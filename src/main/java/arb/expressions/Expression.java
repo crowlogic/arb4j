@@ -153,32 +153,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                             Boolean.valueOf(System.getProperty("arb4j.compiler.saveClasses",
                                                                                "true"));
 
-  private FunctionMapping<D, R> mapping;
-
-  public static <D, R, F extends Function<D, R>> F instantiate(String expression,
-                                                               Context context,
-                                                               Class<? extends D> domainClass,
-                                                               Class<? extends R> rangeClass,
-                                                               Class<? extends F> functionClass,
-                                                               String functionName)
-  {
-    var compiledExpression = compile(expression,
-                                     context,
-                                     domainClass,
-                                     rangeClass,
-                                     functionClass,
-                                     functionName);
-
-    F   func               = compiledExpression.instantiate();
-
-    if (compiledExpression.mapping != null)
-    {
-      compiledExpression.mapping.instance = func;
-    }
-
-    return func;
-  }
-
   public static <D, R, F extends Function<D, R>>
          Expression<D, R, F>
          compile(String expression,
@@ -226,23 +200,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return compiledExpression;
   }
 
-  public static <D, R, F extends Function<D, R>> F instantiate(String className,
-                                                               String expression,
-                                                               Context context,
-                                                               Class<D> domainClass,
-                                                               Class<R> rangeClass,
-                                                               Class<F> functionClass,
-                                                               boolean verbose)
-  {
-    return compile(className,
-                   expression,
-                   context,
-                   domainClass,
-                   rangeClass,
-                   functionClass,
-                   verbose).instantiate();
-  }
-
   public static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String className,
                                                                              String expression,
                                                                              Class<D> domainClass,
@@ -261,6 +218,47 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                                              boolean verbose)
   {
     return express(className, expression, context, domainClass, rangeClass, functionClass, verbose);
+  }
+
+  public static <D, R, F extends Function<D, R>> F instantiate(String expression,
+                                                               Context context,
+                                                               Class<? extends D> domainClass,
+                                                               Class<? extends R> rangeClass,
+                                                               Class<? extends F> functionClass,
+                                                               String functionName)
+  {
+    var compiledExpression = compile(expression,
+                                     context,
+                                     domainClass,
+                                     rangeClass,
+                                     functionClass,
+                                     functionName);
+
+    F   func               = compiledExpression.instantiate();
+
+    if (compiledExpression.mapping != null)
+    {
+      compiledExpression.mapping.instance = func;
+    }
+
+    return func;
+  }
+
+  public static <D, R, F extends Function<D, R>> F instantiate(String className,
+                                                               String expression,
+                                                               Context context,
+                                                               Class<D> domainClass,
+                                                               Class<R> rangeClass,
+                                                               Class<F> functionClass,
+                                                               boolean verbose)
+  {
+    return compile(className,
+                   expression,
+                   context,
+                   domainClass,
+                   rangeClass,
+                   functionClass,
+                   verbose).instantiate();
   }
 
   public Expression<?, ?, ?>                      ascendentExpression;
@@ -306,6 +304,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public ArrayList<IntermediateVariable<D, R, F>> intermediateVariables         = new ArrayList<>();
 
   public ArrayList<LiteralConstant<D, R, F>>      literalConstants              = new ArrayList<>();
+
+  private FunctionMapping<D, R> mapping;
 
   public int                                      position                      = -1;
 
@@ -482,16 +482,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  public void pushOntoTypeStack(Class<?> type, String name)
-  {
-    if (traceGeneration)
-    {
-      System.out.format("Adding %s to the type stack for %s: %s\n from \n", type, name, typeStack);
-      new Throwable().printStackTrace();
-    }
-    typeStack.add(type);
-  }
-
   public MethodVisitor
          callContextualUnaryFunction(MethodVisitor mv, FunctionMapping<D, R> mapping, Class<?> type)
   {
@@ -567,31 +557,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
 
     return this;
-  }
-
-  private ClassVisitor generateToStringMethod(ClassVisitor classVisitor)
-  {
-    MethodVisitor methodVisitor =
-                                classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                         "toString",
-                                                         Utensils.getMethodDescriptor(String.class),
-                                                         null,
-                                                         null);
-
-    methodVisitor.visitCode();
-
-    methodVisitor.visitLdcInsn(String.format("%s%s%s",
-                                             functionName != null ? (functionName + ":") : "",
-                                             expression.contains("➔") || inputNode
-                                                           == null ? ""
-                                                                   : (inputNode.getName() + "➔"),
-                                             expression));
-
-    methodVisitor.visitInsn(Opcodes.ARETURN);
-    methodVisitor.visitMaxs(10, 10);
-    methodVisitor.visitEnd();
-
-    return classVisitor;
   }
 
   public ClassVisitor constructClassVisitor()
@@ -1196,6 +1161,31 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return mv;
   }
 
+  private ClassVisitor generateToStringMethod(ClassVisitor classVisitor)
+  {
+    MethodVisitor methodVisitor =
+                                classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                                         "toString",
+                                                         Utensils.getMethodDescriptor(String.class),
+                                                         null,
+                                                         null);
+
+    methodVisitor.visitCode();
+
+    methodVisitor.visitLdcInsn(String.format("%s%s%s",
+                                             functionName != null ? (functionName + ":") : "",
+                                             expression.contains("➔") || inputNode
+                                                           == null ? ""
+                                                                   : (inputNode.getName() + "➔"),
+                                             expression));
+
+    methodVisitor.visitInsn(Opcodes.ARETURN);
+    methodVisitor.visitMaxs(10, 10);
+    methodVisitor.visitEnd();
+
+    return classVisitor;
+  }
+
   public String getFunctionClassTypeSignature()
   {
 
@@ -1245,16 +1235,29 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return ascendentExpression == null ? null : (Variable<E, S, G>) ascendentExpression.inputNode;
   }
 
+  public Class<?> getThisOrAnyAscendentExpressionsPolynomialRange()
+  {
+    if (rangeType.equals(RealPolynomial.class) || rangeType.equals(ComplexPolynomial.class))
+    {
+      return rangeType;
+    }
+    if (ascendentExpression != null)
+    {
+      Class<?> ascendentPolynomialRangeType =
+                                            ascendentExpression.getThisOrAnyAscendentExpressionsPolynomialRange();
+
+      if (ascendentPolynomialRangeType != null)
+      {
+        return ascendentPolynomialRangeType;
+      }
+    }
+
+    return null;
+  }
+
   public <Q> Q getVariable(VariableReference<D, R, F> reference)
   {
     return context == null ? null : context.variables.get(reference.name);
-  }
-
-  public boolean thisOrAnyAscendentExpressionHasPolynomialRange()
-  {
-    return rangeType.equals(RealPolynomial.class) || rangeType.equals(ComplexPolynomial.class)
-                  || (ascendentExpression != null
-                                && ascendentExpression.thisOrAnyAscendentExpressionHasPolynomialRange());
   }
 
   public void
@@ -1402,6 +1405,16 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return registerIntermediateVariable(intermediateVarName, type);
   }
 
+  public TextTree<Node<?, ?, ?>> newSyntaxTextTree()
+  {
+    return new TextTree<>(newSyntaxTree());
+  }
+
+  public AbstractSyntaxTreeModel newSyntaxTree()
+  {
+    return new AbstractSyntaxTreeModel(rootNode);
+  }
+
   public Variable<D, R, F> newVariable(VariableReference<D, R, F> reference)
   {
     return new Variable<D, R, F>(this,
@@ -1519,6 +1532,34 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
 
     return false;
+  }
+
+  public Class<?> pullFromTypeStack()
+  {
+    if (computeFrames)
+    {
+      return null;
+    }
+    if (traceGeneration)
+    {
+      System.out.format("Popping the top off the type stack: %s\n", typeStack);
+    }
+    Class<?> popped = typeStack.pop();
+    if (traceGeneration)
+    {
+      System.out.format("Popped " + popped + " off the stack so now its " + typeStack);
+    }
+    return popped;
+  }
+
+  public void pushOntoTypeStack(Class<?> type, String name)
+  {
+    if (traceGeneration)
+    {
+      System.out.format("Adding %s to the type stack for %s: %s\n from \n", type, name, typeStack);
+      new Throwable().printStackTrace();
+    }
+    typeStack.add(type);
   }
 
   public String registerIntermediateVariable(String intermediateVarName, Class<?> type)
@@ -1673,12 +1714,29 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return invokeSetMethod(methodVisitor, inputType, rangeType);
   }
 
+  public void skip(int n)
+  {
+    character = expression.charAt(position += n);
+  }
+
   void skipSpaces()
   {
     while (character == ' ')
     {
       nextCharacter();
     }
+  }
+
+  public String syntaxTreeToString()
+  {
+    return newSyntaxTextTree().toString();
+  }
+
+  public boolean thisOrAnyAscendentExpressionHasPolynomialRange()
+  {
+    return rangeType.equals(RealPolynomial.class) || rangeType.equals(ComplexPolynomial.class)
+                  || (ascendentExpression != null
+                                && ascendentExpression.thisOrAnyAscendentExpressionHasPolynomialRange());
   }
 
   public void throwMissingClosingParenthesisException(Object node)
@@ -1737,59 +1795,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                  e);
     }
     return this;
-  }
-
-  public String syntaxTreeToString()
-  {
-    return newSyntaxTextTree().toString();
-  }
-
-  public TextTree<Node<?, ?, ?>> newSyntaxTextTree()
-  {
-    return new TextTree<>(newSyntaxTree());
-  }
-
-  public AbstractSyntaxTreeModel newSyntaxTree()
-  {
-    return new AbstractSyntaxTreeModel(rootNode);
-  }
-
-  public Class<?> pullFromTypeStack()
-  {
-    if (computeFrames)
-    {
-      return null;
-    }
-    if (traceGeneration)
-    {
-      System.out.format("Popping the top off the type stack: %s\n", typeStack);
-    }
-    Class<?> popped = typeStack.pop();
-    if (traceGeneration)
-    {
-      System.out.format("Popped " + popped + " off the stack so now its " + typeStack);
-    }
-    return popped;
-  }
-
-  public Class<?> getThisOrAnyAscendentExpressionsPolynomialRange()
-  {
-    if (rangeType.equals(RealPolynomial.class) || rangeType.equals(ComplexPolynomial.class))
-    {
-      return rangeType;
-    }
-    if (ascendentExpression != null)
-    {
-      Class<?> ascendentPolynomialRangeType =
-                                            ascendentExpression.getThisOrAnyAscendentExpressionsPolynomialRange();
-
-      if (ascendentPolynomialRangeType != null)
-      {
-        return ascendentPolynomialRangeType;
-      }
-    }
-
-    return null;
   }
 
 }

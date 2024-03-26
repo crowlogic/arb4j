@@ -27,10 +27,10 @@ public class J0IntegralCovarianceOperator implements
   }
 
   /**
-   * projection of the k-th orthonormalized Fourier transformed element of the
+   * projection of the orthonormalized Fourier transform of the k-th element of the
    * {@link Type1ChebyshevPolynomialSequence} onto the Bessel function of the
    * first kind of order 0. Why? Because the Fourier transform of J0 is 1/√(1-x^2)
-   * whcih is the measure to which the {@link Type1ChebyshevPolynomialSequence} is
+   * which is the measure to which the {@link Type1ChebyshevPolynomialSequence} is
    * orthogonal with respect to
    */
   RealSequence ξ = RealSequence.express("ξ","(√(2⋅k+3)⋅Γ(k+½)²)/(2⋅√(π)⋅Γ(k+1)²)");

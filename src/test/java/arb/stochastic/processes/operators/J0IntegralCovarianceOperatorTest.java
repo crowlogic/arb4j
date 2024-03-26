@@ -1,7 +1,5 @@
 package arb.stochastic.processes.operators;
 
-import static java.lang.System.out;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;

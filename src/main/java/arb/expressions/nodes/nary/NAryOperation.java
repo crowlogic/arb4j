@@ -115,8 +115,6 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     return methodVisitor;
   }
 
-  protected Class<?>   generatedType;
-
   protected Label      beginningOfTheLoop = new Label();
 
   public Node<D, R, F> endIndex;
