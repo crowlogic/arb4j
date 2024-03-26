@@ -61,9 +61,7 @@ public class factorP1 implements
     }
     while (k.increment().compareTo(endIndexℤ2) <= 0);
 
-    var10000.div(var10001.mul(prodℝ2, bits, ℝ1), bits, result);
-        
-    return result;
+    return var10000.div(var10001.mul(prodℝ2, bits, ℝ1), bits, result);
   }
 
   public factorP1()
@@ -102,12 +100,12 @@ public class factorP1 implements
       factorℝ2.q    = q;
       factorℝ2.α    = α;
       factorℝ2.β    = β;
-      factorℝ2.N    = N;
+     // factorℝ2.N    = N;
       factorℝ1.p    = p;
       factorℝ1.q    = q;
       factorℝ1.α    = α;
       factorℝ1.β    = β;
-      factorℝ1.N    = N;
+     // factorℝ1.N    = N;
       isInitialized = true;
     }
   }

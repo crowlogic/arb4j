@@ -13,7 +13,7 @@ public class factorℝ1 implements
   public Integer  q;
   public Real     α;
   public Real     β;
-  public Integer  N;
+  public Real     z;
 
   public Real evaluate(Integer in, int order, int bits, Real result)
   {

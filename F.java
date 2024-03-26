@@ -30,7 +30,7 @@ public class F implements RealPolynomialNullaryFunction {
          sumP1.add(factorP1.evaluate(n, bits, valueP1), bits);
       } while(n.increment().compareTo(endIndexℤ3) <= 0);
 
-      return (result).set(sumP1);
+      return result.set(sumP1);
    }
 
    public F() {
