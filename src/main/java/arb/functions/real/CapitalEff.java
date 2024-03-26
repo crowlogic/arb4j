@@ -20,6 +20,19 @@ public class CapitalEff implements
   public Integer        endIndexℤ3;
   public final factorP1 factorP1 = new factorP1();
 
+  @SuppressWarnings("resource")
+  public static void main(String args[])
+  {
+    CapitalEff f = new CapitalEff();
+    f.α = Real.newVector(2).setName("α").set(-3, 1.75);
+    f.β = Real.newVector(1).setName("β").set(2);
+    f.N = new Integer(6).setName("N");
+    f.p = new Integer(2).setName("p");
+    f.q = new Integer(1).setName("q");
+    RealPolynomial great = f.evaluate(null, 128, new RealPolynomial());
+    System.out.format("%s=%s where %s, %s, %s, %s and %s", f, great, f.α, f.β, f.N, f.p,f.q);
+  }
+
   public RealPolynomial evaluate(Void in, int order, int bits, RealPolynomial result)
   {
     if (!isInitialized)
