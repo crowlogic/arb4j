@@ -1,6 +1,6 @@
 package arb.functions.polynomials;
 
-import java.util.function.Predicate;
+import java.util.Comparator;
 
 import arb.Integer;
 import arb.Real;
@@ -75,12 +75,11 @@ public class HypergeometricPolynomial implements
     return F.evaluate(null, order, bits, f);
   }
 
-
   public void determinePolynomialOrder()
   {
     α.stream()
      .filter(Real.isNegativeInteger)
-     .min((a, b) -> a.compareTo(b))
+     .min(Comparator.naturalOrder())
      .get()
      .integerValue(N)
      .neg()
