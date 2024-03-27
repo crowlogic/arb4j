@@ -9,7 +9,7 @@ public class factorℝ2 implements Function<Integer, Real> {
    public Integer q;
    public Real α;
    public Real β;
-   public Real z;
+   public Integer N;
 
    public Real evaluate(Integer in, int order, int bits, Real result) {
       if (!isInitialized) {
