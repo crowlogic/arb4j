@@ -8,6 +8,7 @@ import static arb.IntegerConstants.*;
 import static arb.RealConstants.zero;
 import static arb.arblib.*;
 import static java.lang.String.format;
+import java.util.function.Predicate;
 
 import java.io.Serializable;
 import java.lang.foreign.Arena;
@@ -159,6 +160,8 @@ import arb.stochastic.ProbabilityDistributionFunction;
     return get(k.getSignedValue() - 1);
   }
   
+  public static Predicate<? super Real> isNegativeInteger = αᵢ -> αᵢ.isInteger() && αᵢ.isNegative();  
+    
   public RealPolynomial mul(RealPolynomial a, int bits, RealPolynomial res)
   {
     return a.mul(this, bits, res);
