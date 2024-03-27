@@ -80,6 +80,10 @@ import arb.stochastic.ProbabilityDistributionFunction;
  * done automatically by the library). 
  * 
  * Note that there is no way to represent a half-infinite interval such as [0,∞]. 
+ * On the whole line ℝ, symmetry around 0 allows for a midpoint at 0 between -∞ 
+ * and +∞. This concept doesn't apply to the half-line [0, ∞), where no finite 
+ * midpoint exists between 0 and ∞ due to the absence of symmetry and the nature 
+ * of ∞ as unbounded.
  * 
  * The ball NaN±c, where c is finite or infinite, represents an indeterminate 
  * value (the value could be any extended real number, or it could represent 
