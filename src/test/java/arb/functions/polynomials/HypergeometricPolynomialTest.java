@@ -1,7 +1,5 @@
 package arb.functions.polynomials;
 
-import static java.lang.System.out;
-
 import arb.Integer;
 import arb.Real;
 import arb.RealConstants;
