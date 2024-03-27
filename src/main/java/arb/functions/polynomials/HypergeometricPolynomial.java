@@ -59,6 +59,7 @@ public class HypergeometricPolynomial implements
     q.close();
     α.close();
     β.close();
+    N.close();
   }
 
   public final Context                       context;
