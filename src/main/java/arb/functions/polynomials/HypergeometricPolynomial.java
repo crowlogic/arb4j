@@ -73,11 +73,10 @@ public class HypergeometricPolynomial implements
 
   boolean                                    initialized = false;
 
-  @SuppressWarnings("resource")
   public HypergeometricPolynomial(int p, int q)
   {
-    context = new Context(this.p = new Integer(p).setName("p"),
-                          this.q = new Integer(q).setName("q"),
+    context = new Context(this.p = new Integer(p,"p"),
+                          this.q = new Integer(q,"q"),
                           α = Real.newVector(p).setName("α"),
                           β = Real.newVector(q).setName("β"));
     context.registerVariable("N", N = new Integer());
