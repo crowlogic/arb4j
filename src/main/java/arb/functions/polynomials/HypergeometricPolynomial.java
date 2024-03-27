@@ -31,17 +31,22 @@ import arb.functions.real.RealPolynomialNullaryFunction;
  * <p>
  * The implementation uses parameters p and q, which are the dimensions of
  * vectors α and β, respectively. These parameters, along with the vectors
- * themselves, define the hypergeometric series. The series is evaluated up to a
- * specific order N, determined by the smallest non-positive integer in α,
- * ensuring the series terminates. This class provides methods to initialize the
- * polynomial, verify the terminating condition, and evaluate the polynomial,
- * encapsulating the complexity of handling hypergeometric functions in a
- * computational context.
+ * themselves, define the hypergeometric series.<br><br>
+ * 
+ * The notation x₍n₎ represents the n-th
+ * {@link Real#ascendingFactorial(long, int, Real)} of x. <br><br>
+ * 
+ * The series is evaluated up to a specific order N, determined by the smallest
+ * non-positive integer in α, ensuring the series terminates. This class
+ * provides methods to initialize the polynomial, verify the terminating
+ * condition, and evaluate the polynomial, encapsulating the complexity of
+ * handling hypergeometric functions in a computational context.
  * </p>
  * <p>
  * Note: The verify method checks for the presence of at least one non-positive
  * integer in α, a condition necessary for the hypergeometric series to
- * terminate.
+ * terminate. This verification is crucial for ensuring the hypergeometric
+ * series simplifies into a polynomial of finite degree.
  * </p>
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -76,8 +81,10 @@ public class HypergeometricPolynomial implements
 
   public HypergeometricPolynomial(int p, int q)
   {
-    context = new Context(this.p = new Integer(p,"p"),
-                          this.q = new Integer(q,"q"),
+    context = new Context(this.p = new Integer(p,
+                                               "p"),
+                          this.q = new Integer(q,
+                                               "q"),
                           α = Real.newVector(p).setName("α"),
                           β = Real.newVector(q).setName("β"));
     context.registerVariable("N", N = new Integer());
