@@ -1,6 +1,15 @@
 package arb;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+
+/**
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class IntegerConstants
+
 {
   public static final int  ARB_STR_CONDENSE  = 16;
   public static final int  ARB_STR_NO_RADIUS = 2;

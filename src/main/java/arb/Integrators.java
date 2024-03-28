@@ -15,11 +15,17 @@ import static arb.arblib.mag_sub_lower;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.real.ComplexMagnitude;
 import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class Integrators
 {
 
@@ -135,7 +141,8 @@ public class Integrators
     }
 
     try ( Complex s = new Complex(); Complex t = new Complex(); Complex u = new Complex();
-          Magnitude tmpm = new Magnitude(); Magnitude tmpn = new Magnitude(); Magnitude newTol = new Magnitude();)
+          Magnitude tmpm = new Magnitude(); Magnitude tmpn = new Magnitude();
+          Magnitude newTol = new Magnitude();)
     {
       int        depthLimit = options.getDepthLimit(prec);
       int        evalLimit  = options.getEvaluationLimit(prec) * 10;
@@ -151,8 +158,10 @@ public class Integrators
       }
       allocation = 4;
       // TODO: take as,bs,vs,ms and put them in their own (static) class
-      try ( Complex as = Complex.newVector(2 * allocation); Complex bs = Complex.newVector(2 * allocation);
-            Complex vs = Complex.newVector(2 * allocation); Magnitude ms = Magnitude.newVector(2 * allocation);)
+      try ( Complex as = Complex.newVector(2 * allocation);
+            Complex bs = Complex.newVector(2 * allocation);
+            Complex vs = Complex.newVector(2 * allocation);
+            Magnitude ms = Magnitude.newVector(2 * allocation);)
       {
         as.set(a);
         bs.set(b);
@@ -201,7 +210,8 @@ public class Integrators
     }
 
     try ( Complex s = new Complex(); Complex t = new Complex(); Complex u = new Complex();
-          Magnitude tmpm = new Magnitude(); Magnitude tmpn = new Magnitude(); Magnitude newTol = new Magnitude();)
+          Magnitude tmpm = new Magnitude(); Magnitude tmpn = new Magnitude();
+          Magnitude newTol = new Magnitude();)
     {
       int        depthLimit, evalLimit, degLimit;
 
@@ -222,8 +232,10 @@ public class Integrators
       }
       allocation = 4;
       // TODO: take as,bs,vs,ms and put them in their own (static) class
-      try ( Complex as = Complex.newVector(2 * allocation); Complex bs = Complex.newVector(2 * allocation);
-            Complex vs = Complex.newVector(2 * allocation); Magnitude ms = Magnitude.newVector(2 * allocation);)
+      try ( Complex as = Complex.newVector(2 * allocation);
+            Complex bs = Complex.newVector(2 * allocation);
+            Complex vs = Complex.newVector(2 * allocation);
+            Magnitude ms = Magnitude.newVector(2 * allocation);)
       {
 
         /* Compute initial crude estimate for the whole interval. */
@@ -292,7 +304,9 @@ public class Integrators
                             Magnitude topErrors)
   {
 
-    right.get(depth).set(right.get(top)).set(left.get(top).add(right.get(top), prec, left.get(depth)).mul2e(-1));
+    right.get(depth)
+         .set(right.get(top))
+         .set(left.get(top).add(right.get(top), prec, left.get(depth)).mul2e(-1));
 
     /* Evaluate on [a, mid] */
     Complex topVal = values.get(top);
@@ -303,8 +317,8 @@ public class Integrators
     /* Adjust absolute tolerance based on new information. */
     acb_get_mag_lower(tmpMag, topVal);
     mag_mul_2exp_si(tmpMag, tmpMag, -relAccuracyGoalBits);
-    newTol.max( tmpMag );
-    
+    newTol.max(tmpMag);
+
     /* Evaluate on [mid, b] */
     Complex val = values.get(depth);
     f.simpleQuadrature(left.get(depth), right.get(depth), prec, val);
@@ -377,7 +391,6 @@ public class Integrators
         depth--;
         Integrators.accumulateIntegrand(prec, s, depth, top, useHeap, as, bs, vs, ms);
 
-
         continue;
       }
 
@@ -421,7 +434,19 @@ public class Integrators
         Utensils.resizeVectors(allocation, as, bs, vs, ms);
       }
 
-      bisect(f, relAccuracyBitsGoal, prec, tmpm, newTol, depth, top, evalCount, as, bs, vs, ms, topm);
+      bisect(f,
+             relAccuracyBitsGoal,
+             prec,
+             tmpm,
+             newTol,
+             depth,
+             top,
+             evalCount,
+             as,
+             bs,
+             vs,
+             ms,
+             topm);
 
       if (debug)
       {
@@ -444,7 +469,6 @@ public class Integrators
     }
 
     res.set(s);
-
 
   }
 
@@ -571,7 +595,8 @@ public class Integrators
     }
 
     try ( Complex s = new Complex(); Complex t = new Complex(); Complex u = new Complex();
-          Magnitude tmpm = new Magnitude(); Magnitude tmpn = new Magnitude(); Magnitude newTol = new Magnitude();)
+          Magnitude tmpm = new Magnitude(); Magnitude tmpn = new Magnitude();
+          Magnitude newTol = new Magnitude();)
     {
       int        depthLimit, evalLimit, degLimit;
       int        allocation;
@@ -592,9 +617,10 @@ public class Integrators
       }
       allocation = 4;
       // TODO: take as,bs,vs,ms and put them in their own (static) class
-      try ( Complex as = Complex.newVector(2 * allocation); Complex bs = Complex.newVector(2 * allocation);
-            Complex vs = Complex.newVector(2 * allocation); Magnitude ms = Magnitude.newVector(2 * allocation);
-            Complex value = new Complex();)
+      try ( Complex as = Complex.newVector(2 * allocation);
+            Complex bs = Complex.newVector(2 * allocation);
+            Complex vs = Complex.newVector(2 * allocation);
+            Magnitude ms = Magnitude.newVector(2 * allocation); Complex value = new Complex();)
       {
         as.re().set(left);
         bs.re().set(right);
@@ -638,8 +664,9 @@ public class Integrators
     boolean converged = false;
     try ( Complex mid = new Complex(); Complex δ = new Complex(); Complex wide = new Complex();
           Magnitude m = new Magnitude(); Complex s = new Complex(); Complex v = new Complex();
-          Magnitude M = new Magnitude(); Magnitude X = new Magnitude(); Magnitude Y = new Magnitude();
-          Magnitude rho = new Magnitude(); Magnitude err = new Magnitude(); Magnitude t = new Magnitude();
+          Magnitude M = new Magnitude(); Magnitude X = new Magnitude();
+          Magnitude Y = new Magnitude(); Magnitude rho = new Magnitude();
+          Magnitude err = new Magnitude(); Magnitude t = new Magnitude();
           Magnitude bestRho = new Magnitude();)
     {
       int Xexp;

@@ -1,5 +1,8 @@
 package arb;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+
 /**
  * This structure contains several fields, explained below. An
  * acb_calc_integrate_opt_t is defined as an array of
@@ -9,6 +12,9 @@ package arb;
  * values, the integration algorithm will choose defaults automatically (based
  * on the precision and accuracy goals). This structure will most likely be
  * extended in the future to accommodate more options.
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class IntegrationOptions
 {

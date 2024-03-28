@@ -5,13 +5,15 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.ref.Cleaner.Cleanable;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+
 /**
- * A {@link FloatPartition} denoted Pfunc of ...
+ * A {@link FloatPartition} is a {@link Partition} of arbitrary precision
+ * {@link Float}ing point numbers specified by their midpoint and radius
  * 
- * @see <a href="functions/doc-files/IntegrationNotes.pdf">notes on Riemann
- *      integration</a>
- * 
- *      TODO: fix after adapting {@link Float} to support being an array
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class FloatPartition implements
                             AutoCloseable,
