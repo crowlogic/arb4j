@@ -35,9 +35,9 @@ dependencies {
     api 'org.slf4j:slf4j-simple:2.0.11'
     api 'org.scilab.forge:jlatexmath:1.0.7'
     api 'io.fair-acc:chartfx:11.3.1'
-    api 'org.vineflower:vineflower:1.9.3'
     api 'org.controlsfx:controlsfx:11.2.0'
     api 'junit:junit:4.13.2'
+    
 }
 
 group = 'org.arblib'
