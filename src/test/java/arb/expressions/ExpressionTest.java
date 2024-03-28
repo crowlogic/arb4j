@@ -18,6 +18,12 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  public static void testIntegralOfAConstant()
+  {
+    var integral = RealFunction.express("∫(2,4)1dx");
+    assertEquals(2.0, integral.eval(0.0));
+  }
+
   public static void testSuperscriptLowercaseQ()
   {
     assertEquals("𐞥", String.format("%c", Parser.lowercaseSuperscriptAlphabet[16]));
@@ -53,7 +59,11 @@ public class ExpressionTest extends
     try ( Real λ = new Real())
     {
       Context                 context  = new Context(λ.setName("λ").set("3.5", 128));
-      Function<Integer, Real> f        = Function.express(Integer.class, Real.class, "n➔(λ*2)₍ₙ₎/(λ+½)₍ₙ₎", context);
+      Function<Integer,
+                    Real>     f        = Function.express(Integer.class,
+                                                          Real.class,
+                                                          "n➔(λ*2)₍ₙ₎/(λ+½)₍ₙ₎",
+                                                          context);
       Integer                 in       = new Integer(4);
       Real                    evaluate = f.evaluate(in, 128, new Real());
       assertEquals(6.0, evaluate.doubleValue());
@@ -62,7 +72,8 @@ public class ExpressionTest extends
 
   public static void testProductViaFactorial()
   {
-    Function<Integer, Integer> f        = Function.express(Integer.class, Integer.class, "n➔∏k{k=1…n}");
+    Function<Integer, Integer> f        =
+                                 Function.express(Integer.class, Integer.class, "n➔∏k{k=1…n}");
     Integer                    in       = new Integer(3);
     Integer                    evaluate = f.evaluate(in, 128, new Integer());
     assertEquals(6, evaluate.getUnsignedValue());
