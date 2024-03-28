@@ -26,7 +26,6 @@ module arb4j
   requires transitive io.fair_acc.dataset;
   requires transitive io.fair_acc.bench;
   requires transitive org.fxyz3d.core;
-  requires transitive vineflower;
   requires transitive org.objectweb.asm;
   requires transitive org.objectweb.asm.util;
   requires transitive org.objectweb.asm.commons;
@@ -44,7 +43,6 @@ module arb4j
   exports arb.documentation.examples.quantum.mechanics;
   exports arb.stochastic.processes.operators;
   exports arb.expressions;
-  exports arb.expressions.decompiler;
   exports arb.expressions.nodes;
   exports arb.expressions.nodes.nary;
   exports arb.expressions.nodes.binary;
