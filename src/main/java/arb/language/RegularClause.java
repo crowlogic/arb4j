@@ -1,15 +1,16 @@
-package arb.logic;
+package arb.language;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.logic.Clause;
+import arb.logic.Proposition;
 
 /**
- * @author Stephen A. Crowley ©2024
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface PredicateSymbol extends
-                             NonLogicalSymbol
+public interface RegularClause extends
+                               Clause<Word, Sentence<Word>, Proposition<Word, Sentence<Word>>>
 {
-  // Specific implementation for predicate symbols
+
 }

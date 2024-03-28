@@ -1,8 +1,10 @@
 package arb.logic;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.Term;
 import arb.documentation.TheArb4jLibrary;
+import arb.language.Sentence;
+import arb.language.Term;
+import arb.language.Word;
 
 /**
  *
@@ -31,8 +33,11 @@ where pᵢ and qᵢ are atoms and the operators ~, ∧, ∨, ⇒ are connectives
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface Clause extends
-                        Term
+public interface Clause<W extends Word,
+              S extends Sentence<? extends W>,
+              P extends Proposition<? extends W, ? extends S>> extends
+                       Term<S, P, W>
 {
+
 
 }

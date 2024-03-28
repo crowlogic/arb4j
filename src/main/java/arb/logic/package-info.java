@@ -1,8 +1,5 @@
 package arb.logic;
 
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
-
 /**
  * In the interest of keeping the architecture lean and focused on the intrinsic
  * expressability of the ideas themselves as they relate to each other, avoiding

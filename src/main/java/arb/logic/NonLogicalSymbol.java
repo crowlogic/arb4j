@@ -5,7 +5,7 @@ package arb.logic;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class NonLogicalSymbol
+public interface NonLogicalSymbol
 {
   // Base class for predicates, functions, and constants
 }

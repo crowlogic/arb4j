@@ -1,4 +1,8 @@
-package arb.documentation;
+package arb;
+
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.ChapterReferral;
+import arb.documentation.TheArb4jLibrary;
 
 /**
  * <pre>

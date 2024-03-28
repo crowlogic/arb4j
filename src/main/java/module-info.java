@@ -33,6 +33,7 @@ module arb4j
 
   exports arb;
   exports arb.annotations;
+  exports arb.language;
   exports arb.logic;
   exports arb.decisions;
   exports arb.decisions.inference;

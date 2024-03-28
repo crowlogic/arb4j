@@ -1,4 +1,8 @@
-package arb.documentation;
+package arb.language;
+
+import arb.Notion;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 
 /**
  * 
@@ -7,7 +11,7 @@ package arb.documentation;
  */
 public class Terms implements
                    Notion,
-                   Term
+                   RegularTerm
 {
 
   final public String definition;

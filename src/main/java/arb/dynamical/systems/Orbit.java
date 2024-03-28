@@ -24,7 +24,7 @@ import arb.geometry.surfaces.RiemannSurface;
  * 
  */
 public interface Orbit<DS extends DynamicalSystem> extends
-                      SubSet<PhaseSpace<DS>>
+                      SubSet<PhaseSpace<? extends DS>>
 {
 
 }

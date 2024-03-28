@@ -1,9 +1,9 @@
 package arb.documentation.concepts;
 
+import arb.Concept;
 import arb.documentation.Bibliography;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.ChapterReferral;
-import arb.documentation.Concept;
 import arb.documentation.TheArb4jLibrary;
 
 /**

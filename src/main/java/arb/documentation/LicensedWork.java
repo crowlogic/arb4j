@@ -1,6 +1,7 @@
 package arb.documentation;
 
 import arb.documentation.annotations.Legal;
+import arb.language.Terms;
 
 /**
  * LicensedWork is {@link Work} whose terms of distribution are specified by a

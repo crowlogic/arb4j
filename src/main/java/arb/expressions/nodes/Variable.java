@@ -124,9 +124,6 @@ public class Variable<D, R, F extends Function<D, R>> extends
     this.variables  = expression.variables;
     assert reference != null;
     assert !(expression.recursive && reference.name.equals(expression.functionName)) : caveat;
-    var contextVar = expression.getVariable(reference);
-    // reference.type = (expression.context == null || contextVar == null) ?
-    // domainType : contextVar.getClass();
 
     if (variables == null || !variables.map.containsKey(reference.name) || reference.type == null)
     {

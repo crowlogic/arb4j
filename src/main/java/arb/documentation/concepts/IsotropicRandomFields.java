@@ -1,8 +1,8 @@
 package arb.documentation.concepts;
 
+import arb.Concept;
 import arb.documentation.Bibliography;
 import arb.documentation.ChapterReferral;
-import arb.documentation.Concept;
 
 /**
  * <pre>

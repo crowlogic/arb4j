@@ -1,7 +1,6 @@
 package arb.operators;
 
 import arb.Field;
-import arb.space.topological.VectorSpace;
 
 /**
  * A Normal Operator is a specific type of Bounded Linear Operator for which the

@@ -3,7 +3,6 @@ package arb.documentation.examples.quantum.mechanics;
 import arb.Field;
 import arb.documentation.Bibliography;
 import arb.documentation.Example;
-import arb.operators.BoundedLinearOperator;
 import arb.operators.SelfAdjointOperator;
 import arb.space.topological.VectorSpace;
 

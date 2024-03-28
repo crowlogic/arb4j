@@ -1,5 +1,8 @@
 package arb.documentation;
 
+import arb.Notion;
+import arb.language.RegularTerm;
+
 /**
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -7,7 +10,7 @@ package arb.documentation;
  */
 public interface Work extends
                       Notion,
-                      Term
+                      RegularTerm
 {
 
 }
