@@ -11,7 +11,8 @@ import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
 /**
- * @author Stephen A. Crowley ©2024
+ * @author StΣνε
+ * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
