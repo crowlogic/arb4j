@@ -1,9 +1,12 @@
 package arb;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import junit.framework.TestCase;
 
 /**
- * TODO: find out whats causing https://github.com/crowlogic/arb4j/issues/270
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class MagnitudeTest extends
                            TestCase
