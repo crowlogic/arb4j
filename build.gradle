@@ -49,6 +49,12 @@ java {
     withSourcesJar()
 }
 
+task printVersion {
+    doLast {
+        println project.version
+    }
+}
+
 tasks.withType(JavaCompile) {
     options.compilerArgs += ['--enable-preview']
     options.fork = true
@@ -59,12 +65,6 @@ tasks.test {
     jvmArgs '-ea', '--enable-preview', '--enable-native-access=arb4j', '-Djava.library.path=.'
 }
 
-
-tasks.sourcesJar {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    // or use 'DuplicatesStrategy.EXCLUDE' to exclude duplicates
-    // or 'DuplicatesStrategy.WARN' to include duplicates but log a warning
-}
 
 publishing {
     publications {
