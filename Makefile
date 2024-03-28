@@ -14,17 +14,12 @@ CFLAGS=-g -O3 -fPIC -shared -Wno-int-conversion
 
 SWIGFLAGS=-v -java -package arb -outdir src/main/java/arb
 
-all: libarblib.so
+all: jar
 
-jar: target/arb4j-$(VERSION).jar
+jar: build/libs/arb4j-$(VERSION).jar libarblib.so
 
-doc: target/site/apidocs
-
-target/site/apidocs: $(shell find src)
-	mvn javadoc:javadoc
-
-target/arb4j-$(VERSION).jar: libarblib.so $(shell find src) $(shell find native)
-	mvn package
+build/libs/arb4j-$(VERSION).jar: libarblib.so $(shell find src) $(shell find native)
+	gradle build
 
 native/arb_wrap.c: $(shell find native -name "*.i") 
 	swig $(SWIGFLAGS) $(INCLUDES) native/arb.i
@@ -33,7 +28,7 @@ libarblib.so: $(SOURCES)
 	clang $(CFLAGS) $(SOURCES) $(C_INCLUDES) -olibarblib.so -lflint  
 
 clean:
-	rm -rf libarblib.so *.o native/arb_wrap.c target/*.jar target/site/apidocs
+	rm -rf libarblib.so *.o native/arb_wrap.c build/*
 
 cleanGenerated:
 	cd $(BASEDIR)/src/main/java/arb && rm -fv Real.java Complex.java RealPolynomial.java ComplexPolynomial.java SWIGTYPE*.java Float.java Rational.java DirichletCharacter.java DirichletGroup.java DirichletPrimeGroup.java FastDFT*.java GMPRandomState.java Magnitude.java Mantissa*.java RandomState.java RealMatrix.java ComplexMatrix.java 
