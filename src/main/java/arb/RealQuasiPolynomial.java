@@ -6,7 +6,6 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
-import arb.functions.sequences.RealPolynomialSequence;
 import arb.functions.sequences.Sequence;
 
 /**
@@ -20,7 +19,11 @@ public class RealQuasiPolynomial
 
 {
 
-  
+  public static Expression<Integer, RealQuasiPolynomial, Sequence<RealQuasiPolynomial>>
+         parseSequence(String className, String expression)
+  {
+    return parseSequence(className, expression, null);
+  }
 
   public static Expression<Integer, RealQuasiPolynomial, Sequence<RealQuasiPolynomial>>
          parseSequence(String className, String expression, Context context)
