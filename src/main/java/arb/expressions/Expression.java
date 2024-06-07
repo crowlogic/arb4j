@@ -1360,7 +1360,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean isNullaryPolynomialFunction()
   {
-    return (domainType.equals(Object.class) && thisOrAnyAscendentExpressionHasPolynomialCoDomain());
+    return (domainType.equals(Object.class) && thisOrAnyAscendentExpressionHasPolynomialOrQuasiPolynomialCoDomain());
   }
 
   public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, Class<?> fieldType)
@@ -1733,7 +1733,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       return new BesselFunctionOfTheFirstKind<>(this);
     }
-  
 
     return new FunctionCall<>(reference.name,
                               resolve(),
@@ -1846,11 +1845,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return new SyntaxTree<>(rootNode);
   }
 
-  public boolean thisOrAnyAscendentExpressionHasPolynomialCoDomain()
+  public boolean thisOrAnyAscendentExpressionHasPolynomialOrQuasiPolynomialCoDomain()
   {
     boolean isPolynomial = ascendentExpression != null
-                  && ascendentExpression.thisOrAnyAscendentExpressionHasPolynomialCoDomain();
-    return coDomainType.equals(RealPolynomial.class) || coDomainType.equals(ComplexPolynomial.class) || isPolynomial;
+                  && ascendentExpression.thisOrAnyAscendentExpressionHasPolynomialOrQuasiPolynomialCoDomain();
+    return coDomainType.equals(RealQuasiPolynomial.class) || coDomainType.equals(ComplexPolynomial.class)
+                  || coDomainType.equals(RealPolynomial.class) || coDomainType.equals(ComplexPolynomial.class)
+                  || isPolynomial;
   }
 
   public void throwNewUnexpectedCharacterException()
