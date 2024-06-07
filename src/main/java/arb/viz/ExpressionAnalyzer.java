@@ -2,10 +2,11 @@ package arb.viz;
 
 import arb.Integer;
 import arb.RealPolynomial;
+import arb.RealQuasiPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
-import arb.functions.Function;
 import arb.functions.sequences.RealPolynomialSequence;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -20,15 +21,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrarys}
  */
-public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends C>>
-                               extends
-                               Application
+public class ExpressionAnalyzer
+                                extends
+                                Application
 {
 
   private void expandTreeView(TreeItem<?> item)
@@ -43,7 +43,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
     }
   }
 
-  private Expression<Integer, RealPolynomial, RealPolynomialSequence> expr;
+  private Expression<?, ?, ?> expr;
 
   @SuppressWarnings("unchecked")
   @Override
@@ -52,7 +52,11 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
     primaryStage.setWidth(1800);
     primaryStage.setHeight(900);
 
-    expr = RealPolynomialSequence.parse("Ψₖ", "n➔√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)");
+    Integer n = new Integer(0);
+    Context context = new Context(n.setName("n"));
+    
+    expr = RealQuasiPolynomial.parseSequence("Ψ", "y➔½*√(2*(4*n+1)/y)*(-1)ⁿ*J(2*n+½,y)", context);
+    
     var rootNode      = expr.rootNode;
 
     // node creation logic

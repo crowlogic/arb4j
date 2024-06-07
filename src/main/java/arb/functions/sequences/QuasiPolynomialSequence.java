@@ -6,6 +6,7 @@ import arb.QuasiPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.Function;
 
 /**
@@ -16,6 +17,8 @@ public interface QuasiPolynomialSequence<S, P extends Polynomial<S, ? extends P>
                                         extends
                                         Sequence<C>
 {
+
+
 
   public static <S, P extends Polynomial<S, ? extends P>, V extends Function<S, S>, C extends QuasiPolynomial<S, P, V>, Q extends QuasiPolynomialSequence<S, P, V, C>>
          Q
