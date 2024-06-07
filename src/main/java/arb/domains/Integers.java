@@ -1,0 +1,22 @@
+package arb.domains;
+
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+import arb.Integer;
+
+/**
+ *
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
+public class Integers implements
+                      Domain<Integer>
+{
+
+  @Override
+  public boolean contains(Integer point)
+  {
+    return true;
+  }
+
+}

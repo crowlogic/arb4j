@@ -1,0 +1,91 @@
+
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'java'
+    id 'org.openjfx.javafxplugin' version '0.0.10' 
+}
+
+javafx {
+    version = "21.0.2" 
+    modules = [ 'javafx.swing', 'javafx.controls', 'javafx.fxml', 'javafx.graphics' ]  
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url = uri('https://jitpack.io') }
+    maven { url = uri('https://oss.sonatype.org/content/repositories/releases') }
+    maven { url = uri('https://raw.github.com/SpinyOwl/repo/releases') }
+    maven { url = uri('https://maven.jzy3d.org/releases/') }
+    maven { url = uri('https://amelentev.github.io/mvnrepo/') }
+    maven { url = uri('https://repo.maven.apache.org/maven2/') }
+    maven { url = uri('https://download.oracle.com/maven') }
+}
+
+dependencies {
+    api 'org.fxyz3d:fxyz3d:0.6.0'
+    api 'org.ow2.asm:asm:9.6'
+    api 'org.ow2.asm:asm-commons:9.6'
+    api 'eu.hoefel:jatex:1.3.4'
+    api 'org.ow2.asm:asm-util:9.6'
+    api 'org.openjfx:javafx-base:21.0.1'
+    api 'org.openjfx:javafx-swing:21.0.1'
+    api 'org.openjfx:javafx-fxml:21.0.1'
+    api 'org.slf4j:slf4j-simple:2.0.11'
+    api 'org.scilab.forge:jlatexmath:1.0.7'
+    api 'io.fair-acc:chartfx:11.3.1'
+    api 'org.controlsfx:controlsfx:11.2.0'
+    api 'junit:junit:4.13.2'
+    
+}
+
+group = 'org.arblib'
+version = '0.97.5'
+description = 'arb4j'
+java.sourceCompatibility = JavaVersion.VERSION_21
+
+tasks.withType(Javadoc) {
+    options.addStringOption('source', '21') 
+    options.addBooleanOption('-enable-preview', true)
+    options.addBooleanOption('Xdoclint:none', true) 
+    options.addBooleanOption('quiet', true)         
+}
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE;
+}
+
+java {
+    withSourcesJar()
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ['--enable-preview']
+    options.fork = true
+    options.forkOptions.jvmArgs += ['-ea', '--enable-preview']
+}
+
+tasks.test {
+    jvmArgs '-ea', '--enable-preview', '--enable-native-access=arb4j', '-Djava.library.path=.'
+}
+
+task createClasspathManifest {
+    doLast {
+        def classpathEntries = configurations.runtimeClasspath.collect { it.getAbsolutePath() }.join(':')
+        def manifestFile = file('class.path')
+        manifestFile.text = "${classpathEntries}\n"
+    }
+}
+
+tasks.build.dependsOn createClasspathManifest
+
+
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}

@@ -1,0 +1,1 @@
+var psi = RealPolynomialSequence.express("Ψₖ:n➔√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)");

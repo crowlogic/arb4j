@@ -1,0 +1,11 @@
+#!/bin/sh 
+
+
+BASEDIR=$(dirname $(readlink -f $0))/..
+
+$BASEDIR/bin/run org.objectweb.asm.util.ASMifier $@
+
+
+
+
+

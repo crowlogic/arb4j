@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\section*{Definition}
+
+A \tmtextbf{current} $T$ of degree $k$ on a manifold $M$ is a continuous
+linear functional on the space of compactly supported smooth differential
+forms of complementary degree $n - k$ (where $n$ is the dimension of the
+manifold). This is expressed as:
+\begin{equation}
+  T (\omega)
+\end{equation}
+for a compactly supported smooth $(n - k)$-form $\omega$ on $M$.
+
+\section*{Properties and Operations}
+
+\begin{enumerate}
+  \item \tmtextbf{Boundary of a Current:} If $T$ is a $k$-current, its
+  boundary $\partial T$ is a $(k - 1)$-current defined by:
+  \begin{equation}
+    \partial T (\omega) = T (d \omega)
+  \end{equation}
+  where $d \omega$ is the exterior derivative of $\omega$.
+  
+  \item \tmtextbf{Pushforward and Pullback:} Given a smooth map $f : M \to N$,
+  the pushforward of a current can be defined from $M$ to $N$. The pullback,
+  however, is generally not well-defined for currents.
+  
+  \item \tmtextbf{Integration of Currents:} A $n$-dimensional current $T$ on
+  $M$ can be integrated over $M$, represented by:
+  \begin{equation}
+    \int_M T
+  \end{equation}
+\end{enumerate}
+
+\section*{Examples of Currents}
+
+\begin{enumerate}
+  \item \tmtextbf{Dirac Delta Current:} For a point $p$ in $M$, the Dirac
+  delta current $\delta_p$ of degree $n$ acts on a $n$-form $\omega$ by:
+  \begin{equation}
+    \delta_p (\omega) = \omega (p)
+  \end{equation}
+  \item \tmtextbf{Integration Along a Submanifold:} Let $S$ be a
+  $k$-dimensional oriented smooth submanifold of $M$. The current $[S]$
+  associated with $S$ acts on a $(n - k)$-form $\omega$ as:
+  \begin{equation}
+    [S] (\omega) = \int_S \omega
+  \end{equation}
+\end{enumerate}
+
+\section*{Application in Equidistribution}
+
+Currents can be used to study the asymptotic distribution of zeros of
+holomorphic sections in Hermitian vector bundles, particularly how these zeros
+distribute themselves across the manifold, often converging to a certain
+limiting current.
+
+\end{document}

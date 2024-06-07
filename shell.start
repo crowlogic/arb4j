@@ -1,0 +1,82 @@
+import arb.utensils.text.trees.TextTree;
+import arb.utensils.text.trees.FileTreeModel;
+import arb.utensils.text.trees.FileNode;
+import java.io.File;
+import javafx.application.Platform;
+import arb.functions.Function;
+import arb.functions.sequences.*;
+import static arb.utensils.Utensils.*;
+import static java.lang.System.out;
+import java.util.function.IntFunction;
+import java.util.stream.IntStream;
+import java.util.stream.Collectors;
+import java.util.List;
+import arb.stochastic.processes.operators.*;
+import arb.expressions.*;
+import static java.lang.System.out;
+import static java.lang.System.err;
+import static arb.utensils.ShellFunctions.*;
+import static arb.expressions.Expression.*;
+import static arb.functions.real.RealFunction.*;
+import static arb.RoundingMode.*;
+import static arb.RealConstants.*;
+import arb.documentation.*;
+import arb.RealConstants;
+import arb.ComplexConstants;
+import arb.MagnitudeConstants;
+import arb.Magnitude;
+import arb.Real;
+import arb.Integer;
+import arb.RealPolynomial;
+import arb.ComplexPolynomial;
+import arb.Complex;
+import arb.Float;
+import arb.FloatInterval;
+import arb.functions.complex.numbertheoretic.*;
+import arb.functions.polynomials.*;
+import arb.functions.polynomials.orthogonal.*;
+import arb.functions.sequences.*;
+import arb.functions.real.*;
+import java.util.ArrayList;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
+public <A> List<A>  seq(int m, int n,IntFunction<A> f) { return IntStream.rangeClosed(m,n).mapToObj(f).toList();};
+
+@SuppressWarnings("unchecked")
+public <A> A[] array( List<A> list, Class<A> type ) { return (A[])list.toArray((A[])Array.newInstance(type,list.size()));}
+
+public List<Real> coeffs( List<RealPolynomial> s) { return s.stream().map(p->p.getCoeffs()).toList();};
+
+public void matrix( List<RealPolynomial> s) 
+{ 
+  s.forEach( h-> 
+  { 
+    h.getCoeffs().forEach( g -> g.printPrecision = false ); 
+    System.out.format("#%s=%s\n\n",h.getLength(),h.coeffs);
+  });
+}
+
+public RealPolynomial[] rarray( List<RealPolynomial> list ) 
+{ 
+  return array( funcs, RealPolynomial.class); 
+}
+
+public Integer[] iarray( List<Integer> list ) 
+{ 
+  return array( list, Integer.class); 
+}
+
+public RealFunction[] rfarray( List<RealFunction> funcs ) 
+{ 
+  return array( funcs, RealFunction.class); 
+}
+
+void ls(String path) 
+{ 
+  out.println( 
+    new TextTree<FileNode>(
+      new FileTreeModel(
+        new File(
+          path.replaceAll("~",System.getProperty("user.home")))))); 
+}

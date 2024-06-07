@@ -1,0 +1,78 @@
+  public arb.Real evaluate(java.lang.Object, int, int, arb.Real);
+    descriptor: (Ljava/lang/Object;IILarb/Real;)Larb/Real;
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=5, locals=5, args_size=5
+         0: aload_0
+         1: getfield      #84                 // Field isInitialized:Z
+         4: ifne          11
+         7: aload_0
+         8: invokevirtual #86                 // Method initialize:()V
+        11: aload_0
+        12: getfield      #89                 // Field prodℝ1:Larb/Real;
+        15: invokevirtual #91                 // Method arb/Real.multiplicativeIdentity:()Larb/Real;
+        18: pop
+        19: aload_0
+        20: getfield      #95                 // Field k:Larb/Integer;
+        23: aload_0
+        24: getfield      #97                 // Field cℤ1:Larb/Integer;
+        27: invokevirtual #99                 // Method arb/Integer.set:(Larb/Integer;)Larb/Integer;
+        30: pop
+        31: aload_0
+        32: getfield      #105                // Field endIndexℤ1:Larb/Integer;
+        35: aload_0
+        36: getfield      #107                // Field cℤ2:Larb/Integer;
+        39: invokevirtual #99                 // Method arb/Integer.set:(Larb/Integer;)Larb/Integer;
+        42: pop
+        43: goto          82
+        46: aload_0
+        47: getfield      #89                 // Field prodℝ1:Larb/Real;
+        50: aload_0
+        51: getfield      #109                // Field factorℝ1:Larb/functions/real/factorℝ1;
+        54: aload_0
+        55: getfield      #95                 // Field k:Larb/Integer;
+        58: iload_3
+        59: aload_0
+        60: getfield      #111                // Field valueℝ1:Larb/Real;
+        63: invokevirtual #113                // Method arb/functions/real/factorℝ1.evaluate:(Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object;
+        66: checkcast     #36                 // class arb/Real
+        69: iload_3
+        70: invokevirtual #118                // Method arb/Real.mul:(Larb/Real;I)Larb/Real;
+        73: pop
+        74: aload_0
+        75: getfield      #95                 // Field k:Larb/Integer;
+        78: invokevirtual #122                // Method arb/Integer.increment:()Larb/Integer;
+        81: pop
+        82: aload_0
+        83: getfield      #95                 // Field k:Larb/Integer;
+        86: aload_0
+        87: getfield      #105                // Field endIndexℤ1:Larb/Integer;
+        90: invokevirtual #126                // Method arb/Integer.compareTo:(Larb/Integer;)I
+        93: ifle          46
+        96: aload         4
+        98: aload_0
+        99: getfield      #89                 // Field prodℝ1:Larb/Real;
+       102: invokevirtual #130                // Method arb/Real.set:(Larb/Real;)Larb/Real;
+       105: areturn
+      LineNumberTable:
+        line 41: 0
+        line 43: 7
+        line 46: 11
+        line 47: 19
+        line 48: 31
+        line 50: 43
+        line 52: 46
+        line 53: 74
+        line 50: 82
+        line 56: 96
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0     106     0  this   Larb/functions/real/Prod2TimeskWherekEquals1To3;
+            0     106     1    in   Ljava/lang/Object;
+            0     106     2 order   I
+            0     106     3  bits   I
+            0     106     4 result   Larb/Real;
+      StackMapTable: number_of_entries = 3
+        frame_type = 11 /* same */
+        frame_type = 34 /* same */
+        frame_type = 35 /* same */

@@ -1,0 +1,3 @@
+var P = new LegendrePolynomials(128);
+var p = seq(0,9,P);
+plot(-1,1,1000,rarray(p));

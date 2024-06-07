@@ -1,0 +1,8 @@
+#!/bin/sh -x
+
+jhsdb jstack --exe `which java` --core $@
+
+
+
+
+

@@ -1,0 +1,388 @@
+Classfile /home/crow/git/arb4j/bin/main/arb/functions/real/pFqSubMinus23Point51SubMinus23x.class
+  Last modified Apr 11, 2024; size 1992 bytes
+  SHA-256 checksum 8c53d7c56f267e8b5842b44caee90a1688ddbd7b308d981d4d303df4ee03873f
+  Compiled from "pFqSubMinus23Point51SubMinus23x.java"
+[32mpublic class arb.functions.real.pFqSubMinus23Point51SubMinus23x [36mimplements[m arb.functions.real.RealPolynomialNullaryFunction[m
+  minor version: 65535
+  major version: 65
+  flags: (0x0021) ACC_PUBLIC, ACC_SUPER
+  this_class: #1                          [31m// arb/functions/real/pFqSubMinus23Point51SubMinus23x[m
+  super_class: #3                         [31m// java/lang/Object[m
+  interfaces: 1, fields: 9, methods: 5, attributes: 1
+Constant pool:
+    #1 = Class              #2            [31m// arb/functions/real/pFqSubMinus23Point51SubMinus23x[m
+    #2 = Utf8               arb/functions/real/pFqSubMinus23Point51SubMinus23x
+    #3 = Class              #4            [31m// java/lang/Object[m
+    #4 = Utf8               java/lang/Object
+    #5 = Class              #6            [31m// arb/functions/real/RealPolynomialNullaryFunction[m
+    #6 = Utf8               arb/functions/real/RealPolynomialNullaryFunction
+    #7 = Utf8               cℤ1
+    #8 = Utf8               Larb/Integer;
+    #9 = Utf8               cℤ2
+   #10 = Utf8               cℝ3
+   #11 = Utf8               Larb/Real;
+   #12 = Utf8               cℤ4
+   #13 = Utf8               cℤ5
+   #14 = Utf8               ℝ1
+   #15 = Utf8               ℝ2
+   #16 = Utf8               ℝ3
+   #17 = Utf8               ℝ4
+   #18 = Utf8               <init>
+   #19 = Utf8               ()V
+   #20 = Utf8               Code
+   #21 = Methodref          #3.#22        [31m// java/lang/Object."<init>":()V[m
+   #22 = NameAndType        #18:#19       [31m// "<init>":()V[m
+   #23 = Class              #24           [31m// arb/Integer[m
+   #24 = Utf8               arb/Integer
+   #25 = String             #26           [31m// 2[m
+   #26 = Utf8               2
+   #27 = Methodref          #23.#28       [31m// arb/Integer."<init>":(Ljava/lang/String;)V[m
+   #28 = NameAndType        #18:#29       [31m// "<init>":(Ljava/lang/String;)V[m
+   #29 = Utf8               (Ljava/lang/String;)V
+   #30 = Fieldref           #1.#31        [31m// arb/functions/real/pFqSubMinus23Point51SubMinus23x.cℤ1:Larb/Integer;[m
+   #31 = NameAndType        #7:#8         [31m// cℤ1:Larb/Integer;[m
+   #32 = String             #33           [31m// 0[m
+   #33 = Utf8               0
+   #34 = Fieldref           #1.#35        [31m// arb/functions/real/pFqSubMinus23Point51SubMinus23x.cℤ2:Larb/Integer;[m
+   #35 = NameAndType        #9:#8         [31m// cℤ2:Larb/Integer;[m
+   #36 = Class              #37           [31m// arb/Real[m
+   #37 = Utf8               arb/Real
+   #38 = String             #39           [31m// 3.5[m
+   #39 = Utf8               3.5
+   #40 = Methodref          #36.#41       [31m// arb/Real."<init>":(Ljava/lang/String;I)V[m
+   #41 = NameAndType        #18:#42       [31m// "<init>":(Ljava/lang/String;I)V[m
+   #42 = Utf8               (Ljava/lang/String;I)V
+   #43 = Fieldref           #1.#44        [31m// arb/functions/real/pFqSubMinus23Point51SubMinus23x.cℝ3:Larb/Real;[m
+   #44 = NameAndType        #10:#11       [31m// cℝ3:Larb/Real;[m
+   #45 = String             #46           [31m// 1[m
+   #46 = Utf8               1
+   #47 = Fieldref           #1.#48        [31m// arb/functions/real/pFqSubMinus23Point51SubMinus23x.cℤ4:Larb/Integer;[m
+   #48 = NameAndType        #12:#8        [31m// cℤ4:Larb/Integer;[m
+   #49 = String             #50           [31m// 3[m
+   #50 = Utf8               3
+   #51 = Fieldref           #1.#52        [31m// arb/functions/real/pFqSubMinus23Point51SubMinus23x.cℤ5:Larb/Integer;[m
+   #52 = NameAndType        #13:#8        [31m// cℤ5:Larb/Integer;[m
+   #53 = Methodref          #36.#22       [31m// arb/Real."<init>":()V[m
+   #54 = Fieldref           #1.#55        [31m// arb/functions/real/pFqSubMinus23Point51SubMinus23x.ℝ1:Larb/Real;[m
+   #55 = NameAndType        #14:#11       [31m// ℝ1:Larb/Real;[m
+   #56 = Fieldref           #1.#57        [31m// arb/functions/real/pFqSubMinus23Point51SubMinus23x.ℝ2:Larb/Real;[m
+   #57 = NameAndType        #15:#11       [31m// ℝ2:Larb/Real;[m
+   #58 = Fieldref           #1.#59        [31m// arb/functions/real/pFqSubMinus23Point51SubMinus23x.ℝ3:Larb/Real;[m
+   #59 = NameAndType        #16:#11       [31m// ℝ3:Larb/Real;[m
+   #60 = Fieldref           #1.#61        [31m// arb/functions/real/pFqSubMinus23Point51SubMinus23x.ℝ4:Larb/Real;[m
+   #61 = NameAndType        #17:#11       [31m// ℝ4:Larb/Real;[m
+   #62 = Utf8               LineNumberTable
+   #63 = Utf8               LocalVariableTable
+   #64 = Utf8               this
+   #65 = Utf8               Larb/functions/real/pFqSubMinus23Point51SubMinus23x;
+   #66 = Utf8               evaluate
+   #67 = Utf8               (Ljava/lang/Void;IILarb/RealPolynomial;)Larb/RealPolynomial;
+   #68 = Methodref          #23.#69       [31m// arb/Integer.sub:(Larb/Integer;ILarb/Real;)Larb/Real;[m
+   #69 = NameAndType        #70:#71       [31m// sub:(Larb/Integer;ILarb/Real;)Larb/Real;[m
+   #70 = Utf8               sub
+   #71 = Utf8               (Larb/Integer;ILarb/Real;)Larb/Real;
+   #72 = Methodref          #36.#73       [31m// arb/Real.set:(Larb/Integer;)Larb/Real;[m
+   #73 = NameAndType        #74:#75       [31m// set:(Larb/Integer;)Larb/Real;[m
+   #74 = Utf8               set
+   #75 = Utf8               (Larb/Integer;)Larb/Real;
+   #76 = Methodref          #36.#77       [31m// arb/Real."<init>":([Larb/Real;)V[m
+   #77 = NameAndType        #18:#78       [31m// "<init>":([Larb/Real;)V[m
+   #78 = Utf8               ([Larb/Real;)V
+   #79 = Methodref          #80.#82       [31m// arb/RealPolynomial.identity:()Larb/RealPolynomial;[m
+   #80 = Class              #81           [31m// arb/RealPolynomial[m
+   #81 = Utf8               arb/RealPolynomial
+   #82 = NameAndType        #83:#84       [31m// identity:()Larb/RealPolynomial;[m
+   #83 = Utf8               identity
+   #84 = Utf8               ()Larb/RealPolynomial;
+   #85 = Utf8               in
+   #86 = Utf8               Ljava/lang/Void;
+   #87 = Utf8               order
+   #88 = Utf8               I
+   #89 = Utf8               bits
+   #90 = Utf8               result
+   #91 = Utf8               Larb/RealPolynomial;
+   #92 = Utf8               close
+   #93 = Methodref          #23.#94       [31m// arb/Integer.close:()V[m
+   #94 = NameAndType        #92:#19       [31m// close:()V[m
+   #95 = Methodref          #36.#94       [31m// arb/Real.close:()V[m
+   #96 = Utf8               toString
+   #97 = Utf8               ()Ljava/lang/String;
+   #98 = String             #99           [31m// pFq([-2,3.5,1],[-2,3],x)[m
+   #99 = Utf8               pFq([-2,3.5,1],[-2,3],x)
+  #100 = Utf8               (Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;
+  #101 = Class              #102          [31m// java/lang/Void[m
+  #102 = Utf8               java/lang/Void
+  #103 = Methodref          #1.#104       [31m// arb/functions/real/pFqSubMinus23Point51SubMinus23x.evaluate:(Ljava/lang/Void;IILarb/RealPolynomial;)Larb/RealPolynomial;[m
+  #104 = NameAndType        #66:#67       [31m// evaluate:(Ljava/lang/Void;IILarb/RealPolynomial;)Larb/RealPolynomial;[m
+  #105 = Utf8               SourceFile
+  #106 = Utf8               pFqSubMinus23Point51SubMinus23x.java
+{
+  arb.Integer cℤ1;
+    descriptor: Larb/Integer;
+    flags: (0x0000)
+
+  arb.Integer cℤ2;
+    descriptor: Larb/Integer;
+    flags: (0x0000)
+
+  arb.Real cℝ3;
+    descriptor: Larb/Real;
+    flags: (0x0000)
+
+  arb.Integer cℤ4;
+    descriptor: Larb/Integer;
+    flags: (0x0000)
+
+  arb.Integer cℤ5;
+    descriptor: Larb/Integer;
+    flags: (0x0000)
+
+[32m  public arb.Real ℝ1;[m
+    descriptor: Larb/Real;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public arb.Real ℝ2;[m
+    descriptor: Larb/Real;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public arb.Real ℝ3;[m
+    descriptor: Larb/Real;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public arb.Real ℝ4;[m
+    descriptor: Larb/Real;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public arb.functions.real.pFqSubMinus23Point51SubMinus23x();[m
+    descriptor: ()V
+    flags: (0x0001) ACC_PUBLIC
+[36m    Code:[m
+      stack=5, locals=1, args_size=1
+[33m         0:[m aload_0
+[33m         1:[m invokespecial #21                 [31m// Method java/lang/Object."<init>":()V[m
+[33m         4:[m aload_0
+[33m         5:[m new           #23                 [31m// class arb/Integer[m
+[33m         8:[m dup
+[33m         9:[m ldc           #25                 [31m// String 2[m
+[33m        11:[m invokespecial #27                 [31m// Method arb/Integer."<init>":(Ljava/lang/String;)V[m
+[33m        14:[m putfield      #30                 [31m// Field cℤ1:Larb/Integer;[m
+[33m        17:[m aload_0
+[33m        18:[m new           #23                 [31m// class arb/Integer[m
+[33m        21:[m dup
+[33m        22:[m ldc           #32                 [31m// String 0[m
+[33m        24:[m invokespecial #27                 [31m// Method arb/Integer."<init>":(Ljava/lang/String;)V[m
+[33m        27:[m putfield      #34                 [31m// Field cℤ2:Larb/Integer;[m
+[33m        30:[m aload_0
+[33m        31:[m new           #36                 [31m// class arb/Real[m
+[33m        34:[m dup
+[33m        35:[m ldc           #38                 [31m// String 3.5[m
+[33m        37:[m sipush        128
+[33m        40:[m invokespecial #40                 [31m// Method arb/Real."<init>":(Ljava/lang/String;I)V[m
+[33m        43:[m putfield      #43                 [31m// Field cℝ3:Larb/Real;[m
+[33m        46:[m aload_0
+[33m        47:[m new           #23                 [31m// class arb/Integer[m
+[33m        50:[m dup
+[33m        51:[m ldc           #45                 [31m// String 1[m
+[33m        53:[m invokespecial #27                 [31m// Method arb/Integer."<init>":(Ljava/lang/String;)V[m
+[33m        56:[m putfield      #47                 [31m// Field cℤ4:Larb/Integer;[m
+[33m        59:[m aload_0
+[33m        60:[m new           #23                 [31m// class arb/Integer[m
+[33m        63:[m dup
+[33m        64:[m ldc           #49                 [31m// String 3[m
+[33m        66:[m invokespecial #27                 [31m// Method arb/Integer."<init>":(Ljava/lang/String;)V[m
+[33m        69:[m putfield      #51                 [31m// Field cℤ5:Larb/Integer;[m
+[33m        72:[m aload_0
+[33m        73:[m new           #36                 [31m// class arb/Real[m
+[33m        76:[m dup
+[33m        77:[m invokespecial #53                 [31m// Method arb/Real."<init>":()V[m
+[33m        80:[m putfield      #54                 [31m// Field ℝ1:Larb/Real;[m
+[33m        83:[m aload_0
+[33m        84:[m new           #36                 [31m// class arb/Real[m
+[33m        87:[m dup
+[33m        88:[m invokespecial #53                 [31m// Method arb/Real."<init>":()V[m
+[33m        91:[m putfield      #56                 [31m// Field ℝ2:Larb/Real;[m
+[33m        94:[m aload_0
+[33m        95:[m new           #36                 [31m// class arb/Real[m
+[33m        98:[m dup
+[33m        99:[m invokespecial #53                 [31m// Method arb/Real."<init>":()V[m
+[33m       102:[m putfield      #58                 [31m// Field ℝ3:Larb/Real;[m
+[33m       105:[m aload_0
+[33m       106:[m new           #36                 [31m// class arb/Real[m
+[33m       109:[m dup
+[33m       110:[m invokespecial #53                 [31m// Method arb/Real."<init>":()V[m
+[33m       113:[m putfield      #60                 [31m// Field ℝ4:Larb/Real;[m
+[33m       116:[m return
+      LineNumberTable:
+        line 7: 0
+        line 10: 4
+        line 11: 17
+        line 12: 30
+        line 13: 37
+        line 12: 40
+        line 14: 46
+        line 15: 59
+        line 16: 72
+        line 17: 83
+        line 18: 94
+        line 19: 105
+        line 7: 116
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0     117     0  this   Larb/functions/real/pFqSubMinus23Point51SubMinus23x;
+
+[32m  public arb.RealPolynomial evaluate(java.lang.Void, int, int, arb.RealPolynomial);[m
+    descriptor: (Ljava/lang/Void;IILarb/RealPolynomial;)Larb/RealPolynomial;
+    flags: (0x0001) ACC_PUBLIC
+[36m    Code:[m
+      stack=8, locals=5, args_size=5
+[33m         0:[m new           #36                 [31m// class arb/Real[m
+[33m         3:[m iconst_3
+[33m         4:[m anewarray     #36                 [31m// class arb/Real[m
+[33m         7:[m dup
+[33m         8:[m iconst_0
+[33m         9:[m aload_0
+[33m        10:[m getfield      #34                 [31m// Field cℤ2:Larb/Integer;[m
+[33m        13:[m aload_0
+[33m        14:[m getfield      #30                 [31m// Field cℤ1:Larb/Integer;[m
+[33m        17:[m iload_3
+[33m        18:[m aload_0
+[33m        19:[m getfield      #54                 [31m// Field ℝ1:Larb/Real;[m
+[33m        22:[m invokevirtual #68                 [31m// Method arb/Integer.sub:(Larb/Integer;ILarb/Real;)Larb/Real;[m
+[33m        25:[m aastore
+[33m        26:[m dup
+[33m        27:[m iconst_1
+[33m        28:[m aload_0
+[33m        29:[m getfield      #43                 [31m// Field cℝ3:Larb/Real;[m
+[33m        32:[m aastore
+[33m        33:[m dup
+[33m        34:[m iconst_2
+[33m        35:[m aload_0
+[33m        36:[m getfield      #56                 [31m// Field ℝ2:Larb/Real;[m
+[33m        39:[m aload_0
+[33m        40:[m getfield      #47                 [31m// Field cℤ4:Larb/Integer;[m
+[33m        43:[m invokevirtual #72                 [31m// Method arb/Real.set:(Larb/Integer;)Larb/Real;[m
+[33m        46:[m aastore
+[33m        47:[m invokespecial #76                 [31m// Method arb/Real."<init>":([Larb/Real;)V[m
+[33m        50:[m new           #36                 [31m// class arb/Real[m
+[33m        53:[m iconst_2
+[33m        54:[m anewarray     #36                 [31m// class arb/Real[m
+[33m        57:[m dup
+[33m        58:[m iconst_0
+[33m        59:[m aload_0
+[33m        60:[m getfield      #34                 [31m// Field cℤ2:Larb/Integer;[m
+[33m        63:[m aload_0
+[33m        64:[m getfield      #30                 [31m// Field cℤ1:Larb/Integer;[m
+[33m        67:[m iload_3
+[33m        68:[m aload_0
+[33m        69:[m getfield      #58                 [31m// Field ℝ3:Larb/Real;[m
+[33m        72:[m invokevirtual #68                 [31m// Method arb/Integer.sub:(Larb/Integer;ILarb/Real;)Larb/Real;[m
+[33m        75:[m aastore
+[33m        76:[m dup
+[33m        77:[m iconst_1
+[33m        78:[m aload_0
+[33m        79:[m getfield      #60                 [31m// Field ℝ4:Larb/Real;[m
+[33m        82:[m aload_0
+[33m        83:[m getfield      #51                 [31m// Field cℤ5:Larb/Integer;[m
+[33m        86:[m invokevirtual #72                 [31m// Method arb/Real.set:(Larb/Integer;)Larb/Real;[m
+[33m        89:[m aastore
+[33m        90:[m invokespecial #76                 [31m// Method arb/Real."<init>":([Larb/Real;)V[m
+[33m        93:[m aload         4
+[33m        95:[m invokevirtual #79                 [31m// Method arb/RealPolynomial.identity:()Larb/RealPolynomial;[m
+[33m        98:[m areturn
+      LineNumberTable:
+        line 23: 0
+        line 24: 3
+        line 23: 47
+        line 25: 50
+        line 26: 53
+        line 25: 90
+        line 27: 93
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0      99     0  this   Larb/functions/real/pFqSubMinus23Point51SubMinus23x;
+            0      99     1    in   Ljava/lang/Void;
+            0      99     2 order   I
+            0      99     3  bits   I
+            0      99     4 result   Larb/RealPolynomial;
+
+[32m  public void close();[m
+    descriptor: ()V
+    flags: (0x0001) ACC_PUBLIC
+[36m    Code:[m
+      stack=1, locals=1, args_size=1
+[33m         0:[m aload_0
+[33m         1:[m getfield      #30                 [31m// Field cℤ1:Larb/Integer;[m
+[33m         4:[m invokevirtual #93                 [31m// Method arb/Integer.close:()V[m
+[33m         7:[m aload_0
+[33m         8:[m getfield      #34                 [31m// Field cℤ2:Larb/Integer;[m
+[33m        11:[m invokevirtual #93                 [31m// Method arb/Integer.close:()V[m
+[33m        14:[m aload_0
+[33m        15:[m getfield      #43                 [31m// Field cℝ3:Larb/Real;[m
+[33m        18:[m invokevirtual #95                 [31m// Method arb/Real.close:()V[m
+[33m        21:[m aload_0
+[33m        22:[m getfield      #47                 [31m// Field cℤ4:Larb/Integer;[m
+[33m        25:[m invokevirtual #93                 [31m// Method arb/Integer.close:()V[m
+[33m        28:[m aload_0
+[33m        29:[m getfield      #51                 [31m// Field cℤ5:Larb/Integer;[m
+[33m        32:[m invokevirtual #93                 [31m// Method arb/Integer.close:()V[m
+[33m        35:[m aload_0
+[33m        36:[m getfield      #54                 [31m// Field ℝ1:Larb/Real;[m
+[33m        39:[m invokevirtual #95                 [31m// Method arb/Real.close:()V[m
+[33m        42:[m aload_0
+[33m        43:[m getfield      #56                 [31m// Field ℝ2:Larb/Real;[m
+[33m        46:[m invokevirtual #95                 [31m// Method arb/Real.close:()V[m
+[33m        49:[m aload_0
+[33m        50:[m getfield      #58                 [31m// Field ℝ3:Larb/Real;[m
+[33m        53:[m invokevirtual #95                 [31m// Method arb/Real.close:()V[m
+[33m        56:[m aload_0
+[33m        57:[m getfield      #60                 [31m// Field ℝ4:Larb/Real;[m
+[33m        60:[m invokevirtual #95                 [31m// Method arb/Real.close:()V[m
+[33m        63:[m return
+      LineNumberTable:
+        line 32: 0
+        line 33: 7
+        line 34: 14
+        line 35: 21
+        line 36: 28
+        line 37: 35
+        line 38: 42
+        line 39: 49
+        line 40: 56
+        line 41: 63
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0      64     0  this   Larb/functions/real/pFqSubMinus23Point51SubMinus23x;
+
+[32m  public java.lang.String toString();[m
+    descriptor: ()Ljava/lang/String;
+    flags: (0x0001) ACC_PUBLIC
+[36m    Code:[m
+      stack=1, locals=1, args_size=1
+[33m         0:[m ldc           #98                 [31m// String pFq([-2,3.5,1],[-2,3],x)[m
+[33m         2:[m areturn
+      LineNumberTable:
+        line 46: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       3     0  this   Larb/functions/real/pFqSubMinus23Point51SubMinus23x;
+
+[32m  public java.lang.Object evaluate(java.lang.Object, int, int, java.lang.Object);[m
+    descriptor: (Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;
+    flags: (0x1041) ACC_PUBLIC, ACC_BRIDGE, ACC_SYNTHETIC
+[36m    Code:[m
+      stack=5, locals=5, args_size=5
+[33m         0:[m aload_0
+[33m         1:[m aload_1
+[33m         2:[m checkcast     #101                [31m// class java/lang/Void[m
+[33m         5:[m iload_2
+[33m         6:[m iload_3
+[33m         7:[m aload         4
+[33m         9:[m checkcast     #80                 [31m// class arb/RealPolynomial[m
+[33m        12:[m invokevirtual #103                [31m// Method evaluate:(Ljava/lang/Void;IILarb/RealPolynomial;)Larb/RealPolynomial;[m
+[33m        15:[m areturn
+      LineNumberTable:
+        line 1: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+}
+SourceFile: "pFqSubMinus23Point51SubMinus23x.java"

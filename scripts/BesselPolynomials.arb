@@ -1,0 +1,10 @@
+import arb.OrderedPair;
+
+var Bh = RealPolynomialSequence.express("pFq([-n,1+n],[],-x/2)");
+err.println( "Behold: the Bessel polynomials via " + Bh);
+seq(1,10,k->new OrderedPair<>(new Integer(k),Bh.apply(k))).forEach(out::println);
+
+var Br = new RealBesselPolynomials(128);
+Br.initialize();
+err.println( "Behold: the Bessel polynomials via " + Br);
+seq(1,10,k->new OrderedPair<>(new Integer(k),Br.apply(k))).forEach(out::println);

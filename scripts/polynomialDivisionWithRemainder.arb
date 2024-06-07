@@ -1,0 +1,7 @@
+var y = new BesselPolynomials(128);
+var bp = seq(0,9,k->y.evaluate(k,128));
+var bp79 = bp.get(9).div(bp.get(7),128,new RealPolynomial());
+var wb = bp.get(7).mul(bp79,128,new RealPolynomial()).add(bp79.remainder,128,new RealPolynomial());
+var diff = bp.get(7).mul(bp79,128,new RealPolynomial()).add(bp79.remainder,128,new RealPolynomial()).sub(bp.get(9),128,new RealPolynomial());
+var diffsum = diff.coeffs.Σ(128, new Real());
+System.out.format("diffsum=%s should be close to zero\n", diffsum );
