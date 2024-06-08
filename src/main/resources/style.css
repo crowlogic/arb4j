@@ -8,7 +8,7 @@
 .root {
     -fx-font-weight: bold; /* Make font bold */
   -fx-font-size: 18px; /* Change this value to increase/decrease the font size */
-  -fx-base: #3f474f;
+  -fx-base: #1f273f;
   -fx-text-fill: #000000;
   -fx-default-button: #7f878f;
   -fx-focus-color: #efefef;
