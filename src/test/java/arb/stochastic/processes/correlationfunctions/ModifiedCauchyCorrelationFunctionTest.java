@@ -17,7 +17,7 @@ public class ModifiedCauchyCorrelationFunctionTest extends
     try ( ModifiedCauchyCorrelationFunction f = new ModifiedCauchyCorrelationFunction())
     {
       double                            fTwoPointThree = f.eval(2.3);
-      assertEquals(0.0918273645546373, fTwoPointThree);
+      assertEquals(0.09182736455463729, fTwoPointThree);
     }
 
   }

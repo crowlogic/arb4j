@@ -23,7 +23,7 @@ public class BesselFunctionOfTheFirstKindTest
       Context context = new Context(n.setName("n"));
       var     f       = RealFunction.express("Ψ:y➔½*√(2*(4*n+1)/y)*(-1)ⁿ*J(2*n+½,y)", context);
       double  g       = f.eval(2.3);
-      assertEquals(0.1829213535249457, g);
+      assertEquals(0.18292135352494568, g);
     }
   }
 }

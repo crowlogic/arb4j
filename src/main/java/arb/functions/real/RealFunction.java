@@ -35,108 +35,59 @@ import arb.utensils.Utensils;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface RealFunction extends
-                              Function<Real, Real>
+public interface RealFunction extends Function<Real, Real>
 {
 
   @Override
-  public default void
-         close()
+  public default void close()
   {
 
   }
 
   public boolean verbose = false;
 
-  public static Expression<Real, Real, RealFunction>
-         compile(String expression)
+  public static Expression<Real, Real, RealFunction> compile(String expression)
   {
-    return compile(expression,
-                   null);
+    return compile(expression, null);
   }
 
-  public static Expression<Real, Real, RealFunction>
-         compile(String expression,
-                 Context context)
+  public static Expression<Real, Real, RealFunction> compile(String expression, Context context)
   {
-    return Compiler.compile(expression,
-                            context,
-                            Real.class,
-                            Real.class,
-                            RealFunction.class,
-                            null);
+    return Compiler.compile(expression, context, Real.class, Real.class, RealFunction.class, null);
 
   }
 
-  public static RealFunction
-         express(String expression)
+  public static RealFunction express(String expression)
   {
-    return express(null,
-                   expression,
-                   null);
+    return express(null, expression, null);
   }
 
-  public static RealFunction
-         express(String expression,
-                 Context context)
+  public static RealFunction express(String expression, Context context)
   {
-    return Function.instantiate(expression,
-                                context,
-                                Real.class,
-                                Real.class,
-                                RealFunction.class,
-                                null);
+    return Function.instantiate(expression, context, Real.class, Real.class, RealFunction.class, null);
   }
 
-  public static RealFunction
-         express(String expression,
-                 Context context,
-                 boolean verbose)
+  public static RealFunction express(String expression, Context context, boolean verbose)
   {
-    return Function.instantiate(expression,
-                                context,
-                                Real.class,
-                                Real.class,
-                                RealFunction.class,
-                                null);
+    return Function.instantiate(expression, context, Real.class, Real.class, RealFunction.class, null);
   }
 
-  public static RealFunction
-         express(String expression,
-                 String string)
+  public static RealFunction express(String expression, String string)
   {
-    return express(expression,
-                   string,
-                   null);
+    return express(expression, string, null);
   }
 
-  public static RealFunction
-         express(String functionName,
-                 String expression,
-                 Context context)
+  public static RealFunction express(String functionName, String expression, Context context)
   {
-    return express(functionName,
-                   expression,
-                   context,
-                   false);
+    return express(functionName, expression, context, false);
   }
 
-  public static RealFunction
-         express(String functionName,
-                 String expression,
-                 Context context,
-                 boolean verbose)
+  public static RealFunction express(String functionName, String expression, Context context, boolean verbose)
   {
-    return Function.instantiate(expression,
-                                context,
-                                Real.class,
-                                Real.class,
-                                RealFunction.class,
-                                functionName);
+    return Function.instantiate(expression, context, Real.class, Real.class, RealFunction.class, functionName);
   }
 
-  public static Expression<Real, Real, RealFunction>
-         parse(String expression)
+  public static Expression<Real, Real, RealFunction> parse(String expression)
   {
     return Function.parse(Parser.expressionToUniqueClassname(expression),
                           expression,
@@ -148,38 +99,24 @@ public interface RealFunction extends
                           null);
   }
 
-  public default RealFunction
-         add(RealFunction that)
+  public default RealFunction add(RealFunction that)
   {
     return new RealFunction()
     {
 
       @Override
-      public Real
-             evaluate(Real x,
-                      int order,
-                      int bits,
-                      Real result)
+      public Real evaluate(Real x, int order, int bits, Real result)
       {
         try ( Real y = new Real())
         {
-          return RealFunction.this.evaluate(x,
-                                            order,
-                                            bits,
-                                            result)
-                                  .add(that.evaluate(x,
-                                                     order,
-                                                     bits,
-                                                     y),
-                                       bits,
-                                       result);
+          return RealFunction.this.evaluate(x, order, bits, result)
+                                  .add(that.evaluate(x, order, bits, y), bits, result);
         }
 
       }
 
       @Override
-      public String
-             toString()
+      public String toString()
       {
         return String.format("(%s) + (%s)",
                              RealFunction.this.toStringWithoutIndependentVariableSpecified(),
@@ -189,22 +126,13 @@ public interface RealFunction extends
   }
 
   @SuppressWarnings("resource")
-  public default ComplexFunction
-         asHolomorphicFunction()
+  public default ComplexFunction asHolomorphicFunction()
   {
-    ComplexFunction complexFunction = (z,
-                                       order,
-                                       prec,
-                                       value) ->
+    ComplexFunction complexFunction = (z, order, prec, value) ->
     {
-      assert z.im()
-              .isZero() : "the imaginary part of z should be zero but its not: z=" + z;
-      value.im()
-           .zero();
-      RealFunction.this.evaluate(z.re(),
-                                 order,
-                                 prec,
-                                 value.re());
+      assert z.im().isZero() : "the imaginary part of z should be zero but its not: z=" + z;
+      value.im().zero();
+      RealFunction.this.evaluate(z.re(), order, prec, value.re());
       return value;
     };
     return complexFunction;
@@ -225,18 +153,9 @@ public interface RealFunction extends
    * @return C=the supremum of |f''(t)|/(2*|f'(t)| oveRealFunction {t,u}∈I
    */
   public default boolean
-         calculateNewtonStep(Real point,
-                             Real convergenceRegion,
-                             Float convergenceFactor,
-                             int prec,
-                             Real nextPoint)
+         calculateNewtonStep(Real point, Real convergenceRegion, Float convergenceFactor, int prec, Real nextPoint)
   {
-    return computeNewtonStep(this,
-                             point,
-                             convergenceRegion,
-                             convergenceFactor,
-                             prec,
-                             nextPoint);
+    return computeNewtonStep(this, point, convergenceRegion, convergenceFactor, prec, nextPoint);
   }
 
   /**
@@ -248,51 +167,29 @@ public interface RealFunction extends
    * @return the sign of this function evaluated at the midpoint of block with a
    *         zero radius of uncertainty
    */
-  public default int
-         calculatePartition(FloatInterval left,
-                            FloatInterval right,
-                            FloatInterval block,
-                            int prec)
+  public default int calculatePartition(FloatInterval left, FloatInterval right, FloatInterval block, int prec)
   {
-    return Utensils.calculatePartition(this,
-                                       left,
-                                       right,
-                                       block,
-                                       prec);
+    return Utensils.calculatePartition(this, left, right, block, prec);
   }
 
-  public default RealFunction
-         div(RealFunction that)
+  public default RealFunction div(RealFunction that)
   {
     return new RealFunction()
     {
 
       @Override
-      public Real
-             evaluate(Real x,
-                      int order,
-                      int bits,
-                      Real result)
+      public Real evaluate(Real x, int order, int bits, Real result)
       {
         try ( Real y = new Real())
         {
-          return RealFunction.this.evaluate(x,
-                                            order,
-                                            bits,
-                                            result)
-                                  .div(that.evaluate(x,
-                                                     order,
-                                                     bits,
-                                                     y),
-                                       bits,
-                                       result);
+          return RealFunction.this.evaluate(x, order, bits, result)
+                                  .div(that.evaluate(x, order, bits, y), bits, result);
         }
 
       }
 
       @Override
-      public String
-             toString()
+      public String toString()
       {
         return String.format("(%s) / (%s)",
                              RealFunction.this.toStringWithoutIndependentVariableSpecified(),
@@ -310,39 +207,30 @@ public interface RealFunction extends
    * @return the {@link Real#doubleValue()} applied to the result of the
    *         this{@link #evaluate(Real, int, int, Real)} method call
    */
-  public default double
-         eval(double t)
+  public default double eval(double t)
   {
     try ( Real x = Real.newVector(2))
     {
-      return evaluate(x.get(0)
-                       .set(t),
-                      1,
-                      Double.PRECISION + 5,
-                      x.get(1)).doubleValue(RoundingMode.Up);
+      return evaluate(x.get(0).set(t), 1, Double.PRECISION + 5, x.get(1)).doubleValue();
     }
   }
 
-  public default Real
-         evaluate(Real x,
-                  int bits,
-                  Real result)
+  public default double eval(double t, RoundingMode roundingMode)
   {
-    return evaluate(x,
-                    1,
-                    bits,
-                    result);
+    try ( Real x = Real.newVector(2))
+    {
+      return evaluate(x.get(0).set(t), 1, Double.PRECISION + 5, x.get(1)).doubleValue(roundingMode);
+    }
   }
 
-  public default Real
-         evaluate(Real x,
-                  int order,
-                  int bits)
+  public default Real evaluate(Real x, int bits, Real result)
   {
-    return evaluate(x,
-                    order,
-                    bits,
-                    x);
+    return evaluate(x, 1, bits, result);
+  }
+
+  public default Real evaluate(Real x, int order, int bits)
+  {
+    return evaluate(x, order, bits, x);
 
   }
 
@@ -365,72 +253,40 @@ public interface RealFunction extends
    *         assigned the result
    */
   public default Float
-         getNewtonConvergenceFactor(Real convergenceRegion,
-                                    Real jet,
-                                    int prec,
-                                    Float convergenceFactor)
+         getNewtonConvergenceFactor(Real convergenceRegion, Real jet, int prec, Float convergenceFactor)
   {
     if (jet.dim < 3)
     {
       jet.become(Real.newVector(3));
     }
-    Real a     = evaluate(convergenceRegion,
-                          3,
-                          prec,
-                          jet);
+    Real a     = evaluate(convergenceRegion, 3, prec, jet);
 
-    Real mul2e = a.get(2)
-                  .div(jet.get(1),
-                       prec,
-                       jet)
-                  .mul2e(-1);
+    Real mul2e = a.get(2).div(jet.get(1), prec, jet).mul2e(-1);
 
-    arblib.arb_get_abs_ubound_arf(convergenceFactor,
-                                  mul2e,
-                                  prec);
+    arblib.arb_get_abs_ubound_arf(convergenceFactor, mul2e, prec);
 
     return convergenceFactor;
   }
 
-  public default double
-         integrate(double left,
-                   double right)
+  public default double integrate(double left, double right)
   {
-    try ( Magnitude acceptableUncertainty = new Magnitude(1.0e-17);
-          Real l = new Real(left);
-          Real r = new Real(right);
-          Real result = new Real())
+    try ( Magnitude acceptableUncertainty = new Magnitude(1.0e-17); Real l = new Real(left);
+          Real r = new Real(right); Real result = new Real())
     {
       IntegrationOptions opts = new IntegrationOptions();
       opts.verbose = verbose;
-      return integrate(l,
-                       r,
-                       64,
-                       acceptableUncertainty,
-                       opts,
-                       128,
-                       result).doubleValue();
+      return integrate(l, r, 64, acceptableUncertainty, opts, 128, result).doubleValue();
     }
   }
 
-  public default Real
-         integrate(Real l,
-                   Real r)
+  public default Real integrate(Real l, Real r)
   {
-    try ( Magnitude acceptableUncertainty = new Magnitude(1.0e-17);
-          Real result = new Real())
+    try ( Magnitude acceptableUncertainty = new Magnitude(1.0e-17); Real result = new Real())
     {
-      int                bits = Math.max(l.bits(),
-                                         r.bits());
+      int                bits = Math.max(l.bits(), r.bits());
       IntegrationOptions opts = new IntegrationOptions();
       opts.verbose = verbose;
-      return integrate(l,
-                       r,
-                       bits / 2,
-                       acceptableUncertainty,
-                       opts,
-                       bits,
-                       result);
+      return integrate(l, r, bits / 2, acceptableUncertainty, opts, bits, result);
     }
   }
 
@@ -449,14 +305,13 @@ public interface RealFunction extends
    * @param res
    * @return
    */
-  public default Real
-         integrate(Real left,
-                   Real right,
-                   int relativeAccuracyBitsGoal,
-                   Magnitude absoluteErrorToleranceGoal,
-                   IntegrationOptions options,
-                   int bits,
-                   Real res)
+  public default Real integrate(Real left,
+                                Real right,
+                                int relativeAccuracyBitsGoal,
+                                Magnitude absoluteErrorToleranceGoal,
+                                IntegrationOptions options,
+                                int bits,
+                                Real res)
   {
     return Integrators.integrate(this,
                                  left,
@@ -473,8 +328,7 @@ public interface RealFunction extends
    * @return the first inverse branch, oRealFunction the only one if there is only
    *         one, which is the case if the function is properly invertible
    */
-  public default Function<Real, Real>
-         inverse()
+  public default Function<Real, Real> inverse()
   {
     return inverse(0);
   }
@@ -533,8 +387,7 @@ public interface RealFunction extends
    *                 maxdepth to exceed prec.
    * @return a new instance of {@link Roots}
    */
-  public default Roots
-         locateRoots(RootLocatorOptions config)
+  public default Roots locateRoots(RootLocatorOptions config)
   {
     assert config.maxDepth > 1 : "you probably dont really want the max recursion limit to be less than 2";
     Roots            roots    = new Roots();
@@ -544,71 +397,43 @@ public interface RealFunction extends
 
     if (verbose)
     {
-      println(String.format("%s.locateRoots(options=%s)",
-                            this,
-                            config));
+      println(String.format("%s.locateRoots(options=%s)", this, config));
     }
 
-    try ( Real m = new Real();
-          Real v = new Real();)
+    try ( Real m = new Real(); Real v = new Real();)
     {
       m.setMid(interval.getA());
       roots.evals++;
-      asign = evaluate(m,
-                       1,
-                       prec,
-                       v).sign();
+      asign = evaluate(m, 1, prec, v).sign();
 
       m.setMid(interval.getB());
       roots.evals++;
-      bsign = evaluate(m,
-                       1,
-                       prec,
-                       v).sign();
+      bsign = evaluate(m, 1, prec, v).sign();
     }
 
-    recursivelyLocateRoots(roots,
-                           interval,
-                           asign,
-                           bsign,
-                           0,
-                           config);
+    recursivelyLocateRoots(roots, interval, asign, bsign, 0, config);
 
     return roots;
   }
 
-  public default RealFunction
-         mul(RealFunction that)
+  public default RealFunction mul(RealFunction that)
   {
     return new RealFunction()
     {
 
       @Override
-      public Real
-             evaluate(Real x,
-                      int order,
-                      int bits,
-                      Real result)
+      public Real evaluate(Real x, int order, int bits, Real result)
       {
         try ( Real y = new Real())
         {
-          return RealFunction.this.evaluate(x,
-                                            order,
-                                            bits,
-                                            result)
-                                  .mul(that.evaluate(x,
-                                                     order,
-                                                     bits,
-                                                     y),
-                                       bits,
-                                       result);
+          return RealFunction.this.evaluate(x, order, bits, result)
+                                  .mul(that.evaluate(x, order, bits, y), bits, result);
         }
 
       }
 
       @Override
-      public String
-             toString()
+      public String toString()
       {
         return String.format("(%s) * (%s)",
                              RealFunction.this.toStringWithoutIndependentVariableSpecified(),
@@ -623,8 +448,7 @@ public interface RealFunction extends
    * @return the multiplicity of the root at the point t oRealFunction 0 if there
    *         is no root there
    */
-  public default int
-         multiplicityOfRoot(Real t)
+  public default int multiplicityOfRoot(Real t)
   {
     // assert false : "TODO: implement me in " + getClass();
     return 1;
@@ -639,16 +463,9 @@ public interface RealFunction extends
    * @param n
    * @return
    */
-  public default RealDataSet
-         quantize(double left,
-                  double right,
-                  int n)
+  public default RealDataSet quantize(double left, double right, int n)
   {
-    return quantize(left,
-                    right,
-                    n,
-                    false,
-                    Double.SIZE);
+    return quantize(left, right, n, false, Double.SIZE);
   }
 
   /**
@@ -661,19 +478,12 @@ public interface RealFunction extends
    * @param parallel
    * @return
    */
-  public default RealDataSet
-         quantize(double left,
-                  double right,
-                  int n,
-                  boolean parallel)
+  public default RealDataSet quantize(double left, double right, int n, boolean parallel)
   {
     try ( FloatInterval I = new FloatInterval(left,
                                               right);)
     {
-      return quantize(I,
-                      128,
-                      n,
-                      parallel);
+      return quantize(I, 128, n, parallel);
     }
   }
 
@@ -688,20 +498,12 @@ public interface RealFunction extends
    * @param bits
    * @return
    */
-  public default RealDataSet
-         quantize(double left,
-                  double right,
-                  int n,
-                  boolean parallel,
-                  int bits)
+  public default RealDataSet quantize(double left, double right, int n, boolean parallel, int bits)
   {
     try ( FloatInterval I = new FloatInterval(left,
                                               right);)
     {
-      return quantize(I,
-                      bits,
-                      n,
-                      parallel);
+      return quantize(I, bits, n, parallel);
     }
   }
 
@@ -715,17 +517,9 @@ public interface RealFunction extends
    * @param bits
    * @return
    */
-  public default RealDataSet
-         quantize(double left,
-                  double right,
-                  int n,
-                  int bits)
+  public default RealDataSet quantize(double left, double right, int n, int bits)
   {
-    return quantize(left,
-                    right,
-                    n,
-                    false,
-                    bits);
+    return quantize(left, right, n, false, bits);
   }
 
   /**
@@ -741,32 +535,21 @@ public interface RealFunction extends
    * @param parallel TODO
    * @return values
    */
-  public default RealDataSet
-         quantize(FloatInterval interval,
-                  int bits,
-                  int n,
-                  boolean parallel)
+  public default RealDataSet quantize(FloatInterval interval, int bits, int n, boolean parallel)
   {
-    RealDataSet sample = new RealDataSet(toString() + " over " + interval.left()
-                                                                         .toString(5) + ".." + interval.right()
-                                                                                                       .toString(5),
+    RealDataSet sample = new RealDataSet(toString() + " over " + interval.left().toString(5) + ".."
+                  + interval.right().toString(5),
                                          n);
     Real        values = sample.getRealYValues();
 
-    try ( RealPartition mesh = interval.generateRealPartition(bits,
-                                                              false,
-                                                              sample.getRealXValues()))
+    try ( RealPartition mesh = interval.generateRealPartition(bits, false, sample.getRealXValues()))
     {
-      IntStream coDomain = IntStream.range(0,
-                                           n);
+      IntStream coDomain = IntStream.range(0, n);
       if (parallel)
       {
         coDomain = coDomain.parallel();
       }
-      coDomain.forEach(i -> evaluate(mesh.get(i),
-                                     1,
-                                     bits,
-                                     values.get(i)));
+      coDomain.forEach(i -> evaluate(mesh.get(i), 1, bits, values.get(i)));
       return sample;
     }
   }
@@ -783,13 +566,12 @@ public interface RealFunction extends
    * @param depth
    * @param config
    */
-  public default void
-         recursivelyLocateRoots(Roots found,
-                                RealRootInterval root,
-                                int asign,
-                                int bsign,
-                                int depth,
-                                RootLocatorOptions config)
+  public default void recursivelyLocateRoots(Roots found,
+                                             RealRootInterval root,
+                                             int asign,
+                                             int bsign,
+                                             int depth,
+                                             RootLocatorOptions config)
   {
     if (verbose)
     {
@@ -805,31 +587,25 @@ public interface RealFunction extends
     try ( RealRootInterval realRootInterval = new RealRootInterval();)
     {
       realRootInterval.set(root);
-      if (found.evals >= config.maxEvals
-          || found.size() >= config.maxFound)
+      if (found.evals >= config.maxEvals || found.size() >= config.maxFound)
       {
         if (verbose)
         {
           println("the configured limit was hit at " + realRootInterval + " where the configuration is " + config
-                  + " and currently at " + found);
+                        + " and currently at " + found);
         }
         found.add(realRootInterval);
       }
       else
       {
-        RootStatus status = root.determineRootStatus(found,
-                                                     this,
-                                                     asign,
-                                                     bsign,
-                                                     config.prec);
+        RootStatus status = root.determineRootStatus(found, this, asign, bsign, config.prec);
         if (status == RootStatus.NoRoot)
         {
           realRootInterval.close();
           return;
         }
 
-        if (status == RootStatus.RootLocated
-            || depth >= config.maxDepth)
+        if (status == RootStatus.RootLocated || depth >= config.maxDepth)
         {
 
           realRootInterval.status = status;
@@ -842,12 +618,7 @@ public interface RealFunction extends
         else
         {
           realRootInterval.close();
-          if (!root.split(this,
-                          found,
-                          asign,
-                          bsign,
-                          depth,
-                          config))
+          if (!root.split(this, found, asign, bsign, depth, config))
           {
             out.println("Possible zero at midpoint of " + this);
           }
@@ -869,54 +640,34 @@ public interface RealFunction extends
    * @param verbose
    * @return a {@link RefinementResult} indicating the status
    */
-  public default RefinementResult
-         refineRootNewton(Real root,
-                          Real convergenceRegion,
-                          Float convergenceFactor,
-                          int extraPrec,
-                          int prec,
-                          boolean verbose)
+  public default RefinementResult refineRootNewton(Real root,
+                                                   Real convergenceRegion,
+                                                   Float convergenceFactor,
+                                                   int extraPrec,
+                                                   int prec,
+                                                   boolean verbose)
   {
-    return refineRootViaNewtonsMethod(this,
-                                      root,
-                                      convergenceRegion,
-                                      convergenceFactor,
-                                      extraPrec,
-                                      prec);
+    return refineRootViaNewtonsMethod(this, root, convergenceRegion, convergenceFactor, extraPrec, prec);
   }
 
-  public default RealFunction
-         sub(RealFunction that)
+  public default RealFunction sub(RealFunction that)
   {
     return new RealFunction()
     {
 
       @Override
-      public Real
-             evaluate(Real x,
-                      int order,
-                      int bits,
-                      Real result)
+      public Real evaluate(Real x, int order, int bits, Real result)
       {
         try ( Real y = new Real())
         {
-          return RealFunction.this.evaluate(x,
-                                            order,
-                                            bits,
-                                            result)
-                                  .sub(that.evaluate(x,
-                                                     order,
-                                                     bits,
-                                                     y),
-                                       bits,
-                                       result);
+          return RealFunction.this.evaluate(x, order, bits, result)
+                                  .sub(that.evaluate(x, order, bits, y), bits, result);
         }
 
       }
 
       @Override
-      public String
-             toString()
+      public String toString()
       {
         return String.format("(%s) - (%s)",
                              RealFunction.this.toStringWithoutIndependentVariableSpecified(),
@@ -925,8 +676,7 @@ public interface RealFunction extends
     };
   }
 
-  public default String
-         toStringWithoutIndependentVariableSpecified()
+  public default String toStringWithoutIndependentVariableSpecified()
   {
     String str        = toString();
     int    arrowIndex = str.indexOf('➔');

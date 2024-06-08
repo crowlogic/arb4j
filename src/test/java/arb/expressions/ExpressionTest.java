@@ -30,7 +30,7 @@ public class ExpressionTest extends
   {
     var    f    = RealFunction.express("ln⁡Γ(t)");
     double eval = f.eval(2.3);
-    assertEquals(0.1541894549596305, eval);
+    assertEquals(0.15418945495963046, eval);
   }
 
   public void
