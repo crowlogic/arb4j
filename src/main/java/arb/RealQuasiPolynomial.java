@@ -14,7 +14,7 @@ import arb.functions.sequences.Sequence;
  */
 public class RealQuasiPolynomial
                                  extends
-                                 QuasiPolynomial<Real, RealPolynomial, RealFunction> implements
+                                 QuasiPolynomial<Real, RealPolynomial, RealFunction, RealQuasiPolynomial> implements
                                  RealFunction,
                                  AutoCloseable
 
@@ -23,7 +23,7 @@ public class RealQuasiPolynomial
   @Override
   public String toString()
   {
-    return String.format("RealQuasiPolynomial[f=%s, p=%s]", f, p);
+    return String.format("RealQuasiPolynomial[f=%s, x=%s]", f, p);
   }
 
   @Override
@@ -96,34 +96,6 @@ public class RealQuasiPolynomial
     return this;
   }
 
-  public RealQuasiPolynomial mul(RealQuasiPolynomial operand, int bits, RealQuasiPolynomial result)
-  {
-    result.p      = p;
-    result.f      = new RealFunction()
-                  {
-
-                    @Override
-                    public Real evaluate(Real t, int order, int rbits, Real res)
-                    {
-                      try ( Real other = new Real();)
-                      {
-                        evaluate(t, order, rbits, res);
-                        operand.evaluate(t, order, rbits, other);
-                        return res.mul(other, rbits, res);
-                      }
-                    }
-
-                    @Override
-                    public String toString()
-                    {
-                      return String.format("%s*%s", RealQuasiPolynomial.this, operand);
-                    }
-                  };
-
-    result.p.bits = bits;
-    return result;
-  }
-
   public RealQuasiPolynomial sqrt(int bits, RealQuasiPolynomial qXℝ2)
   {
     assert false : "TODO: Auto-generated method stub";
@@ -132,7 +104,7 @@ public class RealQuasiPolynomial
 
   public RealQuasiPolynomial mul(Real real, int bits2, RealQuasiPolynomial result)
   {
-    result.p      = p;
+    result.identity();
     result.f      = new RealFunction()
                   {
 
@@ -140,7 +112,7 @@ public class RealQuasiPolynomial
                     public Real evaluate(Real t, int order, int rbits, Real res)
                     {
 
-                      evaluate(t, order, rbits, res);
+                      RealQuasiPolynomial.this.evaluate(t, order, rbits, res);
                       return res.mul(real, rbits, res);
 
                     }
@@ -166,7 +138,7 @@ public class RealQuasiPolynomial
                     public Real evaluate(Real t, int order, int rbits, Real res)
                     {
 
-                      evaluate(t, order, rbits, res);
+                      RealQuasiPolynomial.this.evaluate(t, order, rbits, res);
                       return res.mul(operand, rbits, res);
 
                     }
@@ -180,6 +152,64 @@ public class RealQuasiPolynomial
 
     result.p.bits = bits;
     return result;
+  }
+
+  @Override
+  public RealQuasiPolynomial mul(RealQuasiPolynomial operand, int prec, RealQuasiPolynomial result)
+  {
+    result.identity();
+    result.p.bits = prec;
+    result.f      = new RealFunction()
+                  {
+
+                    @Override
+                    public Real evaluate(Real t, int order, int rbits, Real res)
+                    {
+                      try ( Real left = new Real(); Real right = new Real();)
+                      {
+                        RealQuasiPolynomial.this.evaluate(t, order, rbits, left);
+                        operand.evaluate(t, order, rbits, right);
+                        Real mul = left.mul(right, rbits, res);
+                        return mul;
+                      }
+                    }
+
+                    @Override
+                    public String toString()
+                    {
+                      return String.format("%s*%s", RealQuasiPolynomial.this, operand);
+                    }
+                  };
+
+    return result;
+  }
+
+  @Override
+  public RealQuasiPolynomial div(RealQuasiPolynomial j, int prec, RealQuasiPolynomial result)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public <N extends Named> N setName(String name)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public RealQuasiPolynomial add(RealQuasiPolynomial addend, int bits, RealQuasiPolynomial result)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public RealQuasiPolynomial sub(RealQuasiPolynomial subtrahend, int bits, RealQuasiPolynomial result)
+  {
+    assert false : "TODO";
+    return null;
   }
 
 }
