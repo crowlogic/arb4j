@@ -124,4 +124,62 @@ public class RealQuasiPolynomial
     return result;
   }
 
+  public RealQuasiPolynomial sqrt(int bits, RealQuasiPolynomial qXℝ2)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
+  public RealQuasiPolynomial mul(Real real, int bits2, RealQuasiPolynomial result)
+  {
+    result.p      = p;
+    result.f      = new RealFunction()
+                  {
+
+                    @Override
+                    public Real evaluate(Real t, int order, int rbits, Real res)
+                    {
+
+                      evaluate(t, order, rbits, res);
+                      return res.mul(real, rbits, res);
+
+                    }
+
+                    @Override
+                    public String toString()
+                    {
+                      return String.format("%s*%s", RealQuasiPolynomial.this, real);
+                    }
+                  };
+
+    result.p.bits = bits2;
+    return result;
+  }
+
+  public RealQuasiPolynomial mul(Integer operand, int bits, RealQuasiPolynomial result)
+  {
+    result.p      = p;
+    result.f      = new RealFunction()
+                  {
+
+                    @Override
+                    public Real evaluate(Real t, int order, int rbits, Real res)
+                    {
+
+                      evaluate(t, order, rbits, res);
+                      return res.mul(operand, rbits, res);
+
+                    }
+
+                    @Override
+                    public String toString()
+                    {
+                      return String.format("%s*%s", RealQuasiPolynomial.this, operand);
+                    }
+                  };
+
+    result.p.bits = bits;
+    return result;
+  }
+
 }

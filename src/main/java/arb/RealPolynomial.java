@@ -960,4 +960,6 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
     this(arblibJNI.new_RealPolynomial(), true);
   }
 
+ 
+
 }

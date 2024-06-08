@@ -674,6 +674,18 @@ public class Integer implements
     return result.set(this).mul(x, bits);
   }
 
+  public RealQuasiPolynomial div(RealQuasiPolynomial q, int bits, RealQuasiPolynomial res)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
+  public Real add(Real half, int bits, RealQuasiPolynomial qXℝ6)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
   
 
 }

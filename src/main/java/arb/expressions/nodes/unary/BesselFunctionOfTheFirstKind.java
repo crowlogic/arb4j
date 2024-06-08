@@ -26,30 +26,27 @@ import arb.functions.real.RealBesselFunctionOfTheFirstKind;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, ? extends R>> extends
+public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, ? extends R>>
+                                         extends
                                          FunctionCall<D, R, F>
 {
 
-
   @Override
-  public List<Node<D, R, F>>
-         getBranches()
+  public List<Node<D, R, F>> getBranches()
   {
-    return List.of(ν,
-                   arg);
+    return List.of(ν, arg);
 
   }
 
   @Override
-  public String
-         toString()
+  public String toString()
   {
-    return String.format("J(%s,%s)",
-                         ν,
-                         arg);
+    return String.format("J(%s,%s)", ν, arg);
   }
 
-  Node<D, R, F> ν;
+  Node<D, R, F>  ν;
+
+  public boolean pointwise;
 
   public BesselFunctionOfTheFirstKind(Expression<D, R, F> expression)
   {
@@ -64,28 +61,32 @@ public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, 
     arg = expression.resolve();
 
     expression.require(')');
+
+    pointwise = expression.hasScalarCodomain();
+
   }
 
   @Override
-  public MethodVisitor
-         generate(Class<?> resultType,
-                  MethodVisitor mv)
+  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
   {
     if (Expression.trace)
     {
-      err.printf("J.generate(ν=%s, resultType=%s\n)\n",
-                 ν,
-                 resultType);
+      err.printf("J.generate(ν=%s, resultType=%s\n)\n", ν, resultType);
     }
     var scalarType = scalarType(resultType);
 
-    loadOutputVariableOntoStack(mv,
-                                scalarType);
+    loadOutputVariableOntoStack(mv, scalarType);
     duplicateTopOfTheStack(mv);
-    ν.generate(scalarType,
-               mv);
-    arg.generate(resultType,
-                 mv);
+    ν.generate(scalarType, mv);
+
+    if (!pointwise)
+    {
+      assert false : "pointwise will be false if the co-domain is a QuasiPolynomial in case we need\n"
+                    + "      to generate either the Lommel or the Bessel polynomials..and if true then\n"
+                    + "      generate a call to the pointwise arb_hypgeom_bessel_j function";
+    }
+
+    arg.generate(resultType, mv);
     loadBitsParameterOntoSTack(mv);
 
     invokeStaticMethod(mv,

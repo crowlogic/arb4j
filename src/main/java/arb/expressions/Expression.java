@@ -1966,4 +1966,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return loadFieldOntoStack(loadThisOntoStack(mv), name, referenceType);
   }
 
+  public boolean hasScalarCodomain()
+  {
+    return coDomainType.equals(Real.class) || coDomainType.equals(Complex.class);
+  }
+
 }
