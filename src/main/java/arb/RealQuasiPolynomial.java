@@ -60,7 +60,6 @@ public class RealQuasiPolynomial
                           null);
   }
 
-  @SuppressWarnings("resource")
   public RealQuasiPolynomial identity()
   {
     p.identity();
@@ -73,9 +72,10 @@ public class RealQuasiPolynomial
           f);
   }
 
+  @SuppressWarnings("resource")
   public RealQuasiPolynomial(RealFunction f)
   {
-    this(new RealPolynomial(),
+    this(new RealPolynomial().identity(),
          f);
   }
 
@@ -185,10 +185,33 @@ public class RealQuasiPolynomial
   }
 
   @Override
-  public RealQuasiPolynomial div(RealQuasiPolynomial j, int prec, RealQuasiPolynomial result)
+  public RealQuasiPolynomial div(RealQuasiPolynomial operand, int prec, RealQuasiPolynomial result)
   {
-    assert false : "TODO";
-    return null;
+    result.identity();
+    result.p.bits = prec;
+    result.f      = new RealFunction()
+                  {
+
+                    @Override
+                    public Real evaluate(Real t, int order, int rbits, Real res)
+                    {
+                      try ( Real left = new Real(); Real right = new Real();)
+                      {
+                        RealQuasiPolynomial.this.evaluate(t, order, rbits, left);
+                        operand.evaluate(t, order, rbits, right);
+                        Real div = left.div(right, rbits, res);
+                        return div;
+                      }
+                    }
+
+                    @Override
+                    public String toString()
+                    {
+                      return String.format("%s*%s", RealQuasiPolynomial.this, operand);
+                    }
+                  };
+
+    return result;
   }
 
   @Override
