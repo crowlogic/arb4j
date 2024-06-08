@@ -1,15 +1,27 @@
 
+
+
+
+.scroll-bar .thumb {
+    -fx-background-color: #808080; /* Change this to your desired thumb color */
+}
+
+.scroll-bar .increment-button, .scroll-bar .decrement-button {
+    -fx-background-color: #a9a9a9; /* Change this to your desired button color */
+}
+.tree-table-view .column-resize-line {
+    -fx-background-color: #ff0000; /* Change this to your desired color */
+}
+
 .tree-table-view .tree-table-row-cell .tree-table-cell .text {
     -fx-font-size: 18px; /* This specifically targets TreeTableView cells */
     -fx-fill: #ffff00; /* Change this to your desired color */
 }
 
-
 .root {
     -fx-font-weight: bold; /* Make font bold */
   -fx-font-size: 18px; /* Change this value to increase/decrease the font size */
   -fx-base: #1f273f;
-  -fx-text-fill: #000000;
   -fx-default-button: #7f878f;
   -fx-focus-color: #efefef;
   -fx-focused-text-base-color: ladder(-fx-selection-bar, -fx-light-text-color 45%, -fx-dark-text-color

@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -26,7 +27,8 @@ import javafx.stage.Stage;
  * @author ©2024 Stephen Crowley
  * @see BusinessSourceLicenseVersionOnePointOne for © terms
  */
-public class TODO extends
+public class TODO
+                  extends
                   Application
 {
 
@@ -40,6 +42,9 @@ public class TODO extends
     Button addButton = new Button("Add");
     addButton.setOnAction(e -> addItem());
 
+    Button editButton = new Button("Edit");
+    editButton.setOnAction(e -> editItem());
+
     Button deleteButton = new Button("Delete");
     deleteButton.setOnAction(e -> deleteItem());
 
@@ -49,16 +54,26 @@ public class TODO extends
     Button loadButton = new Button("Load");
     loadButton.setOnAction(e -> loadItems());
 
-    VBox  layout = new VBox(10,
-                            inputField,
+    Button clearButton = new Button("Clear");
+    clearButton.setOnAction(e -> inputField.setText(""));
+
+    HBox buttons = new HBox(10,
                             addButton,
+                            editButton,
                             deleteButton,
                             saveButton,
                             loadButton,
+                            clearButton);
+    VBox layout  = new VBox(10,
+                            inputField,
+                            buttons,
                             listView);
-    Scene scene  = new Scene(layout,
-                             800,
-                             550);
+    VBox.setVgrow(listView, javafx.scene.layout.Priority.ALWAYS);
+
+    Scene scene = new Scene(layout,
+                            800,
+                            550);
+    scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
     Platform.runLater(this::loadItems);
 
@@ -75,6 +90,12 @@ public class TODO extends
       items.add(item);
       inputField.clear();
     }
+  }
+
+  private void editItem()
+  {
+    inputField.setText(listView.getSelectionModel().getSelectedItem());
+
   }
 
   private void deleteItem()
