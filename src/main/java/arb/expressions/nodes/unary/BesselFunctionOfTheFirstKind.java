@@ -10,10 +10,12 @@ import java.util.List;
 
 import org.objectweb.asm.MethodVisitor;
 
+import arb.QuasiPolynomial;
 import arb.Real;
 import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.exceptions.CompilerException;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
@@ -34,17 +36,17 @@ public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, 
   @Override
   public List<Node<D, R, F>> getBranches()
   {
-    return List.of(ν, arg);
+    return List.of(order, arg);
 
   }
 
   @Override
   public String toString()
   {
-    return String.format("J(%s,%s)", ν, arg);
+    return String.format("J(%s,%s)", order, arg);
   }
 
-  Node<D, R, F>  ν;
+  Node<D, R, F>  order;
 
   public boolean pointwise;
 
@@ -54,7 +56,7 @@ public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, 
           null,
           expression);
 
-    ν = expression.resolve();
+    order = expression.resolve();
 
     expression.require(',');
 
@@ -71,19 +73,23 @@ public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, 
   {
     if (Expression.trace)
     {
-      err.printf("J.generate(ν=%s, resultType=%s\n)\n", ν, resultType);
+      err.printf("J.generate(ν=%s, resultType=%s\n)\n", order, resultType);
     }
     var scalarType = scalarType(resultType);
 
     loadOutputVariableOntoStack(mv, scalarType);
     duplicateTopOfTheStack(mv);
-    ν.generate(scalarType, mv);
+    order.generate(scalarType, mv);
 
     if (!pointwise)
     {
-      assert false : "pointwise will be false if the co-domain is a QuasiPolynomial in case we need\n"
-                    + "      to generate either the Lommel or the Bessel polynomials..and if true then\n"
-                    + "      generate a call to the pointwise arb_hypgeom_bessel_j function";
+      if (!QuasiPolynomial.class.isAssignableFrom(resultType))
+      {
+        throw new CompilerException("The result type of " + expression
+                      + " must be a QuasiPolynomial because the Bessel functions of the first kind at half-integer orders are "
+                      + "not polynomials but rather rather rational functions or quasi-polynomials because they can not be represented by rational multiples of powers of the independent variable");
+      }
+      assert false : "check that the order is a half-integer and evaluate the result in terms of lommel or bessel polynomials";
     }
 
     arg.generate(resultType, mv);
