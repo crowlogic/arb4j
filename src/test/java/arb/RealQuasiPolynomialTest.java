@@ -25,7 +25,7 @@ public class RealQuasiPolynomialTest
     r.p.identity();
     r.f = RealFunction.express("cos(x)");
     RealQuasiPolynomial s = q.mul(r, 128, new RealQuasiPolynomial() );
-    System.out.format( "%s*%s=%s", q, r, s);
+    System.out.println(s);
   }
   
   public void testQuasi()

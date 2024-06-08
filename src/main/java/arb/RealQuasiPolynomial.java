@@ -99,15 +99,27 @@ public class RealQuasiPolynomial
   public RealQuasiPolynomial mul(RealQuasiPolynomial operand, int bits, RealQuasiPolynomial result)
   {
     result.p      = p;
-    result.f      = (t, order, rbits, res) ->
+    result.f      = new RealFunction()
                   {
-                    try ( Real other = new Real();)
+
+                    @Override
+                    public Real evaluate(Real t, int order, int rbits, Real res)
                     {
-                      evaluate(t, order, rbits, res);
-                      operand.evaluate(t, order, rbits, other);
-                      return res.mul(other, rbits, res);
+                      try ( Real other = new Real();)
+                      {
+                        evaluate(t, order, rbits, res);
+                        operand.evaluate(t, order, rbits, other);
+                        return res.mul(other, rbits, res);
+                      }
+                    }
+
+                    @Override
+                    public String toString()
+                    {
+                      return String.format("%s*%s", RealQuasiPolynomial.this, operand);
                     }
                   };
+
     result.p.bits = bits;
     return result;
   }
