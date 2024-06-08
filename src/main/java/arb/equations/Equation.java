@@ -81,7 +81,8 @@ public class Equation<D, C, F extends Function<? extends D, ? extends C>> implem
                             functionType,
                             string,
                             null);
-    string = string.substring(lhs.position, string.length());
+    lhs.require('=');
+    string = string.substring(lhs.position+1, string.length());
     rhs    = Function.parse(Parser.expressionToUniqueClassname(string),
                             string,
                             context,

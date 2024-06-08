@@ -67,15 +67,17 @@ import arb.utensils.Utensils;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>> extends
+public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
+                            extends
                             Node<D, R, F>
 {
   @Override
-  public boolean
-         dependsOn(Variable<D, R, F> variable)
+  public boolean dependsOn(Variable<D, R, F> variable)
   {
     return false;
   }
+
+  public static final String    infinity        = "∞";
 
   public static final String    π               = "π";
 
@@ -89,10 +91,10 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
     constantSymbols.add(π);
     constantSymbols.add(half);
     constantSymbols.add(ⅈ);
+    constantSymbols.add(infinity);
   }
 
-  public static boolean
-         isConstant(String var)
+  public static boolean isConstant(String var)
   {
     return constantSymbols.contains(var);
   }
@@ -105,8 +107,7 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
 
   public boolean      isComplex = false;
 
-  public LiteralConstant(Expression<D, R, F> expression,
-                         String constantValueString)
+  public LiteralConstant(Expression<D, R, F> expression, String constantValueString)
   {
     this(expression,
          constantValueString,
@@ -114,15 +115,12 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
 
   }
 
-  public LiteralConstant(Expression<D, R, F> expression,
-                         String constantValueString,
-                         String name)
+  public LiteralConstant(Expression<D, R, F> expression, String constantValueString, String name)
   {
     super(expression);
     assert Integer.class.equals(arb.Integer.class) : "an import statement for arb.Integer is probably missing";
     value     = Utensils.subscriptToRegular(constantValueString.trim());
-    isInt     = !((value.contains(".")
-                   || constantSymbols.contains(value)));
+    isInt     = !((value.contains(".") || constantSymbols.contains(value)));
     isComplex = ⅈ.equals(value);
 
     if (isConstant(constantValueString))
@@ -146,69 +144,57 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
     }
 
     boolean fieldNameConflicts = expression.literalConstants.get(fieldName) != null;
-    boolean needsNewFieldName  = fieldName == null
-                                 || fieldNameConflicts;
+    boolean needsNewFieldName  = fieldName == null || fieldNameConflicts;
     if (needsNewFieldName)
     {
       fieldName = expression.getNextConstantFieldName(type());
     }
 
-    expression.literalConstants.put(fieldName,
-                                    this);
+    expression.literalConstants.put(fieldName, this);
   }
 
-  public ClassVisitor
-         declareField(ClassVisitor classVisitor)
+  public ClassVisitor declareField(ClassVisitor classVisitor)
   {
-    classVisitor.visitField(ACC_PUBLIC & ACC_FINAL,
-                            fieldName,
-                            type().descriptorString(),
-                            null,
-                            null);
+    classVisitor.visitField(ACC_PUBLIC & ACC_FINAL, fieldName, type().descriptorString(), null, null);
     return classVisitor;
   }
 
   @Override
-  public MethodVisitor
-         generate(Class<?> resultType,
-                  MethodVisitor mv)
+  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
   {
     generatedType = type();
     if (π.equals(fieldName))
     {
-      loadRealConstantOntoStack(mv,
-                                π);
+      loadRealConstantOntoStack(mv, π);
     }
+    else if (infinity.equals(fieldName))
+    {
+      loadRealConstantOntoStack(mv, "infinity");
+    }    
     else if (half.equals(fieldName))
     {
-      loadRealConstantOntoStack(mv,
-                                "half");
+      loadRealConstantOntoStack(mv, "half");
     }
     else if (ⅈ.equals(fieldName))
     {
-      loadComplexConstantOntoStack(mv,
-                                   ⅈ);
+      loadComplexConstantOntoStack(mv, ⅈ);
     }
     else
     {
       // todo: https://github.com/crowlogic/arb4j/issues/222: use the primitive int ,
       // the signature of the method being invoked will also have to know this has
       // been done and change correspondingly
-      expression.loadFieldOntoStack(loadThisOntoStack(mv),
-                                    fieldName,
-                                    generatedType.descriptorString());
+      expression.loadFieldOntoStack(loadThisOntoStack(mv), fieldName, generatedType.descriptorString());
     }
 
     if (!resultType.equals(generatedType))
     {
-      generateCastTo(mv,
-                     resultType);
+      generateCastTo(mv, resultType);
     }
 
     if (isResult)
     {
-      expression.generateSetResultInvocation(mv,
-                                             generatedType);
+      expression.generateSetResultInvocation(mv, generatedType);
     }
 
     // expression.addToTypeStack(thisType, toString() );
@@ -216,55 +202,35 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
     return mv;
   }
 
-  public MethodVisitor
-         generateLiteralConstantInitializerWithString(MethodVisitor methodVisitor)
+  public MethodVisitor generateLiteralConstantInitializerWithString(MethodVisitor methodVisitor)
   {
     Class<?> type = type();
     loadThisOntoStack(methodVisitor);
-    methodVisitor.visitTypeInsn(NEW,
-                                Type.getInternalName(type));
+    methodVisitor.visitTypeInsn(NEW, Type.getInternalName(type));
     duplicateTopOfTheStack(methodVisitor);
     methodVisitor.visitLdcInsn(value);
     boolean needsBitsPassedToStringConstructor = type.equals(Real.class);
     if (needsBitsPassedToStringConstructor)
     {
-      methodVisitor.visitIntInsn(SIPUSH,
-                                 bits);
+      methodVisitor.visitIntInsn(SIPUSH, bits);
     }
     String constructorDescriptor = needsBitsPassedToStringConstructor ? Compiler.getMethodDescriptor(Void.class,
                                                                                                      String.class,
-                                                                                                     int.class)
-                                                                      : Compiler.getMethodDescriptor(Void.class,
-                                                                                                     String.class);
-    methodVisitor.visitMethodInsn(INVOKESPECIAL,
-                                  Type.getInternalName(type),
-                                  "<init>",
-                                  constructorDescriptor,
-                                  false);
-    expression.putField(methodVisitor,
-                        fieldName,
-                        type);
+                                                                                                     int.class) : Compiler.getMethodDescriptor(Void.class,
+                                                                                                                                               String.class);
+    methodVisitor.visitMethodInsn(INVOKESPECIAL, Type.getInternalName(type), "<init>", constructorDescriptor, false);
+    expression.putField(methodVisitor, fieldName, type);
     return methodVisitor;
   }
 
-  public void
-         loadRealConstantOntoStack(MethodVisitor mv,
-                                   String fn)
+  public void loadRealConstantOntoStack(MethodVisitor mv, String fn)
   {
-    loadConstantOntoStack(mv,
-                          fn,
-                          Real.class,
-                          RealConstants.class);
+    loadConstantOntoStack(mv, fn, Real.class, RealConstants.class);
   }
 
-  public void
-         loadComplexConstantOntoStack(MethodVisitor mv,
-                                      String fn)
+  public void loadComplexConstantOntoStack(MethodVisitor mv, String fn)
   {
-    loadConstantOntoStack(mv,
-                          fn,
-                          Complex.class,
-                          ComplexConstants.class);
+    loadConstantOntoStack(mv, fn, Complex.class, ComplexConstants.class);
   }
 
   /**
@@ -279,10 +245,7 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
    * 
    */
   public void
-         loadConstantOntoStack(MethodVisitor mv,
-                               String fieldName,
-                               Class<?> typeClass,
-                               Class<?> staticConstantsClass)
+         loadConstantOntoStack(MethodVisitor mv, String fieldName, Class<?> typeClass, Class<?> staticConstantsClass)
   {
     mv.visitFieldInsn(Opcodes.GETSTATIC,
                       Type.getInternalName(staticConstantsClass),
@@ -291,29 +254,25 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public boolean
-         isReusable()
+  public boolean isReusable()
   {
     return false;
   }
 
   @Override
-  public MethodVisitor
-         prepareStackForReuse(MethodVisitor mv)
+  public MethodVisitor prepareStackForReuse(MethodVisitor mv)
   {
     assert false : "a constant is never reusable";
     return null;
   }
 
   @Override
-  public String
-         toString()
+  public String toString()
   {
     return value;
   }
 
-  public String
-         toString(int depth)
+  public String toString(int depth)
   {
     return String.format("%s[fieldName=%s, value=%s, depth=%s]",
                          getClass().getSimpleName(),
@@ -323,15 +282,13 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public Class<?>
-         type()
+  public Class<?> type()
   {
     return isInt ? Integer.class : isComplex ? Complex.class : Real.class;
   }
 
   @Override
-  public String
-         typeset()
+  public String typeset()
   {
     if (π.equals(value))
     {
@@ -348,39 +305,33 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public boolean
-         isLeaf()
+  public boolean isLeaf()
   {
     return true;
   }
 
   @Override
-  public boolean
-         hasSingleLeaf()
+  public boolean hasSingleLeaf()
   {
     return false;
   }
 
   @Override
-  public List<Node<D, R, F>>
-         getBranches()
+  public List<Node<D, R, F>> getBranches()
   {
     return List.of();
   }
 
   @Override
-  public Node<D, R, F>
-         integral(Variable<D, R, F> variable)
+  public Node<D, R, F> integral(Variable<D, R, F> variable)
   {
     return new Multiplication<>(expression,
                                 this,
                                 variable);
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String variable,
-                    Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
+                                                                                       Node<E, S, G> arg)
   {
     return this;
   }
@@ -396,29 +347,26 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public void
-         accept(Consumer<Node<D, R, F>> t)
+  public void accept(Consumer<Node<D, R, F>> t)
   {
     t.accept(this);
   }
 
   @Override
-  public Node<D, R, F>
-         derivative(Variable<D, R, F> variable)
+  public Node<D, R, F> derivative(Variable<D, R, F> variable)
   {
-    return new LiteralConstant<>(expression, "0");
+    return new LiteralConstant<>(expression,
+                                 "0");
   }
 
   @Override
-  public boolean
-         isScalar()
+  public boolean isScalar()
   {
-   return true;
+    return true;
   }
 
   @Override
-  public char
-            symbol()
+  public char symbol()
   {
     return '#';
   }

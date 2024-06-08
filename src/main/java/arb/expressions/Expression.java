@@ -1554,7 +1554,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (position < expression.length())
     {
-      throwNewUnexpectedCharacterException();
+      if (character != '=')
+      {
+        throwNewUnexpectedCharacterException();
+      }
     }
     return this;
   }
