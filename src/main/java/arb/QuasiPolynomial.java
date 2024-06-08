@@ -6,6 +6,7 @@ import arb.algebra.Ring;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;
+import arb.utensils.Utensils;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -31,12 +32,11 @@ public abstract class QuasiPolynomial<S, P extends Polynomial<S, ? extends P>, F
   @Override
   public S evaluate(S z, int order, int prec, S w)
   {
-    var a    = p.evaluate(z, order, prec, p.newCoDomainInstance());
-
-    S   fapp = f.evaluate(a, order, prec, w);
-
+    S a = p.newCoDomainInstance();
+    p.evaluate(z, order, prec, a);
+    f.evaluate(a, order, prec, w);
+    Utensils.closeIfAutoCloseable(a);
     return w;
-
   }
 
   public QuasiPolynomial(P p, F f)
@@ -53,11 +53,5 @@ public abstract class QuasiPolynomial<S, P extends Polynomial<S, ? extends P>, F
   }
 
   public abstract R identity();
-
-  public <Q extends R> Q mul(Q operand, int bits, Q result)
-  {
-    assert false : "TODO";
-    return null;
-  }
 
 }

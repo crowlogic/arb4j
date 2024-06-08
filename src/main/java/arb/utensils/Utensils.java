@@ -723,4 +723,26 @@ public class Utensils
     return outputStream.toString();
   }
 
+  /**
+   * 
+   * @param a
+   * @return true if it was an AutoCloseable, false if not
+   */
+  public static boolean closeIfAutoCloseable(Object a)
+  {
+    if (a instanceof AutoCloseable)
+    {
+      try
+      {
+        ((AutoCloseable) a).close();
+      }
+      catch (Exception e)
+      {
+        throwOrWrap(e);
+      }
+      return true;
+    }
+    return false;
+  }
+
 }
