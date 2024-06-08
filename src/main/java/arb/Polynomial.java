@@ -16,6 +16,9 @@ public interface Polynomial<S,V extends Polynomial<? extends S, ? extends V>> ex
                             AutoCloseableAssignable<V>
 {
 
+  public V identity();
+  public S getCoeffs();
+  
   @Override
   public void
           close();

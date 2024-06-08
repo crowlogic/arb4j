@@ -16,6 +16,7 @@ import arb.ComplexPolynomial;
 import arb.Integer;
 import arb.Real;
 import arb.RealPolynomial;
+import arb.RealQuasiPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
@@ -394,6 +395,9 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
 
     mapTypes(Real.class, Complex.class, Complex.class);
     mapTypes(Real.class, ComplexPolynomial.class, ComplexPolynomial.class);
+    mapTypes(Integer.class, RealQuasiPolynomial.class, RealQuasiPolynomial.class);
+    mapTypes(Real.class, RealQuasiPolynomial.class, RealQuasiPolynomial.class);
+
   }
 
   public static void mapType(Class<?> scalarType, Class<?> polynomialType)

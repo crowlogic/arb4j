@@ -15,9 +15,31 @@ import arb.functions.sequences.Sequence;
 public class RealQuasiPolynomial
                                  extends
                                  QuasiPolynomial<Real, RealPolynomial, RealFunction> implements
-                                 RealFunction
+                                 RealFunction,
+                                 AutoCloseable
 
 {
+
+  @Override
+  public String toString()
+  {
+    return String.format("RealQuasiPolynomial[f=%s, p=%s]", f, p);
+  }
+
+  @Override
+  public void close()
+  {
+    if (p != null)
+    {
+      p.close();
+      p = null;
+    }
+    if (f != null)
+    {
+      f.close();
+      f = null;
+    }
+  }
 
   public static Expression<Integer, RealQuasiPolynomial, Sequence<RealQuasiPolynomial>>
          parseSequence(String className, String expression)
@@ -39,32 +61,27 @@ public class RealQuasiPolynomial
   }
 
   @SuppressWarnings("resource")
-  public RealQuasiPolynomial identity(RealQuasiPolynomial realQuasiPolynomial)
+  public RealQuasiPolynomial identity()
   {
-    if (p != null)
-    {
-      p.close();
-      p = new RealPolynomial().identity();
-    }
+    p.identity();
     return this;
   }
 
   public RealQuasiPolynomial(RealPolynomial p, RealFunction f)
   {
-    super();
-    this.p = p;
-    this.f = f;
+    super(p,
+          f);
   }
 
   public RealQuasiPolynomial(RealFunction f)
   {
-    super();
-    this.f = f;
+    this(new RealPolynomial(),
+         f);
   }
 
   public RealQuasiPolynomial()
   {
-    super();
+    this(null);
   }
 
   public RealQuasiPolynomial one()
@@ -77,6 +94,22 @@ public class RealQuasiPolynomial
   {
     p.zero();
     return this;
+  }
+
+  public RealQuasiPolynomial mul(RealQuasiPolynomial operand, int bits, RealQuasiPolynomial result)
+  {
+    result.p      = p;
+    result.f      = (t, order, rbits, res) ->
+                  {
+                    try ( Real other = new Real();)
+                    {
+                      evaluate(t, order, rbits, res);
+                      operand.evaluate(t, order, rbits, other);
+                      return res.mul(other, rbits, res);
+                    }
+                  };
+    result.p.bits = bits;
+    return result;
   }
 
 }
