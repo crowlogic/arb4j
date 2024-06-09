@@ -38,10 +38,12 @@ public class pFq implements RealPolynomialNullaryFunction, Typesettable, AutoClo
       initialize();
     }
 
-    return new RealHypergeometricPolynomial(vℝ1.set(new Real[]
-    { ℝ1.set(Xℝ1.set(cℤ1).neg(Xℝ2)), cℝ2, ℝ2.set(cℤ3) }),
-                                            vℝ2.set(new Real[]
-                                            { ℝ3.set(cℤ1), ℝ4.set(cℤ4) }),
+    Real numer = vℝ1.set(new Real[]
+    { ℝ1.set(Xℝ1.set(cℤ1).neg(Xℝ2)), cℝ2, ℝ2.set(cℤ3) });
+    Real denom = vℝ2.set(new Real[]
+    { ℝ3.set(cℤ1), ℝ4.set(cℤ4) });
+    return new RealHypergeometricPolynomial(numer,
+                                            denom,
                                             RealPolynomialNullaryFunction.parse("(1/2)-(x/2)")).evaluate(null,
                                                                                                          1,
                                                                                                          bits,
