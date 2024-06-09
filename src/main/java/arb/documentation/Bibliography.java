@@ -17,9 +17,19 @@ import arb.documentation.references.Reference;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Bibliography extends
+public class Bibliography
+                          extends
                           AbstractBibliography
 {
+  public static Article       modifiedLommelPolynomials                               = new Article("Asymptotic Expansion of the Modified Lommel Polynomials $h_{n,ν}(x)$ and Their Zeros",
+                                                                                                    "K.F. Lee, R. Wong",                                                                                                                                                                    // Authors'
+                                                                                                                                                                                                                                                                                            // names
+                                                                                                                                                                                                                                                                                            // provided
+                                                                                                    "2014",
+                                                                                                    "Proceedings of the American Mathematical Society",
+                                                                                                    "142",
+                                                                                                    "3953-3964").setNumber("11");
+
   public static Book          orthogonalPolynomials                                   = new Book("Orthogonal Polynomials",
                                                                                                  "Gábor Szegő",
                                                                                                  "1975",

@@ -54,6 +54,11 @@ import arb.operators.Operator;
  * {@link RealLine}.
  * </p>
  * 
+ * TODO: ultimately this will be linked to <br>
+ * <br>
+ *
+ * N(t) = (-((lnΓ(1/4 + t𝑖/2)(t) - lnΓ(1/4 - t𝑖/2)(t))𝑖)/2 - ln(π)t/2)/π + 1 - 𝑖((ln(ζ(1/2 + 𝑖t)) - ln(ζ(1/2 - 𝑖t))))/(2π)
+ * 
  * @author Stephen A. Crowley
  * 
  * @since 0.96 - May 13th, 2024
