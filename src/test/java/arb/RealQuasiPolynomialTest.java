@@ -2,9 +2,7 @@ package arb;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Expression;
 import arb.functions.real.RealFunction;
-import arb.functions.sequences.Sequence;
 import junit.framework.TestCase;
 
 /**
@@ -16,11 +14,9 @@ public class RealQuasiPolynomialTest
                                      extends
                                      TestCase
 {
-  public void testExpressionParse()
+  public void testLommelQuasiPolynomialSeuence()
   {
-    Expression<Integer, RealQuasiPolynomial, Sequence<RealQuasiPolynomial>> expression = RealQuasiPolynomial.parseSequence("R",
-
-                                                                                                                           "v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z^2)");
+    var expression = RealQuasiPolynomial.parseSequence("R", "v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z^2)");
     System.out.println(expression.syntaxTextTree());
   }
 
@@ -67,7 +63,7 @@ public class RealQuasiPolynomialTest
     System.out.println(s);
   }
 
-  public void testQuasiPolynomialSequence()
+  public void testQuasiPolynomialJ0EigenfunctionSequence()
   {
 
     var expr = RealQuasiPolynomial.parseSequence("Ψ", "n➔½*√(2*(4*n+1)/y)*(-1)ⁿ*J(2*n+½,y)");
