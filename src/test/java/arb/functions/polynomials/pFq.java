@@ -5,6 +5,7 @@ import arb.Integer;
 import arb.Real;
 import arb.RealPolynomial;
 import arb.Typesettable;
+import arb.expressions.Expression;
 import arb.functions.real.RealPolynomialNullaryFunction;
 
 public class pFq implements RealPolynomialNullaryFunction, Typesettable, AutoCloseable, Initializable
@@ -38,16 +39,15 @@ public class pFq implements RealPolynomialNullaryFunction, Typesettable, AutoClo
       initialize();
     }
 
-    Real numer = vℝ1.set(new Real[]
+    var numer                        = vℝ1.set(new Real[]
     { ℝ1.set(Xℝ1.set(cℤ1).neg(Xℝ2)), cℝ2, ℝ2.set(cℤ3) });
-    Real denom = vℝ2.set(new Real[]
+    var denom                        = vℝ2.set(new Real[]
     { ℝ3.set(cℤ1), ℝ4.set(cℤ4) });
-    return new RealHypergeometricPolynomial(numer,
-                                            denom,
-                                            RealPolynomialNullaryFunction.parse("(1/2)-(x/2)")).evaluate(null,
-                                                                                                         1,
-                                                                                                         bits,
-                                                                                                         result);
+    var arg                          = RealPolynomialNullaryFunction.parse("(1/2)-(x/2)");
+    var realHypergeometricPolynomial = new RealHypergeometricPolynomial(numer,
+                                                                        denom,
+                                                                        arg);
+    return realHypergeometricPolynomial.evaluate(null, 1, bits, result);
   }
 
   @Override
