@@ -294,9 +294,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       else if (nextCharacterIs('-', '₋', '−'))
       {
-        node = new Subtraction<>(this,
-                                 node,
-                                 exponentiateMultiplyAndDivide());
+      //  assert node != null : "TODO: map this to the neg function instead of filling in 0";
+        if (node == null)
+        {
+          node = new Negation<>(this,
+                                exponentiateMultiplyAndDivide());
+        }
+        else
+        {
+          node = new Subtraction<>(this,
+                                   node,
+                                   exponentiateMultiplyAndDivide());
+        }
       }
       else
       {

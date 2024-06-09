@@ -7,6 +7,9 @@
 #include <flint/fmpq_poly.h>
  int fmpq_equal(const fmpq_t x, const fmpq_t y);
  
+
+void acb_poly_neg(acb_poly_t res, const acb_poly_t poly);
+
 void acb_gamma(acb_t y, const acb_t x, slong prec);
 void acb_rgamma(acb_t y, const acb_t x, slong prec);
 void acb_lgamma(acb_t y, const acb_t x, slong prec);

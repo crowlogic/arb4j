@@ -14,7 +14,7 @@ public class RealQuasiPolynomialTest
                                      extends
                                      TestCase
 {
-  public void testLommelQuasiPolynomialSeuence()
+  public void testLommelQuasiPolynomialSequence()
   {
     var expression = RealQuasiPolynomial.parseSequence("R", "v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z^2)");
     System.out.println(expression.syntaxTextTree());

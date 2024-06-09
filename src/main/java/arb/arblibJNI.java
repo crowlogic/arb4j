@@ -10,6 +10,7 @@ package arb;
 
 public class arblibJNI {
   public final static native int fmpq_equal(long jarg1, Rational jarg1_, long jarg2, Rational jarg2_);
+  public final static native void acb_poly_neg(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_);
   public final static native void acb_gamma(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void acb_rgamma(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void acb_lgamma(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);

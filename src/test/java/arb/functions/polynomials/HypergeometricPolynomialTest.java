@@ -46,7 +46,7 @@ public class HypergeometricPolynomialTest extends
     assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
   }
 
-  public void testHypergeometricFuntionExpressionReal()
+  public void testHypergeometricFunctionExpressionReal()
   {
     var            poly      = RealPolynomialNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
     RealPolynomial expressed = poly.evaluate(bits, new RealPolynomial());

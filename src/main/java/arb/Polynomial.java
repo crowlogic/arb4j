@@ -19,6 +19,15 @@ public interface Polynomial<S,V extends Polynomial<? extends S, ? extends V>> ex
   public V identity();
   public S getCoeffs();
   
+  @SuppressWarnings("unchecked")
+  public default V neg()
+  {
+    return neg((V) this);
+  }
+  
+  public V neg( V result );
+  
+  
   @Override
   public void
           close();

@@ -13,6 +13,10 @@ public class arblib {
     return arblibJNI.fmpq_equal(Rational.getCPtr(x), x, Rational.getCPtr(y), y);
   }
 
+  public static void acb_poly_neg(ComplexPolynomial res, ComplexPolynomial poly) {
+    arblibJNI.acb_poly_neg(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(poly), poly);
+  }
+
   public static void acb_gamma(Complex y, Complex x, int prec) {
     arblibJNI.acb_gamma(Complex.getCPtr(y), y, Complex.getCPtr(x), x, prec);
   }

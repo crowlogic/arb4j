@@ -24,6 +24,14 @@ import java.util.Objects;
   }
 
   @Override
+  public ComplexPolynomial neg(ComplexPolynomial result)
+  {
+    arblib.acb_poly_neg(result, this);
+    return result;
+  }
+
+
+  @Override
   public boolean
          equals(Object obj)
   {
