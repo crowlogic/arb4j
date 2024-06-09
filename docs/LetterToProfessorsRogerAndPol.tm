@@ -82,7 +82,8 @@
   <\equation>
     <tabular|<tformat|<table|<row|<cell|\<psi\><rsub|n><around*|(|y|)>>|<cell|=<around*|(|-1|)><rsup|n><sqrt|<frac|4n+1|\<pi\>>>
     j<rsub|2n><around*|(|y|)>>>|<row|<cell|>|<cell|=<around*|(|-1|)><rsup|n><sqrt|<frac|4n+1|\<pi\>>>
-    <sqrt|<frac|\<pi\>|2 y>>J<rsub|2n+<frac|1|2>><around*|(|y|)>>>|<row|<cell|>|<cell|=<around*|(|-1|)><rsup|n><sqrt|<frac|4n+1|2y>>*J<rsub|2n+<frac|1|2>><around*|(|y|)>>>>>>
+    <sqrt|<frac|\<pi\>|2 y>>J<rsub|2n+<frac|1|2>><around*|(|y|)>>>|<row|<cell|>|<cell|=<around*|(|-1|)><rsup|n><sqrt|<frac|4n+1|2y>>*J<rsub|2n+<frac|1|2>><around*|(|y|)>>>|<row|<cell|>|<cell|=<sqrt|<frac|4n+1|4\<pi\>>><big|int><rsub|-1><rsup|1>P<rsub|2n><around*|(|x|)>e<rsup|i
+    x y>\<mathd\>x>>>>>
   </equation>
 
   where <math|j<rsub|n><around*|(|x|)>> is the spherical Bessel function of
@@ -117,7 +118,7 @@
     \<psi\><rsub|n><around*|(|x|)>>>|<row|<cell|>|<cell|=\<cdots\>.>>>>>
   </equation>
 
-  <big-figure|<image|KErr.eps|277.5pt|95pt||>|The Residual
+  <big-figure|<image|KErr.eps|332pt|114pt||>|The Residual
   <math|J<rsub|0><around*|(|x|)>-K<rsub|n><around*|(|x|)>> for
   <math|n=0,10,20>>
 
@@ -133,7 +134,22 @@
   matrices become the identity and <math|c<rsub|n>=\<lambda\><rsub|n>>
   becomes an identity. I do not hold a degree, I'm just a guy who started
   programming computers when he was about 5 or 6 years old and ran into this
-  interesting solution.
+  interesting solution. There is a bigger picture that this fits into as well
+  that I would love to talk to y'all about, please do let me know if you
+  could help me out, I think this method of orthogonalization combined with
+  Fourier transform applies to any positive definite stationary kernel, and
+  perhaps it can be extended to harmonizable processes? I have a
+  non-stationary modification of int(J0(t-s)*f(t),t=0..inf) which is
+  particular interesting but I figured it was best not to go into that right
+  now until the stationar case is completely squared away.
+
+  \;
+
+  Sincerely,
+
+  Stephen Crowley
+
+  \;
 
   \;
 
@@ -152,7 +168,7 @@
 
 <\initial>
   <\collection>
-    <associate|magnification|1.4>
+    <associate|magnification|1.2>
     <associate|page-height|auto>
     <associate|page-medium|paper>
     <associate|page-type|letter>
