@@ -39,16 +39,37 @@
     <big|int><rsup|1><rsub|-1>T<rsub|n><around*|(|\<omega\>|)>T<rsub|m><around*|(|\<omega\>|)>S<around*|(|\<omega\>|)>\<mathd\>w=<choice|<tformat|<table|<row|<cell|0>|<cell|n\<neq\>m>>|<row|<cell|\<pi\>>|<cell|n=m=0>>|<row|<cell|<frac|\<pi\>|2>>|<cell|n=m\<neq\>0>>>>>
   </equation>
 
-  so I had a hunch that if we take the Fourier transform of this set and
-  orthogonalize (via the Gram-Schmidt process) t with respect to the
-  unweighted standard Lebesgue inner product measure<space|1em>over <math|0>
-  to <math|\<infty\>> that it would be related to the solution at least and I
-  was pleasently surprised to notice that indeed the partial sums of the
-  orthogonalized Fourier transforms of <math|T<rsub|n>> are in fact
-  proportional to the Fourier transforms of the Legendre polynomials over the
-  same interval and are actually eigenfunctions of the given integral
-  covariance operation in Equation (<reference|integralCovariance>) and that
-  the eigenvalues are given by
+  \ I had a hunch that if we take the (finite) Fourier transform of the
+  Chebyshev type-<math|I> polynomials which is just the usual infinite
+  Fourier transform with the integration restricted to the range
+  <math|-1\<ldots\>1> since <math|T<rsub|n><around*|(|x|)>=0\<forall\>x\<nin\><around*|[|-1,1|]>>
+
+  <\equation>
+    <wide|T|^><rsub|n><around*|(|y|)>=<big|int><rsub|-1><rsup|1>T<rsub|n><around*|(|x|)>e<rsup|i
+    x y>\<mathd\>x
+  </equation>
+
+  \ and orthogonalize them so that our eigenfunctions are their orthogonal
+  complement
+
+  <\equation>
+    \<psi\><rsub|n><around*|(|y|)>=<wide|T|^><rsup|\<perp\>><rsub|n><rsup|><around*|(|y|)>
+  </equation>
+
+  \ \ \ (via the Gram-Schmidt process)\ 
+
+  <\equation>
+    \<psi\><rsub|n><around|(|y|)>=<wide|T|^><rsup|\<perp\>><rsub|n><rsup|><around*|(|y|)>=<wide|T|^><rsub|n><around*|(|y|)>-<big|sum><rsub|m=1><rsup|n-1><frac|<around|\<langle\>|<wide|T|^><rsub|m><around*|(|y|)>,\<psi\><rsub|m><around|(|y|)>|\<rangle\>>|<around|\<langle\>|<wide|T|^><rsub|m><around*|(|y|)>,<wide|T|^><rsub|m><around*|(|y|)>|\<rangle\>>>*\<psi\><rsub|m><around|(|y|)>
+  </equation>
+
+  \ with respect to the unweighted standard Lebesgue inner product
+  measure<space|1em>over <math|0> to <math|\<infty\>> that it would be
+  related to the solution. I was pleasently surprised to notice that indeed
+  the partial sums of the orthogonalized Fourier transforms of
+  <math|T<rsub|n>> are in fact proportional to the Fourier transforms of the
+  Legendre polynomials over the same interval and are actually eigenfunctions
+  of the given integral covariance operation in Equation
+  (<reference|integralCovariance>) and that the eigenvalues are given by
 
   <\equation>
     \<lambda\><rsub|n>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>J<rsub|0><around*|(|x|)>\<psi\><rsub|n><around*|(|x|)>\<mathd\>x=<sqrt|<frac|4n+1|\<pi\>>><frac|\<Gamma\><around*|(|n+<frac|1|2>|)><rsup|2>|\<Gamma\><around*|(|*n+1|)><rsup|2>>
@@ -114,6 +135,8 @@
   programming computers when he was about 5 or 6 years old and ran into this
   interesting solution.
 
+  \;
+
   <\bibliography|bib|tm-plain|refs>
     <\bib-list|1>
       <bibitem*|1><label|bib-modifiedLommelPolynomials>R.<nbsp>Wong K.F. Lee.
@@ -140,8 +163,8 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|1|3|../../.TeXmacs/texts/scratch/no_name_50.tm>>
-    <associate|auto-2|<tuple|1|3|../../.TeXmacs/texts/scratch/no_name_50.tm>>
-    <associate|bib-modifiedLommelPolynomials|<tuple|1|3|../../.TeXmacs/texts/scratch/no_name_50.tm>>
+    <associate|auto-2|<tuple|1|4|../../.TeXmacs/texts/scratch/no_name_50.tm>>
+    <associate|bib-modifiedLommelPolynomials|<tuple|1|4|../../.TeXmacs/texts/scratch/no_name_50.tm>>
     <associate|integralCovariance|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_50.tm>>
   </collection>
 </references>
