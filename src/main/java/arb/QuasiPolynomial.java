@@ -32,10 +32,8 @@ public abstract class QuasiPolynomial<S, P extends Polynomial<S, ? extends P>, F
   @Override
   public S evaluate(S z, int order, int prec, S w)
   {
-    S a = p.newCoDomainInstance();
-    p.evaluate(z, order, prec, a);
-    f.evaluate(a, order, prec, w);
-    Utensils.closeIfAutoCloseable(a);
+    p.evaluate(z, order, prec, w);
+    f.evaluate(w, order, prec, w);
     return w;
   }
 
