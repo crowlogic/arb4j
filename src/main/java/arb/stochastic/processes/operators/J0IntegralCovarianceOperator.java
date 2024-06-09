@@ -48,7 +48,7 @@ import arb.operators.Operator;
  * to the convergence of the eigenvalues to zero.</li>
  * 
  * <p>
- * Tf = ∫J₀(x-y)*f(x)dx = ∑aₖλₖΨₖ(x-y){k=0..∞} where aₖ= ∫λₖΨₖ(x)*f(x)dx
+ * Tf = ∫J₀(x-y)*f(x)dx = ∑a*ₖλₖ*Ψₖ(x-y){k=0..∞} where aₖ= λₖ*∫Ψₖ(x)*f(x)dx
  * </p>
  * while the kernel itself defines a {@link ProbabilityMeasure} on the
  * {@link RealLine}.
@@ -57,7 +57,7 @@ import arb.operators.Operator;
  * TODO: ultimately this will be linked to <br>
  * <br>
  *
- * N(t) = (-((lnΓ(1/4 + t𝑖/2) - lnΓ(1/4 - t𝑖/2))𝑖)/2 - ln(π)t/2)/π + 1 - 𝑖((ln(ζ(1/2 + 𝑖t)) - ln(ζ(1/2 - 𝑖t))))/(2π) <br><br>
+ * N(t) = (-((lnΓ(1/4 + t𝑖/2) - lnΓ(1/4 - t𝑖/2))𝑖)/2 - ln(π)t/2)/π + 1 - 𝑖((ln(ζ(1/2 + 𝑖t)) - ln(ζ(1/2 - 𝑖t))))/(2π)<br><br>
  * 
  *  
  * @author Stephen A. Crowley
@@ -94,7 +94,7 @@ public class J0IntegralCovarianceOperator implements
    */
   public static RealSequence       λₖ     = RealSequence.express("λₖ:k➔√((4*k+1)/π)*((k+1)⋰-½)²");
 
-  // public static RealPolynomialSequence Ψₖ =
+  // TODO: finish quasipolynomial class and uncomment this: public static RealPolynomialSequence Ψₖ =
   // RealPolynomialSequence.express("Ψₖ:n➔√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)");
 
   @Override
