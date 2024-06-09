@@ -46,6 +46,7 @@ public class Division<D, R, F extends Function<? extends D, ? extends R>> extend
   @Override
   public Node<D, R, F> integral(Variable<D, R, F> variable)
   {
+   // return  new 
     assert false : "TODO: implement integration rule for division, left=" + left + " right=" + right;
     return null;
   }
