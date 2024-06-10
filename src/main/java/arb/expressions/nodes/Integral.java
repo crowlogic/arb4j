@@ -29,25 +29,19 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Integral<D, R, F extends Function<? extends D, ? extends R>> extends
+public class Integral<D, R, F extends Function<? extends D, ? extends R>>
+                     extends
                      Node<D, R, F>
 {
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String variable,
-                    Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
+                                                                                       Node<E, S, G> arg)
   {
-    integrand           = integrand.substitute(variable,
-                                               arg);
-    lowerLimit          = lowerLimit.substitute(variable,
-                                                arg);
-    upperLimit          = upperLimit.substitute(variable,
-                                                arg);
-    integrationVariable = integrationVariable.substitute(variable,
-                                                         arg)
-                                             .asVariable();
+    integrand           = integrand.substitute(variable, arg);
+    lowerLimit          = lowerLimit.substitute(variable, arg);
+    upperLimit          = upperLimit.substitute(variable, arg);
+    integrationVariable = integrationVariable.substitute(variable, arg).asVariable();
     return this;
   }
 
@@ -99,12 +93,9 @@ public class Integral<D, R, F extends Function<? extends D, ? extends R>> extend
     integrand = expression.resolve();
     expression.require('d');
     dvar = expression.parseName();
-    assert dvar.equals(integrationVariable.getName()) : String.format(
-                                                                      "the format is  g(x)=∫x➔f(x)dx∈(a,b) for integrals, the variable on the left "
-                                                                      + "side of the arrow must match the variable on the right side of the d and "
-                                                                      + "before the ( but the first var was %s and the 2nd was %s\n",
-                                                                      integrationVariable,
-                                                                      dvar);
+    assert dvar.equals(integrationVariable.getName()) : String.format("the format is  g(x)=∫x➔f(x)dx∈(a,b) for integrals, the variable on the left "
+                  + "side of the arrow must match the variable on the right side of the d and "
+                  + "before the ( but the first var was %s and the 2nd was %s\n", integrationVariable, dvar);
     expression.require('∈');
     expression.require('(');
     lowerLimit = expression.resolve();
@@ -113,16 +104,12 @@ public class Integral<D, R, F extends Function<? extends D, ? extends R>> extend
     expression.require(')');
   }
 
-  protected void
-            assignFieldNames(Class<?> resultType)
+  protected void assignFieldNames(Class<?> resultType)
   {
-    integralFunctionFieldName   = expression.getNextIntermediateVariableFieldName("integral",
-                                                                                  resultType);
+    integralFunctionFieldName   = expression.getNextIntermediateVariableFieldName("integral", resultType);
 
-    lowerIntegralValueFieldName = expression.newIntermediateVariable("lowerValue",
-                                                                     resultType);
-    upperIntegralValueFieldName = expression.newIntermediateVariable("upperValue",
-                                                                     resultType);
+    lowerIntegralValueFieldName = expression.newIntermediateVariable("lowerValue", resultType);
+    upperIntegralValueFieldName = expression.newIntermediateVariable("upperValue", resultType);
   }
 
   void loadIntegral(MethodVisitor mv)
@@ -133,78 +120,50 @@ public class Integral<D, R, F extends Function<? extends D, ? extends R>> extend
                               "L" + integralFunctionFieldName + ";");
   }
 
-  static String                                             integralEvaluateMethodSignature = Compiler
-                                                                                                      .getMethodDescriptor(Object.class,
+  static String                                             integralEvaluateMethodSignature = Compiler.getMethodDescriptor(Object.class,
                                                                                                                            Object.class,
                                                                                                                            int.class,
                                                                                                                            Object.class);
 
   FunctionMapping<R, R, Function<? extends R, ? extends R>> integralMapping;
 
-  protected void
-            evaluateIntegral(MethodVisitor mv)
+  protected void evaluateIntegral(MethodVisitor mv)
   {
-    invokeMethod(mv,
-                 Type.getInternalName(Function.class),
-                 "evaluate",
-                 integralEvaluateMethodSignature,
-                 true);
+    invokeMethod(mv, Type.getInternalName(Function.class), "evaluate", integralEvaluateMethodSignature, true);
   }
 
-  public MethodVisitor
-         loadFieldFromThis(MethodVisitor mv,
-                           String fieldName,
-                           Class<?> type)
+  public MethodVisitor loadFieldFromThis(MethodVisitor mv, String fieldName, Class<?> type)
   {
-    return getFieldFromThis(mv,
-                            expression.className,
-                            fieldName,
-                            type);
+    return getFieldFromThis(mv, expression.className, fieldName, type);
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public MethodVisitor
-         generate(Class<?> resultType,
-                  MethodVisitor mv)
+  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
   {
     assignFieldNames(resultType);
     generatedType = resultType;
 
     computeIndefiniteIntegral((Class<? extends R>) resultType);
 
-    evaluateIndefiniteIntegralAt(mv,
-                                 upperLimit,
-                                 resultType,
-                                 lowerIntegralValueFieldName);
-    evaluateIndefiniteIntegralAt(mv,
-                                 lowerLimit,
-                                 resultType,
-                                 upperIntegralValueFieldName);
+    evaluateIndefiniteIntegralAt(mv, upperLimit, resultType, lowerIntegralValueFieldName);
+    evaluateIndefiniteIntegralAt(mv, lowerLimit, resultType, upperIntegralValueFieldName);
     loadBitsParameterOntoSTack(mv);
     if (isResult)
     {
-      Compiler.checkClassCast(Compiler.loadResultParameter(mv),
-                              resultType);
+      Compiler.checkClassCast(Compiler.loadResultParameter(mv), resultType);
     }
     else
     {
-      expression.allocateIntermediateVariable(mv,
-                                              "integralDifference",
-                                              resultType);
+      expression.allocateIntermediateVariable(mv, "integralDifference", resultType);
     }
 
-    Compiler.invokeBinaryOperationMethod(mv,
-                                         "sub",
-                                         resultType,
-                                         resultType,
-                                         resultType);
+    Compiler.invokeBinaryOperationMethod(mv, "sub", resultType, resultType, resultType);
 
     return mv;
   }
 
-  private void
-          computeIndefiniteIntegral(Class<? extends R> resultType)
+  private void computeIndefiniteIntegral(Class<? extends R> resultType)
   {
 
     integralNode = integrand.integral(integrationVariable.asVariable());
@@ -230,80 +189,66 @@ public class Integral<D, R, F extends Function<? extends D, ? extends R>> extend
                                                                     integralExpression,
                                                                     expr);
 
-    expression.referencedFunctions.put(integralFunctionFieldName,
-                                       integralMapping);
+    expression.referencedFunctions.put(integralFunctionFieldName, integralMapping);
   }
 
-  private void
-          evaluateIndefiniteIntegralAt(MethodVisitor mv,
-                                       Node<D, R, F> limit,
-                                       Class<?> resultType,
-                                       String integralValueFieldName)
+  private void evaluateIndefiniteIntegralAt(MethodVisitor mv,
+                                            Node<D, R, F> limit,
+                                            Class<?> resultType,
+                                            String integralValueFieldName)
   {
     loadIntegral(mv);
-    limit.generate(Real.class,
-                   mv);
+    limit.generate(Real.class, mv);
 //    assert limit.getGeneratedType()
 //                .equals(Real.class) : String.format("limit.generatedType=%s != Real",
 //                                                    limit.getGeneratedType());
     loadBitsParameterOntoSTack(mv);
-    loadFieldFromThis(mv,
-                      integralValueFieldName,
-                      generatedType);
+    loadFieldFromThis(mv, integralValueFieldName, generatedType);
     evaluateIntegral(mv);
-    checkClassCast(mv,
-                   resultType);
+    checkClassCast(mv, resultType);
   }
 
   @Override
-  public List<Node<D, R, F>>
-         getBranches()
+  public List<Node<D, R, F>> getBranches()
   {
     return List.of(integrand);
   }
 
   @Override
-  public boolean
-         hasSingleLeaf()
+  public boolean hasSingleLeaf()
   {
     assert false : "TODO: Auto-generated method stub";
     return isResult;
   }
 
   @Override
-  public boolean
-         isLeaf()
+  public boolean isLeaf()
   {
     return false;
   }
 
   @Override
-  public boolean
-         isReusable()
+  public boolean isReusable()
   {
     return false;
   }
 
   @Override
-  public MethodVisitor
-         prepareStackForReuse(MethodVisitor mv)
+  public MethodVisitor prepareStackForReuse(MethodVisitor mv)
   {
     assert false : "TODO: Auto-generated method stub";
     return mv;
   }
 
   @Override
-  public <C>
-         Class<? extends C>
-         type()
+  public <C> Class<? extends C> type()
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
   }
 
   @Override
-  public String
-         typeset()
+  public String typeset()
   {
     return String.format("%sint_%s^%s %s %smathd %s",
                          "\\",
@@ -315,8 +260,7 @@ public class Integral<D, R, F extends Function<? extends D, ? extends R>> extend
   }
 
   @Override
-  public Node<D, R, F>
-         integral(Variable<D, R, F> variable)
+  public Node<D, R, F> integral(Variable<D, R, F> variable)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
@@ -339,8 +283,7 @@ public class Integral<D, R, F extends Function<? extends D, ? extends R>> extend
   }
 
   @Override
-  public void
-         accept(Consumer<Node<D, R, F>> t)
+  public void accept(Consumer<Node<D, R, F>> t)
   {
     integrationVariable.accept(t);
     integrand.accept(t);
@@ -350,24 +293,27 @@ public class Integral<D, R, F extends Function<? extends D, ? extends R>> extend
   }
 
   @Override
-  public Node<D, R, F>
-         derivative(Variable<D, R, F> variable)
+  public Node<D, R, F> derivative(Variable<D, R, F> variable)
   {
     return integrand;
   }
 
   @Override
-  public boolean
-         isScalar()
+  public boolean isScalar()
   {
     return type().equals(Real.class) || type().equals(Complex.class);
   }
 
   @Override
-  public char
-            symbol()
+  public char symbol()
   {
     return '∫';
+  }
+
+  @Override
+  public boolean isConstant()
+  {
+    return integrand.isConstant() && lowerLimit.isConstant() && upperLimit.isConstant();
   }
 
 }

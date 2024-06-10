@@ -131,4 +131,11 @@ public class Else<D, R, F extends Function<? extends D, ? extends R>> extends
   {
    return '↮';
   }
+
+  @Override
+  public boolean isConstant()
+  {
+    assert false : "maybe";
+    return true;
+  }
 }

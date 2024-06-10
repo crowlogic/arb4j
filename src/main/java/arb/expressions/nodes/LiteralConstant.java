@@ -370,4 +370,10 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
   {
     return '#';
   }
+
+  @Override
+  public boolean isConstant()
+  {
+   return true;
+  }
 }

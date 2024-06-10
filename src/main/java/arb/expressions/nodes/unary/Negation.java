@@ -1,8 +1,7 @@
 package arb.expressions.nodes.unary;
 
-import org.objectweb.asm.MethodVisitor;
-
 import arb.Polynomial;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
@@ -38,15 +37,16 @@ public class Negation<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
+  public Class<?> resultTypeFor(String functionName)
   {
-    if (Polynomial.class.isAssignableFrom(expression.coDomainType))
+    Class<?> resultTypeFor = super.resultTypeFor(functionName);
+    if (functionName.equals("neg"))
     {
-      resultType = expression.coDomainType;
+      return arg.type();
+    // boolean constantaArg = arg.isConstant();
+      //assert !Polynomial.class.isAssignableFrom(resultTypeFor) : "wtf";
     }
-    return super.generate(resultType, mv);
+    return resultTypeFor;
   }
-
- 
 
 }

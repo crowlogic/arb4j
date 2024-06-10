@@ -39,7 +39,8 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class When<D, R, F extends Function<? extends D, ? extends R>> extends
+public class When<D, R, F extends Function<? extends D, ? extends R>>
+                 extends
                  UnaryOperation<D, R, F>
 {
 
@@ -55,7 +56,7 @@ public class When<D, R, F extends Function<? extends D, ? extends R>> extends
     if (!variable.reference.equals(expression.independentVariable.reference))
     {
       throw new CompilerException("condition of when statement must be the equality of the input variable which is "
-                                  + expression.independentVariable + " not " + variable);
+                    + expression.independentVariable + " not " + variable);
     }
 
     if (!expression.nextCharacterIs('='))
@@ -69,8 +70,7 @@ public class When<D, R, F extends Function<? extends D, ? extends R>> extends
 
     LiteralConstant<D, R, F> constant = evaluateCondition(expression);
     Node<D, R, F>            value    = expression.resolve();
-    cases.put(new Integer(constant.value),
-              value);
+    cases.put(new Integer(constant.value), value);
   }
 
   public static <R, F extends Function<? extends D, ? extends R>, D>
@@ -81,7 +81,7 @@ public class When<D, R, F extends Function<? extends D, ? extends R>> extends
     if (!(condition instanceof LiteralConstant))
     {
       throw new CompilerException("condition of when statement must be the equality of the input variable to an "
-                                  + "Integer LiteralConstant type, but got " + condition);
+                    + "Integer LiteralConstant type, but got " + condition);
     }
     LiteralConstant<D, R, F> constant = (LiteralConstant<D, R, F>) condition;
     expression.require(',');
@@ -125,12 +125,11 @@ public class When<D, R, F extends Function<? extends D, ? extends R>> extends
     if (arg == null)
     {
       throw new CompilerException("default value of when function not specified with else keyword at position="
-                                  + expression.position + " of expression=" + expression);
+                    + expression.position + " of expression=" + expression);
     }
   }
 
-  public void
-         evaluateCases()
+  public void evaluateCases()
   {
     Node<D, R, F> node = expression.evaluate();
     if ((node instanceof Else))
@@ -140,24 +139,19 @@ public class When<D, R, F extends Function<? extends D, ? extends R>> extends
     else if (node.isVariable())
     {
       Variable<D, R, F> variable = (Variable<D, R, F>) node;
-      evaluateCase(expression,
-                   cases,
-                   variable);
+      evaluateCase(expression, cases, variable);
     }
     else
     {
       throw new CompilerException("the cases of the when statement must be either an else statement or a Variable but it was a "
-                                  + node.getClass());
+                    + node.getClass());
     }
   }
 
   @Override
-  public MethodVisitor
-         generate(Class<?> resultType,
-                  MethodVisitor mv)
+  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
   {
-    assert expression.coDomainType.equals(resultType) : String.format(
-                                                                      "expression.domain = %s != Integer, the only type supported presently\n",
+    assert expression.coDomainType.equals(resultType) : String.format("expression.domain = %s != Integer, the only type supported presently\n",
                                                                       expression.domainType);
     try
     {
@@ -165,8 +159,7 @@ public class When<D, R, F extends Function<? extends D, ? extends R>> extends
 
       labels = new Label[cases.size()];
 
-      cases.forEach((id,
-                     val) -> val.isResult = isResult);
+      cases.forEach((id, val) -> val.isResult = isResult);
       arg.isResult = isResult;
 
       generateIndex(mv);
@@ -176,29 +169,20 @@ public class When<D, R, F extends Function<? extends D, ? extends R>> extends
         labels[i] = new Label();
       }
 
-      mv.visitTableSwitchInsn(0,
-                              cases.size() - 1,
-                              defaultLabel,
-                              labels);
-      var branches = cases.values()
-                          .stream()
-                          .toList();
+      mv.visitTableSwitchInsn(0, cases.size() - 1, defaultLabel, labels);
+      var branches = cases.values().stream().toList();
 
       for (int i = 0; i < labels.length; i++)
       {
         mv.visitLabel(labels[i]);
 
-        branches.get(i)
-                .generate(resultType,
-                          mv);
-        mv.visitJumpInsn(GOTO,
-                         endSwitch);
+        branches.get(i).generate(resultType, mv);
+        mv.visitJumpInsn(GOTO, endSwitch);
       }
 
       mv.visitLabel(defaultLabel);
 
-      super.generate(resultType,
-                     mv);
+      super.generate(resultType, mv);
       mv.visitLabel(endSwitch);
     }
     finally
@@ -209,11 +193,9 @@ public class When<D, R, F extends Function<? extends D, ? extends R>> extends
     return mv;
   }
 
-  public void
-         generateIndex(MethodVisitor mv)
+  public void generateIndex(MethodVisitor mv)
   {
-    checkClassCast(loadInputParameter(mv),
-                   expression.domainType);
+    checkClassCast(loadInputParameter(mv), expression.domainType);
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        INTEGER_CLASS_INTERNAL_NAME,
                        "getSignedValue",
@@ -222,74 +204,59 @@ public class When<D, R, F extends Function<? extends D, ? extends R>> extends
   }
 
   @Override
-  public String
-         toString()
+  public String toString()
   {
     return String.format("When[cases=%s,default=%s]",
                          cases.entrySet()
                               .stream()
-                              .map(node -> node.getKey() + "=" + node.getValue()
-                                                                     .typeset())
+                              .map(node -> node.getKey() + "=" + node.getValue().typeset())
                               .collect(Collectors.toList()),
                          arg.typeset());
   }
 
   @Override
-  public Class<?>
-         type()
+  public Class<?> type()
   {
     return expression.coDomainType;
   }
 
   @Override
-  public String
-         typeset()
+  public String typeset()
   {
-    return cases.entrySet()
-                .stream()
-                .map(entry -> entry.getValue()
-                                   .typeset())
-                .collect(Collectors.joining(", ")) + " \text{otherwise} " + arg.typeset();
+    return cases.entrySet().stream().map(entry -> entry.getValue().typeset()).collect(Collectors.joining(", "))
+                  + " \text{otherwise} " + arg.typeset();
   }
 
   @Override
-  public boolean
-         isLeaf()
+  public boolean isLeaf()
   {
     return false;
   }
 
   @Override
-  public boolean
-         hasSingleLeaf()
+  public boolean hasSingleLeaf()
   {
     return false;
   }
 
   @Override
-  public List<Node<D, R, F>>
-         getBranches()
+  public List<Node<D, R, F>> getBranches()
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
   }
 
   @Override
-  public Node<D, R, F>
-         integral(Variable<D, R, F> variable)
+  public Node<D, R, F> integral(Variable<D, R, F> variable)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String variable,
-                    Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
+                                                                                       Node<E, S, G> arg)
   {
-    cases.values()
-         .forEach(element -> element.substitute(variable,
-                                                arg));
+    cases.values().forEach(element -> element.substitute(variable, arg));
     return this;
   }
 
@@ -302,35 +269,36 @@ public class When<D, R, F extends Function<? extends D, ? extends R>> extends
   }
 
   @Override
-  public void
-         accept(Consumer<Node<D, R, F>> t)
+  public void accept(Consumer<Node<D, R, F>> t)
   {
-    cases.forEach((id,
-                   branch) -> branch.accept(t));
+    cases.forEach((id, branch) -> branch.accept(t));
     arg.accept(t);
     t.accept(this);
   }
 
   @Override
-  public Node<D, R, F>
-         derivative(Variable<D, R, F> variable)
+  public Node<D, R, F> derivative(Variable<D, R, F> variable)
   {
     assert false : "TODO";
     return null;
   }
 
   @Override
-  public boolean
-         isScalar()
+  public boolean isScalar()
   {
     return arg.isScalar();
   }
 
   @Override
-  public char
-            symbol()
+  public char symbol()
   {
     return '≡';
+  }
+
+  @Override
+  public boolean isConstant()
+  {
+    return cases.values().stream().allMatch(Node::isConstant) && arg.isConstant();
   }
 
 }

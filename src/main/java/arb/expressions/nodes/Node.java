@@ -191,4 +191,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public abstract char
             symbol();
 
+  public abstract boolean isConstant();
+
 }

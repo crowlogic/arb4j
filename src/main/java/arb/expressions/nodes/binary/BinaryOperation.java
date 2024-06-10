@@ -43,6 +43,13 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
   }
 
   @Override
+  public boolean isConstant()
+  {
+    return left.isConstant() && right.isConstant();
+  }
+  
+
+  @Override
   public boolean isScalar()
   {
     return (left == null || left.isScalar()) && (right == null || right.isScalar());

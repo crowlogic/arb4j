@@ -215,8 +215,6 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
     else
     {
 
-     
-      
       generateBuiltinFunctionCall(mv, resultType, isBitless());
     }
 
@@ -256,7 +254,6 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
     loadOutputVariableOntoStack(methodVisitor, requisiteResultType);
     var domainType   = getDomainType();
     var coDomainType = requisiteResultType;
-
 
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   Type.getInternalName(domainType),
@@ -507,6 +504,12 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
   public boolean isBitless()
   {
     return false;
+  }
+
+  @Override
+  public boolean isConstant()
+  {
+    return arg.isConstant();
   }
 
 }

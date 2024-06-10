@@ -25,7 +25,8 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Vector<D, R, F extends Function<? extends D, ? extends R>> extends
+public class Vector<D, R, F extends Function<? extends D, ? extends R>>
+                   extends
                    Node<D, R, F>
 {
 
@@ -140,9 +141,11 @@ public class Vector<D, R, F extends Function<? extends D, ? extends R>> extends
   {
     if (Expression.trace)
     {
-      System.err.format("Vector(#%s).generating %s-th element:  %s\n",
+      System.err.format("Vector(#%s).generating %s-th element of node %s whose type is %s:  %s\n",
                         System.identityHashCode(this),
                         i.get(),
+                        element.getClass(),
+                        element.type(),
                         element);
     }
   }
@@ -207,25 +210,28 @@ public class Vector<D, R, F extends Function<? extends D, ? extends R>> extends
   }
 
   @Override
-  public Node<D, R, F>
-         derivative(Variable<D, R, F> variable)
+  public Node<D, R, F> derivative(Variable<D, R, F> variable)
   {
     assert false : "TODO";
     return null;
   }
 
   @Override
-  public boolean
-         isScalar()
+  public boolean isScalar()
   {
-   return false;
+    return false;
   }
 
   @Override
-  public char
-            symbol()
+  public char symbol()
   {
     return '→';
+  }
+
+  @Override
+  public boolean isConstant()
+  {
+    return elements.stream().allMatch(Node::isConstant);
   }
 
 }

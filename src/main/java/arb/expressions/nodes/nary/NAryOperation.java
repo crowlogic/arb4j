@@ -72,12 +72,12 @@ import arb.utensils.Utensils;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> extends
+public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>>
+                          extends
                           Node<D, R, F>
 {
 
-  protected static String                  factorEvaluateMethodSignature = Type.getMethodDescriptor(Type.getType(
-                                                                                                                 Object.class),
+  protected static String                  factorEvaluateMethodSignature = Type.getMethodDescriptor(Type.getType(Object.class),
                                                                                                     Type.getType(Object.class),
                                                                                                     Type.getType(int.class),
                                                                                                     Type.getType(Object.class));
@@ -167,28 +167,22 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
   }
 
   @Override
-  public void
-         accept(Consumer<Node<D, R, F>> t)
+  public void accept(Consumer<Node<D, R, F>> t)
   {
     startIndex.accept(t);
     endIndex.accept(t);
     t.accept(this);
   }
 
-  protected void
-            assignFieldNamesIfNecessary(Class<?> resultType)
+  protected void assignFieldNamesIfNecessary(Class<?> resultType)
   {
-    if (factorFunctionFieldName == null
-        && factorValueFieldName == null)
+    if (factorFunctionFieldName == null && factorValueFieldName == null)
     {
-      factorFunctionFieldName = expression.getNextIntermediateVariableFieldName("factor",
-                                                                                resultType);
-      factorValueFieldName    = expression.newIntermediateVariable("value",
-                                                                   resultType);
+      factorFunctionFieldName = expression.getNextIntermediateVariableFieldName("factor", resultType);
+      factorValueFieldName    = expression.newIntermediateVariable("value", resultType);
       if (Expression.trace)
       {
-        int indentation = 18 + getClass().getSimpleName()
-                                         .length();
+        int indentation = 18 + getClass().getSimpleName().length();
         System.out.format("%s.assignFieldNames(this=%s,resultType=%s,\n%sfactorFunctionFieldName=%s,\n%sfactorValueFieldName=%s)\n\n",
                           getClass().getSimpleName(),
                           expression.functionName,
@@ -201,20 +195,15 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
     }
   }
 
-  protected void
-            assignResult(MethodVisitor mv,
-                         Class<?> resultType)
+  protected void assignResult(MethodVisitor mv, Class<?> resultType)
   {
     if (isResult)
     {
       Compiler.loadResultParameter(mv);
       Class<?> type = type();
-      Compiler.checkClassCast(mv,
-                              type);
+      Compiler.checkClassCast(mv, type);
       loadResultVariable(mv);
-      invokeSetMethod(mv,
-                      type,
-                      type);
+      invokeSetMethod(mv, type, type);
     }
     else
     {
@@ -222,59 +211,37 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
     }
   }
 
-  public MethodVisitor
-         combine(MethodVisitor mv)
+  public MethodVisitor combine(MethodVisitor mv)
   {
     return invokeMethod(mv,
                         generatedType,
                         operation,
-                        getMethodDescriptor(generatedType,
-                                            generatedType,
-                                            int.class),
+                        getMethodDescriptor(generatedType, generatedType, int.class),
                         false);
   }
 
-  protected void
-            compareIndexToEndIndex(MethodVisitor mv)
+  protected void compareIndexToEndIndex(MethodVisitor mv)
   {
-    loadFieldFromThis(mv,
-                      endIndexFieldName,
-                      Integer.class);
-    invokeMethod(mv,
-                 Integer.class,
-                 "compareTo",
-                 Compiler.getMethodDescriptor(int.class,
-                                              Integer.class),
-                 false);
+    loadFieldFromThis(mv, endIndexFieldName, Integer.class);
+    invokeMethod(mv, Integer.class, "compareTo", Compiler.getMethodDescriptor(int.class, Integer.class), false);
   }
 
-  protected void
-            designateLabel(MethodVisitor mv,
-                           Label label)
+  protected void designateLabel(MethodVisitor mv, Label label)
   {
     if (Expression.trace)
     {
-      System.out.format("%s.designateLabel( label=%s)\n\n",
-                        getClass().getSimpleName(),
-                        label,
-                        Utensils.indent(35));
+      System.out.format("%s.designateLabel( label=%s)\n\n", getClass().getSimpleName(), label, Utensils.indent(35));
     }
     mv.visitLabel(label);
 
   }
 
-  protected void
-            evaluateFactor(MethodVisitor mv)
+  protected void evaluateFactor(MethodVisitor mv)
   {
-    invokeMethod(mv,
-                 Type.getInternalName(Function.class),
-                 "evaluate",
-                 factorEvaluateMethodSignature,
-                 true);
+    invokeMethod(mv, Type.getInternalName(Function.class), "evaluate", factorEvaluateMethodSignature, true);
   }
 
-  public Node<D, R, F>
-         evaluateCoDomainSpecification()
+  public Node<D, R, F> evaluateCoDomainSpecification()
   {
     expression.require('{');
     if (indexVariableFieldName != null)
@@ -292,8 +259,7 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
       indexVariableFieldName = expression.parseName();
     }
 
-    expression.context.variables.map.put(indexVariableFieldName,
-                                         null);
+    expression.context.variables.map.put(indexVariableFieldName, null);
 
     expression.require('=');
 
@@ -302,26 +268,18 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
     return this;
   }
 
-  protected void
-            jumpToIfGreaterThan(MethodVisitor methodVisitor,
-                                Label label)
+  protected void jumpToIfGreaterThan(MethodVisitor methodVisitor, Label label)
   {
-    methodVisitor.visitJumpInsn(IFGT,
-                                label);
+    methodVisitor.visitJumpInsn(IFGT, label);
   }
 
-  protected void
-            jumpTo(MethodVisitor methodVisitor,
-                   Label label)
+  protected void jumpTo(MethodVisitor methodVisitor, Label label)
   {
-    methodVisitor.visitJumpInsn(GOTO,
-                                label);
+    methodVisitor.visitJumpInsn(GOTO, label);
   }
 
   @Override
-  public MethodVisitor
-         generate(Class<?> resultType,
-                  MethodVisitor mv)
+  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
   {
     resultType = assignTypes(resultType);
 
@@ -332,41 +290,33 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
       parseFactorExpression(resultType);
     }
     propagateInputToFactorClass(mv);
-    initializeResultVariable(mv,
-                             resultType);
+    initializeResultVariable(mv, resultType);
     setIndexToTheStartIndex(mv);
     loadIndex(mv);
     generateEndingIndex(mv);
 
-    designateLabel(mv,
-                   beginningOfTheLoop);
+    designateLabel(mv, beginningOfTheLoop);
 
     compareIndexToEndIndex(mv);
-    jumpToIfGreaterThan(mv,
-                        endOfTheLoop);
+    jumpToIfGreaterThan(mv, endOfTheLoop);
 
     generateInnerLoop(mv);
 
-    jumpTo(mv,
-           beginningOfTheLoop);
+    jumpTo(mv, beginningOfTheLoop);
 
-    designateLabel(mv,
-                   endOfTheLoop);
-    assignResult(mv,
-                 resultType);
+    designateLabel(mv, endOfTheLoop);
+    assignResult(mv, resultType);
 
     return mv;
   }
 
-  public Class<?>
-         assignTypes(Class<?> resultType)
+  public Class<?> assignTypes(Class<?> resultType)
   {
     if (!expression.thisOrAnyAscendentExpressionHasPolynomialOrQuasiPolynomialCoDomain())
     {
       resultType = scalarType(resultType);
     }
-    else if (RealPolynomial.class.equals(resultType)
-             || ComplexPolynomial.class.equals(resultType))
+    else if (RealPolynomial.class.equals(resultType) || ComplexPolynomial.class.equals(resultType))
     {
       generatedType = resultType;
     }
@@ -374,24 +324,16 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
   }
 
   @SuppressWarnings("unchecked")
-  protected void
-            generateEndingIndex(MethodVisitor mv)
+  protected void generateEndingIndex(MethodVisitor mv)
   {
-    endIndexFieldName = expression.newIntermediateVariable("endIndex",
-                                                           Integer.class);
-    loadFieldFromThis(mv,
-                      endIndexFieldName,
-                      Integer.class);
-    endIndex.generate((Class<? extends R>) Integer.class,
-                      mv);
-    invokeSetMethod(mv,
-                    Integer.class,
-                    Integer.class);
+    endIndexFieldName = expression.newIntermediateVariable("endIndex", Integer.class);
+    loadFieldFromThis(mv, endIndexFieldName, Integer.class);
+    endIndex.generate((Class<? extends R>) Integer.class, mv);
+    invokeSetMethod(mv, Integer.class, Integer.class);
     pop(mv);
   }
 
-  public void
-         generateInnerLoop(MethodVisitor mv)
+  public void generateInnerLoop(MethodVisitor mv)
   {
     loadResultVariable(mv);
     loadFactor(mv);
@@ -399,16 +341,14 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
     loadBitsParameterOntoSTack(mv);
     loadFactorValue(mv);
     evaluateFactor(mv);
-    checkClassCast(mv,
-                   generatedType);
+    checkClassCast(mv, generatedType);
     loadBitsParameterOntoSTack(mv);
     combine(mv);
     pop(mv);
     incrementIndex(mv);
   }
 
-  public void
-         generateWhileDoInnerLoop(MethodVisitor mv)
+  public void generateWhileDoInnerLoop(MethodVisitor mv)
   {
     loadResultVariable(mv);
     loadFactor(mv);
@@ -416,8 +356,7 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
     loadBitsParameterOntoSTack(mv);
     loadFactorValue(mv);
     evaluateFactor(mv);
-    checkClassCast(mv,
-                   generatedType);
+    checkClassCast(mv, generatedType);
     loadBitsParameterOntoSTack(mv);
     combine(mv);
     pop(mv);
@@ -425,8 +364,7 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
   }
 
   @Override
-  public List<Node<D, R, F>>
-         getBranches()
+  public List<Node<D, R, F>> getBranches()
   {
     if (factor == null)
     {
@@ -434,9 +372,7 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
     }
     var ast  = factor.syntaxTree();
     var list = ast.indexedBranches.get(ast.getRoot());
-    return list.stream()
-               .map(element -> element.spliceInto(expression))
-               .collect(Collectors.toList());
+    return list.stream().map(element -> element.spliceInto(expression)).collect(Collectors.toList());
   }
 
   IntermediateVariable<D, R, F> getExistingIndexVariable()
@@ -448,9 +384,7 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
     return existingIndexVariable;
   }
 
-  void getField(MethodVisitor methodVisitor,
-                String fieldName,
-                String fieldTypeSignature)
+  void getField(MethodVisitor methodVisitor, String fieldName, String fieldTypeSignature)
   {
     if (Expression.trace)
     {
@@ -461,110 +395,74 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
                  indent(9),
                  fieldTypeSignature);
     }
-    getFieldFromThis(methodVisitor,
-                     functionClass,
-                     fieldName,
-                     fieldTypeSignature);
+    getFieldFromThis(methodVisitor, functionClass, fieldName, fieldTypeSignature);
   }
 
   @Override
-  public Class<?>
-         getGeneratedType()
+  public Class<?> getGeneratedType()
   {
     return generatedType;
   }
 
-  public String
-         getIndexVariableFieldName()
+  public String getIndexVariableFieldName()
   {
     return indexVariableFieldName;
   }
 
   @Override
-  public boolean
-         hasSingleLeaf()
+  public boolean hasSingleLeaf()
   {
     return false;
   }
 
-  protected void
-            incrementIndex(MethodVisitor mv)
+  protected void incrementIndex(MethodVisitor mv)
   {
     loadIndexVariable(mv);
-    invokeMethod(mv,
-                 Type.getInternalName(Integer.class),
-                 "increment",
-                 Compiler.getMethodDescriptor(Integer.class));
+    invokeMethod(mv, Type.getInternalName(Integer.class), "increment", Compiler.getMethodDescriptor(Integer.class));
   }
 
-  public void
-         initializeResult(MethodVisitor mv,
-                          Class<?> resultType,
-                          String identityFunction,
-                          String prefix)
+  public void initializeResult(MethodVisitor mv, Class<?> resultType, String identityFunction, String prefix)
   {
-    resultVariable = expression.allocateIntermediateVariable(mv,
-                                                             prefix,
-                                                             resultType);
-    pop(invokeMethod(mv,
-                     resultType,
-                     identityFunction,
-                     getMethodDescriptor(resultType),
-                     false));
+    resultVariable = expression.allocateIntermediateVariable(mv, prefix, resultType);
+    pop(invokeMethod(mv, resultType, identityFunction, getMethodDescriptor(resultType), false));
   }
 
-  public void
-         initializeResultVariable(MethodVisitor mv,
-                                  Class<?> resultType)
+  public void initializeResultVariable(MethodVisitor mv, Class<?> resultType)
   {
-    initializeResult(mv,
-                     resultType,
-                     identity,
-                     prefix);
+    initializeResult(mv, resultType, identity, prefix);
   }
 
   @Override
-  public Node<D, R, F>
-         integral(Variable<D, R, F> variable)
+  public Node<D, R, F> integral(Variable<D, R, F> variable)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
   }
 
   @Override
-  public boolean
-         isLeaf()
+  public boolean isLeaf()
   {
     return true;
   }
 
   @Override
-  public boolean
-         isReusable()
+  public boolean isReusable()
   {
     return false;
   }
 
-  protected MethodVisitor
-            jumpToIfLessThanOrEquals(MethodVisitor methodVisitor,
-                                     Label label)
+  protected MethodVisitor jumpToIfLessThanOrEquals(MethodVisitor methodVisitor, Label label)
   {
-    methodVisitor.visitJumpInsn(IFLE,
-                                label);
+    methodVisitor.visitJumpInsn(IFLE, label);
     return methodVisitor;
   }
 
-  protected void
-            loadFactor(MethodVisitor mv)
+  protected void loadFactor(MethodVisitor mv)
   {
-    getFieldFromThis(mv,
-                     functionClass,
-                     factorFunctionFieldName,
-                     "L" + factorFunctionFieldName + ";");
+    getFieldFromThis(mv, functionClass, factorFunctionFieldName, "L" + factorFunctionFieldName + ";");
   }
 
-  protected void
-            loadFactorValue(MethodVisitor mv)
+  protected void loadFactorValue(MethodVisitor mv)
   {
     if (Expression.trace)
     {
@@ -574,39 +472,25 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
                         generatedType,
                         expression);
     }
-    loadFieldFromThis(mv,
-                      factorValueFieldName,
-                      generatedType);
+    loadFieldFromThis(mv, factorValueFieldName, generatedType);
   }
 
-  public MethodVisitor
-         loadFieldFromThis(MethodVisitor mv,
-                           String fieldName,
-                           Class<?> type)
+  public MethodVisitor loadFieldFromThis(MethodVisitor mv, String fieldName, Class<?> type)
   {
-    return Compiler.getFieldFromThis(mv,
-                                     functionClass,
-                                     fieldName,
-                                     type);
+    return Compiler.getFieldFromThis(mv, functionClass, fieldName, type);
   }
 
-  protected void
-            loadIndex(MethodVisitor mv)
+  protected void loadIndex(MethodVisitor mv)
   {
-    loadFieldFromThis(mv,
-                      indexVariableFieldName,
-                      Integer.class);
+    loadFieldFromThis(mv, indexVariableFieldName, Integer.class);
   }
 
   void loadIndexVariable(MethodVisitor methodVisitor)
   {
-    getField(methodVisitor,
-             getIndexVariableFieldName(),
-             Integer.class.descriptorString());
+    getField(methodVisitor, getIndexVariableFieldName(), Integer.class.descriptorString());
   }
 
-  public void
-         loadResultVariable(MethodVisitor methodVisitor)
+  public void loadResultVariable(MethodVisitor methodVisitor)
   {
     if (Expression.trace)
     {
@@ -618,58 +502,45 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
 
       // expression.addToTypeStack(generatedType, "result");
     }
-    Compiler.getFieldFromThis(methodVisitor,
-                              expression.className,
-                              resultVariable,
-                              generatedType);
+    Compiler.getFieldFromThis(methodVisitor, expression.className, resultVariable, generatedType);
   }
 
   void loadVariableThatHoldsTheEvaluatedFactor(MethodVisitor methodVisitor)
   {
-    loadFieldFromThis(methodVisitor,
-                      factorValueFieldName,
-                      type());
+    loadFieldFromThis(methodVisitor, factorValueFieldName, type());
   }
 
-  private void
-          parseEndIndex()
+  private void parseEndIndex()
   {
     endIndex = expression.evaluate();
     expression.require('}');
   }
 
-  protected String
-            parseFactorExpression()
+  protected String parseFactorExpression()
   {
     if (Expression.trace)
     {
-      err.format("parseFactorExpression(%s)\n",
-                 expression);
+      err.format("parseFactorExpression(%s)\n", expression);
     }
     parsed = true;
     String stringExpression = expression.expression;
     int    startPos         = expression.position;
-    int    arrowIndex       = stringExpression.indexOf('➔',
-                                                       expression.position);
+    int    arrowIndex       = stringExpression.indexOf('➔', expression.position);
 
     // assert arrowIndex != -1 : "index variable must always be specified for
     // NaryOperations";
 
     if (arrowIndex != -1)
     {
-      indexVariableFieldName = stringExpression.substring(startPos,
-                                                          arrowIndex);
+      indexVariableFieldName = stringExpression.substring(startPos, arrowIndex);
       // expression.position = arrowIndex + 1;
     }
 
-    int    coDomainSpecificationPosition = stringExpression.indexOf(indexVariableFieldName != null ? String.format(
-                                                                                                                   "{%s=",
-                                                                                                                   indexVariableFieldName)
-                                                                                                   : "{",
+    int    coDomainSpecificationPosition = stringExpression.indexOf(indexVariableFieldName != null ? String.format("{%s=",
+                                                                                                                   indexVariableFieldName) : "{",
                                                                     expression.position);
 
-    String factorExpression              = stringExpression.substring(startPos,
-                                                                      coDomainSpecificationPosition)
+    String factorExpression              = stringExpression.substring(startPos, coDomainSpecificationPosition)
                                                            .trim();
     expression.character = expression.expression.charAt(expression.position += factorExpression.length());
     return factorExpression;
@@ -677,10 +548,10 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
   }
 
   @SuppressWarnings("unchecked")
-  protected void
-            parseFactorExpression(Class<?> resultType)
+  protected void parseFactorExpression(Class<?> resultType)
   {
-    assert factor == null : "factorExpression is already set and factorExpressionString is " + factorExpressionString;
+    assert factor == null : "factorExpression is already set and factorExpressionString is "
+                  + factorExpressionString;
 
     String expr = factorExpressionString.toString();
 
@@ -701,25 +572,21 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
                             factorFunctionFieldName,
                             expression);
 
-    registerFactor(expr,
-                   factor);
+    registerFactor(expr, factor);
   }
 
-  private void
-          parseStartIndex()
+  private void parseStartIndex()
   {
     startIndex = expression.resolve();
     expression.require('…');
   }
 
-  protected void
-            pop(MethodVisitor methodVisitor)
+  protected void pop(MethodVisitor methodVisitor)
   {
     methodVisitor.visitInsn(POP);
   }
 
-  protected void
-            prepareIndexVariable()
+  protected void prepareIndexVariable()
   {
     var existingIndexVariable = getExistingIndexVariable();
 
@@ -733,39 +600,30 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
     }
     else
     {
-      expression.registerIntermediateVariable(getIndexVariableFieldName(),
-                                              Integer.class,
-                                              true);
+      expression.registerIntermediateVariable(getIndexVariableFieldName(), Integer.class, true);
     }
   }
 
   @Override
-  public MethodVisitor
-         prepareStackForReuse(MethodVisitor mv)
+  public MethodVisitor prepareStackForReuse(MethodVisitor mv)
   {
     assert false : "not recycleable";
     return mv;
   }
 
-  protected void
-            propagateInputToFactorClass(MethodVisitor mv)
+  protected void propagateInputToFactorClass(MethodVisitor mv)
   {
     var independentVariableNode = expression.independentVariable;
-    if (independentVariableNode != null
-        && !independentVariableNode.type()
-                                   .equals(Object.class))
+    if (independentVariableNode != null && !independentVariableNode.type().equals(Object.class))
     {
       loadThisOntoStack(mv);
-      expression.loadFieldOntoStack(mv,
-                                    factorFunctionFieldName,
-                                    "L" + factorFunctionFieldName + ";");
+      expression.loadFieldOntoStack(mv, factorFunctionFieldName, "L" + factorFunctionFieldName + ";");
       loadInputParameter(mv);
-      checkClassCast(mv,
-                     independentVariableNode.type());
+      checkClassCast(mv, independentVariableNode.type());
       if (Expression.trace)
       {
         System.out.format("%s.propagateInputToFactorClass( factorFunctionFieldName=%s,\n"
-                          + "%sindependentVariableNode=%s,\n" + "%sindependentVariableNode.type=%s)\n\n",
+                      + "%sindependentVariableNode=%s,\n" + "%sindependentVariableNode.type=%s)\n\n",
                           getClass().getSimpleName(),
                           factorFunctionFieldName,
                           indent(48),
@@ -777,36 +635,28 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
       mv.visitFieldInsn(PUTFIELD,
                         factorFunctionFieldName,
                         independentVariableNode.reference.name,
-                        independentVariableNode.type()
-                                               .descriptorString());
+                        independentVariableNode.type().descriptorString());
     }
   }
 
-  void registerFactor(String expr,
-                      Expression<Integer, R, Sequence<R>> factorExpression)
+  void registerFactor(String expr, Expression<Integer, R, Sequence<R>> factorExpression)
   {
 
-    factorMapping = registerFunctionMapping(factorExpression,
-                                            expr);
+    factorMapping = registerFunctionMapping(factorExpression, expr);
     if (Expression.trace)
     {
-      System.err.format("\nregisterFactor(factor=%s,\nfactorMapping=%s\n)\n\n",
-                        factorExpression,
-                        factorMapping);
+      System.err.format("\nregisterFactor(factor=%s,\nfactorMapping=%s\n)\n\n", factorExpression, factorMapping);
     }
 
-    expression.referencedFunctions.put(factorFunctionFieldName,
-                                       factorMapping);
+    expression.referencedFunctions.put(factorFunctionFieldName, factorMapping);
   }
 
-  public FunctionMapping<Integer, R, Sequence<R>>
-         registerFunctionMapping(Expression<Integer, R, Sequence<R>> factor,
-                                 String expr)
+  public FunctionMapping<Integer, R, Sequence<R>> registerFunctionMapping(Expression<Integer, R, Sequence<R>> factor,
+                                                                          String expr)
   {
     if (Expression.trace)
     {
-      System.err.format("registerFunctionMapping(factor=%s)\n",
-                        factor);
+      System.err.format("registerFunctionMapping(factor=%s)\n", factor);
     }
     return expression.context.registerFunctionMapping(factorFunctionFieldName,
                                                       null,
@@ -818,21 +668,16 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
                                                       expr);
   }
 
-  public Class<?>
-         scalarType(Class<?> resultType)
+  public Class<?> scalarType(Class<?> resultType)
   {
     return resultType = generatedType = (RealPolynomial.class.equals(resultType) ? Real.class : resultType);
   }
 
-  protected void
-            setIndexToTheStartIndex(MethodVisitor methodVisitor)
+  protected void setIndexToTheStartIndex(MethodVisitor methodVisitor)
   {
     loadIndexVariable(methodVisitor);
-    startIndex.generate(Integer.class,
-                        methodVisitor);
-    invokeSetMethod(methodVisitor,
-                    Integer.class,
-                    Integer.class);
+    startIndex.generate(Integer.class, methodVisitor);
+    invokeSetMethod(methodVisitor, Integer.class, Integer.class);
     pop(methodVisitor);
   }
 
@@ -852,13 +697,10 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String variable,
-                    Node<E, S, G> substitution)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
+                                                                                       Node<E, S, G> substitution)
   {
-    if (substitution.toString()
-                    .equals(variable))
+    if (substitution.toString().equals(variable))
     {
       return this;
     }
@@ -887,22 +729,17 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
                  substitution.expression);
 
     }
-    factor                 = factor.substitute(variable,
-                                               substitution.expression);
-    startIndex             = startIndex.substitute(variable,
-                                                   substitution);
-    endIndex               = endIndex.substitute(variable,
-                                                 substitution);
+    factor                 = factor.substitute(variable, substitution.expression);
+    startIndex             = startIndex.substitute(variable, substitution);
+    endIndex               = endIndex.substitute(variable, substitution);
     factorExpressionString = factor.toString();
     return this;
   }
 
   @Override
-  public String
-         toString()
+  public String toString()
   {
-    if (factorExpressionString != null
-        && factorExpressionString.contains(indexVariableFieldName + "➔"))
+    if (factorExpressionString != null && factorExpressionString.contains(indexVariableFieldName + "➔"))
     {
       return String.format("%s%s{%s=%s…%s}",
                            symbol,
@@ -924,19 +761,16 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
   }
 
   @Override
-  public Class<?>
-         type()
+  public Class<?> type()
   {
     return generatedType;
   }
 
   @Override
-  public String
-         typeset()
+  public String typeset()
   {
     return String.format("\\%s_{%s = %s}^{%s}{%s}",
-                         operation.replace("mul",
-                                           "prod"),
+                         operation.replace("mul", "prod"),
                          indexVariableFieldName,
                          startIndex.typeset(),
                          endIndex.typeset(),
@@ -944,26 +778,31 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
   }
 
   @Override
-  public Node<D, R, F>
-         derivative(Variable<D, R, F> variable)
+  public Node<D, R, F> derivative(Variable<D, R, F> variable)
   {
     assert false : "TODO";
     return null;
   }
 
   @Override
-  public boolean
-         isScalar()
+  public boolean isScalar()
   {
     return !(generatedType.isAssignableFrom(Polynomial.class)
-             || generatedType.isAssignableFrom(QuasiPolynomial.class));
+                  || generatedType.isAssignableFrom(QuasiPolynomial.class));
   }
 
   @Override
-  public char
-            symbol()
+  public char symbol()
   {
     return '∨';
+  }
+
+  @Override
+  public boolean isConstant()
+  {
+    return this.endIndex.isConstant() && startIndex.isConstant()
+                  && getBranches().stream().allMatch(Node::isConstant);
+
   }
 
 }

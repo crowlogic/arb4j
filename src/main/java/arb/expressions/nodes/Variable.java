@@ -636,4 +636,10 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     return getName().charAt(0);
   }
 
+  @Override
+  public boolean isConstant()
+  {
+    return false;
+  }
+
 }
