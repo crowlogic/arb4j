@@ -37,7 +37,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public abstract Node<D, R, F>
          derivative(Variable<D, R, F> variable);
 
-  public abstract List<Node<D, R, F>>
+  public abstract List<? extends Node<D, R, F>>
          getBranches();
 
   /**

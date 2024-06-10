@@ -1,13 +1,11 @@
 package arb.viz;
 
 import arb.Integer;
-import arb.RealPolynomial;
 import arb.RealQuasiPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
-import arb.functions.sequences.RealPolynomialSequence;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.scene.Scene;
@@ -43,8 +41,6 @@ public class ExpressionAnalyzer
     }
   }
 
-  private Expression<?, ?, ?> expr;
-
   @SuppressWarnings("unchecked")
   @Override
   public void start(Stage primaryStage)
@@ -52,47 +48,51 @@ public class ExpressionAnalyzer
     primaryStage.setWidth(1800);
     primaryStage.setHeight(900);
 
-    Integer n = new Integer(0);
-    Context context = new Context(n.setName("n"));
+    Integer                      n             = new Integer(0);
+    Context                      context       = new Context(n.setName("n"));
+
+    Expression<?, ?, ?>          expr          = RealQuasiPolynomial.parseSequence("Ψ",
+                                                                                   "y➔½*√(2*(4*n+1)/y)*(-1)ⁿ*J(2*n+½,y)",
+                                                                                   context);
+
+    System.out.println( "expr=" + expr.syntaxTextTree() );
     
-    expr = RealQuasiPolynomial.parseSequence("Ψ", "y➔½*√(2*(4*n+1)/y)*(-1)ⁿ*J(2*n+½,y)", context);
-    
-    var rootNode      = expr.rootNode;
+    Node<?, ?, ?>                rootNode      = expr.rootNode;
 
     // node creation logic
-    var rootItem      = new NodeTreeItem<>(rootNode);
+    TreeItem<Node<?, ?, ?>>      rootItem      = new NodeTreeItem(rootNode);
 
-    var treeTableView = new TreeTableView<>(rootItem);
+    TreeTableView<Node<?, ?, ?>> treeTableView = new TreeTableView<Node<?, ?, ?>>(rootItem);
     treeTableView.setShowRoot(true);
     expandTreeView(rootItem);
     // treeTableView.setRowFactory(tv -> new CustomTreeTableRow<>());
 
-    TreeTableColumn<Node<Integer, RealPolynomial, RealPolynomialSequence>, String> nodeCol = new TreeTableColumn<>("Node");
+    TreeTableColumn<Node<?, ?, ?>, String> nodeCol = new TreeTableColumn<>("Node");
     nodeCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().toString()));
     nodeCol.setMinWidth(500);
 
     // Additional columns can be added here
-    TreeTableColumn<Node<Integer, RealPolynomial, RealPolynomialSequence>, String> nodeTypeCol = new TreeTableColumn<>("nodeType");
+    TreeTableColumn<Node<?, ?, ?>, String> nodeTypeCol = new TreeTableColumn<>("nodeType");
     nodeTypeCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
                                                                             .getValue()
                                                                             .getClass()
                                                                             .getSimpleName()));
     nodeTypeCol.setMinWidth(425);
 
-    TreeTableColumn<Node<Integer, RealPolynomial, RealPolynomialSequence>, String> isScalarCol = new TreeTableColumn<>("isScalar");
+    TreeTableColumn<Node<?, ?, ?>, String> isScalarCol = new TreeTableColumn<>("isScalar");
     isScalarCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(String.valueOf(param.getValue()
                                                                                            .getValue()
                                                                                            .isScalar())));
     isScalarCol.setMinWidth(100);
 
     // Additional columns can be added here
-    TreeTableColumn<Node<Integer, RealPolynomial, RealPolynomialSequence>, String> nodeTypeResultCol = new TreeTableColumn<>("result.type()");
+    TreeTableColumn<Node<?, ?, ?>, String> nodeTypeResultCol = new TreeTableColumn<>("result.type()");
     nodeTypeResultCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
                                                                                   .getValue()
                                                                                   .type()
                                                                                   .getSimpleName()));
 
-    TreeTableColumn<Node<Integer, RealPolynomial, RealPolynomialSequence>, String> typesetCol = new TreeTableColumn<>("typeset()");
+    TreeTableColumn<Node<?, ?, ?>, String> typesetCol = new TreeTableColumn<>("typeset()");
     typesetCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().typeset()));
 
     treeTableView.getColumns().addAll(nodeCol, isScalarCol, nodeTypeCol, nodeTypeResultCol, typesetCol);
