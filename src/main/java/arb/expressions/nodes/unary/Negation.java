@@ -20,6 +20,18 @@ public class Negation<D, R, F extends Function<? extends D, ? extends R>>
 {
 
   @Override
+  public String toString()
+  {
+    return String.format("-%s", arg);
+  }
+
+  @Override
+  public String typeset()
+  {
+    return String.format("-%s", arg.typeset());
+  }
+
+  @Override
   public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
   {
     super.generate(resultType, mv);

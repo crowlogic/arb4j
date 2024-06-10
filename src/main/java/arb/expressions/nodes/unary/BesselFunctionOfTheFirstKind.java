@@ -89,7 +89,7 @@ public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, 
                       + " must be a QuasiPolynomial because the Bessel functions of the first kind at half-integer orders are "
                       + "not polynomials but rather rather rational functions or quasi-polynomials because they can not be represented by rational multiples of powers of the independent variable");
       }
-      assert false : "check that the order is a half-integer and evaluate the result in terms of lommel or bessel polynomials";
+      assert false : "generate code to check the order is a half-integer and evaluate the result in terms of lommel or bessel polynomials";
     }
 
     arg.generate(resultType, mv);
