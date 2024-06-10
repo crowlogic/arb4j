@@ -1,5 +1,7 @@
 package arb.expressions.nodes.unary;
 
+import org.objectweb.asm.MethodVisitor;
+
 import arb.Polynomial;
 import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -16,6 +18,14 @@ public class Negation<D, R, F extends Function<? extends D, ? extends R>>
                      extends
                      FunctionCall<D, R, F>
 {
+
+  @Override
+  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
+  {
+    super.generate(resultType, mv);
+    assert resultType.equals(generatedType);
+    return mv;
+  }
 
   @Override
   public boolean isBitless()

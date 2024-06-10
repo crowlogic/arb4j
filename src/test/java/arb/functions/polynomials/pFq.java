@@ -37,14 +37,13 @@ public class pFq implements RealPolynomialNullaryFunction, Typesettable, AutoClo
     {
       initialize();
     }
-    // the type should be a scalar when it can
-    RealPolynomial neg                          = Xℝ1.set(cℤ1).neg(Xℝ2);
-    Real           numer                        = new Real(vℝ1.set(ℝ1.set(neg), cℝ2, ℝ2.set(cℤ3)));
-    Real           denom                        = new Real(vℝ2.set(ℝ3.set(cℤ1), ℝ4.set(cℤ4)));
-    var            arg                          = RealPolynomialNullaryFunction.parse("(1/2)-(x/2)");
-    var            realHypergeometricPolynomial = new RealHypergeometricPolynomial(numer,
-                                                                                   denom,
-                                                                                   arg);
+    Real numer                        = new Real(vℝ1.set(ℝ1.set(Xℝ1.set(cℤ1).neg(Xℝ2)), cℝ2, ℝ2.set(cℤ3)));
+    Real denom                        = new Real(vℝ2.set(ℝ3.set(cℤ1), ℝ4.set(cℤ4)));
+    
+    var  arg                          = RealPolynomialNullaryFunction.parse("(1/2)-(x/2)");
+    var  realHypergeometricPolynomial = new RealHypergeometricPolynomial(numer,
+                                                                         denom,
+                                                                         arg);
     return realHypergeometricPolynomial.evaluate(null, 1, bits, result);
   }
 

@@ -21,12 +21,12 @@ public class EquationTest
   {
     try ( Real v = new Real("1.0",
                             128);
-          Integer l = new Integer(3); Integer m = new Integer(2);)
+          Integer n = new Integer(3); Integer m = new Integer(2);)
     {
       Context      context       = new Context(v.setName("v"),
-                                               l.setName("l"),
+                                               n.setName("n"),
                                                m.setName("m"));
-      RealEquation orthogonality = new RealEquation("∫x->(J(v+2*l+1,x)*J(v+2*m+1,x)/x)dx∈(0,∞) = sin(π*l-π*m)/(2*π*(v+l+1+m)*(1-m))",
+      RealEquation orthogonality = new RealEquation("∫x->(J(v+2*n+1,x)*J(v+2*m+1,x)/x)dx∈(0,∞) = sin(π*n-π*m)/(2*π*(v+n+1+m)*(1-m))",
                                                     context);
     }
   }

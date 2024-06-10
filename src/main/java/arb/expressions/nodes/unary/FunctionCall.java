@@ -270,7 +270,7 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
 
   public Class<?> getArgType()
   {
-    Class<?> argType = expression.coDomainType;
+    Class<?> argType = arg.type(); // expression.coDomainType;
     if ("floor".equals(functionName))
     {
       argType = Compiler.scalarType(argType);

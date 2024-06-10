@@ -170,7 +170,7 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
     else if (infinity.equals(fieldName))
     {
       loadRealConstantOntoStack(mv, "infinity");
-    }    
+    }
     else if (half.equals(fieldName))
     {
       loadRealConstantOntoStack(mv, "half");
@@ -189,6 +189,10 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
 
     if (!resultType.equals(generatedType))
     {
+      if (expression.trace)
+      {
+        System.err.format("generateCastTo(resultType=%s) from generatedType=%s\n", resultType, generatedType);
+      }
       generateCastTo(mv, resultType);
     }
 
@@ -374,6 +378,6 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public boolean isConstant()
   {
-   return true;
+    return true;
   }
 }
