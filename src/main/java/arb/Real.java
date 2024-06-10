@@ -218,7 +218,12 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     arblib.arb_one(this);
     return this;
   }
-    
+
+  public Complex log(int prec, Complex res)
+  {
+    return res.set(this).log(prec);
+  }
+      
   /**
    * 
    * @param mag

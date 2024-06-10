@@ -25,11 +25,7 @@ import arb.documentation.TheArb4jLibrary;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Integer implements
-                     AutoCloseable,
-                     Comparable<Integer>,
-                     Ring<Integer>,
-                     Named
+public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer>, Named
 {
 
   public static Arena arena = Arena.ofAuto();
@@ -272,10 +268,9 @@ public class Integer implements
   public RealPolynomial div(Integer dividend, int prec, RealPolynomial res)
   {
     res.bits = prec;
-    return res.set(this).div(dividend, prec,res);
+    return res.set(this).div(dividend, prec, res);
   }
 
-  
   public RealPolynomial div(Real dividend, int prec, RealPolynomial res)
   {
     res.bits = prec;
@@ -460,7 +455,7 @@ public class Integer implements
   {
     return res.set(this).mul(x, bits);
   }
-  
+
   public RealPolynomial mul(RealPolynomial x, int bits, RealPolynomial res)
   {
     return res.set(this).mul(x, bits);
@@ -485,6 +480,16 @@ public class Integer implements
   {
     arblib.fmpz_neg(result.swigCPtr, swigCPtr);
     return result;
+  }
+
+  public Real neg(Real result)
+  {
+    return result.set(this).neg();
+  }
+
+  public Complex neg(Complex result)
+  {
+    return result.set(this).neg();
   }
 
   public Integer pow(Integer operand, int bits, Integer result)
@@ -631,7 +636,7 @@ public class Integer implements
   {
     return result.set(this).sub(operand, prec);
   }
-  
+
   public Complex sub(Integer operand, int prec, Complex result)
   {
     return result.set(this).sub(operand, prec);
@@ -685,7 +690,5 @@ public class Integer implements
     assert false : "TODO: Auto-generated method stub";
     return null;
   }
-
-  
 
 }
