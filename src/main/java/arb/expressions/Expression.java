@@ -42,6 +42,7 @@ import arb.expressions.nodes.nary.Sum;
 import arb.expressions.nodes.unary.*;
 import arb.functions.Function;
 import arb.functions.NullaryFunction;
+import arb.functions.sequences.Sequence;
 import arb.utensils.Utensils;
 import arb.utensils.text.trees.TextTree;
 import arb.utensils.text.trees.TreeModel;
@@ -247,6 +248,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
          null);
   }
 
+  static
+  {
+    assert arb.functions.sequences.Sequence.class.equals(Sequence.class) : "you forgot to import arb.functions.sequences.Sequence or imported a class named sequence in another package";
+  }
+
   public Expression(String className,
                     Class<? extends D> class1,
                     Class<? extends C> class2,
@@ -294,7 +300,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       else if (nextCharacterIs('-', '₋', '−'))
       {
-      //  assert node != null : "TODO: map this to the neg function instead of filling in 0";
+        // assert node != null : "TODO: map this to the neg function instead of filling
+        // in 0";
         if (node == null)
         {
           node = new Negation<>(this,
@@ -551,9 +558,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   public Node<D, C, F> evaluate() throws CompilerException
   {
-    Node<D, C, F> node     = null;
-
-    int           startPos = position;
+    Node<D, C, F> node = null;
 
     if (nextCharacterIs('['))
     {
@@ -1177,14 +1182,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     sw.visitInterface();
     sw.visitClassType(Type.getInternalName(functionClass));
-    if (functionClass.equals(Function.class))
+    if (Sequence.class.isAssignableFrom(functionClass))
+    {
+      sw.visitTypeArgument('=').visitClassType(Type.getInternalName(coDomainType));
+      sw.visitEnd();
+    }
+    else if (Function.class.isAssignableFrom(functionClass))
     {
       sw.visitTypeArgument('=').visitClassType(Type.getInternalName(domainType));
       sw.visitEnd();
       sw.visitTypeArgument('=').visitClassType(Type.getInternalName(coDomainType));
       sw.visitEnd();
     }
-    else if (functionClass.equals(NullaryFunction.class))
+    else if (NullaryFunction.class.isAssignableFrom(functionClass))
     {
       sw.visitTypeArgument('=').visitClassType(Type.getInternalName(coDomainType));
       sw.visitEnd();

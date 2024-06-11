@@ -16,6 +16,7 @@ import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
+import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
@@ -48,7 +49,7 @@ public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, 
 
   Node<D, R, F>  order;
 
-  public boolean pointwise;
+  public boolean scalar;
 
   public BesselFunctionOfTheFirstKind(Expression<D, R, F> expression)
   {
@@ -64,7 +65,7 @@ public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, 
 
     expression.require(')');
 
-    pointwise = expression.hasScalarCodomain();
+    scalar = expression.hasScalarCodomain();
 
   }
 
@@ -81,7 +82,7 @@ public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, 
     duplicateTopOfTheStack(mv);
     order.generate(scalarType, mv);
 
-    if (!pointwise)
+    if (!scalar)
     {
       if (!QuasiPolynomial.class.isAssignableFrom(resultType))
       {
@@ -89,9 +90,19 @@ public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, 
                       + " must be a QuasiPolynomial because the Bessel functions of the first kind at half-integer orders are "
                       + "not polynomials but rather rather rational functions or quasi-polynomials because they can not be represented by rational multiples of powers of the independent variable");
       }
-      assert false : "generate code to check the order is a half-integer and evaluate the result in terms of lommel or bessel polynomials";
+
+      Compiler.constructNewObject(mv, resultType);
+    }
+    else
+    {
+      generateScalar(resultType, mv, scalarType);
     }
 
+    return mv;
+  }
+
+  public void generateScalar(Class<?> resultType, MethodVisitor mv, Class<?> scalarType)
+  {
     arg.generate(resultType, mv);
     loadBitsParameterOntoSTack(mv);
 
@@ -105,7 +116,5 @@ public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, 
                        int.class);
 
     generatedType = scalarType;
-
-    return mv;
   }
 }
