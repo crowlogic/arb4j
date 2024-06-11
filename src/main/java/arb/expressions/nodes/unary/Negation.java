@@ -32,14 +32,6 @@ public class Negation<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
-  {
-    super.generate(resultType, mv);
-    assert resultType.equals(generatedType);
-    return mv;
-  }
-
-  @Override
   public boolean isBitless()
   {
     return true;
@@ -58,17 +50,5 @@ public class Negation<D, R, F extends Function<? extends D, ? extends R>>
     return false;
   }
 
-  @Override
-  public Class<?> resultTypeFor(String functionName)
-  {
-    Class<?> resultTypeFor = super.resultTypeFor(functionName);
-    if (functionName.equals("neg"))
-    {
-      return arg.type();
-    // boolean constantaArg = arg.isConstant();
-      //assert !Polynomial.class.isAssignableFrom(resultTypeFor) : "wtf";
-    }
-    return resultTypeFor;
-  }
-
+ 
 }
