@@ -6,6 +6,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
+import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 
 /**
@@ -47,6 +48,12 @@ public class Addition<D, R, F extends Function<? extends D, ? extends R>> extend
     return new Addition<E, S, G>(newExpression,
                                  left.spliceInto(newExpression),
                                  right.spliceInto(newExpression));
+  }
+
+  @Override
+  public Node<D, R, F> derivative(Variable<D, R, F> variable)
+  {
+    return null;
   }
 
 

@@ -81,4 +81,11 @@ public class Subtraction<D, R, F extends Function<? extends D, ? extends R>> ext
                                     left.spliceInto(newExpression),
                                     right.spliceInto(newExpression));
   }
+
+  @Override
+  public Node<D, R, F> derivative(Variable<D, R, F> variable)
+  {
+    assert false : "TODO";
+    return null;
+  }
 }

@@ -63,13 +63,6 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
   }
 
   @Override
-  public Node<D, R, F> derivative(Variable<D, R, F> variable)
-  {
-    assert false : "TODO";
-    return null;
-  }
-
-  @Override
   public String typeset()
   {
     assert false : "TODO";

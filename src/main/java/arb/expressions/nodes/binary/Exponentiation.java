@@ -56,4 +56,11 @@ public class Exponentiation<D, R, F extends Function<? extends D, ? extends R>> 
                                        left.spliceInto(newExpression),
                                        right.spliceInto(newExpression));
   }
+
+  @Override
+  public Node<D, R, F> derivative(Variable<D, R, F> variable)
+  {
+    assert false : "TODO";
+    return null;
+  }
 }

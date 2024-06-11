@@ -63,4 +63,11 @@ public class AscendingFactorialization<D, R, F extends Function<? extends D, ? e
                                                   newExpression);
   }
 
+  @Override
+  public Node<D, R, F> derivative(Variable<D, R, F> variable)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
 }
