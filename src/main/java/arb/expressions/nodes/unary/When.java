@@ -256,7 +256,10 @@ public class When<D, R, F extends Function<? extends D, ? extends R>>
   public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
                                                                                        Node<E, S, G> arg)
   {
-    cases.values().forEach(element -> element.substitute(variable, arg));
+    cases.entrySet()
+         .stream()
+         .toList()
+         .forEach(event -> cases.put(event.getKey(), event.getValue().substitute(variable, arg)));
     return this;
   }
 
