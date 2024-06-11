@@ -1182,7 +1182,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     sw.visitInterface();
     sw.visitClassType(Type.getInternalName(functionClass));
-    if (Sequence.class.isAssignableFrom(functionClass))
+    if (Sequence.class.isAssignableFrom(functionClass) || NullaryFunction.class.isAssignableFrom(functionClass))
     {
       sw.visitTypeArgument('=').visitClassType(Type.getInternalName(coDomainType));
       sw.visitEnd();
@@ -1191,11 +1191,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       sw.visitTypeArgument('=').visitClassType(Type.getInternalName(domainType));
       sw.visitEnd();
-      sw.visitTypeArgument('=').visitClassType(Type.getInternalName(coDomainType));
-      sw.visitEnd();
-    }
-    else if (NullaryFunction.class.isAssignableFrom(functionClass))
-    {
       sw.visitTypeArgument('=').visitClassType(Type.getInternalName(coDomainType));
       sw.visitEnd();
     }
