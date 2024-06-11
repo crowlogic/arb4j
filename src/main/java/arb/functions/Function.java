@@ -220,18 +220,6 @@ public interface Function<D, C> extends
 
   }
 
-  public default Function<D, C>
-         differential() throws NotDifferentiableException
-  {
-    assert false : "TODO: implement in " + getClass();
-    return null;
-  }
-
-  public default Domain<? extends D>
-         domain()
-  {
-    return new UnboundedDomain<D>();
-  }
 
   public default Class<D>
          domainType()

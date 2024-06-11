@@ -1,9 +1,7 @@
 package arb.viz;
 
-import arb.Integer;
 import arb.RealQuasiPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import javafx.application.Application;
@@ -48,15 +46,10 @@ public class ExpressionAnalyzer
     primaryStage.setWidth(1800);
     primaryStage.setHeight(900);
 
-    Integer                      n             = new Integer(0);
-    Context                      context       = new Context(n.setName("n"));
+    Expression<?, ?, ?> expr = RealQuasiPolynomial.parseSequence("Ψ", "y➔½*√(2*(4*n+1)/y)*(-1)ⁿ*J(2*n+½,y)");
 
-    Expression<?, ?, ?>          expr          = RealQuasiPolynomial.parseSequence("Ψ",
-                                                                                   "y➔½*√(2*(4*n+1)/y)*(-1)ⁿ*J(2*n+½,y)",
-                                                                                   context);
+    System.out.println("expr=" + expr.syntaxTextTree());
 
-    System.out.println( "expr=" + expr.syntaxTextTree() );
-    
     Node<?, ?, ?>                rootNode      = expr.rootNode;
 
     // node creation logic
