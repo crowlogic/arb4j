@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.QuasiPolynomial;
 import arb.Real;
 import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -20,6 +19,7 @@ import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
+import arb.functions.polynomials.quasi.QuasiPolynomial;
 import arb.functions.real.RealBesselFunctionOfTheFirstKind;
 
 /**
@@ -84,24 +84,29 @@ public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, 
 
     if (!scalar)
     {
-      if (!QuasiPolynomial.class.isAssignableFrom(resultType))
-      {
-        throw new CompilerException("The result type of " + expression
-                      + " must be a QuasiPolynomial because the Bessel functions of the first kind at half-integer orders are "
-                      + "not polynomials but rather rather rational functions or quasi-polynomials because they can not be represented by rational multiples of powers of the independent variable");
-      }
-
-      Compiler.constructNewObject(mv, resultType);
+      generateQuasiPolynomial(mv, resultType);
     }
     else
     {
-      generateScalar(resultType, mv, scalarType);
+      generateScalar(mv, resultType, scalarType);
     }
 
     return mv;
   }
 
-  public void generateScalar(Class<?> resultType, MethodVisitor mv, Class<?> scalarType)
+  public void generateQuasiPolynomial(MethodVisitor mv, Class<?> resultType)
+  {
+    if (!QuasiPolynomial.class.isAssignableFrom(resultType))
+    {
+      throw new CompilerException("The result type of " + expression
+                    + " must be a QuasiPolynomial because the Bessel functions of the first kind at half-integer orders are "
+                    + "not polynomials but rather rather rational functions or quasi-polynomials because they can not be represented by rational multiples of powers of the independent variable");
+    }
+
+    expression.allocateIntermediateVariable(mv, resultType);
+  }
+
+  public void generateScalar(MethodVisitor mv, Class<?> resultType, Class<?> scalarType)
   {
     arg.generate(resultType, mv);
     loadBitsParameterOntoSTack(mv);

@@ -21,7 +21,6 @@ import org.objectweb.asm.Type;
 import arb.ComplexPolynomial;
 import arb.Integer;
 import arb.Polynomial;
-import arb.QuasiPolynomial;
 import arb.Real;
 import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -35,6 +34,7 @@ import arb.expressions.IntermediateVariable;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
+import arb.functions.polynomials.quasi.QuasiPolynomial;
 import arb.functions.sequences.Sequence;
 import arb.utensils.Utensils;
 

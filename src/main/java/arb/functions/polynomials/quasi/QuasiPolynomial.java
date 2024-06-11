@@ -1,7 +1,8 @@
-package arb;
+package arb.functions.polynomials.quasi;
 
 import static arb.utensils.Utensils.throwOrWrap;
 
+import arb.Polynomial;
 import arb.algebra.Ring;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -39,6 +40,9 @@ public abstract class QuasiPolynomial<S, P extends Polynomial<S, ? extends P>, F
 
   public QuasiPolynomial(P p, F f)
   {
+    assert p != null : "p should not be null";
+    assert f != null : "f should not be null";
+    
     try
     {
       this.p = p;

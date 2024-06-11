@@ -2,11 +2,11 @@ package arb.functions.sequences;
 
 import arb.Integer;
 import arb.Polynomial;
-import arb.QuasiPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.functions.Function;
+import arb.functions.polynomials.quasi.QuasiPolynomial;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the

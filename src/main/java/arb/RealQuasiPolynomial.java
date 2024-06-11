@@ -5,7 +5,14 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
+import arb.functions.polynomials.quasi.QuasiPolynomial;
+import arb.functions.polynomials.quasi.real.RealQuasiPolynomialAddition;
+import arb.functions.polynomials.quasi.real.RealQuasiPolynomialDivision;
+import arb.functions.polynomials.quasi.real.RealQuasiPolynomialMultiplication;
+import arb.functions.polynomials.quasi.real.RealQuasiPolynomialSquareRoot;
+import arb.functions.polynomials.quasi.real.RealQuasiPolynomialSubtraction;
 import arb.functions.real.RealFunction;
+import arb.functions.real.RealIdentityFunction;
 import arb.functions.sequences.Sequence;
 
 /**
@@ -81,7 +88,7 @@ public class RealQuasiPolynomial
 
   public RealQuasiPolynomial()
   {
-    this(null);
+    this(RealIdentityFunction.instance);
   }
 
   public RealQuasiPolynomial one()
@@ -94,12 +101,6 @@ public class RealQuasiPolynomial
   {
     p.zero();
     return this;
-  }
-
-  public RealQuasiPolynomial sqrt(int bits, RealQuasiPolynomial qXℝ2)
-  {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
   }
 
   public RealQuasiPolynomial mul(Real real, int bits2, RealQuasiPolynomial result)
@@ -159,27 +160,8 @@ public class RealQuasiPolynomial
   {
     result.identity();
     result.p.bits = prec;
-    result.f      = new RealFunction()
-                  {
-
-                    @Override
-                    public Real evaluate(Real t, int order, int rbits, Real res)
-                    {
-                      try ( Real left = new Real(); Real right = new Real();)
-                      {
-                        RealQuasiPolynomial.this.evaluate(t, order, rbits, left);
-                        operand.evaluate(t, order, rbits, right);
-                        Real mul = left.mul(right, rbits, res);
-                        return mul;
-                      }
-                    }
-
-                    @Override
-                    public String toString()
-                    {
-                      return String.format("%s*%s", RealQuasiPolynomial.this, operand);
-                    }
-                  };
+    result.f      = new RealQuasiPolynomialMultiplication(this,
+                                                          operand);
 
     return result;
   }
@@ -189,27 +171,8 @@ public class RealQuasiPolynomial
   {
     result.identity();
     result.p.bits = prec;
-    result.f      = new RealFunction()
-                  {
-
-                    @Override
-                    public Real evaluate(Real t, int order, int rbits, Real res)
-                    {
-                      try ( Real left = new Real(); Real right = new Real();)
-                      {
-                        RealQuasiPolynomial.this.evaluate(t, order, rbits, left);
-                        operand.evaluate(t, order, rbits, right);
-                        Real div = left.div(right, rbits, res);
-                        return div;
-                      }
-                    }
-
-                    @Override
-                    public String toString()
-                    {
-                      return String.format("%s/%s", RealQuasiPolynomial.this, operand);
-                    }
-                  };
+    result.f      = new RealQuasiPolynomialDivision(this,
+                                                    operand);
 
     return result;
   }
@@ -226,27 +189,8 @@ public class RealQuasiPolynomial
   {
     result.identity();
     result.p.bits = bits;
-    result.f      = new RealFunction()
-                  {
-
-                    @Override
-                    public Real evaluate(Real t, int order, int rbits, Real res)
-                    {
-                      try ( Real left = new Real(); Real right = new Real();)
-                      {
-                        RealQuasiPolynomial.this.evaluate(t, order, rbits, left);
-                        operand.evaluate(t, order, rbits, right);
-                        Real add = left.add(right, rbits, res);
-                        return add;
-                      }
-                    }
-
-                    @Override
-                    public String toString()
-                    {
-                      return String.format("%s+%s", RealQuasiPolynomial.this, operand);
-                    }
-                  };
+    result.f      = new RealQuasiPolynomialAddition(this,
+                                                    operand);
 
     return result;
   }
@@ -256,30 +200,30 @@ public class RealQuasiPolynomial
   {
     result.identity();
     result.p.bits = bits;
-    result.f      = new RealFunction()
-                  {
-
-                    @Override
-                    public Real evaluate(Real t, int order, int rbits, Real res)
-                    {
-                      try ( Real left = new Real(); Real right = new Real();)
-                      {
-                        RealQuasiPolynomial.this.evaluate(t, order, rbits, left);
-                        operand.evaluate(t, order, rbits, right);
-                        Real sub = left.sub(right, rbits, res);
-                        return sub;
-                      }
-                    }
-
-                    @Override
-                    public String toString()
-                    {
-                      return String.format("%s-%s", RealQuasiPolynomial.this, operand);
-                    }
-                  };
+    result.f      = new RealQuasiPolynomialSubtraction(this,
+                                                       operand);
 
     return result;
   }
 
- 
+  public RealQuasiPolynomial sqrt(int bits, RealQuasiPolynomial result)
+  {
+    result.identity();
+    result.p.bits = bits;
+    result.f      = new RealQuasiPolynomialSquareRoot(this);
+    return result.identity();
+  }
+
+  /**
+   * Calls this#p{@link #set(Integer)}
+   * 
+   * @param integer
+   * @return
+   */
+  public RealQuasiPolynomial set(Integer integer)
+  {
+    p.set(integer);
+    return this;
+  }
+
 }

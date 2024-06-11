@@ -681,13 +681,12 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
 
   public RealQuasiPolynomial div(RealQuasiPolynomial q, int bits, RealQuasiPolynomial res)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    return res.set(this).div(q, bits);
   }
 
-  public Real add(Real half, int bits, RealQuasiPolynomial qXℝ6)
+  public Real add(Real half, int bits, RealQuasiPolynomial result)
   {
-    assert false : "TODO: Auto-generated method stub";
+    assert false : "TODO: Auto-generated method stub: result=" + result;
     return null;
   }
 
