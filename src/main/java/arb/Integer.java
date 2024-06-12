@@ -35,12 +35,6 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     System.loadLibrary("arblib");
   }
 
-  public Integer binomial(Integer n, int bits, Integer result)
-  {
-    arblib.fmpz_bin_uiui(result.swigCPtr, swigCPtr, n.swigCPtr);
-    return result;
-  }
-
   public static Real factorial(Integer n, int bits, Real result)
   {
     arblib.arb_fac_ui(result, n.getUnsignedValue(), bits);
@@ -113,6 +107,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     set(string);
   }
 
+
   public Integer add(int i)
   {
     return add(i, this);
@@ -122,6 +117,11 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   {
     arblib.fmpz_add_si(result.swigCPtr, this.swigCPtr, i);
     return result;
+  }
+
+  public Complex add(Integer operand, int prec, Complex result)
+  {
+    return result.set(this).add(operand, prec);
   }
 
   @Override
@@ -137,20 +137,35 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result.set(this).add(operand, prec);
   }
 
-  public Complex add(Integer operand, int prec, Complex result)
-  {
-    return result.set(this).add(operand, prec);
-  }
-
   public Real add(Real addend, int bits, Real result)
   {
     arblib.arb_add_fmpz(result, addend, this.swigCPtr, bits);
     return result;
   }
 
+  public RealQuasiPolynomial add(Real addend, int bits, RealQuasiPolynomial result )
+  {
+    return result.identity().set(this).add(addend, bits, result);
+  }
+  
+
   public Integer additiveIdentity()
   {
     return set(0);
+  }
+
+  public Integer ascendingFactorial(Integer n, int bits, Integer res)
+  {
+    assert n.sign() >= 0 : "negative arguments to the ascending factorial are not supported, n=" + n;
+    arblib.fmpz_rfac_ui(res.swigCPtr, swigCPtr, n.getUnsignedValue());
+    return res;
+  }
+
+  public Real ascendingFactorial(Integer n, int bits, Real res)
+  {
+    assert n.sign() >= 0 : "negative arguments to the ascending factorial are not supported, n=" + n;
+    arblib.arb_hypgeom_rising_ui(res, res.set(this), n.getUnsignedValue(), bits);
+    return res.set(res);
   }
 
   public Real ascendingFactorial(Real n, int bits, Real result)
@@ -163,18 +178,10 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result;
   }
 
-  public Real ascendingFactorial(Integer n, int bits, Real res)
+  public Integer binomial(Integer n, int bits, Integer result)
   {
-    assert n.sign() >= 0 : "negative arguments to the ascending factorial are not supported, n=" + n;
-    arblib.arb_hypgeom_rising_ui(res, res.set(this), n.getUnsignedValue(), bits);
-    return res.set(res);
-  }
-
-  public Integer ascendingFactorial(Integer n, int bits, Integer res)
-  {
-    assert n.sign() >= 0 : "negative arguments to the ascending factorial are not supported, n=" + n;
-    arblib.fmpz_rfac_ui(res.swigCPtr, swigCPtr, n.getUnsignedValue());
-    return res;
+    arblib.fmpz_bin_uiui(result.swigCPtr, swigCPtr, n.swigCPtr);
+    return result;
   }
 
   @Override
@@ -205,9 +212,27 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     }
   }
 
+  public Complex div(Complex dividend, int prec, Complex res)
+  {
+    res.bits = prec;
+    return res.set(this).div(dividend, prec);
+  }
+
+  public ComplexPolynomial div(ComplexPolynomial dividend, int prec, ComplexPolynomial res)
+  {
+    res.bits = prec;
+    return res.set(this).div(dividend, prec);
+  }
+
   public Integer div(Integer operand)
   {
     return div(operand, this);
+  }
+
+  public Complex div(Integer operand, int prec, Complex result)
+  {
+    result.set(this).div(operand, prec);
+    return result;
   }
 
   /**
@@ -228,10 +253,10 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result;
   }
 
-  public Complex div(Integer operand, int prec, Complex result)
+  public RealPolynomial div(Integer dividend, int prec, RealPolynomial res)
   {
-    result.set(this).div(operand, prec);
-    return result;
+    res.bits = prec;
+    return res.set(this).div(dividend, prec, res);
   }
 
   /**
@@ -253,7 +278,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return res.set(this).div(dividend, prec);
   }
 
-  public Complex div(Complex dividend, int prec, Complex res)
+  public RealPolynomial div(Real dividend, int prec, RealPolynomial res)
   {
     res.bits = prec;
     return res.set(this).div(dividend, prec);
@@ -265,22 +290,9 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return res.set(this).div(dividend, prec);
   }
 
-  public RealPolynomial div(Integer dividend, int prec, RealPolynomial res)
+  public RealQuasiPolynomial div(RealQuasiPolynomial q, int bits, RealQuasiPolynomial res)
   {
-    res.bits = prec;
-    return res.set(this).div(dividend, prec, res);
-  }
-
-  public RealPolynomial div(Real dividend, int prec, RealPolynomial res)
-  {
-    res.bits = prec;
-    return res.set(this).div(dividend, prec);
-  }
-
-  public ComplexPolynomial div(ComplexPolynomial dividend, int prec, ComplexPolynomial res)
-  {
-    res.bits = prec;
-    return res.set(this).div(dividend, prec);
+    return res.set(this).div(q, bits);
   }
 
   @Override
@@ -426,6 +438,16 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result.set(this).log(bits);
   }
 
+  public Complex mul(Complex x, int bits, Complex result)
+  {
+    return result.set(this).mul(x, bits);
+  }
+
+  public ComplexPolynomial mul(ComplexPolynomial x, int bits, ComplexPolynomial res)
+  {
+    return res.set(this).mul(x, bits);
+  }
+
   @Override
   public Integer mul(Integer operand, int prec)
   {
@@ -461,19 +483,21 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return res.set(this).mul(x, bits);
   }
 
-  public ComplexPolynomial mul(ComplexPolynomial x, int bits, ComplexPolynomial res)
-  {
-    return res.set(this).mul(x, bits);
-  }
-
   public Integer multiplicativeIdentity()
   {
     return set(1);
   }
 
+
+  
   public Integer neg()
   {
     return neg(this);
+  }
+
+  public Complex neg(Complex result)
+  {
+    return result.set(this).neg();
   }
 
   public Integer neg(Integer result)
@@ -487,9 +511,12 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result.set(this).neg();
   }
 
-  public Complex neg(Complex result)
+  @SuppressWarnings("resource")
+  public RealQuasiPolynomial neg(RealQuasiPolynomial res)
   {
-    return result.set(this).neg();
+    res.identity().p.set(this);
+    res.p.neg();
+    return res;
   }
 
   public Integer pow(Integer operand, int bits, Integer result)
@@ -591,6 +618,11 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result.set(this).sqrt(bits);
   }
 
+  public Complex sub(Complex operand, int prec, Complex result)
+  {
+    return result.set(this).sub(operand, prec);
+  }
+
   public Integer sub(int i)
   {
     return sub(i, this);
@@ -614,6 +646,11 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return sub(b, i, this);
   }
 
+  public Complex sub(Integer operand, int prec, Complex result)
+  {
+    return result.set(this).sub(operand, prec);
+  }
+
   @Override
   public Integer sub(Integer operand, int prec, Integer result)
   {
@@ -627,24 +664,14 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result.set(this).sub(operand, prec);
   }
 
-  public RealPolynomial sub(Real operand, int prec, RealPolynomial result)
-  {
-    return result.set(this).sub(operand, prec);
-  }
-
-  public Complex sub(Complex operand, int prec, Complex result)
-  {
-    return result.set(this).sub(operand, prec);
-  }
-
-  public Complex sub(Integer operand, int prec, Complex result)
-  {
-    return result.set(this).sub(operand, prec);
-  }
-
   public Real sub(Real subtrahend, int bits, Real result)
   {
     return result.set(this).sub(subtrahend, bits);
+  }
+
+  public RealPolynomial sub(Real operand, int prec, RealPolynomial result)
+  {
+    return result.set(this).sub(operand, prec);
   }
 
   public RealPolynomial sub(RealPolynomial subtrahend, int prec, RealPolynomial res)
@@ -672,30 +699,6 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   public Real Γ(int bits, Real result)
   {
     return result.set(this).Γ(bits);
-  }
-
-  public Complex mul(Complex x, int bits, Complex result)
-  {
-    return result.set(this).mul(x, bits);
-  }
-
-  public RealQuasiPolynomial div(RealQuasiPolynomial q, int bits, RealQuasiPolynomial res)
-  {
-    return res.set(this).div(q, bits);
-  }
-
-  public Real add(Real half, int bits, RealQuasiPolynomial result)
-  {
-    assert false : "TODO: Auto-generated method stub: result=" + result;
-    return null;
-  }
-
-  @SuppressWarnings("resource")
-  public RealQuasiPolynomial neg(RealQuasiPolynomial res)
-  {
-    res.identity().p.set(this);
-    res.p.neg();
-    return res;
   }
 
 }

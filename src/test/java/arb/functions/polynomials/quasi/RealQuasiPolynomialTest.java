@@ -72,5 +72,9 @@ public class RealQuasiPolynomialTest
     System.out.println(expr.syntaxTextTree());
     var                 f = expr.instantiate();
     RealQuasiPolynomial g = f.evaluate(0, 128);
+    
+    System.out.format("g.f=%s\n",  g.f );
+    System.out.format("g.p=%s\n",  g.p );
+    
   }
 }

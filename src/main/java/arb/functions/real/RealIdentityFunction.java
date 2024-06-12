@@ -19,4 +19,10 @@ public class RealIdentityFunction implements RealFunction
 
   public static RealIdentityFunction instance = new RealIdentityFunction();
 
+  @Override
+  public String toString()
+  {
+    return "x";
+  }
+
 }

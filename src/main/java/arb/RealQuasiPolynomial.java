@@ -30,7 +30,7 @@ public class RealQuasiPolynomial
   @Override
   public String toString()
   {
-    return String.format("RealQuasiPolynomial[f=%s, x=%s]", f, p);
+    return f.toStringWithoutIndependentVariableSpecified().replaceAll("x", p.toString());
   }
 
   @Override
@@ -184,6 +184,32 @@ public class RealQuasiPolynomial
     return null;
   }
 
+  public RealQuasiPolynomial add(Real addend, int bits, RealQuasiPolynomial result)
+  {
+    result.identity();
+    result.p.bits = bits;
+    String str = toString();
+    result.f      = new RealFunction()
+                  {
+
+                    @Override
+                    public Real evaluate(Real t, int order, int bits, Real res)
+                    {
+                      RealQuasiPolynomial.this.evaluate(t, order, bits, res);
+                      res.add(addend, bits);
+                      return res;
+
+                    }
+
+                    @Override
+                    public String toString()
+                    {
+                      return String.format("%s+%s", str, addend);
+                    }
+                  };
+    return result;
+  }
+
   @Override
   public RealQuasiPolynomial add(RealQuasiPolynomial operand, int bits, RealQuasiPolynomial result)
   {
@@ -204,7 +230,7 @@ public class RealQuasiPolynomial
                   {
                     RealQuasiPolynomial.this.evaluate(x, order, fbits, fresult.identity());
                     fresult.pow(power, fbits);
-                    return fresult.identity();
+                    return fresult;
                   };
     return result;
   }
@@ -225,7 +251,7 @@ public class RealQuasiPolynomial
     result.identity();
     result.p.bits = bits;
     result.f      = new RealQuasiPolynomialSquareRoot(this);
-    return result.identity();
+    return result;
   }
 
   /**
