@@ -183,6 +183,12 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
 
   static { System.loadLibrary( "arblib" ); }
 
+  public RealQuasiPolynomial mul(RealQuasiPolynomial a, int bits, RealQuasiPolynomial result)
+  {
+    return a.mul(this, bits, result);
+  }
+
+
   /**
    * 
    * @param bits

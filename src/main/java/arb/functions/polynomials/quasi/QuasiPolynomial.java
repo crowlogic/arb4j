@@ -2,12 +2,12 @@ package arb.functions.polynomials.quasi;
 
 import static arb.utensils.Utensils.throwOrWrap;
 
+import arb.Integer;
 import arb.Polynomial;
 import arb.algebra.Ring;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;
-import arb.utensils.Utensils;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -42,7 +42,7 @@ public abstract class QuasiPolynomial<S, P extends Polynomial<S, ? extends P>, F
   {
     assert p != null : "p should not be null";
     assert f != null : "f should not be null";
-    
+
     try
     {
       this.p = p;
@@ -55,5 +55,7 @@ public abstract class QuasiPolynomial<S, P extends Polynomial<S, ? extends P>, F
   }
 
   public abstract R identity();
+
+  public abstract R pow(Integer power, int bits, R result);
 
 }

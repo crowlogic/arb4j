@@ -196,6 +196,20 @@ public class RealQuasiPolynomial
   }
 
   @Override
+  public RealQuasiPolynomial pow(Integer power, int bits, RealQuasiPolynomial result)
+  {
+    result.identity();
+    result.p.bits = bits;
+    result.f      = (x, order, fbits, fresult) ->
+                  {
+                    RealQuasiPolynomial.this.evaluate(x, order, fbits, fresult.identity());
+                    fresult.pow(power, fbits);
+                    return fresult.identity();
+                  };
+    return result;
+  }
+
+  @Override
   public RealQuasiPolynomial sub(RealQuasiPolynomial operand, int bits, RealQuasiPolynomial result)
   {
     result.identity();

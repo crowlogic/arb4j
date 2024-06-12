@@ -690,4 +690,12 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return null;
   }
 
+  @SuppressWarnings("resource")
+  public RealQuasiPolynomial neg(RealQuasiPolynomial res)
+  {
+    res.identity().p.set(this);
+    res.p.neg();
+    return res;
+  }
+
 }
