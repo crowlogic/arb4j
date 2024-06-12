@@ -1,10 +1,13 @@
 package arb.functions.polynomials.quasi;
 
+import arb.Integer;
 import arb.RealQuasiPolynomial;
 import arb.RoundingMode;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Expression;
 import arb.functions.real.RealFunction;
+import arb.functions.sequences.Sequence;
 import junit.framework.TestCase;
 
 /**
@@ -16,6 +19,15 @@ public class RealQuasiPolynomialTest
                                      extends
                                      TestCase
 {
+  public void testHypergeometricFactorOfFourierTransformOfType1Chebyshevpolynomials()
+  {
+    Expression<Integer, RealQuasiPolynomial, Sequence<RealQuasiPolynomial>> expression = RealQuasiPolynomial.parseSequence("F",
+                                                                                                                           "n->pFq([1,n,-n],[1/2],ⅈ*y/2)");
+    Sequence<RealQuasiPolynomial>                                           f          = expression.instantiate();
+    RealQuasiPolynomial f0 = f.evaluate(0, 128);
+    System.out.println( "f0=" + f0 );
+  }
+
   public void testLommelQuasiPolynomialSequence()
   {
     var expression = RealQuasiPolynomial.parseSequence("R", "v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z^2)");
@@ -72,9 +84,9 @@ public class RealQuasiPolynomialTest
     System.out.println(expr.syntaxTextTree());
     var                 f = expr.instantiate();
     RealQuasiPolynomial g = f.evaluate(0, 128);
-    
-    System.out.format("g.f=%s\n",  g.f );
-    System.out.format("g.p=%s\n",  g.p );
-    
+
+    System.out.format("g.f=%s\n", g.f);
+    System.out.format("g.p=%s\n", g.p);
+
   }
 }
