@@ -10,8 +10,10 @@ import static org.objectweb.asm.Opcodes.NEW;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
+import arb.ComplexQuasiPolynomial;
 import arb.Real;
 import arb.RealPolynomial;
+import arb.RealQuasiPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
@@ -22,6 +24,7 @@ import arb.functions.Function;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.polynomials.ComplexHypergeometricPolynomial;
 import arb.functions.polynomials.RealHypergeometricPolynomial;
+import arb.functions.polynomials.quasi.QuasiPolynomial;
 import arb.functions.real.RealPolynomialNullaryFunction;
 
 /**
@@ -38,32 +41,7 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
                                    extends
                                    FunctionCall<D, R, F>
 {
-  String        log = "parseRoot pFq([-2,3.5,1],[2,4],1/2-x/2) of Expression(#1795960102)\n" + "\n"
-                + "Variable(#2146608740).resolveReference(reference=x) expression=pFq([-2,3.5,1],[2,4],1/2-x/2)\n"
-                + "\n"
-                + "Expression(#1795960102) declaring x to be the indeterminant in pFq([-2,3.5,1],[2,4],1/2-x/2)\n"
-                + "variables=null\n" + "\n"
-                + "Expression(#1795960102).generate() className=pFq({Minus2,3_5,1},{2,4},1Over2MinusxOver2)\n" + "\n"
-                + "Expression(#1795960102) Generating pFq([-2,3.5,1],[2,4],1/2-x/2)\n" + "\n"
-                + "pFq.generate(resultType=class arb.RealPolynomial\n" + ")\n"
-                + "Vector(#48914743).generating 1-th element:  neg(2)\n"
-                + "FunctionCall.generate: this=neg(2) resultType=class arb.RealPolynomial\n" + "\n"
-                + "index 0: Converting from type class arb.RealPolynomial to class arb.Real\n"
-                + "Vector(#48914743).generating 2-th element:  3.5\n"
-                + "Vector(#48914743).generating 3-th element:  1\n"
-                + "Vector(#728258269).generating 1-th element:  2\n"
-                + "Vector(#728258269).generating 2-th element:  4\n" + "referencedFunctions={}\n"
-                + "generateToStringMethod(expression=pFq([-2,3.5,1],[2,4],1/2-x/2))\n"
-                + "generateTypesetMethod(expression=pFq([-2,3.5,1],[2,4],1/2-x/2))\n" + "\n"
-                + "Instantiating pFq((1/2)-(x/2))\n" + "\n"
-                + "Expression(#1795960102).defineClass(expression=pFq([-2,3.5,1],[2,4],1/2-x/2)\n"
-                + ",className=pFq({Minus2,3_5,1},{2,4},1Over2MinusxOver2)\n"
-                + ", context=Context(#1800031768)[functions=[],variables=[]])\n" + "\n"
-                + "Compiler.loadFunctionClass pFq({Minus2,3_5,1},{2,4},1Over2MinusxOver2)\n"
-                + "defineClass( className=pFq({Minus2,3_5,1},{2,4},1Over2MinusxOver2), ... )\n"
-                + "compiledClasses.keys=[]\n" + "\n" + "\n" + "Injecting references pFq((1/2)-(x/2))\n"
-                + "Context(#1800031768).injectVariableReferences(f=pFq({Minus2,3_5,1},{2,4},1Over2MinusxOver2))\n"
-                + "\n" + "";
+
   Node<D, R, F> α;
 
   Node<D, R, F> β;
@@ -99,15 +77,20 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     }
     Class<?> scalarType = Compiler.scalarType(resultType);
 
-    constructAndEvaluateHypergeometricPolynomial(resultType, mv, scalarType);
+    constructAndEvaluateHypergeometricPolynomial(resultType,
+                                                 mv,
+                                                 scalarType,
+                                                 QuasiPolynomial.class.isAssignableFrom(resultType));
 
     return mv;
   }
 
-  public HypergeometricFunction<D, R, F>
-         constructAndEvaluateHypergeometricPolynomial(Class<?> resultType, MethodVisitor mv, Class<?> scalarType)
+  public HypergeometricFunction<D, R, F> constructAndEvaluateHypergeometricPolynomial(Class<?> resultType,
+                                                                                      MethodVisitor mv,
+                                                                                      Class<?> scalarType,
+                                                                                      boolean quasi)
   {
-    constructHypergeometricPolynomial(mv, scalarType);
+    constructHypergeometricPolynomial(mv, scalarType, quasi);
     evaluateHypergeometricPolynomial(resultType, mv);
     return this;
   }
@@ -135,10 +118,10 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     methodVisitor.visitFieldInsn(GETSTATIC, Type.getInternalName(fieldType), name, fieldType.descriptorString());
   }
 
-  public void constructHypergeometricPolynomial(MethodVisitor mv, Class<?> scalarType)
+  public void constructHypergeometricPolynomial(MethodVisitor mv, Class<?> scalarType, boolean quasi)
   {
     boolean isReal                        = Real.class.equals(scalarType);
-    var     hypergeometricPolynomialClass = isReal ? RealHypergeometricPolynomial.class : ComplexHypergeometricPolynomial.class;
+    var     hypergeometricPolynomialClass = isReal ? (quasi ? RealQuasiPolynomial.class : RealHypergeometricPolynomial.class) : (quasi ? ComplexQuasiPolynomial.class : ComplexHypergeometricPolynomial.class);
     mv.visitTypeInsn(NEW, Type.getInternalName(hypergeometricPolynomialClass));
     duplicateTopOfTheStack(mv);
 
@@ -146,11 +129,8 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     β.generate(scalarType, mv);
 
     mv.visitLdcInsn(arg.toString());
-    invokeStaticMethod(mv,
-                       isReal ? RealPolynomialNullaryFunction.class : ComplexPolynomialNullaryFunction.class,
-                       "parse",
-                       Expression.class,
-                       String.class);
+    Class<?> nullaryFunctionClass = isReal ? (quasi ? RealQuasiPolynomial.class : RealPolynomialNullaryFunction.class) : (quasi ? ComplexQuasiPolynomial.class : ComplexPolynomialNullaryFunction.class);
+    invokeStaticMethod(mv, nullaryFunctionClass, "parse", Expression.class, String.class);
     invokeConstructor(mv, hypergeometricPolynomialClass, scalarType, scalarType, Expression.class);
   }
 

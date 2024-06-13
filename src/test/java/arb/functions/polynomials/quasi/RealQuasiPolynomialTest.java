@@ -1,5 +1,6 @@
 package arb.functions.polynomials.quasi;
 
+import arb.ComplexQuasiPolynomial;
 import arb.Integer;
 import arb.RealQuasiPolynomial;
 import arb.RoundingMode;
@@ -21,11 +22,11 @@ public class RealQuasiPolynomialTest
 {
   public void testHypergeometricFactorOfFourierTransformOfType1Chebyshevpolynomials()
   {
-    Expression<Integer, RealQuasiPolynomial, Sequence<RealQuasiPolynomial>> expression = RealQuasiPolynomial.parseSequence("F",
-                                                                                                                           "n->pFq([1,n,-n],[1/2],ⅈ*y/2)");
-    Sequence<RealQuasiPolynomial>                                           f          = expression.instantiate();
-    RealQuasiPolynomial f0 = f.evaluate(0, 128);
-    System.out.println( "f0=" + f0 );
+    Expression<Integer, ComplexQuasiPolynomial, Sequence<ComplexQuasiPolynomial>> expression = ComplexQuasiPolynomial.parseSequence("F",
+                                                                                                                                    "n->pFq([1,n,-n],[1/2],ⅈ*y/2)");
+    Sequence<ComplexQuasiPolynomial>                                              f          = expression.instantiate();
+    ComplexQuasiPolynomial                                                        f0         = f.evaluate(0, 128);
+    System.out.println("f0=" + f0);
   }
 
   public void testLommelQuasiPolynomialSequence()

@@ -83,7 +83,8 @@ public class Vector<D, R, F extends Function<? extends D, ? extends R>>
   {
     int dimensions = elements.size();
     mv.visitIntInsn(BIPUSH, dimensions);
-    mv.visitTypeInsn(ANEWARRAY, Type.getInternalName(resultType));
+    var scalarType = Compiler.scalarType(resultType);
+    mv.visitTypeInsn(ANEWARRAY, Type.getInternalName(scalarType));
 
     AtomicInteger i = new AtomicInteger(0);
     elements.forEach(element ->
@@ -92,20 +93,20 @@ public class Vector<D, R, F extends Function<? extends D, ? extends R>>
       printIfTraceGenerationEnabled(i, element);
       duplicateTopOfTheStack(mv);
       mv.visitIntInsn(BIPUSH, index);
-      element.generate(resultType, mv);
-      convertTypeIfNecessary(mv, resultType, element, index);
+      element.generate(scalarType, mv);
+      convertTypeIfNecessary(mv, scalarType, element, index);
       mv.visitInsn(AASTORE);
     });
 
     if (isResult)
     {
-      expression.generateSetResultInvocation(mv, resultType.arrayType());
+      expression.generateSetResultInvocation(mv, scalarType.arrayType());
     }
     else
     {
-      expression.allocateIntermediateVariable(mv, "v", resultType);
+      expression.allocateIntermediateVariable(mv, "v", scalarType);
       Compiler.swap(mv);
-      Compiler.invokeSetMethod(mv, resultType.arrayType(), resultType);
+      Compiler.invokeSetMethod(mv, scalarType.arrayType(), scalarType);
     }
 
     return mv;

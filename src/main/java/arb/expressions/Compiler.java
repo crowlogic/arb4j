@@ -633,8 +633,14 @@ public class Compiler
 
   static
   {
-    realScalarTypes.addAll(Arrays.asList(Real.class, RealPolynomial.class, RealMatrix.class));
-    complexScalarTypes.addAll(Arrays.asList(Complex.class, ComplexPolynomial.class, ComplexMatrix.class));
+    realScalarTypes.addAll(Arrays.asList(Real.class,
+                                         RealPolynomial.class,
+                                         RealMatrix.class,
+                                         RealQuasiPolynomial.class));
+    complexScalarTypes.addAll(Arrays.asList(Complex.class,
+                                            ComplexPolynomial.class,
+                                            ComplexMatrix.class,
+                                            ComplexQuasiPolynomial.class));
   }
 
   public static Class<?> scalarType(Class<?> resultType)
