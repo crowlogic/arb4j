@@ -10,10 +10,11 @@
   </author-affiliation>>>>
 
   <abstract-data|<\abstract>
-    This is a nearly verbatim reproduction of most of the first two chapters
-    of Roger<nbsp>G.<nbsp>Ghanem<localize| and >Pol<nbsp>D.<nbsp>Spanos.
-    <newblock><with|font-shape|italic|Stochastic finite elements: a spectral
-    approach>. <newblock>Springer-Verlag, Berlin, Heidelberg, 1991.<newblock>
+    Most of the first two chapters of Roger<nbsp>G.<nbsp>Ghanem<localize| and
+    >Pol<nbsp>D.<nbsp>Spanos. <newblock><with|font-shape|italic|Stochastic
+    finite elements: a spectral approach> are covered and a method of
+    calculating the eigenfunctions and eigenvalues of any integral covariance
+    operator of a stationary process is detailed.
   </abstract>>
 
   <\table-of-contents|toc>
@@ -66,32 +67,28 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-12>>
 
-    <with|par-left|1tab|1.5<space|2spc>Irrational Spectra
+    <with|par-left|1tab|1.5<space|2spc>Numerical Solution
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-13>>
 
-    <with|par-left|2tab|1.5.1<space|2spc>Wiener process
+    <with|par-left|1tab|1.6<space|2spc>Irrational Spectra and Ergodicity
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-14>>
 
-    <with|par-left|1tab|1.6<space|2spc>Numerical Solution
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-15>>
-
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-16><vspace|0.5fn>
+    <no-break><pageref|auto-15><vspace|0.5fn>
   </table-of-contents>
 
   <section|The Spectral Approach to Stochastic Processes>
 
   <subsection|The Gelfand-Vilenkin Spectral Representation>
 
-  The central concepts of the theory of representation for random processes
-  can be formulated where the majority of the results have been derived for
-  the class of second order processes.<cite|stochasticFiniteElements> A very
-  important result is the <verbatim|Gelfand-Vilenkin spectral representation
-  of random processes> which, in its most general form, can be stated as
+  The majority of the results on the representation of random processes have
+  been derived for the class of second order
+  processes<cite|stochasticFiniteElements>; one of the most important of
+  which is the <verbatim|Gelfand-Vilenkin spectral representation> which
+  states in its most general form
 
   <\equation>
     w*<around|(|x,\<theta\>|)>=<big|int>g<around|(|x|)>*d*\<mu\><around|(|\<theta\>|)><label|2.1>
@@ -106,13 +103,13 @@
   </equation>
 
   In equation (<reference|2.1>), <math|g<around|(|x|)>> is a deterministic
-  function. Further, <math|d*\<mu\><around|(|\<theta\>|)>> is an orthogonal
-  set function, also termed orthogonal stochastic measure, defined on the
+  function and <math|d*\<mu\><around|(|\<theta\>|)>> is an orthogonal set
+  function, also termed orthogonal stochastic measure, defined on the
   <math|\<sigma\>>-field <math|\<Psi\>> of random events. An important
-  specialization of the spectral decomposition occurs if the process
+  specialization of the spectral expansion occurs if the process
   <math|w*<around|(|x,\<theta\>|)>> is wide stationary. In this case,
   equation (<reference|2.1>) can be shown to reduce to the Wiener-Khintchine
-  relation (Yaglom, 1962) and the following equations hold
+  relation <cite|correlationTheoryOfStationaryRandomProcesses> and we have
 
   <\equation>
     w*<around|(|x,\<theta\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\><rsup|T>*x>*d*\<mu\><around|(|\<omega\>,\<theta\>|)>
@@ -124,7 +121,7 @@
     C<rsub|w*w><around|(|x<rsub|1>,x<rsub|2>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<omega\><rsub|1>*x<rsub|1>-\<omega\><rsub|2>*x<rsub|2>|)><rsup|T>>*S<around|(|\<omega\>|)>*d*\<omega\>
   </equation>
 
-  Here, the symbol <math|T> denotes vector transposition,
+  where the symbol <math|T> denotes vector transposition,
   <math|S<around|(|\<omega\>|)>> is the usual <verbatim|spectral density> of
   the stationary process, and <math|\<omega\>> is the <verbatim|wave number
   vector>. In the equation for <math|C<rsub|w*w><around|(|x<rsub|1>,x<rsub|2>|)>>:
@@ -152,22 +149,21 @@
   </itemize>
 
   The impact of these spectral representations on the theory of random
-  processes is significant. However, their use has been limited to
-  deterministic systems subjected to random excitations. This limitation
-  arises because these representations require differentials of random
-  functions, placing them in an infinite-dimensional space, which complicates
-  the development of computational algorithms.
-  Similarly,<cite-detail|stochasticInferenceTheory|Ch.1 Bibliogaphical notes,
-  p.18> highlights a challenge in extending von Neumann's zero-sum two-person
-  games to stochastic processes, hindered by the same issue of
-  infinite-dimensionality.\ 
+  processes is significant but limited to deterministic systems subjected to
+  random excitations. This limitation arises because these representations
+  require differentials of random functions, placing them in an
+  infinite-dimensional space, which complicates the development of
+  computational algorithms. Similarly,<cite-detail|stochasticProcessesInferenceTheory|Ch.1
+  Bibliogaphical notes, p.18> highlights a challenge in extending von
+  Neumann's zero-sum two-person games to stochastic processes, hindered by
+  the same issue of infinite-dimensionality.\ 
 
   <subsection|The Karhunen-Loeve Expansion>
 
-  Another spectral representation theorem, and one which is extensively used
-  in the sequel, is the Karhunen-Loeve expansion whereby a random process
-  <math|w*<around|(|x,\<theta\>|)>> can be expanded in terms of a denumerable
-  set of orthogonal random variables in the form
+  The Karhunen-Loeve expansion is an extensively used spectral representation
+  theorem, whereby a random process <math|w*<around|(|x,\<theta\>|)>> can be
+  expanded in terms of a denumerable set of orthogonal random variables in
+  the form
 
   <\equation>
     w*<around|(|x,\<theta\>|)>=<big|sum><rsub|i=1><rsup|\<infty\>>\<mu\><rsub|i><around|(|\<theta\>|)>*g<rsub|i><around|(|x|)>
@@ -178,15 +174,15 @@
   are deterministic functions, which can be related to the covariance kernel
   of <math|w*<around|(|x,\<theta\>|)>>. Note that since equation
   (<reference|2.5>) constitutes a representation of the random process in
-  terms of a denumerable set of random variables, it may be regarded a
-  quantizationd of the random process. It is important to note that this
-  equation can be viewed as a representation of the process
-  <math|w*<around|(|x,\<theta\>|)>> as a curve in the Hilbert space spanned
-  by the set <math|<around|{|g<rsub|i><around|(|x|)>|}>> expressed as a
-  direct sum of orthogonal projections in this Hilbert space whereby the
-  magnitudes of the projections on successive basis vectors are proportional
-  to the corresponding eigenvalues of the covariance function associated with
-  the process <math|w*<around|(|x,\<theta\>|)>>. Collectively, the
+  terms of a denumerable set of random variables, it is a quantization of the
+  random process. It is important to note that this equation can be viewed as
+  a representation of the process <math|w*<around|(|x,\<theta\>|)>> as a
+  curve in the Hilbert space spanned by the set
+  <math|<around|{|g<rsub|i><around|(|x|)>|}>> expressed as a direct sum of
+  orthogonal projections in this Hilbert space whereby the magnitudes of the
+  projections on successive basis vectors are proportional to the
+  corresponding eigenvalues of the covariance function associated with the
+  process <math|w*<around|(|x,\<theta\>|)>>. Collectively, the
   representations discussed up to <cite-detail|stochasticFiniteElements|2.2>
   can be thought of as linear operators or filters acting on processes with
   independent increments.
@@ -206,15 +202,10 @@
   is some constant, and <math|<around|{|f<rsub|n><around|(|x|)>|}>> is an
   orthonormal set of deterministic basis functions. I find it a bit of a
   misnomer to refer to the sequence <math|\<xi\><rsub|n><around*|(|\<theta\>|)>>
-  as random variables because none of the mathematics is dependent upon the
-  stochastic nature to which they are usually applied or regarded. For
-  instance, the realization of a well known complex analytic function with a
-  very elaborate behaviour can be shown to be the principal realization of a
-  Gaussian process having a certain kernel. In this instance, even though we
-  use the mathematics of randomness and stochastics the function to which it
-  applies can be computed to any degree of precision at any given point and
-  in that sense there is nothing random about it, other than the fact that I
-  have yet to point out to everyone how it comes together.\ 
+  as random variables because in many instances these formulas are applied to
+  deterministic, defined exact functions that do not involve randomness and
+  in fact the theorems related to the Karhunen-Loeve expansion do not depend
+  on any concepts that are inherently stochastic.
 
   <subsubsection|Spectral Covariance Representations>
 
@@ -225,7 +216,7 @@
   <math|w*<around|(|x,\<theta\>|)>> over all possible realizations of the
   process, and <math|C<around|(|x<rsub|1>,x<rsub|2>|)>> denote its covariance
   function. By definition of the covariance function, it is bounded,
-  symmetric and positive definite. Thus, it has the spectral decomposition
+  symmetric and positive definite. Thus, it has the eigenfunction expansion
   <cite-detail|stochasticFiniteElements|2.3.1>
 
   <\equation>
@@ -337,21 +328,21 @@
   <subsubsection|Reproducing Kernel Hilbert Spaces (RKHS)>
 
   The essential thing that the Reproducing Kernel Hilbert Space (RKHS)
-  (Aronszajn, 1950; Parzen, 1959), either of equations (<reference|2.11>) or
-  (<reference|2.20>), is an expression for the congruence that maps the
+  paradigm provides, is that either of equations (<reference|2.11>) or
+  (<reference|2.20>), are expressions for the congruence that maps the
   Hilbert space spanned by the functions <math|f<rsub|n><around|(|x|)>> to
-  the Hilbert space spanned by the random process, or equivalently, the space
-  spanned by the set of random variables <math|<around|{|\<xi\><rsub|n><around|(|\<theta\>|)>|}>>.
+  the Hilbert space spanned by the random process, or equivalently, the set
+  of random variables <math|<around|{|\<xi\><rsub|n><around|(|\<theta\>|)>|}>>.
   It is this congruence along with the covariance function of the process
   that determines uniquely the random process
-  <math|w*<around|(|x,\<theta\>|)>>. Observe the similarity of equations
-  (<reference|2.11>) and (<reference|2.20>) with equations (<reference|2.7>)
-  and (<reference|2.8>), respectively. Indeed, it can be shown (Parzen, 1959)
-  that if a function can be represented in terms of linear operations on the
-  family <math|<around|{|C|(>\<cdot\>,x<rsub|2>)}>, then <math|f> belongs to
-  the RKHS corresponding to the kernel <math|C<around|(|x<rsub|1>,x<rsub|2>|)>>,
-  and the congruence between the two Hilbert spaces means of the same linear
-  operations used to represent <math|f> in terms of
+  <math|w*<around|(|x,\<theta\>|)>> as can be seen by observing the
+  similarity of equations (<reference|2.11>) and (<reference|2.20>) with
+  equations (<reference|2.7>) and (<reference|2.8>), respectively. If a
+  function can be represented in terms of linear operations on the family
+  <math|<around|{|C|(>\<cdot\>,x<rsub|2>)}>, then <math|f> belongs to the
+  RKHS corresponding to the kernel <math|C<around|(|x<rsub|1>,x<rsub|2>|)>>,
+  and the congruence between the two Hilbert spaces can be realized by the
+  same linear operations used to represent <math|f> in terms of
   <math|<around|{|C|(>\<cdot\>,x<rsub|2>)}>, <math|x<rsub|2>\<in\>D>.\ 
 
   Another point of practical importance is that the expansion given by
@@ -366,7 +357,12 @@
   the faster the autocorrelation function tends to zero, the broader is the
   corresponding spectral density, and the greater the number of requisite
   terms to represent the underlying random process by the Karhunen-Loeve
-  expansion.\ 
+  expansion. Most theorems are limited to bounded-intervals and
+  square-integrable kernels. This setup does not induce the ergodic
+  assumption for the process since the domain is bounded; however, for many
+  purposes the ergodic condition is not necessary but it may restored by
+  extending the limits of integration in equation (<reference|2.33>) to
+  infinity.<cite-detail|stochasticFiniteElements|2.3.2>
 
   <subsection|Properties>
 
@@ -531,52 +527,6 @@
   its Fourier transform is non-negative and non-decreasing over its domain of
   definition by Aronszajn's Theorem and Bochner's theorem respectively.
 
-  <subsection|Irrational Spectra>
-
-  There is no general method for the solution of the integral equation
-  (<reference|2.33>) corresponding to irrational spectra.
-
-  <subsubsection|Wiener process>
-
-  Another kernel that may be treated by the same method is the kernel of the
-  Wiener process. It is given by the equation
-
-  <\equation>
-    C<around|(|x<rsub|1>,x<rsub|2>|)>=min
-    <around|(|x<rsub|1>,x<rsub|2>|)>\<forall\><around|(|x<rsub|1>,x<rsub|2>|)>\<in\><around|[|0,T|]>\<times\><around|[|0,T|]>
-  </equation>
-
-  The resulting normalized eigenfunctions and eigenvalues are
-
-  <\equation>
-    f<rsub|n><around|(|x<rsub|1>|)>=<sqrt|2>*sin
-    <around*|(|<frac|n*\<pi\>*x<rsub|1>|T>|)>
-  </equation>
-
-  and
-
-  <\equation>
-    \<lambda\><rsub|n>=<frac|4*T<rsup|2>|\<pi\><rsup|2>*<around|(|2*n+1|)><rsup|2>>\<forall\>n=0,1,\<ldots\>
-  </equation>
-
-  Note that the Wiener process is an example of a nonstationary process, a
-  fact that emphasizes the generality of the Karhunen-Loeve expansion and its
-  applicability to such processes.
-
-  <\remark>
-    A final remark is in order concerning the choice of the domain <math|D>
-    of definition of the random process being investigated. Taking <math|D>
-    to be the finite domain over which the process is being observed may
-    often be the most obvious choice. Clearly, this choice does not induce
-    the ergodic assumption for the process, which involves observing infinite
-    length records. This is by no means a handicap of this approach since the
-    ergodic assumption is usually introduced for convenience and is not
-    necessary for the present study. If ergodicity is needed for some
-    particular problem, then it may be recovered by extending the limits of
-    integration in equation (<reference|2.33>) to
-    infinity.<cite-detail|stochasticFiniteElements|2.3.2>
-  </remark>
-
   <subsection|Numerical Solution>
 
   In this section, a Galerkin type procedure is described for the solution of
@@ -660,17 +610,36 @@
   estimating the eigenvalues is better than that achieved for the
   eigenfunctions (Delves and Mohamed, 1985).
 
+  <subsection|Irrational Spectra and Ergodicity>
+
+  At the time of writing of <cite|stochasticFiniteElements> there was no
+  general method for the solution of the integral equation (<reference|2.33>)
+  corresponding to irrational spectra and furthermore most of the results are
+  for finite bounded intervals. <cite-detail|stochasticFiniteElements|2.3.2>
+  Most theorems are limited to bounded-intervals and therefore do not presume
+  ergodicity which may restored by extending the limits of integration in
+  equation (<reference|2.33>) to infinity and modifying the portions of the
+  corresponding lemmas and theorems that depend on boundedness of the
+  interval or square-integrability of the
+  kernel.<cite-detail|stochasticFiniteElements|2.3.2>
+
   <\bibliography|bib|tm-plain|refs>
-    <\bib-list|2>
+    <\bib-list|3>
       <bibitem*|1><label|bib-stochasticFiniteElements>Roger<nbsp>G.<nbsp>Ghanem<localize|
       and >Pol<nbsp>D.<nbsp>Spanos. <newblock><with|font-shape|italic|Stochastic
       finite elements: a spectral approach>. <newblock>Springer-Verlag,
       Berlin, Heidelberg, 1991.<newblock>
 
-      <bibitem*|2><label|bib-stochasticInferenceTheory>Malempati<nbsp>M.<nbsp>Rao.
+      <bibitem*|2><label|bib-stochasticProcessesInferenceTheory>Malempati<nbsp>M.<nbsp>Rao.
       <newblock><with|font-shape|italic|Stochastic Processes: Inference
       Theory>. <newblock>Springer Monographs in Mathematics. Springer,
       2nd<localize| edition>, 2014.<newblock>
+
+      <bibitem*|3><label|bib-correlationTheoryOfStationaryRandomProcesses>A.M.<nbsp>Yaglom.
+      <newblock><with|font-shape|italic|Correlation Theory of Stationary and
+      Related Random Functions>, <localize|volume> I: Basic Results<localize|
+      of ><with|font-shape|italic|Applied Probability>. <newblock>Springer
+      New York, 1987.<newblock>
     </bib-list>
   </bibliography>
 </body>
@@ -699,35 +668,35 @@
     <associate|2.21|<tuple|21|5>>
     <associate|2.22|<tuple|22|6>>
     <associate|2.23|<tuple|23|6>>
-    <associate|2.24|<tuple|24|7>>
+    <associate|2.24|<tuple|24|6>>
     <associate|2.26|<tuple|26|7>>
     <associate|2.33|<tuple|35|8>>
-    <associate|2.7|<tuple|7|4>>
-    <associate|2.74|<tuple|39|10>>
-    <associate|2.77|<tuple|42|10>>
-    <associate|2.78|<tuple|43|10>>
-    <associate|2.79|<tuple|44|10>>
+    <associate|2.7|<tuple|7|3>>
+    <associate|2.74|<tuple|36|9>>
+    <associate|2.77|<tuple|39|9>>
+    <associate|2.78|<tuple|40|9>>
+    <associate|2.79|<tuple|41|9>>
     <associate|2.8|<tuple|8|4>>
-    <associate|2.82|<tuple|47|10>>
+    <associate|2.82|<tuple|44|10>>
     <associate|2.9|<tuple|9|4>>
     <associate|auto-1|<tuple|1|1>>
     <associate|auto-10|<tuple|1.3.3|8>>
     <associate|auto-11|<tuple|1.3.4|8>>
     <associate|auto-12|<tuple|1.4|8>>
     <associate|auto-13|<tuple|1.5|9>>
-    <associate|auto-14|<tuple|1.5.1|9>>
+    <associate|auto-14|<tuple|1.6|10>>
     <associate|auto-15|<tuple|1.6|10>>
-    <associate|auto-16|<tuple|47|11>>
     <associate|auto-2|<tuple|1.1|1>>
     <associate|auto-3|<tuple|1.2|3>>
     <associate|auto-4|<tuple|1.2.1|3>>
-    <associate|auto-5|<tuple|1.2.2|4>>
-    <associate|auto-6|<tuple|1.2.3|6>>
+    <associate|auto-5|<tuple|1.2.2|3>>
+    <associate|auto-6|<tuple|1.2.3|5>>
     <associate|auto-7|<tuple|1.3|6>>
     <associate|auto-8|<tuple|1.3.1|6>>
     <associate|auto-9|<tuple|1.3.2|7>>
-    <associate|bib-stochasticFiniteElements|<tuple|1|11>>
-    <associate|bib-stochasticInferenceTheory|<tuple|2|11>>
+    <associate|bib-correlationTheoryOfStationaryRandomProcesses|<tuple|3|10>>
+    <associate|bib-stochasticFiniteElements|<tuple|1|10>>
+    <associate|bib-stochasticProcessesInferenceTheory|<tuple|2|10>>
   </collection>
 </references>
 
@@ -736,7 +705,15 @@
     <\associate|bib>
       stochasticFiniteElements
 
-      stochasticInferenceTheory
+      correlationTheoryOfStationaryRandomProcesses
+
+      stochasticProcessesInferenceTheory
+
+      stochasticFiniteElements
+
+      stochasticFiniteElements
+
+      stochasticFiniteElements
 
       stochasticFiniteElements
 
@@ -796,21 +773,17 @@
       Equation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-12>>
 
-      <with|par-left|<quote|1tab>|1.5<space|2spc>Irrational Spectra
+      <with|par-left|<quote|1tab>|1.5<space|2spc>Numerical Solution
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-13>>
 
-      <with|par-left|<quote|2tab>|1.5.1<space|2spc>Wiener process
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|1.6<space|2spc>Irrational Spectra and
+      Ergodicity <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-14>>
-
-      <with|par-left|<quote|1tab>|1.6<space|2spc>Numerical Solution
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-15>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-16><vspace|0.5fn>
+      <no-break><pageref|auto-15><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>

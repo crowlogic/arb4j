@@ -86,7 +86,7 @@
   complement (via the Gram-Schmidt process)
 
   <\equation>
-    \<psi\><rsub|n><around|(|y|)>=<wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>=<wide|T|^><rsub|n><around|(|y|)>-<big|sum><rsub|m=1><rsup|n-1><frac|<around|\<langle\>|<wide|T|^><rsub|m><around|(|y|)>,\<psi\><rsub|m><around|(|y|)>|\<rangle\>>|<around|\<langle\>|<wide|T|^><rsub|m><around|(|y|)>,<wide|T|^><rsub|m><around|(|y|)>|\<rangle\>>>*\<psi\><rsub|m><around|(|y|)>
+    \<psi\><rsub|n><around|(|y|)>=<wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>=<wide|T<rsup|>|^><rsub|n><around|(|y|)>-<big|sum><rsub|m=1><rsup|n-1><frac|<around|\<langle\>|<wide|T|^><rsub|n><around|(|y|)>,<wide|T|^><rsup|\<perp\>><rsub|m><around|(|y|)>|\<rangle\>>|<around|\<langle\>|<wide|T|^><rsup|\<perp\>><rsub|m><around|(|y|)>,<wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>|\<rangle\>>>*<wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>
   </equation>
 
   with respect to the unweighted standard Lebesgue inner product measure over
@@ -140,6 +140,30 @@
     J<rsub|0><around|(|x|)>=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*\<psi\><rsub|n><around|(|x|)>=\<cdots\>.
   </equation>
 
+  whose finite version is\ 
+
+  <\equation>
+    K<rsub|n><around*|(|x,y|)>=<big|sum><rsub|k=0><rsup|n>\<lambda\><rsub|k>
+    \<psi\><rsub|k><around*|(|x-y|)>
+  </equation>
+
+  such that
+
+  <\equation>
+    lim<rsub|n\<rightarrow\>\<infty\>>K<rsub|n><around*|(|x,y|)>=J<rsub|0><around*|(|x-y|)>
+  </equation>
+
+  <\big-figure|<image|KConvergence.eps|375pt|176.25pt||>>
+    Demonstrating of convergence of <math|K<rsub|n><around*|(|h|)>> to
+    <math|J<rsub|0><around*|(|h|)>> for <math|n=0,5,10>
+  </big-figure>
+
+  <\big-figure|<image|KErr.eps|375pt|176.25pt||>>
+    Demonstrating of approximation error between
+    \ <math|K<rsub|n><around*|(|h|)>> and <math|J<rsub|0><around*|(|h|)>> for
+    <math|n=0,5,10>
+  </big-figure>
+
   The question is, how to prove it? I am under the impression that this is a
   noteworthy result and would like to get it published. Hence, I am reaching
   out to the most esteemed experts on the subject I can think of, given that
@@ -192,7 +216,7 @@
 
 <\initial>
   <\collection>
-    <associate|bg-color|light grey>
+    <associate|bg-color|white>
     <associate|font|stix>
     <associate|font-family|rm>
     <associate|magnification|1.2>
@@ -206,8 +230,10 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|11|3>>
-    <associate|bib-finiteFourierTransformsOfClassicalOrthogonalPolynomials|<tuple|1|3>>
+    <associate|auto-1|<tuple|1|3>>
+    <associate|auto-2|<tuple|2|4>>
+    <associate|auto-3|<tuple|2|4>>
+    <associate|bib-finiteFourierTransformsOfClassicalOrthogonalPolynomials|<tuple|1|4>>
     <associate|bib-modifiedLommelPolynomials|<tuple|2|4>>
   </collection>
 </references>
@@ -219,10 +245,24 @@
 
       modifiedLommelPolynomials
     </associate>
+    <\associate|figure>
+      <tuple|normal|<\surround|<hidden-binding|<tuple>|1>|>
+        Demonstrating of convergence of <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|K<rsub|n><around*|(|h|)>>>
+        to <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|J<rsub|0><around*|(|h|)>>>
+        for <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|n=0,5,10>>
+      </surround>|<pageref|auto-1>>
+
+      <tuple|normal|<\surround|<hidden-binding|<tuple>|2>|>
+        Demonstrating of approximation error between
+        \ <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|K<rsub|n><around*|(|h|)>>>
+        and <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|J<rsub|0><around*|(|h|)>>>
+        for <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|n=0,5,10>>
+      </surround>|<pageref|auto-2>>
+    </associate>
     <\associate|toc>
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-1><vspace|0.5fn>
+      <no-break><pageref|auto-3><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
