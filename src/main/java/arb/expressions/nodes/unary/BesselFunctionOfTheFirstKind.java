@@ -15,7 +15,6 @@ import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
-import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
@@ -100,7 +99,7 @@ public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, 
     {
       throw new CompilerException("The result type of " + expression
                     + " must be a QuasiPolynomial because the Bessel functions of the first kind at half-integer orders are "
-                    + "not polynomials but rather rather rational functions or quasi-polynomials because they can not be represented by rational multiples of powers of the independent variable");
+                    + "not polynomials but rather rational functions or quasi-polynomials because they can not be represented by rational multiples of powers of the independent variable");
     }
 
     assert false : "TODO: generate Bessel function of the first kind of order=" + order;
