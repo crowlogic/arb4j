@@ -154,13 +154,6 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return set(0);
   }
 
-  public Integer ascendingFactorial(Integer n, int bits, Integer res)
-  {
-    assert n.sign() >= 0 : "negative arguments to the ascending factorial are not supported, n=" + n;
-    arblib.fmpz_rfac_ui(res.swigCPtr, swigCPtr, n.getUnsignedValue());
-    return res;
-  }
-
   public Real ascendingFactorial(Integer n, int bits, Real res)
   {
     assert n.sign() >= 0 : "negative arguments to the ascending factorial are not supported, n=" + n;

@@ -17,7 +17,6 @@ public class R implements Sequence<RealQuasiPolynomial>, Typesettable, AutoClose
   public RealQuasiPolynomial qXℝ3 = new RealQuasiPolynomial();
   public RealQuasiPolynomial qXℝ4 = new RealQuasiPolynomial();
   public RealQuasiPolynomial qXℝ5 = new RealQuasiPolynomial();
-  public Integer             ℤ1   = new Integer();
   public Real                vℝ2  = new Real();
   public Real                vℝ1  = new Real();
   public Real                ℝ1   = new Real();
@@ -25,9 +24,10 @@ public class R implements Sequence<RealQuasiPolynomial>, Typesettable, AutoClose
   public Real                ℝ3   = new Real();
   public Real                ℝ4   = new Real();
   public RealQuasiPolynomial qXℝ6 = new RealQuasiPolynomial();
-  public RealQuasiPolynomial qXℝ7 = new RealQuasiPolynomial();
   public Real                ℝ5   = new Real();
   public Real                ℝ6   = new Real();
+  public Real                ℝ7   = new Real();
+  public Real                ℝ8   = new Real();
 
   @Override
   public Class<RealQuasiPolynomial> coDomainType()
@@ -36,24 +36,24 @@ public class R implements Sequence<RealQuasiPolynomial>, Typesettable, AutoClose
   }
 
   @Override
-  public RealQuasiPolynomial evaluate(Integer v, int order, int bits, RealQuasiPolynomial result)
+  public RealQuasiPolynomial evaluate(Integer n, int order, int bits, RealQuasiPolynomial result)
   {
     if (!isInitialized)
     {
       initialize();
     }
 
-    return v.ascendingFactorial(result.identity(), bits, qXℝ1)
-            .mul(result.identity().div(cℤ1, bits, qXℝ2).pow(result.identity().neg(qXℝ3), bits, qXℝ4), bits, qXℝ5)
-            .mul(new RealQuasiPolynomial(vℝ1.set(new Real[]
-            { cℤ2.div(cℤ1, bits, ℝ1).sub(result.identity().div(cℤ1, bits, qXℝ6), bits, ℝ2),
-              result.identity().div(cℤ1, bits, qXℝ7).neg(ℝ3) }),
-                                         vℝ2.set(new Real[]
-                                         { ℝ4.set(v), result.identity().neg(ℝ5),
-                                           cℤ2.sub(v, bits, ℤ1).sub(result.identity(), bits, ℝ6) }),
-                                         RealQuasiPolynomial.parse("-z^2")).evaluate(null, 1, bits, result),
-                 bits,
-                 result);
+    return result.identity()
+                 .ascendingFactorial(n, bits, qXℝ1)
+                 .mul(result.identity().div(cℤ1, bits, qXℝ2).pow(n.neg(qXℝ3), bits, qXℝ4), bits, qXℝ5)
+                 .mul(new RealQuasiPolynomial(vℝ1.set(new Real[]
+                 { cℤ2.div(cℤ1, bits, ℝ1).sub(n.div(cℤ1, bits, ℝ2), bits, ℝ3), n.div(cℤ1, bits, ℝ4).neg(ℝ5) }),
+                                              vℝ2.set(new Real[]
+                                              { ℝ6.set(result.identity()), n.neg(ℝ7),
+                                                cℤ2.sub(result.identity(), bits, qXℝ6).sub(n, bits, ℝ8) }),
+                                              RealQuasiPolynomial.parse("-z^2")).evaluate(null, 1, bits, result),
+                      bits,
+                      result);
   }
 
   @Override
@@ -79,7 +79,6 @@ public class R implements Sequence<RealQuasiPolynomial>, Typesettable, AutoClose
     qXℝ3.close();
     qXℝ4.close();
     qXℝ5.close();
-    ℤ1.close();
     vℝ2.close();
     vℝ1.close();
     ℝ1.close();
@@ -87,15 +86,16 @@ public class R implements Sequence<RealQuasiPolynomial>, Typesettable, AutoClose
     ℝ3.close();
     ℝ4.close();
     qXℝ6.close();
-    qXℝ7.close();
     ℝ5.close();
     ℝ6.close();
+    ℝ7.close();
+    ℝ8.close();
   }
 
   @Override
   public String toString()
   {
-    return "v➔v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z^2)";
+    return "n➔v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z^2)";
   }
 
   @Override
