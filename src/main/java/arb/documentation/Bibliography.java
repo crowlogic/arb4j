@@ -21,10 +21,17 @@ public class Bibliography
                           extends
                           AbstractBibliography
 {
+  public static Article       uniformlyConvergentBesselFunctionExpansions             = new Article("Convergent expansions of the Bessel functions in terms of elementary functions",
+                                                                                                    "José L. López",
+                                                                                                    "2018",
+                                                                                                    "Advances in Computational Mathematics",
+                                                                                                    "44",
+                                                                                                    "277-294").setPublisher("Springer");
+
   public static Article       modifiedLommelPolynomials                               = new Article("Asymptotic Expansion of the Modified Lommel Polynomials $h_{n,ν}(x)$ and Their Zeros",
-                                                                                                    "K.F. Lee, R. Wong",                                                                                                                                                                    // Authors'
-                                                                                                                                                                                                                                                                                            // names
-                                                                                                                                                                                                                                                                                            // provided
+                                                                                                    "K.F. Lee, R. Wong",                                                                                                                                                                                                     // Authors'
+                                                                                                                                                                                                                                                                                                                             // names
+                                                                                                                                                                                                                                                                                                                             // provided
                                                                                                     "2014",
                                                                                                     "Proceedings of the American Mathematical Society",
                                                                                                     "142",
