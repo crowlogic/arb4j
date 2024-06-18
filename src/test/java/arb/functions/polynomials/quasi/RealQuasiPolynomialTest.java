@@ -33,6 +33,9 @@ public class RealQuasiPolynomialTest
   {
     var expression = RealQuasiPolynomial.parseSequence("R", "v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z^2)");
     System.out.println(expression.syntaxTextTree());
+    Sequence<RealQuasiPolynomial> f = expression.instantiate();
+    RealQuasiPolynomial f0 = f.evaluate(0, 128);
+    System.out.println("f0=" + f0);
   }
 
   @SuppressWarnings("resource")

@@ -75,12 +75,15 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     {
       err.printf("pFq.generate(resultType=%s\n)\n", resultType);
     }
-    Class<?> scalarType = Compiler.scalarType(resultType);
+    Class<?> scalarType        = Compiler.scalarType(resultType);
 
-    constructAndEvaluateHypergeometricPolynomial(resultType,
-                                                 mv,
-                                                 scalarType,
-                                                 QuasiPolynomial.class.isAssignableFrom(resultType));
+    boolean  isQuasiPolynomial = QuasiPolynomial.class.isAssignableFrom(resultType);
+    if (Expression.trace)
+    {
+      err.printf("pFq.isQuasiPolynomial=%s\n", isQuasiPolynomial);
+    }
+
+    constructAndEvaluateHypergeometricPolynomial(resultType, mv, scalarType, isQuasiPolynomial);
 
     return mv;
   }
