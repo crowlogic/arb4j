@@ -21,6 +21,13 @@ public class Bibliography
                           extends
                           AbstractBibliography
 {
+  public static Article       bandlimitedRKHSApplications                             = new Article("Applications of Reproducing Kernel Hilbert Spaces--Bandlimited Signal Models",
+                                                                                                    "K. Yao",
+                                                                                                    "1967",
+                                                                                                    "Information and Control",
+                                                                                                    "11",
+                                                                                                    "429-444");
+
   public static Article       uniformlyConvergentBesselFunctionExpansions             = new Article("Convergent expansions of the Bessel functions in terms of elementary functions",
                                                                                                     "José L. López",
                                                                                                     "2018",
@@ -29,9 +36,9 @@ public class Bibliography
                                                                                                     "277-294").setPublisher("Springer");
 
   public static Article       modifiedLommelPolynomials                               = new Article("Asymptotic Expansion of the Modified Lommel Polynomials $h_{n,ν}(x)$ and Their Zeros",
-                                                                                                    "K.F. Lee, R. Wong",                                                                                                                                                                                                     // Authors'
-                                                                                                                                                                                                                                                                                                                             // names
-                                                                                                                                                                                                                                                                                                                             // provided
+                                                                                                    "K.F. Lee, R. Wong",                                                                                                                                                                                                                           // Authors'
+                                                                                                                                                                                                                                                                                                                                                   // names
+                                                                                                                                                                                                                                                                                                                                                   // provided
                                                                                                     "2014",
                                                                                                     "Proceedings of the American Mathematical Society",
                                                                                                     "142",
