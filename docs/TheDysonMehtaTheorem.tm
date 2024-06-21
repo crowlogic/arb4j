@@ -1,6 +1,6 @@
-<TeXmacs|2.1.1>
+<TeXmacs|2.1.4>
 
-<style|<tuple|article|alt-colors|boring-white|framed-theorems>>
+<style|<tuple|article|boring-white>>
 
 <\body>
   <\hide-preamble>

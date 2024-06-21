@@ -18,6 +18,7 @@ import arb.functions.NullaryFunction;
 public interface ComplexQuasiPolynomialNullaryFunction extends NullaryFunction<ComplexQuasiPolynomial>
 {
 
+
   public static Expression<Object, ComplexQuasiPolynomial, ComplexQuasiPolynomialNullaryFunction>
          parse(String string)
   {

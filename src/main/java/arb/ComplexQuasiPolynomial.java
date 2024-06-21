@@ -6,15 +6,26 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.ComplexIdentityFunction;
+import arb.functions.polynomials.quasi.QuasiPolynomial;
 import arb.functions.sequences.Sequence;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ComplexQuasiPolynomial implements ComplexFunction
+public class ComplexQuasiPolynomial
+                                    extends
+                                    QuasiPolynomial<Complex, ComplexPolynomial, ComplexFunction, ComplexQuasiPolynomial>
+                                    implements
+                                    ComplexFunction
 
 {
+
+  public ComplexQuasiPolynomial()
+  {
+    this(ComplexIdentityFunction.instance);
+  }
 
   public static Expression<Integer, ComplexQuasiPolynomial, Sequence<ComplexQuasiPolynomial>>
          parseSequence(String className, String expression)
@@ -54,17 +65,15 @@ public class ComplexQuasiPolynomial implements ComplexFunction
 
   public ComplexQuasiPolynomial(ComplexPolynomial p, ComplexFunction f)
   {
-    this.p = p;
-    this.f = f;
+    super(p,
+          f);
   }
 
+  @SuppressWarnings("resource")
   public ComplexQuasiPolynomial(ComplexFunction f)
   {
-    this.f = f;
-  }
-
-  public ComplexQuasiPolynomial()
-  {
+    this(new ComplexPolynomial().identity(),
+         f);
   }
 
   public ComplexQuasiPolynomial mul(Integer pow, int bits, ComplexQuasiPolynomial xℝ3)
@@ -82,6 +91,48 @@ public class ComplexQuasiPolynomial implements ComplexFunction
       p = new ComplexPolynomial().identity();
     }
     return this;
+  }
+
+  @Override
+  public ComplexQuasiPolynomial add(ComplexQuasiPolynomial addend, int bits, ComplexQuasiPolynomial result)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
+  @Override
+  public ComplexQuasiPolynomial sub(ComplexQuasiPolynomial subtrahend, int bits, ComplexQuasiPolynomial result)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
+  @Override
+  public ComplexQuasiPolynomial mul(ComplexQuasiPolynomial operand, int prec, ComplexQuasiPolynomial result)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
+  @Override
+  public ComplexQuasiPolynomial div(ComplexQuasiPolynomial j, int prec, ComplexQuasiPolynomial result)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
+  @Override
+  public <N extends Named> N setName(String name)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
+  @Override
+  public ComplexQuasiPolynomial pow(Integer power, int bits, ComplexQuasiPolynomial result)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
   }
 
 }
