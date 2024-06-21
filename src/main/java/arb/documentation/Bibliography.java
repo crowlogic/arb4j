@@ -21,7 +21,7 @@ public class Bibliography
                           extends
                           AbstractBibliography
 {
-  public static Article       bandlimitedRKHSApplications                             = new Article("Applications of Reproducing Kernel Hilbert Spaces--Bandlimited Signal Models",
+  public static Article       bandlimitedRKHSApplicationshun                             = new Article("Applications of Reproducing Kernel Hilbert Spaces--Bandlimited Signal Models",
                                                                                                     "K. Yao",
                                                                                                     "1967",
                                                                                                     "Information and Control",

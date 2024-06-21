@@ -3,22 +3,64 @@
 <style|<tuple|generic|alt-colors|boring-white|framed-theorems>>
 
 <\body>
-  Let <math|j<rsub|n><around|(|x|)>> is the spherical Bessel function of the
-  first kind
+  <\lemma>
+    <strong|Converse of the Spectral Theorem for Compact Operators>
 
-  <\equation>
-    j<rsub|n><around|(|x|)>=<sqrt|<frac|\<pi\>|2*x>>*J<rsub|n+<frac|1|2>><around|(|x|)>=<frac|1|<sqrt|x>>*<around*|(|sin
-    <around|(|z|)>*R<rsub|n,<frac|1|2>><around|(|z|)>-cos
-    <around|(|z|)>*R<rsub|n,<frac|3|2>><around|(|z|)>|)>
-  </equation>
+    If <math|T> is an operator on a Hilbert space <math|\<cal-H\>> with
+    eigenvalues <math|\<lambda\><rsub|n>> such that
+    <math|\<lambda\><rsub|n>\<to\>0> as <math|n\<to\>\<infty\>>, then
+    <math|T> is a compact operator.
+  </lemma>
 
-  and <math|P<rsub|n><around*|(|x|)>> be the Legendre polynomials and
-  <math|R<rsub|n,v><around|(|z|)>> be the Lommel
-  (quasi)polynomials<cite|modifiedLommelPolynomials>
+  <\proof>
+    Let <math|<around|{|e<rsub|n>|}><rsub|n=1><rsup|\<infty\>>> be an
+    orthonormal basis of <math|\<cal-H\>> consisting of eigenvectors of
+    <math|T>, with <math|T*e<rsub|n>=\<lambda\><rsub|n>*e<rsub|n>>.
 
-  <\equation>
-    R<rsub|n,v><around|(|z|)>=<frac|\<Gamma\>*<around|(|n+v|)>|\<Gamma\><around|(|v|)>><around*|(|<frac|z|2>|)><rsup|-n><rsub|2>*F<rsub|3><around*|(|<around|[|-<frac|n|2>,-<frac|n|2>+<frac|1|2>|]>;<around|[|v,-n,-v+1-n|]>;-z<rsup|2>|)>
-  </equation>
+    Consider the finite-rank operator <math|T<rsub|N>=<big|sum><rsub|n=0><rsup|N>\<lambda\><rsub|n>*P<rsub|n>>,
+    where <math|P<rsub|n>> is the orthogonal projection onto the subspace
+    spanned by <math|e<rsub|n>>.
+
+    1. <with|font-series|bold|Compactness of <math|T<rsub|N>>>: Each
+    <math|T<rsub|N>> is compact because it is a finite-rank operator.
+
+    2. <with|font-series|bold|Convergence in Operator Norm>: To show that
+    <math|T<rsub|N>> converges to <math|T> in the operator norm, let
+    <math|x\<in\>\<cal-H\>>. For any <math|\<epsilon\>\<gtr\>0>, choose
+    <math|N> such that <math|<around|\||\<lambda\><rsub|n>|\|>\<less\>\<epsilon\>>
+    for all <math|n\<gtr\>N>.
+
+    For <math|x\<in\>\<cal-H\>>,
+
+    <\equation*>
+      <around|\<\|\|\>|<around|(|T-T<rsub|N>|)>*x|\<\|\|\>>=<around|\<\|\|\>|<big|sum><rsub|n=1><rsup|N>\<lambda\><rsub|n>*P<rsub|n>*x|\<\|\|\>>\<leq\>\<epsilon\><around|\<\|\|\>|x|\<\|\|\>>*<big|sum><rsub|n=1><rsup|N><around|\<\|\|\>|P<rsub|n>|\<\|\|\>>=\<epsilon\><around|\<\|\|\>|x|\<\|\|\>>*<big|sum><rsub|n=1><rsup|N>1=\<epsilon\><around|\<\|\|\>|x|\<\|\|\>>*N.
+    </equation*>
+
+    As <math|N\<to\>\<infty\>>, <math|<around|\<\|\|\>|<around|(|T-T<rsub|N>|)>*x|\<\|\|\>>\<to\>0>
+    for all <math|x\<in\>\<cal-H\>>.
+
+    Therefore, <math|T<rsub|N>> converges to <math|T> in the operator norm,
+    proving that <math|T> is compact.
+  </proof>
+
+  <\definition>
+    Let <math|j<rsub|n><around|(|x|)>> is the spherical Bessel function of
+    the first kind
+
+    <\equation>
+      j<rsub|n><around|(|x|)>=<sqrt|<frac|\<pi\>|2*x>>*J<rsub|n+<frac|1|2>><around|(|x|)>=<frac|1|<sqrt|x>>*<around*|(|sin
+      <around|(|z|)>*R<rsub|n,<frac|1|2>><around|(|z|)>-cos
+      <around|(|z|)>*R<rsub|n,<frac|3|2>><around|(|z|)>|)>
+    </equation>
+
+    and <math|P<rsub|n><around*|(|x|)>> be the Legendre polynomials and
+    <math|R<rsub|n,v><around|(|z|)>> be the Lommel
+    (quasi)polynomials<cite|modifiedLommelPolynomials>
+
+    <\equation>
+      R<rsub|n,v><around|(|z|)>=<frac|\<Gamma\>*<around|(|n+v|)>|\<Gamma\><around|(|v|)>><around*|(|<frac|z|2>|)><rsup|-n><rsub|2>*F<rsub|3><around*|(|<around|[|-<frac|n|2>,-<frac|n|2>+<frac|1|2>|]>;<around|[|v,-n,-v+1-n|]>;-z<rsup|2>|)>
+    </equation>
+  </definition>
 
   <\theorem>
     <label|t1>The eigenvalues of\ 
@@ -64,8 +106,8 @@
   </proof>
 
   <\equation>
-    K<rsub|n><around*|(|x,y|)>=<big|sum><rsub|k=0><rsup|n>\<lambda\><rsub|k>
-    \<psi\><rsub|k><around*|(|x-y|)>
+    <tabular|<tformat|<table|<row|<cell|K<rsub|n><around*|(|x,y|)>>|<cell|=<big|sum><rsub|k=0><rsup|n>\<lambda\><rsub|k>
+    \<psi\><rsub|k><around*|(|x-y|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|n><frac|4*n+1|\<pi\>>*<frac|\<Gamma\>*<around*|(|n+<frac|1|2>|)><rsup|2>|\<Gamma\>*<around|(|n+1|)><rsup|2>>*j<rsub|2*n><around|(|x|)>>>>>>
   </equation>
 
   then show that\ 
@@ -127,6 +169,10 @@
 
     5. Determine the eigenvalues by projecting them onto the kernel
 
+    <\equation>
+      \<lambda\><rsub|n>=<big|int><rsub|0><rsup|\<infty\>>J<rsub|0><around*|(|x|)>\<psi\><rsub|n><around*|(|x|)>\<mathd\>x
+    </equation>
+
     6. Apply the proof of uniformity of asymptotic series by showing
     equivalence to<text-dots>
 
@@ -187,7 +233,7 @@
     <associate|bg-color|white>
     <associate|font|stix>
     <associate|font-family|rm>
-    <associate|magnification|1>
+    <associate|magnification|1.2>
     <associate|math-font|math-stix>
     <associate|page-height|auto>
     <associate|page-medium|paper>
@@ -198,12 +244,12 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|3|LetterToProfessorsRogerAndPol.tm>>
-    <associate|auto-2|<tuple|2|3|LetterToProfessorsRogerAndPol.tm>>
-    <associate|auto-3|<tuple|3|3|LetterToProfessorsRogerAndPol.tm>>
-    <associate|bib-finiteFourierTransformsOfClassicalOrthogonalPolynomials|<tuple|1|3|LetterToProfessorsRogerAndPol.tm>>
-    <associate|bib-modifiedLommelPolynomials|<tuple|2|3|LetterToProfessorsRogerAndPol.tm>>
-    <associate|t1|<tuple|1|1|LetterToProfessorsRogerAndPol.tm>>
+    <associate|auto-1|<tuple|1|4|LetterToProfessorsRogerAndPol.tm>>
+    <associate|auto-2|<tuple|2|4|LetterToProfessorsRogerAndPol.tm>>
+    <associate|auto-3|<tuple|5|5|LetterToProfessorsRogerAndPol.tm>>
+    <associate|bib-finiteFourierTransformsOfClassicalOrthogonalPolynomials|<tuple|1|5|LetterToProfessorsRogerAndPol.tm>>
+    <associate|bib-modifiedLommelPolynomials|<tuple|2|5|LetterToProfessorsRogerAndPol.tm>>
+    <associate|t1|<tuple|3|2|LetterToProfessorsRogerAndPol.tm>>
   </collection>
 </references>
 

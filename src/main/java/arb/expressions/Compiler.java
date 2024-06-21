@@ -261,7 +261,7 @@ public class Compiler
 
     classSignature = expression.getFunctionClassTypeSignature(expression.functionClass);
 
-    classVisitor.visit(V21 | V_PREVIEW,
+    classVisitor.visit(V22 | V_PREVIEW,
                        ACC_PUBLIC | ACC_SUPER,
                        className,
                        classSignature,
