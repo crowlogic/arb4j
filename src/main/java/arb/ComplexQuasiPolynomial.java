@@ -7,6 +7,7 @@ import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexIdentityFunction;
+import arb.functions.complex.ComplexQuasiPolynomialNullaryFunction;
 import arb.functions.polynomials.quasi.QuasiPolynomial;
 import arb.functions.sequences.Sequence;
 

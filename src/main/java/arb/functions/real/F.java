@@ -5,10 +5,20 @@ import arb.ComplexQuasiPolynomial;
 import arb.Initializable;
 import arb.Integer;
 import arb.Typesettable;
+import arb.expressions.Expression;
+import arb.functions.complex.ComplexQuasiPolynomialNullaryFunction;
+import arb.functions.polynomials.quasi.complex.ComplexHypergeometricQuasiPolynomial;
 import arb.functions.sequences.Sequence;
 
 public class F implements Sequence<ComplexQuasiPolynomial>, Typesettable, AutoCloseable, Initializable
 {
+  public static void main( String arg[] )
+  {
+    F f = new F();
+    ComplexQuasiPolynomial f3 = f.evaluate(3, 128);
+    System.out.println("f3=" + f3 );
+    
+  }
   public boolean isInitialized;
   Integer        cℤ2 = new Integer("2");
   Integer        cℤ1 = new Integer("1");
@@ -35,11 +45,17 @@ public class F implements Sequence<ComplexQuasiPolynomial>, Typesettable, AutoCl
 
     // this should not be an evaluation.. instead of constructing a new
     // quasipolynomial set this stuf into the result
-    return new ComplexQuasiPolynomial(vℂ1.set(new Complex[]
-    { ℂ1.set(cℤ1), ℂ2.set(n), n.neg(ℂ3) }),
-                                      vℂ2.set(new Complex[]
-                                      { cℤ1.div(cℤ2, bits, ℂ4) }),
-                                      ComplexQuasiPolynomial.parse("(ⅈ*y)/2")).evaluate(null, 1, bits, result);
+    Complex[]                                                                         numer = new Complex[]
+    { ℂ1.set(cℤ1), ℂ2.set(n), n.neg(ℂ3) };
+    Complex[]                                                                         denom = new Complex[]
+    { cℤ1.div(cℤ2, bits, ℂ4) };
+    Expression<Object, ComplexQuasiPolynomial, ComplexQuasiPolynomialNullaryFunction> arg   = ComplexQuasiPolynomialNullaryFunction.parse("(ⅈ*y)/2");
+    try ( ComplexHypergeometricQuasiPolynomial func = new ComplexHypergeometricQuasiPolynomial(vℂ1.set(numer),
+                                                                                               vℂ2.set(denom),
+                                                                                               arg))
+    {
+      return func.evaluate(null, order, bits, result);
+    }
   }
 
   @Override
