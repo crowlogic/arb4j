@@ -317,6 +317,7 @@ public class Compiler
     typePrefixes.put(RealMatrix.class, "ℝᵐˣⁿ");
     typePrefixes.put(ComplexMatrix.class, "ℂᵐˣⁿ");
     typePrefixes.put(RealQuasiPolynomial.class, "qXℝ");
+    typePrefixes.put(ComplexQuasiPolynomial.class, "qXℂ");
   }
 
   public static String getVariablePrefix(Class<?> type)
