@@ -8,6 +8,7 @@ import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexIdentityFunction;
 import arb.functions.polynomials.quasi.QuasiPolynomial;
+import arb.functions.polynomials.quasi.complex.ComplexQuasiPolynomialMultiplication;
 import arb.functions.sequences.Sequence;
 
 /**
@@ -21,6 +22,17 @@ public class ComplexQuasiPolynomial
                                     ComplexFunction
 
 {
+
+  @Override
+  public ComplexQuasiPolynomial mul(ComplexQuasiPolynomial operand, int prec, ComplexQuasiPolynomial result)
+  {
+    result.identity();
+    result.p.bits = prec;
+    result.f      = new ComplexQuasiPolynomialMultiplication(this,
+                                                             operand);
+
+    return result;
+  }
 
   public ComplexQuasiPolynomial mul(Real scalar, int bits2, ComplexQuasiPolynomial result)
   {
@@ -144,11 +156,9 @@ public class ComplexQuasiPolynomial
     return null;
   }
 
-  @Override
-  public ComplexQuasiPolynomial mul(ComplexQuasiPolynomial operand, int prec, ComplexQuasiPolynomial result)
+  public ComplexQuasiPolynomial mul(ComplexQuasiPolynomial operand, int prec)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    return mul(operand, prec, this);
   }
 
   public ComplexQuasiPolynomial mul(Complex val, int bits2, ComplexQuasiPolynomial result)
@@ -257,6 +267,18 @@ public class ComplexQuasiPolynomial
     return identity().zero();
   }
 
+  public ComplexQuasiPolynomial set(int i)
+  {
+    identity();
+    p.set(i);
+    return this;
+  }
 
+  public ComplexQuasiPolynomial set(Complex val)
+  {
+    identity();
+    p.set(val);
+    return this;
+  }
 
 }

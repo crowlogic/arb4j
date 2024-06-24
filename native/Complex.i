@@ -704,6 +704,17 @@ import arb.domains.Domain;
     return getReal().getAllocatedBytes() + getImag().getAllocatedBytes();
   }
 
+  public ComplexQuasiPolynomial ascendingFactorial(Integer n, int bits, ComplexQuasiPolynomial result)
+  {
+    result.set(1);
+    try ( Complex val = new Complex();)
+    {
+      ascendingFactorial(n, bits, val);
+      result.set(val);
+    }
+    return result;
+  }
+  
   public Complex ascendingFactorial(Integer power, int bits, Complex result)
   {
     assert power.getSignedValue() >= 0 : "power must be nonnegative";
