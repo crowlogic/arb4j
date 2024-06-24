@@ -189,24 +189,24 @@ public class RealQuasiPolynomial
     result.identity();
     result.p.bits = bits;
     String str = toString();
-    result.f      = new RealFunction()
-                  {
+    result.f = new RealFunction()
+    {
 
-                    @Override
-                    public Real evaluate(Real t, int order, int bits, Real res)
-                    {
-                      RealQuasiPolynomial.this.evaluate(t, order, bits, res);
-                      res.add(addend, bits);
-                      return res;
+      @Override
+      public Real evaluate(Real t, int order, int bits, Real res)
+      {
+        RealQuasiPolynomial.this.evaluate(t, order, bits, res);
+        res.add(addend, bits);
+        return res;
 
-                    }
+      }
 
-                    @Override
-                    public String toString()
-                    {
-                      return String.format("%s+%s", str, addend);
-                    }
-                  };
+      @Override
+      public String toString()
+      {
+        return String.format("%s+%s", str, addend);
+      }
+    };
     return result;
   }
 
@@ -264,6 +264,12 @@ public class RealQuasiPolynomial
   {
     p.set(integer);
     return this;
+  }
+
+  @Override
+  public RealQuasiPolynomial additiveIdentity()
+  {
+    return identity();
   }
 
 }

@@ -54,6 +54,9 @@ public abstract class QuasiPolynomial<S, P extends Polynomial<S, ? extends P>, F
     }
   }
 
+  public abstract R additiveIdentity();
+
+  
   public abstract R identity();
 
   public abstract R pow(Integer power, int bits, R result);

@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|alt-colors|boring-white|framed-theorems>>
+<style|<tuple|generic|alt-colors|parchment|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Spectral Representations of Stochastic
@@ -67,8 +67,8 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-12>>
 
-    <with|par-left|1tab|1.5<space|2spc>Numerical Solution
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|1tab|1.5<space|2spc>Exact Solutions For Stationary
+    Processes <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-13>>
 
     <with|par-left|1tab|1.6<space|2spc>Irrational Spectra and Ergodicity
@@ -118,7 +118,7 @@
   and
 
   <\equation>
-    C<rsub|w*w><around|(|x<rsub|1>,x<rsub|2>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<omega\><rsub|1>*x<rsub|1>-\<omega\><rsub|2>*x<rsub|2>|)><rsup|T>>*S<around|(|\<omega\>|)>*d*\<omega\>
+    C<rsub|w*w><around|(|x<rsub|1>,x<rsub|2>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<omega\><rsub|1>*x<rsub|1>-\<omega\><rsub|2>*x<rsub|2>|)><rsup|T>>*S<around|(|\<omega\>|)>*d*\<omega\><label|S>
   </equation>
 
   where the symbol <math|T> denotes vector transposition,
@@ -527,26 +527,95 @@
   its Fourier transform is non-negative and non-decreasing over its domain of
   definition by Aronszajn's Theorem and Bochner's theorem respectively.
 
-  <subsection|Numerical Solution>
+  <subsection|Exact Solutions For Stationary Processes>
 
   In this section, a Galerkin type procedure is described for the solution of
-  the Fredholm equation (<reference|2.33>). Let
-  <math|h<rsub|i><around|(|x|)>> be a complete set of functions in the
-  Hilbert space <math|H>. Each eigenfunction of the kernel
-  <math|C<around|(|x<rsub|1>,x<rsub|2>|)>> may be represented as
+  the Fredholm equation (<reference|2.33>) where
+  <math|h<rsub|i><around|(|x|)>> is not just any complete set of functions in
+  the Hilbert space <math|H> but a complete orthogonal set given by
+  orthogonalizing the Fourier transforms of the orthogonal polynomials whose
+  orthogonality measure is equal to the spectral density of the process.\ 
+
+  <\definition>
+    Let the term 'spectral basis set' denote the orthogonal polynomials whose
+    orthogonality measure is equal to the spectral density of the process
+    which is given by the Fourier transform of the covariance kernel
+    function.\ 
+  </definition>
+
+  For example, suppose that the kernel is given by a stationary
+  (translation-invariant) process where the covariance is a function of one
+  variable given by the difference between two points only
 
   <\equation>
-    f<rsub|k><around|(|x|)>=<big|sum><rsub|i=1><rsup|N>d<rsub|i><rsup|<around|(|k|)>>*h<rsub|i><around|(|x|)><label|2.74>
+    C<around*|(|t,s|)>=J<rsub|0><around*|(|t-s|)>
   </equation>
 
-  with an error <math|e<rsub|N>> resulting from truncating the summation
-  after the <math|N>th term. This error is equal to the difference between
-  the left hand side and the right hand side of equation (<reference|2.33>).
-  Substituting equation (<reference|2.74>) into equation (<reference|2.33>)
-  yields the following expression for the error
+  Each eigenfunction of the kernel <math|C<around|(|t-s|)>> may then be
+  represented exactly as
 
   <\equation>
-    e<rsub|N>=<big|sum><rsub|i=1><rsup|N>d<rsub|i><rsup|<around|(|k|)>>*<around*|[|<big|int><rsub|D><big|int><rsub|D>C<around|(|x<rsub|1>,x<rsub|2>|)>*h<rsub|i><around|(|x<rsub|2>|)>*d*x<rsub|2>-\<lambda\><rsub|n>*h<rsub|i><around|(|x<rsub|1>|)>|]>
+    f<rsub|k><around|(|x|)>=*h<rsub|k><around|(|x|)><label|2.74>
+  </equation>
+
+  by defining <math|h<rsub|i><around*|(|x|)>> to be the orthogonal complement
+  of the normalized Fourier transforms <math|Y<rsub|n><around*|(|y|)>> which
+  are given by normalizing
+
+  <\equation>
+    <wide|T|^><rsub|n><around|(|y|)>=<big|int><rsub|-1><rsup|1>T<rsub|n><around|(|x|)>*e<rsup|i*x*y><space|0.17em><math-up|d>x
+  </equation>
+
+  \<cdot\>
+
+  the finite Fourier transform of the spectral basis set
+  <math|T<rsub|n>>(here the Chebyshev type-I
+  polynomials<cite|finiteFourierTransformsOfClassicalOrthogonalPolynomials>
+  which is just the usual infinite Fourier transform with the integration
+  restricted to the range <math|-1*\<ldots\>*1> since
+  <math|T<rsub|n><around|(|x|)>=0\<forall\>x\<nin\><around|[|-1,1|]>> or
+  equivalently taking the functions value to be 0 outside the range <math|-1>
+  to <math|1>). Taking the Fourier transform of the elements of the spectral
+  basis set takes it back into the time/space domain from the
+  spectral(frequency) domain and by orthogonalizing the with respect to the
+  unweighted <math|L<rsup|2>> inner product the optimal basis for the
+  representation of the covariance function itself is constructed by noting
+  that the partial sums of <math|h<rsub|i><around*|(|x|)>> will then
+  pointwisely converge to <math|K=J<rsub|0>>\ 
+
+  \ of the orthogonal polynomials spanning the spectral basis set
+  <math|T<rsub|n>> given by the Gram-Schidt recursions
+
+  <\equation>
+    h<rsub|i><around|(|y|)>=<wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>=<wide|T<rsup|>|^><rsub|n><around|(|y|)>-<big|sum><rsub|m=1><rsup|n-1><frac|<around|\<langle\>|<wide|T|^><rsub|n><around|(|y|)>,<wide|T|^><rsup|\<perp\>><rsub|m><around|(|y|)>|\<rangle\>>|<around|\<langle\>|<wide|T|^><rsup|\<perp\>><rsub|m><around|(|y|)>,<wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>|\<rangle\>>>*<wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>
+  </equation>
+
+  which in the case when <math|K=J<rsub|0>> the spectral density is seen to
+  be equal to
+
+  <\equation>
+    S<around|(|\<omega\>|)>=<big|int><rsub|0><rsup|\<infty\>>J<rsub|0><around|(|x|)>*e<rsup|i*x*\<omega\>><space|0.17em><math-up|d>x=<around*|{|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<frac|1|<sqrt|1-\<omega\><rsup|2>>>>|<cell|\<omega\>\<in\><around|(|-1,1|)>>>|<row|<cell|0>|<cell|<text|otherwise>>>>>>|\<nobracket\>>
+  </equation>
+
+  so that we identify the spectral density with the Chebyshev polynomials of
+  the first kind <math|T<rsub|n>>, since their orthogonality measure is, in
+  fact, equal to the spectral density in the case
+  <math|K<around|(|t,s|)>=J<rsub|0>*<around|(|t-s|)>>. Recalling that the
+  Chebyshev polynomials' orthogonality relation is
+
+  <\equation>
+    <big|int><rsub|-1><rsup|1>T<rsub|n><around|(|\<omega\>|)>*T<rsub|m><around|(|\<omega\>|)>*S<around|(|\<omega\>|)><space|0.17em><math-up|d>\<omega\>=<around*|{|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|0>|<cell|n\<neq\>m>>|<row|<cell|\<pi\>>|<cell|n=m=0>>|<row|<cell|<frac|\<pi\>|2>>|<cell|n=m\<neq\>0>>>>>|\<nobracket\>>
+  </equation>
+
+  \;
+
+  \ This error is equal to the difference between the left hand side and the
+  right hand side of equation (<reference|2.33>). Substituting equation
+  (<reference|2.74>) into equation (<reference|2.33>) yields the following
+  expression for the error
+
+  <\equation>
+    e<rsub|N>=<big|sum><rsub|i=0><rsup|N>d<rsub|i><rsup|<around|(|k|)>>*<around*|[|<big|int><rsub|D><big|int><rsub|D>C<around|(|x<rsub|1>,x<rsub|2>|)>*h<rsub|i><around|(|x<rsub|2>|)>*d*x<rsub|2>-\<lambda\><rsub|n>*h<rsub|i><around|(|x<rsub|1>|)>|]>
   </equation>
 
   Requiring the error to be orthogonal to the approximating space yields
@@ -624,18 +693,24 @@
   kernel.<cite-detail|stochasticFiniteElements|2.3.2>
 
   <\bibliography|bib|tm-plain|refs>
-    <\bib-list|3>
-      <bibitem*|1><label|bib-stochasticFiniteElements>Roger<nbsp>G.<nbsp>Ghanem<localize|
+    <\bib-list|4>
+      <bibitem*|1><label|bib-finiteFourierTransformsOfClassicalOrthogonalPolynomials>Atul
+      Dixit, Lin Jiu, Victor<nbsp>H Moll<localize|, and >Christophe Vignat.
+      <newblock>The finite fourier transform of classical polynomials.
+      <newblock><with|font-shape|italic|Journal of the Australian
+      Mathematical Society>, 98:145\U160, 2015.<newblock>
+
+      <bibitem*|2><label|bib-stochasticFiniteElements>Roger<nbsp>G.<nbsp>Ghanem<localize|
       and >Pol<nbsp>D.<nbsp>Spanos. <newblock><with|font-shape|italic|Stochastic
       finite elements: a spectral approach>. <newblock>Springer-Verlag,
       Berlin, Heidelberg, 1991.<newblock>
 
-      <bibitem*|2><label|bib-stochasticProcessesInferenceTheory>Malempati<nbsp>M.<nbsp>Rao.
+      <bibitem*|3><label|bib-stochasticProcessesInferenceTheory>Malempati<nbsp>M.<nbsp>Rao.
       <newblock><with|font-shape|italic|Stochastic Processes: Inference
       Theory>. <newblock>Springer Monographs in Mathematics. Springer,
       2nd<localize| edition>, 2014.<newblock>
 
-      <bibitem*|3><label|bib-correlationTheoryOfStationaryRandomProcesses>A.M.<nbsp>Yaglom.
+      <bibitem*|4><label|bib-correlationTheoryOfStationaryRandomProcesses>A.M.<nbsp>Yaglom.
       <newblock><with|font-shape|italic|Correlation Theory of Stationary and
       Related Random Functions>, <localize|volume> I: Basic Results<localize|
       of ><with|font-shape|italic|Applied Probability>. <newblock>Springer
@@ -672,20 +747,21 @@
     <associate|2.26|<tuple|26|7>>
     <associate|2.33|<tuple|35|8>>
     <associate|2.7|<tuple|7|3>>
-    <associate|2.74|<tuple|36|9>>
-    <associate|2.77|<tuple|39|9>>
-    <associate|2.78|<tuple|40|9>>
-    <associate|2.79|<tuple|41|9>>
+    <associate|2.74|<tuple|37|9>>
+    <associate|2.77|<tuple|44|10>>
+    <associate|2.78|<tuple|45|10>>
+    <associate|2.79|<tuple|46|10>>
     <associate|2.8|<tuple|8|4>>
-    <associate|2.82|<tuple|44|10>>
+    <associate|2.82|<tuple|49|10>>
     <associate|2.9|<tuple|9|4>>
+    <associate|S|<tuple|4|2>>
     <associate|auto-1|<tuple|1|1>>
     <associate|auto-10|<tuple|1.3.3|8>>
     <associate|auto-11|<tuple|1.3.4|8>>
     <associate|auto-12|<tuple|1.4|8>>
     <associate|auto-13|<tuple|1.5|9>>
-    <associate|auto-14|<tuple|1.6|10>>
-    <associate|auto-15|<tuple|1.6|10>>
+    <associate|auto-14|<tuple|1.6|11>>
+    <associate|auto-15|<tuple|1.6|11>>
     <associate|auto-2|<tuple|1.1|1>>
     <associate|auto-3|<tuple|1.2|3>>
     <associate|auto-4|<tuple|1.2.1|3>>
@@ -694,9 +770,10 @@
     <associate|auto-7|<tuple|1.3|6>>
     <associate|auto-8|<tuple|1.3.1|6>>
     <associate|auto-9|<tuple|1.3.2|7>>
-    <associate|bib-correlationTheoryOfStationaryRandomProcesses|<tuple|3|10>>
-    <associate|bib-stochasticFiniteElements|<tuple|1|10>>
-    <associate|bib-stochasticProcessesInferenceTheory|<tuple|2|10>>
+    <associate|bib-correlationTheoryOfStationaryRandomProcesses|<tuple|4|11>>
+    <associate|bib-finiteFourierTransformsOfClassicalOrthogonalPolynomials|<tuple|1|11>>
+    <associate|bib-stochasticFiniteElements|<tuple|2|11>>
+    <associate|bib-stochasticProcessesInferenceTheory|<tuple|3|11>>
   </collection>
 </references>
 
@@ -716,6 +793,8 @@
       stochasticFiniteElements
 
       stochasticFiniteElements
+
+      finiteFourierTransformsOfClassicalOrthogonalPolynomials
 
       stochasticFiniteElements
 
@@ -773,8 +852,8 @@
       Equation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-12>>
 
-      <with|par-left|<quote|1tab>|1.5<space|2spc>Numerical Solution
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|1.5<space|2spc>Exact Solutions For
+      Stationary Processes <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-13>>
 
       <with|par-left|<quote|1tab>|1.6<space|2spc>Irrational Spectra and

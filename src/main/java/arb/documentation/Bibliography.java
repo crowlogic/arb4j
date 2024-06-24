@@ -9,6 +9,7 @@ import arb.annotations.Note;
 import arb.documentation.references.Article;
 import arb.documentation.references.Book;
 import arb.documentation.references.MastersThesis;
+import arb.documentation.references.Miscellaneous;
 import arb.documentation.references.Reference;
 
 /**
@@ -21,7 +22,14 @@ public class Bibliography
                           extends
                           AbstractBibliography
 {
-  public static Article       bandlimitedRKHSApplicationshun                             = new Article("Applications of Reproducing Kernel Hilbert Spaces--Bandlimited Signal Models",
+  public static Miscellaneous gaussianProcessIntroduction                             = new Miscellaneous("Introduction to Gaussian Processes",
+                                                                                                          "Steven P. Lalley",
+                                                                                                          "2013",
+                                                                                                          "https://galton.uchicago.edu/~lalley/Courses/386/GaussianProcesses.pdf",
+                                                                                                          "",
+                                                                                                          "");
+
+  public static Article       bandlimitedRKHSApplicationshun                          = new Article("Applications of Reproducing Kernel Hilbert Spaces--Bandlimited Signal Models",
                                                                                                     "K. Yao",
                                                                                                     "1967",
                                                                                                     "Information and Control",
@@ -36,9 +44,9 @@ public class Bibliography
                                                                                                     "277-294").setPublisher("Springer");
 
   public static Article       modifiedLommelPolynomials                               = new Article("Asymptotic Expansion of the Modified Lommel Polynomials $h_{n,ν}(x)$ and Their Zeros",
-                                                                                                    "K.F. Lee, R. Wong",                                                                                                                                                                                                                           // Authors'
-                                                                                                                                                                                                                                                                                                                                                   // names
-                                                                                                                                                                                                                                                                                                                                                   // provided
+                                                                                                    "K.F. Lee, R. Wong",                                                                                                                                                                                                                                                 // Authors'
+                                                                                                                                                                                                                                                                                                                                                                         // names
+                                                                                                                                                                                                                                                                                                                                                                         // provided
                                                                                                     "2014",
                                                                                                     "Proceedings of the American Mathematical Society",
                                                                                                     "142",

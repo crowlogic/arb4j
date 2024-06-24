@@ -3,45 +3,7 @@
 <style|<tuple|generic|alt-colors|boring-white|framed-theorems>>
 
 <\body>
-  <\lemma>
-    <strong|Converse of the Spectral Theorem for Compact Operators>
-
-    If <math|T> is an operator on a Hilbert space <math|\<cal-H\>> with
-    eigenvalues <math|\<lambda\><rsub|n>> such that
-    <math|\<lambda\><rsub|n>\<to\>0> as <math|n\<to\>\<infty\>>, then
-    <math|T> is a compact operator.
-  </lemma>
-
-  <\proof>
-    Let <math|<around|{|e<rsub|n>|}><rsub|n=1><rsup|\<infty\>>> be an
-    orthonormal basis of <math|\<cal-H\>> consisting of eigenvectors of
-    <math|T>, with <math|T*e<rsub|n>=\<lambda\><rsub|n>*e<rsub|n>>.
-
-    Consider the finite-rank operator <math|T<rsub|N>=<big|sum><rsub|n=0><rsup|N>\<lambda\><rsub|n>*P<rsub|n>>,
-    where <math|P<rsub|n>> is the orthogonal projection onto the subspace
-    spanned by <math|e<rsub|n>>.
-
-    1. <with|font-series|bold|Compactness of <math|T<rsub|N>>>: Each
-    <math|T<rsub|N>> is compact because it is a finite-rank operator.
-
-    2. <with|font-series|bold|Convergence in Operator Norm>: To show that
-    <math|T<rsub|N>> converges to <math|T> in the operator norm, let
-    <math|x\<in\>\<cal-H\>>. For any <math|\<epsilon\>\<gtr\>0>, choose
-    <math|N> such that <math|<around|\||\<lambda\><rsub|n>|\|>\<less\>\<epsilon\>>
-    for all <math|n\<gtr\>N>.
-
-    For <math|x\<in\>\<cal-H\>>,
-
-    <\equation*>
-      <around|\<\|\|\>|<around|(|T-T<rsub|N>|)>*x|\<\|\|\>>=<around|\<\|\|\>|<big|sum><rsub|n=1><rsup|N>\<lambda\><rsub|n>*P<rsub|n>*x|\<\|\|\>>\<leq\>\<epsilon\><around|\<\|\|\>|x|\<\|\|\>>*<big|sum><rsub|n=1><rsup|N><around|\<\|\|\>|P<rsub|n>|\<\|\|\>>=\<epsilon\><around|\<\|\|\>|x|\<\|\|\>>*<big|sum><rsub|n=1><rsup|N>1=\<epsilon\><around|\<\|\|\>|x|\<\|\|\>>*N.
-    </equation*>
-
-    As <math|N\<to\>\<infty\>>, <math|<around|\<\|\|\>|<around|(|T-T<rsub|N>|)>*x|\<\|\|\>>\<to\>0>
-    for all <math|x\<in\>\<cal-H\>>.
-
-    Therefore, <math|T<rsub|N>> converges to <math|T> in the operator norm,
-    proving that <math|T> is compact.
-  </proof>
+  \;
 
   <\definition>
     Let <math|j<rsub|n><around|(|x|)>> is the spherical Bessel function of
@@ -122,40 +84,7 @@
   <\remark>
     The solutions in Theorem <reference|t1> were derive by identifying the
     orthogonal polynomial sequence associated with the spectral density of
-    the kernel <math|K>, which in the case when <math|K=J<rsub|0>> the
-    spectral density is seen to be equal to
-
-    <\equation>
-      S<around|(|\<omega\>|)>=<big|int><rsub|0><rsup|\<infty\>>J<rsub|0><around|(|x|)>*e<rsup|i*x*\<omega\>><space|0.17em><math-up|d>x=<around*|{|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<frac|1|<sqrt|1-\<omega\><rsup|2>>>>|<cell|\<omega\>\<in\><around|(|-1,1|)>>>|<row|<cell|0>|<cell|<text|otherwise>>>>>>|\<nobracket\>>
-    </equation>
-
-    so that we identify the spectral density with the Chebyshev polynomials
-    of the first kind, since their orthogonality measure is, in fact, equal
-    to the spectral density in the case <math|K<around|(|t,s|)>=J<rsub|0>*<around|(|t-s|)>>.
-    The Chebyshev polynomials' orthogonality relation is
-
-    <\equation>
-      <big|int><rsub|-1><rsup|1>T<rsub|n><around|(|\<omega\>|)>*T<rsub|m><around|(|\<omega\>|)>*S<around|(|\<omega\>|)><space|0.17em><math-up|d>\<omega\>=<around*|{|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|0>|<cell|n\<neq\>m>>|<row|<cell|\<pi\>>|<cell|n=m=0>>|<row|<cell|<frac|\<pi\>|2>>|<cell|n=m\<neq\>0>>>>>|\<nobracket\>>
-    </equation>
-
-    2. Orthogonalize the finite Fourier transform of the Chebyshev type-I
-    polynomials<cite|finiteFourierTransformsOfClassicalOrthogonalPolynomials>
-    (which is just the usual infinite Fourier transform with the integration
-    restricted to the range <math|-1*\<ldots\>*1> since
-    <math|T<rsub|n><around|(|x|)>=0\<forall\>x\<nin\><around|[|-1,1|]>>)
-
-    <\equation>
-      <wide|T|^><rsub|n><around|(|y|)>=<big|int><rsub|-1><rsup|1>T<rsub|n><around|(|x|)>*e<rsup|i*x*y><space|0.17em><math-up|d>x
-    </equation>
-
-    by applying the Gram-Schmidt recursions
-
-    <\equation>
-      \<psi\><rsub|n><around|(|y|)>=<wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>=<wide|T<rsup|>|^><rsub|n><around|(|y|)>-<big|sum><rsub|m=1><rsup|n-1><frac|<around|\<langle\>|<wide|T|^><rsub|n><around|(|y|)>,<wide|T|^><rsup|\<perp\>><rsub|m><around|(|y|)>|\<rangle\>>|<around|\<langle\>|<wide|T|^><rsup|\<perp\>><rsub|m><around|(|y|)>,<wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>|\<rangle\>>>*<wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>
-    </equation>
-
-    with respect to the unweighted standard Lebesgue inner product measure
-    over <math|0> to <math|\<infty\>>.
+    the kernel <math|K>,\ 
 
     4. Note that the partial sums\ 
 
@@ -181,27 +110,7 @@
 
   \;
 
-  <\big-figure|<image|KConvergence.eps|375pt|176.25pt||>>
-    Demonstration of convergence of <math|K<rsub|n><around*|(|h|)>> to
-    <math|J<rsub|0><around*|(|h|)>> for <math|n=0,5,10>
-  </big-figure>
-
-  <\big-figure|<image|KErr.eps|375pt|176.25pt||>>
-    Demonstrating of approximation error between
-    \ <math|K<rsub|n><around*|(|h|)>> and <math|J<rsub|0><around*|(|h|)>> for
-    <math|n=0,5,10>
-  </big-figure>
-
-  <\note>
-    This procedure is an application of the Galerkin 'numerical' method in
-    the first part of "Stochastic Finite Elements\Q except instead of just
-    choosing a piecewise or other polynomial basis for the expansion, you
-    apply the orthogonalization procedure to the Fourier transform of the
-    orthogonal polynomials corresponding to the spectral density, and thus
-    what are termed the the mass and stiffness matrices in the engineering
-    and finite element literature become the identity matrix, and
-    <math|c<rsub|n>=\<lambda\><rsub|n>> becomes an identity.
-  </note>
+  \;
 
   \;
 
@@ -244,12 +153,12 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|4|LetterToProfessorsRogerAndPol.tm>>
-    <associate|auto-2|<tuple|2|4|LetterToProfessorsRogerAndPol.tm>>
-    <associate|auto-3|<tuple|5|5|LetterToProfessorsRogerAndPol.tm>>
-    <associate|bib-finiteFourierTransformsOfClassicalOrthogonalPolynomials|<tuple|1|5|LetterToProfessorsRogerAndPol.tm>>
-    <associate|bib-modifiedLommelPolynomials|<tuple|2|5|LetterToProfessorsRogerAndPol.tm>>
-    <associate|t1|<tuple|3|2|LetterToProfessorsRogerAndPol.tm>>
+    <associate|auto-1|<tuple|10|4>>
+    <associate|auto-2|<tuple|2|4>>
+    <associate|auto-3|<tuple|4|5>>
+    <associate|bib-finiteFourierTransformsOfClassicalOrthogonalPolynomials|<tuple|1|5>>
+    <associate|bib-modifiedLommelPolynomials|<tuple|2|5>>
+    <associate|t1|<tuple|2|2>>
   </collection>
 </references>
 

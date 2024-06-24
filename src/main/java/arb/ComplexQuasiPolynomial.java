@@ -7,7 +7,6 @@ import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexIdentityFunction;
-import arb.functions.complex.ComplexQuasiPolynomialNullaryFunction;
 import arb.functions.polynomials.quasi.QuasiPolynomial;
 import arb.functions.sequences.Sequence;
 
@@ -22,6 +21,32 @@ public class ComplexQuasiPolynomial
                                     ComplexFunction
 
 {
+
+  public ComplexQuasiPolynomial mul(Real scalar, int bits2, ComplexQuasiPolynomial result)
+  {
+    result.identity();
+    result.f      = new ComplexFunction()
+                  {
+
+                    @Override
+                    public Complex evaluate(Complex t, int order, int rbits, Complex res)
+                    {
+
+                      ComplexQuasiPolynomial.this.evaluate(t, order, rbits, res);
+                      return res.mul(scalar, rbits, res);
+
+                    }
+
+                    @Override
+                    public String toString()
+                    {
+                      return String.format("%s*%s", ComplexQuasiPolynomial.this, scalar);
+                    }
+                  };
+
+    result.p.bits = bits2;
+    return result;
+  }
 
   public ComplexQuasiPolynomial()
   {
@@ -89,8 +114,19 @@ public class ComplexQuasiPolynomial
     if (p != null)
     {
       p.close();
-      p = new ComplexPolynomial().identity();
     }
+    p = new ComplexPolynomial().identity();
+    return this;
+  }
+
+  public ComplexQuasiPolynomial multiplicativeIdentity()
+  {
+    return identity();
+  }
+
+  public ComplexQuasiPolynomial zero()
+  {
+    p.zero();
     return this;
   }
 
@@ -115,11 +151,70 @@ public class ComplexQuasiPolynomial
     return null;
   }
 
+  public ComplexQuasiPolynomial mul(Complex val, int bits2, ComplexQuasiPolynomial result)
+  {
+    result.identity();
+    result.f      = new ComplexFunction()
+                  {
+
+                    @Override
+                    public Complex evaluate(Complex t, int order, int rbits, Complex res)
+                    {
+
+                      ComplexQuasiPolynomial.this.evaluate(t, order, rbits, res);
+                      return res.mul(val, rbits, res);
+
+                    }
+
+                    @Override
+                    public String toString()
+                    {
+                      return String.format("%s*%s", ComplexQuasiPolynomial.this, val);
+                    }
+                  };
+
+    result.p.bits = bits2;
+    return result;
+  }
+
+  public ComplexQuasiPolynomial set(ComplexQuasiPolynomial complexQuasiPolynomial)
+  {
+    this.f = complexQuasiPolynomial.f;
+    this.p.set(complexQuasiPolynomial.p);
+    return this;
+  }
+
   @Override
   public ComplexQuasiPolynomial div(ComplexQuasiPolynomial j, int prec, ComplexQuasiPolynomial result)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
+  }
+
+  public ComplexQuasiPolynomial div(Integer j, int prec, ComplexQuasiPolynomial result)
+  {
+    result.identity();
+    result.f      = new ComplexFunction()
+                  {
+
+                    @Override
+                    public Complex evaluate(Complex val, int order, int rbits, Complex res)
+                    {
+
+                      ComplexQuasiPolynomial.this.evaluate(val, rbits, res);
+                      return res.div(val, rbits);
+
+                    }
+
+                    @Override
+                    public String toString()
+                    {
+                      return String.format("%s/%s", ComplexQuasiPolynomial.this, j);
+                    }
+                  };
+
+    result.p.bits = prec;
+    return result;
   }
 
   @Override
@@ -132,8 +227,36 @@ public class ComplexQuasiPolynomial
   @Override
   public ComplexQuasiPolynomial pow(Integer power, int bits, ComplexQuasiPolynomial result)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    result.identity();
+    result.f      = new ComplexFunction()
+                  {
+
+                    @Override
+                    public Complex evaluate(Complex val, int order, int rbits, Complex res)
+                    {
+
+                      ComplexQuasiPolynomial.this.evaluate(val, rbits, res);
+                      return res.pow(power.getSignedValue(), rbits);
+
+                    }
+
+                    @Override
+                    public String toString()
+                    {
+                      return String.format("%s^%s", ComplexQuasiPolynomial.this, power);
+                    }
+                  };
+
+    result.p.bits = bits;
+    return result;
   }
+
+  @Override
+  public ComplexQuasiPolynomial additiveIdentity()
+  {
+    return identity().zero();
+  }
+
+
 
 }

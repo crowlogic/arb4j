@@ -11,12 +11,8 @@ import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.Complex;
-import arb.ComplexPolynomial;
+import arb.*;
 import arb.Integer;
-import arb.Real;
-import arb.RealPolynomial;
-import arb.RealQuasiPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
@@ -397,6 +393,11 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     mapTypes(Real.class, ComplexPolynomial.class, ComplexPolynomial.class);
     mapTypes(Integer.class, RealQuasiPolynomial.class, RealQuasiPolynomial.class);
     mapTypes(Real.class, RealQuasiPolynomial.class, RealQuasiPolynomial.class);
+    mapTypes(Real.class, ComplexQuasiPolynomial.class, ComplexQuasiPolynomial.class);
+
+    mapTypes(Integer.class, ComplexQuasiPolynomial.class, ComplexQuasiPolynomial.class);
+    mapTypes(Complex.class, ComplexQuasiPolynomial.class, ComplexQuasiPolynomial.class);
+    mapTypes(Complex.class, RealQuasiPolynomial.class, ComplexQuasiPolynomial.class);
 
   }
 
