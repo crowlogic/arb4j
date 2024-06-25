@@ -2,10 +2,13 @@ package arb.functions.polynomials.quasi;
 
 import arb.ComplexQuasiPolynomial;
 import arb.Integer;
+import arb.Real;
+import arb.RealConstants;
 import arb.RealQuasiPolynomial;
 import arb.RoundingMode;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.real.RealFunction;
 import arb.functions.sequences.Sequence;
@@ -31,7 +34,9 @@ public class RealQuasiPolynomialTest
 
   public void testLommelQuasiPolynomialSequence()
   {
-    var expression = RealQuasiPolynomial.parseSequence("R", "n->v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z^2)");
+    Real v = new Real().set(RealConstants.half).setName("v");
+    Context context = new Context(v);
+    var expression = RealQuasiPolynomial.parseSequence("R", "n->v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z^2)",context);
     System.out.println(expression.syntaxTextTree());
     Sequence<RealQuasiPolynomial> f = expression.instantiate();
     RealQuasiPolynomial f0 = f.evaluate(0, 128);

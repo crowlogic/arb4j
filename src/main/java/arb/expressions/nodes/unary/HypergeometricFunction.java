@@ -22,6 +22,7 @@ import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Vector;
 import arb.functions.Function;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
+import arb.functions.complex.ComplexQuasiPolynomialNullaryFunction;
 import arb.functions.polynomials.ComplexHypergeometricPolynomial;
 import arb.functions.polynomials.RealHypergeometricPolynomial;
 import arb.functions.polynomials.quasi.QuasiPolynomial;
@@ -45,6 +46,8 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
   Node<D, R, F> α;
 
   Node<D, R, F> β;
+
+  private Class<?> hypergeometricClass;
 
   public HypergeometricFunction(Expression<D, R, F> expression)
   {
@@ -83,20 +86,11 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
       err.printf("pFq.isQuasiPolynomial=%s\n", isQuasiPolynomial);
     }
 
-    constructAndEvaluateHypergeometricPolynomial(resultType, mv, scalarType, isQuasiPolynomial);
-
+    constructHypergeometricPolynomial(mv, scalarType, isQuasiPolynomial);
+    evaluateHypergeometricPolynomial(resultType, mv);
     return mv;
   }
 
-  public HypergeometricFunction<D, R, F> constructAndEvaluateHypergeometricPolynomial(Class<?> resultType,
-                                                                                      MethodVisitor mv,
-                                                                                      Class<?> scalarType,
-                                                                                      boolean quasi)
-  {
-    constructHypergeometricPolynomial(mv, scalarType, quasi);
-    evaluateHypergeometricPolynomial(resultType, mv);
-    return this;
-  }
 
   public HypergeometricFunction<D, R, F> evaluateHypergeometricPolynomial(Class<?> resultType, MethodVisitor mv)
   {
@@ -106,7 +100,7 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     checkClassCast(Compiler.loadResultParameter(mv), resultType);
     invokeMethod(mv,
                  INVOKEVIRTUAL,
-                 RealPolynomial.class.equals(resultType) ? RealHypergeometricPolynomial.class : ComplexHypergeometricPolynomial.class,
+                 hypergeometricClass,
                  "evaluate",
                  resultType,
                  Object.class,
@@ -124,8 +118,8 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
   public void constructHypergeometricPolynomial(MethodVisitor mv, Class<?> scalarType, boolean quasi)
   {
     boolean isReal                        = Real.class.equals(scalarType);
-    var     hypergeometricPolynomialClass = isReal ? (quasi ? RealQuasiPolynomial.class : RealHypergeometricPolynomial.class) : (quasi ? ComplexQuasiPolynomial.class : ComplexHypergeometricPolynomial.class);
-    mv.visitTypeInsn(NEW, Type.getInternalName(hypergeometricPolynomialClass));
+    hypergeometricClass = isReal ? (quasi ? RealQuasiPolynomial.class : RealHypergeometricPolynomial.class) : (quasi ? ComplexQuasiPolynomialNullaryFunction.class : ComplexHypergeometricPolynomial.class);
+    mv.visitTypeInsn(NEW, Type.getInternalName(hypergeometricClass));
     duplicateTopOfTheStack(mv);
 
     α.generate(scalarType, mv);
@@ -134,7 +128,7 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     mv.visitLdcInsn(arg.toString());
     Class<?> nullaryFunctionClass = isReal ? (quasi ? RealQuasiPolynomial.class : RealPolynomialNullaryFunction.class) : (quasi ? ComplexQuasiPolynomial.class : ComplexPolynomialNullaryFunction.class);
     invokeStaticMethod(mv, nullaryFunctionClass, "parse", Expression.class, String.class);
-    invokeConstructor(mv, hypergeometricPolynomialClass, scalarType, scalarType, Expression.class);
+    invokeConstructor(mv, hypergeometricClass, scalarType, scalarType, Expression.class);
   }
 
 }
