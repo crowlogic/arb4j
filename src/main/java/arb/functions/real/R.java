@@ -12,18 +12,18 @@ public class R implements Sequence<RealQuasiPolynomial>, Typesettable, AutoClose
   public boolean             isInitialized;
   Integer                    cℤ2  = new Integer("1");
   Integer                    cℤ1  = new Integer("2");
+  public Real                v;
   public RealQuasiPolynomial qXℝ1 = new RealQuasiPolynomial();
   public RealQuasiPolynomial qXℝ2 = new RealQuasiPolynomial();
   public RealQuasiPolynomial qXℝ3 = new RealQuasiPolynomial();
   public RealQuasiPolynomial qXℝ4 = new RealQuasiPolynomial();
-  public RealQuasiPolynomial qXℝ5 = new RealQuasiPolynomial();
   public Real                vℝ2  = new Real();
   public Real                vℝ1  = new Real();
   public Real                ℝ1   = new Real();
   public Real                ℝ2   = new Real();
   public Real                ℝ3   = new Real();
   public Real                ℝ4   = new Real();
-  public RealQuasiPolynomial qXℝ6 = new RealQuasiPolynomial();
+  public Real                ℝ9   = new Real();
   public Real                ℝ5   = new Real();
   public Real                ℝ6   = new Real();
   public Real                ℝ7   = new Real();
@@ -38,62 +38,59 @@ public class R implements Sequence<RealQuasiPolynomial>, Typesettable, AutoClose
   @Override
   public RealQuasiPolynomial evaluate(Integer n, int order, int bits, RealQuasiPolynomial result)
   {
-    if (!this.isInitialized)
+    if (!isInitialized)
     {
-      this.initialize();
+      initialize();
     }
 
-    return result.identity()
-                 .ascendingFactorial(n, bits, this.qXℝ1)
-                 .mul(result.identity().div(this.cℤ1, bits, this.qXℝ2).pow(n.neg(this.qXℝ3), bits, this.qXℝ4),
-                      bits,
-                      this.qXℝ5)
-                 .mul(new RealQuasiPolynomial(this.vℝ1.set(new Real[]
-                 { this.cℤ2.div(this.cℤ1, bits, this.ℝ1).sub(n.div(this.cℤ1, bits, this.ℝ2), bits, this.ℝ3),
-                   n.div(this.cℤ1, bits, this.ℝ4).neg(this.ℝ5) }),
-                                              this.vℝ2.set(new Real[]
-                                              { this.ℝ6.set(result.identity()), n.neg(this.ℝ7),
-                                                this.cℤ2.sub(result.identity(), bits, this.qXℝ6)
-                                                        .sub(n, bits, this.ℝ8) }),
-                                              RealQuasiPolynomial.parse("-z^2")).evaluate(null, 1, bits, result),
-                      bits,
-                      result);
+    return v.ascendingFactorial(n, bits, ℝ1)
+            .mul(result.identity().div(cℤ1, bits, qXℝ1).pow(n.neg(qXℝ2), bits, qXℝ3), bits, qXℝ4)
+            .mul(new RealQuasiPolynomial(vℝ1.set(new Real[]
+            { cℤ2.div(cℤ1, bits, ℝ2).sub(n.div(cℤ1, bits, ℝ3), bits, ℝ4), n.div(cℤ1, bits, ℝ5).neg(ℝ6) }),
+                                         vℝ2.set(new Real[]
+                                         { v, n.neg(ℝ7), cℤ2.sub(v, bits, ℝ8).sub(n, bits, ℝ9) }),
+                                         RealQuasiPolynomial.parse("-z^2")).evaluate(null, 1, bits, result),
+                 bits,
+                 result);
   }
 
   @Override
   public void initialize()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
+    else if (v == null)
+    {
+      throw new AssertionError("v shan't be null");
+    }
     else
     {
-      this.isInitialized = true;
+      isInitialized = true;
     }
   }
 
   @Override
   public void close()
   {
-    this.cℤ2.close();
-    this.cℤ1.close();
-    this.qXℝ1.close();
-    this.qXℝ2.close();
-    this.qXℝ3.close();
-    this.qXℝ4.close();
-    this.qXℝ5.close();
-    this.vℝ2.close();
-    this.vℝ1.close();
-    this.ℝ1.close();
-    this.ℝ2.close();
-    this.ℝ3.close();
-    this.ℝ4.close();
-    this.qXℝ6.close();
-    this.ℝ5.close();
-    this.ℝ6.close();
-    this.ℝ7.close();
-    this.ℝ8.close();
+    cℤ2.close();
+    cℤ1.close();
+    qXℝ1.close();
+    qXℝ2.close();
+    qXℝ3.close();
+    qXℝ4.close();
+    vℝ2.close();
+    vℝ1.close();
+    ℝ1.close();
+    ℝ2.close();
+    ℝ3.close();
+    ℝ4.close();
+    ℝ9.close();
+    ℝ5.close();
+    ℝ6.close();
+    ℝ7.close();
+    ℝ8.close();
   }
 
   @Override

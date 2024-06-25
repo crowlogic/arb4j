@@ -1606,6 +1606,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
+  public Variable<D, C, F> getReference( String reference)
+  {
+    return referencedVariables.get(reference);
+  }
   public boolean references(VariableReference<D, C, F> reference)
   {
     return referencedVariables.containsKey(reference.name);

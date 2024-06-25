@@ -111,4 +111,11 @@ public class VariableReference<D, R, F extends Function<? extends D, ? extends R
                                           type);
   }
 
+  public void set(VariableReference<D, R, F> ref)
+  {
+   this.index = ref.index;
+   this.name = ref.name;
+   this.type = ref.type;
+  }
+
 }

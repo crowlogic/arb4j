@@ -115,13 +115,13 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
     return returnType;
   }
 
-  public final VariableReference<D, R, F> reference;
+  public VariableReference<D, R, F> reference;
 
-  public boolean                          isIndependent = false;
+  public boolean                    isIndependent = false;
 
-  public boolean                          isIndetermate = false;
+  public boolean                    isIndetermate = false;
 
-  public boolean                          ascendentInput;
+  public boolean                    ascendentInput;
 
   public Variable(Expression<D, R, F> expression,
                   VariableReference<D, R, F> reference,
@@ -137,33 +137,43 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
     assert !(expression.recursive && reference.name.equals(expression.functionName)) : "variable name clashes with "
                   + "the function name since its a recursve function";
 
-    if ((variables == null || !variables.map.containsKey(reference.name) || reference.type == null) && resolve)
+    Variable<D, R, F> existingVariable = expression.getReference(reference.name);
+    if (existingVariable != null)
     {
-      resolveReference();
-    }
-
-    if (expression.independentVariable != null && reference.equals(expression.independentVariable.reference))
-    {
-      isIndependent = true;
-    }
-
-    if (!isIndependent)
-    {
-      if (isIndetermate)
-      {
-        reference.type = expression.coDomainType;
-      }
-      else
-      {
-        if (!reference.isElse() && !isIndetermate)
-        {
-          expression.referencedVariables.put(reference.name, this);
-        }
-      }
+      this.reference.type = existingVariable.reference.type;
+      isIndependent       = existingVariable.isIndependent;
+      isIndetermate       = existingVariable.isIndetermate;
     }
     else
     {
-      reference.type = expression.domainType;
+      if ((variables == null || !variables.map.containsKey(reference.name) || reference.type == null) && resolve)
+      {
+        resolveReference();
+      }
+
+      if (expression.independentVariable != null && reference.equals(expression.independentVariable.reference))
+      {
+        isIndependent = true;
+      }
+
+      if (!isIndependent)
+      {
+        if (isIndetermate)
+        {
+          reference.type = expression.coDomainType;
+        }
+        else
+        {
+          if (!reference.isElse() && !isIndetermate)
+          {
+            expression.referencedVariables.put(reference.name, this);
+          }
+        }
+      }
+      else
+      {
+        reference.type = expression.domainType;
+      }
     }
   }
 
@@ -359,7 +369,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
 
       if (isIndetermate = ((a && !b) && c && d) && h)
       {
-        if (expression.indeterminateVariable != this && Expression.trace)
+        if (!this.equals(expression.indeterminateVariable) && Expression.trace)
         {
           System.err.format("Expression(#%s) declaring %s to be the indeterminant in %s\nvariables=%s\n\n",
                             System.identityHashCode(expression),
@@ -368,9 +378,8 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
                             expression.context == null ? null : expression.context.variables);
 
         }
-
+        expression.referencedVariables.put(reference.name, this);
         expression.indeterminateVariable = this;
-
       }
       else
       {
