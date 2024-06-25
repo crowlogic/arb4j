@@ -5,20 +5,11 @@ import arb.ComplexQuasiPolynomial;
 import arb.Initializable;
 import arb.Integer;
 import arb.Typesettable;
-import arb.expressions.Expression;
-import arb.functions.complex.ComplexQuasiPolynomialNullaryFunction;
 import arb.functions.polynomials.quasi.complex.ComplexHypergeometricQuasiPolynomial;
 import arb.functions.sequences.Sequence;
 
 public class F implements Sequence<ComplexQuasiPolynomial>, Typesettable, AutoCloseable, Initializable
 {
-  public static void main( String arg[] )
-  {
-    F f = new F();
-    ComplexQuasiPolynomial f3 = f.evaluate(3, 128);
-    System.out.println("f3=" + f3 );
-    
-  }
   public boolean isInitialized;
   Integer        cℤ2 = new Integer("2");
   Integer        cℤ1 = new Integer("1");
@@ -29,6 +20,13 @@ public class F implements Sequence<ComplexQuasiPolynomial>, Typesettable, AutoCl
   public Complex vℂ2 = new Complex();
   public Complex ℂ1  = new Complex();
 
+  public static void main(String arg[])
+  {
+    F                      f  = new F();
+    ComplexQuasiPolynomial f3 = f.evaluate(3, 128);
+    System.out.println("f3=" + f3);
+  }
+
   @Override
   public Class<ComplexQuasiPolynomial> coDomainType()
   {
@@ -38,50 +36,45 @@ public class F implements Sequence<ComplexQuasiPolynomial>, Typesettable, AutoCl
   @Override
   public ComplexQuasiPolynomial evaluate(Integer n, int order, int bits, ComplexQuasiPolynomial result)
   {
-    if (!isInitialized)
+    if (!this.isInitialized)
     {
-      initialize();
+      this.initialize();
     }
 
-    // this should not be an evaluation.. instead of constructing a new
-    // quasipolynomial set this stuf into the result
-    Complex[]                                                                         numer = new Complex[]
-    { ℂ1.set(cℤ1), ℂ2.set(n), n.neg(ℂ3) };
-    Complex[]                                                                         denom = new Complex[]
-    { cℤ1.div(cℤ2, bits, ℂ4) };
-    Expression<Object, ComplexQuasiPolynomial, ComplexQuasiPolynomialNullaryFunction> arg   = ComplexQuasiPolynomialNullaryFunction.parse("(ⅈ*y)/2");
-    try ( ComplexHypergeometricQuasiPolynomial func = new ComplexHypergeometricQuasiPolynomial(vℂ1.set(numer),
-                                                                                               vℂ2.set(denom),
-                                                                                               arg))
-    {
-      return func.evaluate(null, order, bits, result);
-    }
+    return new ComplexHypergeometricQuasiPolynomial(this.vℂ1.set(new Complex[]
+    { this.ℂ1.set(this.cℤ1), this.ℂ2.set(n), n.neg(this.ℂ3) }),
+                                                    this.vℂ2.set(new Complex[]
+                                                    { this.cℤ1.div(this.cℤ2, bits, this.ℂ4) }),
+                                                    ComplexQuasiPolynomial.parse("(ⅈ*y)/2")).evaluate(null,
+                                                                                                      1,
+                                                                                                      bits,
+                                                                                                      result);
   }
 
   @Override
   public void initialize()
   {
-    if (isInitialized)
+    if (this.isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
     else
     {
-      isInitialized = true;
+      this.isInitialized = true;
     }
   }
 
   @Override
   public void close()
   {
-    cℤ2.close();
-    cℤ1.close();
-    vℂ1.close();
-    ℂ4.close();
-    ℂ3.close();
-    ℂ2.close();
-    vℂ2.close();
-    ℂ1.close();
+    this.cℤ2.close();
+    this.cℤ1.close();
+    this.vℂ1.close();
+    this.ℂ4.close();
+    this.ℂ3.close();
+    this.ℂ2.close();
+    this.vℂ2.close();
+    this.ℂ1.close();
   }
 
   @Override
