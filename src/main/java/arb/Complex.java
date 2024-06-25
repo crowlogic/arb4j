@@ -112,11 +112,12 @@ public class Complex implements Named,Domain<Complex>,Field<Complex>,Iterable<Co
   
   public Complex set(Complex... elements)
   {
-    clear();
-    this.elements    = elements;
-    this.dim         = elements.length;
-    this.swigCMemOwn = false;
-    this.swigCPtr    = 0;
+    Complex newVec = Complex.newVector(elements.length);
+    for ( int i = 0; i < elements.length; i++ )
+    {
+      newVec.get(i).set(elements[i]);
+    }
+    become(newVec.setName(name));
     return this;
   }
 
@@ -191,11 +192,6 @@ public class Complex implements Named,Domain<Complex>,Field<Complex>,Iterable<Co
     x.add(this, bits);
     x.bits = bits;
     return res;
-  }
-
-  public ComplexQuasiPolynomial mul(ComplexQuasiPolynomial operand, int prec, ComplexQuasiPolynomial res )
-  {
-    return operand.mul(this,prec,res);
   }
   
   public ComplexPolynomial mul( ComplexPolynomial s, int prec, ComplexPolynomial r )

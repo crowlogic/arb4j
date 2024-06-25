@@ -87,11 +87,12 @@ import arb.domains.Domain;
   
   public Complex set(Complex... elements)
   {
-    clear();
-    this.elements    = elements;
-    this.dim         = elements.length;
-    this.swigCMemOwn = false;
-    this.swigCPtr    = 0;
+    Complex newVec = Complex.newVector(elements.length);
+    for ( int i = 0; i < elements.length; i++ )
+    {
+      newVec.get(i).set(elements[i]);
+    }
+    become(newVec.setName(name));
     return this;
   }
 
