@@ -22,10 +22,11 @@ import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Vector;
 import arb.functions.Function;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
-import arb.functions.complex.ComplexQuasiPolynomialNullaryFunction;
 import arb.functions.polynomials.ComplexHypergeometricPolynomial;
 import arb.functions.polynomials.RealHypergeometricPolynomial;
 import arb.functions.polynomials.quasi.QuasiPolynomial;
+import arb.functions.polynomials.quasi.complex.ComplexHypergeometricQuasiPolynomial;
+import arb.functions.polynomials.quasi.real.RealHypergeometricQuasiPolynomial;
 import arb.functions.real.RealPolynomialNullaryFunction;
 
 /**
@@ -43,9 +44,9 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
                                    FunctionCall<D, R, F>
 {
 
-  Node<D, R, F> α;
+  Node<D, R, F>    α;
 
-  Node<D, R, F> β;
+  Node<D, R, F>    β;
 
   private Class<?> hypergeometricClass;
 
@@ -91,7 +92,6 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     return mv;
   }
 
-
   public HypergeometricFunction<D, R, F> evaluateHypergeometricPolynomial(Class<?> resultType, MethodVisitor mv)
   {
     mv.visitInsn(ACONST_NULL);
@@ -117,8 +117,8 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
 
   public void constructHypergeometricPolynomial(MethodVisitor mv, Class<?> scalarType, boolean quasi)
   {
-    boolean isReal                        = Real.class.equals(scalarType);
-    hypergeometricClass = isReal ? (quasi ? RealQuasiPolynomial.class : RealHypergeometricPolynomial.class) : (quasi ? ComplexQuasiPolynomialNullaryFunction.class : ComplexHypergeometricPolynomial.class);
+    boolean isReal = Real.class.equals(scalarType);
+    hypergeometricClass = isReal ? (quasi ? RealHypergeometricQuasiPolynomial.class : RealHypergeometricPolynomial.class) : (quasi ? ComplexHypergeometricQuasiPolynomial.class : ComplexHypergeometricPolynomial.class);
     mv.visitTypeInsn(NEW, Type.getInternalName(hypergeometricClass));
     duplicateTopOfTheStack(mv);
 
