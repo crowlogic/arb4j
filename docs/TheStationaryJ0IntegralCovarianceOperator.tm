@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|boring-white|framed-theorems>>
+<style|<tuple|generic|framed-theorems>>
 
 <\body>
   \;
@@ -209,7 +209,38 @@
     Hilbert Space of a Gaussian Process>
   </remark>
 
-  \;
+  <subsubsection|Simplifying The Convolution>
+
+  Apply the addition theorem
+
+  <\equation*>
+    J<rsub|0>*<around|(|x-y|)>=<big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|x|)>*J<rsub|k>*<around|(|-y|)>
+  </equation*>
+
+  to the integral covariance operator
+
+  <\equation*>
+    <tabular|<tformat|<table|<row|<cell|<around|[|T*\<psi\><rsub|n>|]><around|(|x|)>>|<cell|=<big|int><rsub|0><rsup|\<infty\>>J<rsub|0>*<around|(|x-y|)>*\<psi\><rsub|n><around|(|y|)>*<space|0.17em>d*y>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>><big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|x|)>*J<rsub|k>*<around|(|-y|)>*\<psi\><rsub|n><around|(|y|)>*<space|0.17em>d*y>>|<row|<cell|>|<cell|=<big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|x|)><big|int><rsub|0><rsup|\<infty\>>*J<rsub|k>*<around|(|-y|)>*\<psi\><rsub|n><around|(|y|)>*<space|0.17em>d*y>>>>>
+  </equation*>
+
+  Where <math|\<psi\><rsub|n><around|(|y|)>> is:
+
+  <\equation*>
+    \<psi\><rsub|n><around|(|y|)>=<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*j<rsub|2*n><around|(|y|)>==<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*<sqrt|<frac|\<pi\>|2*y>>*J<rsub|2*n+<frac|1|2>><around|(|y|)>
+  </equation*>
+
+  Substituting\ 
+
+  <\equation*>
+    <big|int><rsub|0><rsup|\<infty\>>J<rsub|k>*<around|(|-y|)>*\<psi\><rsub|n><around|(|y|)>*<space|0.17em>d*y=<frac|<sqrt|4*n+1>*<around|(|-1|)><rsup|n><sqrt|\<pi\>>*\<Gamma\>*<around*|(|<frac|k|2>+n+<frac|1|2>|)>|2*\<Gamma\>*<around*|(|-n+<frac|k|2>+<frac|1|2>|)>*\<Gamma\>*<around*|(|<frac|k|2>+n+1|)>*\<Gamma\>*<around*|(|n+1-<frac|k|2>|)>>
+  </equation*>
+
+  Now, putting it all back into the expansion for
+  <math|<around|[|T*\<psi\><rsub|n>|]><around|(|x|)>>:
+
+  <\equation*>
+    <around|[|T*\<psi\><rsub|n>|]><around|(|x|)>=<big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|x|)><frac|<sqrt|4*n+1>*<around|(|-1|)><rsup|n><sqrt|\<pi\>>*\<Gamma\>*<around*|(|<frac|k|2>+n+<frac|1|2>|)>|2*\<Gamma\>*<around*|(|-n+<frac|k|2>+<frac|1|2>|)>*\<Gamma\>*<around*|(|<frac|k|2>+n+1|)>*\<Gamma\>*<around*|(|n+1-<frac|k|2>|)>>
+  </equation*>
 
   <\bibliography|bib|tm-plain|refs>
     <\bib-list|3>
@@ -246,7 +277,8 @@
 <\references>
   <\collection>
     <associate|T|<tuple|4|2>>
-    <associate|auto-1|<tuple|13|5>>
+    <associate|auto-1|<tuple|1|5>>
+    <associate|auto-2|<tuple|1|5>>
     <associate|bib-finiteFourierTransforms|<tuple|1|5>>
     <associate|bib-gaussianProcessIntroduction|<tuple|3|5>>
     <associate|bib-modifiedLommelPolynomials|<tuple|2|5>>
@@ -263,9 +295,13 @@
       gaussianProcessIntroduction
     </associate>
     <\associate|toc>
+      <with|par-left|<quote|2tab>|1<space|2spc>Simplifying The Convolution
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-1>>
+
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-1><vspace|0.5fn>
+      <no-break><pageref|auto-2><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
