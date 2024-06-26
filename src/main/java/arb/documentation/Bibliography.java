@@ -25,7 +25,7 @@ public class Bibliography
   public static Miscellaneous gaussianProcessIntroduction                             = new Miscellaneous("Introduction to Gaussian Processes",
                                                                                                           "Steven P. Lalley",
                                                                                                           "2013",
-                                                                                                          "https://galton.uchicago.edu/~lalley/Courses/386/GaussianProcesses.pdf",
+                                                                                                          "https://galton.uchicago.edu/$\\sim$elalley/Courses/386/GaussianProcesses.pdf",
                                                                                                           "",
                                                                                                           "");
 
@@ -106,7 +106,7 @@ public class Bibliography
                                                                                                  "1983").setSeries("Springer Series in Statistics")
                                                                                                         .setPublisher("Springer-Verlag New York Inc.");
 
-  public static Article       finiteFourierTransformsOfClassicalOrthogonalPolynomials = new Article("The finite Fourier transform of classical polynomials",
+  public static Article       finiteFourierTransforms = new Article("The finite Fourier transform of classical polynomials",
                                                                                                     "Dixit, Atul and Jiu, Lin and Moll, Victor H and Vignat, Christophe",
                                                                                                     "2015",
                                                                                                     "Journal of the Australian Mathematical Society",

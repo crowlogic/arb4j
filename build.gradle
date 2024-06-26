@@ -43,10 +43,10 @@ dependencies {
 group = 'org.arblib'
 version = '0.97.5'
 description = 'arb4j'
-java.sourceCompatibility = JavaVersion.VERSION_21
+java.sourceCompatibility = JavaVersion.VERSION_22
 
 tasks.withType(Javadoc) {
-    options.addStringOption('source', '21') 
+    options.addStringOption('source', '22') 
     options.addBooleanOption('-enable-preview', true)
     options.addBooleanOption('Xdoclint:none', true) 
     options.addBooleanOption('quiet', true)         
