@@ -4,6 +4,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.expressions.Parser;
 import arb.functions.Function;
 import arb.functions.polynomials.quasi.QuasiPolynomial;
 import arb.functions.polynomials.quasi.real.RealQuasiPolynomialAddition;
@@ -285,10 +286,16 @@ public class RealQuasiPolynomial
     return null;
   }
 
-  public static Expression<Object, RealQuasiPolynomial, RealQuasiPolynomialNullaryFunction> parse(String string)
+  public static Expression<Object, RealQuasiPolynomial, RealQuasiPolynomialNullaryFunction> parse(String expression)
   {
-    assert false : "TODO";
-    return null;
+    return Function.parse(Parser.expressionToUniqueClassname(expression),
+                          expression,
+                          null,
+                          Object.class,
+                          RealQuasiPolynomial.class,
+                          RealQuasiPolynomialNullaryFunction.class,
+                          null,
+                          null);
   }
 
 }

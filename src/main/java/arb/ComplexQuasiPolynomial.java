@@ -4,12 +4,14 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.expressions.Parser;
 import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexIdentityFunction;
 import arb.functions.complex.ComplexQuasiPolynomialNullaryFunction;
 import arb.functions.polynomials.quasi.QuasiPolynomial;
 import arb.functions.polynomials.quasi.complex.ComplexQuasiPolynomialMultiplication;
+import arb.functions.real.RealQuasiPolynomialNullaryFunction;
 import arb.functions.sequences.Sequence;
 
 /**
@@ -282,11 +284,15 @@ public class ComplexQuasiPolynomial
     return this;
   }
 
-  public static Expression<Object, ComplexQuasiPolynomial, ComplexQuasiPolynomialNullaryFunction>
-         parse(String string)
+  public static Expression<Object, ComplexQuasiPolynomial, ComplexQuasiPolynomialNullaryFunction> parse(String expression)
   {
-    assert false : "TODO";
-    return null;
+    return Function.parse(Parser.expressionToUniqueClassname(expression),
+                          expression,
+                          null,
+                          Object.class,
+                          ComplexQuasiPolynomial.class,
+                          ComplexQuasiPolynomialNullaryFunction.class,
+                          null,
+                          null);
   }
-
 }
