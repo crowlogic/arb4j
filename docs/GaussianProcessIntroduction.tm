@@ -177,23 +177,6 @@
   <math|m> the random vector <math|X<rsub|F>> has a degenerate Gaussian
   distribution (why?).
 
-  <with|font-series|bold|Example 1.3.> The two-parameter Brownian sheet
-  <math|<around|{|W<rsub|s,t>|}><rsub|s,t\<in\>\<bbb-R\><rsup|2>>> is the
-  mean-zero Gaussian process indexed by ordered pairs <math|<around|(|s,t|)>>
-  of nonnegative reals with covariance function
-
-  <\equation*>
-    E*W<rsub|s<rsub|1>,t<rsub|1>>*W<rsub|s<rsub|2>,t<rsub|2>>=min
-    <around|(|s<rsub|1>,s<rsub|2>|)>*min <around|(|t<rsub|1>,t<rsub|2>|)>
-  </equation*>
-
-  Observe that for each fixed <math|r\<gtr\>0>, the one-parameter process
-  <math|Z<rprime|'><rsub|t>=W<rsub|r,t>> has the same covariance function as
-  a standard Wiener process multiplied by <math|<sqrt|r>>. Thus, the Brownian
-  sheet has slices in the two coordinate directions that look like scaled
-  Wiener processes. For figures showing simulations of Brownian sheets, see
-  Mandelbrot's book <with|font-shape|italic|Fractal Geometry of Nature>.
-
   <with|font-series|bold|Construction of Gaussian Processes.> It is not at
   all obvious that the Gaussian processes in Examples 1.1 and 1.3 exist, nor
   what kind of sample paths/sheets they will have. The difficulty is that
@@ -204,27 +187,7 @@
   always be constructed from i.i.d. unit normals. Then, in section 2, we will
   show that under certain restrictions on the covariance function a Gaussian
   process can be extended continuously from a countable dense index set to a
-  continuum. The following example shows that some restriction on the
-  covariance is necessary.
-
-  <with|font-series|bold|Exercise 1.3.> (A) Show that there is no Gaussian
-  process <math|<around|{|X<rsub|t>|}><rsub|t\<in\><around|[|0,1|]>>> with
-  continuous sample paths and covariance function
-
-  <\equation*>
-    R<around|(|s,t|)>=0*<space|1em><text|for><space|1em>s\<neq\>t*<space|1em><text|and><space|1em>R<around|(|s,s|)>=1
-  </equation*>
-
-  (B)<rsup|<math|\<ast\>>> Show that there is no probability space
-  <math|<around|(|\<Omega\>,\<cal-F\>,P|)>> that supports random variables
-  <math|<around|{|X<rsub|t>|}><rsub|t\<in\><around|[|0,1|]>>> such that (i)
-  the mapping <math|X:<around|(|\<Omega\>,\<cal-F\>|)>\<rightarrow\><around|(|\<bbb-R\><rsup|<around|[|0,1|]>>,\<cal-B\>|)>>
-  defined by <math|X<around|(|\<omega\>,t|)>=X<rsub|t><around|(|\<omega\>|)>>
-  is jointly measurable (here the implied <math|\<sigma\>>\Ualgebra on
-  <math|<around|[|0,1|]>> is the set of Lebesgue measurable subsets of
-  <math|<around|[|0,1|]>>); and (ii) the stochastic process
-  <math|<around|{|X<rsub|t>|}><rsub|t\<in\><around|[|0,1|]>>> is centered
-  Gaussian with covariance function <math|R> as in part (A).
+  continuum with some restriction on the covariance.
 
   <with|font-series|bold|Processes with Countable Index Sets.> For each
   <math|m=1,2,\<ldots\>>, let <math|F<rsub|m>> be a (Borel) probability
@@ -284,66 +247,11 @@
 
   <subsection*|2.1. Continuity.>
 
-  Exercise 1.3 shows that there are covariance functions <math|R> such that
-  no centered Gaussian process with covariance function <math|R> has
-  continuous sample paths. The example provided by Exercise 1.3 is somewhat
-  pathological, though, in that the covariance <math|R> is discontinuous (and
-  the corresponding canonical metric leads to the discrete topology). The
-  following example shows that there are <with|font-shape|italic|continuous>
-  covariance functions that are incompatible with sample-path continuity.
-
-  <with|font-series|bold|Example 2.1.> Let
-  <math|n=n<rsub|1>*n<rsub|2>*\<ldots\>> be an infinite sequence of integers
-  <math|n<rsub|i>\<geq\>2>. Define the rooted infinite tree
-  <math|T=T<rsub|n>> to be graph whose vertex set consists of all
-  <with|font-shape|italic|finite> sequence
-  <math|i<rsub|1>*i<rsub|2>*\<ldots\>*i<rsub|k>> such that
-  <math|1\<leq\>i<rsub|j>\<leq\>n> for each <math|j\<leq\>k>, and whose edge
-  set consists of all pairs <math|<around|(|i<rsub|1><rprime|'>,i<rsub|1>|)>>
-  such that <math|i<rsub|1><rprime|'>> is obtained by appending a single
-  letter (integer) to <math|i>, for instance
-
-  <\equation*>
-    <around|(|<around|(|2,7,13|)>,<around|(|2,7,13,4|)>|)>.
-  </equation*>
-
-  The empty sequence <math|\<emptyset\>> is the root of the tree. The
-  <with|font-shape|italic|boundary> <math|\<partial\>*T> is defined to be the
-  set of all infinite self-avoiding paths
-  <math|i=i<rsub|1>*i<rsub|2>*\<ldots\>> that start at the root. For each
-  <math|0\<less\>\<alpha\>\<less\>1> there is a natural metric
-  <math|d<rsub|\<alpha\>>> on <math|\<partial\>*T> defined as follows:
-  <math|d<rsub|\<alpha\>><around|(|i,i<rprime|'>|)>=\<alpha\><rsup|N<around|(|i,i<rprime|'>|)>>>
-  where <math|N<around|(|i,i<rprime|'>|)>> is the index of the first
-  coordinate where the sequences <math|i,i<rprime|'>> differ, e.g.,
-
-  <\equation*>
-    N<around|(|<around|(|2,7,4,5,8,1,\<ldots\>|)>,<around|(|2,7,4,3,3,1,\<ldots\>|)>|)>=4
-  </equation*>
-
-  Define a centered Gaussian process <math|<around|{|X<rsub|i<rsub|\<alpha\>>>|}><rsub|i\<in\>\<partial\>*T>>
-  indexed by the boundary <math|\<partial\>*T> as follows: first, attach to
-  each edge <math|e> connecting vertices at levels <math|n-1> and <math|n> a
-  mean-zero Gaussian random variable <math|\<xi\><rsub|e>> with variance
-  <math|4<rsup|-n>>, in such a way that the random variables
-  <math|<around|{|\<xi\><rsub|e>|}>> are mutually independent. For
-  <math|i=i<rsub|1>*i<rsub|2>*\<ldots\>\<in\>\<partial\>*T> define
-
-  <\equation*>
-    X<rsub|i>=<big|sum><rsub|m=1><rsup|\<infty\>>\<xi\><rsub|e<rsub|m><around|(|i|)>>
-  </equation*>
-
-  where <math|e<rsub|m><around|(|i|)>=<around|(|i<rsub|1>*i<rsub|2>*\<ldots\>*i<rsub|m-1>,i<rsub|1>*i<rsub|2>*\<ldots\>*i<rsub|m>|)>>,
-  that is, sum the random variables <math|\<xi\><rsub|e>> along the path from
-  the root leading to <math|i>. Observe that for each
-  <math|i\<in\>\<partial\>*T> the random variable <math|X<rsub|i>> is
-  centered Gaussian with variance <math|1/3>. You should check that the
-  canonical metric <math|d<rsub|\<alpha\>>> for the choice <math|\<alpha\>=>?
-  (figure it out). Theorem 1 below implies that if, for instance,
-  <math|n<rsub|k>\<geq\>2<rsup|2<rsup|k>>> then the Gaussian process
-  <math|<around|{|X<rsub|i<rsub|\<alpha\>>>|}>> has a version with continuous
-  paths. However, if <math|n<rsub|k>\<geq\>2<rsup|22<rsup|k>>> then it
-  doesn't. (Exercise!)
+  Keep in mind that there are covariance functions <math|R> that exist such
+  that no centered Gaussian process with covariance function <math|R> has
+  continuous sample paths and there are also
+  <with|font-shape|italic|continuous> covariance functions that exist that do
+  not have versions with continous sample paths.
 
   <with|font-series|bold|Definition 2.1.> Let <math|<around|(|T,d|)>> be a
   compact metric space. For each <math|\<varepsilon\>\<gtr\>0> the Lebesgue
@@ -749,48 +657,6 @@
   than for the Fourier basis. This is the existence proof given in most
   standard textbooks today.
 
-  <with|font-series|bold|Exercise 3.1.> Let
-  <math|f\<in\>L<rsup|2><around|[|0,1|]>> be a strictly positive function
-  with <math|L<rsup|2>>\Unorm 1, i.e., such that
-  <math|<big|int><rsub|0><rsup|1>f<around|(|s|)><rsup|2>*<space|0.17em>d*s=1>.
-  For <math|t\<in\><around|[|0,1|]>> define
-
-  <\equation*>
-    F<around|(|t|)>=<big|int><rsub|0><rsup|t>f<around|(|s|)><rsup|2>*<space|0.17em>d*s
-  </equation*>
-
-  <\equation*>
-    \<tau\><around|(|t|)>=F<rsup|-1><around|(|t|)>=min
-    <around|{|s:F<around|(|s|)>=t|}>,<space|1em><text|and><space|1em>Y<around|(|t|)>=T*<around|(|f*I<rsub|<around|[|0,\<tau\><around|(|t|)>|]>>|)>
-  </equation*>
-
-  Show that <math|Y<around|(|\<tau\><around|(|t|)>|)>> is a Wiener process,
-  that is, a mean-zero Gaussian process with covariance function (1.4).
-  Interpretation: <math|f<around|(|s|)>*d*W<rsub|s>> is a Brownian increment
-  whose \Pvolatility\Q is multiplied by <math|<around|\||f<around|(|s|)>|\|>>.
-  Thus, <math|\<tau\><around|(|t|)>> runs the integral until the total
-  accumulated squared volatility (variance) reaches <math|t>.
-
-  <with|font-series|bold|Exercise 3.2.> Let
-  <math|g\<in\>L<rsup|2><around|[|0,1|]>> and define
-  <math|G<around|(|t|)>=<big|int><rsub|0><rsup|t>g<around|(|s|)>*<space|0.17em>d*s>.
-  Note that <math|G<around|(|t|)>> is continuous (why?).
-
-  Also, if <math|W<around|(|t|)>> is a standard Wiener process with
-  continuous paths, then the integral <math|<big|int><rsub|0><rsup|1>g<around|(|s|)>*W<around|(|s|)>*<space|0.17em>d*s>
-  is well-defined as a Riemann integral. Show that
-
-  <\equation*>
-    T<around|(|G|)>=<big|int><rsub|0><rsup|1>g<around|(|s|)>*W<around|(|s|)>*<space|0.17em>d*s
-  </equation*>
-
-  Also, show that
-
-  <\equation*>
-    E<around|(|T<around|(|G|)><rsup|2>|)>=<big|int><rsub|0><rsup|1>G<around|(|s|)><rsup|2>*<space|0.17em>d*s=<big|int><rsub|<around|[|0,1|]><rsup|2>>g<around|(|s|)>*g<around|(|t|)>*min
-    <around|(|s,t|)>*<space|0.17em>d*s*<space|0.17em>d*t
-  </equation*>
-
   <subsection*|3.2. Reproducing Kernel Hilbert Space.>
 
   A symmetric, real-valued function <math|R:T\<times\>T\<rightarrow\>\<bbb-R\>>
@@ -1128,29 +994,6 @@
 
   <subsection*|3.3. Examples of RKHS.>
 
-  <with|font-series|bold|Example 3.1.> Consider first the case where the
-  index set <math|T=<around|[|m|]>> is finite, so that the covariance kernel
-  <math|R*<around|(|s,t|)>> is just a symmetric, positive definite
-  <math|m\<times\>m> matrix. Functions on <math|T> are just
-  <math|m>\Uvectors. To characterize the inner product (3.6), recall that
-  <math|<around|\<langle\>|R<rsub|s>,R<rsub|t>|\<rangle\>>=R*<around|(|s,t|)>>;
-  this can be obtained by taking the <math|s,t> entry of the matrix
-  <math|R*R<rsup|-1>*R>, in matrix notation (with <math|R<rsub|s>> and
-  <math|R<rsub|t>> viewed as column vectors),
-  <math|R*<around|(|s,t|)>=R<rsub|s><rsup|T>*R<rsup|-1>*R<rsub|t>>. Thus, the
-  inner product (3.6) can be written in matrix form as
-
-  <\equation*>
-    <around|\<langle\>|u,v|\<rangle\>>=u<rsup|T>*R<rsup|-1>*v
-  </equation*>
-
-  Example 3.1 is straightforward, but it is useful to keep in mind when
-  attempting to characterize/identify the reproducing kernel Hilbert spaces
-  of infinite parameter Gaussian processes. The rough idea is that the inner
-  product (3.6) can be viewed as the quadratic form <math|R<rsup|-1>>, where
-  <math|R<rsup|-1>> is, in a suitable sense, an inverse of the integral
-  operator associated with the kernel <math|R>.
-
   <with|font-series|bold|Example 3.2.> Recall that the covariance function of
   the standard Wiener process <math|<around|{|W<rsub|t>|}><rsub|t\<in\><around|[|0,1|]>>>
   is <math|R*<around|(|s,t|)>=s\<wedge\>t>, where <math|\<wedge\>> denotes
@@ -1182,249 +1025,7 @@
   reproducing kernel Hilbert space for Brownian motion. It is sometimes
   called the Cameron-Martin Hilbert space.
 
-  <with|font-series|bold|Example 3.3.> The Ornstein-Uhlenbeck process
-  <math|<around|{|Y<rsub|t>|}><rsub|t\<in\>\<bbb-R\>>> is best viewed as a
-  process whose parameter space is the entire real line, since it is
-  stationary. This space isn't compact, so Proposition 3.6 does not apply.
-  Nevertheless, the reproducing kernel Hilbert space remains a useful object.
-
-  <with|font-series|bold|Proposition 3.8.> The reproducing kernel Hilbert
-  space <math|H> associated with the double-exponential kernel
-  <math|R*<around|(|s,t|)>=e<rsup|-<around|\||t-s|\|>>> consists of all
-  functions <math|\<varphi\>\<in\>L<rsup|2><around|(|\<bbb-R\>|)>> whose
-  derivative <math|\<varphi\><rprime|'>> is also an element of
-  <math|L<rsup|2><around|(|\<bbb-R\>|)>>. The inner product of the RKHS is
-  given by
-
-  <\equation*>
-    <around|\<langle\>|\<varphi\>,\<psi\>|\<rangle\>>=<big|int>\<varphi\>*\<psi\>+<big|int>\<varphi\><rprime|'>*\<psi\><rprime|'>
-  </equation*>
-
-  <with|font-shape|italic|Proof.> Two things must be proved: first, that for
-  the covariance kernel of the Ornstein-Uhlenbeck process the inner product
-  (3.6) reduces to (3.16), and second, that the space <math|H<rsub|0>> is
-  dense in the Hilbert space of functions
-  <math|\<varphi\>\<in\>L<rsup|2><around|(|\<bbb-R\>|)>> with derivative
-  <math|\<varphi\><rprime|'>\<in\>L<rsup|2><around|(|\<bbb-R\>|)>>. I will
-  skip the second, since we will have no further use for the result. For the
-  first it suffices to prove that for any <math|s,t\<in\>\<bbb-R\>>,
-
-  <\equation*>
-    <around|\<langle\>|R<rsub|s>,R<rsub|t>|\<rangle\>>=R*<around|(|s,t|)>=<big|int>R<rsub|s>*R<rsub|t>+<big|int>R<rsub|s><rprime|'>*R<rsub|t><rprime|'>
-  </equation*>
-
-  This is an entirely routine calculation (which you should do, to be sure
-  that I haven't missed any factors of 2 or <math|\<pi\>>). This proves that
-  (3.16) holds for all functions in <math|H<rsub|0>>.\ 
-
-  <with|font-shape|italic|Note:> The density proof isn't hard \U it can be
-  done using standard elementary results of Fourier analysis. The Hilbert
-  space <math|H> is the Sobolev space <math|H<rsup|1><around|(|\<bbb-R\>|)>>.
-
-  <with|font-series|bold|Example 3.4.> Consider next a
-  <with|font-shape|italic|moving average process>. Let
-  <math|<around|{|a<rsub|k>|}><rsub|0\<leq\>k\<leq\>K>> be a finite sequence
-  of real numbers, and let <math|<around|{|\<xi\><rsub|n>|}><rsub|n\<in\>\<bbb-Z\>>>
-  be independent standard Gaussian random variables. The moving average
-  process with averaging kernel <math|<around|{|a<rsub|k>|}>> is the centered
-  Gaussian process <math|<around|{|X<rsub|n>|}><rsub|n\<in\>\<bbb-Z\>>>
-  defined by
-
-  <\equation*>
-    X<rsub|n>=<big|sum><rsub|k=0><rsup|K>a<rsub|k>*\<xi\><rsub|n-k>.
-  </equation*>
-
-  <with|font-series|bold|Lemma 3.9.>
-
-  <\equation*>
-    E*X<rsub|n>*X<rsub|m>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<pi\>><rsup|\<pi\>>e<rsup|i*n*\<theta\>>*e<rsup|-i*m*\<theta\>><around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|2>*<space|0.17em>d*\<theta\>*<space|1em><text|where><space|1em>A<around|(|e<rsup|i*\<theta\>>|)>=<big|sum><rsub|k=0><rsup|K>a<rsub|k>*e<rsup|i*k*\<theta\>>.
-  </equation*>
-
-  This representation of the covariance kernel is called the
-  <with|font-shape|italic|spectral representation>. The density
-  <math|<around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|2>> is called
-  the <with|font-shape|italic|spectral density> of the moving average
-  process. For many purposes \U for instance, linear prediction \U the
-  spectral representation is more useful than the time-domain representation.
-
-  <with|font-shape|italic|Proof.> Since a moving average process is
-  stationary in time, its covariance function
-  <math|R<around|(|m,n|)>=E*X<rsub|n>*X<rsub|m>> depends only on the
-  difference <math|m-n>. Set <math|r<rsub|k>=E*X<rsub|k>*X<rsub|0>>; then by
-  the Fourier inversion formula, (3.18) is equivalent to the assertion that
-  the Fourier series of the sequence <math|r<rsub|k>> sums (in
-  <math|L<rsup|2><around|[|-\<pi\>,\<pi\>|]>>) to
-  <math|<around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|2>>. That this
-  is so can be seen as follows. First, since the random variables
-  <math|\<xi\><rsub|n>> are i.i.d. standard Gaussians,
-
-  <\equation*>
-    r<rsub|k>=E*X<rsub|k>*X<rsub|0>=E*<big|sum><rsub|m><big|sum><rsub|n>a<rsub|m>*\<xi\><rsub|k-m>*a<rsub|n>*\<xi\><rsub|-n>=<big|sum><rsub|m>a<rsub|k>*a<rsub|m+k>
-  </equation*>
-
-  Therefore,
-
-  <\equation*>
-    <big|sum><rsub|k>r<rsub|k>*e<rsup|i*k*\<theta\>>=<big|sum><rsub|k><big|sum><rsub|m>a<rsub|k>*a<rsub|m+k>*e<rsup|i*k*\<theta\>>=<big|sum><rsub|k><big|sum><rsub|m>a<rsub|k>*a<rsub|m+k>*e<rsup|i*<around|(|k+m|)>*\<theta\>>*e<rsup|-i*m*\<theta\>>=<around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|2>
-  </equation*>
-
-  The spectral representation (3.18) of the covariance kernel can be used to
-  give a corresponding spectral description of the reproducing kernel Hilbert
-  space. Let's identify a section <math|R<rsub|m><around|(|n|)>=r<rsub|n-m>>
-  with its Fourier series:
-
-  <\equation*>
-    R<rsub|m>\<longleftrightarrow\><big|sum><rsub|k>r<rsub|k-m>*e<rsup|i*m*\<theta\>>=e<rsup|i*m*\<theta\>><around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|2>
-  </equation*>
-
-  The inner product on the reproducing kernel Hilbert space is determined by
-  the law <math|<around|(|R<rsub|m>,R<rsub|n>|)>=R<around|(|m,n|)>=r<rsub|m-n>>.
-  Now Lemma 3.9 implies that
-
-  <\equation*>
-    r<rsub|m-n>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<pi\>><rsup|\<pi\>>e<rsup|-i*m*\<theta\>>*e<rsup|i*n*\<theta\>><around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|2>*<space|0.17em>d*\<theta\>
-  </equation*>
-
-  <\equation*>
-    =<frac|1|2*\<pi\>>*<big|int><rsub|-\<pi\>><rsup|\<pi\>><around|(|e<rsup|-i*m*\<theta\>><around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|2>|)><around|(|e<rsup|i*n*\<theta\>><around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|2>|)><around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|-2>*<space|0.17em>d*\<theta\>
-  </equation*>
-
-  <with|font-shape|italic|Note:> The density proof isn't hard \U it can be
-  done using standard elementary results of Fourier analysis. The Hilbert
-  space <math|H> is the Sobolev space <math|H<rsup|1><around|(|\<bbb-R\>|)>>.
-
-  <with|font-series|bold|Example 3.4.> Consider next a
-  <with|font-shape|italic|moving average process>. Let
-  <math|<around|{|a<rsub|k>|}><rsub|0\<leq\>k\<leq\>K>> be a finite sequence
-  of real numbers, and let <math|<around|{|\<xi\><rsub|n>|}><rsub|n\<in\>\<bbb-Z\>>>
-  be independent standard Gaussian random variables. The moving average
-  process with averaging kernel <math|<around|{|a<rsub|k>|}>> is the centered
-  Gaussian process <math|<around|{|X<rsub|n>|}><rsub|n\<in\>\<bbb-Z\>>>
-  defined by
-
-  <\equation*>
-    X<rsub|n>=<big|sum><rsub|k=0><rsup|K>a<rsub|k>*\<xi\><rsub|n-k>
-  </equation*>
-
-  <with|font-series|bold|Lemma 3.9.>
-
-  <\equation*>
-    E*X<rsub|n>*X<rsub|m>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<pi\>><rsup|\<pi\>>e<rsup|i*n*\<theta\>>*e<rsup|-i*m*\<theta\>><around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|2>*<space|0.17em>d*\<theta\>*<space|1em><text|where><space|1em>A<around|(|e<rsup|i*\<theta\>>|)>=<big|sum><rsub|k=0><rsup|K>a<rsub|k>*e<rsup|i*k*\<theta\>>
-  </equation*>
-
-  This representation of the covariance kernel is called the
-  <with|font-shape|italic|spectral representation>. The density
-  <math|<around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|2>> is called
-  the <with|font-shape|italic|spectral density> of the moving average
-  process. For many purposes \U for instance, linear prediction \U the
-  spectral representation is more useful than the time-domain representation.
-
-  <with|font-shape|italic|Proof.> Since a moving average process is
-  stationary in time, its covariance function
-  <math|R<around|(|m,n|)>=E*X<rsub|n>*X<rsub|m>> depends only on the
-  difference <math|m-n>. Set <math|r<rsub|k>=E*X<rsub|k>*X<rsub|0>>; then by
-  the Fourier inversion formula, (3.18) is equivalent to the assertion that
-  the Fourier series of the sequence <math|r<rsub|k>> sums (in
-  <math|L<rsup|2><around|[|-\<pi\>,\<pi\>|]>>) to
-  <math|<around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|2>>. That this
-  is so can be seen as follows. First, since the random variables
-  <math|\<xi\><rsub|n>> are i.i.d. standard Gaussians,
-
-  <\equation*>
-    r<rsub|k>=E*X<rsub|k>*X<rsub|0>=E*<big|sum><rsub|m><big|sum><rsub|n>a<rsub|m>*\<xi\><rsub|k-m>*a<rsub|n>*\<xi\><rsub|-n>=<big|sum><rsub|m>a<rsub|k>*a<rsub|m+k>
-  </equation*>
-
-  Therefore,
-
-  <\equation*>
-    <big|sum><rsub|k>r<rsub|k>*e<rsup|i*k*\<theta\>>=<big|sum><rsub|k><big|sum><rsub|m>a<rsub|k>*a<rsub|m+k>*e<rsup|i*k*\<theta\>>=<big|sum><rsub|k><big|sum><rsub|m>a<rsub|k>*a<rsub|m+k>*e<rsup|i*<around|(|k+m|)>*\<theta\>>*e<rsup|-i*m*\<theta\>>=<around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|2>
-  </equation*>
-
-  The spectral representation (3.18) of the covariance kernel can be used to
-  give a corresponding spectral description of the reproducing kernel Hilbert
-  space. Let's identify a section <math|R<rsub|m><around|(|n|)>=r<rsub|n-m>>
-  with its Fourier series:
-
-  <\equation*>
-    R<rsub|m>\<longleftrightarrow\><big|sum><rsub|k>r<rsub|k-m>*e<rsup|i*m*\<theta\>>=e<rsup|i*m*\<theta\>><around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|2>
-  </equation*>
-
-  The inner product on the reproducing kernel Hilbert space is determined by
-  the law <math|<around|(|R<rsub|m>,R<rsub|n>|)>=R<around|(|m,n|)>=r<rsub|m-n>>.
-  Now Lemma 3.9 implies that
-
-  <\equation*>
-    r<rsub|m-n>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<pi\>><rsup|\<pi\>>e<rsup|-i*m*\<theta\>>*e<rsup|i*n*\<theta\>><around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|2>*<space|0.17em>d*\<theta\>
-  </equation*>
-
-  <\equation*>
-    =<frac|1|2*\<pi\>>*<big|int><rsub|-\<pi\>><rsup|\<pi\>><around|(|e<rsup|-i*m*\<theta\>><around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|2>|)><around|(|e<rsup|i*n*\<theta\>><around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|2>|)><around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|-2>*<space|0.17em>d*\<theta\>
-  </equation*>
-
-  Thus, with the identification (3.19), the inner product on the reproducing
-  kernel Hilbert space corresponds to the inner product
-
-  <\equation*>
-    <around|\<langle\>|f,g|\<rangle\>>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<pi\>><rsup|\<pi\>>f<around|(|\<theta\>|)><wide|g<around|(|\<theta\>|)>|\<bar\>><around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|-2>*d*\<theta\>
-  </equation*>
-
-  Therefore, the identification (3.19) extends to a linear isometry of the
-  reproducing kernel Hilbert space onto the Hilbert space <math|H> of all
-  complex functions <math|f:<around|[|-\<pi\>,\<pi\>|]>\<rightarrow\>\<bbb-C\>>
-  with real Fourier coefficients that satisfy
-
-  <\equation*>
-    <around|\<\|\|\>|f|\<\|\|\>><rsup|2>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<pi\>><rsup|\<pi\>><around|\||f<around|(|\<theta\>|)><around|\||<rsup|2>|\|>*A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|-2>*d*\<theta\>\<less\>\<infty\>
-  </equation*>
-
-  (Note: Even though this expression involves complex numbers, the Hilbert
-  space <math|H> is actually a real Hilbert space, because functions
-  <math|f<around|(|\<theta\>|)>> with real Fourier coefficients satisfy
-  <math|f<around|(|\<theta\>|)>=<wide|f*<around|(|-\<theta\>|)>|\<bar\>>>, so
-  the inner product can be rewritten as an integral over the interval
-  <math|<around|[|0,\<pi\>|]>> using only the real parts of the functions.)
-
-  Finally, let's give a complete description of the reproducing kernel
-  Hilbert space itself. Since <math|T=\<bbb-Z\>>, the sections
-  <math|R<rsub|m>> of the covariance are two-sided sequences, and the law
-  <math|<around|\<langle\>|R<rsub|m>,R<rsub|n>|\<rangle\>>=R*<around|(|m,n|)>=r<rsub|m-n>>
-  for the inner product can be expressed explicitly as
-
-  <\equation*>
-    r<rsub|m-n>=<big|sum><rsub|n>R<rsub|m-s>*k<rsub|n-t>*r<rsub|n-t>
-  </equation*>
-
-  our problem is to determine the appropriate sequence <math|s<rsub|j>>. But
-  this can be gotten using the fact that the Fourier transform is an
-  <math|L<rsup|2>>\Uisometry (or alternatively using the Fourier inversion
-  formula); in particular, the right side of (3.21) can be written as
-
-  <\equation*>
-    <big|sum><rsub|m,n>R<rsub|m-s>*k<rsub|-n-t>*r<rsub|n-t>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<pi\>><rsup|\<pi\>>e<rsup|i*m*\<theta\>><around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|2>*S<around|(|e<rsup|i*\<theta\>>|)>*e<rsup|-i*n*\<theta\>><around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|2>*d*\<theta\>
-  </equation*>
-
-  where <math|S<around|(|e<rsup|i*\<theta\>>|)>=<big|sum><rsub|k>s<rsub|k>*e<rsup|i*k*\<theta\>>>.
-  Here we have used the fact that the Fourier series of the sequence
-  <math|r<rsub|k>> is <math|<around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|2>>.
-  This shows that
-
-  <\equation*>
-    S<around|(|e<rsup|i*\<theta\>>|)>=<around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|-2>
-  </equation*>
-
-  and so the coefficients <math|s<rsub|k>> in the inner product (3.21) can be
-  recovered by another Fourier inversion:
-
-  <\equation*>
-    s<rsub|k>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<pi\>><rsup|\<pi\>>e<rsup|-i*k*\<theta\>><around|\||A<around|(|e<rsup|i*\<theta\>>|)>|\|><rsup|-2>*d*\<theta\>
-  </equation*>
-
-  <with|font-series|bold|Exercise 3.3.> Assume that the polynomial
-  <math|A<around|(|z|)>=<big|sum><rsub|k=1><rsup|K>a<rsub|k>*z<rsup|k>> has
-  <math|K> distinct roots <math|\<zeta\><rsub|j>> all located outside the
-  unit disk. Use partial fractions to give explicit formulas for the
-  coefficients <math|s<rsub|k>>. What happens when some of the roots of
-  <math|A<around|(|z|)>> are inside the unit circle?
+  \;
 
   <section*|4. SINGULARITY AND ABSOLUTE CONTINUITY>
 
@@ -1777,17 +1378,17 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|?|1|../../.TeXmacs/texts/scratch/no_name_53.tm>>
-    <associate|auto-2|<tuple|?|4|../../.TeXmacs/texts/scratch/no_name_53.tm>>
-    <associate|auto-3|<tuple|?|4|../../.TeXmacs/texts/scratch/no_name_53.tm>>
-    <associate|auto-4|<tuple|?|7|../../.TeXmacs/texts/scratch/no_name_53.tm>>
-    <associate|auto-5|<tuple|?|9|../../.TeXmacs/texts/scratch/no_name_53.tm>>
-    <associate|auto-6|<tuple|?|9|../../.TeXmacs/texts/scratch/no_name_53.tm>>
-    <associate|auto-7|<tuple|?|11|../../.TeXmacs/texts/scratch/no_name_53.tm>>
-    <associate|auto-8|<tuple|1|16|../../.TeXmacs/texts/scratch/no_name_53.tm>>
-    <associate|auto-9|<tuple|1|21|../../.TeXmacs/texts/scratch/no_name_53.tm>>
-    <associate|footnote-1|<tuple|1|15|../../.TeXmacs/texts/scratch/no_name_53.tm>>
-    <associate|footnr-1|<tuple|1|15|../../.TeXmacs/texts/scratch/no_name_53.tm>>
+    <associate|auto-1|<tuple|?|1>>
+    <associate|auto-2|<tuple|?|4>>
+    <associate|auto-3|<tuple|?|4>>
+    <associate|auto-4|<tuple|?|6>>
+    <associate|auto-5|<tuple|?|7>>
+    <associate|auto-6|<tuple|?|8>>
+    <associate|auto-7|<tuple|?|9>>
+    <associate|auto-8|<tuple|1|14>>
+    <associate|auto-9|<tuple|1|14>>
+    <associate|footnote-1|<tuple|1|12>>
+    <associate|footnr-1|<tuple|1|12>>
   </collection>
 </references>
 
