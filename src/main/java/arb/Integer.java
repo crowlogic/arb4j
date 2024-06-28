@@ -523,6 +523,12 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result.set(this).pow(operand, prec);
   }
 
+  public RealQuasiPolynomial pow(RealQuasiPolynomial exponent, int bits, RealQuasiPolynomial res)
+  {
+    assert false : "TODO";
+    return null;
+  }
+  
   public Integer risingFactorial(Integer n, int bits, Integer result)
   {
     assert n.getSignedValue() >= 0 : String.format("power=%d must be non-negative where this=%d",
@@ -693,5 +699,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   {
     return result.set(this).Γ(bits);
   }
+
+
 
 }

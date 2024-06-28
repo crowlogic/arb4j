@@ -242,6 +242,14 @@
     <around|[|T*\<psi\><rsub|n>|]><around|(|x|)>=<big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|x|)><frac|<sqrt|4*n+1>*<around|(|-1|)><rsup|n><sqrt|\<pi\>>*\<Gamma\>*<around*|(|<frac|k|2>+n+<frac|1|2>|)>|2*\<Gamma\>*<around*|(|-n+<frac|k|2>+<frac|1|2>|)>*\<Gamma\>*<around*|(|<frac|k|2>+n+1|)>*\<Gamma\>*<around*|(|n+1-<frac|k|2>|)>>
   </equation*>
 
+  <\conjecture>
+    \;
+
+    <\equation>
+      <big|sum><rsub|k=0><rsup|\<infty\>>\<psi\><rsub|k><around*|(|x|)><rsup|2>=<frac|1|\<pi\>>
+    </equation>
+  </conjecture>
+
   <\bibliography|bib|tm-plain|refs>
     <\bib-list|3>
       <bibitem*|1><label|bib-finiteFourierTransforms>Atul Dixit, Lin Jiu,
@@ -278,7 +286,7 @@
   <\collection>
     <associate|T|<tuple|4|2>>
     <associate|auto-1|<tuple|1|5>>
-    <associate|auto-2|<tuple|1|5>>
+    <associate|auto-2|<tuple|18|5>>
     <associate|bib-finiteFourierTransforms|<tuple|1|5>>
     <associate|bib-gaussianProcessIntroduction|<tuple|3|5>>
     <associate|bib-modifiedLommelPolynomials|<tuple|2|5>>

@@ -2,3 +2,4 @@ implement KL expansion
 implement Node.integral method (starting wtih Division extends BinaryOperation)
 fix testHypergeometricFactorOfFourierTransformOfType1Chebyshevpolynomials
 DescriptionResourcePathLocationTypeThe method div(RealQuasiPolynomial, int, RealQuasiPolynomial) in the type RealQuasiPolynomial is not applicable for the arguments (Integer, int, RealQuasiPolynomial)R.java/arb4j/src/main/java/arb/functions/realline 48Java ProblemThe method parse(String) is undefined for the type ComplexQuasiPolynomialF.java/arb4j/src/main/java/arb/functions/realline 48Java ProblemThe method parse(String) is undefined for the type RealQuasiPolynomialR.java/arb4j/src/main/java/arb/functions/realline 53Java Problem
+quasipolynomial parse methods

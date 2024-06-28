@@ -7,6 +7,7 @@ import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexIdentityFunction;
+import arb.functions.complex.ComplexQuasiPolynomialNullaryFunction;
 import arb.functions.polynomials.quasi.QuasiPolynomial;
 import arb.functions.polynomials.quasi.complex.ComplexQuasiPolynomialMultiplication;
 import arb.functions.sequences.Sequence;
@@ -279,6 +280,13 @@ public class ComplexQuasiPolynomial
     identity();
     p.set(val);
     return this;
+  }
+
+  public static Expression<Object, ComplexQuasiPolynomial, ComplexQuasiPolynomialNullaryFunction>
+         parse(String string)
+  {
+    assert false : "TODO";
+    return null;
   }
 
 }

@@ -13,6 +13,7 @@ import arb.functions.polynomials.quasi.real.RealQuasiPolynomialSquareRoot;
 import arb.functions.polynomials.quasi.real.RealQuasiPolynomialSubtraction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealIdentityFunction;
+import arb.functions.real.RealQuasiPolynomialNullaryFunction;
 import arb.functions.sequences.Sequence;
 
 /**
@@ -166,6 +167,12 @@ public class RealQuasiPolynomial
     return result;
   }
 
+  public RealQuasiPolynomial div(Integer dividend, int bits, RealQuasiPolynomial res)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
   @Override
   public RealQuasiPolynomial div(RealQuasiPolynomial operand, int prec, RealQuasiPolynomial result)
   {
@@ -270,6 +277,18 @@ public class RealQuasiPolynomial
   public RealQuasiPolynomial additiveIdentity()
   {
     return identity();
+  }
+
+  public RealQuasiPolynomial pow(RealQuasiPolynomial exponent, int bits, RealQuasiPolynomial res)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  public static Expression<Object, RealQuasiPolynomial, RealQuasiPolynomialNullaryFunction> parse(String string)
+  {
+    assert false : "TODO";
+    return null;
   }
 
 }
