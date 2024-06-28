@@ -44,18 +44,18 @@ public class R implements Sequence<RealQuasiPolynomial>, Typesettable, AutoClose
       initialize();
     }
 
-    return v.ascendingFactorial(n, bits, ℝ1)
-            .mul(result.identity().div(cℤ1, bits, qXℝ1).pow(n.neg(qXℝ2), bits, qXℝ3), bits, qXℝ4)
-            .mul(new RealHypergeometricQuasiPolynomial(vℝ1.set(new Real[]
-            { cℤ2.div(cℤ1, bits, ℝ2).sub(n.div(cℤ1, bits, ℝ3), bits, ℝ4), n.div(cℤ1, bits, ℝ5).neg(ℝ6) }),
-                                                       vℝ2.set(new Real[]
-                                                       { v, n.neg(ℝ7), cℤ2.sub(v, bits, ℝ8).sub(n, bits, ℝ9) }),
-                                                       RealQuasiPolynomial.parse("-z^2")).evaluate(null,
-                                                                                                   1,
-                                                                                                   bits,
-                                                                                                   result),
-                 bits,
-                 result);
+    Real[] numer = new Real[]
+    { cℤ2.div(cℤ1, bits, ℝ2).sub(n.div(cℤ1, bits, ℝ3), bits, ℝ4), n.div(cℤ1, bits, ℝ5).neg(ℝ6) };
+    Real[] denom = new Real[]
+    { v, n.neg(ℝ7), cℤ2.sub(v, bits, ℝ8).sub(n, bits, ℝ9) };
+    try ( var f = new RealHypergeometricQuasiPolynomial(vℝ1.set(numer),
+                                                        vℝ2.set(denom),
+                                                        RealQuasiPolynomial.parse("-z^2")))
+    {
+      return v.ascendingFactorial(n, bits, ℝ1)
+              .mul(result.identity().div(cℤ1, bits, qXℝ1).pow(n.neg(qXℝ2), bits, qXℝ3), bits, qXℝ4)
+              .mul(f.evaluate(null, 1, bits, result), bits, result);
+    }
   }
 
   @Override
