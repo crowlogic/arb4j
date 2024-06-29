@@ -72,7 +72,12 @@ import arb.domains.Domain;
   {
     return Γ(bits, this);
   }
-    
+
+  public ComplexQuasiPolynomial mul(ComplexQuasiPolynomial s, int prec, ComplexQuasiPolynomial r)
+  {
+    return s.mul(this, prec, r);
+  }
+      
   public Complex Γ(int bits)
   {
     return Γ(bits, this);
