@@ -25,21 +25,22 @@ public class RealQuasiPolynomialTest
 {
   public void testHypergeometricFactorOfFourierTransformOfType1Chebyshevpolynomials()
   {
-    Expression<Integer, ComplexQuasiPolynomial, Sequence<ComplexQuasiPolynomial>> expression = ComplexQuasiPolynomial.parseSequence("F",
-                                                                                                                                    "n->pFq([1,n,-n],[1/2],ⅈ*y/2)");
-    Sequence<ComplexQuasiPolynomial>                                              f          = expression.instantiate();
-    ComplexQuasiPolynomial                                                        f0         = f.evaluate(0, 128);
+    var expression = ComplexQuasiPolynomial.parseSequence("F", "n->pFq([1,n,-n],[1/2],ⅈ*y/2)");
+    var f          = expression.instantiate();
+    var f0         = f.evaluate(2, 128);
     System.out.println("f0=" + f0);
   }
 
   public void testLommelQuasiPolynomialSequence()
   {
-    Real v = new Real().set(RealConstants.half).setName("v");
-    Context context = new Context(v);
-    var expression = RealQuasiPolynomial.parseSequence("R", "n->v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z^2)",context);
+    Real    v          = new Real().set(RealConstants.half).setName("v");
+    Context context    = new Context(v);
+    var     expression = RealQuasiPolynomial.parseSequence("R",
+                                                           "n->v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z^2)",
+                                                           context);
     System.out.println(expression.syntaxTextTree());
-    Sequence<RealQuasiPolynomial> f = expression.instantiate();
-    RealQuasiPolynomial f0 = f.evaluate(0, 128);
+    Sequence<RealQuasiPolynomial> f  = expression.instantiate();
+    RealQuasiPolynomial           f0 = f.evaluate(0, 128);
     System.out.println("f0=" + f0);
   }
 
