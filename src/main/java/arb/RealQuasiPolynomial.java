@@ -136,10 +136,10 @@ public class RealQuasiPolynomial
     }
   }
 
-  public RealQuasiPolynomial div(Integer dividend, int bits, RealQuasiPolynomial res)
+  public RealQuasiPolynomial div(Integer operand, int bits, RealQuasiPolynomial result)
   {
-    assert false : "TODO";
-    return null;
+    p.div(operand, bits, result.p );    
+    return result;
   }
 
   @Override

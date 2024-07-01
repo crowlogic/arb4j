@@ -73,6 +73,12 @@ public interface Ring<X> extends
     return "null";
   }
 
+  @SuppressWarnings("unchecked")
+  public default X add( X addend, int bits )
+  {
+    return add( addend, bits, (X) this);
+  }
+  
   X add(X addend, int bits, X result);
 
   X sub(X subtrahend, int bits, X result);

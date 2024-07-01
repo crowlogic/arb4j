@@ -1,7 +1,10 @@
 package arb.functions.polynomials.quasi.real;
 
+import arb.Integer;
 import arb.Real;
 import arb.RealQuasiPolynomial;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
 
 /**
@@ -19,8 +22,9 @@ public final class RealQuasiPolynomialDivision implements RealFunction
   public RealQuasiPolynomialDivision(RealQuasiPolynomial realQuasiPolynomial, RealQuasiPolynomial operand)
   {
     this.realQuasiPolynomial = realQuasiPolynomial;
-    this.operand = operand;
+    this.operand             = operand;
   }
+
 
   @Override
   public Real evaluate(Real t, int order, int rbits, Real res)

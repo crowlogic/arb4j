@@ -10,21 +10,16 @@ import arb.functions.complex.ComplexFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public final class ComplexQuasiPolynomialMultiplication implements ComplexFunction
+public final class ComplexQuasiPolynomialDivision implements ComplexFunction
 {
 
-  private final ComplexQuasiPolynomial realQuasiPolynomial;
+  private final ComplexQuasiPolynomial complexQuasiPolynomial;
   private final ComplexQuasiPolynomial operand;
-  final String                         opstring ;
-  private String thisStr;
 
-  public ComplexQuasiPolynomialMultiplication(ComplexQuasiPolynomial realQuasiPolynomial,
-                                              ComplexQuasiPolynomial operand)
+  public ComplexQuasiPolynomialDivision(ComplexQuasiPolynomial realQuasiPolynomial, ComplexQuasiPolynomial operand)
   {
-    this.realQuasiPolynomial = realQuasiPolynomial;
-    this.operand             = operand;
-    thisStr = realQuasiPolynomial.toString();
-    opstring = operand.toString();
+    this.complexQuasiPolynomial = realQuasiPolynomial;
+    this.operand                = operand;
   }
 
   @Override
@@ -32,7 +27,7 @@ public final class ComplexQuasiPolynomialMultiplication implements ComplexFuncti
   {
     try ( Complex left = new Complex(); Complex right = new Complex();)
     {
-      this.realQuasiPolynomial.evaluate(t, order, rbits, left);
+      this.complexQuasiPolynomial.evaluate(t, order, rbits, left);
       operand.evaluate(t, order, rbits, right);
       Complex mul = left.mul(right, rbits, res);
       return mul;
@@ -42,6 +37,6 @@ public final class ComplexQuasiPolynomialMultiplication implements ComplexFuncti
   @Override
   public String toString()
   {
-    return String.format("%s*%s", thisStr, opstring);
+    return String.format("%s*%s", this.complexQuasiPolynomial, operand);
   }
 }

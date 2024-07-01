@@ -1,15 +1,9 @@
 package arb.functions.polynomials.quasi;
 
-import arb.ComplexQuasiPolynomial;
-import arb.Integer;
-import arb.Real;
-import arb.RealConstants;
-import arb.RealQuasiPolynomial;
-import arb.RoundingMode;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
-import arb.expressions.Expression;
 import arb.functions.real.RealFunction;
 import arb.functions.sequences.Sequence;
 import junit.framework.TestCase;
@@ -29,6 +23,11 @@ public class RealQuasiPolynomialTest
     var f          = expression.instantiate();
     var f0         = f.evaluate(2, 128);
     System.out.println("f0=" + f0);
+    Complex f0TwoPointThree = f0.evaluate(new Complex(new Real("2.3",
+                                                               128),
+                                                      RealConstants.zero),
+                                          128,
+                                          new Complex());
   }
 
   public void testLommelQuasiPolynomialSequence()

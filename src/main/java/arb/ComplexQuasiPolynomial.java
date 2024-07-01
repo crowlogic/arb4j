@@ -10,6 +10,8 @@ import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexIdentityFunction;
 import arb.functions.complex.ComplexQuasiPolynomialNullaryFunction;
 import arb.functions.polynomials.quasi.QuasiPolynomial;
+import arb.functions.polynomials.quasi.complex.ComplexQuasiPolynomialAddition;
+import arb.functions.polynomials.quasi.complex.ComplexQuasiPolynomialDivision;
 import arb.functions.polynomials.quasi.complex.ComplexQuasiPolynomialMultiplication;
 import arb.functions.sequences.Sequence;
 
@@ -24,6 +26,22 @@ public class ComplexQuasiPolynomial
                                     ComplexFunction
 
 {
+
+  public ComplexQuasiPolynomial add(ComplexQuasiPolynomial q, int prec)
+  {
+    return add(q, prec, this);
+  }
+
+  @Override
+  public ComplexQuasiPolynomial add(ComplexQuasiPolynomial operand, int prec, ComplexQuasiPolynomial result)
+  {
+    result.identity();
+    result.p.bits = prec;
+    result.f      = new ComplexQuasiPolynomialAddition(this,
+                                                       operand);
+
+    return result;
+  }
 
   @Override
   public ComplexQuasiPolynomial mul(ComplexQuasiPolynomial operand, int prec, ComplexQuasiPolynomial result)
@@ -145,13 +163,6 @@ public class ComplexQuasiPolynomial
   }
 
   @Override
-  public ComplexQuasiPolynomial add(ComplexQuasiPolynomial addend, int bits, ComplexQuasiPolynomial result)
-  {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
-  }
-
-  @Override
   public ComplexQuasiPolynomial sub(ComplexQuasiPolynomial subtrahend, int bits, ComplexQuasiPolynomial result)
   {
     assert false : "TODO: Auto-generated method stub";
@@ -191,16 +202,21 @@ public class ComplexQuasiPolynomial
 
   public ComplexQuasiPolynomial set(ComplexQuasiPolynomial complexQuasiPolynomial)
   {
+    identity();
     this.f = complexQuasiPolynomial.f;
     this.p.set(complexQuasiPolynomial.p);
     return this;
   }
 
   @Override
-  public ComplexQuasiPolynomial div(ComplexQuasiPolynomial j, int prec, ComplexQuasiPolynomial result)
+  public ComplexQuasiPolynomial div(ComplexQuasiPolynomial operand, int prec, ComplexQuasiPolynomial result)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    result.identity();
+    result.p.bits = prec;
+    result.f      = new ComplexQuasiPolynomialDivision(this,
+                                                       operand);
+
+    return result;
   }
 
   public ComplexQuasiPolynomial div(Integer j, int prec, ComplexQuasiPolynomial result)
@@ -240,6 +256,7 @@ public class ComplexQuasiPolynomial
   public ComplexQuasiPolynomial pow(Integer power, int bits, ComplexQuasiPolynomial result)
   {
     result.identity();
+    final String thisStr = this.toString();
     result.f      = new ComplexFunction()
                   {
 
@@ -255,7 +272,7 @@ public class ComplexQuasiPolynomial
                     @Override
                     public String toString()
                     {
-                      return String.format("%s^%s", ComplexQuasiPolynomial.this, power);
+                      return String.format("%s^%s", thisStr, power);
                     }
                   };
 
@@ -283,7 +300,8 @@ public class ComplexQuasiPolynomial
     return this;
   }
 
-  public static Expression<Object, ComplexQuasiPolynomial, ComplexQuasiPolynomialNullaryFunction> parse(String expression)
+  public static Expression<Object, ComplexQuasiPolynomial, ComplexQuasiPolynomialNullaryFunction>
+         parse(String expression)
   {
     return Function.parse(Parser.expressionToUniqueClassname(expression),
                           expression,
