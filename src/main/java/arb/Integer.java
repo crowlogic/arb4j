@@ -217,6 +217,11 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return res.set(this).div(dividend, prec);
   }
 
+  public ComplexQuasiPolynomial div(ComplexQuasiPolynomial q, int bits, ComplexQuasiPolynomial res)
+  {
+    return res.set(this).div(q, bits);
+  }
+
   public Integer div(Integer operand)
   {
     return div(operand, this);
@@ -287,7 +292,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   {
     return res.set(this).div(q, bits);
   }
-
+  
   @Override
   public boolean equals(Object obj)
   {
@@ -439,6 +444,11 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   public ComplexPolynomial mul(ComplexPolynomial x, int bits, ComplexPolynomial res)
   {
     return res.set(this).mul(x, bits);
+  }
+
+  public ComplexQuasiPolynomial mul(ComplexQuasiPolynomial q, int bits, ComplexQuasiPolynomial res)
+  {
+    return res.set(this).mul(q, bits);
   }
 
   @Override

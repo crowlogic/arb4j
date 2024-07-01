@@ -11,7 +11,6 @@ import arb.functions.complex.ComplexIdentityFunction;
 import arb.functions.complex.ComplexQuasiPolynomialNullaryFunction;
 import arb.functions.polynomials.quasi.QuasiPolynomial;
 import arb.functions.polynomials.quasi.complex.ComplexQuasiPolynomialMultiplication;
-import arb.functions.real.RealQuasiPolynomialNullaryFunction;
 import arb.functions.sequences.Sequence;
 
 /**
@@ -294,5 +293,12 @@ public class ComplexQuasiPolynomial
                           ComplexQuasiPolynomialNullaryFunction.class,
                           null,
                           null);
+  }
+
+  public ComplexQuasiPolynomial set(Integer integer)
+  {
+    identity();
+    p.set(integer);
+    return this;
   }
 }
