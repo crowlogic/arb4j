@@ -62,7 +62,8 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
                          UnaryOperation<D, R, F>
 {
 
-  public boolean                  contextual                                   = false;
+  public boolean                  contextual   = false;
+  
   public String                   functionName;
 
   HashSet<String>                 polynomialFunctionsWithQuasiPolyomialResults = new HashSet<>(Arrays.asList("sqrt",

@@ -1,9 +1,5 @@
 package arb.expressions.nodes.unary;
 
-import org.objectweb.asm.MethodVisitor;
-
-import arb.Polynomial;
-import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;

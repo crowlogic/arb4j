@@ -244,7 +244,7 @@ public class RealQuasiPolynomial
 
   public RealQuasiPolynomial pow(RealQuasiPolynomial exponent, int bits, RealQuasiPolynomial res)
   {
-    assert false : "TODO";
+    assert false : "TODO: raise " + this + " to the power of " + exponent;
     return null;
   }
 

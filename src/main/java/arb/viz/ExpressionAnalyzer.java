@@ -1,9 +1,11 @@
 package arb.viz;
 
+import arb.Integer;
 import arb.RealQuasiPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
+import arb.functions.sequences.Sequence;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.scene.Scene;
@@ -27,7 +29,12 @@ public class ExpressionAnalyzer
                                 Application
 {
 
-  private void expandTreeView(TreeItem<?> item)
+  public static Expression<Integer, RealQuasiPolynomial, Sequence<RealQuasiPolynomial>> getExpression()
+  {
+    return RealQuasiPolynomial.parseSequence("Ψ", "y➔½*√(2*(4*n+1)/y)*(-1)ⁿ*J(2*n+½,y)");
+  }
+
+  public void expandTreeView(TreeItem<?> item)
   {
     if (item != null && !item.isLeaf())
     {
@@ -46,7 +53,7 @@ public class ExpressionAnalyzer
     primaryStage.setWidth(1800);
     primaryStage.setHeight(900);
 
-    Expression<?, ?, ?> expr = RealQuasiPolynomial.parseSequence("Ψ", "y➔½*√(2*(4*n+1)/y)*(-1)ⁿ*J(2*n+½,y)");
+    Expression<?, ?, ?> expr = getExpression();
 
     System.out.println("expr=" + expr.syntaxTextTree());
 

@@ -8,17 +8,13 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
- * Floor function<br>
- * <br>
- * 
- * <pre>
- * y = x - frac(x)
- * </pre>
+ * Absolute value function
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class AbsoluteValue<D, R, F extends Function<? extends D, ? extends R>> extends
+public class AbsoluteValue<D, R, F extends Function<? extends D, ? extends R>>
+                          extends
                           FunctionCall<D, R, F>
 {
 
