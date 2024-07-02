@@ -1,15 +1,21 @@
 package arb.functions.real;
 
-import arb.Initializable;
+import arb.*;
 import arb.Integer;
-import arb.Real;
-import arb.RealQuasiPolynomial;
-import arb.Typesettable;
 import arb.functions.polynomials.quasi.real.RealHypergeometricQuasiPolynomial;
 import arb.functions.sequences.Sequence;
 
 public class R implements Sequence<RealQuasiPolynomial>, Typesettable, AutoCloseable, Initializable
 {
+  public static void main(String arg[])
+  {
+    R                      f  = new R();
+    f.v = new Real().set(RealConstants.half);
+    RealQuasiPolynomial f3 = f.evaluate(3, 128);
+    System.out.println("f3=" + f3);
+  }
+
+  
   public boolean             isInitialized;
   Integer                    cℤ2  = new Integer("1");
   Integer                    cℤ1  = new Integer("2");

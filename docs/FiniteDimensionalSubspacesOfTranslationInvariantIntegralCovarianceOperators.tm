@@ -65,7 +65,7 @@
   given by:
 
   <\equation>
-    A<rsub|i*j>=<big|int><big|int>\<phi\><rsub|i><around|(|s|)>*K<rsub|n><around|(|s,t|)>*\<phi\><rsub|j><around|(|t|)>*<space|0.17em>d*s*<space|0.17em>d*t
+    A<rsub|i*j>=<big|int><rsub|0><rsup|\<infty\>><big|int><rsub|0><rsup|\<infty\>>\<phi\><rsub|i><around|(|s|)>*K<rsub|n><around|(|s,t|)>*\<phi\><rsub|j><around|(|t|)>*<space|0.17em>d*s*<space|0.17em>d*t
   </equation>
 
   Each element <math|A<rsub|i*j>> represents the interaction between the

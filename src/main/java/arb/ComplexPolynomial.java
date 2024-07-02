@@ -532,4 +532,11 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
     this(arblibJNI.new_ComplexPolynomial(), true);
   }
 
+
+  public ComplexPolynomial mul(Complex val, int bits2, ComplexPolynomial p)
+  {
+    arblib.acb_poly_scalar_mul(p, this, val, bits2);
+    return p;
+  }
+
 }

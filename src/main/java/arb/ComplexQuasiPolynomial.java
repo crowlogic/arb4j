@@ -35,6 +35,7 @@ public class ComplexQuasiPolynomial
   @Override
   public ComplexQuasiPolynomial add(ComplexQuasiPolynomial operand, int prec, ComplexQuasiPolynomial result)
   {
+    assert p != null;
     result.identity();
     result.p.bits = prec;
     result.f      = new ComplexQuasiPolynomialAddition(this,
@@ -48,9 +49,8 @@ public class ComplexQuasiPolynomial
   {
     result.identity();
     result.p.bits = prec;
-    result.f      = new ComplexQuasiPolynomialMultiplication(this,
-                                                             operand);
-
+    p.mul(operand.p, prec, result.p);
+    result.f      = f;
     return result;
   }
 
@@ -107,14 +107,15 @@ public class ComplexQuasiPolynomial
   @Override
   public String toString()
   {
-    return String.format("%s(%s)", f, p);
+    return String.format("[p=%s, f=%s]", p,f);
   }
 
-  ComplexPolynomial p;
+  public ComplexPolynomial p;
 
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
+    assert f != p : "f should not be equal to p";
     p.evaluate(z, order, prec, w);
     return f.evaluate(w, order, prec, w);
   }
@@ -177,25 +178,8 @@ public class ComplexQuasiPolynomial
   public ComplexQuasiPolynomial mul(Complex val, int bits2, ComplexQuasiPolynomial result)
   {
     result.identity();
-    result.f      = new ComplexFunction()
-                  {
-
-                    @Override
-                    public Complex evaluate(Complex t, int order, int rbits, Complex res)
-                    {
-
-                      ComplexQuasiPolynomial.this.evaluate(t, order, rbits, res);
-                      return res.mul(val, rbits, res);
-
-                    }
-
-                    @Override
-                    public String toString()
-                    {
-                      return String.format("%s*%s", ComplexQuasiPolynomial.this, val);
-                    }
-                  };
-
+    result.p = p.mul(val, bits2,result.p);
+    result.f = f;
     result.p.bits = bits2;
     return result;
   }
@@ -212,36 +196,16 @@ public class ComplexQuasiPolynomial
   public ComplexQuasiPolynomial div(ComplexQuasiPolynomial operand, int prec, ComplexQuasiPolynomial result)
   {
     result.identity();
-    result.p.bits = prec;
-    result.f      = new ComplexQuasiPolynomialDivision(this,
-                                                       operand);
-
+    result.p.div(operand.p, prec, result.p);
+    result.f = f;
     return result;
   }
 
   public ComplexQuasiPolynomial div(Integer j, int prec, ComplexQuasiPolynomial result)
   {
     result.identity();
-    result.f      = new ComplexFunction()
-                  {
-
-                    @Override
-                    public Complex evaluate(Complex val, int order, int rbits, Complex res)
-                    {
-
-                      ComplexQuasiPolynomial.this.evaluate(val, rbits, res);
-                      return res.div(val, rbits);
-
-                    }
-
-                    @Override
-                    public String toString()
-                    {
-                      return String.format("%s/%s", ComplexQuasiPolynomial.this, j);
-                    }
-                  };
-
-    result.p.bits = prec;
+    result.p.div(j, prec, result.p);
+    result.f = f;
     return result;
   }
 

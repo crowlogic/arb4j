@@ -1,10 +1,14 @@
 package arb.functions.polynomials.quasi;
 
+
 import arb.*;
+import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.real.RealFunction;
+import arb.functions.sequences.ComplexPolynomialSequence;
 import arb.functions.sequences.Sequence;
 import junit.framework.TestCase;
 
@@ -19,15 +23,17 @@ public class RealQuasiPolynomialTest
 {
   public void testHypergeometricFactorOfFourierTransformOfType1Chebyshevpolynomials()
   {
-    var expression = ComplexQuasiPolynomial.parseSequence("F", "n->pFq([1,n,-n],[1/2],ⅈ*y/2)");
+    Expression<Integer,ComplexPolynomial,ComplexPolynomialSequence> expression = ComplexPolynomialSequence.parse("F", "n->pFq([1,n,-n],[1/2],ⅈ*y/2)",null);
+    
     var f          = expression.instantiate();
-    var f0         = f.evaluate(2, 128);
+    var f0         = f.evaluate(4, 128);
     System.out.println("f0=" + f0);
     Complex f0TwoPointThree = f0.evaluate(new Complex(new Real("2.3",
                                                                128),
                                                       RealConstants.zero),
                                           128,
                                           new Complex());
+    System.out.println( "f0(2.3)=" + f0TwoPointThree);
   }
 
   public void testLommelQuasiPolynomialSequence()

@@ -31,7 +31,7 @@ public final class ComplexQuasiPolynomialAddition implements ComplexFunction
   {
     try ( Complex left = new Complex(); Complex right = new Complex();)
     {
-      this.complexQuasiPolynomial.evaluate(t, order, rbits, left);
+      this.complexQuasiPolynomial.p.evaluate(t, order, rbits, left);
       operand.evaluate(t, order, rbits, right);
       Complex mul = left.add(right, rbits, res);
       return mul;
