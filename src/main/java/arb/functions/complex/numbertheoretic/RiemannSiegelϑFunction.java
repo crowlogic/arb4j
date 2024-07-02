@@ -31,7 +31,7 @@ import arb.functions.complex.ComplexFunction;
 public class RiemannSiegelϑFunction implements
                                     ComplexFunction
 {
-  ComplexFunction ϑ = ComplexFunction.express("ϑ:t->(-ⅈ*(ln⁡Γ(1/4 + ⅈ*t/2) - lnΓ(1/4 − ⅈ*t/2) ) − ln⁡(π)*t)/2");
+  public static final ComplexFunction ϑ = ComplexFunction.express("ϑ:t->(-ⅈ*(ln⁡Γ(1/4 + ⅈ*t/2) - lnΓ(1/4 − ⅈ*t/2) ) − ln⁡(π)*t)/2");
 
   public RiemannSiegelϑFunction()
   {
