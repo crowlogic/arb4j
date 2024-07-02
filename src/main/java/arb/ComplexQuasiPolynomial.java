@@ -107,7 +107,7 @@ public class ComplexQuasiPolynomial
   @Override
   public String toString()
   {
-    return String.format("[p=%s, f=%s]", p,f);
+    return f.toString().replaceAll("x", p.toString());
   }
 
   public ComplexPolynomial p;
@@ -219,6 +219,8 @@ public class ComplexQuasiPolynomial
   @Override
   public ComplexQuasiPolynomial pow(Integer power, int bits, ComplexQuasiPolynomial result)
   {
+    assert f != null : "f is null";
+    assert p != null : "p is null";
     result.identity();
     final String thisStr = this.toString();
     result.f      = new ComplexFunction()
