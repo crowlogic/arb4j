@@ -47,7 +47,7 @@ public class Subtraction<D, R, F extends Function<? extends D, ? extends R>> ext
   public String typeset()
   {
     String lhs = left == null ? "" : left.typeset();
-    return format("%s-%s", "0".equals(lhs) ? "" : lhs, right.typeset());
+    return format("(%s-%s)", "0".equals(lhs) ? "" : lhs, right.typeset());
   }
 
   public Subtraction(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)

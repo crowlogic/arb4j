@@ -1,24 +1,28 @@
 package arb.viz;
 
+import java.awt.image.BufferedImage;
+
 import arb.Integer;
 import arb.RealQuasiPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.sequences.Sequence;
+import arb.utensils.Utensils;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldTreeTableCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -94,6 +98,46 @@ public class ExpressionAnalyzer
 
     TreeTableColumn<Node<?, ?, ?>, String> typesetCol = new TreeTableColumn<>("typeset()");
     typesetCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().typeset()));
+
+    typesetCol.setCellFactory(new Callback<TreeTableColumn<Node<?, ?, ?>, String>, TreeTableCell<Node<?, ?, ?>, String>>()
+    {
+      @Override
+      public TreeTableCell<Node<?, ?, ?>, String> call(TreeTableColumn<Node<?, ?, ?>, String> param)
+      {
+        return new TextFieldTreeTableCell<Node<?, ?, ?>, String>()
+        {
+          private final ImageView imageView = new ImageView();
+
+          @Override
+          public void updateItem(String item, boolean empty)
+          {
+            super.updateItem(item, empty);
+            if (item == null || empty)
+            {
+              setText(null);
+              setGraphic(null);
+            }
+            else
+            {
+              try
+              {
+                BufferedImage bufferedImage = Utensils.renderFormula(item);
+                Image         image         = SwingFXUtils.toFXImage(bufferedImage, null);
+                imageView.setImage(image);
+                setGraphic(imageView);
+                setText(null);
+              }
+              catch (Exception e)
+              {
+                setText("Error rendering formula: " + e.getMessage() + " for string '" + item + "'");
+                e.printStackTrace(System.err);
+                setGraphic(null);
+              }
+            }
+          }
+        };
+      }
+    });
 
     treeTableView.getColumns().addAll(nodeCol, isScalarCol, nodeTypeCol, nodeTypeResultCol, typesetCol);
 

@@ -28,7 +28,7 @@ public class Multiplication<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public String typeset()
   {
-    return format("%s \\cdot %s", left.typeset(), right.typeset());
+    return format("(%s \\cdot %s)", left.typeset(), right.typeset());
   }
 
   @Override

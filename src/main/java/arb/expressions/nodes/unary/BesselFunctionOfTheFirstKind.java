@@ -4,6 +4,7 @@ import static arb.expressions.Compiler.duplicateTopOfTheStack;
 import static arb.expressions.Compiler.invokeStaticMethod;
 import static arb.expressions.Compiler.loadBitsParameterOntoSTack;
 import static arb.expressions.Compiler.scalarType;
+import static java.lang.String.format;
 import static java.lang.System.err;
 
 import java.util.List;
@@ -122,5 +123,13 @@ public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, 
                        int.class);
 
     generatedType = scalarType;
+  }
+
+  @Override
+  public String typeset()
+  {
+    return format("J_{%s}(%s)",
+                  order.typeset(),
+                  arg == null ? "" : arg.typeset());
   }
 }

@@ -22,7 +22,7 @@ public class Exponentiation<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public String typeset()
   {
-    return format("%s^%s", left.typeset(), right.typeset());
+    return format("(%s)^{(%s)}", left.typeset(), right.typeset());
   }
 
   public Exponentiation(Expression<D, R, F> expression, Node<D, R, F> base, Node<D, R, F> exponent)
