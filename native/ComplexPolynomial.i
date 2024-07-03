@@ -16,6 +16,12 @@ import java.util.Objects;
 
 %typemap(javacode) acb_poly_struct %{
 
+  public ComplexPolynomial mul(Complex val, int bits, ComplexPolynomial res)
+  {
+    arblib.acb_poly_scalar_mul(res, this, val, bits);
+    return res;
+  }
+  
   @Override
   public int
          hashCode()
