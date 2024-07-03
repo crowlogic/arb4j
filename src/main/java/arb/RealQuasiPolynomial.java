@@ -118,7 +118,14 @@ public class RealQuasiPolynomial
   @Override
   public RealQuasiPolynomial additiveIdentity()
   {
-    return identity();
+    identity().zero();
+    return this;
+  }
+  
+  public RealQuasiPolynomial multiplicativeIdentity()
+  {
+    identity().one();
+    return this;
   }
 
   @Override
@@ -297,5 +304,7 @@ public class RealQuasiPolynomial
     p.zero();
     return this;
   }
+
+
 
 }

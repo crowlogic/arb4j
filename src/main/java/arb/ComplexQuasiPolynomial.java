@@ -11,8 +11,6 @@ import arb.functions.complex.ComplexIdentityFunction;
 import arb.functions.complex.ComplexQuasiPolynomialNullaryFunction;
 import arb.functions.polynomials.quasi.QuasiPolynomial;
 import arb.functions.polynomials.quasi.complex.ComplexQuasiPolynomialAddition;
-import arb.functions.polynomials.quasi.complex.ComplexQuasiPolynomialDivision;
-import arb.functions.polynomials.quasi.complex.ComplexQuasiPolynomialMultiplication;
 import arb.functions.sequences.Sequence;
 
 /**
