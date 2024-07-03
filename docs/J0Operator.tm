@@ -209,38 +209,62 @@
     Hilbert Space of a Gaussian Process>
   </remark>
 
-  <subsubsection|Simplifying The Convolution>
+  <\theorem>
+    <label|Taddition>The Bessel function identity
 
-  Apply the addition theorem
+    <\equation>
+      J<rsub|0>*<around|(|x-y|)>=<big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|x|)>*J<rsub|k>*<around|(|y|)>
+    </equation>
 
-  <\equation*>
-    J<rsub|0>*<around|(|x-y|)>=<big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|x|)>*J<rsub|k>*<around|(|y|)>
-  </equation*>
+    can be used to expression Equation (<reference|T>) as a series
 
-  to the integral covariance operator
+    <\equation*>
+      <tabular|<tformat|<table|<row|<cell|<around|[|T*f|]><around|(|y|)>>|<cell|=<big|int><rsub|0><rsup|\<infty\>>J<rsub|0>*<around|(|x-y|)>*f<around|(|x|)>*<space|0.17em>d*x>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>><big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|x|)>*J<rsub|k>*<around|(|y|)>*f<around*|(|x|)><space|0.17em>d*x>>|<row|<cell|>|<cell|=<big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|y|)><big|int><rsub|0><rsup|\<infty\>>*J<rsub|k>*<around|(|x|)>*f<around*|(|x|)>*<space|0.17em>d*x<space|1em>>>>>>
+    </equation*>
 
-  <\equation*>
-    <tabular|<tformat|<table|<row|<cell|<around|[|T*\<psi\><rsub|n>|]><around|(|x|)>>|<cell|=<big|int><rsub|0><rsup|\<infty\>>J<rsub|0>*<around|(|x-y|)>*\<psi\><rsub|n><around|(|y|)>*<space|0.17em>d*y>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>><big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|x|)>*J<rsub|k>*<around|(|y|)>*\<psi\><rsub|n><around|(|y|)>*<space|0.17em>d*y>>|<row|<cell|>|<cell|=<big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|x|)><big|int><rsub|0><rsup|\<infty\>>*J<rsub|k>*<around|(|y|)>*\<psi\><rsub|n><around|(|y|)>*<space|0.17em>d*y<space|1em>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|x|)><big|int><rsub|0><rsup|\<infty\>>*J<rsub|k>*<around|(|y|)>*<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*j<rsub|2*n><around|(|y|)><space|0.17em>d*y>>>>>
-  </equation*>
+    when <math|f> is absolutely integrable.\ 
+  </theorem>
 
-  Where <math|\<psi\><rsub|n><around|(|y|)>> is:
+  <\proof>
+    <text-dots>
+  </proof>
 
-  <\equation*>
-    \<psi\><rsub|n><around|(|y|)>=<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*j<rsub|2*n><around|(|y|)>=<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*<sqrt|<frac|\<pi\>|2*y>>*J<rsub|2*n+<frac|1|2>><around|(|y|)>
-  </equation*>
+  <\example>
+    <subsubsection|Simplifying The Convolution>
 
-  Substituting\ 
+    Apply the addition theorem
 
-  <\equation*>
-    <tabular|<tformat|<table|<row|<cell|<big|int><rsub|0><rsup|\<infty\>>J<rsub|k>*<around|(|y|)>*\<psi\><rsub|n><around|(|y|)>*<space|0.17em>d*y>|<cell|=<big|int><rsub|0><rsup|\<infty\>>J<rsub|k>*<around|(|y|)>*<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*j<rsub|2*n><around|(|y|)><space|0.17em>d*y>>|<row|<cell|>|<cell|=<frac|<sqrt|4*n+1>*<around|(|-1|)><rsup|n><sqrt|\<pi\>>*\<Gamma\>*<around*|(|<frac|k|2>+n+<frac|1|2>|)>|2*\<Gamma\>*<around*|(|-n+<frac|k|2>+<frac|1|2>|)>*\<Gamma\>*<around*|(|<frac|k|2>+n+1|)>*\<Gamma\>*<around*|(|n+1-<frac|k|2>|)>>>>>>>
-  </equation*>
+    <\equation>
+      J<rsub|0>*<around|(|x-y|)>=<big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|x|)>*J<rsub|k><around|(|y|)>
+    </equation>
 
-  Now, putting it all back into the expansion for
-  <math|<around|[|T*\<psi\><rsub|n>|]><around|(|x|)>>:
+    to the integral covariance operator from Conjecture <reference|Taddition>
 
-  <\equation*>
-    <around|[|T*\<psi\><rsub|n>|]><around|(|x|)>=<big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|x|)><frac|<sqrt|4*n+1>*<around|(|-1|)><rsup|n><sqrt|\<pi\>>*\<Gamma\>*<around*|(|<frac|k|2>+n+<frac|1|2>|)>|2*\<Gamma\>*<around*|(|-n+<frac|k|2>+<frac|1|2>|)>*\<Gamma\>*<around*|(|<frac|k|2>+n+1|)>*\<Gamma\>*<around*|(|n+1-<frac|k|2>|)>>
-  </equation*>
+    <\equation>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<around|[|T*\<psi\><rsub|n>|]><around|(|x|)>>|<cell|=<big|int><rsub|0><rsup|\<infty\>>J<rsub|0>*<around|(|x-y|)>*\<psi\><rsub|n><around|(|y|)>*<space|0.17em>d*y>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>><big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|x|)>*J<rsub|k><around|(|y|)>*\<psi\><rsub|n><around|(|y|)>*<space|0.17em>d*y>>|<row|<cell|>|<cell|=<big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|x|)>*<big|int><rsub|0><rsup|\<infty\>>J<rsub|k><around|(|y|)>*\<psi\><rsub|n><around|(|y|)>*<space|0.17em>d*y<space|1em>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|x|)>*<big|int><rsub|0><rsup|\<infty\>>J<rsub|k><around|(|y|)>*<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*j<rsub|2*n><around|(|y|)>*<space|0.17em>d*y>>>>>
+    </equation>
+
+    Where <math|\<psi\><rsub|n><around|(|y|)>> is:
+
+    <\equation>
+      \<psi\><rsub|n><around|(|y|)>=<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*j<rsub|2*n><around|(|y|)>=<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*<sqrt|<frac|\<pi\>|2*y>>*J<rsub|2*n+<frac|1|2>><around|(|y|)>
+    </equation>
+
+    Substituting
+
+    <\equation>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<big|int><rsub|0><rsup|\<infty\>>J<rsub|k><around|(|y|)>*\<psi\><rsub|n><around|(|y|)>*<space|0.17em>d*y>|<cell|=<big|int><rsub|0><rsup|\<infty\>>J<rsub|k><around|(|y|)>*<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*j<rsub|2*n><around|(|y|)>*<space|0.17em>d*y>>|<row|<cell|>|<cell|=<frac|<sqrt|4*n+1>*<around|(|-1|)><rsup|n><sqrt|\<pi\>>*\<Gamma\>*<around*|(|<frac|k|2>+n+<frac|1|2>|)>|2*\<Gamma\>*<around*|(|-n+<frac|k|2>+<frac|1|2>|)>*\<Gamma\>*<around*|(|<frac|k|2>+n+1|)>*\<Gamma\>*<around*|(|n+1-<frac|k|2>|)>>>>>>>
+    </equation>
+
+    Now, putting it all back into the expansion for
+    <math|<around|[|T*\<psi\><rsub|n>|]><around|(|x|)>>:
+
+    <\equation>
+      <around|[|T*\<psi\><rsub|n>|]><around|(|x|)>=<big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|x|)><frac|<sqrt|4*n+1>*<around|(|-1|)><rsup|n><sqrt|\<pi\>>*\<Gamma\>*<around*|(|<frac|k|2>+n+<frac|1|2>|)>|2*\<Gamma\>*<around*|(|-n+<frac|k|2>+<frac|1|2>|)>*\<Gamma\>*<around*|(|<frac|k|2>+n+1|)>*\<Gamma\>*<around*|(|n+1-<frac|k|2>|)>>
+    </equation>
+  </example>
+
+  \;
 
   <\conjecture>
     \;
@@ -284,12 +308,13 @@
 
 <\references>
   <\collection>
-    <associate|T|<tuple|4|2>>
-    <associate|auto-1|<tuple|1|4>>
-    <associate|auto-2|<tuple|18|5>>
-    <associate|bib-finiteFourierTransforms|<tuple|1|5>>
-    <associate|bib-gaussianProcessIntroduction|<tuple|3|5>>
-    <associate|bib-modifiedLommelPolynomials|<tuple|2|5>>
+    <associate|T|<tuple|4|2|TheStationaryJ0IntegralCovarianceOperator.tm>>
+    <associate|Taddition|<tuple|14|5|TheStationaryJ0IntegralCovarianceOperator.tm>>
+    <associate|auto-1|<tuple|1|5|TheStationaryJ0IntegralCovarianceOperator.tm>>
+    <associate|auto-2|<tuple|24|6|TheStationaryJ0IntegralCovarianceOperator.tm>>
+    <associate|bib-finiteFourierTransforms|<tuple|1|6|TheStationaryJ0IntegralCovarianceOperator.tm>>
+    <associate|bib-gaussianProcessIntroduction|<tuple|3|6|TheStationaryJ0IntegralCovarianceOperator.tm>>
+    <associate|bib-modifiedLommelPolynomials|<tuple|2|6|TheStationaryJ0IntegralCovarianceOperator.tm>>
   </collection>
 </references>
 
