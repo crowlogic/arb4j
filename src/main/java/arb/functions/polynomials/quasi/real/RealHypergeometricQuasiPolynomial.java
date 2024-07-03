@@ -60,7 +60,7 @@ import arb.functions.real.RealQuasiPolynomialNullaryFunction;
 public class RealHypergeometricQuasiPolynomial implements RealQuasiPolynomialNullaryFunction, Verifiable
 {
 
-  public static final String                                                         pFq                             = "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}";
+  public static final String                                                         pFq                      = "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}";
 
   public final Context                                                               context;
 
@@ -68,7 +68,7 @@ public class RealHypergeometricQuasiPolynomial implements RealQuasiPolynomialNul
 
   public Expression<Object, RealQuasiPolynomial, RealQuasiPolynomialNullaryFunction> F;
 
-  boolean                                                                            initialized                     = false;
+  boolean                                                                            initialized              = false;
 
   private Integer                                                                    N;
 
@@ -76,8 +76,8 @@ public class RealHypergeometricQuasiPolynomial implements RealQuasiPolynomialNul
 
   public final Real                                                                  α, β;
 
-  public static final Predicate<? super Real>                                        complexNegativeIntegerPredicate = z -> Real.isNegativeInteger.test(z)
-                && z.isZero();
+  public static final Predicate<? super Real>                                        negativeIntegerPredicate = z -> Real.isNegativeInteger.test(z)
+                || z.isZero();
 
   public RealHypergeometricQuasiPolynomial(int p,
                                            int q,
@@ -121,7 +121,7 @@ public class RealHypergeometricQuasiPolynomial implements RealQuasiPolynomialNul
   public Integer determineDegree()
   {
     return α.stream()
-            .filter(complexNegativeIntegerPredicate)
+            .filter(negativeIntegerPredicate)
             .min(Comparator.naturalOrder())
             .get()
             .integerValue(N)
@@ -166,7 +166,7 @@ public class RealHypergeometricQuasiPolynomial implements RealQuasiPolynomialNul
   @Override
   public boolean verify()
   {
-    return α.stream().anyMatch(complexNegativeIntegerPredicate);
+    return α.stream().anyMatch(negativeIntegerPredicate);
   }
 
 }
