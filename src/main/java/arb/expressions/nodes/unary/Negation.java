@@ -16,6 +16,12 @@ public class Negation<D, R, F extends Function<? extends D, ? extends R>>
 {
 
   @Override
+  public Class<?> type()
+  {
+    return arg.type();
+  }
+
+  @Override
   public String toString()
   {
     return String.format("-%s", arg);

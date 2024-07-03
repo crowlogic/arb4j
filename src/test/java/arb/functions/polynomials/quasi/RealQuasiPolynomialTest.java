@@ -45,7 +45,7 @@ public class RealQuasiPolynomialTest
                                                            context);
     System.out.println(expression.syntaxTextTree());
     Sequence<RealQuasiPolynomial> f  = expression.instantiate();
-    RealQuasiPolynomial           f0 = f.evaluate(0, 128);
+    RealQuasiPolynomial           f0 = f.evaluate(3, 128);
     System.out.println("f0=" + f0);
   }
 
