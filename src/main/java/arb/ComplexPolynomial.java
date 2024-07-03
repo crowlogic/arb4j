@@ -44,11 +44,10 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
   }
 
 
-
-  public ComplexPolynomial mul(Complex val, int bits2, ComplexPolynomial p)
+  public ComplexPolynomial mul(Complex val, int bits, ComplexPolynomial res)
   {
-    arblib.acb_poly_scalar_mul(p, this, val, bits2);
-    return p;
+    arblib.acb_poly_scalar_mul(res, this, val, bits);
+    return res;
   }
   
   @Override
