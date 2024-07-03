@@ -468,8 +468,13 @@ public class Utensils
 
   public static BufferedImage renderFormula(String formula)
   {
+    return renderFormula(formula, 30);
+  }
+
+  public static BufferedImage renderFormula(String formula, int size)
+  {
     TeXFormula    tf   = new TeXFormula(formula);
-    TeXIcon       ti   = tf.createTeXIcon(TeXConstants.STYLE_DISPLAY, 40);
+    TeXIcon       ti   = tf.createTeXIcon(TeXConstants.STYLE_DISPLAY, size);
     BufferedImage bimg = new BufferedImage(ti.getIconWidth(),
                                            ti.getIconHeight(),
                                            BufferedImage.TYPE_4BYTE_ABGR);
@@ -485,7 +490,7 @@ public class Utensils
     return bimg;
   }
 
-  public static TeXIcon renderFormula(String latex, int size)
+  public static TeXIcon renderFormulaAsIcon(String latex, int size)
   {
     var formula = new TeXFormula(latex);
     var icon    = formula.createTeXIcon(TeXConstants.STYLE_TEXT, size, true);
