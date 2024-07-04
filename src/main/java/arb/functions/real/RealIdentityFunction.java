@@ -11,6 +11,11 @@ import arb.documentation.TheArb4jLibrary;
 public class RealIdentityFunction implements RealFunction
 {
 
+  private RealIdentityFunction()
+  {
+    
+  }
+  
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)
   {

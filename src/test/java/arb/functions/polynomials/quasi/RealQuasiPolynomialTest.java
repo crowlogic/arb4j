@@ -47,6 +47,8 @@ public class RealQuasiPolynomialTest
     Sequence<RealQuasiPolynomial> f  = expression.instantiate();
     RealQuasiPolynomial           f0 = f.evaluate(3, 128);
     System.out.println("f0=" + f0);
+    double fzero = f0.eval(2.3);
+    System.out.println("f(2.3)=" + f0);
   }
 
   @SuppressWarnings("resource")

@@ -9,7 +9,6 @@ import arb.functions.Function;
 import arb.functions.polynomials.quasi.QuasiPolynomial;
 import arb.functions.polynomials.quasi.real.RealQuasiPolynomialAddition;
 import arb.functions.polynomials.quasi.real.RealQuasiPolynomialDivision;
-import arb.functions.polynomials.quasi.real.RealQuasiPolynomialMultiplication;
 import arb.functions.polynomials.quasi.real.RealQuasiPolynomialSquareRoot;
 import arb.functions.polynomials.quasi.real.RealQuasiPolynomialSubtraction;
 import arb.functions.real.RealFunction;
@@ -28,6 +27,24 @@ public class RealQuasiPolynomial
                                  AutoCloseable
 
 {
+
+  public final class RealQuasiPolynomialIntegerPowerFunction implements RealFunction
+  {
+    private final Integer power;
+
+    public RealQuasiPolynomialIntegerPowerFunction(Integer power)
+    {
+      this.power = power;
+    }
+
+    @Override
+    public Real evaluate(Real x, int order, int fbits, Real fresult)
+    {
+      RealQuasiPolynomial.this.evaluate(x, order, fbits, fresult.identity());
+      fresult.pow(power, fbits);
+      return fresult;
+    }
+  }
 
   public static Expression<Object, RealQuasiPolynomial, RealQuasiPolynomialNullaryFunction> parse(String expression)
   {
@@ -114,9 +131,9 @@ public class RealQuasiPolynomial
   @Override
   public RealQuasiPolynomial add(RealQuasiPolynomial operand, int bits)
   {
-    return add(operand,bits,this);
+    return add(operand, bits, this);
   }
-  
+
   @Override
   public RealQuasiPolynomial add(RealQuasiPolynomial operand, int bits, RealQuasiPolynomial result)
   {
@@ -163,14 +180,23 @@ public class RealQuasiPolynomial
   }
 
   @Override
-  public RealQuasiPolynomial div(RealQuasiPolynomial operand, int prec, RealQuasiPolynomial result)
+  public RealQuasiPolynomial div(RealQuasiPolynomial operand, int bits, RealQuasiPolynomial result)
   {
     result.identity();
-    result.p.bits = prec;
-    result.f      = new RealQuasiPolynomialDivision(this,
-                                                    operand);
+    if (isIdentityFunction())
+    {
+      p.div(operand.p, bits, result.p);
+      assert result.p.remainder.isEmpty() : "result.p.remainder=" + result.p.remainder + " when dividing " + this + " by " + operand;
+    }
+    else
+    {
+      result.p.bits = bits;
+      result.f      = new RealQuasiPolynomialDivision(this,
+                                                      operand);
+    }
 
     return result;
+
   }
 
   public RealQuasiPolynomial identity()
@@ -232,14 +258,23 @@ public class RealQuasiPolynomial
   }
 
   @Override
-  public RealQuasiPolynomial mul(RealQuasiPolynomial operand, int prec, RealQuasiPolynomial result)
+  public RealQuasiPolynomial mul(RealQuasiPolynomial operand, int bits2, RealQuasiPolynomial result)
   {
-    result.identity();
-    result.p.bits = prec;
-    result.f      = new RealQuasiPolynomialMultiplication(this,
-                                                          operand);
+    System.out.format("%s * %s\n", this.p, operand.p);
+    assert isIdentityFunction() : "its not the identity(a polynomial), its " + f + " where this=" + this
+                  + ", \noperand=" + operand;
+    assert operand.isIdentityFunction() : "handle operand !identity func";
 
+    result.identity();
+    p.mul(operand.p, bits2, result.p);
+
+    result.p.bits = bits2;
     return result;
+  }
+
+  public boolean isIdentityFunction()
+  {
+    return f == RealIdentityFunction.instance;
   }
 
   public RealQuasiPolynomial one()
@@ -252,15 +287,19 @@ public class RealQuasiPolynomial
   public RealQuasiPolynomial pow(Integer power, int bits, RealQuasiPolynomial result)
   {
     result.identity();
-    result.p.bits = bits;
-    result.f      = (x, order, fbits, fresult) ->
-                  {
-                    RealQuasiPolynomial.this.evaluate(x, order, fbits, fresult.identity());
-                    fresult.pow(power, fbits);
-                    assert false : "damn";
-                    return fresult;
-                  };
+    if (isIdentityFunction())
+    {
+      p.pow(power, bits, result.p);
+    }
+    else
+    {
+      assert false : "wtf " + f;
+      result.p.bits = bits;
+      result.f      = new RealQuasiPolynomialIntegerPowerFunction(power);
+    }
+
     return result;
+
   }
 
   public RealQuasiPolynomial pow(RealQuasiPolynomial exponent, int bits, RealQuasiPolynomial res)
@@ -284,11 +323,11 @@ public class RealQuasiPolynomial
 
   public RealQuasiPolynomial set(Integer integer)
   {
-   identity();
-   p.set(integer);
-   return this;
+    identity();
+    p.set(integer);
+    return this;
   }
-  
+
   @Override
   public <N extends Named> N setName(String name)
   {
@@ -330,8 +369,7 @@ public class RealQuasiPolynomial
   @Override
   public RealQuasiPolynomial mul(RealQuasiPolynomial x, int prec)
   {
-    return mul(x,prec,this);
+    return mul(x, prec, this);
   }
-
 
 }
