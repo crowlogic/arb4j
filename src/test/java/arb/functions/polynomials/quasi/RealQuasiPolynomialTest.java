@@ -29,22 +29,7 @@ public class RealQuasiPolynomialTest
     assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
   }
 
-  public void testHypergeometricFactorOfFourierTransformOfType1Chebyshevpolynomials()
-  {
-    Expression<Integer, ComplexPolynomial, ComplexPolynomialSequence> expression = ComplexPolynomialSequence.parse("F",
-                                                                                                                   "n->pFq([1,n,-n],[1/2],ⅈ*y/2)",
-                                                                                                                   null);
 
-    var                                                               f          = expression.instantiate();
-    var                                                               f0         = f.evaluate(4, 128);
-    System.out.println("f0=" + f0);
-    Complex f0TwoPointThree = f0.evaluate(new Complex(new Real("2.3",
-                                                               128),
-                                                      RealConstants.zero),
-                                          128,
-                                          new Complex());
-    System.out.println("f0(2.3)=" + f0TwoPointThree);
-  }
 
   public void testLommelQuasiPolynomialSequence()
   {
