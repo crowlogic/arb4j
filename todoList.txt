@@ -1,3 +1,4 @@
 implement KL expansion
 implement Node.integral method (starting wtih Division extends BinaryOperation)
 fix testHypergeometricFactorOfFourierTransformOfType1Chebyshevpolynomials
+Exception in thread "main" java.lang.AssertionError: result.p.remainder=x when dividing x by x²at arb4j/arb.RealQuasiPolynomial.div(RealQuasiPolynomial.java:189)
