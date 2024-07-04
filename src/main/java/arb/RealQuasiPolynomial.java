@@ -106,8 +106,9 @@ public class RealQuasiPolynomial
 
   public RealQuasiPolynomial neg(int bits, RealQuasiPolynomial result)
   {
-    assert false : "TODO: negate " + this + " and put result into " + result;
-    return null;
+    result.set(this);
+    result.p.neg();
+    return result;
   }
 
   @Override
@@ -265,12 +266,13 @@ public class RealQuasiPolynomial
   /**
    * Calls this#p{@link #set(Integer)}
    * 
-   * @param integer
+   * @param realQuasiPolynomial.p`
    * @return
    */
-  public RealQuasiPolynomial set(Integer integer)
+  public RealQuasiPolynomial set(RealQuasiPolynomial realQuasiPolynomial)
   {
-    p.set(integer);
+    p.set(realQuasiPolynomial.p);
+    f = realQuasiPolynomial.f;
     return this;
   }
 
