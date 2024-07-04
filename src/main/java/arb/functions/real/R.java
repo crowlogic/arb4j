@@ -53,19 +53,19 @@ public class R implements Sequence<RealQuasiPolynomial>, Typesettable, AutoClose
       initialize();
     }
 
-    Real numerator   = vℝ1.set(cℤ2.div(cℤ1, bits, ℝ2).sub(n.div(cℤ1, bits, ℝ3), bits, ℝ4),
-                               n.div(cℤ1, bits, ℝ5).neg(ℝ6));
-    Real denominator = vℝ2.set(v, n.neg(ℝ7), cℤ2.sub(v, bits, ℝ8).sub(n, bits, ℝ9));
-    var  arg         = RealQuasiPolynomial.parse("-z^2");
-    try ( RealHypergeometricQuasiPolynomial P = new RealHypergeometricQuasiPolynomial(numerator,
-                                                                                      denominator,
-                                                                                      arg))
-    {
-      P.evaluate(null, 1, bits, result);
-    }
+    Real                              numerator   = vℝ1.set(cℤ2.div(cℤ1, bits, ℝ2)
+                                                               .sub(n.div(cℤ1, bits, ℝ3), bits, ℝ4),
+                                                            n.div(cℤ1, bits, ℝ5).neg(ℝ6));
+    Real                              denominator = vℝ2.set(v, n.neg(ℝ7), cℤ2.sub(v, bits, ℝ8).sub(n, bits, ℝ9));
+    var                               arg         = RealQuasiPolynomial.parse("-z^2");
+    
+    RealHypergeometricQuasiPolynomial P           = new RealHypergeometricQuasiPolynomial(numerator,
+                                                                                          denominator,
+                                                                                          arg);
+
     return v.ascendingFactorial(n, bits, ℝ1)
             .mul(result.identity().div(cℤ1, bits, qXℝ1).pow(n.neg(ℤ1), bits, qXℝ2), bits, qXℝ3)
-            .mul(result, bits);
+            .mul(P.evaluate(null, 1, bits, result), bits);
   }
 
   @Override
