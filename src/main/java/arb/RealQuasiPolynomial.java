@@ -112,6 +112,12 @@ public class RealQuasiPolynomial
   }
 
   @Override
+  public RealQuasiPolynomial add(RealQuasiPolynomial operand, int bits)
+  {
+    return add(operand,bits,this);
+  }
+  
+  @Override
   public RealQuasiPolynomial add(RealQuasiPolynomial operand, int bits, RealQuasiPolynomial result)
   {
     result.identity();

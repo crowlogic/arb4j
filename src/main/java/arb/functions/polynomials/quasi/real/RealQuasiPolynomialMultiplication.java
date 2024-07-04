@@ -15,11 +15,15 @@ public final class RealQuasiPolynomialMultiplication implements RealFunction
    */
   private final RealQuasiPolynomial realQuasiPolynomial;
   private final RealQuasiPolynomial operand;
-
+  private final String opstr;
+  private String rhsstr;
+  
   public RealQuasiPolynomialMultiplication(RealQuasiPolynomial realQuasiPolynomial, RealQuasiPolynomial operand)
   {
     this.realQuasiPolynomial = realQuasiPolynomial;
     this.operand = operand;
+    opstr = realQuasiPolynomial.toString();
+    rhsstr = operand.toString();
   }
 
   @Override
@@ -37,6 +41,6 @@ public final class RealQuasiPolynomialMultiplication implements RealFunction
   @Override
   public String toString()
   {
-    return String.format("%s*%s", this.realQuasiPolynomial, operand);
+    return opstr + "*" + rhsstr;
   }
 }
