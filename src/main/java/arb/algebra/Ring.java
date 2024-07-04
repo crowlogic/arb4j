@@ -32,10 +32,7 @@ import arb.groups.CommutativeGroup;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface Ring<X> extends
-                     Magma<X>,
-                     Named,
-                     CommutativeGroup<X>
+public interface Ring<X> extends Magma<X>, Named, CommutativeGroup<X>
 {
 
   @Override
@@ -74,12 +71,26 @@ public interface Ring<X> extends
   }
 
   @SuppressWarnings("unchecked")
-  public default X add( X addend, int bits )
+  public default X add(X addend, int bits)
   {
-    return add( addend, bits, (X) this);
+    return add(addend, bits, (X) this);
   }
-  
+
   X add(X addend, int bits, X result);
 
   X sub(X subtrahend, int bits, X result);
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public default X mul(X x, int prec)
+  {
+    return mul(x, prec, (X) this);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public default X div(X x, int prec, X result)
+  {
+    return div(x, prec, (X) this);
+  }
 }

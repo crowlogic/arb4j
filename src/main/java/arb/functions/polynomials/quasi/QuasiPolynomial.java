@@ -13,7 +13,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class QuasiPolynomial<S, P extends Polynomial<S, ? extends P>, F extends Function<S, S>, R extends QuasiPolynomial<S, P, F, R>>
+public abstract class QuasiPolynomial<S, P extends Polynomial<S, ? extends P>, F extends Function<S, S>, R extends QuasiPolynomial<S, P, F, ? extends R>>
                                      implements
                                      Function<S, S>,
                                      Ring<R>
@@ -56,9 +56,15 @@ public abstract class QuasiPolynomial<S, P extends Polynomial<S, ? extends P>, F
 
   public abstract R additiveIdentity();
 
-  
   public abstract R identity();
 
   public abstract R pow(Integer power, int bits, R result);
+
+  @Override
+  public R mul(R x, int prec)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
 
 }

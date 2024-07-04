@@ -388,7 +388,7 @@ import arb.utensils.Utensils;
     assert result != null : "result shan't be null, but it is";
     arblib.arb_hypgeom_rising(result, this, power, bits);
     result.bits = bits;
-    return result;
+    return result; 
   }
 
   public RealQuasiPolynomial ascendingFactorial(Integer n, int bits, RealQuasiPolynomial result)

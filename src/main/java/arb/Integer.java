@@ -53,6 +53,11 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result;
   }
 
+  public RealQuasiPolynomial mul(RealQuasiPolynomial operand, int prec, RealQuasiPolynomial result)
+  {
+     return result.set(this).mul(operand, prec);
+  }
+  
   public static Integer factorial(long n, Integer result)
   {
     arblib.fmpz_fac_ui(result.swigCPtr, n);

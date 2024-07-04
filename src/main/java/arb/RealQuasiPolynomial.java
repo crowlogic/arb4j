@@ -321,6 +321,11 @@ public class RealQuasiPolynomial
     return this;
   }
 
-  
+  @Override
+  public RealQuasiPolynomial mul(RealQuasiPolynomial x, int prec)
+  {
+    return mul(x,prec,this);
+  }
+
 
 }
