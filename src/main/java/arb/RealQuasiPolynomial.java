@@ -276,6 +276,13 @@ public class RealQuasiPolynomial
     return this;
   }
 
+  public RealQuasiPolynomial set(Integer integer)
+  {
+   identity();
+   p.set(integer);
+   return this;
+  }
+  
   @Override
   public <N extends Named> N setName(String name)
   {
@@ -313,5 +320,7 @@ public class RealQuasiPolynomial
     p.zero();
     return this;
   }
+
+  
 
 }
