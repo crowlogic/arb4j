@@ -391,6 +391,13 @@ import arb.utensils.Utensils;
     return result;
   }
 
+  public RealQuasiPolynomial ascendingFactorial(Integer n, int bits, RealQuasiPolynomial result)
+  {
+    result.identity();
+    ascendingFactorial(n, bits, result.p);
+    return result;
+  }
+  
   public RealPolynomial ascendingFactorial(Integer n, int bits, RealPolynomial result)
   {
     assert result != null : "result shan't be null, but it is";  

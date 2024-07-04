@@ -124,6 +124,8 @@ public class ComplexQuasiPolynomial
   {
     super(p,
           f);
+    assert f != null;
+
   }
 
   @SuppressWarnings("resource")
@@ -131,6 +133,7 @@ public class ComplexQuasiPolynomial
   {
     this(new ComplexPolynomial().identity(),
          f);
+    assert f != null;
   }
 
   public ComplexQuasiPolynomial mul(Integer pow, int bits, ComplexQuasiPolynomial xℝ3)

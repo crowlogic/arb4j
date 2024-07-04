@@ -21,46 +21,113 @@ import java.util.Objects;
  *      {@link TheArb4jLibrary}
  */
 public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,ComplexFunction {
-  static { System.loadLibrary("arblib"); }
-  public static long getCPtr(ComplexPolynomial obj) {
-    return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  public int bits;
-
-  public Complex coeffs;
-
-  public ComplexPolynomial divisor;
-
-
-  String independentVariableName = "x";
-  
-  public String name;
-
-  boolean printPrecision = false;
-
-
-  public ComplexPolynomial remainder;
-  
-  protected boolean swigCMemOwn;
-  
   protected long swigCPtr;
-
-  public ComplexPolynomial() {
-    this(arblibJNI.new_ComplexPolynomial(), true);
-  }
-
+  protected boolean swigCMemOwn;
 
   public ComplexPolynomial(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
-  public ComplexPolynomial add(Complex g, int bits, ComplexPolynomial res)
-  {
-    return g.add(this, bits, res);   
+  public static long getCPtr(ComplexPolynomial obj) {
+    return (obj == null) ? 0 : obj.swigCPtr;
   }
 
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
+        swigCMemOwn = false;
+        arblibJNI.delete_ComplexPolynomial(swigCPtr);
+      }
+      swigCPtr = 0;
+    }
+  }
+
+
+  public ComplexPolynomial mul(Complex val, int bits, ComplexPolynomial res)
+  {
+    arblib.acb_poly_scalar_mul(res, this, val, bits);
+    return res;
+  }
+  
+  @Override
+  public int
+         hashCode()
+  {
+    return Objects.hash(coeffs);
+  }
+
+  @Override
+  public ComplexPolynomial neg(ComplexPolynomial result)
+  {
+    arblib.acb_poly_neg(result, this);
+    return result;
+  }
+
+
+  @Override
+  public boolean
+         equals(Object obj)
+  {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (!obj.getClass()
+            .isAssignableFrom(ComplexPolynomial.class))
+      return false;
+    ComplexPolynomial that = (ComplexPolynomial) obj;
+    return arblib.acb_poly_equal(this, that) != 0;
+  }
+  
+  public String name;
+  
+  @SuppressWarnings("unchecked")
+  @Override
+  public  ComplexPolynomial setName(String name)
+  {
+    this.name = name;
+    return this;
+  }
+
+  @Override
+  public String getName()
+  {
+   return name;
+  }
+
+
+  public int bits;
+
+  static { System.loadLibrary("arblib"); }
+
+  public ComplexPolynomial divisor;
+
+  public ComplexPolynomial pow(Integer in, int bits, ComplexPolynomial result)
+  {
+    arblib.acb_poly_pow_ui(result,this,in.getUnsignedValue(), bits);
+    return result;
+  }
+
+  public ComplexPolynomial set(Real real)
+  {
+    setLength(1);
+    fitLength(1);
+    get(0).set(real);
+    return this;
+  }
+
+  public ComplexPolynomial sub(ComplexPolynomial that, int prec)
+  {
+    return sub(that,prec,this);
+  }
+    
+  public ComplexPolynomial set(int i)
+  {
+    arblib.acb_poly_set_si(this, i);
+    return this;
+  }
+  
   public ComplexPolynomial add(ComplexPolynomial that, int bits)
   {
     return add(that, bits, this);
@@ -73,21 +140,26 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
     result.bits = bits;
     return result;
   }
-
-  public ComplexPolynomial add( int i )
+  
+  public ComplexPolynomial mul( ComplexPolynomial that, int bits )
   {
-    return add( i, bits, this );
+    return mul( that, bits, this );
   }
-
-  public ComplexPolynomial add( int i, int bits )
+  
+  public ComplexPolynomial div(Integer divisor, int bits, ComplexPolynomial result)
   {
-    return add( i, bits, this );
+    try ( Complex complexDivisor = new Complex())
+    {
+      complexDivisor.set(divisor);
+      div(complexDivisor, bits, result);
+    }
+    result.bits = bits;
+    return result;
   }
     
-  public ComplexPolynomial add(int i, int bits, ComplexPolynomial res )
+  public ComplexPolynomial multiplicativeIdentity()
   {
-    arblib.acb_poly_add_si(res, this, i, bits);
-    return res;
+    return identity();
   }
   
   public ComplexPolynomial additiveIdentity()
@@ -95,36 +167,6 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
     return zero();
   }
 
-  /**
-   * Calls {@link arb#acb_clear(Complex)}
-   * 
-   * @return this
-   */
-  public ComplexPolynomial clear()
-  {
-    if ( swigCMemOwn )
-    {
-      acb_poly_clear(this);
-    }
-    return this;
-  }
-  
-  @Override
-  public void close()
-  {
-    clear();
-  }
-  
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
-        swigCMemOwn = false;
-        arblibJNI.delete_ComplexPolynomial(swigCPtr);
-      }
-      swigCPtr = 0;
-    }
-  }
-    
   public ComplexPolynomial div( Complex that, int bits, ComplexPolynomial result )
   {
     assert that != null : "operand is null;";
@@ -132,12 +174,7 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
     result.bits = bits;
     return result;
   }
-  
-  public ComplexPolynomial div(ComplexPolynomial dividend, int prec)
-  {
-    return div(dividend, prec, this);
-  }
-
+    
   public ComplexPolynomial div(ComplexPolynomial divisor, int prec, ComplexPolynomial resultingQuotient)
   {
     ComplexPolynomial remainder = new ComplexPolynomial();
@@ -157,255 +194,44 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
     resultingQuotient.bits = prec;
     return resultingQuotient;
   }
-    
-  public ComplexPolynomial div(Integer divisor, int bits, ComplexPolynomial result)
+
+  public ComplexPolynomial div(ComplexPolynomial dividend, int prec)
   {
-    try ( Complex complexDivisor = new Complex())
-    {
-      complexDivisor.set(divisor);
-      div(complexDivisor, bits, result);
-    }
-    result.bits = bits;
-    return result;
+    return div(dividend, prec, this);
   }
 
-  @Override
-  public boolean
-         equals(Object obj)
-  {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (!obj.getClass()
-            .isAssignableFrom(ComplexPolynomial.class))
-      return false;
-    ComplexPolynomial that = (ComplexPolynomial) obj;
-    return arblib.acb_poly_equal(this, that) != 0;
-  }
-
-  @Override
-  public Complex evaluate(Complex z, int order, int prec, Complex w)
-  {
-    switch (order)
-    {
-    case 1:
-      acb_poly_evaluate(w, this, z, prec);
-      return w;
-    case 2:
-      acb_poly_evaluate2(w, w.get(1), this, z, prec);
-      return w;
-    default:
-      throw new UnsupportedOperationException("derivatives beyond the first are not yet implemented");
-    }
-
-  }
-  
-  public ComplexPolynomial fitLength( int n )
-  {
-    arblib.acb_poly_fit_length(this, n);
-    return this;
-  }
-  
-  public Complex get(int i)
-  {
-    Complex coeff = getCoeffs();
-    if  (coeff == null )
-    {
-      return null;
-    }
-    return i < coeff.size() ? coeff.get(i) : null;
-  }
-  
-  public Complex getCoeffs()
-  {
-    if (coeffs != null && (coeffs.dim != getLength() || coeffs.swigCPtr != swigCPtr))
-    {
-      coeffs.close();
-      coeffs = null;
-    }
-    if (coeffs == null)
-    {
-      coeffs = getCoeffsNative();
-      if (coeffs != null)
-      {
-        coeffs.dim      = getLength();
-        coeffs.elements = new Complex[coeffs.dim];
-      }
-    }
-    return coeffs;
-  }
-  
-  public Complex getCoeffsNative() {
-    long cPtr = arblibJNI.ComplexPolynomial_coeffsNative_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Complex(cPtr, false);
-  }
-  
-  public int getLength() {
-    return arblibJNI.ComplexPolynomial_length_get(swigCPtr, this);
-  }
-
-  @Override
-  public String getName()
-  {
-   return name;
-  }
-
-  @Override
-  public int
-         hashCode()
-  {
-    return Objects.hash(coeffs);
-  }
-
-  /**
-   * Sets this to the polynomial y(x)=x whose coefficient vector is [0 1]
-   * 
-   * @return this
-   */
-  public ComplexPolynomial identity()
-  {
-    setLength(2);
-    set(0, ComplexConstants.zero);
-    set(1, ComplexConstants.one);
-    return this;
-  }
-  
-  public ComplexPolynomial mul(Complex val, int bits, ComplexPolynomial res)
-  {
-    arblib.acb_poly_scalar_mul(res, this, val, bits);
-    return res;
-  }
-  
-  public ComplexPolynomial mul( ComplexPolynomial that, int bits )
-  {
-    return mul( that, bits, this );
-  }
-  
-  public ComplexPolynomial mul( ComplexPolynomial that, int bits, ComplexPolynomial result )
-  {
-    assert that != null : "operand is null;";
-    arblib.acb_poly_mul(result, this, that, bits );
-    result.bits = bits;
-    return result;
-  }
-
-  
-  public ComplexPolynomial multiplicativeIdentity()
-  {
-    return identity();
-  }
-    
-  @Override
-  public ComplexPolynomial neg(ComplexPolynomial result)
-  {
-    arblib.acb_poly_neg(result, this);
-    return result;
-  }
-  
-  public ComplexPolynomial one()
-  {
-    arblib.acb_poly_one(this);
-    return this;
-  }  
-  
-  public ComplexPolynomial pow(Integer in, int bits, ComplexPolynomial result)
-  {
-    arblib.acb_poly_pow_ui(result,this,in.getUnsignedValue(), bits);
-    return result;
-  }
-  
-  /**
-     * @see arb#acb_poly_product_roots(ComplexPolynomial, Complex, int, int)
-     * 
-     * @param xs
-     * @param prec
-     * @return
-     */
-    public ComplexPolynomial productRoots(Complex xs, int prec)
-    {
-      acb_poly_product_roots(this, xs, xs.dim, prec);
-      return this;
-    }
-
-  public ComplexPolynomial set(Complex complex)
-  {
-    setLength(1);
-    fitLength(1);
-    get(0).set(complex);
-    return this;
-  }
-  
-  @Override
-  public ComplexPolynomial set(ComplexPolynomial a)
-  {
-    arblib.acb_poly_set(this, a);
-    if (coeffs != null)
-    {
-     coeffs.close();
-     coeffs = a.coeffs;
-    }
-    return this;
-  }
-  
-  public ComplexPolynomial set(int i)
-  {
-    arblib.acb_poly_set_si(this, i);
-    return this;
-  }
-  
-  /**
-   * Set the value of the i-th element of this polynomial's coefficients
-   * 
-   * @param i   index which must be less than this{@link #getLength()}
-   * @param val value to be set
-   * @return the ith element (the one that represents the polynomial, not the one passed in an as argument)
-   */
-  public Complex set(int i, Complex val)
-  {
-    arblib.acb_poly_set_coeff_acb(this, i, val);
-    return get(i);
-  }
-  
   public ComplexPolynomial set(Integer integer)
   {
     arblib.acb_poly_set_si(this, integer.getSignedValue());
     return this;
   }
   
-  public ComplexPolynomial set(Real real)
+  public ComplexPolynomial sub(ComplexPolynomial that, int prec, ComplexPolynomial result)
   {
-    setLength(1);
-    fitLength(1);
-    get(0).set(real);
-    return this;
-  }
-
-  public void setCoeffs(Complex value)
-  {
-    setCoeffsNative(value);
-    setLength(value.size());
+    arblib.acb_poly_sub(result, this, that, prec);
+    result.bits = prec;
+    return result;
   }
   
-  public void setCoeffsNative(Complex value) {
-    arblibJNI.ComplexPolynomial_coeffsNative_set(swigCPtr, this, Complex.getCPtr(value), value);
-  }
-
-  public void setLength(int value) {
-    arblibJNI.ComplexPolynomial_length_set(swigCPtr, this, value);
-  }
-  
- @SuppressWarnings("unchecked")
-@Override
-public  ComplexPolynomial setName(String name)
-{
-  this.name = name;
-  return this;
-}
-  
-  public ComplexPolynomial shiftLeft(int n )
+  public ComplexPolynomial sub(Complex g, int bits, ComplexPolynomial res)
   {
-    return shiftLeft(n,this);
+    return g.sub(this, bits, res);   
+  }
+  
+  public ComplexPolynomial add( int i )
+  {
+    return add( i, bits, this );
+  }
+  
+  public ComplexPolynomial add( int i, int bits )
+  {
+    return add( i, bits, this );
+  }
+  
+  public ComplexPolynomial add(int i, int bits, ComplexPolynomial res )
+  {
+    arblib.acb_poly_add_si(res, this, i, bits);
+    return res;
   }
 
   /**
@@ -440,11 +266,16 @@ public  ComplexPolynomial setName(String name)
     return result;
   }
 
+  public ComplexPolynomial shiftLeft(int n )
+  {
+    return shiftLeft(n,this);
+  }
+
   public ComplexPolynomial shiftRight(int n )
   {
     return shiftRight(n,this);
   }
-
+  
   /**
    * @see arblib#acb_poly_shift_right(ComplexPolynomial, ComplexPolynomial, int)
    * 
@@ -471,24 +302,89 @@ public  ComplexPolynomial setName(String name)
     result.bits = bits;
     return result;   
   }
-
-  public ComplexPolynomial sub(Complex g, int bits, ComplexPolynomial res)
+  
+  public ComplexPolynomial add(Complex g, int bits, ComplexPolynomial res)
   {
-    return g.sub(this, bits, res);   
+    return g.add(this, bits, res);   
   }
-
-  public ComplexPolynomial sub(ComplexPolynomial that, int prec)
+  
+  public ComplexPolynomial mul( ComplexPolynomial that, int bits, ComplexPolynomial result )
   {
-    return sub(that,prec,this);
-  }
-
-  public ComplexPolynomial sub(ComplexPolynomial that, int prec, ComplexPolynomial result)
-  {
-    arblib.acb_poly_sub(result, this, that, prec);
-    result.bits = prec;
+    assert that != null : "operand is null;";
+    arblib.acb_poly_mul(result, this, that, bits );
+    result.bits = bits;
     return result;
   }
 
+  
+  public ComplexPolynomial fitLength( int n )
+  {
+    arblib.acb_poly_fit_length(this, n);
+    return this;
+  }
+    
+  public ComplexPolynomial set(Complex complex)
+  {
+    setLength(1);
+    fitLength(1);
+    get(0).set(complex);
+    return this;
+  }
+  
+  public ComplexPolynomial one()
+  {
+    arblib.acb_poly_one(this);
+    return this;
+  }  
+  
+  public ComplexPolynomial zero()
+  {
+    arblib.acb_poly_zero(this);
+    return this;
+  }
+  
+  /**
+   * Set the value of the i-th element of this polynomial's coefficients
+   * 
+   * @param i   index which must be less than this{@link #getLength()}
+   * @param val value to be set
+   * @return the ith element (the one that represents the polynomial, not the one passed in an as argument)
+   */
+  public Complex set(int i, Complex val)
+  {
+    arblib.acb_poly_set_coeff_acb(this, i, val);
+    return get(i);
+  }
+
+  public Complex get(int i)
+  {
+    Complex coeff = getCoeffs();
+    if  (coeff == null )
+    {
+      return null;
+    }
+    return i < coeff.size() ? coeff.get(i) : null;
+  }
+  
+  /**
+   * Sets this to the polynomial y(x)=x whose coefficient vector is [0 1]
+   * 
+   * @return this
+   */
+  public ComplexPolynomial identity()
+  {
+    setLength(2);
+    set(0, ComplexConstants.zero);
+    set(1, ComplexConstants.one);
+    return this;
+  }
+  
+  public ComplexPolynomial remainder;
+  
+  String independentVariableName = "x";
+  
+  boolean printPrecision = false;
+  
   public String toString()
   {
     if (getLength() == 0)
@@ -532,10 +428,114 @@ public  ComplexPolynomial setName(String name)
     return string.replaceAll("-", "- ").trim();
   }
 
-  public ComplexPolynomial zero()
+  @Override
+  public ComplexPolynomial set(ComplexPolynomial a)
   {
-    arblib.acb_poly_zero(this);
+    arblib.acb_poly_set(this, a);
+    if (coeffs != null)
+    {
+     coeffs.close();
+     coeffs = a.coeffs;
+    }
     return this;
+  }
+  
+  /**
+   * Calls {@link arb#acb_clear(Complex)}
+   * 
+   * @return this
+   */
+  public ComplexPolynomial clear()
+  {
+    if ( swigCMemOwn )
+    {
+      acb_poly_clear(this);
+    }
+    return this;
+  }
+
+  @Override
+  public void close()
+  {
+    clear();
+  }
+  
+ /**
+   * @see arb#acb_poly_product_roots(ComplexPolynomial, Complex, int, int)
+   * 
+   * @param xs
+   * @param prec
+   * @return
+   */
+  public ComplexPolynomial productRoots(Complex xs, int prec)
+  {
+    acb_poly_product_roots(this, xs, xs.dim, prec);
+    return this;
+  }
+  
+  @Override
+  public Complex evaluate(Complex z, int order, int prec, Complex w)
+  {
+    switch (order)
+    {
+    case 1:
+      acb_poly_evaluate(w, this, z, prec);
+      return w;
+    case 2:
+      acb_poly_evaluate2(w, w.get(1), this, z, prec);
+      return w;
+    default:
+      throw new UnsupportedOperationException("derivatives beyond the first are not yet implemented");
+    }
+
+  }
+
+  public void setCoeffs(Complex value)
+  {
+    setCoeffsNative(value);
+    setLength(value.size());
+  }
+
+  public Complex getCoeffs()
+  {
+    if (coeffs != null && (coeffs.dim != getLength() || coeffs.swigCPtr != swigCPtr))
+    {
+      coeffs.close();
+      coeffs = null;
+    }
+    if (coeffs == null)
+    {
+      coeffs = getCoeffsNative();
+      if (coeffs != null)
+      {
+        coeffs.dim      = getLength();
+        coeffs.elements = new Complex[coeffs.dim];
+      }
+    }
+    return coeffs;
+  }
+
+  public Complex coeffs;
+
+  public void setCoeffsNative(Complex value) {
+    arblibJNI.ComplexPolynomial_coeffsNative_set(swigCPtr, this, Complex.getCPtr(value), value);
+  }
+
+  public Complex getCoeffsNative() {
+    long cPtr = arblibJNI.ComplexPolynomial_coeffsNative_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new Complex(cPtr, false);
+  }
+
+  public void setLength(int value) {
+    arblibJNI.ComplexPolynomial_length_set(swigCPtr, this, value);
+  }
+
+  public int getLength() {
+    return arblibJNI.ComplexPolynomial_length_get(swigCPtr, this);
+  }
+
+  public ComplexPolynomial() {
+    this(arblibJNI.new_ComplexPolynomial(), true);
   }
 
 }
