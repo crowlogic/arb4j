@@ -179,6 +179,9 @@ public class RealQuasiPolynomial
     return result;
   }
 
+  /**
+   * x/(x^2)=1/x but as a polynomial it shows up as a remainder of x with 
+   */
   @Override
   public RealQuasiPolynomial div(RealQuasiPolynomial operand, int bits, RealQuasiPolynomial result)
   {
@@ -186,7 +189,7 @@ public class RealQuasiPolynomial
     if (isIdentityFunction())
     {
       p.div(operand.p, bits, result.p);
-      assert result.p.remainder.isEmpty() : "result.p.remainder=" + result.p.remainder + " when dividing " + this + " by " + operand;
+      assert result.p.remainder.isEmpty() : "this.p=" + this.p + " result.p.remainder=" + result.p.remainder + " when dividing " + this + " by " + operand;
     }
     else
     {
