@@ -469,6 +469,11 @@ import arb.utensils.Utensils;
     return new Real(string,bits);
   }
 
+  public RealQuasiPolynomial sub(RealQuasiPolynomial operand, int bits, RealQuasiPolynomial result)
+  {
+    return result.set(this).sub(operand,bits,result);
+  }
+  
   public RealPolynomial sub(Real a, int bits, RealPolynomial res)
   {
     res.set(a);

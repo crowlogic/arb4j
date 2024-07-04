@@ -10,7 +10,6 @@ import arb.functions.polynomials.quasi.QuasiPolynomial;
 import arb.functions.polynomials.quasi.real.RealQuasiPolynomialAddition;
 import arb.functions.polynomials.quasi.real.RealQuasiPolynomialDivision;
 import arb.functions.polynomials.quasi.real.RealQuasiPolynomialSquareRoot;
-import arb.functions.polynomials.quasi.real.RealQuasiPolynomialSubtraction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealIdentityFunction;
 import arb.functions.real.RealQuasiPolynomialNullaryFunction;
@@ -180,7 +179,7 @@ public class RealQuasiPolynomial
   }
 
   /**
-   * x/(x^2)=1/x but as a polynomial it shows up as a remainder of x with 
+   * x/(x^2)=1/x but as a polynomial it shows up as a remainder of x with
    */
   @Override
   public RealQuasiPolynomial div(RealQuasiPolynomial operand, int bits, RealQuasiPolynomial result)
@@ -189,7 +188,8 @@ public class RealQuasiPolynomial
     if (isIdentityFunction())
     {
       p.div(operand.p, bits, result.p);
-      assert result.p.remainder.isEmpty() : "this.p=" + this.p + " result.p.remainder=" + result.p.remainder + " when dividing " + this + " by " + operand;
+      assert result.p.remainder.isEmpty() : "this.p=" + this.p + " result.p.remainder=" + result.p.remainder
+                    + " when dividing " + this + " by " + operand;
     }
     else
     {
@@ -350,11 +350,19 @@ public class RealQuasiPolynomial
   public RealQuasiPolynomial sub(RealQuasiPolynomial operand, int bits, RealQuasiPolynomial result)
   {
     result.identity();
-    result.p.bits = bits;
-    result.f      = new RealQuasiPolynomialSubtraction(this,
-                                                       operand);
+    if (isIdentityFunction())
+    {
+      p.sub(operand.p, bits, result.p);
+    }
+    else
+    {
+      assert false : "TODO: implement " + f;
+      result.p.bits = bits;
+     // result.f      = new RealQuasiPolynomialIntegerPowerFunction(power);
+    }
 
     return result;
+
   }
 
   @Override
@@ -373,6 +381,13 @@ public class RealQuasiPolynomial
   public RealQuasiPolynomial mul(RealQuasiPolynomial x, int prec)
   {
     return mul(x, prec, this);
+  }
+
+  public RealQuasiPolynomial set(Real real)
+  {
+    identity();
+    this.p.set(real);
+    return this;
   }
 
 }

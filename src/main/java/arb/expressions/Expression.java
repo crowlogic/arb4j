@@ -157,10 +157,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public static final String                            nameOfInitializerFunction         = "initialize";
 
-  public static boolean                                 saveClasses                       = Boolean.valueOf(System.getProperty("arb4j.compiler.saveClasses",
+  public static boolean                                 saveClasses                       = Boolean.valueOf(System.getProperty("arb.compiler.saveClasses",
                                                                                                                                "true"));
 
-  public static boolean                                 trace                             = Boolean.valueOf(System.getProperty("arb4j.compiler.traceGeneration",
+  public static boolean                                 trace                             = Boolean.valueOf(System.getProperty("arb.compiler.trace",
                                                                                                                                "false"));
 
   public Expression<?, ?, ?>                            ascendentExpression;
