@@ -104,6 +104,12 @@ public class RealQuasiPolynomial
     return result;
   }
 
+  public RealQuasiPolynomial neg(int bits, RealQuasiPolynomial result)
+  {
+    assert false : "TODO: negate " + this + " and put result into " + result;
+    return null;
+  }
+
   @Override
   public RealQuasiPolynomial add(RealQuasiPolynomial operand, int bits, RealQuasiPolynomial result)
   {
@@ -121,7 +127,7 @@ public class RealQuasiPolynomial
     identity().zero();
     return this;
   }
-  
+
   public RealQuasiPolynomial multiplicativeIdentity()
   {
     identity().one();
@@ -145,7 +151,7 @@ public class RealQuasiPolynomial
 
   public RealQuasiPolynomial div(Integer operand, int bits, RealQuasiPolynomial result)
   {
-    p.div(operand, bits, result.p );    
+    p.div(operand, bits, result.p);
     return result;
   }
 
@@ -244,6 +250,7 @@ public class RealQuasiPolynomial
                   {
                     RealQuasiPolynomial.this.evaluate(x, order, fbits, fresult.identity());
                     fresult.pow(power, fbits);
+                    assert false : "damn";
                     return fresult;
                   };
     return result;
@@ -304,7 +311,5 @@ public class RealQuasiPolynomial
     p.zero();
     return this;
   }
-
-
 
 }
