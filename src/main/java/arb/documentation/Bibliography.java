@@ -22,12 +22,12 @@ public class Bibliography
                           extends
                           AbstractBibliography
 {
-  public static Miscellaneous compactOperatorNotes                                   = new Miscellaneous("Introduction to Gaussian Processes",
-                                                                                                         "Steven P. Lalley",
-                                                                                                         "2013",
-                                                                                                         "https://galton.uchicago.edu/$\\sim$elalley/Courses/386/GaussianProcesses.pdf",
-                                                                                                         "",
-                                                                                                         "");
+  public static Article       onCompactOperators                                     = new Article("On compact operators",
+                                                                                                   "Alexanderian, Alen",
+                                                                                                   "2013",
+                                                                                                   "Journal of Mathematical Analysis and Applications",
+                                                                                                   "18",
+                                                                                                   "5-36").setNumber("2");
 
   public static Miscellaneous gaussianProcessIntroduction                            = new Miscellaneous("Introduction to Gaussian Processes",
                                                                                                          "Steven P. Lalley",
