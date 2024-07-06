@@ -11,7 +11,8 @@ import junit.framework.TestCase;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealPolynomialTest extends
+public class RealPolynomialTest
+                                extends
                                 TestCase
 {
   public void testPower()
@@ -79,6 +80,17 @@ public class RealPolynomialTest extends
     {
       eye.identity();
     }
+  }
+
+  @SuppressWarnings("resource")
+  public static void testRemainderAfterDivisionIsCarried()
+  {
+    RealPolynomial x        = new RealPolynomial().identity();
+    RealPolynomial xsquared = x.shiftLeft(1, new RealPolynomial());
+    RealPolynomial oneOverx = x.div(xsquared, 128, new RealPolynomial());
+    System.out.format("%s/%s=%s+(%s/%s)", x, xsquared, oneOverx, oneOverx.remainder, oneOverx.divisor);
+    RealPolynomial identity = oneOverx.mul(x, 128, new RealPolynomial());
+    assertEquals(x, identity);
   }
 
   public static void testLeftShift()
