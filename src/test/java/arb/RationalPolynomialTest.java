@@ -16,7 +16,7 @@ public class RationalPolynomialTest extends
   public void testRationalPolynomialsSetFromStringAndGetString()
   {
     String str = "3  2 5 3/8";
-    try ( RationalPolynomial f = new RationalPolynomial(str))
+    try ( RationalFunction f = new RationalFunction(str))
     {
       assertEquals(str, f.toString());
     }
@@ -24,7 +24,7 @@ public class RationalPolynomialTest extends
 
   public void testAddRationalPolynomials()
   {
-    try ( var f = new RationalPolynomial(); var g = new RationalPolynomial(); var h = new RationalPolynomial())
+    try ( var f = new RationalFunction(); var g = new RationalFunction(); var h = new RationalFunction())
     {
       f.set("3  2 5 3/8");
       g.set("1  6/7");
@@ -35,7 +35,7 @@ public class RationalPolynomialTest extends
   
   public void testSubtractRationalPolynomials()
   {
-    try ( var f = new RationalPolynomial(); var g = new RationalPolynomial(); var h = new RationalPolynomial())
+    try ( var f = new RationalFunction(); var g = new RationalFunction(); var h = new RationalFunction())
     {
       f.set("3  2 5 3/8");
       g.set("1  6/7");

@@ -55,7 +55,7 @@ typedef unsigned long int mp_limb_t;
 %rename (numRows) r;
 %rename (numCols) c;
 
-%rename (RationalPolynomial) fmpq_poly_struct;
+%rename (RationalFunction) fmpq_poly_struct;
 %rename (IntegerPolynomial) fmpz_poly_struct;
 %rename (longDenominator) den;
 %rename (longNumerator) num;
@@ -170,7 +170,7 @@ typedef unsigned long int mp_limb_t;
 
 %include "Rational.i"
 
-%include "RationalPolynomial.i"
+%include "RationalFunction.i"
 
 typedef struct
 {

@@ -93,40 +93,40 @@ public class arblib {
     arblibJNI.fmpz_bin_uiui(res, n, k);
   }
 
-  public static String fmpq_poly_get_str_pretty(RationalPolynomial poly, String var) {
-    return arblibJNI.fmpq_poly_get_str_pretty(RationalPolynomial.getCPtr(poly), poly, var);
+  public static String fmpq_poly_get_str_pretty(RationalFunction poly, String var) {
+    return arblibJNI.fmpq_poly_get_str_pretty(RationalFunction.getCPtr(poly), poly, var);
   }
 
-  public static void fmpq_poly_divrem(RationalPolynomial Q, RationalPolynomial R, RationalPolynomial poly1, RationalPolynomial poly2) {
-    arblibJNI.fmpq_poly_divrem(RationalPolynomial.getCPtr(Q), Q, RationalPolynomial.getCPtr(R), R, RationalPolynomial.getCPtr(poly1), poly1, RationalPolynomial.getCPtr(poly2), poly2);
+  public static void fmpq_poly_divrem(RationalFunction Q, RationalFunction R, RationalFunction poly1, RationalFunction poly2) {
+    arblibJNI.fmpq_poly_divrem(RationalFunction.getCPtr(Q), Q, RationalFunction.getCPtr(R), R, RationalFunction.getCPtr(poly1), poly1, RationalFunction.getCPtr(poly2), poly2);
   }
 
-  public static void fmpq_poly_div(RationalPolynomial Q, RationalPolynomial poly1, RationalPolynomial poly2) {
-    arblibJNI.fmpq_poly_div(RationalPolynomial.getCPtr(Q), Q, RationalPolynomial.getCPtr(poly1), poly1, RationalPolynomial.getCPtr(poly2), poly2);
+  public static void fmpq_poly_div(RationalFunction Q, RationalFunction poly1, RationalFunction poly2) {
+    arblibJNI.fmpq_poly_div(RationalFunction.getCPtr(Q), Q, RationalFunction.getCPtr(poly1), poly1, RationalFunction.getCPtr(poly2), poly2);
   }
 
-  public static void fmpq_poly_rem(RationalPolynomial R, RationalPolynomial poly1, RationalPolynomial poly2) {
-    arblibJNI.fmpq_poly_rem(RationalPolynomial.getCPtr(R), R, RationalPolynomial.getCPtr(poly1), poly1, RationalPolynomial.getCPtr(poly2), poly2);
+  public static void fmpq_poly_rem(RationalFunction R, RationalFunction poly1, RationalFunction poly2) {
+    arblibJNI.fmpq_poly_rem(RationalFunction.getCPtr(R), R, RationalFunction.getCPtr(poly1), poly1, RationalFunction.getCPtr(poly2), poly2);
   }
 
-  public static void fmpq_poly_add(RationalPolynomial res, RationalPolynomial poly1, RationalPolynomial poly2) {
-    arblibJNI.fmpq_poly_add(RationalPolynomial.getCPtr(res), res, RationalPolynomial.getCPtr(poly1), poly1, RationalPolynomial.getCPtr(poly2), poly2);
+  public static void fmpq_poly_add(RationalFunction res, RationalFunction poly1, RationalFunction poly2) {
+    arblibJNI.fmpq_poly_add(RationalFunction.getCPtr(res), res, RationalFunction.getCPtr(poly1), poly1, RationalFunction.getCPtr(poly2), poly2);
   }
 
-  public static void fmpq_poly_sub(RationalPolynomial res, RationalPolynomial poly1, RationalPolynomial poly2) {
-    arblibJNI.fmpq_poly_sub(RationalPolynomial.getCPtr(res), res, RationalPolynomial.getCPtr(poly1), poly1, RationalPolynomial.getCPtr(poly2), poly2);
+  public static void fmpq_poly_sub(RationalFunction res, RationalFunction poly1, RationalFunction poly2) {
+    arblibJNI.fmpq_poly_sub(RationalFunction.getCPtr(res), res, RationalFunction.getCPtr(poly1), poly1, RationalFunction.getCPtr(poly2), poly2);
   }
 
-  public static void fmpq_poly_mul(RationalPolynomial res, RationalPolynomial poly1, RationalPolynomial poly2) {
-    arblibJNI.fmpq_poly_mul(RationalPolynomial.getCPtr(res), res, RationalPolynomial.getCPtr(poly1), poly1, RationalPolynomial.getCPtr(poly2), poly2);
+  public static void fmpq_poly_mul(RationalFunction res, RationalFunction poly1, RationalFunction poly2) {
+    arblibJNI.fmpq_poly_mul(RationalFunction.getCPtr(res), res, RationalFunction.getCPtr(poly1), poly1, RationalFunction.getCPtr(poly2), poly2);
   }
 
-  public static int fmpq_poly_set_str(RationalPolynomial poly, String str) {
-    return arblibJNI.fmpq_poly_set_str(RationalPolynomial.getCPtr(poly), poly, str);
+  public static int fmpq_poly_set_str(RationalFunction poly, String str) {
+    return arblibJNI.fmpq_poly_set_str(RationalFunction.getCPtr(poly), poly, str);
   }
 
-  public static String fmpq_poly_get_str(RationalPolynomial poly) {
-    return arblibJNI.fmpq_poly_get_str(RationalPolynomial.getCPtr(poly), poly);
+  public static String fmpq_poly_get_str(RationalFunction poly) {
+    return arblibJNI.fmpq_poly_get_str(RationalFunction.getCPtr(poly), poly);
   }
 
   public static String fmpq_get_str(String str, int b, Rational x) {
