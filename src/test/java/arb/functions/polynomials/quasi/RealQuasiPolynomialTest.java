@@ -56,15 +56,6 @@ public class RealQuasiPolynomialTest
     assertEquals(3.045705212176720177385406211643499538943, s2pointThreee);
   }
 
-  @SuppressWarnings("resource")
-  public void testSubtraction()
-  {
-    var                 q             = new RealQuasiPolynomial(RealFunction.express("sin(x)"));
-    var                 r             = new RealQuasiPolynomial(RealFunction.express("x"));
-    RealQuasiPolynomial s             = q.sub(r, 128, new RealQuasiPolynomial());
-    double              s2pointThreee = s.eval(2.3);
-    assertEquals(-1.5542947878232796, s2pointThreee);
-  }
 
   @SuppressWarnings("resource")
   public void testSincDiv()

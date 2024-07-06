@@ -189,7 +189,7 @@ public class RealQuasiPolynomial
     {
       p.div(operand.p, bits, result.p);
       assert result.p.remainder.isEmpty() : "this.p=" + this.p + " result.p.remainder=" + result.p.remainder
-                    + " when dividing " + this + " by " + operand;
+                    + " when dividing " + this + " by " + operand + " TODO: implement https://github.com/crowlogic/arb4j/issues/440";
     }
     else
     {
