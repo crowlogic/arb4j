@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|alt-colors|parchment|framed-theorems>>
+<style|<tuple|generic|alt-colors|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Spectral Representations of Stochastic
@@ -693,24 +693,18 @@
   kernel.<cite-detail|stochasticFiniteElements|2.3.2>
 
   <\bibliography|bib|tm-plain|refs>
-    <\bib-list|4>
-      <bibitem*|1><label|bib-finiteFourierTransformsOfClassicalOrthogonalPolynomials>Atul
-      Dixit, Lin Jiu, Victor<nbsp>H Moll<localize|, and >Christophe Vignat.
-      <newblock>The finite fourier transform of classical polynomials.
-      <newblock><with|font-shape|italic|Journal of the Australian
-      Mathematical Society>, 98:145\U160, 2015.<newblock>
-
-      <bibitem*|2><label|bib-stochasticFiniteElements>Roger<nbsp>G.<nbsp>Ghanem<localize|
+    <\bib-list|3>
+      <bibitem*|1><label|bib-stochasticFiniteElements>Roger<nbsp>G.<nbsp>Ghanem<localize|
       and >Pol<nbsp>D.<nbsp>Spanos. <newblock><with|font-shape|italic|Stochastic
       finite elements: a spectral approach>. <newblock>Springer-Verlag,
       Berlin, Heidelberg, 1991.<newblock>
 
-      <bibitem*|3><label|bib-stochasticProcessesInferenceTheory>Malempati<nbsp>M.<nbsp>Rao.
+      <bibitem*|2><label|bib-stochasticProcessesInferenceTheory>Malempati<nbsp>M.<nbsp>Rao.
       <newblock><with|font-shape|italic|Stochastic Processes: Inference
       Theory>. <newblock>Springer Monographs in Mathematics. Springer,
       2nd<localize| edition>, 2014.<newblock>
 
-      <bibitem*|4><label|bib-correlationTheoryOfStationaryRandomProcesses>A.M.<nbsp>Yaglom.
+      <bibitem*|3><label|bib-correlationTheoryOfStationaryRandomProcesses>A.M.<nbsp>Yaglom.
       <newblock><with|font-shape|italic|Correlation Theory of Stationary and
       Related Random Functions>, <localize|volume> I: Basic Results<localize|
       of ><with|font-shape|italic|Applied Probability>. <newblock>Springer
@@ -752,7 +746,7 @@
     <associate|2.78|<tuple|45|10>>
     <associate|2.79|<tuple|46|10>>
     <associate|2.8|<tuple|8|4>>
-    <associate|2.82|<tuple|49|10>>
+    <associate|2.82|<tuple|49|11>>
     <associate|2.9|<tuple|9|4>>
     <associate|S|<tuple|4|2>>
     <associate|auto-1|<tuple|1|1>>
@@ -770,10 +764,9 @@
     <associate|auto-7|<tuple|1.3|6>>
     <associate|auto-8|<tuple|1.3.1|6>>
     <associate|auto-9|<tuple|1.3.2|7>>
-    <associate|bib-correlationTheoryOfStationaryRandomProcesses|<tuple|4|11>>
-    <associate|bib-finiteFourierTransformsOfClassicalOrthogonalPolynomials|<tuple|1|11>>
-    <associate|bib-stochasticFiniteElements|<tuple|2|11>>
-    <associate|bib-stochasticProcessesInferenceTheory|<tuple|3|11>>
+    <associate|bib-correlationTheoryOfStationaryRandomProcesses|<tuple|3|11>>
+    <associate|bib-stochasticFiniteElements|<tuple|1|11>>
+    <associate|bib-stochasticProcessesInferenceTheory|<tuple|2|11>>
   </collection>
 </references>
 
