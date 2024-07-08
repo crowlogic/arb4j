@@ -9,6 +9,22 @@
 package arb;
 
 public class arblib {
+  public static void fmpq_poly_set_coeff_si(RationalFunction poly, int n, int x) {
+    arblibJNI.fmpq_poly_set_coeff_si(RationalFunction.getCPtr(poly), poly, n, x);
+  }
+
+  public static void fmpq_poly_set_coeff_ui(RationalFunction poly, int n, long x) {
+    arblibJNI.fmpq_poly_set_coeff_ui(RationalFunction.getCPtr(poly), poly, n, x);
+  }
+
+  public static void fmpq_poly_set_coeff_fmpz(RationalFunction poly, int n, long x) {
+    arblibJNI.fmpq_poly_set_coeff_fmpz(RationalFunction.getCPtr(poly), poly, n, x);
+  }
+
+  public static void fmpq_poly_set_coeff_fmpq(RationalFunction poly, int n, Rational x) {
+    arblibJNI.fmpq_poly_set_coeff_fmpq(RationalFunction.getCPtr(poly), poly, n, Rational.getCPtr(x), x);
+  }
+
   public static int fmpq_equal(Rational x, Rational y) {
     return arblibJNI.fmpq_equal(Rational.getCPtr(x), x, Rational.getCPtr(y), y);
   }

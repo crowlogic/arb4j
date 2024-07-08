@@ -5,6 +5,16 @@
 #include <arb_mat.h>
 #include <flint/fmpq.h>
 #include <flint/fmpq_poly.h>
+
+void fmpq_poly_set_coeff_si(fmpq_poly_t poly, slong n, slong x);
+
+void fmpq_poly_set_coeff_ui(fmpq_poly_t poly, slong n, ulong x);
+
+void fmpq_poly_set_coeff_fmpz(fmpq_poly_t poly, slong n, const fmpz_t x);
+
+void fmpq_poly_set_coeff_fmpq(fmpq_poly_t poly, slong n, const fmpq_t x);
+
+
  int fmpq_equal(const fmpq_t x, const fmpq_t y);
  
 
