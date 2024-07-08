@@ -16,6 +16,30 @@ import arb.algebra.Ring;
 %typemap(javacode) fmpq_poly_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  public RationalFunction setCoeff(int n, long val)
+  {
+    arblib.fmpq_poly_set_coeff_ui(this, n, val);
+    return this;
+  }
+
+  public RationalFunction setCoeff(int n, int val)
+  {
+    arblib.fmpq_poly_set_coeff_si(this, n, val);
+    return this;
+  }
+
+  public RationalFunction setCoeff(int n, Integer val)
+  {
+    arblib.fmpq_poly_set_coeff_fmpz(this, n, val.swigCPtr);
+    return this;
+  }
+  
+  public RationalFunction setCoeff(int n, Rational val)
+  {
+    arblib.fmpq_poly_set_coeff_fmpq(this, n, val);
+    return this;
+  }
+  
   public String name;
   
   @SuppressWarnings("unchecked")
