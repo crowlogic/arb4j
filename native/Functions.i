@@ -40,24 +40,6 @@ int acb_poly_divrem(acb_poly_t Q, acb_poly_t R,
 void fmpz_fac_ui(fmpz_t f, ulong n);
 void fmpz_bin_uiui(fmpz_t res, ulong n, ulong k);
 
-char * fmpq_poly_get_str_pretty(const fmpq_poly_t poly, const char * var);
-
-void fmpq_poly_divrem(fmpq_poly_t Q, fmpq_poly_t R, const fmpq_poly_t poly1, const fmpq_poly_t poly2);
-void fmpq_poly_div(fmpq_poly_t Q, const fmpq_poly_t poly1, const fmpq_poly_t poly2);
-void fmpq_poly_rem(fmpq_poly_t R, const fmpq_poly_t poly1, const fmpq_poly_t poly2);
-
-void fmpq_poly_add(fmpq_poly_t res,
-                   const fmpq_poly_t poly1, const fmpq_poly_t poly2);
-
-void fmpq_poly_sub(fmpq_poly_t res,
-                   const fmpq_poly_t poly1, const fmpq_poly_t poly2);
-
-void fmpq_poly_mul(fmpq_poly_t res,
-                   const fmpq_poly_t poly1, const fmpq_poly_t poly2);
-                                                         
-int fmpq_poly_set_str(fmpq_poly_t poly, const char * str);
-
-char * fmpq_poly_get_str(const fmpq_poly_t poly);
 
 char *fmpq_get_str(char *str, int b, const fmpq_t x);
 int fmpq_set_str(fmpq_t dest, const char *s, int base);

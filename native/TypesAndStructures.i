@@ -1,7 +1,6 @@
 
 %{
 #include <flint/fmpz.h>
-#include <flint/fmpq_poly.h>
 #include <flint/fmpq.h>
 #include <mpfr.h>
 #include <flint/flint.h>
@@ -58,17 +57,6 @@ typedef long int		mp_size_t;
 %}
 
 
-
-
-typedef struct
-{
-    jlong coeffs;
-    slong alloc;
-    slong length;
-}
-fmpz_poly_struct;
-
-typedef fmpz_poly_struct fmpz_poly_t[1];
 
 typedef struct
 {
