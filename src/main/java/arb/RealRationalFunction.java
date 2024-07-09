@@ -11,7 +11,11 @@ import arb.documentation.TheArb4jLibrary;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealRationalFunction implements Ring<RealRationalFunction>, Named, Comparable<RealRationalFunction>
+public class RealRationalFunction implements
+                                  Ring<RealRationalFunction>,
+                                  Named,
+                                  Comparable<RealRationalFunction>,
+                                  AutoCloseableAssignable<RealRationalFunction>
 
 {
   public String         name;
@@ -91,6 +95,30 @@ public class RealRationalFunction implements Ring<RealRationalFunction>, Named, 
                          value,
                          remainder,
                          divisor);
+  }
+
+  @Override
+  public RealRationalFunction set(RealRationalFunction val)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
+  @Override
+  public void close()
+  {
+    if (value != null)
+    {
+      value.close();
+    }
+    if (remainder != null)
+    {
+      remainder.close();
+    }
+    if (divisor != null)
+    {
+      divisor.close();
+    }
   }
 
 }
