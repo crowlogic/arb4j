@@ -4,7 +4,7 @@
 #include <gmp.h>
 #include <arb_mat.h>
 #include <flint/fmpq.h>
-#include <flint/fmpq_poly.h>
+
  int fmpq_equal(const fmpq_t x, const fmpq_t y);
  
 
