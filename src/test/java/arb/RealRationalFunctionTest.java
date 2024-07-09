@@ -30,5 +30,31 @@ public class RealRationalFunctionTest
     System.out.println("f=" + f);    
     assertEquals(1.0, f.eval(2.3) );
   }
+  
+  public void testAdd()
+  {
+    RealRationalFunction f = new RealRationalFunction();
+    assert false : "TODO";
+  }
+
+  public void testSub()
+  {
+    RealRationalFunction f = new RealRationalFunction();
+    assert false : "TODO";
+  }
+
+  public void testMul()
+  {
+    RealRationalFunction f = new RealRationalFunction();
+    assert false : "TODO";
+  }
+
+  public void testDiv()
+  {
+    RealRationalFunction f = new RealRationalFunction();
+    assert false : "TODO";
+  }
+
+  
 
 }
