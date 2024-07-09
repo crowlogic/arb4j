@@ -26,8 +26,7 @@ public interface Field<X extends Field<X>> extends
                       Comparable<X>,
                       Iterable<X>,
                       Ring<X>,
-                      Named,
-                      VectorSpace<X>
+                      Named
 {
   public X additiveIdentity();
 
@@ -327,7 +326,6 @@ public interface Field<X extends Field<X>> extends
     forEach(element -> result.add(element, prec, result));
     return result;
   }
-
 
   @SuppressWarnings("unchecked")
   public default X set(int n)

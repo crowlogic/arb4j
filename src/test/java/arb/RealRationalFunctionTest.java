@@ -14,11 +14,19 @@ public class RealRationalFunctionTest
                                       TestCase
 {
 
-  public void testAdd()
+  public void testReduce()
   {
     RealRationalFunction f = new RealRationalFunction();
-    RealRationalFunction g = new RealRationalFunction();
-
+    f.remainder = new RealPolynomial();
+    f.remainder.set(1);
+    f.remainder.shiftLeft(2);
+    f.divisor = new RealPolynomial();
+    f.divisor.set(1);
+    f.divisor.shiftLeft(2);
+    System.out.println("f=" + f);
+    f.reduce(128);
+    System.out.println("f=" + f);    
+    assertEquals(1.0, f.eval(2.3) );
   }
 
 }
