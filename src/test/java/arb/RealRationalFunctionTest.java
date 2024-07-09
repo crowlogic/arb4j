@@ -24,6 +24,8 @@ public class RealRationalFunctionTest
     f.divisor.set(1);
     f.divisor.shiftLeft(2);
     System.out.println("f=" + f);
+    assertEquals(1.0, f.eval(2.3) );
+
     f.reduce(128);
     System.out.println("f=" + f);    
     assertEquals(1.0, f.eval(2.3) );
