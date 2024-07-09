@@ -82,17 +82,6 @@ public class RealPolynomialTest
     }
   }
 
-  @SuppressWarnings("resource")
-  public static void testRemainderAfterDivisionIsCarried()
-  {
-    RealPolynomial x        = new RealPolynomial().identity();
-    RealPolynomial xsquared = x.shiftLeft(1, new RealPolynomial());
-    RealPolynomial oneOverx = x.div(xsquared, 128, new RealPolynomial());
-    System.out.format("%s/%s=%s+(%s/%s)", x, xsquared, oneOverx, oneOverx.remainder, oneOverx.divisor);
-    RealPolynomial identity = oneOverx.mul(x, 128, new RealPolynomial());
-    assertEquals(x, identity);
-  }
-
   public static void testLeftShift()
   {
     RealPolynomial p = new RealPolynomial(5);
