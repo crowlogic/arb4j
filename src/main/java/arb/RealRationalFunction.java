@@ -25,27 +25,23 @@ public class RealRationalFunction implements
 
     // Perform the division; this operation updates quotient with the result
     // and quotient.remainder will hold the remainder of the division
-    this.remainder.div(this.divisor, prec, quotient);
+    value.remainder.div(value.divisor, prec, quotient);
 
     // Add the result of the division (quotient) to the value
     this.value.add(quotient, prec, this.value);
 
     // Update this.remainder to the remainder of the quotient
-    this.remainder = quotient.remainder;
-    if (this.remainder == null)
+    value.remainder = quotient.remainder;
+    if (value.remainder == null)
     {
-      this.divisor.set(1);
+      value.divisor.set(1);
     }
     return this;
   }
 
   private int           bits;
 
-  public RealPolynomial divisor;
-
   public String         name;
-
-  public RealPolynomial remainder;
 
   public RealPolynomial value = new RealPolynomial();
 
@@ -60,11 +56,11 @@ public class RealRationalFunction implements
     try ( RealPolynomial temp = new RealPolynomial())
     {
       // Resulting Remainder = R1(x)D2(x) + R2(x)D1(x)
-      this.remainder.mul(addend.divisor, bits, result.remainder)
-                    .add(addend.remainder.mul(this.divisor, bits, temp), bits, result.remainder);
+      value.remainder.mul(addend.value.divisor, bits, result.value.remainder)
+                     .add(addend.value.remainder.mul(this.value.divisor, bits, temp), bits, result.value.remainder);
     }
     // Resulting Divisor = D1(x)D2(x)
-    this.divisor.mul(addend.divisor, bits, result.divisor);
+    this.value.divisor.mul(addend.value.divisor, bits, result.value.divisor);
 
     return result;
   }
@@ -90,14 +86,7 @@ public class RealRationalFunction implements
     {
       value.close();
     }
-    if (remainder != null)
-    {
-      remainder.close();
-    }
-    if (divisor != null)
-    {
-      divisor.close();
-    }
+
   }
 
   @Override
@@ -130,15 +119,15 @@ public class RealRationalFunction implements
           RealPolynomial temp = new RealPolynomial())
     {
       // Resulting Value = V1(x)D2(x) / V2(x)D1(x)
-      this.value.mul(x.divisor, prec, V1D2);
-      x.value.mul(this.divisor, prec, V2D1);
+      this.value.mul(x.value.divisor, prec, V1D2);
+      x.value.mul(this.value.divisor, prec, V2D1);
       V1D2.div(V2D1, prec, result.value);
       // Resulting Remainder = (R1(x)D2(x) - R2(x)V1(x)) / V2(x)D1(x)
-      this.remainder.mul(x.divisor, prec, R1D2);
-      x.remainder.mul(this.value, prec, R2V1);
-      R1D2.sub(R2V1, prec, temp).div(V2D1, prec, result.remainder);
+      this.value.remainder.mul(x.value.divisor, prec, R1D2);
+      x.value.remainder.mul(this.value, prec, R2V1);
+      R1D2.sub(R2V1, prec, temp).div(V2D1, prec, result.value.remainder);
       // Resulting Divisor = D1(x)D2(x)
-      this.divisor.mul(x.divisor, prec, result.divisor);
+      this.value.divisor.mul(x.value.divisor, prec, result.value.divisor);
     }
     return result;
   }
@@ -151,8 +140,8 @@ public class RealRationalFunction implements
       return false;
     }
     RealRationalFunction that = (RealRationalFunction) obj;
-    return Objects.equals(value, that.value) && Objects.equals(remainder, that.remainder)
-                  && Objects.equals(divisor, that.divisor);
+    return Objects.equals(value, that.value) && Objects.equals(value.remainder, that.value.remainder)
+                  && Objects.equals(value.divisor, that.value.divisor);
   }
 
   @Override
@@ -194,11 +183,11 @@ public class RealRationalFunction implements
     try ( RealPolynomial temp = new RealPolynomial())
     {
       // Resulting Remainder = V1(x)R2(x) + R1(x)V2(x)
-      this.value.mul(operand.remainder, prec, result.remainder)
-                .add(this.remainder.mul(operand.value, prec, temp), prec, result.remainder);
+      this.value.mul(operand.value.remainder, prec, result.value.remainder)
+                .add(this.value.remainder.mul(operand.value, prec, temp), prec, result.value.remainder);
     }
     // Resulting Divisor = D1(x)D2(x)
-    this.divisor.mul(operand.divisor, prec, result.divisor);
+    this.value.divisor.mul(operand.value.divisor, prec, result.value.divisor);
 
     return result;
   }
@@ -221,8 +210,6 @@ public class RealRationalFunction implements
   public RealRationalFunction set(RealRationalFunction val)
   {
     this.value     = val.value;
-    this.remainder = val.remainder;
-    this.divisor   = val.divisor;
     return this;
   }
 
@@ -245,11 +232,11 @@ public class RealRationalFunction implements
     try ( RealPolynomial temp = new RealPolynomial())
     {
       // Resulting Remainder = R1(x)D2(x) - R2(x)D1(x)
-      this.remainder.mul(subtrahend.divisor, bits, result.remainder)
-                    .sub(subtrahend.remainder.mul(this.divisor, bits, temp), bits, result.remainder);
+      this.value.remainder.mul(subtrahend.value.divisor, bits, result.value.remainder)
+                    .sub(subtrahend.value.remainder.mul(this.value.divisor, bits, temp), bits, result.value.remainder);
     }
     // Resulting Divisor = D1(x)D2(x)
-    this.divisor.mul(subtrahend.divisor, bits, result.divisor);
+    this.value.divisor.mul(subtrahend.value.divisor, bits, result.value.divisor);
 
     return result;
   }
@@ -260,8 +247,8 @@ public class RealRationalFunction implements
     return String.format("RealRationalFunction[name=%s, value=%s, remainder=%s, divisor=%s]",
                          name,
                          value,
-                         remainder,
-                         divisor);
+                         value.remainder,
+                         value.divisor);
   }
 
   @Override
@@ -281,10 +268,10 @@ public class RealRationalFunction implements
 
       // If there is a remainder, evaluate it and the divisor, then add the result to
       // 'res'.
-      if (remainder != null)
+      if (value.remainder != null)
       {
-        remainder.evaluate(t, order, bits, a); // Evaluate the remainder at 't'
-        divisor.evaluate(t, order, bits, b); // Evaluate the divisor at 't'
+        value.remainder.evaluate(t, order, bits, a); // Evaluate the remainder at 't'
+        value.divisor.evaluate(t, order, bits, b); // Evaluate the divisor at 't'
 
         // Since divisor will always be non-null when remainder is set,
         // and you're assured it won't be zero by design, directly divide.
