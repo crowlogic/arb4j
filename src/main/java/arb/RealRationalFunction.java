@@ -56,7 +56,7 @@ public class RealRationalFunction implements
 
     var     sum     = RealPolynomialNullaryFunction.express("V1+V2", context).evaluate(bits, result.value);
 
-    assert false : "TODO: finish implementing this with expression compiler + " + sum;
+    assert false : "TODO: finish implementing this with expression compiler: '" + sum + "'";
 
     return result;
   }

@@ -460,7 +460,7 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
       xi.printPrecision = printPrecision;
       if (!xi.isZero() || (xi.isZero() && getLength() == 1 ))
       {
-        if (!builder.isEmpty())
+        if (!builder.isEmpty() )
         {
           builder.append(((xi.sign() >= 0) ? " + " : " "));
         }
@@ -470,7 +470,7 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
         }
         if (i > 0)
         {
-          if (!builder.toString().trim().isEmpty())
+          if (!builder.toString().trim().isEmpty() && !xi.isOne() )
           {
             builder.append("*");
           }
@@ -487,9 +487,10 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
     {
       return "-" + string.substring(1).replaceAll("-", "- ").trim();
     }
-    return string.replaceAll("-", "- ").trim();
+    String trimmed = string.replaceAll("-", "- ").trim();
+    return trimmed;
   }
-    
+      
   public boolean printPrecision = false;
   
   public RealPolynomial divisor;

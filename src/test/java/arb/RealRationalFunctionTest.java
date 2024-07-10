@@ -100,7 +100,7 @@ public class RealRationalFunctionTest
     assertTrue(xOverXSquared.value.isZero());
   }
 
-  public void testSub()
+  public void testAdd()
   {
     System.setProperty("arb4j.compiler.trace", "true");
     RealRationalFunction x = new RealRationalFunction();
@@ -122,11 +122,7 @@ public class RealRationalFunctionTest
     assertTrue(xPlusXSquared.value.isZero());
   }
 
-  public void testAdd()
-  {
-    
-  }
-  
+
   public void testMul()
   {
     RealRationalFunction f = new RealRationalFunction();
