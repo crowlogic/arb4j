@@ -102,10 +102,31 @@ public class RealRationalFunctionTest
 
   public void testSub()
   {
-    RealRationalFunction f = new RealRationalFunction();
-    assert false : "TODO";
+    System.setProperty("arb4j.compiler.trace", "true");
+    RealRationalFunction x = new RealRationalFunction();
+    x.value.set(1).shiftLeft(1);
+
+    RealRationalFunction xSquared = new RealRationalFunction();
+    xSquared.value.set(1).shiftLeft(2);
+
+    out.println("x=" + x);
+    out.println("x^2=" + xSquared);
+
+    RealRationalFunction xPlusXSquared = new RealRationalFunction();
+    x.add(xSquared, 128, xPlusXSquared);
+
+    out.println("xPlusXSquared=" + xPlusXSquared);
+
+    assertEquals(x.value, xPlusXSquared.value.remainder);
+    assertEquals(xSquared.value, xPlusXSquared.value.divisor);
+    assertTrue(xPlusXSquared.value.isZero());
   }
 
+  public void testAdd()
+  {
+    
+  }
+  
   public void testMul()
   {
     RealRationalFunction f = new RealRationalFunction();

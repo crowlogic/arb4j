@@ -4,7 +4,9 @@ import java.util.Objects;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Context;
 import arb.functions.real.RealFunction;
+import arb.functions.real.RealPolynomialNullaryFunction;
 
 /**
  *
@@ -48,19 +50,13 @@ public class RealRationalFunction implements
   @Override
   public RealRationalFunction add(RealRationalFunction addend, int bits, RealRationalFunction result)
   {
-    if (result == null)
-      result = this;
+    System.setProperty("arb4j.compiler.trace", "true");
+    Context context = new Context(this.value.setName("V1"),
+                                  addend.value.setName("V2"));
 
-    // Resulting Value = V1(x) + V2(x)
-    this.value.add(addend.value, bits, result.value);
-    try ( RealPolynomial temp = new RealPolynomial())
-    {
-      // Resulting Remainder = R1(x)D2(x) + R2(x)D1(x)
-      value.remainder.mul(addend.value.divisor, bits, result.value.remainder)
-                     .add(addend.value.remainder.mul(this.value.divisor, bits, temp), bits, result.value.remainder);
-    }
-    // Resulting Divisor = D1(x)D2(x)
-    this.value.divisor.mul(addend.value.divisor, bits, result.value.divisor);
+    var     sum     = RealPolynomialNullaryFunction.express("V1+V2", context).evaluate(bits, result.value);
+
+    assert false : "TODO: finish implementing this with expression compiler + " + sum;
 
     return result;
   }
@@ -113,40 +109,7 @@ public class RealRationalFunction implements
   @Override
   public RealRationalFunction div(RealRationalFunction x, int prec, RealRationalFunction result)
   {
-    // Handle division by zero (optional, but recommended)
-    if (x.value.isZero() && (x.value.remainder == null || x.value.remainder.isZero()))
-    {
-      throw new ArithmeticException("Division by zero");
-    }
-
-    // Calculate intermediate products
-    RealPolynomial V1D2 = (this.value != null) ? this.value.mul((x.value.divisor != null) ? x.value.divisor : RealPolynomialConstants.one,
-                                                                prec,
-                                                                new RealPolynomial()) : RealPolynomialConstants.zero;
-
-    RealPolynomial V2D1 = (x.value != null) ? x.value.mul((this.value.divisor != null) ? this.value.divisor : RealPolynomialConstants.one,
-                                                          prec,
-                                                          new RealPolynomial()) : RealPolynomialConstants.zero;
-
-    RealPolynomial R1D2 = (this.value.remainder != null) ? this.value.remainder.mul((x.value.divisor != null) ? x.value.divisor : RealPolynomialConstants.one,
-                                                                                    prec,
-                                                                                    new RealPolynomial()) : RealPolynomialConstants.zero;
-
-    RealPolynomial R2V1 = (x.value.remainder != null) ? x.value.remainder.mul(this.value,
-                                                                              prec,
-                                                                              new RealPolynomial()) : RealPolynomialConstants.zero;
-
-    // Calculate quotient and remainder
-    V1D2.div(V2D1, prec, result.value); // This line calculates both quotient and remainder
-
-    // Calculate divisor (if present)
-    if (this.value.divisor != null)
-    {
-      this.value.divisor.mul(x.value.divisor, prec, result.value.divisor);
-    }
-
-    // Reduce the result
-    result.reduce(prec);
+    assert false : "TODO: do this with the expression compiler";
 
     return result;
   }
