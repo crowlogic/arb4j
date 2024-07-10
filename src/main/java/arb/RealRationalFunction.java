@@ -113,39 +113,41 @@ public class RealRationalFunction implements
   @Override
   public RealRationalFunction div(RealRationalFunction x, int prec, RealRationalFunction result)
   {
-
-     RealPolynomial V1D2 = new RealPolynomial(); RealPolynomial V2D1 = new RealPolynomial();
-          RealPolynomial R1D2 = new RealPolynomial(); RealPolynomial R2V1 = new RealPolynomial();
-          RealPolynomial temp = new RealPolynomial();
+    // Handle division by zero (optional, but recommended)
+    if (x.value.isZero() && (x.value.remainder == null || x.value.remainder.isZero()))
     {
-      // Resulting Value = V1(x)D2(x) / V2(x)D1(x)
-      this.value.mul(x.value.divisor, prec, V1D2);
-      x.value.mul(this.value.divisor, prec, V2D1);
-      V1D2.div(V2D1, prec, result.value);
-      // Resulting Remainder = (R1(x)D2(x) - R2(x)V1(x)) / V2(x)D1(x)
-      if (this.value.remainder == null)
-      {
-        R1D2.zero();
-      }
-      else
-      {
-        this.value.remainder.mul(x.value.divisor, prec, R1D2);
-      }
-      if (x.value.remainder == null)
-      {
-        R2V1.set(1);
-      }
-      else
-      {
-        x.value.remainder.mul(this.value, prec, R2V1);
-      }
-      R1D2.sub(R2V1, prec, temp).div(V2D1, prec, result.value.remainder);
-      // Resulting Divisor = D1(x)D2(x)
-      if (this.value.divisor != null)
-      {
-        this.value.divisor.mul(x.value.divisor, prec, result.value.divisor);
-      }
+      throw new ArithmeticException("Division by zero");
     }
+
+    // Calculate intermediate products
+    RealPolynomial V1D2 = (this.value != null) ? this.value.mul((x.value.divisor != null) ? x.value.divisor : RealPolynomialConstants.one,
+                                                                prec,
+                                                                new RealPolynomial()) : RealPolynomialConstants.zero;
+
+    RealPolynomial V2D1 = (x.value != null) ? x.value.mul((this.value.divisor != null) ? this.value.divisor : RealPolynomialConstants.one,
+                                                          prec,
+                                                          new RealPolynomial()) : RealPolynomialConstants.zero;
+
+    RealPolynomial R1D2 = (this.value.remainder != null) ? this.value.remainder.mul((x.value.divisor != null) ? x.value.divisor : RealPolynomialConstants.one,
+                                                                                    prec,
+                                                                                    new RealPolynomial()) : RealPolynomialConstants.zero;
+
+    RealPolynomial R2V1 = (x.value.remainder != null) ? x.value.remainder.mul(this.value,
+                                                                              prec,
+                                                                              new RealPolynomial()) : RealPolynomialConstants.zero;
+
+    // Calculate quotient and remainder
+    V1D2.div(V2D1, prec, result.value); // This line calculates both quotient and remainder
+
+    // Calculate divisor (if present)
+    if (this.value.divisor != null)
+    {
+      this.value.divisor.mul(x.value.divisor, prec, result.value.divisor);
+    }
+
+    // Reduce the result
+    result.reduce(prec);
+
     return result;
   }
 
