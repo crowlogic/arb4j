@@ -114,20 +114,37 @@ public class RealRationalFunction implements
   public RealRationalFunction div(RealRationalFunction x, int prec, RealRationalFunction result)
   {
 
-    try ( RealPolynomial V1D2 = new RealPolynomial(); RealPolynomial V2D1 = new RealPolynomial();
+     RealPolynomial V1D2 = new RealPolynomial(); RealPolynomial V2D1 = new RealPolynomial();
           RealPolynomial R1D2 = new RealPolynomial(); RealPolynomial R2V1 = new RealPolynomial();
-          RealPolynomial temp = new RealPolynomial())
+          RealPolynomial temp = new RealPolynomial();
     {
       // Resulting Value = V1(x)D2(x) / V2(x)D1(x)
       this.value.mul(x.value.divisor, prec, V1D2);
       x.value.mul(this.value.divisor, prec, V2D1);
       V1D2.div(V2D1, prec, result.value);
       // Resulting Remainder = (R1(x)D2(x) - R2(x)V1(x)) / V2(x)D1(x)
-      this.value.remainder.mul(x.value.divisor, prec, R1D2);
-      x.value.remainder.mul(this.value, prec, R2V1);
+      if (this.value.remainder == null)
+      {
+        R1D2.zero();
+      }
+      else
+      {
+        this.value.remainder.mul(x.value.divisor, prec, R1D2);
+      }
+      if (x.value.remainder == null)
+      {
+        R2V1.set(1);
+      }
+      else
+      {
+        x.value.remainder.mul(this.value, prec, R2V1);
+      }
       R1D2.sub(R2V1, prec, temp).div(V2D1, prec, result.value.remainder);
       // Resulting Divisor = D1(x)D2(x)
-      this.value.divisor.mul(x.value.divisor, prec, result.value.divisor);
+      if (this.value.divisor != null)
+      {
+        this.value.divisor.mul(x.value.divisor, prec, result.value.divisor);
+      }
     }
     return result;
   }
@@ -209,7 +226,7 @@ public class RealRationalFunction implements
   @Override
   public RealRationalFunction set(RealRationalFunction val)
   {
-    this.value     = val.value;
+    this.value = val.value;
     return this;
   }
 
@@ -233,7 +250,9 @@ public class RealRationalFunction implements
     {
       // Resulting Remainder = R1(x)D2(x) - R2(x)D1(x)
       this.value.remainder.mul(subtrahend.value.divisor, bits, result.value.remainder)
-                    .sub(subtrahend.value.remainder.mul(this.value.divisor, bits, temp), bits, result.value.remainder);
+                          .sub(subtrahend.value.remainder.mul(this.value.divisor, bits, temp),
+                               bits,
+                               result.value.remainder);
     }
     // Resulting Divisor = D1(x)D2(x)
     this.value.divisor.mul(subtrahend.value.divisor, bits, result.value.divisor);

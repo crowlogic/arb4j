@@ -467,12 +467,19 @@ import arb.utensils.Utensils;
   
   public RealPolynomial divisor;
 
-  public RealPolynomial mul( RealPolynomial that, int bits, RealPolynomial result )
+  public RealPolynomial mul(RealPolynomial that, int bits, RealPolynomial result)
   {
-    assert that != null : "operand is null;";
-    arblib.arb_poly_mul(result, this, that, bits );
-    result.bits = bits;
-    return result;
+    if (that == null)
+    {
+      result.set(this);
+    }
+    else
+    {
+      arblib.arb_poly_mul(result, this, that, bits);
+      result.bits = bits;
+      return result;
+    }
+    return this;
   }
   
   public RealPolynomial mul( Real that, int bits, RealPolynomial result )
