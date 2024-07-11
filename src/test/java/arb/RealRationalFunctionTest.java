@@ -102,7 +102,6 @@ public class RealRationalFunctionTest
 
   public void testAddXPlusXSquaredWithNoRemainder()
   {
-    System.setProperty("arb4j.compiler.trace", "true");
     RealRationalFunction x = new RealRationalFunction();
     x.value.set(1).shiftLeft(1);
 

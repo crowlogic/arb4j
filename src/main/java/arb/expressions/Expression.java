@@ -1185,15 +1185,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       sw.visitClassType(Type.getInternalName(functionClass));
       if (Sequence.class.isAssignableFrom(functionClass) || NullaryFunction.class.isAssignableFrom(functionClass))
       {
-        sw.visitTypeArgument('=').visitClassType(Type.getInternalName(coDomainType));
-        sw.visitEnd();
+        if (functionClass.getTypeParameters().length == 1)
+        {
+          sw.visitTypeArgument('=').visitClassType(Type.getInternalName(coDomainType));
+          sw.visitEnd();
+        }
       }
       else if (Function.class.isAssignableFrom(functionClass))
       {
-        sw.visitTypeArgument('=').visitClassType(Type.getInternalName(domainType));
-        sw.visitEnd();
-        sw.visitTypeArgument('=').visitClassType(Type.getInternalName(coDomainType));
-        sw.visitEnd();
+        if (functionClass.getTypeParameters().length == 2)
+        {
+          sw.visitTypeArgument('=').visitClassType(Type.getInternalName(domainType));
+          sw.visitEnd();
+          sw.visitTypeArgument('=').visitClassType(Type.getInternalName(coDomainType));
+          sw.visitEnd();
+        }
       }
 
       sw.visitEnd();
@@ -1606,10 +1612,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
-  public Variable<D, C, F> getReference( String reference)
+  public Variable<D, C, F> getReference(String reference)
   {
     return referencedVariables.get(reference);
   }
+
   public boolean references(VariableReference<D, C, F> reference)
   {
     return referencedVariables.containsKey(reference.name);
