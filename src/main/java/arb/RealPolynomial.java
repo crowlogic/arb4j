@@ -598,6 +598,7 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
     return i < coeff.size() ? coeff.get(i) : null;
   }
    
+    
   /**
    * Sets {C, max(lenThis, lenThat)} to the sum of {this, thisLen} and {that, thatLen} by calling
    * {@link arblib#arb_poly_add(RealPolynomial, RealPolynomial, RealPolynomial, int)}<br>
@@ -611,6 +612,7 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
    */
   public RealPolynomial add(RealPolynomial addend, int prec, RealPolynomial result)
   {
+    assert prec > 0 : "precision must be >0, was " + prec;
     assert result != null : "result should not be null";
     assert addend != null : "addend should not be null";
     arblib.arb_poly_add(result, this, addend, prec);
@@ -620,6 +622,7 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
 
   public RealPolynomial sub(Real c0, int bits, RealPolynomial res)
   {
+    assert bits > 0 : "bits must be >0, was " + bits;
     res.set(this);
     res.get(0).sub(c0, bits);
     res.bits = bits;
@@ -639,11 +642,13 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
    */
   public RealPolynomial sub(RealPolynomial that, int prec, RealPolynomial result)
   {
+    assert prec > 0 : "prec must be >0, was " + bits;
+
     arblib.arb_poly_sub(result, this, that, prec);
     result.bits = prec;
     return result;
   }
-  
+    
   /**
    * Calls {@link arb#arb_clear(Real)}
    * 

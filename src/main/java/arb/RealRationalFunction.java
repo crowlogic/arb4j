@@ -137,6 +137,7 @@ public class RealRationalFunction implements
   @Override
   public RealRationalFunction div(RealRationalFunction unit, int prec, RealRationalFunction result)
   {
+    assert !unit.value.isZero() : "Division by zero";
     if (value.remainder == null)
     {
       value.remainder = new RealPolynomial();
@@ -166,17 +167,19 @@ public class RealRationalFunction implements
     RealPolynomial resultDivisor   = resultValue != null
                   && resultValue.divisor != null ? resultValue.divisor : (resultValue.divisor = new RealPolynomial());
 
-    assert false : "TODO: express formulas for division";
-    var            sum             = RealPolynomialNullaryFunction.express("V1+V2", context)
-                                                                  .evaluate(bits, resultValue);
+    var            sum             = RealPolynomialNullaryFunction.express("V1*D2+V2*D1", context);
 
-    var            remainder       = RealPolynomialNullaryFunction.express("R1*D2+R2*D1", context)
-                                                                  .evaluate(bits, resultRemainder);
+    var sumVal = sum.evaluate(bits, resultValue);
+    System.out.format("sumVal=%s\n", sumVal);
 
-    var            divisor         = RealPolynomialNullaryFunction.express("D1*D2", context)
-                                                                  .evaluate(bits, resultDivisor);
+    var remainder = RealPolynomialNullaryFunction.express("(R1*D2-R2*V1)/(V2*D1)", context)
+                                                 .evaluate(bits, resultRemainder);
 
-    System.out.format("sum=%s\nremainder=%s\ndivisor=%s\n", sum, remainder, divisor);
+    System.out.format("remainder=%s\n", remainder);
+
+    var divisor = RealPolynomialNullaryFunction.express("D1*D2", context).evaluate(bits, resultDivisor);
+
+    System.out.format("divisor=%s\n", divisor);
 
     return result;
   }
