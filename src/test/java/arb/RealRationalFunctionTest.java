@@ -27,11 +27,11 @@ public class RealRationalFunctionTest
     f.value.divisor = new RealPolynomial();
     f.value.divisor.set(1);
     f.value.divisor.shiftLeft(2);
-    System.out.println("f=" + f);
+    //System.out.println("f=" + f);
     assertEquals(1.0, f.eval(2.3));
 
     f.reduce(128);
-    System.out.println("f=" + f);
+    //System.out.println("f=" + f);
     assertEquals(1.0, f.eval(2.3));
   }
 
@@ -90,7 +90,6 @@ public class RealRationalFunctionTest
 
     RealRationalFunction xOverXSquared = new RealRationalFunction();
     x.div(xSquared, 128, xOverXSquared);
-
 
     assertEquals(x.value, xOverXSquared.value.remainder);
     assertEquals(xSquared.value, xOverXSquared.value.divisor);
