@@ -34,10 +34,7 @@ public class RealRationalFunction implements
 
     // Update this.remainder to the remainder of the quotient
     value.remainder = quotient.remainder;
-    if (value.remainder == null)
-    {
-      value.divisor.set(1);
-    }
+
     return this;
   }
 
