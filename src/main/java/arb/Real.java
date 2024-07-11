@@ -260,7 +260,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
    * method now frees the memory instead of the {@link #close()} method of that
    * 
    * The `become` method fuctions metaphorically like the Terminator T-1000 as it
-   * tookon the form of a person in the classic movie scene. In this case, the
+   * took on the form of a person in the classic movie scene. In this case, the
    * `Real` object `this` absorbs all the properties and state of another `Real`
    * object `that`, effectively transforming into it.
    * 
