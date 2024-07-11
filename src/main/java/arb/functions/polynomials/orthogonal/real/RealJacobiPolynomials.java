@@ -58,8 +58,10 @@ public class RealJacobiPolynomials implements
 
   public int                          bits    = 128;
 
+  @SuppressWarnings("resource")
   public final Real                   α       = new Real().setName("α");
 
+  @SuppressWarnings("resource")
   public final Real                   β       = new Real().setName("β");
 
   final public Context                context = new Context(α,

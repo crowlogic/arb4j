@@ -48,6 +48,7 @@ public class RealLommelPolynomials extends
       .shiftLeft(1);
   }
 
+  @SuppressWarnings("resource")
   public Real v = new Real().setName("v")
                             .set(RealConstants.half);
 

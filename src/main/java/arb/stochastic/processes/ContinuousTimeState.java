@@ -23,10 +23,7 @@ import arb.Float;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class ContinuousTimeState implements
-                                          AutoCloseable,
-                                          State,
-                                          Lockable<ContinuousTimeState>
+public abstract class ContinuousTimeState implements AutoCloseable, State, Lockable<ContinuousTimeState>
 {
   @Override
   public boolean locked()
@@ -52,9 +49,13 @@ public abstract class ContinuousTimeState implements
     return this;
   }
 
+  @SuppressWarnings("resource")
   private final Real prevTime = new Real().negInf();
+  @SuppressWarnings("resource")
   private final Real time     = new Real().negInf();
+  @SuppressWarnings("resource")
   private final Real sqrtdt   = new Real().indeterminate();
+  @SuppressWarnings("resource")
   private final Real dt       = new Real().indeterminate();
 
   public ContinuousTimeState()

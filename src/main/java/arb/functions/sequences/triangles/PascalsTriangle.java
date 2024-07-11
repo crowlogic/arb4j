@@ -36,8 +36,9 @@ public class PascalsTriangle implements
   public RealPolynomial evaluate(Integer _n, int order, int bits, RealPolynomial res)
   {
     final int n = _n.getSignedValue();
-    try ( var rowIndex = new Real().set(n); )
+    try ( var rowIndex = new Real(); )
     {
+      rowIndex.set(n);
       var rowValues = new RealPolynomial(n);
       for (int k = 0; k < n; k++)
       {

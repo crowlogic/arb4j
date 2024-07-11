@@ -206,20 +206,13 @@ import arb.utensils.Utensils;
 
   public RealPolynomial mul(Integer multiplicand, int prec, RealPolynomial res)
   {
-    try ( RealPolynomial polyMultiplicand = new RealPolynomial().set(multiplicand);)
-    {
-      return mul(polyMultiplicand, prec, res);
-    }
-  }
-    
-  public RealPolynomial div(Integer divisor, int prec, RealPolynomial resultingQuotient)
-  {
-    try ( RealPolynomial polyDivisor = new RealPolynomial().set(divisor);)
-    {
-      return div(polyDivisor, prec, resultingQuotient);
-    }
+    return mul(res.set(multiplicand), prec, res);
   }
 
+  public RealPolynomial div(Integer divisor, int prec, RealPolynomial res)
+  {
+    return div(res.set(divisor), prec, res);
+  }
 
   public RealPolynomial sub(RealPolynomial that, int prec)
   {

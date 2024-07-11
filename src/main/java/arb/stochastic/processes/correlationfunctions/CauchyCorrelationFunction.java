@@ -38,11 +38,13 @@ public class CauchyCorrelationFunction implements
   /**
    * α∈(0,2)
    */
+  @SuppressWarnings("resource")
   public final Real   α       = new Real().setName("α").set(1);
 
   /**
    * β≥0
    */
+  @SuppressWarnings("resource")
   public final Real   β       = new Real().setName("β").set(1);
   
   public Context      context = new Context(α,
