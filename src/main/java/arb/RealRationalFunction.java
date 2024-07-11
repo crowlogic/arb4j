@@ -50,13 +50,36 @@ public class RealRationalFunction implements
   @Override
   public RealRationalFunction add(RealRationalFunction addend, int bits, RealRationalFunction result)
   {
+    if (value.remainder == null)
+    {
+      value.remainder = new RealPolynomial();
+    }
+    if (value.divisor == null)
+    {
+      value.divisor = new RealPolynomial().set(1);
+    }
+    if (addend.value.remainder == null)
+    {
+      addend.value.remainder = new RealPolynomial();
+    }
+    if (addend.value.divisor == null)
+    {
+      addend.value.divisor = new RealPolynomial().set(1);
+    }
     System.setProperty("arb4j.compiler.trace", "true");
-    Context context = new Context(this.value.setName("V1"),
-                                  addend.value.setName("V2"));
+    Context context   = new Context(this.value.setName("V1"),
+                                    addend.value.setName("V2"),
+                                    this.value.remainder.setName("R1"),
+                                    this.value.divisor.setName("D1"),
+                                    addend.value.remainder.setName("R2"),
+                                    addend.value.divisor.setName("D2"));
 
-    var     sum     = RealPolynomialNullaryFunction.express("V1+V2", context).evaluate(bits, result.value);
-
-    assert false : "TODO: finish implementing this with expression compiler: '" + sum + "'";
+    var     sum       = RealPolynomialNullaryFunction.express("V1+V2", context).evaluate(bits, new RealPolynomial());
+    var     remainder = RealPolynomialNullaryFunction.express("R1*D2+R2*D1", context)
+                                                     .evaluate(bits, new RealPolynomial());
+    var     divisor   = RealPolynomialNullaryFunction.express("D1*D2", context).evaluate(bits, new RealPolynomial());
+    System.out.format("sum=%s\nremainder=%s\ndivisor=%s\n", sum, remainder, divisor);
+    assert false : "TODO: finish implementing this with expression compiler: " + sum;
 
     return result;
   }
