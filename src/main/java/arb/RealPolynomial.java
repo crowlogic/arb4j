@@ -8,7 +8,10 @@
 
 package arb;
 
-import static arb.arblib.*;
+import static arb.arblib.arb_poly_clear;
+import static arb.arblib.arb_poly_evaluate;
+import static arb.arblib.arb_poly_evaluate2;
+import static arb.arblib.arb_poly_product_roots;
 
 import java.io.Closeable;
 
@@ -961,6 +964,16 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
 
   public RealPolynomial() {
     this(arblibJNI.new_RealPolynomial(), true);
+  }
+
+  public RealPolynomial setRemainder(int i)
+  {
+    if ( remainder == null )
+    {
+      remainder = new RealPolynomial();
+    }
+    remainder.set(i);
+    return this;
   }
 
 }

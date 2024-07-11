@@ -103,6 +103,16 @@ import arb.utensils.Utensils;
     return add(i, bits, this);
   }
   
+  public RealPolynomial setRemainder(int i)
+  {
+    if ( remainder == null )
+    {
+      remainder = new RealPolynomial();
+    }
+    remainder.set(i);
+    return this;
+  }
+    
   /**
    * 
    * @param i

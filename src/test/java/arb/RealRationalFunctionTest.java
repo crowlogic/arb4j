@@ -87,13 +87,10 @@ public class RealRationalFunctionTest
     RealRationalFunction xSquared = new RealRationalFunction();
     xSquared.value.set(1).shiftLeft(2);
 
-    out.println("x=" + x);
-    out.println("x^2=" + xSquared);
 
     RealRationalFunction xOverXSquared = new RealRationalFunction();
     x.div(xSquared, 128, xOverXSquared);
 
-    out.println("xOverXSquared=" + xOverXSquared);
 
     assertEquals(x.value, xOverXSquared.value.remainder);
     assertEquals(xSquared.value, xOverXSquared.value.divisor);
@@ -108,13 +105,10 @@ public class RealRationalFunctionTest
     RealRationalFunction xSquared = new RealRationalFunction();
     xSquared.value.set(1).shiftLeft(2);
 
-    out.println("x=" + x);
-    out.println("x^2=" + xSquared);
 
     RealRationalFunction xPlusXSquared = new RealRationalFunction();
     x.add(xSquared, 128, xPlusXSquared);
 
-    out.println("xPlusXSquared=" + xPlusXSquared);
 
     RealPolynomial shouldBe = new RealPolynomial(3);
     shouldBe.set(1, 1);
@@ -124,6 +118,28 @@ public class RealRationalFunctionTest
     assertTrue(xPlusXSquared.value.remainder.isZero());
   }
 
+  public void testAddXPlusXSquaredWithRemainderOnLHS()
+  {
+    RealRationalFunction x = new RealRationalFunction();
+    x.value.set(1).shiftLeft(1);
+    x.value.setRemainder(1);
+    
+    RealRationalFunction xSquared = new RealRationalFunction();
+    xSquared.value.set(1).shiftLeft(2);
+
+
+    RealRationalFunction xPlusXSquared = new RealRationalFunction();
+    x.add(xSquared, 128, xPlusXSquared);
+
+
+    RealPolynomial shouldBe = new RealPolynomial(3);
+    shouldBe.set(1, 1);
+    shouldBe.set(2, 1);
+    assertEquals(shouldBe, xPlusXSquared.value);
+    assertEquals(xPlusXSquared.value.divisor, RealPolynomialConstants.one);
+    assertTrue(xPlusXSquared.value.remainder.equals(RealPolynomialConstants.one));
+  }
+  
   public void testMul()
   {
     RealRationalFunction f = new RealRationalFunction();
