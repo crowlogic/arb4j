@@ -579,9 +579,11 @@ import arb.utensils.Utensils;
    * @param result
    * @return result
    */
-  public RealPolynomial add(RealPolynomial that, int prec, RealPolynomial result)
+  public RealPolynomial add(RealPolynomial addend, int prec, RealPolynomial result)
   {
-    arblib.arb_poly_add(result, this, that, prec);
+    assert result != null : "result should not be null";
+    assert addend != null : "addend should not be null";
+    arblib.arb_poly_add(result, this, addend, prec);
     result.bits = prec;
     return result;
   }

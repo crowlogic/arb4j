@@ -36,8 +36,8 @@ public class RealRationalFunctionTest
   }
 
   /**
-   * Tests the division of x by x^2. This should result in a quotient of 0 and
-   * a remainder of x.
+   * Tests the division of x by x^2. This should result in a quotient of 0 and a
+   * remainder of x.
    * 
    * ** The `reduce` Method:** The purpose of the `reduce` method is to simplify
    * the rational function by performing polynomial long division and updating the
@@ -100,7 +100,7 @@ public class RealRationalFunctionTest
     assertTrue(xOverXSquared.value.isZero());
   }
 
-  public void testAdd()
+  public void testAddXPlusXSquaredWithNoRemainder()
   {
     System.setProperty("arb4j.compiler.trace", "true");
     RealRationalFunction x = new RealRationalFunction();
@@ -117,11 +117,13 @@ public class RealRationalFunctionTest
 
     out.println("xPlusXSquared=" + xPlusXSquared);
 
-    assertEquals(x.value, xPlusXSquared.value.remainder);
-    assertEquals(xSquared.value, xPlusXSquared.value.divisor);
-    assertTrue(xPlusXSquared.value.isZero());
+    RealPolynomial shouldBe = new RealPolynomial(3);
+    shouldBe.set(1, 1);
+    shouldBe.set(2, 1);
+    assertEquals(shouldBe, xPlusXSquared.value);
+    assertEquals(xPlusXSquared.value.divisor, RealPolynomialConstants.one);
+    assertTrue(xPlusXSquared.value.remainder.isZero());
   }
-
 
   public void testMul()
   {
