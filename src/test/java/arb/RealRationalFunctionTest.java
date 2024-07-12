@@ -35,50 +35,6 @@ public class RealRationalFunctionTest
     }
   }
 
-  /**
-   * Tests the division of x by x^2. This should result in a quotient of 0 and a
-   * remainder of x.
-   * 
-   * ** The `reduce` Method:** The purpose of the `reduce` method is to simplify
-   * the rational function by performing polynomial long division and updating the
-   * `value` and `remainder` fields accordingly. This does not necessarily reduce
-   * the function to its simplest possible form in every case, but rather aims to
-   * put it into a standard representation where the degree of the remainder is
-   * less than the degree of the divisor. -
-   * 
-   * **Expected Behavior for x/x²:** In the case of dividing `x` by `x²`, the
-   * result you are getting (`RealRationalFunction[name=null, value=∅,
-   * remainder=x, divisor=x²]`) is correct and expected. This is because the
-   * quotient of this division is 0, and the remainder is `x`.
-   * 
-   * Why This Is Correct:**
-   * 
-   * **Mathematical Representation:** The output `RealRationalFunction[name=null,
-   * value=∅, remainder=x, divisor=x²]` represents the rational function 0 + (x /
-   * x²). This is a valid and accurate representation of the result of the
-   * division. -
-   * 
-   * **Further Simplification:** While this can be simplified to 1/x, your
-   * `reduce` method is not designed to perform that type of simplification. It
-   * focuses on polynomial long division to ensure that the degree of the
-   * remainder is less than the degree of the divisor. Additional
-   * Considerations:**
-   * 
-   * **Explicit Simplification:** If you want to automatically simplify the result
-   * to 1/x, you would need to add additional logic to your `reduce` method. This
-   * would likely involve finding the greatest common divisor (GCD) of the
-   * numerator and denominator and dividing both by it. However, this might not
-   * always be desired behavior, depending on your specific use case.
-   *
-   * Conclusion:**
-   * 
-   * The output you're getting is correct given the current implementation of your
-   * `reduce` method. If you want further simplification (like reducing x/x² to
-   * 1/x), you would need to modify the `reduce` method to include GCD-based
-   * simplification.
-   * 
-   * 
-   */
   public void testDivisionWithRemainder()
   {
     try ( RealRationalFunction x = new RealRationalFunction())
@@ -140,7 +96,7 @@ public class RealRationalFunctionTest
     }
   }
 
-  public void testSub()
+  public void testSubtractionWithoutRemainder()
   {
     try ( RealRationalFunction x = new RealRationalFunction())
     {
@@ -149,17 +105,18 @@ public class RealRationalFunctionTest
       RealRationalFunction xSquared = new RealRationalFunction();
       xSquared.value.set(1).shiftLeft(2);
 
-      RealRationalFunction xTimesXSquared = new RealRationalFunction();
-      x.sub(xSquared, 128, xTimesXSquared);
+      RealRationalFunction xMinusXSquared = new RealRationalFunction();
+      x.sub(xSquared, 128, xMinusXSquared);
 
-      RealPolynomial shouldBe = new RealPolynomial(3);
-      shouldBe.set(3, 1);
-      assertEquals(shouldBe, xTimesXSquared.value);
-      assertEquals(xTimesXSquared.value.divisor, RealPolynomialConstants.one);
-      assertTrue(xTimesXSquared.value.remainder.isZero());
+      RealPolynomial shouldBe = new RealPolynomial(2);
+      shouldBe.set(1, 1);
+      shouldBe.set(2, -1);
+      assertEquals(shouldBe, xMinusXSquared.value);
+      assertEquals(xMinusXSquared.value.divisor, RealPolynomialConstants.one);
+      assertTrue(xMinusXSquared.value.remainder.isZero());
     }
   }
-                
+
   public void testMul()
   {
     try ( RealRationalFunction x = new RealRationalFunction())

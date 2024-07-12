@@ -298,7 +298,40 @@ public class RealRationalFunction implements
   @Override
   public RealRationalFunction sub(RealRationalFunction subtrahend, int bits, RealRationalFunction result)
   {
-   assert false : "TODO: implement with expression compiler";
+    if (value.remainder == null)
+    {
+      value.remainder = new RealPolynomial();
+    }
+    if (value.divisor == null)
+    {
+      value.divisor = new RealPolynomial().set(1);
+    }
+    if (subtrahend.value.remainder == null)
+    {
+      subtrahend.value.remainder = new RealPolynomial();
+    }
+    if (subtrahend.value.divisor == null)
+    {
+      subtrahend.value.divisor = new RealPolynomial().set(1);
+    }
+    Context        context         = new Context(this.value.setName("V1"),
+                                                 subtrahend.value.setName("V2"),
+                                                 this.value.remainder.setName("R1"),
+                                                 subtrahend.value.remainder.setName("R2"),
+                                                 this.value.divisor.setName("D1"),
+                                                 subtrahend.value.divisor.setName("D2"));
+
+    RealPolynomial resultValue     = result.value != null ? result.value : (result.value = new RealPolynomial());
+    RealPolynomial resultRemainder = resultValue != null
+                  && resultValue.remainder != null ? resultValue.remainder : (resultValue.remainder = new RealPolynomial());
+    RealPolynomial resultDivisor   = resultValue != null
+                  && resultValue.divisor != null ? resultValue.divisor : (resultValue.divisor = new RealPolynomial());
+
+    RealPolynomialNullaryFunction.express("V1-V2", context).evaluate(bits, resultValue);
+
+    RealPolynomialNullaryFunction.express("R1*D2-R2*D1", context).evaluate(bits, resultRemainder);
+
+    RealPolynomialNullaryFunction.express("D1*D2", context).evaluate(bits, resultDivisor);
 
     return result;
   }
