@@ -227,19 +227,10 @@ public class RealRationalFunction implements
   @Override
   public RealRationalFunction mul(RealRationalFunction operand, int prec, RealRationalFunction result)
   {
-    if (result == null)
-      result = this;
-
     // Resulting Value = V1(x)V2(x)
-    this.value.mul(operand.value, prec, result.value);
-    try ( RealPolynomial temp = new RealPolynomial())
-    {
-      // Resulting Remainder = V1(x)R2(x) + R1(x)V2(x)
-      this.value.mul(operand.value.remainder, prec, result.value.remainder)
-                .add(this.value.remainder.mul(operand.value, prec, temp), prec, result.value.remainder);
-    }
+    // Resulting Remainder = V1(x)R2(x) + R1(x)V2(x)
     // Resulting Divisor = D1(x)D2(x)
-    this.value.divisor.mul(operand.value.divisor, prec, result.value.divisor);
+    assert false : "TODO: implement with expression comiler";
 
     return result;
   }
