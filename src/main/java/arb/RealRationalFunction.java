@@ -225,13 +225,54 @@ public class RealRationalFunction implements
   }
 
   @Override
-  public RealRationalFunction mul(RealRationalFunction operand, int prec, RealRationalFunction result)
+  public RealRationalFunction mul(RealRationalFunction operand, int bits, RealRationalFunction result)
   {
+   if ( value.remainder != null )
+   {
+     assert value.divisor != null : "remainder without divisor";
+   }
     // Resulting Value = V1(x)V2(x)
     // Resulting Remainder = V1(x)R2(x) + R1(x)V2(x)
     // Resulting Divisor = D1(x)D2(x)
-    assert false : "TODO: implement with expression comiler";
+    if (value.remainder == null)
+    {
+      value.remainder = new RealPolynomial();
+    }
+    if (value.divisor == null)
+    {
+      value.divisor = new RealPolynomial().set(1);
+    }
+    if (operand.value.remainder == null)
+    {
+      operand.value.remainder = new RealPolynomial();
+    }
+    if (operand.value.divisor == null)
+    {
+      operand.value.divisor = new RealPolynomial().set(1);
+    }
+    Context        context         = new Context(this.value.setName("V1"),
+                                                 operand.value.setName("V2"),
+                                                 this.value.remainder.setName("R1"),
+                                                 operand.value.remainder.setName("R2"),
+                                                 this.value.divisor.setName("D1"),
+                                                 operand.value.divisor.setName("D2"));
 
+    RealPolynomial resultValue     = result.value != null ? result.value : (result.value = new RealPolynomial());
+    RealPolynomial resultRemainder = resultValue != null
+                  && resultValue.remainder != null ? resultValue.remainder : (resultValue.remainder = new RealPolynomial());
+    RealPolynomial resultDivisor   = resultValue != null
+                  && resultValue.divisor != null ? resultValue.divisor : (resultValue.divisor = new RealPolynomial());
+
+    var            sum             = RealPolynomialNullaryFunction.express("V1*V2", context)
+                                                                  .evaluate(bits, resultValue);
+
+    var            remainder       = RealPolynomialNullaryFunction.express("V1*R2+R1*V2", context)
+                                                                  .evaluate(bits, resultRemainder);
+
+    var            divisor         = RealPolynomialNullaryFunction.express("D1*D2", context)
+                                                                  .evaluate(bits, resultDivisor);
+
+    result.bits = bits;
     return result;
   }
 

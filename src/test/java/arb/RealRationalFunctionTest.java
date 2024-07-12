@@ -138,7 +138,7 @@ public class RealRationalFunctionTest
   {
     RealRationalFunction x = new RealRationalFunction();
     x.value.set(1).shiftLeft(1);
-    x.value.setRemainder(1);
+
 
     RealRationalFunction xSquared = new RealRationalFunction();
     xSquared.value.set(1).shiftLeft(2);
@@ -152,5 +152,28 @@ public class RealRationalFunctionTest
     assertEquals(xTimesXSquared.value.divisor, RealPolynomialConstants.one);
     assertTrue(xTimesXSquared.value.remainder.isZero());
   }
+  public void testMulWithRemainderOnLHS()
+  {
+    RealRationalFunction x = new RealRationalFunction();
+    x.value.set(1).shiftLeft(1);
+    x.value.setRemainder(1);
+    x.value.setDivisor(1);
+
+    RealRationalFunction xSquared = new RealRationalFunction();
+    xSquared.value.set(1).shiftLeft(2);
+
+    RealRationalFunction xTimesXSquared = new RealRationalFunction();
+    x.mul(xSquared, 128, xTimesXSquared);
+
+    RealPolynomial xCubed = new RealPolynomial(3);
+    xCubed.set(3, 1);
+
+    assertEquals(xCubed, xTimesXSquared.value);
+    assertEquals(xTimesXSquared.value.divisor, RealPolynomialConstants.one);
+    assertEquals(xSquared.value,xTimesXSquared.value.remainder);
+    assertEquals(xCubed,xTimesXSquared.value);
+
+  }
+  
 
 }

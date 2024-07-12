@@ -112,7 +112,17 @@ import arb.utensils.Utensils;
     remainder.set(i);
     return this;
   }
-    
+
+  public RealPolynomial setDivisor(int i)
+  {
+    if (divisor == null)
+    {
+      divisor = new RealPolynomial();
+    }
+    divisor.set(i);
+    return this;
+  }
+      
   /**
    * 
    * @param i
