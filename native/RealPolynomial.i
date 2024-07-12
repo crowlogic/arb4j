@@ -654,6 +654,10 @@ import arb.utensils.Utensils;
       remainder.close();
       remainder = null;
     }
+    if ( divisor != null )
+    {
+      divisor.close();
+    }
     if (coeffs != null)
     {
       coeffs.close();
