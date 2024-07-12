@@ -2,6 +2,7 @@ package arb;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
 /**
@@ -131,6 +132,7 @@ public class RealRationalFunctionTest
     assertEquals(xPlusXSquared.value.divisor, RealPolynomialConstants.one);
     assertTrue(xPlusXSquared.value.remainder.equals(RealPolynomialConstants.one));
   }
+
 
   public void testMul()
   {

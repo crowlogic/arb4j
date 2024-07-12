@@ -67,19 +67,6 @@ public class RealQuasiPolynomialTest
     assertEquals(0.3242196574681393, s2pointThreee);
   }
 
-  @SuppressWarnings("resource")
-  public void testMultiply()
-  {
-    var q = new RealQuasiPolynomial();
-    q.p.set(1).shiftLeft(1);
-    q.f = RealFunction.express("1/x");
-    var r = new RealQuasiPolynomial().identity();
-    r.p.identity();
-    r.f = RealFunction.express("cos(x)");
-    RealQuasiPolynomial s = q.mul(r, 128, new RealQuasiPolynomial());
-    System.out.println(s);
-  }
-
   public void testQuasiPolynomialJ0EigenfunctionSequence()
   {
 
