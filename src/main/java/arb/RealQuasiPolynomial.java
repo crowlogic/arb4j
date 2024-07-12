@@ -19,6 +19,7 @@ import arb.functions.sequences.Sequence;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
+@Deprecated(forRemoval = true, since = "replaced by RationalFunction")
 public class RealQuasiPolynomial
                                  extends
                                  QuasiPolynomial<Real, RealPolynomial, RealFunction, RealQuasiPolynomial> implements
