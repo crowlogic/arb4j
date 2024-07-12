@@ -305,7 +305,7 @@ public class RealRationalFunction implements
     }
     if (value.divisor == null)
     {
-      value.divisor = new RealPolynomial().set(1);
+      value.setDivisor(1);
     }
     if (subtrahend.value.remainder == null)
     {
@@ -313,7 +313,7 @@ public class RealRationalFunction implements
     }
     if (subtrahend.value.divisor == null)
     {
-      subtrahend.value.divisor = new RealPolynomial().set(1);
+      subtrahend.value.setDivisor(1);
     }
     Context        context         = new Context(this.value.setName("V1"),
                                                  subtrahend.value.setName("V2"),
