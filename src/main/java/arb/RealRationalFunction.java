@@ -298,6 +298,7 @@ public class RealRationalFunction implements
   @Override
   public RealRationalFunction sub(RealRationalFunction subtrahend, int bits, RealRationalFunction result)
   {
+    assert bits > 0 : String.format("bits=%d must be >0", bits);
     if (value.remainder == null)
     {
       value.remainder = new RealPolynomial();
