@@ -93,14 +93,12 @@ public class RealRationalFunction implements
   @Override
   public RealRationalFunction additiveIdentity()
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    return set(0);
   }
 
   @Override
   public int bits()
   {
-    assert false : "TODO: Auto-generated method stub";
     return bits;
   }
 
@@ -117,14 +115,14 @@ public class RealRationalFunction implements
   @Override
   public int compareTo(RealRationalFunction o)
   {
-    assert false : "todo";
+    assert false : "todo: implement compareTo";
     return 0;
   }
 
   @Override
   public int dim()
   {
-    assert false : "TODO: Auto-generated method stub";
+    assert false : "TODO: take this method and the get(int) method out of the Field interface";
     return 0;
   }
 
@@ -195,7 +193,7 @@ public class RealRationalFunction implements
   @Override
   public RealRationalFunction get(int index)
   {
-    assert false : "TODO: Auto-generated method stub";
+    assert false : "accessing RealRationalFunction as an array doesn't make sense";
     return null;
   }
 
@@ -273,15 +271,13 @@ public class RealRationalFunction implements
   @Override
   public RealRationalFunction multiplicativeIdentity()
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    return set(1);
   }
 
   @Override
   public RealRationalFunction newFieldElement()
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    return new RealRationalFunction();
   }
 
   @Override
