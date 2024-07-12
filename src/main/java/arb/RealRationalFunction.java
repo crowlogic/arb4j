@@ -23,19 +23,23 @@ public class RealRationalFunction implements
 
   public RealRationalFunction reduce(int prec)
   {
-    RealPolynomial quotient = new RealPolynomial();
 
-    // Perform the division; this operation updates quotient with the result
-    // and quotient.remainder will hold the remainder of the division
-    value.remainder.div(value.divisor, prec, quotient);
+    try ( RealPolynomial quotient = new RealPolynomial())
+    {
 
-    // Add the result of the division (quotient) to the value
-    this.value.add(quotient, prec, this.value);
+      value.remainder.div(value.divisor, prec, quotient);
 
-    // Update this.remainder to the remainder of the quotient
-    value.remainder = quotient.remainder;
+      this.value.add(quotient, prec, this.value);
 
-    return this;
+      value.remainder = quotient.remainder;
+      if (value.remainder == null && value.divisor != null)
+      {
+        value.divisor.close();
+        value.divisor = null;
+      }
+
+      return this;
+    }
   }
 
   private int           bits;

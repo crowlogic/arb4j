@@ -1,5 +1,7 @@
 package arb;
 
+import static java.lang.System.out;
+
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import junit.framework.TestCase;
@@ -93,6 +95,43 @@ public class RealRationalFunctionTest
       assertEquals(shouldBe, xPlusXSquared.value);
       assertEquals(xPlusXSquared.value.divisor, RealPolynomialConstants.one);
       assertTrue(xPlusXSquared.value.remainder.equals(RealPolynomialConstants.one));
+    }
+  }
+
+  public void testAddXPlusXSquaredWithRemainderOnLHSAndPolynomialRemainderOnRHS()
+  {
+    try ( RealRationalFunction xPlus1 = new RealRationalFunction())
+    {
+      xPlus1.value.set(1).shiftLeft(1);
+      xPlus1.value.setRemainder(1);
+
+      RealRationalFunction xSquaredPlusx = new RealRationalFunction();
+      xSquaredPlusx.value.set(1).shiftLeft(2);
+      xSquaredPlusx.value.setRemainder(0).set(1, 1);
+
+      //out.format("a=%s\n b=%s\n", xPlus1, xSquaredPlusx);
+      RealRationalFunction xPlus1TimesXSquaredPlusX = new RealRationalFunction();
+      xPlus1.add(xSquaredPlusx, 128, xPlus1TimesXSquaredPlusX);
+      //out.format("xPlus1TimesXSquaredPlusX=%s\n", xPlus1TimesXSquaredPlusX);
+      RealPolynomial shouldBe = new RealPolynomial(3);
+      shouldBe.set(0, 0);
+      shouldBe.set(1, 2);
+      shouldBe.set(2, 1);
+      shouldBe.setRemainder(1);     
+      assertEquals(shouldBe, xPlus1TimesXSquaredPlusX.value);
+      assertEquals(xPlus1TimesXSquaredPlusX.value.divisor, RealPolynomialConstants.one);
+      assertEquals(RealPolynomialConstants.one, xPlus1TimesXSquaredPlusX.value.remainder);
+      
+      xPlus1TimesXSquaredPlusX.reduce(128);
+      shouldBe = new RealPolynomial(3);
+      shouldBe.set(0, 1);
+      shouldBe.set(1, 2);
+      shouldBe.set(2, 1);
+      assertEquals(shouldBe, xPlus1TimesXSquaredPlusX.value);
+      assertEquals(null, xPlus1TimesXSquaredPlusX.value.divisor);
+      assertEquals(null, xPlus1TimesXSquaredPlusX.value.remainder);
+         
+      
     }
   }
 
