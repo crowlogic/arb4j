@@ -384,6 +384,3 @@ public class RealRationalFunction implements
   }
 
 }
-// Perform the division; this operation updates quotient with the result
-// and quotient.remainder will hold the remainder of the division    // Perform the division; this operation updates quotient with the result
-// and quotient.remainder will hold the remainder of the division
