@@ -142,8 +142,22 @@ public class RealRationalFunctionTest
 
   public void testSub()
   {
-    assert false : "todo: unit tests for rational function subtraction";
+    try ( RealRationalFunction x = new RealRationalFunction())
+    {
+      x.value.set(1).shiftLeft(1);
 
+      RealRationalFunction xSquared = new RealRationalFunction();
+      xSquared.value.set(1).shiftLeft(2);
+
+      RealRationalFunction xTimesXSquared = new RealRationalFunction();
+      x.sub(xSquared, 128, xTimesXSquared);
+
+      RealPolynomial shouldBe = new RealPolynomial(3);
+      shouldBe.set(3, 1);
+      assertEquals(shouldBe, xTimesXSquared.value);
+      assertEquals(xTimesXSquared.value.divisor, RealPolynomialConstants.one);
+      assertTrue(xTimesXSquared.value.remainder.isZero());
+    }
   }
                 
   public void testMul()
