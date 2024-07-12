@@ -116,6 +116,28 @@ public class RealRationalFunctionTest
       assertTrue(xMinusXSquared.value.remainder.isZero());
     }
   }
+  
+  public void testSubtractionWithRemainderOnTheLHS()
+  {
+    try ( RealRationalFunction x = new RealRationalFunction())
+    {
+      x.value.set(1).shiftLeft(1);
+      x.value.setRemainder(2);
+      RealRationalFunction xSquared = new RealRationalFunction();
+      xSquared.value.set(1).shiftLeft(2);
+
+      RealRationalFunction xMinusXSquared = new RealRationalFunction();
+      x.sub(xSquared, 128, xMinusXSquared);
+
+      RealPolynomial shouldBe = new RealPolynomial(2);
+      shouldBe.set(1, 1);
+      shouldBe.set(2, -1);
+      assertEquals(shouldBe, xMinusXSquared.value);
+      assertEquals(xMinusXSquared.value.divisor, RealPolynomialConstants.one);
+      assertEquals(x.value.remainder, xMinusXSquared.value.remainder);
+    }
+  }
+  
 
   public void testMul()
   {
