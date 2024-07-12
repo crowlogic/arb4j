@@ -21,31 +21,9 @@ public class RealQuasiPolynomialTest
                                      extends
                                      TestCase
 {
-  public void testHypergeometricRealQuasipolynomialFuntionExpression()
-  {
-    int                 bits      = 128;
-    var                 poly      = RealQuasiPolynomialNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
-    RealQuasiPolynomial expressed = poly.evaluate(bits, new RealQuasiPolynomial());
-    assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
-  }
 
 
 
-  @SuppressWarnings("resource")
-  public void testLommelQuasiPolynomialSequence()
-  {
-    Real    v          = new Real().set(RealConstants.half).setName("v");
-    Context context    = new Context(v);
-    var     expression = RealQuasiPolynomial.parseSequence("R",
-                                                           "n->v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z^2)",
-                                                           context);
-    System.out.println(expression.syntaxTextTree());
-    Sequence<RealQuasiPolynomial> f  = expression.instantiate();
-    RealQuasiPolynomial           f0 = f.evaluate(3, 128);
-    System.out.println("f0=" + f0);
-    double fzero = f0.eval(2.3);
-    System.out.println("f(2.3)=" + f0);
-  }
 
   @SuppressWarnings("resource")
   public void testAddition()

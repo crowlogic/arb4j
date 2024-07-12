@@ -2,6 +2,9 @@ package arb;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Context;
+import arb.functions.real.RealRationalNullaryFunction;
+import arb.functions.sequences.Sequence;
 import junit.framework.TestCase;
 
 /**
@@ -15,6 +18,29 @@ public class RealRationalFunctionTest
                                       extends
                                       TestCase
 {
+
+  public void testHypergeometricRealRationalFunctionExpression()
+  {
+    int                  bits      = 128;
+    var                  poly      = RealRationalNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
+    RealRationalFunction expressed = poly.evaluate(bits, new RealRationalFunction());
+    assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
+  }
+
+  public void testLommelRationalPolynomialSequence()
+  {
+    Real    v          = new Real().set(RealConstants.half).setName("v");
+    Context context    = new Context(v);
+    var     expression = RealRationalFunction.parseSequence("R",
+                                                            "n->v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z^2)",
+                                                            context);
+    System.out.println(expression.syntaxTextTree());
+    Sequence<RealRationalFunction> f  = expression.instantiate();
+    RealRationalFunction           f0 = f.evaluate(3, 128);
+    System.out.println("f0=" + f0);
+    double fzero = f0.eval(2.3);
+    System.out.println("f(2.3)=" + f0);
+  }
 
   public void testReduce()
   {
@@ -107,19 +133,19 @@ public class RealRationalFunctionTest
       xSquaredPlusx.value.set(1).shiftLeft(2);
       xSquaredPlusx.value.setRemainder(0).set(1, 1);
 
-      //out.format("a=%s\n b=%s\n", xPlus1, xSquaredPlusx);
+      // out.format("a=%s\n b=%s\n", xPlus1, xSquaredPlusx);
       RealRationalFunction xPlus1TimesXSquaredPlusX = new RealRationalFunction();
       xPlus1.add(xSquaredPlusx, 128, xPlus1TimesXSquaredPlusX);
-      //out.format("xPlus1TimesXSquaredPlusX=%s\n", xPlus1TimesXSquaredPlusX);
+      // out.format("xPlus1TimesXSquaredPlusX=%s\n", xPlus1TimesXSquaredPlusX);
       RealPolynomial shouldBe = new RealPolynomial(3);
       shouldBe.set(0, 0);
       shouldBe.set(1, 2);
       shouldBe.set(2, 1);
-      shouldBe.setRemainder(1);     
+      shouldBe.setRemainder(1);
       assertEquals(shouldBe, xPlus1TimesXSquaredPlusX.value);
       assertEquals(xPlus1TimesXSquaredPlusX.value.divisor, RealPolynomialConstants.one);
       assertEquals(RealPolynomialConstants.one, xPlus1TimesXSquaredPlusX.value.remainder);
-      
+
       xPlus1TimesXSquaredPlusX.reduce(128);
       shouldBe = new RealPolynomial(3);
       shouldBe.set(0, 1);
@@ -128,8 +154,7 @@ public class RealRationalFunctionTest
       assertEquals(shouldBe, xPlus1TimesXSquaredPlusX.value);
       assertEquals(null, xPlus1TimesXSquaredPlusX.value.divisor);
       assertEquals(null, xPlus1TimesXSquaredPlusX.value.remainder);
-         
-      
+
     }
   }
 

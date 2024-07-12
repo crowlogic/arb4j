@@ -5,8 +5,13 @@ import java.util.Objects;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.expressions.Expression;
+import arb.expressions.Parser;
+import arb.functions.Function;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealPolynomialNullaryFunction;
+import arb.functions.real.RealRationalNullaryFunction;
+import arb.functions.sequences.Sequence;
 
 /**
  *
@@ -379,4 +384,34 @@ public class RealRationalFunction implements
     return res;
   }
 
+  public static Expression<Object, RealRationalFunction, RealRationalNullaryFunction> parse(String expression)
+  {
+    return Function.parse(Parser.expressionToUniqueClassname(expression),
+                          expression,
+                          null,
+                          Object.class,
+                          RealRationalFunction.class,
+                          RealRationalNullaryFunction.class,
+                          null,
+                          null);
+  }
+
+  public static Expression<Integer, RealRationalFunction, Sequence<RealRationalFunction>>
+         parseSequence(String className, String expression)
+  {
+    return parseSequence(className, expression, null);
+  }
+
+  public static Expression<Integer, RealRationalFunction, Sequence<RealRationalFunction>>
+         parseSequence(String className, String expression, Context context)
+  {
+    return Function.parse(className,
+                          expression,
+                          context,
+                          Integer.class,
+                          RealRationalFunction.class,
+                          Sequence.class,
+                          null,
+                          null);
+  }
 }
