@@ -9,7 +9,6 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.nodes.binary.Addition;
 import arb.expressions.nodes.binary.Multiplication;
-import arb.space.topological.VectorSpace;
 
 /**
  * a set of elements such that {@link Addition} and {@link Multiplication} are

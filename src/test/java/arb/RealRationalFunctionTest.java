@@ -2,7 +2,6 @@ package arb;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
 /**
@@ -19,19 +18,21 @@ public class RealRationalFunctionTest
 
   public void testReduce()
   {
-    RealRationalFunction f = new RealRationalFunction();
-    f.value.remainder = new RealPolynomial();
-    f.value.remainder.set(1);
-    f.value.remainder.shiftLeft(2);
-    f.value.divisor = new RealPolynomial();
-    f.value.divisor.set(1);
-    f.value.divisor.shiftLeft(2);
-    // System.out.println("f=" + f);
-    assertEquals(1.0, f.eval(2.3));
+    try ( RealRationalFunction f = new RealRationalFunction())
+    {
+      f.value.remainder = new RealPolynomial();
+      f.value.remainder.set(1);
+      f.value.remainder.shiftLeft(2);
+      f.value.divisor = new RealPolynomial();
+      f.value.divisor.set(1);
+      f.value.divisor.shiftLeft(2);
+      // System.out.println("f=" + f);
+      assertEquals(1.0, f.eval(2.3));
 
-    f.reduce(128);
-    // System.out.println("f=" + f);
-    assertEquals(1.0, f.eval(2.3));
+      f.reduce(128);
+      // System.out.println("f=" + f);
+      assertEquals(1.0, f.eval(2.3));
+    }
   }
 
   /**
@@ -80,100 +81,114 @@ public class RealRationalFunctionTest
    */
   public void testDivisionWithRemainder()
   {
-    RealRationalFunction x = new RealRationalFunction();
-    x.value.set(1).shiftLeft(1);
+    try ( RealRationalFunction x = new RealRationalFunction())
+    {
+      x.value.set(1).shiftLeft(1);
 
-    RealRationalFunction xSquared = new RealRationalFunction();
-    xSquared.value.set(1).shiftLeft(2);
+      RealRationalFunction xSquared = new RealRationalFunction();
+      xSquared.value.set(1).shiftLeft(2);
 
-    RealRationalFunction xOverXSquared = new RealRationalFunction();
-    x.div(xSquared, 128, xOverXSquared);
+      RealRationalFunction xOverXSquared = new RealRationalFunction();
+      x.div(xSquared, 128, xOverXSquared);
 
-    assertEquals(x.value, xOverXSquared.value.remainder);
-    assertEquals(xSquared.value, xOverXSquared.value.divisor);
-    assertTrue(xOverXSquared.value.isZero());
+      assertEquals(x.value, xOverXSquared.value.remainder);
+      assertEquals(xSquared.value, xOverXSquared.value.divisor);
+      assertTrue(xOverXSquared.value.isZero());
+    }
   }
 
   public void testAddXPlusXSquaredWithNoRemainder()
   {
-    RealRationalFunction x = new RealRationalFunction();
-    x.value.set(1).shiftLeft(1);
+    try ( RealRationalFunction x = new RealRationalFunction())
+    {
+      x.value.set(1).shiftLeft(1);
 
-    RealRationalFunction xSquared = new RealRationalFunction();
-    xSquared.value.set(1).shiftLeft(2);
+      RealRationalFunction xSquared = new RealRationalFunction();
+      xSquared.value.set(1).shiftLeft(2);
 
-    RealRationalFunction xPlusXSquared = new RealRationalFunction();
-    x.add(xSquared, 128, xPlusXSquared);
+      RealRationalFunction xPlusXSquared = new RealRationalFunction();
+      x.add(xSquared, 128, xPlusXSquared);
 
-    RealPolynomial shouldBe = new RealPolynomial(3);
-    shouldBe.set(1, 1);
-    shouldBe.set(2, 1);
-    assertEquals(shouldBe, xPlusXSquared.value);
-    assertEquals(xPlusXSquared.value.divisor, RealPolynomialConstants.one);
-    assertTrue(xPlusXSquared.value.remainder.isZero());
+      RealPolynomial shouldBe = new RealPolynomial(3);
+      shouldBe.set(1, 1);
+      shouldBe.set(2, 1);
+      assertEquals(shouldBe, xPlusXSquared.value);
+      assertEquals(xPlusXSquared.value.divisor, RealPolynomialConstants.one);
+      assertTrue(xPlusXSquared.value.remainder.isZero());
+    }
   }
 
   public void testAddXPlusXSquaredWithRemainderOnLHS()
   {
-    RealRationalFunction x = new RealRationalFunction();
-    x.value.set(1).shiftLeft(1);
-    x.value.setRemainder(1);
+    try ( RealRationalFunction x = new RealRationalFunction())
+    {
+      x.value.set(1).shiftLeft(1);
+      x.value.setRemainder(1);
 
-    RealRationalFunction xSquared = new RealRationalFunction();
-    xSquared.value.set(1).shiftLeft(2);
+      RealRationalFunction xSquared = new RealRationalFunction();
+      xSquared.value.set(1).shiftLeft(2);
 
-    RealRationalFunction xPlusXSquared = new RealRationalFunction();
-    x.add(xSquared, 128, xPlusXSquared);
+      RealRationalFunction xPlusXSquared = new RealRationalFunction();
+      x.add(xSquared, 128, xPlusXSquared);
 
-    RealPolynomial shouldBe = new RealPolynomial(3);
-    shouldBe.set(1, 1);
-    shouldBe.set(2, 1);
-    assertEquals(shouldBe, xPlusXSquared.value);
-    assertEquals(xPlusXSquared.value.divisor, RealPolynomialConstants.one);
-    assertTrue(xPlusXSquared.value.remainder.equals(RealPolynomialConstants.one));
+      RealPolynomial shouldBe = new RealPolynomial(3);
+      shouldBe.set(1, 1);
+      shouldBe.set(2, 1);
+      assertEquals(shouldBe, xPlusXSquared.value);
+      assertEquals(xPlusXSquared.value.divisor, RealPolynomialConstants.one);
+      assertTrue(xPlusXSquared.value.remainder.equals(RealPolynomialConstants.one));
+    }
   }
 
+  public void testSub()
+  {
+    assert false : "todo: unit tests for rational function subtraction";
 
+  }
+                
   public void testMul()
   {
-    RealRationalFunction x = new RealRationalFunction();
-    x.value.set(1).shiftLeft(1);
+    try ( RealRationalFunction x = new RealRationalFunction())
+    {
+      x.value.set(1).shiftLeft(1);
 
+      RealRationalFunction xSquared = new RealRationalFunction();
+      xSquared.value.set(1).shiftLeft(2);
 
-    RealRationalFunction xSquared = new RealRationalFunction();
-    xSquared.value.set(1).shiftLeft(2);
+      RealRationalFunction xTimesXSquared = new RealRationalFunction();
+      x.mul(xSquared, 128, xTimesXSquared);
 
-    RealRationalFunction xTimesXSquared = new RealRationalFunction();
-    x.mul(xSquared, 128, xTimesXSquared);
-
-    RealPolynomial shouldBe = new RealPolynomial(3);
-    shouldBe.set(3, 1);
-    assertEquals(shouldBe, xTimesXSquared.value);
-    assertEquals(xTimesXSquared.value.divisor, RealPolynomialConstants.one);
-    assertTrue(xTimesXSquared.value.remainder.isZero());
+      RealPolynomial shouldBe = new RealPolynomial(3);
+      shouldBe.set(3, 1);
+      assertEquals(shouldBe, xTimesXSquared.value);
+      assertEquals(xTimesXSquared.value.divisor, RealPolynomialConstants.one);
+      assertTrue(xTimesXSquared.value.remainder.isZero());
+    }
   }
+
   public void testMulWithRemainderOnLHS()
   {
-    RealRationalFunction x = new RealRationalFunction();
-    x.value.set(1).shiftLeft(1);
-    x.value.setRemainder(1);
-    x.value.setDivisor(1);
+    try ( RealRationalFunction x = new RealRationalFunction())
+    {
+      x.value.set(1).shiftLeft(1);
+      x.value.setRemainder(1);
+      x.value.setDivisor(1);
 
-    RealRationalFunction xSquared = new RealRationalFunction();
-    xSquared.value.set(1).shiftLeft(2);
+      RealRationalFunction xSquared = new RealRationalFunction();
+      xSquared.value.set(1).shiftLeft(2);
 
-    RealRationalFunction xTimesXSquared = new RealRationalFunction();
-    x.mul(xSquared, 128, xTimesXSquared);
+      RealRationalFunction xTimesXSquared = new RealRationalFunction();
+      x.mul(xSquared, 128, xTimesXSquared);
 
-    RealPolynomial xCubed = new RealPolynomial(3);
-    xCubed.set(3, 1);
+      RealPolynomial xCubed = new RealPolynomial(3);
+      xCubed.set(3, 1);
 
-    assertEquals(xCubed, xTimesXSquared.value);
-    assertEquals(xTimesXSquared.value.divisor, RealPolynomialConstants.one);
-    assertEquals(xSquared.value,xTimesXSquared.value.remainder);
-    assertEquals(xCubed,xTimesXSquared.value);
+      assertEquals(xCubed, xTimesXSquared.value);
+      assertEquals(xTimesXSquared.value.divisor, RealPolynomialConstants.one);
+      assertEquals(xSquared.value, xTimesXSquared.value.remainder);
+      assertEquals(xCubed, xTimesXSquared.value);
+    }
 
   }
-  
 
 }

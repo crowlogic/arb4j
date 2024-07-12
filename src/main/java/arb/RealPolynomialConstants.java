@@ -10,5 +10,10 @@ public class RealPolynomialConstants
 
   public static final RealPolynomial zero = new RealPolynomial();
 
-  public static final RealPolynomial one = new RealPolynomial().set(1);
+  public static final RealPolynomial one  = new RealPolynomial();
+
+  static
+  {
+    one.set(1);
+  }
 }

@@ -1,6 +1,5 @@
 package arb.functions.polynomials.quasi.real;
 
-import arb.Integer;
 import arb.Real;
 import arb.RealQuasiPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;

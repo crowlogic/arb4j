@@ -1,14 +1,14 @@
 package arb.functions.polynomials.quasi;
 
-import arb.*;
-import arb.Integer;
+import arb.Real;
+import arb.RealConstants;
+import arb.RealQuasiPolynomial;
+import arb.RoundingMode;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
-import arb.expressions.Expression;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealQuasiPolynomialNullaryFunction;
-import arb.functions.sequences.ComplexPolynomialSequence;
 import arb.functions.sequences.Sequence;
 import junit.framework.TestCase;
 
@@ -31,6 +31,7 @@ public class RealQuasiPolynomialTest
 
 
 
+  @SuppressWarnings("resource")
   public void testLommelQuasiPolynomialSequence()
   {
     Real    v          = new Real().set(RealConstants.half).setName("v");

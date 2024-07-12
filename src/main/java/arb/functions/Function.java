@@ -5,8 +5,6 @@ import static arb.utensils.Utensils.throwOrWrap;
 import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.domains.Domain;
-import arb.exceptions.NotDifferentiableException;
 import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
