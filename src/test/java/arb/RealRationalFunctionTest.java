@@ -1,7 +1,5 @@
 package arb;
 
-import static java.lang.System.out;
-
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import junit.framework.TestCase;
