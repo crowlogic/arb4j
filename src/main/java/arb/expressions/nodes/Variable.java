@@ -359,7 +359,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
     else
     {
 
-      boolean a = expression.thisOrAnyAscendentExpressionHasPolynomialOrQuasiPolynomialCoDomain();
+      boolean a = expression.thisOrAnyAscendentExpressionHasPolynomialOrRationalFunctionCoDomain();
       boolean b = expression.anyAscendentIndependentVariableIsEqualTo(getName());
       boolean c = expression.getVariable(reference) == null;
       boolean d = expression.independentVariable == null

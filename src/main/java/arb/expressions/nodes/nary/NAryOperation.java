@@ -312,7 +312,7 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>>
 
   public Class<?> assignTypes(Class<?> resultType)
   {
-    if (!expression.thisOrAnyAscendentExpressionHasPolynomialOrQuasiPolynomialCoDomain())
+    if (!expression.thisOrAnyAscendentExpressionHasPolynomialOrRationalFunctionCoDomain())
     {
       resultType = scalarType(resultType);
     }
