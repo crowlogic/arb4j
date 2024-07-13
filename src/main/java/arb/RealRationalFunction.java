@@ -53,7 +53,6 @@ public class RealRationalFunction implements
 
   public RealPolynomial value = new RealPolynomial();
 
-  @SuppressWarnings("resource")
   @Override
   public RealRationalFunction add(RealRationalFunction addend, int bits, RealRationalFunction result)
   {
@@ -68,10 +67,8 @@ public class RealRationalFunction implements
                                                  addend.value.divisor.setName("D2"));
 
     RealPolynomial resultValue     = result.value != null ? result.value : (result.value = new RealPolynomial());
-    RealPolynomial resultRemainder = resultValue != null
-                  && resultValue.remainder != null ? resultValue.remainder : (resultValue.remainder = new RealPolynomial());
-    RealPolynomial resultDivisor   = resultValue != null
-                  && resultValue.divisor != null ? resultValue.divisor : (resultValue.divisor = new RealPolynomial());
+    RealPolynomial resultRemainder = resultValue.remainder != null ? resultValue.remainder : (resultValue.remainder = new RealPolynomial());
+    RealPolynomial resultDivisor   = resultValue.divisor != null ? resultValue.divisor : (resultValue.divisor = new RealPolynomial());
 
     RealPolynomialNullaryFunction.express("V1+V2", context).evaluate(bits, resultValue);
 
@@ -145,10 +142,8 @@ public class RealRationalFunction implements
                                                  unit.value.divisor.setName("D2"));
 
     RealPolynomial resultValue     = result.value != null ? result.value : (result.value = new RealPolynomial());
-    RealPolynomial resultRemainder = resultValue != null
-                  && resultValue.remainder != null ? resultValue.remainder : (resultValue.remainder = new RealPolynomial());
-    RealPolynomial resultDivisor   = resultValue != null
-                  && resultValue.divisor != null ? resultValue.divisor : (resultValue.divisor = new RealPolynomial());
+    RealPolynomial resultRemainder = resultValue.remainder != null ? resultValue.remainder : (resultValue.remainder = new RealPolynomial());
+    RealPolynomial resultDivisor   = resultValue.divisor != null ? resultValue.divisor : (resultValue.divisor = new RealPolynomial());
 
     RealPolynomialNullaryFunction.express("(V1*D2)/(V2*D1)", context).evaluate(bits, resultValue);
 
@@ -213,7 +208,6 @@ public class RealRationalFunction implements
     return null;
   }
 
-  @SuppressWarnings("resource")
   @Override
   public RealRationalFunction mul(RealRationalFunction operand, int bits, RealRationalFunction result)
   {
@@ -234,10 +228,8 @@ public class RealRationalFunction implements
                                                  operand.value.divisor.setName("D2"));
 
     RealPolynomial resultValue     = result.value != null ? result.value : (result.value = new RealPolynomial());
-    RealPolynomial resultRemainder = resultValue != null
-                  && resultValue.remainder != null ? resultValue.remainder : (resultValue.remainder = new RealPolynomial());
-    RealPolynomial resultDivisor   = resultValue != null
-                  && resultValue.divisor != null ? resultValue.divisor : (resultValue.divisor = new RealPolynomial());
+    RealPolynomial resultRemainder = resultValue.remainder != null ? resultValue.remainder : (resultValue.remainder = new RealPolynomial());
+    RealPolynomial resultDivisor   = resultValue.divisor != null ? resultValue.divisor : (resultValue.divisor = new RealPolynomial());
 
     RealPolynomialNullaryFunction.express("V1*V2", context).evaluate(bits, resultValue);
 
@@ -291,10 +283,8 @@ public class RealRationalFunction implements
                                                  subtrahend.value.divisor.setName("D2"));
 
     RealPolynomial resultValue     = result.value != null ? result.value : (result.value = new RealPolynomial());
-    RealPolynomial resultRemainder = resultValue != null
-                  && resultValue.remainder != null ? resultValue.remainder : (resultValue.remainder = new RealPolynomial());
-    RealPolynomial resultDivisor   = resultValue != null
-                  && resultValue.divisor != null ? resultValue.divisor : (resultValue.divisor = new RealPolynomial());
+    RealPolynomial resultRemainder = resultValue.remainder != null ? resultValue.remainder : (resultValue.remainder = new RealPolynomial());
+    RealPolynomial resultDivisor   = resultValue.divisor != null ? resultValue.divisor : (resultValue.divisor = new RealPolynomial());
 
     RealPolynomialNullaryFunction.express("V1-V2", context).evaluate(bits, resultValue);
 
@@ -327,20 +317,16 @@ public class RealRationalFunction implements
   {
     try ( Real a = new Real(); Real b = new Real())
     {
-      // Evaluate the polynomial part of the rational function.
       value.evaluate(t, order, bits, res);
 
-      // If there is a remainder, evaluate it and the divisor, then add the result to
-      // 'res'.
       if (value.remainder != null)
       {
-        value.remainder.evaluate(t, order, bits, a); // Evaluate the remainder at 't'
-        value.divisor.evaluate(t, order, bits, b); // Evaluate the divisor at 't'
+        assert value.divisor != null : "divisor specified without remainder";
+        value.remainder.evaluate(t, order, bits, a);
+        value.divisor.evaluate(t, order, bits, b);
 
-        // Since divisor will always be non-null when remainder is set,
-        // and you're assured it won't be zero by design, directly divide.
-        a.div(b, bits, a); // Divides 'a' by 'b', storing the result in 'a'
-        res.add(a, bits); // Adds the division result to the main result
+        a.div(b, bits, a);
+        res.add(a, bits);
       }
     }
     res.bits = bits;
