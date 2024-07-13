@@ -23,9 +23,7 @@ import arb.functions.Function;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.polynomials.ComplexHypergeometricPolynomial;
 import arb.functions.polynomials.RealPolynomialValuedHypergeometricFunction;
-import arb.functions.polynomials.quasi.QuasiPolynomial;
 import arb.functions.polynomials.quasi.complex.ComplexHypergeometricQuasiPolynomial;
-import arb.functions.polynomials.quasi.real.RealHypergeometricQuasiPolynomial;
 import arb.functions.real.RealPolynomialNullaryFunction;
 
 /**
@@ -78,7 +76,7 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     {
       err.printf("pFq.generate(resultType=%s\n)\n", resultType);
     }
-    Class<?> scalarType        = Compiler.scalarType(resultType);
+    Class<?> scalarType = Compiler.scalarType(resultType);
 
     boolean  isRational = RealRationalFunction.class.isAssignableFrom(resultType);
     if (Expression.trace)
