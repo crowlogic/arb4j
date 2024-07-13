@@ -3,6 +3,7 @@ package arb.functions.polynomials;
 import java.util.Comparator;
 
 import arb.Integer;
+import arb.Polynomial;
 import arb.Real;
 import arb.RealPolynomial;
 import arb.Verifiable;
@@ -14,10 +15,10 @@ import arb.expressions.Expression;
 import arb.functions.real.RealPolynomialNullaryFunction;
 
 /**
- * Represents a hypergeometric polynomial, defined by a finite hypergeometric
- * series as <br>
+ * Represents a hypergeometric {@link Real}-valued {@link Polynomial}, that is,
+ * a {@link RealPolynomial}, defined by a finite hypergeometric series as <br>
  * <br>
- * pFq:Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N} <br>
+ * pFq:Σn➔zⁿ*∏k➔αₖ₍ₙ₎{k=1…p}/(n!*∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N} <br>
  * <br>
  * 
  * This class encapsulates the computation and representation of hypergeometric
@@ -50,12 +51,10 @@ import arb.functions.real.RealPolynomialNullaryFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealHypergeometricPolynomial implements
-                                          RealPolynomialNullaryFunction,
-                                          Verifiable
+public class RealPolynomialValuedHypergeometricFunction implements RealPolynomialNullaryFunction, Verifiable
 {
 
-  public static final String                                               pFq         = "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}";
+  public static final String                                               pFq         = "Σn➔zⁿ*∏k➔αₖ₍ₙ₎{k=1…p}/(n!*∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}";
 
   public final Context                                                     context;
 
@@ -71,18 +70,18 @@ public class RealHypergeometricPolynomial implements
 
   public final Real                                                        α, β;
 
-  public RealHypergeometricPolynomial(int p,
-                                      int q,
-                                      Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> arg)
+  public RealPolynomialValuedHypergeometricFunction(int p,
+                                                    int q,
+                                                    Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> arg)
   {
     this(Real.newVector(p),
          Real.newVector(q),
          arg);
   }
 
-  public RealHypergeometricPolynomial(Real α,
-                                      Real β,
-                                      Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> arg)
+  public RealPolynomialValuedHypergeometricFunction(Real α,
+                                                    Real β,
+                                                    Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> arg)
   {
     this.α  = α;
     this.β  = β;

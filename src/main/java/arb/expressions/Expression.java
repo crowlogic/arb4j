@@ -684,24 +684,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Node<D, C, F> evaluateSubscriptedIndex()
   {
+    int startPos = position;
+
     if (nextCharacterIs(Parser.SUBSCRIPT_DIGITS_ARRAY))
     {
-      if (!nextCharacterIs(Parser.SUBSCRIPT_DIGITS_ARRAY))
-      {
-        return new LiteralConstant<>(this,
-                                     String.valueOf(previousCharacter));
-      }
-      else
-      {
-        throw new CompilerException(String.format("TODO: handle subscripted index starting with"
-                      + " lastCharacter=%c this could be either a numeric literal constant or a "
-                      + "alphanumeric variable reference"));
-      }
+      while (nextCharacterIs(Parser.SUBSCRIPT_DIGITS_ARRAY))
+        ;
+      return new LiteralConstant<>(this,
+                                   expression.substring(startPos, position));
     }
-    else
+    else if (isIdentifier())
     {
-      return null;
+      return resolveIdentifier();
     }
+    return null;
   }
 
   public Node<D, C, F> exponentiate() throws CompilerException

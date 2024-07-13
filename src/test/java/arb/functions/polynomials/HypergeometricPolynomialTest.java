@@ -27,7 +27,7 @@ public class HypergeometricPolynomialTest extends
 
   public void testHypergeometricPolynomial() throws NoSuchFieldException, IllegalAccessException
   {
-    try ( RealHypergeometricPolynomial poly = new RealHypergeometricPolynomial(Real.newVector(-2, 3.5, 1),
+    try ( RealPolynomialValuedHypergeometricFunction poly = new RealPolynomialValuedHypergeometricFunction(Real.newVector(-2, 3.5, 1),
                                                                                Real.newVector(2, 4),
                                                                                RealPolynomialNullaryFunction.parse("1/2-x/2")))
     {
@@ -99,7 +99,7 @@ public class HypergeometricPolynomialTest extends
   {
     var arg = RealPolynomialNullaryFunction.parse("x");
 
-    try ( RealHypergeometricPolynomial F = new RealHypergeometricPolynomial(2,
+    try ( RealPolynomialValuedHypergeometricFunction F = new RealPolynomialValuedHypergeometricFunction(2,
                                                                             1,
                                                                             arg);
           RealPolynomial y = new RealPolynomial();)

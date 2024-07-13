@@ -9,7 +9,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
 import arb.expressions.Context;
-import arb.functions.polynomials.RealHypergeometricPolynomial;
+import arb.functions.polynomials.RealPolynomialValuedHypergeometricFunction;
 import arb.functions.polynomials.RealPolynomialSequenceIterator;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
@@ -28,7 +28,7 @@ import arb.functions.sequences.RealSequence;
  * over the interval [-1,1] when α,β>-1 and are recursively defined by
  * 
  * The Jacobi polynomials are also known as a
- * {@link RealHypergeometricPolynomial}s
+ * {@link RealPolynomialValuedHypergeometricFunction}s
  * 
  * <pre>
  *  C(n)=2n+α+β

@@ -637,7 +637,7 @@ public class Compiler
     realScalarTypes.addAll(Arrays.asList(Real.class,
                                          RealPolynomial.class,
                                          RealMatrix.class,
-                                         RealQuasiPolynomial.class));
+                                         RealRationalFunction.class));
     complexScalarTypes.addAll(Arrays.asList(Complex.class,
                                             ComplexPolynomial.class,
                                             ComplexMatrix.class,
@@ -664,6 +664,11 @@ public class Compiler
   {
     mv.visitInsn(Opcodes.SWAP);
     return mv;
+  }
+
+  public static void loadStaticFieldOntoStack(MethodVisitor methodVisitor, String name, Class<?> fieldType)
+  {
+    methodVisitor.visitFieldInsn(GETSTATIC, Type.getInternalName(fieldType), name, fieldType.descriptorString());
   }
 
 }

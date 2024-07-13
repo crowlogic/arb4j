@@ -236,10 +236,15 @@ public class Parser
   public static final char[]             SUBSCRIPT_DIGITS_ARRAY       = new char[]
   { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉' };
 
+  public static final char[]             SUBSCRIPT_CHARACTERS_ARRAY   =
+  { 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ', 'ₜ' };
+
   public static int[]                    lowercaseSuperscriptAlphabet =
   { 'ᵃ', 'ᵇ', 'ᶜ', 'ᵈ', 'ᵉ', 'ᶠ', 'ᵍ', 'ʰ', 'ⁱ', 'ʲ', 'ᵏ', 'ˡ', 'ᵐ', 'ⁿ', 'ᵒ', 'ᵖ', 0x107A5, 'ʳ', 'ˢ', 'ᵗ', 'ᵘ', 'ᵛ',
     'ʷ', 'ˣ', 'ʸ', 'ᶻ' };
 
+  public static final HashSet<Character> lowercaseSubscriptAlphabet   = new HashSet<Character>(Arrays.asList(new Character[]
+  { 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ', 'ₜ' }));
   /**
    * Not all uppercase letters have UTF superscript representations
    */

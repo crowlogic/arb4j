@@ -98,7 +98,7 @@ public class ComplexHypergeometricPolynomial implements
 
     context.registerVariable("N", N = new Integer());
 
-    F = ComplexPolynomialNullaryFunction.parse("F", RealHypergeometricPolynomial.pFq, context).substitute("z", arg);
+    F = ComplexPolynomialNullaryFunction.parse("F", RealPolynomialValuedHypergeometricFunction.pFq, context).substitute("z", arg);
   }
 
   @Override

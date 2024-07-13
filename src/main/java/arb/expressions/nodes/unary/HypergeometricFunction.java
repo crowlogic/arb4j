@@ -3,7 +3,6 @@ package arb.expressions.nodes.unary;
 import static arb.expressions.Compiler.*;
 import static java.lang.System.err;
 import static org.objectweb.asm.Opcodes.ACONST_NULL;
-import static org.objectweb.asm.Opcodes.GETSTATIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 import static org.objectweb.asm.Opcodes.NEW;
 
@@ -23,7 +22,7 @@ import arb.expressions.nodes.Vector;
 import arb.functions.Function;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.polynomials.ComplexHypergeometricPolynomial;
-import arb.functions.polynomials.RealHypergeometricPolynomial;
+import arb.functions.polynomials.RealPolynomialValuedHypergeometricFunction;
 import arb.functions.polynomials.quasi.QuasiPolynomial;
 import arb.functions.polynomials.quasi.complex.ComplexHypergeometricQuasiPolynomial;
 import arb.functions.polynomials.quasi.real.RealHypergeometricQuasiPolynomial;
@@ -110,15 +109,11 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     return this;
   }
 
-  public void loadStaticFieldOntoStack(MethodVisitor methodVisitor, String name, Class<?> fieldType)
-  {
-    methodVisitor.visitFieldInsn(GETSTATIC, Type.getInternalName(fieldType), name, fieldType.descriptorString());
-  }
-
   public void constructHypergeometricPolynomial(MethodVisitor mv, Class<?> scalarType, boolean quasi)
   {
     boolean isReal = Real.class.equals(scalarType);
-    hypergeometricClass = isReal ? (quasi ? RealHypergeometricQuasiPolynomial.class : RealHypergeometricPolynomial.class) : (quasi ? ComplexHypergeometricQuasiPolynomial.class : ComplexHypergeometricPolynomial.class);
+    
+    hypergeometricClass = isReal ? (quasi ? RealHypergeometricQuasiPolynomial.class : RealPolynomialValuedHypergeometricFunction.class) : (quasi ? ComplexHypergeometricQuasiPolynomial.class : ComplexHypergeometricPolynomial.class);
     mv.visitTypeInsn(NEW, Type.getInternalName(hypergeometricClass));
     duplicateTopOfTheStack(mv);
 
