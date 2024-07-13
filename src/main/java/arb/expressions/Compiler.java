@@ -316,7 +316,7 @@ public class Compiler
     typePrefixes.put(ComplexPolynomial.class, "Xℂ");
     typePrefixes.put(RealMatrix.class, "ℝᵐˣⁿ");
     typePrefixes.put(ComplexMatrix.class, "ℂᵐˣⁿ");
-    typePrefixes.put(RealQuasiPolynomial.class, "qXℝ");
+    typePrefixes.put(RealRationalFunction.class, "fℝ");
     typePrefixes.put(ComplexQuasiPolynomial.class, "qXℂ");
   }
 

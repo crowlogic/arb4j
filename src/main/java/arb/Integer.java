@@ -519,11 +519,14 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result.set(this).neg();
   }
 
-  @SuppressWarnings("resource")
-  public RealQuasiPolynomial neg(RealQuasiPolynomial res)
+  public RealRationalFunction neg(RealRationalFunction res)
   {
-    res.identity().p.set(this);
-    res.p.neg();
+    res.set(this);
+    res.value.neg();
+    if ( res.value.remainder != null )
+    {
+      res.value.remainder.neg();
+    }
     return res;
   }
 

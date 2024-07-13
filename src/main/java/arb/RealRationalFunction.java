@@ -414,4 +414,18 @@ public class RealRationalFunction implements
                           null,
                           null);
   }
+
+  public RealRationalFunction set(Real v)
+  {
+    value.set(v);
+    value.setRemainder(0);
+    return this;
+  }
+
+  public RealRationalFunction set(Integer integer)
+  {
+    value.set(integer);
+    value.setRemainder(0);
+    return this;
+  }
 }
