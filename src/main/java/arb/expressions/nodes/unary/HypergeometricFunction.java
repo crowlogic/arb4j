@@ -12,7 +12,7 @@ import org.objectweb.asm.Type;
 import arb.ComplexQuasiPolynomial;
 import arb.Real;
 import arb.RealPolynomial;
-import arb.RealQuasiPolynomial;
+import arb.RealRationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
@@ -80,13 +80,13 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     }
     Class<?> scalarType        = Compiler.scalarType(resultType);
 
-    boolean  isQuasiPolynomial = QuasiPolynomial.class.isAssignableFrom(resultType);
+    boolean  isRational = RealRationalFunction.class.isAssignableFrom(resultType);
     if (Expression.trace)
     {
-      err.printf("pFq.isQuasiPolynomial=%s\n", isQuasiPolynomial);
+      err.printf("pFq.isRational=%s\n", isRational);
     }
 
-    constructHypergeometricPolynomial(mv, scalarType, isQuasiPolynomial);
+    constructFiniteHypergeometricSeries(mv, scalarType, isRational);
     evaluateHypergeometricPolynomial(resultType, mv);
     return mv;
   }
@@ -109,11 +109,11 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     return this;
   }
 
-  public void constructHypergeometricPolynomial(MethodVisitor mv, Class<?> scalarType, boolean quasi)
+  public void constructFiniteHypergeometricSeries(MethodVisitor mv, Class<?> scalarType, boolean rational)
   {
     boolean isReal = Real.class.equals(scalarType);
-    
-    hypergeometricClass = isReal ? (quasi ? RealHypergeometricQuasiPolynomial.class : RealPolynomialValuedHypergeometricFunction.class) : (quasi ? ComplexHypergeometricQuasiPolynomial.class : ComplexHypergeometricPolynomial.class);
+
+    hypergeometricClass = isReal ? (rational ? RealRationalFunction.class : RealPolynomialValuedHypergeometricFunction.class) : (rational ? ComplexHypergeometricQuasiPolynomial.class : ComplexHypergeometricPolynomial.class);
     mv.visitTypeInsn(NEW, Type.getInternalName(hypergeometricClass));
     duplicateTopOfTheStack(mv);
 
@@ -121,7 +121,7 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     β.generate(scalarType, mv);
 
     mv.visitLdcInsn(arg.toString());
-    Class<?> nullaryFunctionClass = isReal ? (quasi ? RealQuasiPolynomial.class : RealPolynomialNullaryFunction.class) : (quasi ? ComplexQuasiPolynomial.class : ComplexPolynomialNullaryFunction.class);
+    Class<?> nullaryFunctionClass = isReal ? (rational ? RealRationalFunction.class : RealPolynomialNullaryFunction.class) : (rational ? ComplexQuasiPolynomial.class : ComplexPolynomialNullaryFunction.class);
     invokeStaticMethod(mv, nullaryFunctionClass, "parse", Expression.class, String.class);
     invokeConstructor(mv, hypergeometricClass, scalarType, scalarType, Expression.class);
   }
