@@ -95,6 +95,11 @@ public class RealRationalFunction implements
     return result;
   }
 
+  public RealRationalFunction identity()
+  {
+    return additiveIdentity();
+  }
+  
   @Override
   public RealRationalFunction additiveIdentity()
   {
