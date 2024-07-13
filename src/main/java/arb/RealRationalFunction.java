@@ -57,22 +57,9 @@ public class RealRationalFunction implements
   @Override
   public RealRationalFunction add(RealRationalFunction addend, int bits, RealRationalFunction result)
   {
-    if (value.remainder == null)
-    {
-      value.remainder = new RealPolynomial();
-    }
-    if (value.divisor == null)
-    {
-      value.divisor = new RealPolynomial().set(1);
-    }
-    if (addend.value.remainder == null)
-    {
-      addend.value.remainder = new RealPolynomial();
-    }
-    if (addend.value.divisor == null)
-    {
-      addend.value.divisor = new RealPolynomial().set(1);
-    }
+    prepare(value);
+    prepare(addend.value);
+
     Context        context         = new Context(this.value.setName("V1"),
                                                  addend.value.setName("V2"),
                                                  this.value.remainder.setName("R1"),
@@ -99,7 +86,7 @@ public class RealRationalFunction implements
   {
     return additiveIdentity();
   }
-  
+
   @Override
   public RealRationalFunction additiveIdentity()
   {
@@ -143,27 +130,13 @@ public class RealRationalFunction implements
     return null;
   }
 
-  @SuppressWarnings("resource")
   @Override
   public RealRationalFunction div(RealRationalFunction unit, int bits, RealRationalFunction result)
   {
     assert !unit.value.isZero() : "Division by zero";
-    if (value.remainder == null)
-    {
-      value.remainder = new RealPolynomial();
-    }
-    if (value.divisor == null)
-    {
-      value.divisor = new RealPolynomial().set(1);
-    }
-    if (unit.value.remainder == null)
-    {
-      unit.value.remainder = new RealPolynomial();
-    }
-    if (unit.value.divisor == null)
-    {
-      unit.value.divisor = new RealPolynomial().set(1);
-    }
+    prepare(value);
+    prepare(unit.value);
+
     Context        context         = new Context(this.value.setName("V1"),
                                                  unit.value.setName("V2"),
                                                  this.value.remainder.setName("R1"),
@@ -186,6 +159,18 @@ public class RealRationalFunction implements
     // System.out.format("divisor=%s\n", divisor);
     result.bits = bits;
     return result;
+  }
+
+  public static void prepare(RealPolynomial v)
+  {
+    if (v.remainder == null)
+    {
+      v.setRemainder(0);
+    }
+    if (v.divisor == null)
+    {
+      v.setDivisor(1);
+    }
   }
 
   @Override
@@ -239,22 +224,8 @@ public class RealRationalFunction implements
     // Resulting Value = V1(x)V2(x)
     // Resulting Remainder = V1(x)R2(x) + R1(x)V2(x)
     // Resulting Divisor = D1(x)D2(x)
-    if (value.remainder == null)
-    {
-      value.remainder = new RealPolynomial();
-    }
-    if (value.divisor == null)
-    {
-      value.divisor = new RealPolynomial().set(1);
-    }
-    if (operand.value.remainder == null)
-    {
-      operand.value.remainder = new RealPolynomial();
-    }
-    if (operand.value.divisor == null)
-    {
-      operand.value.divisor = new RealPolynomial().set(1);
-    }
+    prepare(value);
+    prepare(operand.value);
     Context        context         = new Context(this.value.setName("V1"),
                                                  operand.value.setName("V2"),
                                                  this.value.remainder.setName("R1"),
@@ -309,22 +280,9 @@ public class RealRationalFunction implements
   public RealRationalFunction sub(RealRationalFunction subtrahend, int bits, RealRationalFunction result)
   {
     assert bits > 0 : String.format("bits=%d must be >0", bits);
-    if (value.remainder == null)
-    {
-      value.remainder = new RealPolynomial();
-    }
-    if (value.divisor == null)
-    {
-      value.setDivisor(1);
-    }
-    if (subtrahend.value.remainder == null)
-    {
-      subtrahend.value.remainder = new RealPolynomial();
-    }
-    if (subtrahend.value.divisor == null)
-    {
-      subtrahend.value.setDivisor(1);
-    }
+    prepare(value);
+    prepare(subtrahend.value);
+
     Context        context         = new Context(this.value.setName("V1"),
                                                  subtrahend.value.setName("V2"),
                                                  this.value.remainder.setName("R1"),
