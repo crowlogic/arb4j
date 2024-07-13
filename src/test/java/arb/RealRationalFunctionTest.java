@@ -19,6 +19,18 @@ public class RealRationalFunctionTest
                                       TestCase
 {
 
+  public void testRealRationalJ0EigenfunctionSequence()
+  {
+    var expr = RealRationalFunction.parseSequence("Ψ", "n➔½*√(2*(4*n+1)/y)*(-1)ⁿ*J(2*n+½,y)");
+    System.out.println(expr.syntaxTextTree());
+    var                  f = expr.instantiate();
+    RealRationalFunction g = f.evaluate(0, 128);
+
+    System.out.format("f=%s\n", f);
+    System.out.format("g=%s\n", g);
+
+  }
+
   public void testHypergeometricRealRationalFunctionExpression()
   {
     int                  bits      = 128;
@@ -27,7 +39,7 @@ public class RealRationalFunctionTest
     assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
   }
 
-  public void testLommelRationalPolynomialSequence()
+  public void testLommelRationalFunctionSequence()
   {
     Real    v          = new Real().set(RealConstants.half).setName("v");
     Context context    = new Context(v);
