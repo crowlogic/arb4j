@@ -126,6 +126,12 @@ public class RealRationalFunction implements
     assert false : "TODO: Auto-generated method stub";
     return null;
   }
+  
+  public RealRationalFunction div(Integer dividend, int prec, RealRationalFunction result)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
 
   @Override
   public RealRationalFunction div(RealRationalFunction unit, int bits, RealRationalFunction result)
