@@ -73,7 +73,7 @@ public class TODO
     Scene scene = new Scene(layout,
                             800,
                             550);
-    scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+    //scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
 
     Platform.runLater(this::loadItems);
 

@@ -123,14 +123,20 @@ public class RealRationalFunction implements
   @Override
   public RealRationalFunction div(int j, int prec, RealRationalFunction result)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    try ( RealRationalFunction dividend = new RealRationalFunction())
+    {
+      div(dividend.set(j), prec, result);
+    }
+    return result;
   }
-  
-  public RealRationalFunction div(Integer dividend, int prec, RealRationalFunction result)
+
+  public RealRationalFunction div(Integer j, int prec, RealRationalFunction result)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    try ( RealRationalFunction dividend = new RealRationalFunction())
+    {
+      div(dividend.set(j), prec, result);
+    }
+    return result;
   }
 
   @Override
