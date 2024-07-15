@@ -36,6 +36,7 @@ public class RealRationalFunction implements
     return result;
   }
 
+
   public RealRationalFunction reduce(int prec)
   {
 
