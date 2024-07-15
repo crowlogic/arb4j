@@ -26,6 +26,16 @@ public class RealRationalFunction implements
                                   RealFunction
 {
 
+  public RealRationalFunction neg(int bits, RealRationalFunction result)
+  {
+    value.neg();
+    if (value.remainder != null)
+    {
+      value.remainder.neg();
+    }
+    return result;
+  }
+
   public RealRationalFunction reduce(int prec)
   {
 
