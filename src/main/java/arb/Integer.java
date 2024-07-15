@@ -35,6 +35,8 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     System.loadLibrary("arblib");
   }
 
+
+  
   public static Real factorial(Integer n, int bits, Real result)
   {
     arblib.arb_fac_ui(result, n.getUnsignedValue(), bits);

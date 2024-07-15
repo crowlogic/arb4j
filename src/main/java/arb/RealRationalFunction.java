@@ -260,6 +260,13 @@ public class RealRationalFunction implements
     return null;
   }
 
+
+  public RealRationalFunction mul(RealRationalFunction operand, int bits)
+  {
+    assert false : "TODO: implement, divide this=" + this + " by " + operand;
+    return null;
+  }
+  
   @Override
   public RealRationalFunction mul(RealRationalFunction operand, int bits, RealRationalFunction result)
   {
