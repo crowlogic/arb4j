@@ -467,13 +467,13 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
       return "∅";
     }
     StringBuilder builder = new StringBuilder();
-    for (int i = getLength()-1; i >= 0; i--)
+    for (int i = getLength() - 1; i >= 0; i--)
     {
       Real xi = get(i);
       xi.printPrecision = printPrecision;
-      if (!xi.isZero() || (xi.isZero() && getLength() == 1 ))
+      if (!xi.isZero() || (xi.isZero() && getLength() == 1))
       {
-        if (!builder.isEmpty() )
+        if (!builder.isEmpty())
         {
           builder.append(((xi.sign() >= 0) ? " + " : " "));
         }
@@ -483,7 +483,7 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
         }
         if (i > 0)
         {
-          if (!builder.toString().trim().isEmpty() && !xi.isOne() )
+          if (!builder.toString().trim().isEmpty() && !xi.isOne())
           {
             builder.append("*");
           }
@@ -495,8 +495,9 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
         }
       }
     }
-    String string = builder.toString() + (remainder != null ? " with remainder " + remainder : "");
-    if ( string.length() > 0 && string.charAt(0) == '-')
+    String string = builder.toString() + ((remainder != null && !remainder.isEmpty()) ? " with remainder "
+                  + (remainder + "/" + divisor) : "");
+    if (string.length() > 0 && string.charAt(0) == '-')
     {
       return "-" + string.substring(1).replaceAll("-", "- ").trim();
     }

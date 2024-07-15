@@ -143,7 +143,7 @@ public class RealRationalFunction implements
   {
     prepare(value);
 
-    try ( RealRationalFunction zero = new RealRationalFunction(); RealRationalFunction one = new RealRationalFunction() )
+    try ( RealPolynomial zero = new RealPolynomial(); RealPolynomial one = new RealPolynomial() )
     {
       one.set(1);
       Context        context         = new Context(this.value.setName("V1"),

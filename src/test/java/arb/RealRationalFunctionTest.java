@@ -1,5 +1,7 @@
 package arb;
 
+import static java.lang.System.out;
+
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -266,6 +268,7 @@ public class RealRationalFunctionTest
       RealRationalFunction xSquared = new RealRationalFunction();
       x.pow(two, 128, xSquared);
 
+      out.println("x^2=" + xSquared );
       RealPolynomial shouldBe = new RealPolynomial(2);
       shouldBe.set(2, 1);
       assertEquals(shouldBe, xSquared.value);
