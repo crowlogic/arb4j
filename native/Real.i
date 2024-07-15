@@ -384,7 +384,8 @@ import arb.utensils.Utensils;
    */
   public RealRationalFunction ascendingFactorial(Integer power, int bits, RealRationalFunction result)
   {
-    assert false : "TODO: implement ascending factorial of this=" + this + " to the power of " + power;
+    result.set(0);
+    ascendingFactorial( power, bits, result.value.get(0) );
     return result;
   }
   
