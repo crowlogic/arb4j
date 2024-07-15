@@ -1558,7 +1558,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @return this
    * @throws CompilerException
    */
-  public Expression<D, C, F> parseRoot()
+  @SuppressWarnings("unchecked")
+  public <E extends Expression<D, C, F>> E parseRoot()
   {
     assert rootNode == null : "parse must only be called before anything else has been parsed but rootNode="
                   + rootNode;
@@ -1579,7 +1580,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         throwNewUnexpectedCharacterException();
       }
     }
-    return this;
+    return (E) this;
   }
 
   public Node<D, C, F> parseSuperscript(Node<D, C, F> node, char superscript, String digit)
@@ -1825,13 +1826,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Expression<D, C, F>
+  @SuppressWarnings("unchecked")
+  public <E, S, G extends Function<? extends E, ? extends S>, X extends Expression<D, C, F>>
+         X
          substitute(String variableToChange, Expression<E, S, G> substitution)
   {
     if (variableToChange.equals(substitution.toString()))
     {
-      return this;
+      return (X) this;
     }
 
     if (context == null)
@@ -1860,7 +1862,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     updateStringRepresentation();
 
-    return this;
+    return (X) this;
   }
 
   public TextTree<Node<D, C, F>> syntaxTextTree()

@@ -7,6 +7,7 @@ import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
+import arb.expressions.RealRationalNullaryExpression;
 import arb.functions.Function;
 import arb.functions.NullaryFunction;
 
@@ -42,17 +43,17 @@ public interface RealRationalNullaryFunction extends NullaryFunction<RealRationa
     return express(null, expression, null);
   }
 
-  public static Expression<Object, RealRationalFunction, RealRationalNullaryFunction>
-         parse(String functionName, String expression, Context context)
+  public static RealRationalNullaryExpression parse(String functionName, String expression, Context context)
   {
-    return Function.parse(functionName != null ? functionName : Parser.expressionToUniqueClassname(expression),
-                          expression,
-                          context,
-                          Object.class,
-                          RealRationalFunction.class,
-                          RealRationalNullaryFunction.class,
-                          functionName,
-                          null);
+    RealRationalNullaryExpression expr = new RealRationalNullaryExpression(functionName != null ? functionName : Parser.expressionToUniqueClassname(expression),
+                  Object.class,
+                  RealRationalFunction.class,
+                  RealRationalNullaryFunction.class,
+                  expression,
+                  context,
+                  functionName,
+                  null);
+    return expr.parseRoot();
   }
 
   public static Expression<Object, RealRationalFunction, RealRationalNullaryFunction>

@@ -11,18 +11,18 @@ import java.util.function.Predicate;
 
 import arb.Integer;
 import arb.Real;
-import arb.RealQuasiPolynomial;
+import arb.RealRationalFunction;
 import arb.Verifiable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ArbException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.functions.real.RealQuasiPolynomialNullaryFunction;
+import arb.expressions.RealRationalNullaryExpression;
+import arb.functions.real.RealRationalNullaryFunction;
 
 /**
- * Represents a hypergeometric polynomial, defined by a finite hypergeometric
- * series as <br>
+ * Represents a finite hypergeometric series as <br>
  * <br>
  * pFq:Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N} <br>
  * <br>
@@ -30,7 +30,8 @@ import arb.functions.real.RealQuasiPolynomialNullaryFunction;
  * This class encapsulates the computation and representation of hypergeometric
  * polynomials, which are derived from the general hypergeometric series when
  * the existence of a negative integer in the numerator leads to its completion
- * after a finite number of terms.
+ * after a finite number of terms in the sense that all of the terms after a
+ * certain index are equal to 0.
  * <p>
  * A hypergeometric series is finite and simplifies into a polynomial when at
  * least one of its upper parameters (α) is a negative integer. This condition
@@ -57,40 +58,40 @@ import arb.functions.real.RealQuasiPolynomialNullaryFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealHypergeometricQuasiPolynomial implements RealQuasiPolynomialNullaryFunction, Verifiable
+public class RealRationalHypergeometricFunction implements RealRationalNullaryFunction, Verifiable
 {
 
-  public static final String                                                         pFq                      = "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}";
+  public static final String                  pFq                      = "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}";
 
-  public final Context                                                               context;
+  public final Context                        context;
 
-  private RealQuasiPolynomialNullaryFunction                                         f;
+  private RealRationalNullaryFunction         f;
 
-  public Expression<Object, RealQuasiPolynomial, RealQuasiPolynomialNullaryFunction> F;
+  public RealRationalNullaryExpression        F;
 
-  boolean                                                                            initialized              = false;
+  boolean                                     initialized              = false;
 
-  private Integer                                                                    N;
+  private Integer                             N;
 
-  public final Integer                                                               p, q;
+  public final Integer                        p, q;
 
-  public final Real                                                                  α, β;
+  public final Real                           α, β;
 
-  public static final Predicate<? super Real>                                        negativeIntegerPredicate = z -> Real.isNegativeInteger.test(z)
+  public static final Predicate<? super Real> negativeIntegerPredicate = z -> Real.isNegativeInteger.test(z)
                 || z.isZero();
 
-  public RealHypergeometricQuasiPolynomial(int p,
-                                           int q,
-                                           Expression<Object, RealQuasiPolynomial, RealQuasiPolynomialNullaryFunction> arg)
+  public RealRationalHypergeometricFunction(int p,
+                                            int q,
+                                            Expression<Object, RealRationalFunction, RealRationalNullaryFunction> arg)
   {
     this(Real.newVector(p),
          Real.newVector(q),
          arg);
   }
 
-  public RealHypergeometricQuasiPolynomial(Real α,
-                                           Real β,
-                                           Expression<Object, RealQuasiPolynomial, RealQuasiPolynomialNullaryFunction> arg)
+  public RealRationalHypergeometricFunction(Real α,
+                                            Real β,
+                                            Expression<Object, RealRationalFunction, RealRationalNullaryFunction> arg)
   {
     this.α  = α;
     this.β  = β;
@@ -103,8 +104,7 @@ public class RealHypergeometricQuasiPolynomial implements RealQuasiPolynomialNul
 
     context.registerVariable("N", N = new Integer());
 
-    F = RealQuasiPolynomialNullaryFunction.parse("F", RealHypergeometricQuasiPolynomial.pFq, context)
-                                          .substitute("z", arg);
+    F = RealRationalNullaryFunction.parse("F", RealRationalHypergeometricFunction.pFq, context).substitute("z", arg);
   }
 
   @Override
@@ -130,7 +130,7 @@ public class RealHypergeometricQuasiPolynomial implements RealQuasiPolynomialNul
   }
 
   @Override
-  public RealQuasiPolynomial evaluate(Object nullary, int order, int bits, RealQuasiPolynomial res)
+  public RealRationalFunction evaluate(Object nullary, int order, int bits, RealRationalFunction res)
   {
     if (!initialized)
     {

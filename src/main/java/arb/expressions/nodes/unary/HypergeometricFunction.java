@@ -24,6 +24,7 @@ import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.polynomials.ComplexHypergeometricPolynomial;
 import arb.functions.polynomials.RealPolynomialValuedHypergeometricFunction;
 import arb.functions.polynomials.quasi.complex.ComplexHypergeometricQuasiPolynomial;
+import arb.functions.polynomials.quasi.real.RealRationalHypergeometricFunction;
 import arb.functions.real.RealPolynomialNullaryFunction;
 
 /**
@@ -111,7 +112,7 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
   {
     boolean isReal = Real.class.equals(scalarType);
 
-    hypergeometricClass = isReal ? (rational ? RealRationalFunction.class : RealPolynomialValuedHypergeometricFunction.class) : (rational ? ComplexHypergeometricQuasiPolynomial.class : ComplexHypergeometricPolynomial.class);
+    hypergeometricClass = isReal ? (rational ? RealRationalHypergeometricFunction.class : RealPolynomialValuedHypergeometricFunction.class) : (rational ? ComplexHypergeometricQuasiPolynomial.class : ComplexHypergeometricPolynomial.class);
     mv.visitTypeInsn(NEW, Type.getInternalName(hypergeometricClass));
     duplicateTopOfTheStack(mv);
 
