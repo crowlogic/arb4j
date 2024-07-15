@@ -31,7 +31,8 @@ import arb.functions.real.RealFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealBesselPolynomials extends
+public class RealBesselPolynomials
+                                   extends
                                    RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence implements
                                    Concept
 {
@@ -41,14 +42,12 @@ public class RealBesselPolynomials extends
           "2*n+1",
           "0",
           "-1");
-    p1.set(1)
-      .shiftLeft(1)
-      .add(1);
+    p1.set(0, 1);
+    p1.set(1, 1);
   }
 
   @Override
-  public Domain<Real>
-         domainOfOrthogonality()
+  public Domain<Real> domainOfOrthogonality()
   {
     assert false : "TODO: orthogonality measures on the real line are quite complicated";
     return null;
@@ -58,16 +57,14 @@ public class RealBesselPolynomials extends
    * 
    */
   @Override
-  public RealFunction
-         orthogonalityMeasure()
+  public RealFunction orthogonalityMeasure()
   {
     assert false : "TODO: orthogonality measures on the real line are quite complicated";
     return null;
   }
 
   @Override
-  public Stream<? extends Reference>
-         getReferences()
+  public Stream<? extends Reference> getReferences()
   {
     return Stream.of(Bibliography.lommelAndBesselPolynomials);
   }

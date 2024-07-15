@@ -384,9 +384,11 @@ import arb.utensils.Utensils;
    */
   public RealRationalFunction ascendingFactorial(Integer power, int bits, RealRationalFunction result)
   {
-    result.set(0);
-    ascendingFactorial( power, bits, result.value.get(0) );
-    return result;
+    try ( Real tmp = new Real())
+    {
+      ascendingFactorial(power, bits, tmp);
+      return result.set(tmp);
+    }
   }
   
   /**

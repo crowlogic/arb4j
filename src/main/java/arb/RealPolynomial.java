@@ -125,7 +125,7 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
   }
 
   
-  public RealPolynomial add(int i, int bits2)
+  public RealPolynomial add(int i, int bits)
   {
     return add(i, bits, this);
   }
@@ -195,10 +195,8 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
         
   public RealPolynomial add(int a, int bits, RealPolynomial res)
   {
-    res.set(this);
-    res.getCoeffs().get(0).add(a, bits);
-    res.bits = bits;
-    return res;
+    res.set(a);
+    return add( res, bits, res );
   }  
   
   public int bits;
