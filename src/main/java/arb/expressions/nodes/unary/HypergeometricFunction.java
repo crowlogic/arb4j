@@ -24,8 +24,8 @@ import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.polynomials.ComplexHypergeometricPolynomial;
 import arb.functions.polynomials.RealPolynomialValuedHypergeometricFunction;
 import arb.functions.polynomials.quasi.complex.ComplexHypergeometricQuasiPolynomial;
-import arb.functions.polynomials.quasi.real.RealRationalHypergeometricFunction;
 import arb.functions.real.RealPolynomialNullaryFunction;
+import arb.functions.real.RealRationalHypergeometricFunction;
 
 /**
  * The numerator α and the denominator β parameters cab ve specified via the
