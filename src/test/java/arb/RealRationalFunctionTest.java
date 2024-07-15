@@ -254,6 +254,26 @@ public class RealRationalFunctionTest
     }
   }
 
+  public void testPow()
+  {
+    try ( RealRationalFunction x = new RealRationalFunction())
+    {
+      x.value.set(1).shiftLeft(1);
+
+      Integer two = new Integer();
+      two.set(2);
+
+      RealRationalFunction xSquared = new RealRationalFunction();
+      x.pow(two, 128, xSquared);
+
+      RealPolynomial shouldBe = new RealPolynomial(2);
+      shouldBe.set(2, 1);
+      assertEquals(shouldBe, xSquared.value);
+      assertEquals(xSquared.value.divisor, RealPolynomialConstants.one);
+      assertTrue(xSquared.value.remainder.isZero());
+    }
+  }
+
   public void testMulWithRemainderOnLHS()
   {
     try ( RealRationalFunction x = new RealRationalFunction())
