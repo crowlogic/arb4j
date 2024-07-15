@@ -764,6 +764,20 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
     arblib.arb_poly_init(this);
     return this;
   }
+  
+  public RealPolynomial prepare()
+  {
+    if (remainder == null)
+    {
+      setRemainder(0);
+    }
+    if (divisor == null)
+    {
+      setDivisor(1);
+    }
+    return this;
+  }
+  
 
   public RealPolynomial set(RealPolynomial a)
   {
@@ -775,6 +789,7 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
     }
     return this;
   }
+
 
 
   /**

@@ -156,11 +156,10 @@ import arb.utensils.Utensils;
 
   static { System.loadLibrary( "arblib" ); }
 
-  public RealQuasiPolynomial mul(RealQuasiPolynomial a, int bits, RealQuasiPolynomial result)
+  public RealRationalFunction mul(RealRationalFunction a, int bits, RealRationalFunction result)
   {
     return a.mul(this, bits, result);
   }
-
 
   /**
    * 
@@ -391,12 +390,6 @@ import arb.utensils.Utensils;
     return result; 
   }
 
-  public RealQuasiPolynomial ascendingFactorial(Integer n, int bits, RealQuasiPolynomial result)
-  {
-    result.identity();
-    ascendingFactorial(n, bits, result.p);
-    return result;
-  }
   
   public RealPolynomial ascendingFactorial(Integer n, int bits, RealPolynomial result)
   {
@@ -469,7 +462,7 @@ import arb.utensils.Utensils;
     return new Real(string,bits);
   }
 
-  public RealQuasiPolynomial sub(RealQuasiPolynomial operand, int bits, RealQuasiPolynomial result)
+  public RealRationalFunction sub(RealRationalFunction operand, int bits, RealRationalFunction result)
   {
     return result.set(this).sub(operand,bits,result);
   }

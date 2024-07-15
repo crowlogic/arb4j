@@ -737,6 +737,20 @@ import arb.utensils.Utensils;
     arblib.arb_poly_init(this);
     return this;
   }
+  
+  public RealPolynomial prepare()
+  {
+    if (remainder == null)
+    {
+      setRemainder(0);
+    }
+    if (divisor == null)
+    {
+      setDivisor(1);
+    }
+    return this;
+  }
+  
 
   public RealPolynomial set(RealPolynomial a)
   {
@@ -748,6 +762,7 @@ import arb.utensils.Utensils;
     }
     return this;
   }
+
 
 
   /**

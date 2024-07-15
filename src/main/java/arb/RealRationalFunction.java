@@ -56,8 +56,8 @@ public class RealRationalFunction implements
   @Override
   public RealRationalFunction add(RealRationalFunction addend, int bits, RealRationalFunction result)
   {
-    prepare(value);
-    prepare(addend.value);
+    value.prepare();
+    addend.value.prepare();
 
     Context        context         = new Context(this.value.setName("V1"),
                                                  addend.value.setName("V2"),
@@ -141,9 +141,9 @@ public class RealRationalFunction implements
 
   public RealRationalFunction pow(Integer exponent, int prec, RealRationalFunction result)
   {
-    prepare(value);
+    value.prepare();
 
-    try ( RealPolynomial zero = new RealPolynomial(); RealPolynomial one = new RealPolynomial() )
+    try ( RealPolynomial zero = new RealPolynomial(); RealPolynomial one = new RealPolynomial())
     {
       one.set(1);
       Context        context         = new Context(this.value.setName("V1"),
@@ -173,8 +173,8 @@ public class RealRationalFunction implements
   public RealRationalFunction div(RealRationalFunction unit, int bits, RealRationalFunction result)
   {
     assert !unit.value.isZero() : "Division by zero";
-    prepare(value);
-    prepare(unit.value);
+    value.prepare();
+    unit.value.prepare();
 
     Context        context         = new Context(this.value.setName("V1"),
                                                  unit.value.setName("V2"),
@@ -196,18 +196,6 @@ public class RealRationalFunction implements
     // System.out.format("divisor=%s\n", divisor);
     result.bits = bits;
     return result;
-  }
-
-  public static void prepare(RealPolynomial v)
-  {
-    if (v.remainder == null)
-    {
-      v.setRemainder(0);
-    }
-    if (v.divisor == null)
-    {
-      v.setDivisor(1);
-    }
   }
 
   @Override
@@ -235,6 +223,17 @@ public class RealRationalFunction implements
     return name;
   }
 
+  public RealRationalFunction mul(Real x, int prec, RealRationalFunction result)
+  {
+    result.set(this);
+    result.value.mul(x, prec);
+    if (result.value.remainder != null)
+    {
+      result.value.mul(x, prec);
+    }
+    return result;
+  }
+
   /**
    * <pre>
    * Multiplication:
@@ -260,8 +259,8 @@ public class RealRationalFunction implements
     // Resulting Value = V1(x)V2(x)
     // Resulting Remainder = V1(x)R2(x) + R1(x)V2(x)
     // Resulting Divisor = D1(x)D2(x)
-    prepare(value);
-    prepare(operand.value);
+    value.prepare();
+    operand.value.prepare();
     Context        context         = new Context(this.value.setName("V1"),
                                                  operand.value.setName("V2"),
                                                  this.value.remainder.setName("R1"),
@@ -298,7 +297,8 @@ public class RealRationalFunction implements
   @Override
   public RealRationalFunction set(RealRationalFunction val)
   {
-    this.value = val.value;
+    value.prepare();
+    this.value.set(val.value);
     return this;
   }
 
@@ -314,8 +314,8 @@ public class RealRationalFunction implements
   public RealRationalFunction sub(RealRationalFunction subtrahend, int bits, RealRationalFunction result)
   {
     assert bits > 0 : String.format("bits=%d must be >0", bits);
-    prepare(value);
-    prepare(subtrahend.value);
+    value.prepare();
+    subtrahend.value.prepare();
 
     Context        context         = new Context(this.value.setName("V1"),
                                                  subtrahend.value.setName("V2"),
