@@ -14,8 +14,8 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
+import arb.Complex;
 import arb.Integer;
-import arb.Polynomial;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -28,7 +28,6 @@ import arb.expressions.VariableReference;
 import arb.expressions.Variables;
 import arb.expressions.nodes.nary.Product;
 import arb.functions.Function;
-import arb.functions.polynomials.quasi.QuasiPolynomial;
 
 /**
  * This class represents a {@link Variable} node within an {@link Expression} by
@@ -561,7 +560,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public boolean isScalar()
   {
-    return !type().isAssignableFrom(Polynomial.class) && !type().isAssignableFrom(QuasiPolynomial.class);
+    return type().equals(Real.class) || type().equals(Complex.class);
   }
 
   @Override
