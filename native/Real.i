@@ -382,6 +382,20 @@ import arb.utensils.Utensils;
    * @param result
    * @return
    */
+  public RealRationalFunction ascendingFactorial(Integer power, int bits, RealRationalFunction result)
+  {
+    assert false : "TODO: implement ascending factorial of this=" + this + " to the power of " + power;
+    return result;
+  }
+  
+  /**
+   * Calculate the ascending factorial this_(power)
+   * 
+   * @param power
+   * @param bits
+   * @param result
+   * @return
+   */
   public Real ascendingFactorial(Real power, int bits, Real result)
   {
     assert result != null : "result shan't be null, but it is";
