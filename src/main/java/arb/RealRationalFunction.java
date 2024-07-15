@@ -130,6 +130,8 @@ public class RealRationalFunction implements
     return result;
   }
 
+
+
   public RealRationalFunction div(Integer j, int prec, RealRationalFunction result)
   {
     try ( RealRationalFunction dividend = new RealRationalFunction())
@@ -139,6 +141,32 @@ public class RealRationalFunction implements
     return result;
   }
 
+  public RealRationalFunction pow(Integer exponent, int prec, RealRationalFunction result)
+  {
+    prepare(value);
+
+    Context        context         = new Context(this.value.setName("V1"),
+                                                 exponent.setName("V2"),
+                                                 this.value.remainder.setName("R1"),
+                                                 exponent.remainder.setName("R2"),
+                                                 this.value.divisor.setName("D1"),
+                                                 exponent.divisor.setName("D2"));
+
+    RealPolynomial resultValue     = result.value != null ? result.value : (result.value = new RealPolynomial());
+    RealPolynomial resultRemainder = resultValue.remainder != null ? resultValue.remainder : (resultValue.remainder = new RealPolynomial());
+    RealPolynomial resultDivisor   = resultValue.divisor != null ? resultValue.divisor : (resultValue.divisor = new RealPolynomial());
+
+    RealPolynomialNullaryFunction.express("(V1*D2)/(V2*D1)", context).evaluate(bits, resultValue);
+
+    RealPolynomialNullaryFunction.express("(R1*D2-R2*V1)/(V2*D1)", context).evaluate(bits, resultRemainder);
+
+    RealPolynomialNullaryFunction.express("D1*D2", context).evaluate(bits, resultDivisor);
+
+    // System.out.format("divisor=%s\n", divisor);
+    result.bits = bits;
+    return result;
+  }
+  
   @Override
   public RealRationalFunction div(RealRationalFunction unit, int bits, RealRationalFunction result)
   {

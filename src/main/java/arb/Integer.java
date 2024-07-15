@@ -55,9 +55,9 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
 
   public RealQuasiPolynomial mul(RealQuasiPolynomial operand, int prec, RealQuasiPolynomial result)
   {
-     return result.set(this).mul(operand, prec);
+    return result.set(this).mul(operand, prec);
   }
-  
+
   public static Integer factorial(long n, Integer result)
   {
     arblib.fmpz_fac_ui(result.swigCPtr, n);
@@ -82,6 +82,8 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   public boolean        swigCMemOwn = true;
 
   public long           swigCPtr;
+
+  public Integer        divisor;
 
   public Integer()
   {
@@ -111,7 +113,6 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     init();
     set(string);
   }
-
 
   public Integer add(int i)
   {
@@ -148,11 +149,10 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result;
   }
 
-  public RealQuasiPolynomial add(Real addend, int bits, RealQuasiPolynomial result )
+  public RealQuasiPolynomial add(Real addend, int bits, RealQuasiPolynomial result)
   {
     return result.identity().set(this).add(addend, bits, result);
   }
-  
 
   public Integer additiveIdentity()
   {
@@ -187,11 +187,19 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   {
     if (elements != null && dim > 1)
     {
-      Arrays.stream(elements).forEach(Integer::delete);
+      Arrays.stream(elements).forEach(Integer::close);
     }
     else
     {
       delete();
+      if (remainder != null)
+      {
+        remainder.close();
+      }
+      if (divisor != null)
+      {
+        divisor.close();
+      }
     }
   }
 
@@ -241,11 +249,19 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   /**
    * Division, rounded to integer
    * 
-   * TODO: add version for this{@link #remainder}
    */
   @Override
   public Integer div(Integer operand, int prec, Integer result)
   {
+    if (result.remainder != null)
+    {
+      result.remainder = new Integer();
+    }
+    if (result.divisor != null)
+    {
+      result.divisor = operand;
+    }
+    arblib.fmpz_mod(result.remainder.swigCPtr, this.swigCPtr, operand.swigCPtr);
     arblib.fmpz_divexact(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
   }
@@ -297,7 +313,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   {
     return res.set(this).div(q, bits);
   }
-  
+
   @Override
   public boolean equals(Object obj)
   {
@@ -496,8 +512,6 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return set(1);
   }
 
-
-  
   public Integer neg()
   {
     return neg(this);
@@ -523,7 +537,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   {
     res.set(this);
     res.value.neg();
-    if ( res.value.remainder != null )
+    if (res.value.remainder != null)
     {
       res.value.remainder.neg();
     }
@@ -546,7 +560,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     assert false : "TODO";
     return null;
   }
-  
+
   public Integer risingFactorial(Integer n, int bits, Integer result)
   {
     assert n.getSignedValue() >= 0 : String.format("power=%d must be non-negative where this=%d",
@@ -717,7 +731,5 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   {
     return result.set(this).Γ(bits);
   }
-
-
 
 }

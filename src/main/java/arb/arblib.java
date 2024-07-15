@@ -365,6 +365,10 @@ public class arblib {
     arblibJNI.fmpz_divexact(f, g, h);
   }
 
+  public static void fmpz_mod(long f, long g, long h) {
+    arblibJNI.fmpz_mod(f, g, h);
+  }
+
   public static void fmpz_add(long f, long g, long h) {
     arblibJNI.fmpz_add(f, g, h);
   }

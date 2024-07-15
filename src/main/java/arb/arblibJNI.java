@@ -98,6 +98,7 @@ public class arblibJNI {
   public final static native void arb_mul_fmpz(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
   public final static native void arb_sub_fmpz(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
   public final static native void fmpz_divexact(long jarg1, long jarg2, long jarg3);
+  public final static native void fmpz_mod(long jarg1, long jarg2, long jarg3);
   public final static native void fmpz_add(long jarg1, long jarg2, long jarg3);
   public final static native void fmpz_sub(long jarg1, long jarg2, long jarg3);
   public final static native void arb_pow_fmpz(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
