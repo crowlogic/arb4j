@@ -55,6 +55,11 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result;
   }
 
+  public RealRationalFunction div(RealRationalFunction operand, int prec, RealRationalFunction result)
+  {
+    return result.set(this).div(operand, prec);
+  }
+  
   public RealRationalFunction mul(RealRationalFunction operand, int prec, RealRationalFunction result)
   {
     return result.set(this).mul(operand, prec);

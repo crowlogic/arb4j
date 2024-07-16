@@ -62,19 +62,18 @@ public class RealRationalFunctionTest
 
   public void testLommelRationalFunctionSequence()
   {
-    Real    v          = new Real().set(RealConstants.half).setName("v");
-    Context context    = new Context(v);
-    var     expression = RealRationalFunction.parseSequence("R",
-                                                            "n->pFq([½-n/2,-n/2],[v,-n,1-v-n],-(z²))",
-                                                            context);
-    Sequence<RealRationalFunction> f  = expression.instantiate();
-    RealRationalFunction           f0 = f.evaluate(3, 128);
+    Real                           v          = new Real().set(RealConstants.half).setName("v");
+    Context                        context    = new Context(v);
+    var                            expression = RealRationalFunction.parseSequence("R",
+                                                                                   "n->v₍ₙ₎/(z/2)ⁿ*pFq([½-n/2,-n/2],[v,-n,1-v-n],-(z²))",
+                                                                                   context);
+    Sequence<RealRationalFunction> f          = expression.instantiate();
+    RealRationalFunction           f0         = f.evaluate(3, 128);
     System.out.println("f0=" + f0);
     double fzero = f0.eval(2.3);
     System.out.println("f(2.3)=" + fzero);
-    assertEquals( -1.3758527163639352346, fzero );
+    assertEquals(-1.3758527163639352346, fzero);
   }
-
 
   public void testReduce()
   {
@@ -275,6 +274,22 @@ public class RealRationalFunctionTest
     }
   }
 
+  public void testPow2()
+  {
+    var     expression = RealRationalNullaryFunction.express("W",
+                                                            "n->(1/2-2/x)*(1/2-2/x)",null);
+  //  System.out.println("f0=" + f0);
+   // double fzero = f0.eval(2.3);
+    //assertEquals( 1.2328429358099782, fzero );
+  //  System.out.println("f(2.3)=" + fzero);
+    
+   // ½-(2/x)    
+    System.out.println("expression=" + expression );
+    RealRationalFunction eval = expression.evaluate(128);
+    System.out.println("x="+eval);
+    assertEquals("(x^2-8x+16)/(4*x^2)",eval.value );
+  }
+
   public void testPow()
   {
     try ( RealRationalFunction x = new RealRationalFunction())
@@ -320,24 +335,19 @@ public class RealRationalFunctionTest
     }
 
   }
-  
-  
-  
+
   public void testAscendingFactorial()
   {
-    Real    v          = new Real().set(RealConstants.half).setName("v");
-    Context context    = new Context(v);
-    var     expression = RealRationalFunction.parseSequence("W",
-                                                            "n->v₍ₙ₎/(z/2)ⁿ",
-                                                            context);
-    Sequence<RealRationalFunction> f  = expression.instantiate();
-    RealRationalFunction           f0 = f.evaluate(3, 128);
+    Real                           v          = new Real().set(RealConstants.half).setName("v");
+    Context                        context    = new Context(v);
+    var                            expression = RealRationalFunction.parseSequence("W", "n->v₍ₙ₎/(z/2)ⁿ", context);
+    Sequence<RealRationalFunction> f          = expression.instantiate();
+    RealRationalFunction           f0         = f.evaluate(3, 128);
     System.out.println("f0=" + f0);
     double fzero = f0.eval(2.3);
-    assertEquals( 1.2328429358099782, fzero );
+    assertEquals(1.2328429358099782, fzero);
     System.out.println("f(2.3)=" + fzero);
-   
-    
+
   }
 
 }

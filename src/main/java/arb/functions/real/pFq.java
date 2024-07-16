@@ -3,6 +3,7 @@ package arb.functions.real;
 import arb.Initializable;
 import arb.Integer;
 import arb.Real;
+import arb.RealConstants;
 import arb.RealRationalFunction;
 import arb.Typesettable;
 
@@ -21,6 +22,16 @@ public class pFq implements RealRationalNullaryFunction, Typesettable, AutoClose
   public Real    vℝ2 = new Real();
   public Real    vℝ1 = new Real();
 
+  public static void main(String[] args)
+  {
+    pFq r = new pFq();
+   // Larg arg = new Larg();
+    //var initialValue = arg.evaluate(128);
+    RealRationalFunction x = r.evaluate(3, 128, new RealRationalFunction() );
+ //   System.out.println("x=" + x);
+  //  System.out.format("initialValue=%s\n", initialValue);
+ //.out.println("f(2.3)=" + x.eval(2.3) );
+  }
   @Override
   public Class<RealRationalFunction> coDomainType()
   {
@@ -41,15 +52,15 @@ public class pFq implements RealRationalNullaryFunction, Typesettable, AutoClose
     Real[] denominator = new Real[]
     { ℝ3.set(cℤ1), ℝ4.set(cℤ4) };
 
-    var    arg         = RealRationalNullaryFunction.parse("½-(x/2)");
+    var    arg         = RealRationalNullaryFunction.parse("½-(2/x)");
 
     System.out.println("arg=" + arg);
 
     var                         f    = arg.instantiate();
     RealRationalNullaryFunction f2   = f;
     RealRationalFunction        val2 = f2.evaluate(128);
-    System.out.println("f=" + f);
-    System.out.println("f()=" + val2);
+    System.out.println("arg=" + f);
+    System.out.println("arg()=" + val2.value);
 
     
     try ( Real vNumer = vℝ1.set(numerator); Real vDenom = vℝ2.set(denominator);
