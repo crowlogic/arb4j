@@ -264,16 +264,15 @@ public class RealRationalFunction implements
 
   public RealRationalFunction mul(RealRationalFunction operand, int bits)
   {
-    assert false : "TODO: implement, multiply this=" + this + " by " + operand;
-    return null;
+    return mul(operand,bits,this);
   }
   
   @Override
   public RealRationalFunction mul(RealRationalFunction operand, int bits, RealRationalFunction result)
   {
-    if (value.remainder != null)
+    if (value.remainder != null && !value.remainder.isZero() )
     {
-      assert value.divisor != null : "remainder without divisor";
+      assert value.divisor != null : "remainder=" + value.remainder + " without divisor with value=" + value;
     }
     // Resulting Value = V1(x)V2(x)
     // Resulting Remainder = V1(x)R2(x) + R1(x)V2(x)
