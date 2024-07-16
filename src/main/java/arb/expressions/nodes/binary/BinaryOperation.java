@@ -231,6 +231,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     // be null, remaining=" + expression.remaining();
     if (left == null)
     {
+      assert false : "still need this?";
       Class<? extends Object> rhsType = scalarType(right.type());
       if (Integer.class.equals(rhsType) || Real.class.equals(rhsType) || Complex.class.equals(rhsType))
       {

@@ -22,10 +22,11 @@ import arb.expressions.nodes.Vector;
 import arb.functions.Function;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.polynomials.ComplexHypergeometricPolynomial;
-import arb.functions.polynomials.RealPolynomialValuedHypergeometricFunction;
+import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
 import arb.functions.polynomials.quasi.complex.ComplexHypergeometricQuasiPolynomial;
 import arb.functions.real.RealPolynomialNullaryFunction;
 import arb.functions.real.RealRationalHypergeometricFunction;
+import arb.functions.real.RealRationalNullaryFunction;
 
 /**
  * The numerator α and the denominator β parameters cab ve specified via the
@@ -112,7 +113,7 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
   {
     boolean isReal = Real.class.equals(scalarType);
 
-    hypergeometricClass = isReal ? (rational ? RealRationalHypergeometricFunction.class : RealPolynomialValuedHypergeometricFunction.class) : (rational ? ComplexHypergeometricQuasiPolynomial.class : ComplexHypergeometricPolynomial.class);
+    hypergeometricClass = isReal ? (rational ? RealRationalHypergeometricFunction.class : RealPolynomialHypergeometricFunction.class) : (rational ? ComplexHypergeometricQuasiPolynomial.class : ComplexHypergeometricPolynomial.class);
     mv.visitTypeInsn(NEW, Type.getInternalName(hypergeometricClass));
     duplicateTopOfTheStack(mv);
 
@@ -120,7 +121,7 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     β.generate(scalarType, mv);
 
     mv.visitLdcInsn(arg.toString());
-    Class<?> nullaryFunctionClass = isReal ? (rational ? RealRationalFunction.class : RealPolynomialNullaryFunction.class) : (rational ? ComplexQuasiPolynomial.class : ComplexPolynomialNullaryFunction.class);
+    Class<?> nullaryFunctionClass = isReal ? (rational ? RealRationalNullaryFunction.class : RealPolynomialNullaryFunction.class) : (rational ? ComplexQuasiPolynomial.class : ComplexPolynomialNullaryFunction.class);
     invokeStaticMethod(mv, nullaryFunctionClass, "parse", Expression.class, String.class);
     invokeConstructor(mv, hypergeometricClass, scalarType, scalarType, Expression.class);
   }

@@ -98,6 +98,7 @@ public class RealRationalFunction implements
   @Override
   public RealRationalFunction additiveIdentity()
   {
+    value.setRemainder(0);
     return set(0);
   }
 
@@ -263,7 +264,7 @@ public class RealRationalFunction implements
 
   public RealRationalFunction mul(RealRationalFunction operand, int bits)
   {
-    assert false : "TODO: implement, divide this=" + this + " by " + operand;
+    assert false : "TODO: implement, multiply this=" + this + " by " + operand;
     return null;
   }
   
@@ -303,8 +304,10 @@ public class RealRationalFunction implements
   @Override
   public RealRationalFunction multiplicativeIdentity()
   {
+    value.setRemainder(0);
     return set(1);
   }
+
 
   @Override
   public RealRationalFunction newFieldElement()

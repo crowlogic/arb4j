@@ -51,7 +51,7 @@ import arb.functions.real.RealPolynomialNullaryFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealPolynomialValuedHypergeometricFunction implements RealPolynomialNullaryFunction, Verifiable
+public class RealPolynomialHypergeometricFunction implements RealPolynomialNullaryFunction, Verifiable
 {
 
   public static final String                                               pFq         = "Σn➔zⁿ*∏k➔αₖ₍ₙ₎{k=1…p}/(n!*∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}";
@@ -70,7 +70,7 @@ public class RealPolynomialValuedHypergeometricFunction implements RealPolynomia
 
   public final Real                                                        α, β;
 
-  public RealPolynomialValuedHypergeometricFunction(int p,
+  public RealPolynomialHypergeometricFunction(int p,
                                                     int q,
                                                     Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> arg)
   {
@@ -79,7 +79,7 @@ public class RealPolynomialValuedHypergeometricFunction implements RealPolynomia
          arg);
   }
 
-  public RealPolynomialValuedHypergeometricFunction(Real α,
+  public RealPolynomialHypergeometricFunction(Real α,
                                                     Real β,
                                                     Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> arg)
   {
