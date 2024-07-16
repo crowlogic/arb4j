@@ -74,10 +74,7 @@ public class RealRationalFunctionTest
     System.out.println("f(2.3)=" + fzero);
   }
 
-  public void testAscendingFactorial()
-  {
-    assert false : "test that pochhammer(v, m)/(z/2)^m = 15/z^3";
-  }
+
   public void testReduce()
   {
     try ( RealRationalFunction f = new RealRationalFunction())
@@ -188,8 +185,7 @@ public class RealRationalFunctionTest
       shouldBe.set(1, 2);
       shouldBe.set(2, 1);
       assertEquals(shouldBe, xPlus1TimesXSquaredPlusX.value);
-      assertEquals(null, xPlus1TimesXSquaredPlusX.value.divisor);
-      assertEquals(null, xPlus1TimesXSquaredPlusX.value.remainder);
+      assertEquals(RealPolynomialConstants.empty, xPlus1TimesXSquaredPlusX.value.remainder);
 
     }
   }
@@ -322,6 +318,25 @@ public class RealRationalFunctionTest
       assertEquals(xCubed, xTimesXSquared.value);
     }
 
+  }
+  
+  
+  
+  public void testAscendingFactorial()
+  {
+    Real    v          = new Real().set(RealConstants.half).setName("v");
+    Context context    = new Context(v);
+    var     expression = RealRationalFunction.parseSequence("W",
+                                                            "n->v₍ₙ₎/(z/2)ⁿ",
+                                                            context);
+    Sequence<RealRationalFunction> f  = expression.instantiate();
+    RealRationalFunction           f0 = f.evaluate(3, 128);
+    System.out.println("f0=" + f0);
+    double fzero = f0.eval(2.3);
+    assertEquals( 1.2328429358099782, fzero );
+    System.out.println("f(2.3)=" + fzero);
+   
+    
   }
 
 }

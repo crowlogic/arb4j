@@ -789,17 +789,18 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
 
   public RealPolynomial set(RealPolynomial a)
   {
-    arblib.arb_poly_set(this, a);
-    if (coeffs != null)
+    if (a == null)
     {
-     coeffs.close();
-     coeffs = a.coeffs;
+      setLength(0);
+      return this;
     }
+    assert a != null;
+    assert a.swigCPtr != 0;
+    arblib.arb_poly_set(this, a);
+
     return this;
   }
-
-
-
+  
   /**
    * Calls {@link arblib#arb_poly_init2(RealPolynomial, int)} which calls
    * {@link arblib#arb_poly_init(RealPolynomial)} then

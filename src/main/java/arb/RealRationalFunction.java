@@ -38,7 +38,7 @@ public class RealRationalFunction implements
 
   public RealRationalFunction reduce(int prec)
   {
-
+    
     try ( RealPolynomial quotient = new RealPolynomial())
     {
 
@@ -46,12 +46,7 @@ public class RealRationalFunction implements
 
       this.value.add(quotient, prec, this.value);
 
-      value.remainder = quotient.remainder;
-      if (value.remainder == null && value.divisor != null)
-      {
-        value.divisor.close();
-        value.divisor = null;
-      }
+      value.remainder.set(quotient.remainder);      
 
       return this;
     }
