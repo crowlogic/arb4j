@@ -43,18 +43,21 @@ public class pFq implements RealRationalNullaryFunction, Typesettable, AutoClose
 
     var    arg         = RealRationalNullaryFunction.parse("½-(x/2)");
 
-    System.out.println("arg=" + arg );
-    
-    var f = arg.instantiate();
-    RealRationalNullaryFunction f2 = f;
-    RealRationalFunction val2 = f2.evaluate(128);
+    System.out.println("arg=" + arg);
+
+    var                         f    = arg.instantiate();
+    RealRationalNullaryFunction f2   = f;
+    RealRationalFunction        val2 = f2.evaluate(128);
     System.out.println("f=" + f);
     System.out.println("f()=" + val2);
+
     
-    try ( var h = new RealRationalHypergeometricFunction(vℝ1.set(numerator),
-                                                         vℝ2.set(denominator),
+    try ( Real vNumer = vℝ1.set(numerator); Real vDenom = vℝ2.set(denominator);
+          var h = new RealRationalHypergeometricFunction(vNumer,
+                                                         vDenom,
                                                          arg))
     {
+      System.out.format("vNumer=%s\nvDenom=%s\n", vNumer, vDenom );
       return h.evaluate(null, 1, bits, result);
     }
   }
