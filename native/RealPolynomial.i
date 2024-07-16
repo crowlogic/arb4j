@@ -200,6 +200,7 @@ import arb.utensils.Utensils;
   @Override
   public RealPolynomial div(RealPolynomial divisor, int prec, RealPolynomial resultingQuotient)
   {
+   assert prec > 0;
     if ( this.isZero() )
     {
       return resultingQuotient.zero();
@@ -919,6 +920,9 @@ import arb.utensils.Utensils;
 
   public RealPolynomial pow(Integer in, int bits, RealPolynomial result)
   {
+    assert in.swigCPtr != 0;
+    assert result.swigCPtr != 0;
+    assert bits > 0;  
     arblib.arb_poly_pow_ui(result,this,in.getUnsignedValue(), bits);
     return result;
   }

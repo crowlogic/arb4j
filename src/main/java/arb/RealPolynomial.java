@@ -227,6 +227,7 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
   @Override
   public RealPolynomial div(RealPolynomial divisor, int prec, RealPolynomial resultingQuotient)
   {
+   assert prec > 0;
     if ( this.isZero() )
     {
       return resultingQuotient.zero();
@@ -780,7 +781,11 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
     }
     return this;
   }
-  
+
+  public boolean hasRemainder()
+  {
+    return remainder != null && !remainder.isZero();
+  }  
 
   public RealPolynomial set(RealPolynomial a)
   {
@@ -942,6 +947,9 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
 
   public RealPolynomial pow(Integer in, int bits, RealPolynomial result)
   {
+    assert in.swigCPtr != 0;
+    assert result.swigCPtr != 0;
+    assert bits > 0;  
     arblib.arb_poly_pow_ui(result,this,in.getUnsignedValue(), bits);
     return result;
   }
@@ -1009,11 +1017,6 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
 
   public RealPolynomial() {
     this(arblibJNI.new_RealPolynomial(), true);
-  }
-
-  public boolean hasRemainder()
-  {
-   return remainder != null && !remainder.isZero();
   }
 
 }

@@ -36,7 +36,6 @@ public class RealRationalFunction implements
     return result;
   }
 
-
   public RealRationalFunction reduce(int prec)
   {
 
@@ -64,6 +63,19 @@ public class RealRationalFunction implements
 
   public RealPolynomial value = new RealPolynomial();
 
+  public RealRationalFunction add(RealRationalFunction addend, int bits)
+  {
+    try ( RealRationalFunction tmp = new RealRationalFunction())
+    {
+      System.err.println("about to add: " + tmp);
+      System.err.flush();
+      add(addend, bits, tmp);
+      System.err.println("added: " + tmp);
+      this.set(tmp);
+      return this;
+    }
+  }
+
   @Override
   public RealRationalFunction add(RealRationalFunction addend, int bits, RealRationalFunction result)
   {
@@ -82,6 +94,7 @@ public class RealRationalFunction implements
     RealPolynomial resultDivisor   = resultValue.divisor != null ? resultValue.divisor : (resultValue.divisor = new RealPolynomial());
 
     RealPolynomialNullaryFunction.express("V1+V2", context).evaluate(bits, resultValue);
+
 
     RealPolynomialNullaryFunction.express("R1*D2+R2*D1", context).evaluate(bits, resultRemainder);
 
@@ -151,8 +164,9 @@ public class RealRationalFunction implements
     return result;
   }
 
-  public RealRationalFunction pow(Integer exponent, int prec, RealRationalFunction result)
+  public RealRationalFunction pow(Integer exponent, int bits, RealRationalFunction result)
   {
+    assert bits > 0;
     value.prepare();
 
     try ( RealPolynomial zero = new RealPolynomial(); RealPolynomial one = new RealPolynomial())
@@ -184,7 +198,7 @@ public class RealRationalFunction implements
   @Override
   public RealRationalFunction div(RealRationalFunction unit, int bits, RealRationalFunction result)
   {
-    if ( unit.value.isZero() && !unit.value.hasRemainder() )
+    if (unit.value.isZero() && !unit.value.hasRemainder())
     {
       assert value.isZero() : "Division by zero, remainder=" + unit.value.remainder + " this=" + this;
     }
@@ -264,16 +278,15 @@ public class RealRationalFunction implements
     return null;
   }
 
-
   public RealRationalFunction mul(RealRationalFunction operand, int bits)
   {
-    return mul(operand,bits,this);
+    return mul(operand, bits, this);
   }
-  
+
   @Override
   public RealRationalFunction mul(RealRationalFunction operand, int bits, RealRationalFunction result)
   {
-    if (value.remainder != null && !value.remainder.isZero() )
+    if (value.remainder != null && !value.remainder.isZero())
     {
       assert value.divisor != null : "remainder=" + value.remainder + " without divisor with value=" + value;
     }
@@ -309,7 +322,6 @@ public class RealRationalFunction implements
     value.setRemainder(0);
     return set(1);
   }
-
 
   @Override
   public RealRationalFunction newFieldElement()
