@@ -38,7 +38,8 @@ public class RealRationalFunctionTest
     int                  bits      = 128;
     var                  poly      = RealRationalNullaryFunction.express("x^(2)");
     RealRationalFunction expressed = poly.evaluate(bits, new RealRationalFunction());
-    assertEquals("x²", expressed.toString());
+    assertEquals("x²", expressed.value.toString());
+    assertFalse(expressed.value.hasRemainder());
   }
 
   public void testNegativePower()
