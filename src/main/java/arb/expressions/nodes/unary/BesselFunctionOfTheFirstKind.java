@@ -96,12 +96,6 @@ public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, 
 
   public void generateQuasiPolynomial(MethodVisitor mv, Class<?> resultType)
   {
-    if (!QuasiPolynomial.class.isAssignableFrom(resultType))
-    {
-      throw new CompilerException("The result type of " + expression
-                    + " must be a QuasiPolynomial because the Bessel functions of the first kind at half-integer orders are "
-                    + "not polynomials but rather rational functions or quasi-polynomials because they can not be represented by rational multiples of powers of the independent variable");
-    }
 
     assert false : "TODO: generate Bessel function of the first kind of order=" + order;
     

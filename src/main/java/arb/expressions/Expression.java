@@ -144,14 +144,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   private static final String                           ASSERTION_ERROR_METHOD_DESCRIPTOR = Compiler.getMethodDescriptor(Void.class,
                                                                                                                          Object.class);
 
-  public static final String                            VOID_METHOD_DESCRIPTOR            = Compiler.getMethodDescriptor(Void.class);
-
-  public static final Class<?>[]                        implementedInterfaces             = new Class[]
-  { Typesettable.class, AutoCloseable.class, Initializable.class };
-
   public static final String                            evaluationMethodDescriptor        = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
 
   public static boolean                                 ignoreTODO                        = true;
+
+  public static final Class<?>[]                        implementedInterfaces             = new Class[]
+  { Typesettable.class, AutoCloseable.class, Initializable.class };
 
   public static final String                            IS_INITIALIZED                    = "isInitialized";
 
@@ -163,11 +161,24 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public static boolean                                 trace                             = Boolean.valueOf(System.getProperty("arb4j.compiler.trace",
                                                                                                                                "false"));
 
+  public static final String                            VOID_METHOD_DESCRIPTOR            = Compiler.getMethodDescriptor(Void.class);
+
+  static
+  {
+    assert arb.functions.sequences.Sequence.class.equals(Sequence.class) : "you forgot to import arb.functions.sequences.Sequence or imported a class named sequence in another package";
+  }
+
   public Expression<?, ?, ?>                            ascendentExpression;
 
   public char                                           character                         = 0;
 
   public String                                         className;
+
+  public final String                                   coDomainClassDescriptor;
+
+  public final String                                   coDomainClassInternalName;
+
+  public final Class<? extends C>                       coDomainType;
 
   public Class<F>                                       compiledClass;
 
@@ -193,9 +204,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public final String                                   genericFunctionClassInternalName;
 
+  public boolean inAbsoluteValue = false;
+
   public Variable<D, C, F>                              independentVariable;
 
   public Variable<D, C, F>                              indeterminateVariable;
+
+  public LinkedList<Consumer<MethodVisitor>> initializers = new LinkedList<>();
 
   public F                                              instance;
 
@@ -210,12 +225,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public int                                            position                          = -1;
 
   public char                                           previousCharacter;
-
-  public final String                                   coDomainClassDescriptor;
-
-  public final String                                   coDomainClassInternalName;
-
-  public final Class<? extends C>                       coDomainType;
 
   public boolean                                        recursive                         = false;
 
@@ -246,11 +255,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
          context,
          null,
          null);
-  }
-
-  static
-  {
-    assert arb.functions.sequences.Sequence.class.equals(Sequence.class) : "you forgot to import arb.functions.sequences.Sequence or imported a class named sequence in another package";
   }
 
   public Expression(String className,
@@ -593,18 +597,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return resolvePostfixOperators(node);
   }
 
-  /**
-   * @return true if this{@link #character} any of
-   *         {@link Parser#isLatinGreekOrSpecial(char, boolean)},
-   *         {@link Parser#isAlphabeticalSuperscript(char)} or
-   *         {@link Parser#isAlphabeticalOrNumericSubscript(char)} are true
-   */
-  public boolean isIdentifier()
-  {
-    return isLatinGreekOrSpecial(character, false) || isAlphabeticalOrNumericSubscript(character)
-                  || isAlphabeticalSuperscript(character);
-  }
-
   public Node<D, C, F> evaluateIndex()
   {
     var index = evaluateSquareBracketedIndex();
@@ -782,30 +774,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return storeInstructions(classVisitor);
   }
 
-  /**
-   * TODO: See how this can be intetegrated with
-   * {@link ArbShellExecutionController} via
-   * 
-   * @param classVisitor
-   * @return
-   */
-  public Expression<D, C, F> storeInstructions(ClassVisitor classVisitor)
-  {
-    if (classVisitor instanceof TraceClassVisitor)
-    {
-      classVisitor = ((TraceClassVisitor) classVisitor).getDelegate();
-    }
-
-    instructionByteCodes = ((ClassWriter) classVisitor).toByteArray();
-
-    if (saveClasses)
-    {
-      File file = new File(className + ".class");
-      writeBytecodes(file);
-    }
-    return this;
-  }
-
   public MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor, String fieldName, Class<?> fieldType)
   {
     getFieldFromThis(methodVisitor, className, fieldName, fieldType);
@@ -863,6 +831,26 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitInsn(ATHROW);
     mv.visitLabel(alreadyInitializedLabel);
 
+  }
+
+  public ClassVisitor generateCoDomainTypeMethod(ClassVisitor classVisitor) throws CompilerException
+  {
+
+    MethodVisitor mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                                "coDomainType",
+                                                Compiler.getMethodDescriptor(Class.class),
+                                                getCoDomainTypeMethodSignature(),
+                                                null);
+
+    annotateWithOverride(mv);
+
+    mv.visitCode();
+    mv.visitLdcInsn(Type.getType(coDomainType));
+    mv.visitInsn(Opcodes.ARETURN);
+    mv.visitMaxs(1, 0);
+    mv.visitEnd();
+
+    return classVisitor;
   }
 
   public void generateConditionalInitializater(MethodVisitor mv)
@@ -1069,26 +1057,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return methodVisitor;
   }
 
-  public ClassVisitor generateCoDomainTypeMethod(ClassVisitor classVisitor) throws CompilerException
-  {
-
-    MethodVisitor mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                "coDomainType",
-                                                Compiler.getMethodDescriptor(Class.class),
-                                                getCoDomainTypeMethodSignature(),
-                                                null);
-
-    annotateWithOverride(mv);
-
-    mv.visitCode();
-    mv.visitLdcInsn(Type.getType(coDomainType));
-    mv.visitInsn(Opcodes.ARETURN);
-    mv.visitMaxs(1, 0);
-    mv.visitEnd();
-
-    return classVisitor;
-  }
-
   public MethodVisitor generateSelfReference(MethodVisitor mv)
   {
     loadThisOntoStack(mv);
@@ -1165,6 +1133,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     methodVisitor.visitEnd();
 
     return classVisitor;
+  }
+
+  public String getCoDomainTypeMethodSignature()
+  {
+    SignatureWriter sigWriter = new SignatureWriter();
+    sigWriter.visitParameterType();
+    sigWriter.visitReturnType();
+    sigWriter.visitClassType(Type.getInternalName(Class.class));
+    sigWriter.visitTypeArgument('=');
+    sigWriter.visitClassType(Type.getInternalName(coDomainType));
+    sigWriter.visitEnd();
+    sigWriter.visitEnd();
+    return sigWriter.toString();
   }
 
   public String getFunctionClassTypeSignature(Class<?> functionClass)
@@ -1269,17 +1250,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return prefix + counter.getAndIncrement();
   }
 
-  public String getCoDomainTypeMethodSignature()
+  public Variable<D, C, F> getReference(String reference)
   {
-    SignatureWriter sigWriter = new SignatureWriter();
-    sigWriter.visitParameterType();
-    sigWriter.visitReturnType();
-    sigWriter.visitClassType(Type.getInternalName(Class.class));
-    sigWriter.visitTypeArgument('=');
-    sigWriter.visitClassType(Type.getInternalName(coDomainType));
-    sigWriter.visitEnd();
-    sigWriter.visitEnd();
-    return sigWriter.toString();
+    return referencedVariables.get(reference);
   }
 
   public Class<?> getThisOrAnyAscendentExpressionsPolynomialCoDomain()
@@ -1304,6 +1277,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public <Q> Q getVariable(VariableReference<D, C, F> reference)
   {
     return context == null ? null : context.variables.get(reference.name);
+  }
+
+  public boolean hasScalarCodomain()
+  {
+    return coDomainType.equals(Real.class) || coDomainType.equals(Complex.class);
+  }
+
+  public String[] implementedInterfaces()
+  {
+    var ifaces = new ArrayList<>();
+    ifaces.add(genericFunctionClassInternalName);
+    for (var iface : implementedInterfaces)
+    {
+      ifaces.add(Type.getInternalName(iface));
+    }
+    return ifaces.toArray(new String[ifaces.size()]);
   }
 
   /**
@@ -1377,6 +1366,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return context != null && context.functions.map.containsKey("F");
   }
 
+  /**
+   * @return true if this{@link #character} any of
+   *         {@link Parser#isLatinGreekOrSpecial(char, boolean)},
+   *         {@link Parser#isAlphabeticalSuperscript(char)} or
+   *         {@link Parser#isAlphabeticalOrNumericSubscript(char)} are true
+   */
+  public boolean isIdentifier()
+  {
+    return isLatinGreekOrSpecial(character, false) || isAlphabeticalOrNumericSubscript(character)
+                  || isAlphabeticalSuperscript(character);
+  }
+
   public boolean isNullaryPolynomialFunction()
   {
     return (domainType.equals(Object.class)
@@ -1413,6 +1414,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     methodVisitor.visitFieldInsn(GETFIELD, className, indexFieldName, Integer.class.descriptorString());
     return methodVisitor;
+  }
+
+  public MethodVisitor loadThisFieldOntoStack(MethodVisitor mv, String name, Class<?> referenceType)
+  {
+    return loadFieldOntoStack(loadThisOntoStack(mv), name, referenceType);
   }
 
   public Node<D, C, F> multiplyAndDivide(Node<D, C, F> node)
@@ -1610,14 +1616,31 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
-  public Variable<D, C, F> getReference(String reference)
+  public Expression<D, C, F> putField(MethodVisitor mv, String fieldName, Class<?> fieldType)
   {
-    return referencedVariables.get(reference);
+    Compiler.putField(mv, className, fieldName, fieldType);
+    return this;
   }
 
   public boolean references(VariableReference<D, C, F> reference)
   {
     return referencedVariables.containsKey(reference.name);
+  }
+
+  /**
+   * {@link Node}s can call this to register a {@link Consumer} of
+   * {@link MethodVisitor} to have its {@link Consumer#accept(Object)} method
+   * called during the declaration of the body of the {@link Initializable}
+   * interface method implementation {@link Initializable#initialize()} of the
+   * {@link Function} being generated by this {@link Expression}
+   * 
+   * @param consumer
+   * @return
+   */
+  public Expression<D, C, F> registerInitializer(Consumer<MethodVisitor> consumer)
+  {
+    initializers.add(consumer);
+    return this;
   }
 
   public String registerIntermediateVariable(String intermediateVarName, Class<?> type, boolean initialize)
@@ -1696,6 +1719,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return addAndSubtract(node);
   }
 
+  public Node<D, C, F> resolveAbsoluteValue(Node<D, C, F> node)
+  {
+    if (!inAbsoluteValue && nextCharacterIs('|'))
+    {
+      inAbsoluteValue = true;
+      node            = new AbsoluteValue<D, C, F>(this,
+                                                   resolve());
+      require('|');
+      inAbsoluteValue = false;
+    }
+    return node;
+  }
+
   public Node<D, C, F> resolveFactorials(Node<D, C, F> node)
   {
     if (nextCharacterIs('!'))
@@ -1720,21 +1756,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       return node;
     }
-  }
-
-  public boolean inAbsoluteValue = false;
-
-  public Node<D, C, F> resolveAbsoluteValue(Node<D, C, F> node)
-  {
-    if (!inAbsoluteValue && nextCharacterIs('|'))
-    {
-      inAbsoluteValue = true;
-      node            = new AbsoluteValue<D, C, F>(this,
-                                                   resolve());
-      require('|');
-      inAbsoluteValue = false;
-    }
-    return node;
   }
 
   public Node<D, C, F> resolveFloor(Node<D, C, F> node)
@@ -1784,6 +1805,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
+  public Node<D, C, F> resolvePostfixOperators(Node<D, C, F> node)
+  {
+    node = resolveFactorials(node);
+    node = resolveFloor(node);
+    node = resolveAbsoluteValue(node);
+    return node;
+  }
+
   public Node<D, C, F> resolveSymbolicLiteralConstantsKeywordsAndVariables(int startPos,
                                                                            VariableReference<D, C, F> reference)
   {
@@ -1805,14 +1834,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  public Node<D, C, F> resolvePostfixOperators(Node<D, C, F> node)
-  {
-    node = resolveFactorials(node);
-    node = resolveFloor(node);
-    node = resolveAbsoluteValue(node);
-    return node;
-  }
-
   public void skip(int n)
   {
     character = expression.charAt(position += n);
@@ -1824,6 +1845,30 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       nextCharacter();
     }
+  }
+
+  /**
+   * TODO: See how this can be intetegrated with
+   * {@link ArbShellExecutionController} via
+   * 
+   * @param classVisitor
+   * @return
+   */
+  public Expression<D, C, F> storeInstructions(ClassVisitor classVisitor)
+  {
+    if (classVisitor instanceof TraceClassVisitor)
+    {
+      classVisitor = ((TraceClassVisitor) classVisitor).getDelegate();
+    }
+
+    instructionByteCodes = ((ClassWriter) classVisitor).toByteArray();
+
+    if (saveClasses)
+    {
+      File file = new File(className + ".class");
+      writeBytecodes(file);
+    }
+    return this;
   }
 
   @SuppressWarnings("unchecked")
@@ -1953,51 +1998,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                  e);
     }
     return this;
-  }
-
-  public String[] implementedInterfaces()
-  {
-    var ifaces = new ArrayList<>();
-    ifaces.add(genericFunctionClassInternalName);
-    for (var iface : implementedInterfaces)
-    {
-      ifaces.add(Type.getInternalName(iface));
-    }
-    return ifaces.toArray(new String[ifaces.size()]);
-  }
-
-  public LinkedList<Consumer<MethodVisitor>> initializers = new LinkedList<>();
-
-  /**
-   * {@link Node}s can call this to register a {@link Consumer} of
-   * {@link MethodVisitor} to have its {@link Consumer#accept(Object)} method
-   * called during the declaration of the body of the {@link Initializable}
-   * interface method implementation {@link Initializable#initialize()} of the
-   * {@link Function} being generated by this {@link Expression}
-   * 
-   * @param consumer
-   * @return
-   */
-  public Expression<D, C, F> registerInitializer(Consumer<MethodVisitor> consumer)
-  {
-    initializers.add(consumer);
-    return this;
-  }
-
-  public Expression<D, C, F> putField(MethodVisitor mv, String fieldName, Class<?> fieldType)
-  {
-    Compiler.putField(mv, className, fieldName, fieldType);
-    return this;
-  }
-
-  public MethodVisitor loadThisFieldOntoStack(MethodVisitor mv, String name, Class<?> referenceType)
-  {
-    return loadFieldOntoStack(loadThisOntoStack(mv), name, referenceType);
-  }
-
-  public boolean hasScalarCodomain()
-  {
-    return coDomainType.equals(Real.class) || coDomainType.equals(Complex.class);
   }
 
 }
