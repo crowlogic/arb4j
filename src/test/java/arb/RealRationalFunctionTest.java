@@ -74,6 +74,10 @@ public class RealRationalFunctionTest
     System.out.println("f(2.3)=" + fzero);
   }
 
+  public void testAscendingFactorial()
+  {
+    assert false : "test that pochhammer(v, m)/(z/2)^m = 15/z^3";
+  }
   public void testReduce()
   {
     try ( RealRationalFunction f = new RealRationalFunction())
