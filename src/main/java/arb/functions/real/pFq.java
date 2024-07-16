@@ -30,47 +30,61 @@ public class pFq implements RealRationalNullaryFunction, Typesettable, AutoClose
   @Override
   public RealRationalFunction evaluate(Object in, int order, int bits, RealRationalFunction result)
   {
-    if (!this.isInitialized)
+    if (!isInitialized)
     {
-      this.initialize();
+      initialize();
     }
 
-    return new RealRationalHypergeometricFunction(this.vℝ1.set(new Real[]
-    { this.cℤ1.neg(this.ℝ1), this.cℝ2, this.ℝ2.set(this.cℤ3) }),
-                                                  this.vℝ2.set(new Real[]
-                                                  { this.ℝ3.set(this.cℤ1), this.ℝ4.set(this.cℤ4) }),
-                                                  RealRationalNullaryFunction.parse("½-(x/2)")).evaluate(null,
-                                                                                                         1,
-                                                                                                         bits,
-                                                                                                         result);
+    Real[] numerator   = new Real[]
+    { cℤ1.neg(ℝ1), cℝ2, ℝ2.set(cℤ3) };
+
+    Real[] denominator = new Real[]
+    { ℝ3.set(cℤ1), ℝ4.set(cℤ4) };
+
+    var    arg         = RealRationalNullaryFunction.parse("½-(x/2)");
+
+    System.out.println("arg=" + arg );
+    
+    var f = arg.instantiate();
+    RealRationalNullaryFunction f2 = f;
+    RealRationalFunction val2 = f2.evaluate(128);
+    System.out.println("f=" + f);
+    System.out.println("f()=" + val2);
+    
+    try ( var h = new RealRationalHypergeometricFunction(vℝ1.set(numerator),
+                                                         vℝ2.set(denominator),
+                                                         arg))
+    {
+      return h.evaluate(null, 1, bits, result);
+    }
   }
 
   @Override
   public void initialize()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
     else
     {
-      this.isInitialized = true;
+      isInitialized = true;
     }
   }
 
   @Override
   public void close()
   {
-    this.cℤ1.close();
-    this.cℤ4.close();
-    this.cℤ3.close();
-    this.cℝ2.close();
-    this.ℝ1.close();
-    this.ℝ2.close();
-    this.ℝ3.close();
-    this.ℝ4.close();
-    this.vℝ2.close();
-    this.vℝ1.close();
+    cℤ1.close();
+    cℤ4.close();
+    cℤ3.close();
+    cℝ2.close();
+    ℝ1.close();
+    ℝ2.close();
+    ℝ3.close();
+    ℝ4.close();
+    vℝ2.close();
+    vℝ1.close();
   }
 
   @Override
