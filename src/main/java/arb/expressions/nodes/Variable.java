@@ -1,6 +1,8 @@
 package arb.expressions.nodes;
 
+import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.loadInputParameter;
+import static arb.expressions.Compiler.loadResultParameter;
 import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
@@ -291,7 +293,16 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
     {
       resolveReference();
     }
-    Compiler.checkClassCast(Compiler.loadResultParameter(mv), reference.type);
+    if (isResult)
+    {
+      checkClassCast(loadResultParameter(mv), reference.type);
+    }
+    else
+    {
+
+      expression.allocateIntermediateVariable(mv, reference.type);
+
+    }
     generateIndeterminateRangeIdentityInvocation(mv);
   }
 

@@ -67,10 +67,7 @@ public class RealRationalFunction implements
   {
     try ( RealRationalFunction tmp = new RealRationalFunction())
     {
-      System.err.println("about to add: " + tmp);
-      System.err.flush();
       add(addend, bits, tmp);
-      System.err.println("added: " + tmp);
       this.set(tmp);
       return this;
     }
@@ -170,6 +167,8 @@ public class RealRationalFunction implements
     assert bits > 0;
     value.prepare();
 
+    assert exponent.isNonNegative() : "TODO; handle negative exponent " + exponent;
+    
     try ( RealPolynomial zero = new RealPolynomial(); RealPolynomial one = new RealPolynomial())
     {
       one.set(1);

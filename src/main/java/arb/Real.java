@@ -418,6 +418,13 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     }
   }
   
+  public RealRationalFunction div(RealRationalFunction unit, int bits, RealRationalFunction result )
+  {
+    assert bits > 0;
+    result.set(this);
+    return result.div(unit, bits);
+  }
+    
   /**
    * Calculate the ascending factorial this_(power)
    * 

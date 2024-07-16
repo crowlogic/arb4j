@@ -91,12 +91,28 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     return mv;
   }
 
+  public void generateReferenceToThisVariableRepresentingTheIndeterminantOfAPolynomial(MethodVisitor mv, Class<?> resultType )
+  {
+
+    if (isResult)
+    {
+      checkClassCast(loadResultParameter(mv), resultType);
+    }
+    else
+    {
+
+      expression.allocateIntermediateVariable(mv, resultType);
+
+    }
+  }
+  
   public HypergeometricFunction<D, R, F> evaluateHypergeometricPolynomial(Class<?> resultType, MethodVisitor mv)
   {
     mv.visitInsn(ACONST_NULL);
     mv.visitLdcInsn(1);
     loadBitsParameterOntoSTack(mv);
-    checkClassCast(Compiler.loadResultParameter(mv), resultType);
+    generateReferenceToThisVariableRepresentingTheIndeterminantOfAPolynomial(mv,resultType);
+    //checkClassCast(Compiler.loadResultParameter(mv), resultType);
     invokeMethod(mv,
                  INVOKEVIRTUAL,
                  hypergeometricClass,

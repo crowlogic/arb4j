@@ -292,6 +292,10 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     var leftType = left.getGeneratedType();
     leftType = leftType != null ? leftType : left.type();
     var rightType = right.type();
+    if ( Object.class.equals(leftType))
+    {
+      leftType = expression.coDomainType;
+    }
     invokeBinaryOperationMethod(mv, operator, leftType, rightType, resultType);
 
     // expression.addToTypeStack(resultType, toString() );
