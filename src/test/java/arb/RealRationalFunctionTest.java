@@ -36,7 +36,7 @@ public class RealRationalFunctionTest
   public void testHypergeometricRealRationalFunctionExpression()
   {
     int                  bits      = 128;
-    var                  poly      = RealRationalNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
+    var                  poly      = RealRationalNullaryFunction.express("pFq([-2,3.5,1],[2,4],½-x/2)");
     RealRationalFunction expressed = poly.evaluate(bits, new RealRationalFunction());
     assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
   }
@@ -46,7 +46,7 @@ public class RealRationalFunctionTest
     Real    v          = new Real().set(RealConstants.half).setName("v");
     Context context    = new Context(v);
     var     expression = RealRationalFunction.parseSequence("R",
-                                                            "n->v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z^2)",
+                                                            "n->v₍ₙ₎*(z/2)^(-n)*pFq([½-n/2,-n/2],[v,-n,1-v-n],-z²)",
                                                             context);
     System.out.println(expression.syntaxTextTree());
     Sequence<RealRationalFunction> f  = expression.instantiate();
