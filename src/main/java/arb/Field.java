@@ -326,10 +326,5 @@ public interface Field<X extends Field<X>> extends
     return result;
   }
 
-  @SuppressWarnings("unchecked")
-  public default X set(int n)
-  {
-    return (X) this;
-  }
 
 }

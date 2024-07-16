@@ -26,7 +26,11 @@ public class Larg implements RealRationalNullaryFunction, Typesettable, AutoClos
       initialize();
     }
 
-    return RealConstants.half.sub(result.identity().div(cℤ1, bits, fℝ1), bits, result);
+    result.identity();
+    System.out.println("result.identity=" + result );
+    result.div(cℤ1, bits, fℝ1);
+    System.out.println("fℝ1=" + fℝ1);
+    return RealConstants.half.sub(fℝ1, bits, result);
   }
 
   @Override

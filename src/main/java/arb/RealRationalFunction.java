@@ -95,7 +95,6 @@ public class RealRationalFunction implements
 
     RealPolynomialNullaryFunction.express("V1+V2", context).evaluate(bits, resultValue);
 
-
     RealPolynomialNullaryFunction.express("R1*D2+R2*D1", context).evaluate(bits, resultRemainder);
 
     RealPolynomialNullaryFunction.express("D1*D2", context).evaluate(bits, resultDivisor);
@@ -105,7 +104,9 @@ public class RealRationalFunction implements
 
   public RealRationalFunction identity()
   {
-    return additiveIdentity();
+    value.multiplicativeIdentity();
+    value.setRemainder(0);
+    return this;
   }
 
   @Override
@@ -321,6 +322,13 @@ public class RealRationalFunction implements
   {
     value.setRemainder(0);
     return set(1);
+  }
+
+  public RealRationalFunction set(int i)
+  {
+    value.set(i);
+    value.setRemainder(0);
+    return this;
   }
 
   @Override

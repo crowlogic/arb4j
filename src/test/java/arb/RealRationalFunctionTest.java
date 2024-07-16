@@ -40,7 +40,7 @@ public class RealRationalFunctionTest
     RealRationalFunction expressed = poly.evaluate(bits, new RealRationalFunction());
     assertEquals("x²", expressed.toString());
   }
-  
+
   public void testNegativePower()
   {
     int                  bits      = 128;
@@ -48,13 +48,15 @@ public class RealRationalFunctionTest
     RealRationalFunction expressed = poly.evaluate(bits, new RealRationalFunction());
     assertEquals("1/x²", expressed.toString());
   }
-  
+
   public void testHypergeometricRealRationalFunctionExpression()
   {
-    int                  bits      = 128;
-    var                  poly      = RealRationalNullaryFunction.express("pFq([-2,3.5,1],[2,4],½-x/2)");
-    RealRationalFunction expressed = poly.evaluate(bits, new RealRationalFunction());
-    assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
+    int                  bits                      = 128;
+    var                  rationalNullaryFunction   = RealRationalNullaryFunction.express("pFq([-2,3.5,1],[2,4],½-x/2)");
+    RealRationalFunction expressedRationalFunction = rationalNullaryFunction.evaluate(bits,
+                                                                                      new RealRationalFunction());
+    assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressedRationalFunction.value.toString());
+    assertFalse(expressedRationalFunction.value.hasRemainder());
   }
 
   public void testLommelRationalFunctionSequence()
@@ -284,7 +286,7 @@ public class RealRationalFunctionTest
       RealRationalFunction xSquared = new RealRationalFunction();
       x.pow(two, 128, xSquared);
 
-      out.println("x^2=" + xSquared );
+      out.println("x^2=" + xSquared);
       RealPolynomial shouldBe = new RealPolynomial(2);
       shouldBe.set(2, 1);
       assertEquals(shouldBe, xSquared.value);
