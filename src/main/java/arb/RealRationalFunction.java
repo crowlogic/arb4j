@@ -184,7 +184,10 @@ public class RealRationalFunction implements
   @Override
   public RealRationalFunction div(RealRationalFunction unit, int bits, RealRationalFunction result)
   {
-    assert !unit.value.isZero() : "Division by zero";
+    if ( unit.value.isZero() && !unit.value.hasRemainder() )
+    {
+      assert value.isZero() : "Division by zero, remainder=" + unit.value.remainder + " this=" + this;
+    }
     value.prepare();
     unit.value.prepare();
 

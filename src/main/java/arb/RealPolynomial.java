@@ -227,6 +227,11 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
   @Override
   public RealPolynomial div(RealPolynomial divisor, int prec, RealPolynomial resultingQuotient)
   {
+    if ( this.isZero() )
+    {
+      return resultingQuotient.zero();
+    }
+    
     RealPolynomial remainder = new RealPolynomial();
 
     // Performs polynomial division with remainder, computing a quotient and a
@@ -234,7 +239,7 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
 
     if (arblib.arb_poly_divrem(resultingQuotient, remainder, this, divisor, prec) == 0)
     {
-      throw new DivisionByZeroException("division by zero: dividend=" + divisor);
+      throw new DivisionByZeroException("division by zero: dividend=" + divisor + " this=" + this);
     }
     if (remainder.getLength() > 0)
     {
@@ -1004,6 +1009,11 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
 
   public RealPolynomial() {
     this(arblibJNI.new_RealPolynomial(), true);
+  }
+
+  public boolean hasRemainder()
+  {
+   return remainder != null && !remainder.isZero();
   }
 
 }

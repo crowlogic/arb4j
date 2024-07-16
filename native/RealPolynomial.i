@@ -200,6 +200,11 @@ import arb.utensils.Utensils;
   @Override
   public RealPolynomial div(RealPolynomial divisor, int prec, RealPolynomial resultingQuotient)
   {
+    if ( this.isZero() )
+    {
+      return resultingQuotient.zero();
+    }
+    
     RealPolynomial remainder = new RealPolynomial();
 
     // Performs polynomial division with remainder, computing a quotient and a
@@ -207,7 +212,7 @@ import arb.utensils.Utensils;
 
     if (arblib.arb_poly_divrem(resultingQuotient, remainder, this, divisor, prec) == 0)
     {
-      throw new DivisionByZeroException("division by zero: dividend=" + divisor);
+      throw new DivisionByZeroException("division by zero: dividend=" + divisor + " this=" + this);
     }
     if (remainder.getLength() > 0)
     {
@@ -748,7 +753,11 @@ import arb.utensils.Utensils;
     }
     return this;
   }
-  
+
+  public boolean hasRemainder()
+  {
+    return remainder != null && !remainder.isZero();
+  }  
 
   public RealPolynomial set(RealPolynomial a)
   {

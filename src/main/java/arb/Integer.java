@@ -55,7 +55,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result;
   }
 
-  public RealQuasiPolynomial mul(RealQuasiPolynomial operand, int prec, RealQuasiPolynomial result)
+  public RealRationalFunction mul(RealRationalFunction operand, int prec, RealRationalFunction result)
   {
     return result.set(this).mul(operand, prec);
   }
