@@ -217,7 +217,6 @@ public class RealRationalFunction implements
 
     RealPolynomialNullaryFunction.express("D1*D2", context).evaluate(bits, resultDivisor);
 
-    // System.out.format("divisor=%s\n", divisor);
     result.bits = bits;
     return result;
   }

@@ -8,7 +8,7 @@ import arb.domains.RealLine;
 import arb.functions.FourierTransform;
 import arb.functions.Function;
 import arb.functions.RealSquareIntegrableFunction;
-import arb.functions.polynomials.RealLommelPolynomials;
+import arb.functions.polynomials.ModifiedLommelPolynomials;
 import arb.functions.polynomials.orthogonal.real.RealChebyshevPolynomialsOfTheFirstKind;
 import arb.functions.polynomials.orthogonal.real.RealLegendrePolynomials;
 import arb.functions.polynomials.orthogonal.real.RealType1ChebyshevPolynomials;
@@ -83,7 +83,7 @@ public class J0IntegralCovarianceOperator implements
    * expressible equivalently in terms of the
    * {@link RealBesselFunctionOfTheFirstKind} at half-integer orders via
    * {@link RealSphericalBesselFunctionOfTheFirstKind} and thus
-   * {@link RealLommelPolynomials}
+   * {@link ModifiedLommelPolynomials}
    * <p>
    * The eigenvalues are the projections of this{@link #Ψₖ} onto the
    * {@link RealBesselFunctionOfTheFirstKind} function, which is the

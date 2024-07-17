@@ -31,28 +31,24 @@ import arb.functions.real.RealFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealLommelPolynomials extends
-                                   RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence implements
-                                   Concept,
-                                   Initializable
+public class ModifiedLommelPolynomials
+                                        extends
+                                        RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence implements
+                                        Concept,
+                                        Initializable
 {
 
   @Override
-  public void
-         initialize()
+  public void initialize()
   {
     super.initialize();
-    p1.set(2)
-      .mul(v,
-           bits)
-      .shiftLeft(1);
+    p1.set(2).mul(v, bits).shiftLeft(1);
   }
 
   @SuppressWarnings("resource")
-  public Real v = new Real().setName("v")
-                            .set(RealConstants.half);
+  public Real v = new Real().setName("v").set(RealConstants.half);
 
-  public RealLommelPolynomials(int bits)
+  public ModifiedLommelPolynomials(int bits)
   {
     super(bits,
           "n➔2*(n + v )",
@@ -62,21 +58,19 @@ public class RealLommelPolynomials extends
 
   }
 
-  public RealLommelPolynomials()
+  public ModifiedLommelPolynomials()
   {
     this(128);
   }
 
   @Override
-  public Domain<Real>
-         domainOfOrthogonality()
+  public Domain<Real> domainOfOrthogonality()
   {
     return ExtendedRealLine.instance;
   }
 
   @Override
-  public Stream<? extends Reference>
-         getReferences()
+  public Stream<? extends Reference> getReferences()
   {
     return Stream.of(Bibliography.besselFunctionTreatise.referToChapters("9.60 p.294"),
                      Bibliography.specialFunctionsOfMathematicalPhysics.referToChapters("3.11.1 p.120"));
@@ -117,8 +111,7 @@ public class RealLommelPolynomials extends
    * </pre>
    */
   @Override
-  public RealFunction
-         orthogonalityMeasure()
+  public RealFunction orthogonalityMeasure()
   {
     assert false : "TODO: Auto-generated method stub";
     return null;

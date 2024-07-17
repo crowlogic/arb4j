@@ -284,9 +284,9 @@ public class RealRationalFunctionTest
   //  System.out.println("f(2.3)=" + fzero);
     
    // ½-(2/x)    
-    System.out.println("expression=" + expression );
+    System.out.println("W=" + expression );
     RealRationalFunction eval = expression.evaluate(128);
-    System.out.println("x="+eval);
+    System.out.println("W()="+eval);
     assertEquals("(x^2-8x+16)/(4*x^2)",eval.value );
   }
 
