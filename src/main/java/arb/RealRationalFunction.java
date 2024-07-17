@@ -38,6 +38,12 @@ public class RealRationalFunction implements
 
   public RealRationalFunction reduce(int prec)
   {
+    if (!value.hasRemainder())
+    {
+      return this;
+    }
+    assert value.divisor != null && !value.divisor.isEmpty()
+                  && !value.divisor.isZero() : "divisor is null, 0 length, or equal to 0";
 
     try ( RealPolynomial quotient = new RealPolynomial())
     {
@@ -220,7 +226,7 @@ public class RealRationalFunction implements
     RealPolynomialNullaryFunction.express("D1*D2", context).evaluate(bits, resultDivisor);
 
     result.bits = bits;
-    reduce(bits);
+   // reduce(bits);
 
     return result;
   }
@@ -310,7 +316,6 @@ public class RealRationalFunction implements
 
     RealPolynomialNullaryFunction.express("D1*D2", context).evaluate(bits, resultDivisor);
 
-    reduce(bits);
 
     result.bits = bits;
     return result;
@@ -375,8 +380,6 @@ public class RealRationalFunction implements
     RealPolynomialNullaryFunction.express("R1*D2-R2*D1", context).evaluate(bits, resultRemainder);
 
     RealPolynomialNullaryFunction.express("D1*D2", context).evaluate(bits, resultDivisor);
-
-    reduce(bits);
 
     return result;
   }

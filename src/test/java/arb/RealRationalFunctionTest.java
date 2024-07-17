@@ -336,7 +336,7 @@ public class RealRationalFunctionTest
 
   }
 
-  public void testAscendingFactorial()
+  public void testAscendingFactorialDividedByZOver2ToTheNth()
   {
     Real                           v          = new Real().set(RealConstants.half).setName("v");
     Context                        context    = new Context(v);
