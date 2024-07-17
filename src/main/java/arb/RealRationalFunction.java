@@ -38,15 +38,15 @@ public class RealRationalFunction implements
 
   public RealRationalFunction reduce(int prec)
   {
-    
+
     try ( RealPolynomial quotient = new RealPolynomial())
     {
 
       value.remainder.div(value.divisor, prec, quotient);
 
-      this.value.add(quotient, prec, this.value);
+      this.value.add(quotient, prec);
 
-      value.remainder.set(quotient.remainder);      
+      value.remainder.set(quotient.remainder);
 
       return this;
     }
@@ -90,6 +90,8 @@ public class RealRationalFunction implements
     RealPolynomialNullaryFunction.express("R1*D2+R2*D1", context).evaluate(bits, resultRemainder);
 
     RealPolynomialNullaryFunction.express("D1*D2", context).evaluate(bits, resultDivisor);
+
+    reduce(bits);
 
     return result;
   }
@@ -163,7 +165,7 @@ public class RealRationalFunction implements
     value.prepare();
 
     assert exponent.isNonNegative() : "TODO; handle negative exponent " + exponent;
-    
+
     try ( RealPolynomial zero = new RealPolynomial(); RealPolynomial one = new RealPolynomial())
     {
       one.set(1);
@@ -218,6 +220,8 @@ public class RealRationalFunction implements
     RealPolynomialNullaryFunction.express("D1*D2", context).evaluate(bits, resultDivisor);
 
     result.bits = bits;
+    reduce(bits);
+
     return result;
   }
 
@@ -306,6 +310,8 @@ public class RealRationalFunction implements
 
     RealPolynomialNullaryFunction.express("D1*D2", context).evaluate(bits, resultDivisor);
 
+    reduce(bits);
+
     result.bits = bits;
     return result;
   }
@@ -369,6 +375,8 @@ public class RealRationalFunction implements
     RealPolynomialNullaryFunction.express("R1*D2-R2*D1", context).evaluate(bits, resultRemainder);
 
     RealPolynomialNullaryFunction.express("D1*D2", context).evaluate(bits, resultDivisor);
+
+    reduce(bits);
 
     return result;
   }

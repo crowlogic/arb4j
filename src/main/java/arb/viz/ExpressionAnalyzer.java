@@ -1,15 +1,22 @@
 package arb.viz;
 
 import arb.Integer;
-import arb.RealQuasiPolynomial;
+import arb.Real;
+import arb.RealConstants;
+import arb.RealRationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.sequences.Sequence;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -25,9 +32,12 @@ public class ExpressionAnalyzer
                                 Application
 {
 
-  public static Expression<Integer, RealQuasiPolynomial, Sequence<RealQuasiPolynomial>> getExpression()
+  public static Expression<Integer, RealRationalFunction, Sequence<RealRationalFunction>> getExpression()
   {
-    return RealQuasiPolynomial.parseSequence("Ψ", "y➔½*√(2*(4*n+1)/y)*(-1)ⁿ*J(2*n+½,y)");
+
+    Real    v       = new Real().set(RealConstants.half).setName("v");
+    Context context = new Context(v);
+    return RealRationalFunction.parseSequence("Ψ", "n->v₍ₙ₎/(z/2)ⁿ*pFq([½-n/2,-n/2],[v,-n,1-v-n],-(z²))", context);
   }
 
   public void expandTreeView(TreeItem<?> item)
@@ -60,7 +70,7 @@ public class ExpressionAnalyzer
 
     TreeTableView<Node<?, ?, ?>> treeTableView = new TreeTableView<Node<?, ?, ?>>(rootItem);
     treeTableView.setShowRoot(true);
-   // expandTreeView(rootItem);
+    // expandTreeView(rootItem);
     // treeTableView.setRowFactory(tv -> new CustomTreeTableRow<>());
 
     TreeTableColumn<Node<?, ?, ?>, String> nodeCol = new TreeTableColumn<>("Node");

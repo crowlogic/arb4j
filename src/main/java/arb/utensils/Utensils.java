@@ -468,7 +468,7 @@ public class Utensils
 
   public static BufferedImage renderFormula(String formula)
   {
-    return renderFormula(formula, 30);
+    return renderFormula(formula, 25);
   }
 
   public static BufferedImage renderFormula(String formula, int size)

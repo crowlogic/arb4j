@@ -39,7 +39,7 @@ public class Vector<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public String toString()
   {
-    return elements.stream().map(Node::typeset).collect(Collectors.joining(",", "[", "]"));
+    return elements.stream().map(Node::toString).collect(Collectors.joining(",", "[", "]"));
   }
 
   public ArrayList<Node<D, R, F>> elements = new ArrayList<>();

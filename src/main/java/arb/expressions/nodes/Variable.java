@@ -571,7 +571,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public boolean isScalar()
   {
-    return type().equals(Real.class) || type().equals(Complex.class);
+    return type().equals(Real.class) || type().equals(Complex.class) || type().equals(Integer.class);
   }
 
   @Override

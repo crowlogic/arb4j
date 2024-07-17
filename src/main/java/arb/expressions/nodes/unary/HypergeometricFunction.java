@@ -43,9 +43,29 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
                                    FunctionCall<D, R, F>
 {
 
-  Node<D, R, F>    α;
+  @Override
+  public String toString()
+  {
+    return String.format("pFq(%s,%s;%s)",
+                         α,
+                         β,
+                         arg);
+  }
 
-  Node<D, R, F>    β;
+  @Override
+  public String typeset()
+  {
+    return String.format("${_%sF_%s}(%s, %s ; %s)",
+                         this.α.elements.size(),
+                         this.β.elements.size(),
+                         this.α.typeset(),
+                         this.β.typeset(),
+                         arg.typeset());
+  }
+
+  Vector<D, R, F>  α;
+
+  Vector<D, R, F>  β;
 
   private Class<?> hypergeometricClass;
 
@@ -54,9 +74,9 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     super("pFq",
           null,
           expression);
-    α = expression.resolve();
+    α = (Vector<D, R, F>) expression.resolve();
     expression.require(',');
-    β = expression.resolve();
+    β = (Vector<D, R, F>) expression.resolve();
     expression.require(',', ';');
     arg = expression.resolve();
     expression.require(')');
@@ -91,7 +111,8 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     return mv;
   }
 
-  public void generateReferenceToThisVariableRepresentingTheIndeterminantOfAPolynomial(MethodVisitor mv, Class<?> resultType )
+  public void generateReferenceToThisVariableRepresentingTheIndeterminantOfAPolynomial(MethodVisitor mv,
+                                                                                       Class<?> resultType)
   {
 
     if (isResult)
@@ -105,14 +126,14 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
 
     }
   }
-  
+
   public HypergeometricFunction<D, R, F> evaluateHypergeometricPolynomial(Class<?> resultType, MethodVisitor mv)
   {
     mv.visitInsn(ACONST_NULL);
     mv.visitLdcInsn(1);
     loadBitsParameterOntoSTack(mv);
-    generateReferenceToThisVariableRepresentingTheIndeterminantOfAPolynomial(mv,resultType);
-    //checkClassCast(Compiler.loadResultParameter(mv), resultType);
+    generateReferenceToThisVariableRepresentingTheIndeterminantOfAPolynomial(mv, resultType);
+    // checkClassCast(Compiler.loadResultParameter(mv), resultType);
     invokeMethod(mv,
                  INVOKEVIRTUAL,
                  hypergeometricClass,
