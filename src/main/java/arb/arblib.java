@@ -9,6 +9,14 @@
 package arb;
 
 public class arblib {
+  public static int fmpz_poly_equal(IntegerPolynomial poly1, IntegerPolynomial poly2) {
+    return arblibJNI.fmpz_poly_equal(IntegerPolynomial.getCPtr(poly1), poly1, IntegerPolynomial.getCPtr(poly2), poly2);
+  }
+
+  public static int fmpz_poly_equal_fmpz(IntegerPolynomial poly, long numCols) {
+    return arblibJNI.fmpz_poly_equal_fmpz(IntegerPolynomial.getCPtr(poly), poly, numCols);
+  }
+
   public static void fmpz_poly_add(IntegerPolynomial res, IntegerPolynomial poly1, IntegerPolynomial poly2) {
     arblibJNI.fmpz_poly_add(IntegerPolynomial.getCPtr(res), res, IntegerPolynomial.getCPtr(poly1), poly1, IntegerPolynomial.getCPtr(poly2), poly2);
   }

@@ -20,6 +20,18 @@ import arb.documentation.TheArb4jLibrary;
     return add(addend, 0, res);
   }
 
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (!(obj instanceof IntegerPolynomial))
+    {
+      return false;
+    }
+    IntegerPolynomial other = (IntegerPolynomial) obj;
+
+    return arblib.fmpz_poly_equal(this, other) != 0;
+  }
+  
   public IntegerPolynomial add(IntegerPolynomial addend, int bits, IntegerPolynomial res)
   {
     arblib.fmpz_poly_add(res, this, addend);

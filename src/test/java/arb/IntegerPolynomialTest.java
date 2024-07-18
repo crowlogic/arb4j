@@ -12,12 +12,13 @@ public class IntegerPolynomialTest
                                    TestCase
 {
   public void testAdd()
-  {
+  { 
 
-    try ( IntegerPolynomial p = new IntegerPolynomial(); Integer three = new Integer(3))
+    try ( IntegerPolynomial p = new IntegerPolynomial(); Integer three = new Integer(3); )
     {
       p.setCoeffsNative(three.swigCPtr);
       assertEquals("3", three.toString());
+      //p.add(p, p);
     }
   }
 }

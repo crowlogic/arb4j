@@ -6,6 +6,10 @@
 #include <flint/fmpq.h>
 #include <flint/fmpz_poly.h>
 
+int fmpz_poly_equal(const fmpz_poly_t poly1, const fmpz_poly_t poly2);
+
+int fmpz_poly_equal_fmpz(const fmpz_poly_t poly, const fmpz_t c);
+
 void fmpz_poly_add(fmpz_poly_t res, const fmpz_poly_t poly1,
                                                       const fmpz_poly_t poly2);
                                                       
