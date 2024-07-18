@@ -6,6 +6,12 @@
 #include <flint/fmpq.h>
 #include <flint/fmpz_poly.h>
 
+void fmpz_poly_div(fmpz_poly_t Q, const fmpz_poly_t A,
+                                                          const fmpz_poly_t B);
+                                                          
+void fmpz_poly_mul(fmpz_poly_t res,
+                          const fmpz_poly_t poly1, const fmpz_poly_t poly2);
+                          
 void fmpz_poly_sub(fmpz_poly_t res, const fmpz_poly_t poly1,
                                                       const fmpz_poly_t poly2);
 

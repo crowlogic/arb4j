@@ -88,9 +88,12 @@ public interface Ring<X> extends Magma<X>, Named, CommutativeGroup<X>
   }
 
   @SuppressWarnings("unchecked")
-  @Override
-  public default X div(X x, int prec, X result)
+  public default X div(X x, int prec)
   {
     return div(x, prec, (X) this);
   }
+  
+  @Override
+  public X div(X x, int prec, X result);
+  
 }

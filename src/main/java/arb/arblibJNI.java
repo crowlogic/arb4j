@@ -9,6 +9,8 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void fmpz_poly_div(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_, long jarg3, IntegerPolynomial jarg3_);
+  public final static native void fmpz_poly_mul(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_, long jarg3, IntegerPolynomial jarg3_);
   public final static native void fmpz_poly_sub(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_, long jarg3, IntegerPolynomial jarg3_);
   public final static native void fmpz_poly_sub_series(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_, long jarg3, IntegerPolynomial jarg3_, int jarg4);
   public final static native void fmpz_poly_neg(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_);

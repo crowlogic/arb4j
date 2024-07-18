@@ -10,13 +10,14 @@ package arb;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-
+import arb.algebra.Ring;
+ 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
 
-public class IntegerPolynomial implements AutoCloseable {
+public class IntegerPolynomial implements AutoCloseable,Ring<IntegerPolynomial> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
@@ -40,6 +41,7 @@ public class IntegerPolynomial implements AutoCloseable {
   }
 
   static { System.loadLibrary( "arblib" ); }
+  public String name;
 
   public IntegerPolynomial add(IntegerPolynomial addend, IntegerPolynomial res)
   {
@@ -68,6 +70,41 @@ public class IntegerPolynomial implements AutoCloseable {
   public void close() 
   {
     delete();
+  }
+  
+    @Override
+  public IntegerPolynomial mul(IntegerPolynomial operand, int prec, IntegerPolynomial result)
+  {
+    arblib.fmpz_poly_mul(result, this, operand);
+    return result;
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <N extends Named> N setName(String name)
+  {
+   this.name = name;
+   return (N) this;
+  }
+
+  @Override
+  public String getName()
+  {
+    return name;
+  }
+  
+  @Override
+  public IntegerPolynomial div(IntegerPolynomial operand, int prec, IntegerPolynomial result)
+  {
+    arblib.fmpz_poly_div(result, this, operand);
+    return result;
+  }  
+  
+  @Override
+  public IntegerPolynomial sub(IntegerPolynomial subtrahend, int bits, IntegerPolynomial res)
+  {
+    arblib.fmpz_poly_sub(res, this, subtrahend);
+    return res;
   }
 
 

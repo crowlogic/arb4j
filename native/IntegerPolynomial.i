@@ -3,17 +3,19 @@
 %typemap(javaimports) fmpz_poly_struct %{
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-
+import arb.algebra.Ring;
+ 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
 %}
 %typemap(javafinalize) fmpz_poly_struct ""
-%typemap(javainterfaces) fmpz_poly_struct "AutoCloseable"
+%typemap(javainterfaces) fmpz_poly_struct "AutoCloseable,Ring<IntegerPolynomial>"
 
 %typemap(javacode) fmpz_poly_struct %{
   static { System.loadLibrary( "arblib" ); }
+  public String name;
 
   public IntegerPolynomial add(IntegerPolynomial addend, IntegerPolynomial res)
   {
@@ -42,6 +44,41 @@ import arb.documentation.TheArb4jLibrary;
   public void close() 
   {
     delete();
+  }
+  
+    @Override
+  public IntegerPolynomial mul(IntegerPolynomial operand, int prec, IntegerPolynomial result)
+  {
+    arblib.fmpz_poly_mul(result, this, operand);
+    return result;
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <N extends Named> N setName(String name)
+  {
+   this.name = name;
+   return (N) this;
+  }
+
+  @Override
+  public String getName()
+  {
+    return name;
+  }
+  
+  @Override
+  public IntegerPolynomial div(IntegerPolynomial operand, int prec, IntegerPolynomial result)
+  {
+    arblib.fmpz_poly_div(result, this, operand);
+    return result;
+  }  
+  
+  @Override
+  public IntegerPolynomial sub(IntegerPolynomial subtrahend, int bits, IntegerPolynomial res)
+  {
+    arblib.fmpz_poly_sub(res, this, subtrahend);
+    return res;
   }
 
 %}
