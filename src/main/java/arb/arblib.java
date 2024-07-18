@@ -9,6 +9,22 @@
 package arb;
 
 public class arblib {
+  public static void fmpz_poly_set(IntegerPolynomial poly1, IntegerPolynomial poly2) {
+    arblibJNI.fmpz_poly_set(IntegerPolynomial.getCPtr(poly1), poly1, IntegerPolynomial.getCPtr(poly2), poly2);
+  }
+
+  public static void fmpz_poly_set_ui(IntegerPolynomial poly, long numCols) {
+    arblibJNI.fmpz_poly_set_ui(IntegerPolynomial.getCPtr(poly), poly, numCols);
+  }
+
+  public static void fmpz_poly_set_si(IntegerPolynomial poly, int numCols) {
+    arblibJNI.fmpz_poly_set_si(IntegerPolynomial.getCPtr(poly), poly, numCols);
+  }
+
+  public static void fmpz_poly_set_fmpz(IntegerPolynomial poly, long numCols) {
+    arblibJNI.fmpz_poly_set_fmpz(IntegerPolynomial.getCPtr(poly), poly, numCols);
+  }
+
   public static int fmpz_poly_equal(IntegerPolynomial poly1, IntegerPolynomial poly2) {
     return arblibJNI.fmpz_poly_equal(IntegerPolynomial.getCPtr(poly1), poly1, IntegerPolynomial.getCPtr(poly2), poly2);
   }

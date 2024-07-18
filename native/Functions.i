@@ -6,6 +6,14 @@
 #include <flint/fmpq.h>
 #include <flint/fmpz_poly.h>
 
+void fmpz_poly_set(fmpz_poly_t poly1, const fmpz_poly_t poly2);
+
+void fmpz_poly_set_ui(fmpz_poly_t poly, ulong c);
+
+void fmpz_poly_set_si(fmpz_poly_t poly, slong c);
+
+void fmpz_poly_set_fmpz(fmpz_poly_t poly, const fmpz_t c);
+
 int fmpz_poly_equal(const fmpz_poly_t poly1, const fmpz_poly_t poly2);
 
 int fmpz_poly_equal_fmpz(const fmpz_poly_t poly, const fmpz_t c);
