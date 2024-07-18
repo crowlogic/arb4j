@@ -51,7 +51,7 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
   @Override
   public String typeset()
   {
-    return String.format("${_%sF_%s}(%s, %s ; %s)",
+    return String.format("${_%sF_%s}\\left(%s, %s ; %s\\right)",
                          this.α.elements.size(),
                          this.β.elements.size(),
                          this.α.typeset(),

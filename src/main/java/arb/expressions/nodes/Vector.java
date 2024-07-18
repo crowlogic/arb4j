@@ -168,7 +168,7 @@ public class Vector<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public String typeset()
   {
-    return elements.stream().map(Node::typeset).collect(joining(",", "[", "]"));
+    return elements.stream().map(Node::typeset).collect(joining(",", "\\left[", "\\right]"));
   }
 
   @Override
