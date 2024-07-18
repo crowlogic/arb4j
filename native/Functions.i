@@ -6,6 +6,9 @@
 #include <flint/fmpq.h>
 #include <flint/fmpz_poly.h>
 
+void fmpz_poly_add(fmpz_poly_t res, const fmpz_poly_t poly1,
+                                                      const fmpz_poly_t poly2);
+                                                      
 char *fmpz_poly_get_str(const fmpz_poly_t poly);
 int fmpz_poly_set_str(fmpz_poly_t poly, const char *str);
 
