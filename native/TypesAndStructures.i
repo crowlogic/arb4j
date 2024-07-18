@@ -57,17 +57,17 @@ typedef long int		mp_size_t;
 #endif
 %}
 
-/*
+
 typedef struct
 {
-    fmpz * coeffs;
+    fmpz_t coeffs;
     slong alloc;
     slong length;
 }
 fmpz_poly_struct;
 
 typedef fmpz_poly_struct fmpz_poly_t[1];
-*/
+
 
 typedef struct
 {

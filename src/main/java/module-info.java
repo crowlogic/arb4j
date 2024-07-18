@@ -63,7 +63,6 @@ module arb4j
   exports arb.functions.polynomials.orthogonal.complex;
   exports arb.functions.polynomials.orthogonal.real;  
   exports arb.functions.polynomials.quasi;
-  exports arb.functions.polynomials.quasi.complex;
   exports arb.functions.real;
   exports arb.functions.complex;
   exports arb.functions.complex.numbertheoretic;

@@ -9,6 +9,8 @@
 package arb;
 
 public class arblibJNI {
+  public final static native String fmpz_poly_get_str(long jarg1, IntegerPolynomial jarg1_);
+  public final static native int fmpz_poly_set_str(long jarg1, IntegerPolynomial jarg1_, String jarg2);
   public final static native int fmpq_equal(long jarg1, Rational jarg1_, long jarg2, Rational jarg2_);
   public final static native void acb_poly_neg(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_);
   public final static native void acb_gamma(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
@@ -556,6 +558,12 @@ public class arblibJNI {
   public final static native void arb_asin(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_acos(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_atanh(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
+  public final static native void IntegerPolynomial_coeffsNative_set(long jarg1, IntegerPolynomial jarg1_, long jarg2);
+  public final static native long IntegerPolynomial_coeffsNative_get(long jarg1, IntegerPolynomial jarg1_);
+  public final static native void IntegerPolynomial_length_set(long jarg1, IntegerPolynomial jarg1_, int jarg2);
+  public final static native int IntegerPolynomial_length_get(long jarg1, IntegerPolynomial jarg1_);
+  public final static native long new_IntegerPolynomial();
+  public final static native void delete_IntegerPolynomial(long jarg1);
   public final static native void Rational_longNumerator_set(long jarg1, Rational jarg1_, long jarg2);
   public final static native long Rational_longNumerator_get(long jarg1, Rational jarg1_);
   public final static native void Rational_longDenominator_set(long jarg1, Rational jarg1_, long jarg2);

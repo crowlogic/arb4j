@@ -4,10 +4,13 @@
 #include <gmp.h>
 #include <arb_mat.h>
 #include <flint/fmpq.h>
+#include <flint/fmpz_poly.h>
 
- int fmpq_equal(const fmpq_t x, const fmpq_t y);
+char *fmpz_poly_get_str(const fmpz_poly_t poly);
+int fmpz_poly_set_str(fmpz_poly_t poly, const char *str);
+
+int fmpq_equal(const fmpq_t x, const fmpq_t y);
  
-
 void acb_poly_neg(acb_poly_t res, const acb_poly_t poly);
 
 void acb_gamma(acb_t y, const acb_t x, slong prec);

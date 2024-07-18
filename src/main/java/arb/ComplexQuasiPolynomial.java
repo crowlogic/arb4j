@@ -10,7 +10,6 @@ import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexIdentityFunction;
 import arb.functions.complex.ComplexQuasiPolynomialNullaryFunction;
 import arb.functions.polynomials.quasi.QuasiPolynomial;
-import arb.functions.polynomials.quasi.complex.ComplexQuasiPolynomialAddition;
 import arb.functions.sequences.Sequence;
 
 /**
@@ -36,8 +35,7 @@ public class ComplexQuasiPolynomial
     assert p != null;
     result.identity();
     result.p.bits = prec;
-    result.f      = new ComplexQuasiPolynomialAddition(this,
-                                                       operand);
+    assert false : "defunct";
 
     return result;
   }

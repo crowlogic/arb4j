@@ -7,9 +7,7 @@ import arb.expressions.Expression;
 import arb.expressions.Parser;
 import arb.functions.Function;
 import arb.functions.polynomials.quasi.QuasiPolynomial;
-import arb.functions.polynomials.quasi.real.RealQuasiPolynomialAddition;
-import arb.functions.polynomials.quasi.real.RealQuasiPolynomialDivision;
-import arb.functions.polynomials.quasi.real.RealQuasiPolynomialSquareRoot;
+
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealIdentityFunction;
 import arb.functions.real.RealQuasiPolynomialNullaryFunction;
@@ -45,20 +43,8 @@ public class RealQuasiPolynomial
       return fresult;
     }
   }
-
-  public static Expression<Object, RealQuasiPolynomial, RealQuasiPolynomialNullaryFunction> parse(String expression)
-  {
-    return Function.parse(Parser.expressionToUniqueClassname(expression),
-                          expression,
-                          null,
-                          Object.class,
-                          RealQuasiPolynomial.class,
-                          RealQuasiPolynomialNullaryFunction.class,
-                          null,
-                          null);
-  }
-
   public static Expression<Integer, RealQuasiPolynomial, Sequence<RealQuasiPolynomial>>
+  
          parseSequence(String className, String expression)
   {
     return parseSequence(className, expression, null);
@@ -139,8 +125,7 @@ public class RealQuasiPolynomial
   {
     result.identity();
     result.p.bits = bits;
-    result.f      = new RealQuasiPolynomialAddition(this,
-                                                    operand);
+assert false : "defunct";
 
     return result;
   }
@@ -194,9 +179,8 @@ public class RealQuasiPolynomial
     }
     else
     {
-      result.p.bits = bits;
-      result.f      = new RealQuasiPolynomialDivision(this,
-                                                      operand);
+      assert false : "defunct";
+
     }
 
     return result;
@@ -343,7 +327,7 @@ public class RealQuasiPolynomial
   {
     result.identity();
     result.p.bits = bits;
-    result.f      = new RealQuasiPolynomialSquareRoot(this);
+    assert false : "defunct";
     return result;
   }
 

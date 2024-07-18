@@ -23,7 +23,6 @@ import arb.functions.Function;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.polynomials.ComplexHypergeometricPolynomial;
 import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
-import arb.functions.polynomials.quasi.complex.ComplexHypergeometricQuasiPolynomial;
 import arb.functions.real.RealPolynomialNullaryFunction;
 import arb.functions.real.RealRationalHypergeometricFunction;
 import arb.functions.real.RealRationalNullaryFunction;
@@ -46,10 +45,7 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
   @Override
   public String toString()
   {
-    return String.format("pFq(%s,%s;%s)",
-                         α,
-                         β,
-                         arg);
+    return String.format("pFq(%s,%s;%s)", α, β, arg);
   }
 
   @Override
@@ -149,8 +145,11 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
   public void constructFiniteHypergeometricSeries(MethodVisitor mv, Class<?> scalarType, boolean rational)
   {
     boolean isReal = Real.class.equals(scalarType);
-
-    hypergeometricClass = isReal ? (rational ? RealRationalHypergeometricFunction.class : RealPolynomialHypergeometricFunction.class) : (rational ? ComplexHypergeometricQuasiPolynomial.class : ComplexHypergeometricPolynomial.class);
+    if (!isReal && rational)
+    {
+      assert false : "todo: implement ComplexRationalFunction, scalarType=" + scalarType;
+    }
+    hypergeometricClass = isReal ? (rational ? RealRationalHypergeometricFunction.class : RealPolynomialHypergeometricFunction.class) : (rational ? Object.class : ComplexHypergeometricPolynomial.class);
     mv.visitTypeInsn(NEW, Type.getInternalName(hypergeometricClass));
     duplicateTopOfTheStack(mv);
 

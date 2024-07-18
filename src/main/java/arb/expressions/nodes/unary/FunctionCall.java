@@ -62,8 +62,8 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
                          UnaryOperation<D, R, F>
 {
 
-  public boolean                  contextual   = false;
-  
+  public boolean                  contextual                                   = false;
+
   public String                   functionName;
 
   HashSet<String>                 polynomialFunctionsWithQuasiPolyomialResults = new HashSet<>(Arrays.asList("sqrt",
@@ -421,6 +421,7 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
                     || argType.equals(ComplexPolynomial.class);
       if (isPolynomialArg && hasQuasipolynomialResult)
       {
+        assert false : "replace quasipolynomials this with functionals.. that is, the coDomain is a function whose domain is the polynomial and whose range is the function applied to the pointwise evaluation of the polynomial argument";
         return scalarType(argType).equals(Real.class) ? RealQuasiPolynomial.class : ComplexQuasiPolynomial.class;
       }
       else

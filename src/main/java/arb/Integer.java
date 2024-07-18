@@ -319,11 +319,6 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return res.set(this).div(dividend, prec);
   }
 
-  public RealQuasiPolynomial div(RealQuasiPolynomial q, int bits, RealQuasiPolynomial res)
-  {
-    return res.set(this).div(q, bits);
-  }
-
   @Override
   public boolean equals(Object obj)
   {
@@ -563,12 +558,6 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   public Real pow(Integer operand, int prec, Real result)
   {
     return result.set(this).pow(operand, prec);
-  }
-
-  public RealQuasiPolynomial pow(RealQuasiPolynomial exponent, int bits, RealQuasiPolynomial res)
-  {
-    assert false : "TODO";
-    return null;
   }
 
   public Integer risingFactorial(Integer n, int bits, Integer result)
