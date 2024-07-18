@@ -2,6 +2,7 @@
 %wrapper %{
 #include <flint/fmpq.h>
 #include <flint/fmpq_poly.h>
+#include <flint/fmpz_poly.h>
 
 extern int errorNumber();
 
