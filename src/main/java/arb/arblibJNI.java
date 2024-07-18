@@ -9,6 +9,15 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void fmpz_poly_sub(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_, long jarg3, IntegerPolynomial jarg3_);
+  public final static native void fmpz_poly_sub_series(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_, long jarg3, IntegerPolynomial jarg3_, int jarg4);
+  public final static native void fmpz_poly_neg(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_);
+  public final static native void fmpz_poly_add_si(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_, int jarg3);
+  public final static native void fmpz_poly_sub_si(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_, int jarg3);
+  public final static native void fmpz_poly_si_sub(long jarg1, IntegerPolynomial jarg1_, int jarg2, long jarg3, IntegerPolynomial jarg3_);
+  public final static native void fmpz_poly_add_fmpz(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_, long jarg3);
+  public final static native void fmpz_poly_sub_fmpz(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_, long jarg3);
+  public final static native void fmpz_poly_fmpz_sub(long jarg1, IntegerPolynomial jarg1_, long jarg2, long jarg3, IntegerPolynomial jarg3_);
   public final static native void fmpz_poly_set(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_);
   public final static native void fmpz_poly_set_ui(long jarg1, IntegerPolynomial jarg1_, long jarg2);
   public final static native void fmpz_poly_set_si(long jarg1, IntegerPolynomial jarg1_, int jarg2);

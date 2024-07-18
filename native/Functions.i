@@ -6,6 +6,21 @@
 #include <flint/fmpq.h>
 #include <flint/fmpz_poly.h>
 
+void fmpz_poly_sub(fmpz_poly_t res, const fmpz_poly_t poly1,
+                                                      const fmpz_poly_t poly2);
+
+void fmpz_poly_sub_series(fmpz_poly_t res, const fmpz_poly_t poly1,
+                                             const fmpz_poly_t poly2, slong n);
+
+void fmpz_poly_neg(fmpz_poly_t res, const fmpz_poly_t poly);
+
+void fmpz_poly_add_si(fmpz_poly_t res, const fmpz_poly_t poly, slong c);
+void fmpz_poly_sub_si(fmpz_poly_t res, const fmpz_poly_t poly, slong c);
+void fmpz_poly_si_sub(fmpz_poly_t res, slong c, const fmpz_poly_t poly);
+void fmpz_poly_add_fmpz(fmpz_poly_t res, const fmpz_poly_t poly, fmpz_t c);
+void fmpz_poly_sub_fmpz(fmpz_poly_t res, const fmpz_poly_t poly, fmpz_t c);
+void fmpz_poly_fmpz_sub(fmpz_poly_t res, fmpz_t c, const fmpz_poly_t poly);
+
 void fmpz_poly_set(fmpz_poly_t poly1, const fmpz_poly_t poly2);
 
 void fmpz_poly_set_ui(fmpz_poly_t poly, ulong c);

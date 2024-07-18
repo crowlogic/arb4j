@@ -9,6 +9,42 @@
 package arb;
 
 public class arblib {
+  public static void fmpz_poly_sub(IntegerPolynomial res, IntegerPolynomial poly1, IntegerPolynomial poly2) {
+    arblibJNI.fmpz_poly_sub(IntegerPolynomial.getCPtr(res), res, IntegerPolynomial.getCPtr(poly1), poly1, IntegerPolynomial.getCPtr(poly2), poly2);
+  }
+
+  public static void fmpz_poly_sub_series(IntegerPolynomial res, IntegerPolynomial poly1, IntegerPolynomial poly2, int n) {
+    arblibJNI.fmpz_poly_sub_series(IntegerPolynomial.getCPtr(res), res, IntegerPolynomial.getCPtr(poly1), poly1, IntegerPolynomial.getCPtr(poly2), poly2, n);
+  }
+
+  public static void fmpz_poly_neg(IntegerPolynomial res, IntegerPolynomial poly) {
+    arblibJNI.fmpz_poly_neg(IntegerPolynomial.getCPtr(res), res, IntegerPolynomial.getCPtr(poly), poly);
+  }
+
+  public static void fmpz_poly_add_si(IntegerPolynomial res, IntegerPolynomial poly, int numCols) {
+    arblibJNI.fmpz_poly_add_si(IntegerPolynomial.getCPtr(res), res, IntegerPolynomial.getCPtr(poly), poly, numCols);
+  }
+
+  public static void fmpz_poly_sub_si(IntegerPolynomial res, IntegerPolynomial poly, int numCols) {
+    arblibJNI.fmpz_poly_sub_si(IntegerPolynomial.getCPtr(res), res, IntegerPolynomial.getCPtr(poly), poly, numCols);
+  }
+
+  public static void fmpz_poly_si_sub(IntegerPolynomial res, int numCols, IntegerPolynomial poly) {
+    arblibJNI.fmpz_poly_si_sub(IntegerPolynomial.getCPtr(res), res, numCols, IntegerPolynomial.getCPtr(poly), poly);
+  }
+
+  public static void fmpz_poly_add_fmpz(IntegerPolynomial res, IntegerPolynomial poly, long numCols) {
+    arblibJNI.fmpz_poly_add_fmpz(IntegerPolynomial.getCPtr(res), res, IntegerPolynomial.getCPtr(poly), poly, numCols);
+  }
+
+  public static void fmpz_poly_sub_fmpz(IntegerPolynomial res, IntegerPolynomial poly, long numCols) {
+    arblibJNI.fmpz_poly_sub_fmpz(IntegerPolynomial.getCPtr(res), res, IntegerPolynomial.getCPtr(poly), poly, numCols);
+  }
+
+  public static void fmpz_poly_fmpz_sub(IntegerPolynomial res, long numCols, IntegerPolynomial poly) {
+    arblibJNI.fmpz_poly_fmpz_sub(IntegerPolynomial.getCPtr(res), res, numCols, IntegerPolynomial.getCPtr(poly), poly);
+  }
+
   public static void fmpz_poly_set(IntegerPolynomial poly1, IntegerPolynomial poly2) {
     arblibJNI.fmpz_poly_set(IntegerPolynomial.getCPtr(poly1), poly1, IntegerPolynomial.getCPtr(poly2), poly2);
   }
