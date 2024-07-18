@@ -35,8 +35,6 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     System.loadLibrary("arblib");
   }
 
-
-  
   public static Real factorial(Integer n, int bits, Real result)
   {
     arblib.arb_fac_ui(result, n.getUnsignedValue(), bits);
@@ -59,7 +57,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   {
     return result.set(this).div(operand, prec);
   }
-  
+
   public RealRationalFunction mul(RealRationalFunction operand, int prec, RealRationalFunction result)
   {
     return result.set(this).mul(operand, prec);
@@ -71,7 +69,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result;
   }
 
-  public static long getCPtr(Real obj)
+  public static long getCPtr(Integer obj)
   {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
@@ -156,9 +154,14 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result;
   }
 
-  public RealQuasiPolynomial add(Real addend, int bits, RealQuasiPolynomial result)
+  public RealRationalFunction add(Real addend, int bits, RealRationalFunction result)
   {
-    return result.identity().set(this).add(addend, bits, result);
+    try ( Real tmp = new Real())
+    {
+      add(addend, bits, tmp);
+      result.set(tmp);
+      return result;
+    }
   }
 
   public Integer additiveIdentity()

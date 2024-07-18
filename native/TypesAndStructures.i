@@ -35,6 +35,7 @@ typedef mp_limb_t *   mp_ptr;
 typedef slong fmpz;
 typedef fmpz fmpz_t[1];
 
+
 /**
  fmpz is an arbitrary precision integer implemented as a signed 64bit integer. 
  When its second most significant bit is 0 fmpz represents an ordinary slong integer whose absolute value is at most FLINT_BITS - 2 bits.
@@ -56,7 +57,17 @@ typedef long int		mp_size_t;
 #endif
 %}
 
+/*
+typedef struct
+{
+    fmpz * coeffs;
+    slong alloc;
+    slong length;
+}
+fmpz_poly_struct;
 
+typedef fmpz_poly_struct fmpz_poly_t[1];
+*/
 
 typedef struct
 {
