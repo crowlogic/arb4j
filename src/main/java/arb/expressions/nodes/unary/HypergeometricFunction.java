@@ -28,7 +28,7 @@ import arb.functions.real.RealRationalHypergeometricFunction;
 import arb.functions.real.RealRationalNullaryFunction;
 
 /**
- * The numerator α and the denominator β parameters cab ve specified via the
+ * The numerator α and the denominator β parameters can be specified via the
  * {@link Vector} syntax like F([1,n,1+n],[1],x) or symbolically like F(α,β,x)
  * where α and β are {@link Real}s or {@link RealPolynomial}s for instance where
  * if they are {@link RealPolynomial}s then the coeffecients of the polynomial
@@ -52,16 +52,16 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
   public String typeset()
   {
     return String.format("${_%sF_%s}\\left(%s, %s ; %s\\right)",
-                         this.α.elements.size(),
-                         this.β.elements.size(),
+                         this.α.dim(),
+                         this.β.dim(),
                          this.α.typeset(),
                          this.β.typeset(),
                          arg.typeset());
   }
 
-  Vector<D, R, F>  α;
+  Node<D, R, F>  α;
 
-  Vector<D, R, F>  β;
+  Node<D, R, F>  β;
 
   private Class<?> hypergeometricClass;
 
@@ -70,9 +70,9 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     super("pFq",
           null,
           expression);
-    α = (Vector<D, R, F>) expression.resolve();
+    α =  expression.resolve();
     expression.require(',');
-    β = (Vector<D, R, F>) expression.resolve();
+    β =  expression.resolve();
     expression.require(',', ';');
     arg = expression.resolve();
     expression.require(')');

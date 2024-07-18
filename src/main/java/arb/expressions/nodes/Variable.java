@@ -73,6 +73,13 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
 {
 
   @Override
+  public int dim()
+  {
+    assert false : "TODO";
+    return 1;
+  }
+
+  @Override
   public boolean dependsOn(Variable<D, R, F> variable)
   {
     return equals(variable);

@@ -31,6 +31,12 @@ public class Vector<D, R, F extends Function<? extends D, ? extends R>>
 {
 
   @Override
+  public int dim()
+  {
+    return elements.size();
+  }
+
+  @Override
   public boolean dependsOn(Variable<D, R, F> variable)
   {
     return elements.stream().anyMatch(node -> node.dependsOn(variable));

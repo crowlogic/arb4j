@@ -28,23 +28,18 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Consumer<Consumer<Node<D, R, F>>>
 {
 
-  public abstract boolean
-         isScalar();
+  public abstract boolean isScalar();
 
-  public abstract Node<D, R, F>
-         integral(Variable<D, R, F> variable);
+  public abstract Node<D, R, F> integral(Variable<D, R, F> variable);
 
-  public abstract Node<D, R, F>
-         derivative(Variable<D, R, F> variable);
+  public abstract Node<D, R, F> derivative(Variable<D, R, F> variable);
 
-  public abstract List<? extends Node<D, R, F>>
-         getBranches();
+  public abstract List<? extends Node<D, R, F>> getBranches();
 
   /**
    * @return true if this node has any subnodes
    */
-  public abstract boolean
-         isLeaf();
+  public abstract boolean isLeaf();
 
   public Expression<D, R, F> expression;
 
@@ -55,14 +50,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     this.expression = expression;
   }
 
-  public abstract MethodVisitor
-         generate(Class<?> resultType,
-                  MethodVisitor mv);
+  public abstract MethodVisitor generate(Class<?> resultType, MethodVisitor mv);
 
   protected Class<?> generatedType;
 
-  public Class<?>
-         getGeneratedType()
+  public Class<?> getGeneratedType()
   {
     return generatedType;
   }
@@ -90,18 +82,15 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    *
    * @return true if the node this reusable, false otherwise.
    */
-  public abstract boolean
-         isReusable();
+  public abstract boolean isReusable();
 
-  public abstract MethodVisitor
-         prepareStackForReuse(MethodVisitor mv);
+  public abstract MethodVisitor prepareStackForReuse(MethodVisitor mv);
 
   /**
    * 
    * @return the {@link LaTeXAtom} string that represents this node
    */
-  public abstract String
-         typeset();
+  public abstract String typeset();
 
   /**
    * 
@@ -110,12 +99,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    *         {@link RealMatrix}, {@link ComplexMatrix}, {@link ComplexPolynomial},
    *         or {@link Integer}
    */
-  public abstract <C>
-         Class<? extends C>
-         type();
+  public abstract <C> Class<? extends C> type();
 
-  public abstract boolean
-         hasSingleLeaf();
+  public abstract boolean hasSingleLeaf();
 
   /**
    * TODOL Instantiates the target type instance then calls set on it with the
@@ -132,65 +118,56 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * @param type
    * @return
    */
-  public Class<?>
-         generateCastTo(MethodVisitor methodVisitor,
-                        Class<?> type)
+  public Class<?> generateCastTo(MethodVisitor methodVisitor, Class<?> type)
   {
     assert generatedType != null : "generatedType of " + this + " is null where this.class=" + getClass()
-                                   + " and casting to " + type + " is requested";
+                  + " and casting to " + type + " is requested";
     assert !generatedType.equals(type) : String.format("tried to cast from and to the same type %s\n",
                                                        generatedType);
-    checkClassCast(methodVisitor,
-                   generatedType);
-    expression.allocateIntermediateVariable(methodVisitor,
-                                            type);
+    checkClassCast(methodVisitor, generatedType);
+    expression.allocateIntermediateVariable(methodVisitor, type);
     Compiler.swap(methodVisitor);
-    invokeSetMethod(methodVisitor,
-                    generatedType,
-                    type);
+    invokeSetMethod(methodVisitor, generatedType, type);
     generatedType = type;
     return generatedType;
   }
 
-  public abstract <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String variable,
-                    Node<E, S, G> arg);
+  public abstract <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
+                                                                                                Node<E, S, G> arg);
 
-  public boolean
-         isVariable()
+  public boolean isVariable()
   {
     return false;
   }
 
-  public boolean
-         isVariableNamed(String variable)
+  public boolean isVariableNamed(String variable)
   {
-    return isVariable()
-           && asVariable().isNamed(variable);
+    return isVariable() && asVariable().isNamed(variable);
   }
 
   public abstract <E, S, G extends Function<? extends E, ? extends S>>
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression);
 
-  public Variable<D, R, F>
-         asVariable()
+  public Variable<D, R, F> asVariable()
   {
     assert isVariable() : this + " isn't a Variable";
     return (Variable<D, R, F>) this;
   }
 
-  public boolean
-         dependsOn(Variable<D, R, F> variable)
+  public boolean dependsOn(Variable<D, R, F> variable)
   {
     assert false : "TODO: implement in " + getClass();
     return false;
   }
 
-  public abstract char
-            symbol();
+  public abstract char symbol();
 
   public abstract boolean isConstant();
+
+  public int dim()
+  {
+    return 1;
+  }
 
 }
