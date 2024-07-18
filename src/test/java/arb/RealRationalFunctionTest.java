@@ -5,6 +5,7 @@ import static java.lang.System.out;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.functions.NullaryFunction;
 import arb.functions.real.RealRationalNullaryFunction;
 import arb.functions.sequences.Sequence;
 import junit.framework.TestCase;
@@ -274,20 +275,14 @@ public class RealRationalFunctionTest
     }
   }
 
-  public void testPow2()
+  public void testOneHalfMinusTwoOverX()
   {
-    var     expression = RealRationalNullaryFunction.express("W",
-                                                            "n->(1/2-2/x)*(1/2-2/x)",null);
-  //  System.out.println("f0=" + f0);
-   // double fzero = f0.eval(2.3);
-    //assertEquals( 1.2328429358099782, fzero );
-  //  System.out.println("f(2.3)=" + fzero);
-    
-   // ½-(2/x)    
-    System.out.println("W=" + expression );
-    RealRationalFunction eval = expression.evaluate(128);
-    System.out.println("W()="+eval);
-    assertEquals("(x^2-8x+16)/(4*x^2)",eval.value );
+    NullaryFunction<RealRationalFunction> nullularFunc = RealRationalNullaryFunction.express("1/2-2/x", null);
+
+    // ½-(2/x)
+    RealRationalFunction func = nullularFunc.evaluate(128);
+    double fval = func.eval(2.3);
+    assertEquals(-0.36956521739130443, fval);
   }
 
   public void testPow()
