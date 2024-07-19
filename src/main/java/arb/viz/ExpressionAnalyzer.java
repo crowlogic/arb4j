@@ -32,6 +32,7 @@ public class ExpressionAnalyzer
                                 Application
 {
 
+  @SuppressWarnings("resource")
   public static Expression<Integer, RealRationalFunction, Sequence<RealRationalFunction>> getExpression()
   {
 

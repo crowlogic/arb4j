@@ -4,6 +4,7 @@ import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.documentation.concepts.stochastic.KarhunenLoeveExpansion;
+import arb.expressions.Context;
 import arb.functions.real.RealFunction;
 
 /**
@@ -14,11 +15,14 @@ public class RealKarhunenLoeveExpansion<F extends RealFunction> implements
                                        KarhunenLoeveExpansion<Real, Real>
 {
 
-  private F f;
+  public F f;
 
+  public Context context;
+  
   public RealKarhunenLoeveExpansion(F f)
   {
     this.f = f;
+    this.context = new Context();
   }
 
   @Override

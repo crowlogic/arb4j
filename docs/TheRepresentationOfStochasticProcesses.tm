@@ -3,18 +3,23 @@
 <style|<tuple|generic|alt-colors|framed-theorems>>
 
 <\body>
-  <doc-data|<doc-title|Spectral Representations of Stochastic
-  Processes>|<doc-author|<author-data|<author-name|Stephen
+  <doc-data|<doc-title|Optimal Represention of Stationary Second Order
+  (Gaussian) Processes And Exact Determination of the Eigenvalues and
+  Eigenfunctions>|<doc-author|<author-data|<author-name|Stephen
   Crowley>|<\author-affiliation>
     <date|>
   </author-affiliation>>>>
 
   <abstract-data|<\abstract>
-    Most of the first two chapters of Roger<nbsp>G.<nbsp>Ghanem<localize| and
-    >Pol<nbsp>D.<nbsp>Spanos. <newblock><with|font-shape|italic|Stochastic
-    finite elements: a spectral approach> are covered and a method of
-    calculating the eigenfunctions and eigenvalues of any integral covariance
-    operator of a stationary process is detailed.
+    An alternative approach to solving for the eigenfunctions of stationary
+    Gaussian integral covariance operators to the Galerkin method described
+    in <newblock><with|font-shape|italic|Stochastic finite elements: a
+    spectral approach> is described and applied to a particular case of a
+    non-square-integrable kernel over an unbounded domains, essentially
+    providing an effective version of (the ineffective) Aranszajh's theorem,
+    at least for integral operators having stationary kernels. The technique
+    probably generalizes to non-stationary kernels vie the theory of weakly
+    and strongly harmonizable processes.\ 
   </abstract>>
 
   <\table-of-contents|toc>

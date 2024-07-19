@@ -63,17 +63,20 @@ public class RealRationalFunctionTest
 
   public void testLommelRationalFunctionSequence()
   {
-    Real                           v          = new Real().set(RealConstants.half).setName("v");
-    Context                        context    = new Context(v);
-    var                            expression = RealRationalFunction.parseSequence("R",
-                                                                                   "n->v₍ₙ₎/(z/2)ⁿ*pFq([½-n/2,-n/2],[v,-n,1-v-n],-(z²))",
-                                                                                   context);
-    Sequence<RealRationalFunction> f          = expression.instantiate();
-    RealRationalFunction           f0         = f.evaluate(3, 128);
-    System.out.println("f0=" + f0);
-    double fzero = f0.eval(2.3);
-    System.out.println("f(2.3)=" + fzero);
-    assertEquals(-1.3758527163639352346, fzero);
+    try ( Real v = new Real())
+    {
+      v.set(RealConstants.half).setName("v");
+      Context                        context    = new Context(v);
+      var                            expression = RealRationalFunction.parseSequence("R",
+                                                                                     "n->v₍ₙ₎/(z/2)ⁿ*pFq([½-n/2,-n/2],[v,-n,1-v-n],-(z²))",
+                                                                                     context);
+      Sequence<RealRationalFunction> f          = expression.instantiate();
+      RealRationalFunction           f0         = f.evaluate(3, 128);
+      System.out.println("f0=" + f0);
+      double fzero = f0.eval(2.3);
+      System.out.println("f(2.3)=" + fzero);
+      assertEquals(-1.3758527163639352346, fzero);
+    }
   }
 
   public void testReduce()
@@ -280,8 +283,8 @@ public class RealRationalFunctionTest
     NullaryFunction<RealRationalFunction> nullularFunc = RealRationalNullaryFunction.express("1/2-2/x", null);
 
     // ½-(2/x)
-    RealRationalFunction func = nullularFunc.evaluate(128);
-    double fval = func.eval(2.3);
+    RealRationalFunction                  func         = nullularFunc.evaluate(128);
+    double                                fval         = func.eval(2.3);
     assertEquals(-0.36956521739130443, fval);
   }
 
@@ -333,7 +336,8 @@ public class RealRationalFunctionTest
 
   public void testAscendingFactorialDividedByZOver2ToTheNth()
   {
-    Real                           v          = new Real().set(RealConstants.half).setName("v");
+    Real v = new Real();
+    v.set(RealConstants.half).setName("v");
     Context                        context    = new Context(v);
     var                            expression = RealRationalFunction.parseSequence("W", "n->v₍ₙ₎/(z/2)ⁿ", context);
     Sequence<RealRationalFunction> f          = expression.instantiate();

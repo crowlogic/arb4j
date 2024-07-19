@@ -15,11 +15,9 @@ import arb.Real;
 import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.exceptions.CompilerException;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
-import arb.functions.polynomials.quasi.QuasiPolynomial;
 import arb.functions.real.RealBesselFunctionOfTheFirstKind;
 
 /**

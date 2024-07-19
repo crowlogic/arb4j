@@ -189,7 +189,7 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
 
     if (!resultType.equals(generatedType))
     {
-      if (expression.trace)
+      if (Expression.trace)
       {
         System.err.format("generateCastTo(resultType=%s) from generatedType=%s\n", resultType, generatedType);
       }
