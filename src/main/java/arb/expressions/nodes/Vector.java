@@ -49,6 +49,7 @@ public class Vector<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   public ArrayList<Node<D, R, F>> elements = new ArrayList<>();
+  private String intermediateValueFieldName;
 
   public Vector(Expression<D, R, F> expression)
   {
@@ -110,7 +111,7 @@ public class Vector<D, R, F extends Function<? extends D, ? extends R>>
     }
     else
     {
-      expression.allocateIntermediateVariable(mv, "v", scalarType);
+      intermediateValueFieldName = expression.allocateIntermediateVariable(mv, "v", scalarType);
       Compiler.swap(mv);
       Compiler.invokeSetMethod(mv, scalarType.arrayType(), scalarType);
     }
@@ -239,6 +240,12 @@ public class Vector<D, R, F extends Function<? extends D, ? extends R>>
   public boolean isConstant()
   {
     return elements.stream().allMatch(Node::isConstant);
+  }
+
+  @Override
+  public String getIntermediateValueFieldName()
+  {
+    return intermediateValueFieldName;
   }
 
 }

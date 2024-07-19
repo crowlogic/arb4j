@@ -101,6 +101,11 @@ public class ExpressionAnalyzer
     TreeTableColumn<Node<?, ?, ?>, String> typesetCol = new TreeTableColumn<>("typeset()");
     typesetCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().typeset()));
 
+    TreeTableColumn<Node<?, ?, ?>, String> fieldCol = new TreeTableColumn<>("field");
+    fieldCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
+                                                                         .getValue()
+                                                                         .getIntermediateValueFieldName()));
+
     typesetCol.setCellFactory(new TypeSettingCellFactory());
 
     treeTableView.getColumns().addAll(nodeCol, isScalarCol, nodeTypeCol, nodeTypeResultCol, typesetCol);

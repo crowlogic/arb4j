@@ -127,6 +127,8 @@ public class Integral<D, R, F extends Function<? extends D, ? extends R>>
 
   FunctionMapping<R, R, Function<? extends R, ? extends R>> integralMapping;
 
+  private String                                            intermediateValueFieldName;
+
   protected void evaluateIntegral(MethodVisitor mv)
   {
     invokeMethod(mv, Type.getInternalName(Function.class), "evaluate", integralEvaluateMethodSignature, true);
@@ -155,7 +157,7 @@ public class Integral<D, R, F extends Function<? extends D, ? extends R>>
     }
     else
     {
-      expression.allocateIntermediateVariable(mv, "integralDifference", resultType);
+      intermediateValueFieldName = expression.allocateIntermediateVariable(mv, "integralDifference", resultType);
     }
 
     Compiler.invokeBinaryOperationMethod(mv, "sub", resultType, resultType, resultType);
@@ -314,6 +316,12 @@ public class Integral<D, R, F extends Function<? extends D, ? extends R>>
   public boolean isConstant()
   {
     return integrand.isConstant() && lowerLimit.isConstant() && upperLimit.isConstant();
+  }
+
+  @Override
+  public String getIntermediateValueFieldName()
+  {
+    return intermediateValueFieldName;
   }
 
 }

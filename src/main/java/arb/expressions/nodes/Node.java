@@ -170,4 +170,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return 1;
   }
 
+  public abstract String getIntermediateValueFieldName();
+
 }

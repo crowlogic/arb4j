@@ -138,4 +138,10 @@ public class Else<D, R, F extends Function<? extends D, ? extends R>> extends
     assert false : "maybe";
     return true;
   }
+
+  @Override
+  public String getIntermediateValueFieldName()
+  {
+    return null;
+  }
 }

@@ -1,6 +1,8 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
 
 import org.objectweb.asm.MethodVisitor;
 
@@ -14,7 +16,8 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class UnaryOperation<D, R, F extends Function<? extends D, ? extends R>> extends
+public abstract class UnaryOperation<D, R, F extends Function<? extends D, ? extends R>>
+                                    extends
                                     Node<D, R, F>
 {
   @Override
@@ -31,6 +34,7 @@ public abstract class UnaryOperation<D, R, F extends Function<? extends D, ? ext
   }
 
   public Node<D, R, F> arg;
+  private String       intermediateVariableFieldName;
 
   public UnaryOperation(Node<D, R, F> node, Expression<D, R, F> expression)
   {
@@ -56,8 +60,7 @@ public abstract class UnaryOperation<D, R, F extends Function<? extends D, ? ext
     return arg.generate(resultType, mv);
   }
 
-  public void loadOutputVariableOntoStack(MethodVisitor methodVisitor,
-                                          Class<?> resultType)
+  public void loadOutputVariableOntoStack(MethodVisitor methodVisitor, Class<?> resultType)
   {
     if (isResult)
     {
@@ -68,12 +71,19 @@ public abstract class UnaryOperation<D, R, F extends Function<? extends D, ? ext
       if (arg != null && arg.isReusable())
       {
         arg.prepareStackForReuse(methodVisitor);
+        intermediateVariableFieldName = "arg";
       }
       else
       {
-        expression.allocateIntermediateVariable(methodVisitor, resultType);
+        intermediateVariableFieldName = expression.allocateIntermediateVariable(methodVisitor, resultType);
       }
     }
 
+  }
+
+  @Override
+  public String getIntermediateValueFieldName()
+  {
+    return intermediateVariableFieldName;
   }
 }

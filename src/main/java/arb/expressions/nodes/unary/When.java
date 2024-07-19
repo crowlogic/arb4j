@@ -304,4 +304,10 @@ public class When<D, R, F extends Function<? extends D, ? extends R>>
     return cases.values().stream().allMatch(Node::isConstant) && arg.isConstant();
   }
 
+  @Override
+  public String getIntermediateValueFieldName()
+  {
+    return null;
+  }
+
 }

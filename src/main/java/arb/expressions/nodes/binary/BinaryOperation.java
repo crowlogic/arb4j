@@ -210,6 +210,8 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
 
   private String       symbol;
 
+  private String intermediateVariableFieldName;
+
   public Class<?> getGeneratedType()
   {
     return generatedType;
@@ -325,7 +327,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     }
     else
     {
-      expression.allocateIntermediateVariable(mv, resultType);
+      intermediateVariableFieldName = expression.allocateIntermediateVariable(mv, resultType);
       return true;
 
     }
@@ -465,4 +467,10 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
   }
 
   public abstract boolean isCommutative();
+
+  @Override
+  public String getIntermediateValueFieldName()
+  {
+    return intermediateVariableFieldName;
+  }
 }

@@ -380,4 +380,10 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
   {
     return true;
   }
+
+  @Override
+  public String getIntermediateValueFieldName()
+  {
+    return fieldName;
+  }
 }

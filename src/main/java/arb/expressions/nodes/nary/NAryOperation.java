@@ -805,4 +805,10 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>>
 
   }
 
+  @Override
+  public String getIntermediateValueFieldName()
+  {
+    return resultVariable;
+  }
+
 }
