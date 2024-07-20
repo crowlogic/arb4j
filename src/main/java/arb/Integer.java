@@ -28,11 +28,15 @@ import arb.documentation.TheArb4jLibrary;
 public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer>, Named
 {
 
-  public static Arena arena = Arena.ofAuto();
-
   static
   {
     System.loadLibrary("arblib");
+  }
+
+  public static Integer newVector(int dim)
+  {
+    Integer vec = new Integer((long) dim);
+    return vec;
   }
 
   public static Real factorial(Integer n, int bits, Real result)
@@ -90,6 +94,8 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
 
   public Integer        divisor;
 
+  private Arena         arena;
+
   public Integer()
   {
     init(1);
@@ -117,6 +123,11 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   {
     init();
     set(string);
+  }
+
+  public Integer(long dim2)
+  {
+    init((int) dim2);
   }
 
   public Integer add(int i)
@@ -195,20 +206,28 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   @Override
   public void close()
   {
-    if (elements != null && dim > 1)
+    if (arena != null)
     {
-      Arrays.stream(elements).forEach(Integer::close);
+      arena.close();
+      arena = null;
     }
     else
     {
-      delete();
-      if (remainder != null)
+      if (elements != null && dim > 1)
       {
-        remainder.close();
+        Arrays.stream(elements).forEach(Integer::close);
       }
-      if (divisor != null)
+      else
       {
-        divisor.close();
+        delete();
+        if (remainder != null)
+        {
+          remainder.close();
+        }
+        if (divisor != null)
+        {
+          divisor.close();
+        }
       }
     }
   }
@@ -257,8 +276,8 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   }
 
   /**
-   * Division, rounded to integer
-   * 
+   * Division, rounded to integer. If you want the remainder to be calculated, it
+   * must be non-null
    */
   @Override
   public Integer div(Integer operand, int prec, Integer result)
@@ -271,7 +290,10 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     {
       result.divisor = operand;
     }
-    arblib.fmpz_mod(result.remainder.swigCPtr, this.swigCPtr, operand.swigCPtr);
+    if (result.remainder != null)
+    {
+      arblib.fmpz_mod(result.remainder.swigCPtr, this.swigCPtr, operand.swigCPtr);
+    }
     arblib.fmpz_divexact(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
   }
@@ -434,7 +456,8 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
    */
   public Integer init(int n)
   {
-    nativeSegment = arena.allocate(Long.BYTES * dim);
+    arena         = Arena.ofConfined();
+    nativeSegment = arena.allocate(Long.BYTES * n);
     swigCPtr      = nativeSegment.address();
     arblib.fmpz_init2(swigCPtr, n);
     return this;
@@ -731,9 +754,19 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result.set(this).Γ(bits);
   }
 
-  public Integer add(Integer four, Integer seven)
+  public Integer add(Integer operand, Integer result)
   {
-    return add(four, 0, seven);
+    return add(operand, 0, result);
+  }
+
+  public Integer sub(Integer operand, Integer result)
+  {
+    return sub(operand, 0, result);
+  }
+
+  public Integer mul(Integer four, Integer result)
+  {
+    return mul(four, 0, result);
   }
 
 }

@@ -8,9 +8,63 @@ import junit.framework.TestCase;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class IntegerTest extends
+public class IntegerTest
+                         extends
                          TestCase
 {
+
+  public void testAdd()
+  {
+
+    try ( Integer three = new Integer(3); Integer four = new Integer(4); Integer seven = new Integer(7);)
+    {
+      three.add(four, seven);
+      assertEquals("7", seven.toString());
+    }
+  }
+
+  public void testSub()
+  {
+
+    try ( Integer three = new Integer(3); Integer four = new Integer(4); Integer result = new Integer(7);)
+    {
+      three.sub(four, result);
+      assertEquals("-1", result.toString());
+    }
+  }
+
+  public void testMul()
+  {
+
+    try ( Integer three = new Integer(3); Integer four = new Integer(4); Integer result = new Integer(7);)
+    {
+      three.mul(four, result);
+      assertEquals("12", result.toString());
+    }
+  }
+
+  public void testDiv()
+  {
+
+    try ( Integer three = new Integer(3); Integer four = new Integer(4); Integer result = new Integer(7);)
+    {
+      three.div(four, result);
+      assertEquals("0", result.toString());
+    }
+  }
+
+  public void testDivRemainder()
+  {
+
+    try ( Integer three = new Integer(3); Integer four = new Integer(4); Integer result = new Integer(7);)
+    {
+      result.remainder = new Integer();
+      three.div(four, result);
+      assertEquals("0", result.toString());
+      assertEquals("3", result.remainder.toString());
+
+    }
+  }
 
   public static void testRisingFactorial()
   {

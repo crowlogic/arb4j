@@ -1,5 +1,8 @@
 package arb;
 
+import static java.lang.System.out;
+
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import junit.framework.TestCase;
 
@@ -11,14 +14,10 @@ public class IntegerPolynomialTest
                                    extends
                                    TestCase
 {
-  public void testAdd()
-  { 
-
-    try ( Integer three = new Integer(3); Integer four = new Integer(4); Integer seven = new Integer(7); )
-    {
-      three.add(four,  seven);
-      assertEquals("7", seven.toString());
-      //p.add(p, p);
-    }
+  public void testAssertSimpleToString()
+  {
+    IntegerPolynomial p = new IntegerPolynomial();
+    p.set(3);
+    assertEquals("3",p.toString());
   }
 }

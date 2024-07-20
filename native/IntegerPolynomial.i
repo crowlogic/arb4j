@@ -16,6 +16,8 @@ import arb.algebra.Ring;
 %typemap(javacode) fmpz_poly_struct %{
   static { System.loadLibrary( "arblib" ); }
   
+  public IntegerPolynomial remainder;
+  
   @Override
   public String toString()
   {
@@ -29,6 +31,18 @@ import arb.algebra.Ring;
     return add(addend, 0, res);
   }
 
+  public IntegerPolynomial set(int i)
+  {
+    arblib.fmpz_poly_set_si(this, i);
+    return this;
+  }
+  
+  public IntegerPolynomial set(Integer i)
+  {
+    arblib.fmpz_poly_set_fmpz(this, i.swigCPtr);
+    return this;
+  }
+  
   public IntegerPolynomial(String str)
   {
     this();
