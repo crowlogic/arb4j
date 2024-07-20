@@ -36,6 +36,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   public static Integer newVector(int dim)
   {
     Integer vec = new Integer((long) dim);
+    vec.dim = dim;
     return vec;
   }
 
@@ -378,6 +379,11 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     {
       return this;
     }
+
+    if (elements == null)
+    {
+      elements = new Integer[dim];
+    }
     Integer element = elements[index];
     if (element == null)
     {
@@ -446,17 +452,28 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   }
 
   /**
-   * Sets this{@link #nativeSegment} by calling
-   * {@link MemorySegment#allocateNative(long, SegmentScope)} and passing
-   * this{@link #arena} as the second argument then calling
-   * {@link arblib#fmpz_init2(long, long)} on it
+   * Calls this{@link #initialize(Arena, int)} with {@link Arena#ofConfined()}
    * 
    * @param n
-   * @return this
+   * @return
    */
   public Integer init(int n)
   {
-    arena         = Arena.ofConfined();
+    return initialize(Arena.ofConfined(), n);
+  }
+
+  /**
+   * Sets this{@link #arena} and calls {@link Arena#allocate(long)} with the
+   * appropriate size and assigns the results to this{@link #swigCMemOwn}, sets
+   * this{@link #swigCPtr} then calls {@link arblib#fmpz_init2(long, long)} on it
+   * 
+   * @param newArena
+   * @param n
+   * @return
+   */
+  public Integer initialize(Arena newArena, int n)
+  {
+    arena         = newArena;
     nativeSegment = arena.allocate(Long.BYTES * n);
     swigCPtr      = nativeSegment.address();
     arblib.fmpz_init2(swigCPtr, n);
@@ -746,7 +763,26 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   @Override
   public String toString()
   {
-    return (name != null ? (name + "=") : "") + arblib.fmpz_get_str(null, 10, swigCPtr);
+    String nameStr = name != null ? (name + "=") : "";
+
+    if (dim > 1)
+    {
+      StringBuffer buf = new StringBuffer(nameStr + "[");
+      for (int i = 0; i < dim; i++)
+      {
+        if (i > 0)
+        {
+          buf.append(" ");
+        }
+        buf.append(arblib.fmpz_get_str(null, 10, elements[i].swigCPtr));
+      }
+      buf.append("]");
+      return buf.toString();
+    }
+    else
+    {
+      return nameStr + arblib.fmpz_get_str(null, 10, swigCPtr);
+    }
   }
 
   public Real Γ(int bits, Real result)

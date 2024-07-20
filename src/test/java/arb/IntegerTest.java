@@ -12,6 +12,21 @@ public class IntegerTest
                          extends
                          TestCase
 {
+  public void testVectorString()
+  {
+    try ( Integer v = Integer.newVector(3);)
+    {
+      Integer v0 = v.get(0);
+      Integer v1 = v.get(1);
+      Integer v2 = v.get(2);
+      v0.set(41);
+      v1.set(6);
+      v2.set(2);
+      assertEquals("[41 6 2]", v.toString());
+      v.setName("v");
+      assertEquals("v=[41 6 2]", v.toString());
+    }
+  }
 
   public void testAdd()
   {

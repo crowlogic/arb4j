@@ -20,4 +20,6 @@ public class IntegerPolynomialTest
     p.set(3);
     assertEquals("3",p.toString());
   }
+  
+  
 }

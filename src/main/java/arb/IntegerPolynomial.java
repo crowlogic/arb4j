@@ -88,9 +88,9 @@ public class IntegerPolynomial implements AutoCloseable,Ring<IntegerPolynomial> 
     {
       return false;
     }
-    IntegerPolynomial other = (IntegerPolynomial) obj;
+    IntegerPolynomial that = (IntegerPolynomial) obj;
 
-    return arblib.fmpz_poly_equal(this, other) != 0;
+    return arblib.fmpz_poly_equal(this, that) != 0;
   }
   
   public IntegerPolynomial add(IntegerPolynomial addend, int bits, IntegerPolynomial res)
