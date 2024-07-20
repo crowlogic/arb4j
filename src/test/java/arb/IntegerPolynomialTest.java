@@ -14,10 +14,10 @@ public class IntegerPolynomialTest
   public void testAdd()
   { 
 
-    try ( IntegerPolynomial p = new IntegerPolynomial(); Integer three = new Integer(3); )
+    try ( Integer three = new Integer(3); Integer four = new Integer(4); Integer seven = new Integer(7); )
     {
-      p.setCoeffsNative(three.swigCPtr);
-      assertEquals("3", three.toString());
+      three.add(four,  seven);
+      assertEquals("7", seven.toString());
       //p.add(p, p);
     }
   }

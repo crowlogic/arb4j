@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static String fmpz_poly_get_str_pretty(IntegerPolynomial poly, String x) {
+    return arblibJNI.fmpz_poly_get_str_pretty(IntegerPolynomial.getCPtr(poly), poly, x);
+  }
+
   public static void fmpz_poly_div(IntegerPolynomial Q, IntegerPolynomial A, IntegerPolynomial B) {
     arblibJNI.fmpz_poly_div(IntegerPolynomial.getCPtr(Q), Q, IntegerPolynomial.getCPtr(A), A, IntegerPolynomial.getCPtr(B), B);
   }

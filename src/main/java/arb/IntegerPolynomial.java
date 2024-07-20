@@ -13,11 +13,17 @@ import arb.documentation.TheArb4jLibrary;
 import arb.algebra.Ring;
  
 /**
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ * @see BstusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
 
 public class IntegerPolynomial implements AutoCloseable,Ring<IntegerPolynomial> {
+  @Override
+  public String toString()
+  {
+    return arblib.fmpz_poly_get_str_pretty(this, null);
+  }
+
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
@@ -48,6 +54,18 @@ public class IntegerPolynomial implements AutoCloseable,Ring<IntegerPolynomial> 
     return add(addend, 0, res);
   }
 
+  public IntegerPolynomial(String str)
+  {
+    this();
+    set(str);
+  }
+
+  public IntegerPolynomial set(String str)
+  {
+    arblib.fmpz_set_str(swigCPtr, str, 10);
+    return this;
+  }
+  
   @Override
   public boolean equals(Object obj)
   {

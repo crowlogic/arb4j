@@ -6,6 +6,8 @@
 #include <flint/fmpq.h>
 #include <flint/fmpz_poly.h>
 
+ char *fmpz_poly_get_str_pretty(const fmpz_poly_t poly, const char *x);
+
 void fmpz_poly_div(fmpz_poly_t Q, const fmpz_poly_t A,
                                                           const fmpz_poly_t B);
                                                           

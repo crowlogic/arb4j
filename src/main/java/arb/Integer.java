@@ -731,4 +731,9 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result.set(this).Γ(bits);
   }
 
+  public Integer add(Integer four, Integer seven)
+  {
+    return add(four, 0, seven);
+  }
+
 }
