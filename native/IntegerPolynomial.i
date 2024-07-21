@@ -114,9 +114,9 @@ import arb.algebra.Ring;
     return res;
   }
 
-  public IntegerPolynomial div(IntegerPolynomial four, IntegerPolynomial result)
+  public IntegerPolynomial div(IntegerPolynomial operand, IntegerPolynomial result)
   {
-    return div(four,0, result);
+    return div(operand,0, result);
   }
   
   public IntegerPolynomial mul(IntegerPolynomial operand, IntegerPolynomial result)
