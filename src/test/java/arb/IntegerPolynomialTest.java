@@ -21,5 +21,27 @@ public class IntegerPolynomialTest
     assertEquals("3",p.toString());
   }
   
+  public void testAdd()
+  {
+   assert false : "do"; 
+  }
+
+  public void testSub()
+  {
+    assert false : "do";     
+  }
+
+  
+  public void testMul()
+  {
+    assert false : "do";     
+  }
+
+  
+  public void testDiv()
+  {
+    assert false : "do";     
+  }
+
   
 }

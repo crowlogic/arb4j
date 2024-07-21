@@ -32,6 +32,14 @@ void fmpz_poly_add_fmpz(fmpz_poly_t res, const fmpz_poly_t poly, fmpz_t c);
 void fmpz_poly_sub_fmpz(fmpz_poly_t res, const fmpz_poly_t poly, fmpz_t c);
 void fmpz_poly_fmpz_sub(fmpz_poly_t res, fmpz_t c, const fmpz_poly_t poly);
 
+void fmpz_poly_set_coeff_si(fmpz_poly_t poly, slong n, slong x);
+void fmpz_poly_set_coeff_ui(fmpz_poly_t poly, slong n, ulong x);
+void fmpz_poly_set_coeff_fmpz(fmpz_poly_t poly, slong n, const fmpz_t x);
+
+void fmpz_poly_get_coeff_fmpz(fmpz_t x, const fmpz_poly_t poly, slong n);
+slong fmpz_poly_get_coeff_si(const fmpz_poly_t poly, slong n);
+ulong fmpz_poly_get_coeff_ui(const fmpz_poly_t poly, slong n);
+
 void fmpz_poly_set(fmpz_poly_t poly1, const fmpz_poly_t poly2);
 
 void fmpz_poly_set_ui(fmpz_poly_t poly, ulong c);

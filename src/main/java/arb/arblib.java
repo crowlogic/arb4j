@@ -61,6 +61,30 @@ public class arblib {
     arblibJNI.fmpz_poly_fmpz_sub(IntegerPolynomial.getCPtr(res), res, numCols, IntegerPolynomial.getCPtr(poly), poly);
   }
 
+  public static void fmpz_poly_set_coeff_si(IntegerPolynomial poly, int n, int x) {
+    arblibJNI.fmpz_poly_set_coeff_si(IntegerPolynomial.getCPtr(poly), poly, n, x);
+  }
+
+  public static void fmpz_poly_set_coeff_ui(IntegerPolynomial poly, int n, long x) {
+    arblibJNI.fmpz_poly_set_coeff_ui(IntegerPolynomial.getCPtr(poly), poly, n, x);
+  }
+
+  public static void fmpz_poly_set_coeff_fmpz(IntegerPolynomial poly, int n, long x) {
+    arblibJNI.fmpz_poly_set_coeff_fmpz(IntegerPolynomial.getCPtr(poly), poly, n, x);
+  }
+
+  public static void fmpz_poly_get_coeff_fmpz(long x, IntegerPolynomial poly, int n) {
+    arblibJNI.fmpz_poly_get_coeff_fmpz(x, IntegerPolynomial.getCPtr(poly), poly, n);
+  }
+
+  public static int fmpz_poly_get_coeff_si(IntegerPolynomial poly, int n) {
+    return arblibJNI.fmpz_poly_get_coeff_si(IntegerPolynomial.getCPtr(poly), poly, n);
+  }
+
+  public static long fmpz_poly_get_coeff_ui(IntegerPolynomial poly, int n) {
+    return arblibJNI.fmpz_poly_get_coeff_ui(IntegerPolynomial.getCPtr(poly), poly, n);
+  }
+
   public static void fmpz_poly_set(IntegerPolynomial poly1, IntegerPolynomial poly2) {
     arblibJNI.fmpz_poly_set(IntegerPolynomial.getCPtr(poly1), poly1, IntegerPolynomial.getCPtr(poly2), poly2);
   }
