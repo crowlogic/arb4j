@@ -140,6 +140,16 @@ public class IntegerPolynomial implements AutoCloseable,Ring<IntegerPolynomial> 
     return res;
   }
 
+  public IntegerPolynomial div(IntegerPolynomial four, IntegerPolynomial result)
+  {
+    return div(four,0, result);
+  }
+  
+  public IntegerPolynomial mul(IntegerPolynomial operand, IntegerPolynomial result)
+  {
+    return mul(operand, 0, result);
+  }  
+  
 
   public void setCoeffsNative(long value) {
     arblibJNI.IntegerPolynomial_coeffsNative_set(swigCPtr, this, value);
