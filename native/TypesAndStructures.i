@@ -40,12 +40,15 @@ typedef long int		mp_size_t;
 #ifndef size_t
 #define size_t long unsigned int
 #endif
+
+#define flint_bitcnt_t ulong
+
 %}
 
 typedef struct
 {
-    fmpz_poly_struct *num;
-    fmpz_poly_struct *den;
+    jlong num;
+    jlong den;
 }
 fmpz_poly_q_struct;
 

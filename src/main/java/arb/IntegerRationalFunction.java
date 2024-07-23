@@ -41,17 +41,16 @@ public class IntegerRationalFunction implements AutoCloseable {
   private IntegerPolynomial numerator;
   private IntegerPolynomial denominator;
 
- 
-  public IntegerPolynomial getDenominator()
+ public IntegerPolynomial getDenominator()
   {
     if (denominator == null)
     {
-      denominator = new IntegerPolynomial(swigCPtr + Long.BYTES,
+      denominator = new IntegerPolynomial(getLongDenominator(),
                                           false);
     }
     else
     {
-      denominator.swigCPtr = swigCPtr + Long.BYTES;
+      denominator.swigCPtr = getLongDenominator();
     }
     return denominator;
   }
@@ -60,38 +59,36 @@ public class IntegerRationalFunction implements AutoCloseable {
   {
     if (numerator == null)
     {
-      numerator = new IntegerPolynomial(swigCPtr,
+      numerator = new IntegerPolynomial(getLongNumerator(),
                                         false);
     }
     else
     {
-      numerator.swigCPtr = swigCPtr;
+      numerator.swigCPtr = getLongNumerator();
     }
     return numerator;
   }
-  
+    
   @Override
   public void close() 
   {
     delete();
   }  
 
-  public void setLongNumerator(IntegerPolynomial value) {
-    arblibJNI.IntegerRationalFunction_longNumerator_set(swigCPtr, this, IntegerPolynomial.getCPtr(value), value);
+  public void setLongNumerator(long value) {
+    arblibJNI.IntegerRationalFunction_longNumerator_set(swigCPtr, this, value);
   }
 
-  public IntegerPolynomial getLongNumerator() {
-    long cPtr = arblibJNI.IntegerRationalFunction_longNumerator_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new IntegerPolynomial(cPtr, false);
+  public long getLongNumerator() {
+    return arblibJNI.IntegerRationalFunction_longNumerator_get(swigCPtr, this);
   }
 
-  public void setLongDenominator(IntegerPolynomial value) {
-    arblibJNI.IntegerRationalFunction_longDenominator_set(swigCPtr, this, IntegerPolynomial.getCPtr(value), value);
+  public void setLongDenominator(long value) {
+    arblibJNI.IntegerRationalFunction_longDenominator_set(swigCPtr, this, value);
   }
 
-  public IntegerPolynomial getLongDenominator() {
-    long cPtr = arblibJNI.IntegerRationalFunction_longDenominator_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new IntegerPolynomial(cPtr, false);
+  public long getLongDenominator() {
+    return arblibJNI.IntegerRationalFunction_longDenominator_get(swigCPtr, this);
   }
 
   public IntegerRationalFunction() {

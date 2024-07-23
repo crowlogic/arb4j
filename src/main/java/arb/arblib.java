@@ -9,6 +9,34 @@
 package arb;
 
 public class arblib {
+  public static void fmpz_poly_q_canonicalise(IntegerRationalFunction rop) {
+    arblibJNI.fmpz_poly_q_canonicalise(IntegerRationalFunction.getCPtr(rop), rop);
+  }
+
+  public static int fmpz_poly_q_is_canonical(IntegerRationalFunction op) {
+    return arblibJNI.fmpz_poly_q_is_canonical(IntegerRationalFunction.getCPtr(op), op);
+  }
+
+  public static void fmpz_poly_q_init(IntegerRationalFunction rop) {
+    arblibJNI.fmpz_poly_q_init(IntegerRationalFunction.getCPtr(rop), rop);
+  }
+
+  public static void fmpz_poly_q_clear(IntegerRationalFunction rop) {
+    arblibJNI.fmpz_poly_q_clear(IntegerRationalFunction.getCPtr(rop), rop);
+  }
+
+  public static void fmpz_poly_q_set(IntegerRationalFunction rop, IntegerRationalFunction op) {
+    arblibJNI.fmpz_poly_q_set(IntegerRationalFunction.getCPtr(rop), rop, IntegerRationalFunction.getCPtr(op), op);
+  }
+
+  public static void fmpz_poly_q_set_si(IntegerRationalFunction rop, int op) {
+    arblibJNI.fmpz_poly_q_set_si(IntegerRationalFunction.getCPtr(rop), rop, op);
+  }
+
+  public static void fmpz_poly_q_swap(IntegerRationalFunction op1, IntegerRationalFunction op2) {
+    arblibJNI.fmpz_poly_q_swap(IntegerRationalFunction.getCPtr(op1), op1, IntegerRationalFunction.getCPtr(op2), op2);
+  }
+
   public static void fmpz_poly_divrem(IntegerPolynomial Q, IntegerPolynomial R, IntegerPolynomial A, IntegerPolynomial B) {
     arblibJNI.fmpz_poly_divrem(IntegerPolynomial.getCPtr(Q), Q, IntegerPolynomial.getCPtr(R), R, IntegerPolynomial.getCPtr(A), A, IntegerPolynomial.getCPtr(B), B);
   }

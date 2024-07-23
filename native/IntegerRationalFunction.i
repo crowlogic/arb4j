@@ -14,17 +14,16 @@ import java.util.Objects;
   private IntegerPolynomial numerator;
   private IntegerPolynomial denominator;
 
- 
-  public IntegerPolynomial getDenominator()
+ public IntegerPolynomial getDenominator()
   {
     if (denominator == null)
     {
-      denominator = new IntegerPolynomial(swigCPtr + Long.BYTES,
+      denominator = new IntegerPolynomial(getLongDenominator(),
                                           false);
     }
     else
     {
-      denominator.swigCPtr = swigCPtr + Long.BYTES;
+      denominator.swigCPtr = getLongDenominator();
     }
     return denominator;
   }
@@ -33,16 +32,16 @@ import java.util.Objects;
   {
     if (numerator == null)
     {
-      numerator = new IntegerPolynomial(swigCPtr,
+      numerator = new IntegerPolynomial(getLongNumerator(),
                                         false);
     }
     else
     {
-      numerator.swigCPtr = swigCPtr;
+      numerator.swigCPtr = getLongNumerator();
     }
     return numerator;
   }
-  
+    
   @Override
   public void close() 
   {

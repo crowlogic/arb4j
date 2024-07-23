@@ -9,6 +9,13 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void fmpz_poly_q_canonicalise(long jarg1, IntegerRationalFunction jarg1_);
+  public final static native int fmpz_poly_q_is_canonical(long jarg1, IntegerRationalFunction jarg1_);
+  public final static native void fmpz_poly_q_init(long jarg1, IntegerRationalFunction jarg1_);
+  public final static native void fmpz_poly_q_clear(long jarg1, IntegerRationalFunction jarg1_);
+  public final static native void fmpz_poly_q_set(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerRationalFunction jarg2_);
+  public final static native void fmpz_poly_q_set_si(long jarg1, IntegerRationalFunction jarg1_, int jarg2);
+  public final static native void fmpz_poly_q_swap(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerRationalFunction jarg2_);
   public final static native void fmpz_poly_divrem(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_, long jarg3, IntegerPolynomial jarg3_, long jarg4, IntegerPolynomial jarg4_);
   public final static native String fmpz_poly_get_str_pretty(long jarg1, IntegerPolynomial jarg1_, String jarg2);
   public final static native void fmpz_poly_div(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_, long jarg3, IntegerPolynomial jarg3_);
@@ -584,9 +591,9 @@ public class arblibJNI {
   public final static native void arb_asin(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_acos(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_atanh(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-  public final static native void IntegerRationalFunction_longNumerator_set(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerPolynomial jarg2_);
+  public final static native void IntegerRationalFunction_longNumerator_set(long jarg1, IntegerRationalFunction jarg1_, long jarg2);
   public final static native long IntegerRationalFunction_longNumerator_get(long jarg1, IntegerRationalFunction jarg1_);
-  public final static native void IntegerRationalFunction_longDenominator_set(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerPolynomial jarg2_);
+  public final static native void IntegerRationalFunction_longDenominator_set(long jarg1, IntegerRationalFunction jarg1_, long jarg2);
   public final static native long IntegerRationalFunction_longDenominator_get(long jarg1, IntegerRationalFunction jarg1_);
   public final static native long new_IntegerRationalFunction();
   public final static native void delete_IntegerRationalFunction(long jarg1);

@@ -5,6 +5,28 @@
 #include <arb_mat.h>
 #include <flint/fmpq.h>
 #include <flint/fmpz_poly.h>
+#include <flint/fmpz_poly_q.h>
+
+
+void fmpz_poly_q_canonicalise(fmpz_poly_q_t rop);
+
+int fmpz_poly_q_is_canonical(const fmpz_poly_q_t op);
+
+/* Memory management *********************************************************/
+
+void fmpz_poly_q_init(fmpz_poly_q_t rop);
+
+void fmpz_poly_q_clear(fmpz_poly_q_t rop);
+
+
+/* Assignment ****************************************************************/
+
+void fmpz_poly_q_set(fmpz_poly_q_t rop, const fmpz_poly_q_t op);
+
+void fmpz_poly_q_set_si(fmpz_poly_q_t rop, slong op);
+
+void fmpz_poly_q_swap(fmpz_poly_q_t op1, fmpz_poly_q_t op2);
+
 
 void fmpz_poly_divrem(fmpz_poly_t Q, fmpz_poly_t R,
                                      const fmpz_poly_t A, const fmpz_poly_t B);
