@@ -55,6 +55,7 @@ typedef unsigned long int mp_limb_t;
 %rename (numRows) r;
 %rename (numCols) c;
 
+%rename (IntegerRationalFunction) fmpz_poly_q_struct;
 %rename (IntegerPolynomial) fmpz_poly_struct;
 %rename (longDenominator) den;
 %rename (longNumerator) num;
@@ -168,6 +169,8 @@ typedef unsigned long int mp_limb_t;
 %include "RandomState.i"
 
 %include "Rational.i"
+
+%include "IntegerRationalFunction.i"
 
 %include "TypesAndStructures.i"
 

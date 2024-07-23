@@ -35,21 +35,6 @@ typedef mp_limb_t *   mp_ptr;
 typedef slong fmpz;
 typedef fmpz fmpz_t[1];
 
-
-/**
- fmpz is an arbitrary precision integer implemented as a signed 64bit integer. 
- When its second most significant bit is 0 fmpz represents an ordinary slong integer whose absolute value is at most FLINT_BITS - 2 bits.
- When the second most significant bit is 1 fmpz represents a pointer which is shifted right 2 bits and the second msb is set to 1 - 
- this relies on the fact that malloc always allocates memory blocks on a 4 or 8 byte boundary).
- msb=MostSiginificantBit
- 
- the maximum size integer that you can pass to the ARB library as a fmpz_t without it 
- being interpreted as a pointer is 2^62 - 1, since the second most significant bit is 
- reserved to indicate whether the fmpz_t value represents an ordinary slong integer or
-  a pointer to an arbitrary precision integer.
- 
- */
-
 typedef long int		mp_size_t;
 
 #ifndef size_t
@@ -57,6 +42,14 @@ typedef long int		mp_size_t;
 #endif
 %}
 
+typedef struct
+{
+    fmpz_poly_struct *num;
+    fmpz_poly_struct *den;
+}
+fmpz_poly_q_struct;
+
+typedef fmpz_poly_q_struct fmpz_poly_q_t[1];
 
 typedef struct
 {
@@ -78,7 +71,6 @@ fmpq;
 
 typedef fmpq fmpq_t[1];
 
-/* Available random number generation algorithms.  */
 typedef enum
 {
   GMP_RAND_ALG_DEFAULT = 0,
@@ -90,13 +82,14 @@ typedef enum
 /* Random state struct.  */
 typedef struct
 {
-  mpz_t _mp_seed;	      /* _mp_d member points to state of the generator. */
-  gmp_randalg_t _mp_alg;  /* Currently unused. */
+  mpz_t _mp_seed;	    
+  gmp_randalg_t _mp_alg;  
   union 
   {
-    void *_mp_lc;         /* Pointer to function pointers structure.  */
+    void *_mp_lc;         
   } _mp_algdata;
 } __gmp_randstate_struct;
+
 typedef __gmp_randstate_struct gmp_randstate_t[1];
 
 typedef struct

@@ -584,6 +584,12 @@ public class arblibJNI {
   public final static native void arb_asin(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_acos(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_atanh(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
+  public final static native void IntegerRationalFunction_longNumerator_set(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerPolynomial jarg2_);
+  public final static native long IntegerRationalFunction_longNumerator_get(long jarg1, IntegerRationalFunction jarg1_);
+  public final static native void IntegerRationalFunction_longDenominator_set(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerPolynomial jarg2_);
+  public final static native long IntegerRationalFunction_longDenominator_get(long jarg1, IntegerRationalFunction jarg1_);
+  public final static native long new_IntegerRationalFunction();
+  public final static native void delete_IntegerRationalFunction(long jarg1);
   public final static native void IntegerPolynomial_coeffsNative_set(long jarg1, IntegerPolynomial jarg1_, long jarg2);
   public final static native long IntegerPolynomial_coeffsNative_get(long jarg1, IntegerPolynomial jarg1_);
   public final static native void IntegerPolynomial_length_set(long jarg1, IntegerPolynomial jarg1_, int jarg2);
