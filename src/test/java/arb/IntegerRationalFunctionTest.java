@@ -17,9 +17,8 @@ public class IntegerRationalFunctionTest
   @SuppressWarnings("resource")
   public void testAdd()
   {
-    try ( IntegerRationalFunction three = new IntegerRationalFunction().set(3);
-          IntegerRationalFunction four = new IntegerRationalFunction().set(4);
-          IntegerRationalFunction seven = new IntegerRationalFunction().set(7);)
+    try ( var three = new IntegerRationalFunction().set(3); var four = new IntegerRationalFunction().set(4);
+          var seven = new IntegerRationalFunction().set(7);)
     {
       three.add(four, seven);
       assertEquals("7", seven.toString());
@@ -36,6 +35,41 @@ public class IntegerRationalFunctionTest
     assertEquals("0", numerator.toString());
     assertEquals("1", denominator.toString());
 
+  }
+
+  @SuppressWarnings("resource")
+  public void testSub()
+  {
+    try ( var a = new IntegerRationalFunction().set(10); var b = new IntegerRationalFunction().set(3);
+          var result = new IntegerRationalFunction();)
+    {
+      a.sub(b, 128, result);
+      assertEquals("7", result.toString());
+    }
+  }
+
+  @SuppressWarnings("resource")
+  public void testMul()
+  {
+
+    try ( var three = new IntegerRationalFunction().set(3); var four = new IntegerRationalFunction().set(4);
+          var result = new IntegerRationalFunction().set(7);)
+    {
+      three.mul(four, result);
+      assertEquals("12", result.toString());
+    }
+  }
+
+  @SuppressWarnings("resource")
+  public void testDiv()
+  {
+
+    try ( var three = new IntegerRationalFunction().set(3); var four = new IntegerRationalFunction().set(4);
+          var result = new IntegerRationalFunction().set(7);)
+    {
+      three.div(four, result);
+      assertEquals("0", result.toString());
+    }
   }
 
 }
