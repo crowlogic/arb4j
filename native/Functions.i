@@ -7,6 +7,47 @@
 #include <flint/fmpz_poly.h>
 #include <flint/fmpz_poly_q.h>
 
+char * fmpz_poly_q_get_str(const fmpz_poly_q_t op);
+char * fmpz_poly_q_get_str_pretty(const fmpz_poly_q_t op, const char *x);
+
+void fmpz_poly_q_add_in_place(fmpz_poly_q_t rop, const fmpz_poly_q_t op);
+void fmpz_poly_q_sub_in_place(fmpz_poly_q_t rop, const fmpz_poly_q_t op);
+
+void fmpz_poly_q_add(fmpz_poly_q_t rop, const fmpz_poly_q_t op1, const fmpz_poly_q_t op2);
+void fmpz_poly_q_sub(fmpz_poly_q_t rop, const fmpz_poly_q_t op1, const fmpz_poly_q_t op2);
+
+void fmpz_poly_q_addmul(fmpz_poly_q_t rop, const fmpz_poly_q_t op1, const fmpz_poly_q_t op2);
+void fmpz_poly_q_submul(fmpz_poly_q_t rop, const fmpz_poly_q_t op1, const fmpz_poly_q_t op2);
+
+/* Scalar multiplication and division ****************************************/
+
+void fmpz_poly_q_scalar_mul_si(fmpz_poly_q_t rop, const fmpz_poly_q_t op, slong x);
+void fmpz_poly_q_scalar_mul_fmpz(fmpz_poly_q_t rop, const fmpz_poly_q_t op, const fmpz_t x);
+void fmpz_poly_q_scalar_mul_fmpq(fmpz_poly_q_t rop, const fmpz_poly_q_t op, const fmpq_t x);
+
+void fmpz_poly_q_scalar_div_si(fmpz_poly_q_t rop, const fmpz_poly_q_t op, slong x);
+void fmpz_poly_q_scalar_div_fmpz(fmpz_poly_q_t rop, const fmpz_poly_q_t op, const fmpz_t x);
+void fmpz_poly_q_scalar_div_fmpq(fmpz_poly_q_t rop, const fmpz_poly_q_t op, const fmpq_t x);
+
+/* Multiplication and division ***********************************************/
+
+void fmpz_poly_q_mul(fmpz_poly_q_t rop,
+                     const fmpz_poly_q_t op1, const fmpz_poly_q_t op2);
+
+void fmpz_poly_q_div(fmpz_poly_q_t rop,
+                     const fmpz_poly_q_t op1, const fmpz_poly_q_t op2);
+
+/* Powering ******************************************************************/
+
+void fmpz_poly_q_pow(fmpz_poly_q_t rop, const fmpz_poly_q_t op, ulong exp);
+
+/* Derivative ****************************************************************/
+
+void fmpz_poly_q_derivative(fmpz_poly_q_t rop, const fmpz_poly_q_t op);
+
+/* Evaluation ****************************************************************/
+
+int fmpz_poly_q_evaluate_fmpq(fmpq_t rop, const fmpz_poly_q_t f, const fmpq_t a);
 
 void fmpz_poly_q_canonicalise(fmpz_poly_q_t rop);
 

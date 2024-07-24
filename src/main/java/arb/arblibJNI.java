@@ -9,6 +9,25 @@
 package arb;
 
 public class arblibJNI {
+  public final static native String fmpz_poly_q_get_str(long jarg1, IntegerRationalFunction jarg1_);
+  public final static native String fmpz_poly_q_get_str_pretty(long jarg1, IntegerRationalFunction jarg1_, String jarg2);
+  public final static native void fmpz_poly_q_add_in_place(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerRationalFunction jarg2_);
+  public final static native void fmpz_poly_q_sub_in_place(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerRationalFunction jarg2_);
+  public final static native void fmpz_poly_q_add(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerRationalFunction jarg2_, long jarg3, IntegerRationalFunction jarg3_);
+  public final static native void fmpz_poly_q_sub(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerRationalFunction jarg2_, long jarg3, IntegerRationalFunction jarg3_);
+  public final static native void fmpz_poly_q_addmul(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerRationalFunction jarg2_, long jarg3, IntegerRationalFunction jarg3_);
+  public final static native void fmpz_poly_q_submul(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerRationalFunction jarg2_, long jarg3, IntegerRationalFunction jarg3_);
+  public final static native void fmpz_poly_q_scalar_mul_si(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerRationalFunction jarg2_, int jarg3);
+  public final static native void fmpz_poly_q_scalar_mul_fmpz(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerRationalFunction jarg2_, long jarg3);
+  public final static native void fmpz_poly_q_scalar_mul_fmpq(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerRationalFunction jarg2_, long jarg3, Rational jarg3_);
+  public final static native void fmpz_poly_q_scalar_div_si(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerRationalFunction jarg2_, int jarg3);
+  public final static native void fmpz_poly_q_scalar_div_fmpz(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerRationalFunction jarg2_, long jarg3);
+  public final static native void fmpz_poly_q_scalar_div_fmpq(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerRationalFunction jarg2_, long jarg3, Rational jarg3_);
+  public final static native void fmpz_poly_q_mul(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerRationalFunction jarg2_, long jarg3, IntegerRationalFunction jarg3_);
+  public final static native void fmpz_poly_q_div(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerRationalFunction jarg2_, long jarg3, IntegerRationalFunction jarg3_);
+  public final static native void fmpz_poly_q_pow(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerRationalFunction jarg2_, long jarg3);
+  public final static native void fmpz_poly_q_derivative(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerRationalFunction jarg2_);
+  public final static native int fmpz_poly_q_evaluate_fmpq(long jarg1, Rational jarg1_, long jarg2, IntegerRationalFunction jarg2_, long jarg3, Rational jarg3_);
   public final static native void fmpz_poly_q_canonicalise(long jarg1, IntegerRationalFunction jarg1_);
   public final static native int fmpz_poly_q_is_canonical(long jarg1, IntegerRationalFunction jarg1_);
   public final static native void fmpz_poly_q_init(long jarg1, IntegerRationalFunction jarg1_);

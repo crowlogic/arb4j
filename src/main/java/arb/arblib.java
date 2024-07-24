@@ -9,6 +9,82 @@
 package arb;
 
 public class arblib {
+  public static String fmpz_poly_q_get_str(IntegerRationalFunction op) {
+    return arblibJNI.fmpz_poly_q_get_str(IntegerRationalFunction.getCPtr(op), op);
+  }
+
+  public static String fmpz_poly_q_get_str_pretty(IntegerRationalFunction op, String x) {
+    return arblibJNI.fmpz_poly_q_get_str_pretty(IntegerRationalFunction.getCPtr(op), op, x);
+  }
+
+  public static void fmpz_poly_q_add_in_place(IntegerRationalFunction rop, IntegerRationalFunction op) {
+    arblibJNI.fmpz_poly_q_add_in_place(IntegerRationalFunction.getCPtr(rop), rop, IntegerRationalFunction.getCPtr(op), op);
+  }
+
+  public static void fmpz_poly_q_sub_in_place(IntegerRationalFunction rop, IntegerRationalFunction op) {
+    arblibJNI.fmpz_poly_q_sub_in_place(IntegerRationalFunction.getCPtr(rop), rop, IntegerRationalFunction.getCPtr(op), op);
+  }
+
+  public static void fmpz_poly_q_add(IntegerRationalFunction rop, IntegerRationalFunction op1, IntegerRationalFunction op2) {
+    arblibJNI.fmpz_poly_q_add(IntegerRationalFunction.getCPtr(rop), rop, IntegerRationalFunction.getCPtr(op1), op1, IntegerRationalFunction.getCPtr(op2), op2);
+  }
+
+  public static void fmpz_poly_q_sub(IntegerRationalFunction rop, IntegerRationalFunction op1, IntegerRationalFunction op2) {
+    arblibJNI.fmpz_poly_q_sub(IntegerRationalFunction.getCPtr(rop), rop, IntegerRationalFunction.getCPtr(op1), op1, IntegerRationalFunction.getCPtr(op2), op2);
+  }
+
+  public static void fmpz_poly_q_addmul(IntegerRationalFunction rop, IntegerRationalFunction op1, IntegerRationalFunction op2) {
+    arblibJNI.fmpz_poly_q_addmul(IntegerRationalFunction.getCPtr(rop), rop, IntegerRationalFunction.getCPtr(op1), op1, IntegerRationalFunction.getCPtr(op2), op2);
+  }
+
+  public static void fmpz_poly_q_submul(IntegerRationalFunction rop, IntegerRationalFunction op1, IntegerRationalFunction op2) {
+    arblibJNI.fmpz_poly_q_submul(IntegerRationalFunction.getCPtr(rop), rop, IntegerRationalFunction.getCPtr(op1), op1, IntegerRationalFunction.getCPtr(op2), op2);
+  }
+
+  public static void fmpz_poly_q_scalar_mul_si(IntegerRationalFunction rop, IntegerRationalFunction op, int x) {
+    arblibJNI.fmpz_poly_q_scalar_mul_si(IntegerRationalFunction.getCPtr(rop), rop, IntegerRationalFunction.getCPtr(op), op, x);
+  }
+
+  public static void fmpz_poly_q_scalar_mul_fmpz(IntegerRationalFunction rop, IntegerRationalFunction op, long x) {
+    arblibJNI.fmpz_poly_q_scalar_mul_fmpz(IntegerRationalFunction.getCPtr(rop), rop, IntegerRationalFunction.getCPtr(op), op, x);
+  }
+
+  public static void fmpz_poly_q_scalar_mul_fmpq(IntegerRationalFunction rop, IntegerRationalFunction op, Rational x) {
+    arblibJNI.fmpz_poly_q_scalar_mul_fmpq(IntegerRationalFunction.getCPtr(rop), rop, IntegerRationalFunction.getCPtr(op), op, Rational.getCPtr(x), x);
+  }
+
+  public static void fmpz_poly_q_scalar_div_si(IntegerRationalFunction rop, IntegerRationalFunction op, int x) {
+    arblibJNI.fmpz_poly_q_scalar_div_si(IntegerRationalFunction.getCPtr(rop), rop, IntegerRationalFunction.getCPtr(op), op, x);
+  }
+
+  public static void fmpz_poly_q_scalar_div_fmpz(IntegerRationalFunction rop, IntegerRationalFunction op, long x) {
+    arblibJNI.fmpz_poly_q_scalar_div_fmpz(IntegerRationalFunction.getCPtr(rop), rop, IntegerRationalFunction.getCPtr(op), op, x);
+  }
+
+  public static void fmpz_poly_q_scalar_div_fmpq(IntegerRationalFunction rop, IntegerRationalFunction op, Rational x) {
+    arblibJNI.fmpz_poly_q_scalar_div_fmpq(IntegerRationalFunction.getCPtr(rop), rop, IntegerRationalFunction.getCPtr(op), op, Rational.getCPtr(x), x);
+  }
+
+  public static void fmpz_poly_q_mul(IntegerRationalFunction rop, IntegerRationalFunction op1, IntegerRationalFunction op2) {
+    arblibJNI.fmpz_poly_q_mul(IntegerRationalFunction.getCPtr(rop), rop, IntegerRationalFunction.getCPtr(op1), op1, IntegerRationalFunction.getCPtr(op2), op2);
+  }
+
+  public static void fmpz_poly_q_div(IntegerRationalFunction rop, IntegerRationalFunction op1, IntegerRationalFunction op2) {
+    arblibJNI.fmpz_poly_q_div(IntegerRationalFunction.getCPtr(rop), rop, IntegerRationalFunction.getCPtr(op1), op1, IntegerRationalFunction.getCPtr(op2), op2);
+  }
+
+  public static void fmpz_poly_q_pow(IntegerRationalFunction rop, IntegerRationalFunction op, long exp) {
+    arblibJNI.fmpz_poly_q_pow(IntegerRationalFunction.getCPtr(rop), rop, IntegerRationalFunction.getCPtr(op), op, exp);
+  }
+
+  public static void fmpz_poly_q_derivative(IntegerRationalFunction rop, IntegerRationalFunction op) {
+    arblibJNI.fmpz_poly_q_derivative(IntegerRationalFunction.getCPtr(rop), rop, IntegerRationalFunction.getCPtr(op), op);
+  }
+
+  public static int fmpz_poly_q_evaluate_fmpq(Rational rop, IntegerRationalFunction f, Rational a) {
+    return arblibJNI.fmpz_poly_q_evaluate_fmpq(Rational.getCPtr(rop), rop, IntegerRationalFunction.getCPtr(f), f, Rational.getCPtr(a), a);
+  }
+
   public static void fmpz_poly_q_canonicalise(IntegerRationalFunction rop) {
     arblibJNI.fmpz_poly_q_canonicalise(IntegerRationalFunction.getCPtr(rop), rop);
   }

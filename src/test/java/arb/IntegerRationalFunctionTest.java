@@ -14,6 +14,18 @@ public class IntegerRationalFunctionTest
                                          TestCase
 {
 
+  @SuppressWarnings("resource")
+  public void testAdd()
+  {
+    try ( IntegerRationalFunction three = new IntegerRationalFunction().set(3);
+          IntegerRationalFunction four = new IntegerRationalFunction().set(4);
+          IntegerRationalFunction seven = new IntegerRationalFunction().set(7);)
+    {
+      three.add(four, seven);
+      assertEquals("7", seven.toString());
+    }
+  }
+
   public void testInitAndToString()
   {
     IntegerRationalFunction f = new IntegerRationalFunction();

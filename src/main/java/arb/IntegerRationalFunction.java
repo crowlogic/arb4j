@@ -38,10 +38,23 @@ public class IntegerRationalFunction implements AutoCloseable,Field<IntegerRatio
     System.loadLibrary("arblib");
   }
 
+  public IntegerRationalFunction init()
+  {
+    arblib.fmpz_poly_q_init(this);
+    return this;    
+  }
+  
+  public IntegerRationalFunction set(int i)
+  {
+    arblib.fmpz_poly_q_set_si(this, i);
+    return this;
+  }
+  
   public IntegerPolynomial numerator;
+ 
   public IntegerPolynomial denominator;
 
- public IntegerPolynomial getDenominator()
+  public IntegerPolynomial getDenominator()
   {
     if (denominator == null)
     {
@@ -88,7 +101,13 @@ public class IntegerRationalFunction implements AutoCloseable,Field<IntegerRatio
     assert false : "TODO";
     return null;
   }
-
+  
+  @Override
+  public String toString()
+  {
+    return arblib.fmpz_poly_q_get_str_pretty(this, null);
+  }
+  
   @Override
   public IntegerRationalFunction multiplicativeIdentity()
   {
@@ -99,8 +118,8 @@ public class IntegerRationalFunction implements AutoCloseable,Field<IntegerRatio
   @Override
   public IntegerRationalFunction add(IntegerRationalFunction element, int prec, IntegerRationalFunction result)
   {
-    assert false : "TODO";
-    return null;
+    arblib.fmpz_poly_q_add(result, this, element);
+    return result;
   }
 
   public int bits = 128;
@@ -134,6 +153,7 @@ public class IntegerRationalFunction implements AutoCloseable,Field<IntegerRatio
   @Override
   public IntegerRationalFunction get(int index)
   {
+  
     assert false : "TODO";
     return null;
   }
@@ -204,8 +224,11 @@ public class IntegerRationalFunction implements AutoCloseable,Field<IntegerRatio
     return arblibJNI.IntegerRationalFunction_longDenominator_get(swigCPtr, this);
   }
 
-  public IntegerRationalFunction() {
+  public IntegerRationalFunction() 
+  {
     this(arblibJNI.new_IntegerRationalFunction(), true);
+    init();
   }
+
 
 }
