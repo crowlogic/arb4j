@@ -22,7 +22,6 @@ import arb.expressions.nodes.binary.Multiplication;
 public interface Field<X extends Field<X>> extends
                       AutoCloseable,
                       Closeable,
-                      Comparable<X>,
                       Iterable<X>,
                       Ring<X>,
                       Named
