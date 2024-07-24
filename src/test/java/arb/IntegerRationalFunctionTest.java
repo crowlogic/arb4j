@@ -28,13 +28,11 @@ public class IntegerRationalFunctionTest
 
   public void testInitAndToString()
   {
-    IntegerRationalFunction f = new IntegerRationalFunction();
+    IntegerRationalFunction f           = new IntegerRationalFunction();
 
-    arblib.fmpz_poly_q_init(f);
+    IntegerPolynomial       numerator   = f.getNumerator();
 
-    IntegerPolynomial numerator   = f.getNumerator();
-
-    IntegerPolynomial denominator = f.getDenominator();
+    IntegerPolynomial       denominator = f.getDenominator();
     assertEquals("0", numerator.toString());
     assertEquals("1", denominator.toString());
 
