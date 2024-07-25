@@ -8,12 +8,12 @@ import junit.framework.TestCase;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RationalTest extends
+public class FractionTest extends
                           TestCase
 {
   public void testAdd()
   {
-    try ( Rational a = new Rational(); Rational b = new Rational(); Rational c = new Rational())
+    try ( Fraction a = new Fraction(); Fraction b = new Fraction(); Fraction c = new Fraction())
     {
 
       a.getDenominator().set(10);
@@ -31,7 +31,7 @@ public class RationalTest extends
 
   public void testToAndFromStringAndAddingIntegersToNumeratorAndDenominator()
   {
-    try ( Rational r = new Rational())
+    try ( Fraction r = new Fraction())
     {
       r.set("34/23");
       assertEquals(34, r.getNumerator().getSignedValue());

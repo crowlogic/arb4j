@@ -1,6 +1,6 @@
 package arb.expressions;
 
-import arb.RealRationalFunction;
+import arb.RationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealRationalNullaryFunction;
@@ -11,12 +11,12 @@ import arb.functions.real.RealRationalNullaryFunction;
  */
 public class RealRationalNullaryExpression
                                            extends
-                                           Expression<Object, RealRationalFunction, RealRationalNullaryFunction>
+                                           Expression<Object, RationalFunction, RealRationalNullaryFunction>
 {
 
   public RealRationalNullaryExpression(String className,
                                        Class<? extends Object> class1,
-                                       Class<? extends RealRationalFunction> class2,
+                                       Class<? extends RationalFunction> class2,
                                        Class<? extends RealRationalNullaryFunction> class3,
                                        String expression,
                                        Context context,
@@ -35,7 +35,7 @@ public class RealRationalNullaryExpression
 
   public RealRationalNullaryExpression(String className,
                                        Class<? extends Object> domainClass,
-                                       Class<? extends RealRationalFunction> coDomainClass,
+                                       Class<? extends RationalFunction> coDomainClass,
                                        Class<? extends RealRationalNullaryFunction> functionClass,
                                        String expressionString,
                                        Context context)

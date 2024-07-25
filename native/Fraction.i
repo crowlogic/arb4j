@@ -26,42 +26,42 @@ import java.util.Objects;
       return false;
     }
     if (!obj.getClass()
-            .isAssignableFrom(Rational.class))
+            .isAssignableFrom(Fraction.class))
     {
       return false;
     }
-    Rational that = (Rational) obj;
+    Fraction that = (Fraction) obj;
     return arblib.fmpq_equal(this, that) != 0;
   }
     
   private Integer numerator;
   private Integer denominator;
 
-  public Rational add(Rational that, Rational result)
+  public Fraction add(Fraction that, Fraction result)
   {
     arblib.fmpq_add(result, this, that);
     return result;
   }
 
-  public Rational sub(Rational that, Rational result)
+  public Fraction sub(Fraction that, Fraction result)
   {
     arblib.fmpq_sub(result, this, that);
     return result;
   }
 
-  public Rational mul(Rational that, Rational result)
+  public Fraction mul(Fraction that, Fraction result)
   {
     arblib.fmpq_mul(result, this, that);
     return result;
   }
 
-  public Rational div(Rational that, Rational result)
+  public Fraction div(Fraction that, Fraction result)
   {
     arblib.fmpq_div(result, this, that);
     return result;
   }
 
-  public Rational set(String str)
+  public Fraction set(String str)
   {
     arblib.fmpq_set_str(this, str, 10);
     return this;
@@ -71,7 +71,7 @@ import java.util.Objects;
   {
     return arblib.fmpq_get_str(null, 10,this);
   }
-  public Rational one()
+  public Fraction one()
   {
     arblib.fmpq_one(this);
     return this;

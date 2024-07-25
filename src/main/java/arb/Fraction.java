@@ -10,16 +10,16 @@ package arb;
 
 import java.util.Objects;
 
-public class Rational implements AutoCloseable {
+public class Fraction implements AutoCloseable {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  public Rational(long cPtr, boolean cMemoryOwn) {
+  public Fraction(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
-  public static long getCPtr(Rational obj) {
+  public static long getCPtr(Fraction obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
@@ -27,7 +27,7 @@ public class Rational implements AutoCloseable {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
         swigCMemOwn = false;
-        arblibJNI.delete_Rational(swigCPtr);
+        arblibJNI.delete_Fraction(swigCPtr);
       }
       swigCPtr = 0;
     }
@@ -54,42 +54,42 @@ public class Rational implements AutoCloseable {
       return false;
     }
     if (!obj.getClass()
-            .isAssignableFrom(Rational.class))
+            .isAssignableFrom(Fraction.class))
     {
       return false;
     }
-    Rational that = (Rational) obj;
+    Fraction that = (Fraction) obj;
     return arblib.fmpq_equal(this, that) != 0;
   }
     
   private Integer numerator;
   private Integer denominator;
 
-  public Rational add(Rational that, Rational result)
+  public Fraction add(Fraction that, Fraction result)
   {
     arblib.fmpq_add(result, this, that);
     return result;
   }
 
-  public Rational sub(Rational that, Rational result)
+  public Fraction sub(Fraction that, Fraction result)
   {
     arblib.fmpq_sub(result, this, that);
     return result;
   }
 
-  public Rational mul(Rational that, Rational result)
+  public Fraction mul(Fraction that, Fraction result)
   {
     arblib.fmpq_mul(result, this, that);
     return result;
   }
 
-  public Rational div(Rational that, Rational result)
+  public Fraction div(Fraction that, Fraction result)
   {
     arblib.fmpq_div(result, this, that);
     return result;
   }
 
-  public Rational set(String str)
+  public Fraction set(String str)
   {
     arblib.fmpq_set_str(this, str, 10);
     return this;
@@ -99,7 +99,7 @@ public class Rational implements AutoCloseable {
   {
     return arblib.fmpq_get_str(null, 10,this);
   }
-  public Rational one()
+  public Fraction one()
   {
     arblib.fmpq_one(this);
     return this;
@@ -140,23 +140,23 @@ public class Rational implements AutoCloseable {
   }  
 
   public void setLongNumerator(long value) {
-    arblibJNI.Rational_longNumerator_set(swigCPtr, this, value);
+    arblibJNI.Fraction_longNumerator_set(swigCPtr, this, value);
   }
 
   public long getLongNumerator() {
-    return arblibJNI.Rational_longNumerator_get(swigCPtr, this);
+    return arblibJNI.Fraction_longNumerator_get(swigCPtr, this);
   }
 
   public void setLongDenominator(long value) {
-    arblibJNI.Rational_longDenominator_set(swigCPtr, this, value);
+    arblibJNI.Fraction_longDenominator_set(swigCPtr, this, value);
   }
 
   public long getLongDenominator() {
-    return arblibJNI.Rational_longDenominator_get(swigCPtr, this);
+    return arblibJNI.Fraction_longDenominator_get(swigCPtr, this);
   }
 
-  public Rational() {
-    this(arblibJNI.new_Rational(), true);
+  public Fraction() {
+    this(arblibJNI.new_Fraction(), true);
   }
 
 }

@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 
 import arb.Integer;
 import arb.Real;
-import arb.RealRationalFunction;
+import arb.RationalFunction;
 import arb.Verifiable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -81,7 +81,7 @@ public class RealRationalHypergeometricFunction implements RealRationalNullaryFu
 
   public RealRationalHypergeometricFunction(int p,
                                             int q,
-                                            Expression<Object, RealRationalFunction, RealRationalNullaryFunction> arg)
+                                            Expression<Object, RationalFunction, RealRationalNullaryFunction> arg)
   {
     this(Real.newVector(p),
          Real.newVector(q),
@@ -90,7 +90,7 @@ public class RealRationalHypergeometricFunction implements RealRationalNullaryFu
 
   public RealRationalHypergeometricFunction(Real α,
                                             Real β,
-                                            Expression<Object, RealRationalFunction, RealRationalNullaryFunction> arg)
+                                            Expression<Object, RationalFunction, RealRationalNullaryFunction> arg)
   {
     this.α  = α;
     this.β  = β;
@@ -129,7 +129,7 @@ public class RealRationalHypergeometricFunction implements RealRationalNullaryFu
   }
 
   @Override
-  public RealRationalFunction evaluate(Object nullary, int order, int bits, RealRationalFunction res)
+  public RationalFunction evaluate(Object nullary, int order, int bits, RationalFunction res)
   {
     if (!initialized)
     {

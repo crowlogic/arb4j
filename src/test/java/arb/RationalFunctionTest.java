@@ -9,16 +9,16 @@ import junit.framework.TestCase;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class IntegerRationalFunctionTest
-                                         extends
-                                         TestCase
+public class RationalFunctionTest
+                                  extends
+                                  TestCase
 {
 
   @SuppressWarnings("resource")
   public void testAdd()
   {
-    try ( var three = new IntegerRationalFunction().set(3); var four = new IntegerRationalFunction().set(4);
-          var seven = new IntegerRationalFunction().set(7);)
+    try ( var three = new RationalFunction().set(3); var four = new RationalFunction().set(4);
+          var seven = new RationalFunction().set(7);)
     {
       three.add(four, seven);
       assertEquals("7", seven.toString());
@@ -27,11 +27,11 @@ public class IntegerRationalFunctionTest
 
   public void testInitAndToString()
   {
-    IntegerRationalFunction f           = new IntegerRationalFunction();
+    var f           = new RationalFunction();
 
-    IntegerPolynomial       numerator   = f.getNumerator();
+    var numerator   = f.getNumerator();
 
-    IntegerPolynomial       denominator = f.getDenominator();
+    var denominator = f.getDenominator();
     assertEquals("0", numerator.toString());
     assertEquals("1", denominator.toString());
 
@@ -40,8 +40,8 @@ public class IntegerRationalFunctionTest
   @SuppressWarnings("resource")
   public void testSub()
   {
-    try ( var a = new IntegerRationalFunction().set(10); var b = new IntegerRationalFunction().set(3);
-          var result = new IntegerRationalFunction();)
+    try ( var a = new RationalFunction().set(10); var b = new RationalFunction().set(3);
+          var result = new RationalFunction();)
     {
       a.sub(b, 128, result);
       assertEquals("7", result.toString());
@@ -52,8 +52,8 @@ public class IntegerRationalFunctionTest
   public void testMul()
   {
 
-    try ( var three = new IntegerRationalFunction().set(3); var four = new IntegerRationalFunction().set(4);
-          var result = new IntegerRationalFunction().set(7);)
+    try ( var three = new RationalFunction().set(3); var four = new RationalFunction().set(4);
+          var result = new RationalFunction().set(7);)
     {
       three.mul(four, result);
       assertEquals("12", result.toString());
@@ -64,8 +64,8 @@ public class IntegerRationalFunctionTest
   public void testDiv()
   {
 
-    try ( var three = new IntegerRationalFunction().set(3); var four = new IntegerRationalFunction().set(4);
-          var result = new IntegerRationalFunction().set(7);)
+    try ( var three = new RationalFunction().set(3); var four = new RationalFunction().set(4);
+          var result = new RationalFunction().set(7);)
     {
       three.div(four, result);
       assertEquals("3/4", result.toString());

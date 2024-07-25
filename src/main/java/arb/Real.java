@@ -183,7 +183,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
 
   static { System.loadLibrary( "arblib" ); }
 
-  public RealRationalFunction mul(RealRationalFunction a, int bits, RealRationalFunction result)
+  public RationalFunction mul(RationalFunction a, int bits, RationalFunction result)
   {
     return a.mul(this, bits, result);
   }
@@ -409,7 +409,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
    * @param result
    * @return
    */
-  public RealRationalFunction ascendingFactorial(Integer power, int bits, RealRationalFunction result)
+  public RationalFunction ascendingFactorial(Integer power, int bits, RationalFunction result)
   {
     try ( Real tmp = new Real())
     {
@@ -418,7 +418,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     }
   }
   
-  public RealRationalFunction div(RealRationalFunction unit, int bits, RealRationalFunction result )
+  public RationalFunction div(RationalFunction unit, int bits, RationalFunction result )
   {
     assert bits > 0;
     result.set(this);
@@ -513,7 +513,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     return new Real(string,bits);
   }
 
-  public RealRationalFunction sub(RealRationalFunction operand, int bits, RealRationalFunction result)
+  public RationalFunction sub(RationalFunction operand, int bits, RationalFunction result)
   {
     return result.set(this).sub(operand,bits,result);
   }

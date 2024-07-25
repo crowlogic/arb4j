@@ -316,7 +316,7 @@ public class Compiler
     typePrefixes.put(ComplexPolynomial.class, "Xℂ");
     typePrefixes.put(RealMatrix.class, "ℝᵐˣⁿ");
     typePrefixes.put(ComplexMatrix.class, "ℂᵐˣⁿ");
-    typePrefixes.put(RealRationalFunction.class, "fℝ");
+    typePrefixes.put(RationalFunction.class, "fℝ");
     typePrefixes.put(ComplexQuasiPolynomial.class, "qXℂ");
   }
 
@@ -637,7 +637,7 @@ public class Compiler
     realScalarTypes.addAll(Arrays.asList(Real.class,
                                          RealPolynomial.class,
                                          RealMatrix.class,
-                                         RealRationalFunction.class));
+                                         RationalFunction.class));
     complexScalarTypes.addAll(Arrays.asList(Complex.class,
                                             ComplexPolynomial.class,
                                             ComplexMatrix.class,

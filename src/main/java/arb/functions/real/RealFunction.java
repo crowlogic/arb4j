@@ -99,6 +99,18 @@ public interface RealFunction extends Function<Real, Real>
                           null);
   }
 
+  public static Expression<Real, Real, RealFunction> parse(String expression, Context context)
+  {
+    return Function.parse(Parser.expressionToUniqueClassname(expression),
+                          expression,
+                          context,
+                          Real.class,
+                          Real.class,
+                          RealFunction.class,
+                          null,
+                          null);
+  }
+
   public default RealFunction add(RealFunction that)
   {
     return new RealFunction()

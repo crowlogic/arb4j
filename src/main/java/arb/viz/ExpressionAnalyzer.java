@@ -3,11 +3,12 @@ package arb.viz;
 import arb.Integer;
 import arb.Real;
 import arb.RealConstants;
-import arb.RealRationalFunction;
+import arb.RationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
+import arb.functions.real.RealFunction;
 import arb.functions.sequences.Sequence;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -33,12 +34,12 @@ public class ExpressionAnalyzer
 {
 
   @SuppressWarnings("resource")
-  public static Expression<Integer, RealRationalFunction, Sequence<RealRationalFunction>> getExpression()
+  public static Expression<?,?,?> getExpression()
   {
 
     Real    v       = new Real().set(RealConstants.half).setName("v");
     Context context = new Context(v);
-    return RealRationalFunction.parseSequence("Ψ", "n->v₍ₙ₎/(z/2)ⁿ*pFq([½-n/2,-n/2],[v,-n,1-v-n],-(z²))", context);
+    return RealFunction.parse("n->v₍ₙ₎/(z/2)ⁿ*pFq([½-n/2,-n/2],[v,-n,1-v-n],-(z²))", context);
   }
 
   public void expandTreeView(TreeItem<?> item)

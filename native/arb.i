@@ -55,11 +55,11 @@ typedef unsigned long int mp_limb_t;
 %rename (numRows) r;
 %rename (numCols) c;
 
-%rename (IntegerRationalFunction) fmpz_poly_q_struct;
+%rename (RationalFunction) fmpz_poly_q_struct;
 %rename (IntegerPolynomial) fmpz_poly_struct;
 %rename (longDenominator) den;
 %rename (longNumerator) num;
-%rename (Rational) fmpq;
+%rename (Fraction) fmpq;
 %rename (rowPointers) rows;
 %rename (initialValue) gmp_init;
 %rename (gmpRandomState) gmp_state;
@@ -168,9 +168,9 @@ typedef unsigned long int mp_limb_t;
 
 %include "RandomState.i"
 
-%include "Rational.i"
+%include "Fraction.i"
 
-%include "IntegerRationalFunction.i"
+%include "RationalFunction.i"
 
 %include "TypesAndStructures.i"
 

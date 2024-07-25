@@ -58,12 +58,12 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result;
   }
 
-  public RealRationalFunction div(RealRationalFunction operand, int prec, RealRationalFunction result)
+  public RationalFunction div(RationalFunction operand, int prec, RationalFunction result)
   {
     return result.set(this).div(operand, prec);
   }
 
-  public RealRationalFunction mul(RealRationalFunction operand, int prec, RealRationalFunction result)
+  public RationalFunction mul(RationalFunction operand, int prec, RationalFunction result)
   {
     return result.set(this).mul(operand, prec);
   }
@@ -166,7 +166,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result;
   }
 
-  public RealRationalFunction add(Real addend, int bits, RealRationalFunction result)
+  public RationalFunction add(Real addend, int bits, RationalFunction result)
   {
     try ( Real tmp = new Real())
     {
@@ -578,14 +578,10 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result.set(this).neg();
   }
 
-  public RealRationalFunction neg(RealRationalFunction res)
+  public RationalFunction neg(RationalFunction res)
   {
     res.set(this);
-    res.value.neg();
-    if (res.value.remainder != null)
-    {
-      res.value.remainder.neg();
-    }
+    res.neg();  
     return res;
   }
 

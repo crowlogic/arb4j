@@ -3,7 +3,7 @@ package arb.functions.polynomials;
 import java.util.stream.Stream;
 
 import arb.Initializable;
-import arb.Rational;
+import arb.Fraction;
 import arb.Real;
 import arb.RealConstants;
 import arb.documentation.Bibliography;
@@ -19,7 +19,7 @@ import arb.functions.real.RealFunction;
 /**
  * The modified Lommel polynomials R_{v,n}(z) of order v are the expansion of
  * the reciprocal 1/z. The "Lommel Polynomials" are technically not polynomials
- * but actually {@link Rational} functions
+ * but actually {@link Fraction} functions
  * 
  * <pre>
  * R_{v,n}(z) = pochhammer(v,m)*2^m*(1/z)^(-m)*hypergeom([-1/2*m, 1/2-1/2*m],[v, -m, 1-v-m],-1/z^2)

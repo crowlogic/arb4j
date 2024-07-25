@@ -7,6 +7,11 @@
 #include <flint/fmpz_poly.h>
 #include <flint/fmpz_poly_q.h>
 
+void fmpz_poly_q_inv(fmpz_poly_q_t rop, const fmpz_poly_q_t op);
+int fmpz_poly_q_equal(const fmpz_poly_q_t op1, const fmpz_poly_q_t op2);
+int fmpz_poly_q_is_one(const fmpz_poly_q_t op);
+int fmpz_poly_q_is_zero(const fmpz_poly_q_t op);
+
 void fmpz_poly_q_zero(fmpz_poly_q_t rop);
 void fmpz_poly_q_one(fmpz_poly_q_t rop);
 
@@ -46,6 +51,7 @@ void fmpz_poly_q_pow(fmpz_poly_q_t rop, const fmpz_poly_q_t op, ulong exp);
 
 /* Derivative ****************************************************************/
 
+
 void fmpz_poly_q_derivative(fmpz_poly_q_t rop, const fmpz_poly_q_t op);
 
 /* Evaluation ****************************************************************/
@@ -64,6 +70,8 @@ void fmpz_poly_q_clear(fmpz_poly_q_t rop);
 
 
 /* Assignment ****************************************************************/
+
+void fmpz_poly_q_neg(fmpz_poly_q_t rop, const fmpz_poly_q_t op);
 
 void fmpz_poly_q_set(fmpz_poly_q_t rop, const fmpz_poly_q_t op);
 

@@ -1,7 +1,7 @@
-%typemap(javainterfaces) fmpz_poly_q_struct "AutoCloseable,Field<IntegerRationalFunction>"
+%typemap(javainterfaces) fmpz_poly_q_struct "AutoCloseable,Field<RationalFunction>,Function<Fraction,Fraction>"
 %typemap(javafinalize) fmpz_poly_q_struct ""
 %typemap(javaimports) fmpz_poly_q_struct %{
-import java.util.Objects;
+import arb.functions.Function;
 %}
 
 %typemap(javaconstruct) fmpz_poly_q_struct %{
@@ -12,18 +12,37 @@ import java.util.Objects;
 %}
 
 %typemap(javacode) fmpz_poly_q_struct %{
+
+  @Override
+  public Fraction evaluate(Fraction t, int order, int bits, Fraction res)
+  {
+    arblib.fmpz_poly_q_evaluate_fmpq(res, this, t);
+    return res;
+  }
+  
   static
   {
     System.loadLibrary("arblib");
   }
 
-  public IntegerRationalFunction init()
+  @Override
+  public boolean equals(Object obj)
+  {
+    if ( !(obj instanceof RationalFunction))
+    {
+      return false;
+    }
+    RationalFunction that = (RationalFunction)obj;
+    return arblib.fmpz_poly_q_equal(this, that) != 0;
+  }
+  
+  public RationalFunction init()
   {
     arblib.fmpz_poly_q_init(this);
     return this;    
   }
   
-  public IntegerRationalFunction set(int i)
+  public RationalFunction set(int i)
   {
     arblib.fmpz_poly_q_set_si(this, i);
     return this;
@@ -67,18 +86,18 @@ import java.util.Objects;
     delete();
   }  
   
- @Override
+  @SuppressWarnings("unchecked")
+  @Override
   public <N extends Named> N setName(String name)
   {
-    assert false : "TODO";
-    return null;
+    this.name = name;
+    return (N) this;
   }
 
   @Override
-  public IntegerRationalFunction additiveIdentity()
+  public RationalFunction additiveIdentity()
   {
-    assert false : "TODO";
-    return null;
+    return zero();
   }
   
   @Override
@@ -88,14 +107,13 @@ import java.util.Objects;
   }
   
   @Override
-  public IntegerRationalFunction multiplicativeIdentity()
+  public RationalFunction multiplicativeIdentity()
   {
-    assert false : "TODO";
-    return null;
+   return set(1);
   }
 
   @Override
-  public IntegerRationalFunction add(IntegerRationalFunction element, int prec, IntegerRationalFunction result)
+  public RationalFunction add(RationalFunction element, int prec, RationalFunction result)
   {
     arblib.fmpz_poly_q_add(result, this, element);
     return result;
@@ -116,21 +134,21 @@ import java.util.Objects;
   }
 
   @Override
-  public IntegerRationalFunction div(int j, int prec, IntegerRationalFunction result)
+  public RationalFunction div(int j, int prec, RationalFunction result)
   {
     assert false : "TODO";
     return null;
   }
 
   @Override
-  public IntegerRationalFunction div(IntegerRationalFunction operand, int prec, IntegerRationalFunction result)
+  public RationalFunction div(RationalFunction operand, int prec, RationalFunction result)
   {
     arblib.fmpz_poly_q_div(result, this, operand);
     return this;
   }
 
   @Override
-  public IntegerRationalFunction get(int index)
+  public RationalFunction get(int index)
   {
     assert index == 0 : "index can only be 0";
     return this;
@@ -145,45 +163,74 @@ import java.util.Objects;
   public String name;
   
   @Override
-  public IntegerRationalFunction mul(int x, int prec, IntegerRationalFunction result)
+  public RationalFunction mul(int x, int prec, RationalFunction result)
   {
     assert false : "TODO";
     return null;
   }
 
   @Override
-  public IntegerRationalFunction mul(IntegerRationalFunction x, int prec, IntegerRationalFunction result)
+  public RationalFunction mul(RationalFunction x, int prec, RationalFunction result)
   {
     arblib.fmpz_poly_q_mul(result, this, x);
     return this;
   }
 
   @Override
-  public IntegerRationalFunction newFieldElement()
+  public RationalFunction newFieldElement()
   {
-     return new IntegerRationalFunction();
+     return new RationalFunction();
   }
 
   @Override
-  public IntegerRationalFunction set(IntegerRationalFunction value)
+  public RationalFunction set(RationalFunction value)
   {
     arblib.fmpz_poly_q_set(this, value);
     return this;
   }
 
   @Override
-  public IntegerRationalFunction sub(IntegerRationalFunction element, int prec, IntegerRationalFunction result)
+  public RationalFunction sub(RationalFunction element, int prec, RationalFunction result)
   {
     arblib.fmpz_poly_q_sub(result, this, element);
     return this;
   }
 
   @Override
-  public IntegerRationalFunction zero()
+  public RationalFunction zero()
   {
     arblib.fmpz_poly_q_zero(this);
     return this;
   }
+  
+  public RationalFunction set(Real real)
+  {
+    assert false : "TODO: support assignment from real?";
+    return null;
+  }  
+
+  public RationalFunction set(Integer integer)
+  {
+   set(integer.getSignedValue());
+   return this;
+  }
+
+  public RationalFunction neg(RationalFunction res)
+  {
+    arblib.fmpz_poly_q_neg(res, this);
+    return this;
+  }
+  
+  public RationalFunction neg()
+  {
+    return neg(this);
+  }
+
+  public RationalFunction mul(Real real, int bits, RationalFunction result)
+  {
+    assert false : "TODO";
+    return null;
+  }  
   
 %};
  

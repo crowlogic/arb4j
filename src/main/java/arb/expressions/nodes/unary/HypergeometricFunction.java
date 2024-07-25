@@ -12,7 +12,7 @@ import org.objectweb.asm.Type;
 import arb.ComplexQuasiPolynomial;
 import arb.Real;
 import arb.RealPolynomial;
-import arb.RealRationalFunction;
+import arb.RationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
@@ -96,7 +96,7 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     }
     Class<?> scalarType = Compiler.scalarType(resultType);
 
-    boolean  isRational = RealRationalFunction.class.isAssignableFrom(resultType);
+    boolean  isRational = RationalFunction.class.isAssignableFrom(resultType);
     if (Expression.trace)
     {
       err.printf("pFq.isRational=%s\n", isRational);

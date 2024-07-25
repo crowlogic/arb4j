@@ -1924,7 +1924,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     boolean isPolynomial = ascendentExpression != null
                   && ascendentExpression.thisOrAnyAscendentExpressionHasPolynomialOrRationalFunctionCoDomain();
-    return coDomainType.equals(RealRationalFunction.class) || coDomainType.equals(RealPolynomial.class)
+    return coDomainType.equals(RationalFunction.class) || coDomainType.equals(RealPolynomial.class)
                   || coDomainType.equals(ComplexPolynomial.class) || isPolynomial;
   }
 

@@ -1,6 +1,6 @@
 package arb.functions.real;
 
-import arb.RealRationalFunction;
+import arb.RationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
@@ -15,10 +15,10 @@ import arb.functions.NullaryFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface RealRationalNullaryFunction extends NullaryFunction<RealRationalFunction>
+public interface RealRationalNullaryFunction extends NullaryFunction<RationalFunction>
 {
 
-  public static Expression<Object, RealRationalFunction, RealRationalNullaryFunction> parse(String string)
+  public static Expression<Object, RationalFunction, RealRationalNullaryFunction> parse(String string)
   {
     return parse(null, string, null);
   }
@@ -28,17 +28,17 @@ public interface RealRationalNullaryFunction extends NullaryFunction<RealRationa
     return Function.instantiate(expression,
                                 context,
                                 Object.class,
-                                RealRationalFunction.class,
+                                RationalFunction.class,
                                 RealRationalNullaryFunction.class,
                                 functionName);
   }
 
-  public static NullaryFunction<RealRationalFunction> express(String expression, Context context)
+  public static NullaryFunction<RationalFunction> express(String expression, Context context)
   {
     return express(null, expression, context);
   }
 
-  public static NullaryFunction<RealRationalFunction> express(String expression)
+  public static NullaryFunction<RationalFunction> express(String expression)
   {
     return express(null, expression, null);
   }
@@ -47,7 +47,7 @@ public interface RealRationalNullaryFunction extends NullaryFunction<RealRationa
   {
     RealRationalNullaryExpression expr = new RealRationalNullaryExpression(functionName != null ? functionName : Parser.expressionToUniqueClassname(expression),
                   Object.class,
-                  RealRationalFunction.class,
+                  RationalFunction.class,
                   RealRationalNullaryFunction.class,
                   expression,
                   context,
@@ -56,14 +56,14 @@ public interface RealRationalNullaryFunction extends NullaryFunction<RealRationa
     return expr.parseRoot();
   }
 
-  public static Expression<Object, RealRationalFunction, RealRationalNullaryFunction>
+  public static Expression<Object, RationalFunction, RealRationalNullaryFunction>
          compile(String functionName, String expression, Context context)
   {
     return Compiler.compile(functionName,
                             expression,
                             context,
                             Object.class,
-                            RealRationalFunction.class,
+                            RationalFunction.class,
                             RealRationalNullaryFunction.class,
                             false);
   }
