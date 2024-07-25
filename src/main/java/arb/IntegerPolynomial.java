@@ -140,6 +140,11 @@ public class IntegerPolynomial implements AutoCloseable,Ring<IntegerPolynomial> 
     return res;
   }
 
+  public int get(int i)
+  {
+   return arblib.fmpz_poly_get_coeff_si(this, i);
+  }
+  
   public IntegerPolynomial div(IntegerPolynomial operand, IntegerPolynomial result)
   {
     return div(operand,0, result);
@@ -150,6 +155,11 @@ public class IntegerPolynomial implements AutoCloseable,Ring<IntegerPolynomial> 
     return mul(operand, 0, result);
   }  
   
+  public IntegerPolynomial set(int i, int j)
+  {
+    arblib.fmpz_poly_set_coeff_si(this, i, j);
+    return this;
+  }  
 
   public void setCoeffsNative(long value) {
     arblibJNI.IntegerPolynomial_coeffsNative_set(swigCPtr, this, value);

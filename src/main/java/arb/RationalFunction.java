@@ -121,10 +121,12 @@ public class RationalFunction implements AutoCloseable,Field<RationalFunction>,F
     return zero();
   }
   
+  boolean pretty = false;
+  
   @Override
   public String toString()
   {
-    return arblib.fmpz_poly_q_get_str_pretty(this, null);
+    return pretty ? arblib.fmpz_poly_q_get_str_pretty(this, null) : arblib.fmpz_poly_q_get_str(this);
   }
   
   @Override

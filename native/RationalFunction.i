@@ -100,10 +100,12 @@ import arb.functions.Function;
     return zero();
   }
   
+  boolean pretty = false;
+  
   @Override
   public String toString()
   {
-    return arblib.fmpz_poly_q_get_str_pretty(this, null);
+    return pretty ? arblib.fmpz_poly_q_get_str_pretty(this, null) : arblib.fmpz_poly_q_get_str(this);
   }
   
   @Override

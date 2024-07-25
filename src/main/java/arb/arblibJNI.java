@@ -9,6 +9,18 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void fmpz_poly_init2(long jarg1, IntegerPolynomial jarg1_, int jarg2);
+  public final static native void fmpz_poly_realloc(long jarg1, IntegerPolynomial jarg1_, int jarg2);
+  public final static native void fmpz_poly_fit_length(long jarg1, IntegerPolynomial jarg1_, int jarg2);
+  public final static native void fmpz_poly_clear(long jarg1, IntegerPolynomial jarg1_);
+  public final static native void _fmpz_poly_normalise(long jarg1, IntegerPolynomial jarg1_);
+  public final static native void _fmpz_poly_set_length(long jarg1, IntegerPolynomial jarg1_, int jarg2);
+  public final static native int fmpz_poly_get_coeff_si(long jarg1, IntegerPolynomial jarg1_, int jarg2);
+  public final static native void fmpz_poly_set_coeff_si(long jarg1, IntegerPolynomial jarg1_, int jarg2, int jarg3);
+  public final static native long fmpz_poly_get_coeff_ui(long jarg1, IntegerPolynomial jarg1_, int jarg2);
+  public final static native void fmpz_poly_set_coeff_ui(long jarg1, IntegerPolynomial jarg1_, int jarg2, long jarg3);
+  public final static native void fmpz_poly_set_coeff_fmpz(long jarg1, IntegerPolynomial jarg1_, int jarg2, long jarg3);
+  public final static native void fmpz_poly_get_coeff_fmpz(long jarg1, long jarg2, IntegerPolynomial jarg2_, int jarg3);
   public final static native void fmpz_poly_q_inv(long jarg1, RationalFunction jarg1_, long jarg2, RationalFunction jarg2_);
   public final static native int fmpz_poly_q_equal(long jarg1, RationalFunction jarg1_, long jarg2, RationalFunction jarg2_);
   public final static native int fmpz_poly_q_is_one(long jarg1, RationalFunction jarg1_);
@@ -55,12 +67,6 @@ public class arblibJNI {
   public final static native void fmpz_poly_add_fmpz(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_, long jarg3);
   public final static native void fmpz_poly_sub_fmpz(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_, long jarg3);
   public final static native void fmpz_poly_fmpz_sub(long jarg1, IntegerPolynomial jarg1_, long jarg2, long jarg3, IntegerPolynomial jarg3_);
-  public final static native void fmpz_poly_set_coeff_si(long jarg1, IntegerPolynomial jarg1_, int jarg2, int jarg3);
-  public final static native void fmpz_poly_set_coeff_ui(long jarg1, IntegerPolynomial jarg1_, int jarg2, long jarg3);
-  public final static native void fmpz_poly_set_coeff_fmpz(long jarg1, IntegerPolynomial jarg1_, int jarg2, long jarg3);
-  public final static native void fmpz_poly_get_coeff_fmpz(long jarg1, long jarg2, IntegerPolynomial jarg2_, int jarg3);
-  public final static native int fmpz_poly_get_coeff_si(long jarg1, IntegerPolynomial jarg1_, int jarg2);
-  public final static native long fmpz_poly_get_coeff_ui(long jarg1, IntegerPolynomial jarg1_, int jarg2);
   public final static native void fmpz_poly_set(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_);
   public final static native void fmpz_poly_set_ui(long jarg1, IntegerPolynomial jarg1_, long jarg2);
   public final static native void fmpz_poly_set_si(long jarg1, IntegerPolynomial jarg1_, int jarg2);

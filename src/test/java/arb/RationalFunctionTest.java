@@ -37,6 +37,13 @@ public class RationalFunctionTest
 
   }
 
+  public void testRationalIdentity()
+  {
+    RationalFunction x = new RationalFunction();
+    x.multiplicativeIdentity();
+    System.out.println("x=" + x);
+  }
+
   public void testHypergeometricFunctionExpressionRational()
   {
     var              poly      = RationalNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");

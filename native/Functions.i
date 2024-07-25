@@ -7,6 +7,32 @@
 #include <flint/fmpz_poly.h>
 #include <flint/fmpz_poly_q.h>
 
+
+void fmpz_poly_init2(fmpz_poly_t poly, slong alloc);
+
+void fmpz_poly_realloc(fmpz_poly_t poly, slong alloc);
+
+void fmpz_poly_fit_length(fmpz_poly_t poly, slong len);
+
+void fmpz_poly_clear(fmpz_poly_t poly);
+
+void _fmpz_poly_normalise(fmpz_poly_t poly);
+
+void _fmpz_poly_set_length(fmpz_poly_t poly, slong newlen);
+
+
+slong fmpz_poly_get_coeff_si(const fmpz_poly_t poly, slong n);
+
+void fmpz_poly_set_coeff_si(fmpz_poly_t poly, slong n, slong x);
+
+ulong fmpz_poly_get_coeff_ui(const fmpz_poly_t poly, slong n);
+
+void fmpz_poly_set_coeff_ui(fmpz_poly_t poly, slong n, ulong x);
+
+void fmpz_poly_set_coeff_fmpz(fmpz_poly_t poly, slong n, const fmpz_t x);
+
+void fmpz_poly_get_coeff_fmpz(fmpz_t x, const fmpz_poly_t poly, slong n);
+
 void fmpz_poly_q_inv(fmpz_poly_q_t rop, const fmpz_poly_q_t op);
 int fmpz_poly_q_equal(const fmpz_poly_q_t op1, const fmpz_poly_q_t op2);
 int fmpz_poly_q_is_one(const fmpz_poly_q_t op);
