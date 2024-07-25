@@ -4,12 +4,6 @@
 import java.util.Objects;
 %}
 
-%typemap(javacode) fmpz_poly_q_struct %{
-  public void init() {
-    // Initialization for MyStruct
-  }
-%}
-
 %typemap(javaconstruct) fmpz_poly_q_struct %{
   {
     this($imcall, true);
@@ -129,27 +123,27 @@ import java.util.Objects;
   }
 
   @Override
-  public IntegerRationalFunction div(IntegerRationalFunction j, int prec, IntegerRationalFunction result)
+  public IntegerRationalFunction div(IntegerRationalFunction operand, int prec, IntegerRationalFunction result)
   {
-    assert false : "TODO";
-    return null;
+    arblib.fmpz_poly_q_div(result, this, operand);
+    return this;
   }
 
   @Override
   public IntegerRationalFunction get(int index)
   {
-  
-    assert false : "TODO";
-    return null;
+    assert index == 0 : "index can only be 0";
+    return this;
   }
 
   @Override
   public String getName()
   {
-    assert false : "TODO";
-    return null;
+    return name;
   }
 
+  public String name;
+  
   @Override
   public IntegerRationalFunction mul(int x, int prec, IntegerRationalFunction result)
   {
@@ -160,36 +154,35 @@ import java.util.Objects;
   @Override
   public IntegerRationalFunction mul(IntegerRationalFunction x, int prec, IntegerRationalFunction result)
   {
-    assert false : "TODO";
-    return null;
+    arblib.fmpz_poly_q_mul(result, this, x);
+    return this;
   }
 
   @Override
   public IntegerRationalFunction newFieldElement()
   {
-    assert false : "TODO";
-    return null;
+     return new IntegerRationalFunction();
   }
 
   @Override
   public IntegerRationalFunction set(IntegerRationalFunction value)
   {
-    assert false : "TODO";
-    return null;
+    arblib.fmpz_poly_q_set(this, value);
+    return this;
   }
 
   @Override
   public IntegerRationalFunction sub(IntegerRationalFunction element, int prec, IntegerRationalFunction result)
   {
-    assert false : "TODO";
-    return null;
+    arblib.fmpz_poly_q_sub(result, this, element);
+    return this;
   }
 
   @Override
   public IntegerRationalFunction zero()
   {
-    assert false : "TODO";
-    return null;
+    arblib.fmpz_poly_q_zero(this);
+    return this;
   }
   
 %};

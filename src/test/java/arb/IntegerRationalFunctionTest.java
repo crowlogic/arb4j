@@ -68,7 +68,7 @@ public class IntegerRationalFunctionTest
           var result = new IntegerRationalFunction().set(7);)
     {
       three.div(four, result);
-      assertEquals("0", result.toString());
+      assertEquals("3/4", result.toString());
     }
   }
 

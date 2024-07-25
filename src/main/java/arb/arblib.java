@@ -9,6 +9,14 @@
 package arb;
 
 public class arblib {
+  public static void fmpz_poly_q_zero(IntegerRationalFunction rop) {
+    arblibJNI.fmpz_poly_q_zero(IntegerRationalFunction.getCPtr(rop), rop);
+  }
+
+  public static void fmpz_poly_q_one(IntegerRationalFunction rop) {
+    arblibJNI.fmpz_poly_q_one(IntegerRationalFunction.getCPtr(rop), rop);
+  }
+
   public static String fmpz_poly_q_get_str(IntegerRationalFunction op) {
     return arblibJNI.fmpz_poly_q_get_str(IntegerRationalFunction.getCPtr(op), op);
   }

@@ -7,6 +7,9 @@
 #include <flint/fmpz_poly.h>
 #include <flint/fmpz_poly_q.h>
 
+void fmpz_poly_q_zero(fmpz_poly_q_t rop);
+void fmpz_poly_q_one(fmpz_poly_q_t rop);
+
 char * fmpz_poly_q_get_str(const fmpz_poly_q_t op);
 char * fmpz_poly_q_get_str_pretty(const fmpz_poly_q_t op, const char *x);
 

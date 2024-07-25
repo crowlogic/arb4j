@@ -9,6 +9,8 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void fmpz_poly_q_zero(long jarg1, IntegerRationalFunction jarg1_);
+  public final static native void fmpz_poly_q_one(long jarg1, IntegerRationalFunction jarg1_);
   public final static native String fmpz_poly_q_get_str(long jarg1, IntegerRationalFunction jarg1_);
   public final static native String fmpz_poly_q_get_str_pretty(long jarg1, IntegerRationalFunction jarg1_, String jarg2);
   public final static native void fmpz_poly_q_add_in_place(long jarg1, IntegerRationalFunction jarg1_, long jarg2, IntegerRationalFunction jarg2_);
