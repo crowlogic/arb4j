@@ -140,12 +140,6 @@ import arb.functions.Function;
     return multiplicativeIdentity();
   }
 
-  public RationalFunction div(Integer j, int prec, RationalFunction result)
-  {
-    assert false : "TODO";
-    return null;
-  }
-    
   @Override
   public RationalFunction div(int j, int prec, RationalFunction result)
   {
@@ -202,6 +196,11 @@ import arb.functions.Function;
     return this;
   }
 
+  public RationalFunction div(Integer j, int prec, RationalFunction result)
+  {
+    return div(result.set(j), prec, result);
+  }
+  
   @Override
   public RationalFunction sub(RationalFunction element, int prec, RationalFunction result)
   {
