@@ -141,13 +141,6 @@ import arb.functions.Function;
   }
 
   @Override
-  public RationalFunction div(int j, int prec, RationalFunction result)
-  {
-    assert false : "TODO";
-    return null;
-  }
-
-  @Override
   public RationalFunction div(RationalFunction operand, int prec, RationalFunction result)
   {
     arblib.fmpz_poly_q_div(result, this, operand);
@@ -196,6 +189,12 @@ import arb.functions.Function;
     return this;
   }
 
+  @Override
+  public RationalFunction div(int j, int prec, RationalFunction result)
+  {
+    return div(result.set(j), prec, result);
+  }
+  
   public RationalFunction div(Integer j, int prec, RationalFunction result)
   {
     return div(result.set(j), prec, result);
