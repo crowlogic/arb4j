@@ -156,6 +156,11 @@ public class RationalFunction implements AutoCloseable,Field<RationalFunction>,F
     return 1;
   }
 
+  public RationalFunction identity()
+  {
+    return multiplicativeIdentity();
+  }
+  
   @Override
   public RationalFunction div(int j, int prec, RationalFunction result)
   {
