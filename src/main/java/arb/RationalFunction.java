@@ -8,24 +8,71 @@
 
 package arb;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;
 
-public class RationalFunction implements AutoCloseable,Field<RationalFunction>,Function<Fraction,Fraction> {
-  protected long swigCPtr;
+/**
+ * <pre>
+ * fmpz_poly_q.h – rational functions over the rational numbers
+ * 
+ * The module fmpz_poly_q provides functions for performing arithmetic on
+ * rational functions in Q(t) represented as quotients of integer polynomials 
+ * of type fmpz_poly_t. These functions start with the prefix fmpz_poly_q_.
+ * 
+ * Rational functions are stored in objects of type fmpz_poly_q_t, which is an
+ * array of fmpz_poly_q_struct’s of length one. This permits passing parameters
+ * of type fmpz_poly_q_t by reference.
+ * 
+ * The representation of a rational function as the quotient of two integer
+ * polynomials can be made canonical by demanding the numerator and denominator
+ * to be coprime (as integer polynomials) and the denominator to have positive
+ * leading coefficient. As the only special case, we represent the zero function
+ * as
+ * 
+ * All arithmetic functions assume that the operands are in this canonical
+ * form, and canonicalize their result. If the numerator or denominator is
+ * modified individually, for example using the macros fmpz_poly_q_numref() and
+ * fmpz_poly_q_denref(), it is the user’s responsibility to canonicalise the
+ * rational function using the function fmpz_poly_q_canonicalise() if necessary.
+ * 
+ * All methods support aliasing of their inputs and outputs unless explicitly
+ * stated otherwise, subject to the following caveat. If different rational
+ * functions (as objects in memory, not necessarily in the mathematical sense)
+ * share some of the underlying integer polynomial objects, the behaviour is
+ * undefined.
+ * 
+ * The basic arithmetic operations, addition, subtraction and multiplication,
+ * are all implemented using adapted versions of Henrici’s algorithms, see
+ * [Hen1956]. Differentiation is implemented in a way slightly improving on the
+ * algorithm described in [Hor1972].
+ * </pre>
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
+public class RationalFunction implements AutoCloseable, Field<RationalFunction>, Function<Fraction, Fraction>
+{
+  protected long    swigCPtr;
   protected boolean swigCMemOwn;
 
-  public RationalFunction(long cPtr, boolean cMemoryOwn) {
+  public RationalFunction(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(RationalFunction obj) {
+  public static long getCPtr(RationalFunction obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arblibJNI.delete_RationalFunction(swigCPtr);
       }
@@ -33,14 +80,13 @@ public class RationalFunction implements AutoCloseable,Field<RationalFunction>,F
     }
   }
 
-
   @Override
   public Fraction evaluate(Fraction t, int order, int bits, Fraction res)
   {
     arblib.fmpz_poly_q_evaluate_fmpq(res, this, t);
     return res;
   }
-  
+
   static
   {
     System.loadLibrary("arblib");
@@ -49,28 +95,28 @@ public class RationalFunction implements AutoCloseable,Field<RationalFunction>,F
   @Override
   public boolean equals(Object obj)
   {
-    if ( !(obj instanceof RationalFunction))
+    if (!(obj instanceof RationalFunction))
     {
       return false;
     }
-    RationalFunction that = (RationalFunction)obj;
+    RationalFunction that = (RationalFunction) obj;
     return arblib.fmpz_poly_q_equal(this, that) != 0;
   }
-  
+
   public RationalFunction init()
   {
     arblib.fmpz_poly_q_init(this);
-    return this;    
+    return this;
   }
-  
+
   public RationalFunction set(int i)
   {
     arblib.fmpz_poly_q_set_si(this, i);
     return this;
   }
-  
+
   public IntegerPolynomial numerator;
- 
+
   public IntegerPolynomial denominator;
 
   public IntegerPolynomial getDenominator()
@@ -100,13 +146,13 @@ public class RationalFunction implements AutoCloseable,Field<RationalFunction>,F
     }
     return numerator;
   }
-    
+
   @Override
-  public void close() 
+  public void close()
   {
     delete();
-  }  
-  
+  }
+
   @SuppressWarnings("unchecked")
   @Override
   public <N extends Named> N setName(String name)
@@ -120,19 +166,25 @@ public class RationalFunction implements AutoCloseable,Field<RationalFunction>,F
   {
     return zero();
   }
-  
+
   boolean pretty = true;
-  
+
   @Override
   public String toString()
   {
     return pretty ? arblib.fmpz_poly_q_get_str_pretty(this, null) : arblib.fmpz_poly_q_get_str(this);
   }
-  
+
   @Override
   public RationalFunction multiplicativeIdentity()
   {
-   return set(1);
+    return set(1);
+  }
+
+  public RationalFunction div(Integer j, int prec, RationalFunction result)
+  {
+    assert false : "TODO";
+    return null;
   }
 
   @Override
@@ -143,7 +195,7 @@ public class RationalFunction implements AutoCloseable,Field<RationalFunction>,F
   }
 
   public int bits = 128;
-  
+
   @Override
   public int bits()
   {
@@ -160,7 +212,7 @@ public class RationalFunction implements AutoCloseable,Field<RationalFunction>,F
   {
     return multiplicativeIdentity();
   }
-  
+
   @Override
   public RationalFunction div(int j, int prec, RationalFunction result)
   {
@@ -189,10 +241,11 @@ public class RationalFunction implements AutoCloseable,Field<RationalFunction>,F
   }
 
   public String name;
-  
+
   @Override
   public RationalFunction mul(int x, int prec, RationalFunction result)
   {
+    arblib.fmpz_poly_q_scalar_mul_si(result, result, x);
     assert false : "TODO";
     return null;
   }
@@ -207,7 +260,7 @@ public class RationalFunction implements AutoCloseable,Field<RationalFunction>,F
   @Override
   public RationalFunction newFieldElement()
   {
-     return new RationalFunction();
+    return new RationalFunction();
   }
 
   @Override
@@ -230,17 +283,17 @@ public class RationalFunction implements AutoCloseable,Field<RationalFunction>,F
     arblib.fmpz_poly_q_zero(this);
     return this;
   }
-  
+
   public RationalFunction set(Real real)
   {
     assert false : "TODO: support assignment from real?";
     return null;
-  }  
+  }
 
   public RationalFunction set(Integer integer)
   {
-   set(integer.getSignedValue());
-   return this;
+    set(integer.getSignedValue());
+    return this;
   }
 
   public RationalFunction neg(RationalFunction res)
@@ -248,7 +301,7 @@ public class RationalFunction implements AutoCloseable,Field<RationalFunction>,F
     arblib.fmpz_poly_q_neg(res, this);
     return this;
   }
-  
+
   public RationalFunction neg()
   {
     return neg(this);
@@ -258,30 +311,33 @@ public class RationalFunction implements AutoCloseable,Field<RationalFunction>,F
   {
     assert false : "TODO";
     return null;
-  }  
-  
+  }
 
-  public void setLongNumerator(long value) {
+  public void setLongNumerator(long value)
+  {
     arblibJNI.RationalFunction_longNumerator_set(swigCPtr, this, value);
   }
 
-  public long getLongNumerator() {
+  public long getLongNumerator()
+  {
     return arblibJNI.RationalFunction_longNumerator_get(swigCPtr, this);
   }
 
-  public void setLongDenominator(long value) {
+  public void setLongDenominator(long value)
+  {
     arblibJNI.RationalFunction_longDenominator_set(swigCPtr, this, value);
   }
 
-  public long getLongDenominator() {
+  public long getLongDenominator()
+  {
     return arblibJNI.RationalFunction_longDenominator_get(swigCPtr, this);
   }
 
-  public RationalFunction() 
+  public RationalFunction()
   {
-    this(arblibJNI.new_RationalFunction(), true);
+    this(arblibJNI.new_RationalFunction(),
+         true);
     init();
   }
-
 
 }
