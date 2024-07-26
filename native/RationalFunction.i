@@ -100,7 +100,7 @@ import arb.functions.Function;
     return zero();
   }
   
-  boolean pretty = false;
+  boolean pretty = true;
   
   @Override
   public String toString()

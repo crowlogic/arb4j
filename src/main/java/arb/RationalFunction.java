@@ -121,7 +121,7 @@ public class RationalFunction implements AutoCloseable,Field<RationalFunction>,F
     return zero();
   }
   
-  boolean pretty = false;
+  boolean pretty = true;
   
   @Override
   public String toString()
