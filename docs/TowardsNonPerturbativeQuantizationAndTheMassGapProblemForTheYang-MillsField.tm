@@ -1,4 +1,4 @@
-<TeXmacs|2.1.1>
+<TeXmacs|2.1.4>
 
 <style|<tuple|article|alt-colors|boring-white|framed-theorems>>
 
@@ -278,7 +278,7 @@
   equal to <math|\<star\><around|(|<F>\<wedge\>,\<star\><F>|)>>,
 
   <\equation>
-    <label|L>\<cal-L\>=<frac|1|2>*\<star\><around|(|<F>\<wedge\>,\<star\><F>|\<nobracket\>>
+    <label|L>\<cal-L\>=<frac|1|2>*\<star\><around*|(|<F>\<wedge\>,\<star\><F>|)>
   </equation>
 
   Next, following <cite|FS>, we pass from Lagrangian to Hamiltonian
@@ -1932,87 +1932,87 @@
 <\references>
   <\collection>
     <associate|CS|<tuple|50|11>>
-    <associate|FTR|<tuple|10|23>>
-    <associate|GG|<tuple|87|19>>
+    <associate|FTR|<tuple|10|24>>
+    <associate|GG|<tuple|87|20>>
     <associate|Gaugeact|<tuple|36|9>>
     <associate|Gaugeactph|<tuple|39|9>>
-    <associate|Hamiltred|<tuple|67|14>>
-    <associate|L|<tuple|9|4>>
-    <associate|L'|<tuple|10|4>>
+    <associate|Hamiltred|<tuple|67|15>>
+    <associate|L|<tuple|9|5>>
+    <associate|L'|<tuple|10|5>>
     <associate|L''|<tuple|17|6>>
     <associate|YM|<tuple|8|4>>
-    <associate|YM''|<tuple|22|6>>
+    <associate|YM''|<tuple|22|7>>
     <associate|YM'''|<tuple|25|7>>
     <associate|YMH|<tuple|1|4>>
-    <associate|YMPh|<tuple|2|7>>
+    <associate|YMPh|<tuple|2|8>>
     <associate|YMexp|<tuple|96|22>>
     <associate|YMh|<tuple|1.1|4>>
-    <associate|YMhamiltprop|<tuple|50|11>>
-    <associate|YMhamquant|<tuple|3.2|17>>
-    <associate|YMmoment|<tuple|43|9>>
+    <associate|YMhamiltprop|<tuple|50|12>>
+    <associate|YMhamquant|<tuple|3.2|18>>
+    <associate|YMmoment|<tuple|43|10>>
     <associate|YMprop|<tuple|43|10>>
-    <associate|YMred|<tuple|2.1|7>>
+    <associate|YMred|<tuple|2.1|8>>
     <associate|YMsym|<tuple|100|23>>
-    <associate|ansatz|<tuple|80|17>>
+    <associate|ansatz|<tuple|80|18>>
     <associate|auto-1|<tuple|?|1>>
-    <associate|auto-10|<tuple|12|24>>
+    <associate|auto-10|<tuple|12|25>>
     <associate|auto-2|<tuple|1|4>>
     <associate|auto-3|<tuple|1.1|4>>
-    <associate|auto-4|<tuple|2|7>>
-    <associate|auto-5|<tuple|2.1|7>>
-    <associate|auto-6|<tuple|2.2|11>>
-    <associate|auto-7|<tuple|3|15>>
-    <associate|auto-8|<tuple|3.1|15>>
-    <associate|auto-9|<tuple|3.2|17>>
-    <associate|bib-A|<tuple|A|24>>
-    <associate|bib-BS3|<tuple|BS3|24>>
-    <associate|bib-Ber|<tuple|Ber|24>>
-    <associate|bib-Dir|<tuple|Dir|24>>
+    <associate|auto-4|<tuple|2|8>>
+    <associate|auto-5|<tuple|2.1|8>>
+    <associate|auto-6|<tuple|2.2|12>>
+    <associate|auto-7|<tuple|3|16>>
+    <associate|auto-8|<tuple|3.1|16>>
+    <associate|auto-9|<tuple|3.2|18>>
+    <associate|bib-A|<tuple|A|25>>
+    <associate|bib-BS3|<tuple|BS3|25>>
+    <associate|bib-Ber|<tuple|Ber|25>>
+    <associate|bib-Dir|<tuple|Dir|25>>
     <associate|bib-F|<tuple|F|25>>
-    <associate|bib-FS|<tuple|FS|24>>
+    <associate|bib-FS|<tuple|FS|25>>
     <associate|bib-GV|<tuple|GV|25>>
-    <associate|bib-Herm|<tuple|Herm|25>>
-    <associate|bib-Hid|<tuple|Hid|25>>
-    <associate|bib-IZ|<tuple|IZ|25>>
-    <associate|bib-Ob|<tuple|Ob|25>>
-    <associate|bib-Per|<tuple|Per|25>>
-    <associate|bib-RS2|<tuple|RS2|25>>
-    <associate|bib-SS|<tuple|SS|25>>
-    <associate|bib-Sing|<tuple|Sing|25>>
-    <associate|bib-Sing1|<tuple|Sing1|25>>
-    <associate|charf|<tuple|7|19>>
+    <associate|bib-Herm|<tuple|Herm|26>>
+    <associate|bib-Hid|<tuple|Hid|26>>
+    <associate|bib-IZ|<tuple|IZ|26>>
+    <associate|bib-Ob|<tuple|Ob|26>>
+    <associate|bib-Per|<tuple|Per|26>>
+    <associate|bib-RS2|<tuple|RS2|26>>
+    <associate|bib-SS|<tuple|SS|26>>
+    <associate|bib-Sing|<tuple|Sing|26>>
+    <associate|bib-Sing1|<tuple|Sing1|26>>
+    <associate|charf|<tuple|7|20>>
     <associate|classh|<tuple|1|2>>
-    <associate|commrel|<tuple|101|23>>
-    <associate|cr|<tuple|88|20>>
-    <associate|eigen|<tuple|90|20>>
-    <associate|exp1|<tuple|81|18>>
-    <associate|exp2|<tuple|82|18>>
-    <associate|expr|<tuple|77|16>>
-    <associate|fouriero|<tuple|98|22>>
-    <associate|fouriero1|<tuple|99|22>>
+    <associate|commrel|<tuple|101|24>>
+    <associate|cr|<tuple|88|21>>
+    <associate|eigen|<tuple|90|21>>
+    <associate|exp1|<tuple|81|19>>
+    <associate|exp2|<tuple|82|19>>
+    <associate|expr|<tuple|77|17>>
+    <associate|fouriero|<tuple|98|23>>
+    <associate|fouriero1|<tuple|99|23>>
     <associate|gaugeactph|<tuple|40|9>>
-    <associate|geneigen|<tuple|107|24>>
-    <associate|hamM|<tuple|68|15>>
+    <associate|geneigen|<tuple|107|25>>
+    <associate|hamM|<tuple|68|16>>
     <associate|hamilt|<tuple|27|7>>
-    <associate|hamiltred|<tuple|65|14>>
-    <associate|haminv|<tuple|30|7>>
-    <associate|l1|<tuple|1|12>>
-    <associate|m|<tuple|61|12>>
-    <associate|mom|<tuple|60|12>>
-    <associate|momentbrack|<tuple|29|7>>
-    <associate|nondyn|<tuple|11|4>>
-    <associate|pois|<tuple|28|7>>
+    <associate|hamiltred|<tuple|65|15>>
+    <associate|haminv|<tuple|30|8>>
+    <associate|l1|<tuple|1|13>>
+    <associate|m|<tuple|61|13>>
+    <associate|mom|<tuple|60|13>>
+    <associate|momentbrack|<tuple|29|8>>
+    <associate|nondyn|<tuple|11|5>>
+    <associate|pois|<tuple|28|8>>
     <associate|prod|<tuple|12|5>>
-    <associate|qh1|<tuple|75|16>>
-    <associate|quantmod|<tuple|3.1|15>>
+    <associate|qh1|<tuple|75|17>>
+    <associate|quantmod|<tuple|3.1|16>>
     <associate|r1|<tuple|44|10>>
     <associate|rec|<tuple|2|2>>
-    <associate|redcoord|<tuple|2.2|11>>
+    <associate|redcoord|<tuple|2.2|12>>
     <associate|redstruct|<tuple|2|13>>
     <associate|riemann|<tuple|31|8>>
-    <associate|roteigen|<tuple|89|20>>
-    <associate|to|<tuple|62|12>>
-    <associate|vectred|<tuple|3|13>>
+    <associate|roteigen|<tuple|89|21>>
+    <associate|to|<tuple|62|13>>
+    <associate|vectred|<tuple|3|14>>
   </collection>
 </references>
 
