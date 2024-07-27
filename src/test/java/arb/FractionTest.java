@@ -51,6 +51,7 @@ public class FractionTest
       assertEquals("40/30", r.toString());
       assertFalse(r.isReduced());
       assertTrue(r.reduce().isReduced());
+      assertEquals("4/3", r.toString());
     }
 
   }
