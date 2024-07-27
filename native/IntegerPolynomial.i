@@ -11,7 +11,7 @@ import arb.algebra.Ring;
  */
 %}
 %typemap(javafinalize) fmpz_poly_struct ""
-%typemap(javainterfaces) fmpz_poly_struct "AutoCloseable,Ring<IntegerPolynomial>"
+%typemap(javainterfaces) fmpz_poly_struct "Named,AutoCloseable,Ring<IntegerPolynomial>"
 
 %typemap(javacode) fmpz_poly_struct %{
   static { System.loadLibrary( "arblib" ); }

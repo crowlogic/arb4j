@@ -1,4 +1,4 @@
-%typemap(javainterfaces) fmpq "AutoCloseable"
+%typemap(javainterfaces) fmpq "AutoCloseable,Field<Fraction>"
 %typemap(javafinalize) fmpq ""
 %typemap(javaimports) fmpq %{
 import java.util.Objects;
@@ -110,5 +110,109 @@ import java.util.Objects;
   {
     delete();
   }  
+  
+  @Override
+  public Fraction add(Fraction element, int prec, Fraction result)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public int bits()
+  {
+    return 0;
+  }
+
+  @Override
+  public int dim()
+  {
+    return 1;
+  }
+
+  @Override
+  public Fraction div(int j, int prec, Fraction result)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public Fraction div(Fraction j, int prec, Fraction result)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public Fraction get(int index)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public String getName()
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public Fraction mul(int x, int prec, Fraction result)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public Fraction mul(Fraction x, int prec, Fraction result)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public Fraction newFieldElement()
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public Fraction set(Fraction value)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public Fraction sub(Fraction element, int prec, Fraction result)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public Fraction zero()
+  {
+    assert false : "TODO";
+    return null;
+  }
+  
+  @Override
+  public Fraction additiveIdentity()
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public Fraction multiplicativeIdentity()
+  {
+    assert false : "TODO";
+    return null;
+  }  
+  
 %};
  

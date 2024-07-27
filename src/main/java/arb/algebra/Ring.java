@@ -32,7 +32,7 @@ import arb.groups.CommutativeGroup;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface Ring<X> extends Magma<X>, Named, CommutativeGroup<X>
+public interface Ring<X> extends Magma<X>, CommutativeGroup<X>
 {
 
   @Override
@@ -63,12 +63,6 @@ public interface Ring<X> extends Magma<X>, Named, CommutativeGroup<X>
     return null;
   }
 
-  @Override
-  default String getName()
-  {
-    assert false : "this should be overridden";
-    return "null";
-  }
 
   @SuppressWarnings("unchecked")
   public default X add(X addend, int bits)

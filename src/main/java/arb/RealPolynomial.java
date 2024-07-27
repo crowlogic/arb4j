@@ -976,28 +976,6 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
    return mul(v,bits2,this);
   }  
 
-  /**
-   * 
-   * @return a {@link RealQuasiPolynomial} which is a {@link GammaFunction} of
-   *         this#{@link RealPolynomial}
-   */
-  public RealQuasiPolynomial Γ()
-  {
-    return new RealQuasiPolynomial(this,
-                                   RealGammaFunction.instance);
-  }
-
-  /**
-   * 
-   * @return a {@link RealQuasiPolynomial} which is a {@link SquareRoot} of
-   *         this#{@link RealPolynomial}
-   */
-  public RealQuasiPolynomial sqrt()
-  {
-    return new RealQuasiPolynomial(this,
-                                   RealSquareRoot.instance);
-  }
-    
 
   public void setCoeffsNative(Real value) {
     arblibJNI.RealPolynomial_coeffsNative_set(swigCPtr, this, Real.getCPtr(value), value);

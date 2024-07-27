@@ -1,6 +1,6 @@
 %typemap(javafinalize) arb_struct ""
 
-%typemap(javainterfaces) arb_struct "Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,Field<Real>,Lockable<Real>,IntFunction<Real>,Assignable<Real>"
+%typemap(javainterfaces) arb_struct "Named,Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,Field<Real>,Lockable<Real>,IntFunction<Real>,Assignable<Real>"
 
 %typemap(javaimports) arb_struct %{
 import static arb.IntegerConstants.*;

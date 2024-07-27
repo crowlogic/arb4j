@@ -422,7 +422,7 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
       if (isPolynomialArg && hasQuasipolynomialResult)
       {
         assert false : "replace quasipolynomials this with functionals.. that is, the coDomain is a function whose domain is the polynomial and whose range is the function applied to the pointwise evaluation of the polynomial argument";
-        return scalarType(argType).equals(Real.class) ? RealQuasiPolynomial.class : ComplexQuasiPolynomial.class;
+        return scalarType(argType).equals(Real.class) ? RationalFunction.class : ComplexQuasiPolynomial.class;
       }
       else
       {

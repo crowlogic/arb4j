@@ -10,7 +10,7 @@ package arb;
 
 import java.util.Objects;
 
-public class Fraction implements AutoCloseable {
+public class Fraction implements AutoCloseable,Field<Fraction> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
@@ -138,6 +138,110 @@ public class Fraction implements AutoCloseable {
   {
     delete();
   }  
+  
+  @Override
+  public Fraction add(Fraction element, int prec, Fraction result)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public int bits()
+  {
+    return 0;
+  }
+
+  @Override
+  public int dim()
+  {
+    return 1;
+  }
+
+  @Override
+  public Fraction div(int j, int prec, Fraction result)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public Fraction div(Fraction j, int prec, Fraction result)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public Fraction get(int index)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public String getName()
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public Fraction mul(int x, int prec, Fraction result)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public Fraction mul(Fraction x, int prec, Fraction result)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public Fraction newFieldElement()
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public Fraction set(Fraction value)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public Fraction sub(Fraction element, int prec, Fraction result)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public Fraction zero()
+  {
+    assert false : "TODO";
+    return null;
+  }
+  
+  @Override
+  public Fraction additiveIdentity()
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public Fraction multiplicativeIdentity()
+  {
+    assert false : "TODO";
+    return null;
+  }  
+  
 
   public void setLongNumerator(long value) {
     arblibJNI.Fraction_longNumerator_set(swigCPtr, this, value);

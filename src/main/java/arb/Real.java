@@ -156,7 +156,7 @@ import arb.utensils.Utensils;
  *      {@link TheArb4jLibrary}
  */
 
-public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,Field<Real>,Lockable<Real>,IntFunction<Real>,Assignable<Real> {
+public class Real implements Named,Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,Field<Real>,Lockable<Real>,IntFunction<Real>,Assignable<Real> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 

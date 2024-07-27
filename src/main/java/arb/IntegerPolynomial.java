@@ -17,7 +17,7 @@ import arb.algebra.Ring;
  *      {@link TheArb4jLibrary}
  */
 
-public class IntegerPolynomial implements AutoCloseable,Ring<IntegerPolynomial> {
+public class IntegerPolynomial implements Named,AutoCloseable,Ring<IntegerPolynomial> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 

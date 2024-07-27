@@ -949,26 +949,4 @@ import arb.utensils.Utensils;
    return mul(v,bits2,this);
   }  
 
-  /**
-   * 
-   * @return a {@link RealQuasiPolynomial} which is a {@link GammaFunction} of
-   *         this#{@link RealPolynomial}
-   */
-  public RealQuasiPolynomial Γ()
-  {
-    return new RealQuasiPolynomial(this,
-                                   RealGammaFunction.instance);
-  }
-
-  /**
-   * 
-   * @return a {@link RealQuasiPolynomial} which is a {@link SquareRoot} of
-   *         this#{@link RealPolynomial}
-   */
-  public RealQuasiPolynomial sqrt()
-  {
-    return new RealQuasiPolynomial(this,
-                                   RealSquareRoot.instance);
-  }
-    
 %};

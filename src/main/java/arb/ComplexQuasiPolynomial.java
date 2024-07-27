@@ -208,12 +208,7 @@ public class ComplexQuasiPolynomial
     return result;
   }
 
-  @Override
-  public <N extends Named> N setName(String name)
-  {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
-  }
+
 
   @Override
   public ComplexQuasiPolynomial pow(Integer power, int bits, ComplexQuasiPolynomial result)

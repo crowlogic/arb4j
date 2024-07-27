@@ -23,8 +23,7 @@ public interface Field<X extends Field<X>> extends
                       AutoCloseable,
                       Closeable,
                       Iterable<X>,
-                      Ring<X>,
-                      Named
+                      Ring<X>
 {
   public X additiveIdentity();
 

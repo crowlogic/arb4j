@@ -10,7 +10,7 @@ package arb;
 
 import arb.functions.Function;
 
-public class RationalFunction implements AutoCloseable,Field<RationalFunction>,Function<Fraction,Fraction> {
+public class RationalFunction implements Named,AutoCloseable,Field<RationalFunction>,Function<Fraction,Fraction> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 

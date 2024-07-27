@@ -1,4 +1,4 @@
-%typemap(javainterfaces) fmpz_poly_q_struct "AutoCloseable,Field<RationalFunction>,Function<Fraction,Fraction>"
+%typemap(javainterfaces) fmpz_poly_q_struct "Named,AutoCloseable,Field<RationalFunction>,Function<Fraction,Fraction>"
 %typemap(javafinalize) fmpz_poly_q_struct ""
 %typemap(javaimports) fmpz_poly_q_struct %{
 import arb.functions.Function;
