@@ -14,9 +14,11 @@ public class IntegerPolynomialTest
 {
   public void testAssertSimpleToString()
   {
-    IntegerPolynomial p = new IntegerPolynomial();
-    p.set(3);
-    assertEquals("3", p.toString());
+    try ( IntegerPolynomial p = new IntegerPolynomial())
+    {
+      p.set(3);
+      assertEquals("3", p.toString());
+    }
   }
 
   @SuppressWarnings("resource")
@@ -42,6 +44,7 @@ public class IntegerPolynomialTest
     }
   }
 
+  @SuppressWarnings("resource")
   public void testMul()
   {
 

@@ -1,16 +1,9 @@
 package arb.viz;
 
-import arb.Integer;
-import arb.Real;
-import arb.RealConstants;
-import arb.RationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
-import arb.functions.real.RealFunction;
 import arb.functions.real.RealRationalNullaryFunction;
-import arb.functions.sequences.Sequence;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.scene.Scene;

@@ -27,21 +27,24 @@ public class RationalFunctionTest
 
   public void testInitAndToString()
   {
-    var f           = new RationalFunction();
+    try ( var f = new RationalFunction())
+    {
+      var numerator   = f.getNumerator();
 
-    var numerator   = f.getNumerator();
-
-    var denominator = f.getDenominator();
-    assertEquals("0", numerator.toString());
-    assertEquals("1", denominator.toString());
+      var denominator = f.getDenominator();
+      assertEquals("0", numerator.toString());
+      assertEquals("1", denominator.toString());
+    }
 
   }
 
   public void testRationalIdentity()
   {
-    RationalFunction x = new RationalFunction();
-    x.multiplicativeIdentity();
-    System.out.println("x=" + x);
+    try ( RationalFunction x = new RationalFunction())
+    {
+      x.multiplicativeIdentity();
+      System.out.println("x=" + x);
+    }
   }
 
   public void testHypergeometricFunctionExpressionRational()
