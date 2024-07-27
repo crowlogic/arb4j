@@ -13,9 +13,11 @@ public class pFq implements RationalNullaryFunction, Typesettable, AutoCloseable
 {
   public static void main(String args[])
   {
-    pFq              f = new pFq();
-    RationalFunction x = f.evaluate(128);
-    System.out.println(f + "=" + x);
+    try ( pFq f = new pFq())
+    {
+      RationalFunction x = f.evaluate(128);
+      System.out.println(f + "=" + x);
+    }
   }
 
   public boolean isInitialized;

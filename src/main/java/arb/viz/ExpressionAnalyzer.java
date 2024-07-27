@@ -9,6 +9,7 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.real.RealFunction;
+import arb.functions.real.RealRationalNullaryFunction;
 import arb.functions.sequences.Sequence;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -37,9 +38,9 @@ public class ExpressionAnalyzer
   public static Expression<?,?,?> getExpression()
   {
 
-    Real    v       = new Real().set(RealConstants.half).setName("v");
-    Context context = new Context(v);
-    return RealFunction.parse("n->v₍ₙ₎/(z/2)ⁿ*pFq([½-n/2,-n/2],[v,-n,1-v-n],-(z²))", context);
+    //Real    v       = new Real().set(RealConstants.half).setName("v");
+   // Context context = new Context(v);
+    return RealRationalNullaryFunction.parse("(1/2)-(x/2)");
   }
 
   public void expandTreeView(TreeItem<?> item)
