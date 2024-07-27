@@ -66,8 +66,9 @@ tasks.withType(JavaCompile) {
     options.forkOptions.jvmArgs += ['-ea', '--enable-preview']
 }
 
+
 tasks.test {
-    jvmArgs '-ea', '--enable-preview', '--enable-native-access=arb4j', '-Djava.library.path=.'
+    jvmArgs '-ea', '--enable-preview', '--enable-native-access=ALL-UNNAMED', '-Djava.library.path=.'
 }
 
 task createClasspathManifest {
