@@ -7,6 +7,8 @@
 #include <flint/fmpz_poly.h>
 #include <flint/fmpz_poly_q.h>
 
+void fmpq_canonicalise(fmpq_t res);
+int fmpq_is_canonical(const fmpq_t x);
 
 void fmpz_poly_init2(fmpz_poly_t poly, slong alloc);
 

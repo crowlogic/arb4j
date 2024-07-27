@@ -212,7 +212,36 @@ import java.util.Objects;
   {
     assert false : "TODO";
     return null;
-  }  
+  }
+  
+  /**
+   * Reduces this {@link Fraction} into its simplest form, dividing the
+   * {@link #numerator} and the this#denominator by the highest common factor.
+   * 
+   * @return this
+   */
+  public Fraction reduce()
+  {
+    arblib.fmpq_canonicalise(this);
+    return this;
+  }
+
+  /**
+   * A {@link Fraction} is said to be in canonical form if the this#numerator and
+   * this#denominator have no common factor and the denominator is positive.
+   * Except where otherwise noted, all functions in the fmpq module assume that
+   * inputs are in canonical form, and produce outputs in canonical form. The
+   * numerator and denominator of an fmpq_t can be modified severally as arbitrary
+   * integers, but then becomes responsible for canonicalising the number (for
+   * example by calling fmpq_canonicalise) before passing it to any library
+   * function.
+   * 
+   * @return true if {@link arblib#fmpq_is_canonical(Fraction)} != 0
+   */
+  public boolean isReduced()
+  {
+    return arblib.fmpq_is_canonical(this) != 0;
+  }    
   
 %};
  

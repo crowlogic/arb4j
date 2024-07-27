@@ -9,6 +9,14 @@
 package arb;
 
 public class arblib {
+  public static void fmpq_canonicalise(Fraction res) {
+    arblibJNI.fmpq_canonicalise(Fraction.getCPtr(res), res);
+  }
+
+  public static int fmpq_is_canonical(Fraction x) {
+    return arblibJNI.fmpq_is_canonical(Fraction.getCPtr(x), x);
+  }
+
   public static void fmpz_poly_init2(IntegerPolynomial poly, int alloc) {
     arblibJNI.fmpz_poly_init2(IntegerPolynomial.getCPtr(poly), poly, alloc);
   }
