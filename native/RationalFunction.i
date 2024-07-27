@@ -13,6 +13,12 @@ import arb.functions.Function;
 
 %typemap(javacode) fmpz_poly_q_struct %{
 
+  public RationalFunction pow(Integer power, int bits2, RationalFunction res)
+  {
+    assert false : "TODO: raise " + this + " to the power of " + power;
+    return res;
+  }
+  
   @Override
   public Fraction evaluate(Fraction t, int order, int bits, Fraction res)
   {
