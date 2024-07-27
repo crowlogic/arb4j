@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void fmpq_zero(Fraction res) {
+    arblibJNI.fmpq_zero(Fraction.getCPtr(res), res);
+  }
+
   public static void fmpq_canonicalise(Fraction res) {
     arblibJNI.fmpq_canonicalise(Fraction.getCPtr(res), res);
   }

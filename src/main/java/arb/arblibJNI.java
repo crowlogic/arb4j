@@ -9,6 +9,7 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void fmpq_zero(long jarg1, Fraction jarg1_);
   public final static native void fmpq_canonicalise(long jarg1, Fraction jarg1_);
   public final static native int fmpq_is_canonical(long jarg1, Fraction jarg1_);
   public final static native void fmpz_poly_init2(long jarg1, IntegerPolynomial jarg1_, int jarg2);

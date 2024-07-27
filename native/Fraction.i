@@ -196,15 +196,14 @@ import java.util.Objects;
   @Override
   public Fraction zero()
   {
-    assert false : "TODO";
-    return null;
+    arblib.fmpq_zero(this);
+    return this;
   }
   
   @Override
   public Fraction additiveIdentity()
   {
-    assert false : "TODO";
-    return null;
+    return zero();
   }
 
   @Override
