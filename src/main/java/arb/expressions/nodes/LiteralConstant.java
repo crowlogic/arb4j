@@ -4,9 +4,6 @@ import static arb.expressions.Compiler.duplicateTopOfTheStack;
 import static arb.expressions.Compiler.loadThisOntoStack;
 import static org.objectweb.asm.Opcodes.ACC_FINAL;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.NEW;
-import static org.objectweb.asm.Opcodes.SIPUSH;
 
 import java.util.HashSet;
 import java.util.List;
@@ -15,6 +12,7 @@ import java.util.function.Consumer;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import static org.objectweb.asm.Opcodes.*;
 import org.objectweb.asm.Type;
 
 import arb.Complex;
@@ -71,6 +69,12 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
                             extends
                             Node<D, R, F>
 {
+  static final String METHOD_DESCRIPTOR_WITHOUT_BITS = Compiler.getMethodDescriptor(Void.class, String.class);
+
+  static final String METHOD_DESCRIPTOR_WITH_BITS    = Compiler.getMethodDescriptor(Void.class,
+                                                                                    String.class,
+                                                                                    int.class);
+
   @Override
   public boolean dependsOn(Variable<D, R, F> variable)
   {
@@ -218,10 +222,7 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
     {
       methodVisitor.visitIntInsn(SIPUSH, bits);
     }
-    String constructorDescriptor = needsBitsPassedToStringConstructor ? Compiler.getMethodDescriptor(Void.class,
-                                                                                                     String.class,
-                                                                                                     int.class) : Compiler.getMethodDescriptor(Void.class,
-                                                                                                                                               String.class);
+    String constructorDescriptor = needsBitsPassedToStringConstructor ? METHOD_DESCRIPTOR_WITH_BITS : METHOD_DESCRIPTOR_WITHOUT_BITS;
     methodVisitor.visitMethodInsn(INVOKESPECIAL, Type.getInternalName(type), "<init>", constructorDescriptor, false);
     expression.putField(methodVisitor, fieldName, type);
     return methodVisitor;
