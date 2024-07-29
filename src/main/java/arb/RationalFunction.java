@@ -243,7 +243,7 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   
   public RationalFunction set(Real real)
   {
-    assert false : "TODO: support assignment from real?";
+    assert false : "TODO: implement literal Fraction constants: https://github.com/crowlogic/arb4j/issues/442";
     return null;
   }  
 
