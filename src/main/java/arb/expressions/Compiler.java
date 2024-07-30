@@ -318,6 +318,7 @@ public class Compiler
     typePrefixes.put(ComplexMatrix.class, "ℂᵐˣⁿ");
     typePrefixes.put(RationalFunction.class, "fℝ");
     typePrefixes.put(ComplexQuasiPolynomial.class, "qXℂ");
+    typePrefixes.put(Fraction.class, "f");
   }
 
   public static String getVariablePrefix(Class<?> type)
