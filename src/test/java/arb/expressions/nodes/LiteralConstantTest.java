@@ -13,7 +13,7 @@ public class LiteralConstantTest
                                  TestCase
 {
 
-  public void testOneHalfMinusXOver2()
+  public void testRationalNullaryOneHalfMinusXOver2()
   {
       var              rationalFunctional      = RationalNullaryFunction.express("1/2");
       RationalFunction expressed = rationalFunctional.evaluate(128, new RationalFunction());

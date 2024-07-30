@@ -33,6 +33,30 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     System.loadLibrary("arblib");
   }
 
+  /**
+   * Divides this Integer by another Integer and returns the result as a
+   * RationalFunction.
+   *
+   * @param operand The Integer to divide by
+   * @param prec    The precision to use for the operation (not used for exact
+   *                division)
+   * @param result  The RationalFunction to store the result in
+   * @return The resulting RationalFunction
+   */
+  public RationalFunction div(Integer operand, int prec, RationalFunction result)
+  {
+    // Set the numerator to this Integer
+    result.getNumerator().set(this);
+
+    // Set the denominator to the operand
+    result.getDenominator().set(operand);
+
+    // Reduce the rational function
+    result.reduce();
+
+    return result;
+  }
+
   public static Integer newVector(int dim)
   {
     Integer vec = new Integer((long) dim);
@@ -581,7 +605,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   public RationalFunction neg(RationalFunction res)
   {
     res.set(this);
-    res.neg();  
+    res.neg();
     return res;
   }
 

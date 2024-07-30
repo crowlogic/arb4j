@@ -243,7 +243,7 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   
   public RationalFunction set(Real real)
   {
-    assert false : "TODO: implement literal Fraction constants: https://github.com/crowlogic/arb4j/issues/442";
+    assert false : "TODO: support assignment from real?";
     return null;
   }  
 
@@ -268,6 +268,17 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   {
     assert false : "TODO";
     return null;
+  }  
+  
+  public RationalFunction reduce()
+  {
+    arblib.fmpz_poly_q_canonicalise(this);
+    return this;
+  }
+  
+  public boolean isReduced()
+  {   
+    return arblib.fmpz_poly_q_is_canonical(this) != 0;                
   }  
   
 

@@ -249,5 +249,16 @@ import arb.functions.Function;
     return null;
   }  
   
+  public RationalFunction reduce()
+  {
+    arblib.fmpz_poly_q_canonicalise(this);
+    return this;
+  }
+  
+  public boolean isReduced()
+  {   
+    return arblib.fmpz_poly_q_is_canonical(this) != 0;                
+  }  
+  
 %};
  
