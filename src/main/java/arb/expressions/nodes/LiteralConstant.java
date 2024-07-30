@@ -2,8 +2,7 @@ package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.duplicateTopOfTheStack;
 import static arb.expressions.Compiler.loadThisOntoStack;
-import static org.objectweb.asm.Opcodes.ACC_FINAL;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -12,17 +11,18 @@ import java.util.function.Consumer;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-import static org.objectweb.asm.Opcodes.*;
 import org.objectweb.asm.Type;
 
 import arb.Complex;
 import arb.ComplexConstants;
+import arb.Fraction;
 import arb.Integer;
 import arb.Real;
 import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
+import arb.exceptions.ArbException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.binary.Multiplication;
@@ -111,6 +111,8 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
 
   public boolean      isComplex = false;
 
+  public Fraction     fractionValue;
+
   public LiteralConstant(Expression<D, R, F> expression, String constantValueString)
   {
     this(expression,
@@ -123,9 +125,30 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
   {
     super(expression);
     assert Integer.class.equals(arb.Integer.class) : "an import statement for arb.Integer is probably missing";
-    value     = Utensils.subscriptToRegular(constantValueString.trim());
-    isInt     = !((value.contains(".") || constantSymbols.contains(value)));
-    isComplex = ⅈ.equals(value);
+    value = Utensils.subscriptToRegular(constantValueString.trim());
+
+    if (value.contains("/"))
+    {
+      String[] parts = value.split("/");
+
+      if (parts.length == 2)
+      {
+        fractionValue = new Fraction();
+        fractionValue.getNumerator().set(parts[0]);
+        fractionValue.getDenominator().set(parts[1]);
+        isInt     = false;
+        isComplex = false;
+      }
+      else
+      {
+        throw new ArbException("invalid literal constant '" + value + "'");
+      }
+    }
+    else
+    {
+      isInt     = !((value.contains(".") || constantSymbols.contains(value)));
+      isComplex = ⅈ.equals(value);
+    }
 
     if (isConstant(constantValueString))
     {
@@ -167,7 +190,16 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
   public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
   {
     generatedType = type();
-    if (π.equals(fieldName))
+    if (fractionValue != null)
+    {
+      // Generate code to create a new Fraction object
+      mv.visitTypeInsn(NEW, Type.getInternalName(Fraction.class));
+      mv.visitInsn(DUP);
+      mv.visitLdcInsn(fractionValue.getNumerator());
+      mv.visitLdcInsn(fractionValue.getDenominator());
+      mv.visitMethodInsn(INVOKESPECIAL, Type.getInternalName(Fraction.class), "<init>", "(JJ)V", false);
+    }
+    else if (π.equals(fieldName))
     {
       loadRealConstantOntoStack(mv, π);
     }
@@ -185,9 +217,6 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
     }
     else
     {
-      // todo: https://github.com/crowlogic/arb4j/issues/222: use the primitive int ,
-      // the signature of the method being invoked will also have to know this has
-      // been done and change correspondingly
       expression.loadFieldOntoStack(loadThisOntoStack(mv), fieldName, generatedType.descriptorString());
     }
 
@@ -205,8 +234,6 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
       expression.generateSetResultInvocation(mv, generatedType);
     }
 
-    // expression.addToTypeStack(thisType, toString() );
-
     return mv;
   }
 
@@ -216,14 +243,29 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
     loadThisOntoStack(methodVisitor);
     methodVisitor.visitTypeInsn(NEW, Type.getInternalName(type));
     duplicateTopOfTheStack(methodVisitor);
-    methodVisitor.visitLdcInsn(value);
-    boolean needsBitsPassedToStringConstructor = type.equals(Real.class);
-    if (needsBitsPassedToStringConstructor)
+
+    if (fractionValue != null)
     {
-      methodVisitor.visitIntInsn(SIPUSH, bits);
+      methodVisitor.visitLdcInsn(fractionValue.getNumerator());
+      methodVisitor.visitLdcInsn(fractionValue.getDenominator());
+      methodVisitor.visitMethodInsn(INVOKESPECIAL, Type.getInternalName(Fraction.class), "<init>", "(JJ)V", false);
     }
-    String constructorDescriptor = needsBitsPassedToStringConstructor ? METHOD_DESCRIPTOR_WITH_BITS : METHOD_DESCRIPTOR_WITHOUT_BITS;
-    methodVisitor.visitMethodInsn(INVOKESPECIAL, Type.getInternalName(type), "<init>", constructorDescriptor, false);
+    else
+    {
+      methodVisitor.visitLdcInsn(value);
+      boolean needsBitsPassedToStringConstructor = type.equals(Real.class);
+      if (needsBitsPassedToStringConstructor)
+      {
+        methodVisitor.visitIntInsn(SIPUSH, bits);
+      }
+      String constructorDescriptor = needsBitsPassedToStringConstructor ? METHOD_DESCRIPTOR_WITH_BITS : METHOD_DESCRIPTOR_WITHOUT_BITS;
+      methodVisitor.visitMethodInsn(INVOKESPECIAL,
+                                    Type.getInternalName(type),
+                                    "<init>",
+                                    constructorDescriptor,
+                                    false);
+    }
+
     expression.putField(methodVisitor, fieldName, type);
     return methodVisitor;
   }
@@ -289,6 +331,10 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public Class<?> type()
   {
+    if (fractionValue != null)
+    {
+      return Fraction.class;
+    }
     return isInt ? Integer.class : isComplex ? Complex.class : Real.class;
   }
 
@@ -302,6 +348,10 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
     else if (half.equals(value))
     {
       return "\\frac{1}{2}";
+    }
+    else if (fractionValue != null)
+    {
+      return String.format("\\frac{%d}{%d}", fractionValue.getNumerator(), fractionValue.getDenominator());
     }
     else
     {
