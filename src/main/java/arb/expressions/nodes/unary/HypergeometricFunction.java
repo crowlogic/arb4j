@@ -145,10 +145,7 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
   public void constructFiniteHypergeometricSeries(MethodVisitor mv, Class<?> scalarType, boolean rational)
   {
     boolean isReal = Real.class.equals(scalarType);
-    if (!isReal && rational)
-    {
-      assert false : "todo: implement ComplexRationalFunction, scalarType=" + scalarType;
-    }
+
     hypergeometricClass = isReal ? (rational ? RealRationalHypergeometricFunction.class : RealPolynomialHypergeometricFunction.class) : (rational ? Object.class : ComplexHypergeometricPolynomial.class);
     mv.visitTypeInsn(NEW, Type.getInternalName(hypergeometricClass));
     duplicateTopOfTheStack(mv);
