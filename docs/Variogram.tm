@@ -30,7 +30,7 @@
 
     Here, the semivariogram is expressed as a continuous integral over a
     domain of length <math|L>, considering the squared differences of the
-    process at every point <math|x> and its value at <math|x+h>.
+    processes value at every pair of points <math|x> and <math|x+h>.
   </enumerate>
 
   \;
