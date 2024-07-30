@@ -15,8 +15,12 @@ import arb.functions.Function;
 
   public RationalFunction pow(Integer power, int unused, RationalFunction res)
   {
-    assert power != null && power.swigCPtr != 0 : "null pointer or reference";                  
-    arblib.fmpz_poly_q_pow(res, this, power.getUnsignedValue() );
+    assert power != null && power.swigCPtr != 0 : "null pointer or reference";
+    if ( power.getSignedValue() < 0 )
+    {
+      arblib.fmpz_poly_q_inv(res, this);
+    }
+    arblib.fmpz_poly_q_pow(res, res, power.getUnsignedValue() );
     return res;
   }
   
