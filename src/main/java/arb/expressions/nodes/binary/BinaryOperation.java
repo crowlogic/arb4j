@@ -43,7 +43,6 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
   {
     return left.isConstant() && right.isConstant();
   }
-  
 
   @Override
   public boolean isScalar()
@@ -210,7 +209,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
 
   private String       symbol;
 
-  private String intermediateVariableFieldName;
+  private String       intermediateVariableFieldName;
 
   public Class<?> getGeneratedType()
   {
@@ -237,9 +236,9 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
       Class<? extends Object> rhsType = scalarType(right.type());
       if (Integer.class.equals(rhsType) || Real.class.equals(rhsType) || Complex.class.equals(rhsType))
       {
+        boolean decimal = Real.class.equals(rhsType) || RealPolynomial.class.equals(rhsType);
         left = new LiteralConstant<>(expression,
-                                     (Real.class.equals(rhsType)
-                                                   || RealPolynomial.class.equals(rhsType)) ? "0.0" : "0");
+                                     decimal ? "0.0" : "0");
       }
       else
       {
@@ -294,7 +293,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     var leftType = left.getGeneratedType();
     leftType = leftType != null ? leftType : left.type();
     var rightType = right.type();
-    if ( Object.class.equals(leftType))
+    if (Object.class.equals(leftType))
     {
       leftType = expression.coDomainType;
     }
@@ -408,11 +407,15 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     /**
      * TODO: map
      */
-    //mapTypes(Real.class, ComplexQuasiPolynomial.class, ComplexQuasiPolynomial.class);
+    // mapTypes(Real.class, ComplexQuasiPolynomial.class,
+    // ComplexQuasiPolynomial.class);
 
-   // mapTypes(Integer.class, ComplexQuasiPolynomial.class, ComplexQuasiPolynomial.class);
-   // mapTypes(Complex.class, ComplexQuasiPolynomial.class, ComplexQuasiPolynomial.class);
-   // mapTypes(Complex.class, RationalFunction.class, ComplexQuasiPolynomial.class);
+    // mapTypes(Integer.class, ComplexQuasiPolynomial.class,
+    // ComplexQuasiPolynomial.class);
+    // mapTypes(Complex.class, ComplexQuasiPolynomial.class,
+    // ComplexQuasiPolynomial.class);
+    // mapTypes(Complex.class, RationalFunction.class,
+    // ComplexQuasiPolynomial.class);
 
   }
 
