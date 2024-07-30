@@ -436,7 +436,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     if (leftType.equals(rightType))
     {
       boolean integerDivision = operation.equals("div") && leftType.equals(Integer.class);
-      type = integerDivision ? Real.class : leftType;
+      type = integerDivision ? Fraction.class : leftType;
     }
     else
     {
