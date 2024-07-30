@@ -34,14 +34,16 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   }
 
 
+  @SuppressWarnings("resource")
   public RationalFunction pow(Integer power, int unused, RationalFunction res)
   {
     assert power != null && power.swigCPtr != 0 : "null pointer or reference";
+    RationalFunction thiz = this;
     if ( power.getSignedValue() < 0 )
     {
-      arblib.fmpz_poly_q_inv(res, this);
+      arblib.fmpz_poly_q_inv(thiz = res, this);
     }
-    arblib.fmpz_poly_q_pow(res, res, power.getUnsignedValue() );
+    arblib.fmpz_poly_q_pow(res, thiz, power.getUnsignedValue() );
     return res;
   }
   

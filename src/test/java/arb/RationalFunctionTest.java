@@ -69,6 +69,13 @@ public class RationalFunctionTest
     assertEquals("1/(x)", expressed.toString());
   }
   
+  public void testXSquaredToThePowerOfNegativeOne()
+  {
+    var              rationalFunctional = RationalNullaryFunction.express("(x^2)^(-1)");
+    RationalFunction expressed          = rationalFunctional.evaluate(128, new RationalFunction());
+    assertEquals("1/(x^2)", expressed.toString());
+  }
+  
   /**
    * is(expand(x^2-2*x+1)/4=expand((1/2-x/2)^2)); true
    */
