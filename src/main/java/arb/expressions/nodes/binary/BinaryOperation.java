@@ -405,6 +405,9 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     mapTypes(Fraction.class, RealPolynomial.class, RealPolynomial.class);
     mapTypes(Fraction.class, ComplexPolynomial.class, ComplexPolynomial.class);
 
+    /**
+     * TODO: map
+     */
     //mapTypes(Real.class, ComplexQuasiPolynomial.class, ComplexQuasiPolynomial.class);
 
    // mapTypes(Integer.class, ComplexQuasiPolynomial.class, ComplexQuasiPolynomial.class);
