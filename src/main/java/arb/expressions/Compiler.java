@@ -646,7 +646,11 @@ public class Compiler
 
   public static Class<?> scalarType(Class<?> resultType)
   {
-    if (realScalarTypes.contains(resultType))
+    if (resultType.equals(RationalFunction.class))
+    {
+      return Fraction.class;
+    }
+    else if (realScalarTypes.contains(resultType))
     {
       return Real.class;
     }

@@ -20,5 +20,13 @@ public class LiteralConstantTest
       assertEquals("1/2", expressed.toString());
     
   }
+  
+  public void testThreeEightsPlusOneEight()
+  {
+      var              rationalFunctional      = RationalNullaryFunction.express("3/8+1/8");
+      RationalFunction expressed = rationalFunctional.evaluate(128, new RationalFunction());
+      assertEquals("1/2", expressed.toString());
+    
+  }
 
 }

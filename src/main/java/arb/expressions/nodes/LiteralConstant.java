@@ -2,7 +2,11 @@ package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.duplicateTopOfTheStack;
 import static arb.expressions.Compiler.loadThisOntoStack;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_FINAL;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.NEW;
+import static org.objectweb.asm.Opcodes.SIPUSH;
 
 import java.util.HashSet;
 import java.util.List;
@@ -192,9 +196,7 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
     generatedType = type();
     if (fractionValue != null)
     {
-      // Generate code to create a new Fraction object
-      mv.visitTypeInsn(NEW, Type.getInternalName(Fraction.class));
-      mv.visitInsn(DUP);
+      expression.allocateIntermediateVariable(mv, Fraction.class);
       mv.visitLdcInsn(fractionValue.getNumerator());
       mv.visitLdcInsn(fractionValue.getDenominator());
       mv.visitMethodInsn(INVOKESPECIAL, Type.getInternalName(Fraction.class), "<init>", "(JJ)V", false);
