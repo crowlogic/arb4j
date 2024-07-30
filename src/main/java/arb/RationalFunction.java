@@ -279,7 +279,15 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   public boolean isReduced()
   {   
     return arblib.fmpz_poly_q_is_canonical(this) != 0;                
-  }  
+  }
+  
+  public RationalFunction set(Fraction fraction)
+  {
+    getNumerator().set(fraction.getNumerator());
+    getDenominator().set(fraction.getDenominator());
+    return this;
+  }
+  
   
 
   public void setLongNumerator(long value) {

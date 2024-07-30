@@ -38,6 +38,11 @@ public class Fraction implements AutoCloseable,Field<Fraction> {
     System.loadLibrary("arblib");
   }
 
+  public RationalFunction sub(RationalFunction element, int prec, RationalFunction result)
+  {
+    return result.set(this).sub(element, prec, result);
+  }
+  
   @Override
   public int
          hashCode()

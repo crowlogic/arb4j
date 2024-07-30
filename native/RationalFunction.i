@@ -258,7 +258,15 @@ import arb.functions.Function;
   public boolean isReduced()
   {   
     return arblib.fmpz_poly_q_is_canonical(this) != 0;                
-  }  
+  }
+  
+  public RationalFunction set(Fraction fraction)
+  {
+    getNumerator().set(fraction.getNumerator());
+    getDenominator().set(fraction.getDenominator());
+    return this;
+  }
+  
   
 %};
  
