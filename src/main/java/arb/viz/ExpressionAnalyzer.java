@@ -28,11 +28,11 @@ public class ExpressionAnalyzer
 {
 
   @SuppressWarnings("resource")
-  public static Expression<?,?,?> getExpression()
+  public static Expression<?, ?, ?> getExpression()
   {
 
-    //Real    v       = new Real().set(RealConstants.half).setName("v");
-   // Context context = new Context(v);
+    // Real v = new Real().set(RealConstants.half).setName("v");
+    // Context context = new Context(v);
     return RealRationalNullaryFunction.parse("(1/2)-(x/2)");
   }
 
@@ -132,7 +132,7 @@ public class ExpressionAnalyzer
       }
     });
 
-    scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+    scene.getStylesheets().add(TODO.convertStylesheetToDataURI(TODO.EASIER_ON_THE_EYES_STYLESHEET));
     primaryStage.setScene(scene);
     primaryStage.setTitle("Expression Viewer");
     primaryStage.centerOnScreen();

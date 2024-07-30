@@ -34,7 +34,7 @@ public class TODO
                   Application
 {
 
-  private static final String EASIER_ON_THE_EYES_STYLESHEET = ".scroll-bar .thumb {\n"
+  public static final String EASIER_ON_THE_EYES_STYLESHEET = ".scroll-bar .thumb {\n"
                  + "    -fx-background-color: #808080; /* Change this to your desired thumb color */\n" + "}\n"
                  + "\n" + ".scroll-bar .increment-button, .scroll-bar .decrement-button {\n"
                  + "    -fx-background-color: #a9a9a9; /* Change this to your desired button color */\n"
@@ -61,7 +61,7 @@ public class TODO
   private ListView<String>       listView   = new ListView<>(items);
   private TextField              inputField = new TextField();
 
-  private String convertStylesheetToDataURI(String CSS_CONTENT)
+  public static String convertStylesheetToDataURI(String CSS_CONTENT)
   {
     String encoded = Base64.getEncoder().encodeToString(CSS_CONTENT.getBytes(StandardCharsets.UTF_8));
     return "data:text/css;base64," + encoded;
