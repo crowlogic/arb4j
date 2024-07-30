@@ -49,14 +49,14 @@ public class RationalFunctionTest
   {
     var              rationalFunctional = RationalNullaryFunction.express("x/2");
     RationalFunction expressed          = rationalFunctional.evaluate(128, new RationalFunction());
-    assertEquals("x/2", expressed.toString());
+    assertEquals("(x)/2", expressed.toString());
   }
 
   public void testOneHalfMinusXOver2()
   {
     var              rationalFunctional = RationalNullaryFunction.express("1/2-x/2");
     RationalFunction expressed          = rationalFunctional.evaluate(128, new RationalFunction());
-    assertEquals("1/2-x/2", expressed.toString());
+    assertEquals("(-x+1)/2", expressed.toString());
   }
 
   public void testHypergeometricFunctionExpressionRational()

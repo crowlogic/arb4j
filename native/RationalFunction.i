@@ -199,12 +199,14 @@ import arb.functions.Function;
   @Override
   public RationalFunction div(int j, int prec, RationalFunction result)
   {
-    return div(result.set(j), prec, result);
+    arblib.fmpz_poly_q_scalar_div_si(result, this, j);
+    return result;
   }
-  
+
   public RationalFunction div(Integer j, int prec, RationalFunction result)
   {
-    return div(result.set(j), prec, result);
+    arblib.fmpz_poly_q_scalar_div_fmpz(result, this, j.swigCPtr);
+    return result;  
   }
   
   @Override
