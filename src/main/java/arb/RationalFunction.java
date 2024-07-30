@@ -288,7 +288,15 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
     return this;
   }
   
-  
+  public RationalFunction add(Fraction element, int prec, RationalFunction result)
+  {
+    try ( RationalFunction e = new RationalFunction())
+    {
+      e.set(element);
+      return result.set(this).add(e, prec, result);
+    }
+  }
+    
 
   public void setLongNumerator(long value) {
     arblibJNI.RationalFunction_longNumerator_set(swigCPtr, this, value);

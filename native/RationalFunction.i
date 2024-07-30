@@ -267,6 +267,14 @@ import arb.functions.Function;
     return this;
   }
   
-  
+  public RationalFunction add(Fraction element, int prec, RationalFunction result)
+  {
+    try ( RationalFunction e = new RationalFunction())
+    {
+      e.set(element);
+      return result.set(this).add(e, prec, result);
+    }
+  }
+    
 %};
  
