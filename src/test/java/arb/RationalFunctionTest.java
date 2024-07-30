@@ -38,13 +38,11 @@ public class RationalFunctionTest
 
   }
 
-  public void testRationalIdentity()
+  public void testRationalIdentityExpression()
   {
-    try ( RationalFunction x = new RationalFunction())
-    {
-      x.multiplicativeIdentity();
-      System.out.println("x=" + x);
-    }
+    var              rationalFunctional      = RationalNullaryFunction.express("x");
+    RationalFunction expressed = rationalFunctional.evaluate(128, new RationalFunction());
+    assertEquals("x", expressed.toString());    
   }
 
   public void testOneHalfMinusXOver2()
