@@ -337,9 +337,9 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   
   public Fraction div(Integer dividend, int prec, Fraction res)
   {
-    assert false : "todo";
-    return res;
-    //return res.set(this).div(dividend, prec, res);
+    res.getNumerator().set(this);
+    res.getDenominator().set(dividend);
+    return res.reduce();
   }
   
 
