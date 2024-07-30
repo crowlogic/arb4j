@@ -334,6 +334,14 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     res.bits = prec;
     return res.set(this).div(dividend, prec, res);
   }
+  
+  public Fraction div(Integer dividend, int prec, Fraction res)
+  {
+    assert false : "todo";
+    return res;
+    //return res.set(this).div(dividend, prec, res);
+  }
+  
 
   /**
    * Shortcut for this{@link #div(Integer, int, Integer)} since it doesnt need
