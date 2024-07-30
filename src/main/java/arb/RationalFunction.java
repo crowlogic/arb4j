@@ -34,9 +34,9 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   }
 
 
-  public RationalFunction pow(Integer power, int bits2, RationalFunction res)
+  public RationalFunction pow(Integer power, int unused, RationalFunction res)
   {
-    assert false : "TODO: raise " + this + " to the power of " + power;
+    arblib.fmpz_poly_q_pow(res, this, power.swigCPtr);
     return res;
   }
   
@@ -193,8 +193,8 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   @Override
   public RationalFunction mul(int x, int prec, RationalFunction result)
   {
-    assert false : "TODO";
-    return null;
+    arblib.fmpz_poly_q_scalar_mul_si(result, this, x);
+    return result;
   }
 
   @Override
@@ -252,9 +252,8 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
 
   public RationalFunction set(Integer integer)
   {
-    getNumerator().set(integer);
-    getDenominator().set(1);
-    return this;
+   set(integer.getSignedValue());
+   return this;
   }
 
   public RationalFunction neg(RationalFunction res)

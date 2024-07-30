@@ -13,9 +13,9 @@ import arb.functions.Function;
 
 %typemap(javacode) fmpz_poly_q_struct %{
 
-  public RationalFunction pow(Integer power, int bits2, RationalFunction res)
+  public RationalFunction pow(Integer power, int unused, RationalFunction res)
   {
-    assert false : "TODO: raise " + this + " to the power of " + power;
+    arblib.fmpz_poly_q_pow(res, this, power.swigCPtr);
     return res;
   }
   
@@ -172,8 +172,8 @@ import arb.functions.Function;
   @Override
   public RationalFunction mul(int x, int prec, RationalFunction result)
   {
-    assert false : "TODO";
-    return null;
+    arblib.fmpz_poly_q_scalar_mul_si(result, this, x);
+    return result;
   }
 
   @Override
