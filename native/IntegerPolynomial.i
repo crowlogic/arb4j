@@ -21,7 +21,7 @@ import arb.algebra.Ring;
   @Override
   public String toString()
   {
-    return arblib.fmpz_poly_get_str_pretty(this, null);
+    return arblib.fmpz_poly_get_str_pretty(this, "x");
   }
   
   public String name;

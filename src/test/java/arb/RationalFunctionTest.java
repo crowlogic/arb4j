@@ -40,22 +40,29 @@ public class RationalFunctionTest
 
   public void testRationalIdentityExpression()
   {
-    var              rationalFunctional      = RationalNullaryFunction.express("x");
-    RationalFunction expressed = rationalFunctional.evaluate(128, new RationalFunction());
-    assertEquals("x", expressed.toString());    
+    var              rationalFunctional = RationalNullaryFunction.express("x");
+    RationalFunction expressed          = rationalFunctional.evaluate(128, new RationalFunction());
+    assertEquals("x", expressed.toString());
+  }
+
+  public void testXOver2()
+  {
+    var              rationalFunctional = RationalNullaryFunction.express("x/2");
+    RationalFunction expressed          = rationalFunctional.evaluate(128, new RationalFunction());
+    assertEquals("x/2", expressed.toString());
   }
 
   public void testOneHalfMinusXOver2()
   {
-      var              rationalFunctional      = RationalNullaryFunction.express("1/2-x/2");
-      RationalFunction expressed = rationalFunctional.evaluate(128, new RationalFunction());
-      assertEquals("1/2-x/2", expressed.toString());    
+    var              rationalFunctional = RationalNullaryFunction.express("1/2-x/2");
+    RationalFunction expressed          = rationalFunctional.evaluate(128, new RationalFunction());
+    assertEquals("1/2-x/2", expressed.toString());
   }
-  
+
   public void testHypergeometricFunctionExpressionRational()
   {
-    var              rationalFunctional      = RationalNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
-    RationalFunction expressed = rationalFunctional.evaluate(128, new RationalFunction());
+    var              rationalFunctional = RationalNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
+    RationalFunction expressed          = rationalFunctional.evaluate(128, new RationalFunction());
     assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
   }
 

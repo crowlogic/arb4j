@@ -105,19 +105,20 @@ import arb.functions.Function;
   {
     return zero();
   }
-  
-  boolean pretty = true;
-  
+    
   @Override
   public String toString()
   {
-    return pretty ? arblib.fmpz_poly_q_get_str_pretty(this, null) : arblib.fmpz_poly_q_get_str(this);
+    return arblib.fmpz_poly_q_get_str_pretty(this, "x");
   }
   
   @Override
   public RationalFunction multiplicativeIdentity()
   {
-   return set(1);
+   getNumerator().set(0);
+   getNumerator().set(1,1);
+   getDenominator().set(1);
+   return this;
   }
   
   @Override
