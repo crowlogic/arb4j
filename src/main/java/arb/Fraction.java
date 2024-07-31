@@ -37,7 +37,19 @@ public class Fraction implements AutoCloseable,Field<Fraction> {
   {
     System.loadLibrary("arblib");
   }
+
+  public Complex add(Complex that, int bits, Complex result)
+  {
+    result.zero().getReal().set(this);
+    return result.add(that, bits);   
+  }
   
+  public Complex sub(Complex that, int bits, Complex result)
+  {
+    result.zero().getReal().set(this);
+    return result.sub(that, bits);   
+  }
+    
   public Fraction neg()
   {
     return neg(this);
