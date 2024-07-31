@@ -239,6 +239,16 @@ import arb.functions.Function;
     return this;
   }
 
+  public RationalFunction add(RationalFunction x, int prec)
+  {
+    return add(x,prec,this);
+  }
+  
+  public RationalFunction mul(RationalFunction x, int prec)
+  {
+    return mul(x,prec,this);
+  }
+  
   public RationalFunction set(Integer integer)
   {
    set(integer.getSignedValue());
