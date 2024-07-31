@@ -3,9 +3,31 @@
 %typemap(javaimports) fmpq %{
 import java.util.Objects;
 import arb.exceptions.ArbException;
+import java.lang.foreign.Arena;
+import java.lang.foreign.MemorySegment;
 %}
 
 %typemap(javacode) fmpq %{
+
+  public MemorySegment nativeSegment;
+  public int           dim = 1;
+  public Fraction[] elements;
+
+  public static Fraction newVector(Arena arena, int dim)
+  {
+    MemorySegment segment = arena.allocate(Long.BYTES * dim);
+    Fraction array = new Fraction(segment.address(),
+                                  false);
+    array.nativeSegment = segment;
+    array.dim         = dim;
+    array.elements    = new Fraction[array.dim = dim];
+    for ( int i = 0; i < dim; i++ )
+    {
+      array.elements[i] = new Fraction(array.swigCPtr + i*Long.BYTES*2, false );      
+    }
+    return array;
+  }
+  
   static
   {
     System.loadLibrary("arblib");
