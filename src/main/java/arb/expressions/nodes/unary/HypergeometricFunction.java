@@ -144,12 +144,12 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
 
   public void constructFiniteHypergeometricSeries(MethodVisitor mv, Class<?> scalarType, boolean rational)
   {
-    boolean isReal    = Real.class.equals(scalarType);
+    boolean isReal = Real.class.equals(scalarType);
 
     hypergeometricClass = rational ? RationalHypergeometricFunction.class
                                    : isReal ? RealPolynomialHypergeometricFunction.class
                                    : ComplexPolynomialHypergeometricFunction.class;
-    
+
     mv.visitTypeInsn(NEW, Type.getInternalName(hypergeometricClass));
     duplicateTopOfTheStack(mv);
 
@@ -157,7 +157,9 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     β.generate(scalarType, mv);
 
     mv.visitLdcInsn(arg.toString());
-    Class<?> nullaryFunctionClass = isReal ? (rational ? RationalNullaryFunction.class : RealPolynomialNullaryFunction.class) : ComplexPolynomialNullaryFunction.class;
+    Class<?> nullaryFunctionClass = rational ? RationalNullaryFunction.class
+                                             : isReal ? RealPolynomialNullaryFunction.class
+                                             : ComplexPolynomialNullaryFunction.class;
     invokeStaticMethod(mv, nullaryFunctionClass, "parse", Expression.class, String.class);
     invokeConstructor(mv, hypergeometricClass, scalarType, scalarType, Expression.class);
   }
