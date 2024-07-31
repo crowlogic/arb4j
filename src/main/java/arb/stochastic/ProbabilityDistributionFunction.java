@@ -29,8 +29,11 @@ public interface ProbabilityDistributionFunction extends
   public default Real sample(RandomVectorGenerator generator, int resolution, Real result)
   {
     Function<Real, Real> inverse  = inverse();
-    Real         u        = result.random(generator.getRandomState(), resolution);
-    Real         evaluate = inverse.evaluate(u, 1, resolution, result);
-    return evaluate;
+    assert false : "redo, if you really *must* use this technique";
+
+ //   Real         u        = result.random(generator.getRandomState(), resolution);
+   // Real         evaluate = inverse.evaluate(u, 1, resolution, result);
+    //return evaluate;
+    return null;
   }
 }

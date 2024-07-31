@@ -268,37 +268,7 @@ public class RealTest extends
       }
     }
   }
-
-  public static void testCorrelation()
-  {
-    RandomState randomState      = new RandomState(777);
-    RealMatrix  covarianceMatrix = RealMatrix.newMatrix(2, 2);
-    Real        meanVector       = Real.newVector(2);
-    covarianceMatrix.get(0, 0).set(covarianceMatrix.get(1, 1).identity());
-    covarianceMatrix.get(1, 0).set(covarianceMatrix.get(0, 1).set("-0.75", prec));
-
-    try ( CorrelatedRandomVectorGenerator rvgen = new CorrelatedRandomVectorGenerator(meanVector,
-                                                                                      covarianceMatrix,
-                                                                                      prec,
-                                                                                      randomState))
-    {
-      RealMatrix x = RealMatrix.newMatrix(1000, 2);
-
-      for (Real element : x)
-      {
-        rvgen.nextElement(prec, element);
-      }
-
-      Real dW1 = x.copyCol(0, Real.newVector(x.getNumRows())).normalize(prec);
-      Real dW2 = x.copyCol(1, Real.newVector(x.getNumRows())).normalize(prec);
-
-      Real cov = dW1.covariance(dW2, prec, new Real());
-      cov.printPrecision = true;
-
-      assertEquals(covarianceMatrix.get(0, 1).doubleValue(), cov.doubleValue(), 0.006);
-    }
-  }
-
+ 
   public static void testCovariance()
   {
     Real r = Real.newVector(3);

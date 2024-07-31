@@ -134,7 +134,9 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
           }
           for (Real sample : evaluationSequence.dimensions)
           {
-            sample.get(stateIndex).randomlyGenerate(gaussianDistribution, randomState, bits);
+            assert false : "redo, if you really *must* use this technique";
+
+           // sample.get(stateIndex).randomlyGenerate(gaussianDistribution, randomState, bits);
           }
 
         }

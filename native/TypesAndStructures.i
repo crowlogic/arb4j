@@ -95,15 +95,7 @@ typedef struct
 
 typedef __gmp_randstate_struct gmp_randstate_t[1];
 
-typedef struct
-{
-    gmp_randstate_t gmp_state;
-    int gmp_init;
-    mp_limb_t __randval;
-    mp_limb_t __randval2;
-} flint_rand_s;
 
-typedef flint_rand_s flint_rand_t[1];
  
 typedef struct
 {

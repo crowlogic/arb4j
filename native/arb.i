@@ -69,7 +69,6 @@ typedef unsigned long int mp_limb_t;
 %rename (RandomAlgorithmData) __gmp_randstate_struct__mp_algdata;
 %rename ($ignore) gmp_randalg_t;
 %rename (GMPRandomState) __gmp_randstate_struct;
-%rename (RandomState) flint_rand_s;
 %rename (FastDFTBluesteinScheme) acb_dft_bluestein_struct;
 %rename (FastDFTPrecomputedCyclicScheme) acb_dft_cyc_precomp;
 %rename (FastDFTRadix2Scheme) acb_dft_rad2_struct;
@@ -165,8 +164,6 @@ typedef unsigned long int mp_limb_t;
 %include "DirichletCharacter.i"
 
 %include "DirichletGroup.i"
-
-%include "RandomState.i"
 
 %include "Fraction.i"
 

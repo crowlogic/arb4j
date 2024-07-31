@@ -116,8 +116,9 @@ public class CorrelatedRandomVectorGenerator implements
   public Real nextElement(int prec, Real result)
   {
     assert result.dim == mean.dim : String.format("result.dim = %d != mean.dim = %d\n", result.dim, mean.dim);
+    assert false : "redo, if you really *must* use this technique";
     // generate uncorrelated vector
-    normalized.forEach(x -> x.random(randomState, prec));
+    //normalized.forEach(x -> x.random(randomState, prec));
 
     // compute correlated vector
     Real correlated = result.zero();

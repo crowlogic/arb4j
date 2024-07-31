@@ -1009,20 +1009,6 @@ import arb.utensils.Utensils;
     return log(prec, this);
   }
   
-  /**
-   * Calls {@link Real#random(RandomState, int)} on each element of this set of Real numbers via a parallel stream
-   * 
-   * @param pdf
-   * @param randomState
-   * @param prec
-   */
-  @SuppressWarnings("resource")   
-  public void randomlyGenerate(ProbabilityDistributionFunction pdf,
-                               RandomState randomState,
-                               int prec)
-  {
-    stream().parallel().forEach(element -> pdf.sample(randomState, prec, element));
-  }  
   public Real add(Real d, int prec)
   {
     return add(d, prec, this);
@@ -1161,21 +1147,6 @@ import arb.utensils.Utensils;
     return res;
   }
 
-  /**
-   * Sets this to a uniformly distributed (pseudo) random number
-   * 
-   * @param state the {@link RandomState}
-   * @param bits  precision
-   * @return uniformly distributed pseudo-random number
-   */
-  public Real random(RandomState state, int bits)
-  {
-    arblib.arb_urandom(this, state, bits);
-    this.bits = bits;
-    return this;
-  }
-  
-  
   /**
    * Calls {@link arblib#flint_realloc(SWIGTYPE_p_void, long)} and also allocate a
    * new this{@link #elements} array and copy the contents from the existing one
