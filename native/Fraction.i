@@ -10,7 +10,17 @@ import java.lang.foreign.MemorySegment;
 %typemap(javacode) fmpq %{
 
 
-
+  /**
+   * NOTICE: this is 1-indexed, not 0 indexed like this{@link #get(int)} !!!
+   * 
+   * @param k
+   * @return
+   */
+  public Fraction get(Integer k)
+  {
+    return get(k.getSignedValue() - 1);
+  }
+  
   @Override
   public String getName()
   {
