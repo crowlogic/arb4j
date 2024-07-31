@@ -1,5 +1,7 @@
 package arb;
 
+import java.lang.foreign.Arena;
+
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import junit.framework.TestCase;
@@ -12,6 +14,231 @@ public class FractionTest
                           extends
                           TestCase
 {
+
+  public class FractionVectorTest
+                                  extends
+                                  TestCase
+  {
+
+    public void testNewVector()
+    {
+      try ( Arena arena = Arena.ofConfined())
+      {
+        int      dim    = 5;
+        Fraction vector = Fraction.newVector(arena, dim);
+        assertEquals(dim, vector.dim());
+      }
+    }
+
+    public void testVectorElementAccess()
+    {
+      try ( Arena arena = Arena.ofConfined())
+      {
+        int      dim    = 3;
+        Fraction vector = Fraction.newVector(arena, dim);
+        for (int i = 0; i < dim; i++)
+        {
+          vector.get(i).getNumerator().set(i + 1);
+          vector.get(i).getDenominator().set(i + 2);
+          assertEquals((i + 1) + "/" + (i + 2), vector.get(i).toString());
+        }
+      }
+    }
+
+    public void testVectorToString()
+    {
+      try ( Arena arena = Arena.ofConfined())
+      {
+        Fraction vector = Fraction.newVector(arena, 3);
+        for (int i = 0; i < 3; i++)
+        {
+          vector.get(i).getNumerator().set(i + 1);
+          vector.get(i).getDenominator().set(i + 2);
+        }
+        assertEquals("[1/2, 2/3, 3/4]", vector.toString());
+      }
+    }
+
+    public void testVectorAddition()
+    {
+      try ( Arena arena = Arena.ofConfined())
+      {
+        Fraction v1     = Fraction.newVector(arena, 2);
+        Fraction v2     = Fraction.newVector(arena, 2);
+        Fraction result = Fraction.newVector(arena, 2);
+
+        v1.get(0).set("1/2");
+        v1.get(1).set("2/3");
+        v2.get(0).set("1/3");
+        v2.get(1).set("1/4");
+
+        for (int i = 0; i < 2; i++)
+        {
+          v1.get(i).add(v2.get(i), result.get(i));
+        }
+        assertEquals("[5/6, 11/12]", result.toString());
+      }
+    }
+
+    public void testVectorMultiplication()
+    {
+      try ( Arena arena = Arena.ofConfined())
+      {
+        Fraction v1     = Fraction.newVector(arena, 2);
+        Fraction v2     = Fraction.newVector(arena, 2);
+        Fraction result = Fraction.newVector(arena, 2);
+
+        v1.get(0).set("1/2");
+        v1.get(1).set("2/3");
+        v2.get(0).set("1/3");
+        v2.get(1).set("3/4");
+
+        for (int i = 0; i < 2; i++)
+        {
+          v1.get(i).mul(v2.get(i), result.get(i));
+        }
+        assertEquals("[1/6, 1/2]", result.toString());
+      }
+    }
+
+    public void testVectorSubtraction()
+    {
+      try ( Arena arena = Arena.ofConfined())
+      {
+        Fraction v1     = Fraction.newVector(arena, 2);
+        Fraction v2     = Fraction.newVector(arena, 2);
+        Fraction result = Fraction.newVector(arena, 2);
+
+        v1.get(0).set("3/4");
+        v1.get(1).set("5/6");
+        v2.get(0).set("1/2");
+        v2.get(1).set("1/3");
+
+        for (int i = 0; i < 2; i++)
+        {
+          v1.get(i).sub(v2.get(i), result.get(i));
+        }
+        assertEquals("[1/4, 1/2]", result.toString());
+      }
+    }
+  }
+
+  public void testNewVector()
+  {
+    try ( Arena arena = Arena.ofConfined())
+    {
+      int      dim    = 5;
+      Fraction vector = Fraction.newVector(arena, dim);
+
+      assertEquals(dim, vector.dim());
+
+      for (int i = 0; i < dim; i++)
+      {
+        vector.get(i).getNumerator().set(i + 1);
+        vector.get(i).getDenominator().set(i + 2);
+      }
+
+      for (int i = 0; i < dim; i++)
+      {
+        assertEquals((i + 1) + "/" + (i + 2), vector.get(i).toString());
+      }
+
+      String expectedString = "[1/2, 2/3, 3/4, 4/5, 5/6]";
+      assertEquals(expectedString, vector.toString());
+    }
+  }
+
+  public void testVectorElementAccess()
+  {
+    try ( Arena arena = Arena.ofConfined())
+    {
+      int      dim    = 3;
+      Fraction vector = Fraction.newVector(arena, dim);
+      for (int i = 0; i < dim; i++)
+      {
+        vector.get(i).getNumerator().set(i + 1);
+        vector.get(i).getDenominator().set(i + 2);
+        assertEquals((i + 1) + "/" + (i + 2), vector.get(i).toString());
+      }
+    }
+  }
+
+  public void testVectorToString()
+  {
+    try ( Arena arena = Arena.ofConfined())
+    {
+      Fraction vector = Fraction.newVector(arena, 3);
+      for (int i = 0; i < 3; i++)
+      {
+        vector.get(i).getNumerator().set(i + 1);
+        vector.get(i).getDenominator().set(i + 2);
+      }
+      assertEquals("[1/2, 2/3, 3/4]", vector.toString());
+    }
+  }
+
+  public void testVectorAddition()
+  {
+    try ( Arena arena = Arena.ofConfined())
+    {
+      Fraction v1     = Fraction.newVector(arena, 2);
+      Fraction v2     = Fraction.newVector(arena, 2);
+      Fraction result = Fraction.newVector(arena, 2);
+
+      v1.get(0).set("1/2");
+      v1.get(1).set("2/3");
+      v2.get(0).set("1/3");
+      v2.get(1).set("1/4");
+
+      for (int i = 0; i < 2; i++)
+      {
+        v1.get(i).add(v2.get(i), result.get(i));
+      }
+      assertEquals("[5/6, 11/12]", result.toString());
+    }
+  }
+
+  public void testVectorMultiplication()
+  {
+    try ( Arena arena = Arena.ofConfined())
+    {
+      Fraction v1     = Fraction.newVector(arena, 2);
+      Fraction v2     = Fraction.newVector(arena, 2);
+      Fraction result = Fraction.newVector(arena, 2);
+
+      v1.get(0).set("1/2");
+      v1.get(1).set("2/3");
+      v2.get(0).set("1/3");
+      v2.get(1).set("3/4");
+
+      for (int i = 0; i < 2; i++)
+      {
+        v1.get(i).mul(v2.get(i), result.get(i));
+      }
+      assertEquals("[1/6, 1/2]", result.toString());
+    }
+  }
+
+  public void testVectorSubtraction()
+  {
+    try ( Arena arena = Arena.ofConfined())
+    {
+      Fraction v1     = Fraction.newVector(arena, 2);
+      Fraction v2     = Fraction.newVector(arena, 2);
+      Fraction result = Fraction.newVector(arena, 2);
+
+      v1.get(0).set("3/4");
+      v1.get(1).set("5/6");
+      v2.get(0).set("1/2");
+      v2.get(1).set("1/3");
+
+      for (int i = 0; i < 2; i++)
+      {
+        v1.get(i).sub(v2.get(i), result.get(i));
+      }
+      assertEquals("[1/4, 1/2]", result.toString());
+    }
+  }
 
   public void testOne()
   {

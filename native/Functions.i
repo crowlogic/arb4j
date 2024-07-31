@@ -7,6 +7,8 @@
 #include <flint/fmpz_poly.h>
 #include <flint/fmpz_poly_q.h>
 
+void fmpq_init(fmpq_t x);
+
 void arf_get_fmpq(fmpq_t y, const arf_t x);
 
 

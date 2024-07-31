@@ -35,10 +35,6 @@ public class ModifiedLommelPolynomialsTest extends
       for (int i = 0; i < 10; i++)
       {
         RealPolynomial p = m.evaluate(i, 128);
-        if ( i == 3 )
-        {
-          System.out.println("h[" + i + "]=" + p );
-        }
         if (i == 9)
         {
           assertEquals("34459425*x⁹ - 16216200*x⁷ + 945945*x⁵ - 13860*x³ + 45*x", p.toString());

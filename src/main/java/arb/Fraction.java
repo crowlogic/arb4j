@@ -43,7 +43,7 @@ public class Fraction implements AutoCloseable,Field<Fraction> {
 
   public static Fraction newVector(Arena arena, int dim)
   {
-    MemorySegment segment = arena.allocate(Long.BYTES * dim);
+    MemorySegment segment = arena.allocate(Long.BYTES * dim * 2);
     Fraction array = new Fraction(segment.address(),
                                   false);
     array.nativeSegment = segment;
@@ -51,7 +51,9 @@ public class Fraction implements AutoCloseable,Field<Fraction> {
     array.elements    = new Fraction[array.dim = dim];
     for ( int i = 0; i < dim; i++ )
     {
-      array.elements[i] = new Fraction(array.swigCPtr + i*Long.BYTES*2, false );      
+      Fraction frac = new Fraction(array.swigCPtr + i*Long.BYTES*2, false );
+      array.elements[i] = frac;
+      arblib.fmpq_init(frac);
     }
     return array;
   }
@@ -264,7 +266,7 @@ public class Fraction implements AutoCloseable,Field<Fraction> {
   @Override
   public int dim()
   {
-    return 1;
+    return dim;
   }
 
   @Override
