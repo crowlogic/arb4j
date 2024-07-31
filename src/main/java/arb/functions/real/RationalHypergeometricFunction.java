@@ -9,6 +9,7 @@ package arb.functions.real;
 import java.util.Comparator;
 import java.util.function.Predicate;
 
+import arb.Fraction;
 import arb.Integer;
 import arb.RationalFunction;
 import arb.Real;
@@ -88,6 +89,33 @@ public class RationalHypergeometricFunction implements RationalNullaryFunction, 
          arg);
   }
 
+  public RationalHypergeometricFunction(Fraction α,
+                                        Fraction β,
+                                        Expression<Object, RationalFunction, RationalNullaryFunction> arg)
+  {
+    this.α  = Real.newVector( α.dim );
+    for ( int i = 0; i < α.dim; i++ )
+    {
+      this.α.get(i).set(α.get(i));
+    }
+    this.β  = Real.newVector( β.dim );
+    for ( int i = 0; i < β.dim; i++ )
+    {
+      this.β.get(i).set(β.get(i));
+    }
+
+    context = new Context(p = new Integer(α.dim,
+                                          "p"),
+                          q = new Integer(β.dim,
+                                          "q"),
+                          α.setName("α"),
+                          β.setName("β"));
+
+    context.registerVariable("N", N = new Integer());
+
+    F = RationalNullaryFunction.parse("F", RationalHypergeometricFunction.pFq, context).substitute("z", arg);
+  }
+  
   public RationalHypergeometricFunction(Real α,
                                         Real β,
                                         Expression<Object, RationalFunction, RationalNullaryFunction> arg)

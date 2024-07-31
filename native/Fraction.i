@@ -1,4 +1,4 @@
-%typemap(javainterfaces) fmpq "AutoCloseable,Field<Fraction>"
+%typemap(javainterfaces) fmpq "AutoCloseable,Field<Fraction>,Named"
 %typemap(javafinalize) fmpq ""
 %typemap(javaimports) fmpq %{
 import java.util.Objects;
@@ -8,6 +8,26 @@ import java.lang.foreign.MemorySegment;
 %}
 
 %typemap(javacode) fmpq %{
+
+
+
+  @Override
+  public String getName()
+  {
+    return name;
+  }
+
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <N extends Named> N setName(String name)
+  {
+    this.name = name;
+    return (N) this;
+  }
+  
+  public String name;
+
 
   public Fraction set(Fraction... elements)
   {
@@ -274,13 +294,6 @@ import java.lang.foreign.MemorySegment;
       return this;
     }
     return elements[index];
-  }
-
-  @Override
-  public String getName()
-  {
-    assert false : "TODO";
-    return null;
   }
 
   @Override

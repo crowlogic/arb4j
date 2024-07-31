@@ -13,7 +13,7 @@ import arb.exceptions.ArbException;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 
-public class Fraction implements AutoCloseable,Field<Fraction> {
+public class Fraction implements AutoCloseable,Field<Fraction>,Named {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
@@ -35,6 +35,26 @@ public class Fraction implements AutoCloseable,Field<Fraction> {
       swigCPtr = 0;
     }
   }
+
+
+
+
+  @Override
+  public String getName()
+  {
+    return name;
+  }
+
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <N extends Named> N setName(String name)
+  {
+    this.name = name;
+    return (N) this;
+  }
+  
+  public String name;
 
 
   public Fraction set(Fraction... elements)
@@ -302,13 +322,6 @@ public class Fraction implements AutoCloseable,Field<Fraction> {
       return this;
     }
     return elements[index];
-  }
-
-  @Override
-  public String getName()
-  {
-    assert false : "TODO";
-    return null;
   }
 
   @Override
