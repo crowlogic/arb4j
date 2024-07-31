@@ -71,8 +71,8 @@ public class RealPolynomialHypergeometricFunction implements RealPolynomialNulla
   public final Real                                                        α, β;
 
   public RealPolynomialHypergeometricFunction(int p,
-                                                    int q,
-                                                    Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> arg)
+                                              int q,
+                                              Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> arg)
   {
     this(Real.newVector(p),
          Real.newVector(q),
@@ -80,8 +80,8 @@ public class RealPolynomialHypergeometricFunction implements RealPolynomialNulla
   }
 
   public RealPolynomialHypergeometricFunction(Real α,
-                                                    Real β,
-                                                    Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> arg)
+                                              Real β,
+                                              Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> arg)
   {
     this.α  = α;
     this.β  = β;

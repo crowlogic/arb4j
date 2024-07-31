@@ -9,6 +9,7 @@ import static org.objectweb.asm.Opcodes.NEW;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
+import arb.Complex;
 import arb.RationalFunction;
 import arb.Real;
 import arb.RealPolynomial;
@@ -143,9 +144,12 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
 
   public void constructFiniteHypergeometricSeries(MethodVisitor mv, Class<?> scalarType, boolean rational)
   {
-    boolean isReal = Real.class.equals(scalarType);
+    boolean isReal    = Real.class.equals(scalarType);
 
-    hypergeometricClass = isReal ? (rational ? RationalHypergeometricFunction.class : RealPolynomialHypergeometricFunction.class) : ComplexPolynomialHypergeometricFunction.class;
+    hypergeometricClass = rational ? RationalHypergeometricFunction.class
+                                   : isReal ? RealPolynomialHypergeometricFunction.class
+                                   : ComplexPolynomialHypergeometricFunction.class;
+    
     mv.visitTypeInsn(NEW, Type.getInternalName(hypergeometricClass));
     duplicateTopOfTheStack(mv);
 
