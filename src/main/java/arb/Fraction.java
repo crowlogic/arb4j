@@ -37,7 +37,15 @@ public class Fraction implements AutoCloseable,Field<Fraction>,Named {
   }
 
 
-
+  public RationalFunction ascendingFactorial(Integer power, int bits, RationalFunction result)
+  {
+    try ( Real thisReal = new Real())
+    {
+      thisReal.set(this, bits);
+      return thisReal.ascendingFactorial(power, bits, result);
+    }
+  }
+  
   /**
    * NOTICE: this is 1-indexed, not 0 indexed like this{@link #get(int)} !!!
    * 

@@ -244,18 +244,21 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
     return this;
   }
 
+  public RationalFunction set(Real real)
+  {
+    try ( Fraction tmp = new Fraction() )
+    {
+      tmp.set(real);
+      return set(tmp);
+    }
+  }  
+  
   @Override
   public RationalFunction zero()
   {
     arblib.fmpz_poly_q_zero(this);
     return this;
   }
-  
-  public RationalFunction set(Real real)
-  {
-    assert false : "TODO: support assignment from real?";
-    return null;
-  }  
 
   public RationalFunction set(Integer integer)
   {
