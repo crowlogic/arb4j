@@ -153,10 +153,24 @@ import java.lang.foreign.MemorySegment;
     return this;
   }
         
+  @Override
   public String toString()
   {
-    return arblib.fmpq_get_str(null, 10,this);
+    if (dim == 1)
+    {
+      return arblib.fmpq_get_str(null, 10, this);
+    }
+    StringBuilder sb = new StringBuilder("[");
+    for (int i = 0; i < dim; i++)
+    {
+      if (i > 0)
+        sb.append(", ");
+      sb.append(get(i).toString());
+    }
+    sb.append("]");
+    return sb.toString();
   }
+  
   public Fraction one()
   {
     arblib.fmpq_one(this);
@@ -192,10 +206,19 @@ import java.lang.foreign.MemorySegment;
   }
   
   @Override
-  public void close() 
-  {
-    delete();
-  }  
+  public void close() {
+      if (swigCPtr != 0) {
+          if (swigCMemOwn) {
+              swigCMemOwn = false;
+              if (dim == 1) {
+                  arblibJNI.delete_Fraction(swigCPtr);
+              }
+              // For vectors (dim > 1), we don't need to do anything here
+              // The Arena passed to newVector will handle the memory cleanup
+          }
+          swigCPtr = 0;
+      }
+  }
   
   @Override
   public Fraction add(Fraction element, int prec, Fraction result)
@@ -233,8 +256,12 @@ import java.lang.foreign.MemorySegment;
   @Override
   public Fraction get(int index)
   {
-    assert false : "TODO";
-    return null;
+    assert index < dim : String.format("index = %d >= dim = %d", index, dim);
+    if (index == 0 && dim == 1)
+    {
+      return this;
+    }
+    return elements[index];
   }
 
   @Override
