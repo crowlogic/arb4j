@@ -96,6 +96,13 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
 
   public String name;
 
+  public RealPolynomial set(Fraction fraction)
+  {
+    set(0);
+    getCoeffs().set(fraction);
+    return this;
+  }
+  
   @SuppressWarnings("unchecked")
   public RealPolynomial setName(String name)
   {
@@ -199,7 +206,7 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
     return add( res, bits, res );
   }  
   
-  public int bits;
+  public int bits = 128;
 
   static { System.loadLibrary("arblib"); }
 

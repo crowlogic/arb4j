@@ -7,6 +7,9 @@
 #include <flint/fmpz_poly.h>
 #include <flint/fmpz_poly_q.h>
 
+void
+arb_set_fmpq(arb_t y, const fmpq_t x, slong prec);
+
 void fmpq_zero(fmpq_t res);
 
 void fmpq_canonicalise(fmpq_t res);

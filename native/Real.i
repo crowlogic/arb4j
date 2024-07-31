@@ -156,6 +156,11 @@ import arb.utensils.Utensils;
 
   static { System.loadLibrary( "arblib" ); }
 
+  public Real sub(Fraction a, int bits, Real res)
+  {
+    return res.set(this).sub(a,bits,res);
+  }
+  
   public RationalFunction mul(RationalFunction a, int bits, RationalFunction result)
   {
     return a.mul(this, bits, result);
@@ -486,6 +491,17 @@ import arb.utensils.Utensils;
     return new Real(string,bits);
   }
 
+  public Real set(Fraction fraction, int bits )
+  {
+    arblib.arb_set_fmpq(this, fraction, bits);
+    return this;
+  }
+  
+  public Real set(Fraction fraction)
+  {
+    return set(fraction,bits);
+  }
+  
   public RationalFunction sub(RationalFunction operand, int bits, RationalFunction result)
   {
     return result.set(this).sub(operand,bits,result);
@@ -1125,7 +1141,7 @@ import arb.utensils.Utensils;
     return pow(i,prec,this);
   }
 
-  public int bits;
+  public int bits = 128;
 
   public Real(String string, int prec)
   {

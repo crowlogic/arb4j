@@ -9,6 +9,7 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void arb_set_fmpq(long jarg1, Real jarg1_, long jarg2, Fraction jarg2_, int jarg3);
   public final static native void fmpq_zero(long jarg1, Fraction jarg1_);
   public final static native void fmpq_canonicalise(long jarg1, Fraction jarg1_);
   public final static native int fmpq_is_canonical(long jarg1, Fraction jarg1_);

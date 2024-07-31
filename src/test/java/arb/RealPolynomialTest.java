@@ -15,6 +15,14 @@ public class RealPolynomialTest
                                 extends
                                 TestCase
 {
+  public void testSetFraction()
+  {
+    RealPolynomial p = new RealPolynomial();
+    Fraction f = new Fraction();
+    f.set("10/43");
+    System.out.println("f=" + f );
+  }
+  
   public void testPower()
   {
     try ( RealPolynomial p = RealPolynomial.newIdentityPolynomial())

@@ -20,16 +20,19 @@ import junit.framework.TestCase;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class HypergeometricPolynomialTest extends
+public class HypergeometricPolynomialTest
+                                          extends
                                           TestCase
 {
   public int bits = 128;
 
   public void testHypergeometricPolynomial() throws NoSuchFieldException, IllegalAccessException
   {
-    try ( RealPolynomialHypergeometricFunction poly = new RealPolynomialHypergeometricFunction(Real.newVector(-2, 3.5, 1),
-                                                                               Real.newVector(2, 4),
-                                                                               RealPolynomialNullaryFunction.parse("1/2-x/2")))
+    try ( RealPolynomialHypergeometricFunction poly = new RealPolynomialHypergeometricFunction(Real.newVector(-2,
+                                                                                                              3.5,
+                                                                                                              1),
+                                                                                               Real.newVector(2, 4),
+                                                                                               RealPolynomialNullaryFunction.parse("1/2-x/2")))
     {
 
       RealPolynomial expressed = poly.evaluate(bits, new RealPolynomial());
@@ -100,8 +103,8 @@ public class HypergeometricPolynomialTest extends
     var arg = RealPolynomialNullaryFunction.parse("x");
 
     try ( RealPolynomialHypergeometricFunction F = new RealPolynomialHypergeometricFunction(2,
-                                                                            1,
-                                                                            arg);
+                                                                                            1,
+                                                                                            arg);
           RealPolynomial y = new RealPolynomial();)
     {
       F.α.set(-6, 2.5);

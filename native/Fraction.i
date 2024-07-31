@@ -10,6 +10,11 @@ import java.util.Objects;
     System.loadLibrary("arblib");
   }
 
+  public RealPolynomial sub(RealPolynomial element, int prec, RealPolynomial result)
+  {
+    return result.set(this).sub(element, prec, result);
+  }
+  
   public RationalFunction add(Fraction element, int prec, RationalFunction result)
   {
     return result.set(this).add(element,prec, result);
