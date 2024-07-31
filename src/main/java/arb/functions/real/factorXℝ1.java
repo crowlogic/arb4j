@@ -75,7 +75,8 @@ public class factorXℝ1 implements Function<Integer, RealPolynomial>, Typesetta
 
     while (var10002.compareTo(endIndexℤ3) <= 0)
     {
-      prodXℝ2.mul((RealPolynomial) factorXℝ3.evaluate(k, bits, valueXℝ3), bits);
+      factorXℝ3.evaluate(k, bits, valueXℝ3);
+      prodXℝ2.mul(valueXℝ3, bits);
       var10002 = k.increment();
     }
 

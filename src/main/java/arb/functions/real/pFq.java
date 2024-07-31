@@ -46,9 +46,13 @@ public class pFq implements RealPolynomialNullaryFunction, Typesettable, AutoClo
 
     Real numer = vℝ1.set(cℤ1.neg(ℝ1), cℝ2, ℝ2.set(cℤ3));
     Real denom = vℝ2.set(ℝ3.set(cℤ1), ℝ4.set(cℤ4));
-    var  f     = new RealPolynomialHypergeometricFunction(numer,
-                                                          denom,
-                                                          RealPolynomialNullaryFunction.parse("(1/2)-(x/2)"));
+    F f = new F();
+    f.α = numer;
+    f.β = denom;
+    f.N = new Integer(2);
+    f.p = new Integer(numer.size());
+    f.q = new Integer(denom.size());
+    
     return f.evaluate(null, 1, bits, result);
   }
 

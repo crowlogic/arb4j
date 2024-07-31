@@ -42,7 +42,9 @@ public class F implements RealPolynomialNullaryFunction, Typesettable, AutoClose
 
     while (var10000.compareTo(endIndexℤ1) <= 0)
     {
-      sumXℝ1.add(factorXℝ1.evaluate(n, bits, valueXℝ1), bits);
+      factorXℝ1.evaluate(n, bits, valueXℝ1);
+      System.out.format("summand[%s]=%s\n", var10000, valueXℝ1 );
+      sumXℝ1.add(valueXℝ1, bits);
       var10000 = n.increment();
     }
 
