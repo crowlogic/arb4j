@@ -377,10 +377,10 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
 
   static
   {
-    assert Integer.class.equals(arb.Integer.class) : "you forgot to import arb.Integer";
-
-    mapScalarType(Complex.class, ComplexPolynomial.class);
+    assert Integer.class.equals(arb.Integer.class) : "there is most likely a missing import statement for arb.Integer";
+    
     mapScalarType(Real.class, RealPolynomial.class);
+    mapScalarType(Complex.class, ComplexPolynomial.class);
 
     mapTypes(Integer.class, RationalFunction.class, RationalFunction.class);
     mapTypes(Real.class, Complex.class, Complex.class);
@@ -391,9 +391,6 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     mapTypes(Fraction.class, RationalFunction.class, RationalFunction.class);
     mapTypes(Fraction.class, RealPolynomial.class, RealPolynomial.class);
     mapTypes(Fraction.class, ComplexPolynomial.class, ComplexPolynomial.class);
-
-   
-
   }
 
   public static void mapScalarType(Class<?> scalarType, Class<?> polynomialType)
