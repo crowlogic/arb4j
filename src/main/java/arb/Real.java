@@ -1291,20 +1291,19 @@ public class Real implements Named,Domain<Real>,Serializable,Comparable<Real>,It
     return w;
   }
   
-  public Complex sub(Complex a, int prec, Complex res)
+  public Complex sub(Complex subtrahend, int prec, Complex res)
   {
-    return add(a.neg(res), prec, res);
-  }
-  
-  
-  
-  public Complex add(Complex a, int prec, Complex res)
-  {
-  	assert a != null : "addend is null";
-    arblib.acb_add_arb(res, a, this, prec);
+    assert subtrahend != null : "subtrahend is null";
+    arblib.acb_sub_arb(res, subtrahend, this, prec);
     return res;
   }
-
+  
+  public Complex add(Complex addend, int prec, Complex res)
+  {
+  	assert addend != null : "addend is null";
+    arblib.acb_add_arb(res, addend, this, prec);
+    return res;
+  }
   
   /**
    * Adds the magnitude to the radius of this 
