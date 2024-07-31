@@ -610,6 +610,13 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result.set(this).neg();
   }
 
+  public Fraction neg(Fraction res)
+  {
+    res.set(this);
+    res.neg();
+    return res;
+  }
+  
   public RationalFunction neg(RationalFunction res)
   {
     res.set(this);

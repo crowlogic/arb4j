@@ -37,6 +37,24 @@ public class Fraction implements AutoCloseable,Field<Fraction> {
   {
     System.loadLibrary("arblib");
   }
+  
+  public Fraction neg()
+  {
+    return neg(this);
+  }
+  
+  public Fraction neg( Fraction result )
+  {
+    arblib.fmpq_neg(result, this);   
+    return this;
+  }
+    
+  public Fraction set(Integer integer)
+  {
+    getNumerator().set(integer);
+    getDenominator().set(1);
+    return this;
+  }  
 
   public RealPolynomial sub(RealPolynomial element, int prec, RealPolynomial result)
   {
