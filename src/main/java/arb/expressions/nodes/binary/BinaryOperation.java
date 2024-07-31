@@ -361,6 +361,14 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
 
   public static final HashMap<Class<?>, Map<Class<?>, Class<?>>> typeMap = new HashMap<>();
 
+  /**
+   * This is implemented as a symmetric equality which means that leftType and rightType can be 
+   * exchanged and the result is the same
+   * 
+   * @param leftType
+   * @param rightType
+   * @param resultantType
+   */
   public static void mapTypes(Class<?> leftType, Class<?> rightType, Class<?> resultantType)
   {
     typeMap.computeIfAbsent(leftType, k -> new HashMap<>()).put(rightType, resultantType);
