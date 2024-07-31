@@ -37,6 +37,16 @@ public class Fraction implements AutoCloseable,Field<Fraction> {
   }
 
 
+  public Fraction set(Fraction... elements)
+  {
+    close();
+    this.elements    = elements;
+    this.dim         = elements.length;
+    this.swigCMemOwn = false;
+    this.swigCPtr    = 0;
+    return this;
+  }
+  
   public MemorySegment nativeSegment;
   public int           dim = 1;
   public Fraction[] elements;
