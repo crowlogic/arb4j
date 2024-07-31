@@ -5,7 +5,6 @@ import static arb.RealConstants.one;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealNullaryFunction;
-import arb.stochastic.processes.CorrelatedRandomVectorGenerator;
 import junit.framework.TestCase;
 
 /**
@@ -13,9 +12,19 @@ import junit.framework.TestCase;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealTest extends
+public class RealTest
+                      extends
                       TestCase
 {
+
+  public static void testSetFraction()
+  {
+    Real     r = new Real();
+    Fraction f = new Fraction();
+    f.set("10/43");
+    r.set(f);
+    assertEquals(0.23255813953488372093, r.doubleValue());
+  }
 
   public static void testVectorAddViaExpressionToString()
   {
@@ -46,7 +55,7 @@ public class RealTest extends
     }
 
   }
-  
+
   public static void testVectorSubtractionViaExpressionToString()
   {
     try ( Real onePointThree = new Real("1.3",
@@ -61,7 +70,6 @@ public class RealTest extends
     }
 
   }
-  
 
   public static void testVectorViaExpressionToString()
   {
@@ -268,7 +276,7 @@ public class RealTest extends
       }
     }
   }
- 
+
   public static void testCovariance()
   {
     Real r = Real.newVector(3);
