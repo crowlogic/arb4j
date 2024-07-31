@@ -10,28 +10,22 @@ package arb;
 
 import java.util.Objects;
 
-public class Fraction implements AutoCloseable, Field<Fraction>
-{
-  protected long    swigCPtr;
+public class Fraction implements AutoCloseable,Field<Fraction> {
+  protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  public Fraction(long cPtr, boolean cMemoryOwn)
-  {
+  public Fraction(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(Fraction obj)
-  {
+  public static long getCPtr(Fraction obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arblibJNI.delete_Fraction(swigCPtr);
       }
@@ -46,43 +40,43 @@ public class Fraction implements AutoCloseable, Field<Fraction>
 
   public RealPolynomial sub(RealPolynomial element, int prec, RealPolynomial result)
   {
-    try ( var tmp = new RealPolynomial();)
-    {
-      return tmp.set(this).sub(element, prec, result);
-    }
+    return result.set(this).sub(element, prec, result);
   }
-
+  
   public RationalFunction add(Fraction element, int prec, RationalFunction result)
   {
-    return result.set(this).add(element, prec, result);
+    return result.set(this).add(element,prec, result);
   }
-
+  
   public RationalFunction sub(RationalFunction element, int prec, RationalFunction result)
   {
     return result.set(this).sub(element, prec, result);
   }
-
+  
   @Override
-  public int hashCode()
+  public int
+         hashCode()
   {
     return Objects.hash(numerator, denominator);
   }
 
   @Override
-  public boolean equals(Object obj)
+  public boolean
+         equals(Object obj)
   {
     if (obj == null)
     {
       return false;
     }
-    if (!obj.getClass().isAssignableFrom(Fraction.class))
+    if (!obj.getClass()
+            .isAssignableFrom(Fraction.class))
     {
       return false;
     }
     Fraction that = (Fraction) obj;
     return arblib.fmpq_equal(this, that) != 0;
   }
-
+    
   private Integer numerator;
   private Integer denominator;
 
@@ -115,18 +109,17 @@ public class Fraction implements AutoCloseable, Field<Fraction>
     arblib.fmpq_set_str(this, str, 10);
     return this;
   }
-
+        
   public String toString()
   {
-    return arblib.fmpq_get_str(null, 10, this);
+    return arblib.fmpq_get_str(null, 10,this);
   }
-
   public Fraction one()
   {
     arblib.fmpq_one(this);
     return this;
   }
-
+  
   public Integer getDenominator()
   {
     if (denominator == null)
@@ -154,13 +147,13 @@ public class Fraction implements AutoCloseable, Field<Fraction>
     }
     return numerator;
   }
-
+  
   @Override
-  public void close()
+  public void close() 
   {
     delete();
-  }
-
+  }  
+  
   @Override
   public Fraction add(Fraction element, int prec, Fraction result)
   {
@@ -249,7 +242,7 @@ public class Fraction implements AutoCloseable, Field<Fraction>
     arblib.fmpq_zero(this);
     return this;
   }
-
+  
   @Override
   public Fraction additiveIdentity()
   {
@@ -262,7 +255,7 @@ public class Fraction implements AutoCloseable, Field<Fraction>
     assert false : "TODO";
     return null;
   }
-
+  
   /**
    * Reduces this {@link Fraction} into its simplest form, dividing the
    * {@link #numerator} and the this#denominator by the highest common factor.
@@ -290,32 +283,27 @@ public class Fraction implements AutoCloseable, Field<Fraction>
   public boolean isReduced()
   {
     return arblib.fmpq_is_canonical(this) != 0;
-  }
+  }    
+  
 
-  public void setLongNumerator(long value)
-  {
+  public void setLongNumerator(long value) {
     arblibJNI.Fraction_longNumerator_set(swigCPtr, this, value);
   }
 
-  public long getLongNumerator()
-  {
+  public long getLongNumerator() {
     return arblibJNI.Fraction_longNumerator_get(swigCPtr, this);
   }
 
-  public void setLongDenominator(long value)
-  {
+  public void setLongDenominator(long value) {
     arblibJNI.Fraction_longDenominator_set(swigCPtr, this, value);
   }
 
-  public long getLongDenominator()
-  {
+  public long getLongDenominator() {
     return arblibJNI.Fraction_longDenominator_get(swigCPtr, this);
   }
 
-  public Fraction()
-  {
-    this(arblibJNI.new_Fraction(),
-         true);
+  public Fraction() {
+    this(arblibJNI.new_Fraction(), true);
   }
 
 }

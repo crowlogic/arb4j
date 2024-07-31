@@ -206,7 +206,7 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
     return add( res, bits, res );
   }  
   
-  public int bits = 128;
+  public int bits;
 
   static { System.loadLibrary("arblib"); }
 
