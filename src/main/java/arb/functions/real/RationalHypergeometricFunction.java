@@ -1,11 +1,16 @@
-package arb.functions.polynomials;
+package arb.functions.real;
+
+/**
+ *
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 
 import java.util.Comparator;
 import java.util.function.Predicate;
 
-import arb.Complex;
-import arb.ComplexPolynomial;
 import arb.Integer;
+import arb.RationalFunction;
 import arb.Real;
 import arb.Verifiable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -13,11 +18,10 @@ import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ArbException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.functions.complex.ComplexPolynomialNullaryFunction;
+import arb.expressions.RationalNullaryExpression;
 
 /**
- * Represents a hypergeometric polynomial, defined by a finite hypergeometric
- * series as <br>
+ * Represents a finite hypergeometric series as <br>
  * <br>
  * pFq:Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N} <br>
  * <br>
@@ -25,7 +29,8 @@ import arb.functions.complex.ComplexPolynomialNullaryFunction;
  * This class encapsulates the computation and representation of hypergeometric
  * polynomials, which are derived from the general hypergeometric series when
  * the existence of a negative integer in the numerator leads to its completion
- * after a finite number of terms.
+ * after a finite number of terms in the sense that all of the terms after a
+ * certain index are equal to 0.
  * <p>
  * A hypergeometric series is finite and simplifies into a polynomial when at
  * least one of its upper parameters (α) is a negative integer. This condition
@@ -39,7 +44,7 @@ import arb.functions.complex.ComplexPolynomialNullaryFunction;
  * <br>
  * 
  * The notation x₍n₎ represents the n-th
- * {@link Complex#ascendingFactorial(long, int, Complex)} of x. <br>
+ * {@link Real#ascendingFactorial(long, int, Real)} of x. <br>
  * <br>
  * 
  * The series is evaluated up to a specific order N, determined by the smallest
@@ -52,40 +57,40 @@ import arb.functions.complex.ComplexPolynomialNullaryFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ComplexHypergeometricPolynomial implements
-                                             ComplexPolynomialNullaryFunction,
-                                             Verifiable
+public class RationalHypergeometricFunction implements RationalNullaryFunction, Verifiable
 {
 
-  public final Context                                                           context;
+  public static final String                  pFq                      = "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}";
 
-  private ComplexPolynomialNullaryFunction                                       f;
+  public final Context                        context;
 
-  public Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> F;
+  private RationalNullaryFunction             f;
 
-  boolean                                                                        initialized                     = false;
+  public RationalNullaryExpression            F;
 
-  private Integer                                                                N;
+  boolean                                     initialized              = false;
 
-  public final Integer                                                           p, q;
+  private Integer                             N;
 
-  public final Complex                                                           α, β;
+  public final Integer                        p, q;
 
-  public static final Predicate<? super Complex>                                 complexNegativeIntegerPredicate = z -> Real.isNegativeInteger.test(z.re())
-                && z.im().isZero();
+  public final Real                           α, β;
 
-  public ComplexHypergeometricPolynomial(int p,
-                                         int q,
-                                         Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> arg)
+  public static final Predicate<? super Real> negativeIntegerPredicate = z -> Real.isNegativeInteger.test(z)
+                || z.isZero();
+
+  public RationalHypergeometricFunction(int p,
+                                        int q,
+                                        Expression<Object, RationalFunction, RationalNullaryFunction> arg)
   {
-    this(Complex.newVector(p),
-         Complex.newVector(q),
+    this(Real.newVector(p),
+         Real.newVector(q),
          arg);
   }
 
-  public ComplexHypergeometricPolynomial(Complex α,
-                                         Complex β,
-                                         Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> arg)
+  public RationalHypergeometricFunction(Real α,
+                                        Real β,
+                                        Expression<Object, RationalFunction, RationalNullaryFunction> arg)
   {
     this.α  = α;
     this.β  = β;
@@ -98,7 +103,7 @@ public class ComplexHypergeometricPolynomial implements
 
     context.registerVariable("N", N = new Integer());
 
-    F = ComplexPolynomialNullaryFunction.parse("F", RealPolynomialHypergeometricFunction.pFq, context).substitute("z", arg);
+    F = RationalNullaryFunction.parse("F", RationalHypergeometricFunction.pFq, context).substitute("z", arg);
   }
 
   @Override
@@ -115,8 +120,7 @@ public class ComplexHypergeometricPolynomial implements
   public Integer determineDegree()
   {
     return α.stream()
-            .filter(complexNegativeIntegerPredicate)
-            .map(q -> q.re())
+            .filter(negativeIntegerPredicate)
             .min(Comparator.naturalOrder())
             .get()
             .integerValue(N)
@@ -125,7 +129,7 @@ public class ComplexHypergeometricPolynomial implements
   }
 
   @Override
-  public ComplexPolynomial evaluate(Object nullary, int order, int bits, ComplexPolynomial res)
+  public RationalFunction evaluate(Object nullary, int order, int bits, RationalFunction res)
   {
     if (!initialized)
     {
@@ -161,7 +165,7 @@ public class ComplexHypergeometricPolynomial implements
   @Override
   public boolean verify()
   {
-    return α.stream().anyMatch(complexNegativeIntegerPredicate);
+    return α.stream().anyMatch(negativeIntegerPredicate);
   }
 
 }

@@ -1,27 +1,23 @@
-package arb.functions.real;
-
-/**
- *
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
- */
+package arb.functions.polynomials;
 
 import java.util.Comparator;
 import java.util.function.Predicate;
 
+import arb.Complex;
+import arb.ComplexPolynomial;
 import arb.Integer;
 import arb.Real;
-import arb.RationalFunction;
 import arb.Verifiable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ArbException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.expressions.RealRationalNullaryExpression;
+import arb.functions.complex.ComplexPolynomialNullaryFunction;
 
 /**
- * Represents a finite hypergeometric series as <br>
+ * Represents a hypergeometric polynomial, defined by a finite hypergeometric
+ * series as <br>
  * <br>
  * pFq:Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N} <br>
  * <br>
@@ -29,8 +25,7 @@ import arb.expressions.RealRationalNullaryExpression;
  * This class encapsulates the computation and representation of hypergeometric
  * polynomials, which are derived from the general hypergeometric series when
  * the existence of a negative integer in the numerator leads to its completion
- * after a finite number of terms in the sense that all of the terms after a
- * certain index are equal to 0.
+ * after a finite number of terms.
  * <p>
  * A hypergeometric series is finite and simplifies into a polynomial when at
  * least one of its upper parameters (α) is a negative integer. This condition
@@ -44,7 +39,7 @@ import arb.expressions.RealRationalNullaryExpression;
  * <br>
  * 
  * The notation x₍n₎ represents the n-th
- * {@link Real#ascendingFactorial(long, int, Real)} of x. <br>
+ * {@link Complex#ascendingFactorial(long, int, Complex)} of x. <br>
  * <br>
  * 
  * The series is evaluated up to a specific order N, determined by the smallest
@@ -57,40 +52,40 @@ import arb.expressions.RealRationalNullaryExpression;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealRationalHypergeometricFunction implements RealRationalNullaryFunction, Verifiable
+public class ComplexPolynomialHypergeometricFunction implements
+                                             ComplexPolynomialNullaryFunction,
+                                             Verifiable
 {
 
-  public static final String                  pFq                      = "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}";
+  public final Context                                                           context;
 
-  public final Context                        context;
+  private ComplexPolynomialNullaryFunction                                       f;
 
-  private RealRationalNullaryFunction         f;
+  public Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> F;
 
-  public RealRationalNullaryExpression        F;
+  boolean                                                                        initialized                     = false;
 
-  boolean                                     initialized              = false;
+  private Integer                                                                N;
 
-  private Integer                             N;
+  public final Integer                                                           p, q;
 
-  public final Integer                        p, q;
+  public final Complex                                                           α, β;
 
-  public final Real                           α, β;
+  public static final Predicate<? super Complex>                                 complexNegativeIntegerPredicate = z -> Real.isNegativeInteger.test(z.re())
+                && z.im().isZero();
 
-  public static final Predicate<? super Real> negativeIntegerPredicate = z -> Real.isNegativeInteger.test(z)
-                || z.isZero();
-
-  public RealRationalHypergeometricFunction(int p,
-                                            int q,
-                                            Expression<Object, RationalFunction, RealRationalNullaryFunction> arg)
+  public ComplexPolynomialHypergeometricFunction(int p,
+                                         int q,
+                                         Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> arg)
   {
-    this(Real.newVector(p),
-         Real.newVector(q),
+    this(Complex.newVector(p),
+         Complex.newVector(q),
          arg);
   }
 
-  public RealRationalHypergeometricFunction(Real α,
-                                            Real β,
-                                            Expression<Object, RationalFunction, RealRationalNullaryFunction> arg)
+  public ComplexPolynomialHypergeometricFunction(Complex α,
+                                         Complex β,
+                                         Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> arg)
   {
     this.α  = α;
     this.β  = β;
@@ -103,7 +98,7 @@ public class RealRationalHypergeometricFunction implements RealRationalNullaryFu
 
     context.registerVariable("N", N = new Integer());
 
-    F = RealRationalNullaryFunction.parse("F", RealRationalHypergeometricFunction.pFq, context).substitute("z", arg);
+    F = ComplexPolynomialNullaryFunction.parse("F", RealPolynomialHypergeometricFunction.pFq, context).substitute("z", arg);
   }
 
   @Override
@@ -120,7 +115,8 @@ public class RealRationalHypergeometricFunction implements RealRationalNullaryFu
   public Integer determineDegree()
   {
     return α.stream()
-            .filter(negativeIntegerPredicate)
+            .filter(complexNegativeIntegerPredicate)
+            .map(q -> q.re())
             .min(Comparator.naturalOrder())
             .get()
             .integerValue(N)
@@ -129,7 +125,7 @@ public class RealRationalHypergeometricFunction implements RealRationalNullaryFu
   }
 
   @Override
-  public RationalFunction evaluate(Object nullary, int order, int bits, RationalFunction res)
+  public ComplexPolynomial evaluate(Object nullary, int order, int bits, ComplexPolynomial res)
   {
     if (!initialized)
     {
@@ -165,7 +161,7 @@ public class RealRationalHypergeometricFunction implements RealRationalNullaryFu
   @Override
   public boolean verify()
   {
-    return α.stream().anyMatch(negativeIntegerPredicate);
+    return α.stream().anyMatch(complexNegativeIntegerPredicate);
   }
 
 }

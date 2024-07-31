@@ -3,7 +3,7 @@ package arb.viz;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
-import arb.functions.real.RealRationalNullaryFunction;
+import arb.functions.real.RationalNullaryFunction;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.scene.Scene;
@@ -33,7 +33,7 @@ public class ExpressionAnalyzer
 
     // Real v = new Real().set(RealConstants.half).setName("v");
     // Context context = new Context(v);
-    return RealRationalNullaryFunction.parse("(1/2)-(x/2)");
+    return RationalNullaryFunction.parse("(1/2)-(x/2)");
   }
 
   public void expandTreeView(TreeItem<?> item)
