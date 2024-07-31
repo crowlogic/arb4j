@@ -50,6 +50,14 @@ public class Fraction implements AutoCloseable,Field<Fraction> {
     result.zero().getReal().set(this);
     return result.sub(that, bits);   
   }
+  
+  public ComplexPolynomial sub(ComplexPolynomial element, int prec, ComplexPolynomial result)
+  {
+    result.setLength(1);
+    result.fitLength(1);
+    result.getCoeffs().re().set(this);
+    return result.sub(element, prec);
+  }    
     
   public Fraction neg()
   {
