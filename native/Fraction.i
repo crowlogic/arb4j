@@ -2,6 +2,7 @@
 %typemap(javafinalize) fmpq ""
 %typemap(javaimports) fmpq %{
 import java.util.Objects;
+import arb.exceptions.ArbException;
 %}
 
 %typemap(javacode) fmpq %{
@@ -37,6 +38,16 @@ import java.util.Objects;
   {
     getNumerator().set(integer);
     getDenominator().set(1);
+    return this;
+  }  
+  
+  public Fraction set(Real value)
+  {
+    if ( !value.isExact() )
+    {
+      throw new ArbException(value + " must be exact to be representable as a fraction");      
+    }
+    arblib.arf_get_fmpq(this, value.getMid());
     return this;
   }  
 

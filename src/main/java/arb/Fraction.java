@@ -9,6 +9,7 @@
 package arb;
 
 import java.util.Objects;
+import arb.exceptions.ArbException;
 
 public class Fraction implements AutoCloseable,Field<Fraction> {
   protected long swigCPtr;
@@ -65,6 +66,16 @@ public class Fraction implements AutoCloseable,Field<Fraction> {
   {
     getNumerator().set(integer);
     getDenominator().set(1);
+    return this;
+  }  
+  
+  public Fraction set(Real value)
+  {
+    if ( !value.isExact() )
+    {
+      throw new ArbException(value + " must be exact to be representable as a fraction");      
+    }
+    arblib.arf_get_fmpq(this, value.getMid());
     return this;
   }  
 

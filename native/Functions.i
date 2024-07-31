@@ -7,6 +7,12 @@
 #include <flint/fmpz_poly.h>
 #include <flint/fmpz_poly_q.h>
 
+void arf_get_fmpq(fmpq_t y, const arf_t x);
+
+
+int
+arf_set_fmpq(arf_t y, const fmpq_t x, slong prec, arf_rnd_t rnd);
+
 void
 arb_set_fmpq(arb_t y, const fmpq_t x, slong prec);
 
