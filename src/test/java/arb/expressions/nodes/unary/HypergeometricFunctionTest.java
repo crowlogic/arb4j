@@ -1,17 +1,14 @@
-package arb.functions.polynomials;
+package arb.expressions.nodes.unary;
 
-import arb.Complex;
-import arb.ComplexPolynomial;
+import arb.*;
 import arb.Integer;
-import arb.Real;
-import arb.RealConstants;
-import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
+import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealPolynomialNullaryFunction;
 import junit.framework.TestCase;
@@ -20,7 +17,7 @@ import junit.framework.TestCase;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class HypergeometricPolynomialTest
+public class HypergeometricFunctionTest
                                           extends
                                           TestCase
 {
@@ -56,6 +53,13 @@ public class HypergeometricPolynomialTest
     assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
   }
 
+  public void testHypergeometricFunctionExpressionRational()
+  {
+    var            poly      = RationalNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
+    RationalFunction expressed = poly.evaluate(bits, new RationalFunction());
+    assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
+  }
+  
   public static void testSum2()
   {
     //

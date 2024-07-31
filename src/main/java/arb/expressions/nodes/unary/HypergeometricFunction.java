@@ -9,10 +9,9 @@ import static org.objectweb.asm.Opcodes.NEW;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
-import arb.ComplexQuasiPolynomial;
+import arb.RationalFunction;
 import arb.Real;
 import arb.RealPolynomial;
-import arb.RationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
@@ -59,9 +58,9 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
                          arg.typeset());
   }
 
-  Node<D, R, F>  α;
+  Node<D, R, F>    α;
 
-  Node<D, R, F>  β;
+  Node<D, R, F>    β;
 
   private Class<?> hypergeometricClass;
 
@@ -70,9 +69,9 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     super("pFq",
           null,
           expression);
-    α =  expression.resolve();
+    α = expression.resolve();
     expression.require(',');
-    β =  expression.resolve();
+    β = expression.resolve();
     expression.require(',', ';');
     arg = expression.resolve();
     expression.require(')');
@@ -154,7 +153,7 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     β.generate(scalarType, mv);
 
     mv.visitLdcInsn(arg.toString());
-    Class<?> nullaryFunctionClass = isReal ? (rational ? RealRationalNullaryFunction.class : RealPolynomialNullaryFunction.class) : (rational ? ComplexQuasiPolynomial.class : ComplexPolynomialNullaryFunction.class);
+    Class<?> nullaryFunctionClass = isReal ? (rational ? RealRationalNullaryFunction.class : RealPolynomialNullaryFunction.class) : ComplexPolynomialNullaryFunction.class;
     invokeStaticMethod(mv, nullaryFunctionClass, "parse", Expression.class, String.class);
     invokeConstructor(mv, hypergeometricClass, scalarType, scalarType, Expression.class);
   }

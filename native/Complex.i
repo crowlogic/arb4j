@@ -72,11 +72,6 @@ import arb.domains.Domain;
   {
     return Γ(bits, this);
   }
-
-  public ComplexQuasiPolynomial mul(ComplexQuasiPolynomial s, int prec, ComplexQuasiPolynomial r)
-  {
-    return s.mul(this, prec, r);
-  }
       
   public Complex Γ(int bits)
   {
@@ -708,17 +703,6 @@ import arb.domains.Domain;
   public int getAllocatedBytes()
   {
     return getReal().getAllocatedBytes() + getImag().getAllocatedBytes();
-  }
-
-  public ComplexQuasiPolynomial ascendingFactorial(Integer n, int bits, ComplexQuasiPolynomial result)
-  {
-    result.set(1);
-    try ( Complex val = new Complex();)
-    {
-      ascendingFactorial(n, bits, val);
-      result.set(val);
-    }
-    return result;
   }
   
   public Complex ascendingFactorial(Integer power, int bits, Complex result)

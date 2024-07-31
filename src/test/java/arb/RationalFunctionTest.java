@@ -86,12 +86,6 @@ public class RationalFunctionTest
     assertEquals("(x^2-2*x+1)/4", expressed.toString());
   }
 
-  public void testHypergeometricFunctionExpressionRational()
-  {
-    var              rationalFunctional = RationalNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
-    RationalFunction expressed          = rationalFunctional.evaluate(128, new RationalFunction());
-    assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
-  }
 
   @SuppressWarnings("resource")
   public void testSub()

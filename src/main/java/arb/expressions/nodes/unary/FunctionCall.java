@@ -15,8 +15,12 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexPolynomial;
 import arb.Integer;
+import arb.RationalFunction;
+import arb.Real;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
@@ -422,7 +426,7 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
       if (isPolynomialArg && hasQuasipolynomialResult)
       {
         assert false : "replace quasipolynomials this with functionals.. that is, the coDomain is a function whose domain is the polynomial and whose range is the function applied to the pointwise evaluation of the polynomial argument";
-        return scalarType(argType).equals(Real.class) ? RationalFunction.class : ComplexQuasiPolynomial.class;
+        return scalarType(argType).equals(Real.class) ? RationalFunction.class : ComplexPolynomial.class;
       }
       else
       {
