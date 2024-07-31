@@ -3,9 +3,9 @@ package arb.expressions.nodes.unary;
 import arb.*;
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
@@ -18,8 +18,8 @@ import junit.framework.TestCase;
  *      {@link TheArb4jLibrary}
  */
 public class HypergeometricFunctionTest
-                                          extends
-                                          TestCase
+                                        extends
+                                        TestCase
 {
   public int bits = 128;
 
@@ -55,11 +55,11 @@ public class HypergeometricFunctionTest
 
   public void testHypergeometricFunctionExpressionRational()
   {
-    var            poly      = RationalNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
-    RationalFunction expressed = poly.evaluate(bits, new RationalFunction());
-    assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
+    var              function      = RationalNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
+    RationalFunction expressed = function.evaluate(bits, new RationalFunction());
+    assertEquals("201/320+49/160*x+21/320*x^2", expressed.toString());
   }
-  
+
   public static void testSum2()
   {
     //
