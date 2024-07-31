@@ -95,13 +95,6 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
 
 
   public String name;
-
-  public RealPolynomial set(Fraction fraction)
-  {
-    set(0);
-    getCoeffs().set(fraction);
-    return this;
-  }
   
   @SuppressWarnings("unchecked")
   public RealPolynomial setName(String name)
@@ -288,7 +281,15 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
   {
     return Real.class;
   }
-    
+
+  public RealPolynomial set(Fraction fraction)
+  {
+    setLength(1);
+    fitLength(1);
+    get(0).set(fraction);
+    return this;
+  }
+      
   public RealPolynomial set(Real real)
   {
     setLength(real.dim);

@@ -17,17 +17,18 @@ public class RealPolynomialTest
 {
   public void testSetFraction()
   {
-    RealPolynomial p = new RealPolynomial();
-    Fraction f = new Fraction();
-    f.set("10/43");
-    System.out.println("f=" + f );
+    try ( var r = new RealPolynomial(); var f = new Fraction();)
+    {
+      r.set(f.set("10/43"));
+      assertEquals(0.23255813953488372093, r.get(0).doubleValue());
+    }
   }
-  
+
   public void testPower()
   {
-    try ( RealPolynomial p = RealPolynomial.newIdentityPolynomial())
+    try ( var p = RealPolynomial.newIdentityPolynomial(); var r = new RealPolynomial())
     {
-      RealPolynomial pSquared = p.pow(new Integer(2), 128, new RealPolynomial());
+      var pSquared = p.pow(new Integer(2), 128, r);
       assertEquals("x²", pSquared.toString());
     }
   }

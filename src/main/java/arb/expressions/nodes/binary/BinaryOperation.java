@@ -120,28 +120,30 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
   {
     if (Expression.trace)
     {
-      System.err.format("BinaryOperation BEFORE(Expression[#%s]).substitute(name=%s, transformation=%s)) into this=%s of type %s\n",
-                        System.identityHashCode(expression),
-                        name,
-                        transformation,
-                        this,
-                        getClass().getSimpleName());
+      logSubstitution(name, transformation, "BEFORE");
     }
-//    var leftBefore  = left;
-//    var rightBefore = right;
     left  = left.substitute(name, transformation);
     right = right.substitute(name, transformation);
     expression.updateStringRepresentation();
     if (Expression.trace)
     {
-      System.err.format("BinaryOperation AFTER(Expression[#%s]).substitute(name=%s, transformation=%s)) into this=%s of type %s\n",
-                        System.identityHashCode(expression),
-                        name,
-                        transformation,
-                        this,
-                        getClass().getSimpleName());
+      logSubstitution(name, transformation, "AFTER");
+
     }
     return this;
+  }
+
+  public <E, S, G extends Function<? extends E, ? extends S>> void logSubstitution(String name,
+                                                                                   Node<E, S, G> transformation,
+                                                                                   String tense)
+  {
+    System.err.format("BinaryOperation %s(Expression[#%s]).substitute(name=%s, transformation=%s)) into this=%s of type %s\n",
+                      tense,
+                      System.identityHashCode(expression),
+                      name,
+                      transformation,
+                      this,
+                      getClass().getSimpleName());
   }
 
   @Override
@@ -228,27 +230,6 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     this.operation = operation;
     this.left      = left;
     this.symbol    = symbol;
-    // assert right != null : "the right-hand-side of a binary operator should never
-    // be null, remaining=" + expression.remaining();
-    if (left == null)
-    {
-      assert false : "still need this?";
-      Class<? extends Object> rhsType = scalarType(right.type());
-      if (Integer.class.equals(rhsType) || Real.class.equals(rhsType) || Complex.class.equals(rhsType))
-      {
-        boolean decimal = Real.class.equals(rhsType) || RealPolynomial.class.equals(rhsType);
-        left = new LiteralConstant<>(expression,
-                                     decimal ? "0.0" : "0");
-      }
-      else
-      {
-        throw new CompilerException("Unhandled fill-in of left-hand-side of binary "
-                      + "operation when the right hand side is of type " + right.type()
-                      + ", this is where -x is translated to 0-x. that is what is meant by fill-in");
-      }
-    }
-    assert left != null && right != null : "one or more of the operands to this were missing: " + this
-                  + " set 0 value based on type here";
   }
 
   @Override
@@ -267,7 +248,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     return invokeMethod(mv, operation, resultType);
   }
 
-  private String formatGenerationParameters(Class<?> resultType)
+  public String formatGenerationParameters(Class<?> resultType)
   {
     return String.format("BinaryOperation.generate( this=%s,\n%sleft=%s,\n%sleft.type=%s,\n%soperation=%s,\n%sright=%s,\n%sright.type=%s,\n%sresultType=%s )\n\n",
                          this,
@@ -299,12 +280,10 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     }
     invokeBinaryOperationMethod(mv, operator, leftType, rightType, resultType);
 
-    // expression.addToTypeStack(resultType, toString() );
-
     return mv;
   }
 
-  private boolean loadResult(MethodVisitor mv, Class<?> resultType)
+  public boolean loadResult(MethodVisitor mv, Class<?> resultType)
   {
     Node<D, R, F> reusableNode;
 
@@ -392,40 +371,32 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
   {
     assert Integer.class.equals(arb.Integer.class) : "you forgot to import arb.Integer";
 
-    mapType(Real.class, RealPolynomial.class);
-    mapType(Complex.class, ComplexPolynomial.class);
+    mapScalarType(Complex.class, ComplexPolynomial.class);
+    mapScalarType(Real.class, RealPolynomial.class);
 
+    mapTypes(Integer.class, RationalFunction.class, RationalFunction.class);
     mapTypes(Real.class, Complex.class, Complex.class);
     mapTypes(Real.class, ComplexPolynomial.class, ComplexPolynomial.class);
-    mapTypes(Integer.class, RationalFunction.class, RationalFunction.class);
     mapTypes(Real.class, RationalFunction.class, RationalFunction.class);
+    mapTypes(Real.class, Fraction.class, Real.class);
     mapTypes(RealPolynomial.class, RationalFunction.class, RationalFunction.class);
     mapTypes(Fraction.class, RationalFunction.class, RationalFunction.class);
     mapTypes(Fraction.class, RealPolynomial.class, RealPolynomial.class);
     mapTypes(Fraction.class, ComplexPolynomial.class, ComplexPolynomial.class);
 
-    /**
-     * TODO: map
-     */
-    // mapTypes(Real.class, ComplexQuasiPolynomial.class,
-    // ComplexQuasiPolynomial.class);
-
-    // mapTypes(Integer.class, ComplexQuasiPolynomial.class,
-    // ComplexQuasiPolynomial.class);
-    // mapTypes(Complex.class, ComplexQuasiPolynomial.class,
-    // ComplexQuasiPolynomial.class);
-    // mapTypes(Complex.class, RationalFunction.class,
-    // ComplexQuasiPolynomial.class);
+   
 
   }
 
-  public static void mapType(Class<?> scalarType, Class<?> polynomialType)
+  public static void mapScalarType(Class<?> scalarType, Class<?> polynomialType)
   {
-    mapTypes(Integer.class, scalarType, scalarType);
-    mapTypes(int.class, scalarType, scalarType);
-    mapTypes(Integer.class, polynomialType, polynomialType);
-    mapTypes(int.class, polynomialType, polynomialType);
     mapTypes(scalarType, polynomialType, polynomialType);
+    mapTypes(Integer.class, scalarType, scalarType);
+    mapTypes(Integer.class, polynomialType, polynomialType);
+    mapTypes(int.class, scalarType, scalarType);
+    mapTypes(int.class, polynomialType, polynomialType);
+    mapTypes(Fraction.class, scalarType, scalarType );
+    mapTypes(Fraction.class, polynomialType, polynomialType );
   }
 
   @Override
