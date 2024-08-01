@@ -692,6 +692,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
    */
   public Integer set(String value)
   {
+    assert value != null : "value is null";
     arblib.fmpz_set_str(swigCPtr, value, 10);
     return this;
   }
