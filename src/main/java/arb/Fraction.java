@@ -369,6 +369,14 @@ public class Fraction implements AutoCloseable,Field<Fraction>,Named {
   {
     setLongNumerator(value.getLongNumerator());
     setLongDenominator(value.getLongDenominator());
+    if ( numerator != null )
+    {
+      numerator.swigCPtr = getLongNumerator();      
+    }
+    if ( denominator != null )
+    {
+      denominator.swigCPtr = getLongDenominator(); 
+    }
     return this;
   }
 
