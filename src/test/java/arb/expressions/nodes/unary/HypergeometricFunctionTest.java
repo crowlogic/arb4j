@@ -54,9 +54,17 @@ public class HypergeometricFunctionTest
     assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
   }
 
+  /**
+   * The correct sequence of summands is <pre>
+   * f[0]=1/(x)
+     f[1]=(-x+1)/(16*x)
+     f[2]=(x^2-2*x+1)/(960*x)
+     f=(x^2-62*x+1021)/(960*x)\
+   * </pre>
+   */
   public void testHypergeometricFunctionExpressionRational()
   {
-    var              function      = RationalNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
+    var              function      = RationalNullaryFunction.express("pFq([-2,3+1/2,1],[2,4],1/2-x/2)");
     RationalFunction expressed = function.evaluate(bits, new RationalFunction());
     assertEquals("201/320+49/160*x+21/320*x^2", expressed.toString());
   }

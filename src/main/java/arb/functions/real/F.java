@@ -50,7 +50,7 @@ public class F implements RationalNullaryFunction, Typesettable, AutoCloseable, 
     Integer var10000 = n;
     endIndexℤ1.set(N);
 
-    while (var10000.compareTo(endIndexℤ1) <= 0)
+    while (var10000.compareTo(endIndexℤ1) < 0)
     {
       factorfℝ1.evaluate(n, bits, valuefℝ1);
       System.out.format("f[%s]=%s\n", var10000, valuefℝ1 );

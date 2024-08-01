@@ -155,6 +155,11 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     init((int) dim2);
   }
 
+  public Fraction add( Fraction frac, int bits, Fraction result )
+  {
+    return result.set(this).add(frac,bits);
+  }
+  
   public Integer add(int i)
   {
     return add(i, this);
