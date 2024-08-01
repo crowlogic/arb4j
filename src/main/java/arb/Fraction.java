@@ -301,8 +301,7 @@ public class Fraction implements AutoCloseable,Field<Fraction>,Named {
   @Override
   public Fraction add(Fraction element, int prec, Fraction result)
   {
-    assert false : "TODO";
-    return null;
+    return add(element,result);
   }
 
   @Override

@@ -273,8 +273,7 @@ import java.lang.foreign.MemorySegment;
   @Override
   public Fraction add(Fraction element, int prec, Fraction result)
   {
-    assert false : "TODO";
-    return null;
+    return add(element,result);
   }
 
   @Override
