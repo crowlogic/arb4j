@@ -11,6 +11,9 @@ void fmpq_init(fmpq_t x);
 
 void arf_get_fmpq(fmpq_t y, const arf_t x);
 
+void fmpq_div_fmpz(fmpq_t res, const fmpq_t op, const fmpz_t x);
+void fmpq_mul_fmpz(fmpq_t res, const fmpq_t op, const fmpz_t x);
+
 
 int
 arf_set_fmpq(arf_t y, const fmpq_t x, slong prec, arf_rnd_t rnd);

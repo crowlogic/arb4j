@@ -319,15 +319,21 @@ public class Fraction implements AutoCloseable,Field<Fraction>,Named {
   @Override
   public Fraction div(int j, int prec, Fraction result)
   {
-    assert false : "TODO";
-    return null;
+    arblib.fmpq_div_fmpz(result, this, j);
+    return result;
   }
 
+
+  public Fraction set(int j)
+  {
+    arblib.fmpq_set_fmpz_frac(this, j, 1);
+    return this;
+  }
+  
   @Override
   public Fraction div(Fraction j, int prec, Fraction result)
   {
-    assert false : "TODO";
-    return null;
+    return div(j,result);
   }
 
   @Override
@@ -344,36 +350,34 @@ public class Fraction implements AutoCloseable,Field<Fraction>,Named {
   @Override
   public Fraction mul(int x, int prec, Fraction result)
   {
-    assert false : "TODO";
-    return null;
+    arblib.fmpq_mul_fmpz(result, this, x);
+    return result;
   }
 
   @Override
   public Fraction mul(Fraction x, int prec, Fraction result)
   {
-    assert false : "TODO";
-    return null;
+    return mul(x,result);
   }
 
   @Override
   public Fraction newFieldElement()
   {
-    assert false : "TODO";
-    return null;
+    return new Fraction();
   }
 
   @Override
   public Fraction set(Fraction value)
   {
-    assert false : "TODO";
-    return null;
+    getNumerator().set(value.getName());
+    getDenominator().set(value.getDenominator());
+    return this;
   }
 
   @Override
   public Fraction sub(Fraction element, int prec, Fraction result)
   {
-    assert false : "TODO";
-    return null;
+    return set(element,result);
   }
 
   @Override

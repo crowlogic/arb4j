@@ -17,6 +17,14 @@ public class arblib {
     arblibJNI.arf_get_fmpq(Fraction.getCPtr(y), y, Float.getCPtr(x), x);
   }
 
+  public static void fmpq_div_fmpz(Fraction res, Fraction op, long x) {
+    arblibJNI.fmpq_div_fmpz(Fraction.getCPtr(res), res, Fraction.getCPtr(op), op, x);
+  }
+
+  public static void fmpq_mul_fmpz(Fraction res, Fraction op, long x) {
+    arblibJNI.fmpq_mul_fmpz(Fraction.getCPtr(res), res, Fraction.getCPtr(op), op, x);
+  }
+
   public static int arf_set_fmpq(Float y, Fraction x, int prec, int rnd) {
     return arblibJNI.arf_set_fmpq(Float.getCPtr(y), y, Fraction.getCPtr(x), x, prec, rnd);
   }
