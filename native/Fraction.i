@@ -9,6 +9,12 @@ import java.lang.foreign.MemorySegment;
 
 %typemap(javacode) fmpq %{
 
+  public Fraction set(Integer val)
+  {
+    arblib.fmpq_set_fmpz(this, val.swigCPtr );
+    return this;
+  }
+  
   public RationalFunction ascendingFactorial(Integer power, int bits, RationalFunction result)
   {
     try ( Real thisReal = new Real())
@@ -114,12 +120,11 @@ import java.lang.foreign.MemorySegment;
     return this;
   }
     
-  public Fraction set(Integer integer)
+  public Fraction set(int j)
   {
-    getNumerator().set(integer);
-    getDenominator().set(1);
+    arblib.fmpq_set_fmpz(this, j);
     return this;
-  }  
+  } 
   
   public Fraction set(Real value)
   {
@@ -294,13 +299,6 @@ import java.lang.foreign.MemorySegment;
     arblib.fmpq_div_fmpz(result, this, j);
     return result;
   }
-
-
-  public Fraction set(int j)
-  {
-    arblib.fmpq_set_fmpz_frac(this, j, 1);
-    return this;
-  }
   
   @Override
   public Fraction div(Fraction j, int prec, Fraction result)
@@ -341,8 +339,8 @@ import java.lang.foreign.MemorySegment;
   @Override
   public Fraction set(Fraction value)
   {
-    getNumerator().set(value.getName());
-    getDenominator().set(value.getDenominator());
+    setLongNumerator(value.getLongNumerator());
+    setLongDenominator(value.getLongDenominator());
     return this;
   }
 

@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void fmpq_set_fmpz(Fraction q, long n) {
+    arblibJNI.fmpq_set_fmpz(Fraction.getCPtr(q), q, n);
+  }
+
   public static void fmpq_init(Fraction x) {
     arblibJNI.fmpq_init(Fraction.getCPtr(x), x);
   }

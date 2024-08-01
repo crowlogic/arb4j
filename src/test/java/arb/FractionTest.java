@@ -20,10 +20,12 @@ public class FractionTest
   {
     Fraction a = new Fraction().set("7/8");
     Fraction b = new Fraction().set("1/4");
-    System.out.format("a=%s b=%s\n", a,b);
     assertFalse(a.equals(b));
     b.set(a);
     assertTrue(a.equals(b));
+    assertTrue(b.getNumerator().equals(a.getNumerator()));
+    assertTrue(b.getDenominator().equals(a.getDenominator()));
+
   }
 
   public void testNewVector()
