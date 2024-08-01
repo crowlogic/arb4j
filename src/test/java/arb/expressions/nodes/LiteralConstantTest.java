@@ -1,7 +1,9 @@
 package arb.expressions.nodes;
 
 import arb.RationalFunction;
-import arb.RationalNullaryFunction;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+import arb.functions.real.RationalNullaryFunction;
 import junit.framework.TestCase;
 
 /**

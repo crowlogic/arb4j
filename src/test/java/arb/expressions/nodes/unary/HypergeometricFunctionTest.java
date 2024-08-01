@@ -9,6 +9,7 @@ import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
+import arb.functions.real.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealPolynomialNullaryFunction;
 import junit.framework.TestCase;

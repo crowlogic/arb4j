@@ -34,7 +34,6 @@ import arb.expressions.IntermediateVariable;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
-import arb.functions.polynomials.quasi.QuasiPolynomial;
 import arb.functions.sequences.Sequence;
 import arb.utensils.Utensils;
 
@@ -787,8 +786,7 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public boolean isScalar()
   {
-    return !(generatedType.isAssignableFrom(Polynomial.class)
-                  || generatedType.isAssignableFrom(QuasiPolynomial.class));
+    return !(generatedType.isAssignableFrom(Polynomial.class));
   }
 
   @Override
