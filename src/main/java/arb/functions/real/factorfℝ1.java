@@ -44,129 +44,130 @@ public class factorfℝ1 implements Function<Integer, RationalFunction>, Typeset
   @Override
   public RationalFunction evaluate(Integer n, int order, int bits, RationalFunction result)
   {
-    if (!this.isInitialized)
+    if (!isInitialized)
     {
-      this.initialize();
+      initialize();
     }
 
-    RationalFunction var10000 = this.cℤ1.div(this.cℤ2, bits, this.f1)
-                                        .sub(this.fℝ1.identity().div(this.cℤ2, bits, this.fℝ2), bits, this.fℝ3)
-                                        .pow(n, bits, this.fℝ4);
-    this.factorfℝ2.n = n;
-    this.prodfℝ1.multiplicativeIdentity();
-    this.k.set(this.cℤ1);
-    Integer var10001 = this.k;
-    this.endIndexℤ2.set(this.p);
+    RationalFunction var10000 = cℤ1.div(cℤ2, bits, f1)
+                                   .sub(fℝ1.identity().div(cℤ2, bits, fℝ2), bits, fℝ3)
+                                   .pow(n, bits, fℝ4);
+    System.out.format("var10000=%s\n", var10000);
+    factorfℝ2.n = n;
+    prodfℝ1.multiplicativeIdentity();
+    k.set(cℤ1);
+    Integer var10001 = k;
+    endIndexℤ2.set(p);
 
-    while (var10001.compareTo(this.endIndexℤ2) <= 0)
+    while (var10001.compareTo(endIndexℤ2) <= 0)
     {
-      this.prodfℝ1.mul((RationalFunction) this.factorfℝ2.evaluate(this.k, bits, this.valuefℝ2), bits);
-      var10001 = this.k.increment();
+      prodfℝ1.mul( factorfℝ2.evaluate(k, bits, valuefℝ2), bits);
+      var10001 = k.increment();
     }
 
-    var10000         = var10000.mul(this.prodfℝ1, bits, this.fℝ5);
-    var10001         = n.factorial(bits, this.ℤ1);
-    this.factorfℝ3.n = n;
-    this.prodfℝ2.multiplicativeIdentity();
-    this.k.set(this.cℤ1);
-    Integer var10002 = this.k;
-    this.endIndexℤ3.set(this.q);
+    var10000    = var10000.mul(prodfℝ1, bits, fℝ5);
+    var10001    = n.factorial(bits, ℤ1);
+    factorfℝ3.n = n;
+    prodfℝ2.multiplicativeIdentity();
+    k.set(cℤ1);
+    Integer var10002 = k;
+    endIndexℤ3.set(q);
 
-    while (var10002.compareTo(this.endIndexℤ3) <= 0)
+    while (var10002.compareTo(endIndexℤ3) <= 0)
     {
-      this.prodfℝ2.mul((RationalFunction) this.factorfℝ3.evaluate(this.k, bits, this.valuefℝ3), bits);
-      var10002 = this.k.increment();
+      prodfℝ2.mul( factorfℝ3.evaluate(k, bits, valuefℝ3), bits);
+      var10002 = k.increment();
     }
 
-    return var10000.div(var10001.mul(this.prodfℝ2, bits, this.fℝ6), bits, result);
+    return var10000.div(var10001.mul(prodfℝ2, bits, fℝ6), bits, result);
   }
 
   public factorfℝ1()
   {
-    this.cℤ2        = new Integer("2");
-    this.cℤ1        = new Integer("1");
-    this.endIndexℤ3 = new Integer();
-    this.endIndexℤ2 = new Integer();
-    this.ℤ1         = new Integer();
-    this.f1         = new Fraction();
-    this.k          = new Integer();
-    this.prodfℝ1    = new RationalFunction();
-    this.prodfℝ2    = new RationalFunction();
-    this.fℝ4        = new RationalFunction();
-    this.fℝ3        = new RationalFunction();
-    this.fℝ6        = new RationalFunction();
-    this.fℝ5        = new RationalFunction();
-    this.valuefℝ2   = new RationalFunction();
-    this.valuefℝ3   = new RationalFunction();
-    this.fℝ2        = new RationalFunction();
-    this.fℝ1        = new RationalFunction();
+    cℤ2        = new Integer("2");
+    cℤ1        = new Integer("1");
+    endIndexℤ3 = new Integer();
+    endIndexℤ2 = new Integer();
+    ℤ1         = new Integer();
+    f1         = new Fraction();
+    k          = new Integer();
+    prodfℝ1    = new RationalFunction();
+    prodfℝ2    = new RationalFunction();
+    fℝ4        = new RationalFunction();
+    fℝ3        = new RationalFunction();
+    fℝ6        = new RationalFunction();
+    fℝ5        = new RationalFunction();
+    valuefℝ2   = new RationalFunction();
+    valuefℝ3   = new RationalFunction();
+    fℝ2        = new RationalFunction();
+    fℝ1        = new RationalFunction();
   }
 
   @Override
   public void initialize()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (this.p == null)
+    else if (p == null)
     {
       throw new AssertionError("p shan't be null");
     }
-    else if (this.q == null)
+    else if (q == null)
     {
       throw new AssertionError("q shan't be null");
     }
-    else if (this.α == null)
+    else if (α == null)
     {
       throw new AssertionError("α shan't be null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("β shan't be null");
     }
-    else if (this.N == null)
+    else if (N == null)
     {
       throw new AssertionError("N shan't be null");
     }
     else
     {
-      this.factorfℝ2.p   = this.p;
-      this.factorfℝ2.q   = this.q;
-      this.factorfℝ2.α   = this.α;
-      this.factorfℝ2.β   = this.β;
-      this.factorfℝ2.N   = this.N;
-      this.factorfℝ3.p   = this.p;
-      this.factorfℝ3.q   = this.q;
-      this.factorfℝ3.α   = this.α;
-      this.factorfℝ3.β   = this.β;
-      this.factorfℝ3.N   = this.N;
-      this.isInitialized = true;
+      factorfℝ2.p   = p;
+      factorfℝ2.q   = q;
+      factorfℝ2.α   = α;
+      factorfℝ2.β   = β;
+      factorfℝ2.N   = N;
+      factorfℝ3.p   = p;
+      factorfℝ3.q   = q;
+      factorfℝ3.α   = α;
+      factorfℝ3.β   = β;
+      factorfℝ3.N   = N;
+      isInitialized = true;
     }
   }
 
   @Override
   public void close()
   {
-    this.cℤ2.close();
-    this.cℤ1.close();
-    this.endIndexℤ3.close();
-    this.endIndexℤ2.close();
-    this.ℤ1.close();
-    this.f1.close();
-    this.k.close();
-    this.prodfℝ1.close();
-    this.prodfℝ2.close();
-    this.fℝ4.close();
-    this.fℝ3.close();
-    this.fℝ6.close();
-    this.fℝ5.close();
-    this.valuefℝ2.close();
-    this.valuefℝ3.close();
-    this.fℝ2.close();
-    this.fℝ1.close();
-    this.factorfℝ2.close();
-    this.factorfℝ3.close();
+    cℤ2.close();
+    cℤ1.close();
+    endIndexℤ3.close();
+    endIndexℤ2.close();
+    ℤ1.close();
+    f1.close();
+    k.close();
+    prodfℝ1.close();
+    prodfℝ2.close();
+    fℝ4.close();
+    fℝ3.close();
+    fℝ6.close();
+    fℝ5.close();
+    valuefℝ2.close();
+    valuefℝ3.close();
+    fℝ2.close();
+    fℝ1.close();
+    factorfℝ2.close();
+    factorfℝ3.close();
   }
 
   @Override

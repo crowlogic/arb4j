@@ -27,7 +27,7 @@ public class F implements RationalNullaryFunction, Typesettable, AutoCloseable, 
     return RationalFunction.class;
   }
 
-  public static void main( String args[] )
+  public static void main(String args[])
   {
     pFq pfq = new pFq();
     pfq.evaluate(128);
@@ -36,7 +36,7 @@ public class F implements RationalNullaryFunction, Typesettable, AutoCloseable, 
     RationalFunction a = f.evaluate(128);
     System.out.println("f=" + a);
   }
-  
+
   @Override
   public RationalFunction evaluate(Object in, int order, int bits, RationalFunction result)
   {
@@ -50,10 +50,17 @@ public class F implements RationalNullaryFunction, Typesettable, AutoCloseable, 
     Integer var10000 = n;
     endIndexℤ1.set(N);
 
+    /**
+     * <pre>
+     * f[k]=[1
+     *       -7/16+7/16*x
+     *       21/80*(1/2-1/2*x)^2]
+     * </pre>
+     */
     while (var10000.compareTo(endIndexℤ1) < 0)
     {
       factorfℝ1.evaluate(n, bits, valuefℝ1);
-      System.out.format("f[%s]=%s\n", var10000, valuefℝ1 );
+      System.out.format("f[%s]=%s\n", var10000, valuefℝ1);
       sumfℝ1.add(valuefℝ1, bits);
       var10000 = n.increment();
     }
