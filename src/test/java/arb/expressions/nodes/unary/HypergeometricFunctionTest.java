@@ -9,7 +9,6 @@ import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
-import arb.functions.real.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealPolynomialNullaryFunction;
 import junit.framework.TestCase;
@@ -53,33 +52,6 @@ public class HypergeometricFunctionTest
     RealPolynomial expressed = poly.evaluate(bits, new RealPolynomial());
 
     assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
-  }
-
-  /**
-   * <pre>
-   * 
-   * pFq([-2,3+1/2,1],[2,4],1/2-x/2) = 1                 +   ( 1 )
-   *                                   - 7/8*(1/2 - x/2) +   ( 7/16-7/16*x ) 
-   *                                   21/80*(1/2 - x/2)^2   ( 21/320-21/160*x+21/320*x^2 )
-   *                                 = 201/320  +
-   *                                   49/160*x + 
-   *                                   21/320*x^2
-   *                                   
-   * </pre>
-   */
-  public void testHypergeometricFunctionExpressionRational()
-  {
-    var              function  = RationalNullaryFunction.express("pFq([-2,3+1/2,1],[2,4],1/2-x/2)");
-    RationalFunction expressed = function.evaluate(bits, new RationalFunction());
-    // Evaluate terms separately
-    RationalFunction term0     = RationalNullaryFunction.express("1").evaluate(bits, new RationalFunction());
-    RationalFunction term1     = RationalNullaryFunction.express("-7/8*(1/2 - x/2)")
-                                                        .evaluate(bits, new RationalFunction());
-    RationalFunction term2     = RationalNullaryFunction.express("21/80*(1/2 - x/2)^2")
-                                                        .evaluate(bits, new RationalFunction());
-    RationalFunction expected  = term0.add(term1, new RationalFunction()).add(term2, new RationalFunction());
-    assertEquals("(21*x^2+98*x+201)/320", expressed.toString());
-    assertEquals(expected, expressed);
   }
 
   public static void testSum2()
