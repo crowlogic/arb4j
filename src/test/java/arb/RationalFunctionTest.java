@@ -43,13 +43,11 @@ public class RationalFunctionTest
 
   public void testPowers()
   {
-    try ( Integer n = Integer.named("n").set(0))
-    {
-      Context          context            = new Context(n);
-      var              rationalFunctional = RationalFunctionSequence.express("((1/2)-(z/2))^n", context);
-      RationalFunction expressed          = rationalFunctional.evaluate(n, 128, new RationalFunction());
-      assertEquals("x", expressed.toString());
-    }
+  
+      var              rationalFunctional = RationalFunctionSequence.express("((1/2)-(z/2))^n" );
+      RationalFunction expressed          = rationalFunctional.evaluate(0, 128, new RationalFunction());
+      assertEquals("1", expressed.toString());
+    
   }
 
   public void testRationalIdentityExpression()
