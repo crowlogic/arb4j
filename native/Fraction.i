@@ -344,15 +344,15 @@ import java.lang.foreign.MemorySegment;
   @Override
   public Fraction set(Fraction value)
   {
-    setLongNumerator(value.getLongNumerator());
-    setLongDenominator(value.getLongDenominator());
+    setNumeratorAddress(value.getNumeratorAddress());
+    setDenominatorAddress(value.getDenominatorAddress());
     if ( numerator != null )
     {
-      numerator.swigCPtr = getLongNumerator();      
+      numerator.swigCPtr = getNumeratorAddress();      
     }
     if ( denominator != null )
     {
-      denominator.swigCPtr = getLongDenominator(); 
+      denominator.swigCPtr = getDenominatorAddress(); 
     }
     return this;
   }

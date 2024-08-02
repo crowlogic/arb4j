@@ -69,12 +69,12 @@ import arb.functions.Function;
   {
     if (denominator == null)
     {
-      denominator = new IntegerPolynomial(getLongDenominator(),
+      denominator = new IntegerPolynomial(getDenominatorAddress(),
                                           false);
     }
     else
     {
-      denominator.swigCPtr = getLongDenominator();
+      denominator.swigCPtr = getDenominatorAddress();
     }
     return denominator;
   }
@@ -83,12 +83,12 @@ import arb.functions.Function;
   {
     if (numerator == null)
     {
-      numerator = new IntegerPolynomial(getLongNumerator(),
+      numerator = new IntegerPolynomial(getNumeratorAddress(),
                                         false);
     }
     else
     {
-      numerator.swigCPtr = getLongNumerator();
+      numerator.swigCPtr = getNumeratorAddress();
     }
     return numerator;
   }

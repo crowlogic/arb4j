@@ -90,12 +90,12 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   {
     if (denominator == null)
     {
-      denominator = new IntegerPolynomial(getLongDenominator(),
+      denominator = new IntegerPolynomial(getDenominatorAddress(),
                                           false);
     }
     else
     {
-      denominator.swigCPtr = getLongDenominator();
+      denominator.swigCPtr = getDenominatorAddress();
     }
     return denominator;
   }
@@ -104,12 +104,12 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   {
     if (numerator == null)
     {
-      numerator = new IntegerPolynomial(getLongNumerator(),
+      numerator = new IntegerPolynomial(getNumeratorAddress(),
                                         false);
     }
     else
     {
-      numerator.swigCPtr = getLongNumerator();
+      numerator.swigCPtr = getNumeratorAddress();
     }
     return numerator;
   }
@@ -327,20 +327,20 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   }
     
 
-  public void setLongNumerator(long value) {
-    arblibJNI.RationalFunction_longNumerator_set(swigCPtr, this, value);
+  public void setNumeratorAddress(long value) {
+    arblibJNI.RationalFunction_numeratorAddress_set(swigCPtr, this, value);
   }
 
-  public long getLongNumerator() {
-    return arblibJNI.RationalFunction_longNumerator_get(swigCPtr, this);
+  public long getNumeratorAddress() {
+    return arblibJNI.RationalFunction_numeratorAddress_get(swigCPtr, this);
   }
 
-  public void setLongDenominator(long value) {
-    arblibJNI.RationalFunction_longDenominator_set(swigCPtr, this, value);
+  public void setDenominatorAddress(long value) {
+    arblibJNI.RationalFunction_denominatorAddress_set(swigCPtr, this, value);
   }
 
-  public long getLongDenominator() {
-    return arblibJNI.RationalFunction_longDenominator_get(swigCPtr, this);
+  public long getDenominatorAddress() {
+    return arblibJNI.RationalFunction_denominatorAddress_get(swigCPtr, this);
   }
 
   public RationalFunction() 

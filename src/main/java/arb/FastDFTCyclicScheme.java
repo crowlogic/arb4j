@@ -56,12 +56,12 @@ public class FastDFTCyclicScheme {
     return arblibJNI.FastDFTCyclicScheme_zclear_get(swigCPtr, this);
   }
 
-  public void setLongNumerator(int value) {
-    arblibJNI.FastDFTCyclicScheme_longNumerator_set(swigCPtr, this, value);
+  public void setNumeratorAddress(int value) {
+    arblibJNI.FastDFTCyclicScheme_numeratorAddress_set(swigCPtr, this, value);
   }
 
-  public int getLongNumerator() {
-    return arblibJNI.FastDFTCyclicScheme_longNumerator_get(swigCPtr, this);
+  public int getNumeratorAddress() {
+    return arblibJNI.FastDFTCyclicScheme_numeratorAddress_get(swigCPtr, this);
   }
 
   public void setCyc(FastDFTStepScheme value) {

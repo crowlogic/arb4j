@@ -57,8 +57,8 @@ typedef unsigned long int mp_limb_t;
 
 %rename (RationalFunction) fmpz_poly_q_struct;
 %rename (IntegerPolynomial) fmpz_poly_struct;
-%rename (longDenominator) den;
-%rename (longNumerator) num;
+%rename (denominatorAddress) den;
+%rename (numeratorAddress) num;
 %rename (Fraction) fmpq;
 %rename (rowPointers) rows;
 %rename (initialValue) gmp_init;

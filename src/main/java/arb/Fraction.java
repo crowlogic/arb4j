@@ -372,15 +372,15 @@ public class Fraction implements AutoCloseable,Field<Fraction>,Named {
   @Override
   public Fraction set(Fraction value)
   {
-    setLongNumerator(value.getLongNumerator());
-    setLongDenominator(value.getLongDenominator());
+    setNumeratorAddress(value.getNumeratorAddress());
+    setDenominatorAddress(value.getDenominatorAddress());
     if ( numerator != null )
     {
-      numerator.swigCPtr = getLongNumerator();      
+      numerator.swigCPtr = getNumeratorAddress();      
     }
     if ( denominator != null )
     {
-      denominator.swigCPtr = getLongDenominator(); 
+      denominator.swigCPtr = getDenominatorAddress(); 
     }
     return this;
   }
@@ -451,20 +451,20 @@ public class Fraction implements AutoCloseable,Field<Fraction>,Named {
   }    
   
 
-  public void setLongNumerator(long value) {
-    arblibJNI.Fraction_longNumerator_set(swigCPtr, this, value);
+  public void setNumeratorAddress(long value) {
+    arblibJNI.Fraction_numeratorAddress_set(swigCPtr, this, value);
   }
 
-  public long getLongNumerator() {
-    return arblibJNI.Fraction_longNumerator_get(swigCPtr, this);
+  public long getNumeratorAddress() {
+    return arblibJNI.Fraction_numeratorAddress_get(swigCPtr, this);
   }
 
-  public void setLongDenominator(long value) {
-    arblibJNI.Fraction_longDenominator_set(swigCPtr, this, value);
+  public void setDenominatorAddress(long value) {
+    arblibJNI.Fraction_denominatorAddress_set(swigCPtr, this, value);
   }
 
-  public long getLongDenominator() {
-    return arblibJNI.Fraction_longDenominator_get(swigCPtr, this);
+  public long getDenominatorAddress() {
+    return arblibJNI.Fraction_denominatorAddress_get(swigCPtr, this);
   }
 
   public Fraction() {

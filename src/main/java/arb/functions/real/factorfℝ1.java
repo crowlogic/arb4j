@@ -80,7 +80,9 @@ public class factorfℝ1 implements Function<Integer, RationalFunction>, Typeset
 
     while (var10002.compareTo(endIndexℤ3) <= 0)
     {
-      prodfℝ2.mul(factorfℝ3.evaluate(k, bits, valuefℝ3), bits);
+      factorfℝ3.evaluate(k, bits, valuefℝ3);
+      out.format("prodfℝ2=%s factorfℝ3[%s]=%s\n", prodfℝ1, k, valuefℝ2 );
+      prodfℝ2.mul(valuefℝ3, bits);
       var10002 = k.increment();
     }
     RationalFunction denom = var10001.mul(prodfℝ2, bits, fℝ6);
