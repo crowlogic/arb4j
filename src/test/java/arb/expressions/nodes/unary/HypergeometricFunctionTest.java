@@ -1,5 +1,7 @@
 package arb.expressions.nodes.unary;
 
+import static java.lang.System.out;
+
 import arb.*;
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -51,21 +53,33 @@ public class HypergeometricFunctionTest
   {
     var            poly      = RealPolynomialNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
     RealPolynomial expressed = poly.evaluate(bits, new RealPolynomial());
+
     assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
   }
 
   /**
-   * The correct sequence of summands is <pre>
-   * f[0]=1/(x)
-     f[1]=(-x+1)/(16*x)
-     f[2]=(x^2-2*x+1)/(960*x)
-     f=(x^2-62*x+1021)/(960*x)\
+   * <pre>
+   * This is correct
+   * 
+   * pFq([-2,3+1/2,1],[2,4],1/2-x/2) = 1                 +   ( 1 )
+   *                                   - 7/8*(1/2 - x/2) +   ( 7/16-7/16*x ) 
+   *                                   21/80*(1/2 - x/2)^2   ( 21/320-21/160*x+21/320*x^2 )
+   *                                 = 201/320  +
+   *                                   49/160*x + 
+   *                                   21/320*x^2
+   *                                   
+   * but for some reason  its producing not that                                   
    * </pre>
    */
   public void testHypergeometricFunctionExpressionRational()
   {
     var              function      = RationalNullaryFunction.express("pFq([-2,3+1/2,1],[2,4],1/2-x/2)");
     RationalFunction expressed = function.evaluate(bits, new RationalFunction());
+    // Evaluate terms separately
+    RationalFunction term0 = RationalNullaryFunction.express("1").evaluate(bits, new RationalFunction());
+    RationalFunction term1 = RationalNullaryFunction.express("-7/8*(1/2 - x/2)").evaluate(bits, new RationalFunction());
+    RationalFunction term2 = RationalNullaryFunction.express("21/80*(1/2 - x/2)^2").evaluate(bits, new RationalFunction());
+    out.format("term0=%s\nterm1=%s\nterm2=%s\n", term0, term1, term2 );
     assertEquals("201/320+49/160*x+21/320*x^2", expressed.toString());
   }
 

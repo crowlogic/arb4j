@@ -9,6 +9,11 @@ import java.lang.foreign.MemorySegment;
 
 %typemap(javacode) fmpq %{
 
+  public RationalFunction mul(RationalFunction that, int bits, RationalFunction result)
+  {
+    return result.set(this).mul(that,bits,result);
+  }
+  
   public Fraction set(Integer val)
   {
     arblib.fmpq_set_fmpz(this, val.swigCPtr );
