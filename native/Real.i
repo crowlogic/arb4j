@@ -160,11 +160,6 @@ import arb.utensils.Utensils;
   {
     return res.set(this).sub(a,bits,res);
   }
-  
-  public RationalFunction mul(RationalFunction a, int bits, RationalFunction result)
-  {
-    return a.mul(this, bits, result);
-  }
 
   /**
    * 

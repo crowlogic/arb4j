@@ -1,7 +1,5 @@
 package arb.expressions.nodes.unary;
 
-import static java.lang.System.out;
-
 import arb.*;
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -68,19 +66,22 @@ public class HypergeometricFunctionTest
    *                                   49/160*x + 
    *                                   21/320*x^2
    *                                   
-   * but for some reason  its producing not that                                   
+   * but for some reason  its producing not that
    * </pre>
    */
   public void testHypergeometricFunctionExpressionRational()
   {
-    var              function      = RationalNullaryFunction.express("pFq([-2,3+1/2,1],[2,4],1/2-x/2)");
+    var              function  = RationalNullaryFunction.express("pFq([-2,3+1/2,1],[2,4],1/2-x/2)");
     RationalFunction expressed = function.evaluate(bits, new RationalFunction());
     // Evaluate terms separately
-    RationalFunction term0 = RationalNullaryFunction.express("1").evaluate(bits, new RationalFunction());
-    RationalFunction term1 = RationalNullaryFunction.express("-7/8*(1/2 - x/2)").evaluate(bits, new RationalFunction());
-    RationalFunction term2 = RationalNullaryFunction.express("21/80*(1/2 - x/2)^2").evaluate(bits, new RationalFunction());
-    out.format("term0=%s\nterm1=%s\nterm2=%s\n", term0, term1, term2 );
-    assertEquals("201/320+49/160*x+21/320*x^2", expressed.toString());
+    RationalFunction term0     = RationalNullaryFunction.express("1").evaluate(bits, new RationalFunction());
+    RationalFunction term1     = RationalNullaryFunction.express("-7/8*(1/2 - x/2)")
+                                                        .evaluate(bits, new RationalFunction());
+    RationalFunction term2     = RationalNullaryFunction.express("21/80*(1/2 - x/2)^2")
+                                                        .evaluate(bits, new RationalFunction());
+    RationalFunction expected  = term0.add(term1, new RationalFunction()).add(term2, new RationalFunction());
+    assertEquals("(21*x^2+98*x+201)/320", expressed.toString());
+    assertEquals(expected, expressed);
   }
 
   public static void testSum2()

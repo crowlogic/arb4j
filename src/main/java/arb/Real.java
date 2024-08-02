@@ -187,11 +187,6 @@ public class Real implements Named,Domain<Real>,Serializable,Comparable<Real>,It
   {
     return res.set(this).sub(a,bits,res);
   }
-  
-  public RationalFunction mul(RationalFunction a, int bits, RationalFunction result)
-  {
-    return a.mul(this, bits, result);
-  }
 
   /**
    * 
