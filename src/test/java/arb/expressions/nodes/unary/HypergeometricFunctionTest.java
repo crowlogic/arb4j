@@ -57,7 +57,6 @@ public class HypergeometricFunctionTest
 
   /**
    * <pre>
-   * This is correct
    * 
    * pFq([-2,3+1/2,1],[2,4],1/2-x/2) = 1                 +   ( 1 )
    *                                   - 7/8*(1/2 - x/2) +   ( 7/16-7/16*x ) 
@@ -66,7 +65,6 @@ public class HypergeometricFunctionTest
    *                                   49/160*x + 
    *                                   21/320*x^2
    *                                   
-   * but for some reason  its producing not that
    * </pre>
    */
   public void testHypergeometricFunctionExpressionRational()
