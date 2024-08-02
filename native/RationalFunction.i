@@ -160,11 +160,6 @@ import arb.functions.Function;
     return 1;
   }
 
-  public RationalFunction identity()
-  {
-    return multiplicativeIdentity();
-  }
-
   @Override
   public RationalFunction div(RationalFunction operand, int prec, RationalFunction result)
   {
