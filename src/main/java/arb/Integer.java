@@ -52,15 +52,11 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
    */
   public RationalFunction div(Integer operand, int prec, RationalFunction result)
   {
-    // Set the numerator to this Integer
+    assert operand.swigCPtr != 0;
+    assert swigCPtr != 0;
     result.getNumerator().set(this);
-
-    // Set the denominator to the operand
     result.getDenominator().set(operand);
-
-    // Reduce the rational function
     result.reduce();
-
     return result;
   }
 

@@ -1,4 +1,4 @@
-%typemap(javainterfaces) fmpz_poly_q_struct "Named,AutoCloseable,Field<RationalFunction>,Function<Fraction,Fraction>"
+%typemap(javainterfaces) fmpz_poly_q_struct "Named,AutoCloseable,Field<RationalFunction>,Function<Fraction,Fraction>,Verifiable"
 %typemap(javafinalize) fmpz_poly_q_struct ""
 %typemap(javaimports) fmpz_poly_q_struct %{
 import arb.functions.Function;
@@ -13,6 +13,14 @@ import arb.functions.Function;
 
 %typemap(javacode) fmpz_poly_q_struct %{
 
+  @Override
+  public boolean verify()
+  {
+    boolean denominatorConsistent = denominator == null || denominator.swigCPtr == getDenominatorAddress();
+    boolean numeratorConsistent   = numerator == null || numerator.swigCPtr == getNumeratorAddress();
+    return denominatorConsistent && numeratorConsistent;
+  }
+  
   @SuppressWarnings("resource")
   public RationalFunction pow(Integer power, int unused, RationalFunction res)
   {
@@ -192,8 +200,20 @@ import arb.functions.Function;
   @Override
   public RationalFunction mul(RationalFunction x, int prec, RationalFunction result)
   {
+    assert verify() : String.format("numeratorAddress=%s\ndenominatorAddress=%s\nnumerator=%s\ndenominator=%s\n",
+                                    getNumeratorAddress(),
+                                    getDenominatorAddress(),
+                                    numerator == null ? "null" : numerator.swigCPtr,
+                                    denominator == null ? "null" : denominator.swigCPtr);
+    
     arblib.fmpz_poly_q_mul(result, this, x);
-    return this;
+    denominator = numerator = null;
+    assert verify() : String.format("numeratorAddress=%s\ndenominatorAddress=%s\nnumerator=%s\ndenominator=%s\n",
+                                    getNumeratorAddress(),
+                                    getDenominatorAddress(),
+                                    numerator == null ? "null" : numerator.swigCPtr,
+                                    denominator == null ? "null" : denominator.swigCPtr);
+    return result;
   }
 
   @Override

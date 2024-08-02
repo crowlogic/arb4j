@@ -10,7 +10,7 @@ package arb;
 
 import arb.functions.Function;
 
-public class RationalFunction implements Named,AutoCloseable,Field<RationalFunction>,Function<Fraction,Fraction> {
+public class RationalFunction implements Named,AutoCloseable,Field<RationalFunction>,Function<Fraction,Fraction>,Verifiable {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
@@ -34,6 +34,14 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   }
 
 
+  @Override
+  public boolean verify()
+  {
+    boolean denominatorConsistent = denominator == null || denominator.swigCPtr == getDenominatorAddress();
+    boolean numeratorConsistent   = numerator == null || numerator.swigCPtr == getNumeratorAddress();
+    return denominatorConsistent && numeratorConsistent;
+  }
+  
   @SuppressWarnings("resource")
   public RationalFunction pow(Integer power, int unused, RationalFunction res)
   {
@@ -213,8 +221,20 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   @Override
   public RationalFunction mul(RationalFunction x, int prec, RationalFunction result)
   {
+    assert verify() : String.format("numeratorAddress=%s\ndenominatorAddress=%s\nnumerator=%s\ndenominator=%s\n",
+                                    getNumeratorAddress(),
+                                    getDenominatorAddress(),
+                                    numerator == null ? "null" : numerator.swigCPtr,
+                                    denominator == null ? "null" : denominator.swigCPtr);
+    
     arblib.fmpz_poly_q_mul(result, this, x);
-    return this;
+    denominator = numerator = null;
+    assert verify() : String.format("numeratorAddress=%s\ndenominatorAddress=%s\nnumerator=%s\ndenominator=%s\n",
+                                    getNumeratorAddress(),
+                                    getDenominatorAddress(),
+                                    numerator == null ? "null" : numerator.swigCPtr,
+                                    denominator == null ? "null" : denominator.swigCPtr);
+    return result;
   }
 
   @Override
@@ -301,7 +321,17 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   
   public RationalFunction reduce()
   {
+    assert verify() : String.format("numeratorAddress=%s\ndenominatorAddress=%s\nnumerator=%s\ndenominator=%s\n",
+                                    getNumeratorAddress(),
+                                    getDenominatorAddress(),
+                                    numerator == null ? "null" : numerator.swigCPtr,
+                                    denominator == null ? "null" : denominator.swigCPtr);
     arblib.fmpz_poly_q_canonicalise(this);
+    assert verify() : String.format("numeratorAddress=%s\ndenominatorAddress=%s\nnumerator=%s\ndenominator=%s\n",
+                                    getNumeratorAddress(),
+                                    getDenominatorAddress(),
+                                    numerator == null ? "null" : numerator.swigCPtr,
+                                    denominator == null ? "null" : denominator.swigCPtr);
     return this;
   }
   
