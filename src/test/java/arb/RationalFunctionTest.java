@@ -2,7 +2,6 @@ package arb;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Context;
 import arb.functions.real.RationalNullaryFunction;
 import arb.functions.sequences.RationalFunctionSequence;
 import junit.framework.TestCase;
@@ -43,11 +42,18 @@ public class RationalFunctionTest
 
   public void testPowers()
   {
-  
-      var              rationalFunctional = RationalFunctionSequence.express("((1/2)-(z/2))^n" );
-      RationalFunction expressed          = rationalFunctional.evaluate(0, 128, new RationalFunction());
-      assertEquals("1", expressed.toString());
-    
+
+    var              seq       = RationalFunctionSequence.express("n->((1/2)-(z/2))^n");
+    RationalFunction expressed = seq.evaluate(0, 128, new RationalFunction());
+    assertEquals("1", expressed.toString());
+    seq.evaluate(1, 128, expressed);
+    assertEquals("(-x+1)/2", expressed.toString());
+    seq.evaluate(2, 128, expressed);
+    assertEquals("(x^2-2*x+1)/4", expressed.toString());
+    seq.evaluate(3, 128, expressed);
+    assertEquals("(-x^3+3*x^2-3*x+1)/8", expressed.toString());
+    seq.evaluate(-2, 128, expressed);
+    assertEquals("4/(x^2-2*x+1)", expressed.toString());
   }
 
   public void testRationalIdentityExpression()

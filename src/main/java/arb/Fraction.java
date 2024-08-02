@@ -405,7 +405,17 @@ public class Fraction implements AutoCloseable,Field<Fraction>,Named {
     assert false : "TODO";
     return null;
   }
-  
+
+  public RationalFunction pow(Integer n, int bits, RationalFunction result)
+  {
+    try ( RationalFunction tmp = new RationalFunction() )
+    {
+      tmp.set(this);
+      tmp.pow(n, bits, result);
+      return result;
+    }
+  }
+    
   /**
    * Reduces this {@link Fraction} into its simplest form, dividing the
    * {@link #numerator} and the this#denominator by the highest common factor.
