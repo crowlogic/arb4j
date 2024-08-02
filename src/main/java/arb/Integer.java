@@ -28,6 +28,13 @@ import arb.documentation.TheArb4jLibrary;
 public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer>, Named
 {
 
+  public static Integer named(String name)
+  {
+    Integer n = new Integer();
+    n.setName("n");
+    return n;
+  }
+
   static
   {
     System.loadLibrary("arblib");
@@ -155,11 +162,11 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     init((int) dim2);
   }
 
-  public Fraction add( Fraction frac, int bits, Fraction result )
+  public Fraction add(Fraction frac, int bits, Fraction result)
   {
-    return result.set(this).add(frac,bits);
+    return result.set(this).add(frac, bits);
   }
-  
+
   public Integer add(int i)
   {
     return add(i, this);
@@ -334,14 +341,13 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     res.bits = prec;
     return res.set(this).div(dividend, prec, res);
   }
-  
+
   public Fraction div(Integer dividend, int prec, Fraction res)
   {
     res.getNumerator().set(this);
     res.getDenominator().set(dividend);
     return res.reduce();
   }
-  
 
   /**
    * Shortcut for this{@link #div(Integer, int, Integer)} since it doesnt need
@@ -611,7 +617,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     res.neg();
     return res;
   }
-  
+
   public RationalFunction neg(RationalFunction res)
   {
     res.set(this);
