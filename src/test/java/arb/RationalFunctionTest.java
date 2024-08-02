@@ -2,7 +2,9 @@ package arb;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Context;
 import arb.functions.real.RationalNullaryFunction;
+import arb.functions.sequences.RationalFunctionSequence;
 import junit.framework.TestCase;
 
 /**
@@ -39,6 +41,17 @@ public class RationalFunctionTest
 
   }
 
+  public void testPowers()
+  {
+    try ( Integer n = Integer.named("n").set(0))
+    {
+      Context          context            = new Context(n);
+      var              rationalFunctional = RationalFunctionSequence.express("((1/2)-(z/2))^n", context);
+      RationalFunction expressed          = rationalFunctional.evaluate(n, 128, new RationalFunction());
+      assertEquals("x", expressed.toString());
+    }
+  }
+
   public void testRationalIdentityExpression()
   {
     var              rationalFunctional = RationalNullaryFunction.express("x");
@@ -69,14 +82,14 @@ public class RationalFunctionTest
     RationalFunction expressed          = rationalFunctional.evaluate(128, new RationalFunction());
     assertEquals("1/(x)", expressed.toString());
   }
-  
+
   public void testXSquaredToThePowerOfNegativeOne()
   {
     var              rationalFunctional = RationalNullaryFunction.express("(x^2)^(-1)");
     RationalFunction expressed          = rationalFunctional.evaluate(128, new RationalFunction());
     assertEquals("1/(x^2)", expressed.toString());
   }
-  
+
   /**
    * is(expand(x^2-2*x+1)/4=expand((1/2-x/2)^2)); true
    */
@@ -86,7 +99,6 @@ public class RationalFunctionTest
     RationalFunction expressed          = rationalFunctional.evaluate(128, new RationalFunction());
     assertEquals("(x^2-2*x+1)/4", expressed.toString());
   }
-
 
   @SuppressWarnings("resource")
   public void testSub()

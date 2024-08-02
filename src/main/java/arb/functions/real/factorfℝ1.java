@@ -52,7 +52,6 @@ public class factorfℝ1 implements Function<Integer, RationalFunction>, Typeset
     RationalFunction var10000 = cℤ1.div(cℤ2, bits, f1)
                                    .sub(fℝ1.identity().div(cℤ2, bits, fℝ2), bits, fℝ3)
                                    .pow(n, bits, fℝ4);
-    System.out.format("var10000=%s\n", var10000);
     factorfℝ2.n = n;
     prodfℝ1.multiplicativeIdentity();
     k.set(cℤ1);
@@ -61,7 +60,7 @@ public class factorfℝ1 implements Function<Integer, RationalFunction>, Typeset
 
     while (var10001.compareTo(endIndexℤ2) <= 0)
     {
-      prodfℝ1.mul( factorfℝ2.evaluate(k, bits, valuefℝ2), bits);
+      prodfℝ1.mul(factorfℝ2.evaluate(k, bits, valuefℝ2), bits);
       var10001 = k.increment();
     }
 
@@ -75,11 +74,14 @@ public class factorfℝ1 implements Function<Integer, RationalFunction>, Typeset
 
     while (var10002.compareTo(endIndexℤ3) <= 0)
     {
-      prodfℝ2.mul( factorfℝ3.evaluate(k, bits, valuefℝ3), bits);
+      prodfℝ2.mul(factorfℝ3.evaluate(k, bits, valuefℝ3), bits);
       var10002 = k.increment();
     }
+    RationalFunction denom = var10001.mul(prodfℝ2, bits, fℝ6);
 
-    return var10000.div(var10001.mul(prodfℝ2, bits, fℝ6), bits, result);
+    System.out.format("\nnumer=%s denom=%s var10001=%s\n\n", var10000, denom, var10001);
+
+    return var10000.div(denom, bits, result);
   }
 
   public factorfℝ1()
