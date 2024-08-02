@@ -1,5 +1,7 @@
 package arb.functions.real;
 
+import static java.lang.System.out;
+
 import arb.Fraction;
 import arb.Initializable;
 import arb.Integer;
@@ -52,6 +54,8 @@ public class factorfℝ1 implements Function<Integer, RationalFunction>, Typeset
     RationalFunction var10000 = cℤ1.div(cℤ2, bits, f1)
                                    .sub(fℝ1.identity().div(cℤ2, bits, fℝ2), bits, fℝ3)
                                    .pow(n, bits, fℝ4);
+
+    out.format("arg=%s\n", var10000);
     factorfℝ2.n = n;
     prodfℝ1.multiplicativeIdentity();
     k.set(cℤ1);
@@ -60,7 +64,9 @@ public class factorfℝ1 implements Function<Integer, RationalFunction>, Typeset
 
     while (var10001.compareTo(endIndexℤ2) <= 0)
     {
-      prodfℝ1.mul(factorfℝ2.evaluate(k, bits, valuefℝ2), bits);
+      factorfℝ2.evaluate(k, bits, valuefℝ2);
+      out.format("prodfℝ1=%s factorfℝ2[%s]=%s\n", prodfℝ1, k, valuefℝ2 );
+      prodfℝ1.mul(valuefℝ2, bits);
       var10001 = k.increment();
     }
 

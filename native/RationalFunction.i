@@ -119,13 +119,24 @@ import arb.functions.Function;
     return arblib.fmpz_poly_q_get_str_pretty(this, "x");
   }
   
+  public RationalFunction identity()
+  {
+    getNumerator().set(0);
+    getNumerator().set(1,1);
+    getDenominator().set(1);
+    return this;
+  }
+
   @Override
   public RationalFunction multiplicativeIdentity()
   {
-   getNumerator().set(0);
-   getNumerator().set(1,1);
-   getDenominator().set(1);
-   return this;
+   return one();
+  }
+
+  public RationalFunction one()
+  {
+    arblib.fmpz_poly_q_one(this);
+    return this;
   }
   
   @Override
