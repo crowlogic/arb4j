@@ -193,7 +193,7 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   public RationalFunction div(RationalFunction operand, int prec, RationalFunction result)
   {
     arblib.fmpz_poly_q_div(result, this, operand);
-    return this;
+    return result;
   }
 
   @Override
@@ -267,7 +267,7 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   public RationalFunction sub(RationalFunction element, int prec, RationalFunction result)
   {
     arblib.fmpz_poly_q_sub(result, this, element);
-    return this;
+    return result;
   }
 
   public RationalFunction set(Real real)
@@ -305,33 +305,17 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   public RationalFunction neg(RationalFunction res)
   {
     arblib.fmpz_poly_q_neg(res, this);
-    return this;
+    return res;
   }
   
   public RationalFunction neg()
   {
     return neg(this);
   }
-
-  public RationalFunction mul(Real real, int bits, RationalFunction result)
-  {
-    assert false : "TODO";
-    return null;
-  }  
   
   public RationalFunction reduce()
   {
-    assert verify() : String.format("numeratorAddress=%s\ndenominatorAddress=%s\nnumerator=%s\ndenominator=%s\n",
-                                    getNumeratorAddress(),
-                                    getDenominatorAddress(),
-                                    numerator == null ? "null" : numerator.swigCPtr,
-                                    denominator == null ? "null" : denominator.swigCPtr);
     arblib.fmpz_poly_q_canonicalise(this);
-    assert verify() : String.format("numeratorAddress=%s\ndenominatorAddress=%s\nnumerator=%s\ndenominator=%s\n",
-                                    getNumeratorAddress(),
-                                    getDenominatorAddress(),
-                                    numerator == null ? "null" : numerator.swigCPtr,
-                                    denominator == null ? "null" : denominator.swigCPtr);
     return this;
   }
   
@@ -352,7 +336,7 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
     try ( RationalFunction e = new RationalFunction())
     {
       e.set(element);
-      return result.set(this).add(e, prec, result);
+      return result.set(this).add(e, prec);
     }
   }
     

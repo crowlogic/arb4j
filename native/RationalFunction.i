@@ -172,7 +172,7 @@ import arb.functions.Function;
   public RationalFunction div(RationalFunction operand, int prec, RationalFunction result)
   {
     arblib.fmpz_poly_q_div(result, this, operand);
-    return this;
+    return result;
   }
 
   @Override
@@ -246,7 +246,7 @@ import arb.functions.Function;
   public RationalFunction sub(RationalFunction element, int prec, RationalFunction result)
   {
     arblib.fmpz_poly_q_sub(result, this, element);
-    return this;
+    return result;
   }
 
   public RationalFunction set(Real real)
@@ -284,19 +284,13 @@ import arb.functions.Function;
   public RationalFunction neg(RationalFunction res)
   {
     arblib.fmpz_poly_q_neg(res, this);
-    return this;
+    return res;
   }
   
   public RationalFunction neg()
   {
     return neg(this);
   }
-
-  public RationalFunction mul(Real real, int bits, RationalFunction result)
-  {
-    assert false : "TODO";
-    return null;
-  }  
   
   public RationalFunction reduce()
   {
@@ -321,7 +315,7 @@ import arb.functions.Function;
     try ( RationalFunction e = new RationalFunction())
     {
       e.set(element);
-      return result.set(this).add(e, prec, result);
+      return result.set(this).add(e, prec);
     }
   }
     
