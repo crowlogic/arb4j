@@ -9,19 +9,19 @@ import arb.Typesettable;
 
 public class pFq implements RationalNullaryFunction, Typesettable, AutoCloseable, Initializable
 {
-  public boolean                         isInitialized;
-  Integer                                cℤ1 = new Integer("2");
-  Integer                                cℤ4 = new Integer("4");
-  Integer                                cℤ3 = new Integer("1");
-  Real                                   cℝ2 = new Real("3.5",
-                                                        128);
-  public Fraction                        vf1 = new Fraction();
-  public Fraction                        vf2 = new Fraction();
-  public Fraction                        f1  = new Fraction();
-  public Fraction                        f2  = new Fraction();
-  public Fraction                        f3  = new Fraction();
-  public Fraction                        f4  = new Fraction();
-  public Fraction                        f5  = new Fraction();
+  public boolean                        isInitialized;
+  Integer                               cℤ1 = new Integer("2");
+  Integer                               cℤ4 = new Integer("4");
+  Integer                               cℤ3 = new Integer("1");
+  Real                                  cℝ2 = new Real("3.5",
+                                                       128);
+  public Fraction                       vf1 = new Fraction();
+  public Fraction                       vf2 = new Fraction();
+  public Fraction                       f1  = new Fraction();
+  public Fraction                       f2  = new Fraction();
+  public Fraction                       f3  = new Fraction();
+  public Fraction                       f4  = new Fraction();
+  public Fraction                       f5  = new Fraction();
   public RationalHypergeometricFunction f;
 
   public static void main(String args[])
@@ -45,9 +45,13 @@ public class pFq implements RationalNullaryFunction, Typesettable, AutoCloseable
       initialize();
     }
 
-    var      arg   = arb.functions.real.RationalNullaryFunction.parse("(1/2)-(x/2)");
+    var      arg   = RationalNullaryFunction.parse("(1/2)-(x/2)");
     Fraction numer = vf1.set(cℤ1.neg(f1), f2.set(cℝ2), f3.set(cℤ3));
     Fraction denom = vf2.set(f4.set(cℤ1), f5.set(cℤ4));
+    
+    System.out.println("numer=" + numer );
+    System.out.println("denom=" + denom );
+    
     f = new RationalHypergeometricFunction(numer,
                                            denom,
                                            arg);

@@ -29,12 +29,14 @@ public class F implements RationalNullaryFunction, Typesettable, AutoCloseable, 
 
   public static void main(String args[])
   {
-    pFq pfq = new pFq();
-    pfq.evaluate(128);
-    F f = new F();
-    pfq.f.context.injectVariableReferences(f);
-    RationalFunction a = f.evaluate(128);
-    System.out.println("f=" + a);
+    try ( pFq pfq = new pFq())
+    {
+      pfq.evaluate(128);
+      F f = new F();
+      pfq.f.context.injectVariableReferences(f);
+      RationalFunction a = f.evaluate(128);
+      System.out.println("f=" + a);
+    }
   }
 
   @Override
