@@ -10,6 +10,7 @@ package arb;
 
 import arb.functions.Function;
 import arb.exceptions.ArbException;
+import arb.expressions.Context;
 
 public class RationalFunction implements Named,AutoCloseable,Field<RationalFunction>,Function<Fraction,Fraction>,Verifiable {
   protected long swigCPtr;
@@ -35,6 +36,21 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   }
 
 
+  public static RationalFunction express(String functionName, String expression, Context context)
+  {
+    return Function.instantiate(expression,
+                                context,
+                                Object.class,
+                                RationalFunction.class,
+                                RationalFunction.class,
+                                functionName);
+  }
+
+  public static RationalFunction express(String expression, Context context)
+  {
+    return express(null, expression, context);
+  }
+  
   @Override
   public boolean verify()
   {

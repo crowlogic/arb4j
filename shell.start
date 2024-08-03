@@ -1,3 +1,5 @@
+import arb.expressions.Context;
+import arb.RationalFunction;
 import arb.utensils.text.trees.TextTree;
 import arb.utensils.text.trees.FileTreeModel;
 import arb.utensils.text.trees.FileNode;
@@ -40,7 +42,6 @@ import arb.functions.real.*;
 import java.util.ArrayList;
 import java.lang.reflect.Array;
 import java.util.Arrays;
-import arb.RealQuasiPolynomial;
 
 public <A> List<A>  seq(int m, int n,IntFunction<A> f) { return IntStream.rangeClosed(m,n).mapToObj(f).toList();};
 
