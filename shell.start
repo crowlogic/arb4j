@@ -1,5 +1,7 @@
 import arb.expressions.Context;
 import arb.RationalFunction;
+import arb.functions.sequences.RationalFunctionSequence;
+import arb.functions.real.RationalFunctional;
 import arb.utensils.text.trees.TextTree;
 import arb.utensils.text.trees.FileTreeModel;
 import arb.utensils.text.trees.FileNode;

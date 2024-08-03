@@ -1,2 +1,3 @@
 implement KL expansion
 implement Node.integral method (starting wtih Division extends BinaryOperation)
+Error: 'arb.RationalFunction arb.Real.mul(arb.RationalFunction, int, arb.RationalFunction)'

@@ -1,0 +1,5 @@
+var context = new Context();
+context.registerVariable("v",RealConstants.half);
+var R = RationalFunctionSequence.express("v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z^2)",context);
+R
+var x = R.evaluate(3,128);
