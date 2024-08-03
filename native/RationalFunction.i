@@ -3,6 +3,7 @@
 %typemap(javaimports) fmpz_poly_q_struct %{
 import arb.functions.Function;
 import arb.exceptions.ArbException;
+import arb.expressions.Context;
 %}
 
 %typemap(javaconstruct) fmpz_poly_q_struct %{
