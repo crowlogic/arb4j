@@ -2,7 +2,7 @@ package arb;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.NullaryFunction;
+import arb.expressions.Context;
 import arb.functions.real.RationalNullaryFunction;
 import arb.functions.sequences.RationalFunctionSequence;
 import junit.framework.TestCase;
@@ -16,6 +16,14 @@ public class RationalFunctionTest
                                   extends
                                   TestCase
 {
+
+  public void testLommelPolynomials()
+  {
+    var context = new Context();
+    context.registerVariable("v", RealConstants.half);
+    var R = RationalFunctionSequence.express("v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z^2)", context);
+    var x = R.evaluate(3, 128);
+  }
 
   @SuppressWarnings("resource")
   public void testAdd()
@@ -149,12 +157,12 @@ public class RationalFunctionTest
    *                                 = 201/320  +
    *                                   49/160*x + 
    *                                   21/320*x^2
-   *                                   
+   * 
    * </pre>
    */
   public static void testHypergeometricFunctionExpressionRational()
   {
-    int bits = 128;
+    int              bits      = 128;
     var              function  = RationalNullaryFunction.express("pFq([-2,3+1/2,1],[2,4],1/2-x/2)");
     RationalFunction expressed = function.evaluate(bits, new RationalFunction());
     // Evaluate terms separately

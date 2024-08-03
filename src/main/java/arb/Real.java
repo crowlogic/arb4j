@@ -200,7 +200,13 @@ public class Real implements Named,Domain<Real>,Serializable,Comparable<Real>,It
   {
     return lnΓ(bits, value);
   }
-  
+
+  public RationalFunction mul(RationalFunction that, int prec, RationalFunction res)
+  {
+    assert false : String.format("%s * %s\n", this,that);
+    return res;
+  }
+    
   /**
    * Calculate the ascending factorial this_(power)
    * 
