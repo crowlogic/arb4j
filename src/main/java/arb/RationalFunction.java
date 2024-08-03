@@ -9,6 +9,7 @@
 package arb;
 
 import arb.functions.Function;
+import arb.exceptions.ArbException;
 
 public class RationalFunction implements Named,AutoCloseable,Field<RationalFunction>,Function<Fraction,Fraction>,Verifiable {
   protected long swigCPtr;
@@ -218,25 +219,52 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
     return result;
   }
 
-  @Override
+@Override
   public RationalFunction mul(RationalFunction x, int prec, RationalFunction result)
   {
-    assert verify() : String.format("numeratorAddress=%s\ndenominatorAddress=%s\nnumerator=%s\ndenominator=%s\n",
-                                    getNumeratorAddress(),
-                                    getDenominatorAddress(),
-                                    numerator == null ? "null" : numerator.swigCPtr,
-                                    denominator == null ? "null" : denominator.swigCPtr);
-    
+    assertPointerConsistency();
     arblib.fmpz_poly_q_mul(result, this, x);
-    denominator = numerator = null;
-    assert verify() : String.format("numeratorAddress=%s\ndenominatorAddress=%s\nnumerator=%s\ndenominator=%s\n",
-                                    getNumeratorAddress(),
-                                    getDenominatorAddress(),
-                                    numerator == null ? "null" : numerator.swigCPtr,
-                                    denominator == null ? "null" : denominator.swigCPtr);
+    refresh();
+    assertPointerConsistency();
     return result;
   }
 
+  /**
+   * @throws ArbException if {@link #getNumeratorAddress()} !=
+   *                      {@link #getNumerator()}{@link #swigCPtr} or
+   *                      {@link #getDenominatorAddress()} !=
+   *                      {@link #getDenominator()}{@link #swigCPtr}
+   */
+  public void assertPointerConsistency()
+  {
+    if (!verify())
+    {
+      throw new ArbException(String.format("numeratorAddress=%s\ndenominatorAddress=%s\nnumerator=%s\ndenominator=%s\n",
+                                           getNumeratorAddress(),
+                                           getDenominatorAddress(),
+                                           numerator == null ? "null" : numerator.swigCPtr,
+                                           denominator == null ? "null" : denominator.swigCPtr));
+    }
+  }
+
+  /**
+   * Updates the {@link IntegerPolynomial#swigCPtr} of this{@link #numerator} and
+   * this{@link #denominator} if they are not null. This should be called after
+   * performaning any operation that could potentially result in at least one of
+   * the numerator and denominator pointers changing
+   */
+  public void refresh()
+  {
+    if (denominator != null)
+    {
+      denominator.swigCPtr = getDenominatorAddress();
+    }
+    if (numerator != null)
+    {
+      numerator.swigCPtr = getNumeratorAddress();
+    }
+  }
+  
   @Override
   public RationalFunction newFieldElement()
   {
