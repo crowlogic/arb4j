@@ -203,7 +203,7 @@ import arb.exceptions.ArbException;
   {
     assertPointerConsistency();
     arblib.fmpz_poly_q_mul(result, this, x);
-    refresh();
+    refreshPointers();
     assertPointerConsistency();
     return result;
   }
@@ -232,7 +232,7 @@ import arb.exceptions.ArbException;
    * performaning any operation that could potentially result in at least one of
    * the numerator and denominator pointers changing
    */
-  public void refresh()
+  public void refreshPointers()
   {
     if (denominator != null)
     {

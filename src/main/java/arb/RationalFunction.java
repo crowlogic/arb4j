@@ -224,7 +224,7 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   {
     assertPointerConsistency();
     arblib.fmpz_poly_q_mul(result, this, x);
-    refresh();
+    refreshPointers();
     assertPointerConsistency();
     return result;
   }
@@ -253,7 +253,7 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
    * performaning any operation that could potentially result in at least one of
    * the numerator and denominator pointers changing
    */
-  public void refresh()
+  public void refreshPointers()
   {
     if (denominator != null)
     {
