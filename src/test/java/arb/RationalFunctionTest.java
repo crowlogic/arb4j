@@ -25,7 +25,7 @@ public class RationalFunctionTest
     context.registerVariable("v", RealConstants.half);
     var R = RationalFunctionSequence.express("v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z²)", context);
     var x = R.evaluate(3, 128, new RationalFunction());
-    out.format("x=%s\n", x);
+    assertEquals("(-6*x^2+15)/(x^3)",x.toString());
   }
 
   @SuppressWarnings("resource")

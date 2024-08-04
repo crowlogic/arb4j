@@ -181,7 +181,7 @@ public class Fraction implements AutoCloseable,Field<Fraction>,Named,Verifiable 
   public Fraction neg( Fraction result )
   {
     arblib.fmpq_neg(result, this);   
-    return this;
+    return result;
   }
     
   public Fraction set(int j)
