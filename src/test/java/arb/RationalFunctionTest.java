@@ -23,7 +23,7 @@ public class RationalFunctionTest
   {
     var context = new Context();
     context.registerVariable("v", RealConstants.half);
-    var R = RationalFunctionSequence.express("v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z^2)", context);
+    var R = RationalFunctionSequence.express("v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z²)", context);
     var x = R.evaluate(3, 128, new RationalFunction());
     out.format("x=%s\n", x);
   }

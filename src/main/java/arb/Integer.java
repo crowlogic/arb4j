@@ -342,7 +342,8 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   {
     res.getNumerator().set(this);
     res.getDenominator().set(dividend);
-    return res.reduce();
+    res.reduce();
+    return res;
   }
 
   /**
