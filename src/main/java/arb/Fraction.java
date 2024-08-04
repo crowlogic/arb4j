@@ -419,7 +419,7 @@ public class Fraction implements AutoCloseable,Field<Fraction>,Named,Verifiable 
   @Override
   public Fraction sub(Fraction element, int prec, Fraction result)
   {
-    return set(element,result);
+    return sub(element,result);
   }
 
   @Override

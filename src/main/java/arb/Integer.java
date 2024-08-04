@@ -106,7 +106,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public int            dim;
+  public int            dim         = 1;
 
   public Integer[]      elements;
 
@@ -494,6 +494,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
    */
   public Integer init(int n)
   {
+    this.dim = n;
     return initialize(Arena.ofConfined(), n);
   }
 
@@ -508,6 +509,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
    */
   public Integer initialize(Arena newArena, int n)
   {
+    elements      = null;
     arena         = newArena;
     nativeSegment = arena.allocate(Long.BYTES * n);
     swigCPtr      = nativeSegment.address();

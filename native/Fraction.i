@@ -391,7 +391,7 @@ import java.lang.foreign.MemorySegment;
   @Override
   public Fraction sub(Fraction element, int prec, Fraction result)
   {
-    return set(element,result);
+    return sub(element,result);
   }
 
   @Override

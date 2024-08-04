@@ -182,6 +182,18 @@ public class FractionTest
       assertEquals("1/4", c.toString());
     }
   }
+  
+  public void testSubtractionWithUnusedBitsSpecified()
+  {
+    try ( var a = new Fraction(); var b = new Fraction(); var c = new Fraction())
+    {
+      a.set("3/4");
+      b.set("1/2");
+      a.sub(b, 128, c);
+      assertEquals("1/4", c.toString());
+    }
+  }
+  
 
   public void testEqualityWithoutReduction()
   {
