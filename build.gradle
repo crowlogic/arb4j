@@ -41,7 +41,7 @@ dependencies {
 }
 
 group = 'org.arblib'
-version = '0.97.9'
+version = '0.98.1'
 description = 'arb4j'
 java.sourceCompatibility = JavaVersion.VERSION_22
 
