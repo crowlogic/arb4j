@@ -1,5 +1,7 @@
 package arb;
 
+import static java.lang.System.out;
+
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -22,7 +24,8 @@ public class RationalFunctionTest
     var context = new Context();
     context.registerVariable("v", RealConstants.half);
     var R = RationalFunctionSequence.express("v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z^2)", context);
-    var x = R.evaluate(3, 128);
+    var x = R.evaluate(3, 128, new RationalFunction());
+    out.format("x=%s\n", x);
   }
 
   @SuppressWarnings("resource")

@@ -1,4 +1,4 @@
-%typemap(javainterfaces) fmpq "AutoCloseable,Field<Fraction>,Named"
+%typemap(javainterfaces) fmpq "AutoCloseable,Field<Fraction>,Named,Verifiable"
 %typemap(javafinalize) fmpq ""
 %typemap(javaimports) fmpq %{
 import java.util.Objects;
@@ -9,6 +9,37 @@ import java.lang.foreign.MemorySegment;
 
 %typemap(javacode) fmpq %{
 
+  @Override
+  public boolean verify()
+  {
+    boolean denominatorConsistent = denominator == null || denominator.swigCPtr == getDenominatorAddress();
+    boolean numeratorConsistent   = numerator == null || numerator.swigCPtr == getNumeratorAddress();
+    return denominatorConsistent && numeratorConsistent;
+  }
+
+  public void assertPointerConsistency()
+  {
+    if (!verify())
+    {
+      throw new ArbException(String.format("swigCPtr=%s\nnumeratorAddress=%s\ndenominatorAddress=%s\nnumerator=%s\ndenominator=%s\n",
+                                           swigCPtr != 0 ? getNumeratorAddress() : 0,
+                                           swigCPtr != 0 ? getDenominatorAddress() : 0,
+                                           numerator == null ? "null" : numerator.swigCPtr,
+                                           denominator == null ? "null" : denominator.swigCPtr));
+    }
+  }
+  
+  public Fraction sub(Integer that, int prec )
+  {
+    return sub(that,prec,this);
+  }
+  
+  public Fraction sub(Integer that, int prec, Fraction res )
+  {
+    arblib.fmpq_sub_fmpz(res, this, that.swigCPtr );    
+    return res;
+  }
+  
   public RationalFunction mul(RationalFunction that, int bits, RationalFunction result)
   {
     return result.set(this).mul(that,bits,result);
@@ -64,7 +95,7 @@ import java.lang.foreign.MemorySegment;
     this.elements    = elements;
     this.dim         = elements.length;
     this.swigCMemOwn = false;
-    this.swigCPtr    = 0;
+    this.swigCPtr    = elements.length > 0 ? elements[0].swigCPtr : 0;
     return this;
   }
   

@@ -183,10 +183,6 @@ public class Real implements Named,Domain<Real>,Serializable,Comparable<Real>,It
 
   static { System.loadLibrary( "arblib" ); }
 
-  public Real sub(Fraction a, int bits, Real res)
-  {
-    return res.set(this).sub(a,bits,res);
-  }
 
   /**
    * 
@@ -201,10 +197,19 @@ public class Real implements Named,Domain<Real>,Serializable,Comparable<Real>,It
     return lnΓ(bits, value);
   }
 
+  public Fraction sub(Integer a, int bits, Fraction res)
+  {
+    return res.set(this).sub(a,bits,res);
+  }
+  
+  public Real sub(Fraction a, int bits, Real res)
+  {
+    return res.set(this).sub(a,bits,res);
+  }
+  
   public RationalFunction mul(RationalFunction that, int prec, RationalFunction res)
   {
-    assert false : String.format("%s * %s\n", this,that);
-    return res;
+    return res.set(this).mul(that,prec);
   }
     
   /**

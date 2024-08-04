@@ -13,7 +13,7 @@ import arb.exceptions.ArbException;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 
-public class Fraction implements AutoCloseable,Field<Fraction>,Named {
+public class Fraction implements AutoCloseable,Field<Fraction>,Named,Verifiable {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
@@ -37,6 +37,37 @@ public class Fraction implements AutoCloseable,Field<Fraction>,Named {
   }
 
 
+  @Override
+  public boolean verify()
+  {
+    boolean denominatorConsistent = denominator == null || denominator.swigCPtr == getDenominatorAddress();
+    boolean numeratorConsistent   = numerator == null || numerator.swigCPtr == getNumeratorAddress();
+    return denominatorConsistent && numeratorConsistent;
+  }
+
+  public void assertPointerConsistency()
+  {
+    if (!verify())
+    {
+      throw new ArbException(String.format("swigCPtr=%s\nnumeratorAddress=%s\ndenominatorAddress=%s\nnumerator=%s\ndenominator=%s\n",
+                                           swigCPtr != 0 ? getNumeratorAddress() : 0,
+                                           swigCPtr != 0 ? getDenominatorAddress() : 0,
+                                           numerator == null ? "null" : numerator.swigCPtr,
+                                           denominator == null ? "null" : denominator.swigCPtr));
+    }
+  }
+  
+  public Fraction sub(Integer that, int prec )
+  {
+    return sub(that,prec,this);
+  }
+  
+  public Fraction sub(Integer that, int prec, Fraction res )
+  {
+    arblib.fmpq_sub_fmpz(res, this, that.swigCPtr );    
+    return res;
+  }
+  
   public RationalFunction mul(RationalFunction that, int bits, RationalFunction result)
   {
     return result.set(this).mul(that,bits,result);
@@ -92,7 +123,7 @@ public class Fraction implements AutoCloseable,Field<Fraction>,Named {
     this.elements    = elements;
     this.dim         = elements.length;
     this.swigCMemOwn = false;
-    this.swigCPtr    = 0;
+    this.swigCPtr    = elements.length > 0 ? elements[0].swigCPtr : 0;
     return this;
   }
   
