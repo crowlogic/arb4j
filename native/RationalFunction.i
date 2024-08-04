@@ -223,6 +223,11 @@ import arb.expressions.Context;
     assertPointerConsistency();
     return result;
   }
+  
+  public RationalFunction neg( int bits, RationalFunction res )
+  {
+    return neg(res);
+  }  
 
   /**
    * @throws ArbException if {@link #getNumeratorAddress()} !=
