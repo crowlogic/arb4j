@@ -164,10 +164,6 @@ import java.lang.foreign.MemorySegment;
   
   public Fraction set(Real value)
   {
-    if ( !value.isExact() )
-    {
-      throw new ArbException(value + " must be exact to be representable as a fraction");      
-    }
     arblib.arf_get_fmpq(this, value.getMid());
     return this;
   }  
