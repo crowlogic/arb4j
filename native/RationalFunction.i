@@ -16,6 +16,17 @@ import arb.functions.real.RationalNullaryFunction;
 
 %typemap(javacode) fmpz_poly_q_struct %{
   
+  public Real evaluate(Real t, int order, int bits, Real res)
+  {
+    try ( var tmp = new Fraction(); var tmpres = new Fraction())
+    {
+      tmp.set(t);
+      evaluate(tmp, order, bits, tmpres);
+      res.set(tmpres);
+      return res;
+    }
+  }
+    
   @Override
   public boolean verify()
   {
