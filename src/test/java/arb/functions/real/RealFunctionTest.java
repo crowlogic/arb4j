@@ -10,10 +10,17 @@ import arb.Float;
 import arb.functions.complex.numbertheoretic.ZFunction;
 import junit.framework.TestCase;
 
-@SuppressWarnings({"resource","unused"})
-public class RealFunctionTest extends
+@SuppressWarnings(
+{ "resource", "unused" })
+public class RealFunctionTest
+                              extends
                               TestCase
 {
+
+  public static void testJ0Eigenfunctions()
+  {
+
+  }
 
   public static void main(String args[])
   {
@@ -114,7 +121,6 @@ public class RealFunctionTest extends
     roots.refine(sineFunction, 256, 40, true);
   }
 
-
   @Test
   public void testLocateRootsHardyZ()
   {
@@ -152,8 +158,8 @@ public class RealFunctionTest extends
     try ( Real jet = Real.newVector(3); FloatInterval interval = new FloatInterval(0.2,
                                                                                    0.3))
     {
-      Real region = interval.getReal(128, new Real());
-      Float C = sineFunction.getNewtonConvergenceFactor(region, jet, 128, new Float());
+      Real  region = interval.getReal(128, new Real());
+      Float C      = sineFunction.getNewtonConvergenceFactor(region, jet, 128, new Float());
       assertEquals(0.0773340631858446, C.doubleValue(), pow(10, -10));
     }
   }

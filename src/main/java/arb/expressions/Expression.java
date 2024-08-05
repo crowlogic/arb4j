@@ -141,27 +141,27 @@ import arb.viz.ArbShellExecutionController;
 public class Expression<D, C, F extends Function<? extends D, ? extends C>> implements Typesettable
 {
 
-  private static final String                           ASSERTION_ERROR_METHOD_DESCRIPTOR = Compiler.getMethodDescriptor(Void.class,
-                                                                                                                         Object.class);
+  private static final String    ASSERTION_ERROR_METHOD_DESCRIPTOR = Compiler.getMethodDescriptor(Void.class,
+                                                                                                  Object.class);
 
-  public static final String                            evaluationMethodDescriptor        = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
+  public static final String     evaluationMethodDescriptor        = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
 
-  public static boolean                                 ignoreTODO                        = true;
+  public static boolean          ignoreTODO                        = true;
 
-  public static final Class<?>[]                        implementedInterfaces             = new Class[]
+  public static final Class<?>[] implementedInterfaces             = new Class[]
   { Typesettable.class, AutoCloseable.class, Initializable.class };
 
-  public static final String                            IS_INITIALIZED                    = "isInitialized";
+  public static final String     IS_INITIALIZED                    = "isInitialized";
 
-  public static final String                            nameOfInitializerFunction         = "initialize";
+  public static final String     nameOfInitializerFunction         = "initialize";
 
-  public static boolean                                 saveClasses                       = Boolean.valueOf(System.getProperty("arb4j.compiler.saveClasses",
-                                                                                                                               "true"));
+  public static boolean          saveClasses                       = Boolean.valueOf(System.getProperty("arb4j.compiler.saveClasses",
+                                                                                                        "true"));
 
-  public static boolean                                 trace                             = Boolean.valueOf(System.getProperty("arb4j.compiler.trace",
-                                                                                                                               "false"));
+  public static boolean          trace                             = Boolean.valueOf(System.getProperty("arb4j.compiler.trace",
+                                                                                                        "false"));
 
-  public static final String                            VOID_METHOD_DESCRIPTOR            = Compiler.getMethodDescriptor(Void.class);
+  public static final String     VOID_METHOD_DESCRIPTOR            = Compiler.getMethodDescriptor(Void.class);
 
   static
   {
@@ -170,7 +170,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Expression<?, ?, ?>                            ascendentExpression;
 
-  public char                                           character                         = 0;
+  public char                                           character             = 0;
 
   public String                                         className;
 
@@ -182,7 +182,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Class<F>                                       compiledClass;
 
-  int                                                   constantCount                     = 1;
+  int                                                   constantCount         = 1;
 
   public Context                                        context;
 
@@ -204,41 +204,41 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public final String                                   genericFunctionClassInternalName;
 
-  public boolean inAbsoluteValue = false;
+  public boolean                                        inAbsoluteValue       = false;
 
   public Variable<D, C, F>                              independentVariable;
 
   public Variable<D, C, F>                              indeterminateVariable;
 
-  public LinkedList<Consumer<MethodVisitor>> initializers = new LinkedList<>();
+  public LinkedList<Consumer<MethodVisitor>>            initializers          = new LinkedList<>();
 
   public F                                              instance;
 
   public byte[]                                         instructionByteCodes;
 
-  public HashMap<String, IntermediateVariable<D, C, F>> intermediateVariables             = new HashMap<>();
+  public HashMap<String, IntermediateVariable<D, C, F>> intermediateVariables = new HashMap<>();
 
-  public HashMap<String, LiteralConstant<D, C, F>>      literalConstants                  = new HashMap<>();
+  public HashMap<String, LiteralConstant<D, C, F>>      literalConstants      = new HashMap<>();
 
   public FunctionMapping<D, C, F>                       mapping;
 
-  public int                                            position                          = -1;
+  public int                                            position              = -1;
 
   public char                                           previousCharacter;
 
-  public boolean                                        recursive                         = false;
+  public boolean                                        recursive             = false;
 
-  public HashMap<String, FunctionMapping<?, ?, ?>>      referencedFunctions               = new HashMap<>();
+  public HashMap<String, FunctionMapping<?, ?, ?>>      referencedFunctions   = new HashMap<>();
 
-  public HashMap<String, Variable<D, C, F>>             referencedVariables               = new HashMap<>();
+  public HashMap<String, Variable<D, C, F>>             referencedVariables   = new HashMap<>();
 
   public Node<D, C, F>                                  rootNode;
 
   public Variables                                      variables;
 
-  public boolean                                        variablesDeclared                 = false;
+  public boolean                                        variablesDeclared     = false;
 
-  boolean                                               verboseTrace                      = false;
+  boolean                                               verboseTrace          = false;
 
   public Expression(String className,
                     Class<? extends D> domainClass,
@@ -1782,6 +1782,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     else if ("J".equals(reference.name))
     {
       return new BesselFunctionOfTheFirstKind<>(this);
+    }
+    else if ("j".equals(reference.name))
+    {
+      return new SphericalBesselFunctionOfTheFirstKind<>(this);
     }
 
     return new FunctionCall<>(reference.name,
