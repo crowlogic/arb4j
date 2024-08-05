@@ -166,7 +166,7 @@ public class Compiler
                                                     functionClass,
                                                     functionName,
                                                     containingExpression);
-    expression.generate();
+   // expression.generate();
     // expression.defineClass();
 
     return expression;
