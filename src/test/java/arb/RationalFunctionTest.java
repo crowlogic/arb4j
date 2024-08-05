@@ -19,6 +19,16 @@ public class RationalFunctionTest
                                   TestCase
 {
 
+  public static void testEvaluateWithFraction()
+  {
+    try ( RationalFunction f = new RationalFunction())
+    {
+      f.set("(-6*x^2+15)/(x^3)");
+      assertEquals( "(-6*x^2+15)/(x^3)", f.toString() );
+    }
+    
+  }
+  
   public void testLommelPolynomials()
   {
     var context = new Context();

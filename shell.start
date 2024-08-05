@@ -1,3 +1,4 @@
+import arb.Fraction;
 import arb.expressions.Context;
 import arb.RationalFunction;
 import arb.functions.sequences.RationalFunctionSequence;

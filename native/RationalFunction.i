@@ -4,6 +4,7 @@
 import arb.functions.Function;
 import arb.exceptions.ArbException;
 import arb.expressions.Context;
+import arb.functions.real.RationalNullaryFunction;
 %}
 
 %typemap(javaconstruct) fmpz_poly_q_struct %{
@@ -14,21 +15,6 @@ import arb.expressions.Context;
 %}
 
 %typemap(javacode) fmpz_poly_q_struct %{
-
-  public static RationalFunction express(String functionName, String expression, Context context)
-  {
-    return Function.instantiate(expression,
-                                context,
-                                Object.class,
-                                RationalFunction.class,
-                                RationalFunction.class,
-                                functionName);
-  }
-
-  public static RationalFunction express(String expression, Context context)
-  {
-    return express(null, expression, context);
-  }
   
   @Override
   public boolean verify()
@@ -223,6 +209,11 @@ import arb.expressions.Context;
     assertPointerConsistency();
     return result;
   }
+  
+  public RationalFunction set(String string)
+  {
+    return RationalNullaryFunction.express(string).evaluate( 0, this);
+  }  
   
   public RationalFunction neg( int bits, RationalFunction res )
   {
