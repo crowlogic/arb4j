@@ -42,7 +42,7 @@ public class SphericalBesselFunctionOfTheFirstKind<D, R, F extends Function<? ex
   @Override
   public String toString()
   {
-    return String.format("J(%s,%s)", order, arg);
+    return String.format("j(%s,%s)", order, arg);
   }
 
   Node<D, R, F>  order;
@@ -72,7 +72,7 @@ public class SphericalBesselFunctionOfTheFirstKind<D, R, F extends Function<? ex
   {
     if (Expression.trace)
     {
-      err.printf("j.generate(ν=%s, resultType=%s\n)\n", order, resultType);
+      err.printf("J.generate(ν=%s, resultType=%s\n)\n", order, resultType);
     }
     var scalarType = scalarType(resultType);
 
@@ -95,7 +95,7 @@ public class SphericalBesselFunctionOfTheFirstKind<D, R, F extends Function<? ex
   public void generateQuasiPolynomial(MethodVisitor mv, Class<?> resultType)
   {
 
-    assert false : "TODO: generate spherical Bessel function of the first kind of order=" + order;
+    assert false : "TODO: generate spherical Bessel function of the first kind of order=" + order + " for " + this.expression.expression;
 
     expression.allocateIntermediateVariable(mv, resultType);
   }
@@ -105,7 +105,14 @@ public class SphericalBesselFunctionOfTheFirstKind<D, R, F extends Function<? ex
     arg.generate(resultType, mv);
     loadBitsParameterOntoSTack(mv);
 
-    assert false : "TODO: generate spherical Bessel function of the first kind of order=" + order;
+    invokeStaticMethod(mv,
+                       arblib.class,
+                       "arb_hypgeom_bessel_j",
+                       Void.class,
+                       Real.class,
+                       Real.class,
+                       Real.class,
+                       int.class);
 
     generatedType = scalarType;
   }
@@ -113,6 +120,6 @@ public class SphericalBesselFunctionOfTheFirstKind<D, R, F extends Function<? ex
   @Override
   public String typeset()
   {
-    return format("J_{%s}(%s)", order.typeset(), arg == null ? "" : arg.typeset());
+    return format("j_{%s}(%s)", order.typeset(), arg == null ? "" : arg.typeset());
   }
 }

@@ -91,6 +91,7 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
     assignFunctionName();
     generatedType = resultTypeFor(this.functionName);
     registerFunctionWhenItsContextual();
+
   }
 
   @Override

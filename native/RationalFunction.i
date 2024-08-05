@@ -221,6 +221,16 @@ import arb.functions.real.RationalNullaryFunction;
     return result;
   }
   
+  public static Expression<Fraction, Fraction, RationalFunction> compile(String expression)
+  {
+    return compile(expression, null);
+  }
+
+  public static Expression<Fraction, Fraction, RationalFunction> compile(String expression, Context context)
+  {
+    return Compiler.compile(expression, context, Fraction.class, Fraction.class, RationalFunction.class, null);
+  }
+  
   public RationalFunction add(Integer element, int prec, RationalFunction result)
   {
     try ( RationalFunction e = new RationalFunction())

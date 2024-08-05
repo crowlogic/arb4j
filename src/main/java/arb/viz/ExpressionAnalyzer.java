@@ -1,9 +1,10 @@
 package arb.viz;
 
+import arb.RationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
-import arb.functions.real.RationalNullaryFunction;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.scene.Scene;
@@ -17,6 +18,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import arb.Integer;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -32,8 +34,9 @@ public class ExpressionAnalyzer
   {
 
     // Real v = new Real().set(RealConstants.half).setName("v");
-    // Context context = new Context(v);
-    return RationalNullaryFunction.parse("(1/2)-(x/2)");
+    Integer n       = Integer.named("n").set(3);
+    Context context = new Context(n);
+    return RationalFunction.compile("Ψₖ:√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)", context);
   }
 
   public void expandTreeView(TreeItem<?> item)

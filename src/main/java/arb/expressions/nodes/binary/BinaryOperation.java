@@ -382,6 +382,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     mapScalarType(Real.class, RealPolynomial.class);
     mapScalarType(Complex.class, ComplexPolynomial.class);
 
+    mapTypes(Integer.class, Fraction.class, Fraction.class);
     mapTypes(Integer.class, RationalFunction.class, RationalFunction.class);
     mapTypes(Real.class, Complex.class, Complex.class);
     mapTypes(Real.class, ComplexPolynomial.class, ComplexPolynomial.class);
