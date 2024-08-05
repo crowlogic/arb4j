@@ -210,6 +210,15 @@ import arb.functions.real.RationalNullaryFunction;
     return result;
   }
   
+  public RationalFunction add(Integer element, int prec, RationalFunction result)
+  {
+    try ( RationalFunction e = new RationalFunction())
+    {
+      e.set(element);
+      return result.set(this).add(e, prec);
+    }
+  }
+    
   public RationalFunction set(String string)
   {
     return RationalNullaryFunction.express(string).evaluate( 0, this);

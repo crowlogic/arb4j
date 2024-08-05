@@ -1,7 +1,5 @@
 package arb;
 
-import static java.lang.System.out;
-
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -24,18 +22,22 @@ public class RationalFunctionTest
     try ( RationalFunction f = new RationalFunction())
     {
       f.set("(-6*x^2+15)/(x^3)");
-      assertEquals( "(-6*x^2+15)/(x^3)", f.toString() );
+      assertEquals("(-6*x^2+15)/(x^3)", f.toString());
+      var x = new Fraction();
+      x.set("34/12");
+      Fraction y = f.evaluate(x, 128, new Fraction());
+      assertEquals(x.set("-7164/4913"), y);
     }
-    
+
   }
-  
+
   public void testLommelPolynomials()
   {
     var context = new Context();
     context.registerVariable("v", RealConstants.half);
     var R = RationalFunctionSequence.express("v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z²)", context);
     var x = R.evaluate(3, 128, new RationalFunction());
-    assertEquals("(-6*x^2+15)/(x^3)",x.toString());
+    assertEquals("(-6*x^2+15)/(x^3)", x.toString());
   }
 
   @SuppressWarnings("resource")
