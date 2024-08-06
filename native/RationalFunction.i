@@ -20,12 +20,9 @@ import arb.functions.real.RationalNullaryFunction;
   
   public Real evaluate(Real t, int order, int bits, Real res)
   {
-    try ( var tmp = new Fraction(); var tmpres = new Fraction())
+    try ( var tmp = new Fraction())
     {
-      tmp.set(t);
-      evaluate(tmp, order, bits, tmpres);
-      res.set(tmpres);
-      return res;
+      return res.set(evaluate(tmp.set(t), order, bits, tmp));
     }
   }
     
