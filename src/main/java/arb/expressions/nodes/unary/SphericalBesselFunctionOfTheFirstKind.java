@@ -18,11 +18,24 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
-import arb.functions.real.RealBesselFunctionOfTheFirstKind;
 
 /**
- * Implements the {@link RealBesselFunctionOfTheFirstKind} by generating calls
- * directly to {@link arblib#arb_hypgeom_bessel_j(Real, Real, Real, int)}
+ * To express the spherical Bessel functions in terms of Lommel polynomials,
+ * follow these steps:
+ * 
+ * <pre>
+ * Let jₙ (x) is the spherical Bessel function of the first kind,
+ * 
+ * jₙ (z) = √(π/(2z)) Jₙ₊½ (x) = 1/√z (sin (z) Rₙ,½ (z) - cos (z) Rₙ₋₁,³/₂ (z))
+ * 
+ * where Rₙ,ᵥ (z) are the (misnamed) Lommel polynomials
+ * 
+ * Rₙ,ᵥ (z) = Γ(n + v)/Γ(v) (2/z)ⁿ ₂F₃ ([-n/2, 1/2 - n/2] ; [v, -n, 1 - v - n] ; -z²)
+ * 
+ * where ₂F₃ is a generalized hypergeometric function. The "Lommel polynomials"
+ * are actually rational functions of z, not polynomial; but rather "polynomial
+ * in 1/z".
+ * </pre>
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -95,7 +108,8 @@ public class SphericalBesselFunctionOfTheFirstKind<D, R, F extends Function<? ex
   public void generateQuasiPolynomial(MethodVisitor mv, Class<?> resultType)
   {
 
-    assert false : "TODO: generate spherical Bessel function of the first kind of order=" + order + " for " + this.expression.expression;
+    assert false : "TODO: generate spherical Bessel function of the first kind of order=" + order + " for "
+                  + this.expression.expression;
 
     expression.allocateIntermediateVariable(mv, resultType);
   }
