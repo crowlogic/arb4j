@@ -17,7 +17,17 @@ import arb.functions.real.RationalNullaryFunction;
 %}
 
 %typemap(javacode) fmpz_poly_q_struct %{
-  
+
+  public static Expression<Fraction, Fraction, RationalFunction> compile(String expression)
+  {
+    return compile(expression, null);
+  }
+
+  public static Expression<Fraction, Fraction, RationalFunction> compile(String expression, Context context)
+  {
+    return Compiler.compile(expression, context, Fraction.class, Fraction.class, RationalFunction.class, null);
+  }
+    
   public Real evaluate(Real t, int order, int bits, Real res)
   {
     try ( var tmp = new Fraction())

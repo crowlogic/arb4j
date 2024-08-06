@@ -50,10 +50,6 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   @Override
   public boolean verify()
   {
-    if (!checkPointers)
-    {
-      return true;
-    }
     boolean denominatorConsistent = denominator == null || denominator.swigCPtr == getDenominatorAddress();
     boolean numeratorConsistent   = numerator == null || numerator.swigCPtr == getNumeratorAddress();
     return denominatorConsistent && numeratorConsistent;
@@ -105,14 +101,12 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   public RationalFunction init()
   {
     arblib.fmpz_poly_q_init(this);
-    refreshPointers();
     return this;    
   }
   
   public RationalFunction set(int i)
   {
     arblib.fmpz_poly_q_set_si(this, i);
-    refreshPointers();    
     return this;
   }
   
@@ -197,9 +191,7 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   @Override
   public RationalFunction add(RationalFunction element, int prec, RationalFunction result)
   {
-    assertPointerConsistency();  
     arblib.fmpz_poly_q_add(result, this, element);
-    refreshPointers();  
     return result;
   }
 
@@ -220,9 +212,7 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   @Override
   public RationalFunction div(RationalFunction operand, int prec, RationalFunction result)
   {
-    assertPointerConsistency();
     arblib.fmpz_poly_q_div(result, this, operand);
-    refreshPointers();      
     return result;
   }
 
@@ -244,19 +234,28 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   @Override
   public RationalFunction mul(int x, int prec, RationalFunction result)
   {
-    assertPointerConsistency();  
     arblib.fmpz_poly_q_scalar_mul_si(result, this, x);
-    refreshPointers();      
     return result;
   }
 
-  @Override
+@Override
   public RationalFunction mul(RationalFunction x, int prec, RationalFunction result)
   {
     assertPointerConsistency();
     arblib.fmpz_poly_q_mul(result, this, x);
     refreshPointers();
+    assertPointerConsistency();
     return result;
+  }
+  
+  public static Expression<Fraction, Fraction, RationalFunction> compile(String expression)
+  {
+    return compile(expression, null);
+  }
+
+  public static Expression<Fraction, Fraction, RationalFunction> compile(String expression, Context context)
+  {
+    return Compiler.compile(expression, context, Fraction.class, Fraction.class, RationalFunction.class, null);
   }
   
   public RationalFunction add(Integer element, int prec, RationalFunction result)
@@ -325,21 +324,18 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   public RationalFunction set(RationalFunction value)
   {
     arblib.fmpz_poly_q_set(this, value);
-    refreshPointers();
     return this;
   }
 
   @Override
   public RationalFunction div(int j, int prec, RationalFunction result)
   {
-    assertPointerConsistency();
     arblib.fmpz_poly_q_scalar_div_si(result, this, j);
     return result;
   }
 
   public RationalFunction div(Integer j, int prec, RationalFunction result)
   {
-    assertPointerConsistency();
     arblib.fmpz_poly_q_scalar_div_fmpz(result, this, j.swigCPtr);
     return result;  
   }
@@ -347,14 +343,12 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   @Override
   public RationalFunction sub(RationalFunction element, int prec, RationalFunction result)
   {
-    assertPointerConsistency();
     arblib.fmpz_poly_q_sub(result, this, element);
     return result;
   }
 
   public RationalFunction set(Real real)
   {
-    assertPointerConsistency();  
     try ( Fraction tmp = new Fraction() )
     {
       tmp.set(real);
