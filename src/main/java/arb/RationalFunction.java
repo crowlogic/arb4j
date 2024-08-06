@@ -6,12 +6,12 @@
  * the SWIG interface file instead.
  * ----------------------------------------------------------------------------- */
 
-package arb;
+package arb; 
 
 import arb.exceptions.ArbException;
 import arb.expressions.Compiler;
-import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.expressions.Context;
 import arb.functions.Function;
 import arb.functions.real.RationalNullaryFunction;
 
