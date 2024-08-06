@@ -10,38 +10,27 @@ package arb;
 
 import arb.exceptions.ArbException;
 import arb.expressions.Compiler;
-import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.expressions.Context;
 import arb.functions.Function;
 import arb.functions.real.RationalNullaryFunction;
 
-public class RationalFunction implements
-                              Named,
-                              AutoCloseable,
-                              Field<RationalFunction>,
-                              Function<Fraction, Fraction>,
-                              Verifiable
-{
-  protected long    swigCPtr;
+public class RationalFunction implements Named,AutoCloseable,Field<RationalFunction>,Function<Fraction,Fraction>,Verifiable {
+  protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  public RationalFunction(long cPtr, boolean cMemoryOwn)
-  {
+  public RationalFunction(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(RationalFunction obj)
-  {
+  public static long getCPtr(RationalFunction obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arblibJNI.delete_RationalFunction(swigCPtr);
       }
@@ -49,6 +38,7 @@ public class RationalFunction implements
     }
   }
 
+  
   public Real evaluate(Real t, int order, int bits, Real res)
   {
     try ( var tmp = new Fraction())
@@ -56,35 +46,46 @@ public class RationalFunction implements
       return res.set(evaluate(tmp.set(t), order, bits, tmp));
     }
   }
-
+    
   @Override
   public boolean verify()
   {
+    if (!checkPointers)
+    {
+      return true;
+    }
     boolean denominatorConsistent = denominator == null || denominator.swigCPtr == getDenominatorAddress();
     boolean numeratorConsistent   = numerator == null || numerator.swigCPtr == getNumeratorAddress();
     return denominatorConsistent && numeratorConsistent;
   }
-
+  
+  public static boolean checkPointers = true;
+  
   @SuppressWarnings("resource")
   public RationalFunction pow(Integer power, int unused, RationalFunction res)
   {
+    if ( checkPointers )
+    {
+      assertPointerConsistency();
+    }
     assert power != null && power.swigCPtr != 0 : "null pointer or reference";
     RationalFunction thiz = this;
-    if (power.getSignedValue() < 0)
+    if ( power.getSignedValue() < 0 )
     {
       arblib.fmpz_poly_q_inv(thiz = res, this);
     }
-    arblib.fmpz_poly_q_pow(res, thiz, power.getUnsignedValue());
+    arblib.fmpz_poly_q_pow(res, thiz, power.getUnsignedValue() );
+    res.refreshPointers();
     return res;
   }
-
+  
   @Override
   public Fraction evaluate(Fraction t, int order, int bits, Fraction res)
   {
     arblib.fmpz_poly_q_evaluate_fmpq(res, this, t);
     return res;
   }
-
+  
   static
   {
     System.loadLibrary("arblib");
@@ -93,28 +94,30 @@ public class RationalFunction implements
   @Override
   public boolean equals(Object obj)
   {
-    if (!(obj instanceof RationalFunction))
+    if ( !(obj instanceof RationalFunction))
     {
       return false;
     }
-    RationalFunction that = (RationalFunction) obj;
+    RationalFunction that = (RationalFunction)obj;
     return arblib.fmpz_poly_q_equal(this, that) != 0;
   }
-
+  
   public RationalFunction init()
   {
     arblib.fmpz_poly_q_init(this);
-    return this;
+    refreshPointers();
+    return this;    
   }
-
+  
   public RationalFunction set(int i)
   {
     arblib.fmpz_poly_q_set_si(this, i);
+    refreshPointers();    
     return this;
   }
-
+  
   public IntegerPolynomial numerator;
-
+ 
   public IntegerPolynomial denominator;
 
   public IntegerPolynomial getDenominator()
@@ -144,13 +147,13 @@ public class RationalFunction implements
     }
     return numerator;
   }
-
+    
   @Override
-  public void close()
+  public void close() 
   {
     delete();
-  }
-
+  }  
+  
   @SuppressWarnings("unchecked")
   @Override
   public <N extends Named> N setName(String name)
@@ -164,17 +167,17 @@ public class RationalFunction implements
   {
     return zero();
   }
-
+    
   @Override
   public String toString()
   {
     return arblib.fmpz_poly_q_get_str_pretty(this, "x");
   }
-
+  
   public RationalFunction identity()
   {
     getNumerator().set(0);
-    getNumerator().set(1, 1);
+    getNumerator().set(1,1);
     getDenominator().set(1);
     return this;
   }
@@ -182,7 +185,7 @@ public class RationalFunction implements
   @Override
   public RationalFunction multiplicativeIdentity()
   {
-    return one();
+   return one();
   }
 
   public RationalFunction one()
@@ -190,16 +193,18 @@ public class RationalFunction implements
     arblib.fmpz_poly_q_one(this);
     return this;
   }
-
+  
   @Override
   public RationalFunction add(RationalFunction element, int prec, RationalFunction result)
   {
+    assertPointerConsistency();  
     arblib.fmpz_poly_q_add(result, this, element);
+    refreshPointers();  
     return result;
   }
 
   public int bits = 128;
-
+  
   @Override
   public int bits()
   {
@@ -215,7 +220,9 @@ public class RationalFunction implements
   @Override
   public RationalFunction div(RationalFunction operand, int prec, RationalFunction result)
   {
+    assertPointerConsistency();
     arblib.fmpz_poly_q_div(result, this, operand);
+    refreshPointers();      
     return result;
   }
 
@@ -233,11 +240,13 @@ public class RationalFunction implements
   }
 
   public String name;
-
+  
   @Override
   public RationalFunction mul(int x, int prec, RationalFunction result)
   {
+    assertPointerConsistency();  
     arblib.fmpz_poly_q_scalar_mul_si(result, this, x);
+    refreshPointers();      
     return result;
   }
 
@@ -247,20 +256,9 @@ public class RationalFunction implements
     assertPointerConsistency();
     arblib.fmpz_poly_q_mul(result, this, x);
     refreshPointers();
-    assertPointerConsistency();
     return result;
   }
-
-  public static Expression<Fraction, Fraction, RationalFunction> compile(String expression)
-  {
-    return compile(expression, null);
-  }
-
-  public static Expression<Fraction, Fraction, RationalFunction> compile(String expression, Context context)
-  {
-    return Compiler.compile(expression, context, Fraction.class, Fraction.class, RationalFunction.class, null);
-  }
-
+  
   public RationalFunction add(Integer element, int prec, RationalFunction result)
   {
     try ( RationalFunction e = new RationalFunction())
@@ -269,16 +267,16 @@ public class RationalFunction implements
       return result.set(this).add(e, prec);
     }
   }
-
+    
   public RationalFunction set(String string)
   {
-    return RationalNullaryFunction.express(string).evaluate(0, this);
-  }
-
-  public RationalFunction neg(int bits, RationalFunction res)
+    return RationalNullaryFunction.express(string).evaluate( 0, this);
+  }  
+  
+  public RationalFunction neg( int bits, RationalFunction res )
   {
     return neg(res);
-  }
+  }  
 
   /**
    * @throws ArbException if {@link #getNumeratorAddress()} !=
@@ -304,7 +302,7 @@ public class RationalFunction implements
    * performaning any operation that could potentially result in at least one of
    * the numerator and denominator pointers changing
    */
-  public void refreshPointers()
+  public RationalFunction refreshPointers()
   {
     if (denominator != null)
     {
@@ -314,50 +312,56 @@ public class RationalFunction implements
     {
       numerator.swigCPtr = getNumeratorAddress();
     }
+    return this;
   }
-
+  
   @Override
   public RationalFunction newFieldElement()
   {
-    return new RationalFunction();
+     return new RationalFunction();
   }
 
   @Override
   public RationalFunction set(RationalFunction value)
   {
     arblib.fmpz_poly_q_set(this, value);
+    refreshPointers();
     return this;
   }
 
   @Override
   public RationalFunction div(int j, int prec, RationalFunction result)
   {
+    assertPointerConsistency();
     arblib.fmpz_poly_q_scalar_div_si(result, this, j);
     return result;
   }
 
   public RationalFunction div(Integer j, int prec, RationalFunction result)
   {
+    assertPointerConsistency();
     arblib.fmpz_poly_q_scalar_div_fmpz(result, this, j.swigCPtr);
-    return result;
+    return result;  
   }
-
+  
   @Override
   public RationalFunction sub(RationalFunction element, int prec, RationalFunction result)
   {
+    assertPointerConsistency();
     arblib.fmpz_poly_q_sub(result, this, element);
     return result;
   }
 
   public RationalFunction set(Real real)
   {
-    try ( Fraction tmp = new Fraction())
+    assertPointerConsistency();  
+    try ( Fraction tmp = new Fraction() )
     {
       tmp.set(real);
       return set(tmp);
     }
-  }
-
+  }  
+  
   @Override
   public RationalFunction zero()
   {
@@ -367,18 +371,18 @@ public class RationalFunction implements
 
   public RationalFunction add(RationalFunction x, int prec)
   {
-    return add(x, prec, this);
+    return add(x,prec,this);
   }
-
+  
   public RationalFunction mul(RationalFunction x, int prec)
   {
-    return mul(x, prec, this);
+    return mul(x,prec,this);
   }
-
+  
   public RationalFunction set(Integer integer)
   {
-    set(integer.getSignedValue());
-    return this;
+   set(integer.getSignedValue());
+   return this;
   }
 
   public RationalFunction neg(RationalFunction res)
@@ -386,30 +390,30 @@ public class RationalFunction implements
     arblib.fmpz_poly_q_neg(res, this);
     return res;
   }
-
+  
   public RationalFunction neg()
   {
     return neg(this);
   }
-
+  
   public RationalFunction reduce()
   {
     arblib.fmpz_poly_q_canonicalise(this);
     return this;
   }
-
+  
   public boolean isReduced()
-  {
-    return arblib.fmpz_poly_q_is_canonical(this) != 0;
+  {   
+    return arblib.fmpz_poly_q_is_canonical(this) != 0;                
   }
-
+  
   public RationalFunction set(Fraction fraction)
   {
     getNumerator().set(fraction.getNumerator());
     getDenominator().set(fraction.getDenominator());
     return this;
   }
-
+  
   public RationalFunction add(Fraction element, int prec, RationalFunction result)
   {
     try ( RationalFunction e = new RationalFunction())
@@ -418,32 +422,29 @@ public class RationalFunction implements
       return result.set(this).add(e, prec);
     }
   }
+    
 
-  public void setNumeratorAddress(long value)
-  {
+  public void setNumeratorAddress(long value) {
     arblibJNI.RationalFunction_numeratorAddress_set(swigCPtr, this, value);
   }
 
-  public long getNumeratorAddress()
-  {
+  public long getNumeratorAddress() {
     return arblibJNI.RationalFunction_numeratorAddress_get(swigCPtr, this);
   }
 
-  public void setDenominatorAddress(long value)
-  {
+  public void setDenominatorAddress(long value) {
     arblibJNI.RationalFunction_denominatorAddress_set(swigCPtr, this, value);
   }
 
-  public long getDenominatorAddress()
-  {
+  public long getDenominatorAddress() {
     return arblibJNI.RationalFunction_denominatorAddress_get(swigCPtr, this);
   }
 
-  public RationalFunction()
+  public RationalFunction() 
   {
-    this(arblibJNI.new_RationalFunction(),
-         true);
+    this(arblibJNI.new_RationalFunction(), true);
     init();
   }
+
 
 }
