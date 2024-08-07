@@ -19,10 +19,13 @@ import arb.functions.real.RealFunction;
 
 %typemap(javacode) fmpz_poly_q_struct %{
 
+  RealRationalFunction realVersion;
+
   public RealFunction asRealFunction()
   {
-    return new RealRationalFunction();
+    return (realVersion == null ? (realVersion = new RealRationalFunction()) : realVersion);
   }
+
   
   public final class RealRationalFunction implements RealFunction, AutoCloseable
   {

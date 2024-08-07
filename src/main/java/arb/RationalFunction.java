@@ -40,10 +40,13 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   }
 
 
+  RealRationalFunction realVersion;
+
   public RealFunction asRealFunction()
   {
-    return new RealRationalFunction();
+    return (realVersion == null ? (realVersion = new RealRationalFunction()) : realVersion);
   }
+
   
   public final class RealRationalFunction implements RealFunction, AutoCloseable
   {
