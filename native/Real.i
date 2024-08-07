@@ -156,6 +156,10 @@ import arb.utensils.Utensils;
 
   static { System.loadLibrary( "arblib" ); }
 
+  public Fraction sub(Fraction subtrahend, int bits, Fraction res)
+  {
+    return res.set(this).sub(subtrahend,bits,res);
+  }
 
   /**
    * 

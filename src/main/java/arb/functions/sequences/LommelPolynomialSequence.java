@@ -13,7 +13,7 @@ import arb.expressions.Expression;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class LommelPolynomials implements RationalFunctionSequence, AutoCloseable
+public class LommelPolynomialSequence implements RationalFunctionSequence, AutoCloseable
 {
 
   @Override
@@ -37,7 +37,7 @@ public class LommelPolynomials implements RationalFunctionSequence, AutoCloseabl
 
   public Real                                                            v       = new Real().setName("v");
 
-  public LommelPolynomials(Real order)
+  public LommelPolynomialSequence(Real order)
   {
     context    = new Context(v);
     expression = RationalFunctionSequence.parse("n⇒v₍ₙ₎*(z/2)^(-n)*pFq([½-n/2,-n/2],[v,-n,1-v-n],-z²)", context);

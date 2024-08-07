@@ -17,7 +17,7 @@ public class LommelPolynomialsTest
 {
   public void testSequence()
   {
-    try ( LommelPolynomials l = new LommelPolynomials(RealConstants.half))
+    try ( LommelPolynomialSequence l = new LommelPolynomialSequence(RealConstants.half))
     {
       RationalFunction func = l.evaluate(3, 128);
       Real             l3x  = func.evaluate(Real.valueOf(2.3), 0, 128, new Real());

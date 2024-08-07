@@ -183,6 +183,10 @@ public class Real implements Named,Domain<Real>,Serializable,Comparable<Real>,It
 
   static { System.loadLibrary( "arblib" ); }
 
+  public Fraction sub(Fraction subtrahend, int bits, Fraction res)
+  {
+    return res.set(this).sub(subtrahend,bits,res);
+  }
 
   /**
    * 

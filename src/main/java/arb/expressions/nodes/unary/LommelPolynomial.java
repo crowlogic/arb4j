@@ -11,6 +11,7 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
+import arb.functions.sequences.LommelPolynomialSequence;
 
 /**
  *
@@ -78,8 +79,12 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
   @Override
   public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
   {
-    assert false : "TODO: Auto-generated method stub: "
-                  + String.format("arg=%s\norder=%s\nindex=%s\n", this.arg, this.order, this.index);
+    assert false : "TODO: generated code that generates a variable of type "
+                  + String.format("%s where arg=%s\norder=%s\nindex=%s\n",
+                                  LommelPolynomialSequence.class,
+                                  this.arg,
+                                  this.order,
+                                  this.index);
     return null;
   }
 
