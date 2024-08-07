@@ -290,6 +290,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     if (isResult)
     {
       checkClassCast(loadResultParameter(mv), resultType);
+      intermediateVariableFieldName = "result";
     }
     else if ((reusableNode = getAReusableNode()) != null)
     {
@@ -297,10 +298,12 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
       if (rightReusable)
       {
         prepareStackForReusingRightSide(mv);
+        intermediateVariableFieldName = "right";
       }
       else
       {
         prepareStackForReusingLeftSide(mv);
+        intermediateVariableFieldName = "left";
       }
     }
     else

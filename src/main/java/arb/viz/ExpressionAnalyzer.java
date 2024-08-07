@@ -9,9 +9,8 @@ import arb.Real;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
-import arb.functions.Function;
+import arb.functions.NullaryFunction;
 import arb.functions.real.RealFunction;
-import arb.functions.real.Ψₖ;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.scene.Scene;
@@ -29,7 +28,7 @@ public class ExpressionAnalyzer
 
   Context             context;
   Expression<?, ?, ?> expr;
-  Ψₖ                  instance;
+  NullaryFunction<?>  instance;
   Object              result;
   Real                x;
   Integer             n;
@@ -69,7 +68,7 @@ public class ExpressionAnalyzer
 //    instance = new     Ψₖ(); // expr.instantiate();
 //    instance.n = n;
 //    instance.eva
-    
+
     Node<?, ?, ?>                rootNode      = expr.rootNode;
     TreeItem<Node<?, ?, ?>>      rootItem      = new NodeTreeItem(rootNode);
 

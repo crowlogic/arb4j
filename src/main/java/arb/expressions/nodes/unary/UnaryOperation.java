@@ -65,6 +65,7 @@ public abstract class UnaryOperation<D, R, F extends Function<? extends D, ? ext
     if (isResult)
     {
       checkClassCast(loadResultParameter(methodVisitor), resultType);
+      intermediateVariableFieldName = "result";
     }
     else
     {

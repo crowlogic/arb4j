@@ -108,8 +108,8 @@ public class SphericalBesselFunctionOfTheFirstKind<D, R, F extends Function<? ex
   public void generateQuasiPolynomial(MethodVisitor mv, Class<?> resultType)
   {
 
-    assert false : "TODO: generate spherical Bessel function of the first kind of order=" + order + " for "
-                  + this.expression.expression;
+    assert false : "TODO: generate spherical Bessel function *using Lommel Polynomials* of the first kind of order="
+                  + order + " for " + this.expression.expression;
 
     expression.allocateIntermediateVariable(mv, resultType);
   }
