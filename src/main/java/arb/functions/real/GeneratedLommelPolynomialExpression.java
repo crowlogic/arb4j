@@ -86,50 +86,6 @@ public class arb.functions.real.GeneratedLommelPolynomialExpression implements a
        0: ldc           #50                 // class arb/Real
        2: areturn
 
-  public static void main(java.lang.String[]);
-    Code:
-       0: new           #1                  // class arb/functions/real/GeneratedLommelPolynomialExpression
-       3: dup
-       4: invokespecial #80                 // Method "<init>":()V
-       7: astore_1
-       8: aload_1
-       9: ldc2_w        #81                 // double 2.3d
-      12: invokevirtual #83                 // Method eval:(D)D
-      15: dstore_2
-      16: getstatic     #87                 // Field java/lang/System.out:Ljava/io/PrintStream;
-      19: ldc           #93                 // String R[2.3]=%s\n
-      21: iconst_1
-      22: anewarray     #3                  // class java/lang/Object
-      25: dup
-      26: iconst_0
-      27: dload_2
-      28: invokestatic  #95                 // Method java/lang/Double.valueOf:(D)Ljava/lang/Double;
-      31: aastore
-      32: invokevirtual #101                // Method java/io/PrintStream.format:(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-      35: pop
-      36: ldc2_w        #107                // double -1.3758527163639351d
-      39: invokestatic  #95                 // Method java/lang/Double.valueOf:(D)Ljava/lang/Double;
-      42: dload_2
-      43: invokestatic  #95                 // Method java/lang/Double.valueOf:(D)Ljava/lang/Double;
-      46: invokestatic  #109                // Method junit/framework/TestCase.assertEquals:(Ljava/lang/Object;Ljava/lang/Object;)V
-      49: return
-
-  public arb.Real evaluate(arb.Real, int, int, arb.Real);
-    Code:
-       0: aload_0
-       1: getfield      #122                // Field isInitialized:Z
-       4: ifne          11
-       7: aload_0
-       8: invokevirtual #124                // Method initialize:()V
-      11: aload_0
-      12: getfield      #127                // Field element:Larb/RationalFunction;
-      15: aload_1
-      16: iload_2
-      17: iload_3
-      18: aload         4
-      20: invokevirtual #129                // Method arb/RationalFunction.evaluate:(Larb/Real;IILarb/Real;)Larb/Real;
-      23: areturn
-
   public void initialize();
     Code:
        0: aload_0
@@ -154,68 +110,6 @@ public class arb.functions.real.GeneratedLommelPolynomialExpression implements a
       40: putfield      #127                // Field element:Larb/RationalFunction;
       43: return
 
-  public void close();
-    Code:
-       0: aload_0
-       1: getfield      #40                 // Field cℤ2:Larb/Integer;
-       4: invokevirtual #148                // Method arb/Integer.close:()V
-       7: aload_0
-       8: getfield      #44                 // Field cℤ1:Larb/Integer;
-      11: invokevirtual #148                // Method arb/Integer.close:()V
-      14: aload_0
-      15: getfield      #48                 // Field cℤ3:Larb/Integer;
-      18: invokevirtual #148                // Method arb/Integer.close:()V
-      21: aload_0
-      22: getfield      #53                 // Field ℝ1:Larb/Real;
-      25: invokevirtual #150                // Method arb/Real.close:()V
-      28: aload_0
-      29: getfield      #55                 // Field ℝ2:Larb/Real;
-      32: invokevirtual #150                // Method arb/Real.close:()V
-      35: return
-
-  public java.lang.String toString();
-    Code:
-       0: ldc           #153                // String z➔R(1/2,3;z)
-       2: areturn
-
-  public java.lang.String typeset();
-    Code:
-       0: ldc           #156                // String $R_{\\frac{1}{2}, 3} (z)$
-       2: areturn
-
-  public java.lang.Object evaluate(java.lang.Object, int, int, java.lang.Object);
-    Code:
-       0: aload_0
-       1: aload_1
-       2: checkcast     #50                 // class arb/Real
-       5: iload_2
-       6: iload_3
-       7: aload         4
-       9: checkcast     #50                 // class arb/Real
-      12: invokevirtual #159                // Method evaluate:(Larb/Real;IILarb/Real;)Larb/Real;
-      15: areturn
-
-  public java.lang.Object evaluate(java.lang.Object, int, int);
-    Code:
-       0: aload_0
-       1: aload_1
-       2: checkcast     #50                 // class arb/Real
-       5: iload_2
-       6: iload_3
-       7: invokeinterface #161,  4          // InterfaceMethod arb/functions/real/RealFunction.evaluate:(Larb/Real;II)Larb/Real;
-      12: areturn
-
-  public java.lang.Object evaluate(java.lang.Object, int, java.lang.Object);
-    Code:
-       0: aload_0
-       1: aload_1
-       2: checkcast     #50                 // class arb/Real
-       5: iload_2
-       6: aload_3
-       7: checkcast     #50                 // class arb/Real
-      10: invokeinterface #165,  4          // InterfaceMethod arb/functions/real/RealFunction.evaluate:(Larb/Real;ILarb/Real;)Larb/Real;
-      15: areturn
- * </pre>
  * 
  * }
  */
