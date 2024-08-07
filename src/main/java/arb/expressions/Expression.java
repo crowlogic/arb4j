@@ -516,7 +516,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (context != null)
     {
-      for (var variable : context.variables.map.entrySet())
+      for (var variable : context.variables.map.entrySet()
+                                               .stream()
+                                               .sorted((a, b) -> a.getKey().compareTo(b.getKey()))
+                                               .toList())
       {
         declareVariableEntry(classVisitor, variable);
       }

@@ -32,7 +32,14 @@ import arb.functions.sequences.LommelPolynomialSequence;
  * 
  * <pre>
  * Compiled from "GeneratedLommelPolynomialExpression.java"
-public class arb.functions.real.GeneratedLommelPolynomialExpression implements arb.functions.real.RealFunction,arb.Typesettable,java.lang.AutoCloseable,arb.Initializable {
+public class 
+  arb.functions.real.GeneratedLommelPolynomialExpression 
+implements 
+    arb.functions.real.RealFunction,
+    arb.Typesettable,
+    java.lang.AutoCloseable,
+    arb.Initializable 
+{
   public boolean isInitialized;
 
   arb.Integer cℤ2;
