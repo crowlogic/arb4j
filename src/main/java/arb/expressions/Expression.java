@@ -1784,6 +1784,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       return new SphericalBesselFunctionOfTheFirstKind<>(this);
     }
+    else if ("R".equals(reference.name))
+    {
+      return new LommelPolynomial<>(this);
+    }
 
     return new FunctionCall<>(reference.name,
                               resolve(),

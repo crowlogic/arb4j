@@ -26,6 +26,13 @@ public class ExpressionTest
                             extends
                             TestCase
 {
+  
+  public void testLommePolynomial()
+  {
+    var    f    = RealFunction.express("R(1/2,0;z)");
+    System.out.println("f=" + f );
+
+  }
   public void testLogGamma()
   {
     var    f    = RealFunction.express("ln⁡Γ(t)");
