@@ -7,6 +7,7 @@ import arb.expressions.Expression;
 import arb.expressions.Context;
 import arb.functions.Function;
 import arb.functions.real.RationalNullaryFunction;
+import arb.functions.real.RealFunction;
 %}
 
 %typemap(javaconstruct) fmpz_poly_q_struct %{
@@ -17,6 +18,43 @@ import arb.functions.real.RationalNullaryFunction;
 %}
 
 %typemap(javacode) fmpz_poly_q_struct %{
+
+public RealFunction asRealFunction()
+  {
+
+    return new RealRationalFunction();
+  }
+  
+  public final class RealRationalFunction implements RealFunction, AutoCloseable
+  {
+    @Override
+    public String toString()
+    {
+      return RationalFunction.this.toString();
+    }
+
+    @Override
+    public void close()
+    {
+      x.close();
+      x = null;
+      y.close();
+      y = null;
+    }
+
+    Fraction x = new Fraction();
+    Fraction y = new Fraction();
+
+    @Override
+    public Real evaluate(Real t, int order, int bits, Real res)
+    {
+      x.set(t);
+      RationalFunction.this.evaluate(x, order, bits, y);
+      res.set(y);
+      return res;
+    }
+  }
+
 
   public static Expression<Fraction, Fraction, RationalFunction> compile(String expression)
   {

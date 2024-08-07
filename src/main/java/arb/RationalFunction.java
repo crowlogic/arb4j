@@ -14,6 +14,7 @@ import arb.expressions.Expression;
 import arb.expressions.Context;
 import arb.functions.Function;
 import arb.functions.real.RationalNullaryFunction;
+import arb.functions.real.RealFunction;
 
 public class RationalFunction implements Named,AutoCloseable,Field<RationalFunction>,Function<Fraction,Fraction>,Verifiable {
   protected long swigCPtr;
@@ -35,6 +36,43 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
         arblibJNI.delete_RationalFunction(swigCPtr);
       }
       swigCPtr = 0;
+    }
+  }
+
+
+public RealFunction asRealFunction()
+  {
+
+    return new RealRationalFunction();
+  }
+  
+  public final class RealRationalFunction implements RealFunction, AutoCloseable
+  {
+    @Override
+    public String toString()
+    {
+      return RationalFunction.this.toString();
+    }
+
+    @Override
+    public void close()
+    {
+      x.close();
+      x = null;
+      y.close();
+      y = null;
+    }
+
+    Fraction x = new Fraction();
+    Fraction y = new Fraction();
+
+    @Override
+    public Real evaluate(Real t, int order, int bits, Real res)
+    {
+      x.set(t);
+      RationalFunction.this.evaluate(x, order, bits, y);
+      res.set(y);
+      return res;
     }
   }
 
