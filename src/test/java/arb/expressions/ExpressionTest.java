@@ -4,7 +4,6 @@ import arb.Complex;
 import arb.Integer;
 import arb.Real;
 import arb.RealConstants;
-import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
@@ -26,13 +25,14 @@ public class ExpressionTest
                             extends
                             TestCase
 {
-  
+
   public void testLommelPolynomial()
   {
-    var    f    = RealFunction.express("R(1/2,3;z)");
-    System.out.println("f=" + f );
+    var f = RealFunction.express("R(1/2,3;z)");
+    System.out.println("f=" + f);
 
   }
+
   public void testLogGamma()
   {
     var    f    = RealFunction.express("ln⁡Γ(t)");
@@ -68,12 +68,12 @@ public class ExpressionTest
 
   public void testSubstitutionToo()
   {
-    Context context = new Context();
-    var     F       = RealPolynomialNullaryFunction.parse("F",
-                                                          "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
-                                                          context);
-    F.substitute("z", RealFunction.parse("2*z"));
-
+    Context context               = new Context();
+    var     F                     = RealPolynomialNullaryFunction.parse("F",
+                                                                        "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
+                                                                        context);
+    var     transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
+    assertEquals("Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}", transformedExpression.toString());
   }
 
   public void testSubstitution()
