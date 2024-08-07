@@ -19,9 +19,8 @@ import arb.functions.real.RealFunction;
 
 %typemap(javacode) fmpz_poly_q_struct %{
 
-public RealFunction asRealFunction()
+  public RealFunction asRealFunction()
   {
-
     return new RealRationalFunction();
   }
   
