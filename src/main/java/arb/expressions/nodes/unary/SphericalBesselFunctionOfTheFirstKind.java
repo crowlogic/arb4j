@@ -67,17 +67,9 @@ public class SphericalBesselFunctionOfTheFirstKind<D, R, F extends Function<? ex
     super("j",
           null,
           expression);
-
-    order = expression.resolve();
-
-    expression.require(',');
-
-    arg = expression.resolve();
-
-    expression.require(')');
-
-    scalar = expression.hasScalarCodomain();
-
+    order  = expression.resolve();
+    arg    = expression.require(',').resolve();
+    scalar = expression.require(')').hasScalarCodomain();
   }
 
   @Override
