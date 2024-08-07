@@ -1,42 +1,47 @@
 package arb.viz;
 
-import arb.RationalFunction;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import static arb.utensils.Utensils.wrapOrThrow;
+
+import java.util.Map;
+
+import arb.Integer;
+import arb.Real;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
+import arb.functions.Function;
+import arb.functions.real.RealFunction;
+import arb.functions.real.Ψₖ;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import arb.Integer;
 
-/**
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrarys}
- */
 public class ExpressionAnalyzer
                                 extends
                                 Application
 {
 
-  @SuppressWarnings("resource")
-  public static Expression<?, ?, ?> getExpression()
-  {
+  Context             context;
+  Expression<?, ?, ?> expr;
+  Ψₖ                  instance;
+  Object              result;
+  Real                x;
+  Integer             n;
 
-    // Real v = new Real().set(RealConstants.half).setName("v");
-    Integer n       = Integer.named("n").set(3);
-    Context context = new Context(n);
-    return RationalFunction.compile("Ψₖ:√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)", context);
+  @SuppressWarnings("resource")
+  public Expression<?, ?, ?> getExpression()
+  {
+    n       = Integer.named("n").set(3);
+    x       = new Real().setName("x").set(2.3);
+    context = new Context(n,
+                          x);
+    return RealFunction.compile("Ψₖ:√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)", context);
   }
 
   public void expandTreeView(TreeItem<?> item)
@@ -58,66 +63,69 @@ public class ExpressionAnalyzer
     primaryStage.setWidth(1800);
     primaryStage.setHeight(900);
 
-    Expression<?, ?, ?> expr = getExpression();
-
+    expr = getExpression();
     System.out.println("expr=" + expr.syntaxTextTree());
 
+//    instance = new     Ψₖ(); // expr.instantiate();
+//    instance.n = n;
+//    instance.eva
+    
     Node<?, ?, ?>                rootNode      = expr.rootNode;
-
-    // node creation logic
     TreeItem<Node<?, ?, ?>>      rootItem      = new NodeTreeItem(rootNode);
 
-    TreeTableView<Node<?, ?, ?>> treeTableView = new TreeTableView<Node<?, ?, ?>>(rootItem);
+    TreeTableView<Node<?, ?, ?>> treeTableView = new TreeTableView<>(rootItem);
     treeTableView.setShowRoot(true);
-    // expandTreeView(rootItem);
-    // treeTableView.setRowFactory(tv -> new CustomTreeTableRow<>());
 
     TreeTableColumn<Node<?, ?, ?>, String> nodeCol = new TreeTableColumn<>("Node");
     nodeCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().toString()));
     nodeCol.setMinWidth(400);
 
-    // Additional columns can be added here
-    TreeTableColumn<Node<?, ?, ?>, String> nodeTypeCol = new TreeTableColumn<>("nodeType");
+    TreeTableColumn<Node<?, ?, ?>, String> nodeTypeCol = new TreeTableColumn<>("Node Type");
     nodeTypeCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
                                                                             .getValue()
                                                                             .getClass()
                                                                             .getSimpleName()));
     nodeTypeCol.setMinWidth(325);
 
-    TreeTableColumn<Node<?, ?, ?>, String> isScalarCol = new TreeTableColumn<>("isScalar");
-    isScalarCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(String.valueOf(param.getValue()
-                                                                                           .getValue()
-                                                                                           .isScalar())));
-    isScalarCol.setMinWidth(100);
-
-    // Additional columns can be added here
-    TreeTableColumn<Node<?, ?, ?>, String> nodeTypeResultCol = new TreeTableColumn<>("result.type()");
+    TreeTableColumn<Node<?, ?, ?>, String> nodeTypeResultCol = new TreeTableColumn<>("Result Type");
     nodeTypeResultCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
                                                                                   .getValue()
                                                                                   .type()
                                                                                   .getSimpleName()));
 
-    TreeTableColumn<Node<?, ?, ?>, String> typesetCol = new TreeTableColumn<>("typeset()");
+    TreeTableColumn<Node<?, ?, ?>, String> typesetCol = new TreeTableColumn<>("Typeset");
     typesetCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().typeset()));
 
-    TreeTableColumn<Node<?, ?, ?>, String> fieldCol = new TreeTableColumn<>("field");
+    TreeTableColumn<Node<?, ?, ?>, String> fieldCol = new TreeTableColumn<>("Field");
     fieldCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
                                                                          .getValue()
                                                                          .getIntermediateValueFieldName()));
 
+    TreeTableColumn<Node<?, ?, ?>, String> valueCol = new TreeTableColumn<>("Value");
+    valueCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(evaluateNode(param.getValue().getValue())));
+
     typesetCol.setCellFactory(new TypeSettingCellFactory());
 
-    treeTableView.getColumns().addAll(nodeCol, isScalarCol, nodeTypeCol, nodeTypeResultCol, typesetCol);
+    treeTableView.getColumns().addAll(nodeCol, nodeTypeCol, nodeTypeResultCol, typesetCol, fieldCol, valueCol);
+
+    // Context variables display
+    ListView<String> contextListView = new ListView<>();
+    for (Map.Entry<String, Object> entry : context.variables.map.entrySet())
+    {
+      contextListView.getItems().add(entry.getKey() + " = " + entry.getValue());
+    }
+
+    // Evaluate button
+    Button evaluateButton = new Button("Evaluate Expression");
+    evaluateButton.setOnAction(e -> evaluateExpression());
 
     // Create the HBox for buttons
-    HBox   buttonBox = new HBox();
-    Button button1   = new Button("Button 1");
-    Button button2   = new Button("Button 2");
-    buttonBox.getChildren().addAll(button1, button2);
+    HBox buttonBox = new HBox(10);
+    buttonBox.getChildren().addAll(evaluateButton);
 
-    // Create a VBox and add both the treeTableView and buttonBox
-    VBox vbox = new VBox();
-    vbox.getChildren().addAll(treeTableView, buttonBox);
+    // Create a VBox and add components
+    VBox vbox = new VBox(10);
+    vbox.getChildren().addAll(new Label("Context Variables:"), contextListView, treeTableView, buttonBox);
 
     // Set the treeTableView to grow with the VBox
     VBox.setVgrow(treeTableView, javafx.scene.layout.Priority.ALWAYS);
@@ -137,9 +145,41 @@ public class ExpressionAnalyzer
 
     scene.getStylesheets().add(TODO.convertStylesheetToDataURI(TODO.EASIER_ON_THE_EYES_STYLESHEET));
     primaryStage.setScene(scene);
-    primaryStage.setTitle("Expression Viewer");
+    primaryStage.setTitle("Expression Analyzer");
     primaryStage.centerOnScreen();
     primaryStage.show();
+  }
+
+  private String evaluateNode(Node<?, ?, ?> node)
+  {
+    if (result == null)
+    {
+      return null;
+    }
+    try
+    {
+      String intermediateValueFieldName = node.getIntermediateValueFieldName();
+      if (intermediateValueFieldName == null)
+      {
+        return result != null ? "null" : result.toString();
+      }
+      return instance.getClass()
+                     .getField(intermediateValueFieldName)
+                     .get(node.getIntermediateValueFieldName())
+                     .toString();
+    }
+    catch (Exception e)
+    {
+      wrapOrThrow(e);
+    }
+    return "see todo in assertion";
+  }
+
+  private void evaluateExpression()
+  {
+    result = instance.evaluate(null, 128);
+    System.out.println(expr + "=" + result);
+
   }
 
   public static void main(String[] args)

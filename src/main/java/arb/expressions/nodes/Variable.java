@@ -596,7 +596,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public String getIntermediateValueFieldName()
   {
-    return null;
+    return reference.name;
   }
 
 }
