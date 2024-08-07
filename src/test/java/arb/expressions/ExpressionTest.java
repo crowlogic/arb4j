@@ -27,9 +27,9 @@ public class ExpressionTest
                             TestCase
 {
   
-  public void testLommePolynomial()
+  public void testLommelPolynomial()
   {
-    var    f    = RealFunction.express("R(1/2,0;z)");
+    var    f    = RealFunction.express("R(1/2,3;z)");
     System.out.println("f=" + f );
 
   }

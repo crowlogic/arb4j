@@ -5,11 +5,12 @@ import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
-import arb.functions.sequences.LommelPolynomials;
 
 /**
  *
@@ -18,13 +19,21 @@ import arb.functions.sequences.LommelPolynomials;
  */
 public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>>
                              extends
-                             Node<D, C, F>
+                             FunctionCall<D, C, F>
 {
+
+  Node<D, C, F> order;
+  Node<D, C, F> index;
 
   public LommelPolynomial(Expression<D, C, F> expression)
   {
-    super(expression);
-    assert false : "TODO: implement Lommel polynomials via " + LommelPolynomials.class;
+    super("R",
+          null,
+          expression);
+    order = expression.resolve();
+    index = expression.require(',').resolve();
+    arg   = expression.require(';').resolve();
+    expression.require(')');
   }
 
   @Override
@@ -53,7 +62,7 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
   }
 
   @Override
-  public List<? extends Node<D, C, F>> getBranches()
+  public List<Node<D, C, F>> getBranches()
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
@@ -69,7 +78,8 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
   @Override
   public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
   {
-    assert false : "TODO: Auto-generated method stub";
+    assert false : "TODO: Auto-generated method stub: "
+                  + String.format("arg=%s\norder=%s\nindex=%s\n", this.arg, this.order, this.index);
     return null;
   }
 
@@ -89,13 +99,6 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
 
   @Override
   public String typeset()
-  {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
-  }
-
-  @Override
-  public <C> Class<? extends C> type()
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
