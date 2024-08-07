@@ -950,6 +950,10 @@ public class arblib {
   }
 
   public static void arb_hypgeom_bessel_j(Real res, Real nu, Real z, int prec) {
+    assert res != null && res.swigCPtr != 0;
+    assert nu!= null && nu.swigCPtr != 0;
+    assert z!= null && z.swigCPtr != 0;
+
     arblibJNI.arb_hypgeom_bessel_j(Real.getCPtr(res), res, Real.getCPtr(nu), nu, Real.getCPtr(z), z, prec);
   }
 
@@ -2347,6 +2351,9 @@ public class arblib {
   }
 
   public static void arb_set(Real z, Real x) {
+    assert z != null && z.swigCPtr != 0;
+    assert x != null && x.swigCPtr != 0;
+    
     arblibJNI.arb_set(Real.getCPtr(z), z, Real.getCPtr(x), x);
   }
 
