@@ -183,7 +183,25 @@ public class Fraction implements AutoCloseable,Field<Fraction>,Named,Verifiable 
     arblib.fmpq_neg(result, this);   
     return result;
   }
-    
+ 
+  public Real neg( Real result )
+  {
+    try ( Fraction tmp = new Fraction() )
+    {
+      neg(tmp);
+      return result.set(tmp);
+    }
+  }
+   
+  public Real sub(Fraction element, int prec, Real result)
+  {
+    try ( Fraction tmp = new Fraction() )
+    {
+      this.sub(element,prec,tmp);
+      return result.set(tmp);  
+    }
+  }
+  
   public Fraction set(int j)
   {
     arblib.fmpq_set_fmpz(this, j);

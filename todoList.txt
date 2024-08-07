@@ -1,2 +1,3 @@
 implement KL expansion
 implement Node.integral method (starting wtih Division extends BinaryOperation)
+java.lang.NoSuchMethodError: 'arb.Real arb.Fraction.sub(arb.Fraction, int, arb.Real)'at vNTimes(zOver2)ToThePowerOf(Minusn)TimespFq({1Over2MinusnOver2,MinusnOver2},{v,Minusn,1MinusvMinusn},MinuszToThePowerOf2).evaluate(Unknown Source)

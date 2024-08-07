@@ -3,6 +3,7 @@ package arb.functions.sequences;
 import java.util.function.IntFunction;
 
 import arb.Integer;
+import arb.RationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -17,52 +18,38 @@ import arb.functions.Function;
  *      {@link TheArb4jLibrary}
  */
 
-public interface Sequence<C> extends
-                         Function<Integer, C>,
-                         IntFunction<C>
+public interface Sequence<C> extends Function<Integer, C>, IntFunction<C>
 {
-  public default int
-         bits()
+  public default int bits()
   {
     return 128;
   }
 
   @Override
-  default C
-          apply(int value)
+  default C apply(int value)
   {
-    return evaluate(value,
-                    bits());
+    return evaluate(value, bits());
   }
 
   @Override
-  default Class<Integer>
-          domainType()
+  default Class<Integer> domainType()
   {
     return Integer.class;
   }
 
-  public default C
-         evaluate(int t,
-                  int bits)
+  public default C evaluate(int t, int bits)
   {
     try ( Integer integer = new Integer(t))
     {
-      return evaluate(integer,
-                      bits);
+      return evaluate(integer, bits);
     }
   }
 
-  public default C
-         evaluate(int t,
-                  int bits,
-                  C res)
+  public default C evaluate(int t, int bits, C res)
   {
     try ( Integer integer = new Integer(t))
     {
-      return evaluate(integer,
-                      bits,
-                      res);
+      return evaluate(integer, bits, res);
     }
   }
 
@@ -86,77 +73,45 @@ public interface Sequence<C> extends
                           containingExpression);
   }
 
-  public static <Q>
-         Sequence<? extends Q>
-         express(String name,
-                 Class<? extends Q> coDomainType,
-                 String expression,
-                 Class<? extends Sequence<Q>> functionClass)
+  public static <Q> Sequence<? extends Q> express(String name,
+                                                  Class<? extends Q> coDomainType,
+                                                  String expression,
+                                                  Class<? extends Sequence<Q>> functionClass)
   {
-    return Function.express(name,
-                            Integer.class,
-                            coDomainType,
-                            expression,
-                            functionClass);
+    return Function.express(name, Integer.class, coDomainType, expression, functionClass);
   }
 
-  public static <Q>
-         Sequence<? extends Q>
-         express(String name,
-                 Class<? extends Q> coDomainType,
-                 String expression,
-                 Class<? extends Sequence<Q>> functionClass,
-                 Context context)
+  public static <Q> Sequence<? extends Q> express(String name,
+                                                  Class<? extends Q> coDomainType,
+                                                  String expression,
+                                                  Class<? extends Sequence<Q>> functionClass,
+                                                  Context context)
   {
-    return Function.express(name,
-                            Integer.class,
-                            coDomainType,
-                            expression,
-                            functionClass,
-                            context);
+    return Function.express(name, Integer.class, coDomainType, expression, functionClass, context);
   }
 
-  public static <Q>
-         Sequence<? extends Q>
-         express(Class<? extends Q> coDomainType,
-                 String expression,
-                 Class<? extends Sequence<Q>> functionClass)
+  public static <Q> Sequence<? extends Q> express(Class<? extends Q> coDomainType,
+                                                  String expression,
+                                                  Class<? extends Sequence<Q>> functionClass)
   {
-    return Function.express(Integer.class,
-                            coDomainType,
-                            expression,
-                            functionClass);
+    return Function.express(Integer.class, coDomainType, expression, functionClass);
   }
 
-  public static <Q>
-         Sequence<? extends Q>
-         express(Class<? extends Q> coDomainType,
-                 String expression,
-                 Class<? extends Sequence<Q>> functionClass,
-                 Context context)
+  public static <Q> Sequence<? extends Q> express(Class<? extends Q> coDomainType,
+                                                  String expression,
+                                                  Class<? extends Sequence<Q>> functionClass,
+                                                  Context context)
   {
-    return express(null,
-                   coDomainType,
-                   expression,
-                   functionClass,
-                   context);
+    return express(null, coDomainType, expression, functionClass, context);
   }
 
   public static <C, S extends Sequence<? extends C>>
          Expression<Integer, C, S>
-         parse(String className,
-               Class<? extends S> seq,
-               Class<? extends C> coDomainType,
-               String expr)
+         parse(String className, Class<? extends S> seq, Class<? extends C> coDomainType, String expr)
   {
-    return Function.parse(className,
-                          expr,
-                          null,
-                          Integer.class,
-                          coDomainType,
-                          seq,
-                          expr,
-                          null);
+    return Function.parse(className, expr, null, Integer.class, coDomainType, seq, expr, null);
   }
+
+  
 
 }

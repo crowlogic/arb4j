@@ -54,7 +54,6 @@ public interface RealFunction extends Function<Real, Real>
   public static Expression<Real, Real, RealFunction> compile(String expression, Context context)
   {
     return Compiler.compile(expression, context, Real.class, Real.class, RealFunction.class, null);
-
   }
 
   public static RealFunction express(String expression)
