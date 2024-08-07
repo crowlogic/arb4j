@@ -46,6 +46,11 @@ public class LommelPolynomialSequence implements RationalFunctionSequence, AutoC
     expression.injectReferences(instance);
   }
 
+  public LommelPolynomialSequence(Real order, Real set, Real z)
+  {
+    // TODO Auto-generated constructor stub
+  }
+
   @Override
   public RationalFunction evaluate(Integer t, int order, int bits, RationalFunction res)
   {

@@ -1,7 +1,10 @@
 package arb.expressions.nodes.unary;
 
+import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.duplicateTopOfTheStack;
 import static arb.expressions.Compiler.invokeConstructor;
+import static arb.expressions.Compiler.invokeMethod;
+import static arb.expressions.Compiler.loadResultParameter;
 import static org.objectweb.asm.Opcodes.NEW;
 
 import java.util.List;
@@ -10,6 +13,7 @@ import java.util.function.Consumer;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
+import arb.Integer;
 import arb.RationalFunction;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -94,11 +98,21 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
     duplicateTopOfTheStack(mv);
 
     order.generate(scalarType, mv);
-    index.generate(scalarType, mv);
 
-    arg.generate(RationalFunction.class, mv);
+    invokeConstructor(mv, sequenceClass, Real.class);
+    index.generate(Integer.class, mv);
+    loadResultParameter(mv);
+    checkClassCast(mv, RationalFunction.class);
+    invokeMethod(mv,
+                 sequenceClass,
+                 "evaluate",
+                 RationalFunction.class,
+                 false,
+                 Integer.class,
+                 int.class,
+                 int.class,
+                 RationalFunction.class);
 
-    invokeConstructor(mv, sequenceClass, scalarType, scalarType, Expression.class);
   }
 
   @Override
@@ -125,8 +139,7 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
   @Override
   public String typeset()
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    return String.format("$R_{%s, %s} (%s)$", order.typeset(), index.typeset(), arg.typeset());
   }
 
   @Override
