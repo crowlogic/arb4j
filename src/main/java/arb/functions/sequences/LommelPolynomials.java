@@ -40,7 +40,7 @@ public class LommelPolynomials implements RationalFunctionSequence, AutoCloseabl
   public LommelPolynomials(Real order)
   {
     context    = new Context(v);
-    expression = RationalFunctionSequence.parse("n⇒v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z²)", context);
+    expression = RationalFunctionSequence.parse("n⇒v₍ₙ₎*(z/2)^(-n)*pFq([½-n/2,-n/2],[v,-n,1-v-n],-z²)", context);
     v.set(order);
     instance = expression.instantiate();
     expression.injectReferences(instance);
