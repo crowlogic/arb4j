@@ -65,20 +65,19 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
 
   private Class<?> hypergeometricClass;
 
+  private boolean  dependsOnInput;
+
   public HypergeometricFunction(Expression<D, R, F> expression)
   {
     super("pFq",
           null,
           expression);
-    α = expression.resolve();
-    expression.require(',');
-    β = expression.resolve();
-    expression.require(',', ';');
-    arg = expression.resolve();
+    α   = expression.resolve();
+    β   = expression.require(',').resolve();
+    arg = expression.require(',', ';').resolve();
     expression.require(')');
 
-//    boolean dependsOnInput = α.dependsOn(expression.independentVariable)
-//                  || β.dependsOn(expression.independentVariable);
+    dependsOnInput = α.dependsOn(expression.independentVariable) || β.dependsOn(expression.independentVariable);
   }
 
   /**
@@ -92,7 +91,7 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
   {
     if (Expression.trace)
     {
-      err.printf("pFq.generate(resultType=%s\n)\n", resultType);
+      err.printf("pFq.generate(resultType=%s dependsOnInput=%s\n)\n", resultType, dependsOnInput);
     }
     Class<?> scalarType = Compiler.scalarType(resultType);
 

@@ -1,10 +1,17 @@
 package arb.expressions.nodes.unary;
 
+import static arb.expressions.Compiler.duplicateTopOfTheStack;
+import static arb.expressions.Compiler.invokeConstructor;
+import static org.objectweb.asm.Opcodes.NEW;
+
 import java.util.List;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 
+import arb.RationalFunction;
+import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
@@ -23,8 +30,9 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
                              FunctionCall<D, C, F>
 {
 
-  Node<D, C, F> order;
-  Node<D, C, F> index;
+  Node<D, C, F>    order;
+  Node<D, C, F>    index;
+  private Class<?> sequenceClass;
 
   public LommelPolynomial(Expression<D, C, F> expression)
   {
@@ -76,16 +84,28 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
     return false;
   }
 
+  public void constructFiniteHypergeometricSeries(MethodVisitor mv, Class<?> scalarType, boolean rational)
+  {
+    boolean isReal = Real.class.equals(scalarType);
+
+    sequenceClass = LommelPolynomialSequence.class;
+
+    mv.visitTypeInsn(NEW, Type.getInternalName(sequenceClass));
+    duplicateTopOfTheStack(mv);
+
+    order.generate(scalarType, mv);
+    index.generate(scalarType, mv);
+
+    arg.generate(RationalFunction.class, mv);
+
+    invokeConstructor(mv, sequenceClass, scalarType, scalarType, Expression.class);
+  }
+
   @Override
   public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
   {
-    assert false : "TODO: generated code that generates a variable of type "
-                  + String.format("%s where arg=%s\norder=%s\nindex=%s\n",
-                                  LommelPolynomialSequence.class,
-                                  this.arg,
-                                  this.order,
-                                  this.index);
-    return null;
+    constructFiniteHypergeometricSeries(mv, resultType, isResult);
+    return mv;
   }
 
   @Override

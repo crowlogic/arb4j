@@ -10,6 +10,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
+import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 
 /**
@@ -86,5 +87,11 @@ public abstract class UnaryOperation<D, R, F extends Function<? extends D, ? ext
   public String getIntermediateValueFieldName()
   {
     return intermediateVariableFieldName;
+  }
+
+  @Override
+  public boolean dependsOn(Variable<D, R, F> variable)
+  {
+    return arg.dependsOn(variable);
   }
 }

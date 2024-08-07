@@ -19,6 +19,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.functions.Function;
+import arb.functions.real.RationalHypergeometricFunction;
 import arb.utensils.Utensils;
 
 /**
@@ -316,7 +317,7 @@ public class Compiler
     typePrefixes.put(ComplexPolynomial.class, "Xℂ");
     typePrefixes.put(RealMatrix.class, "ℝᵐˣⁿ");
     typePrefixes.put(ComplexMatrix.class, "ℂᵐˣⁿ");
-    typePrefixes.put(RationalFunction.class, "rℝ");
+    typePrefixes.put(RationalFunction.class, "q");
     typePrefixes.put(Fraction.class, "f");
   }
 
