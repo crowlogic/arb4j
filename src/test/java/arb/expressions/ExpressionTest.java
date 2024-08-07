@@ -22,63 +22,54 @@ import junit.framework.TestCase;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ExpressionTest extends
+public class ExpressionTest
+                            extends
                             TestCase
 {
-  public void
-         testLogGamma()
+  public void testLogGamma()
   {
     var    f    = RealFunction.express("ln⁡Γ(t)");
     double eval = f.eval(2.3);
     assertEquals(0.15418945495963046, eval);
   }
 
-  public void
-         testAbsoluteValue()
+  public void testAbsoluteValue()
   {
     var  expr   = RealNullaryFunction.express("abs(2.3)");
     Real result = expr.evaluate(128);
     assertEquals(2.3, result.doubleValue());
   }
 
-  public void
-         testImaginary()
+  public void testImaginary()
   {
     var     expr   = ComplexNullaryFunction.express("ⅈ");
     Complex result = expr.evaluate(128);
     result.forEach(r -> assertTrue(r.isExact()));
-    assertTrue(result.re()
-                     .isZero());
-    assertTrue(result.im()
-                     .isOne());
+    assertTrue(result.re().isZero());
+    assertTrue(result.im().isOne());
   }
 
-  public void
-         testVector()
+  public void testVector()
   {
     var expr   = RealNullaryFunction.express("[8,0,8]");
     var result = expr.evaluate(128, new Real());
     result.forEach(r -> assertTrue(r.isExact()));
-    assertEquals(8.0, result.get(0)
-                            .doubleValue());
-    assertEquals(0.0, result.get(1)
-                            .doubleValue());
-    assertEquals(8.0, result.get(2)
-                            .doubleValue());
+    assertEquals(8.0, result.get(0).doubleValue());
+    assertEquals(0.0, result.get(1).doubleValue());
+    assertEquals(8.0, result.get(2).doubleValue());
   }
 
-  public void
-         testSubstitutionToo()
+  public void testSubstitutionToo()
   {
-    Context                                                           context = new Context();
-    Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> F       = RealPolynomialNullaryFunction.parse("F", "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
-                                                                                                                    context);
+    Context context = new Context();
+    var     F       = RealPolynomialNullaryFunction.parse("F",
+                                                          "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
+                                                          context);
     F.substitute("z", RealFunction.parse("2*z"));
 
   }
 
-  public void
-         testSubstitution()
+  public void testSubstitution()
   {
     var expr = RealFunction.parse("2*x²");
     var subs = RealFunction.parse("½-z/2");
@@ -93,32 +84,31 @@ public class ExpressionTest extends
     var g = f.instantiate();
     var x = new Real("8.08",
                      256);
-    assertEquals(25.0632, g.evaluate(x, 0, 256)
-                           .doubleValue());
+    assertEquals(25.0632, g.evaluate(x, 0, 256).doubleValue());
   }
 
-  public void
-         testIntegralOfAConstant()
+  public void testIntegralOfAConstant()
   {
     var integral = RealFunction.express("∫x➔1dx∈(2,4)");
     assertEquals(2.0, integral.eval(0.0));
   }
 
-  public void
-         testSuperscriptLowercaseQ()
+  public void testSuperscriptLowercaseQ()
   {
     assertEquals("𐞥", String.format("%c", Parser.lowercaseSuperscriptAlphabet[16]));
   }
 
-  public void
-         testConflictingFunctionNameDefinitionThrowsException()
+  public void testConflictingFunctionNameDefinitionThrowsException()
   {
     boolean caughtException = false;
     try
     {
       RealFunction func = RealFunction.express("G", "F: x₍₃₎", null);
       try ( Real result = func.evaluate(new Real("5",
-                                                 128), 0, 128, new Real()))
+                                                 128),
+                                        0,
+                                        128,
+                                        new Real()))
       {
       }
     }
@@ -132,14 +122,12 @@ public class ExpressionTest extends
     assertTrue(caughtException);
   }
 
-  public void
-         testRatioOfRisingFactorials()
+  public void testRatioOfRisingFactorials()
   {
 
     try ( Real λ = new Real())
     {
-      Context                 context  = new Context(λ.setName("λ")
-                                                      .set("3.5", 128));
+      Context                 context  = new Context(λ.setName("λ").set("3.5", 128));
       Function<Integer, Real> f        = Function.express(Integer.class, Real.class, "n➔(λ*2)₍ₙ₎/(λ+½)₍ₙ₎", context);
       Integer                 in       = new Integer(4);
       Real                    evaluate = f.evaluate(in, 128, new Real());
@@ -147,8 +135,7 @@ public class ExpressionTest extends
     }
   }
 
-  public void
-         testProductViaFactorial()
+  public void testProductViaFactorial()
   {
     IntegerFunction f        = IntegerFunction.express("n➔∏k{k=1…n}");
     Integer         in       = new Integer(3);
@@ -156,45 +143,46 @@ public class ExpressionTest extends
     assertEquals(6, evaluate.getUnsignedValue());
   }
 
-  public void
-         testGammaReal()
+  public void testGammaReal()
   {
     RealFunction func   = RealFunction.express("Γ(4.0)");
     Real         result = func.evaluate(null, 0, 128, new Real());
     assertEquals(6.0, result.doubleValue());
   }
 
-  public void
-         testGamma()
+  public void testGamma()
   {
     RealFunction func   = RealFunction.express("Γ(4)");
     Real         result = func.evaluate(null, 0, 128, new Real());
     assertEquals(6.0, result.doubleValue());
   }
 
-  public void
-         testFactorial()
+  public void testFactorial()
   {
     RealFunction func   = RealFunction.express("4!");
     Real         result = func.evaluate(null, 0, 128, new Real());
     assertEquals(24.0, result.doubleValue());
   }
 
-  public void
-         testFactorialToo()
+  public void testFactorialToo()
   {
     RealFunction func   = RealFunction.express("x!");
     Real         result = func.evaluate(new Real("4",
-                                                 128), 0, 128, new Real());
+                                                 128),
+                                        0,
+                                        128,
+                                        new Real());
     assertEquals(24.0, result.doubleValue());
   }
 
-  public void
-         testRisingFactorial()
+  public void testRisingFactorial()
   {
     RealFunction func   = RealFunction.express("x₍₃₎");
     Real         result = func.evaluate(new Real("5",
-                                                 128), 0, 128, new Real());
+                                                 128),
+                                        0,
+                                        128,
+                                        new Real());
     assertEquals(210.0, result.doubleValue());
   }
 
@@ -203,8 +191,7 @@ public class ExpressionTest extends
    * equivalent to this but with the other syntax where the i-th element of x is
    * specified by xᵢ
    */
-  public void
-         testVariableIndexedByASquareBracketedConstantAndMultipliedByTheDefactoInput()
+  public void testVariableIndexedByASquareBracketedConstantAndMultipliedByTheDefactoInput()
   {
     Real         α       = Real.newVector(3);
     Context      context = new Context(α.setName("α"));
@@ -219,8 +206,7 @@ public class ExpressionTest extends
    * is equivalent to this but with the other syntax where the i-th element of x
    * is specified by x[i]
    */
-  public void
-         testVariableIndexedByASubscriptAndMultipliedByTheDefactoInput()
+  public void testVariableIndexedByASubscriptAndMultipliedByTheDefactoInput()
   {
     Real         α       = Real.newVector(3);
     Context      context = new Context(α.setName("α"));

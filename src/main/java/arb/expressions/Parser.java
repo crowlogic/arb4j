@@ -181,7 +181,9 @@ public class Parser
    */
   public static String replaceArrowsEllipsesAndSuperscriptAlphabeticalExponents(String expression)
   {
-    expression = stripInvisibleUnicodeFormattingCharacters(expression.replace("->", "➔").replace("...", "…"));
+    expression = stripInvisibleUnicodeFormattingCharacters(expression.replace("->", "➔")
+                                                                     .replace("⇒", "➔")
+                                                                     .replace("...", "…"));
 
     for (int i = 0; i < superscripts.length; i++)
     {

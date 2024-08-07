@@ -1,11 +1,7 @@
 package arb.expressions;
 
 import static arb.expressions.Compiler.*;
-import static arb.expressions.Parser.isAlphabetical;
-import static arb.expressions.Parser.isAlphabeticalOrNumericSubscript;
-import static arb.expressions.Parser.isAlphabeticalSuperscript;
-import static arb.expressions.Parser.isLatinGreekOrSpecial;
-import static arb.expressions.Parser.isNumeric;
+import static arb.expressions.Parser.*;
 import static arb.utensils.Utensils.wrapOrThrow;
 import static java.lang.String.format;
 import static java.lang.System.err;
@@ -625,7 +621,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
   {
-    int rightArrowIndex = (expression = expression.replace("->", "➔")).indexOf('➔');
+    int rightArrowIndex = (expression = replaceArrowsEllipsesAndSuperscriptAlphabeticalExponents(expression)).indexOf('➔');
     if (rightArrowIndex != -1)
     {
       String  inputVariableName        = expression.substring(0, rightArrowIndex);

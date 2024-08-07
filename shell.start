@@ -1,3 +1,4 @@
+import arb.functions.sequences.LommelPolynomials;
 import arb.Fraction;
 import arb.expressions.Context;
 import arb.RationalFunction;
