@@ -35,7 +35,7 @@ public abstract class UnaryOperation<D, R, F extends Function<? extends D, ? ext
   }
 
   public Node<D, R, F> arg;
-  private String       intermediateVariableFieldName;
+  public String       intermediateVariableFieldName;
 
   public UnaryOperation(Node<D, R, F> node, Expression<D, R, F> expression)
   {
