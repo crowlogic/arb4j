@@ -119,8 +119,7 @@ public class ComplexFraction implements Field<ComplexFraction>,AutoCloseable
     return null;
   }
 
-  @Override
-  public ComplexFraction set(ComplexFraction value)
+  public ComplexFraction set(String string)
   {
     assert false : "TODO";
     return null;
@@ -137,6 +136,26 @@ public class ComplexFraction implements Field<ComplexFraction>,AutoCloseable
   public ComplexFraction zero()
   {
     assert false : "TODO";
+    return null;
+
+  }
+
+  @Override
+  public ComplexFraction set(ComplexFraction value)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
+  public GaussianInteger getNumerator()
+  {
+    assert false : "todo";
+    return null;
+  }
+  
+  public GaussianInteger getDenominator()
+  {
+    assert false : "todo";
     return null;
   }
 
