@@ -24,7 +24,8 @@ import arb.functions.sequences.LommelPolynomialSequence;
  */
 public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>>
                              extends
-                             FunctionCall<D, C, F>
+                             FunctionCall<D, C, F> implements
+                             Cloneable
 {
   Node<D, C, F>    order;
   Node<D, C, F>    index;
@@ -191,12 +192,16 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
     return this;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>>
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new LommelPolynomial<>(newExpression);
+    LommelPolynomial<E, S, G> newVar = new LommelPolynomial<>(newExpression);
+    newVar.arg = (Node<E, S, G>) arg.clone();
+    newVar.order = (Node<E, S, G>) order.clone();
+    return newVar;
   }
 
   @Override
@@ -210,6 +215,5 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
   {
     return order.isConstant() && index.isConstant() && arg.isConstant();
   }
-
 
 }

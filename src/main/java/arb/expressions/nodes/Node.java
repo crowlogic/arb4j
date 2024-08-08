@@ -25,8 +25,16 @@ import arb.functions.Function;
  */
 public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> implements
                           Typesettable,
-                          Consumer<Consumer<Node<D, R, F>>>
+                          Consumer<Consumer<Node<D, R, F>>>,
+                          Cloneable
 {
+
+  @Override
+  public Object clone() 
+  {
+    assert false : "TODO";
+    return null;
+  }
 
   public abstract boolean isScalar();
 
