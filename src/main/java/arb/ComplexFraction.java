@@ -2,161 +2,223 @@ package arb;
 
 import java.lang.foreign.Arena;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ComplexFraction implements Field<ComplexFraction>,AutoCloseable
+public class ComplexFraction implements Field<ComplexFraction>, AutoCloseable
 {
+  Arena           arena;
+  Fraction        parts;
+  Fraction        realPart;
+  Fraction        imaginaryPart;
+  String          name;
+  GaussianInteger numerator;
+  GaussianInteger denominator;
+
+  public ComplexFraction()
+  {
+    arena         = Arena.ofShared();
+    parts         = Fraction.newVector(arena, 2);
+    realPart      = parts.get(0);
+    imaginaryPart = parts.get(1);
+    numerator     = new GaussianInteger();
+    denominator   = new GaussianInteger();
+    updateNumeratorAndDenominator();
+  }
+
+  public void updateNumeratorAndDenominator()
+  {
+    numerator.setRealPart(realPart.getNumerator());
+    numerator.setImaginaryPart(imaginaryPart.getNumerator());
+    denominator.setRealPart(realPart.getDenominator());
+    denominator.setImaginaryPart(imaginaryPart.getDenominator());
+  }
+
   @Override
   public void close()
   {
-   if ( arena != null )
-   {
-     arena.close();
-   }
-   arena = null;
-   realPart = imaginaryPart = parts = null;
-  }
-
-  Arena arena ;
-  
-  Fraction parts;
-
-  Fraction realPart;
-
-  Fraction imaginaryPart;
-  
-  public ComplexFraction()
-  {
-    arena = Arena.ofShared();
-    parts = Fraction.newVector(arena, 2);
-    realPart = parts.get(0);
-    imaginaryPart = parts.get(1);
+    if (arena != null)
+    {
+      arena.close();
+    }
+    arena    = null;
+    realPart = imaginaryPart = parts = null;
+    numerator.close();
+    denominator.close();
+    numerator = denominator = null;
   }
 
   @Override
   public ComplexFraction additiveIdentity()
   {
-    assert false : "TODO";
-    return null;
+    realPart.set(0);
+    imaginaryPart.set(0);
+    updateNumeratorAndDenominator();
+    return this;
   }
 
   @Override
   public ComplexFraction multiplicativeIdentity()
   {
-    assert false : "TODO";
-    return null;
+    realPart.set(1);
+    imaginaryPart.set(0);
+    updateNumeratorAndDenominator();
+    return this;
   }
 
   @Override
-  public ComplexFraction add(ComplexFraction element, int prec, ComplexFraction result)
+  public ComplexFraction add(ComplexFraction element, int bits, ComplexFraction result)
   {
-    assert false : "TODO";
-    return null;
+    realPart.add(element.realPart, bits, result.realPart);
+    imaginaryPart.add(element.imaginaryPart, bits, result.imaginaryPart);
+    result.updateNumeratorAndDenominator();
+    return result;
   }
 
   @Override
   public int bits()
   {
-    assert false : "TODO";
-    return 128;
+    return Math.max(realPart.bits(), imaginaryPart.bits());
   }
 
   @Override
   public int dim()
   {
-    assert false : "TODO";
     return 1;
   }
 
   @Override
-  public ComplexFraction div(int j, int prec, ComplexFraction result)
+  public ComplexFraction div(int j, int bits, ComplexFraction result)
   {
-    assert false : "TODO";
-    return null;
+    realPart.div(j, bits, result.realPart);
+    imaginaryPart.div(j, bits, result.imaginaryPart);
+    result.updateNumeratorAndDenominator();
+    return result;
   }
 
   @Override
-  public ComplexFraction div(ComplexFraction j, int prec, ComplexFraction result)
+  public ComplexFraction div(ComplexFraction j, int bits, ComplexFraction result)
   {
-    assert false : "TODO";
-    return null;
+    try ( Fraction denominator = new Fraction(); Fraction temp1 = new Fraction(); Fraction temp2 = new Fraction();)
+    {
+
+      j.realPart.mul(j.realPart, bits, denominator);
+      j.imaginaryPart.mul(j.imaginaryPart, bits, temp1);
+      denominator.add(temp1, bits, denominator);
+
+      realPart.mul(j.realPart, bits, temp1);
+      imaginaryPart.mul(j.imaginaryPart, bits, temp2);
+      temp1.add(temp2, bits, temp1);
+      temp1.div(denominator, bits, result.realPart);
+
+      imaginaryPart.mul(j.realPart, bits, temp1);
+      realPart.mul(j.imaginaryPart, bits, temp2);
+      temp1.sub(temp2, bits, temp1);
+      temp1.div(denominator, bits, result.imaginaryPart);
+
+      result.updateNumeratorAndDenominator();
+      return result;
+    }
   }
 
   @Override
   public ComplexFraction get(int index)
   {
-    assert false : "TODO";
-    return null;
+    if (index != 0)
+    {
+      throw new IndexOutOfBoundsException("ComplexFraction is a scalar, index must be 0");
+    }
+    return this;
   }
 
   @Override
   public String getName()
   {
-    assert false : "TODO";
-    return null;
+    return name != null ? name : "ComplexFraction";
   }
 
   @Override
-  public ComplexFraction mul(int x, int prec, ComplexFraction result)
+  public ComplexFraction mul(int x, int bits, ComplexFraction result)
   {
-    assert false : "TODO";
-    return null;
+    realPart.mul(x, bits, result.realPart);
+    imaginaryPart.mul(x, bits, result.imaginaryPart);
+    result.updateNumeratorAndDenominator();
+    return result;
   }
 
   @Override
-  public ComplexFraction mul(ComplexFraction x, int prec, ComplexFraction result)
+  public ComplexFraction mul(ComplexFraction x, int bits, ComplexFraction result)
   {
-    assert false : "TODO";
-    return null;
+    try ( Fraction temp1 = new Fraction(); Fraction temp2 = new Fraction();)
+    {
+
+      realPart.mul(x.realPart, bits, temp1);
+      imaginaryPart.mul(x.imaginaryPart, bits, temp2);
+      temp1.sub(temp2, bits, result.realPart);
+
+      realPart.mul(x.imaginaryPart, bits, temp1);
+      imaginaryPart.mul(x.realPart, bits, temp2);
+      temp1.add(temp2, bits, result.imaginaryPart);
+
+      result.updateNumeratorAndDenominator();
+      return result;
+    }
   }
 
   @Override
   public ComplexFraction newFieldElement()
   {
-    assert false : "TODO";
-    return null;
+    return new ComplexFraction();
   }
 
   public ComplexFraction set(String string)
   {
-    assert false : "TODO";
-    return null;
+    String[] parts = string.split("\\s*[+-]\\s*i");
+    realPart.set(parts[0].trim());
+    imaginaryPart.set(parts[1].trim());
+    if (string.contains(" - "))
+    {
+      imaginaryPart.neg();
+    }
+    updateNumeratorAndDenominator();
+    return this;
   }
 
   @Override
-  public ComplexFraction sub(ComplexFraction element, int prec, ComplexFraction result)
+  public ComplexFraction sub(ComplexFraction element, int bits, ComplexFraction result)
   {
-    assert false : "TODO";
-    return null;
+    realPart.sub(element.realPart, bits, result.realPart);
+    imaginaryPart.sub(element.imaginaryPart, bits, result.imaginaryPart);
+    result.updateNumeratorAndDenominator();
+    return result;
   }
 
   @Override
   public ComplexFraction zero()
   {
-    assert false : "TODO";
-    return null;
-
+    return additiveIdentity();
   }
 
   @Override
   public ComplexFraction set(ComplexFraction value)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    realPart.set(value.realPart);
+    imaginaryPart.set(value.imaginaryPart);
+    updateNumeratorAndDenominator();
+    return this;
   }
 
   public GaussianInteger getNumerator()
   {
-    assert false : "todo";
-    return null;
-  }
-  
-  public GaussianInteger getDenominator()
-  {
-    assert false : "todo";
-    return null;
+    return numerator;
   }
 
+  public GaussianInteger getDenominator()
+  {
+    return denominator;
+  }
 }
