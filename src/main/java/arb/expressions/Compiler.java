@@ -20,6 +20,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.functions.Function;
 import arb.functions.real.RationalHypergeometricFunction;
+import arb.functions.sequences.LommelPolynomialSequence;
 import arb.utensils.Utensils;
 
 /**
@@ -167,7 +168,7 @@ public class Compiler
                                                     functionClass,
                                                     functionName,
                                                     containingExpression);
-   // expression.generate();
+    // expression.generate();
     // expression.defineClass();
 
     return expression;
@@ -319,6 +320,7 @@ public class Compiler
     typePrefixes.put(ComplexMatrix.class, "ℂᵐˣⁿ");
     typePrefixes.put(RationalFunction.class, "q");
     typePrefixes.put(Fraction.class, "f");
+    typePrefixes.put(LommelPolynomialSequence.class, "qR");
   }
 
   public static String getVariablePrefix(Class<?> type)
