@@ -21,7 +21,12 @@ public class ComplexFraction implements Field<ComplexFraction>, AutoCloseable
 
   public ComplexFraction()
   {
-    arena         = Arena.ofShared();
+    this(Arena.ofShared());
+  }
+
+  public ComplexFraction(Arena arena)
+  {
+    this.arena    = arena;
     parts         = Fraction.newVector(arena, 2);
     realPart      = parts.get(0);
     imaginaryPart = parts.get(1);
