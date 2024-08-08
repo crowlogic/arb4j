@@ -1,6 +1,6 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.loadBitsParameterOntoSTack;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 import static arb.expressions.Compiler.loadOrderParameter;
 import static arb.expressions.Compiler.loadThisOntoStack;
 import static arb.expressions.Compiler.scalarType;
@@ -254,7 +254,7 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
     arg.generate(argType, methodVisitor);
     if (!bitless)
     {
-      loadBitsParameterOntoSTack(methodVisitor);
+      loadBitsParameterOntoStack(methodVisitor);
     }
 
     loadOutputVariableOntoStack(methodVisitor, requisiteResultType);
@@ -298,7 +298,7 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
 
     loadOrderParameter(mv);
 
-    loadBitsParameterOntoSTack(mv);
+    loadBitsParameterOntoStack(mv);
 
     loadOutputVariableOntoStack(mv, generatedType);
 

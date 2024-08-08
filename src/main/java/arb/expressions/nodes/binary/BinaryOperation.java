@@ -268,7 +268,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
 
   public MethodVisitor invokeMethod(MethodVisitor mv, String operator, Class<?> resultType)
   {
-    loadBitsParameterOntoSTack(mv);
+    loadBitsParameterOntoStack(mv);
     loadResult(mv, resultType);
 
     var leftType = left.getGeneratedType();

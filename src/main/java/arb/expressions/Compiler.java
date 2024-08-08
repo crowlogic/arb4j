@@ -487,7 +487,7 @@ public class Compiler
    * 
    * @return methodVisitor the {@link MethodVisitor} parameter
    */
-  public static MethodVisitor loadBitsParameterOntoSTack(MethodVisitor methodVisitor)
+  public static MethodVisitor loadBitsParameterOntoStack(MethodVisitor methodVisitor)
   {
     methodVisitor.visitVarInsn(Opcodes.ILOAD, 3);
     return methodVisitor;

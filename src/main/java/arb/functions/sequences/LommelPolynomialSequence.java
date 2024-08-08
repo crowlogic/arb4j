@@ -28,14 +28,18 @@ public class LommelPolynomialSequence implements RationalFunctionSequence, AutoC
     v.close();
   }
 
-
   public Context                                                         context = new Context();
-  
+
   public Expression<Integer, RationalFunction, RationalFunctionSequence> expression;
 
   public RationalFunctionSequence                                        instance;
 
   public Real                                                            v       = new Real().setName("v");
+
+  public LommelPolynomialSequence()
+  {
+
+  }
 
   public LommelPolynomialSequence(Real order)
   {
@@ -44,11 +48,6 @@ public class LommelPolynomialSequence implements RationalFunctionSequence, AutoC
     v.set(order);
     instance = expression.instantiate();
     expression.injectReferences(instance);
-  }
-
-  public LommelPolynomialSequence(Real order, Real set, Real z)
-  {
-    // TODO Auto-generated constructor stub
   }
 
   @Override

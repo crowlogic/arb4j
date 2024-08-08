@@ -2,7 +2,7 @@ package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.duplicateTopOfTheStack;
 import static arb.expressions.Compiler.invokeStaticMethod;
-import static arb.expressions.Compiler.loadBitsParameterOntoSTack;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 import static arb.expressions.Compiler.scalarType;
 import static java.lang.String.format;
 import static java.lang.System.err;
@@ -109,7 +109,7 @@ public class SphericalBesselFunctionOfTheFirstKind<D, R, F extends Function<? ex
   public void generateScalar(MethodVisitor mv, Class<?> resultType, Class<?> scalarType)
   {
     arg.generate(resultType, mv);
-    loadBitsParameterOntoSTack(mv);
+    loadBitsParameterOntoStack(mv);
 
     invokeStaticMethod(mv,
                        arblib.class,

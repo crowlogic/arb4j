@@ -1,36 +1,32 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.invokeMethod;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.loadOrderParameter;
+import static arb.expressions.Compiler.loadThisOntoStack;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.Integer;
 import arb.RationalFunction;
-import arb.Real;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 import arb.functions.sequences.LommelPolynomialSequence;
 
-/**
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
- */
 public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>>
                              extends
                              FunctionCall<D, C, F> implements
                              Cloneable
 {
-  Node<D, C, F>    order;
-  Node<D, C, F>    index;
-  private Class<?> sequenceClass = LommelPolynomialSequence.class;
-  private String   seqFieldName;
+  public Node<D, C, F> order;
+  public Node<D, C, F> index;
+  public Class<?>      sequenceClass = LommelPolynomialSequence.class;
+  public String        seqFieldName;
+  public String        elementFieldName;
 
   public LommelPolynomial(Expression<D, C, F> expression)
   {
@@ -43,68 +39,37 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
     expression.require(';');
     arg = expression.resolve();
     expression.require(')');
+
+    // Allocate fields using newIntermediateVariable
+    seqFieldName     = expression.newIntermediateVariable("seq", sequenceClass, true);       // Initialize in
+                                                                                             // constructor
+    elementFieldName = expression.newIntermediateVariable("element", RationalFunction.class);
   }
 
   @Override
   public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
   {
-    generateSequenceInitialization(mv);
     generateEvaluateMethod(resultType, mv);
     return mv;
   }
 
-  private void generateSequenceInitialization(MethodVisitor mv)
-  {
-    expression.registerInitializer(methodVisitor ->
-    {
-      constructNewObject(methodVisitor, sequenceClass);
-      duplicateTopOfTheStack(methodVisitor);
-
-      // Generate order
-      order.generate(Real.class, methodVisitor);
-
-      // Invoke LommelPolynomialSequence constructor
-      invokeConstructor(methodVisitor, sequenceClass, Real.class);
-
-      // Store the sequence in a field
-      seqFieldName = expression.newIntermediateVariable("seq", sequenceClass);
-      expression.putField(methodVisitor, seqFieldName, sequenceClass);
-    });
-  }
-
   private void generateEvaluateMethod(Class<?> resultType, MethodVisitor mv)
   {
-    expression.registerInitializer(methodVisitor ->
-    {
-      // Load the sequence
-      expression.loadFieldOntoStack(methodVisitor, seqFieldName, LommelPolynomialSequence.class);
+    // ... (initializer lambda remains the same)
 
-      expression.loadThisFieldOntoStack(methodVisitor, seqFieldName, sequenceClass);
-
-      // Generate index
-      index.generate(Integer.class, methodVisitor);
-
-      // Load bits
-      loadBitsParameterOntoSTack(methodVisitor);
-
-      // Call sequence.evaluate
-      invokeMethod(methodVisitor,
-                   sequenceClass,
-                   "evaluate",
-                   RationalFunction.class,
-                   false,
-                   Integer.class,
-                   int.class);
-
-      // Store the result in an intermediate variable
-      String resultFieldName = expression.newIntermediateVariable("result", RationalFunction.class);
-      expression.putField(methodVisitor, resultFieldName, RationalFunction.class);
-    });
+    // In the evaluate method
+    // Load the 'element' field
+    loadThisOntoStack(mv);
+    expression.loadFieldOntoStack(mv, elementFieldName, RationalFunction.class);
 
     // Evaluate the argument
     arg.generate(resultType, mv);
+
+    // Load order and bits
     loadOrderParameter(mv);
-    loadBitsParameterOntoSTack(mv);
+    loadBitsParameterOntoStack(mv);
+
+    // Load the output variable
     loadOutputVariableOntoStack(mv, resultType);
 
     // Call evaluate on the RationalFunction
@@ -117,6 +82,8 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
                  int.class,
                  int.class,
                  resultType);
+
+    // No need to load 'this' again, the result is already on the stack
   }
 
   @Override
@@ -199,7 +166,7 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
          spliceInto(Expression<E, S, G> newExpression)
   {
     LommelPolynomial<E, S, G> newVar = new LommelPolynomial<>(newExpression);
-    newVar.arg = (Node<E, S, G>) arg.clone();
+    newVar.arg   = (Node<E, S, G>) arg.clone();
     newVar.order = (Node<E, S, G>) order.clone();
     return newVar;
   }

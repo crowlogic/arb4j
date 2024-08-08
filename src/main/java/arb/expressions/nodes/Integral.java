@@ -3,7 +3,7 @@ package arb.expressions.nodes;
 import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.getFieldFromThis;
 import static arb.expressions.Compiler.invokeMethod;
-import static arb.expressions.Compiler.loadBitsParameterOntoSTack;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -150,7 +150,7 @@ public class Integral<D, R, F extends Function<? extends D, ? extends R>>
 
     evaluateIndefiniteIntegralAt(mv, upperLimit, resultType, lowerIntegralValueFieldName);
     evaluateIndefiniteIntegralAt(mv, lowerLimit, resultType, upperIntegralValueFieldName);
-    loadBitsParameterOntoSTack(mv);
+    loadBitsParameterOntoStack(mv);
     if (isResult)
     {
       Compiler.checkClassCast(Compiler.loadResultParameter(mv), resultType);
@@ -204,7 +204,7 @@ public class Integral<D, R, F extends Function<? extends D, ? extends R>>
 //    assert limit.getGeneratedType()
 //                .equals(Real.class) : String.format("limit.generatedType=%s != Real",
 //                                                    limit.getGeneratedType());
-    loadBitsParameterOntoSTack(mv);
+    loadBitsParameterOntoStack(mv);
     loadFieldFromThis(mv, integralValueFieldName, generatedType);
     evaluateIntegral(mv);
     checkClassCast(mv, resultType);

@@ -126,7 +126,7 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
   {
     mv.visitInsn(ACONST_NULL);
     mv.visitLdcInsn(1);
-    loadBitsParameterOntoSTack(mv);
+    loadBitsParameterOntoStack(mv);
     generateReferenceToThisVariableRepresentingTheIndeterminantOfAPolynomial(mv, resultType);
     // checkClassCast(Compiler.loadResultParameter(mv), resultType);
     invokeMethod(mv,
