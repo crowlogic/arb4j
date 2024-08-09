@@ -140,7 +140,7 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
   @Override
   public String typeset()
   {
-    return String.format("$R_{%s, %s} (%s)$", order.typeset(), index.typeset(), arg.typeset());
+    return String.format("R_{%s, %s} (%s)", order.typeset(), index.typeset(), arg.typeset());
   }
 
   @Override
