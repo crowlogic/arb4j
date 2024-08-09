@@ -1,2 +1,0 @@
-package eu.hoefel.jatex;
-
