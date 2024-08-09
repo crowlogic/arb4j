@@ -47,8 +47,8 @@ import arb.viz.ArbShellExecutionController;
 /**
  * The {@link Expression} class represents a mathematical statement in infix
  * notation, which is a notation that places operators between operands, such as
- * "2 * 3 + 4". It uses characters and strings to represent symbols and
- * operations within these expressions. This class is part of the
+ * "2 * 3 + 4". It uses {@link Character}s and {@link String}s to represent
+ * symbols and operations within these expressions. This class is part of the
  * {@code arb.expressions} package and serves as a dynamic compiler that
  * translates these expressions into high-performance Java bytecode, leveraging
  * the ASM library for bytecode manipulation and generation.
@@ -62,8 +62,9 @@ import arb.viz.ArbShellExecutionController;
  * {@link LiteralConstant}, etc. This {@link TreeModel} structure allows the
  * class to correctly manage operator precedence and associativity rules
  * inherent in mathematical expressions and facilitate their printing via the
- * {@link TextTree}. The AST is then traversed to generate the corresponding
- * Java bytecode, which can be executed to evaluate the expression.
+ * {@link TextTree}. The AST is then traversed to {@link #generate()} the
+ * corresponding Java bytecodes constituting the class which can be executed to
+ * evaluate the corresponding expression.
  *
  * <h2>Key Features:</h2>
  * <ul>
@@ -72,8 +73,8 @@ import arb.viz.ArbShellExecutionController;
  * <li>Supports {@link Variable}, {@link LiteralConstant}, and
  * {@link FunctionCall}s within {@link Expression}, providing an extensive set
  * of features for constructing elaborate expressions, linked together via a
- * shared Context in which variables and other functions are registered for
- * mutual accessibility..</li>
+ * shared {@link Context} in which variables and other functions are registered
+ * for mutual accessibility..</li>
  * <li>Effectively manages {@link IntermediateVariable} and
  * {@link LiteralConstant}, optimizing memory usage and performance.</li>
  * <li>Automatically injects {@link VariableReference}s to {@link Variable} and
@@ -141,8 +142,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                                                   Object.class);
 
   public static final String     evaluationMethodDescriptor        = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
-
-  public static boolean          ignoreTODO                        = true;
 
   public static final Class<?>[] implementedInterfaces             = new Class[]
   { Typesettable.class, AutoCloseable.class, Initializable.class };
@@ -254,9 +253,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   public Expression(String className,
-                    Class<? extends D> class1,
-                    Class<? extends C> class2,
-                    Class<? extends F> class3,
+                    Class<? extends D> domain,
+                    Class<? extends C> codomain,
+                    Class<? extends F> function,
                     String expression,
                     Context context,
                     String functionName,
@@ -264,16 +263,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     assert className != null : "className needs to be specified";
     this.ascendentExpression              = parentExpression;
-    this.coDomainClassDescriptor          = class2.descriptorString();
-    this.domainClassDescriptor            = class1.descriptorString();
+    this.coDomainClassDescriptor          = codomain.descriptorString();
+    this.domainClassDescriptor            = domain.descriptorString();
     this.className                        = className;
-    this.domainType                       = class1;
-    this.coDomainType                     = class2;
-    this.functionClass                    = class3;
-    this.coDomainClassInternalName        = Type.getInternalName(class2);
-    this.domainClassInternalName          = Type.getInternalName(class1);
-    this.genericFunctionClassInternalName = Type.getInternalName(class3);
-    this.functionClassDescriptor          = class3.descriptorString();
+    this.domainType                       = domain;
+    this.coDomainType                     = codomain;
+    this.functionClass                    = function;
+    this.coDomainClassInternalName        = Type.getInternalName(codomain);
+    this.domainClassInternalName          = Type.getInternalName(domain);
+    this.genericFunctionClassInternalName = Type.getInternalName(function);
+    this.functionClassDescriptor          = function.descriptorString();
     this.expression                       = Parser.replaceArrowsEllipsesAndSuperscriptAlphabeticalExponents(expression);
     this.context                          = context;
     this.variables                        = context != null ? context.variables : null;
@@ -327,25 +326,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (variable)
     {
       Object field = context.getVariable(varName);
-      if (field == null)
-      {
-        if (varName != null && independentVariable != null && !varName.equals(independentVariable.reference.name))
-        {
-          if (ascendentExpression != null && ascendentExpression.independentVariable != null
-                        && varName.equals(ascendentExpression.independentVariable.reference.name))
-          {
-            assert ignoreTODO : "TODO: add check for null superexpression input here: " + ascendentExpression;
-          }
-          else
-          {
-            assert ignoreTODO : "no contextual variable for varName='" + varName + "'";
-          }
-        }
-        else
-        {
-          assert ignoreTODO : "TODO: add check for null input here field=" + field;
-        }
-      }
       fieldClass = field != null ? field.getClass() : null;
     }
     else
