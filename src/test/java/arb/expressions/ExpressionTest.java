@@ -32,6 +32,7 @@ public class ExpressionTest
     System.out.println("f=" + f);
     double hmm = f.eval(2.3);
     System.out.println("f(2.3)="+hmm);
+    assertEquals(-1.3758527163639351505, hmm);
   }
 
   public void testLogGamma()
