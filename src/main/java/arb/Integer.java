@@ -487,15 +487,20 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   }
 
   /**
-   * Calls this{@link #initialize(Arena, int)} with {@link Arena#ofConfined()}
+   * Calls this{@link #initialize(Arena, int)} with {@link Arena#ofShared()}
    * 
    * @param n
    * @return
    */
   public Integer init(int n)
   {
+    return init(Arena.ofShared(), n);
+  }
+
+  public Integer init(Arena arena, int n)
+  {
     this.dim = n;
-    return initialize(Arena.ofConfined(), n);
+    return initialize(arena, n);
   }
 
   /**
