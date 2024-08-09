@@ -184,11 +184,22 @@ public class ComplexFraction implements Field<ComplexFraction>, AutoCloseable
   {
     String[] parts = string.split("\\s*[+-]\\s*i");
     realPart.set(parts[0].trim());
-    imaginaryPart.set(parts[1].trim());
-    if (string.contains(" - "))
+
+    // Handle potential missing imaginary part
+    if (parts.length > 1)
     {
-      imaginaryPart.neg();
+      imaginaryPart.set(parts[1].trim());
+      if (string.contains(" - "))
+      {
+        imaginaryPart.neg();
+      }
     }
+    else
+    {
+      // Default imaginary part to 0 if not provided
+      imaginaryPart.set(0);
+    }
+
     updateNumeratorAndDenominator();
     return this;
   }
@@ -225,5 +236,16 @@ public class ComplexFraction implements Field<ComplexFraction>, AutoCloseable
   public GaussianInteger getDenominator()
   {
     return denominator;
+  }
+
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (!(obj instanceof ComplexFraction))
+    {
+      return false;
+    }
+    ComplexFraction f = (ComplexFraction) obj;
+    return realPart.equals(f.realPart) && imaginaryPart.equals(f.imaginaryPart);
   }
 }

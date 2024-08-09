@@ -204,7 +204,7 @@ public class Fraction implements AutoCloseable,Field<Fraction>,Named,Verifiable 
   
   public Fraction set(int j)
   {
-    arblib.fmpq_set_fmpz(this, j);
+    arblib.fmpq_set_si(this, j, 1);
     return this;
   } 
   

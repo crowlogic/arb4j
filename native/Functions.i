@@ -7,6 +7,9 @@
 #include <flint/fmpz_poly.h>
 #include <flint/fmpz_poly_q.h>
 
+void fmpq_set_si(fmpq_t res, slong p, ulong q);
+void fmpq_set_ui(fmpq_t res, ulong p, ulong q);
+
 void fmpq_set_fmpz(fmpq_t q, const fmpz_t n);
 
 void fmpq_init(fmpq_t x);

@@ -9,6 +9,14 @@
 package arb;
 
 public class arblib {
+  public static void fmpq_set_si(Fraction res, int p, long q) {
+    arblibJNI.fmpq_set_si(Fraction.getCPtr(res), res, p, q);
+  }
+
+  public static void fmpq_set_ui(Fraction res, long p, long q) {
+    arblibJNI.fmpq_set_ui(Fraction.getCPtr(res), res, p, q);
+  }
+
   public static void fmpq_set_fmpz(Fraction q, long n) {
     arblibJNI.fmpq_set_fmpz(Fraction.getCPtr(q), q, n);
   }
