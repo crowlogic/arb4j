@@ -12,8 +12,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import eu.hoefel.utils.Strings;
-import eu.hoefel.utils.Types;
+import arb.utensils.Strings;
+import arb.utensils.Types;
 
 /**
  * Class for handling (pretty) complex pgfplots. Intended to be used in

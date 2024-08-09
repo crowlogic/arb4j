@@ -16,9 +16,9 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import arb.utensils.IOs;
 import arb.utensils.text.latex.Equation.EquationEnvironment;
 import arb.utensils.text.latex.Figure.FigureEnvironment;
-import eu.hoefel.utils.IOs;
 
 /**
  * Class for the construction of

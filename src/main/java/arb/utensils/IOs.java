@@ -1,4 +1,4 @@
-package eu.hoefel.utils;
+package arb.utensils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import eu.hoefel.utils.Strings;
+import arb.utensils.Strings;
 
 /**
  * Class for handling tikzpictures to be included in {@link Latex} documents.

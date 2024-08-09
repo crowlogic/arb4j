@@ -1,4 +1,4 @@
-package eu.hoefel.utils;
+package arb.utensils;
 
 /**
  * Convenience methods with respect to types.
