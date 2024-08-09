@@ -12,3 +12,6 @@
 /.gradle/
 /build/
 
+/output.aux
+/output.pdf
+/output.tex

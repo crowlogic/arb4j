@@ -8,9 +8,7 @@ import arb.theorems.RegularTheorem;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class TheoremReference implements
-                              Reference,
-                              RegularTheorem
+public class TheoremReference implements Reference, RegularTheorem
 {
 
   @Override
@@ -69,6 +67,12 @@ public class TheoremReference implements
   public Reference setAddress(String address)
   {
     return book.setAddress(address);
+  }
+
+  @Override
+  public String state()
+  {
+    return String.format("See %s in %s", reference, book);
   }
 
 }

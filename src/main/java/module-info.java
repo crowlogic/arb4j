@@ -29,6 +29,7 @@ module arb4j
   requires transitive org.objectweb.asm.util;
   requires transitive org.objectweb.asm.commons;
   requires transitive org.apache.commons.lang3;
+  requires transitive eu.hoefel.jatex;
 
   exports arb;
   exports arb.theorems;

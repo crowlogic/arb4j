@@ -1,7 +1,11 @@
 package arb.documentation;
 
+import java.util.List;
+
 import arb.language.RegularClause;
 import arb.language.RegularTerm;
+import eu.hoefel.jatex.LatexPackage;
+import eu.hoefel.jatex.LatexPreambleEntry;
 
 /**
  * {@link BusinessSourceLicenseVersionOnePointOne#getText()} returns the text of
@@ -72,6 +76,27 @@ public class BusinessSourceLicenseVersionOnePointOne implements
            + "on the use of the Business Source License generally, please visit the Adopting and Developing Business Source License FAQ.\n"
            + "\n"
            + "";
+  }
+
+  @Override
+  public List<LatexPackage> neededPackages()
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public List<LatexPreambleEntry> preambleExtras()
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public List<String> latexCode()
+  {
+    assert false : "TODO";
+    return null;
   }
 
 }
