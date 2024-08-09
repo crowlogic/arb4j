@@ -3,9 +3,9 @@ package arb.documentation;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import eu.hoefel.jatex.LatexPackage;
-import eu.hoefel.jatex.LatexPreambleEntry;
-import eu.hoefel.jatex.Texable;
+import arb.utensils.text.latex.LatexPackage;
+import arb.utensils.text.latex.LatexPreambleEntry;
+import arb.utensils.text.latex.Texable;
 
 /**
  * 

@@ -8,9 +8,9 @@ import arb.documentation.TheArb4jLibrary;
 import arb.language.Sentence;
 import arb.language.Word;
 import arb.logic.Proposition;
-import eu.hoefel.jatex.LatexPackage;
-import eu.hoefel.jatex.LatexPreambleEntry;
-import eu.hoefel.jatex.Texable;
+import arb.utensils.text.latex.LatexPackage;
+import arb.utensils.text.latex.LatexPreambleEntry;
+import arb.utensils.text.latex.Texable;
 
 /**
  * A {@link Theorem} is a {@link Proposition} deducible from basic postulates.

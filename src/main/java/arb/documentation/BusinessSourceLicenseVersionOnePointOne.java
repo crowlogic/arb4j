@@ -4,8 +4,8 @@ import java.util.List;
 
 import arb.language.RegularClause;
 import arb.language.RegularTerm;
-import eu.hoefel.jatex.LatexPackage;
-import eu.hoefel.jatex.LatexPreambleEntry;
+import arb.utensils.text.latex.LatexPackage;
+import arb.utensils.text.latex.LatexPreambleEntry;
 
 /**
  * {@link BusinessSourceLicenseVersionOnePointOne#getText()} returns the text of
