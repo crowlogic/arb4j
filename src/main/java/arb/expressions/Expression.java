@@ -901,7 +901,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       System.out.format("Expression(#%s) Generating %s\n\n", System.identityHashCode(this), expression);
     }
-    rootNode.generate(coDomainType, mv);
+    rootNode.generate(mv, coDomainType);
 
     mv.visitInsn(Opcodes.ARETURN);
 

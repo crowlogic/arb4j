@@ -54,7 +54,7 @@ import arb.functions.Function;
  *
  * <p>
  * This class is also responsible for generating bytecode for this variable node
- * through its {@link #generate(Class, MethodVisitor)} method.
+ * through its {@link #generate(MethodVisitor, Class)} method.
  * </p>
  * 
  * @param <D> Type of domain field
@@ -199,7 +199,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     if (Expression.trace)
     {
@@ -241,7 +241,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
     {
       indexType = reference.index.type();
 
-      reference.index.generate(indexType, mv);
+      reference.index.generate(mv, indexType);
     }
 
     if (Integer.class.equals(indexType))

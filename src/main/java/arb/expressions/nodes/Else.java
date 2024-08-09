@@ -30,7 +30,7 @@ public class Else<D, R, F extends Function<? extends D, ? extends R>> extends
   }
 
   @Override
-  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     assert false : "not intended to be generated";
     return null;

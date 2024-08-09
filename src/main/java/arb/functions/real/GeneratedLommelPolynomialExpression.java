@@ -11,8 +11,8 @@ import junit.framework.TestCase;
 public class GeneratedLommelPolynomialExpression implements RealFunction, Typesettable, AutoCloseable, Initializable
 {
   public boolean isInitialized;
-  Integer        cℤ2 = new Integer("2");
   Integer        cℤ1 = new Integer("1");
+  Integer        cℤ2 = new Integer("2");
   Integer        cℤ3 = new Integer("3");
   public Real    ℝ1  = new Real();
   public Real    ℝ2  = new Real();

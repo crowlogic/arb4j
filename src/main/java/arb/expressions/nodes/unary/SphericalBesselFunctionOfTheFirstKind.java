@@ -73,7 +73,7 @@ public class SphericalBesselFunctionOfTheFirstKind<D, R, F extends Function<? ex
   }
 
   @Override
-  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     if (Expression.trace)
     {
@@ -83,7 +83,7 @@ public class SphericalBesselFunctionOfTheFirstKind<D, R, F extends Function<? ex
 
     loadOutputVariableOntoStack(mv, scalarType);
     duplicateTopOfTheStack(mv);
-    order.generate(scalarType, mv);
+    order.generate(mv, scalarType);
 
     if (!scalar)
     {
@@ -108,7 +108,7 @@ public class SphericalBesselFunctionOfTheFirstKind<D, R, F extends Function<? ex
 
   public void generateScalar(MethodVisitor mv, Class<?> resultType, Class<?> scalarType)
   {
-    arg.generate(resultType, mv);
+    arg.generate(mv, resultType);
     loadBitsParameterOntoStack(mv);
 
     invokeStaticMethod(mv,

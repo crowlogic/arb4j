@@ -1,9 +1,8 @@
 package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.invokeMethod;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-import static arb.expressions.Compiler.loadOrderParameter;
 import static arb.expressions.Compiler.loadThisOntoStack;
+import static java.lang.System.out;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -11,6 +10,8 @@ import java.util.function.Consumer;
 import org.objectweb.asm.MethodVisitor;
 
 import arb.RationalFunction;
+import arb.Real;
+import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
@@ -22,11 +23,11 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
                              FunctionCall<D, C, F> implements
                              Cloneable
 {
-  public Node<D, C, F> order;
-  public Node<D, C, F> index;
-  public Class<?>      sequenceClass = LommelPolynomialSequence.class;
-  public String        seqFieldName;
-  public String        elementFieldName;
+  public Node<D, C, F>  order;
+  public Node<D, C, F>  index;
+  public final Class<?> sequenceClass = LommelPolynomialSequence.class;
+  public String         seqFieldName;
+  public String         elementFieldName;
 
   public LommelPolynomial(Expression<D, C, F> expression)
   {
@@ -44,46 +45,44 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
     seqFieldName     = expression.newIntermediateVariable("seq", sequenceClass, true);       // Initialize in
                                                                                              // constructor
     elementFieldName = expression.newIntermediateVariable("element", RationalFunction.class);
+
+//    expression.registerInitializer(mv ->
+//    {
+//      initializeSequence(expression, mv);
+//
+//    });
+  }
+
+  public void initializeSequence(Expression<D, C, F> expression, MethodVisitor mv)
+  {
+    Compiler.loadThisOntoStack(mv);
+    expression.loadFieldOntoStack(mv, seqFieldName, sequenceClass );
+    expression.loadFieldOntoStack(mv, "v", Real.class);
+    out.format("generating " + order );
+    order.generate(mv, Real.class);
+
+    Compiler.invokeMethod(mv, Real.class, "set", Real.class, false, Real.class);
   }
 
   @Override
-  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    generateEvaluateMethod(resultType, mv);
-    return mv;
-  }
+    initializeSequence(expression, mv);
+    // TODO: if thios is called from the initialize() method intead of the evalute() method then the 3rd local variable is not going to be the bits parameter
 
-  private void generateEvaluateMethod(Class<?> resultType, MethodVisitor mv)
-  {
-    // ... (initializer lambda remains the same)
-
-    // In the evaluate method
-    // Load the 'element' field
     loadThisOntoStack(mv);
     expression.loadFieldOntoStack(mv, elementFieldName, RationalFunction.class);
 
     // Evaluate the argument
-    arg.generate(resultType, mv);
-
-    // Load order and bits
-    loadOrderParameter(mv);
-    loadBitsParameterOntoStack(mv);
+    arg.generate(mv, resultType);
 
     // Load the output variable
     loadOutputVariableOntoStack(mv, resultType);
 
     // Call evaluate on the RationalFunction
-    invokeMethod(mv,
-                 RationalFunction.class,
-                 "evaluate",
-                 resultType,
-                 false,
-                 resultType,
-                 int.class,
-                 int.class,
-                 resultType);
+    invokeMethod(mv, RationalFunction.class, "evaluate", resultType, false, resultType, resultType);
 
-    // No need to load 'this' again, the result is already on the stack
+    return mv;
   }
 
   @Override

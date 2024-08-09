@@ -86,7 +86,7 @@ public class Vector<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     int dimensions = elements.size();
     mv.visitIntInsn(BIPUSH, dimensions);
@@ -100,7 +100,7 @@ public class Vector<D, R, F extends Function<? extends D, ? extends R>>
       printIfTraceGenerationEnabled(i, element);
       duplicateTopOfTheStack(mv);
       mv.visitIntInsn(BIPUSH, index);
-      element.generate(scalarType, mv);
+      element.generate(mv, scalarType);
       convertTypeIfNecessary(mv, scalarType, element, index);
       mv.visitInsn(AASTORE);
     });

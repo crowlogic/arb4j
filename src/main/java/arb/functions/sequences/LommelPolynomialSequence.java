@@ -3,6 +3,7 @@ package arb.functions.sequences;
 import arb.Integer;
 import arb.RationalFunction;
 import arb.Real;
+import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -38,7 +39,7 @@ public class LommelPolynomialSequence implements RationalFunctionSequence, AutoC
 
   public LommelPolynomialSequence()
   {
-
+    this(RealConstants.half);
   }
 
   public LommelPolynomialSequence(Real order)

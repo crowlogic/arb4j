@@ -149,7 +149,7 @@ public class When<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     assert expression.coDomainType.equals(resultType) : String.format("expression.domain = %s != Integer, the only type supported presently\n",
                                                                       expression.domainType);
@@ -176,13 +176,13 @@ public class When<D, R, F extends Function<? extends D, ? extends R>>
       {
         mv.visitLabel(labels[i]);
 
-        branches.get(i).generate(resultType, mv);
+        branches.get(i).generate(mv, resultType);
         mv.visitJumpInsn(GOTO, endSwitch);
       }
 
       mv.visitLabel(defaultLabel);
 
-      super.generate(resultType, mv);
+      super.generate(mv, resultType);
       mv.visitLabel(endSwitch);
     }
     finally

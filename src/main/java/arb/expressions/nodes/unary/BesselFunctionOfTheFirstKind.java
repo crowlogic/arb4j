@@ -68,7 +68,7 @@ public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, 
   }
 
   @Override
-  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     if (Expression.trace)
     {
@@ -78,7 +78,7 @@ public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, 
 
     loadOutputVariableOntoStack(mv, scalarType);
     duplicateTopOfTheStack(mv);
-    order.generate(scalarType, mv);
+    order.generate(mv, scalarType);
 
     if (!scalar)
     {
@@ -102,7 +102,7 @@ public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, 
 
   public void generateScalar(MethodVisitor mv, Class<?> resultType, Class<?> scalarType)
   {
-    arg.generate(resultType, mv);
+    arg.generate(mv, resultType);
     loadBitsParameterOntoStack(mv);
 
     invokeStaticMethod(mv,

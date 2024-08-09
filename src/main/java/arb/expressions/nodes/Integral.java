@@ -141,7 +141,7 @@ public class Integral<D, R, F extends Function<? extends D, ? extends R>>
 
   @SuppressWarnings("unchecked")
   @Override
-  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     assignFieldNames(resultType);
     generatedType = resultType;
@@ -200,7 +200,7 @@ public class Integral<D, R, F extends Function<? extends D, ? extends R>>
                                             String integralValueFieldName)
   {
     loadIntegral(mv);
-    limit.generate(Real.class, mv);
+    limit.generate(mv, Real.class);
 //    assert limit.getGeneratedType()
 //                .equals(Real.class) : String.format("limit.generatedType=%s != Real",
 //                                                    limit.getGeneratedType());

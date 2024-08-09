@@ -87,7 +87,7 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
    * string parsing the better)
    */
   @Override
-  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     if (Expression.trace)
     {
@@ -152,8 +152,8 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     mv.visitTypeInsn(NEW, Type.getInternalName(hypergeometricClass));
     duplicateTopOfTheStack(mv);
 
-    α.generate(scalarType, mv);
-    β.generate(scalarType, mv);
+    α.generate(mv, scalarType);
+    β.generate(mv, scalarType);
 
     mv.visitLdcInsn(arg.toString());
     Class<?> nullaryFunctionClass = rational ? RationalNullaryFunction.class

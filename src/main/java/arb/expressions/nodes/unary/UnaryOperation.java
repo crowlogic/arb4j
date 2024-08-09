@@ -56,9 +56,9 @@ public abstract class UnaryOperation<D, R, F extends Function<? extends D, ? ext
   }
 
   @Override
-  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    return arg.generate(resultType, mv);
+    return arg.generate(mv, resultType);
   }
 
   public void loadOutputVariableOntoStack(MethodVisitor methodVisitor, Class<?> resultType)

@@ -17,6 +17,12 @@ public class R implements RealFunction, Typesettable, AutoCloseable, Initializab
   public LommelPolynomialSequence seqqR1    = new LommelPolynomialSequence();
   public RationalFunction         elementq1 = new RationalFunction();
 
+  public static void main( String args[] )
+  {
+    R r = new R();
+    double val = r.eval(2.3);
+    System.out.format("r(2.3)=%s\n", val);
+  }
   @Override
   public Class<Real> coDomainType()
   {
@@ -45,6 +51,7 @@ public class R implements RealFunction, Typesettable, AutoCloseable, Initializab
     {
       isInitialized = true;
     }
+    seqqR1.evaluate(3, 128, elementq1);
   }
 
   @Override

@@ -28,10 +28,10 @@ public class Subtraction<D, R, F extends Function<? extends D, ? extends R>> ext
   }
 
   @Override
-  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     fillInNullLeftHandSide();
-    return super.generate(resultType, mv);
+    return super.generate(mv, resultType);
   }
 
   private void fillInNullLeftHandSide()

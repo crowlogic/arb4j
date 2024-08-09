@@ -58,7 +58,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     this.expression = expression;
   }
 
-  public abstract MethodVisitor generate(Class<?> resultType, MethodVisitor mv);
+  public abstract MethodVisitor generate(MethodVisitor mv, Class<?> resultType);
 
   protected Class<?> generatedType;
 

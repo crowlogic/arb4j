@@ -141,7 +141,7 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     changeGeneratedTypeIfNecessary(resultType);
 
@@ -173,7 +173,7 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
 
           // convert to
           Class<? extends Object> argtype = arg.type();
-          arg.generate(argtype, mv);
+          arg.generate(mv, argtype);
           Class<?> argGeneratedtype = arg.getGeneratedType();
           if (!argGeneratedtype.equals(resultType))
           {
@@ -251,7 +251,7 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
          generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> requisiteResultType, boolean bitless)
   {
     Class<?> argType = getArgType();
-    arg.generate(argType, methodVisitor);
+    arg.generate(methodVisitor, argType);
     if (!bitless)
     {
       loadBitsParameterOntoStack(methodVisitor);
@@ -315,7 +315,7 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
     }
     else
     {
-      arg.generate(argType, mv);
+      arg.generate(mv, argType);
     }
   }
 

@@ -278,7 +278,7 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     resultType = assignTypes(resultType);
 
@@ -327,7 +327,7 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>>
   {
     endIndexFieldName = expression.newIntermediateVariable("endIndex", Integer.class);
     loadFieldFromThis(mv, endIndexFieldName, Integer.class);
-    endIndex.generate((Class<? extends R>) Integer.class, mv);
+    endIndex.generate(mv, (Class<? extends R>) Integer.class);
     invokeSetMethod(mv, Integer.class, Integer.class);
     pop(mv);
   }
@@ -675,7 +675,7 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>>
   protected void setIndexToTheStartIndex(MethodVisitor methodVisitor)
   {
     loadIndexVariable(methodVisitor);
-    startIndex.generate(Integer.class, methodVisitor);
+    startIndex.generate(methodVisitor, Integer.class);
     invokeSetMethod(methodVisitor, Integer.class, Integer.class);
     pop(methodVisitor);
   }

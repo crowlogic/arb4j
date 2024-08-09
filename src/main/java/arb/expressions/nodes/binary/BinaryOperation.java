@@ -233,7 +233,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
   }
 
   @Override
-  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     if (Expression.trace)
     {
@@ -241,9 +241,9 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     }
     generatedType = resultType;
 
-    left.generate(left.type(), mv);
+    left.generate(mv, left.type());
 
-    right.generate(right.type(), mv);
+    right.generate(mv, right.type());
 
     return invokeMethod(mv, operation, resultType);
   }
@@ -268,6 +268,8 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
 
   public MethodVisitor invokeMethod(MethodVisitor mv, String operator, Class<?> resultType)
   {
+    // TODO: if thios is called from the initialize() method intead of the evalute() method then the 3rd local variable is not going to be the bits parameter
+    
     loadBitsParameterOntoStack(mv);
     loadResult(mv, resultType);
 

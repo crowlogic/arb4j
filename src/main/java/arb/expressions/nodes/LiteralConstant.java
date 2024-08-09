@@ -191,7 +191,7 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public MethodVisitor generate(Class<?> resultType, MethodVisitor mv)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     generatedType = type();
     if (fractionValue != null)
