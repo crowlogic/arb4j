@@ -8,14 +8,28 @@ import arb.Typesettable;
 import arb.functions.sequences.LommelPolynomialSequence;
 import junit.framework.TestCase;
 
+/**
+ * need to fix this part: this.seqqR1.v.set(this.cℤ1.div(this.cℤ2, var3,
+ * this.ℝ1)); elementq1 = seqqR1.evaluate(cℤ3, 128);
+ */
 public class GeneratedLommelPolynomialExpression implements RealFunction, Typesettable, AutoCloseable, Initializable
 {
-  public boolean isInitialized;
-  Integer        cℤ1 = new Integer("1");
-  Integer        cℤ2 = new Integer("2");
-  Integer        cℤ3 = new Integer("3");
-  public Real    ℝ1  = new Real();
-  public Real    ℝ2  = new Real();
+  public boolean                  isInitialized;
+  Integer                         cℤ2    = new Integer("2");
+  Integer                         cℤ1    = new Integer("1");
+  Integer                         cℤ3    = new Integer("3");
+  public LommelPolynomialSequence seqqR1 = new LommelPolynomialSequence();
+  public RationalFunction         elementq1;
+  public Real                     ℝ1     = new Real();
+
+  public static void main(String args[])
+  {
+    GeneratedLommelPolynomialExpression f    = new GeneratedLommelPolynomialExpression();
+    double                              eval = f.eval(2.3);
+    System.out.println("f=" + eval);
+    TestCase.assertEquals(-1.3758527163639351, eval);
+
+  }
 
   @Override
   public Class<Real> coDomainType()
@@ -23,55 +37,42 @@ public class GeneratedLommelPolynomialExpression implements RealFunction, Typese
     return Real.class;
   }
 
-  public int               bits = 128;
-
-  LommelPolynomialSequence seq  = new LommelPolynomialSequence(cℤ1.div(cℤ2, bits, ℝ1));
-  private RationalFunction element;
-
-  public static void main(String args[])
-  {
-    GeneratedLommelPolynomialExpression r   = new GeneratedLommelPolynomialExpression();
-    double                              val = r.eval(2.3);
-    System.out.format("R[2.3]=%s\n", val);
-    TestCase.assertEquals(-1.3758527163639351505, val);
-
-  }
-
   @Override
   public Real evaluate(Real z, int order, int bits, Real result)
   {
-    if (!isInitialized)
+    if (!this.isInitialized)
     {
-      initialize();
+      this.initialize();
     }
 
-    return element.evaluate(z, order, bits, result);
-
+    return this.elementq1.evaluate(z, 0, 128, result);
   }
 
   @Override
   public void initialize()
   {
-    if (isInitialized)
+    if (this.isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
     else
     {
-      isInitialized = true;
+      int var3 = 128;
+      this.seqqR1.v.set(this.cℤ1.div(this.cℤ2, var3, this.ℝ1));
+      elementq1          = seqqR1.evaluate(cℤ3, 128);
+      this.isInitialized = true;
     }
-    element = seq.evaluate(cℤ3, 128);
-
   }
 
   @Override
   public void close()
   {
-    cℤ2.close();
-    cℤ1.close();
-    cℤ3.close();
-    ℝ1.close();
-    ℝ2.close();
+    this.cℤ2.close();
+    this.cℤ1.close();
+    this.cℤ3.close();
+    this.seqqR1.close();
+    this.ℝ1.close();
+    this.elementq1.close();
   }
 
   @Override
@@ -83,6 +84,6 @@ public class GeneratedLommelPolynomialExpression implements RealFunction, Typese
   @Override
   public String typeset()
   {
-    return "$R_{\\frac{1}{2}, 3} (z)$";
+    return "R_{\\frac{1}{2}, 3} (z)";
   }
 }

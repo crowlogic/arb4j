@@ -19,7 +19,6 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.functions.Function;
-import arb.functions.real.RationalHypergeometricFunction;
 import arb.functions.sequences.LommelPolynomialSequence;
 import arb.utensils.Utensils;
 
@@ -484,10 +483,11 @@ public class Compiler
    * methods is (this,order,bits,result)
    * 
    * @param methodVisitor the {@link MethodVisitor} to receive the instructions
+   * @param expression    TODO
    * 
    * @return methodVisitor the {@link MethodVisitor} parameter
    */
-  public static MethodVisitor loadBitsParameterOntoStack(MethodVisitor methodVisitor)
+  public static MethodVisitor loadBitsParameterOntoStack(MethodVisitor methodVisitor, Expression<?, ?, ?> expression)
   {
     methodVisitor.visitVarInsn(Opcodes.ILOAD, 3);
     return methodVisitor;

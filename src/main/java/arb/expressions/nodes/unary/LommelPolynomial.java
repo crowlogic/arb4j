@@ -42,23 +42,25 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
     expression.require(')');
 
     // Allocate fields using newIntermediateVariable
-    seqFieldName     = expression.newIntermediateVariable("seq", sequenceClass, true);       // Initialize in
-                                                                                             // constructor
-    elementFieldName = expression.newIntermediateVariable("element", RationalFunction.class);
+    seqFieldName     = expression.newIntermediateVariable("seq", sequenceClass, true);              // Initialize in
+                                                                                                    // constructor
+    elementFieldName = expression.newIntermediateVariable("element", RationalFunction.class, false);
 
-//    expression.registerInitializer(mv ->
-//    {
-//      initializeSequence(expression, mv);
-//
-//    });
+    expression.registerInitializer(mv ->
+    {
+      initializeSequence(expression, mv);
+
+    });
   }
 
   public void initializeSequence(Expression<D, C, F> expression, MethodVisitor mv)
   {
     Compiler.loadThisOntoStack(mv);
-    expression.loadFieldOntoStack(mv, seqFieldName, sequenceClass );
+    Compiler.duplicateTopOfTheStack(mv);
+
+    expression.loadFieldOntoStack(mv, seqFieldName, sequenceClass);
     expression.loadFieldOntoStack(mv, "v", Real.class);
-    out.format("generating " + order );
+    out.format("generating " + order);
     order.generate(mv, Real.class);
 
     Compiler.invokeMethod(mv, Real.class, "set", Real.class, false, Real.class);
@@ -67,8 +69,6 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    initializeSequence(expression, mv);
-    // TODO: if thios is called from the initialize() method intead of the evalute() method then the 3rd local variable is not going to be the bits parameter
 
     loadThisOntoStack(mv);
     expression.loadFieldOntoStack(mv, elementFieldName, RationalFunction.class);
@@ -76,11 +76,22 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
     // Evaluate the argument
     arg.generate(mv, resultType);
 
+    mv.visitLdcInsn(0);
+    mv.visitLdcInsn(128);
+
     // Load the output variable
     loadOutputVariableOntoStack(mv, resultType);
 
     // Call evaluate on the RationalFunction
-    invokeMethod(mv, RationalFunction.class, "evaluate", resultType, false, resultType, resultType);
+    invokeMethod(mv,
+                 RationalFunction.class,
+                 "evaluate",
+                 resultType,
+                 false,
+                 resultType,
+                 int.class,
+                 int.class,
+                 resultType);
 
     return mv;
   }

@@ -9,6 +9,14 @@
 package arb;
 
 public class arblib {
+  public static void fmpz_poly_set_coeff_ui(IntegerPolynomial poly, int n, long x) {
+    arblibJNI.fmpz_poly_set_coeff_ui(IntegerPolynomial.getCPtr(poly), poly, n, x);
+  }
+
+  public static void fmpz_poly_set_coeff_fmpz(IntegerPolynomial poly, int n, long x) {
+    arblibJNI.fmpz_poly_set_coeff_fmpz(IntegerPolynomial.getCPtr(poly), poly, n, x);
+  }
+
   public static void fmpq_set_si(Fraction res, int p, long q) {
     arblibJNI.fmpq_set_si(Fraction.getCPtr(res), res, p, q);
   }
@@ -91,14 +99,6 @@ public class arblib {
 
   public static long fmpz_poly_get_coeff_ui(IntegerPolynomial poly, int n) {
     return arblibJNI.fmpz_poly_get_coeff_ui(IntegerPolynomial.getCPtr(poly), poly, n);
-  }
-
-  public static void fmpz_poly_set_coeff_ui(IntegerPolynomial poly, int n, long x) {
-    arblibJNI.fmpz_poly_set_coeff_ui(IntegerPolynomial.getCPtr(poly), poly, n, x);
-  }
-
-  public static void fmpz_poly_set_coeff_fmpz(IntegerPolynomial poly, int n, long x) {
-    arblibJNI.fmpz_poly_set_coeff_fmpz(IntegerPolynomial.getCPtr(poly), poly, n, x);
   }
 
   public static void fmpz_poly_get_coeff_fmpz(long x, IntegerPolynomial poly, int n) {

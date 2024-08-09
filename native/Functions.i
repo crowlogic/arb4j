@@ -7,6 +7,10 @@
 #include <flint/fmpz_poly.h>
 #include <flint/fmpz_poly_q.h>
 
+void fmpz_poly_set_coeff_ui(fmpz_poly_t poly, slong n, ulong x);
+
+void fmpz_poly_set_coeff_fmpz(fmpz_poly_t poly, slong n, const fmpz_t x);
+
 void fmpq_set_si(fmpq_t res, slong p, ulong q);
 void fmpq_set_ui(fmpq_t res, ulong p, ulong q);
 

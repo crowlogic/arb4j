@@ -114,9 +114,21 @@ import arb.algebra.Ring;
     return res;
   }
 
-  public int get(int i)
+  Integer[] coeffs;
+
+  public Integer get(int idx)
   {
-   return arblib.fmpz_poly_get_coeff_si(this, i);
+    if (coeffs == null)
+    {
+      coeffs = new Integer[getLength()];
+      for (int i = 0; i < getLength(); i++)
+      {
+        coeffs[i] = new Integer(swigCPtr + Long.BYTES * i,
+                                false);
+      }
+    }
+
+    return coeffs[idx];
   }
   
   public IntegerPolynomial div(IntegerPolynomial operand, IntegerPolynomial result)

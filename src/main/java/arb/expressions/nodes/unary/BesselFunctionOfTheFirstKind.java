@@ -103,7 +103,7 @@ public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, 
   public void generateScalar(MethodVisitor mv, Class<?> resultType, Class<?> scalarType)
   {
     arg.generate(mv, resultType);
-    loadBitsParameterOntoStack(mv);
+    loadBitsParameterOntoStack(mv, expression);
 
     invokeStaticMethod(mv,
                        arblib.class,

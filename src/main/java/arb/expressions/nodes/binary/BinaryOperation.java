@@ -270,7 +270,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
   {
     // TODO: if thios is called from the initialize() method intead of the evalute() method then the 3rd local variable is not going to be the bits parameter
     
-    loadBitsParameterOntoStack(mv);
+    loadBitsParameterOntoStack(mv, expression);
     loadResult(mv, resultType);
 
     var leftType = left.getGeneratedType();

@@ -9,6 +9,8 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void fmpz_poly_set_coeff_ui(long jarg1, IntegerPolynomial jarg1_, int jarg2, long jarg3);
+  public final static native void fmpz_poly_set_coeff_fmpz(long jarg1, IntegerPolynomial jarg1_, int jarg2, long jarg3);
   public final static native void fmpq_set_si(long jarg1, Fraction jarg1_, int jarg2, long jarg3);
   public final static native void fmpq_set_ui(long jarg1, Fraction jarg1_, long jarg2, long jarg3);
   public final static native void fmpq_set_fmpz(long jarg1, Fraction jarg1_, long jarg2);
@@ -30,8 +32,6 @@ public class arblibJNI {
   public final static native int fmpz_poly_get_coeff_si(long jarg1, IntegerPolynomial jarg1_, int jarg2);
   public final static native void fmpz_poly_set_coeff_si(long jarg1, IntegerPolynomial jarg1_, int jarg2, int jarg3);
   public final static native long fmpz_poly_get_coeff_ui(long jarg1, IntegerPolynomial jarg1_, int jarg2);
-  public final static native void fmpz_poly_set_coeff_ui(long jarg1, IntegerPolynomial jarg1_, int jarg2, long jarg3);
-  public final static native void fmpz_poly_set_coeff_fmpz(long jarg1, IntegerPolynomial jarg1_, int jarg2, long jarg3);
   public final static native void fmpz_poly_get_coeff_fmpz(long jarg1, long jarg2, IntegerPolynomial jarg2_, int jarg3);
   public final static native void fmpz_poly_q_inv(long jarg1, RationalFunction jarg1_, long jarg2, RationalFunction jarg2_);
   public final static native int fmpz_poly_q_equal(long jarg1, RationalFunction jarg1_, long jarg2, RationalFunction jarg2_);
