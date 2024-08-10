@@ -108,7 +108,10 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
 
     if (RationalFunction.class.equals(expression.coDomainType))
     {
-      assert false : "todo: just return element";
+      loadOutputVariableOntoStack(mv, resultType);
+      expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);
+      Compiler.invokeMethod(mv, RationalFunction.class, "set", RationalFunction.class, false, RationalFunction.class);
+     // assert false : "todo: just return element";
     }
     else
     {

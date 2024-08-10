@@ -39,9 +39,9 @@ public class ExpressionTest
   public void testLommelPolynomialRationalExpression()
   {
     var F = RationalNullaryFunction.express("R(1/2,3;z)");
-    System.out.println("F=" + F);
+   // System.out.println("F=" + F);
     var f = F.evaluate(128);
-    System.out.println("f=" + f);
+    //System.out.println("f=" + f);
     double hmm = f.asRealFunction().eval(2.3);
     /// System.out.println("f(2.3)="+hmm);
     assertEquals(-1.3758527163639351505, hmm);
