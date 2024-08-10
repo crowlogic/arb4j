@@ -57,7 +57,12 @@ import arb.functions.real.RealFunction;
     }
   }
 
-
+  @SuppressWarnings("resource")
+  public static RationalFunction parse( String expression )
+  {
+    return new RationalFunction().set(expression);
+  }
+  
   public static Expression<Fraction, Fraction, RationalFunction> compile(String expression)
   {
     return compile(expression, null);

@@ -27,9 +27,9 @@ import arb.functions.real.RealBesselFunctionOfTheFirstKind;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, ? extends R>>
+public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends D, ? extends R>>
                                          extends
-                                         FunctionCall<D, R, F>
+                                         FunctionCallNode<D, R, F>
 {
 
   @Override
@@ -49,7 +49,7 @@ public class BesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, 
 
   public boolean scalar;
 
-  public BesselFunctionOfTheFirstKind(Expression<D, R, F> expression)
+  public BesselFunctionNodeOfTheFirstKind(Expression<D, R, F> expression)
   {
     super("J",
           null,

@@ -20,9 +20,9 @@ import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 import arb.functions.sequences.LommelPolynomialSequence;
 
-public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>>
-                             extends
-                             FunctionCall<D, C, F>
+public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extends C>>
+                                 extends
+                                 FunctionCallNode<D, C, F>
 {
   public Node<D, C, F>  order;
   public Node<D, C, F>  index;
@@ -31,7 +31,7 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
   public String         elementFieldName;
   public Class<?>       scalarType;
 
-  public LommelPolynomial(Expression<D, C, F> expression)
+  public LommelPolynomialNode(Expression<D, C, F> expression)
   {
     super("R",
           null,
@@ -110,8 +110,13 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
     {
       loadOutputVariableOntoStack(mv, resultType);
       expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);
-      Compiler.invokeMethod(mv, RationalFunction.class, "set", RationalFunction.class, false, RationalFunction.class);
-     // assert false : "todo: just return element";
+      Compiler.invokeMethod(mv,
+                            RationalFunction.class,
+                            "set",
+                            RationalFunction.class,
+                            false,
+                            RationalFunction.class);
+      // assert false : "todo: just return element";
     }
     else
     {
@@ -125,7 +130,7 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
                    int.class,
                    resultType);
     }
-    
+
     return mv;
   }
 
@@ -207,7 +212,7 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    LommelPolynomial<E, S, G> newVar = new LommelPolynomial<>(newExpression);
+    LommelPolynomialNode<E, S, G> newVar = new LommelPolynomialNode<>(newExpression);
     newVar.arg   = arg.spliceInto(newExpression);
     newVar.order = order.spliceInto(newExpression);
     return newVar;

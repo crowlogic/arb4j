@@ -9,7 +9,6 @@ import static org.objectweb.asm.Opcodes.NEW;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
-import arb.Complex;
 import arb.RationalFunction;
 import arb.Real;
 import arb.RealPolynomial;
@@ -37,9 +36,9 @@ import arb.functions.real.RealPolynomialNullaryFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class HypergeometricFunction<D, R, F extends Function<? extends D, ? extends R>>
+public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? extends R>>
                                    extends
-                                   FunctionCall<D, R, F>
+                                   FunctionCallNode<D, R, F>
 {
 
   @Override
@@ -63,11 +62,11 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
 
   Node<D, R, F>    β;
 
-  private Class<?> hypergeometricClass;
+  private Class<?> hypergeometricFunctionClass;
 
   private boolean  dependsOnInput;
 
-  public HypergeometricFunction(Expression<D, R, F> expression)
+  public HypergeometricFunctionNode(Expression<D, R, F> expression)
   {
     super("pFq",
           null,
@@ -85,6 +84,8 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
    * {@link Node#spliceInto(Expression)} instead of turning it back into a string
    * and re-parsing it (not like these will be called in tight-loop but the less
    * string parsing the better)
+   * 
+   * HOW: See {@link LommelPolynomialNode} for an example
    */
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
@@ -101,15 +102,42 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
       err.printf("pFq.isRational=%s\n", isRational);
     }
 
-    constructFiniteHypergeometricSeries(mv, scalarType, isRational);
-    evaluateHypergeometricPolynomial(resultType, mv);
+    boolean isReal = Real.class.equals(scalarType);
+
+    hypergeometricFunctionClass = isRational ? RationalHypergeometricFunction.class
+                                             : isReal ? RealPolynomialHypergeometricFunction.class
+                                             : ComplexPolynomialHypergeometricFunction.class;
+
+    mv.visitTypeInsn(NEW, Type.getInternalName(hypergeometricFunctionClass));
+    duplicateTopOfTheStack(mv);
+
+    α.generate(mv, scalarType);
+    β.generate(mv, scalarType);
+
+    mv.visitLdcInsn(arg.toString());
+    Class<?> nullaryFunctionClass = isRational ? RationalNullaryFunction.class
+                                               : isReal ? RealPolynomialNullaryFunction.class
+                                               : ComplexPolynomialNullaryFunction.class;
+    invokeStaticMethod(mv, nullaryFunctionClass, "parse", Expression.class, String.class);
+    invokeConstructor(mv, hypergeometricFunctionClass, scalarType, scalarType, Expression.class);
+    mv.visitInsn(ACONST_NULL);
+    mv.visitLdcInsn(1);
+    loadBitsOntoStack(mv);
+    loadOutputOntoStack(mv, resultType);
+    invokeMethod(mv,
+                 INVOKEVIRTUAL,
+                 hypergeometricFunctionClass,
+                 "evaluate",
+                 resultType,
+                 Object.class,
+                 int.class,
+                 int.class,
+                 resultType);
     return mv;
   }
 
-  public void generateReferenceToThisVariableRepresentingTheIndeterminantOfAPolynomial(MethodVisitor mv,
-                                                                                       Class<?> resultType)
+  public void loadOutputOntoStack(MethodVisitor mv, Class<?> resultType)
   {
-
     if (isResult)
     {
       checkClassCast(loadResultParameter(mv), resultType);
@@ -118,49 +146,19 @@ public class HypergeometricFunction<D, R, F extends Function<? extends D, ? exte
     {
 
       expression.allocateIntermediateVariable(mv, resultType);
-
     }
   }
 
-  public HypergeometricFunction<D, R, F> evaluateHypergeometricPolynomial(Class<?> resultType, MethodVisitor mv)
+  public void loadBitsOntoStack(MethodVisitor mv)
   {
-    mv.visitInsn(ACONST_NULL);
-    mv.visitLdcInsn(1);
-    loadBitsParameterOntoStack(mv);
-    generateReferenceToThisVariableRepresentingTheIndeterminantOfAPolynomial(mv, resultType);
-    // checkClassCast(Compiler.loadResultParameter(mv), resultType);
-    invokeMethod(mv,
-                 INVOKEVIRTUAL,
-                 hypergeometricClass,
-                 "evaluate",
-                 resultType,
-                 Object.class,
-                 int.class,
-                 int.class,
-                 resultType);
-    return this;
-  }
-
-  public void constructFiniteHypergeometricSeries(MethodVisitor mv, Class<?> scalarType, boolean rational)
-  {
-    boolean isReal = Real.class.equals(scalarType);
-
-    hypergeometricClass = rational ? RationalHypergeometricFunction.class
-                                   : isReal ? RealPolynomialHypergeometricFunction.class
-                                   : ComplexPolynomialHypergeometricFunction.class;
-
-    mv.visitTypeInsn(NEW, Type.getInternalName(hypergeometricClass));
-    duplicateTopOfTheStack(mv);
-
-    α.generate(mv, scalarType);
-    β.generate(mv, scalarType);
-
-    mv.visitLdcInsn(arg.toString());
-    Class<?> nullaryFunctionClass = rational ? RationalNullaryFunction.class
-                                             : isReal ? RealPolynomialNullaryFunction.class
-                                             : ComplexPolynomialNullaryFunction.class;
-    invokeStaticMethod(mv, nullaryFunctionClass, "parse", Expression.class, String.class);
-    invokeConstructor(mv, hypergeometricClass, scalarType, scalarType, Expression.class);
+    if (expression.insideInitializer)
+    {
+      mv.visitLdcInsn(128);
+    }
+    else
+    {
+      loadBitsParameterOntoStack(mv);
+    }
   }
 
 }

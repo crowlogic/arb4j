@@ -12,7 +12,7 @@ import arb.functions.Function;
  */
 public class Negation<D, R, F extends Function<? extends D, ? extends R>>
                      extends
-                     FunctionCall<D, R, F>
+                     FunctionCallNode<D, R, F>
 {
 
   @Override

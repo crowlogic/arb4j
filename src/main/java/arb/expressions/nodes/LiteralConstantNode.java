@@ -69,7 +69,7 @@ import arb.utensils.Utensils;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
+public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends R>>
                             extends
                             Node<D, R, F>
 {
@@ -117,7 +117,7 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
 
   public Fraction     fractionValue;
 
-  public LiteralConstant(Expression<D, R, F> expression, String constantValueString)
+  public LiteralConstantNode(Expression<D, R, F> expression, String constantValueString)
   {
     this(expression,
          constantValueString,
@@ -125,7 +125,7 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
 
   }
 
-  public LiteralConstant(Expression<D, R, F> expression, String constantValueString, String name)
+  public LiteralConstantNode(Expression<D, R, F> expression, String constantValueString, String name)
   {
     super(expression);
     assert Integer.class.equals(arb.Integer.class) : "an import statement for arb.Integer is probably missing";
@@ -398,7 +398,7 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new LiteralConstant<E, S, G>(newExpression,
+    return new LiteralConstantNode<E, S, G>(newExpression,
                                         value,
                                         fieldName);
   }
@@ -412,7 +412,7 @@ public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public Node<D, R, F> derivative(Variable<D, R, F> variable)
   {
-    return new LiteralConstant<>(expression,
+    return new LiteralConstantNode<>(expression,
                                  "0");
   }
 

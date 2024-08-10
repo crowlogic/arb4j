@@ -17,7 +17,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.Expression;
-import arb.expressions.nodes.LiteralConstant;
+import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
@@ -151,9 +151,9 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
   @Override
   public List<Node<D, R, F>> getBranches()
   {
-    return List.of(left == null ? new LiteralConstant<>(expression,
+    return List.of(left == null ? new LiteralConstantNode<>(expression,
                                                         "0") : left,
-                   right == null ? new LiteralConstant<>(expression,
+                   right == null ? new LiteralConstantNode<>(expression,
                                                          "0") : right);
   }
 

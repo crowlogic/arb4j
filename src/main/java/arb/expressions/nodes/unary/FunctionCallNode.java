@@ -34,7 +34,7 @@ import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 
 /**
- * {@link FunctionCall} is a {@link Node} in the {@link Expression} that
+ * {@link FunctionCallNode} is a {@link Node} in the {@link Expression} that
  * represents a call to either a builtin or a contextual function, a contextual
  * function call being one that has been constructed by passing a
  * {@link Context} to
@@ -61,7 +61,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
+public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>>
                          extends
                          UnaryOperation<D, R, F>
 {
@@ -83,7 +83,7 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
 
   private boolean                 isBuiltinQuasiPolynomialFunctional;
 
-  public FunctionCall(String functionName, Node<D, R, F> argument, Expression<D, R, F> expression)
+  public FunctionCallNode(String functionName, Node<D, R, F> argument, Expression<D, R, F> expression)
   {
     super(argument,
           expression);
@@ -448,7 +448,7 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new FunctionCall<E, S, G>(functionName,
+    return new FunctionCallNode<E, S, G>(functionName,
                                      arg.spliceInto(newExpression),
                                      newExpression);
   }

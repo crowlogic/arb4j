@@ -20,15 +20,15 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.Expression;
-import arb.expressions.nodes.Else;
-import arb.expressions.nodes.LiteralConstant;
+import arb.expressions.nodes.ElseNode;
+import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 
 /**
- * The {@link When} class represents a {@link Node} in the {@link Expression}
- * that is constructed by the {@link When#evaluate(Expression, int)} method when
+ * The {@link WhenNode} class represents a {@link Node} in the {@link Expression}
+ * that is constructed by the {@link WhenNode#evaluate(Expression, int)} method when
  * the 'when' "function" is encountered. It's syntax is like this:
  * 
  * when(n=0,1,n=1,tanh(ln(1+x²)),else,-1)
@@ -39,7 +39,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class When<D, R, F extends Function<? extends D, ? extends R>>
+public class WhenNode<D, R, F extends Function<? extends D, ? extends R>>
                  extends
                  UnaryOperation<D, R, F>
 {
@@ -68,22 +68,22 @@ public class When<D, R, F extends Function<? extends D, ? extends R>>
                                          expression.previousCharacter));
     }
 
-    LiteralConstant<D, R, F> constant = evaluateCondition(expression);
+    LiteralConstantNode<D, R, F> constant = evaluateCondition(expression);
     Node<D, R, F>            value    = expression.resolve();
     cases.put(new Integer(constant.value), value);
   }
 
   public static <R, F extends Function<? extends D, ? extends R>, D>
-         LiteralConstant<D, R, F>
+         LiteralConstantNode<D, R, F>
          evaluateCondition(Expression<D, R, F> expression)
   {
     Node<D, R, F> condition = expression.evaluate();
-    if (!(condition instanceof LiteralConstant))
+    if (!(condition instanceof LiteralConstantNode))
     {
       throw new CompilerException("condition of when statement must be the equality of the input variable to an "
                     + "Integer LiteralConstant type, but got " + condition);
     }
-    LiteralConstant<D, R, F> constant = (LiteralConstant<D, R, F>) condition;
+    LiteralConstantNode<D, R, F> constant = (LiteralConstantNode<D, R, F>) condition;
     expression.require(',');
     return constant;
   }
@@ -110,7 +110,7 @@ public class When<D, R, F extends Function<? extends D, ? extends R>>
 
   private Label[]                        labels       = null;
 
-  public When(Expression<D, R, F> expression)
+  public WhenNode(Expression<D, R, F> expression)
   {
     super(null,
           expression);
@@ -132,7 +132,7 @@ public class When<D, R, F extends Function<? extends D, ? extends R>>
   public void evaluateCases()
   {
     Node<D, R, F> node = expression.evaluate();
-    if ((node instanceof Else))
+    if ((node instanceof ElseNode))
     {
       arg = evaluateDefaultCase(expression);
     }
@@ -268,7 +268,7 @@ public class When<D, R, F extends Function<? extends D, ? extends R>>
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new When<E, S, G>(newExpression);
+    return new WhenNode<E, S, G>(newExpression);
   }
 
   @Override

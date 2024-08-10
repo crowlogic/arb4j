@@ -17,7 +17,7 @@ import arb.functions.Function;
  *      {@link TheArb4jLibrary}
  */
 public class Factorialization<D, R, F extends Function<? extends D, ? extends R>> extends
-                             FunctionCall<D, R, F>
+                             FunctionCallNode<D, R, F>
 {
 
   @Override

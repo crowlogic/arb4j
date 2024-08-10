@@ -8,11 +8,11 @@ import org.objectweb.asm.MethodVisitor;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
-import arb.expressions.nodes.unary.When;
+import arb.expressions.nodes.unary.WhenNode;
 import arb.functions.Function;
 
 /**
- * This appears in conjunction with the {@link When} node
+ * This appears in conjunction with the {@link WhenNode} node
  * 
  * @param <D>
  * @param <R>
@@ -20,11 +20,11 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Else<D, R, F extends Function<? extends D, ? extends R>> extends
+public class ElseNode<D, R, F extends Function<? extends D, ? extends R>> extends
                  Node<D, R, F>
 {
 
-  public Else(Expression<D, R, F> expression)
+  public ElseNode(Expression<D, R, F> expression)
   {
     super(expression);
   }
@@ -107,7 +107,7 @@ public class Else<D, R, F extends Function<? extends D, ? extends R>> extends
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new Else<E, S, G>(newExpression);
+    return new ElseNode<E, S, G>(newExpression);
   }
 
   @Override

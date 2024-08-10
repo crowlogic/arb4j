@@ -20,17 +20,49 @@ import arb.expressions.nodes.binary.BinaryOperation;
 import arb.functions.Function;
 
 /**
+ * <pre>
+ * Represents the abstract base class for all nodes within a syntax tree in
+ * symbolic computation systems. This class is a fundamental part of the
+ * framework, facilitating the construction, manipulation, and evaluation of
+ * symbolic expressions. Nodes in the tree can perform a variety of operations
+ * such as differentiation, integration, and algebraic simplifications,
+ * employing generics to accommodate different data and function types.
+ *
+ * Each node can be a composite, containing other nodes, or a leaf, representing
+ * terminal operations or values. The class supports dynamic type
+ * transformations, code generation via the ASM framework, and optimization
+ * techniques like subtree reuse to enhance performance and memory efficiency.
+ * It also integrates typesetting capabilities, using JLaTeXMath for rendering
+ * expressions in LaTeX format.
+ *
+ * Subclasses must implement functionality specific to the symbolic operations
+ * they represent, including handling their computational branches, and must
+ * provide methods for performing substitutions and cloning, even if not
+ * implemented via the {@link Cloneable} interface.
+ * </pre>
+ * 
+ * @param <D> the domain type of the node, defining the types of inputs this
+ *            node accepts
+ * @param <R> the range type of the node, defining the types of results this
+ *            node produces
+ * @param <F> the type of function encapsulated by this node, conforming to the
+ *            {@link Function} interface
+ *
+ * @see Function
+ * @see Expression
+ * @see MethodVisitor
+ * @see LaTeXAtom
+ * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
 public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> implements
                           Typesettable,
-                          Consumer<Consumer<Node<D, R, F>>>,
-                          Cloneable
+                          Consumer<Consumer<Node<D, R, F>>>
 {
 
   @Override
-  public Object clone() 
+  public Object clone()
   {
     assert false : "TODO";
     return null;
@@ -75,10 +107,10 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * reliably used by the progenitor node in the {@link Expression} to store its
    * own result, thus saving heap allocations. The method should be overridden by
    * every subclass of {@link Node} to provide an appropriate response. For
-   * {@link LiteralConstant} and {@link Variable} nodes, they would always return
-   * false (since we cannot reuse them). For {@link BinaryOperation} nodes like
-   * {@link Addition}, a method of determining whether they're reusable based on
-   * the state of their operands would be in order. <br>
+   * {@link LiteralConstantNode} and {@link Variable} nodes, they would always
+   * return false (since we cannot reuse them). For {@link BinaryOperation} nodes
+   * like {@link Addition}, a method of determining whether they're reusable based
+   * on the state of their operands would be in order. <br>
    * <br>
    * 
    * The advantage to not reusing nodes is that it would allow the production of a

@@ -7,7 +7,7 @@ import org.objectweb.asm.MethodVisitor;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
-import arb.expressions.nodes.LiteralConstant;
+import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
@@ -38,7 +38,7 @@ public class Subtraction<D, R, F extends Function<? extends D, ? extends R>> ext
   {
     if (left == null)
     {
-      left = new LiteralConstant<>(expression,
+      left = new LiteralConstantNode<>(expression,
                                    "0");
     }
   }

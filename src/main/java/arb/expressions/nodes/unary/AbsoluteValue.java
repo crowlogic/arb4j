@@ -15,7 +15,7 @@ import arb.functions.Function;
  */
 public class AbsoluteValue<D, R, F extends Function<? extends D, ? extends R>>
                           extends
-                          FunctionCall<D, R, F>
+                          FunctionCallNode<D, R, F>
 {
 
   @Override

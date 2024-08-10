@@ -11,12 +11,12 @@
  * representations of formulae with each node in the tree being an instance of
  * {@link arb.expressions.nodes.Node}. This flexible structure allows for
  * parsing and and executing many expressions, with support for
- * {@link arb.expressions.nodes.LiteralConstant},
+ * {@link arb.expressions.nodes.LiteralConstantNode},
  * {@link arb.expressions.nodes.Variable}s,
  * {@link arb.expressions.nodes.binary.BinaryOperation}s, and
  * {@link arb.expressions.nodes.unary.UnaryOperation}s such as
- * {@link arb.expressions.nodes.unary.When} and the related
- * {@link arb.expressions.nodes.Else} node as well as
+ * {@link arb.expressions.nodes.unary.WhenNode} and the related
+ * {@link arb.expressions.nodes.ElseNode} node as well as
  * {@link arb.expressions.nodes.nary.NAryOperation}s like
  * {@link arb.expressions.nodes.nary.Product} and
  * {@link arb.expressions.nodes.nary.Sum}

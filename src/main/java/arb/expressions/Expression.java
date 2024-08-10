@@ -60,7 +60,7 @@ import arb.viz.ArbShellExecutionController;
  * {@link BinaryOperation}, {@link UnaryOperation}, {@link NAryOperation}, such
  * as {@link Addition} , {@link Subtraction}, {@link Multiplication}, and
  * {@link Division} or its operands like {@link Variable} and
- * {@link LiteralConstant}, etc. This {@link TreeModel} structure allows the
+ * {@link LiteralConstantNode}, etc. This {@link TreeModel} structure allows the
  * class to correctly manage operator precedence and associativity rules
  * inherent in mathematical expressions and facilitate their printing via the
  * {@link TextTree}. The AST is then traversed to {@link #generate()} the
@@ -71,13 +71,13 @@ import arb.viz.ArbShellExecutionController;
  * <ul>
  * <li>Dynamically compiles mathematical expressions into executable Java
  * bytecode, allowing for efficient evaluation.</li>
- * <li>Supports {@link Variable}, {@link LiteralConstant}, and
- * {@link FunctionCall}s within {@link Expression}, providing an extensive set
- * of features for constructing elaborate expressions, linked together via a
+ * <li>Supports {@link Variable}, {@link LiteralConstantNode}, and
+ * {@link FunctionCallNode}s within {@link Expression}, providing an extensive
+ * set of features for constructing elaborate expressions, linked together via a
  * shared {@link Context} in which variables and other functions are registered
  * for mutual accessibility..</li>
  * <li>Effectively manages {@link IntermediateVariable} and
- * {@link LiteralConstant}, optimizing memory usage and performance.</li>
+ * {@link LiteralConstantNode}, optimizing memory usage and performance.</li>
  * <li>Automatically injects {@link VariableReference}s to {@link Variable} and
  * {@link Function}s into the compiled bytecode, facilitating dynamic
  * execution.</li>
@@ -132,9 +132,10 @@ import arb.viz.ArbShellExecutionController;
  *            {@link Function} interface, encapsulating the compiled expression
  *            as an evaluatable function in the sense of the Java
  * 
- * @author Stephen A. Crowley ©2024
- * @see BusinessSourceLicenseVersionOnePointOne for the terms of use of the
- *      {@link TheArb4jLibrary}
+ * @author Stephen Andrew Crowley ©2024
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne#getText() for the terms of use
+ *      of the {@link TheArb4jLibrary}
  */
 public class Expression<D, C, F extends Function<? extends D, ? extends C>> implements Typesettable
 {
@@ -214,7 +215,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public HashMap<String, IntermediateVariable<D, C, F>> intermediateVariables = new HashMap<>();
 
-  public HashMap<String, LiteralConstant<D, C, F>>      literalConstants      = new HashMap<>();
+  public HashMap<String, LiteralConstantNode<D, C, F>>  literalConstants      = new HashMap<>();
 
   public FunctionMapping<D, C, F>                       mapping;
 
@@ -553,7 +554,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   /**
    * @return a parenthetical {@link Node}, a {@link Product}, a
-   *         {@link LiteralConstant},a {@link Function}, a {@link Variable} or
+   *         {@link LiteralConstantNode},a {@link Function}, a {@link Variable} or
    *         null if for instance "-t" is encountered, as a 0 is implied by the
    *         absence of a node before the {@link Subtraction} operator is
    *         encountered, also handles {@link Product} also known as the product
@@ -620,8 +621,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       nextCharacter();
     }
 
-    return new LiteralConstant<>(this,
-                                 expression.substring(startingPosition, position));
+    return new LiteralConstantNode<>(this,
+                                     expression.substring(startingPosition, position));
   }
 
   public Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
@@ -683,8 +684,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       while (nextCharacterIs(Parser.SUBSCRIPT_DIGITS_ARRAY))
         ;
-      return new LiteralConstant<>(this,
-                                   expression.substring(startPos, position));
+      return new LiteralConstantNode<>(this,
+                                       expression.substring(startPos, position));
     }
     else if (isIdentifier())
     {
@@ -1599,8 +1600,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       node = new Exponentiation<>(this,
                                   node,
-                                  new LiteralConstant<>(this,
-                                                        digit));
+                                  new LiteralConstantNode<>(this,
+                                                            digit));
     }
     return node;
   }
@@ -1777,28 +1778,28 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (reference.isHypergeometricFunction() && !isHypergeometricFunctionSymbolBeingUsedByAContextualFunction())
     {
-      return new HypergeometricFunction<>(this);
+      return new HypergeometricFunctionNode<>(this);
     }
     else if ("when".equals(reference.name))
     {
-      return new When<>(this);
+      return new WhenNode<>(this);
     }
     else if ("J".equals(reference.name))
     {
-      return new BesselFunctionOfTheFirstKind<>(this);
+      return new BesselFunctionNodeOfTheFirstKind<>(this);
     }
     else if ("j".equals(reference.name))
     {
-      return new SphericalBesselFunctionOfTheFirstKind<>(this);
+      return new SphericalBesselFunctionNodeOfTheFirstKind<>(this);
     }
     else if ("R".equals(reference.name))
     {
-      return new LommelPolynomial<>(this);
+      return new LommelPolynomialNode<>(this);
     }
 
-    return new FunctionCall<>(reference.name,
-                              resolve(),
-                              require(')'));
+    return new FunctionCallNode<>(reference.name,
+                                  resolve(),
+                                  require(')'));
 
   }
 
@@ -1828,16 +1829,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public Node<D, C, F> resolveSymbolicLiteralConstantsKeywordsAndVariables(int startPos,
                                                                            VariableReference<D, C, F> reference)
   {
-    if (LiteralConstant.constantSymbols.contains(reference.name))
+    if (LiteralConstantNode.constantSymbols.contains(reference.name))
     {
-      return new LiteralConstant<>(this,
-                                   reference.name);
+      return new LiteralConstantNode<>(this,
+                                       reference.name);
     }
     else
     {
       if (reference.isElse())
       {
-        return new Else<D, C, F>(this);
+        return new ElseNode<D, C, F>(this);
       }
       else
       {

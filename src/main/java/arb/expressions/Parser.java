@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.nodes.LiteralConstant;
+import arb.expressions.nodes.LiteralConstantNode;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -111,7 +111,7 @@ public class Parser
   {
     ch = subscriptedDigitToRegular(ch);
 
-    return (ch >= '0' && ch <= '9') || ch == '.' || ch == '½' || ch == LiteralConstant.infinity.charAt(0);
+    return (ch >= '0' && ch <= '9') || ch == '.' || ch == '½' || ch == LiteralConstantNode.infinity.charAt(0);
   }
 
   /**
@@ -126,7 +126,7 @@ public class Parser
     return ch >= '0' && ch <= '9';
   }
 
-  public static final char ⅈ = LiteralConstant.ⅈ.charAt(0);
+  public static final char ⅈ = LiteralConstantNode.ⅈ.charAt(0);
 
   /**
    * Checks whether a given character is a Latin or Greek alphabet character.

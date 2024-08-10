@@ -40,9 +40,9 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class SphericalBesselFunctionOfTheFirstKind<D, R, F extends Function<? extends D, ? extends R>>
+public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends D, ? extends R>>
                                                   extends
-                                                  FunctionCall<D, R, F>
+                                                  FunctionCallNode<D, R, F>
 {
 
   @Override
@@ -62,7 +62,7 @@ public class SphericalBesselFunctionOfTheFirstKind<D, R, F extends Function<? ex
 
   public boolean scalar;
 
-  public SphericalBesselFunctionOfTheFirstKind(Expression<D, R, F> expression)
+  public SphericalBesselFunctionNodeOfTheFirstKind(Expression<D, R, F> expression)
   {
     super("j",
           null,
