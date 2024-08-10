@@ -44,6 +44,12 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
                                                                                                     // constructor
     elementFieldName = expression.newIntermediateVariable("element", RationalFunction.class, false);
 
+    if (Expression.trace)
+    {
+      System.out.println("seqFieldName=" + seqFieldName);
+      System.out.println("elementFieldName=" + elementFieldName);
+    }
+
     expression.registerInitializer(mv ->
     {
       initializeSequence(expression, mv);
@@ -54,14 +60,14 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
   public void initializeSequence(Expression<D, C, F> expression, MethodVisitor mv)
   {
     Compiler.loadThisOntoStack(mv);
-    //Compiler.duplicateTopOfTheStack(mv);
+     Compiler.duplicateTopOfTheStack(mv);
 
     expression.loadFieldOntoStack(mv, seqFieldName, sequenceClass);
     expression.loadFieldOntoStack(mv, "v", Real.class);
-  
+
     expression.insideInitializer = true;
     order.generate(mv, Real.class);
-    
+
     Compiler.invokeMethod(mv, Real.class, "set", Real.class, false, Real.class);
   }
 
@@ -75,12 +81,11 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
     // Evaluate the argument
     expression.insideInitializer = true;
     arg.generate(mv, resultType);
-    
-   
-    //mv.visitLdcInsn(0);
+
+    // mv.visitLdcInsn(0);
     Compiler.loadOrderParameter(mv);
     Compiler.loadBitsParameterOntoStack(mv);
-    //mv.visitLdcInsn(128);
+    // mv.visitLdcInsn(128);
 
     // Load the output variable
     loadOutputVariableOntoStack(mv, resultType);

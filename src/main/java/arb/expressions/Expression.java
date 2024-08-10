@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -235,7 +236,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   boolean                                               verboseTrace          = false;
 
-  public boolean insideInitializer = false;
+  public boolean                                        insideInitializer     = false;
 
   public Expression(String className,
                     Class<? extends D> domainClass,
@@ -433,11 +434,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     declareConstants(cw);
 
+    declareFunctionReferences(cw);
+
     declareVariables(cw);
 
     declareIntermediateVariables(cw);
 
-    declareFunctionReferences(cw);
   }
 
   public ClassVisitor declareFunctionReferences(ClassVisitor classVisitor)
@@ -453,9 +455,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     for (var variable : intermediateVariables.values())
     {
-      variable.declareField(classVisitor);
+      if (!declaredIntermediateVariables.contains(variable.name))
+      {
+        variable.declareField(classVisitor);
+        declaredIntermediateVariables.add(variable.name);
+      }
     }
   }
+
+  HashSet<String> declaredIntermediateVariables = new HashSet<>();
 
   public void declareVariableEntry(ClassVisitor classVisitor, Entry<String, Object> variable)
   {
@@ -498,10 +506,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (context != null)
     {
-      if ( trace )
+      if (trace)
       {
-        String vars = context.variables.map.entrySet().stream().map(x->x.toString()).collect(Collectors.joining(","));
-        System.out.println( "declareVariables: " + vars);
+        String vars = context.variables.map.entrySet()
+                                           .stream()
+                                           .map(x -> x.toString())
+                                           .collect(Collectors.joining(","));
+        System.out.println("declareVariables: " + vars);
       }
       for (var variable : context.variables.map.entrySet()
                                                .stream()
@@ -739,9 +750,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
       declareFields(classVisitor);
 
+      generateInitializationMethod(classVisitor);
+
       generateConstructor(classVisitor);
 
-      generateInitializationMethod(classVisitor);
+      declareIntermediateVariables(classVisitor);
 
       if (needsCloseMethod())
       {
@@ -942,15 +955,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       referencedFunctions.put(nestedFunction.functionName, nestedFunction);
 
-      if (!nestedFunction.functionName.equals(functionName))
-      {
-        throw new CompilerException("nestedFunction.func should not be null if its"
-                      + " not the recursive function referring to itself, "
-                      + String.format("nestedFunction.name=%s, name=%s\n",
-                                      nestedFunction.functionName,
-                                      functionName));
-
-      }
+//      if (!nestedFunction.functionName.equals(functionName))
+//      {
+//        throw new CompilerException("nestedFunction.func should not be null if its"
+//                      + " not the recursive function referring to itself, "
+//                      + String.format("nestedFunction.name=%s, name=%s\n",
+//                                      nestedFunction.functionName,
+//                                      functionName));
+//
+//      }
 
     }
 

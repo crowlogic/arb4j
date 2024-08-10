@@ -8,19 +8,8 @@ import arb.Typesettable;
 import arb.functions.sequences.LommelPolynomialSequence;
 import junit.framework.TestCase;
 
-/**
- * need to fix this part: this.seqqR1.v.set(this.cℤ1.div(this.cℤ2, var3,
- * this.ℝ1)); elementq1 = seqqR1.evaluate(cℤ3, 128);
- */
 public class GeneratedLommelPolynomialExpression implements RealFunction, Typesettable, AutoCloseable, Initializable
 {
-  public boolean                  isInitialized;
-  Integer                         cℤ2    = new Integer("2");
-  Integer                         cℤ1    = new Integer("1");
-  Integer                         cℤ3    = new Integer("3");
-  public LommelPolynomialSequence seqqR1 = new LommelPolynomialSequence();
-  public RationalFunction         elementq1;
-  public Real                     ℝ1     = new Real();
 
   public static void main(String args[])
   {
@@ -30,6 +19,14 @@ public class GeneratedLommelPolynomialExpression implements RealFunction, Typese
     TestCase.assertEquals(-1.3758527163639351, eval);
 
   }
+
+  public boolean                  isInitialized;
+  Integer                         cℤ2    = new Integer("2");
+  Integer                         cℤ1    = new Integer("1");
+  Integer                         cℤ3    = new Integer("3");
+  public LommelPolynomialSequence seqqR1 = new LommelPolynomialSequence();
+  public RationalFunction         elementq1;
+  public Real                     ℝ1     = new Real();
 
   @Override
   public Class<Real> coDomainType()
@@ -45,7 +42,7 @@ public class GeneratedLommelPolynomialExpression implements RealFunction, Typese
       this.initialize();
     }
 
-    return this.elementq1.evaluate(z, 0, 128, result);
+    return this.elementq1.evaluate(z, order, bits, result);
   }
 
   @Override
@@ -57,9 +54,7 @@ public class GeneratedLommelPolynomialExpression implements RealFunction, Typese
     }
     else
     {
-      int var3 = 128;
-      this.seqqR1.v.set(this.cℤ1.div(this.cℤ2, var3, this.ℝ1));
-      elementq1          = seqqR1.evaluate(cℤ3, 128);
+      this.seqqR1.v.set(this.cℤ1.div(this.cℤ2, 128, this.ℝ1));
       this.isInitialized = true;
     }
   }
