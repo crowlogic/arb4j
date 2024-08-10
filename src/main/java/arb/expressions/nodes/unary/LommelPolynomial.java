@@ -42,7 +42,7 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
     // Allocate fields using newIntermediateVariable
     seqFieldName     = expression.newIntermediateVariable("seq", sequenceClass, true);              // Initialize in
                                                                                                     // constructor
-    elementFieldName = expression.newIntermediateVariable("element", RationalFunction.class, false);
+    elementFieldName = expression.newIntermediateVariable("element", RationalFunction.class, true);
 
     if (Expression.trace)
     {

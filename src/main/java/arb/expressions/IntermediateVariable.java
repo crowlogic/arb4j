@@ -41,7 +41,7 @@ public class IntermediateVariable<D, R, F extends Function<? extends D, ? extend
 
   public String   name;
   public Class<?> type;
-  public boolean  initialize = true;
+  public final boolean  initialize;
 
   public MethodVisitor generateInitializer(MethodVisitor methodVisitor)
   {
