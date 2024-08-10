@@ -2,7 +2,6 @@ package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.invokeMethod;
 import static arb.expressions.Compiler.loadThisOntoStack;
-import static java.lang.System.out;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -20,8 +19,7 @@ import arb.functions.sequences.LommelPolynomialSequence;
 
 public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>>
                              extends
-                             FunctionCall<D, C, F> implements
-                             Cloneable
+                             FunctionCall<D, C, F>
 {
   public Node<D, C, F>  order;
   public Node<D, C, F>  index;
@@ -60,7 +58,6 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
 
     expression.loadFieldOntoStack(mv, seqFieldName, sequenceClass);
     expression.loadFieldOntoStack(mv, "v", Real.class);
-    out.format("generating " + order);
     order.generate(mv, Real.class);
 
     Compiler.invokeMethod(mv, Real.class, "set", Real.class, false, Real.class);
@@ -169,15 +166,14 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
     return this;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>>
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
     LommelPolynomial<E, S, G> newVar = new LommelPolynomial<>(newExpression);
-    newVar.arg   = (Node<E, S, G>) arg.clone();
-    newVar.order = (Node<E, S, G>) order.clone();
+    newVar.arg   = arg.spliceInto(newExpression);
+    newVar.order = order.spliceInto(newExpression);
     return newVar;
   }
 
