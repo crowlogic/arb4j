@@ -109,7 +109,7 @@ public class SphericalBesselFunctionOfTheFirstKind<D, R, F extends Function<? ex
   public void generateScalar(MethodVisitor mv, Class<?> resultType, Class<?> scalarType)
   {
     arg.generate(mv, resultType);
-    loadBitsParameterOntoStack(mv, expression);
+    loadBitsParameterOntoStack(mv);
 
     invokeStaticMethod(mv,
                        arblib.class,

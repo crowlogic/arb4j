@@ -254,7 +254,7 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
     arg.generate(methodVisitor, argType);
     if (!bitless)
     {
-      loadBitsParameterOntoStack(methodVisitor, expression);
+      loadBitsParameterOntoStack(methodVisitor);
     }
 
     loadOutputVariableOntoStack(methodVisitor, requisiteResultType);
@@ -298,7 +298,7 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>>
 
     loadOrderParameter(mv);
 
-    loadBitsParameterOntoStack(mv, expression);
+    loadBitsParameterOntoStack(mv);
 
     loadOutputVariableOntoStack(mv, generatedType);
 

@@ -150,7 +150,7 @@ public class Integral<D, R, F extends Function<? extends D, ? extends R>>
 
     evaluateIndefiniteIntegralAt(mv, upperLimit, resultType, lowerIntegralValueFieldName);
     evaluateIndefiniteIntegralAt(mv, lowerLimit, resultType, upperIntegralValueFieldName);
-    loadBitsParameterOntoStack(mv, expression);
+    loadBitsParameterOntoStack(mv);
     if (isResult)
     {
       Compiler.checkClassCast(Compiler.loadResultParameter(mv), resultType);
@@ -204,7 +204,7 @@ public class Integral<D, R, F extends Function<? extends D, ? extends R>>
 //    assert limit.getGeneratedType()
 //                .equals(Real.class) : String.format("limit.generatedType=%s != Real",
 //                                                    limit.getGeneratedType());
-    loadBitsParameterOntoStack(mv, expression);
+    loadBitsParameterOntoStack(mv);
     loadFieldFromThis(mv, integralValueFieldName, generatedType);
     evaluateIntegral(mv);
     checkClassCast(mv, resultType);

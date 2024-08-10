@@ -54,15 +54,14 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
   public void initializeSequence(Expression<D, C, F> expression, MethodVisitor mv)
   {
     Compiler.loadThisOntoStack(mv);
-    Compiler.duplicateTopOfTheStack(mv);
+    //Compiler.duplicateTopOfTheStack(mv);
 
     expression.loadFieldOntoStack(mv, seqFieldName, sequenceClass);
     expression.loadFieldOntoStack(mv, "v", Real.class);
-    assert false : order
-                  + " needs some way of knowing that its not being called as part of the body of an evaluate(Real,int order,int bits, C  result) "
-                  + "method. Add an initializerBits field and load it instead of its being called from within the initializaer. A boolean state variable can be set in the Expression class and everything will work fine as long as its made note of that it is not threadsafe and synchronizing/cloning would need to be implemented to make it so";
+  
+    expression.insideInitializer = true;
     order.generate(mv, Real.class);
-
+    
     Compiler.invokeMethod(mv, Real.class, "set", Real.class, false, Real.class);
   }
 
@@ -74,10 +73,14 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
     expression.loadFieldOntoStack(mv, elementFieldName, RationalFunction.class);
 
     // Evaluate the argument
+    expression.insideInitializer = true;
     arg.generate(mv, resultType);
-
-    mv.visitLdcInsn(0);
-    mv.visitLdcInsn(128);
+    
+   
+    //mv.visitLdcInsn(0);
+    Compiler.loadOrderParameter(mv);
+    Compiler.loadBitsParameterOntoStack(mv);
+    //mv.visitLdcInsn(128);
 
     // Load the output variable
     loadOutputVariableOntoStack(mv, resultType);

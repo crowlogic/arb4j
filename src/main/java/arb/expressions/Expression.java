@@ -235,6 +235,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   boolean                                               verboseTrace          = false;
 
+  public boolean insideInitializer = false;
+
   public Expression(String className,
                     Class<? extends D> domainClass,
                     Class<? extends C> coDomainClass,
@@ -496,6 +498,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (context != null)
     {
+      if ( trace )
+      {
+        String vars = context.variables.map.entrySet().stream().map(x->x.toString()).collect(Collectors.joining(","));
+        System.out.println( "declareVariables: " + vars);
+      }
       for (var variable : context.variables.map.entrySet()
                                                .stream()
                                                .sorted((a, b) -> a.getKey().compareTo(b.getKey()))

@@ -32,6 +32,8 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
                                      Node<D, R, F>
 {
 
+  public static final int initializerBits = 128;
+
   @Override
   public char symbol()
   {
@@ -268,9 +270,16 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
 
   public MethodVisitor invokeMethod(MethodVisitor mv, String operator, Class<?> resultType)
   {
-    // TODO: if thios is called from the initialize() method intead of the evalute() method then the 3rd local variable is not going to be the bits parameter
-    
-    loadBitsParameterOntoStack(mv, expression);
+   
+
+    if (expression.insideInitializer)
+    {
+      mv.visitLdcInsn(initializerBits);
+    }
+    else
+    {
+      loadBitsParameterOntoStack(mv);
+    }
     loadResult(mv, resultType);
 
     var leftType = left.getGeneratedType();
@@ -367,8 +376,8 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
   public static final HashMap<Class<?>, Map<Class<?>, Class<?>>> typeMap = new HashMap<>();
 
   /**
-   * This is implemented as a symmetric equality which means that leftType and rightType can be 
-   * exchanged and the result is the same
+   * This is implemented as a symmetric equality which means that leftType and
+   * rightType can be exchanged and the result is the same
    * 
    * @param leftType
    * @param rightType
@@ -383,7 +392,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
   static
   {
     assert Integer.class.equals(arb.Integer.class) : "there is most likely a missing import statement for arb.Integer";
-    
+
     mapScalarType(Real.class, RealPolynomial.class);
     mapScalarType(Complex.class, ComplexPolynomial.class);
 
@@ -406,8 +415,8 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     mapTypes(Integer.class, polynomialType, polynomialType);
     mapTypes(int.class, scalarType, scalarType);
     mapTypes(int.class, polynomialType, polynomialType);
-    mapTypes(Fraction.class, scalarType, scalarType );
-    mapTypes(Fraction.class, polynomialType, polynomialType );
+    mapTypes(Fraction.class, scalarType, scalarType);
+    mapTypes(Fraction.class, polynomialType, polynomialType);
   }
 
   @Override

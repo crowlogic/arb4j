@@ -483,11 +483,9 @@ public class Compiler
    * methods is (this,order,bits,result)
    * 
    * @param methodVisitor the {@link MethodVisitor} to receive the instructions
-   * @param expression    TODO
-   * 
    * @return methodVisitor the {@link MethodVisitor} parameter
    */
-  public static MethodVisitor loadBitsParameterOntoStack(MethodVisitor methodVisitor, Expression<?, ?, ?> expression)
+  public static MethodVisitor loadBitsParameterOntoStack(MethodVisitor methodVisitor)
   {
     methodVisitor.visitVarInsn(Opcodes.ILOAD, 3);
     return methodVisitor;

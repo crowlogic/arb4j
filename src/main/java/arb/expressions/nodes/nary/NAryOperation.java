@@ -337,11 +337,11 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>>
     loadResultVariable(mv);
     loadFactor(mv);
     loadIndex(mv);
-    loadBitsParameterOntoStack(mv, expression);
+    loadBitsParameterOntoStack(mv);
     loadFactorValue(mv);
     evaluateFactor(mv);
     checkClassCast(mv, generatedType);
-    loadBitsParameterOntoStack(mv, expression);
+    loadBitsParameterOntoStack(mv);
     combine(mv);
     pop(mv);
     incrementIndex(mv);
@@ -352,11 +352,11 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>>
     loadResultVariable(mv);
     loadFactor(mv);
     loadIndex(mv);
-    loadBitsParameterOntoStack(mv, expression);
+    loadBitsParameterOntoStack(mv);
     loadFactorValue(mv);
     evaluateFactor(mv);
     checkClassCast(mv, generatedType);
-    loadBitsParameterOntoStack(mv, expression);
+    loadBitsParameterOntoStack(mv);
     combine(mv);
     pop(mv);
     incrementIndex(mv);
