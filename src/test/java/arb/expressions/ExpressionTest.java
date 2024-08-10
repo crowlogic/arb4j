@@ -2,7 +2,6 @@ package arb.expressions;
 
 import arb.Complex;
 import arb.Integer;
-import arb.RationalFunction;
 import arb.Real;
 import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -11,7 +10,6 @@ import arb.exceptions.CompilerException;
 import arb.functions.Function;
 import arb.functions.IntegerFunction;
 import arb.functions.complex.ComplexNullaryFunction;
-import arb.functions.real.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
 import arb.functions.real.RealPolynomialNullaryFunction;
@@ -30,10 +28,9 @@ public class ExpressionTest
 
   public void testLommelPolynomial()
   {
-    var f = RationalNullaryFunction.express("R(1/2,3;z)");
+    var f = RealFunction.express("R(1/2,3;z)");
     System.out.println("f=" + f);
-    RationalFunction func = f.evaluate(128);
-    double hmm = func.asRealFunction().eval(2.3);
+    double hmm = f.eval(2.3);
     System.out.println("f(2.3)="+hmm);
     assertEquals(-1.3758527163639351505, hmm);
   }
