@@ -36,7 +36,6 @@ public class LommelPolynomialSequence implements RationalFunctionSequence, AutoC
     @SuppressWarnings("resource")
     Real v = new Real().setName("v");
     context = new Context(v);
-    context.registerVariable("v", v);
     expression = RationalFunctionSequence.compile("n⇒v₍ₙ₎*(z/2)^(-n)*pFq([½-n/2,-n/2],[v,-n,1-v-n],-z²)", context);
   }
 
