@@ -1,12 +1,10 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.invokeMethod;
-import static arb.expressions.Compiler.loadThisOntoStack;
-
 import java.util.List;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 
 import arb.RationalFunction;
 import arb.Real;
@@ -40,8 +38,8 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
     expression.require(')');
 
     // Allocate fields using newIntermediateVariable
-    seqFieldName     = expression.newIntermediateVariable("seq", sequenceClass, true);              // Initialize in
-                                                                                                    // constructor
+    seqFieldName     = expression.newIntermediateVariable("seq", sequenceClass, true);             // Initialize in
+                                                                                                   // constructor
     elementFieldName = expression.newIntermediateVariable("element", RationalFunction.class, true);
 
     if (Expression.trace)
@@ -60,10 +58,11 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
   public void initializeSequence(Expression<D, C, F> expression, MethodVisitor mv)
   {
     Compiler.loadThisOntoStack(mv);
-     Compiler.duplicateTopOfTheStack(mv);
+//     Compiler.duplicateTopOfTheStack(mv);
 
-    expression.loadFieldOntoStack(mv, seqFieldName, sequenceClass);
-    expression.loadFieldOntoStack(mv, "v", Real.class);
+    expression.loadFieldOntoStack(mv, seqFieldName, LommelPolynomialSequence.class);
+    
+    expression.loadFieldOntoStack(mv, "v", Real.class );
 
     expression.insideInitializer = true;
     order.generate(mv, Real.class);
@@ -71,38 +70,42 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
     Compiler.invokeMethod(mv, Real.class, "set", Real.class, false, Real.class);
   }
 
-  @Override
-  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
-  {
-
-    loadThisOntoStack(mv);
-    expression.loadFieldOntoStack(mv, elementFieldName, RationalFunction.class);
-
-    // Evaluate the argument
-    expression.insideInitializer = true;
-    arg.generate(mv, resultType);
-
-    // mv.visitLdcInsn(0);
-    Compiler.loadOrderParameter(mv);
-    Compiler.loadBitsParameterOntoStack(mv);
-    // mv.visitLdcInsn(128);
-
-    // Load the output variable
-    loadOutputVariableOntoStack(mv, resultType);
-
-    // Call evaluate on the RationalFunction
-    invokeMethod(mv,
-                 RationalFunction.class,
-                 "evaluate",
-                 resultType,
-                 false,
-                 resultType,
-                 int.class,
-                 int.class,
-                 resultType);
-
-    return mv;
-  }
+//  public void initializeSequence(Expression<D, C, F> expression, MethodVisitor mv)
+//  {
+//    // Existing code for setting seqqR1.v
+//    Compiler.loadThisOntoStack(mv);
+//    expression.loadFieldOntoStack(mv, seqFieldName, sequenceClass);
+//    expression.loadFieldOntoStack(mv, "v", Real.class);
+//
+//    expression.insideInitializer = true;
+//    order.generate(mv, Real.class);
+//
+//    Compiler.invokeMethod(mv, Real.class, "set", Real.class, false, Real.class);
+//
+//    // New code for seqqR1.evaluate(index, 128, elementq1)
+//    Compiler.loadThisOntoStack(mv);
+//    expression.loadFieldOntoStack(mv, seqFieldName, sequenceClass);
+//
+//    // Generate index
+//    index.generate(mv, Integer.class);
+//
+//    // Load 128 (bits)
+//    mv.visitLdcInsn(128);
+//
+//    // Load elementq1
+//    Compiler.loadThisOntoStack(mv);
+//    expression.loadFieldOntoStack(mv, elementFieldName, RationalFunction.class);
+//
+//    // Call evaluate
+//    Compiler.invokeMethod(mv,
+//                          sequenceClass,
+//                          "evaluate",
+//                          RationalFunction.class,
+//                          false,
+//                          Integer.class,
+//                          int.class,
+//                          RationalFunction.class);
+//  }
 
   @Override
   public void accept(Consumer<Node<D, C, F>> t)
