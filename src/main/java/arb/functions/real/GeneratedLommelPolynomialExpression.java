@@ -55,11 +55,13 @@ public class GeneratedLommelPolynomialExpression implements RealFunction, Typese
     else
     {
       this.seqqR1.v.set(this.cℤ1.div(this.cℤ2, 128, this.ℝ1));
-      // 3 is index.generate()s output
-      seqqR1.evaluate(3, 128, elementq1);
+      
       this.isInitialized = true;
     }
   }
+  GeneratedLommelPolynomialExpression /* $VF was: R(1Over2,3,z)*/() {
+        this.elementq1 = new RationalFunction();
+     }
 
   @Override
   public void close()

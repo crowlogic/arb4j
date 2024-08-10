@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import arb.RationalFunction;
 import arb.Real;
@@ -40,8 +42,8 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
     expression.require(')');
 
     // Allocate fields using newIntermediateVariable
-    seqFieldName     = expression.newIntermediateVariable("seq", sequenceClass, true);              // Initialize in
-                                                                                                    // constructor
+    seqFieldName     = expression.newIntermediateVariable("seq", sequenceClass, true);             // Initialize in
+                                                                                                   // constructor
     elementFieldName = expression.newIntermediateVariable("element", RationalFunction.class, true);
 
     if (Expression.trace)
@@ -59,11 +61,11 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
 
   public void initializeSequence(Expression<D, C, F> expression, MethodVisitor mv)
   {
-    Compiler.loadThisOntoStack(mv);
-     Compiler.duplicateTopOfTheStack(mv);
-
-    expression.loadFieldOntoStack(mv, seqFieldName, sequenceClass);
-    expression.loadFieldOntoStack(mv, "v", Real.class);
+    expression.loadThisFieldOntoStack(mv, seqFieldName, LommelPolynomialSequence.class);
+    mv.visitFieldInsn(Opcodes.GETFIELD,
+                      Type.getInternalName(LommelPolynomialSequence.class),
+                      "v",
+                      Type.getDescriptor(Real.class));
 
     expression.insideInitializer = true;
     order.generate(mv, Real.class);
