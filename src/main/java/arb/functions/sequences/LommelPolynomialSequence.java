@@ -44,6 +44,7 @@ public class LommelPolynomialSequence implements RationalFunctionSequence, AutoC
 
   public RationalFunctionSequence                                               instance;
 
+  @SuppressWarnings("resource")
   public Real                                                                   v = new Real().setName("v");
 
   public LommelPolynomialSequence()
