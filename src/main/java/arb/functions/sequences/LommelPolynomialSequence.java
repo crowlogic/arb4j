@@ -29,13 +29,22 @@ public class LommelPolynomialSequence implements RationalFunctionSequence, AutoC
     v.close();
   }
 
-  public Context                                                         context = new Context();
+  public static Context context = new Context();
 
-  public Expression<Integer, RationalFunction, RationalFunctionSequence> expression;
+  static
+  {
+    @SuppressWarnings("resource")
+    Real v = new Real().setName("v");
+    context = new Context(v);
+    context.registerVariable("v", v);
+    expression = RationalFunctionSequence.parse("n⇒v₍ₙ₎*(z/2)^(-n)*pFq([½-n/2,-n/2],[v,-n,1-v-n],-z²)", context);
+  }
+  
+  public static Expression<Integer, RationalFunction, RationalFunctionSequence> expression;
 
-  public RationalFunctionSequence                                        instance;
+  public RationalFunctionSequence                                               instance;
 
-  public Real                                                            v       = new Real().setName("v");
+  public Real                                                                   v = new Real().setName("v");
 
   public LommelPolynomialSequence()
   {
@@ -44,8 +53,7 @@ public class LommelPolynomialSequence implements RationalFunctionSequence, AutoC
 
   public LommelPolynomialSequence(Real order)
   {
-    context    = new Context(v);
-    expression = RationalFunctionSequence.parse("n⇒v₍ₙ₎*(z/2)^(-n)*pFq([½-n/2,-n/2],[v,-n,1-v-n],-z²)", context);
+    expression.context = new Context(order.setName("v"));
     v.set(order);
     instance = expression.instantiate();
     expression.injectReferences(instance);

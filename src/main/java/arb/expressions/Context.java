@@ -26,7 +26,7 @@ import arb.functions.sequences.Sequence;
 /**
  * {@link Context} for the {@link Expression} {@link Compiler} to use for the
  * resolution of {@link Variable} and {@link Function} references (in addition
- * to those which are member-functions of the {@link Real} type)
+ * to those which are member-functions of the types)
  * 
  * <p>
  * This class functions similarly to a closure in functional programming. It
