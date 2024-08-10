@@ -10,6 +10,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
+import arb.Integer;
 import arb.RationalFunction;
 import arb.Real;
 import arb.expressions.Compiler;
@@ -28,6 +29,7 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
   public final Class<?> sequenceClass = LommelPolynomialSequence.class;
   public String         seqFieldName;
   public String         elementFieldName;
+  public Class<?>       scalarType;
 
   public LommelPolynomial(Expression<D, C, F> expression)
   {
@@ -35,15 +37,11 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
           null,
           expression);
     order = expression.resolve();
-    expression.require(',');
-    index = expression.resolve();
-    expression.require(';');
-    arg = expression.resolve();
+    index = expression.require(',').resolve();
+    arg   = expression.require(';').resolve();
     expression.require(')');
-
-    // Allocate fields using newIntermediateVariable
-    seqFieldName     = expression.newIntermediateVariable("seq", sequenceClass, true);             // Initialize in
-                                                                                                   // constructor
+    scalarType       = Compiler.scalarType(expression.coDomainType);
+    seqFieldName     = expression.newIntermediateVariable("seq", sequenceClass, true);
     elementFieldName = expression.newIntermediateVariable("element", RationalFunction.class, true);
 
     if (Expression.trace)
@@ -54,23 +52,33 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
 
     expression.registerInitializer(mv ->
     {
-      initializeSequence(expression, mv);
+      generateSequenceInitializer(mv);
 
     });
   }
 
-  public void initializeSequence(Expression<D, C, F> expression, MethodVisitor mv)
+  public void generateSequenceInitializer(MethodVisitor mv)
   {
-    expression.loadThisFieldOntoStack(mv, seqFieldName, LommelPolynomialSequence.class);
-    mv.visitFieldInsn(Opcodes.GETFIELD,
-                      Type.getInternalName(LommelPolynomialSequence.class),
-                      "v",
-                      Type.getDescriptor(Real.class));
-
+    expression.loadThisFieldOntoStack(mv, seqFieldName, sequenceClass);
+    mv.visitFieldInsn(Opcodes.GETFIELD, Type.getInternalName(sequenceClass), "v", Type.getDescriptor(Real.class));
     expression.insideInitializer = true;
     order.generate(mv, Real.class);
-
     Compiler.invokeMethod(mv, Real.class, "set", Real.class, false, Real.class);
+
+    expression.loadThisFieldOntoStack(mv, seqFieldName, sequenceClass);
+    index.generate(mv, Integer.class);
+    mv.visitLdcInsn(0);
+    mv.visitLdcInsn(128);
+    expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);
+
+    Compiler.invokeVirtualMethod(mv,
+                                 sequenceClass,
+                                 "evaluate",
+                                 RationalFunction.class,
+                                 Integer.class,
+                                 int.class,
+                                 int.class,
+                                 RationalFunction.class);
   }
 
   @Override
@@ -84,25 +92,37 @@ public class LommelPolynomial<D, C, F extends Function<? extends D, ? extends C>
     expression.insideInitializer = true;
     arg.generate(mv, resultType);
 
-    // mv.visitLdcInsn(0);
-    Compiler.loadOrderParameter(mv);
-    Compiler.loadBitsParameterOntoStack(mv);
-    // mv.visitLdcInsn(128);
+    if (expression.insideInitializer)
+    {
+      mv.visitLdcInsn(0);
+      mv.visitLdcInsn(128);
+    }
+    else
+    {
+      Compiler.loadOrderParameter(mv);
+      Compiler.loadBitsParameterOntoStack(mv);
+    }
 
     // Load the output variable
     loadOutputVariableOntoStack(mv, resultType);
 
-    // Call evaluate on the RationalFunction
-    invokeMethod(mv,
-                 RationalFunction.class,
-                 "evaluate",
-                 resultType,
-                 false,
-                 resultType,
-                 int.class,
-                 int.class,
-                 resultType);
-
+    if (RationalFunction.class.equals(expression.coDomainType))
+    {
+      assert false : "todo: just return element";
+    }
+    else
+    {
+      invokeMethod(mv,
+                   RationalFunction.class,
+                   "evaluate",
+                   resultType,
+                   false,
+                   resultType,
+                   int.class,
+                   int.class,
+                   resultType);
+    }
+    
     return mv;
   }
 
