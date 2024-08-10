@@ -21,12 +21,12 @@ public class GeneratedLommelPolynomialExpression implements RealFunction, Typese
   }
 
   public boolean                  isInitialized;
-  Integer                         cℤ2    = new Integer("2");
-  Integer                         cℤ1    = new Integer("1");
-  Integer                         cℤ3    = new Integer("3");
-  public LommelPolynomialSequence seqqR1 = new LommelPolynomialSequence();
-  public RationalFunction         elementq1;
-  public Real                     ℝ1     = new Real();
+  Integer                         cℤ2       = new Integer("2");
+  Integer                         cℤ1       = new Integer("1");
+  Integer                         cℤ3       = new Integer("3");
+  public LommelPolynomialSequence seqqR1    = new LommelPolynomialSequence();
+  public RationalFunction         elementq1 = new RationalFunction();
+  public Real                     ℝ1        = new Real();
 
   @Override
   public Class<Real> coDomainType()
