@@ -17,15 +17,20 @@ import arb.functions.Function;
 public interface RationalFunctionSequence extends Sequence<RationalFunction>
 {
 
-  public static Expression<Integer, RationalFunction, Function<Integer, RationalFunction>> compile(String expression)
+  public static Expression<Integer, RationalFunction, RationalFunctionSequence> compile(String expression)
   {
     return compile(expression, null);
   }
 
-  public static Expression<Integer, RationalFunction, Function<Integer, RationalFunction>> compile(String expression,
-                                                                                                   Context context)
+  public static Expression<Integer, RationalFunction, RationalFunctionSequence> compile(String expression,
+                                                                                        Context context)
   {
-    return Compiler.compile(expression, context, Integer.class, RationalFunction.class, Function.class, null);
+    return Compiler.compile(expression,
+                            context,
+                            Integer.class,
+                            RationalFunction.class,
+                            RationalFunctionSequence.class,
+                            null);
   }
 
   @Override
