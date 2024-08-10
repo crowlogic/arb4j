@@ -50,11 +50,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
       System.out.println("elementFieldName=" + elementFieldName);
     }
 
-    expression.registerInitializer(mv ->
-    {
-      generateSequenceInitializer(mv);
-
-    });
+    expression.registerInitializer(this::generateSequenceInitializer);
   }
 
   public void generateSequenceInitializer(MethodVisitor mv)
