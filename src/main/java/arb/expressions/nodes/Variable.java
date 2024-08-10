@@ -289,9 +289,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
     Class<?> referenceType = reference.type();
 
     expression.loadThisFieldOntoStack(mv, reference.name, referenceType);
-//    expression.loadFieldOntoStack(loadThisOntoStack(mv),
-//                                  reference.name,
-//                                  referenceType.descriptorString());
+
   }
 
   public void generateReferenceToThisVariableRepresentingTheIndeterminantOfAPolynomial(MethodVisitor mv)

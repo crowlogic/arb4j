@@ -134,8 +134,8 @@ import arb.viz.ArbShellExecutionController;
  * 
  * @author Stephen Andrew Crowley ©2024
  * 
- * @see BusinessSourceLicenseVersionOnePointOne#getText() for the terms of use
- *      of the {@link TheArb4jLibrary}
+ * @see BusinessSourceLicenseVersionOnePointOne#gett for the terms of use of the
+ *      {@link TheArb4jLibrary}
  */
 public class Expression<D, C, F extends Function<? extends D, ? extends C>> implements Typesettable
 {

@@ -56,7 +56,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   public void generateSequenceInitializer(MethodVisitor mv)
   {
     expression.loadThisFieldOntoStack(mv, seqFieldName, sequenceClass);
-    mv.visitFieldInsn(Opcodes.GETFIELD, Type.getInternalName(sequenceClass), "v", Type.getDescriptor(Real.class));
+    Compiler.getField(mv, sequenceClass, "v", Real.class);
     expression.insideInitializer = true;
     order.generate(mv, Real.class);
     Compiler.invokeMethod(mv, Real.class, "set", Real.class, false, Real.class);
