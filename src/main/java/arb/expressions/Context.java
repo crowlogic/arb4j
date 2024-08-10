@@ -21,6 +21,7 @@ import arb.exceptions.CompilerException;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
+import arb.functions.sequences.RationalFunctionSequence;
 import arb.functions.sequences.Sequence;
 
 /**
@@ -274,6 +275,12 @@ public class Context
     return variableEntryStream().filter(entry -> entry.getValue() != null)
                                 .map(entry -> new OrderedPair<String, Class<?>>(entry.getKey(),
                                                                                 entry.getValue().getClass()));
+  }
+
+  public <D, R, F extends Function<? extends D, ? extends R>> void injectReferences(F f)
+  {
+    injectVariableReferences(f);
+    injectFunctionReferences(f);
   }
 
 }
