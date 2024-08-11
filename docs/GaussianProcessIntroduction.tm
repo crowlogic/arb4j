@@ -1,80 +1,88 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|alt-colors>>
+<style|<tuple|generic|alt-colors|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|INTRODUCTION TO GAUSSIAN
   PROCESSES>|<doc-author|<author-data|<author-name|STEVEN P. LALLEY>>>>\ 
 
   <\table-of-contents|toc>
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1. DEFINITIONS
-    AND EXAMPLES> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1. Definitions
+    and Examples> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-1><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2. CONTINUOUS
-    EXTENSIONS AND MAXIMA OF GAUSSIAN PROCESSES>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2. Continuous
+    Extensions and Maxima of Gaussian Processes>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-2><vspace|0.5fn>
 
-    <with|par-left|1tab|2.1. Continuity. <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|1tab|2.1. Continuity <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-3>>
 
     <with|par-left|1tab|2.2. Maximum of a Gaussian process.
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-4>>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3. REPRODUCING
-    KERNEL HILBERT SPACE OF A GAUSSIAN PROCESS>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3. Reproducing
+    Kernel Hilbert Space of a Gaussian Process>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-5><vspace|0.5fn>
 
-    <with|par-left|1tab|3.1. The Wiener Integral.
+    <with|par-left|1tab|3.2. Reproducing Kernel Hilbert Space.
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-6>>
 
-    <with|par-left|1tab|3.2. Reproducing Kernel Hilbert Space.
+    <with|par-left|1tab|3.3. Examples of RKHS.
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-7>>
 
-    <with|par-left|1tab|3.3. Examples of RKHS.
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-8>>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4. Mutual
+    Singularity and Absolute Continuity> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-8><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4. SINGULARITY
-    AND ABSOLUTE CONTINUITY> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-9><vspace|0.5fn>
+    <with|par-left|1tab|1<space|2spc>Distinguishibility Of Measures
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-9>>
+
+    <with|par-left|1tab|2<space|2spc>Intuition
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-10>>
   </table-of-contents>
 
-  <section*|1. DEFINITIONS AND EXAMPLES>
+  <section*|1. Definitions and Examples>
 
-  <with|font-series|bold|Definition 1.1.> A <with|font-shape|italic|Gaussian
-  process> <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> indexed by a set
-  <math|T> is a family of (real-valued) random variables <math|X<rsub|t>>,
-  all defined on the same probability space, such that for any finite subset
-  <math|F\<subseteq\>T> the random vector
-  <math|X<rsub|F>=<around|(|X<rsub|t<rsub|1>>,X<rsub|t<rsub|2>>,\<ldots\>,X<rsub|t<rsub|n>>|)>>
-  has a (possibly degenerate) Gaussian distribution; if these
-  finite-dimensional distributions are all non-degenerate then the Gaussian
-  process is said to be non-degenerate. Equivalently,
-  <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> is Gaussian if every finite
-  linear combination <math|<big|sum><rsub|t\<in\>F>a<rsub|t>*X<rsub|t>> is
-  either identically zero or has a Gaussian distribution on <math|\<bbb-R\>>.
-  A Gaussian process <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> is
-  <with|font-shape|italic|centered> if <math|E*X<rsub|t>=0> for every
-  <math|t\<in\>T>, and its covariance function is the (symmetric) bivariate
-  function
+  <\definition>
+    A <with|font-shape|italic|Gaussian process>
+    <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> indexed by a set <math|T> is
+    a family of (real-valued) random variables <math|X<rsub|t>>, all defined
+    on the same probability space, such that for any finite subset
+    <math|F\<subseteq\>T> the random vector
+    <math|X<rsub|F>=<around|(|X<rsub|t<rsub|1>>,X<rsub|t<rsub|2>>,\<ldots\>,X<rsub|t<rsub|n>>|)>>
+    has a (possibly degenerate) Gaussian distribution; if these
+    finite-dimensional distributions are all non-degenerate then the Gaussian
+    process is said to be non-degenerate. Equivalently,
+    <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> is Gaussian if every finite
+    linear combination <math|<big|sum><rsub|t\<in\>F>a<rsub|t>*X<rsub|t>> is
+    either identically zero or has a Gaussian distribution on
+    <math|\<bbb-R\>>. A Gaussian process <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>>
+    is <with|font-shape|italic|centered> if <math|E*X<rsub|t>=0> for every
+    <math|t\<in\>T>, and its covariance function is the (symmetric) bivariate
+    function
 
-  <\equation*>
-    R<around|(|s,t|)>=<math-up|cov><around|(|X<rsub|s>,X<rsub|t>|)>=E*<around|(|X<rsub|s>*X<rsub|t>|)>-E*X<rsub|s>*E*X<rsub|t>.
-  </equation*>
+    <\equation>
+      R<around|(|s,t|)>=<math-up|cov><around|(|X<rsub|s>,X<rsub|t>|)>=E*<around|(|X<rsub|s>*X<rsub|t>|)>-E*X<rsub|s>*E*X<rsub|t>
+    </equation>
+  </definition>
 
-  The <with|font-shape|italic|canonical metric> <math|d> associated with a
-  non-degenerate Gaussian process <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>>
-  is
+  <\definition>
+    The <with|font-shape|italic|canonical metric> <math|d> associated with a
+    non-degenerate Gaussian process <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>>
+    is
 
-  <\equation*>
-    d<around|(|s,t|)>=<sqrt|E*<around|(|X<rsub|s>-X<rsub|t>|)><rsup|2>>.
-  </equation*>
+    <\equation>
+      d<around|(|s,t|)>=<sqrt|E*<around|(|X<rsub|s>-X<rsub|t>|)><rsup|2>>
+    </equation>
+  </definition>
 
   <with|font-series|bold|Covariance Functions:> Recall that the covariance
   matrix of a multivariate Gaussian random vector is a symmetric, nonnegative
@@ -99,153 +107,9 @@
   <with|font-shape|italic|all> events <math|B>. Therefore, the processes
   <math|X> and <math|Y> are identical in law.
 
-  <with|font-series|bold|Gaussian processes: Examples>
+  <section*|2. Continuous Extensions and Maxima of Gaussian Processes>
 
-  <with|font-series|bold|Example 1.1.> The most important one-parameter
-  Gaussian processes are the Wiener process
-  <math|W=<around|{|W<rsub|t>|}><rsub|t\<geq\>0>> (Brownian motion), the
-  Ornstein-Uhlenbeck process <math|<around|{|Y<rsub|t>|}><rsub|t\<geq\>0>>,
-  and the Brownian bridge <math|<around|{|W<rsup|b><rsub|t>|}><rsub|t\<in\><around|[|0,1|]>>>.
-  These are the centered Gaussian processes with covariance functions
-
-  <\equation*>
-    E*W<rsub|t>*W<rsub|s>=min <around|(|s,t|)>
-  </equation*>
-
-  <\equation*>
-    E*Y<rsub|s>*Y<rsub|t>=e<rsup|-<around|\||t-s|\|>>
-  </equation*>
-
-  <\equation*>
-    E*W<rsup|b><rsub|s>*W<rsup|b><rsub|t>=min <around|(|s,t|)>-s*t
-  </equation*>
-
-  <with|font-series|bold|Note:> In certain situations we truncate the
-  parameter space <math|T> \U in particular, sometimes we are interested in
-  the Wiener process <math|W<rsub|t>> only for
-  <math|t\<in\><around|[|0,1|]>>, or in the Ornstein-Uhlenbeck process
-  <math|Y<rsub|t>> for <math|t\<geq\>0>.
-
-  <with|font-series|bold|Exercise 1.1.> Check that if <math|W<rsub|t>> is a
-  standard Wiener process, then the derived processes
-
-  <\equation*>
-    W<rprime|'><rsub|t>\<assign\>W<rsub|t>-t*W<rsub|1>*<space|1em><text|and><space|1em>Y<rsub|t>\<assign\>e<rsup|-t>*W<rsub|e<rsup|t>>
-  </equation*>
-
-  have the same covariance functions as given above, and so these derived
-  processes have the same \Pfinite-dimensional distributions\Q as the
-  Brownian bridge and Ornstein-Uhlenbeck process, respectively. Also, check
-  that for any scalar <math|a\<gtr\>0> the process
-
-  <\equation*>
-    W<rsup|\<prime\>*\<prime\>><rsub|t>\<assign\>a<rsup|-1>*W<rsub|a<rsup|2>*t>
-  </equation*>
-
-  has the same covariance function, and therefore also the same
-  finite-dimensional distributions, as <math|W>. (This correspondence is
-  called <with|font-shape|italic|Brownian scaling>.)
-
-  <with|font-series|bold|Exercise 1.2.> Let <math|W<rsub|t>> be a standard
-  Wiener process, and let <math|f<around|(|t|)>> be any continuous
-  (nonrandom) function. Define
-
-  <\equation*>
-    Z<rsub|t>=<big|int><rsub|0><rsup|t>W<rsub|s>*f<around|(|s|)>*<space|0.17em>d*s
-  </equation*>
-
-  (The integral is well-defined because the Wiener process has continuous
-  paths.) Show that <math|Z<rsub|t>> is a Gaussian process, and calculate its
-  covariance function. <with|font-shape|italic|Hint:> First show that if a
-  sequence <math|X<rsub|n>> of Gaussian random variables converges in
-  distribution, then the limit distribution is Gaussian (but possibly
-  degenerate).
-
-  <with|font-series|bold|Example 1.2.> Let
-  <math|i<rsub|1>,i<rsub|2>,\<ldots\>> be independent, identically
-  distributed unit normals. Then for any finite set of frequencies
-  <math|\<omega\><rsub|i>\<geq\>0>, the process
-
-  <\equation*>
-    X<rsub|t>=<big|sum><rsub|i=1><rsup|m>\<xi\><rsub|i>*cos
-    <around|(|\<omega\><rsub|i>*t|)>
-  </equation*>
-
-  indexed by <math|t\<in\>\<bbb-R\>> is a Gaussian process. This process has
-  smooth sample paths (they are just random linear combinations of cosine
-  waves). Note that for any finite set <math|F> of cardinality larger than
-  <math|m> the random vector <math|X<rsub|F>> has a degenerate Gaussian
-  distribution (why?).
-
-  <with|font-series|bold|Construction of Gaussian Processes.> It is not at
-  all obvious that the Gaussian processes in Examples 1.1 and 1.3 exist, nor
-  what kind of sample paths/sheets they will have. The difficulty is that
-  uncountably many random variables are involved. We will show that not only
-  do all of the processes above exist, but that they have continuous sample
-  functions. This will be done in two steps: First, we will show that
-  Gaussian processes with <with|font-shape|italic|countable> index sets can
-  always be constructed from i.i.d. unit normals. Then, in section 2, we will
-  show that under certain restrictions on the covariance function a Gaussian
-  process can be extended continuously from a countable dense index set to a
-  continuum with some restriction on the covariance.
-
-  <with|font-series|bold|Processes with Countable Index Sets.> For each
-  <math|m=1,2,\<ldots\>>, let <math|F<rsub|m>> be a (Borel) probability
-  distribution on <math|\<bbb-R\><rsup|m>>. Assume that these are mutually
-  consistent in the following sense: for each Borel subset <math|B> of
-  <math|\<bbb-R\><rsup|m>>,
-
-  <\equation*>
-    F<rsub|m><around|(|B|)>=F<rsub|m+1>*<around|(|B\<times\>\<bbb-R\>|)>;
-  </equation*>
-
-  that is, <math|F<rsub|m>> is the marginal joint distribution of the first
-  <math|m> coordinates of a random vector with distribution
-  <math|F<rsub|m+1>>. I will show that on some probability space an arbitrary
-  defined random variable <math|X<rsub|i>> such that for each <math|m>, the
-  random vector <math|<around|(|X<rsub|1>,X<rsub|2>,\<ldots\>,X<rsub|m>|)>>
-  has distribution <math|F<rsub|m+1>>. In fact, any probability space that
-  support an i.i.d. sequence <math|U<rsub|i>> of uniform
-  <math|<around|[|0,1|]>> random variables will suffice.
-
-  Recall that any probability distribution <math|F> on <math|\<bbb-R\>> can
-  be \Psimulated\Q using a single uniform <math|<around|[|0,1|]>> random
-  variable <math|U>, by the quantile transformation method. Hence, there is a
-  (Borel) function <math|\<psi\><around|(|U|)>> such that <math|U> has
-  distribution <math|F>. Now suppose that <math|X<rsub|i>> have been
-  constructed for <math|i\<leq\>m> using the values <math|U<rsub|i>>, with
-  <math|i\<leq\>m>, in such a way that the joint distribution of the random
-  vector <math|<around|(|X<rsub|1>,X<rsub|2>,\<ldots\>,X<rsub|m-1>,X<rsub|m>|)>>
-  is <math|F<rsub|m>>. Let <math|G<rsub|m+1>> be the conditional distribution
-  on <math|\<bbb-R\>> of the <math|<around|(|m+1|)>>st coordinate of an
-  arbitrary defined random vector given that the first <math|m> coordinates
-  have values <math|<around|(|X<rsub|1>,X<rsub|2>,\<ldots\>,X<rsub|m>|)>>.
-  Use <math|U<rsub|m+1>> to produce a random variable <math|X<rsub|m+1>> with
-  conditional distribution <math|G<rsub|m+1>> given the values
-  <math|<around|(|X<rsub|1>,X<rsub|2>,\<ldots\>,X<rsub|m>|)>>. Then the joint
-  distribution of <math|<around|(|X<rsub|1>,X<rsub|2>,\<ldots\>,X<rsub|m+1>|)>>
-  will be <math|F<rsub|m+1>>, by the consistency hypothesis.
-
-  Now let <math|R<around|(|s,t|)>> be a positive definite function indexed by
-  a countable set <math|T>, that is, a symmetric function with the property
-  that for every finite subset <math|F> of <math|T>, the matrix
-  <math|Z<rsub|F>=<around|{|R<around|(|s,t|)>|}><rsub|s,t\<in\>F>> is
-  positive definite. Without loss of generality, assume that
-  <math|T=\<bbb-N\>>. Then the sequence of distributions
-
-  <\equation*>
-    F<rsub|m>=<text|Normal><around|(|0,\<Sigma\><rsub|m>|)>
-  </equation*>
-
-  is mutually consistent (why?). Therefore, by the preceding paragraph, there
-  exists a sequence of random variables <math|X<rsub|i>> such that, for each
-  finite subset <math|F\<subseteq\>T> the joint distribution of
-  <math|X<rsub|F>> is Gaussian with mean zero and covariance
-  <math|Z<rsub|F>>.
-
-  <section*|2. CONTINUOUS EXTENSIONS AND MAXIMA OF GAUSSIAN PROCESSES>
-
-  <subsection*|2.1. Continuity.>
+  <subsection*|2.1. Continuity>
 
   Keep in mind that there are covariance functions <math|R> that exist such
   that no centered Gaussian process with covariance function <math|R> has
@@ -253,46 +117,52 @@
   <with|font-shape|italic|continuous> covariance functions that exist that do
   not have versions with continous sample paths.
 
-  <with|font-series|bold|Definition 2.1.> Let <math|<around|(|T,d|)>> be a
-  compact metric space. For each <math|\<varepsilon\>\<gtr\>0> the Lebesgue
-  covering number <math|N<around|(|\<varepsilon\>|)>> is the minimum number
-  of (open) <math|\<varepsilon\>>-balls needed to cover <math|T>.
+  <\definition>
+    Let <math|<around|(|T,d|)>> be a compact metric space. For each
+    <math|\<varepsilon\>\<gtr\>0> the Lebesgue covering number
+    <math|N<around|(|\<varepsilon\>|)>> is the minimum number of (open)
+    <math|\<varepsilon\>>-balls needed to cover <math|T>.
+  </definition>
 
-  <with|font-series|bold|Theorem 1.> Let <math|d> be the canonical metric of
-  a non-degenerate, centered Gaussian process
-  <math|<around|{|X<rsub|i>|}><rsub|i\<in\>T>>, and let
-  <math|N<around|(|\<varepsilon\>|)>> be the Lebesgue covering function. If
-  for some <math|\<rho\>\<gtr\>0>
+  <\theorem>
+    \ Let <math|d> be the canonical metric of a non-degenerate, centered
+    Gaussian process <math|<around|{|X<rsub|i>|}><rsub|i\<in\>T>>, and let
+    <math|N<around|(|\<varepsilon\>|)>> be the Lebesgue covering function. If
+    for some <math|\<rho\>\<gtr\>0>
 
-  <\equation*>
-    <big|int><rsub|0><rsup|\<varepsilon\>>log
-    N<around|(|\<eta\>|)>*d*\<eta\>\<less\>\<infty\>
-  </equation*>
+    <\equation*>
+      <big|int><rsub|0><rsup|\<varepsilon\>>log
+      N<around|(|\<eta\>|)>*d*\<eta\>\<less\>\<infty\>
+    </equation*>
 
-  then the Gaussian process has a version with uniformly continuous sample
-  paths. Consequently (since <math|T> is compact), for this version,
+    then the Gaussian process has a version with uniformly continuous sample
+    paths. Consequently (since <math|T> is compact), for this version,
 
-  <\equation*>
-    sup<rsub|i\<in\>T> X<rsub|i>=max<rsub|i\<in\>T>
-    X<rsub|i><space|1em><text|a.s.>
-  </equation*>
+    <\equation*>
+      sup<rsub|i\<in\>T> X<rsub|i>=max<rsub|i\<in\>T>
+      X<rsub|i><space|1em><text|a.s.>
+    </equation*>
+  </theorem>
 
-  <with|font-series|bold|Remark 1.> This result can then also be used as an
-  extension theorem. In particular, if <math|<around|(|T,d|)>> is not a
-  complete metric space then the theorem implies that under the assumption
-  <math|<big|int><rsub|0><rsup|\<varepsilon\>>log
-  N<around|(|\<eta\>|)>*d*\<eta\>\<less\>\<infty\>> the Gaussian process has
-  a uniformly continuous extension to the completion of
-  <math|<around|(|T,d|)>>, by the next lemma.
+  <\remark>
+    This result can then also be used as an extension theorem. In particular,
+    if <math|<around|(|T,d|)>> is not a complete metric space then the
+    theorem implies that under the assumption
+    <math|<big|int><rsub|0><rsup|\<varepsilon\>>log
+    N<around|(|\<eta\>|)>*d*\<eta\>\<less\>\<infty\>> the Gaussian process
+    has a uniformly continuous extension to the completion of
+    <math|<around|(|T,d|)>>, by the next lemma.
+  </remark>
 
-  <with|font-series|bold|Lemma 2.1.> Let <math|D> be a dense subset of a
-  metric space <math|T>, and let <math|f:D\<rightarrow\>\<bbb-R\>> be
-  uniformly continuous on <math|D>, i.e., for each
-  <math|\<varepsilon\>\<gtr\>0> there exists <math|\<delta\>\<gtr\>0> such
-  that <math|<around|\||f<around|(|y|)>-f<around|(|x|)>|\|>\<less\>\<varepsilon\>>
-  for any two points <math|x,y\<in\>D> at distance
-  <math|d<around|(|x,y|)>\<less\>\<delta\>>. Then there is a unique uniformly
-  continuous extension of <math|f> to <math|T>.
+  <\lemma>
+    Let <math|D> be a dense subset of a metric space <math|T>, and let
+    <math|f:D\<rightarrow\>\<bbb-R\>> be uniformly continuous on <math|D>,
+    i.e., for each <math|\<varepsilon\>\<gtr\>0> there exists
+    <math|\<delta\>\<gtr\>0> such that <math|<around|\||f<around|(|y|)>-f<around|(|x|)>|\|>\<less\>\<varepsilon\>>
+    for any two points <math|x,y\<in\>D> at distance
+    <math|d<around|(|x,y|)>\<less\>\<delta\>>. Then there is a unique
+    uniformly continuous extension of <math|f> to <math|T>.
+  </lemma>
 
   <with|font-shape|italic|Proof.> This is a routine exercise in elementary
   real analysis.
@@ -377,48 +247,51 @@
   <math|<around|\||X<rsub|u>-X<rsub|v>|\|>\<less\>A<rsub|j>*d<around|(|u,v|)>>,
   where <math|j> is the depth of the link. It then follows that
 
-  <\equation*>
+  <\equation>
     <around|\||X<rsub|s>-X<rsub|t>|\|>\<less\>3*\<varepsilon\>
-  </equation*>
+  </equation>
 
   Thus, the restriction of the Gaussian process to <math|D> is, with
   probability one, uniformly continuous.\ 
 
-  <with|font-series|bold|Corollary 2.2.> If <math|T> is a compact subset of
-  <math|\<bbb-R\><rsup|k>> and if <math|R<around|(|s,t|)>> is a symmetric,
-  Lipschitz continuous, nonnegative definite kernel on <math|T\<times\>T>,
-  then there is a centered Gaussian process
-  <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> with continuous sample paths
-  and covariance function <math|R<around|(|s,t|)>>.
+  <\corollary>
+    If <math|T> is a compact subset of <math|\<bbb-R\><rsup|k>> and if
+    <math|R<around|(|s,t|)>> is a symmetric, Lipschitz continuous,
+    nonnegative definite kernel on <math|T\<times\>T>, then there is a
+    centered Gaussian process <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>>
+    with continuous sample paths and covariance function
+    <math|R<around|(|s,t|)>>.
+  </corollary>
 
   <with|font-shape|italic|Proof.> Exercise.
 
-  <with|font-series|bold|Corollary 2.3.> Let <math|T> be a compact interval
-  in <math|\<bbb-R\><rsup|1>> and assume that <math|R<around|(|s,t|)>>
-  satisfies the hypotheses of Corollary 2.2. If <math|R> is twice
-  continuously differentiable, and if the mixed second partials are Lipschitz
-  continuous on <math|T\<times\>T>, then the centered Gaussian process
-  <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> with covariance function
-  <math|R<around|(|s,t|)>> has a differentiable version, and the derivative
-  process <math|<around|{|X<rsub|t><rprime|'>|}><rsub|t\<in\>T>> is a
-  centered Gaussian process with covariance function
+  <\corollary>
+    Let <math|T> be a compact interval in <math|\<bbb-R\><rsup|1>> and assume
+    that <math|R<around|(|s,t|)>> satisfies the hypotheses of Corollary 2.2.
+    If <math|R> is twice continuously differentiable, and if the mixed second
+    partials are Lipschitz continuous on <math|T\<times\>T>, then the
+    centered Gaussian process <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>>
+    with covariance function <math|R<around|(|s,t|)>> has a differentiable
+    version, and the derivative process <math|<around|{|X<rsub|t><rprime|'>|}><rsub|t\<in\>T>>
+    is a centered Gaussian process with covariance function
 
-  <\equation*>
-    <math-up|cov><around|(|X<rsub|s><rprime|'>,X<rsub|t><rprime|'>|)>=<frac|\<partial\><rsup|2>*R|\<partial\>*s*\<partial\>*t>*<around|(|s,t|)>
-  </equation*>
+    <\equation>
+      <math-up|cov><around|(|X<rsub|s><rprime|'>,X<rsub|t><rprime|'>|)>=<frac|\<partial\><rsup|2>*R|\<partial\>*s*\<partial\>*t>*<around|(|s,t|)>
+    </equation>
 
-  <with|font-shape|italic|Proof (Sketch).> Define a Gaussian process on
-  <math|T\<times\>T\<setminus\><around|{|<around|(|t,t|)>|}><rsub|t\<in\>T>>
-  by
+    <with|font-shape|italic|Proof (Sketch).> Define a Gaussian process on
+    <math|T\<times\>T\<setminus\><around|{|<around|(|t,t|)>|}><rsub|t\<in\>T>>
+    by
 
-  <\equation*>
-    Y<rsub|s,t>=<frac|X<rsub|t>-X<rsub|s>|t-s>
-  </equation*>
+    <\equation>
+      Y<rsub|s,t>=<frac|X<rsub|t>-X<rsub|s>|t-s>
+    </equation>
 
-  The hypotheses on <math|R> guarantee that the covariance function of the
-  process <math|<around|{|Y<rsub|s,t>|}>> has a Lipschitz continuous
-  extension to <math|T\<times\>T>, so the preceding corollary implies that
-  <math|Y<rsub|s,t>> extends continuously to all of <math|T\<times\>T>.
+    The hypotheses on <math|R> guarantee that the covariance function of the
+    process <math|<around|{|Y<rsub|s,t>|}>> has a Lipschitz continuous
+    extension to <math|T\<times\>T>, so the preceding corollary implies that
+    <math|Y<rsub|s,t>> extends continuously to all of <math|T\<times\>T>.
+  </corollary>
 
   <subsection*|2.2. Maximum of a Gaussian process.>
 
@@ -429,101 +302,100 @@
   <with|font-shape|italic|expectation> of the max is bounded by a multiple of
   the metric entropy integral.
 
-  <with|font-series|bold|Theorem 2.> There is a universal constant
-  <math|K\<less\>\<infty\>> such that for any non-degenerate, centered
-  Gaussian process <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> and any
-  countable dense subset <math|D\<subseteq\>T>,
+  <\theorem>
+    There is a universal constant <math|K\<less\>\<infty\>> such that for any
+    non-degenerate, centered Gaussian process
+    <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> and any countable dense
+    subset <math|D\<subseteq\>T>,
 
-  <\equation*>
-    E*sup<rsub|t\<in\>D> X<rsub|t>\<leq\>K*<big|int><rsub|0><rsup|<math-up|diam><around|(|T|)>/2><sqrt|log
-    N<around|(|\<varepsilon\>|)>>*<space|0.17em>d*\<varepsilon\>
-  </equation*>
+    <\equation>
+      E*sup<rsub|t\<in\>D> X<rsub|t>\<leq\>K*<big|int><rsub|0><rsup|<math-up|diam><around|(|T|)>/2><sqrt|log
+      N<around|(|\<varepsilon\>|)>>*<space|0.17em>d*\<varepsilon\>
+    </equation>
+  </theorem>
 
   This is stated so that it holds for any version, whether or not it is
   continuous. However, it is easy to see, given Theorem 1, that the statement
   is equivalent to the statement that for a
   <with|font-shape|italic|continuous> version,
 
-  <\equation*>
+  <\equation>
     E*max<rsub|t\<in\>T> X<rsub|t>\<leq\>K*<big|int><rsub|0><rsup|<math-up|diam><around|(|T|)>/2><sqrt|log
     N<around|(|\<varepsilon\>|)>>*<space|0.17em>d*\<varepsilon\>
-  </equation*>
+  </equation>
 
-  What is even more striking is that the sup is highly concentrated around
-  its mean. This is an easy consequence of the Gaussian concentration
-  inequality proved earlier in the course.
+  The high concentration of sup around its mean is an easy consequence of the
+  Gaussian concentration inequality.
 
-  <with|font-series|bold|Theorem 3.> Let <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>>
-  be a centered Gaussian process on a countable set <math|T> that is almost
-  surely bounded. Write <math|X<rsup|\<ast\>>=sup<rsub|t\<in\>T> X<rsub|t>>.
-  If <math|\<sigma\><rsub|t><rsup|2>\<assign\>sup<rsub|t\<in\>T>
-  E*X<rsub|t><rsup|2>\<less\>\<infty\>>, then
-  <math|E*X<rsup|\<ast\>>\<less\>\<infty\>> and for any <math|u\<gtr\>0>
+  <\theorem>
+    Let <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> be a centered Gaussian
+    process on a countable set <math|T> that is almost surely bounded. Write
+    <math|X<rsup|\<ast\>>=sup<rsub|t\<in\>T> X<rsub|t>>. If
+    <math|\<sigma\><rsub|t><rsup|2>\<assign\>sup<rsub|t\<in\>T>
+    E*X<rsub|t><rsup|2>\<less\>\<infty\>>, then
+    <math|E*X<rsup|\<ast\>>\<less\>\<infty\>> and for any <math|u\<gtr\>0>
 
-  <\equation*>
-    P*<around|(|X<rsup|\<ast\>>\<geq\>E*X<rsup|\<ast\>>+u|)>\<leq\>exp
-    <around|(|-u<rsup|2>/2*\<sigma\><rsub|t><rsup|2>|)>
-  </equation*>
+    <\equation>
+      P*<around|(|X<rsup|\<ast\>>\<geq\>E*X<rsup|\<ast\>>+u|)>\<leq\>exp
+      <around|(|-u<rsup|2>/2*\<sigma\><rsub|t><rsup|2>|)>
+    </equation>
+  </theorem>
 
-  <with|font-shape|italic|Proof.> Consider first the case where
-  <math|T=<around|[|m|]>> is finite, and without loss of generality assume
-  that <math|\<sigma\><rsub|t><rsup|2>\<leq\>1>. Then
-  <math|X\<assign\><around|{|X<rsub|t>|}><rsub|t\<in\>T>> is just a mean-zero
-  Gaussian random vector, and <math|X<rsup|\<ast\>>> is the value of the
-  maximum coordinate. This has finite expectation, because, for instance it
-  is always bounded by the absolute value. Furthermore, if <math|k\<leq\>m>
-  is the rank of the covariance matrix then there is a linear transformation
-  <math|A:\<bbb-R\><rsup|k>\<rightarrow\>\<bbb-R\><rsup|m>> and a standard
-  Gaussian random vector <math|Y> in <math|\<bbb-R\><rsup|k>> such that
-  <math|X=A*Y>. Because <math|\<sigma\><rsub|t><rsup|2>\<leq\>1>, the
-  components <math|X<rsub|j>> of <math|X> have variances bounded by 1, and so
-  the rows of <math|A> all have length bounded by 1. Consequently, the
-  mapping <math|A<rsup|\<ast\>>:\<bbb-R\><rsup|k>\<rightarrow\>\<bbb-R\>>
-  that takes <math|y\<in\>\<bbb-R\><rsup|k>> to the largest coordinate of the
-  <math|m>-vector <math|A*y> is 1\ULipschitz. Hence, the inequality (2.5) is
-  an immediate consequence of the Gaussian concentration theorem.
+  <\proof>
+    Consider first the case where <math|T=<around|[|m|]>> is finite, and
+    without loss of generality assume that
+    <math|\<sigma\><rsub|t><rsup|2>\<leq\>1>. Then
+    <math|X\<assign\><around|{|X<rsub|t>|}><rsub|t\<in\>T>> is just a
+    mean-zero Gaussian random vector, and <math|X<rsup|\<ast\>>> is the value
+    of the maximum coordinate. This has finite expectation, because, for
+    instance it is always bounded by the absolute value. Furthermore, if
+    <math|k\<leq\>m> is the rank of the covariance matrix then there is a
+    linear transformation <math|A:\<bbb-R\><rsup|k>\<rightarrow\>\<bbb-R\><rsup|m>>
+    and a standard Gaussian random vector <math|Y> in
+    <math|\<bbb-R\><rsup|k>> such that <math|X=A*Y>. Because
+    <math|\<sigma\><rsub|t><rsup|2>\<leq\>1>, the components <math|X<rsub|j>>
+    of <math|X> have variances bounded by 1, and so the rows of <math|A> all
+    have length bounded by 1. Consequently, the mapping
+    <math|A<rsup|\<ast\>>:\<bbb-R\><rsup|k>\<rightarrow\>\<bbb-R\>> that
+    takes <math|y\<in\>\<bbb-R\><rsup|k>> to the largest coordinate of the
+    <math|m>-vector <math|A*y> is 1\ULipschitz. Hence, the inequality (2.5)
+    is an immediate consequence of the Gaussian concentration theorem.
 
-  Now let <math|T> be countable, and let <math|T<rsub|1>\<subseteq\>T<rsub|2>\<subseteq\>\<ldots\>>
-  be finite subsets of <math|T> whose union is <math|T>. Set
-  <math|\<mu\><rsub|n>=E*max<rsub|t\<in\>T<rsub|n>> X<rsub|t>>; since the
-  sets <math|T<rsub|n>> are nested, the sequence <math|\<mu\><rsub|n>> is
-  nondecreasing. There are two possibilities: either <math|lim
-  \<mu\><rsub|n>\<less\>\<infty\>> or <math|lim \<mu\><rsub|n>=\<infty\>>.
-  But if <math|lim \<mu\><rsub|n>=\<infty\>> then it must be the case that
-  <math|X<rsup|\<ast\>>=\<infty\>> almost surely, because
-  <math|X<rsup|\<ast\>>\<geq\>max<rsub|t\<in\>T<rsub|n>> X<rsub|t>>, and
-  since (2.5) holds for each <math|T<rsub|n>>, the maximum of <math|X> on
-  <math|T<rsub|n>> is highly concentrated about <math|\<mu\><rsub|n>>.
-  (Exercise: Fill in the details.) Thus, if
-  <math|X<rsup|\<ast\>>\<less\>\<infty\>> almost surely then <math|lim
-  \<mu\><rsub|n>\<less\>\<infty\>>, and by monotone convergence
+    Now let <math|T> be countable, and let
+    <math|T<rsub|1>\<subseteq\>T<rsub|2>\<subseteq\>\<ldots\>> be finite
+    subsets of <math|T> whose union is <math|T>. Set
+    <math|\<mu\><rsub|n>=E*max<rsub|t\<in\>T<rsub|n>> X<rsub|t>>; since the
+    sets <math|T<rsub|n>> are nested, the sequence <math|\<mu\><rsub|n>> is
+    nondecreasing. There are two possibilities: either <math|lim
+    \<mu\><rsub|n>\<less\>\<infty\>> or <math|lim \<mu\><rsub|n>=\<infty\>>.
+    But if <math|lim \<mu\><rsub|n>=\<infty\>> then it must be the case that
+    <math|X<rsup|\<ast\>>=\<infty\>> almost surely, because
+    <math|X<rsup|\<ast\>>\<geq\>max<rsub|t\<in\>T<rsub|n>> X<rsub|t>>, and
+    since (2.5) holds for each <math|T<rsub|n>>, the maximum of <math|X> on
+    <math|T<rsub|n>> is highly concentrated about <math|\<mu\><rsub|n>>.
+    (Exercise: Fill in the details.) Thus, if
+    <math|X<rsup|\<ast\>>\<less\>\<infty\>> almost surely then <math|lim
+    \<mu\><rsub|n>\<less\>\<infty\>>, and by monotone convergence
 
-  <\equation*>
-    E*X<rsup|\<ast\>>=E*lim<rsub|n\<rightarrow\>\<infty\>>
-    max<rsub|t\<in\>T<rsub|n>> X<rsub|t>=lim<rsub|n\<rightarrow\>\<infty\>>
-    \<mu\><rsub|n>\<less\>\<infty\>.
-  </equation*>
+    <\equation>
+      E*X<rsup|\<ast\>>=E*lim<rsub|n\<rightarrow\>\<infty\>>
+      max<rsub|t\<in\>T<rsub|n>> X<rsub|t>=lim<rsub|n\<rightarrow\>\<infty\>>
+      \<mu\><rsub|n>\<less\>\<infty\>
+    </equation>
 
-  Finally, to prove the concentration inequality, observe that for any
-  <math|u\<gtr\>0>,
+    Finally, to prove the concentration inequality, observe that for any
+    <math|u\<gtr\>0>
 
-  <\equation*>
-    P*<around|(|X<rsup|\<ast\>>\<geq\>E*X<rsup|\<ast\>>+u|)>=lim<rsub|n\<rightarrow\>\<infty\>>
-    P*<around|(|max<rsub|t\<in\>T<rsub|n>>
-    X<rsub|t>\<geq\>E*X<rsup|\<ast\>>+u|)>
-  </equation*>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|P*<around|(|X<rsup|\<ast\>>\<geq\>E*X<rsup|\<ast\>>+u|)>>|<cell|=lim<rsub|n\<rightarrow\>\<infty\>>
+      P*<around|(|max<rsub|t\<in\>T<rsub|n>>
+      X<rsub|t>\<geq\>E*X<rsup|\<ast\>>+u|)>>>|<row|<cell|>|<cell|\<leq\>lim<rsub|n\<rightarrow\>\<infty\>>
+      P*<around|(|max<rsub|t\<in\>T<rsub|n>>
+      X<rsub|t>\<geq\>\<mu\><rsub|n>+u|)>>>|<row|<cell|>|<cell|\<leq\>e<rsup|-<frac|u<rsup|2>|2*\<sigma\><rsub|t><rsup|2>>>>>>>>
+    </equation>
+  </proof>
 
-  <\equation*>
-    \<leq\>lim<rsub|n\<rightarrow\>\<infty\>>
-    P*<around|(|max<rsub|t\<in\>T<rsub|n>>
-    X<rsub|t>\<geq\>\<mu\><rsub|n>+u|)>
-  </equation*>
-
-  <\equation*>
-    \<leq\>exp <around|(|-u<rsup|2>/2*\<sigma\><rsub|t><rsup|2>|)>.
-  </equation*>
-
-  <section*|3. REPRODUCING KERNEL HILBERT SPACE OF A GAUSSIAN PROCESS>
+  <section*|3. Reproducing Kernel Hilbert Space of a Gaussian Process>
 
   Let <math|R<around|(|s,t|)>> be the covariance function of a centered,
   non-degenerate Gaussian process <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>>,
@@ -539,444 +411,359 @@
   real-valued functions on <math|T> that is naturally isometric to
   <math|L<rsub|2><rsup|X>>. The isometry between these Hilbert spaces leads
   to useful spectral representations of the Gaussian process, notably the
-  Karhunen-Loeve representation. The construction of the RKHS is relatively
-  painless, but because the idea behind it is a bit obscure we will first
-  look at another more transparent isometry of Hilbert spaces, the
-  <with|font-shape|italic|Wiener integral>.
-
-  <subsection*|3.1. The Wiener Integral.>
-
-  The idea \U at least, some version of it \U lies behind Wiener's original
-  1920 construction of the Wiener process. Wiener realized that if a centered
-  Gaussian process <math|<around|{|W<rsub|t>|}><rsub|t\<in\><around|[|0,1|]>>>
-  has the covariance function (1.4) then for <math|s\<less\>t> and
-  <math|u\<less\>v>,
-
-  <\equation*>
-    E*<around|[|<around|(|W<rsub|t>-W<rsub|s>|)>*<around|(|W<rsub|v>-W<rsub|u>|)>|]>=<big|int><rsub|0><rsup|1>I<rsub|<around|[|s,t|]>><around|(|x|)>*I<rsub|<around|[|u,v|]>><around|(|x|)>*<space|0.17em>d*x
-  </equation*>
-
-  that is, the <math|L<rsup|2>> inner product of Wiener process increments is
-  identical to the <math|L<rsup|2>> inner product of the corresponding time
-  interval indicator functions relative to Lebesgue measure. Because both
-  expectation and Lebesgue integral are linear, it follows that the inner
-  product identity (3.1) extends to all finite linear combinations. Now
-  finite linear combinations of indicator functions of intervals are just
-  step functions, and step functions are dense, relative to the
-  <math|L<rsup|2>>\Udistance, in <math|L<rsup|2><around|[|0,1|]>>, so the
-  linear mapping
-
-  <\equation*>
-    T<around*|(|<big|sum><rsub|i=1><rsup|k>a<rsub|i>*I<rsub|<around|[|s<rsub|i>,t<rsub|i>|]>>|)>=<big|sum><rsub|i=1><rsup|k>a<rsub|i>*<around|(|W<around|(|t<rsub|i>|)>-W<around|(|s<rsub|i>|)>|)>
-  </equation*>
-
-  extends to a linear mapping <math|T> of <math|L<rsup|2><around|[|0,1|]>>
-  into the space <math|L<rsup|2><around|(|P|)>> of square-integrable random
-  variables, by the following general principle.
-
-  <with|font-series|bold|Proposition 3.1.> Let <math|H<rsub|0>> be a dense,
-  linear subspace of a Hilbert space <math|H>, and let
-  <math|J:H<rsub|0>\<rightarrow\>H<rprime|'>> be a linear isometry mapping
-  <math|H<rsub|0>> into another Hilbert space <math|H<rprime|'>>. Then
-  <math|J> extends uniquely to a linear isometry
-  <math|J:H\<rightarrow\>H<rprime|'>>.
-
-  <with|font-shape|italic|Proof.> Exercise. If you don't know what a Hilbert
-  space is, just assume that <math|H> and <math|H<rprime|'>> are closed
-  linear subspaces of <math|L<rsup|2>> spaces.
-
-  <with|font-series|bold|Corollary 3.2.> If
-  <math|<around|{|W<rsub|t>|}><rsub|t\<in\><around|[|0,1|]>>> is a Wiener
-  process defined on some probability space
-  <math|<around|(|\<Omega\>,\<cal-F\>,P|)>> then the mapping
-  <math|T<around|(|I<rsub|<around|[|s,t|]>>|)>=W<rsub|t>-W<rsub|s>> extends
-  in a unique way to a linear isometry <math|T:L<rsup|2><around|[|0,1|]>\<rightarrow\>L<rsup|2><around|(|P|)>>.
-
-  The isometry <math|T> is called the <with|font-shape|italic|Wiener
-  isometry> or the <with|font-shape|italic|Wiener integral>. Since a Wiener
-  process is a Gaussian process, all linear combinations (3.2) of Wiener
-  increments are mean-zero Gaussian random variables, so all step functions
-  are mapped by <math|T> to Gaussians. Since <math|L<rsup|2>>\Ulimits of
-  Gaussian random variables are Gaussian, it follows that the image
-  <math|T<around|(|L<rsup|2><around|[|0,1|]>|)>> contains only Gaussian
-  random variables.
-
-  One of the fundamental theorems of Hilbert space theory is that any Hilbert
-  space has a complete orthonormal basis. The Hilbert space
-  <math|L<rsup|2><around|[|0,1|]>> is separable, so it has countable
-  orthonormal bases (for instance, the Fourier basis and the Haar basis). Let
-  <math|<around|{|\<psi\><rsub|n>|}><rsub|n\<geq\>1>> be any such basis.
-  Since the Wiener integral <math|T> is an isometry, the random variables
-  <math|\<xi\><rsub|n>=T*\<psi\><rsub|n>> are orthogonal \U in particular,
-  uncorrelated, and therefore independent \U standard normals, and these form
-  a complete orthonormal basis of <math|T<around|(|L<rsup|2><around|[|0,1|]>|)>>.
-  By Parseval's theorem, any <math|f\<in\>L<rsup|2><around|[|0,1|]>> has the
-  representation
-
-  <\equation*>
-    f=<big|sum><rsub|n=1><rsup|\<infty\>><around|\<langle\>|f,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n><space|1em><text|where><space|1em><around|\<langle\>|f,g|\<rangle\>>=<big|int><rsub|0><rsup|1>f<around|(|x|)>*g<around|(|x|)>*<space|0.17em>d*x
-  </equation*>
-
-  where the series converges in <math|L<rsup|2>> norm, and in particular, for
-  any <math|t\<in\><around|[|0,1|]>>,
-
-  <\equation*>
-    1.0=<big|sum><rsub|n=1><rsup|\<infty\>><around*|(|<big|int><rsub|0><rsup|t>\<psi\><rsub|n><around|(|s|)>*<space|0.17em>d*s|)><rsup|2>
-  </equation*>
-
-  Consequently, for any <math|t\<in\><around|[|0,1|]>>,
-
-  <\equation*>
-    W<rsub|t>=<big|sum><rsub|n=1><rsup|\<infty\>>\<xi\><rsub|n>*\<Psi\><rsub|n><around|(|t|)>*<space|1em><text|where><space|1em>\<Psi\><rsub|n><around|(|t|)>\<assign\><big|int><rsub|0><rsup|t>\<psi\><rsub|n><around|(|s|)>*<space|0.17em>d*s
-  </equation*>
-
-  This expansion is valid for <with|font-shape|italic|any> orthonormal basis
-  <math|<around|{|\<psi\><rsub|n>|}><rsub|n\<geq\>1>>. For the Fourier sine
-  basis, the indefinite integrals <math|\<Psi\><rsub|n>> are cosines, and the
-  expansion reads
-
-  <\equation*>
-    W<rsub|t>=\<xi\><rsub|0>*t+<big|sum><rsub|n=1><rsup|\<infty\>>n<rsup|-1>*\<xi\><rsub|n>*<sqrt|2>*sin
-    n*\<pi\>*t
-  </equation*>
-
-  Wiener's 1920 insight was that the isometry can be \Preversed\Q, that is,
-  if <math|<around|(|\<Omega\>,\<cal-F\>,P|)>> is a probability space that
-  supports a sequence <math|<around|{|\<xi\><rsub|n>|}><rsub|n\<geq\>1>> of
-  i.i.d. standard normal random variables then the mapping
-  <math|T*\<psi\><rsub|n>=\<xi\><rsub|n>> extends to a linear isometry of
-  <math|L<rsup|2><around|[|0,1|]>> into <math|L<rsup|2><around|(|P|)>>, and
-  therefore (3.3) defines a Wiener process. This doesn't prove that the
-  Wiener process has continuous sample paths, because the convergence of the
-  series (3.3) is only <math|L<rsup|2>> convergence for each <math|t>. But
-  Wiener was able to show, by brute force, that for the Fourier basis the
-  series (3.4) actually converges uniformly in <math|t>, w.p.1, and so at
-  least for this basis the series defines a Wiener process with continuous
-  paths. Paul Lévy later realized that it is much easier to prove uniform
-  convergence of the series (3.3) for the Haar basis <math|\<psi\><rsub|n>>
-  than for the Fourier basis. This is the existence proof given in most
-  standard textbooks today.
+  Karhunen-Loeve representation.\ 
 
   <subsection*|3.2. Reproducing Kernel Hilbert Space.>
 
-  A symmetric, real-valued function <math|R:T\<times\>T\<rightarrow\>\<bbb-R\>>
-  is said to be a <with|font-shape|italic|positive definite kernel> if for
-  every finite subset <math|F\<subseteq\>T> the
-  <math|<around|\||F|\|>\<times\><around|\||F|\|>> matrix
-  <math|<around|(|R<around|(|s,t|)>|)><rsub|s,t\<in\>F>> is positive
-  definite. The covariance function of any nondegenerate Gaussian process has
-  this property. Every positive definite kernel <math|R> on <math|T> induces
-  a <with|font-shape|italic|canonical metric> <math|d> on <math|T> by
+  <\definition>
+    A symmetric, real-valued function <math|R:T\<times\>T\<rightarrow\>\<bbb-R\>>
+    is said to be a <with|font-shape|italic|positive definite kernel> if for
+    every finite subset <math|F\<subseteq\>T> the
+    <math|<around|\||F|\|>\<times\><around|\||F|\|>> matrix
+    <math|<around|(|R<around|(|s,t|)>|)><rsub|s,t\<in\>F>> is positive
+    definite.
+  </definition>
 
-  <\equation*>
-    d*<around|(|s,t|)>=<sqrt|R<around|(|t,t|)>+R<around|(|s,s|)>-2*R<around|(|s,t|)>>
-  </equation*>
+  <\definition>
+    \ The covariance function of any nondegenerate Gaussian process has this
+    property. Every positive definite kernel <math|R> on <math|T> induces a
+    <with|font-shape|italic|canonical metric> <math|d> on <math|T> by
 
-  <with|font-series|bold|Lemma 3.3.> The definition (3.5) specifies a metric
-  on <math|T>.
+    <\equation>
+      d*<around|(|s,t|)>=<sqrt|R<around|(|t,t|)>+R<around|(|s,s|)>-2*R<around|(|s,t|)>>
+    </equation>
+  </definition>
 
-  <with|font-shape|italic|Proof.> This is most easily proved by making a
-  connection with Gaussian processes. To prove that <math|d> is a metric on
-  <math|T> it suffices to prove that it is a metric on any finite subset of
-  <math|T> (because the defining properties of a metric \U symmetry,
-  positivity, and the triangle inequality \U involve only two or three points
-  at a time). Now if <math|F> is a finite subset of <math|T> then the matrix
-  <math|<around|(|R<around|(|i,j|)>|)><rsub|i,j\<in\>F>> is a symmetric,
-  positive definite <math|<around|\||F|\|>\<times\><around|\||F|\|>> matrix,
-  and hence is the covariance matrix of a centered, nondegenerate Gaussian
-  random vector <math|<around|(|X<rsub|i>|)><rsub|i\<in\>F>>. By
-  construction,
+  <\lemma>
+    The definition (3.5) specifies a metric on <math|T>.
+  </lemma>
 
-  <\equation*>
-    d<around|(|i,j|)><rsup|2>=E*<around|\||X<rsub|i>-X<rsub|j>|\|><rsup|2>
-  </equation*>
+  <\proof>
+    This is most easily proved by making a connection with Gaussian
+    processes. To prove that <math|d> is a metric on <math|T> it suffices to
+    prove that it is a metric on any finite subset of <math|T> (because the
+    defining properties of a metric \U symmetry, positivity, and the triangle
+    inequality \U involve only two or three points at a time). Now if
+    <math|F> is a finite subset of <math|T> then the matrix
+    <math|<around|(|R<around|(|i,j|)>|)><rsub|i,j\<in\>F>> is a symmetric,
+    positive definite <math|<around|\||F|\|>\<times\><around|\||F|\|>>
+    matrix, and hence is the covariance matrix of a centered, nondegenerate
+    Gaussian random vector <math|<around|(|X<rsub|i>|)><rsub|i\<in\>F>>. By
+    construction,
 
-  so <math|d> is the canonical metric of the Gaussian process
-  <math|<around|(|X<rsub|i>|)><rsub|i\<in\>F>>. But the canonical metric of a
-  non-degenerate Gaussian process is a genuine metric.
+    <\equation*>
+      d<around|(|i,j|)><rsup|2>=E*<around|\||X<rsub|i>-X<rsub|j>|\|><rsup|2>
+    </equation*>
 
-  Assume for the remainder of this section that <math|R<around|(|s,t|)>> is a
-  positive definite kernel on <math|T>. For each <math|s\<in\>T> let
-  <math|R<rsub|s>:T\<rightarrow\>\<bbb-R\>> be the <math|s>\Usection of
-  <math|R>, that is, the function defined by
-  <math|R<rsub|s><around|(|t|)>=R<around|(|s,t|)>>. Let <math|H<rsub|0>> be
-  the vector space of real-valued functions on <math|T> consisting of all
-  finite linear combinations <math|<big|sum>a<rsub|i>*R<rsub|s<rsub|i>>>.
-  Define an inner product on <math|H<rsub|0>> as follows:
+    so <math|d> is the canonical metric of the Gaussian process
+    <math|<around|(|X<rsub|i>|)><rsub|i\<in\>F>>. But the canonical metric of
+    a non-degenerate Gaussian process is a genuine metric.
 
-  <\equation*>
-    <around*|\<langle\>|<big|sum>a<rsub|i>*R<rsub|s<rsub|i>>,<big|sum>b<rsub|j>*R<rsub|t<rsub|j>>|\<rangle\>>=<big|sum>a<rsub|i>*b<rsub|j>*R<around|(|s<rsub|i>,t<rsub|j>|)>
-  </equation*>
+    Assume for the remainder of this section that <math|R<around|(|s,t|)>> is
+    a positive definite kernel on <math|T>. For each <math|s\<in\>T> let
+    <math|R<rsub|s>:T\<rightarrow\>\<bbb-R\>> be the <math|s>\Usection of
+    <math|R>, that is, the function defined by
+    <math|R<rsub|s><around|(|t|)>=R<around|(|s,t|)>>. Let <math|H<rsub|0>> be
+    the vector space of real-valued functions on <math|T> consisting of all
+    finite linear combinations <math|<big|sum>a<rsub|i>*R<rsub|s<rsub|i>>>.
+    Define an inner product on <math|H<rsub|0>> as follows:
 
-  This is clearly bilinear, and since <math|R> is assumed to be positive
-  definite it defines an inner product (as you should check!). This inner
-  product is designed so that the mapping <math|s\<rightarrow\>R<rsub|s>> is
-  an <with|font-shape|italic|isometry> of <math|T> (with the canonical
-  metric) into <math|H<rsub|0>> (with the metric induced by the inner product
-  (3.6)): in particular, for any <math|s,t\<in\>T>
+    <\equation*>
+      <around*|\<langle\>|<big|sum>a<rsub|i>*R<rsub|s<rsub|i>>,<big|sum>b<rsub|j>*R<rsub|t<rsub|j>>|\<rangle\>>=<big|sum>a<rsub|i>*b<rsub|j>*R<around|(|s<rsub|i>,t<rsub|j>|)>
+    </equation*>
 
-  <\equation*>
-    <around|\<\|\|\>|R<rsub|s>-R<rsub|t>|\<\|\|\>><rsup|2>=R<around|(|t,t|)>+R<around|(|s,s|)>-2*R<around|(|s,t|)>=d<around|(|s,t|)><rsup|2>
-  </equation*>
+    This is clearly bilinear, and since <math|R> is assumed to be positive
+    definite it defines an inner product (as you should check!). This inner
+    product is designed so that the mapping <math|s\<rightarrow\>R<rsub|s>>
+    is an <with|font-shape|italic|isometry> of <math|T> (with the canonical
+    metric) into <math|H<rsub|0>> (with the metric induced by the inner
+    product (3.6)): in particular, for any <math|s,t\<in\>T>
 
-  Observe that when <math|R> is the covariance function of a centered
-  Gaussian process <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>>, the inner
-  product (3.6) makes the mapping <math|T:H<rsub|0>\<rightarrow\>L<rsup|2><around|(|P|)>>
-  defined by
+    <\equation>
+      <around|\<\|\|\>|R<rsub|s>-R<rsub|t>|\<\|\|\>><rsup|2>=R<around|(|t,t|)>+R<around|(|s,s|)>-2*R<around|(|s,t|)>=d<around|(|s,t|)><rsup|2>
+    </equation>
 
-  <\equation*>
-    T<around*|(|<big|sum>a<rsub|i>*R<rsub|s<rsub|i>>|)>=<big|sum>a<rsub|i>*X<rsub|s<rsub|i>>
-  </equation*>
+    Observe that when <math|R> is the covariance function of a centered
+    Gaussian process <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>>, the inner
+    product (3.6) makes the mapping <math|T:H<rsub|0>\<rightarrow\>L<rsup|2><around|(|P|)>>
+    defined by
 
-  a linear isometry.
+    <\equation>
+      T<around*|(|<big|sum>a<rsub|i>*R<rsub|s<rsub|i>>|)>=<big|sum>a<rsub|i>*X<rsub|s<rsub|i>>
+    </equation>
 
-  The pairing of the inner product (3.6) with the positive definite kernel
-  <math|R> is explicitly made so that the kernel <math|R<around|(|s,t|)>>
-  will a <with|font-shape|italic|reproducing kernel> relative to the inner
-  product, in the following sense: for any function
-  <math|\<varphi\>\<in\>H<rsub|0>> and any <math|t\<in\>T>,
+    a linear isometry.
 
-  <\equation*>
-    \<varphi\><around|(|t|)>=<around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>
-  </equation*>
+    The pairing of the inner product (3.6) with the positive definite kernel
+    <math|R> is explicitly made so that the kernel <math|R<around|(|s,t|)>>
+    will a <with|font-shape|italic|reproducing kernel> relative to the inner
+    product, in the following sense: for any function
+    <math|\<varphi\>\<in\>H<rsub|0>> and any <math|t\<in\>T>,
 
-  <with|font-series|bold|Definition 3.1.> The
-  <with|font-shape|italic|reproducing kernel Hilbert space> <math|H>
-  associated with the covariance kernel <math|R> is the closure of
-  <math|H<rsub|0>> with respect to the norm induced by the inner product
-  (3.6).
+    <\equation>
+      \<varphi\><around|(|t|)>=<around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>
+    </equation>
+  </proof>
 
-  In the special case where <math|R> is the covariance function of a centered
-  Gaussian process <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>>, Proposition
-  3.1 implies that the linear isometry <math|T> defined by (3.8) extends in a
-  unique way to all of <math|H>, since by construction <math|H<rsub|0>> is a
-  dense linear subspace of <math|H>.
+  <\definition>
+    The <with|font-shape|italic|reproducing kernel Hilbert space> <math|H>
+    associated with the covariance kernel <math|R> is the closure of
+    <math|H<rsub|0>> with respect to the norm induced by the inner product
+    (3.6).
 
-  <with|font-series|bold|Lemma 3.4.> If <math|T> is separable relative to the
-  canonical metric then so is the reproducing kernel Hilbert space <math|H>,
-  and if <math|T> is compact then set <math|<around|{|R<rsub|s>|}><rsub|s\<in\>T>>
-  is compact, and therefore bounded, in <math|H>.
+    In the special case where <math|R> is the covariance function of a
+    centered Gaussian process <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>>,
+    Proposition 3.1 implies that the linear isometry <math|T> defined by
+    (3.8) extends in a unique way to all of <math|H>, since by construction
+    <math|H<rsub|0>> is a dense linear subspace of <math|H>.
+  </definition>
 
-  <with|font-shape|italic|Proof.> By construction, the mapping
-  <math|s\<rightarrow\>R<rsub|s>> is an isometry. Therefore, if <math|T> is
-  compact (separable) then the set <math|<around|{|R<rsub|s>|}><rsub|s\<in\>T>>
-  is compact (separable) in <math|H>. If the set
-  <math|<around|{|R<rsub|s>|}><rsub|s\<in\>T>> is separable, it has a
-  countable dense subset <math|D>, and if this is the case then the
-  (countable) set of rational linear combinations of elements of <math|D> is
-  dense in the reproducing kernel Hilbert space <math|H>.
+  <\lemma>
+    If <math|T> is separable relative to the canonical metric then so is the
+    reproducing kernel Hilbert space <math|H>, and if <math|T> is compact
+    then set <math|<around|{|R<rsub|s>|}><rsub|s\<in\>T>> is compact, and
+    therefore bounded, in <math|H>.
+  </lemma>
 
-  <with|font-series|bold|Lemma 3.5.> The set
-  <math|<around|{|R<rsub|s>|}><rsub|s\<in\>T>> is bounded in the reproducing
-  kernel Hilbert space <math|H> if and only if <math|sup<rsub|t\<in\>T>
-  R<around|(|t,t|)>\<less\>\<infty\>>. If this is the case then
+  <\proof>
+    By construction, the mapping <math|s\<rightarrow\>R<rsub|s>> is an
+    isometry. Therefore, if <math|T> is compact (separable) then the set
+    <math|<around|{|R<rsub|s>|}><rsub|s\<in\>T>> is compact (separable) in
+    <math|H>. If the set <math|<around|{|R<rsub|s>|}><rsub|s\<in\>T>> is
+    separable, it has a countable dense subset <math|D>, and if this is the
+    case then the (countable) set of rational linear combinations of elements
+    of <math|D> is dense in the reproducing kernel Hilbert space <math|H>.
+  </proof>
 
-  <\itemize>
-    <item*|(a)>the function <math|<around|(|s,t|)>\<rightarrow\>R<around|(|s,t|)>>
-    is Lipschitz in each variable <math|s,t>; and
+  <\lemma>
+    \ The set <math|<around|{|R<rsub|s>|}><rsub|s\<in\>T>> is bounded in the
+    reproducing kernel Hilbert space <math|H> if and only if
+    <math|sup<rsub|t\<in\>T> R<around|(|t,t|)>\<less\>\<infty\>>. If this is
+    the case then
 
-    <item*|(b)>for every element <math|\<varphi\>\<in\>H> the function
-    <math|t\<rightarrow\><around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>>
-    is a Lipschitz continuous function on <math|T>, with Lipschitz constant
-    bounded by <math|<around|\<\|\|\>|\<varphi\>|\<\|\|\>>> and sup-norm
-    bounded by <math|<around|\<\|\|\>|\<varphi\>|\<\|\|\>>*sup<rsub|t\<in\>T><around|\<\|\|\>|R<rsub|t>|\<\|\|\>>>.
-  </itemize>
+    <\itemize>
+      <item*|(a)>the function <math|<around|(|s,t|)>\<rightarrow\>R<around|(|s,t|)>>
+      is Lipschitz in each variable <math|s,t>; and
 
-  Thus, the elements <math|\<varphi\>\<in\>H> can be identified with
-  Lipschitz functions <math|t\<rightarrow\><around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>>
-  on <math|T>.
+      <item*|(b)>for every element <math|\<varphi\>\<in\>H> the function
+      <math|t\<rightarrow\><around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>>
+      is a Lipschitz continuous function on <math|T>, with Lipschitz constant
+      bounded by <math|<around|\<\|\|\>|\<varphi\>|\<\|\|\>>> and sup-norm
+      bounded by <math|<around|\<\|\|\>|\<varphi\>|\<\|\|\>>*sup<rsub|t\<in\>T><around|\<\|\|\>|R<rsub|t>|\<\|\|\>>>.
+    </itemize>
 
-  <with|font-shape|italic|Proof.> By the reproducing property (or
-  equivalently the definition of the inner product (3.6)),
+    Thus, the elements <math|\<varphi\>\<in\>H> can be identified with
+    Lipschitz functions <math|t\<rightarrow\><around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>>
+    on <math|T>.
+  </lemma>
 
-  <\equation*>
-    <around|\<\|\|\>|R<rsub|s>-R<rsub|t>|\<\|\|\>><rsup|2>=<around|\<langle\>|R<rsub|s>-R<rsub|t>,R<rsub|s>-R<rsub|t>|\<rangle\>>=R<around|(|t,t|)>+R<around|(|s,s|)>-2*R<around|(|s,t|)>=d<around|(|s,t|)><rsup|2>
-  </equation*>
+  <\proof>
+    By the reproducing property (or equivalently the definition of the inner
+    product (3.6)),
 
-  Assume now that <math|C=sup<rsub|t\<in\>T><around|\<\|\|\>|R<rsub|t>|\<\|\|\>>\<less\>\<infty\>>.
-  By the reproducing property and the Cauchy-Schwartz inequality, for any
-  <math|s<rsub|1>,s<rsub|2>\<in\>T>,
+    <\equation>
+      <around|\<\|\|\>|R<rsub|s>-R<rsub|t>|\<\|\|\>><rsup|2>=<around|\<langle\>|R<rsub|s>-R<rsub|t>,R<rsub|s>-R<rsub|t>|\<rangle\>>=R<around|(|t,t|)>+R<around|(|s,s|)>-2*R<around|(|s,t|)>=d<around|(|s,t|)><rsup|2>
+    </equation>
 
-  <\equation*>
-    <around|\||R<around|(|s<rsub|1>,t|)>-R<around|(|s<rsub|2>,t|)>|\|>=<around|\||<around|\<langle\>|R<rsub|t>-R<rsub|s<rsub|2>>,R<rsub|t>|\<rangle\>>|\|>\<leq\><around|\||<around|\<langle\>|R<rsub|s>-R<rsub|s<rsub|2>>,R<rsub|t>|\<rangle\>>|\|>\<leq\>d<around|(|s<rsub|1>,s<rsub|2>|)><around|\<\|\|\>|R<rsub|t>|\<\|\|\>>
-  </equation*>
+    Assume now that <math|C=sup<rsub|t\<in\>T><around|\<\|\|\>|R<rsub|t>|\<\|\|\>>\<less\>\<infty\>>.
+    By the reproducing property and the Cauchy-Schwartz inequality, for any
+    <math|s<rsub|1>,s<rsub|2>\<in\>T>,
 
-  <\equation*>
-    =C*d<around|(|s<rsub|1>,s<rsub|2>|)>;
-  </equation*>
+    <\equation*>
+      <around|\||R<around|(|s<rsub|1>,t|)>-R<around|(|s<rsub|2>,t|)>|\|>=<around|\||<around|\<langle\>|R<rsub|t>-R<rsub|s<rsub|2>>,R<rsub|t>|\<rangle\>>|\|>\<leq\><around|\||<around|\<langle\>|R<rsub|s>-R<rsub|s<rsub|2>>,R<rsub|t>|\<rangle\>>|\|>\<leq\>d<around|(|s<rsub|1>,s<rsub|2>|)><around|\<\|\|\>|R<rsub|t>|\<\|\|\>>
+    </equation*>
 
-  consequently, <math|R<around|(|s,t|)>> is Lipschitz in <math|s>, with
-  Lipschitz constant bounded by <math|C>. Since
-  <math|R<around|(|s,t|)>=R<around|(|t,s|)>>, it follows that <math|R> is
-  Lipschitz in the second variable <math|t> as well.
+    <\equation>
+      =C*d<around|(|s<rsub|1>,s<rsub|2>|)>
+    </equation>
 
-  Finally, let <math|\<varphi\>> be any element of the reproducing kernel
-  Hilbert space <math|H>, and consider the mapping
-  <math|t\<rightarrow\><around|\<langle\>|\<varphi\>,R<rsub|t>|\<rangle\>>>.
-  For any two points <math|s,t\<in\>T>,
+    consequently, <math|R<around|(|s,t|)>> is Lipschitz in <math|s>, with
+    Lipschitz constant bounded by <math|C>. Since
+    <math|R<around|(|s,t|)>=R<around|(|t,s|)>>, it follows that <math|R> is
+    Lipschitz in the second variable <math|t> as well.
 
-  <\equation*>
-    <around|\||<around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>-<around|\<langle\>|R<rsub|s>,\<varphi\>|\<rangle\>>|\|>=<around|\||<around|\<langle\>|R<rsub|t>-R<rsub|s>,\<varphi\>|\<rangle\>>|\|>\<leq\>d<around|(|s,t|)><around|\<\|\|\>|\<varphi\>|\<\|\|\>>
-  </equation*>
+    Finally, let <math|\<varphi\>> be any element of the reproducing kernel
+    Hilbert space <math|H>, and consider the mapping
+    <math|t\<rightarrow\><around|\<langle\>|\<varphi\>,R<rsub|t>|\<rangle\>>>.
+    For any two points <math|s,t\<in\>T>,
 
-  This implies that the function <math|t\<rightarrow\><around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>>
-  is Lipschitz, with Lipschitz constant bounded by
-  <math|<around|\<\|\|\>|\<varphi\>|\<\|\|\>>>. Furthermore, by
-  Cauchy-Schwartz, for any <math|t\<in\>T>,
+    <\equation>
+      <around|\||<around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>-<around|\<langle\>|R<rsub|s>,\<varphi\>|\<rangle\>>|\|>=<around|\||<around|\<langle\>|R<rsub|t>-R<rsub|s>,\<varphi\>|\<rangle\>>|\|>\<leq\>d<around|(|s,t|)><around|\<\|\|\>|\<varphi\>|\<\|\|\>>
+    </equation>
 
-  <\equation*>
-    <around|\||<around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>|\|>\<leq\><around|\<\|\|\>|\<varphi\>|\<\|\|\>>*sup<rsub|t\<in\>T><around|\<\|\|\>|R<rsub|t>|\<\|\|\>>
-  </equation*>
+    This implies that the function <math|t\<rightarrow\><around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>>
+    is Lipschitz, with Lipschitz constant bounded by
+    <math|<around|\<\|\|\>|\<varphi\>|\<\|\|\>>>. Furthermore, by
+    Cauchy-Schwartz, for any <math|t\<in\>T>,
 
-  <with|font-shape|italic|Note:> Lest you be confused about the
-  identification of elements <math|\<varphi\>\<in\>H> with functions
-  <math|t\<rightarrow\><around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>>:
-  keep in mind that <math|H> was constructed as the abstract completion of
-  the inner product space <math|H<rsub|0>>, so (technically) its elements are
-  equivalence classes of Cauchy sequences in <math|H<rsub|0>>, not functions
-  on <math|T> (even though the elements of <math|H<rsub|0>> are functions on
-  <math|T>). Nevertheless, when the hypotheses of Lemma 3.5 hold, we will act
-  as if the elements <math|\<varphi\>\<in\>H> are Lipschitz functions and
-  write <math|\<varphi\><around|(|t|)>=<around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>>.
+    <\equation>
+      <around|\||<around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>|\|>\<leq\><around|\<\|\|\>|\<varphi\>|\<\|\|\>>*sup<rsub|t\<in\>T><around|\<\|\|\>|R<rsub|t>|\<\|\|\>>
+    </equation>
+  </proof>
 
-  <with|font-series|bold|Proposition 3.6.> If <math|T> is compact relative to
-  the canonical metric of the Gaussian process then for any (countable)
-  orthonormal basis <math|<around|{|\<psi\><rsub|n>|}><rsub|n\<geq\>1>> and
-  any <math|s,t\<in\>T>
+  <\note>
+    Lest you be confused about the identification of elements
+    <math|\<varphi\>\<in\>H> with functions
+    <math|t\<rightarrow\><around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>>:
+    keep in mind that <math|H> was constructed as the abstract completion of
+    the inner product space <math|H<rsub|0>>, so (technically) its elements
+    are equivalence classes of Cauchy sequences in <math|H<rsub|0>>, not
+    functions on <math|T> (even though the elements of <math|H<rsub|0>> are
+    functions on <math|T>). Nevertheless, when the hypotheses of Lemma 3.5
+    hold, we will act as if the elements <math|\<varphi\>\<in\>H> are
+    Lipschitz functions and write <math|\<varphi\><around|(|t|)>=<around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>>.
+  </note>
 
-  <\equation*>
-    R<around|(|s,t|)>=<big|sum><rsub|n\<geq\>1><around|\<langle\>|R<rsub|s>,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n><around|(|t|)>=<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)>*\<psi\><rsub|n><around|(|t|)>
-  </equation*>
+  <\proposition>
+    \ If <math|T> is compact relative to the canonical metric of the Gaussian
+    process then for any (countable) orthonormal basis
+    <math|<around|{|\<psi\><rsub|n>|}><rsub|n\<geq\>1>> and any
+    <math|s,t\<in\>T>
 
-  and the convergence is uniform for <math|s,t\<in\>T>.
+    <\equation>
+      R<around|(|s,t|)>=<big|sum><rsub|n\<geq\>1><around|\<langle\>|R<rsub|s>,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n><around|(|t|)>=<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)>*\<psi\><rsub|n><around|(|t|)>
+    </equation>
 
-  <with|font-shape|italic|Note:> This is a variant of Mercer's theorem. The
-  hypothesis that <math|T> is compact ensures that the reproducing kernel
-  Hilbert space is separable, and hence that every orthonormal basis is
-  countable (or has cardinality <math|<around|\||T|\|>> is <math|T> is
-  finite). If <math|T> is finite the expansion (3.10) follows from the
-  spectral theorem for finite symmetric matrices, so we will restrict
-  attention to the case where <math|T> is compact but infinite.
+    and the convergence is uniform for <math|s,t\<in\>T>.
+  </proposition>
 
-  <with|font-shape|italic|Proof.> By construction, the mapping
-  <math|s\<rightarrow\>R<rsub|s>> is an isometry. Therefore, if <math|T> is
-  compact then by Lemma 3.5, <math|R> is Lipschitz in each variable. This
-  implies that the mapping <math|s\<rightarrow\>R<around|(|s,s|)>> is
-  Lipschitz, and that <math|sup<rsub|s\<in\>T>
-  R<around|(|s,s|)>\<less\>\<infty\>>.
+  <\note>
+    This is a variant of Mercer's theorem. The hypothesis that <math|T> is
+    compact ensures that the reproducing kernel Hilbert space is separable,
+    and hence that every orthonormal basis is countable (or has cardinality
+    <math|<around|\||T|\|>> is <math|T> is finite). If <math|T> is finite the
+    expansion (3.10) follows from the spectral theorem for finite symmetric
+    matrices, so we will restrict attention to the case where <math|T> is
+    compact but infinite.
+  </note>
 
-  If <math|T> is compact and infinite then every orthonormal basis for the
-  reproducing kernel Hilbert space is countable. Let
-  <math|<around|{|\<psi\><rsub|n>|}><rsub|n\<geq\>1>> be any orthonormal
-  basis. By Parseval's theorem, for any <math|s\<in\>T> the <math|s>\Usection
-  <math|R<rsub|s>> has the expansion
+  <\proof>
+    By construction, the mapping <math|s\<rightarrow\>R<rsub|s>> is an
+    isometry. Therefore, if <math|T> is compact then by Lemma 3.5, <math|R>
+    is Lipschitz in each variable. This implies that the mapping
+    <math|s\<rightarrow\>R<around|(|s,s|)>> is Lipschitz, and that
+    <math|sup<rsub|s\<in\>T> R<around|(|s,s|)>\<less\>\<infty\>>.
 
-  <\equation*>
-    R<rsub|s>=<big|sum><rsub|n\<geq\>1><around|\<langle\>|R<rsub|s>,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n>=<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)>*\<psi\><rsub|n>
-  </equation*>
+    If <math|T> is compact and infinite then every orthonormal basis for the
+    reproducing kernel Hilbert space is countable. Let
+    <math|<around|{|\<psi\><rsub|n>|}><rsub|n\<geq\>1>> be any orthonormal
+    basis. By Parseval's theorem, for any <math|s\<in\>T> the
+    <math|s>\Usection <math|R<rsub|s>> has the expansion
 
-  where the convergence is in the <math|H>\Unorm. (The second identity
-  follows from the reproducing property of the kernel.) Moreover, for any
-  <math|s\<in\>T>,
+    <\equation>
+      R<rsub|s>=<big|sum><rsub|n\<geq\>1><around|\<langle\>|R<rsub|s>,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n>=<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)>*\<psi\><rsub|n>
+    </equation>
 
-  <\equation*>
-    R<around|(|s,s|)>=<around|\<\|\|\>|R<rsub|s>|\<\|\|\>><rsup|2>=<big|sum><rsub|n\<geq\>1><around|\<langle\>|R<rsub|s>,\<psi\><rsub|n>|\<rangle\>><rsup|2>=<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)><rsup|2>
-  </equation*>
+    where the convergence is in the <math|H>\Unorm. (The second identity
+    follows from the reproducing property of the kernel.) Moreover, for any
+    <math|s\<in\>T>,
 
-  Since <math|T> is compact, the function
-  <math|s\<rightarrow\>R<around|(|s,s|)>> is Lipschitz, by Lemma 3.5, and
-  therefore continuous. Moreover, the functions
-  <math|\<psi\><rsub|n><around|(|s|)><rsup|2>> are (Lipschitz) continuous,
-  also by Lemma 3.5, and obviously nonnegative. Consequently, Dini's
-  theorem<footnote|Dini's theorem states that if
-  <math|f<rsub|n><around|(|t|)>> is a nondecreasing sequence of nonnegative
-  continuous functions on a compact space <math|T> such that
-  <math|f<rsub|n><around|(|t|)>*\<uparrow\>*f<around|(|t|)>> for every
-  <math|t\<in\>T>, where <math|f> is a continuous function, then the
-  convergence is uniform.> implies that the series
-  <math|<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)><rsup|2>>
-  converges to <math|R<around|(|s,s|)>> uniformly for <math|s\<in\>T>.
+    <\equation>
+      R<around|(|s,s|)>=<around|\<\|\|\>|R<rsub|s>|\<\|\|\>><rsup|2>=<big|sum><rsub|n\<geq\>1><around|\<langle\>|R<rsub|s>,\<psi\><rsub|n>|\<rangle\>><rsup|2>=<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)><rsup|2>
+    </equation>
 
-  To complete the proof we will show that the uniform convergence of the
-  series <math|<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)><rsup|2>>
-  implies that the series <math|<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)>*\<psi\><rsub|n><around|(|t|)>>
-  converges uniformly for <math|<around|(|s,t|)>\<in\>T\<times\>T>. The
-  uniform convergence follows by Cauchy-Schwartz, because for any
-  <math|m\<geq\>1>,
+    Since <math|T> is compact, the function
+    <math|s\<rightarrow\>R<around|(|s,s|)>> is Lipschitz, by Lemma 3.5, and
+    therefore continuous. Moreover, the functions
+    <math|\<psi\><rsub|n><around|(|s|)><rsup|2>> are (Lipschitz) continuous,
+    also by Lemma 3.5, and obviously nonnegative. Consequently, Dini's
+    theorem<footnote|Dini's theorem states that if
+    <math|f<rsub|n><around|(|t|)>> is a nondecreasing sequence of nonnegative
+    continuous functions on a compact space <math|T> such that
+    <math|f<rsub|n><around|(|t|)>*\<uparrow\>*f<around|(|t|)>> for every
+    <math|t\<in\>T>, where <math|f> is a continuous function, then the
+    convergence is uniform.> implies that the series
+    <math|<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)><rsup|2>>
+    converges to <math|R<around|(|s,s|)>> uniformly for <math|s\<in\>T>.
 
-  <\equation*>
-    <around*|\||<big|sum><rsub|n\<geq\>m>\<psi\><rsub|n><around|(|s|)>*\<psi\><rsub|n><around|(|t|)>|\|>\<leq\><sqrt|<big|sum><rsub|n\<geq\>m>\<psi\><rsub|n><around|(|s|)><rsup|2>*<big|sum><rsub|n\<geq\>m>\<psi\><rsub|n><around|(|t|)><rsup|2>>
-  </equation*>
+    To complete the proof we will show that the uniform convergence of the
+    series <math|<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)><rsup|2>>
+    implies that the series <math|<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)>*\<psi\><rsub|n><around|(|t|)>>
+    converges uniformly for <math|<around|(|s,t|)>\<in\>T\<times\>T>. The
+    uniform convergence follows by Cauchy-Schwartz, because for any
+    <math|m\<geq\>1>,
 
-  since <math|<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)><rsup|2>>
-  converges uniformly for <math|s\<in\>T>, the right side of the inequality
-  can be made uniformly small by choosing <math|m> large. To see that the
-  limit of the series <math|<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)>*\<psi\><rsub|n><around|(|t|)>>
-  is <math|R<around|(|s,t|)>>, we use the reproducing property of the kernel
-  together with the <math|H>\Uconvergence (3.11). This implies that
+    <\equation>
+      <around*|\||<big|sum><rsub|n\<geq\>m>\<psi\><rsub|n><around|(|s|)>*\<psi\><rsub|n><around|(|t|)>|\|>\<leq\><sqrt|<big|sum><rsub|n\<geq\>m>\<psi\><rsub|n><around|(|s|)><rsup|2>*<big|sum><rsub|n\<geq\>m>\<psi\><rsub|n><around|(|t|)><rsup|2>>
+    </equation>
 
-  <\equation*>
-    R<around|(|s,t|)>=<around|\<langle\>|R<rsub|s>,R<rsub|t>|\<rangle\>>=<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)><around|\<langle\>|\<psi\><rsub|n>,R<rsub|t>|\<rangle\>>=<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)>*\<psi\><rsub|n><around|(|t|)>
-  </equation*>
+    since <math|<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)><rsup|2>>
+    converges uniformly for <math|s\<in\>T>, the right side of the inequality
+    can be made uniformly small by choosing <math|m> large. To see that the
+    limit of the series <math|<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)>*\<psi\><rsub|n><around|(|t|)>>
+    is <math|R<around|(|s,t|)>>, we use the reproducing property of the
+    kernel together with the <math|H>\Uconvergence (3.11). This implies that
 
-  <with|font-series|bold|Proposition 3.7.> If <math|T> is compact relative to
-  the canonical metric then on any probability space that supports a sequence
-  <math|<around|{|\<xi\><rsub|n>|}><rsub|n\<geq\>1>> of independent
-  <math|N<around|(|0,1|)>> random variables there exists a centered Gaussian
-  process <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> with covariance
-  function <math|R>. For any orthonormal basis
-  <math|<around|{|\<psi\><rsub|n>|}><rsub|n\<geq\>1>> and any <math|t\<in\>T>
-  the random variable <math|X<rsub|t>> is the almost sure limit of the series
+    <\equation>
+      R<around|(|s,t|)>=<around|\<langle\>|R<rsub|s>,R<rsub|t>|\<rangle\>>=<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)><around|\<langle\>|\<psi\><rsub|n>,R<rsub|t>|\<rangle\>>=<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)>*\<psi\><rsub|n><around|(|t|)>
+    </equation>
+  </proof>
 
-  <\equation*>
-    X<rsub|t>=<big|sum><rsub|n\<geq\>1>\<xi\><rsub|n>*\<psi\><rsub|n><around|(|t|)>.
-  </equation*>
+  <\proposition>
+    If <math|T> is compact relative to the canonical metric then on any
+    probability space that supports a sequence
+    <math|<around|{|\<xi\><rsub|n>|}><rsub|n\<geq\>1>> of independent
+    <math|N<around|(|0,1|)>> random variables there exists a centered
+    Gaussian process <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> with
+    covariance function <math|R>. For any orthonormal basis
+    <math|<around|{|\<psi\><rsub|n>|}><rsub|n\<geq\>1>> and any
+    <math|t\<in\>T> the random variable <math|X<rsub|t>> is the almost sure
+    limit of the series
 
-  <with|font-shape|italic|Proof.> If <math|T> is separable then so is the
-  reproducing kernel Hilbert space <math|H>, by the same argument as in the
-  proof of Proposition 3.6. Consequently, <math|H> has a countable
-  orthonormal basis <math|\<psi\><rsub|n>>, and for each <math|s\<in\>T> the
-  <math|s>\Usection <math|R<rsub|s>> has the expansion (3.11), and has norm
-  <math|<around|\<\|\|\>|R<rsub|s>|\<\|\|\>>> given by (3.12). This implies
-  that the series <math|<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)><rsup|2>>
-  converges to a finite limit.
+    <\equation>
+      X<rsub|t>=<big|sum><rsub|n\<geq\>1>\<xi\><rsub|n>*\<psi\><rsub|n><around|(|t|)>
+    </equation>
+  </proposition>
 
-  Suppose that <math|<around|{|\<xi\><rsub|n>|}><rsub|n\<geq\>1>> is a
-  sequence of independent <math|N<around|(|0,1|)>> random variables. Then for
-  any <math|s\<in\>T> the series
+  <\proof>
+    If <math|T> is separable then so is the reproducing kernel Hilbert space
+    <math|H>, by the same argument as in the proof of Proposition 3.6.
+    Consequently, <math|H> has a countable orthonormal basis
+    <math|\<psi\><rsub|n>>, and for each <math|s\<in\>T> the
+    <math|s>\Usection <math|R<rsub|s>> has the expansion (3.11), and has norm
+    <math|<around|\<\|\|\>|R<rsub|s>|\<\|\|\>>> given by (3.12). This implies
+    that the series <math|<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)><rsup|2>>
+    converges to a finite limit.
 
-  <\equation*>
-    X<rsub|s>\<assign\><big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)>*\<xi\><rsub|n>
-  </equation*>
+    Suppose that <math|<around|{|\<xi\><rsub|n>|}><rsub|n\<geq\>1>> is a
+    sequence of independent <math|N<around|(|0,1|)>> random variables. Then
+    for any <math|s\<in\>T> the series
 
-  converges in <math|L<rsup|2><around|(|P|)>> and almost surely, since the
-  variances <math|\<psi\><rsub|n><around|(|s|)><rsup|2>> are summable. (The
-  sequence of partial sums is an <math|L<rsup|2>>\Ubounded martingale, and a
-  basic result of martingale theory asserts that any such martingale
-  converges both a.s. and in <math|L<rsup|2><around|(|P|)>> by the usual
-  arguments, the limit random variable <math|X<rsub|s>> is centered Gaussian,
-  and the process <math|<around|{|X<rsub|s>|}><rsub|s\<in\>T>> is Gaussian.
-  The covariance function is
+    <\equation>
+      X<rsub|s>\<assign\><big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)>*\<xi\><rsub|n>
+    </equation>
 
-  <\equation*>
-    E*X<rsub|s>*X<rsub|t>=E*<big|sum><rsub|n><big|sum><rsub|m>\<psi\><rsub|n><around|(|s|)>*\<psi\><rsub|m><around|(|t|)>*\<xi\><rsub|n>*\<xi\><rsub|m>=<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)>*\<psi\><rsub|n><around|(|t|)>=R*<around|(|s,t|)>.
-  </equation*>
+    converges in <math|L<rsup|2><around|(|P|)>> and almost surely, since the
+    variances <math|\<psi\><rsub|n><around|(|s|)><rsup|2>> are summable. (The
+    sequence of partial sums is an <math|L<rsup|2>>\Ubounded martingale, and
+    a basic result of martingale theory asserts that any such martingale
+    converges both a.s. and in <math|L<rsup|2><around|(|P|)>> by the usual
+    arguments, the limit random variable <math|X<rsub|s>> is centered
+    Gaussian, and the process <math|<around|{|X<rsub|s>|}><rsub|s\<in\>T>> is
+    Gaussian. The covariance function is
 
-  <with|font-series|bold|Theorem 4. (Itô-Nisio)> Let
-  <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> be a centered Gaussian process
-  with covariance function <math|R> and continuous sample paths. Assume also
-  that <math|T> is compact relative to the canonical metric <math|d>. Let
-  <math|<around|{|\<psi\><rsub|n>|}><rsub|n\<geq\>1>> be any orthonormal
-  basis for the reproducing kernel Hilbert space, and denote by
-  <math|\<xi\><rsub|n>=T*\<psi\><rsub|n>> the image of <math|\<psi\><rsub|n>>
-  under the canonical isometry <math|T> (see equation (3.8)). Then the random
-  variables <math|\<xi\><rsub|n>> are independent Normal(0,1), and
+    <\equation>
+      E*X<rsub|s>*X<rsub|t>=E*<big|sum><rsub|n><big|sum><rsub|m>\<psi\><rsub|n><around|(|s|)>*\<psi\><rsub|m><around|(|t|)>*\<xi\><rsub|n>*\<xi\><rsub|m>=<big|sum><rsub|n\<geq\>1>\<psi\><rsub|n><around|(|s|)>*\<psi\><rsub|n><around|(|t|)>=R*<around|(|s,t|)>
+    </equation>
+  </proof>
 
-  <\equation*>
-    X<rsub|t>=<big|sum><rsub|n\<geq\>1>\<xi\><rsub|n>*\<psi\><rsub|n><around|(|t|)>.
-  </equation*>
+  <\theorem>
+    (Itô-Nisio) Let <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> be a
+    centered Gaussian process with covariance function <math|R> and
+    continuous sample paths. Assume also that <math|T> is compact relative to
+    the canonical metric <math|d>. Let <math|<around|{|\<psi\><rsub|n>|}><rsub|n\<geq\>1>>
+    be any orthonormal basis for the reproducing kernel Hilbert space, and
+    denote by <math|\<xi\><rsub|n>=T*\<psi\><rsub|n>> the image of
+    <math|\<psi\><rsub|n>> under the canonical isometry <math|T> (see
+    equation (3.8)). Then the random variables <math|\<xi\><rsub|n>> are
+    independent Normal(0,1), and
 
-  With probability one, the series converges uniformly in <math|t>.
+    <\equation>
+      X<rsub|t>=<big|sum><rsub|n\<geq\>1>\<xi\><rsub|n>*\<psi\><rsub|n><around|(|t|)>
+    </equation>
+
+    With probability one, the series converges uniformly in <math|t>.
+  </theorem>
 
   The main point of the theorem is the uniform convergence. The hypothesis
   that the Gaussian process has a version with continuous paths is crucial,
@@ -984,50 +771,56 @@
   discontinuous at every point with probability one (see Example 2.1 above).
   Theorem 4 is somewhat harder to prove than the other results of this
   section, so I will omit it and refer you to the original paper of Itô and
-  Nisio. <with|font-shape|italic|Note:> Since the random variables
-  <math|\<xi\><rsub|n>> are i.i.d. the series
-  <math|<big|sum>\<xi\><rsub|n><rsup|2>=\<infty\>> a.s. Therefore, the
-  expansion (3.14) does not converge in <math|H>, and in particular the
-  sample paths <math|t\<rightarrow\>X<rsub|t>> of the Gaussian process are
-  a.s. not elements of <math|H>. (Keep this in mind when reading Example 3.2
-  below.)
+  Nisio.
+
+  <\note>
+    Since the random variables <math|\<xi\><rsub|n>> are i.i.d. the series
+    <math|<big|sum>\<xi\><rsub|n><rsup|2>=\<infty\>> a.s. Therefore, the
+    expansion (3.14) does not converge in <math|H>, and in particular the
+    sample paths <math|t\<rightarrow\>X<rsub|t>> of the Gaussian process are
+    a.s. not elements of <math|H>. (Keep this in mind when reading Example
+    3.2 below.)
+  </note>
 
   <subsection*|3.3. Examples of RKHS.>
 
-  <with|font-series|bold|Example 3.2.> Recall that the covariance function of
-  the standard Wiener process <math|<around|{|W<rsub|t>|}><rsub|t\<in\><around|[|0,1|]>>>
-  is <math|R*<around|(|s,t|)>=s\<wedge\>t>, where <math|\<wedge\>> denotes
-  min. Each <math|s>\Usection <math|R<rsub|s>> has the property that
-  <math|R<rsub|s><around|(|0|)>=0>, so every function in <math|H<rsub|0>>
-  takes the value 0 at <math|t=0>. Each <math|s>\Usection <math|R<rsub|s>>
-  has derivative <math|R<rsub|s><rprime|'>> equal to the indicator function
-  <math|I<rsub|<around|[|0,s|]>>> of the interval <math|<around|[|0,s|]>>, so
-  every <math|\<varphi\>\<in\>H<rsub|0>> is differentiable at all but
-  finitely many points, and the derivative is bounded. Hence, for every
-  <math|\<varphi\>\<in\>H<rsub|0>>,
+  <\example>
+    Recall that the covariance function of the standard Wiener process
+    <math|<around|{|W<rsub|t>|}><rsub|t\<in\><around|[|0,1|]>>> is
+    <math|R*<around|(|s,t|)>=s\<wedge\>t>, where <math|\<wedge\>> denotes
+    min. Each <math|s>\Usection <math|R<rsub|s>> has the property that
+    <math|R<rsub|s><around|(|0|)>=0>, so every function in <math|H<rsub|0>>
+    takes the value 0 at <math|t=0>. Each <math|s>\Usection <math|R<rsub|s>>
+    has derivative <math|R<rsub|s><rprime|'>> equal to the indicator function
+    <math|I<rsub|<around|[|0,s|]>>> of the interval <math|<around|[|0,s|]>>,
+    so every <math|\<varphi\>\<in\>H<rsub|0>> is differentiable at all but
+    finitely many points, and the derivative is bounded. Hence, for every
+    <math|\<varphi\>\<in\>H<rsub|0>>,
 
-  <\equation*>
-    <around|\<langle\>|R<rsub|s>,\<varphi\>|\<rangle\>>=\<varphi\><around|(|s|)>=<big|int><rsub|0><rsup|1>R<rsub|s><rprime|'><around|(|t|)>*\<varphi\><rprime|'><around|(|t|)>*<space|0.17em>d*t
-  </equation*>
+    <\equation>
+      <around|\<langle\>|R<rsub|s>,\<varphi\>|\<rangle\>>=\<varphi\><around|(|s|)>=<big|int><rsub|0><rsup|1>R<rsub|s><rprime|'><around|(|t|)>*\<varphi\><rprime|'><around|(|t|)>*<space|0.17em>d*t
+    </equation>
 
-  It follows that the inner product (3.6) on <math|H<rsub|0>> coincides with
-  the usual inner product of derivatives, that is,
+    It follows that the inner product (3.6) on <math|H<rsub|0>> coincides
+    with the usual inner product of derivatives, that is,
 
-  <\equation*>
-    <around|\<langle\>|\<varphi\>,\<psi\>|\<rangle\>>=<big|int><rsub|0><rsup|1>\<varphi\><rprime|'><around|(|s|)>*\<psi\><rprime|'><around|(|s|)>*<space|0.17em>d*s
-  </equation*>
+    <\equation>
+      <around|\<langle\>|\<varphi\>,\<psi\>|\<rangle\>>=<big|int><rsub|0><rsup|1>\<varphi\><rprime|'><around|(|s|)>*\<psi\><rprime|'><around|(|s|)>*<space|0.17em>d*s
+    </equation>
 
-  Since linear combinations of intervals <math|I<rsub|<around|[|0,s|]>>> are
-  dense in <math|L<rsup|2><around|[|0,1|]>>, it follows that <math|H<rsub|0>>
-  is dense in the space of all functions <math|\<varphi\>:<around|[|0,1|]>\<rightarrow\>\<bbb-R\>>
-  with <math|L<rsup|2>>\Uderivative <math|\<varphi\><rprime|'>> and
-  <math|\<varphi\><around|(|0|)>=0>. Consequently, this space is the
-  reproducing kernel Hilbert space for Brownian motion. It is sometimes
-  called the Cameron-Martin Hilbert space.
+    Since linear combinations of intervals <math|I<rsub|<around|[|0,s|]>>>
+    are dense in <math|L<rsup|2><around|[|0,1|]>>, it follows that
+    <math|H<rsub|0>> is dense in the space of all functions
+    <math|\<varphi\>:<around|[|0,1|]>\<rightarrow\>\<bbb-R\>> with
+    <math|L<rsup|2>>\Uderivative <math|\<varphi\><rprime|'>> and
+    <math|\<varphi\><around|(|0|)>=0>. Consequently, this space is the
+    reproducing kernel Hilbert space for Brownian motion. It is sometimes
+    called the Cameron-Martin Hilbert space.
+  </example>
 
-  \;
+  <section*|4. Mutual Singularity and Absolute Continuity>
 
-  <section*|4. SINGULARITY AND ABSOLUTE CONTINUITY>
+  <subsection|Distinguishibility Of Measures>
 
   Let <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> be a centered,
   nondegenerate Gaussian process with (positive definite) covariance function
@@ -1051,151 +844,170 @@
   that maps <math|R<rsub|t>> to the coordinate variable <math|X<rsub|t>> (see
   equation (3.7)).
 
-  <with|font-series|bold|Theorem 5.> The probability measures <math|P,Q> are
-  mutually singular on <math|<around|(|\<Omega\>,\<cal-F\>|)>> unless
-  <math|f> is an element of the reproducing kernel Hilbert space <math|H> of
-  <math|R>. If <math|f\<in\>H> then <math|P,Q> are mutually absolutely
-  continuous, with likelihood ratio (Radon-Nikodym derivative)
+  <\theorem>
+    The probability measures <math|P,Q> are mutually singular on
+    <math|<around|(|\<Omega\>,\<cal-F\>|)>> unless <math|f> is an element of
+    the reproducing kernel Hilbert space <math|H> of <math|R>. If
+    <math|f\<in\>H> then <math|P,Q> are mutually absolutely continuous, with
+    likelihood ratio (Radon-Nikodym derivative)
 
-  <\equation*>
-    <frac|d*Q|d*P><mid|\|><rsub|\<cal-F\>>=exp
-    <around|{|J<rsub|X><around|(|f|)>-<around|\<\|\|\>|f|\<\|\|\>><rsup|2>/2|}>
-  </equation*>
+    <\equation>
+      <frac|d*Q|d*P><mid|\|><rsub|\<cal-F\>>=exp
+      <around|{|J<rsub|X><around|(|f|)>-<around|\<\|\|\>|f|\<\|\|\>><rsup|2>/2|}>
+    </equation>
+  </theorem>
 
-  <with|font-shape|italic|Remark 2.> In the special case where
-  <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> is the Wiener process on
-  <math|T=<around|[|0,1|]>> this theorem was discovered and proved by Cameron
-  and Martin around 1945. In this case the isometry <math|J<rsub|X>> is the
-  usual Wiener integral. Later Girsanov extended the Cameron-Martin formula
-  (4.2) for the likelihood ratio to certain <with|font-shape|italic|random>
-  functions <math|f> given as stochastic integrals.
+  <\remark>
+    In the special case where <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> is
+    the Wiener process on <math|T=<around|[|0,1|]>> this theorem was
+    discovered and proved by Cameron and Martin around 1945. In this case the
+    isometry <math|J<rsub|X>> is the usual Wiener integral. Later Girsanov
+    extended the Cameron-Martin formula (4.2) for the likelihood ratio to
+    certain <with|font-shape|italic|random> functions <math|f> given as
+    stochastic integrals.
 
-  Before turning to the proof of Theorem 5 let's look at the related but at
-  least superficially simpler problem of distinguishing signal plus noise
-  from noise for <with|font-shape|italic|white noise>. Here
-  <math|T=\<bbb-N\>>, and the covariance function is the simplest of all
-  possible covariance functions, to wit, <math|R<around|(|i,j|)>=\<delta\><rsub|i,j>>;
-  thus, the Gaussian process <math|<around|{|X<rsub|n>|}>> consists of
-  independent, identically distributed standard Gaussian random variables.
-  The \Psignal\Q is a fixed non-random sequence
-  <math|<around|{|a<rsub|n>|}><rsub|n\<in\>\<bbb-N\>>> of real numbers. Let
-  the probability measures <math|\<mu\>> and <math|\<nu\>> be the joint
-  distributions of the sequences <math|<around|{|X<rsub|n>|}>> and
-  <math|<around|{|X<rsub|n>+a<rsub|n>|}>>, respectively.
+    Before turning to the proof of Theorem 5 let's look at the related but at
+    least superficially simpler problem of distinguishing signal plus noise
+    from noise for <with|font-shape|italic|white noise>. Here
+    <math|T=\<bbb-N\>>, and the covariance function is the simplest of all
+    possible covariance functions, to wit,
+    <math|R<around|(|i,j|)>=\<delta\><rsub|i,j>>; thus, the Gaussian process
+    <math|<around|{|X<rsub|n>|}>> consists of independent, identically
+    distributed standard Gaussian random variables. The \Psignal\Q is a fixed
+    non-random sequence <math|<around|{|a<rsub|n>|}><rsub|n\<in\>\<bbb-N\>>>
+    of real numbers. Let the probability measures <math|\<mu\>> and
+    <math|\<nu\>> be the joint distributions of the sequences
+    <math|<around|{|X<rsub|n>|}>> and <math|<around|{|X<rsub|n>+a<rsub|n>|}>>,
+    respectively.
+  </remark>
 
-  <with|font-series|bold|Theorem 6. (Kakutani)> The measures <math|\<mu\>>
-  and <math|\<nu\>> are absolutely continuous if
-  <math|<big|sum><rsub|n\<geq\>1>a<rsub|n><rsup|2>\<less\>\<infty\>>, and
-  mutually singular if <math|<big|sum><rsub|n\<geq\>1>a<rsub|n><rsup|2>=\<infty\>>.
-  If <math|<big|sum><rsub|n\<geq\>1>a<rsub|n><rsup|2>\<less\>\<infty\>> then
-  the series <math|<big|sum><rsub|n\<geq\>1>a<rsub|n>*y<rsub|n>> converges
-  almost surely under <math|\<mu\>> and
+  <\theorem>
+    (Kakutani) The measures <math|\<mu\>> and <math|\<nu\>> are absolutely
+    continuous if
 
-  <\equation*>
-    <frac|d*\<nu\>|d*\<mu\>><mid|\|><rsub|<around|(|y<rsub|n>|)><rsub|n\<geq\>1>>=L<rsub|\<infty\>>=exp
-    <around*|{|<big|sum><rsub|n\<geq\>1>a<rsub|n>*y<rsub|n>-<frac|1|2>*<big|sum><rsub|n\<geq\>1>a<rsub|n><rsup|2>|}>
-  </equation*>
+    <\equation>
+      <big|sum><rsub|n\<geq\>1>a<rsub|n><rsup|2>\<less\>\<infty\>
+    </equation>
 
-  <with|font-shape|italic|Proof.> First some generalities. Let
-  <math|\<mu\>,\<nu\>> be two probability measures on
-  <math|<around|(|\<bbb-R\><rsup|\<infty\>>,\<cal-F\><rsub|\<infty\>>|)>>,
-  where <math|\<cal-F\><rsub|\<infty\>>> is the usual Borel field, that is,
-  the smallest <math|\<sigma\>>\Ualgebra that contains all cylinder sets. For
-  each <math|n\<in\>\<bbb-N\>> denote by <math|\<cal-F\><rsub|n>> the
-  <math|\<sigma\>>\Ualgebra generated by the first <math|n> coordinate
-  variables. Suppose that the restrictions of <math|\<mu\>> and <math|\<nu\>>
-  to <math|\<cal-F\><rsub|n>> are mutually absolutely continuous for each
-  <math|n> (this is the case, for instance, when <math|\<mu\>> and
-  <math|\<nu\>> are the laws of any two nondegenerate Gaussian processes, or
-  when <math|\<mu\>> and <math|\<nu\>> are product measures where each factor
-  is absolutely continuous relative to Lebesgue measure on <math|\<bbb-R\>>).
-  Then the sequence
+    , and mutually singular if
 
-  <\equation*>
-    L<rsub|n>\<assign\><around*|(|<frac|d*\<nu\>|d*\<mu\>><mid|\|>\<cal-F\><rsub|n>|)>
-  </equation*>
+    <\equation>
+      <big|sum><rsub|n\<geq\>1>a<rsub|n><rsup|2>=\<infty\>
+    </equation>
 
-  of likelihood ratios is a positive martingale under <math|\<mu\>> relative
-  to the filtration <math|<around|{|\<cal-F\><rsub|n>|}><rsub|n\<geq\>1>>,
-  and hence converges to a nonnegative limit <math|L<rsub|\<infty\>>> almost
-  surely. (Exercise: Verify that <math|L<rsub|n>> is a martingale.) There are
-  two interesting cases:
+    If <math|<big|sum><rsub|n\<geq\>1>a<rsub|n><rsup|2>\<less\>\<infty\>>
+    then the series <math|<big|sum><rsub|n\<geq\>1>a<rsub|n>*y<rsub|n>>
+    converges almost surely under <math|\<mu\>> and
 
-  <\itemize>
-    <item*|(a)><math|E<rsub|\<mu\>>*L<rsub|\<infty\>>=1>, and
+    <\equation>
+      <frac|d*\<nu\>|d*\<mu\>><mid|\|><rsub|<around|(|y<rsub|n>|)><rsub|n\<geq\>1>>=L<rsub|\<infty\>>=e<rsup|<around*|(|<big|sum><rsub|n\<geq\>1>a<rsub|n>*y<rsub|n>-<frac|1|2>*<big|sum><rsub|n\<geq\>1>a<rsub|n><rsup|2>|)>>
+    </equation>
+  </theorem>
 
-    <item*|(b)><math|\<mu\>*<around|{|L<rsub|\<infty\>>=0|}>=1>
-  </itemize>
+  <\proof>
+    First some generalities. Let <math|\<mu\>,\<nu\>> be two probability
+    measures on <math|<around|(|\<bbb-R\><rsup|\<infty\>>,\<cal-F\><rsub|\<infty\>>|)>>,
+    where <math|\<cal-F\><rsub|\<infty\>>> is the usual Borel field, that is,
+    the smallest <math|\<sigma\>>\Ualgebra that contains all cylinder sets.
+    For each <math|n\<in\>\<bbb-N\>> denote by <math|\<cal-F\><rsub|n>> the
+    <math|\<sigma\>>\Ualgebra generated by the first <math|n> coordinate
+    variables. Suppose that the restrictions of <math|\<mu\>> and
+    <math|\<nu\>> to <math|\<cal-F\><rsub|n>> are mutually absolutely
+    continuous for each <math|n> (this is the case, for instance, when
+    <math|\<mu\>> and <math|\<nu\>> are the laws of any two nondegenerate
+    Gaussian processes, or when <math|\<mu\>> and <math|\<nu\>> are product
+    measures where each factor is absolutely continuous relative to Lebesgue
+    measure on <math|\<bbb-R\>>). Then the sequence
 
-  These are not the only possibilities, in general, but in both the Gaussian
-  cases and in the case of product measures either (a) or (b) will hold. In
-  case (a) the martingale <math|L<rsub|n>> is closed, that is,
-  <math|L<rsub|n>=E<around|(|L<rsub|\<infty\>>\|\<cal-F\><rsub|n>|)>> for
-  each <math|n> and <math|L<rsub|n>\<rightarrow\>L<rsub|\<infty\>>> in
-  <math|L<rsup|1>>. In this case the measures <math|\<mu\>> and <math|\<nu\>>
-  are absolutely continuous on <math|\<cal-F\><rsub|\<infty\>>>, with
-  Radon-Nikodym derivative <math|L<rsub|\<infty\>>>, because for any
-  <math|F\<in\>\<cal-F\><rsub|n>>,
+    <\equation>
+      L<rsub|n>\<assign\><around*|(|<frac|d*\<nu\>|d*\<mu\>><mid|\|>\<cal-F\><rsub|n>|)>
+    </equation>
 
-  <\equation*>
-    E<rsub|\<mu\>>*L<rsub|\<infty\>>*1<rsub|F>=E<rsub|\<mu\>>*L<rsub|n>*1<rsub|F>=\<nu\><around|(|F|)>
-  </equation*>
+    of likelihood ratios is a positive martingale under <math|\<mu\>>
+    relative to the filtration <math|<around|{|\<cal-F\><rsub|n>|}><rsub|n\<geq\>1>>,
+    and hence converges to a nonnegative limit <math|L<rsub|\<infty\>>>
+    almost surely. (Exercise: Verify that <math|L<rsub|n>> is a martingale.)
+    There are two interesting cases:
 
-  and so the measures <math|\<nu\>> and <math|F\<mapsto\>E<rsub|\<mu\>>*L<rsub|\<infty\>>*1<rsub|F>>
-  agree on <math|<big|cup><rsub|n\<geq\>1>\<cal-F\><rsub|n>>. In case (b), on
-  the other hand, the measures <math|\<mu\>> and <math|\<nu\>> are singular
-  on <math|\<cal-F\><rsub|\<infty\>>>. To see this, first note that if
-  <math|L<rsub|n>\<rightarrow\>0> a.s. under <math|\<mu\>> then there is a
-  sequence of constants <math|\<varepsilon\><rsub|n>\<gtr\>0> such that
-  <math|\<varepsilon\><rsub|n>\<rightarrow\>0> and such that with
-  <math|\<mu\>>\Uprobability 1,
+    <\enumerate-alpha>
+      <item><math|E<rsub|\<mu\>>*L<rsub|\<infty\>>=1>
 
-  <\equation*>
-    \<mu\>*<around|(|L<rsub|n>\<leq\>\<varepsilon\><rsub|n><text|eventually>|)>=1
-  </equation*>
+      <item><math|\<mu\>*<around|{|L<rsub|\<infty\>>=0|}>=1>
+    </enumerate-alpha>
 
-  (<with|font-shape|italic|Exercise:> Prove this.) Define
-  <math|\<tau\><rsub|m>> to be the first time <math|n\<geq\>m> that
-  <math|L<rsub|n>\<leq\>\<varepsilon\><rsub|n>>, and let <math|F<rsub|m>> be
-  the event <math|<around|{|\<tau\><rsub|m>\<less\>\<infty\>|}>>. These
-  events are nested: <math|F<rsub|m>\<supseteq\>F<rsub|m+1>> for each
-  <math|m>. By construction, <math|\<mu\><around|(|F<rsub|m>|)>=1> for every
-  <math|m\<geq\>1>, and hence <math|\<mu\><around|(|<big|cap><rsub|m>F<rsub|m>|)>=1>.
-  But for each <math|m\<geq\>1>,
+    These are not the only possibilities, in general, but in both the
+    Gaussian cases and in the case of product measures either (a) or (b) will
+    hold. In case (a) the martingale <math|L<rsub|n>> is closed, that is,
+    <math|L<rsub|n>=E<around|(|L<rsub|\<infty\>>\|\<cal-F\><rsub|n>|)>> for
+    each <math|n> and <math|L<rsub|n>\<rightarrow\>L<rsub|\<infty\>>> in
+    <math|L<rsup|1>>. In this case the measures <math|\<mu\>> and
+    <math|\<nu\>> are absolutely continuous on
+    <math|\<cal-F\><rsub|\<infty\>>>, with Radon-Nikodym derivative
+    <math|L<rsub|\<infty\>>>, because for any
+    <math|F\<in\>\<cal-F\><rsub|n>>,
 
-  <\equation*>
-    \<nu\><around|(|F<rsub|m>|)>=<big|sum><rsub|n=m><rsup|\<infty\>>\<nu\>*<around|(|\<tau\><rsub|m>=n|)>=<big|sum><rsub|n=m><rsup|\<infty\>>E<rsub|\<mu\>>*L<rsub|n>*1<rsub|<around|{|\<tau\><rsub|m>=n|}>>=E<rsub|\<mu\>>*L<rsub|\<tau\><rsub|m>>\<leq\>\<varepsilon\><rsub|m>
-  </equation*>
+    <\equation>
+      E<rsub|\<mu\>>*L<rsub|\<infty\>>*1<rsub|F>=E<rsub|\<mu\>>*L<rsub|n>*1<rsub|F>=\<nu\><around|(|F|)>
+    </equation>
 
-  Consequently, <math|\<nu\><around|(|<big|cap><rsub|m>F<rsub|m>|)>=0>.
+    and so the measures <math|\<nu\>> and
+    <math|F\<mapsto\>E<rsub|\<mu\>>*L<rsub|\<infty\>>*1<rsub|F>> agree on
+    <math|<big|cup><rsub|n\<geq\>1>\<cal-F\><rsub|n>>. In case (b), on the
+    other hand, the measures <math|\<mu\>> and <math|\<nu\>> are singular on
+    <math|\<cal-F\><rsub|\<infty\>>>. To see this, first note that if
+    <math|L<rsub|n>\<rightarrow\>0> a.s. under <math|\<mu\>> then there is a
+    sequence of constants <math|\<varepsilon\><rsub|n>\<gtr\>0> such that
+    <math|\<varepsilon\><rsub|n>\<rightarrow\>0> and such that with
+    <math|\<mu\>>\Uprobability 1,
 
-  Now to Kakutani's theorem: Under <math|\<mu\>> the coordinate variables
-  <math|y<rsub|n>> are i.i.d. standard Gaussian, whereas under <math|\<nu\>>
-  they are independent Gaussians with means <math|a<rsub|n>> and variances 1.
-  Thus, the likelihood ratio on <math|\<cal-F\><rsub|n>> is
+    <\equation>
+      \<mu\>*<around|(|L<rsub|n>\<leq\>\<varepsilon\><rsub|n><text|eventually>|)>=1
+    </equation>
 
-  <\equation*>
-    L<rsub|n>=exp <around|{|A<rsub|n>*z<rsub|n>-A<rsub|n><rsup|2>/2|}>*<space|1em><text|where><space|1em>A<rsub|n><rsup|2>=<big|sum><rsub|j=1><rsup|n>a<rsub|j><rsup|2>*<space|1em><text|and><space|1em>z<rsub|n>=<big|sum><rsub|j=1><rsup|n>a<rsub|j>*y<rsub|j>/A<rsub|n>
-  </equation*>
+    (<with|font-shape|italic|Exercise:> Prove this.) Define
+    <math|\<tau\><rsub|m>> to be the first time <math|n\<geq\>m> that
+    <math|L<rsub|n>\<leq\>\<varepsilon\><rsub|n>>, and let <math|F<rsub|m>>
+    be the event <math|<around|{|\<tau\><rsub|m>\<less\>\<infty\>|}>>. These
+    events are nested: <math|F<rsub|m>\<supseteq\>F<rsub|m+1>> for each
+    <math|m>. By construction, <math|\<mu\><around|(|F<rsub|m>|)>=1> for
+    every <math|m\<geq\>1>, and hence <math|\<mu\><around|(|<big|cap><rsub|m>F<rsub|m>|)>=1>.
+    But for each <math|m\<geq\>1>,
 
-  If <math|A=<big|sum>a<rsub|j><rsup|2>\<less\>\<infty\>> then the series
-  <math|<big|sum><rsub|j=1>a<rsub|j>*y<rsub|j>> converges almost surely and
-  in <math|L<rsup|2><around|(|\<mu\>|)>>, and the limit random variable is
-  centered Gaussian with variance <math|A>. Consequently,
-  <math|L<rsub|n>\<rightarrow\>L<rsub|\<infty\>>> where half of the theorem.
-  Suppose then that <math|<big|sum>a<rsub|j><rsup|2>=\<infty\>>. Under
-  <math|\<nu\>> the random variable <math|z<rsub|n>> is standard Gaussian,
-  and so
+    <\equation>
+      \<nu\><around|(|F<rsub|m>|)>=<big|sum><rsub|n=m><rsup|\<infty\>>\<nu\>*<around|(|\<tau\><rsub|m>=n|)>=<big|sum><rsub|n=m><rsup|\<infty\>>E<rsub|\<mu\>>*L<rsub|n>*1<rsub|<around|{|\<tau\><rsub|m>=n|}>>=E<rsub|\<mu\>>*L<rsub|\<tau\><rsub|m>>\<leq\>\<varepsilon\><rsub|m>
+    </equation>
 
-  <\equation*>
-    lim<rsub|n\<rightarrow\>\<infty\>> \<mu\>*<around|{|A<rsub|n>*z<rsub|n>\<gtr\>A<rsub|n><rsup|2>/4|}>=0
-  </equation*>
+    Consequently, <math|\<nu\><around|(|<big|cap><rsub|m>F<rsub|m>|)>=0>.
 
-  This implies that <math|L<rsub|n>\<rightarrow\>0> in
-  <math|\<mu\>>\Uprobability. But the martingale convergence theorem implies
-  that <math|L<rsub|n>\<rightarrow\>L<rsub|\<infty\>>> almost surely under
-  <math|\<mu\>>, and so it follows that <math|L<rsub|\<infty\>>=0> a.s.
-  <math|\<mu\>>.
+    Now to Kakutani's theorem: Under <math|\<mu\>> the coordinate variables
+    <math|y<rsub|n>> are i.i.d. standard Gaussian, whereas under
+    <math|\<nu\>> they are independent Gaussians with means <math|a<rsub|n>>
+    and variances 1. Thus, the likelihood ratio on <math|\<cal-F\><rsub|n>>
+    is
+
+    <\equation>
+      L<rsub|n>=e<rsup| A<rsub|n>*z<rsub|n>-<frac|A<rsub|n><rsup|2>|2>>*<space|1em><text|where><space|1em>A<rsub|n><rsup|2>=<big|sum><rsub|j=1><rsup|n>a<rsub|j><rsup|2>*<space|1em><text|and><space|1em>z<rsub|n>=<big|sum><rsub|j=1><rsup|n><frac|a<rsub|j>*y<rsub|j>|A<rsub|n>>
+    </equation>
+
+    If <math|A=<big|sum>a<rsub|j><rsup|2>\<less\>\<infty\>> then the series
+    <math|<big|sum><rsub|j=1>a<rsub|j>*y<rsub|j>> converges almost surely and
+    in <math|L<rsup|2><around|(|\<mu\>|)>>, and the limit random variable is
+    centered Gaussian with variance <math|A>. Consequently,
+    <math|L<rsub|n>\<rightarrow\>L<rsub|\<infty\>>> where half of the
+    theorem. Suppose then that <math|<big|sum>a<rsub|j><rsup|2>=\<infty\>>.
+    Under <math|\<nu\>> the random variable <math|z<rsub|n>> is standard
+    Gaussian, and so
+
+    <\equation>
+      lim<rsub|n\<rightarrow\>\<infty\>> \<mu\>*<around*|{|A<rsub|n>*z<rsub|n>\<gtr\><frac|A<rsub|n><rsup|2>|4>|}>=0
+    </equation>
+
+    This implies that <math|L<rsub|n>\<rightarrow\>0> in
+    <math|\<mu\>>\Uprobability. But the martingale convergence theorem
+    implies that <math|L<rsub|n>\<rightarrow\>L<rsub|\<infty\>>> almost
+    surely under <math|\<mu\>>, and so it follows that
+    <math|L<rsub|\<infty\>>=0> a.s. <math|\<mu\>>.
+  </proof>
 
   <with|font-shape|italic|Proof of Theorem 5.> Since <math|T> is compact it
   has a countable dense subset <math|D=<around|{|s<rsub|1>,s<rsub|2>,\<ldots\>|}>>.
@@ -1215,22 +1027,22 @@
   <math|\<sigma\>>\Ualgebra <math|\<cal-F\>> generated by
   <math|<around|{|X<rsub|t>|}><rsub|t\<in\>D>>, and so
 
-  <\equation*>
+  <\equation>
     \<cal-F\>=\<sigma\><around*|(|<big|cup><rsub|n\<geq\>1>\<cal-F\><rsub|n>|)>
-  </equation*>
+  </equation>
 
   where <math|\<cal-F\><rsub|n>=\<sigma\><around|(|<around|(|X<rsub|s>|)><rsub|s\<in\>D<rsub|n>>|)>>.
   Let <math|\<xi\><rsub|1>,\<xi\><rsub|2>,\<ldots\>> be the random variables
   obtained by applying the Gram-Schmidt algorithm to the sequence
   <math|X<rsub|s<rsub|1>>,X<rsub|s<rsub|2>>,\<ldots\>>, that is,
 
-  <\equation*>
-    \<xi\><rsub|1>=X<rsub|s<rsub|1>>/R<around|(|s<rsub|1>,s<rsub|1>|)><rsup|1/2>
-  </equation*>
+  <\equation>
+    \<xi\><rsub|1>=<frac|X<rsub|s<rsub|1>>|<sqrt|R<around|(|s<rsub|1>,s<rsub|1>|)>>>
+  </equation>
 
-  <\equation*>
-    \<xi\><rsub|2>=<around|(|X<rsub|s<rsub|2>>-R<around|(|s<rsub|2>,s<rsub|1>|)>*X<rsub|s<rsub|1>>/R<around|(|s<rsub|1>,s<rsub|1>|)>|)>/<around|(|R<around|(|s<rsub|1>,s<rsub|1>|)>-R<around|(|s<rsub|2>,s<rsub|1>|)><rsup|2>/R<around|(|s<rsub|1>,s<rsub|1>|)>|)><rsup|1/2>
-  </equation*>
+  <\equation>
+    \<xi\><rsub|2>=<frac|X<rsub|s<rsub|2>>-<frac|R<around|(|s<rsub|2>,s<rsub|1>|)>*X<rsub|s<rsub|1>>|R<around|(|s<rsub|1>,s<rsub|1>|)>>|<sqrt|<around*|(|R<around|(|s<rsub|1>,s<rsub|1>|)>-<frac|R<around|(|s<rsub|2>,s<rsub|1>|)><rsup|2>|R<around|(|s<rsub|1>,s<rsub|1>|)>>|)>>>
+  </equation>
 
   etc.
 
@@ -1242,9 +1054,9 @@
   Observe that for each <math|n\<geq\>1> the Gram-Schmidt equations (4.4) can
   be written in matrix form:
 
-  <\equation*>
+  <\equation>
     <matrix|<tformat|<table|<row|<cell|\<xi\><rsub|1>>>|<row|<cell|\<xi\><rsub|2>>>|<row|<cell|\<vdots\>>>|<row|<cell|\<xi\><rsub|n>>>>>>=T<rsub|n><matrix|<tformat|<table|<row|<cell|X<rsub|s<rsub|1>>>>|<row|<cell|X<rsub|s<rsub|2>>>>|<row|<cell|\<vdots\>>>|<row|<cell|X<rsub|s<rsub|n>>>>>>>
-  </equation*>
+  </equation>
 
   where for each <math|n> the matrix <math|T<rsub|n>> is lower triangular and
   invertible. Consequently, for each <math|n>,
@@ -1260,9 +1072,9 @@
   for each <math|n> the <math|n\<times\>n> minor of <math|T<rsub|n+1>> is
   <math|T<rsub|n>>, that is,
 
-  <\equation*>
+  <\equation>
     T<rsub|n>=<matrix|<tformat|<table|<row|<cell|b<rsub|1,1>>|<cell|0>|<cell|0>|<cell|\<cdots\>>|<cell|0>>|<row|<cell|b<rsub|2,1>>|<cell|b<rsub|2,2>>|<cell|0>|<cell|\<cdots\>>|<cell|0>>|<row|<cell|\<vdots\>>|<cell|\<vdots\>>|<cell|\<ddots\>>|<cell|\<ddots\>>|<cell|\<vdots\>>>|<row|<cell|b<rsub|n,1>>|<cell|b<rsub|n,2>>|<cell|b<rsub|n,3>>|<cell|\<cdots\>>|<cell|b<rsub|n,n>>>>>>
-  </equation*>
+  </equation>
 
   for fixed scalars <math|b<rsub|i,j>>.
 
@@ -1274,9 +1086,9 @@
   <math|E<rsub|Q>>\Uexpectations on both sides in (4.5): this implies that
   for each <math|n>,
 
-  <\equation*>
+  <\equation>
     <matrix|<tformat|<table|<row|<cell|a<rsub|1>>>|<row|<cell|a<rsub|2>>>|<row|<cell|\<vdots\>>>|<row|<cell|a<rsub|n>>>>>>=T<rsub|n><matrix|<tformat|<table|<row|<cell|f<rsub|s<rsub|1>>>>|<row|<cell|f<rsub|s<rsub|2>>>>|<row|<cell|\<vdots\>>>|<row|<cell|f<rsub|s<rsub|n>>>>>>>
-  </equation*>
+  </equation>
 
   In particular, for each <math|n> the vector
   <math|<around|(|a<rsub|i>|)><rsub|i\<leq\>n>> is gotten by applying the
@@ -1298,25 +1110,24 @@
   taking <math|<around|(|X<rsub|s<rsub|j>>|)><rsub|j\<leq\>n>> to
   <math|<around|(|\<xi\><rsub|j>|)><rsub|j\<leq\>n>>. This implies that
 
-  <\equation*>
-    a<rsub|n>=<around|\<langle\>|f,\<psi\><rsub|n>|\<rangle\>>.
-  </equation*>
+  <\equation>
+    a<rsub|n>=<around|\<langle\>|f,\<psi\><rsub|n>|\<rangle\>>
+  </equation>
 
   Since <math|f=<big|sum><rsub|n\<geq\>1><around|\<langle\>|f,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n>>,
   it follows that <math|<big|sum><rsub|n\<geq\>1>a<rsub|n><rsup|2>=<around|\<\|\|\>|f|\<\|\|\>><rsup|2>\<less\>\<infty\>>.
   Thus, Kakutani's theorem implies that in this case the measures <math|P>
   and <math|Q> are absolutely continuous, and the likelihood ratio is
 
-  <\equation*>
-    <frac|d*Q|d*P><mid|\|><rsub|\<cal-F\>>=exp
-    <around*|{|<big|sum><rsub|n\<geq\>1>a<rsub|n>*\<xi\><rsub|n>-<frac|1|2>*<big|sum><rsub|n\<geq\>1>a<rsub|n><rsup|2>|}>
-  </equation*>
+  <\equation>
+    <frac|d*Q|d*P><mid|\|><rsub|\<cal-F\>>=e<rsup|<around*|(|<big|sum><rsub|n\<geq\>1>a<rsub|n>*\<xi\><rsub|n>-<frac|<big|sum><rsub|n\<geq\>1>a<rsub|n><rsup|2>|2>|)>>
+  </equation>
 
   The formula (4.2) follows, because
 
-  <\equation*>
+  <\equation>
     J<rsub|X><around|(|f|)>=<big|sum><rsub|n\<geq\>1>a<rsub|n>*\<xi\><rsub|n><space|1em><text|and><space|1em><around|\<\|\|\>|f|\<\|\|\>><rsup|2>=<big|sum><rsub|n\<geq\>1>a<rsub|n><rsup|2>
-  </equation*>
+  </equation>
 
   Now suppose that <math|f\<nin\>H>. For each <math|n\<geq\>1>, let
   <math|f<rsup|n>\<in\>H> be the unique linear combination in
@@ -1328,23 +1139,23 @@
   <math|<around|(|a<rsub|i>|)><rsub|i\<leq\>n>> are related to the entries
   <math|<around|(|f<rsub|s<rsub|i>>|)><rsub|i\<leq\>n>> by (4.6), and so
 
-  <\equation*>
+  <\equation>
     <matrix|<tformat|<table|<row|<cell|a<rsub|1>>>|<row|<cell|a<rsub|2>>>|<row|<cell|\<vdots\>>>|<row|<cell|a<rsub|n>>>>>>=T<rsub|n><matrix|<tformat|<table|<row|<cell|f<rsub|s<rsub|1>>>>|<row|<cell|f<rsub|s<rsub|2>>>>|<row|<cell|\<vdots\>>>|<row|<cell|f<rsub|s<rsub|n>>>>>>>
-  </equation*>
+  </equation>
 
   But since <math|f<rsup|n>> is a linear combination of the functions
   <math|<around|(|R<rsub|s<rsub|j>>|)><rsub|j\<leq\>n>>, it follows that for
   <math|1\<leq\>m\<leq\>n>,
 
-  <\equation*>
-    a<rsub|m>=<around|\<langle\>|f<rsup|n>,\<psi\><rsub|m>|\<rangle\>>,
-  </equation*>
+  <\equation>
+    a<rsub|m>=<around|\<langle\>|f<rsup|n>,\<psi\><rsub|m>|\<rangle\>>
+  </equation>
 
   and so
 
-  <\equation*>
-    <big|sum><rsub|j=1><rsup|n>a<rsub|j><rsup|2>=<around|\<\|\|\>|f<rsup|n>|\<\|\|\>><rsup|2>.
-  </equation*>
+  <\equation>
+    <big|sum><rsub|j=1><rsup|n>a<rsub|j><rsup|2>=<around|\<\|\|\>|f<rsup|n>|\<\|\|\>><rsup|2>
+  </equation>
 
   Now if it were the case that <math|<big|sum><rsub|j=1><rsup|\<infty\>>a<rsub|j><rsup|2>=<around|\<\|\|\>|f<rsup|n>|\<\|\|\>><rsup|2>\<less\>\<infty\>>
   then <math|g=<big|sum><rsub|n\<geq\>1>a<rsub|n>*\<psi\><rsub|n>\<in\>H>,
@@ -1359,6 +1170,32 @@
   <math|<big|sum><rsub|n=1><rsup|\<infty\>>a<rsub|n><rsup|2>=\<infty\>>, and
   Kakutani's theorem implies that <math|P> and <math|Q> are mutually
   singular.
+
+  <subsection|Intuition>
+
+  Mutual singularity between measures, like <math|P> and <math|Q> in the
+  Gaussian process context, means that there exist disjoint sets in the
+  underlying space, each fully supported by one measure and null for the
+  other. Basically, the measures live on completely separate parts of the
+  probability space, making them incompatible or "orthogonal."
+
+  Absolute continuity, on the other hand, is when one measure (like <math|Q>)
+  is completely contained within another (like <math|P>). If <math|f> is in
+  the reproducing kernel Hilbert space (H) associated with the Gaussian
+  process, then <math|P> and <math|Q> are absolutely continuous. This
+  relationship is characterized by the existence of a Radon-Nikodym
+  derivative <math|d*Q/d*P>, giving the precise "scaling" of probabilities
+  from <math|P> to <math|Q> across events.
+
+  The intuition here revolves around how the modifications (<math|f<rsub|t>>)
+  to the Gaussian process <math|X<rsub|t>> under measure <math|Q> compared to
+  <math|P> affect the likelihood of observing certain outcomes. If <math|f>
+  belongs to <math|H>, it aligns well enough with the Gaussian structure of
+  <math|X<rsub|t>> under <math|P> that <math|Q> just reweights these
+  probabilities (absolute continuity). If <math|f> does not belong to
+  <math|H>, the modifications it introduces are too orthogonal (in the
+  Hilbert space sense) to the original process, making <math|P> and <math|Q>
+  live on different "worlds" (mutual singularity).
 
   <\padded-center>
     <with|font-shape|italic|University of Chicago, Department of Statistics,
@@ -1379,16 +1216,17 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|?|1>>
-    <associate|auto-2|<tuple|?|4>>
-    <associate|auto-3|<tuple|?|4>>
-    <associate|auto-4|<tuple|?|6>>
-    <associate|auto-5|<tuple|?|7>>
-    <associate|auto-6|<tuple|?|8>>
-    <associate|auto-7|<tuple|?|9>>
-    <associate|auto-8|<tuple|1|14>>
-    <associate|auto-9|<tuple|1|14>>
-    <associate|footnote-1|<tuple|1|12>>
-    <associate|footnr-1|<tuple|1|12>>
+    <associate|auto-10|<tuple|2|16>>
+    <associate|auto-2|<tuple|2|2>>
+    <associate|auto-3|<tuple|2|2>>
+    <associate|auto-4|<tuple|5|4>>
+    <associate|auto-5|<tuple|10|6>>
+    <associate|auto-6|<tuple|10|6>>
+    <associate|auto-7|<tuple|22|11>>
+    <associate|auto-8|<tuple|29|11>>
+    <associate|auto-9|<tuple|1|11>>
+    <associate|footnote-1|<tuple|1|9>>
+    <associate|footnr-1|<tuple|1|9>>
   </collection>
 </references>
 
@@ -1396,15 +1234,15 @@
   <\collection>
     <\associate|toc>
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1.
-      DEFINITIONS AND EXAMPLES> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      Definitions and Examples> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-1><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2.
-      CONTINUOUS EXTENSIONS AND MAXIMA OF GAUSSIAN PROCESSES>
+      Continuous Extensions and Maxima of Gaussian Processes>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-2><vspace|0.5fn>
 
-      <with|par-left|<quote|1tab>|2.1. Continuity.
+      <with|par-left|<quote|1tab>|2.1. Continuity
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3>>
 
@@ -1413,26 +1251,30 @@
       <no-break><pageref|auto-4>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3.
-      REPRODUCING KERNEL HILBERT SPACE OF A GAUSSIAN PROCESS>
+      Reproducing Kernel Hilbert Space of a Gaussian Process>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-5><vspace|0.5fn>
 
-      <with|par-left|<quote|1tab>|3.1. The Wiener Integral.
+      <with|par-left|<quote|1tab>|3.2. Reproducing Kernel Hilbert Space.
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-6>>
 
-      <with|par-left|<quote|1tab>|3.2. Reproducing Kernel Hilbert Space.
+      <with|par-left|<quote|1tab>|3.3. Examples of RKHS.
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-7>>
 
-      <with|par-left|<quote|1tab>|3.3. Examples of RKHS.
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-8>>
-
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4.
-      SINGULARITY AND ABSOLUTE CONTINUITY>
+      Mutual Singularity and Absolute Continuity>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-9><vspace|0.5fn>
+      <no-break><pageref|auto-8><vspace|0.5fn>
+
+      <with|par-left|<quote|1tab>|1<space|2spc>Distinguishibility Of Measures
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-9>>
+
+      <with|par-left|<quote|1tab>|2<space|2spc>Intuition
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-10>>
     </associate>
   </collection>
 </auxiliary>
