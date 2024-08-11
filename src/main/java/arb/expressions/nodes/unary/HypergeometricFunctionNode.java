@@ -4,10 +4,8 @@ import static arb.expressions.Compiler.*;
 import static java.lang.System.err;
 import static org.objectweb.asm.Opcodes.ACONST_NULL;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.NEW;
 
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Type;
 
 import arb.RationalFunction;
 import arb.Real;
@@ -50,7 +48,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   @Override
   public String typeset()
   {
-    return String.format("${_%sF_%s}\\left(%s, %s ; %s\\right)",
+    return String.format("{_%sF_%s}\\left(%s, %s ; %s\\right)",
                          this.α.dim(),
                          this.β.dim(),
                          this.α.typeset(),
@@ -65,6 +63,8 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   private Class<?> hypergeometricFunctionClass;
 
   private boolean  dependsOnInput;
+
+  private String hypergeometricFunctionFieldName;
 
   public HypergeometricFunctionNode(Expression<D, R, F> expression)
   {
@@ -108,7 +108,10 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                                              : isReal ? RealPolynomialHypergeometricFunction.class
                                              : ComplexPolynomialHypergeometricFunction.class;
 
-    mv.visitTypeInsn(NEW, Type.getInternalName(hypergeometricFunctionClass));
+    hypergeometricFunctionFieldName = expression.newIntermediateVariable(hypergeometricFunctionClass);
+    expression.loadThisFieldOntoStack(mv, hypergeometricFunctionFieldName, hypergeometricFunctionClass);
+    
+    //mv.visitTypeInsn(NEW, Type.getInternalName(hypergeometricFunctionClass));
     duplicateTopOfTheStack(mv);
 
     α.generate(mv, scalarType);
