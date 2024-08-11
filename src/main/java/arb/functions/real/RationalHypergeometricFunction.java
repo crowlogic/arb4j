@@ -1,5 +1,7 @@
 package arb.functions.real;
 
+import java.lang.foreign.Arena;
+
 /**
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -63,9 +65,9 @@ public class RationalHypergeometricFunction implements RationalNullaryFunction, 
 
   public static final String                  pFq                      = "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}";
 
-  public final Context                        context;
+  public Context                              context;
 
-  private RationalNullaryFunction             f;
+  public RationalNullaryFunction              f;
 
   public RationalNullaryExpression            F;
 
@@ -73,33 +75,24 @@ public class RationalHypergeometricFunction implements RationalNullaryFunction, 
 
   private Integer                             N;
 
-  public final Integer                        p, q;
+  public Integer                              p, q;
 
-  public final Real                           α, β;
+  public Real                                 α, β;
+
+  public final Arena                          arena                    = Arena.ofShared();
 
   public static final Predicate<? super Real> negativeIntegerPredicate = z -> Real.isNegativeInteger.test(z)
                 || z.isZero();
 
-  public RationalHypergeometricFunction(int p,
-                                        int q,
-                                        Expression<Object, RationalFunction, RationalNullaryFunction> arg)
+  public void init(Fraction α, Fraction β, Expression<Object, RationalFunction, RationalNullaryFunction> arg)
   {
-    this(Real.newVector(p),
-         Real.newVector(q),
-         arg);
-  }
-
-  public RationalHypergeometricFunction(Fraction α,
-                                        Fraction β,
-                                        Expression<Object, RationalFunction, RationalNullaryFunction> arg)
-  {
-    this.α  = Real.newVector( α.dim );
-    for ( int i = 0; i < α.dim; i++ )
+    this.α = Real.newVector(α.dim);
+    for (int i = 0; i < α.dim; i++)
     {
       this.α.get(i).set(α.get(i));
     }
-    this.β  = Real.newVector( β.dim );
-    for ( int i = 0; i < β.dim; i++ )
+    this.β = Real.newVector(β.dim);
+    for (int i = 0; i < β.dim; i++)
     {
       this.β.get(i).set(β.get(i));
     }
@@ -108,30 +101,36 @@ public class RationalHypergeometricFunction implements RationalNullaryFunction, 
                                           "p"),
                           q = new Integer(β.dim,
                                           "q"),
-                          α.setName("α"),
-                          β.setName("β"));
+                          this.α.setName("α"),
+                          this.β.setName("β"));
 
     context.registerVariable("N", N = new Integer());
 
     F = RationalNullaryFunction.parse("F", RationalHypergeometricFunction.pFq, context).substitute("z", arg);
   }
-  
-  public RationalHypergeometricFunction(Real α,
-                                        Real β,
+
+  public void init(int p, int q, Expression<Object, RationalFunction, RationalNullaryFunction> arg)
+  {
+    init(Fraction.newVector(arena, p), Fraction.newVector(arena, q), arg);
+  }
+
+  public RationalHypergeometricFunction()
+  {
+
+  }
+
+  public RationalHypergeometricFunction(int p,
+                                        int q,
                                         Expression<Object, RationalFunction, RationalNullaryFunction> arg)
   {
-    this.α  = α;
-    this.β  = β;
-    context = new Context(p = new Integer(α.dim,
-                                          "p"),
-                          q = new Integer(β.dim,
-                                          "q"),
-                          α.setName("α"),
-                          β.setName("β"));
+    init(p, q, arg);
+  }
 
-    context.registerVariable("N", N = new Integer());
-
-    F = RationalNullaryFunction.parse("F", RationalHypergeometricFunction.pFq, context).substitute("z", arg);
+  public RationalHypergeometricFunction(Fraction α,
+                                        Fraction β,
+                                        Expression<Object, RationalFunction, RationalNullaryFunction> arg)
+  {
+    init(α, β, arg);
   }
 
   @Override
@@ -142,9 +141,9 @@ public class RationalHypergeometricFunction implements RationalNullaryFunction, 
     α.close();
     β.close();
     N.close();
+    arena.close();
   }
 
-  @SuppressWarnings("resource")
   public Integer determineDegree()
   {
     return α.stream()
@@ -170,6 +169,7 @@ public class RationalHypergeometricFunction implements RationalNullaryFunction, 
 
   public void initialize()
   {
+    assert !initialized : "already initialized";
     if (!verify())
     {
       α.printPrecision = true;
