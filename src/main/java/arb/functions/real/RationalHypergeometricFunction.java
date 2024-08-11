@@ -109,21 +109,10 @@ public class RationalHypergeometricFunction implements RationalNullaryFunction, 
     F = RationalNullaryFunction.parse("F", RationalHypergeometricFunction.pFq, context).substitute("z", arg);
   }
 
-  public void init(int p, int q, Expression<Object, RationalFunction, RationalNullaryFunction> arg)
-  {
-    init(Fraction.newVector(arena, p), Fraction.newVector(arena, q), arg);
-  }
 
   public RationalHypergeometricFunction()
   {
 
-  }
-
-  public RationalHypergeometricFunction(int p,
-                                        int q,
-                                        Expression<Object, RationalFunction, RationalNullaryFunction> arg)
-  {
-    init(p, q, arg);
   }
 
   public RationalHypergeometricFunction(Fraction α,
