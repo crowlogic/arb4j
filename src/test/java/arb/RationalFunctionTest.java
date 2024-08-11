@@ -67,7 +67,7 @@ public class RationalFunctionTest
   public void testPowers()
   {
 
-    var              seq       = RationalFunctionSequence.express("n->((1/2)-(z/2))^n");
+    var              seq       = RationalFunctionSequence.express("n➔(½-z/2)ⁿ");
     RationalFunction expressed = seq.evaluate(0, 128, new RationalFunction());
     assertEquals("1", expressed.toString());
     seq.evaluate(1, 128, expressed);
