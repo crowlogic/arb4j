@@ -178,15 +178,11 @@ public class RationalFunctionTest
    */
   public static void testHypergeometricFunctionExpressionRational()
   {
-    int              bits      = 128;
     RationalFunction expressed = RationalFunction.express("pFq([-2,3+1/2,1],[2,4],1/2-x/2)");
-    // Evaluate terms separately
     RationalFunction term0     = RationalFunction.express("1");
-    RationalFunction term1     = RationalNullaryFunction.express("-7/8*(1/2 - x/2)")
-                                                        .evaluate(bits, new RationalFunction());
-    RationalFunction term2     = RationalNullaryFunction.express("21/80*(1/2 - x/2)^2")
-                                                        .evaluate(bits, new RationalFunction());
-    RationalFunction expected  = term0.add(term1, new RationalFunction()).add(term2, new RationalFunction());
+    RationalFunction term1     = RationalFunction.express("-7/8*(1/2 - x/2)");
+    RationalFunction term2     = RationalFunction.express("21/80*(1/2 - x/2)^2");
+    RationalFunction expected  = term0.add(term1, new RationalFunction()).add(term2);
     assertEquals("(21*x^2+98*x+201)/320", expressed.toString());
     assertEquals(expected, expressed);
   }
