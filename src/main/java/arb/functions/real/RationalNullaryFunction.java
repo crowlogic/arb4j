@@ -33,12 +33,12 @@ public interface RationalNullaryFunction extends NullaryFunction<RationalFunctio
                                 functionName);
   }
 
-  public static NullaryFunction<RationalFunction> express(String expression, Context context)
+  public static RationalNullaryFunction express(String expression, Context context)
   {
     return express(null, expression, context);
   }
 
-  public static NullaryFunction<RationalFunction> express(String expression)
+  public static RationalNullaryFunction express(String expression)
   {
     return express(null, expression, null);
   }
@@ -46,13 +46,13 @@ public interface RationalNullaryFunction extends NullaryFunction<RationalFunctio
   public static RationalNullaryExpression parse(String functionName, String expression, Context context)
   {
     RationalNullaryExpression expr = new RationalNullaryExpression(functionName != null ? functionName : Parser.expressionToUniqueClassname(expression),
-                  Object.class,
-                  RationalFunction.class,
-                  RationalNullaryFunction.class,
-                  expression,
-                  context,
-                  functionName,
-                  null);
+                                                                   Object.class,
+                                                                   RationalFunction.class,
+                                                                   RationalNullaryFunction.class,
+                                                                   expression,
+                                                                   context,
+                                                                   functionName,
+                                                                   null);
     return expr.parseRoot();
   }
 

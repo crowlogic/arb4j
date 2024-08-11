@@ -77,11 +77,21 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
       return res;
     }
   }
-
+    
+  public RationalFunction set(String string)
+  {
+    return RationalNullaryFunction.express(string).evaluate( bits(), this);
+  }  
+  
   @SuppressWarnings("resource")
-  public static RationalFunction parse( String expression )
+  public static RationalFunction express(String expression)
   {
     return new RationalFunction().set(expression);
+  }
+
+  public static RationalFunction express(String expression, Context context)
+  {
+    return RationalNullaryFunction.express(expression, context).evaluate(128);
   }
   
   public static Expression<Fraction, Fraction, RationalFunction> compile(String expression)
@@ -207,6 +217,11 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   public void close() 
   {
     delete();
+    if ( realVersion != null ) 
+    {
+      realVersion.close();
+      realVersion = null;
+    }
   }  
   
   @SuppressWarnings("unchecked")
@@ -322,11 +337,7 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
       return result.set(this).add(e, prec);
     }
   }
-    
-  public RationalFunction set(String string)
-  {
-    return RationalNullaryFunction.express(string).evaluate( 0, this);
-  }  
+ 
   
   public RationalFunction neg( int bits, RationalFunction res )
   {

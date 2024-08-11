@@ -3,6 +3,7 @@ package arb;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.functions.NullaryFunction;
 import arb.functions.real.RationalNullaryFunction;
 import arb.functions.sequences.RationalFunctionSequence;
 import junit.framework.TestCase;
@@ -178,10 +179,9 @@ public class RationalFunctionTest
   public static void testHypergeometricFunctionExpressionRational()
   {
     int              bits      = 128;
-    var              function  = RationalNullaryFunction.express("pFq([-2,3+1/2,1],[2,4],1/2-x/2)");
-    RationalFunction expressed = function.evaluate(bits, new RationalFunction());
+    RationalFunction expressed = RationalFunction.express("pFq([-2,3+1/2,1],[2,4],1/2-x/2)");
     // Evaluate terms separately
-    RationalFunction term0     = RationalNullaryFunction.express("1").evaluate(bits, new RationalFunction());
+    RationalFunction term0     = RationalFunction.express("1");
     RationalFunction term1     = RationalNullaryFunction.express("-7/8*(1/2 - x/2)")
                                                         .evaluate(bits, new RationalFunction());
     RationalFunction term2     = RationalNullaryFunction.express("21/80*(1/2 - x/2)^2")
