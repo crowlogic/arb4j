@@ -6,6 +6,8 @@ import static org.objectweb.asm.Opcodes.ACONST_NULL;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import arb.RationalFunction;
 import arb.Real;
@@ -49,10 +51,10 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   public String typeset()
   {
     return String.format("{_%sF_%s}\\left(%s, %s ; %s\\right)",
-                         this.α.dim(),
-                         this.β.dim(),
-                         this.α.typeset(),
-                         this.β.typeset(),
+                         α.dim(),
+                         β.dim(),
+                         α.typeset(),
+                         β.typeset(),
                          arg.typeset());
   }
 
@@ -108,10 +110,10 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                                              : isReal ? RealPolynomialHypergeometricFunction.class
                                              : ComplexPolynomialHypergeometricFunction.class;
 
-    hypergeometricFunctionFieldName = expression.newIntermediateVariable(hypergeometricFunctionClass);
-    expression.loadThisFieldOntoStack(mv, hypergeometricFunctionFieldName, hypergeometricFunctionClass);
+    //hypergeometricFunctionFieldName = expression.newIntermediateVariable(hypergeometricFunctionClass);
+    //expression.loadThisFieldOntoStack(mv, hypergeometricFunctionFieldName, hypergeometricFunctionClass);
     
-    //mv.visitTypeInsn(NEW, Type.getInternalName(hypergeometricFunctionClass));
+    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(hypergeometricFunctionClass));
     duplicateTopOfTheStack(mv);
 
     α.generate(mv, scalarType);
