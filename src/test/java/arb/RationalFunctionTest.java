@@ -106,8 +106,7 @@ public class RationalFunctionTest
    */
   public void testXToThePowerOfNegativeOne()
   {
-    var              rationalFunctional = RationalNullaryFunction.express("x^(-1)");
-    RationalFunction expressed          = rationalFunctional.evaluate(128, new RationalFunction());
+    RationalFunction expressed = RationalFunction.express("x^(-1)");
     assertEquals("1/(x)", expressed.toString());
   }
 
