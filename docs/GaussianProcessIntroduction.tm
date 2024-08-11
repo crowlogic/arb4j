@@ -3,8 +3,11 @@
 <style|<tuple|generic|alt-colors|framed-theorems>>
 
 <\body>
-  <doc-data|<doc-title|INTRODUCTION TO GAUSSIAN
-  PROCESSES>|<doc-author|<author-data|<author-name|STEVEN P. LALLEY>>>>\ 
+  <doc-data|<doc-title|Gaussian Processes>|<doc-author|<author-data|<author-name|Steve
+  P. Lalley>|<\author-affiliation>
+    Heavily Edited by Stephen Crowley (no affiliation with the univ of
+    chicago)
+  </author-affiliation>>>>\ 
 
   <\table-of-contents|toc>
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|1. Definitions
@@ -183,24 +186,24 @@
   <math|N<rsub|n>\<leq\><around|(|n+1|)>*N<around|(|r<rsup|-n>|)>>, and so
   the hypothesis (2.1) implies that
 
-  <\equation*>
+  <\equation>
     <big|sum><rsub|n=0><rsup|\<infty\>>r<rsup|-n>*A<rsub|n>\<less\>\<infty\>*<space|1em><text|where><space|1em>A<rsub|n>=<sqrt|log
     <around|(|4<rsup|n>*N<rsub|n>|)>>
-  </equation*>
+  </equation>
 
   Consider the events
 
-  <\equation*>
+  <\equation>
     B<rsub|n>=<around|{|\<exists\><space|0.17em>s,t\<in\>D<rsub|n>:<around|\||X<rsub|s>-X<rsub|t>|\|>\<geq\>A<rsub|n>*d<around|(|s,t|)>|}>
-  </equation*>
+  </equation>
 
   Since there are at most <math|N<rsub|n><rsup|2>> pairs of points in
   <math|D<rsub|n>>, Bonferroni implies that
 
-  <\equation*>
+  <\equation>
     P<around|(|B<rsub|n>|)>\<leq\>C*N<rsub|n><rsup|2>*e<rsup|<around*|(|-n*log
     4-log N<rsub|n><rsup|2>|)>><rsup|>\<leq\>C*4<rsup|-n>
-  </equation*>
+  </equation>
 
   (Here <math|C> is any constant such that if <math|Z> is a standard Gaussian
   random variable then <math|P*<around|(|<around|\||Z|\|>\<gtr\>x|)>\<leq\>C*exp
@@ -1219,11 +1222,11 @@
     <associate|auto-10|<tuple|2|16>>
     <associate|auto-2|<tuple|2|2>>
     <associate|auto-3|<tuple|2|2>>
-    <associate|auto-4|<tuple|5|4>>
-    <associate|auto-5|<tuple|10|6>>
-    <associate|auto-6|<tuple|10|6>>
+    <associate|auto-4|<tuple|8|4>>
+    <associate|auto-5|<tuple|13|6>>
+    <associate|auto-6|<tuple|13|6>>
     <associate|auto-7|<tuple|22|11>>
-    <associate|auto-8|<tuple|29|11>>
+    <associate|auto-8|<tuple|32|11>>
     <associate|auto-9|<tuple|1|11>>
     <associate|footnote-1|<tuple|1|9>>
     <associate|footnr-1|<tuple|1|9>>
