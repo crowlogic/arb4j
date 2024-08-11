@@ -512,5 +512,11 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
     init();
   }
 
+  public static RationalFunction express(String expression, String string)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
 
 }
