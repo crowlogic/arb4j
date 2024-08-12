@@ -26,7 +26,11 @@ import arb.functions.real.RealFunction;
     return (realVersion == null ? (realVersion = new RealRationalFunction()) : realVersion);
   }
 
-  
+  public RealFunction real()
+  {
+    return asRealFunction();
+  }
+    
   public final class RealRationalFunction implements RealFunction, AutoCloseable
   {
     @Override

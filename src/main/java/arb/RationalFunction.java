@@ -47,7 +47,11 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
     return (realVersion == null ? (realVersion = new RealRationalFunction()) : realVersion);
   }
 
-  
+  public RealFunction real()
+  {
+    return asRealFunction();
+  }
+    
   public final class RealRationalFunction implements RealFunction, AutoCloseable
   {
     @Override
