@@ -11,13 +11,33 @@ import org.objectweb.asm.MethodVisitor;
 import arb.Integer;
 import arb.RationalFunction;
 import arb.Real;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 import arb.functions.sequences.LommelPolynomialSequence;
+import arb.functions.sequences.RationalFunctionSequence;
 
+/**
+ * Syntax: "R(v,n;z)" which corresponds to a {@link LommelPolynomialSequence}
+ * with the {@link LommelPolynomialSequence#v} set and then
+ * 
+ * assigns {@link LommelPolynomialNode#elementFieldName} the specific
+ * {@link RationalFunctionSequence} which gets
+ * {@link RationalFunctionSequence#evaluate(Integer, int, int, RationalFunction)}d
+ * by passing the this{@link #index} argument which corresponds to the variable
+ * n in the expression R(v,n;z)
+ * 
+ * @param <D>
+ * @param <C>
+ * @param <F>
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extends C>>
                                  extends
                                  FunctionCallNode<D, C, F>
@@ -162,33 +182,9 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   }
 
   @Override
-  public boolean isLeaf()
-  {
-    return false;
-  }
-
-  @Override
-  public boolean isReusable()
-  {
-    return false;
-  }
-
-  @Override
-  public MethodVisitor prepareStackForReuse(MethodVisitor mv)
-  {
-    throw new UnsupportedOperationException("Lommel polynomial is not reusable");
-  }
-
-  @Override
   public String typeset()
   {
     return String.format("R_{%s, %s} (%s)", order.typeset(), index.typeset(), arg.typeset());
-  }
-
-  @Override
-  public boolean hasSingleLeaf()
-  {
-    return false;
   }
 
   @Override
