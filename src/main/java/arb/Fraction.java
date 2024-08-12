@@ -116,6 +116,11 @@ public class Fraction implements AutoCloseable,Field<Fraction>,Named,Verifiable 
     return res;
   }
   
+  public Real mul(Real that, int bits, Real result)
+  {
+    return result.set(this).mul(that,bits,result);
+  }
+    
   public Real mul(Integer that, int bits, Real result)
   {
     return result.set(this).mul(that,bits,result);

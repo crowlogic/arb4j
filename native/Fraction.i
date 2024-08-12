@@ -88,6 +88,11 @@ import java.lang.foreign.MemorySegment;
     return res;
   }
   
+  public Real mul(Real that, int bits, Real result)
+  {
+    return result.set(this).mul(that,bits,result);
+  }
+    
   public Real mul(Integer that, int bits, Real result)
   {
     return result.set(this).mul(that,bits,result);
