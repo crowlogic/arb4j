@@ -98,7 +98,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-
+    expression.insideInitializer = false;
     loadThisOntoStack(mv);
     expression.loadFieldOntoStack(mv, elementFieldName, RationalFunction.class);
 
@@ -106,16 +106,8 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     expression.insideInitializer = true;
     arg.generate(mv, resultType);
 
-    if (expression.insideInitializer)
-    {
-      mv.visitLdcInsn(0);
-      mv.visitLdcInsn(128);
-    }
-    else
-    {
-      Compiler.loadOrderParameter(mv);
-      Compiler.loadBitsParameterOntoStack(mv);
-    }
+    Compiler.loadOrderParameter(mv);
+    Compiler.loadBitsParameterOntoStack(mv);
 
     // Load the output variable
     loadOutputVariableOntoStack(mv, resultType);
