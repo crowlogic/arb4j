@@ -2,6 +2,8 @@ package arb;
 
 import static arb.RealConstants.one;
 
+import java.lang.foreign.Arena;
+
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealNullaryFunction;
@@ -16,6 +18,17 @@ public class RealTest
                       extends
                       TestCase
 {
+
+  public static void testSetFractionWithArena()
+  {
+    try ( Arena arena = Arena.ofShared(); Real r = new Real(arena))
+    {
+      Fraction f = new Fraction();
+      f.set("10/43");
+      r.set(f);
+      assertEquals(0.23255813953488372093, r.doubleValue());
+    }
+  }
 
   public static void testSetFraction()
   {
