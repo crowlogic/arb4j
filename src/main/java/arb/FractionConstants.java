@@ -16,7 +16,7 @@ public class FractionConstants
   public static final Fraction oneHalf      = new Fraction(1,
                                                            2);
 
-  public static final Fraction threeQuarter = new Fraction(3,
+  public static final Fraction threeQuarters = new Fraction(3,
                                                            4);
 
   public static final Fraction oneSeventh   = new Fraction(1,
@@ -49,7 +49,7 @@ public class FractionConstants
   public static final Fraction oneSixth     = new Fraction(1,
                                                            6);
 
-  public static final Fraction fiveSixth    = new Fraction(5,
+  public static final Fraction fiveSixths    = new Fraction(5,
                                                            6);
 
   public static final Fraction oneEight     = new Fraction(1,
