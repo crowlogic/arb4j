@@ -74,6 +74,11 @@ public class Fraction implements AutoCloseable,Field<Fraction>,Named,Verifiable 
     set(numerator, denominator);
   }
 
+  public Real sub(Real element, int prec, Real result)
+  {
+    return result.set(this).sub(element, prec, result);
+  }
+  
   public void set(int numerator, int denominator)
   {
     getNumerator().set(numerator);
