@@ -27,6 +27,7 @@ public class RealTest
       f.set("10/43");
       r.set(f);
       assertEquals(0.23255813953488372093, r.doubleValue());
+      assertFalse(r.swigCMemOwn);
     }
   }
 
