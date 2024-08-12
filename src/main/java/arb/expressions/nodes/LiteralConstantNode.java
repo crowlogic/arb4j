@@ -182,7 +182,6 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
       fieldName = expression.getNextConstantFieldName(type());
     }
 
-    System.out.format("value=" + value + " fieldName=" + fieldName + "\n");
     expression.literalConstants.put(fieldName, this);
   }
 

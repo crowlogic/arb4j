@@ -18,11 +18,6 @@ import arb.expressions.nodes.LiteralConstantNode;
  */
 public class Parser
 {
-
-  public static double[]                     commonFractionValues       = new double[]
-  { 1.0 / 4.0, 1.0 / 2.0, 3.0 / 4.0, 1.0 / 7.0, 1.0 / 9.0, 1.0 / 10.00, 1.0 / 3.0, 2.0 / 3.0, 1.0 / 3.0, 2.0 / 5.0,
-    3.0 / 5.0, 4.0 / 5.0, 1.0 / 6.0, 5.0 / 6.0, 1.0 / 8.0, 3.0 / 8.0, 5.0 / 8.0, 7.0 / 8.0 };
-
   public static char[]                       commonFractions            =
   { '¼', '½', '¾', '⅐', '⅑', '⅒', '⅓', '⅔', '⅕', '⅖', '⅗', '⅘', '⅙', '⅚', '⅛', '⅜', '⅝', '⅞' };
 
