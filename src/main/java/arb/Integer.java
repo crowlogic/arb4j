@@ -158,6 +158,14 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     init((int) dim2);
   }
 
+  public Real add(Fraction addend, int bits, Real result)
+  {
+    try ( Real tmp = new Real())
+    {
+      return tmp.set(this).add(addend, bits, result);
+    }
+  }
+
   public Fraction add(Fraction frac, int bits, Fraction result)
   {
     return result.set(this).add(frac, bits);
@@ -790,7 +798,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     res.bits = prec;
     return res.set(this).sub(subtrahend, prec);
   }
-  
+
   public RationalFunction sub(RationalFunction subtrahend, int prec, RationalFunction res)
   {
     res.bits = prec;

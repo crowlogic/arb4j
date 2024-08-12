@@ -1062,6 +1062,11 @@ public class Real implements Named,Domain<Real>,Serializable,Comparable<Real>,It
     return log(prec, this);
   }
   
+  public Real add(Fraction addend, int bits)
+  {
+    return add(addend,bits);
+  }
+    
   public Real add( Fraction addend, int bits, Real result )
   {
     return addend.add(this,bits,result);
@@ -1719,8 +1724,7 @@ public class Real implements Named,Domain<Real>,Serializable,Comparable<Real>,It
     assert dim == that.dim;
     if (dim != res.dim)
     {
-      Real vec = Real.newVector(dim);
-      res.become(vec);
+      res.become(Real.newVector(dim));
     }
     for (int i = 0; i < dim; i++)
     {
