@@ -17,12 +17,8 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
-import arb.Complex;
-import arb.ComplexConstants;
-import arb.Fraction;
+import arb.*;
 import arb.Integer;
-import arb.Real;
-import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
@@ -90,15 +86,12 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 
   public static final String    π               = "π";
 
-  public static final String    half            = "½";
-
   public static final String    ⅈ               = "ⅈ";
 
   public static HashSet<String> constantSymbols = new HashSet<String>();
   static
   {
     constantSymbols.add(π);
-    constantSymbols.add(half);
     constantSymbols.add(ⅈ);
     constantSymbols.add(infinity);
   }
@@ -153,9 +146,16 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     {
       isInt     = !((value.contains(".") || constantSymbols.contains(value)));
       isComplex = ⅈ.equals(value);
+      char firstCharOfValue = value.charAt(0);
+      fractionValue = Parser.fractions.get(firstCharOfValue);
+      if (fractionValue != null)
+      {
+        fieldName = Parser.fractionFieldNames.get(firstCharOfValue);
+        return;
+      }
     }
 
-    if (isConstant(constantValueString))
+    if (isConstant(constantValueString) || fractionValue != null)
     {
       fieldName = constantValueString;
       return;
@@ -182,6 +182,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
       fieldName = expression.getNextConstantFieldName(type());
     }
 
+    System.out.format("value=" + value + " fieldName=" + fieldName + "\n");
     expression.literalConstants.put(fieldName, this);
   }
 
@@ -197,10 +198,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     generatedType = type();
     if (fractionValue != null)
     {
-      expression.allocateIntermediateVariable(mv, Fraction.class);
-      mv.visitLdcInsn(fractionValue.getNumerator());
-      mv.visitLdcInsn(fractionValue.getDenominator());
-      mv.visitMethodInsn(INVOKESPECIAL, Type.getInternalName(Fraction.class), "<init>", "(JJ)V", false);
+      loadConstantOntoStack(mv, fieldName, Fraction.class, FractionConstants.class);
     }
     else if (π.equals(fieldName))
     {
@@ -209,10 +207,6 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     else if (infinity.equals(fieldName))
     {
       loadRealConstantOntoStack(mv, "infinity");
-    }
-    else if (half.equals(fieldName))
-    {
-      loadRealConstantOntoStack(mv, "half");
     }
     else if (ⅈ.equals(fieldName))
     {
@@ -348,13 +342,9 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     {
       return "\\pi";
     }
-    else if (half.equals(value))
-    {
-      return "\\frac{1}{2}";
-    }
     else if (fractionValue != null)
     {
-      return String.format("\\frac{%d}{%d}", fractionValue.getNumerator(), fractionValue.getDenominator());
+      return String.format("\\frac{%s}{%s}", fractionValue.getNumerator(), fractionValue.getDenominator());
     }
     else
     {

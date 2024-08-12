@@ -34,8 +34,8 @@ import arb.exceptions.CompilerException;
 import arb.expressions.nodes.*;
 import arb.expressions.nodes.binary.*;
 import arb.expressions.nodes.nary.NAryOperation;
-import arb.expressions.nodes.nary.Product;
-import arb.expressions.nodes.nary.Sum;
+import arb.expressions.nodes.nary.ProductNode;
+import arb.expressions.nodes.nary.SumNode;
 import arb.expressions.nodes.unary.*;
 import arb.functions.Function;
 import arb.functions.NullaryFunction;
@@ -432,15 +432,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public void declareFields(ClassVisitor cw)
   {
     cw.visitField(Opcodes.ACC_PUBLIC, IS_INITIALIZED, "Z", null, null);
-
     declareConstants(cw);
-
     declareFunctionReferences(cw);
-
     declareVariables(cw);
-
     declareIntermediateVariables(cw);
-
   }
 
   public ClassVisitor declareFunctionReferences(ClassVisitor classVisitor)
@@ -553,12 +548,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * @return a parenthetical {@link Node}, a {@link Product}, a
+   * @return a parenthetical {@link Node}, a {@link ProductNode}, a
    *         {@link LiteralConstantNode},a {@link Function}, a {@link Variable} or
    *         null if for instance "-t" is encountered, as a 0 is implied by the
    *         absence of a node before the {@link Subtraction} operator is
-   *         encountered, also handles {@link Product} also known as the product
-   *         operator and {@link Sum}
+   *         encountered, also handles {@link ProductNode} also known as the
+   *         product operator and {@link SumNode}
    * 
    * @throws CompilerException
    */
@@ -568,7 +563,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (nextCharacterIs('['))
     {
-      node = new Vector<>(this);
+      node = new VectorNode<>(this);
     }
     else if (nextCharacterIs('('))
     {
@@ -577,15 +572,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else if (nextCharacterIs('∫'))
     {
-      node = new Integral<>(this);
+      node = new IntegralNode<>(this);
     }
     else if (nextCharacterIs('Π', '∏'))
     {
-      node = new Product<>(this);
+      node = new ProductNode<>(this);
     }
     else if (nextCharacterIs('∑', 'Σ'))
     {
-      node = new Sum<>(this);
+      node = new SumNode<>(this);
     }
     else if (isNumeric(character))
     {
@@ -620,7 +615,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       nextCharacter();
     }
-
+    assert position > startingPosition : "didn't read any digits";
+    
     return new LiteralConstantNode<>(this,
                                      expression.substring(startingPosition, position));
   }

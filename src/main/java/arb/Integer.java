@@ -790,6 +790,12 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     res.bits = prec;
     return res.set(this).sub(subtrahend, prec);
   }
+  
+  public RationalFunction sub(RationalFunction subtrahend, int prec, RationalFunction res)
+  {
+    res.bits = prec;
+    return res.set(this).sub(subtrahend, prec);
+  }
 
   public Complex tanh(int bits, Complex result)
   {

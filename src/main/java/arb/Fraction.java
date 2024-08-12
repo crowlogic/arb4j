@@ -37,6 +37,18 @@ public class Fraction implements AutoCloseable,Field<Fraction>,Named,Verifiable 
   }
 
 
+  public Fraction(int numerator, int denominator)
+  {
+    this();
+    set(numerator, denominator);
+  }
+
+  public void set(int numerator, int denominator)
+  {
+    getNumerator().set(numerator);
+    getDenominator().set(denominator);
+  }
+  
   @Override
   public boolean verify()
   {

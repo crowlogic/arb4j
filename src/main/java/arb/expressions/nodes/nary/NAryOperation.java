@@ -41,7 +41,7 @@ import arb.utensils.Utensils;
  * Represents a generic n-ary operation on {@link Node}s within
  * {@link Expression}s. This abstract base class provides the common structure
  * and behavior for operations that involve multiple operands, such as
- * {@link Sum}, {@link Product}, or other customized functions that combine
+ * {@link SumNode}, {@link ProductNode}, or other customized functions that combine
  * elements of a class over a coDomain of values.
  * <p>
  * It handles the initialization and execution of these operations, including

@@ -19,11 +19,11 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Product<D, C, F extends Function<? extends D, ? extends C>> extends
+public class ProductNode<D, C, F extends Function<? extends D, ? extends C>> extends
                     NAryOperation<D, C, F>
 {
 
-  public Product(Expression<D, C, F> expression)
+  public ProductNode(Expression<D, C, F> expression)
   {
     super(expression,
           "multiplicativeIdentity",

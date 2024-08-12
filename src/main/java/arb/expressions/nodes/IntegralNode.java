@@ -29,7 +29,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Integral<D, R, F extends Function<? extends D, ? extends R>>
+public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>>
                      extends
                      Node<D, R, F>
 {
@@ -82,7 +82,7 @@ public class Integral<D, R, F extends Function<? extends D, ? extends R>>
    * 
    * @param expression
    */
-  public Integral(Expression<D, R, F> expression)
+  public IntegralNode(Expression<D, R, F> expression)
   {
     super(expression);
     integrationVariable = new Variable<>(expression,
@@ -273,7 +273,7 @@ public class Integral<D, R, F extends Function<? extends D, ? extends R>>
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    Integral<E, S, G> integral = new Integral<E, S, G>(newExpression);
+    IntegralNode<E, S, G> integral = new IntegralNode<E, S, G>(newExpression);
     integral.integralFunctionFieldName   = integralFunctionFieldName;
     integral.lowerIntegralValueFieldName = integral.lowerIntegralValueFieldName;
     integral.upperIntegralValueFieldName = integral.upperIntegralValueFieldName;

@@ -21,11 +21,11 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Sum<D, C, F extends Function<? extends D, ? extends C>> extends
+public class SumNode<D, C, F extends Function<? extends D, ? extends C>> extends
                 NAryOperation<D, C, F>
 {
 
-  public Sum(Expression<D, C, F> expression)
+  public SumNode(Expression<D, C, F> expression)
   {
     super(expression,
           "additiveIdentity",

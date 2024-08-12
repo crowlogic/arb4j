@@ -25,7 +25,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Vector<D, R, F extends Function<? extends D, ? extends R>>
+public class VectorNode<D, R, F extends Function<? extends D, ? extends R>>
                    extends
                    Node<D, R, F>
 {
@@ -51,7 +51,7 @@ public class Vector<D, R, F extends Function<? extends D, ? extends R>>
   public ArrayList<Node<D, R, F>> elements = new ArrayList<>();
   private String intermediateValueFieldName;
 
-  public Vector(Expression<D, R, F> expression)
+  public VectorNode(Expression<D, R, F> expression)
   {
     super(expression);
     do
@@ -201,7 +201,7 @@ public class Vector<D, R, F extends Function<? extends D, ? extends R>>
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    var vec = new Vector<E, S, G>(newExpression);
+    var vec = new VectorNode<E, S, G>(newExpression);
     vec.elements = new ArrayList<Node<E, S, G>>(elements.size());
     for (int i = 0; i < elements.size(); i++)
     {

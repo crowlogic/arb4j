@@ -1,9 +1,11 @@
 package arb.expressions;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
 
+import arb.Fraction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.nodes.LiteralConstantNode;
@@ -17,66 +19,65 @@ import arb.expressions.nodes.LiteralConstantNode;
 public class Parser
 {
 
-  public static double[]        vulgarFractionValues = new double[]
+  public static double[]                     commonFractionValues       = new double[]
   { 1.0 / 4.0, 1.0 / 2.0, 3.0 / 4.0, 1.0 / 7.0, 1.0 / 9.0, 1.0 / 10.00, 1.0 / 3.0, 2.0 / 3.0, 1.0 / 3.0, 2.0 / 5.0,
     3.0 / 5.0, 4.0 / 5.0, 1.0 / 6.0, 5.0 / 6.0, 1.0 / 8.0, 3.0 / 8.0, 5.0 / 8.0, 7.0 / 8.0 };
 
-  public static char[]          vulgarFractions      =
+  public static char[]                       commonFractions            =
   { '¼', '½', '¾', '⅐', '⅑', '⅒', '⅓', '⅔', '⅕', '⅖', '⅗', '⅘', '⅙', '⅚', '⅛', '⅜', '⅝', '⅞' };
 
-  public static char[]          vulgarFractions2     =
-  { '½' };
+  public static String[]                     fractionConstantFieldNames =
+  { "oneQuarter", "oneHalf", "threeQuarters", "oneSeventh", "oneNineth", "oneTenth", "oneThird", "twoThird",
+    "oneFifth", "twoFifths", "threeFifths", "fourFifths", "oneSixth", "fiveSixths", "oneEight", "threeEights",
+    "fiveEights", "sevenEights" };
 
-  public static char[]          vulgarFractions3     =
-  { '⅓', '⅔', };
+  public static HashMap<Character, Fraction> fractions                  = new HashMap<>();
 
-  public static char[]          vulgarFractions4     = new char[]
-  { '¼', '¾' };
+  public static HashMap<Character, String>   fractionFieldNames         = new HashMap<>();
 
-  public static char[]          vulgarFractions5     = new char[]
-  { '⅕', '⅖', '⅗', '⅘' };
+  static
+  {
+    for (int i = 0; i < commonFractions.length; i++)
+    {
+      fractionFieldNames.put(commonFractions[i], fractionConstantFieldNames[i]);
+    }
 
-  public static char[]          vulgarFractions6     = new char[]
-  { '⅙', '⅚' };
-
-  public static char[]          vulgarFractions7     = new char[]
-  { '⅐' };
-
-  public static char[]          vulgarFractions8     = new char[]
-  { '⅛', '⅜', '⅝', '⅞' };
-
-  public static char[]          vulgarFractions9     = new char[]
-  { '⅑' };
-
-  public static char[]          vulgarFractions10    = new char[]
-  { '⅒' };
-
-  public static HashSet<String> greekChars           = new HashSet<String>(Arrays.asList("Γ",
-                                                                                         "Δ",
-                                                                                         "Θ",
-                                                                                         "Λ",
-                                                                                         "Ξ",
-                                                                                         "Π",
-                                                                                         "Σ",
-                                                                                         "Φ",
-                                                                                         "Ψ",
-                                                                                         "Ω",
-                                                                                         "γ",
-                                                                                         "δ",
-                                                                                         "θ",
-                                                                                         "λ",
-                                                                                         "ξ",
-                                                                                         "π",
-                                                                                         "ς",
-                                                                                         "φ",
-                                                                                         "ψ",
-                                                                                         "ω",
-                                                                                         "ϑ",
-                                                                                         "ϒ",
-                                                                                         "ϖ",
-                                                                                         "ϕ",
-                                                                                         "ϱ",
-                                                                                         "ϰ"));
+    fractions.put('½',
+                  new Fraction(1,
+                               2));
+    fractions.put('¼',
+                  new Fraction(1,
+                               4));
+    fractions.put('⅞',
+                  new Fraction(7,
+                               8));
+  }
+  public static HashSet<String> greekChars = new HashSet<String>(Arrays.asList("Γ",
+                                                                               "Δ",
+                                                                               "Θ",
+                                                                               "Λ",
+                                                                               "Ξ",
+                                                                               "Π",
+                                                                               "Σ",
+                                                                               "Φ",
+                                                                               "Ψ",
+                                                                               "Ω",
+                                                                               "γ",
+                                                                               "δ",
+                                                                               "θ",
+                                                                               "λ",
+                                                                               "ξ",
+                                                                               "π",
+                                                                               "ς",
+                                                                               "φ",
+                                                                               "ψ",
+                                                                               "ω",
+                                                                               "ϑ",
+                                                                               "ϒ",
+                                                                               "ϖ",
+                                                                               "ϕ",
+                                                                               "ϱ",
+                                                                               "ϰ"));
 
   public static char subscriptedDigitToRegular(char c)
   {
@@ -111,7 +112,8 @@ public class Parser
   {
     ch = subscriptedDigitToRegular(ch);
 
-    return (ch >= '0' && ch <= '9') || ch == '.' || ch == '½' || ch == LiteralConstantNode.infinity.charAt(0);
+    boolean isDigit = ch >= '0' && ch <= '9';
+    return isDigit || ch == '.' || ch == '∞' || Parser.fractions.containsKey(ch);
   }
 
   /**
@@ -231,9 +233,29 @@ public class Parser
     return character == '₍' || character == '₎';
   }
 
-  public static final HashSet<Character> SUBSCRIPT_CHARACTERS         = new HashSet<Character>(Arrays.asList(new Character[]
-  { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉', 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ',
-    'ₜ' }));
+  public static final HashSet<Character> SUBSCRIPT_CHARACTERS         = new HashSet<Character>(Arrays.asList('₀',
+                                                                                                             '₁',
+                                                                                                             '₂',
+                                                                                                             '₃',
+                                                                                                             '₄',
+                                                                                                             '₅',
+                                                                                                             '₆',
+                                                                                                             '₇',
+                                                                                                             '₈',
+                                                                                                             '₉',
+                                                                                                             'ₐ',
+                                                                                                             'ₑ',
+                                                                                                             'ₒ',
+                                                                                                             'ₓ',
+                                                                                                             'ₔ',
+                                                                                                             'ₕ',
+                                                                                                             'ₖ',
+                                                                                                             'ₗ',
+                                                                                                             'ₘ',
+                                                                                                             'ₙ',
+                                                                                                             'ₚ',
+                                                                                                             'ₛ',
+                                                                                                             'ₜ'));
 
   public static final char[]             SUBSCRIPT_DIGITS_ARRAY       = new char[]
   { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉' };
@@ -245,8 +267,19 @@ public class Parser
   { 'ᵃ', 'ᵇ', 'ᶜ', 'ᵈ', 'ᵉ', 'ᶠ', 'ᵍ', 'ʰ', 'ⁱ', 'ʲ', 'ᵏ', 'ˡ', 'ᵐ', 'ⁿ', 'ᵒ', 'ᵖ', 0x107A5, 'ʳ', 'ˢ', 'ᵗ', 'ᵘ', 'ᵛ',
     'ʷ', 'ˣ', 'ʸ', 'ᶻ' };
 
-  public static final HashSet<Character> lowercaseSubscriptAlphabet   = new HashSet<Character>(Arrays.asList(new Character[]
-  { 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ', 'ₜ' }));
+  public static final HashSet<Character> lowercaseSubscriptAlphabet   = new HashSet<Character>(Arrays.asList('ₐ',
+                                                                                                             'ₑ',
+                                                                                                             'ₒ',
+                                                                                                             'ₓ',
+                                                                                                             'ₔ',
+                                                                                                             'ₕ',
+                                                                                                             'ₖ',
+                                                                                                             'ₗ',
+                                                                                                             'ₘ',
+                                                                                                             'ₙ',
+                                                                                                             'ₚ',
+                                                                                                             'ₛ',
+                                                                                                             'ₜ'));
   /**
    * Not all uppercase letters have UTF superscript representations
    */

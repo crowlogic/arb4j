@@ -17,7 +17,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
-import arb.expressions.nodes.Vector;
+import arb.expressions.nodes.VectorNode;
 import arb.functions.Function;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.polynomials.ComplexPolynomialHypergeometricFunction;
@@ -28,7 +28,7 @@ import arb.functions.real.RealPolynomialNullaryFunction;
 
 /**
  * The numerator α and the denominator β parameters can be specified via the
- * {@link Vector} syntax like F([1,n,1+n],[1],x) or symbolically like F(α,β,x)
+ * {@link VectorNode} syntax like F([1,n,1+n],[1],x) or symbolically like F(α,β,x)
  * where α and β are {@link Real}s or {@link RealPolynomial}s for instance where
  * if they are {@link RealPolynomial}s then the coeffecients of the polynomial
  * are regarded as the parameters of the numerator or denominator
