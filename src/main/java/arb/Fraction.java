@@ -8,10 +8,41 @@
 
 package arb;
 
-import java.util.Objects;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ArbException;
+import java.util.Objects;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
+
+/**
+ * <pre>
+ * TODO: implement this in toString: ²³⁄₅₇
+ * 
+ * 1. **Unicode Characters:** Superscripts:** The code uses Unicode superscript
+ * characters (e.g., ⁰ ¹ ² ³ ⁴ ⁵ ⁶ ⁷ ⁸ ⁹) to represent the numerator (the number
+ * on top of the fraction).
+ * 
+ * **Subscripts:** Similarly, it employs Unicode subscript characters (e.g., ₀ ₁
+ * ₂ ₃ ₄ ₅ ₆ ₇ ₈ ₉) to represent the denominator (the number below the
+ * fraction).
+ * 
+ * **Slash:** A special Unicode character '⁄' (U+2044, FRACTION SLASH) is used
+ * to create the slash that separates the numerator and denominator.
+ * 
+ * 
+ * **Visual Clarity:** This approach produces fractions that closely resemble
+ * their mathematical representation, enhancing readability.
+ * 
+ * **Wide Compatibility:** Unicode characters are generally well-supported
+ * across modern browsers and platforms, ensuring the fractions display
+ * correctly in most environments. 
+ *
+ * </pre>
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 
 public class Fraction implements AutoCloseable,Field<Fraction>,Named,Verifiable {
   protected long swigCPtr;
