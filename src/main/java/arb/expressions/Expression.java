@@ -358,7 +358,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public String allocateIntermediateVariable(MethodVisitor methodVisitor, Class<?> type)
   {
     String intermediateVariableName = newIntermediateVariable(type);
-    loadFieldOntoStack(loadThisOntoStack(methodVisitor), intermediateVariableName, type.descriptorString());
+    loadThisFieldOntoStack(methodVisitor, intermediateVariableName, type);
     return intermediateVariableName;
   }
 
@@ -1767,8 +1767,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (nextCharacterIs('⌊'))
     {
-      node = new Floor<D, C, F>(this,
-                                resolve());
+      node = new FloorNode<D, C, F>(this,
+                                    resolve());
       require('⌋');
     }
     return node;
@@ -1943,7 +1943,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public void throwNewUnexpectedCharacterException()
   {
-    throw new CompilerException(String.format("unexpected '%s'(0x%x) character at position=%s in expression '%s' of length %d, remaining=%s\n",
+    throw new CompilerException(String.format("unexpected '%s'(0x%x) character at position=%s in expression '%s' of length %d, remaining='%s'\n",
                                               character,
                                               (int) character,
                                               position,

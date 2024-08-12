@@ -29,6 +29,7 @@ import arb.domains.Domain;
 import arb.exceptions.ArbException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
+import arb.expressions.Parser;
 import arb.expressions.nodes.binary.Multiplication;
 import arb.functions.Function;
 import arb.utensils.Utensils;
@@ -70,8 +71,8 @@ import arb.utensils.Utensils;
  *      {@link TheArb4jLibrary}
  */
 public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends R>>
-                            extends
-                            Node<D, R, F>
+                                extends
+                                Node<D, R, F>
 {
   static final String METHOD_DESCRIPTOR_WITHOUT_BITS = Compiler.getMethodDescriptor(Void.class, String.class);
 
@@ -399,8 +400,8 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
          spliceInto(Expression<E, S, G> newExpression)
   {
     return new LiteralConstantNode<E, S, G>(newExpression,
-                                        value,
-                                        fieldName);
+                                            value,
+                                            fieldName);
   }
 
   @Override
@@ -413,7 +414,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   public Node<D, R, F> derivative(Variable<D, R, F> variable)
   {
     return new LiteralConstantNode<>(expression,
-                                 "0");
+                                     "0");
   }
 
   @Override

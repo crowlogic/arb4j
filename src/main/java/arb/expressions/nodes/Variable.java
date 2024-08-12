@@ -17,6 +17,7 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import arb.Complex;
+import arb.Fraction;
 import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -143,7 +144,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
 
     assert reference != null;
     assert !(expression.recursive && reference.name.equals(expression.functionName)) : "variable name clashes with "
-                  + "the function name since its a recursve function";
+                  + "the function name since it's a recursve function";
 
     Variable<D, R, F> existingVariable = expression.getReference(reference.name);
     if (existingVariable != null)
@@ -448,7 +449,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
                   && !expression.isNullaryPolynomialFunction());
   }
 
-  protected void resolveInheritedVariableReference(Variable<D, R, F> variable)
+  public void resolveInheritedVariableReference(Variable<D, R, F> variable)
   {
 
     var parentExpression = expression.ascendentExpression;
@@ -468,7 +469,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
     }
   }
 
-  protected Variable<?, ?, ?> resolve(VariableReference<D, R, F> reference, Expression<?, ?, ?> ascendentExpression)
+  public Variable<?, ?, ?> resolve(VariableReference<D, R, F> reference, Expression<?, ?, ?> ascendentExpression)
   {
     var ascendentInputNode = ascendentExpression.independentVariable;
 
@@ -576,7 +577,8 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public boolean isScalar()
   {
-    return type().equals(Real.class) || type().equals(Complex.class) || type().equals(Integer.class);
+    return type().equals(Real.class) || type().equals(Complex.class) || type().equals(Integer.class)
+                  || type().equals(Fraction.class);
   }
 
   @Override

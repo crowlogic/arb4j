@@ -19,7 +19,7 @@ public class RationalFunctionTest
 
   public static void testEvaluateWithFraction()
   {
-    try ( RationalFunction f = new RationalFunction())
+    try ( var f = new RationalFunction())
     {
       f.set("(-6*x^2+15)/(x^3)");
       assertEquals("(-6*x^2+15)/(x^3)", f.toString());
@@ -35,8 +35,8 @@ public class RationalFunctionTest
   {
     var context = new Context();
     context.registerVariable("v", RealConstants.half);
-    var R = RationalFunctionSequence.express("v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z²)", context);
-    var x = R.evaluate(3, 128, new RationalFunction());
+    var R = RationalFunctionSequence.express("n➔v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z²)", context);
+    var x = R.evaluate(3, 128);
     assertEquals("(-6*x^2+15)/(x^3)", x.toString());
   }
 
@@ -68,7 +68,7 @@ public class RationalFunctionTest
   {
 
     var              seq       = RationalFunctionSequence.express("n➔(½-z/2)ⁿ");
-    RationalFunction expressed = seq.evaluate(0, 128, new RationalFunction());
+    RationalFunction expressed = seq.evaluate(0, 128);
     assertEquals("1", expressed.toString());
     seq.evaluate(1, 128, expressed);
     assertEquals("(-x+1)/2", expressed.toString());
@@ -82,22 +82,20 @@ public class RationalFunctionTest
 
   public void testRationalIdentityExpression()
   {
-    var              rationalFunctional = RationalNullaryFunction.express("x");
-    RationalFunction expressed          = rationalFunctional.evaluate(128, new RationalFunction());
+    var expressed = RationalFunction.express("x");
     assertEquals("x", expressed.toString());
   }
 
   public void testXOver2()
   {
-    var              rationalFunctional = RationalNullaryFunction.express("x/2");
-    RationalFunction expressed          = rationalFunctional.evaluate(128, new RationalFunction());
+    var expressed = RationalFunction.express("x/2");
     assertEquals("(x)/2", expressed.toString());
   }
 
   public void testOneHalfMinusXOver2()
   {
     var              rationalFunctional = RationalNullaryFunction.express("1/2-x/2");
-    RationalFunction expressed          = rationalFunctional.evaluate(128, new RationalFunction());
+    RationalFunction expressed          = rationalFunctional.evaluate(128);
     assertEquals("(-x+1)/2", expressed.toString());
   }
 
@@ -112,8 +110,7 @@ public class RationalFunctionTest
 
   public void testXSquaredToThePowerOfNegativeOne()
   {
-    var              rationalFunctional = RationalNullaryFunction.express("(x^2)^(-1)");
-    RationalFunction expressed          = rationalFunctional.evaluate(128, new RationalFunction());
+    var expressed = RationalFunction.express("(x^2)^(-1)");
     assertEquals("1/(x^2)", expressed.toString());
   }
 
@@ -122,8 +119,7 @@ public class RationalFunctionTest
    */
   public void testOneHalfMinusXOver2Squared()
   {
-    var              rationalFunctional = RationalNullaryFunction.express("(1/2-x/2)^2");
-    RationalFunction expressed          = rationalFunctional.evaluate(128, new RationalFunction());
+    var expressed = RationalFunction.express("(1/2-x/2)^2");
     assertEquals("(x^2-2*x+1)/4", expressed.toString());
   }
 
@@ -176,14 +172,14 @@ public class RationalFunctionTest
    */
   public static void testHypergeometricFunctionExpressionRational()
   {
-    Context          context   = new Context();
-    RationalFunction expressed = RationalFunction.express("pFq([-2,3+1/2,1],[2,4],1/2-x/2)");
+    var context   = new Context();
+    var expressed = RationalFunction.express("pFq([-2,3+1/2,1],[2,4],1/2-x/2)");
     RationalFunction.express("a:1", context);
-    RationalFunction.express("b:-7/8*(1/2 - x/2)", context);
+    RationalFunction.express("b:-⅞*(½ - x/2)", context);
     RationalFunction.express("c:21/80*(1/2 - x/2)^2", context);
-    RationalFunction expected = RationalFunction.express("a()+b()+c()", context);
+    RationalFunction expectedSum = RationalFunction.express("a()+b()+c()", context);
     assertEquals("(21*x^2+98*x+201)/320", expressed.toString());
-    assertEquals(expected, expressed);
+    assertEquals(expectedSum, expressed);
   }
 
 }

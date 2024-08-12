@@ -16,7 +16,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Floor<D, R, F extends Function<? extends D, ? extends R>> extends
+public class FloorNode<D, R, F extends Function<? extends D, ? extends R>> extends
                   FunctionCallNode<D, R, F>
 {
 
@@ -38,7 +38,7 @@ public class Floor<D, R, F extends Function<? extends D, ? extends R>> extends
     return arb.Integer.class;
   }
 
-  public Floor(Expression<D, R, F> parser, Node<D, R, F> argument)
+  public FloorNode(Expression<D, R, F> parser, Node<D, R, F> argument)
   {
     super("floor",
           argument,
