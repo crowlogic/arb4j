@@ -1037,7 +1037,7 @@ import arb.utensils.Utensils;
   
   public Real add(Fraction addend, int bits)
   {
-    return add(addend,bits);
+    return add(addend,bits,this);
   }
     
   public Real add( Fraction addend, int bits, Real result )

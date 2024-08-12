@@ -1064,7 +1064,7 @@ public class Real implements Named,Domain<Real>,Serializable,Comparable<Real>,It
   
   public Real add(Fraction addend, int bits)
   {
-    return add(addend,bits);
+    return add(addend,bits,this);
   }
     
   public Real add( Fraction addend, int bits, Real result )
