@@ -1062,9 +1062,14 @@ public class Real implements Named,Domain<Real>,Serializable,Comparable<Real>,It
     return log(prec, this);
   }
   
-  public Real add(Real d, int prec)
+  public Real add( Fraction addend, int bits, Real result )
   {
-    return add(d, prec, this);
+    return addend.add(this,bits,result);
+  }  
+  
+  public Real add(Real addend, int prec)
+  {
+    return add(addend, prec, this);
   }  
     
   /**

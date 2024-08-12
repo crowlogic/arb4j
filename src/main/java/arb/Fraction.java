@@ -120,7 +120,12 @@ public class Fraction implements AutoCloseable,Field<Fraction>,Named,Verifiable 
   {
     return result.set(this).mul(that,bits,result);
   }
-    
+
+  public Real add(Real real, int bits, Real result)
+  {
+    return result.set(this).add(real,bits,result);
+  }
+      
   public RationalFunction mul(RationalFunction that, int bits, RationalFunction result)
   {
     return result.set(this).mul(that,bits,result);
