@@ -57,6 +57,12 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
     }
 
     @Override
+    public String typeset()
+    {
+      return RationalFunction.this.typeset();
+    }
+    
+    @Override
     public void close()
     {
       x.close();
