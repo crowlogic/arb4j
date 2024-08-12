@@ -40,7 +40,7 @@ public class Parser
 
     fractions.put('½', FractionConstants.oneHalf);
     fractions.put('¼', FractionConstants.oneQuarter);
-    fractions.put('¾', FractionConstants.threeQuarter);
+    fractions.put('¾', FractionConstants.threeQuarters);
     fractions.put('⅐', FractionConstants.oneSeventh);
     fractions.put('⅑', FractionConstants.oneNineth);
     fractions.put('⅒', FractionConstants.oneTenth);
@@ -51,12 +51,13 @@ public class Parser
     fractions.put('⅗', FractionConstants.threeFifths);
     fractions.put('⅘', FractionConstants.fourFifths);
     fractions.put('⅙', FractionConstants.oneSixth);
-    fractions.put('⅚', FractionConstants.fiveSixth);
+    fractions.put('⅚', FractionConstants.fiveSixths);
     fractions.put('⅛', FractionConstants.oneEight);
     fractions.put('⅜', FractionConstants.threeEights);
     fractions.put('⅝', FractionConstants.fiveEights);
     fractions.put('⅞', FractionConstants.sevenEights);
   }
+  
   public static HashSet<String> greekChars = new HashSet<String>(Arrays.asList("Γ",
                                                                                "Δ",
                                                                                "Θ",
