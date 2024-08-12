@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.UUID;
 
 import arb.Fraction;
+import arb.FractionConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.nodes.LiteralConstantNode;
@@ -37,15 +38,24 @@ public class Parser
       fractionFieldNames.put(commonFractions[i], fractionConstantFieldNames[i]);
     }
 
-    fractions.put('½',
-                  new Fraction(1,
-                               2));
-    fractions.put('¼',
-                  new Fraction(1,
-                               4));
-    fractions.put('⅞',
-                  new Fraction(7,
-                               8));
+    fractions.put('½', FractionConstants.oneHalf);
+    fractions.put('¼', FractionConstants.oneQuarter);
+    fractions.put('¾', FractionConstants.threeQuarter);
+    fractions.put('⅐', FractionConstants.oneSeventh);
+    fractions.put('⅑', FractionConstants.oneNineth);
+    fractions.put('⅒', FractionConstants.oneTenth);
+    fractions.put('⅓', FractionConstants.oneThird);
+    fractions.put('⅔', FractionConstants.twoThirds);
+    fractions.put('⅕', FractionConstants.oneFifth);
+    fractions.put('⅖', FractionConstants.twoFifths);
+    fractions.put('⅗', FractionConstants.threeFifths);
+    fractions.put('⅘', FractionConstants.fourFifths);
+    fractions.put('⅙', FractionConstants.oneSixth);
+    fractions.put('⅚', FractionConstants.fiveSixth);
+    fractions.put('⅛', FractionConstants.oneEight);
+    fractions.put('⅜', FractionConstants.threeEights);
+    fractions.put('⅝', FractionConstants.fiveEights);
+    fractions.put('⅞', FractionConstants.sevenEights);
   }
   public static HashSet<String> greekChars = new HashSet<String>(Arrays.asList("Γ",
                                                                                "Δ",
