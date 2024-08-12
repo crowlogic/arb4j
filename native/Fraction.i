@@ -88,6 +88,11 @@ import java.lang.foreign.MemorySegment;
     return res;
   }
   
+  public Real mul(Integer that, int bits, Real result)
+  {
+    return result.set(this).mul(that,bits,result);
+  }
+    
   public RationalFunction mul(RationalFunction that, int bits, RationalFunction result)
   {
     return result.set(this).mul(that,bits,result);
