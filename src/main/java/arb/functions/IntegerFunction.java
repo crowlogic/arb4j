@@ -9,9 +9,13 @@ import arb.documentation.TheArb4jLibrary;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface IntegerFunction extends
-                                 Function<Integer, Integer>
+public interface IntegerFunction extends Function<Integer, Integer>
 {
+  public default Integer eval(int n)
+  {
+    Integer val = new Integer(n);
+    return evaluate(val, n, val);
+  }
 
   public static IntegerFunction express(String string)
   {

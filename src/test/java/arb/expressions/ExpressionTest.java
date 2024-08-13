@@ -27,6 +27,13 @@ public class ExpressionTest
                             TestCase
 {
 
+  public void testBinomialCoefficient()
+  {
+    IntegerFunction f   = IntegerFunction.express("ℭ(5,n)");
+    Integer         hmm = f.eval(3);
+    assertEquals(10, hmm.getSignedValue());
+  }
+
   public void testLommelPolynomialRealExpression()
   {
     var    f   = RealFunction.express("R(1/2,3;z)");
@@ -38,10 +45,10 @@ public class ExpressionTest
 
   public void testLommelPolynomialRationalExpression()
   {
-    var F = RationalNullaryFunction.express("R(1/2,3;z)");
-   // System.out.println("F=" + F);
-    var f = F.evaluate(128);
-    //System.out.println("f=" + f);
+    var    F   = RationalNullaryFunction.express("R(1/2,3;z)");
+    // System.out.println("F=" + F);
+    var    f   = F.evaluate(128);
+    // System.out.println("f=" + f);
     double hmm = f.asRealFunction().eval(2.3);
     /// System.out.println("f(2.3)="+hmm);
     assertEquals(-1.3758527163639351505, hmm);

@@ -616,7 +616,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       nextCharacter();
     }
     assert position > startingPosition : "didn't read any digits";
-    
+
     return new LiteralConstantNode<>(this,
                                      expression.substring(startingPosition, position));
   }
@@ -1433,17 +1433,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                     exponentiate());
 
       }
-      else if (nextCharacterIs('/', '÷'))
+      else if (nextCharacterIs('⁄', '/', '÷'))
       {
         node = new Division<>(this,
                               node,
                               exponentiate());
-      }
-      else if (nextCharacterIs('ℭ'))
-      {
-        node = new BinomialCoeffecient<>(this,
-                                         node,
-                                         exponentiate());
       }
       else
       {
@@ -1695,13 +1689,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (!nextCharacterIs(which))
     {
-      String result = Arrays.asList(which).stream().map(String::valueOf).collect(Collectors.joining());
+      String result = Arrays.asList(which)
+                            .stream()
+                            .map(ch -> String.format("'%s'", String.valueOf(ch)))
+                            .collect(Collectors.joining(","));
 
-      throw new CompilerException(format("Missing expected %s at position %d got char '%c' instead, remaining=%s\n",
+      throw new CompilerException(format("Expecting %s %s at position %d but got char '%c' instead, remaining=%s\n",
+                                         which.length > 1 ? "one of" : "",
                                          result,
                                          position,
                                          character == 0 ? '0' : character,
                                          remaining()));
+
     }
     return this;
   }
@@ -1772,30 +1771,30 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Node<D, C, F> resolveFunction(int startPos, VariableReference<D, C, F> reference)
   {
-    if (reference.isHypergeometricFunction() && !isHypergeometricFunctionSymbolBeingUsedByAContextualFunction())
+    switch (reference.name)
     {
-      return new HypergeometricFunctionNode<>(this);
-    }
-    else if ("when".equals(reference.name))
-    {
+    case "when":
       return new WhenNode<>(this);
-    }
-    else if ("J".equals(reference.name))
-    {
+    case "J":
       return new BesselFunctionNodeOfTheFirstKind<>(this);
-    }
-    else if ("j".equals(reference.name))
-    {
+    case "j":
       return new SphericalBesselFunctionNodeOfTheFirstKind<>(this);
-    }
-    else if ("R".equals(reference.name))
-    {
+    case "R":
       return new LommelPolynomialNode<>(this);
+    case "ℭ":
+      return new BinomialCoeffecientNode<>(this);
+    default:
+      if (reference.isHypergeometricFunction() && !isHypergeometricFunctionSymbolBeingUsedByAContextualFunction())
+      {
+        return new HypergeometricFunctionNode<>(this);
+      }
+      else
+      {
+        return new FunctionCallNode<>(reference.name,
+                                      resolve(),
+                                      require(')'));
+      }
     }
-
-    return new FunctionCallNode<>(reference.name,
-                                  resolve(),
-                                  require(')'));
 
   }
 

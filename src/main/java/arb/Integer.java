@@ -259,7 +259,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result;
   }
 
-  public Integer binomial(Integer n, int bits, Integer result)
+  public Integer choose(Integer n, int bits, Integer result)
   {
     arblib.fmpz_bin_uiui(result.swigCPtr, swigCPtr, n.swigCPtr);
     return result;

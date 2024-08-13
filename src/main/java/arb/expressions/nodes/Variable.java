@@ -305,9 +305,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
     }
     else
     {
-
       expression.allocateIntermediateVariable(mv, reference.type);
-
     }
     generateIndeterminateRangeIdentityInvocation(mv);
   }

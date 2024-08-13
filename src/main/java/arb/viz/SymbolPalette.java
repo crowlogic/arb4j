@@ -57,7 +57,7 @@ public class SymbolPalette extends
       chars.add(s);
     }
 
-    chars.addAll(Parser.greekChars);
+    chars.addAll(Parser.greekAndBlackLetterChars);
 
     for (int c : Parser.lowercaseSuperscriptAlphabet)
     {

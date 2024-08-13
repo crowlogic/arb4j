@@ -57,33 +57,34 @@ public class Parser
     fractions.put('⅝', FractionConstants.fiveEights);
     fractions.put('⅞', FractionConstants.sevenEights);
   }
-  
-  public static HashSet<String> greekChars = new HashSet<String>(Arrays.asList("Γ",
-                                                                               "Δ",
-                                                                               "Θ",
-                                                                               "Λ",
-                                                                               "Ξ",
-                                                                               "Π",
-                                                                               "Σ",
-                                                                               "Φ",
-                                                                               "Ψ",
-                                                                               "Ω",
-                                                                               "γ",
-                                                                               "δ",
-                                                                               "θ",
-                                                                               "λ",
-                                                                               "ξ",
-                                                                               "π",
-                                                                               "ς",
-                                                                               "φ",
-                                                                               "ψ",
-                                                                               "ω",
-                                                                               "ϑ",
-                                                                               "ϒ",
-                                                                               "ϖ",
-                                                                               "ϕ",
-                                                                               "ϱ",
-                                                                               "ϰ"));
+
+  public static HashSet<String> greekAndBlackLetterChars = new HashSet<String>(Arrays.asList("ℭ",
+                                                                                             "Γ",
+                                                                                             "Δ",
+                                                                                             "Θ",
+                                                                                             "Λ",
+                                                                                             "Ξ",
+                                                                                             "Π",
+                                                                                             "Σ",
+                                                                                             "Φ",
+                                                                                             "Ψ",
+                                                                                             "Ω",
+                                                                                             "γ",
+                                                                                             "δ",
+                                                                                             "θ",
+                                                                                             "λ",
+                                                                                             "ξ",
+                                                                                             "π",
+                                                                                             "ς",
+                                                                                             "φ",
+                                                                                             "ψ",
+                                                                                             "ω",
+                                                                                             "ϑ",
+                                                                                             "ϒ",
+                                                                                             "ϖ",
+                                                                                             "ϕ",
+                                                                                             "ϱ",
+                                                                                             "ϰ"));
 
   public static char subscriptedDigitToRegular(char c)
   {
@@ -146,7 +147,7 @@ public class Parser
   static public boolean isLatinGreekOrSpecial(char ch, boolean digit)
   {
     // TODO: support the rest of the alphabet here
-    boolean is = isAlphabetical(ch) || isGreek(ch) || ch == ⅈ || ch == '√' || ch == '₀' || ch == 'ⁿ'
+    boolean is = isAlphabetical(ch) || isGreekOrBlackLetter(ch) || ch == ⅈ || ch == '√' || ch == '₀' || ch == 'ⁿ'
                   || (digit && (ch >= '0' && ch <= '9'));
     return is;
   }
@@ -171,9 +172,10 @@ public class Parser
    * @param ch
    * @return true if ch represents an upper or lowercase GreekRegistration
    */
-  public static boolean isGreek(int ch)
+  public static boolean isGreekOrBlackLetter(int ch)
   {
-    return (ch >= 0x0391 && ch <= 0x03A9) || (ch >= 0x03B1 && ch <= 0x03C9);
+    return (ch >= 0x0391 && ch <= 0x03A9) || (ch >= 0x03B1 && ch <= 0x03C9)
+                  || greekAndBlackLetterChars.contains(String.valueOf((char) ch));
   }
 
   /**
