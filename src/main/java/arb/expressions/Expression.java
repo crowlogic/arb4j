@@ -586,7 +586,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       node = evaluateNumber();
     }
-    else if (isIdentifier())
+    else if (isIdentifierCharacter())
     {
       node = resolveIdentifier();
     }
@@ -683,7 +683,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return new LiteralConstantNode<>(this,
                                        expression.substring(startPos, position));
     }
-    else if (isIdentifier())
+    else if (isIdentifierCharacter())
     {
       return resolveIdentifier();
     }
@@ -1373,7 +1373,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    *         {@link Parser#isAlphabeticalSuperscript(char)} or
    *         {@link Parser#isAlphabeticalOrNumericSubscript(char)} are true
    */
-  public boolean isIdentifier()
+  public boolean isIdentifierCharacter()
   {
     return isLatinGreekOrSpecial(character, false) || isAlphabeticalOrNumericSubscript(character)
                   || isAlphabeticalSuperscript(character);

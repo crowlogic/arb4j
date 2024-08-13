@@ -35,3 +35,10 @@ cleanGenerated:
 
 test:
 	gradle test
+
+documentation:
+	gradle javadoc
+
+docs: documentation
+
+doc: docs
