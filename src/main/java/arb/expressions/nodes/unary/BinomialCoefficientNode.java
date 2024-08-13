@@ -21,7 +21,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class BinomialCoeffecientNode<D, R, F extends Function<? extends D, ? extends R>>
+public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? extends R>>
                                     extends
                                     FunctionCallNode<D, R, F>
 {
@@ -61,7 +61,7 @@ public class BinomialCoeffecientNode<D, R, F extends Function<? extends D, ? ext
     return format("\\binom{%s}{%s}", combinations.typeset(), choices.typeset());
   }
 
-  public BinomialCoeffecientNode(Expression<D, R, F> expression)
+  public BinomialCoefficientNode(Expression<D, R, F> expression)
   {
     super("choose",
           null,
@@ -71,7 +71,7 @@ public class BinomialCoeffecientNode<D, R, F extends Function<? extends D, ? ext
     expression.require(')');
   }
 
-  protected BinomialCoeffecientNode(Expression<D, R, F> newExpression,
+  protected BinomialCoefficientNode(Expression<D, R, F> newExpression,
                                     Node<D, R, F> combinations,
                                     Node<D, R, F> choices)
   {
@@ -94,7 +94,7 @@ public class BinomialCoeffecientNode<D, R, F extends Function<? extends D, ? ext
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new BinomialCoeffecientNode<E, S, G>(newExpression,
+    return new BinomialCoefficientNode<E, S, G>(newExpression,
                                                 combinations.spliceInto(newExpression),
                                                 choices.spliceInto(newExpression));
   }

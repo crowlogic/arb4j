@@ -1775,7 +1775,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     case "R":
       return new LommelPolynomialNode<>(this);
     case "ℭ":
-      return new BinomialCoeffecientNode<>(this);
+      return new BinomialCoefficientNode<>(this);
     default:
       if (reference.isHypergeometricFunction())
       {
