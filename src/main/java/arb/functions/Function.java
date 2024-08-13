@@ -19,212 +19,229 @@ import arb.space.topological.VectorSpace;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface Function<D, C> extends
-                         AutoCloseable,
-                         Typesettable,
-                         VectorSpace<C>
+public interface Function<D, C> extends AutoCloseable, Typesettable, VectorSpace<C>
 {
-
-  @Override
-  default String
-          typeset()
-  {
-    assert false : getClass() + " needs to implement this";
-    return null;
-  }
-
-  @SuppressWarnings("unchecked")
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         F
-         express(Class<? extends D> domainClass,
-                 Class<? extends R> coDomainClass,
-                 String expression)
-  {
-    return (F) Function.instantiate(expression,
-                                    new Context(),
-                                    domainClass,
-                                    coDomainClass,
-                                    Function.class,
-                                    null);
-  }
-
-  @SuppressWarnings("unchecked")
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         F
-         express(Class<? extends D> domainClass,
-                 Class<? extends R> coDomainClass,
-                 String expression,
-                 Context context)
-  {
-    return (F) Function.instantiate(expression,
-                                    context,
-                                    domainClass,
-                                    coDomainClass,
-                                    Function.class,
-                                    null);
-  }
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
          Expression<D, R, F>
          compile(Class<? extends D> domainClass,
                  Class<? extends R> coDomainClass,
-                 String expression,
-                 Context context)
-  {
-    return Function.parse(Parser.expressionToUniqueClassname(expression),
-                          expression,
-                          context,
-                          domainClass,
-                          coDomainClass,
-                          Function.class,
-                          null,
-                          null);
-  }
-
-  @SuppressWarnings("unchecked")
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         F
-         express(Class<? extends D> domainClass,
-                 Class<? extends R> coDomainClass,
-                 String expression,
-                 boolean verbose)
-  {
-    return (F) Function.instantiate(expression,
-                                    new Context(),
-                                    domainClass,
-                                    coDomainClass,
-                                    Function.class,
-                                    null);
-  }
-
-  public static <D, R, F extends Function<D, R>>
-         F
-         express(String functionName,
-                 Class<? extends D> domainClass,
-                 Class<? extends R> coDomainClass,
-                 String expression,
-                 Class<? extends F> functionClass)
-  {
-    return Function.instantiate(expression,
-                                new Context(),
-                                domainClass,
-                                coDomainClass,
-                                functionClass,
-                                functionName);
-  }
-
-  public static <D, R, F extends Function<D, R>>
-         F
-         express(String functionName,
-                 Class<? extends D> domainClass,
-                 Class<? extends R> coDomainClass,
-                 String expression,
                  Class<? extends F> functionClass,
-                 Context context)
-  {
-    return Function.instantiate(expression,
-                                context,
-                                domainClass,
-                                coDomainClass,
-                                functionClass,
-                                functionName);
-  }
-
-  @SuppressWarnings("unchecked")
-  public static <D, R>
-         Function<? extends D, ? extends R>
-         express(Class<? extends D> domainClass,
-                 Class<? extends R> coDomainClass,
-                 String expression,
-                 Context context,
-                 boolean verbose)
-  {
-    return Function.instantiate(expression,
-                                context,
-                                domainClass,
-                                coDomainClass,
-                                Function.class,
-                                null);
-  }
-
-  public static <D, R, F extends Function<D, R>>
-         F
-         express(Class<? extends D> domainClass,
-                 Class<? extends R> coDomainClass,
-                 String expressionName,
-                 String expression,
-                 Context context,
-                 Class<? extends F> functionClass)
-  {
-    return (F) Function.instantiate(expression,
-                                    context,
-                                    domainClass,
-                                    coDomainClass,
-                                    functionClass,
-                                    expressionName);
-  }
-
-  public static <D, R, F extends Function<D, R>>
-         F
-         express(Class<? extends D> domainClass,
-                 Class<? extends R> coDomainClass,
-                 String expression,
-                 Class<? extends F> functionClass)
-  {
-    return (F) Function.instantiate(expression,
-                                    new Context(),
-                                    domainClass,
-                                    coDomainClass,
-                                    functionClass,
-                                    null);
-  }
-
-  public static <D, R, F extends Function<D, R>>
-         F
-         express(Class<? extends D> domainClass,
-                 Class<? extends R> coDomainClass,
-                 String expression,
-                 Context context,
-                 Class<? extends F> functionClass)
-  {
-    return (F) Function.instantiate(expression,
-                                    context,
-                                    domainClass,
-                                    coDomainClass,
-                                    functionClass,
-                                    null);
-  }
-
-  @SuppressWarnings("unchecked")
-  public static <D, R, F extends Function<D, R>>
-         F
-         express(Class<? extends D> domainClass,
-                 Class<? extends R> coDomainClass,
-                 String functionName,
                  String expression,
                  Context context)
   {
-    return (F) Function.instantiate(expression,
-                                    context,
-                                    domainClass,
-                                    coDomainClass,
-                                    Function.class,
-                                    functionName);
+    Expression<D, R, F> parsedExpression = Function.parse(Parser.expressionToUniqueClassname(expression),
+                                                          expression,
+                                                          context,
+                                                          domainClass,
+                                                          coDomainClass,
+                                                          functionClass,
+                                                          null,
+                                                          null);
+    return parsedExpression.compile();
   }
 
-  public default void
-         close()
+  @SuppressWarnings("unchecked")
+  public static <D, R, F extends Function<? extends D, ? extends R>> F express(Class<? extends D> domainClass,
+                                                                               Class<? extends R> coDomainClass,
+                                                                               String expression)
+  {
+    return (F) Function.instantiate(expression, new Context(), domainClass, coDomainClass, Function.class, null);
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <D, R, F extends Function<? extends D, ? extends R>> F express(Class<? extends D> domainClass,
+                                                                               Class<? extends R> coDomainClass,
+                                                                               String expression,
+                                                                               boolean verbose)
+  {
+    return (F) Function.instantiate(expression, new Context(), domainClass, coDomainClass, Function.class, null);
+  }
+
+  public static <D, R, F extends Function<D, R>> F express(Class<? extends D> domainClass,
+                                                           Class<? extends R> coDomainClass,
+                                                           String expression,
+                                                           Class<? extends F> functionClass)
+  {
+    return (F) Function.instantiate(expression, new Context(), domainClass, coDomainClass, functionClass, null);
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <D, R, F extends Function<? extends D, ? extends R>> F express(Class<? extends D> domainClass,
+                                                                               Class<? extends R> coDomainClass,
+                                                                               String expression,
+                                                                               Context context)
+  {
+    return (F) Function.instantiate(expression, context, domainClass, coDomainClass, Function.class, null);
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <D, R> Function<? extends D, ? extends R> express(Class<? extends D> domainClass,
+                                                                  Class<? extends R> coDomainClass,
+                                                                  String expression,
+                                                                  Context context,
+                                                                  boolean verbose)
+  {
+    return Function.instantiate(expression, context, domainClass, coDomainClass, Function.class, null);
+  }
+
+  public static <D, R, F extends Function<D, R>> F express(Class<? extends D> domainClass,
+                                                           Class<? extends R> coDomainClass,
+                                                           String expression,
+                                                           Context context,
+                                                           Class<? extends F> functionClass)
+  {
+    return (F) Function.instantiate(expression, context, domainClass, coDomainClass, functionClass, null);
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <D, R, F extends Function<D, R>> F express(Class<? extends D> domainClass,
+                                                           Class<? extends R> coDomainClass,
+                                                           String functionName,
+                                                           String expression,
+                                                           Context context)
+  {
+    return (F) Function.instantiate(expression, context, domainClass, coDomainClass, Function.class, functionName);
+  }
+
+  public static <D, R, F extends Function<D, R>> F express(Class<? extends D> domainClass,
+                                                           Class<? extends R> coDomainClass,
+                                                           String expressionName,
+                                                           String expression,
+                                                           Context context,
+                                                           Class<? extends F> functionClass)
+  {
+    return (F) Function.instantiate(expression, context, domainClass, coDomainClass, functionClass, expressionName);
+  }
+
+  public static <D, R, F extends Function<D, R>> F express(String functionName,
+                                                           Class<? extends D> domainClass,
+                                                           Class<? extends R> coDomainClass,
+                                                           String expression,
+                                                           Class<? extends F> functionClass)
+  {
+    return Function.instantiate(expression, new Context(), domainClass, coDomainClass, functionClass, functionName);
+  }
+
+  public static <D, R, F extends Function<D, R>> F express(String functionName,
+                                                           Class<? extends D> domainClass,
+                                                           Class<? extends R> coDomainClass,
+                                                           String expression,
+                                                           Class<? extends F> functionClass,
+                                                           Context context)
+  {
+    return Function.instantiate(expression, context, domainClass, coDomainClass, functionClass, functionName);
+  }
+
+  static <D, R, F extends Function<? extends D, ? extends R>> F instantiate(String expression,
+                                                                            Context context,
+                                                                            Class<? extends D> domainClass,
+                                                                            Class<? extends R> coDomainClass,
+                                                                            Class<? extends F> functionClass,
+                                                                            String functionName)
+  {
+    Expression<D, R, F> compiledExpression = Compiler.compile(expression,
+                                                              context,
+                                                              domainClass,
+                                                              coDomainClass,
+                                                              functionClass,
+                                                              functionName);
+
+    F                   func               = compiledExpression.instantiate();
+
+    if (compiledExpression.mapping != null)
+    {
+      compiledExpression.mapping.instance = func;
+    }
+
+    return func;
+  }
+
+  static <D, R, F extends Function<D, R>> F instantiate(String className,
+                                                        String expression,
+                                                        Context context,
+                                                        Class<D> domainClass,
+                                                        Class<R> coDomainClass,
+                                                        Class<F> functionClass,
+                                                        boolean verbose)
+  {
+    return Compiler.compile(className, expression, context, domainClass, coDomainClass, functionClass, verbose)
+                   .instantiate();
+  }
+
+  public static <R, D, F extends Function<? extends D, ? extends R>, PD, PR, PF extends Function<? extends PD, ? extends PR>>
+         Expression<D, R, F>
+         parse(Class<? extends D> domainClass,
+               Class<? extends R> coDomainClass,
+               Class<? extends F> functionClass,
+               String expression)
+  {
+    return parse(null, expression, null, domainClass, coDomainClass, functionClass, null, null);
+  }
+
+  public static <R, D, F extends Function<? extends D, ? extends R>, PD, PR, PF extends Function<? extends PD, ? extends PR>>
+         Expression<D, R, F>
+         parse(String className,
+               String expressionString,
+               Context context,
+               Class<? extends D> domainClass,
+               Class<? extends R> coDomainClass,
+               Class<? extends F> functionClass,
+               String functionName,
+               Expression<PD, PR, PF> containingExpression)
+  {
+    var expression = new Expression<D, R, F>(className,
+                                             domainClass,
+                                             coDomainClass,
+                                             functionClass,
+                                             expressionString,
+                                             context,
+                                             functionName,
+                                             containingExpression);
+
+    return expression.parseRoot();
+  }
+
+  public default void close()
   {
 
   }
 
+  public default Class<C> coDomainType()
+  {
+    assert false : "this should be implemented by " + getClass();
+    return null;
+  }
 
-  public default Class<D>
-         domainType()
+  public default Class<D> domainType()
   {
     assert false : "this should be implemented by extending class";
     return null; // for instance, the RealFunction would return Real.class for both the domain
                  // and coDomain
+  }
+
+  public default C evaluate(D t, int bits)
+  {
+    return evaluate(t, 1, bits);
+  }
+
+  /**
+   * shortcut that maps to this{@link #evaluate(Object, int, int, Object)} with
+   * order=1
+   * 
+   * @param t
+   * @param bits
+   * @param res
+   * @return result
+   */
+  public default C evaluate(D t, int bits, C res)
+  {
+    return evaluate(t, 1, bits, res);
+  }
+
+  public default C evaluate(D t, int order, int bits)
+  {
+    return evaluate(t, order, bits, newCoDomainInstance());
   }
 
   /**
@@ -276,39 +293,25 @@ public interface Function<D, C> extends
    * @return res after it has been assigned the values of the function evaluated
    *         at t
    */
-  public C
-         evaluate(D t,
-                  int order,
-                  int bits,
-                  C res);
+  public C evaluate(D t, int order, int bits, C res);
 
-  public default C
-         evaluate(D t,
-                  int bits)
+  public default int getInverseBranchCount()
   {
-    return evaluate(t,
-                    1,
-                    bits);
+    assert false : "TODO: implement in " + getClass();
+    return 0;
   }
 
-  public default C
-         evaluate(D t,
-                  int order,
-                  int bits)
+  public default Function<C, D> inverse(int branch)
   {
-    return evaluate(t,
-                    order,
-                    bits,
-                    newCoDomainInstance());
+    assert false : "TODO: implement in " + getClass();
+    return null;
   }
 
-  public default C
-         newCoDomainInstance()
+  public default C newCoDomainInstance()
   {
     try
     {
-      return coDomainType().getConstructor()
-                           .newInstance();
+      return coDomainType().getConstructor().newInstance();
     }
     catch (Throwable e)
     {
@@ -317,114 +320,11 @@ public interface Function<D, C> extends
     }
   }
 
-  /**
-   * shortcut that maps to this{@link #evaluate(Object, int, int, Object)} with
-   * order=1
-   * 
-   * @param t
-   * @param bits
-   * @param res
-   * @return result
-   */
-  public default C
-         evaluate(D t,
-                  int bits,
-                  C res)
+  @Override
+  default String typeset()
   {
-    return evaluate(t,
-                    1,
-                    bits,
-                    res);
-  }
-
-  public default int
-         getInverseBranchCount()
-  {
-    assert false : "TODO: implement in " + getClass();
-    return 0;
-  }
-
-  public default Function<C, D>
-         inverse(int branch)
-  {
-    assert false : "TODO: implement in " + getClass();
+    assert false : getClass() + " needs to implement this";
     return null;
-  }
-
-  public default Class<C>
-         coDomainType()
-  {
-    assert false : "this should be implemented by " + getClass();
-    return null;
-  }
-
-  static <R, D, F extends Function<? extends D, ? extends R>, PD, PR, PF extends Function<? extends PD, ? extends PR>>
-         Expression<D, R, F>
-         parse(String className,
-               String expressionString,
-               Context context,
-               Class<? extends D> domainClass,
-               Class<? extends R> coDomainClass,
-               Class<? extends F> functionClass,
-               String functionName,
-               Expression<PD, PR, PF> containingExpression)
-  {
-    var expression = new Expression<D, R, F>(className,
-                                             domainClass,
-                                             coDomainClass,
-                                             functionClass,
-                                             expressionString,
-                                             context,
-                                             functionName,
-                                             containingExpression);
-
-    return expression.parseRoot();
-  }
-
-  static <D, R, F extends Function<D, R>>
-         F
-         instantiate(String className,
-                     String expression,
-                     Context context,
-                     Class<D> domainClass,
-                     Class<R> coDomainClass,
-                     Class<F> functionClass,
-                     boolean verbose)
-  {
-    return Compiler.compile(className,
-                            expression,
-                            context,
-                            domainClass,
-                            coDomainClass,
-                            functionClass,
-                            verbose)
-                   .instantiate();
-  }
-
-  static <D, R, F extends Function<? extends D, ? extends R>>
-         F
-         instantiate(String expression,
-                     Context context,
-                     Class<? extends D> domainClass,
-                     Class<? extends R> coDomainClass,
-                     Class<? extends F> functionClass,
-                     String functionName)
-  {
-    Expression<D, R, F> compiledExpression = Compiler.compile(expression,
-                                                              context,
-                                                              domainClass,
-                                                              coDomainClass,
-                                                              functionClass,
-                                                              functionName);
-
-    F                   func               = compiledExpression.instantiate();
-
-    if (compiledExpression.mapping != null)
-    {
-      compiledExpression.mapping.instance = func;
-    }
-
-    return func;
   }
 
 }

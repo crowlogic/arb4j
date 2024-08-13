@@ -646,7 +646,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
         if (isNullaryPolynomialFunction())
         {
-          indeterminateVariable               = variable;
+          indeterminateVariable                 = variable;
           indeterminateVariable.isIndeterminate = true;
         }
         else
@@ -2004,6 +2004,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       throw new RuntimeException(e.getMessage(),
                                  e);
     }
+    return this;
+  }
+
+  public Expression<D, C, F> compile()
+  {
+    defineClass();
     return this;
   }
 

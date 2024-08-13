@@ -3,6 +3,7 @@ package arb.functions;
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Expression;
 
 /**
  *
@@ -20,6 +21,11 @@ public interface IntegerFunction extends Function<Integer, Integer>
   public static IntegerFunction express(String string)
   {
     return Function.express(Integer.class, Integer.class, string, IntegerFunction.class);
+  }
+
+  public static Expression<Integer, Integer, IntegerFunction> parse(String string)
+  {
+    return Function.parse(Integer.class, Integer.class, IntegerFunction.class, string);
   }
 
 }
