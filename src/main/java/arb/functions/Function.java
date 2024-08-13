@@ -49,19 +49,10 @@ public interface Function<D, C> extends AutoCloseable, Typesettable, VectorSpace
     return (F) Function.instantiate(expression, new Context(), domainClass, coDomainClass, Function.class, null);
   }
 
-  @SuppressWarnings("unchecked")
   public static <D, R, F extends Function<? extends D, ? extends R>> F express(Class<? extends D> domainClass,
                                                                                Class<? extends R> coDomainClass,
-                                                                               String expression,
-                                                                               boolean verbose)
-  {
-    return (F) Function.instantiate(expression, new Context(), domainClass, coDomainClass, Function.class, null);
-  }
-
-  public static <D, R, F extends Function<D, R>> F express(Class<? extends D> domainClass,
-                                                           Class<? extends R> coDomainClass,
-                                                           String expression,
-                                                           Class<? extends F> functionClass)
+                                                                               Class<? extends F> functionClass,
+                                                                               String expression)
   {
     return (F) Function.instantiate(expression, new Context(), domainClass, coDomainClass, functionClass, null);
   }
@@ -76,40 +67,21 @@ public interface Function<D, C> extends AutoCloseable, Typesettable, VectorSpace
   }
 
   @SuppressWarnings("unchecked")
-  public static <D, R> Function<? extends D, ? extends R> express(Class<? extends D> domainClass,
-                                                                  Class<? extends R> coDomainClass,
-                                                                  String expression,
-                                                                  Context context,
-                                                                  boolean verbose)
-  {
-    return Function.instantiate(expression, context, domainClass, coDomainClass, Function.class, null);
-  }
-
-  public static <D, R, F extends Function<D, R>> F express(Class<? extends D> domainClass,
-                                                           Class<? extends R> coDomainClass,
-                                                           String expression,
-                                                           Context context,
-                                                           Class<? extends F> functionClass)
-  {
-    return (F) Function.instantiate(expression, context, domainClass, coDomainClass, functionClass, null);
-  }
-
-  @SuppressWarnings("unchecked")
-  public static <D, R, F extends Function<D, R>> F express(Class<? extends D> domainClass,
-                                                           Class<? extends R> coDomainClass,
-                                                           String functionName,
-                                                           String expression,
-                                                           Context context)
+  public static <D, R, F extends Function<? extends D, ? extends R>> F express(Class<? extends D> domainClass,
+                                                                               Class<? extends R> coDomainClass,
+                                                                               String functionName,
+                                                                               String expression,
+                                                                               Context context)
   {
     return (F) Function.instantiate(expression, context, domainClass, coDomainClass, Function.class, functionName);
   }
 
-  public static <D, R, F extends Function<D, R>> F express(Class<? extends D> domainClass,
-                                                           Class<? extends R> coDomainClass,
-                                                           String expressionName,
-                                                           String expression,
-                                                           Context context,
-                                                           Class<? extends F> functionClass)
+  public static <D, R, F extends Function<? extends D, ? extends R>> F express(Class<? extends D> domainClass,
+                                                                               Class<? extends R> coDomainClass,
+                                                                               Class<? extends F> functionClass,
+                                                                               String expressionName,
+                                                                               String expression,
+                                                                               Context context)
   {
     return (F) Function.instantiate(expression, context, domainClass, coDomainClass, functionClass, expressionName);
   }
@@ -117,18 +89,18 @@ public interface Function<D, C> extends AutoCloseable, Typesettable, VectorSpace
   public static <D, R, F extends Function<D, R>> F express(String functionName,
                                                            Class<? extends D> domainClass,
                                                            Class<? extends R> coDomainClass,
-                                                           String expression,
-                                                           Class<? extends F> functionClass)
+                                                           Class<? extends F> functionClass,
+                                                           String expression)
   {
     return Function.instantiate(expression, new Context(), domainClass, coDomainClass, functionClass, functionName);
   }
 
-  public static <D, R, F extends Function<D, R>> F express(String functionName,
-                                                           Class<? extends D> domainClass,
-                                                           Class<? extends R> coDomainClass,
-                                                           String expression,
-                                                           Class<? extends F> functionClass,
-                                                           Context context)
+  public static <D, R, F extends Function<? extends D, ? extends R>> F express(String functionName,
+                                                                               Class<? extends D> domainClass,
+                                                                               Class<? extends R> coDomainClass,
+                                                                               Class<? extends F> functionClass,
+                                                                               String expression,
+                                                                               Context context)
   {
     return Function.instantiate(expression, context, domainClass, coDomainClass, functionClass, functionName);
   }
@@ -157,13 +129,13 @@ public interface Function<D, C> extends AutoCloseable, Typesettable, VectorSpace
     return func;
   }
 
-  static <D, R, F extends Function<D, R>> F instantiate(String className,
-                                                        String expression,
-                                                        Context context,
-                                                        Class<D> domainClass,
-                                                        Class<R> coDomainClass,
-                                                        Class<F> functionClass,
-                                                        boolean verbose)
+  static <D, R, F extends Function<? extends D, ? extends R>> F instantiate(String className,
+                                                                            String expression,
+                                                                            Context context,
+                                                                            Class<D> domainClass,
+                                                                            Class<R> coDomainClass,
+                                                                            Class<F> functionClass,
+                                                                            boolean verbose)
   {
     return Compiler.compile(className, expression, context, domainClass, coDomainClass, functionClass, verbose)
                    .instantiate();

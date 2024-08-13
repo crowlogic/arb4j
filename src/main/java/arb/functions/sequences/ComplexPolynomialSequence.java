@@ -51,10 +51,10 @@ public interface ComplexPolynomialSequence extends PolynomialSequence<Complex, C
   {
     return Function.express(Integer.class,
                             ComplexPolynomial.class,
+                            ComplexPolynomialSequence.class,
                             name,
                             expression,
-                            context,
-                            ComplexPolynomialSequence.class);
+                            context);
   }
 
 

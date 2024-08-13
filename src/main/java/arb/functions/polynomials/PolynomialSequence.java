@@ -34,7 +34,7 @@ public interface PolynomialSequence<X, E> extends
          PolynomialSequence<X, E>
          express(String name, String expression, Context context, Class<E> coDomainType)
   {
-    return Function.express(Integer.class, coDomainType, name, expression, context, PolynomialSequence.class);
+    return Function.express(Integer.class, coDomainType, PolynomialSequence.class, name, expression, context);
   }
 
   @Override

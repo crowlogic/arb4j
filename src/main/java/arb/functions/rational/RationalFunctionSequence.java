@@ -54,10 +54,10 @@ public interface RationalFunctionSequence extends Sequence<RationalFunction>
   {
     return Function.express(Integer.class,
                             RationalFunction.class,
+                            RationalFunctionSequence.class,
                             name,
                             expression,
-                            context,
-                            RationalFunctionSequence.class);
+                            context);
   }
 
   public static Expression<Integer, RationalFunction, RationalFunctionSequence> parse(String className,

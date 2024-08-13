@@ -78,7 +78,7 @@ public interface Sequence<C> extends Function<Integer, C>, IntFunction<C>
                                                   String expression,
                                                   Class<? extends Sequence<Q>> functionClass)
   {
-    return Function.express(name, Integer.class, coDomainType, expression, functionClass);
+    return Function.express(name, Integer.class, coDomainType, functionClass, expression);
   }
 
   public static <Q> Sequence<? extends Q> express(String name,
@@ -87,14 +87,14 @@ public interface Sequence<C> extends Function<Integer, C>, IntFunction<C>
                                                   Class<? extends Sequence<Q>> functionClass,
                                                   Context context)
   {
-    return Function.express(name, Integer.class, coDomainType, expression, functionClass, context);
+    return Function.express(name, Integer.class, coDomainType, functionClass, expression, context);
   }
 
   public static <Q> Sequence<? extends Q> express(Class<? extends Q> coDomainType,
                                                   String expression,
                                                   Class<? extends Sequence<Q>> functionClass)
   {
-    return Function.express(Integer.class, coDomainType, expression, functionClass);
+    return Function.express(Integer.class, coDomainType, functionClass, expression);
   }
 
   public static <Q> Sequence<? extends Q> express(Class<? extends Q> coDomainType,

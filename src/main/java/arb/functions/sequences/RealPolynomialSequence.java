@@ -50,10 +50,10 @@ public interface RealPolynomialSequence extends
   {
     return Function.express(Integer.class,
                             RealPolynomial.class,
+                            RealPolynomialSequence.class,
                             name,
                             expression,
-                            context,
-                            RealPolynomialSequence.class);
+                            context);
   }
 
   public static Expression<Integer, RealPolynomial, RealPolynomialSequence>

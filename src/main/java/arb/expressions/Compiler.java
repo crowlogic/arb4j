@@ -174,13 +174,15 @@ public class Compiler
     return expression;
   }
 
-  public static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String className,
-                                                                             String expression,
-                                                                             Context context,
-                                                                             Class<D> domainClass,
-                                                                             Class<R> coDomainClass,
-                                                                             Class<F> functionClass,
-                                                                             boolean verbose)
+  public static <D, R, F extends Function<? extends D, ? extends R>>
+         Expression<D, R, F>
+         compile(String className,
+                 String expression,
+                 Context context,
+                 Class<D> domainClass,
+                 Class<R> coDomainClass,
+                 Class<F> functionClass,
+                 boolean verbose)
   {
     return express(className, expression, context, domainClass, coDomainClass, functionClass, verbose);
   }
@@ -224,13 +226,15 @@ public class Compiler
     return express(className, expression, context, domainClass, coDomainClass, functionClass, functionName);
   }
 
-  public static <D, R, F extends Function<D, R>> Expression<D, R, F> express(String className,
-                                                                             String expressionString,
-                                                                             Context context,
-                                                                             Class<? extends D> domainClass,
-                                                                             Class<? extends R> coDomainClass,
-                                                                             Class<? extends F> functionClass,
-                                                                             boolean verbose)
+  public static <D, R, F extends Function<? extends D, ? extends R>>
+         Expression<D, R, F>
+         express(String className,
+                 String expressionString,
+                 Context context,
+                 Class<? extends D> domainClass,
+                 Class<? extends R> coDomainClass,
+                 Class<? extends F> functionClass,
+                 boolean verbose)
   {
     return express(className, expressionString, context, domainClass, coDomainClass, functionClass, className);
   }

@@ -20,7 +20,7 @@ public interface IntegerFunction extends Function<Integer, Integer>
 
   public static IntegerFunction express(String string)
   {
-    return Function.express(Integer.class, Integer.class, string, IntegerFunction.class);
+    return Function.express(Integer.class, Integer.class, IntegerFunction.class, string);
   }
 
   public static Expression<Integer, Integer, IntegerFunction> parse(String string)
