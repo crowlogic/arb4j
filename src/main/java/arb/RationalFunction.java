@@ -10,8 +10,8 @@ package arb;
 
 import arb.exceptions.ArbException;
 import arb.expressions.Compiler;
-import arb.expressions.Expression;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
