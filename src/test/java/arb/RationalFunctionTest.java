@@ -94,7 +94,7 @@ public class RationalFunctionTest
 
   public void testOneHalfMinusXOver2()
   {
-    var              rationalFunctional = RationalNullaryFunction.express("1/2-x/2");
+    var              rationalFunctional = RationalNullaryFunction.express("½-x/2");
     RationalFunction expressed          = rationalFunctional.evaluate(128);
     assertEquals("(-x+1)/2", expressed.toString());
   }
@@ -119,7 +119,7 @@ public class RationalFunctionTest
    */
   public void testOneHalfMinusXOver2Squared()
   {
-    var expressed = RationalFunction.express("(1/2-x/2)^2");
+    var expressed = RationalFunction.express("(½-x/2)^2");
     assertEquals("(x^2-2*x+1)/4", expressed.toString());
   }
 
@@ -176,10 +176,21 @@ public class RationalFunctionTest
     var expressed = RationalFunction.express("pFq([-2,3+1/2,1],[2,4],1/2-x/2)");
     RationalFunction.express("a:1", context);
     RationalFunction.express("b:-⅞*(½ - x/2)", context);
-    RationalFunction.express("c:21/80*(1/2 - x/2)^2", context);
+    RationalFunction.express("c:21/80*(½ - x/2)^2", context);
     RationalFunction expectedSum = RationalFunction.express("a()+b()+c()", context);
     assertEquals("(21*x^2+98*x+201)/320", expressed.toString());
     assertEquals(expectedSum, expressed);
+  }
+  public static void testHypergeometricFunctionExpressionRationalWtf()
+  {
+    var context   = new Context();
+    var expressed = RationalFunction.express("pFq([-2,3+1/2,1],[2,4],1/2-x/2)");
+    RationalFunction.express("a:1", context);
+    RationalFunction.express("b:-⅞*(½ - x/2)", context);
+    RationalFunction.express("c:21/80*(½ - x/2)^2", context);
+    RationalFunction expectedSum = RationalFunction.express("a+b+c", context);
+    assertEquals("(21*x^2+98*x+201)/320", expressed.toString());
+    assertEquals(expressed, expectedSum);
   }
 
 }
