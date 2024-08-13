@@ -3,7 +3,7 @@ package arb.expressions;
 import arb.RationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.real.RationalNullaryFunction;
+import arb.functions.rational.RationalNullaryFunction;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the

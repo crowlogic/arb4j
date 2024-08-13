@@ -12,7 +12,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ArbException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.functions.real.RealPolynomialNullaryFunction;
+import arb.functions.complex.trigonometric.RealPolynomialNullaryFunction;
 
 /**
  * Represents a hypergeometric {@link Real}-valued {@link Polynomial}, that is,

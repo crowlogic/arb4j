@@ -1,4 +1,4 @@
-package arb.functions.real;
+package arb.functions.rational;
 
 import arb.RationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;

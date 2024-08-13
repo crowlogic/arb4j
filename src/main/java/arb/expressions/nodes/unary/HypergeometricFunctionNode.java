@@ -20,11 +20,11 @@ import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VectorNode;
 import arb.functions.Function;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
+import arb.functions.complex.trigonometric.RealPolynomialNullaryFunction;
 import arb.functions.polynomials.ComplexPolynomialHypergeometricFunction;
 import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
-import arb.functions.real.RationalHypergeometricFunction;
-import arb.functions.real.RationalNullaryFunction;
-import arb.functions.real.RealPolynomialNullaryFunction;
+import arb.functions.rational.RationalHypergeometricFunction;
+import arb.functions.rational.RationalNullaryFunction;
 
 /**
  * The numerator α and the denominator β parameters can be specified via the

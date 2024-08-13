@@ -13,7 +13,7 @@ import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.Context;
 import arb.functions.Function;
-import arb.functions.real.RationalNullaryFunction;
+import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
 
 public class RationalFunction implements Named,AutoCloseable,Field<RationalFunction>,Function<Fraction,Fraction>,Verifiable {

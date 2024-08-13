@@ -19,7 +19,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.functions.Function;
-import arb.functions.real.RationalHypergeometricFunction;
+import arb.functions.rational.RationalHypergeometricFunction;
 import arb.functions.sequences.LommelPolynomialSequence;
 import arb.utensils.Utensils;
 

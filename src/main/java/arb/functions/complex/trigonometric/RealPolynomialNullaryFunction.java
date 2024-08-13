@@ -1,4 +1,4 @@
-package arb.functions.real;
+package arb.functions.complex.trigonometric;
 
 import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;

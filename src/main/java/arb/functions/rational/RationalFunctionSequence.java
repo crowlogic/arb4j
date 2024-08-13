@@ -1,4 +1,4 @@
-package arb.functions.sequences;
+package arb.functions.rational;
 
 import arb.Integer;
 import arb.RationalFunction;
@@ -9,6 +9,7 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
 import arb.functions.Function;
+import arb.functions.sequences.Sequence;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the

@@ -1,4 +1,4 @@
-package arb.functions.real;
+package arb.functions.rational;
 
 import java.lang.foreign.Arena;
 

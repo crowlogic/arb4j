@@ -18,8 +18,8 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
+import arb.functions.rational.RationalFunctionSequence;
 import arb.functions.sequences.LommelPolynomialSequence;
-import arb.functions.sequences.RationalFunctionSequence;
 
 /**
  * Syntax: "R(v,n;z)" which corresponds to a {@link LommelPolynomialSequence}
