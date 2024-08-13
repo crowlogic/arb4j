@@ -28,6 +28,16 @@ import arb.documentation.TheArb4jLibrary;
 public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer>, Named
 {
 
+  public Fraction cos(int prec, Fraction result )
+  {
+    return result.set(this).cos(prec,result);
+  }
+  
+  public Real cos(int prec, Real result )
+  {
+    return result.set(this).cos(prec,result);
+  }
+  
   public Fraction sin(int prec, Fraction result )
   {
     return result.set(this).sin(prec,result);

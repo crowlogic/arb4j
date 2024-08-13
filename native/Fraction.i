@@ -40,6 +40,15 @@ import java.lang.foreign.MemorySegment;
 
 %typemap(javacode) fmpq %{
 
+  public Fraction cos(int prec, Fraction result)
+  {
+    try ( Real tmp = new Real())
+    {
+      tmp.set(this).cos(prec, tmp);
+      return result.set(tmp);
+    }
+  }
+  
   public Fraction sin(int prec, Fraction result)
   {
     try ( Real tmp = new Real())
