@@ -1,4 +1,4 @@
-package arb.expressions.nodes.binary;
+package arb.expressions.nodes.unary;
 
 import static java.lang.String.format;
 
@@ -9,7 +9,6 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
-import arb.expressions.nodes.unary.FunctionCallNode;
 import arb.functions.Function;
 
 /**
