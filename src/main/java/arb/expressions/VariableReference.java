@@ -94,7 +94,7 @@ public class VariableReference<D, R, F extends Function<? extends D, ? extends R
 
   public boolean isHypergeometricFunction()
   {
-    return "pFq".equals(name) || "F".equals(name);
+    return "pFq".equals(name);
   }
 
   public boolean isBinomialCoeffecient()

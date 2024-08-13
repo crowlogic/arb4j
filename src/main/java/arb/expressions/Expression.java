@@ -1362,11 +1362,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return instance;
   }
 
-  public boolean isHypergeometricFunctionSymbolBeingUsedByAContextualFunction()
-  {
-    return context != null && context.functions.map.containsKey("F");
-  }
-
   /**
    * @return true if this{@link #character} any of
    *         {@link Parser#isLatinGreekOrSpecial(char, boolean)},
@@ -1783,7 +1778,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     case "ℭ":
       return new BinomialCoeffecientNode<>(this);
     default:
-      if (reference.isHypergeometricFunction() && !isHypergeometricFunctionSymbolBeingUsedByAContextualFunction())
+      if (reference.isHypergeometricFunction())
       {
         return new HypergeometricFunctionNode<>(this);
       }
