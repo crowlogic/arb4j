@@ -68,6 +68,15 @@ public class Fraction implements AutoCloseable,Field<Fraction>,Named,Verifiable 
   }
 
 
+  public Fraction sin(int prec, Fraction result)
+  {
+    try ( Real tmp = new Real())
+    {
+      tmp.set(this).sin(prec, tmp);
+      return result.set(tmp);
+    }
+  }
+  
   public Fraction(int numerator, int denominator)
   {
     this();

@@ -28,6 +28,17 @@ import arb.documentation.TheArb4jLibrary;
 public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer>, Named
 {
 
+  public Fraction sin(int prec, Fraction result )
+  {
+    return result.set(this).sin(prec,result);
+  }
+  
+  public Real sin(int prec, Real result )
+  {
+    return result.set(this).sin(prec,result);
+  }
+
+  
   public static Integer named(String name)
   {
     Integer n = new Integer();
