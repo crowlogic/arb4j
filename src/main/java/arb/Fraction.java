@@ -99,8 +99,16 @@ public class Fraction implements AutoCloseable,Field<Fraction>,Named,Verifiable 
   
   public void set(int numerator, int denominator)
   {
-    getNumerator().set(numerator);
-    getDenominator().set(denominator);
+    setNumeratorAddress(numerator);
+    setDenominatorAddress(denominator);
+    if (this.numerator != null)
+    {
+      this.numerator.swigCPtr = numerator;
+    }
+    if (this.denominator != null)
+    {
+      this.denominator.swigCPtr = denominator;
+    }
   }
   
   @Override
