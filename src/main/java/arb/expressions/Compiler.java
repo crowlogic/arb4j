@@ -380,7 +380,7 @@ public class Compiler
     return invokeMethod(methodVisitor, Type.getInternalName(thisClass), functionName, methodSignature, isInterface);
   }
 
-  public static void invokeMethod(MethodVisitor mv,
+  public static MethodVisitor invokeMethod(MethodVisitor mv,
                                   int instruction,
                                   Class<?> whichClass,
                                   String methodName,
@@ -392,6 +392,7 @@ public class Compiler
                        methodName,
                        Compiler.getMethodDescriptor(returnType, argTypes),
                        whichClass.isInterface());
+    return mv;
   }
 
   public static MethodVisitor invokeInterfaceMethod(MethodVisitor methodVisitor,
@@ -460,14 +461,15 @@ public class Compiler
     return mv;
   }
 
-  public static void invokeStaticMethod(MethodVisitor mv,
+  public static MethodVisitor
+         invokeStaticMethod(MethodVisitor mv,
                                         Class<?> whichClass,
                                         String methodName,
                                         Class<?> returnType,
                                         Class<?>... argTypes)
   {
 
-    invokeMethod(mv, INVOKESTATIC, whichClass, methodName, returnType, argTypes);
+    return invokeMethod(mv, INVOKESTATIC, whichClass, methodName, returnType, argTypes);
   }
 
   public static MethodVisitor invokeSuperclassDefaultConstructor(MethodVisitor methodVisitor)

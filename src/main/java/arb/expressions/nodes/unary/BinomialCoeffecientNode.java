@@ -1,11 +1,16 @@
 package arb.expressions.nodes.unary;
 
+import static arb.expressions.Compiler.invokeStaticMethod;
+import static arb.expressions.Compiler.loadResultParameter;
 import static java.lang.String.format;
 
 import org.objectweb.asm.MethodVisitor;
 
+import arb.Real;
+import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
@@ -23,8 +28,21 @@ public class BinomialCoeffecientNode<D, R, F extends Function<? extends D, ? ext
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    assert false : "TODO: complete the binomial coefficient implementation";
-    return null;
+    loadResultParameter(mv);
+    loadPointer(mv);
+
+    combinations.generate(mv, Integer.class);
+    loadPointer(mv);
+
+    choices.generate(mv, Integer.class);
+    loadPointer(mv);
+
+    return invokeStaticMethod(mv, arblib.class, "fmpz_bin_uiui", Void.class, long.class, long.class, long.class);
+  }
+
+  public void loadPointer(MethodVisitor mv)
+  {
+    Compiler.getField(mv, Integer.class, "swigCPtr", long.class);
   }
 
   @Override

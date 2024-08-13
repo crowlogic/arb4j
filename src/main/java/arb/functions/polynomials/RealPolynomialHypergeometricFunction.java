@@ -26,13 +26,13 @@ import arb.functions.complex.trigonometric.RealPolynomialNullaryFunction;
  * the existence of a negative integer in the numerator leads to its completion
  * after a finite number of terms.
  * <p>
- * A hypergeometric series is finite and simplifies into a polynomial when at
- * least one of its upper parameters (α) is a negative integer. This condition
- * ensures that the series has a finite number of non-zero terms, making it
- * possible to represent the series as a polynomial of finite degree.
+ * A hypergeometric series is finite and simplifies into a {@link Polynomial}
+ * when at least one of its upper parameters (α) is a negative {@link Integer}.
+ * This condition ensures that the series has a finite number of non-zero terms,
+ * making it possible to represent the series as a polynomial of finite degree.
  * </p>
  * <p>
- * The implementation uses parameters p and q, which are the dimensions of
+ * The implementation uses parameters p and q, which are the dimensions of the
  * vectors α and β, respectively. These parameters, along with the vectors
  * themselves, define the hypergeometric series.<br>
  * <br>
@@ -53,8 +53,6 @@ import arb.functions.complex.trigonometric.RealPolynomialNullaryFunction;
  */
 public class RealPolynomialHypergeometricFunction implements RealPolynomialNullaryFunction, Verifiable
 {
-
-  public static final String                                               pFq         = "Σn➔zⁿ*∏k➔αₖ₍ₙ₎{k=1…p}/(n!*∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}";
 
   public final Context                                                     context;
 
@@ -94,7 +92,8 @@ public class RealPolynomialHypergeometricFunction implements RealPolynomialNulla
 
     context.registerVariable("N", N = new Integer());
 
-    F = RealPolynomialNullaryFunction.parse("F", pFq, context).substitute("z", arg);
+    F = RealPolynomialNullaryFunction.parse("F", "Σn➔zⁿ⋅∏k➔αₖ₍ₙ₎{k=1…p}/(n!⋅∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}", context)
+                                     .substitute("z", arg);
   }
 
   @Override
@@ -126,8 +125,7 @@ public class RealPolynomialHypergeometricFunction implements RealPolynomialNulla
       initialize();
     }
 
-    f.evaluate(nullary, order, bits, res);
-    return res;
+    return f.evaluate(nullary, order, bits, res);
   }
 
   public void initialize()
