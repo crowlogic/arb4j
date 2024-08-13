@@ -1923,10 +1923,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean thisOrAnyAscendentExpressionHasIndeterminateVariable()
   {
-    boolean isPolynomial = ascendentExpression != null
+    boolean hasIndeterminateVariable = ascendentExpression != null
                   && ascendentExpression.thisOrAnyAscendentExpressionHasIndeterminateVariable();
     return coDomainType.equals(RationalFunction.class) || coDomainType.equals(RealPolynomial.class)
-                  || coDomainType.equals(ComplexPolynomial.class) || isPolynomial;
+                  || coDomainType.equals(ComplexPolynomial.class) || hasIndeterminateVariable;
   }
 
   public void throwNewUnexpectedCharacterException()
