@@ -1376,8 +1376,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean isNullaryPolynomialFunction()
   {
-    return (domainType.equals(Object.class)
-                  && thisOrAnyAscendentExpressionHasPolynomialOrRationalFunctionCoDomain());
+    return (domainType.equals(Object.class) && thisOrAnyAscendentExpressionHasIndeterminateVariable());
   }
 
   public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, Class<?> fieldType)
@@ -1922,10 +1921,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return new SyntaxTree<>(rootNode);
   }
 
-  public boolean thisOrAnyAscendentExpressionHasPolynomialOrRationalFunctionCoDomain()
+  public boolean thisOrAnyAscendentExpressionHasIndeterminateVariable()
   {
     boolean isPolynomial = ascendentExpression != null
-                  && ascendentExpression.thisOrAnyAscendentExpressionHasPolynomialOrRationalFunctionCoDomain();
+                  && ascendentExpression.thisOrAnyAscendentExpressionHasIndeterminateVariable();
     return coDomainType.equals(RationalFunction.class) || coDomainType.equals(RealPolynomial.class)
                   || coDomainType.equals(ComplexPolynomial.class) || isPolynomial;
   }
