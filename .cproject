@@ -28,7 +28,7 @@
 					<folderInfo id="cdt.managedbuild.config.gnu.so.release.1881443755." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.so.release.1062599660" name="Linux GCC" nonInternalBuilderId="cdt.managedbuild.target.gnu.builder.so.release" superClass="cdt.managedbuild.toolchain.gnu.so.release">
 							<targetPlatform id="cdt.managedbuild.target.gnu.platform.so.release.703866835" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.so.release"/>
-							<builder id="cdt.managedbuild.target.gnu.builder.so.release.1679990790" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.so.release"/>
+							<builder id="cdt.managedbuild.target.gnu.builder.so.release.1679990790" incrementalBuildTarget="libarblib.so" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.so.release"/>
 							<tool id="cdt.managedbuild.tool.gnu.archiver.base.1779633851" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.so.release.991251847" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.so.release">
 								<option id="gnu.cpp.compiler.so.release.option.optimization.level.1832228675" name="Optimization Level" superClass="gnu.cpp.compiler.so.release.option.optimization.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.optimization.level.most" valueType="enumerated"/>
