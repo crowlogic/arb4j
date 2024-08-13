@@ -3,7 +3,6 @@ package arb.geometry;
 import arb.Field;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.dynamical.systems.PhaseSpace;
 import arb.space.topological.TangentSpace;
 
 /**

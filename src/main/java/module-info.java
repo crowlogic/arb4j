@@ -50,7 +50,6 @@ module arb4j
   exports arb.geometry;
   exports arb.differential.geometry;
   exports arb.domains;
-  exports arb.dynamical.systems;
   exports arb.exceptions;
   exports arb.physics;
   exports arb.physics.particles;
