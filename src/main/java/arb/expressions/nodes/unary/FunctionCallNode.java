@@ -62,8 +62,8 @@ import arb.functions.Function;
  *      {@link TheArb4jLibrary}
  */
 public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>>
-                         extends
-                         UnaryOperation<D, R, F>
+                             extends
+                             UnaryOperation<D, R, F>
 {
 
   public boolean                  contextual                                   = false;
@@ -166,46 +166,19 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
         boolean determinate = !arg.dependsOn(expression.indeterminateVariable);
         if (determinate)
         {
-          // this means we can get a scalar rather than a function as the codomain.. it
-          // might turn out that ultimately that distinction isnt important
-          // but we shall see, its a useful paradigm and inline with how functional
-          // analysis works
-
-          // convert to
-          Class<? extends Object> argtype = arg.type();
-          arg.generate(mv, argtype);
-          Class<?> argGeneratedtype = arg.getGeneratedType();
-          if (!argGeneratedtype.equals(resultType))
+          arg.generate(mv, arg.type());
+          var argGeneratedType = arg.getGeneratedType();
+          if (!argGeneratedType.equals(resultType))
           {
             arg.generateCastTo(mv, resultType);
           }
-          if (isResult)
-          {
-            assert resultType.equals(expression.coDomainType);
-          }
-//          assert false : String.format(
-//                                       "TODO: determine how the types should interface then implement generateBuiltinFunctionalCall(mv, resultType=%s); arg.type=%s, arg.generatedType=%s this=%s",
-//                                       resultType,
-//                                       arg.type(),
-//                                       argGeneratedtype,this);
-          mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                             Type.getInternalName(generatedType),
-                             functionName,
-                             Compiler.getMethodDescriptor(argGeneratedtype),
-                             false);
-//          assert false : String.format(
-//                                       "TODO: determine how the types should interface then implement generateBuiltinFunctionalCall(mv, resultType=%s); isBuiltinQuasiPolynomialFunctional=%s function=%s arg.type=%s, arg.generatedType=%s, this=%s",
-//                                       resultType,
-//                                       isBuiltinQuasiPolynomialFunctional,
-//                                       functionName,
-//                                       arg.type(),
-//                                       argGeneratedtype,
-//                                       this);
+
+          Compiler.invokeVirtualMethod(mv, generatedType, functionName, argGeneratedType);
         }
 
         else
         {
-          throw new CompilerException(String.format("The application of %s to %s in %s can not be represented as a %s\n",
+          throw new CompilerException(String.format("The application of %s to %s in %s can not be represented as a %s",
                                                     functionName,
                                                     arg,
                                                     expression,
@@ -220,7 +193,6 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
     }
     else
     {
-
       generateBuiltinFunctionCall(mv, resultType, isBitless());
     }
 
@@ -449,8 +421,8 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
          spliceInto(Expression<E, S, G> newExpression)
   {
     return new FunctionCallNode<E, S, G>(functionName,
-                                     arg.spliceInto(newExpression),
-                                     newExpression);
+                                         arg.spliceInto(newExpression),
+                                         newExpression);
   }
 
   @Override

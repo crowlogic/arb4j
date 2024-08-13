@@ -90,8 +90,23 @@ public class ExpressionTest
   public void testSubstitutionToo()
   {
     Context context               = new Context();
+    context.registerVariable("p", new Integer(3));
+    context.registerVariable("q", new Integer(2));
     var     F                     = RealPolynomialNullaryFunction.parse("F",
                                                                         "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
+                                                                        context);
+    var     transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
+    assertEquals("Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}", transformedExpression.toString());
+  }
+  
+  public void testSubstitutionToo2()
+  {
+    Context context               = new Context();
+    context.registerVariable("p", new Integer(3));
+    context.registerVariable("q", new Integer(2));
+    context.registerVariable("N", new Integer(3));
+    var     F                     = RealPolynomialNullaryFunction.parse("F",
+                                                                        "n➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
                                                                         context);
     var     transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
     assertEquals("Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}", transformedExpression.toString());

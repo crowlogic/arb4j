@@ -2,6 +2,7 @@ package arb;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.exceptions.CompilerException;
 import arb.expressions.Context;
 import arb.functions.rational.RationalFunctionSequence;
 import junit.framework.TestCase;
@@ -182,14 +183,27 @@ public class RationalFunctionTest
 
   public static void testHypergeometricFunctionExpressionRationalWithFunctionsMissingParenthesis()
   {
-    var context   = new Context();
-    var expressed = RationalFunction.express("pFq([-2,3+1/2,1],[2,4],1/2-x/2)");
-    RationalFunction.express("a:1", context);
-    RationalFunction.express("b:-⅞*(½ - x/2)", context);
-    RationalFunction.express("c:21/80*(½ - x/2)²", context);
-    RationalFunction expectedSum = RationalFunction.express("a+b+c", context);
-    assertEquals("(21*x^2+98*x+201)/320", expressed.toString());
-    assertEquals(expressed, expectedSum);
+    Exception thrownException = null;
+    try
+    {
+      var context   = new Context();
+      var expressed = RationalFunction.express("pFq([-2,3+1/2,1],[2,4],1/2-x/2)");
+      RationalFunction.express("a:1", context);
+      RationalFunction.express("b:-⅞*(½ - x/2)", context);
+      RationalFunction.express("c:21/80*(½ - x/2)²", context);
+      RationalFunction expectedSum = RationalFunction.express("a+b+c", context);
+      assertEquals("(21*x^2+98*x+201)/320", expressed.toString());
+      assertEquals(expressed, expectedSum);
+    }
+    catch (Exception e)
+    {
+      thrownException = e;
+    }
+    assertNotNull(thrownException);
+    assertEquals(CompilerException.class, thrownException.getClass());
+    assertEquals("undefined variable reference 'b' at position=3 in expression "
+                  + "'a+b+c' since the inderminate variable has already been declared to be 'a'",
+                 thrownException.getMessage());
   }
 
 }

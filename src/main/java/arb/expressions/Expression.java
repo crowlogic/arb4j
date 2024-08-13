@@ -647,7 +647,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         if (isNullaryPolynomialFunction())
         {
           indeterminateVariable               = variable;
-          indeterminateVariable.isIndetermate = true;
+          indeterminateVariable.isIndeterminate = true;
         }
         else
         {
@@ -1739,7 +1739,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return new Factorialization<>(this,
                                     node);
     }
-
     else if (nextCharacterIs('₍'))
     {
       return new AscendingFactorialization<>(node,

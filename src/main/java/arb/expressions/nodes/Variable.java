@@ -13,7 +13,6 @@ import java.util.function.Consumer;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import arb.Complex;
@@ -126,9 +125,9 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
 
   public VariableReference<D, R, F> reference;
 
-  public boolean                    isIndependent = false;
+  public boolean                    isIndependent   = false;
 
-  public boolean                    isIndetermate = false;
+  public boolean                    isIndeterminate = false;
 
   public boolean                    ascendentInput;
 
@@ -151,7 +150,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
     {
       this.reference.type = existingVariable.reference.type;
       isIndependent       = existingVariable.isIndependent;
-      isIndetermate       = existingVariable.isIndetermate;
+      isIndeterminate     = existingVariable.isIndeterminate;
     }
     else
     {
@@ -167,13 +166,13 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
 
       if (!isIndependent)
       {
-        if (isIndetermate)
+        if (isIndeterminate)
         {
           reference.type = expression.coDomainType;
         }
         else
         {
-          if (!reference.isElse() && !isIndetermate)
+          if (!reference.isElse() && !isIndeterminate)
           {
             expression.referencedVariables.put(reference.name, this);
           }
@@ -267,11 +266,11 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
   {
     if (isIndependent)
     {
-      generateReferenceToThisIndependentVariable(mv);
+      Compiler.checkClassCast(loadInputParameter(mv), expression.domainType);
     }
-    else if (isIndetermate)
+    else if (isIndeterminate)
     {
-      generateReferenceToThisVariableRepresentingTheIndeterminantOfAPolynomial(mv);
+      generateReferenceToIndeterminantVariable(mv);
     }
     else
     {
@@ -293,7 +292,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
 
   }
 
-  public void generateReferenceToThisVariableRepresentingTheIndeterminantOfAPolynomial(MethodVisitor mv)
+  public void generateReferenceToIndeterminantVariable(MethodVisitor mv)
   {
     if (reference.type == null)
     {
@@ -307,21 +306,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
     {
       expression.allocateIntermediateVariable(mv, reference.type);
     }
-    generateIndeterminateRangeIdentityInvocation(mv);
-  }
-
-  public void generateReferenceToThisIndependentVariable(MethodVisitor mv)
-  {
-    Compiler.checkClassCast(loadInputParameter(mv), expression.domainType);
-  }
-
-  private void generateIndeterminateRangeIdentityInvocation(MethodVisitor mv)
-  {
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                       Type.getInternalName(reference.type),
-                       "identity",
-                       format("()%s", reference.type.descriptorString()),
-                       false);
+    Compiler.invokeVirtualMethod(mv, reference.type, "identity", reference.type);
   }
 
   @Override
@@ -353,7 +338,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
                         expression);
     }
 
-    if (isIndetermate)
+    if (isIndeterminate)
     {
       reference.type = expression.getThisOrAnyAscendentExpressionsPolynomialCoDomain();
     }
@@ -381,9 +366,18 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>>
       boolean h = expression.independentVariable == null
                     || !expression.independentVariable.reference.equals(reference);
 
-      if (isIndetermate = ((a && !b) && c && d) && h)
+      if (isIndeterminate = ((a && !b) && c && d) && h)
       {
-        if (!this.equals(expression.indeterminateVariable) && Expression.trace)
+        if (expression.indeterminateVariable != null)
+        {
+          throw new CompilerException(String.format("undefined variable reference '%s' at position=%s in expression '%s' since the inderminate variable has already been declared to be '%s'",
+                                                    reference,
+                                                    expression.position,
+                                                    expression,
+                                                    expression.indeterminateVariable));
+        }
+
+        if (!Variable.this.equals(expression.indeterminateVariable) && Expression.trace)
         {
           System.err.format("Expression(#%s) declaring %s to be the indeterminant in %s\nvariables=%s\n\n",
                             System.identityHashCode(expression),
