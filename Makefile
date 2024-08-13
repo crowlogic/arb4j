@@ -14,7 +14,7 @@ CFLAGS=-g -O3 -fPIC -shared -Wno-int-conversion
 
 SWIGFLAGS=-v -java -package arb -outdir src/main/java/arb
 
-all: libarblib.so
+all: libarblib.so jar
 
 jar: build/libs/arb4j-$(VERSION).jar libarblib.so
 
