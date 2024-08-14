@@ -51,43 +51,49 @@ import arb.expressions.Expression;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class HypergeometricFunction<R extends Ring<?>> implements
+public class HypergeometricFunction<R extends Ring<?>, N extends NullaryFunction<R>> implements
                                    NullaryFunction<R>,
                                    Verifiable
 {
 
-  public Context                                   context;
+  public Context                  context;
 
-  private NullaryFunction<R>                       f;
+  private N                       f;
 
-  public Expression<Object, R, NullaryFunction<R>> F;
+  public Expression<Object, R, N> F;
 
-  boolean                                          initialized = false;
+  boolean                         initialized = false;
 
-  private Integer                                  N;
+  private Integer                 N;
 
-  public Integer                                   p, q;
+  public Integer                  p, q;
 
-  public Real                                      α, β;
+  public Real                     α, β;
 
   public HypergeometricFunction()
   {
 
   }
 
-  public HypergeometricFunction(int p,
+  public HypergeometricFunction(Class<R> elementType,
+                                Class<N> nullaryFunctionType,
+                                int p,
                                 int q,
-                                Expression<Object, R, NullaryFunction<R>> arg)
+                                Expression<Object, R, N> arg)
   {
-    init(Real.newVector(p),
+    init(elementType,
+         nullaryFunctionType,
+         Real.newVector(p),
          Real.newVector(q),
          arg);
   }
 
-  public HypergeometricFunction<R>
-         init(Real α,
+  public HypergeometricFunction<R, N>
+         init(Class<R> elementType,
+              Class<N> nullaryFunctionType,
+              Real α,
               Real β,
-              Expression<Object, R, NullaryFunction<R>> arg)
+              Expression<Object, R, N> arg)
   {
     this.α  = α;
     this.β  = β;
@@ -101,7 +107,9 @@ public class HypergeometricFunction<R extends Ring<?>> implements
     context.registerVariable("N",
                              N = new Integer());
 
-    F = NullaryFunction.parse("F",
+    F = NullaryFunction.parse(elementType,
+                              nullaryFunctionType,
+                              "F",
                               "Σn➔zⁿ⋅∏k➔αₖ₍ₙ₎{k=1…p}/(n!⋅∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}",
                               context);
     F = F.substitute("z",
@@ -112,6 +120,7 @@ public class HypergeometricFunction<R extends Ring<?>> implements
 
   @Override
   public void
+
          close()
   {
     p.close();

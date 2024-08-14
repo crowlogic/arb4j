@@ -15,6 +15,7 @@ import org.objectweb.asm.Type;
 
 import arb.*;
 import arb.Integer;
+import arb.algebra.Ring;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
@@ -330,6 +331,7 @@ public class Compiler
     typePrefixes.put(RationalHypergeometricFunction.class, "qF");
     typePrefixes.put(RealPolynomialHypergeometricFunction.class, "XℝF");
     typePrefixes.put(ComplexPolynomialHypergeometricFunction.class, "XℂF");
+    typePrefixes.put(Ring.class, "r");
   }
 
   public static String getVariablePrefix(Class<?> type)

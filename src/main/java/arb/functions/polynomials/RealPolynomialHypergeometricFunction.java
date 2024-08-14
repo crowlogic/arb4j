@@ -1,17 +1,13 @@
 package arb.functions.polynomials;
 
-import java.util.Comparator;
-
 import arb.Integer;
 import arb.Polynomial;
 import arb.Real;
 import arb.RealPolynomial;
-import arb.Verifiable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.exceptions.ArbException;
-import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.functions.HypergeometricFunction;
 import arb.functions.complex.trigonometric.RealPolynomialNullaryFunction;
 
 /**
@@ -51,136 +47,25 @@ import arb.functions.complex.trigonometric.RealPolynomialNullaryFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealPolynomialHypergeometricFunction implements
-                                                  RealPolynomialNullaryFunction,
-                                                  Verifiable
+public class RealPolynomialHypergeometricFunction extends
+                                                  HypergeometricFunction<RealPolynomial,
+                                                  RealPolynomialNullaryFunction>
 {
 
-  public Context                                                           context;
-
-  private RealPolynomialNullaryFunction                                    f;
-
-  public Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> F;
-
-  boolean                                                                  initialized = false;
-
-  private Integer                                                          N;
-
-  public Integer                                                           p, q;
-
-  public Real                                                              α, β;
-
-  public RealPolynomialHypergeometricFunction()
-  {
-
-  }
-
-  public RealPolynomialHypergeometricFunction(int p,
-                                              int q,
+  public RealPolynomialHypergeometricFunction(int i,
+                                              int j,
                                               Expression<Object, RealPolynomial,
                                               RealPolynomialNullaryFunction> arg)
   {
-    init(Real.newVector(p),
-         Real.newVector(q),
+    init(RealPolynomial.class,
+         RealPolynomialNullaryFunction.class,
+         Real.newVector(i),
+         Real.newVector(j),
          arg);
   }
 
-  public RealPolynomialHypergeometricFunction
-         init(Real α,
-              Real β,
-              Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> arg)
+  public RealPolynomialHypergeometricFunction()
   {
-    this.α  = α;
-    this.β  = β;
-    context = new Context(p = new Integer(α.dim,
-                                          "p"),
-                          q = new Integer(β.dim,
-                                          "q"),
-                          α.setName("α"),
-                          β.setName("β"));
-
-    context.registerVariable("N",
-                             N = new Integer());
-
-    F = RealPolynomialNullaryFunction.parse("F",
-                                            "Σn➔zⁿ⋅∏k➔αₖ₍ₙ₎{k=1…p}/(n!⋅∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}",
-                                            context)
-                                     .substitute("z",
-                                                 arg);
-    
-    return this;
-  }
-
-  @Override
-  public void
-         close()
-  {
-    p.close();
-    q.close();
-    α.close();
-    β.close();
-    N.close();
-  }
-
-  public Integer
-         determineDegree()
-  {
-    return α.stream()
-            .filter(Real.isNegativeInteger)
-            .min(Comparator.naturalOrder())
-            .get()
-            .integerValue(N)
-            .neg()
-            .add(1);
-  }
-
-  @Override
-  public RealPolynomial
-         evaluate(Object nullary,
-                  int order,
-                  int bits,
-                  RealPolynomial res)
-  {
-    if (!initialized)
-    {
-      initialize();
-    }
-
-    return f.evaluate(nullary,
-                      order,
-                      bits,
-                      res);
-  }
-
-  public void
-         initialize()
-  {
-    if (!verify())
-    {
-      α.printPrecision = true;
-      throw new ArbException("at least one of the upper parameters must be a non-negative integer but there is none among "
-                             + α);
-    }
-
-    f = F.instantiate();
-
-    determineDegree();
-
-    initialized = true;
-  }
-
-  /**
-   * @return true if there is at least one strictly nonnegative integer in the
-   *         numerator (the condition ensuring the finite number of non-zero terms
-   *         in the hypergeometric series this function generates) and there are
-   *         no negative integers or zero in the denominator
-   */
-  @Override
-  public boolean
-         verify()
-  {
-    return α.stream()
-            .anyMatch(Real.isNegativeInteger);
   }
 
 }

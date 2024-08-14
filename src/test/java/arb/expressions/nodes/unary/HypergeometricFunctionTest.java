@@ -29,7 +29,9 @@ public class HypergeometricFunctionTest extends
     try ( RealPolynomialHypergeometricFunction poly = new RealPolynomialHypergeometricFunction())
     {
 
-      poly.init(Real.newVector(-2,
+      poly.init(RealPolynomial.class,
+                RealPolynomialNullaryFunction.class,
+                Real.newVector(-2,
                                3.5,
                                1),
                 Real.newVector(2,

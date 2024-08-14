@@ -2,6 +2,7 @@ package arb.expressions;
 
 import java.util.Objects;
 
+import arb.algebra.Ring;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.nodes.Node;
@@ -68,6 +69,8 @@ public class VariableReference<D, R, F extends Function<? extends D, ? extends R
   public String        name;
 
   public Node<D, R, F> index;
+
+  public int position;
 
   public String typeset()
   {

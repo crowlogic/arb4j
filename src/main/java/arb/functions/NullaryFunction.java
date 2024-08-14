@@ -19,7 +19,9 @@ public interface NullaryFunction<R> extends
 
   public static <R extends Ring<?>, N extends NullaryFunction<? extends R>>
          Expression<Object, R, N>
-         parse(String functionName,
+         parse(Class<? extends R> elementType,
+               Class<? extends N> nullaryFunctionType,
+               String functionName,
                String expression,
                Context context)
   {
@@ -28,8 +30,8 @@ public interface NullaryFunction<R> extends
                           expression,
                           context,
                           Object.class,
-                          Ring.class,
-                          NullaryFunction.class,
+                          elementType,
+                          nullaryFunctionType,
                           functionName,
                           null);
   }
