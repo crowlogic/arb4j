@@ -8,6 +8,7 @@ import arb.expressions.Context;
 import arb.functions.Function;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
+import java.util.stream.Stream;
 %}
 
 %typemap(javaconstruct) fmpz_poly_q_struct %{
@@ -71,7 +72,15 @@ import arb.functions.real.RealFunction;
   {
     return RationalNullaryFunction.express(string).evaluate( bits(), this);
   }  
-  
+
+ @Override
+  public Stream<RationalFunction>
+         stream()
+  {
+    assert false : "TODO";
+    return null;
+  }
+    
   @SuppressWarnings("resource")
   public static RationalFunction express(String expression)
   {

@@ -26,7 +26,7 @@ import arb.domains.Domain;
  *      {@link TheArb4jLibrary}
  */
 
-public class Complex implements Named,Domain<Complex>,Field<Complex>,Comparable<Complex>,Iterable<Complex>,Serializable,Lockable<Complex>,IntFunction<Complex>,Assignable<Complex> {
+public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<Complex>,Iterable<Complex>,Serializable,Lockable<Complex>,IntFunction<Complex>,Assignable<Complex> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 

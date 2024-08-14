@@ -1,9 +1,11 @@
 package arb.functions.rational;
 
+import arb.Fraction;
 import arb.RationalFunction;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Expression;
 import arb.functions.HypergeometricFunction;
 
 /**
@@ -47,5 +49,30 @@ public class RationalHypergeometricFunction extends
                                             HypergeometricFunction<RationalFunction,
                                             RationalNullaryFunction>
 {
+
+  @Override
+  public RationalFunction
+         evaluate(Object nullary,
+                  int order,
+                  int bits,
+                  RationalFunction res)
+  {
+    return super.evaluate(nullary, order, bits, res);
+  }
+
+  public RationalHypergeometricFunction
+         init(Fraction α,
+              Fraction β,
+              Expression<Object, RationalFunction, RationalNullaryFunction> arg)
+  {
+    super.init(RationalFunction.class,
+               RationalNullaryFunction.class,
+               Real.newVector(α.dim),
+               Real.newVector(β.dim),
+               arg);
+    super.α.set(α);
+    super.β.set(β);
+    return this;
+  }
 
 }

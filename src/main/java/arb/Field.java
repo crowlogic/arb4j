@@ -2,6 +2,7 @@ package arb;
 
 import java.io.Closeable;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 import arb.algebra.Ring;
 import arb.annotations.Commutative;
@@ -25,20 +26,30 @@ public interface Field<X extends Field<X>> extends
                       Iterable<X>,
                       Ring<X>
 {
-  public X additiveIdentity();
+  public X
+         additiveIdentity();
 
-  public X multiplicativeIdentity();
+  public X
+         multiplicativeIdentity();
 
   @Commutative
-  public default X add(X x)
+  public default X
+         add(X x)
   {
-    return add(x, bits(this, x));
+    return add(x,
+               bits(this,
+                    x));
   }
 
   @Commutative
-  public default X add(X x, X result)
+  public default X
+         add(X x,
+             X result)
   {
-    return add(x, bits(this, x), result);
+    return add(x,
+               bits(this,
+                    x),
+               result);
   }
 
   /**
@@ -50,9 +61,13 @@ public interface Field<X extends Field<X>> extends
    */
   @SuppressWarnings("unchecked")
   @Commutative
-  public default X add(X element, int prec)
+  public default X
+         add(X element,
+             int prec)
   {
-    return add(element, prec, (X) this);
+    return add(element,
+               prec,
+               (X) this);
   }
 
   /**
@@ -64,16 +79,21 @@ public interface Field<X extends Field<X>> extends
    * @return result
    */
   @Commutative
-  public X add(X element, int prec, X result);
+  public X
+         add(X element,
+             int prec,
+             X result);
 
   /**
    * @return minimum number of bits required to represent this element without
    *         loss of precision (information)
    */
-  public int bits();
+  public int
+         bits();
 
   @Override
-  default void close()
+  default void
+          close()
   {
 
   }
@@ -81,16 +101,25 @@ public interface Field<X extends Field<X>> extends
   /**
    * @return the number of X's available to this{@link #get(int)}
    */
-  public int dim();
+  public int
+         dim();
 
-  public default X div(X x)
+  public default X
+         div(X x)
   {
-    return div(x, bits(this, x));
+    return div(x,
+               bits(this,
+                    x));
   }
 
-  public default X div(X x, X result)
+  public default X
+         div(X x,
+             X result)
   {
-    return div(x, bits(this, x), result);
+    return div(x,
+               bits(this,
+                    x),
+               result);
   }
 
   /**
@@ -101,9 +130,13 @@ public interface Field<X extends Field<X>> extends
    * @return this
    */
   @SuppressWarnings("unchecked")
-  public default X div(int j, int prec)
+  public default X
+         div(int j,
+             int prec)
   {
-    return div(j, prec, (X) this);
+    return div(j,
+               prec,
+               (X) this);
   }
 
   /**
@@ -114,7 +147,10 @@ public interface Field<X extends Field<X>> extends
    * @param result where to store the result
    * @return result
    */
-  public X div(int j, int prec, X result);
+  public X
+         div(int j,
+             int prec,
+             X result);
 
   /**
    * Compute the quotient of a field element with another field element
@@ -124,9 +160,13 @@ public interface Field<X extends Field<X>> extends
    * @return this after the resulting calculation has been assigned to it
    */
   @SuppressWarnings("unchecked")
-  public default X div(X j, int prec)
+  public default X
+         div(X j,
+             int prec)
   {
-    return div(j, prec, (X) this);
+    return div(j,
+               prec,
+               (X) this);
   }
 
   /**
@@ -137,14 +177,20 @@ public interface Field<X extends Field<X>> extends
    * @param result where to store the result
    * @return result
    */
-  public X div(X j, int prec, X result);
+  public X
+         div(X j,
+             int prec,
+             X result);
 
-  public X get(int index);
+  public X
+         get(int index);
 
-  public String getName();
+  public String
+         getName();
 
   @Override
-  default Iterator<X> iterator()
+  default Iterator<X>
+          iterator()
   {
     assert false : "implement me";
     return null;
@@ -160,9 +206,13 @@ public interface Field<X extends Field<X>> extends
    * 
    * @return this{@link #Σ(int, Field)} / this{@link #dim()}
    */
-  public default X mean(int prec, X result)
+  public default X
+         mean(int prec,
+              X result)
   {
-    return Σ(prec, result).div(dim(), prec);
+    return Σ(prec,
+             result).div(dim(),
+                         prec);
   }
 
   /**
@@ -174,10 +224,14 @@ public interface Field<X extends Field<X>> extends
    */
   @SuppressWarnings("unchecked")
   @Commutative
-  public default X mul(int x, int prec)
+  public default X
+         mul(int x,
+             int prec)
   {
     X result = (X) this;
-    return mul(x, prec, result);
+    return mul(x,
+               prec,
+               result);
   }
 
   /**
@@ -191,12 +245,18 @@ public interface Field<X extends Field<X>> extends
    *         element with the integer
    */
   @Commutative
-  public X mul(int x, int prec, X result);
+  public X
+         mul(int x,
+             int prec,
+             X result);
 
   @Commutative
-  public default X mul(X x)
+  public default X
+         mul(X x)
   {
-    return mul(x, bits(this, x));
+    return mul(x,
+               bits(this,
+                    x));
   }
 
   /**
@@ -208,10 +268,14 @@ public interface Field<X extends Field<X>> extends
    */
   @SuppressWarnings("unchecked")
   @Commutative
-  public default X mul(X x, int prec)
+  public default X
+         mul(X x,
+             int prec)
   {
     X result = (X) this;
-    return mul(x, prec, result);
+    return mul(x,
+               prec,
+               result);
   }
 
   /**
@@ -224,15 +288,24 @@ public interface Field<X extends Field<X>> extends
    *         and x
    */
   @Commutative
-  public X mul(X x, int prec, X result);
+  public X
+         mul(X x,
+             int prec,
+             X result);
 
   @Commutative
-  public default X mul(X x, X result)
+  public default X
+         mul(X x,
+             X result)
   {
-    return mul(x, bits(this, x), result);
+    return mul(x,
+               bits(this,
+                    x),
+               result);
   }
 
-  public X newFieldElement();
+  public X
+         newFieldElement();
 
   /**
    * Assignment operator
@@ -240,7 +313,8 @@ public interface Field<X extends Field<X>> extends
    * @param value
    * @return this after having been assigned value
    */
-  public X set(X value);
+  public X
+         set(X value);
 
   /**
    * Subtracts a field element from this field
@@ -250,9 +324,13 @@ public interface Field<X extends Field<X>> extends
    * @return this after the result has been assigned to it
    */
   @SuppressWarnings("unchecked")
-  public default X sub(X element, int prec)
+  public default X
+         sub(X element,
+             int prec)
   {
-    return sub(element, prec, (X) this);
+    return sub(element,
+               prec,
+               (X) this);
   }
 
   /**
@@ -263,11 +341,17 @@ public interface Field<X extends Field<X>> extends
    * @param result
    * @return result
    */
-  public X sub(X element, int prec, X result);
+  public X
+         sub(X element,
+             int prec,
+             X result);
 
-  public default X sub(X x)
+  public default X
+         sub(X x)
   {
-    return sub(x, bits(this, x));
+    return sub(x,
+               bits(this,
+                    x));
   }
 
   /**
@@ -279,17 +363,28 @@ public interface Field<X extends Field<X>> extends
    * 
    * @return no less than 128 since
    */
-  public static <X extends Field<? extends X>> int bits(X x, X y)
+  public static <X extends Field<? extends X>>
+         int
+         bits(X x,
+              X y)
   {
-    return Math.max(128, Math.max(x.bits(), y.bits()));
+    return Math.max(128,
+                    Math.max(x.bits(),
+                             y.bits()));
   }
 
-  public default X sub(X x, X result)
+  public default X
+         sub(X x,
+             X result)
   {
-    return sub(x, bits(this, x), result);
+    return sub(x,
+               bits(this,
+                    x),
+               result);
   }
 
-  public X zero();
+  public X
+         zero();
 
   /**
    * 
@@ -297,9 +392,12 @@ public interface Field<X extends Field<X>> extends
    * @param result
    * @return this{@link #Σ(int, Field)}
    */
-  public default X sum(int prec, X result)
+  public default X
+         sum(int prec,
+             X result)
   {
-    return Σ(prec, result);
+    return Σ(prec,
+             result);
   }
 
   /**
@@ -317,12 +415,34 @@ public interface Field<X extends Field<X>> extends
    *         regarded as an array of length this{@link #dim()}
    */
   @SuppressWarnings("resource")
-  public default X Σ(int prec, X result)
+  public default X
+         Σ(int prec,
+           X result)
   {
     result.zero();
-    forEach(element -> result.add(element, prec, result));
+    forEach(element -> result.add(element,
+                                  prec,
+                                  result));
     return result;
   }
 
+  public Stream<X>
+         stream();
+
+  @SuppressWarnings("unchecked")
+  public default X
+         set(Fraction... a)
+  {
+    assert false : "todo";
+    return (X) this;
+  }
+  
+  @SuppressWarnings("unchecked")
+  public default X
+         set(double... a)
+  {
+    assert false : "todo";
+    return (X) this;
+  }
 
 }

@@ -2,11 +2,8 @@ package arb.functions;
 
 import java.util.Comparator;
 
+import arb.*;
 import arb.Integer;
-import arb.Polynomial;
-import arb.Real;
-import arb.RealPolynomial;
-import arb.Verifiable;
 import arb.algebra.Ring;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -51,9 +48,10 @@ import arb.expressions.Expression;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class HypergeometricFunction<R extends Ring<?>, N extends NullaryFunction<R>> implements
-                                   NullaryFunction<R>,
-                                   Verifiable
+public abstract class HypergeometricFunction<R extends Ring<?>, N extends NullaryFunction<R>>
+                                            implements
+                                            NullaryFunction<R>,
+                                            Verifiable
 {
 
   public Context                  context;
@@ -68,7 +66,7 @@ public class HypergeometricFunction<R extends Ring<?>, N extends NullaryFunction
 
   public Integer                  p, q;
 
-  public Real                     α, β;
+  public Field<?>                 α, β;
 
   public HypergeometricFunction()
   {
@@ -84,22 +82,22 @@ public class HypergeometricFunction<R extends Ring<?>, N extends NullaryFunction
     init(elementType,
          nullaryFunctionType,
          Real.newVector(p),
-         Real.newVector(q),
+         Real.newVector(q), 
          arg);
   }
 
   public HypergeometricFunction<R, N>
          init(Class<R> elementType,
               Class<N> nullaryFunctionType,
-              Real α,
-              Real β,
+              NamedField<?> α,
+              NamedField<?> β,
               Expression<Object, R, N> arg)
   {
     this.α  = α;
     this.β  = β;
-    context = new Context(p = new Integer(α.dim,
+    context = new Context(p = new Integer(α.dim(),
                                           "p"),
-                          q = new Integer(β.dim,
+                          q = new Integer(β.dim(),
                                           "q"),
                           α.setName("α"),
                           β.setName("β"));
@@ -135,6 +133,7 @@ public class HypergeometricFunction<R extends Ring<?>, N extends NullaryFunction
   {
     return α.stream()
             .filter(Real.isNegativeInteger)
+            .map(a -> (Real) α)
             .min(Comparator.naturalOrder())
             .get()
             .integerValue(N)
@@ -165,7 +164,6 @@ public class HypergeometricFunction<R extends Ring<?>, N extends NullaryFunction
   {
     if (!verify())
     {
-      α.printPrecision = true;
       throw new ArbException("at least one of the upper parameters must be a non-negative integer but there is none among "
                              + α);
     }
@@ -187,8 +185,14 @@ public class HypergeometricFunction<R extends Ring<?>, N extends NullaryFunction
   public boolean
          verify()
   {
-    return α.stream()
-            .anyMatch(Real.isNegativeInteger);
+    for (int i = 0; i < p.getSignedValue(); i++)
+    {
+      if (Real.isNegativeInteger.test(this.α.get(i)))
+      {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

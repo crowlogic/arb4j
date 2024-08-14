@@ -156,7 +156,7 @@ import arb.utensils.Utensils;
  *      {@link TheArb4jLibrary}
  */
 
-public class Real implements Named,Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,Field<Real>,Lockable<Real>,IntFunction<Real>,Assignable<Real> {
+public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,NamedField<Real>,Lockable<Real>,IntFunction<Real>,Assignable<Real> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
@@ -211,6 +211,7 @@ public class Real implements Named,Domain<Real>,Serializable,Comparable<Real>,It
   {
     return res.set(this).sub(a,bits,res);
   }
+  
   
   public Real sub(Fraction a, int bits, Real res)
   {
@@ -326,11 +327,55 @@ public class Real implements Named,Domain<Real>,Serializable,Comparable<Real>,It
     return res.set(this).div(a, bits, res);
   }
   
-  public static Predicate<Real> isNegativeInteger       = αᵢ -> αᵢ.isInteger() && αᵢ.isNegative();
+  public static Predicate<Object> isNegativeInteger       = αᵢ ->
+                                                     {
+                                                       if ((αᵢ instanceof Integer))
+                                                       {
+                                                         Integer α = (Integer) αᵢ;
+                                                         return α.sign() < 0;
+                                                       }
 
-  public static Predicate<Real> isNegativeIntegerOrZero = isNegativeInteger.or(Real::isZero);
+                                                       if (αᵢ instanceof Real)
+                                                       {
+                                                         Real α = (Real) αᵢ;
+                                                         return α.isInteger()
+                                                                && α.isNegative();
+                                                       }
 
-    
+                                                       if (αᵢ instanceof Fraction)
+                                                       {
+                                                         Fraction α = (Fraction) αᵢ;
+                                                         return α.isNegative();
+                                                       }
+                                                       
+                                                       return false;
+                                                     };
+
+  public static Predicate<Object> isNegativeIntegerOrZero = isNegativeInteger.or(αᵢ ->
+                                                     {
+                                                       if ((αᵢ instanceof Integer))
+                                                       {
+                                                         Integer α = (Integer) αᵢ;
+                                                         return α.sign() <= 0;
+                                                       }
+
+                                                       if (αᵢ instanceof Real)
+                                                       {
+                                                         Real α = (Real) αᵢ;
+                                                         return α.isInteger()
+                                                                && ( α.isNegative() || α.isZero() );
+                                                       }
+
+                                                       if (αᵢ instanceof Fraction)
+                                                       {
+                                                         Fraction α = (Fraction) αᵢ;
+                                                         return α.isNegative() || α.isZero();
+                                                       }
+                                                       
+                                                       return false;
+                                                     });
+
+
   public RealPolynomial mul(RealPolynomial a, int bits, RealPolynomial res)
   {
     return a.mul(this, bits, res);
@@ -534,9 +579,26 @@ public class Real implements Named,Domain<Real>,Serializable,Comparable<Real>,It
     return new Real(string,bits);
   }
 
-  public Real set(Fraction fraction, int bits )
+  public Real
+         set(Fraction fraction,
+             int bits)
   {
-    arblib.arb_set_fmpq(this, fraction, bits);
+    assert dim == fraction.dim : String.format("this,dim = %d != fraction.dim = %d",
+                                               this,
+                                               fraction);
+    if ( dim == 1 )
+    {
+    arblib.arb_set_fmpq(this,
+                        fraction,
+                        bits);
+    }
+    else
+    {
+      for ( int i = 0; i < dim; i++ )
+      {
+        get(i).set(fraction.get(i));
+      }
+    }
     return this;
   }
   

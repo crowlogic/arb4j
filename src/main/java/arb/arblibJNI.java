@@ -9,6 +9,7 @@
 package arb;
 
 public class arblibJNI {
+  public final static native int fmpq_is_zero(long jarg1, Fraction jarg1_);
   public final static native void fmpz_poly_set_coeff_ui(long jarg1, IntegerPolynomial jarg1_, int jarg2, long jarg3);
   public final static native void fmpz_poly_set_coeff_fmpz(long jarg1, IntegerPolynomial jarg1_, int jarg2, long jarg3);
   public final static native void fmpq_set_si(long jarg1, Fraction jarg1_, int jarg2, long jarg3);
@@ -18,6 +19,7 @@ public class arblibJNI {
   public final static native void arf_get_fmpq(long jarg1, Fraction jarg1_, long jarg2, Float jarg2_);
   public final static native void fmpq_div_fmpz(long jarg1, Fraction jarg1_, long jarg2, Fraction jarg2_, long jarg3);
   public final static native void fmpq_mul_fmpz(long jarg1, Fraction jarg1_, long jarg2, Fraction jarg2_, long jarg3);
+  public final static native int fmpz_is_zero(long jarg1);
   public final static native int arf_set_fmpq(long jarg1, Float jarg1_, long jarg2, Fraction jarg2_, int jarg3, int jarg4);
   public final static native void arb_set_fmpq(long jarg1, Real jarg1_, long jarg2, Fraction jarg2_, int jarg3);
   public final static native void fmpq_zero(long jarg1, Fraction jarg1_);

@@ -7,6 +7,8 @@
 #include <flint/fmpz_poly.h>
 #include <flint/fmpz_poly_q.h>
 
+int fmpq_is_zero(const fmpq_t x);
+
 void fmpz_poly_set_coeff_ui(fmpz_poly_t poly, slong n, ulong x);
 
 void fmpz_poly_set_coeff_fmpz(fmpz_poly_t poly, slong n, const fmpz_t x);
@@ -23,7 +25,8 @@ void arf_get_fmpq(fmpq_t y, const arf_t x);
 void fmpq_div_fmpz(fmpq_t res, const fmpq_t op, const fmpz_t x);
 void fmpq_mul_fmpz(fmpq_t res, const fmpq_t op, const fmpz_t x);
 
-
+ int fmpz_is_zero(const fmpz_t f) { return (*f == 0); };
+ 
 int
 arf_set_fmpq(arf_t y, const fmpq_t x, slong prec, arf_rnd_t rnd);
 

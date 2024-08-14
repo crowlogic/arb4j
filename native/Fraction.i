@@ -7,6 +7,7 @@ import arb.exceptions.ArbException;
 import java.util.Objects;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
+import java.util.stream.Stream;
 
 /**
  * <pre>
@@ -68,7 +69,13 @@ import java.lang.foreign.MemorySegment;
   {
     return result.set(this).sub(element, prec, result);
   }
-  
+
+  public boolean
+         isZero()
+  {
+    return arblib.fmpq_is_zero(this) != 0;
+  }
+    
   public void set(int numerator, int denominator)
   {
     setNumeratorAddress(numerator);
@@ -555,6 +562,21 @@ import java.lang.foreign.MemorySegment;
   {
     return arblib.fmpq_is_canonical(this) != 0;
   }    
+
+
+  @Override
+  public Stream<Fraction>
+         stream()
+  {
+    return Stream.of(elements);
+  }  
+  
+    public boolean
+         isNegative()
+  {
+    assert false : "TODO";
+    return false;
+  }
   
 %};
  

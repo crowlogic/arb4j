@@ -4,6 +4,7 @@ import static arb.arblib.*;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 import arb.utensils.Utensils;
 
@@ -375,4 +376,12 @@ import arb.utensils.Utensils;
     set(d);
   }
 
+  @Override
+  public Stream<Float>
+         stream()
+  {
+    assert false : "TODO";
+    return null;
+  }
+  
 %};

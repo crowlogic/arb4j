@@ -15,6 +15,7 @@ import arb.expressions.Context;
 import arb.functions.Function;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
+import java.util.stream.Stream;
 
 public class RationalFunction implements Named,AutoCloseable,Field<RationalFunction>,Function<Fraction,Fraction>,Verifiable {
   protected long swigCPtr;
@@ -92,7 +93,15 @@ public class RationalFunction implements Named,AutoCloseable,Field<RationalFunct
   {
     return RationalNullaryFunction.express(string).evaluate( bits(), this);
   }  
-  
+
+ @Override
+  public Stream<RationalFunction>
+         stream()
+  {
+    assert false : "TODO";
+    return null;
+  }
+    
   @SuppressWarnings("resource")
   public static RationalFunction express(String expression)
   {

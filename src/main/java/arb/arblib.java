@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static int fmpq_is_zero(Fraction x) {
+    return arblibJNI.fmpq_is_zero(Fraction.getCPtr(x), x);
+  }
+
   public static void fmpz_poly_set_coeff_ui(IntegerPolynomial poly, int n, long x) {
     arblibJNI.fmpz_poly_set_coeff_ui(IntegerPolynomial.getCPtr(poly), poly, n, x);
   }
@@ -43,6 +47,10 @@ public class arblib {
 
   public static void fmpq_mul_fmpz(Fraction res, Fraction op, long x) {
     arblibJNI.fmpq_mul_fmpz(Fraction.getCPtr(res), res, Fraction.getCPtr(op), op, x);
+  }
+
+  public static int fmpz_is_zero(long f) {
+    return arblibJNI.fmpz_is_zero(f);
   }
 
   public static int arf_set_fmpq(Float y, Fraction x, int prec, int rnd) {

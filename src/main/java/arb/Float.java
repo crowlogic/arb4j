@@ -13,6 +13,7 @@ import static arb.arblib.*;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 import arb.utensils.Utensils;
 
@@ -398,6 +399,14 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
     set(d);
   }
 
+  @Override
+  public Stream<Float>
+         stream()
+  {
+    assert false : "TODO";
+    return null;
+  }
+  
 
   public void setExp(long value) {
     arblibJNI.Float_exp_set(swigCPtr, this, value);

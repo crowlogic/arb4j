@@ -1,6 +1,7 @@
 package arb;
 
 import java.lang.foreign.Arena;
+import java.util.stream.Stream;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -247,5 +248,13 @@ public class ComplexFraction implements Field<ComplexFraction>, AutoCloseable
     }
     ComplexFraction f = (ComplexFraction) obj;
     return realPart.equals(f.realPart) && imaginaryPart.equals(f.imaginaryPart);
+  }
+
+  @Override
+  public Stream<ComplexFraction>
+         stream()
+  {
+    assert false : "TODO";
+    return null;
   }
 }
