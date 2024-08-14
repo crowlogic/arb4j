@@ -17,65 +17,92 @@ import junit.framework.TestCase;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class HypergeometricFunctionTest
-                                        extends
+public class HypergeometricFunctionTest extends
                                         TestCase
 {
   public int bits = 128;
 
-  public void testHypergeometricPolynomial() throws NoSuchFieldException, IllegalAccessException
+  public void
+         testHypergeometricPolynomial() throws NoSuchFieldException,
+                                        IllegalAccessException
   {
-    try ( RealPolynomialHypergeometricFunction poly = new RealPolynomialHypergeometricFunction(Real.newVector(-2,
-                                                                                                              3.5,
-                                                                                                              1),
-                                                                                               Real.newVector(2, 4),
-                                                                                               RealPolynomialNullaryFunction.parse("1/2-x/2")))
+    try ( RealPolynomialHypergeometricFunction poly = new RealPolynomialHypergeometricFunction())
     {
 
-      RealPolynomial expressed = poly.evaluate(bits, new RealPolynomial());
-      assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
+      poly.init(Real.newVector(-2,
+                               3.5,
+                               1),
+                Real.newVector(2,
+                               4),
+                RealPolynomialNullaryFunction.parse("1/2-x/2"));
+
+      RealPolynomial expressed = poly.evaluate(bits,
+                                               new RealPolynomial());
+      assertEquals("0.065625*x² + 0.30625*x + 0.628125",
+                   expressed.toString());
     }
 
   }
 
-  public void testHypergeometricFuntionExpressionComplex()
+  public void
+         testHypergeometricFuntionExpressionComplex()
   {
-    var               poly      = ComplexPolynomialNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
-    ComplexPolynomial expressed = poly.evaluate(bits, new ComplexPolynomial());
+    var               poly      = ComplexPolynomialNullaryFunction.express(
+                                                                           "pFq([-2,3.5,1],[2,4],1/2-x/2)");
+    ComplexPolynomial expressed = poly.evaluate(bits,
+                                                new ComplexPolynomial());
     expressed.getCoeffs().printPrecision = false;
-    assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
+    assertEquals("0.065625*x² + 0.30625*x + 0.628125",
+                 expressed.toString());
   }
 
-  public void testHypergeometricFunctionExpressionReal()
+  public void
+         testHypergeometricFunctionExpressionReal()
   {
-    var            poly      = RealPolynomialNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
-    RealPolynomial expressed = poly.evaluate(bits, new RealPolynomial());
+    var            poly      = RealPolynomialNullaryFunction.express(
+                                                                     "pFq([-2,3.5,1],[2,4],1/2-x/2)");
+    RealPolynomial expressed = poly.evaluate(bits,
+                                             new RealPolynomial());
 
-    assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
+    assertEquals("0.065625*x² + 0.30625*x + 0.628125",
+                 expressed.toString());
   }
 
-  public static void testSum2()
+  public static void
+         testSum2()
   {
     //
     try ( var p = new Integer(3,
                               "p");
           var q = new Integer(1,
                               "q");
-          var α = Real.newVector(p.getSignedValue(), "α"); var β = Real.newVector(q.getSignedValue(), "β");
+          var α = Real.newVector(p.getSignedValue(),
+                                 "α");
+          var β = Real.newVector(q.getSignedValue(),
+                                 "β");
           var N = new Integer();)
     {
       var  context    = new Context(p,
                                     q,
-                                    α.set(1.5, 0.75, -3),
+                                    α.set(1.5,
+                                          0.75,
+                                          -3),
                                     β.set(1),
-                                    N.set(4).setName("N"));
+                                    N.set(4)
+                                     .setName("N"));
 
-      var  expression = RealFunction.compile("z➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}", context);
+      var  expression = RealFunction.compile(
+                                             "z➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
+                                             context);
 
       var  sum        = expression.instantiate();
 
-      Real res        = sum.evaluate(RealConstants.π, 1, 128, new Real());
-      assertEquals(-181.54773622929181, res.doubleValue());
+      Real res        = sum.evaluate(RealConstants.π,
+                                     1,
+                                     128,
+                                     new Real());
+      assertEquals(-181.54773622929181,
+                   res.doubleValue());
     }
   }
 
@@ -96,7 +123,8 @@ public class HypergeometricFunctionTest
    * \-------------------------------------/
    * </pre>
    */
-  public static void testSum()
+  public static void
+         testSum()
   {
     var arg = RealPolynomialNullaryFunction.parse("x");
 
@@ -105,30 +133,40 @@ public class HypergeometricFunctionTest
                                                                                             arg);
           RealPolynomial y = new RealPolynomial();)
     {
-      F.α.set(-6, 2.5);
+      F.α.set(-6,
+              2.5);
       F.β.set(1);
-      RealPolynomial polynomial = F.evaluate(null, 128, y);
+      RealPolynomial polynomial = F.evaluate(null,
+                                             128,
+                                             y);
       assert polynomial != null;
       assertEquals("14.6630859375*x⁶ - 70.3828125*x⁵ + 135.3515625*x⁴ - 131.25*x³ + 65.625*x² - 15*x + 1",
                    polynomial.toString());
       double val = polynomial.eval(2.3);
-      assertEquals(145.01289685058583, val);
+      assertEquals(145.01289685058583,
+                   val);
     }
   }
 
-  public static void testSummand()
+  public static void
+         testSummand()
   {
     try ( var p = new Integer(3,
                               "p");
           var q = new Integer(1,
                               "q");
-          var α = Real.newVector(p.getSignedValue(), "α"); var β = Real.newVector(q.getSignedValue(), "β");
+          var α = Real.newVector(p.getSignedValue(),
+                                 "α");
+          var β = Real.newVector(q.getSignedValue(),
+                                 "β");
           var z = new Real();)
     {
       z.set(RealConstants.π);
       var                                                context   = new Context(p,
                                                                                  q,
-                                                                                 α.set(1.5, 0.75, -3),
+                                                                                 α.set(1.5,
+                                                                                       0.75,
+                                                                                       -3),
                                                                                  β.set(1),
                                                                                  z.setName("z"));
 
@@ -139,43 +177,57 @@ public class HypergeometricFunctionTest
                                                                                       context);
       var                                                summand   = prototype.instantiate();
 
-      Real                                               res       = summand.evaluate(new Integer(3),
+      Real                                               res       = summand.evaluate(new Integer(
+                                                                                                  3),
                                                                                       1,
                                                                                       128,
                                                                                       new Real());
-      assertEquals(-244.81029976584379503781836652101052755, res.doubleValue());
+      assertEquals(-244.81029976584379503781836652101052755,
+                   res.doubleValue());
     }
   }
 
-  public void testSummandComplex()
+  public void
+         testSummandComplex()
   {
     try ( var p = new Integer(3,
                               "p");
           var q = new Integer(1,
                               "q");
-          var α = Real.newVector(p.getSignedValue(), "α"); var β = Real.newVector(q.getSignedValue(), "β");
+          var α = Real.newVector(p.getSignedValue(),
+                                 "α");
+          var β = Real.newVector(q.getSignedValue(),
+                                 "β");
           var z = new Real();)
     {
       z.set(RealConstants.π);
       var                                                      context   = new Context(p,
                                                                                        q,
-                                                                                       α.set(1.5, 0.75, -3),
+                                                                                       α.set(1.5,
+                                                                                             0.75,
+                                                                                             -3),
                                                                                        β.set(1),
                                                                                        z.setName("z"));
 
-      Expression<Integer, Complex, Function<Integer, Complex>> prototype = Function.compile(Integer.class,
+      Expression<Integer, Complex, Function<Integer, Complex>> prototype = Function.compile(
+                                                                                            Integer.class,
                                                                                             Complex.class,
                                                                                             Function.class,
                                                                                             "n➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q})",
                                                                                             context);
       var                                                      summand   = prototype.instantiate();
 
-      Complex                                                  res       = summand.evaluate(new Integer(3),
+      Complex                                                  res       = summand.evaluate(
+                                                                                            new Integer(3),
                                                                                             1,
                                                                                             128,
                                                                                             new Complex());
-      assertEquals(-244.81029976584379503781836652101052755, res.re().doubleValue());
-      assertEquals(0.0, res.im().doubleValue());
+      assertEquals(-244.81029976584379503781836652101052755,
+                   res.re()
+                      .doubleValue());
+      assertEquals(0.0,
+                   res.im()
+                      .doubleValue());
 
     }
   }

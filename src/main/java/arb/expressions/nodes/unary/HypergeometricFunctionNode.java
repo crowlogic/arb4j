@@ -104,7 +104,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     hypergeometricFunctionClass     = isRational ? RationalHypergeometricFunction.class : isReal
                                                                                                  ? RealPolynomialHypergeometricFunction.class
                                                  : ComplexPolynomialHypergeometricFunction.class;
-    hypergeometricFunctionFieldName = expression.newIntermediateVariable("hypxs",
+    hypergeometricFunctionFieldName = expression.newIntermediateVariable("hyp",
                                                                          hypergeometricFunctionClass,
                                                                          true);
 
@@ -132,14 +132,13 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                  dependsOnInput);
     }
 
-    // hypergeometricFunctionFieldName =
-    // expression.newIntermediateVariable(hypergeometricFunctionClass);
-    // expression.loadThisFieldOntoStack(mv, hypergeometricFunctionFieldName,
-    // hypergeometricFunctionClass);
+    expression.loadThisFieldOntoStack(mv,
+                                      hypergeometricFunctionFieldName,
+                                      hypergeometricFunctionClass);
 
-    mv.visitTypeInsn(Opcodes.NEW,
-                     Type.getInternalName(hypergeometricFunctionClass));
-    duplicateTopOfTheStack(mv);
+//    mv.visitTypeInsn(Opcodes.NEW,
+//                     Type.getInternalName(hypergeometricFunctionClass));
+//    duplicateTopOfTheStack(mv);
 
     α.generate(mv,
                scalarType);
@@ -155,11 +154,13 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                        "parse",
                        Expression.class,
                        String.class);
-    invokeConstructor(mv,
-                      hypergeometricFunctionClass,
-                      scalarType,
-                      scalarType,
-                      Expression.class);
+    invokeVirtualMethod(mv,
+                        hypergeometricFunctionClass,
+                        "init",
+                        hypergeometricFunctionClass,
+                        scalarType,
+                        scalarType,
+                        Expression.class);
     mv.visitInsn(ACONST_NULL);
     mv.visitLdcInsn(1);
     loadBitsOntoStack(mv);

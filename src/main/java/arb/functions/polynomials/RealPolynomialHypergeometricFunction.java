@@ -80,15 +80,15 @@ public class RealPolynomialHypergeometricFunction implements
                                               Expression<Object, RealPolynomial,
                                               RealPolynomialNullaryFunction> arg)
   {
-    this(Real.newVector(p),
+    init(Real.newVector(p),
          Real.newVector(q),
          arg);
   }
 
-  public RealPolynomialHypergeometricFunction(Real α,
-                                              Real β,
-                                              Expression<Object, RealPolynomial,
-                                              RealPolynomialNullaryFunction> arg)
+  public RealPolynomialHypergeometricFunction
+         init(Real α,
+              Real β,
+              Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> arg)
   {
     this.α  = α;
     this.β  = β;
@@ -107,6 +107,8 @@ public class RealPolynomialHypergeometricFunction implements
                                             context)
                                      .substitute("z",
                                                  arg);
+    
+    return this;
   }
 
   @Override
