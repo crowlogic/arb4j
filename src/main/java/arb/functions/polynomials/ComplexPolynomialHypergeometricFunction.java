@@ -28,7 +28,7 @@ public class ComplexPolynomialHypergeometricFunction implements
                                                      Verifiable
 {
 
-  public final Context                                                           context;
+  public Context                                                                 context;
 
   private ComplexPolynomialNullaryFunction                                       f;
 
@@ -37,17 +37,22 @@ public class ComplexPolynomialHypergeometricFunction implements
   boolean                                                                        initialized                     =
                                                                                              false;
 
-  private Integer                                                                N;
+  public Integer                                                                 N;
 
-  public final Integer                                                           p, q;
+  public Integer                                                                 p, q;
 
-  public final Complex                                                           α, β;
+  public Complex                                                                 α, β;
 
   public static final Predicate<
   ? super Complex>                                                               complexNegativeIntegerPredicate =
                                                                                                                  z -> Real.isNegativeInteger.test(z.re())
                                                                                                                       && z.im()
                                                                                                                           .isZero();
+
+  public ComplexPolynomialHypergeometricFunction()
+  {
+
+  }
 
   public ComplexPolynomialHypergeometricFunction(int p,
                                                  int q,
