@@ -51,10 +51,12 @@ import arb.functions.complex.trigonometric.RealPolynomialNullaryFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealPolynomialHypergeometricFunction implements RealPolynomialNullaryFunction, Verifiable
+public class RealPolynomialHypergeometricFunction implements
+                                                  RealPolynomialNullaryFunction,
+                                                  Verifiable
 {
 
-  public final Context                                                     context;
+  public Context                                                           context;
 
   private RealPolynomialNullaryFunction                                    f;
 
@@ -64,13 +66,19 @@ public class RealPolynomialHypergeometricFunction implements RealPolynomialNulla
 
   private Integer                                                          N;
 
-  public final Integer                                                     p, q;
+  public Integer                                                           p, q;
 
-  public final Real                                                        α, β;
+  public Real                                                              α, β;
+
+  public RealPolynomialHypergeometricFunction()
+  {
+
+  }
 
   public RealPolynomialHypergeometricFunction(int p,
                                               int q,
-                                              Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> arg)
+                                              Expression<Object, RealPolynomial,
+                                              RealPolynomialNullaryFunction> arg)
   {
     this(Real.newVector(p),
          Real.newVector(q),
@@ -79,7 +87,8 @@ public class RealPolynomialHypergeometricFunction implements RealPolynomialNulla
 
   public RealPolynomialHypergeometricFunction(Real α,
                                               Real β,
-                                              Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> arg)
+                                              Expression<Object, RealPolynomial,
+                                              RealPolynomialNullaryFunction> arg)
   {
     this.α  = α;
     this.β  = β;
@@ -90,14 +99,19 @@ public class RealPolynomialHypergeometricFunction implements RealPolynomialNulla
                           α.setName("α"),
                           β.setName("β"));
 
-    context.registerVariable("N", N = new Integer());
+    context.registerVariable("N",
+                             N = new Integer());
 
-    F = RealPolynomialNullaryFunction.parse("F", "Σn➔zⁿ⋅∏k➔αₖ₍ₙ₎{k=1…p}/(n!⋅∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}", context)
-                                     .substitute("z", arg);
+    F = RealPolynomialNullaryFunction.parse("F",
+                                            "Σn➔zⁿ⋅∏k➔αₖ₍ₙ₎{k=1…p}/(n!⋅∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}",
+                                            context)
+                                     .substitute("z",
+                                                 arg);
   }
 
   @Override
-  public void close()
+  public void
+         close()
   {
     p.close();
     q.close();
@@ -106,7 +120,8 @@ public class RealPolynomialHypergeometricFunction implements RealPolynomialNulla
     N.close();
   }
 
-  public Integer determineDegree()
+  public Integer
+         determineDegree()
   {
     return α.stream()
             .filter(Real.isNegativeInteger)
@@ -118,23 +133,31 @@ public class RealPolynomialHypergeometricFunction implements RealPolynomialNulla
   }
 
   @Override
-  public RealPolynomial evaluate(Object nullary, int order, int bits, RealPolynomial res)
+  public RealPolynomial
+         evaluate(Object nullary,
+                  int order,
+                  int bits,
+                  RealPolynomial res)
   {
     if (!initialized)
     {
       initialize();
     }
 
-    return f.evaluate(nullary, order, bits, res);
+    return f.evaluate(nullary,
+                      order,
+                      bits,
+                      res);
   }
 
-  public void initialize()
+  public void
+         initialize()
   {
     if (!verify())
     {
       α.printPrecision = true;
       throw new ArbException("at least one of the upper parameters must be a non-negative integer but there is none among "
-                    + α);
+                             + α);
     }
 
     f = F.instantiate();
@@ -151,9 +174,11 @@ public class RealPolynomialHypergeometricFunction implements RealPolynomialNulla
    *         no negative integers or zero in the denominator
    */
   @Override
-  public boolean verify()
+  public boolean
+         verify()
   {
-    return α.stream().anyMatch(Real.isNegativeInteger);
+    return α.stream()
+            .anyMatch(Real.isNegativeInteger);
   }
 
 }

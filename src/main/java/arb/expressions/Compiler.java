@@ -19,6 +19,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.functions.Function;
+import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
 import arb.functions.rational.RationalHypergeometricFunction;
 import arb.functions.sequences.LommelPolynomialSequence;
 import arb.utensils.Utensils;
@@ -326,6 +327,7 @@ public class Compiler
     typePrefixes.put(Fraction.class, "f");
     typePrefixes.put(LommelPolynomialSequence.class, "qR");
     typePrefixes.put(RationalHypergeometricFunction.class, "qF");
+    typePrefixes.put(RealPolynomialHypergeometricFunction.class, "XℝF");
   }
 
   public static String getVariablePrefix(Class<?> type)

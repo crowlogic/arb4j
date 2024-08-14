@@ -28,27 +28,31 @@ import arb.functions.rational.RationalNullaryFunction;
 
 /**
  * The numerator α and the denominator β parameters can be specified via the
- * {@link VectorNode} syntax like F([1,n,1+n],[1],x) or symbolically like F(α,β,x)
- * where α and β are {@link Real}s or {@link RealPolynomial}s for instance where
- * if they are {@link RealPolynomial}s then the coeffecients of the polynomial
- * are regarded as the parameters of the numerator or denominator
+ * {@link VectorNode} syntax like F([1,n,1+n],[1],x) or symbolically like
+ * F(α,β,x) where α and β are {@link Real}s or {@link RealPolynomial}s for
+ * instance where if they are {@link RealPolynomial}s then the coeffecients of
+ * the polynomial are regarded as the parameters of the numerator or denominator
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? extends R>>
-                                   extends
-                                   FunctionCallNode<D, R, F>
+public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
+                                       FunctionCallNode<D, R, F>
 {
 
   @Override
-  public String toString()
+  public String
+         toString()
   {
-    return String.format("pFq(%s,%s;%s)", α, β, arg);
+    return String.format("pFq(%s,%s;%s)",
+                         α,
+                         β,
+                         arg);
   }
 
   @Override
-  public String typeset()
+  public String
+         typeset()
   {
     return String.format("{_%sF_%s}\\left(%s, %s ; %s\\right)",
                          α.dim(),
@@ -58,15 +62,21 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                          arg.typeset());
   }
 
-  Node<D, R, F>    α;
+  Node<D, R, F>        α;
 
-  Node<D, R, F>    β;
+  Node<D, R, F>        β;
 
-  private Class<?> hypergeometricFunctionClass;
+  private Class<?>     hypergeometricFunctionClass;
 
-  private boolean  dependsOnInput;
+  private boolean      dependsOnInput;
 
-  private String hypergeometricFunctionFieldName;
+  private String       hypergeometricFunctionFieldName;
+
+  public final boolean isRational;
+
+  public boolean       isReal;
+
+  private Class<?>     scalarType;
 
   public HypergeometricFunctionNode(Expression<D, R, F> expression)
   {
@@ -74,11 +84,32 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
           null,
           expression);
     α   = expression.resolve();
-    β   = expression.require(',').resolve();
-    arg = expression.require(',', ';').resolve();
+    β   = expression.require(',')
+                    .resolve();
+    arg = expression.require(',',
+                             ';')
+                    .resolve();
     expression.require(')');
+    scalarType = Compiler.scalarType(expression.coDomainType);
 
-    dependsOnInput = α.dependsOn(expression.independentVariable) || β.dependsOn(expression.independentVariable);
+    isRational = RationalFunction.class.isAssignableFrom(expression.coDomainType);
+    if (Expression.trace)
+    {
+      err.printf("pFq.isRational=%s\n",
+                 isRational);
+    }
+
+    isReal                          = Real.class.equals(scalarType);
+
+    hypergeometricFunctionClass     = isRational ? RationalHypergeometricFunction.class : isReal
+                                                                                                 ? RealPolynomialHypergeometricFunction.class
+                                                 : ComplexPolynomialHypergeometricFunction.class;
+    hypergeometricFunctionFieldName = expression.newIntermediateVariable("hypxs",
+                                                                         hypergeometricFunctionClass,
+                                                                         true);
+
+    dependsOnInput                  = α.dependsOn(expression.independentVariable)
+                                      || β.dependsOn(expression.independentVariable);
   }
 
   /**
@@ -90,45 +121,50 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
    * HOW: See {@link LommelPolynomialNode} for an example
    */
   @Override
-  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
+  public MethodVisitor
+         generate(MethodVisitor mv,
+                  Class<?> resultType)
   {
     if (Expression.trace)
     {
-      err.printf("pFq.generate(resultType=%s dependsOnInput=%s\n)\n", resultType, dependsOnInput);
-    }
-    Class<?> scalarType = Compiler.scalarType(resultType);
-
-    boolean  isRational = RationalFunction.class.isAssignableFrom(resultType);
-    if (Expression.trace)
-    {
-      err.printf("pFq.isRational=%s\n", isRational);
+      err.printf("pFq.generate(resultType=%s dependsOnInput=%s\n)\n",
+                 resultType,
+                 dependsOnInput);
     }
 
-    boolean isReal = Real.class.equals(scalarType);
+    // hypergeometricFunctionFieldName =
+    // expression.newIntermediateVariable(hypergeometricFunctionClass);
+    // expression.loadThisFieldOntoStack(mv, hypergeometricFunctionFieldName,
+    // hypergeometricFunctionClass);
 
-    hypergeometricFunctionClass = isRational ? RationalHypergeometricFunction.class
-                                             : isReal ? RealPolynomialHypergeometricFunction.class
-                                             : ComplexPolynomialHypergeometricFunction.class;
-
-    //hypergeometricFunctionFieldName = expression.newIntermediateVariable(hypergeometricFunctionClass);
-    //expression.loadThisFieldOntoStack(mv, hypergeometricFunctionFieldName, hypergeometricFunctionClass);
-    
-    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(hypergeometricFunctionClass));
+    mv.visitTypeInsn(Opcodes.NEW,
+                     Type.getInternalName(hypergeometricFunctionClass));
     duplicateTopOfTheStack(mv);
 
-    α.generate(mv, scalarType);
-    β.generate(mv, scalarType);
+    α.generate(mv,
+               scalarType);
+    β.generate(mv,
+               scalarType);
 
     mv.visitLdcInsn(arg.toString());
-    Class<?> nullaryFunctionClass = isRational ? RationalNullaryFunction.class
-                                               : isReal ? RealPolynomialNullaryFunction.class
+    Class<?> nullaryFunctionClass = isRational ? RationalNullaryFunction.class : isReal
+                                                                                        ? RealPolynomialNullaryFunction.class
                                                : ComplexPolynomialNullaryFunction.class;
-    invokeStaticMethod(mv, nullaryFunctionClass, "parse", Expression.class, String.class);
-    invokeConstructor(mv, hypergeometricFunctionClass, scalarType, scalarType, Expression.class);
+    invokeStaticMethod(mv,
+                       nullaryFunctionClass,
+                       "parse",
+                       Expression.class,
+                       String.class);
+    invokeConstructor(mv,
+                      hypergeometricFunctionClass,
+                      scalarType,
+                      scalarType,
+                      Expression.class);
     mv.visitInsn(ACONST_NULL);
     mv.visitLdcInsn(1);
     loadBitsOntoStack(mv);
-    loadOutputOntoStack(mv, resultType);
+    loadOutputOntoStack(mv,
+                        resultType);
     invokeMethod(mv,
                  INVOKEVIRTUAL,
                  hypergeometricFunctionClass,
@@ -141,20 +177,25 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     return mv;
   }
 
-  public void loadOutputOntoStack(MethodVisitor mv, Class<?> resultType)
+  public void
+         loadOutputOntoStack(MethodVisitor mv,
+                             Class<?> resultType)
   {
     if (isResult)
     {
-      checkClassCast(loadResultParameter(mv), resultType);
+      checkClassCast(loadResultParameter(mv),
+                     resultType);
     }
     else
     {
 
-      expression.allocateIntermediateVariable(mv, resultType);
+      expression.allocateIntermediateVariable(mv,
+                                              resultType);
     }
   }
 
-  public void loadBitsOntoStack(MethodVisitor mv)
+  public void
+         loadBitsOntoStack(MethodVisitor mv)
   {
     if (expression.insideInitializer)
     {
