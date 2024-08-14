@@ -15,15 +15,22 @@ import arb.functions.NullaryFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface RationalNullaryFunction extends NullaryFunction<RationalFunction>
+public interface RationalNullaryFunction extends
+                                         NullaryFunction<RationalFunction>
 {
 
-  public static Expression<Object, RationalFunction, RationalNullaryFunction> parse(String string)
+  public static Expression<Object, RationalFunction, RationalNullaryFunction>
+         parse(String string)
   {
-    return parse(null, string, null);
+    return parse(null,
+                 string,
+                 null);
   }
 
-  public static RationalNullaryFunction express(String functionName, String expression, Context context)
+  public static RationalNullaryFunction
+         express(String functionName,
+                 String expression,
+                 Context context)
   {
     return Function.instantiate(expression,
                                 context,
@@ -33,19 +40,31 @@ public interface RationalNullaryFunction extends NullaryFunction<RationalFunctio
                                 functionName);
   }
 
-  public static RationalNullaryFunction express(String expression, Context context)
+  public static RationalNullaryFunction
+         express(String expression,
+                 Context context)
   {
-    return express(null, expression, context);
+    return express(null,
+                   expression,
+                   context);
   }
 
-  public static RationalNullaryFunction express(String expression)
+  public static RationalNullaryFunction
+         express(String expression)
   {
-    return express(null, expression, null);
+    return express(null,
+                   expression,
+                   null);
   }
 
-  public static RationalNullaryExpression parse(String functionName, String expression, Context context)
+  public static RationalNullaryExpression
+         parse(String functionName,
+               String expression,
+               Context context)
   {
-    RationalNullaryExpression expr = new RationalNullaryExpression(functionName != null ? functionName : Parser.expressionToUniqueClassname(expression),
+    RationalNullaryExpression expr = new RationalNullaryExpression(functionName != null
+                                                                                        ? functionName
+                                                                                        : Parser.expressionToUniqueClassname(expression),
                                                                    Object.class,
                                                                    RationalFunction.class,
                                                                    RationalNullaryFunction.class,
@@ -57,7 +76,9 @@ public interface RationalNullaryFunction extends NullaryFunction<RationalFunctio
   }
 
   public static Expression<Object, RationalFunction, RationalNullaryFunction>
-         compile(String functionName, String expression, Context context)
+         compile(String functionName,
+                 String expression,
+                 Context context)
   {
     return Compiler.compile(functionName,
                             expression,

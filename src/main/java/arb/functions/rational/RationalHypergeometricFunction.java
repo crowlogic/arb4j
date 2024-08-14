@@ -21,7 +21,6 @@ import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ArbException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.expressions.RationalNullaryExpression;
 
 /**
  * Represents a finite hypergeometric series as <br>
@@ -60,41 +59,52 @@ import arb.expressions.RationalNullaryExpression;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RationalHypergeometricFunction implements RationalNullaryFunction, Verifiable
+public class RationalHypergeometricFunction implements
+                                            RationalNullaryFunction,
+                                            Verifiable
 {
 
-  public static final String                  pFq                      = "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}";
+  public static final String                                           pFq                      =
+                                                                           "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}";
 
-  public Context                              context;
+  public Context                                                       context;
 
-  public RationalNullaryFunction              f;
+  public RationalNullaryFunction                                       f;
 
-  public RationalNullaryExpression            F;
+  public Expression<Object, RationalFunction, RationalNullaryFunction> F;
 
-  boolean                                     initialized              = false;
+  boolean                                                              initialized              =
+                                                                                   false;
 
-  private Integer                             N;
+  private Integer                                                      N;
 
-  public Integer                              p, q;
+  public Integer                                                       p, q;
 
-  public Real                                 α, β;
+  public Real                                                          α, β;
 
-  public final Arena                          arena                    = Arena.ofShared();
+  public final Arena                                                   arena                    =
+                                                                             Arena.ofShared();
 
-  public static final Predicate<? super Real> negativeIntegerPredicate = z -> Real.isNegativeInteger.test(z)
-                || z.isZero();
+  public static final Predicate<? super Real>                          negativeIntegerPredicate =
+                                                                                                z -> Real.isNegativeInteger.test(z)
+                                                                                                     || z.isZero();
 
-  public void init(Fraction α, Fraction β, Expression<Object, RationalFunction, RationalNullaryFunction> arg)
+  public void
+         init(Fraction α,
+              Fraction β,
+              Expression<Object, RationalFunction, RationalNullaryFunction> arg)
   {
     this.α = Real.newVector(α.dim);
     for (int i = 0; i < α.dim; i++)
     {
-      this.α.get(i).set(α.get(i));
+      this.α.get(i)
+            .set(α.get(i));
     }
     this.β = Real.newVector(β.dim);
     for (int i = 0; i < β.dim; i++)
     {
-      this.β.get(i).set(β.get(i));
+      this.β.get(i)
+            .set(β.get(i));
     }
 
     context = new Context(p = new Integer(α.dim,
@@ -104,11 +114,15 @@ public class RationalHypergeometricFunction implements RationalNullaryFunction, 
                           this.α.setName("α"),
                           this.β.setName("β"));
 
-    context.registerVariable("N", N = new Integer());
+    context.registerVariable("N",
+                             N = new Integer());
 
-    F = RationalNullaryFunction.parse("F", RationalHypergeometricFunction.pFq, context).substitute("z", arg);
+    F = RationalNullaryFunction.parse("F",
+                                      RationalHypergeometricFunction.pFq,
+                                      context);
+    F = F.substitute("z",
+                     arg);
   }
-
 
   public RationalHypergeometricFunction()
   {
@@ -117,13 +131,17 @@ public class RationalHypergeometricFunction implements RationalNullaryFunction, 
 
   public RationalHypergeometricFunction(Fraction α,
                                         Fraction β,
-                                        Expression<Object, RationalFunction, RationalNullaryFunction> arg)
+                                        Expression<Object, RationalFunction,
+                                        RationalNullaryFunction> arg)
   {
-    init(α, β, arg);
+    init(α,
+         β,
+         arg);
   }
 
   @Override
-  public void close()
+  public void
+         close()
   {
     p.close();
     q.close();
@@ -133,7 +151,8 @@ public class RationalHypergeometricFunction implements RationalNullaryFunction, 
     arena.close();
   }
 
-  public Integer determineDegree()
+  public Integer
+         determineDegree()
   {
     return α.stream()
             .filter(negativeIntegerPredicate)
@@ -145,25 +164,33 @@ public class RationalHypergeometricFunction implements RationalNullaryFunction, 
   }
 
   @Override
-  public RationalFunction evaluate(Object nullary, int order, int bits, RationalFunction res)
+  public RationalFunction
+         evaluate(Object nullary,
+                  int order,
+                  int bits,
+                  RationalFunction res)
   {
     if (!initialized)
     {
       initialize();
     }
 
-    f.evaluate(nullary, order, bits, res);
+    f.evaluate(nullary,
+               order,
+               bits,
+               res);
     return res;
   }
 
-  public void initialize()
+  public void
+         initialize()
   {
     assert !initialized : "already initialized";
     if (!verify())
     {
       α.printPrecision = true;
       throw new ArbException("at least one of the upper parameters must be a non-negative integer but there is none among "
-                    + α);
+                             + α);
     }
 
     f = F.instantiate();
@@ -180,9 +207,11 @@ public class RationalHypergeometricFunction implements RationalNullaryFunction, 
    *         no negative integers or zero in the denominator
    */
   @Override
-  public boolean verify()
+  public boolean
+         verify()
   {
-    return α.stream().anyMatch(negativeIntegerPredicate);
+    return α.stream()
+            .anyMatch(negativeIntegerPredicate);
   }
 
 }
