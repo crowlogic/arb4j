@@ -1,12 +1,14 @@
 package arb.expressions.nodes.unary;
 
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.duplicateTopOfTheStack;
 import static arb.expressions.Compiler.invokeStaticMethod;
 import static arb.expressions.Compiler.loadResultParameter;
 import static java.lang.String.format;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.Real;
+import arb.Integer;
 import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -17,38 +19,69 @@ import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 
 /**
- *
+ * <pre>
+ * Binomial Coefficient
+ * 
+ * Syntax: ℭ(n,k) where n is the number of combinations and k is the number of
+ * choices
+ * </pre>
+ * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? extends R>>
-                                    extends
+public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                     FunctionCallNode<D, R, F>
 {
   @Override
-  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
+  public MethodVisitor
+         generate(MethodVisitor mv,
+                  Class<?> resultType)
   {
-    loadResultParameter(mv);
-    loadPointer(mv);
+    loadPointer(checkClassCast(duplicateTopOfTheStack(loadResultParameter(mv)),
+                               Integer.class));
 
-    combinations.generate(mv, Integer.class);
-    loadPointer(mv);
+    loadUnsignedValue(combinations.generate(mv,
+                                            Integer.class));
 
-    choices.generate(mv, Integer.class);
-    loadPointer(mv);
+    loadUnsignedValue(choices.generate(mv,
+                                       Integer.class));
 
-    return invokeStaticMethod(mv, arblib.class, "fmpz_bin_uiui", Void.class, long.class, long.class, long.class);
+    return invokeStaticMethod(mv,
+                              arblib.class,
+                              "fmpz_bin_uiui",
+                              Void.class,
+                              long.class,
+                              long.class,
+                              long.class);
   }
 
-  public void loadPointer(MethodVisitor mv)
+  public static MethodVisitor
+         loadUnsignedValue(MethodVisitor mv)
   {
-    Compiler.getField(mv, Integer.class, "swigCPtr", long.class);
+    Compiler.invokeVirtualMethod(mv,
+                                 Integer.class,
+                                 "getUnsignedValue",
+                                 long.class);
+    return mv;
+  }
+
+  public static MethodVisitor
+         loadPointer(MethodVisitor mv)
+  {
+    Compiler.getField(mv,
+                      Integer.class,
+                      "swigCPtr",
+                      long.class);
+    return mv;
   }
 
   @Override
-  public String toString()
+  public String
+         toString()
   {
-    return String.format("ℭ(%s,%s)", combinations, choices);
+    return String.format("ℭ(%s,%s)",
+                         combinations,
+                         choices);
   }
 
   public Node<D, R, F> combinations;
@@ -56,9 +89,12 @@ public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? ext
   public Node<D, R, F> choices;
 
   @Override
-  public String typeset()
+  public String
+         typeset()
   {
-    return format("\\binom{%s}{%s}", combinations.typeset(), choices.typeset());
+    return format("\\binom{%s}{%s}",
+                  combinations.typeset(),
+                  choices.typeset());
   }
 
   public BinomialCoefficientNode(Expression<D, R, F> expression)
@@ -67,7 +103,8 @@ public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? ext
           null,
           expression);
     combinations = expression.resolve();
-    choices      = expression.require(',').resolve();
+    choices      = expression.require(',')
+                             .resolve();
     expression.require(')');
   }
 
@@ -83,7 +120,8 @@ public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? ext
   }
 
   @Override
-  public Node<D, R, F> integral(Variable<D, R, F> variable)
+  public Node<D, R, F>
+         integral(Variable<D, R, F> variable)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
@@ -100,7 +138,8 @@ public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? ext
   }
 
   @Override
-  public Node<D, R, F> derivative(Variable<D, R, F> variable)
+  public Node<D, R, F>
+         derivative(Variable<D, R, F> variable)
   {
     assert false : "TODO";
     return null;

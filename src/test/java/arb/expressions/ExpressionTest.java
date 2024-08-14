@@ -30,8 +30,8 @@ public class ExpressionTest
   public void testBinomialCoefficient()
   {
     IntegerFunction f   = IntegerFunction.express("ℭ(5,n)");
-    Integer         hmm = f.eval(3);
-    assertEquals(10, hmm.getSignedValue());
+    Integer         permutations = f.eval(3);
+    assertEquals(10, permutations.getSignedValue());
   }
 
   public void testLommelPolynomialRealExpression()
