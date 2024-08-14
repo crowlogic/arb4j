@@ -331,7 +331,6 @@ public class Compiler
     typePrefixes.put(RationalHypergeometricFunction.class, "qF");
     typePrefixes.put(RealPolynomialHypergeometricFunction.class, "XℝF");
     typePrefixes.put(ComplexPolynomialHypergeometricFunction.class, "XℂF");
-    typePrefixes.put(Ring.class, "r");
   }
 
   public static String getVariablePrefix(Class<?> type)
