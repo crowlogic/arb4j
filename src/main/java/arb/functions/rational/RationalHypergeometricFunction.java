@@ -46,7 +46,7 @@ import arb.functions.HypergeometricFunction;
  *      {@link TheArb4jLibrary}
  */
 public class RationalHypergeometricFunction extends
-                                            HypergeometricFunction<RationalFunction,
+                                            HypergeometricFunction<Fraction, RationalFunction,
                                             RationalNullaryFunction>
 {
 
@@ -57,7 +57,10 @@ public class RationalHypergeometricFunction extends
                   int bits,
                   RationalFunction res)
   {
-    return super.evaluate(nullary, order, bits, res);
+    return super.evaluate(nullary,
+                          order,
+                          bits,
+                          res);
   }
 
   public RationalHypergeometricFunction
@@ -65,7 +68,8 @@ public class RationalHypergeometricFunction extends
               Fraction β,
               Expression<Object, RationalFunction, RationalNullaryFunction> arg)
   {
-    super.init(RationalFunction.class,
+    super.init(Fraction.class,
+               RationalFunction.class,
                RationalNullaryFunction.class,
                Real.newVector(α.dim),
                Real.newVector(β.dim),

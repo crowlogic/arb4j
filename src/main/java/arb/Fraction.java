@@ -45,7 +45,7 @@ import java.util.stream.Stream;
  *      {@link TheArb4jLibrary}
  */
 
-public class Fraction implements AutoCloseable,Field<Fraction>,Named,Verifiable {
+public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 

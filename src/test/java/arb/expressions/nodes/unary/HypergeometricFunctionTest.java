@@ -8,8 +8,8 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
-import arb.functions.complex.trigonometric.RealPolynomialNullaryFunction;
 import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
+import arb.functions.polynomials.RealPolynomialNullaryFunction;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
@@ -29,14 +29,14 @@ public class HypergeometricFunctionTest extends
     try ( RealPolynomialHypergeometricFunction poly = new RealPolynomialHypergeometricFunction())
     {
 
-      poly.init(RealPolynomial.class,
+      poly.init(Real.class,
+                RealPolynomial.class,
                 RealPolynomialNullaryFunction.class,
                 Real.newVector(-2,
                                3.5,
                                1),
                 Real.newVector(2,
-                               4),
-                RealPolynomialNullaryFunction.parse("1/2-x/2"));
+                               4), RealPolynomialNullaryFunction.parse("1/2-x/2"));
 
       RealPolynomial expressed = poly.evaluate(bits,
                                                new RealPolynomial());

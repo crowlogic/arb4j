@@ -8,7 +8,6 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.functions.HypergeometricFunction;
-import arb.functions.complex.trigonometric.RealPolynomialNullaryFunction;
 
 /**
  * Represents a hypergeometric {@link Real}-valued {@link Polynomial}, that is,
@@ -48,7 +47,7 @@ import arb.functions.complex.trigonometric.RealPolynomialNullaryFunction;
  *      {@link TheArb4jLibrary}
  */
 public class RealPolynomialHypergeometricFunction extends
-                                                  HypergeometricFunction<RealPolynomial,
+                                                  HypergeometricFunction<Real, RealPolynomial,
                                                   RealPolynomialNullaryFunction>
 {
 
@@ -57,7 +56,8 @@ public class RealPolynomialHypergeometricFunction extends
               Real beta,
               Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> arg)
   {
-    init(RealPolynomial.class,
+    init(Real.class,
+         RealPolynomial.class,
          RealPolynomialNullaryFunction.class,
          alpha,
          beta,
@@ -70,7 +70,8 @@ public class RealPolynomialHypergeometricFunction extends
                                               Expression<Object, RealPolynomial,
                                               RealPolynomialNullaryFunction> arg)
   {
-    init(RealPolynomial.class,
+    init(Real.class,
+         RealPolynomial.class,
          RealPolynomialNullaryFunction.class,
          Real.newVector(i),
          Real.newVector(j),
@@ -79,6 +80,19 @@ public class RealPolynomialHypergeometricFunction extends
 
   public RealPolynomialHypergeometricFunction()
   {
+  }
+
+  @Override
+  public RealPolynomial
+         evaluate(Object nullary,
+                  int order,
+                  int bits,
+                  RealPolynomial res)
+  {
+    return super.evaluate(nullary,
+                          order,
+                          bits,
+                          res);
   }
 
 }

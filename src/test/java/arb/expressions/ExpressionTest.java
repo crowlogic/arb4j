@@ -10,7 +10,7 @@ import arb.exceptions.CompilerException;
 import arb.functions.Function;
 import arb.functions.IntegerFunction;
 import arb.functions.complex.ComplexNullaryFunction;
-import arb.functions.complex.trigonometric.RealPolynomialNullaryFunction;
+import arb.functions.polynomials.RealPolynomialNullaryFunction;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;

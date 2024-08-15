@@ -31,4 +31,11 @@ public interface NamedRing<A extends NamedRing<A>> extends
     return null;
   }
 
+  public default NamedRing<A>
+         set(Real alpha)
+  {
+    assert false : "todo: implement set(" + alpha + ")";
+    return this;
+  }
+
 }

@@ -380,6 +380,8 @@ import arb.utensils.Utensils;
 
   public Integer integerValue(Integer integer)
   {
+    assert swigCPtr != 0 : "this=null pointer";
+    assert integer.swigCPtr != 0 : "argument has a null pointer";
     arblib.arb_get_unique_fmpz(integer.swigCPtr, this);
     return integer;
   }

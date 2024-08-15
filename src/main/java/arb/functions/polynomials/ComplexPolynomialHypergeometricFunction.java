@@ -15,7 +15,8 @@ import arb.functions.complex.ComplexPolynomialNullaryFunction;
  *      {@link TheArb4jLibrary}
  */
 public class ComplexPolynomialHypergeometricFunction extends
-                                                     HypergeometricFunction<ComplexPolynomial,
+                                                     HypergeometricFunction<Complex,
+                                                     ComplexPolynomial,
                                                      ComplexPolynomialNullaryFunction> implements
                                                      Verifiable
 {
@@ -25,11 +26,14 @@ public class ComplexPolynomialHypergeometricFunction extends
               Complex beta,
               Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> arg)
   {
-    init(ComplexPolynomial.class,
+    init(Complex.class,
+         ComplexPolynomial.class,
          ComplexPolynomialNullaryFunction.class,
-         alpha,
-         beta,
+         alpha.size(),
+         beta.size(),
          arg);
+    this.α.set(alpha);
+    this.β.set(beta);
     return this;
   }
 
@@ -38,10 +42,11 @@ public class ComplexPolynomialHypergeometricFunction extends
                                                  Expression<Object, ComplexPolynomial,
                                                  ComplexPolynomialNullaryFunction> arg)
   {
-    init(ComplexPolynomial.class,
+    init(Complex.class,
+         ComplexPolynomial.class,
          ComplexPolynomialNullaryFunction.class,
-         Complex.newVector(i),
-         Complex.newVector(j),
+         i,
+         j,
          arg);
   }
 
