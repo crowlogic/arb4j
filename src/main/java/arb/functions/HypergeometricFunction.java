@@ -58,6 +58,21 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
                                             Verifiable
 {
 
+  @Override
+  public String toString()
+  {
+    return String.format("HypergeometricFunction [context=%s, f=%s, F=%s, initialized=%s, N=%s, p=%s, q=%s, α=%s, β=%s]",
+                         context,
+                         f,
+                         F,
+                         initialized,
+                         N,
+                         p,
+                         q,
+                         α,
+                         β);
+  }
+
   public Context                  context;
 
   public N                        f;
@@ -107,11 +122,12 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
                                               Fraction beta,
                                               Expression<Object, C, N> arg)
   {
+    assert false : "damn";
     this.α = (P) Real.newVector(alpha.dim());
     this.β = (P) Real.newVector(beta.dim());
     this.α.set(alpha);
     this.β.set(beta);
-    System.out.println(this.α + " beta=" + this.β);
+    System.out.println("alpha=" + this.α + " beta=" + this.β);
     initializeContext();
 
     F = NullaryFunction.parse(elementType,
@@ -120,7 +136,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
                               "Σn➔zⁿ⋅∏k➔αₖ₍ₙ₎{k=1…p}/(n!⋅∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}",
                               context);
     F = F.substitute("z", arg);
-    F.compile();
+   // F.compile();
 
     return this;
   }

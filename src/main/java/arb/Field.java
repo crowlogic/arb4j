@@ -182,8 +182,8 @@ public interface Field<X extends Field<X>> extends
              int prec,
              X result);
 
-  public X
-         get(int index);
+  public <E> E get(int i);
+
 
   public String
          getName();

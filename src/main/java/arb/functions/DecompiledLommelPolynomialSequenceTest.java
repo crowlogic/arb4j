@@ -63,11 +63,13 @@ public class DecompiledLommelPolynomialSequenceTest implements
 
     System.out.format("numer=%s\ndenom=%s\n", numerator, denominator);
 
-    RationalFunction element = hypqF1
-                                     .init(numerator,
-                                           denominator,
-                                           RationalNullaryFunction.parse("-z^2"))
-                                     .evaluate(null, 1, bits, q5);
+    RationalHypergeometricFunction f = hypqF1.init(numerator,
+                                                   denominator,
+                                                   RationalNullaryFunction.parse("-z^2"));
+
+    System.out.println("f=" + f);
+    RationalFunction element = f.evaluate(null, 1, bits, q5);
+    System.out.println("element=" + element);
 
     return v.ascendingFactorial(n, bits, ℝ1)
             .mul(q1.identity().div(cℤ1, bits, q2).pow(n.neg(ℤ1), bits, q3), bits, q4)
