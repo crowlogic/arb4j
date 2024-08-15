@@ -87,61 +87,18 @@
     Theorem> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-19><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|8 Fredholm's
-    Theorem of Alternative> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-20><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Proof of
-    Theorem> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-21><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|8 Fredholm's
-    Theorem of Alternative> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-22><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|9 Spectral
-    Theorem for Compact Self-Adjoint Operators>
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-23><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Proof>
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-24><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|8 Fredholm's
-    Theorem of Alternative> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-25><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|9 Spectral
-    Theorem for Compact Self-Adjoint Operators>
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-26><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|8 Fredholm's
-    Theorem of Alternative> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-27><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|8 Fredholm's
-    Theorem of Alternative> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-28><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|9 Spectral
-    Theorem for Compact Self-Adjoint Operators>
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-29><vspace|0.5fn>
-
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|10 Singular
     value decomposition and some basic results>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-30><vspace|0.5fn>
+    <no-break><pageref|auto-20><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|11 A numerical
     illustration> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-31><vspace|0.5fn>
+    <no-break><pageref|auto-21><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-32><vspace|0.5fn>
+    <no-break><pageref|auto-22><vspace|0.5fn>
   </table-of-contents>
 
   <section|Introduction>
@@ -536,390 +493,6 @@
   <math|T>. That is, if a non-zero <math|\<lambda\>\<in\>\<sigma\><around|(|T|)>>
   then operator <math|T-\<lambda\>*I> cannot have a dense range.
 
-  <section*|8 Fredholm's Theorem of Alternative>
-
-  The following well known result, known has Fredholm's theorem of
-  alternative, has great utility in applications to integral equations:
-
-  <\theorem>
-    Let <math|H> be a complex Hilbert space, and let
-    <math|T\<in\>B<around|[|H|]>> be compact and let <math|\<lambda\>> be a
-    nonzero complex number. Then, exactly one of the followings hold:
-
-    <\enumerate>
-      <item><math|T-\<lambda\>*I> is invertible
-
-      <item><math|\<lambda\>> is an eigenvalue of <math|T>.
-    </enumerate>
-  </theorem>
-
-  <with|font-series|bold|Proof:> Assume that the first statement in not true.
-  We show that <math|\<lambda\>\<in\>\<sigma\><rsub|p><around|(|T|)>>. We
-  have already seen that <math|\<lambda\>> cannot be in continuous spectrum
-  of <math|T>. Suppose now that <math|\<lambda\>\<in\>\<sigma\><rsub|r><around|(|T|)>>.
-  Then, Ran<math|<around|(|T-\<lambda\>*I|)>\<neq\>H>. Thus, there is a
-  non-zero <math|x\<in\><text|Ran><around|(|T-\<lambda\>*I|)><rsup|\<perp\>>=<text|Ker><around|(|T<rsup|\<ast\>>-\<lambda\>*I|)>>.
-  Now, by Lemma 7.2, Ran<math|<around|(|T<rsup|\<ast\>>-\<lambda\>*I|)>> is
-  closed and since <math|T<rsup|\<ast\>>-\<lambda\>*I> is not invertible, by
-  the same Lemma, Ran<math|<around|(|T<rsup|\<ast\>>-\<lambda\>*I|)>\<neq\>H>.
-  Therefore,
-
-  <\equation*>
-    <text|Ker><around|(|T-\<lambda\>*I|)>=<text|Ran><around|(|T<rsup|\<ast\>>-\<lambda\>*I|)><rsup|\<perp\>>\<neq\><around|{|0|}>.
-  </equation*>
-
-  That is, <math|\<lambda\>\<in\>\<sigma\><rsub|p><around|(|T|)>>,
-  contradicting the supposition that <math|\<lambda\>\<in\>\<sigma\><rsub|r><around|(|T|)>>.
-  Therefore, it follows that <math|\<lambda\>\<in\>\<sigma\><rsub|p><around|(|T|)>>
-
-  <section*|Proof of Theorem>
-
-  The proof of this result is standard. See e.g., [8] for a proof. Here we
-  just give the proof for the first statement of the theorem. Let
-  <math|M=<text|Ker><around|(|T-\<lambda\>*I|)>>. Note that since <math|T> is
-  continuous <math|M> is closed. Also, note that
-  <math|T\|<rsub|M>=\<lambda\>*I>. We show <math|M> is finite-dimensional by
-  showing that any bounded sequence in <math|M> has a convergent subsequence.
-  Take a bounded sequence <math|<around|{|x<rsub|n>|}>> in <math|M>. Then,
-  there exists a subsequence <math|<around|{|T<rsub|n<rsub|k>>|}>> that
-  converges. However, <math|T<rsub|n<rsub|k>>=\<lambda\>*x<rsub|n<rsub|k>>>,
-  thus (also using <math|\<lambda\>\<neq\>0>), it follows that
-  <math|<around|{|x<rsub|n<rsub|k>>|}>> has a convergent subsequence.
-
-  Note that by the above theorem it follows immediately that a compact
-  operator on a complex Hilbert space has empty non-zero continuous spectrum.
-  In the next section, we will refine this result further by showing that in
-  fact the same holds for the residual spectrum
-  <math|\<sigma\><rsub|r><around|(|T|)>> of a compact operator <math|T> on a
-  complex Hilbert space. That is, if a non-zero
-  <math|\<lambda\>\<in\>\<sigma\><around|(|T|)>> then it must be an
-  eigenvalue of <math|T>.
-
-  <section*|8 Fredholm's Theorem of Alternative>
-
-  The following well known result, known as Fredholm's theorem of
-  alternative, has great utility in applications to integral equations:
-
-  <\theorem>
-    Let <math|H> be a complex Hilbert space, and let
-    <math|T\<in\>B<around|[|H|]>> be compact and let <math|\<lambda\>> be a
-    nonzero complex number. Then, exactly one of the following holds:
-
-    <\enumerate>
-      <item><math|T-\<lambda\>*I> is invertible
-
-      <item><math|\<lambda\>> is an eigenvalue of <math|T>.
-    </enumerate>
-  </theorem>
-
-  <with|font-series|bold|Proof:> Assume that the first statement is not true.
-  We show that <math|\<lambda\>\<in\>\<sigma\><rsub|p><around|(|T|)>>. We
-  have already seen that <math|\<lambda\>> cannot be in continuous spectrum
-  <math|\<sigma\><rsub|c><around|(|T|)>>. Suppose now that
-  <math|\<lambda\>\<in\>\<sigma\><rsub|r><around|(|T|)>>. Then,
-  Ran<math|<around|(|T-\<lambda\>*I|)>\<neq\>H>. Thus, there is a non-zero
-  <math|x\<in\><text|Ran><around|(|T-\<lambda\>*I|)><rsup|\<perp\>>=<text|Ker><around|(|T<rsup|\<ast\>>-\<lambda\>*I|)>>.
-  Now, by Lemma 7.2, Ran<math|<around|(|T<rsup|\<ast\>>-\<lambda\>*I|)>> is
-  closed and since <math|T<rsup|\<ast\>>-\<lambda\>*I> is not invertible, by
-  the same Lemma, Ran<math|<around|(|T<rsup|\<ast\>>-\<lambda\>*I|)>\<neq\>H>.
-  Therefore,
-
-  <\equation*>
-    <text|Ker><around|(|T-\<lambda\>*I|)>=<text|Ran><around|(|T<rsup|\<ast\>>-\<lambda\>*I|)><rsup|\<perp\>>\<neq\><around|{|0|}>.
-  </equation*>
-
-  That is, <math|\<lambda\>\<in\>\<sigma\><rsub|p><around|(|T|)>>,
-  contradicting the supposition that <math|\<lambda\>\<in\>\<sigma\><rsub|r><around|(|T|)>>.
-  Therefore, it follows that <math|\<lambda\>\<in\>\<sigma\><rsub|p><around|(|T|)>>.
-
-  <section*|9 Spectral Theorem for Compact Self-Adjoint Operators>
-
-  Compact self-adjoint operators on infinite dimensional Hilbert spaces
-  resemble many properties of the symmetric matrices. Of particular interest
-  is the spectral decomposition of a compact self-adjoint operator as given
-  by the following theorem (see e.g., [8] for more details):
-
-  <\theorem>
-    Let <math|T> be a compact self-adjoint operator on a Hilbert space
-    <math|H>. The spectrum <math|\<sigma\><around|(|T|)>> consists entirely
-    of eigenvalues, except possibly for <math|\<lambda\>=0>. Moreover, each
-    eigenvalue <math|\<lambda\>\<neq\>0> has finite multiplicity and the
-    corresponding eigenvectors form an orthonormal basis for <math|H>.
-  </theorem>
-
-  <with|font-series|bold|Proof:> For any compact self-adjoint operator
-  <math|T>, we can diagonalize <math|T> by an orthonormal basis consisting of
-  eigenvectors corresponding to the non-zero eigenvalues. Each of these
-  eigenvalues has finite multiplicity, which means there are only finitely
-  many linearly independent eigenvectors corresponding to each eigenvalue. If
-  <math|\<lambda\>\<neq\>0> is an eigenvalue of <math|T>, then there exists
-  an eigenvector <math|v\<neq\>0> such that <math|T*v=\<lambda\>*v>. Since
-
-  <section*|Proof>
-
-  The proof of this result is standard. See e.g., [8] for a proof. Here we
-  just give the proof for the first statement of the theorem. Let
-  <math|M=<text|Ker><around|(|T-\<lambda\>*I|)>>. Note that since <math|T> is
-  continuous <math|M> is closed. Also, note that
-  <math|T\|<rsub|M>=\<lambda\>*I>. We show <math|M> is finite-dimensional by
-  showing that any bounded sequence in <math|M> has a convergent subsequence.
-  Take a bounded sequence <math|<around|{|x<rsub|n>|}>> in <math|M>. Then,
-  there exists a subsequence <math|<around|{|T<rsub|n<rsub|k>>|}>> that
-  converges. However, <math|T<rsub|n<rsub|k>>=\<lambda\>*x<rsub|n<rsub|k>>>,
-  thus (also using <math|\<lambda\>\<neq\>0>), it follows that
-  <math|<around|{|x<rsub|n<rsub|k>>|}>> has a convergent subsequence.
-
-  Note that by the above theorem it follows immediately that a compact
-  operator on a complex Hilbert space has empty non-zero continuous spectrum.
-  In the next section, we will refine this result further by showing that in
-  fact the same holds for the residual spectrum
-  <math|\<sigma\><rsub|r><around|(|T|)>> of a compact operator <math|T> on a
-  complex Hilbert space. That is, if a non-zero
-  <math|\<lambda\>\<in\>\<sigma\><around|(|T|)>> then it must be an
-  eigenvalue of <math|T>.
-
-  <section*|8 Fredholm's Theorem of Alternative>
-
-  The following well-known result, known as Fredholm's theorem of
-  alternative, has great utility in applications to integral equations:
-
-  <\theorem>
-    Let <math|H> be a complex Hilbert space, and let
-    <math|T\<in\>B<around|[|H|]>> be compact and let <math|\<lambda\>> be a
-    nonzero complex number. Then, exactly one of the followings holds:
-
-    <\enumerate>
-      <item><math|T-\<lambda\>*I> is invertible
-
-      <item><math|\<lambda\>> is an eigenvalue of <math|T>.
-    </enumerate>
-  </theorem>
-
-  <with|font-series|bold|Proof:> Assume that the first statement is not true.
-  We show that <math|\<lambda\>\<in\>\<sigma\><rsub|p><around|(|T|)>>. We
-  have already seen that <math|\<lambda\>> cannot be in continuous spectrum
-  <math|\<sigma\><rsub|c><around|(|T|)>>. Suppose now that
-  <math|\<lambda\>\<in\>\<sigma\><rsub|r><around|(|T|)>>. Then,
-  Ran<math|<around|(|T-\<lambda\>*I|)>\<neq\>H>. Thus, there is a non-zero
-  <math|x\<in\><text|Ran><around|(|T-\<lambda\>*I|)><rsup|\<perp\>>=<text|Ker><around|(|T<rsup|\<ast\>>-\<lambda\>*I|)>>.
-  Now, by Lemma 7.2, Ran<math|<around|(|T<rsup|\<ast\>>-\<lambda\>*I|)>> is
-  closed and since <math|T<rsup|\<ast\>>-\<lambda\>*I> is not invertible, by
-  the same Lemma, Ran<math|<around|(|T<rsup|\<ast\>>-\<lambda\>*I|)>\<neq\>H>.
-  Therefore,
-
-  <\equation*>
-    <text|Ker><around|(|T-\<lambda\>*I|)>=<text|Ran><around|(|T<rsup|\<ast\>>-\<lambda\>*I|)><rsup|\<perp\>>\<neq\><around|{|0|}>.
-  </equation*>
-
-  That is, <math|\<lambda\>\<in\>\<sigma\><rsub|p><around|(|T|)>>,
-  contradicting the supposition that <math|\<lambda\>\<in\>\<sigma\><rsub|r><around|(|T|)>>.
-  Therefore, it follows that <math|\<lambda\>\<in\>\<sigma\><rsub|p><around|(|T|)>>.
-
-  <section*|9 Spectral Theorem for Compact Self-Adjoint Operators>
-
-  Compact self-adjoint operators on infinite dimensional Hilbert spaces
-  resemble many properties of the symmetric matrices. Of particular interest
-  is the spectral decomposition of a compact self-adjoint operator as given
-  by the following (see e.g., [8] for more details):
-
-  <\theorem>
-    Let <math|T> be a compact self-adjoint operator on a Hilbert space
-    <math|H>. The spectrum <math|\<sigma\><around|(|T|)>> consists entirely
-    of eigenvalues, except possibly for <math|\<lambda\>=0>. Moreover, each
-    eigenvalue <math|\<lambda\>\<neq\>0> has finite multiplicity and the
-    corresponding eigenvectors form an orthonormal basis for <math|H>.
-  </theorem>
-
-  <with|font-series|bold|Proof:> For any compact self-adjoint operator
-  <math|T>, we can diagonalize <math|T> by an orthonormal basis consisting of
-  eigenvectors corresponding to the non-zero eigenvalues. Each of these
-  eigenvalues has finite multiplicity, which means there are only finitely
-  many linearly independent eigenvectors corresponding to each eigenvalue. If
-  <math|\<lambda\>\<neq\>0> is an eigenvalue of <math|T>, then there exists
-  an eigenvector <math|v\<neq\>0> such that <math|T*v=\<lambda\>>\ 
-
-  <with|font-series|bold|Proof.> The proof of this result is standard. See
-  e.g., [8] for a proof. Here we just give the proof for the first statement
-  of the theorem. Let <math|M=<text|Ker><around|(|T-\<lambda\>*I|)>>. Note
-  that since <math|T> is continuous <math|M> is closed. Also, note that
-  <math|T\|<rsub|M>=\<lambda\>*I>. We show <math|M> is finite-dimensional by
-  showing that any bounded sequence in <math|M> has a convergent subsequence.
-  Take a bounded sequence <math|<around|{|x<rsub|n>|}>> in <math|M>. Then,
-  there exists a subsequence <math|<around|{|T<rsub|n<rsub|k>>|}>> that
-  converges. However, <math|T<rsub|n<rsub|k>>=\<lambda\>*x<rsub|n<rsub|k>>>,
-  thus (also using <math|\<lambda\>\<neq\>0>), it follows that
-  <math|<around|{|x<rsub|n<rsub|k>>|}>> has a convergent subsequence.
-
-  Note that by the above theorem it follows immediately that a compact
-  operator on a complex Hilbert space has empty non-zero continuous spectrum.
-  In the next section, we will refine this result further by showing that in
-  fact the same holds for the residual spectrum
-  <math|\<sigma\><rsub|r><around|(|T|)>> of a compact operator <math|T> on a
-  complex Hilbert space. That is, if a non-zero
-  <math|\<lambda\>\<in\>\<sigma\><around|(|T|)>> then it must be an
-  eigenvalue of <math|T>.
-
-  <section*|8 Fredholm's Theorem of Alternative>
-
-  The following well-known result, known as Fredholm's theorem of
-  alternative, has great utility in applications to integral equations:
-
-  <with|font-series|bold|Theorem 8.1.> Let <math|H> be a complex Hilbert
-  space, and let <math|T\<in\>B<around|[|H|]>> be compact and let
-  <math|\<lambda\>> be a nonzero complex number. Then, exactly one of the
-  followings hold:
-
-  <\enumerate>
-    <item><math|T-\<lambda\>*I> is invertible
-
-    <item><math|\<lambda\>> is an eigenvalue of <math|T>.
-  </enumerate>
-
-  <with|font-series|bold|Proof.> Assume that the first statement is not true.
-  We show that <math|\<lambda\>\<in\>\<sigma\><rsub|p><around|(|T|)>>. We
-  have already seen that <math|\<lambda\>> cannot be in continuous spectrum
-  <math|\<sigma\><rsub|c><around|(|T|)>>. Suppose now that
-  <math|\<lambda\>\<in\>\<sigma\><rsub|r><around|(|T|)>>. Then,
-  Ran<math|<around|(|T-\<lambda\>*I|)>\<neq\>H>. Thus, there is a non-zero
-  <math|x\<in\><text|Ran><around|(|T-\<lambda\>*I|)><rsup|\<perp\>>=<text|Ker><around|(|T<rsup|\<ast\>>-\<lambda\>*I|)>>.
-  Now, by Lemma 7.2, Ran<math|<around|(|T<rsup|\<ast\>>-\<lambda\>*I|)>> is
-  closed and since <math|T<rsup|\<ast\>>-\<lambda\>*I> is not invertible, by
-  the same Lemma, Ran<math|<around|(|T<rsup|\<ast\>>-\<lambda\>*I|)>\<neq\>H>.
-  Therefore,
-
-  <\equation*>
-    <text|Ker><around|(|T-\<lambda\>*I|)>=<text|Ran><around|(|T<rsup|\<ast\>>-\<lambda\>*I|)><rsup|\<perp\>>\<neq\><around|{|0|}>.
-  </equation*>
-
-  That is, <math|\<lambda\>\<in\>\<sigma\><rsub|p><around|(|T|)>>,
-  contradicting the supposition that <math|\<lambda\>\<in\>\<sigma\><rsub|r><around|(|T|)>>.
-  Therefore, it follows that <math|\<lambda\>\<in\>\<sigma\><rsub|p><around|(|T|)>>.
-
-  <with|font-series|bold|Proof.> The proof of this result is standard. See
-  e.g., [8] for a proof. Here we just give the proof for the first statement
-  of the theorem. Let <math|M=<text|Ker><around|(|T-\<lambda\>*I|)>>. Note
-  that since <math|T> is continuous <math|M> is closed. Also, note that
-  <math|T\|<rsub|M>=\<lambda\>*I>. We show <math|M> is finite-dimensional by
-  showing that any bounded sequence in <math|M> has a convergent subsequence.
-  Take a bounded sequence <math|<around|{|x<rsub|n>|}>> in <math|M>. Then,
-  there exists a subsequence <math|<around|{|T<rsub|n<rsub|k>>|}>> that
-  converges. However, <math|T<rsub|n<rsub|k>>=\<lambda\>*x<rsub|n<rsub|k>>>,
-  thus (also using <math|\<lambda\>\<neq\>0>), it follows that
-  <math|<around|{|x<rsub|n<rsub|k>>|}>> has a convergent subsequence.
-
-  Note that by the above theorem it follows immediately that a compact
-  operator on a complex Hilbert space has empty non-zero continuous spectrum.
-  In the next section, we will refine this result further by showing that in
-  fact the same holds for the residual spectrum
-  <math|\<sigma\><rsub|r><around|(|T|)>> of a compact operator <math|T> on a
-  complex Hilbert space. That is, if a non-zero <math|\<lambda\>> is in
-  <math|\<sigma\><around|(|T|)>> then it must be an eigenvalue of <math|T>.
-
-  <section*|8 Fredholm's Theorem of Alternative>
-
-  The following well known result, known has Fredholm's theorem of
-  alternative, has great utility in applications to integral equations:
-
-  <with|font-series|bold|Theorem 8.1.> Let <math|H> be a complex Hilbert
-  space, and let <math|T> in <math|B<around|[|H|]>> be compact and let
-  <math|\<lambda\>> be a nonzero complex number. Then, exactly one of the
-  following holds:
-
-  <\enumerate>
-    <item><math|T-\<lambda\>*I> is invertible
-
-    <item><math|\<lambda\>> is an eigenvalue of <math|T>.
-  </enumerate>
-
-  <with|font-series|bold|Proof.> Assume that the first statement in not true.
-  We show that <math|\<lambda\>\<in\>\<sigma\><rsub|p><around|(|T|)>>. We
-  have already seen that <math|\<lambda\>> cannot be in continuous spectrum
-  of <math|T>. Suppose now that <math|\<lambda\>\<in\>\<sigma\><rsub|r><around|(|T|)>>.
-  Then, Ran<math|<around|(|T-\<lambda\>*I|)>\<neq\>H>. Thus, there is a
-  non-zero <math|x> in Ran<math|<around|(|T-\<lambda\>*I|)><rsup|\<perp\>>=<text|Ker><around|(|T<rsup|\<ast\>>-\<lambda\>*I|)>>.
-  Now, by Lemma 7.2, Ran<math|<around|(|T<rsup|\<ast\>>-\<lambda\>*I|)>> is
-  closed and since <math|T<rsup|\<ast\>>-\<lambda\>*I> is not invertible, by
-  the same Lemma, Ran<math|<around|(|T<rsup|\<ast\>>-\<lambda\>*I|)>\<neq\>H>.
-  Therefore,
-
-  <\equation*>
-    <text|Ker><around|(|T-\<lambda\>*I|)>=<text|Ran><around|(|T<rsup|\<ast\>>-\<lambda\>*I|)><rsup|\<perp\>>\<neq\><around|{|0|}>.
-  </equation*>
-
-  That is, <math|\<lambda\>\<in\>\<sigma\><rsub|p><around|(|T|)>>,
-  contradicting the supposition that <math|\<lambda\>\<in\>\<sigma\><rsub|r><around|(|T|)>>.
-  Therefore, it follows that <math|\<lambda\>\<in\>\<sigma\><rsub|p><around|(|T|)>>.
-
-  Let us note the following interpretation of the above result. Let <math|T>
-  and <math|\<lambda\>\<neq\>0> be as in the above theorem. Then, either
-  <math|T-\<lambda\>*I> is invertible or <math|\<lambda\>> is an eigenvalue
-  of <math|T>. Also, using Lemma 7.2, we know that the eigenspace
-  corresponding to <math|\<lambda\>> is finite-dimensional. That is
-  <math|T-\<lambda\>*I> is invertible, except possibly on a
-  finite-dimensional subspace of <math|H>. Therefore, and equation of form,
-
-  <\equation*>
-    <around|(|T-\<lambda\>*I|)>*x=y,
-  </equation*>
-
-  is solvable uniquely, modulo a finite-dimensional subspace of <math|H>.
-
-  <section*|9 Spectral Theorem for Compact Self-Adjoint Operators>
-
-  Compact self-adjoint operators on infinite dimensional Hilbert spaces
-  resemble many properties of the symmetric matrices. Of particular interest
-  is the spectral decomposition of a compact self-adjoint operator as given
-  by the following (see e.g., [8] for more details):
-
-  <with|font-series|bold|Theorem 9.1.> Let <math|H> be a (real or complex)
-  Hilbert space and let <math|T:H\<to\>H> be a compact self-adjoint operator.
-  Then, <math|H> has an orthonormal basis <math|<around|{|e<rsub|j>|}>> of
-  eigenvectors of <math|T> corresponding to eigenvalues
-  <math|\<lambda\><rsub|j>>. In addition, the following holds:
-
-  <\enumerate>
-    <item>The eigenvalues <math|\<lambda\><rsub|j>> are real having zero as
-    the only possible point of accumulation.
-
-    <item>The eigenspaces corresponding to distinct eigenvalues are mutually
-    orthogonal.
-
-    <item>The eigenspaces corresponding to non-zero eigenvalues are
-    finite-dimensional.
-  </enumerate>
-
-  In the case of a positive compact self-adjoint operator, we know that the
-  eigenvalues are non-negative. Hence, we may order the eigenvalues as
-  follows <math|\<lambda\><rsub|1>\<geq\>\<lambda\><rsub|2>\<geq\>\<ldots\>\<geq\>0>.
-
-  Using the spectral theorem, we can "diagonalize" a compact self-adjoint
-  operator <math|T:H\<to\>H>, as follows,
-
-  <\equation*>
-    T*u=<big|sum><rsub|j=1><rsup|\<infty\>>\<lambda\><rsub|j>*<around|\<langle\>|u,e<rsub|j>|\<rangle\>>*e<rsub|j>,<space|1em>u\<in\>H,
-  </equation*>
-
-  where we also can show that (using compactness of <math|T>) that
-  <math|\<lambda\><rsub|j>\<to\>0> as <math|j\<to\>\<infty\>>.
-
-  Notice that for a strictly positive compact self-adjoint operator we can
-  write the inverse operator by
-
-  <\equation*>
-    T<rsup|-1>*u=<big|sum><rsub|j=1><rsup|\<infty\>>\<lambda\><rsub|j><rsup|-1>*<around|\<langle\>|u,e<rsub|j>|\<rangle\>>*e<rsub|j>.
-  </equation*>
-
-  This is a densely defined unbounded operator. It is densely defined because
-  as we saw before range of <math|T> is dense in <math|H>. The unboundedness
-  follows from the earlier result that states compact operators do not have a
-  bounded inverse. We can also see the unboundedness of this operator
-  directly as follows:
-
-  <\equation*>
-    <around|\<\|\|\>|T*e<rsub|j>|\<\|\|\>>=<around|\<\|\|\>|\<lambda\><rsub|j>*e<rsub|j>|\<\|\|\>>=\<lambda\><rsub|j>\<to\>\<infty\>,<space|1em><text|as
-    >j\<to\>\<infty\>.
-  </equation*>
-
   <section*|10 Singular value decomposition and some basic results>
 
   Here we briefly recall the notion of the singular value decomposition (SVD)
@@ -1141,47 +714,37 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-10|<tuple|1|5|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-11|<tuple|1|5|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-12|<tuple|1|6|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-13|<tuple|1|6|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-14|<tuple|1|6|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-15|<tuple|1|6|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-16|<tuple|3|7|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-17|<tuple|2|7|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-18|<tuple|3|7|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-19|<tuple|3|8|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-2|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-20|<tuple|3|8|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-21|<tuple|2|8|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-22|<tuple|2|9|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-23|<tuple|2|9|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-24|<tuple|6|10|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-25|<tuple|6|10|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-26|<tuple|2|11|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-27|<tuple|8|11|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-28|<tuple|2|12|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-29|<tuple|2|13|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-3|<tuple|1|3|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-30|<tuple|3|14|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-31|<tuple|3|16|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-32|<tuple|3|16|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-4|<tuple|1|3|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-5|<tuple|1|4|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-6|<tuple|1|4|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-7|<tuple|1|4|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-8|<tuple|1|5|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-9|<tuple|1|5|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|bib-bhatia2009|<tuple|bhatia2009|16|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|bib-conway2000|<tuple|conway2000|16|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|bib-enflo1973|<tuple|enflo1973|17|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|bib-friedman1970|<tuple|friedman1970|17|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|bib-gohberg2012|<tuple|gohberg2012|17|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|bib-kress2014|<tuple|kress2014|17|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|bib-kreyszig1989|<tuple|kreyszig1989|17|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|bib-naylor1982|<tuple|naylor1982|17|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|bib-reed1972|<tuple|reed1972|17|../../.TeXmacs/texts/scratch/no_name_35.tm>>
+    <associate|auto-1|<tuple|1|2>>
+    <associate|auto-10|<tuple|1|4>>
+    <associate|auto-11|<tuple|1|5>>
+    <associate|auto-12|<tuple|1|5>>
+    <associate|auto-13|<tuple|1|5>>
+    <associate|auto-14|<tuple|1|6>>
+    <associate|auto-15|<tuple|1|6>>
+    <associate|auto-16|<tuple|3|6>>
+    <associate|auto-17|<tuple|2|7>>
+    <associate|auto-18|<tuple|3|7>>
+    <associate|auto-19|<tuple|3|7>>
+    <associate|auto-2|<tuple|2|2>>
+    <associate|auto-20|<tuple|3|7>>
+    <associate|auto-21|<tuple|3|10>>
+    <associate|auto-22|<tuple|3|10>>
+    <associate|auto-3|<tuple|1|2>>
+    <associate|auto-4|<tuple|1|3>>
+    <associate|auto-5|<tuple|1|3>>
+    <associate|auto-6|<tuple|1|4>>
+    <associate|auto-7|<tuple|1|4>>
+    <associate|auto-8|<tuple|1|4>>
+    <associate|auto-9|<tuple|1|4>>
+    <associate|bib-bhatia2009|<tuple|bhatia2009|10>>
+    <associate|bib-conway2000|<tuple|conway2000|10>>
+    <associate|bib-enflo1973|<tuple|enflo1973|10>>
+    <associate|bib-friedman1970|<tuple|friedman1970|10>>
+    <associate|bib-gohberg2012|<tuple|gohberg2012|10>>
+    <associate|bib-kress2014|<tuple|kress2014|10>>
+    <associate|bib-kreyszig1989|<tuple|kreyszig1989|10>>
+    <associate|bib-naylor1982|<tuple|naylor1982|10>>
+    <associate|bib-reed1972|<tuple|reed1972|10>>
   </collection>
 </references>
 
@@ -1264,61 +827,18 @@
       of Theorem> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-19><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|8
-      Fredholm's Theorem of Alternative> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-20><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Proof
-      of Theorem> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-21><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|8
-      Fredholm's Theorem of Alternative> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-22><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|9
-      Spectral Theorem for Compact Self-Adjoint Operators>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-23><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Proof>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-24><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|8
-      Fredholm's Theorem of Alternative> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-25><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|9
-      Spectral Theorem for Compact Self-Adjoint Operators>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-26><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|8
-      Fredholm's Theorem of Alternative> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-27><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|8
-      Fredholm's Theorem of Alternative> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-28><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|9
-      Spectral Theorem for Compact Self-Adjoint Operators>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-29><vspace|0.5fn>
-
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|10
       Singular value decomposition and some basic results>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-30><vspace|0.5fn>
+      <no-break><pageref|auto-20><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|11
       A numerical illustration> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-31><vspace|0.5fn>
+      <no-break><pageref|auto-21><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-32><vspace|0.5fn>
+      <no-break><pageref|auto-22><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
