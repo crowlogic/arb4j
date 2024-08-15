@@ -127,7 +127,7 @@
   <\description>
     <item*|Definition 2.1. (Relatively Compact)>Let <math|X> be a metric
     space; <math|A\<subset\>X> is relatively compact in <math|X>, if <math|A>
-    is compact in <math|X>.
+    is compact in <math|X>
 
     <item*|Definition 2.2. (Precompact)>Let <math|X> be a metric space;
     <math|A\<subset\>X> is precompact (also called totally bounded) if for
@@ -168,7 +168,7 @@
   <with|font-shape|italic|Hilbert-Schmidt kernel> if
 
   <\equation*>
-    <big|int><rsub|D><big|int><rsub|D><around|\||k<around|(|x,y|)>|\|><rsup|2>*<space|0.17em>d*y*<space|0.17em>d*x\<less\>\<infty\>,
+    <big|int><rsub|D><big|int><rsub|D><around|\||k<around|(|x,y|)>|\|><rsup|2>*<space|0.17em>d*y*<space|0.17em>d*x\<less\>\<infty\>
   </equation*>
 
   that is, <math|k\<in\>L<rsup|2>*<around|(|D\<times\>D|)>> (note that one
@@ -178,7 +178,7 @@
   <math|u\<in\>L<rsup|2><around|(|D|)>>, by
 
   <\equation*>
-    <around|[|K*u|]><around|(|x|)>=<big|int><rsub|D>k<around|(|x,y|)>*u<around|(|y|)>*<space|0.17em>d*y.
+    <around|[|K*u|]><around|(|x|)>=<big|int><rsub|D>k<around|(|x,y|)>*u<around|(|y|)>*<space|0.17em>d*y
   </equation*>
 
   Clearly, <math|K> is linear; moreover, it is simple to show that
@@ -207,7 +207,7 @@
   by
 
   <\equation*>
-    <around|[|A*x|]><rsub|i>=<big|sum><rsub|j=1><rsup|n>A<rsub|i*j>*x<rsub|j>.
+    <around|[|A*x|]><rsub|i>=<big|sum><rsub|j=1><rsup|n>A<rsub|i*j>*x<rsub|j>
   </equation*>
 
   Now note that,
@@ -238,7 +238,7 @@
   <math|M> in <math|R*a*n<around|(|T|)>> such that, for any <math|x\<in\>X>,
 
   <\equation*>
-    inf<rsub|m\<in\>M><around|\<\|\|\>|T<around|(|x|)>-m|\<\|\|\>>\<leq\>\<epsilon\><around|\<\|\|\>|x|\<\|\|\>>.
+    inf<rsub|m\<in\>M><around|\<\|\|\>|T<around|(|x|)>-m|\<\|\|\>>\<leq\>\<epsilon\><around|\<\|\|\>|x|\<\|\|\>>
   </equation*>
 
   <subsection*|Proof>
@@ -254,13 +254,13 @@
   <math|z\<in\>B<rsub|X>>. Therefore, for any <math|x\<in\>X>,
 
   <\equation*>
-    inf<rsub|m\<in\>M><around|\<\|\|\>|T*<around|(|x/<around|\<\|\|\>|x|\<\|\|\>>|)>-m|\<\|\|\>>\<leq\>\<epsilon\>.
+    inf<rsub|m\<in\>M><around|\<\|\|\>|T*<around|(|x/<around|\<\|\|\>|x|\<\|\|\>>|)>-m|\<\|\|\>>\<leq\>\<epsilon\>
   </equation*>
 
   And thus,
 
   <\equation*>
-    inf<rsub|m\<in\>M><around|\<\|\|\>|T<around|(|x|)>-m|\<\|\|\>>\<leq\>\<epsilon\><around|\<\|\|\>|x|\<\|\|\>>,<space|1em>m<rprime|'>=m/<around|\<\|\|\>|x|\<\|\|\>>,m\<in\>M.
+    inf<rsub|m\<in\>M><around|\<\|\|\>|T<around|(|x|)>-m|\<\|\|\>>\<leq\>\<epsilon\><around|\<\|\|\>|x|\<\|\|\>>,<space|1em>m<rprime|'>=m/<around|\<\|\|\>|x|\<\|\|\>>,m\<in\>M
   </equation*>
 
   <section*|5 Approximation by finite-dimensional operators>
@@ -301,19 +301,19 @@
   Next define the mapping <math|T<rsub|n>> by
 
   <\equation*>
-    T<rsub|n>=\<Pi\><rsub|n>\<circ\>T.
+    T<rsub|n>=\<Pi\><rsub|n>\<circ\>T
   </equation*>
 
   We know, by construction, for any <math|x\<in\>B<rsub|X>>,
   <math|<around|\<\|\|\>|T<around|(|x|)>-y|\<\|\|\>>\<leq\>1/n> for some
-  <math|i\<in\><around|{|1,\<ldots\>,N|}>>. Moreover, by (5.1),
+  <math|i\<in\><around|{|1,\<ldots\>,N|}>>. Moreover, by (5.1)
 
   <\equation*>
-    <around|\<\|\|\>|T<rsub|n>*x-y|\<\|\|\>>=<around|\<\|\|\>|\<Pi\><rsub|n><around|(|T<around|(|x|)>|)>-y|\<\|\|\>>\<leq\><around|\<\|\|\>|T<around|(|x|)>-y|\<\|\|\>>\<leq\>1/n.
+    <around|\<\|\|\>|T<rsub|n>*x-y|\<\|\|\>>=<around|\<\|\|\>|\<Pi\><rsub|n><around|(|T<around|(|x|)>|)>-y|\<\|\|\>>\<leq\><around|\<\|\|\>|T<around|(|x|)>-y|\<\|\|\>>\<leq\>1/n
   </equation*>
 
   Therefore, for any <math|x\<in\>X>, with
-  <math|<around|\<\|\|\>|x|\<\|\|\>>\<leq\>1>,
+  <math|<around|\<\|\|\>|x|\<\|\|\>>\<leq\>1>
 
   <\equation*>
     <around|\<\|\|\>|T-T<rsub|n>|\<\|\|\>>\<leq\><frac|2|n>*<space|1em><text|as><space|1em>n\<rightarrow\>\<infty\>.
@@ -329,24 +329,24 @@
 
   <\equation*>
     \<sigma\><around|(|T|)>=<around|{|\<lambda\>\<in\>\<bbb-C\>:T-\<lambda\>*I*<text|is
-    not invertible in >B<around|[|X|]>|}>,
+    not invertible in >B<around|[|X|]>|}>
   </equation*>
 
   and <math|\<sigma\><around|(|T|)>> is the disjoint union of the point
   spectrum <math|\<sigma\><rsub|p><around|(|T|)>> (set of eigenvalues),
   continuous spectrum <math|\<sigma\><rsub|c><around|(|T|)>>, and residual
   spectrum <math|\<sigma\><rsub|r><around|(|T|)>>. Let us recall that the
-  continuous spectrum is given by,
+  continuous spectrum is given b
 
   <\equation*>
     \<sigma\><rsub|c><around|(|T|)>=<around|{|\<lambda\>\<in\>\<bbb-C\>:<text|Ker><around|(|T-\<lambda\>*I|)>=<around|{|0|}>,<text|Ran><around|(|T-\<lambda\>*I|)>\<neq\>X,<text|Ran><around|(|T-\<lambda\>*I|)>*<text|is
-    dense in >X|}>,
+    dense in >X|}>
   </equation*>
 
-  and residual spectrum of <math|T> is given by,
+  and residual spectrum of <math|T> is given by
 
   <\equation*>
-    \<sigma\><rsub|r><around|(|T|)>=<around|{|\<lambda\>\<in\>\<bbb-C\>:<text|Ker><around|(|T-\<lambda\>*I|)>=<around|{|0|}>,<text|Ran><around|(|T-\<lambda\>*I|)>\<neq\>X|}>.
+    \<sigma\><rsub|r><around|(|T|)>=<around|{|\<lambda\>\<in\>\<bbb-C\>:<text|Ker><around|(|T-\<lambda\>*I|)>=<around|{|0|}>,<text|Ran><around|(|T-\<lambda\>*I|)>\<neq\>X|}>
   </equation*>
 
   <section*|7 Some spectral properties of compact operators on Hilbert
@@ -375,10 +375,10 @@
   <math|T> is dense in <math|H>. We first claim that
   Ran<math|<around|(|T|)><rsup|\<perp\>>=<around|{|0|}>>. To show this we
   proceed as follows. Let <math|z\<in\><text|Ran><around|(|T|)><rsup|\<perp\>>>,
-  and note that for every <math|y\<in\>H>,
+  and note that for every <math|y\<in\>H>
 
   <\equation*>
-    0=<around|\<langle\>|T*z,y|\<rangle\>>=<around|\<langle\>|z,T<rsup|\<ast\>>*y|\<rangle\>>.
+    0=<around|\<langle\>|T*z,y|\<rangle\>>=<around|\<langle\>|z,T<rsup|\<ast\>>*y|\<rangle\>>
   </equation*>
 
   Hence, <math|T*z=0> which, since <math|T> is one-to-one, implies that
@@ -398,12 +398,12 @@
   Suppose <math|\<lambda\>> is a non-zero complex number. Then,
 
   <\enumerate>
-    <item>Ker<math|<around|(|T-\<lambda\>*I|)>> is finite dimensional.
+    <item>Ker<math|<around|(|T-\<lambda\>*I|)>> is finite dimensional
 
-    <item>Ran<math|<around|(|T-\<lambda\>*I|)>> is closed.
+    <item>Ran<math|<around|(|T-\<lambda\>*I|)>> is closed
 
     <item><math|T-\<lambda\>*I> is invertible if and only if
-    Ran<math|<around|(|T-\<lambda\>*I|)>=H>.
+    Ran<math|<around|(|T-\<lambda\>*I|)>=H>
   </enumerate>
 
   <section*|8 Fredholm's Theorem of Alternative>
@@ -424,7 +424,7 @@
     following decomposition:
 
     <\equation*>
-      H=<text|Ker><around|(|T-\<lambda\>*I|)>\<oplus\><text|Ran><around|(|T-\<lambda\>*I|)>.
+      H=<text|Ker><around|(|T-\<lambda\>*I|)>\<oplus\><text|Ran><around|(|T-\<lambda\>*I|)>
     </equation*>
   </theorem>
 
@@ -517,20 +517,20 @@
   in <math|H> and <math|K>, respectively, such that
 
   <\equation*>
-    A*u<rsub|n>=\<sigma\><rsub|n>*v<rsub|n>,<space|1em>A<rsup|\<ast\>>*v<rsub|n>=\<sigma\><rsub|n>*u<rsub|n>,<space|1em>n\<geq\>1
+    A*u<rsub|n>=\<sigma\><rsub|n>*v<rsub|n>,<space|1em>A<rsup|\<ast\>>*v<rsub|n>=\<sigma\><rsub|n>*u<rsub|n>\<forall\>n\<geq\>1
   </equation*>
 
   For each <math|x\<in\>H>, we have
 
   <\equation*>
-    x=<big|sum><rsub|n=1><rsup|\<infty\>><around|\<langle\>|x,u<rsub|n>|\<rangle\>>*u<rsub|n>+Q*x,
+    x=<big|sum><rsub|n=1><rsup|\<infty\>><around|\<langle\>|x,u<rsub|n>|\<rangle\>>*u<rsub|n>+Q*x
   </equation*>
 
   where <math|Q> is the orthogonal projection operator onto the kernel of
   <math|A>. Moreover,
 
   <\equation*>
-    A*x=<big|sum><rsub|n=1><rsup|\<infty\>>\<sigma\><rsub|n>*<around|\<langle\>|x,u<rsub|n>|\<rangle\>>*u<rsub|n>,<space|1em>x\<in\>H.
+    A*x=<big|sum><rsub|n=1><rsup|\<infty\>>\<sigma\><rsub|n>*<around|\<langle\>|x,u<rsub|n>|\<rangle\>>*u<rsub|n>,<space|1em>x\<in\>H
   </equation*>
 
   We can use the SVD of a compact operator <math|A:H\<to\>K> in a similar way
@@ -539,7 +539,7 @@
   <math|A\<in\>B<around|[|H,K|]>>, the operator norm is given by
 
   <\equation*>
-    <around|\<\|\|\>|A|\<\|\|\>>=sup<rsub|<around|\<\|\|\>|x|\<\|\|\>>=1><around|\<\|\|\>|A*x|\<\|\|\>><rsub|K>.
+    <around|\<\|\|\>|A|\<\|\|\>>=sup<rsub|<around|\<\|\|\>|x|\<\|\|\>>=1><around|\<\|\|\>|A*x|\<\|\|\>><rsub|K>
   </equation*>
 
   <with|font-series|bold|Theorem 10.3.> Let <math|A:H\<to\>K> be compact, and
@@ -562,13 +562,13 @@
   Moreover, we have
 
   <\equation*>
-    A*x=<big|sum><rsub|n=1><rsup|\<infty\>>\<sigma\><rsub|n>*<around|\<langle\>|x,u<rsub|n>|\<rangle\>>*u<rsub|n>,
+    A*x=<big|sum><rsub|n=1><rsup|\<infty\>>\<sigma\><rsub|n>*<around|\<langle\>|x,u<rsub|n>|\<rangle\>>*u<rsub|n>
   </equation*>
 
   and thus
 
   <\equation*>
-    <around|\<\|\|\>|A*x|\<\|\|\>><rsup|2>=<big|sum><rsub|n=1><rsup|\<infty\>>\<sigma\><rsub|n><rsup|2>*<around|\<langle\>|x,u<rsub|n>|\<rangle\>><rsup|2>\<leq\>\<sigma\><rsub|1><rsup|2>*<big|sum><rsub|n=1><rsup|\<infty\>><around|\<langle\>|x,u<rsub|n>|\<rangle\>><rsup|2>\<leq\>\<sigma\><rsub|1><rsup|2><around|\<\|\|\>|x|\<\|\|\>><rsup|2>.
+    <around|\<\|\|\>|A*x|\<\|\|\>><rsup|2>=<big|sum><rsub|n=1><rsup|\<infty\>>\<sigma\><rsub|n><rsup|2>*<around|\<langle\>|x,u<rsub|n>|\<rangle\>><rsup|2>\<leq\>\<sigma\><rsub|1><rsup|2>*<big|sum><rsub|n=1><rsup|\<infty\>><around|\<langle\>|x,u<rsub|n>|\<rangle\>><rsup|2>\<leq\>\<sigma\><rsub|1><rsup|2><around|\<\|\|\>|x|\<\|\|\>><rsup|2>
   </equation*>
 
   Thus, we have that <math|<around|\<\|\|\>|A*x|\<\|\|\>>\<leq\>\<sigma\><rsub|1><around|\<\|\|\>|x|\<\|\|\>>>,
@@ -589,7 +589,7 @@
   as in Theorem 10.2. We have,
 
   <\equation*>
-    \<sigma\><rsub|k>=min<rsub|<around|\<\|\|\>|A-F|\<\|\|\>>:<text|rank><around|(|F|)>\<leq\>k-1>,<space|1em>k=1,2,\<ldots\>
+    \<sigma\><rsub|k>=min<rsub|<around|\<\|\|\>|A-F|\<\|\|\>>:<text|rank><around|(|F|)>\<leq\>k-1>\<forall\>k=1,2,\<ldots\>
   </equation*>
 
   <with|font-series|bold|Proof.>The result is immediate for <math|k=1>. Let
@@ -611,7 +611,7 @@
   Next, define
 
   <\equation*>
-    F=<big|sum><rsub|n=1><rsup|k-1>\<sigma\><rsub|n><around|\<langle\>|\<cdummy\>,u<rsub|n>|\<rangle\>>*u<rsub|n>.
+    F=<big|sum><rsub|n=1><rsup|k-1>\<sigma\><rsub|n><around|\<langle\>|\<cdummy\>,u<rsub|n>|\<rangle\>>*u<rsub|n>
   </equation*>
 
   Clearly, <math|F> has rank <math|k-1>, and we have
@@ -626,14 +626,18 @@
   assume <math|B\<in\>B<around|[|H|]>> Then,
 
   <\equation*>
-    \<sigma\><rsub|k>*<around|(|A*B|)>\<leq\>\<sigma\><rsub|k><around|(|A|)><around|\<\|\|\>|B|\<\|\|\>>,<space|1em>k\<geq\>1.
+    \<sigma\><rsub|k>*<around|(|A*B|)>\<leq\>\<sigma\><rsub|k><around|(|A|)><around|\<\|\|\>|B|\<\|\|\>>,<space|1em>k\<geq\>1
   </equation*>
 
   <with|font-series|bold|Proof.> First note that by the assumptions of the
   theorem <math|A*B> is compact in <math|B<around|[|H,K|]>>. Consider,
 
   <\equation*>
-    A=<big|sum><rsub|n=1><rsup|\<infty\>>\<sigma\><rsub|n><around|\<langle\>|\<cdummy\>,u<rsub|n>|\<rangle\>>*u<rsub|n>,<space|1em>F=<big|sum><rsub|n=1><rsup|k-1>\<sigma\><rsub|n><around|\<langle\>|\<cdummy\>,u<rsub|n>|\<rangle\>>*u<rsub|n>.
+    A=<big|sum><rsub|n=1><rsup|\<infty\>>\<sigma\><rsub|n><around|\<langle\>|\<cdummy\>,u<rsub|n>|\<rangle\>>*u<rsub|n><space|1em>
+  </equation*>
+
+  <\equation*>
+    F=<big|sum><rsub|n=1><rsup|k-1>\<sigma\><rsub|n><around|\<langle\>|\<cdummy\>,u<rsub|n>|\<rangle\>>*u<rsub|n>
   </equation*>
 
   Note that rank<math|<around|(|F*B|)>\<leq\>k-1>, therefore
@@ -649,8 +653,15 @@
   given by
 
   <\equation*>
-    <around|(|F*u|)><around|(|x|)>=<big|int><rsub|0><rsup|1>k*<around|(|x-y|)>*u<around|(|y|)>*<space|0.17em>d*y,<space|1em>k<around|(|x|)>=<frac|1|<sqrt|2*\<pi\>*\<gamma\><rsup|2>>>*exp
-    <around*|(|-<frac|x<rsup|2>|2*\<gamma\><rsup|2>>|)>,<space|1em>\<gamma\>=0.03.
+    <around|(|F*u|)><around|(|x|)>=<big|int><rsub|0><rsup|1>k*<around|(|x-y|)>*u<around|(|y|)>*<space|0.17em>d*y
+  </equation*>
+
+  <\equation*>
+    k<around|(|x|)>=<frac|e<rsup|-<frac|x<rsup|2>|2*\<gamma\><rsup|2>>><space|1em>|<sqrt|2*\<pi\>*\<gamma\><rsup|2>>>*
+  </equation*>
+
+  <\equation*>
+    \<gamma\>=0.03
   </equation*>
 
   Notice that this is a compact operator (cf. e.g., Lemma 3.1). To study the
@@ -661,10 +672,10 @@
   discretized operator <math|K>:
 
   <\equation*>
-    K<rsub|i*j>=h*C*exp <around*|(|-<frac|<around|(|<around|(|i-j|)>*h|)><rsup|2>|2*\<gamma\><rsup|2>>|)>,<space|1em>h=<frac|1|n>,
+    K<rsub|i*j>=h*C*e<rsup|-<frac|<around|(|<around|(|i-j|)>*h|)><rsup|2>|2*\<gamma\><rsup|2>>>
   </equation*>
 
-  with <math|i,j\<in\><around|{|1,\<ldots\>,n|}>>
+  where <math|h=<frac|1|n>> with <math|i,j\<in\><around|{|1,\<ldots\>,n|}>>.
 
   <\thebibliography|9>
     <bibitem|bhatia2009>Rajendra Bhatia. <with|font-shape|italic|Notes on
