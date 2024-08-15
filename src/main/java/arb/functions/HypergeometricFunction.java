@@ -47,8 +47,9 @@ import arb.expressions.Expression;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class HypergeometricFunction<P extends NamedRing<P>, R extends NamedRing<R>,
-N extends NullaryFunction<R>> implements
+public abstract class HypergeometricFunction<P extends NamedRing<P>,
+              R extends NamedRing<R>,
+              N extends NullaryFunction<R>> implements
                                             NullaryFunction<R>,
                                             Verifiable
 {
@@ -72,48 +73,44 @@ N extends NullaryFunction<R>> implements
 
   }
 
-  public HypergeometricFunction<P, R, N>
-         init(Class<P> paramType,
-              Class<R> elementType,
-              Class<N> nullaryFunctionType,
-              int p,
-              int q,
-              Expression<Object, R, N> arg)
+  public HypergeometricFunction<P, R, N> init(Class<P> paramType,
+                                              Class<R> elementType,
+                                              Class<N> nullaryFunctionType,
+                                              int p,
+                                              int q,
+                                              Expression<Object, R, N> arg)
   {
     Real alpha = Real.newVector(p);
     Real beta  = Real.newVector(q);
 
-    init(paramType,
-         elementType,
-         nullaryFunctionType,
-         alpha,
-         beta,
-         arg);
+    init(paramType, elementType, nullaryFunctionType, alpha, beta, arg);
 
     return this;
   }
 
   @SuppressWarnings("unchecked")
-  public HypergeometricFunction<P, R, N>
-         init(Class<P> paramType,
-              Class<R> elementType,
-              Class<N> nullaryFunctionType,
-              Real alpha,
-              Real beta,
-              Expression<Object, R, N> arg)
+  public HypergeometricFunction<P, R, N> init(Class<P> paramType,
+                                              Class<R> elementType,
+                                              Class<N> nullaryFunctionType,
+                                              Real alpha,
+                                              Real beta,
+                                              Expression<Object, R, N> arg)
   {
     if (Real.class.equals(paramType))
     {
       this.α = (P) alpha;
       this.β = (P) beta;
     }
-    else if ( Fraction.class.equals(paramType) )
+    else if (Fraction.class.equals(paramType))
     {
-      assert false : "TODO: convert Fractions to Reals";
+      this.α = (P) Real.newVector(alpha.size());
+      this.β = (P) Real.newVector(beta.size());
+      this.α.set(alpha);
+      this.β.set(beta);
     }
     else
     {
-      
+
       throw new IllegalArgumentException("unhandled elementType " + paramType);
     }
 
@@ -124,23 +121,20 @@ N extends NullaryFunction<R>> implements
                           α.setName("α"),
                           β.setName("β"));
 
-    context.registerVariable("N",
-                             N = new Integer());
+    context.registerVariable("N", N = new Integer());
 
     F = NullaryFunction.parse(elementType,
                               nullaryFunctionType,
                               "F",
                               "Σn➔zⁿ⋅∏k➔αₖ₍ₙ₎{k=1…p}/(n!⋅∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}",
                               context);
-    F = F.substitute("z",
-                     arg);
+    F = F.substitute("z", arg);
 
     return this;
   }
 
   @Override
-  public void
-         close()
+  public void close()
   {
     if (p != null)
     {
@@ -169,8 +163,7 @@ N extends NullaryFunction<R>> implements
     }
   }
 
-  public Integer
-         determineDegree()
+  public Integer determineDegree()
   {
     return α.stream()
             .filter(Real.isNegativeInteger)
@@ -183,25 +176,17 @@ N extends NullaryFunction<R>> implements
   }
 
   @Override
-  public R
-         evaluate(Object nullary,
-                  int order,
-                  int bits,
-                  R res)
+  public R evaluate(Object nullary, int order, int bits, R res)
   {
     if (!initialized)
     {
       initialize();
     }
 
-    return f.evaluate(nullary,
-                      order,
-                      bits,
-                      res);
+    return f.evaluate(nullary, order, bits, res);
   }
 
-  public void
-         initialize()
+  public void initialize()
   {
     if (!verify())
     {
@@ -223,8 +208,7 @@ N extends NullaryFunction<R>> implements
    *         no negative integers or zero in the denominator
    */
   @Override
-  public boolean
-         verify()
+  public boolean verify()
   {
     for (int i = 0; i < p.getSignedValue(); i++)
     {
