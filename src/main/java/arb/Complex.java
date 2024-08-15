@@ -63,7 +63,14 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
   {
     return lnΓ(bits, value);
   }
-  
+
+  @Override
+  public Complex set(Fraction val)
+  {
+    assert false : "TODO";
+    return null;
+  }
+    
  /**
    * log-Γ
    * 

@@ -122,7 +122,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
                                               Fraction beta,
                                               Expression<Object, C, N> arg)
   {
-    assert false : "damn";
+    //assert false : "damn";
     this.α = (P) Real.newVector(alpha.dim());
     this.β = (P) Real.newVector(beta.dim());
     this.α.set(alpha);

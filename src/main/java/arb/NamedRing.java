@@ -33,11 +33,7 @@ public interface NamedRing<A extends NamedRing<A>> extends
     return this;
   }
 
-  public default NamedRing<A> set(Fraction val)
-  {
-    assert false : "todo: implement set(" + val + ")";
-    return this;
-  }
+  public  NamedRing<A> set(Fraction val);
 
   public default NamedRing<A> set(Complex val)
   {
