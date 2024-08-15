@@ -513,18 +513,16 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
   @Override
   public Fraction set(Fraction value)
   {
-    getNumerator().set(value.getNumerator());
-    getDenominator().set(value.getDenominator());
-//    setNumeratorAddress(value.getNumeratorAddress());
-//    setDenominatorAddress(value.getDenominatorAddress());
-//    if ( numerator != null )
-//    {
-//      numerator.swigCPtr = getNumeratorAddress();      
-//    }
-//    if ( denominator != null )
-//    {
-//      denominator.swigCPtr = getDenominatorAddress(); 
-//    }
+    setNumeratorAddress(value.getNumeratorAddress());
+    setDenominatorAddress(value.getDenominatorAddress());
+    if ( numerator != null )
+    {
+      numerator.swigCPtr = getNumeratorAddress();      
+    }
+    if ( denominator != null )
+    {
+      denominator.swigCPtr = getDenominatorAddress(); 
+    }
     return this;
   }
 

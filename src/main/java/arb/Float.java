@@ -175,7 +175,7 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   /**
    * Self-referencing this{@link #add(int, int, Float)}
    * 
-   * @param DecompiledLommelPolynomialSequenceTest
+   * @param n
    * @param precision
    * @return this number plus n
    */
