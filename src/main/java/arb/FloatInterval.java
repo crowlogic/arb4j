@@ -141,7 +141,7 @@ public class FloatInterval implements AutoCloseable, Interval<Float> {
    * 
    * @param prec
    * @param includeError see {@link RealPartition}
-   * @param n
+   * @param DecompiledLommelPolynomialSequenceTest
    * 
    * @return a new {@link RealPartition}
    */
