@@ -88,7 +88,22 @@ import arb.utensils.Utensils;
   {
     return 1;
   }
-    
+
+  public RealPolynomial
+         set(double... elements)
+  {
+    assert elements.length <= getLength() : String.format(
+                                                          "cannot set elements of dimension %d because the dimension of this polynomials coeffecients is only %d\n",
+                                                          elements.length,
+                                                          getLength());
+    for (int i = 0; i < elements.length; i++)
+    {
+      set(i,
+          elements[i]);
+    }
+    return this;
+  }
+      
   public RealPolynomial become(RealPolynomial that)
   {
     close();

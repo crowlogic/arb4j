@@ -1,5 +1,7 @@
 package arb;
 
+import java.util.stream.Stream;
+
 import arb.algebra.Ring;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -17,5 +19,16 @@ public interface NamedRing<A extends NamedRing<A>> extends
   @Override
   public void
          close();
+
+  public <E>
+         E
+         get(int i);
+
+  public default Stream<A>
+         stream()
+  {
+    assert false : "TODO";
+    return null;
+  }
 
 }

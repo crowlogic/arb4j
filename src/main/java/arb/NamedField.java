@@ -1,5 +1,7 @@
 package arb;
 
+import java.util.stream.Stream;
+
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 
@@ -15,5 +17,13 @@ public interface NamedField<A extends NamedField<A>> extends
   @Override
   public void
          close();
+
+  @Override
+  default Stream<A>
+          stream()
+  {
+    assert false : "TODO";
+    return null;
+  }
 
 }
