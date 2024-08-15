@@ -44,25 +44,28 @@ import arb.expressions.Expression;
  * hypergeometric functions in a computational context.
  * </p>
  * 
+ * @param <P> the type of the numerator and denominator parameters
+ * @param <C> the type of the codomain of this {@link NullaryFunction}
+ * @param <N> the type of NullaryFunction
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
 public abstract class HypergeometricFunction<P extends NamedRing<P>,
-              R extends NamedRing<R>,
-              N extends NullaryFunction<R>> implements
-                                            NullaryFunction<R>,
+              C extends NamedRing<C>,
+              N extends NullaryFunction<C>> implements
+                                            NullaryFunction<C>,
                                             Verifiable
 {
 
   public Context                  context;
 
-  private N                       f;
+  public N                       f;
 
-  public Expression<Object, R, N> F;
+  public Expression<Object, C, N> F;
 
   boolean                         initialized = false;
 
-  private Integer                 N;
+  public Integer                 N;
 
   public Integer                  p, q;
 
@@ -73,12 +76,12 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
 
   }
 
-  public HypergeometricFunction<P, R, N> init(Class<P> paramType,
-                                              Class<R> elementType,
+  public HypergeometricFunction<P, C, N> init(Class<P> paramType,
+                                              Class<C> elementType,
                                               Class<N> nullaryFunctionType,
                                               int p,
                                               int q,
-                                              Expression<Object, R, N> arg)
+                                              Expression<Object, C, N> arg)
   {
     Real alpha = Real.newVector(p);
     Real beta  = Real.newVector(q);
@@ -88,13 +91,42 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
     return this;
   }
 
-  @SuppressWarnings("unchecked")
-  public HypergeometricFunction<P, R, N> init(Class<P> paramType,
-                                              Class<R> elementType,
+  public HypergeometricFunction<P, C, N> init(Class<P> paramType,
+                                              Class<C> elementType,
                                               Class<N> nullaryFunctionType,
                                               Real alpha,
                                               Real beta,
-                                              Expression<Object, R, N> arg)
+                                              Expression<Object, C, N> arg)
+  {
+    assignParameters(paramType, alpha, beta);
+
+    initializeContext();
+
+    F = NullaryFunction.parse(elementType,
+                              nullaryFunctionType,
+                              "F",
+                              "Σn➔zⁿ⋅∏k➔αₖ₍ₙ₎{k=1…p}/(n!⋅∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}",
+                              context);
+    F = F.substitute("z", arg);
+    F.compile();
+    
+    return this;
+  }
+
+  public void initializeContext()
+  {
+    context = new Context(p = new Integer(α.dim(),
+                                          "p"),
+                          q = new Integer(β.dim(),
+                                          "q"),
+                          α.setName("α"),
+                          β.setName("β"));
+
+    context.registerVariable("N", N = new Integer());
+  }
+
+  @SuppressWarnings("unchecked")
+  public void assignParameters(Class<P> paramType, Real alpha, Real beta)
   {
     if (Real.class.equals(paramType))
     {
@@ -113,24 +145,6 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
 
       throw new IllegalArgumentException("unhandled elementType " + paramType);
     }
-
-    context = new Context(p = new Integer(α.dim(),
-                                          "p"),
-                          q = new Integer(β.dim(),
-                                          "q"),
-                          α.setName("α"),
-                          β.setName("β"));
-
-    context.registerVariable("N", N = new Integer());
-
-    F = NullaryFunction.parse(elementType,
-                              nullaryFunctionType,
-                              "F",
-                              "Σn➔zⁿ⋅∏k➔αₖ₍ₙ₎{k=1…p}/(n!⋅∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}",
-                              context);
-    F = F.substitute("z", arg);
-
-    return this;
   }
 
   @Override
@@ -176,7 +190,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
   }
 
   @Override
-  public R evaluate(Object nullary, int order, int bits, R res)
+  public C evaluate(Object nullary, int order, int bits, C res)
   {
     if (!initialized)
     {
