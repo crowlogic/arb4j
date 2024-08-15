@@ -2,12 +2,8 @@ package arb.functions;
 
 import java.util.Comparator;
 
+import arb.*;
 import arb.Integer;
-import arb.NamedRing;
-import arb.Polynomial;
-import arb.Real;
-import arb.RealPolynomial;
-import arb.Verifiable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ArbException;
@@ -97,6 +93,7 @@ N extends NullaryFunction<R>> implements
     return this;
   }
 
+  @SuppressWarnings("unchecked")
   public HypergeometricFunction<P, R, N>
          init(Class<P> paramType,
               Class<R> elementType,
@@ -110,9 +107,14 @@ N extends NullaryFunction<R>> implements
       this.α = (P) alpha;
       this.β = (P) beta;
     }
+    else if ( Fraction.class.equals(paramType) )
+    {
+      assert false : "TODO: convert Fractions to Reals";
+    }
     else
     {
-      throw new IllegalArgumentException("unhandled elementType " + elementType);
+      
+      throw new IllegalArgumentException("unhandled elementType " + paramType);
     }
 
     context = new Context(p = new Integer(α.dim(),
