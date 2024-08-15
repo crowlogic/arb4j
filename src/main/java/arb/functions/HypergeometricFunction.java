@@ -1,6 +1,7 @@
 package arb.functions;
 
 import java.util.Comparator;
+import java.util.stream.Stream;
 
 import arb.*;
 import arb.Integer;
@@ -59,13 +60,13 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
 
   public Context                  context;
 
-  public N                       f;
+  public N                        f;
 
   public Expression<Object, C, N> F;
 
   boolean                         initialized = false;
 
-  public Integer                 N;
+  public Integer                  N;
 
   public Integer                  p, q;
 
@@ -74,21 +75,6 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
   public HypergeometricFunction()
   {
 
-  }
-
-  public HypergeometricFunction<P, C, N> init(Class<P> paramType,
-                                              Class<C> elementType,
-                                              Class<N> nullaryFunctionType,
-                                              int p,
-                                              int q,
-                                              Expression<Object, C, N> arg)
-  {
-    Real alpha = Real.newVector(p);
-    Real beta  = Real.newVector(q);
-
-    init(paramType, elementType, nullaryFunctionType, alpha, beta, arg);
-
-    return this;
   }
 
   public HypergeometricFunction<P, C, N> init(Class<P> paramType,
@@ -109,7 +95,58 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
                               context);
     F = F.substitute("z", arg);
     F.compile();
-    
+
+    return this;
+  }
+
+  @SuppressWarnings("unchecked")
+  public HypergeometricFunction<P, C, N> init(Class<P> paramType,
+                                              Class<C> elementType,
+                                              Class<N> nullaryFunctionType,
+                                              Fraction alpha,
+                                              Fraction beta,
+                                              Expression<Object, C, N> arg)
+  {
+    this.α = (P) Real.newVector(alpha.dim());
+    this.β = (P) Real.newVector(beta.dim());
+    this.α.set(alpha);
+    this.β.set(beta);
+    System.out.println(this.α + " beta=" + this.β);
+    initializeContext();
+
+    F = NullaryFunction.parse(elementType,
+                              nullaryFunctionType,
+                              "F",
+                              "Σn➔zⁿ⋅∏k➔αₖ₍ₙ₎{k=1…p}/(n!⋅∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}",
+                              context);
+    F = F.substitute("z", arg);
+    F.compile();
+
+    return this;
+  }
+
+  @SuppressWarnings("unchecked")
+  public HypergeometricFunction<P, C, N> init(Class<P> paramType,
+                                              Class<C> elementType,
+                                              Class<N> nullaryFunctionType,
+                                              Complex alpha,
+                                              Complex beta,
+                                              Expression<Object, C, N> arg)
+  {
+    this.α = (P) Complex.newVector(alpha.dim());
+    this.β = (P) Complex.newVector(beta.dim());
+    this.α.set(alpha);
+    this.β.set(beta);
+    initializeContext();
+
+    F = NullaryFunction.parse(elementType,
+                              nullaryFunctionType,
+                              "F",
+                              "Σn➔zⁿ⋅∏k➔αₖ₍ₙ₎{k=1…p}/(n!⋅∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}",
+                              context);
+    F = F.substitute("z", arg);
+    F.compile();
+
     return this;
   }
 
@@ -179,14 +216,21 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
 
   public Integer determineDegree()
   {
-    return α.stream()
-            .filter(Real.isNegativeInteger)
-            .map(a -> (Real) α)
-            .min(Comparator.naturalOrder())
-            .get()
-            .integerValue(N)
-            .neg()
-            .add(1);
+    if (α instanceof Real)
+    {
+
+      Real a = (Real) this.α;
+      return Stream.of(a.elements)
+                   .min(Comparator.naturalOrder())
+                   .get()
+                   .integerValue(N)
+                   .neg()
+                   .add(1);
+    }
+    else
+    {
+      throw new UnsupportedOperationException(" TODO: support parmeter type " + α.getClass());
+    }
   }
 
   @Override

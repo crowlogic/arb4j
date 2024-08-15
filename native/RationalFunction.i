@@ -22,6 +22,12 @@ import java.util.stream.Stream;
 
   RealRationalFunction realVersion;
 
+  public boolean isZero()
+  {
+    return arblib.fmpz_poly_q_is_zero(this) != 0;
+  }
+
+
   public RealFunction asRealFunction()
   {
     return (realVersion == null ? (realVersion = new RealRationalFunction()) : realVersion);
@@ -288,6 +294,10 @@ import java.util.stream.Stream;
   @Override
   public RationalFunction div(RationalFunction operand, int prec, RationalFunction result)
   {
+    assert operand.swigCPtr != 0 : "operand has null pointer";
+    assert result.swigCPtr != 0 : "result has null pointer";
+    assert this.swigCPtr != 0 : "this has null pointer";
+    assert !operand.isZero() : "division by zero";  
     assertPointerConsistency();
     arblib.fmpz_poly_q_div(result, this, operand);
     refreshPointers();      

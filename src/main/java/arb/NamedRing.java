@@ -17,25 +17,30 @@ public interface NamedRing<A extends NamedRing<A>> extends
 {
 
   @Override
-  public void
-         close();
+  public void close();
 
-  public <E>
-         E
-         get(int i);
+  public <E> E get(int i);
 
-  public default Stream<A>
-         stream()
+  public default Stream<A> stream()
   {
     assert false : "TODO";
     return null;
   }
 
-  public default NamedRing<A>
-         set(Real alpha)
+  public default NamedRing<A> set(Real val)
   {
-    assert false : "todo: implement set(" + alpha + ")";
+    assert false : "todo: implement set(" + val + ")";
     return this;
   }
 
-}
+  public default NamedRing<A> set(Fraction val)
+  {
+    assert false : "todo: implement set(" + val + ")";
+    return this;
+  }
+
+  public default NamedRing<A> set(Complex val)
+  {
+    assert false : "todo: implement set(" + val + ")";
+    return this;
+  }}

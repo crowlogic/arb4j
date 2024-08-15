@@ -16,38 +16,30 @@ import arb.functions.complex.ComplexPolynomialNullaryFunction;
  */
 public class ComplexPolynomialHypergeometricFunction extends
                                                      HypergeometricFunction<Complex,
-                                                     ComplexPolynomial,
-                                                     ComplexPolynomialNullaryFunction> implements
+                                                                   ComplexPolynomial,
+                                                                   ComplexPolynomialNullaryFunction>
+                                                     implements
                                                      Verifiable
 {
+
+  @Override
+  public ComplexPolynomial evaluate(Object nullary, int order, int bits, ComplexPolynomial res)
+  {
+    return super.evaluate(nullary, order, bits, res);
+  }
 
   public ComplexPolynomialHypergeometricFunction
          init(Complex alpha,
               Complex beta,
               Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> arg)
   {
-    init(Complex.class,
-         ComplexPolynomial.class,
-         ComplexPolynomialNullaryFunction.class,
-         alpha.size(),
-         beta.size(),
-         arg);
-    this.α.set(alpha);
-    this.β.set(beta);
+    super.init(Complex.class,
+               ComplexPolynomial.class,
+               ComplexPolynomialNullaryFunction.class,
+               alpha,
+               beta,
+               arg);
     return this;
-  }
-
-  public ComplexPolynomialHypergeometricFunction(int i,
-                                                 int j,
-                                                 Expression<Object, ComplexPolynomial,
-                                                 ComplexPolynomialNullaryFunction> arg)
-  {
-    init(Complex.class,
-         ComplexPolynomial.class,
-         ComplexPolynomialNullaryFunction.class,
-         i,
-         j,
-         arg);
   }
 
   public ComplexPolynomialHypergeometricFunction()
