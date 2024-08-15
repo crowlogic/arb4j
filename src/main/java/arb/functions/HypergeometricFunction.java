@@ -122,7 +122,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
                                               Fraction beta,
                                               Expression<Object, C, N> arg)
   {
-    //assert false : "damn";
+    // assert false : "damn";
     this.α = (P) Real.newVector(alpha.dim());
     this.β = (P) Real.newVector(beta.dim());
     this.α.set(alpha);
@@ -136,7 +136,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
                               "Σn➔zⁿ⋅∏k➔αₖ₍ₙ₎{k=1…p}/(n!⋅∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}",
                               context);
     F = F.substitute("z", arg);
-   // F.compile();
+    f = F.instantiate();
 
     return this;
   }
