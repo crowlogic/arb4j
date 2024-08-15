@@ -52,6 +52,19 @@ public class RealPolynomialHypergeometricFunction extends
                                                   RealPolynomialNullaryFunction>
 {
 
+  public RealPolynomialHypergeometricFunction
+         init(Real alpha,
+              Real beta,
+              Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> arg)
+  {
+    init(RealPolynomial.class,
+         RealPolynomialNullaryFunction.class,
+         alpha,
+         beta,
+         arg);
+    return this;
+  }
+
   public RealPolynomialHypergeometricFunction(int i,
                                               int j,
                                               Expression<Object, RealPolynomial,

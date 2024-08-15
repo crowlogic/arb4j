@@ -20,6 +20,19 @@ public class ComplexPolynomialHypergeometricFunction extends
                                                      Verifiable
 {
 
+  public ComplexPolynomialHypergeometricFunction
+         init(Complex alpha,
+              Complex beta,
+              Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> arg)
+  {
+    init(ComplexPolynomial.class,
+         ComplexPolynomialNullaryFunction.class,
+         alpha,
+         beta,
+         arg);
+    return this;
+  }
+
   public ComplexPolynomialHypergeometricFunction(int i,
                                                  int j,
                                                  Expression<Object, ComplexPolynomial,

@@ -10,6 +10,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ArbException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.functions.complex.ComplexPolynomialNullaryFunction;
 
 /**
  * Represents a hypergeometric {@link Real}-valued {@link Polynomial}, that is,
@@ -48,8 +49,8 @@ import arb.expressions.Expression;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class HypergeometricFunction<R extends NamedRing<?>, N extends NullaryFunction<R>>
-                                            implements
+public abstract class HypergeometricFunction<R extends NamedRing<? extends R>,
+N extends NullaryFunction<R>> implements
                                             NullaryFunction<R>,
                                             Verifiable
 {
@@ -66,15 +67,15 @@ public abstract class HypergeometricFunction<R extends NamedRing<?>, N extends N
 
   public Integer                  p, q;
 
-  public R                 α, β;
+  public R                        α, β;
 
   public HypergeometricFunction()
   {
 
   }
 
-  public HypergeometricFunction(Class<? extends R> elementType,
-                                Class<? extends N> nullaryFunctionType,
+  public HypergeometricFunction(Class<R> elementType,
+                                Class<N> nullaryFunctionType,
                                 int p,
                                 int q,
                                 Expression<Object, R, N> arg)
@@ -82,13 +83,35 @@ public abstract class HypergeometricFunction<R extends NamedRing<?>, N extends N
     init(elementType,
          nullaryFunctionType,
          Real.newVector(p),
-         Real.newVector(q), 
+         Real.newVector(q),
          arg);
   }
 
   public HypergeometricFunction<R, N>
-         init(Class<? extends R> elementType,
-              Class<? extends N> nullaryFunctionType,
+         init(Class<R> elementType,
+              Class<N> nullaryFunctionType,
+              Real alpha,
+              Real beta,
+              Expression<Object, R, N> arg)
+  {
+    assert false : "todo";
+    return this;
+  }
+
+  public HypergeometricFunction<R, N>
+         init(Class<ComplexPolynomial> elementType,
+              Class<ComplexPolynomialNullaryFunction> nullaryFunctionType,
+              Complex newVector,
+              Complex newVector2,
+              Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> arg)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return this;
+  }
+
+  public HypergeometricFunction<R, N>
+         init(Class<R> elementType,
+              Class<N> nullaryFunctionType,
               R α,
               R β,
               Expression<Object, R, N> arg)
@@ -118,14 +141,33 @@ public abstract class HypergeometricFunction<R extends NamedRing<?>, N extends N
 
   @Override
   public void
-
          close()
   {
-    p.close();
-    q.close();
-    α.close();
-    β.close();
-    N.close();
+    if (p != null)
+    {
+      p.close();
+      p = null;
+    }
+    if (q != null)
+    {
+      q = null;
+      q.close();
+    }
+    if (α != null)
+    {
+      α.close();
+      α = null;
+    }
+    if (β != null)
+    {
+      β.close();
+      β = null;
+    }
+    if (N != null)
+    {
+      N.close();
+      N = null;
+    }
   }
 
   public Integer
