@@ -48,7 +48,7 @@ import arb.expressions.Expression;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class HypergeometricFunction<R extends Ring<?>, N extends NullaryFunction<R>>
+public abstract class HypergeometricFunction<R extends NamedRing<?>, N extends NullaryFunction<R>>
                                             implements
                                             NullaryFunction<R>,
                                             Verifiable
@@ -66,15 +66,15 @@ public abstract class HypergeometricFunction<R extends Ring<?>, N extends Nullar
 
   public Integer                  p, q;
 
-  public Field<?>                 α, β;
+  public R                 α, β;
 
   public HypergeometricFunction()
   {
 
   }
 
-  public HypergeometricFunction(Class<R> elementType,
-                                Class<N> nullaryFunctionType,
+  public HypergeometricFunction(Class<? extends R> elementType,
+                                Class<? extends N> nullaryFunctionType,
                                 int p,
                                 int q,
                                 Expression<Object, R, N> arg)
@@ -87,10 +87,10 @@ public abstract class HypergeometricFunction<R extends Ring<?>, N extends Nullar
   }
 
   public HypergeometricFunction<R, N>
-         init(Class<R> elementType,
-              Class<N> nullaryFunctionType,
-              NamedField<?> α,
-              NamedField<?> β,
+         init(Class<? extends R> elementType,
+              Class<? extends N> nullaryFunctionType,
+              R α,
+              R β,
               Expression<Object, R, N> arg)
   {
     this.α  = α;

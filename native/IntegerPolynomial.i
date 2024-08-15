@@ -16,6 +16,13 @@ import arb.algebra.Ring;
 %typemap(javacode) fmpz_poly_struct %{
   static { System.loadLibrary( "arblib" ); }
   
+  @Override
+  public int
+         dim()
+  {
+    return 1;
+  }
+    
   public IntegerPolynomial remainder;
   
   @Override

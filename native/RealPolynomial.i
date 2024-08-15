@@ -82,6 +82,13 @@ import arb.utensils.Utensils;
     return name;
   }
   
+ @Override
+  public int
+         dim()
+  {
+    return 1;
+  }
+    
   public RealPolynomial become(RealPolynomial that)
   {
     close();

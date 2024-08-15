@@ -746,6 +746,13 @@ import arb.algebra.Ring;
     arblib.arb_mat_frobenius_norm(normResult, this, bits);
     return normResult;
   }  
+  
+  @Override
+  public int
+         dim()
+  {
+    return 1;
+  }  
 %};
 
 

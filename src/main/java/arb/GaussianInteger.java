@@ -79,4 +79,11 @@ public class GaussianInteger implements Ring<GaussianInteger>, AutoCloseable
     GaussianInteger f = (GaussianInteger) obj;
     return realPart.equals(f.realPart) && imaginaryPart.equals(f.imaginaryPart);
   }
+
+  @Override
+  public int
+         dim()
+  {
+    return 1;
+  }
 }

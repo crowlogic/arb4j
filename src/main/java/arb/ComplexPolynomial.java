@@ -49,7 +49,14 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
     arblib.acb_poly_scalar_mul(res, this, val, bits);
     return res;
   }
-  
+
+  @Override
+  public int
+         dim()
+  {
+    return 1;
+  }
+    
   @Override
   public int
          hashCode()

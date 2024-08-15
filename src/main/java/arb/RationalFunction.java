@@ -17,7 +17,7 @@ import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
 import java.util.stream.Stream;
 
-public class RationalFunction implements Named,AutoCloseable,Field<RationalFunction>,Function<Fraction,Fraction>,Verifiable {
+public class RationalFunction implements AutoCloseable,NamedField<RationalFunction>,Function<Fraction,Fraction>,Verifiable {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 

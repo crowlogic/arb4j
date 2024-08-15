@@ -109,6 +109,13 @@ public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunct
     return name;
   }
   
+ @Override
+  public int
+         dim()
+  {
+    return 1;
+  }
+    
   public RealPolynomial become(RealPolynomial that)
   {
     close();

@@ -881,4 +881,11 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return mul(four, 0, result);
   }
 
+  @Override
+  public int
+         dim()
+  {
+    return dim;
+  }
+
 }

@@ -774,6 +774,13 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     arblib.arb_mat_frobenius_norm(normResult, this, bits);
     return normResult;
   }  
+  
+  @Override
+  public int
+         dim()
+  {
+    return 1;
+  }  
 
   public void setNumRows(int value) {
     arblibJNI.RealMatrix_numRows_set(swigCPtr, this, value);

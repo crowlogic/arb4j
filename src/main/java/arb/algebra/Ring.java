@@ -35,6 +35,8 @@ import arb.groups.CommutativeGroup;
 public interface Ring<X> extends Magma<X>, CommutativeGroup<X>
 {
 
+  int dim();
+
   @Override
   default boolean contains(X element)
   {

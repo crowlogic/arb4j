@@ -42,6 +42,13 @@ public class IntegerPolynomial implements Named,AutoCloseable,Ring<IntegerPolyno
 
   static { System.loadLibrary( "arblib" ); }
   
+  @Override
+  public int
+         dim()
+  {
+    return 1;
+  }
+    
   public IntegerPolynomial remainder;
   
   @Override

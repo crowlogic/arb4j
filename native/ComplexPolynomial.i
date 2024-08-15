@@ -21,7 +21,14 @@ import java.util.Objects;
     arblib.acb_poly_scalar_mul(res, this, val, bits);
     return res;
   }
-  
+
+  @Override
+  public int
+         dim()
+  {
+    return 1;
+  }
+    
   @Override
   public int
          hashCode()
