@@ -68,7 +68,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   private Class<?>     hypergeometricFunctionClass;
 
-  private boolean      dependsOnInput;
+  public boolean      dependsOnInput;
 
   private String       hypergeometricFunctionFieldName;
 

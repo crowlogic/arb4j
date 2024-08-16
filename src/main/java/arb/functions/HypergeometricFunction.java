@@ -1,6 +1,8 @@
 package arb.functions;
 
 import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import arb.*;
@@ -10,6 +12,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ArbException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.expressions.nodes.unary.HypergeometricFunctionNode;
 
 /**
  * Represents a hypergeometric {@link Real}-valued {@link Polynomial}, that is,
@@ -44,6 +47,51 @@ import arb.expressions.Expression;
  * evaluate the polynomial, encapsulating the complexity of handling
  * hypergeometric functions in a computational context.
  * </p>
+ * 
+ * Note regarding parameters: hypergeometric functions can indeed have
+ * complex-valued parameters and parameters that depend on the argument.
+ * 
+ * 1. Complex-valued parameters: Hypergeometric functions can absolutely have
+ * complex-valued parameters. In fact, this is quite common in various
+ * applications in physics and mathematics. For example, the general
+ * hypergeometric function ₂F₁(a,b;c;z) can have complex values for a, b, and c.
+ * 
+ * 2. Parameters depending on the argument: This is a bit more nuanced. In the
+ * classical definition of hypergeometric functions, the parameters are
+ * typically constant. However, there are generalizations and related functions
+ * where the parameters can depend on the argument:
+ * 
+ * a) Generalized hypergeometric functions: These can sometimes be defined with
+ * parameters that are functions of the argument.
+ * 
+ * b) q-Hypergeometric functions: These are q-analogs of hypergeometric
+ * functions where q can sometimes be a function of the argument.
+ * 
+ * c) Meijer G-functions and Fox H-functions: These are generalizations of
+ * hypergeometric functions that can have more flexible parameter structures.
+ * 
+ * d) Differential equations: When hypergeometric functions are considered as
+ * solutions to differential equations, the coefficients of the equation (which
+ * relate to the parameters of the function) can sometimes depend on the
+ * independent variable.
+ * 
+ * However, it's important to note that when we allow parameters to depend on
+ * the argument, we're often moving beyond the classical definition of
+ * hypergeometric functions and into more general classes of special functions.
+ * 
+ * In computational implementations, allowing parameters to depend on the
+ * argument would require careful consideration of how this dependency is
+ * expressed and evaluated, as it could significantly complicate the algorithms
+ * for computing these functions.
+ * 
+ * For most standard libraries and implementations, hypergeometric functions are
+ * typically defined with constant (though possibly complex) parameters. If you
+ * need functions with argument-dependent parameters, you might need to
+ * construct these as composite functions or use more general frameworks for
+ * special functions.
+ * 
+ * All that being said, for now, just throw an exception if
+ * {@link HypergeometricFunctionNode#dependsOnInput}
  * 
  * @param <P> the type of the numerator and denominator parameters
  * @param <C> the type of the codomain of this {@link NullaryFunction}
@@ -208,11 +256,20 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
   {
     if (α instanceof Real)
     {
-      assert false : "filter for negative integers in numerator";
-      Real a    = (Real) this.α;
-      Real real = Stream.of(a.elements).min(Comparator.naturalOrder()).get();
-      System.out.println("min numerator=" + real);
-      Integer integer = real.integerValue(N).neg().add(1);
+      Real a = (Real) this.α;
+      for (Real r : a.elements)
+
+      {
+        assert !(r == null) : α + " has a null element";
+      }
+
+      Stream<Real> stream  = Stream.of(a.elements);
+      // List<Real> elementList = stream.collect(Collectors.toList());
+      Real         real    = stream.min(Comparator.naturalOrder()).get();
+      // System.out.println("min numerator=" + real);
+      // System.out.println("elementList=" + elementList);
+      Integer      integer = real.integerValue(N).neg().add(1);
+      // assert false : "filter for negative integers in numerator";
       return integer;
     }
     else

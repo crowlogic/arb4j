@@ -65,19 +65,6 @@ public class RealPolynomialHypergeometricFunction extends
     return this;
   }
 
-  public RealPolynomialHypergeometricFunction(int i,
-                                              int j,
-                                              Expression<Object, RealPolynomial,
-                                              RealPolynomialNullaryFunction> arg)
-  {
-    init(Real.class,
-         RealPolynomial.class,
-         RealPolynomialNullaryFunction.class,
-         Real.newVector(i),
-         Real.newVector(j),
-         arg);
-  }
-
   public RealPolynomialHypergeometricFunction()
   {
   }
