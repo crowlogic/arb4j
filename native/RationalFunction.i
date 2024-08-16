@@ -20,6 +20,13 @@ import java.util.stream.Stream;
 
 %typemap(javacode) fmpz_poly_q_struct %{
 
+  public ComplexFraction evaluate(ComplexFraction t, int order, int bits, ComplexFraction result)
+  {
+    evaluate(t.realPart,order,bits,result.realPart);
+    evaluate(t.imaginaryPart,order,bits,result.imaginaryPart );
+    return result;
+  }
+  
   public RationalFunction sub(Integer element, int prec, RationalFunction result)
   {
     try ( RationalFunction e = new RationalFunction())

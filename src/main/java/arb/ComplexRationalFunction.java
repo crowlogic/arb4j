@@ -55,23 +55,23 @@ public class ComplexRationalFunction implements
     RationalFunction c = x.realPart;
     RationalFunction d = x.imaginaryPart;
     // (a + bi) / (c + di) = (ac + bd)/(c^2 + d^2) + (bc - ad)/(c^2 + d^2)i
-    try ( var denominator = new RationalFunction(); var temp1 = new RationalFunction();
-          var temp2 = new RationalFunction();)
+    try ( var denominator = new RationalFunction(); var realResult = new RationalFunction();
+          var imaginaryResult = new RationalFunction();)
     {
 
       c.mul(c, prec, denominator);
-      d.mul(d, prec, temp1);
-      denominator.add(temp1, prec, denominator);
+      d.mul(d, prec, realResult);
+      denominator.add(realResult, prec, denominator);
 
-      a.mul(c, prec, temp1);
-      b.mul(d, prec, temp2);
-      temp1.add(temp2, prec, temp1);
-      temp1.div(denominator, prec, result.realPart);
+      a.mul(c, prec, realResult);
+      b.mul(d, prec, imaginaryResult);
+      realResult.add(imaginaryResult, prec, realResult);
+      realResult.div(denominator, prec, result.realPart);
 
-      b.mul(c, prec, temp1);
-      a.mul(d, prec, temp2);
-      temp1.sub(temp2, prec, temp1);
-      temp1.div(denominator, prec, result.imaginaryPart);
+      b.mul(c, prec, realResult);
+      a.mul(d, prec, imaginaryResult);
+      realResult.sub(imaginaryResult, prec, realResult);
+      realResult.div(denominator, prec, result.imaginaryPart);
 
       return result;
     }
@@ -160,16 +160,16 @@ public class ComplexRationalFunction implements
     assert result.realPart != null : "result.realPart is null";
     assert result.imaginaryPart != null : "result.imaginaryPart is null";
 
-    try ( var temp1 = new RationalFunction(); var temp2 = new RationalFunction();)
+    try ( var realResult = new RationalFunction(); var imaginaryResult = new RationalFunction();)
     {
 
-      realPart.mul(x.realPart, prec, temp1);
-      imaginaryPart.mul(x.imaginaryPart, prec, temp2);
-      temp1.sub(temp2, prec, result.realPart);
+      realPart.mul(x.realPart, prec, realResult);
+      imaginaryPart.mul(x.imaginaryPart, prec, imaginaryResult);
+      realResult.sub(imaginaryResult, prec, result.realPart);
 
-      realPart.mul(x.imaginaryPart, prec, temp1);
-      imaginaryPart.mul(x.realPart, prec, temp2);
-      temp1.add(temp2, prec, result.imaginaryPart);
+      realPart.mul(x.imaginaryPart, prec, realResult);
+      imaginaryPart.mul(x.realPart, prec, imaginaryResult);
+      realResult.add(imaginaryResult, prec, result.imaginaryPart);
 
       return result;
     }
@@ -226,13 +226,13 @@ public class ComplexRationalFunction implements
    * Let's call the real part function a(x) = x + 1 and the imaginary part
    * function b(x) = x - 1
    * 
-   * So, temp1 = a(2 + i) = (2 + i) + 1 = 3 + i temp2 = b(2 + i) = (2 + i) - 1 = 1
+   * So, realResult = a(2 + i) = (2 + i) + 1 = 3 + i imaginaryResult = b(2 + i) = (2 + i) - 1 = 1
    * + i
    * 
    * Now, the key insight is that we want: f(2 + i) = a(2 + i) + i * b(2 + i) = (3
    * + i) + i(1 + i) = 3 + i + i + i^2 = 3 + i + i - 1 (because i^2 = -1) = 2 + 2i
    * 
-   * The subtraction temp1 - temp2 achieves this because:
+   * The subtraction realResult - imaginaryResult achieves this because:
    * 
    * (3 + i) - (1 + i) = (3 + i) + (-1 - i) = 3 + i - 1 - i = 2
    * 
@@ -247,15 +247,12 @@ public class ComplexRationalFunction implements
    * You're right that this is related to conjugation. If we look at it another
    * way:
    * 
-   * (a + bi) + i(c + di) = (a + bi) - (-i)(c + di) = (a + bi) - (d - ci) = (a -
-   * d) + (b + c)i
+   * (a + bi) + i(c + di) = (a + bi) - (-i)(c + di) 
+   *                      = (a + bi) - (d - ci) 
+   *                      = (a - d)  + (b + c)i
    * 
    * This is equivalent to adding the conjugate of i(c + di), which is indeed what
    * the subtraction does.
-   * 
-   * Your insight is really valuable here - it shows how complex arithmetic
-   * operations can sometimes be simplified in unexpected ways, leading to more
-   * elegant and efficient implementations.
    * </pre>
    * 
    */
@@ -264,23 +261,12 @@ public class ComplexRationalFunction implements
   {
     assert result.realPart != null : "result.realPart is null";
     assert result.imaginaryPart != null : "result.imaginaryPart is null";
-    ComplexFraction temp1 = result;
-    try ( ComplexFraction temp2 = new ComplexFraction();)
+    ComplexFraction realResult = result;
+    try ( ComplexFraction imaginaryResult = new ComplexFraction();)
     {
-      // Evaluate real part
-      realPart.evaluate(t.realPart, order, bits, temp1.realPart);
-      realPart.evaluate(t.imaginaryPart, order, bits, temp1.imaginaryPart);
-
-      // Evaluate imaginary part
-      imaginaryPart.evaluate(t.realPart, order, bits, temp2.realPart);
-      imaginaryPart.evaluate(t.imaginaryPart, order, bits, temp2.imaginaryPart);
-
-      // Combine results
-      temp1.sub(temp2, bits, result); // This is correct
-
-      // System.out.format("t=%s\ntemp1=%s\ntemp2=%s\nresult=%s\n", t, temp1, temp2,
-      // result);
-      return result;
+      realPart.evaluate(t, order, bits, realResult);
+      imaginaryPart.evaluate(t, order, bits, imaginaryResult);
+      return realResult.sub(imaginaryResult, bits, result);
     }
   }
 
