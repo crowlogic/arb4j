@@ -54,6 +54,7 @@ public class RationalHypergeometricFunction extends
   @Override
   public RationalFunction evaluate(Object nullary, int order, int bits, RationalFunction res)
   {
+    System.out.format("evaluate(order=%s,bits=%s,res=%s(0x%x))", order,bits,res,RationalFunction.getCPtr(res));
     return super.evaluate(nullary, order, bits, res);
   }
 
