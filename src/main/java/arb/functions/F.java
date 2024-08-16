@@ -13,6 +13,24 @@ public class F implements
                AutoCloseable,
                Initializable
 {
+  @Override
+  public String toString()
+  {
+    return String.format("F[isInitialized=%s, cℤ1=%s, factorq1=%s, N=%s, p=%s, q=%s, α=%s, β=%s, sumq1=%s, endIndexℤ1=%s, n=%s, valueq1=%s]",
+                         isInitialized,
+                         cℤ1,
+                         factorq1,
+                         N,
+                         p,
+                         q,
+                         α,
+                         β,
+                         sumq1,
+                         endIndexℤ1,
+                         n,
+                         valueq1);
+  }
+
   public boolean          isInitialized;
   Integer                 cℤ1;
   public factorq1         factorq1 = new factorq1();
@@ -105,12 +123,6 @@ public class F implements
     n.close();
     valueq1.close();
     factorq1.close();
-  }
-
-  @Override
-  public String toString()
-  {
-    return "F:Σn➔(((neg(z^2))^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}";
   }
 
   @Override

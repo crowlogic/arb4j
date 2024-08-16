@@ -512,7 +512,10 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
 
   public Integer init()
   {
-    return init(1);
+    swigCPtr = Arena.global().allocate(Long.BYTES).address();
+    swigCMemOwn = false;
+    arblib.fmpz_init(swigCPtr);
+    return this;
   }
 
   /**
@@ -547,7 +550,10 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     arena         = newArena;
     nativeSegment = arena.allocate(Long.BYTES * n);
     swigCPtr      = nativeSegment.address();
-    arblib.fmpz_init2(swigCPtr, n);
+    for ( int i = 0; i < n; i++ )
+    {
+      get(i).init();
+    }
     return this;
   }
 

@@ -1,5 +1,6 @@
 package arb.functions;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -206,6 +207,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
                               context);
     F = F.substitute("z", arg);
     f = F.instantiate();
+    
   }
 
   public void initializeContext()
@@ -218,7 +220,10 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
                           β.setName("β"));
 
     context.registerVariable("N", N = new Integer());
+    //N.set(1);
+    System.out.println("N=" + N);
     determineDegree();
+    System.out.println("N=" + N);
 
   }
 
@@ -263,12 +268,15 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
         assert !(r == null) : α + " has a null element";
       }
 
-      Stream<Real> stream  = Stream.of(a.elements);
+      Stream<Real> stream  = Stream.of(a.elements).filter(Real.isNegativeInteger);
       // List<Real> elementList = stream.collect(Collectors.toList());
       Real         real    = stream.min(Comparator.naturalOrder()).get();
-      // System.out.println("min numerator=" + real);
-      // System.out.println("elementList=" + elementList);
-      Integer      integer = real.integerValue(N).neg().add(1);
+       System.out.println("min numerator=" + real);
+       System.out.println("elementList=" + Arrays.asList(a.elements));
+      Integer integerValue = real.integerValue(N);
+      System.out.println( "integerValue= " + integerValue );
+      Integer      integer = integerValue.neg().add(1);
+      System.out.println( "Returning " + integer );
       // assert false : "filter for negative integers in numerator";
       return integer;
     }
@@ -286,6 +294,8 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
       initialize();
     }
 
+    //assert false : N + " dammit";
+    assert N.sign() > 0 : N + " should be a positive integer equal to one plus the negative of the least integer parameter in the numerator";
     return f.evaluate(nullary, order, bits, res);
   }
 
