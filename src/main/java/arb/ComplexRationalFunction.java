@@ -218,9 +218,6 @@ public class ComplexRationalFunction implements
 
   /**
    * <pre>
-   * Excellent observation! Your intuition about it being related to conjugation
-   * is spot-on. Let's break this down:
-   * 
    * 1. We have f(x) = (x + 1) + i(x - 1) 2. We evaluate this at x = 2 + i
    * 
    * Let's call the real part function a(x) = x + 1 and the imaginary part
@@ -244,7 +241,7 @@ public class ComplexRationalFunction implements
    * 
    * Which is exactly what the subtraction achieves!
    * 
-   * You're right that this is related to conjugation. If we look at it another
+   * It is related to conjugation. If we look at it another
    * way:
    * 
    * (a + bi) + i(c + di) = (a + bi) - (-i)(c + di) 
@@ -288,6 +285,6 @@ public class ComplexRationalFunction implements
   @Override
   public String toString()
   {
-    return realPart.toString() + " + " + imaginaryPart.toString() + "i";
+    return String.format("%s + %si", realPart, imaginaryPart);
   }
 }
