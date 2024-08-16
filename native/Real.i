@@ -300,54 +300,22 @@ import arb.utensils.Utensils;
     return res.set(this).div(a, bits, res);
   }
   
-  public static Predicate<Object> isNegativeInteger       = αᵢ ->
-                                                     {
-                                                       if ((αᵢ instanceof Integer))
-                                                       {
-                                                         Integer α = (Integer) αᵢ;
-                                                         return α.sign() < 0;
-                                                       }
+  public static Predicate<Real> isNegativeInteger       = αᵢ ->
+                                                        {
 
-                                                       if (αᵢ instanceof Real)
-                                                       {
-                                                         Real α = (Real) αᵢ;
-                                                         return α.isInteger()
-                                                                && α.isNegative();
-                                                       }
+                                                          Real α = (Real) αᵢ;
+                                                          return α.isInteger() && α.isNegative();
 
-                                                       if (αᵢ instanceof Fraction)
-                                                       {
-                                                         Fraction α = (Fraction) αᵢ;
-                                                         return α.isNegative();
-                                                       }
-                                                       
-                                                       return false;
-                                                     };
+                                                        };
 
-  public static Predicate<Object> isNegativeIntegerOrZero = isNegativeInteger.or(αᵢ ->
-                                                     {
-                                                       if ((αᵢ instanceof Integer))
-                                                       {
-                                                         Integer α = (Integer) αᵢ;
-                                                         return α.sign() <= 0;
-                                                       }
+  public static Predicate<Real> isNegativeIntegerOrZero = isNegativeInteger.or(αᵢ ->
+                                                        {
 
-                                                       if (αᵢ instanceof Real)
-                                                       {
-                                                         Real α = (Real) αᵢ;
-                                                         return α.isInteger()
-                                                                && ( α.isNegative() || α.isZero() );
-                                                       }
+                                                          Real α = (Real) αᵢ;
+                                                          return α.isInteger() && (α.isNegative()
+                                                                        || α.isZero());
 
-                                                       if (αᵢ instanceof Fraction)
-                                                       {
-                                                         Fraction α = (Fraction) αᵢ;
-                                                         return α.isNegative() || α.isZero();
-                                                       }
-                                                       
-                                                       return false;
-                                                     });
-
+                                                        });
 
   public RealPolynomial mul(RealPolynomial a, int bits, RealPolynomial res)
   {

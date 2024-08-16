@@ -346,7 +346,6 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
     return result;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public RationalFunction get(int index)
   {
