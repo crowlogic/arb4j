@@ -1,5 +1,7 @@
 package arb.functions;
 
+import static org.junit.Assert.assertEquals;
+
 import arb.*;
 import arb.Integer;
 import arb.expressions.Expression;
@@ -19,6 +21,7 @@ public class DecompiledLommelPolynomialSequenceTest implements
     n.v = RealConstants.half;
     RationalFunction thirdLommelPolynomial = n.evaluate(3, 128);
     System.out.println("L(3)=" + thirdLommelPolynomial);
+    assertEquals( "(-6*x^2+15)/(x^3)", thirdLommelPolynomial.toString() );
   }
 
   public boolean                        isInitialized;
@@ -69,28 +72,28 @@ public class DecompiledLommelPolynomialSequenceTest implements
                   RationalNullaryFunction> arg = RationalNullaryFunction.parse("-z^2");
     System.out.println("arg=" + arg);
     @SuppressWarnings("resource")
-    // var f = new F();
-    RationalHypergeometricFunction f = hypqF1.init(numerator,
-                                                   denominator,
-                                                   RationalNullaryFunction.parse("-z^2"));
-    RationalNullaryFunction        g = f.f;
-    f.context.injectReferences(g);
-//    f.N = f.factorq1.N = f.factorq1.factorq2.N = f.factorq1.factorq3.N = new Integer(2);
-//    f.p = f.factorq1.p = f.factorq1.factorq2.p = f.factorq1.factorq3.p = new Integer(numerator.dim);
-//    f.q =
-//        f.factorq1.q = f.factorq1.factorq2.q = f.factorq1.factorq3.q = new Integer(denominator.dim);
-//    f.α =
-//        f.factorq1.α = f.factorq1.factorq2.α = f.factorq1.factorq3.α = Real.newVector(numerator.dim)
-//                                                                           .set(numerator);
-//    f.β =
-//        f.factorq1.β =
-//                     f.factorq1.factorq2.β = f.factorq1.factorq3.β = Real.newVector(denominator.dim)
-//                                                                         .set(denominator);
-    // f.initialize();
+     var f = new F();
+//    RationalHypergeometricFunction f = hypqF1.init(numerator,
+//                                                   denominator,
+//                                                   RationalNullaryFunction.parse("-z^2"));
+//    RationalNullaryFunction        g = f.f;
+    //f.context.injectReferences(g);
+    f.N = f.factorq1.N = f.factorq1.factorq2.N = f.factorq1.factorq3.N = new Integer(2);
+    f.p = f.factorq1.p = f.factorq1.factorq2.p = f.factorq1.factorq3.p = new Integer(numerator.dim);
+    f.q =
+        f.factorq1.q = f.factorq1.factorq2.q = f.factorq1.factorq3.q = new Integer(denominator.dim);
+    f.α =
+        f.factorq1.α = f.factorq1.factorq2.α = f.factorq1.factorq3.α = Real.newVector(numerator.dim)
+                                                                           .set(numerator);
+    f.β =
+        f.factorq1.β =
+                     f.factorq1.factorq2.β = f.factorq1.factorq3.β = Real.newVector(denominator.dim)
+                                                                         .set(denominator);
+  //  f.initialize();
 
     assert bits > 0;
     System.out.println("f=" + f);
-    RationalFunction element = g.evaluate(null, 1, bits, q5);
+    RationalFunction element = f.evaluate(null, 1, bits, q5);
     System.out.println("f=" + f.getClass());
 
     System.out.println("element=" + element);

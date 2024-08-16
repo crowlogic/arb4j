@@ -80,8 +80,9 @@ public class factorq1 implements
       this.prodq2.mul((RationalFunction) this.factorq3.evaluate(this.k, bits, this.valueq3), bits);
       var10002 = this.k.increment();
     }
-
-    return var10000.div(var10001.mul(this.prodq2, bits, this.q6), bits, result);
+    var10001.mul(this.prodq2, bits, this.q6);
+    assert !q6.isZero();
+    return var10000.div(q6, bits, result);
   }
 
   @Override

@@ -318,7 +318,7 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
     assert operand.swigCPtr != 0 : "operand has null pointer";
     assert result.swigCPtr != 0 : "result has null pointer";
     assert this.swigCPtr != 0 : "this has null pointer";
-    assert !operand.isZero() && !isZero(): "division by zero";  
+    assert !operand.isZero(): "division by zero";  
     assertPointerConsistency();
     arblib.fmpz_poly_q_div(result, this, operand);
     refreshPointers();      
