@@ -41,6 +41,15 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
   }
 
 
+  public RationalFunction sub(Integer element, int prec, RationalFunction result)
+  {
+    try ( RationalFunction e = new RationalFunction())
+    {
+      e.set(element);
+      return result.set(this).sub(e, prec);
+    }
+  }
+  
   RealRationalFunction realVersion;
 
   public boolean isOne()

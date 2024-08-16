@@ -12,6 +12,14 @@ import arb.documentation.TheArb4jLibrary;
  */
 public class ComplexFraction implements Field<ComplexFraction>, AutoCloseable
 {
+  @Override
+  public String toString()
+  {
+    return String.format("%s+i%s",
+                         realPart,
+                         imaginaryPart);
+  }
+
   Arena           arena;
   Fraction        parts;
   Fraction        realPart;

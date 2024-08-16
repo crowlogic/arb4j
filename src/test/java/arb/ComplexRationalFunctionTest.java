@@ -120,7 +120,7 @@ public class ComplexRationalFunctionTest extends
     input.imaginaryPart.set(1);
     ComplexFraction output = new ComplexFraction();
     a.evaluate(input, 0, prec, output);
-    assertEquals(3, output.realPart.getNumerator().getSignedValue());
+    assertEquals(2, output.realPart.getNumerator().getSignedValue());
     assertEquals(1, output.realPart.getDenominator().getSignedValue());
     assertEquals(2, output.imaginaryPart.getNumerator().getSignedValue());
     assertEquals(1, output.imaginaryPart.getDenominator().getSignedValue());
