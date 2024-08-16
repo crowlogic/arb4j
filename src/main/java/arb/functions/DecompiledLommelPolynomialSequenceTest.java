@@ -1,5 +1,6 @@
 package arb.functions;
 
+import static java.lang.System.out;
 import static org.junit.Assert.assertEquals;
 
 import arb.*;
@@ -73,22 +74,29 @@ public class DecompiledLommelPolynomialSequenceTest implements
     System.out.println("arg=" + arg);
     @SuppressWarnings("resource")
      var f = new F();
-//    RationalHypergeometricFunction f = hypqF1.init(numerator,
-//                                                   denominator,
-//                                                   RationalNullaryFunction.parse("-z^2"));
-//    RationalNullaryFunction        g = f.f;
+    RationalHypergeometricFunction h = hypqF1.init(numerator,
+                                                   denominator,
+                                                   RationalNullaryFunction.parse("-z^2"));
+    //RationalNullaryFunction        g = f.f;
     //f.context.injectReferences(g);
-    f.N = f.factorq1.N = f.factorq1.factorq2.N = f.factorq1.factorq3.N = new Integer(2);
-    f.p = f.factorq1.p = f.factorq1.factorq2.p = f.factorq1.factorq3.p = new Integer(numerator.dim);
-    f.q =
-        f.factorq1.q = f.factorq1.factorq2.q = f.factorq1.factorq3.q = new Integer(denominator.dim);
-    f.α =
-        f.factorq1.α = f.factorq1.factorq2.α = f.factorq1.factorq3.α = Real.newVector(numerator.dim)
-                                                                           .set(numerator);
-    f.β =
-        f.factorq1.β =
-                     f.factorq1.factorq2.β = f.factorq1.factorq3.β = Real.newVector(denominator.dim)
-                                                                         .set(denominator);
+    //h.context.injectReferences(f);
+    out.println("injecting " + h.context.variables );
+    h.context.injectVariableReferences(f);
+    h.context.injectVariableReferences(f.factorq1);
+    h.context.injectVariableReferences(f.factorq1.factorq2);
+    h.context.injectVariableReferences(f.factorq1.factorq3);
+    
+//    f.N = f.factorq1.N = f.factorq1.factorq2.N = f.factorq1.factorq3.N = new Integer(2);
+//    f.p = f.factorq1.p = f.factorq1.factorq2.p = f.factorq1.factorq3.p = new Integer(numerator.dim);
+//    f.q =
+//        f.factorq1.q = f.factorq1.factorq2.q = f.factorq1.factorq3.q = new Integer(denominator.dim);
+//    f.α =
+//        f.factorq1.α = f.factorq1.factorq2.α = f.factorq1.factorq3.α = Real.newVector(numerator.dim)
+//                                                                           .set(numerator);
+//    f.β =
+//        f.factorq1.β =
+//                     f.factorq1.factorq2.β = f.factorq1.factorq3.β = Real.newVector(denominator.dim)
+//                                                                         .set(denominator);
   //  f.initialize();
 
     assert bits > 0;

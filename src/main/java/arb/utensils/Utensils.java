@@ -203,12 +203,19 @@ public class Utensils
     int precs[] = new int[FLINT_BITS];
     int iters, startPrec = root.relAccuracyBits();
 
-    if ((iters = determineNewtonStepScalingPrecisions(convergenceFactor, prec, precs, startPrec)) == -1)
+    if ((iters = determineNewtonStepScalingPrecisions(convergenceFactor, prec, precs, startPrec))
+                  == -1)
     {
       return RefinementResult.ImpreciseInput;
     }
 
-    return calculateNewtonSteps(f, root, convergenceRegion, convergenceFactor, extraPrec, precs, iters);
+    return calculateNewtonSteps(f,
+                                root,
+                                convergenceRegion,
+                                convergenceFactor,
+                                extraPrec,
+                                precs,
+                                iters);
   }
 
   public static RefinementResult calculateNewtonSteps(RealFunction f,
@@ -225,7 +232,11 @@ public class Utensils
     {
       workingPrecision = precs[i] + extraPrec;
 
-      if (!f.calculateNewtonStep(root, convergenceRegion, convergenceFactor, workingPrecision, root))
+      if (!f.calculateNewtonStep(root,
+                                 convergenceRegion,
+                                 convergenceFactor,
+                                 workingPrecision,
+                                 root))
       {
         return RefinementResult.NoConvergence;
       }
@@ -235,11 +246,14 @@ public class Utensils
 
   }
 
-  public static int
-         determineNewtonStepScalingPrecisions(Float convergenceFactor, int prec, int[] precs, int startPrec)
+  public static int determineNewtonStepScalingPrecisions(Float convergenceFactor,
+                                                         int prec,
+                                                         int[] precs,
+                                                         int startPrec)
   {
     int iters;
-    int padding = Math.max(0, Math.min(arblib.arf_abs_bound_lt_2exp_si(convergenceFactor), prec) + 5);
+    int padding =
+                Math.max(0, Math.min(arblib.arf_abs_bound_lt_2exp_si(convergenceFactor), prec) + 5);
     precs[0] = prec + padding;
     iters    = 1;
     while ((iters < FLINT_BITS) && (precs[iters - 1] + padding > 2 * startPrec))
@@ -291,9 +305,11 @@ public class Utensils
     }
   }
 
-  public static Complex calculateSimpleQuadrature(ComplexFunction f, Complex a, Complex b, int prec, Complex res)
+  public static Complex
+         calculateSimpleQuadrature(ComplexFunction f, Complex a, Complex b, int prec, Complex res)
   {
-    try ( Complex midpoint = new Complex(); Complex δ = new Complex(); Complex widePoint = new Complex();)
+    try ( Complex midpoint = new Complex(); Complex δ = new Complex();
+          Complex widePoint = new Complex();)
     {
       /* δ = (b-a)/2 */
       b.sub(a, prec, δ).mul2e(-1);
@@ -329,8 +345,44 @@ public class Utensils
   }
 
   public static final int glSteps[]   =
-  { 1, 2, 4, 6, 8, 12, 16, 22, 32, 46, 64, 90, 128, 182, 256, 362, 512, 724, 1024, 1448, 2048, 2896, 4096, 5792,
-    8192, 11586, 16384, 23170, 32768, 46340, 65536, 92682, 131072, 185364, 262144, 370728, 524288, 741456 };
+  { 1,
+    2,
+    4,
+    6,
+    8,
+    12,
+    16,
+    22,
+    32,
+    46,
+    64,
+    90,
+    128,
+    182,
+    256,
+    362,
+    512,
+    724,
+    1024,
+    1448,
+    2048,
+    2896,
+    4096,
+    5792,
+    8192,
+    11586,
+    16384,
+    23170,
+    32768,
+    46340,
+    65536,
+    92682,
+    131072,
+    185364,
+    262144,
+    370728,
+    524288,
+    741456 };
 
   public static final int glStepCount = glSteps.length;
 
@@ -703,6 +755,7 @@ public class Utensils
   {
     if (e instanceof RuntimeException)
     {
+      e.addSuppressed(new Throwable(msg));
       throw (RuntimeException) e;
     }
     else
