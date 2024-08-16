@@ -99,8 +99,8 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
                                               Real beta,
                                               Expression<Object, C, N> arg)
   {
-    assignParameters(paramType, alpha, beta);
-
+    this.α = (P) alpha;
+    this.β = (P) beta;
     initializeContext();
 
     F = NullaryFunction.parse(elementType,
@@ -176,28 +176,8 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
                           β.setName("β"));
 
     context.registerVariable("N", N = new Integer());
-  }
+    determineDegree();
 
-  @SuppressWarnings("unchecked")
-  public void assignParameters(Class<P> paramType, Real alpha, Real beta)
-  {
-    if (Real.class.equals(paramType))
-    {
-      this.α = (P) alpha;
-      this.β = (P) beta;
-    }
-    else if (Fraction.class.equals(paramType))
-    {
-      this.α = (P) Real.newVector(alpha.size());
-      this.β = (P) Real.newVector(beta.size());
-      this.α.set(alpha);
-      this.β.set(beta);
-    }
-    else
-    {
-
-      throw new IllegalArgumentException("unhandled elementType " + paramType);
-    }
   }
 
   @Override
@@ -234,14 +214,12 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
   {
     if (α instanceof Real)
     {
-
-      Real a = (Real) this.α;
-      return Stream.of(a.elements)
-                   .min(Comparator.naturalOrder())
-                   .get()
-                   .integerValue(N)
-                   .neg()
-                   .add(1);
+      assert false : "filter for negative integers in numerator";
+      Real    a       = (Real) this.α;
+      Real    real    = Stream.of(a.elements).min(Comparator.naturalOrder()).get();
+      System.out.println( "min numerator=" + real);
+      Integer integer = real.integerValue(N).neg().add(1);
+      return integer;
     }
     else
     {

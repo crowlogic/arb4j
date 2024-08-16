@@ -18,7 +18,7 @@ public class Variables
   @Override
   public String toString()
   {
-    return String.format("Variables(#%s)[%s]", System.identityHashCode(this), map.keySet());
+    return String.format("Variables(#%s)[%s]", System.identityHashCode(this), map);
   }
 
   public final HashMap<String, Object> map = new HashMap<>();
