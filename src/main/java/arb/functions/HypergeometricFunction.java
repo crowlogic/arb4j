@@ -103,13 +103,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
     this.β = (P) beta;
     initializeContext();
 
-    F = NullaryFunction.parse(elementType,
-                              nullaryFunctionType,
-                              "F",
-                              "Σn➔zⁿ⋅∏k➔αₖ₍ₙ₎{k=1…p}/(n!⋅∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}",
-                              context);
-    F = F.substitute("z", arg);
-    F.compile();
+    compile(elementType, nullaryFunctionType, arg);
 
     return this;
   }
@@ -130,13 +124,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
     System.out.println("alpha=" + this.α + " beta=" + this.β);
     initializeContext();
 
-    F = NullaryFunction.parse(elementType,
-                              nullaryFunctionType,
-                              "F",
-                              "Σn➔zⁿ⋅∏k➔αₖ₍ₙ₎{k=1…p}/(n!⋅∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}",
-                              context);
-    F = F.substitute("z", arg);
-    f = F.instantiate();
+    compile(elementType, nullaryFunctionType, arg);
 
     return this;
   }
@@ -155,15 +143,21 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
     this.β.set(beta);
     initializeContext();
 
+    compile(elementType, nullaryFunctionType, arg);
+
+    return this;
+  }
+
+  public void
+         compile(Class<C> elementType, Class<N> nullaryFunctionType, Expression<Object, C, N> arg)
+  {
     F = NullaryFunction.parse(elementType,
                               nullaryFunctionType,
                               "F",
                               "Σn➔zⁿ⋅∏k➔αₖ₍ₙ₎{k=1…p}/(n!⋅∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N}",
                               context);
     F = F.substitute("z", arg);
-    F.compile();
-
-    return this;
+    f = F.instantiate();
   }
 
   public void initializeContext()
@@ -215,9 +209,9 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
     if (α instanceof Real)
     {
       assert false : "filter for negative integers in numerator";
-      Real    a       = (Real) this.α;
-      Real    real    = Stream.of(a.elements).min(Comparator.naturalOrder()).get();
-      System.out.println( "min numerator=" + real);
+      Real a    = (Real) this.α;
+      Real real = Stream.of(a.elements).min(Comparator.naturalOrder()).get();
+      System.out.println("min numerator=" + real);
       Integer integer = real.integerValue(N).neg().add(1);
       return integer;
     }
