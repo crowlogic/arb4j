@@ -43,6 +43,11 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
 
   RealRationalFunction realVersion;
 
+  public boolean isOne()
+  {
+    return arblib.fmpz_poly_q_is_one(this) != 0;
+  }
+
   public boolean isZero()
   {
     return arblib.fmpz_poly_q_is_zero(this) != 0;

@@ -22,6 +22,11 @@ import java.util.stream.Stream;
 
   RealRationalFunction realVersion;
 
+  public boolean isOne()
+  {
+    return arblib.fmpz_poly_q_is_one(this) != 0;
+  }
+
   public boolean isZero()
   {
     return arblib.fmpz_poly_q_is_zero(this) != 0;
