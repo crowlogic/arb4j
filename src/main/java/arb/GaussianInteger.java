@@ -94,4 +94,10 @@ public class GaussianInteger implements Ring<GaussianInteger>, AutoCloseable
   {
     return 1;
   }
+
+  public GaussianInteger set(GaussianInteger numerator)
+  {
+    parts.set(numerator.parts);
+    return this;
+  }
 }

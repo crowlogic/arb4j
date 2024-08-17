@@ -233,7 +233,6 @@ public class ComplexFraction implements
   {
     realPart.set(value.realPart);
     imaginaryPart.set(value.imaginaryPart);
-    updateNumeratorAndDenominator();
     return this;
   }
 

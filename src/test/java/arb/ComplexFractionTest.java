@@ -19,7 +19,7 @@ public class ComplexFractionTest extends
     ComplexFraction b = new ComplexFraction().set("1/4");
     assertFalse(a.equals(b));
     b.set(a);
-    assertTrue(a.equals(b));
+    assertTrue(a + "!=" + b,a.equals(b));
     assertTrue(a.getNumerator() + " != " + b.getNumerator(),
                b.getNumerator().equals(a.getNumerator()));
     assertTrue(b.getDenominator().equals(a.getDenominator()));
