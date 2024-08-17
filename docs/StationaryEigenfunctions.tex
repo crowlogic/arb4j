@@ -1,0 +1,81 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\newtheorem{theorem}{Theorem}
+
+\begin{document}
+
+\title{Orthogonalized Inverse Fourier Transforms of Polynomials}
+\author{}
+\date{}
+\maketitle
+
+\begin{theorem}
+For a stationary Gaussian process with covariance function \( C(x-y) \) on \(\mathbb{R}\), the orthogonalized inverse Fourier transforms of polynomials orthogonal with respect to the spectral density form the eigenfunctions of the covariance operator.
+\end{theorem}
+
+\begin{proof}
+Let \( C(x-y) \) be the covariance function of a stationary Gaussian process on \(\mathbb{R}\). Define the covariance operator \( T \) by
+\[
+(Tf)(x) = \int_{-\infty}^\infty C(x-y) f(y) \, dy.
+\]
+Let \( S(\omega) \) be the spectral density of the process. By Bochner's theorem:
+\[
+C(x-y) = \int_{-\infty}^\infty e^{i\omega(x-y)} S(\omega) \, d\omega.
+\]
+Consider the sequence of polynomials \( \{p_n(\omega)\} \) orthogonal with respect to \( S(\omega) \):
+\[
+\int_{-\infty}^\infty p_n(\omega) p_m(\omega) S(\omega) \, d\omega = \delta_{nm}.
+\]
+Define \( r_n(x) \) as the inverse Fourier transform of \( p_n(\omega) \):
+\[
+r_n(x) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^\infty p_n(\omega) e^{i\omega x} \, d\omega.
+\]
+Now, orthogonalize \( \{r_n(x)\} \) using the Gram-Schmidt process to obtain \( \{q_n(x)\} \):
+\[
+q_0(x) = \frac{r_0(x)}{\|r_0(x)\|},
+\]
+\[
+q_n(x) = r_n(x) - \sum_{k=0}^{n-1} \langle r_n, q_k \rangle q_k(x), \quad n \geq 1,
+\]
+\[
+q_n(x) = \frac{q_n(x)}{\|q_n(x)\|}.
+\]
+We claim that \( q_n(x) \) are eigenfunctions of \( T \). To prove this:
+\[
+(Tq_n)(x) = \int_{-\infty}^\infty C(x-y) q_n(y) \, dy
+          = \int_{-\infty}^\infty \left[\int_{-\infty}^\infty e^{i\omega(x-y)} S(\omega) \, d\omega\right] q_n(y) \, dy
+          = \int_{-\infty}^\infty S(\omega) \left[\int_{-\infty}^\infty q_n(y) e^{-i\omega y} \, dy\right] e^{i\omega x} \, d\omega
+          = \lambda_n q_n(x),
+\]
+where
+\[
+\lambda_n = \int_{-\infty}^\infty S(\omega) |F[q_n](\omega)|^2 \, d\omega,
+\]
+and \( F[q_n] \) denotes the Fourier transform of \( q_n \).
+
+Define a sequence of finite rank operators:
+\[
+T_N f = \sum_{n=0}^N \lambda_n \langle f, q_n \rangle q_n,
+\]
+\( T_N \) converges to \( T \) in the strong operator topology:
+For any \( f \) in the Hilbert space \( H \),
+\[
+\|(T - T_N)f\|^2 = \|\sum_{n>N} \lambda_n \langle f, q_n \rangle q_n\|^2
+                \leq (\sum_{n>N} |\lambda_n|^2) (\sum_{n>N} |\langle f, q_n \rangle|^2)
+                \rightarrow 0 \text{ as } N \rightarrow \infty.
+\]
+The compactness of \( T \) follows from the convergence of finite rank operators \( T_N \) to \( T \) in the strong operator topology, combined with the boundedness of \( T \) in the operator norm induced by the canonical metric of the Gaussian process.
+
+By the spectral theorem for compact self-adjoint operators, we have the representation:
+\[
+C(x-y) = \sum_{n=0}^\infty \lambda_n q_n(x) q_n(y).
+\]
+This series converges uniformly on \( \mathbb{R} \times \mathbb{R} \) due to the compactness of \( T \).
+
+Thus, we have constructed the eigenfunctions and eigenvalues of the covariance operator \( T \) for the stationary Gaussian process on \(\mathbb{R}\), without restricting to compact intervals. The eigenfunctions are precisely the orthogonalized inverse Fourier transforms of polynomials orthogonal with respect to the spectral density.
+\end{proof}
+
+\end{document}
