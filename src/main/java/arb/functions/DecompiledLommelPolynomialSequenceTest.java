@@ -82,21 +82,21 @@ public class DecompiledLommelPolynomialSequenceTest implements
     //h.context.injectReferences(f);
    // out.println("injecting " + h.context.variables );
 //    h.context.injectVariableReferences(f);
-    h.context.injectVariableReferences(f);
+   // h.context.injectVariableReferences(f);
 //    h.context.injectVariableReferences(f.factorq1.factorq2);
 //    h.context.injectVariableReferences(f.factorq1.factorq3);
     
-//    f.N = f.factorq1.N = f.factorq1.factorq2.N = f.factorq1.factorq3.N = new Integer(2);
-//    f.p = f.factorq1.p = f.factorq1.factorq2.p = f.factorq1.factorq3.p = new Integer(numerator.dim);
-//    f.q =
-//        f.factorq1.q = f.factorq1.factorq2.q = f.factorq1.factorq3.q = new Integer(denominator.dim);
-//    f.α =
-//        f.factorq1.α = f.factorq1.factorq2.α = f.factorq1.factorq3.α = Real.newVector(numerator.dim)
-//                                                                           .set(numerator);
-//    f.β =
-//        f.factorq1.β =
-//                     f.factorq1.factorq2.β = f.factorq1.factorq3.β = Real.newVector(denominator.dim)
-//                                                                         .set(denominator);
+    f.N = f.factorq1.N = f.factorq1.factorq2.N = f.factorq1.factorq3.N = new Integer(2);
+    f.p = f.factorq1.p = f.factorq1.factorq2.p = f.factorq1.factorq3.p = new Integer(numerator.dim);
+    f.q =
+        f.factorq1.q = f.factorq1.factorq2.q = f.factorq1.factorq3.q = new Integer(denominator.dim);
+    f.α =
+        f.factorq1.α = f.factorq1.factorq2.α = f.factorq1.factorq3.α = Real.newVector(numerator.dim)
+                                                                           .set(numerator);
+    f.β =
+        f.factorq1.β =
+                     f.factorq1.factorq2.β = f.factorq1.factorq3.β = Real.newVector(denominator.dim)
+                                                                         .set(denominator);
   //  f.initialize();
 
     assert bits > 0;

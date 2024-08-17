@@ -1,9 +1,6 @@
 package arb.functions;
 
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import arb.*;
@@ -220,10 +217,8 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
                           β.setName("β"));
 
     context.registerVariable("N", N = new Integer());
-    // N.set(1);
-    System.out.println("N=" + N);
+
     determineDegree();
-    System.out.println("N=" + N);
 
   }
 
