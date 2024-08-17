@@ -398,21 +398,20 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     mapScalarType(Real.class, RealPolynomial.class);
     mapScalarType(Complex.class, ComplexPolynomial.class);
 
-    mapTypes(Integer.class, Fraction.class, Fraction.class);
     mapTypes(Integer.class, RationalFunction.class, RationalFunction.class);
     mapTypes(Integer.class, ComplexRationalFunction.class, ComplexRationalFunction.class);
+    mapTypes(Fraction.class, Integer.class, Fraction.class);
+    mapTypes(Fraction.class, Real.class,  Real.class);    
+    mapTypes(Fraction.class, RationalFunction.class, RationalFunction.class);
+    mapTypes(Fraction.class, ComplexRationalFunction.class, ComplexRationalFunction.class);
+    mapTypes(Fraction.class, RealPolynomial.class, RealPolynomial.class);
+    mapTypes(Fraction.class, ComplexPolynomial.class, ComplexPolynomial.class);
     mapTypes(Real.class, Complex.class, Complex.class);
     mapTypes(Real.class, ComplexPolynomial.class, ComplexPolynomial.class);
     mapTypes(Real.class, RationalFunction.class, RationalFunction.class);
     mapTypes(Real.class, ComplexRationalFunction.class, ComplexRationalFunction.class);
-
-    mapTypes(Real.class, Fraction.class, Real.class);
     mapTypes(RealPolynomial.class, RationalFunction.class, RationalFunction.class);
-    mapTypes(Fraction.class, RationalFunction.class, RationalFunction.class);
-    mapTypes(Fraction.class, ComplexRationalFunction.class, ComplexRationalFunction.class);
-
-    mapTypes(Fraction.class, RealPolynomial.class, RealPolynomial.class);
-    mapTypes(Fraction.class, ComplexPolynomial.class, ComplexPolynomial.class);
+    mapTypes(Complex.class, ComplexRationalFunction.class, ComplexRationalFunction.class);
   }
 
   public static void mapScalarType(Class<?> scalarType, Class<?> polynomialType)
