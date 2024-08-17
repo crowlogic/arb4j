@@ -7,9 +7,7 @@ import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.RationalFunction;
-import arb.Real;
-import arb.RealPolynomial;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
@@ -21,6 +19,8 @@ import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.polynomials.ComplexPolynomialHypergeometricFunction;
 import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
+import arb.functions.rational.ComplexRationalHypergeometricFunction;
+import arb.functions.rational.ComplexRationalNullaryFunction;
 import arb.functions.rational.RationalHypergeometricFunction;
 import arb.functions.rational.RationalNullaryFunction;
 
@@ -67,9 +67,15 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   public final boolean isRational;
 
-  public boolean       isReal;
+  public final boolean isReal;
+
+  public final boolean isComplex;
 
   private Class<?>     scalarType;
+
+  public boolean       isComplexRational;
+
+  public Class<?>      nullaryFunctionClass;
 
   public HypergeometricFunctionNode(Expression<D, R, F> expression)
   {
@@ -81,19 +87,34 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     arg = expression.require(',', ';').resolve();
     expression.require(')');
     scalarType = Compiler.scalarType(expression.coDomainType);
+    isRational = RationalFunction.class.isAssignableFrom(expression.coDomainType)
+                  || ComplexRationalFunction.class.isAssignableFrom(expression.coDomainType);
 
-    isRational = RationalFunction.class.isAssignableFrom(expression.coDomainType);
     if (Expression.trace)
     {
       err.printf("pFq.isRational=%s\n", isRational);
     }
 
-    isReal                          = Real.class.equals(scalarType);
+    isReal                      =
+           Real.class.equals(scalarType) || Fraction.class.equals(scalarType);
+    isComplex                   =
+              Complex.class.equals(scalarType) || ComplexFraction.class.equals(scalarType);
 
-    hypergeometricFunctionClass     =
-                                isRational ? RationalHypergeometricFunction.class
+    hypergeometricFunctionClass =
+                                isRational ? (isReal ? RationalHypergeometricFunction.class
+                                                     : isComplex ? ComplexRationalHypergeometricFunction.class
+                                                     : null)
                                            : isReal ? RealPolynomialHypergeometricFunction.class
-                                           : ComplexPolynomialHypergeometricFunction.class;
+                                           : isComplex ? ComplexPolynomialHypergeometricFunction.class
+                                           : null;
+    assert hypergeometricFunctionClass != null : "scalarType=" + scalarType;
+
+    nullaryFunctionClass            = isRational
+                                                 ? (isReal ? RationalNullaryFunction.class
+                                                           : ComplexRationalNullaryFunction.class)
+                                                 : isReal ? RealPolynomialNullaryFunction.class
+                                                 : ComplexPolynomialNullaryFunction.class;
+
     hypergeometricFunctionFieldName =
                                     expression.newIntermediateVariable("hyp",
                                                                        hypergeometricFunctionClass,
@@ -127,9 +148,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     β.generate(mv, scalarType);
 
     mv.visitLdcInsn(arg.toString());
-    Class<?> nullaryFunctionClass = isRational ? RationalNullaryFunction.class
-                                               : isReal ? RealPolynomialNullaryFunction.class
-                                               : ComplexPolynomialNullaryFunction.class;
+
     invokeStaticMethod(mv, nullaryFunctionClass, "parse", Expression.class, String.class);
     invokeVirtualMethod(mv,
                         hypergeometricFunctionClass,
