@@ -87,6 +87,7 @@ public class ComplexRationalFunctionTest extends
   public void testOneHalfMinusXOver2()
   {
     var expressed = ComplexRationalFunction.express("½-x/2");
+    System.out.println( expressed.toString());
     assertEquals("(-x+1)/2 + 0i", expressed.toString());
   }
 

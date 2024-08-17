@@ -346,15 +346,15 @@ public class ComplexRationalFunction implements
 
   public ComplexRationalFunction add(Integer power, int bits, ComplexRationalFunction result)
   {
-    realPart.add(power,bits,result.realPart);
+    realPart.add(power, bits, result.realPart);
     result.imaginaryPart.set(imaginaryPart);
     return result;
   }
-  
+
   public ComplexRationalFunction div(Integer power, int bits, ComplexRationalFunction result)
   {
-    realPart.div(power,bits,result.realPart);
-    imaginaryPart.div(power,bits,result.imaginaryPart);
+    realPart.div(power, bits, result.realPart);
+    imaginaryPart.div(power, bits, result.imaginaryPart);
     return result;
   }
 
@@ -378,7 +378,15 @@ public class ComplexRationalFunction implements
 
   public ComplexRationalFunction add(Fraction operand, int prec, ComplexRationalFunction result)
   {
-    assert false : "TODO";
-    return null;
+   // assert false : String.format("this=%s + operand=%s", this, operand);
+    try ( ComplexRationalFunction tmp = new ComplexRationalFunction())
+    {
+      return operand.add(tmp.set(this), prec, result);
+    }
+  }
+
+  public ComplexRationalFunction add(Fraction operand, int prec)
+  {
+    return add(operand, prec, this);
   }
 }

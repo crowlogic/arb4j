@@ -124,7 +124,24 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
       this.denominator.swigCPtr = denominator;
     }
   }
-  
+
+
+  public ComplexRationalFunction
+         add(ComplexRationalFunction addend, int prec, ComplexRationalFunction result)
+  {
+    addend.realPart.add(this, prec, result.realPart);
+    result.imaginaryPart.set(addend.imaginaryPart);
+    return result;
+  }
+
+  public ComplexRationalFunction
+         sub(ComplexRationalFunction subtrahend, int prec, ComplexRationalFunction result)
+  {
+    sub(subtrahend.realPart,prec,result.realPart);
+    subtrahend.imaginaryPart.neg(result.imaginaryPart);
+    return result;
+  }
+    
   @Override
   public boolean verify()
   {

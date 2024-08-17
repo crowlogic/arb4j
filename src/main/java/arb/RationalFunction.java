@@ -47,7 +47,12 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
     evaluate(t.imaginaryPart,order,bits,result.imaginaryPart );
     return result;
   }
-  
+
+  public RationalFunction sub(Fraction element, int prec, RationalFunction result)
+  {     
+      return this.sub(result.set(element), prec,result);
+  }  
+    
   public RationalFunction sub(Integer element, int prec, RationalFunction result)
   {
     try ( RationalFunction e = new RationalFunction())
