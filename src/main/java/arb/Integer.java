@@ -28,6 +28,11 @@ import arb.documentation.TheArb4jLibrary;
 public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer>, Named
 {
 
+  public ComplexRationalFunction neg( ComplexRationalFunction result )
+  {
+    return result.set(this).neg();
+  }
+  
   public Fraction cos(int prec, Fraction result )
   {
     return result.set(this).cos(prec,result);
@@ -203,6 +208,16 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result;
   }
 
+  public ComplexRationalFunction add(Fraction operand, int prec, ComplexRationalFunction result)
+  {
+    return result.set(this).add(operand, prec, result);
+  }
+  
+  public ComplexRationalFunction add(Integer operand, int prec, ComplexRationalFunction result)
+  {
+    return result.set(this).add(operand, prec, result);
+  }
+  
   public Complex add(Integer operand, int prec, Complex result)
   {
     return result.set(this).add(operand, prec);

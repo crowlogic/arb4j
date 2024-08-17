@@ -20,7 +20,7 @@ public class ComplexRationalFunction implements
 {
   public final RationalFunction realPart;
   public final RationalFunction imaginaryPart;
-  public String   name;
+  public String                 name;
 
   public ComplexRationalFunction identity()
   {
@@ -337,4 +337,46 @@ public class ComplexRationalFunction implements
                             null);
   }
 
+  public ComplexRationalFunction neg(ComplexRationalFunction result)
+  {
+    realPart.neg(result.realPart);
+    imaginaryPart.neg(result.imaginaryPart);
+    return result;
+  }
+
+  public ComplexRationalFunction add(Integer power, int bits, ComplexRationalFunction result)
+  {
+    assert false : "TODO";
+    return result;
+  }
+  
+  public ComplexRationalFunction div(Integer power, int bits, ComplexRationalFunction result)
+  {
+    assert false : "TODO";
+    return result;
+  }
+
+  public ComplexRationalFunction pow(Integer power, int bits, ComplexRationalFunction result)
+  {
+    assert false : "TODO";
+    return result;
+  }
+
+  public ComplexRationalFunction set(Integer integer)
+  {
+    realPart.set(integer);
+    imaginaryPart.zero();
+    return this;
+  }
+
+  public ComplexRationalFunction neg()
+  {
+    return neg(this);
+  }
+
+  public ComplexRationalFunction add(Fraction operand, int prec, ComplexRationalFunction result)
+  {
+    assert false : "TODO";
+    return null;
+  }
 }
