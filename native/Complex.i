@@ -1,13 +1,28 @@
 
 %typemap(javaimports) acb_struct %{
-import static arb.arblib.*;
-import java.io.*;
-import java.util.*;
-import java.util.function.IntFunction;
-import java.util.stream.*;
-import arb.space.topological.EuclideanVectorSpace;
 import static arb.IntegerConstants.PAGESIZE;
+import static arb.arblib.acb_clear;
+import static arb.arblib.acb_indeterminate;
+import static arb.arblib.acb_mul_2exp_si;
+import static arb.arblib.acb_sinh;
+import static arb.arblib.acb_swap;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.lang.foreign.MemorySegment;
+import java.util.Iterator;
+import java.util.Objects;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.function.IntFunction;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
+import arb.space.topological.EuclideanVectorSpace;
 
 /**
  * The {@link Complex} numbers constitute an algebraically closed {@link Field}, a
@@ -26,6 +41,16 @@ import arb.domains.Domain;
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  public static Predicate<Complex> isNegativeInteger = αᵢ ->
+                                                     {
+
+                                                       Complex α = (Complex) αᵢ;
+                                                       return α.getImag().isZero()
+                                                                     && α.getReal().isInteger()
+                                                                     && α.getReal().isNegative();
+
+                                                     };
+                                                     
   /**
    * 
    * @param bits

@@ -207,7 +207,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
                               context);
     F = F.substitute("z", arg);
     f = F.instantiate();
-    
+
   }
 
   public void initializeContext()
@@ -220,7 +220,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
                           β.setName("β"));
 
     context.registerVariable("N", N = new Integer());
-    //N.set(1);
+    // N.set(1);
     System.out.println("N=" + N);
     determineDegree();
     System.out.println("N=" + N);
@@ -261,23 +261,22 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
   {
     if (α instanceof Real)
     {
-      Real a = (Real) this.α;
-      for (Real r : a.elements)
+      Real         a            = (Real) this.α;
 
-      {
-        assert !(r == null) : α + " has a null element";
-      }
+      Stream<Real> stream       = Stream.of(a.elements).filter(Real.isNegativeInteger);
+      Real         real         = stream.min(Comparator.naturalOrder()).get();
 
-      Stream<Real> stream  = Stream.of(a.elements).filter(Real.isNegativeInteger);
-      // List<Real> elementList = stream.collect(Collectors.toList());
-      Real         real    = stream.min(Comparator.naturalOrder()).get();
-       System.out.println("min numerator=" + real);
-       System.out.println("elementList=" + Arrays.asList(a.elements));
-      Integer integerValue = real.integerValue(N);
-      System.out.println( "integerValue= " + integerValue );
-      Integer      integer = integerValue.neg().add(1);
-      System.out.println( "Returning " + integer );
-      // assert false : "filter for negative integers in numerator";
+      Integer      integerValue = real.integerValue(N);
+      Integer      integer      = integerValue.neg().add(1);
+      return integer;
+    }
+    else if (α instanceof Complex)
+    {
+      Complex         a            = (Complex) this.α;
+      Stream<Complex> stream       = Stream.of(a.elements).filter(Complex.isNegativeInteger);
+      Complex         x            = stream.min(Comparator.naturalOrder()).get();
+      Integer         integerValue = x.getReal().integerValue(N);
+      Integer         integer      = integerValue.neg().add(1);
       return integer;
     }
     else
@@ -294,8 +293,10 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
       initialize();
     }
 
-    //assert false : N + " dammit";
-    assert N.sign() > 0 : N + " should be a positive integer equal to one plus the negative of the least integer parameter in the numerator";
+    // assert false : N + " dammit";
+    assert N.sign()
+                  > 0 : N
+                        + " should be a positive integer equal to one plus the negative of the least integer parameter in the numerator";
     return f.evaluate(nullary, order, bits, res);
   }
 
