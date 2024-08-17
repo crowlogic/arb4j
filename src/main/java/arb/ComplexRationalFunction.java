@@ -346,7 +346,8 @@ public class ComplexRationalFunction implements
 
   public ComplexRationalFunction add(Integer power, int bits, ComplexRationalFunction result)
   {
-    assert false : "TODO";
+    realPart.add(power,bits,result.realPart);
+    result.imaginaryPart.set(imaginaryPart);
     return result;
   }
   

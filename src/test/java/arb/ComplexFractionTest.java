@@ -35,4 +35,31 @@ public class ComplexFractionTest extends
     assertEquals("(71/34)+(-6/17)i", aOverB.toString());
   }
 
+  @SuppressWarnings("resource")
+  public void testAdd()
+  {
+    ComplexFraction a      = new ComplexFraction("7/8+2*ⅈ");
+    ComplexFraction b      = new ComplexFraction("1/4+ⅈ");
+    ComplexFraction aOverB = a.add(b, new ComplexFraction());
+    assertEquals("(9/8)+(3)i", aOverB.toString());
+  }
+  
+  @SuppressWarnings("resource")
+  public void testSub()
+  {
+    ComplexFraction a      = new ComplexFraction("7/8+2*ⅈ");
+    ComplexFraction b      = new ComplexFraction("1/4+ⅈ");
+    ComplexFraction aOverB = a.sub(b, new ComplexFraction());
+    assertEquals("(5/8)+(1)i", aOverB.toString());
+  }
+  
+  @SuppressWarnings("resource")
+  public void testMul()
+  {
+    ComplexFraction a      = new ComplexFraction("7/8+2*ⅈ");
+    ComplexFraction b      = new ComplexFraction("1/4+ⅈ");
+    ComplexFraction aOverB = a.mul(b, new ComplexFraction());
+    assertEquals("(-57/32)+(11/8)i", aOverB.toString());
+  }
+  
 }

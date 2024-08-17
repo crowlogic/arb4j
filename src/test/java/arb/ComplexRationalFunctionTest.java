@@ -58,6 +58,15 @@ public class ComplexRationalFunctionTest extends
     a.add(b, prec, result);
     assertEquals("4 + 6i", result.toString());
   }
+  
+  public void testAddInteger()
+  {
+    a.realPart.set(1);
+    a.imaginaryPart.set(2);
+    var b = new Integer(3);
+    a.add(b, prec, result);
+    assertEquals("4 + 2i", result.toString());
+  }
 
   public void testSub()
   {
