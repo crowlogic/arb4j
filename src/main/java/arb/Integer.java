@@ -613,6 +613,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   @Override
   public Integer mul(Integer operand, int prec, Integer result)
   {
+    assert operand != null;
     // assert prec == 0 : "exact precision methods require bits=0";
     arblib.fmpz_mul(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
@@ -914,6 +915,17 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     div(i,bits,result.realPart);
     result.imaginaryPart.zero();
     return result;
+  }
+
+  public boolean isZero()
+  {
+    return arblib.fmpz_is_zero(swigCPtr) != 0;
+  }
+
+  public Integer abs(Integer res)
+  {
+    arblib.fmpz_abs(res.swigCPtr, swigCPtr);
+    return this;
   }
 
 }

@@ -7,6 +7,15 @@
 #include <flint/fmpz_poly.h>
 #include <flint/fmpz_poly_q.h>
 
+ void fmpq_inv(fmpq_t dest, const fmpq_t src);
+ 
+void fmpz_poly_q_scalar_mul_fmpq(fmpz_poly_q_t rop, const fmpz_poly_q_t op, const fmpq_t x);
+
+void fmpz_poly_q_scalar_div_si(fmpz_poly_q_t rop, const fmpz_poly_q_t op, slong x);
+void fmpz_poly_q_scalar_div_fmpz(fmpz_poly_q_t rop, const fmpz_poly_q_t op, const fmpz_t x);
+void fmpz_poly_q_scalar_div_fmpq(fmpz_poly_q_t rop, const fmpz_poly_q_t op, const fmpq_t x);
+
+
 int fmpq_is_zero(const fmpq_t x);
 
 void fmpz_poly_set_coeff_ui(fmpz_poly_t poly, slong n, ulong x);

@@ -9,6 +9,26 @@
 package arb;
 
 public class arblib {
+  public static void fmpq_inv(Fraction dest, Fraction src) {
+    arblibJNI.fmpq_inv(Fraction.getCPtr(dest), dest, Fraction.getCPtr(src), src);
+  }
+
+  public static void fmpz_poly_q_scalar_mul_fmpq(RationalFunction rop, RationalFunction op, Fraction x) {
+    arblibJNI.fmpz_poly_q_scalar_mul_fmpq(RationalFunction.getCPtr(rop), rop, RationalFunction.getCPtr(op), op, Fraction.getCPtr(x), x);
+  }
+
+  public static void fmpz_poly_q_scalar_div_si(RationalFunction rop, RationalFunction op, int x) {
+    arblibJNI.fmpz_poly_q_scalar_div_si(RationalFunction.getCPtr(rop), rop, RationalFunction.getCPtr(op), op, x);
+  }
+
+  public static void fmpz_poly_q_scalar_div_fmpz(RationalFunction rop, RationalFunction op, long x) {
+    arblibJNI.fmpz_poly_q_scalar_div_fmpz(RationalFunction.getCPtr(rop), rop, RationalFunction.getCPtr(op), op, x);
+  }
+
+  public static void fmpz_poly_q_scalar_div_fmpq(RationalFunction rop, RationalFunction op, Fraction x) {
+    arblibJNI.fmpz_poly_q_scalar_div_fmpq(RationalFunction.getCPtr(rop), rop, RationalFunction.getCPtr(op), op, Fraction.getCPtr(x), x);
+  }
+
   public static int fmpq_is_zero(Fraction x) {
     return arblibJNI.fmpq_is_zero(Fraction.getCPtr(x), x);
   }
@@ -175,22 +195,6 @@ public class arblib {
 
   public static void fmpz_poly_q_scalar_mul_fmpz(RationalFunction rop, RationalFunction op, long x) {
     arblibJNI.fmpz_poly_q_scalar_mul_fmpz(RationalFunction.getCPtr(rop), rop, RationalFunction.getCPtr(op), op, x);
-  }
-
-  public static void fmpz_poly_q_scalar_mul_fmpq(RationalFunction rop, RationalFunction op, Fraction x) {
-    arblibJNI.fmpz_poly_q_scalar_mul_fmpq(RationalFunction.getCPtr(rop), rop, RationalFunction.getCPtr(op), op, Fraction.getCPtr(x), x);
-  }
-
-  public static void fmpz_poly_q_scalar_div_si(RationalFunction rop, RationalFunction op, int x) {
-    arblibJNI.fmpz_poly_q_scalar_div_si(RationalFunction.getCPtr(rop), rop, RationalFunction.getCPtr(op), op, x);
-  }
-
-  public static void fmpz_poly_q_scalar_div_fmpz(RationalFunction rop, RationalFunction op, long x) {
-    arblibJNI.fmpz_poly_q_scalar_div_fmpz(RationalFunction.getCPtr(rop), rop, RationalFunction.getCPtr(op), op, x);
-  }
-
-  public static void fmpz_poly_q_scalar_div_fmpq(RationalFunction rop, RationalFunction op, Fraction x) {
-    arblibJNI.fmpz_poly_q_scalar_div_fmpq(RationalFunction.getCPtr(rop), rop, RationalFunction.getCPtr(op), op, Fraction.getCPtr(x), x);
   }
 
   public static void fmpz_poly_q_mul(RationalFunction rop, RationalFunction op1, RationalFunction op2) {

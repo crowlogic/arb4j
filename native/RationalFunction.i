@@ -20,6 +20,35 @@ import java.util.stream.Stream;
 
 %typemap(javacode) fmpz_poly_q_struct %{
 
+  @Override
+  public RationalFunction inverse(RationalFunction x)
+  {
+    arblib.fmpz_poly_q_inv(x, this);
+    return null;
+  }
+   
+  public RationalFunction mul(Integer absPower, int bits, RationalFunction ntheta)
+  {
+    assert false : "TODO";
+    return this;
+  }
+  
+  public RationalFunction pow(int power, int bits, RationalFunction res)
+  {
+    if ( checkPointers )
+    {
+      assertPointerConsistency();
+    }
+    RationalFunction thiz = this;
+    if ( power < 0 )
+    {
+      arblib.fmpz_poly_q_inv(thiz = res, this);
+    }
+    arblib.fmpz_poly_q_pow(res, thiz, power );
+    res.refreshPointers();
+    return res;
+  }
+  
   public ComplexFraction evaluate(ComplexFraction t, int order, int bits, ComplexFraction result)
   {
     evaluate(t.realPart,order,bits,result.realPart);

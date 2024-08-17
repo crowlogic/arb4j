@@ -56,6 +56,13 @@ public class ComplexRationalFunctionTest extends
     }
   }
 
+  public void testNegativePower()
+  {
+    var seq = ComplexRationalNullaryFunction.express("(2*x+3*ⅈ)^(-2)");
+    var f   = seq.evaluate(0);
+    assertEquals("1/4*x^2+12*I*x-9", f.toString());
+  }
+
   public void testPowers()
   {
 
@@ -87,8 +94,15 @@ public class ComplexRationalFunctionTest extends
   public void testOneHalfMinusXOver2()
   {
     var expressed = ComplexRationalFunction.express("½-x/2");
-    System.out.println( expressed.toString());
+    System.out.println(expressed.toString());
     assertEquals("(-x+1)/2 + 0i", expressed.toString());
+  }
+
+  public void testIdentity()
+  {
+    ComplexRationalFunction expressed = ComplexRationalFunction.express("x");
+
+    assertEquals("x + 0i", expressed.toString());
   }
 
   /**
@@ -97,6 +111,7 @@ public class ComplexRationalFunctionTest extends
   public void testXToThePowerOfNegativeOne()
   {
     ComplexRationalFunction expressed = ComplexRationalFunction.express("x^(-1)");
+
     assertEquals("1/(x) + 0i", expressed.toString());
   }
 

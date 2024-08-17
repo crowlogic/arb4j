@@ -18,9 +18,12 @@ public class ComplexRationalFunction implements
                                      Function<ComplexFraction, ComplexFraction>,
                                      Verifiable
 {
-  public final RationalFunction realPart;
-  public final RationalFunction imaginaryPart;
-  public String                 name;
+  @SuppressWarnings("resource")
+  public static ComplexRationalFunction one = new ComplexRationalFunction().set(1);
+
+  public final RationalFunction         realPart;
+  public final RationalFunction         imaginaryPart;
+  public String                         name;
 
   public ComplexRationalFunction identity()
   {
@@ -309,10 +312,10 @@ public class ComplexRationalFunction implements
     return ComplexRationalNullaryFunction.express(string).evaluate(bits(), this);
   }
 
-  @SuppressWarnings("resource")
   public static ComplexRationalFunction express(String expression)
   {
-    return new ComplexRationalFunction().set(expression);
+    return ComplexRationalNullaryFunction.express(expression)
+                                         .evaluate(0, new ComplexRationalFunction());
   }
 
   public static ComplexRationalFunction express(String expression, Context context)
@@ -360,7 +363,26 @@ public class ComplexRationalFunction implements
 
   public ComplexRationalFunction pow(Integer power, int bits, ComplexRationalFunction result)
   {
-    assert false : "TODO";
+    if (power.isZero())
+    {
+      return result.multiplicativeIdentity();
+    }
+
+    boolean isNegativePower = power.sign() < 0;
+    int     absPower        = Math.abs(power.getSignedValue());
+
+    result.set(this);
+
+    for (int i = 1; i < absPower; i++)
+    {
+      result.mul(this, bits, result);
+    }
+
+    if (isNegativePower)
+    {
+      return one.div(result, bits, result);
+    }
+
     return result;
   }
 
@@ -378,7 +400,7 @@ public class ComplexRationalFunction implements
 
   public ComplexRationalFunction add(Fraction operand, int prec, ComplexRationalFunction result)
   {
-   // assert false : String.format("this=%s + operand=%s", this, operand);
+    // assert false : String.format("this=%s + operand=%s", this, operand);
     try ( ComplexRationalFunction tmp = new ComplexRationalFunction())
     {
       return operand.add(tmp.set(this), prec, result);
