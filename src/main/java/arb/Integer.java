@@ -599,6 +599,11 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result.set(this).mul(x, bits);
   }
 
+  public ComplexRationalFunction mul(ComplexRationalFunction x, int bits, ComplexRationalFunction res)
+  {
+    return res.set(this).mul(x, bits);
+  }
+  
   public ComplexPolynomial mul(ComplexPolynomial x, int bits, ComplexPolynomial res)
   {
     return res.set(this).mul(x, bits);
