@@ -19,7 +19,7 @@ public class ComplexFractionTest extends
     ComplexFraction b = new ComplexFraction().set("1/4");
     assertFalse(a.equals(b));
     b.set(a);
-    assertTrue(a + "!=" + b,a.equals(b));
+    assertTrue(a + "!=" + b, a.equals(b));
     assertTrue(a.getNumerator() + " != " + b.getNumerator(),
                b.getNumerator().equals(a.getNumerator()));
     assertTrue(b.getDenominator().equals(a.getDenominator()));
@@ -29,10 +29,8 @@ public class ComplexFractionTest extends
   @SuppressWarnings("resource")
   public void testDiv()
   {
-    ComplexFraction a = new ComplexFraction().set("7/8");
-    a.imaginaryPart.set(2);
-    ComplexFraction b = new ComplexFraction().set("1/4");
-    b.imaginaryPart.one();
+    ComplexFraction a      = new ComplexFraction("7/8+2*ⅈ");
+    ComplexFraction b      = new ComplexFraction("1/4+ⅈ");
     ComplexFraction aOverB = a.div(b, new ComplexFraction());
     assertEquals("(71/34)+(-6/17)i", aOverB.toString());
   }

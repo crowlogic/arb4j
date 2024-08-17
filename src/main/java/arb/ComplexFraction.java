@@ -68,6 +68,12 @@ public class ComplexFraction implements
     updateNumeratorAndDenominator();
   }
 
+  public ComplexFraction(String string)
+  {
+    this();
+    set(string);
+  }
+
   public void updateNumeratorAndDenominator()
   {
     numerator.setRealPart(realPart.getNumerator());
@@ -188,6 +194,22 @@ public class ComplexFraction implements
     return result;
   }
 
+  public ComplexFraction add(Complex x, int bits, ComplexFraction result)
+  {
+    try ( var y = new ComplexFraction())
+    {
+      y.set(x);
+      return add(y, bits, result);
+    }
+  }
+
+  public ComplexFraction set(Complex x)
+  {
+    realPart.set(x.re());
+    imaginaryPart.set(x.im());
+    return this;
+  }
+
   @Override
   public ComplexFraction mul(ComplexFraction x, int bits, ComplexFraction result)
   {
@@ -240,8 +262,8 @@ public class ComplexFraction implements
   {
     if (numerator == null)
     {
-      numerator = new GaussianInteger();
-      numerator.realPart = realPart.getNumerator();
+      numerator               = new GaussianInteger();
+      numerator.realPart      = realPart.getNumerator();
       numerator.imaginaryPart = imaginaryPart.getNumerator();
     }
 
@@ -252,8 +274,8 @@ public class ComplexFraction implements
   {
     if (denominator == null)
     {
-      denominator = new GaussianInteger();
-      denominator.realPart = realPart.getDenominator();
+      denominator               = new GaussianInteger();
+      denominator.realPart      = realPart.getDenominator();
       denominator.imaginaryPart = imaginaryPart.getDenominator();
     }
 
@@ -277,4 +299,5 @@ public class ComplexFraction implements
     assert false : "TODO";
     return null;
   }
+
 }
