@@ -37,7 +37,7 @@ public class SymbolPalette extends
                            Application
 {
 
-  public static int             columnsPerRow = 4;
+  public static int             columnsPerRow = 18;
 
   private TextField             textField;
 
@@ -45,45 +45,70 @@ public class SymbolPalette extends
 
   static
   {
-    chars.addAll(Parser.SUBSCRIPT_CHARACTERS.stream()
-                                            .map(String::valueOf)
-                                            .toList());
+    chars.addAll(Parser.SUBSCRIPT_CHARACTERS.stream().map(String::valueOf).toList());
     for (String s : new String[]
-    {
-      "π", "Γ", "ᵅ", "ⅈ", "∈", "₋", "₊", "⇒", "➔", "√", "π", "⌊", "⌋", "≀", "₍", "₎", "∫", "Π", "∏", "Σ", "∑", "½", "²",
-      "ⁿ", "∀", "∃", "μ", "ν", "ξ", "⋰", "ℭ", "α", "β"
-    })
+    { "π",
+      "Γ",
+      "ᵅ",
+      "ⅈ",
+      "∈",
+      "₋",
+      "₊",
+      "⇒",
+      "➔",
+      "√",
+      "π",
+      "⌊",
+      "⌋",
+      "≀",
+      "₍",
+      "₎",
+      "∫",
+      "Π",
+      "∏",
+      "Σ",
+      "∑",
+      "½",
+      "²",
+      "ⁿ",
+      "∀",
+      "∃",
+      "μ",
+      "ν",
+      "ξ",
+      "⋰",
+      "ℭ",
+      "α",
+      "β" })
     {
       chars.add(s);
     }
 
     chars.addAll(Parser.greekAndBlackLetterChars);
 
+    chars.addAll(Parser.fractions.keySet().stream().map(String::valueOf).toList());
+
     for (int c : Parser.lowercaseSuperscriptAlphabet)
     {
-      chars.add(String.format("%c",
-                              c));
+      chars.add(String.format("%c", c));
     }
     for (int c : Parser.uppercaseSuperscriptAlphabet)
     {
-      chars.add(String.format("%c",
-                              c));
+      chars.add(String.format("%c", c));
     }
     for (String s : Parser.superscripts)
     {
       chars.add(s);
     }
     characters    = chars.toArray(new String[chars.size()]);
-    columnsPerRow = (int) Math.ceil(Math.sqrt(chars.size()));
-    System.out.format("colsPerRow=%s\n",
-                      columnsPerRow);
+   // columnsPerRow = (int) Math.ceil(Math.sqrt(chars.size()));
+    System.out.format("colsPerRow=%s\n", columnsPerRow);
   }
 
   public static String[] characters;
 
   @Override
-  public void
-         start(Stage primaryStage)
+  public void start(Stage primaryStage)
   {
     System.out.println("cool beans: ∏Π➔➔√⌋₎");
 
@@ -109,13 +134,9 @@ public class SymbolPalette extends
       button.setOnAction(e -> appendCharacter(character));
       button.setMaxWidth(Double.MAX_VALUE);
       button.setMaxHeight(Double.MAX_VALUE);
-      GridPane.setHgrow(button,
-                        Priority.ALWAYS);
-      GridPane.setVgrow(button,
-                        Priority.ALWAYS);
-      gridPane.add(button,
-                   col,
-                   row);
+      GridPane.setHgrow(button, Priority.ALWAYS);
+      GridPane.setVgrow(button, Priority.ALWAYS);
+      gridPane.add(button, col, row);
       col++;
       if (col == columnsPerRow)
       {
@@ -128,17 +149,10 @@ public class SymbolPalette extends
     vbox.setPadding(new Insets(0));
     ScrollPane scrollPane = new ScrollPane(gridPane);
     HBox       hbox       = new HBox();
-    hbox.getChildren()
-        .addAll(copyButton,
-                clearButton,
-                textField);
-    vbox.getChildren()
-        .addAll(scrollPane,
-                hbox);
-    VBox.setVgrow(gridPane,
-                  Priority.ALWAYS);
-    VBox.setVgrow(textField,
-                  Priority.ALWAYS);
+    hbox.getChildren().addAll(copyButton, clearButton, textField);
+    vbox.getChildren().addAll(scrollPane, hbox);
+    VBox.setVgrow(gridPane, Priority.ALWAYS);
+    VBox.setVgrow(textField, Priority.ALWAYS);
 
     Scene scene = new Scene(vbox,
                             columnsPerRow * 100,
@@ -156,16 +170,11 @@ public class SymbolPalette extends
 
                                     ((Button) node).fontProperty()
                                                    .bind(Bindings.createObjectBinding(() -> Font.font(scene.getHeight()
-                                                                                                      * 0.04),
-                                                                                      scene.heightProperty()));
+                                                                 * 0.04), scene.heightProperty()));
                                   };
     Predicate<Node>        filter = node -> node instanceof Button;
-    hbox.getChildren()
-        .filtered(filter)
-        .forEach(action);
-    gridPane.getChildren()
-            .filtered(filter)
-            .forEach(action);
+    hbox.getChildren().filtered(filter).forEach(action);
+    gridPane.getChildren().filtered(filter).forEach(action);
 
     primaryStage.setTitle(SymbolPalette.class.getSimpleName());
     primaryStage.setScene(scene);
@@ -173,14 +182,12 @@ public class SymbolPalette extends
 
   }
 
-  private void
-          appendCharacter(String character)
+  private void appendCharacter(String character)
   {
     textField.setText(textField.getText() + character);
   }
 
-  private void
-          copyToClipboard()
+  private void copyToClipboard()
   {
     String           text      = textField.getText();
     Clipboard        clipboard = Clipboard.getSystemClipboard();
@@ -189,14 +196,12 @@ public class SymbolPalette extends
     clipboard.setContent(content);
   }
 
-  private void
-          clearInput()
+  private void clearInput()
   {
     textField.setText("");
   }
 
-  public static void
-         main(String[] args)
+  public static void main(String[] args)
   {
     launch(args);
 
