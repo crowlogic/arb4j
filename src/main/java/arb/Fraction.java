@@ -93,6 +93,13 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     set(numerator, denominator);
   }
 
+  public ComplexFraction add(Complex that, int bits, ComplexFraction result)
+  {
+    result.realPart.set(this);
+    result.imaginaryPart.zero();
+    return result.add(that, bits, result);   
+  }
+  
   public Real sub(Real element, int prec, Real result)
   {
     return result.set(this).sub(element, prec, result);
@@ -253,13 +260,6 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
   {
     result.zero().getReal().set(this);
     return result.add(that, bits);   
-  }
-  
-  public ComplexFraction add(Complex that, int bits, ComplexFraction result)
-  {
-    result.realPart.set(this);
-    result.imaginaryPart.zero();
-    return result.add(that, bits, result);   
   }
   
   public Complex sub(Complex that, int bits, Complex result)

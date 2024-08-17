@@ -37,7 +37,7 @@ public class SymbolPalette extends
                            Application
 {
 
-  public static int             columnsPerRow = 18;
+  public static int             columnsPerRow = 15;
 
   private TextField             textField;
 

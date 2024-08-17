@@ -65,6 +65,13 @@ import java.util.stream.Stream;
     set(numerator, denominator);
   }
 
+  public ComplexFraction add(Complex that, int bits, ComplexFraction result)
+  {
+    result.realPart.set(this);
+    result.imaginaryPart.zero();
+    return result.add(that, bits, result);   
+  }
+  
   public Real sub(Real element, int prec, Real result)
   {
     return result.set(this).sub(element, prec, result);
