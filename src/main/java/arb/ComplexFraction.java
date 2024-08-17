@@ -5,6 +5,9 @@ import java.util.stream.Stream;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Compiler;
+import arb.expressions.Expression;
+import arb.functions.Function;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -14,6 +17,27 @@ public class ComplexFraction implements
                              Field<ComplexFraction>,
                              AutoCloseable
 {
+
+  public ComplexFraction set(String string)
+  {
+    return express(string).evaluate(null, 0, this);
+  }
+
+  public static Function<Object, ComplexFraction> express(String string)
+  {
+    Expression<Object, ComplexFraction, Function<Object, ComplexFraction>> express  =
+                                                                                   Compiler.express(string,
+                                                                                                    null,
+                                                                                                    Object.class,
+                                                                                                    ComplexFraction.class,
+                                                                                                    Function.class,
+                                                                                                    null);
+
+    Function<Object, ComplexFraction>                                      instance =
+                                                                                    express.getInstance();
+    return instance;
+  }
+
   @Override
   public String toString()
   {
@@ -187,30 +211,6 @@ public class ComplexFraction implements
   public ComplexFraction newFieldElement()
   {
     return new ComplexFraction();
-  }
-
-  public ComplexFraction set(String string)
-  {
-    String[] parts = string.split("\\s*[+-]\\s*i");
-    realPart.set(parts[0].trim());
-
-    // Handle potential missing imaginary part
-    if (parts.length > 1)
-    {
-      imaginaryPart.set(parts[1].trim());
-      if (string.contains(" - "))
-      {
-        imaginaryPart.neg();
-      }
-    }
-    else
-    {
-      // Default imaginary part to 0 if not provided
-      imaginaryPart.set(0);
-    }
-
-    updateNumeratorAndDenominator();
-    return this;
   }
 
   @Override
