@@ -1,8 +1,6 @@
 package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.duplicateTopOfTheStack;
-import static arb.expressions.Compiler.invokeStaticMethod;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 import static arb.expressions.Compiler.scalarType;
 import static java.lang.String.format;
 import static java.lang.System.err;
@@ -11,8 +9,6 @@ import java.util.List;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.Real;
-import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
@@ -40,9 +36,10 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends D, ? extends R>>
-                                                  extends
-                                                  FunctionCallNode<D, R, F>
+public class SphericalBesselFunctionNodeOfTheFirstKind<D,
+              R,
+              F extends Function<? extends D, ? extends R>> extends
+                                                      FunctionCallNode<D, R, F>
 {
 
   @Override
@@ -84,43 +81,10 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
     loadOutputVariableOntoStack(mv, scalarType);
     duplicateTopOfTheStack(mv);
     order.generate(mv, scalarType);
-
-    if (!scalar)
-    {
-      generateQuasiPolynomial(mv, resultType);
-    }
-    else
-    {
-      generateScalar(mv, resultType, scalarType);
-    }
+    // ³⁄₂
+    assert false : "return √(2⁄(x*π))*(R(n,½;x)*sin(x) - R(n-1,3⁄2;x)*cos(x)) where R(n,v;x) is a Lommel (rational) polynomial";
 
     return mv;
-  }
-
-  public void generateQuasiPolynomial(MethodVisitor mv, Class<?> resultType)
-  {
-
-    assert false : "TODO: generate spherical Bessel function *using Lommel Polynomials* of the first kind of order="
-                  + order + " for " + this.expression.expression;
-
-    expression.allocateIntermediateVariable(mv, resultType);
-  }
-
-  public void generateScalar(MethodVisitor mv, Class<?> resultType, Class<?> scalarType)
-  {
-    arg.generate(mv, resultType);
-    loadBitsParameterOntoStack(mv);
-
-    invokeStaticMethod(mv,
-                       arblib.class,
-                       "arb_hypgeom_bessel_j",
-                       Void.class,
-                       Real.class,
-                       Real.class,
-                       Real.class,
-                       int.class);
-
-    generatedType = scalarType;
   }
 
   @Override

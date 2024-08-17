@@ -96,13 +96,22 @@ public class SymbolPalette extends
     {
       chars.add(String.format("%c", c));
     }
+    for (char c : Parser.SUBSCRIPT_DIGITS_ARRAY)
+    {
+      chars.add(String.valueOf(c));
+    }
+    for (char c : Parser.SUPERSCRIPT_DIGITS_ARRAY)
+    {
+      chars.add(String.valueOf(c));
+    }
     for (String s : Parser.superscripts)
     {
       chars.add(s);
     }
-    characters    = chars.toArray(new String[chars.size()]);
-   // columnsPerRow = (int) Math.ceil(Math.sqrt(chars.size()));
+    characters = chars.toArray(new String[chars.size()]);
+    // columnsPerRow = (int) Math.ceil(Math.sqrt(chars.size()));
     System.out.format("colsPerRow=%s\n", columnsPerRow);
+    System.out.println("chars=" + chars );
   }
 
   public static String[] characters;
