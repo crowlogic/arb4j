@@ -13,7 +13,6 @@ import org.objectweb.asm.MethodVisitor;
 
 import arb.*;
 import arb.Integer;
-import arb.algebra.Ring;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
@@ -35,41 +34,32 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
   public static final int initializerBits = 128;
 
   @Override
-  public char
-         symbol()
+  public char symbol()
   {
     return symbol.charAt(0);
   }
 
   @Override
-  public boolean
-         isConstant()
+  public boolean isConstant()
   {
-    return left.isConstant()
-           && right.isConstant();
+    return left.isConstant() && right.isConstant();
   }
 
   @Override
-  public boolean
-         isScalar()
+  public boolean isScalar()
   {
-    return (left == null
-            || left.isScalar())
-           && (right == null
-               || right.isScalar());
+    return (left == null || left.isScalar()) && (right == null || right.isScalar());
   }
 
   @Override
-  public Node<D, R, F>
-         integral(Variable<D, R, F> variable)
+  public Node<D, R, F> integral(Variable<D, R, F> variable)
   {
     assert false : "TODO";
     return null;
   }
 
   @Override
-  public String
-         typeset()
+  public String typeset()
   {
     assert false : "TODO";
     return null;
@@ -85,30 +75,21 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
   }
 
   @Override
-  public boolean
-         dependsOn(Variable<D, R, F> variable)
+  public boolean dependsOn(Variable<D, R, F> variable)
   {
-    var dependsOnLeft  = left != null
-                         && left.dependsOn(variable);
-    var dependsOnRight = right != null
-                         && right.dependsOn(variable);
-    return dependsOnLeft
-           || dependsOnRight;
+    var dependsOnLeft  = left != null && left.dependsOn(variable);
+    var dependsOnRight = right != null && right.dependsOn(variable);
+    return dependsOnLeft || dependsOnRight;
   }
 
   @Override
-  public int
-         hashCode()
+  public int hashCode()
   {
-    return Objects.hash(left,
-                        operation,
-                        right,
-                        symbol);
+    return Objects.hash(left, operation, right, symbol);
   }
 
   @Override
-  public boolean
-         equals(Object obj)
+  public boolean equals(Object obj)
   {
     if (this == obj)
       return true;
@@ -117,19 +98,12 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     if (getClass() != obj.getClass())
       return false;
     BinaryOperation<?, ?, ?> other = (BinaryOperation<?, ?, ?>) obj;
-    return Objects.equals(left,
-                          other.left)
-           && Objects.equals(operation,
-                             other.operation)
-           && Objects.equals(right,
-                             other.right)
-           && Objects.equals(symbol,
-                             other.symbol);
+    return Objects.equals(left, other.left) && Objects.equals(operation, other.operation)
+                  && Objects.equals(right, other.right) && Objects.equals(symbol, other.symbol);
   }
 
   @Override
-  public void
-         accept(Consumer<Node<D, R, F>> t)
+  public void accept(Consumer<Node<D, R, F>> t)
   {
     if (left != null)
     {
@@ -144,25 +118,18 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
 
   public <E, S, G extends Function<? extends E, ? extends S>>
          Node<D, R, F>
-         substitute(String name,
-                    Node<E, S, G> transformation)
+         substitute(String name, Node<E, S, G> transformation)
   {
     if (Expression.trace)
     {
-      logSubstitution(name,
-                      transformation,
-                      "BEFORE");
+      logSubstitution(name, transformation, "BEFORE");
     }
-    left  = left.substitute(name,
-                            transformation);
-    right = right.substitute(name,
-                             transformation);
+    left  = left.substitute(name, transformation);
+    right = right.substitute(name, transformation);
     expression.updateStringRepresentation();
     if (Expression.trace)
     {
-      logSubstitution(name,
-                      transformation,
-                      "AFTER");
+      logSubstitution(name, transformation, "AFTER");
 
     }
     return this;
@@ -170,9 +137,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
 
   public <E, S, G extends Function<? extends E, ? extends S>>
          void
-         logSubstitution(String name,
-                         Node<E, S, G> transformation,
-                         String tense)
+         logSubstitution(String name, Node<E, S, G> transformation, String tense)
   {
     System.err.format("BinaryOperation %s(Expression[#%s]).substitute(name=%s, transformation=%s)) into this=%s of type %s\n",
                       tense,
@@ -184,61 +149,49 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
   }
 
   @Override
-  public List<Node<D, R, F>>
-         getBranches()
+  public List<Node<D, R, F>> getBranches()
   {
     return List.of(left == null ? new LiteralConstantNode<>(expression,
-                                                            "0") : left,
+                                                            "0")
+                                : left,
                    right == null ? new LiteralConstantNode<>(expression,
-                                                             "0") : right);
+                                                             "0")
+                                 : right);
   }
 
   @Override
-  public boolean
-         hasSingleLeaf()
+  public boolean hasSingleLeaf()
   {
-    return (left.isLeaf()
-            && !right.isLeaf())
-           || (!left.isLeaf()
-               && right.isLeaf());
+    return (left.isLeaf() && !right.isLeaf()) || (!left.isLeaf() && right.isLeaf());
   }
 
   @Override
-  public boolean
-         isLeaf()
+  public boolean isLeaf()
   {
     return false;
   }
 
-  public String
-         stringFormat(Node<?, ?, ?> side)
+  public String stringFormat(Node<?, ?, ?> side)
   {
-    return (side == null
-            || side.isLeaf()) ? "%s" : "(%s)";
+    return (side == null || side.isLeaf()) ? "%s" : "(%s)";
   }
 
   @Override
-  public String
-         toString()
+  public String toString()
   {
-    return String.format(String.format("%s%s%s",
-                                       stringFormat(left),
-                                       "%s",
-                                       stringFormat(right)),
+    return String.format(String.format("%s%s%s", stringFormat(left), "%s", stringFormat(right)),
                          left == null ? "0" : left,
                          symbol,
                          right == null ? "0" : right);
   }
 
-  public String
-         toString(int depth)
+  public String toString(int depth)
   {
     return toString();
   }
 
   @Override
-  public MethodVisitor
-         prepareStackForReuse(MethodVisitor mv)
+  public MethodVisitor prepareStackForReuse(MethodVisitor mv)
   {
     if (right.isReusable())
     {
@@ -264,8 +217,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
 
   private String       intermediateVariableFieldName;
 
-  public Class<?>
-         getGeneratedType()
+  public Class<?> getGeneratedType()
   {
     return generatedType;
   }
@@ -285,9 +237,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
   }
 
   @Override
-  public MethodVisitor
-         generate(MethodVisitor mv,
-                  Class<?> resultType)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     if (Expression.trace)
     {
@@ -295,19 +245,14 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     }
     generatedType = resultType;
 
-    left.generate(mv,
-                  left.type());
+    left.generate(mv, left.type());
 
-    right.generate(mv,
-                   right.type());
+    right.generate(mv, right.type());
 
-    return invokeMethod(mv,
-                        operation,
-                        resultType);
+    return invokeMethod(mv, operation, resultType);
   }
 
-  public String
-         formatGenerationParameters(Class<?> resultType)
+  public String formatGenerationParameters(Class<?> resultType)
   {
     return String.format("BinaryOperation.generate( this=%s,\n%sleft=%s,\n%sleft.type=%s,\n%soperation=%s,\n%sright=%s,\n%sright.type=%s,\n%sresultType=%s )\n\n",
                          this,
@@ -325,10 +270,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
                          resultType);
   }
 
-  public MethodVisitor
-         invokeMethod(MethodVisitor mv,
-                      String operator,
-                      Class<?> resultType)
+  public MethodVisitor invokeMethod(MethodVisitor mv, String operator, Class<?> resultType)
   {
 
     if (expression.insideInitializer)
@@ -339,8 +281,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     {
       loadBitsParameterOntoStack(mv);
     }
-    loadResult(mv,
-               resultType);
+    loadResult(mv, resultType);
 
     var leftType = left.getGeneratedType();
     leftType = leftType != null ? leftType : left.type();
@@ -349,25 +290,18 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     {
       leftType = expression.coDomainType;
     }
-    invokeBinaryOperationMethod(mv,
-                                operator,
-                                leftType,
-                                rightType,
-                                resultType);
+    invokeBinaryOperationMethod(mv, operator, leftType, rightType, resultType);
 
     return mv;
   }
 
-  public boolean
-         loadResult(MethodVisitor mv,
-                    Class<?> resultType)
+  public boolean loadResult(MethodVisitor mv, Class<?> resultType)
   {
     Node<D, R, F> reusableNode;
 
     if (isResult)
     {
-      checkClassCast(loadResultParameter(mv),
-                     resultType);
+      checkClassCast(loadResultParameter(mv), resultType);
       intermediateVariableFieldName = "result";
     }
     else if ((reusableNode = getAReusableNode()) != null)
@@ -386,8 +320,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     }
     else
     {
-      intermediateVariableFieldName = expression.allocateIntermediateVariable(mv,
-                                                                              resultType);
+      intermediateVariableFieldName = expression.allocateIntermediateVariable(mv, resultType);
       return true;
 
     }
@@ -399,8 +332,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
    * Returns a reusable node if it exists, it will either be this{@link #left} or
    * this{@link #right} or null if neither are reusable
    */
-  public Node<D, R, F>
-         getAReusableNode()
+  public Node<D, R, F> getAReusableNode()
   {
     if (right.isReusable())
     {
@@ -414,11 +346,9 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
   }
 
   @Override
-  public boolean
-         isReusable()
+  public boolean isReusable()
   {
-    return left.isReusable()
-           || right.isReusable();
+    return left.isReusable() || right.isReusable();
   }
 
   /**
@@ -428,9 +358,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
    * @param b
    * @return true if ({@link #left},{@link #right}) in { (a,b) , (b,a) }
    */
-  public boolean
-         typesSymmetryicallyEqual(Class<?> a,
-                                  Class<?> b)
+  public boolean typesSymmetryicallyEqual(Class<?> a, Class<?> b)
   {
     assert a != null : "a is null";
     assert b != null : "b is null";
@@ -441,10 +369,8 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     assert leftType != null : "lhs type is  null where lhs is " + left + " and a=" + a + " b=" + b;
     assert rightType != null : "rhs type is null where rhs is " + right + " and a=" + a + " b=" + b;
 
-    return (leftType.equals(a)
-            && rightType.equals(b))
-           || (leftType.equals(b)
-               && rightType.equals(a));
+    return (leftType.equals(a) && rightType.equals(b))
+                  || (leftType.equals(b) && rightType.equals(a));
   }
 
   Class<?>                                                       type;
@@ -459,93 +385,49 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
    * @param rightType
    * @param resultantType
    */
-  public static void
-         mapTypes(Class<?> leftType,
-                  Class<?> rightType,
-                  Class<?> resultantType)
+  public static void mapTypes(Class<?> leftType, Class<?> rightType, Class<?> resultantType)
   {
-    typeMap.computeIfAbsent(leftType,
-                            k -> new HashMap<>())
-           .put(rightType,
-                resultantType);
-    typeMap.computeIfAbsent(rightType,
-                            k -> new HashMap<>())
-           .put(leftType,
-                resultantType);
+    typeMap.computeIfAbsent(leftType, k -> new HashMap<>()).put(rightType, resultantType);
+    typeMap.computeIfAbsent(rightType, k -> new HashMap<>()).put(leftType, resultantType);
   }
 
   static
   {
-    assert Integer.class.equals(arb.Integer.class)
-    : "there is most likely a missing import statement for arb.Integer";
+    assert Integer.class.equals(arb.Integer.class) : "there is most likely a missing import statement for arb.Integer";
 
-    mapScalarType(Real.class,
-                  RealPolynomial.class);
-    mapScalarType(Complex.class,
-                  ComplexPolynomial.class);
+    mapScalarType(Real.class, RealPolynomial.class);
+    mapScalarType(Complex.class, ComplexPolynomial.class);
 
-    mapTypes(Integer.class,
-             Fraction.class,
-             Fraction.class);
-    mapTypes(Integer.class,
-             RationalFunction.class,
-             RationalFunction.class);
-    mapTypes(Real.class,
-             Complex.class,
-             Complex.class);
-    mapTypes(Real.class,
-             ComplexPolynomial.class,
-             ComplexPolynomial.class);
-    mapTypes(Real.class,
-             RationalFunction.class,
-             RationalFunction.class);
-    mapTypes(Real.class,
-             Fraction.class,
-             Real.class);
-    mapTypes(RealPolynomial.class,
-             RationalFunction.class,
-             RationalFunction.class);
-    mapTypes(Fraction.class,
-             RationalFunction.class,
-             RationalFunction.class);
-    mapTypes(Fraction.class,
-             RealPolynomial.class,
-             RealPolynomial.class);
-    mapTypes(Fraction.class,
-             ComplexPolynomial.class,
-             ComplexPolynomial.class);
+    mapTypes(Integer.class, Fraction.class, Fraction.class);
+    mapTypes(Integer.class, RationalFunction.class, RationalFunction.class);
+    mapTypes(Integer.class, ComplexRationalFunction.class, ComplexRationalFunction.class);
+    mapTypes(Real.class, Complex.class, Complex.class);
+    mapTypes(Real.class, ComplexPolynomial.class, ComplexPolynomial.class);
+    mapTypes(Real.class, RationalFunction.class, RationalFunction.class);
+    mapTypes(Real.class, ComplexRationalFunction.class, ComplexRationalFunction.class);
+
+    mapTypes(Real.class, Fraction.class, Real.class);
+    mapTypes(RealPolynomial.class, RationalFunction.class, RationalFunction.class);
+    mapTypes(Fraction.class, RationalFunction.class, RationalFunction.class);
+    mapTypes(Fraction.class, ComplexRationalFunction.class, ComplexRationalFunction.class);
+
+    mapTypes(Fraction.class, RealPolynomial.class, RealPolynomial.class);
+    mapTypes(Fraction.class, ComplexPolynomial.class, ComplexPolynomial.class);
   }
 
-  public static void
-         mapScalarType(Class<?> scalarType,
-                       Class<?> polynomialType)
+  public static void mapScalarType(Class<?> scalarType, Class<?> polynomialType)
   {
-    mapTypes(scalarType,
-             polynomialType,
-             polynomialType);
-    mapTypes(Integer.class,
-             scalarType,
-             scalarType);
-    mapTypes(Integer.class,
-             polynomialType,
-             polynomialType);
-    mapTypes(int.class,
-             scalarType,
-             scalarType);
-    mapTypes(int.class,
-             polynomialType,
-             polynomialType);
-    mapTypes(Fraction.class,
-             scalarType,
-             scalarType);
-    mapTypes(Fraction.class,
-             polynomialType,
-             polynomialType);
+    mapTypes(scalarType, polynomialType, polynomialType);
+    mapTypes(Integer.class, scalarType, scalarType);
+    mapTypes(Integer.class, polynomialType, polynomialType);
+    mapTypes(int.class, scalarType, scalarType);
+    mapTypes(int.class, polynomialType, polynomialType);
+    mapTypes(Fraction.class, scalarType, scalarType);
+    mapTypes(Fraction.class, polynomialType, polynomialType);
   }
 
   @Override
-  public Class<?>
-         type()
+  public Class<?> type()
   {
     if (type != null)
     {
@@ -555,15 +437,12 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     assert right != null : "rhs is null: " + this + " for expr=" + expression;
     var leftType  = left.type();
     var rightType = right.type();
-    assert leftType != null : String.format("leftType is null where this=%s\\n",
-                                            this);
-    assert rightType != null : String.format("rightType is null where this=%s\\n",
-                                             this);
+    assert leftType != null : String.format("leftType is null where this=%s\\n", this);
+    assert rightType != null : String.format("rightType is null where this=%s\\n", this);
 
     if (leftType.equals(rightType))
     {
-      boolean integerDivision = operation.equals("div")
-                                && leftType.equals(Integer.class);
+      boolean integerDivision = operation.equals("div") && leftType.equals(Integer.class);
       type = integerDivision ? Fraction.class : leftType;
     }
     else
@@ -585,7 +464,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
 
     if (type == null)
     {
-     
+
       throw new CompilerException(String.format("Could not determine resultant type for left=%s and right=%s in %s",
                                                 leftType,
                                                 rightType,
@@ -595,12 +474,10 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     return type;
   }
 
-  public abstract boolean
-         isCommutative();
+  public abstract boolean isCommutative();
 
   @Override
-  public String
-         getIntermediateValueFieldName()
+  public String getIntermediateValueFieldName()
   {
     return intermediateVariableFieldName;
   }

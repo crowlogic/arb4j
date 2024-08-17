@@ -18,7 +18,9 @@ import arb.functions.Function;
  *      {@link TheArb4jLibrary}
  */
 
-public interface Sequence<C> extends Function<Integer, C>, IntFunction<C>
+public interface Sequence<C> extends
+                         Function<Integer, C>,
+                         IntFunction<C>
 {
   public default int bits()
   {
@@ -53,7 +55,11 @@ public interface Sequence<C> extends Function<Integer, C>, IntFunction<C>
     }
   }
 
-  public static <R, F extends Sequence<? extends R>, PD, PR, PF extends Function<? extends PD, ? extends PR>>
+  public static <R,
+                F extends Sequence<? extends R>,
+                PD,
+                PR,
+                PF extends Function<? extends PD, ? extends PR>>
          Expression<Integer, R, F>
          parse(String className,
                String expressionString,
@@ -107,11 +113,9 @@ public interface Sequence<C> extends Function<Integer, C>, IntFunction<C>
 
   public static <C, S extends Sequence<? extends C>>
          Expression<Integer, C, S>
-         parse(String className, Class<? extends S> seq, Class<? extends C> coDomainType, String expr)
+         parse(String className, Class<S> seq, Class<C> coDomainType, String expr)
   {
     return Function.parse(className, expr, null, Integer.class, coDomainType, seq, expr, null);
   }
-
-  
 
 }

@@ -2,7 +2,11 @@ package arb;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Compiler;
+import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.Function;
+import arb.functions.rational.ComplexRationalNullaryFunction;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -14,14 +18,28 @@ public class ComplexRationalFunction implements
                                      Function<ComplexFraction, ComplexFraction>,
                                      Verifiable
 {
-  RationalFunction realPart;
-  RationalFunction imaginaryPart;
-  private String   name;
+  public final RationalFunction realPart;
+  public final RationalFunction imaginaryPart;
+  public String   name;
+
+  public ComplexRationalFunction identity()
+  {
+    realPart.identity();
+    imaginaryPart.zero();
+    return this;
+  }
 
   public ComplexRationalFunction()
   {
     realPart      = new RationalFunction();
     imaginaryPart = new RationalFunction();
+  }
+
+  public ComplexRationalFunction set(int i)
+  {
+    realPart.set(i);
+    imaginaryPart.zero();
+    return this;
   }
 
   @SuppressWarnings("unchecked")
@@ -273,12 +291,10 @@ public class ComplexRationalFunction implements
     if (realPart != null)
     {
       realPart.close();
-      realPart = null;
     }
     if (imaginaryPart != null)
     {
       imaginaryPart.close();
-      imaginaryPart = null;
     }
   }
 
@@ -287,4 +303,38 @@ public class ComplexRationalFunction implements
   {
     return String.format("%s + %si", realPart, imaginaryPart);
   }
+
+  public ComplexRationalFunction set(String string)
+  {
+    return ComplexRationalNullaryFunction.express(string).evaluate(bits(), this);
+  }
+
+  @SuppressWarnings("resource")
+  public static ComplexRationalFunction express(String expression)
+  {
+    return new ComplexRationalFunction().set(expression);
+  }
+
+  public static ComplexRationalFunction express(String expression, Context context)
+  {
+    return ComplexRationalNullaryFunction.express(expression, context).evaluate(128);
+  }
+
+  public static Expression<ComplexFraction, ComplexFraction, ComplexRationalFunction>
+         compile(String expression)
+  {
+    return compile(expression, null);
+  }
+
+  public static Expression<ComplexFraction, ComplexFraction, ComplexRationalFunction>
+         compile(String expression, Context context)
+  {
+    return Compiler.compile(expression,
+                            context,
+                            ComplexFraction.class,
+                            ComplexFraction.class,
+                            ComplexRationalFunction.class,
+                            null);
+  }
+
 }
