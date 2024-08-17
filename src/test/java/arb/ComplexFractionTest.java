@@ -1,5 +1,7 @@
 package arb;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import junit.framework.TestCase;
 
 /**
@@ -7,8 +9,7 @@ import junit.framework.TestCase;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ComplexFractionTest
-                                 extends
+public class ComplexFractionTest extends
                                  TestCase
 {
   @SuppressWarnings("resource")
@@ -23,4 +24,16 @@ public class ComplexFractionTest
     assertTrue(b.getDenominator().equals(a.getDenominator()));
 
   }
+
+  @SuppressWarnings("resource")
+  public void testDiv()
+  {
+    ComplexFraction a      = new ComplexFraction().set("7/8");
+    a.imaginaryPart.set(2);
+    ComplexFraction b      = new ComplexFraction().set("1/4");
+    b.imaginaryPart.one();
+    ComplexFraction aOverB = a.div(b, new ComplexFraction());
+    assertEquals("(71/34)+(-6/17)i",aOverB.toString());
+  }
+
 }

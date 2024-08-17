@@ -352,7 +352,8 @@ public class ComplexRationalFunction implements
   
   public ComplexRationalFunction div(Integer power, int bits, ComplexRationalFunction result)
   {
-    assert false : "TODO";
+    realPart.div(power,bits,result.realPart);
+    imaginaryPart.div(power,bits,result.imaginaryPart);
     return result;
   }
 

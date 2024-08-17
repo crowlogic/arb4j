@@ -10,14 +10,14 @@ import arb.documentation.TheArb4jLibrary;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ComplexFraction implements Field<ComplexFraction>, AutoCloseable
+public class ComplexFraction implements
+                             Field<ComplexFraction>,
+                             AutoCloseable
 {
   @Override
   public String toString()
   {
-    return String.format("%s+i%s",
-                         realPart,
-                         imaginaryPart);
+    return String.format("(%s)+(%s)i", realPart, imaginaryPart);
   }
 
   Arena           arena;
@@ -117,22 +117,22 @@ public class ComplexFraction implements Field<ComplexFraction>, AutoCloseable
   @Override
   public ComplexFraction div(ComplexFraction j, int bits, ComplexFraction result)
   {
-    try ( Fraction denominator = new Fraction(); Fraction temp1 = new Fraction(); Fraction temp2 = new Fraction();)
+    try ( Fraction denominator = new Fraction(); ComplexFraction temp = new ComplexFraction();)
     {
 
       j.realPart.mul(j.realPart, bits, denominator);
-      j.imaginaryPart.mul(j.imaginaryPart, bits, temp1);
-      denominator.add(temp1, bits, denominator);
+      j.imaginaryPart.mul(j.imaginaryPart, bits, temp.realPart);
+      denominator.add(temp.realPart, bits, denominator);
 
-      realPart.mul(j.realPart, bits, temp1);
-      imaginaryPart.mul(j.imaginaryPart, bits, temp2);
-      temp1.add(temp2, bits, temp1);
-      temp1.div(denominator, bits, result.realPart);
+      realPart.mul(j.realPart, bits, temp.realPart);
+      imaginaryPart.mul(j.imaginaryPart, bits, temp.imaginaryPart);
+      temp.realPart.add(temp.imaginaryPart, bits, temp.realPart);
+      temp.realPart.div(denominator, bits, result.realPart);
 
-      imaginaryPart.mul(j.realPart, bits, temp1);
-      realPart.mul(j.imaginaryPart, bits, temp2);
-      temp1.sub(temp2, bits, temp1);
-      temp1.div(denominator, bits, result.imaginaryPart);
+      imaginaryPart.mul(j.realPart, bits, temp.realPart);
+      realPart.mul(j.imaginaryPart, bits, temp.imaginaryPart);
+      temp.realPart.sub(temp.imaginaryPart, bits, temp.realPart);
+      temp.realPart.div(denominator, bits, result.imaginaryPart);
 
       result.updateNumeratorAndDenominator();
       return result;
@@ -259,8 +259,7 @@ public class ComplexFraction implements Field<ComplexFraction>, AutoCloseable
   }
 
   @Override
-  public Stream<ComplexFraction>
-         stream()
+  public Stream<ComplexFraction> stream()
   {
     assert false : "TODO";
     return null;
