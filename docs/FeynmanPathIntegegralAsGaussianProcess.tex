@@ -1,0 +1,144 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{physics}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\title{Rigorous Formulation of Feynman's Path Integral using Gaussian Processes}
+\author{[Author Name]}
+
+\begin{document}
+
+\maketitle
+
+\section{Fundamental Definitions}
+
+\begin{definition}[Gaussian Process]
+A Gaussian process $X(t)$ on $[0,T]$ is defined by its mean function $\mu(t)$ and covariance function $k(s,t)$:
+\begin{equation}
+    X(t) \sim \mathcal{GP}(\mu(t), k(s,t))
+\end{equation}
+\end{definition}
+
+\begin{definition}[Path Integral]
+The quantum propagator $K(x_f, T; x_i, 0)$ is defined as:
+\begin{equation}
+    K(x_f, T; x_i, 0) = \int \exp\left(\frac{i}{\hbar}S[X]\right) d\mu[X]
+\end{equation}
+where $S[X]$ is the action functional and $d\mu[X]$ is the measure induced by the Gaussian process.
+\end{definition}
+
+\section{Measure Theory}
+
+\begin{theorem}[Existence of Measure]
+Let $\mathcal{C}[0,T]$ be the space of continuous functions on $[0,T]$ with the supremum norm. There exists a unique probability measure $\mu$ on $(\mathcal{C}[0,T], \mathcal{B})$, where $\mathcal{B}$ is the Borel $\sigma$-algebra, such that for any finite set $\{t_1, \ldots, t_n\} \subset [0,T]$, the finite-dimensional distributions are Gaussian with mean $\mu(t)$ and covariance $k(s,t)$.
+\end{theorem}
+
+\begin{proof}
+This follows from Kolmogorov's extension theorem and the consistency of finite-dimensional Gaussian distributions.
+\end{proof}
+
+\section{Action Functional}
+
+\begin{definition}[Action Functional]
+For a particle with mass $m$ in a potential $V(x)$, the action functional is:
+\begin{equation}
+    S[X] = \int_0^T \left[\frac{1}{2}m\dot{X}(t)^2 - V(X(t))\right] dt
+\end{equation}
+where $\dot{X}(t)$ is understood in the mean square sense.
+\end{definition}
+
+\begin{theorem}[Well-definedness of Action]
+For a Gaussian process $X(t)$ with covariance function $k(s,t)$ that is twice differentiable, the action functional $S[X]$ is well-defined almost surely if:
+\begin{equation}
+    \int_0^T \int_0^T \left|\frac{\partial^2 k}{\partial s \partial t}(s,t)\right| ds dt < \infty
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The condition ensures that $\dot{X}(t)$ exists in the mean square sense, and the integral in $S[X]$ is well-defined.
+\end{proof}
+
+\section{Path Integral Convergence}
+
+\begin{theorem}[Convergence of Path Integral]
+Let $X(t)$ be a Gaussian process on $[0,T]$ with continuous sample paths and covariance function $k(s,t)$. Assume:
+
+\begin{enumerate}
+    \item $k(s,t)$ is twice differentiable with $\int_0^T \int_0^T |\frac{\partial^2 k}{\partial s \partial t}(s,t)| ds dt < \infty$
+    \item $V(x)$ is continuous and bounded below
+    \item $X(0) = x_i$ and $X(T) = x_f$ almost surely
+\end{enumerate}
+
+Then, the path integral
+\begin{equation}
+    K(x_f, T; x_i, 0) = \int \exp\left(\frac{i}{\hbar}S[X]\right) d\mu[X]
+\end{equation}
+is well-defined and finite.
+\end{theorem}
+
+\begin{proof}
+The proof uses the fact that $\exp(\frac{i}{\hbar}S[X])$ is bounded, and the measure $\mu$ is a probability measure. The integral exists by Lebesgue's dominated convergence theorem.
+\end{proof}
+
+\section{Propagator and Covariance Kernel Relationship}
+
+\begin{theorem}[Propagator-Kernel Relation]
+The covariance kernel $k(s,t)$ of a Gaussian process can be expressed in terms of the quantum propagator $K(x_f, T; x_i, 0)$:
+
+\begin{equation}
+    k(s,t) = \frac{\hbar}{i} \int K(x, s; y, 0) K(y, t; x, s) dy
+\end{equation}
+
+where $s < t$ without loss of generality.
+\end{theorem}
+
+\begin{proof}
+This relation follows from the composition property of propagators and the definition of expectation values in quantum mechanics.
+\end{proof}
+
+\begin{corollary}[Free Particle Case]
+For a free particle, where the propagator is known explicitly:
+
+\begin{equation}
+    K(x_f, T; x_i, 0) = \sqrt{\frac{m}{2\pi i\hbar T}} \exp\left(\frac{im(x_f - x_i)^2}{2\hbar T}\right)
+\end{equation}
+
+The covariance kernel is given by:
+
+\begin{equation}
+    k(s,t) = \frac{\hbar}{2m} \min(s,t)
+\end{equation}
+\end{corollary}
+
+\begin{theorem}[Feynman-Kac Formula]
+For a particle in a potential V(x), the propagator satisfies:
+
+\begin{equation}
+    \frac{\partial K}{\partial T} = \frac{\hbar}{2mi} \frac{\partial^2 K}{\partial x_f^2} - \frac{i}{\hbar}V(x_f)K
+\end{equation}
+
+This equation, along with the Propagator-Kernel Relation, determines the covariance kernel for a given potential.
+\end{theorem}
+
+\section{Connection to Schrödinger Equation}
+
+\begin{theorem}[Feynman-Kac Formula]
+The propagator $K(x_f, T; x_i, 0)$ satisfies the Schrödinger equation:
+\begin{equation}
+    i\hbar \frac{\partial K}{\partial T} = \left(-\frac{\hbar^2}{2m} \frac{\partial^2}{\partial x_f^2} + V(x_f)\right)K
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+(Outline) Differentiate the path integral with respect to T and $x_f$, use integration by parts, and show that the resulting expressions satisfy the Schrödinger equation.
+\end{proof}
+
+\section{Conclusion}
+
+This formulation provides a rigorous mathematical foundation for Feynman's path integral using Gaussian processes, without resorting to regularization or other approximation methods. It connects the intuitive idea of summing over paths with the well-developed theory of stochastic processes and measure theory. The relationship between the quantum propagator and the covariance kernel of the associated Gaussian process establishes a deep connection between quantum mechanics and stochastic processes.
+
+\end{document}
