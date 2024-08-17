@@ -97,7 +97,7 @@ import arb.expressions.nodes.unary.HypergeometricFunctionNode;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class HypergeometricFunction<P extends NamedRing<P>,
+public abstract class HypergeometricFunction<P extends NamedRing<? extends P>,
               C extends NamedRing<C>,
               N extends NullaryFunction<C>> implements
                                             NullaryFunction<C>,
@@ -133,11 +133,14 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
 
   public P                        α, β;
 
+  public Class<?>                paramType;
+
   public HypergeometricFunction()
   {
 
   }
 
+  @SuppressWarnings("unchecked")
   public HypergeometricFunction<P, C, N> init(Class<P> paramType,
                                               Class<C> elementType,
                                               Class<N> nullaryFunctionType,
@@ -145,8 +148,9 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
                                               Real beta,
                                               Expression<Object, C, N> arg)
   {
-    this.α = (P) alpha;
-    this.β = (P) beta;
+    this.paramType = paramType;
+    this.α         = (P) alpha;
+    this.β         = (P) beta;
     initializeContext();
 
     compile(elementType, nullaryFunctionType, arg);
@@ -162,12 +166,11 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
                                               Fraction beta,
                                               Expression<Object, C, N> arg)
   {
-    // assert false : "damn";
-    this.α = (P) Real.newVector(alpha.dim());
-    this.β = (P) Real.newVector(beta.dim());
+    this.paramType = paramType;
+    this.α         = (P) Real.newVector(alpha.dim());
+    this.β         = (P) Real.newVector(beta.dim());
     this.α.set(alpha);
     this.β.set(beta);
-    System.out.println("alpha=" + this.α + " beta=" + this.β);
     initializeContext();
 
     compile(elementType, nullaryFunctionType, arg);
@@ -183,6 +186,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
                                               Complex beta,
                                               Expression<Object, C, N> arg)
   {
+    this.paramType = paramType;
     this.α = (P) Complex.newVector(alpha.dim());
     this.β = (P) Complex.newVector(beta.dim());
     this.α.set(alpha);
@@ -319,12 +323,30 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
   @Override
   public boolean verify()
   {
-    for (int i = 0; i < p.getSignedValue(); i++)
+    int p = this.p.getSignedValue();
+    if (Real.class.equals(paramType))
     {
-      if (Real.isNegativeInteger.test(this.α.get(i)))
+      for (int i = 0; i < p; i++)
       {
-        return true;
+        if (Real.isNegativeInteger.test(this.α.get(i)))
+        {
+          return true;
+        }
       }
+    }
+    else if (Complex.class.equals(paramType))
+    {
+      for (int i = 0; i < p; i++)
+      {
+        if (Complex.isNegativeInteger.test(this.α.get(i)))
+        {
+          return true;
+        }
+      }
+    }
+    else
+    {
+      throw new ArbException("TOOD: handle paramType=" + paramType);
     }
     return false;
   }
