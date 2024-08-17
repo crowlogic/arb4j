@@ -909,4 +909,11 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return dim;
   }
 
+  public ComplexFraction div(Integer i, int bits, ComplexFraction result)
+  {
+    div(i,bits,result.realPart);
+    result.imaginaryPart.zero();
+    return result;
+  }
+
 }

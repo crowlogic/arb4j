@@ -239,11 +239,25 @@ public class ComplexFraction implements
 
   public GaussianInteger getNumerator()
   {
+    if (numerator == null)
+    {
+      numerator = new GaussianInteger();
+      numerator.realPart = realPart.getNumerator();
+      numerator.imaginaryPart = imaginaryPart.getNumerator();
+    }
+
     return numerator;
   }
 
   public GaussianInteger getDenominator()
   {
+    if (denominator == null)
+    {
+      denominator = new GaussianInteger();
+      denominator.realPart = realPart.getDenominator();
+      denominator.imaginaryPart = imaginaryPart.getDenominator();
+    }
+
     return denominator;
   }
 
