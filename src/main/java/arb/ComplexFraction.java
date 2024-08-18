@@ -74,21 +74,12 @@ public class ComplexFraction implements
     imaginaryPart = parts.get(1);
     numerator     = new GaussianInteger();
     denominator   = new GaussianInteger();
-    updateNumeratorAndDenominator();
   }
 
   public ComplexFraction(String string)
   {
     this();
     set(string);
-  }
-
-  public void updateNumeratorAndDenominator()
-  {
-    numerator.setRealPart(realPart.getNumerator());
-    numerator.setImaginaryPart(imaginaryPart.getNumerator());
-    denominator.setRealPart(realPart.getDenominator());
-    denominator.setImaginaryPart(imaginaryPart.getDenominator());
   }
 
   @Override
@@ -110,7 +101,6 @@ public class ComplexFraction implements
   {
     realPart.set(0);
     imaginaryPart.set(0);
-    updateNumeratorAndDenominator();
     return this;
   }
 
@@ -119,7 +109,6 @@ public class ComplexFraction implements
   {
     realPart.set(1);
     imaginaryPart.set(0);
-    updateNumeratorAndDenominator();
     return this;
   }
 
@@ -128,7 +117,6 @@ public class ComplexFraction implements
   {
     realPart.add(element.realPart, bits, result.realPart);
     imaginaryPart.add(element.imaginaryPart, bits, result.imaginaryPart);
-    result.updateNumeratorAndDenominator();
     return result;
   }
 
@@ -149,7 +137,6 @@ public class ComplexFraction implements
   {
     realPart.div(j, bits, result.realPart);
     imaginaryPart.div(j, bits, result.imaginaryPart);
-    result.updateNumeratorAndDenominator();
     return result;
   }
 
@@ -173,7 +160,6 @@ public class ComplexFraction implements
       temp.realPart.sub(temp.imaginaryPart, bits, temp.realPart);
       temp.realPart.div(denominator, bits, result.imaginaryPart);
 
-      result.updateNumeratorAndDenominator();
       return result;
     }
   }
@@ -199,7 +185,6 @@ public class ComplexFraction implements
   {
     realPart.mul(x, bits, result.realPart);
     imaginaryPart.mul(x, bits, result.imaginaryPart);
-    result.updateNumeratorAndDenominator();
     return result;
   }
 
@@ -233,7 +218,6 @@ public class ComplexFraction implements
       imaginaryPart.mul(x.realPart, bits, temp2);
       temp1.add(temp2, bits, result.imaginaryPart);
 
-      result.updateNumeratorAndDenominator();
       return result;
     }
   }
@@ -249,7 +233,6 @@ public class ComplexFraction implements
   {
     realPart.sub(element.realPart, bits, result.realPart);
     imaginaryPart.sub(element.imaginaryPart, bits, result.imaginaryPart);
-    result.updateNumeratorAndDenominator();
     return result;
   }
 
