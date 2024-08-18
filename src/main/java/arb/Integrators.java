@@ -1,24 +1,12 @@
 package arb;
 
-import static arb.arblib.acb_get_mag_lower;
-import static arb.arblib.mag_add_lower;
-import static arb.arblib.mag_hypot;
-import static arb.arblib.mag_inf;
-import static arb.arblib.mag_max;
-import static arb.arblib.mag_mul_2exp_si;
-import static arb.arblib.mag_mul_lower;
-import static arb.arblib.mag_mul_ui_lower;
-import static arb.arblib.mag_pow_ui_lower;
-import static arb.arblib.mag_set;
-import static arb.arblib.mag_sqrt_lower;
-import static arb.arblib.mag_sub_lower;
+import static arb.arblib.*;
 
 import java.util.concurrent.atomic.AtomicLong;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.complex.ComplexFunction;
-import arb.functions.real.ComplexMagnitude;
 import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;
 
@@ -112,7 +100,7 @@ public class Integrators
    *                              ε[rel=]2^(-relAccuracyGoalBits)
    * 
    * @param absErrorToleranceGoal absolute accuracy goal as a
-   *                              {@link ComplexMagnitude} describing the error
+   *                               describing the error
    *                              tolerance, i.e. target an absolute error less
    *                              than ε[abs]=absErrorToleranceGoal
    * @param options

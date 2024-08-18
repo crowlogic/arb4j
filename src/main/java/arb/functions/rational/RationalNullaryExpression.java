@@ -1,9 +1,10 @@
-package arb.expressions;
+package arb.functions.rational;
 
 import arb.RationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.rational.RationalNullaryFunction;
+import arb.expressions.Context;
+import arb.expressions.Expression;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the

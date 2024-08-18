@@ -1,19 +1,20 @@
 package arb.functions.real;
 
 import static java.lang.Math.pow;
-import static java.lang.System.out;
 
 import org.junit.Test;
 
-import arb.*;
 import arb.Float;
-import arb.functions.complex.numbertheoretic.ZFunction;
+import arb.FloatInterval;
+import arb.Real;
+import arb.RealRootInterval;
+import arb.RootLocatorOptions;
+import arb.Roots;
 import junit.framework.TestCase;
 
 @SuppressWarnings(
 { "resource", "unused" })
-public class RealFunctionTest
-                              extends
+public class RealFunctionTest extends
                               TestCase
 {
 
@@ -119,37 +120,6 @@ public class RealFunctionTest
                                                              256);
     Roots              roots        = sineFunction.locateRoots(config);
     roots.refine(sineFunction, 256, 40, true);
-  }
-
-  @Test
-  public void testLocateRootsHardyZ()
-  {
-    RealFunction       f               = new RealHolomorphicPart<>(new ZFunction()).asRealFunction(new Complex());
-    RealRootInterval   initialInterval = new RealRootInterval(14,
-                                                              14.2);
-    int                maxdepth        = 11;
-    int                maxevals        = 5000;
-    int                maxfound        = 1;
-    int                prec            = 256;
-    RootLocatorOptions config          = new RootLocatorOptions(initialInterval,
-                                                                maxdepth,
-                                                                maxevals,
-                                                                maxfound,
-                                                                prec);
-    Roots              roots           = f.locateRoots(config);
-
-    assertEquals(192, roots.evals);
-    assertEquals(3, roots.size());
-    RealRootInterval first     = roots.get(0);
-    Real             firstRoot = first.getReal(prec, new Real());
-    assertEquals(14.13125, firstRoot.getMid().doubleValue(RoundingMode.Ceiling), pow(10, -30));
-    assertEquals(first.status, FloatInterval.RootStatus.RootLocated);
-
-    roots.refine(f, prec, 40, true);
-
-    assertEquals(14.134725141734693, roots.get(0).getReal(256, new Real()).doubleValue(RoundingMode.Down), 0);
-    assertEquals(2, roots.unknownCount);
-    assertEquals(1, roots.foundCount);
   }
 
   @Test

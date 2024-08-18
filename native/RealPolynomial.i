@@ -1,5 +1,8 @@
 %typemap(javaimports) arb_poly_struct %{
-import static arb.arblib.*;
+import static arb.arblib.arb_poly_clear;
+import static arb.arblib.arb_poly_evaluate;
+import static arb.arblib.arb_poly_evaluate2;
+import static arb.arblib.arb_poly_product_roots;
 
 import java.io.Closeable;
 
@@ -7,8 +10,6 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.DivisionByZeroException;
 import arb.functions.real.RealFunction;
-import arb.functions.real.RealGammaFunction;
-import arb.functions.real.RealSquareRoot;
 import arb.utensils.Utensils;
 
 

@@ -14,7 +14,6 @@ import arb.expressions.Expression;
 import arb.expressions.Parser;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
-import arb.functions.real.RealHolomorphicPart;
 import arb.space.topological.VectorSpace;
 import arb.utensils.Utensils;
 
@@ -60,9 +59,15 @@ public interface ComplexFunction extends
     return compile(expression, null);
   }
 
-  public static Expression<Complex, Complex, ComplexFunction> compile(String expression, Context context)
+  public static Expression<Complex, Complex, ComplexFunction> compile(String expression,
+                                                                      Context context)
   {
-    return Compiler.compile(expression, context, Complex.class, Complex.class, ComplexFunction.class, null);
+    return Compiler.compile(expression,
+                            context,
+                            Complex.class,
+                            Complex.class,
+                            ComplexFunction.class,
+                            null);
 
   }
 
@@ -73,12 +78,22 @@ public interface ComplexFunction extends
 
   public static ComplexFunction express(String expression, Context context)
   {
-    return Function.instantiate(expression, context, Complex.class, Complex.class, ComplexFunction.class, null);
+    return Function.instantiate(expression,
+                                context,
+                                Complex.class,
+                                Complex.class,
+                                ComplexFunction.class,
+                                null);
   }
 
   public static ComplexFunction express(String expression, Context context, boolean verbose)
   {
-    return Function.instantiate(expression, context, Complex.class, Complex.class, ComplexFunction.class, null);
+    return Function.instantiate(expression,
+                                context,
+                                Complex.class,
+                                Complex.class,
+                                ComplexFunction.class,
+                                null);
   }
 
   public static ComplexFunction express(String expression, String string)
@@ -91,7 +106,8 @@ public interface ComplexFunction extends
     return express(functionName, expression, context, false);
   }
 
-  public static ComplexFunction express(String functionName, String expression, Context context, boolean verbose)
+  public static ComplexFunction
+         express(String functionName, String expression, Context context, boolean verbose)
   {
     return Function.instantiate(expression,
                                 context,
@@ -173,10 +189,13 @@ public interface ComplexFunction extends
                                             Complex res)
   {
 
-    try ( RealToComplexFunction integrand = (t, order, prec, w) -> evaluate(curve.evaluate(t, 0, prec, w),
-                                                                            order,
-                                                                            prec,
-                                                                            w))
+    try ( RealToComplexFunction integrand = (t,
+                                             order,
+                                             prec,
+                                             w) -> evaluate(curve.evaluate(t, 0, prec, w),
+                                                            order,
+                                                            prec,
+                                                            w))
     {
       return integrand.integrate(left,
                                  right,
@@ -231,11 +250,6 @@ public interface ComplexFunction extends
     // multiplicity of the root at the point " + z + " here, or throw an exception
     // or something if there isn't a root at the requested point within whatever
     // uncertainty radius is there");
-  }
-
-  public default RealHolomorphicPart<ComplexFunction> realPart()
-  {
-    return new RealHolomorphicPart<ComplexFunction>(this);
   }
 
   /**

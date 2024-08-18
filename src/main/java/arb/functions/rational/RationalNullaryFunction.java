@@ -7,7 +7,6 @@ import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
-import arb.expressions.RationalNullaryExpression;
 import arb.functions.Function;
 import arb.functions.NullaryFunction;
 
