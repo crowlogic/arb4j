@@ -449,7 +449,7 @@ import arb.utensils.Utensils;
     result.bits = bits;
     return result; 
   }
-
+  
   public ComplexRationalFunction
          mul(ComplexRationalFunction that, int prec, ComplexRationalFunction res)
   {

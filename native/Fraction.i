@@ -65,6 +65,13 @@ import java.util.stream.Stream;
     set(numerator, denominator);
   }
 
+  public ComplexFraction sub(Fraction element, int prec, ComplexFraction result)
+  {
+    sub(element, prec, result.realPart);
+    result.imaginaryPart.zero();
+    return result;
+  }
+  
   public ComplexFraction neg( ComplexFraction result )
   {
     neg(result.realPart);

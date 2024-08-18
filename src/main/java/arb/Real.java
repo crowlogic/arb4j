@@ -476,7 +476,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     result.bits = bits;
     return result; 
   }
-
+  
   public ComplexRationalFunction
          mul(ComplexRationalFunction that, int prec, ComplexRationalFunction res)
   {

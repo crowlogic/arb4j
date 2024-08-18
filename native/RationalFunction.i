@@ -22,6 +22,10 @@ import java.util.stream.Stream;
 %typemap(javacode) fmpz_poly_q_struct %{
 
 
+  public RationalFunction mul(Real real, int prec, RationalFunction realPart)
+  {
+    return realPart.set(real).mul(this,prec,realPart);
+  }
   
   @Override
   public RationalFunction inverse(RationalFunction x)

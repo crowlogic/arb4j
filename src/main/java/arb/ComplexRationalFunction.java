@@ -412,4 +412,11 @@ public class ComplexRationalFunction implements
   {
     return add(operand, prec, this);
   }
+
+  public ComplexRationalFunction mul(Real real, int prec, ComplexRationalFunction res)
+  {
+    res.set(this);
+    res.realPart.mul(real,prec,res.realPart);
+    return res;
+  }
 }

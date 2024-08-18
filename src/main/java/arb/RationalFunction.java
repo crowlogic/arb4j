@@ -42,6 +42,10 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
 
 
 
+  public RationalFunction mul(Real real, int prec, RationalFunction realPart)
+  {
+    return realPart.set(real).mul(this,prec,realPart);
+  }
   
   @Override
   public RationalFunction inverse(RationalFunction x)
