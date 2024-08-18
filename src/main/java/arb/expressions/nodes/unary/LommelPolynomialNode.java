@@ -103,7 +103,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     expression.loadFieldOntoStack(mv, elementFieldName, RationalFunction.class);
 
     // Evaluate the argument
-    expression.insideInitializer = true;
+    //expression.insideInitializer = true;
     arg.generate(mv, resultType);
 
     Compiler.loadOrderParameter(mv);
