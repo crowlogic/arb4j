@@ -162,6 +162,13 @@ import arb.utensils.Utensils;
          false);
   }
 
+  public ComplexFraction sub(Integer n, int bits2, ComplexFraction res)
+  {
+    res.realPart.set(this).sub(n, bits2);
+    res.imaginaryPart.zero();
+    return res;
+  }
+  
   public RationalFunction mul(RationalFunction that, int prec, RationalFunction res)
   {
     return res.set(this).mul(that, prec, res);

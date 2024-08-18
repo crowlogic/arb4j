@@ -52,16 +52,17 @@ public class ComplexFraction implements
     return String.format("(%s)+(%s)i", realPart, imaginaryPart);
   }
 
-  Arena           arena;
-  Fraction        parts;
-  Fraction        realPart;
-  Fraction        imaginaryPart;
-  String          name;
-  GaussianInteger numerator;
-  GaussianInteger denominator;
+  public Arena           arena;
+  public Fraction        parts;
+  public Fraction        realPart;
+  public Fraction        imaginaryPart;
+  public String          name;
+  public GaussianInteger numerator;
+  public GaussianInteger denominator;
 
   public ComplexFraction()
   {
+    // TODO: this can be improved
     this(Arena.ofShared());
   }
 
@@ -317,6 +318,13 @@ public class ComplexFraction implements
   {
     assert false : "TODO";
     return null;
+  }
+
+  public ComplexFraction set(Real x)
+  {
+    realPart.set(x);
+    imaginaryPart.zero();
+    return this;
   }
 
 }

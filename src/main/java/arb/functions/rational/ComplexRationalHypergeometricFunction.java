@@ -1,12 +1,15 @@
 package arb.functions.rational;
 
 import arb.Complex;
+import arb.ComplexFraction;
 import arb.ComplexRationalFunction;
 import arb.Fraction;
+import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
+import arb.functions.Function;
 import arb.functions.HypergeometricFunction;
 
 /**
@@ -71,6 +74,17 @@ public class ComplexRationalHypergeometricFunction extends
                β,
                arg);
     return this;
+  }
+
+
+
+  public Function<Integer, ComplexRationalFunction>
+         init(ComplexFraction numerator,
+              ComplexFraction denominator,
+              Expression<Object, ComplexRationalFunction, ComplexRationalNullaryFunction> arg)
+  {
+    assert false : "TODO";
+    return null;
   }
 
 }
