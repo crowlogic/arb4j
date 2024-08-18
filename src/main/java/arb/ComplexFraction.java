@@ -72,8 +72,7 @@ public class ComplexFraction implements
     parts         = Fraction.newVector(arena, 2);
     realPart      = parts.get(0);
     imaginaryPart = parts.get(1);
-    numerator     = new GaussianInteger();
-    denominator   = new GaussianInteger();
+
   }
 
   public ComplexFraction(String string)
@@ -91,8 +90,14 @@ public class ComplexFraction implements
     }
     arena    = null;
     realPart = imaginaryPart = parts = null;
-    numerator.close();
-    denominator.close();
+    if (numerator != null)
+    {
+      numerator.close();
+    }
+    if (denominator != null)
+    {
+      denominator.close();
+    }
     numerator = denominator = null;
   }
 
