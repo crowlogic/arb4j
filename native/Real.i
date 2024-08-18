@@ -161,7 +161,12 @@ import arb.utensils.Utensils;
     this(arena.allocate(Real.BYTES).address(),
          false);
   }
-  
+
+  public RationalFunction mul(RationalFunction that, int prec, RationalFunction res)
+  {
+    return res.set(this).mul(that, prec, res);
+  }
+    
   public Fraction sub(Fraction subtrahend, int bits, Fraction res)
   {
     return res.set(this).sub(subtrahend,bits,res);
@@ -189,11 +194,6 @@ import arb.utensils.Utensils;
   public Real sub(Fraction a, int bits, Real res)
   {
     return res.set(this).sub(a,bits,res);
-  }
-  
-  public RationalFunction mul(RationalFunction that, int prec, RationalFunction res)
-  {
-    return res.set(this).mul(that,prec);
   }
     
   /**
@@ -453,7 +453,7 @@ import arb.utensils.Utensils;
   public ComplexRationalFunction
          mul(ComplexRationalFunction that, int prec, ComplexRationalFunction res)
   {
-    return res.set(this).mul(that, prec);
+    return res.set(that).mul(this, prec,res);
   }
   
   public RealPolynomial ascendingFactorial(Integer n, int bits, RealPolynomial result)
