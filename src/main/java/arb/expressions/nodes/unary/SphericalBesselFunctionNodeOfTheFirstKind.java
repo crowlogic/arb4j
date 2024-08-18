@@ -22,7 +22,7 @@ import arb.functions.Function;
  * <pre>
  * Let jₙ (x) is the spherical Bessel function of the first kind,
  * 
- * jₙ (z) = √(π/(2z)) Jₙ₊½ (x) = 1/√z (sin (z) Rₙ,½ (z) - cos (z) Rₙ₋₁,³/₂ (z))
+ * jₙ (z) = √(π/(2z)) Jₙ₊½ (x) = (sin (z) Rₙ,½ (z) - cos (z) Rₙ₋₁,³/₂ (z))/z
  * 
  * where Rₙ,ᵥ (z) are the (misnamed) Lommel polynomials
  * 
@@ -74,7 +74,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
   {
     if (Expression.trace)
     {
-      err.printf("J.generate(ν=%s, resultType=%s\n)\n", order, resultType);
+      err.printf("j.generate(ν=%s, resultType=%s\n)\n", order, resultType);
     }
     var scalarType = scalarType(resultType);
 
