@@ -162,6 +162,7 @@ import arb.utensils.Utensils;
          false);
   }
 
+
   public ComplexFraction sub(Integer n, int bits2, ComplexFraction res)
   {
     res.realPart.set(this).sub(n, bits2);
@@ -307,22 +308,10 @@ import arb.utensils.Utensils;
     return res.set(this).div(a, bits, res);
   }
   
-  public static Predicate<Real> isNegativeInteger       = αᵢ ->
-                                                        {
+  public static Predicate<Real> isNegativeInteger       = α -> α.isInteger() && α.isNegative();
 
-                                                          Real α = (Real) αᵢ;
-                                                          return α.isInteger() && α.isNegative();
-
-                                                        };
-
-  public static Predicate<Real> isNegativeIntegerOrZero = isNegativeInteger.or(αᵢ ->
-                                                        {
-
-                                                          Real α = (Real) αᵢ;
-                                                          return α.isInteger() && (α.isNegative()
-                                                                        || α.isZero());
-
-                                                        });
+  public static Predicate<Real> isNegativeIntegerOrZero = isNegativeInteger.or(α -> α.isInteger()
+                && (α.isNegative() || α.isZero()));
 
   public RealPolynomial mul(RealPolynomial a, int bits, RealPolynomial res)
   {

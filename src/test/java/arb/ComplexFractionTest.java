@@ -12,6 +12,18 @@ import junit.framework.TestCase;
 public class ComplexFractionTest extends
                                  TestCase
 {
+  public void testArraySet()
+  {
+    ComplexFraction f = new ComplexFraction();
+    ComplexFraction a = new ComplexFraction().set("7/8");
+    ComplexFraction b = new ComplexFraction().set("1/4");
+    System.out.format("Adding %s+%s\n", a, b);
+
+    f.set(a, b);
+    System.out.format("%s+%s=%s\n", a, b, f);
+    assertEquals("[7/8,1/4]",f.toString());
+  }
+
   @SuppressWarnings("resource")
   public void testSet()
   {
@@ -43,7 +55,7 @@ public class ComplexFractionTest extends
     ComplexFraction aOverB = a.add(b, new ComplexFraction());
     assertEquals("(9/8)+(3)i", aOverB.toString());
   }
-  
+
   @SuppressWarnings("resource")
   public void testSub()
   {
@@ -52,7 +64,7 @@ public class ComplexFractionTest extends
     ComplexFraction aOverB = a.sub(b, new ComplexFraction());
     assertEquals("(5/8)+(1)i", aOverB.toString());
   }
-  
+
   @SuppressWarnings("resource")
   public void testMul()
   {
@@ -61,5 +73,5 @@ public class ComplexFractionTest extends
     ComplexFraction aOverB = a.mul(b, new ComplexFraction());
     assertEquals("(-57/32)+(11/8)i", aOverB.toString());
   }
-  
+
 }

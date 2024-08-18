@@ -171,6 +171,8 @@ public abstract class HypergeometricFunction<P extends NamedRing<? extends P>,
     this.β         = (P) Real.newVector(beta.dim());
     this.α.set(alpha);
     this.β.set(beta);
+    System.out.format("α=%s\nβ=%s\nalpha=%s\nbeta=%s\n",α,β,alpha,beta);
+
     initializeContext();
 
     compile(elementType, nullaryFunctionType, arg);
@@ -191,6 +193,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<? extends P>,
     this.β = (P) Complex.newVector(beta.dim());
     this.α.set(alpha);
     this.β.set(beta);
+    System.out.format("α=%s\nβ=%s\n",α,β);
     initializeContext();
 
     compile(elementType, nullaryFunctionType, arg);

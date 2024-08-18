@@ -78,13 +78,15 @@ public class ComplexRationalHypergeometricFunction extends
 
 
 
-  public Function<Integer, ComplexRationalFunction>
+  public ComplexRationalHypergeometricFunction
          init(ComplexFraction numerator,
               ComplexFraction denominator,
               Expression<Object, ComplexRationalFunction, ComplexRationalNullaryFunction> arg)
   {
-    assert false : "TODO";
-    return null;
+    assert numerator.imaginaryPart.isZero();
+    assert denominator.imaginaryPart.isZero();
+    System.out.format("init(numer=%s,denom=%s)\n", numerator,denominator);
+    return init(numerator.realPart,denominator.realPart,arg);
   }
 
 }

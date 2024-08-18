@@ -1,7 +1,7 @@
 package arb;
 
 import java.lang.foreign.Arena;
-import java.util.Arrays;
+import java.lang.foreign.MemorySegment;
 import java.util.stream.Stream;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -52,26 +52,26 @@ public class ComplexFraction implements
     return String.format("(%s)+(%s)i", realPart, imaginaryPart);
   }
 
-  public Arena           arena;
-  public Fraction        parts;
-  public Fraction        realPart;
-  public Fraction        imaginaryPart;
-  public String          name;
-  public GaussianInteger numerator;
-  public GaussianInteger denominator;
+  public Arena              arena;
+  public Fraction           realPart;
+  public Fraction           imaginaryPart;
+  public String             name;
+  public GaussianInteger    numerator;
+  public GaussianInteger    denominator;
+  private int               dim;
+  private ComplexFraction[] elements;
 
   public ComplexFraction()
   {
-    // TODO: this can be improved
-    this(Arena.ofShared());
+    this(Arena.ofShared(),
+         1);
   }
 
-  public ComplexFraction(Arena arena)
+  public ComplexFraction(Arena arena, int dim)
   {
     this.arena    = arena;
-    parts         = Fraction.newVector(arena, 2);
-    realPart      = parts.get(0);
-    imaginaryPart = parts.get(1);
+    realPart      = Fraction.newVector(arena, dim);
+    imaginaryPart = Fraction.newVector(arena, dim);
 
   }
 
@@ -89,7 +89,7 @@ public class ComplexFraction implements
       arena.close();
     }
     arena    = null;
-    realPart = imaginaryPart = parts = null;
+    realPart = imaginaryPart = null;
     if (numerator != null)
     {
       numerator.close();
@@ -172,12 +172,14 @@ public class ComplexFraction implements
   @Override
   public ComplexFraction get(int index)
   {
-    if (index != 0)
+    assert index < dim : String.format("index = %d >= dim = %d", index, dim);
+    if (index == 0 && dim == 1)
     {
-      throw new IndexOutOfBoundsException("ComplexFraction is a scalar, index must be 0");
+      return this;
     }
-    return this;
+    return elements[index];
   }
+
 
   @Override
   public String getName()
@@ -255,14 +257,26 @@ public class ComplexFraction implements
     return this;
   }
 
-  public ComplexFraction set(ComplexFraction... values)
+  @SuppressWarnings("resource")
+  public ComplexFraction set(ComplexFraction... vals)
   {
-    assert false : "TODO: vectorize "
-                   + this.getClass()
-                   + " so it can hold  "
-                   + Arrays.asList(values);
-    // realPart.set(value.realPart);
-    // imaginaryPart.set(value.imaginaryPart);
+    dim = vals.length;
+
+    MemorySegment segment = arena.allocate(Long.BYTES * dim * 4);
+
+    elements = new ComplexFraction[dim];
+    for (int i = 0; i < dim; i++)
+    {
+      ComplexFraction frac = new ComplexFraction();
+      frac.realPart.swigCPtr      = segment.address() + i * Long.BYTES * 4;
+      frac.imaginaryPart.swigCPtr = frac.realPart.swigCPtr + Long.BYTES * 2;
+      frac.realPart.swigCMemOwn   = frac.imaginaryPart.swigCMemOwn = false;
+      arblib.fmpq_init(frac.realPart);
+      arblib.fmpq_init(frac.imaginaryPart);
+      System.out.format("Setting %s\n", vals[i]);
+      elements[i] = frac.set(vals[i]);
+      System.out.format("Set %s\n\n", elements[i]);
+    }
     return this;
   }
 
