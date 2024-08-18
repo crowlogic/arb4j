@@ -60,10 +60,15 @@ public class nvNTimes implements
       initialize();
     }
 
-    var numerator   = vfℂ1.set(cℤ2.div(cℤ1, bits, f1).sub(n.div(cℤ1, bits, f2), bits, fℂ1),
-                               n.div(cℤ1, bits, f3).neg(fℂ2));
+    Fraction ass = cℤ2.div(cℤ1, bits, f1);
+    Fraction cunt = n.div(cℤ1, bits, f2);
+    ComplexFraction fuck = ass.sub(cunt, bits, fℂ1);
+    Fraction twat = n.div(cℤ1, bits, f3);
+    ComplexFraction shit = twat.neg(fℂ2);
+    ComplexFraction numerator   = vfℂ1.set(fuck,
+                               shit);
 
-    var denominator = vfℂ2.set(fℂ3.set(v), n.neg(fℂ4), cℤ2.sub(v, bits, ℝ2).sub(n, bits, fℂ5));
+    ComplexFraction denominator = vfℂ2.set(fℂ3.set(v), n.neg(fℂ4), cℤ2.sub(v, bits, ℝ2).sub(n, bits, fℂ5));
 
     var arg         = ComplexRationalNullaryFunction.parse("-z^2");
 

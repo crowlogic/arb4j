@@ -49,7 +49,20 @@ public class ComplexFraction implements
   @Override
   public String toString()
   {
-    return String.format("(%s)+(%s)i", realPart, imaginaryPart);
+    assert dim > 0;
+    if (dim == 1)
+    {
+      return String.format("(%s)+(%s)i", realPart, imaginaryPart);
+    }
+    StringBuilder sb = new StringBuilder("[");
+    for (int i = 0; i < dim; i++)
+    {
+      if (i > 0)
+        sb.append(", ");
+      sb.append(get(i).toString());
+    }
+    sb.append("]");
+    return sb.toString();
   }
 
   public Arena              arena;
@@ -58,7 +71,7 @@ public class ComplexFraction implements
   public String             name;
   public GaussianInteger    numerator;
   public GaussianInteger    denominator;
-  private int               dim;
+  public int                dim = 1;
   private ComplexFraction[] elements;
 
   public ComplexFraction()
@@ -69,10 +82,13 @@ public class ComplexFraction implements
 
   public ComplexFraction(Arena arena, int dim)
   {
-    this.arena    = arena;
-    realPart      = Fraction.newVector(arena, dim);
-    imaginaryPart = Fraction.newVector(arena, dim);
-
+    this.arena = arena;
+    this.dim   = dim;
+    if (dim > 0)
+    {
+      realPart      = Fraction.newVector(arena, dim);
+      imaginaryPart = Fraction.newVector(arena, dim);
+    }
   }
 
   public ComplexFraction(String string)
@@ -180,7 +196,6 @@ public class ComplexFraction implements
     return elements[index];
   }
 
-
   @Override
   public String getName()
   {
@@ -252,6 +267,7 @@ public class ComplexFraction implements
   @Override
   public ComplexFraction set(ComplexFraction value)
   {
+    dim = value.dim();
     realPart.set(value.realPart);
     imaginaryPart.set(value.imaginaryPart);
     return this;
@@ -260,14 +276,32 @@ public class ComplexFraction implements
   @SuppressWarnings("resource")
   public ComplexFraction set(ComplexFraction... vals)
   {
+    if (vals.length == 1)
+    {
+      dim = 1;
+      return set(vals[0]);
+    }
+
     dim = vals.length;
 
     MemorySegment segment = arena.allocate(Long.BYTES * dim * 4);
 
-    elements = new ComplexFraction[dim];
+    elements               = new ComplexFraction[dim];
+    numerator              = denominator = null;
+    realPart               = new Fraction();
+    imaginaryPart          = new Fraction();
+    realPart.elements      = new Fraction[dim];
+    realPart.dim           = dim;
+    imaginaryPart.elements = new Fraction[dim];
+    imaginaryPart.dim      = dim;
     for (int i = 0; i < dim; i++)
     {
-      ComplexFraction frac = new ComplexFraction();
+      ComplexFraction frac = new ComplexFraction(null,
+                                                 0);
+      frac.realPart               = new Fraction(0,
+                                                 false);
+      frac.imaginaryPart          = new Fraction(0,
+                                                 false);
       frac.realPart.swigCPtr      = segment.address() + i * Long.BYTES * 4;
       frac.imaginaryPart.swigCPtr = frac.realPart.swigCPtr + Long.BYTES * 2;
       frac.realPart.swigCMemOwn   = frac.imaginaryPart.swigCMemOwn = false;
@@ -276,7 +310,10 @@ public class ComplexFraction implements
       System.out.format("Setting %s\n", vals[i]);
       elements[i] = frac.set(vals[i]);
       System.out.format("Set %s\n\n", elements[i]);
+      realPart.elements[i]      = frac.realPart;
+      imaginaryPart.elements[i] = frac.imaginaryPart;
     }
+
     return this;
   }
 

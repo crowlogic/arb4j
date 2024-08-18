@@ -97,7 +97,7 @@ import arb.expressions.nodes.unary.HypergeometricFunctionNode;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class HypergeometricFunction<P extends NamedRing<? extends P>,
+public abstract class HypergeometricFunction<P extends NamedRing<P>,
               C extends NamedRing<C>,
               N extends NullaryFunction<C>> implements
                                             NullaryFunction<C>,
@@ -133,7 +133,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<? extends P>,
 
   public P                        α, β;
 
-  public Class<?>                paramType;
+  public Class<?>                 paramType;
 
   public HypergeometricFunction()
   {
@@ -171,7 +171,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<? extends P>,
     this.β         = (P) Real.newVector(beta.dim());
     this.α.set(alpha);
     this.β.set(beta);
-    System.out.format("α=%s\nβ=%s\nalpha=%s\nbeta=%s\n",α,β,alpha,beta);
+    System.out.format("α=%s\nβ=%s\nalpha=%s\nbeta=%s\n", α, β, alpha, beta);
 
     initializeContext();
 
@@ -189,11 +189,11 @@ public abstract class HypergeometricFunction<P extends NamedRing<? extends P>,
                                               Expression<Object, C, N> arg)
   {
     this.paramType = paramType;
-    this.α = (P) Complex.newVector(alpha.dim());
-    this.β = (P) Complex.newVector(beta.dim());
+    this.α         = (P) Complex.newVector(alpha.dim());
+    this.β         = (P) Complex.newVector(beta.dim());
     this.α.set(alpha);
     this.β.set(beta);
-    System.out.format("α=%s\nβ=%s\n",α,β);
+    System.out.format("α=%s\nβ=%s\n", α, β);
     initializeContext();
 
     compile(elementType, nullaryFunctionType, arg);
@@ -326,6 +326,9 @@ public abstract class HypergeometricFunction<P extends NamedRing<? extends P>,
   @Override
   public boolean verify()
   {
+    assert paramType.equals(this.α.getClass()) : String.format("paramType=%s != alpha.class=%s\n",
+                                                               paramType,
+                                                               this.α.getClass());
     int p = this.p.getSignedValue();
     if (Real.class.equals(paramType))
     {

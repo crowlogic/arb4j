@@ -12,16 +12,14 @@ import junit.framework.TestCase;
 public class ComplexFractionTest extends
                                  TestCase
 {
+  @SuppressWarnings("resource")
   public void testArraySet()
   {
     ComplexFraction f = new ComplexFraction();
     ComplexFraction a = new ComplexFraction().set("7/8");
-    ComplexFraction b = new ComplexFraction().set("1/4");
-    System.out.format("Adding %s+%s\n", a, b);
-
+    ComplexFraction b = new ComplexFraction().set("1/4+ⅈ");
     f.set(a, b);
-    System.out.format("%s+%s=%s\n", a, b, f);
-    assertEquals("[7/8,1/4]",f.toString());
+    assertEquals("[(7/8)+(0)i, (1/4)+(1)i]",f.toString());
   }
 
   @SuppressWarnings("resource")
