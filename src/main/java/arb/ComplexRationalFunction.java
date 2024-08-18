@@ -398,6 +398,7 @@ public class ComplexRationalFunction implements
     return neg(this);
   }
 
+
   public ComplexRationalFunction add(Fraction operand, int prec, ComplexRationalFunction result)
   {
     // assert false : String.format("this=%s + operand=%s", this, operand);

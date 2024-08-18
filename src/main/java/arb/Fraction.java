@@ -93,6 +93,19 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     set(numerator, denominator);
   }
 
+  public ComplexFraction neg( ComplexFraction result )
+  {
+    neg(result.realPart);
+    result.imaginaryPart.zero();
+    return result;
+  }
+
+  public Fraction add(Integer that, int prec, Fraction res)
+  {
+    arblib.fmpq_add_fmpz(res, this, that.swigCPtr );    
+    return res;
+  }
+  
   public ComplexFraction add(Complex that, int bits, ComplexFraction result)
   {
     result.realPart.set(this);

@@ -1,6 +1,7 @@
 package arb;
 
 import java.lang.foreign.Arena;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -17,6 +18,13 @@ public class ComplexFraction implements
                              Field<ComplexFraction>,
                              AutoCloseable
 {
+
+  public ComplexFraction set(Integer i)
+  {
+    realPart.set(i);
+    imaginaryPart.zero();
+    return this;
+  }
 
   public ComplexFraction set(String string)
   {
@@ -255,6 +263,17 @@ public class ComplexFraction implements
   {
     realPart.set(value.realPart);
     imaginaryPart.set(value.imaginaryPart);
+    return this;
+  }
+
+  public ComplexFraction set(ComplexFraction... values)
+  {
+    assert false : "TODO: vectorize "
+                   + this.getClass()
+                   + " so it can hold  "
+                   + Arrays.asList(values);
+    // realPart.set(value.realPart);
+    // imaginaryPart.set(value.imaginaryPart);
     return this;
   }
 

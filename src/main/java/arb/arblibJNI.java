@@ -9,6 +9,7 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void fmpq_add_fmpz(long jarg1, Fraction jarg1_, long jarg2, Fraction jarg2_, long jarg3);
   public final static native void fmpq_inv(long jarg1, Fraction jarg1_, long jarg2, Fraction jarg2_);
   public final static native void fmpz_poly_q_scalar_mul_fmpq(long jarg1, RationalFunction jarg1_, long jarg2, RationalFunction jarg2_, long jarg3, Fraction jarg3_);
   public final static native void fmpz_poly_q_scalar_div_si(long jarg1, RationalFunction jarg1_, long jarg2, RationalFunction jarg2_, int jarg3);

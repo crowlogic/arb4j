@@ -208,6 +208,12 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result;
   }
 
+  public ComplexFraction add(Fraction operand, int prec, ComplexFraction result)
+  {
+    operand.add(this,prec,result.realPart);
+    return result;
+  }
+  
   public ComplexRationalFunction add(Fraction operand, int prec, ComplexRationalFunction result)
   {
     return result.set(this).add(operand, prec, result);
@@ -671,6 +677,13 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result.set(this).neg();
   }
 
+  public ComplexFraction neg(ComplexFraction res)
+  {
+    neg(res.realPart);
+    res.imaginaryPart.zero();
+    return res;
+  }
+  
   public Fraction neg(Fraction res)
   {
     res.set(this);

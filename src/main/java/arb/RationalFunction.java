@@ -41,6 +41,8 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
   }
 
 
+
+  
   @Override
   public RationalFunction inverse(RationalFunction x)
   {

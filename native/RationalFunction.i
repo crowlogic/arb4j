@@ -18,8 +18,11 @@ import java.util.stream.Stream;
   }
 %}
 
+
 %typemap(javacode) fmpz_poly_q_struct %{
 
+
+  
   @Override
   public RationalFunction inverse(RationalFunction x)
   {
