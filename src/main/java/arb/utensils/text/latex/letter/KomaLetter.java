@@ -80,9 +80,19 @@ public final class KomaLetter
                                                     "fraction"))
 
                       .usePackageWithOptions("csquotes",
-                                             Map.of("strict", "true", "autostyle", "true", "german", "guillemets"))
+                                             Map.of("strict",
+                                                    "true",
+                                                    "autostyle",
+                                                    "true",
+                                                    "german",
+                                                    "guillemets"))
 
-                      .usePackages("xcolor", "datetime2", "selnolig", "phonenumbers", "marvosym", "ifthen")
+                      .usePackages("xcolor",
+                                   "datetime2",
+                                   "selnolig",
+                                   "phonenumbers",
+                                   "marvosym",
+                                   "ifthen")
 
                       .usePackageWithOption("hyperref", "hidelinks")
 
@@ -91,7 +101,8 @@ public final class KomaLetter
                       .addToPreamble(Latex.MINOR_SEPARATOR)
 
                       .addToPreamble("\\KOMAoptions{fromphone=on,fromrule=aftername,fromemail=on,foldmarks="
-                                    + (foldmarks != null ? foldmarks : "off") + "}")
+                                     + (foldmarks != null ? foldmarks : "off")
+                                     + "}")
                       .addToPreamble("\\SetTracking{encoding={*},shape=sc}{40}")
                       .addToPreamble(Latex.EMPTY_LINE)
                       .addToPreamble("\\newboolean{showbank}")
@@ -105,17 +116,18 @@ public final class KomaLetter
                       .addToPreamble("\\newcommand{\\layout}{\\ifthenelse{\\boolean{smaller}}{")
                       .addToPreamble(Latex.indent(1) + "\\@setplength{firstheadvpos}{17mm}%")
                       .addToPreamble(Latex.indent(1)
-                                    + "\\@setplength{firstfootvpos}{275mm}% Abstand des Footers von oben")
-                      .addToPreamble(Latex.indent(1) + "\\@setplength{locwidth}{70mm}% Breite des Locationfeldes")
+                                     + "\\@setplength{firstfootvpos}{275mm}% Abstand des Footers von oben")
                       .addToPreamble(Latex.indent(1)
-                                    + "\\@setplength{locvpos}{55mm}% Abstand des Locationfeldes von oben")
+                                     + "\\@setplength{locwidth}{70mm}% Breite des Locationfeldes")
+                      .addToPreamble(Latex.indent(1)
+                                     + "\\@setplength{locvpos}{55mm}% Abstand des Locationfeldes von oben")
                       .addToPreamble(Latex.indent(1) + "\\@setplength{foldmarkhpos}{6.5mm}%")
                       .addToPreamble(Latex.indent(1) + "}{}}")
                       .addToPreamble("\\makeatother%")
                       .addToPreamble(Latex.EMPTY_LINE)
                       .addToPreamble("\\setkomavar{firsthead}{%")
                       .addToPreamble(Latex.indent(1)
-                                    + "\\usekomavar{fromlogo}\\hfill\\scshape\\LARGE\\usekomavar{fromname}\\\\")
+                                     + "\\usekomavar{fromlogo}\\hfill\\scshape\\LARGE\\usekomavar{fromname}\\\\")
                       .addToPreamble(Latex.indent(1) + "\\rule[3pt]{\\textwidth}{.4pt}%")
                       .addToPreamble("}")
                       .addToPreamble(Latex.EMPTY_LINE)
@@ -131,7 +143,7 @@ public final class KomaLetter
                       .addToPreamble(Latex.indent(2) + "\\usekomavar{fromemail}\\\\")
                       .addToPreamble(Latex.indent(1) + "\\end{tabular}%")
                       .addToPreamble(Latex.indent(1)
-                                    + "\\ifthenelse{\\boolean{showbank}}{\\ifkomavarempty{frombank}{}{%")
+                                     + "\\ifthenelse{\\boolean{showbank}}{\\ifkomavarempty{frombank}{}{%")
                       .addToPreamble(Latex.indent(2) + "\\hfill")
                       .addToPreamble(Latex.indent(2) + "\\begin{tabular}[t]{r@{}}%")
                       .addToPreamble(Latex.indent(3) + "\\usekomavar{frombank}")
@@ -534,21 +546,21 @@ public final class KomaLetter
       date = LocalDate.now();
     }
 
-    String address = (toStreet == null ? "" : toStreet + "\\\\") + (toCity == null ? "" : toCity + "\\\\")
-                  + (toExtra == null ? "" : toExtra);
+    String address = (toStreet == null ? "" : toStreet + "\\\\")
+                  + (toCity == null ? "" : toCity + "\\\\") + (toExtra == null ? "" : toExtra);
 
     String locale  = user.neededPackages()
                          .stream()
                          .filter(p -> p.name().equals("babel"))
                          .findFirst()
-                         .orElse(new LatexPackage("babel"))                                                   // package
-                                                                                                              // without
-                                                                                                              // the
-                                                                                                              // option
-                                                                                                              // we
-                                                                                                              // are
-                                                                                                              // interested
-                                                                                                              // in
+                         .orElse(new LatexPackage("babel"))                                                        // package
+                                                                                                                   // without
+                                                                                                                   // the
+                                                                                                                   // option
+                                                                                                                   // we
+                                                                                                                   // are
+                                                                                                                   // interested
+                                                                                                                   // in
                          .options()
                          .getOrDefault("main", "english");
 
@@ -581,8 +593,13 @@ public final class KomaLetter
        .addToPreamble("\\setkomavar{myref}{" + (myRef == null ? "" : myRef) + "}")
        .addToPreamble("\\setkomavar{customer}{" + (customer == null ? "" : customer) + "}")
        .addToPreamble("\\setkomavar{invoice}{" + (invoice == null ? "" : invoice) + "}")
-       .addToPreamble("\\setkomavar{date}{\\DTMdisplaydate{" + date.getYear() + "}{" + (date.getMonthValue()) + "}{"
-                     + date.getDayOfMonth() + "}{-1}}")
+       .addToPreamble("\\setkomavar{date}{\\DTMdisplaydate{"
+                      + date.getYear()
+                      + "}{"
+                      + (date.getMonthValue())
+                      + "}{"
+                      + date.getDayOfMonth()
+                      + "}{-1}}")
        .addToPreamble(Latex.MINOR_SEPARATOR)
        .addToPreamble(Latex.EMPTY_LINE)
        .addToPreamble("\\layout")

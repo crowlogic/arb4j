@@ -10,7 +10,8 @@ import java.util.Map;
  * 
  * @author Udo Hoefel
  */
-public final class Equation implements Texable
+public final class Equation implements
+                            Texable
 {
 
   /** The namespace used for equations in labels. */
@@ -426,8 +427,11 @@ public final class Equation implements Texable
   {
     if (!eq.getEnvironment().mathModeOnly())
     {
-      throw new IllegalArgumentException("Cannot use a " + eq.env + " environment inside a " + env
-                    + " environment. Maybe you wanted to use parse(Equation eq) instead of add(Equation eq)?");
+      throw new IllegalArgumentException("Cannot use a "
+                                         + eq.env
+                                         + " environment inside a "
+                                         + env
+                                         + " environment. Maybe you wanted to use parse(Equation eq) instead of add(Equation eq)?");
     }
     input.add(eq);
     endLines.add(endLine);
@@ -565,10 +569,13 @@ public final class Equation implements Texable
     environment(env, isStarred);
     if (isStarred)
       label(null);
-    if (equationColumns <= 0 && (env == EquationEnvironment.ALIGNAT || env == EquationEnvironment.ALIGNEDAT))
+    if (equationColumns <= 0
+                  && (env == EquationEnvironment.ALIGNAT || env == EquationEnvironment.ALIGNEDAT))
     {
       throw new IllegalArgumentException("You did not specifiy a valid number of columns (specified: "
-                    + equationColumns + ") for " + env.toString());
+                                         + equationColumns
+                                         + ") for "
+                                         + env.toString());
     }
     // ======
 
@@ -576,15 +583,21 @@ public final class Equation implements Texable
     int          n   = 1;
     if (useSubequations && outermost)
     {
-      ret.add(Latex.indent(n) + "\\begin{subequations}"
-                    + (label != null ? "\\label{" + LABEL_NAMESPACE + label + "}" : ""));
+      ret.add(Latex.indent(n)
+              + "\\begin{subequations}"
+              + (label != null ? "\\label{" + LABEL_NAMESPACE + label + "}" : ""));
       n++;
     }
 
     if ((env.mathModeOnly() && !outermost) || outermost)
     {
-      ret.add(Latex.indent(n) + "\\begin{" + env.toString() + (isStarred ? "*" : "") + "}"
-                    + (env.hasEquationColumns() ? "{" + equationColumns + "}" : "") + "%");
+      ret.add(Latex.indent(n)
+              + "\\begin{"
+              + env.toString()
+              + (isStarred ? "*" : "")
+              + "}"
+              + (env.hasEquationColumns() ? "{" + equationColumns + "}" : "")
+              + "%");
     }
 
     // ======
@@ -622,8 +635,8 @@ public final class Equation implements Texable
     int labelIndex = 0;
     for (int i = 0; i < input.size(); i++)
     {
-      boolean useLabel  = ((endLines.get(i) && i != input.size() - 1) || (i == input.size() - 1)) && label != null
-                    && !env.mathModeOnly();
+      boolean useLabel  = ((endLines.get(i) && i != input.size() - 1) || (i == input.size() - 1))
+                    && label != null && !env.mathModeOnly();
 
       Object  obj       = input.get(i);
       String  currLabel = "\\label{%s%s-%d}".formatted(LABEL_NAMESPACE, label, labelIndex);
@@ -655,7 +668,8 @@ public final class Equation implements Texable
         }
 
         ret.add(Latex.indent(n + 1) + s + spaceCorrection.get(i) + (useLabel ? currLabel : "")
-                      + (Boolean.TRUE.equals(endLines.get(i)) && i != input.size() - 1 ? "\\\\%" : ""));
+                      + (Boolean.TRUE.equals(endLines.get(i)) && i != input.size() - 1 ? "\\\\%"
+                                                                                       : ""));
 
         if (useLabel)
           labelIndex++;
