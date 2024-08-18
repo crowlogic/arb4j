@@ -22,7 +22,7 @@ import arb.functions.Function;
  * <pre>
  * Let jₙ (x) is the spherical Bessel function of the first kind,
  * 
- * jₙ (z) = √(π/(2z)) Jₙ₊½ (x) = (sin (z) Rₙ,½ (z) - cos (z) Rₙ₋₁,³/₂ (z))/z
+ * jₙ (z) = √(π/(2z)) Jₙ₊½ (x) = (sin(z) Rₙ,½(z) - cos(z) Rₙ₋₁,³/₂(z))/z
  * 
  * where Rₙ,ᵥ (z) are the (misnamed) Lommel polynomials
  * 
