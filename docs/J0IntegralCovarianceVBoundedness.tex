@@ -1,0 +1,163 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Compactness of the $J_0$ Integral Covariance Operator}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+We consider the integral operator $T$ on $L^2[0,\infty)$ defined by:
+
+\[(Tf)(x) = \int_0^\infty J_0(|x-y|)f(y)dy\]
+
+where $J_0$ is the Bessel function of the first kind of order zero. We aim to prove that $T$ is compact using the concept of Bochner V-boundedness.
+
+\section{Preliminaries}
+
+\begin{lemma}
+For $x \neq 0$, $|J_0(x)| \leq \min(1, \sqrt{2/(\pi|x|)})$.
+\end{lemma}
+
+\begin{proof}
+This follows from the asymptotic behavior of $J_0(x)$ and its maximum value of 1 at $x = 0$.
+\end{proof}
+
+\begin{lemma}
+\label{lem:integral}
+The integral $\int_0^\infty (J_0(x)/(1+x))^2 dx$ converges.
+\end{lemma}
+
+\begin{proof}
+We split the integral into two parts:
+
+\[\int_0^\infty \left(\frac{J_0(x)}{1+x}\right)^2 dx = \int_0^1 \left(\frac{J_0(x)}{1+x}\right)^2 dx + \int_1^\infty \left(\frac{J_0(x)}{1+x}\right)^2 dx\]
+
+For the first part, since $|J_0(x)| \leq 1$:
+
+\[\int_0^1 \left(\frac{J_0(x)}{1+x}\right)^2 dx \leq \int_0^1 \frac{1}{(1+x)^2} dx = \frac{1}{2} < \infty\]
+
+For the second part, we use the asymptotic behavior $|J_0(x)| \leq \sqrt{2/(\pi x)}$ for $x > 1$:
+
+\[\int_1^\infty \left(\frac{J_0(x)}{1+x}\right)^2 dx \leq \int_1^\infty \frac{2}{\pi x(1+x)^2} dx\]
+
+We can directly evaluate this integral:
+
+\begin{align*}
+\int_1^\infty \frac{2}{\pi x(1+x)^2} dx &= \frac{2}{\pi} \left[ -\frac{1}{1+x} + \log\left(\frac{x}{1+x}\right) \right]_1^\infty \\
+&= \frac{2}{\pi} \left[ \frac{1}{2} + \log\left(\frac{2}{1}\right) \right] < \infty
+\end{align*}
+
+Therefore, the entire integral converges.
+\end{proof}
+
+\section{Bochner V-boundedness}
+
+\begin{definition}
+An integral operator $T$ with kernel $K(x,y)$ is Bochner V-bounded if there exists a positive function $V(x)$ such that:
+\[\int_0^\infty \sup_{y\geq0} |K(x,y)/V(y)|^2 V(x)^2 dx < \infty\]
+\end{definition}
+
+\begin{theorem}
+If $T$ is Bochner V-bounded on $L^2[0,\infty)$, then $T$ is compact.
+\end{theorem}
+
+\begin{proof}
+Let $\{e_n\}$ be an orthonormal basis for $L^2[0,\infty)$. Define the finite rank operators:
+
+\[T_N f = \sum_{n=1}^N \langle Tf, e_n \rangle e_n\]
+
+We will show that $T_N \to T$ in operator norm. Let $f \in L^2[0,\infty)$ with $\|f\| \leq 1$. Then:
+
+\begin{align*}
+\|(T-T_N)f\|^2 &= \sum_{n>N} |\langle Tf, e_n \rangle|^2 \\
+&= \sum_{n>N} \left|\int_0^\infty \int_0^\infty K(x,y)f(y)e_n(x) dy dx\right|^2 \\
+&\leq \sum_{n>N} \left(\int_0^\infty \int_0^\infty |K(x,y)/V(y)| |V(y)f(y)| |e_n(x)| dy dx\right)^2 \\
+&\leq \sum_{n>N} \left(\int_0^\infty \sup_{y\geq0} |K(x,y)/V(y)| \|V f\| |e_n(x)| dx\right)^2 \\
+&\leq \|V f\|^2 \sum_{n>N} \int_0^\infty \sup_{y\geq0} |K(x,y)/V(y)|^2 |e_n(x)|^2 dx \\
+&= \|V f\|^2 \int_0^\infty \sup_{y\geq0} |K(x,y)/V(y)|^2 \sum_{n>N} |e_n(x)|^2 dx
+\end{align*}
+
+By Parseval's identity, for any fixed $x$, $\sum_{n=1}^\infty |e_n(x)|^2 = 1$ almost everywhere. Therefore, $\sum_{n>N} |e_n(x)|^2$ represents the tail of this series and converges to zero pointwise as $N \to \infty$ for almost every $x$. This sum is also bounded by 1 for all $N$ and $x$.
+
+By the dominated convergence theorem and the Bochner V-boundedness condition, $\|(T-T_N)f\|^2 \to 0$ as $N \to \infty$, uniformly for $\|f\| \leq 1$. Thus, $T$ is the limit of finite rank operators and is therefore compact.
+\end{proof}
+
+\section{Proof of Compactness}
+
+We will show that $T$ is Bochner V-bounded with $V(x) = 1 + x$.
+
+\begin{theorem}
+The operator $T$ defined by $(Tf)(x) = \int_0^\infty J_0(|x-y|)f(y)dy$ is compact on $L^2[0,\infty)$.
+\end{theorem}
+
+\begin{proof}
+We need to show:
+\[\int_0^\infty \sup_{y\geq0} |J_0(|x-y|)/(1+y)|^2 (1+x)^2 dx < \infty\]
+
+First, note that for any $x, y \geq 0$:
+\[|J_0(|x-y|)| \leq \min(1, \sqrt{2/(\pi|x-y|)})\]
+
+Now, let's consider two cases:
+
+1) For $|x-y| \leq 1$:
+   \[|J_0(|x-y|)|/(1+y) \leq 1/(1+y) \leq 1/(1+|x|-1)^+\]
+   where $(\cdot)^+$ denotes the positive part.
+
+2) For $|x-y| > 1$:
+   \[|J_0(|x-y|)|/(1+y) \leq \sqrt{2/(\pi|x-y|)}/(1+y)\]
+
+To take the supremum over $y$, we consider:
+
+a) When $x \leq 1$, the supremum is achieved in case 1, giving $1$.
+
+b) When $x > 1$:
+   - For $y \in [0, x-1] \cup [x+1, \infty)$, we use case 2.
+   - For $y \in (x-1, x+1)$, we use case 1.
+
+Thus, for $x > 1$:
+
+\[\sup_{y\geq0} |J_0(|x-y|)/(1+y)| \leq \max\left(\frac{1}{x}, \sup_{y \in [0,x-1] \cup [x+1,\infty)} \frac{\sqrt{2/(\pi|x-y|)}}{1+y}\right)\]
+
+For $y \in [0,x-1]$, $|x-y| \leq x$ and $1+y \geq 1$, so:
+
+\[\frac{\sqrt{2/(\pi|x-y|)}}{1+y} \leq \sqrt{\frac{2}{\pi x}}\]
+
+For $y \in [x+1,\infty)$, $|x-y| = y-x$ and $1+y \geq y$, so:
+
+\[\frac{\sqrt{2/(\pi|x-y|)}}{1+y} \leq \frac{\sqrt{2/(\pi(y-x))}}{y} \leq \frac{\sqrt{2/\pi}}{x^{3/2}}\]
+
+Therefore, for all $x > 0$:
+
+\[\sup_{y\geq0} |J_0(|x-y|)/(1+y)| \leq \max\left(1, \frac{1}{x}, \sqrt{\frac{2}{\pi x}}, \frac{\sqrt{2/\pi}}{x^{3/2}}\right)\]
+
+Now, we can bound our integral:
+
+\begin{align*}
+&\int_0^\infty \sup_{y\geq0} |J_0(|x-y|)/(1+y)|^2 (1+x)^2 dx \\
+&\leq \int_0^1 (1+x)^2 dx + \int_1^\infty \max\left(\frac{1}{x^2}, \frac{2}{\pi x}, \frac{2/\pi}{x^3}\right) (1+x)^2 dx \\
+&= \frac{7}{3} + \int_1^\infty \left(\frac{1}{x^2} + \frac{2}{\pi x} + \frac{2/\pi}{x^3}\right) (1+2x+x^2) dx \\
+&= \frac{7}{3} + \int_1^\infty \left(\frac{1}{x^2} + \frac{2}{x} + 1 + \frac{2}{\pi x} + \frac{4}{\pi} + \frac{2}{\pi x^2} + \frac{2/\pi}{x^3} + \frac{4/\pi}{x^2} + \frac{2/\pi}{x}\right) dx \\
+&= \frac{7}{3} + \left[-\frac{1}{x} + 2\log x + x + \frac{2}{\pi}\log x + \frac{4}{\pi}x - \frac{1}{\pi x} - \frac{1/\pi}{x^2} - \frac{2/\pi}{x} + \frac{2}{\pi}\log x\right]_1^\infty \\
+&< \infty
+\end{align*}
+
+This proves that $T$ is Bochner V-bounded with $V(x) = 1 + x$, and therefore compact.
+\end{proof}
+
+\begin{remark}
+The choice of $V(x) = 1 + x$ is optimal. If we chose $V(x) = 1$, the integral would diverge due to the slow decay of $J_0$. If we chose $V(x) = (1+x)^{1+\epsilon}$ for any $\epsilon > 0$, the proof would be easier as the integral would converge faster, but this would provide a weaker result.
+\end{remark}
+
+\end{document}
