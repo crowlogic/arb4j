@@ -776,7 +776,19 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     result.bits = bits;
     return result;
   }
-  
+
+  public ComplexRationalFunction
+         ascendingFactorial(Integer n, int bits, ComplexRationalFunction result)
+  {
+    try ( Real intermediateVariable = new Real())
+    {
+      getReal().ascendingFactorial(n, bits, intermediateVariable);
+      result.realPart.set(intermediateVariable);
+      result.imaginaryPart.zero();
+      return result;
+    }
+  }
+    
   public ComplexPolynomial ascendingFactorial(Integer n, int bits, ComplexPolynomial result)
   {
     result.set(1);   

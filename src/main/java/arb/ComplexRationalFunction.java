@@ -340,6 +340,12 @@ public class ComplexRationalFunction implements
                             null);
   }
 
+
+  public ComplexRationalFunction neg(int unusedBits, ComplexRationalFunction result)
+  {
+    return neg(result);
+  }
+  
   public ComplexRationalFunction neg(ComplexRationalFunction result)
   {
     realPart.neg(result.realPart);
