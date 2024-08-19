@@ -174,6 +174,17 @@ public class ComplexRationalFunction implements
     return result;
   }
 
+
+  public ComplexRationalFunction add(ComplexRationalFunction x, int prec)
+  {
+    return add(x, prec, this);
+  }
+  
+  public ComplexRationalFunction mul(ComplexRationalFunction x, int prec)
+  {
+    return mul(x, prec, this);
+  }
+
   @Override
   public ComplexRationalFunction
          mul(ComplexRationalFunction x, int prec, ComplexRationalFunction result)
@@ -340,12 +351,11 @@ public class ComplexRationalFunction implements
                             null);
   }
 
-
   public ComplexRationalFunction neg(int unusedBits, ComplexRationalFunction result)
   {
     return neg(result);
   }
-  
+
   public ComplexRationalFunction neg(ComplexRationalFunction result)
   {
     realPart.neg(result.realPart);
@@ -404,7 +414,6 @@ public class ComplexRationalFunction implements
     return neg(this);
   }
 
-
   public ComplexRationalFunction add(Fraction operand, int prec, ComplexRationalFunction result)
   {
     // assert false : String.format("this=%s + operand=%s", this, operand);
@@ -422,7 +431,7 @@ public class ComplexRationalFunction implements
   public ComplexRationalFunction mul(Real real, int prec, ComplexRationalFunction res)
   {
     res.set(this);
-    res.realPart.mul(real,prec,res.realPart);
+    res.realPart.mul(real, prec, res.realPart);
     return res;
   }
 }

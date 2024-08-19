@@ -741,7 +741,7 @@ import arb.space.topological.EuclideanVectorSpace;
   {
     return getReal().getAllocatedBytes() + getImag().getAllocatedBytes();
   }
-  
+
   public Complex ascendingFactorial(Integer power, int bits, Complex result)
   {
     assert power.getSignedValue() >= 0 : "power must be nonnegative";
@@ -751,15 +751,14 @@ import arb.space.topological.EuclideanVectorSpace;
     result.bits = bits;
     return result;
   }
-
+    
   public ComplexRationalFunction
          ascendingFactorial(Integer n, int bits, ComplexRationalFunction result)
   {
-    try ( Real intermediateVariable = new Real())
+    try ( Complex intermediateVariable = new Complex())
     {
-      getReal().ascendingFactorial(n, bits, intermediateVariable);
-      result.realPart.set(intermediateVariable);
-      result.imaginaryPart.zero();
+      ascendingFactorial(n, bits, intermediateVariable);
+      result.set(intermediateVariable);
       return result;
     }
   }
