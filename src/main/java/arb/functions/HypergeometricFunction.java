@@ -176,6 +176,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
     initializeContext();
 
     compile(elementType, nullaryFunctionType, arg);
+    assert paramType.equals(this.α.getClass()) : String.format("paramType=%s != alpha.class=%s\n", paramType, this.α.getClass());
 
     return this;
   }
