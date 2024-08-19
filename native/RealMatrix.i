@@ -674,12 +674,12 @@ import arb.algebra.Ring;
     assert isSquare() : "diag() is not well-defined for non-square matrices";
     if (diagonal == null || diagonal.size() != getNumRows())
     {
-      if ( diagonal != null )
+      if (diagonal != null)
       {
         diagonal.close();
       }
       diagonal = Real.newVector(getNumRows());
-      IntStream.range(0, getNumCols()).forEach(i -> diagonal.set(i, get(i, i)));
+      IntStream.range(0, getNumCols()).forEach(i -> diagonal.set(i,get(i, i)));
     }
     return diagonal;
   }

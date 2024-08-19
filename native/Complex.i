@@ -67,8 +67,10 @@ import arb.space.topological.EuclideanVectorSpace;
   @Override
   public Complex set(Fraction val)
   {
-    assert false : "TODO";
-    return null;
+    assert dim == 1 : "TODO: support >1 dimensions";  
+    getReal().set(val);
+    getImag().zero();
+    return this;
   }
     
  /**

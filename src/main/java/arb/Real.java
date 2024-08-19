@@ -1249,26 +1249,42 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     return res;
   }
 
+  
   /**
-   * Calls {@link arblib#flint_realloc(SWIGTYPE_p_void, long)} and also allocate a
-   * new this{@link #elements} array and copy the contents from the existing one
-   * if any
+   * Directly sets the i-th element of the elements, that is, replaces the references
+   * rather than setting the value to the Real currently referenced at the specified index
+   */
+  public Real set(int index, Real element )
+  {
+    assert index < dim : String.format("index = %d >= dim = %d", index, dim);
+    if (index == 0 && dim == 1)
+    {
+      return set(element);
+    }
+    return elements[index] = element;
+  }  
+   
+  /**
+   * Sets the dimension of this as an array (a contiguous array of pointers to
+   * {@link Real}s, copying the contents as well since almost always the newly
+   * allocated location will be in a different portion of the heap
    * 
    * @param alloc
    * @return this
    */
   public Real resize(int alloc)
   {
-    swigCPtr = SWIGTYPE_p_void.getCPtr(arblib.flint_realloc(new SWIGTYPE_p_void(swigCPtr,
-                                                                                false),
-                                                            2 * (long) alloc * Real.BYTES));
-    Real newElements[] = new Real[alloc];
-    if (elements != null)
+    if (alloc == dim)
     {
-      System.arraycopy(elements, 0, newElements, 0, Math.min(alloc, dim));
+      return this;
     }
-    this.dim = alloc;
-    elements = newElements;
+    Real newLocation = Real.newVector(alloc).setName(name);
+    int  nd          = Math.min(size(), newLocation.size());
+    for (int i = 0; i < nd; i++)
+    {
+      newLocation.get(i).set(get(i));
+    }
+    become(newLocation);
     return this;
   }
 
@@ -1794,17 +1810,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     }
     return element;
   }
-  
-  public Real set(int index, Real element )
-  {
-    assert index < dim : String.format("index = %d >= dim = %d", index, dim);
-    if (index == 0 && dim == 1)
-    {
-      return set(element);
-    }
-    return elements[index] = element;
-  }  
-   
+
   public String toFixedString()
   {
     StringBuilder sb = new StringBuilder();

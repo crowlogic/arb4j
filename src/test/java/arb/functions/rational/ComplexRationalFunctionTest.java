@@ -181,7 +181,7 @@ public class ComplexRationalFunctionTest extends
     try
     {
       var context   = new Context();
-      var expressed = ComplexRationalFunction.express("pFq([-2,3+1/2,1],[2,4],1/2-x/2)");
+      var expressed = ComplexRationalFunction.express("pFq([-2,3+1/2,1],[2,4],½-x/2)");
       ComplexRationalFunction.express("a:1", context);
       ComplexRationalFunction.express("b:-⅞*(½ - x/2)", context);
       ComplexRationalFunction.express("c:21/80*(½ - x/2)²", context);

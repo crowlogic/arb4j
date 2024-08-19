@@ -97,8 +97,24 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
                                               Expression<Object, C, N> arg)
   {
     this.paramType = paramType;
-    this.α         = (P) Real.newVector(alpha.dim());
-    this.β         = (P) Real.newVector(beta.dim());
+    if (paramType.equals(Complex.class))
+    {
+      this.α = (P) Complex.newVector(alpha.dim());
+      this.β = (P) Complex.newVector(beta.dim());
+    }
+    else if (paramType.equals(Real.class))
+
+    {
+      this.α = (P) Real.newVector(alpha.dim());
+      this.β = (P) Real.newVector(beta.dim());
+    }
+    else
+    {
+      throw new UnsupportedOperationException("TODO: handle paramType="
+                                              + paramType
+                                              + " and setting values from "
+                                              + alpha.getClass());
+    }
     this.α.set(alpha);
     this.β.set(beta);
     System.out.format("α=%s\nβ=%s\nalpha=%s\nbeta=%s\n", α, β, alpha, beta);

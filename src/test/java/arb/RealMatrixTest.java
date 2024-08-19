@@ -72,7 +72,10 @@ public class RealMatrixTest extends
     IntStream.range(0, n).forEach(i -> diag.get(i).set(i + 1));
     IntStream.range(0, n)
              .forEach(i -> IntStream.range(0, n)
-                                    .forEach(j -> assertTrue(A.get(i, j)
+                                    .forEach(j -> assertTrue(diag.get(i).toString()
+                                                             + " hmm "
+                                                             + A.get(i, j),
+                                                             A.get(i, j)
                                                               .equals(i == j ? diag.get(i)
                                                                              : RealConstants.zero))));
   }

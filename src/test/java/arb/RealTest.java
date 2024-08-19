@@ -1,6 +1,7 @@
 package arb;
 
 import static arb.RealConstants.one;
+import static java.lang.System.out;
 
 import java.lang.foreign.Arena;
 
@@ -14,10 +15,25 @@ import junit.framework.TestCase;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealTest
-                      extends
+public class RealTest extends
                       TestCase
 {
+
+  public static void testResize()
+  {
+    try ( Real x = new Real().set("3.4", 128); var origx = new Real().set(x);)
+
+    {
+
+      x.resize(3);
+      Real x1     = x.get(1);
+      var  newval = new Real("6.9",
+                             128);
+      x1.set(newval);
+      assertEquals(x.get(1), newval);
+      assertEquals(x.toString(), origx, x.get(0));
+    }
+  }
 
   public static void testSetFractionWithArena()
   {
@@ -33,11 +49,13 @@ public class RealTest
 
   public static void testSetFraction()
   {
-    Real     r = new Real();
-    Fraction f = new Fraction();
-    f.set("10/43");
-    r.set(f);
-    assertEquals(0.23255813953488372093, r.doubleValue());
+    try ( Real r = new Real())
+    {
+      Fraction f = new Fraction();
+      f.set("10/43");
+      r.set(f);
+      assertEquals(0.23255813953488372093, r.doubleValue());
+    }
   }
 
   public static void testVectorAddViaExpressionToString()

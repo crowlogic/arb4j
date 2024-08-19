@@ -3,7 +3,6 @@ package arb.functions.sequences;
 import java.util.function.IntFunction;
 
 import arb.Integer;
-import arb.RationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;

@@ -5,16 +5,12 @@ import static arb.expressions.Compiler.loadInputParameter;
 import static arb.expressions.Compiler.loadResultParameter;
 import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Type;
-
 import arb.Complex;
 import arb.Fraction;
 import arb.Integer;

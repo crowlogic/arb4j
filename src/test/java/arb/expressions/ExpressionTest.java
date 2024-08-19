@@ -22,14 +22,13 @@ import junit.framework.TestCase;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ExpressionTest
-                            extends
+public class ExpressionTest extends
                             TestCase
 {
 
   public void testBinomialCoefficient()
   {
-    IntegerFunction f   = IntegerFunction.express("ℭ(5,n)");
+    IntegerFunction f            = IntegerFunction.express("ℭ(5,n)");
     Integer         permutations = f.eval(3);
     assertEquals(10, permutations.getSignedValue());
   }
@@ -89,27 +88,31 @@ public class ExpressionTest
 
   public void testSubstitutionToo()
   {
-    Context context               = new Context();
+    Context context = new Context();
     context.registerVariable("p", new Integer(3));
     context.registerVariable("q", new Integer(2));
-    var     F                     = RealPolynomialNullaryFunction.parse("F",
-                                                                        "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
-                                                                        context);
-    var     transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
-    assertEquals("Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}", transformedExpression.toString());
+    var F                     =
+          RealPolynomialNullaryFunction.parse("F",
+                                              "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
+                                              context);
+    var transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
+    assertEquals("Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}",
+                 transformedExpression.toString());
   }
-  
+
   public void testSubstitutionToo2()
   {
-    Context context               = new Context();
+    Context context = new Context();
     context.registerVariable("p", new Integer(3));
     context.registerVariable("q", new Integer(2));
     context.registerVariable("N", new Integer(3));
-    var     F                     = RealPolynomialNullaryFunction.parse("F",
-                                                                        "n➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
-                                                                        context);
-    var     transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
-    assertEquals("Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}", transformedExpression.toString());
+    var F                     =
+          RealPolynomialNullaryFunction.parse("F",
+                                              "n➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
+                                              context);
+    var transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
+    assertEquals("Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}",
+                 transformedExpression.toString());
   }
 
   public void testSubstitution()
@@ -171,7 +174,11 @@ public class ExpressionTest
     try ( Real λ = new Real())
     {
       Context                 context  = new Context(λ.setName("λ").set("3.5", 128));
-      Function<Integer, Real> f        = Function.express(Integer.class, Real.class, "n➔(λ*2)₍ₙ₎/(λ+½)₍ₙ₎", context);
+      Function<Integer,
+                    Real>     f        = Function.express(Integer.class,
+                                                          Real.class,
+                                                          "n➔(λ*2)₍ₙ₎/(λ+½)₍ₙ₎",
+                                                          context);
       Integer                 in       = new Integer(4);
       Real                    evaluate = f.evaluate(in, 128, new Real());
       assertEquals(6.0, evaluate.doubleValue());
@@ -239,7 +246,7 @@ public class ExpressionTest
     Real         α       = Real.newVector(3);
     Context      context = new Context(α.setName("α"));
     RealFunction f       = RealFunction.express("α[1]*t", context);
-    α.set(0, RealConstants.π);
+    α.get(0).set(RealConstants.π);
     Real twoPi = f.evaluate(RealConstants.two, 128, new Real());
     assertTrue(RealConstants.twoπ.approximatelyEquals(twoPi, 257));
   }
@@ -254,7 +261,7 @@ public class ExpressionTest
     Real         α       = Real.newVector(3);
     Context      context = new Context(α.setName("α"));
     RealFunction f       = RealFunction.express("α₁*t", context);
-    α.set(0, RealConstants.π);
+    α.get(0).set(RealConstants.π);
     Real twoPi = f.evaluate(RealConstants.two, 128, new Real());
     assertTrue(RealConstants.twoπ.approximatelyEquals(twoPi, 257));
   }
