@@ -8,7 +8,10 @@
 
 package arb;
 
-import static arb.IntegerConstants.*;
+import static arb.IntegerConstants.ARB_RND;
+import static arb.IntegerConstants.ARF_RND_UP;
+import static arb.IntegerConstants.MAG_BITS;
+import static arb.IntegerConstants.PAGESIZE;
 import static arb.RealConstants.zero;
 import static arb.arblib.*;
 
@@ -29,7 +32,6 @@ import java.util.stream.StreamSupport;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
-import arb.stochastic.ProbabilityDistributionFunction;
 import arb.utensils.Utensils; 
 
 /**
