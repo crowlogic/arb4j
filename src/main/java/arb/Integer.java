@@ -28,6 +28,11 @@ import arb.documentation.TheArb4jLibrary;
 public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer>, Named
 {
 
+  public Fraction sub( Integer subtrahend, int prec, Fraction result )
+  {
+    return result.set(this).sub(subtrahend,prec,result);
+  }
+  
   public ComplexRationalFunction neg( ComplexRationalFunction result )
   {
     return result.set(this).neg();
