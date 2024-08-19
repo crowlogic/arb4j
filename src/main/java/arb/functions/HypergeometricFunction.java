@@ -3,93 +3,23 @@ package arb.functions;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
-import arb.*;
+import arb.Complex;
+import arb.Fraction;
 import arb.Integer;
+import arb.NamedRing;
+import arb.Real;
+import arb.Verifiable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ArbException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.expressions.nodes.unary.HypergeometricFunctionNode;
 
 /**
- * Represents a hypergeometric {@link Real}-valued {@link Polynomial}, that is,
- * a {@link RealPolynomial}, defined by a finite hypergeometric series as <br>
+ * Represents a finite hypergeometric series as <br>
  * <br>
  * pFq:Σn➔zⁿ*∏k➔αₖ₍ₙ₎{k=1…p}/(n!*∏k➔βₖ₍ₙ₎{k=1…q}){n=0…N} <br>
  * <br>
- * 
- * This class encapsulates the computation and representation of hypergeometric
- * polynomials, which are derived from the general hypergeometric series when
- * the existence of a negative integer in the numerator leads to its completion
- * after a finite number of terms.
- * <p>
- * A hypergeometric series is finite and simplifies into a {@link Polynomial}
- * when at least one of its upper parameters (α) is a negative {@link Integer}.
- * This condition ensures that the series has a finite number of non-zero terms,
- * making it possible to represent the series as a polynomial of finite degree.
- * </p>
- * <p>
- * The implementation uses parameters p and q, which are the dimensions of the
- * vectors α and β, respectively. These parameters, along with the vectors
- * themselves, define the hypergeometric series.<br>
- * <br>
- * 
- * The notation x₍n₎ represents the n-th
- * {@link Real#ascendingFactorial(long, int, Real)} of x. <br>
- * <br>
- * 
- * The series is evaluated up to a specific order N, determined by the smallest
- * non-positive integer in α, ensuring the series is finite. This class provides
- * methods to initialize the polynomial, verify the finiteness condition, and
- * evaluate the polynomial, encapsulating the complexity of handling
- * hypergeometric functions in a computational context.
- * </p>
- * 
- * Note regarding parameters: hypergeometric functions can indeed have
- * complex-valued parameters and parameters that depend on the argument.
- * 
- * 1. Complex-valued parameters: Hypergeometric functions can absolutely have
- * complex-valued parameters. In fact, this is quite common in various
- * applications in physics and mathematics. For example, the general
- * hypergeometric function ₂F₁(a,b;c;z) can have complex values for a, b, and c.
- * 
- * 2. Parameters depending on the argument: This is a bit more nuanced. In the
- * classical definition of hypergeometric functions, the parameters are
- * typically constant. However, there are generalizations and related functions
- * where the parameters can depend on the argument:
- * 
- * a) Generalized hypergeometric functions: These can sometimes be defined with
- * parameters that are functions of the argument.
- * 
- * b) q-Hypergeometric functions: These are q-analogs of hypergeometric
- * functions where q can sometimes be a function of the argument.
- * 
- * c) Meijer G-functions and Fox H-functions: These are generalizations of
- * hypergeometric functions that can have more flexible parameter structures.
- * 
- * d) Differential equations: When hypergeometric functions are considered as
- * solutions to differential equations, the coefficients of the equation (which
- * relate to the parameters of the function) can sometimes depend on the
- * independent variable.
- * 
- * However, it's important to note that when we allow parameters to depend on
- * the argument, we're often moving beyond the classical definition of
- * hypergeometric functions and into more general classes of special functions.
- * 
- * In computational implementations, allowing parameters to depend on the
- * argument would require careful consideration of how this dependency is
- * expressed and evaluated, as it could significantly complicate the algorithms
- * for computing these functions.
- * 
- * For most standard libraries and implementations, hypergeometric functions are
- * typically defined with constant (though possibly complex) parameters. If you
- * need functions with argument-dependent parameters, you might need to
- * construct these as composite functions or use more general frameworks for
- * special functions.
- * 
- * All that being said, for now, just throw an exception if
- * {@link HypergeometricFunctionNode#dependsOnInput}
  * 
  * @param <P> the type of the numerator and denominator parameters
  * @param <C> the type of the codomain of this {@link NullaryFunction}
@@ -176,7 +106,9 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
     initializeContext();
 
     compile(elementType, nullaryFunctionType, arg);
-    assert paramType.equals(this.α.getClass()) : String.format("paramType=%s != alpha.class=%s\n", paramType, this.α.getClass());
+    assert paramType.equals(this.α.getClass()) : String.format("paramType=%s != alpha.class=%s\n",
+                                                               paramType,
+                                                               this.α.getClass());
 
     return this;
   }
