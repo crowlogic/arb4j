@@ -105,20 +105,6 @@ import arb.utensils.Utensils;
  * also implements multiple interfaces that give it capabilities like being 
  * part of a vector space, being lockable, and having a serializable representation.
  *
- * It also incorporates several mathematical operations like addition,
- * subtraction, multiplication, division, trigonometric operations, and complex
- * operations, along with utility operations like hashing, comparison,
- * normalization, covariance calculations, etc. It also handles uncertainties
- * and precision.
- *
- * The {@link Real} class provides the ability to generate random real numbers based on a
- * probability distribution function, calculate logarithmic values, manage the
- * variance and standard deviation, among other operations. It allows operations
- * at different levels of precision controlled by integer values.
- *
- * The class can also be resized and has several static functions to create new
- * instances.
- *
  * Instances of this class can be locked and unlocked; this means that by calling the 
  * this{@link #lock()} method, the region of memory pointed to this{@link #swigCPtr} will be marked
  * read-only at the kernel level by using the POSIX {@link arblib#mprotect(SWIGTYPE_p_void, long, int)}
@@ -486,7 +472,12 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     result.bits = bits;
     return result;
   }
-  
+
+  public Real sub(Fraction element, int prec)
+  {
+    return sub(element, prec);
+  }
+    
   public RealPolynomial div(Real divisor, int bits, RealPolynomial result)
   {
     result.bits = bits;
@@ -972,55 +963,10 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     this.swigCPtr    = 0;
     return this;
   }
-    
-  public Real normalize(int prec)
-  {
-    return normalize(prec,this);
-  }
   
-  /**
-   * Divides the elements of this by the standard deviation
-   * 
-   * @param prec
-   * @param result
-   * @return this / this{@link #standardDeviation(int, Real)}
-   */
-  public Real normalize(int prec, Real result)
-  {
-    try ( Real σ = standardDeviation(prec, new Real() ))
-    {
-      for (int i = 0; i < dim; i++)
-      {
-        get(i).div(σ, prec, result.get(i));
-      }
-      return result;
-    }
-  }
-
   public boolean equals( int i )
   {
     return arblib.arb_equal_si(this, i) != 0;
-  }
-  
-  /*
-   * The covariance of x and y is Σ(x[i]-x̄)*(y[i]-ȳ),i=1..dim) where x̄ denotes 
-   * the this{@link #mean(int, Field)}
-   * 
-   * @param that
-   * @param prec
-   * @param res
-   * @return the covariance of this and that
-   */
-  public Real covariance(Real that, int prec, Real res)
-  {
-    assert dim == that.dim;
-    try ( Real a = mean(prec, new Real()); 
-          Real b = that.mean(prec, new Real());
-          Real aCentered = subScalar(a, prec, Real.newVector(dim));
-          Real bCentered = that.subScalar(b, prec, Real.newVector(dim)))
-    {
-      return aCentered.dotProduct(bCentered, prec, res).div(dim, prec);
-    }
   }
   
   /**

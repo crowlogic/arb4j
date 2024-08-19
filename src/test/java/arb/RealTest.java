@@ -1,7 +1,6 @@
 package arb;
 
 import static arb.RealConstants.one;
-import static java.lang.System.out;
 
 import java.lang.foreign.Arena;
 
@@ -307,31 +306,6 @@ public class RealTest extends
         assertEquals(expectedDotProduct, result);
       }
     }
-  }
-
-  public static void testCovariance()
-  {
-    Real r = Real.newVector(3);
-    r.get(0).set("1.3", prec);
-    r.get(1).set("2.3", prec);
-    r.get(2).set("3.3", prec);
-    Real sumOfrSquares = r.covariance(r, prec, new Real());
-    assertEquals(0.66666666666666666667, sumOfrSquares.doubleValue(), Math.pow(10, -20));
-  }
-
-  public static void testCovariance2()
-  {
-    Real r = Real.newVector(3);
-    r.get(0).set("1", prec);
-    r.get(1).set("2", prec);
-    r.get(2).set("3", prec);
-    Real p = Real.newVector(3);
-    p.get(0).set("4", prec);
-    p.get(1).set("5", prec);
-    p.get(2).set("6", prec);
-    Real sumOfrSquares = r.covariance(p, prec, new Real());
-    assertEquals(0.66666666666666666667, sumOfrSquares.doubleValue(), Math.pow(10, -20));
-
   }
 
   public static void testVecScalarSub()
