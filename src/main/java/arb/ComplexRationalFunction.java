@@ -326,8 +326,40 @@ public class ComplexRationalFunction implements
   public ComplexFraction
          evaluate(ComplexFraction input, int order, int bits, ComplexFraction output)
   {
-    assert false : "TODO: implement (z) = \\frac{(r(z)s(z) + q(z)t(z)) + (q(z)s(z) -\n"
-                  + "   * r(z)t(z))i}{s(z)^2 + t(z)^2}";
+    assert false : "TODO: Let's verify the mathematical formulation given in your comment for evaluating a complex rational function, focusing on whether it is correctly derived and if it will function as intended based on the rules of complex arithmetic.\n"
+                   + "\n"
+                   + "### Formula for Complex Division\n"
+                   + "The formula you've provided for complex division is standard and correct:\n"
+                   + "\\[ \\frac{a+bi}{c+di} = \\frac{(a+bi)(c-di)}{(c+di)(c-di)} = \\frac{(ac+bd) + (bc-ad)i}{c^2+d^2} \\]\n"
+                   + "\n"
+                   + "### Applying the Formula to the General Form\n"
+                   + "Given:\n"
+                   + "\\[ P(z) = r(z) + i \\cdot q(z) \\]\n"
+                   + "\\[ Q(z) = s(z) + i \\cdot t(z) \\]\n"
+                   + "\n"
+                   + "**Steps to Follow:**\n"
+                   + "\n"
+                   + "1. **Multiplication of \\( P(z) \\) by the Conjugate of \\( Q(z) \\):**\n"
+                   + "\\[ (r(z) + i \\cdot q(z))(s(z) - i \\cdot t(z)) = r(z)s(z) + q(z)t(z) + i(q(z)s(z) - r(z)t(z)) \\]\n"
+                   + "\n"
+                   + "This step expands correctly according to the distribution (FOIL method) in complex numbers, handling the imaginary unit \\( i \\) correctly by recognizing \\( i^2 = -1 \\).\n"
+                   + "\n"
+                   + "2. **Multiplication of \\( Q(z) \\) by Its Own Conjugate:**\n"
+                   + "\\[ (s(z) + i \\cdot t(z))(s(z) - i \\cdot t(z)) = s(z)^2 + t(z)^2 \\]\n"
+                   + "\n"
+                   + "Again, this is a standard operation to eliminate the imaginary part, leading to a real number which serves as the denominator in the division operation.\n"
+                   + "\n"
+                   + "3. **Forming the Quotient:**\n"
+                   + "\\[ f(z) = \\frac{r(z)s(z) + q(z)t(z) + i(q(z)s(z) - r(z)t(z))}{s(z)^2 + t(z)^2} \\]\n"
+                   + "\n"
+                   + "The final quotient formation aligns correctly with the complex division rules. It ensures that the real parts are summed and the imaginary parts are subtracted appropriately, then divided by the magnitude squared of the complex denominator.\n"
+                   + "\n"
+                   + "### Conclusion: Verification of Correctness\n"
+                   + "The method and formula given in your comment are mathematically sound for evaluating a complex rational function. The outlined steps correctly compute the division of two complex functions formed by rational functions, ensuring that both the real and imaginary parts are handled appropriately according to the complex arithmetic rules.\n"
+                   + "\n"
+                   + "This analysis confirms the correctness of the proposed implementation for the `evaluate` method based on the mathematical principles of complex numbers. It should work effectively for any inputs where \\( r(z), q(z), s(z), t(z) \\) are rational functions, provided the denominator \\( s(z)^2 + t(z)^2 \\) does not equal zero (to avoid division by zero errors).\n"
+                   + "\n"
+                   + "If there are specific cases or additional considerations you'd like to discuss or analyze further, please let me know!";
 
     return output;
   }

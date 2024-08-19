@@ -35,7 +35,7 @@ public class ComplexRationalFunctionTest extends
 
   }
 
-  public void testLommelPolynomials()
+  public void testComplexRationalLommelPolynomials()
   {
     var context = new Context();
     context.registerVariable("v", RealConstants.half);
