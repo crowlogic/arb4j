@@ -67,7 +67,10 @@ import arb.space.topological.EuclideanVectorSpace;
   @Override
   public Complex set(Fraction val)
   {
-    assert dim == 1 : "TODO: support >1 dimensions";  
+    if ( dim != val.dim )
+    {
+      resize(val.dim);
+    }
     getReal().set(val);
     getImag().zero();
     return this;
@@ -1321,31 +1324,81 @@ import arb.space.topological.EuclideanVectorSpace;
   }
   
   Real real;
-
-  public Real getReal()
+  
+ public Real getReal()
   {
-    if (real != null)
+    if (dim == 1)
     {
-      return real;
+      if (real != null)
+      {
+        return real;
+      }
+      else
+      {
+        return real = getRealObj();
+      }
     }
     else
     {
-      return real = getRealObj();
+      boolean needsInitialization = false;
+      if (real == null)
+      {
+        real                = Real.newAlignedVector(dim);
+        needsInitialization = true;
+      }
+      if (dim != real.dim)
+      {
+        real.resize(dim);
+        needsInitialization = true;
+      }
+      if (needsInitialization)
+      {
+        for (int i = 0; i < dim; i++)
+        {
+          real.set(i, get(i).getReal());
+        }
+      }
     }
+    return real;
   }
 
   Real imag;
 
   public Real getImag()
   {
-    if (imag != null)
+    if (dim == 1)
     {
-      return imag;
+      if (imag != null)
+      {
+        return imag;
+      }
+      else
+      {
+        return imag = getImagObj();
+      }
     }
     else
     {
-      return imag = getImagObj();
+      boolean needsInitialization = false;
+      if (imag == null)
+      {
+        imag                = Real.newVector(dim);
+        needsInitialization = true;
+      }
+      if (dim != imag.dim)
+      {
+        imag.resize(dim);
+        needsInitialization = true;
+      }
+      if (needsInitialization)
+      {
+        for (int i = 0; i < dim; i++)
+        {
+          imag.set(i, get(i).getImag());
+        }
+      }
     }
+    return imag;
   }
 
   /**
