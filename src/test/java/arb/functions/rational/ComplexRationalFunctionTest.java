@@ -1,5 +1,7 @@
 package arb.functions.rational;
 
+import static java.lang.System.out;
+
 import arb.ComplexFraction;
 import arb.ComplexRationalFunction;
 import arb.RealConstants;
@@ -63,7 +65,9 @@ public class ComplexRationalFunctionTest extends
     ComplexRationalFunction expressed = seq.evaluate(0, 128);
     assertEquals("1 + 0i", expressed.toString());
     seq.evaluate(1, 128, expressed);
+    System.out.println("ff " + expressed.toString());
     assertEquals("(-x+1)/2 + 0i", expressed.toString());
+                  
     seq.evaluate(2, 128, expressed);
     assertEquals("(x^2-2*x+1)/4 + 0i", expressed.toString());
     seq.evaluate(3, 128, expressed);
@@ -96,7 +100,8 @@ public class ComplexRationalFunctionTest extends
   public void testXToThePowerOfNegativeOne()
   {
     ComplexRationalFunction expressed = ComplexRationalFunction.express("x^(-1)");
-    assertEquals("1/(x) + 0i", expressed.toString());
+    String string = expressed.toString();
+    assertEquals("1/(x) + 0i", string);
   }
 
   public void testXSquaredToThePowerOfNegativeOne()

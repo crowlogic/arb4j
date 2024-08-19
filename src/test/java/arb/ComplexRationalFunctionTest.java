@@ -58,7 +58,17 @@ public class ComplexRationalFunctionTest extends
     a.add(b, prec, result);
     assertEquals("4 + 6i", result.toString());
   }
-  
+
+  public void testAddWithNegativeImaginary()
+  {
+    a.realPart.set(1);
+    a.imaginaryPart.set(-2);
+    b.realPart.set(3);
+    b.imaginaryPart.set(4);
+    a.add(b, prec, result);
+    assertEquals("4 + 2i", result.toString());
+  }
+
   public void testAddInteger()
   {
     a.realPart.set(1);
@@ -78,6 +88,16 @@ public class ComplexRationalFunctionTest extends
     assertEquals("3 + 4i", result.toString());
   }
 
+  public void testSubWithNegativeImaginary()
+  {
+    a.realPart.set(5);
+    a.imaginaryPart.set(-7);
+    b.realPart.set(2);
+    b.imaginaryPart.set(3);
+    a.sub(b, prec, result);
+    assertEquals("3 + (-10)i", result.toString());
+  }
+
   public void testMul()
   {
     a.realPart.set(1);
@@ -86,6 +106,16 @@ public class ComplexRationalFunctionTest extends
     b.imaginaryPart.set(4);
     a.mul(b, prec, result);
     assertEquals("-5 + 10i", result.toString());
+  }
+
+  public void testMulWithNegativeImaginary()
+  {
+    a.realPart.set(1);
+    a.imaginaryPart.set(-2);
+    b.realPart.set(3);
+    b.imaginaryPart.set(4);
+    a.mul(b, prec, result);
+    assertEquals("11 + (-2)i", result.toString());
   }
 
   public void testDiv()
@@ -102,6 +132,23 @@ public class ComplexRationalFunctionTest extends
     assertTrue(result.imaginaryPart.evaluate(new Fraction(), 0, prec, new Fraction())
                                    .equals(new Fraction(2,
                                                         25)));
+  }
+
+  public void testDivWithNegativeImaginary()
+  {
+    a.realPart.set(1);
+    a.imaginaryPart.set(-2);
+    b.realPart.set(3);
+    b.imaginaryPart.set(4);
+    a.div(b, prec, result);
+    assertEquals("-1/5 + (-2/5)i", result.toString() );
+//    // The exact result should be (5 - 10i) / 25
+//    assertEquals(result.realPart.evaluate(new Fraction(), 0, prec, new Fraction()),
+//                 (new Fraction(5,
+//                               25)));
+//    assertEquals(result.imaginaryPart.evaluate(new Fraction(), 0, prec, new Fraction()),
+//                 (new Fraction(-10,
+//                               25)));
   }
 
   public void testMulInt()
@@ -127,11 +174,30 @@ public class ComplexRationalFunctionTest extends
     ComplexFraction input = new ComplexFraction();
     input.realPart.set(2);
     input.imaginaryPart.set(1);
+    
     ComplexFraction output = new ComplexFraction();
     a.evaluate(input, 0, prec, output);
+    System.out.format("%s @ x=%s = %s\n", a, input, output );
     assertEquals(2, output.realPart.getNumerator().getSignedValue());
     assertEquals(1, output.realPart.getDenominator().getSignedValue());
     assertEquals(2, output.imaginaryPart.getNumerator().getSignedValue());
+    assertEquals(1, output.imaginaryPart.getDenominator().getSignedValue());
+  }
+
+  public void testEvaluateWithNegativeImaginary()
+  {
+    
+    a.realPart.set("x + 1");
+    a.imaginaryPart.set("1-x");
+    ComplexFraction input = new ComplexFraction();
+    input.realPart.set(2);
+    input.imaginaryPart.set(-1);
+    ComplexFraction output = new ComplexFraction();
+    a.evaluate(input, 0, prec, output);
+    //System.out.format("%s with x=%s = %s\n", a, input, output);
+    assertEquals(2, output.realPart.getNumerator().getSignedValue());
+    assertEquals(1, output.realPart.getDenominator().getSignedValue());
+    assertEquals(-2, output.imaginaryPart.getNumerator().getSignedValue());
     assertEquals(1, output.imaginaryPart.getDenominator().getSignedValue());
   }
 
@@ -145,5 +211,12 @@ public class ComplexRationalFunctionTest extends
     a.realPart.set(1);
     a.imaginaryPart.set(2);
     assertEquals("1 + 2i", a.toString());
+  }
+
+  public void testToStringWithNegativeImaginary()
+  {
+    a.realPart.set(1);
+    a.imaginaryPart.set(-2);
+    assertEquals("1 + (-2)i", a.toString());
   }
 }

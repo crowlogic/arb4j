@@ -368,4 +368,10 @@ public class ComplexFraction implements
     return this;
   }
 
+  public ComplexFraction conjugate()
+  {
+    imaginaryPart.neg();
+    return this;
+  }
+
 }
