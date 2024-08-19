@@ -171,7 +171,8 @@ public class ComplexRationalFunctionTest extends
     ComplexRationalFunction.express("b:-⅞*(½ - x/2)", context);
     ComplexRationalFunction.express("c:21/80*(½ - x/2)²", context);
     ComplexRationalFunction expectedSum = ComplexRationalFunction.express("a()+b()+c()", context);
-    assertEquals("(21*x^2+98*x+201)/320", expressed.toString());
+    System.out.println(expressed.toString());
+    assertEquals("(21*x^2+98*x+201)/320 + 0i", expressed.toString());
     assertEquals(expectedSum, expressed);
   }
 

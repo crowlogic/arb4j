@@ -215,7 +215,12 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
   {
     return result.set(this).add(real,bits,result);
   }
-      
+
+  public ComplexRationalFunction mul(ComplexRationalFunction that, int bits, ComplexRationalFunction result)
+  {
+    return result.set(this).mul(that,bits,result);
+  }
+        
   public RationalFunction mul(RationalFunction that, int bits, RationalFunction result)
   {
     return result.set(this).mul(that,bits,result);

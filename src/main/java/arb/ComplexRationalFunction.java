@@ -1,5 +1,7 @@
 package arb;
 
+import java.util.Objects;
+
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
@@ -18,6 +20,21 @@ public class ComplexRationalFunction implements
                                      Function<ComplexFraction, ComplexFraction>,
                                      Verifiable
 {
+
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    ComplexRationalFunction other = (ComplexRationalFunction) obj;
+    return Objects.equals(imaginaryPart, other.imaginaryPart)
+                  && Objects.equals(realPart, other.realPart);
+  }
+
   public static final int DEFAULT_BITS = 128;
 
   @Override
