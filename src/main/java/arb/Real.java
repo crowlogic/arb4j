@@ -8,10 +8,7 @@
 
 package arb;
 
-import static arb.IntegerConstants.ARB_RND;
-import static arb.IntegerConstants.ARF_RND_UP;
-import static arb.IntegerConstants.MAG_BITS;
-import static arb.IntegerConstants.PAGESIZE;
+import static arb.IntegerConstants.*;
 import static arb.RealConstants.zero;
 import static arb.arblib.*;
 
@@ -1277,8 +1274,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
   public Real resize(int alloc)
   {
     if (alloc == dim)
-    {
-      return this;
+    {      return this;
     }
     Real newLocation = Real.newVector(alloc).setName(name);
     int  nd          = Math.min(size(), newLocation.size());

@@ -24,7 +24,6 @@ import java.util.stream.StreamSupport;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
-import arb.stochastic.ProbabilityDistributionFunction;
 import arb.utensils.Utensils; 
 
 /**
@@ -1248,8 +1247,7 @@ import arb.utensils.Utensils;
   public Real resize(int alloc)
   {
     if (alloc == dim)
-    {
-      return this;
+    {      return this;
     }
     Real newLocation = Real.newVector(alloc).setName(name);
     int  nd          = Math.min(size(), newLocation.size());
