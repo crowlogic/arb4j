@@ -28,6 +28,7 @@ import arb.documentation.TheArb4jLibrary;
 public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer>, Named
 {
 
+
   public Fraction mul( Integer subtrahend, int prec, Fraction result )
   {
     return result.set(this).mul(subtrahend,prec,result);
