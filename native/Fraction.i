@@ -97,6 +97,12 @@ import java.util.stream.Stream;
     return result.set(this).sub(element, prec, result);
   }
 
+  public Fraction mul(Integer that, int prec, Fraction res)
+  {
+    arblib.fmpq_sub_fmpz(res, this, that.swigCPtr );    
+    return res;
+  }  
+
   public boolean
          isZero()
   {
