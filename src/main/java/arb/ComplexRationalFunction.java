@@ -18,6 +18,8 @@ public class ComplexRationalFunction implements
                                      Function<ComplexFraction, ComplexFraction>,
                                      Verifiable
 {
+  public static final int DEFAULT_BITS = 128;
+
   @Override
   public NamedRing<ComplexRationalFunction> set(Complex val)
   {
@@ -182,12 +184,11 @@ public class ComplexRationalFunction implements
     return result;
   }
 
-
   public ComplexRationalFunction add(ComplexRationalFunction x, int prec)
   {
     return add(x, prec, this);
   }
-  
+
   public ComplexRationalFunction mul(ComplexRationalFunction x, int prec)
   {
     return mul(x, prec, this);
@@ -331,10 +332,15 @@ public class ComplexRationalFunction implements
     return ComplexRationalNullaryFunction.express(string).evaluate(bits(), this);
   }
 
-  public static ComplexRationalFunction express(String expression)
+  public static ComplexRationalFunction express(String expression, int bits)
   {
     return ComplexRationalNullaryFunction.express(expression)
-                                         .evaluate(0, new ComplexRationalFunction());
+                                         .evaluate(bits, new ComplexRationalFunction());
+  }
+
+  public static ComplexRationalFunction express(String expression)
+  {
+    return express(expression, DEFAULT_BITS);
   }
 
   public static ComplexRationalFunction express(String expression, Context context)
