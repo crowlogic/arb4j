@@ -273,6 +273,8 @@ public class ComplexFraction implements
     return this;
   }
 
+  public static int BYTES = Fraction.BYTES * 2;
+
   @SuppressWarnings("resource")
   public ComplexFraction set(ComplexFraction... vals)
   {
@@ -284,7 +286,7 @@ public class ComplexFraction implements
 
     dim = vals.length;
 
-    MemorySegment segment = arena.allocate(Long.BYTES * dim * 4);
+    MemorySegment segment = arena.allocate(BYTES * dim);
 
     elements               = new ComplexFraction[dim];
     numerator              = denominator = null;

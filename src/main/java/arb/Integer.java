@@ -10,66 +10,76 @@ import arb.documentation.TheArb4jLibrary;
 
 /**
  * This class wraps the fmpz type in flint which is an arbitrary precision
- * integer implemented as a signed 64bit integer. When its second most
- * significant bit is 0, an fmpz represents an ordinary signed long integer
- * whose absolute value is at most {@link IntegerConstants#FLINT_BITS} - 2 bits.
+ * integer implemented as a signed 64bit integer.
+ * 
+ * When its second most significant bit is 0, an fmpz represents an ordinary
+ * signed long integer whose absolute value is at most
+ * {@link IntegerConstants#FLINT_BITS} - 2 bits.
+ * 
  * When the second most significant bit is 1 an fmpz represents a pointer which
- * is shifted right 2 bits and the second most siginificant bit is set to 1 -
- * this relies on the fact that {@link arblib#flint_malloc(long)} always
- * allocates memory blocks on a 4 or 8 byte boundary and <b>the second most
- * significant bit is reserved to indicate whether the fmpz_t value represents
- * an ordinary signed 64-bit integer or a pointer to an arbitrary precision
- * integer</b> therefore the maximum size integer that can be passed to ARB as a
- * fmpz_t without it being interpreted as a pointer is 2^62 - 1.
+ * is shifted right 2 bits and the second most siginificant bit is set to 1.
+ * 
+ * This feature relies on the fact that {@link arblib#flint_malloc(long)} always
+ * allocates memory blocks on a 4 or 8 byte boundary
+ * 
+ * The second most significant bit is reserved to indicate whether the fmpz_t
+ * value represents an ordinary signed 64-bit integer or a pointer to an
+ * arbitrary precision integer.
+ * 
+ * Therefore the maximum size integer that can be passed to ARB as a fmpz_t
+ * without it being interpreted as a pointer is 2^62 - 1.
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer>, Named
+public class Integer implements
+                     AutoCloseable,
+                     Comparable<Integer>,
+                     Ring<Integer>,
+                     Named
 {
+  public static int BYTES = Long.BYTES;
 
+  public Fraction mul(Integer subtrahend, int prec, Fraction result)
+  {
+    return result.set(this).mul(subtrahend, prec, result);
+  }
 
-  public Fraction mul( Integer subtrahend, int prec, Fraction result )
+  public Fraction add(Integer subtrahend, int prec, Fraction result)
   {
-    return result.set(this).mul(subtrahend,prec,result);
+    return result.set(this).add(subtrahend, prec, result);
   }
-  
-  public Fraction add( Integer subtrahend, int prec, Fraction result )
+
+  public Fraction sub(Integer subtrahend, int prec, Fraction result)
   {
-    return result.set(this).add(subtrahend,prec,result);
+    return result.set(this).sub(subtrahend, prec, result);
   }
-  
-  public Fraction sub( Integer subtrahend, int prec, Fraction result )
-  {
-    return result.set(this).sub(subtrahend,prec,result);
-  }
-  
-  public ComplexRationalFunction neg( ComplexRationalFunction result )
+
+  public ComplexRationalFunction neg(ComplexRationalFunction result)
   {
     return result.set(this).neg();
   }
-  
-  public Fraction cos(int prec, Fraction result )
+
+  public Fraction cos(int prec, Fraction result)
   {
-    return result.set(this).cos(prec,result);
-  }
-  
-  public Real cos(int prec, Real result )
-  {
-    return result.set(this).cos(prec,result);
-  }
-  
-  public Fraction sin(int prec, Fraction result )
-  {
-    return result.set(this).sin(prec,result);
-  }
-  
-  public Real sin(int prec, Real result )
-  {
-    return result.set(this).sin(prec,result);
+    return result.set(this).cos(prec, result);
   }
 
-  
+  public Real cos(int prec, Real result)
+  {
+    return result.set(this).cos(prec, result);
+  }
+
+  public Fraction sin(int prec, Fraction result)
+  {
+    return result.set(this).sin(prec, result);
+  }
+
+  public Real sin(int prec, Real result)
+  {
+    return result.set(this).sin(prec, result);
+  }
+
   public static Integer named(String name)
   {
     Integer n = new Integer();
@@ -187,6 +197,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   {
     swigCMemOwn = cMemoryOwn;
     swigCPtr    = cPtr;
+    assert swigCPtr % 4 == 0 : "fmpz pointer not aligned on 4-byte boundary";
   }
 
   public Integer(String string)
@@ -226,20 +237,20 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
 
   public ComplexFraction add(Fraction operand, int prec, ComplexFraction result)
   {
-    operand.add(this,prec,result.realPart);
+    operand.add(this, prec, result.realPart);
     return result;
   }
-  
+
   public ComplexRationalFunction add(Fraction operand, int prec, ComplexRationalFunction result)
   {
     return result.set(this).add(operand, prec, result);
   }
-  
+
   public ComplexRationalFunction add(Integer operand, int prec, ComplexRationalFunction result)
   {
     return result.set(this).add(operand, prec, result);
   }
-  
+
   public Complex add(Integer operand, int prec, Complex result)
   {
     return result.set(this).add(operand, prec);
@@ -281,7 +292,8 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
 
   public Real ascendingFactorial(Integer n, int bits, Real res)
   {
-    assert n.sign() >= 0 : "negative arguments to the ascending factorial are not supported, n=" + n;
+    assert n.sign() >= 0 : "negative arguments to the ascending factorial are not supported, n="
+                           + n;
     arblib.arb_hypgeom_rising_ui(res, res.set(this), n.getUnsignedValue(), bits);
     return res.set(res);
   }
@@ -549,7 +561,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
 
   public Integer init()
   {
-    swigCPtr = Arena.global().allocate(Long.BYTES).address();
+    swigCPtr    = Arena.global().allocate(Long.BYTES).address();
     swigCMemOwn = false;
     arblib.fmpz_init(swigCPtr);
     return this;
@@ -587,7 +599,8 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     arena         = newArena;
     nativeSegment = arena.allocate(Long.BYTES * n);
     swigCPtr      = nativeSegment.address();
-    for ( int i = 0; i < n; i++ )
+    assert swigCPtr % 4 == 0 : "fmpz pointer not aligned on 4-byte boundary";
+    for (int i = 0; i < n; i++)
     {
       get(i).init();
     }
@@ -621,11 +634,12 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     return result.set(this).mul(x, bits);
   }
 
-  public ComplexRationalFunction mul(ComplexRationalFunction x, int bits, ComplexRationalFunction res)
+  public ComplexRationalFunction
+         mul(ComplexRationalFunction x, int bits, ComplexRationalFunction res)
   {
     return res.set(this).mul(x, bits);
   }
-  
+
   public ComplexPolynomial mul(ComplexPolynomial x, int bits, ComplexPolynomial res)
   {
     return res.set(this).mul(x, bits);
@@ -699,7 +713,7 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
     res.imaginaryPart.zero();
     return res;
   }
-  
+
   public Fraction neg(Fraction res)
   {
     res.set(this);
@@ -938,15 +952,14 @@ public class Integer implements AutoCloseable, Comparable<Integer>, Ring<Integer
   }
 
   @Override
-  public int
-         dim()
+  public int dim()
   {
     return dim;
   }
 
   public ComplexFraction div(Integer i, int bits, ComplexFraction result)
   {
-    div(i,bits,result.realPart);
+    div(i, bits, result.realPart);
     result.imaginaryPart.zero();
     return result;
   }

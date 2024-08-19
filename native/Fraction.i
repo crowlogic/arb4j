@@ -65,6 +65,8 @@ import java.util.stream.Stream;
     set(numerator, denominator);
   }
 
+  public static int BYTES = Integer.BYTES * 2;
+
   public ComplexFraction sub(Fraction element, int prec, ComplexFraction result)
   {
     sub(element, prec, result.realPart);
