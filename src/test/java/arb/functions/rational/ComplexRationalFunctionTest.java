@@ -175,7 +175,7 @@ public class ComplexRationalFunctionTest extends
     assertEquals(expectedSum, expressed);
   }
 
-  public static void testHypergeometricFunctionExpressionRationalWithFunctionsMissingParenthesis()
+  public static void testComplexRationalHypergeometricFunctionExpressionRationalWithFunctionsMissingParenthesis()
   {
     Exception thrownException = null;
     try
@@ -185,7 +185,7 @@ public class ComplexRationalFunctionTest extends
       ComplexRationalFunction.express("a:1", context);
       ComplexRationalFunction.express("b:-⅞*(½ - x/2)", context);
       ComplexRationalFunction.express("c:21/80*(½ - x/2)²", context);
-      ComplexRationalFunction expectedSum = ComplexRationalFunction.express("a()+b()+c()", context);
+      ComplexRationalFunction expectedSum = ComplexRationalFunction.express("a+b+c", context);
       assertEquals("(21*x^2+98*x+201)/320", expressed.toString());
       assertEquals(expressed, expectedSum);
     }
