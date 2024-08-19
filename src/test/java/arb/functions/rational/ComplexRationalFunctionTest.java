@@ -163,7 +163,7 @@ public class ComplexRationalFunctionTest extends
    * 
    * </pre>
    */
-  public static void testHypergeometricFunctionExpressionRational()
+  public static void testComplexRationalHypergeometricFunctionExpressionRational()
   {
     var context   = new Context();
     var expressed = ComplexRationalFunction.express("pFq([-2,3+1⁄2,1],[2,4],1/2-x/2)");
