@@ -18,6 +18,14 @@ public class ComplexRationalFunction implements
                                      Function<ComplexFraction, ComplexFraction>,
                                      Verifiable
 {
+  @Override
+  public NamedRing<ComplexRationalFunction> set(Complex val)
+  {
+    realPart.set(val.getReal());
+    imaginaryPart.set(val.getImag());
+    return this;
+  }
+
   @SuppressWarnings("resource")
   public static ComplexRationalFunction one = new ComplexRationalFunction().set(1);
 

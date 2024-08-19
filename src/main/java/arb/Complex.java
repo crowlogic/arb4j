@@ -772,6 +772,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     assert power.getSignedValue() >= 0 : "power must be nonnegative";
     assert result != null : "result shan't be null, but it is";
     assert swigCPtr != 0 : "swigCptr is null";
+    assert bits > 0 : "bits must be a positive integer";
     arblib.acb_hypgeom_rising_ui(result, this, power.getUnsignedValue(), bits);
     result.bits = bits;
     return result;
