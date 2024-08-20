@@ -2,6 +2,7 @@ package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -211,5 +212,17 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   }
 
   public abstract String getIntermediateValueFieldName();
+
+  protected void loadBitsOntoStack(MethodVisitor mv)
+  {
+    if (expression.insideInitializer)
+    {
+      mv.visitLdcInsn(128);
+    }
+    else
+    {
+      loadBitsParameterOntoStack(mv);
+    }
+  }
 
 }
