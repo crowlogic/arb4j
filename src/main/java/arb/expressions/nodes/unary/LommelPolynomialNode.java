@@ -1,6 +1,8 @@
 package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.invokeMethod;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.loadOrderParameter;
 import static arb.expressions.Compiler.loadThisOntoStack;
 
 import java.util.List;
@@ -102,14 +104,11 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     loadThisOntoStack(mv);
     expression.loadFieldOntoStack(mv, elementFieldName, RationalFunction.class);
 
-    // Evaluate the argument
-    // expression.insideInitializer = true;
     arg.generate(mv, resultType);
 
     Compiler.loadOrderParameter(mv);
-    Compiler.loadBitsParameterOntoStack(mv);
+    loadBitsParameterOntoStack(mv);
 
-    // Load the output variable
     loadOutputVariableOntoStack(mv, resultType);
 
     if (RationalFunction.class.equals(expression.coDomainType))
