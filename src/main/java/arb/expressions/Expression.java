@@ -1839,17 +1839,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return new LommelPolynomialNode<>(this);
     case "ℭ":
       return new BinomialCoefficientNode<>(this);
+    case "pFq":
+      return new HypergeometricFunctionNode<>(this);
     default:
-      if (reference.isHypergeometricFunction())
-      {
-        return new HypergeometricFunctionNode<>(this);
-      }
-      else
-      {
-        return new FunctionCallNode<>(reference.name,
-                                      resolve(),
-                                      require(')'));
-      }
+      return new FunctionCallNode<>(reference.name,
+                                    resolve(),
+                                    require(')'));
     }
 
   }

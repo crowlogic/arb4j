@@ -93,16 +93,6 @@ public class VariableReference<D, R, F extends Function<? extends D, ? extends R
   {
     return "else".equals(name) && index == null;
   }
-
-  public boolean isHypergeometricFunction()
-  {
-    return "pFq".equals(name);
-  }
-
-  public boolean isBinomialCoeffecient()
-  {
-    return "C".equals(name);
-  }
   
   public <E, S, G extends Function<? extends E, ? extends S>>
          VariableReference<E, S, G>
