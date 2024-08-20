@@ -40,6 +40,12 @@ public class Integer implements
 {
   public static int BYTES = Long.BYTES;
 
+  public Integer set(Fraction f)
+  {
+    assert false : "set " + f;
+    return null;
+  }
+  
   public Fraction mul(Integer subtrahend, int prec, Fraction result)
   {
     return result.set(this).mul(subtrahend, prec, result);

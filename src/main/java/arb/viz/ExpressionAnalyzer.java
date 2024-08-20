@@ -10,6 +10,7 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.NullaryFunction;
+import arb.functions.rational.RationalFunctionSequence;
 import arb.functions.real.RealFunction;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -33,6 +34,7 @@ public class ExpressionAnalyzer
   Real                x;
   Integer             n;
 
+  
   @SuppressWarnings("resource")
   public Expression<?, ?, ?> getExpression()
   {
@@ -40,7 +42,7 @@ public class ExpressionAnalyzer
     x       = new Real().setName("x").set(2.3);
     context = new Context(n,
                           x);
-    return RealFunction.compile("Ψₖ:√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)", context);
+    return RationalFunctionSequence.compile("n->(R(n,½;x)*sin(x) - R(n-1,3⁄2;x)*cos(x))/x");
   }
 
   public void expandTreeView(TreeItem<?> item)

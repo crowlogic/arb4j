@@ -38,8 +38,7 @@ import arb.functions.sequences.LommelPolynomialSequence;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extends C>>
-                                 extends
+public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extends C>> extends
                                  FunctionCallNode<D, C, F>
 {
   public Node<D, C, F>  order;
@@ -77,6 +76,8 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     Compiler.getField(mv, sequenceClass, "v", Real.class);
     expression.insideInitializer = true;
     order.generate(mv, Real.class);
+    assert order.getGeneratedType()
+                .equals(Real.class) : "wanted " + Real.class + " got " + order.getGeneratedType();
     Compiler.invokeMethod(mv, Real.class, "set", Real.class, false, Real.class);
 
     expression.loadThisFieldOntoStack(mv, seqFieldName, sequenceClass);
@@ -103,7 +104,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     expression.loadFieldOntoStack(mv, elementFieldName, RationalFunction.class);
 
     // Evaluate the argument
-    //expression.insideInitializer = true;
+    // expression.insideInitializer = true;
     arg.generate(mv, resultType);
 
     Compiler.loadOrderParameter(mv);
@@ -180,8 +181,9 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, C, F> substitute(String variable,
-                                                                                       Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<D, C, F>
+         substitute(String variable, Node<E, S, G> arg)
   {
     order    = order.substitute(variable, arg);
     index    = index.substitute(variable, arg);
