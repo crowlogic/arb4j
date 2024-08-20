@@ -51,18 +51,12 @@ public class RationalHypergeometricFunction extends
                                                           RationalNullaryFunction>
 {
 
-  @Override
-  public RationalFunction evaluate(Object nullary, int order, int bits, RationalFunction res)
-  {
-    return super.evaluate(nullary, order, bits, res);
-  }
-
   public RationalHypergeometricFunction
          init(Fraction α,
               Fraction β,
               Expression<Object, RationalFunction, RationalNullaryFunction> arg)
   {
-    super.init(Real.class, RationalFunction.class, RationalNullaryFunction.class, α, β, arg);
+    init(Real.class, RationalFunction.class, RationalNullaryFunction.class, α, β, arg);
     return this;
   }
 

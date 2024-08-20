@@ -53,13 +53,6 @@ public class ComplexRationalHypergeometricFunction extends
                                                                  ComplexRationalNullaryFunction>
 {
 
-  @Override
-  public ComplexRationalFunction
-         evaluate(Object nullary, int order, int bits, ComplexRationalFunction res)
-  {
-    return super.evaluate(nullary, order, bits, res);
-  }
-
   public ComplexRationalHypergeometricFunction
          init(Fraction α,
               Fraction β,
@@ -74,8 +67,6 @@ public class ComplexRationalHypergeometricFunction extends
     return this;
   }
 
-
-
   public ComplexRationalHypergeometricFunction
          init(ComplexFraction numerator,
               ComplexFraction denominator,
@@ -83,8 +74,8 @@ public class ComplexRationalHypergeometricFunction extends
   {
     assert numerator.imaginaryPart.isZero();
     assert denominator.imaginaryPart.isZero();
-    System.out.format("init(numer=%s,denom=%s)\n", numerator,denominator);
-    return init(numerator.realPart,denominator.realPart,arg);
+    System.out.format("init(numer=%s,denom=%s)\n", numerator, denominator);
+    return init(numerator.realPart, denominator.realPart, arg);
   }
 
 }

@@ -23,8 +23,7 @@ import arb.functions.sequences.LommelPolynomialSequence;
 
 /**
  * Syntax: "R(v,n;z)" which corresponds to a {@link LommelPolynomialSequence}
- * with the {@link LommelPolynomialSequence#v} set and then
- * 
+ * with the {@link LommelPolynomialSequence#v} order variable set and then
  * assigns {@link LommelPolynomialNode#elementFieldName} the specific
  * {@link RationalFunctionSequence} which gets
  * {@link RationalFunctionSequence#evaluate(Integer, int, int, RationalFunction)}d

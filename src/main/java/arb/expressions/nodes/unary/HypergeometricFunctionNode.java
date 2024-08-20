@@ -1,9 +1,12 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.invokeStaticMethod;
+import static arb.expressions.Compiler.invokeVirtualMethod;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.loadResultParameter;
 import static java.lang.System.err;
 import static org.objectweb.asm.Opcodes.ACONST_NULL;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import org.objectweb.asm.MethodVisitor;
 
@@ -107,13 +110,16 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                                            : isReal ? RealPolynomialHypergeometricFunction.class
                                            : isComplex ? ComplexPolynomialHypergeometricFunction.class
                                            : null;
-    assert hypergeometricFunctionClass != null : "scalarType=" + scalarType;
+    assert hypergeometricFunctionClass != null : "hypergeometricFunctionClass="
+                                                 + hypergeometricFunctionClass;
 
-    nullaryFunctionClass            = isRational
-                                                 ? (isReal ? RationalNullaryFunction.class
-                                                           : ComplexRationalNullaryFunction.class)
-                                                 : isReal ? RealPolynomialNullaryFunction.class
-                                                 : ComplexPolynomialNullaryFunction.class;
+    nullaryFunctionClass = isRational
+                                      ? (isReal ? RationalNullaryFunction.class
+                                                : isComplex ? ComplexRationalNullaryFunction.class
+                                                : null)
+                                      : isReal ? RealPolynomialNullaryFunction.class
+                                      : isComplex ? ComplexPolynomialNullaryFunction.class : null;
+    assert nullaryFunctionClass != null : "nullaryFunctionClass=" + nullaryFunctionClass;
 
     hypergeometricFunctionFieldName =
                                     expression.newIntermediateVariable("hyp",
@@ -161,15 +167,15 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     mv.visitLdcInsn(1);
     loadBitsOntoStack(mv);
     loadOutputOntoStack(mv, resultType);
-    invokeMethod(mv,
-                 INVOKEVIRTUAL,
-                 hypergeometricFunctionClass,
-                 "evaluate",
-                 resultType,
-                 Object.class,
-                 int.class,
-                 int.class,
-                 resultType);
+    invokeVirtualMethod(mv,
+                        hypergeometricFunctionClass,
+                        "evaluate",
+                        Object.class,
+                        Object.class,
+                        int.class,
+                        int.class,
+                        Object.class);
+    checkClassCast(mv, resultType);
     return mv;
   }
 

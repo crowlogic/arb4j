@@ -117,7 +117,6 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
     }
     this.α.set(alpha);
     this.β.set(beta);
-    System.out.format("α=%s\nβ=%s\nalpha=%s\nbeta=%s\n", α, β, alpha, beta);
 
     initializeContext();
 
@@ -142,7 +141,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
     this.β         = (P) Complex.newVector(beta.dim());
     this.α.set(alpha);
     this.β.set(beta);
-    System.out.format("α=%s\nβ=%s\n", α, β);
+
     initializeContext();
 
     compile(elementType, nullaryFunctionType, arg);
@@ -237,7 +236,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
   }
 
   @Override
-  public C evaluate(Object nullary, int order, int bits, C res)
+  public final C evaluate(Object nullary, int order, int bits, C res)
   {
     if (!initialized)
     {

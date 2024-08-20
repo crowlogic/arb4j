@@ -65,21 +65,5 @@ public class RealPolynomialHypergeometricFunction extends
     return this;
   }
 
-  public RealPolynomialHypergeometricFunction()
-  {
-  }
-
-  @Override
-  public RealPolynomial
-         evaluate(Object nullary,
-                  int order,
-                  int bits,
-                  RealPolynomial res)
-  {
-    return super.evaluate(nullary,
-                          order,
-                          bits,
-                          res);
-  }
 
 }

@@ -22,28 +22,18 @@ public class ComplexPolynomialHypergeometricFunction extends
                                                      Verifiable
 {
 
-  @Override
-  public ComplexPolynomial evaluate(Object nullary, int order, int bits, ComplexPolynomial res)
-  {
-    return super.evaluate(nullary, order, bits, res);
-  }
-
   public ComplexPolynomialHypergeometricFunction
          init(Complex alpha,
               Complex beta,
               Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> arg)
   {
-    super.init(Complex.class,
-               ComplexPolynomial.class,
-               ComplexPolynomialNullaryFunction.class,
-               alpha,
-               beta,
-               arg);
+    init(Complex.class,
+         ComplexPolynomial.class,
+         ComplexPolynomialNullaryFunction.class,
+         alpha,
+         beta,
+         arg);
     return this;
-  }
-
-  public ComplexPolynomialHypergeometricFunction()
-  {
   }
 
 }
