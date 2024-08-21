@@ -2,6 +2,7 @@ package arb.expressions.nodes.binary;
 
 import static java.lang.String.format;
 
+import arb.Quaternion;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
@@ -31,10 +32,13 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     return format("%s \\cdot %s", left.typeset(), right.typeset());
   }
 
+  /**
+   * @return true if {@link Expression#coDomainType} is not a {@link Quaternion}
+   */
   @Override
   public boolean isCommutative()
   {
-    return true;
+    return !expression.coDomainType.equals(Quaternion.class);
   }
 
   @Override
