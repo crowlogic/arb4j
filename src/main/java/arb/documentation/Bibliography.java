@@ -18,331 +18,383 @@ import arb.documentation.references.Reference;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Bibliography
-                          extends
+public class Bibliography extends
                           AbstractBibliography
 {
-  public static Article       onCompactOperators                                     = new Article("On compact operators",
-                                                                                                   "Alexanderian, Alen",
-                                                                                                   "2013",
-                                                                                                   "Journal of Mathematical Analysis and Applications",
-                                                                                                   "18",
-                                                                                                   "5-36").setNumber("2");
+  /**
+   * Askey, R. (1989). Beta integrals and the associated orthogonal polynomials.
+   * Number Theory, Madras 1987, 84–121. doi:10.1007/bfb0086401 10.1007/bfb0086401
+   */
+  
+  public static Article       onCompactOperators                                     =
+                                                 new Article("On compact operators",
+                                                             "Alexanderian, Alen",
+                                                             "2013",
+                                                             "Journal of Mathematical Analysis and Applications",
+                                                             "18",
+                                                             "5-36").setNumber("2");
 
-  public static Miscellaneous gaussianProcessIntroduction                            = new Miscellaneous("Introduction to Gaussian Processes",
-                                                                                                         "Steven P. Lalley",
-                                                                                                         "2013",
-                                                                                                         "https://galton.uchicago.edu/$\\sim$elalley/Courses/386/GaussianProcesses.pdf",
-                                                                                                         "",
-                                                                                                         "");
+  public static Miscellaneous gaussianProcessIntroduction                            =
+                                                          new Miscellaneous("Introduction to Gaussian Processes",
+                                                                            "Steven P. Lalley",
+                                                                            "2013",
+                                                                            "https://galton.uchicago.edu/$\\sim$elalley/Courses/386/GaussianProcesses.pdf",
+                                                                            "",
+                                                                            "");
 
-  public static Article       bandlimitedRKHSApplicationshun                         = new Article("Applications of Reproducing Kernel Hilbert Spaces--Bandlimited Signal Models",
-                                                                                                   "K. Yao",
-                                                                                                   "1967",
-                                                                                                   "Information and Control",
-                                                                                                   "11",
-                                                                                                   "429-444");
+  public static Article       bandlimitedRKHSApplicationshun                         =
+                                                             new Article("Applications of Reproducing Kernel Hilbert Spaces--Bandlimited Signal Models",
+                                                                         "K. Yao",
+                                                                         "1967",
+                                                                         "Information and Control",
+                                                                         "11",
+                                                                         "429-444");
 
-  public static Article       uniformlyConvergentBesselFunctionExpansions            = new Article("Convergent expansions of the Bessel functions in terms of elementary functions",
-                                                                                                   "José L. López",
-                                                                                                   "2018",
-                                                                                                   "Advances in Computational Mathematics",
-                                                                                                   "44",
-                                                                                                   "277-294").setPublisher("Springer");
+  public static Article       uniformlyConvergentBesselFunctionExpansions            =
+                                                                          new Article("Convergent expansions of the Bessel functions in terms of elementary functions",
+                                                                                      "José L. López",
+                                                                                      "2018",
+                                                                                      "Advances in Computational Mathematics",
+                                                                                      "44",
+                                                                                      "277-294").setPublisher("Springer");
 
-  public static Article       modifiedLommelPolynomials                              = new Article("Asymptotic Expansion of the Modified Lommel Polynomials $h_{n,ν}(x)$ and Their Zeros",
-                                                                                                   "K.F. Lee, R. Wong",
-                                                                                                   "2014",
-                                                                                                   "Proceedings of the American Mathematical Society",
-                                                                                                   "142",
-                                                                                                   "3953-3964").setNumber("11");
+  public static Article       modifiedLommelPolynomials                              =
+                                                        new Article("Asymptotic Expansion of the Modified Lommel Polynomials $h_{n,ν}(x)$ and Their Zeros",
+                                                                    "K.F. Lee, R. Wong",
+                                                                    "2014",
+                                                                    "Proceedings of the American Mathematical Society",
+                                                                    "142",
+                                                                    "3953-3964").setNumber("11");
 
-  public static Book          orthogonalPolynomials                                  = new Book("Orthogonal Polynomials",
-                                                                                                "Gábor Szegő",
-                                                                                                "1975",
-                                                                                                null).setPublisher("American Mathematical Society")
-                                                                                                     .setAddress("Providence, RI")
-                                                                                                     .setIsbn("0821810235, 9780821810231");
+  public static Book          orthogonalPolynomials                                  =
+                                                    new Book("Orthogonal Polynomials",
+                                                             "Gábor Szegő",
+                                                             "1975",
+                                                             null).setPublisher("American Mathematical Society")
+                                                                  .setAddress("Providence, RI")
+                                                                  .setIsbn("0821810235, 9780821810231");
 
-  public static Book          chernSelectedPapersIV                                  = new Book("Selected Papers IV",
-                                                                                                "Shiing-Shen Chern",
-                                                                                                "1989",
-                                                                                                "463").setPublisher("Springer New York, NY")
-                                                                                                      .setIsbn("978-1-4614-9085-2")
-                                                                                                      .setSeries("Springer Collected Works in Mathematics")
-                                                                                                      .setEdition("1")
-                                                                                                      .setVolume("XV");
+  public static Book          chernSelectedPapersIV                                  =
+                                                    new Book("Selected Papers IV",
+                                                             "Shiing-Shen Chern",
+                                                             "1989",
+                                                             "463").setPublisher("Springer New York, NY")
+                                                                   .setIsbn("978-1-4614-9085-2")
+                                                                   .setSeries("Springer Collected Works in Mathematics")
+                                                                   .setEdition("1")
+                                                                   .setVolume("XV");
 
-  public static Article       theBesselPolynomials                                   = new Article("A New Class of Orthogonal Polynomials: The Bessel Polynomials",
-                                                                                                   "H.L. Krall and Orrin Frink",
-                                                                                                   "1949",
-                                                                                                   "Transactions of the American Mathematical Society",
-                                                                                                   "65",
-                                                                                                   "100-115").setNumber("1");
+  public static Article       theBesselPolynomials                                   =
+                                                   new Article("A New Class of Orthogonal Polynomials: The Bessel Polynomials",
+                                                               "H.L. Krall and Orrin Frink",
+                                                               "1949",
+                                                               "Transactions of the American Mathematical Society",
+                                                               "65",
+                                                               "100-115").setNumber("1");
 
-  public static Article       isotropicCharacteristicFunctions                       = new Article("A Class of Isotropic Distributions in $\\mathbb{R}_n$ and Their Characteristic Functions",
-                                                                                                   "Simeon M. Berman",
-                                                                                                   "Pacific Journal of Mathematics",
-                                                                                                   "78",
-                                                                                                   "No. 1",
-                                                                                                   "1978");
+  public static Article       isotropicCharacteristicFunctions                       =
+                                                               new Article("A Class of Isotropic Distributions in $\\mathbb{R}_n$ and Their Characteristic Functions",
+                                                                           "Simeon M. Berman",
+                                                                           "Pacific Journal of Mathematics",
+                                                                           "78",
+                                                                           "No. 1",
+                                                                           "1978");
 
-  public static Book          besselFunctionTreatise                                 = new Book("A Treatise on the Theory of Bessel Functions",
-                                                                                                "G.N. Watson",
-                                                                                                "1944").setPublisher("Cambridge University Press")
-                                                                                                       .setEdition("2nd");
+  public static Book          besselFunctionTreatise                                 =
+                                                     new Book("A Treatise on the Theory of Bessel Functions",
+                                                              "G.N. Watson",
+                                                              "1944").setPublisher("Cambridge University Press")
+                                                                     .setEdition("2nd");
 
-  public static Article       classicalOrthogonalPolynomialReproducingKernels        = new Article("A new property of reproducing kernels for classical orthogonal polynomials",
-                                                                                                   "F. Alberto Grünbaum",
-                                                                                                   "1983",
-                                                                                                   "Journal of Mathematical Analysis and Applications",
-                                                                                                   "95",
-                                                                                                   "491-500").setNumber("2")
-                                                                                                             .setPublisher("Elsevier");
+  public static Article       classicalOrthogonalPolynomialReproducingKernels        =
+                                                                              new Article("A new property of reproducing kernels for classical orthogonal polynomials",
+                                                                                          "F. Alberto Grünbaum",
+                                                                                          "1983",
+                                                                                          "Journal of Mathematical Analysis and Applications",
+                                                                                          "95",
+                                                                                          "491-500").setNumber("2")
+                                                                                                    .setPublisher("Elsevier");
 
-  public static Book          correlationTheoryOfStationaryRandomProcesses           = new Book("Correlation Theory of Stationary and Related Random Functions",
-                                                                                                "Yaglom, A.M.",
-                                                                                                "1987").setSeries("Applied Probability")
-                                                                                                       .setPublisher("Springer New York")
-                                                                                                       .setVolume("I: Basic Results");
+  public static Book          correlationTheoryOfStationaryRandomProcesses           =
+                                                                           new Book("Correlation Theory of Stationary and Related Random Functions",
+                                                                                    "Yaglom, A.M.",
+                                                                                    "1987").setSeries("Applied Probability")
+                                                                                           .setPublisher("Springer New York")
+                                                                                           .setVolume("I: Basic Results");
 
-  public static Book          extremesOfRandomProcesses                              = new Book("Extremes and Related Properties of Random Sequences and Processes",
-                                                                                                "Georg Lindgren, Holger Rootzén, and M. R. Leadbetter",
-                                                                                                "1983").setSeries("Springer Series in Statistics")
-                                                                                                       .setPublisher("Springer-Verlag New York Inc.");
+  public static Book          extremesOfRandomProcesses                              =
+                                                        new Book("Extremes and Related Properties of Random Sequences and Processes",
+                                                                 "Georg Lindgren, Holger Rootzén, and M. R. Leadbetter",
+                                                                 "1983").setSeries("Springer Series in Statistics")
+                                                                        .setPublisher("Springer-Verlag New York Inc.");
 
-  public static Article       finiteFourierTransforms                                = new Article("The finite Fourier transform of classical polynomials",
-                                                                                                   "Dixit, Atul and Jiu, Lin and Moll, Victor H and Vignat, Christophe",
-                                                                                                   "2015",
-                                                                                                   "Journal of the Australian Mathematical Society",
-                                                                                                   "98",
-                                                                                                   "145--160").setPublisher("Cambridge University Press");
+  public static Article       finiteFourierTransforms                                =
+                                                      new Article("The finite Fourier transform of classical polynomials",
+                                                                  "Dixit, Atul and Jiu, Lin and Moll, Victor H and Vignat, Christophe",
+                                                                  "2015",
+                                                                  "Journal of the Australian Mathematical Society",
+                                                                  "98",
+                                                                  "145--160").setPublisher("Cambridge University Press");
 
-  public static Book          functionalAnalysisRieszNagy                            = new Book("Functional Analysis",
-                                                                                                "Frigyes Riesz and Béla Sz.-Nagy",
-                                                                                                "2012").setPublisher("Dover Publications")
-                                                                                                       .setSeries("Dover Books on Mathematics")
-                                                                                                       .setEdition("unabridged republication of 1955");
+  public static Book          functionalAnalysisRieszNagy                            =
+                                                          new Book("Functional Analysis",
+                                                                   "Frigyes Riesz and Béla Sz.-Nagy",
+                                                                   "2012").setPublisher("Dover Publications")
+                                                                          .setSeries("Dover Books on Mathematics")
+                                                                          .setEdition("unabridged republication of 1955");
 
-  public static Book          functionalAnalysisYosida                               = new Book("Functional Analysis",
-                                                                                                "吉田 耕作(Kōsaku Yosida)",
-                                                                                                "1995").setPublisher("Springer Berlin Heidelberg")
-                                                                                                       .setSeries("Classics in Mathematics")
-                                                                                                       .setEdition("Reprint of the 1980 Edition");
+  public static Book          functionalAnalysisYosida                               =
+                                                       new Book("Functional Analysis",
+                                                                "吉田 耕作(Kōsaku Yosida)",
+                                                                "1995").setPublisher("Springer Berlin Heidelberg")
+                                                                       .setSeries("Classics in Mathematics")
+                                                                       .setEdition("Reprint of the 1980 Edition");
 
-  public static Book          introductionToQuantumGravitationalEffects              = new Book("Introduction to quantum effects in gravity",
-                                                                                                "Viatcheslav Mukhanov, Sergei Winitzki",
-                                                                                                "2007").setEdition("1ˢᵗ")
-                                                                                                       .setPublisher("Cambridge University Press");
+  public static Book          introductionToQuantumGravitationalEffects              =
+                                                                        new Book("Introduction to quantum effects in gravity",
+                                                                                 "Viatcheslav Mukhanov, Sergei Winitzki",
+                                                                                 "2007").setEdition("1ˢᵗ")
+                                                                                        .setPublisher("Cambridge University Press");
 
-  public static Article       isotropyPrevalenceInSpatialStatistics                  = new Article("Why is isotropy so prevalent in spatial statistics?",
-                                                                                                   "Chunsheng Ma",
-                                                                                                   "2007",
-                                                                                                   "Proceedings of the American Mathematical Society",
-                                                                                                   "135",
-                                                                                                   "865–871").setNumber("3")
-                                                                                                             .setPublisher("American Mathematical Society");
+  public static Article       isotropyPrevalenceInSpatialStatistics                  =
+                                                                    new Article("Why is isotropy so prevalent in spatial statistics?",
+                                                                                "Chunsheng Ma",
+                                                                                "2007",
+                                                                                "Proceedings of the American Mathematical Society",
+                                                                                "135",
+                                                                                "865–871").setNumber("3")
+                                                                                          .setPublisher("American Mathematical Society");
 
-  public static Book          lecturesOnDifferentialAndIntegralEquations             = new Book("Lectures on Differential and Integral Equations",
-                                                                                                "吉田 耕作(Kōsaku Yosida)",
-                                                                                                "1960").setPublisher("Interscience Publishers/John Wiley & Sons Inc.")
-                                                                                                       .setAddress("New York/London/Sydney")
-                                                                                                       .setSeries("Pure and Applied Mathematics")
-                                                                                                       .setVolume("X");
+  public static Book          lecturesOnDifferentialAndIntegralEquations             =
+                                                                         new Book("Lectures on Differential and Integral Equations",
+                                                                                  "吉田 耕作(Kōsaku Yosida)",
+                                                                                  "1960").setPublisher("Interscience Publishers/John Wiley & Sons Inc.")
+                                                                                         .setAddress("New York/London/Sydney")
+                                                                                         .setSeries("Pure and Applied Mathematics")
+                                                                                         .setVolume("X");
 
-  public static Book          linearHilbertSpaceTransforms                           = new Book("Linear Transformations in Hilbert Space",
-                                                                                                "Marshall Harvey Stone",
-                                                                                                "1932").setEdition("4th Printing (1951)")
-                                                                                                       .setVolume("XV")
-                                                                                                       .setSeries("Colloquium Publications")
-                                                                                                       .setPublisher("American Mathematical Society")
-                                                                                                       .setAddress("501 West 116th Street");
+  public static Book          linearHilbertSpaceTransforms                           =
+                                                           new Book("Linear Transformations in Hilbert Space",
+                                                                    "Marshall Harvey Stone",
+                                                                    "1932").setEdition("4th Printing (1951)")
+                                                                           .setVolume("XV")
+                                                                           .setSeries("Colloquium Publications")
+                                                                           .setPublisher("American Mathematical Society")
+                                                                           .setAddress("501 West 116th Street");
 
-  public static Article       lommelAndBesselPolynomials                             = new Article("On Lommel and Bessel polynomials",
-                                                                                                   "David Dickinson",
-                                                                                                   "Proceedings of the American Mathematical Society",
-                                                                                                   "5",
-                                                                                                   "946-956",
-                                                                                                   "1954");
+  public static Article       lommelAndBesselPolynomials                             =
+                                                         new Article("On Lommel and Bessel polynomials",
+                                                                     "David Dickinson",
+                                                                     "Proceedings of the American Mathematical Society",
+                                                                     "5",
+                                                                     "946-956",
+                                                                     "1954");
 
-  public static Article       newBesselFunctionIdentity                              = new Article("Circular motion analogue Unruh effect in a 2+1 thermal bath: robbing from the rich and giving to the poor",
-                                                                                                   "D Bunney, Cameron R and Louko, Jorma",
-                                                                                                   "2023",
-                                                                                                   "Classical and Quantum Gravity",
-                                                                                                   "40",
-                                                                                                   "155001 (27 pages)").setNumber("15");
+  public static Article       newBesselFunctionIdentity                              =
+                                                        new Article("Circular motion analogue Unruh effect in a 2+1 thermal bath: robbing from the rich and giving to the poor",
+                                                                    "D Bunney, Cameron R and Louko, Jorma",
+                                                                    "2023",
+                                                                    "Classical and Quantum Gravity",
+                                                                    "40",
+                                                                    "155001 (27 pages)").setNumber("15");
 
-  public static Book          oneParameterSemigroups                                 = new Book("One-Parameter Semigroups",
-                                                                                                "E.B. Davies",
-                                                                                                "1980").setPublisher("Academic Press")
-                                                                                                       .setAddress("111 Fifth Avenue New York, New York 10003")
-                                                                                                       .setSeries("L.M.S. Monographs");
+  public static Book          oneParameterSemigroups                                 =
+                                                     new Book("One-Parameter Semigroups",
+                                                              "E.B. Davies",
+                                                              "1980").setPublisher("Academic Press")
+                                                                     .setAddress("111 Fifth Avenue New York, New York 10003")
+                                                                     .setSeries("L.M.S. Monographs");
 
-  public static Article       orthogonalPolynomialsAndQuadraticExtremalProblems      = new Article("Orthogonal Polynomials and Quadratic Extremal Problems",
-                                                                                                   "McDougall, J",
-                                                                                                   "2002",
-                                                                                                   "Transactions of the American Mathematical Society",
-                                                                                                   "354",
-                                                                                                   "2341--2357").setNumber("6");
+  public static Article       orthogonalPolynomialsAndQuadraticExtremalProblems      =
+                                                                                new Article("Orthogonal Polynomials and Quadratic Extremal Problems",
+                                                                                            "McDougall, J",
+                                                                                            "2002",
+                                                                                            "Transactions of the American Mathematical Society",
+                                                                                            "354",
+                                                                                            "2341--2357").setNumber("6");
 
-  public static Article       orthogonalPolynomialsAndSingularSturmLiouvilleSystemsI = new Article("Orthogonal polynomials and Singular Sturm-Liouville Systems, I",
-                                                                                                   "Littlejohn, Lance L and Krall, Allan M",
-                                                                                                   "1986",
-                                                                                                   "The Rocky Mountain Journal of Mathematics",
-                                                                                                   "16",
-                                                                                                   "435--479").setNumber("3");
+  public static Article       orthogonalPolynomialsAndSingularSturmLiouvilleSystemsI =
+                                                                                     new Article("Orthogonal polynomials and Singular Sturm-Liouville Systems, I",
+                                                                                                 "Littlejohn, Lance L and Krall, Allan M",
+                                                                                                 "1986",
+                                                                                                 "The Rocky Mountain Journal of Mathematics",
+                                                                                                 "16",
+                                                                                                 "435--479").setNumber("3");
 
-  public static Book          outOfThisWorld                                         = new Book("Out of This World: Thinking Fourth Dimensionally",
-                                                                                                "Neville Goddard",
-                                                                                                "2010").setPublisher("Martino Fine Books")
-                                                                                                       .setAddress("Eastford, CT")
-                                                                                                       .setEdition("Reprint of First 1949 Edition");
+  public static Book          outOfThisWorld                                         =
+                                             new Book("Out of This World: Thinking Fourth Dimensionally",
+                                                      "Neville Goddard",
+                                                      "2010").setPublisher("Martino Fine Books")
+                                                             .setAddress("Eastford, CT")
+                                                             .setEdition("Reprint of First 1949 Edition");
 
   @Note("The boundaries of the open sets consist of those points for which the flow is not analytic in "
-                + "at least one timelike direction which is probably frameable in the Riemann-Hilbert setup")
+        + "at least one timelike direction which is probably frameable in the Riemann-Hilbert setup")
   @Note("The criteria for the realizability of certain processes hinges upon approximation by rational "
-                + "vector fields of arbitarily large polynomial degree")
-  public static Article       planeAutonomousSystemsWithRationalVectorFields         = new Article("Plane Autonomous Systems With Rational Vector Fields",
-                                                                                                   "Harold E. Benzinger",
-                                                                                                   "1991",
-                                                                                                   "326",
-                                                                                                   "2",
-                                                                                                   "465-484");
+        + "vector fields of arbitarily large polynomial degree")
+  public static Article       planeAutonomousSystemsWithRationalVectorFields         =
+                                                                             new Article("Plane Autonomous Systems With Rational Vector Fields",
+                                                                                         "Harold E. Benzinger",
+                                                                                         "1991",
+                                                                                         "326",
+                                                                                         "2",
+                                                                                         "465-484");
 
-  public static Book          psychologyOfMathematicalInvention                      = new Book("The Psychology of Invention in the Mathematical Field",
-                                                                                                "Jacques Hadamard",
-                                                                                                "1954").setSeries("Dover books on advanced mathematics")
-                                                                                                       .setEdition("enlarged, unaltered, and unabridged reprint of the 1949")
-                                                                                                       .setPublisher("Dover publications, Inc.")
-                                                                                                       .setAddress("180 Varick Street New York, N.Y. 10014");
+  public static Book          psychologyOfMathematicalInvention                      =
+                                                                new Book("The Psychology of Invention in the Mathematical Field",
+                                                                         "Jacques Hadamard",
+                                                                         "1954").setSeries("Dover books on advanced mathematics")
+                                                                                .setEdition("enlarged, unaltered, and unabridged reprint of the 1949")
+                                                                                .setPublisher("Dover publications, Inc.")
+                                                                                .setAddress("180 Varick Street New York, N.Y. 10014");
 
-  public static Book          randomMatrices                                         = new Book("Random Matrices",
-                                                                                                "Madan Lal Mehta",
-                                                                                                "2004").setEdition("3rd")
-                                                                                                       .setSeries("Pure and Applied Mathematics")
-                                                                                                       .setVolume("142");
+  public static Book          randomMatrices                                         =
+                                             new Book("Random Matrices",
+                                                      "Madan Lal Mehta",
+                                                      "2004").setEdition("3rd")
+                                                             .setSeries("Pure and Applied Mathematics")
+                                                             .setVolume("142");
 
-  public static Article       randomProcessWithStationaryIncrements                  = new Article("A note on processes with random stationary increments",
-                                                                                                   "Haimeng Zhang and Chunfeng Huang",
-                                                                                                   "2014",
-                                                                                                   "Statistics and Probabiltiy Letters",
-                                                                                                   "94",
-                                                                                                   "153-161");
+  public static Article       randomProcessWithStationaryIncrements                  =
+                                                                    new Article("A note on processes with random stationary increments",
+                                                                                "Haimeng Zhang and Chunfeng Huang",
+                                                                                "2014",
+                                                                                "Statistics and Probabiltiy Letters",
+                                                                                "94",
+                                                                                "153-161");
 
-  public static Article       simpleSymbolManipulation                               = new Article("ALGLIB, a simple symbol-manipulation package",
-                                                                                                   "J. M. Shearer and M. A. Wolfe",
-                                                                                                   "1985",
-                                                                                                   "Communications of the ACM",
-                                                                                                   "28",
-                                                                                                   "820–825").setNumber("8");
+  public static Article       simpleSymbolManipulation                               =
+                                                       new Article("ALGLIB, a simple symbol-manipulation package",
+                                                                   "J. M. Shearer and M. A. Wolfe",
+                                                                   "1985",
+                                                                   "Communications of the ACM",
+                                                                   "28",
+                                                                   "820–825").setNumber("8");
 
-  public static Article       skewOrthogonalPolynomialsAndRandomMatrixTheory         = new Article("Generalized Christoffel-Darboux formula for skew-orthogonal polynomials and random matrix theory",
-                                                                                                   "Saugata Ghosh",
-                                                                                                   "2006",
-                                                                                                   "Journal of Physics A: Mathematical and General",
-                                                                                                   "39",
-                                                                                                   "8775").setNumber("28")
-                                                                                                          .setPublisher("IOP Publishing");
+  public static Article       skewOrthogonalPolynomialsAndRandomMatrixTheory         =
+                                                                             new Article("Generalized Christoffel-Darboux formula for skew-orthogonal polynomials and random matrix theory",
+                                                                                         "Saugata Ghosh",
+                                                                                         "2006",
+                                                                                         "Journal of Physics A: Mathematical and General",
+                                                                                         "39",
+                                                                                         "8775").setNumber("28")
+                                                                                                .setPublisher("IOP Publishing");
 
-  public static Book          skewOrthogonalRandomMatrices                           = new Book("Skew-Orthogonal Polynomials and Random Matrix Theory",
-                                                                                                "Saugata Ghosh",
-                                                                                                "2009").setSeries("CRM Monograph Series")
-                                                                                                       .setVolume("28")
-                                                                                                       .setPublisher("American Mathematical Society");
+  public static Book          skewOrthogonalRandomMatrices                           =
+                                                           new Book("Skew-Orthogonal Polynomials and Random Matrix Theory",
+                                                                    "Saugata Ghosh",
+                                                                    "2009").setSeries("CRM Monograph Series")
+                                                                           .setVolume("28")
+                                                                           .setPublisher("American Mathematical Society");
 
-  public static Book          specialFunctionsOfMathematicalPhysics                  = new Book("Formulas and Theorems for the Special Functions of Mathematical Physics",
-                                                                                                "Wilhelm Magnus, Fritz Oberhettinger, Raj Pal Soni",
-                                                                                                "1966").setPublisher("Springer")
-                                                                                                       .setSeries("Die Grundlehren der mathematischen Wissenschaften in Einzeldarstellungen")
-                                                                                                       .setVolume("52")
-                                                                                                       .setEdition("VIII, 508 p. ; 24 cm. 3rd enl. ed.");
+  public static Book          specialFunctionsOfMathematicalPhysics                  =
+                                                                    new Book("Formulas and Theorems for the Special Functions of Mathematical Physics",
+                                                                             "Wilhelm Magnus, Fritz Oberhettinger, Raj Pal Soni",
+                                                                             "1966").setPublisher("Springer")
+                                                                                    .setSeries("Die Grundlehren der mathematischen Wissenschaften in Einzeldarstellungen")
+                                                                                    .setVolume("52")
+                                                                                    .setEdition("VIII, 508 p. ; 24 cm. 3rd enl. ed.");
 
-  public static MastersThesis spectralMethodsInGaussianProcessApproximations         = new MastersThesis("Spectral Methods in Gaussian Process Approximations",
-                                                                                                         "David R. Burt",
-                                                                                                         "2018").setUniversity("University of Cambridge")
-                                                                                                                .setDepartment("Emmanuel College")
-                                                                                                                .setDegree("Master of Philosophy")
-                                                                                                                .setAddress("Cambridge, UK");
+  public static MastersThesis spectralMethodsInGaussianProcessApproximations         =
+                                                                             new MastersThesis("Spectral Methods in Gaussian Process Approximations",
+                                                                                               "David R. Burt",
+                                                                                               "2018").setUniversity("University of Cambridge")
+                                                                                                      .setDepartment("Emmanuel College")
+                                                                                                      .setDegree("Master of Philosophy")
+                                                                                                      .setAddress("Cambridge, UK");
 
-  public static Book          stationaryAndRelatedStochasticProcesses                = new Book("Stationary and Related Processes: Sample Function Properties and Their Applications",
-                                                                                                "Harald Cramér and M.R. Leadbetter",
-                                                                                                "1967").setSeries("Wiley Series in Probability and Mathematical Statistics");
+  public static Book          stationaryAndRelatedStochasticProcesses                =
+                                                                      new Book("Stationary and Related Processes: Sample Function Properties and Their Applications",
+                                                                               "Harald Cramér and M.R. Leadbetter",
+                                                                               "1967").setSeries("Wiley Series in Probability and Mathematical Statistics");
 
-  public static Book          stochasticFiniteElements                               = new Book("Stochastic finite elements: a spectral approach",
-                                                                                                "Ghanem, Roger G. and Spanos, Pol D.",
-                                                                                                "1991").setPublisher("Springer-Verlag")
-                                                                                                       .setAddress("Berlin, Heidelberg");
+  public static Book          stochasticFiniteElements                               =
+                                                       new Book("Stochastic finite elements: a spectral approach",
+                                                                "Ghanem, Roger G. and Spanos, Pol D.",
+                                                                "1991").setPublisher("Springer-Verlag")
+                                                                       .setAddress("Berlin, Heidelberg");
 
-  public static Article       stochasticProcessesAsCurvesInHilbertSpace              = new Article("Stochastic processes as curves in Hilbert space",
-                                                                                                   "Harald Cramér",
-                                                                                                   "1964",
-                                                                                                   "Theory of Probability & Its Applications",
-                                                                                                   "9",
-                                                                                                   "169–179").setNumber("2")
-                                                                                                             .setPublisher("SIAM");
+  public static Article       stochasticProcessesAsCurvesInHilbertSpace              =
+                                                                        new Article("Stochastic processes as curves in Hilbert space",
+                                                                                    "Harald Cramér",
+                                                                                    "1964",
+                                                                                    "Theory of Probability & Its Applications",
+                                                                                    "9",
+                                                                                    "169–179").setNumber("2")
+                                                                                              .setPublisher("SIAM");
 
-  public static Book          stochasticProcessesHarmonizableTheory                  = new Book("Stochastic Processes: Harmonizable Theory",
-                                                                                                "M.M. Rao",
-                                                                                                "2020").setPublisher("World Scientific Publishing Co. Pte. Ltd.")
-                                                                                                       .setAddress("Hackensack, NJ")
-                                                                                                       .setSeries("Series on Multivariate Analysis")
-                                                                                                       .setVolume("12")
-                                                                                                       .setIsbn("9789811213656");
+  public static Book          stochasticProcessesHarmonizableTheory                  =
+                                                                    new Book("Stochastic Processes: Harmonizable Theory",
+                                                                             "M.M. Rao",
+                                                                             "2020").setPublisher("World Scientific Publishing Co. Pte. Ltd.")
+                                                                                    .setAddress("Hackensack, NJ")
+                                                                                    .setSeries("Series on Multivariate Analysis")
+                                                                                    .setVolume("12")
+                                                                                    .setIsbn("9789811213656");
 
-  public static Book          stochasticProcessesInferenceTheory                     = new Book("Stochastic Processes: Inference Theory",
-                                                                                                "Malempati M. Rao",
-                                                                                                "2014").setPublisher("Springer")
-                                                                                                       .setEdition("2nd")
-                                                                                                       .setSeries("Springer Monographs in Mathematics");
+  public static Book          stochasticProcessesInferenceTheory                     =
+                                                                 new Book("Stochastic Processes: Inference Theory",
+                                                                          "Malempati M. Rao",
+                                                                          "2014").setPublisher("Springer")
+                                                                                 .setEdition("2nd")
+                                                                                 .setSeries("Springer Monographs in Mathematics");
 
-  public static Book          stochasticQuantumMechanicalMethods                     = new Book("Stochastic Methods in Quantum Mechanics",
-                                                                                                "Stanley P. Gudder",
-                                                                                                "1979").setSeries("North Holland Series in Probability and Applied Mathematics")
-                                                                                                       .setPublisher("Elsevier North Holland");
+  public static Book          stochasticQuantumMechanicalMethods                     =
+                                                                 new Book("Stochastic Methods in Quantum Mechanics",
+                                                                          "Stanley P. Gudder",
+                                                                          "1979").setSeries("North Holland Series in Probability and Applied Mathematics")
+                                                                                 .setPublisher("Elsevier North Holland");
 
-  public static Article       theBesselPolynomialMoments                             = new Article("The Besel Polynomial Moment Problem",
-                                                                                                   "A.M. Krall",
-                                                                                                   "1981",
-                                                                                                   "Acta Mathematica Academiae Scientiarum Hungarica",
-                                                                                                   "38",
-                                                                                                   "105-107");
+  public static Article       theBesselPolynomialMoments                             =
+                                                         new Article("The Besel Polynomial Moment Problem",
+                                                                     "A.M. Krall",
+                                                                     "1981",
+                                                                     "Acta Mathematica Academiae Scientiarum Hungarica",
+                                                                     "38",
+                                                                     "105-107");
 
-  public static Article       certainMatrixEnsemblesEigenvalueDistributions          = new Article("On the distribution of eigenvalues of certain matrix ensembles",
-                                                                                                   "{Bogomolny}, E. and {Bohigas}, O. and {Pato}, M.~P.",
-                                                                                                   "1997",
-                                                                                                   "Physical Review E",
-                                                                                                   "55",
-                                                                                                   "6707-6718").setNumber("6");
+  public static Article       certainMatrixEnsemblesEigenvalueDistributions          =
+                                                                            new Article("On the distribution of eigenvalues of certain matrix ensembles",
+                                                                                        "{Bogomolny}, E. and {Bohigas}, O. and {Pato}, M.~P.",
+                                                                                        "1997",
+                                                                                        "Physical Review E",
+                                                                                        "55",
+                                                                                        "6707-6718").setNumber("6");
 
-  public static Article       singularSelfAdjointDifferentialOperationExpansion      = new Article("The Expansion Theorem for Singular Self-Adjoint Linear Differential Operators",
-                                                                                                   "Norman Levinson",
-                                                                                                   "1954",
-                                                                                                   "Annals of Mathematics, Second Series",
-                                                                                                   "59",
-                                                                                                   "300-315").setNumber("2");
+  public static Article       singularSelfAdjointDifferentialOperationExpansion      =
+                                                                                new Article("The Expansion Theorem for Singular Self-Adjoint Linear Differential Operators",
+                                                                                            "Norman Levinson",
+                                                                                            "1954",
+                                                                                            "Annals of Mathematics, Second Series",
+                                                                                            "59",
+                                                                                            "300-315").setNumber("2");
 
-  public static Book          schrödingerOperatorTheoryTopics                        = new Book("Topics in the Theory of Schrödinger Operators",
-                                                                                                "Araki, H. and Ezawa, H.",
-                                                                                                "2004").setSeries("G - Reference,Information and Interdisciplinary Subjects Series")
-                                                                                                       .setPublisher("World Scientific");
+  public static Book          schrödingerOperatorTheoryTopics                        =
+                                                              new Book("Topics in the Theory of Schrödinger Operators",
+                                                                       "Araki, H. and Ezawa, H.",
+                                                                       "2004").setSeries("G - Reference,Information and Interdisciplinary Subjects Series")
+                                                                              .setPublisher("World Scientific");
 
-  public static Article       voroninUniversalityTheoremForTheRiemannZetaFunction    = new Article("On the Voronin’s universality theorem for the Riemann zeta-function",
-                                                                                                   "Ramunas Garunkštis",
-                                                                                                   "2003",
-                                                                                                   "Fizikos ir Matematikos Fakulteto Mokslinio Seminaro Darbai.(Proceedings of Scientific Seminar of the Faculty of Physics and Mathematics)",
-                                                                                                   "6",
-                                                                                                   "29-33").setPublisher("Siauliu Univ. Leidykla, Vilnius. (Siauliai Univ. Publishing house, Vilnius.)");
+  public static Article       voroninUniversalityTheoremForTheRiemannZetaFunction    =
+                                                                                  new Article("On the Voronin’s universality theorem for the Riemann zeta-function",
+                                                                                              "Ramunas Garunkštis",
+                                                                                              "2003",
+                                                                                              "Fizikos ir Matematikos Fakulteto Mokslinio Seminaro Darbai.(Proceedings of Scientific Seminar of the Faculty of Physics and Mathematics)",
+                                                                                              "6",
+                                                                                              "29-33").setPublisher("Siauliu Univ. Leidykla, Vilnius. (Siauliai Univ. Publishing house, Vilnius.)");
 
-  public static Article       waveFunctionOfTheUniverse                              = new Article("Wave function of the Universe",
-                                                                                                   "J.B. Hartle and S.W. Hawking",
-                                                                                                   "1983",
-                                                                                                   "Physical Review D",
-                                                                                                   "28",
-                                                                                                   "2965-2975").setNumber("12");
+  public static Article       waveFunctionOfTheUniverse                              =
+                                                        new Article("Wave function of the Universe",
+                                                                    "J.B. Hartle and S.W. Hawking",
+                                                                    "1983",
+                                                                    "Physical Review D",
+                                                                    "28",
+                                                                    "2965-2975").setNumber("12");
 
-  public static Book          whittakerAndWatsonCourseOfModernAnalysis               = new Book("A course of modern analysis: an introduction to the general theory of infinite processes and of analytic functions; with an account of the principal transcendental functions",
-                                                                                                "Edmund Taylor Whittaker, George Neville Watson",
-                                                                                                "1920").setPublisher("University Press");
+  public static Book          whittakerAndWatsonCourseOfModernAnalysis               =
+                                                                       new Book("A course of modern analysis: an introduction to the general theory of infinite processes and of analytic functions; with an account of the principal transcendental functions",
+                                                                                "Edmund Taylor Whittaker, George Neville Watson",
+                                                                                "1920").setPublisher("University Press");
 
   public static void main(String args[]) throws IOException
   {

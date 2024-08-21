@@ -164,7 +164,6 @@ public class ComplexFraction implements
   @Override
   public ComplexFraction div(ComplexFraction j, int bits, ComplexFraction result)
   {
-    assert !result.isZero();
     try ( Fraction denominator = new Fraction(); ComplexFraction temp = new ComplexFraction();)
     {
 

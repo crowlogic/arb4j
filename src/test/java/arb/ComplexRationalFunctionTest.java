@@ -190,11 +190,11 @@ public class ComplexRationalFunctionTest extends
     a.realPart.set("x + 1");
     a.imaginaryPart.set("1-x");
     ComplexFraction input = new ComplexFraction();
-    input.realPart.set(2);
-    input.imaginaryPart.set(-1);
+    input.realPart.set(2,3);
+    input.imaginaryPart.set(-3,4);
     ComplexFraction output = new ComplexFraction();
     a.evaluate(input, 0, prec, output);
-    //System.out.format("%s with x=%s = %s\n", a, input, output);
+    System.out.format("%s with x=%s = %s\n", a, input, output);
     assertEquals(2, output.realPart.getNumerator().getSignedValue());
     assertEquals(1, output.realPart.getDenominator().getSignedValue());
     assertEquals(-2, output.imaginaryPart.getNumerator().getSignedValue());

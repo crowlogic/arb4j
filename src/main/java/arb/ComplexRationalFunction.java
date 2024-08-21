@@ -294,8 +294,8 @@ public class ComplexRationalFunction implements
     try ( ComplexFraction b = new ComplexFraction())
     {
       realPart.evaluate(input, bits, result);
-      imaginaryPart.evaluate(input, bits, b).mul(imaginaryUnit, bits);
-      return result.add(b, bits);
+      imaginaryPart.evaluate(input, bits, b);
+      return result.sub(b, bits);
     }
   }
 
