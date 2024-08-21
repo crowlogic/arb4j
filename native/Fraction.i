@@ -49,7 +49,23 @@ import java.util.stream.Stream;
       return result.set(tmp);
     }
   }
-  
+
+  public Real sqrt(int bits, Real result)
+  {
+    assert bits > 0 : "bits must be strictly positive";
+    try ( Real tmp = new Real())
+    {
+      Real hmm = tmp.set(this);
+      System.out.format("about to sqrt %s with bits=%d\n", hmm,bits);
+      return hmm.sqrt(bits, result);
+    }
+  }
+
+  public Real floor(int bits, Real result)
+  {
+    return result.set(this).floor(bits, result);
+  }
+    
   public Fraction sin(int prec, Fraction result)
   {
     try ( Real tmp = new Real())

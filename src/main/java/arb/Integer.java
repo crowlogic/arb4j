@@ -44,12 +44,17 @@ public class Integer implements
 
   public static Integer express(String expression)
   {
-    return express(expression, null);
+    return express(expression, 128);
   }
 
-  public static Integer express(String expression, Context context)
+  public static Integer express(String expression, int bits)
   {
-    return IntegerNullaryFunction.compile(expression, context).evaluate(0);
+    return express(expression, null, bits);
+  }
+
+  public static Integer express(String expression, Context context, int bits)
+  {
+    return IntegerNullaryFunction.compile(expression, context).evaluate(bits);
   }
 
   public Integer set(Fraction f)

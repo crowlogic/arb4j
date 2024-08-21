@@ -15,12 +15,8 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
-import arb.Complex;
-import arb.ComplexPolynomial;
+import arb.*;
 import arb.Integer;
-import arb.RationalFunction;
-import arb.Real;
-import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
@@ -408,7 +404,7 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
     {
       return expression.coDomainType;
     }
-    else if ((argType.equals(Integer.class)
+    else if (((argType.equals(Integer.class) || argType.equals(Fraction.class))
                   && integerFunctionsWithRealResults.contains(functionName))
                   || (argType.equals(Complex.class)
                                 && complexFunctionsWithRealResults.contains(functionName)))

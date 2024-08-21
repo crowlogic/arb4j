@@ -33,10 +33,16 @@ public class ExpressionTest extends
     assertEquals(141.0, squareRootOfOneHalf.doubleValue());
   }
 
-  public void testSquareRootOfOneHalf()
+  public void testIntegerSquareRootOfOneHalf()
   {
     IntegerNullaryFunction expression          = IntegerNullaryFunction.compile("⌊100/√(1⁄2)⌋");
-    Integer                squareRootOfOneHalf = expression.evaluate();
+    Integer                squareRootOfOneHalf = expression.evaluate(128);
+    assertEquals(141, squareRootOfOneHalf.getUnsignedValue());
+  }
+
+  public void testIntegerSquareRootOfOneHalfToo()
+  {
+    Integer squareRootOfOneHalf = Integer.express("⌊100/√(1⁄2)⌋");
     assertEquals(141, squareRootOfOneHalf.getUnsignedValue());
   }
 
