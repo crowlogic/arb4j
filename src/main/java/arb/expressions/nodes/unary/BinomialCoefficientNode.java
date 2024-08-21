@@ -15,7 +15,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
-import arb.expressions.nodes.Variable;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
@@ -121,7 +121,7 @@ public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? ext
 
   @Override
   public Node<D, R, F>
-         integral(Variable<D, R, F> variable)
+         integral(VariableNode<D, R, F> variable)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
@@ -139,7 +139,7 @@ public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? ext
 
   @Override
   public Node<D, R, F>
-         derivative(Variable<D, R, F> variable)
+         derivative(VariableNode<D, R, F> variable)
   {
     assert false : "TODO";
     return null;

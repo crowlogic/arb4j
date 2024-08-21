@@ -111,7 +111,7 @@ public class SymbolPalette extends
     characters = chars.toArray(new String[chars.size()]);
     // columnsPerRow = (int) Math.ceil(Math.sqrt(chars.size()));
     System.out.format("colsPerRow=%s\n", columnsPerRow);
-    System.out.println("chars=" + chars );
+    System.out.println("chars=" + chars);
   }
 
   public static String[] characters;
@@ -119,7 +119,6 @@ public class SymbolPalette extends
   @Override
   public void start(Stage primaryStage)
   {
-    System.out.println("cool beans: ∏Π➔➔√⌋₎");
 
     textField = new TextField();
     textField.setEditable(true);

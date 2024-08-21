@@ -10,16 +10,15 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
-import arb.expressions.nodes.Variable;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class UnaryOperation<D, R, F extends Function<? extends D, ? extends R>>
-                                    extends
-                                    Node<D, R, F>
+public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ? extends R>> extends
+                                        Node<D, R, F>
 {
   @Override
   public MethodVisitor prepareStackForReuse(MethodVisitor mv)
@@ -35,9 +34,9 @@ public abstract class UnaryOperation<D, R, F extends Function<? extends D, ? ext
   }
 
   public Node<D, R, F> arg;
-  public String       intermediateVariableFieldName;
+  public String        intermediateVariableFieldName;
 
-  public UnaryOperation(Node<D, R, F> node, Expression<D, R, F> expression)
+  public UnaryOperationNode(Node<D, R, F> node, Expression<D, R, F> expression)
   {
     super(expression);
     this.arg = node;
@@ -77,7 +76,8 @@ public abstract class UnaryOperation<D, R, F extends Function<? extends D, ? ext
       }
       else
       {
-        intermediateVariableFieldName = expression.allocateIntermediateVariable(methodVisitor, resultType);
+        intermediateVariableFieldName = expression.allocateIntermediateVariable(methodVisitor,
+                                                                                resultType);
       }
     }
 
@@ -90,7 +90,7 @@ public abstract class UnaryOperation<D, R, F extends Function<? extends D, ? ext
   }
 
   @Override
-  public boolean dependsOn(Variable<D, R, F> variable)
+  public boolean dependsOn(VariableNode<D, R, F> variable)
   {
     return arg.dependsOn(variable);
   }

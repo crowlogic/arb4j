@@ -17,8 +17,8 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
-import arb.expressions.nodes.binary.Addition;
-import arb.expressions.nodes.binary.BinaryOperation;
+import arb.expressions.nodes.binary.AdditionNode;
+import arb.expressions.nodes.binary.BinaryOperationNode;
 import arb.functions.Function;
 
 /**
@@ -72,9 +72,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public abstract boolean isScalar();
 
-  public abstract Node<D, R, F> integral(Variable<D, R, F> variable);
+  public abstract Node<D, R, F> integral(VariableNode<D, R, F> variable);
 
-  public abstract Node<D, R, F> derivative(Variable<D, R, F> variable);
+  public abstract Node<D, R, F> derivative(VariableNode<D, R, F> variable);
 
   public abstract List<? extends Node<D, R, F>> getBranches();
 
@@ -109,9 +109,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * reliably used by the progenitor node in the {@link Expression} to store its
    * own result, thus saving heap allocations. The method should be overridden by
    * every subclass of {@link Node} to provide an appropriate response. For
-   * {@link LiteralConstantNode} and {@link Variable} nodes, they would always
-   * return false (since we cannot reuse them). For {@link BinaryOperation} nodes
-   * like {@link Addition}, a method of determining whether they're reusable based
+   * {@link LiteralConstantNode} and {@link VariableNode} nodes, they would always
+   * return false (since we cannot reuse them). For {@link BinaryOperationNode} nodes
+   * like {@link AdditionNode}, a method of determining whether they're reusable based
    * on the state of their operands would be in order. <br>
    * <br>
    * 
@@ -197,13 +197,13 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression);
 
-  public Variable<D, R, F> asVariable()
+  public VariableNode<D, R, F> asVariable()
   {
     assert isVariable() : this + " isn't a Variable";
-    return (Variable<D, R, F>) this;
+    return (VariableNode<D, R, F>) this;
   }
 
-  public boolean dependsOn(Variable<D, R, F> variable)
+  public boolean dependsOn(VariableNode<D, R, F> variable)
   {
     assert false : "TODO: implement in " + getClass();
     return false;

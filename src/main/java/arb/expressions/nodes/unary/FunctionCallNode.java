@@ -30,7 +30,7 @@ import arb.expressions.Expression;
 import arb.expressions.FunctionMapping;
 import arb.expressions.Parser;
 import arb.expressions.nodes.Node;
-import arb.expressions.nodes.Variable;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
@@ -61,9 +61,8 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>>
-                             extends
-                             UnaryOperation<D, R, F>
+public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>> extends
+                             UnaryOperationNode<D, R, F>
 {
 
   @Override
@@ -77,20 +76,25 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
 
   public String                   functionName;
 
-  HashSet<String>                 polynomialFunctionsWithQuasiPolyomialResults = new HashSet<>(Arrays.asList("sqrt",
-                                                                                                             "Γ"));
+  HashSet<String>                 polynomialFunctionsWithQuasiPolyomialResults =
+                                                                               new HashSet<>(Arrays.asList("sqrt",
+                                                                                                           "Γ"));
 
-  HashSet<String>                 integerFunctionsWithRealResults              = new HashSet<>(Arrays.asList("sqrt",
-                                                                                                             "tanh",
-                                                                                                             "log"));
+  HashSet<String>                 integerFunctionsWithRealResults              =
+                                                                  new HashSet<>(Arrays.asList("sqrt",
+                                                                                              "tanh",
+                                                                                              "log"));
 
-  HashSet<String>                 complexFunctionsWithRealResults              = new HashSet<>(Arrays.asList("arg"));
+  HashSet<String>                 complexFunctionsWithRealResults              =
+                                                                  new HashSet<>(Arrays.asList("arg"));
 
   public FunctionMapping<D, R, F> mapping;
 
   private boolean                 isBuiltinQuasiPolynomialFunctional;
 
-  public FunctionCallNode(String functionName, Node<D, R, F> argument, Expression<D, R, F> expression)
+  public FunctionCallNode(String functionName,
+                          Node<D, R, F> argument,
+                          Expression<D, R, F> expression)
   {
     super(argument,
           expression);
@@ -123,16 +127,19 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
     }
   }
 
-  public boolean checkForArgumentConversionNeed(FunctionMapping<D, R, F> functionMapping, boolean isNullaryFunction)
+  public boolean checkForArgumentConversionNeed(FunctionMapping<D, R, F> functionMapping,
+                                                boolean isNullaryFunction)
   {
-    return arg != null && !arg.getGeneratedType().equals(functionMapping.domain) && !isNullaryFunction;
+    return arg != null && !arg.getGeneratedType().equals(functionMapping.domain)
+                  && !isNullaryFunction;
   }
 
   private void checkForUndefinedReferenced(FunctionMapping<D, R, F> mapping)
   {
     if (mapping.instance == null && mapping.functionClass == null)
     {
-      throw new IllegalArgumentException(String.format("Undefined reference to function %s", mapping));
+      throw new IllegalArgumentException(String.format("Undefined reference to function %s",
+                                                       mapping));
     }
   }
 
@@ -162,7 +169,8 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
       designateAsRecursiveFunction(resultType);
     }
 
-    boolean isPolynomial = resultType.equals(RealPolynomial.class) || resultType.equals(ComplexPolynomial.class);
+    boolean isPolynomial = resultType.equals(RealPolynomial.class)
+                  || resultType.equals(ComplexPolynomial.class);
     isBuiltinQuasiPolynomialFunctional = isPolynomial
                   && polynomialFunctionsWithQuasiPolyomialResults.contains(functionName);
 
@@ -218,7 +226,8 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
 
     generateParameter(mv, (Class<? extends R>) functionMapping.domain, isNullaryFunction);
 
-    boolean needsArgTypeConversion = checkForArgumentConversionNeed(functionMapping, isNullaryFunction);
+    boolean needsArgTypeConversion = checkForArgumentConversionNeed(functionMapping,
+                                                                    isNullaryFunction);
 
     if (needsArgTypeConversion)
     {
@@ -226,8 +235,9 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
     }
   }
 
-  public MethodVisitor
-         generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> requisiteResultType, boolean bitless)
+  public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor,
+                                                   Class<?> requisiteResultType,
+                                                   boolean bitless)
   {
     Class<?> argType = getArgType();
     arg.generate(methodVisitor, argType);
@@ -243,10 +253,10 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   Type.getInternalName(domainType),
                                   functionName,
-                                  bitless ? Compiler.getMethodDescriptor(coDomainType,
-                                                                         coDomainType) : Compiler.getMethodDescriptor(coDomainType,
-                                                                                                                      int.class,
-                                                                                                                      coDomainType),
+                                  bitless ? Compiler.getMethodDescriptor(coDomainType, coDomainType)
+                                          : Compiler.getMethodDescriptor(coDomainType,
+                                                                         int.class,
+                                                                         coDomainType),
                                   false);
 
     generatedType = requisiteResultType;
@@ -286,7 +296,8 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
     return mv;
   }
 
-  private void generateParameter(MethodVisitor mv, Class<? extends R> argType, boolean isNullaryFunction)
+  private void
+          generateParameter(MethodVisitor mv, Class<? extends R> argType, boolean isNullaryFunction)
   {
     if (isNullaryFunction)
     {
@@ -331,7 +342,7 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
   }
 
   @Override
-  public Node<D, R, F> integral(Variable<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
@@ -350,7 +361,9 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
 
   private void loadFunctionReferenceOntoStack(MethodVisitor mv, FunctionMapping<D, R, F> mapping)
   {
-    expression.loadFieldOntoStack(loadThisOntoStack(mv), functionName, mapping.functionFieldDescriptor());
+    expression.loadFieldOntoStack(loadThisOntoStack(mv),
+                                  functionName,
+                                  mapping.functionFieldDescriptor());
   }
 
   @SuppressWarnings("unchecked")
@@ -369,14 +382,16 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
 
   public FunctionMapping<D, R, F> registerSelfReferrentialFunctionMapping()
   {
-    FunctionMapping<D, R, F> mapping = expression.context.registerFunctionMapping(functionName,
-                                                                                  null,
-                                                                                  expression.domainType,
-                                                                                  expression.coDomainType,
-                                                                                  expression.functionClass,
-                                                                                  false,
-                                                                                  expression,
-                                                                                  expression.expression);
+    FunctionMapping<D,
+                  R,
+                  F> mapping = expression.context.registerFunctionMapping(functionName,
+                                                                          null,
+                                                                          expression.domainType,
+                                                                          expression.coDomainType,
+                                                                          expression.functionClass,
+                                                                          false,
+                                                                          expression,
+                                                                          expression.expression);
     expression.referencedFunctions.put(functionName, mapping);
     return mapping;
   }
@@ -393,20 +408,24 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
     {
       return expression.coDomainType;
     }
-    else if ((argType.equals(Integer.class) && integerFunctionsWithRealResults.contains(functionName))
-                  || (argType.equals(Complex.class) && complexFunctionsWithRealResults.contains(functionName)))
+    else if ((argType.equals(Integer.class)
+                  && integerFunctionsWithRealResults.contains(functionName))
+                  || (argType.equals(Complex.class)
+                                && complexFunctionsWithRealResults.contains(functionName)))
     {
       return Real.class;
     }
     else
     {
-      boolean hasQuasipolynomialResult = polynomialFunctionsWithQuasiPolyomialResults.contains(functionName);
+      boolean hasQuasipolynomialResult =
+                                       polynomialFunctionsWithQuasiPolyomialResults.contains(functionName);
       boolean isPolynomialArg          = argType.equals(RealPolynomial.class)
                     || argType.equals(ComplexPolynomial.class);
       if (isPolynomialArg && hasQuasipolynomialResult)
       {
         assert false : "replace quasipolynomials this with functionals.. that is, the coDomain is a function whose domain is the polynomial and whose range is the function applied to the pointwise evaluation of the polynomial argument";
-        return scalarType(argType).equals(Real.class) ? RationalFunction.class : ComplexPolynomial.class;
+        return scalarType(argType).equals(Real.class) ? RationalFunction.class
+                                                      : ComplexPolynomial.class;
       }
       else
       {
@@ -417,9 +436,10 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
 
   private void assignFunctionName()
   {
-    this.functionName = Parser.replaceArrowsEllipsesAndSuperscriptAlphabeticalExponents(functionName)
-                              .replaceAll("ln", "log")
-                              .replaceAll("√", "sqrt");
+    this.functionName =
+                      Parser.replaceArrowsEllipsesAndSuperscriptAlphabeticalExponents(functionName)
+                            .replaceAll("ln", "log")
+                            .replaceAll("√", "sqrt");
   }
 
   @Override
@@ -433,8 +453,9 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
-                                                                                       Node<E, S, G> transformation)
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<D, R, F>
+         substitute(String variable, Node<E, S, G> transformation)
   {
     arg = arg.substitute(variable, transformation);
     return this;
@@ -460,13 +481,16 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
   @Override
   public String typeset()
   {
-    return format("\\%s(%s)",
-                  functionName.replaceAll("√", "sqrt").replaceAll("J0", "J_0").replaceAll("Γ", "Gamma"),
+    String name = functionName.replaceAll("√", "sqrt")
+                              .replaceAll("J0", "J_0")
+                              .replaceAll("Γ", "Gamma");
+    return format(name.equals("sqrt") ? "\\%s{%s}" : "\\%s(%s)",
+                  name,
                   arg == null ? "" : arg.typeset());
   }
 
   @Override
-  public Node<D, R, F> derivative(Variable<D, R, F> variable)
+  public Node<D, R, F> derivative(VariableNode<D, R, F> variable)
   {
     assert false : "TODO";
     return null;

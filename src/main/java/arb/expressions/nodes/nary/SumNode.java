@@ -22,7 +22,7 @@ import arb.functions.Function;
  *      {@link TheArb4jLibrary}
  */
 public class SumNode<D, C, F extends Function<? extends D, ? extends C>> extends
-                NAryOperation<D, C, F>
+                NAryOperationNode<D, C, F>
 {
 
   public SumNode(Expression<D, C, F> expression)

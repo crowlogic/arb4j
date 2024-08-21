@@ -6,15 +6,15 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
-import arb.expressions.nodes.Variable;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Division<D, R, F extends Function<? extends D, ? extends R>> extends
-                     BinaryOperation<D, R, F>
+public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> extends
+                     BinaryOperationNode<D, R, F>
 {
   @Override
   public boolean hasSingleLeaf()
@@ -22,7 +22,7 @@ public class Division<D, R, F extends Function<? extends D, ? extends R>> extend
     return false;
   }
 
-  public Division(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
+  public DivisionNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
     super(expression,
           left,
@@ -44,7 +44,7 @@ public class Division<D, R, F extends Function<? extends D, ? extends R>> extend
   }
 
   @Override
-  public Node<D, R, F> integral(Variable<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
    // return  new 
     assert false : "TODO: implement integration rule for division, left=" + left + " right=" + right;
@@ -56,13 +56,13 @@ public class Division<D, R, F extends Function<? extends D, ? extends R>> extend
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new Division<E, S, G>(newExpression,
+    return new DivisionNode<E, S, G>(newExpression,
                                  left.spliceInto(newExpression),
                                  right.spliceInto(newExpression));
   }
 
   @Override
-  public Node<D, R, F> derivative(Variable<D, R, F> variable)
+  public Node<D, R, F> derivative(VariableNode<D, R, F> variable)
   {
     assert false : "TODO";
     return null;

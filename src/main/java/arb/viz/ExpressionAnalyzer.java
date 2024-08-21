@@ -5,12 +5,11 @@ import static arb.utensils.Utensils.wrapOrThrow;
 import java.util.Map;
 
 import arb.Integer;
-import arb.Real;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
-import arb.functions.rational.RationalFunctionSequence;
+import arb.functions.real.RealFunction;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.scene.Scene;
@@ -29,18 +28,17 @@ public class ExpressionAnalyzer extends
   Expression<?, ?, ?> expr;
   Function<?, ?>      instance;
   Object              result;
-  Real                x;
-  Integer             n;
 
   @SuppressWarnings("resource")
   public Expression<?, ?, ?> getExpression()
   {
-    n       = Integer.named("n").set(3);
-    x       = new Real().setName("x").set(2.3);
-    context = new Context(n,
-                          x);
-    return RationalFunctionSequence.compile("n➔(R(n,½;x)*sin(x) - R(n-1,3⁄2;x)*cos(x))/x");
+
+    context = new Context(Integer.named("n").set(3));
+    return RealFunction.compile("Ψₖ:√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)", context);
   }
+
+  // return RationalFunctionSequence.compile("n➔(R(n,½;x)*sin(x) -
+  // R(n-1,3⁄2;x)*cos(x))/x");
 
   public void expandTreeView(TreeItem<?> item)
   {

@@ -19,13 +19,13 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.nodes.Node;
-import arb.expressions.nodes.Variable;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.sequences.Sequence;
 
 /**
  * {@link Context} for the {@link Expression} {@link Compiler} to use for the
- * resolution of {@link Variable} and {@link Function} references (in addition
+ * resolution of {@link VariableNode} and {@link Function} references (in addition
  * to those which are member-functions of the types)
  * 
  * <p>

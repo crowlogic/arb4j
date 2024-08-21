@@ -5,12 +5,14 @@ import static arb.expressions.Compiler.loadInputParameter;
 import static arb.expressions.Compiler.loadResultParameter;
 import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
+
 import arb.Complex;
 import arb.Fraction;
 import arb.Integer;
@@ -28,11 +30,12 @@ import arb.expressions.nodes.nary.ProductNode;
 import arb.functions.Function;
 
 /**
- * This class represents a {@link Variable} node within an {@link Expression} by
- * extending the {@link Node} class to provide additional functionality for
- * managing {@link VariableReference}s those registered in the {@link Context}
- * and or those which are inputs to the expression, or any upstream expression
- * (in the case of nested-expressions such as for {@link ProductNode}s
+ * This class represents a {@link VariableNode} node within an
+ * {@link Expression} by extending the {@link Node} class to provide additional
+ * functionality for managing {@link VariableReference}s those registered in the
+ * {@link Context} and or those which are inputs to the expression, or any
+ * upstream expression (in the case of nested-expressions such as for
+ * {@link ProductNode}s
  *
  * <p>
  * A variable can either be the independent variable , or the independent(input)
@@ -63,8 +66,8 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Variable<D, R, F extends Function<? extends D, ? extends R>> extends
-                     Node<D, R, F>
+public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> extends
+                         Node<D, R, F>
 {
 
   @Override
@@ -75,7 +78,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
   }
 
   @Override
-  public boolean dependsOn(Variable<D, R, F> variable)
+  public boolean dependsOn(VariableNode<D, R, F> variable)
   {
     return equals(variable);
   }
@@ -126,10 +129,10 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
 
   public boolean                    ascendentInput;
 
-  public Variable(Expression<D, R, F> expression,
-                  VariableReference<D, R, F> reference,
-                  int startPos,
-                  boolean resolve)
+  public VariableNode(Expression<D, R, F> expression,
+                      VariableReference<D, R, F> reference,
+                      int startPos,
+                      boolean resolve)
   {
     super(expression);
     Variables variables = expression.variables;
@@ -141,7 +144,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
                   && reference.name.equals(expression.functionName)) : "variable name clashes with "
                                                                        + "the function name since it's a recursve function";
 
-    Variable<D, R, F> existingVariable = expression.getReference(reference.name);
+    VariableNode<D, R, F> existingVariable = expression.getReference(reference.name);
     if (existingVariable != null)
     {
       this.reference.type = existingVariable.reference.type;
@@ -192,7 +195,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
       return false;
     if (getClass() != obj.getClass())
       return false;
-    var other = (Variable<?, ?, ?>) obj;
+    var other = (VariableNode<?, ?, ?>) obj;
     return Objects.equals(reference, other.reference);
   }
 
@@ -325,7 +328,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     return null;
   }
 
-  public Variable<D, R, F> resolveReference()
+  public VariableNode<D, R, F> resolveReference()
   {
     if (Expression.trace)
     {
@@ -374,7 +377,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
                                                     expression.indeterminateVariable));
         }
 
-        if (!Variable.this.equals(expression.indeterminateVariable) && Expression.trace)
+        if (!VariableNode.this.equals(expression.indeterminateVariable) && Expression.trace)
         {
           System.err.format("Expression(#%s) declaring %s to be the indeterminant in %s\nvariables=%s\n\n",
                             System.identityHashCode(expression),
@@ -418,7 +421,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     return false;
   }
 
-  public void resolveIndependentVariable(Variable<D, R, F> inputVariable)
+  public void resolveIndependentVariable(VariableNode<D, R, F> inputVariable)
   {
     assert (inputVariable == null
                   || inputVariable.equals(expression.independentVariable)) : "inputVariable is already "
@@ -442,13 +445,13 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     reference.type                 = expression.domainType;
   }
 
-  public boolean isIndependent(Variable<D, R, F> inputVariable)
+  public boolean isIndependent(VariableNode<D, R, F> inputVariable)
   {
     return equals(inputVariable) || (inputVariable == null && !expression.references(reference)
                   && !expression.isNullaryPolynomialFunction());
   }
 
-  public void resolveInheritedVariableReference(Variable<D, R, F> variable)
+  public void resolveInheritedVariableReference(VariableNode<D, R, F> variable)
   {
 
     var parentExpression = expression.ascendentExpression;
@@ -468,8 +471,8 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     }
   }
 
-  public Variable<?, ?, ?> resolve(VariableReference<D, R, F> reference,
-                                   Expression<?, ?, ?> ascendentExpression)
+  public VariableNode<?, ?, ?> resolve(VariableReference<D, R, F> reference,
+                                       Expression<?, ?, ?> ascendentExpression)
   {
     var ascendentInputNode = ascendentExpression.independentVariable;
 
@@ -522,7 +525,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     return List.of();
   }
 
-  public Variable<D, R, F> resolveType()
+  public VariableNode<D, R, F> resolveType()
   {
     resolveReference();
     assert type() != null : "type() STILL null even after calling resolveReference";
@@ -530,7 +533,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
   }
 
   @Override
-  public Node<D, R, F> integral(Variable<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
@@ -547,10 +550,10 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new Variable<E, S, G>(newExpression,
-                                 reference.spliceInto(newExpression),
-                                 -1,
-                                 true);
+    return new VariableNode<E, S, G>(newExpression,
+                                     reference.spliceInto(newExpression),
+                                     -1,
+                                     true);
   }
 
   @Override
@@ -564,14 +567,14 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     return getName().equals(variable);
   }
 
-  public Variable<D, R, F> renameTo(String to)
+  public VariableNode<D, R, F> renameTo(String to)
   {
     reference.name = to;
     return this;
   }
 
   @Override
-  public Node<D, R, F> derivative(Variable<D, R, F> variable)
+  public Node<D, R, F> derivative(VariableNode<D, R, F> variable)
   {
     assert false : "TODO";
     return null;

@@ -37,7 +37,7 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public boolean dependsOn(Variable<D, R, F> variable)
+  public boolean dependsOn(VariableNode<D, R, F> variable)
   {
     return elements.stream().anyMatch(node -> node.dependsOn(variable));
   }
@@ -67,7 +67,7 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public Node<D, R, F> integral(Variable<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
@@ -218,7 +218,7 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public Node<D, R, F> derivative(Variable<D, R, F> variable)
+  public Node<D, R, F> derivative(VariableNode<D, R, F> variable)
   {
     assert false : "TODO";
     return null;

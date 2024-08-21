@@ -16,7 +16,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
-import arb.expressions.nodes.Variable;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.rational.RationalFunctionSequence;
 import arb.functions.sequences.LommelPolynomialSequence;
@@ -131,7 +131,6 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     }
     else
     {
-//      /assert false : "ass";
       invokeMethod(mv,
                    RationalFunction.class,
                    "evaluate",
@@ -162,13 +161,13 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   }
 
   @Override
-  public Node<D, C, F> integral(Variable<D, C, F> variable)
+  public Node<D, C, F> integral(VariableNode<D, C, F> variable)
   {
     throw new UnsupportedOperationException("Integration of Lommel polynomials is not implemented");
   }
 
   @Override
-  public Node<D, C, F> derivative(Variable<D, C, F> variable)
+  public Node<D, C, F> derivative(VariableNode<D, C, F> variable)
   {
     throw new UnsupportedOperationException("Differentiation of Lommel polynomials is not implemented");
   }

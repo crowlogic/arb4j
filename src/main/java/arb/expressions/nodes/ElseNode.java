@@ -83,7 +83,7 @@ public class ElseNode<D, R, F extends Function<? extends D, ? extends R>> extend
   }
 
   @Override
-  public Node<D, R, F> integral(Variable<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
@@ -112,7 +112,7 @@ public class ElseNode<D, R, F extends Function<? extends D, ? extends R>> extend
 
   @Override
   public Node<D, R, F>
-         derivative(Variable<D, R, F> variable)
+         derivative(VariableNode<D, R, F> variable)
   {
     assert false : "TODO";
     return null;

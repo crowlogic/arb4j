@@ -31,7 +31,7 @@ import arb.expressions.Expression;
 import arb.expressions.FunctionMapping;
 import arb.expressions.IntermediateVariable;
 import arb.expressions.nodes.Node;
-import arb.expressions.nodes.Variable;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.sequences.Sequence;
 import arb.utensils.Utensils;
@@ -70,7 +70,7 @@ import arb.utensils.Utensils;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> extends
+public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                           Node<D, R, F>
 {
 
@@ -118,7 +118,7 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
 
   public List<Node<D, R, F>>                      spliced;
 
-  public NAryOperation(Expression<D, R, F> expression,
+  public NAryOperationNode(Expression<D, R, F> expression,
                        String identity,
                        String prefix,
                        String operation,
@@ -141,7 +141,7 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
     evaluateCoDomainSpecification();
   }
 
-  public NAryOperation(Expression<D, R, F> expression,
+  public NAryOperationNode(Expression<D, R, F> expression,
                        String identity,
                        String prefix,
                        String operation,
@@ -447,7 +447,7 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
   }
 
   @Override
-  public Node<D, R, F> integral(Variable<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
@@ -650,7 +650,7 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
     }
   }
 
-  protected void logInputPropagationToFactorClass(Variable<D, R, F> independentVariableNode)
+  protected void logInputPropagationToFactorClass(VariableNode<D, R, F> independentVariableNode)
   {
     System.out.format("%s.propagateInputToFactorClass( factorFunctionFieldName=%s,\n"
                       + "%sindependentVariableNode=%s,\n"
@@ -713,7 +713,7 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new NAryOperation<E, S, G>(newExpression,
+    return new NAryOperationNode<E, S, G>(newExpression,
                                       identity,
                                       prefix,
                                       operation,
@@ -814,7 +814,7 @@ public class NAryOperation<D, R, F extends Function<? extends D, ? extends R>> e
   }
 
   @Override
-  public Node<D, R, F> derivative(Variable<D, R, F> variable)
+  public Node<D, R, F> derivative(VariableNode<D, R, F> variable)
   {
     assert false : "TODO";
     return null;

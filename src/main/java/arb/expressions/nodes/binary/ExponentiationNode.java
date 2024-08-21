@@ -6,7 +6,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
-import arb.expressions.nodes.Variable;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
@@ -15,8 +15,8 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Exponentiation<D, R, F extends Function<? extends D, ? extends R>> extends
-                           BinaryOperation<D, R, F>
+public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends R>> extends
+                           BinaryOperationNode<D, R, F>
 {
 
   @Override
@@ -25,7 +25,7 @@ public class Exponentiation<D, R, F extends Function<? extends D, ? extends R>> 
     return format("(%s)^{(%s)}", left.typeset(), right.typeset());
   }
 
-  public Exponentiation(Expression<D, R, F> expression, Node<D, R, F> base, Node<D, R, F> exponent)
+  public ExponentiationNode(Expression<D, R, F> expression, Node<D, R, F> base, Node<D, R, F> exponent)
   {
     super(expression,
           base,
@@ -41,7 +41,7 @@ public class Exponentiation<D, R, F extends Function<? extends D, ? extends R>> 
   }
 
   @Override
-  public Node<D, R, F> integral(Variable<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
@@ -52,13 +52,13 @@ public class Exponentiation<D, R, F extends Function<? extends D, ? extends R>> 
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new Exponentiation<E, S, G>(newExpression,
+    return new ExponentiationNode<E, S, G>(newExpression,
                                        left.spliceInto(newExpression),
                                        right.spliceInto(newExpression));
   }
 
   @Override
-  public Node<D, R, F> derivative(Variable<D, R, F> variable)
+  public Node<D, R, F> derivative(VariableNode<D, R, F> variable)
   {
     assert false : "TODO";
     return null;

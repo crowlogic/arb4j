@@ -13,7 +13,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class AbsoluteValue<D, R, F extends Function<? extends D, ? extends R>>
+public class AbsoluteValueNode<D, R, F extends Function<? extends D, ? extends R>>
                           extends
                           FunctionCallNode<D, R, F>
 {
@@ -36,7 +36,7 @@ public class AbsoluteValue<D, R, F extends Function<? extends D, ? extends R>>
     return Real.class;
   }
 
-  public AbsoluteValue(Expression<D, R, F> parser, Node<D, R, F> argument)
+  public AbsoluteValueNode(Expression<D, R, F> parser, Node<D, R, F> argument)
   {
     super("abs",
           argument,

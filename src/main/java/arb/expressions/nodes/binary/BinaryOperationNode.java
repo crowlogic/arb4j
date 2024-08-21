@@ -19,7 +19,7 @@ import arb.exceptions.CompilerException;
 import arb.expressions.Expression;
 import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
-import arb.expressions.nodes.Variable;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
@@ -27,7 +27,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? extends R>> extends
+public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                      Node<D, R, F>
 {
 
@@ -52,7 +52,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
   }
 
   @Override
-  public Node<D, R, F> integral(Variable<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     assert false : "TODO";
     return null;
@@ -75,7 +75,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
   }
 
   @Override
-  public boolean dependsOn(Variable<D, R, F> variable)
+  public boolean dependsOn(VariableNode<D, R, F> variable)
   {
     var dependsOnLeft  = left != null && left.dependsOn(variable);
     var dependsOnRight = right != null && right.dependsOn(variable);
@@ -97,7 +97,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
       return false;
     if (getClass() != obj.getClass())
       return false;
-    BinaryOperation<?, ?, ?> other = (BinaryOperation<?, ?, ?>) obj;
+    BinaryOperationNode<?, ?, ?> other = (BinaryOperationNode<?, ?, ?>) obj;
     return Objects.equals(left, other.left) && Objects.equals(operation, other.operation)
                   && Objects.equals(right, other.right) && Objects.equals(symbol, other.symbol);
   }
@@ -222,7 +222,7 @@ public abstract class BinaryOperation<D, R, F extends Function<? extends D, ? ex
     return generatedType;
   }
 
-  public BinaryOperation(Expression<D, R, F> expression,
+  public BinaryOperationNode(Expression<D, R, F> expression,
                          Node<D, R, F> left,
                          String operation,
                          Node<D, R, F> right,

@@ -23,7 +23,7 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.ElseNode;
 import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
-import arb.expressions.nodes.Variable;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
@@ -41,7 +41,7 @@ import arb.functions.Function;
  */
 public class WhenNode<D, R, F extends Function<? extends D, ? extends R>>
                  extends
-                 UnaryOperation<D, R, F>
+                 UnaryOperationNode<D, R, F>
 {
 
   private static final String INTEGER_CLASS_INTERNAL_NAME = Type.getInternalName(Integer.class);
@@ -51,7 +51,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>>
           void
           evaluateCase(Expression<D, R, F> expression,
                        TreeMap<Integer, Node<D, R, F>> cases,
-                       Variable<D, R, F> variable)
+                       VariableNode<D, R, F> variable)
   {
     if (!variable.reference.equals(expression.independentVariable.reference))
     {
@@ -138,12 +138,12 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>>
     }
     else if (node.isVariable())
     {
-      Variable<D, R, F> variable = (Variable<D, R, F>) node;
+      VariableNode<D, R, F> variable = (VariableNode<D, R, F>) node;
       evaluateCase(expression, cases, variable);
     }
     else
     {
-      throw new CompilerException("the cases of the when statement must be either an else statement or a Variable but it was a "
+      throw new CompilerException("the cases of the when statement must be either an else statement or a VariableNode but it was a "
                     + node.getClass());
     }
   }
@@ -247,7 +247,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public Node<D, R, F> integral(Variable<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
@@ -280,7 +280,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public Node<D, R, F> derivative(Variable<D, R, F> variable)
+  public Node<D, R, F> derivative(VariableNode<D, R, F> variable)
   {
     assert false : "TODO";
     return null;

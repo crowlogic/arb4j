@@ -7,43 +7,42 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
+ * Factorialize a number, where the factorial is of course defined by
+ * 
+ * <pre>
+ *   n! = n*(n - 1)!
+ * </pre>
+ * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Negation<D, R, F extends Function<? extends D, ? extends R>>
-                     extends
-                     FunctionCallNode<D, R, F>
+public class FactorialNode<D, R, F extends Function<? extends D, ? extends R>> extends
+                          FunctionCallNode<D, R, F>
 {
-
-  @Override
-  public Class<?> type()
-  {
-    return arg.type();
-  }
 
   @Override
   public String toString()
   {
-    return String.format("-%s", arg);
+    return String.format(arg.isLeaf() ? "%s!" : "(%s)!", arg);
   }
 
   @Override
   public String typeset()
   {
-    return String.format("-%s", arg.typeset());
+    return String.format(arg.isLeaf() ? "%s!" : "(%s)!", arg.typeset());
   }
 
   @Override
-  public boolean isBitless()
+  public Class<?> type()
   {
-    return true;
+    return arb.Integer.class;
   }
 
-  public Negation(Expression<D, R, F> expression, Node<D, R, F> argument)
+  public FactorialNode(Expression<D, R, F> parser, Node<D, R, F> argument)
   {
-    super("neg",
+    super("factorial",
           argument,
-          expression);
+          parser);
   }
 
   @Override
@@ -52,5 +51,4 @@ public class Negation<D, R, F extends Function<? extends D, ? extends R>>
     return false;
   }
 
- 
 }

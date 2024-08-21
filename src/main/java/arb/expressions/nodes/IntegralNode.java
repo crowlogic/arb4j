@@ -53,7 +53,7 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>>
 
   Node<D, R, F>                                                upperLimit;
 
-  Variable<D, R, F>                                            integrationVariable;
+  VariableNode<D, R, F>                                            integrationVariable;
 
   Function<? extends R, ? extends R>                           integralFunction;
 
@@ -85,7 +85,7 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>>
   public IntegralNode(Expression<D, R, F> expression)
   {
     super(expression);
-    integrationVariable = new Variable<>(expression,
+    integrationVariable = new VariableNode<>(expression,
                                          new VariableReference<>(expression.parseName()),
                                          expression.position,
                                          true);
@@ -262,7 +262,7 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public Node<D, R, F> integral(Variable<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
@@ -295,7 +295,7 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public Node<D, R, F> derivative(Variable<D, R, F> variable)
+  public Node<D, R, F> derivative(VariableNode<D, R, F> variable)
   {
     return integrand;
   }

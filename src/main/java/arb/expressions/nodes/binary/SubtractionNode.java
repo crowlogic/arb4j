@@ -9,15 +9,15 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
-import arb.expressions.nodes.Variable;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Subtraction<D, R, F extends Function<? extends D, ? extends R>> extends
-                        BinaryOperation<D, R, F>
+public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>> extends
+                        BinaryOperationNode<D, R, F>
 {
 
   @Override
@@ -50,7 +50,7 @@ public class Subtraction<D, R, F extends Function<? extends D, ? extends R>> ext
     return format("\\left(%s-%s\\right)", "0".equals(lhs) ? "" : lhs, right.typeset());
   }
 
-  public Subtraction(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
+  public SubtractionNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
     super(expression,
           left,
@@ -66,7 +66,7 @@ public class Subtraction<D, R, F extends Function<? extends D, ? extends R>> ext
   }
 
   @Override
-  public Node<D, R, F> integral(Variable<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
@@ -77,13 +77,13 @@ public class Subtraction<D, R, F extends Function<? extends D, ? extends R>> ext
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new Subtraction<E, S, G>(newExpression,
+    return new SubtractionNode<E, S, G>(newExpression,
                                     left.spliceInto(newExpression),
                                     right.spliceInto(newExpression));
   }
 
   @Override
-  public Node<D, R, F> derivative(Variable<D, R, F> variable)
+  public Node<D, R, F> derivative(VariableNode<D, R, F> variable)
   {
     assert false : "TODO";
     return null;

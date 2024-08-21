@@ -12,12 +12,12 @@
  * {@link arb.expressions.nodes.Node}. This flexible structure allows for
  * parsing and and executing many expressions, with support for
  * {@link arb.expressions.nodes.LiteralConstantNode},
- * {@link arb.expressions.nodes.Variable}s,
- * {@link arb.expressions.nodes.binary.BinaryOperation}s, and
- * {@link arb.expressions.nodes.unary.UnaryOperation}s such as
+ * {@link arb.expressions.nodes.VariableNode}s,
+ * {@link arb.expressions.nodes.binary.BinaryOperationNode}s, and
+ * {@link arb.expressions.nodes.unary.UnaryOperationNode}s such as
  * {@link arb.expressions.nodes.unary.WhenNode} and the related
  * {@link arb.expressions.nodes.ElseNode} node as well as
- * {@link arb.expressions.nodes.nary.NAryOperation}s like
+ * {@link arb.expressions.nodes.nary.NAryOperationNode}s like
  * {@link arb.expressions.nodes.nary.ProductNode} and
  * {@link arb.expressions.nodes.nary.SumNode}
  *

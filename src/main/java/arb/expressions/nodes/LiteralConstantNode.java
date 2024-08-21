@@ -26,7 +26,7 @@ import arb.exceptions.ArbException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
-import arb.expressions.nodes.binary.Multiplication;
+import arb.expressions.nodes.binary.MultiplicationNode;
 import arb.functions.Function;
 import arb.utensils.Utensils;
 
@@ -77,7 +77,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
                                                                                     int.class);
 
   @Override
-  public boolean dependsOn(Variable<D, R, F> variable)
+  public boolean dependsOn(VariableNode<D, R, F> variable)
   {
     return false;
   }
@@ -370,9 +370,9 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   }
 
   @Override
-  public Node<D, R, F> integral(Variable<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
-    return new Multiplication<>(expression,
+    return new MultiplicationNode<>(expression,
                                 this,
                                 variable);
   }
@@ -400,7 +400,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   }
 
   @Override
-  public Node<D, R, F> derivative(Variable<D, R, F> variable)
+  public Node<D, R, F> derivative(VariableNode<D, R, F> variable)
   {
     return new LiteralConstantNode<>(expression,
                                      "0");

@@ -4,10 +4,10 @@ import java.util.Set;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.nodes.binary.BinaryOperation;
+import arb.expressions.nodes.binary.BinaryOperationNode;
 
 /**
- * A {@link Magma} consists of a set M and a {@link BinaryOperation} (•)
+ * A {@link Magma} consists of a set M and a {@link BinaryOperationNode} (•)
  * that maps any two elements a, b ∈ M to another element a • b ∈ M.
  * <p>
  * To qualify as a {@link Magma}, the {@link Set} and operation (M, •) must satisfy the closure

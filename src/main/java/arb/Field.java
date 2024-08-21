@@ -8,11 +8,11 @@ import arb.algebra.Ring;
 import arb.annotations.Commutative;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.nodes.binary.Addition;
-import arb.expressions.nodes.binary.Multiplication;
+import arb.expressions.nodes.binary.AdditionNode;
+import arb.expressions.nodes.binary.MultiplicationNode;
 
 /**
- * a set of elements such that {@link Addition} and {@link Multiplication} are
+ * a set of elements such that {@link AdditionNode} and {@link MultiplicationNode} are
  * {@link Commutative} and associative and multiplication is distributive over
  * addition and there are two elements 0 and 1; "the set of all rational numbers
  * is a field"
