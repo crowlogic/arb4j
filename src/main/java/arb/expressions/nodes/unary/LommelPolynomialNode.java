@@ -41,12 +41,11 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
                                  FunctionCallNode<D, C, F>
 {
 
-  public Node<D, C, F>  order;
-  public Node<D, C, F>  index;
-  public final Class<?> sequenceClass = LommelPolynomialSequence.class;
-  public String         seqFieldName;
-  public String         elementFieldName;
-  public Class<?>       scalarType;
+  public Node<D, C, F> order;
+  public Node<D, C, F> index;
+  public String        seqFieldName;
+  public String        elementFieldName;
+  public Class<?>      scalarType;
 
   public LommelPolynomialNode(Expression<D, C, F> expression)
   {
@@ -58,7 +57,8 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     arg   = expression.require(';').resolve();
     expression.require(')');
     scalarType       = Compiler.scalarType(expression.coDomainType);
-    seqFieldName     = expression.newIntermediateVariable("seq", sequenceClass, true);
+    seqFieldName     =
+                 expression.newIntermediateVariable("seq", LommelPolynomialSequence.class, true);
     elementFieldName = expression.newIntermediateVariable("element", RationalFunction.class, true);
 
     if (Expression.trace)
@@ -68,12 +68,14 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     }
 
     expression.registerInitializer(this::generateSequenceInitializer);
+
+    seqFieldName = expression.newIntermediateVariable("hyp", LommelPolynomialSequence.class, true);
   }
 
   public void generateSequenceInitializer(MethodVisitor mv)
   {
-    expression.loadThisFieldOntoStack(mv, seqFieldName, sequenceClass);
-    Compiler.getField(mv, sequenceClass, "v", Real.class);
+    expression.loadThisFieldOntoStack(mv, seqFieldName, LommelPolynomialSequence.class);
+    Compiler.getField(mv, LommelPolynomialSequence.class, "v", Real.class);
     expression.insideInitializer = true;
     order.generate(mv, Real.class);
 
@@ -88,14 +90,14 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     Compiler.invokeMethod(mv, Real.class, "set", Real.class, false, Real.class);
     assert false : "TODO: wield the LommelPolynomialSequence class similarly to how the SphericalBesselFunctionNodeOfTheFirstKind wields the SphericalBesselFunctionSequence";
 
-    expression.loadThisFieldOntoStack(mv, seqFieldName, sequenceClass);
+    expression.loadThisFieldOntoStack(mv, seqFieldName, LommelPolynomialSequence.class);
     index.generate(mv, Integer.class);
     mv.visitLdcInsn(0);
     mv.visitLdcInsn(128);
     expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);
 
     Compiler.invokeVirtualMethod(mv,
-                                 sequenceClass,
+                                 LommelPolynomialSequence.class,
                                  "evaluate",
                                  RationalFunction.class,
                                  Integer.class,

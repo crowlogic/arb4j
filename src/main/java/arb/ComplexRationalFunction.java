@@ -291,11 +291,11 @@ public class ComplexRationalFunction implements
   public ComplexFraction
          evaluate(ComplexFraction input, int order, int bits, ComplexFraction result)
   {
-    try ( ComplexFraction b = new ComplexFraction())
+    try ( ComplexFraction a = new ComplexFraction();ComplexFraction b = new ComplexFraction())
     {
-      realPart.evaluate(input, bits, result);
+      realPart.evaluate(input, bits, a);
       imaginaryPart.evaluate(input, bits, b);
-      return result.sub(b, bits);
+      return a.add(b, bits,result);
     }
   }
 
