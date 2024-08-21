@@ -37,7 +37,7 @@ public class SymbolPalette extends
                            Application
 {
 
-  public static int             columnsPerRow = 15;
+  public static int             columnsPerRow = 20;
 
   private TextField             textField;
 
@@ -47,7 +47,23 @@ public class SymbolPalette extends
   {
     chars.addAll(Parser.SUBSCRIPT_CHARACTERS.stream().map(String::valueOf).toList());
     for (String s : new String[]
-    { "π",
+    { "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "9",
+      "⁄",
+      "/",
+      "+",
+      "-",
+      "*",
+      "π",
       "Γ",
       "ᵅ",
       "ⅈ",

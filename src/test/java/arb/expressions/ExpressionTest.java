@@ -25,6 +25,12 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  public void testSquareRootOfOneHalf()
+  {
+    RealNullaryFunction expression          = RealNullaryFunction.express("√⌊1⁄2⌋");
+    Real                squareRootOfOneHalf = expression.evaluate(128);
+    System.out.format("%s=%s", expression, squareRootOfOneHalf);
+  }
 
   public void testBinomialCoefficient()
   {

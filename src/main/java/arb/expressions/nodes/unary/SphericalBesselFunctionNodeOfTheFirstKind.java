@@ -22,7 +22,7 @@ import arb.functions.Function;
  * <pre>
  * Let jₙ (x) is the spherical Bessel function of the first kind,
  * 
- * jₙ (z) = √(π/(2z)) Jₙ₊½ (x) = (sin(z) Rₙ,½(z) - cos(z) Rₙ₋₁,³/₂(z))/z
+ * jₙ (z) = √(π/(2z)) Jₙ₊₁⸝₂ (x) = (sin(z) Rₙ,₁⸝₂(z) - cos(z) Rₙ₋₁,₃⸝₂(z))/z
  * 
  * where Rₙ,ᵥ (z) are the (misnamed) Lommel polynomials
  * 
@@ -82,7 +82,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
     duplicateTopOfTheStack(mv);
     order.generate(mv, scalarType);
     // ³⁄₂
-   // assert false : "return (R(n,½;x)*sin(x) - R(n-1,3⁄2;x)*cos(x))/x where R(n,v;x) are Lommel (rational) polynomial";
+    assert false : "TODO: wield the SphericalBesselFunctionSequence class the same way the HypergeometricFunctionNode uses the HypergeometricFunction";
 
     return mv;
   }

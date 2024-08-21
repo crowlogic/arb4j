@@ -33,6 +33,13 @@ import java.util.stream.Stream;
     arblib.fmpz_poly_q_inv(x, this);
     return null;
   }
+  
+  public ComplexFraction evaluate(ComplexFraction input, int bits, ComplexFraction result)
+  {
+    evaluate(input.realPart, bits, result.realPart);
+    evaluate(input.imaginaryPart, bits, result.imaginaryPart);
+    return result;
+  }  
    
   public RationalFunction mul(Integer absPower, int bits, RationalFunction ntheta)
   {

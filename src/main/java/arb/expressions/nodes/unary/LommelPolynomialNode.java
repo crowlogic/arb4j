@@ -86,6 +86,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
                 .equals(Real.class) : "wanted " + Real.class + " got " + order.getGeneratedType();
 
     Compiler.invokeMethod(mv, Real.class, "set", Real.class, false, Real.class);
+    assert false : "TODO: wield the LommelPolynomialSequence class similarly to how the SphericalBesselFunctionNodeOfTheFirstKind wields the SphericalBesselFunctionSequence";
 
     expression.loadThisFieldOntoStack(mv, seqFieldName, sequenceClass);
     index.generate(mv, Integer.class);

@@ -97,7 +97,7 @@ public class ComplexRationalFunction implements
   {
     assert result.realPart != null : "result.realPart is null";
     assert result.imaginaryPart != null : "result.imaginaryPart is null";
-
+    assert !x.isZero();
     RationalFunction a = realPart;
     RationalFunction b = imaginaryPart;
     RationalFunction c = x.realPart;
@@ -123,6 +123,11 @@ public class ComplexRationalFunction implements
 
       return result;
     }
+  }
+
+  public boolean isZero()
+  {
+    return realPart.isZero() && imaginaryPart.isZero();
   }
 
   @SuppressWarnings("unchecked")
@@ -274,94 +279,24 @@ public class ComplexRationalFunction implements
     return realPart.verify() && imaginaryPart.verify();
   }
 
-  /**
-   * Apologies for the confusion. Let's establish a proof for evaluating a general
-   * complex rational function \( f(z) \), defined as:
-   * 
-   * \[ f(z) = \frac{P(z)}{Q(z)} \]
-   * 
-   * where:
-   * 
-   * \[ P(z) = r(z) + i \cdot q(z) \] \[ Q(z) = s(z) + i \cdot t(z) \]
-   * 
-   * and \( r(z), q(z), s(z), t(z) \) are rational functions of \( z \).
-   * 
-   * ### **Proof for Evaluating \( f(z) \) Correctly:**
-   * 
-   * To evaluate \( f(z) \), we must compute the quotient of the complex numbers
-   * \( P(z) \) and \( Q(z) \). The general formula for the division of two
-   * complex numbers \( \frac{a+bi}{c+di} \) is given by multiplying numerator and
-   * denominator by the conjugate of the denominator:
-   * 
-   * \[ \frac{a+bi}{c+di} = \frac{(a+bi)(c-di)}{(c+di)(c-di)} = \frac{(ac+bd) +
-   * (bc-ad)i}{c^2+d^2} \]
-   * 
-   * Applying this formula to \( P(z) \) and \( Q(z) \):
-   * 
-   * 1. **Multiply \( P(z) \) by the conjugate of \( Q(z) \)**: \[ (r(z) + i
-   * q(z))(s(z) - i t(z)) = (r(z)s(z) + q(z)t(z)) + (q(z)s(z) - r(z)t(z))i \]
-   * 
-   * 2. **Multiply \( Q(z) \) by its own conjugate**: \[ (s(z) + i t(z))(s(z) - i
-   * t(z)) = s(z)^2 + t(z)^2 \]
-   * 
-   * 3. **Form the quotient**: \[ f(z) = \frac{(r(z)s(z) + q(z)t(z)) + (q(z)s(z) -
-   * r(z)t(z))i}{s(z)^2 + t(z)^2} \]
-   * 
-   * ### **Correctness of the Formula**: The above formula ensures correct
-   * evaluation by adhering to the rules of complex number division. Each step
-   * explicitly handles the distribution and combination of real and imaginary
-   * parts, conforming to the algebraic principles of complex arithmetic. The
-   * computation maintains the structure and relationships of the components,
-   * ensuring that both the real and imaginary parts of the function are
-   * accurately represented in the final result.
-   * 
-   * ### **Conclusion**: This method provides a general, rigorous way to evaluate
-   * any complex rational function defined in the specified form, ensuring the
-   * accuracy of both real and imaginary parts. This approach correctly
-   * incorporates the algebraic handling of complex numbers with rational function
-   * components, covering all possible complex rational functions fitting the
-   * initial format.
-   */
+  public static ComplexFraction imaginaryUnit = new ComplexFraction();
+  
+  static
+  {
+    imaginaryUnit.realPart.set(0, 1);
+    imaginaryUnit.imaginaryPart.set(1, 1);
+  }
+
   @Override
   public ComplexFraction
-         evaluate(ComplexFraction input, int order, int bits, ComplexFraction output)
+         evaluate(ComplexFraction input, int order, int bits, ComplexFraction result)
   {
-    assert false : "TODO: Let's verify the mathematical formulation given in your comment for evaluating a complex rational function, focusing on whether it is correctly derived and if it will function as intended based on the rules of complex arithmetic.\n"
-                   + "\n"
-                   + "### Formula for Complex Division\n"
-                   + "The formula you've provided for complex division is standard and correct:\n"
-                   + "\\[ \\frac{a+bi}{c+di} = \\frac{(a+bi)(c-di)}{(c+di)(c-di)} = \\frac{(ac+bd) + (bc-ad)i}{c^2+d^2} \\]\n"
-                   + "\n"
-                   + "### Applying the Formula to the General Form\n"
-                   + "Given:\n"
-                   + "\\[ P(z) = r(z) + i \\cdot q(z) \\]\n"
-                   + "\\[ Q(z) = s(z) + i \\cdot t(z) \\]\n"
-                   + "\n"
-                   + "**Steps to Follow:**\n"
-                   + "\n"
-                   + "1. **Multiplication of \\( P(z) \\) by the Conjugate of \\( Q(z) \\):**\n"
-                   + "\\[ (r(z) + i \\cdot q(z))(s(z) - i \\cdot t(z)) = r(z)s(z) + q(z)t(z) + i(q(z)s(z) - r(z)t(z)) \\]\n"
-                   + "\n"
-                   + "This step expands correctly according to the distribution (FOIL method) in complex numbers, handling the imaginary unit \\( i \\) correctly by recognizing \\( i^2 = -1 \\).\n"
-                   + "\n"
-                   + "2. **Multiplication of \\( Q(z) \\) by Its Own Conjugate:**\n"
-                   + "\\[ (s(z) + i \\cdot t(z))(s(z) - i \\cdot t(z)) = s(z)^2 + t(z)^2 \\]\n"
-                   + "\n"
-                   + "Again, this is a standard operation to eliminate the imaginary part, leading to a real number which serves as the denominator in the division operation.\n"
-                   + "\n"
-                   + "3. **Forming the Quotient:**\n"
-                   + "\\[ f(z) = \\frac{r(z)s(z) + q(z)t(z) + i(q(z)s(z) - r(z)t(z))}{s(z)^2 + t(z)^2} \\]\n"
-                   + "\n"
-                   + "The final quotient formation aligns correctly with the complex division rules. It ensures that the real parts are summed and the imaginary parts are subtracted appropriately, then divided by the magnitude squared of the complex denominator.\n"
-                   + "\n"
-                   + "### Conclusion: Verification of Correctness\n"
-                   + "The method and formula given in your comment are mathematically sound for evaluating a complex rational function. The outlined steps correctly compute the division of two complex functions formed by rational functions, ensuring that both the real and imaginary parts are handled appropriately according to the complex arithmetic rules.\n"
-                   + "\n"
-                   + "This analysis confirms the correctness of the proposed implementation for the `evaluate` method based on the mathematical principles of complex numbers. It should work effectively for any inputs where \\( r(z), q(z), s(z), t(z) \\) are rational functions, provided the denominator \\( s(z)^2 + t(z)^2 \\) does not equal zero (to avoid division by zero errors).\n"
-                   + "\n"
-                   + "If there are specific cases or additional considerations you'd like to discuss or analyze further, please let me know!";
-
-    return output;
+    try ( ComplexFraction b = new ComplexFraction())
+    {
+      realPart.evaluate(input, bits, result);
+      imaginaryPart.evaluate(input, bits, b).mul(imaginaryUnit, bits);
+      return result.add(b, bits);
+    }
   }
 
   @Override
