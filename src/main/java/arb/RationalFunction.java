@@ -58,7 +58,7 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
   {
     evaluate(input.realPart, bits, result.realPart);
     evaluate(input.imaginaryPart, bits, result.imaginaryPart);
-    return result.conjugate();
+    return result;
   }  
    
   public RationalFunction mul(Integer absPower, int bits, RationalFunction ntheta)

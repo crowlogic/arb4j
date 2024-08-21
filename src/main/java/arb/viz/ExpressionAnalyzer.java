@@ -24,6 +24,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
+ * TODO: add a tabbed pane so multiple expressions can be opened in the same program
+ * 
  * @author StΣνε
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
