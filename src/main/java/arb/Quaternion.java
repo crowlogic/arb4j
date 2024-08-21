@@ -1,5 +1,7 @@
 package arb;
 
+import java.util.stream.Stream;
+
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 
@@ -9,7 +11,8 @@ import arb.documentation.TheArb4jLibrary;
  *      {@link TheArb4jLibrary}
  */
 public class Quaternion implements
-                        AutoCloseable
+                        AutoCloseable,
+                        Field<Quaternion>
 {
   @Override
   public String toString()
@@ -43,7 +46,8 @@ public class Quaternion implements
   }
 
   /**
-   * Multiplies this quaternion with another quaternion and stores the result.
+   * Multiplies this {@link Quaternion} with another {@link Quaternion} and stores
+   * the result.
    *
    * @param other  The quaternion to multiply with.
    * @param bits   The precision of the operation.
@@ -52,6 +56,7 @@ public class Quaternion implements
    */
   public Quaternion mul(Quaternion other, int bits, Quaternion result)
   {
+    assert other != result : "aliasing result with this is not supported";
     try ( Complex a = new Complex())
     {
       left.mul(other.left, bits, result.left).sub(right.mul(other.right.conj(a), bits, a), bits);
@@ -210,5 +215,91 @@ public class Quaternion implements
   {
     left.close();
     right.close();
+  }
+
+  @Override
+  public Quaternion additiveIdentity()
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
+  @Override
+  public Quaternion multiplicativeIdentity()
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
+  protected int bits;
+
+  @Override
+  public int bits()
+  {
+    return bits;
+  }
+
+  @Override
+  public int dim()
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return 1;
+  }
+
+  @Override
+  public Quaternion div(int j, int prec, Quaternion result)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
+  @Override
+  public <E> E get(int i)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
+  @Override
+  public String getName()
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
+  @Override
+  public Quaternion mul(int x, int prec, Quaternion result)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
+  @Override
+  public Quaternion newFieldElement()
+  {
+    return new Quaternion();
+  }
+
+  @Override
+  public Quaternion set(Quaternion value)
+  {
+    left.set(value.left);
+    right.set(value.right);
+    return this;
+  }
+
+  @Override
+  public Quaternion zero()
+  {
+    left.zero();
+    right.zero();
+    return this;
+  }
+
+  @Override
+  public Stream<Quaternion> stream()
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
   }
 }
