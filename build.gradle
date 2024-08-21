@@ -6,6 +6,11 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.1.0' 
 }
 
+group = 'org.arblib'
+version = '0.98.7'
+description = 'arb4j'
+java.sourceCompatibility = JavaVersion.VERSION_22
+
 javafx {
     version = "22.0.2" 
     modules = [ 'javafx.swing', 'javafx.controls', 'javafx.fxml', 'javafx.graphics' ]  
@@ -39,10 +44,7 @@ dependencies {
     
 }
 
-group = 'org.arblib'
-version = '0.98.5'
-description = 'arb4j'
-java.sourceCompatibility = JavaVersion.VERSION_22
+
 
 tasks.withType(Javadoc) {
     options.addStringOption('source', '22') 
