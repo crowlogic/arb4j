@@ -19,26 +19,24 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.SplitPane;
 
 public class ExpressionAnalyzer extends
                                 Application
 {
 
-  Context             context;
-  Expression<?, ?, ?> expr;
-  Function<?, ?>      instance;
-  Object              result;
+  Context                      context;
+  Expression<?, ?, ?>          expr;
+  Function<?, ?>               instance;
+  Object                       result;
+  TreeTableView<Node<?, ?, ?>> treeTableView;
 
   @SuppressWarnings("resource")
   public Expression<?, ?, ?> getExpression()
   {
-
     context = new Context(Integer.named("n").set(3));
     return RealFunction.compile("Ψₖ:√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)", context);
   }
-
-  // return RationalFunctionSequence.compile("n➔(R(n,½;x)*sin(x) -
-  // R(n-1,3⁄2;x)*cos(x))/x");
 
   public void expandTreeView(TreeItem<?> item)
   {
@@ -62,14 +60,11 @@ public class ExpressionAnalyzer extends
     expr = getExpression();
     System.out.println("expr=" + expr.syntaxTextTree());
     instance = expr.instantiate();
-//    instance = new     Ψₖ(); // expr.instantiate();
-//    instance.n = n;
-//    instance.eva
 
-    Node<?, ?, ?>                rootNode      = expr.rootNode;
-    TreeItem<Node<?, ?, ?>>      rootItem      = new NodeTreeItem(rootNode);
+    Node<?, ?, ?>           rootNode = expr.rootNode;
+    TreeItem<Node<?, ?, ?>> rootItem = new NodeTreeItem(rootNode);
 
-    TreeTableView<Node<?, ?, ?>> treeTableView = new TreeTableView<>(rootItem);
+    treeTableView = new TreeTableView<>(rootItem);
     treeTableView.setShowRoot(true);
 
     TreeTableColumn<Node<?, ?, ?>, String> nodeCol = new TreeTableColumn<>("Node");
@@ -112,6 +107,7 @@ public class ExpressionAnalyzer extends
 
     // Context variables display
     ListView<String> contextListView = new ListView<>();
+    contextListView.setPrefHeight(100); // Set preferred height
     for (Map.Entry<String, Object> entry : context.variables.map.entrySet())
     {
       contextListView.getItems().add(entry.getKey() + " = " + entry.getValue());
@@ -121,22 +117,45 @@ public class ExpressionAnalyzer extends
     Button evaluateButton = new Button("Evaluate Expression");
     evaluateButton.setOnAction(e -> evaluateExpression());
 
+    // Expand All button
+    Button expandAllButton = new Button("Expand All");
+    expandAllButton.setOnAction(e -> expandTreeView(treeTableView.getRoot()));
+
     // Create the HBox for buttons
     HBox buttonBox = new HBox(10);
-    buttonBox.getChildren().addAll(evaluateButton);
+    buttonBox.getChildren().addAll(evaluateButton, expandAllButton);
 
-    // Create a VBox and add components
-    VBox vbox = new VBox(10);
-    vbox.getChildren()
-        .addAll(new Label("Context Variables:"), contextListView, treeTableView, buttonBox);
+    // Create a SplitPane
+    SplitPane splitPane = new SplitPane();
 
-    // Set the treeTableView to grow with the VBox
+    // Create a VBox for the top part (context variables)
+    VBox      topBox    = new VBox(10);
+    topBox.getChildren().addAll(new Label("Context Variables:"), contextListView);
+
+    // Create a VBox for the bottom part (tree table and button)
+    VBox bottomBox = new VBox(10);
+    bottomBox.getChildren().addAll(treeTableView, buttonBox);
+
+    // Set the treeTableView to grow within its container
     VBox.setVgrow(treeTableView, javafx.scene.layout.Priority.ALWAYS);
 
+    // Add the top and bottom parts to the SplitPane
+    splitPane.getItems().addAll(topBox, bottomBox);
+
+    // Set the initial divider position
+    splitPane.setDividerPositions(0.2);
+
+    // Create a main VBox to hold the SplitPane
+    VBox mainBox = new VBox(splitPane);
+
+    // Set the SplitPane to grow with the main VBox
+    VBox.setVgrow(splitPane, javafx.scene.layout.Priority.ALWAYS);
+
     // ScrollPane
-    ScrollPane scrollPane = new ScrollPane(vbox);
+    ScrollPane scrollPane = new ScrollPane(mainBox);
     scrollPane.setFitToHeight(true);
     scrollPane.setFitToWidth(true);
+
     Scene scene = new Scene(scrollPane);
     scene.addEventFilter(KeyEvent.KEY_PRESSED, event ->
     {
@@ -182,7 +201,6 @@ public class ExpressionAnalyzer extends
   {
     result = instance.evaluate(null, 128);
     System.out.println(expr + "=" + result);
-
   }
 
   public static void main(String[] args)
