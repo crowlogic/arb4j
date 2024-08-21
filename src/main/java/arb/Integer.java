@@ -7,6 +7,8 @@ import java.util.Arrays;
 import arb.algebra.Ring;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Context;
+import arb.functions.IntegerNullaryFunction;
 
 /**
  * This class wraps the fmpz type in flint which is an arbitrary precision
@@ -40,12 +42,22 @@ public class Integer implements
 {
   public static int BYTES = Long.BYTES;
 
+  public static Integer express(String expression)
+  {
+    return express(expression, null);
+  }
+
+  public static Integer express(String expression, Context context)
+  {
+    return IntegerNullaryFunction.compile(expression, context).evaluate(0);
+  }
+
   public Integer set(Fraction f)
   {
     assert false : "set " + f;
     return null;
   }
-  
+
   public Fraction mul(Integer subtrahend, int prec, Fraction result)
   {
     return result.set(this).mul(subtrahend, prec, result);

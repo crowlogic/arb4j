@@ -68,7 +68,16 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     }
   }
 
-
+  public Real sqrt( int bits, Real result )
+  {
+    return result.set(this).sqrt(bits, result);
+  }
+  
+  public Real floor( int bits, Real result )
+  {
+    return result.set(this).floor(bits, result);
+  }
+   
   public Fraction cos(int prec, Fraction result)
   {
     try ( Real tmp = new Real())

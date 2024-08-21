@@ -9,6 +9,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.functions.Function;
 import arb.functions.IntegerFunction;
+import arb.functions.IntegerNullaryFunction;
 import arb.functions.complex.ComplexNullaryFunction;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
 import arb.functions.rational.RationalNullaryFunction;
@@ -25,11 +26,18 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  public void testRealSquareRootOfOneHalf()
+  {
+    RealNullaryFunction expression          = RealNullaryFunction.express("⌊100/√(1⁄2)⌋");
+    Real                squareRootOfOneHalf = expression.evaluate(128);
+    assertEquals(141.0, squareRootOfOneHalf.doubleValue());
+  }
+
   public void testSquareRootOfOneHalf()
   {
-    RealNullaryFunction expression          = RealNullaryFunction.express("√⌊1⁄2⌋");
-    Real                squareRootOfOneHalf = expression.evaluate(128);
-    System.out.format("%s=%s", expression, squareRootOfOneHalf);
+    IntegerNullaryFunction expression          = IntegerNullaryFunction.compile("⌊100/√(1⁄2)⌋");
+    Integer                squareRootOfOneHalf = expression.evaluate();
+    assertEquals(141, squareRootOfOneHalf.getUnsignedValue());
   }
 
   public void testBinomialCoefficient()
