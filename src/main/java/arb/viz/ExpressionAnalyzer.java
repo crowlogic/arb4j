@@ -6,6 +6,8 @@ import static arb.utensils.Utensils.wrapOrThrow;
 import java.util.Map;
 
 import arb.Integer;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
@@ -20,8 +22,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.scene.control.SplitPane;
 
+/**
+ * @author StΣνε
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class ExpressionAnalyzer extends
                                 Application
 {
@@ -32,7 +39,6 @@ public class ExpressionAnalyzer extends
   Object                       result;
   TreeTableView<Node<?, ?, ?>> treeTableView;
 
-  @SuppressWarnings("resource")
   public Expression<?, ?, ?> getExpression()
   {
     context = new Context(Integer.named("n").set(3));
@@ -51,7 +57,6 @@ public class ExpressionAnalyzer extends
     }
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public void start(Stage primaryStage)
   {
@@ -62,6 +67,106 @@ public class ExpressionAnalyzer extends
     System.out.println("expr=" + expr.syntaxTextTree());
     instance = expr.instantiate();
 
+    newTreeTableView();
+
+    primaryStage.setScene(newScene(primaryStage,
+                                   newScrollPane(newSplitPane(newContextView(), newButtonBox()))));
+    primaryStage.setTitle("Expression Analyzer");
+    primaryStage.centerOnScreen();
+    primaryStage.show();
+  }
+
+  public Scene newScene(Stage primaryStage, ScrollPane scrollPane)
+  {
+    Scene scene = new Scene(scrollPane);
+    scene.addEventFilter(KeyEvent.KEY_PRESSED, event ->
+    {
+      if (event.getCode() == KeyCode.ESCAPE)
+      {
+        primaryStage.close();
+      }
+    });
+
+    scene.getStylesheets().add(TODO.convertStylesheetToDataURI(TODO.EASIER_ON_THE_EYES_STYLESHEET));
+    return scene;
+  }
+
+  public ScrollPane newScrollPane(SplitPane splitPane)
+  {
+    // Create a main VBox to hold the SplitPane
+    VBox mainBox = new VBox(splitPane);
+
+    // Set the SplitPane to grow with the main VBox
+    VBox.setVgrow(splitPane, javafx.scene.layout.Priority.ALWAYS);
+
+    // ScrollPane
+    ScrollPane scrollPane = new ScrollPane(mainBox);
+    scrollPane.setFitToHeight(true);
+    scrollPane.setFitToWidth(true);
+    return scrollPane;
+  }
+
+  public SplitPane newSplitPane(ListView<String> contextListView, HBox buttonBox)
+  {
+    // Create a SplitPane
+    SplitPane splitPane = new SplitPane();
+
+    // Create a VBox for the top part (context variables)
+    VBox      topBox    = new VBox(10);
+    topBox.getChildren().addAll(new Label("Context Variables:"), contextListView);
+
+    VBox bottomBox = newBottomBox(buttonBox);
+
+    // Set the treeTableView to grow within its container
+    VBox.setVgrow(treeTableView, javafx.scene.layout.Priority.ALWAYS);
+
+    // Add the top and bottom parts to the SplitPane
+    splitPane.getItems().addAll(topBox, bottomBox);
+
+    // Set the initial divider position
+    splitPane.setDividerPositions(0.2);
+    return splitPane;
+  }
+
+  public VBox newBottomBox(HBox buttonBox)
+  {
+    // Create a VBox for the bottom part (tree table and button)
+    VBox bottomBox = new VBox(10);
+    bottomBox.getChildren().addAll(treeTableView, buttonBox);
+    return bottomBox;
+  }
+
+  public HBox newButtonBox()
+  {
+    // Evaluate button
+    Button evaluateButton = new Button("Evaluate Expression");
+    evaluateButton.setOnAction(e -> evaluateExpression());
+
+    // Expand All button
+    Button expandAllButton = new Button("Expand All");
+    expandAllButton.setOnAction(e -> expandTreeView(treeTableView.getRoot()));
+
+    // Create the HBox for buttons
+    HBox buttonBox = new HBox(10);
+    buttonBox.getChildren().addAll(evaluateButton, expandAllButton);
+    return buttonBox;
+  }
+
+  public ListView<String> newContextView()
+  {
+    // Context variables display
+    ListView<String> contextListView = new ListView<>();
+    contextListView.setPrefHeight(100); // Set preferred height
+    for (Map.Entry<String, Object> entry : context.variables.map.entrySet())
+    {
+      contextListView.getItems().add(entry.getKey() + " = " + entry.getValue());
+    }
+    return contextListView;
+  }
+
+  @SuppressWarnings("unchecked")
+  public void newTreeTableView()
+  {
     Node<?, ?, ?>           rootNode = expr.rootNode;
     TreeItem<Node<?, ?, ?>> rootItem = new NodeTreeItem(rootNode);
 
@@ -91,8 +196,10 @@ public class ExpressionAnalyzer extends
     typesetCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
                                                                            .getValue()
                                                                            .typeset()));
+    typesetCol.setCellFactory(new TypeSettingCellFactory());
 
     TreeTableColumn<Node<?, ?, ?>, String> fieldCol = new TreeTableColumn<>("Field");
+
     fieldCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
                                                                          .getValue()
                                                                          .getIntermediateValueFieldName()));
@@ -101,76 +208,8 @@ public class ExpressionAnalyzer extends
     valueCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(evaluateNode(param.getValue()
                                                                                       .getValue())));
 
-    typesetCol.setCellFactory(new TypeSettingCellFactory());
-
     treeTableView.getColumns()
                  .addAll(nodeCol, nodeTypeCol, nodeTypeResultCol, typesetCol, fieldCol, valueCol);
-
-    // Context variables display
-    ListView<String> contextListView = new ListView<>();
-    contextListView.setPrefHeight(100); // Set preferred height
-    for (Map.Entry<String, Object> entry : context.variables.map.entrySet())
-    {
-      contextListView.getItems().add(entry.getKey() + " = " + entry.getValue());
-    }
-
-    // Evaluate button
-    Button evaluateButton = new Button("Evaluate Expression");
-    evaluateButton.setOnAction(e -> evaluateExpression());
-
-    // Expand All button
-    Button expandAllButton = new Button("Expand All");
-    expandAllButton.setOnAction(e -> expandTreeView(treeTableView.getRoot()));
-
-    // Create the HBox for buttons
-    HBox buttonBox = new HBox(10);
-    buttonBox.getChildren().addAll(evaluateButton, expandAllButton);
-
-    // Create a SplitPane
-    SplitPane splitPane = new SplitPane();
-
-    // Create a VBox for the top part (context variables)
-    VBox      topBox    = new VBox(10);
-    topBox.getChildren().addAll(new Label("Context Variables:"), contextListView);
-
-    // Create a VBox for the bottom part (tree table and button)
-    VBox bottomBox = new VBox(10);
-    bottomBox.getChildren().addAll(treeTableView, buttonBox);
-
-    // Set the treeTableView to grow within its container
-    VBox.setVgrow(treeTableView, javafx.scene.layout.Priority.ALWAYS);
-
-    // Add the top and bottom parts to the SplitPane
-    splitPane.getItems().addAll(topBox, bottomBox);
-
-    // Set the initial divider position
-    splitPane.setDividerPositions(0.2);
-
-    // Create a main VBox to hold the SplitPane
-    VBox mainBox = new VBox(splitPane);
-
-    // Set the SplitPane to grow with the main VBox
-    VBox.setVgrow(splitPane, javafx.scene.layout.Priority.ALWAYS);
-
-    // ScrollPane
-    ScrollPane scrollPane = new ScrollPane(mainBox);
-    scrollPane.setFitToHeight(true);
-    scrollPane.setFitToWidth(true);
-
-    Scene scene = new Scene(scrollPane);
-    scene.addEventFilter(KeyEvent.KEY_PRESSED, event ->
-    {
-      if (event.getCode() == KeyCode.ESCAPE)
-      {
-        primaryStage.close();
-      }
-    });
-
-    scene.getStylesheets().add(TODO.convertStylesheetToDataURI(TODO.EASIER_ON_THE_EYES_STYLESHEET));
-    primaryStage.setScene(scene);
-    primaryStage.setTitle("Expression Analyzer");
-    primaryStage.centerOnScreen();
-    primaryStage.show();
   }
 
   private String evaluateNode(Node<?, ?, ?> node)
