@@ -82,7 +82,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
     duplicateTopOfTheStack(mv);
     order.generate(mv, scalarType);
     // ³⁄₂
-    assert false : "TODO: wield the SphericalBesselFunctionSequence class the same way the HypergeometricFunctionNode uses the HypergeometricFunction";
+    //assert false : "TODO: wield the SphericalBesselFunctionSequence class the same way the HypergeometricFunctionNode uses the HypergeometricFunction";
 
     return mv;
   }
