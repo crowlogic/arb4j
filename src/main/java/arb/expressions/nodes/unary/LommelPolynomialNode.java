@@ -2,8 +2,6 @@ package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.invokeMethod;
 import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-import static arb.expressions.Compiler.loadOrderParameter;
-import static arb.expressions.Compiler.loadThisOntoStack;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -42,6 +40,7 @@ import arb.functions.sequences.LommelPolynomialSequence;
 public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extends C>> extends
                                  FunctionCallNode<D, C, F>
 {
+
   public Node<D, C, F>  order;
   public Node<D, C, F>  index;
   public final Class<?> sequenceClass = LommelPolynomialSequence.class;
@@ -77,8 +76,15 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     Compiler.getField(mv, sequenceClass, "v", Real.class);
     expression.insideInitializer = true;
     order.generate(mv, Real.class);
+
+    if (!order.getGeneratedType().equals(Real.class))
+    {
+      order.generateCastTo(mv, Real.class);
+    }
+
     assert order.getGeneratedType()
                 .equals(Real.class) : "wanted " + Real.class + " got " + order.getGeneratedType();
+
     Compiler.invokeMethod(mv, Real.class, "set", Real.class, false, Real.class);
 
     expression.loadThisFieldOntoStack(mv, seqFieldName, sequenceClass);
@@ -101,8 +107,8 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     expression.insideInitializer = false;
-    loadThisOntoStack(mv);
-    expression.loadFieldOntoStack(mv, elementFieldName, RationalFunction.class);
+
+    loadFieldOntoStack(mv, elementFieldName, RationalFunction.class);
 
     arg.generate(mv, resultType);
 
@@ -125,6 +131,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     }
     else
     {
+//      /assert false : "ass";
       invokeMethod(mv,
                    RationalFunction.class,
                    "evaluate",
@@ -173,9 +180,15 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   }
 
   @Override
+  public String toString()
+  {
+    return String.format("R(%s,%s;%s)", order, index, arg);
+  }
+
+  @Override
   public String typeset()
   {
-    return String.format("R_{%s, %s} (%s)", order.typeset(), index.typeset(), arg.typeset());
+    return String.format("R_{%s, %s}(%s)", order.typeset(), index.typeset(), arg.typeset());
   }
 
   @Override

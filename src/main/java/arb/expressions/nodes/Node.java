@@ -3,6 +3,7 @@ package arb.expressions.nodes;
 import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.invokeSetMethod;
 import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.loadThisOntoStack;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -161,8 +162,13 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    */
   public Class<?> generateCastTo(MethodVisitor methodVisitor, Class<?> type)
   {
-    assert generatedType != null : "generatedType of " + this + " is null where this.class=" + getClass()
-                  + " and casting to " + type + " is requested";
+    assert generatedType != null : "generatedType of "
+                                   + this
+                                   + " is null where this.class="
+                                   + getClass()
+                                   + " and casting to "
+                                   + type
+                                   + " is requested";
     assert !generatedType.equals(type) : String.format("tried to cast from and to the same type %s\n",
                                                        generatedType);
     checkClassCast(methodVisitor, generatedType);
@@ -173,8 +179,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return generatedType;
   }
 
-  public abstract <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
-                                                                                                Node<E, S, G> arg);
+  public abstract <E, S, G extends Function<? extends E, ? extends S>>
+         Node<D, R, F>
+         substitute(String variable, Node<E, S, G> arg);
 
   public boolean isVariable()
   {
@@ -223,6 +230,15 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     {
       loadBitsParameterOntoStack(mv);
     }
+  }
+
+  protected Node<D, R, F> loadFieldOntoStack(MethodVisitor mv,
+                                             String fieldName,
+                                             Class<RationalFunction> fieldClass)
+  {
+    loadThisOntoStack(mv);
+    expression.loadFieldOntoStack(mv, fieldName, fieldClass);
+    return this;
   }
 
 }

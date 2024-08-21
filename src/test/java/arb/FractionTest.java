@@ -48,7 +48,7 @@ public class FractionTest
       {
         vector.get(i).getNumerator().set(i + 1);
         vector.get(i).getDenominator().set(i + 2);
-        assertEquals((i + 1) + "/" + (i + 2), vector.get(i).toString());
+        assertEquals((i + 1) + "⁄" + (i + 2), vector.get(i).toString());
       }
     }
   }
@@ -63,7 +63,7 @@ public class FractionTest
         vector.get(i).getNumerator().set(i + 1);
         vector.get(i).getDenominator().set(i + 2);
       }
-      assertEquals("[1/2, 2/3, 3/4]", vector.toString());
+      assertEquals("[1⁄2, 2⁄3, 3⁄4]", vector.toString());
     }
   }
 
@@ -75,16 +75,16 @@ public class FractionTest
       Fraction v2     = Fraction.newVector(arena, 2);
       Fraction result = Fraction.newVector(arena, 2);
 
-      v1.get(0).set("1/2");
-      v1.get(1).set("2/3");
-      v2.get(0).set("1/3");
-      v2.get(1).set("1/4");
+      v1.get(0).set("1⁄2");
+      v1.get(1).set("2⁄3");
+      v2.get(0).set("1⁄3");
+      v2.get(1).set("1⁄4");
 
       for (int i = 0; i < 2; i++)
       {
         v1.get(i).add(v2.get(i), result.get(i));
       }
-      assertEquals("[5/6, 11/12]", result.toString());
+      assertEquals("[5⁄6, 11⁄12]", result.toString());
     }
   }
 
@@ -96,16 +96,16 @@ public class FractionTest
       Fraction v2     = Fraction.newVector(arena, 2);
       Fraction result = Fraction.newVector(arena, 2);
 
-      v1.get(0).set("1/2");
-      v1.get(1).set("2/3");
-      v2.get(0).set("1/3");
-      v2.get(1).set("3/4");
+      v1.get(0).set("1⁄2");
+      v1.get(1).set("2⁄3");
+      v2.get(0).set("1⁄3");
+      v2.get(1).set("3⁄4");
 
       for (int i = 0; i < 2; i++)
       {
         v1.get(i).mul(v2.get(i), result.get(i));
       }
-      assertEquals("[1/6, 1/2]", result.toString());
+      assertEquals("[1⁄6, 1⁄2]", result.toString());
     }
   }
 
@@ -117,16 +117,16 @@ public class FractionTest
       Fraction v2     = Fraction.newVector(arena, 2);
       Fraction result = Fraction.newVector(arena, 2);
 
-      v1.get(0).set("3/4");
-      v1.get(1).set("5/6");
-      v2.get(0).set("1/2");
-      v2.get(1).set("1/3");
+      v1.get(0).set("3⁄4");
+      v1.get(1).set("5⁄6");
+      v2.get(0).set("1⁄2");
+      v2.get(1).set("1⁄3");
 
       for (int i = 0; i < 2; i++)
       {
         v1.get(i).sub(v2.get(i), result.get(i));
       }
-      assertEquals("[1/4, 1/2]", result.toString());
+      assertEquals("[1⁄4, 1⁄2]", result.toString());
     }
   }
 
@@ -154,10 +154,10 @@ public class FractionTest
   {
     try ( var a = new Fraction(); var b = new Fraction(); var c = new Fraction())
     {
-      a.set("1/2");
-      b.set("3/4");
+      a.set("1⁄2");
+      b.set("3⁄4");
       a.mul(b, c);
-      assertEquals("3/8", c.toString());
+      assertEquals("3⁄8", c.toString());
     }
   }
 
@@ -165,10 +165,10 @@ public class FractionTest
   {
     try ( var a = new Fraction(); var b = new Fraction(); var c = new Fraction())
     {
-      a.set("1/2");
-      b.set("3/4");
+      a.set("1⁄2");
+      b.set("3⁄4");
       a.div(b, c);
-      assertEquals("2/3", c.toString());
+      assertEquals("2⁄3", c.toString());
     }
   }
 
@@ -176,10 +176,10 @@ public class FractionTest
   {
     try ( var a = new Fraction(); var b = new Fraction(); var c = new Fraction())
     {
-      a.set("3/4");
-      b.set("1/2");
+      a.set("3⁄4");
+      b.set("1⁄2");
       a.sub(b, c);
-      assertEquals("1/4", c.toString());
+      assertEquals("1⁄4", c.toString());
     }
   }
   
@@ -187,10 +187,10 @@ public class FractionTest
   {
     try ( var a = new Fraction(); var b = new Fraction(); var c = new Fraction())
     {
-      a.set("3/4");
-      b.set("1/2");
+      a.set("3⁄4");
+      b.set("1⁄2");
       a.sub(b, 128, c);
-      assertEquals("1/4", c.toString());
+      assertEquals("1⁄4", c.toString());
     }
   }
   
@@ -199,8 +199,8 @@ public class FractionTest
   {
     try ( var a = new Fraction(); var b = new Fraction())
     {
-      a.set("1/2");
-      b.set("2/4");
+      a.set("1⁄2");
+      b.set("2⁄4");
       assertFalse(a.equals(b)); // They are not equal without reduction
     }
   }
@@ -209,8 +209,8 @@ public class FractionTest
   {
     try ( var a = new Fraction(); var b = new Fraction())
     {
-      a.set("1/2");
-      b.set("2/4");
+      a.set("1⁄2");
+      b.set("2⁄4");
       b.reduce();
       assertTrue(a.equals(b)); // Now they are equal after reduction
     }
@@ -220,8 +220,8 @@ public class FractionTest
   {
     try ( var a = new Fraction(); var b = new Fraction())
     {
-      a.set("1/2");
-      b.set("3/4");
+      a.set("1⁄2");
+      b.set("3⁄4");
       assertFalse(a.equals(b)); // Different values should not be equal
     }
   }
@@ -230,8 +230,8 @@ public class FractionTest
   {
     try ( var a = new Fraction(); var b = new Fraction())
     {
-      a.set("0/1");
-      b.set("0/5");
+      a.set("0⁄1");
+      b.set("0⁄5");
       b.reduce();
       assertTrue(a.equals(b)); // Both represent zero
     }
@@ -241,22 +241,22 @@ public class FractionTest
   {
     try ( var a = new Fraction(); var b = new Fraction(); var c = new Fraction())
     {
-      a.set("-1/2");
-      b.set("1/2");
-      c.set("-2/4");
+      a.set("-1⁄2");
+      b.set("1⁄2");
+      c.set("-2⁄4");
 
-      assertFalse(a.equals(b)); // -1/2 != 1/2
-      assertFalse(a.equals(c)); // -1/2 != -2/4 (without reduction)
+      assertFalse(a.equals(b)); // -1⁄2 != 1⁄2
+      assertFalse(a.equals(c)); // -1⁄2 != -2⁄4 (without reduction)
 
       c.reduce();
-      assertTrue(a.equals(c)); // -1/2 == -1/2 (after reduction)
+      assertTrue(a.equals(c)); // -1⁄2 == -1⁄2 (after reduction)
 
-      a.set("-3/4");
-      b.set("3/4");
-      assertFalse(a.equals(b)); // -3/4 != 3/4
+      a.set("-3⁄4");
+      b.set("3⁄4");
+      assertFalse(a.equals(b)); // -3⁄4 != 3⁄4
 
       b.getNumerator().neg();
-      assertTrue(a.equals(b)); // -3/4 == -3/4
+      assertTrue(a.equals(b)); // -3⁄4 == -3⁄4
     }
   }
 
@@ -291,15 +291,15 @@ public class FractionTest
   {
     try ( var r = new Fraction())
     {
-      r.set("34/23");
+      r.set("34⁄23");
       assertEquals(34, r.getNumerator().getSignedValue());
       assertEquals(23, r.getDenominator().getSignedValue());
       r.getNumerator().add(6);
       r.getDenominator().add(7);
-      assertEquals("40/30", r.toString());
+      assertEquals("40⁄30", r.toString());
       assertFalse(r.isReduced());
       assertTrue(r.reduce().isReduced());
-      assertEquals("4/3", r.toString());
+      assertEquals("4⁄3", r.toString());
     }
 
   }

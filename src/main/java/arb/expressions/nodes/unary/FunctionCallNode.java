@@ -66,6 +66,13 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
                              UnaryOperation<D, R, F>
 {
 
+  @Override
+  public String getIntermediateValueFieldName()
+  {
+    assert intermediateVariableFieldName != null : "TODO";
+    return intermediateVariableFieldName;
+  }
+
   public boolean                  contextual                                   = false;
 
   public String                   functionName;
@@ -453,7 +460,7 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
   @Override
   public String typeset()
   {
-    return format("\\%s{%s}",
+    return format("\\%s(%s)",
                   functionName.replaceAll("√", "sqrt").replaceAll("J0", "J_0").replaceAll("Γ", "Gamma"),
                   arg == null ? "" : arg.typeset());
   }

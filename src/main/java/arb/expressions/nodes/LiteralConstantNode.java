@@ -427,6 +427,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   @Override
   public String getIntermediateValueFieldName()
   {
+    assert fieldName != null;
     return fieldName;
   }
 }

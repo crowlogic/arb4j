@@ -16,10 +16,10 @@ public class ComplexFractionTest extends
   public void testArraySet()
   {
     ComplexFraction f = new ComplexFraction();
-    ComplexFraction a = new ComplexFraction().set("7/8");
-    ComplexFraction b = new ComplexFraction().set("1/4+ⅈ");
+    ComplexFraction a = new ComplexFraction().set("7⁄8");
+    ComplexFraction b = new ComplexFraction().set("1⁄4+ⅈ");
     f.set(a, b);
-    assertEquals("[(7/8)+(0)i, (1/4)+(1)i]",f.toString());
+    assertEquals("[(7⁄8)+(0)i, (1⁄4)+(1)i]",f.toString());
   }
 
   @SuppressWarnings("resource")
@@ -39,37 +39,37 @@ public class ComplexFractionTest extends
   @SuppressWarnings("resource")
   public void testDiv()
   {
-    ComplexFraction a      = new ComplexFraction("7/8+2*ⅈ");
-    ComplexFraction b      = new ComplexFraction("1/4+ⅈ");
+    ComplexFraction a      = new ComplexFraction("7⁄8+2*ⅈ");
+    ComplexFraction b      = new ComplexFraction("1⁄4+ⅈ");
     ComplexFraction aOverB = a.div(b, new ComplexFraction());
-    assertEquals("(71/34)+(-6/17)i", aOverB.toString());
+    assertEquals("(71⁄34)+(-6⁄17)i", aOverB.toString());
   }
 
   @SuppressWarnings("resource")
   public void testAdd()
   {
-    ComplexFraction a      = new ComplexFraction("7/8+2*ⅈ");
-    ComplexFraction b      = new ComplexFraction("1/4+ⅈ");
+    ComplexFraction a      = new ComplexFraction("7⁄8+2*ⅈ");
+    ComplexFraction b      = new ComplexFraction("1⁄4+ⅈ");
     ComplexFraction aOverB = a.add(b, new ComplexFraction());
-    assertEquals("(9/8)+(3)i", aOverB.toString());
+    assertEquals("(9⁄8)+(3)i", aOverB.toString());
   }
 
   @SuppressWarnings("resource")
   public void testSub()
   {
-    ComplexFraction a      = new ComplexFraction("7/8+2*ⅈ");
-    ComplexFraction b      = new ComplexFraction("1/4+ⅈ");
+    ComplexFraction a      = new ComplexFraction("7⁄8+2*ⅈ");
+    ComplexFraction b      = new ComplexFraction("1⁄4+ⅈ");
     ComplexFraction aOverB = a.sub(b, new ComplexFraction());
-    assertEquals("(5/8)+(1)i", aOverB.toString());
+    assertEquals("(5⁄8)+(1)i", aOverB.toString());
   }
 
   @SuppressWarnings("resource")
   public void testMul()
   {
-    ComplexFraction a      = new ComplexFraction("7/8+2*ⅈ");
-    ComplexFraction b      = new ComplexFraction("1/4+ⅈ");
+    ComplexFraction a      = new ComplexFraction("7⁄8+2*ⅈ");
+    ComplexFraction b      = new ComplexFraction("1⁄4+ⅈ");
     ComplexFraction aOverB = a.mul(b, new ComplexFraction());
-    assertEquals("(-57/32)+(11/8)i", aOverB.toString());
+    assertEquals("(-57⁄32)+(11⁄8)i", aOverB.toString());
   }
 
 }

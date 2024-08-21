@@ -399,16 +399,16 @@ import java.util.stream.Stream;
 
   public Fraction set(String str)
   {
-    arblib.fmpq_set_str(this, str, 10);
+    arblib.fmpq_set_str(this, str.replaceAll("⁄", "/"), 10);
     return this;
   }
-        
-  @Override
+          
+@Override
   public String toString()
   {
     if (dim == 1)
     {
-      return arblib.fmpq_get_str(null, 10, this);
+      return arblib.fmpq_get_str(null, 10, this).replaceAll("/", "⁄");
     }
     StringBuilder sb = new StringBuilder("[");
     for (int i = 0; i < dim; i++)
@@ -420,7 +420,7 @@ import java.util.stream.Stream;
     sb.append("]");
     return sb.toString();
   }
-  
+    
   public Fraction one()
   {
     arblib.fmpq_one(this);

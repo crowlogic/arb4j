@@ -9,9 +9,8 @@ import arb.Real;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
-import arb.functions.NullaryFunction;
+import arb.functions.Function;
 import arb.functions.rational.RationalFunctionSequence;
-import arb.functions.real.RealFunction;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.scene.Scene;
@@ -22,19 +21,17 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ExpressionAnalyzer
-                                extends
+public class ExpressionAnalyzer extends
                                 Application
 {
 
   Context             context;
   Expression<?, ?, ?> expr;
-  NullaryFunction<?>  instance;
+  Function<?, ?>      instance;
   Object              result;
   Real                x;
   Integer             n;
 
-  
   @SuppressWarnings("resource")
   public Expression<?, ?, ?> getExpression()
   {
@@ -42,7 +39,7 @@ public class ExpressionAnalyzer
     x       = new Real().setName("x").set(2.3);
     context = new Context(n,
                           x);
-    return RationalFunctionSequence.compile("n->(R(n,½;x)*sin(x) - R(n-1,3⁄2;x)*cos(x))/x");
+    return RationalFunctionSequence.compile("n➔(R(n,½;x)*sin(x) - R(n-1,3⁄2;x)*cos(x))/x");
   }
 
   public void expandTreeView(TreeItem<?> item)
@@ -66,7 +63,7 @@ public class ExpressionAnalyzer
 
     expr = getExpression();
     System.out.println("expr=" + expr.syntaxTextTree());
-
+    instance = expr.instantiate();
 //    instance = new     Ψₖ(); // expr.instantiate();
 //    instance.n = n;
 //    instance.eva
@@ -78,7 +75,9 @@ public class ExpressionAnalyzer
     treeTableView.setShowRoot(true);
 
     TreeTableColumn<Node<?, ?, ?>, String> nodeCol = new TreeTableColumn<>("Node");
-    nodeCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().toString()));
+    nodeCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
+                                                                        .getValue()
+                                                                        .toString()));
     nodeCol.setMinWidth(400);
 
     TreeTableColumn<Node<?, ?, ?>, String> nodeTypeCol = new TreeTableColumn<>("Node Type");
@@ -95,7 +94,9 @@ public class ExpressionAnalyzer
                                                                                   .getSimpleName()));
 
     TreeTableColumn<Node<?, ?, ?>, String> typesetCol = new TreeTableColumn<>("Typeset");
-    typesetCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().typeset()));
+    typesetCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
+                                                                           .getValue()
+                                                                           .typeset()));
 
     TreeTableColumn<Node<?, ?, ?>, String> fieldCol = new TreeTableColumn<>("Field");
     fieldCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
@@ -103,11 +104,13 @@ public class ExpressionAnalyzer
                                                                          .getIntermediateValueFieldName()));
 
     TreeTableColumn<Node<?, ?, ?>, String> valueCol = new TreeTableColumn<>("Value");
-    valueCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(evaluateNode(param.getValue().getValue())));
+    valueCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(evaluateNode(param.getValue()
+                                                                                      .getValue())));
 
     typesetCol.setCellFactory(new TypeSettingCellFactory());
 
-    treeTableView.getColumns().addAll(nodeCol, nodeTypeCol, nodeTypeResultCol, typesetCol, fieldCol, valueCol);
+    treeTableView.getColumns()
+                 .addAll(nodeCol, nodeTypeCol, nodeTypeResultCol, typesetCol, fieldCol, valueCol);
 
     // Context variables display
     ListView<String> contextListView = new ListView<>();
@@ -126,7 +129,8 @@ public class ExpressionAnalyzer
 
     // Create a VBox and add components
     VBox vbox = new VBox(10);
-    vbox.getChildren().addAll(new Label("Context Variables:"), contextListView, treeTableView, buttonBox);
+    vbox.getChildren()
+        .addAll(new Label("Context Variables:"), contextListView, treeTableView, buttonBox);
 
     // Set the treeTableView to grow with the VBox
     VBox.setVgrow(treeTableView, javafx.scene.layout.Priority.ALWAYS);

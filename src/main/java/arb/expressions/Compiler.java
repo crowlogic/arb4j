@@ -619,7 +619,7 @@ public class Compiler
   }
 
   /**
-   * Loads the 4th and last argument onto the stack, and since this follows the
+   * Loads the 4th (last) argument onto the stack, and since this follows the
    * fluent pattern, it is also the return variable
    * 
    * The argument pattern for {@link Function#evaluate(Object, int, int, Object)}

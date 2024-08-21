@@ -40,7 +40,7 @@ public class ComplexRationalFunctionTest extends
     var context = new Context();
     context.registerVariable("v", RealConstants.half);
     var R =
-          ComplexRationalFunctionSequence.express("n➔v₍ₙ₎*(z/2)^(-n)*pFq([1/2-n/2,-n/2],[v,-n,1-v-n],-z²)",
+          ComplexRationalFunctionSequence.express("n➔v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
                                                   context);
     var x = R.evaluate(3, 128);
     assertEquals("(-6*x^2+15)/(x^3) + 0i", x.toString());

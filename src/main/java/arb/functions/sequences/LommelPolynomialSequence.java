@@ -39,7 +39,7 @@ public class LommelPolynomialSequence implements RationalFunctionSequence, AutoC
 
   public static Expression<Integer, RationalFunction, RationalFunctionSequence> expression;
 
-  public RationalFunctionSequence                                               element;
+  public RationalFunctionSequence                                               sequence;
 
   public final Context                                                          context;
 
@@ -53,15 +53,15 @@ public class LommelPolynomialSequence implements RationalFunctionSequence, AutoC
 
   public LommelPolynomialSequence(Real order)
   {
-    element = expression.instantiate();
+    sequence = expression.instantiate();
     context  = new Context(v.set(order));
-    context.injectReferences(element);
+    context.injectReferences(sequence);
   }
 
   @Override
   public RationalFunction evaluate(Integer t, int order, int bits, RationalFunction res)
   {
-    return element.evaluate(t, order, bits, res);
+    return sequence.evaluate(t, order, bits, res);
   }
 
 }
