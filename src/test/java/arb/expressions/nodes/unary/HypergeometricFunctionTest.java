@@ -22,7 +22,7 @@ public class HypergeometricFunctionTest extends
 {
   public int bits = 128;
 
-  public void testHypergeometricPolynomial() throws NoSuchFieldException, IllegalAccessException
+  public void testHypergeometricPolynomialReal()
   {
     try ( RealPolynomialHypergeometricFunction poly = new RealPolynomialHypergeometricFunction())
     {
@@ -40,6 +40,13 @@ public class HypergeometricFunctionTest extends
 
   }
 
+  public void testHypergeometricFunctionExpressionReal()
+  {
+    var f = RealFunction.express("pFq([-5,3.75,1.2],[1.4,2.7,3.4],-x^2)");
+    f.eval(2.3);
+
+  }
+
   public void testHypergeometricFuntionExpressionComplex()
   {
     var               poly      =
@@ -49,7 +56,7 @@ public class HypergeometricFunctionTest extends
     assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
   }
 
-  public void testHypergeometricFunctionExpressionReal()
+  public void testHypergeometricFunctionExpressionRealPolynomial()
   {
     var            poly      =
                         RealPolynomialNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
