@@ -4,6 +4,7 @@ package arb.viz;
 import static arb.utensils.Utensils.wrapOrThrow;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -16,9 +17,11 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 import arb.functions.sequences.RealSequence;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.skin.TableColumnHeader;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -26,6 +29,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
+ * be sure to run this with --add-opens javafx.controls/javafx.scene.control.skin=arb4j
+ * 
  * TODO: add a tabbed pane so multiple expressions can be opened in the same
  * program
  * 
@@ -38,11 +43,13 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
                                Application
 {
 
-  Context                      context;
-  Expression<?, ?, ?>          expr;
-  Function<D, C>               instance;
-  Object                       result;
-  TreeTableView<Node<?, ?, ?>> treeTableView;
+  Context                                        context;
+  Expression<?, ?, ?>                            expr;
+  Function<D, C>                                 instance;
+  Object                                         result;
+  TreeTableView<Node<?, ?, ?>>                   treeTableView;
+  TreeTableColumn<Node<?, ?, ?>, String>         nodeCol;
+  private TreeTableColumn<Node<?, ?, ?>, String> typesetCol;
 
   @SuppressWarnings("unchecked")
   public Expression<?, ?, ?> getExpression()
@@ -114,6 +121,35 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
     return scrollPane;
   }
 
+  public void resizeColumn(TreeTableColumn<?, ?> column)
+  {
+    try
+    {
+      javafx.scene.Node node = column.getStyleableNode();
+      if (node instanceof TableColumnHeader)
+      {
+        TableColumnHeader header       = (TableColumnHeader) node;
+        Method            resizeMethod =
+                                       TableColumnHeader.class.getDeclaredMethod("resizeColumnToFitContent",
+                                                                                 int.class);
+        resizeMethod.setAccessible(true);
+        resizeMethod.invoke(header, -1); // -1 means consider all rows
+      }
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+    }
+  }
+
+  private void resizeColumnsToFitContent()
+  {
+    for (TreeTableColumn<?, ?> column : treeTableView.getColumns())
+    {
+      resizeColumn(column);
+    }
+  }
+
   public SplitPane newSplitPane(ListView<String> contextListView, HBox buttonBox)
   {
     // Create a SplitPane
@@ -132,7 +168,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
     splitPane.getItems().addAll(topBox, bottomBox);
 
     // Set the initial divider position
-    splitPane.setDividerPositions(0.2);
+    splitPane.setDividerPositions(0.05);
     return splitPane;
   }
 
@@ -179,12 +215,12 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
   public void newTreeTableView()
   {
     Node<D, C, F>           rootNode = (Node<D, C, F>) expr.rootNode;
-    TreeItem<Node<?, ?, ?>> rootItem = new NodeTreeItem(rootNode);
+    TreeItem<Node<D, C, F>> rootItem = new NodeTreeItem<D, C, F>(rootNode);
 
-    treeTableView = new TreeTableView<Node<?, ?, ?>>(rootItem);
+    treeTableView = new TreeTableView(rootItem);
     treeTableView.setShowRoot(true);
 
-    TreeTableColumn<Node<?, ?, ?>, String> nodeCol = new TreeTableColumn<>("Node");
+    nodeCol = new TreeTableColumn<>("Node");
     nodeCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
                                                                         .getValue()
                                                                         .toString()));
@@ -203,7 +239,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
                                                                                   .type()
                                                                                   .getSimpleName()));
 
-    TreeTableColumn<Node<?, ?, ?>, String> typesetCol = new TreeTableColumn<>("Typeset");
+    typesetCol = new TreeTableColumn<>("Typeset");
     typesetCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
                                                                            .getValue()
                                                                            .typeset()));
@@ -221,6 +257,9 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
 
     treeTableView.getColumns()
                  .addAll(nodeCol, nodeTypeCol, nodeTypeResultCol, typesetCol, fieldCol, valueCol);
+
+    Platform.runLater( () -> resizeColumnsToFitContent() );
+
   }
 
   private String evaluateNode(Node<?, ?, ?> node)
@@ -275,8 +314,9 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
     Integer index = new Integer();
     index.set(0);
     result = instance.evaluate((D) index, 128);
-
     System.out.println(expr + "=" + result);
+    resizeColumnsToFitContent();
+    treeTableView.refresh();
   }
 
   public static void main(String[] args)
