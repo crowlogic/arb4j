@@ -3,8 +3,11 @@ package arb.viz;
 
 import static arb.utensils.Utensils.wrapOrThrow;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Map;
 
+import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -31,16 +34,17 @@ import javafx.stage.Stage;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ExpressionAnalyzer extends
-                                Application
+public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends C>> extends
+                               Application
 {
 
   Context                      context;
   Expression<?, ?, ?>          expr;
-  Function<?, ?>               instance;
+  Function<D, C>               instance;
   Object                       result;
   TreeTableView<Node<?, ?, ?>> treeTableView;
 
+  @SuppressWarnings("unchecked")
   public Expression<?, ?, ?> getExpression()
   {
     return RealSequence.compile("k➔√((2*k+1/2)/(2*π))*((k+1)⋰-½)²");
@@ -60,6 +64,7 @@ public class ExpressionAnalyzer extends
     }
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void start(Stage primaryStage)
   {
@@ -68,7 +73,7 @@ public class ExpressionAnalyzer extends
 
     expr = getExpression();
     System.out.println("expr=" + expr.syntaxTextTree());
-    instance = expr.instantiate();
+    instance = (Function<D, C>) expr.instantiate();
 
     newTreeTableView();
 
@@ -173,10 +178,10 @@ public class ExpressionAnalyzer extends
   @SuppressWarnings("unchecked")
   public void newTreeTableView()
   {
-    Node<?, ?, ?>           rootNode = expr.rootNode;
+    Node<D, C, F>           rootNode = (Node<D, C, F>) expr.rootNode;
     TreeItem<Node<?, ?, ?>> rootItem = new NodeTreeItem(rootNode);
 
-    treeTableView = new TreeTableView<>(rootItem);
+    treeTableView = new TreeTableView<Node<?, ?, ?>>(rootItem);
     treeTableView.setShowRoot(true);
 
     TreeTableColumn<Node<?, ?, ?>, String> nodeCol = new TreeTableColumn<>("Node");
@@ -229,23 +234,48 @@ public class ExpressionAnalyzer extends
       String intermediateValueFieldName = node.getIntermediateValueFieldName();
       if (intermediateValueFieldName == null)
       {
-        return result != null ? "null" : result.toString();
+        return "null";
       }
-      return instance.getClass()
-                     .getField(intermediateValueFieldName)
-                     .get(node.getIntermediateValueFieldName())
-                     .toString();
+      if (intermediateValueFieldName == "result")
+      {
+        return "result";
+      }
+      if (intermediateValueFieldName.equals(expr.getInputName()))
+      {
+        return "input";
+      }
+      else
+      {
+        try
+        {
+          Field field = instance.getClass().getField(intermediateValueFieldName);
+
+          return field == null ? String.format("missing %s in %s",
+                                               intermediateValueFieldName,
+                                               instance.getClass())
+                               : field.get(instance).toString();
+        }
+        catch (NoSuchFieldException nsfe)
+        {
+          return intermediateValueFieldName;
+        }
+      }
     }
     catch (Exception e)
     {
-      wrapOrThrow(e);
+      wrapOrThrow(Arrays.asList(instance.getClass().getFields()).stream().toList().toString(), e);
     }
     return "see todo in assertion";
   }
 
+  @SuppressWarnings("unchecked")
   private void evaluateExpression()
   {
-    result = instance.evaluate(null, 128);
+
+    Integer index = new Integer();
+    index.set(0);
+    result = instance.evaluate((D) index, 128);
+
     System.out.println(expr + "=" + result);
   }
 

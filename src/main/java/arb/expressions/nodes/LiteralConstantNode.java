@@ -187,7 +187,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 
   public ClassVisitor declareField(ClassVisitor classVisitor)
   {
-    classVisitor.visitField(ACC_PUBLIC & ACC_FINAL, fieldName, type().descriptorString(), null, null);
+    classVisitor.visitField(ACC_PUBLIC | ACC_FINAL , fieldName, type().descriptorString(), null, null);
     return classVisitor;
   }
 
