@@ -1782,9 +1782,8 @@ import arb.utensils.Utensils;
     
   public int digits()
   {
-   return 20;
-  }  
- 
+    return (int) (bits / 3.3219280948873623478703194294893901758648313930246);
+  }
   
   public boolean  printPrecision = true;
     
@@ -1795,11 +1794,19 @@ import arb.utensils.Utensils;
 
   public String toString(int digits, boolean precise)
   {
-    if (dim == 1 && elements == null )
+    if (dim == 1 && elements == null)
     {
-      return Utensils.removeTrailingZeros(arblib.arb_get_str(this, digits, (printPrecision || precise) ? 0 : 2)
-                                         .replace("[", "")
-                                         .replace("]", ""));
+      var str = arblib.arb_get_str(this, digits, (printPrecision || precise) ? 0 : 2)
+                      .replace("[", "")
+                      .replace("]", "");
+      if (!str.contains("+/-"))
+      {
+        return Utensils.removeTrailingZeros(str);
+      }
+      else
+      {
+        return str;
+      }
     }
     else
     {

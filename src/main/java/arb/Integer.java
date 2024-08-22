@@ -689,6 +689,7 @@ public class Integer implements
 
   public Real mul(Real s, int bits, Real result)
   {
+    result.bits = bits;
     arblib.arb_mul_fmpz(result, s, this.swigCPtr, bits);
     return result;
   }

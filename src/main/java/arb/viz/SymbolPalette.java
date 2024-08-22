@@ -124,6 +124,10 @@ public class SymbolPalette extends
     {
       chars.add(s);
     }
+    
+    
+    chars.add("π");
+    
     characters = chars.toArray(new String[chars.size()]);
     // columnsPerRow = (int) Math.ceil(Math.sqrt(chars.size()));
     System.out.format("colsPerRow=%s\n", columnsPerRow);
