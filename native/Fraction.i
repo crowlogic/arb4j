@@ -598,6 +598,12 @@ import java.util.stream.Stream;
     arblib.fmpq_pow_fmpz(result, this, n.swigCPtr);
     return result;
   }
+
+  public Real div(Real divisor, int prec, Real result)
+  {
+    return result.set(this).div(divisor, prec, result);
+  }
+
   
   public Fraction pow(Integer n, int bits)
   {

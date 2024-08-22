@@ -160,6 +160,16 @@ import arb.utensils.Utensils;
     return new Real().setName(name);
   }
   
+  public Real mul(Fraction that, int prec, Real res)
+  {
+    return mul(res.set(that),prec,res);
+  }
+
+  public Real mul(Fraction that, int prec)
+  {
+    return mul(that,prec,this);
+  }
+    
   public ComplexFraction sub(Integer n, int bits2, ComplexFraction res)
   {
     res.realPart.set(this).sub(n, bits2);

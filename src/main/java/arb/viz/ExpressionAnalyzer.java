@@ -5,14 +5,13 @@ import static arb.utensils.Utensils.wrapOrThrow;
 
 import java.util.Map;
 
-import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
-import arb.functions.real.RealFunction;
+import arb.functions.sequences.RealSequence;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.scene.Scene;
@@ -24,7 +23,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
- * TODO: add a tabbed pane so multiple expressions can be opened in the same program
+ * TODO: add a tabbed pane so multiple expressions can be opened in the same
+ * program
  * 
  * @author StΣνε
  * 
@@ -43,8 +43,9 @@ public class ExpressionAnalyzer extends
 
   public Expression<?, ?, ?> getExpression()
   {
-    context = new Context(Integer.named("n").set(3));
-    return RealFunction.compile("Ψₖ:√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)", context);
+    return RealSequence.compile("k➔√((2*k+1/2)/(2*π))*((k+1)⋰-½)²");
+    // context = new Context(Integer.named("n").set(3));
+    // return RealFunction.compile("Ψₖ:√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)", context);
   }
 
   public void expandTreeView(TreeItem<?> item)
@@ -159,9 +160,12 @@ public class ExpressionAnalyzer extends
     // Context variables display
     ListView<String> contextListView = new ListView<>();
     contextListView.setPrefHeight(100); // Set preferred height
-    for (Map.Entry<String, Object> entry : context.variables.map.entrySet())
+    if (context != null)
     {
-      contextListView.getItems().add(entry.getKey() + " = " + entry.getValue());
+      for (Map.Entry<String, Object> entry : context.variables.map.entrySet())
+      {
+        contextListView.getItems().add(entry.getKey() + " = " + entry.getValue());
+      }
     }
     return contextListView;
   }

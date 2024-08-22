@@ -19,9 +19,8 @@ public interface RealSequence extends
                               Sequence<Real>
 {
 
-  public static Expression<Integer, Real, RealSequence>
-         parse(String expression)
-  {  
+  public static Expression<Integer, Real, RealSequence> parse(String expression)
+  {
     return Function.parse(Parser.expressionToUniqueClassname(expression),
                           expression,
                           null,
@@ -43,62 +42,47 @@ public interface RealSequence extends
    *         elements of f
    */
   @SuppressWarnings("resource")
-  public default Real
-         enumerate(int i,
-                   int j)
+  public default Real enumerate(int i, int j)
   {
-    return new Real(rangeClosed(i,
-                                j).mapToObj(this)).setName(String.format("%s over %d..%d",
-                                                                         toString(),
-                                                                         i,
-                                                                         j));
+    return new Real(rangeClosed(i, j).mapToObj(this)).setName(String.format("%s over %d..%d",
+                                                                            toString(),
+                                                                            i,
+                                                                            j));
   }
 
   @Override
-  default Real
-          newCoDomainInstance()
+  default Real newCoDomainInstance()
   {
     return new Real();
   }
 
-  public static RealSequence
-         express(String expression)
+  public static RealSequence express(String expression)
   {
-    return (RealSequence) Sequence.express(Real.class,
-                                           expression,
-                                           RealSequence.class);
+    return (RealSequence) Sequence.express(Real.class, expression, RealSequence.class);
   }
 
-  public static RealSequence
-         express(String expression,
-                 Context context)
+  public static RealSequence express(String expression, Context context)
   {
-    return (RealSequence) Sequence.express(Real.class,
-                                           expression,
-                                           RealSequence.class,
-                                           context);
+    return (RealSequence) Sequence.express(Real.class, expression, RealSequence.class, context);
   }
 
-  public static RealSequence
-         express(String name,
-                 String expression)
+  public static RealSequence express(String name, String expression)
   {
-    return (RealSequence) Sequence.express(name,
-                                           Real.class,
-                                           expression,
-                                           RealSequence.class);
+    return (RealSequence) Sequence.express(name, Real.class, expression, RealSequence.class);
   }
 
-  public static RealSequence
-         express(String name,
-                 String expression,
-                 Context context)
+  public static RealSequence express(String name, String expression, Context context)
   {
     return (RealSequence) Sequence.express(name,
                                            Real.class,
                                            expression,
                                            RealSequence.class,
                                            context);
+  }
+
+  public static Expression<?, ?, ?> compile(String string)
+  {
+    return Function.compile(Integer.class, Real.class, RealSequence.class, string, new Context());
   }
 
 }
