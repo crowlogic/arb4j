@@ -26,9 +26,14 @@ import arb.functions.rational.ComplexRationalHypergeometricFunction;
 import arb.functions.rational.ComplexRationalNullaryFunction;
 import arb.functions.rational.RationalHypergeometricFunction;
 import arb.functions.rational.RationalNullaryFunction;
-import arb.functions.sequences.LommelPolynomialSequence;
 
 /**
+ * TODO: the sequence case, where it depends on the independent variable, NOT
+ * the indeterminate variable, can be optimized by compiling a version treating
+ * the index as a contextual variable and then having the evluate method set the
+ * context variable then call evaluate instead of reconstruction a new
+ * HypergeometricFunction objecvt upon each invocation of evaluate
+ * 
  * The numerator α and the denominator β parameters can be specified via the
  * {@link VectorNode} syntax like F([1,n,1+n],[1],x) or symbolically like
  * F(α,β,x) where α and β are {@link Real}s or {@link RealPolynomial}s for
@@ -69,6 +74,8 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   public final String        hypergeometricFunctionFieldName;
 
+  public final String        elementFieldName;
+
   public final boolean       isRational;
 
   public final boolean       isReal;
@@ -78,6 +85,8 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   public final Class<?>      scalarType;
 
   public final Class<?>      nullaryFunctionClass;
+
+  public final boolean       isNullaryFunction;
 
   public HypergeometricFunctionNode(Expression<D, R, F> expression)
   {
@@ -124,8 +133,15 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                   || α.dependsOn(expression.indeterminateVariable)
                   || β.dependsOn(expression.independentVariable)
                   || β.dependsOn(expression.indeterminateVariable);
-    
-    if ( !dependsOnInput )
+
+    isNullaryFunction               = expression.domainType.equals(Object.class);
+
+    elementFieldName                =
+                     isNullaryFunction ? expression.newIntermediateVariable("element",
+                                                                            expression.coDomainType)
+                                       : null;
+
+    if (!dependsOnInput)
     {
       expression.registerInitializer(this::generateHypergeometricFunctionInitializer);
     }
@@ -137,6 +153,22 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     expression.insideInitializer = true;
     loadHypergeometricFunctionOntoStack(mv);
     initializeHypergeometricFunction(mv);
+    if (isNullaryFunction)
+    {
+      loadHypergeometricFunctionOntoStack(mv);
+      mv.visitInsn(ACONST_NULL);
+      mv.visitLdcInsn(1);
+      loadBitsOntoStack(mv);
+      expression.loadThisFieldOntoStack(mv, elementFieldName, expression.coDomainType);
+      invokeVirtualMethod(mv,
+                          hypergeometricFunctionClass,
+                          "evaluate",
+                          Object.class,
+                          Object.class,
+                          int.class,
+                          int.class,
+                          Object.class);
+    }
   }
 
   /**
@@ -156,14 +188,43 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       err.printf("pFq.generate(resultType=%s dependsOnInput=%s\n)\n", resultType, dependsOnInput);
     }
 
-    loadHypergeometricFunctionOntoStack(mv);
+    boolean loadedHypergeometricFunction = false;
 
     if (dependsOnInput)
     {
+      loadedHypergeometricFunction = true;
+      loadHypergeometricFunctionOntoStack(mv);
       initializeHypergeometricFunction(mv);
     }
 
-    invokeHypergeometricFunctionEvaluationMethod(mv, resultType);
+    if (!isNullaryFunction)
+    {
+      if (!loadedHypergeometricFunction)
+      {
+        loadHypergeometricFunctionOntoStack(mv);
+      }
+
+      mv.visitInsn(ACONST_NULL);
+      mv.visitLdcInsn(1);
+      loadBitsOntoStack(mv);
+      loadOutputOntoStack(mv, resultType);
+      invokeVirtualMethod(mv,
+                          hypergeometricFunctionClass,
+                          "evaluate",
+                          Object.class,
+                          Object.class,
+                          int.class,
+                          int.class,
+                          Object.class);
+      checkClassCast(mv, resultType);
+
+    }
+    else
+    {
+      loadOutputOntoStack(mv, resultType);
+      expression.loadThisFieldOntoStack(mv, elementFieldName, resultType);
+      Compiler.invokeSetMethod(mv, resultType, resultType);
+    }
     return mv;
   }
 
@@ -193,23 +254,6 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                         Expression.class);
   }
 
-  protected void invokeHypergeometricFunctionEvaluationMethod(MethodVisitor mv, Class<?> resultType)
-  {
-    mv.visitInsn(ACONST_NULL);
-    mv.visitLdcInsn(1);
-    loadBitsOntoStack(mv);
-    loadOutputOntoStack(mv, resultType);
-    invokeVirtualMethod(mv,
-                        hypergeometricFunctionClass,
-                        "evaluate",
-                        Object.class,
-                        Object.class,
-                        int.class,
-                        int.class,
-                        Object.class);
-    checkClassCast(mv, resultType);
-  }
-
   protected void loadHypergeometricFunctionOntoStack(MethodVisitor mv)
   {
     expression.loadThisFieldOntoStack(mv,
@@ -221,7 +265,9 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   {
     if (isResult)
     {
+
       checkClassCast(loadResultParameter(mv), resultType);
+
     }
     else
     {

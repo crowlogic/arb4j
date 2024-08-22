@@ -448,7 +448,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public boolean isIndependent(VariableNode<D, R, F> inputVariable)
   {
     return equals(inputVariable) || (inputVariable == null && !expression.references(reference)
-                  && !expression.isNullaryPolynomialFunction());
+                  && !expression.hasIndeterminateVariable());
   }
 
   public void resolveInheritedVariableReference(VariableNode<D, R, F> variable)

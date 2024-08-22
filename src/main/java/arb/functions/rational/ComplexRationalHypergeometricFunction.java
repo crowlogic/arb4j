@@ -74,7 +74,6 @@ public class ComplexRationalHypergeometricFunction extends
   {
     assert numerator.imaginaryPart.isZero();
     assert denominator.imaginaryPart.isZero();
-    System.out.format("init(numer=%s,denom=%s)\n", numerator, denominator);
     return init(numerator.realPart, denominator.realPart, arg);
   }
 

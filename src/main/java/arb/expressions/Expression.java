@@ -670,7 +670,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                           position,
                                           false);
 
-        if (isNullaryPolynomialFunction())
+        if (hasIndeterminateVariable())
         {
           indeterminateVariable                 = variable;
           indeterminateVariable.isIndeterminate = true;
@@ -1421,7 +1421,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                   || isAlphabeticalSuperscript(character);
   }
 
-  public boolean isNullaryPolynomialFunction()
+  public boolean hasIndeterminateVariable()
   {
     return (domainType.equals(Object.class)
                   && thisOrAnyAscendentExpressionHasIndeterminateVariable());

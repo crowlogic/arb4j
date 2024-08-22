@@ -517,6 +517,7 @@ public class Compiler
     assert !outType.getClass()
                    .equals(Object.class) : "invokeSetMethod shouldn't be called for Object type";
 
+    //Compiler.invokeVirtualMethod(mv, inType, objectDesc, outType, null)
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        Type.getInternalName(outType),
                        "set",
