@@ -52,10 +52,21 @@ public class RationalHypergeometricFunction extends
 {
 
   public RationalHypergeometricFunction
+         init(Real α, Real β, Expression<Object, RationalFunction, RationalNullaryFunction> arg)
+  {
+    try ( Fraction alpha = new Fraction(); Fraction beta = new Fraction();)
+    {
+      alpha.set(α);
+      beta.set(β);
+      return init(alpha, beta, arg);
+    }
+  }
+
+  public RationalHypergeometricFunction
          init(Fraction α,
               Fraction β,
               Expression<Object, RationalFunction, RationalNullaryFunction> arg)
-  {
+  {    
     init(Real.class, RationalFunction.class, RationalNullaryFunction.class, α, β, arg);
     return this;
   }

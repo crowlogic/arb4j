@@ -372,9 +372,12 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
   
   public Fraction set(Real value)
   {
+    assert value != null : "value is null";
+    assert this.dim == value.dim : String.format("this.dim=%d != that.dim=%d", this.dim, value.dim);
+    assert value.swigCPtr != 0 : "value has a null pointer";
     arblib.arf_get_fmpq(this, value.getMid());
     return this;
-  }  
+  }
 
   public RealPolynomial sub(RealPolynomial element, int prec, RealPolynomial result)
   {
