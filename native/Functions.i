@@ -7,6 +7,10 @@
 #include <flint/fmpz_poly.h>
 #include <flint/fmpz_poly_q.h>
 
+int fmpq_pow_fmpz(fmpq_t a, const fmpq_t b, const fmpz_t e);
+
+void fmpq_set(fmpq_t dest, const fmpq_t src);
+
 void fmpq_add_fmpz(fmpq_t res, const fmpq_t op1, const fmpz_t c);
 
  void fmpq_inv(fmpq_t dest, const fmpq_t src);

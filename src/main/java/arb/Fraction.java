@@ -621,6 +621,17 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     return null;
   }
 
+  public Fraction pow(Integer n, int bits, Fraction result)
+  {
+    arblib.fmpq_pow_fmpz(result, this, n.swigCPtr);
+    return result;
+  }
+  
+  public Fraction pow(Integer n, int bits)
+  {
+    return pow(n,bits,this);
+  }
+
   public RationalFunction pow(Integer n, int bits, RationalFunction result)
   {
     try ( RationalFunction tmp = new RationalFunction() )

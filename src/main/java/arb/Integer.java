@@ -315,6 +315,16 @@ public class Integer implements
     return res.set(res);
   }
 
+  public Fraction ascendingFactorial(Fraction n, int bits, Fraction result)
+  {
+    try ( Real tmpIn = new Real(); Real tmpOut = new Real() )
+    {
+      tmpIn.set(n).ascendingFactorial(tmpOut,bits,tmpOut);
+      return result.set(tmpOut);
+    }
+  }
+
+  
   public Real ascendingFactorial(Real n, int bits, Real result)
   {
     arblib.arb_rising(result, result.set(this), n, bits);

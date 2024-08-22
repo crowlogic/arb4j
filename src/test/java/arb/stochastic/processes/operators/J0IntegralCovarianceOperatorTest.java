@@ -22,7 +22,8 @@ public class J0IntegralCovarianceOperatorTest extends
   {
     List<Real>   projections;
     RealSequence λₖ = RealSequence.express("λₖ:k➔√((4*k+1)/π)*((k+1)⋰-½)²");
-
+    Real l1 = λₖ.evaluate(1, 128);
+    assert false : "hmm " + l1;
     try ( Integer index = new Integer())
     {
       projections = IntStream.range(0, 10).mapToObj(λₖ).toList();
