@@ -69,7 +69,6 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
 
     expression.registerInitializer(this::generateSequenceInitializer);
 
-    seqFieldName = expression.newIntermediateVariable("hyp", LommelPolynomialSequence.class, true);
   }
 
   public void generateSequenceInitializer(MethodVisitor mv)
