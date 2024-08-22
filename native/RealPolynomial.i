@@ -120,7 +120,11 @@ import arb.utensils.Utensils;
     return this;
   }
 
-  
+  public RealPolynomial neg(int bits, RealPolynomial result)
+  {
+    return neg(result);
+  }
+    
   public RealPolynomial add(int i, int bits)
   {
     return add(i, bits, this);
