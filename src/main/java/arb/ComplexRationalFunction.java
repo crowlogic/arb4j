@@ -91,6 +91,63 @@ public class ComplexRationalFunction implements
     return this;
   }
 
+  /**
+   * <pre>
+   * Given two complex rational functions defined as:
+   * 
+   * f(x) = p(x)/q(x) + i r(x)/s(x)
+   * 
+   * g(x) = u(x)/v(x) + i w(x)/y(x)
+   * 
+   * To Prove
+   * 
+   * We need to prove that h(x) = f(x)/g(x) equals:
+   * 
+   * h(x) = a(x)/b(x) + i c(x)/d(x)
+   * 
+   * Where:
+   * 
+   * a(x) = (p(x)u(x) + r(x)w(x))v(x)² + (r(x)u(x) - p(x)w(x))y(x)² 
+   * b(x) = (q(x)v(x)² + s(x)y(x)²)(u(x)² + w(x)²) 
+   * c(x) = (r(x)u(x) - p(x)w(x))v(x)² * (p(x)u(x) + r(x)w(x))y(x)² 
+   * d(x) = (q(x)v(x)² + s(x)y(x)²)(u(x)² + w(x)²)
+   * 
+   * Proof
+   * 
+   * 1. Start with the division:
+   * 
+   * f(x)/g(x) = (p(x)/q(x) + i r(x)/s(x)) / (u(x)/v(x) + i w(x)/y(x))
+   * 
+   * 2. Multiply numerator and denominator by the conjugate of the denominator:
+   * 
+   * = ((p(x)/q(x) + i r(x)/s(x)) (u(x)/v(x) - i w(x)/y(x))) / ((u(x)/v(x) + i
+   * w(x)/y(x))(u(x)/v(x) - i w(x)/y(x)))
+   * 
+   * 3. Simplify the denominator:
+   * 
+   * = ((p(x)/q(x) + i r(x)/s(x)) (u(x)/v(x) - i w(x)/y(x))) / ((u(x)² + w(x)²) /
+   * (v(x)² + y(x)²))
+   * 
+   * 4. Multiply the numerators and separate real and imaginary parts:
+   * 
+   * = (p(x)u(x)/(q(x)v(x)) + r(x)w(x)/(s(x)y(x)) + i(r(x)u(x)/(s(x)v(x)) -
+   * p(x)w(x)/(q(x)y(x)))) / ((u(x)² + w(x)²) / (v(x)² + y(x)²))
+   * 
+   * 5. Multiply all terms by (v(x)² + y(x)²)/(u(x)² + w(x)²):
+   * 
+   * = (p(x)u(x)v(x)² + r(x)w(x)v(x)² + p(x)u(x)y(x)² + r(x)w(x)y(x)²) /
+   * ((q(x)v(x)² + s(x)y(x)²)(u(x)² + w(x)²)) + i(r(x)u(x)v(x)² - p(x)w(x)v(x)² +
+   * r(x)u(x)y(x)² - p(x)w(x)y(x)²) / ((q(x)v(x)² + s(x)y(x)²)(u(x)² + w(x)²))
+   * 
+   * 6. Comparing with the definition of h(x):
+   * 
+   * a(x) = (p(x)u(x)  + r(x)w(x))v(x)²   + (r(x)u(x) - p(x)w(x))y(x)² 
+   * b(x) = (q(x)v(x)² + s(x)y(x)²)(u(x)² + w(x)²) 
+   * c(x) = (r(x)u(x)  - p(x)w(x))v(x)²   - (p(x)u(x) + r(x)w(x))y(x)² 
+   * d(x) = (q(x)v(x)² + s(x)y(x)²)(u(x)² + w(x)²)
+   * 
+   * </pre>
+   */
   @Override
   public ComplexRationalFunction
          div(ComplexRationalFunction x, int prec, ComplexRationalFunction result)
@@ -98,6 +155,9 @@ public class ComplexRationalFunction implements
     assert result.realPart != null : "result.realPart is null";
     assert result.imaginaryPart != null : "result.imaginaryPart is null";
     assert !x.isZero();
+
+    assert false : "TODO: reimplement this properly";
+
     RationalFunction a = realPart;
     RationalFunction b = imaginaryPart;
     RationalFunction c = x.realPart;
@@ -280,7 +340,7 @@ public class ComplexRationalFunction implements
   }
 
   public static ComplexFraction imaginaryUnit = new ComplexFraction();
-  
+
   static
   {
     imaginaryUnit.realPart.set(0, 1);
@@ -291,11 +351,11 @@ public class ComplexRationalFunction implements
   public ComplexFraction
          evaluate(ComplexFraction input, int order, int bits, ComplexFraction result)
   {
-    try ( ComplexFraction a = new ComplexFraction();ComplexFraction b = new ComplexFraction())
+    try ( ComplexFraction a = new ComplexFraction(); ComplexFraction b = new ComplexFraction())
     {
       realPart.evaluate(input, bits, a);
       imaginaryPart.evaluate(input, bits, b).conjugate();
-      return a.sub(b, bits,result);
+      return a.sub(b, bits, result);
     }
   }
 
