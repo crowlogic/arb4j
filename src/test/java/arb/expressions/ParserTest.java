@@ -12,7 +12,7 @@ public class ParserTest extends
 
   public void testIsLatinGreekOrSpecial()
   {
-    assertTrue(Parser.isLatinGreekOrSpecial('Γ', false));
+    assertTrue(Parser.isLatinGreekSpecialOrBlackLetter('Γ', false));
     assertTrue(Parser.isGreekOrBlackLetter('Γ'));
 
   }

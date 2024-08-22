@@ -312,11 +312,10 @@ public class ComplexFraction implements
       frac.realPart.swigCPtr      = segment.address() + i * Long.BYTES * 4;
       frac.imaginaryPart.swigCPtr = frac.realPart.swigCPtr + Long.BYTES * 2;
       frac.realPart.swigCMemOwn   = frac.imaginaryPart.swigCMemOwn = false;
+      frac.realPart.init();
       arblib.fmpq_init(frac.realPart);
       arblib.fmpq_init(frac.imaginaryPart);
-      System.out.format("Setting %s\n", vals[i]);
       elements[i] = frac.set(vals[i]);
-      System.out.format("Set %s\n\n", elements[i]);
       realPart.elements[i]      = frac.realPart;
       imaginaryPart.elements[i] = frac.imaginaryPart;
     }

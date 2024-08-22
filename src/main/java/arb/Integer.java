@@ -83,11 +83,6 @@ public class Integer implements
     return result.set(this).neg();
   }
 
-  public Fraction cos(int prec, Fraction result)
-  {
-    return result.set(this).cos(prec, result);
-  }
-
   public Real cos(int prec, Real result)
   {
     return result.set(this).cos(prec, result);
@@ -103,11 +98,10 @@ public class Integer implements
     return result.set(this).sin(prec, result);
   }
 
+  @SuppressWarnings("resource")
   public static Integer named(String name)
   {
-    Integer n = new Integer();
-    n.setName("n");
-    return n;
+    return new Integer().setName("n");
   }
 
   static
@@ -323,11 +317,7 @@ public class Integer implements
 
   public Real ascendingFactorial(Real n, int bits, Real result)
   {
-
-    try ( Real x = new Real();)
-    {
-      arblib.arb_rising(result, x.set(this), n, bits);
-    }
+    arblib.arb_rising(result, result.set(this), n, bits);
     return result;
   }
 
@@ -400,8 +390,7 @@ public class Integer implements
 
   public Complex div(Integer operand, int prec, Complex result)
   {
-    result.set(this).div(operand, prec);
-    return result;
+    return result.set(this).div(operand, prec);
   }
 
   /**

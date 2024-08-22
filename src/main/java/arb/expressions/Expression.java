@@ -57,15 +57,16 @@ import arb.viz.ArbShellExecutionController;
  * <p>
  * Internally, the {@link Expression} class parses the input string to construct
  * an Abstract Syntax Tree (AST), where each {@link Node} represents a
- * {@link BinaryOperationNode}, {@link UnaryOperationNode}, {@link NAryOperationNode}, such
- * as {@link AdditionNode} , {@link SubtractionNode}, {@link MultiplicationNode}, and
- * {@link DivisionNode} or its operands like {@link VariableNode} and
- * {@link LiteralConstantNode}, etc. This {@link TreeModel} structure allows the
- * class to correctly manage operator precedence and associativity rules
- * inherent in mathematical expressions and facilitate their printing via the
- * {@link TextTree}. The AST is then traversed to {@link #generate()} the
- * corresponding Java bytecodes constituting the class which can be executed to
- * evaluate the corresponding expression.
+ * {@link BinaryOperationNode}, {@link UnaryOperationNode},
+ * {@link NAryOperationNode}, such as {@link AdditionNode} ,
+ * {@link SubtractionNode}, {@link MultiplicationNode}, and {@link DivisionNode}
+ * or its operands like {@link VariableNode} and {@link LiteralConstantNode},
+ * etc. This {@link TreeModel} structure allows the class to correctly manage
+ * operator precedence and associativity rules inherent in mathematical
+ * expressions and facilitate their printing via the {@link TextTree}. The AST
+ * is then traversed to {@link #generate()} the corresponding Java bytecodes
+ * constituting the class which can be executed to evaluate the corresponding
+ * expression.
  *
  * <h2>Key Features:</h2>
  * <ul>
@@ -78,8 +79,8 @@ import arb.viz.ArbShellExecutionController;
  * for mutual accessibility..</li>
  * <li>Effectively manages {@link IntermediateVariable} and
  * {@link LiteralConstantNode}, optimizing memory usage and performance.</li>
- * <li>Automatically injects {@link VariableReference}s to {@link VariableNode} and
- * {@link Function}s into the compiled bytecode, facilitating dynamic
+ * <li>Automatically injects {@link VariableReference}s to {@link VariableNode}
+ * and {@link Function}s into the compiled bytecode, facilitating dynamic
  * execution.</li>
  * <li>The {@link Parser} provides comprehensive methods for parsing
  * expressions, evaluating them, and generating the necessary bytecode, all
@@ -209,9 +210,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean                                        inAbsoluteValue       = false;
 
-  public VariableNode<D, C, F>                              independentVariable;
+  public VariableNode<D, C, F>                          independentVariable;
 
-  public VariableNode<D, C, F>                              indeterminateVariable;
+  public VariableNode<D, C, F>                          indeterminateVariable;
 
   public LinkedList<Consumer<MethodVisitor>>            initializers          = new LinkedList<>();
 
@@ -233,7 +234,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public HashMap<String, FunctionMapping<?, ?, ?>>      referencedFunctions   = new HashMap<>();
 
-  public HashMap<String, VariableNode<D, C, F>>             referencedVariables   = new HashMap<>();
+  public HashMap<String, VariableNode<D, C, F>>         referencedVariables   = new HashMap<>();
 
   public Node<D, C, F>                                  rootNode;
 
@@ -305,8 +306,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       if (nextCharacterIs('+', '₊'))
       {
         node = new AdditionNode<>(this,
-                              node,
-                              exponentiateMultiplyAndDivide());
+                                  node,
+                                  exponentiateMultiplyAndDivide());
       }
       else if (nextCharacterIs('-', '₋', '−'))
       {
@@ -315,13 +316,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         if (node == null)
         {
           node = new NegationNode<>(this,
-                                exponentiateMultiplyAndDivide());
+                                    exponentiateMultiplyAndDivide());
         }
         else
         {
           node = new SubtractionNode<>(this,
-                                   node,
-                                   exponentiateMultiplyAndDivide());
+                                       node,
+                                       exponentiateMultiplyAndDivide());
         }
       }
       else
@@ -571,11 +572,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   /**
    * @return a parenthetical {@link Node}, a {@link ProductNode}, a
-   *         {@link LiteralConstantNode},a {@link Function}, a {@link VariableNode} or
-   *         null if for instance "-t" is encountered, as a 0 is implied by the
-   *         absence of a node before the {@link SubtractionNode} operator is
-   *         encountered, also handles {@link ProductNode} also known as the
-   *         product operator and {@link SumNode}
+   *         {@link LiteralConstantNode},a {@link Function}, a
+   *         {@link VariableNode} or null if for instance "-t" is encountered, as
+   *         a 0 is implied by the absence of a node before the
+   *         {@link SubtractionNode} operator is encountered, also handles
+   *         {@link ProductNode} also known as the product operator and
+   *         {@link SumNode}
    * 
    * @throws CompilerException
    */
@@ -662,11 +664,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       if (isInputVariableSpecified)
       {
         var variable = new VariableNode<>(this,
-                                      new VariableReference<>(inputVariableName,
-                                                              null,
-                                                              domainType),
-                                      position,
-                                      false);
+                                          new VariableReference<>(inputVariableName,
+                                                                  null,
+                                                                  domainType),
+                                          position,
+                                          false);
 
         if (isNullaryPolynomialFunction())
         {
@@ -724,8 +726,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       final boolean parenthetical = nextCharacterIs('(');
       node = new ExponentiationNode<>(this,
-                                  node,
-                                  parenthetical ? resolve() : evaluate());
+                                      node,
+                                      parenthetical ? resolve() : evaluate());
       if (parenthetical)
       {
         require(')');
@@ -1409,13 +1411,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   /**
    * @return true if this{@link #character} any of
-   *         {@link Parser#isLatinGreekOrSpecial(char, boolean)},
+   *         {@link Parser#isLatinGreekSpecialOrBlackLetter(char, boolean)},
    *         {@link Parser#isAlphabeticalSuperscript(char)} or
    *         {@link Parser#isAlphabeticalOrNumericSubscript(char)} are true
    */
   public boolean isIdentifierCharacter()
   {
-    return isLatinGreekOrSpecial(character, false) || isAlphabeticalOrNumericSubscript(character)
+    return isLatinGreekSpecialOrBlackLetter(character, false) || isAlphabeticalOrNumericSubscript(character)
                   || isAlphabeticalSuperscript(character);
   }
 
@@ -1474,15 +1476,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       if (nextCharacterIs('*', '×', 'ₓ', '⋅'))
       {
         node = new MultiplicationNode<>(this,
-                                    node,
-                                    exponentiate());
+                                        node,
+                                        exponentiate());
 
       }
       else if (nextCharacterIs('⁄', '/', '÷'))
       {
         node = new DivisionNode<>(this,
-                              node,
-                              exponentiate());
+                                  node,
+                                  exponentiate());
       }
       else
       {
@@ -1530,9 +1532,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public VariableNode<D, C, F> newVariable(int startPos, VariableReference<D, C, F> reference)
   {
     return new VariableNode<D, C, F>(this,
-                                 reference,
-                                 startPos,
-                                 true);
+                                     reference,
+                                     startPos,
+                                     true);
   }
 
   public char nextCharacter()
@@ -1572,7 +1574,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     boolean entirelySubscripted   = true;
     boolean entirelySuperscripted = true;
     boolean isLatinOrGreek;
-    while ((isLatinOrGreek = isLatinGreekOrSpecial(character, true))
+    while ((isLatinOrGreek = isLatinGreekSpecialOrBlackLetter(character, true))
                   || (entirelySubscripted && !isLatinOrGreek
                                 && Parser.isAlphabeticalOrNumericSubscript(character))
                   || (entirelySuperscripted && !isLatinOrGreek
@@ -1586,16 +1588,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
     }
     var substring = expression.substring(startPos, position);
-    if (trace)
-
-    {
-      if (substring.equals("ln"))
-      {
-        // https://docs.oracle.com/javase/7/docs/api/java/lang/Character.html#unicode
-        // dammit dammit sonofabitch
-        err.println("substring=" + substring);
-      }
-    }
     return Utensils.subscriptToRegular(substring.trim());
   }
 
@@ -1642,13 +1634,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (nextCharacterIs(superscript))
     {
       node = new ExponentiationNode<>(this,
-                                  node,
-                                  new LiteralConstantNode<>(this,
-                                                            digit));
+                                      node,
+                                      new LiteralConstantNode<>(this,
+                                                                digit));
     }
     return node;
   }
 
+  /**
+   * TODO: test/suppport multi-digit literal constants as superscripts
+   * 
+   * @param node
+   * @return
+   */
   public Node<D, C, F> parseSuperscripts(Node<D, C, F> node)
   {
     node = parseSuperscript(node, '⁰', "0");
@@ -1746,20 +1744,24 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (!nextCharacterIs(which))
     {
-      String result = Arrays.asList(which)
-                            .stream()
-                            .map(ch -> String.format("'%s'", String.valueOf(ch)))
-                            .collect(Collectors.joining(","));
-
-      throw new CompilerException(format("Expecting %s %s at position %d but got char '%c' instead, remaining=%s\n",
-                                         which.length > 1 ? "one of" : "",
-                                         result,
-                                         position,
-                                         character == 0 ? '0' : character,
-                                         remaining()));
-
+      throwUnexpectedCharacterException(which);
     }
     return this;
+  }
+
+  protected void throwUnexpectedCharacterException(char... which)
+  {
+    String result = Arrays.asList(which)
+                          .stream()
+                          .map(ch -> String.format("'%s'", String.valueOf(ch)))
+                          .collect(Collectors.joining(","));
+
+    throw new CompilerException(format("Expecting %s %s at position %d but got char '%c' instead, remaining=%s\n",
+                                       which.length > 1 ? "one of" : "",
+                                       result,
+                                       position,
+                                       character == 0 ? '0' : character,
+                                       remaining()));
   }
 
   /**
@@ -1782,7 +1784,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       inAbsoluteValue = true;
       node            = new AbsoluteValueNode<D, C, F>(this,
-                                                   resolve());
+                                                       resolve());
       require('|');
       inAbsoluteValue = false;
     }
@@ -1794,19 +1796,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (nextCharacterIs('!'))
     {
       return new FactorialNode<>(this,
-                                    node);
+                                 node);
     }
     else if (nextCharacterIs('₍'))
     {
       return new AscendingFactorializationNode<>(node,
-                                             resolve(),
-                                             require('₎'));
+                                                 resolve(),
+                                                 require('₎'));
     }
     else if (nextCharacterIs('⋰'))
     {
       return new AscendingFactorializationNode<>(node,
-                                             resolve(),
-                                             this);
+                                                 resolve(),
+                                                 this);
     }
     else
     {
@@ -1860,7 +1862,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else
     {
-      return resolveSymbolicLiteralConstantsKeywordsAndVariables(startPos, reference);
+      return resolveSymbolicLiteralConstantKeywordOrVariable(startPos, reference);
     }
   }
 
@@ -1873,8 +1875,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   public Node<D, C, F>
-         resolveSymbolicLiteralConstantsKeywordsAndVariables(int startPos,
-                                                             VariableReference<D, C, F> reference)
+         resolveSymbolicLiteralConstantKeywordOrVariable(int startPos,
+                                                         VariableReference<D, C, F> reference)
   {
     if (LiteralConstantNode.constantSymbols.contains(reference.name))
     {
@@ -1931,7 +1933,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
-  @SuppressWarnings("unchecked")
   public <E, S, G extends Function<? extends E, ? extends S>>
          Expression<D, C, F>
          substitute(String variableToChange, Expression<E, S, G> substitution)
@@ -1957,7 +1958,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     VariableNode<E, S, G> substituteInputVariable     = substitution.getInputVariable();
-    String            substituteInputVariableName = substituteInputVariable.getName();
+    String                substituteInputVariableName = substituteInputVariable.getName();
     if (!variableToChange.equals(substituteInputVariableName))
     {
       substitution.rename(substituteInputVariableName, variableToChange);

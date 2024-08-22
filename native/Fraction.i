@@ -53,12 +53,7 @@ import java.util.stream.Stream;
   public Real sqrt(int bits, Real result)
   {
     assert bits > 0 : "bits must be strictly positive";
-    try ( Real tmp = new Real())
-    {
-      Real hmm = tmp.set(this);
-      System.out.format("about to sqrt %s with bits=%d\n", hmm,bits);
-      return hmm.sqrt(bits, result);
-    }
+    return result.set(this).sqrt(bits);
   }
 
   public Real floor(int bits, Real result)
@@ -272,6 +267,7 @@ import java.util.stream.Stream;
   public int           dim = 1;
   public Fraction[] elements;
 
+  @SuppressWarnings("resource")
   public static Fraction newVector(Arena arena, int dim)
   {
     MemorySegment segment = arena.allocate(Long.BYTES * dim * 2);
@@ -283,10 +279,15 @@ import java.util.stream.Stream;
     for ( int i = 0; i < dim; i++ )
     {
       Fraction frac = new Fraction(array.swigCPtr + i*Long.BYTES*2, false );
-      array.elements[i] = frac;
-      arblib.fmpq_init(frac);
+      array.elements[i] = frac.init();
     }
     return array;
+  }
+
+  public Fraction init()
+  {
+    arblib.fmpq_init(this);
+    return this;
   }
   
   static

@@ -184,12 +184,10 @@ public class Parser
    * @return true if the character is a Latin or Greek alphabet character; false
    *         otherwise
    */
-  static public boolean isLatinGreekOrSpecial(char ch, boolean digit)
+  static public boolean isLatinGreekSpecialOrBlackLetter(char ch, boolean digit)
   {
-    // TODO: support the rest of the alphabet here
-    boolean is = isAlphabetical(ch) || isGreekOrBlackLetter(ch) || ch == ⅈ || ch == '√' || ch == '₀'
-                  || ch == 'ⁿ' || (digit && (ch >= '0' && ch <= '9'));
-    return is;
+    return isAlphabetical(ch) || isGreekOrBlackLetter(ch) || ch == ⅈ || ch == '√' || ch == '₀'
+                  || superscriptChars.contains(ch) || (digit && (ch >= '0' && ch <= '9'));
   }
 
   public static boolean isAlphabetical(int ch)
