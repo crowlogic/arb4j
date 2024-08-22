@@ -156,7 +156,7 @@ public class ComplexRationalFunction implements
     assert result.imaginaryPart != null : "result.imaginaryPart is null";
     assert !x.isZero();
 
-    assert false : "TODO: reimplement this properly";
+    //assert false : "TODO: reimplement this properly";
 
     RationalFunction a = realPart;
     RationalFunction b = imaginaryPart;

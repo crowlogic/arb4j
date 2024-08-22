@@ -26,6 +26,7 @@ import arb.functions.rational.ComplexRationalHypergeometricFunction;
 import arb.functions.rational.ComplexRationalNullaryFunction;
 import arb.functions.rational.RationalHypergeometricFunction;
 import arb.functions.rational.RationalNullaryFunction;
+import arb.functions.sequences.LommelPolynomialSequence;
 
 /**
  * The numerator α and the denominator β parameters can be specified via the
@@ -58,27 +59,25 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                          arg.typeset());
   }
 
-  Node<D, R, F>        α;
+  public final Node<D, R, F> α;
 
-  Node<D, R, F>        β;
+  public final Node<D, R, F> β;
 
-  private Class<?>     hypergeometricFunctionClass;
+  public final Class<?>      hypergeometricFunctionClass;
 
-  public boolean       dependsOnInput;
+  public final boolean       dependsOnInput;
 
-  private String       hypergeometricFunctionFieldName;
+  public final String        hypergeometricFunctionFieldName;
 
-  public final boolean isRational;
+  public final boolean       isRational;
 
-  public final boolean isReal;
+  public final boolean       isReal;
 
-  public final boolean isComplex;
+  public final boolean       isComplex;
 
-  private Class<?>     scalarType;
+  public final Class<?>      scalarType;
 
-  public boolean       isComplexRational;
-
-  public Class<?>      nullaryFunctionClass;
+  public final Class<?>      nullaryFunctionClass;
 
   public HypergeometricFunctionNode(Expression<D, R, F> expression)
   {
@@ -122,7 +121,22 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                                                                        true);
 
     dependsOnInput                  = α.dependsOn(expression.independentVariable)
-                  || β.dependsOn(expression.independentVariable);
+                  || α.dependsOn(expression.indeterminateVariable)
+                  || β.dependsOn(expression.independentVariable)
+                  || β.dependsOn(expression.indeterminateVariable);
+    
+    if ( !dependsOnInput )
+    {
+      expression.registerInitializer(this::generateHypergeometricFunctionInitializer);
+    }
+
+  }
+
+  public void generateHypergeometricFunctionInitializer(MethodVisitor mv)
+  {
+    expression.insideInitializer = true;
+    loadHypergeometricFunctionOntoStack(mv);
+    initializeHypergeometricFunction(mv);
   }
 
   /**
@@ -142,17 +156,24 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       err.printf("pFq.generate(resultType=%s dependsOnInput=%s\n)\n", resultType, dependsOnInput);
     }
 
-    loadHypergeometricFunctionClassOntoStack(mv);
+    loadHypergeometricFunctionOntoStack(mv);
 
-    α.generate(mv, scalarType);
-    β.generate(mv, scalarType);
-
-    mv.visitLdcInsn(arg.toString());
-
-    invokeArgumentParsingMethod(mv);
-    invokeHypergeometricFunctionInitializationMethod(mv);
+    if (dependsOnInput)
+    {
+      initializeHypergeometricFunction(mv);
+    }
 
     invokeHypergeometricFunctionEvaluationMethod(mv, resultType);
+    return mv;
+  }
+
+  protected MethodVisitor initializeHypergeometricFunction(MethodVisitor mv)
+  {
+    α.generate(mv, scalarType);
+    β.generate(mv, scalarType);
+    mv.visitLdcInsn(arg.toString());
+    invokeArgumentParsingMethod(mv);
+    invokeHypergeometricFunctionInitializationMethod(mv);
     return mv;
   }
 
@@ -189,7 +210,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     checkClassCast(mv, resultType);
   }
 
-  protected void loadHypergeometricFunctionClassOntoStack(MethodVisitor mv)
+  protected void loadHypergeometricFunctionOntoStack(MethodVisitor mv)
   {
     expression.loadThisFieldOntoStack(mv,
                                       hypergeometricFunctionFieldName,

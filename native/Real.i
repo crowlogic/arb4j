@@ -147,7 +147,19 @@ import arb.utensils.Utensils;
          false);
   }
 
-
+  /**
+   * Construct a new {@link Real} and call {@link Real#setName(String)} with the
+   * given name
+   * 
+   * @param name
+   * @return a new {@link Real} named name
+   */
+  @SuppressWarnings("resource")
+  public static Real named(String name)
+  {
+    return new Real().setName(name);
+  }
+  
   public ComplexFraction sub(Integer n, int bits2, ComplexFraction res)
   {
     res.realPart.set(this).sub(n, bits2);

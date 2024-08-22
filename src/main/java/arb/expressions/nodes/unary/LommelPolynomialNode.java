@@ -73,9 +73,10 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
 
   public void generateSequenceInitializer(MethodVisitor mv)
   {
+    expression.insideInitializer = true;
+
     expression.loadThisFieldOntoStack(mv, seqFieldName, LommelPolynomialSequence.class);
     Compiler.getField(mv, LommelPolynomialSequence.class, "v", Real.class);
-    expression.insideInitializer = true;
     order.generate(mv, Real.class);
 
     if (!order.getGeneratedType().equals(Real.class))
@@ -89,8 +90,12 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     Compiler.invokeMethod(mv, Real.class, "set", Real.class, false, Real.class);
     assert false : "TODO: wield the LommelPolynomialSequence class similarly to how the SphericalBesselFunctionNodeOfTheFirstKind wields the SphericalBesselFunctionSequence";
 
+    // prepare the stack to invoke LommelPolynomialSequence.evaluate(Integer index,int order, int bits, C result)
+    // load the sequence class to be 'this' at slot 0
     expression.loadThisFieldOntoStack(mv, seqFieldName, LommelPolynomialSequence.class);
+    // load the Integer index at slot 1
     index.generate(mv, Integer.class);
+    // load the order parameter 
     mv.visitLdcInsn(0);
     mv.visitLdcInsn(128);
     expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);

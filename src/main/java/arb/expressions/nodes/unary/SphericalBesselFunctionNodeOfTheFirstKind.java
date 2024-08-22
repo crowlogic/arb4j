@@ -67,6 +67,8 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
 
   private String sequenceFieldName;
 
+  private String elementFieldName;
+
   public SphericalBesselFunctionNodeOfTheFirstKind(Expression<D, R, F> expression)
   {
     super("j",
@@ -80,6 +82,8 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
     sequenceFieldName = expression.newIntermediateVariable("sph",
                                                            SphericalBesselFunctionSequence.class,
                                                            true);
+    elementFieldName = expression.newIntermediateVariable("element", RationalFunction.class, true);
+
   }
 
   public void generateSequenceInitializer(MethodVisitor mv)
