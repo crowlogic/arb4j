@@ -29,7 +29,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
- * be sure to run this with --add-opens javafx.controls/javafx.scene.control.skin=arb4j
+ * be sure to run this with "--add-modules arb4j --add-opens
+ * javafx.controls/javafx.scene.control.skin=arb4j" passed to the JVM
+ * 
  * 
  * TODO: add a tabbed pane so multiple expressions can be opened in the same
  * program
@@ -258,7 +260,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
     treeTableView.getColumns()
                  .addAll(nodeCol, nodeTypeCol, nodeTypeResultCol, typesetCol, fieldCol, valueCol);
 
-    Platform.runLater( () -> resizeColumnsToFitContent() );
+    Platform.runLater(() -> resizeColumnsToFitContent());
 
   }
 
