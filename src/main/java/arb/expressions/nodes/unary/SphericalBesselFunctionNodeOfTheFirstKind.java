@@ -1,6 +1,6 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.duplicateTopOfTheStack;
+import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.scalarType;
 import static java.lang.String.format;
 import static java.lang.System.err;
@@ -11,7 +11,6 @@ import org.objectweb.asm.MethodVisitor;
 
 import arb.Integer;
 import arb.RationalFunction;
-import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
@@ -19,7 +18,6 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
 import arb.functions.SphericalBesselFunctionSequence;
-import arb.functions.sequences.LommelPolynomialSequence;
 
 /**
  * To express the spherical Bessel functions in terms of Lommel polynomials,
@@ -82,7 +80,8 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
     sequenceFieldName = expression.newIntermediateVariable("sph",
                                                            SphericalBesselFunctionSequence.class,
                                                            true);
-    elementFieldName = expression.newIntermediateVariable("element", RationalFunction.class, true);
+    elementFieldName  = expression.newIntermediateVariable("element", RationalFunction.class, true);
+
 
   }
 
@@ -97,31 +96,34 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
       index.generateCastTo(mv, Integer.class);
     }
 
-    assert index.getGeneratedType()
-                .equals(Integer.class) : "wanted " + Integer.class + " got " + index.getGeneratedType();
+    assert index.getGeneratedType().equals(Integer.class) : "wanted "
+                                                            + Integer.class
+                                                            + " got "
+                                                            + index.getGeneratedType();
 
     Compiler.invokeMethod(mv, Integer.class, "set", Integer.class, false, Integer.class);
-    assert false : "TODO: wield the LommelPolynomialSequence class similarly to how the SphericalBesselFunctionNodeOfTheFirstKind wields the SphericalBesselFunctionSequence";
 
-    expression.loadThisFieldOntoStack(mv, sequenceFieldName, LommelPolynomialSequence.class);
+    expression.loadThisFieldOntoStack(mv, sequenceFieldName, SphericalBesselFunctionSequence.class);
     index.generate(mv, Integer.class);
     mv.visitLdcInsn(0);
     mv.visitLdcInsn(128);
-    expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);
+    expression.loadThisFieldOntoStack(mv, elementFieldName, expression.coDomainType);
 
     Compiler.invokeVirtualMethod(mv,
-                                 LommelPolynomialSequence.class,
+                                 SphericalBesselFunctionSequence.class,
                                  "evaluate",
                                  RationalFunction.class,
-                                 Integer.class,
+                                 Object.class,
                                  int.class,
                                  int.class,
-                                 RationalFunction.class);
+                                 Object.class);
+    checkClassCast(mv, expression.coDomainType );
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+   // assert false : "wtf " + resultType;
     if (Expression.trace)
     {
       err.printf("j.generate(ν=%s, resultType=%s\n)\n", index, resultType);
@@ -129,8 +131,9 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
     var scalarType = scalarType(resultType);
 
     loadOutputVariableOntoStack(mv, scalarType);
-    duplicateTopOfTheStack(mv);
-    index.generate(mv, scalarType);
+    // index.generate(mv, scalarType);
+    expression.loadThisFieldOntoStack(mv, elementFieldName, resultType);
+    Compiler.invokeSetMethod(mv, resultType, resultType);
     // ³⁄₂
     // assert false : "TODO: wield the SphericalBesselFunctionSequence class the
     // same way the HypergeometricFunctionNode uses the HypergeometricFunction";

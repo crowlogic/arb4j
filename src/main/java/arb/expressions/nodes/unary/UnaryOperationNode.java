@@ -71,6 +71,7 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
     {
       if (arg != null && arg.isReusable())
       {
+        assert false : "Wtf";
         arg.prepareStackForReuse(methodVisitor);
         intermediateVariableFieldName = "arg";
       }

@@ -19,6 +19,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.functions.Function;
+import arb.functions.SphericalBesselFunctionSequence;
 import arb.functions.polynomials.ComplexPolynomialHypergeometricFunction;
 import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
 import arb.functions.rational.ComplexRationalHypergeometricFunction;
@@ -380,7 +381,7 @@ public class Compiler
     typePrefixes.put(ComplexPolynomialHypergeometricFunction.class, "XℂF");
     typePrefixes.put(ComplexRationalHypergeometricFunction.class, "qℂF");
     typePrefixes.put(ComplexFraction.class, "fℂ");
-
+    typePrefixes.put(SphericalBesselFunctionSequence.class, "sph");
   }
 
   public static String getVariablePrefix(Class<?> type)
