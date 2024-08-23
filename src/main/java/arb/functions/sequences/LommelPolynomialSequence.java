@@ -15,7 +15,9 @@ import arb.functions.rational.RationalFunctionSequence;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class LommelPolynomialSequence implements RationalFunctionSequence, AutoCloseable
+public class LommelPolynomialSequence implements
+                                      RationalFunctionSequence,
+                                      AutoCloseable
 {
 
   @Override
@@ -34,17 +36,21 @@ public class LommelPolynomialSequence implements RationalFunctionSequence, AutoC
   {
     @SuppressWarnings("resource")
     Context prototype = new Context(new Real().setName("v"));
-    expression = RationalFunctionSequence.compile("n⇒v₍ₙ₎*(z/2)^(-n)*pFq([½-n/2,-n/2],[v,-n,1-v-n],-z²)", prototype);
+    expression =
+               RationalFunctionSequence.compile("v₍ₙ₎*(z/2)^(-n)*pFq([½-n/2,-n/2],[v,-n,1-v-n],-z²)",
+                                                prototype);
   }
 
   public static Expression<Integer, RationalFunction, RationalFunctionSequence> expression;
 
   public RationalFunctionSequence                                               sequence;
 
-  public final Context                                                          context;
-
   @SuppressWarnings("resource")
-  public Real                                                                   v = new Real().setName("v");
+  public Real                                                                   v       =
+                                                                                  new Real().setName("v");
+
+  public final Context                                                          context =
+                                                                                        new Context(v);
 
   public LommelPolynomialSequence()
   {
@@ -53,9 +59,8 @@ public class LommelPolynomialSequence implements RationalFunctionSequence, AutoC
 
   public LommelPolynomialSequence(Real order)
   {
-    sequence = expression.instantiate();
-    context  = new Context(v.set(order));
-    context.injectReferences(sequence);
+    v.set(order);
+    context.injectReferences(sequence = expression.instantiate());
   }
 
   @Override
@@ -65,4 +70,3 @@ public class LommelPolynomialSequence implements RationalFunctionSequence, AutoC
   }
 
 }
-
