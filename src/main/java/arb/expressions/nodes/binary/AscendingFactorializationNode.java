@@ -1,6 +1,9 @@
 package arb.expressions.nodes.binary;
 
+
 import arb.Field;
+import arb.Real;
+import arb.Fraction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
@@ -69,6 +72,17 @@ public class AscendingFactorializationNode<D, R, F extends Function<? extends D,
   {
     assert false : "TODO";
     return null;
+  }
+
+  @Override
+  public Class<?> type()
+  {
+    var thisType = super.type();
+    if ( Fraction.class.equals(thisType))
+    {
+      thisType = Real.class;
+    }
+    return thisType;
   }
 
 }

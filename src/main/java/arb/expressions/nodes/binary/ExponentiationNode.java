@@ -1,7 +1,5 @@
 package arb.expressions.nodes.binary;
 
-import static java.lang.String.format;
-
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
@@ -16,16 +14,25 @@ import arb.functions.Function;
  *      {@link TheArb4jLibrary}
  */
 public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends R>> extends
-                           BinaryOperationNode<D, R, F>
+                               BinaryOperationNode<D, R, F>
 {
+
+  public String format(Node<D, R, F> side)
+  {
+    return side.isLeaf() ? "%s" : "(%s)";
+  }
 
   @Override
   public String typeset()
   {
-    return format("(%s)^{(%s)}", left.typeset(), right.typeset());
+    return String.format(String.format("{%s}^{%s}", format(left), format(right)),
+                         left.typeset(),
+                         right.typeset());
   }
 
-  public ExponentiationNode(Expression<D, R, F> expression, Node<D, R, F> base, Node<D, R, F> exponent)
+  public ExponentiationNode(Expression<D, R, F> expression,
+                            Node<D, R, F> base,
+                            Node<D, R, F> exponent)
   {
     super(expression,
           base,
@@ -53,8 +60,8 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
          spliceInto(Expression<E, S, G> newExpression)
   {
     return new ExponentiationNode<E, S, G>(newExpression,
-                                       left.spliceInto(newExpression),
-                                       right.spliceInto(newExpression));
+                                           left.spliceInto(newExpression),
+                                           right.spliceInto(newExpression));
   }
 
   @Override

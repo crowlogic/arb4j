@@ -230,9 +230,9 @@ public class Integer implements
 
   public Real add(Fraction addend, int bits, Real result)
   {
-    try ( Real tmp = new Real())
+    try ( Real blip = new Real())
     {
-      return tmp.set(this).add(addend, bits, result);
+      return blip.set(this).add(addend, bits, result);
     }
   }
 
@@ -294,11 +294,9 @@ public class Integer implements
 
   public RationalFunction add(Real addend, int bits, RationalFunction result)
   {
-    try ( Real tmp = new Real())
+    try ( Real blip = new Real())
     {
-      add(addend, bits, tmp);
-      result.set(tmp);
-      return result;
+      return result.set(add(addend, bits, blip));
     }
   }
 
@@ -315,16 +313,14 @@ public class Integer implements
     return res.set(res);
   }
 
-  public Fraction ascendingFactorial(Fraction n, int bits, Fraction result)
+  public Real ascendingFactorial(Fraction n, int bits, Real result)
   {
-    try ( Real tmpIn = new Real(); Real tmpOut = new Real() )
+    try ( Real blip = new Real())
     {
-      tmpIn.set(n).ascendingFactorial(tmpOut,bits,tmpOut);
-      return result.set(tmpOut);
+      return result.set(this).ascendingFactorial(blip.set(n), bits);
     }
   }
 
-  
   public Real ascendingFactorial(Real n, int bits, Real result)
   {
     arblib.arb_rising(result, result.set(this), n, bits);

@@ -73,7 +73,8 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
   public String                   functionName;
 
   HashSet<String>                 polynomialFunctionsWithQuasiPolyomialResults =
-                                                                               new HashSet<>(Arrays.asList("sqrt",
+                                                                               new HashSet<>(Arrays.asList("ascendingFactorial",
+                                                                                                           "sqrt",
                                                                                                            "Γ"));
 
   HashSet<String>                 integerFunctionsWithRealResults              =

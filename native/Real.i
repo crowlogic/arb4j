@@ -1779,7 +1779,12 @@ import arb.utensils.Utensils;
   }
 
   public String name;
-    
+
+  public Real ascendingFactorial(Real set, int bits)
+  {
+    return ascendingFactorial(set, bits, this);
+  }
+      
   public int digits()
   {
     return (int) (bits / 3.3219280948873623478703194294893901758648313930246);
