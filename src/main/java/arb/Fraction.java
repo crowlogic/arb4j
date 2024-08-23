@@ -69,15 +69,6 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
   }
 
 
-  public Fraction cos(int prec, Fraction result)
-  {
-    try ( Real tmp = new Real())
-    {
-      tmp.set(this).cos(prec, tmp);
-      return result.set(tmp);
-    }
-  }
-
   public Real sqrt(int bits, Real result)
   {
     assert bits > 0 : "bits must be strictly positive";
@@ -100,16 +91,7 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     that.swigCMemOwn = false;
     return this;
   }
-     
-  public Fraction sin(int prec, Fraction result)
-  {
-    try ( Real tmp = new Real())
-    {
-      tmp.set(this).sin(prec, tmp);
-      return result.set(tmp);
-    }
-  }
-  
+
   public Fraction(int numerator, int denominator)
   {
     this();

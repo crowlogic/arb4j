@@ -41,15 +41,6 @@ import java.util.stream.Stream;
 
 %typemap(javacode) fmpq %{
 
-  public Fraction cos(int prec, Fraction result)
-  {
-    try ( Real tmp = new Real())
-    {
-      tmp.set(this).cos(prec, tmp);
-      return result.set(tmp);
-    }
-  }
-
   public Real sqrt(int bits, Real result)
   {
     assert bits > 0 : "bits must be strictly positive";
@@ -72,16 +63,7 @@ import java.util.stream.Stream;
     that.swigCMemOwn = false;
     return this;
   }
-     
-  public Fraction sin(int prec, Fraction result)
-  {
-    try ( Real tmp = new Real())
-    {
-      tmp.set(this).sin(prec, tmp);
-      return result.set(tmp);
-    }
-  }
-  
+
   public Fraction(int numerator, int denominator)
   {
     this();

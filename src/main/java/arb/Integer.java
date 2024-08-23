@@ -93,11 +93,6 @@ public class Integer implements
     return result.set(this).cos(prec, result);
   }
 
-  public Fraction sin(int prec, Fraction result)
-  {
-    return result.set(this).sin(prec, result);
-  }
-
   public Real sin(int prec, Real result)
   {
     return result.set(this).sin(prec, result);
