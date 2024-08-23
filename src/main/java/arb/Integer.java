@@ -63,6 +63,11 @@ public class Integer implements
     return null;
   }
 
+  public Fraction mul(Fraction subtrahend, int prec, Fraction result)
+  {
+    return result.set(this).mul(subtrahend, prec, result);
+  }
+
   public Fraction mul(Integer subtrahend, int prec, Fraction result)
   {
     return result.set(this).mul(subtrahend, prec, result);
