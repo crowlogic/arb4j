@@ -1,13 +1,17 @@
 package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.invokeMethod;
+import static arb.expressions.Compiler.invokeVirtualMethod;
 import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static org.objectweb.asm.Opcodes.ACONST_NULL;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
 
+import arb.Complex;
+import arb.Fraction;
 import arb.Integer;
 import arb.RationalFunction;
 import arb.Real;
@@ -46,6 +50,8 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   public String        seqFieldName;
   public String        elementFieldName;
   public Class<?>      scalarType;
+  private boolean hasScalarCodomain;
+  private boolean isNullaryFunctionOrHasScalarCodomain;
 
   public LommelPolynomialNode(Expression<D, C, F> expression)
   {
@@ -57,6 +63,14 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     arg   = expression.require(';').resolve();
     expression.require(')');
     scalarType       = Compiler.scalarType(expression.coDomainType);
+    
+    
+    hasScalarCodomain                    = expression.coDomainType.equals(Real.class)
+                  || expression.coDomainType.equals(Complex.class)
+                  || expression.coDomainType.equals(Fraction.class);
+    isNullaryFunctionOrHasScalarCodomain = expression.domainType.equals(Object.class)
+                  || hasScalarCodomain;
+    
     seqFieldName     =
                  expression.newIntermediateVariable("seq", LommelPolynomialSequence.class, true);
     elementFieldName = expression.newIntermediateVariable("element", RationalFunction.class, true);
@@ -71,44 +85,40 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
 
   }
 
+  
+  
   public void generateSequenceInitializer(MethodVisitor mv)
   {
     expression.insideInitializer = true;
-
-    expression.loadThisFieldOntoStack(mv, seqFieldName, LommelPolynomialSequence.class);
-    Compiler.getField(mv, LommelPolynomialSequence.class, "v", Real.class);
-    order.generate(mv, Real.class);
-
-    if (!order.getGeneratedType().equals(Real.class))
+    if (isNullaryFunctionOrHasScalarCodomain)
     {
-      order.generateCastTo(mv, Real.class);
+      loadSequenceOntoStack(mv);
+      assert false : "assign sequence.v=" + order;
+
+      mv.visitInsn(ACONST_NULL);
+      mv.visitLdcInsn(1);
+      loadBitsOntoStack(mv);
+      expression.loadThisFieldOntoStack(mv, elementFieldName, expression.coDomainType);
+      
+      invokeVirtualMethod(mv,
+                          LommelPolynomialSequence.class,
+                          "evaluate",
+                          Object.class,
+                          Object.class,
+                          int.class,
+                          int.class,
+                          Object.class);
+
     }
-
-    assert order.getGeneratedType()
-                .equals(Real.class) : "wanted " + Real.class + " got " + order.getGeneratedType();
-
-    Compiler.invokeMethod(mv, Real.class, "set", Real.class, false, Real.class);
-    assert false : "TODO: wield the LommelPolynomialSequence class similarly to how the SphericalBesselFunctionNodeOfTheFirstKind wields the SphericalBesselFunctionSequence";
-
-    // prepare the stack to invoke LommelPolynomialSequence.evaluate(Integer index,int order, int bits, C result)
-    // load the sequence class to be 'this' at slot 0
-    expression.loadThisFieldOntoStack(mv, seqFieldName, LommelPolynomialSequence.class);
-    // load the Integer index at slot 1
-    index.generate(mv, Integer.class);
-    // load the order parameter 
-    mv.visitLdcInsn(0);
-    mv.visitLdcInsn(128);
-    expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);
-
-    Compiler.invokeVirtualMethod(mv,
-                                 LommelPolynomialSequence.class,
-                                 "evaluate",
-                                 RationalFunction.class,
-                                 Integer.class,
-                                 int.class,
-                                 int.class,
-                                 RationalFunction.class);
   }
+
+  private LommelPolynomialNode<D, C, F> loadSequenceOntoStack(MethodVisitor mv)
+  {
+    expression.loadThisFieldOntoStack(mv, seqFieldName, LommelPolynomialSequence.class);
+    return this;
+  }
+
+
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)

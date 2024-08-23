@@ -15,46 +15,46 @@ import arb.functions.rational.RationalFunctionSequence;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class LommelPolynomialSequence implements
-                                      RationalFunctionSequence
+public class LommelPolynomialSequence implements RationalFunctionSequence, AutoCloseable
 {
 
   @Override
   public String toString()
   {
-    return String.format("%s with %s", expression, context);
+    return String.format("%s where %s\n", expression, v);
   }
 
-  public static final Expression<Integer, RationalFunction, RationalFunctionSequence> expression;
+  @Override
+  public void close()
+  {
+    v.close();
+  }
 
   static
   {
-    Context prototype = new Context(Real.named("v"));
-    expression =
-               RationalFunctionSequence.compile("n⇒v₍ₙ₎*(z/2)^(-n)*pFq([½-n/2,-n/2],[v,-n,1-v-n],-z²)",
-                                                prototype);
+    @SuppressWarnings("resource")
+    Context prototype = new Context(new Real().setName("v"));
+    expression = RationalFunctionSequence.compile("n⇒v₍ₙ₎*(z/2)^(-n)*pFq([½-n/2,-n/2],[v,-n,1-v-n],-z²)", prototype);
   }
 
-  public final RationalFunctionSequence sequence;
+  public static Expression<Integer, RationalFunction, RationalFunctionSequence> expression;
 
-  public final Context                  context;
+  public RationalFunctionSequence                                               sequence;
+
+  public final Context                                                          context;
+
+  @SuppressWarnings("resource")
+  public Real                                                                   v = new Real().setName("v");
 
   public LommelPolynomialSequence()
   {
     this(RealConstants.half);
   }
 
-  /**
-   * NOTE: this constructor sets the order variable's name to "v", so if you don't
-   * want that to happen, send a clone whose swigCPtr pointer points to
-   * the same location but whose swigCMemOwn bit is set to false
-   * 
-   * @param order
-   */
   public LommelPolynomialSequence(Real order)
   {
     sequence = expression.instantiate();
-    context  = new Context(order.setName("v"));
+    context  = new Context(v.set(order));
     context.injectReferences(sequence);
   }
 
@@ -65,3 +65,4 @@ public class LommelPolynomialSequence implements
   }
 
 }
+
