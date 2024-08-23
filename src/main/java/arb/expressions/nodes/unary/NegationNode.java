@@ -10,9 +10,8 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class NegationNode<D, R, F extends Function<? extends D, ? extends R>>
-                     extends
-                     FunctionCallNode<D, R, F>
+public class NegationNode<D, R, F extends Function<? extends D, ? extends R>> extends
+                         FunctionCallNode<D, R, F>
 {
 
   @Override
@@ -52,5 +51,10 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>>
     return false;
   }
 
- 
+  @Override
+  public char symbol()
+  {
+    return '-';
+  }
+
 }

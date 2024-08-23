@@ -279,7 +279,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
       }
       if (intermediateValueFieldName == "result")
       {
-        return "result";
+        return result.toString();
       }
       if (intermediateValueFieldName.equals(expr.getInputName()))
       {

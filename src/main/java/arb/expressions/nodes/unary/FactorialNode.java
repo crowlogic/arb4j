@@ -51,4 +51,10 @@ public class FactorialNode<D, R, F extends Function<? extends D, ? extends R>> e
     return false;
   }
 
+  @Override
+  public char symbol()
+  {
+    return '!';
+  }
+
 }

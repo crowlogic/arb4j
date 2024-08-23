@@ -82,12 +82,12 @@ public class TextTree<N>
     {
       sb.append(prefix);
       sb.append(bud);
-      sb.append("-- ");
+      sb.append("━━ ");
       sb.append(node.toString());
       sb.append("\n");
     }
     String lastPrefix        = prefix + "   ";
-    String innerPrefix       = prefix + "   |";
+    String innerPrefix       = prefix + "   ┃";
     String notRenderedPrefix = prefix + "";
     int    childCount        = model.getNodeCount(node);
     String indentation;
