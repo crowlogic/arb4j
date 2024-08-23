@@ -44,7 +44,7 @@ import java.util.stream.Stream;
   public RationalFunction mul(Integer absPower, int bits, RationalFunction ntheta)
   {
     assert false : "TODO";
-    return this;
+    return this; 
   }
   
   public RationalFunction pow(int power, int bits, RationalFunction res)

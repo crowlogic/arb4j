@@ -28,6 +28,8 @@ import arb.expressions.Parser;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
+import arb.functions.complex.hyperbolic.HyperbolicCosine;
+import arb.functions.complex.trigonometric.SineFunction;
 
 /**
  * {@link FunctionCallNode} is a {@link Node} in the {@link Expression} that
@@ -476,7 +478,15 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
       boolean  wtf        = irrationalFunctions.contains(functionName);
       if (wtf && RationalFunction.class.equals(resultType) )
       {
-        return Real.class;
+        switch(functionName)
+        {
+        case "sin":
+          return SineFunction.class;
+        case "cos":
+          assert false : "todo";
+          default:
+            return Real.class;
+        }
         //assert false : "f " + functionName + " irationalfuncs=" + irrationalFunctions ;
       }
 
