@@ -1,8 +1,10 @@
 package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.invokeMethod;
+import static arb.expressions.Compiler.invokeSetMethod;
 import static arb.expressions.Compiler.invokeVirtualMethod;
 import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.realScalarTypes;
 import static org.objectweb.asm.Opcodes.ACONST_NULL;
 
 import java.util.List;
@@ -50,8 +52,8 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   public String        seqFieldName;
   public String        elementFieldName;
   public Class<?>      scalarType;
-  private boolean hasScalarCodomain;
-  private boolean isNullaryFunctionOrHasScalarCodomain;
+  private boolean      hasScalarCodomain;
+  private boolean      isNullaryFunctionOrHasScalarCodomain;
 
   public LommelPolynomialNode(Expression<D, C, F> expression)
   {
@@ -62,18 +64,18 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     index = expression.require(',').resolve();
     arg   = expression.require(';').resolve();
     expression.require(')');
-    scalarType       = Compiler.scalarType(expression.coDomainType);
-    
-    
+    scalarType                           = Compiler.scalarType(expression.coDomainType);
+
     hasScalarCodomain                    = expression.coDomainType.equals(Real.class)
                   || expression.coDomainType.equals(Complex.class)
                   || expression.coDomainType.equals(Fraction.class);
     isNullaryFunctionOrHasScalarCodomain = expression.domainType.equals(Object.class)
                   || hasScalarCodomain;
-    
-    seqFieldName     =
+
+    seqFieldName                         =
                  expression.newIntermediateVariable("seq", LommelPolynomialSequence.class, true);
-    elementFieldName = expression.newIntermediateVariable("element", RationalFunction.class, true);
+    elementFieldName                     =
+                     expression.newIntermediateVariable("element", RationalFunction.class, true);
 
     if (Expression.trace)
     {
@@ -85,21 +87,22 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
 
   }
 
-  
-  
   public void generateSequenceInitializer(MethodVisitor mv)
   {
     expression.insideInitializer = true;
     if (isNullaryFunctionOrHasScalarCodomain)
     {
       loadSequenceOntoStack(mv);
-      assert false : "assign sequence.v=" + order;
+      Compiler.getField(mv, scalarType, seqFieldName, scalarType);
+      order.generate(mv, Real.class);
+      invokeSetMethod(mv, Real.class, Real.class);
 
+      loadSequenceOntoStack(mv);
       mv.visitInsn(ACONST_NULL);
       mv.visitLdcInsn(1);
       loadBitsOntoStack(mv);
-      expression.loadThisFieldOntoStack(mv, elementFieldName, expression.coDomainType);
-      
+      expression.loadThisFieldOntoStack(mv, elementFieldName, Real.class);
+
       invokeVirtualMethod(mv,
                           LommelPolynomialSequence.class,
                           "evaluate",
@@ -117,8 +120,6 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     expression.loadThisFieldOntoStack(mv, seqFieldName, LommelPolynomialSequence.class);
     return this;
   }
-
-
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
