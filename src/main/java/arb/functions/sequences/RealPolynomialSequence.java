@@ -19,34 +19,17 @@ public interface RealPolynomialSequence extends
                                         PolynomialSequence<Real, RealPolynomial>
 {
 
-  @Override
-  default Class<RealPolynomial>
-          coDomainType()
+  public static RealPolynomialSequence express(String expression, Context context)
   {
-    return RealPolynomial.class;
+    return express(null, expression, context);
   }
 
-  public static RealPolynomialSequence
-         express(String expression,
-                 Context context)
+  public static RealPolynomialSequence express(String expression)
   {
-    return express(null,
-                   expression,
-                   context);
+    return express(null, expression, null);
   }
 
-  public static RealPolynomialSequence
-         express(String expression)
-  {
-    return express(null,
-                   expression,
-                   null);
-  }
-
-  public static RealPolynomialSequence
-         express(String name,
-                 String expression,
-                 Context context)
+  public static RealPolynomialSequence express(String name, String expression, Context context)
   {
     return Function.express(Integer.class,
                             RealPolynomial.class,
@@ -56,14 +39,10 @@ public interface RealPolynomialSequence extends
                             context);
   }
 
-  public static Expression<Integer, RealPolynomial, RealPolynomialSequence>
-         parse(String className,
-               String string)
+  public static Expression<Integer, RealPolynomial, RealPolynomialSequence> parse(String className,
+                                                                                  String string)
   {
-    return Sequence.parse(className,
-                          RealPolynomialSequence.class,
-                          RealPolynomial.class,
-                          string);
+    return Sequence.parse(className, RealPolynomialSequence.class, RealPolynomial.class, string);
   }
 
 }

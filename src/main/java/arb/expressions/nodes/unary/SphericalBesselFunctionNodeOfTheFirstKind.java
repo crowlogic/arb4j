@@ -17,7 +17,7 @@ import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
-import arb.functions.SphericalBesselFunctionSequence;
+import arb.functions.SphericalBesselFunction;
 
 /**
  * To express the spherical Bessel functions in terms of Lommel polynomials,
@@ -75,19 +75,19 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
     index  = expression.resolve();
     arg    = expression.require(',').resolve();
     scalar = expression.require(')').hasScalarCodomain();
-    expression.registerInitializer(this::generateSequenceInitializer);
+    expression.registerInitializer(this::generateInitializer);
 
     sequenceFieldName = expression.newIntermediateVariable("sph",
-                                                           SphericalBesselFunctionSequence.class,
+                                                           SphericalBesselFunction.class,
                                                            true);
     elementFieldName  = expression.newIntermediateVariable("element", RationalFunction.class, true);
 
 
   }
 
-  public void generateSequenceInitializer(MethodVisitor mv)
+  public void generateInitializer(MethodVisitor mv)
   {
-    expression.loadThisFieldOntoStack(mv, sequenceFieldName, SphericalBesselFunctionSequence.class);
+    expression.loadThisFieldOntoStack(mv, sequenceFieldName, SphericalBesselFunction.class);
     expression.insideInitializer = true;
     index.generate(mv, Integer.class);
 
@@ -103,14 +103,14 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
 
     Compiler.invokeMethod(mv, Integer.class, "set", Integer.class, false, Integer.class);
 
-    expression.loadThisFieldOntoStack(mv, sequenceFieldName, SphericalBesselFunctionSequence.class);
+    expression.loadThisFieldOntoStack(mv, sequenceFieldName, SphericalBesselFunction.class);
     index.generate(mv, Integer.class);
     mv.visitLdcInsn(0);
     mv.visitLdcInsn(128);
     expression.loadThisFieldOntoStack(mv, elementFieldName, expression.coDomainType);
 
     Compiler.invokeVirtualMethod(mv,
-                                 SphericalBesselFunctionSequence.class,
+                                 SphericalBesselFunction.class,
                                  "evaluate",
                                  RationalFunction.class,
                                  Object.class,

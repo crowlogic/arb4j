@@ -19,7 +19,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.functions.Function;
-import arb.functions.SphericalBesselFunctionSequence;
+import arb.functions.SphericalBesselFunction;
 import arb.functions.polynomials.ComplexPolynomialHypergeometricFunction;
 import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
 import arb.functions.rational.ComplexRationalHypergeometricFunction;
@@ -381,7 +381,7 @@ public class Compiler
     typePrefixes.put(ComplexPolynomialHypergeometricFunction.class, "XℂF");
     typePrefixes.put(ComplexRationalHypergeometricFunction.class, "qℂF");
     typePrefixes.put(ComplexFraction.class, "fℂ");
-    typePrefixes.put(SphericalBesselFunctionSequence.class, "sph");
+    typePrefixes.put(SphericalBesselFunction.class, "sph");
   }
 
   public static String getVariablePrefix(Class<?> type)
@@ -518,7 +518,7 @@ public class Compiler
     assert !outType.getClass()
                    .equals(Object.class) : "invokeSetMethod shouldn't be called for Object type";
 
-    //Compiler.invokeVirtualMethod(mv, inType, objectDesc, outType, null)
+    // Compiler.invokeVirtualMethod(mv, inType, objectDesc, outType, null)
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        Type.getInternalName(outType),
                        "set",

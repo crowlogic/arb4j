@@ -1,6 +1,7 @@
 package arb.functions;
 
-import arb.RationalFunction;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import junit.framework.TestCase;
 
 /**
@@ -12,8 +13,8 @@ public class SphericalBesselFunctionSequenceTest extends
 {
   public static void testThree()
   {
-    SphericalBesselFunctionSequence sbf = new SphericalBesselFunctionSequence();
-    RationalFunction f = sbf.evaluate(3, 128);
-    System.out.println("j(3,x)=" + f );
+    SphericalBesselFunction sbf = new SphericalBesselFunction(0);
+    var                     f   = sbf.eval(2.3);
+    System.out.println("j(3,x)=" + f);
   }
 }
