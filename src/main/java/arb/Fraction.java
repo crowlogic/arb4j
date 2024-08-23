@@ -88,7 +88,19 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
   {
     return result.set(this).floor(bits, result);
   }
-    
+ 
+  public Fraction become(Fraction that)
+  {
+    close();
+    elements         = that.elements;
+    swigCPtr         = that.swigCPtr;
+    swigCMemOwn      = that.swigCMemOwn;
+    dim              = that.dim;
+    name             = that.name;
+    that.swigCMemOwn = false;
+    return this;
+  }
+     
   public Fraction sin(int prec, Fraction result)
   {
     try ( Real tmp = new Real())
@@ -372,12 +384,18 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
   
   public Fraction set(Real value)
   {
+    if (dim != value.dim)
+    {
+      become(Fraction.newVector(Arena.global(), value.dim));
+    }
     assert value != null : "value is null";
-    assert this.dim == value.dim : String.format("this.dim=%d != that.dim=%d", this.dim, value.dim);
-    assert value.swigCPtr != 0 : "value has a null pointer";
-    arblib.arf_get_fmpq(this, value.getMid());
+    for (int i = 0; i < dim; i++)
+    {
+      arblib.arf_get_fmpq(this.get(i), value.get(i).getMid());
+    }
     return this;
   }
+
 
   public RealPolynomial sub(RealPolynomial element, int prec, RealPolynomial result)
   {
