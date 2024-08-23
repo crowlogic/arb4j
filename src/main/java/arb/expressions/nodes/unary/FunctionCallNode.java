@@ -68,21 +68,24 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
     return intermediateVariableFieldName;
   }
 
-  public boolean                  contextual                                   = false;
+  public boolean                  contextual                                  = false;
 
   public String                   functionName;
 
-  HashSet<String>                 polynomialFunctionsWithQuasiPolyomialResults =
-                                                                               new HashSet<>(Arrays.asList("ascendingFactorial",
-                                                                                                           "sqrt",
-                                                                                                           "Γ"));
+  HashSet<String>                 irrationalFunctions                         =
+                                                      new HashSet<>(Arrays.asList("cos", "sin"));
 
-  HashSet<String>                 integerFunctionsWithRealResults              =
+  HashSet<String>                 polynomialFunctionsWithNonPolynomialResults =
+                                                                              new HashSet<>(Arrays.asList("ascendingFactorial",
+                                                                                                          "sqrt",
+                                                                                                          "Γ"));
+
+  HashSet<String>                 integerFunctionsWithRealResults             =
                                                                   new HashSet<>(Arrays.asList("sqrt",
                                                                                               "tanh",
                                                                                               "log"));
 
-  HashSet<String>                 complexFunctionsWithRealResults              =
+  HashSet<String>                 complexFunctionsWithRealResults             =
                                                                   new HashSet<>(Arrays.asList("arg"));
 
   public FunctionMapping<D, R, F> mapping;
@@ -169,7 +172,7 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
     boolean isPolynomial = resultType.equals(RealPolynomial.class)
                   || resultType.equals(ComplexPolynomial.class);
     isBuiltinQuasiPolynomialFunctional = isPolynomial
-                  && polynomialFunctionsWithQuasiPolyomialResults.contains(functionName);
+                  && polynomialFunctionsWithNonPolynomialResults.contains(functionName);
 
     if (isBuiltinQuasiPolynomialFunctional)
     {
@@ -415,7 +418,7 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
     else
     {
       boolean hasQuasipolynomialResult =
-                                       polynomialFunctionsWithQuasiPolyomialResults.contains(functionName);
+                                       polynomialFunctionsWithNonPolynomialResults.contains(functionName);
       boolean isPolynomialArg          = argType.equals(RealPolynomial.class)
                     || argType.equals(ComplexPolynomial.class);
       if (isPolynomialArg && hasQuasipolynomialResult)
@@ -469,7 +472,15 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
   {
     if (isBuiltin())
     {
-      return resultTypeFor(functionName);
+      Class<?> resultType = resultTypeFor(functionName);
+      boolean  wtf        = irrationalFunctions.contains(functionName);
+      if (wtf && RationalFunction.class.equals(resultType) )
+      {
+        return Real.class;
+        //assert false : "f " + functionName + " irationalfuncs=" + irrationalFunctions ;
+      }
+
+      return resultType;
     }
     assert mapping.coDomain != null : "coDomain of " + mapping + " is null";
     return mapping.coDomain;
