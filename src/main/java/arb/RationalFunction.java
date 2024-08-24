@@ -67,12 +67,6 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
     return this; 
   }
   
-  public RationalFunction pow(Real power, int bits, RationalFunction result )
-  {
-    assert false : "raise " + this + " to the power of " + power;
-    return null;
-  }
-  
   public RationalFunction pow(int power, int bits, RationalFunction res)
   {
     if ( checkPointers )
