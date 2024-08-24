@@ -5,7 +5,7 @@ import arb.Integer;
 import arb.RationalFunction;
 import arb.Typesettable;
 import arb.functions.rational.RationalFunctionSequence;
-import arb.functions.sequences.LommelPolynomialSequence;
+import arb.functions.sequences.LommelPolynomial;
 
 public class nMinus implements
                     RationalFunctionSequence,
@@ -28,11 +28,11 @@ public class nMinus implements
   public RationalFunction         q9        = new RationalFunction();
   public RationalFunction         elementq2 = new RationalFunction();
   public RationalFunction         elementq1 = new RationalFunction();
-  public LommelPolynomialSequence seqqR1    = new LommelPolynomialSequence();
+  public LommelPolynomial seqqR1    = new LommelPolynomial();
   public RationalFunction         q11       = new RationalFunction();
   public RationalFunction         q10       = new RationalFunction();
   public RationalFunction         q13       = new RationalFunction();
-  public LommelPolynomialSequence seqqR2    = new LommelPolynomialSequence();
+  public LommelPolynomial seqqR2    = new LommelPolynomial();
   public RationalFunction         q12       = new RationalFunction();
   public RationalFunction         q14       = new RationalFunction();
 

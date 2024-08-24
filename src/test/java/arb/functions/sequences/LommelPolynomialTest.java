@@ -11,14 +11,16 @@ import junit.framework.TestCase;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class LommelPolynomialSequenceTest extends
+public class LommelPolynomialTest extends
                                           TestCase
 {
-  public void testSequence()
+  public void testLommelPolynomial()
   {
-    try ( LommelPolynomialSequence l = new LommelPolynomialSequence(RealConstants.half))
+    try ( LommelPolynomial l = new LommelPolynomial())
     {
-      RationalFunction func = l.evaluate(3, 128);
+      l.v.set(RealConstants.half);
+      l.n.set(3);
+      RationalFunction func = l.evaluate(128);
       Real             l3x  = func.evaluate(Real.valueOf(2.3), 0, 128, new Real());
       assertEquals(-1.3758527163639351505, l3x.doubleValue());
     }

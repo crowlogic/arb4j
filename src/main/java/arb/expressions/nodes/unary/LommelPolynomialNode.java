@@ -24,11 +24,11 @@ import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.rational.RationalFunctionSequence;
-import arb.functions.sequences.LommelPolynomialSequence;
+import arb.functions.sequences.LommelPolynomial;
 
 /**
- * Syntax: "R(v,n;z)" which corresponds to a {@link LommelPolynomialSequence}
- * with the {@link LommelPolynomialSequence#v} order variable set and then
+ * Syntax: "R(v,n;z)" which corresponds to a {@link LommelPolynomial}
+ * with the {@link LommelPolynomial#v} order variable set and then
  * assigns {@link LommelPolynomialNode#elementFieldName} the specific
  * {@link RationalFunctionSequence} which gets
  * {@link RationalFunctionSequence#evaluate(Integer, int, int, RationalFunction)}d
@@ -72,7 +72,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
                   || hasScalarCodomain;
 
     seqFieldName                         =
-                 expression.newIntermediateVariable("seq", LommelPolynomialSequence.class, true);
+                 expression.newIntermediateVariable("seq", LommelPolynomial.class, true);
     elementFieldName                     =
                      expression.newIntermediateVariable("element", RationalFunction.class, true);
 
@@ -92,22 +92,34 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     if (isNullaryFunctionOrHasScalarCodomain)
     {
       loadSequenceOntoStack(mv);
-      Compiler.getField(mv, LommelPolynomialSequence.class, "v", Real.class);
+      Compiler.getField(mv, LommelPolynomial.class, "v", Real.class);
       order.generate(mv, Real.class);
+      if (!Real.class.equals(order.getGeneratedType()))
+      {
+        if (Expression.trace)
+        {
+          System.err.format("generateCastTo(Real) from generatedType=%s\n",
+                            Real.class,
+                            generatedType);
+        }
+        order.generateCastTo(mv, Real.class);
+      }
       assert order.getGeneratedType()
                   .equals(Real.class) : String.format("need Real.class but got %s",
                                                       order.getGeneratedType());
       invokeSetMethod(mv, Real.class, Real.class);
 
       loadSequenceOntoStack(mv);
-      mv.visitInsn(ACONST_NULL);
+      index.generate(mv, Real.class);
+      assert index.getGeneratedType().equals(Real.class);
+      
       mv.visitLdcInsn(1);
       loadBitsOntoStack(mv);
 
       expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);
 
       invokeVirtualMethod(mv,
-                          LommelPolynomialSequence.class,
+                          LommelPolynomial.class,
                           "evaluate",
                           Object.class,
                           Object.class,
@@ -120,7 +132,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
 
   private LommelPolynomialNode<D, C, F> loadSequenceOntoStack(MethodVisitor mv)
   {
-    expression.loadThisFieldOntoStack(mv, seqFieldName, LommelPolynomialSequence.class);
+    expression.loadThisFieldOntoStack(mv, seqFieldName, LommelPolynomial.class);
     return this;
   }
 

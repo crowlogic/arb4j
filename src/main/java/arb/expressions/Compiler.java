@@ -24,7 +24,7 @@ import arb.functions.polynomials.ComplexPolynomialHypergeometricFunction;
 import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
 import arb.functions.rational.ComplexRationalHypergeometricFunction;
 import arb.functions.rational.RationalHypergeometricFunction;
-import arb.functions.sequences.LommelPolynomialSequence;
+import arb.functions.sequences.LommelPolynomial;
 import arb.utensils.Utensils;
 
 /**
@@ -375,7 +375,7 @@ public class Compiler
     typePrefixes.put(RationalFunction.class, "q");
     typePrefixes.put(ComplexRationalFunction.class, "qℂ");
     typePrefixes.put(Fraction.class, "f");
-    typePrefixes.put(LommelPolynomialSequence.class, "qR");
+    typePrefixes.put(LommelPolynomial.class, "qR");
     typePrefixes.put(RationalHypergeometricFunction.class, "qF");
     typePrefixes.put(RealPolynomialHypergeometricFunction.class, "XℝF");
     typePrefixes.put(ComplexPolynomialHypergeometricFunction.class, "XℂF");
