@@ -56,7 +56,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
   @SuppressWarnings("unchecked")
   public Expression<?, ?, ?> getExpression()
   {
-    return RealSequence.compile("k➔√((4*k+1)/π)*((k+1)⋰-½)²");
+    return RealSequence.compile("λₖ:k➔√((2*k+½)/π)*((k+1)⋰-½)²");
     // context = new Context(Integer.named("n").set(3));
     // return RealFunction.compile("Ψₖ:√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)", context);
   }
