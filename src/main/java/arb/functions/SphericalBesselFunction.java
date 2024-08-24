@@ -40,6 +40,11 @@ public class SphericalBesselFunction implements
     context.injectReferences(element);
   }
 
+  public SphericalBesselFunction()
+  {
+    // TODO Auto-generated constructor stub
+  }
+
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)
   {

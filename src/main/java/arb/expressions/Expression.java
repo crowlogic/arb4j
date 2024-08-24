@@ -663,6 +663,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       if (isInputVariableSpecified)
       {
+        if (context != null)
+        {
+          if (context.getVariable(inputVariableName) != null)
+          {
+            throw new CompilerException(inputVariableName
+                                        + " cannot be declared as the input since it is already registered as a context variable in "
+                                        + context);
+          }
+        }
         var variable = new VariableNode<>(this,
                                           new VariableReference<>(inputVariableName,
                                                                   null,
@@ -1417,7 +1426,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   public boolean isIdentifierCharacter()
   {
-    return isLatinGreekSpecialOrBlackLetter(character, false) || isAlphabeticalOrNumericSubscript(character)
+    return isLatinGreekSpecialOrBlackLetter(character, false)
+                  || isAlphabeticalOrNumericSubscript(character)
                   || isAlphabeticalSuperscript(character);
   }
 

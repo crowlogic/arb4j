@@ -4,6 +4,7 @@ import static arb.RealConstants.one;
 import static arb.RealConstants.zero;
 import static arb.functions.real.RealFunction.express;
 
+import arb.Integer;
 import arb.Real;
 import arb.RealConstants;
 import arb.RoundingMode;
@@ -28,11 +29,16 @@ public class RealFunctionExpressionCompilerTest extends
   private Real v;
   private Real v3;
 
-  public static void testRealNullaryFunction()
+  public static void testSphericalBesselFunctionViaRealNullaryFunction()
   {
-    var  f = RealNullaryFunction.express("Ψₖ:n➔√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)");
-    Real x = f.evaluate(128);
-    System.out.format("testRealNullaryFunction: %s=%s\n", f, x);
+    Real x = Real.named("x").set("2.3", 128);
+    x.printPrecision = false;
+    Context context = new Context(Integer.named("n").set(3),
+                                  x);
+
+    var     f       = RealNullaryFunction.express("√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)", context);
+    Real    y       = f.evaluate(128);
+    System.out.format("testRealNullaryFunction: %s=%s\n", f, y);
   }
 
   @Override

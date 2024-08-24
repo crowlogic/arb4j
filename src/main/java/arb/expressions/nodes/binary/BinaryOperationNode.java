@@ -27,8 +27,9 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, ? extends R>> extends
-                                     Node<D, R, F>
+public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, ? extends R>>
+                                         extends
+                                         Node<D, R, F>
 {
 
   public static final int initializerBits = 128;
@@ -223,10 +224,10 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
   }
 
   public BinaryOperationNode(Expression<D, R, F> expression,
-                         Node<D, R, F> left,
-                         String operation,
-                         Node<D, R, F> right,
-                         String symbol)
+                             Node<D, R, F> left,
+                             String operation,
+                             Node<D, R, F> right,
+                             String symbol)
   {
     super(expression);
 
@@ -401,7 +402,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     mapTypes(Integer.class, RationalFunction.class, RationalFunction.class);
     mapTypes(Integer.class, ComplexRationalFunction.class, ComplexRationalFunction.class);
     mapTypes(Fraction.class, Integer.class, Fraction.class);
-    mapTypes(Fraction.class, Real.class,  Real.class);    
+    mapTypes(Fraction.class, Real.class, Real.class);
     mapTypes(Fraction.class, RationalFunction.class, RationalFunction.class);
     mapTypes(Fraction.class, ComplexRationalFunction.class, ComplexRationalFunction.class);
     mapTypes(Fraction.class, RealPolynomial.class, RealPolynomial.class);
@@ -463,8 +464,8 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
 
     if (type == null)
     {
-
-      throw new CompilerException(String.format("Could not determine resultant type for left=%s and right=%s in %s",
+      throw new CompilerException(String.format("Could not determine resultant type for this=%s where left.type=%s and right.type=%s in %s",
+                                                this,
                                                 leftType,
                                                 rightType,
                                                 toString()));
