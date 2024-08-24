@@ -1,6 +1,7 @@
 package arb.functions;
 
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import arb.Complex;
@@ -214,7 +215,9 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
       Real         a            = (Real) this.α;
 
       Stream<Real> stream       = Stream.of(a.elements).filter(Real.isNegativeInteger);
-      Real         real         = stream.min(Comparator.naturalOrder()).get();
+      Optional<Real> min = stream.min(Comparator.naturalOrder());
+      assert min.isPresent() : "no negative integers in " + a;
+      Real         real         = min.get();
 
       Integer      integerValue = real.integerValue(N);
       Integer      integer      = integerValue.neg().add(1);

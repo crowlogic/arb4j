@@ -159,7 +159,12 @@ import arb.utensils.Utensils;
   {
     return new Real().setName(name);
   }
-  
+
+  public Fraction sub(Real that, int prec, Fraction res)
+  {
+    return res.set(this).sub(that,prec,res);
+  }
+    
   public Fraction neg(Fraction value)
   {
     return value.set(this).neg();
