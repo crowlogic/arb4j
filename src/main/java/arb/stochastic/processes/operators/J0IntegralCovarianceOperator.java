@@ -12,8 +12,8 @@ import arb.functions.polynomials.ModifiedLommelPolynomials;
 import arb.functions.polynomials.orthogonal.real.RealChebyshevPolynomialsOfTheFirstKind;
 import arb.functions.polynomials.orthogonal.real.RealLegendrePolynomials;
 import arb.functions.polynomials.orthogonal.real.RealType1ChebyshevPolynomials;
-import arb.functions.rational.RationalFunctionSequence;
 import arb.functions.real.RealBesselFunctionOfTheFirstKind;
+import arb.functions.real.RealFunction;
 import arb.functions.sequences.RealSequence;
 import arb.measure.Measure;
 import arb.measure.ProbabilityMeasure;
@@ -71,9 +71,11 @@ import arb.operators.Operator;
  *      {@link TheArb4jLibrary}
  */
 public class J0IntegralCovarianceOperator implements
-                                          IntegralCovarianceOperator<Real, RealBesselFunctionOfTheFirstKind, RealSquareIntegrableFunction>
+                                          IntegralCovarianceOperator<Real,
+                                                        RealBesselFunctionOfTheFirstKind,
+                                                        RealSquareIntegrableFunction>
 {
-  RealBesselFunctionOfTheFirstKind       kernel = new RealBesselFunctionOfTheFirstKind(0);
+  RealBesselFunctionOfTheFirstKind kernel = new RealBesselFunctionOfTheFirstKind(0);
 
   /**
    * The eigenvalues λₖ of the integral equation:
@@ -95,10 +97,9 @@ public class J0IntegralCovarianceOperator implements
    * {@link RealChebyshevPolynomialsOfTheFirstKind} .
    * </p>
    */
-  public static RealSequence             λₖ     = RealSequence.express("λₖ:k➔√((2*k+½)/π)*((k+1)⋰-½)²");
+  public static RealSequence       λₖ     = RealSequence.express("λₖ:k➔√((2*k+½)/π)*((k+1)⋰-½)²");
 
-  // TODO: finish quasipolynomial class and uncomment this:
-  public static RationalFunctionSequence Ψₖ     = RationalFunctionSequence.express("Ψₖ:n➔√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)");
+  public static RealFunction       Ψ      = RealFunction.express("Ψ:n➔√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)");
 
   @Override
   public RealBesselFunctionOfTheFirstKind kernel()
