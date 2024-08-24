@@ -1,5 +1,6 @@
 package arb.functions.sequences;
 
+import arb.Integer;
 import arb.RationalFunction;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -21,7 +22,7 @@ public class LommelPolynomial implements
   @Override
   public String toString()
   {
-    return String.format("%s where %s\n", expression, v);
+    return String.format("%s with %s", expression,context);
   }
 
   @Override
@@ -32,9 +33,8 @@ public class LommelPolynomial implements
 
   static
   {
-    @SuppressWarnings("resource")
     Context prototype = new Context(Real.named("v"),
-                                    Real.named("n"));
+                                    Integer.named("n"));
     expression =
                RationalNullaryFunction.compile("v₍ₙ₎*(z/2)^(-n)*pFq([½-n/2,-n/2],[v,-n,1-v-n],-z²)",
                                                prototype);
@@ -44,13 +44,11 @@ public class LommelPolynomial implements
 
   public RationalNullaryFunction                                              nullaryFunction;
 
-  @SuppressWarnings("resource")
   public Real                                                                 v           =
-                                                                                new Real().setName("v");
+                                                                                Real.named("v");
 
-  @SuppressWarnings("resource")
-  public Real                                                                 n           =
-                                                                                new Real().setName("n");
+  public Integer                                                              n           =
+                                                                                Integer.named("n");
 
   public final Context                                                        context     =
                                                                                       new Context(v,
@@ -75,7 +73,7 @@ public class LommelPolynomial implements
   @Override
   public RationalFunction newCoDomainInstance()
   {
-   return new RationalFunction();
+    return new RationalFunction();
   }
 
 }

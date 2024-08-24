@@ -21,7 +21,7 @@ public class LommelPolynomialTest extends
       l.v.set(RealConstants.half);
       l.n.set(3);
       RationalFunction func = l.evaluate(128);
-      Real             l3x  = func.evaluate(Real.valueOf(2.3), 0, 128, new Real());
+      Real             l3x  = func.evaluate(Real.of("2.3",128), 0, 128, new Real());
       assertEquals(-1.3758527163639351505, l3x.doubleValue());
     }
   }
