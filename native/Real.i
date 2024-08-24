@@ -160,6 +160,11 @@ import arb.utensils.Utensils;
     return new Real().setName(name);
   }
   
+  public Fraction neg(Fraction value)
+  {
+    return value.set(this).neg();
+  }
+    
   public Real mul(Fraction that, int prec, Real res)
   {
     return mul(res.set(that),prec,res);

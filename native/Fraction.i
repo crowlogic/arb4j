@@ -52,6 +52,22 @@ import java.util.stream.Stream;
     return result.set(this).floor(bits, result);
   }
  
+  public Fraction sub(Real element, int prec, Fraction result)
+  {
+    try ( Real tmp = new Real())
+    {
+      return result.set(tmp.set(this).sub(element, prec));
+    }
+  }
+  
+  public Fraction add(Real element, int prec, Fraction result)
+  {
+    try ( Real tmp = new Real())
+    {
+      return result.set(tmp.set(this).add(element, prec));
+    }
+  }
+  
   public Fraction become(Fraction that)
   {
     close();
