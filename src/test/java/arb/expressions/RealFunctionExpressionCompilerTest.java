@@ -10,6 +10,7 @@ import arb.RoundingMode;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
+import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
 
 /**
@@ -26,6 +27,13 @@ public class RealFunctionExpressionCompilerTest extends
 
   private Real v;
   private Real v3;
+
+  public static void testRealNullaryFunction()
+  {
+    var  f = RealNullaryFunction.express("Ψₖ:n➔√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)");
+    Real x = f.evaluate(128);
+    System.out.format("testRealNullaryFunction: %s=%s\n", f, x);
+  }
 
   @Override
   protected void setUp() throws Exception
@@ -301,7 +309,11 @@ public class RealFunctionExpressionCompilerTest extends
       assert result == evaluatedX;
       assertEquals(0.6931471805599453, evaluatedX.doubleValue());
 
-      evaluatedX = expression.evaluate(new Real("0.5", 128), 1, 256, result);
+      evaluatedX = expression.evaluate(new Real("0.5",
+                                                128),
+                                       1,
+                                       256,
+                                       result);
       assert result == evaluatedX;
       assertEquals(0.22314355131420976, evaluatedX.doubleValue(RoundingMode.Up));
     }
@@ -326,11 +338,19 @@ public class RealFunctionExpressionCompilerTest extends
       assert result == evaluatedX;
       assertEquals(2.0, evaluatedX.doubleValue());
 
-      evaluatedX = expression.evaluate(new Real("2", 128), 1, 256, result);
+      evaluatedX = expression.evaluate(new Real("2",
+                                                128),
+                                       1,
+                                       256,
+                                       result);
       assert result == evaluatedX;
       assertEquals(5.0, evaluatedX.doubleValue());
 
-      evaluatedX = expression.evaluate(new Real("0.5", 128), 1, 256, result);
+      evaluatedX = expression.evaluate(new Real("0.5",
+                                                128),
+                                       1,
+                                       256,
+                                       result);
       assert result == evaluatedX;
       assertEquals(1.25, evaluatedX.doubleValue(RoundingMode.Up));
     }
@@ -339,7 +359,8 @@ public class RealFunctionExpressionCompilerTest extends
   public void testOnePlusInputOver2PlusZero()
   {
     RealFunction expression = express("1+i/2+0", context);
-    Real         x          = new Real("2", 128);
+    Real         x          = new Real("2",
+                                       128);
     {
 
       Real evaluatedX = expression.evaluate(x, 1, 256, x);

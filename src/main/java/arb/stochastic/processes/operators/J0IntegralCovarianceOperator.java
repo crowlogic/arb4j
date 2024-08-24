@@ -14,6 +14,7 @@ import arb.functions.polynomials.orthogonal.real.RealLegendrePolynomials;
 import arb.functions.polynomials.orthogonal.real.RealType1ChebyshevPolynomials;
 import arb.functions.rational.RationalFunctionSequence;
 import arb.functions.real.RealBesselFunctionOfTheFirstKind;
+import arb.functions.sequences.RealFunctionSequence;
 import arb.functions.sequences.RealSequence;
 import arb.measure.Measure;
 import arb.measure.ProbabilityMeasure;
@@ -98,7 +99,7 @@ public class J0IntegralCovarianceOperator implements
   public static RealSequence             λₖ     = RealSequence.express("λₖ:k➔√((2*k+½)/π)*((k+1)⋰-½)²");
 
   // TODO: finish quasipolynomial class and uncomment this:
-  public static RationalFunctionSequence Ψₖ     = RationalFunctionSequence.express("Ψₖ:n➔√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)");
+  public static RealFunctionSequence Ψₖ     = RealFunctionSequence.express("Ψₖ:n➔√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)");
 
   @Override
   public RealBesselFunctionOfTheFirstKind kernel()
