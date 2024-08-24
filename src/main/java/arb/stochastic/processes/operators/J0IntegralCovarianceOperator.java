@@ -95,7 +95,7 @@ public class J0IntegralCovarianceOperator implements
    * {@link RealChebyshevPolynomialsOfTheFirstKind} .
    * </p>
    */
-  public static RealSequence             λₖ     = RealSequence.express("λₖ:k➔√((4*k+1)/π)*((k+1)⋰-½)²");
+  public static RealSequence             λₖ     = RealSequence.express("λₖ:k➔√((2*k+½)/π)*((k+1)⋰-½)²");
 
   // TODO: finish quasipolynomial class and uncomment this:
   public static RationalFunctionSequence Ψₖ     = RationalFunctionSequence.express("Ψₖ:n➔√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)");
