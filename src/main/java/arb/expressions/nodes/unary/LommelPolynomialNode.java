@@ -4,7 +4,6 @@ import static arb.expressions.Compiler.invokeMethod;
 import static arb.expressions.Compiler.invokeSetMethod;
 import static arb.expressions.Compiler.invokeVirtualMethod;
 import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-import static arb.expressions.Compiler.realScalarTypes;
 import static org.objectweb.asm.Opcodes.ACONST_NULL;
 
 import java.util.List;
@@ -93,15 +92,19 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     if (isNullaryFunctionOrHasScalarCodomain)
     {
       loadSequenceOntoStack(mv);
-      Compiler.getField(mv, scalarType, seqFieldName, scalarType);
+      Compiler.getField(mv, LommelPolynomialSequence.class, "v", Real.class);
       order.generate(mv, Real.class);
+      assert order.getGeneratedType()
+                  .equals(Real.class) : String.format("need Real.class but got %s",
+                                                      order.getGeneratedType());
       invokeSetMethod(mv, Real.class, Real.class);
 
       loadSequenceOntoStack(mv);
       mv.visitInsn(ACONST_NULL);
       mv.visitLdcInsn(1);
       loadBitsOntoStack(mv);
-      expression.loadThisFieldOntoStack(mv, elementFieldName, Real.class);
+
+      expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);
 
       invokeVirtualMethod(mv,
                           LommelPolynomialSequence.class,

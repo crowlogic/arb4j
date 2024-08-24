@@ -262,7 +262,9 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   protected MethodVisitor initializeHypergeometricFunction(MethodVisitor mv)
   {
     α.generate(mv, scalarType);
+   // assert scalarType.equals(α.getGeneratedType());
     β.generate(mv, scalarType);
+    //assert scalarType.equals(β.getGeneratedType());
     mv.visitLdcInsn(arg.toString());
     invokeArgumentParsingMethod(mv);
     invokeHypergeometricFunctionInitializationMethod(mv);
