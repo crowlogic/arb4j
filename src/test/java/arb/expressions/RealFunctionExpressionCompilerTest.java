@@ -36,10 +36,11 @@ public class RealFunctionExpressionCompilerTest extends
     Context context = new Context(Integer.named("n").set(3),
                                   x);
 
-    var     f       = RealNullaryFunction.express("√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)", context);
+    var     f       = RealNullaryFunction.express("√((8*n+2)/π)*(-1)ⁿ*j(2*n,x)", context);
     Real    y       = f.evaluate(128);
-    //System.out.format("testRealNullaryFunction: %s=%s\nwith %s\n", f, y, context.variables);
-    assertEquals(-0.00186466433442789978956679613056334, y.doubleValue());
+    // System.out.format("testRealNullaryFunction: %s=%s\nwith %s\n", f, y,
+    // context.variables);
+    assertEquals(-0.00263703359102133642443445488859, y.doubleValue());
   }
 
   @Override

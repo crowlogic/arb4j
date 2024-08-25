@@ -21,7 +21,7 @@ public class J0IntegralCovarianceOperatorTest extends
   public static void testJ0Projections()
   {
     List<Real>   projections;
-    RealSequence λₖ = RealSequence.express("λₖ:k➔√((2*k+½)/π)*((k+1)⋰-½)²");
+    RealSequence λₖ = J0IntegralCovarianceOperator.λₖ;//RealSequence.express("λₖ:k➔√((2*k+½)/π)*((k+1)⋰-½)²");
 
     projections = IntStream.range(0, 10).mapToObj(λₖ).toList();
 

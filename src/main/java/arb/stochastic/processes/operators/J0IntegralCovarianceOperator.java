@@ -99,7 +99,8 @@ public class J0IntegralCovarianceOperator implements
    */
   public static RealSequence       λₖ     = RealSequence.express("λₖ:k➔√((2*k+½)/π)*((k+1)⋰-½)²");
 
-  public static RealFunction       Ψ      = RealFunction.express("Ψ:n➔√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)");
+  
+  //public static RealFunction       Ψ      = RealFunction.express("Ψₖ:k➔√((8*k+2)/π)*(-1)ᵏ*j(2*k,x)");
 
   @Override
   public RealBesselFunctionOfTheFirstKind kernel()
