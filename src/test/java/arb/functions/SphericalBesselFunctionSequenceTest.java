@@ -13,9 +13,11 @@ public class SphericalBesselFunctionSequenceTest extends
 {
   public static void testThree()
   {
-    SphericalBesselFunction sbf = new SphericalBesselFunction();
-    sbf.n.set(3);
-    var                     f   = sbf.eval(2.3);
-    System.out.println("j(3,x)=" + f);
+    try ( SphericalBesselFunction sbf = new SphericalBesselFunction())
+    {
+      sbf.n.set(3);
+      var                     f   = sbf.eval(2.3);
+      assertEquals( 0.0856499630648839, f );
+    }
   }
 }
