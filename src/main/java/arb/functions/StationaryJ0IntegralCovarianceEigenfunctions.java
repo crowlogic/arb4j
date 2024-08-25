@@ -1,37 +1,40 @@
 package arb.functions;
 
+import arb.FractionConstants;
 import arb.Initializable;
 import arb.Integer;
 import arb.RationalFunction;
 import arb.Real;
-import arb.RealConstants;
 import arb.Typesettable;
-import arb.functions.real.RealNullaryFunction;
+import arb.functions.real.RealFunction;
+import arb.functions.sequences.LommelPolynomial;
 
 public class StationaryJ0IntegralCovarianceEigenfunctions implements
-                                                          RealNullaryFunction,
+                                                          RealFunction,
                                                           Typesettable,
                                                           AutoCloseable,
                                                           Initializable
 {
-  public boolean                 isInitialized;
-  public final Integer           cℤ2 = new Integer("1");
-  public final Integer           cℤ1 = new Integer("4");
-  public final Integer           cℤ3 = new Integer("2");
-  public Integer                 n;
-  public Real                    x;
-  public Real                    ℝ1  = new Real();
-  public Real                    ℝ2  = new Real();
-  public Real                    ℝ3  = new Real();
-  public Real                    ℝ4  = new Real();
-  public Integer                 ℤ4  = new Integer();
-  public Integer                 ℤ1;
-  public Integer                 ℤ2;
-  public SphericalBesselFunction sphsph1;
-  public RationalFunction        elementq1;
-  public Integer                 ℤ3;
-  public Integer                 ℤ5  = new Integer();
-  public Integer                 ℤ6  = new Integer();
+  public boolean          isInitialized;
+  public final Integer    cℤ2 = new Integer("3");
+  public final Integer    cℤ1 = new Integer("1");
+  public final Integer    cℤ3 = new Integer("2");
+  public Integer          n;
+  public LommelPolynomial seqqR1;
+  public Real             ℝ1;
+  public Real             ℝ2;
+  public Real             ℝ3;
+  public LommelPolynomial seqqR2;
+  public Real             ℝ4;
+  public RationalFunction elementq2;
+  public RationalFunction elementq1;
+  public Real             ℝ5;
+  public Real             ℝ6;
+  public Real             ℝ7;
+  public Real             ℝ10 = new Real();
+  public Real             ℝ11 = new Real();
+  public Real             ℝ9;
+  public Real             ℝ8;
 
   @Override
   public Class<Real> coDomainType()
@@ -40,19 +43,19 @@ public class StationaryJ0IntegralCovarianceEigenfunctions implements
   }
 
   @Override
-  public Real evaluate(Object in, int order, int bits, Real result)
+  public Real evaluate(Real x, int order, int bits, Real result)
   {
     if (!isInitialized)
     {
       initialize();
     }
 
-    return cℤ1.mul(n, bits, ℤ1)
-              .add(cℤ2, bits, ℤ2)
-              .div(RealConstants.π, bits, ℝ1)
-              .sqrt(bits, ℝ2)
-              .mul(cℤ2.neg(ℤ3).pow(n, bits, ℤ4), bits, ℝ3)
-              .mul(ℝ4.set(elementq1), bits, result);
+    return elementq1.evaluate(x, order, bits, ℝ1)
+                    .mul(x.sin(bits, ℝ2), bits, ℝ3)
+                    .sub(elementq2.evaluate(x, order, bits, ℝ4).mul(x.cos(bits, ℝ5), bits, ℝ6),
+                         bits,
+                         ℝ7)
+                    .div(x, bits, result);
   }
 
   @Override
@@ -62,29 +65,37 @@ public class StationaryJ0IntegralCovarianceEigenfunctions implements
     {
       throw new AssertionError("Already initialized");
     }
-    else if (x == null)
-    {
-      throw new AssertionError("x shan't be null");
-    }
     else if (n == null)
     {
       throw new AssertionError("n shan't be null");
     }
     else
     {
-      sphsph1.set(cℤ3.mul(n, 128, ℤ5));
-      cℤ3.mul(n, 128, ℤ6);
+      seqqR1.v.set(ℝ8.set(n));
+      seqqR1.n.set(ℝ9.set(FractionConstants.oneHalf));
+      seqqR1.evaluate(null, 1, 128, elementq1);
+      seqqR2.v.set(n.sub(cℤ1, 128, ℝ10));
+      seqqR2.n.set(cℤ2.div(cℤ3, 128, ℝ11));
+      seqqR2.evaluate(null, 1, 128, elementq2);
       isInitialized = true;
     }
   }
 
   public StationaryJ0IntegralCovarianceEigenfunctions()
   {
-    ℤ1        = new Integer();
-    ℤ2        = new Integer();
-    sphsph1   = new SphericalBesselFunction();
+    elementq2 = new RationalFunction();
     elementq1 = new RationalFunction();
-    ℤ3        = new Integer();
+    seqqR1    = new LommelPolynomial();
+    ℝ1        = new Real();
+    ℝ2        = new Real();
+    ℝ3        = new Real();
+    seqqR2    = new LommelPolynomial();
+    ℝ4        = new Real();
+    ℝ9        = new Real();
+    ℝ5        = new Real();
+    ℝ6        = new Real();
+    ℝ7        = new Real();
+    ℝ8        = new Real();
   }
 
   @Override
@@ -93,29 +104,32 @@ public class StationaryJ0IntegralCovarianceEigenfunctions implements
     cℤ2.close();
     cℤ1.close();
     cℤ3.close();
+    ℝ10.close();
+    ℝ11.close();
+    elementq2.close();
+    elementq1.close();
+    seqqR1.close();
     ℝ1.close();
     ℝ2.close();
     ℝ3.close();
+    seqqR2.close();
     ℝ4.close();
-    ℤ4.close();
-    ℤ5.close();
-    ℤ6.close();
-    ℤ1.close();
-    ℤ2.close();
-    sphsph1.close();
-    elementq1.close();
-    ℤ3.close();
+    ℝ9.close();
+    ℝ5.close();
+    ℝ6.close();
+    ℝ7.close();
+    ℝ8.close();
   }
 
   @Override
   public String toString()
   {
-    return "√((4*n+1)/(2*π))*(-1)^n*j(2*n,x)";
+    return "x➔(R(n,½;x)*sin(x) - R(n-1,3⁄2;x)*cos(x))/x";
   }
 
   @Override
   public String typeset()
   {
-    return "\\sqrt{\\frac{4 \\cdot n + 1}{2\\pi}} \\cdot {(-1)}^{n} \\cdot j_{2 \\cdot n}(x)";
+    return "\\frac{\\left(R_{n, \\frac{1}{2}}(x) \\cdot \\sin(x)-R_{\\left(n-1\\right), \\frac{3}{2}}(x) \\cdot \\cos(x)\\right)}{x}";
   }
 }

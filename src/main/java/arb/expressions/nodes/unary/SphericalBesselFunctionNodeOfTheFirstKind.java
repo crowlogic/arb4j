@@ -1,7 +1,8 @@
 package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.scalarType;
+import static arb.expressions.Compiler.loadInputParameter;
+import static arb.expressions.Compiler.loadOrderParameter;
 import static java.lang.String.format;
 import static java.lang.System.err;
 
@@ -10,7 +11,6 @@ import java.util.List;
 import org.objectweb.asm.MethodVisitor;
 
 import arb.Integer;
-import arb.RationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
@@ -65,8 +65,6 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
 
   private String functionFieldName;
 
-  private String elementFieldName;
-
   public SphericalBesselFunctionNodeOfTheFirstKind(Expression<D, R, F> expression)
   {
     super("j",
@@ -78,14 +76,14 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
     expression.registerInitializer(this::generateInitializer);
 
     functionFieldName = expression.newIntermediateVariable("", SphericalBesselFunction.class, true);
-    elementFieldName  = expression.newIntermediateVariable("element", RationalFunction.class, true);
 
   }
 
   public void generateInitializer(MethodVisitor mv)
   {
-    expression.loadThisFieldOntoStack(mv, functionFieldName, SphericalBesselFunction.class);
     expression.insideInitializer = true;
+    expression.loadThisFieldOntoStack(mv, functionFieldName, SphericalBesselFunction.class);
+    Compiler.getField(mv, SphericalBesselFunction.class, "n", Integer.class);
     index.generate(mv, Integer.class);
 
     if (!index.getGeneratedType().equals(Integer.class))
@@ -100,41 +98,33 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
 
     Compiler.invokeMethod(mv, Integer.class, "set", Integer.class, false, Integer.class);
 
-    expression.loadThisFieldOntoStack(mv, functionFieldName, SphericalBesselFunction.class);
-    index.generate(mv, Integer.class);
-    mv.visitLdcInsn(0);
-    mv.visitLdcInsn(128);
-    expression.loadThisFieldOntoStack(mv, elementFieldName, expression.coDomainType);
-
-    Compiler.invokeVirtualMethod(mv,
-                                 SphericalBesselFunction.class,
-                                 "evaluate",
-                                 RationalFunction.class,
-                                 Object.class,
-                                 int.class,
-                                 int.class,
-                                 Object.class);
-    checkClassCast(mv, expression.coDomainType);
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+    assert !expression.domainType.equals(Object.class) : "TODO: handle use as nullary function";
+    expression.insideInitializer = false;
     // assert false : "wtf " + resultType;
     if (Expression.trace)
     {
       err.printf("j.generate(ν=%s, resultType=%s\n)\n", index, resultType);
     }
-    var scalarType = scalarType(resultType);
+    expression.loadThisFieldOntoStack(mv, functionFieldName, SphericalBesselFunction.class);
+    checkClassCast(loadInputParameter(mv),expression.domainType);    
+    loadOrderParameter(mv);
+    loadBitsOntoStack(mv);
+    loadOutputVariableOntoStack(mv, expression.coDomainType);
 
-    loadOutputVariableOntoStack(mv, scalarType);
-    // index.generate(mv, scalarType);
-    expression.loadThisFieldOntoStack(mv, elementFieldName, resultType);
-    Compiler.invokeSetMethod(mv, resultType, resultType);
-    // ³⁄₂
-    // assert false : "TODO: wield the SphericalBesselFunctionSequence class the
-    // same way the HypergeometricFunctionNode uses the HypergeometricFunction";
-
+    Compiler.invokeVirtualMethod(mv,
+                                 SphericalBesselFunction.class,
+                                 "evaluate",
+                                 expression.coDomainType,
+                                 expression.domainType,
+                                 int.class,
+                                 int.class,
+                                 expression.coDomainType);
+    checkClassCast(mv, expression.coDomainType);
     return mv;
   }
 

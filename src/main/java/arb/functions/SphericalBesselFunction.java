@@ -33,21 +33,29 @@ public class SphericalBesselFunction implements
 
   private RealFunction                               element;
 
-  public SphericalBesselFunction(int index)
-  {
-    element = prototype.instantiate();
-    n.set(index);
-    context.injectReferences(element);
-    System.out.println( "SphericalBesselFunction: element=" + element );
-  }
-
   public SphericalBesselFunction()
   {
+  }
+
+  boolean isInitialized = false;
+
+  public void initialize()
+  {
+
+    isInitialized = true;
+
+    element       = prototype.instantiate();
+    context.injectReferences(element);
+
   }
 
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)
   {
+    if (!isInitialized)
+    {
+      initialize();
+    }
     return element.evaluate(t, order, bits, res);
   }
 
