@@ -59,8 +59,8 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     super("R",
           null,
           expression);
-    order = expression.resolve();
-    index = expression.require(',').resolve();
+    index = expression.resolve();
+    order = expression.require(',').resolve();
     arg   = expression.require(';').resolve();
     expression.require(')');
     scalarType                           = Compiler.scalarType(expression.coDomainType);
@@ -97,10 +97,10 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
       invokeSetMethod(mv, Real.class, Real.class);
 
       loadFunctionOntoStack(mv);
-      Compiler.getField(mv, LommelPolynomial.class, "n", Real.class);
-      index.generate(mv, Real.class);
-      assert index.getGeneratedType().equals(Real.class);
-      invokeSetMethod(mv, Real.class, Real.class);
+      Compiler.getField(mv, LommelPolynomial.class, "n", Integer.class);
+      index.generate(mv, Integer.class);
+      assert index.getGeneratedType().equals(Integer.class);
+      invokeSetMethod(mv, Integer.class, Integer.class);
 
       loadFunctionOntoStack(mv);
       mv.visitInsn(Opcodes.ACONST_NULL);

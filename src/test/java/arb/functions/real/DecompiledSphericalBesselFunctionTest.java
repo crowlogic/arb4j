@@ -22,7 +22,7 @@ public class DecompiledSphericalBesselFunctionTest extends
     f.n = new Integer(3);
     double x = f.eval(2.3);
     System.out.format("f(%s)=%s\n", f, x);
-    assertEquals(0.08564996306488391407751283096252802553363, x);
+    assertEquals(0.0856499630648839, x);
   }
 
   public boolean          isInitialized;
@@ -41,7 +41,7 @@ public class DecompiledSphericalBesselFunctionTest extends
   public Real             ℝ5;
   public Real             ℝ6;
   public Real             ℝ7;
-  public Real             ℝ10 = new Real();
+  public Integer             Z10 = new Integer();
   public Real             ℝ11 = new Real();
   public Real             ℝ9;
   public Real             ℝ8;
@@ -81,11 +81,11 @@ public class DecompiledSphericalBesselFunctionTest extends
     }
     else
     {
-      seqqR1.v.set(ℝ8.set(n));
-      seqqR1.n.set(ℝ9.set(FractionConstants.oneHalf));
+      seqqR1.n.set(n);
+      seqqR1.v.set(ℝ9.set(FractionConstants.oneHalf));
       seqqR1.evaluate(null, 1, 128, elementq1);
-      seqqR2.v.set(n.sub(cℤ1, 128, ℝ10));
-      seqqR2.n.set(cℤ2.div(cℤ3, 128, ℝ11));
+      seqqR2.n.set(n.sub(cℤ1, 128, Z10));
+      seqqR2.v.set(cℤ2.div(cℤ3, 128, ℝ11));
       seqqR2.evaluate(null, 1, 128, elementq2);
       isInitialized = true;
     }
@@ -114,7 +114,7 @@ public class DecompiledSphericalBesselFunctionTest extends
     cℤ2.close();
     cℤ1.close();
     cℤ3.close();
-    ℝ10.close();
+    Z10.close();
     ℝ11.close();
     elementq2.close();
     elementq1.close();

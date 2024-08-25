@@ -247,10 +247,10 @@ public class Parser
                            .replace(';', ',')
                            .replace(" ", "")
                            .replace("+", "Plus")
-                           .replace("-", "Minus")
-                           .replace("*", "Times")
-                           .replace("/", "Over")
-                           .replace("^", "ToThePowerOf")
+                           //.replace("-", "Minus")
+                           //.replace("*", "Times")
+                           .replace("/", "⁄")
+                          // .replace("^", "ToThePowerOf")
                            .replace(".", "_")
                            .replace("{", "Where")
                            .replace("}", "")
@@ -261,10 +261,11 @@ public class Parser
                            .replace("ₙ", "N")
                            .replace("…", "To")
                            .replace("!", "Bang")
-                           .replace("[", "{")
-                           .replace("]", "}")
-                           .replace("➔", "")
-                           .replace("½", "Half");
+                           .replace("[", "［")
+                           .replace("]", "］")
+                           .replace("➔", "");
+                           //.replace("½", "Half"
+                                    
     str = (isDigit(str.charAt(0)) ? "_" : "") + str;
     if (str.length() >= 250)
     {
