@@ -97,6 +97,17 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
                                               Fraction beta,
                                               Expression<Object, C, N> arg)
   {
+    if (Expression.trace)
+    {
+      System.err.format("pFq.init(paramType=%s, elementType=%s, nullaryFunctionType=%s, alpha=%s, beta=%s, arg=%s)\n",
+                        paramType,
+                        elementType,
+                        nullaryFunctionType,
+                        alpha,
+                        beta,
+                        arg);
+    }
+
     this.paramType = paramType;
     if (paramType.equals(Complex.class))
     {
@@ -118,7 +129,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
     }
     this.α.set(alpha);
     this.β.set(beta);
-    
+
     initializeContext();
 
     compile(elementType, nullaryFunctionType, arg);
@@ -212,15 +223,15 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
   {
     if (α instanceof Real)
     {
-      Real         a            = (Real) this.α;
+      Real           a      = (Real) this.α;
 
-      Stream<Real> stream       = Stream.of(a.elements).filter(Real.isNegativeInteger);
-      Optional<Real> min = stream.min(Comparator.naturalOrder());
+      Stream<Real>   stream = Stream.of(a.elements).filter(Real.isNegativeInteger);
+      Optional<Real> min    = stream.min(Comparator.naturalOrder());
       assert min.isPresent() : "no negative integers in " + a;
-      Real         real         = min.get();
+      Real    real         = min.get();
 
-      Integer      integerValue = real.integerValue(N);
-      Integer      integer      = integerValue.neg().add(1);
+      Integer integerValue = real.integerValue(N);
+      Integer integer      = integerValue.neg().add(1);
       return integer;
     }
     else if (α instanceof Complex)

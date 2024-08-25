@@ -171,6 +171,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
                             RationalFunction.class,
                             false,
                             RationalFunction.class);
+      generatedType = RationalFunction.class;
       // assert false : "todo: just return element";
     }
     else

@@ -124,7 +124,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                                                                                                            : RationalHypergeometricFunction.class
                                            : isComplex ? ComplexPolynomialHypergeometricFunction.class
                                            : null;
-    
+
     assert hypergeometricFunctionClass != null : "hypergeometricFunctionClass="
                                                  + hypergeometricFunctionClass;
 
@@ -197,7 +197,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
     if (Expression.trace)
     {
-      err.printf("pFq.generate(resultType=%s dependsOnInput=%s\n)\n", resultType, dependsOnInput);
+      err.printf("pFq.generate(resultType=%s dependsOnInput=%s)\n", resultType, dependsOnInput);
     }
 
     boolean loadedHypergeometricFunction = false;
@@ -261,10 +261,14 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   protected MethodVisitor initializeHypergeometricFunction(MethodVisitor mv)
   {
+    if (expression.trace)
+    {
+      System.err.format("initializeHypergeometricFunction(alpha=%s, beta=%s, arg=%s)\n", α, β, arg);
+    }
     α.generate(mv, scalarType);
-   // assert scalarType.equals(α.getGeneratedType());
+    // assert scalarType.equals(α.getGeneratedType());
     β.generate(mv, scalarType);
-    //assert scalarType.equals(β.getGeneratedType());
+    // assert scalarType.equals(β.getGeneratedType());
     mv.visitLdcInsn(arg.toString());
     invokeArgumentParsingMethod(mv);
     invokeHypergeometricFunctionInitializationMethod(mv);
