@@ -38,7 +38,8 @@ public class RealFunctionExpressionCompilerTest extends
 
     var     f       = RealNullaryFunction.express("√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)", context);
     Real    y       = f.evaluate(128);
-    System.out.format("testRealNullaryFunction: %s=%s\n", f, y);
+    //System.out.format("testRealNullaryFunction: %s=%s\nwith %s\n", f, y, context.variables);
+    assertEquals(-0.00186466433442789978956679613056334, y.doubleValue());
   }
 
   @Override

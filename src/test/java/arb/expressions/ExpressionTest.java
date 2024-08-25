@@ -55,7 +55,7 @@ public class ExpressionTest extends
 
   public void testLommelPolynomialRealExpression()
   {
-    var    f   = RealFunction.express("R(1/2,3;z)");
+    var    f   = RealFunction.express("R(3,1/2;z)");
     // System.out.println("f=" + f);
     double hmm = f.eval(2.3);
     /// System.out.println("f(2.3)="+hmm);
@@ -64,12 +64,13 @@ public class ExpressionTest extends
 
   public void testLommelPolynomialRationalExpression()
   {
-    var    F   = RationalNullaryFunction.express("R(1/2,3;z)");
-    // System.out.println("F=" + F);
+    var    F   = RationalNullaryFunction.express("R(3,1/2;z)");
+     //System.out.println("F=" + F);
     var    f   = F.evaluate(128);
-    // System.out.println("f=" + f);
+    assertEquals("(-6*x^2+15)/(x^3)",f.toString());
+     //System.out.println("f=" + f);
     double hmm = f.asRealFunction().eval(2.3);
-    /// System.out.println("f(2.3)="+hmm);
+     //System.out.println("f(2.3)="+hmm);
     assertEquals(-1.3758527163639351505, hmm);
   }
 

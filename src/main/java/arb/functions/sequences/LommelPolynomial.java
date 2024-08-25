@@ -67,7 +67,7 @@ public class LommelPolynomial implements
       context.injectReferences(nullaryFunction = expression.instantiate());
       initialized = true;
     }
-    return nullaryFunction.evaluate(t, order, bits, res);
+    return nullaryFunction.evaluate(null, order, bits, res);
   }
 
   @Override

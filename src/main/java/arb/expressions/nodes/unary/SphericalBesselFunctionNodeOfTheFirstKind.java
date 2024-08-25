@@ -3,6 +3,7 @@ package arb.expressions.nodes.unary;
 import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.loadInputParameter;
 import static arb.expressions.Compiler.loadOrderParameter;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.String.format;
 import static java.lang.System.err;
 
@@ -82,7 +83,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
   public void generateInitializer(MethodVisitor mv)
   {
     expression.insideInitializer = true;
-    expression.loadThisFieldOntoStack(mv, functionFieldName, SphericalBesselFunction.class);
+    loadSphericalBesselFunctionOntoStack(mv);
     Compiler.getField(mv, SphericalBesselFunction.class, "n", Integer.class);
     index.generate(mv, Integer.class);
 
@@ -103,29 +104,65 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    assert !expression.domainType.equals(Object.class) : "TODO: handle use as nullary function";
+    boolean isNullaryFunction = expression.domainType.equals(Object.class);
+
+    // assert !expression.domainType.equals(Object.class) : "TODO: handle use as
+    // nullary function";
     expression.insideInitializer = false;
     // assert false : "wtf " + resultType;
     if (Expression.trace)
     {
       err.printf("j.generate(ν=%s, resultType=%s\n)\n", index, resultType);
     }
-    expression.loadThisFieldOntoStack(mv, functionFieldName, SphericalBesselFunction.class);
-    checkClassCast(loadInputParameter(mv),expression.domainType);    
-    loadOrderParameter(mv);
-    loadBitsOntoStack(mv);
-    loadOutputVariableOntoStack(mv, expression.coDomainType);
+    if (isNullaryFunction)
+    {
+      loadSphericalBesselFunctionOntoStack(mv);
 
-    Compiler.invokeVirtualMethod(mv,
-                                 SphericalBesselFunction.class,
-                                 "evaluate",
-                                 expression.coDomainType,
-                                 expression.domainType,
-                                 int.class,
-                                 int.class,
-                                 expression.coDomainType);
-    checkClassCast(mv, expression.coDomainType);
-    return mv;
+      arg.generate(mv, resultType);
+      assert arg.getGeneratedType()
+                .equals(resultType) : String.format("%s type %s != requested type %s",
+                                                               arg,
+                                                               arg.type(),
+                                                               resultType);
+      loadOrderParameter(mv);
+      loadBitsOntoStack(mv);
+      loadOutputVariableOntoStack(mv, expression.coDomainType);
+
+      Compiler.invokeVirtualMethod(mv,
+                                   SphericalBesselFunction.class,
+                                   "evaluate",
+                                   expression.coDomainType,
+                                   resultType,
+                                   int.class,
+                                   int.class,
+                                   expression.coDomainType);
+      checkClassCast(mv, expression.coDomainType);
+      return mv;
+    }
+    else
+    {
+      loadSphericalBesselFunctionOntoStack(mv);
+      checkClassCast(loadInputParameter(mv), expression.domainType);
+      loadOrderParameter(mv);
+      loadBitsOntoStack(mv);
+      loadOutputVariableOntoStack(mv, expression.coDomainType);
+
+      Compiler.invokeVirtualMethod(mv,
+                                   SphericalBesselFunction.class,
+                                   "evaluate",
+                                   expression.coDomainType,
+                                   expression.domainType,
+                                   int.class,
+                                   int.class,
+                                   expression.coDomainType);
+      checkClassCast(mv, expression.coDomainType);
+      return mv;
+    }
+  }
+
+  public void loadSphericalBesselFunctionOntoStack(MethodVisitor mv)
+  {
+    expression.loadThisFieldOntoStack(mv, functionFieldName, SphericalBesselFunction.class);
   }
 
   @Override

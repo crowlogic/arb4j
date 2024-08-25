@@ -6,9 +6,15 @@ import arb.Integer;
 import arb.RationalFunction;
 import arb.Real;
 import arb.Typesettable;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.sequences.LommelPolynomial;
 import junit.framework.TestCase;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class DecompiledSphericalBesselFunctionTest extends
                                                    TestCase implements
                                                    RealFunction,
@@ -18,11 +24,13 @@ public class DecompiledSphericalBesselFunctionTest extends
 {
   public static void testEval()
   {
-    DecompiledSphericalBesselFunctionTest f = new DecompiledSphericalBesselFunctionTest();
-    f.n = new Integer(3);
-    double x = f.eval(2.3);
-    //System.out.format("f(%s)=%s\n", f, x);
-    assertEquals(0.0856499630648839, x);
+    try ( DecompiledSphericalBesselFunctionTest f = new DecompiledSphericalBesselFunctionTest())
+    {
+      f.n = new Integer(3);
+      double x = f.eval(2.3);
+      //System.out.format("f(%s)=%s\n", f, x);
+      assertEquals(0.0856499630648839, x);
+    }
   }
 
   public boolean          isInitialized;

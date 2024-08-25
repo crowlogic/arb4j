@@ -23,17 +23,11 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
-import arb.functions.rational.RationalFunctionSequence;
 import arb.functions.sequences.LommelPolynomial;
 
 /**
- * Syntax: "R(v,n;z)" which corresponds to a {@link LommelPolynomial} with the
- * {@link LommelPolynomial#v} order variable set and then assigns
- * {@link LommelPolynomialNode#elementFieldName} the specific
- * {@link RationalFunctionSequence} which gets
- * {@link RationalFunctionSequence#evaluate(Integer, int, int, RationalFunction)}d
- * by passing the this{@link #index} argument which corresponds to the variable
- * n in the expression R(v,n;z)
+ * Syntax: "R(n,v;z)" which corresponds to a {@link LommelPolynomial} of index
+ * {@link LommelPolynomial#n}, order {@link LommelPolynomial#v} and argument z
  * 
  * @param <D>
  * @param <C>
@@ -120,7 +114,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     }
     else
     {
-    //  assert false : "todo?";
+      // assert false : "todo?";
     }
   }
 

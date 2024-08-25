@@ -1,5 +1,7 @@
 package arb.expressions.nodes.unary;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
@@ -10,9 +12,11 @@ import junit.framework.TestCase;
 public class SphericalBesselFunctionNodeOfTheFirstKindTest extends
                                                            TestCase
 {
-  public static void testj0()
+  public static void testj0ViaExpression()
   {
-    RealFunction j0 = RealFunction.express("j(0,x)");
-    System.out.println("j0(2.3)=" + j0.eval(2.3));
+    RealFunction j0 = RealFunction.express("j(3,x)");
+    double       y  = j0.eval(2.3);
+    // System.out.println("j0(2.3)=" + y);
+    assertEquals(0.0856499630648839, y);
   }
 }
