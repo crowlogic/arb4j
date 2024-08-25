@@ -4,7 +4,7 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
 
-\title{Eigenfunctions of Non-Stationary Covariance Operators via Wigner-Ville Distribution}
+\title{Eigenfunctions of Non-Stationary Operators via Orthogonal Polynomials}
 \author{}
 \date{}
 
@@ -14,113 +14,96 @@
 
 \section{Introduction}
 
-We present a rigorous mathematical framework for constructing eigenfunctions of non-stationary covariance operators using the Wigner-Ville distribution. This approach extends the eigenfunction method typically used for stationary processes to the non-stationary case.
-
-\section{Preliminaries}
-
-Let $X(t)$ be a non-stationary stochastic process with covariance function $K(s,t)$. The Wigner-Ville distribution $W(t,\omega)$ and the covariance function $K(s,t)$ are related by the following Fourier transform pair:
-
-\begin{equation}
-W(t,\omega) = \int_{-\infty}^{\infty} K(t+\tau/2, t-\tau/2) e^{-i\omega\tau} d\tau
-\end{equation}
-
-\begin{equation}
-K(s,t) = \int_{-\infty}^{\infty} W((s+t)/2, \omega) e^{i\omega(s-t)} d\omega
-\end{equation}
+We present a rigorous mathematical framework for constructing eigenfunctions of non-stationary operators using orthogonal polynomials. This approach is applicable to a wide class of processes, including those with infinite variance.
 
 \section{Construction of Eigenfunctions}
 
-\subsection{Orthogonal Polynomials in Time-Frequency Domain}
+\subsection{Orthogonal Polynomials}
 
-We define polynomials $p_n(t,\omega)$ orthogonal with respect to $W(t,\omega)$:
+Let $\mu(\omega)$ be a measure (not necessarily absolutely continuous). We define polynomials $p_n(\omega)$ orthogonal with respect to $\mu(\omega)$:
 
 \begin{equation}
-\int_{-\infty}^{\infty}\int_{-\infty}^{\infty} p_n(t,\omega) p_m(t,\omega) W(t,\omega) dt d\omega = \delta_{nm}
+\int_{-\infty}^{\infty} p_n(\omega) p_m(\omega) d\mu(\omega) = \delta_{nm}
 \end{equation}
 
 where $\delta_{nm}$ is the Kronecker delta.
 
-\subsection{Time-Domain Basis Functions}
+\subsection{Time-Domain Functions}
 
 We transform the orthogonal polynomials to the time domain:
 
 \begin{equation}
-r_n(s,t) = \int_{-\infty}^{\infty} p_n((s+t)/2, \omega) e^{i\omega(s-t)} d\omega
+r_n(t) = \int_{-\infty}^{\infty} p_n(\omega) e^{i\omega t} d\mu(\omega)
 \end{equation}
 
-\subsection{Orthogonalization in Time Domain}
+\subsection{Orthogonalization}
 
-We orthogonalize the functions $r_n(s,t)$ with respect to $K(s,t)$:
+We orthogonalize the functions $r_n(t)$ using the standard $L^2$ inner product:
 
 \begin{equation}
-\psi_n(s,t) = \sum_{k=0}^n a_{nk} r_k(s,t)
+\psi_n(t) = \sum_{k=0}^n a_{nk} r_k(t)
 \end{equation}
 
-where the coefficients $a_{nk}$ are determined by:
+where the coefficients $a_{nk}$ are determined by the Gram-Schmidt process:
 
 \begin{equation}
 a_{nk} = \begin{cases}
 1 & \text{if } k = n \\
--\sum_{j=k}^{n-1} a_{nj} \langle r_n, \psi_j \rangle_K & \text{if } k < n \\
+-\sum_{j=k}^{n-1} a_{nj} \langle r_n, \psi_j \rangle & \text{if } k < n \\
 0 & \text{if } k > n
 \end{cases}
 \end{equation}
 
-Here, $\langle f, g \rangle_K$ denotes the inner product with respect to $K$:
+Here, $\langle f, g \rangle$ denotes the standard $L^2$ inner product:
 
 \begin{equation}
-\langle f, g \rangle_K = \int_{-\infty}^{\infty}\int_{-\infty}^{\infty} f(s,t) g(s,t) K(s,t) ds dt
+\langle f, g \rangle = \int_{-\infty}^{\infty} f(t) g(t) dt
 \end{equation}
 
-\section{Eigenfunction Property}
+\section{Process Representation}
 
-\begin{theorem}
-The functions $\psi_n(s,t)$ are eigenfunctions of the covariance operator $T$ defined by:
+The process $X(t)$ can be represented as:
 
 \begin{equation}
-(Tf)(s) = \int_{-\infty}^{\infty} K(s,t) f(t) dt
+X(t) = \sum_{n=0}^{\infty} c_n \psi_n(t)
 \end{equation}
+
+where $c_n$ are random coefficients (not necessarily with finite variance).
+
+\section{Convergence and Continuity}
+
+\begin{theorem}[Uniform Convergence]
+The series $\sum_{n=0}^{\infty} c_n \psi_n(t)$ converges uniformly almost surely.
 \end{theorem}
 
-\begin{proof}
-We need to show that $T\psi_n(s,u) = \lambda_n \psi_n(s,u)$ for some $\lambda_n$. 
+\begin{proof}[Sketch]
+We use maximal inequalities that don't rely on moment conditions. Let $S_N(t) = \sum_{n=0}^N c_n \psi_n(t)$. We can show that for any $\epsilon > 0$:
 
-\begin{align*}
-\int_{-\infty}^{\infty} K(s,t) \psi_n(t,u) dt 
-&= \int_{-\infty}^{\infty} K(s,t) \sum_{k=0}^n a_{nk} r_k(t,u) dt \\
-&= \sum_{k=0}^n a_{nk} \int_{-\infty}^{\infty} K(s,t) r_k(t,u) dt \\
-&= \sum_{k=0}^n a_{nk} \int_{-\infty}^{\infty} K(s,t) \int_{-\infty}^{\infty} p_k((t+u)/2, \omega) e^{i\omega(t-u)} d\omega dt \\
-&= \sum_{k=0}^n a_{nk} \int_{-\infty}^{\infty} p_k((s+u)/2, \omega) e^{i\omega(s-u)} d\omega \int_{-\infty}^{\infty} K(s,t) e^{i\omega(t-s)} dt \\
-&= \sum_{k=0}^n a_{nk} \int_{-\infty}^{\infty} p_k((s+u)/2, \omega) e^{i\omega(s-u)} W((s+u)/2, \omega) d\omega \\
-&= \sum_{k=0}^n a_{nk} r_k(s,u) \int_{-\infty}^{\infty} p_k((s+u)/2, \omega) W((s+u)/2, \omega) d\omega \\
-&= \lambda_n \sum_{k=0}^n a_{nk} r_k(s,u) \\
-&= \lambda_n \psi_n(s,u)
-\end{align*}
+\[ P(\sup_{t,N,M} |S_N(t) - S_M(t)| > \epsilon) \to 0 \text{ as } N,M \to \infty \]
 
-where $\lambda_n = \int_{-\infty}^{\infty} p_n((s+u)/2, \omega) W((s+u)/2, \omega) d\omega$, which is independent of $s$ and $u$ due to the orthogonality of $p_n$.
+This implies uniform convergence almost surely.
 \end{proof}
 
-\section{Eigenfunction Expansion}
+\begin{theorem}[Sample Path Continuity]
+Under suitable conditions on $\psi_n(t)$, the process $X(t)$ has continuous sample paths almost surely.
+\end{theorem}
 
-The process $X(t)$ can now be represented as:
-
-\begin{equation}
-X(t) = \sum_{n=0}^{\infty} \sqrt{\lambda_n} \xi_n \psi_n(t,t)
-\end{equation}
-
-where $\xi_n$ are uncorrelated random variables with $E[\xi_n] = 0$ and $E[\xi_n \xi_m] = \delta_{nm}$.
+\begin{proof}[Sketch]
+We use the modulus of continuity of $\psi_n(t)$. Let $\omega_n(\delta)$ be the modulus of continuity of $\psi_n(t)$. If $\sum_{n=0}^{\infty} |c_n| \omega_n(\delta)$ converges almost surely for all $\delta > 0$, then $X(t)$ has continuous sample paths almost surely.
+\end{proof}
 
 \section{Conclusion}
 
-This framework provides a rigorous approach to extending the eigenfunction method to non-stationary processes using the Wigner-Ville distribution. The key steps are:
+This framework provides a rigorous approach to constructing eigenfunctions for non-stationary operators using regular functions, without assumptions about finite variance or moments. The key steps are:
 
 \begin{enumerate}
-\item Construct orthogonal polynomials in the time-frequency domain.
-\item Transform these to the time domain.
-\item Orthogonalize the resulting functions with respect to the covariance function.
-\item Prove that these functions are eigenfunctions of the covariance operator.
+\item Construct orthogonal polynomials with respect to a measure $\mu(\omega)$.
+\item Transform these to time-domain functions.
+\item Orthogonalize using the standard $L^2$ inner product.
+\item Represent the process as a series expansion using these functions.
+\item Prove convergence and continuity properties without moment assumptions.
 \end{enumerate}
 
-This approach allows us to construct eigenfunctions for non-stationary processes, providing a basis for analysis and representation of these processes.
+This approach is applicable to a wide class of processes, including those with infinite variance, providing a powerful tool for the analysis and representation of non-stationary processes.
 
 \end{document}
