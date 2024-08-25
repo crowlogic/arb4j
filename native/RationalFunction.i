@@ -40,7 +40,17 @@ import java.util.stream.Stream;
     evaluate(input.imaginaryPart, bits, result.imaginaryPart);
     return result;
   }  
-   
+
+  public RationalFunction pow(Real power, int bits, RationalFunction result)
+  {
+    assert power.isInteger() : "TODO: support non-integer power " + power;
+    try ( var intPower = power.integerValue(new Integer()))
+    {
+      return pow(intPower, bits, result);
+    }
+
+  }
+     
   public RationalFunction mul(Integer absPower, int bits, RationalFunction ntheta)
   {
     assert false : "TODO";
