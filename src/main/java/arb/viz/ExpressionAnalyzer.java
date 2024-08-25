@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 import arb.Integer;
+import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -16,6 +17,7 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
 import arb.functions.sequences.RealSequence;
+import arb.stochastic.processes.operators.J0IntegralCovarianceOperator;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -56,7 +58,9 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
   @SuppressWarnings("unchecked")
   public Expression<?, ?, ?> getExpression()
   {
-    return RealSequence.compile("k➔√((2*k+½)/π)*((k+1)⋰-½)²");
+    //return RealSequence.compile("k➔√((2*k+½)/π)*((k+1)⋰-½)²");
+    return J0IntegralCovarianceOperator.Ψ;
+    //              ₖ;
     // context = new Context(Integer.named("n").set(3));
     // return RealFunction.compile("Ψₖ:√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)", context);
   }
@@ -313,9 +317,11 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
   private void evaluateExpression()
   {
 
-    Integer index = new Integer();
-    index.set(0);
-    result = instance.evaluate((D) index, 128);
+    //Integer index = new Integer();
+    //index.set(3);
+    new Context(Integer.named("k").set(3)).injectReferences(instance);
+    Real point = new Real("2.3",128);
+    result = instance.evaluate((D) point, 128);
     System.out.println(expr + "=" + result);
     resizeColumnsToFitContent();
     treeTableView.refresh();

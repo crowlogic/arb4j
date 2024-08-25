@@ -101,7 +101,7 @@ public class Integer implements
   @SuppressWarnings("resource")
   public static Integer named(String name)
   {
-    return new Integer().setName("n");
+    return new Integer().setName(name);
   }
 
   static

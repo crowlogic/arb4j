@@ -1,14 +1,16 @@
 package arb.stochastic.processes.operators;
 
+import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.documentation.concepts.stochastic.KarhunenLoeveExpansion;
 import arb.domains.RealLine;
+import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.FourierTransform;
 import arb.functions.Function;
 import arb.functions.RealSquareIntegrableFunction;
-import arb.functions.polynomials.ModifiedLommelPolynomials;
 import arb.functions.polynomials.orthogonal.real.RealChebyshevPolynomialsOfTheFirstKind;
 import arb.functions.polynomials.orthogonal.real.RealLegendrePolynomials;
 import arb.functions.polynomials.orthogonal.real.RealType1ChebyshevPolynomials;
@@ -75,7 +77,8 @@ public class J0IntegralCovarianceOperator implements
                                                         RealBesselFunctionOfTheFirstKind,
                                                         RealSquareIntegrableFunction>
 {
-  RealBesselFunctionOfTheFirstKind kernel = new RealBesselFunctionOfTheFirstKind(0);
+  RealBesselFunctionOfTheFirstKind                   kernel  =
+                                                            new RealBesselFunctionOfTheFirstKind(0);
 
   /**
    * The eigenvalues λₖ of the integral equation:
@@ -87,20 +90,22 @@ public class J0IntegralCovarianceOperator implements
    * {@link FourierTransform}s of the {@link RealLegendrePolynomials} which are
    * expressible equivalently in terms of the
    * {@link RealBesselFunctionOfTheFirstKind} at half-integer orders via
-   * {@link RealSphericalBesselFunctionOfTheFirstKind} and thus
-   * {@link ModifiedLommelPolynomials}
+   * {@link RealSphericalBesselFunctionOfTheFirstKind}
    * <p>
    * The eigenvalues are the projections of this{@link #Ψₖ} onto the
    * {@link RealBesselFunctionOfTheFirstKind} function, which is the
-   * {@link FourierTransform} of the measure 1/√(1-x²) to which is the the
-   * orthogonality {@link Measure} of the
-   * {@link RealChebyshevPolynomialsOfTheFirstKind} .
+   * {@link FourierTransform} of 1/√(1-x²) which is the the orthogonality
+   * {@link Measure} of the {@link RealChebyshevPolynomialsOfTheFirstKind} .
    * </p>
    */
-  public static RealSequence       λₖ     = RealSequence.express("λₖ:k➔√((2*k+½)/π)*((k+1)⋰-½)²");
+  public static RealSequence                         λₖ      =
+                                                        RealSequence.express("λₖ:k➔√((2*k+½)/π)*((k+1)⋰-½)²");
 
-  
-  //public static RealFunction       Ψ      = RealFunction.express("Ψₖ:k➔√((8*k+2)/π)*(-1)ᵏ*j(2*k,x)");
+  public static Context                              context = new Context(Integer.named("k"));
+
+  public static Expression<Real, Real, RealFunction> Ψ       =
+                                                       RealFunction.compile("Ψ:x->√((8*k+2)/π)*(-1)ᵏ*j(2*k,x)",
+                                                                            context);
 
   @Override
   public RealBesselFunctionOfTheFirstKind kernel()
