@@ -63,7 +63,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
 
   public boolean scalar;
 
-  private String sequenceFieldName;
+  private String functionFieldName;
 
   private String elementFieldName;
 
@@ -77,17 +77,14 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
     scalar = expression.require(')').hasScalarCodomain();
     expression.registerInitializer(this::generateInitializer);
 
-    sequenceFieldName = expression.newIntermediateVariable("sph",
-                                                           SphericalBesselFunction.class,
-                                                           true);
+    functionFieldName = expression.newIntermediateVariable("", SphericalBesselFunction.class, true);
     elementFieldName  = expression.newIntermediateVariable("element", RationalFunction.class, true);
-
 
   }
 
   public void generateInitializer(MethodVisitor mv)
   {
-    expression.loadThisFieldOntoStack(mv, sequenceFieldName, SphericalBesselFunction.class);
+    expression.loadThisFieldOntoStack(mv, functionFieldName, SphericalBesselFunction.class);
     expression.insideInitializer = true;
     index.generate(mv, Integer.class);
 
@@ -103,7 +100,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
 
     Compiler.invokeMethod(mv, Integer.class, "set", Integer.class, false, Integer.class);
 
-    expression.loadThisFieldOntoStack(mv, sequenceFieldName, SphericalBesselFunction.class);
+    expression.loadThisFieldOntoStack(mv, functionFieldName, SphericalBesselFunction.class);
     index.generate(mv, Integer.class);
     mv.visitLdcInsn(0);
     mv.visitLdcInsn(128);
@@ -117,13 +114,13 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
                                  int.class,
                                  int.class,
                                  Object.class);
-    checkClassCast(mv, expression.coDomainType );
+    checkClassCast(mv, expression.coDomainType);
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-   // assert false : "wtf " + resultType;
+    // assert false : "wtf " + resultType;
     if (Expression.trace)
     {
       err.printf("j.generate(ν=%s, resultType=%s\n)\n", index, resultType);

@@ -38,11 +38,11 @@ public class SphericalBesselFunction implements
     element = prototype.instantiate();
     n.set(index);
     context.injectReferences(element);
+    System.out.println( "SphericalBesselFunction: element=" + element );
   }
 
   public SphericalBesselFunction()
   {
-    // TODO Auto-generated constructor stub
   }
 
   @Override

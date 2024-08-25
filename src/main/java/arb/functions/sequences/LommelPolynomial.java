@@ -1,6 +1,5 @@
 package arb.functions.sequences;
 
-import arb.Integer;
 import arb.RationalFunction;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -22,7 +21,7 @@ public class LommelPolynomial implements
   @Override
   public String toString()
   {
-    return String.format("%s with %s", expression,context);
+    return String.format("%s with %s", expression, context);
   }
 
   @Override
@@ -34,7 +33,7 @@ public class LommelPolynomial implements
   static
   {
     Context prototype = new Context(Real.named("v"),
-                                    Integer.named("n"));
+                                    Real.named("n"));
     expression =
                RationalNullaryFunction.compile("v₍ₙ₎*(z/2)^(-n)*pFq([½-n/2,-n/2],[v,-n,1-v-n],-z²)",
                                                prototype);
@@ -47,8 +46,8 @@ public class LommelPolynomial implements
   public Real                                                                 v           =
                                                                                 Real.named("v");
 
-  public Integer                                                              n           =
-                                                                                Integer.named("n");
+  public Real                                                                 n           =
+                                                                                Real.named("n");
 
   public final Context                                                        context     =
                                                                                       new Context(v,

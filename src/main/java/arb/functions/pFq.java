@@ -2,6 +2,7 @@ package arb.functions;
 
 import arb.Initializable;
 import arb.Integer;
+import arb.RationalFunction;
 import arb.Real;
 import arb.Typesettable;
 import arb.functions.rational.RationalHypergeometricFunction;
@@ -28,7 +29,7 @@ public class pFq implements
   public final Real                     cℝ4 = new Real("1.4",
                                                        128);
   public RationalHypergeometricFunction hypqF1;
-  public Real                           elementℝ1;
+  public RationalFunction                           elementℝ1;
   public Real                           ℝ1  = new Real();
   public Real                           vℝ2;
   public Real                           vℝ1;
@@ -47,7 +48,7 @@ public class pFq implements
       initialize();
     }
 
-    return result;
+    return elementℝ1.evaluate(result, order, bits, result);
   }
 
   @Override
@@ -70,7 +71,7 @@ public class pFq implements
   public pFq/* $VF was: pFq({Minus5,3_75,1_2},{1_4,2_7,3_4},MinusxToThePowerOf2) */()
   {
     hypqF1    = new RationalHypergeometricFunction();
-    elementℝ1 = new Real();
+    elementℝ1 = new RationalFunction();
     vℝ2       = new Real();
     vℝ1       = new Real();
   }

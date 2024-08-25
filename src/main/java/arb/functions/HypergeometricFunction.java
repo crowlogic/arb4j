@@ -118,7 +118,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>,
     }
     this.α.set(alpha);
     this.β.set(beta);
-
+    
     initializeContext();
 
     compile(elementType, nullaryFunctionType, arg);
