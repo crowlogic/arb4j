@@ -5,6 +5,7 @@ import arb.Real;
 import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.rational.LommelPolynomial;
 import junit.framework.TestCase;
 
 /**

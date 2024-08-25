@@ -1,4 +1,4 @@
-package arb.functions.sequences.triangles;
+package arb.functions.sequences.integer;
 
 import arb.Complex;
 import arb.Integer;

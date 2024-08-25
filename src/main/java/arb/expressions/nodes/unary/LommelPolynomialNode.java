@@ -23,7 +23,7 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
-import arb.functions.sequences.LommelPolynomial;
+import arb.functions.rational.LommelPolynomial;
 
 /**
  * Syntax: "R(n,v;z)" which corresponds to a {@link LommelPolynomial} of index

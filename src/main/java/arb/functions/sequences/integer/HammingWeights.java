@@ -1,4 +1,4 @@
-package arb.functions.sequences;
+package arb.functions.sequences.integer;
 
 import arb.Integer;
 import arb.arblib;

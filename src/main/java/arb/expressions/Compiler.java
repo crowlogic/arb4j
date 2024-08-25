@@ -23,8 +23,8 @@ import arb.functions.SphericalBesselFunction;
 import arb.functions.polynomials.ComplexPolynomialHypergeometricFunction;
 import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
 import arb.functions.rational.ComplexRationalHypergeometricFunction;
+import arb.functions.rational.LommelPolynomial;
 import arb.functions.rational.RationalHypergeometricFunction;
-import arb.functions.sequences.LommelPolynomial;
 import arb.utensils.Utensils;
 
 /**

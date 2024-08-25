@@ -14,7 +14,7 @@ import arb.functions.real.RealFunction;
  *      {@link TheArb4jLibrary}
  */
 public class SphericalBesselFunction implements
-                                     RealFunction
+                                     RealFunction, AutoCloseable
 {
 
   static
@@ -25,7 +25,6 @@ public class SphericalBesselFunction implements
 
   public static Expression<Real, Real, RealFunction> prototype;
 
-  @SuppressWarnings("resource")
 
   public Integer                                     n       = Integer.named("n");
 
@@ -57,6 +56,12 @@ public class SphericalBesselFunction implements
       initialize();
     }
     return element.evaluate(t, order, bits, res);
+  }
+
+  @Override
+  public void close()
+  {
+   n.close();
   }
 
 }

@@ -8,7 +8,7 @@ import arb.Real;
 import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.sequences.LommelPolynomial;
+import arb.functions.rational.LommelPolynomial;
 import junit.framework.TestCase;
 
 /**

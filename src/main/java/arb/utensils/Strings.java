@@ -71,14 +71,5 @@ public final class Strings
     return Stream.of(strs).filter(Objects::nonNull).collect(Collectors.toMap(s -> s, s -> ""));
   }
 
-  /**
-   * Trims <em>all</em> surrounding space, including small non-breakable spaces.
-   * 
-   * @param s the string to trim
-   * @return the trimmed space
-   */
-  public static final String trim(String s)
-  {
-    return Regexes.ALL_SURROUNDING_SPACE.matcher(s).replaceAll("");
-  }
+
 }

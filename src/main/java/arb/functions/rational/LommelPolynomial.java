@@ -1,4 +1,4 @@
-package arb.functions.sequences;
+package arb.functions.rational;
 
 import arb.Integer;
 import arb.RationalFunction;
@@ -7,7 +7,6 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.functions.rational.RationalNullaryFunction;
 
 /**
  * 
@@ -29,6 +28,7 @@ public class LommelPolynomial implements
   public void close()
   {
     v.close();
+    n.close();
   }
 
   static
@@ -53,9 +53,6 @@ public class LommelPolynomial implements
   public final Context                                                        context     =
                                                                                       new Context(v,
                                                                                                   n);
-
-  public RationalFunction                                                     value       =
-                                                                                    new RationalFunction();
 
   boolean                                                                     initialized = false;
 

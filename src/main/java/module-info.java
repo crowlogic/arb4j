@@ -66,7 +66,7 @@ module arb4j
   exports arb.functions.complex.hyperbolic;
   exports arb.functions.complex.trigonometric;
   exports arb.functions.sequences;
-  exports arb.functions.sequences.triangles;
+  exports arb.functions.sequences.integer;
   exports arb.groups;
   exports arb.space.bornological;
   exports arb.space.topological;
