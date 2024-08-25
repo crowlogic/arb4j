@@ -21,7 +21,7 @@ public class DecompiledSphericalBesselFunctionTest extends
     DecompiledSphericalBesselFunctionTest f = new DecompiledSphericalBesselFunctionTest();
     f.n = new Integer(3);
     double x = f.eval(2.3);
-    System.out.format("f(%s)=%s\n", f, x);
+    //System.out.format("f(%s)=%s\n", f, x);
     assertEquals(0.0856499630648839, x);
   }
 
