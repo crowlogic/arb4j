@@ -7,6 +7,10 @@
 #include <flint/fmpz_poly.h>
 #include <flint/fmpz_poly_q.h>
 
+void arb_hypgeom_pfq(arb_t res, arb_srcptr a, slong p, arb_srcptr b, slong q,
+    const arb_t z, int regularized, slong prec);
+
+
 void fmpz_poly_pow(fmpz_poly_t res, const fmpz_poly_t poly, ulong e);
 
 void fmpz_poly_zero(fmpz_poly_t poly);

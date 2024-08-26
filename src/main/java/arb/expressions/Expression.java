@@ -482,10 +482,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         if (trace)
         {
-          System.out.println("Declaring IntermediateVariable of "
-                             + className
-                             + ": "
-                             + variable.name);
+          System.out.format("Declaring IntermediateVariable of %s: %s %s\n",
+                            className,
+                            variable.type,
+                            variable.name);
         }
         variable.declareField(classVisitor);
         declaredIntermediateVariables.add(variable.name);
@@ -1928,8 +1928,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * TODO: See how this can be integrated with
-   * {@link ArbShellExecutionController} via
+   * TODO: See how this can be integrated with {@link ArbShellExecutionController}
+   * via
    * 
    * @param classVisitor
    * @return

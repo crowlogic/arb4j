@@ -21,6 +21,7 @@
 #include <jni.h>
 
 #ifndef size_t
+
 #define size_t long unsigned int
 #endif
 

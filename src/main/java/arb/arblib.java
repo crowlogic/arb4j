@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void arb_hypgeom_pfq(Real res, Real a, int p, Real b, int q, Real z, int regularized, int prec) {
+    arblibJNI.arb_hypgeom_pfq(Real.getCPtr(res), res, Real.getCPtr(a), a, p, Real.getCPtr(b), b, q, Real.getCPtr(z), z, regularized, prec);
+  }
+
   public static void fmpz_poly_pow(IntegerPolynomial res, IntegerPolynomial poly, long e) {
     arblibJNI.fmpz_poly_pow(IntegerPolynomial.getCPtr(res), res, IntegerPolynomial.getCPtr(poly), poly, e);
   }

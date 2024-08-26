@@ -25,11 +25,8 @@ import arb.functions.rational.RationalHypergeometricFunction;
 import arb.functions.rational.RationalNullaryFunction;
 
 /**
- * TODO: the sequence case, where it depends on the independent variable, NOT
- * the indeterminate variable, can be optimized by compiling a version treating
- * the index as a contextual variable and then having the evluate method set the
- * context variable then call evaluate instead of reconstruction a new
- * HypergeometricFunction objecvt upon each invocation of evaluate
+ * TODO: compare the present way of evaluating the RealPolynomial vs using
+ * {@link arblib#arb_hypgeom_pfq(Real, Real, int, Real, int, Real, int, int)}
  * 
  * The numerator α and the denominator β parameters can be specified via the
  * {@link VectorNode} syntax like F([1,n,1+n],[1],x) or symbolically like

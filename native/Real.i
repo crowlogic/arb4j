@@ -953,14 +953,49 @@ import arb.utensils.Utensils;
     return mul2e(i, this);
   }
   
-  public Real set(Real... elements)
+  public Real set(Real... newElements)
   {
     clear();
-    this.elements    = elements;
-    this.dim         = elements.length;
-    this.swigCMemOwn = false;
-    this.swigCPtr    = 0;
+    resize(newElements.length);
+    assert assertContiguity();
+    for (int i = 0; i < dim; i++)
+    {
+      Real ithElement    = get(i);
+      Real newIthElement = newElements[i];
+      ithElement.set(newIthElement);
+    }
+    assert assertContiguity();
     return this;
+  }
+
+  @SuppressWarnings("resource")
+  public boolean assertContiguity()
+  {
+    assert swigCPtr != 0;
+    if (elements != null)
+    {
+      if (swigCPtr != get(0).swigCPtr)
+      {
+        assert false : String.format("swigCPtr = %d != element[0].swigCptr=%s",
+                                     swigCPtr,
+                                     get(0).swigCPtr);
+        return false;
+      }
+    }
+    for (int i = 1; i < dim; i++)
+    {
+      Real ultimateElement    = get(i);
+      Real penultimateElement = get(i - 1);
+      assert ultimateElement != null : i + "th element is null: ";
+      assert penultimateElement != null : (i - 1) + "th element is null";
+
+      if (penultimateElement.swigCPtr != ultimateElement.swigCPtr - Real.BYTES)
+      {
+        assert false;
+        return false;
+      }
+    }
+    return true;
   }
   
   public boolean equals( int i )
@@ -1801,6 +1836,46 @@ import arb.utensils.Utensils;
     return toString(digits, printPrecision);
   }
 
+  /**
+   * TODO: eliminate repeated trailing 0s while still displaying precision
+   * 
+   * <pre>
+   *  When an arb_t (Real in Arb4j) is
+   * printed as a whole, the effective precision of the radius (magnitude)
+   * component is often reduced for several reasons:
+   * 
+   * 1. Readability: A slightly rounded radius is often more readable and gives a
+   * quick sense of the uncertainty without overwhelming the user with excessive
+   * digits.
+   * 
+   * 2. Relative precision: The precision of the radius is often adjusted relative
+   * to the midpoint. Since the radius represents uncertainty, it usually doesn't
+   * make sense to display it with more precision than the midpoint.
+   * 
+   * 3. Efficiency: Calculating and displaying fewer digits is more efficient,
+   * especially when you're dealing with many numbers or in performance-critical
+   * applications.
+   * 
+   * 4. Meaningful representation: In many cases, the extra digits in the radius
+   * aren't meaningful in the context of the computation being performed.
+   * 
+   * When you access the Magnitude (rad) component directly, you're seeing its
+   * full internal representation. But when it's printed as part of the Real
+   * number, the arb_get_str() function (or its Arb4j equivalent) applies some
+   * heuristics to determine an appropriate precision for displaying the radius.
+   * 
+   * This behavior aligns with the principle that the radius in an arb_t
+   * represents an upper bound on the error. A slightly larger (rounded up) radius
+   * still maintains this guarantee while potentially being easier to read and
+   * work with.
+   * 
+   * If you need the full precision of the radius in your application, you should
+   * always access it directly rather than relying on the string representation of
+   * the whole Real number.
+   * </pre>
+   * 
+   * @return
+   */
   public String toString(int digits, boolean precise)
   {
     if (dim == 1 && elements == null)

@@ -9,6 +9,7 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void arb_hypgeom_pfq(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, long jarg4, Real jarg4_, int jarg5, long jarg6, Real jarg6_, int jarg7, int jarg8);
   public final static native void fmpz_poly_pow(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_, long jarg3);
   public final static native void fmpz_poly_zero(long jarg1, IntegerPolynomial jarg1_);
   public final static native void fmpz_poly_evaluate_fmpz(long jarg1, long jarg2, IntegerPolynomial jarg2_, long jarg3);
