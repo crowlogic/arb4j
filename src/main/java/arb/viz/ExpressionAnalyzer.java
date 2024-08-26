@@ -17,18 +17,22 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
 import arb.stochastic.processes.operators.J0IntegralCovarianceOperator;
+import arb.utensils.Utensils;
 import arb.utensils.text.trees.NodeTreeItem;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.skin.TableColumnHeader;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 /**
  * be sure to run this with "--add-modules arb4j --add-opens
@@ -47,15 +51,13 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
                                Application
 {
 
-  Context                                        context;
-  Expression<?, ?, ?>                            expr;
-  Function<D, C>                                 instance;
-  Object                                         result;
-  TreeTableView<Node<D, C, F>>                   treeTableView;
-  TreeTableColumn<Node<D, C, F>, String>         nodeCol;
-  private TreeTableColumn<Node<D, C, F>, String> typesetCol;
+  Context                      context;
+  Expression<?, ?, ?>          expr;
+  Function<D, C>               instance;
+  Object                       result;
+  TreeTableView<Node<D, C, F>> treeTableView;
 
-  public Expression<?,?,?> getExpression()
+  public Expression<?, ?, ?> getExpression()
   {
     // return RealSequence.compile("k➔√((2*k+½)/π)*((k+1)⋰-½)²");
     return J0IntegralCovarianceOperator.Ψ;
@@ -78,13 +80,16 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
 
   private void toggleContextView(SplitPane splitPane, VBox contextBox)
   {
-      if (contextViewVisible) {
-          splitPane.getItems().remove(contextBox);
-      } else {
-          splitPane.getItems().add(0, contextBox);
-          splitPane.setDividerPositions(0.2);
-      }
-      contextViewVisible = !contextViewVisible;
+    if (contextViewVisible)
+    {
+      splitPane.getItems().remove(contextBox);
+    }
+    else
+    {
+      splitPane.getItems().add(0, contextBox);
+      splitPane.setDividerPositions(0.2);
+    }
+    contextViewVisible = !contextViewVisible;
   }
 
   public HBox newButtonBox(SplitPane splitPane, VBox contextBox)
@@ -103,37 +108,53 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
     return buttonBox;
   }
 
-  private boolean contextViewVisible = false;
+  private boolean       contextViewVisible = false;
+  private static Method resizeMethod;
 
+  static
+  {
+    try
+    {
+      resizeMethod =
+                   TableColumnHeader.class.getDeclaredMethod("resizeColumnToFitContent", int.class);
+      resizeMethod.setAccessible(true);
+    }
+    catch (NoSuchMethodException | SecurityException e)
+    {
+      Utensils.throwOrWrap(e);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
   @Override
   public void start(Stage primaryStage)
   {
-      primaryStage.setWidth(1800);
-      primaryStage.setHeight(900);
+    primaryStage.setWidth(1800);
+    primaryStage.setHeight(900);
 
-      expr = getExpression();
-      System.out.println("expr=" + expr.syntaxTextTree());
-      instance = (Function<D, C>) expr.instantiate();
+    expr = getExpression();
+    System.out.println("expr=" + expr.syntaxTextTree());
+    instance = (Function<D, C>) expr.instantiate();
 
-      newTreeTableView();
+    newTreeTableView();
 
-      VBox contextBox = new VBox(10);
-      ListView<String> contextListView = newContextView();
-      contextBox.getChildren().addAll(new Label("Context Variables:"), contextListView);
+    VBox             contextBox      = new VBox(10);
+    ListView<String> contextListView = newContextView();
+    contextBox.getChildren().addAll(new Label("Context Variables:"), contextListView);
 
-      SplitPane splitPane = new SplitPane();
-      HBox buttonBox = newButtonBox(splitPane, contextBox);
+    SplitPane splitPane  = new SplitPane();
+    HBox      buttonBox  = newButtonBox(splitPane, contextBox);
 
-      VBox mainLayout = new VBox(10);
-      mainLayout.getChildren().addAll(splitPane, buttonBox);
-      VBox.setVgrow(splitPane, javafx.scene.layout.Priority.ALWAYS);
+    VBox      mainLayout = new VBox(10);
+    mainLayout.getChildren().addAll(splitPane, buttonBox);
+    VBox.setVgrow(splitPane, javafx.scene.layout.Priority.ALWAYS);
 
-      splitPane.getItems().add(treeTableView);
+    splitPane.getItems().add(treeTableView);
 
-      primaryStage.setScene(newScene(primaryStage, newScrollPane(mainLayout)));
-      primaryStage.setTitle("Expression Analyzer");
-      primaryStage.centerOnScreen();
-      primaryStage.show();
+    primaryStage.setScene(newScene(primaryStage, newScrollPane(mainLayout)));
+    primaryStage.setTitle("Expression Analyzer");
+    primaryStage.centerOnScreen();
+    primaryStage.show();
   }
 
   public Scene newScene(Stage primaryStage, ScrollPane scrollPane)
@@ -153,10 +174,10 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
 
   public ScrollPane newScrollPane(VBox mainLayout)
   {
-      ScrollPane scrollPane = new ScrollPane(mainLayout);
-      scrollPane.setFitToHeight(true);
-      scrollPane.setFitToWidth(true);
-      return scrollPane;
+    ScrollPane scrollPane = new ScrollPane(mainLayout);
+    scrollPane.setFitToHeight(true);
+    scrollPane.setFitToWidth(true);
+    return scrollPane;
   }
 
   public void resizeColumn(TreeTableColumn<?, ?> column)
@@ -166,11 +187,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
       javafx.scene.Node node = column.getStyleableNode();
       if (node instanceof TableColumnHeader)
       {
-        TableColumnHeader header       = (TableColumnHeader) node;
-        Method            resizeMethod =
-                                       TableColumnHeader.class.getDeclaredMethod("resizeColumnToFitContent",
-                                                                                 int.class);
-        resizeMethod.setAccessible(true);
+        TableColumnHeader header = (TableColumnHeader) node;
         resizeMethod.invoke(header, -1); // -1 means consider all rows
       }
     }
@@ -187,8 +204,6 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
       resizeColumn(column);
     }
   }
-
- 
 
   public HBox newButtonBox()
   {
@@ -230,46 +245,105 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
     treeTableView = new TreeTableView<Node<D, C, F>>(rootItem);
     treeTableView.setShowRoot(true);
 
-    nodeCol = new TreeTableColumn<>("Node");
-    nodeCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
-                                                                        .getValue()
-                                                                        .toString()));
-    nodeCol.setMinWidth(400);
-
-    TreeTableColumn<Node<D, C, F>, String> nodeTypeCol = new TreeTableColumn<>("Node Type");
-    nodeTypeCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
-                                                                            .getValue()
-                                                                            .getClass()
-                                                                            .getSimpleName()));
-    nodeTypeCol.setMinWidth(325);
-
-    TreeTableColumn<Node<D, C, F>, String> nodeTypeResultCol = new TreeTableColumn<>("Result Type");
-    nodeTypeResultCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
-                                                                                  .getValue()
-                                                                                  .type()
-                                                                                  .getSimpleName()));
-
-    typesetCol = new TreeTableColumn<>("Typeset");
-    typesetCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
-                                                                           .getValue()
-                                                                           .typeset()));
-    typesetCol.setCellFactory(new TypeSettingCellFactory<D, C, F>());
-
-    TreeTableColumn<Node<D, C, F>, String> fieldCol = new TreeTableColumn<>("Field");
-
-    fieldCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
-                                                                         .getValue()
-                                                                         .getIntermediateValueFieldName()));
-
-    TreeTableColumn<Node<D, C, F>, String> valueCol = new TreeTableColumn<>("Value");
-    valueCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(evaluateNode(param.getValue()
-                                                                                      .getValue())));
+    var nodeCol           = newNodeCol();
+    var nodeTypeCol       = newNodeTypeCol();
+    var nodeTypeResultCol = newNodeTypeResultCol();
+    var typesetCol        = newTypesetCol();
+    var fieldCol          = newFieldCol();
+    var valueCol          = newValueCol();
 
     treeTableView.getColumns()
                  .addAll(nodeCol, nodeTypeCol, nodeTypeResultCol, typesetCol, fieldCol, valueCol);
 
     Platform.runLater(() -> resizeColumnsToFitContent());
 
+  }
+
+  protected TreeTableColumn<Node<D, C, F>, String> newValueCol()
+  {
+    TreeTableColumn<Node<D, C, F>, String> valueCol = new TreeTableColumn<>("Value");
+    valueCol.setCellValueFactory(newValueColCellValueFactory());
+    return valueCol;
+  }
+
+  protected TreeTableColumn<Node<D, C, F>, String> newFieldCol()
+  {
+    TreeTableColumn<Node<D, C, F>, String> fieldCol = new TreeTableColumn<>("Field");
+
+    fieldCol.setCellValueFactory(newFieldColCellValueFactory());
+    return fieldCol;
+  }
+
+  protected TreeTableColumn<Node<D, C, F>, String> newTypesetCol()
+  {
+    TreeTableColumn<Node<D, C, F>, String> typesetCol = new TreeTableColumn<>("Typeset");
+    typesetCol.setCellValueFactory(newTypesetColCellValueFactory());
+    typesetCol.setCellFactory(new TypeSettingCellFactory<D, C, F>());
+    return typesetCol;
+  }
+
+  protected TreeTableColumn<Node<D, C, F>, String> newNodeTypeResultCol()
+  {
+    TreeTableColumn<Node<D, C, F>, String> nodeTypeResultCol = new TreeTableColumn<>("Result Type");
+    nodeTypeResultCol.setCellValueFactory(newNodeTypeResultColCellValueFactory());
+    return nodeTypeResultCol;
+  }
+
+  protected TreeTableColumn<Node<D, C, F>, String> newNodeTypeCol()
+  {
+    TreeTableColumn<Node<D, C, F>, String> nodeTypeCol = new TreeTableColumn<>("Node Type");
+    nodeTypeCol.setCellValueFactory(newNodeTypeColCellValueFactory());
+    nodeTypeCol.setMinWidth(325);
+    return nodeTypeCol;
+  }
+
+  protected TreeTableColumn<Node<D, C, F>, String> newNodeCol()
+  {
+    TreeTableColumn<Node<D, C, F>, String> nodeCol = new TreeTableColumn<>("Node");
+    nodeCol.setCellValueFactory(newNodeColCellValueFactory());
+    nodeCol.setMinWidth(400);
+    return nodeCol;
+  }
+
+  protected Callback<CellDataFeatures<Node<D, C, F>, String>, ObservableValue<String>>
+            newValueColCellValueFactory()
+  {
+    return param -> new ReadOnlyStringWrapper(evaluateNode(param.getValue().getValue()));
+  }
+
+  protected Callback<CellDataFeatures<Node<D, C, F>, String>, ObservableValue<String>>
+            newFieldColCellValueFactory()
+  {
+    return param -> new ReadOnlyStringWrapper(param.getValue()
+                                                   .getValue()
+                                                   .getIntermediateValueFieldName());
+  }
+
+  protected Callback<CellDataFeatures<Node<D, C, F>, String>, ObservableValue<String>>
+            newTypesetColCellValueFactory()
+  {
+    return param -> new ReadOnlyStringWrapper(param.getValue().getValue().typeset());
+  }
+
+  protected Callback<CellDataFeatures<Node<D, C, F>, String>, ObservableValue<String>>
+            newNodeTypeResultColCellValueFactory()
+  {
+    return param -> new ReadOnlyStringWrapper(param.getValue().getValue().type().getSimpleName());
+  }
+
+  protected Callback<CellDataFeatures<Node<D, C, F>, String>, ObservableValue<String>>
+            newNodeTypeColCellValueFactory()
+  {
+    return param -> new ReadOnlyStringWrapper(param.getValue()
+                                                   .getValue()
+                                                   .getClass()
+                                                   .getSimpleName());
+  }
+
+  protected Callback<CellDataFeatures<Node<D, C, F>, String>, ObservableValue<String>>
+            newNodeColCellValueFactory()
+  {
+    return param -> new ReadOnlyStringWrapper(param.getValue().getValue().toString());
   }
 
   private String evaluateNode(Node<?, ?, ?> node)
