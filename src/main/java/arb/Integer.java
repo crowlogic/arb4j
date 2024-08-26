@@ -637,9 +637,7 @@ public class Integer implements
 
   public Complex log(int bits, Complex result)
   {
-    result.im().zero();
-    result.re().set(this);
-    return result.log(bits);
+    return result.set(this).log(bits);
   }
 
   public Real log(int bits, Real result)
@@ -662,12 +660,12 @@ public class Integer implements
   {
     return res.set(this).sub(x, bits);
   }
-  
+
   public IntegerPolynomial mul(IntegerPolynomial x, int bits, IntegerPolynomial res)
   {
     return res.set(this).mul(x, bits);
   }
-  
+
   public ComplexPolynomial mul(ComplexPolynomial x, int bits, ComplexPolynomial res)
   {
     return res.set(this).mul(x, bits);
