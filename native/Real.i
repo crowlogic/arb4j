@@ -953,12 +953,6 @@ import arb.utensils.Utensils;
     return mul2e(i, this);
   }
   
-  @Override
-  public int hashCode()
-  {
-    return Objects.hash(doubleValue());
-  }
-  
   public Real set(Real... elements)
   {
     clear();
@@ -1940,12 +1934,12 @@ import arb.utensils.Utensils;
   
   public double doubleValue()
   {
-    return getMid().doubleValue();
+    return get(0).getMid().doubleValue();
   }
 
   public double doubleValue(RoundingMode rm)
   {
-    return getMid().doubleValue(rm);
+    return get(0).getMid().doubleValue(rm);
   }
   
   /**

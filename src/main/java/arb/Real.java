@@ -980,12 +980,6 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     return mul2e(i, this);
   }
   
-  @Override
-  public int hashCode()
-  {
-    return Objects.hash(doubleValue());
-  }
-  
   public Real set(Real... elements)
   {
     clear();
@@ -1967,12 +1961,12 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
   
   public double doubleValue()
   {
-    return getMid().doubleValue();
+    return get(0).getMid().doubleValue();
   }
 
   public double doubleValue(RoundingMode rm)
   {
-    return getMid().doubleValue(rm);
+    return get(0).getMid().doubleValue(rm);
   }
   
   /**
