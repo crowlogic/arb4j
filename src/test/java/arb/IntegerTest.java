@@ -11,15 +11,7 @@ import junit.framework.TestCase;
 public class IntegerTest extends
                          TestCase
 {
-  public void testAddRealReturnRationalFunction()
-  {
-    try ( Integer three = new Integer(3))
-    {
-      Real             twoPointFour          = Real.of("2.4", 128);
-      RationalFunction threePlusTwoPointFour = three.add(twoPointFour, 0, new RationalFunction());
-      assertEquals("5.4", threePlusTwoPointFour.toString());
-    }
-  }
+
 
   public void testAscendingFactorial()
   {

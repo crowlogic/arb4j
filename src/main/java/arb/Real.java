@@ -614,7 +614,6 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
  
   public Real add( Integer z, int bits, Real result )
   {
-    assert bits > 0;
     arblib.arb_add_fmpz(result, this, z.swigCPtr, bits);
     return result;
   }

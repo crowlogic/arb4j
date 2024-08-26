@@ -305,14 +305,6 @@ public class Integer implements
     return result.set(this).sub(addend, bits, result);
   }
 
-  public RationalFunction add(Real addend, int bits, RationalFunction result)
-  {
-    try ( Real blip = new Real())
-    {
-      return result.set(add(addend, bits, blip));
-    }
-  }
-
   public Integer additiveIdentity()
   {
     return set(0);
