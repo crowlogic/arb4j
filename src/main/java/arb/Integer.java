@@ -658,6 +658,16 @@ public class Integer implements
     return res.set(this).mul(x, bits);
   }
 
+  public IntegerPolynomial sub(IntegerPolynomial x, int bits, IntegerPolynomial res)
+  {
+    return res.set(this).sub(x, bits);
+  }
+  
+  public IntegerPolynomial mul(IntegerPolynomial x, int bits, IntegerPolynomial res)
+  {
+    return res.set(this).mul(x, bits);
+  }
+  
   public ComplexPolynomial mul(ComplexPolynomial x, int bits, ComplexPolynomial res)
   {
     return res.set(this).mul(x, bits);

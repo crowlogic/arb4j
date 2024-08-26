@@ -1,4 +1,4 @@
-package arb.functions.sequences.integer;
+package arb.functions.integer;
 
 /**
  *

@@ -93,61 +93,29 @@ public class ComplexRationalFunction implements
 
   /**
    * <pre>
-   * Given two complex rational functions defined as:
+   * Let 
    * 
-   * f(x) = p(x)/q(x) + i r(x)/s(x)
+   * f(x) = P(x)/Q(x) + i R(x)/S(x) 
+   * g(x) = U(x)/V(x) + i W(x)/Y(x)
    * 
-   * g(x) = u(x)/v(x) + i w(x)/y(x)
+   * Then 
    * 
-   * To Prove
+   * f(x)/g(x) = h(x) = a(x)/b(x) + i C(x)/D(x)
    * 
-   * We need to prove that h(x) = f(x)/g(x) equals:
+   * where 
    * 
-   * h(x) = a(x)/b(x) + i c(x)/d(x)
+   * a(x) = A(x)V(x)² + B(x)Y(x)² 
+   * b(x) = d(x) 
+   * C(x) = B(x)V(x)² - A(x)Y(x)²
+   * d(x) = (Q(x)V(x)² + S(x)Y(x)²) * (U(x)² + W(x)²)
    * 
-   * Where:
+   * and
    * 
-   * a(x) = (p(x)u(x) + r(x)w(x))v(x)² + (r(x)u(x) - p(x)w(x))y(x)² 
-   * b(x) = (q(x)v(x)² + s(x)y(x)²)(u(x)² + w(x)²) 
-   * c(x) = (r(x)u(x) - p(x)w(x))v(x)² * (p(x)u(x) + r(x)w(x))y(x)² 
-   * d(x) = (q(x)v(x)² + s(x)y(x)²)(u(x)² + w(x)²)
-   * 
-   * Proof
-   * 
-   * 1. Start with the division:
-   * 
-   * f(x)/g(x) = (p(x)/q(x) + i r(x)/s(x)) / (u(x)/v(x) + i w(x)/y(x))
-   * 
-   * 2. Multiply numerator and denominator by the conjugate of the denominator:
-   * 
-   * = ((p(x)/q(x) + i r(x)/s(x)) (u(x)/v(x) - i w(x)/y(x))) / ((u(x)/v(x) + i
-   * w(x)/y(x))(u(x)/v(x) - i w(x)/y(x)))
-   * 
-   * 3. Simplify the denominator:
-   * 
-   * = ((p(x)/q(x) + i r(x)/s(x)) (u(x)/v(x) - i w(x)/y(x))) / ((u(x)² + w(x)²) /
-   * (v(x)² + y(x)²))
-   * 
-   * 4. Multiply the numerators and separate real and imaginary parts:
-   * 
-   * = (p(x)u(x)/(q(x)v(x)) + r(x)w(x)/(s(x)y(x)) + i(r(x)u(x)/(s(x)v(x)) -
-   * p(x)w(x)/(q(x)y(x)))) / ((u(x)² + w(x)²) / (v(x)² + y(x)²))
-   * 
-   * 5. Multiply all terms by (v(x)² + y(x)²)/(u(x)² + w(x)²):
-   * 
-   * = (p(x)u(x)v(x)² + r(x)w(x)v(x)² + p(x)u(x)y(x)² + r(x)w(x)y(x)²) /
-   * ((q(x)v(x)² + s(x)y(x)²)(u(x)² + w(x)²)) + i(r(x)u(x)v(x)² - p(x)w(x)v(x)² +
-   * r(x)u(x)y(x)² - p(x)w(x)y(x)²) / ((q(x)v(x)² + s(x)y(x)²)(u(x)² + w(x)²))
-   * 
-   * 6. Comparing with the definition of h(x):
-   * 
-   * a(x) = (p(x)u(x)  + r(x)w(x))v(x)²   + (r(x)u(x) - p(x)w(x))y(x)² 
-   * b(x) = (q(x)v(x)² + s(x)y(x)²)(u(x)² + w(x)²) 
-   * c(x) = (r(x)u(x)  - p(x)w(x))v(x)²   - (p(x)u(x) + r(x)w(x))y(x)² 
-   * d(x) = (q(x)v(x)² + s(x)y(x)²)(u(x)² + w(x)²)
-   * 
+   * A(x) = P(x)U(x) + R(x)W(x) 
+   * B(x) = R(x)U(x) - P(x)W(x)
    * </pre>
    */
+  
   @Override
   public ComplexRationalFunction
          div(ComplexRationalFunction x, int prec, ComplexRationalFunction result)
@@ -156,8 +124,10 @@ public class ComplexRationalFunction implements
     assert result.imaginaryPart != null : "result.imaginaryPart is null";
     assert !x.isZero();
 
-    //assert false : "TODO: reimplement this properly";
+    // assert false : "TODO: reimplement this properly";
 
+    Context context = new Context();
+    context.registerFunctionMapping("P", realPart.getNumerator(), getClass(), getClass());
     RationalFunction a = realPart;
     RationalFunction b = imaginaryPart;
     RationalFunction c = x.realPart;

@@ -8,10 +8,29 @@ import junit.framework.TestCase;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class IntegerPolynomialTest
-                                   extends
+public class IntegerPolynomialTest extends
                                    TestCase
 {
+
+  public void testIdentity()
+  {
+    try ( var x = new IntegerPolynomial())
+    {
+      assertEquals("0", x.toString());
+      x.identity();
+      assertEquals("x", x.toString());
+    }
+  }
+
+  public void testSet()
+  {
+    try ( var x = new IntegerPolynomial())
+    {
+      x.set("4-3*x+4*x^3+2*x^2");
+      assertEquals("4*x^3+2*x^2-3*x+4", x.toString());
+    }
+  }
+
   public void testAssertSimpleToString()
   {
     try ( IntegerPolynomial p = new IntegerPolynomial())
@@ -37,7 +56,8 @@ public class IntegerPolynomialTest
   public void testSub()
   {
     try ( IntegerPolynomial a = new IntegerPolynomial().set(10);
-          IntegerPolynomial b = new IntegerPolynomial().set(3); IntegerPolynomial result = new IntegerPolynomial();)
+          IntegerPolynomial b = new IntegerPolynomial().set(3);
+          IntegerPolynomial result = new IntegerPolynomial();)
     {
       a.sub(b, 128, result);
       assertEquals("7", result.toString());

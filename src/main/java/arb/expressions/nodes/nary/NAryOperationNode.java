@@ -33,7 +33,7 @@ import arb.expressions.IntermediateVariable;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
-import arb.functions.sequences.Sequence;
+import arb.functions.integer.Sequence;
 import arb.utensils.Utensils;
 
 /**

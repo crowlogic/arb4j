@@ -1,4 +1,4 @@
-package arb.functions.sequences.integer;
+package arb.functions.integer;
 
 import arb.Complex;
 import arb.Integer;
@@ -6,7 +6,6 @@ import arb.Real;
 import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.sequences.Sequence;
 
 /**
  * a triangular array of {@link Real} or {@link Complex} numbers,

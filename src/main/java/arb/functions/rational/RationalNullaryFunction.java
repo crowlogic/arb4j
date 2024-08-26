@@ -1,6 +1,5 @@
 package arb.functions.rational;
 
-import arb.Integer;
 import arb.RationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;

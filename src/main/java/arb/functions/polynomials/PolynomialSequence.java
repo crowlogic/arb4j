@@ -7,7 +7,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.functions.Function;
-import arb.functions.sequences.Sequence;
+import arb.functions.integer.Sequence;
 
 /**
  *

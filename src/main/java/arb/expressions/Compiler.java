@@ -372,16 +372,17 @@ public class Compiler
     typePrefixes.put(ComplexPolynomial.class, "Xℂ");
     typePrefixes.put(RealMatrix.class, "ℝᵐˣⁿ");
     typePrefixes.put(ComplexMatrix.class, "ℂᵐˣⁿ");
-    typePrefixes.put(RationalFunction.class, "q");
-    typePrefixes.put(ComplexRationalFunction.class, "qℂ");
+    typePrefixes.put(RationalFunction.class, "ℚ");
+    typePrefixes.put(ComplexRationalFunction.class, "ℚℂ");
     typePrefixes.put(Fraction.class, "f");
-    typePrefixes.put(LommelPolynomial.class, "qR");
-    typePrefixes.put(RationalHypergeometricFunction.class, "qF");
+    typePrefixes.put(LommelPolynomial.class, "XR");
+    typePrefixes.put(RationalHypergeometricFunction.class, "ℚF");
     typePrefixes.put(RealPolynomialHypergeometricFunction.class, "XℝF");
     typePrefixes.put(ComplexPolynomialHypergeometricFunction.class, "XℂF");
-    typePrefixes.put(ComplexRationalHypergeometricFunction.class, "qℂF");
+    typePrefixes.put(ComplexRationalHypergeometricFunction.class, "ℚℂF");
     typePrefixes.put(ComplexFraction.class, "fℂ");
     typePrefixes.put(SphericalBesselFunction.class, "sph");
+    typePrefixes.put(IntegerPolynomial.class, "Xℤ");
   }
 
   public static String getVariablePrefix(Class<?> type)

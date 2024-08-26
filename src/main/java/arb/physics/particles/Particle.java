@@ -3,7 +3,7 @@ package arb.physics.particles;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.documentation.concepts.Concept;
-import arb.functions.sequences.Sequence;
+import arb.functions.integer.Sequence;
 
 /**
  * A particle is a small, localized object to which can be ascribed several

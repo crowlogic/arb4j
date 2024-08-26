@@ -9,12 +9,12 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
 import arb.expressions.Context;
+import arb.functions.integer.RealPolynomialSequence;
+import arb.functions.integer.RealSequence;
 import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
 import arb.functions.polynomials.RealPolynomialSequenceIterator;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
-import arb.functions.sequences.RealPolynomialSequence;
-import arb.functions.sequences.RealSequence;
 
 /**
  *

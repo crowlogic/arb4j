@@ -7,9 +7,9 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.documentation.concepts.Concept;
 import arb.documentation.references.Reference;
+import arb.functions.integer.ComplexSequence;
 import arb.functions.real.RealBesselFunctionOfTheFirstKind;
 import arb.functions.real.RealFunction;
-import arb.functions.sequences.ComplexSequence;
 
 /**
  * 

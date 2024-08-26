@@ -21,7 +21,7 @@ import arb.exceptions.CompilerException;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
-import arb.functions.sequences.Sequence;
+import arb.functions.integer.Sequence;
 
 /**
  * {@link Context} for the {@link Expression} {@link Compiler} to use for the

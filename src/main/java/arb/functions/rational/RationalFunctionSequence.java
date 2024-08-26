@@ -9,7 +9,7 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
 import arb.functions.Function;
-import arb.functions.sequences.Sequence;
+import arb.functions.integer.Sequence;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the

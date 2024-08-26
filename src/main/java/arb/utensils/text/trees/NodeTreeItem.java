@@ -1,4 +1,4 @@
-package arb.viz;
+package arb.utensils.text.trees;
 
 import java.util.stream.Collectors;
 

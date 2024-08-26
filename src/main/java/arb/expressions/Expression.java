@@ -39,7 +39,7 @@ import arb.expressions.nodes.nary.SumNode;
 import arb.expressions.nodes.unary.*;
 import arb.functions.Function;
 import arb.functions.NullaryFunction;
-import arb.functions.sequences.Sequence;
+import arb.functions.integer.Sequence;
 import arb.utensils.Utensils;
 import arb.utensils.text.trees.TextTree;
 import arb.utensils.text.trees.TreeModel;
@@ -169,7 +169,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   static
   {
-    assert arb.functions.sequences.Sequence.class.equals(Sequence.class) : "you forgot to import arb.functions.sequences.Sequence or imported a class named sequence in another package";
+    assert arb.functions.integer.Sequence.class.equals(Sequence.class) : "you forgot to import arb.functions.sequences.Sequence or imported a class named sequence in another package";
   }
 
   public Expression<?, ?, ?>                            ascendentExpression;
@@ -1997,6 +1997,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                   && ascendentExpression.thisOrAnyAscendentExpressionHasIndeterminateVariable();
     return coDomainType.equals(RationalFunction.class) || coDomainType.equals(RealPolynomial.class)
                   || coDomainType.equals(ComplexPolynomial.class)
+                  || coDomainType.equals(IntegerPolynomial.class)
                   || coDomainType.equals(ComplexRationalFunction.class) || hasIndeterminateVariable;
   }
 

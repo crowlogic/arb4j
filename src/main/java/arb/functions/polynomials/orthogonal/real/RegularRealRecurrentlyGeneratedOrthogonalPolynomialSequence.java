@@ -1,6 +1,6 @@
 package arb.functions.polynomials.orthogonal.real;
 
-import arb.functions.sequences.RealSequence;
+import arb.functions.integer.RealSequence;
 
 public abstract class RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence extends
                                                                                   RealRecurrentlyGeneratedOrthogonalPolynomialSequence

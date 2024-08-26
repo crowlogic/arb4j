@@ -1,4 +1,4 @@
-package arb.functions.sequences;
+package arb.functions.integer;
 
 import static java.util.stream.IntStream.rangeClosed;
 

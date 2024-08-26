@@ -4,17 +4,64 @@
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.algebra.Ring;
- 
+import arb.functions.Function;
+import arb.functions.integer.IntegerPolynomialNullaryFunction;
+import arb.expressions.Context;
+
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
 %}
 %typemap(javafinalize) fmpz_poly_struct ""
-%typemap(javainterfaces) fmpz_poly_struct "Named,AutoCloseable,Ring<IntegerPolynomial>"
+%typemap(javainterfaces) fmpz_poly_struct "Named,AutoCloseable,Ring<IntegerPolynomial>,Function<Integer,Integer>"
 
 %typemap(javacode) fmpz_poly_struct %{
   static { System.loadLibrary( "arblib" ); }
+
+  public IntegerPolynomial sub(IntegerPolynomial x, int bits)
+  {
+    return sub(x, bits, this);
+  }
+  
+  public IntegerPolynomial add(Integer in, int bits, IntegerPolynomial result)
+  {
+    assert in.swigCPtr != 0;
+    assert result.swigCPtr != 0;
+    assert in.swigCPtr != 0 : "input pointer is null";
+    arblib.fmpz_poly_add_fmpz(result, this, in.swigCPtr);
+    return result;
+  }
+  
+  public IntegerPolynomial pow(Integer in, int bits, IntegerPolynomial result)
+  {
+    assert in.swigCPtr != 0;
+    assert result.swigCPtr != 0;
+    assert bits > 0;
+    assert in.sign() >= 0 : "cannot raise " + this + " + to a negative power " + in;
+    arblib.fmpz_poly_pow(result, this, in.getUnsignedValue());
+    return result;
+  }
+  
+  public IntegerPolynomial identity()
+  {
+    return zero().set(1, 1);
+  }
+
+  public IntegerPolynomial zero()
+  {
+    arblib.fmpz_poly_zero(this);
+    return this;
+  }
+
+  @Override
+  public Integer evaluate(Integer t, int order, int bits, Integer res)
+  {
+    assert res.swigCPtr != 0 : "null result pointer";
+    assert t.swigCPtr != 0 : "input has null pointer";
+    arblib.fmpz_poly_evaluate_fmpz(res.swigCPtr, this, t.swigCPtr);
+    return res;
+  }
   
   @Override
   public int
@@ -56,10 +103,19 @@ import arb.algebra.Ring;
     set(str);
   }
 
+  public static IntegerPolynomial express(String expression)
+  {
+    return express(expression,null);
+  }
+
+  public static IntegerPolynomial express(String expression, Context context)
+  {
+    return IntegerPolynomialNullaryFunction.express(expression, context).evaluate(128);
+  }
+
   public IntegerPolynomial set(String str)
   {
-    arblib.fmpz_set_str(swigCPtr, str, 10);
-    return this;
+    return IntegerPolynomialNullaryFunction.express(str).evaluate(128, this);
   }
   
   @Override

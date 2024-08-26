@@ -10,9 +10,9 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
 import arb.expressions.Context;
+import arb.functions.integer.Sequence;
 import arb.functions.polynomials.PolynomialSequence;
 import arb.functions.polynomials.PolynomialSequenceIterator;
-import arb.functions.sequences.Sequence;
 
 /**
  * All orthogonal polynomials can be expressed by specifying 3

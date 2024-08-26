@@ -9,6 +9,18 @@
 package arb;
 
 public class arblib {
+  public static void fmpz_poly_pow(IntegerPolynomial res, IntegerPolynomial poly, long e) {
+    arblibJNI.fmpz_poly_pow(IntegerPolynomial.getCPtr(res), res, IntegerPolynomial.getCPtr(poly), poly, e);
+  }
+
+  public static void fmpz_poly_zero(IntegerPolynomial poly) {
+    arblibJNI.fmpz_poly_zero(IntegerPolynomial.getCPtr(poly), poly);
+  }
+
+  public static void fmpz_poly_evaluate_fmpz(long res, IntegerPolynomial f, long a) {
+    arblibJNI.fmpz_poly_evaluate_fmpz(res, IntegerPolynomial.getCPtr(f), f, a);
+  }
+
   public static int fmpq_pow_fmpz(Fraction a, Fraction b, long e) {
     return arblibJNI.fmpq_pow_fmpz(Fraction.getCPtr(a), a, Fraction.getCPtr(b), b, e);
   }

@@ -3,7 +3,7 @@ package arb.expressions.nodes.binary;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.sequences.RealSequence;
+import arb.functions.integer.RealSequence;
 import junit.framework.TestCase;
 
 /**

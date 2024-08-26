@@ -3,7 +3,7 @@ package arb.functions.sequences.triangles;
 import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.sequences.integer.PascalsTriangle;
+import arb.functions.integer.PascalsTriangle;
 import junit.framework.TestCase;
 
 /**

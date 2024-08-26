@@ -1,4 +1,4 @@
-package arb.functions.sequences.integer;
+package arb.functions.integer;
 
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -7,7 +7,6 @@ import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
-import arb.functions.sequences.Sequence;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
