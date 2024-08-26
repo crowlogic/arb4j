@@ -230,6 +230,15 @@ public class ComplexRationalFunction implements
     return result;
   }
 
+  public ComplexRationalFunction mul(Integer x, int prec, ComplexRationalFunction result)
+  {
+    assert result.realPart != null : "result.realPart is null";
+    assert result.imaginaryPart != null : "result.imaginaryPart is null";
+    realPart.mul(x, prec, result.realPart);
+    imaginaryPart.mul(x, prec, result.imaginaryPart);
+    return result;
+  }
+
   @Override
   public ComplexRationalFunction mul(int x, int prec, ComplexRationalFunction result)
   {

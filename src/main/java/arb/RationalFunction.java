@@ -77,7 +77,7 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
      
   public RationalFunction mul(Integer absPower, int bits, RationalFunction ntheta)
   {
-    assert false : "TODO";
+    assert false : String.format("TODO: raise %s to the power of %s", this, absPower );
     return this; 
   }
   

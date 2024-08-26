@@ -51,7 +51,7 @@ public class ComplexRationalFunctionTest extends
 
   public void testAddMoreThoroughly()
   {
-    ComplexRationalFunction a = ComplexRationalFunction.express("(1+2)/(3/4)+ⅈ*((5/6)*(7/8))");
+    ComplexRationalFunction a = ComplexRationalFunction.express("(1+2*ⅈ)/(3/(4+x^2-ⅈ*x^3))+ⅈ*((5/6)*(ⅈ*(x^2-x)*7/8))");
     
 //    assertEquals("(3*x^7+2*x^5-4*x^4-3*x^3-2*x)/(x^10-2*x^6+x^2+16) + ((x^9-x^5+12*x^2+8)/(x^10-2*x^6+x^2+16))i",
 //                 a.toString());

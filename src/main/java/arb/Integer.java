@@ -286,6 +286,11 @@ public class Integer implements
     return result.set(this).add(operand, prec);
   }
 
+  public Complex add(Complex addend, int bits, Complex result)
+  {
+    return result.set(this).add(addend, bits);
+  }
+
   public Real add(Real addend, int bits, Real result)
   {
     assert bits > 0;
@@ -385,6 +390,12 @@ public class Integer implements
   public Complex div(Complex dividend, int prec, Complex res)
   {
     res.bits = prec;
+    return res.set(this).div(dividend, prec);
+  }
+
+  public ComplexRationalFunction
+         div(ComplexRationalFunction dividend, int prec, ComplexRationalFunction res)
+  {
     return res.set(this).div(dividend, prec);
   }
 

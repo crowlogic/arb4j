@@ -122,7 +122,12 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     value.bits = bits;
     return value;
   }
-  
+
+  public ComplexRationalFunction div(ComplexRationalFunction dividend, int prec, ComplexRationalFunction result)
+  {
+    return result.set(this).div(dividend, prec);
+  }
+    
   /**
    * @see arblib#acb_gamma(Complex, Complex, int)
    * @param bits
