@@ -747,6 +747,10 @@ public class Compiler
     {
       return Complex.class;
     }
+    else if (IntegerPolynomial.class.equals(resultType))
+    {
+      return Integer.class;
+    }
     else
     {
       assert false : "dont know what the scalar type is for " + resultType;

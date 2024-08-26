@@ -15,6 +15,15 @@ public class pFq implements
                  AutoCloseable,
                  Initializable
 {
+  public static void main(String args[])
+  {
+    try ( pFq pfq = new pFq())
+    {
+      double y = pfq.eval(2.3);
+      System.out.println(pfq + "=" + y);
+    }
+  }
+
   public boolean                        isInitialized;
   public final Integer                  cℤ7 = new Integer("2");
   public final Integer                  cℤ1 = new Integer("5");
@@ -28,9 +37,9 @@ public class pFq implements
                                                        128);
   public final Real                     cℝ4 = new Real("1.4",
                                                        128);
-  public RationalHypergeometricFunction hypqF1;
-  public RationalFunction               elementq1;
-  public Real                           ℝ1  = new Real();
+  public RationalHypergeometricFunction hypℚF1;
+  public RationalFunction               elementℝ1;
+  public Real                           xℝ1  = new Real();
   public Real                           vℝ2;
   public Real                           vℝ1;
 
@@ -48,7 +57,7 @@ public class pFq implements
       initialize();
     }
 
-    return (Real) elementq1.evaluate(x, 1, bits, result);
+    return elementℝ1.evaluate(x, order, bits, result);
   }
 
   @Override
@@ -60,18 +69,18 @@ public class pFq implements
     }
     else
     {
-      hypqF1.init(vℝ1.set(new Real[]
-      { cℤ1.neg(ℝ1), cℝ2, cℝ3 }), vℝ2.set(new Real[]
-      { cℝ4, cℝ5, cℝ6 }), RationalNullaryFunction.parse("-x^2"));
-      hypqF1.evaluate(null, 1, 128, elementq1);
+      hypℚF1.init(vℝ1.set(cℤ1.neg(xℝ1), cℝ2, cℝ3),
+                  vℝ2.set(cℝ4, cℝ5, cℝ6),
+                  RationalNullaryFunction.parse("-x^2"));
+      hypℚF1.evaluate(null, 1, 128, elementℝ1);
       isInitialized = true;
     }
   }
 
-  public pFq/* $VF was: pFq({Minus5,3_75,1_2},{1_4,2_7,3_4},MinusxToThePowerOf2) */()
+  public pFq()
   {
-    hypqF1    = new RationalHypergeometricFunction();
-    elementq1 = new RationalFunction();
+    hypℚF1    = new RationalHypergeometricFunction();
+    elementℝ1 = new RationalFunction();
     vℝ2       = new Real();
     vℝ1       = new Real();
   }
@@ -86,9 +95,9 @@ public class pFq implements
     cℝ2.close();
     cℝ5.close();
     cℝ4.close();
-    ℝ1.close();
-    hypqF1.close();
-    elementq1.close();
+    xℝ1.close();
+    hypℚF1.close();
+    elementℝ1.close();
     vℝ2.close();
     vℝ1.close();
   }
