@@ -292,6 +292,18 @@ public class Integer implements
     return result;
   }
 
+  public ComplexRationalFunction
+         add(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
+  {
+    return result.set(this).add(addend, bits, result);
+  }
+
+  public ComplexRationalFunction
+         sub(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
+  {
+    return result.set(this).sub(addend, bits, result);
+  }
+
   public RationalFunction add(Real addend, int bits, RationalFunction result)
   {
     try ( Real blip = new Real())

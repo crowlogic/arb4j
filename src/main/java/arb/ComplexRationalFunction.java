@@ -38,7 +38,7 @@ public class ComplexRationalFunction implements
   public static final int DEFAULT_BITS = 128;
 
   @Override
-  public NamedRing<ComplexRationalFunction> set(Complex val)
+  public ComplexRationalFunction set(Complex val)
   {
     realPart.set(val.getReal());
     imaginaryPart.set(val.getImag());
@@ -89,6 +89,11 @@ public class ComplexRationalFunction implements
     realPart.set(val);
     imaginaryPart.zero();
     return this;
+  }
+
+  public ComplexRationalFunction div(Complex x, int prec, ComplexRationalFunction result)
+  {
+    return div(result.set(x), prec, result);
   }
 
   /**
@@ -416,6 +421,14 @@ public class ComplexRationalFunction implements
     return result;
   }
 
+  /**
+   * FIXME: surely this can be done more efficiently
+   * 
+   * @param power
+   * @param bits
+   * @param result
+   * @return
+   */
   public ComplexRationalFunction pow(Integer power, int bits, ComplexRationalFunction result)
   {
     if (power.isZero())
@@ -455,11 +468,7 @@ public class ComplexRationalFunction implements
 
   public ComplexRationalFunction add(Fraction operand, int prec, ComplexRationalFunction result)
   {
-    // assert false : String.format("this=%s + operand=%s", this, operand);
-    try ( ComplexRationalFunction tmp = new ComplexRationalFunction())
-    {
-      return operand.add(tmp.set(this), prec, result);
-    }
+    return operand.add(result.set(this), prec, result);
   }
 
   public ComplexRationalFunction add(Fraction operand, int prec)
@@ -467,10 +476,15 @@ public class ComplexRationalFunction implements
     return add(operand, prec, this);
   }
 
+  public ComplexRationalFunction mul(Complex real, int prec, ComplexRationalFunction res)
+  {
+    return real.mul(res.set(this), prec, res);
+  }
+
   public ComplexRationalFunction mul(Real real, int prec, ComplexRationalFunction res)
   {
     res.set(this);
-    res.realPart.mul(real, prec, res.realPart);
+    res.realPart.mul(real, prec);
     return res;
   }
 }

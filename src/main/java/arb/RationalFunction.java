@@ -41,6 +41,10 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
   }
 
 
+  public RationalFunction mul(Real real, int prec)
+  {
+    return mul(real,prec,this);
+  }
 
   public RationalFunction mul(Real real, int prec, RationalFunction realPart)
   {
@@ -618,8 +622,6 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
     this(arblibJNI.new_RationalFunction(), true);
     init();
   }
-
-
 
 
 }

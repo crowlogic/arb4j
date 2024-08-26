@@ -50,7 +50,14 @@ import arb.space.topological.EuclideanVectorSpace;
                                                                      && α.getReal().isNegative();
 
                                                      };
-                                                     
+
+
+  public ComplexRationalFunction
+         mul(ComplexRationalFunction operand, int prec, ComplexRationalFunction result)
+  {
+    return result.set(this).mul(operand, prec, result);
+  }
+                                                       
   /**
    * 
    * @param bits
