@@ -141,7 +141,7 @@ public class ComplexRationalFunctionTest extends
     b.realPart.set(3);
     b.imaginaryPart.set(4);
     a.div(b, prec, result);
-    assertEquals("-1/5 + (-2/5)i", result.toString() );
+    assertEquals("-1/5 + (-2/5)i", result.toString());
 //    // The exact result should be (5 - 10i) / 25
 //    assertEquals(result.realPart.evaluate(new Fraction(), 0, prec, new Fraction()),
 //                 (new Fraction(5,
@@ -171,34 +171,26 @@ public class ComplexRationalFunctionTest extends
   {
     a.realPart.set("x + 1");
     a.imaginaryPart.set("x - 1");
-    ComplexFraction input = new ComplexFraction();
-    input.realPart.set(2);
-    input.imaginaryPart.set(1);
-    
+    Fraction        input  = new Fraction(2,
+                                          3);
+
     ComplexFraction output = new ComplexFraction();
     a.evaluate(input, 0, prec, output);
-    System.out.format("%s @ x=%s = %s\n", a, input, output );
-    assertEquals(2, output.realPart.getNumerator().getSignedValue());
-    assertEquals(1, output.realPart.getDenominator().getSignedValue());
-    assertEquals(2, output.imaginaryPart.getNumerator().getSignedValue());
-    assertEquals(1, output.imaginaryPart.getDenominator().getSignedValue());
+    //System.out.format("%s @ x=%s = %s\n", a, input, output);
+    assertEquals("(5⁄3)+(-1⁄3)i", output.toString() );
+
   }
 
-  public void testEvaluateWithNegativeImaginary()
+  public void testEvaluateWithNegativeRealPart()
   {
-    
+
     a.realPart.set("x + 1");
     a.imaginaryPart.set("1-x");
-    ComplexFraction input = new ComplexFraction();
-    input.realPart.set(2,3);
-    input.imaginaryPart.set(-3,4);
+    Fraction input = new Fraction();
+    input.set(-3, 4);
     ComplexFraction output = new ComplexFraction();
     a.evaluate(input, 0, prec, output);
-    System.out.format("%s with x=%s = %s\n", a, input, output);
-    assertEquals(2, output.realPart.getNumerator().getSignedValue());
-    assertEquals(1, output.realPart.getDenominator().getSignedValue());
-    assertEquals(-2, output.imaginaryPart.getNumerator().getSignedValue());
-    assertEquals(1, output.imaginaryPart.getDenominator().getSignedValue());
+    assertEquals("(1⁄4)+(7⁄4)i", output.toString());
   }
 
   public void testVerify()

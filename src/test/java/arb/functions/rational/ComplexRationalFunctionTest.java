@@ -1,9 +1,8 @@
 package arb.functions.rational;
 
-import static java.lang.System.out;
-
 import arb.ComplexFraction;
 import arb.ComplexRationalFunction;
+import arb.Fraction;
 import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -27,10 +26,10 @@ public class ComplexRationalFunctionTest extends
     {
       f.set("(-6*x^2+15)/(x^3)");
       assertEquals("(-6*x^2+15)/(x^3) + 0i", f.toString());
-      var x = new ComplexFraction();
-      x.set("34/12");
+      var x = new Fraction();
+      x.set("34⁄12");
       ComplexFraction y = f.evaluate(x, 128, new ComplexFraction());
-      assertEquals(x.set("-7164/4913"), y);
+      assertEquals("(-7164⁄4913)+(0)i", y.toString());
     }
 
   }
@@ -67,7 +66,7 @@ public class ComplexRationalFunctionTest extends
     seq.evaluate(1, 128, expressed);
     System.out.println("ff " + expressed.toString());
     assertEquals("(-x+1)/2 + 0i", expressed.toString());
-                  
+
     seq.evaluate(2, 128, expressed);
     assertEquals("(x^2-2*x+1)/4 + 0i", expressed.toString());
     seq.evaluate(3, 128, expressed);
@@ -100,7 +99,7 @@ public class ComplexRationalFunctionTest extends
   public void testXToThePowerOfNegativeOne()
   {
     ComplexRationalFunction expressed = ComplexRationalFunction.express("x^(-1)");
-    String string = expressed.toString();
+    String                  string    = expressed.toString();
     assertEquals("1/(x) + 0i", string);
   }
 
@@ -181,7 +180,8 @@ public class ComplexRationalFunctionTest extends
     assertEquals(expectedSum, expressed);
   }
 
-  public static void testComplexRationalHypergeometricFunctionExpressionRationalWithFunctionsMissingParenthesis()
+  public static void
+         testComplexRationalHypergeometricFunctionExpressionRationalWithFunctionsMissingParenthesis()
   {
     Exception thrownException = null;
     try

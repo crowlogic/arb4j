@@ -17,7 +17,7 @@ import arb.functions.rational.ComplexRationalNullaryFunction;
 public class ComplexRationalFunction implements
                                      AutoCloseable,
                                      NamedField<ComplexRationalFunction>,
-                                     Function<ComplexFraction, ComplexFraction>,
+                                     Function<Fraction, ComplexFraction>,
                                      Verifiable
 {
 
@@ -115,7 +115,7 @@ public class ComplexRationalFunction implements
    * B(x) = R(x)U(x) - P(x)W(x)
    * </pre>
    */
-  
+
   @Override
   public ComplexRationalFunction
          div(ComplexRationalFunction x, int prec, ComplexRationalFunction result)
@@ -318,15 +318,11 @@ public class ComplexRationalFunction implements
   }
 
   @Override
-  public ComplexFraction
-         evaluate(ComplexFraction input, int order, int bits, ComplexFraction result)
+  public ComplexFraction evaluate(Fraction input, int order, int bits, ComplexFraction result)
   {
-    try ( ComplexFraction a = new ComplexFraction(); ComplexFraction b = new ComplexFraction())
-    {
-      realPart.evaluate(input, bits, a);
-      imaginaryPart.evaluate(input, bits, b).conjugate();
-      return a.sub(b, bits, result);
-    }
+    realPart.evaluate(input, bits, result.realPart);
+    imaginaryPart.evaluate(input, bits, result.imaginaryPart);
+    return result;
   }
 
   @Override
@@ -377,18 +373,18 @@ public class ComplexRationalFunction implements
     return ComplexRationalNullaryFunction.express(expression, context).evaluate(128);
   }
 
-  public static Expression<ComplexFraction, ComplexFraction, ComplexRationalFunction>
+  public static Expression<Fraction, ComplexFraction, ComplexRationalFunction>
          compile(String expression)
   {
     return compile(expression, null);
   }
 
-  public static Expression<ComplexFraction, ComplexFraction, ComplexRationalFunction>
+  public static Expression<Fraction, ComplexFraction, ComplexRationalFunction>
          compile(String expression, Context context)
   {
     return Compiler.compile(expression,
                             context,
-                            ComplexFraction.class,
+                            Fraction.class,
                             ComplexFraction.class,
                             ComplexRationalFunction.class,
                             null);
