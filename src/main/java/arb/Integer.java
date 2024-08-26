@@ -288,6 +288,7 @@ public class Integer implements
 
   public Real add(Real addend, int bits, Real result)
   {
+    assert bits > 0;
     arblib.arb_add_fmpz(result, addend, this.swigCPtr, bits);
     return result;
   }
