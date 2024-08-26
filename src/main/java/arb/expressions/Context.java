@@ -24,23 +24,27 @@ import arb.functions.Function;
 import arb.functions.integer.Sequence;
 
 /**
- * {@link Context} for the {@link Expression} {@link Compiler} to use for the
- * resolution of {@link VariableNode} and {@link Function} references (in addition
- * to those which are member-functions of the types)
+ * The {@link Context} class is an integral part of the {@link Expression}
+ * {@link Compiler} which facilitates the resolution of {@link VariableNode} and
+ * {@link Function} references (in addition to those which are member-functions
+ * of the types)
  * 
  * <p>
  * This class functions similarly to a closure in functional programming. It
- * encapsulates an environment of variable, bindings and functions, providing a
- * context in which expressions are evaluated. Unlike a traditional closure, it
- * does not contain the expression itself but rather the environment for such
- * expressions and therefore fulfills its essential function by facilitating the
- * organization and reification of mathematical expressions into cohesive
- * functional units via {@link Compiler} class, {@link Expression} class, and
- * the {@link Node} class along with all of its extensions.
+ * encapsulates an environment of {@link Variables}, and
+ * {@link FunctionMappings}, providing a {@link Context} in which
+ * {@link Expression}s are synthesized into {@link Function} implementations
+ * which can then be {@link Function#evaluate(Object, int)}d. Unlike a
+ * traditional closure, it does not contain the expression itself but rather the
+ * environment for such expressions and therefore fulfills its essential
+ * function by facilitating the organization and reification of mathematical
+ * expressions into cohesive functional units via the {@link Compiler} class,
+ * the {@link Expression} class, the {@link Node} class, and all of its
+ * extensions.
  * </p>
  * 
  * <p>
- * In the context of a reduction system, this class can be thought of as
+ * When considering this class as a reduction system, it can be thought of as
  * managing the 'environment' part of a closure, where the variables and
  * functions are localized and maintained.
  * </p>
@@ -50,7 +54,8 @@ import arb.functions.integer.Sequence;
  */
 public class Context
 {
-  public final CompiledExpressionClassLoader classLoader                  = new CompiledExpressionClassLoader(this);
+  public final CompiledExpressionClassLoader classLoader                  =
+                                                         new CompiledExpressionClassLoader(this);
 
   public final FunctionMappings              functions;
 
@@ -145,7 +150,10 @@ public class Context
 
   public <D, R, F extends Function<? extends D, ? extends R>>
          FunctionMapping<D, R, F>
-         registerFunctionMapping(String functionName, F function, Class<?> domainType, Class<?> coDomainType)
+         registerFunctionMapping(String functionName,
+                                 F function,
+                                 Class<?> domainType,
+                                 Class<?> coDomainType)
   {
     return registerFunctionMapping(functionName,
                                    function,
@@ -235,7 +243,11 @@ public class Context
 
   public <D, R, F extends Function<? extends D, ? extends R>>
          void
-         setFieldValue(Class<?> compiledClass, F f, String variableName, Object value, boolean overwrite)
+         setFieldValue(Class<?> compiledClass,
+                       F f,
+                       String variableName,
+                       Object value,
+                       boolean overwrite)
   {
 
     java.lang.reflect.Field field;
@@ -246,7 +258,13 @@ public class Context
     }
     catch (Throwable e)
     {
-      wrapOrThrow("threw " + e.toString() + " setting field '" + variableName + "' in " + compiledClass, e);
+      wrapOrThrow("threw "
+                  + e.toString()
+                  + " setting field '"
+                  + variableName
+                  + "' in "
+                  + compiledClass,
+                  e);
     }
   }
 
@@ -273,7 +291,8 @@ public class Context
   {
     return variableEntryStream().filter(entry -> entry.getValue() != null)
                                 .map(entry -> new OrderedPair<String, Class<?>>(entry.getKey(),
-                                                                                entry.getValue().getClass()));
+                                                                                entry.getValue()
+                                                                                     .getClass()));
   }
 
   public <D, R, F extends Function<? extends D, ? extends R>> void injectReferences(F f)

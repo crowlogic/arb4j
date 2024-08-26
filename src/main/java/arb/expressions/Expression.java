@@ -46,9 +46,9 @@ import arb.utensils.text.trees.TreeModel;
 import arb.viz.ArbShellExecutionController;
 
 /**
- * The {@link Expression} class represents a mathematical statement in infix
- * notation, which is a notation that places operators between operands, such as
- * "2 * 3 + 4". It uses {@link Character}s and {@link String}s to represent
+ * The {@link Expression} class represents mathematical expressions in infix and
+ * postfix notation flexibily depending upon the context in which the characters
+ * are encountered. It uses {@link Character}s and {@link String}s to represent
  * symbols and operations within these expressions. This class is part of the
  * {@code arb.expressions} package and serves as a dynamic compiler that
  * translates these expressions into high-performance Java bytecode, leveraging
@@ -63,9 +63,10 @@ import arb.viz.ArbShellExecutionController;
  * or its operands like {@link VariableNode} and {@link LiteralConstantNode},
  * etc. This {@link TreeModel} structure allows the class to correctly manage
  * operator precedence and associativity rules inherent in mathematical
- * expressions and facilitate their printing via the {@link TextTree}. The AST
- * is then traversed to {@link #generate()} the corresponding Java bytecodes
- * constituting the class which can be executed to evaluate the corresponding
+ * expressions and also naturally facilitate their printing via the
+ * {@link TextTree} interface. The AST is then traversed by the
+ * {@link #generate()} method to produce the corresponding Java bytecodes that
+ * which when executed produce the result of the evaluation of the the
  * expression.
  *
  * <h2>Key Features:</h2>
@@ -80,8 +81,8 @@ import arb.viz.ArbShellExecutionController;
  * <li>Effectively manages {@link IntermediateVariable} and
  * {@link LiteralConstantNode}, optimizing memory usage and performance.</li>
  * <li>Automatically injects {@link VariableReference}s to {@link VariableNode}
- * and {@link Function}s into the compiled bytecode, facilitating dynamic
- * execution.</li>
+ * and {@link FunctionCallNode}s into the compiled bytecode, facilitating
+ * dynamic execution.</li>
  * <li>The {@link Parser} provides comprehensive methods for parsing
  * expressions, evaluating them, and generating the necessary bytecode, all
  * while handling mathematical precedence and associativity.</li>
@@ -93,7 +94,7 @@ import arb.viz.ArbShellExecutionController;
  * information related to the generation process. Default is {@code false}.</li>
  * 
  * <li>{@code arb4j.compiler.saveClasses=true|false}: Specifies whether the
- * compiled classes should be saved for inspection. Default is
+ * compiled classes should be saved to disk (the current directory). Default is
  * {@code true}.</li>
  * </ul>
  * 
@@ -131,7 +132,7 @@ import arb.viz.ArbShellExecutionController;
  *            the result of the expression.
  * @param <F> The function type of the expression, extending the
  *            {@link Function} interface, encapsulating the compiled expression
- *            as an evaluatable function in the sense of the Java
+ *            as an evaluatable function in the sense of Java
  * 
  * @author Stephen Andrew Crowley ©2024
  * 
@@ -311,8 +312,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       else if (nextCharacterIs('-', '₋', '−'))
       {
-        // assert node != null : "TODO: map this to the neg function instead of filling
-        // in 0";
         if (node == null)
         {
           node = new NegationNode<>(this,
@@ -363,6 +362,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
+  /**
+   * Calls this{@link #newIntermediateVariable(Class)} followed by
+   * this{@link #loadThisFieldOntoStack(MethodVisitor, String, Class)} with the
+   * newly assigned intermediate variable
+   * 
+   * @param methodVisitor
+   * @param type
+   * @return
+   */
   public String allocateIntermediateVariable(MethodVisitor methodVisitor, Class<?> type)
   {
     String intermediateVariableName = newIntermediateVariable(type);
@@ -1510,7 +1518,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String newIntermediateVariable(Class<?> type)
   {
-    return newIntermediateVariable("", type);
+    return newIntermediateVariable("i", type);
   }
 
   public String newIntermediateVariable(String prefix, Class<?> type)
@@ -1920,7 +1928,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * TODO: See how this can be intetegrated with
+   * TODO: See how this can be integrated with
    * {@link ArbShellExecutionController} via
    * 
    * @param classVisitor
