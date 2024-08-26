@@ -288,8 +288,21 @@ public class Integer implements
 
   public Real add(Real addend, int bits, Real result)
   {
+    assert bits > 0;
     arblib.arb_add_fmpz(result, addend, this.swigCPtr, bits);
     return result;
+  }
+
+  public ComplexRationalFunction
+         add(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
+  {
+    return result.set(this).add(addend, bits, result);
+  }
+
+  public ComplexRationalFunction
+         sub(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
+  {
+    return result.set(this).sub(addend, bits, result);
   }
 
   public RationalFunction add(Real addend, int bits, RationalFunction result)

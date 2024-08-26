@@ -21,6 +21,10 @@ import java.util.stream.Stream;
 
 %typemap(javacode) fmpz_poly_q_struct %{
 
+  public RationalFunction mul(Real real, int prec)
+  {
+    return mul(real,prec,this);
+  }
 
   public RationalFunction mul(Real real, int prec, RationalFunction realPart)
   {

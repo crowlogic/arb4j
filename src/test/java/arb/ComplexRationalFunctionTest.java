@@ -49,6 +49,22 @@ public class ComplexRationalFunctionTest extends
     assertTrue(a.imaginaryPart.isZero());
   }
 
+  public void testAddMoreThoroughly()
+  {
+    ComplexRationalFunction a = ComplexRationalFunction.express("(1+2)/(3/4)+ⅈ*((5/6)*(7/8))");
+    
+//    assertEquals("(3*x^7+2*x^5-4*x^4-3*x^3-2*x)/(x^10-2*x^6+x^2+16) + ((x^9-x^5+12*x^2+8)/(x^10-2*x^6+x^2+16))i",
+//                 a.toString());
+    var aPoint= a.evaluate(new Fraction(230,100), 128, new ComplexFraction());
+    
+    ComplexRationalFunction b =
+                              ComplexRationalFunction.express("(3*x^7+2*x^5-4*x^4-3*x^3-2*x)/(x^10-2*x^6+x^2+16) + ((x^9-x^5+12*x^2+8)/(x^10-2*x^6+x^2+16))*ⅈ");
+//    assertEquals("(3*x^7+2*x^5-4*x^4-3*x^3-2*x)/(x^10-2*x^6+x^2+16) + ((x^9-x^5+12*x^2+8)/(x^10-2*x^6+x^2+16))i",
+//                 b.toString());
+    var bPoint= b.evaluate(new Fraction(230,100), 128, new ComplexFraction());
+    System.out.format("a=%s b=%s\n", aPoint,bPoint);
+  }
+
   public void testAdd()
   {
     a.realPart.set(1);
@@ -176,8 +192,8 @@ public class ComplexRationalFunctionTest extends
 
     ComplexFraction output = new ComplexFraction();
     a.evaluate(input, 0, prec, output);
-    //System.out.format("%s @ x=%s = %s\n", a, input, output);
-    assertEquals("(5⁄3)+(-1⁄3)i", output.toString() );
+    // System.out.format("%s @ x=%s = %s\n", a, input, output);
+    assertEquals("(5⁄3)+(-1⁄3)i", output.toString());
 
   }
 
