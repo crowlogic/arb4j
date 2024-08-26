@@ -43,7 +43,8 @@ public class HypergeometricFunctionTest extends
   public void testHypergeometricFunctionExpressionReal()
   {
     var f = RealFunction.express("pFq([-5,3.75,1.2],[1.4,2.7,3.4],-x^2)");
-    f.eval(2.3);
+    double x = f.eval(2.3);
+    System.out.format("%s(2.3)=%s\n", f,x);
 
   }
 
