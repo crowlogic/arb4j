@@ -190,6 +190,12 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
         TableColumnHeader header = (TableColumnHeader) node;
         resizeMethod.invoke(header, -1); // -1 means consider all rows
       }
+      else
+      {
+        System.err.println("failed to invoke the hidden resize method, got a "
+                           + node.getClass()
+                           + " instead of a TableColumnHeader as expected");
+      }
     }
     catch (Exception e)
     {
