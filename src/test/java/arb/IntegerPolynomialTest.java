@@ -31,6 +31,14 @@ public class IntegerPolynomialTest extends
     }
   }
 
+  public void testEval()
+  {
+    try ( var x = new IntegerPolynomial(); Integer y = new Integer(); Integer z = new Integer(5))
+    {
+      assertEquals(539, x.set("4-3*x+4*x^3+2*x^2").evaluate(z, 128, y).getSignedValue());
+    }
+  }
+
   public void testAssertSimpleToString()
   {
     try ( IntegerPolynomial p = new IntegerPolynomial())
