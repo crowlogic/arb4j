@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.nodes.Node;
+import arb.functions.Function;
 import arb.utensils.Utensils;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.TreeTableCell;
@@ -18,12 +19,13 @@ import javafx.util.Callback;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public final class TypeSettingCellFactory implements
-                                          Callback<TreeTableColumn<Node<?, ?, ?>, String>,
-                                                        TreeTableCell<Node<?, ?, ?>, String>>
+public final class TypeSettingCellFactory<D, C, F extends Function<? extends D, ? extends C>>
+                                         implements
+                                         Callback<TreeTableColumn<Node<D,C,F>, String>,
+                                                       TreeTableCell<Node<D,C,F>, String>>
 {
   public final class TypeSettingTextField extends
-                                          TextFieldTreeTableCell<Node<?, ?, ?>, String>
+                                          TextFieldTreeTableCell<Node<D,C,F>, String>
   {
     private final ImageView imageView = new ImageView();
 
@@ -57,7 +59,7 @@ public final class TypeSettingCellFactory implements
   }
 
   @Override
-  public TreeTableCell<Node<?, ?, ?>, String> call(TreeTableColumn<Node<?, ?, ?>, String> param)
+  public TreeTableCell<Node<D,C,F>, String> call(TreeTableColumn<Node<D,C,F>, String> param)
   {
     return new TypeSettingTextField();
   }

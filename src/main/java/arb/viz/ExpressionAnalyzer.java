@@ -16,7 +16,6 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
-import arb.functions.integer.RealSequence;
 import arb.stochastic.processes.operators.J0IntegralCovarianceOperator;
 import arb.utensils.text.trees.NodeTreeItem;
 import javafx.application.Application;
@@ -52,16 +51,15 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
   Expression<?, ?, ?>                            expr;
   Function<D, C>                                 instance;
   Object                                         result;
-  TreeTableView<Node<?, ?, ?>>                   treeTableView;
-  TreeTableColumn<Node<?, ?, ?>, String>         nodeCol;
-  private TreeTableColumn<Node<?, ?, ?>, String> typesetCol;
+  TreeTableView<Node<D, C, F>>                   treeTableView;
+  TreeTableColumn<Node<D, C, F>, String>         nodeCol;
+  private TreeTableColumn<Node<D, C, F>, String> typesetCol;
 
-  @SuppressWarnings("unchecked")
-  public Expression<?, ?, ?> getExpression()
+  public Expression<?,?,?> getExpression()
   {
-    //return RealSequence.compile("k➔√((2*k+½)/π)*((k+1)⋰-½)²");
+    // return RealSequence.compile("k➔√((2*k+½)/π)*((k+1)⋰-½)²");
     return J0IntegralCovarianceOperator.Ψ;
-    //              ₖ;
+    // ₖ;
     // context = new Context(Integer.named("n").set(3));
     // return RealFunction.compile("Ψₖ:√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)", context);
   }
@@ -78,24 +76,64 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
     }
   }
 
-  @SuppressWarnings("unchecked")
+  private void toggleContextView(SplitPane splitPane, VBox contextBox)
+  {
+      if (contextViewVisible) {
+          splitPane.getItems().remove(contextBox);
+      } else {
+          splitPane.getItems().add(0, contextBox);
+          splitPane.setDividerPositions(0.2);
+      }
+      contextViewVisible = !contextViewVisible;
+  }
+
+  public HBox newButtonBox(SplitPane splitPane, VBox contextBox)
+  {
+    Button evaluateButton = new Button("Evaluate Expression");
+    evaluateButton.setOnAction(e -> evaluateExpression());
+
+    Button expandAllButton = new Button("Expand All");
+    expandAllButton.setOnAction(e -> expandTreeView(treeTableView.getRoot()));
+
+    Button toggleContextButton = new Button("Toggle Context View");
+    toggleContextButton.setOnAction(e -> toggleContextView(splitPane, contextBox));
+
+    HBox buttonBox = new HBox(10);
+    buttonBox.getChildren().addAll(evaluateButton, expandAllButton, toggleContextButton);
+    return buttonBox;
+  }
+
+  private boolean contextViewVisible = false;
+
   @Override
   public void start(Stage primaryStage)
   {
-    primaryStage.setWidth(1800);
-    primaryStage.setHeight(900);
+      primaryStage.setWidth(1800);
+      primaryStage.setHeight(900);
 
-    expr = getExpression();
-    System.out.println("expr=" + expr.syntaxTextTree());
-    instance = (Function<D, C>) expr.instantiate();
+      expr = getExpression();
+      System.out.println("expr=" + expr.syntaxTextTree());
+      instance = (Function<D, C>) expr.instantiate();
 
-    newTreeTableView();
+      newTreeTableView();
 
-    primaryStage.setScene(newScene(primaryStage,
-                                   newScrollPane(newSplitPane(newContextView(), newButtonBox()))));
-    primaryStage.setTitle("Expression Analyzer");
-    primaryStage.centerOnScreen();
-    primaryStage.show();
+      VBox contextBox = new VBox(10);
+      ListView<String> contextListView = newContextView();
+      contextBox.getChildren().addAll(new Label("Context Variables:"), contextListView);
+
+      SplitPane splitPane = new SplitPane();
+      HBox buttonBox = newButtonBox(splitPane, contextBox);
+
+      VBox mainLayout = new VBox(10);
+      mainLayout.getChildren().addAll(splitPane, buttonBox);
+      VBox.setVgrow(splitPane, javafx.scene.layout.Priority.ALWAYS);
+
+      splitPane.getItems().add(treeTableView);
+
+      primaryStage.setScene(newScene(primaryStage, newScrollPane(mainLayout)));
+      primaryStage.setTitle("Expression Analyzer");
+      primaryStage.centerOnScreen();
+      primaryStage.show();
   }
 
   public Scene newScene(Stage primaryStage, ScrollPane scrollPane)
@@ -113,19 +151,12 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
     return scene;
   }
 
-  public ScrollPane newScrollPane(SplitPane splitPane)
+  public ScrollPane newScrollPane(VBox mainLayout)
   {
-    // Create a main VBox to hold the SplitPane
-    VBox mainBox = new VBox(splitPane);
-
-    // Set the SplitPane to grow with the main VBox
-    VBox.setVgrow(splitPane, javafx.scene.layout.Priority.ALWAYS);
-
-    // ScrollPane
-    ScrollPane scrollPane = new ScrollPane(mainBox);
-    scrollPane.setFitToHeight(true);
-    scrollPane.setFitToWidth(true);
-    return scrollPane;
+      ScrollPane scrollPane = new ScrollPane(mainLayout);
+      scrollPane.setFitToHeight(true);
+      scrollPane.setFitToWidth(true);
+      return scrollPane;
   }
 
   public void resizeColumn(TreeTableColumn<?, ?> column)
@@ -157,35 +188,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
     }
   }
 
-  public SplitPane newSplitPane(ListView<String> contextListView, HBox buttonBox)
-  {
-    // Create a SplitPane
-    SplitPane splitPane = new SplitPane();
-
-    // Create a VBox for the top part (context variables)
-    VBox      topBox    = new VBox(10);
-    topBox.getChildren().addAll(new Label("Context Variables:"), contextListView);
-
-    VBox bottomBox = newBottomBox(buttonBox);
-
-    // Set the treeTableView to grow within its container
-    VBox.setVgrow(treeTableView, javafx.scene.layout.Priority.ALWAYS);
-
-    // Add the top and bottom parts to the SplitPane
-    splitPane.getItems().addAll(topBox, bottomBox);
-
-    // Set the initial divider position
-    splitPane.setDividerPositions(0.05);
-    return splitPane;
-  }
-
-  public VBox newBottomBox(HBox buttonBox)
-  {
-    // Create a VBox for the bottom part (tree table and button)
-    VBox bottomBox = new VBox(10);
-    bottomBox.getChildren().addAll(treeTableView, buttonBox);
-    return bottomBox;
-  }
+ 
 
   public HBox newButtonBox()
   {
@@ -224,7 +227,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
     Node<D, C, F>           rootNode = (Node<D, C, F>) expr.rootNode;
     TreeItem<Node<D, C, F>> rootItem = new NodeTreeItem<D, C, F>(rootNode);
 
-    treeTableView = new TreeTableView(rootItem);
+    treeTableView = new TreeTableView<Node<D, C, F>>(rootItem);
     treeTableView.setShowRoot(true);
 
     nodeCol = new TreeTableColumn<>("Node");
@@ -233,14 +236,14 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
                                                                         .toString()));
     nodeCol.setMinWidth(400);
 
-    TreeTableColumn<Node<?, ?, ?>, String> nodeTypeCol = new TreeTableColumn<>("Node Type");
+    TreeTableColumn<Node<D, C, F>, String> nodeTypeCol = new TreeTableColumn<>("Node Type");
     nodeTypeCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
                                                                             .getValue()
                                                                             .getClass()
                                                                             .getSimpleName()));
     nodeTypeCol.setMinWidth(325);
 
-    TreeTableColumn<Node<?, ?, ?>, String> nodeTypeResultCol = new TreeTableColumn<>("Result Type");
+    TreeTableColumn<Node<D, C, F>, String> nodeTypeResultCol = new TreeTableColumn<>("Result Type");
     nodeTypeResultCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
                                                                                   .getValue()
                                                                                   .type()
@@ -250,15 +253,15 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
     typesetCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
                                                                            .getValue()
                                                                            .typeset()));
-    typesetCol.setCellFactory(new TypeSettingCellFactory());
+    typesetCol.setCellFactory(new TypeSettingCellFactory<D, C, F>());
 
-    TreeTableColumn<Node<?, ?, ?>, String> fieldCol = new TreeTableColumn<>("Field");
+    TreeTableColumn<Node<D, C, F>, String> fieldCol = new TreeTableColumn<>("Field");
 
     fieldCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
                                                                          .getValue()
                                                                          .getIntermediateValueFieldName()));
 
-    TreeTableColumn<Node<?, ?, ?>, String> valueCol = new TreeTableColumn<>("Value");
+    TreeTableColumn<Node<D, C, F>, String> valueCol = new TreeTableColumn<>("Value");
     valueCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(evaluateNode(param.getValue()
                                                                                       .getValue())));
 
@@ -318,10 +321,11 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
   private void evaluateExpression()
   {
 
-    //Integer index = new Integer();
-    //index.set(3);
+    // Integer index = new Integer();
+    // index.set(3);
     new Context(Integer.named("k").set(3)).injectReferences(instance);
-    Real point = new Real("2.3",128);
+    Real point = new Real("2.3",
+                          128);
     result = instance.evaluate((D) point, 128);
     System.out.println(expr + "=" + result);
     resizeColumnsToFitContent();
