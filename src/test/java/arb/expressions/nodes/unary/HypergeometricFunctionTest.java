@@ -1,7 +1,11 @@
 package arb.expressions.nodes.unary;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexPolynomial;
 import arb.Integer;
+import arb.Real;
+import arb.RealConstants;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -42,10 +46,10 @@ public class HypergeometricFunctionTest extends
 
   public void testHypergeometricFunctionExpressionReal()
   {
-    var f = RealFunction.express("pFq([-5,3.75,1.2],[1.4,2.7,3.4],-x^2)");
+    var    f = RealFunction.express("pFq([-5,3.75,1.2],[1.4,2.7,3.4],-x^2)");
     double x = f.eval(2.3);
-    System.out.format("%s(2.3)=%s\n", f,x);
-
+   // System.out.format("%s(2.3)=%s\n", f, x);
+    assertEquals(82.03626613894305, x);
   }
 
   public void testHypergeometricFuntionExpressionComplex()

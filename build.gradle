@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'org.arblib'
-version = '0.99.0'
+version = '0.99.1'
 description = 'arb4j'
 java.sourceCompatibility = JavaVersion.VERSION_22
 

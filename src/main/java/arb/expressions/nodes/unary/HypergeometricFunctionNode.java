@@ -1,9 +1,6 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.invokeStaticMethod;
-import static arb.expressions.Compiler.invokeVirtualMethod;
-import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.*;
 import static java.lang.System.err;
 import static org.objectweb.asm.Opcodes.ACONST_NULL;
 
@@ -121,9 +118,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                       isReal ? RationalHypergeometricFunction.class
                              : isComplex ? ComplexRationalHypergeometricFunction.class : null;
 
-    var realPolynomialClass =
-                            RealPolynomial.class.equals(expression.coDomainType) ? RealPolynomialHypergeometricFunction.class
-                                                                                 : RationalHypergeometricFunction.class;
+    var realPolynomialClass = RealPolynomialHypergeometricFunction.class;
 
     var polynomialClass     =
                         isReal ? realPolynomialClass
@@ -274,9 +269,27 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       }
       else
       {
-        assert false : String.format("TODO: handle resultType = %s != elementType = %s",
-                                     resultType,
-                                     elementType);
+        assert resultType.equals(expression.coDomainType) : String.format("TODO: handle resultType = %s != coDomainType = %s",
+                                                                          resultType,
+                                                                          expression.coDomainType);
+        loadOutputOntoStack(mv, resultType);
+        expression.loadThisFieldOntoStack(mv, elementFieldName, elementType);
+        checkClassCast(mv, elementType);
+        loadInputParameter(mv);
+        checkClassCast(mv, expression.domainType);
+        loadOrderParameter(mv);
+        loadBitsOntoStack(mv);
+        loadOutputOntoStack(mv, resultType);
+        invokeVirtualMethod(mv,
+                            elementType,
+                            "evaluate",
+                            resultType,
+                            expression.domainType,
+                            int.class,
+                            int.class,
+                            expression.coDomainType);
+        checkClassCast(mv, resultType);
+
       }
 
     }
