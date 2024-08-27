@@ -101,9 +101,9 @@
   <math|Y=<around|{|Y<rsub|t>|}><rsub|t\<in\>T>> have the same mean and
   covariance functions, then for any event <math|B>
 
-  <\equation*>
-    P*<around|(|X\<in\>B|)>=P*<around|(|Y\<in\>B|)>.
-  </equation*>
+  <\equation>
+    P*<around|(|X\<in\>B|)>=P*<around|(|Y\<in\>B|)>
+  </equation>
 
   Since any event can be arbitrarily well-approximated by events that depend
   on only finitely many coordinates, it follows that the equality holds for
@@ -133,17 +133,17 @@
     <math|N<around|(|\<varepsilon\>|)>> be the Lebesgue covering function. If
     for some <math|\<rho\>\<gtr\>0>
 
-    <\equation*>
+    <\equation>
       <big|int><rsub|0><rsup|\<rho\>>log N<around|(|\<varepsilon\>|)>*d*\<varepsilon\>\<less\>\<infty\>
-    </equation*>
+    </equation>
 
     then the Gaussian process has a version with uniformly continuous sample
     paths. Consequently (since <math|T> is compact), for this version,
 
-    <\equation*>
+    <\equation>
       sup<rsub|i\<in\>T> X<rsub|i>=max<rsub|i\<in\>T>
       X<rsub|i><space|1em><text|a.s.>
-    </equation*>
+    </equation>
   </theorem>
 
   <\remark>
@@ -157,11 +157,16 @@
   </remark>
 
   <\lemma>
-    Let <math|D> be a dense subset of a metric space <math|T>, and let
-    <math|f:D\<rightarrow\>\<bbb-R\>> be uniformly continuous on <math|D>,
-    i.e., for each <math|\<varepsilon\>\<gtr\>0> there exists
-    <math|\<delta\>\<gtr\>0> such that <math|<around|\||f<around|(|y|)>-f<around|(|x|)>|\|>\<less\>\<varepsilon\>>
-    for any two points <math|x,y\<in\>D> at distance
+    <label|continuousExtension>Let <math|D> be a dense subset of a metric
+    space <math|T>, and let <math|f:D\<rightarrow\>\<bbb-R\>> be uniformly
+    continuous on <math|D>, i.e., for each <math|\<varepsilon\>\<gtr\>0>
+    there exists <math|\<delta\>\<gtr\>0> such that
+
+    <\equation>
+      <around|\||f<around|(|y|)>-f<around|(|x|)>|\|>\<less\>\<varepsilon\>\<forall\>x,y\<in\>D
+    </equation>
+
+    \ for any two points <math|>at distance
     <math|d<around|(|x,y|)>\<less\>\<delta\>>. Then there is a unique
     uniformly continuous extension of <math|f> to <math|T>.
   </lemma>
@@ -171,26 +176,46 @@
 
   <with|font-shape|italic|Proof of Theorem 1.> Assume without loss of
   generality that <math|\<rho\>=1> (if not, rescale). Fix <math|r\<geq\>4>,
-  and for each <math|n=0,1,2,\<ldots\>> let <math|T<rsub|n>> be a subset of
-  <math|T> with cardinality <math|N<around|(|r<rsup|-n>|)>> such that the
-  <math|r<rsup|-n>>-balls centered at the points of <math|T<rsub|n>> cover
-  <math|T>. Clearly, the set <math|D=<big|cup><rsub|n\<geq\>0>T<rsub|n>> is a
-  countable dense subset of <math|T>. The plan will be to use Borel-Cantelli
-  to show that with probability one the restriction of the Gaussian process
-  to the index set <math|D> is uniformly continuous; Lemma 2.1 will then
-  imply that there is a continuous extension to <math|T>.
-
-  For each <math|n\<geq\>0> define <math|D<rsub|n>=<big|cup><rsub|k=0><rsup|n>T<rsub|k>>;
-  the sets <math|D<rsub|n>> are nested, and <math|D<rsub|n>> has cardinality
-  <math|N<rsub|n>\<leq\><around|(|n+1|)>*N<around|(|r<rsup|-n>|)>>, and so
-  the hypothesis (2.1) implies that
+  and for each <math|n=0,1,2,\<ldots\>> let <math|T<rsub|n>\<subset\>T> be a
+  subset of <math|T> with cardinality <math|N<around|(|r<rsup|-n>|)>> such
+  that the <math|r<rsup|-n>>-balls centered at the points of <math|T<rsub|n>>
+  cover <math|T>. Clearly, the set
 
   <\equation>
-    <big|sum><rsub|n=0><rsup|\<infty\>>r<rsup|-n>*A<rsub|n>\<less\>\<infty\>*<space|1em><text|where><space|1em>A<rsub|n>=<sqrt|log
-    <around|(|4<rsup|n>*N<rsub|n>|)>>
+    D=<big|cup><rsub|n\<geq\>0>T<rsub|n>
   </equation>
 
-  Consider the events
+  \ is a countable dense subset of <math|T>. The plan will be to use
+  Borel-Cantelli to show that with probability one the restriction of the
+  Gaussian process to the index set <math|D> is uniformly continuous; Lemma
+  <reference|continuousExtension> will then imply that there is a continuous
+  extension to <math|T>. Define
+
+  <\equation>
+    D<rsub|n>=<big|cup><rsub|k=0><rsup|n>T<rsub|k>\<forall\>n\<geq\>0<label|Dn>
+  </equation>
+
+  ; the sets <math|D<rsub|n>> are nested, and <math|D<rsub|n>> has
+  cardinality
+
+  <\equation>
+    N<rsub|n>\<leq\><around|(|n+1|)>*N<around|(|r<rsup|-n>|)>
+  </equation>
+
+  and so the hypothesis (???) implies that
+
+  <\equation>
+    <big|sum><rsub|n=0><rsup|\<infty\>><frac|A<rsub|n>|r<rsup|n>>=<big|sum><rsub|n=0><rsup|\<infty\>><frac|<sqrt|log
+    <around|(|4<rsup|n>*N<rsub|n>|)>>|r<rsup|n>>\<less\>\<infty\>*
+  </equation>
+
+  where
+
+  <\equation>
+    A<rsub|n>=<sqrt|log <around|(|4<rsup|n>*N<rsub|n>|)>>
+  </equation>
+
+  <math|>Consider the events
 
   <\equation>
     B<rsub|n>=<around|{|\<exists\><space|0.17em>s,t\<in\>D<rsub|n>:<around|\||X<rsub|s>-X<rsub|t>|\|>\<geq\>A<rsub|n>*d<around|(|s,t|)>|}>
@@ -204,50 +229,73 @@
     4-log N<rsub|n><rsup|2>|)>><rsup|>\<leq\>C*4<rsup|-n>
   </equation>
 
-  (Here <math|C> is any constant such that if <math|Z> is a standard Gaussian
-  random variable then <math|P*<around|(|<around|\||Z|\|>\<gtr\>x|)>\<leq\>C*exp
-  <around|(|-x<rsup|2>/2|)>> for all <math|x\<geq\>0>.) This is summable, so
-  Borel-Cantelli implies that with probability one only finitely many of the
-  events <math|B<rsub|n>> occur. In particular, w.p.1 there exists
-  <math|K\<less\>\<infty\>> (random) such that
-  <math|<big|sum><rsub|n\<geq\>1>B<rsub|n>=0>. We will show that this implies
-  that the mapping <math|s\<rightarrow\>X<rsub|s>> is uniformly continuous on
-  <math|D>.
+  Here <math|C> is any constant such that if <math|Z> is a standard Gaussian
+  random variable then\ 
+
+  <\equation>
+    P*<around|(|<around|\||Z|\|>\<gtr\>x|)>\<leq\>C*e<rsup|-<frac|x<rsup|2>|2>>\<forall\>x\<geq\>0
+  </equation>
+
+  This is summable, so the Borel-Cantelli lemma implies that with probability
+  one only finitely many of the events <math|B<rsub|n>> occur. In particular,
+  w.p.1 there exists <math|K\<less\>\<infty\>> (random) such that
+
+  <\equation>
+    <big|sum><rsub|n\<geq\>1>B<rsub|n>=0
+  </equation>
+
+  We will show that this implies that the mapping
+  <math|s\<rightarrow\>X<rsub|s>> is uniformly continuous on <math|D>.
 
   Fix <math|\<varepsilon\>\<gtr\>0>, and let
   <math|m=m<around|(|\<varepsilon\>|)>> be such that
-  <math|<big|sum><rsub|n\<geq\>m>r<rsup|-n>*A<rsub|n>\<less\>\<varepsilon\>>.
+
+  <\equation>
+    <big|sum><rsub|n\<geq\>m>*<frac|A<rsub|n>|r<rsup|n>>\<less\>\<varepsilon\>
+  </equation>
+
   Suppose that <math|s,t\<in\>D> are any two points at distance less than
-  <math|r<rsup|-m>>. Let <math|l\<geq\>0> be the smallest nonnegative integer
-  such that <math|s,t\<in\>D<rsub|m+1>>. Then there is a chain of points
+  <math|r<rsup|-m>>. Let <math|l> \ be the smallest nonnegative integer
+  <math|m> such that <math|s,t\<in\>D<rsub|m+1>>\ 
 
-  <\equation*>
+  <\equation>
+    l=<around*|{|min<rsub|m>:s,t\<in\>D<rsub|m+1>|}>=<around*|{|min<rsub|m>:s,t\<in\><big|cup><rsub|k=0><rsup|m+1>T<rsub|k>|}>
+  </equation>
+
+  Then there exists a point chain\ 
+
+  <\equation>
     s=s<rsub|k>\<in\>T<rsub|n<rsub|k>>,s<rsub|k-1>\<in\>T<rsub|n<rsub|k-1>>,\<ldots\>,s<rsub|0>\<in\>T<rsub|n>
-  </equation*>
+  </equation>
 
-  <\equation*>
+  <\equation>
     t=t<rsub|l>\<in\>T<rsub|n<rsub|l>>,t<rsub|l-1>\<in\>T<rsub|n<rsub|l-1>>,\<ldots\>,t<rsub|0>\<in\>T<rsub|n>
-  </equation*>
+  </equation>
 
-  connecting <math|s> to <math|t> such that at every link of the chain
+  connecting <math|s> to <math|t> such that\ 
 
-  <\equation*>
+  <\equation>
     d<around|(|s<rsub|r>,s<rsub|r-1>|)>\<leq\>4<rsup|-n+r+2>
-  </equation*>
+  </equation>
 
-  <\equation*>
+  <\equation>
     d<around|(|t<rsub|r>,t<rsub|r-1>|)>\<leq\>4<rsup|-n-r+2>
-  </equation*>
+  </equation>
 
-  <\equation*>
+  <\equation>
     d<around|(|s<rsub|0>,t<rsub|0>|)>\<leq\>4<rsup|-n+2>
-  </equation*>
+  </equation>
 
-  If <math|m\<geq\>K> (as it will be eventually as
+  at every link of the chain. Eventually <math|m\<geq\>K> \ as
   <math|\<varepsilon\>\<rightarrow\>0> then along any link
-  <math|<around|(|u,v|)>> of these chains
-  <math|<around|\||X<rsub|u>-X<rsub|v>|\|>\<less\>A<rsub|j>*d<around|(|u,v|)>>,
-  where <math|j> is the depth of the link. It then follows that
+  <math|<around|(|u,v|)>> of these chains the inequality
+
+  <\equation>
+    <around|\||X<rsub|u>-X<rsub|v>|\|>\<less\>A<rsub|j>*d<around|(|u,v|)>
+  </equation>
+
+  always holds true where <math|j> is the depth of the link. It then follows
+  that
 
   <\equation>
     <around|\||X<rsub|s>-X<rsub|t>|\|>\<less\>3*\<varepsilon\>
@@ -1280,19 +1328,20 @@
 
 <\references>
   <\collection>
+    <associate|Dn|<tuple|8|3>>
     <associate|auto-1|<tuple|?|1>>
-    <associate|auto-10|<tuple|2|16>>
-    <associate|auto-11|<tuple|2|?>>
-    <associate|auto-2|<tuple|2|2>>
-    <associate|auto-3|<tuple|2|2>>
-    <associate|auto-4|<tuple|8|4>>
-    <associate|auto-5|<tuple|16|6>>
-    <associate|auto-6|<tuple|11|6>>
-    <associate|auto-7|<tuple|23|11>>
-    <associate|auto-8|<tuple|47|11>>
-    <associate|auto-9|<tuple|1|11>>
-    <associate|footnote-1|<tuple|1|9>>
-    <associate|footnr-1|<tuple|1|9>>
+    <associate|auto-10|<tuple|2|18>>
+    <associate|auto-2|<tuple|3|2>>
+    <associate|auto-3|<tuple|3|2>>
+    <associate|auto-4|<tuple|26|5>>
+    <associate|auto-5|<tuple|34|7>>
+    <associate|auto-6|<tuple|11|7>>
+    <associate|auto-7|<tuple|23|12>>
+    <associate|auto-8|<tuple|65|13>>
+    <associate|auto-9|<tuple|1|13>>
+    <associate|continuousExtension|<tuple|6|3>>
+    <associate|footnote-1|<tuple|1|11>>
+    <associate|footnr-1|<tuple|1|11>>
   </collection>
 </references>
 
