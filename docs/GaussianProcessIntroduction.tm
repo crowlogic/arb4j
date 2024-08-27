@@ -150,10 +150,10 @@
     This result can then also be used as an extension theorem. In particular,
     if <math|<around|(|T,d|)>> is not a complete metric space then the
     theorem implies that under the assumption
-    <math|<big|int><rsub|0><rsup|\<varepsilon\>>log
-    N<around|(|\<eta\>|)>*d*\<eta\>\<less\>\<infty\>> the Gaussian process
-    has a uniformly continuous extension to the completion of
-    <math|<around|(|T,d|)>>, by the next lemma.
+    <math|<big|int><rsub|0><rsup|\<rho\>>log
+    N<around|(|\<varepsilon\>|)>*d*\<varepsilon\>\<less\>\<infty\>> the
+    Gaussian process has a uniformly continuous extension to the completion
+    of <math|<around|(|T,d|)>>, by the next lemma.
   </remark>
 
   <\lemma>
