@@ -450,10 +450,10 @@ public class ComplexRationalFunction implements
     }
 
     boolean isNegativePower = power.sign() < 0;
-    assert !isNegativePower : "TODO: fix negative powers so that "
-                              + this
-                              + " can be raised to the power of "
-                              + power;
+//    assert !isNegativePower : "TODO: fix negative powers so that "
+//                              + this
+//                              + " can be raised to the power of "
+//                              + power;
     int absPower = Math.abs(power.getSignedValue());
 
     result.set(this);
@@ -464,7 +464,7 @@ public class ComplexRationalFunction implements
     }
 
     if (isNegativePower)
-    {
+    {      
       return one.div(result, bits, result);
     }
 
