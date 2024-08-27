@@ -134,8 +134,7 @@
     for some <math|\<rho\>\<gtr\>0>
 
     <\equation*>
-      <big|int><rsub|0><rsup|\<varepsilon\>>log
-      N<around|(|\<eta\>|)>*d*\<eta\>\<less\>\<infty\>
+      <big|int><rsub|0><rsup|\<rho\>>log N<around|(|\<varepsilon\>|)>*d*\<varepsilon\>\<less\>\<infty\>
     </equation*>
 
     then the Gaussian process has a version with uniformly continuous sample
@@ -332,15 +331,31 @@
 
   <\theorem>
     Let <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> be a centered Gaussian
-    process on a countable set <math|T> that is almost surely bounded. Write
-    <math|X<rsup|\<ast\>>=sup<rsub|t\<in\>T> X<rsub|t>>. If
-    <math|\<sigma\><rsub|t><rsup|2>\<assign\>sup<rsub|t\<in\>T>
-    E*X<rsub|t><rsup|2>\<less\>\<infty\>>, then
-    <math|E*X<rsup|\<ast\>>\<less\>\<infty\>> and for any <math|u\<gtr\>0>
+    process on a countable set <math|T> that is almost surely bounded and let
+    <math|X<rsup|\<ast\>>> be defined as its supremum over the index set
+    <math|T>
 
     <\equation>
-      P*<around|(|X<rsup|\<ast\>>\<geq\>E*X<rsup|\<ast\>>+u|)>\<leq\>exp
-      <around|(|-u<rsup|2>/2*\<sigma\><rsub|t><rsup|2>|)>
+      X<rsup|\<ast\>>=sup<rsub|t\<in\>T> X<rsub|t>
+    </equation>
+
+    the it can be seen that if
+
+    <\equation>
+      \<sigma\><rsub|t><rsup|2>\<assign\>sup<rsub|t\<in\>T>
+      E*X<rsub|t><rsup|2>\<less\>\<infty\>
+    </equation>
+
+    then\ 
+
+    <\equation>
+      E*X<rsup|\<ast\>>\<less\>\<infty\>
+    </equation>
+
+    and
+
+    <\equation>
+      P*<around|(|X<rsup|\<ast\>>\<geq\>E*X<rsup|\<ast\>>+u|)>\<leq\>e<rsup|-<frac|u<rsup|2>|2*\<sigma\><rsub|t><rsup|2>>>\<forall\>u\<gtr\>0
     </equation>
   </theorem>
 
@@ -407,21 +422,31 @@
   combinations of the random variables <math|X<rsub|t>>. Since
   <math|L<rsub|2>>\Ulimits of centered Gaussian random variables are centered
   Gaussian random variables, every random variable in
-  <math|L<rsub|2><rsup|X>> is Gaussian. The
-  <with|font-shape|italic|reproducing kernel Hilbert space> (abbreviated
-  RKHS) associated to the Gaussian process
-  <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> is a Hilbert space of
-  real-valued functions on <math|T> that is naturally isometric to
-  <math|L<rsub|2><rsup|X>>. The isometry between these Hilbert spaces leads
-  to useful spectral representations of the Gaussian process, notably the
-  Karhunen-Loeve representation.\ 
+  <math|L<rsub|2><rsup|X>> is Gaussian.\ 
+
+  <\definition>
+    The <with|font-shape|italic|<strong|reproducing kernel Hilbert space>>
+    (abbreviated <strong|RKHS>) associated to the Gaussian process
+    <math|<around|{|X<rsub|t>|}><rsub|t\<in\>T>> is a Hilbert space of
+    real-valued functions on <math|T> that is naturally isometric to
+    <math|L<rsub|2><rsup|X>>. The isometry between these Hilbert spaces leads
+    to useful spectral representations of the Gaussian process, notably the
+    Karhunen-Loeve representation.
+  </definition>
+
+  \ 
 
   <subsection*|3.2. Reproducing Kernel Hilbert Space.>
 
   <\definition>
-    A symmetric, real-valued function <math|R:T\<times\>T\<rightarrow\>\<bbb-R\>>
-    is said to be a <with|font-shape|italic|positive definite kernel> if for
-    every finite subset <math|F\<subseteq\>T> the
+    A symmetric, real-valued function
+
+    <\equation>
+      R:T\<times\>T\<rightarrow\>\<bbb-R\>
+    </equation>
+
+    \ is said to be a <with|font-shape|italic|positive definite kernel> if
+    for every finite subset <math|F\<subseteq\>T> the
     <math|<around|\||F|\|>\<times\><around|\||F|\|>> matrix
     <math|<around|(|R<around|(|s,t|)>|)><rsub|s,t\<in\>F>> is positive
     definite.
@@ -454,9 +479,9 @@
     Gaussian random vector <math|<around|(|X<rsub|i>|)><rsub|i\<in\>F>>. By
     construction,
 
-    <\equation*>
+    <\equation>
       d<around|(|i,j|)><rsup|2>=E*<around|\||X<rsub|i>-X<rsub|j>|\|><rsup|2>
-    </equation*>
+    </equation>
 
     so <math|d> is the canonical metric of the Gaussian process
     <math|<around|(|X<rsub|i>|)><rsub|i\<in\>F>>. But the canonical metric of
@@ -471,9 +496,9 @@
     finite linear combinations <math|<big|sum>a<rsub|i>*R<rsub|s<rsub|i>>>.
     Define an inner product on <math|H<rsub|0>> as follows:
 
-    <\equation*>
+    <\equation>
       <around*|\<langle\>|<big|sum>a<rsub|i>*R<rsub|s<rsub|i>>,<big|sum>b<rsub|j>*R<rsub|t<rsub|j>>|\<rangle\>>=<big|sum>a<rsub|i>*b<rsub|j>*R<around|(|s<rsub|i>,t<rsub|j>|)>
-    </equation*>
+    </equation>
 
     This is clearly bilinear, and since <math|R> is assumed to be positive
     definite it defines an inner product (as you should check!). This inner
@@ -539,20 +564,43 @@
   </proof>
 
   <\lemma>
-    \ The set <math|<around|{|R<rsub|s>|}><rsub|s\<in\>T>> is bounded in the
-    reproducing kernel Hilbert space <math|H> if and only if
-    <math|sup<rsub|t\<in\>T> R<around|(|t,t|)>\<less\>\<infty\>>. If this is
-    the case then
+    \ The set
+
+    <\equation>
+      <around|{|R<rsub|s>|}><rsub|s\<in\>T>
+    </equation>
+
+    \ is bounded in the reproducing kernel Hilbert space <math|H> if and only
+    if
+
+    <\equation>
+      sup<rsub|t\<in\>T> R<around|(|t,t|)>\<less\>\<infty\>
+    </equation>
+
+    If this is the case then
 
     <\itemize>
-      <item*|(a)>the function <math|<around|(|s,t|)>\<rightarrow\>R<around|(|s,t|)>>
-      is Lipschitz in each variable <math|s,t>; and
+      <item*|(a)>the function
 
-      <item*|(b)>for every element <math|\<varphi\>\<in\>H> the function
-      <math|t\<rightarrow\><around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>>
+      <\equation>
+        <around|(|s,t|)>\<rightarrow\>R<around|(|s,t|)>
+      </equation>
+
+      \ is Lipschitz in each variable <math|s,t>; and
+
+      <item*|(b)>The function
+
+      <\equation>
+        t\<rightarrow\><around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>\<forall\>\<varphi\>\<in\>H
+      </equation>
+
       is a Lipschitz continuous function on <math|T>, with Lipschitz constant
       bounded by <math|<around|\<\|\|\>|\<varphi\>|\<\|\|\>>> and sup-norm
-      bounded by <math|<around|\<\|\|\>|\<varphi\>|\<\|\|\>>*sup<rsub|t\<in\>T><around|\<\|\|\>|R<rsub|t>|\<\|\|\>>>.
+      bounded by
+
+      <\equation>
+        <around|\<\|\|\>|\<varphi\>|\<\|\|\>>*sup<rsub|t\<in\>T><around|\<\|\|\>|R<rsub|t>|\<\|\|\>>
+      </equation>
     </itemize>
 
     Thus, the elements <math|\<varphi\>\<in\>H> can be identified with
@@ -572,49 +620,63 @@
     By the reproducing property and the Cauchy-Schwartz inequality, for any
     <math|s<rsub|1>,s<rsub|2>\<in\>T>,
 
-    <\equation*>
-      <around|\||R<around|(|s<rsub|1>,t|)>-R<around|(|s<rsub|2>,t|)>|\|>=<around|\||<around|\<langle\>|R<rsub|t>-R<rsub|s<rsub|2>>,R<rsub|t>|\<rangle\>>|\|>\<leq\><around|\||<around|\<langle\>|R<rsub|s>-R<rsub|s<rsub|2>>,R<rsub|t>|\<rangle\>>|\|>\<leq\>d<around|(|s<rsub|1>,s<rsub|2>|)><around|\<\|\|\>|R<rsub|t>|\<\|\|\>>
-    </equation*>
-
     <\equation>
-      =C*d<around|(|s<rsub|1>,s<rsub|2>|)>
+      <text|<tabular*|<tformat|<cwith|1|-1|2|2|cell-halign|l>|<table|<row|<cell|<math|<around|\||R<around|(|s<rsub|1>,t|)>-R<around|(|s<rsub|2>,t|)>|\|>>>|<cell|<math|=<around|\||<around|\<langle\>|R<rsub|t>-R<rsub|s<rsub|2>>,R<rsub|t>|\<rangle\>>|\|>>>>|<row|<cell|>|<cell|<math|\<leq\><around|\||<around|\<langle\>|R<rsub|s>-R<rsub|s<rsub|2>>,R<rsub|t>|\<rangle\>>|\|>>>>|<row|<cell|>|<cell|<math|\<leq\>d<around|(|s<rsub|1>,s<rsub|2>|)><around|\<\|\|\>|R<rsub|t>|\<\|\|\>>>>>|<row|<cell|>|<cell|<math|=C*d<around|(|s<rsub|1>,s<rsub|2>|)>>>>>>>>
     </equation>
 
-    consequently, <math|R<around|(|s,t|)>> is Lipschitz in <math|s>, with
-    Lipschitz constant bounded by <math|C>. Since
+    <\equation>
+      \;
+    </equation>
+
+    consequently, <math|R<around|(|s,t|)>> is Lipschitz-continuous in
+    <math|s>, with Lipschitz constant bounded by <math|C>. Since
     <math|R<around|(|s,t|)>=R<around|(|t,s|)>>, it follows that <math|R> is
     Lipschitz in the second variable <math|t> as well.
 
     Finally, let <math|\<varphi\>> be any element of the reproducing kernel
     Hilbert space <math|H>, and consider the mapping
-    <math|t\<rightarrow\><around|\<langle\>|\<varphi\>,R<rsub|t>|\<rangle\>>>.
-    For any two points <math|s,t\<in\>T>,
 
     <\equation>
-      <around|\||<around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>-<around|\<langle\>|R<rsub|s>,\<varphi\>|\<rangle\>>|\|>=<around|\||<around|\<langle\>|R<rsub|t>-R<rsub|s>,\<varphi\>|\<rangle\>>|\|>\<leq\>d<around|(|s,t|)><around|\<\|\|\>|\<varphi\>|\<\|\|\>>
+      t\<rightarrow\><around|\<langle\>|\<varphi\>,R<rsub|t>|\<rangle\>>\<forall\>\<varphi\>\<in\>H
+    </equation>
+
+    then for any two points,
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|<around|\||<around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>-<around|\<langle\>|R<rsub|s>,\<varphi\>|\<rangle\>>|\|>>|<cell|=<around|\||<around|\<langle\>|R<rsub|t>-R<rsub|s>,\<varphi\>|\<rangle\>>|\|>\<forall\>s,t\<in\>T>>|<row|<cell|>|<cell|\<leq\>d<around|(|s,t|)><around|\<\|\|\>|\<varphi\>|\<\|\|\>>>>>>>
     </equation>
 
     This implies that the function <math|t\<rightarrow\><around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>>
     is Lipschitz, with Lipschitz constant bounded by
-    <math|<around|\<\|\|\>|\<varphi\>|\<\|\|\>>>. Furthermore, by
-    Cauchy-Schwartz, for any <math|t\<in\>T>,
+    <math|<around|\<\|\|\>|\<varphi\>|\<\|\|\>>>. Furthermore, by the
+    Cauchy-Schwartz inequality,
 
     <\equation>
-      <around|\||<around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>|\|>\<leq\><around|\<\|\|\>|\<varphi\>|\<\|\|\>>*sup<rsub|t\<in\>T><around|\<\|\|\>|R<rsub|t>|\<\|\|\>>
+      <around|\||<around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>|\|>\<leq\><around|\<\|\|\>|\<varphi\>|\<\|\|\>>*sup<rsub|t\<in\>T><around|\<\|\|\>|R<rsub|t>|\<\|\|\>>\<forall\>t\<in\>T
     </equation>
   </proof>
 
   <\note>
-    Lest you be confused about the identification of elements
-    <math|\<varphi\>\<in\>H> with functions
-    <math|t\<rightarrow\><around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>>:
-    keep in mind that <math|H> was constructed as the abstract completion of
-    the inner product space <math|H<rsub|0>>, so (technically) its elements
-    are equivalence classes of Cauchy sequences in <math|H<rsub|0>>, not
-    functions on <math|T> (even though the elements of <math|H<rsub|0>> are
-    functions on <math|T>). Nevertheless, when the hypotheses of Lemma 3.5
-    hold, we will act as if the elements <math|\<varphi\>\<in\>H> are
-    Lipschitz functions and write <math|\<varphi\><around|(|t|)>=<around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>>.
+    It is important to behold the fact that <math|H> is identified with the
+    elements of its function space defined by
+
+    <\equation>
+      t\<rightarrow\><around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>\<forall\>\<varphi\>\<in\>H
+    </equation>
+
+    which was constructed as the abstract completion of the inner product
+    space <math|H<rsub|0>>, so its elements are equivalence classes of Cauchy
+    sequences in <math|H<rsub|0>>, not functions on <math|T>. This is despite
+    the fact that the elements of <math|H<rsub|0>> itself are functions on
+    <math|T>. Therefore, when the hypotheses of Lemma 3.5 hold, the elements
+    <math|\<varphi\>\<in\>H> shall be regarded as Lipschitz functions and
+    expressed by
+
+    <\equation>
+      \<varphi\><around|(|t|)>=<around|\<langle\>|R<rsub|t>,\<varphi\>|\<rangle\>>\<forall\>\<varphi\>\<in\>H
+    </equation>
+
+    .
   </note>
 
   <\proposition>
@@ -1220,13 +1282,14 @@
   <\collection>
     <associate|auto-1|<tuple|?|1>>
     <associate|auto-10|<tuple|2|16>>
+    <associate|auto-11|<tuple|2|?>>
     <associate|auto-2|<tuple|2|2>>
     <associate|auto-3|<tuple|2|2>>
     <associate|auto-4|<tuple|8|4>>
-    <associate|auto-5|<tuple|13|6>>
-    <associate|auto-6|<tuple|13|6>>
-    <associate|auto-7|<tuple|22|11>>
-    <associate|auto-8|<tuple|32|11>>
+    <associate|auto-5|<tuple|16|6>>
+    <associate|auto-6|<tuple|11|6>>
+    <associate|auto-7|<tuple|23|11>>
+    <associate|auto-8|<tuple|47|11>>
     <associate|auto-9|<tuple|1|11>>
     <associate|footnote-1|<tuple|1|9>>
     <associate|footnr-1|<tuple|1|9>>
