@@ -229,7 +229,7 @@
     4-log N<rsub|n><rsup|2>|)>><rsup|>\<leq\>C*4<rsup|-n>
   </equation>
 
-  Here <math|C> is any constant such that if <math|Z> is a standard Gaussian
+  where <math|C> is any constant such that if <math|Z> is a standard Gaussian
   random variable then\ 
 
   <\equation>
