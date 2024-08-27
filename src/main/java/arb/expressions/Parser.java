@@ -246,7 +246,7 @@ public class Parser
     String str = expression.replaceAll("\\.{2,}", "…")
                            .replace(';', ',')
                            .replace(" ", "")
-                           .replace("+", "Plus")
+                           //.replace("+", "Plus")
                            //.replace("-", "Minus")
                            //.replace("*", "Times")
                            .replace("/", "⁄")

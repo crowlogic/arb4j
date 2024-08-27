@@ -496,4 +496,9 @@ public class ComplexRationalFunction implements
     res.realPart.mul(real, prec);
     return res;
   }
+
+  public ComplexFraction evaluate(Fraction x, ComplexFraction result)
+  {
+    return evaluate(x,0,result);
+  }
 }

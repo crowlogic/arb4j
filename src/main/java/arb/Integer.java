@@ -298,6 +298,11 @@ public class Integer implements
     return result;
   }
 
+  public RationalFunction add(RationalFunction addend, int bits, RationalFunction result)
+  {
+    return result.set(this).add(addend, bits, result);
+  }
+
   public ComplexRationalFunction
          add(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
   {
