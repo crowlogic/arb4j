@@ -129,7 +129,6 @@ public class ComplexRationalFunction implements
    * </pre>
    */
 
-  @Override
   public ComplexRationalFunction
          div(ComplexRationalFunction x, int prec, ComplexRationalFunction result)
   {
@@ -137,33 +136,30 @@ public class ComplexRationalFunction implements
     assert result.imaginaryPart != null : "result.imaginaryPart is null";
     assert !x.isZero();
 
-    // assert false : "TODO: reimplement this properly";
-
-    Context context = new Context();
-    context.registerFunctionMapping("P", realPart.getNumerator(), getClass(), getClass());
-    RationalFunction a = realPart;
-    RationalFunction b = imaginaryPart;
+    RationalFunction a = this.realPart;
+    RationalFunction b = this.imaginaryPart;
     RationalFunction c = x.realPart;
     RationalFunction d = x.imaginaryPart;
-    // (a + bi) / (c + di) = (ac + bd)/(c^2 + d^2) + (bc - ad)/(c^2 + d^2)i
-    try ( var denominator = new RationalFunction(); var realResult = new RationalFunction();
-          var imaginaryResult = new RationalFunction();)
+
+    try ( RationalFunction temp1 = new RationalFunction();
+          RationalFunction temp2 = new RationalFunction();)
     {
+      // Calculate denominator: c^2 + d^2
+      c.mul(c, prec, temp1);
+      d.mul(d, prec, temp2);
+      temp1.add(temp2, prec, temp1); // temp1 now holds denominator
 
-      c.mul(c, prec, denominator);
-      d.mul(d, prec, realResult);
-      denominator.add(realResult, prec, denominator);
+      // Calculate real part: (ac + bd) / (c^2 + d^2)
+      a.mul(c, prec, result.realPart);
+      b.mul(d, prec, temp2);
+      result.realPart.add(temp2, prec, result.realPart);
+      result.realPart.div(temp1, prec, result.realPart);
 
-      a.mul(c, prec, realResult);
-      b.mul(d, prec, imaginaryResult);
-      realResult.add(imaginaryResult, prec, realResult);
-      realResult.div(denominator, prec, result.realPart);
-
-      b.mul(c, prec, realResult);
-      a.mul(d, prec, imaginaryResult);
-      realResult.sub(imaginaryResult, prec, realResult);
-      realResult.div(denominator, prec, result.imaginaryPart);
-
+      // Calculate imaginary part: (bc - ad) / (c^2 + d^2)
+      b.mul(c, prec, result.imaginaryPart);
+      a.mul(d, prec, temp2);
+      result.imaginaryPart.sub(temp2, prec, result.imaginaryPart);
+      result.imaginaryPart.div(temp1, prec, result.imaginaryPart);
       return result;
     }
   }
@@ -454,8 +450,11 @@ public class ComplexRationalFunction implements
     }
 
     boolean isNegativePower = power.sign() < 0;
-    assert !isNegativePower : "TODO: fix negative powers so that " + this + " can be raised to the power of " + power;
-    int     absPower        = Math.abs(power.getSignedValue());
+    assert !isNegativePower : "TODO: fix negative powers so that "
+                              + this
+                              + " can be raised to the power of "
+                              + power;
+    int absPower = Math.abs(power.getSignedValue());
 
     result.set(this);
 
