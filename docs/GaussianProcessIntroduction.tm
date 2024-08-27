@@ -138,7 +138,8 @@
     </equation>
 
     then the Gaussian process has a version with uniformly continuous sample
-    paths. Consequently (since <math|T> is compact), for this version,
+    paths. Consequently (since <math|T> is compact relative to the canonical
+    metric), for this version,
 
     <\equation>
       sup<rsub|i\<in\>T> X<rsub|i>=max<rsub|i\<in\>T>
