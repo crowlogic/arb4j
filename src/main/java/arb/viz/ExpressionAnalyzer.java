@@ -62,14 +62,14 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
     var context = new Context();
     context.registerVariable("v", RealConstants.half);
 
-//    var R    =
-//          ComplexRationalFunctionSequence.compile("R:n➔(v₍ₙ₎*1/((z/2)^(n)))*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
-//                                                  context);
-
-    var Rtoo =
-             ComplexRationalFunctionSequence.compile("Rtoo:n➔v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
-                                                     context);
-    return Rtoo;
+    var R    =
+          ComplexRationalFunctionSequence.compile("R:n➔(v₍ₙ₎*1/((z/2)^(n)))*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
+                                                  context);
+    return R;
+//    var Rtoo =
+//             ComplexRationalFunctionSequence.compile("Rtoo:n➔v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
+//                                                     context);
+//    return Rtoo;
     // return
     // ComplexRationalNullaryFunction.compile(null,"(1+2*ⅈ)/(3/(4+x^2-ⅈ*x^3))+ⅈ*((5/6)*(ⅈ*(x^2-x)*7/8))",
     // null);
