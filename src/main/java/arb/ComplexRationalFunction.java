@@ -309,6 +309,11 @@ public class ComplexRationalFunction implements
     return this;
   }
 
+  public ComplexRationalFunction sub(Integer element, int prec, ComplexRationalFunction result)
+  {
+    return sub(result.set(element), prec, result);
+  }
+
   @Override
   public ComplexRationalFunction
          sub(ComplexRationalFunction element, int prec, ComplexRationalFunction result)
@@ -442,16 +447,43 @@ public class ComplexRationalFunction implements
 
   public ComplexRationalFunction multiplicativeInverse(ComplexRationalFunction result)
   {
+    ComplexRationalFunction alias = null;
+    if (result == this)
+    {
+      alias  = result;
+      result = new ComplexRationalFunction();
+    }
+
     try ( RationalFunction divisor = new RationalFunction())
     {
       realPart.pow(2, bits(), divisor)
               .add(imaginaryPart.pow(2, bits(), result.imaginaryPart), bits(), divisor);
       result.set(this);
       result.imaginaryPart.neg();
-      result.realPart.div(divisor);
-      result.imaginaryPart.div(divisor);
-      return result;
+      result.div(divisor);
+      if (alias != null)
+      {
+        alias.set(result);
+        result.close();
+        return alias;
+      }
+      else
+      {
+        return result;
+      }
     }
+  }
+
+  public ComplexRationalFunction div(RationalFunction divisor)
+  {
+    return div(divisor, this);
+  }
+
+  public ComplexRationalFunction div(RationalFunction divisor, ComplexRationalFunction result)
+  {
+    realPart.div(divisor, result.realPart);
+    imaginaryPart.div(divisor, result.imaginaryPart);
+    return result;
   }
 
   /**
@@ -556,5 +588,10 @@ public class ComplexRationalFunction implements
   public ComplexFraction evaluate(Fraction x, ComplexFraction result)
   {
     return evaluate(x, 0, result);
+  }
+
+  public ComplexRationalFunction multiplicativeInverse()
+  {
+    return multiplicativeInverse(this);
   }
 }

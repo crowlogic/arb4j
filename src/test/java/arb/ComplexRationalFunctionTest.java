@@ -33,9 +33,10 @@ public class ComplexRationalFunctionTest extends
 
   public static void testMultiplicativeInverse()
   {
-    ComplexRationalFunction f = new ComplexRationalFunction("(1-x)*ⅈ-(x-1)");
-    ComplexRationalFunction inv = f.multiplicativeInverse(new ComplexRationalFunction());
-    System.out.format("f=%s\nfinv=%s\n", f,inv);
+    var f = new ComplexRationalFunction("(1-x)*ⅈ-(x-1)");
+    var inv = f.multiplicativeInverse(new ComplexRationalFunction());
+    var g = inv.multiplicativeInverse();
+    assertEquals( f, g);
   }
 
   @SuppressWarnings("resource")
