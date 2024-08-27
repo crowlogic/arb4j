@@ -41,15 +41,20 @@ public class ComplexRationalFunctionTest extends
     var context = new Context();
     context.registerVariable("v", RealConstants.half);
 
-    var R =
-          ComplexRationalFunctionSequence.express("n➔(v₍ₙ₎*(z/2)^(-n))*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
+    var R    =
+          ComplexRationalFunctionSequence.express("R:n➔(v₍ₙ₎*1/((z/2)^(n)))*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
                                                   context);
-    /*
-     * var R = ComplexRationalFunctionSequence.express(
-     * "n➔v₍ₙ₎/(z/2)^(n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)", context);
-     */
-    var x = R.evaluate(3, 128);
+
+    var Rtoo =
+             ComplexRationalFunctionSequence.express("Rtoo:n➔v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
+                                                     context);
+
+    var x    = R.evaluate(3, 128);
+    var xToo = Rtoo.evaluate(3, 128);
     assertEquals("(-6*x^2+15)/(x^3) + 0i", x.toString());
+    assertEquals("the negative power of the complex rational function is not being calculated properly",
+                 "(-6*x^2+15)/(x^3) + 0i",
+                 xToo.toString());
   }
 
   public void testComplexRationalLommelPolynomialsAsNullary()

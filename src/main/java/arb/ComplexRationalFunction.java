@@ -454,7 +454,7 @@ public class ComplexRationalFunction implements
 //                              + this
 //                              + " can be raised to the power of "
 //                              + power;
-    int absPower = Math.abs(power.getSignedValue());
+    long absPower = power.getUnsignedValue();
 
     result.set(this);
 
@@ -465,7 +465,8 @@ public class ComplexRationalFunction implements
 
     if (isNegativePower)
     {      
-      return one.div(result, bits, result);
+      one.div(result, bits, result);
+      return result;
     }
 
     return result;
