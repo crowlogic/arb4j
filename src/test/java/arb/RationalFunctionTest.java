@@ -4,7 +4,9 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.Context;
+import arb.functions.rational.ComplexRationalNullaryFunction;
 import arb.functions.rational.RationalFunctionSequence;
+import arb.functions.rational.RationalNullaryFunction;
 import arb.utensils.Utensils;
 import junit.framework.TestCase;
 
@@ -30,10 +32,14 @@ public class RationalFunctionTest extends
     }
 
   }
-  
-  public void testLommelPolynomialNode()
+
+  public void testLommelRationalPolynomialSequenceNode()
   {
-    RationalFunctionSequence express = RationalFunctionSequence.express("R(n,1⁄2;z)");
+    RationalFunctionSequence express           = RationalFunctionSequence.express("R(n,1⁄2;z)");
+    RationalFunction         R3                = express.evaluate(3, 128);
+    Fraction                 R3AtTwoPointThree = R3.evaluate(new Fraction(23,
+                                                                          100));
+    System.out.format("R3AtTwoPointThree=%s\n", R3AtTwoPointThree);
   }
 
   public void testLommelPolynomials()
@@ -45,8 +51,26 @@ public class RationalFunctionTest extends
                                            context);
     var x = R.evaluate(3, 128);
     assertEquals("(-6*x^2+15)/(x^3)", x.toString());
+    
+    double y = x.asRealFunction().eval(2.3);
+    assertEquals( -1.375852716363935234651105449165776280101915, y);
+    System.out.println("y=" + y );
   }
 
+  public void testRationalLommelPolynomialsAsNullary()
+  {
+    var context = new Context(Real.named("v").set(RealConstants.half),
+                              Integer.named("n").set(3));
+
+    var R       =
+          RationalNullaryFunction.express("v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
+                                                 context);
+    var x       = R.evaluate();
+    double y = x.asRealFunction().eval(2.3);
+    //System.out.println("y=" + y );
+    assertEquals("(-6*x^2+15)/(x^3)", x.toString());
+  }
+  
   @SuppressWarnings("resource")
   public void testAdd()
   {

@@ -3,6 +3,8 @@ package arb.functions.rational;
 import arb.ComplexFraction;
 import arb.ComplexRationalFunction;
 import arb.Fraction;
+import arb.Integer;
+import arb.Real;
 import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -38,10 +40,27 @@ public class ComplexRationalFunctionTest extends
   {
     var context = new Context();
     context.registerVariable("v", RealConstants.half);
+
     var R =
-          ComplexRationalFunctionSequence.express("n➔v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
+          ComplexRationalFunctionSequence.express("n➔(v₍ₙ₎*(z/2)^(-n))*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
                                                   context);
+    /*
+     * var R = ComplexRationalFunctionSequence.express(
+     * "n➔v₍ₙ₎/(z/2)^(n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)", context);
+     */
     var x = R.evaluate(3, 128);
+    assertEquals("(-6*x^2+15)/(x^3) + 0i", x.toString());
+  }
+
+  public void testComplexRationalLommelPolynomialsAsNullary()
+  {
+    var context = new Context(Real.named("v").set(RealConstants.half),
+                              Integer.named("n").set(3));
+
+    var R       =
+          ComplexRationalNullaryFunction.express("v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
+                                                 context);
+    var x       = R.evaluate();
     assertEquals("(-6*x^2+15)/(x^3) + 0i", x.toString());
   }
 

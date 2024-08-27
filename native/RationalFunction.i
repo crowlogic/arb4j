@@ -55,12 +55,20 @@ import java.util.stream.Stream;
 
   }
      
-  public RationalFunction mul(Integer absPower, int bits, RationalFunction ntheta)
+  public RationalFunction mul(Integer multiplicand, int bits, RationalFunction result)
   {
-    assert false : "TODO";
-    return this; 
+    assert swigCPtr != 0 : "this.swigCPtr is null";
+    assert multiplicand.swigCPtr != 0 : "multiplicand.swigCPtr is null";
+    assert result.swigCPtr != 0 : "result.swigCPtr is null";    
+    arblib.fmpz_poly_q_scalar_mul_fmpz(result, this, multiplicand.swigCPtr);
+    return result; 
   }
   
+  public Fraction evaluate(Fraction fraction)
+  {
+    return evaluate(fraction, 0, new Fraction());
+  }
+    
   public RationalFunction pow(int power, int bits, RationalFunction res)
   {
     if ( checkPointers )

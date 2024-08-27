@@ -968,6 +968,13 @@ import arb.utensils.Utensils;
     return this;
   }
 
+  public ComplexRationalFunction div(ComplexRationalFunction unit, int bits, ComplexRationalFunction result )
+  {
+    assert bits > 0;
+    result.set(this);
+    return result.div(unit, bits);
+  }
+  
   @SuppressWarnings("resource")
   public boolean assertContiguity()
   {

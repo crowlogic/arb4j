@@ -35,6 +35,14 @@ public class ComplexRationalFunction implements
                   && Objects.equals(realPart, other.realPart);
   }
 
+  @SuppressWarnings("resource")
+  @Override
+  public ComplexRationalFunction set(Real value)
+  {
+    zero().realPart.set(value);
+    return this;
+  }
+
   public static final int DEFAULT_BITS = 128;
 
   @Override
@@ -446,6 +454,7 @@ public class ComplexRationalFunction implements
     }
 
     boolean isNegativePower = power.sign() < 0;
+    assert !isNegativePower : "TODO: fix negative powers so that " + this + " can be raised to the power of " + power;
     int     absPower        = Math.abs(power.getSignedValue());
 
     result.set(this);
@@ -499,6 +508,6 @@ public class ComplexRationalFunction implements
 
   public ComplexFraction evaluate(Fraction x, ComplexFraction result)
   {
-    return evaluate(x,0,result);
+    return evaluate(x, 0, result);
   }
 }

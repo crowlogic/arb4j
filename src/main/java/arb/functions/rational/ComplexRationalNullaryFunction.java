@@ -72,4 +72,9 @@ public interface ComplexRationalNullaryFunction extends
                             false);
   }
 
+  public default ComplexRationalFunction evaluate()
+  {
+    return evaluate(0,new ComplexRationalFunction());
+  }
+
 }

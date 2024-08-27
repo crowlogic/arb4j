@@ -77,4 +77,14 @@ public interface RationalNullaryFunction extends
     return compile(Parser.expressionToUniqueClassname(string), string, prototype);
   }
 
+  public default int bits()
+  {
+    return 128;
+  }
+  
+  public default RationalFunction evaluate()
+  {
+    return evaluate(bits(), new RationalFunction());
+  }
+
 }
