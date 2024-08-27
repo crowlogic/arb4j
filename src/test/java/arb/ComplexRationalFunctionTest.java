@@ -33,10 +33,10 @@ public class ComplexRationalFunctionTest extends
 
   public static void testMultiplicativeInverse()
   {
-    var f = new ComplexRationalFunction("(1-x)*ⅈ-(x-1)");
+    var f   = new ComplexRationalFunction("(1-x)*ⅈ-(x-1)");
     var inv = f.multiplicativeInverse(new ComplexRationalFunction());
-    var g = inv.multiplicativeInverse();
-    assertEquals( f, g);
+    var g   = inv.multiplicativeInverse();
+    assertEquals(f, g);
   }
 
   @SuppressWarnings("resource")
@@ -57,10 +57,11 @@ public class ComplexRationalFunctionTest extends
       ComplexFraction         y2  = pow.evaluate(new Fraction(230,
                                                               100),
                                                  new ComplexFraction());
-      assertEquals(20.18169131958561589132569543344225562674, y2.realPart.doubleValue());
-      assertEquals(106.0106962206352505316329133368229455630, y2.imaginaryPart.doubleValue());
+      assertEquals(20.181691319585614, y2.realPart.doubleValue());
+      assertEquals(106.01069622063524, y2.imaginaryPart.doubleValue());
 
-      assert false : f + "^(-2)=" + y2;
+      assertEquals("(1024*x^12-3024*x^10+256*x^9-1495*x^8-4538*x^7-1459*x^6-2170*x^5-1824*x^4-906*x^3-787*x^2-90*x-75)/(256*x^8+800*x^6+192*x^5+785*x^4+300*x^3+286*x^2+60*x+25) + ((3328*x^11+512*x^10+376*x^9+4120*x^8+516*x^7+424*x^6+664*x^5-60*x^4-28*x^3-416*x^2-120*x-100)/(256*x^8+800*x^6+192*x^5+785*x^4+300*x^3+286*x^2+60*x+25))i",
+                   pow.toString());
     }
 
   }

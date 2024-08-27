@@ -276,7 +276,12 @@ public class ComplexRationalFunction implements
   {
     assert result.realPart != null : "result.realPart is null";
     assert result.imaginaryPart != null : "result.imaginaryPart is null";
-
+    ComplexRationalFunction alias = null;
+    if (result == this)
+    {
+      alias  = result;
+      result = new ComplexRationalFunction();
+    }
     try ( var realResult = new RationalFunction(); var imaginaryResult = new RationalFunction();)
     {
 
@@ -287,8 +292,16 @@ public class ComplexRationalFunction implements
       realPart.mul(x.imaginaryPart, prec, realResult);
       imaginaryPart.mul(x.realPart, prec, imaginaryResult);
       realResult.add(imaginaryResult, prec, result.imaginaryPart);
-
-      return result;
+      if (alias != null)
+      {
+        alias.set(result);
+        result.close();
+        return alias;
+      }
+      else
+      {
+        return result;
+      }
     }
   }
 
@@ -518,9 +531,12 @@ public class ComplexRationalFunction implements
 
     result.set(this);
 
-    for (int i = 1; i < absPower; i++)
+    try ( ComplexRationalFunction tmp = new ComplexRationalFunction())
     {
-      result.mul(this, bits, result);
+      for (int i = 1; i < absPower; i++)
+      {
+        result.set(result.mul(this, bits, tmp));
+      }
     }
 
     if (isNegativePower)
