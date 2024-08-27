@@ -222,7 +222,7 @@
   </equation>
 
   Since there are at most <math|N<rsub|n><rsup|2>> pairs of points in
-  <math|D<rsub|n>>, Bonferroni implies that
+  <math|D<rsub|n>>, the Bonferroni inequality implies that
 
   <\equation>
     P<around|(|B<rsub|n>|)>\<leq\>C*N<rsub|n><rsup|2>*e<rsup|<around*|(|-n*log
