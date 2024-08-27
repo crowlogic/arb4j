@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Map;
 
+import arb.ComplexRationalFunction;
 import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -16,7 +17,7 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
-import arb.stochastic.processes.operators.J0IntegralCovarianceOperator;
+import arb.functions.rational.ComplexRationalNullaryFunction;
 import arb.utensils.Utensils;
 import arb.utensils.text.trees.NodeTreeItem;
 import javafx.application.Application;
@@ -59,8 +60,9 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
 
   public Expression<?, ?, ?> getExpression()
   {
+    return ComplexRationalNullaryFunction.compile(null,"(1+2*ⅈ)/(3/(4+x^2-ⅈ*x^3))+ⅈ*((5/6)*(ⅈ*(x^2-x)*7/8))", null);
     // return RealSequence.compile("k➔√((2*k+½)/π)*((k+1)⋰-½)²");
-    return J0IntegralCovarianceOperator.Ψ;
+   // return J0IntegralCovarianceOperator.Ψ;
     // ₖ;
     // context = new Context(Integer.named("n").set(3));
     // return RealFunction.compile("Ψₖ:√((4*n+1)/π)*(-1)ⁿ*j(2*n,x)", context);
@@ -403,10 +405,11 @@ public class ExpressionAnalyzer<D, C, F extends Function<? extends D, ? extends 
 
     // Integer index = new Integer();
     // index.set(3);
-    new Context(Integer.named("k").set(3)).injectReferences(instance);
-    Real point = new Real("2.3",
-                          128);
-    result = instance.evaluate((D) point, 128);
+//    new Context(Integer.named("k").set(3)).injectReferences(instance);
+//    Real point = new Real("2.3",
+//                          128);
+//    result = instance.evaluate((D) point, 128);
+    result = instance.evaluate(null,128);
     System.out.println(expr + "=" + result);
     resizeColumnsToFitContent();
     treeTableView.refresh();

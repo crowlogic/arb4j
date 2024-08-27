@@ -62,7 +62,8 @@ public interface ComplexRationalNullaryFunction extends
   public static Expression<Object, ComplexRationalFunction, ComplexRationalNullaryFunction>
          compile(String functionName, String expression, Context context)
   {
-    return Compiler.compile(functionName,
+    return Compiler.compile(functionName != null ? functionName
+                                                 : Parser.expressionToUniqueClassname(expression),
                             expression,
                             context,
                             Object.class,
