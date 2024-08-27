@@ -73,6 +73,12 @@ public class ComplexRationalFunction implements
     imaginaryPart = new RationalFunction();
   }
 
+  public ComplexRationalFunction(String string)
+  {
+    this();
+    set(string);
+  }
+
   public ComplexRationalFunction set(int i)
   {
     realPart.set(i);
@@ -434,6 +440,28 @@ public class ComplexRationalFunction implements
     return result;
   }
 
+  public ComplexRationalFunction multiplicativeInverse(ComplexRationalFunction result)
+  {
+    try ( RationalFunction divisor = new RationalFunction())
+    {
+      realPart.pow(2, bits(), divisor)
+              .add(imaginaryPart.pow(2, bits(), result.imaginaryPart), bits(), divisor);
+      result.set(this);
+      result.imaginaryPart.neg();
+      result.realPart.div(divisor);
+      result.imaginaryPart.div(divisor);
+      return result;
+    }
+  }
+
+  /**
+   * FIXME: surely this can be done more efficiently
+   * 
+   * @param power
+   * @param bits
+   * @param result
+   * @return
+   */
   /**
    * FIXME: surely this can be done more efficiently
    * 
@@ -454,7 +482,7 @@ public class ComplexRationalFunction implements
 //                              + this
 //                              + " can be raised to the power of "
 //                              + power;
-    long absPower = power.getUnsignedValue();
+    long    absPower        = power.getUnsignedValue();
 
     result.set(this);
 
@@ -464,11 +492,30 @@ public class ComplexRationalFunction implements
     }
 
     if (isNegativePower)
-    {      
-      one.div(result, bits, result);
-      return result;
+    {
+      // .one.div(result, bits, result);
+      return result.multiplicativeInverse(result);
     }
 
+    return result;
+  }
+
+  /**
+   * Let a=this{@link #realPart} and b=this{@link #imaginaryPart} then
+   * 
+   * @param bits
+   * @param result
+   * @return result [re,im]=[a^2-b^2,2*a*b]
+   * 
+   */
+  public ComplexRationalFunction square(int bits, ComplexRationalFunction result)
+  {
+    realPart.pow(2, bits, result.realPart);
+    imaginaryPart.pow(2, bits, result.imaginaryPart);
+    // result.real=this.real^2-this.imag^2
+    result.realPart.sub(result.imaginaryPart, bits);
+    // result.imag=2*this.real*this.imag
+    realPart.mul(imaginaryPart, bits, result.imaginaryPart).mul(2, bits);
     return result;
   }
 

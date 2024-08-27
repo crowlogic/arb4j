@@ -68,6 +68,12 @@ import java.util.stream.Stream;
     }
   }
   
+  public double doubleValue()
+  {
+    assert swigCPtr != 0 : "null pointer";
+    return arblib.fmpq_get_d(this);
+  }
+    
   public Fraction become(Fraction that)
   {
     close();

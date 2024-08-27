@@ -9,6 +9,14 @@
 package arb;
 
 public class arblib {
+  public static void fmpz_poly_q_inv(RationalFunction rop, RationalFunction op) {
+    arblibJNI.fmpz_poly_q_inv(RationalFunction.getCPtr(rop), rop, RationalFunction.getCPtr(op), op);
+  }
+
+  public static double fmpq_get_d(Fraction a) {
+    return arblibJNI.fmpq_get_d(Fraction.getCPtr(a), a);
+  }
+
   public static void arb_hypgeom_pfq(Real res, Real a, int p, Real b, int q, Real z, int regularized, int prec) {
     arblibJNI.arb_hypgeom_pfq(Real.getCPtr(res), res, Real.getCPtr(a), a, p, Real.getCPtr(b), b, q, Real.getCPtr(z), z, regularized, prec);
   }
@@ -159,10 +167,6 @@ public class arblib {
 
   public static void fmpz_poly_get_coeff_fmpz(long x, IntegerPolynomial poly, int n) {
     arblibJNI.fmpz_poly_get_coeff_fmpz(x, IntegerPolynomial.getCPtr(poly), poly, n);
-  }
-
-  public static void fmpz_poly_q_inv(RationalFunction rop, RationalFunction op) {
-    arblibJNI.fmpz_poly_q_inv(RationalFunction.getCPtr(rop), rop, RationalFunction.getCPtr(op), op);
   }
 
   public static int fmpz_poly_q_equal(RationalFunction op1, RationalFunction op2) {

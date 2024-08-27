@@ -123,6 +123,11 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     return value;
   }
 
+  public ComplexRationalFunction add(ComplexRationalFunction a, int bits, ComplexRationalFunction res)
+  {
+    return res.set(this).add(a,bits);
+  }
+  
   public ComplexRationalFunction div(ComplexRationalFunction dividend, int prec, ComplexRationalFunction result)
   {
     return result.set(this).div(dividend, prec);

@@ -17,6 +17,53 @@ public class ComplexRationalFunctionTest extends
   private ComplexRationalFunction result;
   private int                     prec = 128;
 
+  public static void testSquare()
+  {
+    try ( ComplexRationalFunction f =
+                                    new ComplexRationalFunction("(1+2*ⅈ+3*x+4*ⅈ*x^2)/(5-6*ⅈ*x+7*x^3-8*ⅈ*x^4)");
+          ComplexRationalFunction fSquared = f.square(128, new ComplexRationalFunction());
+          ComplexFraction point = fSquared.evaluate(new Fraction(230,
+                                                                 100),
+                                                    new ComplexFraction()))
+    {
+      assertEquals(0.00173299324387004007955453560959, point.realPart.doubleValue());
+      assertEquals(-0.009103093364133974, point.imaginaryPart.doubleValue());
+    }
+  }
+
+  public static void testMultiplicativeInverse()
+  {
+    ComplexRationalFunction f = new ComplexRationalFunction("(1-x)*ⅈ-(x-1)");
+    ComplexRationalFunction inv = f.multiplicativeInverse(new ComplexRationalFunction());
+    System.out.format("f=%s\nfinv=%s\n", f,inv);
+  }
+
+  @SuppressWarnings("resource")
+  public static void testRaiseToANegativeIntegerPower()
+  {
+    try ( ComplexRationalFunction f =
+                                    new ComplexRationalFunction().set("(1+2*ⅈ+3*x+4*ⅈ*x^2)/(5-6*ⅈ*x+7*x^3-8*ⅈ*x^4)"))
+    {
+      assertEquals("(-32*x^6+5*x^4-17*x^3+3*x+5)/(64*x^8+49*x^6+96*x^5+70*x^3+36*x^2+25) + ((52*x^5+8*x^4+14*x^3+38*x^2+6*x+10)/(64*x^8+49*x^6+96*x^5+70*x^3+36*x^2+25))i",
+                   f.toString());
+      ComplexFraction y = f.evaluate(new Fraction(230,
+                                                  100),
+                                     new ComplexFraction());
+      assertEquals(-0.07416055890090498, y.realPart.doubleValue());
+      assertEquals(0.06137422303071997, y.imaginaryPart.doubleValue());
+
+      ComplexRationalFunction pow = f.pow(new Integer(-2), 128, new ComplexRationalFunction());
+      ComplexFraction         y2  = pow.evaluate(new Fraction(230,
+                                                              100),
+                                                 new ComplexFraction());
+      assertEquals(20.18169131958561589132569543344225562674, y2.realPart.doubleValue());
+      assertEquals(106.0106962206352505316329133368229455630, y2.imaginaryPart.doubleValue());
+
+      assert false : f + "^(-2)=" + y2;
+    }
+
+  }
+
   @Override
   protected void setUp() throws Exception
   {
