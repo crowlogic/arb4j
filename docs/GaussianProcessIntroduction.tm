@@ -229,37 +229,36 @@
     4-log N<rsub|n><rsup|2>|)>><rsup|>\<leq\>C*4<rsup|-n>
   </equation>
 
-  where <math|C> is any constant such that if <math|Z> is a standard Gaussian
-  random variable then\ 
+  where <math|C> is any constant such that
 
   <\equation>
     P*<around|(|<around|\||Z|\|>\<gtr\>x|)>\<leq\>C*e<rsup|-<frac|x<rsup|2>|2>>\<forall\>x\<geq\>0
   </equation>
 
-  This is summable, so the Borel-Cantelli lemma implies that with probability
-  one only finitely many of the events <math|B<rsub|n>> occur. In particular,
-  w.p.1 there exists <math|K\<less\>\<infty\>> (random) such that
+  where <math|Z> is a standard Gaussian random variable and therefore
+  summable, so the Borel-Cantelli lemma implies that with probability one
+  only finitely many of the events <math|B<rsub|n>> occur. In particular,
+  there exists <math|K\<less\>\<infty\>> (random) such that
 
   <\equation>
-    <big|sum><rsub|n\<geq\>1>B<rsub|n>=0
+    <big|sum><rsub|n\<geq\>1>B<rsub|n>=0 <text|w.p.1>
   </equation>
 
-  We will show that this implies that the mapping
-  <math|s\<rightarrow\>X<rsub|s>> is uniformly continuous on <math|D>.
-
-  Fix <math|\<varepsilon\>\<gtr\>0>, and let
-  <math|m=m<around|(|\<varepsilon\>|)>> be such that
+  which implies that the mapping <math|s\<rightarrow\>X<rsub|s>> is uniformly
+  continuous on <math|D>. To see that, fix <math|\<varepsilon\>\<gtr\>0>, and
+  let <math|m<around|(|\<varepsilon\>|)>> be such that
 
   <\equation>
-    <big|sum><rsub|n\<geq\>m>*<frac|A<rsub|n>|r<rsup|n>>\<less\>\<varepsilon\>
+    <big|sum><rsub|n\<geq\>m<around*|(|\<varepsilon\>|)>>*<frac|A<rsub|n>|r<rsup|n>>\<less\>\<varepsilon\>
   </equation>
 
   Suppose that <math|s,t\<in\>D> are any two points at distance less than
-  <math|r<rsup|-m>>. Let <math|l> \ be the smallest nonnegative integer
-  <math|m> such that <math|s,t\<in\>D<rsub|m+1>>\ 
+  <math|r<rsup|-m<around*|(|\<varepsilon\>|)>>>. Let <math|l> \ be the
+  smallest nonnegative integer <math|m<around*|(|\<varepsilon\>|)>> such that
+  <math|s,t\<in\>D<rsub|m<around*|(|\<varepsilon\>|)>+1>>\ 
 
   <\equation>
-    l=<around*|{|min<rsub|m>:s,t\<in\>D<rsub|m+1>|}>=<around*|{|min<rsub|m>:s,t\<in\><big|cup><rsub|k=0><rsup|m+1>T<rsub|k>|}>
+    l=<around*|{|min<rsub|m<around*|(|\<varepsilon\>|)>>:s,t\<in\>D<rsub|m<around*|(|\<varepsilon\>|)>+1>|}>=<around*|{|min<rsub|m<around*|(|\<varepsilon\>|)>>:s,t\<in\><big|cup><rsub|k=0><rsup|m<around*|(|\<varepsilon\>|)>+1>T<rsub|k>|}>
   </equation>
 
   Then there exists a point chain\ 
@@ -286,23 +285,28 @@
     d<around|(|s<rsub|0>,t<rsub|0>|)>\<leq\>4<rsup|-n+2>
   </equation>
 
-  at every link of the chain. Eventually <math|m\<geq\>K> \ as
-  <math|\<varepsilon\>\<rightarrow\>0> then along any link
-  <math|<around|(|u,v|)>> of these chains the inequality
+  at every link of the chain. Eventually
+
+  <\equation>
+    m<around*|(|\<varepsilon\>|)>\<geq\>K<text|as>
+    \<varepsilon\>\<rightarrow\>0
+  </equation>
+
+  \ along any link <math|<around|(|u,v|)>> of these chains and thus the
+  inequality
 
   <\equation>
     <around|\||X<rsub|u>-X<rsub|v>|\|>\<less\>A<rsub|j>*d<around|(|u,v|)>
   </equation>
 
-  always holds true where <math|j> is the depth of the link. It then follows
-  that
+  where <math|j> is the depth of the link is satisfied so that
 
   <\equation>
     <around|\||X<rsub|s>-X<rsub|t>|\|>\<less\>3*\<varepsilon\>
   </equation>
 
-  Thus, the restriction of the Gaussian process to <math|D> is, with
-  probability one, uniformly continuous.\ 
+  and therefore the restriction of the Gaussian process to <math|D> is
+  uniformly continuous with probability one.
 
   <\corollary>
     If <math|T> is a compact subset of <math|\<bbb-R\><rsup|k>> and if
@@ -1330,15 +1334,15 @@
   <\collection>
     <associate|Dn|<tuple|8|3>>
     <associate|auto-1|<tuple|?|1>>
-    <associate|auto-10|<tuple|2|18>>
+    <associate|auto-10|<tuple|2|19>>
     <associate|auto-2|<tuple|3|2>>
     <associate|auto-3|<tuple|3|2>>
-    <associate|auto-4|<tuple|26|5>>
-    <associate|auto-5|<tuple|34|7>>
+    <associate|auto-4|<tuple|27|5>>
+    <associate|auto-5|<tuple|35|7>>
     <associate|auto-6|<tuple|11|7>>
-    <associate|auto-7|<tuple|23|12>>
-    <associate|auto-8|<tuple|65|13>>
-    <associate|auto-9|<tuple|1|13>>
+    <associate|auto-7|<tuple|23|13>>
+    <associate|auto-8|<tuple|66|14>>
+    <associate|auto-9|<tuple|1|14>>
     <associate|continuousExtension|<tuple|6|3>>
     <associate|footnote-1|<tuple|1|11>>
     <associate|footnr-1|<tuple|1|11>>
