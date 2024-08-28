@@ -279,9 +279,9 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
         updateTreeTableView();
         updateContextView();
       }
-      catch (Exception e)
+      catch (Throwable e)
       {
-        showAlert("Compilation Error", e.getMessage());
+        showAlert("Compilation Error", e.getClass().getName() + ": " + e.getMessage());
       }
     }
 
@@ -473,7 +473,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
       catch (Throwable e)
       {
         e.printStackTrace(System.err);
-        showAlert("Evaluation Error", e.getMessage());
+        showAlert("Evaluation Error", e.getClass().getName() + ": " + e.getMessage());
       }
     }
 

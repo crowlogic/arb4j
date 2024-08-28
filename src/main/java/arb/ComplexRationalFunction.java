@@ -104,6 +104,16 @@ public class ComplexRationalFunction implements
     imaginaryPart.zero();
     return this;
   }
+  
+  @Override
+  public ComplexRationalFunction set(Fraction... vals)
+  {
+    assert vals.length == 1 : "TODO: implement multidimensional ComplexRationalFunctions";
+    realPart.set(vals);
+    imaginaryPart.zero();
+    return this;
+  }
+  
 
   public ComplexRationalFunction div(Complex x, int prec, ComplexRationalFunction result)
   {

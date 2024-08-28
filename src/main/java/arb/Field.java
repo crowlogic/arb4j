@@ -1,6 +1,7 @@
 package arb;
 
 import java.io.Closeable;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
@@ -433,7 +434,7 @@ public interface Field<X extends Field<X>> extends
   public default X
          set(Fraction... a)
   {
-    assert false : "todo";
+    assert false : "todo: set from Fraction...=" + Arrays.asList(a);
     return (X) this;
   }
   

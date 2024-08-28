@@ -938,6 +938,11 @@ public class Integer implements
     return res.set(this).sub(subtrahend, prec);
   }
 
+  public Fraction sub(Fraction subtrahend, int prec, Fraction res)
+  {
+    return res.set(this).sub(subtrahend, prec);
+  }
+  
   public RationalFunction sub(RationalFunction subtrahend, int prec, RationalFunction res)
   {
     res.bits = prec;

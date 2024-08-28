@@ -378,4 +378,10 @@ public class ComplexFraction implements
     return this;
   }
 
+  public ComplexFraction sub(Integer that, int prec, ComplexFraction res)
+  {
+    return res.set(this).sub(that,prec,res);
+  }
+  
+
 }

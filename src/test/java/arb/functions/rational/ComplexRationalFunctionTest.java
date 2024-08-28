@@ -42,7 +42,7 @@ public class ComplexRationalFunctionTest extends
     context.registerVariable("v", RealConstants.half);
 
     var R    =
-          ComplexRationalFunctionSequence.express("R:n➔(v₍ₙ₎*1/((z/2)^(n)))*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
+          ComplexRationalFunctionSequence.express("R:n➔(v₍ₙ₎/((z/2)^(n)))*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
                                                   context);
 
     var Rtoo =

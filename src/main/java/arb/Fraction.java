@@ -268,6 +268,12 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     return sub(that,prec,this);
   }
   
+  
+  public ComplexFraction sub(Integer that, int prec, ComplexFraction res )
+  {
+    return res.set(this).sub(that,prec,res);
+  }
+  
   public Fraction sub(Integer that, int prec, Fraction res )
   {
     arblib.fmpq_sub_fmpz(res, this, that.swigCPtr );    
