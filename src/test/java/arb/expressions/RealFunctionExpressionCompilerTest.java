@@ -4,6 +4,7 @@ import static arb.RealConstants.one;
 import static arb.RealConstants.zero;
 import static arb.functions.real.RealFunction.express;
 
+import arb.Fraction;
 import arb.Integer;
 import arb.Real;
 import arb.RealConstants;
@@ -31,9 +32,9 @@ public class RealFunctionExpressionCompilerTest extends
 
   public static void testSphericalBesselFunctionViaRealNullaryFunction()
   {
-   
+
     Context context = new Context(Integer.named("n").set(3),
-                                  Real.named("x").set("2.3", 128));
+                                  Fraction.named("x").set(230, 100));
 
     var     f       = RealNullaryFunction.express("√((8*n+2)/π)*(-1)ⁿ*j(2*n,x)", context);
     Real    y       = f.evaluate(128);

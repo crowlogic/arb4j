@@ -41,6 +41,47 @@ import java.util.stream.Stream;
 
 %typemap(javacode) fmpq %{
 
+  public static Fraction named(String string)
+  {
+    return new Fraction().setName(string);
+  }
+
+
+ public static Fraction from(double value, double accuracy, Fraction result)
+  {
+    int sign = value < 0 ? -1 : 1;
+    value = value < 0 ? -value : value;
+    int integerpart = (int) value;
+    value -= integerpart;
+    double minimalvalue = value - accuracy;
+    if (minimalvalue < 0.0)
+      return new Fraction(sign * integerpart,
+                          1);
+    double maximumvalue = value + accuracy;
+    if (maximumvalue > 1.0)
+      return new Fraction(sign * (integerpart + 1),
+                          1);
+    int a = 0;
+    int b = 1;
+    int c = 1;
+    int d = (int) (1 / maximumvalue);
+    while (true)
+    {
+      int n = (int) ((b * minimalvalue - a) / (c - d * minimalvalue));
+      if (n == 0)
+        break;
+      a += n * c;
+      b += n * d;
+      n  = (int) ((c - d * maximumvalue) / (b * maximumvalue - a));
+      if (n == 0)
+        break;
+      c += n * a;
+      d += n * b;
+    }
+    int denominator = b + d;
+    return result.set(sign * (integerpart * denominator + (a + c)), denominator);
+  }
+  
   public Real sqrt(int bits, Real result)
   {
     assert bits > 0 : "bits must be strictly positive";
@@ -137,8 +178,13 @@ import java.util.stream.Stream;
   {
     return arblib.fmpq_is_zero(this) != 0;
   }
-    
-  public void set(int numerator, int denominator)
+
+  public Real ascendingFactorial(Integer power, int bits, Real result)
+  {
+    return result.set(this, bits).ascendingFactorial(power, bits);
+  }
+      
+  public Fraction set(int numerator, int denominator)
   {
     setNumeratorAddress(numerator);
     setDenominatorAddress(denominator);
@@ -150,9 +196,9 @@ import java.util.stream.Stream;
     {
       this.denominator.swigCPtr = denominator;
     }
+    return this;
   }
-
-
+  
   public ComplexRationalFunction
          add(ComplexRationalFunction addend, int prec, ComplexRationalFunction result)
   {
@@ -367,11 +413,20 @@ import java.util.stream.Stream;
     assert value != null : "value is null";
     for (int i = 0; i < dim; i++)
     {
-      arblib.arf_get_fmpq(this.get(i), value.get(i).getMid());
+
+      Real ithElement = value.get(i);
+      if (!ithElement.isExact())
+      {
+        Fraction.from(ithElement.doubleValue(), 1e-15, this);
+        // FIXME: when does the result not make sense?
+      }
+      else
+      {
+        arblib.arf_get_fmpq(this.get(i), ithElement.getMid());
+      }
     }
     return this;
   }
-
 
   public RealPolynomial sub(RealPolynomial element, int prec, RealPolynomial result)
   {
