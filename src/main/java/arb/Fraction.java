@@ -8,13 +8,14 @@
 
 package arb;
 
+import java.lang.foreign.Arena;
+import java.lang.foreign.MemorySegment;
+import java.util.Objects;
+import java.util.stream.Stream;
+
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ArbException;
-import java.util.Objects;
-import java.lang.foreign.Arena;
-import java.lang.foreign.MemorySegment;
-import java.util.stream.Stream;
 
 /**
  * <pre>
@@ -37,7 +38,7 @@ import java.util.stream.Stream;
  * 
  * **Wide Compatibility:** Unicode characters are generally well-supported
  * across modern browsers and platforms, ensuring the fractions display
- * correctly in most environments. 
+ * correctly in most environments.
  *
  * </pre>
  * 
@@ -45,29 +46,37 @@ import java.util.stream.Stream;
  *      {@link TheArb4jLibrary}
  */
 
-public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
-  protected long swigCPtr;
+public class Fraction implements
+                      AutoCloseable,
+                      NamedField<Fraction>,
+                      Verifiable
+{
+  protected long    swigCPtr;
   protected boolean swigCMemOwn;
 
-  public Fraction(long cPtr, boolean cMemoryOwn) {
+  public Fraction(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(Fraction obj) {
+  public static long getCPtr(Fraction obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arblibJNI.delete_Fraction(swigCPtr);
       }
       swigCPtr = 0;
     }
   }
-
 
   public Real sqrt(int bits, Real result)
   {
@@ -79,7 +88,7 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
   {
     return result.set(this).floor(bits, result);
   }
- 
+
   public Fraction sub(Real element, int prec, Fraction result)
   {
     try ( Real tmp = new Real())
@@ -87,7 +96,7 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
       return result.set(tmp.set(this).sub(element, prec));
     }
   }
-  
+
   public Fraction add(Real element, int prec, Fraction result)
   {
     try ( Real tmp = new Real())
@@ -95,13 +104,13 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
       return result.set(tmp.set(this).add(element, prec));
     }
   }
-  
+
   public double doubleValue()
   {
     assert swigCPtr != 0 : "null pointer";
     return arblib.fmpq_get_d(this);
   }
-    
+
   public Fraction become(Fraction that)
   {
     close();
@@ -128,8 +137,8 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     result.imaginaryPart.zero();
     return result;
   }
-  
-  public ComplexFraction neg( ComplexFraction result )
+
+  public ComplexFraction neg(ComplexFraction result)
   {
     neg(result.realPart);
     result.imaginaryPart.zero();
@@ -138,17 +147,17 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
 
   public Fraction add(Integer that, int prec, Fraction res)
   {
-    arblib.fmpq_add_fmpz(res, this, that.swigCPtr );    
+    arblib.fmpq_add_fmpz(res, this, that.swigCPtr);
     return res;
   }
-  
+
   public ComplexFraction add(Complex that, int bits, ComplexFraction result)
   {
     result.realPart.set(this);
     result.imaginaryPart.zero();
-    return result.add(that, bits, result);   
+    return result.add(that, bits, result);
   }
-  
+
   public Real sub(Real element, int prec, Real result)
   {
     return result.set(this).sub(element, prec, result);
@@ -156,16 +165,15 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
 
   public Fraction mul(Integer that, int prec, Fraction res)
   {
-    arblib.fmpq_sub_fmpz(res, this, that.swigCPtr );    
+    arblib.fmpq_sub_fmpz(res, this, that.swigCPtr);
     return res;
-  }  
+  }
 
-  public boolean
-         isZero()
+  public boolean isZero()
   {
     return arblib.fmpq_is_zero(this) != 0;
   }
-    
+
   public void set(int numerator, int denominator)
   {
     setNumeratorAddress(numerator);
@@ -180,7 +188,6 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     }
   }
 
-
   public ComplexRationalFunction
          add(ComplexRationalFunction addend, int prec, ComplexRationalFunction result)
   {
@@ -192,16 +199,18 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
   public ComplexRationalFunction
          sub(ComplexRationalFunction subtrahend, int prec, ComplexRationalFunction result)
   {
-    sub(subtrahend.realPart,prec,result.realPart);
+    sub(subtrahend.realPart, prec, result.realPart);
     subtrahend.imaginaryPart.neg(result.imaginaryPart);
     return result;
   }
-    
+
   @Override
   public boolean verify()
   {
-    boolean denominatorConsistent = denominator == null || denominator.swigCPtr == getDenominatorAddress();
-    boolean numeratorConsistent   = numerator == null || numerator.swigCPtr == getNumeratorAddress();
+    boolean denominatorConsistent = denominator == null
+                  || denominator.swigCPtr == getDenominatorAddress();
+    boolean numeratorConsistent   =
+                                numerator == null || numerator.swigCPtr == getNumeratorAddress();
     return denominatorConsistent && numeratorConsistent;
   }
 
@@ -216,58 +225,65 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
                                            denominator == null ? "null" : denominator.swigCPtr));
     }
   }
-  
-  public Fraction sub(Integer that, int prec )
+
+  public Fraction sub(Integer that, int prec)
   {
-    return sub(that,prec,this);
+    return sub(that, prec, this);
   }
-  
-  public Fraction sub(Integer that, int prec, Fraction res )
+
+  public Fraction sub(Integer that, int prec, Fraction res)
   {
-    arblib.fmpq_sub_fmpz(res, this, that.swigCPtr );    
+    arblib.fmpq_sub_fmpz(res, this, that.swigCPtr);
     return res;
   }
-  
+
   public Real mul(Real that, int bits, Real result)
   {
-    return result.set(this).mul(that,bits,result);
+    return result.set(this).mul(that, bits, result);
   }
-    
+
   public Real mul(Integer that, int bits, Real result)
   {
-    return result.set(this).mul(that,bits,result);
+    return result.set(this).mul(that, bits, result);
   }
 
   public Real add(Real real, int bits, Real result)
   {
-    return result.set(this).add(real,bits,result);
+    return result.set(this).add(real, bits, result);
   }
 
-  public ComplexRationalFunction mul(ComplexRationalFunction that, int bits, ComplexRationalFunction result)
+  public ComplexRationalFunction
+         mul(ComplexRationalFunction that, int bits, ComplexRationalFunction result)
   {
-    return result.set(this).mul(that,bits,result);
+    return result.set(this).mul(that, bits, result);
   }
-        
+
   public RationalFunction mul(RationalFunction that, int bits, RationalFunction result)
   {
-    return result.set(this).mul(that,bits,result);
+    return result.set(this).mul(that, bits, result);
   }
-  
+
   public Fraction set(Integer val)
   {
-    arblib.fmpq_set_fmpz(this, val.swigCPtr );
+    arblib.fmpq_set_fmpz(this, val.swigCPtr);
     return this;
   }
-  
+
+  public Real ascendingFactorial(Integer power, int bits, Real result)
+  {
+    return result.set(this, bits).ascendingFactorial(power, bits);
+  }
+
   public RationalFunction ascendingFactorial(Integer power, int bits, RationalFunction result)
   {
+    assert false : "fff";
     try ( Real thisReal = new Real())
     {
       thisReal.set(this, bits);
       return thisReal.ascendingFactorial(power, bits, result);
     }
   }
-  
+
   /**
    * NOTICE: this is 1-indexed, not 0 indexed like this{@link #get(int)} !!!
    * 
@@ -278,13 +294,12 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
   {
     return get(k.getSignedValue() - 1);
   }
-  
+
   @Override
   public String getName()
   {
     return name;
   }
-
 
   @SuppressWarnings("unchecked")
   @Override
@@ -293,9 +308,8 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     this.name = name;
     return (N) this;
   }
-  
-  public String name;
 
+  public String name;
 
   public Fraction set(Fraction... elements)
   {
@@ -306,23 +320,24 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     this.swigCPtr    = elements.length > 0 ? elements[0].swigCPtr : 0;
     return this;
   }
-  
+
   public MemorySegment nativeSegment;
   public int           dim = 1;
-  public Fraction[] elements;
+  public Fraction[]    elements;
 
   @SuppressWarnings("resource")
   public static Fraction newVector(Arena arena, int dim)
   {
     MemorySegment segment = arena.allocate(Long.BYTES * dim * 2);
-    Fraction array = new Fraction(segment.address(),
-                                  false);
+    Fraction      array   = new Fraction(segment.address(),
+                                         false);
     array.nativeSegment = segment;
-    array.dim         = dim;
-    array.elements    = new Fraction[array.dim = dim];
-    for ( int i = 0; i < dim; i++ )
+    array.dim           = dim;
+    array.elements      = new Fraction[array.dim = dim];
+    for (int i = 0; i < dim; i++)
     {
-      Fraction frac = new Fraction(array.swigCPtr + i*Long.BYTES*2, false );
+      Fraction frac = new Fraction(array.swigCPtr + i * Long.BYTES * 2,
+                                   false);
       array.elements[i] = frac.init();
     }
     return array;
@@ -333,7 +348,7 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     arblib.fmpq_init(this);
     return this;
   }
-  
+
   static
   {
     System.loadLibrary("arblib");
@@ -342,50 +357,50 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
   public Complex add(Complex that, int bits, Complex result)
   {
     result.zero().getReal().set(this);
-    return result.add(that, bits);   
+    return result.add(that, bits);
   }
-  
+
   public Complex sub(Complex that, int bits, Complex result)
   {
     result.zero().getReal().set(this);
-    return result.sub(that, bits);   
+    return result.sub(that, bits);
   }
-  
+
   public ComplexPolynomial sub(ComplexPolynomial element, int prec, ComplexPolynomial result)
   {
     result.setLength(1);
     result.fitLength(1);
     result.getCoeffs().re().set(this);
     return result.sub(element, prec);
-  }    
-    
+  }
+
   public Fraction neg()
   {
     return neg(this);
   }
-  
-  public Fraction neg( Fraction result )
+
+  public Fraction neg(Fraction result)
   {
-    arblib.fmpq_neg(result, this);   
+    arblib.fmpq_neg(result, this);
     return result;
   }
- 
-  public Real neg( Real result )
+
+  public Real neg(Real result)
   {
     return result.set(this).neg();
   }
-   
+
   public Real sub(Fraction element, int prec, Real result)
   {
-    return result.set(this).sub(element,prec);
+    return result.set(this).sub(element, prec);
   }
-  
+
   public Fraction set(int j)
   {
     arblib.fmpq_set_si(this, j, 1);
     return this;
-  } 
-  
+  }
+
   public Fraction set(Real value)
   {
     if (dim != value.dim)
@@ -395,51 +410,49 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     assert value != null : "value is null";
     for (int i = 0; i < dim; i++)
     {
-      arblib.arf_get_fmpq(this.get(i), value.get(i).getMid());
+      Real real = value.get(i);
+      assert real.isExact() : real + " is not exact and therefore cannot be represented as a fraction";
+      arblib.arf_get_fmpq(this.get(i), real.getMid());
     }
     return this;
   }
-
 
   public RealPolynomial sub(RealPolynomial element, int prec, RealPolynomial result)
   {
     return result.set(this).sub(element, prec, result);
   }
-  
+
   public RationalFunction add(Fraction element, int prec, RationalFunction result)
   {
-    return result.set(this).add(element,prec, result);
+    return result.set(this).add(element, prec, result);
   }
-  
+
   public RationalFunction sub(RationalFunction element, int prec, RationalFunction result)
   {
     return result.set(this).sub(element, prec, result);
   }
-  
+
   @Override
-  public int
-         hashCode()
+  public int hashCode()
   {
     return Objects.hash(numerator, denominator);
   }
 
   @Override
-  public boolean
-         equals(Object obj)
+  public boolean equals(Object obj)
   {
     if (obj == null)
     {
       return false;
     }
-    if (!obj.getClass()
-            .isAssignableFrom(Fraction.class))
+    if (!obj.getClass().isAssignableFrom(Fraction.class))
     {
       return false;
     }
     Fraction that = (Fraction) obj;
     return arblib.fmpq_equal(this, that) != 0;
   }
-    
+
   private Integer numerator;
   private Integer denominator;
 
@@ -472,8 +485,8 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     arblib.fmpq_set_str(this, str.replaceAll("⁄", "/"), 10);
     return this;
   }
-          
-@Override
+
+  @Override
   public String toString()
   {
     if (dim == 1)
@@ -490,13 +503,13 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     sb.append("]");
     return sb.toString();
   }
-    
+
   public Fraction one()
   {
     arblib.fmpq_one(this);
     return this;
   }
-  
+
   public Integer getDenominator()
   {
     if (denominator == null)
@@ -524,26 +537,30 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     }
     return numerator;
   }
-  
+
   @Override
-  public void close() {
-      if (swigCPtr != 0) {
-          if (swigCMemOwn) {
-              swigCMemOwn = false;
-              if (dim == 1) {
-                  arblibJNI.delete_Fraction(swigCPtr);
-              }
-              // For vectors (dim > 1), we don't need to do anything here
-              // The Arena passed to newVector will handle the memory cleanup
-          }
-          swigCPtr = 0;
+  public void close()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
+        swigCMemOwn = false;
+        if (dim == 1)
+        {
+          arblibJNI.delete_Fraction(swigCPtr);
+        }
+        // For vectors (dim > 1), we don't need to do anything here
+        // The Arena passed to newVector will handle the memory cleanup
       }
+      swigCPtr = 0;
+    }
   }
-  
+
   @Override
   public Fraction add(Fraction element, int prec, Fraction result)
   {
-    return add(element,result);
+    return add(element, result);
   }
 
   @Override
@@ -564,11 +581,11 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     arblib.fmpq_div_fmpz(result, this, j);
     return result;
   }
-  
+
   @Override
   public Fraction div(Fraction j, int prec, Fraction result)
   {
-    return div(j,result);
+    return div(j, result);
   }
 
   @Override
@@ -592,7 +609,7 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
   @Override
   public Fraction mul(Fraction x, int prec, Fraction result)
   {
-    return mul(x,result);
+    return mul(x, result);
   }
 
   @Override
@@ -606,13 +623,13 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
   {
     setNumeratorAddress(value.getNumeratorAddress());
     setDenominatorAddress(value.getDenominatorAddress());
-    if ( numerator != null )
+    if (numerator != null)
     {
-      numerator.swigCPtr = getNumeratorAddress();      
+      numerator.swigCPtr = getNumeratorAddress();
     }
-    if ( denominator != null )
+    if (denominator != null)
     {
-      denominator.swigCPtr = getDenominatorAddress(); 
+      denominator.swigCPtr = getDenominatorAddress();
     }
     return this;
   }
@@ -620,7 +637,7 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
   @Override
   public Fraction sub(Fraction element, int prec, Fraction result)
   {
-    return sub(element,result);
+    return sub(element, result);
   }
 
   @Override
@@ -629,7 +646,7 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     arblib.fmpq_zero(this);
     return this;
   }
-  
+
   @Override
   public Fraction additiveIdentity()
   {
@@ -654,22 +671,21 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     return result.set(this).div(divisor, prec, result);
   }
 
-  
   public Fraction pow(Integer n, int bits)
   {
-    return pow(n,bits,this);
+    return pow(n, bits, this);
   }
 
   public RationalFunction pow(Integer n, int bits, RationalFunction result)
   {
-    try ( RationalFunction tmp = new RationalFunction() )
+    try ( RationalFunction tmp = new RationalFunction())
     {
       tmp.set(this);
       tmp.pow(n, bits, result);
       return result;
     }
   }
-    
+
   /**
    * Reduces this {@link Fraction} into its simplest form, dividing the
    * {@link #numerator} and the this#denominator by the highest common factor.
@@ -697,42 +713,44 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
   public boolean isReduced()
   {
     return arblib.fmpq_is_canonical(this) != 0;
-  }    
-
+  }
 
   @Override
-  public Stream<Fraction>
-         stream()
+  public Stream<Fraction> stream()
   {
     return Stream.of(elements);
-  }  
-  
-    public boolean
-         isNegative()
+  }
+
+  public boolean isNegative()
   {
     assert false : "TODO";
     return false;
   }
-  
 
-  public void setNumeratorAddress(long value) {
+  public void setNumeratorAddress(long value)
+  {
     arblibJNI.Fraction_numeratorAddress_set(swigCPtr, this, value);
   }
 
-  public long getNumeratorAddress() {
+  public long getNumeratorAddress()
+  {
     return arblibJNI.Fraction_numeratorAddress_get(swigCPtr, this);
   }
 
-  public void setDenominatorAddress(long value) {
+  public void setDenominatorAddress(long value)
+  {
     arblibJNI.Fraction_denominatorAddress_set(swigCPtr, this, value);
   }
 
-  public long getDenominatorAddress() {
+  public long getDenominatorAddress()
+  {
     return arblibJNI.Fraction_denominatorAddress_get(swigCPtr, this);
   }
 
-  public Fraction() {
-    this(arblibJNI.new_Fraction(), true);
+  public Fraction()
+  {
+    this(arblibJNI.new_Fraction(),
+         true);
   }
 
 }

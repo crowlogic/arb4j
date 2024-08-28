@@ -10,10 +10,19 @@ import junit.framework.TestCase;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class FractionTest
-                          extends
+public class FractionTest extends
                           TestCase
 {
+
+  public void testAscendingFactorialOfFractionToIntegerWithRealResult()
+  {
+    try ( Fraction twoThirds = new Fraction(2,
+                                            3))
+    {
+      Real result = twoThirds.ascendingFactorial(new Integer(3), 128, new Real());
+      assertEquals(2.962962962962962962962962962962962962962962962, result.doubleValue());
+    }
+  }
 
   @SuppressWarnings("resource")
   public void testSet()
@@ -182,7 +191,7 @@ public class FractionTest
       assertEquals("1⁄4", c.toString());
     }
   }
-  
+
   public void testSubtractionWithUnusedBitsSpecified()
   {
     try ( var a = new Fraction(); var b = new Fraction(); var c = new Fraction())
@@ -193,7 +202,6 @@ public class FractionTest
       assertEquals("1⁄4", c.toString());
     }
   }
-  
 
   public void testEqualityWithoutReduction()
   {

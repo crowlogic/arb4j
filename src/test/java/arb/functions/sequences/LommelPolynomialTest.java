@@ -1,7 +1,7 @@
 package arb.functions.sequences;
 
+import arb.Fraction;
 import arb.RationalFunction;
-import arb.Real;
 import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -13,7 +13,7 @@ import junit.framework.TestCase;
  *      {@link TheArb4jLibrary}
  */
 public class LommelPolynomialTest extends
-                                          TestCase
+                                  TestCase
 {
   public void testLommelPolynomial()
   {
@@ -22,7 +22,11 @@ public class LommelPolynomialTest extends
       l.v.set(RealConstants.half);
       l.n.set(3);
       RationalFunction func = l.evaluate(128);
-      Real             l3x  = func.evaluate(Real.of("2.3",128), 0, 128, new Real());
+      Fraction         l3x  = func.evaluate(new Fraction(230,
+                                                         100),
+                                            0,
+                                            128,
+                                            new Fraction());
       assertEquals(-1.3758527163639351505, l3x.doubleValue());
     }
   }

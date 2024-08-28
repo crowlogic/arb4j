@@ -995,6 +995,11 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     return this;
   }
 
+  public Real ascendingFactorial(Integer power, int bits2)
+  {
+    return ascendingFactorial(power, bits2, this);
+  }
+  
   public ComplexRationalFunction div(ComplexRationalFunction unit, int bits, ComplexRationalFunction result )
   {
     assert bits > 0;
