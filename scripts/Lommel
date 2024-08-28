@@ -1,2 +1,0 @@
-var h = new ModifiedLommelPolynomials(128);
-h.initialize();

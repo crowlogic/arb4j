@@ -765,7 +765,7 @@ public class Utensils
     }
   }
 
-  public static String stackTraceToString(Exception first)
+  public static String stackTraceToString(Throwable first)
   {
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     first.printStackTrace(new PrintWriter(outputStream,

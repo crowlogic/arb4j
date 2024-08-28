@@ -273,7 +273,6 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
 
   public MethodVisitor invokeMethod(MethodVisitor mv, String operator, Class<?> resultType)
   {
-
     if (expression.insideInitializer)
     {
       mv.visitLdcInsn(initializerBits);
@@ -325,7 +324,6 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
       return true;
 
     }
-
     return false;
   }
 

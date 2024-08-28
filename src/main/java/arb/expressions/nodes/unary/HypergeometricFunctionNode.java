@@ -347,4 +347,10 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     }
   }
 
+  @Override
+  public String getIntermediateValueFieldName()
+  {
+    return hypergeometricFunctionFieldName;
+  }
+
 }
