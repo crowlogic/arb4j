@@ -2,3 +2,4 @@ java.lang.AssertionError: TODO: implement integration rule for division, left=(J
 NEW: implement KL expansion
 TODO: expression analyzer: save and load expressions to/from history
 TODO: expression analyzer: context variable of input
+fix RationalFunctionSequence.express("R(n,1⁄2;z)"); #483
