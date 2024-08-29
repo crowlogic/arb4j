@@ -26,6 +26,13 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  public void testWholeFractionDifference()
+  {
+    var x = RealNullaryFunction.express("[1/2-3/2]");
+    var d = x.evaluate(128, new Real());
+    assertTrue(d.neg().isOne());
+  }
+
   public void testRealSquareRootOfOneHalf()
   {
     RealNullaryFunction expression          = RealNullaryFunction.express("⌊100/√(1⁄2)⌋");
@@ -64,13 +71,13 @@ public class ExpressionTest extends
 
   public void testLommelPolynomialRationalExpression()
   {
-    var    F   = RationalNullaryFunction.express("R(3,1/2;z)");
-     //System.out.println("F=" + F);
-    var    f   = F.evaluate(128);
-    assertEquals("(-6*x^2+15)/(x^3)",f.toString());
-     //System.out.println("f=" + f);
+    var F = RationalNullaryFunction.express("R(3,1/2;z)");
+    // System.out.println("F=" + F);
+    var f = F.evaluate(128);
+    assertEquals("(-6*x^2+15)/(x^3)", f.toString());
+    // System.out.println("f=" + f);
     double hmm = f.asRealFunction().eval(2.3);
-     //System.out.println("f(2.3)="+hmm);
+    // System.out.println("f(2.3)="+hmm);
     assertEquals(-1.3758527163639351505, hmm);
   }
 

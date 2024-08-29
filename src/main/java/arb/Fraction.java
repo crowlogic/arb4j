@@ -445,7 +445,10 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
    
   public Real sub(Fraction element, int prec, Real result)
   {
-    return result.set(this).sub(element,prec);
+    try ( Fraction tmp = new Fraction())
+    {      
+      return result.set(sub(element, prec, tmp));
+    }
   }
   
   public Fraction set(int j)

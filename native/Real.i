@@ -480,7 +480,7 @@ import arb.utensils.Utensils;
 
   public Real sub(Fraction element, int prec)
   {
-    return sub(element, prec);
+    return sub(element, prec,this);
   }
     
   public RealPolynomial div(Real divisor, int bits, RealPolynomial result)
