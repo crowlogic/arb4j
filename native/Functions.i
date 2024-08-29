@@ -7,8 +7,11 @@
 #include <flint/fmpz_poly.h>
 #include <flint/fmpz_poly_q.h>
 
+int fmpq_sgn(const fmpq_t x);
+
 void fmpz_poly_q_inv(fmpz_poly_q_t rop, const fmpz_poly_q_t op);
 
+int fmpq_is_canonical(const fmpq_t x);
 
 double fmpq_get_d(const fmpq_t a);
 

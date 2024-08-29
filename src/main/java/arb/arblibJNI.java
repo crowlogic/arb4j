@@ -9,7 +9,9 @@
 package arb;
 
 public class arblibJNI {
+  public final static native int fmpq_sgn(long jarg1, Fraction jarg1_);
   public final static native void fmpz_poly_q_inv(long jarg1, RationalFunction jarg1_, long jarg2, RationalFunction jarg2_);
+  public final static native int fmpq_is_canonical(long jarg1, Fraction jarg1_);
   public final static native double fmpq_get_d(long jarg1, Fraction jarg1_);
   public final static native void arb_hypgeom_pfq(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, long jarg4, Real jarg4_, int jarg5, long jarg6, Real jarg6_, int jarg7, int jarg8);
   public final static native void fmpz_poly_pow(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_, long jarg3);
@@ -38,7 +40,6 @@ public class arblibJNI {
   public final static native void arb_set_fmpq(long jarg1, Real jarg1_, long jarg2, Fraction jarg2_, int jarg3);
   public final static native void fmpq_zero(long jarg1, Fraction jarg1_);
   public final static native void fmpq_canonicalise(long jarg1, Fraction jarg1_);
-  public final static native int fmpq_is_canonical(long jarg1, Fraction jarg1_);
   public final static native void fmpz_poly_init2(long jarg1, IntegerPolynomial jarg1_, int jarg2);
   public final static native void fmpz_poly_realloc(long jarg1, IntegerPolynomial jarg1_, int jarg2);
   public final static native void fmpz_poly_fit_length(long jarg1, IntegerPolynomial jarg1_, int jarg2);

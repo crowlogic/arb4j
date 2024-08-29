@@ -9,8 +9,16 @@
 package arb;
 
 public class arblib {
+  public static int fmpq_sgn(Fraction x) {
+    return arblibJNI.fmpq_sgn(Fraction.getCPtr(x), x);
+  }
+
   public static void fmpz_poly_q_inv(RationalFunction rop, RationalFunction op) {
     arblibJNI.fmpz_poly_q_inv(RationalFunction.getCPtr(rop), rop, RationalFunction.getCPtr(op), op);
+  }
+
+  public static int fmpq_is_canonical(Fraction x) {
+    return arblibJNI.fmpq_is_canonical(Fraction.getCPtr(x), x);
   }
 
   public static double fmpq_get_d(Fraction a) {
@@ -123,10 +131,6 @@ public class arblib {
 
   public static void fmpq_canonicalise(Fraction res) {
     arblibJNI.fmpq_canonicalise(Fraction.getCPtr(res), res);
-  }
-
-  public static int fmpq_is_canonical(Fraction x) {
-    return arblibJNI.fmpq_is_canonical(Fraction.getCPtr(x), x);
   }
 
   public static void fmpz_poly_init2(IntegerPolynomial poly, int alloc) {

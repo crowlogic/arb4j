@@ -268,12 +268,6 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     return sub(that,prec,this);
   }
   
-  
-  public ComplexFraction sub(Integer that, int prec, ComplexFraction res )
-  {
-    return res.set(this).sub(that,prec,res);
-  }
-  
   public Fraction sub(Integer that, int prec, Fraction res )
   {
     arblib.fmpq_sub_fmpz(res, this, that.swigCPtr );    
@@ -359,17 +353,32 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     return this;
   }
   
-  public MemorySegment nativeSegment;
+  public Arena arena;
   public int           dim = 1;
   public Fraction[] elements;
 
+  public Fraction resize(Arena arena, int alloc)
+  {
+    if (alloc == dim)
+    {      return this;
+    }
+    Fraction newLocation = Fraction.newVector(arena,alloc).setName(name);
+    int  nd          = Math.min(alloc, dim);
+    for (int i = 0; i < nd; i++)
+    {
+      newLocation.get(i).set(get(i));
+    }
+    become(newLocation);
+    return this;
+  }
+  
   @SuppressWarnings("resource")
   public static Fraction newVector(Arena arena, int dim)
   {
     MemorySegment segment = arena.allocate(Long.BYTES * dim * 2);
     Fraction array = new Fraction(segment.address(),
                                   false);
-    array.nativeSegment = segment;
+    array.arena = arena;
     array.dim         = dim;
     array.elements    = new Fraction[array.dim = dim];
     for ( int i = 0; i < dim; i++ )
@@ -665,16 +674,8 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
   @Override
   public Fraction set(Fraction value)
   {
-    setNumeratorAddress(value.getNumeratorAddress());
-    setDenominatorAddress(value.getDenominatorAddress());
-    if ( numerator != null )
-    {
-      numerator.swigCPtr = getNumeratorAddress();      
-    }
-    if ( denominator != null )
-    {
-      denominator.swigCPtr = getDenominatorAddress(); 
-    }
+    getNumerator().set(value.getNumerator());
+    getDenominator().set(value.getDenominator());
     return this;
   }
 
@@ -700,8 +701,7 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
   @Override
   public Fraction multiplicativeIdentity()
   {
-    assert false : "TODO";
-    return null;
+    return one();
   }
 
   public Fraction pow(Integer n, int bits, Fraction result)
@@ -768,11 +768,14 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     return Stream.of(elements);
   }  
   
-    public boolean
-         isNegative()
+  public boolean isNegative()
   {
-    assert false : "TODO";
-    return false;
+    return sign() < 0;
+  }
+
+  public int sign()
+  {
+    return arblib.fmpq_sgn(this);
   }
   
 

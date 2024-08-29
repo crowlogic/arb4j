@@ -9,6 +9,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.functions.Function;
+import arb.functions.NullaryFunction;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -18,6 +19,21 @@ public class ComplexFraction implements
                              Field<ComplexFraction>,
                              AutoCloseable
 {
+
+  public ComplexFraction become(ComplexFraction that)
+  {
+    close();
+    elements         = that.elements;
+    realPart         = that.realPart;
+    imaginaryPart    = that.imaginaryPart;
+    dim              = that.dim;
+    name             = that.name;
+    this.numerator   = that.numerator;
+    this.denominator = that.denominator;
+    that.numerator = null;
+    that.denominator = null;
+    return this;
+  }
 
   public ComplexFraction set(Integer i)
   {
@@ -31,19 +47,20 @@ public class ComplexFraction implements
     return express(string).evaluate(null, 0, this);
   }
 
-  public static Function<Object, ComplexFraction> express(String string)
+  public static NullaryFunction<ComplexFraction> express(String string)
   {
-    Expression<Object, ComplexFraction, Function<Object, ComplexFraction>> express  =
-                                                                                   Compiler.express(string,
-                                                                                                    null,
-                                                                                                    Object.class,
-                                                                                                    ComplexFraction.class,
-                                                                                                    Function.class,
-                                                                                                    null);
+    Expression<Object,
+                  ComplexFraction,
+                  NullaryFunction<
+                                ComplexFraction>> express =
+                                                            Compiler.express(string,
+                                                                             null,
+                                                                             Object.class,
+                                                                             ComplexFraction.class,
+                                                                             NullaryFunction.class,
+                                                                             null);
 
-    Function<Object, ComplexFraction>                                      instance =
-                                                                                    express.getInstance();
-    return instance;
+    return express.getInstance();
   }
 
   @Override
@@ -100,11 +117,7 @@ public class ComplexFraction implements
   @Override
   public void close()
   {
-    if (arena != null)
-    {
-      arena.close();
-    }
-    arena    = null;
+
     realPart = imaginaryPart = null;
     if (numerator != null)
     {
@@ -150,7 +163,7 @@ public class ComplexFraction implements
   @Override
   public int dim()
   {
-    return 1;
+    return dim;
   }
 
   @Override
@@ -187,9 +200,10 @@ public class ComplexFraction implements
 
   public boolean isZero()
   {
-    return imaginaryPart.isZero() || realPart.isZero();
+    return imaginaryPart.isZero() && realPart.isZero();
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public ComplexFraction get(int index)
   {
@@ -315,7 +329,7 @@ public class ComplexFraction implements
       frac.realPart.init();
       arblib.fmpq_init(frac.realPart);
       arblib.fmpq_init(frac.imaginaryPart);
-      elements[i] = frac.set(vals[i]);
+      elements[i]               = frac.set(vals[i]);
       realPart.elements[i]      = frac.realPart;
       imaginaryPart.elements[i] = frac.imaginaryPart;
     }
@@ -380,8 +394,7 @@ public class ComplexFraction implements
 
   public ComplexFraction sub(Integer that, int prec, ComplexFraction res)
   {
-    return res.set(this).sub(that,prec,res);
+    return res.set(this).sub(that, prec, res);
   }
-  
 
 }

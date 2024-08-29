@@ -325,17 +325,32 @@ import java.util.stream.Stream;
     return this;
   }
   
-  public MemorySegment nativeSegment;
+  public Arena arena;
   public int           dim = 1;
   public Fraction[] elements;
 
+  public Fraction resize(Arena arena, int alloc)
+  {
+    if (alloc == dim)
+    {      return this;
+    }
+    Fraction newLocation = Fraction.newVector(arena,alloc).setName(name);
+    int  nd          = Math.min(alloc, dim);
+    for (int i = 0; i < nd; i++)
+    {
+      newLocation.get(i).set(get(i));
+    }
+    become(newLocation);
+    return this;
+  }
+  
   @SuppressWarnings("resource")
   public static Fraction newVector(Arena arena, int dim)
   {
     MemorySegment segment = arena.allocate(Long.BYTES * dim * 2);
     Fraction array = new Fraction(segment.address(),
                                   false);
-    array.nativeSegment = segment;
+    array.arena = arena;
     array.dim         = dim;
     array.elements    = new Fraction[array.dim = dim];
     for ( int i = 0; i < dim; i++ )
@@ -631,16 +646,8 @@ import java.util.stream.Stream;
   @Override
   public Fraction set(Fraction value)
   {
-    setNumeratorAddress(value.getNumeratorAddress());
-    setDenominatorAddress(value.getDenominatorAddress());
-    if ( numerator != null )
-    {
-      numerator.swigCPtr = getNumeratorAddress();      
-    }
-    if ( denominator != null )
-    {
-      denominator.swigCPtr = getDenominatorAddress(); 
-    }
+    getNumerator().set(value.getNumerator());
+    getDenominator().set(value.getDenominator());
     return this;
   }
 
@@ -666,8 +673,7 @@ import java.util.stream.Stream;
   @Override
   public Fraction multiplicativeIdentity()
   {
-    assert false : "TODO";
-    return null;
+    return one();
   }
 
   public Fraction pow(Integer n, int bits, Fraction result)
@@ -734,11 +740,14 @@ import java.util.stream.Stream;
     return Stream.of(elements);
   }  
   
-    public boolean
-         isNegative()
+  public boolean isNegative()
   {
-    assert false : "TODO";
-    return false;
+    return sign() < 0;
+  }
+
+  public int sign()
+  {
+    return arblib.fmpq_sgn(this);
   }
   
 %};
