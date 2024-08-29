@@ -5,6 +5,9 @@ import java.util.HashMap;
 import arb.Named;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import javafx.beans.value.ObservableValueBase;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableListBase;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -12,7 +15,7 @@ import arb.documentation.TheArb4jLibrary;
  * 
  * @author ©2024 Stephen Crowley
  */
-public class Variables
+public class Variables extends ObservableListBase<String> 
 
 {
   @Override
@@ -47,6 +50,18 @@ public class Variables
   public <R> R put(String name, R variable)
   {
     return (R) map.put(name, variable);
+  }
+
+  @Override
+  public int size()
+  {
+   return map.size();
+  }
+
+  @Override
+  public String get(int index)
+  {
+    return map.entrySet().toArray()[index].toString();
   }
 
 }

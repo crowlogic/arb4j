@@ -3,7 +3,6 @@ package arb.functions.rational;
 import arb.ComplexRationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
@@ -62,19 +61,25 @@ public interface ComplexRationalNullaryFunction extends
   public static Expression<Object, ComplexRationalFunction, ComplexRationalNullaryFunction>
          compile(String functionName, String expression, Context context)
   {
-    return Compiler.compile(functionName != null ? functionName
-                                                 : Parser.expressionToUniqueClassname(expression),
-                            expression,
-                            context,
-                            Object.class,
+    return Function.compile(Object.class,
                             ComplexRationalFunction.class,
                             ComplexRationalNullaryFunction.class,
-                            false);
+                            expression,
+                            context);
+//    return Compiler.compile(functionName != null ? functionName
+//                                                 : Parser.expressionToUniqueClassname(expression),
+//                            expression,
+//                            context,
+//                            Object.class,
+//                            ComplexRationalFunction.class,
+//                            ComplexRationalNullaryFunction.class,
+//                            false);
   }
 
-  public default ComplexRationalFunction evaluate()
+  public default ComplexRationalFunction evaluate(int bits)
   {
-    return evaluate(0,new ComplexRationalFunction());
+    assert bits > 0 : "bits=" + bits + " is not positive";
+    return evaluate(bits, new ComplexRationalFunction());
   }
 
 }

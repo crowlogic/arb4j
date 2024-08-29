@@ -68,6 +68,7 @@ public interface NullaryFunction<R> extends
                   R realPolynomial)
   {
     assert realPolynomial != null : "realPolynomial should not be null";
+    assert bits > 0 : "bits must be positive";
     return evaluate(null,
                     0,
                     bits,

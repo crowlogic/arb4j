@@ -22,6 +22,12 @@ public class ComplexRationalFunction implements
 {
 
   @Override
+  public ComplexFraction newCoDomainInstance()
+  {
+   return new ComplexFraction();
+  }
+
+  @Override
   public boolean equals(Object obj)
   {
     if (this == obj)
