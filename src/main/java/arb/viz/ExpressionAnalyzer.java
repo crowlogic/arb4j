@@ -70,7 +70,8 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
                                new Label("Domain:"),
                                domainTypeBox,
                                new Label("Codomain:"),
-                               codomainTypeBox);
+                               codomainTypeBox,
+                               newButtonBox());
 
     splitPane  = new SplitPane();
     contextBox = new VBox(10);
@@ -79,7 +80,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     VBox.setVgrow(splitPane, Priority.ALWAYS);
     splitPane.getItems().add(tabPane);
 
-    mainLayout.getChildren().addAll(typeBoxes, splitPane, newButtonBox());
+    mainLayout.getChildren().addAll(typeBoxes, splitPane);
     return mainLayout;
   }
 
