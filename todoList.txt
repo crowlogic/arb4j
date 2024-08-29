@@ -3,4 +3,3 @@ NEW: RealFunctionSequence
 NEW: implement KL expansion
 TODO: expression analyzer: context variable editing
 TODO: expression analyzer: save and load expressions to/from history
-TODO: implement multidimensional ComplexRationalFunctions
