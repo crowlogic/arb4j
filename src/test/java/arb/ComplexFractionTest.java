@@ -33,7 +33,7 @@ public class ComplexFractionTest extends
     ComplexFraction g = new ComplexFraction().become(f);
     assertEquals("[(7⁄8)+(0)i, (1⁄4)+(1)i]",g.toString());    
     assertEquals( 16, Fraction.BYTES);
-   //f.realPart.res
+   f.resize(1);
     //g.resize(1);
   }
 

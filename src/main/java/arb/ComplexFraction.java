@@ -8,7 +8,6 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
-import arb.functions.Function;
 import arb.functions.NullaryFunction;
 
 /**
@@ -30,7 +29,7 @@ public class ComplexFraction implements
     name             = that.name;
     this.numerator   = that.numerator;
     this.denominator = that.denominator;
-    that.numerator = null;
+    that.numerator   = null;
     that.denominator = null;
     return this;
   }
@@ -51,8 +50,7 @@ public class ComplexFraction implements
   {
     Expression<Object,
                   ComplexFraction,
-                  NullaryFunction<
-                                ComplexFraction>> express =
+                  NullaryFunction<ComplexFraction>> express =
                                                             Compiler.express(string,
                                                                              null,
                                                                              Object.class,
@@ -395,6 +393,13 @@ public class ComplexFraction implements
   public ComplexFraction sub(Integer that, int prec, ComplexFraction res)
   {
     return res.set(this).sub(that, prec, res);
+  }
+
+  public ComplexFraction resize(int i)
+  {
+    realPart.resize(arena, i);
+    imaginaryPart.resize(arena, i);
+    return this;
   }
 
 }
