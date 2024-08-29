@@ -82,7 +82,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
   {
     return result.set(this).mul(operand, prec, result);
   }
-                                                       
+                                             
   /**
    * 
    * @param bits

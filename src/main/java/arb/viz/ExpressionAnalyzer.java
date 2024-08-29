@@ -204,7 +204,8 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
   }
 
   public static final Class<?>[] TYPES = new Class[]
-  { Integer.class,
+  { Object.class,
+    Integer.class,
     Real.class,
     Complex.class,
     RealPolynomial.class,

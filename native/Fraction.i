@@ -135,6 +135,13 @@ import java.util.stream.Stream;
 
   public static int BYTES = Integer.BYTES * 2;
 
+  public ComplexFraction sub(Integer element, int prec, ComplexFraction result)
+  {
+    sub(element, prec, result.realPart);
+    result.imaginaryPart.zero();
+    return result;
+  }
+
   public ComplexFraction sub(Fraction element, int prec, ComplexFraction result)
   {
     sub(element, prec, result.realPart);

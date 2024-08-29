@@ -66,6 +66,7 @@ public class ComplexRationalFunctionTest extends
           ComplexRationalNullaryFunction.express("v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
                                                  context);
     var x       = R.evaluate();
+    System.out.println( "gr8=" + x.toString() );
     assertEquals("(-6*x^2+15)/(x^3) + 0i", x.toString());
   }
 

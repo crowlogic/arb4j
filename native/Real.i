@@ -463,10 +463,10 @@ import arb.utensils.Utensils;
     return result; 
   }
   
-  public ComplexRationalFunction
-         mul(ComplexRationalFunction that, int prec, ComplexRationalFunction res)
+ public ComplexRationalFunction
+         mul(ComplexRationalFunction that, int prec, ComplexRationalFunction result)
   {
-    return res.set(that).mul(this, prec,res);
+    return result.set(this).mul(that, prec, result);
   }
   
   public RealPolynomial ascendingFactorial(Integer n, int bits, RealPolynomial result)
