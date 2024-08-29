@@ -4,7 +4,6 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.Context;
-import arb.functions.rational.ComplexRationalNullaryFunction;
 import arb.functions.rational.RationalFunctionSequence;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.utensils.Utensils;
@@ -33,15 +32,16 @@ public class RationalFunctionTest extends
 
   }
 
-  public void testLommelRationalPolynomialSequenceNode()
+  public void testLommelRationalPolynomialViaSequenceNode()
   {
-    RationalFunctionSequence sequence           = RationalFunctionSequence.express("R(n,1⁄2;z)");
-    RationalFunction         R3                = sequence.evaluate(3, 128);
-    Fraction                 R3AtTwoPointThree = R3.evaluate(new Fraction(23,
-                                                                          10));
-    System.out.format("sequence=%s\nR3=%s\nR3AtTwoPointThree=%s\n", sequence, R3, R3AtTwoPointThree );
+    RationalFunctionSequence sequence = RationalFunctionSequence.express("R(n,1⁄2;z)");
+    RationalFunction         R3       = sequence.evaluate(3, 128);
     assertEquals("(-6*x^2+15)/(x^3)", R3.toString());
-
+    Fraction R3AtTwoPointThree = R3.evaluate(new Fraction(23,
+                                                          10));
+    assertEquals(new Fraction(-16740,
+                              12167),
+                 R3AtTwoPointThree);
   }
 
   public void testLommelPolynomials()
@@ -53,25 +53,25 @@ public class RationalFunctionTest extends
                                            context);
     var x = R.evaluate(3, 128);
     assertEquals("(-6*x^2+15)/(x^3)", x.toString());
-    
+
     double y = x.asRealFunction().eval(2.3);
-    assertEquals( -1.375852716363935234651105449165776280101915, y);
+    assertEquals(-1.375852716363935234651105449165776280101915, y);
   }
 
   public void testRationalLommelPolynomialsAsNullary()
   {
-    var context = new Context(Real.named("v").set(RealConstants.half),
-                              Integer.named("n").set(3));
+    var    context = new Context(Real.named("v").set(RealConstants.half),
+                                 Integer.named("n").set(3));
 
-    var R       =
-          RationalNullaryFunction.express("v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
-                                                 context);
-    var x       = R.evaluate();
-    double y = x.asRealFunction().eval(2.3);
-    //System.out.println("y=" + y );
+    var    R       =
+             RationalNullaryFunction.express("v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
+                                             context);
+    var    x       = R.evaluate();
+    double y       = x.asRealFunction().eval(2.3);
+    // System.out.println("y=" + y );
     assertEquals("(-6*x^2+15)/(x^3)", x.toString());
   }
-  
+
   @SuppressWarnings("resource")
   public void testAdd()
   {
