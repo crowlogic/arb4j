@@ -32,7 +32,7 @@ public class RationalFunctionTest extends
 
   }
 
-  public void testLommelRationalPolynomialViaSequenceNode()
+  public void testLommelRationalFuctionSequenceViaSequenceNode()
   {
     RationalFunctionSequence sequence = RationalFunctionSequence.express("R(n,1⁄2;z)");
     RationalFunction         R3       = sequence.evaluate(3, 128);

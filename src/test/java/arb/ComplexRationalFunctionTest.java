@@ -375,49 +375,55 @@ public class ComplexRationalFunctionTest extends
 
   public static void testDivisionMoreThoroughly()
   {
-    ComplexRationalFunction a = new ComplexRationalFunction();
-    a.realPart.set("3+4*x^2-3*x^4");
-    a.imaginaryPart.set("-1+2*x-3*x^3");
-    ComplexRationalFunction b = new ComplexRationalFunction();
-    b.realPart.set("-2-2*x^2-3*x^3");
-    b.imaginaryPart.set("1+3*x^2-3*x^3");
+    try ( ComplexRationalFunction a = new ComplexRationalFunction();
+          ComplexRationalFunction b = new ComplexRationalFunction();)
+    {
+      a.realPart.set("3+4*x^2-3*x^4");
+      a.imaginaryPart.set("-1+2*x-3*x^3");
 
-    ComplexRationalFunction quotient    = a.div(b, new ComplexRationalFunction());
-    // System.out.format("(%s)/(%s)=%s\n", a, b, quotient);
+      b.realPart.set("-2-2*x^2-3*x^3");
+      b.imaginaryPart.set("1+3*x^2-3*x^3");
 
-    Fraction                x           = new Fraction(23,
-                                                       100);
-    ComplexFraction         aAtx        = a.evaluate(x, new ComplexFraction());
-    ComplexFraction         bAtx        = b.evaluate(x, new ComplexFraction());
-    // System.out.format("%s(%s)=%s\n", a, x, aAtx);
-    // System.out.format("%s(%s)=%s\n", b, x, bAtx);
-    ComplexFraction         aDivbAtx    = aAtx.div(bAtx, new ComplexFraction());
-    // System.out.format("%s/%s=%s", aAtx, bAtx, aDivbAtx );
-    ComplexFraction         quotientAtx = quotient.evaluate(x, new ComplexFraction());
-    assertEquals(quotientAtx, aDivbAtx);
+      ComplexRationalFunction quotient    = a.div(b, new ComplexRationalFunction());
+      // System.out.format("(%s)/(%s)=%s\n", a, b, quotient);
+
+      Fraction                x           = new Fraction(23,
+                                                         100);
+      ComplexFraction         aAtx        = a.evaluate(x, new ComplexFraction());
+      ComplexFraction         bAtx        = b.evaluate(x, new ComplexFraction());
+      // System.out.format("%s(%s)=%s\n", a, x, aAtx);
+      // System.out.format("%s(%s)=%s\n", b, x, bAtx);
+      ComplexFraction         aDivbAtx    = aAtx.div(bAtx, new ComplexFraction());
+      // System.out.format("%s/%s=%s", aAtx, bAtx, aDivbAtx );
+      ComplexFraction         quotientAtx = quotient.evaluate(x, new ComplexFraction());
+      assertEquals(quotientAtx, aDivbAtx);
+    }
   }
 
   public static void testAdditionMoreThoroughly()
   {
-    ComplexRationalFunction a = new ComplexRationalFunction();
-    a.realPart.set("3+4*x^2-3*x^4");
-    a.imaginaryPart.set("-1+2*x-3*x^3");
-    ComplexRationalFunction b = new ComplexRationalFunction();
-    b.realPart.set("-2-2*x^2-3*x^3");
-    b.imaginaryPart.set("1+3*x^2-3*x^3");
+    try ( ComplexRationalFunction a = new ComplexRationalFunction();
+          ComplexRationalFunction b = new ComplexRationalFunction();)
+    {
+      a.realPart.set("3+4*x^2-3*x^4");
+      a.imaginaryPart.set("-1+2*x-3*x^3");
 
-    ComplexRationalFunction sum  = a.add(b, new ComplexRationalFunction());
-    // System.out.format("(%s)+(%s)=%s\n", a, b, sum);
+      b.realPart.set("-2-2*x^2-3*x^3");
+      b.imaginaryPart.set("1+3*x^2-3*x^3");
 
-    Fraction                x    = new Fraction(23,
-                                                100);
-    ComplexFraction         aAtx = a.evaluate(x, new ComplexFraction());
-    ComplexFraction         bAtx = b.evaluate(x, new ComplexFraction());
+      ComplexRationalFunction sum       = a.add(b, new ComplexRationalFunction());
+      // System.out.format("(%s)+(%s)=%s\n", a, b, sum);
+
+      Fraction                x         = new Fraction(23,
+                                                       100);
+      ComplexFraction         aAtx      = a.evaluate(x, new ComplexFraction());
+      ComplexFraction         bAtx      = b.evaluate(x, new ComplexFraction());
 //    /System.out.format("%s(%s)=%s\n", a, x, aAtx);
-    System.out.format("%s(%s)=%s\n", b, x, bAtx);
-    ComplexFraction aPlusbAtx = aAtx.add(bAtx, new ComplexFraction());
-    ComplexFraction sumAtx    = sum.evaluate(x, new ComplexFraction());
-    assertEquals(sumAtx, aPlusbAtx);
+      // System.out.format("%s(%s)=%s\n", b, x, bAtx);
+      ComplexFraction         aPlusbAtx = aAtx.add(bAtx, new ComplexFraction());
+      ComplexFraction         sumAtx    = sum.evaluate(x, new ComplexFraction());
+      assertEquals(sumAtx, aPlusbAtx);
+    }
   }
 
   public void testAdd()

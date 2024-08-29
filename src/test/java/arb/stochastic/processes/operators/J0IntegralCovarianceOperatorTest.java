@@ -25,7 +25,7 @@ public class J0IntegralCovarianceOperatorTest extends
 
     projections = IntStream.range(0, 10).mapToObj(λₖ).toList();
 
-    System.out.println("projections=" + projections);
+    //System.out.println("projections=" + projections);
     double lambda0 = projections.get(0).doubleValue();
     assertEquals(0.886226925452758013649083741670 * Math.sqrt(2), lambda0);
     assertEquals(0.495415912200751376668128595640 * Math.sqrt(2), projections.get(1).doubleValue());
