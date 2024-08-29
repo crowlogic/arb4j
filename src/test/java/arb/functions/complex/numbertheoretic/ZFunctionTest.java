@@ -28,7 +28,7 @@ public class ZFunctionTest extends
     {
       z.set(6, 0.4);
       Z.evaluate(z, 2, 128, res);
-      System.out.format("Z(z=%s)=%s\n",z,res);
+      //System.out.format("Z(z=%s)=%s\n",z,res);
       Complex derivative = res.get(1);
       Real r =  res.getReal();
       

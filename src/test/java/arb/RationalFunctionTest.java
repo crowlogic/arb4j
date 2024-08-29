@@ -35,11 +35,13 @@ public class RationalFunctionTest extends
 
   public void testLommelRationalPolynomialSequenceNode()
   {
-    RationalFunctionSequence express           = RationalFunctionSequence.express("R(n,1⁄2;z)");
-    RationalFunction         R3                = express.evaluate(3, 128);
+    RationalFunctionSequence sequence           = RationalFunctionSequence.express("R(n,1⁄2;z)");
+    RationalFunction         R3                = sequence.evaluate(3, 128);
     Fraction                 R3AtTwoPointThree = R3.evaluate(new Fraction(23,
-                                                                          100));
-    System.out.format("R3AtTwoPointThree=%s\n", R3AtTwoPointThree);
+                                                                          10));
+    System.out.format("sequence=%s\nR3=%s\nR3AtTwoPointThree=%s\n", sequence, R3, R3AtTwoPointThree );
+    assertEquals("(-6*x^2+15)/(x^3)", R3.toString());
+
   }
 
   public void testLommelPolynomials()
@@ -54,7 +56,6 @@ public class RationalFunctionTest extends
     
     double y = x.asRealFunction().eval(2.3);
     assertEquals( -1.375852716363935234651105449165776280101915, y);
-    System.out.println("y=" + y );
   }
 
   public void testRationalLommelPolynomialsAsNullary()

@@ -77,8 +77,8 @@ public class ComplexRationalFunctionTest extends
     var    x       = R;//.instantiate();
 
     Object x3      = x.evaluate(128);
-    System.out.println("gr8=" + x3);
-    System.out.println(" should also be gr8 " + R);
+    //System.out.println("gr8=" + x3);
+    //System.out.println(" should also be gr8 " + R);
     assertEquals("(-6*x^2+15)/(x^3) + 0i", x3.toString());
   }
 
@@ -101,7 +101,7 @@ public class ComplexRationalFunctionTest extends
     ComplexRationalFunction expressed = seq.evaluate(0, 128);
     assertEquals("1 + 0i", expressed.toString());
     seq.evaluate(1, 128, expressed);
-    System.out.println("ff " + expressed.toString());
+    //System.out.println("ff " + expressed.toString());
     assertEquals("(-x+1)/2 + 0i", expressed.toString());
 
     seq.evaluate(2, 128, expressed);
@@ -212,7 +212,7 @@ public class ComplexRationalFunctionTest extends
     ComplexRationalFunction.express("b:-⅞*(½ - x/2)", context);
     ComplexRationalFunction.express("c:21/80*(½ - x/2)²", context);
     ComplexRationalFunction expectedSum = ComplexRationalFunction.express("a()+b()+c()", context);
-    System.out.println(expressed.toString());
+    //System.out.println(expressed.toString());
     assertEquals("(21*x^2+98*x+201)/320 + 0i", expressed.toString());
     assertEquals(expectedSum, expressed);
   }
