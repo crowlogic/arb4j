@@ -434,7 +434,7 @@ public interface Field<X extends Field<X>> extends
   public default X
          set(Fraction... a)
   {
-    assert false : "todo: set from Fraction...=" + Arrays.asList(a);
+    assert false : "todo: set " + getClass().getName() + " from Fraction...=" + Arrays.asList(a);
     return (X) this;
   }
   
