@@ -219,7 +219,7 @@ public class Context
     return registerVariable(var.getName(), var);
   }
 
-  public <R> R registerVariable(String name, R variable)
+  public <R extends Named> R registerVariable(String name, R variable)
   {
     assert name != null : "name cannot be null";
     assert variable != null : "variable cannot be null";
@@ -277,12 +277,12 @@ public class Context
                          variables);
   }
 
-  public Collection<Entry<String, Object>> variableEntries()
+  public Collection<Entry<String, Named>> variableEntries()
   {
     return variables.map.entrySet();
   }
 
-  public Stream<Entry<String, Object>> variableEntryStream()
+  public Stream<Entry<String, Named>> variableEntryStream()
   {
     return variableEntries().stream();
   }

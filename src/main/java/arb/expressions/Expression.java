@@ -495,7 +495,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   HashSet<String> declaredIntermediateVariables = new HashSet<>();
 
-  public void declareVariableEntry(ClassVisitor classVisitor, Entry<String, Object> variable)
+  public void declareVariableEntry(ClassVisitor classVisitor, Entry<String, Named> variable)
   {
     if (trace)
     {

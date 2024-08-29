@@ -5,9 +5,7 @@ import java.util.HashMap;
 import arb.Named;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import javafx.beans.value.ObservableValueBase;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableListBase;
+import javafx.collections.ModifiableObservableListBase;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -15,7 +13,8 @@ import javafx.collections.ObservableListBase;
  * 
  * @author ©2024 Stephen Crowley
  */
-public class Variables extends ObservableListBase<String> 
+public class Variables extends
+                       ModifiableObservableListBase<Named>
 
 {
   @Override
@@ -24,7 +23,7 @@ public class Variables extends ObservableListBase<String>
     return String.format("Variables(#%s)[%s]", System.identityHashCode(this), map);
   }
 
-  public final HashMap<String, Object> map = new HashMap<>();
+  public final HashMap<String, Named> map = new HashMap<>();
 
   @SafeVarargs
   public <A extends Named> Variables(A... variables)
@@ -35,7 +34,7 @@ public class Variables extends ObservableListBase<String>
     }
   }
 
-  public Object register(String name, Object field)
+  public Object register(String name, Named field)
   {
     return map.put(name, field);
   }
@@ -47,7 +46,7 @@ public class Variables extends ObservableListBase<String>
   }
 
   @SuppressWarnings("unchecked")
-  public <R> R put(String name, R variable)
+  public <R extends Named> R put(String name, R variable)
   {
     return (R) map.put(name, variable);
   }
@@ -55,13 +54,42 @@ public class Variables extends ObservableListBase<String>
   @Override
   public int size()
   {
-   return map.size();
+    return map.size();
   }
 
   @Override
-  public String get(int index)
+  public Named get(int index)
   {
-    return map.entrySet().toArray()[index].toString();
+    return map.values().stream().toList().get(index);
+  }
+
+  @Override
+  protected void doAdd(int index, Named element)
+  {
+    System.err.format("doAdd(index=%s, element=%s", index,element);
+    map.put(element.getName(), element);
+  }
+
+  @Override
+  protected Named doSet(int index, Named element)
+  {
+    System.err.format("doSet(index=%s, element=%s)", index,element);
+
+    if ( element == null )
+    {
+      return null;
+    }
+    Named put = map.put(element.getName(), element);
+    System.err.println("after set " + this );
+    return put;
+  }
+
+  @Override
+  protected Named doRemove(int index)
+  {
+    System.err.format("doRemove(index=%s)", index);
+
+    return map.remove(map.keySet().stream().toList().get(index));
   }
 
 }

@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 
 import arb.Integer;
+import arb.Named;
 import arb.Real;
 import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -119,8 +120,8 @@ public class ExpressionTab<D, C, F extends Function<D, C>> extends
   @SuppressWarnings("unchecked")
   private void updateContextView()
   {
-    ListView<String> contextListView = (ListView<
-                  String>) this.expressionAnalyzer.contextBox.getChildren().get(1);
+    ListView<Named> contextListView = (ListView<
+                  Named>) this.expressionAnalyzer.contextBox.getChildren().get(1);
     contextListView.refresh();
   }
 
@@ -282,8 +283,9 @@ public class ExpressionTab<D, C, F extends Function<D, C>> extends
     }
     try
     {
+      // TODO: make this editable via the Context ListView
       // Assuming the input is an Integer for this example
-      D var = (D) new Integer(3);
+      D var = (D) new Integer(7);
       result = instance.evaluate(var, 128);
       System.out.println(expr + "=" + result);
       updateTreeTableView();

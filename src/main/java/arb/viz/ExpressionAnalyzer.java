@@ -13,6 +13,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.control.skin.TableColumnHeader;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -20,6 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
                                Application
@@ -49,6 +51,8 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     }
   }
 
+  public int bits = 128;
+
   public VBox createMainLayout()
   {
     tabPane         = new TabPane();
@@ -70,7 +74,46 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
                                newButtonBox());
     splitPane       = new SplitPane();
     contextBox      = new VBox(10);
-    contextListView = new ListView<String>();
+    contextListView = new ListView<Named>();
+    StringConverter<Named> converter = new StringConverter<Named>()
+    {
+
+      @Override
+      public String toString(Named object)
+      {
+        return object == null ? "null"
+                              : object.getClass().getSimpleName() + ": " + object.toString();
+      }
+
+      @Override
+      public Named fromString(String string)
+      {
+        int    colon        = string.indexOf(':');
+        String type         = string.substring(0, colon);
+        int    namePosition = colon;
+        while (string.charAt(++namePosition) == ' ');
+        int    equalsPosition = string.indexOf('=', colon);
+        String name           = string.substring(namePosition, equalsPosition);
+        String value          = string.substring(equalsPosition + 1);
+
+        switch (type)
+        {
+        case "Real":
+          return Real.named(name).set(value, bits);
+        case "Integer":
+          return Integer.named(name).set(value);
+        default:
+          showAlert("Context Variable: " + string,
+                    String.format("TODO: handle type='%s'\nname='%s'\nvalue='%s'\n",
+                                  type,
+                                  name,
+                                  value));
+          return null;
+        }
+      }
+    };
+    contextListView.setCellFactory(param -> new TextFieldListCell<Named>(converter));
+    contextListView.setEditable(true);
     contextBox.getChildren().addAll(new Label("Context Variables:"), contextListView);
 
     VBox.setVgrow(splitPane, Priority.ALWAYS);
@@ -226,7 +269,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     ComplexRationalFunction.class,
     Fraction.class,
     ComplexFraction.class };
-  public ListView<String>        contextListView;
+  public ListView<Named>         contextListView;
 
   void showAlert(String title, String content)
   {
