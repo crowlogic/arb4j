@@ -33,8 +33,8 @@ import javafx.scene.layout.VBox;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ExpressionTab<D, C, F extends Function<D, C>> extends
-                          VBox
+public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
+                                  VBox
 {
 
   final ExpressionAnalyzer<D, C, F> expressionAnalyzer;
@@ -45,11 +45,17 @@ public class ExpressionTab<D, C, F extends Function<D, C>> extends
   C                                 result;
   Context                           context;
 
-  public ExpressionTab(ExpressionAnalyzer<D, C, F> expressionAnalyzer)
+  public Context getContext()
+  {
+    return context;
+  }
+
+  public ExpressionAnalyzerTab(ExpressionAnalyzer<D, C, F> expressionAnalyzer)
   {
     super(10);
     this.expressionAnalyzer = expressionAnalyzer;
     this.context            = new Context(Integer.named("n").set(3),
+
                                           Real.named("v").set(RealConstants.half));
 
     expressionInput         = new TextField();

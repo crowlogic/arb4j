@@ -8,6 +8,7 @@ import arb.Integer;
 import arb.expressions.Context;
 import arb.functions.Function;
 import arb.functions.rational.ComplexRationalNullaryFunction;
+import arb.functions.rational.RationalFunctionSequence;
 import arb.utensils.Utensils;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -27,15 +28,24 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
                                Application
 {
 
-  private TabPane    tabPane;
-  ComboBox<Class<?>> domainTypeBox;
-  ComboBox<Class<?>> codomainTypeBox;
-  ComboBox<Class<?>> functionTypeBox;
+  public static final Class<?>[] INTERFACES = new Class<?>[]
+  { Function.class, RationalFunctionSequence.class, ComplexRationalNullaryFunction.class };
 
-  static Method      resizeMethod;
-  private boolean    contextViewVisible = false;
-  VBox               contextBox;
-  private SplitPane  splitPane;
+  static Method                  resizeMethod;
+
+  public static final Class<?>[] TYPES      = new Class[]
+  { Object.class,
+    Integer.class,
+    GaussianInteger.class,
+    Real.class,
+    Complex.class,
+    IntegerPolynomial.class,
+    RealPolynomial.class,
+    ComplexPolynomial.class,
+    RationalFunction.class,
+    ComplexRationalFunction.class,
+    Fraction.class,
+    ComplexFraction.class };
 
   static
   {
@@ -51,91 +61,213 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     }
   }
 
-  public int bits = 128;
+  public static void main(String[] args)
+  {
+    launch(args);
+  }
+
+  public int                      bits                 = 128;
+
+  public final ComboBox<Class<?>> codomainTypeBox      = new ComboBox<Class<?>>();
+
+  VBox                            contextBox;
+
+  public ListView<Named>          contextListView;
+
+  private boolean                 contextViewVisible   = false;
+
+  public final ComboBox<Class<?>> domainTypeBox        = new ComboBox<Class<?>>();
+
+  public final ComboBox<Class<?>> functionTypeBox      = new ComboBox<Class<?>>();
+
+  private SplitPane               splitPane;
+
+  private TabPane                 tabPane;
+
+  private double[]                lastDividerPositions = null;
+
+  private void addNewExpressionTab()
+  {
+    Tab                            tab           =
+                                       new Tab("Expression " + (tabPane.getTabs().size() + 1));
+    ExpressionAnalyzerTab<D, C, F> expressionTab = new ExpressionAnalyzerTab<D, C, F>(this);
+    tab.setContent(expressionTab);
+    tabPane.getTabs().add(tab);
+    tabPane.getSelectionModel().select(tab);
+
+    // Update the contextListView when a new tab is added
+    updateContextListView(expressionTab);
+
+    // Add a listener to update the contextListView when the tab is selected
+    tab.setOnSelectionChanged(event ->
+    {
+      if (tab.isSelected())
+      {
+        updateContextListView(expressionTab);
+      }
+    });
+  }
+
+  private void updateContextListView(ExpressionAnalyzerTab<D, C, F> expressionTab)
+  {
+    if (contextListView != null)
+    {
+      contextListView.setItems(expressionTab.getContext().variables);
+    }
+  }
+
+  private void compileCurrentExpression()
+  {
+    executeTabAction(ExpressionAnalyzerTab::compileExpression);
+  }
 
   public VBox createMainLayout()
   {
-    tabPane         = new TabPane();
-    domainTypeBox   = new ComboBox<>();
-    codomainTypeBox = new ComboBox<>();
-    functionTypeBox = new ComboBox<>();
+    tabPane = new TabPane();
 
     setupTypeBoxes();
 
-    VBox mainLayout = new VBox(10);
-    HBox typeBoxes  = new HBox(10,
-                               new Label("Domain:"),
-                               domainTypeBox,
-                               new Label("Codomain:"),
-                               codomainTypeBox,
-                               new Label("Function:"),
-                               functionTypeBox);
-    HBox buttonBox  = new HBox(10,
-                               newButtonBox());
-    splitPane       = new SplitPane();
-    contextBox      = new VBox(10);
-    contextListView = new ListView<Named>();
-    StringConverter<Named> converter = new StringConverter<Named>()
-    {
+    var mainLayout = new VBox(10);
 
-      @Override
-      public String toString(Named object)
-      {
-        return object == null ? "null"
-                              : object.getClass().getSimpleName() + ": " + object.toString();
-      }
+    var typeBoxes  = createTypeBoxes();
 
-      @Override
-      public Named fromString(String string)
-      {
-        int    colon        = string.indexOf(':');
-        String type         = string.substring(0, colon);
-        int    namePosition = colon;
-        while (string.charAt(++namePosition) == ' ');
-        int    equalsPosition = string.indexOf('=', colon);
-        String name           = string.substring(namePosition, equalsPosition);
-        String value          = string.substring(equalsPosition + 1);
+    var buttonBox  = new HBox(10,
+                              newButtonBox());
 
-        switch (type)
-        {
-        case "Real":
-          return Real.named(name).set(value, bits);
-        case "Integer":
-          return Integer.named(name).set(value);
-        default:
-          showAlert("Context Variable: " + string,
-                    String.format("TODO: handle type='%s'\nname='%s'\nvalue='%s'\n",
-                                  type,
-                                  name,
-                                  value));
-          return null;
-        }
-      }
-    };
-    contextListView.setCellFactory(param -> new TextFieldListCell<Named>(converter));
-    contextListView.setEditable(true);
-    contextBox.getChildren().addAll(new Label("Context Variables:"), contextListView);
+    var scrollpane = createScrollPane();
 
-    VBox.setVgrow(splitPane, Priority.ALWAYS);
-    splitPane.getItems().add(tabPane);
+    mainLayout.getChildren().addAll(typeBoxes, buttonBox, scrollpane);
 
-    var scrollpane = new ScrollPane(splitPane);
+    return mainLayout;
+  }
+
+  protected ScrollPane createScrollPane()
+  {
+    var scrollpane = new ScrollPane(createSplitPane());
     VBox.setVgrow(scrollpane, Priority.ALWAYS);
 
     scrollpane.setFitToWidth(true);
     scrollpane.setMinViewportWidth(1800);
     scrollpane.setFitToHeight(true);
     scrollpane.setPannable(true);
+    return scrollpane;
+  }
 
-    mainLayout.getChildren().addAll(typeBoxes, buttonBox, scrollpane);
-    return mainLayout;
+  protected SplitPane createSplitPane()
+  {
+    splitPane       = new SplitPane();
+    contextBox      = new VBox(10);
+    contextListView = new ListView<Named>();
+    StringConverter<Named> converter = new ContextVariableStringConverter<D, C, F>(this);
+    contextListView.setCellFactory(param -> new TextFieldListCell<Named>(converter));
+    contextListView.setEditable(true);
+    contextBox.getChildren().addAll(new Label("Context Variables:"), contextListView);
+
+    VBox.setVgrow(splitPane, Priority.ALWAYS);
+    splitPane.getItems().add(tabPane);
+    return splitPane;
+  }
+
+  protected HBox createTypeBoxes()
+  {
+    HBox typeBoxes = new HBox(10,
+                              new Label("Domain:"),
+                              domainTypeBox,
+                              new Label("Codomain:"),
+                              codomainTypeBox,
+                              new Label("Function:"),
+                              functionTypeBox);
+    return typeBoxes;
+  }
+
+  private void evaluateExpression()
+  {
+    executeTabAction(ExpressionAnalyzerTab::evaluateExpression);
+  }
+
+  @SuppressWarnings("unchecked")
+  private void executeTabAction(Consumer<ExpressionAnalyzerTab<D, C, F>> action)
+  {
+    Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
+    if (currentTab != null)
+    {
+      javafx.scene.Node              content       = currentTab.getContent();
+
+      ExpressionAnalyzerTab<D, C, F> expressionTab = (ExpressionAnalyzerTab<D, C, F>) content;
+
+      action.accept(expressionTab);
+    }
+  }
+
+  private void expandAllNodes()
+  {
+    executeTabAction(ExpressionAnalyzerTab::expandAllNodes);
+  }
+
+  @SuppressWarnings("unchecked")
+  public Context getCurrentContext()
+  {
+    Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
+    if (currentTab != null)
+    {
+      javafx.scene.Node              content       = currentTab.getContent();
+      ExpressionAnalyzerTab<D, C, F> expressionTab = (ExpressionAnalyzerTab<D, C, F>) content;
+      return expressionTab.context;
+    }
+    return null;
+  }
+
+  private HBox newButtonBox()
+  {
+    Button addTabButton = new Button("New");
+    addTabButton.setOnAction(e -> addNewExpressionTab());
+
+    Button compileButton = new Button("Compile");
+    compileButton.setOnAction(e -> compileCurrentExpression());
+
+    Button expandAllButton = new Button("Expand All");
+    expandAllButton.setOnAction(e -> expandAllNodes());
+
+    Button evaluateButton = new Button("Evaluate");
+    evaluateButton.setOnAction(e -> evaluateExpression());
+
+    Button toggleContextButton = new Button("Toggle Context");
+    toggleContextButton.setOnAction(e -> toggleContextView());
+
+    return new HBox(10,
+                    addTabButton,
+                    compileButton,
+                    expandAllButton,
+                    evaluateButton,
+                    toggleContextButton);
+  }
+
+  private void setupTypeBoxes()
+  {
+
+    domainTypeBox.getItems().addAll(TYPES);
+    codomainTypeBox.getItems().addAll(TYPES);
+    functionTypeBox.getItems().addAll(INTERFACES);
+    domainTypeBox.setValue(Integer.class);
+    codomainTypeBox.setValue(RationalFunction.class);
+    functionTypeBox.setValue(Function.class);
+  }
+
+  void showAlert(String title, String content)
+  {
+    Alert alert = new Alert(AlertType.ERROR);
+    alert.setTitle(title);
+    alert.setHeaderText(null);
+    alert.setContentText(content);
+    alert.setWidth(800);
+    alert.showAndWait();
   }
 
   @Override
   public void start(Stage primaryStage)
   {
-    primaryStage.setWidth(1800);
-    primaryStage.setHeight(900);
+    primaryStage.setWidth(1900);
+    primaryStage.setHeight(950);
 
     Scene scene = new Scene(createMainLayout());
 
@@ -156,133 +288,26 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     addNewExpressionTab();
   }
 
-  private void setupTypeBoxes()
-  {
-    domainTypeBox.getItems().addAll(TYPES);
-    codomainTypeBox.getItems().addAll(TYPES);
-    functionTypeBox.getItems().addAll(Function.class, ComplexRationalNullaryFunction.class);
-    domainTypeBox.setValue(Integer.class);
-    codomainTypeBox.setValue(RationalFunction.class);
-    functionTypeBox.setValue(Function.class);
-  }
-
-  private void addNewExpressionTab()
-  {
-    Tab                    tab           = new Tab("Expression " + (tabPane.getTabs().size() + 1));
-    ExpressionTab<D, C, F> expressionTab = new ExpressionTab<D, C, F>(this);
-    tab.setContent(expressionTab);
-    tabPane.getTabs().add(tab);
-    tabPane.getSelectionModel().select(tab);
-  }
-
-  private HBox newButtonBox()
-  {
-    Button addTabButton = new Button("New");
-    addTabButton.setOnAction(e -> addNewExpressionTab());
-
-    Button compileButton = new Button("Compile");
-    compileButton.setOnAction(e -> compileCurrentExpression());
-
-    Button expandAllButton = new Button("Expand All");
-    expandAllButton.setOnAction(e -> expandAllNodes());
-
-    Button evaluateButton = new Button("Evaluate");
-    evaluateButton.setOnAction(e -> evaluateExpression());
-
-    Button toggleContextButton = new Button("Toggle Context");
-    toggleContextButton.setOnAction(e -> toggleContextView());
-
-    HBox buttonBox = new HBox(10,
-                              addTabButton,
-                              compileButton,
-                              expandAllButton,
-                              evaluateButton,
-                              toggleContextButton);
-    return buttonBox;
-  }
-
   private void toggleContextView()
   {
     if (contextViewVisible)
     {
+      lastDividerPositions = splitPane.getDividerPositions();
       splitPane.getItems().remove(contextBox);
     }
     else
     {
-      contextListView.setItems(getContext().variables);
+      contextListView.setItems(getCurrentContext().variables);
       splitPane.getItems().add(0, contextBox);
-      splitPane.setDividerPositions(0.2);
+      if (lastDividerPositions == null)
+      {
+        splitPane.setDividerPositions(0.2);
+      }
+      else
+      {
+        splitPane.setDividerPositions(lastDividerPositions);
+      }
     }
     contextViewVisible = !contextViewVisible;
-  }
-
-  @SuppressWarnings("unchecked")
-  public Context getContext()
-  {
-    Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
-    if (currentTab != null)
-    {
-      javafx.scene.Node      content       = currentTab.getContent();
-      ExpressionTab<D, C, F> expressionTab = (ExpressionTab<D, C, F>) content;
-      return expressionTab.context;
-    }
-    return null;
-  }
-
-  @SuppressWarnings("unchecked")
-  private void executeTabAction(Consumer<ExpressionTab<D, C, F>> action)
-  {
-    Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
-    if (currentTab != null)
-    {
-      javafx.scene.Node      content       = currentTab.getContent();
-
-      ExpressionTab<D, C, F> expressionTab = (ExpressionTab<D, C, F>) content;
-
-      action.accept(expressionTab);
-    }
-  }
-
-  private void compileCurrentExpression()
-  {
-    executeTabAction(ExpressionTab::compileExpression);
-  }
-
-  private void expandAllNodes()
-  {
-    executeTabAction(ExpressionTab::expandAllNodes);
-  }
-
-  private void evaluateExpression()
-  {
-    executeTabAction(ExpressionTab::evaluateExpression);
-  }
-
-  public static final Class<?>[] TYPES = new Class[]
-  { Object.class,
-    Integer.class,
-    Real.class,
-    Complex.class,
-    RealPolynomial.class,
-    ComplexPolynomial.class,
-    RationalFunction.class,
-    ComplexRationalFunction.class,
-    Fraction.class,
-    ComplexFraction.class };
-  public ListView<Named>         contextListView;
-
-  void showAlert(String title, String content)
-  {
-    Alert alert = new Alert(AlertType.ERROR);
-    alert.setTitle(title);
-    alert.setHeaderText(null);
-    alert.setContentText(content);
-    alert.setWidth(800);
-    alert.showAndWait();
-  }
-
-  public static void main(String[] args)
-  {
-    launch(args);
   }
 }
