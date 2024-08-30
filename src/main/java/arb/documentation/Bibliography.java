@@ -21,6 +21,15 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+
+public static Article harmonizableAndVBoundedProcesses = 
+    new Article("A Note on Harmonizable and V-Bounded Processes",
+                "Yûichirô Kakihara",
+                "1985",
+                "Journal of Multivariate Analysis",
+                "16",
+                "140-156");
+
   /**
    * Askey, R. (1989). Beta integrals and the associated orthogonal polynomials.
    * Number Theory, Madras 1987, 84–121. doi:10.1007/bfb0086401 10.1007/bfb0086401
