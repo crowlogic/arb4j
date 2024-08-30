@@ -7,8 +7,10 @@ import arb.*;
 import arb.Integer;
 import arb.expressions.Context;
 import arb.functions.Function;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.rational.ComplexRationalNullaryFunction;
 import arb.functions.rational.RationalFunctionSequence;
+import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -31,7 +33,11 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
 {
 
   public static final Class<?>[] INTERFACES = new Class<?>[]
-  { Function.class, RationalFunctionSequence.class, ComplexRationalNullaryFunction.class };
+  { Function.class,
+    RealFunction.class,
+    ComplexFunction.class,
+    RationalFunctionSequence.class,
+    ComplexRationalNullaryFunction.class };
 
   static Method                  resizeMethod;
 
@@ -47,7 +53,9 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     RationalFunction.class,
     ComplexRationalFunction.class,
     Fraction.class,
-    ComplexFraction.class };
+    ComplexFraction.class,
+    RealMatrix.class,
+    ComplexMatrix.class };
 
   static
   {
@@ -160,10 +168,11 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     splitPane       = new SplitPane();
     contextBox      = new VBox(10);
     contextListView = new ListView<Named>();
-    StringConverter<Named> converter   = new ContextVariableStringConverter<D, C, F>(this);
+    StringConverter<Named> converter             =
+                                     new ContextVariableStringConverter<D, C, F>(this);
     // Create a MenuItem and place it in a ContextMenu
-    MenuItem               insertNewRealVariable  = new MenuItem("Insert New Real Variable");
-    ContextMenu            contextMenu = new ContextMenu(insertNewRealVariable);
+    MenuItem               insertNewRealVariable = new MenuItem("Insert New Real Variable");
+    ContextMenu            contextMenu           = new ContextMenu(insertNewRealVariable);
 
     contextListView.setCellFactory(ContextMenuListCell.<
                   Named>forListView(contextMenu, param -> new TextFieldListCell<Named>(converter)));
@@ -177,8 +186,9 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
       public void handle(ActionEvent e)
       {
         ExpressionAnalyzer.this.getCurrentContext().variables.add(Real.named("newvar"));
-       //contextListView.getSelectionModel().
-        System.out.println("Selected item: " + contextListView.getSelectionModel().getSelectedItem());
+        // contextListView.getSelectionModel().
+        System.out.println("Selected item: "
+                           + contextListView.getSelectionModel().getSelectedItem());
       }
     });
     VBox.setVgrow(splitPane, Priority.ALWAYS);

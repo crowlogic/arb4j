@@ -22,6 +22,8 @@ import arb.documentation.TheArb4jLibrary;
  * things.. so we go with the rule-of-thumb that 128 bits is enough for
  * calculating RGB intensities anyway..
  * 
+ * TODO: redo this with a {@link ComplexMatrix}
+ * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */

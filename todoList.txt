@@ -2,4 +2,4 @@ java.lang.AssertionError: TODO: implement integration rule for division, left=(J
 NEW: implement KL expansion
 TODO: expression analyzer: save and load expressions to/from history
 TODO: expression analyzer: context variable of input
-fix RationalFunctionSequence.express("R(n,1⁄2;z)"); #483
+java.lang.NoSuchMethodError: 'arb.Complex arb.Real.mul(arb.Real, int, arb.Complex)'at sqrt(-1)*v.evaluate(Unknown Source)at arb4j/arb.functions.Function.evaluate(Function.java:284)at arb4j/arb.functions.Function.evaluate(Function.java:265)at arb4j/arb.viz.ExpressionAnalyzerTab.evaluateExpression(ExpressionAnalyzerTab.java:294)at arb4j/arb.viz.ExpressionAnalyzer.executeTabAction(ExpressionAnalyzer.java:224)at arb4j/arb.viz.ExpressionAnalyzer.evaluateExpression(ExpressionAnalyzer.java:211)at arb4j/arb.viz.ExpressionAnalyzer.lambda$8(ExpressionAnalyzer.java:258)
