@@ -611,7 +611,18 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     res.getCoeffs().get(0).sub(this,bits);
     return res;
   }
- 
+
+  public RationalFunction add( Real z, int bits, RationalFunction result )
+  {
+    return result.set(this).add(z,bits,result);
+  }
+
+  
+  public RationalFunction add( Integer z, int bits, RationalFunction result )
+  {
+    return result.set(this).add(z,bits,result);
+  }
+  
   public Real add( Integer z, int bits, Real result )
   {
     arblib.arb_add_fmpz(result, this, z.swigCPtr, bits);

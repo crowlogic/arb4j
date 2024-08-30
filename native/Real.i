@@ -146,7 +146,17 @@ import arb.utensils.Utensils;
     this(arena.allocate(Real.BYTES).address(),
          false);
   }
+  
+  public RationalFunction add( Real z, int bits, RationalFunction result )
+  {
+    return result.set(this).add(z,bits,result);
+  }  
 
+  public RationalFunction add( Integer z, int bits, RationalFunction result )
+  {
+    return result.set(this).add(z,bits,result);
+  }
+  
   /**
    * Construct a new {@link Real} and call {@link Real#setName(String)} with the
    * given name

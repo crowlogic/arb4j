@@ -280,7 +280,6 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     }
   }
 
-  @SuppressWarnings("unchecked")
   public void evaluateExpression()
   {
     if (instance == null)
@@ -291,7 +290,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     {
       // TODO: make this editable via the Context ListView
       // Assuming the input is an Integer for this example
-      D var = (D) new Integer(7);
+      D var = getContext().getVariable("input");
       result = instance.evaluate(var, 128);
       System.out.println(expr + "=" + result);
       updateTreeTableView();

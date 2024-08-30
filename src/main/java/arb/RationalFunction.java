@@ -41,6 +41,11 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
   }
 
 
+  public RationalFunction add(Real addend, int prec, RationalFunction result)
+  {
+    return add(result.set(addend),prec,result);
+  }
+  
   public RationalFunction mul(Real real, int prec)
   {
     return mul(real,prec,this);

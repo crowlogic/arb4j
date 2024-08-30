@@ -11,6 +11,8 @@ import arb.functions.rational.ComplexRationalNullaryFunction;
 import arb.functions.rational.RationalFunctionSequence;
 import arb.utensils.Utensils;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -158,11 +160,27 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     splitPane       = new SplitPane();
     contextBox      = new VBox(10);
     contextListView = new ListView<Named>();
-    StringConverter<Named> converter = new ContextVariableStringConverter<D, C, F>(this);
-    contextListView.setCellFactory(param -> new TextFieldListCell<Named>(converter));
-    contextListView.setEditable(true);
-    contextBox.getChildren().addAll(new Label("Context Variables:"), contextListView);
+    StringConverter<Named> converter   = new ContextVariableStringConverter<D, C, F>(this);
+    // Create a MenuItem and place it in a ContextMenu
+    MenuItem               insertNewRealVariable  = new MenuItem("Insert New Real Variable");
+    ContextMenu            contextMenu = new ContextMenu(insertNewRealVariable);
 
+    contextListView.setCellFactory(ContextMenuListCell.<
+                  Named>forListView(contextMenu, param -> new TextFieldListCell<Named>(converter)));
+
+    contextListView.setEditable(true);
+    contextListView.setContextMenu(null);
+    contextBox.getChildren().addAll(new Label("Context Variables:"), contextListView);
+    insertNewRealVariable.setOnAction(new EventHandler<ActionEvent>()
+    {
+      @Override
+      public void handle(ActionEvent e)
+      {
+        ExpressionAnalyzer.this.getCurrentContext().variables.add(Real.named("newvar"));
+       //contextListView.getSelectionModel().
+        System.out.println("Selected item: " + contextListView.getSelectionModel().getSelectedItem());
+      }
+    });
     VBox.setVgrow(splitPane, Priority.ALWAYS);
     splitPane.getItems().add(tabPane);
     return splitPane;
