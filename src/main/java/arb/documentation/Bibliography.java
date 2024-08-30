@@ -22,19 +22,22 @@ public class Bibliography extends
                           AbstractBibliography
 {
 
-public static Article harmonizableAndVBoundedProcesses = 
-    new Article("A Note on Harmonizable and V-Bounded Processes",
-                "Yûichirô Kakihara",
-                "1985",
-                "Journal of Multivariate Analysis",
-                "16",
-                "140-156");
+  public static Article       betaIntegralsAndOrthogonalPolynomials                  =
+                                                                    new Article("Beta integrals and the associated orthogonal polynomials",
+                                                                                "Askey, R.",
+                                                                                "1989",
+                                                                                "Number Theory, Madras 1987",
+                                                                                "",
+                                                                                "84-121");
 
-  /**
-   * Askey, R. (1989). Beta integrals and the associated orthogonal polynomials.
-   * Number Theory, Madras 1987, 84–121. doi:10.1007/bfb0086401 10.1007/bfb0086401
-   */
-  
+  public static Article       harmonizableAndVBoundedProcesses                       =
+                                                               new Article("A Note on Harmonizable and V-Bounded Processes",
+                                                                           "Yûichirô Kakihara",
+                                                                           "1985",
+                                                                           "Journal of Multivariate Analysis",
+                                                                           "16",
+                                                                           "140-156");
+
   public static Article       onCompactOperators                                     =
                                                  new Article("On compact operators",
                                                              "Alexanderian, Alen",
