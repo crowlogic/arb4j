@@ -188,6 +188,8 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
         assert resultType.equals(expression.coDomainType);
         loadFieldOntoStack(mv, elementFieldName, RationalFunction.class);
         Compiler.invokeSetMethod(mv, resultType, resultType);
+        generatedType = RationalFunction.class;
+
         // checkClassCast(mv, resultType);
       }
       else
@@ -203,6 +205,8 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
                      int.class,
                      int.class,
                      resultType);
+        generatedType = resultType;
+
       }
     }
 

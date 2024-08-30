@@ -60,6 +60,13 @@ public class ExpressionTest extends
     assertEquals(10, permutations.getSignedValue());
   }
 
+  public void testLogOfLommelPolynomialRealExpression()
+  {
+    var    f   = RealFunction.express("log(1+R(3,½;z)²)");
+    double hmm = f.eval(-2.68);
+    assertEquals(1.141113163192019433725615596826852379455, hmm);
+  }
+
   public void testLommelPolynomialRealExpression()
   {
     var    f   = RealFunction.express("R(3,1/2;z)");
