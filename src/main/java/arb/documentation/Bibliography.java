@@ -27,8 +27,8 @@ public class Bibliography extends
                                                                                 "Askey, R.",
                                                                                 "1989",
                                                                                 "Number Theory, 1987",
-                                                                                "Madras",
-                                                                                "84-121");
+                                                                                "",
+                                                                                "84-121").setAddress("Madras");
 
   public static Article       harmonizableAndVBoundedProcesses                       =
                                                                new Article("A Note on Harmonizable and V-Bounded Processes",
