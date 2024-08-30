@@ -26,8 +26,8 @@ public class Bibliography extends
                                                                     new Article("Beta integrals and the associated orthogonal polynomials",
                                                                                 "Askey, R.",
                                                                                 "1989",
-                                                                                "Number Theory, Madras 1987",
-                                                                                "",
+                                                                                "Number Theory, 1987",
+                                                                                "Madras",
                                                                                 "84-121");
 
   public static Article       harmonizableAndVBoundedProcesses                       =
