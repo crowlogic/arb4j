@@ -1,9 +1,6 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.invokeMethod;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.invokeVirtualMethod;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.*;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -66,7 +63,8 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
                   || hasScalarCodomain;
 
     functionFieldName                    =
-                      expression.newIntermediateVariable("seq", LommelPolynomial.class, true);
+                      expression.newIntermediateVariable("r", LommelPolynomial.class, true);
+
     elementFieldName                     =
                      expression.newIntermediateVariable("element", RationalFunction.class, true);
 
@@ -83,12 +81,12 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   public void generateFunctionInitializer(MethodVisitor mv)
   {
     expression.insideInitializer = true;
+    loadFunctionOntoStack(mv);
+    Compiler.getField(mv, LommelPolynomial.class, "v", Real.class);
+    generateOrder(mv);
+    invokeSetMethod(mv, Real.class, Real.class);
     if (isNullaryFunctionOrHasScalarCodomain)
     {
-      loadFunctionOntoStack(mv);
-      Compiler.getField(mv, LommelPolynomial.class, "v", Real.class);
-      generateOrder(mv);
-      invokeSetMethod(mv, Real.class, Real.class);
 
       loadFunctionOntoStack(mv);
       Compiler.getField(mv, LommelPolynomial.class, "n", Integer.class);
@@ -112,10 +110,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
                           Object.class);
 
     }
-    else
-    {
-      // assert false : "todo?";
-    }
+
   }
 
   protected void generateOrder(MethodVisitor mv)
@@ -155,16 +150,30 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
 
     loadOutputVariableOntoStack(mv, resultType);
 
-    if (RationalFunction.class.equals(expression.coDomainType))
+    if (RationalFunction.class.equals(expression.coDomainType)
+                  && Integer.class.equals(expression.domainType))
     {
+      loadFunctionOntoStack(mv);
+      Compiler.getField(mv, LommelPolynomial.class, "n", Integer.class);
+      loadInputParameter(mv);
+      checkClassCast(mv, Integer.class);
+      invokeSetMethod(mv, Integer.class, Integer.class);
+
+      loadFunctionOntoStack(mv);
+      mv.visitInsn(Opcodes.ACONST_NULL);
+      mv.visitLdcInsn(1);
+      loadBitsOntoStack(mv);
       loadOutputVariableOntoStack(mv, resultType);
-      expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);
-      Compiler.invokeMethod(mv,
-                            RationalFunction.class,
-                            "set",
-                            RationalFunction.class,
-                            false,
-                            RationalFunction.class);
+
+      invokeVirtualMethod(mv,
+                          LommelPolynomial.class,
+                          "evaluate",
+                          Object.class,
+                          Object.class,
+                          int.class,
+                          int.class,
+                          Object.class);
+
       generatedType = RationalFunction.class;
       // assert false : "todo: just return element";
     }
