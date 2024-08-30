@@ -19,6 +19,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -125,6 +127,13 @@ public class TODO extends
                             800,
                             550);
     scene.getStylesheets().add(convertStylesheetToDataURI(EASIER_ON_THE_EYES_STYLESHEET));
+    scene.addEventFilter(KeyEvent.KEY_PRESSED, event ->
+    {
+      if (event.getCode() == KeyCode.ESCAPE)
+      {
+        primaryStage.close();
+      }
+    });
 
     Platform.runLater(this::loadItems);
 
