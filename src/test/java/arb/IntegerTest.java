@@ -12,7 +12,6 @@ public class IntegerTest extends
                          TestCase
 {
 
-
   public void testAscendingFactorial()
   {
     try ( Integer n = new Integer(3))
@@ -69,6 +68,17 @@ public class IntegerTest extends
       three.mul(four, result);
       assertEquals("12", result.toString());
     }
+  }
+
+  public void testTwoIntsInOneFractionOut()
+  {
+    try ( Integer three = new Integer(3); Integer four = new Integer(4);
+          Fraction result = new Fraction();)
+    {
+      three.div(four, 0, result);
+      assertEquals("3⁄4", result.toString());
+    }
+
   }
 
   public void testDiv()
