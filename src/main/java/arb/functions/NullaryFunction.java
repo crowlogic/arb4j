@@ -69,8 +69,14 @@ public interface NullaryFunction<R> extends
   {
     assert realPolynomial != null : "realPolynomial should not be null";
     assert bits > 0 : "bits must be positive";
+    int order = 0;
+    return evaluate(order, bits, realPolynomial);
+  }
+
+  public default R evaluate(int order, int bits, R realPolynomial)
+  {
     return evaluate(null,
-                    0,
+                    order,
                     bits,
                     realPolynomial);
   }

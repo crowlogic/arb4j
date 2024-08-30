@@ -82,6 +82,11 @@ public interface RationalNullaryFunction extends
     return 128;
   }
   
+  public default RationalFunction evaluate(RationalFunction result)
+  {
+    return evaluate(bits(), result);
+  }
+  
   public default RationalFunction evaluate()
   {
     return evaluate(bits(), new RationalFunction());

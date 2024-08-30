@@ -8,8 +8,6 @@ import java.util.function.Consumer;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-import arb.Complex;
-import arb.Fraction;
 import arb.Integer;
 import arb.RationalFunction;
 import arb.Real;
@@ -21,6 +19,7 @@ import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.rational.LommelPolynomial;
+import arb.functions.rational.RationalNullaryFunction;
 
 /**
  * Syntax: "R(n,v;z)" which corresponds to a {@link LommelPolynomial} of index
@@ -56,9 +55,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     expression.require(')');
     scalarType                           = Compiler.scalarType(expression.coDomainType);
 
-    hasScalarCodomain                    = expression.coDomainType.equals(Real.class)
-                  || expression.coDomainType.equals(Complex.class)
-                  || expression.coDomainType.equals(Fraction.class);
+    hasScalarCodomain                    = expression.hasScalarCodomain();
     isNullaryFunctionOrHasScalarCodomain = expression.domainType.equals(Object.class)
                   || hasScalarCodomain;
 
@@ -139,20 +136,24 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+    boolean isRationalFunctionSequence = RationalFunction.class.equals(expression.coDomainType)
+                  && Integer.class.equals(expression.domainType);
     expression.insideInitializer = false;
 
     loadFieldOntoStack(mv, elementFieldName, RationalFunction.class);
 
-    arg.generate(mv, resultType);
+    if (!isRationalFunctionSequence)
+    {
+      arg.generate(mv, resultType);
+    }
 
     Compiler.loadOrderParameter(mv);
     loadBitsParameterOntoStack(mv);
 
-    loadOutputVariableOntoStack(mv, resultType);
-
-    if (RationalFunction.class.equals(expression.coDomainType)
-                  && Integer.class.equals(expression.domainType))
+    if (isRationalFunctionSequence)
     {
+      // loadOutputVariableOntoStack(mv, resultType);
+
       loadFunctionOntoStack(mv);
       Compiler.getField(mv, LommelPolynomial.class, "n", Integer.class);
       loadInputParameter(mv);
@@ -161,7 +162,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
 
       loadFunctionOntoStack(mv);
       mv.visitInsn(Opcodes.ACONST_NULL);
-      mv.visitLdcInsn(1);
+      loadOrderParameter(mv);
       loadBitsOntoStack(mv);
       loadOutputVariableOntoStack(mv, resultType);
 
@@ -179,15 +180,30 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     }
     else
     {
-      invokeMethod(mv,
-                   RationalFunction.class,
-                   "evaluate",
-                   resultType,
-                   false,
-                   resultType,
-                   int.class,
-                   int.class,
-                   resultType);
+
+      if (expression.domainType.equals(Object.class))
+      {
+        loadOutputVariableOntoStack(mv, resultType);
+
+        assert resultType.equals(expression.coDomainType);
+        loadFieldOntoStack(mv, elementFieldName, RationalFunction.class);
+        Compiler.invokeSetMethod(mv, resultType, resultType);
+        // checkClassCast(mv, resultType);
+      }
+      else
+      {
+        loadOutputVariableOntoStack(mv, resultType);
+
+        invokeMethod(mv,
+                     RationalFunction.class,
+                     "evaluate",
+                     resultType,
+                     false,
+                     resultType,
+                     int.class,
+                     int.class,
+                     resultType);
+      }
     }
 
     return mv;

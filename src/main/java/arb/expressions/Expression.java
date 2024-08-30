@@ -1342,7 +1342,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public boolean hasScalarCodomain()
   {
     return coDomainType.equals(Real.class) || coDomainType.equals(Complex.class)
-                  || coDomainType.equals(Fraction.class);
+                  || coDomainType.equals(Fraction.class) || coDomainType.equals(Integer.class)
+                  || coDomainType.equals(ComplexFraction.class)
+                  || coDomainType.equals(GaussianInteger.class);
   }
 
   public String[] implementedInterfaces()
