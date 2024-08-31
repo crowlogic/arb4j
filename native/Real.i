@@ -230,7 +230,7 @@ import arb.utensils.Utensils;
   {
     return res.set(this).sub(a,bits,res);
   }
-    
+      
   /**
    * Calculate the ascending factorial this_(power)
    * 

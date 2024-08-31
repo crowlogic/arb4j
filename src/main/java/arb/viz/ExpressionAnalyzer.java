@@ -1,5 +1,7 @@
 package arb.viz;
 
+import static java.lang.System.out;
+
 import java.lang.reflect.Method;
 import java.util.function.Consumer;
 
@@ -13,8 +15,6 @@ import arb.functions.rational.RationalFunctionSequence;
 import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -105,24 +105,23 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     tabPane.getTabs().add(tab);
     tabPane.getSelectionModel().select(tab);
 
-    // Update the contextListView when a new tab is added
-    updateContextListView(expressionTab);
+    updateContextListView();
 
-    // Add a listener to update the contextListView when the tab is selected
     tab.setOnSelectionChanged(event ->
     {
       if (tab.isSelected())
       {
-        updateContextListView(expressionTab);
+        updateContextListView();
       }
     });
   }
 
-  private void updateContextListView(ExpressionAnalyzerTab<D, C, F> expressionTab)
+  private void updateContextListView()
   {
-    if (contextListView != null)
+    Context currentContext = getCurrentContext();
+    if (currentContext != null && contextListView != null)
     {
-      contextListView.setItems(expressionTab.getContext().variables);
+      contextListView.setItems(currentContext.variables);
     }
   }
 
@@ -168,29 +167,44 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     splitPane       = new SplitPane();
     contextBox      = new VBox(10);
     contextListView = new ListView<Named>();
-    StringConverter<Named> converter             =
+    contextListView.setOnMouseClicked(e ->
+    {
+      System.out.println("mouseClicked " + e);
+    });
+    StringConverter<Named> converter              =
                                      new ContextVariableStringConverter<D, C, F>(this);
     // Create a MenuItem and place it in a ContextMenu
-    MenuItem               insertNewRealVariable = new MenuItem("Insert New Real Variable");
-    ContextMenu            contextMenu           = new ContextMenu(insertNewRealVariable);
+    MenuItem               deleteVariableMenuItem = new MenuItem("Delete Variable");
+    deleteVariableMenuItem.setOnAction(e ->
+    {
+      Named selectedItem = contextListView.getSelectionModel().getSelectedItem();
+      if (selectedItem != null)
+      {
+        Context currentContext = getCurrentContext();
+        if (currentContext != null)
+        {
+          currentContext.variables.remove(selectedItem.getName());
+          contextListView.getItems().remove(selectedItem);
+        }
+      }
+    });
+
+    MenuItem insertNewRealVariable = new MenuItem("New Real Variable");
+    insertNewRealVariable.setOnAction(e ->
+    {
+      ExpressionAnalyzer.this.getCurrentContext().variables.add(Real.named("newvar"));
+      System.out.println("Selected item: " + contextListView.getSelectionModel().getSelectedItem());
+    });
+    ContextMenu contextMenu = new ContextMenu(deleteVariableMenuItem,
+                                              insertNewRealVariable);
 
     contextListView.setCellFactory(ContextMenuListCell.<
                   Named>forListView(contextMenu, param -> new TextFieldListCell<Named>(converter)));
 
     contextListView.setEditable(true);
-    contextListView.setContextMenu(null);
+    contextListView.setContextMenu(contextMenu);
     contextBox.getChildren().addAll(new Label("Context Variables:"), contextListView);
-    insertNewRealVariable.setOnAction(new EventHandler<ActionEvent>()
-    {
-      @Override
-      public void handle(ActionEvent e)
-      {
-        ExpressionAnalyzer.this.getCurrentContext().variables.add(Real.named("newvar"));
-        // contextListView.getSelectionModel().
-        System.out.println("Selected item: "
-                           + contextListView.getSelectionModel().getSelectedItem());
-      }
-    });
+
     VBox.setVgrow(splitPane, Priority.ALWAYS);
     splitPane.getItems().add(tabPane);
     return splitPane;
