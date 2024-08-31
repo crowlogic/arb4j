@@ -42,6 +42,11 @@ public class Integer implements
 {
   public static int BYTES = Long.BYTES;
 
+  public static long prime( long n )
+  {
+    return arblib.n_nth_prime(n);
+  }
+  
   public static Integer express(String expression)
   {
     return express(expression, 128);

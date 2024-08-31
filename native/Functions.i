@@ -7,6 +7,8 @@
 #include <flint/fmpz_poly.h>
 #include <flint/fmpz_poly_q.h>
 
+ulong n_nth_prime(ulong n);
+ 
 int fmpq_sgn(const fmpq_t x);
 
 void fmpz_poly_q_inv(fmpz_poly_q_t rop, const fmpz_poly_q_t op);

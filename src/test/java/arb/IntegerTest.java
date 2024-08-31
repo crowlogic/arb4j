@@ -12,6 +12,12 @@ public class IntegerTest extends
                          TestCase
 {
 
+  public static void testPrime()
+  {
+    long p = Integer.prime(5);
+    assertEquals( 11, p );
+  }
+  
   public void testAscendingFactorial()
   {
     try ( Integer n = new Integer(3))

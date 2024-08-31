@@ -197,6 +197,11 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     return new Real().setName(name);
   }
 
+  public Complex mul(Real that, int prec, Complex res)
+  {
+    return res.set(this).mul(that, prec, res);
+  }
+  
   public Fraction sub(Real that, int prec, Fraction res)
   {
     return res.set(this).sub(that,prec,res);
