@@ -1,90 +1,122 @@
 \documentclass{article}
-\usepackage{amsmath, amssymb, amsthm}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,latexsym}
+\geometry{letterpaper}
 
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{lemma}{Lemma}
 \newtheorem{theorem}{Theorem}
-\newtheorem{lemma}[theorem]{Lemma}
+%%%%%%%%%% End TeXmacs macros
 
 \begin{document}
 
 \title{Proof of the Vitali--Hahn--Saks Theorem}
-\author{}
+
 \date{}
 
 \maketitle
 
-\begin{theorem}[Vitali--Hahn--Saks]
-Let $(X, \Sigma)$ be a measurable space, and let $\{\mu_n\}$ be a sequence of finite measures on $(X, \Sigma)$. Suppose that for every set $E$ in $\Sigma$, the limit $\lim_{n\to\infty} \mu_n(E)$ exists (finite or infinite). Then:
-
-\begin{enumerate}
-    \item There exists a measure $\mu$ on $(X, \Sigma)$ such that for every $E$ in $\Sigma$: $\mu(E) = \lim_{n\to\infty} \mu_n(E)$
-    \item The sequence of measures $\{\mu_n\}$ is uniformly absolutely continuous with respect to $\mu$.
+\begin{theorem}
+  [Vitali--Hahn--Saks] Let $(X, \Sigma)$ be a measurable space, and let
+  $\{\mu_n \}$ be a sequence of finite measures on $(X, \Sigma)$. Suppose that
+  for every set $E$ in $\Sigma$, the limit $\lim_{n \to \infty} \mu_n (E)$
+  exists (finite or infinite). Then:
+  \begin{enumerate}
+    \item There exists a measure $\mu$ on $(X, \Sigma)$ such that for every
+    $E$ in $\Sigma$: $\mu (E) = \lim_{n \to \infty} \mu_n (E)$
+    
+    \item The sequence of measures $\{\mu_n \}$ is uniformly absolutely
+    continuous with respect to $\mu$.
+    
     \item The convergence of $\mu_n$ to $\mu$ is uniform on $\Sigma$.
-\end{enumerate}
+  \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-\textbf{Step 1: Define the limit measure $\mu$}
-
-For each $E \in \Sigma$, define $\mu(E) = \lim_{n\to\infty} \mu_n(E)$. We need to show that $\mu$ is indeed a measure.
-
-a) Clearly, $\mu(\emptyset) = \lim_{n\to\infty} \mu_n(\emptyset) = 0$.
-
-b) Countable additivity: Let $\{E_k\}$ be a sequence of disjoint sets in $\Sigma$. We need to show that $\mu(\bigcup_k E_k) = \sum_k \mu(E_k)$.
-
-   \begin{align*}
-   \mu(\bigcup_k E_k) &= \lim_{n\to\infty} \mu_n(\bigcup_k E_k) \\
-                      &= \lim_{n\to\infty} \sum_k \mu_n(E_k) \quad \text{(by countable additivity of $\mu_n$)} \\
-                      &= \sum_k \lim_{n\to\infty} \mu_n(E_k) \quad \text{(by the monotone convergence theorem)} \\
-                      &= \sum_k \mu(E_k)
-   \end{align*}
-
-Thus, $\mu$ is a measure on $(X, \Sigma)$.
-
-\textbf{Step 2: Prove uniform absolute continuity}
-
-We'll use the following lemma:
-
-\begin{lemma}
-For any $\varepsilon > 0$, there exists a $\delta > 0$ such that for all $n$ and all $E \in \Sigma$:
-If $\mu(E) < \delta$, then $\mu_n(E) < \varepsilon$.
-\end{lemma}
-
-\begin{proof}[Proof of Lemma]
-Suppose the lemma is false. Then there exists an $\varepsilon > 0$ such that for every $k \in \mathbb{N}$, we can find $n_k$ and $E_k \in \Sigma$ with $\mu(E_k) < 1/k$ and $\mu_{n_k}(E_k) \geq \varepsilon$.
-
-Define $F_k = \bigcup_{j\geq k} E_j$. Then $F_k \supseteq F_{k+1}$ and $\mu(F_k) \leq \sum_{j\geq k} \mu(E_j) < \sum_{j\geq k} 1/j \to 0$ as $k \to \infty$.
-
-But for any $k$, $\mu_{n_k}(F_k) \geq \mu_{n_k}(E_k) \geq \varepsilon$.
-
-This contradicts the fact that $\lim_{n\to\infty} \mu_n(F_k) = \mu(F_k)$ for all $k$.
+  \tmtextbf{Step 1: Define the limit measure $\mu$}
+  
+  For each $E \in \Sigma$, define $\mu (E) = \lim_{n \to \infty} \mu_n (E)$.
+  We need to show that $\mu$ is indeed a measure.
+  
+  a) Clearly, $\mu (\emptyset) = \lim_{n \to \infty} \mu_n (\emptyset) = 0$.
+  
+  b) Countable additivity: Let $\{E_k \}$ be a sequence of disjoint sets in
+  $\Sigma$. We need to show that $\mu (\bigcup_k E_k) = \sum_k \mu (E_k)$.
+  
+  \begin{align*}
+    \mu (\bigcup_k E_k) & = \lim_{n \to \infty} \mu_n (\bigcup_k E_k)\\
+    & = \lim_{n \to \infty}  \sum_k \mu_n (E_k) \quad \text{(by countable
+    additivity of $\mu_n$)}\\
+    & = \sum_k \lim_{n \to \infty} \mu_n (E_k) \quad \text{(by the monotone
+    convergence theorem)}\\
+    & = \sum_k \mu (E_k)
+  \end{align*}
+  
+  Thus, $\mu$ is a measure on $(X, \Sigma)$.
+  
+  \tmtextbf{Step 2: Prove uniform absolute continuity}
+  
+  We'll use the following lemma:
+  
+  \begin{lemma}
+    For any $\varepsilon > 0$, there exists a $\delta > 0$ such that for all
+    $n$ and all $E \in \Sigma$: If $\mu (E) < \delta$, then $\mu_n (E) <
+    \varepsilon$.
+  \end{lemma}
+  
+  Suppose the lemma is false. Then there exists an $\varepsilon > 0$ such that
+  for every $k \in \mathbb{N}$, we can find $n_k$ and $E_k \in \Sigma$ with
+  $\mu (E_k) < 1 / k$ and $\mu_{n_k} (E_k) \geq \varepsilon$.
+  
+  Define $F_k = \bigcup_{j \geq k} E_j$. Then $F_k \supseteq F_{k + 1}$ and
+  $\mu (F_k) \leq \sum_{j \geq k} \mu (E_j) < \sum_{j \geq k} 1 / j \to 0$ as
+  $k \to \infty$.
+  
+  But for any $k$, $\mu_{n_k} (F_k) \geq \mu_{n_k} (E_k) \geq \varepsilon$.
+  
+  This contradicts the fact that $\lim_{n \to \infty} \mu_n (F_k) = \mu (F_k)$
+  for all $k$.
 \end{proof}
 
-\textbf{Step 3: Prove uniform convergence}
+\tmtextbf{Step 3: Prove uniform convergence}
 
-We'll use Egoroff's theorem, which states that if a sequence of measurable functions converges almost everywhere on a finite measure space, then it converges uniformly except on a set of arbitrarily small measure.
+We'll use Egoroff's theorem, which states that if a sequence of measurable
+functions converges almost everywhere on a finite measure space, then it
+converges uniformly except on a set of arbitrarily small measure.
 
-For each $E \in \Sigma$, define $f_E(n) = \mu_n(E)$. The sequence $\{f_E(n)\}$ converges for each $E$.
+For each $E \in \Sigma$, define $f_E (n) = \mu_n (E)$. The sequence $\{f_E
+(n)\}$ converges for each $E$.
 
-Let $\varepsilon > 0$. By the uniform absolute continuity proved in Step 2, there exists a $\delta > 0$ such that $\mu(A) < \delta$ implies $\mu_n(A) < \varepsilon/3$ for all $n$.
+Let $\varepsilon > 0$. By the uniform absolute continuity proved in Step 2,
+there exists a $\delta > 0$ such that $\mu (A) < \delta$ implies $\mu_n (A) <
+\varepsilon / 3$ for all $n$.
 
-Let $M = \mu(X)$. Choose a finite partition $\{P_1, ..., P_k\}$ of $X$ with $\mu(P_i) < \delta$ for all $i$.
+Let $M = \mu (X)$. Choose a finite partition $\{P_1, ..., P_k \}$ of $X$ with
+$\mu (P_i) < \delta$ for all $i$.
 
-For each $P_i$, the sequence $f_{P_i}(n)$ converges. By Egoroff's theorem, there exists $A_i \subset P_i$ with $\mu(A_i) < \delta/k$ such that $f_{P_i}(n)$ converges uniformly on $P_i \setminus A_i$.
+For each $P_i$, the sequence $f_{P_i} (n)$ converges. By Egoroff's theorem,
+there exists $A_i \subset P_i$ with $\mu (A_i) < \delta / k$ such that
+$f_{P_i} (n)$ converges uniformly on $P_i \setminus A_i$.
 
-Let $A = \bigcup_i A_i$. Then $\mu(A) < \delta$, so $\mu_n(A) < \varepsilon/3$ for all $n$.
+Let $A = \bigcup_i A_i$. Then $\mu (A) < \delta$, so $\mu_n (A) < \varepsilon
+/ 3$ for all $n$.
 
-For each $i$, choose $N_i$ such that for $n, m \geq N_i$, $|f_{P_i\setminus A_i}(n) - f_{P_i\setminus A_i}(m)| < \varepsilon/3k$.
+For each $i$, choose $N_i$ such that for $n, m \geq N_i$, $|f_{P_i \setminus
+A_i} (n) - f_{P_i \setminus A_i} (m) | < \varepsilon / 3 k$.
 
-Let $N = \max\{N_i\}$. Then for $n, m \geq N$ and any $E \in \Sigma$:
+Let $N = \max \{N_i \}$. Then for $n, m \geq N$ and any $E \in \Sigma$:
 
 \begin{align*}
-|\mu_n(E) - \mu_m(E)| &\leq |\mu_n(E \cap A) - \mu_m(E \cap A)| + \sum_i |\mu_n(E \cap (P_i \setminus A_i)) - \mu_m(E \cap (P_i \setminus A_i))| \\
-                      &< \varepsilon/3 + \varepsilon/3 + \varepsilon/3 = \varepsilon
+  | \mu_n (E) - \mu_m (E) | & \leq | \mu_n (E \cap A) - \mu_m (E \cap A) | +
+  \sum_i | \mu_n (E \cap (P_i \setminus A_i)) - \mu_m (E \cap (P_i \setminus
+  A_i)) |\\
+  & < \varepsilon / 3 + \varepsilon / 3 + \varepsilon / 3 = \varepsilon
 \end{align*}
 
 This proves uniform convergence.
 
 Therefore, we have proved all three parts of the Vitali--Hahn--Saks theorem.
-\end{proof}
 
 \end{document}
