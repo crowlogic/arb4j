@@ -238,7 +238,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
       }
       if (intermediateValueFieldName.equals(expr.getInputName()))
       {
-        return "input";
+        return getContext().getVariable("input");
       }
       else
       {
