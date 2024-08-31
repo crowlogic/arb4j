@@ -1,8 +1,7 @@
 package arb.viz;
 
-import static java.lang.System.out;
-
 import java.lang.reflect.Method;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import arb.*;
@@ -171,10 +170,34 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     {
       System.out.println("mouseClicked " + e);
     });
-    StringConverter<Named> converter              =
-                                     new ContextVariableStringConverter<D, C, F>(this);
+    var         converter   = new ContextVariableStringConverter<D, C, F>(this);
+    ContextMenu contextMenu = newContextMenu(converter);
+    contextListView.setContextMenu(contextMenu);
+    contextBox.getChildren().addAll(new Label("Context Variables:"), contextListView);
+
+    VBox.setVgrow(splitPane, Priority.ALWAYS);
+    splitPane.getItems().add(tabPane);
+    return splitPane;
+  }
+
+  private Optional<String> showNewVariableNameDialog()
+  {
+    TextInputDialog dialog = new TextInputDialog();
+    dialog.setTitle("New Variable");
+    dialog.setHeaderText("Enter the name for the new variable:");
+    dialog.setContentText("Variable name:");
+
+    // Set the owner to the primary stage
+    dialog.initOwner(tabPane.getScene().getWindow());
+
+    return dialog.showAndWait();
+  }
+
+  @SuppressWarnings("unlikely-arg-type")
+  protected ContextMenu newContextMenu(StringConverter<Named> converter)
+  {
     // Create a MenuItem and place it in a ContextMenu
-    MenuItem               deleteVariableMenuItem = new MenuItem("Delete Variable");
+    MenuItem deleteVariableMenuItem = new MenuItem("Delete Variable");
     deleteVariableMenuItem.setOnAction(e ->
     {
       Named selectedItem = contextListView.getSelectionModel().getSelectedItem();
@@ -192,8 +215,17 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     MenuItem insertNewRealVariable = new MenuItem("New Real Variable");
     insertNewRealVariable.setOnAction(e ->
     {
-      ExpressionAnalyzer.this.getCurrentContext().variables.add(Real.named("newvar"));
-      System.out.println("Selected item: " + contextListView.getSelectionModel().getSelectedItem());
+      Optional<String> result = showNewVariableNameDialog();
+      result.ifPresent(name ->
+      {
+        Context currentContext = getCurrentContext();
+        if (currentContext != null)
+        {
+          Real newVar = Real.named(name);
+          currentContext.variables.add(newVar);
+          updateContextListView();
+        }
+      });
     });
     ContextMenu contextMenu = new ContextMenu(deleteVariableMenuItem,
                                               insertNewRealVariable);
@@ -202,12 +234,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
                   Named>forListView(contextMenu, param -> new TextFieldListCell<Named>(converter)));
 
     contextListView.setEditable(true);
-    contextListView.setContextMenu(contextMenu);
-    contextBox.getChildren().addAll(new Label("Context Variables:"), contextListView);
-
-    VBox.setVgrow(splitPane, Priority.ALWAYS);
-    splitPane.getItems().add(tabPane);
-    return splitPane;
+    return contextMenu;
   }
 
   protected HBox createTypeBoxes()
