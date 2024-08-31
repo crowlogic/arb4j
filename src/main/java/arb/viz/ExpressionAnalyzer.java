@@ -6,6 +6,8 @@ import java.util.function.Consumer;
 
 import arb.*;
 import arb.Integer;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
@@ -27,6 +29,17 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
+/**
+ * TODO: save/restore/copy/paste/drag&drop context variables
+ * TODO: confirm before exiting or closing a tab
+ * 
+ * @param <D>
+ * @param <C>
+ * @param <F>
+ *
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
                                Application
 {
