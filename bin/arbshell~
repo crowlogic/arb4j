@@ -2,8 +2,8 @@
 
 
 BASEDIR=$(dirname $(readlink -f $0))/..
-CLASSPATH=`cat $BASEDIR/class.path`:$BASEDIR/build/classes
-LD_LIBRARY_PATH=$BASEDIR jshell -R-verbose:class -R-XX:+PrintFlagsFinal $MODS -q -R--enable-native-access=arb4j --enable-preview -R-ea --add-modules ALL-MODULE-PATH --module-path $CLASSPATH --add-module arb4j --startup $BASEDIR/shell.start $@
+CLASSPATH=`cat $BASEDIR/class.path`:$BASEDIR/build/classes/java/main
+LD_LIBRARY_PATH=$BASEDIR jshell -R-verbose:jni $MODS -q -R-Djava.library.path=. -R--enable-native-access=arb4j --enable-preview -R-ea --add-modules ALL-MODULE-PATH --module-path $CLASSPATH --add-module arb4j --startup $BASEDIR/shell.start $@
 
 
 

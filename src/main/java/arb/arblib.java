@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static long n_nth_prime(long n) {
+    return arblibJNI.n_nth_prime(n);
+  }
+
   public static int fmpq_sgn(Fraction x) {
     return arblibJNI.fmpq_sgn(Fraction.getCPtr(x), x);
   }

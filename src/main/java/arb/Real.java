@@ -193,6 +193,16 @@ public class Real implements
          false);
   }
 
+  public RationalFunction add(Real z, int bits, RationalFunction result)
+  {
+    return result.set(this).add(z, bits, result);
+  }
+
+  public RationalFunction add(Integer z, int bits, RationalFunction result)
+  {
+    return result.set(this).add(z, bits, result);
+  }
+
   /**
    * Construct a new {@link Real} and call {@link Real#setName(String)} with the
    * given name
@@ -622,16 +632,6 @@ public class Real implements
     res.set(a);
     res.getCoeffs().get(0).sub(this, bits);
     return res;
-  }
-
-  public RationalFunction add(Real z, int bits, RationalFunction result)
-  {
-    return result.set(this).add(z, bits, result);
-  }
-
-  public RationalFunction add(Integer z, int bits, RationalFunction result)
-  {
-    return result.set(this).add(z, bits, result);
   }
 
   public Real add(Integer z, int bits, Real result)
@@ -2266,9 +2266,7 @@ public class Real implements
 
   public Complex mul(Real that, int prec, Complex res)
   {
-    mul(that,prec,res.re());
-    res.im().zero();
-    return res;
+    return res.set(this).mul(that, prec, res);
   }
 
   public Real mul(Real that, int prec, Real res)
