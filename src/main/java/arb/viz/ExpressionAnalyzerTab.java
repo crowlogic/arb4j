@@ -340,8 +340,16 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
       }
       else
       {
-        getContext().injectReferences(instance);
-        result = instance.evaluate(input, 128);
+        getContext().injectReferences(instance = expr.instantiate());
+        if (result != null)
+        {
+          result = instance.evaluate(input, 128, result);
+        }
+        else
+        {
+          result = instance.evaluate(input, 128);
+
+        }
         System.out.println(expr + "(" + input + ")=" + result);
         var rootItem = updateTreeTableView();
         applyNodeExpansionStates(nodeExpansionStates, rootItem);
