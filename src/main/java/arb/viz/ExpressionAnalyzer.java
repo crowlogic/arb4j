@@ -27,11 +27,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 
 /**
- * TODO: save/restore/copy/paste/drag&drop context variables
- * TODO: confirm before exiting or closing a tab
+ * TODO: save/restore/copy/paste/drag&drop context variables TODO: confirm
+ * before exiting or closing a tab
  * 
  * @param <D>
  * @param <C>
@@ -359,8 +360,17 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     {
       if (event.getCode() == KeyCode.ESCAPE)
       {
-        primaryStage.close();
+        primaryStage.fireEvent(new WindowEvent(primaryStage,
+                                               WindowEvent.WINDOW_CLOSE_REQUEST));
       }
+    });
+
+    primaryStage.setOnCloseRequest(evt ->
+    {
+      Alert alert = new Alert(AlertType.CONFIRMATION);
+      alert.setTitle("Confirm Close");
+      alert.setHeaderText("Close program?");
+      alert.showAndWait().filter(r -> r != ButtonType.OK).ifPresent(r -> evt.consume());
     });
 
     primaryStage.setScene(scene);
