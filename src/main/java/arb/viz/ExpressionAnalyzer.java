@@ -180,15 +180,10 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     splitPane       = new SplitPane();
     contextBox      = new VBox(10);
     contextListView = new ListView<Named>();
-    contextListView.setOnMouseClicked(e ->
-    {
-      System.out.println("mouseClicked " + e);
-    });
     var         converter   = new ContextVariableStringConverter<D, C, F>(this);
     ContextMenu contextMenu = newContextMenu(converter);
     contextListView.setContextMenu(contextMenu);
     contextBox.getChildren().addAll(new Label("Context Variables:"), contextListView);
-
     VBox.setVgrow(splitPane, Priority.ALWAYS);
     splitPane.getItems().add(tabPane);
     return splitPane;
