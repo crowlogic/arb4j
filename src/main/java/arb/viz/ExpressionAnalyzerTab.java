@@ -15,7 +15,6 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
-import arb.utensils.text.trees.NodeTreeItem;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.geometry.Insets;
@@ -290,10 +289,18 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     {
       // TODO: make this editable via the Context ListView
       // Assuming the input is an Integer for this example
-      D var = getContext().getVariable("input");
-      result = instance.evaluate(var, 128);
-      System.out.println(expr + "=" + result);
-      updateTreeTableView();
+      D input = getContext().getVariable("input");
+      if (input == null && !expr.domainType.equals(Object.class))
+      {
+        expressionAnalyzer.showAlert("Input Required",
+                                     "variable named input must be defined in the context");
+      }
+      else
+      {
+        result = instance.evaluate(input, 128);
+        System.out.println(expr + "(" + input + ")=" + result);
+        updateTreeTableView();
+      }
     }
     catch (Throwable e)
     {
