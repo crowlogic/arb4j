@@ -4,6 +4,7 @@ import static arb.utensils.Utensils.wrapOrThrow;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import arb.Integer;
 import arb.Named;
@@ -262,6 +263,26 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     return "see todo in assertion";
   }
 
+  public HashMap<String, Boolean> enumerateExpansionStates()
+  {
+    return enumerateNodeExpansionStates(new HashMap<String, Boolean>(), treeTableView.getRoot());
+  }
+
+  public HashMap<String, Boolean> enumerateNodeExpansionStates(HashMap<String, Boolean> states,
+                                                      TreeItem<?> item)
+  {
+    if (item != null && !item.isLeaf())
+    {
+      states.put(item.getValue().toString(), item.isExpanded() );
+      
+      for (TreeItem<?> child : item.getChildren())
+      {
+        enumerateNodeExpansionStates(states, child);
+      }
+    }
+    return states;
+  }
+
   public void expandAllNodes()
   {
     expandTreeView(treeTableView.getRoot());
@@ -269,6 +290,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
 
   private void expandTreeView(TreeItem<?> item)
   {
+    System.out.println("Expanding " + item.getValue());
     if (item != null && !item.isLeaf())
     {
       item.setExpanded(true);
@@ -287,8 +309,9 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     }
     try
     {
-      // TODO: make this editable via the Context ListView
-      // Assuming the input is an Integer for this example
+      var nodeExpansionStates = enumerateExpansionStates();
+      
+      System.out.format("nodeExpansionStates=%s\n", nodeExpansionStates);
       D input = getContext().getVariable("input");
       if (input == null && !expr.domainType.equals(Object.class))
       {
