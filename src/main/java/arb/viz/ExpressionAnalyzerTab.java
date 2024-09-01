@@ -64,7 +64,6 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
 
     expressionInput.setMaxWidth(1200);
 
-    treeTableView = new TreeTableView<>();
     setupTreeTableView();
 
     VBox.setVgrow(treeTableView, Priority.ALWAYS);
@@ -78,6 +77,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
   @SuppressWarnings("unchecked")
   private void setupTreeTableView()
   {
+    treeTableView = new TreeTableView<>();
     treeTableView.setColumnResizePolicy(TreeTableView.UNCONSTRAINED_RESIZE_POLICY);
     var nodeCol           = newNodeCol();
     var nodeTypeCol       = newNodeTypeCol();
@@ -222,15 +222,16 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
 
   private String evaluateNode(Node<D, C, F> node)
   {
-    if (result == null)
-    {
-      return null;
-    }
+   
     try
     {
       String intermediateValueFieldName = node.getIntermediateValueFieldName();
       if (intermediateValueFieldName == null)
       {
+        if (result == null)
+        {
+          return null;
+        }
         return "null";
       }
       if (intermediateValueFieldName == "result")
@@ -310,7 +311,6 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
 
   private void expandTreeView(TreeItem<?> item)
   {
-    System.out.println("Expanding " + item.getValue());
     if (item != null && !item.isLeaf())
     {
       item.setExpanded(true);
@@ -331,7 +331,6 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     {
       var nodeExpansionStates = enumerateNodeExpansionStates();
 
-      System.out.format("nodeExpansionStates=%s\n", nodeExpansionStates);
       D input = getContext().getVariable("input");
       if (input == null && !expr.domainType.equals(Object.class))
       {
