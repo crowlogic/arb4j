@@ -142,8 +142,11 @@ public class Context
       }
       catch (Exception e)
       {
-        // e.printStackTrace(System.err);
-        wrapOrThrow(String.format("variable=%s", variableName), e);
+        if (!variableName.equals("input"))
+        {
+          // e.printStackTrace(System.err);
+          wrapOrThrow(String.format("variable=%s", variableName), e);
+        }
       }
     });
   }
