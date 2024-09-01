@@ -16,7 +16,10 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -24,6 +27,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * basic todo list
@@ -131,8 +135,17 @@ public class TODO extends
     {
       if (event.getCode() == KeyCode.ESCAPE)
       {
-        primaryStage.close();
+        primaryStage.fireEvent(new WindowEvent(primaryStage,
+                                               WindowEvent.WINDOW_CLOSE_REQUEST));
       }
+    });
+
+    primaryStage.setOnCloseRequest(evt ->
+    {
+      Alert alert = new Alert(AlertType.CONFIRMATION);
+      alert.setTitle("Confirm Close");
+      alert.setHeaderText("Close program?");
+      alert.showAndWait().filter(r -> r != ButtonType.OK).ifPresent(r -> evt.consume());
     });
 
     Platform.runLater(this::loadItems);
