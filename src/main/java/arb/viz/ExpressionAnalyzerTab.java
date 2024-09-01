@@ -85,7 +85,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     var typesetCol        = newTypesetCol();
     var fieldCol          = newFieldCol();
     var valueCol          = newValueCol();
-
+    treeTableView.setTableMenuButtonVisible(true);
     treeTableView.getColumns()
                  .addAll(nodeCol, nodeTypeCol, nodeTypeResultCol, typesetCol, fieldCol, valueCol);
   }
