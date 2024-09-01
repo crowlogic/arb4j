@@ -114,13 +114,14 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     }
   }
 
-  private void updateTreeTableView()
+  private TreeItem<Node<D, C, F>> updateTreeTableView()
   {
     Node<D, C, F>           rootNode = expr.rootNode;
     TreeItem<Node<D, C, F>> rootItem = new NodeTreeItem<>(rootNode);
     treeTableView.setRoot(rootItem);
     treeTableView.setShowRoot(true);
     Platform.runLater(this::resizeColumnsToFitContent);
+    return rootItem;
   }
 
   @SuppressWarnings("unchecked")
@@ -263,18 +264,37 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     return "see todo in assertion";
   }
 
-  public HashMap<String, Boolean> enumerateExpansionStates()
+  public HashMap<String, Boolean> enumerateNodeExpansionStates()
   {
     return enumerateNodeExpansionStates(new HashMap<String, Boolean>(), treeTableView.getRoot());
   }
 
-  public HashMap<String, Boolean> enumerateNodeExpansionStates(HashMap<String, Boolean> states,
-                                                      TreeItem<?> item)
+  public HashMap<String, Boolean> applyNodeExpansionStates(HashMap<String, Boolean> states,
+                                                           TreeItem<?> item)
   {
     if (item != null && !item.isLeaf())
     {
-      states.put(item.getValue().toString(), item.isExpanded() );
-      
+      Boolean value = states.get(item.getValue().toString());
+      if (value != null)
+      {
+        item.setExpanded(value);
+      }
+
+      for (TreeItem<?> child : item.getChildren())
+      {
+        applyNodeExpansionStates(states, child);
+      }
+    }
+    return states;
+  }
+
+  public HashMap<String, Boolean> enumerateNodeExpansionStates(HashMap<String, Boolean> states,
+                                                               TreeItem<?> item)
+  {
+    if (item != null && !item.isLeaf())
+    {
+      states.put(item.getValue().toString(), item.isExpanded());
+
       for (TreeItem<?> child : item.getChildren())
       {
         enumerateNodeExpansionStates(states, child);
@@ -309,8 +329,8 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     }
     try
     {
-      var nodeExpansionStates = enumerateExpansionStates();
-      
+      var nodeExpansionStates = enumerateNodeExpansionStates();
+
       System.out.format("nodeExpansionStates=%s\n", nodeExpansionStates);
       D input = getContext().getVariable("input");
       if (input == null && !expr.domainType.equals(Object.class))
@@ -320,9 +340,11 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
       }
       else
       {
+        getContext().injectReferences(instance);
         result = instance.evaluate(input, 128);
         System.out.println(expr + "(" + input + ")=" + result);
-        updateTreeTableView();
+        var rootItem = updateTreeTableView();
+        applyNodeExpansionStates(nodeExpansionStates, rootItem);
       }
     }
     catch (Throwable e)
