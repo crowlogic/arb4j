@@ -3,70 +3,80 @@
 <style|<tuple|article|std-latex>>
 
 <\body>
-  <doc-data|<doc-title|Proof of Equality>|<doc-date|<date|>>>
+  <doc-data|<doc-title|Proof that <math|<sqrt|<frac|8*n+2|\<pi\>>>*<sqrt|<frac|4*n+1|2*\<pi\>>>=<frac|4*n+1|\<pi\>>>>>
 
   <\proof>
     We will prove that:
 
-    <\equation*>
-      <frac|1|2>*<sqrt|<frac|8*n+2|\<pi\>>>*<sqrt|2>*<sqrt|<frac|4*n+1|\<pi\>>>=<frac|4*n+1|\<pi\>>
-    </equation*>
+    <\equation>
+      <sqrt|<frac|8*n+2|\<pi\>>>*<sqrt|<frac|4*n+1|2*\<pi\>>>=<frac|4*n+1|\<pi\>>
+    </equation>
 
     <\enumerate>
       <item>Start with the left side of the equation:
 
-      <\equation*>
-        <frac|1|2><around*|(|<frac|8*n+2|\<pi\>>|)><rsup|<frac|1|2>>*2<rsup|<frac|1|2>><around*|(|<frac|4*n+1|\<pi\>>|)><rsup|<frac|1|2>>
-      </equation*>
+      <\equation>
+        =<sqrt|<frac|8*n+2|\<pi\>>>*<sqrt|<frac|4*n+1|2*\<pi\>>>
+      </equation>
 
-      <item>Simplify <math|2<rsup|<frac|1|2>>>:
+      <item>Multiply the terms under the square roots:
 
-      <\equation*>
-        <frac|1|2><around*|(|<frac|8*n+2|\<pi\>>|)><rsup|<frac|1|2>><sqrt|2><around*|(|<frac|4*n+1|\<pi\>>|)><rsup|<frac|1|2>>
-      </equation*>
+      <\equation>
+        =<sqrt|<frac|<around|(|8*n+2|)>*<around|(|4*n+1|)>|\<pi\>
+        2**\<pi\>>>=<sqrt|<frac|<around|(|8*n+2|)>*<around|(|4*n+1|)>|2*\<pi\><rsup|2>>>
+      </equation>
 
-      <item>Combine terms under square roots:
+      <item>Expand the numerator:
 
-      <\equation*>
-        <frac|1|2>*<sqrt|<frac|8*n+2|\<pi\>>>*<sqrt|2>*<sqrt|<frac|4*n+1|\<pi\>>>
-      </equation*>
+      <\equation>
+        =<sqrt|<frac|32*n<rsup|2>+8*n+8*n+2|2*\<pi\><rsup|2>>>
+      </equation>
 
-      <item>Combine <math|<sqrt|2>> with one of the other square roots:
+      <item>Simplify:
 
-      <\equation*>
-        <frac|1|2>*<sqrt|<frac|8*n+2|\<pi\>>>*<sqrt|<frac|2*<around|(|4*n+1|)>|\<pi\>>>
-      </equation*>
+      <\equation>
+        =<sqrt|<frac|32*n<rsup|2>+16*n+2|2*\<pi\><rsup|2>>>
+      </equation>
 
-      <item>Multiply terms under the square roots:
+      <item>Divide both numerator and denominator by 2:
 
-      <\equation*>
-        <frac|1|2>*<sqrt|<frac|8*n+2|\<pi\>>>*<sqrt|<frac|8*n+2|\<pi\>>>
-      </equation*>
+      <\equation>
+        =<sqrt|<frac|16*n<rsup|2>+8*n+1|\<pi\><rsup|2>>>
+      </equation>
 
-      <item>Multiply equal square roots:
+      <item>Factor the numerator:
 
-      <\equation*>
-        <frac|1|2>*<frac|8*n+2|\<pi\>>
-      </equation*>
+      <\equation>
+        =<sqrt|<frac|<around|(|4*n+1|)><rsup|2>|\<pi\><rsup|2>>>
+      </equation>
 
-      <item>Multiply <math|<frac|1|2>> by <math|<around|(|8*n+2|)>>:
+      where we see by expanding that
 
-      <\equation*>
-        <frac|4*n+1|\<pi\>>
-      </equation*>
+      <\equation>
+        <tabular|<tformat|<table|<row|<cell|<around*|(|4n+1|)>*<around*|(|4n+1|)>>|<cell|=4n*4n+4n+4n+1>>|<row|<cell|>|<cell|=16
+        n n+4n+4n+1>>|<row|<cell|>|<cell|=16n<rsup|2>+4n+4n+1>>|<row|<cell|>|<cell|=16n<rsup|2>+8n+1>>>>>
+      </equation>
+
+      <item>Now, the square root of a square is the identity so finally :
+
+      <\equation>
+        =<frac|4*n+1|\<pi\>>
+      </equation>
     </enumerate>
 
-    This is exactly the right side of the equation we were trying to prove.
+    This is exactly the right side of the equation whose proof was sought;
+    therefore, it has been shown that:
 
-    Therefore, we have shown that:
-
-    <\equation*>
-      <frac|1|2>*<sqrt|<frac|8*n+2|\<pi\>>>*<sqrt|2>*<sqrt|<frac|4*n+1|\<pi\>>>=<frac|4*n+1|\<pi\>>
-    </equation*>
+    <\equation>
+      <sqrt|<frac|8*n+2|\<pi\>>>*<sqrt|<frac|4*n+1|2*\<pi\>>>=<frac|4*n+1|\<pi\>>
+    </equation>
 
     The proof is complete.
   </proof>
 </body>
 
-<initial|<\collection>
-</collection>>
+<\initial>
+  <\collection>
+    <associate|magnification|1.2>
+  </collection>
+</initial>
