@@ -1,4 +1,4 @@
-package arb.viz;
+package arb.expressions.viz;
 
 import java.util.stream.Collectors;
 

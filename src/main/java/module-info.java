@@ -29,6 +29,7 @@ module arb4j
   requires transitive org.objectweb.asm.commons;
 
   exports arb;
+  exports arb.expressions.viz;
   exports arb.theorems;
   exports arb.annotations;
   exports arb.language;

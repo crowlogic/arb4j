@@ -1,4 +1,4 @@
-package arb.viz;
+package arb.expressions.viz;
 
 import java.lang.reflect.Method;
 import java.util.Optional;
@@ -15,6 +15,7 @@ import arb.functions.rational.ComplexRationalNullaryFunction;
 import arb.functions.rational.RationalFunctionSequence;
 import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;
+import arb.viz.TODO;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;

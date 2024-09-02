@@ -1,4 +1,4 @@
-package arb.viz;
+package arb.expressions.viz;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
