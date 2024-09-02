@@ -1,0 +1,46 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\title{Proof of Equality}
+\maketitle
+
+\begin{proof}
+We will prove that:
+
+\[\frac{1}{2}\sqrt{\frac{8n+2}{\pi}}\sqrt{2}\sqrt{\frac{4n+1}{\pi}} = \frac{4n+1}{\pi}\]
+
+\begin{enumerate}
+    \item Start with the left side of the equation:
+    \[\frac{1}{2}\left(\frac{8n+2}{\pi}\right)^{\frac{1}{2}}2^{\frac{1}{2}}\left(\frac{4n+1}{\pi}\right)^{\frac{1}{2}}\]
+    
+    \item Simplify $2^{\frac{1}{2}}$:
+    \[\frac{1}{2}\left(\frac{8n+2}{\pi}\right)^{\frac{1}{2}}\sqrt{2}\left(\frac{4n+1}{\pi}\right)^{\frac{1}{2}}\]
+    
+    \item Combine terms under square roots:
+    \[\frac{1}{2}\sqrt{\frac{8n+2}{\pi}}\sqrt{2}\sqrt{\frac{4n+1}{\pi}}\]
+    
+    \item Combine $\sqrt{2}$ with one of the other square roots:
+    \[\frac{1}{2}\sqrt{\frac{8n+2}{\pi}}\sqrt{\frac{2(4n+1)}{\pi}}\]
+    
+    \item Multiply terms under the square roots:
+    \[\frac{1}{2}\sqrt{\frac{8n+2}{\pi}}\sqrt{\frac{8n+2}{\pi}}\]
+    
+    \item Multiply equal square roots:
+    \[\frac{1}{2}\frac{8n+2}{\pi}\]
+    
+    \item Multiply $\frac{1}{2}$ by $(8n+2)$:
+    \[\frac{4n+1}{\pi}\]
+\end{enumerate}
+
+This is exactly the right side of the equation we were trying to prove.
+
+Therefore, we have shown that:
+
+\[\frac{1}{2}\sqrt{\frac{8n+2}{\pi}}\sqrt{2}\sqrt{\frac{4n+1}{\pi}} = \frac{4n+1}{\pi}\]
+
+The proof is complete.
+\end{proof}
+
+\end{document}
