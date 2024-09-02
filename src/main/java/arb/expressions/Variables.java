@@ -1,95 +1,208 @@
 package arb.expressions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import arb.Named;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ModifiableObservableListBase;
+import javafx.collections.ObservableList;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
- * 
+ *
  * @author ©2024 Stephen Crowley
  */
 public class Variables extends
                        ModifiableObservableListBase<Named>
-
 {
+
+  public final class ContextVariableChange extends
+                                           Change<Named>
+  {
+    private final int index;
+    private boolean   invalid = true;
+
+    public ContextVariableChange(ObservableList<Named> list, int index)
+    {
+      super(list);
+      this.index = index;
+    }
+
+    @Override
+    public boolean next()
+    {
+      if (invalid)
+      {
+        invalid = false;
+        return true;
+      }
+      return false;
+    }
+
+    @Override
+    public void reset()
+    {
+      invalid = true;
+    }
+
+    @Override
+    public boolean wasReplaced()
+    {
+      return true;
+    }
+
+    @Override
+    public boolean wasRemoved()
+    {
+      return false;
+    }
+
+    @Override
+    public boolean wasAdded()
+    {
+      return false;
+    }
+
+    @Override
+    public int getRemovedSize()
+    {
+      return 0;
+    }
+
+    @Override
+    public List<Named> getRemoved()
+    {
+      return null;
+    }
+
+    @Override
+    public int getTo()
+    {
+      return index + 1;
+    }
+
+    @Override
+    public int getFrom()
+    {
+      return index;
+    }
+
+    @Override
+    protected int[] getPermutation()
+    {
+      return new int[0];
+    }
+  }
+
+  public final HashMap<String, Named> map  = new HashMap<>();
+  private final List<Named>           list = new ArrayList<>();
+
   @Override
   public String toString()
   {
     return String.format("Variables(#%s)[%s]", System.identityHashCode(this), map);
   }
 
-  public final HashMap<String, Named> map = new HashMap<>();
-
   @SafeVarargs
-  public <A extends Named> Variables(A... variables)
+  public Variables(Named... variables)
   {
-    for (A variable : variables)
+    for (Named variable : variables)
     {
-      map.put(variable.getName(), variable);
+      add(variable);
     }
   }
 
-  public Object register(String name, Named field)
+  public Named register(String name, Named field)
   {
-    return map.put(name, field);
+    return put(name, field);
   }
 
   @SuppressWarnings("unchecked")
-  public <R> R get(String name)
+  public <R extends Named> R get(String name)
   {
     return (R) map.get(name);
   }
 
-  @SuppressWarnings("unchecked")
   public <R extends Named> R put(String name, R variable)
   {
-    return (R) map.put(name, variable);
+    Named oldValue = map.put(name, variable);
+    if (oldValue != null)
+    {
+      int index = list.indexOf(oldValue);
+      if (index != -1)
+      {
+        list.set(index, variable);
+      }
+    }
+    else
+    {
+      list.add(variable);
+    }
+    return variable;
   }
 
   @Override
   public int size()
   {
-    return map.size();
+    return list.size();
   }
 
   @Override
   public Named get(int index)
   {
-    return map.values().stream().toList().get(index);
+    return list.get(index);
   }
 
   @Override
   protected void doAdd(int index, Named element)
   {
-    System.err.format("doAdd(index=%s, element=%s", index,element);
+    list.add(index, element);
     map.put(element.getName(), element);
   }
 
   @Override
   protected Named doSet(int index, Named element)
   {
-    System.err.format("doSet(index=%s, element=%s)", index,element);
-
-    if ( element == null )
+    Named oldElement = list.set(index, element);
+    if (oldElement != null)
     {
-      return null;
+      map.remove(oldElement.getName());
     }
-    Named put = map.put(element.getName(), element);
-    System.err.println("after set " + this );
-    return put;
+    map.put(element.getName(), element);
+    return oldElement;
   }
 
   @Override
   protected Named doRemove(int index)
   {
-    System.err.format("doRemove(index=%s)", index);
+    Named removed = list.remove(index);
+    if (removed != null)
+    {
+      map.remove(removed.getName());
+    }
+    return removed;
+  }
 
-    return map.remove(map.keySet().stream().toList().get(index));
+  public void rename(String oldName, String newName)
+  {
+    Named variable = map.get(oldName);
+    if (variable != null)
+    {
+      map.remove(oldName);
+      variable.setName(newName);
+      map.put(newName, variable);
+      int index = list.indexOf(variable);
+      if (index != -1)
+      {
+        fireChange(new ContextVariableChange(this,
+                                             index));
+      }
+    }
   }
 
 }

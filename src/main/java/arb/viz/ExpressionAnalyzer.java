@@ -189,11 +189,12 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     return splitPane;
   }
 
-  private Optional<String> showNewVariableNameDialog()
+  private Optional<String> showVariableNameDialog(boolean rename)
   {
     TextInputDialog dialog = new TextInputDialog();
     dialog.setTitle("New Variable");
-    dialog.setHeaderText("Enter the name for the new variable:");
+    dialog.setHeaderText(rename ? "Enter the new name for the variable:"
+                                : "Enter the name for the new variable:");
     dialog.setContentText("Variable name:");
 
     // Set the owner to the primary stage
@@ -202,10 +203,69 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     return dialog.showAndWait();
   }
 
-  @SuppressWarnings("unlikely-arg-type")
   protected ContextMenu newContextMenu(StringConverter<Named> converter)
   {
-    // Create a MenuItem and place it in a ContextMenu
+
+    ContextMenu contextMenu = new ContextMenu(newDeleteVariableMenuItem(),
+                                              newInsertNewRealVariable(),
+                                              newRenameRealVariableMenuItem());
+
+    contextListView.setCellFactory(ContextMenuListCell.<
+                  Named>forListView(contextMenu, param -> new TextFieldListCell<Named>(converter)));
+
+    contextListView.setEditable(true);
+    return contextMenu;
+  }
+
+  public MenuItem newRenameRealVariableMenuItem()
+  {
+    MenuItem renameVariable = new MenuItem("Rename Variable");
+    renameVariable.setOnAction(e ->
+    {
+      Named selectedItem = contextListView.getSelectionModel().getSelectedItem();
+      if (selectedItem == null)
+      {
+        showAlert("Error", "No variable selected. Please select a variable to rename.");
+        return;
+      }
+
+      Optional<String> result = showVariableNameDialog(true);
+      result.ifPresent(newName ->
+      {
+        Context currentContext = getCurrentContext();
+        if (currentContext != null)
+        {
+          String oldName = selectedItem.getName();
+          currentContext.variables.rename(oldName, newName);
+          updateContextListView();
+        }
+      });
+    });
+    return renameVariable;
+  }
+
+  public MenuItem newInsertNewRealVariable()
+  {
+    MenuItem insertNewRealVariable = new MenuItem("New Real Variable");
+    insertNewRealVariable.setOnAction(e ->
+    {
+      Optional<String> result = showVariableNameDialog(false);
+      result.ifPresent(name ->
+      {
+        Context currentContext = getCurrentContext();
+        if (currentContext != null)
+        {
+          Real newVar = Real.named(name);
+          currentContext.variables.add(newVar);
+          updateContextListView();
+        }
+      });
+    });
+    return insertNewRealVariable;
+  }
+
+  public MenuItem newDeleteVariableMenuItem()
+  {
     MenuItem deleteVariableMenuItem = new MenuItem("Delete Variable");
     deleteVariableMenuItem.setOnAction(e ->
     {
@@ -220,30 +280,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
         }
       }
     });
-
-    MenuItem insertNewRealVariable = new MenuItem("New Real Variable");
-    insertNewRealVariable.setOnAction(e ->
-    {
-      Optional<String> result = showNewVariableNameDialog();
-      result.ifPresent(name ->
-      {
-        Context currentContext = getCurrentContext();
-        if (currentContext != null)
-        {
-          Real newVar = Real.named(name);
-          currentContext.variables.add(newVar);
-          updateContextListView();
-        }
-      });
-    });
-    ContextMenu contextMenu = new ContextMenu(deleteVariableMenuItem,
-                                              insertNewRealVariable);
-
-    contextListView.setCellFactory(ContextMenuListCell.<
-                  Named>forListView(contextMenu, param -> new TextFieldListCell<Named>(converter)));
-
-    contextListView.setEditable(true);
-    return contextMenu;
+    return deleteVariableMenuItem;
   }
 
   protected HBox createTypeBoxes()

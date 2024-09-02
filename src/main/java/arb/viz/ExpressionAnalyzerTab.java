@@ -222,16 +222,16 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
 
   private String evaluateNode(Node<D, C, F> node)
   {
-   
+    if (result == null)
+    {
+      return "null";
+    }
     try
     {
       String intermediateValueFieldName = node.getIntermediateValueFieldName();
       if (intermediateValueFieldName == null)
       {
-        if (result == null)
-        {
-          return null;
-        }
+
         return "null";
       }
       if (intermediateValueFieldName == "result")
@@ -240,7 +240,8 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
       }
       if (intermediateValueFieldName.equals(expr.getInputName()))
       {
-        return getContext().getVariable("input");
+        Object inputVariable = getContext().getVariable("input");
+        return inputVariable != null ? inputVariable.toString() : "null";
       }
       else
       {

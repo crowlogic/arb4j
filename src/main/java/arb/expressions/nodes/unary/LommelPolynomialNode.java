@@ -255,7 +255,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   @Override
   public String typeset()
   {
-    return String.format("R_{%s, %s}(%s)", order.typeset(), index.typeset(), arg.typeset());
+    return String.format("R_{%s, %s}(%s)", index.typeset(), order.typeset(), arg.typeset());
   }
 
   @Override
