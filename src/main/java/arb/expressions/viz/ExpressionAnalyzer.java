@@ -78,26 +78,71 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
 
   void functionTypeSelected(Class<?> functionType)
   {
-    if (functionType.equals(IntegerFunction.class))
+    if (functionType.equals(Function.class))
     {
-      domainTypeBox.getSelectionModel().select(Integer.class);
-      codomainTypeBox.getSelectionModel().select(Integer.class);
+    }
+    else if (functionType.equals(IntegerFunction.class))
+    {
+      selectTypes(Integer.class, Integer.class);
     }
     else if (functionType.equals(IntegerPolynomialSequence.class))
     {
-      domainTypeBox.getSelectionModel().select(Integer.class);
-      codomainTypeBox.getSelectionModel().select(IntegerPolynomial.class);
-
+      selectTypes(Integer.class, IntegerPolynomial.class);
     }
     else if (functionType.equals(IntegerPolynomialNullaryFunction.class))
     {
-      domainTypeBox.getSelectionModel().select(Object.class);
-      codomainTypeBox.getSelectionModel().select(IntegerPolynomial.class);
+      selectTypes(Object.class, IntegerPolynomial.class);
+    }
+    else if (functionType.equals(RealFunction.class))
+    {
+      selectTypes(Real.class, Real.class);
+    }
+    else if (functionType.equals(RealPolynomialFunction.class))
+    {
+      selectTypes(RealPolynomial.class, RealPolynomial.class);
+    }
+    else if (functionType.equals(ComplexFunction.class))
+    {
+      selectTypes(Complex.class, Complex.class);
+    }
+    else if (functionType.equals(ComplexPolynomialSequence.class))
+    {
+      selectTypes(Integer.class, ComplexPolynomial.class);
+    }
+    else if (functionType.equals(ComplexNullaryFunction.class))
+    {
+      selectTypes(Object.class, Complex.class);
+    }
+    else if (functionType.equals(RationalFunctionSequence.class))
+    {
+      selectTypes(Integer.class, RationalFunction.class);
+    }
+    else if (functionType.equals(RationalNullaryFunction.class))
+    {
+      selectTypes(Object.class, RationalFunction.class);
+    }
+    else if (functionType.equals(ComplexToRealFunction.class))
+    {
+      selectTypes(Complex.class, Real.class);
+    }
+    else if (functionType.equals(ComplexRationalFunctionSequence.class))
+    {
+      selectTypes(Integer.class, ComplexRationalFunction.class);
+    }
+    else if (functionType.equals(ComplexRationalNullaryFunction.class))
+    {
+      selectTypes(Object.class, ComplexRationalFunction.class);
     }
     else
     {
       System.err.println("functionTypeSelected: TODO: handle " + functionType);
     }
+  }
+
+  public void selectTypes(Class<?> aclass, Class<?> bclass)
+  {
+    domainTypeBox.getSelectionModel().select(aclass);
+    codomainTypeBox.getSelectionModel().select(bclass);
   }
 
   public static Class<?>[] INTERFACES = new Class<?>[]
