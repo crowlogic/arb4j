@@ -57,4 +57,10 @@ public interface IntegerPolynomialNullaryFunction extends
     return compile(Parser.expressionToUniqueClassname(string), string, prototype);
   }
 
+  @Override
+  default Class<IntegerPolynomial> coDomainType()
+  {
+    return IntegerPolynomial.class;
+  }
+
 }

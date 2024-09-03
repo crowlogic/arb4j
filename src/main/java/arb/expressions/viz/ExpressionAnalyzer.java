@@ -1,6 +1,8 @@
 package arb.expressions.viz;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -9,10 +11,19 @@ import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.functions.ComplexToRealFunction;
 import arb.functions.Function;
+import arb.functions.IntegerFunction;
+import arb.functions.IntegerPolynomialSequence;
 import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.ComplexNullaryFunction;
+import arb.functions.integer.ComplexPolynomialSequence;
+import arb.functions.integer.IntegerPolynomialNullaryFunction;
+import arb.functions.polynomials.RealPolynomialFunction;
+import arb.functions.rational.ComplexRationalFunctionSequence;
 import arb.functions.rational.ComplexRationalNullaryFunction;
 import arb.functions.rational.RationalFunctionSequence;
+import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;
 import arb.viz.TODO;
@@ -22,6 +33,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.control.skin.TableColumnHeader;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -32,8 +44,8 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 
 /**
- * TODO: save/restore/copy/paste/drag&drop context variables TODO: confirm
- * before exiting or closing a tab
+ * TODO: save/restore/copy/paste/drag&drop context variables
+ * 
  * 
  * @param <D>
  * @param <C>
@@ -46,16 +58,9 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
                                Application
 {
 
-  public static final Class<?>[] INTERFACES = new Class<?>[]
-  { Function.class,
-    RealFunction.class,
-    ComplexFunction.class,
-    RationalFunctionSequence.class,
-    ComplexRationalNullaryFunction.class };
+  static Method            resizeMethod;
 
-  static Method                  resizeMethod;
-
-  public static final Class<?>[] TYPES      = new Class[]
+  public static Class<?>[] TYPES = new Class[]
   { Object.class,
     Integer.class,
     GaussianInteger.class,
@@ -71,8 +76,57 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     RealMatrix.class,
     ComplexMatrix.class };
 
+  void functionTypeSelected(Class<?> functionType)
+  {
+    if (functionType.equals(IntegerFunction.class))
+    {
+      domainTypeBox.getSelectionModel().select(Integer.class);
+      codomainTypeBox.getSelectionModel().select(Integer.class);
+    }
+    else if (functionType.equals(IntegerPolynomialSequence.class))
+    {
+      domainTypeBox.getSelectionModel().select(Integer.class);
+      codomainTypeBox.getSelectionModel().select(IntegerPolynomial.class);
+
+    }
+    else if (functionType.equals(IntegerPolynomialNullaryFunction.class))
+    {
+      domainTypeBox.getSelectionModel().select(Object.class);
+      codomainTypeBox.getSelectionModel().select(IntegerPolynomial.class);
+    }
+    else
+    {
+      System.err.println("functionTypeSelected: TODO: handle " + functionType);
+    }
+  }
+
+  public static Class<?>[] INTERFACES = new Class<?>[]
+  { Function.class,
+    IntegerFunction.class,
+    IntegerPolynomialSequence.class,
+    IntegerPolynomialNullaryFunction.class,
+    RealFunction.class,
+    RealPolynomialFunction.class,
+    ComplexFunction.class,
+    ComplexPolynomialSequence.class,
+    ComplexNullaryFunction.class,
+    RationalFunctionSequence.class,
+    RationalNullaryFunction.class,
+    ComplexToRealFunction.class,
+    ComplexRationalFunctionSequence.class,
+    ComplexRationalNullaryFunction.class };
+
   static
   {
+    Comparator<? super Class<?>> comparator = (a, b) ->
+    {
+      Class<?> classA = (Class<?>) a;
+      Class<?> classB = (Class<?>) b;
+      return classA.getName().compareTo(classB.getName());
+    };
+    Arrays.sort(INTERFACES, comparator);
+    Arrays.sort(TYPES, comparator);
+
     try
     {
       resizeMethod =
@@ -291,7 +345,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
                               domainTypeBox,
                               new Label("Codomain:"),
                               codomainTypeBox,
-                              new Label("Function:"),
+                              new Label("Interface:"),
                               functionTypeBox);
     return typeBoxes;
   }
@@ -364,25 +418,33 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     domainTypeBox.getItems().addAll(TYPES);
     codomainTypeBox.getItems().addAll(TYPES);
     functionTypeBox.getItems().addAll(INTERFACES);
+
     domainTypeBox.setValue(Integer.class);
     codomainTypeBox.setValue(RationalFunction.class);
     functionTypeBox.setValue(Function.class);
+    functionTypeBox.setOnAction(e ->
+    {
+      functionTypeSelected(functionTypeBox.getValue());
+    });
   }
 
-  void showAlert(String title, String content)
+  void showAlert(String title, String header, String content)
   {
     Alert alert = new Alert(AlertType.ERROR);
+    alert.setWidth(1400);
+    alert.setResizable(true);
     alert.setTitle(title);
-    alert.setHeaderText(null);
+    alert.setHeaderText(header);
     alert.setContentText(content);
-    alert.setWidth(800);
     alert.showAndWait();
   }
 
   @Override
   public void start(Stage primaryStage)
   {
-    primaryStage.setWidth(1900);
+    setStageIcon(primaryStage);
+
+    primaryStage.setWidth(2000);
     primaryStage.setHeight(950);
 
     Scene scene = new Scene(createMainLayout());
@@ -413,6 +475,19 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     addNewExpressionTab();
   }
 
+  public void setStageIcon(Stage primaryStage)
+  {
+    try
+    {
+      primaryStage.getIcons()
+                  .add(new Image(getClass().getResourceAsStream("/ExpressionAnalyzer.png")));
+    }
+    catch (Throwable e)
+    {
+      e.printStackTrace(System.err);
+    }
+  }
+
   private void toggleContextView()
   {
     if (contextViewVisible)
@@ -424,15 +499,15 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     {
       contextListView.setItems(getCurrentContext().variables);
       splitPane.getItems().add(0, contextBox);
-      if (lastDividerPositions == null)
-      {
-        splitPane.setDividerPositions(0.2);
-      }
-      else
-      {
-        splitPane.setDividerPositions(lastDividerPositions);
-      }
+      splitPane.setDividerPositions(lastDividerPositions == null ? new double[]
+      { 0.11 } : lastDividerPositions);
+
     }
     contextViewVisible = !contextViewVisible;
+  }
+
+  public void showAlert(String string, String msg)
+  {
+    showAlert(string, msg, msg);
   }
 }

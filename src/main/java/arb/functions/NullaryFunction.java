@@ -17,6 +17,12 @@ public interface NullaryFunction<R> extends
                                 Function<Object, R>
 {
 
+  @Override
+  default Class<Object> domainType()
+  {
+    return Object.class;
+  }
+  
   public static <R extends Ring<?>, N extends NullaryFunction<? extends R>>
          Expression<Object, R, N>
          parse(Class<? extends R> elementType,

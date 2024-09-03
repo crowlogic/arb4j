@@ -35,7 +35,7 @@ public class CompiledExpressionClassLoader extends
                         className,
                         compiledClasses.keySet());
     }
-    assert !compiledClasses.containsKey(className) : className + " already exists";
+   // assert !compiledClasses.containsKey(className) : className + " already exists";
     Class<?> definedClass = defineClass(className, bytecodes, 0, bytecodes.length);
     compiledClasses.put(className, definedClass);
     return definedClass;

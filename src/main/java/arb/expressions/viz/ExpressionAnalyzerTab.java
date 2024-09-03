@@ -100,8 +100,12 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
       Class<C> codomainType = (Class<C>) this.expressionAnalyzer.codomainTypeBox.getValue();
       Class<F> functionType = (Class<F>) this.expressionAnalyzer.functionTypeBox.getValue();
 
-      expr     =
-           Function.compile(domainType, codomainType, functionType, expressionString, context);
+      expr     = Function.compile(domainType,
+                                  codomainType,
+                                  functionType,
+                                  expressionString,
+                                  context.resetClassLoader());
+      
       instance = expr.instantiate();
       updateTreeTableView();
       updateContextView();
@@ -110,7 +114,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     {
       e.printStackTrace(System.err);
       this.expressionAnalyzer.showAlert("Compilation Error",
-                                        e.getClass().getName() + ": " + e.getMessage());
+                                        e.getClass().getName(), e.getMessage());
     }
   }
 
@@ -332,7 +336,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     {
       var nodeExpansionStates = enumerateNodeExpansionStates();
 
-      D input = getContext().getVariable("input");
+      D   input               = getContext().getVariable("input");
       if (input == null && !expr.domainType.equals(Object.class))
       {
         expressionAnalyzer.showAlert("Input Required",

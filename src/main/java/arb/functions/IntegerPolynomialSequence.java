@@ -5,16 +5,17 @@ import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.functions.integer.Sequence;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface IntegerToRealPolynomialFunction extends
-                                                 Function<Integer, RealPolynomial>
+public interface IntegerPolynomialSequence extends
+                                                 Sequence<RealPolynomial>
 {
 
-  public static IntegerToRealPolynomialFunction
+  public static IntegerPolynomialSequence
          express(String functionName,
                  String expression,
                  Context context)
@@ -23,22 +24,22 @@ public interface IntegerToRealPolynomialFunction extends
                                 context,
                                 Integer.class,
                                 RealPolynomial.class,
-                                IntegerToRealPolynomialFunction.class,
+                                IntegerPolynomialSequence.class,
                                 functionName);
   }
 
-  public static IntegerToRealPolynomialFunction
+  public static IntegerPolynomialSequence
          express(String expression)
   {
     return Function.instantiate(expression,
                                 null,
                                 Integer.class,
                                 RealPolynomial.class,
-                                IntegerToRealPolynomialFunction.class,
+                                IntegerPolynomialSequence.class,
                                 null);
   }
 
-  public static IntegerToRealPolynomialFunction
+  public static IntegerPolynomialSequence
          express(String expression,
                  Context context)
   {
@@ -46,7 +47,7 @@ public interface IntegerToRealPolynomialFunction extends
                                 context,
                                 Integer.class,
                                 RealPolynomial.class,
-                                IntegerToRealPolynomialFunction.class,
+                                IntegerPolynomialSequence.class,
                                 null);
   }
 

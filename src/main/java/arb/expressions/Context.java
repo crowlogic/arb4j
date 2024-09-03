@@ -54,16 +54,22 @@ import arb.functions.integer.Sequence;
  */
 public class Context
 {
-  public final CompiledExpressionClassLoader classLoader                  =
-                                                         new CompiledExpressionClassLoader(this);
+  CompiledExpressionClassLoader         classLoader                  =
+                                                    new CompiledExpressionClassLoader(this);
 
-  public final FunctionMappings              functions;
+  public final FunctionMappings         functions;
 
-  public HashMap<String, AtomicInteger>      intermediateVariableCounters = new HashMap<>();
+  public HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
-  public boolean                             saveClasses                  = false;
+  public boolean                        saveClasses                  = false;
 
-  public Variables                           variables;
+  public Variables                      variables;
+
+  public Context resetClassLoader()
+  {
+    classLoader = new CompiledExpressionClassLoader(this);
+    return this;
+  }
 
   public Context()
   {
