@@ -14,23 +14,22 @@ import arb.functions.real.RealFunction;
  *      {@link TheArb4jLibrary}
  */
 public class SphericalBesselFunction implements
-                                     RealFunction, AutoCloseable
+                                     RealFunction,
+                                     AutoCloseable
 {
 
-  static
-  {
-    Context prototypeContext = new Context(Integer.named("n"));
-    prototype = RealFunction.compile("(R(n,½;x)*sin(x) - R(n-1,3⁄2;x)*cos(x))/x", prototypeContext);
-  }
+  private static Context                              prototypeContext =
+                                                                       new Context(Integer.named("n"));
 
-  public static Expression<Real, Real, RealFunction> prototype;
+  private static Expression<Real, Real, RealFunction> prototype        =
+                                                                RealFunction.compile("(R(n,½;x)*sin(x) - R(n-1,3⁄2;x)*cos(x))/x",
+                                                                                     prototypeContext);
 
+  public final Integer                                      n                = Integer.named("n");
 
-  public Integer                                     n       = Integer.named("n");
+  public final Context                                context          = new Context(n);
 
-  public final Context                               context = new Context(n);
-
-  private RealFunction                               element;
+  private RealFunction                                element;
 
   public SphericalBesselFunction()
   {
@@ -61,7 +60,7 @@ public class SphericalBesselFunction implements
   @Override
   public void close()
   {
-   n.close();
+    n.close();
   }
 
 }
