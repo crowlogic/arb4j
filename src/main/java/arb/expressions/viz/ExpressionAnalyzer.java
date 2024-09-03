@@ -17,6 +17,7 @@ import arb.functions.IntegerFunction;
 import arb.functions.IntegerPolynomialSequence;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexNullaryFunction;
+import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.integer.ComplexPolynomialSequence;
 import arb.functions.integer.IntegerPolynomialNullaryFunction;
 import arb.functions.polynomials.RealPolynomialFunction;
@@ -25,6 +26,7 @@ import arb.functions.rational.ComplexRationalNullaryFunction;
 import arb.functions.rational.RationalFunctionSequence;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
+import arb.functions.real.RealNullaryFunction;
 import arb.utensils.Utensils;
 import arb.viz.TODO;
 import javafx.application.Application;
@@ -57,6 +59,23 @@ import javafx.util.StringConverter;
 public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
                                Application
 {
+
+  public final class ClassStringConverter extends
+                                          StringConverter<Class<?>>
+  {
+    @Override
+    public String toString(Class<?> object)
+    {
+      return object.getSimpleName();
+    }
+
+    @Override
+    public Class<?> fromString(String string)
+    {
+      assert false : "TODO: Auto-generated method stub";
+      return null;
+    }
+  }
 
   static Method            resizeMethod;
 
@@ -133,6 +152,14 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     {
       selectTypes(Object.class, ComplexRationalFunction.class);
     }
+    else if (functionType.equals(RealNullaryFunction.class))
+    {
+      selectTypes(Object.class, Real.class);
+    }
+    else if (functionType.equals(ComplexPolynomialNullaryFunction.class))
+    {
+      selectTypes(Object.class, ComplexPolynomial.class);
+    }
     else
     {
       System.err.println("functionTypeSelected: TODO: handle " + functionType);
@@ -157,6 +184,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     ComplexNullaryFunction.class,
     RationalFunctionSequence.class,
     RationalNullaryFunction.class,
+    RealNullaryFunction.class,
     ComplexToRealFunction.class,
     ComplexRationalFunctionSequence.class,
     ComplexRationalNullaryFunction.class };
@@ -459,11 +487,16 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
 
   private void setupTypeBoxes()
   {
+    ClassStringConverter classStringConverter = new ClassStringConverter();
 
     domainTypeBox.getItems().addAll(TYPES);
-    codomainTypeBox.getItems().addAll(TYPES);
-    functionTypeBox.getItems().addAll(INTERFACES);
+    domainTypeBox.setConverter(classStringConverter);
 
+    codomainTypeBox.getItems().addAll(TYPES);
+    codomainTypeBox.setConverter(classStringConverter);
+
+    functionTypeBox.getItems().addAll(INTERFACES);
+    functionTypeBox.setConverter(classStringConverter);
     domainTypeBox.setValue(Integer.class);
     codomainTypeBox.setValue(RationalFunction.class);
     functionTypeBox.setValue(Function.class);

@@ -15,6 +15,8 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
+import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.unary.HypergeometricFunctionNode;
 import arb.functions.Function;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -87,7 +89,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     var valueCol          = newValueCol();
     treeTableView.setTableMenuButtonVisible(true);
     treeTableView.getColumns()
-                 .addAll(nodeCol, nodeTypeCol, nodeTypeResultCol, typesetCol, fieldCol, valueCol);
+                 .addAll(nodeCol, nodeTypeCol, nodeTypeResultCol, typesetCol, valueCol, fieldCol);
   }
 
   @SuppressWarnings("unchecked")
@@ -105,7 +107,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
                                   functionType,
                                   expressionString,
                                   context.resetClassLoader());
-      
+
       instance = expr.instantiate();
       updateTreeTableView();
       updateContextView();
@@ -114,7 +116,8 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     {
       e.printStackTrace(System.err);
       this.expressionAnalyzer.showAlert("Compilation Error",
-                                        e.getClass().getName(), e.getMessage());
+                                        e.getClass().getName(),
+                                        e.getMessage());
     }
   }
 
@@ -167,7 +170,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     nodeCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
                                                                         .getValue()
                                                                         .toString()));
-    nodeCol.setMinWidth(400);
+    // nodeCol.setMinWidth(400);
     return nodeCol;
   }
 
@@ -178,17 +181,19 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
                                                                             .getValue()
                                                                             .getClass()
                                                                             .getSimpleName()));
-    nodeTypeCol.setMinWidth(325);
+    // nodeTypeCol.setMinWidth(325);
     return nodeTypeCol;
   }
 
   protected TreeTableColumn<Node<D, C, F>, String> newNodeTypeResultCol()
   {
     TreeTableColumn<Node<D, C, F>, String> nodeTypeResultCol = new TreeTableColumn<>("Result Type");
-    nodeTypeResultCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
-                                                                                  .getValue()
-                                                                                  .type()
-                                                                                  .getSimpleName()));
+    nodeTypeResultCol.setCellValueFactory(param ->
+    {
+      Class<?> generatedType = param.getValue().getValue().getGeneratedType();
+      return new ReadOnlyStringWrapper(generatedType == null ? "null"
+                                                             : generatedType.getSimpleName());
+    });
     return nodeTypeResultCol;
   }
 
@@ -199,7 +204,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
                                                                            .getValue()
                                                                            .typeset()));
     typesetCol.setCellFactory(new TypeSettingCellFactory<>());
-    typesetCol.setMinWidth(400); // Adjust this value as needed
+    // typesetCol.setMinWidth(400); // Adjust this value as needed
     return typesetCol;
   }
 
@@ -241,6 +246,21 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
       if (intermediateValueFieldName == "result")
       {
         return result.toString();
+      }
+      if (node instanceof VariableNode)
+      {
+        VariableNode<D, C, F> variableNode = (VariableNode<D, C, F>) node;
+        if (variableNode.isIndeterminate)
+        {
+          return variableNode.getName();
+        }
+      }
+      else if (node instanceof HypergeometricFunctionNode)
+      {
+        // FIXME; support these types of embedded expressions by accessing the evaluated alpha and beta params instead
+        // of printing the formulas for alpha and beta which are already displayed
+        HypergeometricFunctionNode<D, C, F> hyp = (HypergeometricFunctionNode<D, C, F>) node;
+        return String.format("%s/%s arg=%s\n", hyp.α, hyp.β, hyp.arg );
       }
       if (intermediateValueFieldName.equals(expr.getInputName()))
       {
