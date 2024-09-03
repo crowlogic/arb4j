@@ -1929,6 +1929,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
+  static File compiledClassDir = new File("compiled");
+  static
+  {
+    if (!compiledClassDir.canWrite())
+    {
+      compiledClassDir.mkdir();
+    }
+  }
+
   /**
    * TODO: See how this can be integrated with {@link ArbShellExecutionController}
    * via
@@ -1947,7 +1956,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (saveClasses)
     {
-      File file = new File(className + ".class");
+
+      File file = new File(compiledClassDir,
+                           className + ".class");
       writeBytecodes(file);
     }
     return this;
