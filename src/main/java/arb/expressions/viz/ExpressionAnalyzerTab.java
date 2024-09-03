@@ -375,7 +375,10 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
 
         }
         System.out.println(expr + "(" + input + ")=" + result);
+
         var rootItem = updateTreeTableView();
+        expandAllNodes();
+        
         applyNodeExpansionStates(nodeExpansionStates, rootItem);
       }
     }

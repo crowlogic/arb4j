@@ -472,7 +472,11 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     expandAllButton.setOnAction(e -> expandAllNodes());
 
     Button evaluateButton = new Button("Evaluate");
-    evaluateButton.setOnAction(e -> evaluateExpression());
+    evaluateButton.setOnAction(e ->
+    {
+      evaluateExpression();
+      expandAllNodes();
+    });
 
     Button toggleContextButton = new Button("Toggle Context");
     toggleContextButton.setOnAction(e -> toggleContextView());
