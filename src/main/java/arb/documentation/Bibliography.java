@@ -22,6 +22,14 @@ public class Bibliography extends
                           AbstractBibliography
 {
 
+  public static Article       nonCommutativeOrbitSpaceGeometry                       =
+                                                               new Article("The Geometry of the Orbit Space for Non-Abelian Gauge Theories",
+                                                                           "I M Singer",
+                                                                           "1981",
+                                                                           "Physica Scripta",
+                                                                           "24",
+                                                                           "817").setNumber("5");
+
   public static Article       betaIntegralsAndOrthogonalPolynomials                  =
                                                                     new Article("Beta integrals and the associated orthogonal polynomials",
                                                                                 "Askey, R.",
