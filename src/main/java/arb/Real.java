@@ -627,6 +627,11 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     return res;
   }
  
+  public Complex add( Integer z, int bits, Complex result )
+  {
+    return z.add(this, bits,result);
+  }
+  
   public Real add( Integer z, int bits, Real result )
   {
     arblib.arb_add_fmpz(result, this, z.swigCPtr, bits);

@@ -15,9 +15,9 @@ public class IntegerTest extends
   public static void testPrime()
   {
     long p = Integer.prime(5);
-    assertEquals( 11, p );
+    assertEquals(11, p);
   }
-  
+
   public void testAscendingFactorial()
   {
     try ( Integer n = new Integer(3))
@@ -40,6 +40,28 @@ public class IntegerTest extends
       assertEquals("[41 6 2]", v.toString());
       v.setName("v");
       assertEquals("v=[41 6 2]", v.toString());
+    }
+  }
+
+  public void testAddComplexToComplex()
+  {
+
+    try ( Integer three = new Integer(3); Complex four = new Complex().set(4);
+          Complex seven = new Complex().set(new Integer(7));)
+    {
+      three.add(four, 128, seven);
+      assertEquals("7", seven.toString());
+    }
+  }
+  
+  public void testAddRealToComplex()
+  {
+
+    try ( Integer three = new Integer(3); Real four = new Real().set(4);
+          Complex seven = new Complex().set(new Integer(7));)
+    {
+      three.add(four, 128, seven);
+      assertEquals("7", seven.toString());
     }
   }
 

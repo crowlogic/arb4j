@@ -257,10 +257,11 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
       }
       else if (node instanceof HypergeometricFunctionNode)
       {
-        // FIXME; support these types of embedded expressions by accessing the evaluated alpha and beta params instead
+        // FIXME; support these types of embedded expressions by accessing the evaluated
+        // alpha and beta params instead
         // of printing the formulas for alpha and beta which are already displayed
         HypergeometricFunctionNode<D, C, F> hyp = (HypergeometricFunctionNode<D, C, F>) node;
-        return String.format("%s/%s arg=%s\n", hyp.α, hyp.β, hyp.arg );
+        return String.format("%s/%s arg=%s\n", hyp.α, hyp.β, hyp.arg);
       }
       if (intermediateValueFieldName.equals(expr.getInputName()))
       {
@@ -371,6 +372,10 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
         }
         else
         {
+          Object inputClass = input == null ? Object.class : input.getClass();
+          assert expr.domainType.equals(inputClass) : String.format("input should be of type %s not %s",
+                                                                    expr.domainType,
+                                                                    input.getClass());
           result = instance.evaluate(input, 128);
 
         }
@@ -378,7 +383,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
 
         var rootItem = updateTreeTableView();
         expandAllNodes();
-        
+
         applyNodeExpansionStates(nodeExpansionStates, rootItem);
       }
     }

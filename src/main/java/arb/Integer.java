@@ -42,11 +42,11 @@ public class Integer implements
 {
   public static int BYTES = Long.BYTES;
 
-  public static long prime( long n )
+  public static long prime(long n)
   {
     return arblib.n_nth_prime(n);
   }
-  
+
   public static Integer express(String expression)
   {
     return express(expression, 128);
@@ -298,9 +298,16 @@ public class Integer implements
 
   public IntegerPolynomial add(Real addend, int bits, IntegerPolynomial result)
   {
-    return result.set(this).add(addend, bits,result);
+    return result.set(this).add(addend, bits, result);
   }
-  
+
+  public Complex add(Real addend, int bits, Complex result)
+  {
+     this.add(addend,bits,result.re());
+     result.im().zero();
+     return result;
+  }
+
   public Real add(Real addend, int bits, Real result)
   {
     assert bits > 0;
@@ -952,7 +959,7 @@ public class Integer implements
   {
     return res.set(this).sub(subtrahend, prec);
   }
-  
+
   public RationalFunction sub(RationalFunction subtrahend, int prec, RationalFunction res)
   {
     res.bits = prec;

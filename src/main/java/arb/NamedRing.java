@@ -35,8 +35,9 @@ public interface NamedRing<A extends NamedRing<A>> extends
 
   public  NamedRing<A> set(Fraction val);
 
-  public default NamedRing<A> set(Complex val)
+  @SuppressWarnings("unchecked")
+  public default A set(Complex val)
   {
     assert false : "todo: implement set(" + val + ")";
-    return this;
+    return (A) this;
   }}

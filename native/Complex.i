@@ -18,6 +18,7 @@ import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import arb.functions.complex.ComplexNullaryFunction;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -41,6 +42,23 @@ import arb.space.topological.EuclideanVectorSpace;
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  public Complex add(Real z, int bits2)
+  {
+    return add(z, bits2, this);
+  }
+
+  public Complex set(double... d)
+  {
+    re().set(d);
+    im().zero();
+    return this;
+  }
+  
+  public Complex add(Real z, int bits2, Complex s)
+  {
+    return z.add(this, bits2,s);
+  }
+  
   public static Predicate<Complex> isNegativeInteger = αᵢ ->
                                                      {
 
@@ -71,6 +89,17 @@ import arb.space.topological.EuclideanVectorSpace;
     return lnΓ(bits, value);
   }
 
+  @SuppressWarnings("resource")
+  public static Complex named(String name2)
+  {
+    return new Complex().setName(name2);
+  }
+
+  public Named set(String value, int bits2)
+  {
+    return ComplexNullaryFunction.express(value).evaluate(bits2, this);
+  }
+    
   @Override
   public Complex set(Fraction val)
   {

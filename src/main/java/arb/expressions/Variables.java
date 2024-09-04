@@ -173,7 +173,10 @@ public class Variables extends
     {
       map.remove(oldElement.getName());
     }
-    map.put(element.getName(), element);
+    if (element != null)
+    {
+      map.put(element.getName(), element);
+    }
     return oldElement;
   }
 

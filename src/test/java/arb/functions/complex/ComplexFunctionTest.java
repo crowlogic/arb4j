@@ -20,9 +20,11 @@ public class ComplexFunctionTest extends
   {
     System.setProperty("arb4j.compiler.trace", "true");
     var context = new Context(RealNullaryFunction.express("1/2").evaluate(128, Real.named("v")));
-    var f       = ComplexNullaryFunction.express("sqrt(-1)*v", context);
+    var f       = ComplexNullaryFunction.express("sqrt(-1)", context);
     var x       = f.evaluate(128);
-    System.out.println(f + "=" + x);
+
+    assertTrue(x.im().isOne());
+    assertTrue(x.re().isZero());
 
   }
 
