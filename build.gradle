@@ -56,11 +56,23 @@ Terminal=false
 Categories=Utility;
 """
     }
+    doLast {
+        def desktopFile = new File("${buildDir}/TODO.desktop")
+        desktopFile.text = """[Desktop Entry]
+Type=Application
+Name=TODO
+Exec=${projectDir}/bin/todo
+Icon=${projectDir}/src/main/resources/TODO.png
+Terminal=false
+Categories=Utility;
+"""
+    }    
 }
 
 task installDesktopFile(type: Copy) {
     dependsOn createDesktopFile
     from "${buildDir}/ExpressionAnalyzer.desktop"
+    from "${buildDir}/TODO.desktop"
     into "${System.getProperty('user.home')}/.local/share/applications"
 }
 

@@ -18,6 +18,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
@@ -93,6 +94,19 @@ public class TODO extends
     return "data:text/css;base64," + encoded;
   }
 
+  public void setStageIcon(Stage primaryStage)
+  {
+    try
+    {
+      primaryStage.getIcons()
+                  .add(new Image(getClass().getResourceAsStream("/TODO.png")));
+    }
+    catch (Throwable e)
+    {
+      e.printStackTrace(System.err);
+    }
+  }
+
   @Override
   public void start(Stage primaryStage)
   {
@@ -150,6 +164,8 @@ public class TODO extends
 
     Platform.runLater(this::loadItems);
 
+    setStageIcon(primaryStage);
+    
     primaryStage.setTitle("To-Do List");
     primaryStage.setScene(scene);
     primaryStage.show();
