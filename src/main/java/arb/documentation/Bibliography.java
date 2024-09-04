@@ -21,6 +21,13 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       karhunenLoeveExpansionNote                             =
+                                                         new Article("A brief note on the karhunen-loève expansion",
+                                                                     "Alen Alexanderian",
+                                                                     "2015",
+                                                                     "arXiv preprint arXiv:1509.07526",
+                                                                     null,
+                                                                     null);
 
   public static Article       nonCommutativeOrbitSpaceGeometry                       =
                                                                new Article("The Geometry of the Orbit Space for Non-Abelian Gauge Theories",
