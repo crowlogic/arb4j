@@ -44,7 +44,28 @@ dependencies {
     
 }
 
+task createDesktopFile {
+    doLast {
+        def desktopFile = new File("${buildDir}/ExpressionAnalyzer.desktop")
+        desktopFile.text = """[Desktop Entry]
+Type=Application
+Name=Expression Analyzer
+Exec=${projectDir}/bin/analyze
+Icon=${projectDir}/src/main/resources/ExpressionAnalyzer.png
+Terminal=false
+Categories=Utility;
+"""
+    }
+}
 
+task installDesktopFile(type: Copy) {
+    dependsOn createDesktopFile
+    from "${buildDir}/ExpressionAnalyzer.desktop"
+    into "${System.getProperty('user.home')}/.local/share/applications"
+}
+
+build.finalizedBy createDesktopFile
+build.finalizedBy installDesktopFile
 
 tasks.withType(Javadoc) {
     options.addStringOption('source', '22') 

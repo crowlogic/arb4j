@@ -19,6 +19,27 @@ import arb.expressions.Context;
 %typemap(javacode) fmpz_poly_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+
+  public IntegerPolynomial add(Real addend, int bits, IntegerPolynomial result)
+  {
+    assert addend.isInteger() : "addend " + addend + " must be an integer";
+    try ( var intVal = addend.integerValue(new Integer()) )
+    {
+      return result.set(this).add(intVal, bits);
+    }
+  }
+
+  public IntegerPolynomial add(Integer intVal, int bits)
+  {
+    return add(intVal,bits,this);
+  }
+
+  public IntegerPolynomial set(IntegerPolynomial integerPolynomial)
+  {
+    arblib.fmpz_poly_set(this, integerPolynomial);;
+    return this;
+  }
+  
   public IntegerPolynomial sub(IntegerPolynomial x, int bits)
   {
     return sub(x, bits, this);

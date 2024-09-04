@@ -296,6 +296,11 @@ public class Integer implements
     return result.set(this).add(addend, bits);
   }
 
+  public IntegerPolynomial add(Real addend, int bits, IntegerPolynomial result)
+  {
+    return result.set(this).add(addend, bits,result);
+  }
+  
   public Real add(Real addend, int bits, Real result)
   {
     assert bits > 0;

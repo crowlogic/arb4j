@@ -66,7 +66,14 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     @Override
     public String toString(Class<?> object)
     {
-      return object.getSimpleName();
+      if (Object.class.equals(object))
+      {
+        return "∅ (NULL)";
+      }
+      else
+      {
+        return object.getSimpleName();
+      }
     }
 
     @Override
@@ -195,7 +202,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     {
       Class<?> classA = (Class<?>) a;
       Class<?> classB = (Class<?>) b;
-      return classA.getName().compareTo(classB.getName());
+      return classA.getSimpleName().compareTo(classB.getSimpleName());
     };
     Arrays.sort(INTERFACES, comparator);
     Arrays.sort(TYPES, comparator);

@@ -11,6 +11,17 @@ import junit.framework.TestCase;
 public class IntegerPolynomialTest extends
                                    TestCase
 {
+  int bits = 128;
+
+  public void testAddRealFromIntegerWithIntegerPolynomialResult()
+  {
+    try ( var y = new Real("3.0",
+                           128);
+          var n = new Integer(4); var r = n.add(y, bits, new IntegerPolynomial());)
+    {
+      assertEquals("7", r.toString());
+    }
+  }
 
   public void testIdentity()
   {
