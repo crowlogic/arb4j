@@ -42,3 +42,6 @@ documentation:
 docs: documentation
 
 doc: docs
+
+install:
+	gradle install
