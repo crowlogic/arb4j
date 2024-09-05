@@ -273,11 +273,6 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     }
   }
 
-  private void compileCurrentExpression()
-  {
-    executeTabAction(ExpressionAnalyzerTab::compileExpression);
-  }
-
   public VBox createMainLayout()
   {
     tabPane = new TabPane();
@@ -430,11 +425,6 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     return typeBoxes;
   }
 
-  private void evaluateExpression()
-  {
-    executeTabAction(ExpressionAnalyzerTab::evaluateExpression);
-  }
-
   @SuppressWarnings("unchecked")
   private void executeTabAction(Consumer<ExpressionAnalyzerTab<D, C, F>> action)
   {
@@ -447,11 +437,6 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
 
       action.accept(expressionTab);
     }
-  }
-
-  private void expandAllNodes()
-  {
-    executeTabAction(ExpressionAnalyzerTab::expandAllNodes);
   }
 
   @SuppressWarnings("unchecked")
@@ -473,15 +458,15 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     addTabButton.setOnAction(e -> addNewExpressionTab());
 
     Button compileButton = new Button("Compile");
-    compileButton.setOnAction(e -> compileCurrentExpression());
+    compileButton.setOnAction(e -> executeTabAction(ExpressionAnalyzerTab::compileExpression));
 
     Button expandAllButton = new Button("Expand All");
-    expandAllButton.setOnAction(e -> expandAllNodes());
+    expandAllButton.setOnAction(e -> executeTabAction(ExpressionAnalyzerTab::expandAllNodes));
 
     Button evaluateButton = new Button("Evaluate");
     evaluateButton.setOnAction(e ->
     {
-      evaluateExpression();
+      executeTabAction(ExpressionAnalyzerTab::evaluateExpression);
     });
 
     Button toggleContextButton = new Button("Toggle Context");
@@ -492,7 +477,8 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
                     compileButton,
                     expandAllButton,
                     evaluateButton,
-                    toggleContextButton);
+                    toggleContextButton
+                    );
   }
 
   private void setupTypeBoxes()
@@ -588,7 +574,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
       contextListView.setItems(getCurrentContext().variables);
       splitPane.getItems().add(0, contextBox);
       splitPane.setDividerPositions(lastDividerPositions == null ? new double[]
-      { 0.11 } : lastDividerPositions);
+      { 0.15 } : lastDividerPositions);
 
     }
     contextViewVisible = !contextViewVisible;

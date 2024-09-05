@@ -3,7 +3,6 @@ package arb.expressions.nodes.unary;
 import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.loadInputParameter;
 import static arb.expressions.Compiler.loadOrderParameter;
-import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.String.format;
 import static java.lang.System.err;
 
