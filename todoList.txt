@@ -3,4 +3,3 @@ NEW: implement KL expansion
 TODO: expression analyzer: save and load expressions to/from history
 expr analyzer; add button to toggle debug output
 todo: fix square root type when codomains scalar type is complex
-java.lang.NoSuchMethodError: 'arb.RationalFunction arb.Integer.div(arb.Real, int, arb.RationalFunction)'at n⁄2_4.evaluate(Unknown Source)
