@@ -114,6 +114,11 @@ public class Integer implements
     System.loadLibrary("arblib");
   }
 
+  public RationalFunction div(Real operand, int prec, RationalFunction result)
+  {
+    return result.set(this).div(operand,prec,result);
+  }
+  
   /**
    * Divides this Integer by another Integer and returns the result as a
    * RationalFunction.

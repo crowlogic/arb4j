@@ -1,6 +1,7 @@
 package arb.expressions.viz;
 
 import static arb.utensils.Utensils.wrapOrThrow;
+import static java.lang.System.out;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -27,6 +28,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.control.skin.TableColumnHeader;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -46,6 +48,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
   F                                 instance;
   C                                 result;
   Context                           context;
+  private HashMap<String, Boolean>  nodeExpansionStates;
 
   public Context getContext()
   {
@@ -57,14 +60,9 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     super(10);
     this.expressionAnalyzer = expressionAnalyzer;
     this.context            = new Context(Integer.named("n").set(3),
-
                                           Real.named("v").set(RealConstants.half));
 
-    expressionInput         = new TextField();
-    expressionInput.setPromptText("Enter expression here");
-    expressionInput.setText("v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)");
-
-    expressionInput.setMaxWidth(1200);
+    setupExpressionInput();
 
     setupTreeTableView();
 
@@ -74,6 +72,22 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     this.getChildren().addAll(expressionInput, treeTableView);
     this.setPadding(new Insets(10));
     VBox.setVgrow(this, Priority.ALWAYS);
+  }
+
+  public void setupExpressionInput()
+  {
+    expressionInput = new TextField();
+    expressionInput.setPromptText("Enter expression here");
+    expressionInput.setText("v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)");
+
+    expressionInput.setMaxWidth(1200);
+    expressionInput.setOnKeyPressed(event ->
+    {
+      if (event.getCode() == KeyCode.ENTER)
+      {
+        evaluateExpression();
+      }
+    });
   }
 
   @SuppressWarnings("unchecked")
@@ -141,6 +155,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
 
   private void resizeColumnsToFitContent()
   {
+    out.println("resizeColumnsToFitContent");
     for (TreeTableColumn<?, ?> column : treeTableView.getColumns())
     {
       resizeColumn(column);
@@ -333,6 +348,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
   public void expandAllNodes()
   {
     expandTreeView(treeTableView.getRoot());
+    resizeColumnsToFitContent();
   }
 
   private void expandTreeView(TreeItem<?> item)
@@ -349,15 +365,14 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
 
   public void evaluateExpression()
   {
-    if (instance == null)
-    {
-      compileExpression();
-    }
+    nodeExpansionStates = enumerateNodeExpansionStates();
+
+    compileExpression();
+
     try
     {
-      var nodeExpansionStates = enumerateNodeExpansionStates();
 
-      D   input               = getContext().getVariable("input");
+      D input = getContext().getVariable("input");
       if (input == null && !expr.domainType.equals(Object.class))
       {
         expressionAnalyzer.showAlert("Input Required",
@@ -382,9 +397,18 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
         System.out.println(expr + "(" + input + ")=" + result);
 
         var rootItem = updateTreeTableView();
-        expandAllNodes();
 
-        applyNodeExpansionStates(nodeExpansionStates, rootItem);
+        if (nodeExpansionStates != null && !nodeExpansionStates.isEmpty())
+        {
+          out.println("restoring nodeExpansionStates " + nodeExpansionStates);
+          applyNodeExpansionStates(nodeExpansionStates, rootItem);
+        }
+        else
+        {
+          expandAllNodes();
+
+        }
+ 
       }
     }
     catch (Throwable e)

@@ -636,5 +636,10 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
     init();
   }
 
+  public RationalFunction div(Real operand, int prec, RationalFunction result)
+  {
+    return div(result.set(operand),prec,result);
+  }
+
 
 }
