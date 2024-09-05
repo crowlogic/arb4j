@@ -3,3 +3,8 @@ NEW: implement KL expansion
 TODO: expression analyzer: save and load expressions to/from history
 expr analyzer; add button to toggle debug output
 todo: fix square root type when codomains scalar type is complex
+expr analyzer: spinner for integer context vars
+expr compiler: derivatives and fractional derivatices
+todo: assimilate zeta function universality paper
+todo: egoroves theorem
+todo: email Lalley

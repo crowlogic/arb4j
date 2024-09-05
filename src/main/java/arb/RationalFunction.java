@@ -41,6 +41,11 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
   }
 
 
+  public RationalFunction div(Real operand, int prec, RationalFunction result)
+  {
+    return div(result.set(operand),prec,result);
+  }
+  
   public RationalFunction add(Real addend, int prec, RationalFunction result)
   {
     return add(result.set(addend),prec,result);
@@ -634,11 +639,6 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
   {
     this(arblibJNI.new_RationalFunction(), true);
     init();
-  }
-
-  public RationalFunction div(Real operand, int prec, RationalFunction result)
-  {
-    return div(result.set(operand),prec,result);
   }
 
 
