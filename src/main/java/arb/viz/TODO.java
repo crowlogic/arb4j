@@ -39,6 +39,7 @@ import javafx.stage.WindowEvent;
 public class TODO extends
                   Application
 {
+  boolean                        changed                       = false;
 
   public static final String     EASIER_ON_THE_EYES_STYLESHEET = ".scroll-bar .thumb {\n"
                                                                  + "    -fx-background-color: #808080; /* Change this to your desired thumb color */\n"
@@ -98,8 +99,7 @@ public class TODO extends
   {
     try
     {
-      primaryStage.getIcons()
-                  .add(new Image(getClass().getResourceAsStream("/TODO.png")));
+      primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/TODO.png")));
     }
     catch (Throwable e)
     {
@@ -156,16 +156,19 @@ public class TODO extends
 
     primaryStage.setOnCloseRequest(evt ->
     {
-      Alert alert = new Alert(AlertType.CONFIRMATION);
-      alert.setTitle("Confirm Close");
-      alert.setHeaderText("Close program?");
-      alert.showAndWait().filter(r -> r != ButtonType.OK).ifPresent(r -> evt.consume());
+      if (changed)
+      {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Close");
+        alert.setHeaderText("There are unsaved changes. Are you sure you want to close the program?");
+        alert.showAndWait().filter(r -> r != ButtonType.OK).ifPresent(r -> evt.consume());
+      }
     });
 
     Platform.runLater(this::loadItems);
 
     setStageIcon(primaryStage);
-    
+
     primaryStage.setTitle("To-Do List");
     primaryStage.setScene(scene);
     primaryStage.show();
@@ -178,6 +181,7 @@ public class TODO extends
     {
       items.add(item);
       inputField.clear();
+      changed = true;
     }
   }
 
@@ -193,6 +197,7 @@ public class TODO extends
     if (selectedIndex != -1)
     {
       items.remove(selectedIndex);
+      changed = true;
     }
   }
 
@@ -201,6 +206,7 @@ public class TODO extends
     try ( PrintWriter out = new PrintWriter("todoList.txt"))
     {
       items.forEach(out::println);
+      changed = false;
     }
     catch (FileNotFoundException e)
     {
