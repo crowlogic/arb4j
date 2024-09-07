@@ -23,7 +23,6 @@ module arb4j
   requires transitive jdk.jshell;
   requires transitive io.fair_acc.chartfx;
   requires transitive io.fair_acc.dataset;
-  requires transitive org.fxyz3d.core;
   requires transitive org.objectweb.asm;
   requires transitive org.objectweb.asm.util;
   requires transitive org.objectweb.asm.commons;

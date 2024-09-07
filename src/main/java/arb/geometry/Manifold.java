@@ -2,7 +2,6 @@ package arb.geometry;
 
 import java.util.Set;
 
-import org.fxyz3d.shapes.Torus;
 
 import arb.Field;
 import arb.differential.geometry.Surface;
