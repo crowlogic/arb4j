@@ -88,10 +88,14 @@ tasks.withType(Javadoc) {
 
 jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE;
+     from('src/main/resources') {
+        include '**/*'
+    }
 }
 
 java {
     withSourcesJar()
+    modularity.inferModulePath.set(true)
 }
 
 tasks.withType(JavaCompile) {
@@ -123,4 +127,11 @@ publishing {
             from(components.java)
         }
     }
+}
+
+processResources {
+    from('src/main/resources') {
+        include '**/*'
+    }
+    into 'build/classes/java/main'
 }

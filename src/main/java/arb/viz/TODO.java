@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
@@ -18,11 +19,11 @@ import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -99,10 +100,28 @@ public class TODO extends
   {
     try
     {
-      primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/TODO.png")));
+      URL resourceUrl = getClass().getClassLoader().getResource("TODO.png");
+      System.out.println("Resource URL: " + resourceUrl);
+
+      if (resourceUrl != null)
+      {
+        primaryStage.getIcons().add(new Image(resourceUrl.toExternalForm()));
+        System.out.println("Icon added successfully");
+      }
+      else
+      {
+        System.err.println("Could not find resource: TODO.png");
+        // Print classpath and module path for debugging
+        System.out.println("Classpath: " + System.getProperty("java.class.path"));
+        System.out.println("Module path: " + System.getProperty("jdk.module.path"));
+      }
     }
     catch (Throwable e)
     {
+      System.err.println("Could not find resource: TODO.png");
+      // Print classpath and module path for debugging
+      System.out.println("Classpath: " + System.getProperty("java.class.path"));
+      System.out.println("Module path: " + System.getProperty("jdk.module.path"));
       e.printStackTrace(System.err);
     }
   }
