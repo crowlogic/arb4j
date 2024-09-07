@@ -461,8 +461,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else
     {
-      throw new UndefinedReferenceException(format("Undefined reference to variable"
+      throw new UndefinedReferenceException(format("Undefined reference to variable at position=%d remaining='%s'"
                                                    + " '%s' in expression=%s, expression.rootNode=%s, independent variable is %s and parentExpression is %s",
+                                                   reference.position,
+                                                   expression.remaining(),
                                                    reference.name,
                                                    expression.expression,
                                                    expression.rootNode,

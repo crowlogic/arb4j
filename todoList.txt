@@ -8,3 +8,4 @@ expr compiler: derivatives and fractional derivatices
 todo: assimilate zeta function universality paper
 todo: email Lalley
 todo: Egorov's Theorem
+Undefined TeXFormula: 'logGamma'at jlatexmath/org.scilab.forge.jlatexmath.PredefMacroInfo.invokeID(PredefMacroInfo.java:602)at jlatexmath/org.scilab.forge.jlatexmath.PredefMacroInfo.invoke(PredefMacroInfo.java:73)

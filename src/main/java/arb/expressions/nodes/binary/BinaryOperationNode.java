@@ -433,6 +433,8 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
       return type;
     }
 
+    assert left != null : "lhs is null: " + this + " for expr=" + expression;
+
     assert right != null : "rhs is null: " + this + " for expr=" + expression;
     var leftType  = left.type();
     var rightType = right.type();

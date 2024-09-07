@@ -231,7 +231,9 @@ public class Parser
   {
     expression = stripInvisibleUnicodeFormattingCharacters(expression.replace("->", "➔")
                                                                      .replace("⇒", "➔")
-                                                                     .replace("...", "…"));
+                                                                     .replace("...", "…")
+                                                                     .replaceAll("𝑖", "ⅈ")
+                                                                     .replaceAll("I", "ⅈ"));
 
     for (int i = 0; i < superscripts.length; i++)
     {
@@ -246,11 +248,11 @@ public class Parser
     String str = expression.replaceAll("\\.{2,}", "…")
                            .replace(';', ',')
                            .replace(" ", "")
-                           //.replace("+", "Plus")
-                           //.replace("-", "Minus")
-                           //.replace("*", "Times")
+                           // .replace("+", "Plus")
+                           // .replace("-", "Minus")
+                           // .replace("*", "Times")
                            .replace("/", "⁄")
-                          // .replace("^", "ToThePowerOf")
+                           // .replace("^", "ToThePowerOf")
                            .replace(".", "_")
                            .replace("{", "Where")
                            .replace("}", "")
@@ -264,8 +266,8 @@ public class Parser
                            .replace("[", "［")
                            .replace("]", "］")
                            .replace("➔", "");
-                           //.replace("½", "Half"
-                                    
+    // .replace("½", "Half"
+
     str = (isDigit(str.charAt(0)) ? "_" : "") + str;
     if (str.length() >= 250)
     {
