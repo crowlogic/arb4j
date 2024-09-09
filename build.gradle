@@ -5,7 +5,6 @@ plugins {
     id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.1.0'
-    id 'com.gluonhq.gluonfx-gradle-plugin' version '1.0.23'
 }
 
 
@@ -98,15 +97,6 @@ jar {
 javafx {
     version = '17.0.2'
     modules = ['javafx.controls', 'javafx.fxml']
-}
-
-gluonfx {
-    target = "android"
-    
-}
-
-application {
- mainClass = 'arb.viz.TODO'
 }
 
 java {
