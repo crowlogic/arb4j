@@ -3,8 +3,11 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'java'
-    id 'org.openjfx.javafxplugin' version '0.1.0' 
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'com.gluonhq.gluonfx-gradle-plugin' version '1.0.23'
 }
+
 
 group = 'org.arblib'
 version = '0.99.3'
@@ -92,6 +95,20 @@ jar {
     }
 }
 
+javafx {
+    version = '17.0.2'
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
+gluonfx {
+    target = "android"
+    
+}
+
+application {
+ mainClass = 'arb.viz.TODO'
+}
+
 java {
     withSourcesJar()
     modularity.inferModulePath.set(true)
@@ -119,7 +136,6 @@ task createClasspathManifest {
 tasks.build.dependsOn createClasspathManifest
 
 
-
 publishing {
     publications {
         maven(MavenPublication) {
@@ -129,7 +145,8 @@ publishing {
 }
 
 processResources {
-    from('src/main/resources') {
+   duplicatesStrategy = DuplicatesStrategy.EXCLUDE;
+   from('src/main/resources') {
         include '**/*'
     }
     into 'build/classes/java/main'
