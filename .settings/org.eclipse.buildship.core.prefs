@@ -1,17 +1,16 @@
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
+>>>>>>>=branch 'master' of ssh\://c17/home/crow/git/arb4j
 arguments=
 auto.sync=false
 build.scans.enabled=false
-<<<<<<< HEAD
-connection.gradle.distribution=GRADLE_DISTRIBUTION(LOCAL_INSTALLATION(/home/crow/.sdkman/candidates/gradle/8.10.1))
-=======
-connection.gradle.distribution=GRADLE_DISTRIBUTION(VERSION(8.10))
->>>>>>> branch 'master' of ssh://c17/home/crow/git/arb4j
+connection.gradle.distribution=GRADLE_DISTRIBUTION(VERSION(8.10.1))
 connection.project.dir=
 eclipse.preferences.version=1
 gradle.user.home=
 java.home=
 jvm.arguments=
 offline.mode=false
-override.workspace.settings=false
+override.workspace.settings=true
 show.console.view=false
 show.executions.view=false
