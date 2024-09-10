@@ -1,7 +1,11 @@
 arguments=
 auto.sync=false
 build.scans.enabled=false
+<<<<<<< HEAD
 connection.gradle.distribution=GRADLE_DISTRIBUTION(LOCAL_INSTALLATION(/home/crow/.sdkman/candidates/gradle/8.10.1))
+=======
+connection.gradle.distribution=GRADLE_DISTRIBUTION(VERSION(8.10))
+>>>>>>> branch 'master' of ssh://c17/home/crow/git/arb4j
 connection.project.dir=
 eclipse.preferences.version=1
 gradle.user.home=
