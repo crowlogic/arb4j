@@ -60,30 +60,6 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
                                Application
 {
 
-  public final class ClassStringConverter extends
-                                          StringConverter<Class<?>>
-  {
-    @Override
-    public String toString(Class<?> object)
-    {
-      if (Object.class.equals(object))
-      {
-        return "∅ (NULL)";
-      }
-      else
-      {
-        return object.getSimpleName();
-      }
-    }
-
-    @Override
-    public Class<?> fromString(String string)
-    {
-      assert false : "TODO: Auto-generated method stub";
-      return null;
-    }
-  }
-
   static Method            resizeMethod;
 
   public static Class<?>[] TYPES = new Class[]
@@ -243,6 +219,8 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
   private TabPane                 tabPane;
 
   private double[]                lastDividerPositions = null;
+
+  private ClassStringConverter<D, C, F> classStringConverter = new ClassStringConverter<D, C, F>();
 
   private void addNewExpressionTab()
   {
@@ -483,8 +461,6 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
 
   private void setupTypeBoxes()
   {
-    ClassStringConverter classStringConverter = new ClassStringConverter();
-
     domainTypeBox.getItems().addAll(TYPES);
     domainTypeBox.setConverter(classStringConverter);
 
