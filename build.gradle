@@ -3,7 +3,9 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'java'
-    id 'org.openjfx.javafxplugin' version '0.1.0' 
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'com.gluonhq.gluonfx-gradle-plugin' version '1.0.23'
 }
 
 group = 'org.arblib'
@@ -92,6 +94,38 @@ jar {
     }
 }
 
+javafx {
+    version = '22.0.2'
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
+
+gluonfx {
+    graalvmHome = '/jvm/graalvm-jdk-22.0.2+9.1'
+    target = "android"
+}
+
+tasks.named('nativeCompile') {
+    enabled = false
+}
+
+    
+application {
+ mainClass = 'arb.viz.TODO'
+}
+
+task createDummyAndroidLib {
+    doLast {
+        def dummyFile = file("${buildDir}/gluonfx/aarch64-android/libarb4j.so")
+        dummyFile.parentFile.mkdirs()
+        dummyFile.createNewFile()
+    }
+}
+
+tasks.withType(com.gluonhq.gradle.tasks.NativePackageTask) {
+    dependsOn createDummyAndroidLib
+}
+
 java {
     withSourcesJar()
     modularity.inferModulePath.set(true)
@@ -119,7 +153,6 @@ task createClasspathManifest {
 tasks.build.dependsOn createClasspathManifest
 
 
-
 publishing {
     publications {
         maven(MavenPublication) {
@@ -129,7 +162,8 @@ publishing {
 }
 
 processResources {
-    from('src/main/resources') {
+   duplicatesStrategy = DuplicatesStrategy.EXCLUDE;
+   from('src/main/resources') {
         include '**/*'
     }
     into 'build/classes/java/main'
