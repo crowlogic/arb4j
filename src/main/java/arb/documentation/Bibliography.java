@@ -298,15 +298,6 @@ public class Bibliography extends
                                                                    "28",
                                                                    "820–825").setNumber("8");
 
-  public static Article       skewOrthogonalPolynomialsAndRandomMatrixTheory         =
-                                                                             new Article("Generalized Christoffel-Darboux formula for skew-orthogonal polynomials and random matrix theory",
-                                                                                         "Saugata Ghosh",
-                                                                                         "2006",
-                                                                                         "Journal of Physics A: Mathematical and General",
-                                                                                         "39",
-                                                                                         "8775").setNumber("28")
-                                                                                                .setPublisher("IOP Publishing");
-
   public static Book          skewOrthogonalRandomMatrices                           =
                                                            new Book("Skew-Orthogonal Polynomials and Random Matrix Theory",
                                                                     "Saugata Ghosh",
