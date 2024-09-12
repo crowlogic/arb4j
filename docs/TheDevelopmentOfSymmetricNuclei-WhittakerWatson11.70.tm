@@ -5,7 +5,9 @@
 <\body>
   <section*|11.70. The development of a symmetric nucleus.>
 
-  Let <math|\<phi\><rsub|n><around|(|\<alpha\>|)>> be a complete set of
+  Following Hilbert's proof as written in
+  <cite-detail|whittakerAndWatsonCourseOfModernAnalysis|11.70>. Let
+  <math|\<phi\><rsub|n><around|(|\<alpha\>|)>> be a complete set of
   orthogonal functions satisfying the homogeneous integral equation with
   symmetric nucleus
 
@@ -14,11 +16,10 @@
   </equation>
 
   the corresponding characteristic numbers being
-  <math|\<lambda\><rsub|1>,\<lambda\><rsub|2>,\<lambda\><rsub|3>,\<ldots\>>
-
-  Now suppose that the series <math|<big|sum><rsub|n=1><rsup|\<infty\>><frac|\<phi\><rsub|n><around|(|\<alpha\>|)>*\<phi\><rsub|n><around|(|\<gamma\>|)>|\<lambda\><rsub|n>>>
-  is uniformly convergent when <math|a\<leq\>\<alpha\>\<leq\>b>,
-  <math|a\<leq\>\<gamma\>\<leq\>b>. Then it will be shown that
+  <math|\<lambda\><rsub|1>,\<lambda\><rsub|2>,\<lambda\><rsub|3>,\<ldots\>>Now
+  suppose that the series <math|<big|sum><rsub|n=1><rsup|\<infty\>><frac|\<phi\><rsub|n><around|(|\<alpha\>|)>*\<phi\><rsub|n><around|(|\<gamma\>|)>|\<lambda\><rsub|n>>>
+  is uniformly convergent when <math|0\<leqslant\>a\<leq\>\<alpha\>\<leq\>b\<leqslant\>\<infty\>>,<math|0\<leqslant\>a\<leq\>\<gamma\>\<leq\>b\<leqslant\>\<infty\>>.
+  Then it will be shown that
 
   <\equation>
     K<around|(|\<alpha\>,\<gamma\>|)>=<big|sum><rsub|n=1><rsup|\<infty\>><frac|\<phi\><rsub|n><around|(|\<alpha\>|)>*\<phi\><rsub|n><around|(|\<gamma\>|)>|\<lambda\><rsub|n>>
@@ -38,11 +39,10 @@
     \<psi\><around|(|\<alpha\>|)>=\<mu\>*<big|int><rsub|a><rsup|b>H<around|(|\<alpha\>,\<xi\>|)>*\<psi\><around|(|\<xi\>|)>*d*\<xi\>
   </equation>
 
-  which does not vanish identically.
-
-  Multiply by <math|\<phi\><rsub|m><around|(|\<alpha\>|)>> and integrate and
-  we get, since the series converges uniformly, we may integrate term by term
-  and get
+  which does not vanish identically. Multiply by
+  <math|\<phi\><rsub|m><around|(|\<alpha\>|)>> and integrate term-by-term
+  (which we may do since the series converges uniformly by hypothesis proved
+  by other means), and get
 
   <\equation>
     <big|int><rsub|a><rsup|b>\<psi\><around|(|\<alpha\>|)>*\<phi\><rsub|m><around|(|\<alpha\>|)>*d*\<alpha\>=\<mu\>*<big|int><rsub|a><rsup|b><big|int><rsub|a><rsup|b><around*|[|K<around|(|\<alpha\>,\<xi\>|)>-<big|sum><rsub|n=1><rsup|\<infty\>><frac|\<phi\><rsub|n><around|(|\<alpha\>|)>*\<phi\><rsub|n><around|(|\<xi\>|)>|\<lambda\><rsub|n>>|]>*\<psi\><around|(|\<xi\>|)>*\<phi\><rsub|m><around|(|\<alpha\>|)>*d*\<xi\>*d*\<alpha\>=0
@@ -207,18 +207,25 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|?|1|../../.TeXmacs/texts/scratch/no_name_34.tm>>
-    <associate|auto-2|<tuple|1|?|../../.TeXmacs/texts/scratch/no_name_34.tm>>
+    <associate|auto-1|<tuple|?|1>>
+    <associate|auto-2|<tuple|1|2>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
+    <\associate|bib>
+      whittakerAndWatsonCourseOfModernAnalysis
+    </associate>
     <\associate|toc>
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|11.70.
       The development of a symmetric nucleus.>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-1><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Explanation>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-2><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
