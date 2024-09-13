@@ -255,18 +255,6 @@ public class Bibliography extends
                                                              .setAddress("Eastford, CT")
                                                              .setEdition("Reprint of First 1949 Edition");
 
-  @Note("The boundaries of the open sets consist of those points for which the flow is not analytic in "
-        + "at least one timelike direction which is probably frameable in the Riemann-Hilbert setup")
-  @Note("The criteria for the realizability of certain processes hinges upon approximation by rational "
-        + "vector fields of arbitarily large polynomial degree")
-  public static Article       planeAutonomousSystemsWithRationalVectorFields         =
-                                                                             new Article("Plane Autonomous Systems With Rational Vector Fields",
-                                                                                         "Harold E. Benzinger",
-                                                                                         "1991",
-                                                                                         "326",
-                                                                                         "2",
-                                                                                         "465-484");
-
   public static Book          psychologyOfMathematicalInvention                      =
                                                                 new Book("The Psychology of Invention in the Mathematical Field",
                                                                          "Jacques Hadamard",
@@ -274,13 +262,6 @@ public class Bibliography extends
                                                                                 .setEdition("enlarged, unaltered, and unabridged reprint of the 1949")
                                                                                 .setPublisher("Dover publications, Inc.")
                                                                                 .setAddress("180 Varick Street New York, N.Y. 10014");
-
-  public static Book          randomMatrices                                         =
-                                             new Book("Random Matrices",
-                                                      "Madan Lal Mehta",
-                                                      "2004").setEdition("3rd")
-                                                             .setSeries("Pure and Applied Mathematics")
-                                                             .setVolume("142");
 
   public static Article       randomProcessWithStationaryIncrements                  =
                                                                     new Article("A note on processes with random stationary increments",
@@ -297,13 +278,6 @@ public class Bibliography extends
                                                                    "Communications of the ACM",
                                                                    "28",
                                                                    "820–825").setNumber("8");
-
-  public static Book          skewOrthogonalRandomMatrices                           =
-                                                           new Book("Skew-Orthogonal Polynomials and Random Matrix Theory",
-                                                                    "Saugata Ghosh",
-                                                                    "2009").setSeries("CRM Monograph Series")
-                                                                           .setVolume("28")
-                                                                           .setPublisher("American Mathematical Society");
 
   public static Book          specialFunctionsOfMathematicalPhysics                  =
                                                                     new Book("Formulas and Theorems for the Special Functions of Mathematical Physics",
