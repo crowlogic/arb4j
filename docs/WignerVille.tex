@@ -1,0 +1,58 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{physics}
+\begin{document}
+\section{Wigner-Ville Representation and Process Analysis}
+\subsection{Wigner-Ville Representation}
+For a signal $x(t)$, the Wigner-Ville representation is defined as:
+\begin{equation}
+W_x(t,\omega) = \int_{-\infty}^{\infty} x(t + \tau/2) x^*(t - \tau/2) e^{-i\omega\tau} d\tau
+\end{equation}
+Properties:
+\begin{enumerate}
+\item Realness: $W_x(t,\omega) \in \mathbb{R}$
+\item Time-frequency shifts: $W_{x(t-t_0)e^{i\omega_0 t}}(t,\omega) = W_x(t-t_0,\omega-\omega_0)$
+\item Marginals:
+$\int_{-\infty}^{\infty} W_x(t,\omega) d\omega = |x(t)|^2$
+$\int_{-\infty}^{\infty} W_x(t,\omega) dt = |\hat{x}(\omega)|^2$
+\end{enumerate}
+\subsection{Process Definition}
+Given $W(t,\omega)$, we define a process $X(t)$ as:
+\begin{equation}
+X(t) = \int_{-\infty}^{\infty} e^{i\omega t} dZ(\omega)
+\end{equation}
+where $Z(\omega)$ is a complex-valued random measure with:
+\begin{equation}
+E[dZ(\omega)dZ^*(\omega')] = W(\frac{t+t'}{2},\omega) \delta(\omega-\omega')d\omega
+\end{equation}
+\subsection{Moment Analysis}
+First moment (mean):
+\begin{equation}
+E[X(t)] = \int_{-\infty}^{\infty} e^{i\omega t} E[dZ(\omega)] = 0
+\end{equation}
+Second moment (covariance):
+\begin{equation}
+K(t,s) = E[X(t)X^*(s)] = \int_{-\infty}^{\infty} e^{i\omega(t-s)} W(\frac{t+s}{2},\omega) d\omega
+\end{equation}
+\subsection{Spectral Analysis}
+The spectral density function $S(t,\omega)$ is given by:
+\begin{equation}
+S(t,\omega) = W(t,\omega)
+\end{equation}
+Instantaneous power:
+\begin{equation}
+P(t) = \int_{-\infty}^{\infty} W(t,\omega) d\omega
+\end{equation}
+\subsection{Time-Frequency Analysis}
+Time-frequency correlation:
+\begin{equation}
+R(t,\tau) = \int_{-\infty}^{\infty} W(t,\omega) e^{i\omega\tau} d\omega
+\end{equation}
+\subsection{Stationarity Condition}
+The process is stationary if and only if $W(t,\omega)$ is independent of $t$:
+\begin{equation}
+W(t,\omega) = S(\omega)
+\end{equation}
+where $S(\omega)$ is the spectral density of the stationary process.
+\end{document}
