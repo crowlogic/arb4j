@@ -16,8 +16,9 @@ import arb.space.topological.VectorSpace;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface IntegralCovarianceOperator<F extends Field<? extends F>, K extends Function<? extends F, ? extends F>,
-V extends VectorSpace<? extends F>> extends
+public interface IntegralCovarianceOperator<F extends Field<? extends F>,
+              K extends Function<? extends F, ? extends F>,
+              V extends VectorSpace<? extends F>> extends
                                            IntegralOperator<F, K, V, V>,
                                            SelfAdjointOperator<F, V>,
                                            PositiveDefiniteOperator<V, V>
@@ -25,7 +26,6 @@ V extends VectorSpace<? extends F>> extends
 {
 
   @Override
-  public K
-         kernel();
+  public K kernel();
 
 }

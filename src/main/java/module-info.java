@@ -1,6 +1,6 @@
 /**
  * A Java API for <a href="http://arblib.org">flint/arblib</a>.
-
+ * 
  * @param <R>
  * 
  * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -58,7 +58,7 @@ module arb4j
   exports arb.functions.polynomials;
   exports arb.functions.polynomials.orthogonal;
   exports arb.functions.polynomials.orthogonal.complex;
-  exports arb.functions.polynomials.orthogonal.real;  
+  exports arb.functions.polynomials.orthogonal.real;
   exports arb.functions.rational;
   exports arb.functions.real;
   exports arb.functions.complex;
@@ -77,4 +77,5 @@ module arb4j
   exports arb.documentation.concepts.stochastic;
   exports arb.documentation.concepts.stochastic.randomfields.isotropy;
 
+  opens arb.expressions.viz to javafx.scene.control.skin;
 }
