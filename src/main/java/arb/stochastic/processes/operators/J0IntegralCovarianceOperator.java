@@ -20,6 +20,7 @@ import arb.functions.real.RealFunction;
 import arb.measure.Measure;
 import arb.measure.ProbabilityMeasure;
 import arb.operators.Operator;
+import arb.stochastic.processes.RealKarhunenLoeveExpansion;
 
 /**
  * The {@link J0IntegralCovarianceOperator} represents the
@@ -106,6 +107,16 @@ public class J0IntegralCovarianceOperator implements
   public static Expression<Real, Real, RealFunction> Ψ       =
                                                        RealFunction.compile("Ψ:x->√((8*k+2)/π)*(-1)ᵏ*j(2*k,x)",
                                                                             context);
+
+  public RealKarhunenLoeveExpansion<RealFunction,
+                RealSquareIntegrableFunction,
+                J0IntegralCovarianceOperator>
+         getKLExpansion()
+  {
+    return new RealKarhunenLoeveExpansion<>()
+    {
+    };
+  }
 
   @Override
   public RealBesselFunctionOfTheFirstKind kernel()

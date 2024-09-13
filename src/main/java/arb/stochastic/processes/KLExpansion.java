@@ -14,9 +14,8 @@ import arb.stochastic.processes.operators.IntegralCovarianceOperator;
  */
 public interface KLExpansion<D extends Field<? extends D>,
               F extends Function<? extends D, ? extends D>,
-              T extends IntegralCovarianceOperator<? extends D,
-                            ? extends F,
-                            VectorSpace<? extends D>>>
+              V extends VectorSpace<? extends D>,
+              T extends IntegralCovarianceOperator<? extends D,? extends F,? extends V>>
 {
 
 }
