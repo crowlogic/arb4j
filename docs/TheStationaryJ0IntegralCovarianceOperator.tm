@@ -14,9 +14,9 @@
   <\lemma>
     <label|ortho>The functions
 
-    <\equation*>
-      \<psi\><rsub|n><around|(|y|)>=<sqrt|<frac|4*n+1|y>>*<around|(|-1|)><rsup|n>*J<rsub|2*n+<frac|1|2>><around|(|y|)>
-    </equation*>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|\<psi\><rsub|n><around|(|y|)>>|<cell|=*<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|y>>*J<rsub|2*n+<frac|1|2>><around|(|y|)>>>|<row|<cell|>|<cell|=<around*|(|-1|)><rsup|n><sqrt|<frac|4n+1|\<pi\>>>j<rsub|2n><around*|(|y|)>>>>>>
+    </equation>
 
     are orthonormal over the interval <math|0> to <math|\<infty\>>, i.e.,
 
@@ -511,11 +511,11 @@
 
 <\references>
   <\collection>
-    <associate|T|<tuple|13|4>>
+    <associate|T|<tuple|14|4>>
     <associate|auto-1|<tuple|1|7>>
     <associate|auto-2|<tuple|1|8>>
     <associate|auto-3|<tuple|1.1|8>>
-    <associate|auto-4|<tuple|35|9>>
+    <associate|auto-4|<tuple|36|9>>
     <associate|bib-finiteFourierTransforms|<tuple|1|9>>
     <associate|bib-gaussianProcessIntroduction|<tuple|4|9>>
     <associate|bib-modifiedLommelPolynomials|<tuple|3|9>>
