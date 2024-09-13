@@ -1,7 +1,9 @@
 package arb.expressions.viz;
 
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -28,7 +30,6 @@ import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
 import arb.utensils.Utensils;
-import arb.viz.TODO;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -455,8 +456,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
                     compileButton,
                     expandAllButton,
                     evaluateButton,
-                    toggleContextButton
-                    );
+                    toggleContextButton);
   }
 
   private void setupTypeBoxes()
@@ -489,6 +489,55 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     alert.showAndWait();
   }
 
+  public static final String EASIER_ON_THE_EYES_STYLESHEET = ".scroll-bar .thumb {\n"
+                                                             + "    -fx-background-color: #808080; /* Change this to your desired thumb color */\n"
+                                                             + "}\n"
+                                                             + "\n"
+                                                             + ".scroll-bar .increment-button, .scroll-bar .decrement-button {\n"
+                                                             + "    -fx-background-color: #a9a9a9; /* Change this to your desired button color */\n"
+                                                             + "}\n"
+                                                             + ".tree-table-view .column-resize-line {\n"
+                                                             + "    -fx-background-color: #ff0000; /* Change this to your desired color */\n"
+                                                             + "}\n"
+                                                             + "\n"
+                                                             + ".tree-table-view .tree-table-row-cell .tree-table-cell .text {\n"
+                                                             + "    -fx-font-size: 18px; /* This specifically targets TreeTableView cells */\n"
+                                                             + "    -fx-fill: #ffff00; /* Change this to your desired color */\n"
+                                                             + "}\n"
+                                                             + "\n"
+                                                             + ".root {\n"
+                                                             + "    -fx-font-weight: bold; /* Make font bold */\n"
+                                                             + "  -fx-font-size: 18px; /* Change this value to increase/decrease the font size */\n"
+                                                             + "  -fx-base: #1f273f;\n"
+                                                             + "  -fx-default-button: #7f878f;\n"
+                                                             + "  -fx-focus-color: #efefef;\n"
+                                                             + "  -fx-focused-text-base-color: ladder(-fx-selection-bar, -fx-light-text-color 45%, -fx-dark-text-color\n"
+                                                             + "    46%, -fx-dark-text-color 59%, -fx-mid-text-color 60%);\n"
+                                                             + "  -fx-focused-mark-color: -fx-focused-text-base-color;\n"
+                                                             + "}\n"
+                                                             + "\n"
+                                                             + ".text-input:focused {\n"
+                                                             + "  -fx-highlight-text-fill: ladder(-fx-highlight-fill, -fx-light-text-color 45%, -fx-dark-text-color\n"
+                                                             + "    46%, -fx-dark-text-color 59%, -fx-mid-text-color 60%);\n"
+                                                             + "}\n"
+                                                             + "\n"
+                                                             + ".chart-legend-item {\n"
+                                                             + "  -fx-font-size: 20px;\n"
+                                                             + "  font-size: 20px;\n"
+                                                             + "}\n"
+                                                             + "\n"
+                                                             + ".chart-datapoint-tooltip-label {\n"
+                                                             + "  -fx-font-size: 20px;\n"
+                                                             + "  font-size: 20px;}\n"
+                                                             + ".tree-table-row-cell { -fx-border-color: #CCCCCC; -fx-border-width: 0 0 1 0; }\n";
+
+  public static String convertStylesheetToDataURI(String CSS_CONTENT)
+  {
+    String encoded =
+                   Base64.getEncoder().encodeToString(CSS_CONTENT.getBytes(StandardCharsets.UTF_8));
+    return "data:text/css;base64," + encoded;
+  }
+
   @Override
   public void start(Stage primaryStage)
   {
@@ -499,7 +548,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
 
     Scene scene = new Scene(createMainLayout());
 
-    scene.getStylesheets().add(TODO.convertStylesheetToDataURI(TODO.EASIER_ON_THE_EYES_STYLESHEET));
+    scene.getStylesheets().add(convertStylesheetToDataURI(EASIER_ON_THE_EYES_STYLESHEET));
 
     scene.addEventFilter(KeyEvent.KEY_PRESSED, event ->
     {

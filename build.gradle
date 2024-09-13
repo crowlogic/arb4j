@@ -99,33 +99,6 @@ javafx {
     modules = ['javafx.controls', 'javafx.fxml']
 }
 
-
-gluonfx {
-    graalvmHome = '/jvm/graalvm-jdk-22.0.2+9.1'
-    target = "android"
-}
-
-tasks.named('nativeCompile') {
-    enabled = false
-}
-
-    
-application {
- mainClass = 'arb.viz.TODO'
-}
-
-task createDummyAndroidLib {
-    doLast {
-        def dummyFile = file("${buildDir}/gluonfx/aarch64-android/libarb4j.so")
-        dummyFile.parentFile.mkdirs()
-        dummyFile.createNewFile()
-    }
-}
-
-tasks.withType(com.gluonhq.gradle.tasks.NativePackageTask) {
-    dependsOn createDummyAndroidLib
-}
-
 java {
     withSourcesJar()
     modularity.inferModulePath.set(true)
