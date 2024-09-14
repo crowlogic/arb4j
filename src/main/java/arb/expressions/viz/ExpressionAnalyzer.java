@@ -1,5 +1,6 @@
 package arb.expressions.viz;
 
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -578,8 +579,9 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
   {
     try
     {
+      InputStream resource = ClassLoader.getSystemResourceAsStream("ExpressionAnalyzer.png");
       primaryStage.getIcons()
-                  .add(new Image(getClass().getResourceAsStream("/ExpressionAnalyzer.png")));
+                  .add(new Image(resource));
     }
     catch (Throwable e)
     {

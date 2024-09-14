@@ -17,9 +17,10 @@
     processes. It is applicable \ non-square-integrable kernels over an
     unbounded (noncompact) domains if the canonical metric is such that the
     corresponding metric entropy integral is finite thus rendering the
-    integral covariance operator compact to the canonical metric induced by
-    thge process. This essentially provides an effective version of (the
-    ineffective) Aronszajn's theorem for stationary Gaussian procesees.\ 
+    integral covariance operator compact relative to the canonical metric
+    induced by thge process. This essentially provides an effective version
+    of (the ineffective) Aronszajn's theorem for stationary Gaussian
+    procesees.\ 
   </abstract>>
 
   <\table-of-contents|toc>
