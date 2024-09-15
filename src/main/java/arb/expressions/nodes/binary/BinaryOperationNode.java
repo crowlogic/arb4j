@@ -57,6 +57,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     mapTypes(Real.class, ComplexRationalFunction.class, ComplexRationalFunction.class);
     mapTypes(RealPolynomial.class, RationalFunction.class, RationalFunction.class);
     mapTypes(Complex.class, RationalFunction.class, ComplexRationalFunction.class);
+    mapTypes(ComplexRationalFunction.class, RationalFunction.class, ComplexRationalFunction.class);
     mapTypes(Complex.class, ComplexRationalFunction.class, ComplexRationalFunction.class);
     mapTypes(Integer.class, IntegerPolynomial.class, IntegerPolynomial.class);
   }

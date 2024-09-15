@@ -206,6 +206,11 @@ import arb.utensils.Utensils;
   {
     return res.set(this).mul(that, prec, res);
   }
+
+  public Complex sqrt(int prec, Complex res)
+  {
+    return res.set(this).sqrt(prec);
+  }
     
   public Fraction sub(Fraction subtrahend, int bits, Fraction res)
   {

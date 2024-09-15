@@ -1538,6 +1538,11 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     return res;
   }
 
+  public Complex sqrt(int prec, Complex res)
+  {
+    return res.set(this).sqrt(prec);
+  }
+
   /**
    * @see arb#arb_addmul(Real, Real, Real, int)
    * @param that
