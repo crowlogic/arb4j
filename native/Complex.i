@@ -1180,8 +1180,8 @@ import arb.space.topological.EuclideanVectorSpace;
     {
       sb.append("]");
     }
-    return sb.toString();
-  }
+    return ( name == null ? "" : name + "=" ) + sb.toString();
+  }  
   
   public int dim = 1;
   

@@ -1205,7 +1205,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     {
       sb.append("]");
     }
-    return sb.toString();
+    return ( name == null ? "" : name + "=" ) + sb.toString();
   }
   
   public int dim = 1;

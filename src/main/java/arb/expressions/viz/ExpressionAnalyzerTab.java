@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import arb.Complex;
 import arb.Integer;
 import arb.Named;
 import arb.Real;
@@ -61,7 +62,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
   {
     super(10);
     this.expressionAnalyzer = expressionAnalyzer;
-    this.context            = new Context(Integer.named("input").set(3),
+    this.context            = new Context(Complex.named("input").set(3),
                                           Real.named("v").set(RealConstants.half));
 
     setupExpressionInput();
@@ -80,7 +81,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
   {
     expressionInput = new TextField();
     expressionInput.setPromptText("Enter expression here");
-    expressionInput.setText("(0-((lnΓ(1/4 + t*I/2) - lnΓ(1/4 - t*I/2))*I)/2 - ln(π)*t/2)/π + 1 - I*((ln(ζ(1/2 + I*t)) - ln(ζ(1/2 - I*t))))/(2*π)");
+    expressionInput.setText("1+(-((lnΓ(1/4 + t*I/2) - lnΓ(1/4 - t*I/2))*I)/2 - ln(π)*t/2)/π + 1 - I*((ln(ζ(1/2 + I*t)) - ln(ζ(1/2 - I*t))))/(2*π)");
 
     expressionInput.setMaxWidth(1200);
     expressionInput.setOnKeyPressed(event ->
