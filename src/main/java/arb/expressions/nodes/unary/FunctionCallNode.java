@@ -397,8 +397,7 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
   public String typeset()
   {
     String name = functionName.replaceAll("√", "sqrt")
-                              .replaceAll("J0", "J_0")
-                              .replaceAll("Γ", "Gamma");
+                              .replaceAll("J0", "J_0");
     return format(name.equals("sqrt") ? "\\%s{%s}" : "\\%s(%s)",
                   name,
                   arg == null ? "" : arg.typeset());
