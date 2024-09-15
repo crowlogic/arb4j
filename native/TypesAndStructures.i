@@ -1,7 +1,7 @@
 
 %{
 #include <flint/fmpz.h>
-#include <flint/fmpq.h>
+#include <flint/qqbar.h>
 #include <mpfr.h>
 #include <flint/flint.h>
 #include <arf.h>
@@ -44,6 +44,16 @@ typedef long int		mp_size_t;
 #define flint_bitcnt_t ulong
 
 %}
+
+typedef struct
+{
+    fmpz_poly_struct poly;
+    acb_struct enclosure;
+}
+qqbar_struct;
+
+typedef qqbar_struct qqbar_t[1];
+
 
 typedef struct
 {

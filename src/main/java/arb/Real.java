@@ -233,6 +233,11 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
   {
     return res.set(this).mul(that, prec, res);
   }
+
+  public Complex sqrt(int prec, Complex res)
+  {
+    return res.set(this).sqrt(prec);
+  }
     
   public Fraction sub(Fraction subtrahend, int bits, Fraction res)
   {
@@ -1536,11 +1541,6 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     arblib.arb_sqrt(res, this, prec);
     this.bits = prec;
     return res;
-  }
-
-  public Complex sqrt(int prec, Complex res)
-  {
-    return res.set(this).sqrt(prec);
   }
 
   /**
