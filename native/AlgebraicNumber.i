@@ -148,6 +148,11 @@
   {
     delete();
   }
+
+  static
+  {
+    System.loadLibrary("arblib");
+  }
  
  
 %};

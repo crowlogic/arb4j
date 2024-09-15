@@ -166,6 +166,11 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   {
     delete();
   }
+
+  static
+  {
+    System.loadLibrary("arblib");
+  }
  
  
 
