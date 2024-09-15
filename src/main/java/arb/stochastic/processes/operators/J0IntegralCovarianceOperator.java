@@ -1,6 +1,7 @@
 package arb.stochastic.processes.operators;
 
 import arb.Integer;
+import arb.RationalFunction;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -15,9 +16,9 @@ import arb.functions.integer.RealSequence;
 import arb.functions.polynomials.orthogonal.real.RealChebyshevPolynomialsOfTheFirstKind;
 import arb.functions.polynomials.orthogonal.real.RealLegendrePolynomials;
 import arb.functions.polynomials.orthogonal.real.RealType1ChebyshevPolynomials;
+import arb.functions.rational.RationalFunctionSequence;
 import arb.functions.real.RealBesselFunctionOfTheFirstKind;
 import arb.functions.real.RealFunction;
-import arb.measure.Measure;
 import arb.measure.ProbabilityMeasure;
 import arb.operators.Operator;
 import arb.stochastic.processes.RealKarhunenLoeveExpansion;
@@ -78,26 +79,30 @@ public class J0IntegralCovarianceOperator implements
                                                         RealBesselFunctionOfTheFirstKind,
                                                         RealSquareIntegrableFunction>
 {
-  RealBesselFunctionOfTheFirstKind                   kernel  =
-                                                            new RealBesselFunctionOfTheFirstKind(0);
+  public static void main(String args[])
+  {
+    J0IntegralCovarianceOperator j0      = new J0IntegralCovarianceOperator();
+    Context                      context = new Context(Integer.named("k").set(3));
+    RationalFunctionSequence     seq     =
+                                     RationalFunctionSequence.express("Ψ:x->√((2*k+½)/π)*((k+1)⋰-½)²*√((8*k+2)/π)*(-1)ᵏ*j(2*k,x)",
+                                                                      context);
 
-  /**
-   * The eigenvalues λₖ of the integral equation:
-   * <p>
-   * Ψₖ(x)=λₖ∫J₀(x-y)*Ψₖ(x)dx
-   * </p>
+    RationalFunction             func    = seq.evaluate(3, 128);
+    System.out.println("psi(3)=" + func);
+
+  }
+
+  /*
    * where {@link #Ψₖ} are the orthonormalized {@link FourierTransform}s of the
    * k-th {@link RealChebyshevPolynomialsOfTheFirstKind} which happen to be the
    * {@link FourierTransform}s of the {@link RealLegendrePolynomials} which are
-   * expressible equivalently in terms of the
-   * {@link RealBesselFunctionOfTheFirstKind} at half-integer orders via
-   * {@link RealSphericalBesselFunctionOfTheFirstKind}
-   * <p>
-   * The eigenvalues are the projections of this{@link #Ψₖ} onto the
-   * {@link RealBesselFunctionOfTheFirstKind} function, which is the
-   * {@link FourierTransform} of 1/√(1-x²) which is the the orthogonality
-   * {@link Measure} of the {@link RealChebyshevPolynomialsOfTheFirstKind} .
-   * </p>
+   * expressible equivalently in terms of the {@link
+   * RealBesselFunctionOfTheFirstKind} at half-integer orders via {@link
+   * RealSphericalBesselFunctionOfTheFirstKind} <p> The eigenvalues are the
+   * projections of this{@link #Ψₖ} onto the {@link
+   * RealBesselFunctionOfTheFirstKind} function, which is the {@link
+   * FourierTransform} of 1/√(1-x²) which is the the orthogonality {@link Measure}
+   * of the {@link RealChebyshevPolynomialsOfTheFirstKind} . </p>
    */
   public static RealSequence                         λₖ      =
                                                         RealSequence.express("λₖ:k➔√((2*k+½)/π)*((k+1)⋰-½)²");
@@ -107,6 +112,9 @@ public class J0IntegralCovarianceOperator implements
   public static Expression<Real, Real, RealFunction> Ψ       =
                                                        RealFunction.compile("Ψ:x->√((8*k+2)/π)*(-1)ᵏ*j(2*k,x)",
                                                                             context);
+
+  private RealBesselFunctionOfTheFirstKind           kernel  =
+                                                            new RealBesselFunctionOfTheFirstKind(0);
 
   public RealKarhunenLoeveExpansion<RealFunction,
                 RealSquareIntegrableFunction,
