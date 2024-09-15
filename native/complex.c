@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <flint/fmpz.h>
 #include <flint/fmpz_poly.h>
+#include <flint/fexpr.h>
 #include <mpfr.h>
 #include <flint/flint.h>
 #include <flint/fmpq.h>

@@ -54,6 +54,14 @@ qqbar_struct;
 
 typedef qqbar_struct qqbar_t[1];
 
+typedef struct
+{
+    ulong * data;
+    slong alloc;
+}
+fexpr_struct;
+
+typedef fexpr_struct fexpr_t[1];
 
 typedef struct
 {

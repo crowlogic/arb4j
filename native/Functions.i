@@ -6,6 +6,117 @@
 #include <flint/fmpq.h>
 #include <flint/fmpz_poly.h>
 #include <flint/fmpz_poly_q.h>
+#include <flint/fexpr.h>
+#include <flint/qqbar.h>
+
+void fexpr_print(const fexpr_t expr);
+char * fexpr_get_str(const fexpr_t expr);
+
+void qqbar_cache_enclosure(qqbar_t res, slong prec);
+
+void qqbar_get_acb(acb_t res, const qqbar_t x, slong prec);
+
+void qqbar_get_arb(arb_t res, const qqbar_t x, slong prec);
+
+void qqbar_get_arb_re(arb_t res, const qqbar_t x, slong prec);
+
+void qqbar_get_arb_im(arb_t res, const qqbar_t x, slong prec);
+
+
+void qqbar_neg(qqbar_t res, const qqbar_t x);
+
+void qqbar_add(qqbar_t res, const qqbar_t x, const qqbar_t y);
+void qqbar_add_fmpq(qqbar_t res, const qqbar_t x, const fmpq_t y);
+void qqbar_add_fmpz(qqbar_t res, const qqbar_t x, const fmpz_t y);
+void qqbar_add_ui(qqbar_t res, const qqbar_t x, ulong y);
+void qqbar_add_si(qqbar_t res, const qqbar_t x, slong y);
+
+void qqbar_sub(qqbar_t res, const qqbar_t x, const qqbar_t y);
+void qqbar_sub_fmpq(qqbar_t res, const qqbar_t x, const fmpq_t y);
+void qqbar_sub_fmpz(qqbar_t res, const qqbar_t x, const fmpz_t y);
+void qqbar_sub_ui(qqbar_t res, const qqbar_t x, ulong y);
+void qqbar_sub_si(qqbar_t res, const qqbar_t x, slong y);
+void qqbar_fmpq_sub(qqbar_t res, const fmpq_t x, const qqbar_t y);
+void qqbar_fmpz_sub(qqbar_t res, const fmpz_t x, const qqbar_t y);
+void qqbar_ui_sub(qqbar_t res, ulong x, const qqbar_t y);
+void qqbar_si_sub(qqbar_t res, slong x, const qqbar_t y);
+
+int qqbar_equal(const qqbar_t x, const qqbar_t y);
+int qqbar_cmp_re(const qqbar_t x, const qqbar_t y);
+int qqbar_cmp_im(const qqbar_t x, const qqbar_t y);
+int qqbar_cmpabs_re(const qqbar_t x, const qqbar_t y);
+int qqbar_cmpabs_im(const qqbar_t x, const qqbar_t y);
+int qqbar_cmpabs(const qqbar_t x, const qqbar_t y);
+int qqbar_cmp_root_order(const qqbar_t x, const qqbar_t y);
+
+ulong qqbar_hash(const qqbar_t x);
+void qqbar_mul(qqbar_t res, const qqbar_t x, const qqbar_t y);
+void qqbar_mul_fmpq(qqbar_t res, const qqbar_t x, const fmpq_t y);
+void qqbar_mul_fmpz(qqbar_t res, const qqbar_t x, const fmpz_t y);
+void qqbar_mul_ui(qqbar_t res, const qqbar_t x, ulong y);
+void qqbar_mul_si(qqbar_t res, const qqbar_t x, slong y);
+
+void qqbar_div(qqbar_t res, const qqbar_t x, const qqbar_t y);
+void qqbar_div_fmpq(qqbar_t res, const qqbar_t x, const fmpq_t y);
+void qqbar_div_fmpz(qqbar_t res, const qqbar_t x, const fmpz_t y);
+void qqbar_div_ui(qqbar_t res, const qqbar_t x, ulong y);
+void qqbar_div_si(qqbar_t res, const qqbar_t x, slong y);
+void qqbar_fmpq_div(qqbar_t res, const fmpq_t x, const qqbar_t y);
+void qqbar_fmpz_div(qqbar_t res, const fmpz_t x, const qqbar_t y);
+void qqbar_ui_div(qqbar_t res, ulong x, const qqbar_t y);
+void qqbar_si_div(qqbar_t res, slong x, const qqbar_t y);
+
+
+void qqbar_sqr(qqbar_t res, const qqbar_t x);
+
+void qqbar_inv(qqbar_t res, const qqbar_t x);
+
+void qqbar_mul_2exp_si(qqbar_t res, const qqbar_t x, slong exp);
+
+void qqbar_pow_ui(qqbar_t res, const qqbar_t x, ulong e);
+void qqbar_pow_si(qqbar_t res, const qqbar_t x, slong n);
+void qqbar_pow_fmpz(qqbar_t res, const qqbar_t x, const fmpz_t n);
+void qqbar_pow_fmpq(qqbar_t res, const qqbar_t x, const fmpq_t n);
+
+int qqbar_pow(qqbar_t res, const qqbar_t x, const qqbar_t e);
+
+/* Check if x = (p/q)^(1/n), p > 0 */
+int _qqbar_fast_detect_simple_principal_surd(const qqbar_t x);
+
+void qqbar_root_ui(qqbar_t res, const qqbar_t x, ulong n);
+
+ void qqbar_sqrt(qqbar_t res, const qqbar_t x);
+
+
+void qqbar_sqrt_ui(qqbar_t res, ulong x);
+
+
+void qqbar_rsqrt(qqbar_t res, const qqbar_t x);
+
+void qqbar_fmpq_root_ui(qqbar_t res, const fmpq_t x, ulong b);
+void qqbar_fmpq_pow_si_ui(qqbar_t res, const fmpq_t x, slong a, ulong b);
+
+void qqbar_swap(qqbar_t x, qqbar_t y);
+
+void qqbar_set(qqbar_t res, const qqbar_t x);
+
+void qqbar_set_si(qqbar_t res, slong x);
+
+void qqbar_set_ui(qqbar_t res, ulong x);
+
+void qqbar_set_fmpz(qqbar_t res, const fmpz_t x);
+
+void qqbar_set_fmpq(qqbar_t res, const fmpq_t x);
+
+void qqbar_set_re_im(qqbar_t res, const qqbar_t x, const qqbar_t y);
+
+int qqbar_set_d(qqbar_t res, double x);
+
+int qqbar_set_re_im_d(qqbar_t res, double x, double y);
+
+void qqbar_init(qqbar_t res);
+
+void qqbar_clear(qqbar_t res);
 
 ulong n_nth_prime(ulong n);
  

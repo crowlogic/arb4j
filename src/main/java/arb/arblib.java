@@ -9,6 +9,286 @@
 package arb;
 
 public class arblib {
+  public static void fexpr_print(SymbolicExpression expr) {
+    arblibJNI.fexpr_print(SymbolicExpression.getCPtr(expr), expr);
+  }
+
+  public static String fexpr_get_str(SymbolicExpression expr) {
+    return arblibJNI.fexpr_get_str(SymbolicExpression.getCPtr(expr), expr);
+  }
+
+  public static void qqbar_cache_enclosure(AlgebraicNumber res, int prec) {
+    arblibJNI.qqbar_cache_enclosure(AlgebraicNumber.getCPtr(res), res, prec);
+  }
+
+  public static void qqbar_get_acb(Complex res, AlgebraicNumber x, int prec) {
+    arblibJNI.qqbar_get_acb(Complex.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, prec);
+  }
+
+  public static void qqbar_get_arb(Real res, AlgebraicNumber x, int prec) {
+    arblibJNI.qqbar_get_arb(Real.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, prec);
+  }
+
+  public static void qqbar_get_arb_re(Real res, AlgebraicNumber x, int prec) {
+    arblibJNI.qqbar_get_arb_re(Real.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, prec);
+  }
+
+  public static void qqbar_get_arb_im(Real res, AlgebraicNumber x, int prec) {
+    arblibJNI.qqbar_get_arb_im(Real.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, prec);
+  }
+
+  public static void qqbar_neg(AlgebraicNumber res, AlgebraicNumber x) {
+    arblibJNI.qqbar_neg(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x);
+  }
+
+  public static void qqbar_add(AlgebraicNumber res, AlgebraicNumber x, AlgebraicNumber y) {
+    arblibJNI.qqbar_add(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static void qqbar_add_fmpq(AlgebraicNumber res, AlgebraicNumber x, Fraction y) {
+    arblibJNI.qqbar_add_fmpq(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, Fraction.getCPtr(y), y);
+  }
+
+  public static void qqbar_add_fmpz(AlgebraicNumber res, AlgebraicNumber x, long y) {
+    arblibJNI.qqbar_add_fmpz(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, y);
+  }
+
+  public static void qqbar_add_ui(AlgebraicNumber res, AlgebraicNumber x, long y) {
+    arblibJNI.qqbar_add_ui(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, y);
+  }
+
+  public static void qqbar_add_si(AlgebraicNumber res, AlgebraicNumber x, int y) {
+    arblibJNI.qqbar_add_si(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, y);
+  }
+
+  public static void qqbar_sub(AlgebraicNumber res, AlgebraicNumber x, AlgebraicNumber y) {
+    arblibJNI.qqbar_sub(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static void qqbar_sub_fmpq(AlgebraicNumber res, AlgebraicNumber x, Fraction y) {
+    arblibJNI.qqbar_sub_fmpq(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, Fraction.getCPtr(y), y);
+  }
+
+  public static void qqbar_sub_fmpz(AlgebraicNumber res, AlgebraicNumber x, long y) {
+    arblibJNI.qqbar_sub_fmpz(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, y);
+  }
+
+  public static void qqbar_sub_ui(AlgebraicNumber res, AlgebraicNumber x, long y) {
+    arblibJNI.qqbar_sub_ui(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, y);
+  }
+
+  public static void qqbar_sub_si(AlgebraicNumber res, AlgebraicNumber x, int y) {
+    arblibJNI.qqbar_sub_si(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, y);
+  }
+
+  public static void qqbar_fmpq_sub(AlgebraicNumber res, Fraction x, AlgebraicNumber y) {
+    arblibJNI.qqbar_fmpq_sub(AlgebraicNumber.getCPtr(res), res, Fraction.getCPtr(x), x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static void qqbar_fmpz_sub(AlgebraicNumber res, long x, AlgebraicNumber y) {
+    arblibJNI.qqbar_fmpz_sub(AlgebraicNumber.getCPtr(res), res, x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static void qqbar_ui_sub(AlgebraicNumber res, long x, AlgebraicNumber y) {
+    arblibJNI.qqbar_ui_sub(AlgebraicNumber.getCPtr(res), res, x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static void qqbar_si_sub(AlgebraicNumber res, int x, AlgebraicNumber y) {
+    arblibJNI.qqbar_si_sub(AlgebraicNumber.getCPtr(res), res, x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static int qqbar_equal(AlgebraicNumber x, AlgebraicNumber y) {
+    return arblibJNI.qqbar_equal(AlgebraicNumber.getCPtr(x), x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static int qqbar_cmp_re(AlgebraicNumber x, AlgebraicNumber y) {
+    return arblibJNI.qqbar_cmp_re(AlgebraicNumber.getCPtr(x), x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static int qqbar_cmp_im(AlgebraicNumber x, AlgebraicNumber y) {
+    return arblibJNI.qqbar_cmp_im(AlgebraicNumber.getCPtr(x), x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static int qqbar_cmpabs_re(AlgebraicNumber x, AlgebraicNumber y) {
+    return arblibJNI.qqbar_cmpabs_re(AlgebraicNumber.getCPtr(x), x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static int qqbar_cmpabs_im(AlgebraicNumber x, AlgebraicNumber y) {
+    return arblibJNI.qqbar_cmpabs_im(AlgebraicNumber.getCPtr(x), x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static int qqbar_cmpabs(AlgebraicNumber x, AlgebraicNumber y) {
+    return arblibJNI.qqbar_cmpabs(AlgebraicNumber.getCPtr(x), x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static int qqbar_cmp_root_order(AlgebraicNumber x, AlgebraicNumber y) {
+    return arblibJNI.qqbar_cmp_root_order(AlgebraicNumber.getCPtr(x), x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static long qqbar_hash(AlgebraicNumber x) {
+    return arblibJNI.qqbar_hash(AlgebraicNumber.getCPtr(x), x);
+  }
+
+  public static void qqbar_mul(AlgebraicNumber res, AlgebraicNumber x, AlgebraicNumber y) {
+    arblibJNI.qqbar_mul(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static void qqbar_mul_fmpq(AlgebraicNumber res, AlgebraicNumber x, Fraction y) {
+    arblibJNI.qqbar_mul_fmpq(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, Fraction.getCPtr(y), y);
+  }
+
+  public static void qqbar_mul_fmpz(AlgebraicNumber res, AlgebraicNumber x, long y) {
+    arblibJNI.qqbar_mul_fmpz(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, y);
+  }
+
+  public static void qqbar_mul_ui(AlgebraicNumber res, AlgebraicNumber x, long y) {
+    arblibJNI.qqbar_mul_ui(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, y);
+  }
+
+  public static void qqbar_mul_si(AlgebraicNumber res, AlgebraicNumber x, int y) {
+    arblibJNI.qqbar_mul_si(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, y);
+  }
+
+  public static void qqbar_div(AlgebraicNumber res, AlgebraicNumber x, AlgebraicNumber y) {
+    arblibJNI.qqbar_div(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static void qqbar_div_fmpq(AlgebraicNumber res, AlgebraicNumber x, Fraction y) {
+    arblibJNI.qqbar_div_fmpq(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, Fraction.getCPtr(y), y);
+  }
+
+  public static void qqbar_div_fmpz(AlgebraicNumber res, AlgebraicNumber x, long y) {
+    arblibJNI.qqbar_div_fmpz(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, y);
+  }
+
+  public static void qqbar_div_ui(AlgebraicNumber res, AlgebraicNumber x, long y) {
+    arblibJNI.qqbar_div_ui(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, y);
+  }
+
+  public static void qqbar_div_si(AlgebraicNumber res, AlgebraicNumber x, int y) {
+    arblibJNI.qqbar_div_si(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, y);
+  }
+
+  public static void qqbar_fmpq_div(AlgebraicNumber res, Fraction x, AlgebraicNumber y) {
+    arblibJNI.qqbar_fmpq_div(AlgebraicNumber.getCPtr(res), res, Fraction.getCPtr(x), x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static void qqbar_fmpz_div(AlgebraicNumber res, long x, AlgebraicNumber y) {
+    arblibJNI.qqbar_fmpz_div(AlgebraicNumber.getCPtr(res), res, x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static void qqbar_ui_div(AlgebraicNumber res, long x, AlgebraicNumber y) {
+    arblibJNI.qqbar_ui_div(AlgebraicNumber.getCPtr(res), res, x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static void qqbar_si_div(AlgebraicNumber res, int x, AlgebraicNumber y) {
+    arblibJNI.qqbar_si_div(AlgebraicNumber.getCPtr(res), res, x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static void qqbar_sqr(AlgebraicNumber res, AlgebraicNumber x) {
+    arblibJNI.qqbar_sqr(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x);
+  }
+
+  public static void qqbar_inv(AlgebraicNumber res, AlgebraicNumber x) {
+    arblibJNI.qqbar_inv(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x);
+  }
+
+  public static void qqbar_mul_2exp_si(AlgebraicNumber res, AlgebraicNumber x, int exp) {
+    arblibJNI.qqbar_mul_2exp_si(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, exp);
+  }
+
+  public static void qqbar_pow_ui(AlgebraicNumber res, AlgebraicNumber x, long e) {
+    arblibJNI.qqbar_pow_ui(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, e);
+  }
+
+  public static void qqbar_pow_si(AlgebraicNumber res, AlgebraicNumber x, int n) {
+    arblibJNI.qqbar_pow_si(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, n);
+  }
+
+  public static void qqbar_pow_fmpz(AlgebraicNumber res, AlgebraicNumber x, long n) {
+    arblibJNI.qqbar_pow_fmpz(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, n);
+  }
+
+  public static void qqbar_pow_fmpq(AlgebraicNumber res, AlgebraicNumber x, Fraction n) {
+    arblibJNI.qqbar_pow_fmpq(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, Fraction.getCPtr(n), n);
+  }
+
+  public static int qqbar_pow(AlgebraicNumber res, AlgebraicNumber x, AlgebraicNumber e) {
+    return arblibJNI.qqbar_pow(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, AlgebraicNumber.getCPtr(e), e);
+  }
+
+  public static int _qqbar_fast_detect_simple_principal_surd(AlgebraicNumber x) {
+    return arblibJNI._qqbar_fast_detect_simple_principal_surd(AlgebraicNumber.getCPtr(x), x);
+  }
+
+  public static void qqbar_root_ui(AlgebraicNumber res, AlgebraicNumber x, long n) {
+    arblibJNI.qqbar_root_ui(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, n);
+  }
+
+  public static void qqbar_sqrt(AlgebraicNumber res, AlgebraicNumber x) {
+    arblibJNI.qqbar_sqrt(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x);
+  }
+
+  public static void qqbar_sqrt_ui(AlgebraicNumber res, long x) {
+    arblibJNI.qqbar_sqrt_ui(AlgebraicNumber.getCPtr(res), res, x);
+  }
+
+  public static void qqbar_rsqrt(AlgebraicNumber res, AlgebraicNumber x) {
+    arblibJNI.qqbar_rsqrt(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x);
+  }
+
+  public static void qqbar_fmpq_root_ui(AlgebraicNumber res, Fraction x, long b) {
+    arblibJNI.qqbar_fmpq_root_ui(AlgebraicNumber.getCPtr(res), res, Fraction.getCPtr(x), x, b);
+  }
+
+  public static void qqbar_fmpq_pow_si_ui(AlgebraicNumber res, Fraction x, int a, long b) {
+    arblibJNI.qqbar_fmpq_pow_si_ui(AlgebraicNumber.getCPtr(res), res, Fraction.getCPtr(x), x, a, b);
+  }
+
+  public static void qqbar_swap(AlgebraicNumber x, AlgebraicNumber y) {
+    arblibJNI.qqbar_swap(AlgebraicNumber.getCPtr(x), x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static void qqbar_set(AlgebraicNumber res, AlgebraicNumber x) {
+    arblibJNI.qqbar_set(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x);
+  }
+
+  public static void qqbar_set_si(AlgebraicNumber res, int x) {
+    arblibJNI.qqbar_set_si(AlgebraicNumber.getCPtr(res), res, x);
+  }
+
+  public static void qqbar_set_ui(AlgebraicNumber res, long x) {
+    arblibJNI.qqbar_set_ui(AlgebraicNumber.getCPtr(res), res, x);
+  }
+
+  public static void qqbar_set_fmpz(AlgebraicNumber res, long x) {
+    arblibJNI.qqbar_set_fmpz(AlgebraicNumber.getCPtr(res), res, x);
+  }
+
+  public static void qqbar_set_fmpq(AlgebraicNumber res, Fraction x) {
+    arblibJNI.qqbar_set_fmpq(AlgebraicNumber.getCPtr(res), res, Fraction.getCPtr(x), x);
+  }
+
+  public static void qqbar_set_re_im(AlgebraicNumber res, AlgebraicNumber x, AlgebraicNumber y) {
+    arblibJNI.qqbar_set_re_im(AlgebraicNumber.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, AlgebraicNumber.getCPtr(y), y);
+  }
+
+  public static int qqbar_set_d(AlgebraicNumber res, double x) {
+    return arblibJNI.qqbar_set_d(AlgebraicNumber.getCPtr(res), res, x);
+  }
+
+  public static int qqbar_set_re_im_d(AlgebraicNumber res, double x, double y) {
+    return arblibJNI.qqbar_set_re_im_d(AlgebraicNumber.getCPtr(res), res, x, y);
+  }
+
+  public static void qqbar_init(AlgebraicNumber res) {
+    arblibJNI.qqbar_init(AlgebraicNumber.getCPtr(res), res);
+  }
+
+  public static void qqbar_clear(AlgebraicNumber res) {
+    arblibJNI.qqbar_clear(AlgebraicNumber.getCPtr(res), res);
+  }
+
   public static long n_nth_prime(long n) {
     return arblibJNI.n_nth_prime(n);
   }

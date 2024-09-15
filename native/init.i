@@ -4,6 +4,7 @@
 #include <flint/fmpq_poly.h>
 #include <flint/fmpz_poly.h>
 #include <flint/fmpz_poly_q.h>
+#include <flint/fexpr.h>
 
 extern int errorNumber();
 
