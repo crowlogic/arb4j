@@ -171,5 +171,7 @@ typedef unsigned long int mp_limb_t;
 
 %include "RationalFunction.i"
 
+%include "AlgebraicNumber.i"
+
 %include "TypesAndStructures.i"
 
