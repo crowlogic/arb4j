@@ -15,7 +15,7 @@
   </author-affiliation>>>>
 
   <abstract-data|<\abstract>
-    \ The null space of Gaussian process kernel inner product operators are
+    \ The null spaces of Gaussian process kernel inner product operators are
     shown to be the Fourier transforms of the polynomials orthogonal with
     respect to the spectral densities of the processes and it is furthermore
     shown that the orthogonal complements of the null spaces as given by the
@@ -142,89 +142,6 @@
     is the Hadamard product factorization?
   </proof>
 
-  \;
-
-  <\definition>
-    Let <math|j<rsub|n><around|(|x|)>> is the spherical Bessel function of
-    the first kind,\ 
-
-    <\equation>
-      <tabular|<tformat|<table|<row|<cell|j<rsub|n><around|(|z|)>>|<cell|=<sqrt|<frac|\<pi\>|2*z>>*J<rsub|n+<frac|1|2>><around|(|x|)>>>|<row|<cell|>|<cell|=<frac|1|<sqrt|z>>*<around*|(|sin
-      <around|(|z|)>*R<rsub|n,<frac|1|2>><around|(|z|)>-cos
-      <around|(|z|)>*R<rsub|n-1,<frac|3|2>><around|(|z|)>|)>>>>>>
-    </equation>
-
-    where <math|R<rsub|n,v><around|(|z|)>> are the (misnamed) Lommel
-    polynomials <cite|modifiedLommelPolynomials>
-
-    <\equation>
-      R<rsub|n,v><around|(|z|)>=<frac|\<Gamma\>*<around|(|n+v|)>|\<Gamma\><around|(|v|)>><around*|(|<frac|2|z>|)><rsup|n><rsub|>*<rsub|2>F<rsub|3><around*|(|<around*|[|-<frac|n|2>,<frac|1|2>-<frac|n|2>|]>;<around*|[|v,-n,1-v-n|]>;-z<rsup|2>|)>
-    </equation>
-
-    where <math|*<rsub|2>F<rsub|3>> is a generalized hypergeometric function.
-    The \PLommel polynomials\Q are actually rational functions of z, not
-    polynomial; but rather \Ppolynomial in <math|<frac|1|z>>\Q.\ 
-  </definition>
-
-  <\theorem>
-    The eigenfunctions of the stationary integral covariance operator\ 
-
-    <\equation>
-      <around*|[|T \<psi\><rsub|n>|]><around*|(|x|)>=<big|int><rsub|0><rsup|\<infty\>>J<rsub|0>*<around|(|x-y|)>*\<psi\><rsub|n><around*|(|x|)>\<mathd\>x=\<lambda\><rsub|n>\<psi\><rsub|n><around*|(|x|)><label|T>
-    </equation>
-
-    are given by
-
-    <\equation>
-      \<psi\><rsub|n><around*|(|x|)>\<psi\><rsub|n><around*|(|y|)>=<around|(|-1|)><rsup|n><sqrt|<frac|8n+2|\<pi\>>>*j<rsub|2*n><around|(|x-y|)>
-    </equation>
-
-    and the eigenvalues are given by
-
-    <math|<\text>
-      <\equation>
-        <tabular|<tformat|<table|<row|<cell|\<lambda\><rsub|n>>|<cell|=<big|int><rsub|0><rsup|\<infty\>>J<rsub|0><around|(|x|)>*\<psi\><rsub|n><around|(|x|)><space|0.17em><math-up|d>x>>|<row|<cell|>|<cell|=<sqrt|<frac|2n+<frac|1|2>|\<pi\>>>*<frac|\<Gamma\>*<around*|(|n+<frac|1|2>|)><rsup|2>|\<Gamma\>*<around|(|n+1|)><rsup|2>>>>|<row|<cell|>|<cell|=<sqrt|<frac|2n+<frac|1|2>|\<pi\>>>*<around|(|n+1|)><rsub|-<frac|1|2>><rsup|2>>>>>>
-      </equation>
-    </text>>
-
-    where <math|<around|(|n+1|)><rsub|-<frac|1|2>><rsup|>> is the Pochhammer
-    symbol(ascending/rising factorial).\ 
-  </theorem>
-
-  <\theorem>
-    The series
-
-    <\equation>
-      <tabular|<tformat|<table|<row|<cell|J<rsub|0><around*|(|t|)>>|<cell|=<big|sum><rsub|k=0<rsup|>><rsup|\<infty\>>\<lambda\><rsub|k>\<psi\><rsub|k><around*|(|t|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0<rsup|>><rsup|\<infty\>><sqrt|<frac|2*n+<frac|1|2>|\<pi\>>>*<sqrt|<frac|8*n+2|\<pi\>>><around|(|n+1|)><rsub|-<frac|1|2>><rsup|2><around|(|-1|)><rsup|n>*j<rsub|2*n><around|(|t|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0<rsup|>><rsup|\<infty\>><frac|4*n+1|\<pi\>>*<around|(|n+1|)><rsub|-<frac|1|2>><rsup|2><around|(|-1|)><rsup|n>*j<rsub|2*n><around|(|t|)>>>>>>
-    </equation>
-
-    converges uniformly for all complex <math|t> except the origin where it
-    has a regular singular point where <math|lim<rsub|t\<rightarrow\>0>J<rsub|0><around*|(|t|)>=1>.
-  </theorem>
-
-  <\proof>
-    <math|<sqrt|<frac|2*n+<frac|1|2>|\<pi\>>>*<sqrt|<frac|8*n+2|\<pi\>>>=<frac|<sqrt|16n<rsup|2>+8n+1>|<sqrt|\<pi\><rsup|2>>>=<frac|<sqrt|<around*|(|4n+1|)><around*|(|4n+1|)>>|<sqrt|\<pi\>*\<pi\>>>=<frac|4n+1|\<pi\>>>.
-    The rest is left as an excercise.
-  </proof>
-
-  <\big-figure|<image|KConvergence.eps|375pt|200pt||>>
-    <math|J<rsub|0>> compared to the finite-rank approximations for rank
-    <math|0,5,<text|and>> 10. The figure shows the excellent convergence
-    properties of the proposed eigenfunction expansion
-    <math|J<rsub|0><around*|(|x|)>=lim<rsub|n\<rightarrow\>\<infty\>><big|sum><rsub|k=0><rsup|n>\<lambda\><rsub|k>\<psi\><rsub|k><around*|(|x|)>>.
-  </big-figure>
-
-  <\theorem>
-    The operator defined by Equation (<reference|T>) is compact relative to
-    the canonical metric induced by the covariance kernel
-    <math|J<rsub|0><around*|(|<around*|\||x-y|\|>|)>>.
-  </theorem>
-
-  <\proof>
-    The proof can be demonstrated by calculating the metric entropy integral
-    and showing it is finite for all positive epsilon
-  </proof>
-
   <\definition>
     The spectral density of a stationary process is the Fourier tranform of
     the covariance kernel due to Wiener-Khinchine theorem.
@@ -293,6 +210,200 @@
     <math|g<around|(|t|)>> a real-valued function.
   </proof>
 
+  <subsection|The Karhunen-Loeve Expansion>
+
+  The Karhunen-Loeve expansion is a spectral representation theorem which
+  expands the random process <math|w*<around|(|x,\<theta\>|)>> in terms of a
+  denumerable set of orthogonal random variables in the form
+
+  <\equation>
+    w*<around|(|x,\<theta\>|)>=<big|sum><rsub|i=1><rsup|\<infty\>>\<mu\><rsub|i><around|(|\<theta\>|)>*g<rsub|i><around|(|x|)><label|process>
+  </equation>
+
+  where <math|<around|{|\<mu\><rsub|i><around|(|\<theta\>|)>|}>> is a set of
+  random variable projections and <math|<around|{|g<rsub|i><around|(|x|)>|}>>
+  are the functions of the integral covariance operator associated to the
+  Gaussian process having the covariance kernel of
+  <math|w*<around|(|x,\<theta\>|)>>. Since equation (<reference|process>) is
+  a quantization of the random process it is a representation of the process
+  <math|w*<around|(|x,\<theta\>|)>> as a curve in the Hilbert space spanned
+  by the set <math|<around|{|g<rsub|i><around|(|x|)>|}>> expressed as a
+  direct sum of orthogonal projections in this Hilbert space whose
+  \ projections on successive basis vectors have magnitudes which are
+  proportional to the corresponding eigenvalues of the covariance function
+  associated with the eigenfunctions of the process
+  <math|w*<around|(|x,\<theta\>|)>>.
+
+  <subsubsection|Derivation>
+
+  <\theorem>
+    The random process <math|w<around*|(|x,\<theta\>|)>> can be represented
+    by the Karhunen-Loeve expansion defined by the Fourier-like series as
+
+    <\equation>
+      w*<around|(|x,\<theta\>|)>=<big|sum><rsub|n=0><rsup|\<infty\>><sqrt|\<lambda\><rsub|n>>*\<xi\><rsub|n><around|(|\<theta\>|)>*f<rsub|n><around|(|x|)>
+    </equation>
+
+    where <math|<around|{|\<xi\><rsub|n><around|(|\<theta\>|)>|}>> is a said
+    to be a set of 'random' variables to be determined by projecting the
+    process <math|w<around*|(|x,\<theta\>|)>> onto the <math|n-th>
+    eigenfunction and <math|\<lambda\><rsub|n>> is the <math|n>-th eigenvalue
+    corresponding to the n-th eigenfunction of the corresponding integral
+    covariance operator <math|<around|{|f<rsub|n><around|(|x|)>|}>>
+  </theorem>
+
+  <\proof>
+    Let <math|w*<around|(|x,\<theta\>|)>> be a random process, function of
+    the position vector <math|x> defined over the domain <math|D>, with
+    <math|\<theta\>> belonging to the space of random events
+    <math|\<Omega\>>. Let <math|<wide|w|\<bar\>><around|(|x|)>> denote the
+    expected value of <math|w*<around|(|x,\<theta\>|)>> over all possible
+    realizations of the process, and <math|C<around|(|x<rsub|1>,x<rsub|2>|)>>
+    denote its covariance function. By definition of the covariance function,
+    it is bounded, symmetric and positive definite. Thus, it has the
+    eigenfunction expansion <cite-detail|stochasticFiniteElements|2.3.1>
+
+    <\equation>
+      C<around|(|x<rsub|1>,x<rsub|2>|)>=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*f<rsub|n><around|(|x<rsub|1>|)>*f<rsub|n><around|(|x<rsub|2>|)><label|2.7>
+    </equation>
+
+    where <math|\<lambda\><rsub|n>> and <math|f<rsub|n><around|(|x|)>> are
+    the eigenvalue and the eigenfunction of the covariance kernel. And,
+    specifically, that they are the solution to the integral equation
+
+    <\equation>
+      <big|int><rsub|D>C<around|(|x<rsub|1>,x<rsub|2>|)>*f<rsub|n><around|(|x<rsub|1>|)>*d*x<rsub|1>=\<lambda\><rsub|n>*f<rsub|n><around|(|x<rsub|2>|)><label|2.8><style-only*|>
+    </equation>
+
+    Due to the symmetry and the positive definiteness of the covariance
+    kernel, its eigenfunctions are orthogonal and form a complete set. They
+    can be normalized according to the following criterion
+
+    <\equation>
+      <big|int><rsub|D>f<rsub|n><around|(|x|)>*f<rsub|m><around|(|x|)>*d*x=\<delta\><rsub|n*m><label|2.9>
+    </equation>
+
+    where <math|\<delta\><rsub|n*m>> is the Kronecker delta. Clearly,
+    <math|w<around|(|x,\<theta\>|)>> can be written as
+
+    <\equation>
+      w*<around|(|x,\<theta\>|)>=<wide|w|\<bar\>><around|(|x|)>+\<alpha\><around|(|x,\<theta\>|)><label|2.10>
+    </equation>
+
+    where <math|\<alpha\><around|(|x,\<theta\>|)>> is a process with zero
+    mean and covariance function <math|C<around*|(|x<rsub|1>,x<rsub|2>|)>>.
+    The process <math|\<alpha\><around|(|x,\<theta\>|)>> can be expanded in
+    terms of the eigenfunctions <math|f<rsub|n><around|(|x|)>> as
+
+    <\equation>
+      \<alpha\><around|(|x,\<theta\>|)>=<big|sum><rsub|n=0><rsup|\<infty\>>\<xi\><rsub|n><around|(|\<theta\>|)><sqrt|\<lambda\><rsub|n>>*f<rsub|n><around|(|x|)><label|2.11>
+    </equation>
+
+    Second order properties of the random variables <math|\<xi\><rsub|n>> can
+    be determined by multiplying both sides of equation (<reference|2.11>) by
+    <math|\<alpha\><around|(|x<rsub|2>,\<theta\>|)>> and taking the
+    expectation on both sides. Specifically, it is found that
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|C<around|(|x<rsub|1>,x<rsub|2>|)>>|<cell|=<around|\<langle\>|\<alpha\><around|(|x<rsub|1>,\<theta\>|)>*\<alpha\><around|(|x<rsub|2>,\<theta\>|)>|\<rangle\>>>>|<row|<cell|>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>><big|sum><rsub|m=0><rsup|\<infty\>><around|\<langle\>|\<xi\><rsub|n><around|(|\<theta\>|)>*\<xi\><rsub|m><around|(|\<theta\>|)>|\<rangle\>><sqrt|\<lambda\><rsub|n>*\<lambda\><rsub|m>>*f<rsub|n><around|(|x<rsub|1>|)>*f<rsub|m><around|(|x<rsub|2>|)>>>>>><label|2.12>
+    </equation>
+
+    Then, multiplying both sides of equation (<reference|2.12>) by
+    <math|f<rsub|k><around|(|x<rsub|2>|)>>, integrating over the domain
+    <math|D>, and making use of the orthogonality of the eigenfunctions,
+    yields
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|<big|int><rsub|D>C<around|(|x<rsub|1>,x<rsub|2>|)>*f<rsub|k><around|(|x<rsub|2>|)>*d*x<rsub|2>>|<cell|=\<lambda\><rsub|k>*f<rsub|k><around|(|x<rsub|1>|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|\<xi\><rsub|n><around|(|\<theta\>|)>*\<xi\><rsub|k><around|(|\<theta\>|)>|\<rangle\>><sqrt|\<lambda\><rsub|n>*\<lambda\><rsub|k>>*f<rsub|n><around|(|x<rsub|1>|)>>>>>>
+    </equation>
+
+    Multiplying once more by <math|f<rsub|l><around|(|x<rsub|1>|)>> and
+    integrating over <math|D> gives
+
+    <\equation>
+      <big|int><rsub|D><big|int><rsub|D>f<rsub|l><around|(|x<rsub|1>|)>*f<rsub|k><around|(|x<rsub|1>|)>*d*x<rsub|1>=<big|sum><rsub|n=0><rsup|\<infty\>>E*<around|\<langle\>|\<xi\><rsub|n><around|(|\<theta\>|)>*\<xi\><rsub|k><around|(|\<theta\>|)>|\<rangle\>><sqrt|\<lambda\><rsub|n>*\<lambda\><rsub|k>>*\<delta\><rsub|n*l>
+    </equation>
+
+    Then, using equation (<reference|2.9>) leads to
+
+    <\equation>
+      \<lambda\><rsub|k>*\<delta\><rsub|k*l>=<sqrt|\<lambda\><rsub|k>*\<lambda\><rsub|l>>*<around|\<langle\>|\<xi\><rsub|k><around|(|\<theta\>|)>*\<xi\><rsub|l><around|(|\<theta\>|)>|\<rangle\>><label|2.15>
+    </equation>
+
+    Equation (<reference|2.15>) can be rearranged to give
+
+    <\equation>
+      <around|\<langle\>|\<xi\><rsub|k><around|(|\<theta\>|)>*\<xi\><rsub|l><around|(|\<theta\>|)>|\<rangle\>>=\<delta\><rsub|k*l>
+    </equation>
+
+    Thus, the random process <math|w*<around|(|x,\<theta\>|)>> can be written
+    as
+
+    <\equation>
+      w*<around|(|x,\<theta\>|)>=<wide|w|\<bar\>><around|(|x|)>+<big|sum><rsub|n=0><rsup|\<infty\>>\<xi\><rsub|n><around|(|\<theta\>|)><sqrt|\<lambda\><rsub|n>>*f<rsub|n><around|(|x|)><label|2.17>
+    </equation>
+
+    where
+
+    <\equation>
+      <around|\<langle\>|\<xi\><rsub|n><around|(|\<theta\>|)>|\<rangle\>>=0
+    </equation>
+
+    <\equation>
+      <around|\<langle\>|\<xi\><rsub|n><around|(|\<theta\>|)>*\<xi\><rsub|m><around|(|\<theta\>|)>|\<rangle\>>=\<delta\><rsub|n*m><label|2.19>
+    </equation>
+
+    and <math|\<lambda\><rsub|n>,f<rsub|n><around|(|x|)>> are solution to
+    equation (<reference|2.8>). Truncating the series in equation
+    (<reference|2.17>) at the <math|M<rsup|t*h>> term, gives
+
+    <\equation>
+      w*<around|(|x,\<theta\>|)>=<wide|w|\<bar\>><around|(|x|)>+<big|sum><rsub|n=0><rsup|M>\<xi\><rsub|n><around|(|\<theta\>|)><sqrt|\<lambda\><rsub|n>>*f<rsub|n><around|(|x|)><label|2.20>
+    </equation>
+
+    An explicit expression for <math|\<xi\><rsub|n><around|(|\<theta\>|)>>
+    can be obtained by multiplying equation (<reference|2.11>) by
+    <math|f<rsub|n><around|(|x|)>> and integrating over the domain <math|D>.
+    That is,
+
+    <\equation>
+      \<xi\><rsub|n><around|(|\<theta\>|)>=<frac|<big|int><rsub|D>\<alpha\><around|(|x,\<theta\>|)>*f<rsub|n><around|(|x|)>*d*x|<sqrt|\<lambda\><rsub|n>>><label|2.21>
+    </equation>
+  </proof>
+
+  <subsubsection|Uniqueness of the Expansion>
+
+  <\lemma>
+    <strong|Uniqueness>: The random variables appearing in an expansion of
+    the kind given by equation (<reference|2.10>) are orthonormal if and only
+    if the orthonormal functions <math|<around|{|f<rsub|n><around|(|x|)>|}>>
+    and the constants <math|<around|{|\<lambda\><rsub|n>|}>> are respectively
+    the eigenfunctions and the eigenvalues of the covariance kernel as given
+    by equation (<reference|2.8>).
+  </lemma>
+
+  <\proof>
+    The "if" part is an immediate consequence of equation (<reference|2.11>).
+    To show the "only if" part, equation (<reference|2.12>) can be used with
+
+    <\equation>
+      <around|\<langle\>|\<xi\><rsub|n><around|(|\<theta\>|)>*\<xi\><rsub|m><around|(|\<theta\>|)>|\<rangle\>>=\<delta\><rsub|n*m>
+    </equation>
+
+    \ to obtain
+
+    <\equation>
+      C<around|(|x<rsub|1>,x<rsub|2>|)>=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*f<rsub|n><around|(|x<rsub|1>|)>*f<rsub|n><around|(|x<rsub|2>|)>
+    </equation>
+
+    Multiplying both sides by <math|f<rsub|m><around|(|x<rsub|2>|)>> and
+    integrating over <math|D> gives
+
+    <\equation>
+      <big|int><rsub|D>C<around|(|x<rsub|1>,x<rsub|2>|)>*f<rsub|m><around|(|x<rsub|2>|)>*d*x<rsub|2>=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*f<rsub|n><around|(|x<rsub|1>|)>*\<delta\><rsub|n*m>=\<lambda\><rsub|m>*f<rsub|m><around|(|x<rsub|1>|)>
+    </equation>
+  </proof>
+
   <\theorem>
     Let <math|Y<rsub|n><around*|(|y|)>> be the normalized Fourier transforms
     of the spectral polynomials <math|<tabular|<tformat|<table|<row|<cell|Y<rsub|n><around*|(|y|)>>|<cell|=<frac|<wide|S|^><rsub|n><around|(|y|)>|<around*|\||<wide|S|^><rsub|n>|\|>>>>>>>>where
@@ -320,6 +431,11 @@
       <tabular|<tformat|<table|<row|<cell|\<psi\><rsub|n><around|(|x|)>\<psi\><rsub|n><around*|(|y|)>>|<cell|=Y<rsup|\<perp\>><rsub|n><around|(|x-y|)>>>|<row|<cell|>|<cell|=Y<rsub|n><around|(|x-y|)>-<big|sum><rsub|m=0><rsup|n-1><frac|<around|\<langle\>|Y<rsub|m><around|(|x-y|)>,Y<rsup|\<perp\>><rsub|m><around|(|x-y|)>|\<rangle\>>|<around|\<langle\>|Y<rsup|\<perp\>><rsub|m><around|(|x-y|)>,Y<rsup|\<perp\>><rsub|m><around|(|x-y|)>|\<rangle\>>>*Y<rsup|\<perp\>><rsub|m><around|(|x-y|)>>>>>>
     </equation>
   </theorem>
+
+  <\proof>
+    <text-dots>theres some elegant way to do this that I can probably write
+    down after my back surgery
+  </proof>
 
   <\example>
     Let the kernel function be given by <math|K<around*|(|t,s|)>=J<rsub|0><around*|(|t-s|)>>
@@ -390,17 +506,305 @@
     \;
   </example>
 
+  <\definition>
+    Let <math|j<rsub|n><around|(|x|)>> is the spherical Bessel function of
+    the first kind,\ 
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|j<rsub|n><around|(|z|)>>|<cell|=<sqrt|<frac|\<pi\>|2*z>>*J<rsub|n+<frac|1|2>><around|(|x|)>>>|<row|<cell|>|<cell|=<frac|1|<sqrt|z>>*<around*|(|sin
+      <around|(|z|)>*R<rsub|n,<frac|1|2>><around|(|z|)>-cos
+      <around|(|z|)>*R<rsub|n-1,<frac|3|2>><around|(|z|)>|)>>>>>>
+    </equation>
+
+    where <math|R<rsub|n,v><around|(|z|)>> are the (misnamed) Lommel
+    polynomials <cite|modifiedLommelPolynomials>
+
+    <\equation>
+      R<rsub|n,v><around|(|z|)>=<frac|\<Gamma\>*<around|(|n+v|)>|\<Gamma\><around|(|v|)>><around*|(|<frac|2|z>|)><rsup|n><rsub|>*<rsub|2>F<rsub|3><around*|(|<around*|[|-<frac|n|2>,<frac|1|2>-<frac|n|2>|]>;<around*|[|v,-n,1-v-n|]>;-z<rsup|2>|)>
+    </equation>
+
+    where <math|*<rsub|2>F<rsub|3>> is a generalized hypergeometric function.
+    The \PLommel polynomials\Q are actually rational functions of z, not
+    polynomial; but rather \Ppolynomial in <math|<frac|1|z>>\Q.\ 
+  </definition>
+
   \;
 
+  <\theorem>
+    The eigenfunctions of the stationary integral covariance operator\ 
+
+    <\equation>
+      <around*|[|T \<psi\><rsub|n>|]><around*|(|x|)>=<big|int><rsub|0><rsup|\<infty\>>J<rsub|0>*<around|(|x-y|)>*\<psi\><rsub|n><around*|(|x|)>\<mathd\>x=\<lambda\><rsub|n>\<psi\><rsub|n><around*|(|x|)><label|T>
+    </equation>
+
+    are given by
+
+    <\equation>
+      Y<rsup|\<perp\>><rsub|n><around*|(|x-y|)>=\<psi\><rsub|n><around*|(|x|)>\<psi\><rsub|n><around*|(|y|)>=<around|(|-1|)><rsup|n><sqrt|<frac|8n+2|\<pi\>>>*j<rsub|2*n><around|(|x-y|)>
+    </equation>
+
+    and the eigenvalues are given by
+
+    <math|<\text>
+      <\equation>
+        <tabular|<tformat|<table|<row|<cell|\<lambda\><rsub|n>>|<cell|=<big|int><rsub|0><rsup|\<infty\>>J<rsub|0><around|(|x|)>*\<psi\><rsub|n><around|(|x|)><space|0.17em><math-up|d>x>>|<row|<cell|>|<cell|=<sqrt|<frac|2n+<frac|1|2>|\<pi\>>>*<frac|\<Gamma\>*<around*|(|n+<frac|1|2>|)><rsup|2>|\<Gamma\>*<around|(|n+1|)><rsup|2>>>>|<row|<cell|>|<cell|=<sqrt|<frac|2n+<frac|1|2>|\<pi\>>>*<around|(|n+1|)><rsub|-<frac|1|2>><rsup|2>>>>>>
+      </equation>
+    </text>>
+
+    where <math|<around|(|n+1|)><rsub|-<frac|1|2>><rsup|>> is the Pochhammer
+    symbol(ascending/rising factorial).\ 
+  </theorem>
+
+  <\proof>
+    TODO: show that <math|Y<rsup|\<perp\>><rsub|n><around*|(|<around*|\||x-y|\|>|)>=\<psi\><rsub|n><around*|(|x|)>\<psi\><rsub|n><around*|(|y|)>>
+    converges uniformly by demonstrating that it is compact relative to the
+    canonical metric induced by the process then apply Hilbert's proof of a
+    theorem that was initiated by Schmidt as written in
+    <cite-detail|whittakerAndWatsonCourseOfModernAnalysis|11.70>. Note that
+    just because Hilbert and Schmidt are involved this does not mean this is
+    the Hilbert-Schmidt class of operators; specifically, nothing in this
+    proof depends on the boundedness of the domain or the square
+    integrability of the kernel; both of which are significant limitations of
+    the classical Mercer theorem. To see that unLet
+    <math|\<phi\><rsub|n><around|(|\<alpha\>|)>> be a complete set of
+    orthogonal functions satisfying the homogeneous integral equation with
+    symmetric nucleus
+
+    <\equation>
+      \<phi\><around|(|\<alpha\>|)>=\<lambda\>*<big|int><rsub|a><rsup|b>K<around|(|\<alpha\>,\<xi\>|)>*\<phi\><around|(|\<xi\>|)>*d*\<xi\>
+    </equation>
+
+    the corresponding characteristic numbers being
+    <math|\<lambda\><rsub|1>,\<lambda\><rsub|2>,\<lambda\><rsub|3>,\<ldots\>>Now
+    suppose that the series <math|<big|sum><rsub|n=1><rsup|\<infty\>><frac|\<phi\><rsub|n><around|(|\<alpha\>|)>*\<phi\><rsub|n><around|(|\<gamma\>|)>|\<lambda\><rsub|n>>>
+    is uniformly convergent when <math|0\<leqslant\>a\<leq\>\<alpha\>\<leq\>b\<leqslant\>\<infty\>>,<math|0\<leqslant\>a\<leq\>\<gamma\>\<leq\>b\<leqslant\>\<infty\>>.
+    Then it will be shown that
+
+    <\equation>
+      K<around|(|\<alpha\>,\<gamma\>|)>=<big|sum><rsub|n=1><rsup|\<infty\>><frac|\<phi\><rsub|n><around|(|\<alpha\>|)>*\<phi\><rsub|n><around|(|\<gamma\>|)>|\<lambda\><rsub|n>>
+    </equation>
+
+    For consider the symmetric nucleus
+
+    <\equation>
+      H<around|(|\<alpha\>,\<gamma\>|)>=K<around|(|\<alpha\>,\<gamma\>|)>-<big|sum><rsub|n=1><rsup|\<infty\>><frac|\<phi\><rsub|n><around|(|\<alpha\>|)>*\<phi\><rsub|n><around|(|\<gamma\>|)>|\<lambda\><rsub|n>>
+    </equation>
+
+    If this nucleus is not identically zero, it will possess at least one
+    characteristic number <math|\<mu\>>. Let
+    <math|\<psi\><around|(|\<gamma\>|)>> be any solution of the equation
+
+    <\equation>
+      \<psi\><around|(|\<alpha\>|)>=\<mu\>*<big|int><rsub|a><rsup|b>H<around|(|\<alpha\>,\<xi\>|)>*\<psi\><around|(|\<xi\>|)>*d*\<xi\>
+    </equation>
+
+    which does not vanish identically. Multiply by
+    <math|\<phi\><rsub|m><around|(|\<alpha\>|)>> and integrate term-by-term
+    (which we may do since the series converges uniformly by hypothesis
+    proved by other means), and get
+
+    <\equation>
+      <big|int><rsub|a><rsup|b>\<psi\><around|(|\<alpha\>|)>*\<phi\><rsub|m><around|(|\<alpha\>|)>*d*\<alpha\>=\<mu\>*<big|int><rsub|a><rsup|b><big|int><rsub|a><rsup|b><around*|[|K<around|(|\<alpha\>,\<xi\>|)>-<big|sum><rsub|n=1><rsup|\<infty\>><frac|\<phi\><rsub|n><around|(|\<alpha\>|)>*\<phi\><rsub|n><around|(|\<xi\>|)>|\<lambda\><rsub|n>>|]>*\<psi\><around|(|\<xi\>|)>*\<phi\><rsub|m><around|(|\<alpha\>|)>*d*\<xi\>*d*\<alpha\>=0
+    </equation>
+
+    Therefore <math|\<psi\><around|(|\<alpha\>|)>> is orthogonal to
+    <math|\<phi\><rsub|1><around|(|\<alpha\>|)>,\<phi\><rsub|2><around|(|\<alpha\>|)>,\<ldots\>>;
+    and so taking the equation
+
+    <\equation>
+      \<psi\><around|(|\<alpha\>|)>=\<mu\>*<big|int><rsub|a><rsup|b><around*|[|K<around|(|\<alpha\>,\<xi\>|)>-<big|sum><rsub|n=1><rsup|\<infty\>><frac|\<phi\><rsub|n><around|(|\<alpha\>|)>*\<phi\><rsub|n><around|(|\<xi\>|)>|\<lambda\><rsub|n>>|]>*\<psi\><around|(|\<xi\>|)>*d*\<xi\>
+    </equation>
+
+    we have
+
+    <\equation>
+      \<psi\><around|(|\<alpha\>|)>=\<mu\>*<big|int><rsub|a><rsup|b>K<around|(|\<alpha\>,\<xi\>|)>*\<psi\><around|(|\<xi\>|)>*d*\<xi\>
+    </equation>
+
+    Therefore <math|\<mu\>> is a characteristic number of
+    <math|K<around|(|\<alpha\>,\<gamma\>|)>>, and so
+    <math|\<psi\><around|(|\<alpha\>|)>> must be a linear combination of the
+    functions <math|\<phi\><rsub|n><around|(|\<alpha\>|)>> corresponding to
+    this number; let
+
+    <\equation>
+      \<psi\><around|(|\<alpha\>|)>=<big|sum><rsub|m>a<rsub|m>*\<phi\><rsub|m><around|(|\<alpha\>|)>
+    </equation>
+
+    Multiply by <math|\<phi\><rsub|m><around|(|\<gamma\>|)>> and integrate;
+    then since <math|\<psi\><around|(|\<alpha\>|)>> is orthogonal to all the
+    functions <math|\<phi\><rsub|m><around|(|\<alpha\>|)>>, we see that
+    <math|a<rsub|m>=0>, so, contrary to hypothesis,
+    <math|\<psi\><around|(|\<alpha\>|)>=0>. The contradiction implies that
+    the nucleus <math|H<around|(|\<alpha\>,\<gamma\>|)>> must be identically
+    zero; that is to say, <math|K<around|(|\<alpha\>,\<gamma\>|)>> can be
+    expanded in the given series, if it is uniformly convergent.
+
+    <section|Explanation>
+
+    <with|font-series|bold|Given:>
+
+    <\itemize>
+      <item>An orthogonal set of functions
+      <math|\<phi\><rsub|n><around|(|\<alpha\>|)>> defined over an interval
+      <math|<around|[|a,b|]>>.
+
+      <item>A symmetric kernel <math|K<around|(|\<alpha\>,\<gamma\>|)>>
+      defined over <math|<around|[|a,b|]>\<times\><around|[|a,b|]>>.
+
+      <item>The series <math|<big|sum><rsub|n=1><rsup|\<infty\>><frac|\<phi\><rsub|n><around|(|\<alpha\>|)>*\<phi\><rsub|n><around|(|\<gamma\>|)>|\<lambda\><rsub|n>>>
+      uniformly converges to <math|K<around|(|\<alpha\>,\<gamma\>|)>>.
+    </itemize>
+
+    <with|font-series|bold|To Prove:>
+
+    <\itemize>
+      <item>The functions <math|\<phi\><rsub|n><around|(|\<alpha\>|)>> are
+      the unique eigenfunctions of the integral operator with kernel
+      <math|K<around|(|\<alpha\>,\<gamma\>|)>>.
+    </itemize>
+
+    <with|font-series|bold|Proof:>
+
+    <\enumerate>
+      <item><with|font-series|bold|Uniform Convergence of Series
+      Representation:>
+
+      <\itemize>
+        <item>By hypothesis, the series
+
+        <\equation>
+          K<around|(|\<alpha\>,\<gamma\>|)>=<big|sum><rsub|n=0><rsup|\<infty\>><frac|\<phi\><rsub|n><around|(|\<alpha\>|)>*\<phi\><rsub|n><around|(|\<gamma\>|)>|\<lambda\><rsub|n>>
+        </equation>
+
+        converges uniformly to <math|K<around|(|\<alpha\>,\<gamma\>|)>>.
+
+        <item>This uniform convergence ensures that the series represents
+        <math|K> accurately over the entire domain
+        <math|<around|[|a,b|]>\<times\><around|[|a,b|]>>.
+      </itemize>
+
+      <item><with|font-series|bold|Orthogonality and Completeness:>
+
+      <\itemize>
+        <item>The functions <math|\<phi\><rsub|n>> are orthogonal, meaning:
+
+        <\equation>
+          <big|int><rsub|a><rsup|b>\<phi\><rsub|m><around|(|\<alpha\>|)>*\<phi\><rsub|n><around|(|\<alpha\>|)>*d*\<alpha\>=0*<space|1em><text|for
+          all >m\<neq\>n
+        </equation>
+
+        <item>Orthogonality implies that no <math|\<phi\><rsub|n>> can be
+        represented by a linear combination of other <math|\<phi\><rsub|m>>s
+        in the set.
+      </itemize>
+
+      <item><with|font-series|bold|Eigenfunction Equation:>
+
+      <\itemize>
+        <item>Each function <math|\<phi\><rsub|n>> satisfies the integral
+        equation:
+
+        <\equation>
+          \<phi\><rsub|n><around|(|\<alpha\>|)>=\<lambda\><rsub|n>*<big|int><rsub|a><rsup|b>K<around|(|\<alpha\>,\<xi\>|)>*\<phi\><rsub|n><around|(|\<xi\>|)>*d*\<xi\>
+        </equation>
+
+        defining them as eigenfunctions of <math|K> with corresponding
+        eigenvalues <math|\<lambda\><rsub|n>>.
+      </itemize>
+
+      <item><with|font-series|bold|Uniqueness:>
+
+      <\itemize>
+        <item>Assume there exists another function
+        <math|\<psi\><around|(|\<alpha\>|)>> that is not a linear combination
+        of <math|\<phi\><rsub|n>> and also satisfies the integral equation
+        for some <math|\<lambda\>>:
+
+        <\equation>
+          \<psi\><around|(|\<alpha\>|)>=\<lambda\>*<big|int><rsub|a><rsup|b>K<around|(|\<alpha\>,\<xi\>|)>*\<psi\><around|(|\<xi\>|)>*d*\<xi\>
+        </equation>
+
+        <item>Multiply both sides by <math|\<phi\><rsub|m><around|(|\<alpha\>|)>>
+        and integrate:
+
+        <\equation>
+          <big|int><rsub|a><rsup|b>\<psi\><around|(|\<alpha\>|)>*\<phi\><rsub|m><around|(|\<alpha\>|)>*d*\<alpha\>=\<lambda\>*<big|int><rsub|a><rsup|b><big|int><rsub|a><rsup|b>K<around|(|\<alpha\>,\<xi\>|)>*\<psi\><around|(|\<xi\>|)>*\<phi\><rsub|m><around|(|\<alpha\>|)>*d*\<xi\>*d*\<alpha\>
+        </equation>
+
+        <item>Since <math|\<psi\>> is orthogonal to all
+        <math|\<phi\><rsub|n>>, the left-hand side is zero, implying
+        <math|\<psi\><around|(|\<alpha\>|)>> must be zero by the completeness
+        of <math|\<phi\><rsub|n>>.
+      </itemize>
+
+      <item><with|font-series|bold|Conclusion:>
+
+      <\itemize>
+        <item>The set <math|\<phi\><rsub|n>> uniquely represents the kernel
+        <math|K> via their series expansion. No other function set orthogonal
+        to <math|\<phi\><rsub|n>> can satisfy the kernel's integral equation
+        unless it is zero.
+
+        <item>Therefore, <math|\<phi\><rsub|n><around|(|\<alpha\>|)>> are the
+        unique eigenfunctions of the integral operator defined by
+        <math|K<around|(|\<alpha\>,\<gamma\>|)>>.
+      </itemize>
+    </enumerate>
+  </proof>
+
+  <\theorem>
+    The series
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|J<rsub|0><around*|(|t|)>>|<cell|=<big|sum><rsub|k=0<rsup|>><rsup|\<infty\>>\<lambda\><rsub|k>\<psi\><rsub|k><around*|(|t|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0<rsup|>><rsup|\<infty\>><sqrt|<frac|2*n+<frac|1|2>|\<pi\>>>*<sqrt|<frac|8*n+2|\<pi\>>><around|(|n+1|)><rsub|-<frac|1|2>><rsup|2><around|(|-1|)><rsup|n>*j<rsub|2*n><around|(|t|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0<rsup|>><rsup|\<infty\>><frac|4*n+1|\<pi\>>*<around|(|n+1|)><rsub|-<frac|1|2>><rsup|2><around|(|-1|)><rsup|n>*j<rsub|2*n><around|(|t|)>>>>>>
+    </equation>
+
+    converges uniformly for all complex <math|t> except the origin where it
+    has a regular singular point where <math|lim<rsub|t\<rightarrow\>0>J<rsub|0><around*|(|t|)>=1>.
+  </theorem>
+
+  <\proof>
+    <math|>
+
+    <\equation>
+      <sqrt|<frac|2*n+<frac|1|2>|\<pi\>>>*<sqrt|<frac|8*n+2|\<pi\>>>=<frac|<sqrt|16n<rsup|2>+8n+1>|<sqrt|\<pi\><rsup|2>>>=<frac|<sqrt|<around*|(|4n+1|)><around*|(|4n+1|)>>|<sqrt|\<pi\>*\<pi\>>>=<frac|4n+1|\<pi\>>
+    </equation>
+
+    TODO..show that operator defined by Equation (<reference|T>) is compact
+    relative to the canonical metric induced by the covariance kernel
+    <math|J<rsub|0><around*|(|<around*|\||x-y|\|>|)>> which can be
+    demonstrated by calculating the metric entropy integral and showing it is
+    finite for all positive epsilon
+  </proof>
+
+  <\big-figure|<image|KConvergence.eps|375pt|200pt||>>
+    <math|J<rsub|0>> compared to the finite-rank approximations for rank
+    <math|0,5,<text|and>> 10. The figure shows the excellent convergence
+    properties of the proposed eigenfunction expansion
+    <math|J<rsub|0><around*|(|x|)>=lim<rsub|n\<rightarrow\>\<infty\>><big|sum><rsub|k=0><rsup|n>\<lambda\><rsub|k>\<psi\><rsub|k><around*|(|x|)>>.
+  </big-figure>
+
   <\bibliography|bib|tm-plain|refs>
-    <\bib-list|2>
+    <\bib-list|4>
       <bibitem*|1><label|bib-finiteFourierTransforms>Atul Dixit, Lin Jiu,
       Victor<nbsp>H Moll<localize|, and >Christophe Vignat. <newblock>The
       finite fourier transform of classical polynomials.
       <newblock><with|font-shape|italic|Journal of the Australian
       Mathematical Society>, 98:145\U160, 2015.<newblock>
 
-      <bibitem*|2><label|bib-modifiedLommelPolynomials>R.<nbsp>Wong K.F. Lee.
+      <bibitem*|2><label|bib-whittakerAndWatsonCourseOfModernAnalysis>George<nbsp>Neville<nbsp>Watson
+      Edmund Taylor Whittaker. <newblock><with|font-shape|italic|A course of
+      modern analysis: an introduction to the general theory of infinite
+      processes and of analytic functions; with an account of the principal
+      transcendental functions>. <newblock>University Press, 1920.<newblock>
+
+      <bibitem*|3><label|bib-stochasticFiniteElements>Roger<nbsp>G.<nbsp>Ghanem<localize|
+      and >Pol<nbsp>D.<nbsp>Spanos. <newblock><with|font-shape|italic|Stochastic
+      finite elements: a spectral approach>. <newblock>Springer-Verlag,
+      Berlin, Heidelberg, 1991.<newblock>
+
+      <bibitem*|4><label|bib-modifiedLommelPolynomials>R.<nbsp>Wong K.F. Lee.
       <newblock>Asymptotic expansion of the modified lommel polynomials
       <math|h<rsub|n,\<nu\>><around|(|x|)>> and their zeros.
       <newblock><with|font-shape|italic|Proceedings of the American
@@ -421,22 +825,44 @@
 
 <\references>
   <\collection>
-    <associate|T|<tuple|16|4>>
-    <associate|auto-1|<tuple|1|3>>
-    <associate|auto-2|<tuple|1|5>>
-    <associate|auto-3|<tuple|36|8>>
-    <associate|bib-finiteFourierTransforms|<tuple|1|8>>
-    <associate|bib-modifiedLommelPolynomials|<tuple|2|8>>
-    <associate|factorize|<tuple|10|6>>
+    <associate|2.10|<tuple|25|5>>
+    <associate|2.11|<tuple|26|5>>
+    <associate|2.12|<tuple|27|5>>
+    <associate|2.15|<tuple|30|6>>
+    <associate|2.17|<tuple|32|6>>
+    <associate|2.19|<tuple|34|6>>
+    <associate|2.20|<tuple|35|6>>
+    <associate|2.21|<tuple|36|6>>
+    <associate|2.7|<tuple|22|5>>
+    <associate|2.8|<tuple|23|5>>
+    <associate|2.9|<tuple|24|5>>
+    <associate|T|<tuple|53|10>>
+    <associate|auto-1|<tuple|1|2>>
+    <associate|auto-2|<tuple|1.1|4>>
+    <associate|auto-3|<tuple|1.1.1|4>>
+    <associate|auto-4|<tuple|1.1.2|7>>
+    <associate|auto-5|<tuple|2|11>>
+    <associate|auto-6|<tuple|1|14>>
+    <associate|auto-7|<tuple|1|14>>
+    <associate|bib-finiteFourierTransforms|<tuple|1|14>>
+    <associate|bib-modifiedLommelPolynomials|<tuple|4|14>>
+    <associate|bib-stochasticFiniteElements|<tuple|3|14>>
+    <associate|bib-whittakerAndWatsonCourseOfModernAnalysis|<tuple|2|14>>
+    <associate|factorize|<tuple|6|3>>
+    <associate|process|<tuple|20|4>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
     <\associate|bib>
-      modifiedLommelPolynomials
+      stochasticFiniteElements
 
       finiteFourierTransforms
+
+      modifiedLommelPolynomials
+
+      whittakerAndWatsonCourseOfModernAnalysis
     </associate>
     <\associate|figure>
       <tuple|normal|<\surround|<hidden-binding|<tuple>|1>|>
@@ -444,16 +870,32 @@
         approximations for rank <with|mode|<quote|math>|0,5,<with|mode|<quote|text>|and>>
         10. The figure shows the excellent convergence properties of the
         proposed eigenfunction expansion <with|mode|<quote|math>|J<rsub|0><around*|(|x|)>=lim<rsub|n\<rightarrow\>\<infty\>><big|sum><rsub|k=0><rsup|n>\<lambda\><rsub|k>\<psi\><rsub|k><around*|(|x|)>>.
-      </surround>|<pageref|auto-2>>
+      </surround>|<pageref|auto-6>>
     </associate>
     <\associate|toc>
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Eigenfunctions
       from Orthogonalized Null Space> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-1><vspace|0.5fn>
 
+      <with|par-left|<quote|1tab>|1.1<space|2spc>The Karhunen-Loeve Expansion
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-2>>
+
+      <with|par-left|<quote|2tab>|1.1.1<space|2spc>Derivation
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-3>>
+
+      <with|par-left|<quote|2tab>|1.1.2<space|2spc>Uniqueness of the
+      Expansion <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-4>>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Explanation>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-5><vspace|0.5fn>
+
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-3><vspace|0.5fn>
+      <no-break><pageref|auto-7><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
