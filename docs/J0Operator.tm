@@ -6,16 +6,182 @@
   \;
 
   <doc-data|<\doc-title>
-    Uniformly Convergent Series Expansions for the Bessel Functions of the
-    First Kind of Integer Orders That Are Conjectured To Be The
-    Eigenfunctions of <math|<big|int><rsub|0><rsup|\<infty\>>J<rsub|0><around*|(|x-y|)>f<around*|(|x|)>\<mathd\>x>
+    The Eigenfunctions of <math|<big|int><rsub|0><rsup|\<infty\>>J<rsub|0><around*|(|<around*|\||x-y|\|>|)>f<around*|(|x|)>\<mathd\>x>
+    and a Technique For Deriving The Eigenfunctions of Stationary Gaussian
+    Process Integral Covariance Operators
   </doc-title>|<doc-author|<author-data|<author-name|Stephen Crowley
   \<less\>stephencrowley214@gmail.com\<gtr\>>|<\author-affiliation>
     <date|>
   </author-affiliation>>>>
 
-  <abstract-data|<abstract|Uniformly convergent eigenfunction expansions for
-  the even-indexed <math|Type-1> Bessel functions are all but proven.>>
+  <abstract-data|<\abstract>
+    \ The null space of Gaussian process kernel inner product operators are
+    shown to be the Fourier transforms of the polynomials orthogonal with
+    respect to the spectral densities of the processes and it is furthermore
+    shown that the orthogonal complements of the null spaces as given by the
+    Gram-Schmidt recursions enumerate the products
+    <math|g<rsub|k><around|(|t|)>=<sqrt|<frac|c<rsub|p>|c<rsub|q>>>*<frac|<big|prod><rsub|i=1><rsup|n<rsub|k>><around|(|t-\<alpha\><rsub|k,i>|)>|<big|prod><rsub|j=1><rsup|m<rsub|k>><around|(|t-\<beta\><rsub|k,j>|)>>=f<rsub|k><around*|(|t|)>*f<rsub|k><around*|(|s|)>>
+    of the eigenfunctions <math|f<rsub|k>> of the corresponding integral
+    covariance operators.
+  </abstract>>
+
+  Let <math|C<around|(|x|)>> be the covariance function of a stationary
+  Gaussian process on <math|<around|[|0,\<infty\>|)>>. Define the integral
+  covariance operator <math|T> by:
+
+  <\equation>
+    <around|(|T*f|)><around|(|x|)>=<big|int><rsub|0><rsup|\<infty\>>C*<around|(|x-y|)>*f<around|(|y|)>*<space|0.17em>\<mathd\>*y
+  </equation>
+
+  Let <math|S<around|(|\<omega\>|)>> be the spectral density related to
+  <math|C<around|(|x|)>> by the Wiener-Khinchin theorem:
+
+  <\equation>
+    C<around|(|x|)>=<frac|1|\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*x>*S<around|(|\<omega\>|)>*<space|0.17em>\<mathd\>*\<omega\>
+  </equation>
+
+  <\equation>
+    S<around|(|\<omega\>|)>=<big|int><rsub|0><rsup|\<infty\>>C<around|(|x|)>*e<rsup|-i*x*\<omega\>>*\<mathd\>*x
+  </equation>
+
+  Consider polynomials <math|<around|{|p<rsub|n><around|(|\<omega\>|)>|}>>
+  orthogonal with respect to <math|S<around|(|\<omega\>|)>>:
+
+  <\equation>
+    <big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|n><around|(|\<omega\>|)>*p<rsub|m><around|(|\<omega\>|)>*S<around|(|\<omega\>|)>*<space|0.17em>\<mathd\>*\<omega\>=\<delta\><rsub|n*m>
+  </equation>
+
+  Define <math|r<rsub|n><around|(|x|)>> as the inverse Fourier transforms of
+  <math|p<rsub|n><around|(|\<omega\>|)>>:
+
+  <\equation>
+    r<rsub|n><around|(|x|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|n><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*x>*<space|0.17em>\<mathd\>*\<omega\>
+  </equation>
+
+  <\lemma>
+    The functions <math|r<rsub|n><around|(|x|)>> form the null space of the
+    kernel inner product:
+
+    <\equation>
+      <big|int><rsub|0><rsup|\<infty\>>C<around|(|x|)>*r<rsub|n><around|(|x|)>*<space|0.17em>\<mathd\>*x=0
+    </equation>
+  </lemma>
+
+  <\proof>
+    Proof: Substitute the definitions of <math|C<around|(|x|)>> and
+    <math|r<rsub|n><around|(|x|)>>, and apply Fubini's theorem:
+
+    <\equation>
+      <big|int><rsub|0><rsup|\<infty\>>C<around|(|x|)>*r<rsub|n><around|(|x|)>*<space|0.17em>\<mathd\>*x=<big|int><rsub|0><rsup|\<infty\>><frac|1|\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*x>*S<around|(|\<omega\>|)>*<space|0.17em>\<mathd\>*\<omega\>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|n><around|(|\<omega\><rprime|'>|)>*e<rsup|i*\<omega\><rprime|'>*x>*<space|0.17em>\<mathd\>*\<omega\><rprime|'>*<space|0.17em>\<mathd\>*x
+    </equation>
+
+    By Fubini's theorem, we can swap the integrals:
+
+    <\equation>
+      =<frac|1|\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|n><around|(|\<omega\><rprime|'>|)>*S<around|(|\<omega\>|)>*<big|int><rsub|0><rsup|\<infty\>>e<rsup|i*<around|(|\<omega\>+\<omega\><rprime|'>|)>*x>*<space|0.17em>\<mathd\>*x*<space|0.17em>\<mathd\>*\<omega\><rprime|'>*<space|0.17em>\<mathd\>*\<omega\>
+    </equation>
+
+    The integral over <math|x> yields the Dirac delta function
+    <math|\<delta\>*<around|(|\<omega\>-\<omega\><rprime|'>|)>>:
+
+    <\equation>
+      =<frac|1|\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|n><around|(|\<omega\><rprime|'>|)>*S<around|(|\<omega\>|)>*\<pi\>*\<delta\>*<around|(|\<omega\>-\<omega\><rprime|'>|)>*<space|0.17em>\<mathd\>*\<omega\><rprime|'>*<space|0.17em>\<mathd\>*\<omega\>
+    </equation>
+
+    Now, integrate over <math|\<omega\><rprime|'>> using the delta function:
+
+    <\equation>
+      =<big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|n><around|(|\<omega\>|)>*S<around|(|\<omega\>|)>*<space|0.17em>\<mathd\>*\<omega\>
+    </equation>
+
+    By the orthogonality of <math|p<rsub|n><around|(|\<omega\>|)>> with
+    respect to <math|S<around|(|\<omega\>|)>>, we conclude:
+
+    <\equation>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|n><around|(|\<omega\>|)>*S<around|(|\<omega\>|)>*<space|0.17em>\<mathd\>*\<omega\>=0
+    </equation>
+
+    Thus, <math|<big|int><rsub|0><rsup|\<infty\>>C<around|(|x|)>*r<rsub|n><around|(|x|)>*<space|0.17em>\<mathd\>*x=0>,
+    which completes the proof.
+  </proof>
+
+  <section|Eigenfunctions from Orthogonalized Null Space>
+
+  By orthogonalizing the null space <math|<around|{|r<rsub|n><around|(|x|)>|}>>,
+  we obtain the eigenfunctions <math|<around|{|\<psi\><rsub|n><around|(|x|)>|}>>
+  of the covariance operator <math|T>. The orthogonalization process gives:
+
+  <\equation*>
+    r<rsup|\<perp\>><rsub|n><around|(|y|)>=\<psi\><rsub|n><around|(|x|)>=<big|sum><rsub|k=0><rsup|n>a<rsub|n*k>*r<rsub|k><around|(|x|)>=r<rsub|n><around|(|y|)>-<big|sum><rsub|m=0><rsup|n-1><frac|<around|\<langle\>|r<rsub|n><around|(|y|)>,r<rsup|\<perp\>><rsub|m><around|(|y|)>|\<rangle\>>|<around|\<langle\>|r<rsup|\<perp\>><rsub|m><around|(|y|)>,r<rsup|\<perp\>><rsub|m><around|(|y|)>|\<rangle\>>>*r<rsup|\<perp\>><rsub|m><around|(|y|)>
+  </equation*>
+
+  where the coefficients <math|a<rsub|n*k>> are given by:
+
+  <\equation>
+    a<rsub|n*k>=<around*|{|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|1>|<cell|<text|if
+    >k=n>>|<row|<cell|-<big|sum><rsub|j=k><rsup|n-1>a<rsub|n*j>*<around|\<langle\>|r<rsub|n>,\<psi\><rsub|j>|\<rangle\>>>|<cell|<text|if
+    >k\<less\>n>>|<row|<cell|0>|<cell|<text|if >k\<gtr\>n>>>>>|\<nobracket\>>
+  </equation>
+
+  <\theorem>
+    <label|factorize>For any rational function
+    <math|f*<around|(|t-s|)>=<frac|P*<around|(|t-s|)>|Q*<around|(|t-s|)>>>,
+    where <math|P> and <math|Q> are polynomials, there exist rational
+    functions <math|g<around|(|t|)>> and <math|g<around|(|s|)>> such that
+    <math|f*<around|(|t-s|)>=g<around|(|t|)>*g<around|(|s|)>>.
+  </theorem>
+
+  <\proof>
+    Let
+
+    <\equation>
+      P*<around|(|t-s|)>=c<rsub|p>*<big|prod><rsub|i=1><rsup|n><around|(|t-s-\<alpha\><rsub|i>|)>
+    </equation>
+
+    \ and
+
+    <\equation>
+      Q*<around|(|t-s|)>=c<rsub|q>*<big|prod><rsub|j=1><rsup|m><around|(|t-s-\<beta\><rsub|j>|)>
+    </equation>
+
+    \ be the complete factorizations over <math|\<bbb-C\>>. Define:
+
+    <\equation*>
+      g<around|(|t|)>=<sqrt|<frac|c<rsub|p>|c<rsub|q>>>*<frac|<big|prod><rsub|i=1><rsup|n><around|(|t-\<alpha\><rsub|i>|)>|<big|prod><rsub|j=1><rsup|m><around|(|t-\<beta\><rsub|j>|)>>
+    </equation*>
+
+    Then:
+
+    <\align*>
+      <tformat|<table|<row|<cell|g<around|(|t|)>*g<around|(|s|)>>|<cell|=<frac|c<rsub|p>|c<rsub|q>>*<frac|<big|prod><rsub|i=1><rsup|n><around|(|t-\<alpha\><rsub|i>|)>|<big|prod><rsub|j=1><rsup|m><around|(|t-\<beta\><rsub|j>|)>>\<cdot\><frac|<big|prod><rsub|i=1><rsup|n><around|(|s-\<alpha\><rsub|i>|)>|<big|prod><rsub|j=1><rsup|m><around|(|s-\<beta\><rsub|j>|)>>>>|<row|<cell|>|<cell|=<frac|c<rsub|p>|c<rsub|q>>*<frac|<big|prod><rsub|i=1><rsup|n><around|(|t-\<alpha\><rsub|i>|)>*<around|(|s-\<alpha\><rsub|i>|)>|<big|prod><rsub|j=1><rsup|m><around|(|t-\<beta\><rsub|j>|)>*<around|(|s-\<beta\><rsub|j>|)>>>>|<row|<cell|>|<cell|=<frac|c<rsub|p>*<big|prod><rsub|i=1><rsup|n><around|(|<around|(|t-s|)>-\<alpha\><rsub|i>|)>|c<rsub|q>*<big|prod><rsub|j=1><rsup|m><around|(|<around|(|t-s|)>-\<beta\><rsub|j>|)>>>>|<row|<cell|>|<cell|=f*<around|(|t-s|)>>>>>
+    </align*>
+
+    For complex roots, we pair each <math|\<alpha\><rsub|i>> or
+    <math|\<beta\><rsub|j>> with its complex conjugate in the factorization
+    of <math|g<around|(|t|)>>. This ensures that the product
+    <math|<around|(|t-\<alpha\><rsub|i>|)>*<around|(|t-<wide|\<alpha\><rsub|i>|\<bar\>>|)>>
+    results in a quadratic polynomial with real coefficients, making
+    <math|g<around|(|t|)>> a real-valued function.
+  </proof>
+
+  <\theorem>
+    Let <math|<around|{|\<psi\><rsub|n><around|(|x|)>|}>> be the orthogonal
+    complement of <math|<around|{|r<rsub|n><around|(|x|)>|}>>. Then
+    <math|\<psi\><rsub|n><around|(|x|)>> are eigenfunctions of <math|T>, with
+    eigenvalues:
+
+    <\equation>
+      \<lambda\><rsub|n>=<big|int><rsub|0><rsup|\<infty\>>C<around|(|z|)>*\<psi\><rsub|n><around|(|z|)>*<space|0.17em>\<mathd\>*z
+    </equation>
+  </theorem>
+
+  <\proof>
+    This is not quite right, they have to be factorized as in Theorem
+    <reference|factorize>. I think the infinite-dimensional version of this
+    is the Hadamard product factorization?
+  </proof>
+
+  \;
 
   <\definition>
     Let <math|j<rsub|n><around|(|x|)>> is the spherical Bessel function of
@@ -105,7 +271,7 @@
     <math|0,5,<text|and>> 10. The figure shows the excellent convergence
     properties of the proposed eigenfunction expansion
     <math|J<rsub|0><around*|(|x|)>=lim<rsub|n\<rightarrow\>\<infty\>><big|sum><rsub|k=0><rsup|n>\<lambda\><rsub|k>\<psi\><rsub|k><around*|(|x|)>>.
-    </big-figure>
+  </big-figure>
 
   <\remark>
     There is no doubt that the expansion <math|J<rsub|0><around*|(|x|)>=lim<rsub|n\<rightarrow\>\<infty\>><big|sum><rsub|k=0><rsup|n>\<lambda\><rsub|k>\<psi\><rsub|k><around*|(|x|)>>
@@ -348,13 +514,19 @@
   as I write it, I realize that's probably why Equation <reference|Tadd>
   doesn't quite work as written<text-dots>hmm.\ 
 
-  <\conjecture>
-    \;
-
+  <\theorem>
     <\equation>
       <big|sum><rsub|k=0><rsup|\<infty\>>\<psi\><rsub|k><around*|(|x|)><rsup|2>=<frac|1|\<pi\>>
     </equation>
-  </conjecture>
+  </theorem>
+
+  <\theorem>
+    \;
+
+    <\equation>
+      <big|int><rsub|0><rsup|\<infty\>>\<psi\><rsub|n><around*|(|x|)><rsup|2>\<mathd\>x=1=K<around*|(|s,s|)>=K<around*|(|s-s|)>=K<around*|(|0|)>
+    </equation>
+  </theorem>
 
   <\bibliography|bib|tm-plain|refs>
     <\bib-list|4>
@@ -395,17 +567,19 @@
 
 <\references>
   <\collection>
-    <associate|T|<tuple|4|2>>
-    <associate|Tadd|<tuple|24|7>>
-    <associate|Taddition|<tuple|17|6>>
-    <associate|auto-1|<tuple|1|3>>
-    <associate|auto-2|<tuple|26|8>>
-    <associate|bib-finiteFourierTransforms|<tuple|2|8>>
-    <associate|bib-gaussianProcessIntroduction|<tuple|4|8>>
-    <associate|bib-modifiedLommelPolynomials|<tuple|3|8>>
-    <associate|bib-onCompactOperators|<tuple|1|8>>
-    <associate|conv|<tuple|18|6>>
-    <associate|dualBasis|<tuple|23|7>>
+    <associate|T|<tuple|19|5>>
+    <associate|Tadd|<tuple|39|10>>
+    <associate|Taddition|<tuple|20|9>>
+    <associate|auto-1|<tuple|1|2>>
+    <associate|auto-2|<tuple|1|6>>
+    <associate|auto-3|<tuple|42|11>>
+    <associate|bib-finiteFourierTransforms|<tuple|2|11>>
+    <associate|bib-gaussianProcessIntroduction|<tuple|4|11>>
+    <associate|bib-modifiedLommelPolynomials|<tuple|3|11>>
+    <associate|bib-onCompactOperators|<tuple|1|11>>
+    <associate|conv|<tuple|21|9>>
+    <associate|dualBasis|<tuple|38|10>>
+    <associate|factorize|<tuple|2|3>>
   </collection>
 </references>
 
@@ -426,12 +600,16 @@
         approximations for rank <with|mode|<quote|math>|0,5,<with|mode|<quote|text>|and>>
         10. The figure shows the excellent convergence properties of the
         proposed eigenfunction expansion <with|mode|<quote|math>|J<rsub|0><around*|(|x|)>=lim<rsub|n\<rightarrow\>\<infty\>><big|sum><rsub|k=0><rsup|n>\<lambda\><rsub|k>\<psi\><rsub|k><around*|(|x|)>>.
-        </surround>|<pageref|auto-1>>
+      </surround>|<pageref|auto-2>>
     </associate>
     <\associate|toc>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Eigenfunctions
+      from Orthogonalized Null Space> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-1><vspace|0.5fn>
+
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-2><vspace|0.5fn>
+      <no-break><pageref|auto-3><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>

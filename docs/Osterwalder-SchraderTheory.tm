@@ -122,7 +122,7 @@
   given by:
 
   <\equation>
-    <around|\<langle\>|\<Phi\>\|\<Psi\>|\<rangle\>>=<big|int>d<rsup|d>*x<rsub|1>*\<ldots\>*d<rsup|d>*x<rsub|n><space|0.17em><wide|\<Phi\><around|(|x<rsub|1>,\<ldots\>,x<rsub|n>|)>|\<bar\>>W<rsub|n><around|(|x<rsub|1>,\<ldots\>,x<rsub|n>|)>*\<Psi\><around|(|x<rsub|1>,\<ldots\>,x<rsub|n>|)>
+    <around|\<langle\>|\<Phi\>\|\<Psi\>|\<rangle\>>=<big|int><space|0.17em><wide|\<Phi\><around|(|x<rsub|1>,\<ldots\>,x<rsub|n>|)>|\<bar\>>W<rsub|n><around|(|x<rsub|1>,\<ldots\>,x<rsub|n>|)>*\<Psi\><around|(|x<rsub|1>,\<ldots\>,x<rsub|n>|)>d<rsup|d>*x<rsub|1>*\<ldots\>*d<rsup|d>*x<rsub|n>
   </equation>
 
   <subsection|Quantum Field Operators>
@@ -160,18 +160,18 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_39.tm>>
-    <associate|auto-10|<tuple|4.2|3|../../.TeXmacs/texts/scratch/no_name_39.tm>>
-    <associate|auto-11|<tuple|4.3|3|../../.TeXmacs/texts/scratch/no_name_39.tm>>
-    <associate|auto-12|<tuple|5|3|../../.TeXmacs/texts/scratch/no_name_39.tm>>
-    <associate|auto-2|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_39.tm>>
-    <associate|auto-3|<tuple|3|1|../../.TeXmacs/texts/scratch/no_name_39.tm>>
-    <associate|auto-4|<tuple|3.1|2|../../.TeXmacs/texts/scratch/no_name_39.tm>>
-    <associate|auto-5|<tuple|3.2|2|../../.TeXmacs/texts/scratch/no_name_39.tm>>
-    <associate|auto-6|<tuple|3.3|2|../../.TeXmacs/texts/scratch/no_name_39.tm>>
-    <associate|auto-7|<tuple|3.4|2|../../.TeXmacs/texts/scratch/no_name_39.tm>>
-    <associate|auto-8|<tuple|4|2|../../.TeXmacs/texts/scratch/no_name_39.tm>>
-    <associate|auto-9|<tuple|4.1|2|../../.TeXmacs/texts/scratch/no_name_39.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-10|<tuple|4.2|3>>
+    <associate|auto-11|<tuple|4.3|3>>
+    <associate|auto-12|<tuple|5|3>>
+    <associate|auto-2|<tuple|2|1>>
+    <associate|auto-3|<tuple|3|1>>
+    <associate|auto-4|<tuple|3.1|2>>
+    <associate|auto-5|<tuple|3.2|2>>
+    <associate|auto-6|<tuple|3.3|2>>
+    <associate|auto-7|<tuple|3.4|2>>
+    <associate|auto-8|<tuple|4|2>>
+    <associate|auto-9|<tuple|4.1|2>>
   </collection>
 </references>
 
