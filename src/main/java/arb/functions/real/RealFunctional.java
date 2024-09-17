@@ -2,9 +2,10 @@ package arb.functions.real;
 
 import arb.Real;
 import arb.expressions.Expression;
+import arb.functions.Function;
 
-public class RealFunctional implements
-                            RealFunction
+public class RealFunctional<K> implements
+                            Function<K,RealFunction>
 {
   private RealFunction instance;
 
@@ -14,14 +15,16 @@ public class RealFunctional implements
   }
 
   @Override
-  public Real evaluate(Real x, int order, int bits, Real result)
-  {
-    return instance.evaluate(x, order, bits, result);
-  }
-
-  @Override
   public String toString()
   {
     return instance.toString();
+  }
+
+
+  @Override
+  public RealFunction evaluate(K t, int order, int bits, RealFunction res)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
   }
 }
