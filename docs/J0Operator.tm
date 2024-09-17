@@ -167,6 +167,88 @@
     spectral density (of a stationary process).
   </remark>
 
+  \;
+
+  <\theorem>
+    Let <math|Y<rsub|n><around|(|y|)>> be the normalized Fourier transforms
+    of the spectral polynomials <math|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|Y<rsub|n><around|(|y|)>>|<cell|=<frac|<wide|S|^><rsub|n><around|(|y|)>|<around|\||<wide|S|^><rsub|n>|\|>>>>>>>>where
+    the sequence <math|<wide|S|^><rsub|n><around|(|y|)>> of inverse Fourier
+    transforms of the spectral polynomials <math|S<rsub|n><around|(|x|)>> is
+    given by
+
+    <\equation>
+      <wide|S|^><rsub|n><around|(|y|)>=<big|int><rsub|-1><rsup|1>S<rsub|n><around|(|x|)>*e<rsup|i*x*y><space|0.17em><math-up|d>x
+    </equation>
+
+    The eigenfunctions of the integral covariance operator (<reference|T>)
+    are given by the products
+
+    <\equation>
+      \<psi\><rsub|n><around|(|x|)>*\<psi\><rsub|n><around|(|y|)>=Y<rsup|\<perp\>><rsub|n>*<around|(|x-y|)>
+    </equation>
+
+    of the elements of orthogonal complement of the normalized Fourier
+    transforms <math|Y<rsub|n><around|(|y|)>> of the spectral polynomials
+    (via the Gram-Schmidt process)
+
+    <\equation>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|\<psi\><rsub|n><around|(|x|)>*\<psi\><rsub|n><around|(|y|)>>|<cell|=Y<rsup|\<perp\>><rsub|n>*<around|(|x-y|)>>>|<row|<cell|>|<cell|=Y<rsub|n>*<around|(|x-y|)>-<big|sum><rsub|m=0><rsup|n-1><frac|<around|\<langle\>|Y<rsub|m>*<around|(|x-y|)>,Y<rsup|\<perp\>><rsub|m>*<around|(|x-y|)>|\<rangle\>>|<around|\<langle\>|Y<rsup|\<perp\>><rsub|m>*<around|(|x-y|)>,Y<rsup|\<perp\>><rsub|m>*<around|(|x-y|)>|\<rangle\>>>*Y<rsup|\<perp\>><rsub|m>*<around|(|x-y|)>>>>>>
+    </equation>
+  </theorem>
+
+  <\proof>
+    ...there's some elegant way to do this that I can probably write down
+    after my back surgery.. it involves Lemma <reference|factorize>
+  </proof>
+
+  <\lemma>
+    <label|factorize>For any rational function
+
+    <\equation>
+      f*<around|(|t-s|)>=<frac|P*<around|(|t-s|)>|Q*<around|(|t-s|)>>
+    </equation>
+
+    , where <math|P> and <math|Q> are polynomials, there exist rational
+    functions <math|g<around|(|t|)>> and <math|g<around|(|s|)>> such that
+
+    <\equation>
+      f*<around|(|t-s|)>=g<around|(|t|)>*g<around|(|s|)>
+    </equation>
+  </lemma>
+
+  <\proof>
+    Let
+
+    <\equation>
+      P*<around|(|t-s|)>=c<rsub|p>*<big|prod><rsub|i=1><rsup|n><around|(|t-s-\<alpha\><rsub|i>|)>
+    </equation>
+
+    and
+
+    <\equation>
+      Q*<around|(|t-s|)>=c<rsub|q>*<big|prod><rsub|j=1><rsup|m><around|(|t-s-\<beta\><rsub|j>|)>
+    </equation>
+
+    then define
+
+    <\equation>
+      g<around|(|t|)>=<sqrt|<frac|c<rsub|p>|c<rsub|q>>>*<frac|<big|prod><rsub|i=1><rsup|n><around|(|t-\<alpha\><rsub|i>|)>|<big|prod><rsub|j=1><rsup|m><around|(|t-\<beta\><rsub|j>|)>>
+    </equation>
+
+    such that
+
+    <\equation>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|g<around|(|t|)>*g<around|(|s|)>>|<cell|=<frac|c<rsub|p>|c<rsub|q>>*<frac|<big|prod><rsub|i=1><rsup|n><around|(|t-\<alpha\><rsub|i>|)>|<big|prod><rsub|j=1><rsup|m><around|(|t-\<beta\><rsub|j>|)>>*<frac|<big|prod><rsub|i=1><rsup|n><around|(|s-\<alpha\><rsub|i>|)>|<big|prod><rsub|j=1><rsup|m><around|(|s-\<beta\><rsub|j>|)>>>>|<row|<cell|>|<cell|=<frac|c<rsub|p>|c<rsub|q>>*<frac|<big|prod><rsub|i=1><rsup|n><around|(|t-\<alpha\><rsub|i>|)>*<around|(|s-\<alpha\><rsub|i>|)>|<big|prod><rsub|j=1><rsup|m><around|(|t-\<beta\><rsub|j>|)>*<around|(|s-\<beta\><rsub|j>|)>>>>|<row|<cell|>|<cell|=<frac|c<rsub|p>*<big|prod><rsub|i=1><rsup|n><around|(|<around|(|t-s|)>-\<alpha\><rsub|i>|)>|c<rsub|q>*<big|prod><rsub|j=1><rsup|m><around|(|<around|(|t-s|)>-\<beta\><rsub|j>|)>>>>|<row|<cell|>|<cell|=f*<around|(|t-s|)>>>>>>
+    </equation>
+
+    For complex roots, we pair each <math|\<alpha\><rsub|i>> or
+    <math|\<beta\><rsub|j>> with its complex conjugate in the factorization
+    of <math|g<around|(|t|)>>. This ensures that the product
+    <math|<around|(|t-\<alpha\><rsub|i>|)>*<around|(|t-<wide|\<alpha\><rsub|i>|\<bar\>>|)>>
+    results in a quadratic polynomial with real coefficients, making
+    <math|g<around|(|t|)>> a real-valued function.
+  </proof>
+
   <subsection|The Karhunen-Loeve Expansion>
 
   The Karhunen-Loeve expansion is a spectral representation theorem which
@@ -359,86 +441,6 @@
     <\equation>
       <big|int><rsub|D>C<around|(|x<rsub|1>,x<rsub|2>|)>*f<rsub|m><around|(|x<rsub|2>|)><space|0.17em><math-up|d>x<rsub|2>=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*f<rsub|n><around|(|x<rsub|1>|)>*\<delta\><rsub|n*m>=\<lambda\><rsub|m>*f<rsub|m><around|(|x<rsub|1>|)>
     </equation>
-  </proof>
-
-  <\theorem>
-    Let <math|Y<rsub|n><around|(|y|)>> be the normalized Fourier transforms
-    of the spectral polynomials <math|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|Y<rsub|n><around|(|y|)>>|<cell|=<frac|<wide|S|^><rsub|n><around|(|y|)>|<around|\||<wide|S|^><rsub|n>|\|>>>>>>>>where
-    the sequence <math|<wide|S|^><rsub|n><around|(|y|)>> of inverse Fourier
-    transforms of the spectral polynomials <math|S<rsub|n><around|(|x|)>> is
-    given by
-
-    <\equation>
-      <wide|S|^><rsub|n><around|(|y|)>=<big|int><rsub|-1><rsup|1>S<rsub|n><around|(|x|)>*e<rsup|i*x*y><space|0.17em><math-up|d>x
-    </equation>
-
-    The eigenfunctions of the integral covariance operator (<reference|T>)
-    are given by the products
-
-    <\equation>
-      \<psi\><rsub|n><around|(|x|)>*\<psi\><rsub|n><around|(|y|)>=Y<rsup|\<perp\>><rsub|n>*<around|(|x-y|)>
-    </equation>
-
-    of the elements of orthogonal complement of the normalized Fourier
-    transforms <math|Y<rsub|n><around|(|y|)>> of the spectral polynomials
-    (via the Gram-Schmidt process)
-
-    <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|\<psi\><rsub|n><around|(|x|)>*\<psi\><rsub|n><around|(|y|)>>|<cell|=Y<rsup|\<perp\>><rsub|n>*<around|(|x-y|)>>>|<row|<cell|>|<cell|=Y<rsub|n>*<around|(|x-y|)>-<big|sum><rsub|m=0><rsup|n-1><frac|<around|\<langle\>|Y<rsub|m>*<around|(|x-y|)>,Y<rsup|\<perp\>><rsub|m>*<around|(|x-y|)>|\<rangle\>>|<around|\<langle\>|Y<rsup|\<perp\>><rsub|m>*<around|(|x-y|)>,Y<rsup|\<perp\>><rsub|m>*<around|(|x-y|)>|\<rangle\>>>*Y<rsup|\<perp\>><rsub|m>*<around|(|x-y|)>>>>>>
-    </equation>
-  </theorem>
-
-  <\proof>
-    ...there's some elegant way to do this that I can probably write down
-    after my back surgery.. it involves Lemma <reference|factorize>
-  </proof>
-
-  <\lemma>
-    <label|factorize>For any rational function
-
-    <\equation>
-      f*<around|(|t-s|)>=<frac|P*<around|(|t-s|)>|Q*<around|(|t-s|)>>
-    </equation>
-
-    , where <math|P> and <math|Q> are polynomials, there exist rational
-    functions <math|g<around|(|t|)>> and <math|g<around|(|s|)>> such that
-
-    <\equation>
-      f*<around|(|t-s|)>=g<around|(|t|)>*g<around|(|s|)>
-    </equation>
-  </lemma>
-
-  <\proof>
-    Let
-
-    <\equation>
-      P*<around|(|t-s|)>=c<rsub|p>*<big|prod><rsub|i=1><rsup|n><around|(|t-s-\<alpha\><rsub|i>|)>
-    </equation>
-
-    and
-
-    <\equation>
-      Q*<around|(|t-s|)>=c<rsub|q>*<big|prod><rsub|j=1><rsup|m><around|(|t-s-\<beta\><rsub|j>|)>
-    </equation>
-
-    then define
-
-    <\equation>
-      g<around|(|t|)>=<sqrt|<frac|c<rsub|p>|c<rsub|q>>>*<frac|<big|prod><rsub|i=1><rsup|n><around|(|t-\<alpha\><rsub|i>|)>|<big|prod><rsub|j=1><rsup|m><around|(|t-\<beta\><rsub|j>|)>>
-    </equation>
-
-    such that
-
-    <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|g<around|(|t|)>*g<around|(|s|)>>|<cell|=<frac|c<rsub|p>|c<rsub|q>>*<frac|<big|prod><rsub|i=1><rsup|n><around|(|t-\<alpha\><rsub|i>|)>|<big|prod><rsub|j=1><rsup|m><around|(|t-\<beta\><rsub|j>|)>>*<frac|<big|prod><rsub|i=1><rsup|n><around|(|s-\<alpha\><rsub|i>|)>|<big|prod><rsub|j=1><rsup|m><around|(|s-\<beta\><rsub|j>|)>>>>|<row|<cell|>|<cell|=<frac|c<rsub|p>|c<rsub|q>>*<frac|<big|prod><rsub|i=1><rsup|n><around|(|t-\<alpha\><rsub|i>|)>*<around|(|s-\<alpha\><rsub|i>|)>|<big|prod><rsub|j=1><rsup|m><around|(|t-\<beta\><rsub|j>|)>*<around|(|s-\<beta\><rsub|j>|)>>>>|<row|<cell|>|<cell|=<frac|c<rsub|p>*<big|prod><rsub|i=1><rsup|n><around|(|<around|(|t-s|)>-\<alpha\><rsub|i>|)>|c<rsub|q>*<big|prod><rsub|j=1><rsup|m><around|(|<around|(|t-s|)>-\<beta\><rsub|j>|)>>>>|<row|<cell|>|<cell|=f*<around|(|t-s|)>>>>>>
-    </equation>
-
-    For complex roots, we pair each <math|\<alpha\><rsub|i>> or
-    <math|\<beta\><rsub|j>> with its complex conjugate in the factorization
-    of <math|g<around|(|t|)>>. This ensures that the product
-    <math|<around|(|t-\<alpha\><rsub|i>|)>*<around|(|t-<wide|\<alpha\><rsub|i>|\<bar\>>|)>>
-    results in a quadratic polynomial with real coefficients, making
-    <math|g<around|(|t|)>> a real-valued function.
   </proof>
 
   <\example>
@@ -787,17 +789,17 @@
 
 <\references>
   <\collection>
-    <associate|2.10|<tuple|18|5>>
-    <associate|2.11|<tuple|19|5>>
-    <associate|2.12|<tuple|20|5>>
-    <associate|2.15|<tuple|23|5>>
-    <associate|2.17|<tuple|25|6>>
-    <associate|2.19|<tuple|27|6>>
-    <associate|2.20|<tuple|28|6>>
-    <associate|2.21|<tuple|29|6>>
-    <associate|2.7|<tuple|15|4>>
-    <associate|2.8|<tuple|16|4>>
-    <associate|2.9|<tuple|17|5>>
+    <associate|2.10|<tuple|27|5>>
+    <associate|2.11|<tuple|28|5>>
+    <associate|2.12|<tuple|29|5>>
+    <associate|2.15|<tuple|32|5>>
+    <associate|2.17|<tuple|34|6>>
+    <associate|2.19|<tuple|36|6>>
+    <associate|2.20|<tuple|37|6>>
+    <associate|2.21|<tuple|38|6>>
+    <associate|2.7|<tuple|24|4>>
+    <associate|2.8|<tuple|25|4>>
+    <associate|2.9|<tuple|26|5>>
     <associate|T|<tuple|52|10>>
     <associate|auto-1|<tuple|1|3>>
     <associate|auto-2|<tuple|1.1|4>>
@@ -805,8 +807,8 @@
     <associate|auto-4|<tuple|1.1.2|6>>
     <associate|auto-5|<tuple|2|11>>
     <associate|auto-6|<tuple|69|14>>
-    <associate|factorize|<tuple|9|7>>
-    <associate|process|<tuple|13|4>>
+    <associate|factorize|<tuple|7|7>>
+    <associate|process|<tuple|22|4>>
   </collection>
 </references>
 
