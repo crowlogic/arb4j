@@ -71,7 +71,7 @@ import arb.utensils.Utensils;
  *      {@link TheArb4jLibrary}
  */
 public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R>> extends
-                          Node<D, R, F>
+                              Node<D, R, F>
 {
 
   public static String                            factorEvaluateMethodSignature =
@@ -119,10 +119,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   public List<Node<D, R, F>>                      spliced;
 
   public NAryOperationNode(Expression<D, R, F> expression,
-                       String identity,
-                       String prefix,
-                       String operation,
-                       String symbol)
+                           String identity,
+                           String prefix,
+                           String operation,
+                           String symbol)
   {
     super(expression);
     this.identity  = identity;
@@ -142,13 +142,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   public NAryOperationNode(Expression<D, R, F> expression,
-                       String identity,
-                       String prefix,
-                       String operation,
-                       String symbol,
-                       String factorExpression,
-                       Node<D, R, F> startIndex,
-                       Node<D, R, F> endIndex)
+                           String identity,
+                           String prefix,
+                           String operation,
+                           String symbol,
+                           String factorExpression,
+                           Node<D, R, F> startIndex,
+                           Node<D, R, F> endIndex)
   {
     super(expression);
     this.identity  = identity;
@@ -714,13 +714,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
          spliceInto(Expression<E, S, G> newExpression)
   {
     return new NAryOperationNode<E, S, G>(newExpression,
-                                      identity,
-                                      prefix,
-                                      operation,
-                                      symbol,
-                                      factorExpressionString,
-                                      startIndex.spliceInto(newExpression),
-                                      endIndex.spliceInto(newExpression));
+                                          identity,
+                                          prefix,
+                                          operation,
+                                          symbol,
+                                          factorExpressionString,
+                                          startIndex.spliceInto(newExpression),
+                                          endIndex.spliceInto(newExpression));
   }
 
   @Override
@@ -774,26 +774,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @Override
   public String toString()
   {
-    if (factorExpressionString != null
-                  && factorExpressionString.contains(indexVariableFieldName + "➔"))
-    {
-      return String.format("%s%s{%s=%s…%s}",
-                           symbol,
-                           factor != null ? factor.toString() : factorExpressionString,
-                           indexVariableFieldName,
-                           startIndex,
-                           endIndex);
-    }
-    else
-    {
-      return String.format("%s%s➔%s{%s=%s…%s}",
-                           symbol,
-                           indexVariableFieldName,
-                           factor != null ? factor.toString() : factorExpressionString,
-                           indexVariableFieldName,
-                           startIndex,
-                           endIndex);
-    }
+
+    return String.format("%s%s{%s=%s…%s}",
+                         symbol,
+                         factor != null ? factor.toString() : factorExpressionString,
+                         indexVariableFieldName,
+                         startIndex,
+                         endIndex);
+
   }
 
   @Override
@@ -806,7 +794,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   public String typeset()
   {
     return String.format("\\%s_{%s = %s}^{%s}{%s}",
-                         operation.replace("mul", "prod"),
+                         operation.replace("mul", "prod").replace("add", "sum"),
                          indexVariableFieldName,
                          startIndex.typeset(),
                          endIndex.typeset(),

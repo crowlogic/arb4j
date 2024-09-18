@@ -26,6 +26,12 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  public void testSumTypeset()
+  {
+    var x = RealNullaryFunction.express("∑k{k=2...4}");
+    assertEquals("\\sum_{k = 2}^{4}{k}", x.typeset());
+  }
+
   public void testWholeFractionDifference()
   {
     var x = RealNullaryFunction.express("[1/2-3/2]");

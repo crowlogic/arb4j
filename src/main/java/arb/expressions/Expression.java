@@ -417,7 +417,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return false;
   }
 
-  public ClassVisitor constructClassVisitor()
+  public static ClassVisitor constructClassVisitor()
   {
     // ClassVisitor cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
     ClassVisitor cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);

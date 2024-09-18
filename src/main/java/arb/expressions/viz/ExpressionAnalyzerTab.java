@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import arb.Complex;
-import arb.Integer;
 import arb.Named;
 import arb.Real;
 import arb.RealConstants;
@@ -52,6 +51,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
   C                                 result;
   Context                           context;
   private HashMap<String, Boolean>  nodeExpansionStates;
+  private MiniSymbolPalette         symbolPalette;
 
   public Context getContext()
   {
@@ -67,12 +67,20 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
 
     setupExpressionInput();
 
+    // Create the MiniSymbolPalette
+    MiniSymbolPalette symbolPalette = new MiniSymbolPalette(expressionInput);
+
+    // Create an HBox to hold the expressionInput and symbolPalette
+    HBox              inputRow      = new HBox(10);
+    inputRow.getChildren().addAll(expressionInput, symbolPalette);
+    HBox.setHgrow(expressionInput, Priority.ALWAYS);
+
     setupTreeTableView();
 
     VBox.setVgrow(treeTableView, Priority.ALWAYS);
     HBox.setHgrow(treeTableView, Priority.ALWAYS);
 
-    this.getChildren().addAll(expressionInput, treeTableView);
+    this.getChildren().addAll(inputRow, treeTableView);
     this.setPadding(new Insets(10));
     VBox.setVgrow(this, Priority.ALWAYS);
   }
@@ -91,6 +99,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
         evaluateExpression();
       }
     });
+    symbolPalette = new MiniSymbolPalette(expressionInput);
   }
 
   @SuppressWarnings("unchecked")
@@ -273,7 +282,8 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
         // FIXME; support these types of embedded expressions by accessing the evaluated
         // alpha and beta params instead
         // of printing the formulas for alpha and beta which are already displayed
-        //HypergeometricFunctionNode<D, C, F> hyp = (HypergeometricFunctionNode<D, C, F>) node;
+        // HypergeometricFunctionNode<D, C, F> hyp = (HypergeometricFunctionNode<D, C,
+        // F>) node;
         return "...";
       }
       if (intermediateValueFieldName.equals(expr.getInputName()))
