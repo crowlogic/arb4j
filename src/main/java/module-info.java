@@ -77,5 +77,4 @@ module arb4j
   exports arb.documentation.concepts.stochastic;
   exports arb.documentation.concepts.stochastic.randomfields.isotropy;
 
-  opens arb.expressions.viz to javafx.scene.control.skin;
 }

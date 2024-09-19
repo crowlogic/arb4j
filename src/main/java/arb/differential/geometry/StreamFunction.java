@@ -1,10 +1,8 @@
 package arb.differential.geometry;
 
-import arb.Complex;
-import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.Function;
+import arb.functions.ComplexToRealFunction;
 
 /**
  * For two-dimensional potential flow, streamlines are perpendicular to
@@ -18,7 +16,7 @@ import arb.functions.Function;
  *      {@link TheArb4jLibrary}
  */
 public interface StreamFunction extends
-                                Function<Complex, Real>
+                                ComplexToRealFunction
 {
 
 }

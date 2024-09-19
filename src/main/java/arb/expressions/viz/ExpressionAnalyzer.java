@@ -14,15 +14,11 @@ import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
-import arb.functions.ComplexToRealFunction;
-import arb.functions.Function;
-import arb.functions.IntegerFunction;
-import arb.functions.IntegerPolynomialSequence;
+import arb.functions.*;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexNullaryFunction;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
-import arb.functions.integer.ComplexPolynomialSequence;
-import arb.functions.integer.IntegerPolynomialNullaryFunction;
+import arb.functions.integer.*;
 import arb.functions.polynomials.RealPolynomialFunction;
 import arb.functions.rational.ComplexRationalFunctionSequence;
 import arb.functions.rational.ComplexRationalNullaryFunction;
@@ -85,6 +81,10 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     if (functionType.equals(Function.class))
     {
     }
+    else if (functionType.equals(NullaryFunction.class))
+    {
+      domainTypeBox.getSelectionModel().select(Object.class);
+    }
     else if (functionType.equals(IntegerFunction.class))
     {
       selectTypes(Integer.class, Integer.class);
@@ -145,6 +145,38 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     {
       selectTypes(Object.class, ComplexPolynomial.class);
     }
+    else if (functionType.equals(RealPolynomialFunction.class))
+    {
+      selectTypes(RealPolynomial.class, RealPolynomial.class);
+    }
+    else if (functionType.equals(RealToComplexFunction.class))
+    {
+      selectTypes(Real.class, Complex.class);
+    }
+    else if (functionType.equals(ComplexSequence.class))
+    {
+      selectTypes(Integer.class, Complex.class);
+    }
+    else if (functionType.equals(IntegerPolynomialSequence.class))
+    {
+      selectTypes(Integer.class, IntegerPolynomial.class);
+    }
+    else if (functionType.equals(IntegerSequence.class))
+    {
+      selectTypes(Integer.class, Integer.class);
+    }
+    else if (functionType.equals(RealPolynomialSequence.class))
+    {
+      selectTypes(Integer.class, RealPolynomial.class);
+    }
+    else if (functionType.equals(RationalFunctionSequence.class))
+    {
+      selectTypes(Integer.class, RationalFunction.class);
+    }
+    else if (functionType.equals(RealSequence.class))
+    {
+      selectTypes(Integer.class, Real.class);
+    }
     else
     {
       System.err.println("functionTypeSelected: TODO: handle " + functionType);
@@ -158,17 +190,25 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
   }
 
   public static Class<?>[] INTERFACES = new Class<?>[]
-  { Function.class,
+  { IntegerSequence.class,
+    RealSequence.class,
+    IntegerPolynomialSequence.class,
+    RationalFunctionSequence.class,
+    Function.class,
+    NullaryFunction.class,
     IntegerFunction.class,
     IntegerPolynomialSequence.class,
     IntegerPolynomialNullaryFunction.class,
     RealFunction.class,
     RealPolynomialFunction.class,
     ComplexFunction.class,
+    ComplexSequence.class,
     ComplexPolynomialSequence.class,
     ComplexNullaryFunction.class,
     RationalFunctionSequence.class,
     RationalNullaryFunction.class,
+    RealPolynomialSequence.class,
+    RealToComplexFunction.class,
     RealNullaryFunction.class,
     ComplexToRealFunction.class,
     ComplexRationalFunctionSequence.class,
@@ -202,25 +242,25 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     launch(args);
   }
 
-  public int                      bits                 = 128;
+  public int                            bits                 = 128;
 
-  public final ComboBox<Class<?>> codomainTypeBox      = new ComboBox<Class<?>>();
+  public final ComboBox<Class<?>>       codomainTypeBox      = new ComboBox<Class<?>>();
 
-  VBox                            contextBox;
+  VBox                                  contextBox;
 
-  public ListView<Named>          contextListView;
+  public ListView<Named>                contextListView;
 
-  private boolean                 contextViewVisible   = false;
+  private boolean                       contextViewVisible   = false;
 
-  public final ComboBox<Class<?>> domainTypeBox        = new ComboBox<Class<?>>();
+  public final ComboBox<Class<?>>       domainTypeBox        = new ComboBox<Class<?>>();
 
-  public final ComboBox<Class<?>> functionTypeBox      = new ComboBox<Class<?>>();
+  public final ComboBox<Class<?>>       functionTypeBox      = new ComboBox<Class<?>>();
 
-  private SplitPane               splitPane;
+  private SplitPane                     splitPane;
 
-  private TabPane                 tabPane;
+  private TabPane                       tabPane;
 
-  private double[]                lastDividerPositions = null;
+  private double[]                      lastDividerPositions = null;
 
   private ClassStringConverter<D, C, F> classStringConverter = new ClassStringConverter<D, C, F>();
 
@@ -580,8 +620,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     try
     {
       InputStream resource = ClassLoader.getSystemResourceAsStream("ExpressionAnalyzer.png");
-      primaryStage.getIcons()
-                  .add(new Image(resource));
+      primaryStage.getIcons().add(new Image(resource));
     }
     catch (Throwable e)
     {
