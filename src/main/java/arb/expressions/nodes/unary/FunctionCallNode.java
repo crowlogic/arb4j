@@ -77,7 +77,11 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
                                                                                               "log"));
 
   public static HashSet<String>   complexFunctionsWithRealResults =
-                                                                  new HashSet<>(Arrays.asList("arg"));
+                                                                  new HashSet<>(Arrays.asList("arg",
+                                                                                              "re",
+                                                                                              "im",
+                                                                                              "real",
+                                                                                              "imag"));
 
   public FunctionMapping<D, R, F> mapping;
 

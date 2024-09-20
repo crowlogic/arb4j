@@ -13,27 +13,45 @@ import javafx.scene.layout.HBox;
 public class MiniSymbolPalette extends
                                HBox
 {
-
   private TextField textField;
+  private int       lastKnownCaretPosition = 0;
 
   public MiniSymbolPalette(TextField textField)
   {
     super(5);
     this.textField = textField;
 
-      String[] symbols =
+    // Store the caret position whenever it changes
+    this.textField.caretPositionProperty().addListener((obs, oldVal, newVal) ->
+    {
+      if (newVal.intValue() != 0)
+      {
+        lastKnownCaretPosition = newVal.intValue();
+      }
+    });
+
+    String[] symbols =
     { "+", "-", "*", "/", "^", "∑", "∏", "∫", "π", "√" };
 
     for (String symbol : symbols)
     {
       Button button = new Button(symbol);
-      button.setOnAction(e -> appendSymbol(symbol));
+      button.setOnAction(e -> insertSymbolAtCursor(symbol));
       getChildren().add(button);
     }
   }
 
-  private void appendSymbol(String symbol)
+  private void insertSymbolAtCursor(String symbol)
   {
-    textField.setText(textField.getText() + symbol);
+    try
+    {
+      textField.insertText(lastKnownCaretPosition, symbol);
+    }
+    catch (IndexOutOfBoundsException k)
+    {
+      textField.setText(symbol);
+
+    }
+    textField.requestFocus();
   }
 }

@@ -549,13 +549,15 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       indexVariableFieldName = stringExpression.substring(startPos, arrowIndex);
     }
 
-    int    coDomainSpecificationPosition = stringExpression.indexOf(indexVariableFieldName
+    int coDomainSpecificationPosition = stringExpression.indexOf(indexVariableFieldName
                   != null ? String.format("{%s=", indexVariableFieldName) : "{",
-                                                                    expression.position);
-
-    String factorExpression              =
-                            stringExpression.substring(startPos, coDomainSpecificationPosition)
-                                            .trim();
+                                                                 expression.position);
+    if (coDomainSpecificationPosition == -1)
+    {
+      expression.throwNewUnexpectedCharacterException();
+    }
+    String factorExpression = stringExpression.substring(startPos, coDomainSpecificationPosition)
+                                              .trim();
     expression.character =
                          expression.expression.charAt(expression.position +=
                                                                           factorExpression.length());
