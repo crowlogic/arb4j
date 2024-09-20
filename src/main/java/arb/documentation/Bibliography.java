@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import arb.annotations.Note;
 import arb.documentation.references.Article;
 import arb.documentation.references.Book;
 import arb.documentation.references.MastersThesis;
@@ -21,6 +20,14 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       orthonormalExpansionsForTranslationInvariantKernels    =
+                                                                                  new Article("Orthonormal expansions for translation-invariant kernels",
+                                                                                              "Filip Tronarp, Toni Karvonen",
+                                                                                              "2024",
+                                                                                              "Journal of Approximation Theory",
+                                                                                              "302",
+                                                                                              "106055");
+
   public static Article       karhunenLoeveExpansionNote                             =
                                                          new Article("A brief note on the karhunen-loève expansion",
                                                                      "Alen Alexanderian",
