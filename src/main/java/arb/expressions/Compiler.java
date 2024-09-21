@@ -365,6 +365,7 @@ public class Compiler
 
   static
   {
+    typePrefixes.put(AlgebraicNumber.class, "𝔸");
     typePrefixes.put(Real.class, "ℝ");
     typePrefixes.put(Complex.class, "ℂ");
     typePrefixes.put(Integer.class, "ℤ");

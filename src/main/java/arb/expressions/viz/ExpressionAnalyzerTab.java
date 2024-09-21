@@ -115,7 +115,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     var valueCol          = newValueCol();
     treeTableView.setTableMenuButtonVisible(true);
     treeTableView.getColumns()
-                 .addAll(nodeCol, nodeTypeCol, nodeTypeResultCol, typesetCol, valueCol, fieldCol);
+                 .addAll(typesetCol, valueCol, nodeTypeCol, nodeTypeResultCol, nodeCol, fieldCol);
   }
 
   @SuppressWarnings("unchecked")
@@ -224,7 +224,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
 
   protected TreeTableColumn<Node<D, C, F>, String> newTypesetCol()
   {
-    TreeTableColumn<Node<D, C, F>, String> typesetCol = new TreeTableColumn<>("Typeset");
+    TreeTableColumn<Node<D, C, F>, String> typesetCol = new TreeTableColumn<>("Expression");
     typesetCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
                                                                            .getValue()
                                                                            .typeset()));
@@ -393,7 +393,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
       {
         getContext().injectReferences(instance = expr.instantiate());
         Class<?> inputClass = input == null ? Object.class : input.getClass();
-        if (!expr.domainType.equals(inputClass))
+        if (!expr.domainType.equals(inputClass) && !Object.class.equals(expr.domainType))
         {
           input      = expr.domainType.getConstructor(inputClass).newInstance(input);
           inputClass = input.getClass();

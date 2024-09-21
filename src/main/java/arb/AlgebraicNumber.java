@@ -8,8 +8,15 @@
 
 package arb;
 
-// imports..
+import arb.Integer;
 
+/*
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ * 
+ * @author ©2024 Stephen Crowley
+ */
 public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
@@ -33,6 +40,19 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     }
   }
 
+
+  public AlgebraicNumber set(Integer val)
+  {
+    assert val != null && val.swigCPtr != 0 : "val is null or has a null swigCPtr";
+    arblib.qqbar_set_fmpz(this, val.swigCPtr);
+    return this;
+  }
+  
+  public AlgebraicNumber(Complex complex)
+  {
+    this();
+    setEnclosure(complex);    
+  }
 
  public AlgebraicNumber init()
  {
@@ -143,8 +163,9 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   @Override
   public AlgebraicNumber set(AlgebraicNumber value)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    assert value != null && value.swigCPtr != 0 : "value or value.swigCPtr is null";
+    arblib.qqbar_set(this, value);
+    return this;
   }
 
   @Override

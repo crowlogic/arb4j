@@ -59,7 +59,9 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
   static Method            resizeMethod;
 
   public static Class<?>[] TYPES = new Class[]
-  { Object.class,
+
+  { AlgebraicNumber.class,
+    Object.class,
     Integer.class,
     GaussianInteger.class,
     Real.class,
@@ -538,7 +540,8 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
 
     Scene scene = new Scene(createMainLayout());
 
-    scene.getStylesheets().add(Stylesheet.convertStylesheetToDataURI(Stylesheet.EASIER_ON_THE_EYES_STYLESHEET));
+    scene.getStylesheets()
+         .add(Stylesheet.convertStylesheetToDataURI(Stylesheet.EASIER_ON_THE_EYES_STYLESHEET));
 
     scene.addEventFilter(KeyEvent.KEY_PRESSED, event ->
     {
