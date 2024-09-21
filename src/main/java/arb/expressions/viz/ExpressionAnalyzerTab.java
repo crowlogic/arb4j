@@ -50,8 +50,8 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
   F                                 instance;
   C                                 result;
   Context                           context;
-  private HashMap<String, Boolean>  nodeExpansionStates;
-  private MiniSymbolPalette         symbolPalette;
+  HashMap<String, Boolean>          nodeExpansionStates;
+  MiniSymbolPalette                 symbolPalette;
 
   public Context getContext()
   {

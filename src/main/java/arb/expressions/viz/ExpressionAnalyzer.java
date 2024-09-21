@@ -191,7 +191,6 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
   { IntegerSequence.class,
     RealSequence.class,
     IntegerPolynomialSequence.class,
-    RationalFunctionSequence.class,
     Function.class,
     NullaryFunction.class,
     IntegerFunction.class,
