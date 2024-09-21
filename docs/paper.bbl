@@ -1,0 +1,200 @@
+\begin{thebibliography}{10}
+
+\bibitem{Adler1990}
+{\sc Adler, R.~J.}
+\newblock {\em An Introduction to Continuity, Extrema, and Related Topics for
+  General {G}aussian Processes}.
+\newblock No.~12 in Lecture Notes--Monograph Series. Institute of Mathematical
+  Statistics, 1990.
+
+\bibitem{AskeyWimp1984}
+{\sc Askey, R., and Wimp, J.}
+\newblock Associated {L}aguerre and {H}ermite polynomials.
+\newblock {\em Proceedings of the Royal Society of Edinburgh Section A:
+  Mathematics 96}, 1--2 (1984), 15--37.
+
+\bibitem{Bell2004}
+{\sc Bell, W.~W.}
+\newblock {\em Special Functions for Scientists and Engineers}.
+\newblock Courier Corporation, 2004.
+
+\bibitem{Christov1982}
+{\sc Christov, C.}
+\newblock A complete orthonormal system of functions in {$L^2(-\infty,\infty)$}
+  space.
+\newblock {\em SIAM Journal on Applied Mathematics 42}, 6 (1982), 1337--1344.
+
+\bibitem{DickKuoSloan2013}
+{\sc Dick, J., Kuo, F.~Y., and Sloan, I.~H.}
+\newblock High-dimensional integration: The quasi-{M}onte {C}arlo way.
+\newblock {\em Acta Numerica 22\/} (2013), 133--288.
+
+\bibitem{Erdelyi1954}
+{\sc Erdélyi, A.}
+\newblock {\em Tables of Integral Transforms. Volume {II}}.
+\newblock McGraw-Hill, 1954.
+
+\bibitem{FasshauerHickernell2012}
+{\sc Fasshauer, G., Hickernell, F., and Wo{\'z}niakowski, H.}
+\newblock On dimension-independent rates of convergence for function
+  approximation with {G}aussian kernels.
+\newblock {\em SIAM Journal on Numerical Analysis 50}, 1 (2012), 247--271.
+
+\bibitem{FasshauerMcCourt2015}
+{\sc Fasshauer, G., and McCourt, M.}
+\newblock {\em Kernel-based Approximation Methods using {MATLAB}}.
+\newblock No.~19 in Interdisciplinary Mathematical Sciences. World Scientific
+  Publishing, 2015.
+
+\bibitem{FasshauerMcCourt2012}
+{\sc Fasshauer, G.~E., and McCourt, M.~J.}
+\newblock Stable evaluation of {G}aussian radial basis function interpolants.
+\newblock {\em SIAM Journal on Scientific Computing 34}, 2 (2012), A737--A762.
+
+\bibitem{Gnewuch2022}
+{\sc Gnewuch, M., Hefter, M., Hinrichs, A., and Ritter, K.}
+\newblock Countable tensor products of {H}ermite spaces and spaces of
+  {G}aussian kernels.
+\newblock {\em Journal of Complexity 71\/} (2022), 101654.
+
+\bibitem{Hawkins1989}
+{\sc Hawkins, D.~L.}
+\newblock Some practical problems in implementing a certain sieve estimator of
+  the {G}aussian mean function.
+\newblock {\em Communications in Statistics - Simulation and Computation 18}, 2
+  (1989), 481--500.
+
+\bibitem{Higgins1977}
+{\sc Higgins, J.~R.}
+\newblock {\em Completeness and Basis Properties of Sets of Special Functions}.
+\newblock No.~72 in Cambridge Tracts in Mathematics. Cambridge University
+  Press, 1977.
+
+\bibitem{IrrgeherLeobacher2015}
+{\sc Irrgeher, C., and Leobacher, G.}
+\newblock High-dimensional integration on $\mathbb{R}^d$, weighted {H}ermite
+  spaces, and orthogonal transforms.
+\newblock {\em Journal of Complexity 31}, 2 (2015), 174--205.
+
+\bibitem{Karvonen2022}
+{\sc Karvonen, T.}
+\newblock Small sample spaces for {G}aussian processes.
+\newblock {\em Bernoulli 29}, 2 (2023), 875--900.
+
+\bibitem{KimeldorfWahba1970}
+{\sc Kimeldorf, G.~S., and Wahba, G.}
+\newblock A correspondence between {B}ayesian estimation on stochastic
+  processes and smoothing by splines.
+\newblock {\em The Annals of Mathematical Statistics 41}, 2 (1970), 495--502.
+
+\bibitem{Kuo1975}
+{\sc Kuo, H.-H.}
+\newblock {\em Gaussian Measures in {B}anach Spaces}.
+\newblock No.~463 in Lecture Notes in Mathematics. Springer, 1975.
+
+\bibitem{Minh2010}
+{\sc Minh, H.~Q.}
+\newblock Some properties of {G}aussian reproducing kernel {H}ilbert spaces and
+  their implications for function approximation and learning theory.
+\newblock {\em Constructive Approximation 32}, 2 (2010), 307--338.
+
+\bibitem{NovakUllrich2018}
+{\sc Novak, E., Ullrich, M., Wo{\'z}niakowski, H., and Zhang, S.}
+\newblock Reproducing kernels of {S}obolev spaces on $\mathbb{R}^d$ and
+  applications to embedding constants and tractability.
+\newblock {\em Analysis and Applications 16}, 5 (2018), 693--715.
+
+\bibitem{NovakWozniakowski2008}
+{\sc Novak, E., and Wo{\'z}niakowski, H.}
+\newblock {\em Tractability of Multivariate Problems. Volume {I}: Linear
+  Information}.
+\newblock No.~6 in EMS Tracts in Mathematics. European Mathematical Society,
+  2008.
+
+\bibitem{OwhadiScovel2017}
+{\sc Owhadi, H., and Scovel, C.}
+\newblock Separability of reproducing kernel spaces.
+\newblock {\em Proceedings of the American Mathematical Society 145}, 5 (2017),
+  2131--2138.
+
+\bibitem{Paulsen2016}
+{\sc Paulsen, V.~I., and Raghupathi, M.}
+\newblock {\em An Introduction to the Theory of Reproducing Kernel {H}ilbert
+  Spaces}.
+\newblock No.~152 in Cambridge Studies in Advanced Mathematics. Cambridge
+  University Press, 2016.
+
+\bibitem{RahimiRecht2007}
+{\sc Rahimi, A., and Recht, B.}
+\newblock Random features for large-scale kernel machines.
+\newblock In {\em Advances in Neural Information Processing Systems\/} (2007),
+  vol.~20, pp.~1177--1184.
+
+\bibitem{RasmussenWilliams2006}
+{\sc Rasmussen, C.~E., and Williams, C. K.~I.}
+\newblock {\em Gaussian Processes for Machine Learning}.
+\newblock Adaptive Computation and Machine Learning. MIT Press, 2006.
+
+\bibitem{SolinSarkka2020}
+{\sc Solin, A., and Särkkä, S.}
+\newblock Hilbert space methods for reduced-rank {G}aussian process regression.
+\newblock {\em Statistics and Computing 30}, 2 (2020), 419--446.
+
+\bibitem{Stein1999}
+{\sc Stein, M.~L.}
+\newblock {\em Interpolation of Spatial Data: {S}ome Theory for Kriging}.
+\newblock Springer Series in Statistics. Springer, 1999.
+
+\bibitem{Steinwart2019}
+{\sc Steinwart, I.}
+\newblock Convergence types and rates in generic {K}arhunen-{L}oève expansions
+  with applications to sample path properties.
+\newblock {\em Potential Analysis 51\/} (2019), 361--395.
+
+\bibitem{SteinwartScovel2012}
+{\sc Steinwart, I., and Scovel, C.}
+\newblock {M}ercer's theorem on general domains: {O}n the interaction between
+  measures, kernels, and {RKHS}s.
+\newblock {\em Constructive Approximation 35\/} (2012), 363--417.
+
+\bibitem{Szego1939}
+{\sc Szeg\H{o}, G.}
+\newblock {\em Orthogonal Polynomials}.
+\newblock No.~23 in Colloquium Publications. American Mathematical Society,
+  1939.
+
+\bibitem{VanTrees2001}
+{\sc Van~Trees, H.~L.}
+\newblock {\em Detection Estimation and Modulation Theory: Part I}.
+\newblock Wiley-Interscience, 2001.
+
+\bibitem{Wendland2005}
+{\sc Wendland, H.}
+\newblock {\em Scattered Data Approximation}.
+\newblock No.~17 in Cambridge Monographs on Applied and Computational
+  Mathematics. Cambridge University Press, 2005.
+
+\bibitem{Wiener1949}
+{\sc Wiener, N.}
+\newblock {\em Extrapolation, Interpolation, and Smoothing of Stationary Time
+  Series: With Engineering Applications}.
+\newblock MIT Press, 1949.
+
+\bibitem{Xiu2010}
+{\sc Xiu, D.}
+\newblock {\em Numerical Methods for Stochastic Computations}.
+\newblock Princeton University Press, 2010.
+
+\bibitem{Zhu1998}
+{\sc Zhu, H., Williams, C. K.~I., Rohwer, R., and Morciniec, M.}
+\newblock {G}aussian regression and optimal finite dimensional linear models.
+\newblock In {\em Neural Networks and Machine Learning}, C.~M. Bishop, Ed.,
+  vol.~168 of {\em NATO ASI Series. Series F: Computer and Systems Science}.
+  Springer, 1998, pp.~167--184.
+
+\bibitem{Zwickngaslc2009}
+{\sc Zwicknagl, B.}
+\newblock Power series kernels.
+\newblock {\em Constructive Approximation 29}, 1 (2009), 61--84.
+
+\end{thebibliography}

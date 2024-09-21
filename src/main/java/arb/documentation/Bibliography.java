@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import arb.annotations.Note;
 import arb.documentation.references.Article;
 import arb.documentation.references.Book;
 import arb.documentation.references.MastersThesis;
@@ -21,6 +20,14 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       orthonormalExpansionsForTranslationInvariantKernels    =
+                                                                                  new Article("Orthonormal expansions for translation-invariant kernels",
+                                                                                              "Filip Tronarp, Toni Karvonen",
+                                                                                              "2024",
+                                                                                              "Journal of Approximation Theory",
+                                                                                              "302",
+                                                                                              "106055");
+
   public static Article       karhunenLoeveExpansionNote                             =
                                                          new Article("A brief note on the karhunen-loève expansion",
                                                                      "Alen Alexanderian",
@@ -69,14 +76,6 @@ public class Bibliography extends
                                                                             "",
                                                                             "");
 
-  public static Article       bandlimitedRKHSApplicationshun                         =
-                                                             new Article("Applications of Reproducing Kernel Hilbert Spaces--Bandlimited Signal Models",
-                                                                         "K. Yao",
-                                                                         "1967",
-                                                                         "Information and Control",
-                                                                         "11",
-                                                                         "429-444");
-
   public static Article       uniformlyConvergentBesselFunctionExpansions            =
                                                                           new Article("Convergent expansions of the Bessel functions in terms of elementary functions",
                                                                                       "José L. López",
@@ -102,7 +101,7 @@ public class Bibliography extends
                                                                   .setIsbn("0821810235, 9780821810231");
 
   public static Book          chernSelectedPapersIV                                  =
-                                                    new Book("Selected Papers IV",
+                                                    new Book("Selected Papers of Shiing-Shen Chern IV",
                                                              "Shiing-Shen Chern",
                                                              "1989",
                                                              "463").setPublisher("Springer New York, NY")
@@ -149,12 +148,6 @@ public class Bibliography extends
                                                                                            .setPublisher("Springer New York")
                                                                                            .setVolume("I: Basic Results");
 
-  public static Book          extremesOfRandomProcesses                              =
-                                                        new Book("Extremes and Related Properties of Random Sequences and Processes",
-                                                                 "Georg Lindgren, Holger Rootzén, and M. R. Leadbetter",
-                                                                 "1983").setSeries("Springer Series in Statistics")
-                                                                        .setPublisher("Springer-Verlag New York Inc.");
-
   public static Article       finiteFourierTransforms                                =
                                                       new Article("The finite Fourier transform of classical polynomials",
                                                                   "Dixit, Atul and Jiu, Lin and Moll, Victor H and Vignat, Christophe",
@@ -176,12 +169,6 @@ public class Bibliography extends
                                                                 "1995").setPublisher("Springer Berlin Heidelberg")
                                                                        .setSeries("Classics in Mathematics")
                                                                        .setEdition("Reprint of the 1980 Edition");
-
-  public static Book          introductionToQuantumGravitationalEffects              =
-                                                                        new Book("Introduction to quantum effects in gravity",
-                                                                                 "Viatcheslav Mukhanov, Sergei Winitzki",
-                                                                                 "2007").setEdition("1ˢᵗ")
-                                                                                        .setPublisher("Cambridge University Press");
 
   public static Article       isotropyPrevalenceInSpatialStatistics                  =
                                                                     new Article("Why is isotropy so prevalent in spatial statistics?",
@@ -216,14 +203,6 @@ public class Bibliography extends
                                                                      "5",
                                                                      "946-956",
                                                                      "1954");
-
-  public static Article       newBesselFunctionIdentity                              =
-                                                        new Article("Circular motion analogue Unruh effect in a 2+1 thermal bath: robbing from the rich and giving to the poor",
-                                                                    "D Bunney, Cameron R and Louko, Jorma",
-                                                                    "2023",
-                                                                    "Classical and Quantum Gravity",
-                                                                    "40",
-                                                                    "155001 (27 pages)").setNumber("15");
 
   public static Book          oneParameterSemigroups                                 =
                                                      new Book("One-Parameter Semigroups",
@@ -344,14 +323,6 @@ public class Bibliography extends
                                                                      "Acta Mathematica Academiae Scientiarum Hungarica",
                                                                      "38",
                                                                      "105-107");
-
-  public static Article       certainMatrixEnsemblesEigenvalueDistributions          =
-                                                                            new Article("On the distribution of eigenvalues of certain matrix ensembles",
-                                                                                        "{Bogomolny}, E. and {Bohigas}, O. and {Pato}, M.~P.",
-                                                                                        "1997",
-                                                                                        "Physical Review E",
-                                                                                        "55",
-                                                                                        "6707-6718").setNumber("6");
 
   public static Article       singularSelfAdjointDifferentialOperationExpansion      =
                                                                                 new Article("The Expansion Theorem for Singular Self-Adjoint Linear Differential Operators",
