@@ -150,6 +150,12 @@ import arb.space.topological.EuclideanVectorSpace;
     return value;
   }
 
+  public Complex( Integer val )
+  {
+    this();
+    set(val);
+  }
+  
   
   public Complex gamma(int bits)
   {
