@@ -5,7 +5,5 @@ expr analyzer; add button to toggle debug output
 todo: fix square root type when codomains scalar type is complex
 expr analyzer: spinner for integer context vars
 expr compiler: derivatives and fractional derivatices
-todo: assimilate zeta function universality paper
-todo: email Lalley
 todo: Egorov's Theorem
-Undefined TeXFormula: 'logGamma'at jlatexmath/org.scilab.forge.jlatexmath.PredefMacroInfo.invokeID(PredefMacroInfo.java:602)at jlatexmath/org.scilab.forge.jlatexmath.PredefMacroInfo.invoke(PredefMacroInfo.java:73)
+bonanzai

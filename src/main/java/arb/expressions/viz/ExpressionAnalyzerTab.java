@@ -392,13 +392,20 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
       else
       {
         getContext().injectReferences(instance = expr.instantiate());
+        Class<?> inputClass = input == null ? Object.class : input.getClass();
+        if (!expr.domainType.equals(inputClass))
+        {
+          input      = expr.domainType.getConstructor(inputClass).newInstance(input);
+          inputClass = input.getClass();
+        }
+
         if (result != null)
         {
           result = instance.evaluate(input, 128, result);
         }
         else
         {
-          Object inputClass = input == null ? Object.class : input.getClass();
+
           assert expr.domainType.equals(inputClass) : String.format("input should be of type %s not %s",
                                                                     expr.domainType,
                                                                     input.getClass());
