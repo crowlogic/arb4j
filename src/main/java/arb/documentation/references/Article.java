@@ -4,10 +4,19 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.language.Noun;
+import arb.language.Phrase;
+import arb.language.Word;
 
 /**
+ * In grammar, an article is any member of a class of dedicated {@link Word}s
+ * that are used with {@link Noun} {@link Phrase}s to mark the identifiability
+ * of the referents of the noun phrases. The category of articles constitutes a
+ * part of speech. In English, both "the" and "a(n)" are articles, which combine
+ * with nouns to form noun phrases.
+ * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- * {@link TheArb4jLibrary}
+ *      {@link TheArb4jLibrary}
  */
 public record Article(String title,
                       String author,
@@ -40,7 +49,12 @@ public record Article(String title,
                  .replace(",}", "}");
   }
 
-  public Article(String title, String author, String year, String journal, String volume, String pages)
+  public Article(String title,
+                 String author,
+                 String year,
+                 String journal,
+                 String volume,
+                 String pages)
   {
     this(title,
          author,

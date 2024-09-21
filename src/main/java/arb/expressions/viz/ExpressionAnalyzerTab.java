@@ -406,9 +406,6 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
         else
         {
 
-          assert expr.domainType.equals(inputClass) : String.format("input should be of type %s not %s",
-                                                                    expr.domainType,
-                                                                    input.getClass());
           result = instance.evaluate(input, 128);
 
         }
