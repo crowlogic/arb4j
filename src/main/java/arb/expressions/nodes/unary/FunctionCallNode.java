@@ -14,6 +14,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
+import arb.AlgebraicNumber;
 import arb.Complex;
 import arb.Fraction;
 import arb.Integer;
@@ -335,6 +336,7 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
     }
     Class<? extends Object> argType = arg.type();
 
+    Class<?>                retType = null;
     if (argType == null)
     {
       return expression.coDomainType;
@@ -344,12 +346,19 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
                   || (argType.equals(Complex.class)
                                 && complexFunctionsWithRealResults.contains(functionName)))
     {
-      return Real.class;
+      retType = Compiler.scalarType(expression.coDomainType);
     }
     else
     {
-      return expression.coDomainType;
+      retType = expression.coDomainType;
     }
+
+    if ("sqrt".equals(functionName))
+    {
+      return AlgebraicNumber.class;
+    }
+
+    return retType;
   }
 
   private void assignFunctionName()
@@ -432,7 +441,8 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
 
   public boolean isBitless()
   {
-    return false;
+    Class<?> type = type();
+    return AlgebraicNumber.class.equals(type);
   }
 
   @Override

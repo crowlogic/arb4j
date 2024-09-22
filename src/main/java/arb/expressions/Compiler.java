@@ -719,7 +719,8 @@ public class Compiler
 
   static
   {
-    realScalarTypes.addAll(Arrays.asList(Real.class,
+    realScalarTypes.addAll(Arrays.asList(Object.class,
+                                         Real.class,
                                          RealPolynomial.class,
                                          RealMatrix.class,
                                          RationalFunction.class));
@@ -751,6 +752,10 @@ public class Compiler
     else if (IntegerPolynomial.class.equals(resultType))
     {
       return Integer.class;
+    }
+    else if (Integer.class.equals(resultType))
+    {
+      return resultType;
     }
     else
     {

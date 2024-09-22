@@ -178,6 +178,16 @@ import arb.Integer;
     delete();
   }
 
+  public AlgebraicNumber sqrt(AlgebraicNumber result)
+  {
+    return sqrt(0, result);
+  }
+
+  public AlgebraicNumber sqrt(int bits, AlgebraicNumber result)
+  {
+    arblib.qqbar_sqrt(result, this);
+    return result;
+  }
   static
   {
     System.loadLibrary("arblib");
