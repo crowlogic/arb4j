@@ -1,0 +1,104 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+
+\title{Shifted Jacobi Polynomial Integral Operational Matrix for Solving Fractional Riccati Equations}
+\author{Assistant}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+This article details the use of the shifted Jacobi polynomial integral operational matrix in solving fractional Riccati differential equations using a spectral method.
+
+\section{Shifted Jacobi Polynomials}
+The shifted Jacobi polynomials $J_n^{(\alpha,\beta)}(x)$ on $[0,1]$ are defined by:
+
+\begin{equation}
+J_n^{(\alpha,\beta)}(x) = \sum_{k=0}^n (-1)^{n-k} \binom{n+\alpha}{k} \binom{n+\beta}{n-k} x^k
+\end{equation}
+
+where $\alpha, \beta > -1$ are parameters. These polynomials satisfy the orthogonality relation:
+
+\begin{equation}
+\int_0^1 x^\alpha (1-x)^\beta J_m^{(\alpha,\beta)}(x) J_n^{(\alpha,\beta)}(x) dx = h_n \delta_{mn}
+\end{equation}
+
+where $h_n$ is the normalization constant:
+
+\begin{equation}
+h_n = \frac{\Gamma(n+\alpha+1)\Gamma(n+\beta+1)}{(2n+\alpha+\beta+1)n!\Gamma(n+\alpha+\beta+1)}
+\end{equation}
+
+\section{Integral Operational Matrix}
+The integral operational matrix $P$ for shifted Jacobi polynomials is defined as:
+
+\begin{equation}
+P_{ij} = \int_0^1 J_i^{(\alpha,\beta)}(x) J_j^{(\alpha,\beta)}(x) dx
+\end{equation}
+
+For an $N$-term representation, $P$ is an $N \times N$ matrix. This matrix allows us to express the integral of a function $f(x) = \sum_{i=0}^{\infty} c_i J_i^{(\alpha,\beta)}(x)$ as:
+
+\begin{equation}
+\int_0^x f(t)dt = \mathbf{X}^T P \mathbf{C}
+\end{equation}
+
+where $\mathbf{X}$ is the vector of Jacobi polynomials and $\mathbf{C}$ is the vector of coefficients.
+
+\section{Application to Fractional Riccati Equations}
+Consider the fractional Riccati equation:
+
+\begin{equation}
+D^\alpha y(x) = p(x) + q(x)y(x) + r(x)y^2(x), \quad 0 < \alpha \leq 1
+\end{equation}
+
+with initial condition $y(0) = y_0$.
+
+The spectral method involves the following steps:
+
+\begin{enumerate}
+    \item Express $y(x)$ using shifted Jacobi polynomials:
+    \begin{equation}
+    y(x) = \sum_{i=0}^{\infty} c_i J_i^{(\alpha,\beta)}(x) = \mathbf{C}^T \mathbf{X}(x)
+    \end{equation}
+
+    \item Express the fractional derivative using the Caputo definition:
+    \begin{equation}
+    D^\alpha y(x) = I^{1-\alpha} \frac{d}{dx} y(x)
+    \end{equation}
+    where $I^{1-\alpha}$ is the Riemann-Liouville fractional integral operator.
+
+    \item Use the operational matrix to represent the fractional integral:
+    \begin{equation}
+    I^{1-\alpha} y(x) = \mathbf{X}^T P^{1-\alpha} \mathbf{C}
+    \end{equation}
+
+    \item Express the nonlinear term:
+    \begin{equation}
+    y^2(x) = (\mathbf{C}^T \mathbf{X}(x))^2 = \mathbf{C}^T \hat{\mathbf{X}} \mathbf{C}
+    \end{equation}
+    where $\hat{\mathbf{X}}$ is a matrix formed by the products of Jacobi polynomials.
+
+    \item Substitute these expressions into the original equation:
+    \begin{equation}
+    \mathbf{X}^T D P^{1-\alpha} \mathbf{C} = p(x) + q(x)\mathbf{C}^T \mathbf{X}(x) + r(x)(\mathbf{C}^T \hat{\mathbf{X}} \mathbf{C})
+    \end{equation}
+    where $D$ is the operational matrix for differentiation.
+
+    \item Apply the Galerkin method by multiplying both sides by $\mathbf{X}(x)$ and integrating over $[0,1]$:
+    \begin{equation}
+    \int_0^1 \mathbf{X}(x) \mathbf{X}^T(x) dx \cdot D P^{1-\alpha} \mathbf{C} = \int_0^1 \mathbf{X}(x) [p(x) + q(x)\mathbf{C}^T \mathbf{X}(x) + r(x)(\mathbf{C}^T \hat{\mathbf{X}} \mathbf{C})] dx
+    \end{equation}
+
+    \item This results in a system of nonlinear algebraic equations in the spectral domain:
+    \begin{equation}
+    F(\mathbf{C}) = 0
+    \end{equation}
+
+    \item Solve this system for the coefficients $\mathbf{C}$ using an iterative method like Newton-Raphson.
+\end{enumerate}
+
+The solution is a sequence of spectral coefficients that define an exact representation of the solution in the basis of Jacobi polynomials. This spectral representation can be interpreted as a series of functions (which may be polynomial, rational, or more general, depending on the specific problem and basis functions used). For practical computation, this infinite series is typically truncated, introducing an approximation at that stage.
+
+\end{document}
