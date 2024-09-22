@@ -16,7 +16,10 @@ public class EquationTest
                           extends
                           TestCase
 {
-
+  public static void testDummy()
+  {
+    
+  }
 //  public static void testBesselFunctionOrthogonality()
 //  {
 //    try ( Real v = new Real("1.0",
