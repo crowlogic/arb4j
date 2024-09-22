@@ -116,9 +116,9 @@ public class Integer implements
 
   public RationalFunction div(Real operand, int prec, RationalFunction result)
   {
-    return result.set(this).div(operand,prec,result);
+    return result.set(this).div(operand, prec, result);
   }
-  
+
   /**
    * Divides this Integer by another Integer and returns the result as a
    * RationalFunction.
@@ -296,6 +296,11 @@ public class Integer implements
     return result.set(this).add(operand, prec);
   }
 
+  public AlgebraicNumber add(Integer addend, int bits, AlgebraicNumber result)
+  {
+    return result.set(this).add(addend, bits, result);
+  }
+
   public Complex add(Complex addend, int bits, Complex result)
   {
     return result.set(this).add(addend, bits);
@@ -308,9 +313,9 @@ public class Integer implements
 
   public Complex add(Real addend, int bits, Complex result)
   {
-     this.add(addend,bits,result.re());
-     result.im().zero();
-     return result;
+    this.add(addend, bits, result.re());
+    result.im().zero();
+    return result;
   }
 
   public Real add(Real addend, int bits, Real result)

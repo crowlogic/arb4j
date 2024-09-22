@@ -104,6 +104,14 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     return null;
   }
 
+  public AlgebraicNumber add(Integer addend, int bits, AlgebraicNumber result)
+  {
+    assert addend != null && addend.swigCPtr != 0 : "addend is null";
+    assert result != null && result.swigCPtr != 0 : "result is null";    
+    arblib.qqbar_add_fmpz(result, this, addend.swigCPtr );
+    return result;
+  }
+  
   @Override
   public AlgebraicNumber add(AlgebraicNumber element, int prec, AlgebraicNumber result)
   {

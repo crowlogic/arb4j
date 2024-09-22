@@ -20,6 +20,14 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+
+  public static Article       shiftedJacobiPolynomialIntegralOperationalMatrix       =
+                                                                               new Article("The shifted Jacobi polynomial integral operational matrix for solving Riccati differential equation of fractional order",
+                                                                                           "A. Neamaty and B. Agheli and R. Darzi",
+                                                                                           "2015",
+                                                                                           "Applications and Applied Mathematics: An International Journal (AAM)",
+                                                                                           "10",
+                                                                                           "878-892").setNumber("2");
   public static Article       orthonormalExpansionsForTranslationInvariantKernels    =
                                                                                   new Article("Orthonormal expansions for translation-invariant kernels",
                                                                                               "Filip Tronarp, Toni Karvonen",
