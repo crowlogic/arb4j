@@ -337,12 +337,12 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
     Class<? extends Object> argType = arg.type();
 
     Class<?>                retType = null;
-    
-    if ("sqrt".equals(functionName) && expression.coDomainType.equals(AlgebraicNumber.class))
+
+    if ("sqrt".equals(functionName) )
     {
-      return AlgebraicNumber.class;
+      return Real.class;
     }
-    
+
     if (argType == null)
     {
       return expression.coDomainType;
@@ -358,8 +358,6 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
     {
       retType = expression.coDomainType;
     }
-
-   
 
     return retType;
   }
@@ -444,8 +442,7 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
 
   public boolean isBitless()
   {
-    Class<?> type = type();
-    return AlgebraicNumber.class.equals(type);
+    return false;
   }
 
   @Override

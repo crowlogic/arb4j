@@ -269,88 +269,90 @@
   </theorem>
 
   <\proof>
-    <rev|That <math|r> is symmetric positive-definite implies that
+    That <math|r> is symmetric positive-definite implies that
     <math|<wide|\<Phi\>|^>> is real-valued and
-    positive<nbsp><cite-detail|Wendland2005|Theorem<nbsp>6.11>.> For a
-    function <math|h> such that <math|<around*|\||<wide|h|^><around|(|\<omega\>|)>|\|>=<wide|\<Phi\>|^><around|(|\<omega\>|)><rsup|1/2>\<gtr\>0>
-    for all <math|\<omega\>\<in\><R>> we define a convolution operator
+    positive<nbsp><cite-detail|Wendland2005|Theorem<nbsp>6.11> For a function
+    <math|h> such that <math|<around*|\||<wide|h|^><around|(|\<omega\>|)>|\|>=<wide|\<Phi\>|^><around|(|\<omega\>|)><rsup|1/2>\<gtr\>0>
+    for all <math|\<omega\>\<in\>\<bbb-R\>> we define a convolution operator
     <math|\<cal-H\>:<with|math-font|cal*|L><rsub|2><around|(|<R>|)>\<to\><with|math-font|cal*|L><rsub|2><around|(|<R>|)>>
     via
 
-    <\equation*>
-      <around|(|\<cal-H\>*f|)><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h*<around|(|t-\<tau\>|)>*f<around|(|\<tau\>|)><dif>\<tau\>*<space|1em><text|for
-      all ><space|1em>t\<in\><R>.
-    </equation*>
+    <\equation>
+      <around|(|\<cal-H\>*f|)><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h*<around|(|t-\<tau\>|)>*f<around|(|\<tau\>|)>\<mathd\>\<tau\>*<space|1em><text|\<forall\>>t\<in\>\<bbb-R\>
+    </equation>
 
-    Note that the convolution theorem yields
-    <math|<wide|\<cal-H\>*f|^><around|(|\<omega\>|)>=<wide|h|^><around|(|\<omega\>|)>*<wide|f|^><around|(|\<omega\>|)>>.
-    By the standard characterisation (see<nbsp><cite|KimeldorfWahba1970>
+    Note that the convolution theorem yields\ 
+
+    <\equation>
+      <wide|\<cal-H\>*f|^><around|(|\<omega\>|)>=<wide|h|^><around|(|\<omega\>|)>*<wide|f|^><around|(|\<omega\>|)>
+    </equation>
+
+    . By the standard characterisation (see<nbsp><cite|KimeldorfWahba1970>
     or<nbsp><cite-detail|Wendland2005|Theorem<nbsp>10.12>) of the RKHS of a
     translation-invariant kernel,
 
     <\equation>
-      <label|eq:RKHS-fourier><around|\<langle\>|f,g|\<rangle\>><rsub|r>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|<wide|f|^><rsup|\<ast\>><space|-0.17em><around|(|\<omega\>|)>*<wide|g|^><around|(|\<omega\>|)>|<wide|\<Phi\>|^><around|(|\<omega\>|)>><dif>\<omega\>*<space|1em><text|for
-      any ><space|1em>f,g\<in\><with|math-font|cal*|H><rsub|r><around|(|<R>|)>.
+      <label|eq:RKHS-fourier><around|\<langle\>|f,g|\<rangle\>><rsub|r>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|<wide|f|^><rsup|\<ast\>><space|-0.17em><around|(|\<omega\>|)>*<wide|g|^><around|(|\<omega\>|)>|<wide|\<Phi\>|^><around|(|\<omega\>|)>>\<mathd\>\<omega\>*<space|1em>\<forall\>f,g\<in\><with|math-font|cal*|H><rsub|r><around|(|\<bbb-R\>|)>
     </equation>
 
-    For any <math|f,g\<in\><with|math-font|cal*|L><rsub|2><around|(|<R>|)>>
+    For any <math|f,g\<in\><with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>|)>>
     the convolution theorem and Plancherel theorem thus give
 
     <\equation*>
-      <around|\<langle\>|\<cal-H\>*f,\<cal-H\>*g|\<rangle\>><rsub|r>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|<around*|\||<wide|h|^><around|(|\<omega\>|)>|\|><rsup|2><wide|f|^><rsup|\<ast\>><space|-0.17em><around|(|\<omega\>|)>*<wide|g|^><around|(|\<omega\>|)>|<wide|\<Phi\>|^><around|(|\<omega\>|)>><dif>\<omega\>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|f|^><rsup|\<ast\>><space|-0.17em><around|(|\<omega\>|)>*<wide|g|^><around|(|\<omega\>|)><dif>\<omega\>=<around|\<langle\>|f,g|\<rangle\>><rsub|<with|math-font|cal*|L><rsub|2><around|(|<R>|)>>,
+      <around|\<langle\>|\<cal-H\>*f,\<cal-H\>*g|\<rangle\>><rsub|r>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|<around*|\||<wide|h|^><around|(|\<omega\>|)>|\|><rsup|2><wide|f|^><rsup|\<ast\>><space|-0.17em><around|(|\<omega\>|)>*<wide|g|^><around|(|\<omega\>|)>|<wide|\<Phi\>|^><around|(|\<omega\>|)>>\<mathd\>\<omega\>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|f|^><rsup|\<ast\>><space|-0.17em><around|(|\<omega\>|)>*<wide|g|^><around|(|\<omega\>|)>\<mathd\>\<omega\>=<around|\<langle\>|f,g|\<rangle\>><rsub|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>|)>>,
     </equation*>
 
     which shows that <math|\<cal-H\>> is an isometry from
-    <math|<with|math-font|cal*|L><rsub|2><around|(|<R>|)>> to
-    <math|<with|math-font|cal*|H><rsub|r><around|(|<R>|)>>. It follows
+    <math|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>|)>> to
+    <math|<with|math-font|cal*|H><rsub|r><around|(|\<bbb-R\>|)>>. It follows
     from<nbsp><eqref|eq:RKHS-fourier> that the inverse Fourier transform
 
-    <\equation*>
-      <around|(|\<cal-H\><rsup|-1>*f|)><around|(|t|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|<wide|f|^><around|(|\<omega\>|)>|<wide|h|^><around|(|\<omega\>|)>>*e<rsup|i*\<omega\>*t><dif>\<omega\>*<space|1em><text|for
-      all ><space|1em>t\<in\><R>
-    </equation*>
+    <\equation>
+      <around|(|\<cal-H\><rsup|-1>*f|)><around|(|t|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|<wide|f|^><around|(|\<omega\>|)>|<wide|h|^><around|(|\<omega\>|)>>*e<rsup|i*\<omega\>*t>\<mathd\>\<omega\>*<space|1em><text|for
+      all ><space|1em>t\<in\>\<bbb-R\>
+    </equation>
 
     defines the inverse of <math|\<cal-H\>>. Therefore <math|\<cal-H\>> is an
     isometric isomorphism and thus maps every orthonormal basis of
-    <math|<with|math-font|cal*|L><rsub|2><around|(|<R>|)>> to an orthonormal
-    basis of <math|<with|math-font|cal*|H><rsub|r><around|(|<R>|)>><nbsp><cite-detail|Higgins1977|Section<nbsp>2.6>.
-    <rev|The kernel has a pointwise convergent expansion of the
+    <math|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>|)>> to an
+    orthonormal basis of <math|<with|math-font|cal*|H><rsub|r><around|(|\<bbb-R\>|)>><nbsp><cite-detail|Higgins1977|Section<nbsp>2.6>.
+    The kernel has a pointwise convergent expansion of the
     form<nbsp><eqref|eq:main-theorem-r-expansion> for every orthonormal basis
-    of <math|<with|math-font|cal*|H><rsub|r><around|(|<R>|)>><nbsp><cite|Paulsen2016>.>
+    of <math|<with|math-font|cal*|H><rsub|r><around|(|\<bbb-R\>|)>><nbsp><cite|Paulsen2016>
   </proof>
 
   To obtain the basis functions <math|\<psi\><rsub|m>> in time domain using
   <localize|Theorem><nbsp><reference|thm:main-theorem> one has to either
-  compute the convolution <math|<big|int><rsub|-\<infty\>><rsup|\<infty\>>h*<around|(|t-\<tau\>|)><rev|\<varphi\><rsub|m><around|(|\<tau\>|)>><dif>\<tau\>>
+  compute the convolution <math|<big|int><rsub|-\<infty\>><rsup|\<infty\>>h*<around|(|t-\<tau\>|)>\<varphi\><rsub|m><around*|(|\<tau\>|)>\<mathd\>\<tau\>>
   or the inverse Fourier transform of <math|<wide|h|^><around|(|\<omega\>|)>*<wide|\<varphi\>|^><rsub|m><around|(|\<omega\>|)>>.
   It is therefore necessary to select a basis of
-  <math|<with|math-font|cal*|L><rsub|2><around|(|<R>|)>> for which either of
-  these operations can be done in closed form. We use
+  <math|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>|)>> for which
+  either of these operations can be done in closed form. We use
   <localize|Theorem><nbsp><reference|thm:main-theorem> to derive orthonormal
   expansions for (i) Matérn kernels for all half-integer orders, (ii) the
   Cauchy kernel (i.e., rational quadratic
   kernel<nbsp><cite-detail|RasmussenWilliams2006|Equation<nbsp>(4.19)> with
   <math|\<alpha\>=1>), and (iii) the Gaussian kernel. The expansions are
-  summarised in <localize|Section><nbsp><reference|sec:summary>. <rev|All
-  expansions appearing in this article converge pointwise.>
+  summarised in <localize|Section><nbsp><reference|sec:summary>. All
+  expansions appearing in this article converge pointwise.
 
   <subsection|On Mercer expansions>
 
-  Let <math|\<Omega\>> be a subset of <math|<R><rsup|d>> and
+  Let <math|\<Omega\>> be a subset of <math|\<bbb-R\><rsup|d>> and
   <math|w:\<Omega\>\<to\><around|[|0,\<infty\>|)>> a weight function. The
   Hilbert space <math|<with|math-font|cal*|L><rsub|2><around|(|\<Omega\>,w|)>>
   is equipped with the inner product
 
-  <\equation*>
-    <around|\<langle\>|f,g|\<rangle\>><rsub|<with|math-font|cal*|L><rsub|2><around|(|\<Omega\>,w|)>>=<big|int><rsub|\<Omega\>>f<rsup|\<ast\>><space|-0.17em><around|(|t|)>*g<around|(|t|)>*w<around|(|t|)><dif>t
-  </equation*>
+  <\equation>
+    <around|\<langle\>|f,g|\<rangle\>><rsub|<with|math-font|cal*|L><rsub|2><around|(|\<Omega\>,w|)>>=<big|int><rsub|\<Omega\>>f<rsup|\<ast\>><space|-0.17em><around|(|t|)>*g<around|(|t|)>*w<around|(|t|)>\<mathd\>t
+  </equation>
 
-  and consists of all functions <math|f:<R>\<to\><C>> for which the
-  corresponding norm is finite. Suppose that the kernel <math|r> is
+  and consists of all functions <math|f:\<bbb-R\>\<to\>\<bbb-C\>> for which
+  the corresponding norm is finite. Suppose that the kernel <math|r> is
   continuous and define the integral operator
 
   <\equation>
-    <label|eq:mercer-integral-operator>\<cal-T\><rsub|r,w>*f=<big|int><rsub|-\<infty\>><rsup|\<infty\>>r<around|(|\<cdummy\>,u|)>*f<around|(|u|)>*w<around|(|u|)><dif>u.
+    <label|eq:mercer-integral-operator>\<cal-T\><rsub|r,w>*f=<big|int><rsub|-\<infty\>><rsup|\<infty\>>r<around|(|\<cdummy\>,u|)>*f<around|(|u|)>*w<around|(|u|)>\<mathd\>u
   </equation>
 
   Under certain assumptions, Mercer's theorem<nbsp><cite|SteinwartScovel2012>
@@ -365,8 +367,7 @@
   Consequently, the kernel has the pointwise convergent <em|Mercer expansion>
 
   <\equation>
-    <label|eq:kernel-expansion-mercer>r<around|(|t,u|)>=<big|sum><rsub|m=0><rsup|\<infty\>>\<mu\><rsub|m>\<vartheta\><rsub|m><rsup|\<ast\>><around|(|t|)>\<vartheta\><rsub|m><around|(|u|)>*<space|1em><text|for
-    all ><space|1em>t,u\<in\>\<Omega\>.
+    <label|eq:kernel-expansion-mercer>r<around|(|t,u|)>=<big|sum><rsub|m=0><rsup|\<infty\>>\<mu\><rsub|m>\<vartheta\><rsub|m><rsup|\<ast\>><around|(|t|)>\<vartheta\><rsub|m><around|(|u|)>*<space|1em><text|\<forall\>>t,u\<in\>\<Omega\>
   </equation>
 
   While Mercer's theorem and the eigenvalues of <math|\<cal-T\><rsub|r,w>>
@@ -720,7 +721,7 @@
   expression of the Matérn\ULaguerre functions<nbsp><eqref|eq:matern-laguerre-functions>
   may be obtained by using the convolution formula in
   <localize|Theorem><nbsp><reference|thm:main-theorem>. For
-  <math|\<eta\>\<in\><N><rsub|0>>, the associated Laguerre polynomial
+  <math|\<eta\>\<in\>\<bbb-N\><rsub|0>>, the associated Laguerre polynomial
   <math|<math-up|L><rsub|m><rsup|<around|(|\<eta\>|)>>> is defined as
 
   <\equation>
@@ -735,7 +736,7 @@
 
   <\equation*>
     <\eqsplit>
-      <tformat|<table|<row|<cell|\<psi\><rsub|m,\<nu\>><around|(|t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|\<nu\>+1/2>*<around|(|t-\<tau\>|)>*\<varphi\><rsub|m><around|(|\<tau\>|)><dif>\<tau\>>>|<row|<cell|>|<cell|=<frac|\<nu\>!|<sqrt|<smash|[>b]<around|(|2*\<nu\>|)>!>>*2<rsup|\<nu\>+1/2>*<big|int><rsub|0><rsup|t>e<rsup|-<around|(|t-\<tau\>|)>>*<frac|<around|(|t-\<tau\>|)><rsup|\<nu\>>|\<nu\>!>*e<rsup|-\<tau\>>*<sqrt|2><math-up|L><rsub|m><around|(|2*\<tau\>|)><dif>\<tau\>>>|<row|<cell|>|<cell|=<frac|\<nu\>!|<sqrt|<smash|[>b]<around|(|2*\<nu\>|)>!>>*2*e<rsup|-t>*<big|int><rsub|0><rsup|t><frac|<around|(|2*t-2*\<tau\>|)><rsup|\<nu\>>|\<nu\>!><math-up|L><rsub|m><around|(|2*\<tau\>|)><dif>\<tau\>>>|<row|<cell|>|<cell|=<frac|\<nu\>!|<sqrt|<smash|[>b]<around|(|2*\<nu\>|)>!>>*e<rsup|-t>*<big|int><rsub|0><rsup|2*t><frac|<around|(|2*t-\<tau\>|)><rsup|\<nu\>>|\<nu\>!><math-up|L><rsub|m><around|(|\<tau\>|)><dif>\<tau\>>>|<row|<cell|>|<cell|=<frac|\<nu\>!|<sqrt|<smash|[>b]<around|(|2*\<nu\>|)>!>>*<frac|m!|<around|(|m+\<nu\>+1|)>!>*<around|(|2*t|)><rsup|\<nu\>+1><math-up|L><rsub|m><rsup|<around|(|\<nu\>+1|)>><around|(|2*t|)>*e<rsup|-t>,>>>>
+      <tformat|<table|<row|<cell|\<psi\><rsub|m,\<nu\>><around|(|t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|\<nu\>+1/2>*<around|(|t-\<tau\>|)>*\<varphi\><rsub|m><around|(|\<tau\>|)>\<mathd\>\<tau\>>>|<row|<cell|>|<cell|=<frac|\<nu\>!|<sqrt|<smash|[>b]<around|(|2*\<nu\>|)>!>>*2<rsup|\<nu\>+1/2>*<big|int><rsub|0><rsup|t>e<rsup|-<around|(|t-\<tau\>|)>>*<frac|<around|(|t-\<tau\>|)><rsup|\<nu\>>|\<nu\>!>*e<rsup|-\<tau\>>*<sqrt|2><math-up|L><rsub|m><around|(|2*\<tau\>|)>\<mathd\>\<tau\>>>|<row|<cell|>|<cell|=<frac|\<nu\>!|<sqrt|<smash|[>b]<around|(|2*\<nu\>|)>!>>*2*e<rsup|-t>*<big|int><rsub|0><rsup|t><frac|<around|(|2*t-2*\<tau\>|)><rsup|\<nu\>>|\<nu\>!><math-up|L><rsub|m><around|(|2*\<tau\>|)>\<mathd\>\<tau\>>>|<row|<cell|>|<cell|=<frac|\<nu\>!|<sqrt|<smash|[>b]<around|(|2*\<nu\>|)>!>>*e<rsup|-t>*<big|int><rsub|0><rsup|2*t><frac|<around|(|2*t-\<tau\>|)><rsup|\<nu\>>|\<nu\>!><math-up|L><rsub|m><around|(|\<tau\>|)>\<mathd\>\<tau\>>>|<row|<cell|>|<cell|=<frac|\<nu\>!|<sqrt|<smash|[>b]<around|(|2*\<nu\>|)>!>>*<frac|m!|<around|(|m+\<nu\>+1|)>!>*<around|(|2*t|)><rsup|\<nu\>+1><math-up|L><rsub|m><rsup|<around|(|\<nu\>+1|)>><around|(|2*t|)>*e<rsup|-t>,>>>>
     </eqsplit>
   </equation*>
 
@@ -757,7 +758,7 @@
     <label|eq:negative_matern_laguerre>
 
     <\eqsplit>
-      <tformat|<table|<row|<cell|\<psi\><rsub|-\<nu\>-1-m-1,\<nu\>><around|(|t|)>>|<cell|=<around|(|-1|)><rsup|\<nu\>>*\<psi\><rsub|m,\<nu\>>*<around|(|-t|)>>>|<row|<cell|>|<cell|=-<frac|\<nu\>!|<sqrt|<smash|[>b]<around|(|2*\<nu\>|)>!>>*<frac|m!|<around|(|m+\<nu\>+1|)>!>*<around|(|2*t|)><rsup|\<nu\>+1><math-up|L><rsub|m><rsup|<around|(|\<nu\>+1|)>><around|(|2<abs*|0|t>|)>*e<rsup|-<abs*|0|t>>*<with|math-font-family|bf|1><rsub|<around|(|-\<infty\>,0|)>><around|(|t|)>>>>>
+      <tformat|<table|<row|<cell|\<psi\><rsub|-\<nu\>-1-m-1,\<nu\>><around|(|t|)>>|<cell|=<around|(|-1|)><rsup|\<nu\>>*\<psi\><rsub|m,\<nu\>>*<around|(|-t|)>>>|<row|<cell|>|<cell|=-<frac|\<nu\>!|<sqrt|<smash|[>b]<around|(|2*\<nu\>|)>!>>*<frac|m!|<around|(|m+\<nu\>+1|)>!>*<around|(|2*t|)><rsup|\<nu\>+1><math-up|L><rsub|m><rsup|<around|(|\<nu\>+1|)>><around|(|2<around*|\||t|\|>|)>*e<rsup|-<around*|\||t|\|>>*<with|math-font-family|bf|1><rsub|<around|(|-\<infty\>,0|)>><around|(|t|)>>>>>
     </eqsplit>
   </equation>
 
@@ -767,16 +768,16 @@
 
   <\align>
     <tformat|<table|<row|<cell|\<psi\><rsub|m,\<nu\>><rsup|+><around|(|t|)>>|<cell|=\<psi\><rsub|m,\<nu\>><around|(|t|)>>|<cell|>|<cell|<text|for
-    ><space|1em>m\<in\><N><rsub|0>,<eq-number><label|eq:psi-positive>>>|<row|<cell|\<psi\><rsub|m,\<nu\>><rsup|-><around|(|t|)>>|<cell|=<around|(|-1|)><rsup|\<nu\>>*\<psi\><rsub|m,\<nu\>>*<around|(|-t|)>>|<cell|>|<cell|<text|for
-    ><space|1em>m\<in\><N><rsub|0>,<eq-number><label|eq:psi-negative>>>|<row|<cell|\<psi\><rsub|m,\<nu\>><rsup|0><around|(|t|)>>|<cell|=\<psi\><rsub|-\<nu\>-1+m,\<nu\>><around|(|t|)>>|<cell|>|<cell|<text|for
-    ><space|1em>m=0,1,\<ldots\>,\<nu\>.<eq-number><label|eq:psi-null>>>>>
+    ><space|1em>m\<in\>\<bbb-N\><rsub|0><eq-number><label|eq:psi-positive>>>|<row|<cell|\<psi\><rsub|m,\<nu\>><rsup|-><around|(|t|)>>|<cell|=<around|(|-1|)><rsup|\<nu\>>*\<psi\><rsub|m,\<nu\>>*<around|(|-t|)>>|<cell|>|<cell|<text|for
+    ><space|1em>m\<in\>\<bbb-N\><rsub|0><eq-number><label|eq:psi-negative>>>|<row|<cell|\<psi\><rsub|m,\<nu\>><rsup|0><around|(|t|)>>|<cell|=\<psi\><rsub|-\<nu\>-1+m,\<nu\>><around|(|t|)>>|<cell|>|<cell|<text|for
+    ><space|1em>m=0,1,\<ldots\>,\<nu\><eq-number><label|eq:psi-null>>>>>
   </align>
 
   For convenience, define the corresponding sets
 
-  <\equation*>
-    <with|math-font|cal*|M><rsub|\<nu\>><rsup|+>=<around*|{|\<psi\><rsub|m,\<nu\>><rsup|+>|}><rsub|m\<in\><N><rsub|0>>,<space|1em><with|math-font|cal*|M><rsub|\<nu\>><rsup|->=<around*|{|\<psi\><rsub|m,\<nu\>><rsup|->|}><rsub|m\<in\><N><rsub|0>>,<space|1em><with|math-font|cal*|M><rsub|\<nu\>><rsup|0>=<around*|{|\<psi\><rsub|m,\<nu\>><rsup|0>|}><rsub|m=0><rsup|\<nu\>>,
-  </equation*>
+  <\equation>
+    <with|math-font|cal*|M><rsub|\<nu\>><rsup|+>=<around*|{|\<psi\><rsub|m,\<nu\>><rsup|+>|}><rsub|m\<in\>\<bbb-N\><rsub|0>>,<space|1em><with|math-font|cal*|M><rsub|\<nu\>><rsup|->=<around*|{|\<psi\><rsub|m,\<nu\>><rsup|->|}><rsub|m\<in\>\<bbb-N\><rsub|0>>,<space|1em><with|math-font|cal*|M><rsub|\<nu\>><rsup|0>=<around*|{|\<psi\><rsub|m,\<nu\>><rsup|0>|}><rsub|m=0><rsup|\<nu\>>
+  </equation>
 
   the union <math|<with|math-font|cal*|M><rsub|\<nu\>>=<with|math-font|cal*|M><rsub|\<nu\>><rsup|->\<cup\><with|math-font|cal*|M><rsub|\<nu\>><rsup|+>>,
   and the kernels
@@ -788,7 +789,7 @@
   We call the set <math|<with|math-font|cal*|M><rsub|\<nu\>><rsup|0>> the
   <em|null-space> and study it in more detail in
   <localize|Section><nbsp><reference|sec:null-space>. For now, note that the
-  null-space functions are supported on <math|<R>> because
+  null-space functions are supported on <math|\<bbb-R\>> because
   from<nbsp><eqref|eq:matern-laguerre-functions> one can see that for
   <math|m=0,\<ldots\>,\<nu\>> the sum that defines
   <math|\<psi\><rsub|-\<nu\>-1+m,\<nu\>>> contains Laguerre functions with
@@ -827,9 +828,9 @@
   <math|<with|math-font|cal*|M><rsub|\<nu\>><rsup|+>> form orthogonal bases
   with respect to the weight function
 
-  <\equation*>
-    w<rsub|\<nu\>><around|(|t|)>=2/<abs|2*t><rsup|\<nu\>+1>.
-  </equation*>
+  <\equation>
+    w<rsub|\<nu\>><around|(|t|)>=<frac|2|<around*|\||2t|\|><rsup|\<nu\>+1>>
+  </equation>
 
   This justifies saying that the expansions we have derived for Matérn
   kernels are \Palmost\Q Mercer.
@@ -844,10 +845,10 @@
     and <math|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\><rsub|->,w<rsub|\<nu\>>|)>>,
     respectively. Furthermore,
 
-    <\equation*>
-      <norm*|1|\<psi\><rsup|+><rsub|m,\<nu\>>><rsub|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,w<rsub|\<nu\>>|)>><rsup|2>=<norm*|1|\<psi\><rsup|-><rsub|m,\<nu\>>><rsub|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,w<rsub|\<nu\>>|)>><rsup|2>=<frac|<around|(|\<nu\>!|)><rsup|2>|<around|(|2*\<nu\>|)>!>*<frac|m!|<around|(|m+\<nu\>+1|)>!>*<space|1em><text|for
-      every ><space|1em>m\<in\><N><rsub|0>.
-    </equation*>
+    <\equation>
+      <around*|\<\|\|\>|\<psi\><rsup|+><rsub|m,\<nu\>>|\<\|\|\>><rsub|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,w<rsub|\<nu\>>|)>><rsup|2>=<around*|\<\|\|\>|\<psi\><rsup|-><rsub|m,\<nu\>>|\<\|\|\>><rsub|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,w<rsub|\<nu\>>|)>><rsup|2>=<frac|<around|(|\<nu\>!|)><rsup|2>|<around|(|2*\<nu\>|)>!>*<frac|m!|<around|(|m+\<nu\>+1|)>!>*<space|1em><text|for
+      every ><space|1em>m\<in\>\<bbb-N\><rsub|0>
+    </equation>
   </proposition>
 
   <\proof>
@@ -856,20 +857,19 @@
     follows from the fact that the functions
 
     <\equation>
-      t<rsup|\<nu\>/2+1/2><math-up|L><rsub|m><rsup|<around|(|\<nu\>+1|)>><around|(|t|)>*e<rsup|-t/2>*<space|1em><text|for
-      ><space|1em>m\<in\><N><rsub|0>
+      t<rsup|<frac|v+1|2>><math-up|L><rsub|m><rsup|<around|(|\<nu\>+1|)>><around|(|t|)>*e<rsup|-<frac|t|2>><space|1em><text|\<forall\>>m\<in\>\<bbb-N\><rsub|0>
     </equation>
 
     form an orthonormal basis in <math|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\><rsub|+>|)>>
-    <cite-parenthesized|Szego1939>. Furthermore, the norms of the functions
-    in <math|<with|math-font|cal*|M><rsub|\<nu\>><rsup|+>> are readily
-    computed from the norms of the corresponding Laguerre polynomials:
+    <cite|Szego1939>.Furthermore, the norms of the functions in
+    <math|<with|math-font|cal*|M><rsub|\<nu\>><rsup|+>> are readily computed
+    from the norms of the corresponding Laguerre polynomials:
 
-    <\equation*>
+    <\equation>
       <\eqsplit>
-        <tformat|<table|<row|<cell|<norm*|1|\<psi\><rsup|+><rsub|m,\<nu\>>><rsub|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,w<rsub|\<nu\>>|)>><rsup|2>>|<cell|=<frac|<around|(|\<nu\>!|)><rsup|2>|<around|(|2*\<nu\>|)>!><around*|(|<frac|m!|<around|(|m+\<nu\>+1|)>!>|)><rsup|2>*<big|int><rsub|0><rsup|\<infty\>><around|[|<math-up|L><rsub|m><rsup|<around|(|\<nu\>+1|)>><around|(|t|)>|]><rsup|2>*t<rsup|\<nu\>+1>*e<rsup|-t><dif>t>>|<row|<cell|>|<cell|=<frac|<around|(|\<nu\>!|)><rsup|2>|<around|(|2*\<nu\>|)>!>*<frac|m!|<around|(|m+\<nu\>+1|)>!>.>>>>
+        <tformat|<table|<row|<cell|<around*|\<\|\|\>|\<psi\><rsup|+><rsub|m,\<nu\>>|\<\|\|\>><rsub|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,w<rsub|\<nu\>>|)>><rsup|2>>|<cell|=<frac|<around|(|\<nu\>!|)><rsup|2>|<around|(|2*\<nu\>|)>!><around*|(|<frac|m!|<around|(|m+\<nu\>+1|)>!>|)><rsup|2>*<big|int><rsub|0><rsup|\<infty\>><math-up|L><rsub|m><rsup|\<nu\>+1><around|(|t|)><rsup|2>*t<rsup|\<nu\>+1>*e<rsup|-t>\<mathd\>t>>|<row|<cell|>|<cell|=<frac|<around|(|\<nu\>!|)><rsup|2>|<around|(|2*\<nu\>|)>!>*<frac|m!|<around|(|m+\<nu\>+1|)>!>>>>>
       </eqsplit>
-    </equation*>
+    </equation>
 
     The statement pertaining to <math|<with|math-font|cal*|M><rsub|\<nu\>><rsup|->>
     follows from the symmetry <eqref|eq:negative_matern_laguerre> and the
@@ -877,10 +877,10 @@
     the fact that <math|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>|)>=<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\><rsub|->|)>\<oplus\><with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\><rsub|+>|)>>.
   </proof>
 
-  <rev|Because they do not decay to zero sufficiently fast at the origin, the
+  Because they do not decay to zero sufficiently fast at the origin, the
   functions in <math|<with|math-font|cal*|M><rsub|\<nu\>><rsup|0>> are not
   members of <math|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,w<rsub|\<nu\>>|)>>.
-  This will become evident in Section<nbsp><reference|sec:null-space>. >
+  This will become evident in Section<nbsp><reference|sec:null-space>
 
   <subsection|Truncation error>
 
@@ -900,32 +900,32 @@
   this kernel are displayed in <localize|Figure><nbsp><reference|fig:matern-rho-kernel>.
   The full Matérn kernel is therefore
 
-  <\equation*>
-    r<rsub|\<nu\>+1/2><around|(|t,u|)>=<big|sum><rsub|m=0><rsup|\<nu\>>\<psi\><rsub|m,\<nu\>><rsup|0><around|(|t|)>*\<psi\><rsub|m,\<nu\>><rsup|0><around|(|u|)>+\<rho\><rsub|\<nu\>+1/2><around|(|t,u|)>.
-  </equation*>
+  <\equation>
+    r<rsub|\<nu\>+1/2><around|(|t,u|)>=<big|sum><rsub|m=0><rsup|\<nu\>>\<psi\><rsub|m,\<nu\>><rsup|0><around|(|t|)>*\<psi\><rsub|m,\<nu\>><rsup|0><around|(|u|)>+\<rho\><rsub|\<nu\>+1/2><around|(|t,u|)>
+  </equation>
 
   From <localize|Proposition><nbsp><reference|prop:matern_laguerre_L2> we see
   that the kernel <math|\<rho\><rsub|\<nu\>+1/2>> is an element of
   <math|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>\<times\>\<bbb-R\>,w<rsub|\<nu\>>\<otimes\>w<rsub|\<nu\>>|)>>
   and that its squared norm is given by
 
-  <\equation*>
+  <\equation>
     <\eqsplit>
-      <tformat|<table|<row|<cell|<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>\<rho\><rsub|\<nu\>+1/2><rsup|2>>|<cell|<around|(|t,u|)>*w<rsub|\<nu\>><around|(|t|)>*w<rsub|\<nu\>><around|(|u|)><dif>t<dif>u>>|<row|<cell|>|<cell|=<big|sum><rsub|m=0><rsup|\<infty\>><around*|(|<norm*|1|\<psi\><rsup|-><rsub|m,\<nu\>>><rsub|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,w<rsub|\<nu\>>|)>><rsup|4>+<norm*|1|\<psi\><rsup|+><rsub|m,\<nu\>>><rsub|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,w<rsub|\<nu\>>|)>><rsup|4><space|-0.17em>|)>.>>>>
+      <tformat|<table|<row|<cell|<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>\<rho\><rsub|\<nu\>+1/2><rsup|2>>|<cell|<around|(|t,u|)>*w<rsub|\<nu\>><around|(|t|)>*w<rsub|\<nu\>><around|(|u|)>\<mathd\>t\<mathd\>u>>|<row|<cell|>|<cell|=<big|sum><rsub|m=0><rsup|\<infty\>><around*|(|<around*|\<\|\|\>|\<psi\><rsup|-><rsub|m,\<nu\>>|\<\|\|\>><rsub|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,w<rsub|\<nu\>>|)>><rsup|4>+<around*|\<\|\|\>|\<psi\><rsup|+><rsub|m,\<nu\>>|\<\|\|\>><rsub|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,w<rsub|\<nu\>>|)>><rsup|4><space|-0.17em>|)>>>>>
     </eqsplit>
-  </equation*>
+  </equation>
 
   This implies that <math|\<rho\><rsub|\<nu\>+1/2>> defines a
   Hilbert\USchmidt operator on <math|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,w<rsub|\<nu\>>|)>>
   via<nbsp><eqref|eq:mercer-integral-operator> and that the above norm is
   precisely the squared Hilbert\USchmidt norm of this
-  operator<nbsp><cite-parenthesized|Kuo1975>. Next the approximation errors
-  for appropriately truncated approximations of the Matérn kernel are
-  examined in terms of the Hilbert\USchmidt norm. Let <math|n\<geq\>1> and
-  define the truncated kernels
+  operator<nbsp><cite|Kuo1975>. Next the approximation errors for
+  appropriately truncated approximations of the Matérn kernel are examined in
+  terms of the Hilbert\USchmidt norm. Let <math|n\<geq\>1> and define the
+  truncated kernels
 
   <\align>
-    <tformat|<table|<row|<cell|\<rho\><rsub|\<nu\>+1/2,n><around|(|t,u|)>>|<cell|=<big|sum><rsub|m=0><rsup|n-1>\<psi\><rsub|m,\<nu\>><rsup|-><around|(|t|)>*\<psi\><rsub|m,\<nu\>><rsup|-><around|(|u|)>+<big|sum><rsub|m=0><rsup|n-1>\<psi\><rsub|m,\<nu\>><rsup|+><around|(|t|)>*\<psi\><rsub|m,\<nu\>><rsup|+><around|(|u|)>,<eq-number>>>|<row|<cell|r<rsub|\<nu\>+1/2,n><around|(|t,u|)>>|<cell|=<big|sum><rsub|m=0><rsup|\<nu\>>\<psi\><rsub|m,\<nu\>><rsup|0><around|(|t|)>*\<psi\><rsub|m,\<nu\>><rsup|0><around|(|u|)>+\<rho\><rsub|\<nu\>+1/2,n><around|(|t,u|)>.<eq-number><label|eq:matern-truncation>>>>>
+    <tformat|<table|<row|<cell|\<rho\><rsub|\<nu\>+1/2,n><around|(|t,u|)>>|<cell|=<big|sum><rsub|m=0><rsup|n-1>\<psi\><rsub|m,\<nu\>><rsup|-><around|(|t|)>*\<psi\><rsub|m,\<nu\>><rsup|-><around|(|u|)>+<big|sum><rsub|m=0><rsup|n-1>\<psi\><rsub|m,\<nu\>><rsup|+><around|(|t|)>*\<psi\><rsub|m,\<nu\>><rsup|+><around|(|u|)><eq-number>>>|<row|<cell|r<rsub|\<nu\>+1/2,n><around|(|t,u|)>>|<cell|=<big|sum><rsub|m=0><rsup|\<nu\>>\<psi\><rsub|m,\<nu\>><rsup|0><around|(|t|)>*\<psi\><rsub|m,\<nu\>><rsup|0><around|(|u|)>+\<rho\><rsub|\<nu\>+1/2,n><around|(|t,u|)>.<eq-number><label|eq:matern-truncation>>>>>
   </align>
 
   Observe that <math|r<rsub|\<nu\>+1/2,n>> is a finite expansion of
@@ -940,18 +940,18 @@
 
   <\proposition>
     [Matérn truncation]<label|prop:matern-truncation-error>For every
-    <math|n\<in\><N>> it holds that
+    <math|n\<in\>\<bbb-N\>> it holds that
 
-    <\equation*>
-      <around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><around|(|r<rsub|\<nu\>+1/2><around|(|t,u|)>-r<rsub|\<nu\>+1/2,n><around|(|t,u|)>|)><rsup|2>*w<rsub|\<nu\>><around|(|t|)>*w<rsub|\<nu\>><around|(|u|)><dif>t<dif>u|)><rsup|1/2>\<leq\><frac|c<rsub|\<nu\>>|n<rsup|\<nu\>+1/2>>,
-    </equation*>
+    <\equation>
+      <sqrt|<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><around|(|r<rsub|\<nu\>+1/2><around|(|t,u|)>-r<rsub|\<nu\>+1/2,n><around|(|t,u|)>|)><rsup|2>*w<rsub|\<nu\>><around|(|t|)>*w<rsub|\<nu\>><around|(|u|)>\<mathd\>t\<mathd\>u>\<leq\><frac|c<rsub|\<nu\>>|n<rsup|\<nu\>+<frac|1|2>>>
+    </equation>
 
     where
 
-    <\equation*>
+    <\equation>
       c<rsub|\<nu\>>=<frac|<around|(|\<nu\>!|)><rsup|2>|<around|(|2*\<nu\>|)>!>*<sqrt|<frac|2*<around|(|2*\<nu\>+2|)>|2*\<nu\>+1>>\<sim\><frac|1|2<rsup|2*\<nu\>>>*<sqrt|<frac|2*\<pi\>*<around|(|2*\<nu\>+2|)>*\<nu\>|2*\<nu\>+1>>*<space|1em><text|as
-      ><space|1em>\<nu\>\<to\>\<infty\>.
-    </equation*>
+      ><space|1em>\<nu\>\<to\>\<infty\>
+    </equation>
   </proposition>
 
   <\proof>
@@ -969,7 +969,7 @@
 
     <\equation*>
       <\eqsplit>
-        <tformat|<table|<row|<cell|<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>(r<rsub|\<nu\>+1/2>>|<cell|<around|(|t,u|)>-r<rsub|\<nu\>+1/2,n><around|(|t,u|)>)<rsup|2>w<rsub|\<nu\>><around|(|t|)>*w<rsub|\<nu\>><around|(|u|)><dif>t<dif>u>>|<row|<cell|>|<cell|=<big|sum><rsub|m=n><rsup|\<infty\>><around*|(|<norm*|1|\<psi\><rsup|-><rsub|m,\<nu\>>><rsub|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,w<rsub|\<nu\>>|)>><rsup|4>+<norm*|1|\<psi\><rsup|+><rsub|m,\<nu\>>><rsub|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,w<rsub|\<nu\>>|)>><rsup|4>|)>>>|<row|<cell|>|<cell|=2<around*|(|<frac|<around|(|\<nu\>!|)><rsup|2>|<around|(|2*\<nu\>|)>!>|)><rsup|2>*<big|sum><rsub|m=n><rsup|\<infty\>><around*|(|<frac|m!|<around|(|m+\<nu\>+1|)>!>|)><rsup|2>>>|<row|<cell|>|<cell|\<leq\>2<around*|(|<frac|<around|(|\<nu\>!|)><rsup|2>|<around|(|2*\<nu\>|)>!>|)><rsup|2>*<big|sum><rsub|m=n><rsup|\<infty\>><frac|1|m<rsup|2*\<nu\>+2>>.>>>>
+        <tformat|<table|<row|<cell|<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>(r<rsub|\<nu\>+1/2>>|<cell|<around|(|t,u|)>-r<rsub|\<nu\>+1/2,n><around|(|t,u|)>)<rsup|2>w<rsub|\<nu\>><around|(|t|)>*w<rsub|\<nu\>><around|(|u|)>\<mathd\>t\<mathd\>u>>|<row|<cell|>|<cell|=<big|sum><rsub|m=n><rsup|\<infty\>><around*|(|<norm*|1|\<psi\><rsup|-><rsub|m,\<nu\>>><rsub|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,w<rsub|\<nu\>>|)>><rsup|4>+<norm*|1|\<psi\><rsup|+><rsub|m,\<nu\>>><rsub|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,w<rsub|\<nu\>>|)>><rsup|4>|)>>>|<row|<cell|>|<cell|=2<around*|(|<frac|<around|(|\<nu\>!|)><rsup|2>|<around|(|2*\<nu\>|)>!>|)><rsup|2>*<big|sum><rsub|m=n><rsup|\<infty\>><around*|(|<frac|m!|<around|(|m+\<nu\>+1|)>!>|)><rsup|2>>>|<row|<cell|>|<cell|\<leq\>2<around*|(|<frac|<around|(|\<nu\>!|)><rsup|2>|<around|(|2*\<nu\>|)>!>|)><rsup|2>*<big|sum><rsub|m=n><rsup|\<infty\>><frac|1|m<rsup|2*\<nu\>+2>>.>>>>
       </eqsplit>
     </equation*>
 
@@ -1147,50 +1147,46 @@
 
   Similarly, for negative indices we get
 
-  <\equation*>
+  <\equation>
     <\eqsplit>
-      <tformat|<table|<row|<cell|\<psi\><rsub|-m><around|(|t|)>=<frac|1|2>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-<abs*|0|\<omega\>>/2>*\<varphi\><rsub|-m>*<around|(|\<omega\>/2|)>*e<rsup|i*\<omega\>*t><dif>\<omega\>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-<abs*|0|\<omega\>>>*\<varphi\><rsub|-m><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*2*t><dif>\<omega\>>>|<row|<cell|>|<cell|=-<big|int><rsub|-\<infty\>><rsup|0>e<rsup|-<abs*|0|\<omega\>>>*\<varphi\><rsub|m-1>*<around|(|-\<omega\>|)>*e<rsup|i*\<omega\>*2*t><dif>\<omega\>>>|<row|<cell|>|<cell|=-<big|int><rsub|0><rsup|\<infty\>>e<rsup|-<abs*|0|\<omega\>>>*\<varphi\><rsub|m-1><around|(|\<omega\>|)>*e<rsup|-i*\<omega\>*2*t><dif>\<omega\>>>|<row|<cell|>|<cell|=-<big|int><rsub|0><rsup|\<infty\>>\<varphi\><rsub|m-1><around|(|\<omega\>|)>*e<rsup|-i*\<omega\>*<around|(|2*t-i|)>><dif>\<omega\>>>|<row|<cell|>|<cell|=-<wide|\<varphi\>|^><rsub|m-1>*<around|(|2*t-i|)>>>|<row|<cell|>|<cell|=-<frac|1|<sqrt|2>>*<frac|<around|(|i*t|)><rsup|m-1>|<around*|(|i*t+1|)><rsup|m>>.>>>>
+      <tformat|<table|<row|<cell|\<psi\><rsub|-m><around|(|t|)>=<frac|1|2>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-<frac|<around*|\||\<omega\>|\|>|2>>*\<varphi\><rsub|-m>*<around*|(|<frac|\<omega\>|2>|)>*e<rsup|i*\<omega\>*t>\<mathd\>\<omega\>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-<around*|\||\<omega\>|\|>>*\<varphi\><rsub|-m><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*2*t>\<mathd\>\<omega\>>>|<row|<cell|>|<cell|=-<big|int><rsub|-\<infty\>><rsup|0>e<rsup|-<abs*|0|\<omega\>>>*\<varphi\><rsub|m-1>*<around|(|-\<omega\>|)>*e<rsup|i*\<omega\>*2*t><dif>\<omega\>>>|<row|<cell|>|<cell|=-<big|int><rsub|0><rsup|\<infty\>>e<rsup|-<abs*|0|\<omega\>>>*\<varphi\><rsub|m-1><around|(|\<omega\>|)>*e<rsup|-i*\<omega\>*2*t><dif>\<omega\>>>|<row|<cell|>|<cell|=-<big|int><rsub|0><rsup|\<infty\>>\<varphi\><rsub|m-1><around|(|\<omega\>|)>*e<rsup|-i*\<omega\>*<around|(|2*t-i|)>><dif>\<omega\>>>|<row|<cell|>|<cell|=-<wide|\<varphi\>|^><rsub|m-1>*<around|(|2*t-i|)>>>|<row|<cell|>|<cell|=-<frac|1|<sqrt|2>>*<frac|<around|(|i*t|)><rsup|m-1>|<around*|(|i*t+1|)><rsup|m>>.>>>>
     </eqsplit>
-  </equation*>
+  </equation>
 
   To summarise, the complex valued Cauchy\ULaguerre functions are
 
   <\subequations>
-    <label|eq:cauch-laguerre-funcs>
-
     <\align>
-      <tformat|<table|<row|<cell|\<psi\><rsub|m><around|(|t|)>>|<cell|=-<frac|1|<sqrt|2>>*<frac|<around|(|i*t|)><rsup|m>|<around|(|i*t-1|)><rsup|m+1>>*<space|1em><text|for
-      ><space|1em>m\<in\>\<bbb-N\><rsub|0>,<eq-number>>>|<row|<cell|\<psi\><rsub|-m-1><around|(|t|)>>|<cell|=-<frac|1|<sqrt|2>>*<frac|<around|(|i*t|)><rsup|m>|<around|(|i*t+1|)><rsup|m+1>>*<space|1em><text|for
-      ><space|1em>m\<in\>\<bbb-N\><rsub|0>.<eq-number>>>>>
+      <tformat|<table|<row|<cell|\<psi\><rsub|m><around|(|t|)>>|<cell|=-<frac|1|<sqrt|2>>*<frac|<around|(|i*t|)><rsup|m>|<around|(|i*t-1|)><rsup|m+1>>*<space|1em>\<forall\>m\<in\>\<bbb-N\><rsub|0><label|eq:cauch-laguerre-funcs><eq-number>>>|<row|<cell|\<psi\><rsub|-m-1><around|(|t|)>>|<cell|=-<frac|1|<sqrt|2>>*<frac|<around|(|i*t|)><rsup|m>|<around|(|i*t+1|)><rsup|m+1>>*<space|1em><text|\<forall\>>m\<in\>\<bbb-N\><rsub|0><eq-number>>>>>
     </align>
   </subequations>
 
   \ They have the conjugate symmetry property
 
-  <\equation*>
+  <\equation>
     \<psi\><rsub|m><rsup|\<ast\>><around|(|t|)>=-\<psi\><rsub|-m-1><around|(|t|)>=\<psi\><rsub|m>*<around|(|-t|)>*<space|1em><text|for
-    ><space|1em>m\<in\><Z>.
-  </equation*>
+    ><space|1em>m\<in\>\<bbb-Z\>
+  </equation>
 
   An expansion of the Cauchy kernel<nbsp><eqref|eq:cauchy-kernel> in terms of
   complex-valued Cauchy\ULaguerre functions is thus given by
 
-  <\equation*>
-    r<around|(|t,u|)>=<big|sum><rsub|m=-\<infty\>><rsup|\<infty\>>\<psi\><rsub|m><rsup|\<ast\>><around|(|t|)>*\<psi\><rsub|m><around|(|u|)>.
-  </equation*>
+  <\equation>
+    r<around|(|t,u|)>=<big|sum><rsub|m=-\<infty\>><rsup|\<infty\>>\<psi\><rsub|m><rsup|\<ast\>><around|(|t|)>*\<psi\><rsub|m><around|(|u|)>
+  </equation>
 
   This expansion is remarkably easy to verify by independent means since
   geometric summation and conjugate symmetry yield
 
-  <\equation*>
+  <\equation>
     <big|sum><rsub|m=0><rsup|\<infty\>>\<psi\><rsub|m><rsup|\<ast\>><around|(|t|)>*\<psi\><rsub|m><around|(|u|)>=<frac|1|2>*<frac|1|<around|(|i*t-1|)>*<around|(|-i*u-1|)>-t*u>
-  </equation*>
+  </equation>
 
   and
 
-  <\equation*>
-    <big|sum><rsub|m=-\<infty\>><rsup|-1>\<psi\><rsub|m><rsup|\<ast\>><around|(|t|)>*\<psi\><rsub|m><around|(|u|)>=<around*|(|<big|sum><rsub|m=0><rsup|\<infty\>>\<psi\><rsub|m><rsup|\<ast\>><around|(|t|)>*\<psi\><rsub|m><around|(|u|)>|)><rsup|\<ast\>>.
-  </equation*>
+  <\equation>
+    <big|sum><rsub|m=-\<infty\>><rsup|-1>\<psi\><rsub|m><rsup|\<ast\>><around|(|t|)>*\<psi\><rsub|m><around|(|u|)>=<around*|(|<big|sum><rsub|m=0><rsup|\<infty\>>\<psi\><rsub|m><rsup|\<ast\>><around|(|t|)>*\<psi\><rsub|m><around|(|u|)>|)><rsup|\<ast\>>
+  </equation>
 
   Hence
 
@@ -1207,9 +1203,9 @@
   expansions in <localize|Section><nbsp><reference|sec:matern>, the present
   expansion is very good at origin since all but two terms vanish:
 
-  <\equation*>
-    r<around|(|t,0|)>=<big|sum><rsub|m=-\<infty\>><rsup|\<infty\>>\<psi\><rsub|m><rsup|\<ast\>><around|(|t|)>*\<psi\><rsub|m><around|(|0|)>=-<around*|(|\<psi\><rsub|-1><around|(|t|)>+\<psi\><rsub|0><around|(|t|)>|)>.
-  </equation*>
+  <\equation>
+    r<around|(|t,0|)>=<big|sum><rsub|m=-\<infty\>><rsup|\<infty\>>\<psi\><rsub|m><rsup|\<ast\>><around|(|t|)>*\<psi\><rsub|m><around|(|0|)>=-<around*|(|\<psi\><rsub|-1><around|(|t|)>+\<psi\><rsub|0><around|(|t|)>|)>
+  </equation>
 
   <subsection|Expansion in real-valued Cauchy--Laguerre
   functions><label|sec:cauchy-real>
@@ -1395,9 +1391,9 @@
     <math|\<kappa\>\<in\><around|(|0,<sqrt|2>|)>>, the scaled Hermite
     functions
 
-    <\equation*>
+    <\equation>
       \<varphi\><rsub|m,\<kappa\>><around|(|t|)>=<sqrt|<frac|\<kappa\>|2<rsup|m>*m!<sqrt|\<pi\>>>>*<space|0.17em>e<rsup|-\<kappa\><rsup|2>*t<rsup|2>/2><math-up|H><rsub|m><around|(|\<kappa\>*t|)>
-    </equation*>
+    </equation>
 
     would yield the RKHS basis functions
 
@@ -1414,10 +1410,10 @@
   Gaussian kernel by the use of the basis functions
   in<nbsp><eqref|eq:gaussian-basis> can also be derived by setting
 
-  <\equation*>
+  <\equation>
     \<rho\>=<frac|1|3>,<space|1em>x=<frac|2*t|<sqrt|3>>,<space|1em><text|and
     ><space|1em>y=<frac|2*u|<sqrt|3>>
-  </equation*>
+  </equation>
 
   in Mehler's formula
 
@@ -1824,50 +1820,50 @@
     <associate|bib-Xiu2010|<tuple|27|29>>
     <associate|bib-Zhu1998|<tuple|28|29>>
     <associate|bib-Zwickngaslc2009|<tuple|29|29>>
-    <associate|eq:RKHS-fourier|<tuple|5|4>>
-    <associate|eq:associated-laguerre|<tuple|39|11>>
-    <associate|eq:cauch-laguerre-funcs|<tuple|4.1|20>>
-    <associate|eq:cauchy-expansion-trig|<tuple|61|22>>
-    <associate|eq:cauchy-kernel|<tuple|52|18>>
-    <associate|eq:gaussian-basis|<tuple|66|23>>
-    <associate|eq:gaussian-basis-intro|<tuple|18|7>>
-    <associate|eq:gaussian-basis-mercer|<tuple|69|25>>
-    <associate|eq:gaussian-expansion|<tuple|67|23>>
-    <associate|eq:gaussian-kernel|<tuple|62|22>>
-    <associate|eq:gaussian-kernel-truncated|<tuple|70|27>>
-    <associate|eq:gaussian-mercer-expansion|<tuple|68|25>>
-    <associate|eq:h-cauchy|<tuple|53|19>>
-    <associate|eq:h-gaussian|<tuple|63|22>>
-    <associate|eq:h-hat-matern|<tuple|24|8>>
-    <associate|eq:h-matern|<tuple|25|8>>
-    <associate|eq:hermite-function|<tuple|64|23>>
-    <associate|eq:hermite-polynomial|<tuple|65|23>>
+    <associate|eq:RKHS-fourier|<tuple|7|4>>
+    <associate|eq:associated-laguerre|<tuple|43|11>>
+    <associate|eq:cauch-laguerre-funcs|<tuple|66|20>>
+    <associate|eq:cauchy-expansion-trig|<tuple|79|22>>
+    <associate|eq:cauchy-kernel|<tuple|64|18>>
+    <associate|eq:gaussian-basis|<tuple|84|23>>
+    <associate|eq:gaussian-basis-intro|<tuple|22|7>>
+    <associate|eq:gaussian-basis-mercer|<tuple|89|25>>
+    <associate|eq:gaussian-expansion|<tuple|85|23>>
+    <associate|eq:gaussian-kernel|<tuple|80|22>>
+    <associate|eq:gaussian-kernel-truncated|<tuple|90|27>>
+    <associate|eq:gaussian-mercer-expansion|<tuple|88|25>>
+    <associate|eq:h-cauchy|<tuple|65|19>>
+    <associate|eq:h-gaussian|<tuple|81|22>>
+    <associate|eq:h-hat-matern|<tuple|28|8>>
+    <associate|eq:h-matern|<tuple|29|8>>
+    <associate|eq:hermite-function|<tuple|82|23>>
+    <associate|eq:hermite-polynomial|<tuple|83|23>>
     <associate|eq:kernel-expansion-intro|<tuple|1|2>>
-    <associate|eq:kernel-expansion-mercer|<tuple|7|5>>
-    <associate|eq:laguerre-func-ft|<tuple|26|8>>
-    <associate|eq:laguerre-inverse-ft|<tuple|27|8>>
-    <associate|eq:laguerre-polynomial|<tuple|28|9>>
+    <associate|eq:kernel-expansion-mercer|<tuple|11|5>>
+    <associate|eq:laguerre-func-ft|<tuple|30|8>>
+    <associate|eq:laguerre-inverse-ft|<tuple|31|8>>
+    <associate|eq:laguerre-polynomial|<tuple|32|9>>
     <associate|eq:main-theorem-r-expansion|<tuple|4|4>>
-    <associate|eq:matern-expansion|<tuple|34|10>>
-    <associate|eq:matern-kernel-intro|<tuple|8|6>>
-    <associate|eq:matern-laguerre-functions|<tuple|32|9>>
-    <associate|eq:matern-simplification-positive|<tuple|45|13>>
-    <associate|eq:matern-simplification-sign|<tuple|47|13>>
-    <associate|eq:matern-truncation|<tuple|51|15>>
-    <associate|eq:matern_laguerre_binomial_expression|<tuple|33|10>>
-    <associate|eq:matern_laguerre_conjugate_symmetry|<tuple|31|9>>
-    <associate|eq:matern_laguerre_functions|<tuple|30|9>>
-    <associate|eq:mercer-integral-operator|<tuple|6|5>>
-    <associate|eq:negative_matern_laguerre|<tuple|40|11>>
+    <associate|eq:matern-expansion|<tuple|38|10>>
+    <associate|eq:matern-kernel-intro|<tuple|12|6>>
+    <associate|eq:matern-laguerre-functions|<tuple|36|9>>
+    <associate|eq:matern-simplification-positive|<tuple|50|13>>
+    <associate|eq:matern-simplification-sign|<tuple|52|13>>
+    <associate|eq:matern-truncation|<tuple|61|15>>
+    <associate|eq:matern_laguerre_binomial_expression|<tuple|37|10>>
+    <associate|eq:matern_laguerre_conjugate_symmetry|<tuple|35|9>>
+    <associate|eq:matern_laguerre_functions|<tuple|34|9>>
+    <associate|eq:mercer-integral-operator|<tuple|10|5>>
+    <associate|eq:negative_matern_laguerre|<tuple|44|11>>
     <associate|eq:nullspace_functions|<tuple|4|16>>
-    <associate|eq:phi-m-matern-non-negative|<tuple|29|9>>
-    <associate|eq:psi-negative|<tuple|42|12>>
-    <associate|eq:psi-null|<tuple|43|12>>
-    <associate|eq:psi-positive|<tuple|41|12>>
-    <associate|eq:real_cauchy_laguerre_explicit|<tuple|56|21>>
-    <associate|eq:rho-kernel|<tuple|49|14>>
-    <associate|eq:rho-kernels|<tuple|44|12>>
-    <associate|eq:trig-cauchy-laguerre|<tuple|56|21>>
+    <associate|eq:phi-m-matern-non-negative|<tuple|33|9>>
+    <associate|eq:psi-negative|<tuple|46|12>>
+    <associate|eq:psi-null|<tuple|47|12>>
+    <associate|eq:psi-positive|<tuple|45|12>>
+    <associate|eq:real_cauchy_laguerre_explicit|<tuple|74|21>>
+    <associate|eq:rho-kernel|<tuple|57|14>>
+    <associate|eq:rho-kernels|<tuple|49|12>>
+    <associate|eq:trig-cauchy-laguerre|<tuple|74|21>>
     <associate|example:null-space|<tuple|6|17>>
     <associate|fig:cauchy-basis|<tuple|5|21>>
     <associate|fig:cauchy-truncation|<tuple|6|22>>
