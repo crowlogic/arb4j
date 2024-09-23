@@ -898,9 +898,9 @@ public class Integer implements
     return result.set(this).sqrt(bits);
   }
 
-  public AlgebraicNumber sqrt(int bits, AlgebraicNumber result)
+  public AlgebraicNumber sqrt(AlgebraicNumber result)
   {
-    return result.set(this).sqrt(bits,result);
+    return result.set(this).sqrt(result);
   }
 
   
