@@ -49,7 +49,8 @@ public class Utensils
 
   static
   {
-    NewCommandMacro.addNewCommand("tmop", "\\ensuremath{\\operatorname{#1}}", 1);
+    NewCommandMacro.addNewCommand("re", "\\operatorname{Re} {#1}", 1);
+    NewCommandMacro.addNewCommand("im", "\\operatorname{Im} {#1}", 1);
   }
 
   public static String indent(int n)
