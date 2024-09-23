@@ -492,12 +492,30 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     Button toggleContextButton = new Button("Toggle Context");
     toggleContextButton.setOnAction(e -> toggleContextView());
 
+    Button saveButton = new Button("Save");
+    saveButton.setOnAction(e -> save());
+
+    Button loadButton = new Button("Load");
+    loadButton.setOnAction(e -> load());
+
     return new HBox(10,
                     addTabButton,
                     compileButton,
                     expandAllButton,
                     evaluateButton,
-                    toggleContextButton);
+                    toggleContextButton,
+                    saveButton,
+                    loadButton);
+  }
+
+  private void load()
+  {
+    showAlert("TODO", "TODO: load");
+  }
+
+  private void save()
+  {
+    showAlert("TODO", "TODO: save");
   }
 
   private void setupTypeBoxes()
