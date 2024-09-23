@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 
 import org.apache.commons.lang3.StringUtils;
 import org.objectweb.asm.Type;
+import org.scilab.forge.jlatexmath.NewCommandMacro;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
@@ -45,6 +46,11 @@ import arb.functions.real.RealFunction;
  */
 public class Utensils
 {
+
+  static
+  {
+    NewCommandMacro.addNewCommand("tmp", "\\ensuremath{\\operatorname{#1}}", 1);
+  }
 
   public static String indent(int n)
   {
