@@ -1,5 +1,7 @@
 package arb.expressions.viz;
 
+import java.lang.reflect.Field;
+
 import arb.Integer;
 import arb.Named;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -9,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -18,7 +21,7 @@ import javafx.util.StringConverter;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public final class ContextFieldListCell<D, C, F extends Function<D,C>> extends
+public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
                                        TextFieldListCell<Named>
 {
   /**
@@ -29,6 +32,34 @@ public final class ContextFieldListCell<D, C, F extends Function<D,C>> extends
   private Spinner<java.lang.Integer>        spinner;
   private HBox                              layout;
   private Label                             representationLabel;
+
+  private boolean                           emacsKeybindingsAdded = false;
+
+  @Override
+  public void startEdit()
+  {
+    super.startEdit();
+    if (!emacsKeybindingsAdded)
+    {
+      addEmacsKeybindingsToTextField();
+      emacsKeybindingsAdded = true;
+    }
+  }
+
+  private void addEmacsKeybindingsToTextField()
+  {
+    try
+    {
+      Field textField = TextFieldListCell.class.getDeclaredField("textField");
+      textField.setAccessible(true);
+      TextField tf = (TextField) textField.get(this);
+      analyzer.addEmacsKeybindings(tf);
+    }
+    catch (NoSuchFieldException | IllegalAccessException e)
+    {
+      e.printStackTrace();
+    }
+  }
 
   public ContextFieldListCell(ExpressionAnalyzer<D, C, F> expressionAnalyzer,
                               StringConverter<Named> converter)
@@ -77,6 +108,7 @@ public final class ContextFieldListCell<D, C, F extends Function<D,C>> extends
             integerItem.set(newValue);
             updateRepresentation(item);
           });
+          analyzer.addEmacsKeybindings(spinner.getEditor());
           layout.getChildren().add(spinner);
         }
         else
