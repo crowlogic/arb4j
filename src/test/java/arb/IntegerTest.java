@@ -20,7 +20,6 @@ public class IntegerTest extends
     ComplexSequence f       = ComplexSequence.express(null, "t->t*v", context);
     Complex         val     = f.evaluate(3, 128);
     assertEquals(126, val.re().integerValue(new Integer()).getUnsignedValue());
-    System.err.println("f(3)" + val);
 
   }
 
