@@ -29,6 +29,7 @@ import javafx.scene.control.skin.TableColumnHeader;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -49,6 +50,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
   Context                           context;
   HashMap<String, Boolean>          nodeExpansionStates;
   MiniSymbolPalette                 symbolPalette;
+  private StackPane                 stackPane;
 
   public Context getContext()
   {
@@ -74,11 +76,14 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
 
     setupTreeTableView();
 
-    VBox.setVgrow(treeTableView, Priority.ALWAYS);
-    HBox.setHgrow(treeTableView, Priority.ALWAYS);
+  
 
-    this.getChildren().addAll(inputRow, treeTableView);
+    stackPane = new StackPane(treeTableView);
+    this.getChildren().addAll(inputRow, stackPane);
     this.setPadding(new Insets(10));
+    
+    VBox.setVgrow(stackPane, Priority.ALWAYS);
+    HBox.setHgrow(stackPane, Priority.ALWAYS);
     VBox.setVgrow(this, Priority.ALWAYS);
   }
 
@@ -88,7 +93,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     expressionInput.setPromptText("Enter expression here");
     expressionInput.setText("1+(-((lnΓ(1/4 + t*I/2) - lnΓ(1/4 - t*I/2))*I)/2 - ln(π)*t/2)/π + 1 - I*((ln(ζ(1/2 + I*t)) - ln(ζ(1/2 - I*t))))/(2*π)");
     expressionAnalyzer.addEmacsKeybindings(expressionInput);
-    
+
     expressionInput.setMaxWidth(1200);
     expressionInput.setOnKeyPressed(event ->
     {

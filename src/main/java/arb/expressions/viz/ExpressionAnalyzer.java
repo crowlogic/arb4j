@@ -573,13 +573,13 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
 
     functionTypeBox.getItems().addAll(INTERFACES);
     functionTypeBox.setConverter(classStringConverter);
-    domainTypeBox.setValue(Integer.class);
-    codomainTypeBox.setValue(RationalFunction.class);
-    functionTypeBox.setValue(Function.class);
+    domainTypeBox.setValue(Complex.class);
+    codomainTypeBox.setValue(Complex.class);
     functionTypeBox.setOnAction(e ->
     {
       functionTypeSelected(functionTypeBox.getValue());
     });
+    functionTypeBox.setValue(ComplexFunction.class);
   }
 
   void showAlert(String title, String header, String content)
@@ -628,6 +628,8 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     primaryStage.show();
 
     addNewExpressionTab();
+    
+    
   }
 
   public void setStageIcon(Stage primaryStage)
