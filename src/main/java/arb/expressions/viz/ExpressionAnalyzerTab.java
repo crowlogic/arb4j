@@ -6,6 +6,7 @@ import static java.lang.System.out;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Optional;
 
 import arb.Complex;
 import arb.Named;
@@ -23,11 +24,7 @@ import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.geometry.Insets;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.control.*;
 import javafx.scene.control.skin.TableColumnHeader;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
@@ -255,15 +252,32 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
   {
     expressionAnalyzer.showAlert("TODO", "TODO: graph");
   }
-  
+
   public void load()
   {
     expressionAnalyzer.showAlert("TODO", "TODO: load");
   }
 
+  private Optional<String> askWhatToSaveAs()
+  {
+    TextInputDialog dialog = new TextInputDialog();
+    dialog.setTitle("New Variable");
+    dialog.setHeaderText("Designation");
+    dialog.setContentText("What shall this expression be designated as?");
+
+    // Set the owner to the primary stage
+    dialog.initOwner(getScene().getWindow());
+
+    return dialog.showAndWait();
+  }
+
   public void save()
   {
-    expressionAnalyzer.showAlert("TODO", "TODO: save");
+    Optional<String> filename = askWhatToSaveAs();
+    if (filename.isPresent())
+    {
+      expressionAnalyzer.showAlert("TODO", "TODO: save expression and context to " + filename);
+    }
   }
 
   private String evaluateNode(Node<D, C, F> node)
