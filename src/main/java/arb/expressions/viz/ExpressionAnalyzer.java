@@ -338,6 +338,56 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     return splitPane;
   }
 
+  public void addEmacsKeybindings(TextField textField)
+  {
+    textField.addEventFilter(KeyEvent.KEY_PRESSED, event ->
+    {
+      if (event.isControlDown())
+      {
+        switch (event.getCode())
+        {
+        case A:
+          textField.home();
+          event.consume();
+          break;
+        case E:
+          textField.end();
+          event.consume();
+          break;
+        case F:
+          textField.forward();
+          event.consume();
+          break;
+        case B:
+          textField.backward();
+          event.consume();
+          break;
+        case N:
+          // Move to next line (not applicable in single-line TextField)
+          event.consume();
+          break;
+        case P:
+          // Move to previous line (not applicable in single-line TextField)
+          event.consume();
+          break;
+        case D:
+          int caretPosition = textField.getCaretPosition();
+          if (caretPosition < textField.getText().length())
+          {
+            textField.deleteNextChar();
+          }
+          event.consume();
+          break;
+        case K:
+          caretPosition = textField.getCaretPosition();
+          textField.deleteText(caretPosition, textField.getText().length());
+          event.consume();
+          break;
+        }
+      }
+    });
+  }
+
   private Optional<String> showVariableNameDialog(boolean rename)
   {
     TextInputDialog dialog = new TextInputDialog();
@@ -499,7 +549,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
 
     Button graphButton = new Button("Graph");
     graphButton.setOnAction(e -> executeTabAction(ExpressionAnalyzerTab::graph));
-    
+
     return new HBox(10,
                     addTabButton,
                     compileButton,

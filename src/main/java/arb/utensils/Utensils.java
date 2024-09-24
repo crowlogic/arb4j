@@ -49,6 +49,8 @@ public class Utensils
 
   static
   {
+    
+    NewCommandMacro.addNewCommand("Γ", "\\Gamma", 0);    
     NewCommandMacro.addNewCommand("re", "\\operatorname{Re} {#1}", 1);
     NewCommandMacro.addNewCommand("im", "\\operatorname{Im} {#1}", 1);
   }
