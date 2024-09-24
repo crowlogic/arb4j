@@ -227,6 +227,14 @@ public class Integer implements
     assert swigCPtr % 4 == 0 : "fmpz pointer not aligned on 4-byte boundary";
   }
 
+  public Integer(Complex val)
+  {
+    this();
+    assert val.im().isZero() : "imaginary part must be 0 but instead it is " + val;
+    assert val.re().isExact() : "real part must be exact but instead it is " + val;
+    val.re().integerValue(this);
+  }
+
   public Integer(String string)
   {
     init();
@@ -903,7 +911,6 @@ public class Integer implements
     return result.set(this).sqrt(result);
   }
 
-  
   public Real sqrt(int bits, Real result)
   {
     return result.set(this).sqrt(bits);

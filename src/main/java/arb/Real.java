@@ -184,6 +184,14 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     return result.set(this).add(z,bits,result);
   }
   
+  public Real(Complex val)
+  {
+    this();
+    assert val.im().isZero() : "imaginary part must be 0 but instead it is " + val;
+    assert val.re().isExact() : "real part must be exact but instead it is " + val;
+    set(val.re());
+  }
+    
   /**
    * Construct a new {@link Real} and call {@link Real#setName(String)} with the
    * given name
