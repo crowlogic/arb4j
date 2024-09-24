@@ -44,6 +44,13 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
   }
 
 
+  public ComplexPolynomial(Complex init)
+  {
+    this();
+    set(init);
+  }
+
+
   @Override
   public ComplexPolynomial set(Fraction val)
   {

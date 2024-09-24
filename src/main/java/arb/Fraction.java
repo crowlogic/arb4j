@@ -74,6 +74,19 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     return new Fraction().setName(string);
   }
 
+  public ComplexPolynomial add(ComplexPolynomial that, int bits, ComplexPolynomial result)
+  {
+    result.set(this);
+    return result.add(that, bits);   
+  }
+
+  
+  public RealPolynomial add(RealPolynomial that, int bits, RealPolynomial result)
+  {
+    result.set(this);
+    return result.add(that, bits);   
+  }
+
 
  public static Fraction from(double value, double accuracy, Fraction result)
   {

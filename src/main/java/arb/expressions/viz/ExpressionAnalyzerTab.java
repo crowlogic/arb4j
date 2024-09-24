@@ -251,7 +251,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
 
   public void graph()
   {
-    expressionAnalyzer.showAlert("TODO", "TODO: graph");
+    expressionAnalyzer.showAlert("TODO", "TODO: graph.. ask for range.. 1d for real");
   }
 
   public void load()

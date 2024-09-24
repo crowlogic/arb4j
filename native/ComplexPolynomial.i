@@ -16,6 +16,13 @@ import java.util.Objects;
 
 %typemap(javacode) acb_poly_struct %{
 
+  public ComplexPolynomial(Complex init)
+  {
+    this();
+    set(init);
+  }
+
+
   @Override
   public ComplexPolynomial set(Fraction val)
   {
