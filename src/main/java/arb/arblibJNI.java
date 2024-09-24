@@ -9,6 +9,7 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void acb_mul_fmpz(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4);
   public final static native void fexpr_print(long jarg1, SymbolicExpression jarg1_);
   public final static native String fexpr_get_str(long jarg1, SymbolicExpression jarg1_);
   public final static native void qqbar_cache_enclosure(long jarg1, AlgebraicNumber jarg1_, int jarg2);

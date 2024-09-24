@@ -1,11 +1,8 @@
 package arb.expressions.viz;
 
-import java.lang.reflect.Field;
-
 import arb.Integer;
+import arb.Field;
 import arb.Named;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -17,23 +14,24 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.util.StringConverter;
 
-/**
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
- */
 public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
                                        TextFieldListCell<Named>
 {
-  /**
-   * 
-   */
+
   private final ExpressionAnalyzer<D, C, F> analyzer;
   private final StringConverter<Named>      converter;
   private Spinner<java.lang.Integer>        spinner;
   private HBox                              layout;
-  private Label                             representationLabel;
-
+  private Label                             nameLabel;
   private boolean                           emacsKeybindingsAdded = false;
+
+  public ContextFieldListCell(ExpressionAnalyzer<D, C, F> expressionAnalyzer,
+                              StringConverter<Named> converter)
+  {
+    super(converter);
+    this.analyzer  = expressionAnalyzer;
+    this.converter = converter;
+  }
 
   @Override
   public void startEdit()
@@ -44,13 +42,38 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
       addEmacsKeybindingsToTextField();
       emacsKeybindingsAdded = true;
     }
+
+    synchronizeText();
+  }
+
+  public void synchronizeText()
+  {
+    // Ensure full information is available when editing
+    if (getItem() instanceof Integer)
+    {
+      String fullRepresentation = converter.toString(getItem());
+      try
+      {
+        java.lang.reflect.Field textField = TextFieldListCell.class.getDeclaredField("textField");
+        textField.setAccessible(true);
+        TextField tf = (TextField) textField.get(this);
+        if (tf != null)
+        {
+          tf.setText(fullRepresentation);
+        }
+      }
+      catch (NoSuchFieldException | IllegalAccessException e)
+      {
+        e.printStackTrace();
+      }
+    }
   }
 
   private void addEmacsKeybindingsToTextField()
   {
     try
     {
-      Field textField = TextFieldListCell.class.getDeclaredField("textField");
+      java.lang.reflect.Field textField = TextFieldListCell.class.getDeclaredField("textField");
       textField.setAccessible(true);
       TextField tf = (TextField) textField.get(this);
       analyzer.addEmacsKeybindings(tf);
@@ -59,14 +82,6 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
     {
       e.printStackTrace();
     }
-  }
-
-  public ContextFieldListCell(ExpressionAnalyzer<D, C, F> expressionAnalyzer,
-                              StringConverter<Named> converter)
-  {
-    super(converter);
-    analyzer       = expressionAnalyzer;
-    this.converter = converter;
   }
 
   @Override
@@ -84,9 +99,9 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
       {
         layout = new HBox(5);
         layout.setAlignment(Pos.CENTER_LEFT);
-        representationLabel = new Label();
-        layout.getChildren().add(representationLabel);
-        HBox.setHgrow(representationLabel, Priority.ALWAYS);
+        nameLabel = new Label();
+        layout.getChildren().add(nameLabel);
+        HBox.setHgrow(nameLabel, Priority.ALWAYS);
       }
 
       updateRepresentation(item);
@@ -101,12 +116,13 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
                                                                                    java.lang.Integer.MAX_VALUE,
                                                                                    integerItem.getSignedValue()));
           spinner.setEditable(true);
-          spinner.setPrefWidth(100); // Increased width
-          spinner.setMaxWidth(100); // Set max width
+          spinner.setPrefWidth(100);
+          spinner.setMaxWidth(100);
           spinner.valueProperty().addListener((obs, oldValue, newValue) ->
           {
             integerItem.set(newValue);
             updateRepresentation(item);
+            synchronizeText();
           });
           analyzer.addEmacsKeybindings(spinner.getEditor());
           layout.getChildren().add(spinner);
@@ -132,7 +148,25 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
 
   private void updateRepresentation(Named item)
   {
-    String itemString = converter.toString(item);
-    representationLabel.setText(itemString);
+    analyzer.getCurrentContext().variables.put(item.getName(),item);
+    
+    if (item instanceof Integer)
+    {
+      // For Integer types, only show the name in the label
+      nameLabel.setText(item.getClass().getSimpleName() + ": " + item.getName() + "=");
+    }
+    else
+    {
+      // For other types, show the full representation
+      String itemString = converter.toString(item);
+      nameLabel.setText(itemString);
+    }
+  }
+
+  @Override
+  public void cancelEdit()
+  {
+    super.cancelEdit();
+    updateItem(getItem(), false);
   }
 }

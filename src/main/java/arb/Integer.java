@@ -742,6 +742,11 @@ public class Integer implements
     return result;
   }
 
+  public Complex mul(Integer operand, int prec, Complex result)
+  {
+    return result.set(this).mul(operand, prec,result);
+  }
+  
   public Real mul(Integer operand, int prec, Real result)
   {
     return result.set(this).mul(operand, prec);

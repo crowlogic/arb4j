@@ -84,6 +84,13 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     return z.add(this, bits2,s);
   }
   
+  public Complex mul(Integer operand, int prec, Complex result)
+  {
+    assert operand != null && operand.swigCPtr != 0 : "operand is null";
+    arblib.acb_mul_fmpz(result, this, operand.swigCPtr, prec);
+    return result;
+  }
+    
   public static Predicate<Complex> isNegativeInteger = αᵢ ->
                                                      {
 

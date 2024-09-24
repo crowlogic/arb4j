@@ -9,6 +9,9 @@
 #include <flint/fexpr.h>
 #include <flint/qqbar.h>
 
+void
+acb_mul_fmpz(acb_t z, const acb_t x, const fmpz_t y, slong prec);
+
 void fexpr_print(const fexpr_t expr);
 char * fexpr_get_str(const fexpr_t expr);
 

@@ -2,6 +2,8 @@ package arb;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Context;
+import arb.functions.integer.ComplexSequence;
 import junit.framework.TestCase;
 
 /**
@@ -11,6 +13,16 @@ import junit.framework.TestCase;
 public class IntegerTest extends
                          TestCase
 {
+
+  public static void testMulIntComplex()
+  {
+    Context         context = new Context(Integer.named("v").set(42));
+    ComplexSequence f       = ComplexSequence.express(null, "t->t*v", context);
+    Complex         val     = f.evaluate(3, 128);
+    assertEquals(126, val.re().integerValue(new Integer()).getUnsignedValue());
+    System.err.println("f(3)" + val);
+
+  }
 
   public static void testPrime()
   {
@@ -53,7 +65,7 @@ public class IntegerTest extends
       assertEquals("7", seven.toString());
     }
   }
-  
+
   public void testAddRealToComplex()
   {
 

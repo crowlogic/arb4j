@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void acb_mul_fmpz(Complex z, Complex x, long y, int prec) {
+    arblibJNI.acb_mul_fmpz(Complex.getCPtr(z), z, Complex.getCPtr(x), x, y, prec);
+  }
+
   public static void fexpr_print(SymbolicExpression expr) {
     arblibJNI.fexpr_print(SymbolicExpression.getCPtr(expr), expr);
   }
