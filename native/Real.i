@@ -156,7 +156,13 @@ import arb.utensils.Utensils;
   {
     return result.set(this).add(z,bits,result);
   }
-  
+
+  public Real(Integer val)
+  {
+    this();
+    set(val);    
+  }
+    
   public Real(Complex val)
   {
     this();

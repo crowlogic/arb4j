@@ -93,6 +93,17 @@ public class Integer implements
     return result.set(this).neg();
   }
 
+  public Complex cos(int prec, Complex result)
+  {
+    return result.set(this).cos(prec, result);
+  }
+  
+  
+  public Complex sin(int prec, Complex result)
+  {
+    return result.set(this).sin(prec, result);
+  }
+  
   public Real cos(int prec, Real result)
   {
     return result.set(this).cos(prec, result);
