@@ -29,7 +29,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.control.skin.TableColumnHeader;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -404,13 +403,16 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
 
   protected ContextMenu newContextMenu(StringConverter<Named> converter)
   {
-
     ContextMenu contextMenu = new ContextMenu(newDeleteVariableMenuItem(),
                                               newInsertNewRealVariable(),
                                               newRenameRealVariableMenuItem());
 
-    contextListView.setCellFactory(ContextMenuListCell.<
-                  Named>forListView(contextMenu, param -> new TextFieldListCell<Named>(converter)));
+    contextListView.setCellFactory(ContextMenuListCell.forListView(contextMenu,
+                                                                   param -> new ContextFieldListCell<
+                                                                                 D,
+                                                                                 C,
+                                                                                 F>(this,
+                                                                                    converter)));
 
     contextListView.setEditable(true);
     return contextMenu;
