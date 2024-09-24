@@ -9,6 +9,15 @@
 package arb;
 
 public class arblib {
+  public static XDO xdo_new(String display) {
+    long cPtr = arblibJNI.xdo_new(display);
+    return (cPtr == 0) ? null : new XDO(cPtr, false);
+  }
+
+  public static int xdo_activate_window(XDO xdo, long wid) {
+    return arblibJNI.xdo_activate_window(XDO.getCPtr(xdo), xdo, wid);
+  }
+
   public static void acb_mul_fmpz(Complex z, Complex x, long y, int prec) {
     arblibJNI.acb_mul_fmpz(Complex.getCPtr(z), z, Complex.getCPtr(x), x, y, prec);
   }

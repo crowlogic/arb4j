@@ -25,6 +25,71 @@
 #include <unistd.h>
 #include <malloc.h>
 #include <mpfr.h>
+#include <sys/types.h>
+#include <X11/Xlib.h>
+#include <X11/X.h>
+#include <unistd.h>
+#include <wchar.h>
+
+typedef unsigned long Window;
+
+typedef struct charcodemap {
+  wchar_t key; /** the letter for this key, like 'a' */
+  KeyCode code; /** the keycode that this key is on */
+  KeySym symbol; /** the symbol representing this key */
+  int group; /** the keyboard group that has this key in it */
+  int modmask; /** the modifiers to apply when sending this key */
+   /** if this key need to be bound at runtime because it does not
+    * exist in the current keymap, this will be set to 1. */
+  int needs_binding;
+} charcodemap_t;
+
+typedef struct xdo_t {
+
+  /** The Display for Xlib */
+  Display *xdpy;
+
+  /** The display name, if any. NULL if not specified. */
+  char *display_name;
+
+  /** @internal Array of known keys/characters */
+  charcodemap_t *charcodes;
+
+  /** @internal Length of charcodes array */
+  int charcodes_len;
+
+  /** @internal UNUSED -- result from XGetModifierMapping */
+  XModifierKeymap *modmap;
+
+  /** @internal UNUSED -- current keyboard mapping (via XGetKeyboardMapping) */
+  KeySym *keymap;
+
+  /** @internal highest keycode value */
+  int keycode_high; /* highest and lowest keycodes */
+
+  /** @internal lowest keycode value */
+  int keycode_low;  /* used by this X server */
+  
+  /** @internal number of keysyms per keycode */
+  int keysyms_per_keycode;
+
+  /** Should we close the display when calling xdo_free? */
+  int close_display_when_freed;
+
+  /** Be extra quiet? (omits some error/message output) */
+  int quiet;
+
+  /** Enable debug output? */
+  int debug;
+
+  /** Feature flags, such as XDO_FEATURE_XTEST, etc... */
+  int features_mask;
+
+} xdo_struct ;
+
+const struct xdo_t *xdo_new( const char *host );
+
+int xdo_activate_window(const struct xdo_t *xdo, Window wid);
 
 typedef unsigned long* unsigned_long_ptr;
 

@@ -55,6 +55,7 @@ typedef unsigned long int mp_limb_t;
 %rename (numRows) r;
 %rename (numCols) c;
 
+%rename (XDO) xdo_struct;
 %rename (SymbolicExpression) fexpr_struct;
 %rename (AlgebraicNumber) qqbar_struct;
 %rename (RationalFunction) fmpz_poly_q_struct;

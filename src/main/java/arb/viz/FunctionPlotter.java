@@ -26,6 +26,7 @@ public class FunctionPlotter extends
                              FunctionSampler
 {
 
+  
   public void toFront()
   {
     Platform.runLater(() ->

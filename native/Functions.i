@@ -8,6 +8,74 @@
 #include <flint/fmpz_poly_q.h>
 #include <flint/fexpr.h>
 #include <flint/qqbar.h>
+#include <X11/Xlib.h>
+#include <X11/X.h>
+#include <unistd.h>
+#include <wchar.h>
+
+typedef unsigned long Window;
+
+typedef struct charcodemap {
+  wchar_t key; /** the letter for this key, like 'a' */
+  KeyCode code; /** the keycode that this key is on */
+  KeySym symbol; /** the symbol representing this key */
+  int group; /** the keyboard group that has this key in it */
+  int modmask; /** the modifiers to apply when sending this key */
+   /** if this key need to be bound at runtime because it does not
+    * exist in the current keymap, this will be set to 1. */
+  int needs_binding;
+} charcodemap_t;
+
+typedef struct {
+
+  /** The Display for Xlib */
+  Display *xdpy;
+
+  /** The display name, if any. NULL if not specified. */
+  char *display_name;
+
+  /** @internal Array of known keys/characters */
+  charcodemap_t *charcodes;
+
+  /** @internal Length of charcodes array */
+  int charcodes_len;
+
+  /** @internal UNUSED -- result from XGetModifierMapping */
+  XModifierKeymap *modmap;
+
+  /** @internal UNUSED -- current keyboard mapping (via XGetKeyboardMapping) */
+  KeySym *keymap;
+
+  /** @internal highest keycode value */
+  int keycode_high; /* highest and lowest keycodes */
+
+  /** @internal lowest keycode value */
+  int keycode_low;  /* used by this X server */
+  
+  /** @internal number of keysyms per keycode */
+  int keysyms_per_keycode;
+
+  /** Should we close the display when calling xdo_free? */
+  int close_display_when_freed;
+
+  /** Be extra quiet? (omits some error/message output) */
+  int quiet;
+
+  /** Enable debug output? */
+  int debug;
+
+  /** Feature flags, such as XDO_FEATURE_XTEST, etc... */
+  int features_mask;
+
+} xdo_struct ;
+
+typedef xdo_struct xdo_t[1];
+
+typedef unsigned long Window;
+
+xdo_struct *xdo_new(const char *display);
+
+int xdo_activate_window(const xdo_struct *xdo, Window wid);
 
 void
 acb_mul_fmpz(acb_t z, const acb_t x, const fmpz_t y, slong prec);

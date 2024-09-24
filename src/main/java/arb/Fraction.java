@@ -87,7 +87,12 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
     return result.add(that, bits);   
   }
 
-
+  public Fraction(Real val)
+  {
+    this();
+    set(val);
+  }
+  
  public static Fraction from(double value, double accuracy, Fraction result)
   {
     int sign = value < 0 ? -1 : 1;

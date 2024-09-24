@@ -21,19 +21,101 @@
 #include <acb_modular.h>
 #include <sys/mman.h>
 #include <jni.h>
+#include <sys/select.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
+#include <regex.h>
+#include <ctype.h>
+#include <locale.h>
+#include <stdarg.h>
+#include <X11/Xlib.h>
+#include <X11/X.h>
+#include <unistd.h>
+#include <wchar.h>
+
+typedef unsigned long Window;
+
+typedef struct charcodemap {
+  wchar_t key; /** the letter for this key, like 'a' */
+  KeyCode code; /** the keycode that this key is on */
+  KeySym symbol; /** the symbol representing this key */
+  int group; /** the keyboard group that has this key in it */
+  int modmask; /** the modifiers to apply when sending this key */
+   /** if this key need to be bound at runtime because it does not
+    * exist in the current keymap, this will be set to 1. */
+  int needs_binding;
+} charcodemap_t;
+// Define the xdo_t structure
+typedef struct {
+    Display *xdpy;
+    char *display_name;
+    charcodemap_t *charcodes;
+    int charcodes_len;
+    XModifierKeymap *modmap;
+    KeySym *keymap;
+    int keycode_high;
+    int keycode_low;
+    int keysyms_per_keycode;
+    int close_display_when_freed;
+    int quiet;
+    int debug;
+    int features_mask;
+} xdo_struct;
+
+// Function declarations
+xdo_struct *xdo_new(const char *display);
+
 
 #ifndef size_t
 
 #define size_t long unsigned int
 #endif
 
+typedef unsigned long Window;
+
 extern JNIEnv *env;
 
+int _is_success(const char *funcname, int code, const xdo_struct *xdo) {
+  /* Nonzero is failure. */
+  if (code != 0 && !xdo->quiet)
+    fprintf(stderr, "%s failed (code=%d)\n", funcname, code);
+  return code;
+}
+
+
+int xdo_activate_window(const xdo_struct *xdo, Window wid) {
+  int ret = 0;
+  long desktop = 0;
+  XEvent xev;
+  XWindowAttributes wattr;
+
+  memset(&xev, 0, sizeof(xev));
+  xev.type = ClientMessage;
+  xev.xclient.display = xdo->xdpy;
+  xev.xclient.window = wid;
+  xev.xclient.message_type = XInternAtom(xdo->xdpy, "_NET_ACTIVE_WINDOW", False);
+  xev.xclient.format = 32;
+  xev.xclient.data.l[0] = 2L; /* 2 == Message from a window pager */
+  xev.xclient.data.l[1] = CurrentTime;
+
+  XGetWindowAttributes(xdo->xdpy, wid, &wattr);
+  ret = XSendEvent(xdo->xdpy, wattr.screen->root, False,
+                   SubstructureNotifyMask | SubstructureRedirectMask,
+                   &xev);
+
+  /* XXX: XSendEvent returns 0 on conversion failure, nonzero otherwise.
+   * Manpage says it will only generate BadWindow or BadValue errors */
+  return _is_success("XSendEvent[EWMH:_NET_ACTIVE_WINDOW]", ret == 0, xdo);
+}
 
 int errorNumber()
 {
   return errno;
 }
+
 
 void
 arb_pow_si(arb_t res, const arb_t x, slong y, slong prec)
