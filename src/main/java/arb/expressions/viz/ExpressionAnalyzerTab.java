@@ -251,6 +251,16 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     return valueCol;
   }
 
+  public void load()
+  {
+    expressionAnalyzer.showAlert("TODO", "TODO: load");
+  }
+
+  public void save()
+  {
+    expressionAnalyzer.showAlert("TODO", "TODO: save");
+  }
+
   private String evaluateNode(Node<D, C, F> node)
   {
     if (result == null)

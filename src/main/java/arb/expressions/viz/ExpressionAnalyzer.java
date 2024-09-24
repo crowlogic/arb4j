@@ -493,10 +493,10 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     toggleContextButton.setOnAction(e -> toggleContextView());
 
     Button saveButton = new Button("Save");
-    saveButton.setOnAction(e -> save());
+    saveButton.setOnAction(e -> executeTabAction(ExpressionAnalyzerTab::save));
 
     Button loadButton = new Button("Load");
-    loadButton.setOnAction(e -> load());
+    loadButton.setOnAction(e -> executeTabAction(ExpressionAnalyzerTab::load));
 
     return new HBox(10,
                     addTabButton,
@@ -506,16 +506,6 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
                     toggleContextButton,
                     saveButton,
                     loadButton);
-  }
-
-  private void load()
-  {
-    showAlert("TODO", "TODO: load");
-  }
-
-  private void save()
-  {
-    showAlert("TODO", "TODO: save");
   }
 
   private void setupTypeBoxes()
