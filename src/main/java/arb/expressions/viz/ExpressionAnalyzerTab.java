@@ -251,6 +251,11 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     return valueCol;
   }
 
+  public void graph()
+  {
+    expressionAnalyzer.showAlert("TODO", "TODO: graph");
+  }
+  
   public void load()
   {
     expressionAnalyzer.showAlert("TODO", "TODO: load");

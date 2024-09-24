@@ -485,9 +485,8 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
 
     Button evaluateButton = new Button("Evaluate");
     evaluateButton.setOnAction(e ->
-    {
-      executeTabAction(ExpressionAnalyzerTab::evaluateExpression);
-    });
+
+    executeTabAction(ExpressionAnalyzerTab::evaluateExpression));
 
     Button toggleContextButton = new Button("Toggle Context");
     toggleContextButton.setOnAction(e -> toggleContextView());
@@ -498,6 +497,9 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     Button loadButton = new Button("Load");
     loadButton.setOnAction(e -> executeTabAction(ExpressionAnalyzerTab::load));
 
+    Button graphButton = new Button("Graph");
+    graphButton.setOnAction(e -> executeTabAction(ExpressionAnalyzerTab::graph));
+    
     return new HBox(10,
                     addTabButton,
                     compileButton,
@@ -505,7 +507,8 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
                     evaluateButton,
                     toggleContextButton,
                     saveButton,
-                    loadButton);
+                    loadButton,
+                    graphButton);
   }
 
   private void setupTypeBoxes()
