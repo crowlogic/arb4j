@@ -26,14 +26,9 @@ public class FunctionPlotter extends
                              FunctionSampler
 {
 
-  
   public void toFront()
   {
-    Platform.runLater(() ->
-    {
-      stage.show();
-      stage.toFront();
-    });
+    WindowManager.bringToFront(stage);
   }
 
   @Override
@@ -58,7 +53,7 @@ public class FunctionPlotter extends
     root = new StackPane();
     configureChartPlugins();
     root.getChildren().add(chart);
-    stage.initModality(Modality.WINDOW_MODAL); 
+    stage.initModality(Modality.WINDOW_MODAL);
     for (var renderer : chart.getRenderers()
                              .stream()
                              .filter(renderer -> renderer instanceof ErrorDataSetRenderer)
@@ -85,7 +80,19 @@ public class FunctionPlotter extends
       stage.hide();
     });
 
+    stage.showingProperty().addListener((obs, old, newthing) ->
+    {
+      if (newthing.booleanValue())
+      {
+        Platform.runLater(() ->
+        {
+          toFront();
+        });
+      }
+    });
     stage.show();
+
+//    toFront();
 
     return stage;
   }

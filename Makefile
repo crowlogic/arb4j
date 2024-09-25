@@ -25,7 +25,7 @@ native/arb_wrap.c: $(shell find native -name "*.i")
 	swig $(SWIGFLAGS) $(INCLUDES) native/arb.i
 
 libarblib.so: $(SOURCES)
-	clang $(CFLAGS) $(SOURCES) $(C_INCLUDES) -olibarblib.so -lflint  
+	clang $(CFLAGS) $(SOURCES) $(C_INCLUDES) -olibarblib.so -lflint -lxdo 
 
 clean:
 	rm -rf libarblib.so *.o native/arb_wrap.c build/*

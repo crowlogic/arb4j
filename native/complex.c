@@ -78,13 +78,6 @@ typedef unsigned long Window;
 
 extern JNIEnv *env;
 
-int _is_success(const char *funcname, int code, const xdo_struct *xdo) {
-  /* Nonzero is failure. */
-  if (code != 0 && !xdo->quiet)
-    fprintf(stderr, "%s failed (code=%d)\n", funcname, code);
-  return code;
-}
-
 
 int xdo_activate_window(const xdo_struct *xdo, Window wid) {
   int ret = 0;
@@ -105,10 +98,11 @@ int xdo_activate_window(const xdo_struct *xdo, Window wid) {
   ret = XSendEvent(xdo->xdpy, wattr.screen->root, False,
                    SubstructureNotifyMask | SubstructureRedirectMask,
                    &xev);
+  XFlush(xdo->xdpy);
 
   /* XXX: XSendEvent returns 0 on conversion failure, nonzero otherwise.
    * Manpage says it will only generate BadWindow or BadValue errors */
-  return _is_success("XSendEvent[EWMH:_NET_ACTIVE_WINDOW]", ret == 0, xdo);
+  return ret != 0;
 }
 
 int errorNumber()

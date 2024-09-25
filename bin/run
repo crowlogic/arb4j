@@ -3,7 +3,7 @@
 
 BASEDIR=$(dirname $(readlink -f $0))/..
 CLASSPATH=`cat $BASEDIR/class.path`:$BASEDIR/build/resources/main:$BASEDIR/build/classes/java/main
-java --enable-preview -Djava.library.path=$BASEDIR -ea -cp $CLASSPATH --module-path $CLASSPATH --add-modules arb4j --add-modules javafx.controls --add-opens javafx.controls/javafx.scene.control.skin=arb4j -classpath $CLASSPATH $@
+java --enable-preview -Djava.library.path=$BASEDIR -ea -cp $CLASSPATH --module-path $CLASSPATH --add-modules arb4j --add-modules javafx.controls --add-opens javafx.controls/javafx.scene.control.skin=arb4j --add-opens javafx.graphics/com.sun.javafx.tk.quantum=arb4j --add-opens javafx.graphics/javafx.stage=arb4j -classpath $CLASSPATH $@
 
 
 

@@ -13,6 +13,8 @@
 #include <unistd.h>
 #include <wchar.h>
 
+typedef unsigned long Atom;   /* Also in Xdefs.h */
+
 typedef unsigned long Window;
 
 typedef struct charcodemap {
