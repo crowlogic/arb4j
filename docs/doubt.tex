@@ -1,0 +1,61 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\title{Compactness Proof for $J_0(|x - y|)$ Kernel}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{theorem}
+The parameter space of the Gaussian process with covariance kernel $K(x,y) = J_0(|x-y|)$ is compact under the canonical metric.
+\end{theorem}
+
+\begin{proof}
+We proceed in several steps:
+
+\begin{enumerate}
+    \item Define the canonical metric:
+    \[d^2(x,y) = 1 - J_0(|x-y|)\]
+    
+    \item Recall two key properties of $J_0$:
+    \begin{itemize}
+        \item $|J_0(x)| \leq 1$ for all real $x$
+        \item $J_0(x) = 1 - \frac{x^2}{4} + O(x^4)$ for small $x$
+    \end{itemize}
+    
+    \item For $|x-y| \leq 1$, we can bound the metric:
+    \[d^2(x,y) = 1 - J_0(|x-y|) \leq \frac{|x-y|^2}{4}\]
+    
+    \item Consider covering the parameter space $I = [0,L]$ with balls of radius $\varepsilon$. We can prove that:
+    \[N(\varepsilon) \leq \left\lceil\frac{L}{2\varepsilon}\right\rceil \text{ for } \varepsilon \leq \frac{1}{2}\]
+    
+    \textit{Proof:} Divide $I$ into intervals of length $2\varepsilon$. Each interval is covered by a ball of radius $\varepsilon$. The number of intervals is at most $\lceil L / (2\varepsilon) \rceil$.
+    
+    \item The metric entropy integral is thus bounded:
+    \[\int_0^1 \sqrt{\log N(\varepsilon)} \,d\varepsilon \leq \int_0^1 \sqrt{\log\left(\frac{L}{2\varepsilon} + 1\right)} \,d\varepsilon\]
+    
+    \item To evaluate this upper bound, let $u = \log(L/(2\varepsilon) + 1)$
+    
+    Then $\varepsilon = \frac{L}{2(e^u - 1)}$ and $d\varepsilon = -\frac{L}{2(e^u - 1)^2} e^u \,du$
+    
+    Substituting:
+    \begin{align*}
+    \int_0^1 \sqrt{\log\left(\frac{L}{2\varepsilon} + 1\right)} \,d\varepsilon
+    &\leq \int_k^{\infty} \sqrt{u} \cdot \frac{L}{2(e^u - 1)^2} e^u \,du \\
+    &\leq \frac{L}{2} \cdot \int_k^{\infty} \frac{\sqrt{u}}{e^u - 1} \,du
+    \end{align*}
+    where $k = \log(L/2 + 1)$
+    
+    This last integral converges because $\frac{\sqrt{u}}{e^u - 1}$ decays faster than $\frac{1}{u^2}$ for large $u$.
+\end{enumerate}
+
+Thus, we have rigorously established an upper bound for the metric entropy integral and proved it is finite. This demonstrates the compactness of the parameter space under the canonical metric.
+\end{proof}
+
+\end{document}
