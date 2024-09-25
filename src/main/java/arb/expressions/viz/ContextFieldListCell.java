@@ -1,7 +1,8 @@
 package arb.expressions.viz;
 
+import java.lang.reflect.Field;
+
 import arb.Integer;
-import arb.Field;
 import arb.Named;
 import arb.functions.Function;
 import javafx.geometry.Pos;
@@ -25,13 +26,6 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
   private Label                             nameLabel;
   private boolean                           emacsKeybindingsAdded = false;
 
-  public ContextFieldListCell(ExpressionAnalyzer<D, C, F> expressionAnalyzer,
-                              StringConverter<Named> converter)
-  {
-    super(converter);
-    this.analyzer  = expressionAnalyzer;
-    this.converter = converter;
-  }
 
   @Override
   public void startEdit()
@@ -42,46 +36,14 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
       addEmacsKeybindingsToTextField();
       emacsKeybindingsAdded = true;
     }
-
-    synchronizeText();
   }
-
-  public void synchronizeText()
+  
+  public ContextFieldListCell(ExpressionAnalyzer<D, C, F> expressionAnalyzer,
+                              StringConverter<Named> converter)
   {
-    // Ensure full information is available when editing
-    if (getItem() instanceof Integer)
-    {
-      String fullRepresentation = converter.toString(getItem());
-      try
-      {
-        java.lang.reflect.Field textField = TextFieldListCell.class.getDeclaredField("textField");
-        textField.setAccessible(true);
-        TextField tf = (TextField) textField.get(this);
-        if (tf != null)
-        {
-          tf.setText(fullRepresentation);
-        }
-      }
-      catch (NoSuchFieldException | IllegalAccessException e)
-      {
-        e.printStackTrace();
-      }
-    }
-  }
-
-  private void addEmacsKeybindingsToTextField()
-  {
-    try
-    {
-      java.lang.reflect.Field textField = TextFieldListCell.class.getDeclaredField("textField");
-      textField.setAccessible(true);
-      TextField tf = (TextField) textField.get(this);
-      analyzer.addEmacsKeybindings(tf);
-    }
-    catch (NoSuchFieldException | IllegalAccessException e)
-    {
-      e.printStackTrace();
-    }
+    super(converter);
+    this.analyzer  = expressionAnalyzer;
+    this.converter = converter;
   }
 
   @Override
@@ -99,9 +61,9 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
       {
         layout = new HBox(5);
         layout.setAlignment(Pos.CENTER_LEFT);
+        //layout.prefWidthProperty().bind(widthProperty().subtract(5)); // Subtract padding
         nameLabel = new Label();
         layout.getChildren().add(nameLabel);
-        HBox.setHgrow(nameLabel, Priority.ALWAYS);
       }
 
       updateRepresentation(item);
@@ -116,13 +78,12 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
                                                                                    java.lang.Integer.MAX_VALUE,
                                                                                    integerItem.getSignedValue()));
           spinner.setEditable(true);
-          spinner.setPrefWidth(100);
-          spinner.setMaxWidth(100);
+          spinner.maxWidthProperty().bind(widthProperty().multiply(0.5)); // 30% of cell width
+          spinner.prefWidthProperty().bind(spinner.maxWidthProperty());
           spinner.valueProperty().addListener((obs, oldValue, newValue) ->
           {
             integerItem.set(newValue);
             updateRepresentation(item);
-            synchronizeText();
           });
           analyzer.addEmacsKeybindings(spinner.getEditor());
           layout.getChildren().add(spinner);
@@ -134,6 +95,7 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
         if (!layout.getChildren().contains(spinner))
         {
           layout.getChildren().add(spinner);
+          HBox.setHgrow(spinner, Priority.ALWAYS);
         }
       }
       else if (layout.getChildren().size() > 1)
@@ -146,20 +108,36 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
     }
   }
 
+  private void addEmacsKeybindingsToTextField()
+  {
+    try
+    {
+      Field textField = TextFieldListCell.class.getDeclaredField("textField");
+      textField.setAccessible(true);
+      TextField tf = (TextField) textField.get(this);
+      analyzer.addEmacsKeybindings(tf);
+    }
+    catch (NoSuchFieldException | IllegalAccessException e)
+    {
+      e.printStackTrace();
+    }
+  }
+  
   private void updateRepresentation(Named item)
   {
-    analyzer.getCurrentContext().variables.put(item.getName(),item);
-    
+    analyzer.getCurrentContext().variables.put(item.getName(), item);
+
     if (item instanceof Integer)
     {
-      // For Integer types, only show the name in the label
       nameLabel.setText(item.getClass().getSimpleName() + ": " + item.getName() + "=");
+      nameLabel.setMaxWidth(USE_PREF_SIZE);
     }
     else
     {
-      // For other types, show the full representation
       String itemString = converter.toString(item);
       nameLabel.setText(itemString);
+      nameLabel.setMaxWidth(Double.MAX_VALUE);
+      HBox.setHgrow(nameLabel, Priority.ALWAYS);
     }
   }
 
