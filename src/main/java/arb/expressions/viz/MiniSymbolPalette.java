@@ -2,6 +2,7 @@ package arb.expressions.viz;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -20,7 +21,17 @@ public class MiniSymbolPalette extends
   {
     super(5);
     this.textField = textField;
-
+    textField.focusedProperty().addListener((obs, oldVal, newVal) ->
+    {
+      if (newVal)
+      {
+        Platform.runLater(() ->
+        {
+          textField.deselect();
+          textField.positionCaret(lastKnownCaretPosition);
+        });
+      }
+    });
     // Store the caret position whenever it changes
     this.textField.caretPositionProperty().addListener((obs, oldVal, newVal) ->
     {
@@ -43,15 +54,10 @@ public class MiniSymbolPalette extends
 
   private void insertSymbolAtCursor(String symbol)
   {
-    try
-    {
-      textField.insertText(lastKnownCaretPosition, symbol);
-    }
-    catch (IndexOutOfBoundsException k)
-    {
-      textField.setText(symbol);
 
-    }
+    textField.insertText(lastKnownCaretPosition, symbol);
+
     textField.requestFocus();
+    textField.positionCaret(lastKnownCaretPosition);
   }
 }
