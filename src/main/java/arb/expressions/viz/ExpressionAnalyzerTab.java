@@ -300,7 +300,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
 
         return "null";
       }
-      if (intermediateValueFieldName == "result")
+      if (intermediateValueFieldName.equals("result"))
       {
         return result.toString();
       }

@@ -122,7 +122,8 @@ public class ShellFunctions
     return plot(left, right, n, Arrays.asList(functions));
   }
 
-  public static FunctionPlotter plot(double left, double right, int n, Iterable<RealFunction> functions)
+  public static FunctionPlotter
+         plot(double left, double right, int n, Iterable<RealFunction> functions)
   {
     AtomicReference<FunctionPlotter> ref = new AtomicReference<FunctionPlotter>();
 
@@ -132,24 +133,29 @@ public class ShellFunctions
     Platform.runLater(() ->
     {
 
-      FunctionPlotter plotter = new FunctionPlotter();
-      ref.set(plotter);
-
-      plotter.createScene();
-
-      plotter.chart.getDatasets().clear();
-
-      for (RealFunction func : functions)
+      try
       {
-        RealDataSet sample = func.quantize(left, right, n);
-        plotter.chart.getDatasets().add(sample);
+        FunctionPlotter plotter = new FunctionPlotter();
+        ref.set(plotter);
+
+        plotter.createScene();
+
+        plotter.chart.getDatasets().clear();
+
+        for (RealFunction func : functions)
+        {
+          RealDataSet sample = func.quantize(left, right, n);
+          plotter.chart.getDatasets().add(sample);
+        }
+
+        plotter.stage.show();
+
+        plotter.stage.toFront();
       }
-
-      plotter.stage.show();
-
-      plotter.stage.toFront();
-
-      sem.release();
+      finally
+      {
+        sem.release();
+      }
 
     });
 

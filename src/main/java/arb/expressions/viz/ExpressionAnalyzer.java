@@ -176,6 +176,10 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     {
       selectTypes(Integer.class, Real.class);
     }
+    else if (functionType.equals(Sequence.class))
+    {
+      domainTypeBox.getSelectionModel().select(Integer.class);
+    }
     else
     {
       System.err.println("functionTypeSelected: TODO: handle " + functionType);
@@ -210,7 +214,8 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     RealNullaryFunction.class,
     ComplexToRealFunction.class,
     ComplexRationalFunctionSequence.class,
-    ComplexRationalNullaryFunction.class };
+    ComplexRationalNullaryFunction.class,
+    Sequence.class };
 
   static
   {
@@ -339,52 +344,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
 
   public void addEmacsKeybindings(TextField textField)
   {
-    textField.addEventFilter(KeyEvent.KEY_PRESSED, event ->
-    {
-      if (event.isControlDown())
-      {
-        switch (event.getCode())
-        {
-        case A:
-          textField.home();
-          event.consume();
-          break;
-        case E:
-          textField.end();
-          event.consume();
-          break;
-        case F:
-          textField.forward();
-          event.consume();
-          break;
-        case B:
-          textField.backward();
-          event.consume();
-          break;
-        case N:
-          // Move to next line (not applicable in single-line TextField)
-          event.consume();
-          break;
-        case P:
-          // Move to previous line (not applicable in single-line TextField)
-          event.consume();
-          break;
-        case D:
-          int caretPosition = textField.getCaretPosition();
-          if (caretPosition < textField.getText().length())
-          {
-            textField.deleteNextChar();
-          }
-          event.consume();
-          break;
-        case K:
-          caretPosition = textField.getCaretPosition();
-          textField.deleteText(caretPosition, textField.getText().length());
-          event.consume();
-          break;
-        }
-      }
-    });
+    textField.addEventFilter(KeyEvent.KEY_PRESSED, new EmacsKeybindingsEventHandler(textField));
   }
 
   private Optional<String> showVariableNameDialog(boolean rename)
@@ -536,9 +496,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     expandAllButton.setOnAction(e -> executeTabAction(ExpressionAnalyzerTab::expandAllNodes));
 
     Button evaluateButton = new Button("Evaluate");
-    evaluateButton.setOnAction(e ->
-
-    executeTabAction(ExpressionAnalyzerTab::evaluateExpression));
+    evaluateButton.setOnAction(e -> executeTabAction(ExpressionAnalyzerTab::evaluateExpression));
 
     Button toggleContextButton = new Button("Toggle Context");
     toggleContextButton.setOnAction(e -> toggleContextView());
@@ -628,8 +586,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     primaryStage.show();
 
     addNewExpressionTab();
-    
-    
+
   }
 
   public void setStageIcon(Stage primaryStage)

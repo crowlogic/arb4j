@@ -1,4 +1,5 @@
 import arb.arblib;
+import arb.Initializable;
 import arb.IntegerConstants;
 import arb.ComplexRationalFunction;
 import arb.functions.rational.LommelPolynomial;

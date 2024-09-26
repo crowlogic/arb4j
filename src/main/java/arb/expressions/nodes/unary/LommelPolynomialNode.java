@@ -19,7 +19,6 @@ import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.rational.LommelPolynomial;
-import arb.functions.rational.RationalNullaryFunction;
 
 /**
  * Syntax: "R(n,v;z)" which corresponds to a {@link LommelPolynomial} of index
