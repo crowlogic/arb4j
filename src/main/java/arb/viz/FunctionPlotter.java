@@ -34,6 +34,7 @@ public class FunctionPlotter extends
   @Override
   public void close()
   {
+    Platform.runLater(() -> stage.close());
   }
 
   public Stage              stage;

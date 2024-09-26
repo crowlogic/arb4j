@@ -9,6 +9,7 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.functions.rational.ComplexRationalNullaryFunction;
+import arb.functions.real.RealFunction;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -21,10 +22,39 @@ public class ComplexRationalFunction implements
                                      Verifiable
 {
 
+  public final class Part implements
+                          RealFunction
+  {
+    final RationalFunction part;
+
+    public Part(boolean real)
+    {
+      part = real ? realPart : imaginaryPart;
+    }
+
+    @Override
+    public Real evaluate(Real t, int order, int bits, Real res)
+    {
+      return part.evaluate(t, order, bits, res);
+    }
+
+    @Override
+    public String toString()
+    {
+      return part.toString();
+    }
+
+    @Override
+    public String typeset()
+    {
+      return part.typeset();
+    }
+  }
+
   @Override
   public ComplexFraction newCoDomainInstance()
   {
-   return new ComplexFraction();
+    return new ComplexFraction();
   }
 
   @Override
@@ -110,7 +140,7 @@ public class ComplexRationalFunction implements
     imaginaryPart.zero();
     return this;
   }
-  
+
   @Override
   public ComplexRationalFunction set(Fraction... vals)
   {
@@ -119,7 +149,6 @@ public class ComplexRationalFunction implements
     imaginaryPart.zero();
     return this;
   }
-  
 
   public ComplexRationalFunction div(Complex x, int prec, ComplexRationalFunction result)
   {
@@ -368,6 +397,26 @@ public class ComplexRationalFunction implements
   }
 
   public static ComplexFraction imaginaryUnit = new ComplexFraction();
+
+  public RealFunction realPart()
+  {
+    return new Part(true);
+  }
+
+  public RealFunction imaginaryPart()
+  {
+    return new Part(false);
+  }
+
+  public RealFunction re()
+  {
+    return realPart();
+  }
+
+  public RealFunction im()
+  {
+    return imaginaryPart();
+  }
 
   static
   {

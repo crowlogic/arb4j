@@ -1,4 +1,6 @@
+import javafx.application.Platform;
 import arb.arblib;
+import arb.functions.rational.ComplexRationalFunctionSequence;
 import arb.Initializable;
 import arb.IntegerConstants;
 import arb.ComplexRationalFunction;
