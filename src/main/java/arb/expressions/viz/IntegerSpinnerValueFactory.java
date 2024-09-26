@@ -7,6 +7,11 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.util.StringConverter;
 
+/**
+*
+* @see BusinessSourceLicenseVersionOnePointOne © terms of the
+*      {@link TheArb4jLibrary}
+*/
 public class IntegerSpinnerValueFactory extends
                                         SpinnerValueFactory<Integer>
 {
