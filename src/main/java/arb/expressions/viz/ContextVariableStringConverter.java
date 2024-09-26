@@ -52,10 +52,7 @@ public final class ContextVariableStringConverter<D, C, F extends Function<D, C>
       case "Fraction":
         return Fraction.named(name).set(value);
       default:
-        String msg = String.format("TODO: handle type='%s'\nname='%s'\nvalue='%s'\n",
-                                   type,
-                                   name,
-                                   value);
+        String msg = String.format("TODO: handle type='%s'\nname='%s'\nvalue='%s'\n", type, name, value);
         expressionAnalyzer.showAlert("TODO", msg);
         assert false : msg;
         return null;

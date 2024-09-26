@@ -230,8 +230,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
 
     try
     {
-      resizeMethod =
-                   TableColumnHeader.class.getDeclaredMethod("resizeColumnToFitContent", int.class);
+      resizeMethod = TableColumnHeader.class.getDeclaredMethod("resizeColumnToFitContent", int.class);
       resizeMethod.setAccessible(true);
     }
     catch (NoSuchMethodException | SecurityException e)
@@ -269,9 +268,8 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
 
   private void addNewExpressionTab()
   {
-    Tab                            tab           =
-                                       new Tab("Expression " + (tabPane.getTabs().size() + 1));
-    ExpressionAnalyzerTab<D, C, F> expressionTab = new ExpressionAnalyzerTab<D, C, F>(this);
+    Tab tab           = new Tab("Expression " + (tabPane.getTabs().size() + 1));
+    var expressionTab = new ExpressionAnalyzerTab<D, C, F>(this);
     tab.setContent(expressionTab);
     tabPane.getTabs().add(tab);
     tabPane.getSelectionModel().select(tab);
@@ -351,8 +349,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
   {
     TextInputDialog dialog = new TextInputDialog();
     dialog.setTitle("New Variable");
-    dialog.setHeaderText(rename ? "Enter the new name for the variable:"
-                                : "Enter the name for the new variable:");
+    dialog.setHeaderText(rename ? "Enter the new name for the variable:" : "Enter the name for the new variable:");
     dialog.setContentText("Variable name:");
 
     // Set the owner to the primary stage
@@ -368,11 +365,8 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
                                               newRenameRealVariableMenuItem());
 
     contextListView.setCellFactory(ContextMenuListCell.forListView(contextMenu,
-                                                                   param -> new ContextFieldListCell<
-                                                                                 D,
-                                                                                 C,
-                                                                                 F>(this,
-                                                                                    converter)));
+                                                                   param -> new ContextFieldListCell<D, C, F>(this,
+                                                                                                              converter)));
 
     contextListView.setEditable(true);
     return contextMenu;
@@ -386,12 +380,11 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
       Named selectedItem = contextListView.getSelectionModel().getSelectedItem();
       if (selectedItem == null)
       {
-        showAlert("Error", "No variable selected. Please select a variable to rename.");
+        showAlert("Error", "The variable to rename must be selected.");
         return;
       }
 
-      Optional<String> result = showVariableNameDialog(true);
-      result.ifPresent(newName ->
+      showVariableNameDialog(true).ifPresent(newName ->
       {
         Context currentContext = getCurrentContext();
         if (currentContext != null)
@@ -408,20 +401,17 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
   public MenuItem newInsertNewRealVariable()
   {
     MenuItem insertNewRealVariable = new MenuItem("New Real Variable");
-    insertNewRealVariable.setOnAction(e ->
+    insertNewRealVariable.setOnAction(e -> showVariableNameDialog(false).ifPresent(name ->
     {
-      Optional<String> result = showVariableNameDialog(false);
-      result.ifPresent(name ->
+      Context currentContext = getCurrentContext();
+      if (currentContext != null)
       {
-        Context currentContext = getCurrentContext();
-        if (currentContext != null)
-        {
-          Real newVar = Real.named(name);
-          currentContext.variables.add(newVar);
-          updateContextListView();
-        }
-      });
-    });
+        Real newVar = Real.named(name);
+        currentContext.variables.add(newVar);
+        updateContextListView();
+      }
+    }));
+
     return insertNewRealVariable;
   }
 
@@ -561,8 +551,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
 
     Scene scene = new Scene(createMainLayout());
 
-    scene.getStylesheets()
-         .add(Stylesheet.convertStylesheetToDataURI(Stylesheet.EASIER_ON_THE_EYES_STYLESHEET));
+    scene.getStylesheets().add(Stylesheet.convertStylesheetToDataURI(Stylesheet.EASIER_ON_THE_EYES_STYLESHEET));
 
     scene.addEventFilter(KeyEvent.KEY_PRESSED, event ->
     {

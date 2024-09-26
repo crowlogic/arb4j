@@ -10,7 +10,7 @@ import javafx.scene.input.KeyEvent;
  *      {@link TheArb4jLibrary}
  */
 public final class EmacsKeybindingsEventHandler implements
-                                                       EventHandler<KeyEvent>
+                                                EventHandler<KeyEvent>
 {
   private final TextField textField;
 

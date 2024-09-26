@@ -14,7 +14,6 @@ public final class ClassStringConverter<D, C, F extends Function<D, C>> extends
                                        StringConverter<Class<?>>
 {
 
-
   @Override
   public String toString(Class<?> object)
   {

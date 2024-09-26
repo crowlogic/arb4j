@@ -76,12 +76,10 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
 
     setupTreeTableView();
 
-  
-
     stackPane = new StackPane(treeTableView);
     this.getChildren().addAll(inputRow, stackPane);
     this.setPadding(new Insets(10));
-    
+
     VBox.setVgrow(stackPane, Priority.ALWAYS);
     HBox.setHgrow(stackPane, Priority.ALWAYS);
     VBox.setVgrow(this, Priority.ALWAYS);
@@ -117,8 +115,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     var fieldCol          = newFieldCol();
     var valueCol          = newValueCol();
     treeTableView.setTableMenuButtonVisible(true);
-    treeTableView.getColumns()
-                 .addAll(typesetCol, valueCol, nodeTypeCol, nodeTypeResultCol, nodeCol, fieldCol);
+    treeTableView.getColumns().addAll(typesetCol, valueCol, nodeTypeCol, nodeTypeResultCol, nodeCol, fieldCol);
   }
 
   @SuppressWarnings("unchecked")
@@ -131,11 +128,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
       Class<C> codomainType = (Class<C>) this.expressionAnalyzer.codomainTypeBox.getValue();
       Class<F> functionType = (Class<F>) this.expressionAnalyzer.functionTypeBox.getValue();
 
-      expr     = Function.compile(domainType,
-                                  codomainType,
-                                  functionType,
-                                  expressionString,
-                                  context.resetClassLoader());
+      expr     = Function.compile(domainType, codomainType, functionType, expressionString, context.resetClassLoader());
 
       instance = expr.instantiate();
       updateTreeTableView();
@@ -144,9 +137,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     catch (Throwable e)
     {
       e.printStackTrace(System.err);
-      this.expressionAnalyzer.showAlert("Compilation Error",
-                                        e.getClass().getName(),
-                                        e.getMessage());
+      this.expressionAnalyzer.showAlert("Compilation Error", e.getClass().getName(), e.getMessage());
     }
   }
 
@@ -163,8 +154,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
   @SuppressWarnings("unchecked")
   private void updateContextView()
   {
-    ListView<Named> contextListView = (ListView<
-                  Named>) this.expressionAnalyzer.contextBox.getChildren().get(1);
+    ListView<Named> contextListView = (ListView<Named>) this.expressionAnalyzer.contextBox.getChildren().get(1);
     contextListView.refresh();
   }
 
@@ -197,9 +187,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
   protected TreeTableColumn<Node<D, C, F>, String> newNodeCol()
   {
     TreeTableColumn<Node<D, C, F>, String> nodeCol = new TreeTableColumn<>("Node");
-    nodeCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
-                                                                        .getValue()
-                                                                        .toString()));
+    nodeCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().toString()));
     return nodeCol;
   }
 
@@ -219,8 +207,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     nodeTypeResultCol.setCellValueFactory(param ->
     {
       Class<?> generatedType = param.getValue().getValue().getGeneratedType();
-      return new ReadOnlyStringWrapper(generatedType == null ? "null"
-                                                             : generatedType.getSimpleName());
+      return new ReadOnlyStringWrapper(generatedType == null ? "null" : generatedType.getSimpleName());
     });
     return nodeTypeResultCol;
   }
@@ -228,9 +215,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
   protected TreeTableColumn<Node<D, C, F>, String> newTypesetCol()
   {
     TreeTableColumn<Node<D, C, F>, String> typesetCol = new TreeTableColumn<>("Expression");
-    typesetCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
-                                                                           .getValue()
-                                                                           .typeset()));
+    typesetCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().typeset()));
     typesetCol.setCellFactory(new TypeSettingCellFactory<>());
     return typesetCol;
   }
@@ -248,8 +233,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
   protected TreeTableColumn<Node<D, C, F>, String> newValueCol()
   {
     TreeTableColumn<Node<D, C, F>, String> valueCol = new TreeTableColumn<>("Value");
-    valueCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(evaluateNode(param.getValue()
-                                                                                      .getValue())));
+    valueCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(evaluateNode(param.getValue().getValue())));
 
     return valueCol;
   }
@@ -331,9 +315,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
         try
         {
           Field field = instance.getClass().getField(intermediateValueFieldName);
-          return field == null ? String.format("missing %s in %s",
-                                               intermediateValueFieldName,
-                                               instance.getClass())
+          return field == null ? String.format("missing %s in %s", intermediateValueFieldName, instance.getClass())
                                : field.get(instance).toString();
         }
         catch (NoSuchFieldException nsfe)
@@ -354,8 +336,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     return enumerateNodeExpansionStates(new HashMap<String, Boolean>(), treeTableView.getRoot());
   }
 
-  public HashMap<String, Boolean> applyNodeExpansionStates(HashMap<String, Boolean> states,
-                                                           TreeItem<?> item)
+  public HashMap<String, Boolean> applyNodeExpansionStates(HashMap<String, Boolean> states, TreeItem<?> item)
   {
     if (item != null && !item.isLeaf())
     {
@@ -373,8 +354,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     return states;
   }
 
-  public HashMap<String, Boolean> enumerateNodeExpansionStates(HashMap<String, Boolean> states,
-                                                               TreeItem<?> item)
+  public HashMap<String, Boolean> enumerateNodeExpansionStates(HashMap<String, Boolean> states, TreeItem<?> item)
   {
     if (item != null && !item.isLeaf())
     {
@@ -421,8 +401,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
       D input = getContext().getVariable("input");
       if (input == null && !expr.domainType.equals(Object.class))
       {
-        expressionAnalyzer.showAlert("Input Required",
-                                     "variable named input must be defined in the context");
+        expressionAnalyzer.showAlert("Input Required", "variable named input must be defined in the context");
       }
       else
       {
@@ -466,8 +445,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     catch (Throwable e)
     {
       e.printStackTrace(System.err);
-      this.expressionAnalyzer.showAlert("Evaluation Error",
-                                        e.getClass().getName() + ": " + e.getMessage());
+      this.expressionAnalyzer.showAlert("Evaluation Error", e.getClass().getName() + ": " + e.getMessage());
     }
   }
 

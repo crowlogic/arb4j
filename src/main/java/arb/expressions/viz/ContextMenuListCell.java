@@ -22,10 +22,8 @@ public class ContextMenuListCell<T> extends
     return forListView(contextMenu, null);
   }
 
-  public static <T>
-         Callback<ListView<T>, ListCell<T>>
-         forListView(final ContextMenu contextMenu,
-                     final Callback<ListView<T>, ListCell<T>> cellFactory)
+  public static <T> Callback<ListView<T>, ListCell<T>> forListView(final ContextMenu contextMenu,
+                                                                   final Callback<ListView<T>, ListCell<T>> cellFactory)
   {
     return listView ->
     {

@@ -1,6 +1,6 @@
 package arb.expressions.viz;
 
-import java.util.stream.Collectors;
+import static java.util.stream.Collectors.toCollection;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -48,14 +48,12 @@ public class NodeTreeItem<D, C, F extends Function<? extends D, ? extends C>> ex
     {
       return FXCollections.observableArrayList();
     }
-    ObservableList<TreeItem<Node<D,
-                  C,
-                  F>>> collect =
-                               treeItem.getValue()
-                                       .getBranches()
-                                       .stream()
-                                       .map(NodeTreeItem::new)
-                                       .collect(Collectors.toCollection(FXCollections::observableArrayList));
+    ObservableList<TreeItem<Node<D, C, F>>> collect =
+                                                    treeItem.getValue()
+                                                            .getBranches()
+                                                            .stream()
+                                                            .map(NodeTreeItem::new)
+                                                            .collect(toCollection(FXCollections::observableArrayList));
     return collect;
   }
 }

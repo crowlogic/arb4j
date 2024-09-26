@@ -34,7 +34,6 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
   private Label                             nameLabel;
   private boolean                           emacsKeybindingsAdded = false;
 
-
   @Override
   public void startEdit()
   {
@@ -45,9 +44,8 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
       emacsKeybindingsAdded = true;
     }
   }
-  
-  public ContextFieldListCell(ExpressionAnalyzer<D, C, F> expressionAnalyzer,
-                              StringConverter<Named> converter)
+
+  public ContextFieldListCell(ExpressionAnalyzer<D, C, F> expressionAnalyzer, StringConverter<Named> converter)
   {
     super(converter);
     this.analyzer  = expressionAnalyzer;
@@ -69,7 +67,8 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
       {
         layout = new HBox(5);
         layout.setAlignment(Pos.CENTER_LEFT);
-        //layout.prefWidthProperty().bind(widthProperty().subtract(5)); // Subtract padding
+        // layout.prefWidthProperty().bind(widthProperty().subtract(5)); // Subtract
+        // padding
         nameLabel = new Label();
         layout.getChildren().add(nameLabel);
       }
@@ -81,10 +80,9 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
         Integer integerItem = (Integer) item;
         if (spinner == null)
         {
-          spinner =
-                  new Spinner<>(new SpinnerValueFactory.IntegerSpinnerValueFactory(java.lang.Integer.MIN_VALUE,
-                                                                                   java.lang.Integer.MAX_VALUE,
-                                                                                   integerItem.getSignedValue()));
+          spinner = new Spinner<>(new SpinnerValueFactory.IntegerSpinnerValueFactory(java.lang.Integer.MIN_VALUE,
+                                                                                     java.lang.Integer.MAX_VALUE,
+                                                                                     integerItem.getSignedValue()));
           spinner.setEditable(true);
           spinner.maxWidthProperty().bind(widthProperty().multiply(0.5)); // 30% of cell width
           spinner.prefWidthProperty().bind(spinner.maxWidthProperty());
@@ -130,7 +128,7 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
       e.printStackTrace();
     }
   }
-  
+
   private void updateRepresentation(Named item)
   {
     analyzer.getCurrentContext().variables.put(item.getName(), item);

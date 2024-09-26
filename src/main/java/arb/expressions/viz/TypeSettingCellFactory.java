@@ -19,13 +19,12 @@ import javafx.util.Callback;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public final class TypeSettingCellFactory<D, C, F extends Function<? extends D, ? extends C>>
-                                         implements
-                                         Callback<TreeTableColumn<Node<D,C,F>, String>,
-                                                       TreeTableCell<Node<D,C,F>, String>>
+public final class TypeSettingCellFactory<D, C, F extends Function<? extends D, ? extends C>> implements
+                                         Callback<TreeTableColumn<Node<D, C, F>, String>,
+                                                       TreeTableCell<Node<D, C, F>, String>>
 {
   public final class TypeSettingTextField extends
-                                          TextFieldTreeTableCell<Node<D,C,F>, String>
+                                          TextFieldTreeTableCell<Node<D, C, F>, String>
   {
     private final ImageView imageView = new ImageView();
 
@@ -59,7 +58,7 @@ public final class TypeSettingCellFactory<D, C, F extends Function<? extends D, 
   }
 
   @Override
-  public TreeTableCell<Node<D,C,F>, String> call(TreeTableColumn<Node<D,C,F>, String> param)
+  public TreeTableCell<Node<D, C, F>, String> call(TreeTableColumn<Node<D, C, F>, String> param)
   {
     return new TypeSettingTextField();
   }
