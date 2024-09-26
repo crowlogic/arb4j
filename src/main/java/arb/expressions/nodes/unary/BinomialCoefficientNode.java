@@ -33,55 +33,33 @@ public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? ext
                                     FunctionCallNode<D, R, F>
 {
   @Override
-  public MethodVisitor
-         generate(MethodVisitor mv,
-                  Class<?> resultType)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    loadPointer(checkClassCast(duplicateTopOfTheStack(loadResultParameter(mv)),
-                               Integer.class));
+    loadPointer(checkClassCast(duplicateTopOfTheStack(loadResultParameter(mv)), Integer.class));
 
-    loadUnsignedValue(combinations.generate(mv,
-                                            Integer.class));
+    loadUnsignedValue(combinations.generate(mv, Integer.class));
 
-    loadUnsignedValue(choices.generate(mv,
-                                       Integer.class));
+    loadUnsignedValue(choices.generate(mv, Integer.class));
 
-    return invokeStaticMethod(mv,
-                              arblib.class,
-                              "fmpz_bin_uiui",
-                              Void.class,
-                              long.class,
-                              long.class,
-                              long.class);
+    return invokeStaticMethod(mv, arblib.class, "fmpz_bin_uiui", Void.class, long.class, long.class, long.class);
   }
 
-  public static MethodVisitor
-         loadUnsignedValue(MethodVisitor mv)
+  public static MethodVisitor loadUnsignedValue(MethodVisitor mv)
   {
-    Compiler.invokeVirtualMethod(mv,
-                                 Integer.class,
-                                 "getUnsignedValue",
-                                 long.class);
+    Compiler.invokeVirtualMethod(mv, Integer.class, "getUnsignedValue", long.class);
     return mv;
   }
 
-  public static MethodVisitor
-         loadPointer(MethodVisitor mv)
+  public static MethodVisitor loadPointer(MethodVisitor mv)
   {
-    Compiler.getField(mv,
-                      Integer.class,
-                      "swigCPtr",
-                      long.class);
+    Compiler.getField(mv, Integer.class, "swigCPtr", long.class);
     return mv;
   }
 
   @Override
-  public String
-         toString()
+  public String toString()
   {
-    return String.format("ℭ(%s,%s)",
-                         combinations,
-                         choices);
+    return String.format("ℭ(%s,%s)", combinations, choices);
   }
 
   public Node<D, R, F> combinations;
@@ -89,12 +67,9 @@ public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? ext
   public Node<D, R, F> choices;
 
   @Override
-  public String
-         typeset()
+  public String typeset()
   {
-    return format("\\binom{%s}{%s}",
-                  combinations.typeset(),
-                  choices.typeset());
+    return format("\\binom{%s}{%s}", combinations.typeset(), choices.typeset());
   }
 
   public BinomialCoefficientNode(Expression<D, R, F> expression)
@@ -103,8 +78,7 @@ public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? ext
           null,
           expression);
     combinations = expression.resolve();
-    choices      = expression.require(',')
-                             .resolve();
+    choices      = expression.require(',').resolve();
     expression.require(')');
   }
 
@@ -120,8 +94,7 @@ public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? ext
   }
 
   @Override
-  public Node<D, R, F>
-         integral(VariableNode<D, R, F> variable)
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
@@ -138,8 +111,7 @@ public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? ext
   }
 
   @Override
-  public Node<D, R, F>
-         derivative(VariableNode<D, R, F> variable)
+  public Node<D, R, F> derivative(VariableNode<D, R, F> variable)
   {
     assert false : "TODO";
     return null;

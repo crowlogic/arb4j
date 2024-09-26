@@ -96,30 +96,25 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     expression.require(')');
     scalarType                           = Compiler.scalarType(expression.coDomainType);
 
-    isRational                           =
-               RationalFunction.class.isAssignableFrom(expression.coDomainType)
-                             || ComplexRationalFunction.class.isAssignableFrom(expression.coDomainType);
+    isRational                           = RationalFunction.class.isAssignableFrom(expression.coDomainType)
+                  || ComplexRationalFunction.class.isAssignableFrom(expression.coDomainType);
 
-    isReal                               = Real.class.equals(scalarType)
-                  || Fraction.class.equals(scalarType) || Integer.class.equals(scalarType);
+    isReal                               =
+           Real.class.equals(scalarType) || Fraction.class.equals(scalarType) || Integer.class.equals(scalarType);
 
-    isComplex                            =
-              Complex.class.equals(scalarType) || ComplexFraction.class.equals(scalarType);
+    isComplex                            = Complex.class.equals(scalarType) || ComplexFraction.class.equals(scalarType);
 
     hasScalarCodomain                    = hasScalarCodomain(expression);
 
-    isNullaryFunctionOrHasScalarCodomain = expression.domainType.equals(Object.class)
-                  || hasScalarCodomain;
+    isNullaryFunctionOrHasScalarCodomain = expression.domainType.equals(Object.class) || hasScalarCodomain;
 
-    var rationalClass       =
-                      isReal ? RationalHypergeometricFunction.class
-                             : isComplex ? ComplexRationalHypergeometricFunction.class : null;
+    var rationalClass       = isReal ? RationalHypergeometricFunction.class
+                                     : isComplex ? ComplexRationalHypergeometricFunction.class : null;
 
     var realPolynomialClass = RealPolynomialHypergeometricFunction.class;
 
     var polynomialClass     =
-                        isReal ? realPolynomialClass
-                               : isComplex ? ComplexPolynomialHypergeometricFunction.class : null;
+                        isReal ? realPolynomialClass : isComplex ? ComplexPolynomialHypergeometricFunction.class : null;
 
     hypergeometricFunctionClass = isRational ? rationalClass : polynomialClass;
 
@@ -131,14 +126,10 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
     nullaryFunctionClass            = isRational ? rationalNullaryClass : polynomialNullaryClass;
 
-    hypergeometricFunctionFieldName =
-                                    expression.newIntermediateVariable("hyp",
-                                                                       hypergeometricFunctionClass,
-                                                                       true);
+    hypergeometricFunctionFieldName = expression.newIntermediateVariable("hyp", hypergeometricFunctionClass, true);
 
     dependsOnInput                  = α.dependsOn(expression.independentVariable)
-                  || α.dependsOn(expression.indeterminateVariable)
-                  || β.dependsOn(expression.independentVariable)
+                  || α.dependsOn(expression.indeterminateVariable) || β.dependsOn(expression.independentVariable)
                   || β.dependsOn(expression.indeterminateVariable);
 
     if (isNullaryFunctionOrHasScalarCodomain)
@@ -174,10 +165,8 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   protected boolean hasScalarCodomain(Expression<D, R, F> expression)
   {
-    return expression.coDomainType.equals(Real.class)
-                  || expression.coDomainType.equals(Complex.class)
-                  || expression.coDomainType.equals(Fraction.class)
-                  || expression.coDomainType.equals(Integer.class)
+    return expression.coDomainType.equals(Real.class) || expression.coDomainType.equals(Complex.class)
+                  || expression.coDomainType.equals(Fraction.class) || expression.coDomainType.equals(Integer.class)
                   || expression.coDomainType.equals(ComplexFraction.class)
                   || expression.coDomainType.equals(GaussianInteger.class);
   }
@@ -327,9 +316,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   protected void loadHypergeometricFunctionOntoStack(MethodVisitor mv)
   {
-    expression.loadThisFieldOntoStack(mv,
-                                      hypergeometricFunctionFieldName,
-                                      hypergeometricFunctionClass);
+    expression.loadThisFieldOntoStack(mv, hypergeometricFunctionFieldName, hypergeometricFunctionClass);
   }
 
   protected void loadOutputOntoStack(MethodVisitor mv, Class<?> resultType)

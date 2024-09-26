@@ -7,17 +7,18 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
- * Floor function<br><br>
+ * Floor function<br>
+ * <br>
  * 
  * <pre>
- *   y = x - frac(x)
+ * y = x - frac(x)
  * </pre>
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
 public class FloorNode<D, R, F extends Function<? extends D, ? extends R>> extends
-                  FunctionCallNode<D, R, F>
+                      FunctionCallNode<D, R, F>
 {
 
   @Override

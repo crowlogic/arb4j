@@ -77,8 +77,7 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
       }
       else
       {
-        intermediateVariableFieldName = expression.allocateIntermediateVariable(methodVisitor,
-                                                                                resultType);
+        intermediateVariableFieldName = expression.allocateIntermediateVariable(methodVisitor, resultType);
       }
     }
 

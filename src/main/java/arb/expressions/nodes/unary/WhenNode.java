@@ -27,9 +27,10 @@ import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
- * The {@link WhenNode} class represents a {@link Node} in the {@link Expression}
- * that is constructed by the {@link WhenNode#evaluate(Expression, int)} method when
- * the 'when' "function" is encountered. It's syntax is like this:
+ * The {@link WhenNode} class represents a {@link Node} in the
+ * {@link Expression} that is constructed by the
+ * {@link WhenNode#evaluate(Expression, int)} method when the 'when' "function"
+ * is encountered. It's syntax is like this:
  * 
  * when(n=0,1,n=1,tanh(ln(1+x²)),else,-1)
  * 
@@ -39,15 +40,15 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class WhenNode<D, R, F extends Function<? extends D, ? extends R>>
-                 extends
-                 UnaryOperationNode<D, R, F>
+public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extends
+                     UnaryOperationNode<D, R, F>
 {
 
   private static final String INTEGER_CLASS_INTERNAL_NAME = Type.getInternalName(Integer.class);
   private static final String INT_METHOD_DESCRIPTOR       = Type.getMethodDescriptor(Type.getType(int.class));
 
-  private static <D, F extends Function<? extends D, ? extends R>, R>
+  private static <D, F extends Function<? extends D, ? extends R>,
+                R>
           void
           evaluateCase(Expression<D, R, F> expression,
                        TreeMap<Integer, Node<D, R, F>> cases,
@@ -56,7 +57,9 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>>
     if (!variable.reference.equals(expression.independentVariable.reference))
     {
       throw new CompilerException("condition of when statement must be the equality of the input variable which is "
-                    + expression.independentVariable + " not " + variable);
+                                  + expression.independentVariable
+                                  + " not "
+                                  + variable);
     }
 
     if (!expression.nextCharacterIs('='))
@@ -69,11 +72,12 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>>
     }
 
     LiteralConstantNode<D, R, F> constant = evaluateCondition(expression);
-    Node<D, R, F>            value    = expression.resolve();
+    Node<D, R, F>                value    = expression.resolve();
     cases.put(new Integer(constant.value), value);
   }
 
-  public static <R, F extends Function<? extends D, ? extends R>, D>
+  public static <R, F extends Function<? extends D, ? extends R>,
+                D>
          LiteralConstantNode<D, R, F>
          evaluateCondition(Expression<D, R, F> expression)
   {
@@ -81,7 +85,8 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>>
     if (!(condition instanceof LiteralConstantNode))
     {
       throw new CompilerException("condition of when statement must be the equality of the input variable to an "
-                    + "Integer LiteralConstant type, but got " + condition);
+                                  + "Integer LiteralConstant type, but got "
+                                  + condition);
     }
     LiteralConstantNode<D, R, F> constant = (LiteralConstantNode<D, R, F>) condition;
     expression.require(',');
@@ -125,7 +130,9 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>>
     if (arg == null)
     {
       throw new CompilerException("default value of when function not specified with else keyword at position="
-                    + expression.position + " of expression=" + expression);
+                                  + expression.position
+                                  + " of expression="
+                                  + expression);
     }
   }
 
@@ -144,7 +151,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>>
     else
     {
       throw new CompilerException("the cases of the when statement must be either an else statement or a VariableNode but it was a "
-                    + node.getClass());
+                                  + node.getClass());
     }
   }
 
@@ -224,7 +231,8 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>>
   public String typeset()
   {
     return cases.entrySet().stream().map(entry -> entry.getValue().typeset()).collect(Collectors.joining(", "))
-                  + " \text{otherwise} " + arg.typeset();
+           + " \text{otherwise} "
+           + arg.typeset();
   }
 
   @Override

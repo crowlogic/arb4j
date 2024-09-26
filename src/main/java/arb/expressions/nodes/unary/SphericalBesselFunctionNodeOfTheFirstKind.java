@@ -40,9 +40,7 @@ import arb.functions.SphericalBesselFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class SphericalBesselFunctionNodeOfTheFirstKind<D,
-              R,
-              F extends Function<? extends D, ? extends R>> extends
+public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends D, ? extends R>> extends
                                                       FunctionCallNode<D, R, F>
 {
 
@@ -75,8 +73,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
     scalar = expression.require(')').hasScalarCodomain();
     expression.registerInitializer(this::generateInitializer);
 
-    functionFieldName =
-                      expression.newIntermediateVariable("j", SphericalBesselFunction.class, true);
+    functionFieldName = expression.newIntermediateVariable("j", SphericalBesselFunction.class, true);
 
   }
 
@@ -92,10 +89,8 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
       index.generateCastTo(mv, Integer.class);
     }
 
-    assert index.getGeneratedType().equals(Integer.class) : "wanted "
-                                                            + Integer.class
-                                                            + " got "
-                                                            + index.getGeneratedType();
+    assert index.getGeneratedType()
+                .equals(Integer.class) : "wanted " + Integer.class + " got " + index.getGeneratedType();
 
     Compiler.invokeMethod(mv, Integer.class, "set", Integer.class, false, Integer.class);
 

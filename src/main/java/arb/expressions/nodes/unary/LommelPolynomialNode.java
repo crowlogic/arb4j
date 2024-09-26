@@ -55,14 +55,11 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     scalarType                           = Compiler.scalarType(expression.coDomainType);
 
     hasScalarCodomain                    = expression.hasScalarCodomain();
-    isNullaryFunctionOrHasScalarCodomain = expression.domainType.equals(Object.class)
-                  || hasScalarCodomain;
+    isNullaryFunctionOrHasScalarCodomain = expression.domainType.equals(Object.class) || hasScalarCodomain;
 
-    functionFieldName                    =
-                      expression.newIntermediateVariable("r", LommelPolynomial.class, true);
+    functionFieldName                    = expression.newIntermediateVariable("r", LommelPolynomial.class, true);
 
-    elementFieldName                     =
-                     expression.newIntermediateVariable("element", RationalFunction.class, true);
+    elementFieldName                     = expression.newIntermediateVariable("element", RationalFunction.class, true);
 
     if (Expression.trace)
     {
@@ -116,9 +113,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     {
       if (Expression.trace)
       {
-        System.err.format("generateCastTo(Real) from generatedType=%s\n",
-                          Real.class,
-                          generatedType);
+        System.err.format("generateCastTo(Real) from generatedType=%s\n", Real.class, generatedType);
       }
       order.generateCastTo(mv, Real.class);
     }
@@ -258,9 +253,8 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, C, F>
-         substitute(String variable, Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, C, F> substitute(String variable,
+                                                                                       Node<E, S, G> arg)
   {
     order    = order.substitute(variable, arg);
     index    = index.substitute(variable, arg);

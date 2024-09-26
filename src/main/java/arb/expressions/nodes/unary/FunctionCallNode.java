@@ -72,24 +72,18 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
 
   public String                   functionName;
 
-  public static HashSet<String>   integerFunctionsWithRealResults =
-                                                                  new HashSet<>(Arrays.asList("sqrt",
-                                                                                              "tanh",
-                                                                                              "log"));
+  public static HashSet<String>   integerFunctionsWithRealResults = new HashSet<>(Arrays.asList("sqrt", "tanh", "log"));
 
-  public static HashSet<String>   complexFunctionsWithRealResults =
-                                                                  new HashSet<>(Arrays.asList("arg",
-                                                                                              "re",
-                                                                                              "im",
-                                                                                              "real",
-                                                                                              "imag"));
+  public static HashSet<String>   complexFunctionsWithRealResults = new HashSet<>(Arrays.asList("arg",
+                                                                                                "re",
+                                                                                                "im",
+                                                                                                "real",
+                                                                                                "imag"));
 
   public FunctionMapping<D, R, F> mapping;
 
   @SuppressWarnings("unchecked")
-  public FunctionCallNode(String functionName,
-                          Node<D, R, F> argument,
-                          Expression<D, R, F> expression)
+  public FunctionCallNode(String functionName, Node<D, R, F> argument, Expression<D, R, F> expression)
   {
     super(argument,
           expression);
@@ -117,19 +111,16 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
     t.accept(this);
   }
 
-  public boolean checkForArgumentConversionNeed(FunctionMapping<D, R, F> functionMapping,
-                                                boolean isNullaryFunction)
+  public boolean checkForArgumentConversionNeed(FunctionMapping<D, R, F> functionMapping, boolean isNullaryFunction)
   {
-    return arg != null && !arg.getGeneratedType().equals(functionMapping.domain)
-                  && !isNullaryFunction;
+    return arg != null && !arg.getGeneratedType().equals(functionMapping.domain) && !isNullaryFunction;
   }
 
   private void checkForUndefinedReferenced(FunctionMapping<D, R, F> mapping)
   {
     if (mapping.instance == null && mapping.functionClass == null)
     {
-      throw new IllegalArgumentException(String.format("Undefined reference to function %s",
-                                                       mapping));
+      throw new IllegalArgumentException(String.format("Undefined reference to function %s", mapping));
     }
   }
 
@@ -182,8 +173,7 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
 
     generateParameter(mv, (Class<? extends R>) functionMapping.domain, isNullaryFunction);
 
-    boolean needsArgTypeConversion = checkForArgumentConversionNeed(functionMapping,
-                                                                    isNullaryFunction);
+    boolean needsArgTypeConversion = checkForArgumentConversionNeed(functionMapping, isNullaryFunction);
 
     if (needsArgTypeConversion)
     {
@@ -191,9 +181,8 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
     }
   }
 
-  public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor,
-                                                   Class<?> requisiteResultType,
-                                                   boolean bitless)
+  public MethodVisitor
+         generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> requisiteResultType, boolean bitless)
   {
     Class<?> argType = getArgType();
     arg.generate(methodVisitor, argType);
@@ -210,9 +199,7 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
                                   Type.getInternalName(domainType),
                                   functionName,
                                   bitless ? Compiler.getMethodDescriptor(coDomainType, coDomainType)
-                                          : Compiler.getMethodDescriptor(coDomainType,
-                                                                         int.class,
-                                                                         coDomainType),
+                                          : Compiler.getMethodDescriptor(coDomainType, int.class, coDomainType),
                                   false);
 
     generatedType = requisiteResultType;
@@ -245,8 +232,7 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
     return functionMapping.call(mv, generatedType);
   }
 
-  private void
-          generateParameter(MethodVisitor mv, Class<? extends R> argType, boolean isNullaryFunction)
+  private void generateParameter(MethodVisitor mv, Class<? extends R> argType, boolean isNullaryFunction)
   {
     if (isNullaryFunction)
     {
@@ -309,9 +295,7 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
 
   private void loadFunctionReferenceOntoStack(MethodVisitor mv, FunctionMapping<D, R, F> mapping)
   {
-    expression.loadFieldOntoStack(loadThisOntoStack(mv),
-                                  functionName,
-                                  mapping.functionFieldDescriptor());
+    expression.loadFieldOntoStack(loadThisOntoStack(mv), functionName, mapping.functionFieldDescriptor());
   }
 
   public FunctionMapping<D, R, F> registerSelfReferrentialFunctionMapping()
@@ -338,7 +322,7 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
 
     Class<?>                retType = null;
 
-    if ("sqrt".equals(functionName) )
+    if ("sqrt".equals(functionName))
     {
       return Real.class;
     }
@@ -349,8 +333,7 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
     }
     else if (((argType.equals(Integer.class) || argType.equals(Fraction.class))
                   && integerFunctionsWithRealResults.contains(functionName))
-                  || (argType.equals(Complex.class)
-                                && complexFunctionsWithRealResults.contains(functionName)))
+                  || (argType.equals(Complex.class) && complexFunctionsWithRealResults.contains(functionName)))
     {
       retType = Compiler.scalarType(expression.coDomainType);
     }
@@ -364,10 +347,9 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
 
   private void assignFunctionName()
   {
-    this.functionName =
-                      Parser.replaceArrowsEllipsesAndSuperscriptAlphabeticalExponents(functionName)
-                            .replaceAll("ln", "log")
-                            .replaceAll("√", "sqrt");
+    this.functionName = Parser.replaceArrowsEllipsesAndSuperscriptAlphabeticalExponents(functionName)
+                              .replaceAll("ln", "log")
+                              .replaceAll("√", "sqrt");
   }
 
   @Override
@@ -381,9 +363,8 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String variable, Node<E, S, G> transformation)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
+                                                                                       Node<E, S, G> transformation)
   {
     arg = arg.substitute(variable, transformation);
     return this;
@@ -410,12 +391,8 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
   @Override
   public String typeset()
   {
-    String name = functionName.replaceAll("√", "sqrt")
-                              .replaceAll("J0", "J_0")
-                              .replaceAll("ζ", "zeta");
-    return format(name.equals("sqrt") ? "\\%s{%s}" : "\\%s(%s)",
-                  name,
-                  arg == null ? "" : arg.typeset());
+    String name = functionName.replaceAll("√", "sqrt").replaceAll("J0", "J_0").replaceAll("ζ", "zeta");
+    return format(name.equals("sqrt") ? "\\%s{%s}" : "\\%s(%s)", name, arg == null ? "" : arg.typeset());
   }
 
   @Override

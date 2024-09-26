@@ -27,9 +27,8 @@ import arb.functions.real.RealBesselFunctionOfTheFirstKind;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends D, ? extends R>>
-                                         extends
-                                         FunctionCallNode<D, R, F>
+public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends D, ? extends R>> extends
+                                             FunctionCallNode<D, R, F>
 {
 
   @Override
@@ -96,7 +95,7 @@ public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends
   {
 
     assert false : "TODO: generate Bessel function of the first kind of order=" + order;
-    
+
     expression.allocateIntermediateVariable(mv, resultType);
   }
 
@@ -120,8 +119,6 @@ public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends
   @Override
   public String typeset()
   {
-    return format("J_{%s}(%s)",
-                  order.typeset(),
-                  arg == null ? "" : arg.typeset());
+    return format("J_{%s}(%s)", order.typeset(), arg == null ? "" : arg.typeset());
   }
 }
