@@ -82,15 +82,7 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
     }
     else
     {
-      if (layout == null)
-      {
-        layout = new HBox(5);
-        layout.setAlignment(Pos.CENTER_LEFT);
-        // layout.prefWidthProperty().bind(widthProperty().subtract(5)); // Subtract
-        // padding
-        nameLabel = new Label();
-        layout.getChildren().add(nameLabel);
-      }
+      createLayoutIfItDoesntAlreadyExist();
 
       updateRepresentation(item);
 
@@ -135,13 +127,28 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
           HBox.setHgrow(spinner, Priority.ALWAYS);
         }
       }
-      else if (layout.getChildren().size() > 1)
-      {
-        layout.getChildren().remove(1);
-      }
+
 
       setText(null);
       setGraphic(layout);
+    }
+  }
+
+  public void removeSpinner()
+  {
+    layout.getChildren().remove(1);
+  }
+
+  public void createLayoutIfItDoesntAlreadyExist()
+  {
+    if (layout == null)
+    {
+      layout = new HBox(5);
+      layout.setAlignment(Pos.CENTER_LEFT);
+      // layout.prefWidthProperty().bind(widthProperty().subtract(5)); // Subtract
+      // padding
+      nameLabel = new Label();
+      layout.getChildren().add(nameLabel);
     }
   }
 
