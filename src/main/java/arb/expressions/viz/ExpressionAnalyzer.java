@@ -608,7 +608,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
       contextListView.setItems(getCurrentContext().variables);
       splitPane.getItems().add(0, contextBox);
       splitPane.setDividerPositions(lastDividerPositions == null ? new double[]
-      { 0.18 } : lastDividerPositions);
+      { 0.19 } : lastDividerPositions);
 
     }
     contextViewVisible = !contextViewVisible;
