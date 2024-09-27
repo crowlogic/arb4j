@@ -90,6 +90,18 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
           {
             integerItem.set(newValue);
             updateRepresentation(item);
+            analyzer.evaluate();
+          });
+          spinner.setOnScroll(event ->
+          {
+            if (event.getDeltaY() < 0)
+            {
+              spinner.decrement();
+            }
+            else if (event.getDeltaY() > 0)
+            {
+              spinner.increment();
+            }
           });
           analyzer.addEmacsKeybindings(spinner.getEditor());
           layout.getChildren().add(spinner);

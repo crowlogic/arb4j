@@ -269,7 +269,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
   private void addNewExpressionTab()
   {
     Tab tab           = new Tab("Expression " + (tabPane.getTabs().size() + 1));
-    var expressionTab = new ExpressionAnalyzerTab<D, C, F>(this);
+    var expressionTab = new ExpressionTab<D, C, F>(this);
     tab.setContent(expressionTab);
     tabPane.getTabs().add(tab);
     tabPane.getSelectionModel().select(tab);
@@ -448,14 +448,14 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
   }
 
   @SuppressWarnings("unchecked")
-  private void executeTabAction(Consumer<ExpressionAnalyzerTab<D, C, F>> action)
+  private void executeTabAction(Consumer<ExpressionTab<D, C, F>> action)
   {
     Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
     if (currentTab != null)
     {
-      javafx.scene.Node              content       = currentTab.getContent();
+      javafx.scene.Node      content       = currentTab.getContent();
 
-      ExpressionAnalyzerTab<D, C, F> expressionTab = (ExpressionAnalyzerTab<D, C, F>) content;
+      ExpressionTab<D, C, F> expressionTab = (ExpressionTab<D, C, F>) content;
 
       action.accept(expressionTab);
     }
@@ -467,8 +467,8 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
     if (currentTab != null)
     {
-      javafx.scene.Node              content       = currentTab.getContent();
-      ExpressionAnalyzerTab<D, C, F> expressionTab = (ExpressionAnalyzerTab<D, C, F>) content;
+      javafx.scene.Node      content       = currentTab.getContent();
+      ExpressionTab<D, C, F> expressionTab = (ExpressionTab<D, C, F>) content;
       return expressionTab.context;
     }
     return null;
@@ -480,25 +480,25 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     addTabButton.setOnAction(e -> addNewExpressionTab());
 
     Button compileButton = new Button("Compile");
-    compileButton.setOnAction(e -> executeTabAction(ExpressionAnalyzerTab::compileExpression));
+    compileButton.setOnAction(e -> executeTabAction(ExpressionTab::compileExpression));
 
     Button expandAllButton = new Button("Expand All");
-    expandAllButton.setOnAction(e -> executeTabAction(ExpressionAnalyzerTab::expandAllNodes));
+    expandAllButton.setOnAction(e -> executeTabAction(ExpressionTab::expandAllNodes));
 
     Button evaluateButton = new Button("Evaluate");
-    evaluateButton.setOnAction(e -> executeTabAction(ExpressionAnalyzerTab::evaluateExpression));
+    evaluateButton.setOnAction(e -> evaluate());
 
     Button toggleContextButton = new Button("Toggle Context");
     toggleContextButton.setOnAction(e -> toggleContextView());
 
     Button saveButton = new Button("Save");
-    saveButton.setOnAction(e -> executeTabAction(ExpressionAnalyzerTab::save));
+    saveButton.setOnAction(e -> executeTabAction(ExpressionTab::save));
 
     Button loadButton = new Button("Load");
-    loadButton.setOnAction(e -> executeTabAction(ExpressionAnalyzerTab::load));
+    loadButton.setOnAction(e -> executeTabAction(ExpressionTab::load));
 
     Button graphButton = new Button("Graph");
-    graphButton.setOnAction(e -> executeTabAction(ExpressionAnalyzerTab::graph));
+    graphButton.setOnAction(e -> executeTabAction(ExpressionTab::graph));
 
     return new HBox(10,
                     addTabButton,
@@ -509,6 +509,11 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
                     saveButton,
                     loadButton,
                     graphButton);
+  }
+
+  public void evaluate()
+  {
+    executeTabAction(ExpressionTab::evaluateExpression);
   }
 
   private void setupTypeBoxes()

@@ -18,7 +18,6 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
-import arb.expressions.nodes.unary.HypergeometricFunctionNode;
 import arb.functions.Function;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -37,11 +36,11 @@ import javafx.util.Duration;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
-                                  VBox
+public class ExpressionTab<D, C, F extends Function<D, C>> extends
+                          VBox
 {
 
-  final ExpressionAnalyzer<D, C, F> expressionAnalyzer;
+  final ExpressionAnalyzer<D, C, F> analyzer;
   TextField                         expressionInput;
   TreeTableView<Node<D, C, F>>      treeTableView;
   Expression<D, C, F>               expr;
@@ -57,19 +56,17 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     return context;
   }
 
-  public ExpressionAnalyzerTab(ExpressionAnalyzer<D, C, F> expressionAnalyzer)
+  public ExpressionTab(ExpressionAnalyzer<D, C, F> expressionAnalyzer)
   {
     super(10);
-    this.expressionAnalyzer = expressionAnalyzer;
-    this.context            = new Context(Complex.named("input").set(3),
-                                          Real.named("v").set(RealConstants.half));
+    this.analyzer = expressionAnalyzer;
+    this.context  = new Context(Complex.named("input").set(3),
+                                Real.named("v").set(RealConstants.half));
 
     setupExpressionInput();
 
-    // Create the MiniSymbolPalette
     MiniSymbolPalette symbolPalette = new MiniSymbolPalette(expressionInput);
 
-    // Create an HBox to hold the expressionInput and symbolPalette
     HBox              inputRow      = new HBox(10);
     inputRow.getChildren().addAll(expressionInput, symbolPalette);
     HBox.setHgrow(expressionInput, Priority.ALWAYS);
@@ -77,8 +74,8 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     setupTreeTableView();
 
     stackPane = new StackPane(treeTableView);
-    this.getChildren().addAll(inputRow, stackPane);
-    this.setPadding(new Insets(10));
+    getChildren().addAll(inputRow, stackPane);
+    setPadding(new Insets(10));
 
     VBox.setVgrow(stackPane, Priority.ALWAYS);
     HBox.setHgrow(stackPane, Priority.ALWAYS);
@@ -90,7 +87,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     expressionInput = new TextField();
     expressionInput.setPromptText("Enter expression here");
     expressionInput.setText("1+(-((lnΓ(1/4 + t*I/2) - lnΓ(1/4 - t*I/2))*I)/2 - ln(π)*t/2)/π + 1 - I*((ln(ζ(1/2 + I*t)) - ln(ζ(1/2 - I*t))))/(2*π)");
-    expressionAnalyzer.addEmacsKeybindings(expressionInput);
+    analyzer.addEmacsKeybindings(expressionInput);
 
     expressionInput.setMaxWidth(1200);
     expressionInput.setOnKeyPressed(event ->
@@ -124,9 +121,9 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     String expressionString = expressionInput.getText();
     try
     {
-      Class<D> domainType   = (Class<D>) this.expressionAnalyzer.domainTypeBox.getValue();
-      Class<C> codomainType = (Class<C>) this.expressionAnalyzer.codomainTypeBox.getValue();
-      Class<F> functionType = (Class<F>) this.expressionAnalyzer.functionTypeBox.getValue();
+      Class<D> domainType   = (Class<D>) this.analyzer.domainTypeBox.getValue();
+      Class<C> codomainType = (Class<C>) this.analyzer.codomainTypeBox.getValue();
+      Class<F> functionType = (Class<F>) this.analyzer.functionTypeBox.getValue();
 
       expr     = Function.compile(domainType, codomainType, functionType, expressionString, context.resetClassLoader());
 
@@ -137,14 +134,14 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     catch (Throwable e)
     {
       e.printStackTrace(System.err);
-      this.expressionAnalyzer.showAlert("Compilation Error", e.getClass().getName(), e.getMessage());
+      this.analyzer.showAlert("Compilation Error", e.getClass().getName(), e.getMessage());
     }
   }
 
   private TreeItem<Node<D, C, F>> updateTreeTableView()
   {
-    Node<D, C, F>           rootNode = expr.rootNode;
-    TreeItem<Node<D, C, F>> rootItem = new NodeTreeItem<>(rootNode);
+    var rootNode = expr.rootNode;
+    var rootItem = new NodeTreeItem<>(rootNode);
     treeTableView.setRoot(rootItem);
     treeTableView.setShowRoot(true);
     Platform.runLater(this::resizeColumnsToFitContent);
@@ -154,17 +151,13 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
   @SuppressWarnings("unchecked")
   private void updateContextView()
   {
-    ListView<Named> contextListView = (ListView<Named>) this.expressionAnalyzer.contextBox.getChildren().get(1);
+    ListView<Named> contextListView = (ListView<Named>) this.analyzer.contextBox.getChildren().get(1);
     contextListView.refresh();
   }
 
   public void resizeColumnsToFitContent()
   {
-    out.println("resizeColumnsToFitContent");
-    for (TreeTableColumn<?, ?> column : treeTableView.getColumns())
-    {
-      resizeColumn(column);
-    }
+    treeTableView.getColumns().forEach(column -> resizeColumn(column));
   }
 
   private void resizeColumn(TreeTableColumn<?, ?> column)
@@ -234,18 +227,17 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
   {
     TreeTableColumn<Node<D, C, F>, String> valueCol = new TreeTableColumn<>("Value");
     valueCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(evaluateNode(param.getValue().getValue())));
-
     return valueCol;
   }
 
   public void graph()
   {
-    expressionAnalyzer.showAlert("TODO", "TODO: graph.. ask for range.. 1d for real");
+    analyzer.showAlert("TODO", "TODO: graph.. ask for range.. 1d for real");
   }
 
   public void load()
   {
-    expressionAnalyzer.showAlert("TODO", "TODO: load");
+    analyzer.showAlert("TODO", "TODO: load");
   }
 
   private Optional<String> askWhatToSaveAs()
@@ -255,7 +247,6 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     dialog.setHeaderText("Designation");
     dialog.setContentText("What shall this expression be designated as?");
 
-    // Set the owner to the primary stage
     dialog.initOwner(getScene().getWindow());
 
     return dialog.showAndWait();
@@ -266,7 +257,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     Optional<String> filename = askWhatToSaveAs();
     if (filename.isPresent())
     {
-      expressionAnalyzer.showAlert("TODO", "TODO: save expression and context to " + filename);
+      analyzer.showAlert("TODO", "TODO: save expression and context to " + filename);
     }
   }
 
@@ -281,7 +272,6 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
       String intermediateValueFieldName = node.getIntermediateValueFieldName();
       if (intermediateValueFieldName == null)
       {
-
         return "null";
       }
       if (intermediateValueFieldName.equals("result"))
@@ -295,34 +285,24 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
         {
           return variableNode.getName();
         }
-      }
-      else if (node instanceof HypergeometricFunctionNode)
-      {
-        // FIXME; support these types of embedded expressions by accessing the evaluated
-        // alpha and beta params instead
-        // of printing the formulas for alpha and beta which are already displayed
-        // HypergeometricFunctionNode<D, C, F> hyp = (HypergeometricFunctionNode<D, C,
-        // F>) node;
-        return "...";
-      }
-      if (intermediateValueFieldName.equals(expr.getInputName()))
-      {
-        Object inputVariable = getContext().getVariable("input");
-        return inputVariable != null ? inputVariable.toString() : "null";
-      }
-      else
-      {
-        try
+        else if (variableNode.isIndependent)
         {
-          Field field = instance.getClass().getField(intermediateValueFieldName);
-          return field == null ? String.format("missing %s in %s", intermediateValueFieldName, instance.getClass())
-                               : field.get(instance).toString();
-        }
-        catch (NoSuchFieldException nsfe)
-        {
-          return intermediateValueFieldName;
+          Object inputVariable = getContext().getVariable("input");
+          return inputVariable != null ? inputVariable.toString() : "null";
         }
       }
+
+      try
+      {
+        Field field = instance.getClass().getField(intermediateValueFieldName);
+        return field == null ? String.format("missing %s in %s", intermediateValueFieldName, instance.getClass())
+                             : field.get(instance).toString();
+      }
+      catch (NoSuchFieldException nsfe)
+      {
+        return intermediateValueFieldName;
+      }
+
     }
     catch (Exception e)
     {
@@ -371,10 +351,10 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
   public void expandAllNodes()
   {
     expandTreeView(treeTableView.getRoot());
-    // Add a short delay before resizing
-    PauseTransition pause = new PauseTransition(Duration.millis(250));
-    pause.setOnFinished(event -> resizeColumnsToFitContent());
-    pause.play();
+    Platform.runLater(this::resizeColumnsToFitContent);
+//    PauseTransition pause = new PauseTransition(Duration.millis(250));
+//    pause.setOnFinished(event -> resizeColumnsToFitContent());
+//    pause.play();
   }
 
   private void expandTreeView(TreeItem<?> item)
@@ -401,7 +381,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
       D input = getContext().getVariable("input");
       if (input == null && !expr.domainType.equals(Object.class))
       {
-        expressionAnalyzer.showAlert("Input Required", "variable named input must be defined in the context");
+        analyzer.showAlert("Input Required", "variable named input must be defined in the context");
       }
       else
       {
@@ -419,25 +399,18 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
         }
         else
         {
-
           result = instance.evaluate(input, 128);
-
         }
-        System.out.println(expr + "(" + input + ")=" + result);
 
         var rootItem = updateTreeTableView();
 
         if (nodeExpansionStates != null)
         {
-          out.println("restoring nodeExpansionStates " + nodeExpansionStates);
           applyNodeExpansionStates(nodeExpansionStates, rootItem);
         }
         if (!anyExpanded(rootItem))
         {
-          out.println("expandAllNodes");
-
           expandAllNodes();
-
         }
 
       }
@@ -445,7 +418,7 @@ public class ExpressionAnalyzerTab<D, C, F extends Function<D, C>> extends
     catch (Throwable e)
     {
       e.printStackTrace(System.err);
-      this.expressionAnalyzer.showAlert("Evaluation Error", e.getClass().getName() + ": " + e.getMessage());
+      this.analyzer.showAlert("Evaluation Error", e.getClass().getName() + ": " + e.getMessage());
     }
   }
 
