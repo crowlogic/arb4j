@@ -1,4 +1,4 @@
-package arb.expressions.viz;
+package arb.expressions.viz.context;
 
 import java.lang.reflect.Field;
 
@@ -6,7 +6,9 @@ import arb.Integer;
 import arb.Named;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.viz.ExpressionAnalyzer;
 import arb.functions.Function;
+import arb.utensils.Utensils;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
@@ -27,21 +29,38 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
                                        TextFieldListCell<Named>
 {
 
-  private final ExpressionAnalyzer<D, C, F> analyzer;
-  private final StringConverter<Named>      converter;
-  private Spinner<java.lang.Integer>        spinner;
-  private HBox                              layout;
-  private Label                             nameLabel;
-  private boolean                           emacsKeybindingsAdded = false;
+  final ExpressionAnalyzer<D, C, F> analyzer;
+  final StringConverter<Named>      converter;
+  Spinner<java.lang.Integer>        spinner;
+  HBox                              layout;
+  Label                             nameLabel;
+  boolean                           emacsKeyBindingsAdded;
 
   @Override
   public void startEdit()
   {
     super.startEdit();
-    if (!emacsKeybindingsAdded)
+    if (!isEditing())
     {
-      addEmacsKeybindingsToTextField();
-      emacsKeybindingsAdded = true;
+      return;
+    }
+    if (!emacsKeyBindingsAdded)
+    {
+      addEmacsKeybindingsToTextField(getTextField());
+      emacsKeyBindingsAdded = true;
+    }
+  }
+
+  public TextField getTextField()
+  {
+    try
+    {
+      return (TextField) textFieldField.get(this);
+    }
+    catch (IllegalArgumentException | IllegalAccessException e)
+    {
+      Utensils.throwOrWrap(e);
+      return null;
     }
   }
 
@@ -126,19 +145,26 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
     }
   }
 
-  private void addEmacsKeybindingsToTextField()
+  static Field textFieldField;
+
+  static
   {
     try
     {
-      Field textField = TextFieldListCell.class.getDeclaredField("textField");
-      textField.setAccessible(true);
-      TextField tf = (TextField) textField.get(this);
-      analyzer.addEmacsKeybindings(tf);
+      textFieldField = TextFieldListCell.class.getDeclaredField("textField");
+      textFieldField.setAccessible(true);
     }
-    catch (NoSuchFieldException | IllegalAccessException e)
+    catch (NoSuchFieldException | SecurityException e)
     {
       e.printStackTrace();
     }
+  }
+
+  private void addEmacsKeybindingsToTextField(TextField textField)
+  {
+
+    analyzer.addEmacsKeybindings(textField);
+
   }
 
   private void updateRepresentation(Named item)
@@ -165,4 +191,5 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
     super.cancelEdit();
     updateItem(getItem(), false);
   }
+
 }

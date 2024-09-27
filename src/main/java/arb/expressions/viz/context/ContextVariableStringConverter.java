@@ -1,4 +1,4 @@
-package arb.expressions.viz;
+package arb.expressions.viz.context;
 
 import arb.Complex;
 import arb.Fraction;
@@ -7,6 +7,7 @@ import arb.Named;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.viz.ExpressionAnalyzer;
 import arb.functions.Function;
 import javafx.util.StringConverter;
 
@@ -23,7 +24,7 @@ public final class ContextVariableStringConverter<D, C, F extends Function<D, C>
   /**
    * @param expressionAnalyzer
    */
-  ContextVariableStringConverter(ExpressionAnalyzer<D, C, F> expressionAnalyzer)
+  public ContextVariableStringConverter(ExpressionAnalyzer<D, C, F> expressionAnalyzer)
   {
     this.expressionAnalyzer = expressionAnalyzer;
   }

@@ -12,6 +12,9 @@ import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.expressions.viz.context.ContextFieldListCell;
+import arb.expressions.viz.context.ContextMenuListCell;
+import arb.expressions.viz.context.ContextVariableStringConverter;
 import arb.functions.*;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexNullaryFunction;
@@ -342,6 +345,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
 
   public void addEmacsKeybindings(TextField textField)
   {
+    
     textField.addEventFilter(KeyEvent.KEY_PRESSED, new EmacsKeybindingsEventHandler(textField));
   }
 
