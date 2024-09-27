@@ -19,7 +19,7 @@ import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -38,8 +38,8 @@ import javafx.scene.layout.VBox;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ExpressionTab<D, C, F extends Function<D, C>> extends
-                          VBox
+public class ExpressionTree<D, C, F extends Function<D, C>> extends
+                           VBox
 {
 
   final ExpressionAnalyzer<D, C, F> analyzer;
@@ -52,14 +52,16 @@ public class ExpressionTab<D, C, F extends Function<D, C>> extends
   HashMap<String, Boolean>          nodeExpansionStates;
   MiniSymbolPalette                 symbolPalette;
   private StackPane                 stackPane;
-  private VirtualFlow<?>            treeTableVirtualFlow;
+  VirtualFlow<?>            tableVirtualFlow;
+  private ScrollBar                 hbar;
+  private ScrollBar                 vbar;
 
   public Context getContext()
   {
     return context;
   }
 
-  public ExpressionTab(ExpressionAnalyzer<D, C, F> expressionAnalyzer)
+  public ExpressionTree(ExpressionAnalyzer<D, C, F> expressionAnalyzer)
   {
     super(10);
     this.analyzer = expressionAnalyzer;
@@ -103,15 +105,20 @@ public class ExpressionTab<D, C, F extends Function<D, C>> extends
     symbolPalette = new MiniSymbolPalette(expressionInput);
   }
 
-  InvalidationListener virtualFlowListener = skinEvent ->
+  void virtualFlowListener(Observable skinEvent)
   {
     try
     {
-      var   skin      = treeTableView.getSkin();
-      Field flowField = TableViewSkinBase.class.getDeclaredField("flow");
-      flowField.setAccessible(true);
-      treeTableVirtualFlow = (VirtualFlow<?>) flowField.get(skin);
-      System.err.println("treeTableVirtualFlow=" + treeTableVirtualFlow);
+      var flow = getVirtualFlow();
+      flow.setPannable(true);
+      hbar = getTableVirtualFlowScrollbar(flow, true);
+      vbar = getTableVirtualFlowScrollbar(flow, false);
+
+      System.err.format("treeTableVirtualFlow=%s\nhbar=%s\nvbar=%s\npannable=%s\n",
+                        tableVirtualFlow,
+                        hbar,
+                        vbar,
+                        tableVirtualFlow.isPannable());
     }
     catch (Throwable e)
     {
@@ -119,6 +126,29 @@ public class ExpressionTab<D, C, F extends Function<D, C>> extends
     }
 
   };
+
+  public static ScrollBar getTableVirtualFlowScrollbar(VirtualFlow<?> tableVirtualFlow,
+                                                       boolean horizontal) throws IllegalAccessException,
+                                                                           NoSuchFieldException
+  {
+    var scrollbar = horizontal ? "hbar" : "vbar";
+    return (ScrollBar) getVirtualFlowField(scrollbar).get(tableVirtualFlow);
+  }
+
+  public static Field getVirtualFlowField(String fieldName) throws NoSuchFieldException
+  {
+    Field hbarField = VirtualFlow.class.getDeclaredField(fieldName);
+    hbarField.setAccessible(true);
+    return hbarField;
+  }
+
+  public VirtualFlow<?> getVirtualFlow() throws NoSuchFieldException, IllegalAccessException
+  {
+    var   skin      = treeTableView.getSkin();
+    Field flowField = TableViewSkinBase.class.getDeclaredField("flow");
+    flowField.setAccessible(true);
+    return tableVirtualFlow = (VirtualFlow<?>) flowField.get(skin);
+  }
 
   @SuppressWarnings("unchecked")
   private void setupTreeTableView()
@@ -132,54 +162,11 @@ public class ExpressionTab<D, C, F extends Function<D, C>> extends
     var fieldCol          = newFieldCol();
     var valueCol          = newValueCol();
     treeTableView.setTableMenuButtonVisible(true);
-
-    treeTableView.skinProperty().addListener(virtualFlowListener);
-
+    treeTableView.skinProperty().addListener(this::virtualFlowListener);
     treeTableView.getColumns().addAll(typesetCol, valueCol, nodeTypeCol, nodeTypeResultCol, nodeCol, fieldCol);
-
-    treeTableView.addEventFilter(ScrollEvent.SCROLL, (ScrollEvent event) ->
-    {
-      boolean   informed = false;
-      ScrollBar hBar     = getScrollBar(treeTableVirtualFlow, Orientation.HORIZONTAL);
-      if (hBar != null)
-      {
-        if (event.getDeltaY() > 0 && event.isShiftDown())
-        {
-          if (hBar.getValue() != hBar.getMin())
-          {
-            hBar.setValue(hBar.getValue() - 20);
-            event.consume();
-          }
-          else
-          {
-            event.consume();
-          }
-        }
-        else if (event.isShiftDown())
-        {
-          if (hBar.getValue() != hBar.getMax())
-          {
-            hBar.setValue(hBar.getValue() + 20);
-            event.consume();
-          }
-          else
-          {
-            event.consume();
-          }
-        }
-      }
-      else
-      {
-        if (!informed)
-        {
-          new Throwable("virtual flow handlers not installed").printStackTrace();
-          informed = true;
-        }
-      }
-    });
   }
 
-  private ScrollBar getScrollBar(VirtualFlow<?> treeTableVirtualFlow2, Orientation horizontal)
+  ScrollBar getScrollBar(VirtualFlow<?> treeTableVirtualFlow2, Orientation horizontal)
   {
     assert false : "TODO: also get this via reflection. I fucking hate this about java. The audicity of some neckbeard somewhere thinking that they are going to prevent me from accessing stuff on  my own computer is absurd.";
     return null;
