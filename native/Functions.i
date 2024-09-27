@@ -114,6 +114,8 @@ void qqbar_fmpz_sub(qqbar_t res, const fmpz_t x, const qqbar_t y);
 void qqbar_ui_sub(qqbar_t res, ulong x, const qqbar_t y);
 void qqbar_si_sub(qqbar_t res, slong x, const qqbar_t y);
 
+void acb_pow_fmpz(acb_t y, const acb_t b, const fmpz_t e, slong prec);
+
 int qqbar_equal(const qqbar_t x, const qqbar_t y);
 int qqbar_cmp_re(const qqbar_t x, const qqbar_t y);
 int qqbar_cmp_im(const qqbar_t x, const qqbar_t y);

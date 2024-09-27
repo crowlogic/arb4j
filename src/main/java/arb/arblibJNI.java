@@ -76,6 +76,7 @@ public class arblibJNI {
   public final static native void qqbar_fmpz_sub(long jarg1, AlgebraicNumber jarg1_, long jarg2, long jarg3, AlgebraicNumber jarg3_);
   public final static native void qqbar_ui_sub(long jarg1, AlgebraicNumber jarg1_, long jarg2, long jarg3, AlgebraicNumber jarg3_);
   public final static native void qqbar_si_sub(long jarg1, AlgebraicNumber jarg1_, int jarg2, long jarg3, AlgebraicNumber jarg3_);
+  public final static native void acb_pow_fmpz(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4);
   public final static native int qqbar_equal(long jarg1, AlgebraicNumber jarg1_, long jarg2, AlgebraicNumber jarg2_);
   public final static native int qqbar_cmp_re(long jarg1, AlgebraicNumber jarg1_, long jarg2, AlgebraicNumber jarg2_);
   public final static native int qqbar_cmp_im(long jarg1, AlgebraicNumber jarg1_, long jarg2, AlgebraicNumber jarg2_);

@@ -110,6 +110,10 @@ public class arblib {
     arblibJNI.qqbar_si_sub(AlgebraicNumber.getCPtr(res), res, x, AlgebraicNumber.getCPtr(y), y);
   }
 
+  public static void acb_pow_fmpz(Complex y, Complex b, long e, int prec) {
+    arblibJNI.acb_pow_fmpz(Complex.getCPtr(y), y, Complex.getCPtr(b), b, e, prec);
+  }
+
   public static int qqbar_equal(AlgebraicNumber x, AlgebraicNumber y) {
     return arblibJNI.qqbar_equal(AlgebraicNumber.getCPtr(x), x, AlgebraicNumber.getCPtr(y), y);
   }

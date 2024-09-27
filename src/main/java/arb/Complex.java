@@ -79,6 +79,13 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     return this;
   }
   
+  public Complex pow( Integer operand, int prec, Complex r )
+  {
+    assert operand != null && operand.swigCPtr != 0 : "operand is null";
+    arblib.acb_pow_fmpz(r, this, operand.swigCPtr, prec);
+    return r;
+  }
+    
   public Complex add(Real z, int bits2, Complex s)
   {
     return z.add(this, bits2,s);
