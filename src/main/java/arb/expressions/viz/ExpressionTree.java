@@ -52,7 +52,7 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
   HashMap<String, Boolean>          nodeExpansionStates;
   MiniSymbolPalette                 symbolPalette;
   private StackPane                 stackPane;
-  VirtualFlow<?>            tableVirtualFlow;
+  VirtualFlow<?>                    tableVirtualFlow;
   private ScrollBar                 hbar;
   private ScrollBar                 vbar;
 
@@ -442,6 +442,10 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
       }
       else
       {
+        if ( expr == null )
+        {
+          return;
+        }
         getContext().injectReferences(instance = expr.instantiate());
         Class<?> inputClass = input == null ? Object.class : input.getClass();
         if (!expr.domainType.equals(inputClass) && !Object.class.equals(expr.domainType))
@@ -475,7 +479,7 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
     catch (Throwable e)
     {
       e.printStackTrace(System.err);
-      this.analyzer.showAlert("Evaluation Error", e.getClass().getName() + ": " + e.getMessage());
+      Platform.runLater(() -> analyzer.showAlert("Evaluation Error", e.getClass().getName() + ": " + e.getMessage()));
     }
   }
 

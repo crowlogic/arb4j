@@ -1,0 +1,99 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+
+\title{Orthogonal Polynomials with Respect to a Measure}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Existence and Uniqueness of Orthogonal Polynomials}
+
+\subsection{Conditions for Existence}
+
+For a measure $\mu$ on the real line to have a set of orthogonal polynomials:
+
+\begin{enumerate}
+    \item $\mu$ must be a positive Borel measure.
+    \item All moments of $\mu$ must exist and be finite:
+    \[\int x^n d\mu(x) < \infty \quad \text{for all } n \geq 0\]
+    \item $\mu$ must not be concentrated on a finite set of points.
+\end{enumerate}
+
+\subsection{Uniqueness of Orthogonal Polynomials}
+
+If orthogonal polynomials exist for a measure, their uniqueness (up to normalization) is guaranteed by:
+
+\begin{enumerate}
+    \item Gram-Schmidt Process
+    \item Three-Term Recurrence Relation:
+    \[P_{n+1}(x) = (A_n x + B_n)P_n(x) - C_n P_{n-1}(x)\]
+\end{enumerate}
+
+\subsection{Determining Uniqueness}
+
+\begin{theorem}[Carleman's Condition]
+If the measure satisfies:
+\[\sum_{n=1}^{\infty} (m_{2n})^{-1/2n} = \infty\]
+where $m_{2n}$ is the $2n$-th moment, then the measure has a unique set of orthogonal polynomials.
+\end{theorem}
+
+\begin{theorem}[Stieltjes Moment Problem]
+For measures supported on $[0,\infty)$, if:
+\[\sum_{n=1}^{\infty} (m_n)^{-1/2n} = \infty\]
+then the measure has a unique set of orthogonal polynomials.
+\end{theorem}
+
+\section{Generation of Orthogonal Polynomials}
+
+\subsection{Gram-Schmidt Process}
+
+Let $\mu$ be a measure on $\mathbb{R}$ and define the inner product:
+
+\[\int_{\mathbb{R}} f(x)g(x)d\mu(x)\]
+
+Starting with the monomials $\{1, x, x^2, \ldots\}$, we construct orthogonal polynomials $\{P_0, P_1, P_2, \ldots\}$ as follows:
+
+\begin{align*}
+P_0(x) &= 1 \\[10pt]
+P_1(x) &= x - \frac{\int_{\mathbb{R}} x \cdot 1 \, d\mu(x)}{\int_{\mathbb{R}} 1 \cdot 1 \, d\mu(x)} \\[10pt]
+P_2(x) &= x^2 - \frac{\int_{\mathbb{R}} x^2 \cdot P_1(x) \, d\mu(x)}{\int_{\mathbb{R}} P_1(x) \cdot P_1(x) \, d\mu(x)}P_1(x) - \frac{\int_{\mathbb{R}} x^2 \cdot P_0(x) \, d\mu(x)}{\int_{\mathbb{R}} P_0(x) \cdot P_0(x) \, d\mu(x)}P_0(x) \\[10pt]
+P_n(x) &= x^n - \sum_{k=0}^{n-1} \frac{\int_{\mathbb{R}} x^n \cdot P_k(x) \, d\mu(x)}{\int_{\mathbb{R}} P_k(x) \cdot P_k(x) \, d\mu(x)}P_k(x)
+\end{align*}
+
+\subsection{Three-Term Recurrence Relation}
+
+The orthogonal polynomials satisfy a three-term recurrence relation:
+
+\[P_{n+1}(x) = (A_n x + B_n)P_n(x) - C_n P_{n-1}(x)\]
+
+where:
+
+\begin{align*}
+A_n &= \frac{\int_{\mathbb{R}} xP_n(x) \cdot P_n(x) \, d\mu(x)}{\int_{\mathbb{R}} P_n(x) \cdot P_n(x) \, d\mu(x)} \\[10pt]
+B_n &= \frac{\int_{\mathbb{R}} xP_n(x) \cdot P_{n-1}(x) \, d\mu(x)}{\int_{\mathbb{R}} P_{n-1}(x) \cdot P_{n-1}(x) \, d\mu(x)} \\[10pt]
+C_n &= \frac{\int_{\mathbb{R}} P_n(x) \cdot P_n(x) \, d\mu(x)}{\int_{\mathbb{R}} P_{n-1}(x) \cdot P_{n-1}(x) \, d\mu(x)}
+\end{align*}
+
+This recurrence relation, along with initial conditions $P_0(x) = 1$ and $P_1(x) = x - B_0$, uniquely determines the set of orthogonal polynomials.
+
+\subsection{Normalized Orthogonal Polynomials}
+
+To obtain orthonormal polynomials, we normalize each polynomial by dividing it by its norm:
+
+\[\hat{P}_n(x) = \frac{P_n(x)}{\sqrt{\int_{\mathbb{R}} [P_n(x)]^2 d\mu(x)}}\]
+
+This normalization ensures that:
+
+\[\int_{\mathbb{R}} \hat{P}_n(x) \cdot \hat{P}_m(x) \, d\mu(x) = \delta_{nm}\]
+
+where $\delta_{nm}$ is the Kronecker delta.
+
+\end{document}

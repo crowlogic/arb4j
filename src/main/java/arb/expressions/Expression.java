@@ -143,9 +143,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Typesettable
 {
 
-  private static final String    ASSERTION_ERROR_METHOD_DESCRIPTOR =
-                                                                   Compiler.getMethodDescriptor(Void.class,
-                                                                                                Object.class);
+  private static final String    ASSERTION_ERROR_METHOD_DESCRIPTOR = Compiler.getMethodDescriptor(Void.class,
+                                                                                                  Object.class);
 
   public static final String     evaluationMethodDescriptor        =
                                                             "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
@@ -158,15 +157,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public static final String     nameOfInitializerFunction         = "initialize";
 
   public static boolean          saveClasses                       =
-                                             Boolean.valueOf(System.getProperty("arb4j.compiler.saveClasses",
-                                                                                "true"));
+                                             Boolean.valueOf(System.getProperty("arb4j.compiler.saveClasses", "true"));
 
   public static boolean          trace                             =
-                                       Boolean.valueOf(System.getProperty("arb4j.compiler.trace",
-                                                                          "false"));
+                                       Boolean.valueOf(System.getProperty("arb4j.compiler.trace", "false"));
 
-  public static final String     VOID_METHOD_DESCRIPTOR            =
-                                                        Compiler.getMethodDescriptor(Void.class);
+  public static final String     VOID_METHOD_DESCRIPTOR            = Compiler.getMethodDescriptor(Void.class);
 
   static
   {
@@ -285,8 +281,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     this.domainClassInternalName          = Type.getInternalName(domain);
     this.genericFunctionClassInternalName = Type.getInternalName(function);
     this.functionClassDescriptor          = function.descriptorString();
-    this.expression                       =
-                    Parser.replaceArrowsEllipsesAndSuperscriptAlphabeticalExponents(expression);
+    this.expression                       = Parser.replaceArrowsEllipsesAndSuperscriptAlphabeticalExponents(expression);
     this.context                          = context;
     this.variables                        = context != null ? context.variables : null;
     this.functionName                     = functionName;
@@ -378,18 +373,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return intermediateVariableName;
   }
 
-  public String
-         allocateIntermediateVariable(MethodVisitor methodVisitor, String prefix, Class<?> type)
+  public String allocateIntermediateVariable(MethodVisitor methodVisitor, String prefix, Class<?> type)
   {
     String intermediateVariableName = newIntermediateVariable(prefix, type);
-    loadFieldOntoStack(loadThisOntoStack(methodVisitor),
-                       intermediateVariableName,
-                       type.descriptorString());
+    loadFieldOntoStack(loadThisOntoStack(methodVisitor), intermediateVariableName, type.descriptorString());
     return intermediateVariableName;
   }
 
-  public MethodVisitor annotateWith(MethodVisitor methodVisitor,
-                                    Class<? extends Annotation> annotation)
+  public MethodVisitor annotateWith(MethodVisitor methodVisitor, Class<? extends Annotation> annotation)
   {
     AnnotationVisitor av = methodVisitor.visitAnnotation(annotation.descriptorString(), true);
     av.visitEnd();
@@ -433,13 +424,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return classVisitor;
   }
 
-  public MethodVisitor declareEvaluateMethodsLocalVariableArguments(MethodVisitor methodVisitor,
-                                                                    Label startLabel,
-                                                                    Label endLabel)
+  public MethodVisitor
+         declareEvaluateMethodsLocalVariableArguments(MethodVisitor methodVisitor, Label startLabel, Label endLabel)
   {
     methodVisitor.visitLocalVariable("this", "L" + className + ";", null, startLabel, endLabel, 0);
-    methodVisitor.visitLocalVariable(independentVariable != null ? independentVariable.getName()
-                                                                 : "in",
+    methodVisitor.visitLocalVariable(independentVariable != null ? independentVariable.getName() : "in",
                                      domainType.descriptorString(),
                                      null,
                                      startLabel,
@@ -447,12 +436,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                      1);
     methodVisitor.visitLocalVariable("order", "I", null, startLabel, endLabel, 2);
     methodVisitor.visitLocalVariable("bits", "I", null, startLabel, endLabel, 3);
-    methodVisitor.visitLocalVariable("result",
-                                     coDomainType.descriptorString(),
-                                     null,
-                                     startLabel,
-                                     endLabel,
-                                     4);
+    methodVisitor.visitLocalVariable("result", coDomainType.descriptorString(), null, startLabel, endLabel, 4);
     return methodVisitor;
   }
 
@@ -482,10 +466,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         if (trace)
         {
-          System.out.format("Declaring IntermediateVariable of %s: %s %s\n",
-                            className,
-                            variable.type,
-                            variable.name);
+          System.out.format("Declaring IntermediateVariable of %s: %s %s\n", className, variable.type, variable.name);
         }
         variable.declareField(classVisitor);
         declaredIntermediateVariables.add(variable.name);
@@ -524,8 +505,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (ascendentExpression != null)
     {
       var parentIndependentVariableNode = ascendentExpression.independentVariable;
-      if (parentIndependentVariableNode != null
-                    && !parentIndependentVariableNode.type().equals(Object.class))
+      if (parentIndependentVariableNode != null && !parentIndependentVariableNode.type().equals(Object.class))
       {
         classVisitor.visitField(ACC_PUBLIC,
                                 parentIndependentVariableNode.reference.name,
@@ -539,10 +519,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       if (trace)
       {
-        String vars = context.variables.map.entrySet()
-                                           .stream()
-                                           .map(x -> x.toString())
-                                           .collect(Collectors.joining(","));
+        String vars = context.variables.map.entrySet().stream().map(x -> x.toString()).collect(Collectors.joining(","));
         System.out.println("declareVariables: " + vars);
       }
       for (var variable : context.variables.map.entrySet()
@@ -779,9 +756,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (trace)
     {
-      System.err.format("Expression(#%s).generate() className=%s\n\n",
-                        System.identityHashCode(this),
-                        className);
+      System.err.format("Expression(#%s).generate() className=%s\n\n", System.identityHashCode(this), className);
     }
     ClassVisitor classVisitor = constructClassVisitor();
 
@@ -818,8 +793,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return storeInstructions(classVisitor);
   }
 
-  public MethodVisitor
-         generateCloseFieldCall(MethodVisitor methodVisitor, String fieldName, Class<?> fieldType)
+  public MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor, String fieldName, Class<?> fieldType)
   {
     getFieldFromThis(methodVisitor, className, fieldName, fieldType);
     return invokeCloseMethod(methodVisitor, fieldType);
@@ -841,10 +815,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                                  intermediateVariable.name,
                                                                                  intermediateVariable.type));
 
-    referencedFunctions.forEach((name,
-                                 mapping) -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
-                                                                    name,
-                                                                    mapping.type()));
+    referencedFunctions.forEach((name, mapping) -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
+                                                                          name,
+                                                                          mapping.type()));
 
     methodVisitor.visitInsn(Opcodes.RETURN);
     methodVisitor.visitMaxs(10, 10);
@@ -869,11 +842,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     mv.visitTypeInsn(NEW, "java/lang/AssertionError");
     duplicateTopOfTheStack(mv).visitLdcInsn("Already initialized");
-    mv.visitMethodInsn(INVOKESPECIAL,
-                       "java/lang/AssertionError",
-                       "<init>",
-                       ASSERTION_ERROR_METHOD_DESCRIPTOR,
-                       false);
+    mv.visitMethodInsn(INVOKESPECIAL, "java/lang/AssertionError", "<init>", ASSERTION_ERROR_METHOD_DESCRIPTOR, false);
     mv.visitInsn(ATHROW);
     mv.visitLabel(alreadyInitializedLabel);
 
@@ -966,9 +935,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (trace)
     {
-      System.out.format("Expression(#%s) Generating %s\n\n",
-                        System.identityHashCode(this),
-                        expression);
+      System.out.format("Expression(#%s) Generating %s\n\n", System.identityHashCode(this), expression);
     }
     rootNode.generate(mv, coDomainType);
 
@@ -985,8 +952,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return classVisitor;
   }
 
-  public MethodVisitor generateFunctionInitializer(MethodVisitor mv,
-                                                   FunctionMapping<?, ?, ?> nestedFunction)
+  public MethodVisitor generateFunctionInitializer(MethodVisitor mv, FunctionMapping<?, ?, ?> nestedFunction)
   {
     if (trace)
     {
@@ -1058,11 +1024,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)
   {
-    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                 nameOfInitializerFunction,
-                                                 "()V",
-                                                 null,
-                                                 null);
+    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, nameOfInitializerFunction, "()V", null, null);
     annotateWithOverride(methodVisitor);
 
     try
@@ -1091,13 +1053,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return methodVisitor;
   }
 
-  public void generateInvocationOfDefaultNoArgConstructor(MethodVisitor methodVisitor,
-                                                          boolean object)
+  public void generateInvocationOfDefaultNoArgConstructor(MethodVisitor methodVisitor, boolean object)
   {
     loadThisOntoStack(methodVisitor);
     methodVisitor.visitMethodInsn(INVOKESPECIAL,
-                                  object ? Type.getInternalName(Object.class)
-                                         : className.replace(".", "/"),
+                                  object ? Type.getInternalName(Object.class) : className.replace(".", "/"),
                                   "<init>",
                                   "()V",
                                   false);
@@ -1153,12 +1113,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     methodVisitor.visitCode();
 
     String name  = functionName != null ? (functionName + ":") : "";
-    String arrow = expression.contains("➔")
-                  || independentVariable == null ? "" : (independentVariable.getName() + "➔");
-    methodVisitor.visitLdcInsn(String.format("%s%s%s",
-                                             name,
-                                             arrow,
-                                             expression.replace("sqrt", "√")));
+    String arrow = expression.contains("➔") || independentVariable == null ? "" : (independentVariable.getName() + "➔");
+    methodVisitor.visitLdcInsn(String.format("%s%s%s", name, arrow, expression.replace("sqrt", "√")));
 
     methodVisitor.visitInsn(Opcodes.ARETURN);
     methodVisitor.visitMaxs(10, 10);
@@ -1218,8 +1174,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       sw.visitInterface();
       sw.visitClassType(Type.getInternalName(functionClass));
-      if (Sequence.class.isAssignableFrom(functionClass)
-                    || NullaryFunction.class.isAssignableFrom(functionClass))
+      if (Sequence.class.isAssignableFrom(functionClass) || NullaryFunction.class.isAssignableFrom(functionClass))
       {
         if (functionClass.getTypeParameters().length == 1)
         {
@@ -1322,8 +1277,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (ascendentExpression != null)
     {
-      var ascendentPolynomialCoDomainType =
-                                          ascendentExpression.getThisOrAnyAscendentExpressionsPolynomialCoDomain();
+      var ascendentPolynomialCoDomainType = ascendentExpression.getThisOrAnyAscendentExpressionsPolynomialCoDomain();
 
       if (ascendentPolynomialCoDomainType != null)
       {
@@ -1341,9 +1295,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean hasScalarCodomain()
   {
-    return coDomainType.equals(Real.class) || coDomainType.equals(Complex.class)
-                  || coDomainType.equals(Fraction.class) || coDomainType.equals(Integer.class)
-                  || coDomainType.equals(ComplexFraction.class)
+    return coDomainType.equals(Real.class) || coDomainType.equals(Complex.class) || coDomainType.equals(Fraction.class)
+                  || coDomainType.equals(Integer.class) || coDomainType.equals(ComplexFraction.class)
                   || coDomainType.equals(GaussianInteger.class);
   }
 
@@ -1375,12 +1328,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    *           file and made it available to be instantiated yet and hence there
    *           is no .class to refer to
    */
-  public void
-         initializeNestedFunctionVariableReferences(MethodVisitor mv,
-                                                    String generatedFunctionClassInternalName,
-                                                    String fieldType,
-                                                    String functionFieldName,
-                                                    Stream<OrderedPair<String, Class<?>>> variables)
+  public void initializeNestedFunctionVariableReferences(MethodVisitor mv,
+                                                         String generatedFunctionClassInternalName,
+                                                         String fieldType,
+                                                         String functionFieldName,
+                                                         Stream<OrderedPair<String, Class<?>>> variables)
   {
     String typeDesc = "L" + fieldType + ";";
 
@@ -1388,10 +1340,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       String variableFieldName           = variable.getLeft();
       String variableFieldTypeDescriptor = variable.getRight().descriptorString();
-      getField(loadThisOntoStack(mv),
-               generatedFunctionClassInternalName,
-               functionFieldName,
-               typeDesc);
+      getField(loadThisOntoStack(mv), generatedFunctionClassInternalName, functionFieldName, typeDesc);
       getField(loadThisOntoStack(mv),
                generatedFunctionClassInternalName,
                variableFieldName,
@@ -1436,19 +1385,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   public boolean isIdentifierCharacter()
   {
-    return isLatinGreekSpecialOrBlackLetter(character, false)
-                  || isAlphabeticalOrNumericSubscript(character)
+    return isLatinGreekSpecialOrBlackLetter(character, false) || isAlphabeticalOrNumericSubscript(character)
                   || isAlphabeticalSuperscript(character);
   }
 
   public boolean hasIndeterminateVariable()
   {
-    return (domainType.equals(Object.class)
-                  && thisOrAnyAscendentExpressionHasIndeterminateVariable());
+    return (domainType.equals(Object.class) && thisOrAnyAscendentExpressionHasIndeterminateVariable());
   }
 
-  public MethodVisitor
-         loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, Class<?> fieldType)
+  public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, Class<?> fieldType)
   {
     if (verboseTrace)
     {
@@ -1461,8 +1407,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return methodVisitor;
   }
 
-  public MethodVisitor
-         loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
+  public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
   {
     if (verboseTrace)
     {
@@ -1477,10 +1422,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public MethodVisitor loadIndexField(MethodVisitor methodVisitor, String indexFieldName)
   {
-    methodVisitor.visitFieldInsn(GETFIELD,
-                                 className,
-                                 indexFieldName,
-                                 Integer.class.descriptorString());
+    methodVisitor.visitFieldInsn(GETFIELD, className, indexFieldName, Integer.class.descriptorString());
     return methodVisitor;
   }
 
@@ -1559,8 +1501,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public char nextCharacter()
   {
-    return character = (++position < expression.length()) ? expression.charAt(position)
-                                                          : Character.MIN_VALUE;
+    return character = (++position < expression.length()) ? expression.charAt(position) : Character.MIN_VALUE;
   }
 
   public boolean nextCharacterIs(char... expectedCharacters)
@@ -1595,10 +1536,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     boolean entirelySuperscripted = true;
     boolean isLatinOrGreek;
     while ((isLatinOrGreek = isLatinGreekSpecialOrBlackLetter(character, true))
-                  || (entirelySubscripted && !isLatinOrGreek
-                                && Parser.isAlphabeticalOrNumericSubscript(character))
-                  || (entirelySuperscripted && !isLatinOrGreek
-                                && Parser.isAlphabeticalSuperscript(character)))
+                  || (entirelySubscripted && !isLatinOrGreek && Parser.isAlphabeticalOrNumericSubscript(character))
+                  || (entirelySuperscripted && !isLatinOrGreek && Parser.isAlphabeticalSuperscript(character)))
     {
       nextCharacter();
       if (isLatinOrGreek)
@@ -1622,21 +1561,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   @SuppressWarnings("unchecked")
   public <E extends Expression<D, C, F>> E parseRoot()
   {
-    assert rootNode
-                  == null : "parse must only be called before anything else has been parsed but rootNode="
-                            + rootNode;
+    assert rootNode == null : "parse must only be called before anything else has been parsed but rootNode=" + rootNode;
     evaluateOptionalIndependentVariableSpecification();
     nextCharacter();
     if (trace)
     {
-      System.out.format("parseRoot %s of Expression(#%s)\n",
-                        expression,
-                        System.identityHashCode(this));
+      System.out.format("parseRoot %s of Expression(#%s)\n", expression, System.identityHashCode(this));
     }
     rootNode = resolve();
-    assert rootNode != null : "evaluateRootNode: determine() returned null, expression='"
-                              + expression
-                              + "'";
+    assert rootNode != null : "evaluateRootNode: determine() returned null, expression='" + expression + "'";
     rootNode.isResult = true;
 
     if (position < expression.length())
@@ -1709,8 +1642,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
-  public String
-         registerIntermediateVariable(String intermediateVarName, Class<?> type, boolean initialize)
+  public String registerIntermediateVariable(String intermediateVarName, Class<?> type, boolean initialize)
   {
     var newIntermediateVariable = new IntermediateVariable<>(this,
                                                              intermediateVarName,
@@ -1736,10 +1668,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (trace)
     {
-      err.format("Expression(#%s).rename(from=%s, to=%s)\n",
-                 System.identityHashCode(this),
-                 from,
-                 to);
+      err.format("Expression(#%s).rename(from=%s, to=%s)\n", System.identityHashCode(this), from, to);
     }
     renameIfNamed(independentVariable, from, to);
     renameIfNamed(indeterminateVariable, from, to);
@@ -1762,26 +1691,38 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Expression<D, C, F> require(char... which)
   {
+    return require(null, which);
+  }
+
+  public Expression<D, C, F> require(String msg, char... which)
+  {
     if (!nextCharacterIs(which))
     {
-      throwUnexpectedCharacterException(which);
+      throwUnexpectedCharacterException(msg, which);
     }
     return this;
   }
 
   protected void throwUnexpectedCharacterException(char... which)
   {
+    throwUnexpectedCharacterException(null, which);
+  }
+
+  protected void throwUnexpectedCharacterException(String msg, char... which)
+  {
     String result = Arrays.asList(which)
                           .stream()
                           .map(ch -> String.format("'%s'", String.valueOf(ch)))
                           .collect(Collectors.joining(","));
 
-    throw new CompilerException(format("Expecting %s %s at position %d but got char '%c' instead, remaining=%s\n",
+    throw new CompilerException(format("Expecting %s %s at position %d but got char '%c' instead, remaining=%s%s\n",
                                        which.length > 1 ? "one of" : "",
                                        result,
                                        position,
                                        character == 0 ? '0' : character,
-                                       remaining()));
+                                       remaining(),
+                                       msg != null ? " syntax=\"" + msg : "\"",
+                                       implementedInterfaces));
   }
 
   /**
@@ -1894,9 +1835,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
-  public Node<D, C, F>
-         resolveSymbolicLiteralConstantKeywordOrVariable(int startPos,
-                                                         VariableReference<D, C, F> reference)
+  public Node<D, C, F> resolveSymbolicLiteralConstantKeywordOrVariable(int startPos,
+                                                                       VariableReference<D, C, F> reference)
   {
     if (LiteralConstantNode.constantSymbols.contains(reference.name))
     {
@@ -2017,8 +1957,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     boolean hasIndeterminateVariable = ascendentExpression != null
                   && ascendentExpression.thisOrAnyAscendentExpressionHasIndeterminateVariable();
     return coDomainType.equals(RationalFunction.class) || coDomainType.equals(RealPolynomial.class)
-                  || coDomainType.equals(ComplexPolynomial.class)
-                  || coDomainType.equals(IntegerPolynomial.class)
+                  || coDomainType.equals(ComplexPolynomial.class) || coDomainType.equals(IntegerPolynomial.class)
                   || coDomainType.equals(ComplexRationalFunction.class) || hasIndeterminateVariable;
   }
 

@@ -49,8 +49,8 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
           null,
           expression);
     index = expression.resolve();
-    order = expression.require(',').resolve();
-    arg   = expression.require(';').resolve();
+    order = expression.require("R(n,v;z)", ',').resolve();
+    arg   = expression.require("R(n,v;z)", ';').resolve();
     expression.require(')');
     scalarType                           = Compiler.scalarType(expression.coDomainType);
 
@@ -225,13 +225,13 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   @Override
   public Node<D, C, F> integral(VariableNode<D, C, F> variable)
   {
-    throw new UnsupportedOperationException("Integration of Lommel polynomials is not implemented");
+    throw new UnsupportedOperationException("Integration of Lommel polynomials is not yet implemented");
   }
 
   @Override
   public Node<D, C, F> derivative(VariableNode<D, C, F> variable)
   {
-    throw new UnsupportedOperationException("Differentiation of Lommel polynomials is not implemented");
+    throw new UnsupportedOperationException("Differentiation of Lommel polynomials is not yet implemented");
   }
 
   @Override

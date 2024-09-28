@@ -143,7 +143,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       {
         elementType = RealPolynomial.class;
       }
-      // if ( )
+
       elementFieldName = expression.newIntermediateVariable("element", elementType);
       if (Expression.trace)
       {
