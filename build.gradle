@@ -11,7 +11,7 @@ plugins {
 group = 'org.arblib'
 version = '0.99.4'
 description = 'arb4j'
-java.sourceCompatibility = JavaVersion.VERSION_22
+java.sourceCompatibility = JavaVersion.VERSION_23
 
 javafx {
     version = "22.0.2" 
@@ -31,9 +31,9 @@ repositories {
 }
 
 dependencies {
-    api 'org.ow2.asm:asm:9.6'
-    api 'org.ow2.asm:asm-commons:9.6'
-    api 'org.ow2.asm:asm-util:9.6'
+    api 'org.ow2.asm:asm:9.7'
+    api 'org.ow2.asm:asm-commons:9.7'
+    api 'org.ow2.asm:asm-util:9.7'
     api 'org.openjfx:javafx-base:22.0.1'
     api 'org.openjfx:javafx-swing:22.0.1'
     api 'org.openjfx:javafx-fxml:22.0.1'
@@ -81,7 +81,7 @@ build.finalizedBy createDesktopFile
 build.finalizedBy installDesktopFile
 
 tasks.withType(Javadoc) {
-    options.addStringOption('source', '22') 
+    options.addStringOption('source', '23') 
     options.addBooleanOption('-enable-preview', true)
     options.addBooleanOption('Xdoclint:none', true) 
     options.addBooleanOption('quiet', true)         
