@@ -4,5 +4,4 @@ expr compiler: derivatives and fractional derivatices
 bonanzai
 java.lang.NoSuchMethodError: 'arb.Complex arb.Complex.re(int, arb.Complex)'at re(Γ(1⁄4-t*I⁄2)).evaluate(Unknown Source)
 Exception in thread "JavaFX Application Thread" java.lang.NumberFormatException: For input string: "9o838934"at java.base/java.lang.NumberFormatException.forInputString(NumberFormatException.java:67)at java.base/java.lang.Integer.parseInt(Integer.java:588)
-analyzer: set spinner width based on width of string rep of number
-analyzer: add right-click context menu to TreeTableView rows
+analyzer: remember scrollbar positions in addition to existing node expansion states which are remembered
