@@ -15,24 +15,37 @@ import arb.expressions.Context;
 import arb.functions.Function;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
+
+import static arb.ComplexConstants.imaginaryUnit;
+
 import java.util.stream.Stream;
 
-public class RationalFunction implements AutoCloseable,NamedField<RationalFunction>,Function<Fraction,Fraction>,Verifiable {
-  protected long swigCPtr;
+public class RationalFunction implements
+                              AutoCloseable,
+                              NamedField<RationalFunction>,
+                              Function<Fraction, Fraction>,
+                              Verifiable
+{
+  protected long    swigCPtr;
   protected boolean swigCMemOwn;
 
-  public RationalFunction(long cPtr, boolean cMemoryOwn) {
+  public RationalFunction(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(RationalFunction obj) {
+  public static long getCPtr(RationalFunction obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arblibJNI.delete_RationalFunction(swigCPtr);
       }
@@ -40,40 +53,46 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
     }
   }
 
-
   public RationalFunction div(Real operand, int prec, RationalFunction result)
   {
-    return div(result.set(operand),prec,result);
+    return div(result.set(operand), prec, result);
   }
-  
+
   public RationalFunction add(Real addend, int prec, RationalFunction result)
   {
-    return add(result.set(addend),prec,result);
+    return add(result.set(addend), prec, result);
   }
-  
+
   public RationalFunction mul(Real real, int prec)
   {
-    return mul(real,prec,this);
+    return mul(real, prec, this);
   }
 
   public RationalFunction mul(Real real, int prec, RationalFunction realPart)
   {
-    return realPart.set(real).mul(this,prec,realPart);
+    return realPart.set(real).mul(this, prec, realPart);
   }
-  
+
   @Override
   public RationalFunction inverse(RationalFunction x)
   {
     arblib.fmpz_poly_q_inv(x, this);
     return null;
   }
-  
+
+  public Complex evaluate(Complex input, int order, int bits, Complex result)
+  {
+    evaluate(input.real, order, bits, result.real);
+    evaluate(input.imag, order, bits, result.imag);
+    return result;
+  }
+
   public ComplexFraction evaluate(ComplexFraction input, int bits, ComplexFraction result)
   {
     evaluate(input.realPart, bits, result.realPart);
     evaluate(input.imaginaryPart, bits, result.imaginaryPart);
     return result;
-  }  
+  }
 
   public RationalFunction pow(Real power, int bits, RationalFunction result)
   {
@@ -84,49 +103,49 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
     }
 
   }
-     
+
   public RationalFunction mul(Integer multiplicand, int bits, RationalFunction result)
   {
     assert swigCPtr != 0 : "this.swigCPtr is null";
     assert multiplicand.swigCPtr != 0 : "multiplicand.swigCPtr is null";
-    assert result.swigCPtr != 0 : "result.swigCPtr is null";    
+    assert result.swigCPtr != 0 : "result.swigCPtr is null";
     arblib.fmpz_poly_q_scalar_mul_fmpz(result, this, multiplicand.swigCPtr);
-    return result; 
+    return result;
   }
-  
+
   public Fraction evaluate(Fraction fraction)
   {
     return evaluate(fraction, 0, new Fraction());
   }
-    
+
   public RationalFunction pow(int power, int bits, RationalFunction res)
   {
-    if ( checkPointers )
+    if (checkPointers)
     {
       assertPointerConsistency();
     }
     RationalFunction thiz = this;
-    if ( power < 0 )
+    if (power < 0)
     {
       arblib.fmpz_poly_q_inv(thiz = res, this);
     }
-    arblib.fmpz_poly_q_pow(res, thiz, power );
+    arblib.fmpz_poly_q_pow(res, thiz, power);
     res.refreshPointers();
     return res;
   }
-  
+
   public ComplexFraction evaluate(ComplexFraction t, int order, int bits, ComplexFraction result)
   {
-    evaluate(t.realPart,order,bits,result.realPart);
-    evaluate(t.imaginaryPart,order,bits,result.imaginaryPart );
+    evaluate(t.realPart, order, bits, result.realPart);
+    evaluate(t.imaginaryPart, order, bits, result.imaginaryPart);
     return result;
   }
 
   public RationalFunction sub(Fraction element, int prec, RationalFunction result)
-  {     
-      return this.sub(result.set(element), prec,result);
-  }  
-    
+  {
+    return this.sub(result.set(element), prec, result);
+  }
+
   public RationalFunction sub(Integer element, int prec, RationalFunction result)
   {
     try ( RationalFunction e = new RationalFunction())
@@ -135,7 +154,7 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
       return result.set(this).sub(e, prec);
     }
   }
-  
+
   RealRationalFunction realVersion;
 
   public boolean isOne()
@@ -148,7 +167,6 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
     return arblib.fmpz_poly_q_is_zero(this) != 0;
   }
 
-
   public RealFunction asRealFunction()
   {
     return (realVersion == null ? (realVersion = new RealRationalFunction()) : realVersion);
@@ -158,8 +176,10 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
   {
     return asRealFunction();
   }
-    
-  public final class RealRationalFunction implements RealFunction, AutoCloseable
+
+  public final class RealRationalFunction implements
+                                          RealFunction,
+                                          AutoCloseable
   {
     @Override
     public String toString()
@@ -172,7 +192,7 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
     {
       return RationalFunction.this.typeset();
     }
-    
+
     @Override
     public void close()
     {
@@ -194,20 +214,19 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
       return res;
     }
   }
-    
+
   public RationalFunction set(String string)
   {
-    return RationalNullaryFunction.express(string).evaluate( bits(), this);
-  }  
+    return RationalNullaryFunction.express(string).evaluate(bits(), this);
+  }
 
- @Override
-  public Stream<RationalFunction>
-         stream()
+  @Override
+  public Stream<RationalFunction> stream()
   {
     assert false : "TODO";
     return null;
   }
-    
+
   @SuppressWarnings("resource")
   public static RationalFunction express(String expression)
   {
@@ -218,7 +237,7 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
   {
     return RationalNullaryFunction.express(expression, context).evaluate(128);
   }
-  
+
   public static Expression<Fraction, Fraction, RationalFunction> compile(String expression)
   {
     return compile(expression, null);
@@ -228,7 +247,7 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
   {
     return Compiler.compile(expression, context, Fraction.class, Fraction.class, RationalFunction.class, null);
   }
-    
+
   public Real evaluate(Real t, int order, int bits, Real res)
   {
     try ( var tmp = new Fraction())
@@ -236,7 +255,7 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
       return res.set(evaluate(tmp.set(t), order, bits, tmp));
     }
   }
-    
+
   @Override
   public boolean verify()
   {
@@ -248,34 +267,34 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
     boolean numeratorConsistent   = numerator == null || numerator.swigCPtr == getNumeratorAddress();
     return denominatorConsistent && numeratorConsistent;
   }
-  
+
   public static boolean checkPointers = true;
-  
+
   @SuppressWarnings("resource")
   public RationalFunction pow(Integer power, int unused, RationalFunction res)
   {
-    if ( checkPointers )
+    if (checkPointers)
     {
       assertPointerConsistency();
     }
     assert power != null && power.swigCPtr != 0 : "null pointer or reference";
     RationalFunction thiz = this;
-    if ( power.getSignedValue() < 0 )
+    if (power.getSignedValue() < 0)
     {
       arblib.fmpz_poly_q_inv(thiz = res, this);
     }
-    arblib.fmpz_poly_q_pow(res, thiz, power.getUnsignedValue() );
+    arblib.fmpz_poly_q_pow(res, thiz, power.getUnsignedValue());
     res.refreshPointers();
     return res;
   }
-  
+
   @Override
   public Fraction evaluate(Fraction t, int order, int bits, Fraction res)
   {
     arblib.fmpz_poly_q_evaluate_fmpq(res, this, t);
     return res;
   }
-  
+
   static
   {
     System.loadLibrary("arblib");
@@ -284,30 +303,30 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
   @Override
   public boolean equals(Object obj)
   {
-    if ( !(obj instanceof RationalFunction))
+    if (!(obj instanceof RationalFunction))
     {
       return false;
     }
-    RationalFunction that = (RationalFunction)obj;
+    RationalFunction that = (RationalFunction) obj;
     return arblib.fmpz_poly_q_equal(this, that) != 0;
   }
-  
+
   public RationalFunction init()
   {
     arblib.fmpz_poly_q_init(this);
     refreshPointers();
-    return this;    
+    return this;
   }
-  
+
   public RationalFunction set(int i)
   {
     arblib.fmpz_poly_q_set_si(this, i);
-    refreshPointers();    
+    refreshPointers();
     return this;
   }
-  
+
   public IntegerPolynomial numerator;
- 
+
   public IntegerPolynomial denominator;
 
   public IntegerPolynomial getDenominator()
@@ -337,18 +356,18 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
     }
     return numerator;
   }
-    
+
   @Override
-  public void close() 
+  public void close()
   {
     delete();
-    if ( realVersion != null ) 
+    if (realVersion != null)
     {
       realVersion.close();
       realVersion = null;
     }
-  }  
-  
+  }
+
   @SuppressWarnings("unchecked")
   @Override
   public <N extends Named> N setName(String name)
@@ -362,17 +381,17 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
   {
     return zero();
   }
-    
+
   @Override
   public String toString()
   {
     return arblib.fmpz_poly_q_get_str_pretty(this, "x");
   }
-  
+
   public RationalFunction identity()
   {
     getNumerator().set(0);
-    getNumerator().set(1,1);
+    getNumerator().set(1, 1);
     getDenominator().set(1);
     return this;
   }
@@ -380,7 +399,7 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
   @Override
   public RationalFunction multiplicativeIdentity()
   {
-   return one();
+    return one();
   }
 
   public RationalFunction one()
@@ -388,18 +407,18 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
     arblib.fmpz_poly_q_one(this);
     return this;
   }
-  
+
   @Override
   public RationalFunction add(RationalFunction element, int prec, RationalFunction result)
   {
-    assertPointerConsistency();  
+    assertPointerConsistency();
     arblib.fmpz_poly_q_add(result, this, element);
-    refreshPointers();  
+    refreshPointers();
     return result;
   }
 
   public int bits = 128;
-  
+
   @Override
   public int bits()
   {
@@ -418,10 +437,10 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
     assert operand.swigCPtr != 0 : "operand has null pointer";
     assert result.swigCPtr != 0 : "result has null pointer";
     assert this.swigCPtr != 0 : "this has null pointer";
-    assert !operand.isZero() : "division by zero";  
+    assert !operand.isZero() : "division by zero";
     assertPointerConsistency();
     arblib.fmpz_poly_q_div(result, this, operand);
-    refreshPointers();      
+    refreshPointers();
     return result;
   }
 
@@ -439,13 +458,13 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
   }
 
   public String name;
-  
+
   @Override
   public RationalFunction mul(int x, int prec, RationalFunction result)
   {
-    assertPointerConsistency();  
+    assertPointerConsistency();
     arblib.fmpz_poly_q_scalar_mul_si(result, this, x);
-    refreshPointers();      
+    refreshPointers();
     return result;
   }
 
@@ -457,7 +476,7 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
     refreshPointers();
     return result;
   }
-  
+
   public RationalFunction add(Integer element, int prec, RationalFunction result)
   {
     try ( RationalFunction e = new RationalFunction())
@@ -466,12 +485,11 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
       return result.set(this).add(e, prec);
     }
   }
- 
-  
-  public RationalFunction neg( int bits, RationalFunction res )
+
+  public RationalFunction neg(int bits, RationalFunction res)
   {
     return neg(res);
-  }  
+  }
 
   /**
    * @throws ArbException if {@link #getNumeratorAddress()} !=
@@ -509,11 +527,11 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
     }
     return this;
   }
-  
+
   @Override
   public RationalFunction newFieldElement()
   {
-     return new RationalFunction();
+    return new RationalFunction();
   }
 
   @Override
@@ -536,9 +554,9 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
   {
     assertPointerConsistency();
     arblib.fmpz_poly_q_scalar_div_fmpz(result, this, j.swigCPtr);
-    return result;  
+    return result;
   }
-  
+
   @Override
   public RationalFunction sub(RationalFunction element, int prec, RationalFunction result)
   {
@@ -549,14 +567,14 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
 
   public RationalFunction set(Real real)
   {
-    assertPointerConsistency();  
-    try ( Fraction tmp = new Fraction() )
+    assertPointerConsistency();
+    try ( Fraction tmp = new Fraction())
     {
       tmp.set(real);
       return set(tmp);
     }
-  }  
-  
+  }
+
   @Override
   public RationalFunction zero()
   {
@@ -566,18 +584,18 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
 
   public RationalFunction add(RationalFunction x, int prec)
   {
-    return add(x,prec,this);
+    return add(x, prec, this);
   }
-  
+
   public RationalFunction mul(RationalFunction x, int prec)
   {
-    return mul(x,prec,this);
+    return mul(x, prec, this);
   }
-  
+
   public RationalFunction set(Integer integer)
   {
-   set(integer.getSignedValue());
-   return this;
+    set(integer.getSignedValue());
+    return this;
   }
 
   public RationalFunction neg(RationalFunction res)
@@ -585,30 +603,30 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
     arblib.fmpz_poly_q_neg(res, this);
     return res;
   }
-  
+
   public RationalFunction neg()
   {
     return neg(this);
   }
-  
+
   public RationalFunction reduce()
   {
     arblib.fmpz_poly_q_canonicalise(this);
     return this;
   }
-  
+
   public boolean isReduced()
-  {   
-    return arblib.fmpz_poly_q_is_canonical(this) != 0;                
+  {
+    return arblib.fmpz_poly_q_is_canonical(this) != 0;
   }
-  
+
   public RationalFunction set(Fraction fraction)
   {
     getNumerator().set(fraction.getNumerator());
     getDenominator().set(fraction.getDenominator());
     return this;
   }
-  
+
   public RationalFunction add(Fraction element, int prec, RationalFunction result)
   {
     try ( RationalFunction e = new RationalFunction())
@@ -617,29 +635,32 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
       return result.set(this).add(e, prec);
     }
   }
-    
 
-  public void setNumeratorAddress(long value) {
+  public void setNumeratorAddress(long value)
+  {
     arblibJNI.RationalFunction_numeratorAddress_set(swigCPtr, this, value);
   }
 
-  public long getNumeratorAddress() {
+  public long getNumeratorAddress()
+  {
     return arblibJNI.RationalFunction_numeratorAddress_get(swigCPtr, this);
   }
 
-  public void setDenominatorAddress(long value) {
+  public void setDenominatorAddress(long value)
+  {
     arblibJNI.RationalFunction_denominatorAddress_set(swigCPtr, this, value);
   }
 
-  public long getDenominatorAddress() {
+  public long getDenominatorAddress()
+  {
     return arblibJNI.RationalFunction_denominatorAddress_get(swigCPtr, this);
   }
 
-  public RationalFunction() 
+  public RationalFunction()
   {
-    this(arblibJNI.new_RationalFunction(), true);
+    this(arblibJNI.new_RationalFunction(),
+         true);
     init();
   }
-
 
 }
