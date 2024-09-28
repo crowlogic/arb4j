@@ -7,7 +7,7 @@ import arb.Named;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.viz.ExpressionAnalyzer;
+import arb.expressions.viz.Analyzer;
 import arb.functions.Function;
 import javafx.util.StringConverter;
 
@@ -19,12 +19,12 @@ public final class ContextVariableStringConverter<D, C, F extends Function<D, C>
                                                  StringConverter<Named>
 {
 
-  private final ExpressionAnalyzer<D, C, F> expressionAnalyzer;
+  private final Analyzer<D, C, F> expressionAnalyzer;
 
   /**
    * @param expressionAnalyzer
    */
-  public ContextVariableStringConverter(ExpressionAnalyzer<D, C, F> expressionAnalyzer)
+  public ContextVariableStringConverter(Analyzer<D, C, F> expressionAnalyzer)
   {
     this.expressionAnalyzer = expressionAnalyzer;
   }
@@ -34,7 +34,11 @@ public final class ContextVariableStringConverter<D, C, F extends Function<D, C>
   {
     try
     {
-      int    colon        = string.indexOf(':');
+      int colon = string.indexOf(':');
+      if (colon == -1)
+      {
+        throw new IllegalArgumentException("Missing ':'. The format is 'Type: name=value'");
+      }
       String type         = string.substring(0, colon);
       int    namePosition = colon;
       while (string.charAt(++namePosition) == ' ');
@@ -62,7 +66,7 @@ public final class ContextVariableStringConverter<D, C, F extends Function<D, C>
     }
     catch (Throwable t)
     {
-      expressionAnalyzer.showAlert(t.getClass().getName(), t.getMessage());
+      expressionAnalyzer.showAlert(t.getClass().getName(), "Problem with context variable format", t);
       t.printStackTrace(System.err);
       return null;
     }

@@ -42,26 +42,26 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
                            VBox
 {
 
-  final ExpressionAnalyzer<D, C, F> analyzer;
-  TextField                         expressionInput;
-  TreeTableView<Node<D, C, F>>      treeTableView;
-  Expression<D, C, F>               expr;
-  F                                 instance;
-  C                                 result;
-  Context                           context;
-  HashMap<String, Boolean>          nodeExpansionStates;
-  MiniSymbolPalette                 symbolPalette;
-  private StackPane                 stackPane;
-  VirtualFlow<?>                    tableVirtualFlow;
-  private ScrollBar                 hbar;
-  private ScrollBar                 vbar;
+  final Analyzer<D, C, F>      analyzer;
+  TextField                    expressionInput;
+  TreeTableView<Node<D, C, F>> treeTableView;
+  Expression<D, C, F>          expr;
+  F                            instance;
+  C                            result;
+  Context                      context;
+  HashMap<String, Boolean>     nodeExpansionStates;
+  MiniSymbolPalette            symbolPalette;
+  private StackPane            stackPane;
+  VirtualFlow<?>               tableVirtualFlow;
+  private ScrollBar            hbar;
+  private ScrollBar            vbar;
 
   public Context getContext()
   {
     return context;
   }
 
-  public ExpressionTree(ExpressionAnalyzer<D, C, F> expressionAnalyzer)
+  public ExpressionTree(Analyzer<D, C, F> expressionAnalyzer)
   {
     super(10);
     this.analyzer = expressionAnalyzer;
@@ -219,7 +219,7 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
       if (node instanceof TableColumnHeader)
       {
         TableColumnHeader header = (TableColumnHeader) node;
-        ExpressionAnalyzer.resizeMethod.invoke(header, -1);
+        Analyzer.resizeMethod.invoke(header, -1);
       }
     }
     catch (Exception e)
@@ -436,7 +436,7 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
       }
       else
       {
-        if ( expr == null )
+        if (expr == null)
         {
           return;
         }
@@ -473,7 +473,9 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
     catch (Throwable e)
     {
       e.printStackTrace(System.err);
-      Platform.runLater(() -> analyzer.showAlert("Evaluation Error", e.getClass().getName() + ": " + e.getMessage()));
+      Platform.runLater(() -> analyzer.showAlert("Evaluation Error",
+                                                 e.getClass().getName() + ": " + e.getMessage(),
+                                                 e));
     }
   }
 

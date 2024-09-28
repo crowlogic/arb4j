@@ -1,6 +1,8 @@
 package arb.expressions.viz;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -54,8 +56,8 @@ import javafx.util.StringConverter;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
-                               Application
+public class Analyzer<D, C, F extends Function<D, C>> extends
+                     Application
 {
 
   static Method            resizeMethod;
@@ -345,7 +347,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
 
   public void addEmacsKeybindings(TextField textField)
   {
-    
+
     textField.addEventFilter(KeyEvent.KEY_PRESSED, new EmacsKeybindingsEventHandler(textField));
   }
 
@@ -457,7 +459,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
     if (currentTab != null)
     {
-      javafx.scene.Node      content       = currentTab.getContent();
+      javafx.scene.Node       content       = currentTab.getContent();
 
       ExpressionTree<D, C, F> expressionTab = (ExpressionTree<D, C, F>) content;
 
@@ -471,7 +473,7 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
     Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
     if (currentTab != null)
     {
-      javafx.scene.Node      content       = currentTab.getContent();
+      javafx.scene.Node       content       = currentTab.getContent();
       ExpressionTree<D, C, F> expressionTab = (ExpressionTree<D, C, F>) content;
       return expressionTab.context;
     }
@@ -622,4 +624,15 @@ public class ExpressionAnalyzer<D, C, F extends Function<D, C>> extends
   {
     showAlert(string, msg, msg);
   }
+  
+  public void showAlert(String string, String msg, Throwable t)
+  {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintWriter s = new PrintWriter(baos);
+    t.printStackTrace(s);
+    s.flush();
+    
+    showAlert(string, msg, baos.toString());
+  }
+
 }
