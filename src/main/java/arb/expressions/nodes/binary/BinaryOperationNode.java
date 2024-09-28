@@ -27,8 +27,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, ? extends R>>
-                                         extends
+public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                          Node<D, R, F>
 {
 
@@ -62,7 +61,8 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     mapTypes(Integer.class, IntegerPolynomial.class, IntegerPolynomial.class);
     mapTypes(Integer.class, AlgebraicNumber.class, AlgebraicNumber.class);
     mapTypes(Fraction.class, AlgebraicNumber.class, AlgebraicNumber.class);
-
+    mapTypes(IntegerPolynomial.class, Complex.class, ComplexPolynomial.class);
+    mapTypes(IntegerPolynomial.class, ComplexPolynomial.class, ComplexPolynomial.class);
   }
 
   public static void mapScalarType(Class<?> scalarType, Class<?> polynomialType)
@@ -319,9 +319,9 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     return false;
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         void
-         logSubstitution(String name, Node<E, S, G> transformation, String tense)
+  public <E, S, G extends Function<? extends E, ? extends S>> void logSubstitution(String name,
+                                                                                   Node<E, S, G> transformation,
+                                                                                   String tense)
   {
     System.err.format("BinaryOperation %s(Expression[#%s]).substitute(name=%s, transformation=%s)) into this=%s of type %s\n",
                       tense,
@@ -363,9 +363,8 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     return (side == null || side.isLeaf()) ? "%s" : "(%s)";
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String name, Node<E, S, G> transformation)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String name,
+                                                                                       Node<E, S, G> transformation)
   {
     if (Expression.trace)
     {
@@ -470,7 +469,6 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     assert leftType != null : "lhs type is  null where lhs is " + left + " and a=" + a + " b=" + b;
     assert rightType != null : "rhs type is null where rhs is " + right + " and a=" + a + " b=" + b;
 
-    return (leftType.equals(a) && rightType.equals(b))
-                  || (leftType.equals(b) && rightType.equals(a));
+    return (leftType.equals(a) && rightType.equals(b)) || (leftType.equals(b) && rightType.equals(a));
   }
 }

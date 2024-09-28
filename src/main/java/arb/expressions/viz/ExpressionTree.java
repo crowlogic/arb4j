@@ -113,12 +113,6 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
       flow.setPannable(true);
       hbar = getTableVirtualFlowScrollbar(flow, true);
       vbar = getTableVirtualFlowScrollbar(flow, false);
-
-      System.err.format("treeTableVirtualFlow=%s\nhbar=%s\nvbar=%s\npannable=%s\n",
-                        tableVirtualFlow,
-                        hbar,
-                        vbar,
-                        tableVirtualFlow.isPannable());
     }
     catch (Throwable e)
     {
