@@ -3,3 +3,4 @@ expr analyzer; add button to toggle debug output
 expr compiler: derivatives and fractional derivatices
 bonanzai
 analyzer: remember scrollbar positions in addition to existing node expansion states which are remembered
+analyzer: cache rendered formulas
