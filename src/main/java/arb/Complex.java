@@ -34,30 +34,44 @@ import arb.domains.Domain;
 import arb.space.topological.EuclideanVectorSpace;
 
 /**
- * The {@link Complex} numbers constitute an algebraically closed {@link Field}, a
- * commutative algebra over the {@link Real}s, and a
+ * The {@link Complex} numbers constitute an algebraically closed {@link Field},
+ * a commutative algebra over the {@link Real}s, and a
  * {@link EuclideanVectorSpace} of dimension two.
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
 
-public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<Complex>,Iterable<Complex>,Serializable,Lockable<Complex>,IntFunction<Complex>,Assignable<Complex> {
-  protected long swigCPtr;
+public class Complex implements
+                     Domain<Complex>,
+                     NamedField<Complex>,
+                     Comparable<Complex>,
+                     Iterable<Complex>,
+                     Serializable,
+                     Lockable<Complex>,
+                     IntFunction<Complex>,
+                     Assignable<Complex>
+{
+  protected long    swigCPtr;
   protected boolean swigCMemOwn;
 
-  public Complex(long cPtr, boolean cMemoryOwn) {
+  public Complex(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(Complex obj) {
+  public static long getCPtr(Complex obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arblibJNI.delete_Complex(swigCPtr);
       }
@@ -65,7 +79,10 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     }
   }
 
-  static { System.loadLibrary( "arblib" ); }
+  static
+  {
+    System.loadLibrary("arblib");
+  }
 
   public Complex add(Real z, int bits2)
   {
@@ -78,52 +95,66 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     im().zero();
     return this;
   }
-  
-  public Complex pow( Integer operand, int prec, Complex r )
+
+  public Complex pow(Integer operand, int prec, Complex r)
   {
     assert operand != null && operand.swigCPtr != 0 : "operand is null";
     arblib.acb_pow_fmpz(r, this, operand.swigCPtr, prec);
     return r;
   }
-    
+
   public Complex add(Real z, int bits2, Complex s)
   {
-    return z.add(this, bits2,s);
+    return z.add(this, bits2, s);
   }
-  
+
   public Complex mul(Integer operand, int prec, Complex result)
   {
     assert operand != null && operand.swigCPtr != 0 : "operand is null";
     arblib.acb_mul_fmpz(result, this, operand.swigCPtr, prec);
     return result;
   }
-    
+
   public static Predicate<Complex> isNegativeInteger = αᵢ ->
-                                                     {
+  {
 
-                                                       Complex α = (Complex) αᵢ;
-                                                       return α.getImag().isZero()
-                                                                     && α.getReal().isInteger()
-                                                                     && α.getReal().isNegative();
+    Complex α = (Complex) αᵢ;
+    return α.getImag().isZero() && α.getReal().isInteger() && α.getReal().isNegative();
 
-                                                     };
+  };
 
+  public Complex re(int bits, Complex res)
+  {
+    return res.set(re());
+  }
 
-  public ComplexRationalFunction
-         mul(ComplexRationalFunction operand, int prec, ComplexRationalFunction result)
+  public Complex im(int bits, Complex res)
+  {
+    return res.set(im());
+  }
+
+  public Real re(int bits, Real res)
+  {
+    return res.set(re());
+  }
+
+  public Real im(int bits, Real res)
+  {
+    return res.set(im());
+  }
+
+  public ComplexRationalFunction mul(ComplexRationalFunction operand, int prec, ComplexRationalFunction result)
   {
     return result.set(this).mul(operand, prec, result);
   }
-                                                       
+
   /**
    * 
    * @param bits
    * @param value
    * @return this{@link #lnΓ(int, Real)}
    */
-  public Complex
-         logΓ(int bits,
-              Complex value)
+  public Complex logΓ(int bits, Complex value)
   {
     return lnΓ(bits, value);
   }
@@ -138,11 +169,11 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
   {
     return ComplexNullaryFunction.express(value).evaluate(bits2, this);
   }
-    
+
   @Override
   public Complex set(Fraction val)
   {
-    if ( dim != val.dim )
+    if (dim != val.dim)
     {
       resize(val.dim);
     }
@@ -150,8 +181,8 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     getImag().zero();
     return this;
   }
-    
- /**
+
+  /**
    * log-Γ
    * 
    * @see arb#arb_lgamma(Real, Real, int)
@@ -168,14 +199,14 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
 
   public ComplexRationalFunction add(ComplexRationalFunction a, int bits, ComplexRationalFunction res)
   {
-    return res.set(this).add(a,bits);
+    return res.set(this).add(a, bits);
   }
-  
+
   public ComplexRationalFunction div(ComplexRationalFunction dividend, int prec, ComplexRationalFunction result)
   {
     return result.set(this).div(dividend, prec);
   }
-    
+
   /**
    * @see arblib#acb_gamma(Complex, Complex, int)
    * @param bits
@@ -189,34 +220,33 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     return value;
   }
 
-  public Complex( Integer val )
+  public Complex(Integer val)
   {
     this();
     set(val);
   }
-  
-  
+
   public Complex gamma(int bits)
   {
     return Γ(bits, this);
   }
-      
+
   public Complex Γ(int bits)
   {
     return Γ(bits, this);
   }
-  
+
   public int bits;
 
   public Complex div(Integer operand, int prec)
   {
-    return div(operand,prec,this);
+    return div(operand, prec, this);
   }
-  
+
   public Complex set(Complex... elements)
   {
     Complex newVec = Complex.newVector(elements.length);
-    for ( int i = 0; i < elements.length; i++ )
+    for (int i = 0; i < elements.length; i++)
     {
       newVec.get(i).set(elements[i]);
     }
@@ -230,10 +260,10 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     im().zero();
     return this;
   }
-    
+
   public Complex add(Integer addend, int prec)
   {
-    return add( addend, prec, this );
+    return add(addend, prec, this);
   }
 
   public Complex add(Integer operand, int prec, Complex s)
@@ -242,7 +272,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     arblib.acb_add_ui(s, this, operand.getUnsignedValue(), prec);
     return this;
   }
-  
+
   /**
    * Adds the {@link Real#getMagnitude(Magnitude)}s of the this{@link #getReal()}
    * and this{@link #getImag()} parts of a given {@link Complex} number to the
@@ -260,7 +290,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     }
     return this;
   }
-  
+
   /**
    * See {@link Real#become(Real)}
    * 
@@ -278,7 +308,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     that.swigCMemOwn = false;
     return this;
   }
-  
+
   public ComplexPolynomial sub(ComplexPolynomial a, int bits, ComplexPolynomial res)
   {
     res.set(a);
@@ -287,7 +317,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     x.bits = bits;
     return res;
   }
-  
+
   public ComplexPolynomial add(ComplexPolynomial a, int bits, ComplexPolynomial res)
   {
     res.set(a);
@@ -296,25 +326,25 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     x.bits = bits;
     return res;
   }
-  
-  public ComplexPolynomial mul( ComplexPolynomial s, int prec, ComplexPolynomial r )
+
+  public ComplexPolynomial mul(ComplexPolynomial s, int prec, ComplexPolynomial r)
   {
-   arblib.acb_poly_scalar_mul(r, s, this, prec);
-   return r;
+    arblib.acb_poly_scalar_mul(r, s, this, prec);
+    return r;
   }
-   
-  public Complex sub(Integer subtrahend, int prec, Complex result )
+
+  public Complex sub(Integer subtrahend, int prec, Complex result)
   {
-    arblib.acb_sub_fmpz(result, this, subtrahend.swigCPtr, prec );
+    arblib.acb_sub_fmpz(result, this, subtrahend.swigCPtr, prec);
     result.bits = prec;
     return result;
   }
 
   public Complex sub(Integer subtrahend, int prec)
   {
-    return sub( subtrahend, prec, this );
+    return sub(subtrahend, prec, this);
   }
-    
+
   @Override
   public Complex apply(int value)
   {
@@ -329,21 +359,21 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
   {
     return arblib.acb_is_exact(this) != 0;
   }
-  
+
   public Complex cosh(int prec)
   {
     bits = prec;
     return cosh(prec, this);
   }
-  
+
   public Complex set(Integer integer)
   {
     re().set(integer);
     im().zero();
     return this;
   }
-  
-/**
+
+  /**
    * @see this{@link #sinh(int, Complex)}
    * 
    * @param bits
@@ -368,11 +398,11 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     acb_sinh(value, this, bits);
     return value;
   }
-  
+
   @Override
   public Complex additiveIdentity()
   {
-   return set(ComplexConstants.zero);
+    return set(ComplexConstants.zero);
   }
 
   @Override
@@ -380,7 +410,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
   {
     return set(ComplexConstants.one);
   }
-  
+
   /**
    * Sets u to an lower bound for the absolute value of x via
    * {@link arb#acb_get_mag_lower(Magnitude, Complex)}
@@ -393,7 +423,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     arblib.acb_get_mag_lower(lowerBound, this);
     return lowerBound;
   }
-  
+
   /**
    * Calculate sqrt(Re^2+Im^2)
    * 
@@ -405,7 +435,6 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
   {
     return getReal().getRad().hypotenuseLength(getImag().getRad(), result);
   }
-
 
   /**
    * Sets u to an upper bound for the absolute value of x via
@@ -419,33 +448,34 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     arblib.acb_get_mag(upperBound, this);
     return upperBound;
   }
-  
- public static Complex newVector(int dim, String name )
- {
+
+  public static Complex newVector(int dim, String name)
+  {
     Complex array = arblib._acb_vec_init(dim);
-    array.swigCMemOwn = true;      
-    array.elements = new Complex[array.dim = dim];
-    array.name = name;
+    array.swigCMemOwn = true;
+    array.elements    = new Complex[array.dim = dim];
+    array.name        = name;
     return array;
- }
+  }
+
   public Complex tanh(int prec)
   {
     bits = prec;
     return tanh(prec, this);
   }
-  
+
   public Complex sub(int i, int prec)
   {
     bits = prec;
-    return sub(i,prec,this);
+    return sub(i, prec, this);
   }
 
   /**
-   * Construct a new {@link Complex} aligned on a page boundary so that this can be
-   * this{@link #lock()}ed by invoking the
-   * {@link arblibJNI#mprotect(long, long, int)} method. The actual size based on the
-   * rounding up of the buffer size to the nearest page boundary is set which is
-   * always greater than or equal to the requested dimension
+   * Construct a new {@link Complex} aligned on a page boundary so that this can
+   * be this{@link #lock()}ed by invoking the
+   * {@link arblibJNI#mprotect(long, long, int)} method. The actual size based on
+   * the rounding up of the buffer size to the nearest page boundary is set which
+   * is always greater than or equal to the requested dimension
    * 
    * TODO: use
    * {@link MemorySegment#allocateNative(java.lang.foreign.MemoryLayout, java.lang.foreign.MemorySession)}
@@ -476,7 +506,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     }
     return x;
   }
-    
+
   /**
    * Swaps the positions of two elements of the array
    * 
@@ -488,7 +518,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
   {
     return get(i).swap(get(j));
   }
-  
+
   /**
    * @return this{@link #getImag()}
    */
@@ -504,29 +534,30 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
   {
     return getReal();
   }
-  
+
   public Complex(Complex x)
   {
-   this();
-   set(x);
+    this();
+    set(x);
   }
-  
+
   public Complex log(int prec)
   {
-    return log(prec,this);
+    return log(prec, this);
   }
 
   /**
    * Self-assigned this{@link #div(Real, int, Complex)}
+   * 
    * @param σ
    * @param prec
    * @return this
    */
   public Complex div(Real σ, int prec)
   {
-    return div(σ, prec, this );
+    return div(σ, prec, this);
   }
-  
+
   /**
    * @see this{@link #mul2e(int, Complex)}
    * @param i
@@ -536,15 +567,15 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
   {
     return mul2e(i, this);
   }
-  
+
   public Complex add(int i, int prec)
   {
-    return add(i,prec,this);
+    return add(i, prec, this);
   }
-  
+
   public Complex pow(int i, int prec)
   {
-    return pow(i,prec,this);
+    return pow(i, prec, this);
   }
 
   /**
@@ -559,7 +590,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
   }
 
   @SuppressWarnings("unchecked")
-  public Complex setName( String name )
+  public Complex setName(String name)
   {
     this.name = name;
     return this;
@@ -567,7 +598,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
 
   public String name;
 
- @Override
+  @Override
   public int dim()
   {
     return dim;
@@ -575,24 +606,25 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
 
   /**
    * Self-assigned this{@link #mul(Real, int, Complex)}
+   * 
    * @param h
    * @param prec
    * @return this=this*h
    */
   public Complex mul(Real h, int prec)
   {
-    return mul(h,prec,this);
+    return mul(h, prec, this);
   }
 
-
   /**
-   * Self-assigned this{@link #exp(int, Complex)} 
+   * Self-assigned this{@link #exp(int, Complex)}
+   * 
    * @param prec
    * @return this=exp(this)
    */
   public Complex exp(int prec)
   {
-    return exp(prec,this);
+    return exp(prec, this);
   }
 
   public Real getRealCoordinate(int dim)
@@ -609,11 +641,11 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
       return null;
     }
   }
-  
+
   public Complex(double r, double i)
   {
     this();
-    set(r,i);
+    set(r, i);
   }
 
   public Complex(String realStr, String imagStr, int precision)
@@ -629,10 +661,9 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     return r;
   }
 
-  
   public Complex sqrt(int prec)
   {
-    return sqrt(prec,this);
+    return sqrt(prec, this);
   }
 
   public Complex log(int prec, Complex r)
@@ -643,13 +674,13 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
 
   public Complex tanh(int prec, Complex res)
   {
-    arblib.acb_tanh(res, this, prec );
+    arblib.acb_tanh(res, this, prec);
     return res;
   }
 
   public boolean printPrecision = true;
 
- /**
+  /**
    * Sets z to this multiplied by the imaginary unit.
    * 
    * @param z result
@@ -661,7 +692,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     arblib.acb_mul_onei(z, this);
     return z;
   }
-  
+
   /**
    * Sets this to this multiplied by the imaginary unit
    * 
@@ -671,7 +702,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
   {
     return muli(this);
   }
-  
+
   public Complex tan(int prec, Complex s)
   {
     arblib.acb_tan(s, this, prec);
@@ -687,7 +718,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
   {
     return conj(this);
   }
-  
+
   /**
    * @see arb#acb_swap(Complex, Complex)
    * 
@@ -699,22 +730,22 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     acb_swap(this, that);
     return this;
   }
-  
+
   @Override
   public Complex identity()
   {
     arblib.acb_one(this);
     return this;
   }
-  
+
   /**
    * Calculates this*(2^e)
-   *  
+   * 
    * @param e
    * @param res
    * @return {@link arb#acb_mul_2exp_si(Complex, Complex, int)}
    */
-  public Complex mul2e( int e, Complex res )
+  public Complex mul2e(int e, Complex res)
   {
     acb_mul_2exp_si(res, this, e);
     return res;
@@ -731,7 +762,6 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     return get(k.getSignedValue() - 1);
   }
 
-  
   public Complex div(int i, int prec, Complex res)
   {
     res.bits = prec;
@@ -746,12 +776,11 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     return res;
   }
 
-  
   public Complex negate()
   {
     return negate(this);
   }
-  
+
   public Complex setIndeterminate()
   {
     acb_indeterminate(this);
@@ -761,9 +790,9 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
   @Override
   public int hashCode()
   {
-    return Objects.hash(getReal().doubleValue(), getImag().doubleValue() );
+    return Objects.hash(getReal().doubleValue(), getImag().doubleValue());
   }
-  
+
   /**
    * @return {@link arb#acb_equal(Complex, Complex)}
    */
@@ -777,21 +806,21 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     Complex that = (Complex) obj;
     return arblib.acb_equal(this, that) != 0;
   }
-  
+
   public Complex resize(int alloc)
   {
     swigCPtr = SWIGTYPE_p_void.getCPtr(arblib.flint_realloc(new SWIGTYPE_p_void(swigCPtr,
-                                                                             false),
-                                                         2 * (long)alloc * Complex.BYTES));
+                                                                                false),
+                                                            2 * (long) alloc * Complex.BYTES));
     Complex newElements[] = new Complex[alloc];
     System.arraycopy(elements, 0, newElements, 0, dim);
     this.dim = alloc;
     elements = newElements;
     return this;
   }
-    
+
   private static final long serialVersionUID = 1L;
-    
+
   private void writeObject(java.io.ObjectOutputStream stream) throws IOException
   {
     assert false : "TODO";
@@ -801,7 +830,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
   {
     assert false : "TODO";
   }
-    
+
   public Iterator<Real> realIterator()
   {
     return new ComplexRealPartIterator(this);
@@ -814,8 +843,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
 
   private Stream<Real> stream(Iterator<Real> iter)
   {
-    return StreamSupport.stream(Spliterators.spliterator(iter, dim, Spliterator.SIZED | Spliterator.ORDERED),
-                                false);
+    return StreamSupport.stream(Spliterators.spliterator(iter, dim, Spliterator.SIZED | Spliterator.ORDERED), false);
   }
 
   public Stream<Real> realStream()
@@ -843,9 +871,8 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     result.bits = bits;
     return result;
   }
-    
-  public ComplexRationalFunction
-         ascendingFactorial(Integer n, int bits, ComplexRationalFunction result)
+
+  public ComplexRationalFunction ascendingFactorial(Integer n, int bits, ComplexRationalFunction result)
   {
     try ( Complex intermediateVariable = new Complex())
     {
@@ -854,15 +881,15 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
       return result;
     }
   }
-    
+
   public ComplexPolynomial ascendingFactorial(Integer n, int bits, ComplexPolynomial result)
   {
-    result.set(1);   
+    result.set(1);
     ascendingFactorial(n, bits, result.get(0));
     result.bits = bits;
     return result;
   }
-    
+
   /**
    * @see arb#acb_addmul(Complex, Complex, Complex, int)
    * @param that
@@ -875,7 +902,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     arblib.acb_addmul(result, this, that, prec);
     return result;
   }
-  
+
   /**
    * @see arblib#acb_addmul_arb(Complex, Complex, Real, int)m
    * @param that
@@ -888,8 +915,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     arblib.acb_addmul_arb(result, this, that, bits);
     return result;
   }
-  
-    
+
   /**
    * Computes the dot product of the vectors x and y, setting res to
    * <code>s+(-1)^subtract+sum(this[i]*y[i],i=0..len-1)</code> The initial term s
@@ -900,7 +926,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
    * reverse direction starting from the initial pointer. Aliasing is allowed
    * between res and s but not between res and the entries of x and y.
    * 
-   * @param that        the other vector
+   * @param that     the other vector
    * @param initial  initial value to be added to the vector, can be NULL which is
    *                 equivalent to 0
    * @param subtract must be 0 or 1
@@ -912,7 +938,8 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
    * @param res      variable which the result is to be stored in
    * @return res
    */
-  public Complex dotProduct( Complex that, Complex initial, int subtract, int xstep, int ystep, int len, int prec, Complex res )
+  public Complex
+         dotProduct(Complex that, Complex initial, int subtract, int xstep, int ystep, int len, int prec, Complex res)
   {
     arblib.acb_dot(res, initial, subtract, this, xstep, that, ystep, len, prec);
     return res;
@@ -966,25 +993,26 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
   {
     return new Complex();
   }
-    
+
   public Stream<Complex> stream()
   {
     return StreamSupport.stream(Spliterators.spliterator(iterator(), dim, Spliterator.SIZED | Spliterator.ORDERED),
                                 false);
   }
-  
+
   @Override
   public Iterator<Complex> iterator()
   {
     return new ComplexIterator(this);
   }
-  
+
   public Complex(Real firstRoot)
   {
-   this(arblibJNI.new_Complex(), true);
-   getReal().set(firstRoot);
+    this(arblibJNI.new_Complex(),
+         true);
+    getReal().set(firstRoot);
   }
- 
+
   public int relAccuracyBits()
   {
     return arblib.acb_rel_accuracy_bits(this);
@@ -1006,64 +1034,69 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     arblib.acb_poly_interpolate_newton(res, this, y, n, prec);
     return res;
   }
-  
-  public Complex cosh( int prec, Complex res )
+
+  public Complex cosh(int prec, Complex res)
   {
-    arblib.acb_cosh( res, this, prec );
+    arblib.acb_cosh(res, this, prec);
     return res;
   }
-  
+
   public static final int BYTES = 96;
-  
-  public Complex conj( Complex res )
+
+  public Complex conj(Complex res)
   {
-    arblib.acb_conj( res, this );
+    arblib.acb_conj(res, this);
     return res;
   }
-  
+
   /**
    * @param prec precision
-   * @param res Complex vector to store the result, the length of the array is the number 
-            of terms of the Taylor series of the zeta function to compute 
+   * @param res  Complex vector to store the result, the length of the array is
+   *             the number of terms of the Taylor series of the zeta function to
+   *             compute
    */
-  public Complex ζ( int prec, Complex res )
+  public Complex ζ(int prec, Complex res)
   {
     arblib.acb_dirichlet_zeta_jet(res, this, 0, res.dim, prec);
     return res;
   }
-  
+
   public boolean isFinite()
   {
     return arblib.acb_is_finite(this) != 0;
   }
-   
-  public Complex slice( int startInclusive, int endExclusive )
+
+  public Complex slice(int startInclusive, int endExclusive)
   {
     assert startInclusive >= 0 : "startInclusive must be >= 0";
     assert endExclusive <= dim : "endExclusive must be <= dim=" + dim;
-    assert startInclusive < endExclusive : "startInclusive must be < endExclusive";  
-    int sliceDim = endExclusive - startInclusive;
-    Complex array = new Complex( swigCPtr + startInclusive * BYTES, false );
+    assert startInclusive < endExclusive : "startInclusive must be < endExclusive";
+    int     sliceDim = endExclusive - startInclusive;
+    Complex array    = new Complex(swigCPtr + startInclusive * BYTES,
+                                   false);
     array.elements = new Complex[array.dim = sliceDim];
     return array;
   }
-    
- public Complex mul( int i, int prec, Complex r )
- {
-   arblib.acb_mul_si( r, this, i, prec );
-   return r;
- }
+
+  public Complex mul(int i, int prec, Complex r)
+  {
+    arblib.acb_mul_si(r, this, i, prec);
+    return r;
+  }
 
   @Override
-  public Complex add( Complex q, int prec, Complex s )
-  {  
-    arblib.acb_add( s, this, q, prec );
+  public Complex add(Complex q, int prec, Complex s)
+  {
+    arblib.acb_add(s, this, q, prec);
     return s;
   }
 
-  public Complex normalize(Complex res, int prec )
+  public Complex normalize(Complex res, int prec)
   {
-    try ( Real magnitude = new Real()) { return div(norm(prec, magnitude ), prec, res); }
+    try ( Real magnitude = new Real())
+    {
+      return div(norm(prec, magnitude), prec, res);
+    }
   }
 
   public Complex div(Real a, int prec, Complex r)
@@ -1071,71 +1104,70 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     arblib.acb_div_arb(r, this, a, prec);
     return r;
   }
-    
+
   public Complex ellipticK(int prec, Complex res)
   {
     arblib.acb_elliptic_k(res, this, prec);
     return res;
   }
-  
-  public Complex neg( Complex r)
+
+  public Complex neg(Complex r)
   {
-    arblib.acb_neg( r, this );
+    arblib.acb_neg(r, this);
     return r;
   }
 
-
- public Complex midpoint( Complex res )
- {
-   arblib.acb_get_mid( res, this );
-   return res;
- }
- 
- public Complex mul( Complex s, int bits )
- {
-   return mul(s,bits,this);
- }
- 
- public Complex mul( Complex s, int prec, Complex r )
- {
-   this.bits = prec;
-   arblib.acb_mul(r, this, s, prec);
-   return r;
- }
- 
-  public Complex div( Complex s, int prec, Complex r )
+  public Complex midpoint(Complex res)
   {
-   this.bits = prec;
-   arblib.acb_div(r, this, s, prec);
-   return r;
+    arblib.acb_get_mid(res, this);
+    return res;
   }
- 
+
+  public Complex mul(Complex s, int bits)
+  {
+    return mul(s, bits, this);
+  }
+
+  public Complex mul(Complex s, int prec, Complex r)
+  {
+    this.bits = prec;
+    arblib.acb_mul(r, this, s, prec);
+    return r;
+  }
+
+  public Complex div(Complex s, int prec, Complex r)
+  {
+    this.bits = prec;
+    arblib.acb_div(r, this, s, prec);
+    return r;
+  }
+
   public Complex init()
   {
     arblib.acb_init(this);
     return this;
   }
-  
-  public Real arg( int prec, Real result )
+
+  public Real arg(int prec, Real result)
   {
-    arblib.acb_arg(result, this, prec );
+    arblib.acb_arg(result, this, prec);
     return result;
   }
-  
+
   public Complex set(double r, double i)
   {
     getReal().set(r);
     getImag().set(i);
     return this;
   }
-  
+
   public Complex set(Real real, Real imag)
   {
-   	getReal().set( real );
-   	getImag().set( imag ); 
+    getReal().set(real);
+    getImag().set(imag);
     return this;
   }
-  
+
   /**
    * @see arb#acb_abs(Real, Complex, int)
    * @param prec
@@ -1147,13 +1179,12 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     arblib.acb_abs(real, this, prec);
     return real;
   }
-  
-  
+
   public Complex set(Complex complex)
   {
     assert dim == complex.dim : String.format("dim = %d != this.dim = %d\n", dim, complex.dim);
     this.bits = complex.bits;
-    
+
     if (dim == 1)
     {
       arblib.acb_set(this, complex);
@@ -1167,14 +1198,14 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     }
     return this;
   }
-    
+
   public String toFixedString()
   {
     StringBuilder sb = new StringBuilder();
     sb.append("[");
     for (int i = 0; i < dim; i++)
     {
-      if ( i > 0 )
+      if (i > 0)
       {
         sb.append(",\n ");
       }
@@ -1186,7 +1217,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     sb.append("]");
     return sb.toString();
   }
-    
+
   public String toString()
   {
     StringBuilder sb = new StringBuilder();
@@ -1225,11 +1256,11 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     {
       sb.append("]");
     }
-    return ( name == null ? "" : name + "=" ) + sb.toString();
-  }  
-  
+    return (name == null ? "" : name + "=") + sb.toString();
+  }
+
   public int dim = 1;
-  
+
   public int size()
   {
     return dim;
@@ -1239,30 +1270,30 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
   {
     return conj();
   }
-  
-  public Complex cos(int prec, Complex result )
+
+  public Complex cos(int prec, Complex result)
   {
-    arblib.acb_cos(result, this, prec );
+    arblib.acb_cos(result, this, prec);
     return result;
   }
 
-  public Complex sin(int prec, Complex result )
+  public Complex sin(int prec, Complex result)
   {
-    arblib.acb_sin(result, this, prec );
+    arblib.acb_sin(result, this, prec);
     return result;
   }
-  
+
   public int bits()
   {
     return getReal().bits() + getImag().bits();
   }
-  
+
   public Complex[] elements;
 
   public Complex get(int index)
   {
-    assert index < dim : String.format( "index = %d >= dim = %d", index, dim );
-    if ( index == 0 && dim == 1 )
+    assert index < dim : String.format("index = %d >= dim = %d", index, dim);
+    if (index == 0 && dim == 1)
     {
       return this;
     }
@@ -1270,10 +1301,10 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     if (element == null)
     {
       element = elements[index] = new Complex(swigCPtr + index * Complex.BYTES,
-                            	              false);
+                                              false);
     }
     return element;
-  }    
+  }
 
   /**
    * The absolute value
@@ -1292,21 +1323,22 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     getImag().zero();
     return this;
   }
-  
- /**
-   * @return this{@link #getReal()}{@link #isZero()} and this{@link #getImag()}{@link #isZero()}
+
+  /**
+   * @return this{@link #getReal()}{@link #isZero()} and
+   *         this{@link #getImag()}{@link #isZero()}
    */
   public boolean isZero()
   {
     return getReal().isZero() && getImag().isZero();
   }
-  
+
   public boolean containsZero()
   {
     return arblib.acb_contains_zero(this) != 0;
   }
-  
-  public boolean contains( Complex x )
+
+  public boolean contains(Complex x)
   {
     return arblib.acb_contains(this, x) != 0;
   }
@@ -1317,72 +1349,73 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     return res;
   }
 
-  public Complex mul( Real a, int prec, Complex r )
+  public Complex mul(Real a, int prec, Complex r)
   {
-    arblib.acb_mul_arb( r, this, a, prec );
+    arblib.acb_mul_arb(r, this, a, prec);
     return r;
   }
-  
-  public boolean overlaps( Complex x )
+
+  public boolean overlaps(Complex x)
   {
     return arblib.acb_overlaps(this, x) != 0;
   }
-  
 
-  
- /**
+  /**
    * raise to the power of an unsigned integer
-   * @param r = this^k
-   * @param k = power >= 0 
+   * 
+   * @param r    = this^k
+   * @param k    = power >= 0
    * @param prec = precision
    * @return r
    */
-  public Complex pow( int k, int prec, Complex r )
+  public Complex pow(int k, int prec, Complex r)
   {
     assert k >= 0;
     arblib.acb_pow_ui(r, this, k, prec);
     return r;
   }
-  
- /**
-   * add an unsigned integer to this 
-   * @param r = this^k
-   * @param k = int >= 0 
+
+  /**
+   * add an unsigned integer to this
+   * 
+   * @param r    = this^k
+   * @param k    = int >= 0
    * @param prec = precision
    * @return r
    */
-  public Complex add( int k, int prec, Complex r )
+  public Complex add(int k, int prec, Complex r)
   {
     assert k >= 0;
     arblib.acb_add_ui(r, this, k, prec);
     return r;
   }
-   
-  public Complex(Real norm, Real imag)  
+
+  public Complex(Real norm, Real imag)
   {
     this();
     getReal().set(norm);
     getImag().set(imag);
   }
-   
+
   public Complex clear()
   {
-    if ( swigCMemOwn )
+    if (swigCMemOwn)
     {
       swigCMemOwn = false;
       acb_clear(this);
-      for ( int i = 0; i < dim; i++ )
+      for (int i = 0; i < dim; i++)
       {
         get(i).clear();
       }
     }
     return this;
   }
-      
-   /**
-   * add an unsigned integer to this 
-   * @param r = this^k
-   * @param k = int >= 0 
+
+  /**
+   * add an unsigned integer to this
+   * 
+   * @param r    = this^k
+   * @param k    = int >= 0
    * @param prec = precision
    * @return r
    */
@@ -1392,43 +1425,43 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     arblib.acb_sub_ui(r, this, k, prec);
     return r;
   }
- 
-/**
-  * subtract a complex number from this 
-  * @param r = this-s
-  * @param s = number to be subtracted 
-  * @param prec = precision
-  * @return r
-  */
- public Complex sub( Complex s, int prec, Complex r )
- {
-   arblib.acb_sub(r, this, s, prec);
-   return r;
- }
- 
+
+  /**
+   * subtract a complex number from this
+   * 
+   * @param r    = this-s
+   * @param s    = number to be subtracted
+   * @param prec = precision
+   * @return r
+   */
+  public Complex sub(Complex s, int prec, Complex r)
+  {
+    arblib.acb_sub(r, this, s, prec);
+    return r;
+  }
+
   public Complex tan(int bits)
   {
-    return tan(bits,this);
+    return tan(bits, this);
   }
-  
- public static Complex newVector(int dim)
- {
+
+  public static Complex newVector(int dim)
+  {
     Complex array = arblib._acb_vec_init(dim);
-    array.swigCMemOwn = true;      
-    array.elements = new Complex[array.dim = dim];
+    array.swigCMemOwn = true;
+    array.elements    = new Complex[array.dim = dim];
     return array;
- }
-   
-     
+  }
+
   @Override
   public void close()
   {
-   clear();
+    clear();
   }
-  
+
   Real real;
-  
- public Real getReal()
+
+  public Real getReal()
   {
     if (dim == 1)
     {
@@ -1508,9 +1541,9 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
    * 
    * @param prec
    * @param r
-   * @return the multiplicative inverse of r 
+   * @return the multiplicative inverse of r
    */
-  public Complex inv( int prec, Complex r )
+  public Complex inv(int prec, Complex r)
   {
     bits = prec;
     arblib.acb_inv(r, this, prec);
@@ -1530,18 +1563,18 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     arblib.acb_sec(result, this, prec);
     return result;
   }
-  
+
   public boolean isReal()
   {
-    return arblib.acb_is_real(this) != 0 ;
+    return arblib.acb_is_real(this) != 0;
   }
 
-
-   /**
+  /**
    * Calls {@link arblibJNI#mprotect(long, long, int)} with
    * {@link Protections#PROT_READ} only so that the contents become immutable. Any
    * code that attempts to change the variable will trigger an access violation
-   * @return 
+   * 
+   * @return
    * 
    * @throws IllegalArgumentException if {@link #swigCPtr} is not aligned on a
    *                                  page-boundary, the length of which is
@@ -1562,16 +1595,17 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
 
   /**
    * Calls {@link arblibJNI#mprotect(long, long, int)} with
-   * {@link Protections#PROT_READ} and {@link Protections#PROT_WRITE} so that the contents 
-   * become mutable again
-   * @return 
+   * {@link Protections#PROT_READ} and {@link Protections#PROT_WRITE} so that the
+   * contents become mutable again
+   * 
+   * @return
    */
   @Override
   public Complex unlock()
   {
     int status = arblibJNI.mprotect(swigCPtr,
-                                 BYTES * dim,
-                                 Protections.PROT_READ.bitfield | Protections.PROT_WRITE.bitfield);
+                                    BYTES * dim,
+                                    Protections.PROT_READ.bitfield | Protections.PROT_WRITE.bitfield);
     assert status == 0 : "mprotect call failed. errno=" + arblib.errorNumber();
     locked = false;
     return this;
@@ -1579,40 +1613,48 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
 
   boolean locked = false;
 
-  
   @Override
   public boolean locked()
   {
     return locked;
-  }      
-  
+  }
+
   @Override
   public String getName()
   {
-   return name;
+    return name;
   }
-  
 
-  public void setRealObj(Real value) {
+  public void setRealObj(Real value)
+  {
     arblibJNI.Complex_realObj_set(swigCPtr, this, Real.getCPtr(value), value);
   }
 
-  public Real getRealObj() {
+  public Real getRealObj()
+  {
     long cPtr = arblibJNI.Complex_realObj_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Real(cPtr, false);
+    return (cPtr == 0) ? null
+                       : new Real(cPtr,
+                                  false);
   }
 
-  public void setImagObj(Real value) {
+  public void setImagObj(Real value)
+  {
     arblibJNI.Complex_imagObj_set(swigCPtr, this, Real.getCPtr(value), value);
   }
 
-  public Real getImagObj() {
+  public Real getImagObj()
+  {
     long cPtr = arblibJNI.Complex_imagObj_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Real(cPtr, false);
+    return (cPtr == 0) ? null
+                       : new Real(cPtr,
+                                  false);
   }
 
-  public Complex() {
-    this(arblibJNI.new_Complex(), true);
+  public Complex()
+  {
+    this(arblibJNI.new_Complex(),
+         true);
   }
 
 }

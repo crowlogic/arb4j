@@ -83,7 +83,26 @@ import arb.space.topological.EuclideanVectorSpace;
 
                                                      };
 
+  public Real re(int bits, Real res )
+  {
+    return res.set(re());
+  }
 
+  public Real im(int bits, Real res )
+  {
+    return res.set(im());
+  }
+  
+  public Complex re(int bits, Complex res)
+  {
+    return res.set(re());
+  }
+
+  public Complex im(int bits, Complex res)
+  {
+    return res.set(im());
+  }  
+  
   public ComplexRationalFunction
          mul(ComplexRationalFunction operand, int prec, ComplexRationalFunction result)
   {

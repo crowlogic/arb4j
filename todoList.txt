@@ -2,5 +2,4 @@ NEW: implement KL expansion
 expr analyzer; add button to toggle debug output
 expr compiler: derivatives and fractional derivatices
 bonanzai
-java.lang.NoSuchMethodError: 'arb.Complex arb.Complex.re(int, arb.Complex)'at re(Γ(1⁄4-t*I⁄2)).evaluate(Unknown Source)
 analyzer: remember scrollbar positions in addition to existing node expansion states which are remembered
