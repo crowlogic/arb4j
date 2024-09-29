@@ -29,12 +29,12 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
                                        TextFieldListCell<Named>
 {
 
-  final Analyzer<D, C, F> analyzer;
-  final StringConverter<Named>      converter;
-  Spinner<java.lang.Integer>        spinner;
-  HBox                              layout;
-  Label                             nameLabel;
-  boolean                           emacsKeyBindingsAdded;
+  final Analyzer<D, C, F>      analyzer;
+  final StringConverter<Named> converter;
+  Spinner<java.lang.Integer>   spinner;
+  HBox                         layout;
+  Label                        nameLabel;
+  boolean                      emacsKeyBindingsAdded;
 
   @Override
   public void startEdit()
@@ -91,31 +91,7 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
         Integer integerItem = (Integer) item;
         if (spinner == null)
         {
-          spinner = new Spinner<>(new SpinnerValueFactory.IntegerSpinnerValueFactory(java.lang.Integer.MIN_VALUE,
-                                                                                     java.lang.Integer.MAX_VALUE,
-                                                                                     integerItem.getSignedValue()));
-          spinner.setEditable(true);
-          spinner.maxWidthProperty().bind(widthProperty().multiply(0.5)); // 30% of cell width
-          spinner.prefWidthProperty().bind(spinner.maxWidthProperty());
-          spinner.valueProperty().addListener((obs, oldValue, newValue) ->
-          {
-            integerItem.set(newValue);
-            updateRepresentation(item);
-            analyzer.evaluate();
-          });
-          spinner.setOnScroll(event ->
-          {
-            if (event.getDeltaY() < 0)
-            {
-              spinner.decrement();
-            }
-            else if (event.getDeltaY() > 0)
-            {
-              spinner.increment();
-            }
-          });
-          analyzer.addEmacsKeybindings(spinner.getEditor());
-          layout.getChildren().add(spinner);
+          constructSpinner(item, integerItem);
         }
         else
         {
@@ -128,10 +104,38 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
         }
       }
 
-
       setText(null);
       setGraphic(layout);
     }
+  }
+
+  public void constructSpinner(Named item, Integer integerItem)
+  {
+    spinner = new Spinner<>(new SpinnerValueFactory.IntegerSpinnerValueFactory(java.lang.Integer.MIN_VALUE,
+                                                                               java.lang.Integer.MAX_VALUE,
+                                                                               integerItem.getSignedValue()));
+    spinner.setEditable(true);
+    spinner.maxWidthProperty().bind(widthProperty().multiply(0.5)); // 30% of cell width
+    spinner.prefWidthProperty().bind(spinner.maxWidthProperty());
+    spinner.valueProperty().addListener((obs, oldValue, newValue) ->
+    {
+      integerItem.set(newValue);
+      updateRepresentation(item);
+      analyzer.evaluate();
+    });
+    spinner.setOnScroll(event ->
+    {
+      if (event.getDeltaY() < 0)
+      {
+        spinner.decrement();
+      }
+      else if (event.getDeltaY() > 0)
+      {
+        spinner.increment();
+      }
+    });
+    analyzer.addEmacsKeybindings(spinner.getEditor());
+    layout.getChildren().add(spinner);
   }
 
   public void removeSpinner()
@@ -169,9 +173,7 @@ public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
 
   private void addEmacsKeybindingsToTextField(TextField textField)
   {
-
     analyzer.addEmacsKeybindings(textField);
-
   }
 
   private void updateRepresentation(Named item)

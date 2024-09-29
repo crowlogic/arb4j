@@ -14,6 +14,7 @@ import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.expressions.Variables;
 import arb.expressions.viz.context.ContextFieldListCell;
 import arb.expressions.viz.context.ContextMenuListCell;
 import arb.expressions.viz.context.ContextVariableStringConverter;
@@ -336,6 +337,34 @@ public class Analyzer<D, C, F extends Function<D, C>> extends
     splitPane       = new SplitPane();
     contextBox      = new VBox(10);
     contextListView = new ListView<Named>();
+    {
+      contextListView.setOnEditCommit(event ->
+      {
+        int       index     = event.getIndex();
+        Named     newValue  = event.getNewValue();
+        Variables variables = getCurrentContext().variables;
+
+        if (newValue == null)
+        {
+          // Conversion failed, keep the original value
+          return;
+        }
+
+        Named  oldValue = variables.get(index);
+        String oldName  = oldValue.getName();
+        String newName  = newValue.getName();
+
+        if (!oldName.equals(newName))
+        {
+          // Name changed, handle rename
+          variables.rename(oldName, newName);
+        }
+
+        // Update the value (this will handle both value changes and name changes)
+        variables.set(index, newValue);
+      }); 
+    }
+
     var         converter   = new ContextVariableStringConverter<D, C, F>(this);
     ContextMenu contextMenu = newContextMenu(converter);
     contextListView.setContextMenu(contextMenu);
@@ -624,14 +653,14 @@ public class Analyzer<D, C, F extends Function<D, C>> extends
   {
     showAlert(string, msg, msg);
   }
-  
+
   public void showAlert(String string, String msg, Throwable t)
   {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    PrintWriter s = new PrintWriter(baos);
+    PrintWriter           s    = new PrintWriter(baos);
     t.printStackTrace(s);
     s.flush();
-    
+
     showAlert(string, msg, baos.toString());
   }
 

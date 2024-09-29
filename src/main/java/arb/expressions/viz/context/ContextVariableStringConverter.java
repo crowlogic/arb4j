@@ -19,14 +19,14 @@ public final class ContextVariableStringConverter<D, C, F extends Function<D, C>
                                                  StringConverter<Named>
 {
 
-  private final Analyzer<D, C, F> expressionAnalyzer;
+  private final Analyzer<D, C, F> analyzer;
 
   /**
    * @param expressionAnalyzer
    */
   public ContextVariableStringConverter(Analyzer<D, C, F> expressionAnalyzer)
   {
-    this.expressionAnalyzer = expressionAnalyzer;
+    this.analyzer = expressionAnalyzer;
   }
 
   @Override
@@ -37,7 +37,9 @@ public final class ContextVariableStringConverter<D, C, F extends Function<D, C>
       int colon = string.indexOf(':');
       if (colon == -1)
       {
-        throw new IllegalArgumentException("Missing ':'. The format is 'Type: name=value'");
+        String msg = "Missing ':'. The format is 'Type: name=value'";
+        analyzer.showAlert("Syntax Error", msg, new IllegalArgumentException(msg));
+        return null;
       }
       String type         = string.substring(0, colon);
       int    namePosition = colon;
@@ -49,16 +51,16 @@ public final class ContextVariableStringConverter<D, C, F extends Function<D, C>
       switch (type)
       {
       case "Real":
-        return Real.named(name).set(value, this.expressionAnalyzer.bits);
+        return Real.named(name).set(value, this.analyzer.bits);
       case "Complex":
-        return Complex.named(name).set(value, this.expressionAnalyzer.bits);
+        return Complex.named(name).set(value, this.analyzer.bits);
       case "Integer":
         return Integer.named(name).set(value);
       case "Fraction":
         return Fraction.named(name).set(value);
       default:
         String msg = String.format("TODO: handle type='%s'\nname='%s'\nvalue='%s'\n", type, name, value);
-        expressionAnalyzer.showAlert("TODO", msg);
+        analyzer.showAlert("TODO", msg);
         assert false : msg;
         return null;
       }
@@ -66,7 +68,7 @@ public final class ContextVariableStringConverter<D, C, F extends Function<D, C>
     }
     catch (Throwable t)
     {
-      expressionAnalyzer.showAlert(t.getClass().getName(), "Problem with context variable format", t);
+      analyzer.showAlert(t.getClass().getName(), "Problem with context variable format", t);
       t.printStackTrace(System.err);
       return null;
     }

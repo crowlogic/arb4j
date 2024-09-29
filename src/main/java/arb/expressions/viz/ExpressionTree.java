@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Optional;
 
-import arb.Complex;
+import arb.Integer;
 import arb.Named;
 import arb.Real;
 import arb.RealConstants;
@@ -28,7 +28,6 @@ import javafx.scene.control.skin.TableColumnHeader;
 import javafx.scene.control.skin.TableViewSkinBase;
 import javafx.scene.control.skin.VirtualFlow;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
@@ -65,7 +64,7 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
   {
     super(10);
     this.analyzer = expressionAnalyzer;
-    this.context  = new Context(Complex.named("input").set(3),
+    this.context  = new Context(Integer.named("input").set(3),
                                 Real.named("v").set(RealConstants.half));
 
     setupExpressionInput();
@@ -296,7 +295,7 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
     TextInputDialog dialog = new TextInputDialog();
     dialog.setTitle("New Variable");
     dialog.setHeaderText("Designation");
-    dialog.setContentText("What shall this expression be designated as?");
+    dialog.setContentText("Enter the name of the new variable: ");
 
     dialog.initOwner(getScene().getWindow());
 
@@ -403,9 +402,6 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
   {
     expandTreeView(treeTableView.getRoot());
     Platform.runLater(this::resizeColumnsToFitContent);
-//    PauseTransition pause = new PauseTransition(Duration.millis(250));
-//    pause.setOnFinished(event -> resizeColumnsToFitContent());
-//    pause.play();
   }
 
   private void expandTreeView(TreeItem<?> item)
