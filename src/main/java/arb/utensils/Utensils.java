@@ -541,8 +541,9 @@ public class Utensils
                                            BufferedImage.TYPE_4BYTE_ABGR);
 
     Graphics2D    g2d  = bimg.createGraphics();
-    g2d.setColor(Color.white);
+    g2d.setColor(new Color(112, 128, 144, 0));
     g2d.fillRect(0, 0, ti.getIconWidth(), ti.getIconHeight());
+    
     JLabel jl = new JLabel();
     jl.setForeground(new Color(0,
                                0,
