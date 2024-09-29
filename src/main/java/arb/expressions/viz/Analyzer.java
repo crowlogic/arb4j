@@ -362,7 +362,7 @@ public class Analyzer<D, C, F extends Function<D, C>> extends
 
         // Update the value (this will handle both value changes and name changes)
         variables.set(index, newValue);
-      }); 
+      });
     }
 
     var         converter   = new ContextVariableStringConverter<D, C, F>(this);
@@ -604,10 +604,13 @@ public class Analyzer<D, C, F extends Function<D, C>> extends
 
     primaryStage.setOnCloseRequest(evt ->
     {
-      Alert alert = new Alert(AlertType.CONFIRMATION);
-      alert.setTitle("Confirm Close");
-      alert.setHeaderText("Close program?");
-      alert.showAndWait().filter(r -> r != ButtonType.OK).ifPresent(r -> evt.consume());
+      if (shouldConfirmClose())
+      {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Close");
+        alert.setHeaderText("Close program?");
+        alert.showAndWait().filter(r -> r != ButtonType.OK).ifPresent(r -> evt.consume());
+      }
     });
 
     primaryStage.setScene(scene);
@@ -616,6 +619,11 @@ public class Analyzer<D, C, F extends Function<D, C>> extends
 
     addNewExpressionTab();
 
+  }
+
+  boolean shouldConfirmClose()
+  {
+    return false;
   }
 
   public void setStageIcon(Stage primaryStage)
