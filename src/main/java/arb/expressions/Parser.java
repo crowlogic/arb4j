@@ -99,7 +99,8 @@ public class Parser
                                                                                              "ϖ",
                                                                                              "ϕ",
                                                                                              "ϱ",
-                                                                                             "ϰ"));
+                                                                                             "ϰ",
+                                                                                             "ζ"));
 
   public static char subscriptedDigitToRegular(char c)
   {
@@ -282,9 +283,29 @@ public class Parser
     return character == '₍' || character == '₎';
   }
 
-  public static final HashSet<
-                Character>               SUBSCRIPT_CHARACTERS         = new HashSet<
-                              Character>(Arrays.asList('₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉', 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ', 'ₜ'));
+  public static final HashSet<Character> SUBSCRIPT_CHARACTERS         = new HashSet<Character>(Arrays.asList('₀',
+                                                                                                             '₁',
+                                                                                                             '₂',
+                                                                                                             '₃',
+                                                                                                             '₄',
+                                                                                                             '₅',
+                                                                                                             '₆',
+                                                                                                             '₇',
+                                                                                                             '₈',
+                                                                                                             '₉',
+                                                                                                             'ₐ',
+                                                                                                             'ₑ',
+                                                                                                             'ₒ',
+                                                                                                             'ₓ',
+                                                                                                             'ₔ',
+                                                                                                             'ₕ',
+                                                                                                             'ₖ',
+                                                                                                             'ₗ',
+                                                                                                             'ₘ',
+                                                                                                             'ₙ',
+                                                                                                             'ₚ',
+                                                                                                             'ₛ',
+                                                                                                             'ₜ'));
 
   public static final char[]             SUPERSCRIPT_DIGITS_ARRAY     = new char[]
   { '⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹' };
@@ -323,9 +344,8 @@ public class Parser
     'ʸ',
     'ᶻ' };
 
-  public static final HashSet<
-                Character>               lowercaseSubscriptAlphabet   = new HashSet<
-                              Character>(Arrays.asList('ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ', 'ₜ'));
+  public static final HashSet<Character> lowercaseSubscriptAlphabet   = new HashSet<
+                Character>(Arrays.asList('ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ', 'ₜ'));
   /**
    * Not all uppercase letters have UTF superscript representations
    */

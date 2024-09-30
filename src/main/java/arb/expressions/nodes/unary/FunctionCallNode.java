@@ -14,7 +14,6 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
-import arb.AlgebraicNumber;
 import arb.Complex;
 import arb.Fraction;
 import arb.Integer;
@@ -68,17 +67,20 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
     return intermediateVariableFieldName;
   }
 
-  public boolean                  contextual                      = false;
+  public boolean                  contextual                         = false;
 
   public String                   functionName;
 
-  public static HashSet<String>   integerFunctionsWithRealResults = new HashSet<>(Arrays.asList("sqrt", "tanh", "log"));
+  public static HashSet<String>   integerFunctionsWithRealResults    =
+                                                                  new HashSet<>(Arrays.asList("sqrt", "tanh", "log"));
 
-  public static HashSet<String>   complexFunctionsWithRealResults = new HashSet<>(Arrays.asList("arg",
-                                                                                                "re",
-                                                                                                "im",
-                                                                                                "real",
-                                                                                                "imag"));
+  public static HashSet<String>   complexFunctionsWithRealResults    = new HashSet<>(Arrays.asList("arg",
+                                                                                                   "re",
+                                                                                                   "im",
+                                                                                                   "real",
+                                                                                                   "imag"));
+
+  public static HashSet<String>   complexFunctionsWithComplexResults = new HashSet<>(Arrays.asList("log", "logΓ","ζ"));
 
   public FunctionMapping<D, R, F> mapping;
 
@@ -173,9 +175,7 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
 
     generateParameter(mv, (Class<? extends R>) functionMapping.domain, isNullaryFunction);
 
-    boolean needsArgTypeConversion = checkForArgumentConversionNeed(functionMapping, isNullaryFunction);
-
-    if (needsArgTypeConversion)
+    if (checkForArgumentConversionNeed(functionMapping, isNullaryFunction))
     {
       arg.generateCastTo(mv, functionMapping.domain);
     }
@@ -192,14 +192,16 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
     }
 
     loadOutputVariableOntoStack(methodVisitor, requisiteResultType);
-    var domainType   = getDomainType();
-    var coDomainType = requisiteResultType;
+    var    domainType         = getDomainType();
+    var    coDomainType       = requisiteResultType;
+
+    String functionDescriptor = bitless ? Compiler.getMethodDescriptor(coDomainType, coDomainType)
+                                        : Compiler.getMethodDescriptor(coDomainType, int.class, coDomainType);
 
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   Type.getInternalName(domainType),
                                   functionName,
-                                  bitless ? Compiler.getMethodDescriptor(coDomainType, coDomainType)
-                                          : Compiler.getMethodDescriptor(coDomainType, int.class, coDomainType),
+                                  functionDescriptor,
                                   false);
 
     generatedType = requisiteResultType;
@@ -214,21 +216,13 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
   public MethodVisitor generateContextualFunctionCall(MethodVisitor mv, Class<?> resultType)
   {
     generatedType = type();
-
     var functionMapping = getFunctionMapping();
-
     checkForUndefinedReferenced(functionMapping);
-
     loadFunctionReferenceOntoStack(mv, functionMapping);
-
     generateArgument(mv, functionMapping);
-
     loadOrderParameter(mv);
-
     loadBitsParameterOntoStack(mv);
-
     loadOutputVariableOntoStack(mv, generatedType);
-
     return functionMapping.call(mv, generatedType);
   }
 
@@ -258,15 +252,19 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
 
   public FunctionMapping<D, R, F> getFunctionMapping()
   {
-    Context                  context = expression.context;
-    FunctionMapping<D, R, F> mapping = context.functions.get(functionName);
-    if (mapping == null && functionName != null && context != null)
+    FunctionMapping<D, R, F> mapping = expression.context.functions.get(functionName);
+    if (isSelfReferential(mapping))
     {
       mapping = registerSelfReferrentialFunctionMapping();
     }
 
     assert mapping != null : "FunctionMapping for " + functionName + " missing";
     return mapping;
+  }
+
+  public boolean isSelfReferential(FunctionMapping<D, R, F> mapping)
+  {
+    return mapping == null && functionName != null && expression.context != null;
   }
 
   @Override
@@ -336,6 +334,10 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
                   || (argType.equals(Complex.class) && complexFunctionsWithRealResults.contains(functionName)))
     {
       retType = Compiler.scalarType(expression.coDomainType);
+    }
+    else if (Complex.class.equals(expression.domainType) && complexFunctionsWithComplexResults.contains(functionName))
+    {
+      return Complex.class;
     }
     else
     {
