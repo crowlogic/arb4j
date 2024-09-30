@@ -26,6 +26,11 @@ public class FunctionPlotter extends
                              FunctionSampler
 {
 
+  public void show()
+  {
+    toFront();
+  }
+  
   public void toFront()
   {
     WindowManager.bringToFront(stage);
