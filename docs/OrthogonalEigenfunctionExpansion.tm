@@ -11,7 +11,7 @@
 
   <\equation>
     <\text>
-      <tabular*|<tformat|<cwith|1|-1|2|2|cell-halign|l>|<table|<row|<cell|<math|<around|(|f\<ast\>g|)><around|(|x|)>>>|<cell|<math|=<big|int><rsub|0><rsup|\<infty\>>f*<around|(|x-t|)>*g<around|(|t|)>*d*t>>>|<row|<cell|>|<cell|<math|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f*<around|(|x-t|)>*g<around|(|t|)>*H<around|(|t|)>*d*t>>>|<row|<cell|>|<cell|<math|=\<cal-F\><rsup|-1>*<around|{|\<cal-F\><around|{|f|}>\<cdot\>\<cal-F\><around|{|g|}>\<cdot\>\<cal-F\><around|{|g|}>|}>>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|2|2|cell-halign|l>|<table|<row|<cell|<math|<around|(|f\<ast\>g|)><around|(|x|)>>>|<cell|<math|=<big|int><rsub|0><rsup|\<infty\>>f*<around|(|x-t|)>*g<around|(|t|)>*d*t>>>|<row|<cell|>|<cell|<math|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f*<around|(|x-t|)>*g<around|(|t|)>*H<around|(|t|)>*d*t>>>|<row|<cell|>|<cell|=<math|\<cal-F\><rsup|-1>*<around|{|\<cal-F\><around|{|f|}>\<cdot\>\<cal-F\>*<around|{|g\<cdot\>H|}>|}>>>>|<row|<cell|>|<cell|<math|=\<cal-F\><rsup|-1>*<around|{|\<cal-F\><around|{|f|}>\<cdot\>\<cal-F\><around|{|g|}>\<cdot\>\<cal-F\><around|{|g|}>|}>>>>>>>
     </text>
   </equation>
 
@@ -155,6 +155,7 @@
 
 <\initial>
   <\collection>
+    <associate|magnification|1.2>
     <associate|page-height|auto>
     <associate|page-medium|paper>
     <associate|page-type|letter>
@@ -165,9 +166,8 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_59.tm>>
-    <associate|auto-2|<tuple|1.1|1|../../.TeXmacs/texts/scratch/no_name_59.tm>>
+    <associate|auto-2|<tuple|1.1|2|../../.TeXmacs/texts/scratch/no_name_59.tm>>
     <associate|auto-3|<tuple|1.2|2|../../.TeXmacs/texts/scratch/no_name_59.tm>>
-    <associate|auto-4|<tuple|1.2|?|../../.TeXmacs/texts/scratch/no_name_59.tm>>
   </collection>
 </references>
 
