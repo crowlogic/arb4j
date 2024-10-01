@@ -38,8 +38,8 @@ import arb.functions.polynomials.PolynomialSequenceIterator;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R, E extends AutoCloseableAssignable<? extends E>>
-                                                                      implements
+public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R,
+              E extends AutoCloseableAssignable<? extends E>> implements
                                                                       OrthogonalPolynomialSequence<R, E>,
                                                                       Initializable
 {
@@ -71,12 +71,12 @@ public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R, E exte
   private boolean                 initialized;
 
   @Nonnegative
-  public Sequence<R>              A;
+  private Sequence<R>             A;
 
-  public Sequence<R>              B;
+  private Sequence<R>             B;
 
   @Nonnegative
-  public Sequence<R>              C;
+  private Sequence<R>             C;
 
   public PolynomialSequence<R, E> P;
 

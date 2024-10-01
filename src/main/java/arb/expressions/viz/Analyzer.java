@@ -201,7 +201,6 @@ public class Analyzer<D, C, F extends Function<D, C>> extends
   public static Class<?>[] INTERFACES = new Class<?>[]
   { IntegerSequence.class,
     RealSequence.class,
-    IntegerPolynomialSequence.class,
     Function.class,
     NullaryFunction.class,
     IntegerFunction.class,

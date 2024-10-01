@@ -24,14 +24,16 @@ import arb.functions.real.RealFunction;
  * half-integer argument: <br>
  * <br>
  * 
- * J_(n+1/2)(r)=sqrt(π*r)**(2^(i*r))/2[e^(i*π*(n+1/2))*y_n*(1/r)+e^(-i*π*(n+1/2))*y_n*(1/r)]
- *
+ * <pre>
+ * J₍ₙ₊½₎(r) = √(πr)^(2^(ir)) / 2 [e^(iπ(n + ½)) * yₙ(1/r) + e^(-iπ(n + ½)) * yₙ(1/r)]
+ * </pre>
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
 public class ComplexBesselPolynomials extends
-                                      ComplexRecurrentlyGeneratedOrthogonalPolynomialSequence implements Concept
+                                      ComplexRecurrentlyGeneratedOrthogonalPolynomialSequence implements
+                                      Concept
 {
   @Override
   public Stream<Reference> getReferences()
@@ -46,33 +48,35 @@ public class ComplexBesselPolynomials extends
     p1.one().shiftLeft(1).add(1);
   }
 
-  private RealFunction w;
+  public static RealFunction w    = RealFunction.express("w:x➔e^(2*π*x)");
+
+  final ComplexSequence      Aseq = ComplexSequence.express("A", "2*n+1", context);
+
+  final ComplexSequence      Bseq = ComplexSequence.express("B", "0", context);
+
+  final ComplexSequence      Cseq = ComplexSequence.express("C", "-1", context);
 
   @Override
   public RealFunction orthogonalityMeasure()
   {
-    if (w != null)
-    {
-      return w;
-    }
-    return w = RealFunction.express("w", "e^(2*π*x)");
+    return w;
   }
 
   @Override
   public ComplexSequence A()
   {
-    return ComplexSequence.express("A", "2*n+1", context);
+    return Aseq;
   }
 
   @Override
   public ComplexSequence B()
   {
-    return ComplexSequence.express("B", "0", context);
+    return Bseq;
   }
 
   @Override
   public ComplexSequence C()
   {
-    return ComplexSequence.express("C", "-1", context);
+    return Cseq;
   }
 }

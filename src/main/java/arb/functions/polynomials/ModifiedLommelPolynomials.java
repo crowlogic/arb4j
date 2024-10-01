@@ -14,6 +14,7 @@ import arb.documentation.references.Reference;
 import arb.domains.Domain;
 import arb.domains.ExtendedRealLine;
 import arb.functions.polynomials.orthogonal.real.RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence;
+import arb.functions.real.RealBesselFunctionOfTheFirstKind;
 import arb.functions.real.RealFunction;
 
 /**
@@ -31,11 +32,10 @@ import arb.functions.real.RealFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ModifiedLommelPolynomials
-                                        extends
-                                        RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence implements
-                                        Concept,
-                                        Initializable
+public class ModifiedLommelPolynomials extends
+                                       RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence implements
+                                       Concept,
+                                       Initializable
 {
 
   @Override
@@ -45,17 +45,15 @@ public class ModifiedLommelPolynomials
     p1.set(2).mul(v, bits).shiftLeft(1);
   }
 
-  @SuppressWarnings("resource")
-  public Real v = new Real().setName("v").set(RealConstants.half);
+  public Real v = Real.named("v").set(RealConstants.half);
 
   public ModifiedLommelPolynomials(int bits)
   {
     super(bits,
-          "n➔2*(n + v )",
+          "n➔2*(n+v)",
           "0",
           "1");
     context.registerVariable(v);
-
   }
 
   public ModifiedLommelPolynomials()
@@ -78,38 +76,39 @@ public class ModifiedLommelPolynomials
 
   /**
    * <pre>
-   * The discrete orthogonality measure for the Lommel polynomials R_{n,v}(z) is
-   * related to the zeros of the Bessel function J_v(z). Let z_{v,k} denote the
-   * kth positive zero of J_v(z), arranged in ascending order.
+   * The discrete orthogonality measure for the Lommel polynomials Rₙ,ᵥ(z) is
+   * related to the zeros of the Bessel function Jᵥ(z). Let zᵥ,ₖ denote the
+   * kᵗʰ positive zero of the {@link RealBesselFunctionOfTheFirstKind} Jᵥ(z), arranged in ascending order.
    * 
    * The Lommel polynomials satisfy the following discrete orthogonality relation:
    * 
-   * \sum_{k=1}^{\infty} \frac{R_{m,v}(1/z_{v,k}) R_{n,v}(1/z_{v,k})}{z_{v,k}^2
-   * [J_{v+1}(z_{v,k})]^2} = \frac{\delta_{m,n}}{2(n+v)}
+   * ∑ₖ=₁^∞ (Rₘ,ᵥ(1/zᵥ,ₖ) Rₙ,ᵥ(1/zᵥ,ₖ) / (zᵥ,ₖ² [Jᵥ₊₁(zᵥ,ₖ)]²)) = δₘ,ₙ / (2(n+ᵥ))
    * 
-   * where \delta_{m,n} is the Kronecker delta, defined as:
+   * where δₘ,ₙ is the Kronecker delta, defined as:
    * 
-   * \delta_{m,n} = 1 if m = n \delta_{m,n} = 0 if m ≠ n
+   * δₘ,ₙ = 1 if m = n
+   * δₘ,ₙ = 0 if m ≠ n
    * 
    * In other words, the Lommel polynomials are orthogonal with respect to the
    * discrete measure defined by the reciprocals of the squares of the zeros of
-   * the Bessel function J_v(z), weighted by the square of the Bessel function
-   * J_{v+1}(z) evaluated at those zeros.
+   * the Bessel function Jᵥ(z), weighted by the square of the Bessel function
+   * Jᵥ₊₁(z) evaluated at those zeros.
    * 
    * This discrete orthogonality relation is a consequence of the fact that the
    * Lommel polynomials appear in the series expansion of the ratio of two Bessel
    * functions, as mentioned earlier:
    * 
-   * J_{v-1}(z) / J_v(z) = 1/z \sum_{n=0}^{\infty} (-1)^n R_{n,v}(1/z)
+   * Jᵥ₋₁(z) / Jᵥ(z) = (1/z) ∑ₙ=₀^∞ (-1)ⁿ Rₙ,ᵥ(1/z)
    * 
-   * The modified Lommel polynomials h_n^{(v)}(z), on the other hand, are
+   * The modified Lommel polynomials hₙ⁽ᵥ⁾(z), on the other hand, are
    * orthogonal with respect to a continuous measure on the real line, but the
    * specific form of this measure is more complex and less well-known compared to
    * the discrete orthogonality measure for the Lommel polynomials.
    * 
-   * ∑k->(R_{m,v}(1/z_{v,k}) R_{n,v}(1/z_{v,k}) / (z_{v,k}² [J_{v+1}(z_{v,k})]²)){k=1..∞} = δ_{m,n} / (2(n+v))
+   * ∑ₖ=₁^∞ (Rₘ,ᵥ(1/zᵥ,ₖ) Rₙ,ᵥ(1/zᵥ,ₖ) / (zᵥ,ₖ² [Jᵥ₊₁(zᵥ,ₖ)]²)) = δₘ,ₙ / (2(n+ᵥ))
    * </pre>
    */
+
   @Override
   public RealFunction orthogonalityMeasure()
   {
