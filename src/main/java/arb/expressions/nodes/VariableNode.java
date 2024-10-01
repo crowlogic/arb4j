@@ -153,14 +153,12 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else
     {
-      if ((variables == null || !variables.map.containsKey(reference.name)
-                    || reference.type == null) && resolve)
+      if ((variables == null || !variables.map.containsKey(reference.name) || reference.type == null) && resolve)
       {
         resolveReference();
       }
 
-      if (expression.independentVariable != null
-                    && reference.equals(expression.independentVariable.reference))
+      if (expression.independentVariable != null && reference.equals(expression.independentVariable.reference))
       {
         isIndependent = true;
       }
@@ -353,7 +351,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (isIndependent = isIndependent(inputVariable))
     {
       resolveIndependentVariable(inputVariable);
-
     }
     else
     {
@@ -361,10 +358,8 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       boolean a = expression.thisOrAnyAscendentExpressionHasIndeterminateVariable();
       boolean b = expression.anyAscendentIndependentVariableIsEqualTo(getName());
       boolean c = expression.getVariable(reference) == null;
-      boolean d = expression.independentVariable == null
-                    || !expression.independentVariable.getName().equals(getName());
-      boolean h = expression.independentVariable == null
-                    || !expression.independentVariable.reference.equals(reference);
+      boolean d = expression.independentVariable == null || !expression.independentVariable.getName().equals(getName());
+      boolean h = expression.independentVariable == null || !expression.independentVariable.reference.equals(reference);
 
       if (isIndeterminate = ((a && !b) && c && d) && h)
       {
@@ -407,10 +402,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         reference.type = instanceVariable.getClass();
         if (Expression.trace)
         {
-          System.err.println("Declaring "
-                             + reference
-                             + " as a contextual variable of type "
-                             + reference.type());
+          System.err.println("Declaring " + reference + " as a contextual variable of type " + reference.type());
 
         }
 
@@ -461,20 +453,18 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else
     {
-      throw new UndefinedReferenceException(format("Undefined reference to variable at position=%d remaining='%s'"
-                                                   + " '%s' in expression=%s, expression.rootNode=%s, independent variable is %s and parentExpression is %s",
-                                                   reference.position,
-                                                   expression.remaining(),
+      throw new UndefinedReferenceException(format("Undefined reference to variable "
+                                                   + " '%s' at position=%d in expression=%s, independent variable is %s and parentExpression is %s,  remaining='%s'",
                                                    reference.name,
+                                                   reference.position,
                                                    expression.expression,
-                                                   expression.rootNode,
                                                    variable,
-                                                   expression.ascendentExpression));
+                                                   expression.ascendentExpression,
+                                                   expression.remaining()));
     }
   }
 
-  public VariableNode<?, ?, ?> resolve(VariableReference<D, R, F> reference,
-                                       Expression<?, ?, ?> ascendentExpression)
+  public VariableNode<?, ?, ?> resolve(VariableReference<D, R, F> reference, Expression<?, ?, ?> ascendentExpression)
   {
     var ascendentInputNode = ascendentExpression.independentVariable;
 
@@ -482,9 +472,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       if (Expression.trace)
       {
-        System.err.format("Assigning this %s as ascendent input node=%s\n",
-                          this,
-                          ascendentInputNode);
+        System.err.format("Assigning this %s as ascendent input node=%s\n", this, ascendentInputNode);
       }
       ascendentInput = true;
       reference.type = ascendentExpression.domainType;
@@ -541,9 +529,8 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return null;
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String variable, Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
+                                                                                       Node<E, S, G> arg)
   {
     return variable.equals(getName()) ? arg.spliceInto(expression) : this;
   }

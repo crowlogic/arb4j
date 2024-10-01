@@ -21,6 +21,21 @@ public class Bibliography extends
                           AbstractBibliography
 {
 
+  /**
+   * <pre>
+    @article{straton2024fourier,
+  title={The Fourier--Legendre Series of Bessel Functions of the First Kind and the Summed Series Involving 1 F 2 Hypergeometric Functions that Arise from Them},
+  author={Straton, Jack C},
+  journal={Axioms},
+  volume={13},
+  number={2},
+  pages={134},
+  year={2024},
+  publisher={MDPI}
+  }
+   * </pre>
+   */
+
   public static Article       shiftedJacobiPolynomialIntegralOperationalMatrix       =
                                                                                new Article("The shifted Jacobi polynomial integral operational matrix for solving Riccati differential equation of fractional order",
                                                                                            "A. Neamaty and B. Agheli and R. Darzi",
@@ -164,19 +179,17 @@ public class Bibliography extends
                                                                   "98",
                                                                   "145--160").setPublisher("Cambridge University Press");
 
-  public static Book          functionalAnalysisRieszNagy                            =
-                                                          new Book("Functional Analysis",
-                                                                   "Frigyes Riesz and Béla Sz.-Nagy",
-                                                                   "2012").setPublisher("Dover Publications")
-                                                                          .setSeries("Dover Books on Mathematics")
-                                                                          .setEdition("unabridged republication of 1955");
+  public static Book          functionalAnalysisRieszNagy                            = new Book("Functional Analysis",
+                                                                                                "Frigyes Riesz and Béla Sz.-Nagy",
+                                                                                                "2012").setPublisher("Dover Publications")
+                                                                                                       .setSeries("Dover Books on Mathematics")
+                                                                                                       .setEdition("unabridged republication of 1955");
 
-  public static Book          functionalAnalysisYosida                               =
-                                                       new Book("Functional Analysis",
-                                                                "吉田 耕作(Kōsaku Yosida)",
-                                                                "1995").setPublisher("Springer Berlin Heidelberg")
-                                                                       .setSeries("Classics in Mathematics")
-                                                                       .setEdition("Reprint of the 1980 Edition");
+  public static Book          functionalAnalysisYosida                               = new Book("Functional Analysis",
+                                                                                                "吉田 耕作(Kōsaku Yosida)",
+                                                                                                "1995").setPublisher("Springer Berlin Heidelberg")
+                                                                                                       .setSeries("Classics in Mathematics")
+                                                                                                       .setEdition("Reprint of the 1980 Edition");
 
   public static Article       isotropyPrevalenceInSpatialStatistics                  =
                                                                     new Article("Why is isotropy so prevalent in spatial statistics?",
