@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -199,7 +198,7 @@ public class Analyzer<D, C, F extends Function<D, C>> extends
     codomainTypeBox.getSelectionModel().select(bclass);
   }
 
-  public static Class<?>[] INTERFACES = new Class<?>[]
+  public static Class<?>[]            INTERFACES = new Class<?>[]
   { IntegerSequence.class,
     RealSequence.class,
     Function.class,
@@ -223,14 +222,15 @@ public class Analyzer<D, C, F extends Function<D, C>> extends
     ComplexRationalNullaryFunction.class,
     Sequence.class };
 
+  static Comparator<? super Class<?>> comparator = (a, b) ->
+                                                 {
+                                                   Class<?> classA = (Class<?>) a;
+                                                   Class<?> classB = (Class<?>) b;
+                                                   return classA.getSimpleName().compareTo(classB.getSimpleName());
+                                                 };
+
   static
   {
-    Comparator<? super Class<?>> comparator = (a, b) ->
-    {
-      Class<?> classA = (Class<?>) a;
-      Class<?> classB = (Class<?>) b;
-      return classA.getSimpleName().compareTo(classB.getSimpleName());
-    };
     Arrays.sort(INTERFACES, comparator);
     Arrays.sort(TYPES, comparator);
 
@@ -334,36 +334,9 @@ public class Analyzer<D, C, F extends Function<D, C>> extends
 
   protected SplitPane createSplitPane()
   {
-    splitPane       = new SplitPane();
-    contextBox      = new VBox(10);
-    contextListView = new ListView<Named>();
-    {
-      contextListView.setOnEditCommit(event ->
-      {
-        int       index     = event.getIndex();
-        Named     newValue  = event.getNewValue();
-        Variables variables = getCurrentContext().variables;
-
-        if (newValue == null)
-        {
-          // Conversion failed, keep the original value
-          return;
-        }
-
-        Named  oldValue = variables.get(index);
-        String oldName  = oldValue.getName();
-        String newName  = newValue.getName();
-
-        if (!oldName.equals(newName))
-        {
-          // Name changed, handle rename
-          variables.rename(oldName, newName);
-        }
-
-        // Update the value (this will handle both value changes and name changes)
-        variables.set(index, newValue);
-      });
-    }
+    splitPane  = new SplitPane();
+    contextBox = new VBox(10);
+    constructContextListView();
 
     var         converter   = new ContextVariableStringConverter<D, C, F>(this);
     ContextMenu contextMenu = newContextMenu(converter);
@@ -374,26 +347,56 @@ public class Analyzer<D, C, F extends Function<D, C>> extends
     return splitPane;
   }
 
+  public void constructContextListView()
+  {
+    contextListView = new ListView<Named>();
+
+    contextListView.setOnEditCommit(event ->
+    {
+      int       index     = event.getIndex();
+      Named     newValue  = event.getNewValue();
+      Variables variables = getCurrentContext().variables;
+
+      if (newValue == null)
+      {
+        // Conversion failed, keep the original value
+        return;
+      }
+
+      Named  oldValue = variables.get(index);
+      String oldName  = oldValue.getName();
+      String newName  = newValue.getName();
+
+      if (!oldName.equals(newName))
+      {
+        // Name changed, handle rename
+        variables.rename(oldName, newName);
+      }
+
+      // Update the value (this will handle both value changes and name changes)
+      variables.set(index, newValue);
+    });
+
+  }
+
   public void addEmacsKeybindings(TextField textField)
   {
-
     textField.addEventFilter(KeyEvent.KEY_PRESSED, new EmacsKeybindingsEventHandler(textField));
   }
 
   private Optional<String> showVariableNameDialog(boolean rename)
   {
-
     ChoiceDialog<Class<?>> choiceDialog = new ChoiceDialog<>(Real.class,
                                                              TYPES);
     choiceDialog.setTitle("Select Type");
     choiceDialog.setContentText("What's the new variable type?");
     choiceDialog.initOwner(tabPane.getScene().getWindow());
     var typeChoice = choiceDialog.showAndWait();
-    if ( typeChoice.isEmpty() )
+    if (typeChoice.isEmpty())
     {
       return Optional.empty();
     }
-    System.err.println( "TODO: refactor this for type=" + typeChoice.get() );
+    System.err.println("TODO: refactor this for type=" + typeChoice.get());
     // Set the owner to the primary stage
     TextInputDialog dialog = new TextInputDialog();
     dialog.setTitle("New Variable");
@@ -407,7 +410,7 @@ public class Analyzer<D, C, F extends Function<D, C>> extends
   protected ContextMenu newContextMenu(StringConverter<Named> converter)
   {
     ContextMenu contextMenu = new ContextMenu(newDeleteVariableMenuItem(),
-                                              newInsertNewVariable(),
+                                              newNewVariableMenuItem(),
                                               newRenameRealVariableMenuItem());
 
     contextListView.setCellFactory(ContextMenuListCell.forListView(contextMenu,
@@ -444,7 +447,7 @@ public class Analyzer<D, C, F extends Function<D, C>> extends
     return renameVariable;
   }
 
-  public MenuItem newInsertNewVariable()
+  public MenuItem newNewVariableMenuItem()
   {
     MenuItem insertNewRealVariable = new MenuItem("New Variable");
     insertNewRealVariable.setOnAction(e -> showVariableNameDialog(false).ifPresent(name ->
@@ -499,8 +502,8 @@ public class Analyzer<D, C, F extends Function<D, C>> extends
     Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
     if (currentTab != null)
     {
-      javafx.scene.Node       content       = currentTab.getContent();
-      ExpressionTree<D, C, F> expressionTab = (ExpressionTree<D, C, F>) content;
+      var content       = currentTab.getContent();
+      var expressionTab = (ExpressionTree<D, C, F>) content;
       action.accept(expressionTab);
     }
   }
@@ -511,8 +514,8 @@ public class Analyzer<D, C, F extends Function<D, C>> extends
     Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
     if (currentTab != null)
     {
-      javafx.scene.Node       content       = currentTab.getContent();
-      ExpressionTree<D, C, F> expressionTab = (ExpressionTree<D, C, F>) content;
+      var content       = currentTab.getContent();
+      var expressionTab = (ExpressionTree<D, C, F>) content;
       return expressionTab.context;
     }
     return null;
