@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -381,12 +382,23 @@ public class Analyzer<D, C, F extends Function<D, C>> extends
 
   private Optional<String> showVariableNameDialog(boolean rename)
   {
+
+    ChoiceDialog<Class<?>> choiceDialog = new ChoiceDialog<>(Real.class,
+                                                             TYPES);
+    choiceDialog.setTitle("Select Type");
+    choiceDialog.setContentText("What's the new variable type?");
+    choiceDialog.initOwner(tabPane.getScene().getWindow());
+    var typeChoice = choiceDialog.showAndWait();
+    if ( typeChoice.isEmpty() )
+    {
+      return Optional.empty();
+    }
+    System.err.println( "TODO: refactor this for type=" + typeChoice.get() );
+    // Set the owner to the primary stage
     TextInputDialog dialog = new TextInputDialog();
     dialog.setTitle("New Variable");
     dialog.setHeaderText(rename ? "Enter the new name for the variable:" : "Enter the name for the new variable:");
     dialog.setContentText("Variable name:");
-
-    // Set the owner to the primary stage
     dialog.initOwner(tabPane.getScene().getWindow());
 
     return dialog.showAndWait();
@@ -395,7 +407,7 @@ public class Analyzer<D, C, F extends Function<D, C>> extends
   protected ContextMenu newContextMenu(StringConverter<Named> converter)
   {
     ContextMenu contextMenu = new ContextMenu(newDeleteVariableMenuItem(),
-                                              newInsertNewRealVariable(),
+                                              newInsertNewVariable(),
                                               newRenameRealVariableMenuItem());
 
     contextListView.setCellFactory(ContextMenuListCell.forListView(contextMenu,
@@ -432,9 +444,9 @@ public class Analyzer<D, C, F extends Function<D, C>> extends
     return renameVariable;
   }
 
-  public MenuItem newInsertNewRealVariable()
+  public MenuItem newInsertNewVariable()
   {
-    MenuItem insertNewRealVariable = new MenuItem("New Real Variable");
+    MenuItem insertNewRealVariable = new MenuItem("New Variable");
     insertNewRealVariable.setOnAction(e -> showVariableNameDialog(false).ifPresent(name ->
     {
       Context currentContext = getCurrentContext();
@@ -488,9 +500,7 @@ public class Analyzer<D, C, F extends Function<D, C>> extends
     if (currentTab != null)
     {
       javafx.scene.Node       content       = currentTab.getContent();
-
       ExpressionTree<D, C, F> expressionTab = (ExpressionTree<D, C, F>) content;
-
       action.accept(expressionTab);
     }
   }
