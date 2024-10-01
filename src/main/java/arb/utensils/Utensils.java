@@ -1,7 +1,11 @@
 package arb.utensils;
 
 import static arb.IntegerConstants.FLINT_BITS;
-import static arb.arblib.*;
+import static arb.arblib.acb_add_error_mag;
+import static arb.arblib.acb_calc_gl_node;
+import static arb.arblib.acb_init;
+import static arb.arblib.arb_init;
+import static arb.arblib.mag_init;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -10,6 +14,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.Integer;
+import java.net.URL;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -26,19 +32,15 @@ import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 
-import arb.Complex;
+import arb.*;
 import arb.Float;
-import arb.FloatInterval;
-import arb.Magnitude;
-import arb.Real;
-import arb.RealMatrix;
 import arb.RealRootInterval.RefinementResult;
-import arb.RoundingMode;
-import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -47,10 +49,47 @@ import arb.functions.real.RealFunction;
 public class Utensils
 {
 
+  public static void setStageIcon(Stage primaryStage, String path)
+  {
+    try
+    {
+      URL resourceUrl = ClassLoader.getSystemResource(path);
+
+      if (resourceUrl != null)
+      {
+        primaryStage.getIcons().add(new Image(resourceUrl.toExternalForm()));
+      }
+      else
+      {
+        Utensils.informOfMissingIconAndPrintClassAndModulePaths();
+      }
+    }
+    catch (Throwable e)
+    {
+      Utensils.informOfMissingIconAndPrintClassAndModulePaths(e);
+    }
+  }
+
+  public static void informOfMissingIconAndPrintClassAndModulePaths()
+  {
+    informOfMissingIconAndPrintClassAndModulePaths(null);
+  }
+
+  public static void informOfMissingIconAndPrintClassAndModulePaths(Throwable e)
+  {
+    if (e != null)
+    {
+      e.printStackTrace(System.err);
+    }
+    System.err.println("Could not find resource: TODO.png");
+    System.out.println("Classpath: " + System.getProperty("java.class.path"));
+    System.out.println("Module path: " + System.getProperty("jdk.module.path"));
+  }
+
   static
   {
-    
-    NewCommandMacro.addNewCommand("Γ", "\\Gamma", 0);    
+
+    NewCommandMacro.addNewCommand("Γ", "\\Gamma", 0);
     NewCommandMacro.addNewCommand("re", "\\operatorname{Re} {#1}", 1);
     NewCommandMacro.addNewCommand("im", "\\operatorname{Im} {#1}", 1);
   }
@@ -212,19 +251,12 @@ public class Utensils
     int precs[] = new int[FLINT_BITS];
     int iters, startPrec = root.relAccuracyBits();
 
-    if ((iters = determineNewtonStepScalingPrecisions(convergenceFactor, prec, precs, startPrec))
-                  == -1)
+    if ((iters = determineNewtonStepScalingPrecisions(convergenceFactor, prec, precs, startPrec)) == -1)
     {
       return RefinementResult.ImpreciseInput;
     }
 
-    return calculateNewtonSteps(f,
-                                root,
-                                convergenceRegion,
-                                convergenceFactor,
-                                extraPrec,
-                                precs,
-                                iters);
+    return calculateNewtonSteps(f, root, convergenceRegion, convergenceFactor, extraPrec, precs, iters);
   }
 
   public static RefinementResult calculateNewtonSteps(RealFunction f,
@@ -241,11 +273,7 @@ public class Utensils
     {
       workingPrecision = precs[i] + extraPrec;
 
-      if (!f.calculateNewtonStep(root,
-                                 convergenceRegion,
-                                 convergenceFactor,
-                                 workingPrecision,
-                                 root))
+      if (!f.calculateNewtonStep(root, convergenceRegion, convergenceFactor, workingPrecision, root))
       {
         return RefinementResult.NoConvergence;
       }
@@ -255,14 +283,10 @@ public class Utensils
 
   }
 
-  public static int determineNewtonStepScalingPrecisions(Float convergenceFactor,
-                                                         int prec,
-                                                         int[] precs,
-                                                         int startPrec)
+  public static int determineNewtonStepScalingPrecisions(Float convergenceFactor, int prec, int[] precs, int startPrec)
   {
     int iters;
-    int padding =
-                Math.max(0, Math.min(arblib.arf_abs_bound_lt_2exp_si(convergenceFactor), prec) + 5);
+    int padding = Math.max(0, Math.min(arblib.arf_abs_bound_lt_2exp_si(convergenceFactor), prec) + 5);
     precs[0] = prec + padding;
     iters    = 1;
     while ((iters < FLINT_BITS) && (precs[iters - 1] + padding > 2 * startPrec))
@@ -314,11 +338,9 @@ public class Utensils
     }
   }
 
-  public static Complex
-         calculateSimpleQuadrature(ComplexFunction f, Complex a, Complex b, int prec, Complex res)
+  public static Complex calculateSimpleQuadrature(ComplexFunction f, Complex a, Complex b, int prec, Complex res)
   {
-    try ( Complex midpoint = new Complex(); Complex δ = new Complex();
-          Complex widePoint = new Complex();)
+    try ( Complex midpoint = new Complex(); Complex δ = new Complex(); Complex widePoint = new Complex();)
     {
       /* δ = (b-a)/2 */
       b.sub(a, prec, δ).mul2e(-1);
@@ -541,9 +563,12 @@ public class Utensils
                                            BufferedImage.TYPE_4BYTE_ABGR);
 
     Graphics2D    g2d  = bimg.createGraphics();
-    g2d.setColor(new Color(112, 128, 144, 0));
+    g2d.setColor(new Color(112,
+                           128,
+                           144,
+                           0));
     g2d.fillRect(0, 0, ti.getIconWidth(), ti.getIconHeight());
-    
+
     JLabel jl = new JLabel();
     jl.setForeground(new Color(0,
                                0,

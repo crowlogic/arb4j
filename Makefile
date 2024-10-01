@@ -44,4 +44,5 @@ docs: documentation
 doc: docs
 
 install:
-	gradle install
+	gradle publishToMavenLocal
+
