@@ -243,7 +243,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   @Override
   public String toString()
   {
-    return String.format("R(%s,%s;%s)", order, index, arg);
+    return String.format("R(%s,%s;%s)", index, order, arg);
   }
 
   @Override

@@ -42,6 +42,17 @@ import java.util.stream.Stream;
     return realPart.set(real).mul(this,prec,realPart);
   }
   
+  public Complex evaluate(Complex t, int order, int bits, Complex result)
+  {
+    try ( ComplexFraction tf = new ComplexFraction())
+    {
+      tf.set(t);
+      evaluate(t.real, order, bits, result.real);
+      evaluate(t.imag, order, bits, result.imag);
+      return result;
+    }
+  }  
+  
   @Override
   public RationalFunction inverse(RationalFunction x)
   {
