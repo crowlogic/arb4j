@@ -1,7 +1,6 @@
 package arb.expressions.viz;
 
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -31,12 +30,12 @@ import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
 import arb.utensils.Utensils;
+import arb.viz.WindowManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.skin.TableColumnHeader;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -640,15 +639,7 @@ public class Analyzer<D, C, F extends Function<D, C>> extends
 
   public void setStageIcon(Stage primaryStage)
   {
-    try
-    {
-      InputStream resource = ClassLoader.getSystemResourceAsStream("ExpressionAnalyzer.png");
-      primaryStage.getIcons().add(new Image(resource));
-    }
-    catch (Throwable e)
-    {
-      e.printStackTrace(System.err);
-    }
+    WindowManager.setStageIcon(primaryStage, "ExpressionAnalyzer.png");
   }
 
   private void toggleContextView()

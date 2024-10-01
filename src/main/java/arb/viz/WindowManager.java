@@ -1,11 +1,13 @@
 package arb.viz;
 
 import java.lang.reflect.Method;
+import java.net.URL;
 
 import arb.XDO;
 import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -92,6 +94,43 @@ public class WindowManager
     {
       System.err.println("XDO not initialized");
     }
+  }
+
+  public static void setStageIcon(Stage primaryStage, String path)
+  {
+    try
+    {
+      URL resourceUrl = ClassLoader.getSystemResource(path);
+  
+      if (resourceUrl != null)
+      {
+        primaryStage.getIcons().add(new Image(resourceUrl.toExternalForm()));
+      }
+      else
+      {
+        WindowManager.informOfMissingIconAndPrintClassAndModulePaths();
+      }
+    }
+    catch (Throwable e)
+    {
+      WindowManager.informOfMissingIconAndPrintClassAndModulePaths(e);
+    }
+  }
+
+  public static void informOfMissingIconAndPrintClassAndModulePaths()
+  {
+    informOfMissingIconAndPrintClassAndModulePaths(null);
+  }
+
+  public static void informOfMissingIconAndPrintClassAndModulePaths(Throwable e)
+  {
+    if (e != null)
+    {
+      e.printStackTrace(System.err);
+    }
+    System.err.println("Could not find resource: TODO.png");
+    System.out.println("Classpath: " + System.getProperty("java.class.path"));
+    System.out.println("Module path: " + System.getProperty("jdk.module.path"));
   }
 
 }

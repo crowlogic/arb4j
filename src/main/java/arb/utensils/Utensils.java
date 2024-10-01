@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.Integer;
-import java.net.URL;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -39,8 +38,6 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
-import javafx.scene.image.Image;
-import javafx.stage.Stage;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -48,43 +45,6 @@ import javafx.stage.Stage;
  */
 public class Utensils
 {
-
-  public static void setStageIcon(Stage primaryStage, String path)
-  {
-    try
-    {
-      URL resourceUrl = ClassLoader.getSystemResource(path);
-
-      if (resourceUrl != null)
-      {
-        primaryStage.getIcons().add(new Image(resourceUrl.toExternalForm()));
-      }
-      else
-      {
-        Utensils.informOfMissingIconAndPrintClassAndModulePaths();
-      }
-    }
-    catch (Throwable e)
-    {
-      Utensils.informOfMissingIconAndPrintClassAndModulePaths(e);
-    }
-  }
-
-  public static void informOfMissingIconAndPrintClassAndModulePaths()
-  {
-    informOfMissingIconAndPrintClassAndModulePaths(null);
-  }
-
-  public static void informOfMissingIconAndPrintClassAndModulePaths(Throwable e)
-  {
-    if (e != null)
-    {
-      e.printStackTrace(System.err);
-    }
-    System.err.println("Could not find resource: TODO.png");
-    System.out.println("Classpath: " + System.getProperty("java.class.path"));
-    System.out.println("Module path: " + System.getProperty("jdk.module.path"));
-  }
 
   static
   {
