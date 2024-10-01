@@ -48,7 +48,7 @@ public class ComplexBesselPolynomials extends
     p1.one().shiftLeft(1).add(1);
   }
 
-  public static RealFunction w    = RealFunction.express("w:x➔e^(2*π*x)");
+  public static RealFunction w    = RealFunction.express("w:x➔exp(2*π*x)");
 
   final ComplexSequence      Aseq = ComplexSequence.express("A", "2*n+1", context);
 
