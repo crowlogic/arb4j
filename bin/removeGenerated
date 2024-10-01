@@ -1,6 +1,0 @@
-#!/bin/sh -x
-
-BASEDIR=$(dirname $(readlink -f $0))/..
-cd $BASEDIR
-find . -name "*.i" | cut -d / -f 3 | sed -e s/i$/java/g | xargs -I _ echo src/main/java/arb/_ | xargs -n 1 rm -fv
-rm -fv src/main/java/arb/arblib.java
