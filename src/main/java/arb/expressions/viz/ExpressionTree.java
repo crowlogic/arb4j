@@ -216,7 +216,7 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
     catch (Throwable e)
     {
       e.printStackTrace(System.err);
-      this.analyzer.showAlert("Compilation Error", e.getClass().getName(), e.getMessage());
+      this.analyzer.showAlert("Compilation Error", e.getClass().getName(), e);
     }
   }
 
