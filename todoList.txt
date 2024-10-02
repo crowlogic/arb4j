@@ -1,8 +1,8 @@
 NEW: implement KL expansion
-expr analyzer; add button to toggle debug output
 expr compiler: derivatives and fractional derivatices
 analyzer: remember scrollbar positions in addition to existing node expansion states which are remembered
 analyzer: cache rendered formulas
 TimeWaveZero
 analyzer: dont allow duplicate variables
 analyzer: load
+expr analyzer; add button to toggle debug output https://controlsfx.github.io/features/toggleswitch/
