@@ -27,8 +27,8 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, ? extends R>> extends
-                                         Node<D, R, F>
+public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, ? extends C>> extends
+                                         Node<D, C, F>
 {
 
   public static final int                                        initializerBits = 128;
@@ -92,20 +92,20 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
 
   private String       intermediateVariableFieldName;
 
-  public Node<D, R, F> left;
+  public Node<D, C, F> left;
 
   public String        operation;
 
-  public Node<D, R, F> right;
+  public Node<D, C, F> right;
 
   private String       symbol;
 
   Class<?>             type;
 
-  public BinaryOperationNode(Expression<D, R, F> expression,
-                             Node<D, R, F> left,
+  public BinaryOperationNode(Expression<D, C, F> expression,
+                             Node<D, C, F> left,
                              String operation,
-                             Node<D, R, F> right,
+                             Node<D, C, F> right,
                              String symbol)
   {
     super(expression);
@@ -117,7 +117,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
   }
 
   @Override
-  public void accept(Consumer<Node<D, R, F>> t)
+  public void accept(Consumer<Node<D, C, F>> t)
   {
     if (left != null)
     {
@@ -131,7 +131,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
   }
 
   @Override
-  public boolean dependsOn(VariableNode<D, R, F> variable)
+  public boolean dependsOn(VariableNode<D, C, F> variable)
   {
     var dependsOnLeft  = left != null && left.dependsOn(variable);
     var dependsOnRight = right != null && right.dependsOn(variable);
@@ -190,7 +190,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
    * Returns a reusable node if it exists, it will either be this{@link #left} or
    * this{@link #right} or null if neither are reusable
    */
-  public Node<D, R, F> getAReusableNode()
+  public Node<D, C, F> getAReusableNode()
   {
     if (right.isReusable())
     {
@@ -204,7 +204,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
   }
 
   @Override
-  public List<Node<D, R, F>> getBranches()
+  public List<Node<D, C, F>> getBranches()
   {
     return List.of(left == null ? new LiteralConstantNode<>(expression,
                                                             "0")
@@ -289,7 +289,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
 
   public boolean loadResult(MethodVisitor mv, Class<?> resultType)
   {
-    Node<D, R, F> reusableNode;
+    Node<D, C, F> reusableNode;
 
     if (isResult)
     {
@@ -363,7 +363,7 @@ public abstract class BinaryOperationNode<D, R, F extends Function<? extends D, 
     return (side == null || side.isLeaf()) ? "%s" : "(%s)";
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String name,
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, C, F> substitute(String name,
                                                                                        Node<E, S, G> transformation)
   {
     if (Expression.trace)

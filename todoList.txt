@@ -6,3 +6,4 @@ TimeWaveZero
 analyzer: dont allow duplicate variables
 analyzer: load
 expr analyzer; add button to toggle debug output https://controlsfx.github.io/features/toggleswitch/
+TODO: builtin sykbols for the classical orthogonal polynomials
