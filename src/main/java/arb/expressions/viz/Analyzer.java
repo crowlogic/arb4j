@@ -259,6 +259,9 @@ public class Analyzer<D, C, F extends Function<D, C>> extends
 
   private boolean                       contextViewVisible   = false;
 
+  /**
+   * TODO: these need to be moved to the {@link ExpressionTree}
+   */
   public final ComboBox<Class<?>>       domainTypeBox        = new ComboBox<Class<?>>();
 
   public final ComboBox<Class<?>>       functionTypeBox      = new ComboBox<Class<?>>();
