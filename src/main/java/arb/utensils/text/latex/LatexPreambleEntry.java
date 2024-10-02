@@ -14,7 +14,7 @@ import java.util.function.Consumer;
  * updateable.
  * 
  * @param cmd        the command, e.g. "\\pgfplotsset"
- * @param options    the options as key-value pairs. Use null or an empty string
+ * @param yamlConfig    the options as key-value pairs. Use null or an empty string
  *                   for the value if you have an option that does not need a
  *                   value
  * @param standalone true if this preamble entry should not be changed even if

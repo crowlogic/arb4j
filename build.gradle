@@ -31,6 +31,7 @@ repositories {
 }
 
 dependencies {
+    api 'org.yaml:snakeyaml:2.3'
     api 'org.ow2.asm:asm:9.7'
     api 'org.ow2.asm:asm-commons:9.7'
     api 'org.ow2.asm:asm-util:9.7'

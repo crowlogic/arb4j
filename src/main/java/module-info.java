@@ -27,6 +27,7 @@ module arb4j
   requires transitive org.objectweb.asm.util;
   requires transitive org.objectweb.asm.commons;
   requires transitive org.apache.commons.lang3;
+  requires transitive org.yaml.snakeyaml;
 
   exports arb;
   exports arb.expressions.viz;

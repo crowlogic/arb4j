@@ -2,10 +2,15 @@ package arb.expressions.viz;
 
 import static arb.utensils.Utensils.wrapOrThrow;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Optional;
+
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
 
 import arb.Integer;
 import arb.Named;
@@ -18,6 +23,7 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
+import arb.utensils.Utensils;
 import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -41,10 +47,36 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
                            VBox
 {
 
+  final static DumperOptions yamlConfig = new DumperOptions();
+  static
+  {
+    yamlConfig.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+    yamlConfig.setPrettyFlow(true);
+  }
+
+  public void save(String yamlFile)
+  {
+    try
+    {
+      Yaml       yaml       = new Yaml(yamlConfig);
+      FileWriter fileWriter = new FileWriter(yamlFile);
+      yaml.dump(this, fileWriter);
+      fileWriter.close();
+    }
+    catch (IOException e)
+    {
+      Platform.runLater(() ->
+      {
+        analyzer.showAlert("Exception throw", yamlFile, e);
+      });
+      Utensils.throwOrWrap(e);
+    }
+  }
+
   final Analyzer<D, C, F>      analyzer;
   TextField                    expressionInput;
   TreeTableView<Node<D, C, F>> treeTableView;
-  Expression<D, C, F>          expr;
+  public Expression<D, C, F>   expr;
   F                            instance;
   C                            result;
   Context                      context;
@@ -307,7 +339,7 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
     Optional<String> filename = askWhatToSaveAs();
     if (filename.isPresent())
     {
-      analyzer.showAlert("TODO", "TODO: save expression and context to " + filename);
+      save(filename.get());
     }
   }
 

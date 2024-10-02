@@ -19,7 +19,7 @@ import java.util.function.BinaryOperator;
  * appropriately.
  * 
  * @param name                 the package name, e.g. "babel"
- * @param options              the options as key-value pairs. Use null or an
+ * @param yamlConfig              the options as key-value pairs. Use null or an
  *                             empty string for the value if you have an option
  *                             that does not need a value, e.g. "open" for the
  *                             package "bookmark"
