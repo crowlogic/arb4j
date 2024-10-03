@@ -24,7 +24,7 @@ public final class TypeSettingCellFactory<D, C, F extends Function<? extends D, 
                                          Callback<TreeTableColumn<Node<D, C, F>, String>,
                                                        TreeTableCell<Node<D, C, F>, String>>
 {
-  final ConcurrentHashMap<String, Image> cache = new ConcurrentHashMap<>();
+  final static ConcurrentHashMap<String, Image> cache = new ConcurrentHashMap<>();
 
   public final class TypeSettingTextField extends
                                           TextFieldTreeTableCell<Node<D, C, F>, String>
