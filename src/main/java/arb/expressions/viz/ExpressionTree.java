@@ -191,12 +191,6 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
     treeTableView.getColumns().addAll(typesetCol, valueCol, nodeTypeCol, nodeTypeResultCol, nodeCol, fieldCol);
   }
 
-  ScrollBar getScrollBar(VirtualFlow<?> treeTableVirtualFlow2, Orientation horizontal)
-  {
-    assert false : "TODO: also get this via reflection. I fucking hate this about java. The audicity of some neckbeard somewhere thinking that they are going to prevent me from accessing stuff on  my own computer is absurd.";
-    return null;
-  }
-
   @SuppressWarnings("unchecked")
   public void compileExpression()
   {
