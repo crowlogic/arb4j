@@ -101,11 +101,7 @@ public class FunctionPlotter extends
     {
       if (newthing.booleanValue())
       {
-        Platform.runLater(() ->
-        {
-          System.err.println("Bringing " + stage + " to front");
-          toFront();
-        });
+        Platform.runLater(this::toFront);
       }
     });
     stage.show();
