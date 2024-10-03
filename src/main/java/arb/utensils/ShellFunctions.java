@@ -33,7 +33,7 @@ public class ShellFunctions
     {
       RealTwoDimensionalDataSet dataSet = sequence;
 
-      try 
+      try
       {
         FunctionPlotter plotter = new FunctionPlotter();
         ref.set(plotter);
@@ -56,15 +56,15 @@ public class ShellFunctions
   {
     Utensils.initializeJavaFxIfNecessary();
     AtomicReference<FunctionPlotter> ref = new AtomicReference<>();
-    Semaphore                        sem = new Semaphore(0);
+    var                              sem = new Semaphore(0);
 
     Platform.runLater(() ->
     {
-      SequenceDataSet dataSet = new SequenceDataSet(sequence);
+      var dataSet = new SequenceDataSet(sequence);
 
       try
       {
-        FunctionPlotter plotter = new FunctionPlotter();
+        var plotter = new FunctionPlotter();
         ref.set(plotter);
         plotter.createScene();
         plotter.chart.getDatasets().clear();
@@ -82,18 +82,21 @@ public class ShellFunctions
 
   static boolean javaFxInitialized = false;
 
-  public static FunctionPlotter plot(double left, double right, int n, RealFunction... functions)
+  @SafeVarargs
+  public static <R extends RealFunction> FunctionPlotter plot(double left, double right, int n, R... functions)
   {
     return plot(left, right, n, Arrays.asList(functions));
   }
 
-  public static FunctionPlotter plot(double left, double right, int n, Iterable<RealFunction> functions)
+  public static <R extends RealFunction>
+         FunctionPlotter
+         plot(double left, double right, int n, Iterable<? extends R> functions)
   {
     AtomicReference<FunctionPlotter> ref = new AtomicReference<>();
 
     Utensils.initializeJavaFxIfNecessary();
 
-    Semaphore sem = new Semaphore(0);
+    var sem = new Semaphore(0);
     Platform.runLater(() ->
     {
 
@@ -105,9 +108,9 @@ public class ShellFunctions
         plotter.createScene();
         plotter.chart.getDatasets().clear();
 
-        for (RealFunction func : functions)
+        for (var func : functions)
         {
-          RealTwoDimensionalDataSet sample = func.quantize(left, right, n);
+          var sample = func.quantize(left, right, n);
           plotter.chart.getDatasets().add(sample);
         }
 
@@ -122,10 +125,10 @@ public class ShellFunctions
     });
 
     return waitForFunctionPlotterToBeReleased(ref, sem);
-
   }
 
-  public static FunctionPlotter waitForFunctionPlotterToBeReleased(AtomicReference<FunctionPlotter> ref, Semaphore sem)
+  protected static FunctionPlotter waitForFunctionPlotterToBeReleased(AtomicReference<FunctionPlotter> ref,
+                                                                      Semaphore sem)
   {
     try
     {

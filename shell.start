@@ -1,4 +1,5 @@
 import javafx.application.Platform;
+import arb.functions.integer.RealPolynomialSequence;
 import arb.arblib;
 import arb.functions.rational.ComplexRationalFunctionSequence;
 import arb.Initializable;
