@@ -23,100 +23,64 @@ import javafx.application.Platform;
 public class ShellFunctions
 {
 
-  public static void plot(RealTwoDimensionalDataSet sequence)
+  public static FunctionPlotter plot(RealTwoDimensionalDataSet sequence)
   {
-    initializeJavaFxIfNecessary();
+    Utensils.initializeJavaFxIfNecessary();
+    AtomicReference<FunctionPlotter> ref = new AtomicReference<>();
+    Semaphore                        sem = new Semaphore(0);
+
     Platform.runLater(() ->
-    { // Create a SequenceDataSet from the Real sequence
+    {
       RealTwoDimensionalDataSet dataSet = sequence;
 
-      try ( FunctionPlotter plotter = new FunctionPlotter())
+      try 
       {
-        plotter.createScene();
-
-        // Clear existing datasets if needed
-        plotter.chart.getDatasets().clear();
-
-        // Add the new dataset to FunctionPlotter's internal list
-        plotter.chart.getDatasets().add(dataSet);
-
-        plotter.stage.show();
-
-        plotter.stage.toFront();
-        plotter.stage.requestFocus();
-      }
-    });
-  }
-
-  /**
-   * Plots the given SequenceDataSet
-   *
-   * @param sequence The Real sequence to be plotted.
-   * @return
-   */
-  public static FunctionPlotter plot(Real sequence)
-  {
-    initializeJavaFxIfNecessary();
-    AtomicReference<FunctionPlotter> ref  = new AtomicReference<>();
-    Object                           sync = new Object();
-    Platform.runLater(() ->
-    {
-      synchronized (sync)
-      {
-        // Create a SequenceDataSet from the Real sequence
-        SequenceDataSet dataSet = new SequenceDataSet(sequence);
-
         FunctionPlotter plotter = new FunctionPlotter();
         ref.set(plotter);
-
         plotter.createScene();
-
-        // Clear existing datasets if needed
         plotter.chart.getDatasets().clear();
-
-        // Add the new dataset to FunctionPlotter's internal list
         plotter.chart.getDatasets().add(dataSet);
-
-        // Create and show the scene if not already displayed
-
         plotter.stage.show();
-        sync.notify();
       }
-    });
-    try
-    {
-      synchronized (sync)
+      finally
       {
-        sync.wait();
+        sem.release();
       }
-    }
-    catch (InterruptedException e)
-    {
-      wrapOrThrow(e);
-    }
-    return ref.get();
+
+    });
+
+    return waitForFunctionPlotterToBeReleased(ref, sem);
   }
 
-  private static boolean javaFxInitialized = false;
-
-  public static void initializeJavaFxIfNecessary()
+  public static FunctionPlotter plot(Real sequence)
   {
-    if (!javaFxInitialized)
+    Utensils.initializeJavaFxIfNecessary();
+    AtomicReference<FunctionPlotter> ref = new AtomicReference<>();
+    Semaphore                        sem = new Semaphore(0);
+
+    Platform.runLater(() ->
     {
-      javaFxInitialized = true;
+      SequenceDataSet dataSet = new SequenceDataSet(sequence);
+
       try
       {
-        Platform.startup(() ->
-        {
-          Platform.setImplicitExit(false);
-        });
+        FunctionPlotter plotter = new FunctionPlotter();
+        ref.set(plotter);
+        plotter.createScene();
+        plotter.chart.getDatasets().clear();
+        plotter.chart.getDatasets().add(dataSet);
+        plotter.stage.show();
       }
-      catch (Exception e)
+      finally
       {
-        e.printStackTrace(System.err);
+        sem.release();
       }
-    }
+    });
+    return waitForFunctionPlotterToBeReleased(ref, sem);
+
   }
+
+  static boolean javaFxInitialized = false;
 
   public static FunctionPlotter plot(double left, double right, int n, RealFunction... functions)
   {
@@ -125,9 +89,9 @@ public class ShellFunctions
 
   public static FunctionPlotter plot(double left, double right, int n, Iterable<RealFunction> functions)
   {
-    AtomicReference<FunctionPlotter> ref = new AtomicReference<FunctionPlotter>();
+    AtomicReference<FunctionPlotter> ref = new AtomicReference<>();
 
-    initializeJavaFxIfNecessary();
+    Utensils.initializeJavaFxIfNecessary();
 
     Semaphore sem = new Semaphore(0);
     Platform.runLater(() ->
@@ -147,7 +111,7 @@ public class ShellFunctions
           plotter.chart.getDatasets().add(sample);
         }
 
-        plotter.show();
+        plotter.stage.show();
         functions.forEach(plotter.functions::add);
       }
       finally
@@ -157,16 +121,23 @@ public class ShellFunctions
 
     });
 
+    return waitForFunctionPlotterToBeReleased(ref, sem);
+
+  }
+
+  public static FunctionPlotter waitForFunctionPlotterToBeReleased(AtomicReference<FunctionPlotter> ref, Semaphore sem)
+  {
     try
     {
-      sem.tryAcquire(10, TimeUnit.SECONDS); 
+      sem.tryAcquire(10, TimeUnit.SECONDS);
     }
     catch (InterruptedException e)
     {
       wrapOrThrow(e);
     }
-    return ref.get();
-
+    FunctionPlotter functionPlotter = ref.get();
+    functionPlotter.show();
+    return functionPlotter;
   }
 
 }

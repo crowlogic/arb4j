@@ -98,13 +98,13 @@ public class FunctionPlotter extends
       {
         Platform.runLater(() ->
         {
+          System.err.println("Bringing " + stage + " to front");
           toFront();
         });
       }
     });
     stage.show();
 
-//    toFront();
 
     return stage;
   }
@@ -137,7 +137,7 @@ public class FunctionPlotter extends
     for (RealFunction function : functions)
     {
       RealTwoDimensionalDataSet dataset = new RealTwoDimensionalDataSet(function.toString(),
-                                            sampleCount);
+                                                                        sampleCount);
       domain.generateRealPartition(precision, false, dataset.getRealXValues());
       chart.getDatasets().add(dataset);
     }
@@ -163,12 +163,12 @@ public class FunctionPlotter extends
     }
     functionStream.forEach(i ->
     {
-      RealFunction function = functions.get(i);
-      RealTwoDimensionalDataSet  dataset  = (RealTwoDimensionalDataSet) chart.getDatasets().get(i);
-      Real         mesh     = dataset.getRealXValues();
-      Real         values   = dataset.getRealYValues();
+      RealFunction              function = functions.get(i);
+      RealTwoDimensionalDataSet dataset  = (RealTwoDimensionalDataSet) chart.getDatasets().get(i);
+      Real                      mesh     = dataset.getRealXValues();
+      Real                      values   = dataset.getRealYValues();
 
-      IntStream    sequence = IntStream.range(0, sampleCount);
+      IntStream                 sequence = IntStream.range(0, sampleCount);
       if (parallel)
       {
         sequence = sequence.parallel();
@@ -180,6 +180,8 @@ public class FunctionPlotter extends
 
   public void show()
   {
+    assert stage != null : "stage is null";
+    Platform.runLater(() -> stage.show());
     toFront();
   }
 

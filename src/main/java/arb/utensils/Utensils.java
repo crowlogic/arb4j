@@ -38,6 +38,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
+import javafx.application.Platform;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -796,6 +797,25 @@ public class Utensils
       return true;
     }
     return false;
+  }
+
+  public static void initializeJavaFxIfNecessary()
+  {
+    if (!ShellFunctions.javaFxInitialized)
+    {
+      ShellFunctions.javaFxInitialized = true;
+      try
+      {
+        Platform.startup(() ->
+        {
+          Platform.setImplicitExit(false);
+        });
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace(System.err);
+      }
+    }
   }
 
 }
