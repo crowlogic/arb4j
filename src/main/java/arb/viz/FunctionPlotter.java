@@ -2,9 +2,15 @@ package arb.viz;
 
 import static java.util.stream.Collectors.toList;
 
+import java.util.stream.IntStream;
+
+import arb.Float;
+import arb.Real;
+import arb.RealTwoDimensionalDataSet;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.FunctionSampler;
+import arb.functions.real.RealFunction;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
@@ -26,15 +32,19 @@ public class FunctionPlotter extends
                              FunctionSampler
 {
 
-  public void show()
-  {
-    toFront();
-  }
-  
-  public void toFront()
-  {
-    WindowManager.bringToFront(stage);
-  }
+  public boolean            darkStyle = true;
+
+  public boolean            parallel  = true;
+
+  public StackPane          root;
+  public Scene              scene;
+  public Stage              stage;
+  public DefaultNumericAxis xAxis     = new DefaultNumericAxis();
+
+  public DefaultNumericAxis yAxis     = new DefaultNumericAxis();
+
+  public final XYChart      chart     = new XYChart(xAxis,
+                                                    yAxis);
 
   @Override
   public void close()
@@ -42,15 +52,11 @@ public class FunctionPlotter extends
     Platform.runLater(() -> stage.close());
   }
 
-  public Stage              stage;
-  public StackPane          root;
-  public Scene              scene;
-  public boolean            darkStyle = true;
-
-  public DefaultNumericAxis xAxis     = new DefaultNumericAxis();
-  public DefaultNumericAxis yAxis     = new DefaultNumericAxis();
-  public final XYChart      chart     = new XYChart(xAxis,
-                                                    yAxis);
+  public void configureChartPlugins()
+  {
+    chart.getPlugins().addAll(new EditAxis(AxisMode.XY), new DataPointTooltip(), new Zoomer());
+    // new CrosshairIndicator()
+  }
 
   public Stage createScene()
   {
@@ -103,10 +109,10 @@ public class FunctionPlotter extends
     return stage;
   }
 
-  public void configureChartPlugins()
+  private void freeExistingDatasets()
   {
-    chart.getPlugins().addAll(new EditAxis(AxisMode.XY), new DataPointTooltip(), new Zoomer());
-    // new CrosshairIndicator()
+    chart.getDatasets().forEach(ds -> ((RealTwoDimensionalDataSet) ds).close());
+    chart.getDatasets().clear();
   }
 
   public void initializeFuctions()
@@ -115,25 +121,83 @@ public class FunctionPlotter extends
     refreshFunctionDatasets();
   }
 
-  public boolean parallel = true;
-
-  public void updateLegend()
-  {
-    chart.getLegend().updateLegend(chart.getRenderers(), true);
-
-  }
-
-  @Override
+  /**
+   * Refresh the data sets associated with the functions.
+   *
+   * This method recalculates the sample count (if necessary), clears the current
+   * data sets and then regenerates them for each function.
+   */
   public void refreshFunctionDatasets()
   {
-    super.refreshFunctionDatasets();
-    chart.getDatasets().addAll(dataSets);
+    if (sampleCount <= 0)
+    {
+      sampleCount = Math.min(10000, 1 + (int) domain.length(128, new Float()).mul(resolution, 128).doubleValue());
+    }
+    freeExistingDatasets();
+    for (RealFunction function : functions)
+    {
+      RealTwoDimensionalDataSet dataset = new RealTwoDimensionalDataSet(function.toString(),
+                                            sampleCount);
+      domain.generateRealPartition(precision, false, dataset.getRealXValues());
+      chart.getDatasets().add(dataset);
+    }
+  }
+
+  /**
+   * Resample all functions in the list.
+   *
+   * This method goes through the list of functions and resamples each one,
+   * updating the corresponding data set with the new samples.
+   *
+   * @param parallel A boolean that indicates if the process should be
+   *                 parallelized.
+   */
+  @SuppressWarnings("resource")
+  public final void resampleFunctions(boolean parallel)
+  {
+    assert functions.size() == chart.getDatasets().size();
+    IntStream functionStream = IntStream.range(0, functions.size());
+    if (parallel)
+    {
+      functionStream = functionStream.parallel();
+    }
+    functionStream.forEach(i ->
+    {
+      RealFunction function = functions.get(i);
+      RealTwoDimensionalDataSet  dataset  = (RealTwoDimensionalDataSet) chart.getDatasets().get(i);
+      Real         mesh     = dataset.getRealXValues();
+      Real         values   = dataset.getRealYValues();
+
+      IntStream    sequence = IntStream.range(0, sampleCount);
+      if (parallel)
+      {
+        sequence = sequence.parallel();
+      }
+      sequence.forEach(n -> function.evaluate(mesh.get(n), 1, precision, values.get(n)));
+      dataset.setName(function.toString());
+    });
+  }
+
+  public void show()
+  {
+    toFront();
+  }
+
+  public void toFront()
+  {
+    WindowManager.bringToFront(stage);
   }
 
   @Override
   public String toString()
   {
-    return String.format("FunctionPlotter[%s]", chart.getDatasets() );
+    return String.format("FunctionPlotter[%s]", chart.getDatasets());
+  }
+
+  public void updateLegend()
+  {
+    chart.getLegend().updateLegend(chart.getRenderers(), true);
+
   }
 
 }

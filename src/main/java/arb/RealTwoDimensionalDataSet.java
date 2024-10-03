@@ -14,15 +14,15 @@ import io.fair_acc.dataset.spi.AbstractDataSet;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealDataSet extends
-                         AbstractDataSet<RealDataSet> implements
-                         DataSet2D,
-                         AutoCloseable,
-                         Closeable
+public class RealTwoDimensionalDataSet extends
+                                       AbstractDataSet<RealTwoDimensionalDataSet> implements
+                                       DataSet2D,
+                                       AutoCloseable,
+                                       Closeable
 {
   private static final long serialVersionUID = 1L;
 
-  public RealDataSet(String name, int length)
+  public RealTwoDimensionalDataSet(String name, int length)
   {
     super(name,
           2);
@@ -44,7 +44,7 @@ public class RealDataSet extends
   @Override
   public double get(int dimIndex, int index)
   {
-    assert dimIndex <= 1 && dimIndex >= 0 : "wtf, dimIndex=" + dimIndex + " index=" + index;
+    assert dimIndex <= 1 && dimIndex >= 0 : "dimIndex=" + dimIndex + " must be 0 or 1";
     assert index < data.getNumCols();
     Real got = data.get(dimIndex, index);
     return got.getMid().doubleValue();
@@ -74,13 +74,13 @@ public class RealDataSet extends
   }
 
   @SuppressWarnings("resource")
-  public RealDataSet structure(int n)
+  public RealTwoDimensionalDataSet structure(int n)
   {
-    var         x    = getRealXValues();
-    var         y    = getRealYValues();
-    RealDataSet rds  = new RealDataSet("structure[" + y.name + "]",
-                                       n);
-    var         outy = rds.getRealYValues();
+    var                       x    = getRealXValues();
+    var                       y    = getRealYValues();
+    RealTwoDimensionalDataSet rds  = new RealTwoDimensionalDataSet("structure[" + y.name + "]",
+                                                                   n);
+    var                       outy = rds.getRealYValues();
     rds.getRealXValues().set(x.slice(0, n));
     IntStream.range(0, n).parallel().forEach(i -> y.gammaVariance(i, 128, outy.get(i)));
     return rds;

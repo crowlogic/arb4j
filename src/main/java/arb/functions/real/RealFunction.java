@@ -474,7 +474,7 @@ public interface RealFunction extends Function<Real, Real>
    * @param n
    * @return
    */
-  public default RealDataSet quantize(double left, double right, int n)
+  public default RealTwoDimensionalDataSet quantize(double left, double right, int n)
   {
     return quantize(left, right, n, false, Double.SIZE);
   }
@@ -489,7 +489,7 @@ public interface RealFunction extends Function<Real, Real>
    * @param parallel
    * @return
    */
-  public default RealDataSet quantize(double left, double right, int n, boolean parallel)
+  public default RealTwoDimensionalDataSet quantize(double left, double right, int n, boolean parallel)
   {
     try ( FloatInterval I = new FloatInterval(left,
                                               right);)
@@ -509,7 +509,7 @@ public interface RealFunction extends Function<Real, Real>
    * @param bits
    * @return
    */
-  public default RealDataSet quantize(double left, double right, int n, boolean parallel, int bits)
+  public default RealTwoDimensionalDataSet quantize(double left, double right, int n, boolean parallel, int bits)
   {
     try ( FloatInterval I = new FloatInterval(left,
                                               right);)
@@ -528,7 +528,7 @@ public interface RealFunction extends Function<Real, Real>
    * @param bits
    * @return
    */
-  public default RealDataSet quantize(double left, double right, int n, int bits)
+  public default RealTwoDimensionalDataSet quantize(double left, double right, int n, int bits)
   {
     return quantize(left, right, n, false, bits);
   }
@@ -546,9 +546,9 @@ public interface RealFunction extends Function<Real, Real>
    * @param parallel TODO
    * @return values
    */
-  public default RealDataSet quantize(FloatInterval interval, int bits, int n, boolean parallel)
+  public default RealTwoDimensionalDataSet quantize(FloatInterval interval, int bits, int n, boolean parallel)
   {
-    RealDataSet sample = new RealDataSet(toString() + " over " + interval.left().toString(5) + ".."
+    RealTwoDimensionalDataSet sample = new RealTwoDimensionalDataSet(toString() + " over " + interval.left().toString(5) + ".."
                   + interval.right().toString(5),
                                          n);
     Real        values = sample.getRealYValues();

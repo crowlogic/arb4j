@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import arb.Real;
-import arb.RealDataSet;
+import arb.RealTwoDimensionalDataSet;
 import arb.SequenceDataSet;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -23,12 +23,12 @@ import javafx.application.Platform;
 public class ShellFunctions
 {
 
-  public static void plot(RealDataSet sequence)
+  public static void plot(RealTwoDimensionalDataSet sequence)
   {
     initializeJavaFxIfNecessary();
     Platform.runLater(() ->
     { // Create a SequenceDataSet from the Real sequence
-      RealDataSet dataSet = sequence;
+      RealTwoDimensionalDataSet dataSet = sequence;
 
       try ( FunctionPlotter plotter = new FunctionPlotter())
       {
@@ -143,7 +143,7 @@ public class ShellFunctions
 
         for (RealFunction func : functions)
         {
-          RealDataSet sample = func.quantize(left, right, n);
+          RealTwoDimensionalDataSet sample = func.quantize(left, right, n);
           plotter.chart.getDatasets().add(sample);
         }
 
