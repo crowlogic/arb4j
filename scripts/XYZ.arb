@@ -2,3 +2,5 @@ var Z = RealFunction.express("ℤ:Z(t)");
 var X = RealFunction.express("𝕏:tanh(log(1+Z(t)^2))");
 var Y = RealFunction.express("𝕐:tanh(log(1-Z(t)^2))");
 var p = plot(0,50,5000,X,Y,Z);
+var ds = p.getDataset(2);
+var p2 = plot(ds);

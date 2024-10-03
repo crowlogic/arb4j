@@ -121,6 +121,14 @@ public class FunctionPlotter extends
     refreshFunctionDatasets();
   }
 
+  public RealTwoDimensionalDataSet getDataset(int index)
+  {
+    assert index < chart.getDatasets().size() && 0 <= index : String.format("0 <= index = %d < %d out of bounds",
+                                                                            index,
+                                                                            chart.getDatasets().size());
+    return (RealTwoDimensionalDataSet) chart.getDatasets().get(index);
+  }
+
   /**
    * Refresh the data sets associated with the functions.
    *
