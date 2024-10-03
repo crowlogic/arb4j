@@ -28,7 +28,6 @@ import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.scene.control.*;
 import javafx.scene.control.skin.TableColumnHeader;
 import javafx.scene.control.skin.TableViewSkinBase;
@@ -167,11 +166,26 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
     return hbarField;
   }
 
+  static Field flowField;
+
+  static
+  {
+    try
+    {
+      flowField = TableViewSkinBase.class.getDeclaredField("flow");
+    }
+    catch (Exception e)
+    {
+      Utensils.throwOrWrap(e);
+    }
+
+    flowField.setAccessible(true);
+  }
+
   public VirtualFlow<?> getVirtualFlow() throws NoSuchFieldException, IllegalAccessException
   {
-    var   skin      = treeTableView.getSkin();
-    Field flowField = TableViewSkinBase.class.getDeclaredField("flow");
-    flowField.setAccessible(true);
+    var skin = treeTableView.getSkin();
+
     return tableVirtualFlow = (VirtualFlow<?>) flowField.get(skin);
   }
 
