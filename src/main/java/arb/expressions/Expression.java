@@ -1804,7 +1804,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return new BinomialCoefficientNode<>(this);
     case "pFq":
       return new HypergeometricFunctionNode<>(this);
-    case "B":
+    case "Beta":
       return new BetaFunctionNode<D, C, F>(this);
     default:
       return new FunctionCallNode<>(reference.name,

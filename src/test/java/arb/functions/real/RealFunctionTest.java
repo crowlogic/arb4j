@@ -4,12 +4,9 @@ import static java.lang.Math.pow;
 
 import org.junit.Test;
 
+import arb.*;
 import arb.Float;
-import arb.FloatInterval;
-import arb.Real;
-import arb.RealRootInterval;
-import arb.RootLocatorOptions;
-import arb.Roots;
+import arb.functions.rational.RationalNullaryFunction;
 import junit.framework.TestCase;
 
 @SuppressWarnings(
@@ -18,9 +15,17 @@ public class RealFunctionTest extends
                               TestCase
 {
 
+  public static void testBetaFunction()
+  {
+    var oneOverThirthy = new Fraction(1,
+                                      30);
+    var oneThirtieth   = RationalNullaryFunction.express("Beta(5,2)");
+    assertEquals(oneOverThirthy, oneThirtieth);
+  }
+
   public static void testJ0Eigenfunctions()
   {
-
+    assert false : "TODO: determine them.. they aren't equal to the uniformly convergent basis functions, expand the eigenfunctions in terms of the basis then solve for coeffecients and determine pattern";
   }
 
   public static void main(String args[])

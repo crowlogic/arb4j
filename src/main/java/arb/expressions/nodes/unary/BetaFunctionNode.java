@@ -1,5 +1,7 @@
 package arb.expressions.nodes.unary;
 
+import org.objectweb.asm.MethodVisitor;
+
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
@@ -31,6 +33,13 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
 
     expression.require(')');
 
+  }
+
+  @Override
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
+  {
+    assert false : "TODO: generate Beta(x, y) = (Γ(x)*Γ(y))/Γ(x + y)";
+    return null;
   }
 
 }
