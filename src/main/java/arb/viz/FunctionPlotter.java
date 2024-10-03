@@ -14,9 +14,7 @@ import arb.functions.real.RealFunction;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.plugins.DataPointTooltip;
-import io.fair_acc.chartfx.plugins.EditAxis;
-import io.fair_acc.chartfx.plugins.Zoomer;
+import io.fair_acc.chartfx.plugins.*;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -49,13 +47,20 @@ public class FunctionPlotter extends
   @Override
   public void close()
   {
+    super.close();
     Platform.runLater(() -> stage.close());
   }
 
   public void configureChartPlugins()
   {
-    chart.getPlugins().addAll(new EditAxis(AxisMode.XY), new DataPointTooltip(), new Zoomer());
-    // new CrosshairIndicator()
+    chart.getPlugins()
+         .addAll(new EditAxis(AxisMode.XY),
+                 new DataPointTooltip(),
+                 new Zoomer(),
+                 new TableViewer(),
+                 new ColormapSelector(),
+                 new Screenshot());
+
   }
 
   public Stage createScene()
@@ -104,7 +109,6 @@ public class FunctionPlotter extends
       }
     });
     stage.show();
-
 
     return stage;
   }

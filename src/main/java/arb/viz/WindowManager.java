@@ -101,34 +101,29 @@ public class WindowManager
     try
     {
       URL resourceUrl = ClassLoader.getSystemResource(path);
-  
+
       if (resourceUrl != null)
       {
         primaryStage.getIcons().add(new Image(resourceUrl.toExternalForm()));
       }
       else
       {
-        WindowManager.informOfMissingIconAndPrintClassAndModulePaths();
+        informOfMissingIconAndPrintClassAndModulePaths(null, path);
       }
     }
     catch (Throwable e)
     {
-      WindowManager.informOfMissingIconAndPrintClassAndModulePaths(e);
+      informOfMissingIconAndPrintClassAndModulePaths(e, path);
     }
   }
 
-  public static void informOfMissingIconAndPrintClassAndModulePaths()
-  {
-    informOfMissingIconAndPrintClassAndModulePaths(null);
-  }
-
-  public static void informOfMissingIconAndPrintClassAndModulePaths(Throwable e)
+  public static void informOfMissingIconAndPrintClassAndModulePaths(Throwable e, String filename)
   {
     if (e != null)
     {
       e.printStackTrace(System.err);
     }
-    System.err.println("Could not find resource: TODO.png");
+    System.err.format("Could not find resource: %s\n");
     System.out.println("Classpath: " + System.getProperty("java.class.path"));
     System.out.println("Module path: " + System.getProperty("jdk.module.path"));
   }
