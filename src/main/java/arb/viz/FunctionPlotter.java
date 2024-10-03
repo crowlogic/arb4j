@@ -130,4 +130,10 @@ public class FunctionPlotter extends
     chart.getDatasets().addAll(dataSets);
   }
 
+  @Override
+  public String toString()
+  {
+    return String.format("FunctionPlotter[%s]", chart.getDatasets() );
+  }
+
 }

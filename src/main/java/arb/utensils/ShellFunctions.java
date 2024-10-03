@@ -4,6 +4,7 @@ import static arb.utensils.Utensils.wrapOrThrow;
 
 import java.util.Arrays;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import arb.Real;
@@ -122,8 +123,7 @@ public class ShellFunctions
     return plot(left, right, n, Arrays.asList(functions));
   }
 
-  public static FunctionPlotter
-         plot(double left, double right, int n, Iterable<RealFunction> functions)
+  public static FunctionPlotter plot(double left, double right, int n, Iterable<RealFunction> functions)
   {
     AtomicReference<FunctionPlotter> ref = new AtomicReference<FunctionPlotter>();
 
@@ -139,7 +139,6 @@ public class ShellFunctions
         ref.set(plotter);
 
         plotter.createScene();
-
         plotter.chart.getDatasets().clear();
 
         for (RealFunction func : functions)
@@ -148,9 +147,8 @@ public class ShellFunctions
           plotter.chart.getDatasets().add(sample);
         }
 
-        plotter.stage.show();
-
-        plotter.stage.toFront();
+        plotter.show();
+        functions.forEach(plotter.functions::add);
       }
       finally
       {
@@ -161,8 +159,7 @@ public class ShellFunctions
 
     try
     {
-      System.out.println("Waiting to return");
-      sem.acquire();
+      sem.tryAcquire(10, TimeUnit.SECONDS); 
     }
     catch (InterruptedException e)
     {
