@@ -1,6 +1,7 @@
 package arb.expressions.viz;
 
 import java.awt.image.BufferedImage;
+import java.util.concurrent.ConcurrentHashMap;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -23,6 +24,8 @@ public final class TypeSettingCellFactory<D, C, F extends Function<? extends D, 
                                          Callback<TreeTableColumn<Node<D, C, F>, String>,
                                                        TreeTableCell<Node<D, C, F>, String>>
 {
+  final ConcurrentHashMap<String, Image> cache = new ConcurrentHashMap<>();
+
   public final class TypeSettingTextField extends
                                           TextFieldTreeTableCell<Node<D, C, F>, String>
   {
@@ -41,8 +44,13 @@ public final class TypeSettingCellFactory<D, C, F extends Function<? extends D, 
       {
         try
         {
-          BufferedImage bufferedImage = Utensils.renderFormula(item);
-          Image         image         = SwingFXUtils.toFXImage(bufferedImage, null);
+          Image image = cache.get(item);
+          if (image == null)
+          {
+            BufferedImage bufferedImage = Utensils.renderFormula(item);
+            cache.put(item, image = SwingFXUtils.toFXImage(bufferedImage, null));
+          }
+         
           imageView.setImage(image);
           setGraphic(imageView);
           setText(null);
