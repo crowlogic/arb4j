@@ -21,20 +21,14 @@ public class Bibliography extends
                           AbstractBibliography
 {
 
-  /**
-   * <pre>
-    @article{straton2024fourier,
-  title={The Fourier--Legendre Series of Bessel Functions of the First Kind and the Summed Series Involving 1 F 2 Hypergeometric Functions that Arise from Them},
-  author={Straton, Jack C},
-  journal={Axioms},
-  volume={13},
-  number={2},
-  pages={134},
-  year={2024},
-  publisher={MDPI}
-  }
-   * </pre>
-   */
+  public static Article       besselFunctionFourierLegendreSeries                    =
+                                                                  new Article("The Fourier--Legendre Series of Bessel Functions of the First Kind and the Summed Series Involving 1 F 2 Hypergeometric Functions that Arise from Them",
+                                                                              "Straton, Jack C",
+                                                                              "2024",
+                                                                              "Axioms",
+                                                                              "13",
+                                                                              "134").setNumber("2")
+                                                                                    .setPublisher("MDPI");
 
   public static Article       shiftedJacobiPolynomialIntegralOperationalMatrix       =
                                                                                new Article("The shifted Jacobi polynomial integral operational matrix for solving Riccati differential equation of fractional order",
