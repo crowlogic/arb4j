@@ -46,7 +46,7 @@ public class Bibliography extends
                                                                                               "106055");
 
   public static Article       karhunenLoeveExpansionNote                             =
-                                                         new Article("A brief note on the karhunen-loève expansion",
+                                                         new Article("A brief note on the Karhunen-Loève expansion",
                                                                      "Alen Alexanderian",
                                                                      "2015",
                                                                      "arXiv preprint arXiv:1509.07526",
