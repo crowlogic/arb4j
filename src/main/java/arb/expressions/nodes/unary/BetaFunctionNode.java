@@ -38,7 +38,7 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    assert false : "TODO: generate Beta(x, y) = (Γ(x)*Γ(y))/Γ(x + y)";
+
     return null;
   }
 
