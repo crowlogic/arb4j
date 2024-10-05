@@ -76,7 +76,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
   
   public Complex(int i)
   {
-  this();
+   this();
    set(i);
   }
 

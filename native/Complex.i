@@ -51,7 +51,7 @@ import arb.space.topological.EuclideanVectorSpace;
   
   public Complex(int i)
   {
-  this();
+   this();
    set(i);
   }
 
