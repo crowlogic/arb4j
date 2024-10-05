@@ -1,5 +1,7 @@
 package arb.expressions.viz.context;
 
+import java.io.Closeable;
+
 import arb.Complex;
 import arb.Fraction;
 import arb.Integer;
@@ -15,7 +17,7 @@ import javafx.util.StringConverter;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public final class ContextVariableStringConverter<D, C, F extends Function<D, C>> extends
+public final class ContextVariableStringConverter<D, C extends Closeable, F extends Function<D, C>> extends
                                                  StringConverter<Named>
 {
 

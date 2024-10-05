@@ -1,5 +1,6 @@
 package arb.expressions.viz.context;
 
+import java.io.Closeable;
 import java.lang.reflect.Field;
 
 import arb.Integer;
@@ -25,7 +26,7 @@ import javafx.util.StringConverter;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public final class ContextFieldListCell<D, C, F extends Function<D, C>> extends
+public final class ContextFieldListCell<D, C extends Closeable, F extends Function<D, C>> extends
                                        TextFieldListCell<Named>
 {
 

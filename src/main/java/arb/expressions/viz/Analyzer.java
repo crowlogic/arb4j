@@ -1,6 +1,7 @@
 package arb.expressions.viz;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -56,7 +57,7 @@ import javafx.util.StringConverter;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Analyzer<D, C, F extends Function<D, C>> extends
+public class Analyzer<D, C extends Closeable, F extends Function<D, C>> extends
                      Application
 {
 

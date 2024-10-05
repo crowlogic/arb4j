@@ -2,6 +2,7 @@ package arb.expressions.viz;
 
 import static arb.utensils.Utensils.wrapOrThrow;
 
+import java.io.Closeable;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -42,7 +43,7 @@ import javafx.scene.layout.VBox;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ExpressionTree<D, C, F extends Function<D, C>> extends
+public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> extends
                            VBox
 {
 
@@ -85,6 +86,8 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
   VirtualFlow<?>               tableVirtualFlow;
   private ScrollBar            hbar;
   private ScrollBar            vbar;
+  private double               hbarValue;
+  private double               vbarValue;
 
   public Context getContext()
   {
@@ -139,7 +142,7 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
   {
     try
     {
-      var flow = getVirtualFlow();
+      flow = getVirtualFlow();
       flow.setPannable(true);
       hbar = getTableVirtualFlowScrollbar(flow, true);
       vbar = getTableVirtualFlowScrollbar(flow, false);
@@ -167,6 +170,7 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
   }
 
   static Field flowField;
+  public VirtualFlow<?> flow;
 
   static
   {
@@ -248,6 +252,7 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
   public void resizeColumnsToFitContent()
   {
     treeTableView.getColumns().forEach(column -> resizeColumn(column));
+    restoreScrollbarPositions();
   }
 
   private void resizeColumn(TreeTableColumn<?, ?> column)
@@ -459,7 +464,8 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
   public void evaluateExpression()
   {
     nodeExpansionStates = enumerateNodeExpansionStates();
-
+    keepScrollbarPosition();
+    
     compileExpression();
 
     try
@@ -486,6 +492,11 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
 
         if (result != null)
         {
+          if (!result.getClass().equals(expr.coDomainType))
+          {
+            result.close();
+            result = expr.coDomainType.getConstructor().newInstance();
+          }
           result = instance.evaluate(input, 128, result);
         }
         else
@@ -499,10 +510,13 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
         {
           applyNodeExpansionStates(nodeExpansionStates, rootItem);
         }
+
+        
         if (!anyExpanded(rootItem))
         {
           expandAllNodes();
         }
+        
 
       }
     }
@@ -512,6 +526,28 @@ public class ExpressionTree<D, C, F extends Function<D, C>> extends
       Platform.runLater(() -> analyzer.showAlert("Evaluation Error",
                                                  e.getClass().getName() + ": " + e.getMessage(),
                                                  e));
+    }
+  }
+
+  public void keepScrollbarPosition()
+  {
+    hbarValue = hbar.getValue();
+    vbarValue = vbar.getValue();
+    System.out.format("Keeping scrollbar positions hbarValue=%s , vbarValue=%s\n", hbarValue, vbarValue );
+
+  }
+
+  public void restoreScrollbarPositions()
+  {
+    System.out.format("Restoring scrollbar positions hbarValue=%s , vbarValue=%s\n", hbarValue, vbarValue );
+    if (!Double.isNaN(hbarValue))
+    {
+      hbar.setValue(hbarValue);
+    }
+    ;
+    if (!Double.isNaN(vbarValue))
+    {
+     vbar.setValue(vbarValue);
     }
   }
 
