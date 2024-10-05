@@ -97,13 +97,12 @@ public class Integer implements
   {
     return result.set(this).cos(prec, result);
   }
-  
-  
+
   public Complex sin(int prec, Complex result)
   {
     return result.set(this).sin(prec, result);
   }
-  
+
   public Real cos(int prec, Real result)
   {
     return result.set(this).cos(prec, result);
@@ -349,14 +348,12 @@ public class Integer implements
     return result.set(this).add(addend, bits, result);
   }
 
-  public ComplexRationalFunction
-         add(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
+  public ComplexRationalFunction add(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
   {
     return result.set(this).add(addend, bits, result);
   }
 
-  public ComplexRationalFunction
-         sub(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
+  public ComplexRationalFunction sub(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
   {
     return result.set(this).sub(addend, bits, result);
   }
@@ -368,8 +365,7 @@ public class Integer implements
 
   public Real ascendingFactorial(Integer n, int bits, Real res)
   {
-    assert n.sign() >= 0 : "negative arguments to the ascending factorial are not supported, n="
-                           + n;
+    assert n.sign() >= 0 : "negative arguments to the ascending factorial are not supported, n=" + n;
     arblib.arb_hypgeom_rising_ui(res, res.set(this), n.getUnsignedValue(), bits);
     return res.set(res);
   }
@@ -444,8 +440,7 @@ public class Integer implements
     return res.set(this).div(dividend, prec);
   }
 
-  public ComplexRationalFunction
-         div(ComplexRationalFunction dividend, int prec, ComplexRationalFunction res)
+  public ComplexRationalFunction div(ComplexRationalFunction dividend, int prec, ComplexRationalFunction res)
   {
     return res.set(this).div(dividend, prec);
   }
@@ -717,8 +712,7 @@ public class Integer implements
     return result.set(this).mul(x, bits);
   }
 
-  public ComplexRationalFunction
-         mul(ComplexRationalFunction x, int bits, ComplexRationalFunction res)
+  public ComplexRationalFunction mul(ComplexRationalFunction x, int bits, ComplexRationalFunction res)
   {
     return res.set(this).mul(x, bits);
   }
@@ -755,9 +749,9 @@ public class Integer implements
 
   public Complex mul(Integer operand, int prec, Complex result)
   {
-    return result.set(this).mul(operand, prec,result);
+    return result.set(this).mul(operand, prec, result);
   }
-  
+
   public Real mul(Integer operand, int prec, Real result)
   {
     return result.set(this).mul(operand, prec);
@@ -1082,6 +1076,11 @@ public class Integer implements
   {
     arblib.fmpz_abs(res.swigCPtr, swigCPtr);
     return this;
+  }
+
+  public static Integer newVectorNamed(int dim, String name)
+  {
+    return newVector(dim).set(name);
   }
 
 }

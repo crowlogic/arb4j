@@ -4,6 +4,7 @@ import org.objectweb.asm.MethodVisitor;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
@@ -16,8 +17,16 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
                              FunctionCallNode<D, C, F>
 {
 
-  private Node<D, C, F> p;
-  private Node<D, C, F> q;
+  private Node<D, C, F> x;
+  private Node<D, C, F> y;
+  Context               context    = new Context();
+
+  Expression<D, C,
+                F>      definition = Function.compile(expression.domainType,
+                                                      expression.coDomainType,
+                                                      expression.functionClass,
+                                                      "(Γ(x)*Γ(y)))/Γ(x+y)",
+                                                      context);
 
   public BetaFunctionNode(Expression<D, C, F> expression)
   {
@@ -25,11 +34,11 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
           null,
           expression);
 
-    p = expression.resolve();
+    x = expression.resolve();
 
     expression.require(',');
 
-    q = expression.resolve();
+    y = expression.resolve();
 
     expression.require(')');
 
@@ -38,7 +47,7 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-
+    assert false : "proxy to " + definition;
     return null;
   }
 
