@@ -69,6 +69,7 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
   }
 
 
+  @SuppressWarnings("resource")
   public static Fraction named(String string)
   {
     return new Fraction().setName(string);

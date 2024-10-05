@@ -1,6 +1,5 @@
 NEW: implement KL expansion
 expr compiler: derivatives and fractional derivatices
-analyzer: remember scrollbar positions in addition to existing node expansion states which are remembered
 TimeWaveZero
 analyzer: dont allow duplicate variables
 analyzer: load

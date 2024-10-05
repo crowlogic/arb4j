@@ -1634,4 +1634,9 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     this(arblibJNI.new_Complex(), true);
   }
 
+  public Complex(int i)
+  {
+   set(i);
+  }
+
 }

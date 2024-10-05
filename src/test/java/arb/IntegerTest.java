@@ -57,8 +57,7 @@ public class IntegerTest extends
   public void testAddComplexToComplex()
   {
 
-    try ( Integer three = new Integer(3); Complex four = new Complex().set(4);
-          Complex seven = new Complex().set(new Integer(7));)
+    try ( var three = new Integer(3); var four = new Complex(4); var seven = new Complex(7))
     {
       three.add(four, 128, seven);
       assertEquals("7", seven.toString());
@@ -79,8 +78,7 @@ public class IntegerTest extends
   public void testAdd()
   {
 
-    try ( Integer three = new Integer(3); Integer four = new Integer(4);
-          Integer seven = new Integer(7);)
+    try ( Integer three = new Integer(3); Integer four = new Integer(4); Integer seven = new Integer(7);)
     {
       three.add(four, seven);
       assertEquals("7", seven.toString());
@@ -90,8 +88,7 @@ public class IntegerTest extends
   public void testSub()
   {
 
-    try ( Integer three = new Integer(3); Integer four = new Integer(4);
-          Integer result = new Integer(7);)
+    try ( Integer three = new Integer(3); Integer four = new Integer(4); Integer result = new Integer(7);)
     {
       three.sub(four, result);
       assertEquals("-1", result.toString());
@@ -101,8 +98,7 @@ public class IntegerTest extends
   public void testMul()
   {
 
-    try ( Integer three = new Integer(3); Integer four = new Integer(4);
-          Integer result = new Integer(7);)
+    try ( Integer three = new Integer(3); Integer four = new Integer(4); Integer result = new Integer(7);)
     {
       three.mul(four, result);
       assertEquals("12", result.toString());
@@ -111,8 +107,7 @@ public class IntegerTest extends
 
   public void testTwoIntsInOneFractionOut()
   {
-    try ( Integer three = new Integer(3); Integer four = new Integer(4);
-          Fraction result = new Fraction();)
+    try ( Integer three = new Integer(3); Integer four = new Integer(4); Fraction result = new Fraction();)
     {
       three.div(four, 0, result);
       assertEquals("3⁄4", result.toString());
@@ -123,8 +118,7 @@ public class IntegerTest extends
   public void testDiv()
   {
 
-    try ( Integer three = new Integer(3); Integer four = new Integer(4);
-          Integer result = new Integer(7);)
+    try ( Integer three = new Integer(3); Integer four = new Integer(4); Integer result = new Integer(7);)
     {
       three.div(four, result);
       assertEquals("0", result.toString());
@@ -134,8 +128,7 @@ public class IntegerTest extends
   public void testDivRemainder()
   {
 
-    try ( Integer three = new Integer(3); Integer four = new Integer(4);
-          Integer result = new Integer(7);)
+    try ( Integer three = new Integer(3); Integer four = new Integer(4); Integer result = new Integer(7);)
     {
       result.remainder = new Integer();
       three.div(four, result);

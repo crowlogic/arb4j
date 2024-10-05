@@ -41,6 +41,7 @@ import java.util.stream.Stream;
 
 %typemap(javacode) fmpq %{
 
+  @SuppressWarnings("resource")
   public static Fraction named(String string)
   {
     return new Fraction().setName(string);
