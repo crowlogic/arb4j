@@ -67,6 +67,19 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
 
   static { System.loadLibrary( "arblib" ); }
 
+  public Complex set(int integer)
+  {
+    re().set(integer);
+    im().zero();
+    return this;
+  }
+  
+  public Complex(int i)
+  {
+  this();
+   set(i);
+  }
+
   public Complex add(Real z, int bits2)
   {
     return add(z, bits2, this);
@@ -1632,11 +1645,6 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
 
   public Complex() {
     this(arblibJNI.new_Complex(), true);
-  }
-
-  public Complex(int i)
-  {
-   set(i);
   }
 
 }
