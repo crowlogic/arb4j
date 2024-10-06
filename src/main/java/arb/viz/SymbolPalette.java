@@ -9,8 +9,10 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
+import arb.expressions.viz.Stylesheet;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -19,10 +21,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -37,11 +38,9 @@ public class SymbolPalette extends
                            Application
 {
 
-  public static int             columnsPerRow = 20;
-
   private TextField             textField;
 
-  public static TreeSet<String> chars         = new TreeSet<>();
+  public static TreeSet<String> chars = new TreeSet<>();
 
   static
   {
@@ -124,13 +123,11 @@ public class SymbolPalette extends
     {
       chars.add(s);
     }
-    
-    
+
     chars.add("π");
-    
+
     characters = chars.toArray(new String[chars.size()]);
     // columnsPerRow = (int) Math.ceil(Math.sqrt(chars.size()));
-    System.out.format("colsPerRow=%s\n", columnsPerRow);
     System.out.println("chars=" + chars);
   }
 
@@ -149,50 +146,46 @@ public class SymbolPalette extends
     Button clearButton = new Button("Clear");
     clearButton.setOnAction(e -> clearInput());
 
-    GridPane gridPane = new GridPane();
-    gridPane.setPadding(new Insets(10));
-    gridPane.setHgap(0);
-    gridPane.setVgap(0);
+    FlowPane buttonPane = new FlowPane();
 
-    int row = 0;
-    int col = 0;
     for (String character : characters)
     {
       Button button = new Button(character);
       button.setOnAction(e -> appendCharacter(character));
       button.setMaxWidth(Double.MAX_VALUE);
       button.setMaxHeight(Double.MAX_VALUE);
-      GridPane.setHgrow(button, Priority.ALWAYS);
-      GridPane.setVgrow(button, Priority.ALWAYS);
-      gridPane.add(button, col, row);
-      col++;
-      if (col == columnsPerRow)
-      {
-        col = 0;
-        row++;
-      }
+
+      buttonPane.getChildren().add(button);
+
     }
 
-    VBox vbox = new VBox(0);
-    vbox.setPadding(new Insets(0));
-    ScrollPane scrollPane = new ScrollPane(gridPane);
+    BorderPane root = new BorderPane();
+    root.setPadding(new Insets(0));
+    ScrollPane scrollPane = new ScrollPane(buttonPane);
     HBox       hbox       = new HBox();
     hbox.getChildren().addAll(copyButton, clearButton, textField);
-    vbox.getChildren().addAll(scrollPane, hbox);
-    VBox.setVgrow(gridPane, Priority.ALWAYS);
-    VBox.setVgrow(textField, Priority.ALWAYS);
+    root.setBottom(hbox);
+    root.setCenter(scrollPane);
+    scrollPane.setPannable(true);
+    
+    Scene scene = new Scene(root,
+                            1800,
+                            900);
+    scrollPane.setFitToWidth(true); // Automatically fit the width
+    scrollPane.setFitToHeight(false); // Allow height to expand as needed
+    // Bind FlowPane's width to ScrollPane's viewport width (taking scrollbar into account)
+    scrollPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> {
+        Bounds viewportBounds = newValue;
+        // Set the FlowPane width to the viewport width
+        buttonPane.setPrefWidth(viewportBounds.getWidth());
+    });
 
-    Scene scene = new Scene(vbox,
-                            columnsPerRow * 100,
-                            columnsPerRow * 100);
-
+    
     // Bind the font size to the scene height
     textField.fontProperty()
-             .bind(Bindings.createObjectBinding(() -> Font.font(scene.getHeight() * 0.04),
-                                                scene.heightProperty()));
+             .bind(Bindings.createObjectBinding(() -> Font.font(scene.getHeight() * 0.04), scene.heightProperty()));
     copyButton.fontProperty()
-              .bind(Bindings.createObjectBinding(() -> Font.font(scene.getHeight() * 0.02),
-                                                 scene.heightProperty()));
+              .bind(Bindings.createObjectBinding(() -> Font.font(scene.getHeight() * 0.02), scene.heightProperty()));
     Consumer<? super Node> action = node ->
                                   {
 
@@ -202,7 +195,9 @@ public class SymbolPalette extends
                                   };
     Predicate<Node>        filter = node -> node instanceof Button;
     hbox.getChildren().filtered(filter).forEach(action);
-    gridPane.getChildren().filtered(filter).forEach(action);
+    buttonPane.getChildren().filtered(filter).forEach(action);
+    WindowManager.setStageIcon(primaryStage, "SymbolPalette.png");
+    scene.getStylesheets().add(Stylesheet.convertStylesheetToDataURI(Stylesheet.EASIER_ON_THE_EYES_STYLESHEET));
 
     primaryStage.setTitle(SymbolPalette.class.getSimpleName());
     primaryStage.setScene(scene);
