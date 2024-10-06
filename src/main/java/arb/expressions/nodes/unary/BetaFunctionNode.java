@@ -7,6 +7,17 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
+/**
+ * 
+ * @param <D>
+ * @param <C>
+ * @param <F>
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link
+ * TheArb4jLibrary}
+ * 
+ * @author ©2024 Stephen Crowley
+ */
 public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>> extends
                              FunctionCallNode<D, C, F>
 {

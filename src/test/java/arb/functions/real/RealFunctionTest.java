@@ -6,11 +6,20 @@ import org.junit.Test;
 
 import arb.*;
 import arb.Float;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.rational.RationalNullaryFunction;
 import junit.framework.TestCase;
 
 @SuppressWarnings(
 { "resource", "unused" })
+/*
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link
+ * TheArb4jLibrary}
+ * 
+ * @author ©2024 Stephen Crowley
+ */
 public class RealFunctionTest extends
                               TestCase
 {
