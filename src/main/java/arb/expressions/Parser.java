@@ -432,4 +432,77 @@ public class Parser
     return superscriptChars.contains(character);
   }
 
+  public static String subscriptToRegular(String input)
+  {
+    return input.replace("₀", "0")
+                .replace("₁", "1")
+                .replace("₂", "2")
+                .replace("₃", "3")
+                .replace("₄", "4")
+                .replace("₅", "5")
+                .replace("₆", "6")
+                .replace("₇", "7")
+                .replace("₈", "8")
+                .replace("₉", "9")
+                .replace("ₐ", "a")
+                .replace("ₑ", "e")
+                .replace("ₕ", "h")
+                .replace("ᵢ", "i")
+                .replace("ⱼ", "j")
+                .replace("ₖ", "k")
+                .replace("ₗ", "l")
+                .replace("ₘ", "m")
+                .replace("ₙ", "n")
+                .replace("ₒ", "o")
+                .replace("ₚ", "p")
+                .replace("ᵣ", "r")
+                .replace("ₛ", "s")
+                .replace("ₜ", "t")
+                .replace("ᵤ", "u")
+                .replace("ᵥ", "v")
+                .replace("ₓ", "x");
+  }
+
+  public static String toSuperscript(int number)
+  {
+    StringBuilder result    = new StringBuilder();
+    String        numberStr = Integer.toString(number);
+  
+    for (int i = 0; i < numberStr.length(); i++)
+    {
+      result.append(Parser.digitToSuperscript(numberStr.charAt(i)));
+    }
+  
+    return result.toString();
+  }
+
+  public static char digitToSuperscript(char digit)
+  {
+    switch (digit)
+    {
+    case '0':
+      return '⁰';
+    case '1':
+      return '¹';
+    case '2':
+      return '²';
+    case '3':
+      return '³';
+    case '4':
+      return '⁴';
+    case '5':
+      return '⁵';
+    case '6':
+      return '⁶';
+    case '7':
+      return '⁷';
+    case '8':
+      return '⁸';
+    case '9':
+      return '⁹';
+    default:
+      throw new IllegalArgumentException("Not a digit: " + digit);
+    }
+  }
+
 }

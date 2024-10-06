@@ -40,7 +40,6 @@ import arb.expressions.nodes.unary.*;
 import arb.functions.Function;
 import arb.functions.NullaryFunction;
 import arb.functions.integer.Sequence;
-import arb.utensils.Utensils;
 import arb.utensils.text.trees.TextTree;
 import arb.utensils.text.trees.TreeModel;
 import arb.viz.ArbShellExecutionController;
@@ -1547,7 +1546,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
     }
     var substring = expression.substring(startPos, position);
-    return Utensils.subscriptToRegular(substring.trim());
+    return Parser.subscriptToRegular(substring.trim());
   }
 
   /**

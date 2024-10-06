@@ -3,15 +3,10 @@ package arb.expressions.viz;
 import static arb.utensils.Utensils.wrapOrThrow;
 
 import java.io.Closeable;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Optional;
-
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
 
 import arb.Integer;
 import arb.Named;
@@ -25,13 +20,12 @@ import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.utensils.Utensils;
+import arb.viz.WindowManager;
 import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.control.skin.TableColumnHeader;
-import javafx.scene.control.skin.TableViewSkinBase;
 import javafx.scene.control.skin.VirtualFlow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
@@ -47,30 +41,9 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
                            VBox
 {
 
-  final static DumperOptions yamlConfig = new DumperOptions();
-  static
-  {
-    yamlConfig.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-    yamlConfig.setPrettyFlow(true);
-  }
-
   public void save(String yamlFile)
   {
-    try
-    {
-      Yaml       yaml       = new Yaml(yamlConfig);
-      FileWriter fileWriter = new FileWriter(yamlFile);
-      yaml.dump(this, fileWriter);
-      fileWriter.close();
-    }
-    catch (IOException e)
-    {
-      Platform.runLater(() ->
-      {
-        analyzer.showAlert("Exception throw", yamlFile, e);
-      });
-      Utensils.throwOrWrap(e);
-    }
+    Utensils.persistInYamlFormat(this, yamlFile);
   }
 
   final Analyzer<D, C, F>      analyzer;
@@ -84,10 +57,8 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
   MiniSymbolPalette            symbolPalette;
   private StackPane            stackPane;
   VirtualFlow<?>               tableVirtualFlow;
-  private ScrollBar            hbar;
-  private ScrollBar            vbar;
-  private double               hbarValue;
-  private double               vbarValue;
+
+  IndexedCell<?>               pointer;
 
   public Context getContext()
   {
@@ -144,8 +115,6 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     {
       flow = getVirtualFlow();
       flow.setPannable(true);
-      hbar = getTableVirtualFlowScrollbar(flow, true);
-      vbar = getTableVirtualFlowScrollbar(flow, false);
     }
     catch (Throwable e)
     {
@@ -154,43 +123,11 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
 
   };
 
-  public static ScrollBar getTableVirtualFlowScrollbar(VirtualFlow<?> tableVirtualFlow,
-                                                       boolean horizontal) throws IllegalAccessException,
-                                                                           NoSuchFieldException
-  {
-    var scrollbar = horizontal ? "hbar" : "vbar";
-    return (ScrollBar) getVirtualFlowField(scrollbar).get(tableVirtualFlow);
-  }
-
-  public static Field getVirtualFlowField(String fieldName) throws NoSuchFieldException
-  {
-    Field hbarField = VirtualFlow.class.getDeclaredField(fieldName);
-    hbarField.setAccessible(true);
-    return hbarField;
-  }
-
-  static Field flowField;
   public VirtualFlow<?> flow;
 
-  static
+  public VirtualFlow<?> getVirtualFlow()
   {
-    try
-    {
-      flowField = TableViewSkinBase.class.getDeclaredField("flow");
-    }
-    catch (Exception e)
-    {
-      Utensils.throwOrWrap(e);
-    }
-
-    flowField.setAccessible(true);
-  }
-
-  public VirtualFlow<?> getVirtualFlow() throws NoSuchFieldException, IllegalAccessException
-  {
-    var skin = treeTableView.getSkin();
-
-    return tableVirtualFlow = (VirtualFlow<?>) flowField.get(skin);
+    return (flow == null) ? flow = WindowManager.getVirtualFlow(treeTableView) : flow;
   }
 
   @SuppressWarnings("unchecked")
@@ -202,8 +139,8 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     var nodeTypeCol       = newNodeTypeCol();
     var nodeTypeResultCol = newNodeTypeResultCol();
     var typesetCol        = newTypesetCol();
-    var fieldCol          = newFieldCol();
-    var valueCol          = newValueCol();
+    var fieldCol          = newFieldColumn();
+    var valueCol          = newValueColumn();
     treeTableView.setTableMenuButtonVisible(true);
     treeTableView.skinProperty().addListener(this::virtualFlowListener);
     treeTableView.getColumns().addAll(typesetCol, valueCol, nodeTypeCol, nodeTypeResultCol, nodeCol, fieldCol);
@@ -228,7 +165,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     catch (Throwable e)
     {
       e.printStackTrace(System.err);
-      this.analyzer.showAlert("Compilation Error", e.getClass().getName(), e);
+      WindowManager.showAlert("Compilation Error", e.getClass().getName(), e);
     }
   }
 
@@ -251,64 +188,46 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
 
   public void resizeColumnsToFitContent()
   {
-    treeTableView.getColumns().forEach(column -> resizeColumn(column));
-    restoreScrollbarPositions();
-  }
-
-  private void resizeColumn(TreeTableColumn<?, ?> column)
-  {
-    try
-    {
-      javafx.scene.Node node = column.getStyleableNode();
-      if (node instanceof TableColumnHeader)
-      {
-        TableColumnHeader header = (TableColumnHeader) node;
-        Analyzer.resizeMethod.invoke(header, -1);
-      }
-    }
-    catch (Exception e)
-    {
-      e.printStackTrace();
-    }
+    treeTableView.getColumns().forEach(WindowManager::resizeColumn);
   }
 
   protected TreeTableColumn<Node<D, C, F>, String> newNodeCol()
   {
-    TreeTableColumn<Node<D, C, F>, String> nodeCol = new TreeTableColumn<>("Node");
-    nodeCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().toString()));
-    return nodeCol;
+    TreeTableColumn<Node<D, C, F>, String> nodeColumn = new TreeTableColumn<>("Node");
+    nodeColumn.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().toString()));
+    return nodeColumn;
   }
 
   protected TreeTableColumn<Node<D, C, F>, String> newNodeTypeCol()
   {
-    TreeTableColumn<Node<D, C, F>, String> nodeTypeCol = new TreeTableColumn<>("Node Type");
-    nodeTypeCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
+    TreeTableColumn<Node<D, C, F>, String> nodeTypeColumn = new TreeTableColumn<>("Node Type");
+    nodeTypeColumn.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
                                                                             .getValue()
                                                                             .getClass()
                                                                             .getSimpleName()));
-    return nodeTypeCol;
+    return nodeTypeColumn;
   }
 
   protected TreeTableColumn<Node<D, C, F>, String> newNodeTypeResultCol()
   {
-    TreeTableColumn<Node<D, C, F>, String> nodeTypeResultCol = new TreeTableColumn<>("Result Type");
-    nodeTypeResultCol.setCellValueFactory(param ->
+    TreeTableColumn<Node<D, C, F>, String> nodeTypeResultColumn = new TreeTableColumn<>("Result Type");
+    nodeTypeResultColumn.setCellValueFactory(param ->
     {
       Class<?> generatedType = param.getValue().getValue().getGeneratedType();
       return new ReadOnlyStringWrapper(generatedType == null ? "null" : generatedType.getSimpleName());
     });
-    return nodeTypeResultCol;
+    return nodeTypeResultColumn;
   }
 
   protected TreeTableColumn<Node<D, C, F>, String> newTypesetCol()
   {
-    TreeTableColumn<Node<D, C, F>, String> typesetCol = new TreeTableColumn<>("Expression");
-    typesetCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().typeset()));
-    typesetCol.setCellFactory(new TypeSettingCellFactory<>());
-    return typesetCol;
+    TreeTableColumn<Node<D, C, F>, String> typesetColumn = new TreeTableColumn<>("Expression");
+    typesetColumn.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().typeset()));
+    typesetColumn.setCellFactory(new TypeSettingCellFactory<>());
+    return typesetColumn;
   }
 
-  protected TreeTableColumn<Node<D, C, F>, String> newFieldCol()
+  protected TreeTableColumn<Node<D, C, F>, String> newFieldColumn()
   {
     TreeTableColumn<Node<D, C, F>, String> fieldCol = new TreeTableColumn<>("Field");
     fieldCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
@@ -318,7 +237,8 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     return fieldCol;
   }
 
-  protected TreeTableColumn<Node<D, C, F>, String> newValueCol()
+  protected TreeTableColumn<Node<D, C, F>, String> newValueColumn
+  ()
   {
     TreeTableColumn<Node<D, C, F>, String> valueCol = new TreeTableColumn<>("Value");
     valueCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(evaluateNode(param.getValue().getValue())));
@@ -327,12 +247,12 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
 
   public void graph()
   {
-    analyzer.showAlert("TODO", "TODO: graph.. ask for range.. 1d for real");
+    WindowManager.showAlert("TODO", "TODO: graph.. ask for range.. 1d for real");
   }
 
   public void load()
   {
-    analyzer.showAlert("TODO", "TODO: load");
+    WindowManager.showAlert("TODO", "TODO: load");
   }
 
   private Optional<String> askWhatToSaveAs()
@@ -408,39 +328,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
 
   public HashMap<String, Boolean> enumerateNodeExpansionStates()
   {
-    return enumerateNodeExpansionStates(new HashMap<String, Boolean>(), treeTableView.getRoot());
-  }
-
-  public HashMap<String, Boolean> applyNodeExpansionStates(HashMap<String, Boolean> states, TreeItem<?> item)
-  {
-    if (item != null && !item.isLeaf())
-    {
-      Boolean value = states.get(item.getValue().toString());
-      if (value != null)
-      {
-        item.setExpanded(value);
-      }
-
-      for (TreeItem<?> child : item.getChildren())
-      {
-        applyNodeExpansionStates(states, child);
-      }
-    }
-    return states;
-  }
-
-  public HashMap<String, Boolean> enumerateNodeExpansionStates(HashMap<String, Boolean> states, TreeItem<?> item)
-  {
-    if (item != null && !item.isLeaf())
-    {
-      states.put(item.getValue().toString(), item.isExpanded());
-
-      for (TreeItem<?> child : item.getChildren())
-      {
-        enumerateNodeExpansionStates(states, child);
-      }
-    }
-    return states;
+    return WindowManager.enumerateNodeExpansionStates(new HashMap<String, Boolean>(), treeTableView.getRoot());
   }
 
   public void expandAllNodes()
@@ -464,8 +352,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
   public void evaluateExpression()
   {
     nodeExpansionStates = enumerateNodeExpansionStates();
-    keepScrollbarPosition();
-    
+
     compileExpression();
 
     try
@@ -474,7 +361,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
       D input = getContext().getVariable("input");
       if (input == null && !expr.domainType.equals(Object.class))
       {
-        analyzer.showAlert("Input Required", "variable named input must be defined in the context");
+        WindowManager.showAlert("Input Required", "variable named input must be defined in the context");
       }
       else
       {
@@ -508,63 +395,23 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
 
         if (nodeExpansionStates != null)
         {
-          applyNodeExpansionStates(nodeExpansionStates, rootItem);
+          WindowManager.applyNodeExpansionStates(nodeExpansionStates, rootItem);
         }
 
-        
-        if (!anyExpanded(rootItem))
+        if (!WindowManager.anyExpanded(rootItem))
         {
           expandAllNodes();
         }
-        
 
       }
     }
     catch (Throwable e)
     {
       e.printStackTrace(System.err);
-      Platform.runLater(() -> analyzer.showAlert("Evaluation Error",
-                                                 e.getClass().getName() + ": " + e.getMessage(),
-                                                 e));
+      Platform.runLater(() -> WindowManager.showAlert("Evaluation Error",
+                                                      e.getClass().getName() + ": " + e.getMessage(),
+                                                      e));
     }
-  }
-
-  public void keepScrollbarPosition()
-  {
-    hbarValue = hbar.getValue();
-    vbarValue = vbar.getValue();
-    System.out.format("Keeping scrollbar positions hbarValue=%s , vbarValue=%s\n", hbarValue, vbarValue );
-
-  }
-
-  public void restoreScrollbarPositions()
-  {
-    System.out.format("Restoring scrollbar positions hbarValue=%s , vbarValue=%s\n", hbarValue, vbarValue );
-    if (!Double.isNaN(hbarValue))
-    {
-      hbar.setValue(hbarValue);
-    }
-    ;
-    if (!Double.isNaN(vbarValue))
-    {
-     vbar.setValue(vbarValue);
-    }
-  }
-
-  public static <N extends Node<?, ?, ?>> boolean anyExpanded(TreeItem<N> rootItem)
-  {
-    if (rootItem.isExpanded())
-    {
-      return true;
-    }
-    for (var item : rootItem.getChildren())
-    {
-      if (anyExpanded(item))
-      {
-        return true;
-      }
-    }
-    return false;
   }
 
 }

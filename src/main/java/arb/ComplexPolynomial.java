@@ -9,10 +9,12 @@
 package arb;
 
 import static arb.arblib.*;
-import arb.utensils.Utensils;
+
 import arb.functions.complex.ComplexFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.exceptions.DivisionByZeroException;
+import arb.expressions.Parser;
+
 import java.util.Objects;
 
 /**
@@ -435,7 +437,7 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
           builder.append(independentVariableName);
           if (i > 1)
           {
-            builder.append(Utensils.toSuperscript(i));
+            builder.append(Parser.toSuperscript(i));
           }
         }
       }

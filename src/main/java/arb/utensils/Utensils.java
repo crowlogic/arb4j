@@ -12,9 +12,10 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.Integer;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -30,14 +31,18 @@ import org.scilab.forge.jlatexmath.NewCommandMacro;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
 
 import arb.*;
 import arb.Float;
 import arb.RealRootInterval.RefinementResult;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Parser;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
+import arb.viz.WindowManager;
 import javafx.application.Platform;
 
 /**
@@ -46,10 +51,12 @@ import javafx.application.Platform;
  */
 public class Utensils
 {
+  public final static DumperOptions yamlConfig = new DumperOptions();
 
   static
   {
-
+    yamlConfig.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+    yamlConfig.setPrettyFlow(true);
     NewCommandMacro.addNewCommand("Γ", "\\Gamma", 0);
     NewCommandMacro.addNewCommand("re", "\\operatorname{Re} {#1}", 1);
     NewCommandMacro.addNewCommand("im", "\\operatorname{Im} {#1}", 1);
@@ -60,113 +67,10 @@ public class Utensils
     return StringUtils.repeat(' ', n);
   }
 
-  public static String superscriptToRegular(String input)
-  {
-    return input.replace("⁰", "0")
-                .replace("¹", "1")
-                .replace("²", "2")
-                .replace("³", "3")
-                .replace("⁴", "4")
-                .replace("⁵", "5")
-                .replace("⁶", "6")
-                .replace("⁷", "7")
-                .replace("⁸", "8")
-                .replace("⁹", "9")
-                .replace("ᵃ", "a")
-                .replace("ᵉ", "e")
-                .replace("ᶦ", "i")
-                .replace("ʲ", "j")
-                .replace("ᵏ", "k")
-                .replace("ᶫ", "l")
-                .replace("ᵐ", "m")
-                .replace("ⁿ", "n")
-                .replace("ᵒ", "o")
-                .replace("ᵖ", "p")
-                .replace("ʳ", "r")
-                .replace("ˢ", "s")
-                .replace("ᵗ", "t")
-                .replace("ᵘ", "u")
-                .replace("ᵛ", "v")
-                .replace("ˣ", "x");
-  }
-
-  public static String subscriptToRegular(String input)
-  {
-    return input.replace("₀", "0")
-                .replace("₁", "1")
-                .replace("₂", "2")
-                .replace("₃", "3")
-                .replace("₄", "4")
-                .replace("₅", "5")
-                .replace("₆", "6")
-                .replace("₇", "7")
-                .replace("₈", "8")
-                .replace("₉", "9")
-                .replace("ₐ", "a")
-                .replace("ₑ", "e")
-                .replace("ₕ", "h")
-                .replace("ᵢ", "i")
-                .replace("ⱼ", "j")
-                .replace("ₖ", "k")
-                .replace("ₗ", "l")
-                .replace("ₘ", "m")
-                .replace("ₙ", "n")
-                .replace("ₒ", "o")
-                .replace("ₚ", "p")
-                .replace("ᵣ", "r")
-                .replace("ₛ", "s")
-                .replace("ₜ", "t")
-                .replace("ᵤ", "u")
-                .replace("ᵥ", "v")
-                .replace("ₓ", "x");
-  }
-
-  public static String toSuperscript(int number)
-  {
-    StringBuilder result    = new StringBuilder();
-    String        numberStr = Integer.toString(number);
-
-    for (int i = 0; i < numberStr.length(); i++)
-    {
-      result.append(digitToSuperscript(numberStr.charAt(i)));
-    }
-
-    return result.toString();
-  }
-
-  public static char digitToSuperscript(char digit)
-  {
-    switch (digit)
-    {
-    case '0':
-      return '⁰';
-    case '1':
-      return '¹';
-    case '2':
-      return '²';
-    case '3':
-      return '³';
-    case '4':
-      return '⁴';
-    case '5':
-      return '⁵';
-    case '6':
-      return '⁶';
-    case '7':
-      return '⁷';
-    case '8':
-      return '⁸';
-    case '9':
-      return '⁹';
-    default:
-      throw new IllegalArgumentException("Not a digit: " + digit);
-    }
-  }
-
   public static void main(String[] args)
   {
     int number = 1234567890;
-    System.out.println("Superscript: " + toSuperscript(number));
+    System.out.println("Superscript: " + Parser.toSuperscript(number));
   }
 
   /**
@@ -817,5 +721,32 @@ public class Utensils
       }
     }
   }
+
+
+  public static void persistInYamlFormat(Object information, String yamlFile)
+  {
+    try
+    {
+      Yaml       yaml       = new Yaml(yamlConfig);
+      FileWriter fileWriter = new FileWriter(yamlFile);
+      yaml.dump(information, fileWriter);
+      fileWriter.close();
+    }
+    catch (IOException e)
+    {
+      Platform.runLater(() ->
+      {
+        WindowManager.showAlert("Exception throw", yamlFile, e);
+      });
+      throwOrWrap(e);
+    }
+  }
+
+  public static Comparator<? super Class<?>> classNameComparator = (a, b) ->
+   {
+     Class<?> classA = (Class<?>) a;
+     Class<?> classB = (Class<?>) b;
+     return classA.getSimpleName().compareTo(classB.getSimpleName());
+   };
 
 }

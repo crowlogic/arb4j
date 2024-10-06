@@ -11,6 +11,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.viz.Analyzer;
 import arb.functions.Function;
+import arb.viz.WindowManager;
 import javafx.util.StringConverter;
 
 /**
@@ -40,7 +41,7 @@ public final class ContextVariableStringConverter<D, C extends Closeable, F exte
       if (colon == -1)
       {
         String msg = "Missing ':'. The format is 'Type: name=value'";
-        analyzer.showAlert("Syntax Error", msg, new IllegalArgumentException(msg));
+        WindowManager.showAlert("Syntax Error", msg, new IllegalArgumentException(msg));
         return null;
       }
       String type         = string.substring(0, colon);
@@ -62,7 +63,7 @@ public final class ContextVariableStringConverter<D, C extends Closeable, F exte
         return Fraction.named(name).set(value);
       default:
         String msg = String.format("TODO: handle type='%s'\nname='%s'\nvalue='%s'\n", type, name, value);
-        analyzer.showAlert("TODO", msg);
+        WindowManager.showAlert("TODO", msg);
         assert false : msg;
         return null;
       }
@@ -70,7 +71,7 @@ public final class ContextVariableStringConverter<D, C extends Closeable, F exte
     }
     catch (Throwable t)
     {
-      analyzer.showAlert(t.getClass().getName(), "Problem with context variable format", t);
+      WindowManager.showAlert(t.getClass().getName(), "Problem with context variable format", t);
       t.printStackTrace(System.err);
       return null;
     }

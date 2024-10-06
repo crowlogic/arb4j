@@ -1,11 +1,7 @@
 package arb.expressions.viz;
 
-import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
-import java.io.PrintWriter;
-import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -14,7 +10,6 @@ import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
-import arb.expressions.Variables;
 import arb.expressions.viz.context.ContextFieldListCell;
 import arb.expressions.viz.context.ContextMenuListCell;
 import arb.expressions.viz.context.ContextVariableStringConverter;
@@ -36,7 +31,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.skin.TableColumnHeader;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -60,8 +54,6 @@ import javafx.util.StringConverter;
 public class Analyzer<D, C extends Closeable, F extends Function<D, C>> extends
                      Application
 {
-
-  static Method            resizeMethod;
 
   public static Class<?>[] TYPES = new Class[]
 
@@ -222,27 +214,10 @@ public class Analyzer<D, C extends Closeable, F extends Function<D, C>> extends
     ComplexRationalNullaryFunction.class,
     Sequence.class };
 
-  static Comparator<? super Class<?>> comparator = (a, b) ->
-                                                 {
-                                                   Class<?> classA = (Class<?>) a;
-                                                   Class<?> classB = (Class<?>) b;
-                                                   return classA.getSimpleName().compareTo(classB.getSimpleName());
-                                                 };
-
   static
   {
-    Arrays.sort(INTERFACES, comparator);
-    Arrays.sort(TYPES, comparator);
-
-    try
-    {
-      resizeMethod = TableColumnHeader.class.getDeclaredMethod("resizeColumnToFitContent", int.class);
-      resizeMethod.setAccessible(true);
-    }
-    catch (NoSuchMethodException | SecurityException e)
-    {
-      Utensils.throwOrWrap(e);
-    }
+    Arrays.sort(INTERFACES, Utensils.classNameComparator);
+    Arrays.sort(TYPES, Utensils.classNameComparator);
   }
 
   public static void main(String[] args)
@@ -354,31 +329,7 @@ public class Analyzer<D, C extends Closeable, F extends Function<D, C>> extends
   {
     contextListView = new ListView<Named>();
 
-    contextListView.setOnEditCommit(event ->
-    {
-      int       index     = event.getIndex();
-      Named     newValue  = event.getNewValue();
-      Variables variables = getCurrentContext().variables;
-
-      if (newValue == null)
-      {
-        // Conversion failed, keep the original value
-        return;
-      }
-
-      Named  oldValue = variables.get(index);
-      String oldName  = oldValue.getName();
-      String newName  = newValue.getName();
-
-      if (!oldName.equals(newName))
-      {
-        // Name changed, handle rename
-        variables.rename(oldName, newName);
-      }
-
-      // Update the value (this will handle both value changes and name changes)
-      variables.set(index, newValue);
-    });
+    contextListView.setOnEditCommit(new ContextVariableEditCommitHandler<D, C, F>(this));
 
   }
 
@@ -432,7 +383,7 @@ public class Analyzer<D, C extends Closeable, F extends Function<D, C>> extends
       Named selectedItem = contextListView.getSelectionModel().getSelectedItem();
       if (selectedItem == null)
       {
-        showAlert("Error", "The variable to rename must be selected.");
+        WindowManager.showAlert("Error", "The variable to rename must be selected.");
         return;
       }
 
@@ -585,17 +536,6 @@ public class Analyzer<D, C extends Closeable, F extends Function<D, C>> extends
     functionTypeBox.setValue(ComplexFunction.class);
   }
 
-  void showAlert(String title, String header, String content)
-  {
-    Alert alert = new Alert(AlertType.ERROR);
-    alert.setWidth(1400);
-    alert.setResizable(true);
-    alert.setTitle(title);
-    alert.setHeaderText(header);
-    alert.setContentText(content);
-    alert.showAndWait();
-  }
-
   @Override
   public void start(Stage primaryStage)
   {
@@ -662,21 +602,6 @@ public class Analyzer<D, C extends Closeable, F extends Function<D, C>> extends
 
     }
     contextViewVisible = !contextViewVisible;
-  }
-
-  public void showAlert(String string, String msg)
-  {
-    showAlert(string, msg, msg);
-  }
-
-  public void showAlert(String string, String msg, Throwable t)
-  {
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    PrintWriter           s    = new PrintWriter(baos);
-    t.printStackTrace(s);
-    s.flush();
-
-    showAlert(string, msg, baos.toString());
   }
 
 }

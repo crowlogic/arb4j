@@ -6,7 +6,6 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
-import arb.utensils.Utensils;
 
 /**
  * @author Stephen A. Crowley ©2024
@@ -54,7 +53,7 @@ public class VariableReference<D, R, F extends Function<? extends D, ? extends R
   public VariableReference(String name, Node<D, R, F> index)
   {
     assert !name.isEmpty() : "name is empty";
-    this.name  = name == null ? null : Utensils.subscriptToRegular(name.trim());
+    this.name  = name == null ? null : Parser.subscriptToRegular(name.trim());
     this.index = index;
   }
 

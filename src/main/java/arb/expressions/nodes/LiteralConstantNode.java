@@ -28,7 +28,6 @@ import arb.expressions.Expression;
 import arb.expressions.Parser;
 import arb.expressions.nodes.binary.MultiplicationNode;
 import arb.functions.Function;
-import arb.utensils.Utensils;
 
 /**
  * Represents a literal constant within an arithmetic expression. This class is
@@ -123,7 +122,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   {
     super(expression);
     assert Integer.class.equals(arb.Integer.class) : "an import statement for arb.Integer is probably missing";
-    value = Utensils.subscriptToRegular(constantValueString.trim());
+    value = Parser.subscriptToRegular(constantValueString.trim());
 
     if (value.contains("/"))
     {
