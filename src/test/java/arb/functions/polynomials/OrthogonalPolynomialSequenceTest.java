@@ -8,7 +8,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.functions.polynomials.orthogonal.real.RealChebyshevPolynomialsOfTheFirstKind;
 import arb.functions.polynomials.orthogonal.real.RealHermitePolynomials;
 import arb.functions.polynomials.orthogonal.real.RealLegendrePolynomials;
-import arb.functions.polynomials.orthogonal.real.RealType1ChebyshevPolynomials;
+import arb.functions.polynomials.orthogonal.real.Type1ChebyshevPolynomials;
 import junit.framework.TestCase;
 
 /**
@@ -69,7 +69,7 @@ public class OrthogonalPolynomialSequenceTest extends
 
   public void testType1ChebyshevPolynomials()
   {
-    try ( RealType1ChebyshevPolynomials T = new RealType1ChebyshevPolynomials(128))
+    try ( Type1ChebyshevPolynomials T = new Type1ChebyshevPolynomials(128))
 
     {
 

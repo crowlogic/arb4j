@@ -16,7 +16,7 @@ import arb.functions.real.RealFunction;
 /**
  * 
  * The Chebyshev polynomials of the first kind are defined by 2*x*T(n-1)-T(n-2))
- * with initial conditions T(0)=1, T(1)=x. The {@link RealType1ChebyshevPolynomials}
+ * with initial conditions T(0)=1, T(1)=x. The {@link Type1ChebyshevPolynomials}
  * is an equivalent implementation based on the
  * {@link RecurrentlyGeneratedOrthogonalPolynomialSequence} interface
  * 

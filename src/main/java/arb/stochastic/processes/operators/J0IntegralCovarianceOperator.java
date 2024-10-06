@@ -15,7 +15,7 @@ import arb.functions.RealSquareIntegrableFunction;
 import arb.functions.integer.RealSequence;
 import arb.functions.polynomials.orthogonal.real.RealChebyshevPolynomialsOfTheFirstKind;
 import arb.functions.polynomials.orthogonal.real.RealLegendrePolynomials;
-import arb.functions.polynomials.orthogonal.real.RealType1ChebyshevPolynomials;
+import arb.functions.polynomials.orthogonal.real.Type1ChebyshevPolynomials;
 import arb.functions.rational.RationalFunctionSequence;
 import arb.functions.real.RealBesselFunctionOfTheFirstKind;
 import arb.functions.real.RealFunction;
@@ -38,7 +38,7 @@ import arb.stochastic.processes.RealKarhunenLoeveExpansion;
  * <ul>
  * <li>The eigenvalues λₖ are the projections of the orthogonal complement of
  * the orthonormalized Fourier transforms of the
- * {@link RealType1ChebyshevPolynomials} onto the J₀ function. They quantify the
+ * {@link Type1ChebyshevPolynomials} onto the J₀ function. They quantify the
  * contribution of each eigenfunction to the kernel's spectral
  * representation.</li>
  * <li>The eigenfunctions associated with zero eigenvalues lie in the null space

@@ -11,13 +11,13 @@ import arb.functions.real.RealFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealType1ChebyshevPolynomials extends
+public class Type1ChebyshevPolynomials extends
                                            RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence
 {
 
   public static RealFunction orthoMeasure = RealFunction.express("1/√(1-y²)");
 
-  public RealType1ChebyshevPolynomials(int bits)
+  public Type1ChebyshevPolynomials(int bits)
   {
     super(bits,
           "2",
@@ -33,7 +33,7 @@ public class RealType1ChebyshevPolynomials extends
   }
 
   public static final Real orthogonalityDomain = new Real("0+/-1",
-                                             128);
+                                                          128);
 
   @Override
   public RealFunction orthogonalityMeasure()
