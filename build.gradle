@@ -69,7 +69,18 @@ Icon=${projectDir}/src/main/resources/TODO.png
 Terminal=false
 Categories=Utility;
 """
-    }    
+    }   
+         doLast {
+        def desktopFile = new File("${buildDir}/SymbolPalette.desktop")
+        desktopFile.text = """[Desktop Entry]
+Type=Application
+Name=Symbol Palette
+Exec=${projectDir}/bin/symbolPalette
+Icon=${projectDir}/src/main/resources/SymbolPalette.png
+Terminal=false
+Categories=Utility;
+"""
+    }
 }
 
 task installDesktopFile(type: Copy) {
