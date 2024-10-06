@@ -10,6 +10,7 @@ import static org.objectweb.asm.Opcodes.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +41,7 @@ import arb.expressions.nodes.unary.*;
 import arb.functions.Function;
 import arb.functions.NullaryFunction;
 import arb.functions.integer.Sequence;
+import arb.utensils.Utensils;
 import arb.utensils.text.trees.TextTree;
 import arb.utensils.text.trees.TreeModel;
 import arb.viz.ArbShellExecutionController;
@@ -2038,6 +2040,32 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     defineClass();
     return this;
+  }
+
+  public Named newCoDomainInstance()
+  {
+    try
+    {
+      return (Named) coDomainType.getConstructor().newInstance();
+    }
+    catch (Throwable e)
+    {
+      Utensils.throwOrWrap(e);
+      return null;
+    }
+  }
+  
+  public Named newDomainInstance()
+  {
+    try
+    {
+      return (Named) domainType.getConstructor().newInstance();
+    }
+    catch (Throwable e)
+    {
+      Utensils.throwOrWrap(e);
+      return null;
+    }
   }
 
 }

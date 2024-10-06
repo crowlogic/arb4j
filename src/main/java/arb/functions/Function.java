@@ -347,6 +347,19 @@ public interface Function<D, C> extends
     return null;
   }
 
+  public default D newDomainInstance()
+  {
+    try
+    {
+      return domainType().getConstructor().newInstance();
+    }
+    catch (Throwable e)
+    {
+      throwOrWrap(e);
+      return null;
+    }
+  }
+  
   public default C newCoDomainInstance()
   {
     try
