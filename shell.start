@@ -1,3 +1,4 @@
+import arb.functions.polynomials.orthogonal.real.Type1ChebyshevPolynomials;
 import javafx.application.Platform;
 import arb.functions.integer.RealPolynomialSequence;
 import arb.arblib;

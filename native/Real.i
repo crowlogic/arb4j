@@ -1973,23 +1973,22 @@ import arb.utensils.Utensils;
     arblib.arb_abs(res, this);
     return res;
   }
-
         
   public Real set(Real real)
   {
-    assert dim == real.dim;
-    if ( dim == 1 )
+    assert dim == real.dim : String.format("this.dim = %d != real.dim = %d", this.dim, real.dim);
+    if (dim == 1)
     {
-     arblib.arb_set( this, real );
-     }
-     else
-     { 
-       arblib._arb_vec_set( this, real, dim );
-     }
-     bits = real.bits;
-     return this;    
+      arblib.arb_set(this, real);
+    }
+    else
+    {
+      arblib._arb_vec_set(this, real, dim);
+    }
+    bits = real.bits;
+    return this;
   }
-  
+    
   public int bits()
   {
     return arblib.arb_bits(this);
