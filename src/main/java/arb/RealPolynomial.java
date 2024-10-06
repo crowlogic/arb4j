@@ -18,8 +18,8 @@ import java.io.Closeable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.DivisionByZeroException;
-import arb.expressions.Parser;
 import arb.functions.real.RealFunction;
+import arb.expressions.Parser;
 
 
 /**

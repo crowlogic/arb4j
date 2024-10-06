@@ -9,12 +9,10 @@
 package arb;
 
 import static arb.arblib.*;
-
+import arb.expressions.Parser;
 import arb.functions.complex.ComplexFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.exceptions.DivisionByZeroException;
-import arb.expressions.Parser;
-
 import java.util.Objects;
 
 /**

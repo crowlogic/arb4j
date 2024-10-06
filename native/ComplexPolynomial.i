@@ -1,6 +1,6 @@
 %typemap(javaimports) acb_poly_struct %{
 import static arb.arblib.*;
-import arb.utensils.Utensils;
+import arb.expressions.Parser;
 import arb.functions.complex.ComplexFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.exceptions.DivisionByZeroException;
@@ -407,7 +407,7 @@ import java.util.Objects;
           builder.append(independentVariableName);
           if (i > 1)
           {
-            builder.append(Utensils.toSuperscript(i));
+            builder.append(Parser.toSuperscript(i));
           }
         }
       }
