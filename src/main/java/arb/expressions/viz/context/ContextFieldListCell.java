@@ -7,7 +7,7 @@ import arb.Integer;
 import arb.Named;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.viz.Analyzer;
+import arb.expressions.viz.ExpressionEvaluator;
 import arb.functions.Function;
 import arb.utensils.Utensils;
 import javafx.geometry.Pos;
@@ -30,7 +30,7 @@ public final class ContextFieldListCell<D, C extends Closeable, F extends Functi
                                        TextFieldListCell<Named>
 {
 
-  final Analyzer<D, C, F>      analyzer;
+  final ExpressionEvaluator<D, C, F>      analyzer;
   final StringConverter<Named> converter;
   Spinner<java.lang.Integer>   spinner;
   HBox                         layout;
@@ -65,7 +65,7 @@ public final class ContextFieldListCell<D, C extends Closeable, F extends Functi
     }
   }
 
-  public ContextFieldListCell(Analyzer<D, C, F> expressionAnalyzer, StringConverter<Named> converter)
+  public ContextFieldListCell(ExpressionEvaluator<D, C, F> expressionAnalyzer, StringConverter<Named> converter)
   {
     super(converter);
     this.analyzer  = expressionAnalyzer;

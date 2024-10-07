@@ -22,12 +22,12 @@ public final class ContextVariableEditCommitHandler<D, C extends Closeable, F ex
   /**
    * 
    */
-  private final Analyzer<D, C, F> analyzer;
+  private final ExpressionEvaluator<D, C, F> analyzer;
 
   /**
    * @param analyzer
    */
-  ContextVariableEditCommitHandler(Analyzer<D, C, F> analyzer)
+  ContextVariableEditCommitHandler(ExpressionEvaluator<D, C, F> analyzer)
   {
     this.analyzer = analyzer;
   }

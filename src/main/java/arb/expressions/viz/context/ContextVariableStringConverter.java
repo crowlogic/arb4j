@@ -9,7 +9,7 @@ import arb.Named;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.viz.Analyzer;
+import arb.expressions.viz.ExpressionEvaluator;
 import arb.functions.Function;
 import arb.viz.WindowManager;
 import javafx.util.StringConverter;
@@ -22,12 +22,12 @@ public final class ContextVariableStringConverter<D, C extends Closeable, F exte
                                                  StringConverter<Named>
 {
 
-  private final Analyzer<D, C, F> analyzer;
+  private final ExpressionEvaluator<D, C, F> analyzer;
 
   /**
    * @param expressionAnalyzer
    */
-  public ContextVariableStringConverter(Analyzer<D, C, F> expressionAnalyzer)
+  public ContextVariableStringConverter(ExpressionEvaluator<D, C, F> expressionAnalyzer)
   {
     this.analyzer = expressionAnalyzer;
   }
