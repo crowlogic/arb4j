@@ -239,28 +239,6 @@ import arb.algebra.Ring;
     arb_mat_det(result, this, bits);
     return result;
   }
-
-  /**
-   * Sets the result to the inverse of this (square) matrix, computed by solving the system
-   * 
-   * X = A^(-1)
-   * 
-   * If cannot be inverted numerically (indicating either that is singular or that
-   * the precision is insufficient), the values in the output matrix are left
-   * undefined and zero is returned. A nonzero return value guarantees that the
-   * matrix is invertible and that the exact inverse is contained in the output.
-   * 
-   * @see arb#arb_mat_inv(RealMatrix, RealMatrix, int)
-   * 
-   * @param bits
-   * @param result
-   * @return
-   */
-  public RealMatrix inverse(int bits, RealMatrix result)
-  {
-    arb_mat_inv(result, this, bits);
-    return result;
-  }
   
   /**
    * @see arb#arb_mat_zero(RealMatrix)
@@ -406,12 +384,22 @@ import arb.algebra.Ring;
   }
   
   /**
+   * Sets the result to the inverse of this (square) matrix, computed by solving the system
+   * 
+   * X = A^(-1)
+   * 
+   * If cannot be inverted numerically (indicating either that is singular or that
+   * the precision is insufficient), the values in the output matrix are left
+   * undefined and zero is returned. A nonzero return value guarantees that the
+   * matrix is invertible and that the exact inverse is contained in the output.
+   * 
    * @see arb#arb_mat_inv(RealMatrix, RealMatrix, int)
-   * @param prec
+   * 
+   * @param bits
    * @param result
-   * @return result
+   * @return
    */
-  public RealMatrix inv(int prec, RealMatrix result)
+  public RealMatrix inverse(int prec, RealMatrix result)
   {
     if (arb_mat_inv(result, this, prec) == 0)
     {
@@ -423,7 +411,6 @@ import arb.algebra.Ring;
       return result;
     }
   }
-
   
   /**
    * @see arb#arb_mat_transpose(RealMatrix, RealMatrix)
