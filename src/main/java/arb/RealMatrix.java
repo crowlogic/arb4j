@@ -55,6 +55,22 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
 
   static { System.loadLibrary( "arblib" ); }
 
+  /**
+   * Solve this*result=that, in other words this=A, result=X and that=B
+   * 
+   * @param that   B
+   * @param bits   precision
+   * @param result X
+   * 
+   * @return result after setting its value such that it is the solution to
+   *         this*result=that
+   */
+  public RealMatrix solve(RealMatrix that, int bits, RealMatrix result)
+  {
+    arblib.arb_mat_solve(result, this, that, bits);
+    return result;
+  }
+  
   @Override
   public RealMatrix div(RealMatrix j, int prec, RealMatrix result)
   {

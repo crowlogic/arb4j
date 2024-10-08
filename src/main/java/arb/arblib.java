@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static int arb_mat_solve(RealMatrix X, RealMatrix A, RealMatrix B, int prec) {
+    return arblibJNI.arb_mat_solve(RealMatrix.getCPtr(X), X, RealMatrix.getCPtr(A), A, RealMatrix.getCPtr(B), B, prec);
+  }
+
   public static XDO xdo_new(String display) {
     long cPtr = arblibJNI.xdo_new(display);
     return (cPtr == 0) ? null : new XDO(cPtr, false);

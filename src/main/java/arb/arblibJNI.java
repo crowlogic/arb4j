@@ -9,6 +9,7 @@
 package arb;
 
 public class arblibJNI {
+  public final static native int arb_mat_solve(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, long jarg3, RealMatrix jarg3_, int jarg4);
   public final static native void charcodemap_t_key_set(long jarg1, charcodemap_t jarg1_, long jarg2);
   public final static native long charcodemap_t_key_get(long jarg1, charcodemap_t jarg1_);
   public final static native void charcodemap_t_code_set(long jarg1, charcodemap_t jarg1_, long jarg2);
