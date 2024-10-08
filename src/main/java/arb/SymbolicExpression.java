@@ -36,13 +36,12 @@ public class SymbolicExpression {
     }
   }
 
-  public void setData(SWIGTYPE_p_unsigned_long value) {
-    arblibJNI.SymbolicExpression_data_set(swigCPtr, this, SWIGTYPE_p_unsigned_long.getCPtr(value));
+  public void setData(long value) {
+    arblibJNI.SymbolicExpression_data_set(swigCPtr, this, value);
   }
 
-  public SWIGTYPE_p_unsigned_long getData() {
-    long cPtr = arblibJNI.SymbolicExpression_data_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_unsigned_long(cPtr, false);
+  public long getData() {
+    return arblibJNI.SymbolicExpression_data_get(swigCPtr, this);
   }
 
   public SymbolicExpression() {

@@ -1,5 +1,7 @@
 #define __off_t long int
 #define off_t long int
+#define wchar_t int
+#define ulong unsigned long
 
 #include <gmp.h>
 #include <arb_mat.h>
@@ -14,6 +16,7 @@
 #include <wchar.h>
 
 int arb_mat_solve(arb_mat_t X, const arb_mat_t A, const arb_mat_t B, slong prec);
+
 
 typedef unsigned long Atom;   /* Also in Xdefs.h */
 

@@ -36,12 +36,12 @@ public class CharacterCodeMap {
     }
   }
 
-  public void setKey(SWIGTYPE_p_wchar_t value) {
-    arblibJNI.CharacterCodeMap_key_set(swigCPtr, this, SWIGTYPE_p_wchar_t.getCPtr(value));
+  public void setKey(int value) {
+    arblibJNI.CharacterCodeMap_key_set(swigCPtr, this, value);
   }
 
-  public SWIGTYPE_p_wchar_t getKey() {
-    return new SWIGTYPE_p_wchar_t(arblibJNI.CharacterCodeMap_key_get(swigCPtr, this), true);
+  public int getKey() {
+    return arblibJNI.CharacterCodeMap_key_get(swigCPtr, this);
   }
 
   public void setCode(SWIGTYPE_p_KeyCode value) {

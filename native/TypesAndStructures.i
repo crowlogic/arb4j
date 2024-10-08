@@ -1,5 +1,7 @@
 
 %{
+
+
 #include <flint/fmpz.h>
 #include <flint/qqbar.h>
 #include <mpfr.h>
@@ -121,7 +123,7 @@ typedef qqbar_struct qqbar_t[1];
 
 typedef struct
 {
-    ulong * data;
+    jlong data;
     slong alloc;
 }
 fexpr_struct;
