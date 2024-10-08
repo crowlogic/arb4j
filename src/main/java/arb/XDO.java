@@ -53,13 +53,13 @@ public class XDO {
     return arblibJNI.XDO_display_name_get(swigCPtr, this);
   }
 
-  public void setCharcodes(charcodemap_t value) {
-    arblibJNI.XDO_charcodes_set(swigCPtr, this, charcodemap_t.getCPtr(value), value);
+  public void setCharcodes(CharacterCodeMap value) {
+    arblibJNI.XDO_charcodes_set(swigCPtr, this, CharacterCodeMap.getCPtr(value), value);
   }
 
-  public charcodemap_t getCharcodes() {
+  public CharacterCodeMap getCharcodes() {
     long cPtr = arblibJNI.XDO_charcodes_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new charcodemap_t(cPtr, false);
+    return (cPtr == 0) ? null : new CharacterCodeMap(cPtr, false);
   }
 
   public void setCharcodes_len(int value) {

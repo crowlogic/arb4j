@@ -8,16 +8,16 @@
 
 package arb;
 
-public class charcodemap_t {
+public class CharacterCodeMap {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  public charcodemap_t(long cPtr, boolean cMemoryOwn) {
+  public CharacterCodeMap(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
-  public static long getCPtr(charcodemap_t obj) {
+  public static long getCPtr(CharacterCodeMap obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
@@ -30,62 +30,62 @@ public class charcodemap_t {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
         swigCMemOwn = false;
-        arblibJNI.delete_charcodemap_t(swigCPtr);
+        arblibJNI.delete_CharacterCodeMap(swigCPtr);
       }
       swigCPtr = 0;
     }
   }
 
   public void setKey(SWIGTYPE_p_wchar_t value) {
-    arblibJNI.charcodemap_t_key_set(swigCPtr, this, SWIGTYPE_p_wchar_t.getCPtr(value));
+    arblibJNI.CharacterCodeMap_key_set(swigCPtr, this, SWIGTYPE_p_wchar_t.getCPtr(value));
   }
 
   public SWIGTYPE_p_wchar_t getKey() {
-    return new SWIGTYPE_p_wchar_t(arblibJNI.charcodemap_t_key_get(swigCPtr, this), true);
+    return new SWIGTYPE_p_wchar_t(arblibJNI.CharacterCodeMap_key_get(swigCPtr, this), true);
   }
 
   public void setCode(SWIGTYPE_p_KeyCode value) {
-    arblibJNI.charcodemap_t_code_set(swigCPtr, this, SWIGTYPE_p_KeyCode.getCPtr(value));
+    arblibJNI.CharacterCodeMap_code_set(swigCPtr, this, SWIGTYPE_p_KeyCode.getCPtr(value));
   }
 
   public SWIGTYPE_p_KeyCode getCode() {
-    return new SWIGTYPE_p_KeyCode(arblibJNI.charcodemap_t_code_get(swigCPtr, this), true);
+    return new SWIGTYPE_p_KeyCode(arblibJNI.CharacterCodeMap_code_get(swigCPtr, this), true);
   }
 
   public void setSymbol(SWIGTYPE_p_KeySym value) {
-    arblibJNI.charcodemap_t_symbol_set(swigCPtr, this, SWIGTYPE_p_KeySym.getCPtr(value));
+    arblibJNI.CharacterCodeMap_symbol_set(swigCPtr, this, SWIGTYPE_p_KeySym.getCPtr(value));
   }
 
   public SWIGTYPE_p_KeySym getSymbol() {
-    return new SWIGTYPE_p_KeySym(arblibJNI.charcodemap_t_symbol_get(swigCPtr, this), true);
+    return new SWIGTYPE_p_KeySym(arblibJNI.CharacterCodeMap_symbol_get(swigCPtr, this), true);
   }
 
   public void setGroup(int value) {
-    arblibJNI.charcodemap_t_group_set(swigCPtr, this, value);
+    arblibJNI.CharacterCodeMap_group_set(swigCPtr, this, value);
   }
 
   public int getGroup() {
-    return arblibJNI.charcodemap_t_group_get(swigCPtr, this);
+    return arblibJNI.CharacterCodeMap_group_get(swigCPtr, this);
   }
 
   public void setModmask(int value) {
-    arblibJNI.charcodemap_t_modmask_set(swigCPtr, this, value);
+    arblibJNI.CharacterCodeMap_modmask_set(swigCPtr, this, value);
   }
 
   public int getModmask() {
-    return arblibJNI.charcodemap_t_modmask_get(swigCPtr, this);
+    return arblibJNI.CharacterCodeMap_modmask_get(swigCPtr, this);
   }
 
   public void setNeeds_binding(int value) {
-    arblibJNI.charcodemap_t_needs_binding_set(swigCPtr, this, value);
+    arblibJNI.CharacterCodeMap_needs_binding_set(swigCPtr, this, value);
   }
 
   public int getNeeds_binding() {
-    return arblibJNI.charcodemap_t_needs_binding_get(swigCPtr, this);
+    return arblibJNI.CharacterCodeMap_needs_binding_get(swigCPtr, this);
   }
 
-  public charcodemap_t() {
-    this(arblibJNI.new_charcodemap_t(), true);
+  public CharacterCodeMap() {
+    this(arblibJNI.new_CharacterCodeMap(), true);
   }
 
 }
