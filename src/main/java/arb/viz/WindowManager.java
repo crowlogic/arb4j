@@ -1,7 +1,6 @@
 package arb.viz;
 
 import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -13,15 +12,10 @@ import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.nodes.Node;
-import arb.functions.Function;
 import arb.utensils.Utensils;
 import javafx.application.Platform;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ScrollBar;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
 import javafx.scene.control.skin.TableColumnHeader;
 import javafx.scene.control.skin.TableViewSkinBase;
 import javafx.scene.control.skin.VirtualFlow;
@@ -171,14 +165,15 @@ public class WindowManager
     return hbarField;
   }
 
-  public static <D, C extends Closeable,
-                F extends Function<D, C>>
-         VirtualFlow<?>
-         getVirtualFlow(TreeTableView<Node<D, C, F>> treeTableView2)
+  @SuppressWarnings("unchecked")
+  public static <Y,T extends IndexedCell<? extends Y>>
+
+         VirtualFlow<T>
+         getVirtualFlow(Control treeTableView2)
   {
     try
     {
-      return (VirtualFlow<?>) flowField.get(treeTableView2.getSkin());
+      return (VirtualFlow<T>) flowField.get(treeTableView2.getSkin());
     }
     catch (IllegalArgumentException | IllegalAccessException e)
     {
@@ -275,7 +270,7 @@ public class WindowManager
     if (item != null && !item.isLeaf())
     {
       states.put(item.getValue().toString(), item.isExpanded());
-  
+
       for (var child : item.getChildren())
       {
         enumerateNodeExpansionStates(states, child);
@@ -293,7 +288,7 @@ public class WindowManager
       {
         item.setExpanded(value);
       }
-  
+
       for (var child : item.getChildren())
       {
         applyNodeExpansionStates(states, child);
