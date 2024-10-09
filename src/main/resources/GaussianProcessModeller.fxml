@@ -68,6 +68,11 @@
                   <NumberAxis />
                </yAxis>
             </LineChart>
+            
+    <HBox spacing="10.0">
+               <Label text="Orthogonal Spectral Polynomials Pₙ(ω):" />
+               <ComboBox prefWidth="200.0" />
+            </HBox>            
          </children>
       </VBox>
    </left>
