@@ -29,6 +29,14 @@ public class Bibliography extends
                                                                                                         "2408.08064",
                                                                                                         "Aug 15");
 
+  public static Article       besselChebyshevDuality                                        =
+                                                     new Article("Duality between Bessel Functions and Chebyshev Polynomials in Expansions of Functions",
+                                                                 "Alfred Wünsche",
+                                                                 "2023",
+                                                                 "Advances in Pure Mathematics",
+                                                                 "13",
+                                                                 "504-536").setNumber("8");
+
   public static Article       besselFunctionFourierLegendreSeries                           =
                                                                   new Article("The Fourier--Legendre Series of Bessel Functions of the First Kind and the Summed Series Involving 1 F 2 Hypergeometric Functions that Arise from Them",
                                                                               "Straton, Jack C",
