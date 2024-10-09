@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 
@@ -36,28 +35,39 @@
       </MenuBar>
    </top>
    <left>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="800.0" prefWidth="400.0" BorderPane.alignment="CENTER">
          <children>
-            <TitledPane animated="false" maxHeight="100.0" maxWidth="1.7976931348623157E308" minWidth="330.0" prefHeight="373.0" prefWidth="404.0" text="Definition">
-               <content>
-                  <GridPane gridLinesVisible="true" prefHeight="420.0" prefWidth="117.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <ComboBox prefWidth="150.0" GridPane.columnIndex="1" />
-                        <Label text="Spectral Density S(ω)" GridPane.rowIndex="1" />
-                        <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Covariance Kernel K(t-s):" />
-                     </children>
-                  </GridPane>
-               </content>
-            </TitledPane>
+            <!-- Covariance Kernel Label and ComboBox in HBox -->
+            <HBox spacing="10.0">
+               <Label text="Covariance Kernel K(t-s):" />
+               <ComboBox prefWidth="200.0" />
+            </HBox>
+
+            <!-- LineChart for Covariance Kernel -->
+            <LineChart fx:id="covKernelChart" prefHeight="200.0" prefWidth="400.0">
+               <xAxis>
+                  <NumberAxis />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis />
+               </yAxis>
+            </LineChart>
+
+            <!-- Spectral Density Label and ComboBox in HBox -->
+            <HBox spacing="10.0">
+               <Label text="Spectral Density S(ω):" />
+               <ComboBox prefWidth="200.0" />
+            </HBox>
+
+            <!-- LineChart for Spectral Density -->
+            <LineChart fx:id="spectralDensityChart" prefHeight="200.0" prefWidth="400.0">
+               <xAxis>
+                  <NumberAxis />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis />
+               </yAxis>
+            </LineChart>
          </children>
       </VBox>
    </left>
