@@ -65,8 +65,6 @@ typedef struct {
     int features_mask;
 } xdo_struct;
 
-// Function declarations
-xdo_struct *xdo_new(const char *display);
 
 
 #ifndef size_t
