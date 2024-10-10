@@ -2,15 +2,18 @@
 
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <top>
@@ -35,14 +38,16 @@
       </MenuBar>
    </top>
    <left>
-      <VBox prefHeight="800.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="773.0" prefWidth="460.0" BorderPane.alignment="CENTER">
          <children>
-            <!-- Covariance Kernel Label and ComboBox in HBox -->
-            <HBox spacing="10.0">
-               <Label text="Covariance Kernel K(t-s):" />
-               <ComboBox prefWidth="200.0" />
-            </HBox>
-
+            <TitledPane text="Covariance Kernel K(t-s):">
+               <content>
+               <VBox spacing="10.0">
+                  <!-- Covariance Kernel Label and ComboBox in HBox -->
+                  <HBox spacing="10.0">
+                     <ComboBox fx:id="kernelComboBox" prefWidth="200.0" />
+                     <Button fx:id="compileButton" mnemonicParsing="false" text="Compile" />
+                  </HBox>
             <!-- LineChart for Covariance Kernel -->
             <LineChart fx:id="covKernelChart" prefHeight="200.0" prefWidth="400.0">
                <xAxis>
@@ -52,12 +57,16 @@
                   <NumberAxis />
                </yAxis>
             </LineChart>
+                  
+                  </VBox>
+               </content>
+            </TitledPane>
 
+	<TitledPane text="Spectral Density S(ω):">
+	<content>
+	<VBox spacing="10.0">
             <!-- Spectral Density Label and ComboBox in HBox -->
-            <HBox spacing="10.0">
-               <Label text="Spectral Density S(ω):" />
-               <ComboBox prefWidth="200.0" />
-            </HBox>
+               <ComboBox fx:id="spectralDensityComboBox" prefWidth="200.0" />
 
             <!-- LineChart for Spectral Density -->
             <LineChart fx:id="spectralDensityChart" prefHeight="200.0" prefWidth="400.0">
@@ -68,11 +77,32 @@
                   <NumberAxis />
                </yAxis>
             </LineChart>
+            </VBox>
+            </content>
             
-    <HBox spacing="10.0">
-               <Label text="Orthogonal Spectral Polynomials Pₙ(ω):" />
+            </TitledPane>
+            	<TitledPane text="Orthogonal Spectral Polynomials Pₙ(ω):">
+	<content>
                <ComboBox prefWidth="200.0" />
-            </HBox>            
+            <TableView prefHeight="200.0" prefWidth="200.0">
+              <columns>
+                <TableColumn prefWidth="75.0" text="C1" />
+                <TableColumn prefWidth="75.0" text="C2" />
+              </columns>
+            </TableView>    
+            </content>
+            </TitledPane>  
+            
+            <HBox spacing="10.0">
+               <Label text="Kernel Inner-Product Null Space P̂ₙ(t):" />
+               <ComboBox prefWidth="200.0" />
+            </HBox>
+         <TableView prefHeight="200.0" prefWidth="200.0">
+              <columns>
+                <TableColumn prefWidth="75.0" text="C1" />
+                <TableColumn prefWidth="75.0" text="C2" />
+              </columns>
+            </TableView>                   
          </children>
       </VBox>
    </left>
