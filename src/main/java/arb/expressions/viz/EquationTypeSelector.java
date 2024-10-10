@@ -116,10 +116,4 @@ public class EquationTypeSelector extends
     functionTypeProperty.set(functionType);
   }
 
-  public EquationTypeInfo getSelectedTypes()
-  {
-    return new EquationTypeInfo(getDomainType(),
-                                getCodomainType(),
-                                getFunctionType());
-  }
 }
