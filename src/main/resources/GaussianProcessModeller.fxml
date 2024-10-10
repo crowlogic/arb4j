@@ -4,7 +4,6 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -15,9 +14,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-	minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0"
-	xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity"
+	minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0"
+	prefWidth="1314.0" xmlns="http://javafx.com/javafx/21"
+	xmlns:fx="http://javafx.com/fxml/1">
 	<top>
 		<MenuBar BorderPane.alignment="CENTER">
 			<menus>
@@ -40,17 +40,17 @@
 		</MenuBar>
 	</top>
 	<left>
-		<VBox prefHeight="773.0" prefWidth="460.0" BorderPane.alignment="CENTER">
+		<VBox prefHeight="773.0" prefWidth="460.0"
+			BorderPane.alignment="CENTER">
 			<children>
 				<TitledPane text="Covariance Kernel K(t-s):">
 					<content>
 						<VBox spacing="10.0">
 							<!-- Covariance Kernel Label and ComboBox in HBox -->
 							<HBox spacing="10.0">
-								<ComboBox fx:id="kernelComboBox"
-									prefWidth="200.0" />
-								<Button fx:id="compileButton"
-									mnemonicParsing="false" text="Compile" />
+								<ComboBox fx:id="kernelComboBox" prefWidth="200.0" />
+								<Button fx:id="compileButton" mnemonicParsing="false"
+									text="Compile" />
 							</HBox>
 							<!-- LineChart for Covariance Kernel -->
 							<LineChart fx:id="covKernelChart" prefHeight="200.0"
@@ -90,26 +90,31 @@
 				</TitledPane>
 				<TitledPane text="Orthogonal Spectral Polynomials Pₙ(ω):">
 					<content>
-						<ComboBox prefWidth="200.0" />
-						<TableView prefHeight="200.0" prefWidth="200.0">
-							<columns>
-								<TableColumn prefWidth="75.0" text="C1" />
-								<TableColumn prefWidth="75.0" text="C2" />
-							</columns>
-						</TableView>
+						<VBox>
+							<ComboBox prefWidth="200.0" />
+							<TableView prefHeight="200.0" prefWidth="200.0">
+								<columns>
+									<TableColumn prefWidth="75.0" text="n" />
+									<TableColumn prefWidth="75.0" text="Pₙ(ω)" />
+								</columns>
+							</TableView>
+						</VBox>
 					</content>
 				</TitledPane>
-
-				<HBox spacing="10.0">
-					<Label text="Kernel Inner-Product Null Space P̂ₙ(t):" />
-					<ComboBox prefWidth="200.0" />
-				</HBox>
-				<TableView prefHeight="200.0" prefWidth="200.0">
-					<columns>
-						<TableColumn prefWidth="75.0" text="C1" />
-						<TableColumn prefWidth="75.0" text="C2" />
-					</columns>
-				</TableView>
+				<TitledPane
+					text="Kernel Inner-Product Null Space 𝔉(Pₙ)(y):">
+					<content>
+						<VBox spacing="10.0">
+							<ComboBox prefWidth="200.0" />
+							<TableView prefHeight="200.0" prefWidth="200.0">
+								<columns>
+									<TableColumn prefWidth="75.0" text="n" />
+									<TableColumn prefWidth="75.0" text="𝔉(Pₙ)(y)" />
+								</columns>
+							</TableView>
+						</VBox>
+					</content>
+				</TitledPane>
 			</children>
 		</VBox>
 	</left>
