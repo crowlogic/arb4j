@@ -10,7 +10,6 @@ import static org.objectweb.asm.Opcodes.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1945,6 +1944,36 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
+  public <E, S, G extends Function<? extends E, ? extends S>> Expression<D, C, F> substitute(String variableToChange,
+                                                                                             Node<E, S, G> substitution)
+  {
+    if (variableToChange.equals(substitution.toString()))
+    {
+      return this;
+    }
+
+    if (context == null)
+    {
+      context   = new Context();
+      variables = context.variables;
+    }
+
+    if (Expression.trace)
+    {
+      System.err.format("Expression(#%s).substitute %s for %s into %s\n \n\n",
+                        System.identityHashCode(this),
+                        substitution,
+                        variableToChange,
+                        this);
+    }
+
+    rootNode = rootNode.substitute(variableToChange, substitution);
+
+    updateStringRepresentation();
+
+    return this;
+  }
+
   public TextTree<Node<D, C, F>> syntaxTextTree()
   {
     return new TextTree<>(syntaxTree());
@@ -2054,7 +2083,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return null;
     }
   }
-  
+
   public Named newDomainInstance()
   {
     try

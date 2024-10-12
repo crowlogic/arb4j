@@ -2,6 +2,8 @@ package arb.expressions.nodes.unary;
 
 import org.objectweb.asm.MethodVisitor;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
@@ -13,8 +15,8 @@ import arb.functions.Function;
  * @param <C>
  * @param <F>
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the {@link
- * TheArb4jLibrary}
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  * 
  * @author ©2024 Stephen Crowley
  */
@@ -46,19 +48,18 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
                                   expression.functionClass,
                                   "Γ(x)*Γ(y)/Γ(x+y)",
                                   context);
+    x.expression = definition;
+    y.expression = definition;
+   
+    definition.substitute("x", x);
+    definition.substitute("y", y);
+    
+    definition.instantiate();
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    x.generate(mv, resultType);
-    expression.loadFieldOntoStack(mv, "x", resultType);
-    expression.putField(mv, "x", resultType);
-
-    y.generate(mv, resultType);
-    expression.loadFieldOntoStack(mv, "y", resultType);
-    expression.putField(mv, "y", resultType);
-
     definition.rootNode.generate(mv, resultType);
     return mv;
   }
