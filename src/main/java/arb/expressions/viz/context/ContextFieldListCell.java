@@ -10,6 +10,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.viz.ExpressionEvaluator;
 import arb.functions.Function;
 import arb.utensils.Utensils;
+import arb.viz.WindowManager;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
@@ -135,7 +136,7 @@ public final class ContextFieldListCell<D, C extends Closeable, F extends Functi
         spinner.increment();
       }
     });
-    analyzer.addEmacsKeybindings(spinner.getEditor());
+    WindowManager.addEmacsKeybindings(spinner.getEditor());
     layout.getChildren().add(spinner);
   }
 
@@ -174,7 +175,7 @@ public final class ContextFieldListCell<D, C extends Closeable, F extends Functi
 
   private void addEmacsKeybindingsToTextField(TextField textField)
   {
-    analyzer.addEmacsKeybindings(textField);
+    WindowManager.addEmacsKeybindings(textField);
   }
 
   private void updateRepresentation(Named item)

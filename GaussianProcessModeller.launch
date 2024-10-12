@@ -14,4 +14,5 @@
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="arb.expressions.viz.GaussianProcessModeller"/>
     <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="arb4j"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="arb4j"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.library.path=${project_loc:/arb4j} --add-opens javafx.controls/javafx.scene.control.skin=arb4j --add-opens javafx.controls/javafx.scene.control.cell=arb4j --add-opens javafx.graphics/javafx.stage=arb4j  --add-exports javafx.controls/com.sun.javafx.scene.control=arb4j"/>
 </launchConfiguration>

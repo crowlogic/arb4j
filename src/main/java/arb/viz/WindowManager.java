@@ -12,6 +12,7 @@ import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.nodes.Node;
+import arb.expressions.viz.EmacsKeybindingsEventHandler;
 import arb.utensils.Utensils;
 import javafx.application.Platform;
 import javafx.scene.control.*;
@@ -20,6 +21,7 @@ import javafx.scene.control.skin.TableColumnHeader;
 import javafx.scene.control.skin.TableViewSkinBase;
 import javafx.scene.control.skin.VirtualFlow;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -295,6 +297,11 @@ public class WindowManager
       }
     }
     return states;
+  }
+
+  public static void addEmacsKeybindings(TextField textField)
+  {
+    textField.addEventFilter(KeyEvent.KEY_PRESSED, new EmacsKeybindingsEventHandler(textField));
   }
 
 }

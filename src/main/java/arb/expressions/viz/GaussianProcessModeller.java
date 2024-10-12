@@ -2,6 +2,8 @@ package arb.expressions.viz;
 
 import java.lang.reflect.Method;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.viz.WindowManager;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +15,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
+/**
+ * @author ©2024 Stephen Crowley
+ * @see BusinessSourceLicenseVersionOnePointOne for © terms
+ */
 public class GaussianProcessModeller extends
                                      Application
 {
@@ -85,6 +91,7 @@ public class GaussianProcessModeller extends
     {
       comboBox.setEditable(true);
       TextField editor = comboBox.getEditor();
+      WindowManager.addEmacsKeybindings(editor);
       try
       {
         Method setFakeFocus = editor.getClass().getMethod("setFakeFocus", boolean.class);
@@ -92,6 +99,7 @@ public class GaussianProcessModeller extends
       }
       catch (Exception e)
       {
+        e.printStackTrace();
         editor.requestFocus();
       }
     });

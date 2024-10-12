@@ -52,7 +52,7 @@ import javafx.util.StringConverter;
  *      {@link TheArb4jLibrary}
  */
 public class ExpressionEvaluator<D, C extends Closeable, F extends Function<D, C>> extends
-                     Application
+                                Application
 {
 
   public static Class<?>[] TYPES = new Class[]
@@ -190,7 +190,7 @@ public class ExpressionEvaluator<D, C extends Closeable, F extends Function<D, C
     codomainTypeBox.getSelectionModel().select(bclass);
   }
 
-  public static Class<?>[]            INTERFACES = new Class<?>[]
+  public static Class<?>[] INTERFACES = new Class<?>[]
   { IntegerSequence.class,
     RealSequence.class,
     Function.class,
@@ -331,11 +331,6 @@ public class ExpressionEvaluator<D, C extends Closeable, F extends Function<D, C
 
     contextListView.setOnEditCommit(new ContextVariableEditCommitHandler<D, C, F>(this));
 
-  }
-
-  public void addEmacsKeybindings(TextField textField)
-  {
-    textField.addEventFilter(KeyEvent.KEY_PRESSED, new EmacsKeybindingsEventHandler(textField));
   }
 
   private Optional<String> showVariableNameDialog(boolean rename)
@@ -571,6 +566,14 @@ public class ExpressionEvaluator<D, C extends Closeable, F extends Function<D, C
     primaryStage.setScene(scene);
     primaryStage.setTitle("Expression Analyzer");
     primaryStage.show();
+
+    scene.setOnKeyPressed(handler ->
+    {
+      if (handler.getCode() == KeyCode.F11)
+      {
+        primaryStage.setFullScreen(!primaryStage.isFullScreen());
+      }
+    });
 
     addNewExpressionTab();
 

@@ -96,7 +96,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     expressionInput = new TextField();
     expressionInput.setPromptText("Enter expression here");
     expressionInput.setText("1+(-((lnΓ(1/4 + t*I/2) - lnΓ(1/4 - t*I/2))*I)/2 - ln(π)*t/2)/π + 1 - I*((ln(ζ(1/2 + I*t)) - ln(ζ(1/2 - I*t))))/(2*π)");
-    analyzer.addEmacsKeybindings(expressionInput);
+    WindowManager.addEmacsKeybindings(expressionInput);
 
     expressionInput.setMaxWidth(1200);
     expressionInput.setOnKeyPressed(event ->

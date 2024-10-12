@@ -184,6 +184,14 @@ public class TODO extends
       }
     });
 
+    scene.setOnKeyPressed(handler ->
+    {
+      if (handler.getCode() == KeyCode.F11)
+      {
+        primaryStage.setFullScreen(!primaryStage.isFullScreen());
+      }
+    });
+    
     Platform.runLater(this::loadItems);
 
     setStageIcon(primaryStage);
