@@ -16,16 +16,21 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * An application to generate the UTF characters used by the {@link Expression}
@@ -167,20 +172,21 @@ public class SymbolPalette extends
     root.setBottom(hbox);
     root.setCenter(scrollPane);
     scrollPane.setPannable(true);
-    
+
     Scene scene = new Scene(root,
                             1800,
                             900);
     scrollPane.setFitToWidth(true); // Automatically fit the width
     scrollPane.setFitToHeight(false); // Allow height to expand as needed
-    // Bind FlowPane's width to ScrollPane's viewport width (taking scrollbar into account)
-    scrollPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> {
-        Bounds viewportBounds = newValue;
-        // Set the FlowPane width to the viewport width
-        buttonPane.setPrefWidth(viewportBounds.getWidth());
+    // Bind FlowPane's width to ScrollPane's viewport width (taking scrollbar into
+    // account)
+    scrollPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) ->
+    {
+      Bounds viewportBounds = newValue;
+      // Set the FlowPane width to the viewport width
+      buttonPane.setPrefWidth(viewportBounds.getWidth());
     });
 
-    
     // Bind the font size to the scene height
     textField.fontProperty()
              .bind(Bindings.createObjectBinding(() -> Font.font(scene.getHeight() * 0.04), scene.heightProperty()));
@@ -199,6 +205,28 @@ public class SymbolPalette extends
     WindowManager.setStageIcon(primaryStage, "SymbolPalette.png");
     scene.getStylesheets().add(Stylesheet.convertStylesheetToDataURI(Stylesheet.EASIER_ON_THE_EYES_STYLESHEET));
 
+    scene.setOnKeyPressed(button ->
+    {
+      if (button.getCode() == KeyCode.F11)
+      {
+        primaryStage.setFullScreenExitHint("Press escape or F11 to exit full-screen mode");
+        primaryStage.setFullScreen(!primaryStage.isFullScreen());
+      }
+      if (button.getCode() == KeyCode.ESCAPE)
+      {
+        primaryStage.fireEvent(new WindowEvent(primaryStage,
+                                               WindowEvent.WINDOW_CLOSE_REQUEST));
+      }
+    });
+    primaryStage.setOnCloseRequest(evt ->
+    {
+
+      Alert alert = new Alert(AlertType.CONFIRMATION);
+      alert.setTitle("Confirm Close");
+      alert.setHeaderText("Close program?");
+      alert.showAndWait().filter(r -> r != ButtonType.OK).ifPresent(r -> evt.consume());
+
+    });
     primaryStage.setTitle(SymbolPalette.class.getSimpleName());
     primaryStage.setScene(scene);
     primaryStage.show();
