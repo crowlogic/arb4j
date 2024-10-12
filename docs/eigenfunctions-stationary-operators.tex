@@ -1,53 +1,41 @@
 \documentclass{article}
-\usepackage{amsmath}
-\usepackage{amssymb}
+\usepackage[english]{babel}
+\usepackage{latexsym}
 
+%%%%%%%%%% Start TeXmacs macros
 \newcommand{\mathd}{\mathrm{d}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{lemma}{Lemma}
+%%%%%%%%%% End TeXmacs macros
 
-\title{Determination of the Eigenfunctions of Integral Covariance Operators of
-Stationary Gaussian Processes}
-
-\author{
-  Stephen Crowley <stephencrowley214@gmail.com>
-  \tmaffiliation{September 14, 2024}
-}
+\providecommand{\mathd}{\mathrm{d}}
 
 \begin{document}
-
-\maketitle
-
-\begin{abstract}
-  It is proved that the eigenfunctions and eigenvalues of the integral
-  covariance operator of a stationary Gaussian process is the orthogonal
-  complement of the null space of the kernel inner product operator where the
-  null space is identified as the inverse Fourier transforms of the
-  polynomials which are orthogonal with respect to the spectral density of the
-  process. 
-\end{abstract}
 
 Let $C (x)$ be the covariance function of a stationary Gaussian process on
 $[0, \infty)$. Define the integral covariance operator $T$ by:
 \begin{equation}
   (Tf) (x) = \int_0^{\infty} C (x - y) f (y)  \hspace{0.17em} \mathd y
 \end{equation}
-Let $S (\omega)$ be the spectral density related to $C (x)$ by the Wiener-Khinchin theorem:
+Let $S (\omega)$ be the spectral density related to $C (x)$ by the
+Wiener-Khinchin theorem:
 \begin{equation}
-  C (x) = \frac{1}{\pi} \int_{-\infty}^{\infty} e^{i \omega x} S (\omega) 
+  C (x) = \frac{1}{\pi}  \int_{- \infty}^{\infty} e^{i \omega x} S (\omega) 
   \hspace{0.17em} \mathd \omega
 \end{equation}
 \begin{equation}
-  S (\omega) = \int_{0}^{\infty} C (x) e^{-i x \omega} \mathd x
+  S (\omega) = \int_0^{\infty} C (x) e^{- ix \omega} \mathd x
 \end{equation}
 Consider polynomials $\{p_n (\omega)\}$ orthogonal with respect to $S
 (\omega)$:
 \begin{equation}
-  \int_{-\infty}^{\infty} p_n (\omega) p_m (\omega) S (\omega)  \hspace{0.17em} \mathd
-  \omega = \delta_{nm}
+  \int_{- \infty}^{\infty} p_n (\omega) p_m (\omega) S (\omega) 
+  \hspace{0.17em} \mathd \omega = \delta_{nm}
 \end{equation}
-
 Define $r_n (x)$ as the inverse Fourier transforms of $p_n (\omega)$:
 \begin{equation}
-  r_n (x) = \int_{-\infty}^{\infty} p_n (\omega) e^{i \omega x}  \hspace{0.17em} \mathd \omega
+  r_n (x) = \int_{- \infty}^{\infty} p_n (\omega) e^{i \omega x} 
+  \hspace{0.17em} \mathd \omega
 \end{equation}
 \begin{lemma}
   The functions $r_n (x)$ form the null space of the kernel inner product:
@@ -60,80 +48,40 @@ Define $r_n (x)$ as the inverse Fourier transforms of $p_n (\omega)$:
   Proof: Substitute the definitions of $C (x)$ and $r_n (x)$, and apply
   Fubini's theorem:
   \begin{equation}
-    \int_0^{\infty} C (x) r_n (x)  \hspace{0.17em} \mathd x = 
-    \int_0^{\infty} \frac{1}{\pi} \int_{-\infty}^{\infty} e^{i \omega x} S (\omega) 
-    \hspace{0.17em} \mathd \omega \int_{-\infty}^{\infty} p_n (\omega') e^{i \omega' x} 
-    \hspace{0.17em} \mathd \omega'  \hspace{0.17em} \mathd x
+    \int_0^{\infty} C (x) r_n (x)  \hspace{0.17em} \mathd x = \int_0^{\infty}
+    \frac{1}{\pi}  \int_{- \infty}^{\infty} e^{i \omega x} S (\omega) 
+    \hspace{0.17em} \mathd \omega \int_{- \infty}^{\infty} p_n (\omega') e^{i
+    \omega' x}  \hspace{0.17em} \mathd \omega'  \hspace{0.17em} \mathd x
   \end{equation}
   By Fubini's theorem, we can swap the integrals:
   \begin{equation}
-    = \frac{1}{\pi}  \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} p_n (\omega') S
-    (\omega)  \int_0^{\infty} e^{i (\omega + \omega') x}  \hspace{0.17em} \mathd x
-    \hspace{0.17em} \mathd \omega'  \hspace{0.17em} \mathd \omega
+    = \frac{1}{\pi}  \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} p_n
+    (\omega') S (\omega)  \int_0^{\infty} e^{i (\omega + \omega') x} 
+    \hspace{0.17em} \mathd x \hspace{0.17em} \mathd \omega'  \hspace{0.17em}
+    \mathd \omega
   \end{equation}
   The integral over $x$ yields the Dirac delta function $\delta (\omega -
   \omega')$:
   \begin{equation}
-    = \frac{1}{\pi}  \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} p_n (\omega') S
-    (\omega) \pi \delta (\omega - \omega')  \hspace{0.17em} \mathd \omega'
-    \hspace{0.17em} \mathd \omega
+    = \frac{1}{\pi}  \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} p_n
+    (\omega') S (\omega) \pi \delta (\omega - \omega')  \hspace{0.17em} \mathd
+    \omega'  \hspace{0.17em} \mathd \omega
   \end{equation}
   Now, integrate over $\omega'$ using the delta function:
   \begin{equation}
-    = \int_{-\infty}^{\infty} p_n (\omega) S (\omega)  \hspace{0.17em} \mathd \omega
+    = \int_{- \infty}^{\infty} p_n (\omega) S (\omega)  \hspace{0.17em} \mathd
+    \omega
   \end{equation}
   By the orthogonality of $p_n (\omega)$ with respect to $S (\omega)$, we
   conclude:
   \begin{equation}
-    \int_{-\infty}^{\infty} p_n (\omega) S (\omega)  \hspace{0.17em} \mathd \omega = 0
+    \int_{- \infty}^{\infty} p_n (\omega) S (\omega)  \hspace{0.17em} \mathd
+    \omega = 0
   \end{equation}
   Thus, $\int_0^{\infty} C (x) r_n (x)  \hspace{0.17em} \mathd x = 0$, which
   completes the proof.
 \end{proof}
 
-\section{Eigenfunctions from Orthogonalized Null Space}
-By orthogonalizing the null space $\{r_n(x)\}$, we obtain the eigenfunctions $\{\psi_n(x)\}$ of the covariance operator $T$. The orthogonalization process gives:
-\[ \psi_n(x) = \sum_{k=0}^n a_{nk}r_k(x) \]
-where the coefficients $a_{nk}$ are given by:
-\[ a_{nk} = \left\{
-\begin{array}{ll}
-1 & \text{if } k = n\\
--\sum_{j=k}^{n-1} a_{nj}\langle r_n,\psi_j\rangle & \text{if } k < n\\
-0 & \text{if } k > n
-\end{array}
-\right. \]
-
-\begin{theorem}
-  Let $\{\psi_n (x)\}$ be the orthogonal complement of $\{r_n (x)\}$. Then
-  $\psi_n (x)$ are eigenfunctions of $T$, with eigenvalues:
-  \[ \lambda_n = \int_0^{\infty} C (z) \psi_n (z)  \hspace{0.17em} \mathd z \]
-\end{theorem}
-
-\begin{proof}
-Let $\psi_n(x) = \sum_k a_{nk}r_k(x)$. Then:
-\begin{align*}
-\int_{-\infty}^{\infty} C(x-y)\psi_n(y) \,\mathd y &= \int_{-\infty}^{\infty} C(x-y) \sum_k a_{nk}r_k(y) \,\mathd y\\
-&= \sum_k a_{nk} \int_{-\infty}^{\infty} C(x-y)r_k(y) \,\mathd y\\
-&= \sum_k a_{nk} \int_{-\infty}^x C(x-y)r_k(y) \,\mathd y\\
-&= \sum_k a_{nk} \left[r_k(x)\int_0^{\infty} C(z)\,\mathd z - \int_0^{\infty} C(z)r_k(x-z) \,\mathd z\right]
-\end{align*}
-Now, let's focus on the second term:
-\begin{align*}
-\sum_k a_{nk} \int_0^{\infty} C(z)r_k(x-z) \,\mathd z &= \int_0^{\infty} C(z)\sum_k a_{nk}r_k(x-z) \,\mathd z\\
-&= \int_0^{\infty} C(z)\psi_n(x-z) \,\mathd z\\
-&= (T\psi_n)(x)
-\end{align*}
-Substituting this back into our original expression:
-\begin{align*}
-\int_{-\infty}^{\infty} C(x-y)\psi_n(y) \,\mathd y &= \sum_k a_{nk}r_k(x)\int_0^{\infty} C(z)\,\mathd z - (T\psi_n)(x)\\
-&= \psi_n(x)\int_0^{\infty} C(z)\,\mathd z - (T\psi_n)(x)
-\end{align*}
-Therefore, we have shown that:
-\[ (T\psi_n)(x) = \lambda_n\psi_n(x) \]
-where the eigenvalue $\lambda_n$ is given by:
-\[ \lambda_n = \int_0^{\infty} C(z)\psi_n(z) \,\mathd z \]
-\end{proof}
-
-Thus, we have shown that the orthogonalized null space functions are eigenfunctions of the covariance operator, providing a direct method to construct eigenfunctions for stationary operators. The eigenvalues are determined by the integral of the covariance function with the corresponding eigenfunction.
+\
 
 \end{document}
