@@ -1,6 +1,5 @@
 NEW: implement KL expansion
 expr compiler: derivatives and fractional derivatices
-TimeWaveZero
 analyzer: dont allow duplicate variables
 analyzer: load
 expr analyzer; add button to toggle debug output https://controlsfx.github.io/features/toggleswitch/
