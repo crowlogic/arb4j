@@ -23,6 +23,17 @@ public class IntegerPolynomialTest extends
     }
   }
 
+  public void testIndexedAccess()
+  {
+    try ( var x = new IntegerPolynomial("7*x+3*x^2"))
+    {
+      assertEquals("3*x^2+7*x", x.toString());
+      assertEquals(7, x.get(1).getSignedValue());
+      assertEquals(3, x.get(2).getSignedValue());
+      assertEquals(0, x.get(0).getSignedValue());
+    }
+  }
+
   public void testIdentity()
   {
     try ( var x = new IntegerPolynomial())
@@ -74,8 +85,7 @@ public class IntegerPolynomialTest extends
   @SuppressWarnings("resource")
   public void testSub()
   {
-    try ( IntegerPolynomial a = new IntegerPolynomial().set(10);
-          IntegerPolynomial b = new IntegerPolynomial().set(3);
+    try ( IntegerPolynomial a = new IntegerPolynomial().set(10); IntegerPolynomial b = new IntegerPolynomial().set(3);
           IntegerPolynomial result = new IntegerPolynomial();)
     {
       a.sub(b, 128, result);

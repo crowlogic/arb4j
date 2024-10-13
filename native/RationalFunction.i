@@ -59,7 +59,16 @@ import java.util.stream.Stream;
     arblib.fmpz_poly_q_inv(x, this);
     return null;
   }
-  
+
+  /**
+   * @return true if this{@link #denominator} and this{@link #numerator} are both
+   *         of length 1
+   */
+  public boolean isFraction()
+  {
+    return getNumerator().getLength() == 1 && getDenominator().getLength() == 1;
+  }
+    
   public ComplexFraction evaluate(ComplexFraction input, int bits, ComplexFraction result)
   {
     evaluate(input.realPart, bits, result.realPart);
@@ -276,11 +285,20 @@ import java.util.stream.Stream;
   @Override
   public boolean equals(Object obj)
   {
-    if ( !(obj instanceof RationalFunction))
+    if (obj instanceof Fraction)
+    {
+      if (!isFraction())
+      {
+        return false;
+      }
+      assert false : "maybe";
+
+    }
+    if (!(obj instanceof RationalFunction))
     {
       return false;
     }
-    RationalFunction that = (RationalFunction)obj;
+    RationalFunction that = (RationalFunction) obj;
     return arblib.fmpz_poly_q_equal(this, that) != 0;
   }
   

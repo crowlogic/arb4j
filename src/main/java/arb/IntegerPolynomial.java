@@ -228,12 +228,15 @@ public class IntegerPolynomial implements Named,AutoCloseable,Ring<IntegerPolyno
 
   public Integer get(int idx)
   {
+    final int length = getLength();
+    assert 0 <= idx && idx < length : String.format("index %d out of bounds, this.length=%d", idx, length);
     if (coeffs == null)
     {
-      coeffs = new Integer[getLength()];
+      long coeffsNative = getCoeffsNative();
+      coeffs = new Integer[length];
       for (int i = 0; i < getLength(); i++)
       {
-        coeffs[i] = new Integer(swigCPtr + Long.BYTES * i,
+        coeffs[i] = new Integer(coeffsNative + Long.BYTES * i,
                                 false);
       }
     }

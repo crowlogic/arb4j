@@ -1034,6 +1034,14 @@ public class Integer implements
     }
   }
 
+  public RationalFunction Γ(int bits, RationalFunction result)
+  {
+    try ( Real tmp = new Real())
+    {
+      return result.set(Γ(bits, tmp));
+    }
+  }
+
   public Real Γ(int bits, Real result)
   {
     return result.set(this).Γ(bits);

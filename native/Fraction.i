@@ -495,22 +495,32 @@ import java.util.stream.Stream;
   }
 
   @Override
-  public boolean
-         equals(Object obj)
+  public boolean equals(Object obj)
   {
     if (obj == null)
     {
       return false;
     }
-    if (!obj.getClass()
-            .isAssignableFrom(Fraction.class))
+    if (obj instanceof RationalFunction)
+    {
+      RationalFunction rfunc = (RationalFunction) obj;
+      if (rfunc.isFraction())
+      {
+        Integer otherNumerator   = rfunc.getNumerator().get(0);
+        Integer otherDenominator = rfunc.getDenominator().get(0);
+        Integer thisNumerator    = getNumerator();
+        Integer thisDenominator  = getDenominator();
+        return otherNumerator.equals(thisNumerator) && otherDenominator.equals(thisDenominator);
+      }
+    }
+    if (!(obj instanceof Fraction))
     {
       return false;
     }
     Fraction that = (Fraction) obj;
     return arblib.fmpq_equal(this, that) != 0;
-  }
-    
+  }    
+  
   private Integer numerator;
   private Integer denominator;
 
