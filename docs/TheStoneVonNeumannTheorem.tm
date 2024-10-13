@@ -91,9 +91,9 @@
   By analogy with the classical case, one can show that a quantum dynamical
   system with Hamiltonian operator <math|H<rsub|op>> is Euclidean invariant
   on <math|\<bbb-R\><rsup|3>> when <math|H<rsub|op>> is a function of the
-  Laplacian; the relevant fact from operator theory is that every translation
-  and rotational invariant operator on <math|\<bbb-R\><rsup|n>> is a function
-  of the Laplacian.
+  Laplacian; <strong|the relevant fact from operator theory is that every
+  translation and rotational invariant operator on <math|\<bbb-R\><rsup|n>>
+  is a function of the Laplacian.>
 
   We can go to the Galilei group and the Lorentz group as in the classical
   case. For the Galilei case we are again forced into
