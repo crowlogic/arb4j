@@ -310,4 +310,9 @@ public class Context
     injectFunctionReferences(f);
   }
 
+  public void mergeFrom(Context context)
+  {
+    variables.addAll( context.variables );
+  }
+
 }

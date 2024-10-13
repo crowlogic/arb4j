@@ -6,8 +6,6 @@ import org.junit.Test;
 
 import arb.*;
 import arb.Float;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.functions.rational.RationalNullaryFunction;
 import junit.framework.TestCase;
 
@@ -24,12 +22,22 @@ public class RealFunctionTest extends
                               TestCase
 {
 
-  public static void testBetaFunction()
+  public static void testBetaFunctionReal()
+  {
+    var oneOverThirthy = new Fraction(1,
+                                      30);
+    var oneThirtieth   = RealNullaryFunction.express("Beta(5,2)");
+    var val            = oneThirtieth.evaluate(128);
+    assertEquals(oneOverThirthy.doubleValue(), val.doubleValue());
+  }
+
+  public static void testBetaFunctionRational()
   {
     var oneOverThirthy = new Fraction(1,
                                       30);
     var oneThirtieth   = RationalNullaryFunction.express("Beta(5,2)");
-    assertEquals(oneOverThirthy, oneThirtieth);
+    var val            = oneThirtieth.evaluate(128);
+    assertEquals(oneOverThirthy, val);
   }
 
   public static void testJ0Eigenfunctions()

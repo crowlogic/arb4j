@@ -4,6 +4,7 @@ import org.objectweb.asm.MethodVisitor;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
@@ -39,7 +40,11 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
     y = expression.resolve();
     expression.require(')');
 
-    Context context = new Context();
+    Context context = expression.context;
+    if (expression.context == null)
+    {
+      context = expression.context = new Context();
+    }
     context.registerVariable("x", expression.newCoDomainInstance());
     context.registerVariable("y", expression.newCoDomainInstance());
 
@@ -48,19 +53,19 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
                                   expression.functionClass,
                                   "Γ(x)*Γ(y)/Γ(x+y)",
                                   context);
-    x.expression = definition;
-    y.expression = definition;
-   
+//    x.expression = definition;
+//    y.expression = definition;
+
+    //expression.context.functions.map.putAll(context.functions.map);
     definition.substitute("x", x);
     definition.substitute("y", y);
-    
-    definition.instantiate();
+
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    definition.rootNode.generate(mv, resultType);
+    definition.rootNode.spliceInto(expression).generate(mv, resultType);
     return mv;
   }
 }
