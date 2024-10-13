@@ -20,6 +20,13 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       bilinearOrthogonalExpansionsAndIntegralOperatorSpectra        =
+                                                                                     new Article("Bilinear biorthogonal expansions and the spectrum of an integral operator",
+                                                                                                 "Abreu, Lu{\\'\\i}s Daniel and Ciaurri, {\\'O}scar and Varona, Juan Luis",
+                                                                                                 "2009",
+                                                                                                 "Pr{\\'e}-Publica{\\c{c}}{\\~o}es DMUC",
+                                                                                                 "2408.08064",
+                                                                                                 "").setNumber("09-32");
 
   public static Article       theRayleighRitzMethodForIntegralCovarianceOperatorEigenspaces =
                                                                                             new Article("Eigenvalues approximation of integral covariance operators with applications to weighted $L^2$ statistics",
