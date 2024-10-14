@@ -29,122 +29,69 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-1><vspace|0.5fn>
 
-    <with|par-left|1tab|1.1<space|2spc>The Gelfand-Vilenkin Spectral
-    Representation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|1tab|1.1<space|2spc>The Karhunen-Loeve Expansion
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-2>>
 
-    <with|par-left|1tab|1.2<space|2spc>The Karhunen-Loeve Expansion
+    <with|par-left|2tab|1.1.1<space|2spc>Derivation
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-3>>
 
-    <with|par-left|2tab|1.2.1<space|2spc>Derivation
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|2tab|1.1.2<space|2spc>Reproducing Kernel Hilbert Spaces
+    (RKHS) <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-4>>
 
-    <with|par-left|2tab|1.2.2<space|2spc>Reproducing Kernel Hilbert Spaces
-    (RKHS) <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|1tab|1.2<space|2spc>Properties
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-5>>
 
-    <with|par-left|1tab|1.3<space|2spc>Properties
+    <with|par-left|2tab|1.2.1<space|2spc>Error Minimization
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-6>>
 
-    <with|par-left|2tab|1.3.1<space|2spc>Error Minimization
+    <with|par-left|2tab|1.2.2<space|2spc>Uniqueness of the Expansion
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-7>>
 
-    <with|par-left|2tab|1.3.2<space|2spc>Uniqueness of the Expansion
+    <with|par-left|2tab|1.2.3<space|2spc>Expansion of Gaussian Processes
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-8>>
 
-    <with|par-left|2tab|1.3.3<space|2spc>Expansion of Gaussian Processes
+    <with|par-left|2tab|1.2.4<space|2spc>Minimum Representation Entropy
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-9>>
 
-    <with|par-left|2tab|1.3.4<space|2spc>Minimum Representation Entropy
+    <with|par-left|1tab|1.3<space|2spc>Solution of the Integral Equation
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-10>>
 
-    <with|par-left|1tab|1.4<space|2spc>Solution of the Integral Equation
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|1tab|1.4<space|2spc>Exact Solutions For Stationary
+    Processes <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-11>>
 
-    <with|par-left|1tab|1.5<space|2spc>Exact Solutions For Stationary
-    Processes <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|2tab|1.4.1<space|2spc><with|color|dark
+    red|font-family|rm|<with|mode|math|<big|int><rsub|0><rsup|\<infty\>>J<rsub|0><around*|(|t-s|)>f<around*|(|t|)>\<mathd\>t>>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-12>>
 
-    <with|par-left|2tab|1.5.1<space|2spc><with|color|dark
-    red|font-family|rm|<with|mode|math|<big|int><rsub|0><rsup|\<infty\>>J<rsub|0><around*|(|t-s|)>f<around*|(|t|)>\<mathd\>t>>
+    <with|par-left|2tab|1.4.2<space|2spc>Simplifying The Convolution
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-13>>
 
-    <with|par-left|2tab|1.5.2<space|2spc>Simplifying The Convolution
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-14>>
-
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Appendix>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-15><vspace|0.5fn>
+    <no-break><pageref|auto-14><vspace|0.5fn>
 
     <with|par-left|1tab|2.1<space|2spc>A Theorem On The Development of
     Symmetric Nuclei <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-16>>
+    <no-break><pageref|auto-15>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-17><vspace|0.5fn>
+    <no-break><pageref|auto-16><vspace|0.5fn>
   </table-of-contents>
 
   <section|The Spectral Approach to Stochastic Processes>
-
-  <subsection|The Gelfand-Vilenkin Spectral Representation>
-
-  The majority of the results on the representation of random processes have
-  been derived for the class of second order
-  processes<cite|stochasticFiniteElements>; one of the most important of
-  which is the <verbatim|Gelfand-Vilenkin spectral representation> which
-  states in its most general form
-
-  <\equation>
-    w*<around|(|x,\<theta\>|)>=<big|int>g<around|(|x|)>*d*\<mu\><around|(|\<theta\>|)><label|2.1>
-  </equation>
-
-  where <math|w*<around|(|x,\<theta\>|)>> is a stochastic process whose
-  covariance function <math|C<rsub|w*w><around|(|x<rsub|1>,x<rsub|2>|)>> can
-  be expressed as
-
-  <\equation>
-    C<rsub|w*w><around|(|x<rsub|1>,x<rsub|2>|)>=<big|int>g<around|(|x<rsub|1>|)>*g<around|(|x<rsub|2>|)>*d*\<mu\><rsub|1><around|(|\<theta\>|)>*d*\<mu\><rsub|2><around|(|\<theta\>|)><label|2.2>
-  </equation>
-
-  In equation (<reference|2.1>), <math|g<around|(|x|)>> is a deterministic
-  function and <math|d*\<mu\><around|(|\<theta\>|)>> is an orthogonal set
-  function, also termed orthogonal stochastic measure, defined on the
-  <math|\<sigma\>>-field <math|\<Psi\>> of random events. An important
-  specialization of the spectral expansion occurs if the process
-  <math|w*<around|(|x,\<theta\>|)>> is wide stationary. In this case,
-  equation (<reference|2.1>) can be shown to reduce to the Wiener-Khintchine
-  relation <cite|correlationTheoryOfStationaryRandomProcesses> and we have
-
-  <\equation>
-    w*<around|(|x,\<theta\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\><rsup|T>*x>*d*\<mu\><around|(|\<omega\>,\<theta\>|)>
-  </equation>
-
-  and
-
-  <\equation>
-    C<rsub|w*w><around|(|x<rsub|1>,x<rsub|2>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<omega\><rsub|1>*x<rsub|1>-\<omega\><rsub|2>*x<rsub|2>|)><rsup|T>>*S<around|(|\<omega\>|)>*d*\<omega\><label|S>
-  </equation>
-
-  where the symbol <math|T> denotes vector transposition, These spectral
-  representations are significant but limited to deterministic systems under
-  the influence of stochastic processes. \ This limitation arises because
-  these representations require differentials of random functions, placing
-  them in an infinite-dimensional space, which complicates the development of
-  computational algorithms. Similarly,<cite-detail|stochasticProcessesInferenceTheory|Ch.1
-  Bibliogaphical notes, p.18> highlights a challenge in extending von
-  Neumann's zero-sum two-person games to stochastic processes, hindered by
-  the same issue of infinite-dimensionality.\ 
 
   <subsection|The Karhunen-Loeve Expansion>
 
@@ -525,7 +472,9 @@
   stationary process, kernel square-integrable or not, domain unbounded or
   not.
 
-  In <cite-detail|stochasticFiniteElements|2.3.2> a Galerkin type procedure
+  In <cite-detail|stochasticFiniteElements|2.3.2> a Galerkin type procedure,
+  equivalent to the variational solution and also the Rayleigh-Ritz
+  method<cite|theRayleighRitzMethodForIntegralCovarianceOperatorEigenspaces>
   is described for the solution of the Fredholm equation (<reference|2.33>)
   where <math|h<rsub|i><around|(|x|)>> is any complete set but here it will
   be shown that the best choice is not just any complete set of functions in
@@ -1140,7 +1089,7 @@
   </proof>
 
   <\bibliography|bib|tm-plain|refs>
-    <\bib-list|8>
+    <\bib-list|7>
       <bibitem*|1><label|bib-stationaryAndRelatedStochasticProcesses>Harald
       Cramér<localize| and >M.R.<nbsp>Leadbetter.
       <newblock><with|font-shape|italic|Stationary and Related Processes:
@@ -1153,38 +1102,34 @@
       <newblock><with|font-shape|italic|Journal of the Australian
       Mathematical Society>, 98:145\U160, 2015.<newblock>
 
-      <bibitem*|3><label|bib-whittakerAndWatsonCourseOfModernAnalysis>George<nbsp>Neville<nbsp>Watson
+      <bibitem*|3><label|bib-theRayleighRitzMethodForIntegralCovarianceOperatorEigenspaces>María<nbsp>Dolores<nbsp>Jiménez-Gamero,
+      Ebner, Bruno<localize| and >Bojana Milo²evi¢. <newblock>Eigenvalues
+      approximation of integral covariance operators with applications to
+      weighted <math|L<rsup|2>> statistics.
+      <newblock><with|font-shape|italic|ArXiv preprint>, 2408.08064:0,
+      2024.<newblock>
+
+      <bibitem*|4><label|bib-whittakerAndWatsonCourseOfModernAnalysis>George<nbsp>Neville<nbsp>Watson
       Edmund Taylor Whittaker. <newblock><with|font-shape|italic|A course of
       modern analysis: an introduction to the general theory of infinite
       processes and of analytic functions; with an account of the principal
       transcendental functions>. <newblock>University Press, 1920.<newblock>
 
-      <bibitem*|4><label|bib-stochasticFiniteElements>Roger<nbsp>G.<nbsp>Ghanem<localize|
+      <bibitem*|5><label|bib-stochasticFiniteElements>Roger<nbsp>G.<nbsp>Ghanem<localize|
       and >Pol<nbsp>D.<nbsp>Spanos. <newblock><with|font-shape|italic|Stochastic
       finite elements: a spectral approach>. <newblock>Springer-Verlag,
       Berlin, Heidelberg, 1991.<newblock>
 
-      <bibitem*|5><label|bib-modifiedLommelPolynomials>R.<nbsp>Wong K.F. Lee.
+      <bibitem*|6><label|bib-modifiedLommelPolynomials>R.<nbsp>Wong K.F. Lee.
       <newblock>Asymptotic expansion of the modified lommel polynomials
       <math|h<rsub|n,\<nu\>><around|(|x|)>> and their zeros.
       <newblock><with|font-shape|italic|Proceedings of the American
       Mathematical Society>, 142(11):3953\U3964, 2014.<newblock>
 
-      <bibitem*|6><label|bib-gaussianProcessIntroduction>Steven<nbsp>P.<nbsp>Lalley.
+      <bibitem*|7><label|bib-gaussianProcessIntroduction>Steven<nbsp>P.<nbsp>Lalley.
       <newblock>Introduction to gaussian processes.
       <newblock>https://galton.uchicago.edu/<math|\<sim\>>elalley/Courses/386/GaussianProcesses.pdf,
       2013.<newblock>
-
-      <bibitem*|7><label|bib-stochasticProcessesInferenceTheory>Malempati<nbsp>M.<nbsp>Rao.
-      <newblock><with|font-shape|italic|Stochastic Processes: Inference
-      Theory>. <newblock>Springer Monographs in Mathematics. Springer,
-      2nd<localize| edition>, 2014.<newblock>
-
-      <bibitem*|8><label|bib-correlationTheoryOfStationaryRandomProcesses>A.M.<nbsp>Yaglom.
-      <newblock><with|font-shape|italic|Correlation Theory of Stationary and
-      Related Random Functions>, <localize|volume> I: Basic Results<localize|
-      of ><with|font-shape|italic|Applied Probability>. <newblock>Springer
-      New York, 1987.<newblock>
     </bib-list>
   </bibliography>
 </body>
@@ -1201,69 +1146,58 @@
 
 <\references>
   <\collection>
-    <associate|2.1|<tuple|1|2>>
-    <associate|2.10|<tuple|10|4>>
-    <associate|2.11|<tuple|11|4>>
-    <associate|2.12|<tuple|12|4>>
-    <associate|2.15|<tuple|15|4>>
-    <associate|2.17|<tuple|17|4>>
-    <associate|2.19|<tuple|19|5>>
-    <associate|2.2|<tuple|2|2>>
-    <associate|2.20|<tuple|20|5>>
-    <associate|2.21|<tuple|21|5>>
-    <associate|2.22|<tuple|22|6>>
-    <associate|2.23|<tuple|23|6>>
-    <associate|2.24|<tuple|24|6>>
-    <associate|2.26|<tuple|26|6>>
-    <associate|2.33|<tuple|35|8>>
-    <associate|2.7|<tuple|7|3>>
-    <associate|2.74|<tuple|37|9>>
-    <associate|2.77|<tuple|44|10>>
-    <associate|2.78|<tuple|45|10>>
-    <associate|2.79|<tuple|46|10>>
-    <associate|2.8|<tuple|8|3>>
-    <associate|2.82|<tuple|49|10>>
-    <associate|2.9|<tuple|9|3>>
-    <associate|S|<tuple|4|2>>
-    <associate|T|<tuple|63|14>>
-    <associate|auto-1|<tuple|1|2>>
-    <associate|auto-10|<tuple|1.3.4|8>>
-    <associate|auto-11|<tuple|1.4|8>>
-    <associate|auto-12|<tuple|1.5|8>>
-    <associate|auto-13|<tuple|1.5.1|11>>
-    <associate|auto-14|<tuple|1.5.2|17>>
-    <associate|auto-15|<tuple|2|18>>
-    <associate|auto-16|<tuple|2.1|18>>
-    <associate|auto-17|<tuple|85|19>>
-    <associate|auto-2|<tuple|1.1|2>>
-    <associate|auto-3|<tuple|1.2|2>>
-    <associate|auto-4|<tuple|1.2.1|3>>
-    <associate|auto-5|<tuple|1.2.2|5>>
-    <associate|auto-6|<tuple|1.3|6>>
-    <associate|auto-7|<tuple|1.3.1|6>>
-    <associate|auto-8|<tuple|1.3.2|7>>
-    <associate|auto-9|<tuple|1.3.3|7>>
-    <associate|bib-correlationTheoryOfStationaryRandomProcesses|<tuple|8|19>>
-    <associate|bib-finiteFourierTransforms|<tuple|2|19>>
-    <associate|bib-gaussianProcessIntroduction|<tuple|6|19>>
-    <associate|bib-modifiedLommelPolynomials|<tuple|5|19>>
-    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|19>>
-    <associate|bib-stochasticFiniteElements|<tuple|4|19>>
-    <associate|bib-stochasticProcessesInferenceTheory|<tuple|7|19>>
-    <associate|bib-whittakerAndWatsonCourseOfModernAnalysis|<tuple|3|19>>
-    <associate|ortho|<tuple|5|11>>
+    <associate|2.10|<tuple|6|3>>
+    <associate|2.11|<tuple|7|3>>
+    <associate|2.12|<tuple|8|3>>
+    <associate|2.15|<tuple|11|3>>
+    <associate|2.17|<tuple|13|4>>
+    <associate|2.19|<tuple|15|4>>
+    <associate|2.20|<tuple|16|4>>
+    <associate|2.21|<tuple|17|4>>
+    <associate|2.22|<tuple|18|5>>
+    <associate|2.23|<tuple|19|5>>
+    <associate|2.24|<tuple|20|5>>
+    <associate|2.26|<tuple|22|6>>
+    <associate|2.33|<tuple|31|7>>
+    <associate|2.7|<tuple|3|2>>
+    <associate|2.74|<tuple|33|8>>
+    <associate|2.77|<tuple|40|9>>
+    <associate|2.78|<tuple|41|9>>
+    <associate|2.79|<tuple|42|9>>
+    <associate|2.8|<tuple|4|2>>
+    <associate|2.82|<tuple|45|9>>
+    <associate|2.9|<tuple|5|3>>
+    <associate|T|<tuple|59|13>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-10|<tuple|1.3|7>>
+    <associate|auto-11|<tuple|1.4|7>>
+    <associate|auto-12|<tuple|1.4.1|10>>
+    <associate|auto-13|<tuple|1.4.2|16>>
+    <associate|auto-14|<tuple|2|17>>
+    <associate|auto-15|<tuple|2.1|17>>
+    <associate|auto-16|<tuple|81|18>>
+    <associate|auto-2|<tuple|1.1|1>>
+    <associate|auto-3|<tuple|1.1.1|2>>
+    <associate|auto-4|<tuple|1.1.2|4>>
+    <associate|auto-5|<tuple|1.2|5>>
+    <associate|auto-6|<tuple|1.2.1|5>>
+    <associate|auto-7|<tuple|1.2.2|6>>
+    <associate|auto-8|<tuple|1.2.3|7>>
+    <associate|auto-9|<tuple|1.2.4|7>>
+    <associate|bib-finiteFourierTransforms|<tuple|2|18>>
+    <associate|bib-gaussianProcessIntroduction|<tuple|7|18>>
+    <associate|bib-modifiedLommelPolynomials|<tuple|6|18>>
+    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|18>>
+    <associate|bib-stochasticFiniteElements|<tuple|5|18>>
+    <associate|bib-theRayleighRitzMethodForIntegralCovarianceOperatorEigenspaces|<tuple|3|18>>
+    <associate|bib-whittakerAndWatsonCourseOfModernAnalysis|<tuple|4|18>>
+    <associate|ortho|<tuple|5|10>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
     <\associate|bib>
-      stochasticFiniteElements
-
-      correlationTheoryOfStationaryRandomProcesses
-
-      stochasticProcessesInferenceTheory
-
       stochasticFiniteElements
 
       stochasticFiniteElements
@@ -1282,6 +1216,8 @@
 
       stochasticFiniteElements
 
+      theRayleighRitzMethodForIntegralCovarianceOperatorEigenspaces
+
       finiteFourierTransformsOfClassicalOrthogonalPolynomials
 
       modifiedLommelPolynomials
@@ -1298,70 +1234,66 @@
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-1><vspace|0.5fn>
 
-      <with|par-left|<quote|1tab>|1.1<space|2spc>The Gelfand-Vilenkin
-      Spectral Representation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|1.1<space|2spc>The Karhunen-Loeve Expansion
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-2>>
 
-      <with|par-left|<quote|1tab>|1.2<space|2spc>The Karhunen-Loeve Expansion
+      <with|par-left|<quote|2tab>|1.1.1<space|2spc>Derivation
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3>>
 
-      <with|par-left|<quote|2tab>|1.2.1<space|2spc>Derivation
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|2tab>|1.1.2<space|2spc>Reproducing Kernel Hilbert
+      Spaces (RKHS) <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-4>>
 
-      <with|par-left|<quote|2tab>|1.2.2<space|2spc>Reproducing Kernel Hilbert
-      Spaces (RKHS) <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|1.2<space|2spc>Properties
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-5>>
 
-      <with|par-left|<quote|1tab>|1.3<space|2spc>Properties
+      <with|par-left|<quote|2tab>|1.2.1<space|2spc>Error Minimization
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-6>>
 
-      <with|par-left|<quote|2tab>|1.3.1<space|2spc>Error Minimization
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|2tab>|1.2.2<space|2spc>Uniqueness of the
+      Expansion <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-7>>
 
-      <with|par-left|<quote|2tab>|1.3.2<space|2spc>Uniqueness of the
-      Expansion <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|2tab>|1.2.3<space|2spc>Expansion of Gaussian
+      Processes <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-8>>
 
-      <with|par-left|<quote|2tab>|1.3.3<space|2spc>Expansion of Gaussian
-      Processes <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|2tab>|1.2.4<space|2spc>Minimum Representation
+      Entropy <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-9>>
 
-      <with|par-left|<quote|2tab>|1.3.4<space|2spc>Minimum Representation
-      Entropy <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|1.3<space|2spc>Solution of the Integral
+      Equation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-10>>
 
-      <with|par-left|<quote|1tab>|1.4<space|2spc>Solution of the Integral
-      Equation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|1.4<space|2spc>Exact Solutions For
+      Stationary Processes <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-11>>
 
-      <with|par-left|<quote|1tab>|1.5<space|2spc>Exact Solutions For
-      Stationary Processes <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-12>>
-
-      <with|par-left|<quote|2tab>|1.5.1<space|2spc><with|color|<quote|dark
+      <with|par-left|<quote|2tab>|1.4.1<space|2spc><with|color|<quote|dark
       red>|font-family|<quote|rm>|<with|mode|<quote|math>|<big|int><rsub|0><rsup|\<infty\>>J<rsub|0><around*|(|t-s|)>f<around*|(|t|)>\<mathd\>t>>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-13>>
+      <no-break><pageref|auto-12>>
 
-      <with|par-left|<quote|2tab>|1.5.2<space|2spc>Simplifying The
+      <with|par-left|<quote|2tab>|1.4.2<space|2spc>Simplifying The
       Convolution <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-14>>
+      <no-break><pageref|auto-13>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Appendix>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-15><vspace|0.5fn>
+      <no-break><pageref|auto-14><vspace|0.5fn>
 
       <with|par-left|<quote|1tab>|2.1<space|2spc>A Theorem On The Development
       of Symmetric Nuclei <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-16>>
+      <no-break><pageref|auto-15>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-17><vspace|0.5fn>
+      <no-break><pageref|auto-16><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
