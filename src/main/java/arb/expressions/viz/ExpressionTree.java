@@ -46,7 +46,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     Utensils.persistInYamlFormat(this, yamlFile);
   }
 
-  final ExpressionEvaluator<D, C, F>      analyzer;
+  final Expressor<D, C, F>     analyzer;
   TextField                    expressionInput;
   TreeTableView<Node<D, C, F>> treeTableView;
   public Expression<D, C, F>   expr;
@@ -65,7 +65,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     return context;
   }
 
-  public ExpressionTree(ExpressionEvaluator<D, C, F> expressionAnalyzer)
+  public ExpressionTree(Expressor<D, C, F> expressionAnalyzer)
   {
     super(10);
     this.analyzer = expressionAnalyzer;
@@ -165,7 +165,10 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     catch (Throwable e)
     {
       e.printStackTrace(System.err);
-      WindowManager.showAlert("Compilation Error", e.getClass().getName(), e);
+      Platform.runLater(() ->
+      {
+        WindowManager.showAlert("Compilation Error", e.getClass().getName(), e);
+      });
     }
   }
 
@@ -202,9 +205,9 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
   {
     TreeTableColumn<Node<D, C, F>, String> nodeTypeColumn = new TreeTableColumn<>("Node Type");
     nodeTypeColumn.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
-                                                                            .getValue()
-                                                                            .getClass()
-                                                                            .getSimpleName()));
+                                                                               .getValue()
+                                                                               .getClass()
+                                                                               .getSimpleName()));
     return nodeTypeColumn;
   }
 
@@ -237,8 +240,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     return fieldCol;
   }
 
-  protected TreeTableColumn<Node<D, C, F>, String> newValueColumn
-  ()
+  protected TreeTableColumn<Node<D, C, F>, String> newValueColumn()
   {
     TreeTableColumn<Node<D, C, F>, String> valueCol = new TreeTableColumn<>("Value");
     valueCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(evaluateNode(param.getValue().getValue())));

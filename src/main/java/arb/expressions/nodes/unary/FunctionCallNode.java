@@ -6,6 +6,7 @@ import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.String.format;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.function.Consumer;
@@ -80,7 +81,7 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
                                                                                                    "real",
                                                                                                    "imag"));
 
-  public static HashSet<String>   complexFunctionsWithComplexResults = new HashSet<>(Arrays.asList("log", "logΓ","ζ"));
+  public static HashSet<String>   complexFunctionsWithComplexResults = new HashSet<>(Arrays.asList("log", "logΓ", "ζ"));
 
   public FunctionMapping<D, R, F> mapping;
 
@@ -241,8 +242,7 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
   @Override
   public List<Node<D, R, F>> getBranches()
   {
-    assert arg != null;
-    return List.of(arg);
+    return arg == null ? Collections.emptyList() : List.of(arg);
   }
 
   public Class<?> getDomainType()

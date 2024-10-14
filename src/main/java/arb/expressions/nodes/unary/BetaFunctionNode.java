@@ -1,9 +1,12 @@
 package arb.expressions.nodes.unary;
 
+import java.util.List;
+
 import org.objectweb.asm.MethodVisitor;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
@@ -39,11 +42,8 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
     y = expression.resolve();
     expression.require(')');
 
-    Context context = expression.context;
-    if (expression.context == null)
-    {
-      context = expression.context = new Context();
-    }
+    Context context = new Context();
+    
     context.registerVariable("x", expression.newCoDomainInstance());
     context.registerVariable("y", expression.newCoDomainInstance());
 
@@ -60,7 +60,11 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    definition.rootNode.spliceInto(expression).generate(mv, resultType);
+    Node<D, C, F> splicedNode = definition.rootNode.spliceInto(expression);
+    splicedNode.isResult = isResult;
+    splicedNode.generate(mv, resultType);
     return mv;
   }
+
+
 }

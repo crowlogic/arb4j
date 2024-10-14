@@ -5,6 +5,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.expressions.Parser;
 import arb.functions.Function;
 import arb.functions.NullaryFunction;
 
@@ -15,8 +16,16 @@ import arb.functions.NullaryFunction;
 public interface RealNullaryFunction extends
                                      NullaryFunction<Real>
 {
-  public static Expression<Object, Real, RealNullaryFunction> compile(String expression,
-                                                                      Context context)
+  public static Object parse(String expression)
+  {
+    return NullaryFunction.parse(Real.class,
+                                 RealNullaryFunction.class,
+                                 Parser.expressionToUniqueClassname(expression),
+                                 expression,
+                                 null);
+  }
+
+  public static Expression<Object, Real, RealNullaryFunction> compile(String expression, Context context)
   {
     return compile(null, expression, context);
   }
@@ -35,12 +44,7 @@ public interface RealNullaryFunction extends
 
   public static RealNullaryFunction express(String functionName, String expression, Context context)
   {
-    return Function.instantiate(expression,
-                                context,
-                                Object.class,
-                                Real.class,
-                                RealNullaryFunction.class,
-                                functionName);
+    return Function.instantiate(expression, context, Object.class, Real.class, RealNullaryFunction.class, functionName);
   }
 
   public static RealNullaryFunction express(String expression, Context context)

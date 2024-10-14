@@ -51,8 +51,8 @@ import javafx.util.StringConverter;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ExpressionEvaluator<D, C extends Closeable, F extends Function<D, C>> extends
-                                Application
+public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
+                      Application
 {
 
   public static Class<?>[] TYPES = new Class[]
