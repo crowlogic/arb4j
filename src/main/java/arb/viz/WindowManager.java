@@ -29,8 +29,8 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 /**
- * Restore the completely broken toFront() functionality in Javafx that was put there
- * because microsoft is a flaming heap of dung
+ * Restore the completely broken toFront() functionality in Javafx that was put
+ * there because microsoft is a flaming heap of dung
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -102,18 +102,22 @@ public class WindowManager
 
   private static XDO    xdo;
 
-  private static Method getPeerMethod;
+  private static Method windowGetPeerMethod;
 
-  public static Field   flowField;
+  private static Field   tableViewSkinBaseFlowField;
+
+  private static Method resizeMethod;
 
   static
   {
     try
     {
-      getPeerMethod = Window.class.getDeclaredMethod("getPeer");
-      getPeerMethod.setAccessible(true);
-      flowField = TableViewSkinBase.class.getDeclaredField("flow");
-      flowField.setAccessible(true);
+      windowGetPeerMethod = Window.class.getDeclaredMethod("getPeer");
+      windowGetPeerMethod.setAccessible(true);
+      tableViewSkinBaseFlowField = TableViewSkinBase.class.getDeclaredField("flow");
+      tableViewSkinBaseFlowField.setAccessible(true);
+      resizeMethod = TableColumnHeader.class.getDeclaredMethod("resizeColumnToFitContent", int.class);
+      resizeMethod.setAccessible(true);      
     }
     catch (NoSuchMethodException | SecurityException | NoSuchFieldException e)
     {
@@ -123,7 +127,7 @@ public class WindowManager
 
   static
   {
-    xdo = arblib.xdo_new(":0");
+    xdo = arblib.xdo_new(System.getenv("DISPLAY"));
   }
 
   public static void bringToFront(Stage stage)
@@ -145,7 +149,7 @@ public class WindowManager
   {
     try
     {
-      Object tkStage = getPeerMethod.invoke(stage);
+      Object tkStage = windowGetPeerMethod.invoke(stage);
 
       if (getRawHandleMethod == null)
       {
@@ -224,14 +228,11 @@ public class WindowManager
   }
 
   @SuppressWarnings("unchecked")
-  public static <Y, T extends IndexedCell<? extends Y>>
-
-         VirtualFlow<T>
-         getVirtualFlow(Control treeTableView2)
+  public static <Y, T extends IndexedCell<? extends Y>> VirtualFlow<T> getVirtualFlow(Control treeTableView2)
   {
     try
     {
-      return (VirtualFlow<T>) flowField.get(treeTableView2.getSkin());
+      return (VirtualFlow<T>) tableViewSkinBaseFlowField.get(treeTableView2.getSkin());
     }
     catch (IllegalArgumentException | IllegalAccessException e)
     {
@@ -270,16 +271,9 @@ public class WindowManager
   {
     try
     {
-      javafx.scene.Node node = column.getStyleableNode();
-      if (node instanceof TableColumnHeader)
-      {
-        TableColumnHeader header = (TableColumnHeader) node;
-        resizeMethod.invoke(header, -1);
-      }
-      else
-      {
-        System.err.format("wtf %s\n", Utensils.stackTraceToString(new Throwable()));
-      }
+      javafx.scene.Node node   = column.getStyleableNode();
+      TableColumnHeader header = (TableColumnHeader) node;
+      resizeMethod.invoke(header, -1);
     }
     catch (Exception e)
     {
@@ -287,20 +281,7 @@ public class WindowManager
     }
   }
 
-  static
-  {
-    try
-    {
-      WindowManager.resizeMethod = TableColumnHeader.class.getDeclaredMethod("resizeColumnToFitContent", int.class);
-      WindowManager.resizeMethod.setAccessible(true);
-    }
-    catch (NoSuchMethodException | SecurityException e)
-    {
-      Utensils.throwOrWrap(e);
-    }
-  }
 
-  public static Method resizeMethod;
 
   public static void showError(Thread t, Throwable e)
   {
