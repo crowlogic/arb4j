@@ -95,30 +95,28 @@
 
   <subsection|The Karhunen-Loeve Expansion>
 
-  The Karhunen-Loeve expansion is an extensively used spectral representation
-  theorem, which expands the random process <math|w*<around|(|x,\<theta\>|)>>
-  in terms of a denumerable set of orthogonal random variables in the form
+  The Karhunen-Loeve expansion is spectral representation theorem which
+  expands random processes <math|w*<around|(|x,\<theta\>|)>> in terms of a
+  countable sets of orthogonal random variables in the form
 
   <\equation>
-    w*<around|(|x,\<theta\>|)>=<big|sum><rsub|i=1><rsup|\<infty\>>\<mu\><rsub|i><around|(|\<theta\>|)>*g<rsub|i><around|(|x|)>
+    w*<around|(|x,\<theta\>|)>=<big|sum><rsub|i=0><rsup|\<infty\>>\<mu\><rsub|i><around|(|\<theta\>|)>*g<rsub|i><around|(|x|)><label|KL>
   </equation>
 
   where <math|<around|{|\<mu\><rsub|i><around|(|\<theta\>|)>|}>> is a set of
   random variable projections and <math|<around|{|g<rsub|i><around|(|x|)>|}>>
-  are the functions of the integral covariance operator associated to the
-  Gaussian process having the covariance kernel of
-  <math|w*<around|(|x,\<theta\>|)>>. Since equation (<reference|2.5>) is a
-  quantization of the random process it can be viewed as a representation of
-  the process <math|w*<around|(|x,\<theta\>|)>> as a curve in the Hilbert
-  space spanned by the set <math|<around|{|g<rsub|i><around|(|x|)>|}>>
-  expressed as a direct sum of orthogonal projections in this Hilbert space
-  whereby the magnitudes of the projections on successive basis vectors are
-  proportional to the corresponding eigenvalues of the covariance function
-  associated with the eigenfunctions of the process
-  <math|w*<around|(|x,\<theta\>|)>>. Collectively, the representations
-  discussed up to <cite-detail|stochasticFiniteElements|2.2> can be thought
-  of as linear operators or filters acting on processes with independent
-  increments.
+  are the eigenfunctions of the integral covariance operator associated to
+  the Gaussian process having the covariance kernel of
+  <math|w*<around|(|x,\<theta\>|)>>. Since the Karhunen-Loeve(KL) equation
+  (<reference|2.5>) is a quantization of the random process it can be viewed
+  as a representation of the process <math|w*<around|(|x,\<theta\>|)>> as a
+  curve in the Hilbert space spanned by the set
+  <math|<around|{|g<rsub|i><around|(|x|)>|}>> expressed as a direct sum of
+  orthogonal projections in this Hilbert space whereby the magnitudes of the
+  projections on successive basis vectors are proportional to the
+  corresponding eigenvalues of the covariance function associated with the
+  eigenfunctions of the process <math|w*<around|(|x,\<theta\>|)>>. ors or
+  filters acting on processes with independent increments.
 
   <subsubsection|Derivation>
 
@@ -1167,6 +1165,7 @@
     <associate|2.8|<tuple|4|2>>
     <associate|2.82|<tuple|45|9>>
     <associate|2.9|<tuple|5|3>>
+    <associate|KL|<tuple|1|?>>
     <associate|T|<tuple|59|13>>
     <associate|auto-1|<tuple|1|1>>
     <associate|auto-10|<tuple|1.3|7>>
