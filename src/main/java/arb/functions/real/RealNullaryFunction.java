@@ -16,7 +16,7 @@ import arb.functions.NullaryFunction;
 public interface RealNullaryFunction extends
                                      NullaryFunction<Real>
 {
-  public static Object parse(String expression)
+  public static Expression<Object, Real, RealNullaryFunction> parse(String expression)
   {
     return NullaryFunction.parse(Real.class,
                                  RealNullaryFunction.class,
