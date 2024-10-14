@@ -49,11 +49,11 @@ dependencies {
 
 task createDesktopFile {
     doLast {
-        def desktopFile = new File("${buildDir}/ExpressionAnalyzer.desktop")
+        def desktopFile = new File("${buildDir}/Expressor.desktop")
         desktopFile.text = """[Desktop Entry]
 Type=Application
 Name=Expression Analyzer
-Exec=${projectDir}/bin/analyze
+Exec=${projectDir}/bin/expressor
 Icon=${projectDir}/src/main/resources/ExpressionAnalyzer.png
 Terminal=false
 Categories=Utility;

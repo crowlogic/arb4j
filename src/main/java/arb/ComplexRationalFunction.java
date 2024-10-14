@@ -21,6 +21,11 @@ public class ComplexRationalFunction implements
                                      Function<Fraction, ComplexFraction>,
                                      Verifiable
 {
+  public ComplexRationalFunction(Integer val)
+  {
+    this();
+    set(val);
+  }
 
   public final class Part implements
                           RealFunction
@@ -67,8 +72,7 @@ public class ComplexRationalFunction implements
     if (getClass() != obj.getClass())
       return false;
     ComplexRationalFunction other = (ComplexRationalFunction) obj;
-    return Objects.equals(imaginaryPart, other.imaginaryPart)
-                  && Objects.equals(realPart, other.realPart);
+    return Objects.equals(imaginaryPart, other.imaginaryPart) && Objects.equals(realPart, other.realPart);
   }
 
   @SuppressWarnings("resource")
@@ -180,8 +184,7 @@ public class ComplexRationalFunction implements
    * </pre>
    */
 
-  public ComplexRationalFunction
-         div(ComplexRationalFunction x, int prec, ComplexRationalFunction result)
+  public ComplexRationalFunction div(ComplexRationalFunction x, int prec, ComplexRationalFunction result)
   {
     assert result.realPart != null : "result.realPart is null";
     assert result.imaginaryPart != null : "result.imaginaryPart is null";
@@ -192,8 +195,7 @@ public class ComplexRationalFunction implements
     RationalFunction c = x.realPart;
     RationalFunction d = x.imaginaryPart;
 
-    try ( RationalFunction temp1 = new RationalFunction();
-          RationalFunction temp2 = new RationalFunction();)
+    try ( RationalFunction temp1 = new RationalFunction(); RationalFunction temp2 = new RationalFunction();)
     {
       // Calculate denominator: c^2 + d^2
       c.mul(c, prec, temp1);
@@ -251,8 +253,7 @@ public class ComplexRationalFunction implements
   }
 
   @Override
-  public ComplexRationalFunction
-         add(ComplexRationalFunction element, int prec, ComplexRationalFunction result)
+  public ComplexRationalFunction add(ComplexRationalFunction element, int prec, ComplexRationalFunction result)
   {
     assert result.realPart != null : "result.realPart is null";
     assert result.imaginaryPart != null : "result.imaginaryPart is null";
@@ -316,8 +317,7 @@ public class ComplexRationalFunction implements
   }
 
   @Override
-  public ComplexRationalFunction
-         mul(ComplexRationalFunction x, int prec, ComplexRationalFunction result)
+  public ComplexRationalFunction mul(ComplexRationalFunction x, int prec, ComplexRationalFunction result)
   {
     assert result.realPart != null : "result.realPart is null";
     assert result.imaginaryPart != null : "result.imaginaryPart is null";
@@ -373,8 +373,7 @@ public class ComplexRationalFunction implements
   }
 
   @Override
-  public ComplexRationalFunction
-         sub(ComplexRationalFunction element, int prec, ComplexRationalFunction result)
+  public ComplexRationalFunction sub(ComplexRationalFunction element, int prec, ComplexRationalFunction result)
   {
     assert result.realPart != null : "result.realPart is null";
     assert result.imaginaryPart != null : "result.imaginaryPart is null";
@@ -466,8 +465,7 @@ public class ComplexRationalFunction implements
 
   public static ComplexRationalFunction express(String expression, int bits)
   {
-    return ComplexRationalNullaryFunction.express(expression)
-                                         .evaluate(bits, new ComplexRationalFunction());
+    return ComplexRationalNullaryFunction.express(expression).evaluate(bits, new ComplexRationalFunction());
   }
 
   public static ComplexRationalFunction express(String expression)
@@ -480,14 +478,13 @@ public class ComplexRationalFunction implements
     return ComplexRationalNullaryFunction.express(expression, context).evaluate(128);
   }
 
-  public static Expression<Fraction, ComplexFraction, ComplexRationalFunction>
-         compile(String expression)
+  public static Expression<Fraction, ComplexFraction, ComplexRationalFunction> compile(String expression)
   {
     return compile(expression, null);
   }
 
-  public static Expression<Fraction, ComplexFraction, ComplexRationalFunction>
-         compile(String expression, Context context)
+  public static Expression<Fraction, ComplexFraction, ComplexRationalFunction> compile(String expression,
+                                                                                       Context context)
   {
     return Compiler.compile(expression,
                             context,
@@ -534,8 +531,7 @@ public class ComplexRationalFunction implements
 
     try ( RationalFunction divisor = new RationalFunction())
     {
-      realPart.pow(2, bits(), divisor)
-              .add(imaginaryPart.pow(2, bits(), result.imaginaryPart), bits(), divisor);
+      realPart.pow(2, bits(), divisor).add(imaginaryPart.pow(2, bits(), result.imaginaryPart), bits(), divisor);
       result.set(this);
       result.imaginaryPart.neg();
       result.div(divisor);

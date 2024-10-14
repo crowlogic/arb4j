@@ -564,7 +564,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     });
 
     primaryStage.setScene(scene);
-    primaryStage.setTitle("Expression Analyzer");
+    primaryStage.setTitle("Expressor");
     primaryStage.show();
 
     scene.setOnKeyPressed(handler ->

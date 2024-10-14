@@ -63,6 +63,8 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     mapTypes(Fraction.class, AlgebraicNumber.class, AlgebraicNumber.class);
     mapTypes(IntegerPolynomial.class, Complex.class, ComplexPolynomial.class);
     mapTypes(IntegerPolynomial.class, ComplexPolynomial.class, ComplexPolynomial.class);
+    mapTypes(RealPolynomial.class, Complex.class, ComplexPolynomial.class);
+    mapTypes(RealPolynomial.class, ComplexPolynomial.class, ComplexPolynomial.class);
   }
 
   public static void mapScalarType(Class<?> scalarType, Class<?> polynomialType)
