@@ -282,6 +282,7 @@ import java.util.stream.Stream;
     System.loadLibrary("arblib");
   }
 
+  @SuppressWarnings("unlikely-arg-type")
   @Override
   public boolean equals(Object obj)
   {
@@ -291,8 +292,8 @@ import java.util.stream.Stream;
       {
         return false;
       }
-      assert false : "maybe";
-
+      Fraction frac = (Fraction) obj;
+      return frac.equals(this);
     }
     if (!(obj instanceof RationalFunction))
     {
@@ -301,7 +302,7 @@ import java.util.stream.Stream;
     RationalFunction that = (RationalFunction) obj;
     return arblib.fmpz_poly_q_equal(this, that) != 0;
   }
-  
+    
   public RationalFunction init()
   {
     arblib.fmpz_poly_q_init(this);

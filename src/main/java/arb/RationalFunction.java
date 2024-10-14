@@ -301,6 +301,7 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
     System.loadLibrary("arblib");
   }
 
+  @SuppressWarnings("unlikely-arg-type")
   @Override
   public boolean equals(Object obj)
   {
@@ -310,8 +311,8 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
       {
         return false;
       }
-      assert false : "maybe";
-
+      Fraction frac = (Fraction) obj;
+      return frac.equals(this);
     }
     if (!(obj instanceof RationalFunction))
     {
@@ -320,7 +321,7 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
     RationalFunction that = (RationalFunction) obj;
     return arblib.fmpz_poly_q_equal(this, that) != 0;
   }
-  
+    
   public RationalFunction init()
   {
     arblib.fmpz_poly_q_init(this);
