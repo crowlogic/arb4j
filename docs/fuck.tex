@@ -1,0 +1,35 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+The covariance operator \mathcal{C} acts on the orthonormal basis functions \phi_m(x) as follows:
+\[
+\mathcal{C} \phi_m(x) = \int K(x, y) \phi_m(y) \, dy
+\]
+where K(x, y) is the covariance kernel.
+
+The eigenfunctions \psi_n(x) are expressed as linear combinations of the covariance-transformed basis functions:
+\[
+\psi_n(x) = \sum_m c_{m,n} \mathcal{C} \phi_m(x)
+\]
+with the eigenvalue equation:
+\[
+\mathcal{C} \psi_n(x) = \lambda_n \psi_n(x)
+\]
+This leads to the matrix equation for the coefficients c_{m,n}:
+\[
+\sum_m K_{l,m} c_{m,n} = \lambda_n c_{l,n}
+\]
+where the matrix elements K_{l,m} are defined by:
+\[
+K_{l,m} = \int \int K(x, y) \phi_l(x) \phi_m(y) \, dx \, dy
+\]
+
+The covariance kernel K(x, y) is expressed as a spectral decomposition:
+\[
+K(x, y) = \sum_n \lambda_n \psi_n(x) \psi_n(y)
+\]
+where \lambda_n are the eigenvalues, and \psi_n(x) are the corresponding eigenfunctions.
+
+\end{document}
