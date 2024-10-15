@@ -35,12 +35,7 @@ public class MiniSymbolPalette extends
     this.textField.caretPositionProperty().addListener((obs, oldVal, newVal) ->
     {
       if ( textField.isFocused() )
-      {
-        if ( newVal.intValue() == 0 )
-        {
-           System.out.println( textField.isFocusVisible() );
-          
-        }
+      {      
         lastKnownCaretPosition = newVal.intValue();
       }
     });

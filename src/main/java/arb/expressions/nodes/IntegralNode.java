@@ -98,7 +98,7 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                                       integrationVariable,
                                                                       dvar);
 
-    expression.nextCharacterIs('∈');
+    if ( expression.nextCharacterIs('∈') )
     {
       expression.require('(');
       lowerLimit = expression.resolve();
