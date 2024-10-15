@@ -21,21 +21,11 @@ public class MiniSymbolPalette extends
   {
     super(5);
     this.textField = textField;
-    textField.focusedProperty().addListener((obs, oldVal, newVal) ->
-    {
-      if (newVal)
-      {
-        Platform.runLater(() ->
-        {
-          textField.deselect();
-          textField.positionCaret(lastKnownCaretPosition);
-        });
-      }
-    });
+    
     // Store the caret position whenever it changes
     this.textField.caretPositionProperty().addListener((obs, oldVal, newVal) ->
     {
-      if (newVal.intValue() != 0)
+      if (newVal.intValue() >= 0 && textField.isFocused() )
       {
         lastKnownCaretPosition = newVal.intValue();
       }
@@ -54,10 +44,14 @@ public class MiniSymbolPalette extends
 
   private void insertSymbolAtCursor(String symbol)
   {
-
-    textField.insertText(lastKnownCaretPosition, symbol);
-
-    textField.requestFocus();
+    if (textField.getText().length() > 0)
+    {
+      textField.insertText(lastKnownCaretPosition++, symbol);
+    }
+    else
+    {
+      textField.setText(symbol);
+    }
     textField.positionCaret(lastKnownCaretPosition);
   }
 }

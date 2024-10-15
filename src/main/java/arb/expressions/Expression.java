@@ -1721,7 +1721,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        position,
                                        character == 0 ? '0' : character,
                                        remaining(),
-                                       msg != null ? " syntax=\"" + msg : "\"",
+                                       msg != null ? " syntax=\"" + msg : "",
                                        implementedInterfaces));
   }
 

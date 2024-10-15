@@ -29,9 +29,8 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>>
-                     extends
-                     Node<D, R, F>
+public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> extends
+                         Node<D, R, F>
 {
 
   @Override
@@ -53,7 +52,7 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>>
 
   Node<D, R, F>                                                upperLimit;
 
-  VariableNode<D, R, F>                                            integrationVariable;
+  VariableNode<D, R, F>                                        integrationVariable;
 
   Function<? extends R, ? extends R>                           integralFunction;
 
@@ -86,22 +85,27 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>>
   {
     super(expression);
     integrationVariable = new VariableNode<>(expression,
-                                         new VariableReference<>(expression.parseName()),
-                                         expression.position,
-                                         true);
+                                             new VariableReference<>(expression.parseName()),
+                                             expression.position,
+                                             true);
     expression.require('➔');
     integrand = expression.resolve();
     expression.require('d');
     dvar = expression.parseName();
-    assert dvar.equals(integrationVariable.getName()) : String.format("the format is  g(x)=∫x➔f(x)dx∈(a,b) for integrals, the variable on the left "
-                  + "side of the arrow must match the variable on the right side of the d and "
-                  + "before the ( but the first var was %s and the 2nd was %s\n", integrationVariable, dvar);
-    expression.require('∈');
-    expression.require('(');
-    lowerLimit = expression.resolve();
-    expression.require(',');
-    upperLimit = expression.resolve();
-    expression.require(')');
+    assert dvar.equals(integrationVariable.getName()) : String.format("the format is  g(x)=∫x➔f(x)dx∈(a,b) for definite integrals and g(x)=∫x➔f(x)dx for indefinate integrals, the variable on the left "
+                                                                      + "side of the arrow must match the variable on the right side of the d and "
+                                                                      + "before the ( but the first var was %s and the 2nd was %s\n",
+                                                                      integrationVariable,
+                                                                      dvar);
+
+    expression.nextCharacterIs('∈');
+    {
+      expression.require('(');
+      lowerLimit = expression.resolve();
+      expression.require(',');
+      upperLimit = expression.resolve();
+      expression.require(')');
+    }
   }
 
   protected void assignFieldNames(Class<?> resultType)
@@ -120,10 +124,11 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>>
                               "L" + integralFunctionFieldName + ";");
   }
 
-  static String                                             integralEvaluateMethodSignature = Compiler.getMethodDescriptor(Object.class,
-                                                                                                                           Object.class,
-                                                                                                                           int.class,
-                                                                                                                           Object.class);
+  static String                                             integralEvaluateMethodSignature =
+                                                                                            Compiler.getMethodDescriptor(Object.class,
+                                                                                                                         Object.class,
+                                                                                                                         int.class,
+                                                                                                                         Object.class);
 
   FunctionMapping<R, R, Function<? extends R, ? extends R>> integralMapping;
 
