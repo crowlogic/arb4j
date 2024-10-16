@@ -111,8 +111,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
   {
     expressionInput = new TextField();
     expressionInput.setPromptText("Enter expression here");
-    // expressionInput.setText("1+(-((lnΓ(1/4 + t*I/2) - lnΓ(1/4 - t*I/2))*I)/2 -
-    // ln(π)*t/2)/π + 1 - I*((ln(ζ(1/2 + I*t)) - ln(ζ(1/2 - I*t))))/(2*π)");
+    expressionInput.setText("1+(-((lnΓ(1/4 + t*I/2) - lnΓ(1/4 - t*I/2))*I)/2 -ln(π)*t/2)/π + 1 - I*((ln(ζ(1/2 + I*t)) - ln(ζ(1/2 - I*t))))/(2*π)");
     expressionInput.setText("R(3,1/2;z)");
 
     WindowManager.addEmacsKeybindings(expressionInput);
@@ -317,9 +316,9 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
                                              !needsBits ? (Named) constructor.newInstance(serializedValueString)
                                                         : (Named) constructor.newInstance(serializedValueString, bits);
           variable.setName(name);
-          
+
           context.variables.add(variable);
-          System.out.println( "Loaded " + context.variables );
+          System.out.println("Loaded " + context.variables);
           analyzer.updateContextListView();
         }
 
