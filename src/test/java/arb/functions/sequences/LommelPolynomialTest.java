@@ -1,13 +1,11 @@
 package arb.functions.sequences;
 
-import arb.Fraction;
+import arb.*;
 import arb.Integer;
-import arb.RationalFunction;
-import arb.Real;
-import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.functions.rational.ComplexRationalFunctionSequence;
 import arb.functions.rational.LommelPolynomial;
 import arb.functions.rational.RationalFunctionSequence;
 import arb.functions.rational.RationalNullaryFunction;
@@ -20,6 +18,17 @@ import junit.framework.TestCase;
 public class LommelPolynomialTest extends
                                   TestCase
 {
+
+  public void testLommelComplexRationalFuctionSequenceViaSequenceNode()
+  {
+    ComplexRationalFunctionSequence sequence = ComplexRationalFunctionSequence.express("R(n,1⁄2;z)");
+    ComplexRationalFunction         R3       = sequence.evaluate(3, 128);
+    assertEquals("(-6*x^2+15)/(x^3)", R3.toString());
+    ComplexFraction R3AtTwoPointThree =R3.evaluate(new Fraction(23,10), 0, 0, new ComplexFraction() );
+    assertEquals(new ComplexFraction(-16740,
+                              12167),
+                 R3AtTwoPointThree);
+  }
 
   public void testLommelRationalFuctionSequenceViaSequenceNode()
   {
@@ -37,9 +46,7 @@ public class LommelPolynomialTest extends
   {
     var context = new Context();
     context.registerVariable("v", RealConstants.half);
-    var R =
-          RationalFunctionSequence.express("n➔v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
-                                           context);
+    var R = RationalFunctionSequence.express("n➔v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)", context);
     var x = R.evaluate(3, 128);
     assertEquals("(-6*x^2+15)/(x^3)", x.toString());
 
@@ -52,9 +59,7 @@ public class LommelPolynomialTest extends
     var    context = new Context(Real.named("v").set(RealConstants.half),
                                  Integer.named("n").set(3));
 
-    var    R       =
-             RationalNullaryFunction.express("v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)",
-                                             context);
+    var    R       = RationalNullaryFunction.express("v₍ₙ₎*(z/2)^(-n)*pFq([1⁄2-n/2,-n/2],[v,-n,1-v-n],-z²)", context);
     var    x       = R.evaluate();
     double y       = x.asRealFunction().eval(2.3);
     // System.out.println("y=" + y );

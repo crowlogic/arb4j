@@ -671,4 +671,5 @@ public class ComplexRationalFunction implements
   {
     return multiplicativeInverse(this);
   }
+
 }

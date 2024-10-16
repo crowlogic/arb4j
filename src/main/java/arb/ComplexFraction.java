@@ -112,6 +112,12 @@ public class ComplexFraction implements
     set(string);
   }
 
+  public ComplexFraction(int i, int j)
+  {
+    numerator.realPart.set(i);
+    denominator.imaginaryPart.set(i);
+  }
+
   @Override
   public void close()
   {
