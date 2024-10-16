@@ -14,8 +14,6 @@ import java.util.Optional;
 
 import arb.Integer;
 import arb.Named;
-import arb.Real;
-import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -318,8 +316,11 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
           variable.setName(name);
 
           context.variables.add(variable);
-          System.out.println("Loaded " + context.variables);
           analyzer.updateContextListView();
+
+          analyzer.codomainTypeBox.setValue(Class.forName(serializedExpression.coDomain));
+          analyzer.domainTypeBox.setValue(Class.forName(serializedExpression.domain));
+          analyzer.functionTypeBox.setValue(Class.forName(serializedExpression.function));
         }
 
       }
