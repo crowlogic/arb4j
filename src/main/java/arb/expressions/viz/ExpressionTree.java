@@ -55,6 +55,9 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
   public void save(File yamlFile)
   {
     var x = new SerializedExpression();
+    x.coDomain   = analyzer.codomainTypeBox.getValue().getName();
+    x.domain     = analyzer.domainTypeBox.getValue().getName();
+    x.function   = analyzer.functionTypeBox.getValue().getName();
     x.expression = this.expressionInput.getText();
     x.context    = new HashMap<>();
     context.variables.forEach(variable -> x.context.put(variable.getName(), new SerializedContextVariable(variable)));

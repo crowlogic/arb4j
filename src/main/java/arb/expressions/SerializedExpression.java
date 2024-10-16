@@ -16,9 +16,21 @@ public class SerializedExpression
 
   public Map<String, SerializedContextVariable> context;
 
+  public String domain;
+  
+  public String coDomain;
+  
+  public String function;
+
   @Override
   public String toString()
   {
-    return String.format("SerializedExpression [expression=%s, context=%s]", expression, context);
+    return String.format("SerializedExpression[expression=%s, domain=%s, coDomain=%s, function=%s, context=%s]",
+                         expression,
+                         domain,
+                         coDomain,
+                         function,
+                         context);
   }
+    
 }
