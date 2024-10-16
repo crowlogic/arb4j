@@ -48,7 +48,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
 
   public void save(String yamlFile)
   {
-    Utensils.persistInYamlFormat( yamlFile, expressionInput.getText(), context.variables.map );
+    Utensils.persistInYamlFormat(yamlFile, expressionInput.getText(), context.variables.map);
   }
 
   final Expressor<D, C, F>     analyzer;
@@ -150,15 +150,20 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     var      fieldCol          = newFieldColumn();
     var      valueCol          = newValueColumn();
     MenuItem copyMenuItem      = new MenuItem("copy");
-  
-     
-    
+
+   
+
     copyMenuItem.setOnAction(event ->
     {
-      ObservableList<TreeTablePosition<Node<D, C, F>, ?>> item = treeTableView.getSelectionModel().getSelectedCells();
-      MenuItem source = (MenuItem) event.getSource();
-      System.err.println("onAction " + source.getText() + " item=" + item.getFirst().getRow() + "," + item.getFirst().getColumn() );
-      
+      ObservableList<TreeTablePosition<Node<D, C, F>, ?>> item   = treeTableView.getSelectionModel().getSelectedCells();
+      MenuItem                                            source = (MenuItem) event.getSource();
+      System.err.println("onAction "
+                         + source.getText()
+                         + " item="
+                         + item.getFirst().getRow()
+                         + ","
+                         + item.getFirst().getColumn());
+
     });
     treeTableView.setContextMenu(new ContextMenu(copyMenuItem));
     treeTableView.setTableMenuButtonVisible(true);
