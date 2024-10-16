@@ -53,7 +53,6 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     arg   = expression.require("R(n,v;z)", ';').resolve();
     expression.require(')');
     scalarType                           = Compiler.scalarType(expression.coDomainType);
-
     hasScalarCodomain                    = expression.hasScalarCodomain();
     isNullaryFunctionOrHasScalarCodomain = expression.domainType.equals(Object.class) || hasScalarCodomain;
 
@@ -134,7 +133,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
                   && Integer.class.equals(expression.domainType);
     expression.insideInitializer = false;
 
-    loadFieldOntoStack(mv, elementFieldName, RationalFunction.class);
+    expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);
 
     if (!isRationalFunctionSequence)
     {
@@ -180,7 +179,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
         loadOutputVariableOntoStack(mv, resultType);
 
         assert resultType.equals(expression.coDomainType);
-        loadFieldOntoStack(mv, elementFieldName, RationalFunction.class);
+        expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);
         Compiler.invokeSetMethod(mv, resultType, resultType);
         generatedType = RationalFunction.class;
 

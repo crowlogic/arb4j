@@ -232,13 +232,4 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     }
   }
 
-  protected Node<D, R, F> loadFieldOntoStack(MethodVisitor mv,
-                                             String fieldName,
-                                             Class<RationalFunction> fieldClass)
-  {
-    loadThisOntoStack(mv);
-    expression.loadFieldOntoStack(mv, fieldName, fieldClass);
-    return this;
-  }
-
 }
