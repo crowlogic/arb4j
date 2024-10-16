@@ -27,7 +27,7 @@ public class SerializedContextVariable
   @Override
   public String toString()
   {
-    return String.format("SerializedContextVariable [type=%s, value=%s]", type, value);
+    return String.format("SerializedContextVariable[type=%s, value=%s]", type, value);
   }
 
   
