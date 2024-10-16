@@ -53,9 +53,9 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
   public void save(File yamlFile)
   {
     var x = new SerializedExpression();
-    x.coDomain   = analyzer.codomainTypeBox.getValue().getName();
-    x.domain     = analyzer.domainTypeBox.getValue().getName();
-    x.function   = analyzer.functionTypeBox.getValue().getName();
+    x.coDomain   = expressor.codomainTypeBox.getValue().getName();
+    x.domain     = expressor.domainTypeBox.getValue().getName();
+    x.function   = expressor.functionTypeBox.getValue().getName();
     x.expression = this.expressionInput.getText();
     x.context    = new HashMap<>();
     context.variables.forEach(variable -> x.context.put(variable.getName(), new SerializedContextVariable(variable)));
@@ -63,7 +63,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     Utensils.saveToYamlFormat(yamlFile, x);
   }
 
-  final Expressor<D, C, F>     analyzer;
+  final Expressor<D, C, F>     expressor;
   TreeTableView<Node<D, C, F>> treeTableView;
   public TextField             expressionInput;
   public Expression<D, C, F>   expr;
@@ -85,7 +85,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
   public ExpressionTree(Expressor<D, C, F> expressionAnalyzer)
   {
     super(10);
-    this.analyzer = expressionAnalyzer;
+    this.expressor = expressionAnalyzer;
     this.context  = new Context();
 
     setupExpressionInput();
@@ -183,9 +183,9 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     String expressionString = expressionInput.getText();
     try
     {
-      Class<D> domainType   = (Class<D>) this.analyzer.domainTypeBox.getValue();
-      Class<C> codomainType = (Class<C>) this.analyzer.codomainTypeBox.getValue();
-      Class<F> functionType = (Class<F>) this.analyzer.functionTypeBox.getValue();
+      Class<D> domainType   = (Class<D>) this.expressor.domainTypeBox.getValue();
+      Class<C> codomainType = (Class<C>) this.expressor.codomainTypeBox.getValue();
+      Class<F> functionType = (Class<F>) this.expressor.functionTypeBox.getValue();
 
       expr     = Function.compile(domainType, codomainType, functionType, expressionString, context.resetClassLoader());
 
@@ -216,7 +216,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
   @SuppressWarnings("unchecked")
   private void updateContextView()
   {
-    ListView<Named> contextListView = (ListView<Named>) this.analyzer.contextBox.getChildren().get(1);
+    ListView<Named> contextListView = (ListView<Named>) this.expressor.contextBox.getChildren().get(1);
     contextListView.refresh();
   }
 
@@ -316,11 +316,11 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
           variable.setName(name);
 
           context.variables.add(variable);
-          analyzer.updateContextListView();
+          expressor.updateContextListView();
 
-          analyzer.codomainTypeBox.setValue(Class.forName(serializedExpression.coDomain));
-          analyzer.domainTypeBox.setValue(Class.forName(serializedExpression.domain));
-          analyzer.functionTypeBox.setValue(Class.forName(serializedExpression.function));
+          expressor.codomainTypeBox.setValue(Class.forName(serializedExpression.coDomain));
+          expressor.domainTypeBox.setValue(Class.forName(serializedExpression.domain));
+          expressor.functionTypeBox.setValue(Class.forName(serializedExpression.function));
         }
 
       }
