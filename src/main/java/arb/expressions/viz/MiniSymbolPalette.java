@@ -41,7 +41,7 @@ public class MiniSymbolPalette extends
     });
 
     String[] symbols =
-    { "+", "-", "*", "/", "^", "∑", "∏", "∫", "π", "√", "┴" };
+    { "➔", "+", "-", "*", "/", "^", "∑", "∏", "∫", "π", "√", "┴" };
 
     for (String symbol : symbols)
     {

@@ -83,7 +83,9 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
       loadFunctionOntoStack(mv);
       Compiler.getField(mv, LommelPolynomial.class, "n", Integer.class);
       index.generate(mv, Integer.class);
-      assert index.getGeneratedType().equals(Integer.class);
+      assert index.getGeneratedType().equals(Integer.class) : String.format("TODO: %s needs to be cast to %s",
+                                                                            index.getGeneratedType(),
+                                                                            Integer.class);
       invokeSetMethod(mv, Integer.class, Integer.class);
 
       loadFunctionOntoStack(mv);

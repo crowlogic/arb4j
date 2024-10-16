@@ -25,6 +25,8 @@ import javafx.scene.control.skin.TableViewSkinBase;
 import javafx.scene.control.skin.VirtualFlow;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -245,10 +247,30 @@ public class WindowManager
   {
     Alert alert = new Alert(AlertType.ERROR);
     alert.setWidth(1400);
+    alert.setHeight(1000);
     alert.setResizable(true);
     alert.setTitle(title);
     alert.setHeaderText(header);
-    alert.setContentText(content);
+
+    TextArea textArea = new TextArea(content);
+    textArea.setEditable(false);
+    textArea.setWrapText(true);
+    textArea.setMinHeight(600);
+    textArea.setPrefHeight(800);
+    textArea.setPrefWidth(1300);;
+    textArea.setMaxWidth(Double.MAX_VALUE);
+    textArea.setMaxHeight(Double.MAX_VALUE);
+    GridPane.setVgrow(textArea, Priority.ALWAYS);
+    GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+    GridPane expContent = new GridPane();
+    expContent.setMaxWidth(Double.MAX_VALUE);
+    expContent.add(textArea, 0, 1);
+
+    // Set expandable Exception into the dialog pane.
+    alert.getDialogPane().setExpandableContent(expContent);    
+    alert.getDialogPane().setExpanded(true);
+    
     alert.showAndWait();
   }
 
