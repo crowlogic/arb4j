@@ -1009,6 +1009,30 @@ public class Integer implements
     return result.set(this).tanh(bits);
   }
 
+  public String toStringWithoutName()
+  {
+    String nameStr = "";
+
+    if (dim > 1)
+    {
+      StringBuffer buf = new StringBuffer(nameStr + "[");
+      for (int i = 0; i < dim; i++)
+      {
+        if (i > 0)
+        {
+          buf.append(" ");
+        }
+        buf.append(arblib.fmpz_get_str(null, 10, elements[i].swigCPtr));
+      }
+      buf.append("]");
+      return buf.toString();
+    }
+    else
+    {
+      return nameStr + arblib.fmpz_get_str(null, 10, swigCPtr);
+    }
+  }
+  
   @Override
   public String toString()
   {
@@ -1034,6 +1058,8 @@ public class Integer implements
     }
   }
 
+
+  
   public RationalFunction Γ(int bits, RationalFunction result)
   {
     try ( Real tmp = new Real())
@@ -1090,5 +1116,7 @@ public class Integer implements
   {
     return newVector(dim).set(name);
   }
+
+ 
 
 }

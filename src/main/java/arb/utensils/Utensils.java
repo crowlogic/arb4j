@@ -32,13 +32,16 @@ import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
 import arb.*;
 import arb.Float;
 import arb.RealRootInterval.RefinementResult;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.ArbTypeRepresenter;
 import arb.expressions.Parser;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
@@ -722,14 +725,18 @@ public class Utensils
     }
   }
 
-
-  public static void persistInYamlFormat(Object information, String yamlFile)
+  public static void persistInYamlFormat(String yamlFile, Object... information)
   {
     try
     {
-      Yaml       yaml       = new Yaml(yamlConfig);
+      Yaml       yaml       = new Yaml(new Constructor(new LoaderOptions()),
+                                       new ArbTypeRepresenter(yamlConfig),
+                                       yamlConfig);
       FileWriter fileWriter = new FileWriter(yamlFile);
-      yaml.dump(information, fileWriter);
+      for (Object obj : information)
+      {
+        yaml.dump(obj, fileWriter);
+      }
       fileWriter.close();
     }
     catch (IOException e)
@@ -743,10 +750,10 @@ public class Utensils
   }
 
   public static Comparator<? super Class<?>> classNameComparator = (a, b) ->
-   {
-     Class<?> classA = (Class<?>) a;
-     Class<?> classB = (Class<?>) b;
-     return classA.getSimpleName().compareTo(classB.getSimpleName());
-   };
+  {
+    Class<?> classA = (Class<?>) a;
+    Class<?> classB = (Class<?>) b;
+    return classA.getSimpleName().compareTo(classB.getSimpleName());
+  };
 
 }

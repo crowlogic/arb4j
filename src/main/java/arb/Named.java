@@ -13,4 +13,10 @@ public interface Named
   public <N extends Named> N setName(String name);
 
   public String getName();
+
+  public default String toStringWithoutName()
+  {
+    assert false : "todo: implement";
+    return "todo";
+  }
 }

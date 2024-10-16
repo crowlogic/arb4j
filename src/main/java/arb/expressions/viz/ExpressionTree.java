@@ -48,7 +48,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
 
   public void save(String yamlFile)
   {
-    Utensils.persistInYamlFormat(this, yamlFile);
+    Utensils.persistInYamlFormat( yamlFile, expressionInput.getText(), context.variables.map );
   }
 
   final Expressor<D, C, F>     analyzer;

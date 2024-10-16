@@ -225,6 +225,13 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
   {
     return value.set(this).neg();
   }
+
+  @Override
+  public String toStringWithoutName()
+  {
+    return toString(digits());
+  }
+
     
   public Real mul(Fraction that, int prec, Real res)
   {
