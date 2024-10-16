@@ -1,12 +1,5 @@
 package arb.utensils;
 
-import static arb.IntegerConstants.FLINT_BITS;
-import static arb.arblib.acb_add_error_mag;
-import static arb.arblib.acb_calc_gl_node;
-import static arb.arblib.acb_init;
-import static arb.arblib.arb_init;
-import static arb.arblib.mag_init;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -17,7 +10,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,14 +29,10 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import arb.*;
-import arb.Float;
-import arb.RealRootInterval.RefinementResult;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.ArbTypeRepresenter;
 import arb.expressions.Parser;
-import arb.functions.complex.ComplexFunction;
-import arb.functions.real.RealFunction;
 import arb.viz.WindowManager;
 import javafx.application.Platform;
 
@@ -68,12 +56,6 @@ public class Utensils
   public static String indent(int n)
   {
     return StringUtils.repeat(' ', n);
-  }
-
-  public static void main(String[] args)
-  {
-    int number = 1234567890;
-    System.out.println("Superscript: " + Parser.toSuperscript(number));
   }
 
   /**
@@ -107,140 +89,6 @@ public class Utensils
     }
 
     return input.substring(0, lastIndex + 1);
-  }
-
-  public static RefinementResult refineRootViaNewtonsMethod(RealFunction f,
-                                                            Real root,
-                                                            Real convergenceRegion,
-                                                            Float convergenceFactor,
-                                                            int extraPrec,
-                                                            int prec)
-  {
-    int precs[] = new int[FLINT_BITS];
-    int iters, startPrec = root.relAccuracyBits();
-
-    if ((iters = determineNewtonStepScalingPrecisions(convergenceFactor, prec, precs, startPrec)) == -1)
-    {
-      return RefinementResult.ImpreciseInput;
-    }
-
-    return calculateNewtonSteps(f, root, convergenceRegion, convergenceFactor, extraPrec, precs, iters);
-  }
-
-  public static RefinementResult calculateNewtonSteps(RealFunction f,
-                                                      Real root,
-                                                      Real convergenceRegion,
-                                                      Float convergenceFactor,
-                                                      int extraPrec,
-                                                      int[] precs,
-                                                      int iters)
-  {
-    int i;
-    int workingPrecision;
-    for (i = iters - 1; i >= 0; i--)
-    {
-      workingPrecision = precs[i] + extraPrec;
-
-      if (!f.calculateNewtonStep(root, convergenceRegion, convergenceFactor, workingPrecision, root))
-      {
-        return RefinementResult.NoConvergence;
-      }
-    }
-
-    return RefinementResult.Success;
-
-  }
-
-  public static int determineNewtonStepScalingPrecisions(Float convergenceFactor, int prec, int[] precs, int startPrec)
-  {
-    int iters;
-    int padding = Math.max(0, Math.min(arblib.arf_abs_bound_lt_2exp_si(convergenceFactor), prec) + 5);
-    precs[0] = prec + padding;
-    iters    = 1;
-    while ((iters < FLINT_BITS) && (precs[iters - 1] + padding > 2 * startPrec))
-    {
-      precs[iters] = (precs[iters - 1] / 2) + padding;
-      iters++;
-
-      if (iters == FLINT_BITS)
-      {
-        return -1;
-      }
-    }
-    return iters;
-  }
-
-  public static boolean computeNewtonStep(RealFunction f,
-                                          Real point,
-                                          Real convergenceRegion,
-                                          Float convergenceFactor,
-                                          int prec,
-                                          Real nextPoint)
-  {
-    try ( Magnitude err = new Magnitude(); Magnitude v = new Magnitude(); Real t = new Real();
-          Real u = Real.newVector(2))
-    {
-      Magnitude xRadius = point.getRad();
-      xRadius.pow(2, err);
-      convergenceFactor.getMagnitude(v).mul(err, err);
-
-      t.setMid(point.getMid());
-      t.getRad().zero();
-
-      f.evaluate(t.get(0), 2, prec, u);
-      u.get(0).div(u.get(1), prec);
-      t.get(0).sub(u.get(0), prec, u.get(0));
-      Magnitude uRadius = u.getRad();
-      uRadius.add(err, uRadius);
-
-      if (convergenceRegion.contains(u) && uRadius.compareTo(xRadius) < 0)
-      {
-        nextPoint.get(0).swap(u);
-        return true;
-      }
-      else
-      {
-        nextPoint.get(0).set(point);
-        return false;
-      }
-    }
-  }
-
-  public static Complex calculateSimpleQuadrature(ComplexFunction f, Complex a, Complex b, int prec, Complex res)
-  {
-    try ( Complex midpoint = new Complex(); Complex δ = new Complex(); Complex widePoint = new Complex();)
-    {
-      /* δ = (b-a)/2 */
-      b.sub(a, prec, δ).mul2e(-1);
-
-      /* mid = (a+b)/2 */
-      a.add(b, prec, midpoint).mul2e(-1);
-
-      /* wide = mid +- [δ] */
-      widePoint.set(midpoint).addUncertainty(δ);
-
-      /* Direct evaluation: integral = f([a,b]) * (b-a) */
-      Complex result = f.evaluate(widePoint, 0, prec, res).mul(δ, prec, res).mul2e(-1);
-      assert result.isFinite() : String.format("f(%s)=%s\n", widePoint, result);
-      return result;
-    }
-  }
-
-  public static void resizeVectors(int allocation, Complex as, Complex bs, Complex vs, Magnitude ms)
-  {
-    int k;
-    allocation *= 2;
-    as.resize(allocation);
-    bs.resize(allocation);
-    vs.resize(allocation);
-    ms.resize(allocation);
-    for (k = allocation; k < allocation; k++)
-    {
-      as.get(k).init();
-      bs.get(k).init();
-      vs.get(k).init();
-      ms.get(k).init();
-    }
   }
 
   public static final int glSteps[]   =
@@ -284,87 +132,6 @@ public class Utensils
     741456 };
 
   public static final int glStepCount = glSteps.length;
-
-  public static void evaluateBestGaussLegendreQuadratureRule(ComplexFunction f,
-                                                             int bits,
-                                                             AtomicLong evalCount,
-                                                             Complex res,
-                                                             boolean converged,
-                                                             Complex mid,
-                                                             Complex δ,
-                                                             Complex widePoint,
-                                                             Complex s,
-                                                             Complex v,
-                                                             Magnitude err,
-                                                             int best_n)
-  {
-    int k;
-    int i;
-    if (converged)
-    {
-      try ( Real x = Real.newVector(2))
-      {
-        Real w = x.get(1);
-        assert best_n != -1;
-
-        for (i = 0; i < glStepCount; i++)
-          if (glSteps[i] == best_n)
-            break;
-
-        s.zero();
-
-        for (k = 0; k < best_n; k++)
-        {
-          acb_calc_gl_node(x, w, i, k, bits);
-          δ.mul(x, bits, widePoint).add(mid, bits);
-          f.evaluate(widePoint, 0, bits, v);
-          v.addmul(x.get(1), bits, s);
-        }
-
-        evalCount.getAndAdd(best_n);
-
-        acb_add_error_mag(s.mul(δ, bits, res), err);
-
-      }
-    }
-    else
-    {
-      res.setIndeterminate();
-    }
-  }
-
-  public static void swapElements(Complex as, Complex bs, Complex vs, Magnitude ms, int depth)
-  {
-    as.swap(as.get(depth));
-    bs.swap(bs.get(depth));
-    vs.swap(vs.get(depth));
-    ms.swap(ms.get(depth));
-  }
-
-  public static void swapElements(Real as, Real bs, Complex vs, Magnitude ms, int depth)
-  {
-    as.swap(as.get(depth));
-    bs.swap(bs.get(depth));
-    vs.swap(vs.get(depth));
-    ms.swap(ms.get(depth));
-  }
-
-  public static void resizeRegisters(int allocation, Real as, Real bs, Complex vs, Magnitude ms)
-  {
-    int k = allocation;
-    allocation *= 2;
-    as.resize(allocation);
-    bs.resize(allocation);
-    vs.resize(allocation);
-    ms.resize(allocation);
-    for (; k < allocation; k++)
-    {
-      arb_init(as.get(k));
-      arb_init(bs.get(k));
-      acb_init(vs.get(k));
-      mag_init(ms.get(k));
-    }
-  }
 
   public static File save(BufferedImage image, String file)
   {
@@ -453,79 +220,6 @@ public class Utensils
     return icon;
   }
 
-  public static void heapUp(Real as, Real bs, Complex vs, Magnitude ms, int n)
-  {
-    int i, max, l, r;
-    i = 0;
-    for (;;)
-    {
-      max = i;
-      l   = 2 * i + 1;
-      r   = 2 * i + 2;
-      if (l < n && ms.get(l).compareTo(ms.get(max)) > 0)
-        max = l;
-      if (r < n && ms.get(r).compareTo(ms.get(max)) > 0)
-        max = r;
-      if (max != i)
-      {
-        as.swap(i, max);
-        bs.swap(i, max);
-        vs.swap(i, max);
-        ms.swap(i, max);
-
-        i = max;
-      }
-      else
-      {
-        break;
-      }
-    }
-  }
-
-  public static void heapUp(Complex as, Complex bs, Complex vs, Magnitude ms, int n)
-  {
-    int i, max, l, r;
-    i = 0;
-    for (;;)
-    {
-      max = i;
-      l   = 2 * i + 1;
-      r   = 2 * i + 2;
-      if (l < n && ms.get(l).compareTo(ms.get(max)) > 0)
-        max = l;
-      if (r < n && ms.get(r).compareTo(ms.get(max)) > 0)
-        max = r;
-      if (max != i)
-      {
-        as.swap(i, max);
-        bs.swap(i, max);
-        vs.swap(i, max);
-        ms.swap(i, max);
-        i = max;
-      }
-      else
-      {
-        break;
-      }
-    }
-  }
-
-  public static void heapDown(Complex as, Complex bs, Complex vs, Magnitude ms, int n)
-  {
-    int k = n - 1;
-    int j = (k - 1) / 2;
-
-    while (k > 0 && ms.get(j).compareTo(ms.get(k)) < 0)
-    {
-      as.swap(j, k);
-      bs.swap(j, k);
-      vs.swap(j, k);
-      ms.swap(j, k);
-      k = j;
-      j = (j - 1) / 2;
-    }
-  }
-
   public static boolean overlaps(Real tmp, Real a, Real b, int fidelity)
   {
     return a.sub(b, fidelity, tmp).containsZero();
@@ -547,59 +241,9 @@ public class Utensils
     return a.sub(b, prec, tmp).containsZero();
   }
 
-  /**
-   * 
-   * @param as
-   * @param bs
-   * @param vs
-   * @param ms
-   * @param n
-   */
-  public static void heapDown(Real as, Real bs, Complex vs, Magnitude ms, int n)
-  {
-    int k = n - 1;
-    int j = (k - 1) / 2;
-
-    while (k > 0 && ms.get(j).compareTo(ms.get(k)) < 0)
-    {
-      as.swap(j, k);
-      bs.swap(j, k);
-      vs.swap(j, k);
-      ms.swap(j, k);
-      k = j;
-      j = (j - 1) / 2;
-    }
-  }
-
   public static void println(Object s)
   {
     System.out.println(s);
-  }
-
-  public static int calculatePartition(RealFunction realFunction,
-                                       FloatInterval left,
-                                       FloatInterval right,
-                                       FloatInterval block,
-                                       int prec)
-  {
-    try ( Real t = new Real(); Real m = new Real();)
-    {
-      Float u = m.getMid();
-
-      /* Compute the midpoint */
-      block.getA().add(block.getB(), prec, RoundingMode.Down, u).half(u);
-
-      /* Evaluate the function at the midpoint so the sign can be returned */
-      int sign = realFunction.evaluate(m, 1, prec, t).sign();
-
-      /* split the interval at the midpoint */
-      left.setA(block.getA());
-      left.setB(u);
-      right.setA(u);
-      right.setB(block.getB());
-
-      return sign;
-    }
   }
 
   public static RealMatrix newBivariateCorrelationMatrix(Real ρ)
@@ -704,25 +348,6 @@ public class Utensils
       return true;
     }
     return false;
-  }
-
-  public static void initializeJavaFxIfNecessary()
-  {
-    if (!ShellFunctions.javaFxInitialized)
-    {
-      ShellFunctions.javaFxInitialized = true;
-      try
-      {
-        Platform.startup(() ->
-        {
-          Platform.setImplicitExit(false);
-        });
-      }
-      catch (Exception e)
-      {
-        e.printStackTrace(System.err);
-      }
-    }
   }
 
   public static void persistInYamlFormat(String yamlFile, Object... information)

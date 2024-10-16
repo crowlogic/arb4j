@@ -8,6 +8,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
+import arb.utensils.IntegrationTools;
 import arb.utensils.Utensils;
 
 /**
@@ -419,7 +420,7 @@ public class Integrators
       {
         allocation *= 2;
 
-        Utensils.resizeVectors(allocation, as, bs, vs, ms);
+        IntegrationTools.resizeVectors(allocation, as, bs, vs, ms);
       }
 
       bisect(f,
@@ -443,8 +444,8 @@ public class Integrators
 
       if (useHeap)
       {
-        Utensils.heapUp(as, bs, vs, ms, depth);
-        Utensils.heapDown(as, bs, vs, ms, depth + 1);
+        IntegrationTools.heapUp(as, bs, vs, ms, depth);
+        IntegrationTools.heapDown(as, bs, vs, ms, depth + 1);
 
         if (debug)
         {
@@ -473,8 +474,8 @@ public class Integrators
     s.add(vs.get(top), prec, s);
     if (useHeap && depth > 0)
     {
-      Utensils.swapElements(as, bs, vs, ms, depth);
-      Utensils.heapUp(as, bs, vs, ms, depth);
+      IntegrationTools.swapElements(as, bs, vs, ms, depth);
+      IntegrationTools.heapUp(as, bs, vs, ms, depth);
     }
   }
 
@@ -491,8 +492,8 @@ public class Integrators
     s.add(vs.get(top), prec, s);
     if (useHeap && depth > 0)
     {
-      Utensils.swapElements(as, bs, vs, ms, depth);
-      Utensils.heapUp(as, bs, vs, ms, depth);
+      IntegrationTools.swapElements(as, bs, vs, ms, depth);
+      IntegrationTools.heapUp(as, bs, vs, ms, depth);
     }
   }
 
@@ -525,8 +526,8 @@ public class Integrators
 
     if (useHeap && depth > 0)
     {
-      Utensils.swapElements(as, bs, vs, ms, depth);
-      Utensils.heapUp(as, bs, vs, ms, depth);
+      IntegrationTools.swapElements(as, bs, vs, ms, depth);
+      IntegrationTools.heapUp(as, bs, vs, ms, depth);
     }
   }
 
@@ -559,8 +560,8 @@ public class Integrators
 
     if (useHeap && depth > 0)
     {
-      Utensils.swapElements(as, bs, vs, ms, depth);
-      Utensils.heapUp(as, bs, vs, ms, depth);
+      IntegrationTools.swapElements(as, bs, vs, ms, depth);
+      IntegrationTools.heapUp(as, bs, vs, ms, depth);
     }
   }
 
@@ -746,7 +747,7 @@ public class Integrators
       }
 
       /* Evaluate best found Gauss-Legendre quadrature rule. */
-      Utensils.evaluateBestGaussLegendreQuadratureRule(f,
+      IntegrationTools.evaluateBestGaussLegendreQuadratureRule(f,
                                                        bits,
                                                        evalCount,
                                                        res,

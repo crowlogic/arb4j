@@ -39,6 +39,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.real.RealFunction;
+import arb.utensils.IntegrationTools;
 import arb.utensils.Utensils;
 
 /**
@@ -213,15 +214,15 @@ public interface RealToComplexFunction extends
           if (depth >= allocation - 1)
           {
             allocation *= 2;
-            Utensils.resizeRegisters(allocation, as, bs, vs, ms);
+            IntegrationTools.resizeRegisters(allocation, as, bs, vs, ms);
           }
 
           bisect(relAccuracyGoalBits, prec, tmpm, newTol, depth, top, evalCount, as, bs, vs, ms, topm, verbose);
 
           if (useHeap)
           {
-            Utensils.heapUp(as, bs, vs, ms, depth);
-            Utensils.heapDown(as, bs, vs, ms, depth + 1);
+            IntegrationTools.heapUp(as, bs, vs, ms, depth);
+            IntegrationTools.heapDown(as, bs, vs, ms, depth + 1);
           }
 
           depth++;

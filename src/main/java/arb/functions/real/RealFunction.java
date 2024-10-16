@@ -1,8 +1,6 @@
 package arb.functions.real;
 
-import static arb.utensils.Utensils.computeNewtonStep;
 import static arb.utensils.Utensils.println;
-import static arb.utensils.Utensils.refineRootViaNewtonsMethod;
 import static java.lang.String.format;
 import static java.lang.System.out;
 
@@ -21,7 +19,7 @@ import arb.expressions.Expression;
 import arb.expressions.Parser;
 import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
-import arb.utensils.Utensils;
+import arb.utensils.RootFindingTools;
 
 /**
  * The {@link RealFunction} interface, a part of the arb.functions.real package,
@@ -166,7 +164,7 @@ public interface RealFunction extends Function<Real, Real>
   public default boolean
          calculateNewtonStep(Real point, Real convergenceRegion, Float convergenceFactor, int prec, Real nextPoint)
   {
-    return computeNewtonStep(this, point, convergenceRegion, convergenceFactor, prec, nextPoint);
+    return RootFindingTools.computeNewtonStep(this, point, convergenceRegion, convergenceFactor, prec, nextPoint);
   }
 
   /**
@@ -180,7 +178,7 @@ public interface RealFunction extends Function<Real, Real>
    */
   public default int calculatePartition(FloatInterval left, FloatInterval right, FloatInterval block, int prec)
   {
-    return Utensils.calculatePartition(this, left, right, block, prec);
+    return RootFindingTools.calculatePartition(this, left, right, block, prec);
   }
 
   public default RealFunction div(RealFunction that)
@@ -658,7 +656,7 @@ public interface RealFunction extends Function<Real, Real>
                                                    int prec,
                                                    boolean verbose)
   {
-    return refineRootViaNewtonsMethod(this, root, convergenceRegion, convergenceFactor, extraPrec, prec);
+    return RootFindingTools.refineRootViaNewtonsMethod(this, root, convergenceRegion, convergenceFactor, extraPrec, prec);
   }
 
   public default RealFunction sub(RealFunction that)

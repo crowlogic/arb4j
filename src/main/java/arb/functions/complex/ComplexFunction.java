@@ -15,7 +15,7 @@ import arb.expressions.Parser;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
 import arb.space.topological.VectorSpace;
-import arb.utensils.Utensils;
+import arb.utensils.IntegrationTools;
 
 /**
  * <pre>
@@ -265,7 +265,7 @@ public interface ComplexFunction extends
    */
   public default Complex simpleQuadrature(Complex a, Complex b, int prec, Complex res)
   {
-    return Utensils.calculateSimpleQuadrature(this, a, b, prec, res);
+    return IntegrationTools.calculateSimpleQuadrature(this, a, b, prec, res);
   }
 
 }

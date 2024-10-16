@@ -15,6 +15,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.nodes.Node;
 import arb.expressions.viz.EmacsKeybindingsEventHandler;
+import arb.utensils.ShellFunctions;
 import arb.utensils.Utensils;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -361,6 +362,25 @@ public class WindowManager
   public static void addEmacsKeybindings(TextField textField)
   {
     textField.addEventFilter(KeyEvent.KEY_PRESSED, new EmacsKeybindingsEventHandler(textField));
+  }
+
+  public static void initializeJavaFxIfNecessary()
+  {
+    if (!ShellFunctions.javaFxInitialized)
+    {
+      ShellFunctions.javaFxInitialized = true;
+      try
+      {
+        Platform.startup(() ->
+        {
+          Platform.setImplicitExit(false);
+        });
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace(System.err);
+      }
+    }
   }
 
 }

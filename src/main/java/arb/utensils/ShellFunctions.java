@@ -14,6 +14,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
 import arb.viz.FunctionPlotter;
+import arb.viz.WindowManager;
 import javafx.application.Platform;
 
 /**
@@ -25,7 +26,7 @@ public class ShellFunctions
 
   public static FunctionPlotter plot(RealTwoDimensionalDataSet sequence)
   {
-    Utensils.initializeJavaFxIfNecessary();
+    WindowManager.initializeJavaFxIfNecessary();
     AtomicReference<FunctionPlotter> ref = new AtomicReference<>();
     Semaphore                        sem = new Semaphore(0);
 
@@ -54,7 +55,7 @@ public class ShellFunctions
 
   public static FunctionPlotter plot(Real sequence)
   {
-    Utensils.initializeJavaFxIfNecessary();
+    WindowManager.initializeJavaFxIfNecessary();
     AtomicReference<FunctionPlotter> ref = new AtomicReference<>();
     var                              sem = new Semaphore(0);
 
@@ -80,7 +81,7 @@ public class ShellFunctions
 
   }
 
-  static boolean javaFxInitialized = false;
+  public static boolean javaFxInitialized = false;
 
   @SafeVarargs
   public static <R extends RealFunction> FunctionPlotter plot(double left, double right, int n, R... functions)
@@ -94,7 +95,7 @@ public class ShellFunctions
   {
     AtomicReference<FunctionPlotter> ref = new AtomicReference<>();
 
-    Utensils.initializeJavaFxIfNecessary();
+    WindowManager.initializeJavaFxIfNecessary();
 
     var sem = new Semaphore(0);
     Platform.runLater(() ->
