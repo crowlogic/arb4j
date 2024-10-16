@@ -107,7 +107,7 @@ public class WindowManager
 
   private static Method windowGetPeerMethod;
 
-  private static Field   tableViewSkinBaseFlowField;
+  private static Field  tableViewSkinBaseFlowField;
 
   private static Method resizeMethod;
 
@@ -120,7 +120,7 @@ public class WindowManager
       tableViewSkinBaseFlowField = TableViewSkinBase.class.getDeclaredField("flow");
       tableViewSkinBaseFlowField.setAccessible(true);
       resizeMethod = TableColumnHeader.class.getDeclaredMethod("resizeColumnToFitContent", int.class);
-      resizeMethod.setAccessible(true);      
+      resizeMethod.setAccessible(true);
     }
     catch (NoSuchMethodException | SecurityException | NoSuchFieldException e)
     {
@@ -258,7 +258,8 @@ public class WindowManager
     textArea.setWrapText(true);
     textArea.setMinHeight(600);
     textArea.setPrefHeight(800);
-    textArea.setPrefWidth(1300);;
+    textArea.setPrefWidth(1300);
+    ;
     textArea.setMaxWidth(Double.MAX_VALUE);
     textArea.setMaxHeight(Double.MAX_VALUE);
     GridPane.setVgrow(textArea, Priority.ALWAYS);
@@ -269,9 +270,9 @@ public class WindowManager
     expContent.add(textArea, 0, 1);
 
     // Set expandable Exception into the dialog pane.
-    alert.getDialogPane().setExpandableContent(expContent);    
+    alert.getDialogPane().setExpandableContent(expContent);
     alert.getDialogPane().setExpanded(true);
-    
+
     alert.showAndWait();
   }
 
@@ -296,15 +297,16 @@ public class WindowManager
     {
       javafx.scene.Node node   = column.getStyleableNode();
       TableColumnHeader header = (TableColumnHeader) node;
-      resizeMethod.invoke(header, -1);
+      if (header != null)
+      {
+        resizeMethod.invoke(header, -1);
+      }
     }
     catch (Exception e)
     {
       e.printStackTrace();
     }
   }
-
-
 
   public static void showError(Thread t, Throwable e)
   {
