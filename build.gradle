@@ -52,7 +52,7 @@ task createDesktopFile {
         def desktopFile = new File("${buildDir}/Expressor.desktop")
         desktopFile.text = """[Desktop Entry]
 Type=Application
-Name=Expression Analyzer
+Name=Expressor
 Exec=${projectDir}/bin/expressor
 Icon=${projectDir}/src/main/resources/ExpressionAnalyzer.png
 Terminal=false
