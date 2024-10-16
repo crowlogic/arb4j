@@ -1,0 +1,9 @@
+!!arb.expressions.SerializedExpression
+context:
+  input:
+  - arb.Integer
+  - '3'
+  v:
+  - arb.Real
+  - '0.5'
+expression: R(3,1/2;z)

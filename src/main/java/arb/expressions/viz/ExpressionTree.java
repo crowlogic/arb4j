@@ -52,7 +52,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
 
   public static final int bits = 128;
 
-  public void save(String yamlFile)
+  public void save(File yamlFile)
   {
     var x = new SerializedExpression();
     x.expression = this.expressionInput.getText();
@@ -85,8 +85,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
   {
     super(10);
     this.analyzer = expressionAnalyzer;
-    this.context  = new Context(Integer.named("input").set(3),
-                                Real.named("v").set(RealConstants.half));
+    this.context  = new Context();
 
     setupExpressionInput();
 
@@ -110,9 +109,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
   public void setupExpressionInput()
   {
     expressionInput = new TextField();
-    expressionInput.setPromptText("Enter expression here");
-    expressionInput.setText("1+(-((lnΓ(1/4 + t*I/2) - lnΓ(1/4 - t*I/2))*I)/2 -ln(π)*t/2)/π + 1 - I*((ln(ζ(1/2 + I*t)) - ln(ζ(1/2 - I*t))))/(2*π)");
-    expressionInput.setText("R(3,1/2;z)");
+    expressionInput.setPromptText("Enter expression:");
 
     WindowManager.addEmacsKeybindings(expressionInput);
 
@@ -333,8 +330,8 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
   private Optional<String> askWhatToSaveAs()
   {
     TextInputDialog dialog = new TextInputDialog();
-    dialog.setTitle("New Variable");
-    dialog.setHeaderText("Designation");
+    dialog.setTitle("Save Expression");
+    dialog.setHeaderText("");
     dialog.setContentText("Enter the name of the new variable: ");
 
     dialog.initOwner(getScene().getWindow());
@@ -344,10 +341,14 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
 
   public void save()
   {
-    Optional<String> filename = askWhatToSaveAs();
-    if (filename.isPresent())
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.getExtensionFilters()
+               .add(new ExtensionFilter("Expressions serialized in YAML Format",
+                                        List.of("*.yaml")));
+    File file = fileChooser.showSaveDialog(null);
+    if (file != null)
     {
-      save(filename.get());
+      save(file);
     }
   }
 

@@ -322,7 +322,7 @@ public class Utensils
     return loaded;  
   }
   
-  public static void saveToYamlFormat(String yamlFile, Object... information)
+  public static void saveToYamlFormat(File yamlFile, Object... information)
   {
     try
     {
@@ -338,7 +338,7 @@ public class Utensils
     {
       Platform.runLater(() ->
       {
-        WindowManager.showAlert("Exception throw", yamlFile, e);
+        WindowManager.showAlert("Exception throw", yamlFile.toString(), e);
       });
       throwOrWrap(e);
     }
