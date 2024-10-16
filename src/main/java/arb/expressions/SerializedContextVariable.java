@@ -15,7 +15,6 @@ public class SerializedContextVariable
     this.type  = type;
   }
   
-  public int bits;
   
   public SerializedContextVariable(Named integer)
   {
@@ -25,4 +24,11 @@ public class SerializedContextVariable
 
   public String value;
   public String type;
+  @Override
+  public String toString()
+  {
+    return String.format("SerializedContextVariable [type=%s, value=%s]", type, value);
+  }
+
+  
 }

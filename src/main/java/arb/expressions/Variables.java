@@ -100,12 +100,20 @@ public class Variables extends
   }
 
   public final HashMap<String, Named> map  = new HashMap<>();
-  public final List<Named>           list = new ArrayList<>();
+  public final List<Named>            list = new ArrayList<>();
 
   @Override
   public String toString()
   {
-    return String.format("Variables(#%s)[%s]", System.identityHashCode(this), map);
+    return String.format("Variables(#%s)[%s]",
+                         System.identityHashCode(this),
+                         map.entrySet()
+                            .stream()
+                            .map(entry -> String.format("%s:%s=%s",
+                                                        entry.getValue().getClass().getName(),
+                                                        entry.getKey(),
+                                                        entry.getValue().toStringWithoutName()))
+                            .toList());
   }
 
   @SafeVarargs
