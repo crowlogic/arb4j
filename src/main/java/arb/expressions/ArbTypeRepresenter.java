@@ -9,7 +9,6 @@ import org.yaml.snakeyaml.representer.Represent;
 import org.yaml.snakeyaml.representer.Representer;
 
 import arb.Integer;
-import arb.Named;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -36,26 +35,14 @@ public class ArbTypeRepresenter extends
       return representData(((ExpressionTree) data).expressionInput.getText());
     });
 
-    representers.put(ArbTypeRepresenter.ContextVariable.class, data ->
+    representers.put(SerializedContextVariable.class, data ->
     {
-      ContextVariable contextVariable = (ArbTypeRepresenter.ContextVariable) data;
+      SerializedContextVariable contextVariable = (SerializedContextVariable) data;
       return representSequence(getTag(String.class, Tag.SEQ),
                                List.of(contextVariable.type, contextVariable.value),
                                defaultFlowStyle);
     });
 
-  }
-
-  public static class ContextVariable
-  {
-    public ContextVariable(Named integer)
-    {
-      value = integer.toStringWithoutName();
-      type  = integer.getClass().getName();
-    }
-
-    public Object value;
-    public String type;
   }
 
   public class RealRepresentation implements
@@ -67,7 +54,7 @@ public class ArbTypeRepresenter extends
     {
       Real integer = (Real) data;
 
-      return represent(new ContextVariable(integer));
+      return represent(new SerializedContextVariable(integer));
     }
 
   }
@@ -81,7 +68,7 @@ public class ArbTypeRepresenter extends
     {
       Integer integer = (Integer) data;
 
-      return represent(new ContextVariable(integer));
+      return represent(new SerializedContextVariable(integer));
     }
 
   }

@@ -269,7 +269,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     });
   }
 
-  private void updateContextListView()
+  void updateContextListView()
   {
     Context currentContext = getCurrentContext();
     if (currentContext != null && contextListView != null)

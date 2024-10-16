@@ -4,11 +4,12 @@ import static arb.utensils.Utensils.wrapOrThrow;
 
 import java.io.Closeable;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import arb.Integer;
@@ -19,6 +20,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.expressions.SerializedContextVariable;
 import arb.expressions.SerializedExpression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
@@ -29,20 +31,16 @@ import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.skin.VirtualFlow;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.util.Callback;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -52,11 +50,15 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
                            VBox
 {
 
+  public static final int bits = 128;
+
   public void save(String yamlFile)
-  { 
+  {
     var x = new SerializedExpression();
     x.expression = this.expressionInput.getText();
-    x.context = context.variables.map;
+    x.context    = new HashMap<>();
+    context.variables.forEach(variable -> x.context.put(variable.getName(), new SerializedContextVariable(variable)));
+    System.out.println("Saving " + yamlFile);
     Utensils.saveToYamlFormat(yamlFile, x);
   }
 
@@ -295,9 +297,34 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     {
       try
       {
-        Utensils.loadFromYamlFormat(file);
+        SerializedExpression serializedExpression = Utensils.loadFromYamlFormat(file);
+        expressionInput.setText(serializedExpression.expression);
+        context.variables.clear();
+        for (Map.Entry<String, SerializedContextVariable> k : serializedExpression.context.entrySet())
+        {
+          SerializedContextVariable serializedContextVariable = k.getValue();
+          String                    name                      = k.getKey();
+          String                    type                      = serializedContextVariable.type;
+
+          String                    serializedValueString     = serializedContextVariable.value;
+          Class<?>                  typeClass                 = Class.forName(type);
+          boolean                   isInteger                 = typeClass.equals(Integer.class);
+          boolean                   needsBits                 = !isInteger;
+          Constructor<?>            constructor               =
+                                                !needsBits ? typeClass.getConstructor(String.class)
+                                                           : typeClass.getConstructor(String.class, int.class);
+          Named                     variable                  =
+                                             !needsBits ? (Named) constructor.newInstance(serializedValueString)
+                                                        : (Named) constructor.newInstance(serializedValueString, bits);
+          variable.setName(name);
+          
+          context.variables.add(variable);
+          System.out.println( "Loaded " + context.variables );
+          analyzer.updateContextListView();
+        }
+
       }
-      catch (FileNotFoundException e)
+      catch (Throwable e)
       {
         Utensils.throwOrWrap(e);
       }

@@ -312,16 +312,16 @@ public class Utensils
     return false;
   }
 
-  public static void loadFromYamlFormat(File file) throws FileNotFoundException
+  public static SerializedExpression loadFromYamlFormat(File file) throws FileNotFoundException
   {
     Yaml   yaml   = newYaml();
 
-    Object loaded = yaml.loadAs(new FileReader(file), SerializedExpression.class);
+    SerializedExpression loaded = yaml.load(new FileReader(file));
 
     System.out.println("Loaded " + loaded);
-
+    return loaded;  
   }
-
+  
   public static void saveToYamlFormat(String yamlFile, Object... information)
   {
     try

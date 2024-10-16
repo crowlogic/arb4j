@@ -1218,8 +1218,15 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     sb.append("]");
     return sb.toString();
   }
-    
-  public String toString()
+
+  public Complex(String str, int bits )
+  {
+    this();
+    set(str,bits);
+  }
+      
+  @Override
+  public String toStringWithoutName()
   {
     StringBuilder sb = new StringBuilder();
     if (dim > 1)
@@ -1257,9 +1264,13 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     {
       sb.append("]");
     }
-    return ( name == null ? "" : name + "=" ) + sb.toString();
+    return sb.toString();
+  }
+
+  public String toString()
+  {
+    return (name == null ? "" : name + "=") + toStringWithoutName();
   }  
-  
   public int dim = 1;
   
   public int size()

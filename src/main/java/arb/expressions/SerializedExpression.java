@@ -1,6 +1,6 @@
 package arb.expressions;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -12,9 +12,9 @@ import arb.documentation.TheArb4jLibrary;
  */
 public class SerializedExpression
 {
-  public String             expression;
+  public String                                 expression;
 
-  public HashMap<String, ?> context;
+  public Map<String, SerializedContextVariable> context;
 
   @Override
   public String toString()
