@@ -81,7 +81,7 @@ public class IntegrationTools
         assert best_n != -1;
   
         for (i = 0; i < Utensils.glStepCount; i++)
-          if (Utensils.glSteps[i] == best_n)
+          if (IntegrationTools.glSteps[i] == best_n)
             break;
   
         s.zero();
@@ -235,5 +235,45 @@ public class IntegrationTools
       j = (j - 1) / 2;
     }
   }
+
+  public static final int glSteps[]   =
+  { 1,
+    2,
+    4,
+    6,
+    8,
+    12,
+    16,
+    22,
+    32,
+    46,
+    64,
+    90,
+    128,
+    182,
+    256,
+    362,
+    512,
+    724,
+    1024,
+    1448,
+    2048,
+    2896,
+    4096,
+    5792,
+    8192,
+    11586,
+    16384,
+    23170,
+    32768,
+    46340,
+    65536,
+    92682,
+    131072,
+    185364,
+    262144,
+    370728,
+    524288,
+    741456 };
 
 }

@@ -99,6 +99,7 @@ public class GestureEvents extends
                             500,
                             500);
 
+    scene.setOnTouchPressed(value -> System.out.println("touchPressed " + value));
     primaryStage.setTitle("Gesture Events Example");
     primaryStage.setScene(scene);
     primaryStage.show();

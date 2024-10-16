@@ -3,9 +3,12 @@ package arb.expressions.viz;
 import static arb.utensils.Utensils.wrapOrThrow;
 
 import java.io.Closeable;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import arb.Integer;
@@ -36,6 +39,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Callback;
 
 /**
@@ -48,12 +53,12 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
 
   public void save(String yamlFile)
   {
-    Utensils.persistInYamlFormat(yamlFile, expressionInput.getText(), context.variables.map);
+    Utensils.saveToYamlFormat(yamlFile, this, context);
   }
 
   final Expressor<D, C, F>     analyzer;
-  TextField                    expressionInput;
   TreeTableView<Node<D, C, F>> treeTableView;
+  public TextField             expressionInput;
   public Expression<D, C, F>   expr;
   F                            instance;
   C                            result;
@@ -150,8 +155,6 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     var      fieldCol          = newFieldColumn();
     var      valueCol          = newValueColumn();
     MenuItem copyMenuItem      = new MenuItem("copy");
-
-   
 
     copyMenuItem.setOnAction(event ->
     {
@@ -279,7 +282,22 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
 
   public void load()
   {
-    WindowManager.showAlert("TODO", "TODO: load");
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.getExtensionFilters()
+               .add(new ExtensionFilter("Expressions serialized in YAML Format",
+                                        List.of("*.yaml")));
+    File file = fileChooser.showOpenDialog(null);
+    if (file != null)
+    {
+      try
+      {
+        Utensils.loadFromYamlFormat(file);
+      }
+      catch (FileNotFoundException e)
+      {
+        Utensils.throwOrWrap(e);
+      }
+    }
   }
 
   private Optional<String> askWhatToSaveAs()

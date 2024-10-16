@@ -3,11 +3,7 @@ package arb.utensils;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,14 +21,17 @@ import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.LoaderOptions;
+import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
-import arb.*;
+import arb.Complex;
+import arb.Real;
+import arb.RealMatrix;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.ArbTypeRepresenter;
-import arb.expressions.Parser;
+import arb.expressions.viz.ExpressionTree;
 import arb.viz.WindowManager;
 import javafx.application.Platform;
 
@@ -91,47 +90,7 @@ public class Utensils
     return input.substring(0, lastIndex + 1);
   }
 
-  public static final int glSteps[]   =
-  { 1,
-    2,
-    4,
-    6,
-    8,
-    12,
-    16,
-    22,
-    32,
-    46,
-    64,
-    90,
-    128,
-    182,
-    256,
-    362,
-    512,
-    724,
-    1024,
-    1448,
-    2048,
-    2896,
-    4096,
-    5792,
-    8192,
-    11586,
-    16384,
-    23170,
-    32768,
-    46340,
-    65536,
-    92682,
-    131072,
-    185364,
-    262144,
-    370728,
-    524288,
-    741456 };
-
-  public static final int glStepCount = glSteps.length;
+  public static final int glStepCount = IntegrationTools.glSteps.length;
 
   public static File save(BufferedImage image, String file)
   {
@@ -350,13 +309,18 @@ public class Utensils
     return false;
   }
 
-  public static void persistInYamlFormat(String yamlFile, Object... information)
+  public static void loadFromYamlFormat(File file) throws FileNotFoundException
+  {
+    Object loaded = newYaml().load(new FileReader(file));
+    System.out.println("Loaded " + loaded);
+
+  }
+
+  public static void saveToYamlFormat(String yamlFile, Object... information)
   {
     try
     {
-      Yaml       yaml       = new Yaml(new Constructor(new LoaderOptions()),
-                                       new ArbTypeRepresenter(yamlConfig),
-                                       yamlConfig);
+      Yaml       yaml       = newYaml();
       FileWriter fileWriter = new FileWriter(yamlFile);
       for (Object obj : information)
       {
@@ -372,6 +336,18 @@ public class Utensils
       });
       throwOrWrap(e);
     }
+  }
+
+  public static Yaml newYaml()
+  {
+    Yaml            yaml            = new Yaml(new Constructor(new LoaderOptions()),
+                                               new ArbTypeRepresenter(yamlConfig),
+                                               yamlConfig);
+    TypeDescription contextVarTypeDescription = new TypeDescription(ArbTypeRepresenter.ContextVariable.class);
+    
+    yaml.addTypeDescription(contextVarTypeDescription);
+
+    return yaml;
   }
 
   public static Comparator<? super Class<?>> classNameComparator = (a, b) ->

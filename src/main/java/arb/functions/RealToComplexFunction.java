@@ -455,9 +455,9 @@ public interface RealToComplexFunction extends
         mag_mul(M, M, τ);
 
         /* Search for the smallest n that gives err < tol (if possible) */
-        for (i = 0; i < Utensils.glStepCount && Utensils.glSteps[i] <= degreeLimit; i++)
+        for (i = 0; i < Utensils.glStepCount && IntegrationTools.glSteps[i] <= degreeLimit; i++)
         {
-          n = Utensils.glSteps[i];
+          n = IntegrationTools.glSteps[i];
 
           /* (64/15) M / ((ρ-1) ρ^(2n-1)) */
           mag_pow_ui_lower(t, ρ, 2 * n - 1);
@@ -493,7 +493,7 @@ public interface RealToComplexFunction extends
           assert bestn != -1;
 
           for (i = 0; i < Utensils.glStepCount; i++)
-            if (Utensils.glSteps[i] == bestn)
+            if (IntegrationTools.glSteps[i] == bestn)
               break;
 
           s.zero();

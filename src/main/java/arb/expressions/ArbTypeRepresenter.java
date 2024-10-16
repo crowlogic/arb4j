@@ -1,5 +1,7 @@
 package arb.expressions;
 
+import java.util.List;
+
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.Tag;
@@ -11,6 +13,8 @@ import arb.Named;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.viz.ExpressionTree;
+import javafx.scene.control.skin.TreeTableViewSkin;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -23,9 +27,23 @@ public class ArbTypeRepresenter extends
   public ArbTypeRepresenter(DumperOptions options)
   {
     super(options);
+
     representers.put(Context.class, new ContextRepresentation());
     representers.put(Integer.class, new IntegerRepresentation());
     representers.put(Real.class, new RealRepresentation());
+    representers.put(TreeTableViewSkin.class, data -> represent(null));
+    representers.put(ExpressionTree.class, data ->
+    {
+      return representData(((ExpressionTree) data).expressionInput.getText());
+    });
+
+    representers.put(ArbTypeRepresenter.ContextVariable.class, data ->
+    {
+      ContextVariable contextVariable = (ArbTypeRepresenter.ContextVariable) data;
+      return representSequence(getTag(String.class, Tag.SEQ),
+                               List.of(contextVariable.type, contextVariable.value),
+                               defaultFlowStyle);
+    });
 
   }
 

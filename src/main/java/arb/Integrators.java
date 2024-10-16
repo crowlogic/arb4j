@@ -715,9 +715,9 @@ public class Integrators
         M.mul(m);
 
         /* Search for the smallest n that gives err < tol (if possible) */
-        for (i = 0; i < Utensils.glStepCount && Utensils.glSteps[i] <= degreeLimit; i++)
+        for (i = 0; i < Utensils.glStepCount && IntegrationTools.glSteps[i] <= degreeLimit; i++)
         {
-          n = Utensils.glSteps[i];
+          n = IntegrationTools.glSteps[i];
 
           /* (64/15) M / ((ρ-1) ρ^(2n-1)) */
           mag_pow_ui_lower(t, rho, 2 * n - 1);
