@@ -24,6 +24,8 @@ import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.inspector.TagInspector;
+import org.yaml.snakeyaml.nodes.Tag;
 
 import arb.Complex;
 import arb.Real;
@@ -31,6 +33,7 @@ import arb.RealMatrix;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.ArbTypeRepresenter;
+import arb.expressions.SerializedExpression;
 import arb.expressions.viz.ExpressionTree;
 import arb.viz.WindowManager;
 import javafx.application.Platform;
@@ -311,7 +314,10 @@ public class Utensils
 
   public static void loadFromYamlFormat(File file) throws FileNotFoundException
   {
-    Object loaded = newYaml().load(new FileReader(file));
+    Yaml   yaml   = newYaml();
+
+    Object loaded = yaml.loadAs(new FileReader(file), SerializedExpression.class);
+
     System.out.println("Loaded " + loaded);
 
   }
@@ -340,12 +346,12 @@ public class Utensils
 
   public static Yaml newYaml()
   {
-    Yaml            yaml            = new Yaml(new Constructor(new LoaderOptions()),
-                                               new ArbTypeRepresenter(yamlConfig),
-                                               yamlConfig);
-    TypeDescription contextVarTypeDescription = new TypeDescription(ArbTypeRepresenter.ContextVariable.class);
-    
-    yaml.addTypeDescription(contextVarTypeDescription);
+    LoaderOptions loadingConfig = new LoaderOptions();
+    loadingConfig.setTagInspector(tag -> true);
+    Yaml yaml = new Yaml(new Constructor(SerializedExpression.class,
+                                         loadingConfig),
+                         new ArbTypeRepresenter(yamlConfig),
+                         yamlConfig);
 
     return yaml;
   }

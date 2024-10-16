@@ -1,5 +1,9 @@
 package arb.expressions;
 
+import java.util.HashMap;
+
+import arb.Named;
+
 /**
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -7,7 +11,13 @@ package arb.expressions;
  */
 public class SerializedExpression
 {
-  public String expression;
-  
-  public Context context;
+  public String             expression;
+
+  public HashMap<String, ?> context;
+
+  @Override
+  public String toString()
+  {
+    return String.format("SerializedExpression [expression=%s, context=%s]", expression, context);
+  }
 }

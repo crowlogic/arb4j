@@ -31,7 +31,6 @@ public class ArbTypeRepresenter extends
     representers.put(Context.class, new ContextRepresentation());
     representers.put(Integer.class, new IntegerRepresentation());
     representers.put(Real.class, new RealRepresentation());
-    representers.put(TreeTableViewSkin.class, data -> represent(null));
     representers.put(ExpressionTree.class, data ->
     {
       return representData(((ExpressionTree) data).expressionInput.getText());

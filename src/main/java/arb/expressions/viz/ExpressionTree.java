@@ -19,6 +19,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.expressions.SerializedExpression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -52,8 +53,11 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
 {
 
   public void save(String yamlFile)
-  {
-    Utensils.saveToYamlFormat(yamlFile, this, context);
+  { 
+    var x = new SerializedExpression();
+    x.expression = this.expressionInput.getText();
+    x.context = context.variables.map;
+    Utensils.saveToYamlFormat(yamlFile, x);
   }
 
   final Expressor<D, C, F>     analyzer;

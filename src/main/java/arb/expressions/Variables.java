@@ -100,7 +100,7 @@ public class Variables extends
   }
 
   public final HashMap<String, Named> map  = new HashMap<>();
-  private final List<Named>           list = new ArrayList<>();
+  public final List<Named>           list = new ArrayList<>();
 
   @Override
   public String toString()
