@@ -24,14 +24,19 @@ import arb.viz.WindowManager;
 import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.skin.VirtualFlow;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -95,7 +100,10 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
   {
     expressionInput = new TextField();
     expressionInput.setPromptText("Enter expression here");
-    expressionInput.setText("1+(-((lnΓ(1/4 + t*I/2) - lnΓ(1/4 - t*I/2))*I)/2 - ln(π)*t/2)/π + 1 - I*((ln(ζ(1/2 + I*t)) - ln(ζ(1/2 - I*t))))/(2*π)");
+    // expressionInput.setText("1+(-((lnΓ(1/4 + t*I/2) - lnΓ(1/4 - t*I/2))*I)/2 -
+    // ln(π)*t/2)/π + 1 - I*((ln(ζ(1/2 + I*t)) - ln(ζ(1/2 - I*t))))/(2*π)");
+    expressionInput.setText("R(3,1/2;z)");
+
     WindowManager.addEmacsKeybindings(expressionInput);
 
     expressionInput.setMaxWidth(1200);
@@ -135,12 +143,24 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
   {
     treeTableView = new TreeTableView<>();
     treeTableView.setColumnResizePolicy(TreeTableView.UNCONSTRAINED_RESIZE_POLICY);
-    var nodeCol           = newNodeCol();
-    var nodeTypeCol       = newNodeTypeCol();
-    var nodeTypeResultCol = newNodeTypeResultCol();
-    var typesetCol        = newTypesetCol();
-    var fieldCol          = newFieldColumn();
-    var valueCol          = newValueColumn();
+    var      nodeCol           = newNodeCol();
+    var      nodeTypeCol       = newNodeTypeCol();
+    var      nodeTypeResultCol = newNodeTypeResultCol();
+    var      typesetCol        = newTypesetCol();
+    var      fieldCol          = newFieldColumn();
+    var      valueCol          = newValueColumn();
+    MenuItem copyMenuItem      = new MenuItem("copy");
+  
+     
+    
+    copyMenuItem.setOnAction(event ->
+    {
+      ObservableList<TreeTablePosition<Node<D, C, F>, ?>> item = treeTableView.getSelectionModel().getSelectedCells();
+      MenuItem source = (MenuItem) event.getSource();
+      System.err.println("onAction " + source.getText() + " item=" + item.getFirst().getRow() + "," + item.getFirst().getColumn() );
+      
+    });
+    treeTableView.setContextMenu(new ContextMenu(copyMenuItem));
     treeTableView.setTableMenuButtonVisible(true);
     treeTableView.skinProperty().addListener(this::virtualFlowListener);
     treeTableView.getColumns().addAll(typesetCol, valueCol, nodeTypeCol, nodeTypeResultCol, nodeCol, fieldCol);

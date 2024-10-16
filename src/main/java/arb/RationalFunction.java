@@ -249,8 +249,13 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
     return Compiler.compile(expression, context, Fraction.class, Fraction.class, RationalFunction.class, null);
   }
     
+  @SuppressWarnings("resource")
   public Real evaluate(Real t, int order, int bits, Real res)
   {
+    if  (res == null )
+    {
+      res = new Real();
+    }
     try ( var tmp = new Fraction())
     {
       return res.set(evaluate(tmp.set(t), order, bits, tmp));
