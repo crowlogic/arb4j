@@ -1,0 +1,9 @@
+!!arb.expressions.SerializedExpression
+coDomain: arb.RationalFunction
+context:
+  input:
+  - arb.Integer
+  - '5'
+domain: arb.Integer
+expression: n->R(n,1/2;z)
+function: arb.functions.rational.RationalFunctionSequence

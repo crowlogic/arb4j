@@ -269,7 +269,10 @@ public class Parser
                            .replace("➔", "");
     // .replace("½", "Half"
 
+    if ( !str.isEmpty() )
+    {
     str = (isDigit(str.charAt(0)) ? "_" : "") + str;
+    }
     if (str.length() >= 250)
     {
       UUID uuid = UUID.nameUUIDFromBytes(str.getBytes());

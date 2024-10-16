@@ -1,4 +1,5 @@
 !!arb.expressions.SerializedExpression
+coDomain: arb.Complex
 context:
   input:
   - arb.Integer
@@ -6,4 +7,6 @@ context:
   v:
   - arb.Real
   - '0.5'
+domain: arb.Complex
 expression: R(3,1/2;z)
+function: arb.functions.complex.ComplexFunction

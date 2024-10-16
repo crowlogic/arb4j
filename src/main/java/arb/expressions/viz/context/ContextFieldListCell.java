@@ -7,6 +7,7 @@ import arb.Integer;
 import arb.Named;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Context;
 import arb.expressions.viz.Expressor;
 import arb.functions.Function;
 import arb.utensils.Utensils;
@@ -122,7 +123,7 @@ public final class ContextFieldListCell<D, C extends Closeable, F extends Functi
     spinner.valueProperty().addListener((obs, oldValue, newValue) ->
     {
       integerItem.set(newValue);
-      updateRepresentation(item);
+      updateRepresentation(item);      
       analyzer.evaluate();
     });
     spinner.setOnScroll(event ->
@@ -180,7 +181,12 @@ public final class ContextFieldListCell<D, C extends Closeable, F extends Functi
 
   private void updateRepresentation(Named item)
   {
-    analyzer.getCurrentContext().variables.put(item.getName(), item);
+    Context currentContext = analyzer.getCurrentContext();
+    if ( currentContext == null )
+    {
+      return;
+    }
+    currentContext.variables.put(item.getName(), item);
 
     if (item instanceof Integer)
     {

@@ -1,30 +1,21 @@
 package arb.expressions.viz;
 
 import java.io.Closeable;
+import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import arb.*;
-import arb.Integer;
+import arb.Named;
+import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.viz.context.ContextFieldListCell;
 import arb.expressions.viz.context.ContextMenuListCell;
 import arb.expressions.viz.context.ContextVariableStringConverter;
-import arb.functions.*;
-import arb.functions.complex.ComplexFunction;
-import arb.functions.complex.ComplexNullaryFunction;
-import arb.functions.complex.ComplexPolynomialNullaryFunction;
-import arb.functions.integer.*;
-import arb.functions.polynomials.RealPolynomialFunction;
-import arb.functions.rational.ComplexRationalFunctionSequence;
-import arb.functions.rational.ComplexRationalNullaryFunction;
-import arb.functions.rational.RationalFunctionSequence;
-import arb.functions.rational.RationalNullaryFunction;
-import arb.functions.real.RealFunction;
-import arb.functions.real.RealNullaryFunction;
+import arb.functions.Function;
 import arb.utensils.Utensils;
 import arb.viz.WindowManager;
 import javafx.application.Application;
@@ -36,6 +27,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
@@ -55,169 +48,10 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
                       Application
 {
 
-  public static Class<?>[] TYPES = new Class[]
-
-  { AlgebraicNumber.class,
-    Object.class,
-    Integer.class,
-    GaussianInteger.class,
-    Real.class,
-    Complex.class,
-    IntegerPolynomial.class,
-    RealPolynomial.class,
-    ComplexPolynomial.class,
-    RationalFunction.class,
-    ComplexRationalFunction.class,
-    Fraction.class,
-    ComplexFraction.class,
-    RealMatrix.class,
-    ComplexMatrix.class };
-
-  void functionTypeSelected(Class<?> functionType)
-  {
-    if (functionType.equals(Function.class))
-    {
-    }
-    else if (functionType.equals(NullaryFunction.class))
-    {
-      domainTypeBox.getSelectionModel().select(Object.class);
-    }
-    else if (functionType.equals(IntegerFunction.class))
-    {
-      selectTypes(Integer.class, Integer.class);
-    }
-    else if (functionType.equals(IntegerPolynomialSequence.class))
-    {
-      selectTypes(Integer.class, IntegerPolynomial.class);
-    }
-    else if (functionType.equals(IntegerPolynomialNullaryFunction.class))
-    {
-      selectTypes(Object.class, IntegerPolynomial.class);
-    }
-    else if (functionType.equals(RealFunction.class))
-    {
-      selectTypes(Real.class, Real.class);
-    }
-    else if (functionType.equals(RealPolynomialFunction.class))
-    {
-      selectTypes(RealPolynomial.class, RealPolynomial.class);
-    }
-    else if (functionType.equals(ComplexFunction.class))
-    {
-      selectTypes(Complex.class, Complex.class);
-    }
-    else if (functionType.equals(ComplexPolynomialSequence.class))
-    {
-      selectTypes(Integer.class, ComplexPolynomial.class);
-    }
-    else if (functionType.equals(ComplexNullaryFunction.class))
-    {
-      selectTypes(Object.class, Complex.class);
-    }
-    else if (functionType.equals(RationalFunctionSequence.class))
-    {
-      selectTypes(Integer.class, RationalFunction.class);
-    }
-    else if (functionType.equals(RationalNullaryFunction.class))
-    {
-      selectTypes(Object.class, RationalFunction.class);
-    }
-    else if (functionType.equals(ComplexToRealFunction.class))
-    {
-      selectTypes(Complex.class, Real.class);
-    }
-    else if (functionType.equals(ComplexRationalFunctionSequence.class))
-    {
-      selectTypes(Integer.class, ComplexRationalFunction.class);
-    }
-    else if (functionType.equals(ComplexRationalNullaryFunction.class))
-    {
-      selectTypes(Object.class, ComplexRationalFunction.class);
-    }
-    else if (functionType.equals(RealNullaryFunction.class))
-    {
-      selectTypes(Object.class, Real.class);
-    }
-    else if (functionType.equals(ComplexPolynomialNullaryFunction.class))
-    {
-      selectTypes(Object.class, ComplexPolynomial.class);
-    }
-    else if (functionType.equals(RealPolynomialFunction.class))
-    {
-      selectTypes(RealPolynomial.class, RealPolynomial.class);
-    }
-    else if (functionType.equals(RealToComplexFunction.class))
-    {
-      selectTypes(Real.class, Complex.class);
-    }
-    else if (functionType.equals(ComplexSequence.class))
-    {
-      selectTypes(Integer.class, Complex.class);
-    }
-    else if (functionType.equals(IntegerPolynomialSequence.class))
-    {
-      selectTypes(Integer.class, IntegerPolynomial.class);
-    }
-    else if (functionType.equals(IntegerSequence.class))
-    {
-      selectTypes(Integer.class, Integer.class);
-    }
-    else if (functionType.equals(RealPolynomialSequence.class))
-    {
-      selectTypes(Integer.class, RealPolynomial.class);
-    }
-    else if (functionType.equals(RationalFunctionSequence.class))
-    {
-      selectTypes(Integer.class, RationalFunction.class);
-    }
-    else if (functionType.equals(RealSequence.class))
-    {
-      selectTypes(Integer.class, Real.class);
-    }
-    else if (functionType.equals(Sequence.class))
-    {
-      domainTypeBox.getSelectionModel().select(Integer.class);
-    }
-    else
-    {
-      System.err.println("functionTypeSelected: TODO: handle " + functionType);
-    }
-  }
-
-  public void selectTypes(Class<?> aclass, Class<?> bclass)
-  {
-    domainTypeBox.getSelectionModel().select(aclass);
-    codomainTypeBox.getSelectionModel().select(bclass);
-  }
-
-  public static Class<?>[] INTERFACES = new Class<?>[]
-  { IntegerSequence.class,
-    RealSequence.class,
-    Function.class,
-    NullaryFunction.class,
-    IntegerFunction.class,
-    IntegerPolynomialSequence.class,
-    IntegerPolynomialNullaryFunction.class,
-    RealFunction.class,
-    RealPolynomialFunction.class,
-    ComplexFunction.class,
-    ComplexSequence.class,
-    ComplexPolynomialSequence.class,
-    ComplexNullaryFunction.class,
-    RationalFunctionSequence.class,
-    RationalNullaryFunction.class,
-    RealPolynomialSequence.class,
-    RealToComplexFunction.class,
-    RealNullaryFunction.class,
-    ComplexToRealFunction.class,
-    ComplexRationalFunctionSequence.class,
-    ComplexRationalNullaryFunction.class,
-    Sequence.class };
-
   static
   {
-    Arrays.sort(INTERFACES, Utensils.classNameComparator);
-    Arrays.sort(TYPES, Utensils.classNameComparator);
+    Arrays.sort(ExpressionTree.INTERFACES, Utensils.classNameComparator);
+    Arrays.sort(ExpressionTree.TYPES, Utensils.classNameComparator);
   }
 
   public static void main(String[] args)
@@ -225,36 +59,26 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     launch(args);
   }
 
-  public int                            bits                 = 128;
+  public int             bits                 = 128;
 
-  public final ComboBox<Class<?>>       codomainTypeBox      = new ComboBox<Class<?>>();
+  VBox                   contextBox;
 
-  VBox                                  contextBox;
+  public ListView<Named> contextListView;
 
-  public ListView<Named>                contextListView;
+  private boolean        contextViewVisible   = false;
 
-  private boolean                       contextViewVisible   = false;
+  private SplitPane      splitPane;
 
-  /**
-   * TODO: these need to be moved to the {@link ExpressionTree}
-   */
-  public final ComboBox<Class<?>>       domainTypeBox        = new ComboBox<Class<?>>();
+  private TabPane        tabPane;
 
-  public final ComboBox<Class<?>>       functionTypeBox      = new ComboBox<Class<?>>();
+  private double[]       lastDividerPositions = null;
 
-  private SplitPane                     splitPane;
-
-  private TabPane                       tabPane;
-
-  private double[]                      lastDividerPositions = null;
-
-  private ClassStringConverter<D, C, F> classStringConverter = new ClassStringConverter<D, C, F>();
-
-  private void addNewExpressionTab()
+  ExpressionTree<D, C, F> addNewExpressionTab()
   {
-    Tab tab           = new Tab("Expression " + (tabPane.getTabs().size() + 1));
-    var expressionTab = new ExpressionTree<D, C, F>(this);
-    tab.setContent(expressionTab);
+    Tab tab            = new Tab("Expression " + (tabPane.getTabs().size() + 1));
+    var expressionTree = new ExpressionTree<D, C, F>(this,
+                                                     tab);
+    tab.setContent(expressionTree);
     tabPane.getTabs().add(tab);
     tabPane.getSelectionModel().select(tab);
 
@@ -267,6 +91,8 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
         updateContextListView();
       }
     });
+
+    return expressionTree;
   }
 
   void updateContextListView()
@@ -282,18 +108,14 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
   {
     tabPane = new TabPane();
 
-    setupTypeBoxes();
-
     var mainLayout = new VBox(10);
-
-    var typeBoxes  = createTypeBoxes();
 
     var buttonBox  = new HBox(10,
                               newButtonBox());
 
     var scrollpane = createScrollPane();
 
-    mainLayout.getChildren().addAll(typeBoxes, buttonBox, scrollpane);
+    mainLayout.getChildren().addAll(buttonBox, scrollpane);
 
     return mainLayout;
   }
@@ -336,7 +158,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
   private Optional<String> showVariableNameDialog(boolean rename)
   {
     ChoiceDialog<Class<?>> choiceDialog = new ChoiceDialog<>(Real.class,
-                                                             TYPES);
+                                                             ExpressionTree.TYPES);
     choiceDialog.setTitle("Select Type");
     choiceDialog.setContentText("What's the new variable type?");
     choiceDialog.initOwner(tabPane.getScene().getWindow());
@@ -433,28 +255,23 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     return deleteVariableMenuItem;
   }
 
-  protected HBox createTypeBoxes()
+  private void executeTabAction(Consumer<ExpressionTree<D, C, F>> action)
   {
-    HBox typeBoxes = new HBox(10,
-                              new Label("Domain:"),
-                              domainTypeBox,
-                              new Label("Codomain:"),
-                              codomainTypeBox,
-                              new Label("Interface:"),
-                              functionTypeBox);
-    return typeBoxes;
+    var expressionTab = getCurrentExpressionTree();
+    action.accept(expressionTab);
   }
 
   @SuppressWarnings("unchecked")
-  private void executeTabAction(Consumer<ExpressionTree<D, C, F>> action)
+  public ExpressionTree<D, C, F> getCurrentExpressionTree()
   {
     Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
-    if (currentTab != null)
+    if (currentTab == null)
     {
-      var content       = currentTab.getContent();
-      var expressionTab = (ExpressionTree<D, C, F>) content;
-      action.accept(expressionTab);
+      addNewExpressionTab();
     }
+    var content       = currentTab.getContent();
+    var expressionTab = (ExpressionTree<D, C, F>) content;
+    return expressionTab;
   }
 
   @SuppressWarnings("unchecked")
@@ -491,7 +308,20 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     saveButton.setOnAction(e -> executeTabAction(ExpressionTree::save));
 
     Button loadButton = new Button("Load");
-    loadButton.setOnAction(e -> executeTabAction(ExpressionTree::load));
+    loadButton.setOnAction(e ->
+    {
+      FileChooser fileChooser = new FileChooser();
+      fileChooser.getExtensionFilters()
+                 .add(new ExtensionFilter("Expressions serialized in YAML Format",
+                                          List.of("*.yaml")));
+      File file = fileChooser.showOpenDialog(null);
+      if (file != null)
+      {
+        addNewExpressionTab();
+
+        getCurrentExpressionTree().load(file);
+      }
+    });
 
     Button graphButton = new Button("Graph");
     graphButton.setOnAction(e -> executeTabAction(ExpressionTree::graph));
@@ -510,25 +340,6 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
   public void evaluate()
   {
     executeTabAction(ExpressionTree::evaluateExpression);
-  }
-
-  private void setupTypeBoxes()
-  {
-    domainTypeBox.getItems().addAll(TYPES);
-    domainTypeBox.setConverter(classStringConverter);
-
-    codomainTypeBox.getItems().addAll(TYPES);
-    codomainTypeBox.setConverter(classStringConverter);
-
-    functionTypeBox.getItems().addAll(INTERFACES);
-    functionTypeBox.setConverter(classStringConverter);
-    domainTypeBox.setValue(Complex.class);
-    codomainTypeBox.setValue(Complex.class);
-    functionTypeBox.setOnAction(e ->
-    {
-      functionTypeSelected(functionTypeBox.getValue());
-    });
-    functionTypeBox.setValue(ComplexFunction.class);
   }
 
   @Override

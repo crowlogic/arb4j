@@ -1,0 +1,7 @@
+!!arb.expressions.SerializedExpression
+coDomain: arb.ComplexRationalFunction
+context: {
+  }
+domain: java.lang.Object
+expression: 3+4
+function: arb.functions.rational.ComplexRationalNullaryFunction

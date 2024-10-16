@@ -10,10 +10,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
+import arb.*;
 import arb.Integer;
-import arb.Named;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -22,7 +21,18 @@ import arb.expressions.SerializedContextVariable;
 import arb.expressions.SerializedExpression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
-import arb.functions.Function;
+import arb.functions.*;
+import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.ComplexNullaryFunction;
+import arb.functions.complex.ComplexPolynomialNullaryFunction;
+import arb.functions.integer.*;
+import arb.functions.polynomials.RealPolynomialFunction;
+import arb.functions.rational.ComplexRationalFunctionSequence;
+import arb.functions.rational.ComplexRationalNullaryFunction;
+import arb.functions.rational.RationalFunctionSequence;
+import arb.functions.rational.RationalNullaryFunction;
+import arb.functions.real.RealFunction;
+import arb.functions.real.RealNullaryFunction;
 import arb.utensils.Utensils;
 import arb.viz.WindowManager;
 import javafx.application.Platform;
@@ -53,9 +63,9 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
   public void save(File yamlFile)
   {
     var x = new SerializedExpression();
-    x.coDomain   = expressor.codomainTypeBox.getValue().getName();
-    x.domain     = expressor.domainTypeBox.getValue().getName();
-    x.function   = expressor.functionTypeBox.getValue().getName();
+    x.coDomain   = codomainTypeBox.getValue().getName();
+    x.domain     = domainTypeBox.getValue().getName();
+    x.function   = functionTypeBox.getValue().getName();
     x.expression = this.expressionInput.getText();
     x.context    = new HashMap<>();
     context.variables.forEach(variable -> x.context.put(variable.getName(), new SerializedContextVariable(variable)));
@@ -76,30 +86,40 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
   VirtualFlow<?>               tableVirtualFlow;
 
   IndexedCell<?>               pointer;
+  private Tab                  tab;
 
   public Context getContext()
   {
     return context;
   }
 
-  public ExpressionTree(Expressor<D, C, F> expressionAnalyzer)
+  public final ComboBox<Class<?>> codomainTypeBox = new ComboBox<Class<?>>();
+
+  public final ComboBox<Class<?>> domainTypeBox   = new ComboBox<Class<?>>();
+
+  public final ComboBox<Class<?>> functionTypeBox = new ComboBox<Class<?>>();
+
+  public ExpressionTree(Expressor<D, C, F> expressionAnalyzer, Tab tab)
   {
     super(10);
+    this.tab       = tab;
     this.expressor = expressionAnalyzer;
-    this.context  = new Context();
+    this.context   = new Context();
 
     setupExpressionInput();
 
     MiniSymbolPalette symbolPalette = new MiniSymbolPalette(expressionInput);
 
-    HBox              inputRow      = new HBox(10);
-    inputRow.getChildren().addAll(expressionInput, symbolPalette);
-    HBox.setHgrow(expressionInput, Priority.ALWAYS);
+    VBox              inputRow      = new VBox();
+    HBox              rhs           = new HBox();
+    inputRow.getChildren().addAll(setupTypeBoxes(), expressionInput, symbolPalette);
+    rhs.getChildren().addAll(inputRow);
+    VBox.setVgrow(expressionInput, Priority.ALWAYS);
 
     setupTreeTableView();
 
     stackPane = new StackPane(treeTableView);
-    getChildren().addAll(inputRow, stackPane);
+    getChildren().addAll(rhs, stackPane);
     setPadding(new Insets(10));
 
     VBox.setVgrow(stackPane, Priority.ALWAYS);
@@ -139,7 +159,24 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
 
   };
 
-  public VirtualFlow<?> flow;
+  public VirtualFlow<?>    flow;
+  public static Class<?>[] TYPES = new Class[]
+
+  { AlgebraicNumber.class,
+    Object.class,
+    Integer.class,
+    GaussianInteger.class,
+    Real.class,
+    Complex.class,
+    IntegerPolynomial.class,
+    RealPolynomial.class,
+    ComplexPolynomial.class,
+    RationalFunction.class,
+    ComplexRationalFunction.class,
+    Fraction.class,
+    ComplexFraction.class,
+    RealMatrix.class,
+    ComplexMatrix.class };
 
   public VirtualFlow<?> getVirtualFlow()
   {
@@ -181,11 +218,15 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
   public void compileExpression()
   {
     String expressionString = expressionInput.getText();
+    if (expressionString.trim().isEmpty())
+    {
+      return;
+    }
     try
     {
-      Class<D> domainType   = (Class<D>) this.expressor.domainTypeBox.getValue();
-      Class<C> codomainType = (Class<C>) this.expressor.codomainTypeBox.getValue();
-      Class<F> functionType = (Class<F>) this.expressor.functionTypeBox.getValue();
+      Class<D> domainType   = (Class<D>) this.domainTypeBox.getValue();
+      Class<C> codomainType = (Class<C>) this.codomainTypeBox.getValue();
+      Class<F> functionType = (Class<F>) this.functionTypeBox.getValue();
 
       expr     = Function.compile(domainType, codomainType, functionType, expressionString, context.resetClassLoader());
 
@@ -283,20 +324,16 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     WindowManager.showAlert("TODO", "TODO: graph.. ask for range.. 1d for real");
   }
 
-  public void load()
+  public void load(File file)
   {
-    FileChooser fileChooser = new FileChooser();
-    fileChooser.getExtensionFilters()
-               .add(new ExtensionFilter("Expressions serialized in YAML Format",
-                                        List.of("*.yaml")));
-    File file = fileChooser.showOpenDialog(null);
+  
     if (file != null)
     {
       try
       {
         SerializedExpression serializedExpression = Utensils.loadFromYamlFormat(file);
-        expressionInput.setText(serializedExpression.expression);
         context.variables.clear();
+
         for (Map.Entry<String, SerializedContextVariable> k : serializedExpression.context.entrySet())
         {
           SerializedContextVariable serializedContextVariable = k.getValue();
@@ -316,13 +353,27 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
           variable.setName(name);
 
           context.variables.add(variable);
-          expressor.updateContextListView();
 
-          expressor.codomainTypeBox.setValue(Class.forName(serializedExpression.coDomain));
-          expressor.domainTypeBox.setValue(Class.forName(serializedExpression.domain));
-          expressor.functionTypeBox.setValue(Class.forName(serializedExpression.function));
         }
+        
+        expressor.updateContextListView();
 
+        if (serializedExpression.coDomain != null)
+        {
+          codomainTypeBox.setValue(Class.forName(serializedExpression.coDomain));
+        }
+        if (serializedExpression.domain != null)
+        {
+          domainTypeBox.setValue(Class.forName(serializedExpression.domain));
+        }
+        if (serializedExpression.function != null)
+        {
+          functionTypeBox.setValue(Class.forName(serializedExpression.function));
+        }
+        tab.setText(file.getName().split("\\.")[0]);
+        String expression = serializedExpression.expression;
+        expressionInput.setText(expression);
+        compileExpression();
       }
       catch (Throwable e)
       {
@@ -331,16 +382,176 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     }
   }
 
-  private Optional<String> askWhatToSaveAs()
+  private ClassStringConverter<D, C, F> classStringConverter = new ClassStringConverter<D, C, F>();
+  public static Class<?>[]              INTERFACES           = new Class<?>[]
+  { IntegerSequence.class,
+    RealSequence.class,
+    Function.class,
+    NullaryFunction.class,
+    IntegerFunction.class,
+    IntegerPolynomialSequence.class,
+    IntegerPolynomialNullaryFunction.class,
+    RealFunction.class,
+    RealPolynomialFunction.class,
+    ComplexFunction.class,
+    ComplexSequence.class,
+    ComplexPolynomialSequence.class,
+    ComplexNullaryFunction.class,
+    RationalFunctionSequence.class,
+    RationalNullaryFunction.class,
+    RealPolynomialSequence.class,
+    RealToComplexFunction.class,
+    RealNullaryFunction.class,
+    ComplexToRealFunction.class,
+    ComplexRationalFunctionSequence.class,
+    ComplexRationalNullaryFunction.class,
+    Sequence.class };
+
+  private HBox setupTypeBoxes()
   {
-    TextInputDialog dialog = new TextInputDialog();
-    dialog.setTitle("Save Expression");
-    dialog.setHeaderText("");
-    dialog.setContentText("Enter the name of the new variable: ");
+    HBox typeBox = new HBox();
 
-    dialog.initOwner(getScene().getWindow());
+    domainTypeBox.getItems().addAll(TYPES);
+    domainTypeBox.setConverter(classStringConverter);
 
-    return dialog.showAndWait();
+    codomainTypeBox.getItems().addAll(TYPES);
+    codomainTypeBox.setConverter(classStringConverter);
+
+    functionTypeBox.getItems().addAll(INTERFACES);
+    functionTypeBox.setConverter(classStringConverter);
+    domainTypeBox.setValue(Complex.class);
+    codomainTypeBox.setValue(Complex.class);
+    functionTypeBox.setOnAction(e ->
+    {
+      functionTypeSelected(functionTypeBox.getValue());
+    });
+    functionTypeBox.setValue(ComplexFunction.class);
+
+    HBox domainBox   = new HBox(new Label("Domain:"),
+                                domainTypeBox);
+    HBox codomainBox = new HBox(new Label("Codomain:"),
+                                codomainTypeBox);
+    HBox functionBox = new HBox(new Label("Function:"),
+                                functionTypeBox);
+    typeBox.getChildren().addAll(domainBox, codomainBox, functionBox);
+    return typeBox;
+  }
+
+  void functionTypeSelected(Class<?> functionType)
+  {
+    if (functionType.equals(Function.class))
+    {
+    }
+    else if (functionType.equals(NullaryFunction.class))
+    {
+      domainTypeBox.getSelectionModel().select(Object.class);
+    }
+    else if (functionType.equals(IntegerFunction.class))
+    {
+      selectTypes(Integer.class, Integer.class);
+    }
+    else if (functionType.equals(IntegerPolynomialSequence.class))
+    {
+      selectTypes(Integer.class, IntegerPolynomial.class);
+    }
+    else if (functionType.equals(IntegerPolynomialNullaryFunction.class))
+    {
+      selectTypes(Object.class, IntegerPolynomial.class);
+    }
+    else if (functionType.equals(RealFunction.class))
+    {
+      selectTypes(Real.class, Real.class);
+    }
+    else if (functionType.equals(RealPolynomialFunction.class))
+    {
+      selectTypes(RealPolynomial.class, RealPolynomial.class);
+    }
+    else if (functionType.equals(ComplexFunction.class))
+    {
+      selectTypes(Complex.class, Complex.class);
+    }
+    else if (functionType.equals(ComplexPolynomialSequence.class))
+    {
+      selectTypes(Integer.class, ComplexPolynomial.class);
+    }
+    else if (functionType.equals(ComplexNullaryFunction.class))
+    {
+      selectTypes(Object.class, Complex.class);
+    }
+    else if (functionType.equals(RationalFunctionSequence.class))
+    {
+      selectTypes(Integer.class, RationalFunction.class);
+    }
+    else if (functionType.equals(RationalNullaryFunction.class))
+    {
+      selectTypes(Object.class, RationalFunction.class);
+    }
+    else if (functionType.equals(ComplexToRealFunction.class))
+    {
+      selectTypes(Complex.class, Real.class);
+    }
+    else if (functionType.equals(ComplexRationalFunctionSequence.class))
+    {
+      selectTypes(Integer.class, ComplexRationalFunction.class);
+    }
+    else if (functionType.equals(ComplexRationalNullaryFunction.class))
+    {
+      selectTypes(Object.class, ComplexRationalFunction.class);
+    }
+    else if (functionType.equals(RealNullaryFunction.class))
+    {
+      selectTypes(Object.class, Real.class);
+    }
+    else if (functionType.equals(ComplexPolynomialNullaryFunction.class))
+    {
+      selectTypes(Object.class, ComplexPolynomial.class);
+    }
+    else if (functionType.equals(RealPolynomialFunction.class))
+    {
+      selectTypes(RealPolynomial.class, RealPolynomial.class);
+    }
+    else if (functionType.equals(RealToComplexFunction.class))
+    {
+      selectTypes(Real.class, Complex.class);
+    }
+    else if (functionType.equals(ComplexSequence.class))
+    {
+      selectTypes(Integer.class, Complex.class);
+    }
+    else if (functionType.equals(IntegerPolynomialSequence.class))
+    {
+      selectTypes(Integer.class, IntegerPolynomial.class);
+    }
+    else if (functionType.equals(IntegerSequence.class))
+    {
+      selectTypes(Integer.class, Integer.class);
+    }
+    else if (functionType.equals(RealPolynomialSequence.class))
+    {
+      selectTypes(Integer.class, RealPolynomial.class);
+    }
+    else if (functionType.equals(RationalFunctionSequence.class))
+    {
+      selectTypes(Integer.class, RationalFunction.class);
+    }
+    else if (functionType.equals(RealSequence.class))
+    {
+      selectTypes(Integer.class, Real.class);
+    }
+    else if (functionType.equals(Sequence.class))
+    {
+      domainTypeBox.getSelectionModel().select(Integer.class);
+    }
+    else
+    {
+      System.err.println("functionTypeSelected: TODO: handle " + functionType);
+    }
+  }
+
+  public void selectTypes(Class<?> aclass, Class<?> bclass)
+  {
+    domainTypeBox.getSelectionModel().select(aclass);
+    codomainTypeBox.getSelectionModel().select(bclass);
   }
 
   public void save()
@@ -431,10 +642,14 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
 
   public void evaluateExpression()
   {
+
     nodeExpansionStates = enumerateNodeExpansionStates();
 
     compileExpression();
-
+    if (expr == null)
+    {
+      return;
+    }
     try
     {
 
