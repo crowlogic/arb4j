@@ -267,8 +267,15 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
           {
             newInstance = (Named) newVar.type.getConstructor().newInstance();
             newInstance.setName(newVar.name);
-            currentContext.variables.add(newInstance);
-            updateContextListView();
+            if (!currentContext.variables.map.containsKey(newVar.name))
+            {
+              currentContext.variables.add(newInstance);
+              updateContextListView();
+            }
+            else
+            {
+              WindowManager.showAlert("Variable Name Conflict", "A variable named " + newVar.name + " already exists");
+            }
           }
           catch (Throwable t)
           {
