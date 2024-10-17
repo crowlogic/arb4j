@@ -1,0 +1,9 @@
+!!arb.expressions.SerializedExpression
+coDomain: arb.Real
+context:
+  k:
+  - arb.Integer
+  - '0'
+domain: java.lang.Object
+expression: ∑j➔1/2*J(k,x)*π^(1/2)*(8*j+2)^(1/2)*(-1)^j*Γ(1/2*k+j+1/2)/Γ(-j+1/2*k+1/2)/Γ(j+1-1/2*k)/Γ(1/2*k+j+1){j = -10 … 10}
+function: arb.functions.real.RealNullaryFunction

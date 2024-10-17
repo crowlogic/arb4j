@@ -30,6 +30,15 @@ public class RealFunctionExpressionCompilerTest extends
   private Real v;
   private Real v3;
 
+  public static void testExpansion()
+  {
+    RealFunction f    =
+                   RealFunction.express("∑j➔1/2*J(k,x)*π^(1/2)*(8*j+2)^(1/2)*(-1)^j*Γ(1/2*k+j+1/2)/Γ(-j+1/2*k+1/2)/Γ(j+1-1/2*k)/Γ(1/2*k+j+1){j = -10 … 10}");
+    double       eval = f.eval(2.3);
+    System.out.println("f(2.3)=" + eval);
+
+  }
+
   public static void testSphericalBesselFunctionViaRealNullaryFunction()
   {
 

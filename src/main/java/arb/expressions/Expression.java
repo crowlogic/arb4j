@@ -74,15 +74,15 @@ import arb.viz.ArbShellExecutionController;
  * <li>Dynamically compiles mathematical expressions into executable Java
  * bytecode, allowing for efficient evaluation.</li>
  * <li>Supports {@link VariableNode}, {@link LiteralConstantNode}, and
- * {@link FunctionNode}s within {@link Expression}, providing an extensive
- * set of features for constructing elaborate expressions, linked together via a
+ * {@link FunctionNode}s within {@link Expression}, providing an extensive set
+ * of features for constructing elaborate expressions, linked together via a
  * shared {@link Context} in which variables and other functions are registered
  * for mutual accessibility..</li>
  * <li>Effectively manages {@link IntermediateVariable} and
  * {@link LiteralConstantNode}, optimizing memory usage and performance.</li>
  * <li>Automatically injects {@link VariableReference}s to {@link VariableNode}
- * and {@link FunctionNode}s into the compiled bytecode, facilitating
- * dynamic execution.</li>
+ * and {@link FunctionNode}s into the compiled bytecode, facilitating dynamic
+ * execution.</li>
  * <li>The {@link Parser} provides comprehensive methods for parsing
  * expressions, evaluating them, and generating the necessary bytecode, all
  * while handling mathematical precedence and associativity.</li>
@@ -1576,7 +1576,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       if (character != '=')
       {
-        throwNewUnexpectedCharacterException();
+        throwUnexpectedCharacterException();
       }
     }
     return (E) this;
@@ -1703,12 +1703,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
-  protected void throwUnexpectedCharacterException(char... which)
+  public void throwUnexpectedCharacterException(char... which)
   {
     throwUnexpectedCharacterException(null, which);
   }
 
-  protected void throwUnexpectedCharacterException(String msg, char... which)
+  public void throwUnexpectedCharacterException(String msg, char... which)
   {
     String result = Arrays.asList(which)
                           .stream()
@@ -1808,8 +1808,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return new BetaFunctionNode<D, C, F>(this);
     default:
       return new FunctionNode<>(reference.name,
-                                    resolve(),
-                                    require(')'));
+                                resolve(),
+                                require(')'));
     }
 
   }
@@ -1993,7 +1993,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                   || coDomainType.equals(ComplexRationalFunction.class) || hasIndeterminateVariable;
   }
 
-  public void throwNewUnexpectedCharacterException()
+  public void throwUnexpectedCharacterException()
   {
     throw new CompilerException(String.format("unexpected '%s'(0x%x) character at position=%s in expression '%s' of length %d, remaining='%s'\n",
                                               character,

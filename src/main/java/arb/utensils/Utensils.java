@@ -50,6 +50,7 @@ public class Utensils
   {
     yamlConfig.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
     yamlConfig.setPrettyFlow(true);
+    yamlConfig.setSplitLines(false);
     NewCommandMacro.addNewCommand("Γ", "\\Gamma", 0);
     NewCommandMacro.addNewCommand("re", "\\operatorname{Re} {#1}", 1);
     NewCommandMacro.addNewCommand("im", "\\operatorname{Im} {#1}", 1);

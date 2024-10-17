@@ -115,7 +115,8 @@ public class Compiler
       functionName = inlineFunctionName;
       expression   = expression.substring(punctuationMarkIndex + 1, expression.length());
     }
-
+    expression = expression.replace(" ", "");
+    
     FunctionMapping<D, R, F> mapping = null;
     if (functionName != null && context != null)
     {
