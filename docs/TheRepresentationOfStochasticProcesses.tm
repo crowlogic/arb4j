@@ -96,7 +96,7 @@
   <subsection|The Karhunen-Loeve Expansion>
 
   The Karhunen-Loeve expansion is spectral representation theorem which
-  expands random processes <math|w*<around|(|x,\<theta\>|)>> in terms of a
+  expands random processes <math|w*<around|(|x,\<theta\>|)>> in terms of
   countable sets of orthogonal random variables in the form
 
   <\equation>
@@ -1144,28 +1144,28 @@
 
 <\references>
   <\collection>
-    <associate|2.10|<tuple|6|3>>
+    <associate|2.10|<tuple|6|2>>
     <associate|2.11|<tuple|7|3>>
     <associate|2.12|<tuple|8|3>>
     <associate|2.15|<tuple|11|3>>
-    <associate|2.17|<tuple|13|4>>
-    <associate|2.19|<tuple|15|4>>
+    <associate|2.17|<tuple|13|3>>
+    <associate|2.19|<tuple|15|3>>
     <associate|2.20|<tuple|16|4>>
     <associate|2.21|<tuple|17|4>>
     <associate|2.22|<tuple|18|5>>
     <associate|2.23|<tuple|19|5>>
     <associate|2.24|<tuple|20|5>>
-    <associate|2.26|<tuple|22|6>>
+    <associate|2.26|<tuple|22|5>>
     <associate|2.33|<tuple|31|7>>
     <associate|2.7|<tuple|3|2>>
-    <associate|2.74|<tuple|33|8>>
+    <associate|2.74|<tuple|33|7>>
     <associate|2.77|<tuple|40|9>>
     <associate|2.78|<tuple|41|9>>
     <associate|2.79|<tuple|42|9>>
     <associate|2.8|<tuple|4|2>>
     <associate|2.82|<tuple|45|9>>
-    <associate|2.9|<tuple|5|3>>
-    <associate|KL|<tuple|1|?>>
+    <associate|2.9|<tuple|5|2>>
+    <associate|KL|<tuple|1|1>>
     <associate|T|<tuple|59|13>>
     <associate|auto-1|<tuple|1|1>>
     <associate|auto-10|<tuple|1.3|7>>
@@ -1178,11 +1178,11 @@
     <associate|auto-2|<tuple|1.1|1>>
     <associate|auto-3|<tuple|1.1.1|2>>
     <associate|auto-4|<tuple|1.1.2|4>>
-    <associate|auto-5|<tuple|1.2|5>>
-    <associate|auto-6|<tuple|1.2.1|5>>
+    <associate|auto-5|<tuple|1.2|4>>
+    <associate|auto-6|<tuple|1.2.1|4>>
     <associate|auto-7|<tuple|1.2.2|6>>
-    <associate|auto-8|<tuple|1.2.3|7>>
-    <associate|auto-9|<tuple|1.2.4|7>>
+    <associate|auto-8|<tuple|1.2.3|6>>
+    <associate|auto-9|<tuple|1.2.4|6>>
     <associate|bib-finiteFourierTransforms|<tuple|2|18>>
     <associate|bib-gaussianProcessIntroduction|<tuple|7|18>>
     <associate|bib-modifiedLommelPolynomials|<tuple|6|18>>
@@ -1197,8 +1197,6 @@
 <\auxiliary>
   <\collection>
     <\associate|bib>
-      stochasticFiniteElements
-
       stochasticFiniteElements
 
       stochasticFiniteElements

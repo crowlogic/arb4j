@@ -71,7 +71,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     context.variables.forEach(variable -> x.context.put(variable.getName(), new SerializedContextVariable(variable)));
     System.out.println("Saving " + yamlFile);
     Utensils.saveToYamlFormat(yamlFile, x);
-    tab.setText(yamlFile.getName().split("\\.")[0]);    
+    tab.setText(yamlFile.getName().split("\\.")[0]);
   }
 
   final Expressor<D, C, F>     expressor;
@@ -327,7 +327,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
 
   public void load(File file)
   {
-  
+
     if (file != null)
     {
       try
@@ -356,7 +356,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
           context.variables.add(variable);
 
         }
-        
+
         expressor.updateContextListView();
 
         if (serializedExpression.coDomain != null)
@@ -374,7 +374,6 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
         tab.setText(file.getName().split("\\.")[0]);
         String expression = serializedExpression.expression;
         expressionInput.setText(expression);
-        compileExpression();
         evaluateExpression();
         expandAllNodes();
       }
@@ -647,8 +646,11 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
   {
 
     nodeExpansionStates = enumerateNodeExpansionStates();
+    if (expr != null && !expr.expression.equals(expressionInput.getText()) || expr == null)
+    {
+      compileExpression();
+    }
 
-    compileExpression();
     if (expr == null)
     {
       return;
@@ -706,9 +708,8 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     catch (Throwable e)
     {
       e.printStackTrace(System.err);
-      Platform.runLater(() -> WindowManager.showAlert("Evaluation Error",
-                                                      e.getClass().getName() + ": " + e.getMessage(),
-                                                      e));
+      // Platform.runLater(() -> WindowManager.showAlert("Evaluation Error",
+      // e.getClass().getName(), e));
     }
   }
 
