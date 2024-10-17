@@ -32,7 +32,7 @@ public class ArbTypeRepresenter extends
     representers.put(Real.class, new RealRepresentation());
     representers.put(ExpressionTree.class, data ->
     {
-      return representData(((ExpressionTree) data).expressionInput.getText());
+      return representData(((ExpressionTree<?, ?, ?>) data).expressionInput.getText());
     });
 
     representers.put(SerializedContextVariable.class, data ->
