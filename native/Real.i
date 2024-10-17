@@ -170,7 +170,12 @@ import arb.utensils.Utensils;
     assert val.re().isExact() : "real part must be exact but instead it is " + val;
     set(val.re());
   }
-    
+
+  public Real pow(Fraction div, int bits, Real res)
+  {
+    return pow(res.set(div),bits,res);
+  }
+      
   /**
    * Construct a new {@link Real} and call {@link Real#setName(String)} with the
    * given name

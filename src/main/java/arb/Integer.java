@@ -1117,6 +1117,13 @@ public class Integer implements
     return newVector(dim).set(name);
   }
 
+  public Fraction pow(Fraction div, int bits, Fraction res)
+  {
+    pow(div.getNumerator(),bits,res.getNumerator());
+    pow(div.getDenominator(),bits,res.getDenominator());
+    return res;
+  }
+
  
 
 }

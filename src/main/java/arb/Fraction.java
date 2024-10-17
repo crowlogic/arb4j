@@ -69,6 +69,11 @@ public class Fraction implements AutoCloseable,NamedField<Fraction>,Verifiable {
   }
 
 
+  public Real Γ(int bits, Real res)
+  {
+    return res.set(this).Γ(bits);
+  }
+  
   @SuppressWarnings("resource")
   public static Fraction named(String string)
   {
