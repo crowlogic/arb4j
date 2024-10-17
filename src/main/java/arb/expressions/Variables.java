@@ -3,13 +3,13 @@ package arb.expressions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
+import java.util.stream.Stream;
 
 import arb.Named;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ModifiableObservableListBase;
-import javafx.collections.ObservableList;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -20,84 +20,6 @@ import javafx.collections.ObservableList;
 public class Variables extends
                        ModifiableObservableListBase<Named>
 {
-
-  public final class ContextVariableChange extends
-                                           Change<Named>
-  {
-    private final int index;
-    private boolean   invalid = true;
-
-    public ContextVariableChange(ObservableList<Named> list, int index)
-    {
-      super(list);
-      this.index = index;
-    }
-
-    @Override
-    public boolean next()
-    {
-      if (invalid)
-      {
-        invalid = false;
-        return true;
-      }
-      return false;
-    }
-
-    @Override
-    public void reset()
-    {
-      invalid = true;
-    }
-
-    @Override
-    public boolean wasReplaced()
-    {
-      return true;
-    }
-
-    @Override
-    public boolean wasRemoved()
-    {
-      return false;
-    }
-
-    @Override
-    public boolean wasAdded()
-    {
-      return false;
-    }
-
-    @Override
-    public int getRemovedSize()
-    {
-      return 0;
-    }
-
-    @Override
-    public List<Named> getRemoved()
-    {
-      return null;
-    }
-
-    @Override
-    public int getTo()
-    {
-      return index + 1;
-    }
-
-    @Override
-    public int getFrom()
-    {
-      return index;
-    }
-
-    @Override
-    protected int[] getPermutation()
-    {
-      return new int[0];
-    }
-  }
 
   public final HashMap<String, Named> map  = new HashMap<>();
   public final List<Named>            list = new ArrayList<>();
@@ -120,7 +42,19 @@ public class Variables extends
   @SafeVarargs
   public Variables(Named... variables)
   {
-    for (Named variable : variables)
+    TreeMap<String, Named> uniqueVars = new TreeMap<>();
+    Stream.of(variables).forEach(named ->
+    {
+      if (!uniqueVars.containsKey(named.getName()))
+      {
+        uniqueVars.put(named.getName(), named);
+      }
+      else
+      {
+        System.err.format("Ignored duplicate variable " + named);
+      }
+    });
+    for (Named variable : uniqueVars.values())
     {
       add(variable);
     }
@@ -212,6 +146,7 @@ public class Variables extends
       if (index != -1)
       {
         fireChange(new ContextVariableChange(this,
+                                             this,
                                              index));
       }
     }

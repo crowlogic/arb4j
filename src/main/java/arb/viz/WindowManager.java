@@ -325,6 +325,7 @@ public class WindowManager
 
   public static void showError(Thread t, Throwable e)
   {
+   e.printStackTrace(System.err);
     Platform.runLater(() -> showAlert("Exception in " + t.getName(), e.getMessage(), e));
   }
 

@@ -155,7 +155,47 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
 
   }
 
-  private Optional<String> showVariableNameDialog(boolean rename)
+  public record NewVariable(String name, Class<?> type)
+  {
+  }
+
+  private NewVariable showNewVariableDialogs(boolean rename)
+  {
+    var typeChoice = showVariableTypeDialog();
+    if (typeChoice.isEmpty())
+    {
+      return null;
+    }
+    var type       = typeChoice.get();
+    var newVarName = showVariableNameDialog(rename);
+    if (newVarName != null)
+    {
+      NewVariable newVar = new NewVariable(newVarName,
+                                           type);
+      return newVar;
+    }
+    else
+    {
+      return null;
+    }
+  }
+
+  public String showVariableNameDialog(boolean rename)
+  {
+    TextInputDialog dialog = new TextInputDialog();
+    dialog.setTitle("New Variable");
+    dialog.setHeaderText(rename ? "Enter the new name for the variable:" : "Enter the name for the new variable:");
+    dialog.setContentText("Variable name:");
+    dialog.initOwner(tabPane.getScene().getWindow());
+    Optional<String> newVarName = dialog.showAndWait();
+    if (newVarName.isEmpty())
+    {
+      return null;
+    }
+    return newVarName.get();
+  }
+
+  public Optional<Class<?>> showVariableTypeDialog()
   {
     ChoiceDialog<Class<?>> choiceDialog = new ChoiceDialog<>(Real.class,
                                                              ExpressionTree.TYPES);
@@ -165,24 +205,16 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     var typeChoice = choiceDialog.showAndWait();
     if (typeChoice.isEmpty())
     {
-      return Optional.empty();
+      return null;
     }
-    System.err.println("TODO: refactor this for type=" + typeChoice.get());
-    // Set the owner to the primary stage
-    TextInputDialog dialog = new TextInputDialog();
-    dialog.setTitle("New Variable");
-    dialog.setHeaderText(rename ? "Enter the new name for the variable:" : "Enter the name for the new variable:");
-    dialog.setContentText("Variable name:");
-    dialog.initOwner(tabPane.getScene().getWindow());
-
-    return dialog.showAndWait();
+    return typeChoice;
   }
 
   protected ContextMenu newContextMenu(StringConverter<Named> converter)
   {
     ContextMenu contextMenu = new ContextMenu(newDeleteVariableMenuItem(),
                                               newNewVariableMenuItem(),
-                                              newRenameRealVariableMenuItem());
+                                              newRenameVariableMenuItem());
 
     contextListView.setCellFactory(ContextMenuListCell.forListView(contextMenu,
                                                                    param -> new ContextFieldListCell<D, C, F>(this,
@@ -192,7 +224,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     return contextMenu;
   }
 
-  public MenuItem newRenameRealVariableMenuItem()
+  public MenuItem newRenameVariableMenuItem()
   {
     MenuItem renameVariable = new MenuItem("Rename Variable");
     renameVariable.setOnAction(e ->
@@ -204,16 +236,17 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
         return;
       }
 
-      showVariableNameDialog(true).ifPresent(newName ->
+      var newVar = showVariableNameDialog(true);
+      if (newVar != null)
       {
         Context currentContext = getCurrentContext();
         if (currentContext != null)
         {
           String oldName = selectedItem.getName();
-          currentContext.variables.rename(oldName, newName);
+          currentContext.variables.rename(oldName, newVar);
           updateContextListView();
         }
-      });
+      }
     });
     return renameVariable;
   }
@@ -221,17 +254,29 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
   public MenuItem newNewVariableMenuItem()
   {
     MenuItem insertNewRealVariable = new MenuItem("New Variable");
-    insertNewRealVariable.setOnAction(e -> showVariableNameDialog(false).ifPresent(name ->
+    insertNewRealVariable.setOnAction(e ->
     {
-      Context currentContext = getCurrentContext();
-      if (currentContext != null)
+      NewVariable newVar = showNewVariableDialogs(false);
+      if (newVar != null)
       {
-        Real newVar = Real.named(name);
-        currentContext.variables.add(newVar);
-        updateContextListView();
+        Context currentContext = getCurrentContext();
+        if (currentContext != null)
+        {
+          Named newInstance;
+          try
+          {
+            newInstance = (Named) newVar.type.getConstructor().newInstance();
+            newInstance.setName(newVar.name);
+            currentContext.variables.add(newInstance);
+            updateContextListView();
+          }
+          catch (Throwable t)
+          {
+            Utensils.wrapOrThrow(t);
+          }
+        }
       }
-    }));
-
+    });
     return insertNewRealVariable;
   }
 

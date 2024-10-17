@@ -353,7 +353,14 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
                                                         : (Named) constructor.newInstance(serializedValueString, bits);
           variable.setName(name);
 
-          context.variables.add(variable);
+          if (!context.variables.map.containsKey(variable.getName()))
+          {
+            context.variables.add(variable);
+          }
+          else
+          {
+            System.err.format("Ignored duplicated variable '%s' whilst loading %s", variable, file);
+          }
 
         }
 
@@ -708,8 +715,8 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     catch (Throwable e)
     {
       Utensils.throwOrWrap(e);
-      //e.printStackTrace(System.err);
-      //Platform.runLater(() -> WindowManager.showAlert("Evaluation Error",
+      // e.printStackTrace(System.err);
+      // Platform.runLater(() -> WindowManager.showAlert("Evaluation Error",
       // e.getClass().getName(), e));
     }
   }
