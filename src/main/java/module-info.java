@@ -28,7 +28,8 @@ module arb4j
   requires transitive org.objectweb.asm.commons;
   requires transitive org.apache.commons.lang3;
   requires transitive org.yaml.snakeyaml;
-
+  requires transitive org.fxyz3d.core;
+  
   exports arb;
   exports arb.expressions.viz;
   exports arb.theorems;
