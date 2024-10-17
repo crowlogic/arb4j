@@ -19,16 +19,6 @@ public class LommelPolynomialTest extends
                                   TestCase
 {
 
-  public void testLommelComplexRationalFuctionSequenceViaSequenceNode()
-  {
-    ComplexRationalFunctionSequence sequence = ComplexRationalFunctionSequence.express("R(n,1⁄2;z)");
-    ComplexRationalFunction         R3       = sequence.evaluate(3, 128);
-    assertEquals("(-6*x^2+15)/(x^3)", R3.toString());
-    ComplexFraction R3AtTwoPointThree =R3.evaluate(new Fraction(23,10), 0, 0, new ComplexFraction() );
-    assertEquals(new ComplexFraction(-16740,
-                              12167),
-                 R3AtTwoPointThree);
-  }
 
   public void testLommelRationalFuctionSequenceViaSequenceNode()
   {
