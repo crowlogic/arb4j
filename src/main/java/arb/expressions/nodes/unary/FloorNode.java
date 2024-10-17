@@ -18,7 +18,7 @@ import arb.functions.Function;
  *      {@link TheArb4jLibrary}
  */
 public class FloorNode<D, R, F extends Function<? extends D, ? extends R>> extends
-                      FunctionCallNode<D, R, F>
+                      FunctionNode<D, R, F>
 {
 
   @Override

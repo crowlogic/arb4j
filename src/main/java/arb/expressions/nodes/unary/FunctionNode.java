@@ -31,7 +31,7 @@ import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
- * {@link FunctionCallNode} is a {@link Node} in the {@link Expression} that
+ * {@link FunctionNode} is a {@link Node} in the {@link Expression} that
  * represents a call to either a builtin or a contextual function, a contextual
  * function call being one that has been constructed by passing a
  * {@link Context} to
@@ -58,7 +58,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>> extends
+public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                              UnaryOperationNode<D, R, F>
 {
 
@@ -86,7 +86,7 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
   public FunctionMapping<D, R, F> mapping;
 
   @SuppressWarnings("unchecked")
-  public FunctionCallNode(String functionName, Node<D, R, F> argument, Expression<D, R, F> expression)
+  public FunctionNode(String functionName, Node<D, R, F> argument, Expression<D, R, F> expression)
   {
     super(argument,
           expression);
@@ -310,6 +310,12 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
     return mapping;
   }
 
+  /**
+   * This could use some refactoring to seperate the concerns 
+   * 
+   * @param functionName
+   * @return
+   */
   public Class<?> resultTypeFor(String functionName)
   {
     if (arg == null)
@@ -322,7 +328,11 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
 
     if ("sqrt".equals(functionName))
     {
-      return Real.class;
+      if ( Integer.class.equals(expression.coDomainType))
+      {
+        return Real.class;
+      }
+      return Compiler.scalarType(expression.coDomainType);
     }
 
     if (argType == null)
@@ -359,7 +369,7 @@ public class FunctionCallNode<D, R, F extends Function<? extends D, ? extends R>
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new FunctionCallNode<E, S, G>(functionName,
+    return new FunctionNode<E, S, G>(functionName,
                                          arg.spliceInto(newExpression),
                                          newExpression);
   }
