@@ -215,9 +215,9 @@ public class WindowManager
     System.out.println("Module path: " + System.getProperty("jdk.module.path"));
   }
 
-  public static ScrollBar getTableVirtualFlowScrollbar(VirtualFlow<?> tableVirtualFlow,
-                                                       boolean horizontal) throws IllegalAccessException,
-                                                                           NoSuchFieldException
+  public static ScrollBar getVirtualFlowScrollbar(VirtualFlow<?> tableVirtualFlow,
+                                                  boolean horizontal) throws IllegalAccessException,
+                                                                      NoSuchFieldException
   {
     var scrollbar = horizontal ? "hbar" : "vbar";
     return (ScrollBar) getVirtualFlowField(scrollbar).get(tableVirtualFlow);
@@ -231,17 +231,28 @@ public class WindowManager
   }
 
   @SuppressWarnings("unchecked")
-  public static <Y, T extends IndexedCell<? extends Y>> VirtualFlow<T> getVirtualFlow(Control treeTableView2)
+  public static <Y, T extends IndexedCell<? extends Y>> VirtualFlow<T> getVirtualFlow(Skin<?> skin)
   {
     try
     {
-      return (VirtualFlow<T>) tableViewSkinBaseFlowField.get(treeTableView2.getSkin());
+      assert skin != null : "skin is null";
+      return (VirtualFlow<T>) tableViewSkinBaseFlowField.get(skin);
     }
     catch (IllegalArgumentException | IllegalAccessException e)
     {
       Utensils.throwOrWrap(e);
       return null;
     }
+  }
+
+  public static <Y, T extends IndexedCell<? extends Y>> VirtualFlow<T> getVirtualFlow(ListView<?> control)
+  {
+    return getVirtualFlow(control.getSkin());
+  }
+  
+  public static <Y, T extends IndexedCell<? extends Y>> VirtualFlow<T> getVirtualFlow(TreeTableView<?> control)
+  {
+    return getVirtualFlow(control.getSkin());
   }
 
   public static void showAlert(String title, String header, String content)
