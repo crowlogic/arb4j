@@ -389,6 +389,17 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         resolveInheritedVariableReference(inputVariable);
       }
     }
+    if (expression.independentVariable != null && !isIndeterminate && !isIndependent && !ascendentInput)
+    {
+      throw new UndefinedReferenceException(format("Undefined reference '%s' at position=%d in expression=%s, "
+                                                   + "independent variable is %s and parentExpression is %s,  remaining='%s'",
+                                                   reference.name,
+                                                   reference.position,
+                                                   expression.expression,
+                                                   expression.independentVariable,
+                                                   expression.ascendentExpression,
+                                                   expression.remaining()));
+    }
     return this;
   }
 
@@ -454,7 +465,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     else
     {
       throw new UndefinedReferenceException(format("Undefined reference to variable "
-                                                   + " '%s' at position=%d in expression=%s, independent variable is %s and parentExpression is %s,  remaining='%s'",
+                                                   + " '%s' at position=%d in expression=%s, independent variable is %s and ascendentExpression is %s,  remaining='%s'",
                                                    reference.name,
                                                    reference.position,
                                                    expression.expression,
