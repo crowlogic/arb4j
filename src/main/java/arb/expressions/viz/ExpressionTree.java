@@ -71,6 +71,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     context.variables.forEach(variable -> x.context.put(variable.getName(), new SerializedContextVariable(variable)));
     System.out.println("Saving " + yamlFile);
     Utensils.saveToYamlFormat(yamlFile, x);
+    tab.setText(yamlFile.getName().split("\\.")[0]);    
   }
 
   final Expressor<D, C, F>     expressor;
@@ -374,6 +375,8 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
         String expression = serializedExpression.expression;
         expressionInput.setText(expression);
         compileExpression();
+        evaluateExpression();
+        expandAllNodes();
       }
       catch (Throwable e)
       {
