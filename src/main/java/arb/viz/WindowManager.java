@@ -249,7 +249,7 @@ public class WindowManager
   {
     return getVirtualFlow(control.getSkin());
   }
-  
+
   public static <Y, T extends IndexedCell<? extends Y>> VirtualFlow<T> getVirtualFlow(TreeTableView<?> control)
   {
     return getVirtualFlow(control.getSkin());
@@ -296,6 +296,10 @@ public class WindowManager
   {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     PrintWriter           s    = new PrintWriter(baos);
+    if ((t instanceof RuntimeException) && t.getCause() != null && t.getCause().getMessage().equals(t.getMessage()))
+    {
+      t = t.getCause();
+    }
     t.printStackTrace(s);
     s.flush();
 

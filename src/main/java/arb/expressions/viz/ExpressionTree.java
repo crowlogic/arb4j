@@ -707,8 +707,9 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     }
     catch (Throwable e)
     {
-      e.printStackTrace(System.err);
-      // Platform.runLater(() -> WindowManager.showAlert("Evaluation Error",
+      Utensils.throwOrWrap(e);
+      //e.printStackTrace(System.err);
+      //Platform.runLater(() -> WindowManager.showAlert("Evaluation Error",
       // e.getClass().getName(), e));
     }
   }
