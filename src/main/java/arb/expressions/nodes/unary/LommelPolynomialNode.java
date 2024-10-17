@@ -32,7 +32,7 @@ import arb.functions.rational.LommelPolynomial;
  *      {@link TheArb4jLibrary}
  */
 public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extends C>> extends
-                                 FunctionCallNode<D, C, F>
+                                 FunctionNode<D, C, F>
 {
 
   public Node<D, C, F> order;

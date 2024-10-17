@@ -41,7 +41,7 @@ import arb.functions.SphericalBesselFunction;
  *      {@link TheArb4jLibrary}
  */
 public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends D, ? extends R>> extends
-                                                      FunctionCallNode<D, R, F>
+                                                      FunctionNode<D, R, F>
 {
 
   @Override

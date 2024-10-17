@@ -28,7 +28,7 @@ import arb.functions.real.RealBesselFunctionOfTheFirstKind;
  *      {@link TheArb4jLibrary}
  */
 public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends D, ? extends R>> extends
-                                             FunctionCallNode<D, R, F>
+                                             FunctionNode<D, R, F>
 {
 
   @Override

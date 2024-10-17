@@ -24,7 +24,7 @@ import arb.functions.Function;
  * @author ©2024 Stephen Crowley
  */
 public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>> extends
-                             FunctionCallNode<D, C, F>
+                             FunctionNode<D, C, F>
 {
 
   private final Node<D, C, F>       x;

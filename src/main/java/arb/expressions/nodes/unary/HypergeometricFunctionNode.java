@@ -38,7 +38,7 @@ import arb.functions.rational.RationalNullaryFunction;
  *      {@link TheArb4jLibrary}
  */
 public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
-                                       FunctionCallNode<D, R, F>
+                                       FunctionNode<D, R, F>
 {
 
   public String defaulttoString()

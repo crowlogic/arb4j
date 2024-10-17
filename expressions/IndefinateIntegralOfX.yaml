@@ -1,0 +1,7 @@
+!!arb.expressions.SerializedExpression
+coDomain: arb.RationalFunction
+context: {
+  }
+domain: java.lang.Object
+expression: ∫x➔(x)dx
+function: arb.functions.rational.RationalNullaryFunction

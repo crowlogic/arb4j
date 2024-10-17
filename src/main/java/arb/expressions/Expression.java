@@ -74,14 +74,14 @@ import arb.viz.ArbShellExecutionController;
  * <li>Dynamically compiles mathematical expressions into executable Java
  * bytecode, allowing for efficient evaluation.</li>
  * <li>Supports {@link VariableNode}, {@link LiteralConstantNode}, and
- * {@link FunctionCallNode}s within {@link Expression}, providing an extensive
+ * {@link FunctionNode}s within {@link Expression}, providing an extensive
  * set of features for constructing elaborate expressions, linked together via a
  * shared {@link Context} in which variables and other functions are registered
  * for mutual accessibility..</li>
  * <li>Effectively manages {@link IntermediateVariable} and
  * {@link LiteralConstantNode}, optimizing memory usage and performance.</li>
  * <li>Automatically injects {@link VariableReference}s to {@link VariableNode}
- * and {@link FunctionCallNode}s into the compiled bytecode, facilitating
+ * and {@link FunctionNode}s into the compiled bytecode, facilitating
  * dynamic execution.</li>
  * <li>The {@link Parser} provides comprehensive methods for parsing
  * expressions, evaluating them, and generating the necessary bytecode, all
@@ -1807,7 +1807,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     case "Beta":
       return new BetaFunctionNode<D, C, F>(this);
     default:
-      return new FunctionCallNode<>(reference.name,
+      return new FunctionNode<>(reference.name,
                                     resolve(),
                                     require(')'));
     }
