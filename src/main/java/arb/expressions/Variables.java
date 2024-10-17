@@ -109,6 +109,7 @@ public class Variables extends
                          System.identityHashCode(this),
                          map.entrySet()
                             .stream()
+                            .filter(entry -> entry != null && entry.getValue() != null)
                             .map(entry -> String.format("%s:%s=%s",
                                                         entry.getValue().getClass().getName(),
                                                         entry.getKey(),

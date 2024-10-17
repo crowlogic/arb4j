@@ -32,6 +32,7 @@ public class RealFunctionExpressionCompilerTest extends
 
   public static void testExpansion()
   {
+    Expression.trace = true;
     RealFunction f    =
                    RealFunction.express("∑j➔1/2*J(k,x)*π^(1/2)*(8*j+2)^(1/2)*(-1)^j*Γ(1/2*k+j+1/2)/Γ(-j+1/2*k+1/2)/Γ(j+1-1/2*k)/Γ(1/2*k+j+1){j = -10 … 10}");
     double       eval = f.eval(2.3);

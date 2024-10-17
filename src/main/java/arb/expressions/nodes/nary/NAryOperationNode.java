@@ -364,7 +364,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       var ast  = factor.syntaxTree();
       var list = ast.indexedBranches.get(ast.getRoot());
-      spliced = list.stream().map(element -> element.spliceInto(expression)).collect(Collectors.toList());
+      spliced = list.stream().map(element -> element.spliceInto(expression)).toList();
     }
     return spliced;
   }
@@ -412,7 +412,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   protected void incrementIndex(MethodVisitor mv)
   {
     loadIndexVariable(mv);
-    invokeMethod(mv, Type.getInternalName(Integer.class), "increment", Compiler.getMethodDescriptor(Integer.class));
+    invokeVirtualMethod(mv, Integer.class, "increment", Integer.class);
   }
 
   public void initializeResult(MethodVisitor mv, Class<?> resultType, String identityFunction, String prefix)
@@ -453,7 +453,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void loadFactor(MethodVisitor mv)
   {
-    getFieldFromThis(mv, functionClass, factorFunctionFieldName, "L" + factorFunctionFieldName + ";");
+    getFieldFromThis(mv, functionClass, factorFunctionFieldName, String.format("L%s;", factorFunctionFieldName));
   }
 
   protected void loadFactorValue(MethodVisitor mv)
@@ -494,7 +494,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                         resultVariable,
                         generatedType);
 
-      // expression.addToTypeStack(generatedType, "result");
     }
     Compiler.getFieldFromThis(methodVisitor, expression.className, resultVariable, generatedType);
   }
