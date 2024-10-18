@@ -180,6 +180,11 @@ import java.util.stream.Stream;
     return result;
   }
 
+  public Complex mul(Complex that, int bits, Complex result)
+  {
+    return result.set(this).mul(that,bits,result);
+  }
+  
   public Fraction add(Integer that, int prec, Fraction res)
   {
     arblib.fmpq_add_fmpz(res, this, that.swigCPtr );    
