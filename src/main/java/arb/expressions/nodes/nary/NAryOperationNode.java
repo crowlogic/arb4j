@@ -526,8 +526,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
     String lookingFor                    =
                       indexVariableFieldName != null ? String.format("{%s=", indexVariableFieldName) : "{";
-    int    coDomainSpecificationPosition = stringExpression.indexOf(lookingFor, expression.position);
-    if (coDomainSpecificationPosition == -1)
+    int    rangeSpecificationPosition = stringExpression.indexOf(lookingFor, expression.position);
+    if (rangeSpecificationPosition == -1)
     {
       expression.throwUnexpectedCharacterException("didn't find '"
                                                    + lookingFor
@@ -535,7 +535,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                    + expression.remaining());
 
     }
-    String factorExpression = stringExpression.substring(startPos, coDomainSpecificationPosition).trim();
+    String factorExpression = stringExpression.substring(startPos, rangeSpecificationPosition).trim();
     expression.character = expression.expression.charAt(expression.position += factorExpression.length());
     return factorExpression;
 

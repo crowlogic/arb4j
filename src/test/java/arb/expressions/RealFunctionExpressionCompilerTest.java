@@ -36,8 +36,11 @@ public class RealFunctionExpressionCompilerTest extends
     Expression.trace = true;
     try
     {
+      Context context = new Context();
+      context.variables.add(Integer.named("k").set(3));
       RealFunction f    =
-                     RealFunction.express("∑j➔1/2*J(k,x)*√(π)*√(8*j+2)*(-1)^j*Γ(k/2+j+1/2)/Γ(k/2-j+1/2)/Γ(j+1-k/2)/Γ(k/2+j+1){j = -10 … 10}");
+                     RealFunction.express("x➔∑j➔1/2*J(k,x)*√(π)*√(8*j+2)*(-1)^j*Γ(k/2+j+1/2)/Γ(k/2-j+1/2)/Γ(j+1-k/2)/Γ(k/2+j+1){j = -10 … 10}",
+                                          context);
       double       eval = f.eval(2.3);
       System.out.println("f(2.3)=" + eval);
     }
@@ -122,6 +125,16 @@ public class RealFunctionExpressionCompilerTest extends
     {
       Real func = expression.evaluate(one, 1, 256, new Real());
       assertEquals(69.42, func.doubleValue(RoundingMode.Up));
+    }
+  }
+
+  public void testBesselFunctionVariableIndex()
+  {
+    Context      context    = new Context(Integer.named("k").set(3));
+    RealFunction expression = express("t->J(k,t)", context);
+    {
+      Real evaluatedX = expression.evaluate(one, 1, 256, new Real());
+      assertEquals(0.7651976865579666, evaluatedX.doubleValue(RoundingMode.Up));
     }
   }
 
