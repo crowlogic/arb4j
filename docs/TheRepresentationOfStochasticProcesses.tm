@@ -53,42 +53,34 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-7>>
 
-    <with|par-left|2tab|1.2.3<space|2spc>Expansion of Gaussian Processes
+    <with|par-left|1tab|1.3<space|2spc>Solution of the Integral Equation
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-8>>
 
-    <with|par-left|2tab|1.2.4<space|2spc>Minimum Representation Entropy
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-9>>
-
-    <with|par-left|1tab|1.3<space|2spc>Solution of the Integral Equation
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-10>>
-
     <with|par-left|1tab|1.4<space|2spc>Exact Solutions For Stationary
     Processes <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-11>>
+    <no-break><pageref|auto-9>>
 
     <with|par-left|2tab|1.4.1<space|2spc><with|color|dark
     red|font-family|rm|<with|mode|math|<big|int><rsub|0><rsup|\<infty\>>J<rsub|0><around*|(|t-s|)>f<around*|(|t|)>\<mathd\>t>>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-12>>
+    <no-break><pageref|auto-10>>
 
     <with|par-left|2tab|1.4.2<space|2spc>Simplifying The Convolution
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-13>>
+    <no-break><pageref|auto-11>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Appendix>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-14><vspace|0.5fn>
+    <no-break><pageref|auto-12><vspace|0.5fn>
 
     <with|par-left|1tab|2.1<space|2spc>A Theorem On The Development of
     Symmetric Nuclei <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-15>>
+    <no-break><pageref|auto-13>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-16><vspace|0.5fn>
+    <no-break><pageref|auto-14><vspace|0.5fn>
   </table-of-contents>
 
   <section|The Spectral Approach to Stochastic Processes>
@@ -403,40 +395,6 @@
       <big|int><rsub|D>C<around|(|x<rsub|1>,x<rsub|2>|)>*f<rsub|m><around|(|x<rsub|2>|)>*d*x<rsub|2>=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*f<rsub|n><around|(|x<rsub|1>|)>*\<delta\><rsub|n*m>=\<lambda\><rsub|m>*f<rsub|m><around|(|x<rsub|1>|)>
     </equation>
   </proof>
-
-  <subsubsection|Expansion of Gaussian Processes>
-
-  Let <math|w*<around|(|x,\<theta\>|)>> be a Gaussian process with covariance
-  function <math|C<around|(|x<rsub|1>,x<rsub|2>|)>>. Then
-  <math|w*<around|(|x,\<theta\>|)>> has the Karhunen-Loeve decomposition
-  given by equation (<reference|2.17>) with the random variables
-  <math|\<xi\><rsub|i><around|(|\<theta\>|)>> forming a Gaussian vector. That
-  is, any subset of <math|<around|{|\<xi\><rsub|i><around|(|\<theta\>|)>|}>>
-  is jointly Gaussian. Since these random variables are uncorrelated, their
-  Gaussian property implies their independence. Some important consequences
-  derive from this property. Specifically,
-
-  <\equation>
-    <around|\<langle\>|\<xi\><rsub|1><around|(|\<theta\>|)>,\<ldots\>,\<xi\><rsub|2*n+1><around|(|\<theta\>|)>|\<rangle\>>=0
-  </equation>
-
-  and
-
-  <\equation>
-    <around|\<langle\>|\<xi\><rsub|1><around|(|\<theta\>|)>,\<ldots\>,\<xi\><rsub|2*n><around|(|\<theta\>|)>|\<rangle\>>=<big|sum><big|prod><around|\<langle\>|\<xi\><rsub|i><around|(|\<theta\>|)>*\<xi\><rsub|j><around|(|\<theta\>|)>|\<rangle\>>
-  </equation>
-
-  where the summation extends over all the partitions of the set
-  <math|<around|{|\<xi\><rsub|i><around|(|\<theta\>|)>|}><rsup|2*n><rsub|i=1>>
-  into sets of two elements, and the product is over all such sets in a given
-  partition. Furthermore, it can be shown (Loeve, 1977) that for Gaussian
-  processes, the Karhunen-Loeve expansion is almost surely convergent.
-
-  <subsubsection|Minimum Representation Entropy>
-
-  The minimum representation of entropy property is worth mentioning even
-  though it only references and no details were given in
-  <cite|stochasticFiniteElements>.
 
   <subsection|Solution of the Integral Equation>
 
@@ -950,7 +908,7 @@
     can be equivalently expressed as
 
     <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|\<psi\><rsub|n><around|(|y|)>>|<cell|=<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*j<rsub|2*n><around|(|y|)>>>|<row|<cell|>|<cell|=<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*<sqrt|<frac|\<pi\>|2*y>>*J<rsub|2*n+<frac|1|2>><around|(|y|)>>>|<row|<cell|>|<cell|=<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|2*y>>*J<rsub|2*n+<frac|1|2>><around|(|y|)>>>|<row|<cell|>|<cell|=<sqrt|<frac|4*n+1|4*\<pi\>>>*<big|int><rsub|-1><rsup|1>P<rsub|2*n><around|(|x|)>*e<rsup|i*x*y><space|0.17em><math-up|d>x>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|\<psi\><rsub|n><around|(|y|)>>|<cell|=<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*j<rsub|2*n><around|(|y|)>>>|<row|<cell|>|<cell|=<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*<sqrt|<frac|\<pi\>|2*y>>*J<rsub|2*n+<frac|1|2>><around|(|y|)>>>|<row|<cell|>|<cell|=<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|2*y>>*J<rsub|2*n+<frac|1|2>><around|(|y|)>>>|<row|<cell|>|<cell|=<sqrt|<frac|2n+<frac|1|2>|*\<pi\>>>*<big|int><rsub|-1><rsup|1>P<rsub|2*n><around|(|x|)>*e<rsup|i*x*y><space|0.17em><math-up|d>x>>>>>
     </equation>
   </conjecture>
 
@@ -1156,41 +1114,39 @@
     <associate|2.23|<tuple|19|5>>
     <associate|2.24|<tuple|20|5>>
     <associate|2.26|<tuple|22|5>>
-    <associate|2.33|<tuple|31|7>>
+    <associate|2.33|<tuple|29|6>>
     <associate|2.7|<tuple|3|2>>
-    <associate|2.74|<tuple|33|7>>
-    <associate|2.77|<tuple|40|9>>
-    <associate|2.78|<tuple|41|9>>
-    <associate|2.79|<tuple|42|9>>
+    <associate|2.74|<tuple|31|7>>
+    <associate|2.77|<tuple|38|8>>
+    <associate|2.78|<tuple|39|8>>
+    <associate|2.79|<tuple|40|8>>
     <associate|2.8|<tuple|4|2>>
-    <associate|2.82|<tuple|45|9>>
+    <associate|2.82|<tuple|43|8>>
     <associate|2.9|<tuple|5|2>>
     <associate|KL|<tuple|1|1>>
-    <associate|T|<tuple|59|13>>
+    <associate|T|<tuple|57|12>>
     <associate|auto-1|<tuple|1|1>>
-    <associate|auto-10|<tuple|1.3|7>>
-    <associate|auto-11|<tuple|1.4|7>>
-    <associate|auto-12|<tuple|1.4.1|10>>
-    <associate|auto-13|<tuple|1.4.2|16>>
-    <associate|auto-14|<tuple|2|17>>
-    <associate|auto-15|<tuple|2.1|17>>
-    <associate|auto-16|<tuple|81|18>>
+    <associate|auto-10|<tuple|1.4.1|9>>
+    <associate|auto-11|<tuple|1.4.2|15>>
+    <associate|auto-12|<tuple|2|16>>
+    <associate|auto-13|<tuple|2.1|16>>
+    <associate|auto-14|<tuple|79|17>>
     <associate|auto-2|<tuple|1.1|1>>
     <associate|auto-3|<tuple|1.1.1|2>>
     <associate|auto-4|<tuple|1.1.2|4>>
     <associate|auto-5|<tuple|1.2|4>>
     <associate|auto-6|<tuple|1.2.1|4>>
     <associate|auto-7|<tuple|1.2.2|6>>
-    <associate|auto-8|<tuple|1.2.3|6>>
-    <associate|auto-9|<tuple|1.2.4|6>>
-    <associate|bib-finiteFourierTransforms|<tuple|2|18>>
-    <associate|bib-gaussianProcessIntroduction|<tuple|7|18>>
-    <associate|bib-modifiedLommelPolynomials|<tuple|6|18>>
-    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|18>>
-    <associate|bib-stochasticFiniteElements|<tuple|5|18>>
-    <associate|bib-theRayleighRitzMethodForIntegralCovarianceOperatorEigenspaces|<tuple|3|18>>
-    <associate|bib-whittakerAndWatsonCourseOfModernAnalysis|<tuple|4|18>>
-    <associate|ortho|<tuple|5|10>>
+    <associate|auto-8|<tuple|1.3|6>>
+    <associate|auto-9|<tuple|1.4|6>>
+    <associate|bib-finiteFourierTransforms|<tuple|2|17>>
+    <associate|bib-gaussianProcessIntroduction|<tuple|7|17>>
+    <associate|bib-modifiedLommelPolynomials|<tuple|6|17>>
+    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|17>>
+    <associate|bib-stochasticFiniteElements|<tuple|5|17>>
+    <associate|bib-theRayleighRitzMethodForIntegralCovarianceOperatorEigenspaces|<tuple|3|17>>
+    <associate|bib-whittakerAndWatsonCourseOfModernAnalysis|<tuple|4|17>>
+    <associate|ortho|<tuple|5|9>>
   </collection>
 </references>
 
@@ -1202,8 +1158,6 @@
       stochasticFiniteElements
 
       stationaryAndRelatedStochasticProcesses
-
-      stochasticFiniteElements
 
       stochasticFiniteElements
 
@@ -1255,42 +1209,34 @@
       Expansion <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-7>>
 
-      <with|par-left|<quote|2tab>|1.2.3<space|2spc>Expansion of Gaussian
-      Processes <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-8>>
-
-      <with|par-left|<quote|2tab>|1.2.4<space|2spc>Minimum Representation
-      Entropy <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-9>>
-
       <with|par-left|<quote|1tab>|1.3<space|2spc>Solution of the Integral
       Equation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-10>>
+      <no-break><pageref|auto-8>>
 
       <with|par-left|<quote|1tab>|1.4<space|2spc>Exact Solutions For
       Stationary Processes <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-11>>
+      <no-break><pageref|auto-9>>
 
       <with|par-left|<quote|2tab>|1.4.1<space|2spc><with|color|<quote|dark
       red>|font-family|<quote|rm>|<with|mode|<quote|math>|<big|int><rsub|0><rsup|\<infty\>>J<rsub|0><around*|(|t-s|)>f<around*|(|t|)>\<mathd\>t>>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-12>>
+      <no-break><pageref|auto-10>>
 
       <with|par-left|<quote|2tab>|1.4.2<space|2spc>Simplifying The
       Convolution <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-13>>
+      <no-break><pageref|auto-11>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Appendix>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-14><vspace|0.5fn>
+      <no-break><pageref|auto-12><vspace|0.5fn>
 
       <with|par-left|<quote|1tab>|2.1<space|2spc>A Theorem On The Development
       of Symmetric Nuclei <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-15>>
+      <no-break><pageref|auto-13>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-16><vspace|0.5fn>
+      <no-break><pageref|auto-14><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
