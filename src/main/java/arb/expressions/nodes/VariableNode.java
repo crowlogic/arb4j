@@ -536,8 +536,8 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    return new LiteralConstantNode<>(expression,
+                                     variable.reference.equals(reference) ? "1" : "0");
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
