@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -44,6 +45,9 @@ public class Utensils
 
   static
   {
+    yamlConfig.setAllowUnicode(true);
+    yamlConfig.setExplicitStart(true);
+    yamlConfig.setExplicitEnd(true);
     yamlConfig.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
     yamlConfig.setPrettyFlow(true);
     yamlConfig.setSplitLines(false);
@@ -349,6 +353,7 @@ public class Utensils
   {
     LoaderOptions loadingConfig = new LoaderOptions();
     loadingConfig.setTagInspector(tag -> true);
+    loadingConfig.setAllowRecursiveKeys(true);
     Yaml yaml = new Yaml(new Constructor(SerializedExpression.class,
                                          loadingConfig),
                          new ArbTypeRepresenter(yamlConfig),

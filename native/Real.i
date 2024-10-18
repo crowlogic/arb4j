@@ -189,6 +189,16 @@ import arb.utensils.Utensils;
     return new Real().setName(name);
   }
 
+  public RationalFunction add(RationalFunction a, int bits, RationalFunction res)
+  {
+    return a.add(this,bits,res);
+  }
+
+  public ComplexRationalFunction add(ComplexRationalFunction a, int bits, ComplexRationalFunction res)
+  {
+    return a.add(this,bits,res);
+  }
+
   public Complex mul(Real that, int prec, Complex res)
   {
     return res.set(this).mul(that, prec, res);

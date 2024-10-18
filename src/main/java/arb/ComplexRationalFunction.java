@@ -672,4 +672,11 @@ public class ComplexRationalFunction implements
     return multiplicativeInverse(this);
   }
 
+  public ComplexRationalFunction add(Real real, int bits, ComplexRationalFunction res)
+  {
+    res.set(this);
+    res.realPart.add(real, bits);
+    return res;
+  }
+
 }

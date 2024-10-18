@@ -52,9 +52,9 @@ public class ArbTypeRepresenter extends
     @Override
     public Node representData(Object data)
     {
-      Real integer = (Real) data;
+      Real real = (Real) data;
 
-      return represent(new SerializedContextVariable(integer));
+      return represent(new SerializedContextVariable(real));
     }
 
   }
