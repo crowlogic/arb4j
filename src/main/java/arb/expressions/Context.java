@@ -54,8 +54,7 @@ import arb.functions.integer.Sequence;
  */
 public class Context
 {
-  CompiledExpressionClassLoader         classLoader                  =
-                                                    new CompiledExpressionClassLoader(this);
+  CompiledExpressionClassLoader         classLoader                  = new CompiledExpressionClassLoader(this);
 
   public final FunctionMappings         functions;
 
@@ -128,6 +127,7 @@ public class Context
 
   public <D, R, F extends Function<? extends D, ? extends R>> void injectVariableReferences(F f)
   {
+    assert f != null : "f is null";
     if (Expression.trace)
     {
       System.err.format("Context(#%s).injectVariableReferences(f=%s)\n\n",
@@ -159,10 +159,7 @@ public class Context
 
   public <D, R, F extends Function<? extends D, ? extends R>>
          FunctionMapping<D, R, F>
-         registerFunctionMapping(String functionName,
-                                 F function,
-                                 Class<?> domainType,
-                                 Class<?> coDomainType)
+         registerFunctionMapping(String functionName, F function, Class<?> domainType, Class<?> coDomainType)
   {
     return registerFunctionMapping(functionName,
                                    function,
@@ -252,11 +249,7 @@ public class Context
 
   public <D, R, F extends Function<? extends D, ? extends R>>
          void
-         setFieldValue(Class<?> compiledClass,
-                       F f,
-                       String variableName,
-                       Object value,
-                       boolean overwrite)
+         setFieldValue(Class<?> compiledClass, F f, String variableName, Object value, boolean overwrite)
   {
 
     java.lang.reflect.Field field;
@@ -267,13 +260,7 @@ public class Context
     }
     catch (Throwable e)
     {
-      wrapOrThrow("threw "
-                  + e.toString()
-                  + " setting field '"
-                  + variableName
-                  + "' in "
-                  + compiledClass,
-                  e);
+      wrapOrThrow("threw " + e.toString() + " setting field '" + variableName + "' in " + compiledClass, e);
     }
   }
 
@@ -300,8 +287,7 @@ public class Context
   {
     return variableEntryStream().filter(entry -> entry.getValue() != null)
                                 .map(entry -> new OrderedPair<String, Class<?>>(entry.getKey(),
-                                                                                entry.getValue()
-                                                                                     .getClass()));
+                                                                                entry.getValue().getClass()));
   }
 
   public <D, R, F extends Function<? extends D, ? extends R>> void injectReferences(F f)
@@ -312,7 +298,7 @@ public class Context
 
   public void mergeFrom(Context context)
   {
-    variables.addAll( context.variables );
+    variables.addAll(context.variables);
   }
 
 }

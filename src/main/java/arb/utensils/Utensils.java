@@ -21,11 +21,8 @@ import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.LoaderOptions;
-import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
-import org.yaml.snakeyaml.inspector.TagInspector;
-import org.yaml.snakeyaml.nodes.Tag;
 
 import arb.Complex;
 import arb.Real;
@@ -34,7 +31,6 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.ArbTypeRepresenter;
 import arb.expressions.SerializedExpression;
-import arb.expressions.viz.ExpressionTree;
 import arb.viz.WindowManager;
 import javafx.application.Platform;
 
@@ -244,16 +240,21 @@ public class Utensils
     }
     else
     {
-      throw new RuntimeException(e.getMessage(),
+      throw new RuntimeException(e instanceof VerifyError ? e.getClass().getName() : e.getMessage(),
                                  e);
     }
   }
 
   public static void wrapOrThrow(Throwable e)
   {
+
     if (e instanceof RuntimeException)
     {
       throw (RuntimeException) e;
+    }
+    else if (e instanceof VerifyError)
+    {
+      throw (VerifyError) e;
     }
     else
     {
@@ -265,7 +266,6 @@ public class Utensils
   {
     if (e instanceof RuntimeException)
     {
-      e.addSuppressed(new Throwable(msg));
       throw (RuntimeException) e;
     }
     else
@@ -315,14 +315,14 @@ public class Utensils
 
   public static SerializedExpression loadFromYamlFormat(File file) throws FileNotFoundException
   {
-    Yaml   yaml   = newYaml();
+    Yaml                 yaml   = newYaml();
 
     SerializedExpression loaded = yaml.load(new FileReader(file));
 
     System.out.println("Loaded " + loaded);
-    return loaded;  
+    return loaded;
   }
-  
+
   public static void saveToYamlFormat(File yamlFile, Object... information)
   {
     try
