@@ -296,8 +296,11 @@ public class WindowManager
   {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     PrintWriter           s    = new PrintWriter(baos);
-    if ((t instanceof RuntimeException))
+
+    if ((t instanceof RuntimeException) && t.getCause() != null )
     {
+      System.err.format("Not showing RuntimeException wrapper: ");
+      t.printStackTrace(System.err);
       t = t.getCause();
     }
     t.printStackTrace(s);

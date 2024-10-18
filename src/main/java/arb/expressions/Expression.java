@@ -2,7 +2,6 @@ package arb.expressions;
 
 import static arb.expressions.Compiler.*;
 import static arb.expressions.Parser.*;
-import static arb.utensils.Utensils.wrapOrThrow;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static org.objectweb.asm.Opcodes.*;
@@ -10,6 +9,7 @@ import static org.objectweb.asm.Opcodes.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1233,15 +1233,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public F getInstance()
   {
     Class<F> definition = compiledClass != null ? compiledClass : defineClass();
+
     try
     {
       return instance = definition.getDeclaredConstructor().newInstance();
     }
-    catch (Throwable e)
+    catch (Exception e)
     {
-      wrapOrThrow(e);
+      Utensils.throwOrWrap(e);
       return null;
     }
+
   }
 
   public String getNextConstantFieldName(Class<?> type)
@@ -1366,7 +1368,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       System.err.format("\nInstantiating %s\n", this);
     }
-    F instance = getInstance();
+    instance = getInstance();
     if (trace)
     {
       System.err.format("\nInjecting references %s\n", this);

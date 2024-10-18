@@ -43,11 +43,7 @@ public final class ContextFieldListCell<D, C extends Closeable, F extends Functi
   public void startEdit()
   {
     super.startEdit();
-    if (!isEditing())
-    {
-      assert false : "wtf";
-      return;
-    }
+
     if (!emacsKeyBindingsAdded)
     {
       addEmacsKeybindingsToTextField(getTextField());

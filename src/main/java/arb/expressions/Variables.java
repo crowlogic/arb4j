@@ -136,6 +136,7 @@ public class Variables extends
 
   public void rename(String oldName, String newName)
   {
+    System.err.format("rename(%s,%s)", oldName,newName);
     Named variable = map.get(oldName);
     if (variable != null)
     {
