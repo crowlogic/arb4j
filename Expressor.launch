@@ -14,5 +14,5 @@
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="arb.expressions.viz.Expressor"/>
     <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="arb4j"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="arb4j"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.library.path=${project_loc:/arb4j} --add-opens javafx.controls/javafx.scene.control.skin=arb4j --add-opens javafx.controls/javafx.scene.control.cell=arb4j --add-opens javafx.graphics/javafx.stage=arb4j  -Djavafx.scene.control.skin.TableViewSkin.pannable=true  -Djavafx.scene.control.skin.ListViewSkin.pannable=true"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.library.path=${project_loc:/arb4j} --add-opens javafx.controls/javafx.scene.control.skin=arb4j --add-opens javafx.controls/javafx.scene.control.cell=arb4j --add-opens javafx.graphics/javafx.stage=arb4j  -Djavafx.scene.control.skin.TableViewSkin.pannable=true  -Djavafx.scene.control.skin.ListViewSkin.pannable=true -ea"/>
 </launchConfiguration>

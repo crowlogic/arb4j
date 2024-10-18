@@ -26,6 +26,12 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  public void testDerivative()
+  {
+    var x = RealNullaryFunction.express("x∂x");
+    assertEquals("1", x.typeset());
+  }
+  
   public void testSumTypeset()
   {
     var x = RealNullaryFunction.express("∑k{k=2...4}");

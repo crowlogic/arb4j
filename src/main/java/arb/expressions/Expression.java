@@ -9,7 +9,6 @@ import static org.objectweb.asm.Opcodes.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1833,6 +1832,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Node<D, C, F> resolvePostfixOperators(Node<D, C, F> node)
   {
+    if (nextCharacterIs('∂'))
+    {
+      node = new DerivativeNode<D, C, F>(this);
+    }
     node = resolveFactorials(node);
     node = resolveFloor(node);
     node = resolveAbsoluteValue(node);
