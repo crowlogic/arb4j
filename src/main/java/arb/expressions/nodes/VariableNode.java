@@ -26,6 +26,9 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.VariableReference;
 import arb.expressions.Variables;
+import arb.expressions.nodes.binary.DivisionNode;
+import arb.expressions.nodes.binary.ExponentiationNode;
+import arb.expressions.nodes.binary.MultiplicationNode;
 import arb.expressions.nodes.nary.ProductNode;
 import arb.functions.Function;
 
@@ -536,8 +539,22 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
-    return new LiteralConstantNode<>(expression,
-                                     variable.reference.equals(reference) ? "1" : "0");
+    if (variable.reference.equals(reference))
+    {
+      return new DivisionNode<>(expression,
+                                new ExponentiationNode<>(expression,
+                                                         variable,
+                                                         new LiteralConstantNode<>(expression,
+                                                                                   "2")),
+                                new LiteralConstantNode<>(expression,
+                                                          "2"));
+    }
+    else
+    {
+      return new MultiplicationNode<>(expression,
+                                      this,
+                                      variable);
+    }
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
