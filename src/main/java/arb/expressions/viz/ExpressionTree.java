@@ -335,7 +335,9 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
         SerializedExpression serializedExpression = Utensils.loadFromYamlFormat(file);
         context.variables.clear();
 
-        for (Map.Entry<String, SerializedContextVariable> k : serializedExpression.context.entrySet())
+        Map<String, SerializedContextVariable> ctx = serializedExpression.context;
+        System.err.println( "serialized context: " + ctx );
+        for (Map.Entry<String, SerializedContextVariable> k : ctx.entrySet())
         {
           SerializedContextVariable serializedContextVariable = k.getValue();
           String                    name                      = k.getKey();

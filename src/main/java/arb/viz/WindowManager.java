@@ -296,7 +296,7 @@ public class WindowManager
   {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     PrintWriter           s    = new PrintWriter(baos);
-    if ((t instanceof RuntimeException) && t.getCause() != null && t.getCause().getMessage().equals(t.getMessage()))
+    if ((t instanceof RuntimeException))
     {
       t = t.getCause();
     }
@@ -325,8 +325,8 @@ public class WindowManager
 
   public static void showError(Thread t, Throwable e)
   {
-   e.printStackTrace(System.err);
-    Platform.runLater(() -> showAlert("Exception in " + t.getName(), e.getMessage(), e));
+    e.printStackTrace(System.err);
+    Platform.runLater(() -> showAlert("Exception in " + t.getName(), e.getClass().toString(), e));
   }
 
   public static <N extends Node<?, ?, ?>> boolean anyExpanded(TreeItem<N> rootItem)
