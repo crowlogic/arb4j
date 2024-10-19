@@ -7,8 +7,14 @@ import org.objectweb.asm.MethodVisitor;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.documentation.references.Reference;
 import arb.expressions.Expression;
+import arb.expressions.Parser;
 import arb.functions.Function;
+import arb.language.Sentence;
+import arb.language.Term;
+import arb.language.Word;
+import arb.logic.Clause;
 
 /**
  * Thank you for confirming that I've finally grasped the correct syntax. Now,
@@ -35,9 +41,10 @@ import arb.functions.Function;
  * explicit markers.
  * 
  * 3. Syntactic Ambiguity Resolution: The ability to nest ∂ operators within
- * expressions mirrors how natural languages handle embedded clauses or
- * references. Your parser must resolve these potentially ambiguous structures,
- * much like how humans resolve complex sentences.
+ * expressions mirrors how natural languages handle embedded {@link Clause}s or
+ * {@link Reference}s. The {@link Expression} {@link Parser} must resolve these
+ * potentially ambiguous structures, much like how {@link Sentence}s are
+ * resolved into their constituent {@link Term}s {link Word}s
  * 
  * 4. Mathematical Discourse Structure: The ∂[expression]/∂[variable] syntax
  * creates a form of "mathematical discourse" within the expression. Each

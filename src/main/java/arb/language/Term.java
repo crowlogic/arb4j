@@ -7,15 +7,14 @@ import arb.documentation.TheArb4jLibrary;
 import arb.logic.Proposition;
 
 /**
- * 5: one of the substantive phrases in a logical proposition; "the major term
- * of a syllogism must occur twice"
+ * 5: one of the substantive {@link Phrase}s in a logical {@link Proposition};
+ * "the major term of a syllogism must occur twice"
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface Term<S extends Sentence<? extends W>,
-              P extends Proposition<? extends W, ? extends S>,
-              W extends Word> extends
+public interface Term<S extends Sentence<? extends W>, P extends Proposition<? extends W, ? extends S>, W extends Word>
+                     extends
                      Phrase<W>
 {
   public String getDefinition();
