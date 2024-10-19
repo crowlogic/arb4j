@@ -31,14 +31,20 @@ public class ExpressionTest extends
     var x = RealNullaryFunction.express("∂x/∂x");
     assertEquals("1", x.typeset());
   }
-  
-  
+
   public void testDerivativeToo()
   {
-    var x = RealNullaryFunction.express("∂a+x^2+b*x+c/∂x");
-    assertEquals("1", x.typeset());
+    Context context = new Context(Real.named("y"));
+    var     x       = RealNullaryFunction.express("∂y/∂x", context);
+    assertEquals("0", x.typeset());
   }
-  
+
+  public void testRationalNullaryDerivative()
+  {
+    var x = RationalNullaryFunction.express("∂a+x^2+b*x+c/∂x");
+    assertEquals("2*a*x+b", x.typeset());
+  }
+
   public void testSumTypeset()
   {
     var x = RealNullaryFunction.express("∑k{k=2...4}");
@@ -146,12 +152,9 @@ public class ExpressionTest extends
     context.registerVariable("p", new Integer(3));
     context.registerVariable("q", new Integer(2));
     var F                     =
-          RealPolynomialNullaryFunction.parse("F",
-                                              "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
-                                              context);
+          RealPolynomialNullaryFunction.parse("F", "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}", context);
     var transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
-    assertEquals("Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}",
-                 transformedExpression.toString());
+    assertEquals("Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}", transformedExpression.toString());
   }
 
   public void testSubstitutionToo2()
@@ -161,12 +164,9 @@ public class ExpressionTest extends
     context.registerVariable("q", new Integer(2));
     context.registerVariable("N", new Integer(3));
     var F                     =
-          RealPolynomialNullaryFunction.parse("F",
-                                              "n➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
-                                              context);
+          RealPolynomialNullaryFunction.parse("F", "n➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}", context);
     var transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
-    assertEquals("Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}",
-                 transformedExpression.toString());
+    assertEquals("Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}", transformedExpression.toString());
   }
 
   public void testSubstitution()
@@ -228,11 +228,7 @@ public class ExpressionTest extends
     try ( Real λ = new Real())
     {
       Context                 context  = new Context(λ.setName("λ").set("3.5", 128));
-      Function<Integer,
-                    Real>     f        = Function.express(Integer.class,
-                                                          Real.class,
-                                                          "n➔(λ*2)₍ₙ₎/(λ+½)₍ₙ₎",
-                                                          context);
+      Function<Integer, Real> f        = Function.express(Integer.class, Real.class, "n➔(λ*2)₍ₙ₎/(λ+½)₍ₙ₎", context);
       Integer                 in       = new Integer(4);
       Real                    evaluate = f.evaluate(in, 128, new Real());
       assertEquals(6.0, evaluate.doubleValue());
