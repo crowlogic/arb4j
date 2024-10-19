@@ -53,22 +53,6 @@ import arb.documentation.TheArb4jLibrary;
  * </ul>
  * </li>
  * </ol>
- * To summarize the key points about the point at infinity in the one-point
- * compactification:
- * 
- * <ol>
- * <li>It's a precisely defined mathematical construction for locally compact
- * Hausdorff spaces.</li>
- * <li>Its purpose is to create a compact space from a non-compact one in a
- * minimal way.</li>
- * <li>The topology on the resulting space a(X) = X ∪ {∞} is rigorously
- * defined.</li>
- * <li>It has specific, well-defined neighborhood properties in the compactified
- * space.</li>
- * <li>It serves as a single "ideal" point that completes the space to make it
- * compact.</li>
- * </ol>
- * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
