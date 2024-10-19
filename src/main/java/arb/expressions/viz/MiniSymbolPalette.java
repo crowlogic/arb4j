@@ -34,14 +34,14 @@ public class MiniSymbolPalette extends
     });
     this.textField.caretPositionProperty().addListener((obs, oldVal, newVal) ->
     {
-      if ( textField.isFocused() )
-      {      
+      if (textField.isFocused())
+      {
         lastKnownCaretPosition = newVal.intValue();
       }
     });
 
     String[] symbols =
-    { "➔", "+", "-", "*", "/", "^", "∑", "∏", "∫", "∂", "π", "√", "┴" };
+    { "➔", "+", "-", "*", "/", "^", "∑", "∏", "∫", "∂", "π", "√", "┴", "∂" };
 
     for (String symbol : symbols)
     {
@@ -62,6 +62,6 @@ public class MiniSymbolPalette extends
       textField.setText(symbol);
     }
     textField.positionCaret(lastKnownCaretPosition);
-    
+
   }
 }

@@ -28,7 +28,14 @@ public class ExpressionTest extends
 {
   public void testDerivative()
   {
-    var x = RealNullaryFunction.express("x∂x");
+    var x = RealNullaryFunction.express("∂x/∂x");
+    assertEquals("1", x.typeset());
+  }
+  
+  
+  public void testDerivativeToo()
+  {
+    var x = RealNullaryFunction.express("∂a+x^2+b*x+c/∂x");
     assertEquals("1", x.typeset());
   }
   

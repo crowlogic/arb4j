@@ -69,13 +69,22 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
   private String                                               upperIntegralValueFieldName;
 
   /**
-   * The syntax to express an integral is<br>
+   * The syntax to express a definate integral is<br>
    * <br>
    * 
    * <pre>
    * 
    * g(x)=∫x➔f(x)dx∈(a,b)
    * 
+   * </pre>
+   * The syntax to express an indefinate integral is<br>
+   * <br>
+   * 
+   * <pre>
+   * 
+   * g(x)=∫x➔f(x)dx
+   *
+   * (just leave off the range specification ∈(a,b)
    * </pre>
    * 
    * 

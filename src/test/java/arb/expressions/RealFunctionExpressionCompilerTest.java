@@ -33,7 +33,7 @@ public class RealFunctionExpressionCompilerTest extends
   public static void testExpansion()
   {
     boolean before = Expression.trace;
-    Expression.trace = true;
+    //Expression.trace = true;
     try
     {
       Context context = new Context();
