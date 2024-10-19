@@ -9,11 +9,16 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * @author ©2024 Stephen Crowley
@@ -22,7 +27,8 @@ import javafx.stage.Stage;
 public class GaussianProcessModeller extends
                                      Application
 {
-
+  boolean hasUnsavedChanges = false;
+  
   @Override
   public void start(Stage primaryStage) throws Exception
   {
@@ -41,6 +47,25 @@ public class GaussianProcessModeller extends
 
     setupComboBox(kernelComboBox);
     setupComboBox(spectralDensityComboBox);
+    WindowManager.setDarkStyle(scene);
+    scene.addEventFilter(KeyEvent.KEY_PRESSED, event ->
+    {
+      if (event.getCode() == KeyCode.ESCAPE)
+      {
+        primaryStage.fireEvent(new WindowEvent(primaryStage,
+                                               WindowEvent.WINDOW_CLOSE_REQUEST));
+      }
+    });
+    primaryStage.setOnCloseRequest(evt ->
+    {
+      if (hasUnsavedChanges)
+      {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Close");
+        alert.setHeaderText("There are unsaved changes. Are you sure you want to close the program?");
+        alert.showAndWait().filter(r -> r != ButtonType.OK).ifPresent(r -> evt.consume());
+      }
+    });
 
     scene.setOnKeyPressed(handler ->
     {
