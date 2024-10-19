@@ -13,13 +13,10 @@ import arb.expressions.Parser;
 import arb.functions.Function;
 import arb.language.Sentence;
 import arb.language.Term;
-import arb.language.Word;
 import arb.logic.Clause;
 
 /**
- * Thank you for confirming that I've finally grasped the correct syntax. Now,
- * let's explore a more enlightening perspective based on this understanding:
- * 
+*
  * The exophoric nature of the differential operator syntax
  * (∂[expression]/∂[variable]) in your compiler presents a fascinating parallel
  * to natural language processing and context-dependent interpretation. This
