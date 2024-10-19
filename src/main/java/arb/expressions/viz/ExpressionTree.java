@@ -160,24 +160,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
 
   };
 
-  public VirtualFlow<?>    flow;
-  public static Class<?>[] TYPES = new Class[]
-
-  { AlgebraicNumber.class,
-    Object.class,
-    Integer.class,
-    GaussianInteger.class,
-    Real.class,
-    Complex.class,
-    IntegerPolynomial.class,
-    RealPolynomial.class,
-    ComplexPolynomial.class,
-    RationalFunction.class,
-    ComplexRationalFunction.class,
-    Fraction.class,
-    ComplexFraction.class,
-    RealMatrix.class,
-    ComplexMatrix.class };
+  public VirtualFlow<?> flow;
 
   public VirtualFlow<?> getVirtualFlow()
   {
@@ -336,7 +319,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
         context.variables.clear();
 
         Map<String, SerializedContextVariable> ctx = serializedExpression.context;
-        System.err.println( "serialized context: " + ctx );
+        System.err.println("serialized context: " + ctx);
         for (Map.Entry<String, SerializedContextVariable> k : ctx.entrySet())
         {
           SerializedContextVariable serializedContextVariable = k.getValue();
@@ -394,29 +377,19 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
   }
 
   private ClassStringConverter<D, C, F> classStringConverter = new ClassStringConverter<D, C, F>();
+
+  public static Class<?>[]              TYPES                = new Class[]
+  { AlgebraicNumber.class, Object.class, Integer.class, GaussianInteger.class, Real.class, Complex.class,
+    IntegerPolynomial.class, RealPolynomial.class, ComplexPolynomial.class, RationalFunction.class,
+    ComplexRationalFunction.class, Fraction.class, ComplexFraction.class, RealMatrix.class, ComplexMatrix.class };
+
   public static Class<?>[]              INTERFACES           = new Class<?>[]
-  { IntegerSequence.class,
-    RealSequence.class,
-    Function.class,
-    NullaryFunction.class,
-    IntegerFunction.class,
-    IntegerPolynomialSequence.class,
-    IntegerPolynomialNullaryFunction.class,
-    RealFunction.class,
-    RealPolynomialFunction.class,
-    ComplexFunction.class,
-    ComplexSequence.class,
-    ComplexPolynomialSequence.class,
-    ComplexNullaryFunction.class,
-    RationalFunctionSequence.class,
-    RationalNullaryFunction.class,
-    RealPolynomialSequence.class,
-    RealToComplexFunction.class,
-    RealNullaryFunction.class,
-    ComplexToRealFunction.class,
-    ComplexRationalFunctionSequence.class,
-    ComplexRationalNullaryFunction.class,
-    Sequence.class };
+  { IntegerSequence.class, RealSequence.class, Function.class, NullaryFunction.class, IntegerFunction.class,
+    IntegerPolynomialSequence.class, IntegerPolynomialNullaryFunction.class, RealFunction.class,
+    RealPolynomialFunction.class, ComplexFunction.class, ComplexSequence.class, ComplexPolynomialSequence.class,
+    ComplexNullaryFunction.class, RationalFunctionSequence.class, RationalNullaryFunction.class,
+    RealPolynomialSequence.class, RealToComplexFunction.class, RealNullaryFunction.class, ComplexToRealFunction.class,
+    ComplexRationalFunctionSequence.class, ComplexRationalNullaryFunction.class, Sequence.class };
 
   private HBox setupTypeBoxes()
   {
@@ -691,7 +664,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
           if (!result.getClass().equals(expr.coDomainType))
           {
             result.close();
-            result = expr.coDomainType.getConstructor().newInstance();
+            result = expr.newCoDomainInstance();
           }
           result = instance.evaluate(input, 128, result);
         }

@@ -2076,11 +2076,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
-  public Named newCoDomainInstance()
+  @SuppressWarnings("unchecked")
+  public <N extends Named> N newCoDomainInstance()
   {
     try
     {
-      return (Named) coDomainType.getConstructor().newInstance();
+      return (N) coDomainType.getConstructor().newInstance();
     }
     catch (Throwable e)
     {
@@ -2089,11 +2090,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  public Named newDomainInstance()
+  @SuppressWarnings("unchecked")
+  public <N extends Named> N newDomainInstance()
   {
     try
     {
-      return (Named) domainType.getConstructor().newInstance();
+      return (N) domainType.getConstructor().newInstance();
     }
     catch (Throwable e)
     {
