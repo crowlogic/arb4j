@@ -1,4 +1,24 @@
-Carefully check this proof in detail verify it by substituting and manipulating etc etc 
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\section*{Theorem: Spectral Representation}
+Let $K(t-s)$ be a stationary kernel function. Then $K(t-s)$ can be expressed in the form:
+
+$$
+K(t-s) = \int_{-\infty}^{\infty} h(\tau) h(t-\tau-s) d\tau
+$$
+
+where $h(t)$ is defined as:
+
+$$
+h(t) = \frac{1}{2\pi} \int_{-\infty}^{\infty} \sqrt{S(\omega)} e^{i\omega t} d\omega
+$$
+
+and $S(\omega)$ is the spectral density function.
+
+\section*{Proof}
 
 1. Start with the spectral representation:
    $$
@@ -27,12 +47,12 @@ Carefully check this proof in detail verify it by substituting and manipulating 
 
 6. Apply Fubini's theorem to change the order of integration:
    $$
-   K(t-s) = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} h(\tau) h(\sigma) \left(\frac{1}{2\pi} \int_{-\infty}^{\infty} e^{i\omega(t-\tau)} e^{-i\omega(s-\sigma)} d\omega\right) d\tau d\sigma
+   K(t-s) = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} h(\tau) h(\sigma) \left(\frac{1}{2\pi} \int_{-\infty}^{\infty} e^{i\omega(t-\tau-s+\sigma)} d\omega\right) d\tau d\sigma
    $$
 
 7. Evaluate the inner $\omega$ integral:
    $$
-   \frac{1}{2\pi} \int_{-\infty}^{\infty} e^{i\omega(t-\tau)} e^{-i\omega(s-\sigma)} d\omega = \delta(t-\tau-s+\sigma)
+   \frac{1}{2\pi} \int_{-\infty}^{\infty} e^{i\omega(t-\tau-s+\sigma)} d\omega = \delta(t-\tau-s+\sigma)
    $$
 
 8. Apply the delta function:
@@ -41,13 +61,11 @@ Carefully check this proof in detail verify it by substituting and manipulating 
    $$
 
 9. Integrate with respect to $\sigma$:
-   $$
-   \begin{align*}
+\begin{align*}
    K(t-s) &= \int_{-\infty}^{\infty} h(\tau) \int_{-\infty}^{\infty} h(\sigma) \delta(t-\tau-s+\sigma) d\sigma d\tau \\
          &= \int_{-\infty}^{\infty} h(\tau) \cdot h(t-\tau-s) \cdot 1 d\tau \\
          &= \int_{-\infty}^{\infty} h(\tau) h(t-\tau-s) d\tau
-   \end{align*}
-   $$
+\end{align*}
 
 The key step is:
 $$
@@ -56,4 +74,6 @@ $$
 
 This equality holds because the delta function $\delta(t-\tau-s+\sigma)$ is non-zero only when $\sigma = t-\tau+s$. Therefore, the integral reduces to $h(t-\tau-s)$.
 
-This completes the proof without any variable changes or substitutions, as requested.
+This completes the proof of the Spectral Representation Theorem.
+
+\end{document}
