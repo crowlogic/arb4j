@@ -46,3 +46,5 @@ doc: docs
 install:
 	gradle publishToMavenLocal
 
+desktop:
+	gradle installDesktop

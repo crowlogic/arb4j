@@ -1,111 +1,119 @@
-\documentclass{article}
-\usepackage{amsmath}
+<TeXmacs|2.1.4>
 
-\begin{document}
+<style|generic>
 
-\section*{Theorem: Spectral Representation}
-Let $K(t-s)$ be a stationary kernel function. Then $K(t-s)$ can be expressed in the form:
+<\body>
+  <doc-data|<doc-title|Proof of the Triangular Factorization of Stationary
+  Gaussian Process Kernels>|<doc-author|<author-data|<author-name|Stephen
+  Crowley>|<\author-affiliation>
+    <date|>
+  </author-affiliation>>>>
 
-$$
-K(t-s) = \int_{-\infty}^{\infty} h(\tau) h(t-\tau-s) d\tau
-$$
+  <section|Theorem: Spectral Representation>
 
-where $h(t)$ is defined as:
+  Let <math|K*<around|(|t-s|)>> be a stationary kernel function. Then
+  <math|K*<around|(|t-s|)>> can be expressed in the form:
 
-$$
-h(t) = \frac{1}{2\pi} \int_{-\infty}^{\infty} \sqrt{S(\omega)} e^{i\omega t} d\omega
-$$
+  <\equation>
+    K*<around|(|t-s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>*h<around|(|\<tau\>|)>*h*<around|(|t-\<tau\>-s|)>*d*\<tau\>
+  </equation>
 
-and $S(\omega)$ is the spectral density function.
+  where <math|h<around|(|t|)>> is defined as:
 
-\section*{Proof}
+  <\equation>
+    h<around|(|t|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\>|)>>*e<rsup|i*\<omega\>*t>*d*\<omega\>
+  </equation>
 
-1. Start with the spectral representation:
-   $$
-   K(t-s) = \frac{1}{2\pi} \int_{-\infty}^{\infty} S(\omega) e^{i\omega(t-s)} d\omega
-   $$
+  and <math|S<around|(|\<omega\>|)>> is the spectral density function.
 
-2. Factor $S(\omega)$:
-   $$
-   K(t-s) = \frac{1}{2\pi} \int_{-\infty}^{\infty} \sqrt{S(\omega)} e^{i\omega t} \cdot \sqrt{S(\omega)} e^{-i\omega s} d\omega
-   $$
+  <section|Proof>
 
-3. Define $h(t)$:
-   $$
-   h(t) = \frac{1}{2\pi} \int_{-\infty}^{\infty} \sqrt{S(\omega)} e^{i\omega t} d\omega
-   $$
+  1. Start with the spectral representation:
 
-4. Express $\sqrt{S(\omega)}$:
-   $$
-   \sqrt{S(\omega)} = \int_{-\infty}^{\infty} h(\tau) e^{-i\omega\tau} d\tau
-   $$
+  <\equation>
+    K*<around|(|t-s|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>*S<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*<around|(|t-s|)>>*d*\<omega\>
+  </equation>
 
-5. Substitute into the kernel equation:
-   $$
-   K(t-s) = \frac{1}{2\pi} \int_{-\infty}^{\infty} \left(\int_{-\infty}^{\infty} h(\tau) e^{-i\omega\tau} d\tau\right) e^{i\omega t} \cdot \left(\int_{-\infty}^{\infty} h(\sigma) e^{-i\omega\sigma} d\sigma\right) e^{-i\omega s} d\omega
-   $$
+  2. Factor <math|S<around|(|\<omega\>|)>>:
 
-6. Apply Fubini's theorem to change the order of integration:
-   $$
-   K(t-s) = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} h(\tau) h(\sigma) \left(\frac{1}{2\pi} \int_{-\infty}^{\infty} e^{i\omega(t-\tau-s+\sigma)} d\omega\right) d\tau d\sigma
-   $$
+  <\equation>
+    K*<around|(|t-s|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\>|)>>*e<rsup|i*\<omega\>*t><sqrt|S<around|(|\<omega\>|)>>*e<rsup|-i*\<omega\>*s>*d*\<omega\>
+  </equation>
 
-7. Evaluate the inner $\omega$ integral:
-   $$
-   \frac{1}{2\pi} \int_{-\infty}^{\infty} e^{i\omega(t-\tau-s+\sigma)} d\omega = \delta(t-\tau-s+\sigma)
-   $$
+  3. Define <math|h<around|(|t|)>>:
 
-8. Apply the delta function:
-   $$
-   K(t-s) = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} h(\tau) h(\sigma) \delta(t-\tau-s+\sigma) d\tau d\sigma
-   $$
+  <\equation>
+    h<around|(|t|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\>|)>>*e<rsup|i*\<omega\>*t>*d*\<omega\>
+  </equation>
 
-9. Integrate with respect to $\sigma$:
-\begin{align*}
-   K(t-s) &= \int_{-\infty}^{\infty} h(\tau) \int_{-\infty}^{\infty} h(\sigma) \delta(t-\tau-s+\sigma) d\sigma d\tau \\
-         &= \int_{-\infty}^{\infty} h(\tau) \cdot h(t-\tau-s) \cdot 1 d\tau \\
-         &= \int_{-\infty}^{\infty} h(\tau) h(t-\tau-s) d\tau
-\end{align*}
+  4. Express <math|<sqrt|S<around|(|\<omega\>|)>>>:
 
-The key step is:
-$$
-\int_{-\infty}^{\infty} h(\sigma) \delta(t-\tau-s+\sigma) d\sigma = h(t-\tau-s)
-$$
+  <\equation*>
+    <sqrt|S<around|(|\<omega\>|)>>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>*h<around|(|\<tau\>|)>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\><space|1em><text|(by
+    inverse Fourier transform)>
+  </equation*>
 
-This equality holds because the delta function $\delta(t-\tau-s+\sigma)$ is non-zero only when $\sigma = t-\tau+s$. Therefore, the integral reduces to $h(t-\tau-s)$.
+  5. Substitute into the kernel equation:
 
-This completes the proof of the Spectral Representation Theorem.
+  <\equation>
+    K*<around|(|t-s|)>=<frac|*<big|int><rsub|-\<infty\>><rsup|\<infty\>>*<around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>*h<around|(|\<tau\>|)>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\>|)>*e<rsup|i*\<omega\>*t><around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>*h<around|(|\<sigma\>|)>*e<rsup|-i*\<omega\>*\<sigma\>>*d*\<sigma\>|)>*e<rsup|-i*\<omega\>*s>*d*\<omega\>|2*\<pi\>>
+  </equation>
 
-\section*{Reverse Proof of Spectral Representation Theorem}
+  6. Apply Fubini's theorem to change the order of integration
 
-Starting from the final result:
+  <\equation>
+    K*<around|(|t-s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>*h<around|(|\<tau\>|)>*h<around|(|\<sigma\>|)>*<frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>>*e<rsup|i*\<omega\>*<around|(|t-\<tau\>-s+\<sigma\>|)>>*d*\<omega\>|2*\<pi\>>**d*\<tau\>*d*\<sigma\>
+  </equation>
 
-$$K(t-s) = \int_{-\infty}^{\infty} h(\tau) h(t-\tau-s) d\tau$$
+  7. Evaluate the inner <math|\<omega\>> integral by the Fourier integral
+  representation of the delta function:
 
-Expressing $h(t)$ in terms of the spectral density $S(\omega)$:
+  <\equation>
+    <frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>*e<rsup|i*\<omega\>*<around|(|t-\<tau\>-s+\<sigma\>|)>>*d*\<omega\>=\<delta\>*<around|(|t-\<tau\>-s+\<sigma\>|)>
+  </equation>
 
-$$h(t) = \frac{1}{2\pi} \int_{-\infty}^{\infty} \sqrt{S(\omega)} e^{i\omega t} d\omega$$
+  8. Apply the delta function:
 
-Substituting this into the final expression:
+  <\equation>
+    K*<around|(|t-s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>*h<around|(|\<tau\>|)>*h<around|(|\<sigma\>|)>*\<delta\>*<around|(|t-\<tau\>-s+\<sigma\>|)>*d*\<tau\>*d*\<sigma\>
+  </equation>
 
-$$K(t-s) = \int_{-\infty}^{\infty} \left(\frac{1}{2\pi} \int_{-\infty}^{\infty} \sqrt{S(\omega_1)} e^{i\omega_1 \tau} d\omega_1\right) \left(\frac{1}{2\pi} \int_{-\infty}^{\infty} \sqrt{S(\omega_2)} e^{i\omega_2 (t-\tau-s)} d\omega_2\right) d\tau$$
+  9. Integrate with respect to <math|\<sigma\>>:
 
-Applying Fubini's theorem to change the order of integration:
+  <\equation>
+    <tabular|<tformat|<table|<row|<cell|K*<around|(|t-s|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>*h<around|(|\<tau\>|)>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>*h<around|(|\<sigma\>|)>*\<delta\>*<around|(|t-\<tau\>-s+\<sigma\>|)>*d*\<sigma\>*d*\<tau\>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*h*<around|(|t-\<tau\>-s|)>*d*\<tau\>>>>>>
+  </equation>
 
-$$K(t-s) = \frac{1}{(2\pi)^2} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \sqrt{S(\omega_1)} \sqrt{S(\omega_2)} e^{i\omega_1 \tau} e^{i\omega_2 (t-\tau-s)} d\omega_1 d\omega_2 d\tau$$
+  This completes the proof of the spectral representation theorem.
+</body>
 
-Combining the exponential terms:
+<\initial>
+  <\collection>
+    <associate|magnification|1.2>
+    <associate|page-height|auto>
+    <associate|page-medium|paper>
+    <associate|page-type|letter>
+    <associate|page-width|auto>
+  </collection>
+</initial>
 
-$$K(t-s) = \frac{1}{(2\pi)^2} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \sqrt{S(\omega_1)} \sqrt{S(\omega_2)} e^{i(\omega_1 \tau + \omega_2 (t-\tau-s))} d\omega_1 d\omega_2 d\tau$$
+<\references>
+  <\collection>
+    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_60.tm>>
+    <associate|auto-2|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_60.tm>>
+  </collection>
+</references>
 
-Evaluating the inner integral with respect to $\tau$:
+<\auxiliary>
+  <\collection>
+    <\associate|toc>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Theorem:
+      Spectral Representation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-1><vspace|0.5fn>
 
-$$K(t-s) = \frac{1}{(2\pi)^2} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \sqrt{S(\omega_1)} \sqrt{S(\omega_2)} 2\pi \delta(\omega_1 - \omega_2) e^{i\omega_2 (t-s)} d\omega_1 d\omega_2$$
-
-Applying the delta function property:
-
-$$K(t-s) = \frac{1}{2\pi} \int_{-\infty}^{\infty} S(\omega) e^{i\omega (t-s)} d\omega$$
-
-This matches the initial spectral representation of $K(t-s)$, completing the full reverse derivation of the Spectral Representation Theorem proof.
-
-\end{document}
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Proof>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-2><vspace|0.5fn>
+    </associate>
+  </collection>
+</auxiliary>
