@@ -834,6 +834,14 @@ public class Integer implements
     return result;
   }
 
+  public RationalFunction pow(Integer operand, int bits, RationalFunction result)
+  {
+    try ( Integer intres = new Integer())
+    {
+      return result.set(pow(operand, bits, intres));
+    }
+  }
+
   public Real pow(Integer operand, int prec, Real result)
   {
     return result.set(this).pow(operand, prec);

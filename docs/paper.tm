@@ -7,6 +7,22 @@
     \;
   </hide-preamble>
 
+  <doc-data|<doc-title|Mercer Expansions for Translation-Invariant
+  Kernels>|<doc-author|<author-data|<author-name|Stephen
+  Crowley>|<\author-affiliation>
+    <date|>
+  </author-affiliation>>>>
+
+  <abstract-data|<abstract|An extension of the method for deriving
+  orthonormal expansions for kernels <math|K<around*|(|t-s|)>> of
+  translation-invariant \ Gaussian processes detailed by Tronarp and
+  Karvonen<cite|orthonormalExpansionsForTranslationInvariantKernels> is
+  derived by showing selecting the orthonormal base of <math|L<rsup|2>> to be
+  such that <math|K<around*|(|t-s|)>=<big|sum><rsub|n=0><rsup|\<infty\>>\<varphi\><rsub|m><around|(|t-s|)>>
+  converges uniformly. That is, instead of just choosing any orthnormal basis
+  of <math|L<rsup|2>>, a basis whose partial sums uniformly converge to the
+  kernel itself is constructed.>>
+
   \;
 
   <\table-of-contents|toc>
@@ -395,28 +411,32 @@
   <\collection>
     <associate|auto-1|<tuple|1|1>>
     <associate|auto-2|<tuple|1.1|2>>
-    <associate|auto-3|<tuple|1.2|5>>
+    <associate|auto-3|<tuple|1.2|4>>
     <associate|auto-4|<tuple|2|5>>
-    <associate|auto-5|<tuple|2.1|6>>
+    <associate|auto-5|<tuple|2.1|5>>
     <associate|auto-6|<tuple|3|6>>
     <associate|eq:RKHS-fourier|<tuple|17|4>>
     <associate|eq:gaussian-basis-intro|<tuple|24|6>>
     <associate|eq:gaussian-kernel|<tuple|28|6>>
     <associate|eq:h-gaussian|<tuple|30|6>>
-    <associate|eq:kernel-expansion-intro|<tuple|1|2>>
+    <associate|eq:kernel-expansion-intro|<tuple|1|1>>
     <associate|eq:kernel-expansion-mercer|<tuple|22|5>>
     <associate|eq:main-theorem-r-expansion|<tuple|13|3>>
     <associate|eq:mercer-integral-operator|<tuple|21|5>>
     <associate|sec:gaussian|<tuple|3|6>>
     <associate|sec:introduction|<tuple|1|1>>
     <associate|sec:summary|<tuple|2|5>>
-    <associate|thm:main-theorem|<tuple|2|3>>
+    <associate|thm:main-theorem|<tuple|2|2>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
     <\associate|bib>
+      orthonormalExpansionsForTranslationInvariantKernels
+
+      orthonormalExpansionsForTranslationInvariantKernels
+
       Paulsen2016
 
       Paulsen2016
