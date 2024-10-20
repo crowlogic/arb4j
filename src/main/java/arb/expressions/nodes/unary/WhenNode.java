@@ -47,12 +47,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   private static final String INTEGER_CLASS_INTERNAL_NAME = Type.getInternalName(Integer.class);
   private static final String INT_METHOD_DESCRIPTOR       = Type.getMethodDescriptor(Type.getType(int.class));
 
-  private static <D, F extends Function<? extends D, ? extends R>,
-                R>
-          void
-          evaluateCase(Expression<D, R, F> expression,
-                       TreeMap<Integer, Node<D, R, F>> cases,
-                       VariableNode<D, R, F> variable)
+  void evaluateCase(TreeMap<Integer, Node<D, R, F>> cases, VariableNode<D, R, F> variable)
   {
     if (!variable.reference.equals(expression.independentVariable.reference))
     {
@@ -71,15 +66,12 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
                                          expression.previousCharacter));
     }
 
-    LiteralConstantNode<D, R, F> constant = evaluateCondition(expression);
+    LiteralConstantNode<D, R, F> constant = evaluateCondition();
     Node<D, R, F>                value    = expression.resolve();
     cases.put(new Integer(constant.value), value);
   }
 
-  public static <R, F extends Function<? extends D, ? extends R>,
-                D>
-         LiteralConstantNode<D, R, F>
-         evaluateCondition(Expression<D, R, F> expression)
+  public LiteralConstantNode<D, R, F> evaluateCondition()
   {
     Node<D, R, F> condition = expression.evaluate();
     if (!(condition instanceof LiteralConstantNode))
@@ -146,7 +138,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     else if (node.isVariable())
     {
       VariableNode<D, R, F> variable = (VariableNode<D, R, F>) node;
-      evaluateCase(expression, cases, variable);
+      evaluateCase(cases, variable);
     }
     else
     {

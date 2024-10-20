@@ -280,6 +280,13 @@ public class Integer implements
     return result;
   }
 
+  public Complex add(Fraction operand, int prec, Complex result)
+  {
+    add(operand, prec, result.re());
+    result.im().zero();
+    return result;
+  }
+
   public ComplexFraction add(Fraction operand, int prec, ComplexFraction result)
   {
     operand.add(this, prec, result.realPart);
@@ -1032,7 +1039,7 @@ public class Integer implements
       return nameStr + arblib.fmpz_get_str(null, 10, swigCPtr);
     }
   }
-  
+
   @Override
   public String toString()
   {
@@ -1058,8 +1065,6 @@ public class Integer implements
     }
   }
 
-
-  
   public RationalFunction Γ(int bits, RationalFunction result)
   {
     try ( Real tmp = new Real())
@@ -1119,11 +1124,9 @@ public class Integer implements
 
   public Fraction pow(Fraction div, int bits, Fraction res)
   {
-    pow(div.getNumerator(),bits,res.getNumerator());
-    pow(div.getDenominator(),bits,res.getDenominator());
+    pow(div.getNumerator(), bits, res.getNumerator());
+    pow(div.getDenominator(), bits, res.getDenominator());
     return res;
   }
-
- 
 
 }

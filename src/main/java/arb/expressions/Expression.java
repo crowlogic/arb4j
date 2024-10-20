@@ -578,6 +578,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       node = resolve();
       require(')');
     }
+    else if (nextCharacterIs('∂'))
+    {
+      node = new DerivativeNode<D, C, F>(this);
+    }
     else if (nextCharacterIs('∫'))
     {
       node = new IntegralNode<>(this);
@@ -1832,10 +1836,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Node<D, C, F> resolvePostfixOperators(Node<D, C, F> node)
   {
-    if (nextCharacterIs('∂'))
-    {
-      node = new DerivativeNode<D, C, F>(this);
-    }
+
     node = resolveFactorials(node);
     node = resolveFloor(node);
     node = resolveAbsoluteValue(node);

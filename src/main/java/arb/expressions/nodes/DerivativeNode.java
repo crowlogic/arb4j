@@ -74,7 +74,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   public DerivativeNode(Expression<D, R, F> expression)
   {
     super(expression);
-    assert false : "TODO: implement derivative operator, the syntax is ∂(a*x^2+b*x+c)/∂x";
+    assert false : "TODO: implement derivative operator, the syntax is ∂a*x^2+b*x+c/∂x";
   }
 
   @Override

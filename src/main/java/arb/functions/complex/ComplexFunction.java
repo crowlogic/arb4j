@@ -253,7 +253,10 @@ public interface ComplexFunction extends
 
   public default Complex evaluate(Real x, int order, int bits, Complex result)
   {
-    return evaluate(result.set(x), order, bits, result);
+    try ( Complex tmp = new Complex())
+    {
+      return evaluate(tmp.set(x), order, bits, result);
+    }
   }
 
 }
