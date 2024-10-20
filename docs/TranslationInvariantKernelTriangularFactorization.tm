@@ -76,4 +76,41 @@ This equality holds because the delta function $\delta(t-\tau-s+\sigma)$ is non-
 
 This completes the proof of the Spectral Representation Theorem.
 
+\section*{Reverse Proof of Spectral Representation Theorem}
+
+Starting from the final result:
+
+$$K(t-s) = \int_{-\infty}^{\infty} h(\tau) h(t-\tau-s) d\tau$$
+
+Substituting the definition of $h(t)$:
+
+$$K(t-s) = \int_{-\infty}^{\infty} \left(\frac{1}{2\pi} \int_{-\infty}^{\infty} \sqrt{S(\omega)} e^{i\omega \tau} d\omega\right) \left(\frac{1}{2\pi} \int_{-\infty}^{\infty} \sqrt{S(\omega)} e^{i\omega (t-\tau-s)} d\omega\right) d\tau$$
+
+Applying Fubini's theorem to interchange the order of integration:
+
+$$K(t-s) = \frac{1}{(2\pi)^2} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \sqrt{S(\omega_1)} \sqrt{S(\omega_2)} e^{i\omega_1 \tau} e^{i\omega_2 (t-\tau-s)} d\omega_1 d\omega_2 d\tau$$
+
+Combining the exponential terms:
+
+$$K(t-s) = \frac{1}{(2\pi)^2} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \sqrt{S(\omega_1)} \sqrt{S(\omega_2)} e^{i(\omega_1 \tau + \omega_2 (t-\tau-s))} d\omega_1 d\omega_2 d\tau$$
+
+Factoring out the common exponential term:
+
+$$K(t-s) = \frac{1}{(2\pi)^2} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \sqrt{S(\omega_1)} \sqrt{S(\omega_2)} e^{i\omega_1 \tau} e^{i\omega_2 (t-\tau-s)} d\omega_1 d\omega_2 d\tau$$
+
+Applying Fubini's theorem again to interchange the order of integration:
+
+$$K(t-s) = \frac{1}{(2\pi)^2} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \sqrt{S(\omega_1)} \sqrt{S(\omega_2)} e^{i\omega_1 \tau} e^{i\omega_2 (t-\tau-s)} d\tau d\omega_1 d\omega_2$$
+
+Evaluating the inner integral with respect to $\tau$:
+
+$$K(t-s) = \frac{1}{(2\pi)^2} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \sqrt{S(\omega_1)} \sqrt{S(\omega_2)} 2\pi \delta(\omega_1 - \omega_2) e^{i\omega_2 (t-s)} d\omega_1 d\omega_2$$
+
+Applying the delta function property:
+
+$$K(t-s) = \frac{1}{2\pi} \int_{-\infty}^{\infty} S(\omega) e^{i\omega (t-s)} d\omega$$
+
+This matches the initial spectral representation of $K(t-s)$, completing the full reverse derivation of the Spectral Representation Theorem proof.
+
+
 \end{document}
