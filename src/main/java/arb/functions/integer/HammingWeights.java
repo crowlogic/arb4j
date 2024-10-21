@@ -23,4 +23,11 @@ public class HammingWeights implements
     return res.set(arblib.fmpz_popcnt(t.swigCPtr));
   }
 
+  @Override
+  public Integer enumerate(int i, int j)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
 }

@@ -49,4 +49,11 @@ public class PascalsTriangle implements
     }
   }
 
+  @Override
+  public RealPolynomial enumerate(int i, int j)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
 }

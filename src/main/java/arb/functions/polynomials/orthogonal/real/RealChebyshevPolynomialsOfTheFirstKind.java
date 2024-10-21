@@ -89,4 +89,11 @@ public class RealChebyshevPolynomialsOfTheFirstKind implements
   {
     return new RealPolynomialSequenceIterator(this);
   }
+
+  @Override
+  public RealPolynomial enumerate(int i, int j)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
 }
