@@ -1,0 +1,92 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      2571,         82]
+NotebookOptionsPosition[      2061,         65]
+NotebookOutlinePosition[      2400,         80]
+CellTagsIndexPosition[      2357,         77]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"h", "[", "s_", "]"}], ":=", 
+  RowBox[{"Evaluate", "[", 
+   RowBox[{"Integrate", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Sqrt", "[", 
+       RowBox[{"1", "/", 
+        RowBox[{"Sqrt", "[", 
+         RowBox[{"1", "-", 
+          RowBox[{"t", "^", "2"}]}], "]"}]}], "]"}], "*", 
+      RowBox[{"Exp", "[", 
+       RowBox[{
+        RowBox[{"-", "I"}], "*", "t", "*", "s"}], "]"}]}], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", 
+       RowBox[{"-", "1"}], ",", "1"}], "}"}]}], "]"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.9385259756343946`*^9, 3.938525988302127*^9}, {
+  3.938526096804719*^9, 3.938526155693296*^9}, {3.938526262581615*^9, 
+  3.938526279111231*^9}, {3.9385263884759007`*^9, 3.938526391978712*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"11f8b482-54d7-441d-9cc2-cf87616fd715"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"h", "[", "s", "]"}]], "Input",
+ CellChangeTimes->{{3.938526393461059*^9, 3.938526394100026*^9}},
+ CellLabel->"In[2]:=",ExpressionUUID->"34782511-8d5b-4784-8987-16530b9d9d78"],
+
+Cell[BoxData[
+ RowBox[{
+  SqrtBox["\[Pi]"], " ", 
+  RowBox[{"Gamma", "[", 
+   FractionBox["3", "4"], "]"}], " ", 
+  RowBox[{"Hypergeometric0F1Regularized", "[", 
+   RowBox[{
+    FractionBox["5", "4"], ",", 
+    RowBox[{"-", 
+     FractionBox[
+      SuperscriptBox["s", "2"], "4"]}]}], "]"}]}]], "Output",
+ CellChangeTimes->{3.938526394575392*^9},
+ CellLabel->"Out[2]=",ExpressionUUID->"31ff61c9-6fea-4a00-aae0-c11db9ebf53a"]
+}, Open  ]]
+},
+WindowSize->{2550, 1493},
+WindowMargins->{{5, Automatic}, {5, Automatic}},
+FrontEndVersion->"11.3 for Linux x86 (64-bit) (March 6, 2018)",
+StyleDefinitions->"ReverseColor.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 837, 21, 90, "Input",ExpressionUUID->"11f8b482-54d7-441d-9cc2-cf87616fd715"],
+Cell[CellGroupData[{
+Cell[1420, 45, 198, 3, 90, "Input",ExpressionUUID->"34782511-8d5b-4784-8987-16530b9d9d78"],
+Cell[1621, 50, 424, 12, 133, "Output",ExpressionUUID->"31ff61c9-6fea-4a00-aae0-c11db9ebf53a"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+

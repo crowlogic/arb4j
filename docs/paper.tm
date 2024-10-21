@@ -292,21 +292,6 @@
     <label|eq:kernel-expansion-mercer>r<around|(|t,u|)>=<big|sum><rsub|m=0><rsup|\<infty\>>\<mu\><rsub|m>\<vartheta\><rsub|m><rsup|\<ast\>><around|(|t|)>\<vartheta\><rsub|m><around|(|u|)>*<space|1em><text|\<forall\>>t,u\<in\>\<Omega\>
   </equation>
 
-  While Mercer's theorem and the eigenvalues of <math|\<cal-T\><rsub|r,w>>
-  constitute a powerful tool for understanding topics such as optimal
-  approximation in <math|<with|math-font|cal*|L><rsub|2><around|(|\<Omega\>,w|)>>-norm
-  (e.g.,<nbsp><cite-detail|NovakWozniakowski2008|Corollary<nbsp>4.12>
-  and<nbsp><cite-detail|FasshauerHickernell2012|Section<nbsp>2.4>) and
-  improved approximation orders in subsets of
-  <math|<with|math-font|cal*|H><rsub|r><around|(|\<Omega\>|)>><nbsp><cite-detail|Wendland2005|Section<nbsp>11.5>,
-  both in theoretical research and practical applications there is often no
-  reason to prefer a Mercer expansion<nbsp><eqref|eq:kernel-expansion-mercer>
-  over a generic RKHS-orthonormal expansion<nbsp><eqref|eq:kernel-expansion-intro>.
-  For example, the Karhunen\ULoève theorem is merely a special case of a more
-  general result that a Gaussian process with covariance kernel<nbsp><math|r>
-  can be expanded in terms of any orthonormal basis of
-  <math|<with|math-font|cal*|H><rsub|r><around|(|\<Omega\>|)>><nbsp><cite-detail|Adler1990|Chapter<nbsp>III>.\ 
-
   Constructing a Mercer expansion by first identifying a convenient weight
   and then finding the eigendecomposition of the integral
   operator<nbsp><eqref|eq:mercer-integral-operator> can be rather involved.
@@ -416,13 +401,13 @@
     <associate|auto-5|<tuple|2.1|5>>
     <associate|auto-6|<tuple|3|6>>
     <associate|eq:RKHS-fourier|<tuple|17|4>>
-    <associate|eq:gaussian-basis-intro|<tuple|24|6>>
+    <associate|eq:gaussian-basis-intro|<tuple|24|5>>
     <associate|eq:gaussian-kernel|<tuple|28|6>>
     <associate|eq:h-gaussian|<tuple|30|6>>
     <associate|eq:kernel-expansion-intro|<tuple|1|1>>
     <associate|eq:kernel-expansion-mercer|<tuple|22|5>>
     <associate|eq:main-theorem-r-expansion|<tuple|13|3>>
-    <associate|eq:mercer-integral-operator|<tuple|21|5>>
+    <associate|eq:mercer-integral-operator|<tuple|21|4>>
     <associate|sec:gaussian|<tuple|3|6>>
     <associate|sec:introduction|<tuple|1|1>>
     <associate|sec:summary|<tuple|2|5>>
@@ -452,14 +437,6 @@
       Paulsen2016
 
       SteinwartScovel2012
-
-      NovakWozniakowski2008
-
-      FasshauerHickernell2012
-
-      Wendland2005
-
-      Adler1990
 
       FasshauerMcCourt2015
     </associate>
