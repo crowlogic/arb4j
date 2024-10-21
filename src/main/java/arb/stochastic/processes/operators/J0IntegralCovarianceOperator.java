@@ -79,6 +79,14 @@ public class J0IntegralCovarianceOperator implements
                                                         RealBesselFunctionOfTheFirstKind,
                                                         RealSquareIntegrableFunction>
 {
+  /**
+   * <pre>
+   * h(s)=InvFourier(sqrt(S(w)),w,s)=Sqrt[\[Pi]] Gamma[3/4] Hypergeometric0F1Regularized[5/4, -(s^2/4)]
+   * S(w)=Fourier(J0(t),t,w)=1/sqrt(1-w^2);
+   * </pre>
+   * 
+   * @param args
+   */
   public static void main(String args[])
   {
     J0IntegralCovarianceOperator j0      = new J0IntegralCovarianceOperator();
