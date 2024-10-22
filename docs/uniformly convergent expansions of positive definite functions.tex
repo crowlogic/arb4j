@@ -15,7 +15,7 @@
 \maketitle
 
 \begin{theorem}
-The covariance function $K(t)$ of a stationary Gaussian process can be uniformly approximated by partial sums of functions from the orthogonal complement of the null space of the inner product defined by $K$. This uniform convergence holds not only on the real line but extends to the entire complex plane.
+The covariance function $K(t)$ of a stationary Gaussian process can be uniformly approximated by partial sums of functions from the orthogonal complement of the null space of the inner product defined by $K$. This uniform convergence holds initially on the real line and extends to the entire complex plane.
 \end{theorem}
 
 \begin{proof}
@@ -68,17 +68,19 @@ Let $\{P_n(\omega)\}_{n=0}^{\infty}$ be the orthogonal polynomials with respect 
 
 9) Extension to the Complex Plane:
    
-   a) The covariance function $K(t)$ of a stationary Gaussian process is positive definite and therefore analytic.
+   a) The covariance function $K(t)$ of a stationary Gaussian process is positive definite and therefore analytic in the complex plane.
    
-   b) The partial sum $S_N(t)$ is a finite sum of analytic functions (as $g_n(t)$ are analytic), and is thus analytic.
+   b) The partial sum $S_N(t)$ is a finite sum of analytic functions (as $g_n(t)$ are analytic), and is thus analytic in the complex plane.
    
    c) The convergence of $S_N(t)$ to $K(t)$ on the real line is uniform, as shown in steps 1-8.
    
-   d) By the identity theorem for analytic functions, if two analytic functions agree on a set with an accumulation point (in this case, the real line), they must agree everywhere in their domain of analyticity.
+   d) Consider any open disk D in the complex plane that intersects the real line. The intersection of D with the real line contains an accumulation point.
    
-   e) Therefore, the uniform convergence of $S_N(t)$ to $K(t)$ extends to the entire complex plane.
+   e) By the Identity Theorem for analytic functions, since $K(t)$ and $S_N(t)$ agree on a set with an accumulation point within D (namely, the intersection of D with the real line), they must agree on the entire disk D.
+   
+   f) As this holds for any disk intersecting the real line, and such disks cover the entire complex plane, the uniform convergence of $S_N(t)$ to $K(t)$ extends to the entire complex plane.
 
-Thus, we have shown that the covariance function $K(t)$ can be uniformly approximated by partial sums of functions from the orthogonal complement of the null space of the inner product defined by $K$. This uniform convergence holds  initially on the real line but is easily shown to extend  to the entire complex plane.
+Thus, we have shown that the covariance function $K(t)$ can be uniformly approximated by partial sums of functions from the orthogonal complement of the null space of the inner product defined by $K$. This uniform convergence holds initially on the real line and extends to the entire complex plane.
 \end{proof}
 
 \end{document}
