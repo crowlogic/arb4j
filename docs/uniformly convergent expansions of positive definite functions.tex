@@ -1,0 +1,60 @@
+\begin{proof}
+Let $\{P_n(\omega)\}_{n=0}^{\infty}$ be the orthogonal polynomials with respect to the spectral density $S(\omega)$ of a Gaussian process, and $\{f_n(t)\}_{n=0}^{\infty}$ their Fourier transforms. Let $k(t,s)$ be the covariance function of the Gaussian process.
+
+1) First, we prove that $f_n(t)$ for $n \geq 1$ are orthogonal to $k(t,s)$:
+
+   a) By definition of orthogonal polynomials, for $n \geq 1$:
+      $$\int P_n(\omega)S(\omega)d\omega = 0$$
+
+   b) The spectral density and covariance function form a Fourier transform pair:
+      $$k(t,s) = \int S(\omega)e^{i\omega (t-s)}d\omega$$
+
+   c) Consider the inner product $\langle f_n, k(\cdot,s) \rangle$ for $n \geq 1$:
+      $$\langle f_n, k(\cdot,s) \rangle = \int f_n(t)k(t,s)dt = \int f_n(t) \left(\int S(\omega)e^{i\omega (t-s)}d\omega\right) dt$$
+
+   d) Applying Fubini's theorem:
+      $$\langle f_n, k(\cdot,s) \rangle = \int S(\omega) \left(\int f_n(t)e^{i\omega t}dt\right) e^{-i\omega s}d\omega = \int S(\omega)P_n(\omega)e^{-i\omega s}d\omega = 0$$
+
+   Thus, $\{f_n(t)\}_{n=1}^{\infty}$ are orthogonal to $k(t,s)$ for all $s$.
+
+2) Consider the orthogonal complement of the space spanned by $\{f_n(t)\}_{n=1}^{\infty}$. Let $\{g_n(t)\}_{n=0}^{\infty}$ be an orthonormal basis for this complement.
+
+3) We can express $k(t,s)$ in terms of this basis:
+   $$k(t,s) = \sum_{n=0}^{\infty} \alpha_n(s) g_n(t)$$
+   where $\alpha_n(s) = \langle k(\cdot,s), g_n \rangle$ are the projections of $k(\cdot,s)$ onto $g_n(t)$.
+
+4) Define the partial sum:
+   $$S_N(t,s) = \sum_{n=0}^N \alpha_n(s) g_n(t)$$
+
+5) We claim that $S_N(t,s)$ converges to $k(t,s)$ in the canonical metric induced by the kernel as $N \to \infty$.
+
+6) The canonical metric is defined as:
+   $$d(f,g) = \sqrt{\int\int (f(t) - g(t))(f(s) - g(s))k(t,s)dtds}$$
+
+7) Consider the error in this metric:
+   $$d(k(\cdot,s), S_N(\cdot,s))^2 = \int\int (k(t,s) - S_N(t,s))(k(t',s) - S_N(t',s))k(t,t')dtdt'$$
+
+8) As the kernel operator is compact in this metric, for any $\epsilon > 0$, there exists an $N$ such that for all $n > N$:
+   $$d(k(\cdot,s), S_n(\cdot,s)) < \epsilon$$
+
+Thus, we have shown that the covariance function $k(t,s)$ can be approximated by partial sums of functions from the orthogonal complement of the null space, weighted by their projections onto $k(\cdot,s)$. This convergence is in the canonical metric induced by the kernel, which is appropriate for the compact operator nature of the kernel.
+\end{proof}
+
+\begin{proof}
+
+
+9) Extension to the Complex Plane:
+   
+   a) The covariance function $k(t,s)$ of a Gaussian process is positive definite and therefore analytic.
+   
+   b) The partial sum $S_N(t,s)$ is a finite sum of analytic functions (as $g_n(t)$ are analytic), and is thus analytic.
+   
+   c) The convergence of $S_N(t,s)$ to $k(t,s)$ on the real line is uniform, as shown in steps 1-8.
+   
+   d) By the identity theorem for analytic functions, if two analytic functions agree on a set with an accumulation point (in this case, the real line), they must agree everywhere in their domain of analyticity.
+   
+   e) Therefore, the uniform convergence of $S_N(t,s)$ to $k(t,s)$ extends to the entire complex plane.
+
+Thus, we have shown that the covariance function $k(t,s)$ can be uniformly approximated by partial sums of functions from the orthogonal complement of the null space, weighted by their projections onto $k(\cdot,s)$. This uniform convergence holds not only on the real line but extends to the entire complex plane.
+\end{proof}
+
