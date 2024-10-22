@@ -1,5 +1,6 @@
 NEW: implement KL expansion
 expr compiler: derivatives and fractional derivatices
 TODO: builtin sykbols for the classical orthogonal polynomials
-java.lang.NoSuchMethodError: 'arb.ComplexPolynomial arb.Complex.div(arb.ComplexPolynomial, int, arb.ComplexPolynomial)'
 implement remaiing BesselFunctionNodeOfTHeFirstKind
+"limit" is null at arb4j/arb.expressions.nodes.IntegralNode.evaluateIndefiniteIntegralAt(IntegralNode.java:217)
+java.lang.NoSuchMethodError: 'arb.ComplexPolynomial arb.ComplexPolynomial.neg(int, arb.ComplexPolynomial)'

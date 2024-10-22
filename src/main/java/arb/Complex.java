@@ -73,7 +73,12 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
     im().zero();
     return this;
   }
-  
+
+  public ComplexPolynomial div(ComplexPolynomial dividend, int prec, ComplexPolynomial result)
+  {
+    return result.set(this).div(dividend, prec);
+  }
+    
   public Complex(int i)
   {
    this();
