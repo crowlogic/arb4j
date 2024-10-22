@@ -4,3 +4,4 @@ TODO: builtin sykbols for the classical orthogonal polynomials
 implement remaiing BesselFunctionNodeOfTHeFirstKind
 "limit" is null at arb4j/arb.expressions.nodes.IntegralNode.evaluateIndefiniteIntegralAt(IntegralNode.java:217)
 java.lang.NoSuchMethodError: 'arb.ComplexPolynomial arb.ComplexPolynomial.neg(int, arb.ComplexPolynomial)'
+ᵠjava.lang.AssertionError: lhs is nullat arb4j/arb.expressions.nodes.binary.BinaryOperationNode.generate(BinaryOperationNode.java:178)

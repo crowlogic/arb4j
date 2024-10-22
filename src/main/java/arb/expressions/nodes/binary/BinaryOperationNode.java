@@ -175,6 +175,9 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+    assert left != null : "lhs is null";
+    assert right != null : "rhs is null";
+    
     if (Expression.trace)
     {
       System.out.println(formatGenerationParameters(resultType));
@@ -232,7 +235,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   {
     return Objects.hash(left, operation, right, symbol);
   }
-
 
   public MethodVisitor invokeMethod(MethodVisitor mv, String operator, Class<?> resultType)
   {
@@ -352,7 +354,8 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     if (isCommutativeBinaryLeaf)
     {
       BinaryOperationNode<?, ?, ?> binNode = (BinaryOperationNode<?, ?, ?>) side;
-      isCommutativeBinaryLeaf = binNode.left.isLeaf() && binNode.right.isLeaf();
+      isCommutativeBinaryLeaf = (binNode.left == null || binNode.left.isLeaf())
+                    && (binNode.right == null || binNode.right.isLeaf());
     }
     return (isCommutativeBinaryLeaf || (side == null || side.isLeaf())) ? "%s" : "(%s)";
   }
