@@ -1,86 +1,141 @@
 \documentclass{article}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{amsthm}
+\usepackage[english]{babel}
+\usepackage{geometry,latexsym}
+\geometry{letterpaper}
 
-\title{Uniform Convergence of Positive Definite Functions}
-\author{Your Name}
-\date{\today}
-
+%%%%%%%%%% Start TeXmacs macros
+\catcode`\<=\active \def<{
+\fontencoding{T1}\selectfont\symbol{60}\fontencoding{\encodingdefault}}
+\catcode`\>=\active \def>{
+\fontencoding{T1}\selectfont\symbol{62}\fontencoding{\encodingdefault}}
+\newcommand{\cdummy}{\cdot}
+\newcommand{\tmaffiliation}[1]{\\ #1}
+\newcommand{\tmrsub}[1]{\ensuremath{_{\textrm{#1}}}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
 \newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
 
 \begin{document}
+
+\title{Uniformly Convergence Expansions of Positive Definite Functions}
+
+\author{
+  Stephen Crowley <stephencrowley214@gmail.com>
+  \tmaffiliation{October 22, 2024}
+}
 
 \maketitle
 
 \begin{theorem}
-The covariance function $K(t)$ of a stationary Gaussian process can be uniformly approximated by partial sums of functions from the orthogonal complement of the null space of the inner product defined by $K$. This uniform convergence holds initially on the real line and extends to the entire complex plane.
+  The covariance function $K (t)$ of a stationary Gaussian process has a
+  uniformly convergent expansion in terms of functions from the orthogonal
+  complement of the null space of the inner product defined by $K$. This
+  uniform convergence holds initially on the real line and extends to the
+  entire complex plane.
 \end{theorem}
 
 \begin{proof}
-Let $\{P_n(\omega)\}_{n=0}^{\infty}$ be the orthogonal polynomials with respect to the spectral density $S(\omega)$ of a stationary Gaussian process, and $\{f_n(t)\}_{n=0}^{\infty}$ their Fourier transforms. Let $K(t)$ be the covariance function of the Gaussian process.
-
-1) First, we prove that $f_n(t)$ for $n \geq 1$ are orthogonal to $K(t)$:
-
-   a) By definition of orthogonal polynomials, for $n \geq 1$:
-      $$\int P_n(\omega)S(\omega)d\omega = 0$$
-
-   b) The spectral density and covariance function form a Fourier transform pair:
-      $$K(t) = \int S(\omega)e^{i\omega t}d\omega$$
-
-   c) Consider the inner product $\langle f_n, K \rangle$ for $n \geq 1$:
-      $$\langle f_n, K \rangle = \int f_n(t)K(t)dt = \int f_n(t) \left(\int S(\omega)e^{i\omega t}d\omega\right) dt$$
-
-   d) Applying Fubini's theorem:
-      $$\langle f_n, K \rangle = \int S(\omega) \left(\int f_n(t)e^{i\omega t}dt\right) d\omega = \int S(\omega)P_n(\omega)d\omega = 0$$
-
-   Thus, $\{f_n(t)\}_{n=1}^{\infty}$ are orthogonal to $K(t)$.
-
-2) The orthogonal complement of the space spanned by $\{f_n(t)\}_{n=1}^{\infty}$ is uniquely determined. Let $\{g_n(t)\}_{n=0}^{\infty}$ be the orthonormal basis for this complement, obtained through the Gram-Schmidt process:
-
-   $$\tilde{g}_0(t) = K(t)$$
-   $$g_0(t) = \frac{\tilde{g}_0(t)}{\|\tilde{g}_0(t)\|}$$
-
-   For $n \geq 1$:
-   $$\tilde{g}_n(t) = K(t) - \sum_{k=0}^{n-1} \langle K, g_k \rangle g_k(t)$$
-   $$g_n(t) = \frac{\tilde{g}_n(t)}{\|\tilde{g}_n(t)\|}$$
-
-   where $\|\cdot\|$ denotes the norm induced by the inner product $\langle f, g \rangle = \int f(t)g(t)dt$.
-
-3) We can express $K(t)$ in terms of this basis:
-   $$K(t) = \sum_{n=0}^{\infty} \alpha_n g_n(t)$$
-   where $\alpha_n = \langle K, g_n \rangle$ are the projections of $K$ onto $g_n(t)$.
-
-4) Define the partial sum:
-   $$S_N(t) = \sum_{n=0}^N \alpha_n g_n(t)$$
-
-5) We claim that $S_N(t)$ converges to $K(t)$ in the canonical metric induced by the kernel as $N \to \infty$.
-
-6) The canonical metric is defined as:
-   $$d(f,g) = \sqrt{\int\int (f(t) - g(t))(f(s) - g(s))K(t-s)dtds}$$
-
-7) Consider the error in this metric:
-   $$d(K, S_N)^2 = \int\int (K(t) - S_N(t))(K(s) - S_N(s))K(t-s)dtds$$
-
-8) As the kernel operator is compact in this metric, for any $\epsilon > 0$, there exists an $N$ such that for all $n > N$:
-   $$d(K, S_n) < \epsilon$$
-
-9) Extension to the Complex Plane:
-   
-   a) The covariance function $K(t)$ of a stationary Gaussian process is positive definite and therefore analytic in the complex plane.
-   
-   b) The partial sum $S_N(t)$ is a finite sum of analytic functions (as $g_n(t)$ are analytic), and is thus analytic in the complex plane.
-   
-   c) The convergence of $S_N(t)$ to $K(t)$ on the real line is uniform, as shown in steps 1-8.
-   
-   d) Consider any open disk D in the complex plane that intersects the real line. The intersection of D with the real line contains an accumulation point.
-   
-   e) By the Identity Theorem for analytic functions, since $K(t)$ and $S_N(t)$ agree on a set with an accumulation point within D (namely, the intersection of D with the real line), they must agree on the entire disk D.
-   
-   f) As this holds for any disk intersecting the real line, and such disks cover the entire complex plane, the uniform convergence of $S_N(t)$ to $K(t)$ extends to the entire complex plane.
-
-Thus, we have shown that the covariance function $K(t)$ can be uniformly approximated by partial sums of functions from the orthogonal complement of the null space of the inner product defined by $K$. This uniform convergence holds initially on the real line and extends to the entire complex plane.
+  Let $\{P_n (\omega)\}_{n = 0}^{\infty}$ be the orthogonal polynomials with
+  respect to the spectral density $S (\omega)$ of a stationary Gaussian
+  process, and $\{f_n (t)\}_{n = 0}^{\infty}$ their Fourier transforms defined
+  as:
+  \begin{equation}
+    f_n (t) = \int P_n (\omega) e^{i \omega t} d \omega
+  \end{equation}
+  Let $K (t)$ be the covariance function of the Gaussian process.
+  
+  1) First, the orthogonality of the polynomials $P_n (\omega)$ is
+  established:
+  
+  a) By definition of orthogonal polynomials, for $m \neq n$:
+  \begin{equation}
+    \int P_m (\omega) P_n (\omega) S (\omega) d \omega = 0
+  \end{equation}
+  b) The spectral density and covariance function form a Fourier transform
+  pair:
+  \begin{equation}
+    K (t) = \int S (\omega) e^{i \omega t} d \omega
+  \end{equation}
+  2) The Gram-Schmidt process is applied to the Fourier transforms $\{f_n
+  (t)\}_{n = 0}^{\infty}$ to obtain an orthonormal basis $\{g_n (t)\}_{n =
+  0}^{\infty}$:
+  \begin{equation}
+    \tilde{g}_0 (t) = f_0 (t)
+  \end{equation}
+  \begin{equation}
+    g_0 (t) = \frac{\tilde{g}_0 (t)}{\| \tilde{g}_0 (t)\|}
+  \end{equation}
+  For $n \geq 1$:
+  \begin{equation}
+    \tilde{g}_n (t) = f_n (t) - \sum_{k = 0}^{n - 1} \langle f_n, g_k \rangle
+    g_k (t)
+  \end{equation}
+  \begin{equation}
+    g_n (t) = \frac{\tilde{g}_n (t)}{\| \tilde{g}_n (t)\|}
+  \end{equation}
+  where $\| \cdummy \|$ and $\langle \cdummy, \cdummy \rangle$ denote the norm
+  and inner product induced by $K$, respectively.
+  
+  3) $K (t)$ can be expressed in terms of this basis:
+  \begin{equation}
+    K (t) = \sum_{n = 0}^{\infty} \alpha_n g_n (t)
+  \end{equation}
+  where $\alpha_n = \langle K, g_n \rangle$ are the projections of $K$ onto
+  $g_n (t)$.
+  
+  4) The partial sum is defined as:
+  \begin{equation}
+    S_N (t) = \sum_{n = 0}^N \alpha_n g_n (t)
+  \end{equation}
+  5) The sequence of partial sums $S_N (t)$ converges uniformly to $K (t)$ in
+  the canonical metric induced by the kernel as $N \to \infty$.
+  
+  6) To realize this, recall that the canonical metric is defined as:
+  \begin{equation}
+    d (f, g) = \sqrt{\int \int (f (t) - g (t))  (f (s) - g (s)) K (t - s)
+    dtds}
+  \end{equation}
+  7) The error in this metric is considered:
+  \begin{equation}
+    d (K, S_N)^2 = \int \int (K (t) - S_N (t))  (K (s) - S_N (s)) K (t - s)
+    dtds
+  \end{equation}
+  8) As the kernel operator is compact in this metric:
+  
+  For every positive epsilon, there exists an N (which depends on epsilon)
+  less than n, such that the distance between K and S\tmrsub{n} is less than
+  epsilon.
+  \begin{equation}
+    \exists N (\epsilon) < n : d (K, S_n) < \epsilon \quad \forall \epsilon >
+    0
+  \end{equation}
+  9) Extension to the Complex Plane:
+  
+  a) The covariance function $K (t)$ of a stationary Gaussian process is
+  positive definite and therefore analytic in the complex plane.
+  
+  b) The partial sum $S_N (t)$ is a finite sum of analytic functions (as $g_n
+  (t)$ are analytic), and is thus analytic in the complex plane.
+  
+  c) The convergence of $S_N (t)$ to $K (t)$ on the real line is uniform, as
+  shown in steps 1-8.
+  
+  d) Consider any open disk D in the complex plane that intersects the real
+  line. The intersection of D with the real line contains an accumulation
+  point.
+  
+  e) By the Identity Theorem for analytic functions, since $K (t)$ and $S_N
+  (t)$ agree on a set with an accumulation point within D (namely, the
+  intersection of D with the real line), they must agree on the entire disk D.
+  
+  f) As this holds for any disk intersecting the real line, and such disks
+  cover the entire complex plane, the uniform convergence of $S_N (t)$ to $K
+  (t)$ extends to the entire complex plane.
+  
+  Thus, it has been shown that the covariance function $K (t)$ has a uniformly
+  convergent expansion in terms of functions from the orthogonal complement of
+  the null space of the inner product defined by $K$. This uniform convergence
+  holds initially on the real line and extends to the entire complex plane.
 \end{proof}
 
 \end{document}
