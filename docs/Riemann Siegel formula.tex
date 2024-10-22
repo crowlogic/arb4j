@@ -1,0 +1,27 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\begin{document}
+\section*{Riemann-Siegel Formula}
+The exact Riemann-Siegel formula for the Riemann zeta function on the critical line, with the remainder term as an infinite sum, is:
+\begin{equation}
+\zeta(\frac{1}{2} + it) = \sum_{n=1}^N \frac{1}{n^{1/2 + it}} + \chi(t) \sum_{n=1}^N \frac{1}{n^{1/2 - it}} + R(t)
+\end{equation}
+Where:
+\begin{itemize}
+\item $N = \lfloor\sqrt{\frac{t}{2\pi}}\rfloor$
+\item $\chi(t) = \pi^{-it/2} \frac{\Gamma(\frac{1}{4} + \frac{it}{2})}{\Gamma(\frac{1}{4} - \frac{it}{2})}$
+\end{itemize}
+The remainder term $R(t)$ is given by the exact infinite sum:
+\begin{equation}
+R(t) = \frac{(-1)^{N+1}}{2\sqrt{N}} \sum_{k=0}^{\infty} \frac{(-1)^k}{k!} \Phi^{(k)}(z) \left(\frac{1}{2\pi}\right)^{k/2} t^{-k/2}
+\end{equation}
+Where:
+\begin{itemize}
+\item $z = 2(\sqrt{\frac{t}{2\pi}} - N) - 1$
+\item $\Phi^{(k)}(z)$ is the $k$-th derivative of the function $\Phi(z)$, defined as:
+\end{itemize}
+\begin{equation}
+\Phi(z) = \frac{\cos(\pi(z^2/2 + 3/8))}{\cos(\pi z)}
+\end{equation}
+\end{document}
