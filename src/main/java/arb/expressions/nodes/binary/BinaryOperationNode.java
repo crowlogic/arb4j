@@ -51,8 +51,8 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     mapTypes(Fraction.class, RealPolynomial.class, RealPolynomial.class);
     mapTypes(Fraction.class, ComplexPolynomial.class, ComplexPolynomial.class);
     mapTypes(Real.class, Complex.class, Complex.class);
-      mapTypes(Real.class, ComplexPolynomial.class, ComplexPolynomial.class);
-      mapTypes(Real.class, RationalFunction.class, RationalFunction.class);
+    mapTypes(Real.class, ComplexPolynomial.class, ComplexPolynomial.class);
+    mapTypes(Real.class, RationalFunction.class, RationalFunction.class);
     mapTypes(Real.class, ComplexRationalFunction.class, ComplexRationalFunction.class);
     mapTypes(RealPolynomial.class, RationalFunction.class, RationalFunction.class);
     mapTypes(Complex.class, RationalFunction.class, ComplexRationalFunction.class);
@@ -351,18 +351,15 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     }
   }
 
-  @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
-  {
-    assert false : "TODO";
-    return null;
-  }
-
   public String stringFormat(Node<?, ?, ?> side)
   {
-    return (side == null || side.isLeaf()) ? "%s" : "(%s)";
+    boolean isCommutativeBinaryLeaf = side instanceof BinaryOperationNode;
+    if (isCommutativeBinaryLeaf)
+    {
+      BinaryOperationNode<?, ?, ?> binNode = (BinaryOperationNode<?, ?, ?>) side;
+      isCommutativeBinaryLeaf = isCommutative() && binNode.left.isLeaf() && binNode.right.isLeaf();
+    }
+    return (isCommutativeBinaryLeaf || (side == null || side.isLeaf())) ? "%s" : "(%s)";
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>> Node<D, C, F> substitute(String name,
