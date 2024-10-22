@@ -14,13 +14,9 @@ Where:
 \end{itemize}
 The remainder term $R(t)$ is given by the exact infinite sum:
 \begin{equation}
-R(t) = \frac{(-1)^{N+1}}{2\sqrt{N}} \sum_{k=0}^{\infty} \frac{(-1)^k}{k!} \Phi^{(k)}(z) \left(\frac{1}{2\pi}\right)^{k/2} t^{-k/2}
+R(t) = \frac{(-1)^{N+1}}{2\sqrt{N}} \sum_{k=0}^{\infty} \frac{(-1)^k}{k!} \left.\frac{d^k\Phi}{dz^k}\right|_{z=2(\sqrt{\frac{t}{2\pi}} - N) - 1} \left(\frac{1}{2\pi}\right)^{k/2} t^{-k/2}
 \end{equation}
-Where:
-\begin{itemize}
-\item $z = 2(\sqrt{\frac{t}{2\pi}} - N) - 1$
-\item $\Phi^{(k)}(z)$ is the $k$-th derivative of the function $\Phi(z)$, defined as:
-\end{itemize}
+Where $\Phi(z)$ is defined as:
 \begin{equation}
 \Phi(z) = \frac{\cos(\pi(z^2/2 + 3/8))}{\cos(\pi z)}
 \end{equation}
