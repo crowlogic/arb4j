@@ -233,11 +233,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     return Objects.hash(left, operation, right, symbol);
   }
 
-  @Override
-  public boolean hasSingleLeaf()
-  {
-    return (left.isLeaf() && !right.isLeaf()) || (!left.isLeaf() && right.isLeaf());
-  }
 
   public MethodVisitor invokeMethod(MethodVisitor mv, String operator, Class<?> resultType)
   {
@@ -353,11 +348,11 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
   public String stringFormat(Node<?, ?, ?> side)
   {
-    boolean isCommutativeBinaryLeaf = side instanceof BinaryOperationNode;
+    boolean isCommutativeBinaryLeaf = isCommutative() && side instanceof BinaryOperationNode;
     if (isCommutativeBinaryLeaf)
     {
       BinaryOperationNode<?, ?, ?> binNode = (BinaryOperationNode<?, ?, ?>) side;
-      isCommutativeBinaryLeaf = isCommutative() && binNode.left.isLeaf() && binNode.right.isLeaf();
+      isCommutativeBinaryLeaf = binNode.left.isLeaf() && binNode.right.isLeaf();
     }
     return (isCommutativeBinaryLeaf || (side == null || side.isLeaf())) ? "%s" : "(%s)";
   }

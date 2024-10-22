@@ -153,12 +153,6 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     return null;
   }
 
-  @Override
-  public boolean hasSingleLeaf()
-  {
-    assert false : "TODO";
-    return false;
-  }
 
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,

@@ -233,11 +233,6 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     return false;
   }
 
-  @Override
-  public boolean hasSingleLeaf()
-  {
-    return false;
-  }
 
   @Override
   public List<Node<D, R, F>> getBranches()

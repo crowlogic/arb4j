@@ -403,12 +403,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     return indexVariableFieldName;
   }
 
-  @Override
-  public boolean hasSingleLeaf()
-  {
-    return false;
-  }
-
   protected void incrementIndex(MethodVisitor mv)
   {
     loadIndexVariable(mv);

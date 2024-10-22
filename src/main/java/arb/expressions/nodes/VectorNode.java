@@ -25,9 +25,8 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class VectorNode<D, R, F extends Function<? extends D, ? extends R>>
-                   extends
-                   Node<D, R, F>
+public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> extends
+                       Node<D, R, F>
 {
 
   @Override
@@ -49,7 +48,7 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   public ArrayList<Node<D, R, F>> elements = new ArrayList<>();
-  private String intermediateValueFieldName;
+  private String                  intermediateValueFieldName;
 
   public VectorNode(Expression<D, R, F> expression)
   {
@@ -182,12 +181,6 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>>
   public Class<? extends R> type()
   {
     return expression.coDomainType;
-  }
-
-  @Override
-  public boolean hasSingleLeaf()
-  {
-    return elements.size() == 1;
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,

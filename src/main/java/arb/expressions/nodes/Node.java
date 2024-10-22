@@ -142,9 +142,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    *         or {@link Integer}
    */
   public abstract <C> Class<? extends C> type();
-
-  public abstract boolean hasSingleLeaf();
-
+  
   /**
    * TODOL Instantiates the target type instance then calls set on it with the
    * source instance then sets generatedType to to the requested type so that

@@ -230,12 +230,6 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return List.of(integrand);
   }
 
-  @Override
-  public boolean hasSingleLeaf()
-  {
-    assert false : "TODO: Auto-generated method stub";
-    return isResult;
-  }
 
   @Override
   public boolean isLeaf()

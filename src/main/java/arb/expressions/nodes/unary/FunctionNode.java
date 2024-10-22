@@ -268,12 +268,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public boolean hasSingleLeaf()
-  {
-    return arg.isLeaf();
-  }
-
-  @Override
   public Node<D, R, F> integral(VariableNode<D, R, F> variable)
   {
     assert false : "TODO: Auto-generated method stub";

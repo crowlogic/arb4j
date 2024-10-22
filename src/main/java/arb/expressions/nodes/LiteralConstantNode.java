@@ -356,11 +356,6 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return true;
   }
 
-  @Override
-  public boolean hasSingleLeaf()
-  {
-    return false;
-  }
 
   @Override
   public List<Node<D, R, F>> getBranches()

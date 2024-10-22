@@ -69,11 +69,6 @@ public class ElseNode<D, R, F extends Function<? extends D, ? extends R>> extend
     return true;
   }
 
-  @Override
-  public boolean hasSingleLeaf()
-  {
-    return false;
-  }
 
   @Override
   public List<Node<D, R, F>> getBranches()

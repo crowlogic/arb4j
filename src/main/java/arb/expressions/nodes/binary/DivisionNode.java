@@ -16,11 +16,6 @@ import arb.functions.Function;
 public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                      BinaryOperationNode<D, R, F>
 {
-  @Override
-  public boolean hasSingleLeaf()
-  {
-    return false;
-  }
 
   public DivisionNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
