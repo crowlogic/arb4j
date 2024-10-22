@@ -17,7 +17,7 @@
 
 \begin{document}
 
-\title{Uniformly Convergence Expansions of Positive Definite Functions}
+\title{Uniformly Convergent Expansions of Positive Definite Functions}
 
 \author{
   Stephen Crowley <stephencrowley214@gmail.com>
@@ -56,9 +56,24 @@
   \begin{equation}
     K (t) = \int S (\omega) e^{i \omega t} d \omega
   \end{equation}
-  2) The Gram-Schmidt process is applied to the Fourier transforms $\{f_n
+  2) The null space property of $\{f_n (t)\}_{n = 1}^{\infty}$ is proven:
+  
+  a) Consider the inner product $\langle f_n, K \rangle$ for $n \geq 1$:
+  \begin{equation}
+    \langle f_n, K \rangle = \int f_n (t) K (t) dt = \int f_n (t) \left( \int
+    S (\omega) e^{i \omega t} d \omega \right) dt
+  \end{equation}
+  b) Applying Fubini's theorem:
+  \begin{equation}
+    \langle f_n, K \rangle = \int S (\omega) \left( \int f_n (t) e^{i \omega
+    t} dt \right) d \omega = \int S (\omega) P_n (\omega) d \omega = 0
+  \end{equation}
+  Thus, $\{f_n (t)\}_{n = 1}^{\infty}$ are in the null space of the inner
+  product defined by $K$.
+  
+  3) The Gram-Schmidt process is applied to the Fourier transforms $\{f_n
   (t)\}_{n = 0}^{\infty}$ to obtain an orthonormal basis $\{g_n (t)\}_{n =
-  0}^{\infty}$:
+  0}^{\infty}$ for the orthogonal complement of the null space:
   \begin{equation}
     \tilde{g}_0 (t) = f_0 (t)
   \end{equation}
@@ -76,31 +91,31 @@
   where $\| \cdummy \|$ and $\langle \cdummy, \cdummy \rangle$ denote the norm
   and inner product induced by $K$, respectively.
   
-  3) $K (t)$ can be expressed in terms of this basis:
+  4) $K (t)$ can be expressed in terms of this basis:
   \begin{equation}
     K (t) = \sum_{n = 0}^{\infty} \alpha_n g_n (t)
   \end{equation}
   where $\alpha_n = \langle K, g_n \rangle$ are the projections of $K$ onto
   $g_n (t)$.
   
-  4) The partial sum is defined as:
+  5) The partial sum is defined as:
   \begin{equation}
     S_N (t) = \sum_{n = 0}^N \alpha_n g_n (t)
   \end{equation}
-  5) The sequence of partial sums $S_N (t)$ converges uniformly to $K (t)$ in
+  6) The sequence of partial sums $S_N (t)$ converges uniformly to $K (t)$ in
   the canonical metric induced by the kernel as $N \to \infty$.
   
-  6) To realize this, recall that the canonical metric is defined as:
+  7) To realize this, recall that the canonical metric is defined as:
   \begin{equation}
     d (f, g) = \sqrt{\int \int (f (t) - g (t))  (f (s) - g (s)) K (t - s)
     dtds}
   \end{equation}
-  7) The error in this metric is considered:
+  8) The error in this metric is considered:
   \begin{equation}
     d (K, S_N)^2 = \int \int (K (t) - S_N (t))  (K (s) - S_N (s)) K (t - s)
     dtds
   \end{equation}
-  8) As the kernel operator is compact in this metric:
+  9) As the kernel operator is compact in this metric:
   
   For every positive epsilon, there exists an N (which depends on epsilon)
   less than n, such that the distance between K and S\tmrsub{n} is less than
@@ -109,7 +124,7 @@
     \exists N (\epsilon) < n : d (K, S_n) < \epsilon \quad \forall \epsilon >
     0
   \end{equation}
-  9) Extension to the Complex Plane:
+  10) Extension to the Complex Plane:
   
   a) The covariance function $K (t)$ of a stationary Gaussian process is
   positive definite and therefore analytic in the complex plane.
@@ -118,7 +133,7 @@
   (t)$ are analytic), and is thus analytic in the complex plane.
   
   c) The convergence of $S_N (t)$ to $K (t)$ on the real line is uniform, as
-  shown in steps 1-8.
+  shown in steps 1-9.
   
   d) Consider any open disk D in the complex plane that intersects the real
   line. The intersection of D with the real line contains an accumulation

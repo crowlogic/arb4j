@@ -3,7 +3,7 @@
 <style|generic>
 
 <\body>
-  <doc-data|<doc-title|Uniformly Convergence Expansions of Positive Definite
+  <doc-data|<doc-title|Uniformly Convergent Expansions of Positive Definite
   Functions>|<doc-author|<author-data|<author-name|Stephen Crowley
   \<less\>stephencrowley214@gmail.com\<gtr\>>|<\author-affiliation>
     <date|>
@@ -47,9 +47,29 @@
       K<around|(|t|)>=<big|int>S<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*\<omega\>
     </equation>
 
-    2) The Gram-Schmidt process is applied to the Fourier transforms
+    2) The null space property of <math|<around|{|f<rsub|n><around|(|t|)>|}><rsub|n=1><rsup|\<infty\>>>
+    is proven:
+
+    a) Consider the inner product <math|<around|\<langle\>|f<rsub|n>,K|\<rangle\>>>
+    for <math|n\<geq\>1>:
+
+    <\equation>
+      <around|\<langle\>|f<rsub|n>,K|\<rangle\>>=<big|int>f<rsub|n><around|(|t|)>*K<around|(|t|)>*d*t=<big|int>f<rsub|n><around|(|t|)><around*|(|<big|int>S<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*\<omega\>|)>*d*t
+    </equation>
+
+    b) Applying Fubini's theorem:
+
+    <\equation>
+      <around|\<langle\>|f<rsub|n>,K|\<rangle\>>=<big|int>S<around|(|\<omega\>|)><around*|(|<big|int>f<rsub|n><around|(|t|)>*e<rsup|i*\<omega\>*t>*d*t|)>*d*\<omega\>=<big|int>S<around|(|\<omega\>|)>*P<rsub|n><around|(|\<omega\>|)>*d*\<omega\>=0
+    </equation>
+
+    Thus, <math|<around|{|f<rsub|n><around|(|t|)>|}><rsub|n=1><rsup|\<infty\>>>
+    are in the null space of the inner product defined by <math|K>.
+
+    3) The Gram-Schmidt process is applied to the Fourier transforms
     <math|<around|{|f<rsub|n><around|(|t|)>|}><rsub|n=0><rsup|\<infty\>>> to
-    obtain an orthonormal basis <math|<around|{|g<rsub|n><around|(|t|)>|}><rsub|n=0><rsup|\<infty\>>>:
+    obtain an orthonormal basis <math|<around|{|g<rsub|n><around|(|t|)>|}><rsub|n=0><rsup|\<infty\>>>
+    for the orthogonal complement of the null space:
 
     <\equation>
       <wide|g|~><rsub|0><around|(|t|)>=f<rsub|0><around|(|t|)>
@@ -73,7 +93,7 @@
     <math|<around|\<langle\>|\<cdummy\>,\<cdummy\>|\<rangle\>>> denote the
     norm and inner product induced by <math|K>, respectively.
 
-    3) <math|K<around|(|t|)>> can be expressed in terms of this basis:
+    4) <math|K<around|(|t|)>> can be expressed in terms of this basis:
 
     <\equation>
       K<around|(|t|)>=<big|sum><rsub|n=0><rsup|\<infty\>>\<alpha\><rsub|n>*g<rsub|n><around|(|t|)>
@@ -82,29 +102,29 @@
     where <math|\<alpha\><rsub|n>=<around|\<langle\>|K,g<rsub|n>|\<rangle\>>>
     are the projections of <math|K> onto <math|g<rsub|n><around|(|t|)>>.
 
-    4) The partial sum is defined as:
+    5) The partial sum is defined as:
 
     <\equation>
       S<rsub|N><around|(|t|)>=<big|sum><rsub|n=0><rsup|N>\<alpha\><rsub|n>*g<rsub|n><around|(|t|)>
     </equation>
 
-    5) The sequence of partial sums <math|S<rsub|N><around|(|t|)>> converges
+    6) The sequence of partial sums <math|S<rsub|N><around|(|t|)>> converges
     uniformly to <math|K<around|(|t|)>> in the canonical metric induced by
     the kernel as <math|N\<to\>\<infty\>>.
 
-    6) To realize this, recall that the canonical metric is defined as:
+    7) To realize this, recall that the canonical metric is defined as:
 
     <\equation>
       d*<around|(|f,g|)>=<sqrt|<big|int><big|int><around|(|f<around|(|t|)>-g<around|(|t|)>|)>*<around|(|f<around|(|s|)>-g<around|(|s|)>|)>*K*<around|(|t-s|)>*d*t*d*s>
     </equation>
 
-    7) The error in this metric is considered:
+    8) The error in this metric is considered:
 
     <\equation>
       d*<around|(|K,S<rsub|N>|)><rsup|2>=<big|int><big|int><around|(|K<around|(|t|)>-S<rsub|N><around|(|t|)>|)>*<around|(|K<around|(|s|)>-S<rsub|N><around|(|s|)>|)>*K*<around|(|t-s|)>*d*t*d*s
     </equation>
 
-    8) As the kernel operator is compact in this metric:
+    9) As the kernel operator is compact in this metric:
 
     For every positive epsilon, there exists an N (which depends on epsilon)
     less than n, such that the distance between K and S<rsub|n> is less than
@@ -114,7 +134,7 @@
       \<exists\>N<around|(|\<epsilon\>|)>\<less\>n:d*<around|(|K,S<rsub|n>|)>\<less\>\<epsilon\><space|1em>\<forall\>\<epsilon\>\<gtr\>0
     </equation>
 
-    9) Extension to the Complex Plane:
+    10) Extension to the Complex Plane:
 
     a) The covariance function <math|K<around|(|t|)>> of a stationary
     Gaussian process is positive definite and therefore analytic in the
@@ -126,7 +146,7 @@
 
     c) The convergence of <math|S<rsub|N><around|(|t|)>> to
     <math|K<around|(|t|)>> on the real line is uniform, as shown in steps
-    1-8.
+    1-9.
 
     d) Consider any open disk D in the complex plane that intersects the real
     line. The intersection of D with the real line contains an accumulation
