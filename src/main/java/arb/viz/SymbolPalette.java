@@ -417,9 +417,8 @@ public class SymbolPalette extends
     {
       buttonPane.getChildren().forEach(node ->
       {
-        if (node instanceof Button)
+        if (node instanceof Button button)
         {
-          Button button = (Button) node;
           button.setStyle(null); // <-- This was the problem
         }
       });
@@ -430,9 +429,8 @@ public class SymbolPalette extends
 
     buttonPane.getChildren().forEach(node ->
     {
-      if (node instanceof Button)
+      if (node instanceof Button button)
       {
-        Button  button    = (Button) node;
         String  character = buttonMap.get(button);
         boolean matches   = false;
 

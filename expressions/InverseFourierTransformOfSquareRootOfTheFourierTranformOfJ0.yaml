@@ -1,8 +1,10 @@
 --- !!arb.expressions.SerializedExpression
-coDomain: arb.Complex
-context: {
-  }
-domain: arb.Complex
-expression: √π*GAMMA(3/4)*BesselJ(1/4, s)*2^(1/4)/s^(1/4)
-function: arb.functions.complex.ComplexFunction
+coDomain: arb.Real
+context:
+  input:
+  - arb.Real
+  - '1'
+domain: arb.Real
+expression: √(π)*Γ(3/4)*J(1/4, s)*2^(1/4)/s^(1/4)
+function: arb.functions.real.RealFunction
 ...
