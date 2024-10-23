@@ -3,7 +3,6 @@ package arb.viz;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -17,8 +16,12 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
@@ -30,9 +33,15 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * An application to generate the UTF characters used by the {@link Expression}
+ * A virtual keyboard to generate the UTF characters used by the {@link Expression}
  * {@link Compiler}
- * 
+ * <pre>
+    1. Complete alias mapping for every symbol
+    2. Multi-term search with space separation
+    3. Proper real-time highlighting that updates on both typing and backspace
+    4. Case-insensitive matching
+    5. Clean visual feedback
+</pre>
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
@@ -51,35 +60,78 @@ public class SymbolPalette extends
   private static void initializeAliases()
   {
     // Basic operators
-    addAliases("*", "multiply", "times", "mult");
-    addAliases("+", "plus", "add");
-    addAliases("-", "minus", "subtract");
-    addAliases("/", "divide", "div");
+    addAliases("*", "multiply", "times", "mult", "star", "asterisk");
+    addAliases("+", "plus", "add", "addition");
+    addAliases("-", "minus", "subtract", "dash", "hyphen");
+    addAliases("/", "divide", "div", "slash", "fraction");
 
-    // Numbers and fractions
-    addAliases("⁄", "fraction", "div");
+    // Numbers 0-9
+    addAliases("0", "zero");
+    addAliases("1", "one");
+    addAliases("2", "two");
+    addAliases("3", "three");
+    addAliases("4", "four");
+    addAliases("5", "five");
+    addAliases("6", "six");
+    addAliases("7", "seven");
+    addAliases("8", "eight");
+    addAliases("9", "nine");
+
+    // Superscript numbers
+    addAliases("⁰", "sup0", "power0", "superscript0");
+    addAliases("¹", "sup1", "power1", "superscript1");
+    addAliases("²", "sup2", "power2", "squared");
+    addAliases("³", "sup3", "power3", "cubed");
+    addAliases("⁴", "sup4", "power4");
+    addAliases("⁵", "sup5", "power5");
+    addAliases("⁶", "sup6", "power6");
+    addAliases("⁷", "sup7", "power7");
+    addAliases("⁸", "sup8", "power8");
+    addAliases("⁹", "sup9", "power9");
+
+    // Subscript numbers
+    addAliases("₀", "sub0");
+    addAliases("₁", "sub1");
+    addAliases("₂", "sub2");
+    addAliases("₃", "sub3");
+    addAliases("₄", "sub4");
+    addAliases("₅", "sub5");
+    addAliases("₆", "sub6");
+    addAliases("₇", "sub7");
+    addAliases("₈", "sub8");
+    addAliases("₉", "sub9");
+
+    // Fractions
     addAliases("¼", "fourth", "quarter");
     addAliases("½", "half");
-    addAliases("¾", "threefourths", "quarters");
+    addAliases("¾", "threefourths", "threequarters");
+    addAliases("⅐", "seventh");
+    addAliases("⅑", "ninth");
+    addAliases("⅒", "tenth");
+    addAliases("⅓", "third");
+    addAliases("⅔", "twothirds");
+    addAliases("⅕", "fifth");
+    addAliases("⅖", "twofifths");
+    addAliases("⅗", "threefifths");
+    addAliases("⅘", "fourfifths");
+    addAliases("⅙", "sixth");
+    addAliases("⅚", "fivesixths");
+    addAliases("⅛", "eighth");
+    addAliases("⅜", "threeeighths");
+    addAliases("⅝", "fiveeighths");
+    addAliases("⅞", "seveneighths");
 
-    // Superscripts
-    addAliases("²", "squared", "power2");
-    addAliases("³", "cubed", "power3");
-    addAliases("¹", "power1");
-
-    // Greek Letters (matching both cases)
+    // Greek Letters (uppercase and lowercase together)
     addAliases("Γ γ", "gamma");
     addAliases("Δ δ", "delta");
     addAliases("Θ θ", "theta");
     addAliases("Λ λ", "lambda");
     addAliases("Ξ ξ", "xi");
-    addAliases("Π π", "pi", "mathpi");
-    addAliases("Σ σ", "sigma", "sum");
+    addAliases("Π π", "pi");
+    addAliases("Σ σ", "sigma");
     addAliases("Φ φ", "phi");
     addAliases("Ψ ψ", "psi");
     addAliases("Ω ω", "omega");
-
-    // Additional Greek
     addAliases("ζ", "zeta");
     addAliases("μ", "mu");
     addAliases("ν", "nu");
@@ -99,47 +151,64 @@ public class SymbolPalette extends
     addAliases("∈", "in", "element", "member");
     addAliases("∏", "product", "prod");
     addAliases("∑", "sum", "summation");
-    addAliases("√", "sqrt", "root");
+    addAliases("√", "sqrt", "root", "radical");
     addAliases("≀", "wreath");
-    addAliases("⋰", "dots", "diagonaldots");
+    addAliases("⋰", "dots", "diagonaldots", "ellipsis");
     addAliases("⌊", "floor", "leftfloor");
     addAliases("⌋", "floor", "rightfloor");
-    addAliases("⇒", "implies", "therefore");
-    addAliases("➔", "arrow", "to");
+    addAliases("⇒", "implies", "therefore", "rightarrow");
+    addAliases("➔", "arrow", "to", "rightarrow");
 
-    // Complex Numbers
-    addAliases("ⅈ", "i", "imaginary");
-    addAliases("ℭ", "complex", "mathcalc");
+    // Superscript Latin letters
+    addAliases("ᴬ", "supA");
+    addAliases("ᴮ", "supB");
+    addAliases("ᴰ", "supD");
+    addAliases("ᴱ", "supE");
+    addAliases("ᴳ", "supG");
+    addAliases("ᴴ", "supH");
+    addAliases("ᴵ", "supI");
+    addAliases("ᴶ", "supJ");
+    addAliases("ᴷ", "supK");
+    addAliases("ᴸ", "supL");
+    addAliases("ᴹ", "supM");
+    addAliases("ᴺ", "supN");
+    addAliases("ᴼ", "supO");
+    addAliases("ᴾ", "supP");
+    addAliases("ᴿ", "supR");
+    addAliases("ᵀ", "supT");
+    addAliases("ᵁ", "supU");
+    addAliases("ᵂ", "supW");
 
-    // Subscripts and Superscripts
-    for (char c = 'ᴬ'; c <= 'ᵂ'; c++)
-    {
-      addAliases(String.valueOf(c), "sup" + (char) (c - 'ᴬ' + 'A'));
-    }
-    for (char c = 'ᵃ'; c <= 'ᵣ'; c++)
-    {
-      addAliases(String.valueOf(c), "sup" + (char) (c - 'ᵃ' + 'a'));
-    }
+    // Lowercase superscripts
+    addAliases("ᵃ", "supa");
+    addAliases("ᵅ", "supalpha");
+    addAliases("ᵇ", "supb");
+    addAliases("ᵈ", "supd");
+    addAliases("ᵉ", "supe");
+    addAliases("ᵋ", "supepsilon");
+    addAliases("ᵍ", "supg");
+    addAliases("ᵏ", "supk");
+    addAliases("ᵐ", "supm");
+    addAliases("ᵒ", "supo");
+    addAliases("ᵖ", "supp");
+    addAliases("ᵗ", "supt");
+    addAliases("ᵘ", "supu");
+    addAliases("ᵛ", "supv");
+    addAliases("ᵝ", "supbeta");
+    addAliases("ᵞ", "supgamma");
+    addAliases("ᵟ", "supdelta");
+    addAliases("ᵠ", "supphi");
+    addAliases("ᵡ", "supchi");
+    addAliases("ᶜ", "supc");
+    addAliases("ᶠ", "supf");
+    addAliases("ᶻ", "supz");
+    addAliases("ᶿ", "suptheta");
 
-    // Subscript Numbers
-    for (int i = 0; i <= 9; i++)
-    {
-      addAliases("₀₁₂₃₄₅₆₇₈₉".charAt(i), "sub" + i);
-    }
-
-    // Superscript Numbers
-    for (int i = 0; i <= 9; i++)
-    {
-      addAliases("⁰¹²³⁴⁵⁶⁷⁸⁹".charAt(i), "sup" + i);
-    }
-
-    // Subscript Operators
+    // Subscript operators and letters
     addAliases("₊", "subplus");
     addAliases("₋", "subminus");
     addAliases("₍", "subleftparen");
     addAliases("₎", "subrightparen");
-
-    // Subscript Letters
     addAliases("ₐ", "suba");
     addAliases("ₑ", "sube");
     addAliases("ₒ", "subo");
@@ -152,11 +221,10 @@ public class SymbolPalette extends
     addAliases("ₚ", "subp");
     addAliases("ₛ", "subs");
     addAliases("ₜ", "subt");
-  }
 
-  private static void addAliases(char charAt, String string)
-  {
-    addAliases(String.valueOf(charAt), string);
+    // Complex numbers and special
+    addAliases("ⅈ", "i", "imaginary");
+    addAliases("ℭ", "complex", "mathcalc");
   }
 
   private static void addAliases(String characters, String... aliases)
@@ -347,93 +415,47 @@ public class SymbolPalette extends
   {
     if (searchText == null || searchText.trim().isEmpty())
     {
-      // Clear all highlighting when search is empty
       buttonPane.getChildren().forEach(node ->
       {
-        if (node instanceof Button button)
+        if (node instanceof Button)
         {
-          button.getStyleClass().remove("highlighted-button");
-          button.setTooltip(null);
+          Button button = (Button) node;
+          button.setStyle(null); // <-- This was the problem
         }
       });
       return;
     }
 
-    String searchLower = searchText.trim().toLowerCase();
+    String[] searchTerms = searchText.trim().toLowerCase().split("\\s+");
 
     buttonPane.getChildren().forEach(node ->
     {
-      if (node instanceof Button button)
+      if (node instanceof Button)
       {
+        Button  button    = (Button) node;
         String  character = buttonMap.get(button);
         boolean matches   = false;
 
-        // Check exact character match
-        if (character.toLowerCase().equals(searchLower))
+        for (String term : searchTerms)
         {
-          matches = true;
-        }
-        else
-        {
-          // Check exact alias matches
           Set<String> aliases = CHARACTER_ALIASES.get(character);
-          if (aliases != null)
+          if (aliases != null && aliases.contains(term))
           {
-            matches = aliases.stream().anyMatch(alias ->
-            {
-              // Split alias on spaces to match whole words
-              String[] words = alias.toLowerCase().split("\\s+");
-              for (String word : words)
-              {
-                if (word.equals(searchLower))
-                {
-                  return true;
-                }
-              }
-              return false;
-            });
+            matches = true;
+            break;
           }
         }
 
         if (matches)
         {
-          button.getStyleClass().add("highlighted-button");
-          updateTooltip(button, character, searchText);
+          button.setStyle("-fx-background-color: rgba(255, 255, 0, 0.5);");
         }
         else
         {
-          button.getStyleClass().remove("highlighted-button");
-          button.setTooltip(null);
+          button.setStyle(null);
         }
       }
     });
-  }
-
-  private void updateTooltip(Button button, String character, String searchText)
-  {
-    Set<String> aliases = CHARACTER_ALIASES.get(character);
-    if (aliases != null)
-    {
-      String searchLower     = searchText.trim().toLowerCase();
-      String matchingAliases = aliases.stream().filter(alias ->
-                             {
-                               String[] words = alias.toLowerCase().split("\\s+");
-                               for (String word : words)
-                               {
-                                 if (word.equals(searchLower))
-                                 {
-                                   return true;
-                                 }
-                               }
-                               return false;
-                             }).collect(Collectors.joining(", "));
-
-      if (!matchingAliases.isEmpty())
-      {
-        Tooltip tooltip = new Tooltip("Matches: " + matchingAliases);
-        button.setTooltip(tooltip);
-      }
-    }
   }
 
   private void appendCharacter(String character)
