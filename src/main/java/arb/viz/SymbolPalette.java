@@ -301,7 +301,6 @@ public class SymbolPalette extends
     chars.add("π");
 
     characters = chars.toArray(new String[chars.size()]);
-    System.out.println("chars=" + chars);
   }
 
   public static String[] characters;
