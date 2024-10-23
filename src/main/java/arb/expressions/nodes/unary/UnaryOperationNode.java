@@ -36,10 +36,16 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
   public Node<D, R, F> arg;
   public String        intermediateVariableFieldName;
 
-  public UnaryOperationNode(Node<D, R, F> node, Expression<D, R, F> expression)
+  public UnaryOperationNode(Node<D, R, F> arg)
+  {
+    super(arg.expression);
+    this.arg = arg;
+  }
+  
+  public UnaryOperationNode(Node<D, R, F> arg, Expression<D, R, F> expression)
   {
     super(expression);
-    this.arg = node;
+    this.arg = arg;
   }
 
   @Override

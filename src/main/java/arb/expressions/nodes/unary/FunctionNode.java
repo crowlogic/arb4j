@@ -59,7 +59,7 @@ import arb.functions.Function;
  *      {@link TheArb4jLibrary}
  */
 public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
-                             UnaryOperationNode<D, R, F>
+                         UnaryOperationNode<D, R, F>
 {
 
   @Override
@@ -95,7 +95,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     generatedType = resultTypeFor(this.functionName);
     if (this.expression.context != null)
     {
-      mapping    = (FunctionMapping<D, R, F>) expression.context.functions.map.get(functionName);
+      mapping    = (FunctionMapping<D, R, F>) this.expression.context.functions.map.get(functionName);
       contextual = mapping != null;
       if (contextual)
       {
@@ -198,6 +198,13 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     String functionDescriptor = bitless ? Compiler.getMethodDescriptor(coDomainType, coDomainType)
                                         : Compiler.getMethodDescriptor(coDomainType, int.class, coDomainType);
+
+    assert !(functionName.equals("neg") && !bitless) : "this.class="
+                                                       + this.getClass()
+                                                       + " this="
+                                                       + this
+                                                       + "this.bitless="
+                                                       + this.isBitless();
 
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   Type.getInternalName(domainType),
@@ -305,7 +312,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   /**
-   * This could use some refactoring to seperate the concerns 
+   * This could use some refactoring to seperate the concerns
    * 
    * @param functionName
    * @return
@@ -322,7 +329,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if ("sqrt".equals(functionName))
     {
-      if ( Integer.class.equals(expression.coDomainType))
+      if (Integer.class.equals(expression.coDomainType))
       {
         return Real.class;
       }
@@ -364,8 +371,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
          spliceInto(Expression<E, S, G> newExpression)
   {
     return new FunctionNode<E, S, G>(functionName,
-                                         arg.spliceInto(newExpression),
-                                         newExpression);
+                                     arg.spliceInto(newExpression),
+                                     newExpression);
   }
 
   @Override
@@ -425,7 +432,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public boolean isBitless()
   {
-    return false;
+    return "neg".equals(functionName);
   }
 
   @Override

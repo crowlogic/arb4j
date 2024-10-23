@@ -306,17 +306,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       else if (nextCharacterIs('-', '₋', '−'))
       {
-        if (node == null)
-        {
-          node = new NegationNode<>(this,
-                                    exponentiateMultiplyAndDivide());
-        }
-        else
-        {
-          node = new SubtractionNode<>(this,
-                                       node,
-                                       exponentiateMultiplyAndDivide());
-        }
+        Node<D, C, F> rhs = exponentiateMultiplyAndDivide();
+
+        node = node == null ? new NegationNode<>(this,
+                                                 rhs)
+                            : new SubtractionNode<>(this,
+                                                    node,
+                                                    rhs);
+
       }
       else
       {
