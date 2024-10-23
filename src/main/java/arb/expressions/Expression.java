@@ -2109,4 +2109,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
+  public boolean isNullaryFunction()
+  {
+    return domainType.equals(Object.class);
+  }
+
 }

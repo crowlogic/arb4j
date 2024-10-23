@@ -14,7 +14,7 @@ public class NonnegativeIntegers extends
   @Override
   public boolean contains(Integer point)
   {
-    return point.isNonNegative();
+    return point.isPositive();
   }
 
 }

@@ -694,7 +694,7 @@ public class Integer implements
     return this;
   }
 
-  public boolean isNonNegative()
+  public boolean isPositive()
   {
     return sign() >= 0;
   }
@@ -830,9 +830,12 @@ public class Integer implements
 
   public Integer pow(Integer operand, int bits, Integer result)
   {
+    assert operand.isPositive() : operand + " is not positive";
     arblib.fmpz_pow_fmpz(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
   }
+
+ 
 
   public RationalFunction pow(Integer operand, int bits, RationalFunction result)
   {

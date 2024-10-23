@@ -122,7 +122,7 @@ public class NewHypergeometricFunctionNode<D, R, F extends Function<? extends D,
 
     hasScalarCodomain                    = expression.hasScalarCodomain();
 
-    isNullaryFunctionOrHasScalarCodomain = expression.domainType.equals(Object.class) || hasScalarCodomain;
+    isNullaryFunctionOrHasScalarCodomain = expression.isNullaryFunction() || hasScalarCodomain;
 
     var rationalClass       = isReal ? RationalHypergeometricFunction.class
                                      : isComplex ? ComplexRationalHypergeometricFunction.class : null;
@@ -155,11 +155,18 @@ public class NewHypergeometricFunctionNode<D, R, F extends Function<? extends D,
       {
         elementType = RationalFunction.class;
       }
+      if (nullaryFunctionClass.equals(ComplexRationalNullaryFunction.class))
+      {
+        elementType = ComplexRationalFunction.class;
+      }
       else if (nullaryFunctionClass.equals(RealPolynomialNullaryFunction.class))
       {
         elementType = RealPolynomial.class;
       }
-
+      else if (nullaryFunctionClass.equals(ComplexPolynomialNullaryFunction.class))
+      {
+        elementType = ComplexPolynomial.class;
+      }
       elementFieldName = expression.newIntermediateVariable("element", elementType);
       if (Expression.trace)
       {
