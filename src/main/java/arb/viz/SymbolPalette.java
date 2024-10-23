@@ -33,27 +33,45 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * A virtual keyboard to generate the UTF characters used by the {@link Expression}
- * {@link Compiler}
+ * A virtual keyboard to generate the UTF characters used by the
+ * {@link Expression} {@link Compiler}
+ * 
  * <pre>
     1. Complete alias mapping for every symbol
     2. Multi-term search with space separation
     3. Proper real-time highlighting that updates on both typing and backspace
     4. Case-insensitive matching
     5. Clean visual feedback
-</pre>
+ * </pre>
+ * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
 public class SymbolPalette extends
                            Application
 {
-  // Add this new data structure
+  private static final String                   STYLESHEET        = """
+                 .highlighted-button
+                 {
+                     -fx-background-color: rgba(255, 255, 0, 0.5);
+                 }
+
+                 .tooltip
+                 {
+                     -fx-font-size: 14px;
+                     -fx-background-color: #333333;
+                     -fx-text-fill: white;
+                 }
+                .search-highlight
+                {
+                     -fx-background-color: yellow;
+                     -fx-background-radius: 3;
+                }
+                  """;
   private static final Map<String, Set<String>> CHARACTER_ALIASES = new HashMap<>();
 
   static
   {
-    // Initialize aliases for characters
     initializeAliases();
   }
 
@@ -364,25 +382,8 @@ public class SymbolPalette extends
     buttonPane.getChildren().filtered(filter).forEach(action);
 
     WindowManager.setStageIcon(primaryStage, "SymbolPalette.png");
-    scene.getStylesheets().add(Stylesheet.convertStylesheetToDataURI(Stylesheet.EASIER_ON_THE_EYES_STYLESHEET));
-    scene.getStylesheets().add(Stylesheet.convertStylesheetToDataURI("""
-                   .highlighted-button
-                   {
-                       -fx-background-color: rgba(255, 255, 0, 0.5);
-                   }
-
-                   .tooltip
-                   {
-                       -fx-font-size: 14px;
-                       -fx-background-color: #333333;
-                       -fx-text-fill: white;
-                   }
-                  .search-highlight
-                  {
-                       -fx-background-color: yellow;
-                       -fx-background-radius: 3;
-                  }
-                    """));
+    scene.getStylesheets().add(Stylesheet.convertStylesheetToDataURI(Stylesheet.DarkerStyle));
+    scene.getStylesheets().add(Stylesheet.convertStylesheetToDataURI(STYLESHEET));
 
     scene.setOnKeyPressed(button ->
     {

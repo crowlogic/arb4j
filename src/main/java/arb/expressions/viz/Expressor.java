@@ -404,7 +404,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
 
     Scene scene = new Scene(createMainLayout());
 
-    scene.getStylesheets().add(Stylesheet.convertStylesheetToDataURI(Stylesheet.EASIER_ON_THE_EYES_STYLESHEET));
+    scene.getStylesheets().add(Stylesheet.convertStylesheetToDataURI(Stylesheet.DarkerStyle));
 
     scene.addEventFilter(KeyEvent.KEY_PRESSED, event ->
     {

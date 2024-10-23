@@ -10,7 +10,7 @@ import java.util.Base64;
 public class Stylesheet
 {
 
-  public static final String EASIER_ON_THE_EYES_STYLESHEET = ".scroll-bar .thumb {\n"
+  public static final String DarkerStyle = ".scroll-bar .thumb {\n"
                                                              + "    -fx-background-color: #808080; /* Change this to your desired thumb color */\n"
                                                              + "}\n"
                                                              + "\n"
