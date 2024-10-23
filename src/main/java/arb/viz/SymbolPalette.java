@@ -48,6 +48,11 @@ import javafx.stage.WindowEvent;
 public class SymbolPalette extends
                            Application
 {
+  public static final String[]                  SYMBOLS           =
+  { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "9", "⁄", "/", "+", "-", "*", "π", "Γ", "ᵅ", "ⅈ", "∈", "₋", "₊",
+    "⇒", "➔", "√", "π", "⌊", "⌋", "≀", "₍", "₎", "∫", "Π", "∏", "Σ", "∑", "½", "²", "ⁿ", "∀", "∃", "μ", "ν", "ξ", "⋰",
+    "ℭ", "α", "β", "∂" };
+
   private static final String                   STYLESHEET        = """
                  .highlighted-button
                  {
@@ -75,6 +80,29 @@ public class SymbolPalette extends
 
   private static void initializeAliases()
   {
+    addAliases("ʰ", "suph");
+    addAliases("ʲ", "supj");
+    addAliases("ʳ", "supr");
+    addAliases("ʷ", "supw");
+    addAliases("ʸ", "supy");
+    addAliases("ˡ", "supl");
+    addAliases("ˢ", "sups");
+    addAliases("ˣ", "supx");
+
+    addAliases("α", "alpha");
+    addAliases("β", "beta");
+
+    addAliases("⁄", "fraction", "slash", "div", "frac","ratio");
+
+    addAliases("ⁱ", "supi");
+    addAliases("ⁿ", "supn");
+
+    addAliases("ₔ", "subschwa");
+
+    addAliases("ⱽ", "supV");
+
+    addAliases("𐞥", "q");
+
     // Basic operators
     addAliases("*", "multiply", "times", "mult", "star", "asterisk");
     addAliases("+", "plus", "add", "addition");
@@ -264,10 +292,8 @@ public class SymbolPalette extends
   static
   {
     chars.addAll(Parser.SUBSCRIPT_CHARACTERS.stream().map(String::valueOf).toList());
-    for (String s : new String[]
-    { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "9", "⁄", "/", "+", "-", "*", "π", "Γ", "ᵅ", "ⅈ", "∈", "₋", "₊",
-      "⇒", "➔", "√", "π", "⌊", "⌋", "≀", "₍", "₎", "∫", "Π", "∏", "Σ", "∑", "½", "²", "ⁿ", "∀", "∃", "μ", "ν", "ξ", "⋰",
-      "ℭ", "α", "β", "∂" })
+
+    for (String s : SYMBOLS)
     {
       chars.add(s);
     }
@@ -468,6 +494,19 @@ public class SymbolPalette extends
   private void clearInput()
   {
     textField.setText("");
+  }
+
+  static
+  {
+    initializeAliases();
+    // Debug print to see what's missing
+    chars.forEach(c ->
+    {
+      if (!CHARACTER_ALIASES.containsKey(c))
+      {
+        System.out.println("Missing alias for: " + c);
+      }
+    });
   }
 
   public static void main(String[] args)
