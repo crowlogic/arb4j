@@ -322,6 +322,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
+  protected boolean hasScalarCodomain(Expression<D, C, F> expression)
+  {
+    return coDomainType.equals(Real.class) || coDomainType.equals(Complex.class) || coDomainType.equals(Fraction.class)
+                  || coDomainType.equals(Integer.class) || coDomainType.equals(ComplexFraction.class)
+                  || coDomainType.equals(GaussianInteger.class);
+  }
+
   public void addCheckForNullField(MethodVisitor mv, String varName, boolean variable)
   {
     Class<?> fieldClass;
@@ -1805,7 +1812,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     case "ℭ":
       return new BinomialCoefficientNode<>(this);
     case "pFq":
-      return new HypergeometricFunctionNode<>(this);
+      return new NewHypergeometricFunctionNode<>(this);
     case "Beta":
       return new BetaFunctionNode<D, C, F>(this);
     default:
