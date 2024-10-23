@@ -1,8 +1,6 @@
 package arb.viz;
 
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -12,9 +10,9 @@ import arb.expressions.Parser;
 import arb.expressions.viz.Stylesheet;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.ObjectBinding;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -362,23 +360,19 @@ public class SymbolPalette extends
       buttonPane.setPrefWidth(viewportBounds.getWidth());
     });
 
-    // Bind font sizes
-    textField.fontProperty()
-             .bind(Bindings.createObjectBinding(() -> Font.font(scene.getHeight() * 0.04), scene.heightProperty()));
-    searchField.fontProperty()
-               .bind(Bindings.createObjectBinding(() -> Font.font(scene.getHeight() * 0.04), scene.heightProperty()));
-    copyButton.fontProperty()
-              .bind(Bindings.createObjectBinding(() -> Font.font(scene.getHeight() * 0.02), scene.heightProperty()));
+    ObjectBinding<Font> fontSizeBinding = Bindings.createObjectBinding(() -> Font.font(scene.getHeight() * 0.04),
+                                                                       scene.heightProperty());
+    textField.fontProperty().bind(fontSizeBinding);
+    searchField.fontProperty().bind(fontSizeBinding);
+    copyButton.fontProperty().bind(fontSizeBinding);
 
-    Consumer<? super Node> action = node ->
-                                  {
-                                    ((Button) node).fontProperty()
-                                                   .bind(Bindings.createObjectBinding(() -> Font.font(scene.getHeight()
-                                                                 * 0.04), scene.heightProperty()));
-                                  };
-    Predicate<Node>        filter = node -> node instanceof Button;
-    hbox.getChildren().filtered(filter).forEach(action);
-    buttonPane.getChildren().filtered(filter).forEach(action);
+    buttonPane.getChildren().forEach(node ->
+    {
+      if (node instanceof Button button)
+      {
+        button.fontProperty().bind(fontSizeBinding);
+      }
+    });
 
     WindowManager.setStageIcon(primaryStage, "SymbolPalette.png");
     scene.getStylesheets().add(Stylesheet.convertStylesheetToDataURI(Stylesheet.DarkerStyle));
@@ -386,15 +380,16 @@ public class SymbolPalette extends
 
     scene.setOnKeyPressed(button ->
     {
-      if (button.getCode() == KeyCode.F11)
+      switch (button.getCode())
       {
+      case KeyCode.F11:
         primaryStage.setFullScreenExitHint("Press escape or F11 to exit full-screen mode");
         primaryStage.setFullScreen(!primaryStage.isFullScreen());
-      }
-      if (button.getCode() == KeyCode.ESCAPE)
-      {
+        break;
+      case KeyCode.ESCAPE:
         primaryStage.fireEvent(new WindowEvent(primaryStage,
                                                WindowEvent.WINDOW_CLOSE_REQUEST));
+      default:
       }
     });
 
