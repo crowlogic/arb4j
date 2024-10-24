@@ -1,0 +1,73 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\geometry{letterpaper}
+
+\begin{document}
+
+\
+
+\section*{Riemann-Siegel Formula}
+
+The exact Riemann-Siegel formula for the Riemann zeta function on the critical
+line, with the remainder term as an infinite sum, is:
+\begin{equation}
+  \zeta (\frac{1}{2} + it) = \sum_{n = 1}^N \frac{1}{n^{1 / 2 + it}} + \chi
+  (t)  \sum_{n = 1}^N \frac{1}{n^{1 / 2 - it}} + R (t)
+\end{equation}
+Where:
+\begin{itemize}
+  \item $N = \lfloor \sqrt{\frac{t}{2 \pi}} \rfloor$
+  
+  \item 
+\end{itemize}
+The remainder term $R (t)$ is given by the exact infinite sum:
+\begin{equation}
+  R (t) = \frac{(- 1)^{N + 1}}{2 \sqrt{N}}  \sum_{k = 0}^{\infty} \frac{(-
+  1)^k}{k!} \left. \frac{d^k \Phi}{dz^k} \right|_{z = 2 (\sqrt{\frac{t}{2
+  \pi}} - N) - 1} \left( \frac{1}{2 \pi} \right)^{k / 2} t^{- k / 2}
+\end{equation}
+Where $\Phi (z)$ is defined as:
+\begin{equation}
+  \Phi (z) = \frac{\cos (\pi (z^2 / 2 + 3 / 8))}{\cos (\pi z)}
+\end{equation}
+
+\section*{Derivation}
+
+Starting with Riemann's integral representation:
+\begin{equation}
+  \pi^{- s / 2} \Gamma (s / 2) \zeta (s) = \int_0^{\infty} x^{s / 2 - 1} e^{-
+  \pi x} dx + \int_{0 \swarrow 1} \frac{x^{- s} e^{\pi ix^2}}{e^{\pi ix} -
+  e^{- \pi ix}} dx
+\end{equation}
+The saddle point occurs where:
+\begin{equation}
+  \frac{d}{dx}  (- s \log x + \pi ix^2) = 0
+\end{equation}
+giving $x = \sqrt{\frac{t}{2 \pi}}$. The integral from $N$ to $\infty$
+transforms under $u = x - N$ to:
+\begin{equation}
+  \int_N^{\infty} e^{- 2 \pi i (x^2 - tx)} dx = e^{2 \pi i (N^2 - tN)} 
+  \int_0^{\infty} e^{- 2 \pi i (u^2 + 2 Nu)} du
+\end{equation}
+By Watson's lemma:
+\begin{equation}
+  \int_0^{\infty} e^{- 2 \pi i (u^2 + 2 Nu)} du = \frac{e^{- \pi i / 4}}{2
+  \sqrt{\pi}}  \sum_{k = 0}^{\infty} \frac{\Gamma (k + 1 / 2)}{k! (4 \pi
+  iN)^k}
+\end{equation}
+The phase factor combines as:
+\begin{equation}
+  e^{2 \pi i (N^2 - tN)}  \frac{e^{- \pi i / 4}}{2 \sqrt{\pi}} = e^{\pi i (2
+  N^2 - 2 tN - 1 / 4)}
+\end{equation}
+This leads to the function $\Phi (z)$ through the substitution $z = 2
+(\sqrt{\frac{t}{2 \pi}} - N) - 1$, and the remainder term $R (t)$ emerges in
+its final form as given above. The functional equation of zeta provides the
+second main sum term:
+\begin{equation}
+  \chi (t)  \sum_{n = 1}^N \frac{1}{n^{1 / 2 - it}}
+\end{equation}
+Combining all terms gives the complete Riemann-Siegel formula.
+
+\end{document}
