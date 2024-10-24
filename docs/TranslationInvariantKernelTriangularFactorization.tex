@@ -1,71 +1,59 @@
 \documentclass{article}
 \usepackage[english]{babel}
-\usepackage{amsmath,latexsym}
-
-%%%%%%%%%% Start TeXmacs macros
-\newcommand{\mathd}{\mathrm{d}}
-\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
-\newtheorem{theorem}{Theorem}
-%%%%%%%%%% End TeXmacs macros
+\usepackage{amsmath}
 
 \begin{document}
 
-\begin{theorem}
-  Let $K (t - s)$ be a stationary kernel function. Then $K (t - s)$ can be
-  expressed in the form:
-  \[ K (t - s) = \int_{- \infty}^{\infty} h (\tau) h (t - s - \tau) d \tau =
-     \frac{1}{2 \pi} \int_{- \infty}^{\infty} S (\omega) e^{i \omega (t - s)}
-     \mathd \omega \]
-  where $h (t)$ is defined as:
-  \[ h (t) = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} \sqrt{S (\omega)} e^{i
-     \omega t} d \omega \]
-  and $S (\omega)$ is the spectral density function
-  \begin{equation}
-    S (\omega) = \int_{- \infty}^{\infty} K (t) e^{- i \omega t} \mathd t
-  \end{equation}
-\end{theorem}
+\section{Theorem: Spectral Representation}
 
-\begin{proof}
-  1. Start with the spectral representation:
-  \[ K (t - s) = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} S (\omega) e^{i
-     \omega (t - s)} d \omega \]
-  2. Factor $S (\omega)$:
-  \[ K (t - s) = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} \sqrt{S (\omega)}
-     e^{i \omega t} \cdot \sqrt{S (\omega)} e^{- i \omega s} d \omega \]
-  3. Define $h (t)$:
-  \[ h (t) = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} \sqrt{S (\omega)} e^{i
-     \omega t} d \omega \]
-  4. Express $\sqrt{S (\omega)}$:
-  \[ \sqrt{S (\omega)} = \int_{- \infty}^{\infty} h (\tau) e^{- i \omega \tau}
-     d \tau \quad \text{(by inverse Fourier transform)} \]
-  5. Substitute into the kernel equation:
-  \[ K (t - s) = \frac{\int_{- \infty}^{\infty} \left( \int_{-
-     \infty}^{\infty} h (\tau) e^{- i \omega \tau} d \tau \right) e^{i \omega
-     t} \left( \int_{- \infty}^{\infty} h (\sigma) e^{- i \omega \sigma} d
-     \sigma \right) e^{- i \omega s} d \omega}{2 \pi} \]
-  6. Apply Fubini's theorem to change the order of integration
-  \[ K (t - s) = \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} h (\tau) h
-     (\sigma) \frac{\int_{- \infty}^{\infty} e^{i \omega (t - \tau - s +
-     \sigma)} d \omega}{2 \pi} d \tau d \sigma \]
-  7. Evaluate the inner $\omega$ integral by the Fourier integral
-  representation of the delta function:
-  \[ \frac{1}{2 \pi}  \int_{- \infty}^{\infty} e^{i \omega (t - \tau - s +
-     \sigma)} d \omega = \delta (t - \tau - s + \sigma) \quad \]
-  8. Apply the delta function:
-  \[ K (t - s) = \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} h (\tau) h
-     (\sigma) \delta (t - \tau - s + \sigma) d \tau d \sigma \]
-  9. Integrate with respect to $\sigma$:
-  
-  \begin{align*}
-    K (t - s) & = \int_{- \infty}^{\infty} h (\tau)  \int_{- \infty}^{\infty}
-    h (\sigma) \delta (t - \tau - s + \sigma) d \sigma d \tau\\
-    & = \int_{- \infty}^{\infty} h (\tau) \cdot h (t - \tau - s) \cdot 1 d
-    \tau\\
-    & = \int_{- \infty}^{\infty} h (\tau) h (t - \tau - s) d \tau\\
-    & = \int_{- \infty}^{\infty} h (s + \tau) h (t - \tau) d \tau
-  \end{align*}
-  
-  This completes the proof of the spectral representation theorem.
-\end{proof}
+Let $K (t - s)$ be a stationary kernel function. Then $K (t - s)$ can be
+expressed in the form:
+\[ K (t - s) = \int_{- \infty}^{\infty} h (\tau) h (t - \tau - s) d \tau \]
+where $h (t)$ is defined as:
+\[ h (t) = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} \sqrt{S (\omega)} e^{i
+   \omega t} d \omega \]
+and $S (\omega)$ is the spectral density function.
+
+\section{Proof}
+
+1. Start with the spectral representation:
+\[ K (t - s) = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} S (\omega) e^{i
+   \omega (t - s)} d \omega \]
+2. Factor $S (\omega)$:
+\[ K (t - s) = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} \sqrt{S (\omega)}
+   e^{i \omega t} \cdot \sqrt{S (\omega)} e^{- i \omega s} d \omega \]
+3. Define $h (t)$:
+\[ h (t) = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} \sqrt{S (\omega)} e^{i
+   \omega t} d \omega \]
+4. Express $\sqrt{S (\omega)}$:
+\[ \sqrt{S (\omega)} = \int_{- \infty}^{\infty} h (\tau) e^{- i \omega \tau} d
+   \tau \quad \text{(by inverse Fourier transform)} \]
+5. Substitute into the kernel equation:
+\[ K (t - s) = \frac{ \int_{- \infty}^{\infty}  \left( \int_{-
+   \infty}^{\infty} h (\tau) e^{- i \omega \tau} d \tau \right) e^{i \omega t}
+   \left( \int_{- \infty}^{\infty} h (\sigma) e^{- i \omega \sigma} d \sigma
+   \right) e^{- i \omega s} d \omega}{2 \pi} \]
+6. Apply Fubini's theorem to change the order of integration
+\[ K (t - s) = \int_{- \infty}^{\infty}  \int_{- \infty}^{\infty} h (\tau) h
+   (\sigma)  \frac{\int_{- \infty}^{\infty} e^{i \omega (t - \tau - s +
+   \sigma)} d \omega}{2 \pi} d \tau d \sigma \]
+7. Evaluate the inner $\omega$ integral by the Fourier integral representation
+of the delta function:
+\[ \frac{1}{2 \pi}  \int_{- \infty}^{\infty} e^{i \omega (t - \tau - s +
+   \sigma)} d \omega = \delta (t - \tau - s + \sigma) \quad \]
+8. Apply the delta function:
+\[ K (t - s) = \int_{- \infty}^{\infty}  \int_{- \infty}^{\infty} h (\tau) h
+   (\sigma) \delta (t - \tau - s + \sigma) d \tau d \sigma \]
+9. Integrate with respect to $\sigma$:
+
+\begin{align*}
+  K (t - s) & = \int_{- \infty}^{\infty} h (\tau)  \int_{- \infty}^{\infty} h
+  (\sigma) \delta (t - \tau - s + \sigma) d \sigma d \tau\\
+  & = \int_{- \infty}^{\infty} h (\tau) \cdot h (t - \tau - s) \cdot 1 d
+  \tau\\
+  & = \int_{- \infty}^{\infty} h (\tau) h (t - \tau - s) d \tau
+\end{align*}
+
+This completes the proof of the spectral representation theorem.
 
 \end{document}

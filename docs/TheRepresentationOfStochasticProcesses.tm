@@ -660,7 +660,7 @@
     The eigenvalues of
 
     <\equation>
-      <big|int><rsub|0><rsup|\<infty\>>J<rsub|0>*<around|(|x-y|)>\<ast\>\<psi\><rsub|n><around|(|x|)>*d*x=\<lambda\><rsub|n>*\<psi\><rsub|n><around|(|y|)>
+      <big|int><rsub|0><rsup|\<infty\>>J<rsub|0>*<around|(|x-y|)>\<psi\><rsub|n><around|(|x|)>*d*x=\<lambda\><rsub|n>*\<psi\><rsub|n><around|(|y|)>
     </equation>
 
     are given by
@@ -709,19 +709,10 @@
     Using the integral of products of Bessel functions:
 
     <\equation*>
-      <big|int><rsub|0><rsup|\<infty\>>x<rsup|-<frac|1|2>>*J<rsub|0><around|(|x|)>*J<rsub|2*n+<frac|1|2>><around|(|x|)>*<space|0.17em>d*x=<sqrt|<frac|4*n+1|\<pi\>>>*<frac|\<Gamma\>*<around*|(|n+<frac|1|2>|)><rsup|2>|\<Gamma\>*<around|(|n+1|)><rsup|2>>
+      \<lambda\><rsub|n>=<big|int><rsub|0><rsup|\<infty\>>x<rsup|-<frac|1|2>>*J<rsub|0><around|(|x|)>*J<rsub|2*n+<frac|1|2>><around|(|x|)>*<space|0.17em>d*x=<sqrt|<frac|4*n+1|\<pi\>>>*<frac|\<Gamma\>*<around*|(|n+<frac|1|2>|)><rsup|2>|\<Gamma\>*<around|(|n+1|)><rsup|2>>
     </equation*>
 
-    Thus:
-
-    <\equation*>
-      \<lambda\><rsub|n>=<sqrt|<frac|4*n+1|\<pi\>>>*<frac|\<Gamma\>*<around*|(|n+<frac|1|2>|)><rsup|2>|\<Gamma\>*<around|(|n+1|)><rsup|2>>
-    </equation*>
-
-    This completes the proof that <math|\<psi\><rsub|n><around|(|y|)>> are
-    eigenfunctions of the integral operator with kernel
-    <math|J<rsub|0>*<around|(|x-y|)>> and the corresponding eigenvalues are
-    as given.
+    \;
   </proof>
 
   <\definition>
@@ -757,31 +748,6 @@
 
     converges uniformly for all complex <math|t> except the origin where it
     has a regular singular point where <math|lim<rsub|t\<rightarrow\>0>J<rsub|0><around*|(|t|)>=1>.
-  </conjecture>
-
-  <\conjecture>
-    The eigenfunctions of the stationary integral covariance operator\ 
-
-    <\equation>
-      <around*|[|T \<psi\><rsub|n>|]><around*|(|x|)>=<big|int><rsub|0><rsup|\<infty\>>J<rsub|0>*<around|(|x-y|)>*\<psi\><rsub|n><around*|(|x|)>\<mathd\>x=\<lambda\><rsub|n>\<psi\><rsub|n><around*|(|x|)><label|T>
-    </equation>
-
-    are given by
-
-    <\equation>
-      \<psi\><rsub|n><around*|(|y|)>=<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*j<rsub|2*n><around|(|y|)>
-    </equation>
-
-    and the eigenvalues are given by
-
-    <math|<\text>
-      <\equation>
-        <tabular|<tformat|<table|<row|<cell|\<lambda\><rsub|n>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>J<rsub|0><around|(|x|)>*\<psi\><rsub|n><around|(|x|)><space|0.17em><math-up|d>x>>|<row|<cell|>|<cell|=<sqrt|<frac|4*n+1|\<pi\>>>*<frac|\<Gamma\>*<around*|(|n+<frac|1|2>|)><rsup|2>|\<Gamma\>*<around|(|n+1|)><rsup|2>>>>|<row|<cell|>|<cell|=<sqrt|<frac|4*n+1|\<pi\>>>*<around|(|n+1|)><rsub|-<frac|1|2>><rsup|2>>>>>>
-      </equation>
-    </text>>
-
-    where <math|<around|(|n+1|)><rsub|-<frac|1|2>><rsup|2>> is the Pochhammer
-    symbol(ascending/rising factorial).
   </conjecture>
 
   <\definition>
@@ -1092,7 +1058,10 @@
 
 <\initial>
   <\collection>
+    <associate|font|roman>
+    <associate|font-family|rm>
     <associate|magnification|1.2>
+    <associate|math-font|roman>
     <associate|page-height|auto>
     <associate|page-medium|paper>
     <associate|page-type|letter>
@@ -1130,7 +1099,7 @@
     <associate|auto-11|<tuple|1.4.2|15>>
     <associate|auto-12|<tuple|2|16>>
     <associate|auto-13|<tuple|2.1|16>>
-    <associate|auto-14|<tuple|79|17>>
+    <associate|auto-14|<tuple|76|17>>
     <associate|auto-2|<tuple|1.1|1>>
     <associate|auto-3|<tuple|1.1.1|2>>
     <associate|auto-4|<tuple|1.1.2|4>>
