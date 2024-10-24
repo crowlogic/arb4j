@@ -230,4 +230,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     }
   }
 
+  public boolean isPossiblyNegative()
+  {
+    return false;
+  }
+
 }

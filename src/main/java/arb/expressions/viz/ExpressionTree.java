@@ -385,11 +385,12 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
 
   public static Class<?>[]              INTERFACES           = new Class<?>[]
   { IntegerSequence.class, RealSequence.class, Function.class, NullaryFunction.class, IntegerFunction.class,
-    IntegerPolynomialSequence.class, IntegerPolynomialNullaryFunction.class, RealFunction.class,
-    RealPolynomialFunction.class, ComplexFunction.class, ComplexSequence.class, ComplexPolynomialSequence.class,
-    ComplexNullaryFunction.class, RationalFunctionSequence.class, RationalNullaryFunction.class,
-    RealPolynomialSequence.class, RealToComplexFunction.class, RealNullaryFunction.class, ComplexToRealFunction.class,
-    ComplexRationalFunctionSequence.class, ComplexRationalNullaryFunction.class, Sequence.class };
+    IntegerPolynomialSequence.class, IntegerNullaryFunction.class, IntegerPolynomialNullaryFunction.class,
+    RealFunction.class, RealPolynomialFunction.class, ComplexFunction.class, ComplexSequence.class,
+    ComplexPolynomialSequence.class, ComplexNullaryFunction.class, RationalFunctionSequence.class,
+    RationalNullaryFunction.class, RealPolynomialSequence.class, RealToComplexFunction.class, RealNullaryFunction.class,
+    ComplexToRealFunction.class, ComplexRationalFunctionSequence.class, ComplexRationalNullaryFunction.class,
+    Sequence.class };
 
   private HBox setupTypeBoxes()
   {

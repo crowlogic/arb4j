@@ -25,14 +25,10 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public String typeset()
   {
-    return String.format(String.format("{%s}^{%s}", format(left), format(right)),
-                         left.typeset(),
-                         right.typeset());
+    return String.format(String.format("{%s}^{%s}", format(left), format(right)), left.typeset(), right.typeset());
   }
 
-  public ExponentiationNode(Expression<D, R, F> expression,
-                            Node<D, R, F> base,
-                            Node<D, R, F> exponent)
+  public ExponentiationNode(Expression<D, R, F> expression, Node<D, R, F> base, Node<D, R, F> exponent)
   {
     super(expression,
           base,
@@ -69,5 +65,25 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   {
     assert false : "TODO";
     return null;
+  }
+
+  @Override
+  public Class<?> type()
+  {
+    if (right.isPossiblyNegative())
+    {
+      assert false : "todo: type of exponetiation node can not be represented in the codomain type "
+                     + expression.coDomainType
+                     + " because the exponent of "
+                     + this
+                     + " can be negative";
+      return null;
+    }
+    else
+    {
+      return super.type();
+
+    }
+
   }
 }

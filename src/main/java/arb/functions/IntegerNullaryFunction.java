@@ -1,7 +1,5 @@
 package arb.functions;
 
-import java.util.BitSet;
-
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
