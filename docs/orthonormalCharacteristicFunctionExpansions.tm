@@ -5,7 +5,9 @@
 <\body>
   <doc-data|<doc-title|Orthonormal Galerkin Method for Stationary Integral
   Covariance Operator Eigenfunction Expansions>|<doc-author|<author-data|<author-name|Stephen
-  Crowley>>>>
+  Crowley>|<\author-affiliation>
+    <date|>
+  </author-affiliation>>>>
 
   <\table-of-contents|toc>
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Given>
@@ -33,86 +35,86 @@
     <item><math|K*<around|(|t-s|)>=<big|sum><rsub|n=0><rsup|\<infty\>>\<psi\><rsub|n>*<around|(|t-s|)>>
     (uniformly convergent)
 
-    <item>Eigenvalue equation: <math|<big|int><rsub|0><rsup|\<infty\>>K*<around|(|t-s|)>*\<phi\><rsub|k><around|(|t|)>*<space|0.17em>d*t=\<lambda\><rsub|k>*\<phi\><rsub|k><around|(|s|)>>
+    <item>Eigenvalue equation: <math|<big|int><rsub|-\<infty\>><rsup|\<infty\>>K*<around|(|t-s|)>*\<phi\><rsub|k><around|(|t|)>*<space|0.17em>d*t=\<lambda\><rsub|k>*\<phi\><rsub|k><around|(|s|)>>
 
     <item>Eigenfunction expansion: <math|\<phi\><rsub|k><around|(|t|)>=<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|t|)>>
 
     <item>The basis functions <math|<around|{|\<psi\><rsub|n>|}>> are
-    orthonormal, i.e., <math|<big|int><rsub|0><rsup|\<infty\>>\<psi\><rsub|m><around|(|s|)>*\<psi\><rsub|n><around|(|s|)>*<space|0.17em>d*s=\<delta\><rsub|m*n>>
+    orthonormal, i.e., <math|<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|m><around|(|s|)>*\<psi\><rsub|n><around|(|s|)>*<space|0.17em>d*s=\<delta\><rsub|m*n>>
   </enumerate>
 
   <section|Objective>
 
-  Solve for the coefficient matrices <math|c<rsub|n,k>> for the
-  eigenfunctions\ 
+  The goal is to solve for the coefficient matrix <math|c<rsub|n,k>> of the
+  eigenfunctions
 
   <\equation>
-    T \<phi\><rsub|k><around|(|s|)>=\<lambda\><rsub|k>*\<phi\><rsub|k><around|(|s|)>
+    T*\<phi\><rsub|k><around|(|s|)>=\<lambda\><rsub|k>*\<phi\><rsub|k><around|(|s|)>
   </equation>
 
   of the integral covariance operator
 
   <\equation>
-    T f<around*|(|s|)>=<big|int><rsub|0><rsup|\<infty\>>K*<around|(|t-s|)>*f<around|(|t|)>*<space|0.17em>d*t<space|1em>
+    T*f<around|(|s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>K*<around|(|t-s|)>*f<around|(|t|)>*<space|0.17em>d*t
   </equation>
 
   <section|Proof>
 
   <\enumerate>
-    <item>Substitute the eigenfunction expansion into the eigenvalue
+    <item>The eigenfunction expansion is substituted into the eigenvalue
     equation:
 
     <\equation>
-      <big|int><rsub|0><rsup|\<infty\>>K*<around|(|t-s|)>*<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t=\<lambda\><rsub|k>*<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|s|)>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>>K*<around|(|t-s|)>*<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t=\<lambda\><rsub|k>*<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|s|)>
     </equation>
 
-    <item>Use the uniform expansion of <math|K>:
+    <item>Using the uniform expansion of <math|K>:
 
     <\equation>
-      <big|int><rsub|0><rsup|\<infty\>><big|sum><rsub|j=0><rsup|\<infty\>>\<psi\><rsub|j>*<around|(|t-s|)>*<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t=\<lambda\><rsub|k>*<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|s|)>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>><big|sum><rsub|j=0><rsup|\<infty\>>\<psi\><rsub|j>*<around|(|t-s|)>*<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t=\<lambda\><rsub|k>*<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|s|)>
     </equation>
 
-    <item>Apply Fubini's theorem (justified by uniform convergence):
+    <item>Applying Fubini's theorem (justified by uniform convergence):
 
     <\equation>
-      <big|sum><rsub|j=0><rsup|\<infty\>><big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*<big|int><rsub|0><rsup|\<infty\>>\<psi\><rsub|j>*<around|(|t-s|)>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t=\<lambda\><rsub|k>*<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|s|)>
+      <big|sum><rsub|j=0><rsup|\<infty\>><big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|j>*<around|(|t-s|)>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t=\<lambda\><rsub|k>*<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|s|)>
     </equation>
 
-    <item>Define <math|G<rsub|j,n><around|(|s|)>=<big|int><rsub|0><rsup|\<infty\>>\<psi\><rsub|j>*<around|(|t-s|)>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t>:
+    <item>Let <math|G<rsub|j,n><around|(|s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|j>*<around|(|t-s|)>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t>:
 
     <\equation>
       <big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*<big|sum><rsub|j=0><rsup|\<infty\>>G<rsub|j,n><around|(|s|)>=\<lambda\><rsub|k>*<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|s|)>
     </equation>
 
-    <item>Project onto the basis <math|<around|{|\<psi\><rsub|m><around|(|s|)>|}>>.
-    Multiply both sides by <math|\<psi\><rsub|m><around|(|s|)>> and integrate
-    over <math|s>:
+    <item>Projecting onto the basis <math|<around|{|\<psi\><rsub|m><around|(|s|)>|}>>
+    by multiplying both sides by <math|\<psi\><rsub|m><around|(|s|)>> and
+    integrating over <math|s>:
 
     <\equation>
-      <big|int><rsub|0><rsup|\<infty\>><big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*<big|sum><rsub|j=0><rsup|\<infty\>>G<rsub|j,n><around|(|s|)>*\<psi\><rsub|m><around|(|s|)>*<space|0.17em>d*s=\<lambda\><rsub|k>*<big|int><rsub|0><rsup|\<infty\>><big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|s|)>*\<psi\><rsub|m><around|(|s|)>*<space|0.17em>d*s
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>><big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*<big|sum><rsub|j=0><rsup|\<infty\>>G<rsub|j,n><around|(|s|)>*\<psi\><rsub|m><around|(|s|)>*<space|0.17em>d*s=\<lambda\><rsub|k>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|s|)>*\<psi\><rsub|m><around|(|s|)>*<space|0.17em>d*s
     </equation>
 
-    <item>Assuming we can interchange summation and integration:
+    <item>Interchanging summation and integration:
 
     <\equation>
-      <big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*<big|sum><rsub|j=0><rsup|\<infty\>><big|int><rsub|0><rsup|\<infty\>>G<rsub|j,n><around|(|s|)>*\<psi\><rsub|m><around|(|s|)>*<space|0.17em>d*s=\<lambda\><rsub|k>*<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*<big|int><rsub|0><rsup|\<infty\>>\<psi\><rsub|n><around|(|s|)>*\<psi\><rsub|m><around|(|s|)>*<space|0.17em>d*s
+      <big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*<big|sum><rsub|j=0><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>G<rsub|j,n><around|(|s|)>*\<psi\><rsub|m><around|(|s|)>*<space|0.17em>d*s=\<lambda\><rsub|k>*<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|n><around|(|s|)>*\<psi\><rsub|m><around|(|s|)>*<space|0.17em>d*s
     </equation>
 
-    <item>Using the orthonormality of <math|<around|{|\<psi\><rsub|n>|}>>,
-    the right-hand side simplifies to <math|\<lambda\><rsub|k>*c<rsub|m,k>>.
-    Define:
+    <item>The right-hand side simplifies to
+    <math|\<lambda\><rsub|k>*c<rsub|m,k>> by orthonormality of
+    <math|<around|{|\<psi\><rsub|n>|}>>. Define:
 
     <\align>
-      <tformat|<table|<row|<cell|b<rsub|m,n>>|<cell|=<big|sum><rsub|j=0><rsup|\<infty\>><big|int><rsub|0><rsup|\<infty\>>G<rsub|j,n><around|(|s|)>*\<psi\><rsub|m><around|(|s|)>*<space|0.17em>d*s<eq-number>>>>>
+      <tformat|<table|<row|<cell|b<rsub|m,n>>|<cell|=<big|sum><rsub|j=0><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>G<rsub|j,n><around|(|s|)>*\<psi\><rsub|m><around|(|s|)>*<space|0.17em>d*s<eq-number>>>>>
     </align>
 
-    <item>Our equation becomes:
+    <item>The equation becomes:
 
     <\equation>
       <big|sum><rsub|n=0><rsup|\<infty\>>b<rsub|m,n>*c<rsub|n,k>=\<lambda\><rsub|k>*c<rsub|m,k>
     </equation>
 
-    <item>This is a standard eigenvalue problem:
+    <item>This reduces to a standard eigenvalue problem:
 
     <\equation>
       B*<wide|c|\<vect\>><rsub|k>=\<lambda\><rsub|k>*<wide|c|\<vect\>><rsub|k>
@@ -124,8 +126,8 @@
 
   <section|Verification that Solutions are Eigenfunctions>
 
-  We will now prove that the solutions obtained are indeed eigenfunctions of
-  the original integral equation.
+  A verification that the solutions obtained are indeed eigenfunctions of the
+  original integral equation follows:
 
   <\enumerate>
     <item>Let <math|\<lambda\><rsub|k>> and
@@ -138,55 +140,51 @@
 
     where <math|B=<around|(|b<rsub|m,n>|)>> as derived above.
 
-    <item>We construct the functions <math|\<phi\><rsub|k><around|(|t|)>>:
+    <item>The functions <math|\<phi\><rsub|k><around|(|t|)>> are constructed
+    as:
 
     <\equation>
       \<phi\><rsub|k><around|(|t|)>=<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|t|)>
     </equation>
 
-    <item>Substitute this into the original integral equation:
+    <item>Substituting into the original integral equation:
 
     <\equation>
-      <big|int><rsub|0><rsup|\<infty\>>K*<around|(|t-s|)>*\<phi\><rsub|k><around|(|t|)>*d*t=<big|int><rsub|0><rsup|\<infty\>>K*<around|(|t-s|)><around*|[|<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|t|)>|]>*d*t
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>>K*<around|(|t-s|)>*\<phi\><rsub|k><around|(|t|)>*d*t=<big|int><rsub|-\<infty\>><rsup|\<infty\>>K*<around|(|t-s|)><around*|[|<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|t|)>|]>*d*t
     </equation>
 
     <item>Using the expansion of <math|K*<around|(|t-s|)>> and interchanging
     summations:
 
     <\align>
-      <tformat|<table|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>><around*|[|<big|sum><rsub|j=0><rsup|\<infty\>>\<psi\><rsub|j>*<around|(|t-s|)>|]><around*|[|<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|t|)>|]>*d*t<eq-number>>>|<row|<cell|>|<cell|=<big|sum><rsub|j=0><rsup|\<infty\>><big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*<big|int><rsub|0><rsup|\<infty\>>\<psi\><rsub|j>*<around|(|t-s|)>*\<psi\><rsub|n><around|(|t|)>*d*t<eq-number>>>>>
+      <tformat|<table|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|[|<big|sum><rsub|j=0><rsup|\<infty\>>\<psi\><rsub|j>*<around|(|t-s|)>|]><around*|[|<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|t|)>|]>*d*t<eq-number>>>|<row|<cell|>|<cell|=<big|sum><rsub|j=0><rsup|\<infty\>><big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|j>*<around|(|t-s|)>*\<psi\><rsub|n><around|(|t|)>*d*t<eq-number>>>>>
     </align>
 
-    <item>Recall our definitions and introduce the covariance operator
-    <math|T>:
-
-    <\align*>
-      <tformat|<table|<row|<cell|G<rsub|j,n><around|(|s|)>>|<cell|=<big|int><rsub|0><rsup|\<infty\>>\<psi\><rsub|j>*<around|(|t-s|)>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t>>|<row|<cell|b<rsub|m,n>>|<cell|=<big|sum><rsub|j=0><rsup|\<infty\>><big|int><rsub|0><rsup|\<infty\>>G<rsub|j,n><around|(|s|)>*\<psi\><rsub|m><around|(|s|)>*<space|0.17em>d*s>>|<row|<cell|>|<cell|>>>>
-    </align*>
-
-    <\enumerate>
-      \;
-
-      <item>Rewrite the left-hand side of the integral equation:
-
-      <\align*>
-        <tformat|<table|<row|<cell|T*\<phi\><rsub|k><around|(|s|)>>|<cell|=<big|int><rsub|0><rsup|\<infty\>>K*<around|(|t-s|)>*\<phi\><rsub|k><around|(|t|)>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>K*<around|(|t-s|)><around*|[|<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|t|)>|]>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*<big|int><rsub|0><rsup|\<infty\>>K*<around|(|t-s|)>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k><around*|[|<big|sum><rsub|j=0><rsup|\<infty\>><big|int><rsub|0><rsup|\<infty\>>\<psi\><rsub|j>*<around|(|t-s|)>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t|]>>>|<row|<cell|>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k><around*|[|<big|sum><rsub|j=0><rsup|\<infty\>>G<rsub|j,n><around|(|s|)>|]>>>>>
-      </align*>
-
-      <item>Project onto <math|\<psi\><rsub|m><around|(|s|)>> by multiplying
-      by <math|\<psi\><rsub|m><around|(|s|)>> and integrating over <math|s>:
-
-      <\align*>
-        <tformat|<table|<row|<cell|<big|int><rsub|0><rsup|\<infty\>>\<psi\><rsub|m><around|(|s|)>*T*\<phi\><rsub|k><around|(|s|)>*<space|0.17em>d*s>|<cell|=<big|int><rsub|0><rsup|\<infty\>>\<psi\><rsub|m><around|(|s|)><around*|[|<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k><around*|[|<big|sum><rsub|j=0><rsup|\<infty\>>G<rsub|j,n><around|(|s|)>|]>|]>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k><around*|[|<big|sum><rsub|j=0><rsup|\<infty\>><big|int><rsub|0><rsup|\<infty\>>G<rsub|j,n><around|(|s|)>*\<psi\><rsub|m><around|(|s|)>*<space|0.17em>d*s|]>>>|<row|<cell|>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*b<rsub|m,n>>>|<row|<cell|>|<cell|=<around|(|B*<wide|c|\<vect\>><rsub|k>|)><rsub|m>>>|<row|<cell|>|<cell|=\<lambda\><rsub|k><around|(|<wide|c|\<vect\>><rsub|k>|)><rsub|m>>>|<row|<cell|>|<cell|=\<lambda\><rsub|k>*c<rsub|m,k>>>>>
-      </align*>
-    </enumerate>
-
-    <item>Since this holds for all <math|m>, and
-    <math|<around|{|\<psi\><rsub|m>|}>> is a complete orthonormal basis, we
-    conclude:
+    <item>Recalling the definitions:
 
     <\equation>
-      <big|int><rsub|0><rsup|\<infty\>>K*<around|(|t-s|)>*\<phi\><rsub|k><around|(|t|)>*d*t=\<lambda\><rsub|k>*\<phi\><rsub|k><around|(|s|)>
+      <tabular|<tformat|<table|<row|<cell|G<rsub|j,n><around|(|s|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|j>*<around|(|t-s|)>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t>>|<row|<cell|b<rsub|m,n>>|<cell|=<big|sum><rsub|j=0><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>G<rsub|j,n><around|(|s|)>*\<psi\><rsub|m><around|(|s|)>*<space|0.17em>d*s>>>>>
+    </equation>
+
+    <item>The left-hand side of the integral equation can be rewritten:
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|T*\<phi\><rsub|k><around|(|s|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>K*<around|(|t-s|)>*\<phi\><rsub|k><around|(|t|)>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>K*<around|(|t-s|)><around*|[|<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|n><around|(|t|)>|]>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>K*<around|(|t-s|)>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k><around*|[|<big|sum><rsub|j=0><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|j>*<around|(|t-s|)>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t|]>>>|<row|<cell|>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k><around*|[|<big|sum><rsub|j=0><rsup|\<infty\>>G<rsub|j,n><around|(|s|)>|]>>>>>>
+    </equation>
+
+    <item>Projecting onto <math|\<psi\><rsub|m><around|(|s|)>> by multiplying
+    by <math|\<psi\><rsub|m><around|(|s|)>> and integrating over <math|s>:
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|m><around|(|s|)>*T*\<phi\><rsub|k><around|(|s|)>*<space|0.17em>d*s>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|m><around|(|s|)><around*|[|<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k><around*|[|<big|sum><rsub|j=0><rsup|\<infty\>>G<rsub|j,n><around|(|s|)>|]>|]>*<space|0.17em>d*s>>|<row|<cell|>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k><around*|[|<big|sum><rsub|j=0><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>G<rsub|j,n><around|(|s|)>*\<psi\><rsub|m><around|(|s|)>*<space|0.17em>d*s|]>>>|<row|<cell|>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>>c<rsub|n,k>*b<rsub|m,n>>>|<row|<cell|>|<cell|=<around|(|B*<wide|c|\<vect\>><rsub|k>|)><rsub|m>>>|<row|<cell|>|<cell|=\<lambda\><rsub|k><around|(|<wide|c|\<vect\>><rsub|k>|)><rsub|m>>>|<row|<cell|>|<cell|=\<lambda\><rsub|k>*c<rsub|m,k>>>>>>
+    </equation>
+
+    <item>Since this holds for all <math|m>, and
+    <math|<around|{|\<psi\><rsub|m>|}>> is a complete orthonormal basis, the
+    conclusion follows:
+
+    <\equation>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>>K*<around|(|t-s|)>*\<phi\><rsub|k><around|(|t|)>*d*t=\<lambda\><rsub|k>*\<phi\><rsub|k><around|(|s|)>
     </equation>
   </enumerate>
 
@@ -209,7 +207,7 @@
   <\collection>
     <associate|auto-1|<tuple|1|1>>
     <associate|auto-2|<tuple|2|1>>
-    <associate|auto-3|<tuple|3|1>>
+    <associate|auto-3|<tuple|3|2>>
     <associate|auto-4|<tuple|4|3>>
   </collection>
 </references>
