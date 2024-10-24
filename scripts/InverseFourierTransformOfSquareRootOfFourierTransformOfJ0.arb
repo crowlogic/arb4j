@@ -1,0 +1,6 @@
+f
+plot(-10,40,2000,f);
+f.eval(-2.3);
+plot(-10,40,2000,f);
+var f = RealFunction.express("(√(π)*Γ(3/4)*J(1/4, abs(s))*2^(1/4)/abs(s)^(1/4))");
+plot(-10,40,2000,f);
