@@ -20,6 +20,14 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       mercerTheoremForRKHSOnNonCompactSets                          =
+                                                                   new Article("Mercer theorem for RKHS on noncompact sets",
+                                                                               "Hongwei Sun",
+                                                                               "2005",
+                                                                               "Journal of Complexity",
+                                                                               "21",
+                                                                               "337-349");
+
   public static Article       groupsSpecialFunctionsAndRiggedHilbertSpaces                  =
                                                                            new Article("Groups, Special Functions, and Rigged Hilbert Spaces",
                                                                                        "Celeghini, Enrico and Gadella, Manuel and del Olmo, Mariano A",
