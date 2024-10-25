@@ -23,7 +23,7 @@ import javafx.stage.Stage;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Referrences extends
+public class References extends
                          Application
 {
   private TableView<Article>      tableView;
