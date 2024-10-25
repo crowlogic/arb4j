@@ -23,23 +23,8 @@ public class Parser
   { '¼', '½', '¾', '⅐', '⅑', '⅒', '⅓', '⅔', '⅕', '⅖', '⅗', '⅘', '⅙', '⅚', '⅛', '⅜', '⅝', '⅞' };
 
   public static String[]                     fractionConstantFieldNames =
-  { "oneQuarter",
-    "oneHalf",
-    "threeQuarters",
-    "oneSeventh",
-    "oneNineth",
-    "oneTenth",
-    "oneThird",
-    "twoThird",
-    "oneFifth",
-    "twoFifths",
-    "threeFifths",
-    "fourFifths",
-    "oneSixth",
-    "fiveSixths",
-    "oneEight",
-    "threeEights",
-    "fiveEights",
+  { "oneQuarter", "oneHalf", "threeQuarters", "oneSeventh", "oneNineth", "oneTenth", "oneThird", "twoThird", "oneFifth",
+    "twoFifths", "threeFifths", "fourFifths", "oneSixth", "fiveSixths", "oneEight", "threeEights", "fiveEights",
     "sevenEights" };
 
   public static HashMap<Character, Fraction> fractions                  = new HashMap<>();
@@ -73,7 +58,8 @@ public class Parser
     fractions.put('⅞', FractionConstants.sevenEights);
   }
 
-  public static HashSet<String> greekAndBlackLetterChars = new HashSet<String>(Arrays.asList("ℭ",
+  public static HashSet<String> greekAndBlackLetterChars = new HashSet<String>(Arrays.asList("η",
+                                                                                             "ℭ",
                                                                                              "Γ",
                                                                                              "Δ",
                                                                                              "Θ",
@@ -122,23 +108,15 @@ public class Parser
 
   /**
    * <pre>
-   * Ok, let's say you write 1 \u2044 16 (without spaces) as an attempt to display
-   * 1/16 as a fraction glyph. How does the rendering engine know that the fraction 
-   * ends after 16 and not after 1.  That is, how does it know that it's 1/16 and not 
-   * 1/1 followed by a 6? 
+   * "1\u204416" (without spaces) to display 1/16 as a fraction glyph. The rendering  declares the 
+   * fractio has ended when it encounters a character that cannot be part of a fraction, i.e. 
+   * something that is not an ASCII digit. 
    * 
-   * The fraction ends once the text renderer encounters a character that cannot
-   * be part of a fraction, i.e. something that is not an ASCII digit. – 
-   * 
-   * To extend on that question, what if I want to display one and fifteen
-   * sixteenths, rather than one hundred fifteen sixteenths? Is there a unicode character I
-   * can use to  separate the "1" from the "15" so that the rendering engine knows that the
-   * "1" is separate  from the "15⁄16"?  
-   * 
-   * Any zero-width, invisible character will do the trick. 
-   * I personally prefer using U+2064 INVISIBLE PLUS because it was
-   * encoded to represent exactly this type of semantic concept, but something
-   * like U+200C ZERO WIDTH NON-JOINER or U+2060 WORD JOINER will also work
+   * Extending on that, in order to display one and fifteen sixteenths, rather than one hundred 
+   * fifteen sixteenths, Any zero-width, invisible character can be used to separate the "1" from 
+   * the "15" in an expression such as "15⁄16"  because the rendering engine will declare the fraction 
+   * ended when it encounters an invisible symbol such as U+2064 INVISIBLE PLUS, U+200C ZERO WIDTH NON-JOINER, 
+   * or U+2060 WORD JOINER which produces the same result
    * </pre>
    * 
    * @param input
@@ -269,9 +247,9 @@ public class Parser
                            .replace("➔", "");
     // .replace("½", "Half"
 
-    if ( !str.isEmpty() )
+    if (!str.isEmpty())
     {
-    str = (isDigit(str.charAt(0)) ? "_" : "") + str;
+      str = (isDigit(str.charAt(0)) ? "_" : "") + str;
     }
     if (str.length() >= 250)
     {
@@ -320,32 +298,8 @@ public class Parser
   { 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ', 'ₜ' };
 
   public static int[]                    lowercaseSuperscriptAlphabet =
-  { 'ᵃ',
-    'ᵇ',
-    'ᶜ',
-    'ᵈ',
-    'ᵉ',
-    'ᶠ',
-    'ᵍ',
-    'ʰ',
-    'ⁱ',
-    'ʲ',
-    'ᵏ',
-    'ˡ',
-    'ᵐ',
-    'ⁿ',
-    'ᵒ',
-    'ᵖ',
-    0x107A5,
-    'ʳ',
-    'ˢ',
-    'ᵗ',
-    'ᵘ',
-    'ᵛ',
-    'ʷ',
-    'ˣ',
-    'ʸ',
-    'ᶻ' };
+  { 'ᵃ', 'ᵇ', 'ᶜ', 'ᵈ', 'ᵉ', 'ᶠ', 'ᵍ', 'ʰ', 'ⁱ', 'ʲ', 'ᵏ', 'ˡ', 'ᵐ', 'ⁿ', 'ᵒ', 'ᵖ', 0x107A5, 'ʳ', 'ˢ', 'ᵗ', 'ᵘ', 'ᵛ',
+    'ʷ', 'ˣ', 'ʸ', 'ᶻ' };
 
   public static final HashSet<Character> lowercaseSubscriptAlphabet   = new HashSet<
                 Character>(Arrays.asList('ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ', 'ₜ'));
@@ -356,76 +310,12 @@ public class Parser
   { 'ᴬ', 'ᴮ', 'ᴰ', 'ᴱ', 'ᴳ', 'ᴴ', 'ᴵ', 'ᴶ', 'ᴷ', 'ᴸ', 'ᴹ', 'ᴺ', 'ᴼ', 'ᴾ', 'ᴿ', 'ᵀ', 'ᵁ', 'ⱽ', 'ᵂ' };
 
   public static final String[]           superscripts                 =
-  { "ᵃ",
-    "ᵇ",
-    "ᶜ",
-    "ᵈ",
-    "ᵉ",
-    "ᶠ",
-    "ᵍ",
-    "ʰ",
-    "ⁱ",
-    "ʲ",
-    "ᵏ",
-    "ˡ",
-    "ᵐ",
-    "ⁿ",
-    "ᵒ",
-    "ᵖ",
-    String.format("%c", 0x107A5),
-    "ʳ",
-    "ˢ",
-    "ᵗ",
-    "ᵘ",
-    "ᵛ",
-    "ʷ",
-    "ˣ",
-    "ʸ",
-    "ᶻ",
-    "ᵅ",
-    "ᵝ",
-    "ᵞ",
-    "ᵟ",
-    "ᵋ",
-    "ᶿ",
-    "ᵠ",
-    "ᵡ" };
+  { "ᵃ", "ᵇ", "ᶜ", "ᵈ", "ᵉ", "ᶠ", "ᵍ", "ʰ", "ⁱ", "ʲ", "ᵏ", "ˡ", "ᵐ", "ⁿ", "ᵒ", "ᵖ", String.format("%c", 0x107A5), "ʳ",
+    "ˢ", "ᵗ", "ᵘ", "ᵛ", "ʷ", "ˣ", "ʸ", "ᶻ", "ᵅ", "ᵝ", "ᵞ", "ᵟ", "ᵋ", "ᶿ", "ᵠ", "ᵡ" };
 
   public static final String[]           caretNormals                 =
-  { "^a",
-    "^b",
-    "^c",
-    "^d",
-    "^e",
-    "^f",
-    "^g",
-    "^h",
-    "^i",
-    "^j",
-    "^k",
-    "^l",
-    "^m",
-    "^n",
-    "^o",
-    "^p",
-    "^q",
-    "^r",
-    "^s",
-    "^t",
-    "^u",
-    "^v",
-    "^w",
-    "^x",
-    "^y",
-    "^z",
-    "^α",
-    "^β",
-    "^γ",
-    "^δ",
-    "^ε",
-    "^θ",
-    "^φ",
-    "^χ" };
+  { "^a", "^b", "^c", "^d", "^e", "^f", "^g", "^h", "^i", "^j", "^k", "^l", "^m", "^n", "^o", "^p", "^q", "^r", "^s",
+    "^t", "^u", "^v", "^w", "^x", "^y", "^z", "^α", "^β", "^γ", "^δ", "^ε", "^θ", "^φ", "^χ" };
 
   public static final HashSet<Character> superscriptChars             = new HashSet<
                 Character>(Arrays.asList(superscripts).stream().map(s -> s.charAt(0)).toList());
@@ -470,12 +360,12 @@ public class Parser
   {
     StringBuilder result    = new StringBuilder();
     String        numberStr = Integer.toString(number);
-  
+
     for (int i = 0; i < numberStr.length(); i++)
     {
       result.append(Parser.digitToSuperscript(numberStr.charAt(i)));
     }
-  
+
     return result.toString();
   }
 
