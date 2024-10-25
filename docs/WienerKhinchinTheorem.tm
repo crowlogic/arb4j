@@ -3,20 +3,22 @@
 <style|generic>
 
 <\body>
-  The Wiener-Khinchin theorem states that for a translation-invariant kernel
-  K and its spectral density S:
+  The Wiener-Khinchin theorem states that the covariance kernel of a
+  stationary Gaussian process given as function of the distance between
+  points <math|t>
 
   <\equation>
-    K<around|(|x|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*x*t>*S<around|(|t|)>*d*t
+    K<around|(|t|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*t>*S<around|(|\<omega\>|)>*d*\<omega\>
   </equation>
+
+  is the inverse Fourier transform of its power spectral density
 
   <\equation>
-    S<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*x*t>*K<around|(|x|)>*d*x
+    S<around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*\<omega\>*t>*K<around|(|t|)>*d*t
   </equation>
 
-  This shows the duality between stationary kernels and their spectral
-  densities under the Fourier transform, with the
-  <math|1/<around|(|2*\<pi\>|)>> factor in the first equation.
+  which is likewise a function of frequency/momentum defined by the Fourier
+  transform of the covariance kernel function.
 </body>
 
 <\initial>

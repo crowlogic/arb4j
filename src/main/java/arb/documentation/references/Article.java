@@ -49,12 +49,7 @@ public record Article(String title,
                  .replace(",}", "}");
   }
 
-  public Article(String title,
-                 String author,
-                 String year,
-                 String journal,
-                 String volume,
-                 String pages)
+  public Article(String title, String author, String year, String journal, String volume, String pages)
   {
     this(title,
          author,
@@ -63,6 +58,25 @@ public record Article(String title,
          new AtomicReference<>(volume),
          pages,
          new AtomicReference<>(),
+         new AtomicReference<>(),
+         new AtomicReference<>());
+  }
+
+  public Article(String title,
+                 String author,
+                 String year,
+                 String journal,
+                 String volume,
+                 String pages,
+                 String publisher)
+  {
+    this(title,
+         author,
+         year,
+         journal,
+         new AtomicReference<>(volume),
+         pages,
+         new AtomicReference<>(publisher),
          new AtomicReference<>(),
          new AtomicReference<>());
   }

@@ -47,7 +47,7 @@ public class GaussianProcessModeller extends
 
     setupComboBox(kernelComboBox);
     setupComboBox(spectralDensityComboBox);
-    WindowManager.setDarkStyle(scene);
+    WindowManager.setMoreConduciveStyle(scene);
     scene.addEventFilter(KeyEvent.KEY_PRESSED, event ->
     {
       if (event.getCode() == KeyCode.ESCAPE)

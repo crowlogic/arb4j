@@ -20,6 +20,15 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       groupsSpecialFunctionsAndRiggedHilbertSpaces                  =
+                                                                           new Article("Groups, Special Functions, and Rigged Hilbert Spaces",
+                                                                                       "Celeghini, Enrico and Gadella, Manuel and del Olmo, Mariano A",
+                                                                                       "2019",
+                                                                                       "Axioms",
+                                                                                       "3",
+                                                                                       "89",
+                                                                                       "MDPI");
+
   public static Article       bilinearOrthogonalExpansionsAndIntegralOperatorSpectra        =
                                                                                      new Article("Bilinear biorthogonal expansions and the spectrum of an integral operator",
                                                                                                  "Abreu, Lu{\\'\\i}s Daniel and Ciaurri, {\\'O}scar and Varona, Juan Luis",
@@ -45,7 +54,7 @@ public class Bibliography extends
                                                                  "504-536").setNumber("8");
 
   public static Article       besselFunctionFourierLegendreSeries                           =
-                                                                  new Article("The Fourier--Legendre Series of Bessel Functions of the First Kind and the Summed Series Involving 1 F 2 Hypergeometric Functions that Arise from Them",
+                                                                  new Article("The Fourier--Legendre Series of Bessel Functions of the First Kind and the Summed Series Involving 1F2 Hypergeometric Functions that Arise from Them",
                                                                               "Straton, Jack C",
                                                                               "2024",
                                                                               "Axioms",

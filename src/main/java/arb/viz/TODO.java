@@ -120,7 +120,7 @@ public class TODO extends
     Scene scene = new Scene(layout,
                             800,
                             550);
-    WindowManager.setDarkStyle(scene);
+    WindowManager.setMoreConduciveStyle(scene);
     scene.addEventFilter(KeyEvent.KEY_PRESSED, event ->
     {
       if (event.getCode() == KeyCode.ESCAPE)

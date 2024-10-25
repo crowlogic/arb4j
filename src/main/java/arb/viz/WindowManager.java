@@ -50,7 +50,7 @@ public class WindowManager
     Thread.setDefaultUncaughtExceptionHandler(WindowManager::showError);
   }
 
-  public static final String EASIER_ON_THE_EYES_STYLESHEET = ".scroll-bar .thumb {\n"
+  public static final String MORE_CONDUCIVE_STYLESHEET = ".scroll-bar .thumb {\n"
                                                              + "    -fx-background-color: #808080; /* Change this to your desired thumb color */\n"
                                                              + "}\n"
                                                              + "\n"
@@ -98,9 +98,9 @@ public class WindowManager
     return "data:text/css;base64," + encoded;
   }
 
-  public static void setDarkStyle(Scene scene)
+  public static void setMoreConduciveStyle(Scene scene)
   {
-    scene.getStylesheets().add(convertStylesheetToDataURI(EASIER_ON_THE_EYES_STYLESHEET));
+    scene.getStylesheets().add(convertStylesheetToDataURI(MORE_CONDUCIVE_STYLESHEET));
   }
 
   private static XDO    xdo;
@@ -213,14 +213,6 @@ public class WindowManager
     System.err.format("Could not find resource: %s\n");
     System.out.println("Classpath: " + System.getProperty("java.class.path"));
     System.out.println("Module path: " + System.getProperty("jdk.module.path"));
-  }
-
-  public static ScrollBar getVirtualFlowScrollbar(VirtualFlow<?> tableVirtualFlow,
-                                                  boolean horizontal) throws IllegalAccessException,
-                                                                      NoSuchFieldException
-  {
-    var scrollbar = horizontal ? "hbar" : "vbar";
-    return (ScrollBar) getVirtualFlowField(scrollbar).get(tableVirtualFlow);
   }
 
   public static Field getVirtualFlowField(String fieldName) throws NoSuchFieldException
