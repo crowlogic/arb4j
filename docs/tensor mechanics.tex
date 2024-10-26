@@ -1,0 +1,37 @@
+\documentclass{article}
+\usepackage{amsmath, amsthm, amssymb}
+
+\begin{document}
+
+\section{Rigorous Definition of the Tensor Structure Function}
+
+Let $(\Omega, \mathcal{F}, P)$ be a complete probability space where $\Omega$ represents the sample space, $\mathcal{F}$ is a $\sigma$-algebra on $\Omega$, and $P: \mathcal{F} \to [0,1]$ is the associated probability measure.
+
+On a smooth manifold $M$ with its Borel $\sigma$-algebra $\mathcal{B}(M)$, we consider tensor fields taking values in the n-fold tensor product space $V^{\otimes n}$ of a finite-dimensional real vector space $V$.
+
+A tensor-valued random field $T: M \times \Omega \to V^{\otimes n}$ provides the foundation for our structure function, where measurability requires that $T(x,\cdot): \Omega \to V^{\otimes n}$ is $\mathcal{F}$-measurable for each $x \in M$.
+
+The tensor structure function $D: M \times M \to V^{\otimes n} \otimes V^{\otimes n}$ captures the statistical relationship between tensor values at different points through:
+
+\begin{equation}
+D_{ij}(x_1,x_2) = E[(T_i(x_1,\omega) - T_i(x_2,\omega))(T_j(x_1,\omega) - T_j(x_2,\omega))], \quad i,j \in \{1,\ldots,\dim V^{\otimes n}\}
+\end{equation}
+
+This function satisfies positive definiteness through:
+\begin{equation}
+\sum_{i=1}^{\dim V^{\otimes n}} \sum_{j=1}^{\dim V^{\otimes n}} \xi^i\xi^jD_{ij}(x_1,x_2) \geq 0, \quad \forall \xi \in V^{\otimes n}
+\end{equation}
+
+The symmetry property manifests as:
+\begin{equation}
+D_{ij}(x_1,x_2) = D_{ji}(x_1,x_2), \quad \forall i,j \in \{1,\ldots,\dim V^{\otimes n}\}
+\end{equation}
+
+These properties together ensure that $D$ induces a well-defined measure $\mu_D$ on $(M \times M, \mathcal{B}(M) \otimes \mathcal{B}(M))$ through:
+\begin{equation}
+\mu_D(A \times B) = \int\limits_{(x_1,x_2) \in A \times B} \text{tr}(D(x_1,x_2)) \, d\lambda(x_1)d\lambda(x_2)
+\end{equation}
+
+where $\lambda$ denotes the appropriate reference measure on $M$, typically the Lebesgue measure when $M \subseteq \mathbb{R}^d$.
+
+\end{document}
