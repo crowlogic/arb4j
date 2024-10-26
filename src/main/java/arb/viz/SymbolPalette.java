@@ -92,7 +92,7 @@ public class SymbolPalette extends
     addAliases("α", "alpha");
     addAliases("β", "beta");
 
-    addAliases("⁄", "fraction", "slash", "div", "frac","ratio");
+    addAliases("⁄", "fraction", "slash", "div", "frac", "ratio");
 
     addAliases("ⁱ", "supi");
     addAliases("ⁿ", "supn");
@@ -168,6 +168,7 @@ public class SymbolPalette extends
     // Greek Letters (uppercase and lowercase together)
     addAliases("Γ γ", "gamma");
     addAliases("Δ δ", "delta");
+    addAliases("η", "eta");
     addAliases("Θ θ", "theta");
     addAliases("Λ λ", "lambda");
     addAliases("Ξ ξ", "xi");
@@ -186,7 +187,8 @@ public class SymbolPalette extends
     addAliases("ϖ", "pi");
     addAliases("ϰ", "kappa");
     addAliases("ϱ", "rho");
-
+    addAliases("𝜏", "tau");
+    
     // Mathematical Symbols
     addAliases("∫", "integral", "int");
     addAliases("∂", "partial", "del");
@@ -347,6 +349,8 @@ public class SymbolPalette extends
     clearButton.setOnAction(e -> clearInput());
 
     buttonPane = new FlowPane();
+
+    Arrays.sort(characters, (a, b) -> a.compareTo(b));
 
     for (String character : characters)
     {
