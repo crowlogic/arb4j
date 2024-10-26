@@ -1,4 +1,6 @@
 
+
+
 \documentclass{article}
 \usepackage{amsmath, amssymb, amsthm}
 \usepackage{mathtools}
@@ -85,6 +87,20 @@ Combining these steps and using uniform convergence of the product:
 \end{equation}
 
 Which is our original counting function, verifying the equivalence.
+
+
+\section*{Commentary on Mathematical Structure}
+The appearance of $\epsilon$ within the Bessel function $J_0(\epsilon r)$ in this regularization is not merely a computational convenience, but reveals deep connections to the Hankel transform and the underlying structure of phase space. This formulation naturally emerges from Fourier duality principles and the representation theory of the Heisenberg group. The scaling behavior introduced by $\epsilon$ in $J_0(\epsilon r)$ in frequency space, combined with the phase information in the exponential term, respects the fundamental symmetries of phase space. Specifically, the Heisenberg group structure manifests through the canonical commutation relations:
+\begin{equation}
+    [X,P] = i\hbar I
+\end{equation}
+which is preserved under the Fourier transform:
+\begin{equation}
+    \mathcal{F}[xf(x)](p) = i\hbar\frac{d}{dp}\mathcal{F}[f(x)](p)
+\end{equation}
+The scaling parameter $\epsilon$ in $J_0(\epsilon r)$ then acts as a resolution parameter in this dual space, analogous to $\hbar$ in the quantum mechanical setting. What initially appeared as a technical necessity for convergence (since the integral diverges when $\epsilon = 0$) actually illuminates the profound mathematical structure governing the counting function. The regularization through the scaled Bessel function $J_0(\epsilon r)$ provides exactly the right kind of "uncertainty principle" behavior that aligns with these natural symmetries of the Heisenberg group and the radial structure of phase space transformations.
+
+
 
 \end{document}
 
