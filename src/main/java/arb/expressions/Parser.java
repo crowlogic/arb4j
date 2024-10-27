@@ -58,7 +58,7 @@ public class Parser
     fractions.put('⅞', FractionConstants.sevenEights);
   }
 
-  public static HashSet<String> greekAndBlackLetterChars = new HashSet<String>(Arrays.asList("η",
+  public static HashSet<String> greekAndBlackLetterChars = new HashSet<String>(Arrays.asList("𝜏",
                                                                                              "ℭ",
                                                                                              "Γ",
                                                                                              "Δ",

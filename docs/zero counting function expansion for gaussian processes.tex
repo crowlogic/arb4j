@@ -1,0 +1,81 @@
+
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+
+\begin{document}
+
+\section{Zero Counting Function via Regularized Transform}
+
+\subsection{Forward Proof}
+Starting with our counting function with KL expansion and its equivalent Hankel transform representation:
+\begin{equation}
+\begin{split}
+    N(T) &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \int_0^T \int_{-\infty}^{\infty} J_0(\epsilon r)|r| \exp\left(-ir\sum_{n=1}^{\infty} Z_n \sqrt{\lambda_n} \phi_n(t)\right) dr dt \\
+    &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \int_0^T \mathcal{H}_{0,r\to\epsilon}\left[\exp\left(-ir\sum_{n=1}^{\infty} Z_n \sqrt{\lambda_n} \phi_n(t)\right)\right] dt
+\end{split}
+\end{equation}
+where $\mathcal{H}_{0,r\to s}[f] = \int_0^\infty rf(r)J_0(sr)dr$
+
+By Fubini's theorem:
+\begin{equation}
+\begin{split}
+    N(T) &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \int_0^T \mathcal{H}_{0,r\to\epsilon}\left[\exp\left(-ir\sum_{n=1}^{\infty} Z_n \sqrt{\lambda_n} \phi_n(t)\right)\right] dt \\
+    &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \int_0^T \int_{-\infty}^{\infty} J_0(\epsilon r)|r| \exp\left(-ir\sum_{n=1}^{\infty} Z_n \sqrt{\lambda_n} \phi_n(t)\right) dr dt \\
+    &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \mathcal{H}_{0,r\to\epsilon}\left[\exp\left(-ir\sum_{n=1}^{\infty} Z_n \sqrt{\lambda_n} \int_0^T \phi_n(t) dt\right)\right] \\
+    &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \int_{-\infty}^{\infty} J_0(\epsilon r)|r| \exp\left(-ir\sum_{n=1}^{\infty} Z_n \sqrt{\lambda_n} \int_0^T \phi_n(t) dt\right) dr
+\end{split}
+\end{equation}
+
+Using the integral representation of $J_0$ and substituting:
+\begin{equation}
+\begin{split}
+    N(T) &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \int_{-\infty}^{\infty} |r| \left(\frac{1}{2\pi} \int_0^{2\pi} e^{i\epsilon r\cos\theta} d\theta\right) \exp\left(-ir\sum_{n=1}^{\infty} Z_n \sqrt{\lambda_n} \int_0^T \phi_n(t) dt\right) dr \\
+    &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \int_0^{2\pi} \int_{-\infty}^{\infty} |r| e^{ir(\epsilon\cos\theta - \sum_{n=1}^{\infty} Z_n \sqrt{\lambda_n} \int_0^T \phi_n(t) dt)} dr d\theta
+\end{split}
+\end{equation}
+
+The inner integral evaluates to:
+\begin{equation}
+    \int_{-\infty}^{\infty} |r| e^{ir(\epsilon\cos\theta - \sum_{n=1}^{\infty} Z_n \sqrt{\lambda_n} \int_0^T \phi_n(t) dt)} dr = \frac{2}{(\epsilon\cos\theta - \sum_{n=1}^{\infty} Z_n \sqrt{\lambda_n} \int_0^T \phi_n(t) dt)^2}
+\end{equation}
+
+Therefore:
+\begin{equation}
+\begin{split}
+    N(T) &= \lim_{\epsilon \to 0} \frac{1}{\pi} \int_0^{2\pi} \frac{1}{(\epsilon\cos\theta - \sum_{n=1}^{\infty} Z_n \sqrt{\lambda_n} \int_0^T \phi_n(t) dt)^2} d\theta \\
+    &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \frac{1}{((\sum_{n=1}^{\infty} Z_n \sqrt{\lambda_n} \int_0^T \phi_n(t) dt)^2 + \epsilon^2)^{3/2}}
+\end{split}
+\end{equation}
+
+\subsection{Reverse Verification}
+Starting from our final form and working backwards through the Hankel transform structure:
+\begin{equation}
+\begin{split}
+    N(T) &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \frac{1}{((\sum_{n=1}^{\infty} Z_n \sqrt{\lambda_n} \int_0^T \phi_n(t) dt)^2 + \epsilon^2)^{3/2}} \\
+    &= \lim_{\epsilon \to 0} \frac{1}{\pi} \int_0^{2\pi} \frac{1}{(\epsilon\cos\theta - \sum_{n=1}^{\infty} Z_n \sqrt{\lambda_n} \int_0^T \phi_n(t) dt)^2} d\theta \\
+    &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \mathcal{H}_{0,r\to\epsilon}\left[\exp\left(-ir\sum_{n=1}^{\infty} Z_n \sqrt{\lambda_n} \int_0^T \phi_n(t) dt\right)\right] \\
+    &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \int_{-\infty}^{\infty} J_0(\epsilon r)|r| \exp\left(-ir\sum_{n=1}^{\infty} Z_n \sqrt{\lambda_n} \int_0^T \phi_n(t) dt\right) dr
+\end{split}
+\end{equation}
+
+By Fubini's theorem:
+\begin{equation}
+\begin{split}
+    N(T) &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \int_0^T \mathcal{H}_{0,r\to\epsilon}\left[\exp\left(-ir\sum_{n=1}^{\infty} Z_n \sqrt{\lambda_n} \phi_n(t)\right)\right] dt \\
+    &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \int_0^T \int_{-\infty}^{\infty} J_0(\epsilon r)|r| \exp\left(-ir\sum_{n=1}^{\infty} Z_n \sqrt{\lambda_n} \phi_n(t)\right) dr dt
+\end{split}
+\end{equation}
+
+Which is our original counting function, verifying the equivalence.
+
+\section*{Commentary on Mathematical Structure}
+The appearance of $\epsilon$ within the Bessel function $J_0(\epsilon r)$ in this regularization is not merely a computational convenience, but reveals deep connections to the Hankel transform $\mathcal{H}_{0,r\to\epsilon}$ and the underlying structure of phase space. This formulation naturally emerges from Fourier duality principles and the representation theory of the Heisenberg group. The scaling behavior introduced by $\epsilon$ in $J_0(\epsilon r)$ in frequency space, combined with the phase information in the exponential term, respects the fundamental symmetries of phase space. Specifically, the Heisenberg group structure manifests through the canonical commutation relations:
+\begin{equation}
+    [X,P] = i\hbar I = \mathcal{F}[xf(x)](p) = i\hbar\frac{d}{dp}\mathcal{F}[f(x)](p)
+\end{equation}
+The scaling parameter $\epsilon$ in $J_0(\epsilon r)$ then acts as a resolution parameter in this dual space, analogous to $\hbar$ in the quantum mechanical setting. What initially appeared as a technical necessity for convergence (since the integral diverges when $\epsilon = 0$) actually illuminates the profound mathematical structure governing the counting function. The regularization through the scaled Bessel function $J_0(\epsilon r)$ provides exactly the right kind of "uncertainty principle" behavior that aligns with these natural symmetries of the Heisenberg group and the radial structure of phase space transformations.
+
+\end{document}
+
+
