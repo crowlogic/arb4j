@@ -1,4 +1,3 @@
-
 \documentclass{article}
 \usepackage{amsmath, amssymb, amsthm}
 \usepackage{mathtools}
@@ -10,10 +9,7 @@
 \subsection{Theorem Statement and Preliminaries}
 Let $\{X_t\}_{t\in[0,\infty)}$ be a real-valued centered Gaussian process with continuous sample paths and covariance operator $K$ which is compact relative to the canonical metric induced by its kernel. The operator $K$ is not required to be trace class. 
 
-The canonical metric $d$ on $[0,\infty)$ is given by:
-\begin{equation}
-    d^2(s,t) = K(s,s) + K(t,t) - 2K(s,t)
-\end{equation}
+The canonical metric $d$ on $[0,\infty)$ is given by: \begin{equation} d(s,t) = \sqrt{K(s,s) + K(t,t) - 2K(s,t)} \end{equation}
 
 Compactness relative to the canonical metric is characterized by the finiteness of Dudley's metric entropy integral:
 \begin{equation}
@@ -87,5 +83,3 @@ Therefore:
 The appearance of $\epsilon$ within the Bessel function $J_0(\epsilon r)$ in this regularization reveals deep connections to the Hankel transform $\mathcal{H}_{0,r\to\epsilon}$ and the underlying structure of phase space. The scaling parameter $\epsilon$ acts as a resolution parameter in the dual space, providing the necessary regularization for the counting function while respecting the fundamental symmetries of the space.
 
 \end{document}
-
-
