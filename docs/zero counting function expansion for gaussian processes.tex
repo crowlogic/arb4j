@@ -19,7 +19,15 @@ Compactness relative to the canonical metric is characterized by the finiteness 
 \begin{equation}
     \int_0^1 \sqrt{\log N(\varepsilon,B_T,d)} \, d\varepsilon < \infty
 \end{equation}
-where $N(\varepsilon,B_T,d)$ is the covering number - the minimal number of $\varepsilon$-balls needed to cover any bounded set $B_T = [0,T]$ under the metric $d$. The upper limit of integration is 1 because functions in the reproducing kernel Hilbert space (RKHS) have norm bounded by 1, making this the maximum possible error in the canonical metric.
+where the covering number $N(\varepsilon,B_T,d)$ can be expressed as:
+\begin{equation}
+    N(\varepsilon,B_T,d) = \sup_{t \in B_T} \inf\{n : \exists \{x_1,\ldots,x_n\} \subset B_T \text{ s.t. } \bigcup_{i=1}^n B_d(x_i,\varepsilon) \supseteq B_T\}
+\end{equation}
+This number admits an upper bound in terms of the eigenvalues (Dudley, 1999)\footnote{Dudley, R. M. (1999). Uniform Central Limit Theorems. Cambridge University Press.}:
+\begin{equation}
+    N(\varepsilon,B_T,d) \leq \min\{n \in \mathbb{N} : \lambda_n < \varepsilon^2\}
+\end{equation}
+where $\{\lambda_n\}$ are the eigenvalues of $K$. The upper limit of integration is 1 because functions in the reproducing kernel Hilbert space (RKHS) have norm bounded by 1, making this the maximum possible error in the canonical metric.
 
 The process admits two equivalent representations through the Karhunen-Loève expansion:
 
@@ -79,4 +87,5 @@ Therefore:
 The appearance of $\epsilon$ within the Bessel function $J_0(\epsilon r)$ in this regularization reveals deep connections to the Hankel transform $\mathcal{H}_{0,r\to\epsilon}$ and the underlying structure of phase space. The scaling parameter $\epsilon$ acts as a resolution parameter in the dual space, providing the necessary regularization for the counting function while respecting the fundamental symmetries of the space.
 
 \end{document}
+
 
