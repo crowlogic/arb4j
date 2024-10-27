@@ -178,10 +178,10 @@ public class Bibliography extends
   public static Article       isotropicCharacteristicFunctions                              =
                                                                new Article("A Class of Isotropic Distributions in $\\mathbb{R}_n$ and Their Characteristic Functions",
                                                                            "Simeon M. Berman",
+                                                                           "1978",
                                                                            "Pacific Journal of Mathematics",
                                                                            "78",
-                                                                           "No. 1",
-                                                                           "1978");
+                                                                           "No. 1");
 
   public static Book          besselFunctionTreatise                                        =
                                                      new Book("A Treatise on the Theory of Bessel Functions",
@@ -256,10 +256,10 @@ public class Bibliography extends
   public static Article       lommelAndBesselPolynomials                                    =
                                                          new Article("On Lommel and Bessel polynomials",
                                                                      "David Dickinson",
+                                                                     "1954",
                                                                      "Proceedings of the American Mathematical Society",
                                                                      "5",
-                                                                     "946-956",
-                                                                     "1954");
+                                                                     "946-956");
 
   public static Book          oneParameterSemigroups                                        =
                                                      new Book("One-Parameter Semigroups",
