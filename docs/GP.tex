@@ -1,31 +1,34 @@
-
 \documentclass{article}
 \usepackage{amsmath}
 \usepackage{amsthm}
+\usepackage{amssymb}
 
 \begin{document}
 
-\title{Variance Structure and Canonical Metric for Real-Valued Gaussian Processes}
+\title{Variance Structure and Canonical Metric for\\Real-Valued Gaussian Processes}
 \author{}
 \date{}
 \maketitle
 
-For a real-valued Gaussian process $\{X_t\}_{t \in T}$ on probability space $(\Omega, \mathcal{F}, \mathbb{P})$ where $\mathcal{F} = \mathcal{B}(\Omega)$ is the Borel $\sigma$-algebra, the covariance function is:
-\[
-R(s,t) = \mathbb{E}[(X_s - \mathbb{E}[X_s])(X_t - \mathbb{E}[X_t])] = \int_\Omega (X_s(\omega) - \mathbb{E}[X_s])(X_t(\omega) - \mathbb{E}[X_t]) \, d\mathbb{P}(\omega)
-\]
+\noindent For a real-valued Gaussian process $\{X_t\}_{t \in \mathbb{R}}$:
 
-The variance structure function measures the variance between points separated by a given distance:
-\[
-v(s,t) = \mathbb{E}[(X_s - X_t)^2] = \int_\Omega (X_s(\omega) - X_t(\omega))^2 \, d\mathbb{P}(\omega) = R(s,s) + R(t,t) - 2R(s,t) = \lim_{|\pi| \to 0} \sum_{i=1}^n (X_{t_i} - X_{t_{i-1}})^2
-\]
-where $\pi = \{t_i \in [s,t] : t_i < t_{i+1}\}$ is a partition of $[s,t]$ with $t_0 = s$ and $t_n = t$. For real-valued processes, the variance structure and covariance functions uniquely determine each other.
+\begin{align*}
+R(s,t) &= \mathbb{E}[(X_s - \mathbb{E}[X_s])(X_t - \mathbb{E}[X_t])] \\
+&= \int_{-\infty}^{\infty}\int_{-\infty}^{\infty} (X_u - \mathbb{E}[X_u])(X_v - \mathbb{E}[X_v]) \, dudv \\
+&= \lim_{n \to \infty} \sum_{i=1}^n (X_{t_i} - \mathbb{E}[X_{t_i}])(X_{t_{i+1}} - \mathbb{E}[X_{t_{i+1}}]) \\
+&= \frac{1}{2}(v(s,s) + v(t,t) - v(s,t))
+\end{align*}
 
-The canonical metric is the square root of the variance structure:
-\[
-d(s,t) = \sqrt{\mathbb{E}[(X_s - X_t)^2]} = \sqrt{\int_\Omega (X_s(\omega) - X_t(\omega))^2 \, d\mathbb{P}(\omega)} = \sqrt{R(s,s) + R(t,t) - 2R(s,t)}
-\]
+\begin{align*}
+v(s,t) &= \mathbb{E}[(X_s - X_t)^2] \\
+&= \int_{-\infty}^{\infty}\int_{-\infty}^{\infty} (X_u - X_v)^2 \, dudv \\
+&= R(s,s) + R(t,t) - 2R(s,t) \\
+&= \lim_{n \to \infty} \sum_{i=1}^n (X_{t_i} - X_{t_{i-1}})^2
+\end{align*}
+where $t_i = s + i(\frac{t-s}{n})$ for $i \in \{1,\ldots,n\}$.
+
+\begin{align*}
+d(s,t) &= \sqrt{v(s,t)} = \sqrt{\mathbb{E}[(X_s - X_t)^2]} = \sqrt{R(s,s) + R(t,t) - 2R(s,t)}
+\end{align*}
 
 \end{document}
-
-
