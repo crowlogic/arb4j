@@ -20,6 +20,24 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       gauntCoeffecientsSphericalHarmonicsRecurrenceRelation         =
+                                                                                    new Article("Evaluation of the Gaunt Coefficients by Using Recurrence Relations for Spherical Harmonics",
+                                                                                                "{\\\"O}zay, Selda",
+                                                                                                "2023",
+                                                                                                "S{\\\"u}leyman Demirel University Faculty of Arts and Science Journal of Science",
+                                                                                                "18",
+                                                                                                "3",
+                                                                                                "213--222");
+
+  public static Article       rkhsTutorialSurvey                                            =
+                                                 new Article("Reproducing Kernel Hilbert Space, Mercer's Theorem, Eigenfunctions, Nystr\\\"om Method, and Use of Kernels in Machine Learning: Tutorial and Survey",
+                                                             "Benyamin Ghojogh and Ali Ghodsi and Fakhri Karray and Mark Crowley",
+                                                             "2021",
+                                                             "https://arxiv.org/abs/2106.08443",
+                                                             "",
+                                                             "",
+                                                             "");
+
   public static Article       mercerTheoremForRKHSOnNonCompactSets                          =
                                                                    new Article("Mercer theorem for RKHS on noncompact sets",
                                                                                "Hongwei Sun",
@@ -42,7 +60,7 @@ public class Bibliography extends
                                                                                                  "Abreu, Lu{\\'\\i}s Daniel and Ciaurri, {\\'O}scar and Varona, Juan Luis",
                                                                                                  "2009",
                                                                                                  "Pr{\\'e}-Publica{\\c{c}}{\\~o}es DMUC",
-                                                                                                 "2408.08064",
+                                                                                                 "",
                                                                                                  "").setNumber("09-32");
 
   public static Article       theRayleighRitzMethodForIntegralCovarianceOperatorEigenspaces =
@@ -178,10 +196,10 @@ public class Bibliography extends
   public static Article       isotropicCharacteristicFunctions                              =
                                                                new Article("A Class of Isotropic Distributions in $\\mathbb{R}_n$ and Their Characteristic Functions",
                                                                            "Simeon M. Berman",
+                                                                           "1978",
                                                                            "Pacific Journal of Mathematics",
                                                                            "78",
-                                                                           "No. 1",
-                                                                           "1978");
+                                                                           "No. 1");
 
   public static Book          besselFunctionTreatise                                        =
                                                      new Book("A Treatise on the Theory of Bessel Functions",
@@ -256,10 +274,10 @@ public class Bibliography extends
   public static Article       lommelAndBesselPolynomials                                    =
                                                          new Article("On Lommel and Bessel polynomials",
                                                                      "David Dickinson",
+                                                                     "1954",
                                                                      "Proceedings of the American Mathematical Society",
                                                                      "5",
-                                                                     "946-956",
-                                                                     "1954");
+                                                                     "946-956");
 
   public static Book          oneParameterSemigroups                                        =
                                                      new Book("One-Parameter Semigroups",

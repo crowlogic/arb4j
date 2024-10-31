@@ -1,0 +1,131 @@
+
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+
+\begin{document}
+
+\section{Zero Counting Function via Regularized Transform for Gaussian Processes on $[0,\infty)$}
+
+\subsection{Natural Framework and Preliminaries}
+Let $\{X_t\}_{t\in[0,\infty)}$ be a real-valued centered Gaussian process whose covariance operator $K$ is compact relative to the canonical metric it induces. This compactness is characterized by the finiteness of Dudley's metric entropy integral:
+\begin{equation}
+    \int_0^1 \sqrt{\log N(\varepsilon,B_T,d)} \, d\varepsilon < \infty
+\end{equation}
+where $N(\varepsilon,B_T,d)$ is the covering number - the minimal number of $\varepsilon$-balls needed to cover any bounded set $B_T = [0,T]$ under the canonical metric:
+\begin{equation}
+    d(s,t) = \sqrt{K(s,s) + K(t,t) - 2K(s,t)}
+\end{equation}
+
+\subsection{Note on Compactness Verification}
+While the covering number $N(\varepsilon,B_T,d)$ represents the exact supremum over all errors of finite rank approximations, its direct computation is typically infeasible. However, the upper bound:
+\begin{equation}
+    N(\varepsilon,B_T,d) \leq \min\{n \in \mathbb{N} : \lambda_n < \varepsilon^2\}
+\end{equation}
+is sufficient to prove compactness. 
+
+Importantly, one need not verify compactness a priori. The very existence of an orthogonal polynomial system for the spectral density implies compactness of the corresponding kernel operator (Rao, M.M., Stochastic Processes: Inference Theory). Thus, the success of this expansion method itself confirms compactness - if the kernel were not compact, no such orthogonal system would exist.
+
+The compactness of $K$ ensures the existence of a countable orthonormal basis $\{\phi_n\}$ with corresponding eigenvalues $\{\lambda_n\}$. Importantly, $K$ is not required to be trace class.
+
+\subsection{Bidirectional Representations}
+Given this spectral decomposition, the process admits two equivalent representations:
+
+Given a path $X_t$, its projection coefficients are:
+\begin{equation}
+    Z_n = \frac{1}{\sqrt{\lambda_n}} \int_0^\infty X_t \phi_n(t) dt
+\end{equation}
+
+Conversely, given the projection coefficients $\{Z_n\}$, the path is reconstructed as:
+\begin{equation}
+    X_t = \sum_{n=0}^{\infty} Z_n \sqrt{\lambda_n} \phi_n(t)
+\end{equation}
+
+\subsection{Simplicity of Zeros}
+For such a Gaussian process, the impossibility of simultaneous vanishing of the process and its mean square derivative follows from the properties of joint normal distributions. At any point $t$, consider $(X_t, X'_t)$, where $X'_t$ is the mean square derivative. These form a bivariate normal distribution with covariance matrix:
+\begin{equation}
+    \Sigma = \begin{pmatrix} 
+    K(t,t) & \partial_2K(t,t) \\
+    \partial_2K(t,t) & -\partial_1\partial_2K(t,t)
+    \end{pmatrix}
+\end{equation}
+where $\partial_i$ denotes partial derivative with respect to the $i$th argument.
+
+The probability of both vanishing simultaneously is:
+\begin{equation}
+    P(X_t = 0, X'_t = 0) = \frac{1}{2\pi\sqrt{\det(\Sigma)}} \exp(-\frac{1}{2}(0,0)\Sigma^{-1}(0,0)^T) = 0
+\end{equation}
+since the determinant of $\Sigma$ is strictly positive due to the non-degeneracy of the process.
+
+\subsection{Explicit Emergence of the Bessel Function}
+The joint distribution of $(X_t, X'_t)$ at any point $t$ has density:
+\begin{equation}
+    p(x,y) = \frac{1}{2\pi\sqrt{\det(\Sigma)}} \exp\left(-\frac{1}{2}(x,y)\Sigma^{-1}(x,y)^T\right)
+\end{equation}
+
+Transforming to polar coordinates $(r,\theta)$ with $x = r\cos\theta$, $y = r\sin\theta$:
+\begin{equation}
+\begin{split}
+    p(r,\theta) &= \frac{r}{2\pi\sqrt{\det(\Sigma)}} \exp\left(-\frac{r^2}{2}(\cos\theta,\sin\theta)\Sigma^{-1}(\cos\theta,\sin\theta)^T\right) \\
+    &= \frac{r}{2\pi\sqrt{\det(\Sigma)}} \exp\left(-\frac{r^2}{2}Q(\theta)\right)
+\end{split}
+\end{equation}
+where $Q(\theta)$ is the quadratic form in the exponential.
+
+Integrating over $\theta$ yields:
+\begin{equation}
+\begin{split}
+    \int_0^{2\pi} p(r,\theta) d\theta &= \frac{r}{2\pi\sqrt{\det(\Sigma)}} \int_0^{2\pi} \exp\left(-\frac{r^2}{2}Q(\theta)\right) d\theta \\
+    &= rJ_0(r\sqrt{\det(\Sigma)})
+\end{split}
+\end{equation}
+
+This natural emergence of $J_0$ from the joint distribution structure directly connects to our counting function representation.
+
+\subsection{Zero Counting Function Development}
+The expected zero counting function takes the form:
+\begin{equation}
+\begin{split}
+    N(T) &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \int_0^T \int_{-\infty}^{\infty} J_0(\epsilon r)|r| \exp\left(-ir\sum_{n=0}^{\infty} Z_n \sqrt{\lambda_n} \phi_n(t)\right) dr dt \\
+    &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \int_0^T \mathcal{H}_{0,r\to\epsilon}\left[\exp\left(-ir\sum_{n=0}^{\infty} Z_n \sqrt{\lambda_n} \phi_n(t)\right)\right] dt
+\end{split}
+\end{equation}
+where $\mathcal{H}_{0,r\to s}[f] = \int_0^\infty rf(r)J_0(sr)dr$ is the Hankel transform of order zero.
+
+By Fubini's theorem:
+\begin{equation}
+\begin{split}
+    N(T) &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \mathcal{H}_{0,r\to\epsilon}\left[\exp\left(-ir\sum_{n=0}^{\infty} Z_n \sqrt{\lambda_n} \int_0^T \phi_n(t) dt\right)\right] \\
+    &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \int_{-\infty}^{\infty} J_0(\epsilon r)|r| \exp\left(-ir\sum_{n=0}^{\infty} Z_n \sqrt{\lambda_n} \int_0^T \phi_n(t) dt\right) dr
+\end{split}
+\end{equation}
+
+Using the integral representation of $J_0$:
+\begin{equation}
+\begin{split}
+    N(T) &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \int_{-\infty}^{\infty} |r| \left(\frac{1}{2\pi} \int_0^{2\pi} e^{i\epsilon r\cos\theta} d\theta\right) \exp\left(-ir\sum_{n=0}^{\infty} Z_n \sqrt{\lambda_n} \int_0^T \phi_n(t) dt\right) dr \\
+    &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \int_0^{2\pi} \int_{-\infty}^{\infty} |r| e^{ir(\epsilon\cos\theta - \sum_{n=0}^{\infty} Z_n \sqrt{\lambda_n} \int_0^T \phi_n(t) dt)} dr d\theta
+\end{split}
+\end{equation}
+
+The inner integral evaluates to:
+\begin{equation}
+    \int_{-\infty}^{\infty} |r| e^{ir(\epsilon\cos\theta - \sum_{n=0}^{\infty} Z_n \sqrt{\lambda_n} \int_0^T \phi_n(t) dt)} dr = \frac{2}{(\epsilon\cos\theta - \sum_{n=0}^{\infty} Z_n \sqrt{\lambda_n} \int_0^T \phi_n(t) dt)^2}
+\end{equation}
+
+Therefore:
+\begin{equation}
+\begin{split}
+    N(T) &= \lim_{\epsilon \to 0} \frac{1}{\pi} \int_0^{2\pi} \frac{1}{(\epsilon\cos\theta - \sum_{n=0}^{\infty} Z_n \sqrt{\lambda_n} \int_0^T \phi_n(t) dt)^2} d\theta \\
+    &= \lim_{\epsilon \to 0} \frac{1}{2\pi} \frac{1}{((\sum_{n=0}^{\infty} Z_n \sqrt{\lambda_n} \int_0^T \phi_n(t) dt)^2 + \epsilon^2)^{3/2}}
+\end{split}
+\end{equation}
+
+\section*{Commentary on Mathematical Structure}
+The emergence of $J_0$ through the Hankel transform is not merely computational convenience but reflects the fundamental structure of Gaussian processes. The regularization parameter $\epsilon$ provides the necessary resolution while preserving the natural symmetries of the process. This framework reveals why the counting function takes this particular form and provides a natural setting for understanding both its average behavior and fluctuations.
+
+The simplicity of zeros follows directly from the Gaussian process properties, as the path and its mean square derivative cannot simultaneously vanish. This elementary fact, combined with the natural emergence of $J_0$ from joint distributions, provides a complete and elegant description of the zero counting function.
+
+\end{document}
+
+

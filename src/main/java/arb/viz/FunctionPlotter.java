@@ -87,7 +87,7 @@ public class FunctionPlotter extends
 
     if (darkStyle)
     {
-      scene.getStylesheets().add("dark-theme.css");
+      WindowManager.setMoreConduciveStyle(scene);
     }
     stage.setTitle(this.getClass().getSimpleName());
     stage.setScene(scene);
