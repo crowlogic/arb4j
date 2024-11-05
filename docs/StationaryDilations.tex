@@ -1,0 +1,132 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amssymb,theorem}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+{\theorembodyfont{\rmfamily}\newtheorem{remark}{Remark}}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\section{Stationary Dilations}
+
+\begin{definition}
+  Let $(\Omega, \mathcal{F}, P)$ and $(\tilde{\Omega}, \tilde{\mathcal{F}},
+  \tilde{P})$ be probability spaces. We say that $(\Omega, \mathcal{F}, P)$ is
+  a factor of $(\tilde{\Omega}, \tilde{\mathcal{F}}, \tilde{P})$ if there
+  exists a measurable surjective map $\phi : \tilde{\Omega} \to \Omega$ such
+  that:
+  \begin{enumerate}
+    \item For all $A \in \mathcal{F}$, $\phi^{- 1} (A) \in
+    \tilde{\mathcal{F}}$
+    
+    \item For all $A \in \mathcal{F}$, $P (A) = \tilde{P} (\phi^{- 1} (A))$
+  \end{enumerate}
+  In other words, $(\Omega, \mathcal{F}, P)$ can be obtained from
+  $(\tilde{\Omega}, \tilde{\mathcal{F}}, \tilde{P})$ by projecting the larger
+  space onto the smaller one while preserving the probability measure
+  structure.
+\end{definition}
+
+\begin{remark}
+  In the context of stationary dilations, this means that the original
+  nonstationary process $\{X_t \}$ can be recovered from the stationary
+  dilation $\{Y_t \}$ through a measurable projection that preserves the
+  probabilistic structure of the original process.
+\end{remark}
+
+\begin{definition}[Stationary Dilation]
+  Let $(\Omega, \mathcal{F}, P)$ be a probability space and let $\{X_t \}_{t
+  \in \mathbb{R}_+}$ be a nonstationary stochastic process. A stationary
+  dilation of $\{X_t \}$ is a stationary process $\{Y_t \}_{t \in
+  \mathbb{R}_+}$ defined on a larger probability space $(\tilde{\Omega},
+  \tilde{\mathcal{F}}, \tilde{P})$ such that:
+  \begin{enumerate}
+    \item $(\Omega, \mathcal{F}, P)$ is a factor of $(\tilde{\Omega},
+    \tilde{\mathcal{F}}, \tilde{P})$
+    
+    \item There exists a measurable projection operator $\Pi$ such that:
+    \begin{equation}
+      X_t = \Pi Y_t \quad \forall t \in \mathbb{R}_+
+    \end{equation}
+  \end{enumerate}
+\end{definition}
+
+\begin{theorem}[Representation of Nonstationary Processes]
+  For a continuous-time nonstationary process $\{X_t \}_{t \in \mathbb{R}_+}$,
+  its stationary dilation exists which has sample paths $t \mapsto X_t
+  (\omega)$ which are continuous with probability one when $X_t$:
+  \begin{itemize}
+    \item is uniformly continuous in probability over compact intervals:
+    \begin{equation}
+      \lim_{s \to t} P (|X_s - X_t | > \epsilon) = 0 \quad \forall \epsilon >
+      0, t \in [0, T], T > 0
+    \end{equation}
+    \item has finite second moments:
+    \begin{equation}
+      \mathbb{E} [|X_t |^2] < \infty \quad \forall t \in \mathbb{R}_+
+    \end{equation}
+    \item has an integral representation of the form:
+    \begin{equation}
+      X_t = \int_0^t \eta (s) ds
+    \end{equation}
+    where $\eta (t)$ is a measurable random function that is stationary in the
+    wide sense (with $\int_0^t \mathbb{E} [| \eta (s) |^2]  \hspace{0.17em} ds
+    < \infty$ for all $t$)
+    
+    \item and has a covariance operator
+    \begin{equation}
+      R (t, s) =\mathbb{E} [X_t X_s]
+    \end{equation}
+    which is symmetric $(R (t, s) = R (s, t))$, positive definite and
+    continuous
+  \end{itemize}
+  Under these conditions, there exists a representation:
+  \begin{equation}
+    X_t = M (t) \cdot S_t
+  \end{equation}
+  where:
+  \begin{itemize}
+    \item $M (t)$ is a continuous deterministic modulation function
+    
+    \item $\{S_t \}_{t \in \mathbb{R}_+}$ is a stationary process
+  \end{itemize}
+  This representation can be obtained through the stationary dilation by
+  choosing:
+  \begin{equation}
+    Y_t = \left( \begin{array}{c}
+      M (t)\\
+      S_t
+    \end{array} \right)
+  \end{equation}
+  with the projection operator $\Pi$ defined as:
+  \begin{equation}
+    \Pi Y_t = M (t) \cdot S_t
+  \end{equation}
+\end{theorem}
+
+\begin{proposition}[Properties of Dilation]
+  The stationary dilation satisfies:
+  \begin{enumerate}
+    \item Preservation of moments:
+    \begin{equation}
+      \mathbb{E} [|X_t |^p] \leq \mathbb{E} [|Y_t |^p] \quad \forall p \geq 1
+    \end{equation}
+    \item Minimal extension: Among all stationary processes that dilate $X_t$,
+    there exists a minimal one (unique up to isomorphism) in terms of the
+    probability space dimension
+  \end{enumerate}
+\end{proposition}
+
+\begin{corollary}
+  For any nonstationary process satisfying the above conditions, the
+  stationary dilation provides a canonical factorization into deterministic
+  time-varying components and stationary stochastic components.
+\end{corollary}
+
+\end{document}
