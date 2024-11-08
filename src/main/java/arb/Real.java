@@ -235,6 +235,12 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
   {
     return res.set(this).sub(that,prec,res);
   }
+  
+  public Real sign( Real result )
+  {
+    arblib.arb_sgn(result, this);
+    return result;
+  }  
     
   public Fraction neg(Fraction value)
   {

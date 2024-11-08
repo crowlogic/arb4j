@@ -17,6 +17,7 @@
 
 int arb_mat_solve(arb_mat_t X, const arb_mat_t A, const arb_mat_t B, slong prec);
 
+void arb_sgn(arb_t res, const arb_t x);
 
 typedef unsigned long Atom;   /* Also in Xdefs.h */
 

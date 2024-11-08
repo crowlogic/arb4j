@@ -430,9 +430,16 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return "sqrt".equals(functionName) ? '√' : 'f';
   }
 
+  static final HashSet<String> bitlessFunctions = new HashSet<>();
+  static
+  {
+    bitlessFunctions.add("neg");
+    bitlessFunctions.add("sign");
+  }
+
   public boolean isBitless()
   {
-    return "neg".equals(functionName);
+    return bitlessFunctions.contains(functionName);
   }
 
   @Override
