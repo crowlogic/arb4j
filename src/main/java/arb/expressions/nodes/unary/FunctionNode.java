@@ -431,6 +431,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   static final HashSet<String> bitlessFunctions = new HashSet<>();
+  
   static
   {
     bitlessFunctions.add("neg");
