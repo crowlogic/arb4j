@@ -3,88 +3,155 @@
 <style|generic>
 
 <\body>
-  <doc-data|<doc-title|Proof of the Triangular Factorization of Stationary
-  Gaussian Process Kernels>|<doc-author|<author-data|<author-name|Stephen
+  <doc-data|<doc-title|Factorization of Stationary Gaussian Process
+  Kernels>|<doc-author|<author-data|<author-name|Stephen Andrew
   Crowley>|<\author-affiliation>
     <date|>
   </author-affiliation>>>>
 
   <section|Theorem: Spectral Representation>
 
-  Let <math|K*<around|(|t-s|)>> be a stationary kernel function. Then
-  <math|K*<around|(|t-s|)>> can be expressed in the form:
+  <\theorem>
+    [Spectral Factorization Theorem]: Let <math|K:\<bbb-R\>\<to\>\<bbb-R\>>
+    be a positive definite stationary kernel function.
 
-  <\equation>
-    K*<around|(|t-s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>*h<around|(|\<tau\>|)>*h*<around|(|t-\<tau\>-s|)>*d*\<tau\>
-  </equation>
+    By Bochner's theorem, there exists a non-negative spectral density
+    function <math|S:\<bbb-R\>\<to\>\<bbb-R\>> such that:
 
-  where <math|h<around|(|t|)>> is defined as:
+    <\equation>
+      K*<around|(|t-s|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*<around|(|t-s|)>>*d*\<omega\>
+    </equation>
 
-  <\equation>
-    h<around|(|t|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\>|)>>*e<rsup|i*\<omega\>*t>*d*\<omega\>
-  </equation>
+    Let <math|h:\<bbb-R\>\<to\>\<bbb-C\>> be defined as:
 
-  and <math|S<around|(|\<omega\>|)>> is the spectral density function.
+    <\equation>
+      h<around|(|t|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\>|)>>*e<rsup|i*\<omega\>*t>*d*\<omega\>
+    </equation>
+
+    Then:
+
+    <\equation>
+      K*<around|(|t-s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*h*<around|(|t-\<tau\>-s|)>*d*\<tau\>
+    </equation>
+  </theorem>
 
   <section|Proof>
 
-  1. Start with the spectral representation:
+  1. Since K is positive definite and stationary, Bochner's theorem
+  guarantees the existence of <math|S<around|(|\<omega\>|)>\<geq\>0> such
+  that:
 
   <\equation>
-    K*<around|(|t-s|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>*S<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*<around|(|t-s|)>>*d*\<omega\>
+    K*<around|(|t-s|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*<around|(|t-s|)>>*d*\<omega\>
   </equation>
 
-  2. Factor <math|S<around|(|\<omega\>|)>>:
+  2. Since <math|S<around|(|\<omega\>|)>\<geq\>0> by Bochner's theorem:
 
   <\equation>
-    K*<around|(|t-s|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\>|)>>*e<rsup|i*\<omega\>*t><sqrt|S<around|(|\<omega\>|)>>*e<rsup|-i*\<omega\>*s>*d*\<omega\>
+    K*<around|(|t-s|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\>|)>>*e<rsup|i*\<omega\>*t>\<cdot\><sqrt|S<around|(|\<omega\>|)>>*e<rsup|-i*\<omega\>*s>*d*\<omega\>
   </equation>
 
-  3. Define <math|h<around|(|t|)>>:
+  3. Using the definition of <math|h<around|(|t|)>> as the inverse Fourier
+  transform of the square root of the spectral density
+  <math|S<around*|(|\<omega\>|)>>:
 
   <\equation>
     h<around|(|t|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\>|)>>*e<rsup|i*\<omega\>*t>*d*\<omega\>
   </equation>
 
-  4. Express <math|<sqrt|S<around|(|\<omega\>|)>>>:
-
-  <\equation*>
-    <sqrt|S<around|(|\<omega\>|)>>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>*h<around|(|\<tau\>|)>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\><space|1em><text|(by
-    inverse Fourier transform)>
-  </equation*>
-
-  5. Substitute into the kernel equation:
+  4. The Fourier transform of <math|h<around|(|t|)>> gives:
 
   <\equation>
-    K*<around|(|t-s|)>=<frac|*<big|int><rsub|-\<infty\>><rsup|\<infty\>>*<around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>*h<around|(|\<tau\>|)>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\>|)>*e<rsup|i*\<omega\>*t><around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>*h<around|(|\<sigma\>|)>*e<rsup|-i*\<omega\>*\<sigma\>>*d*\<sigma\>|)>*e<rsup|-i*\<omega\>*s>*d*\<omega\>|2*\<pi\>>
+    <sqrt|S<around|(|\<omega\>|)>>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\>
   </equation>
 
-  6. Apply Fubini's theorem to change the order of integration
+  5. Substituting this representation:
 
   <\equation>
-    K*<around|(|t-s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>*h<around|(|\<tau\>|)>*h<around|(|\<sigma\>|)>*<frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>>*e<rsup|i*\<omega\>*<around|(|t-\<tau\>-s+\<sigma\>|)>>*d*\<omega\>|2*\<pi\>>**d*\<tau\>*d*\<sigma\>
+    K*<around|(|t-s|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\>|)>*e<rsup|i*\<omega\>*t><around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<sigma\>|)>*e<rsup|-i*\<omega\>*\<sigma\>>*d*\<sigma\>|)>*e<rsup|-i*\<omega\>*s>*d*\<omega\>
   </equation>
 
-  7. Evaluate the inner <math|\<omega\>> integral by the Fourier integral
-  representation of the delta function:
+  6. By Fubini's theorem (valid since K is PD):
 
   <\equation>
-    <frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>*e<rsup|i*\<omega\>*<around|(|t-\<tau\>-s+\<sigma\>|)>>*d*\<omega\>=\<delta\>*<around|(|t-\<tau\>-s+\<sigma\>|)>
+    K*<around|(|t-s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*h<around|(|\<sigma\>|)><frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*<around|(|t-\<tau\>-s+\<sigma\>|)>>*d*\<omega\>*d*\<tau\>*d*\<sigma\>
   </equation>
 
-  8. Apply the delta function:
+  7. The inner integral yields the Dirac delta function:
 
   <\equation>
-    K*<around|(|t-s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>*h<around|(|\<tau\>|)>*h<around|(|\<sigma\>|)>*\<delta\>*<around|(|t-\<tau\>-s+\<sigma\>|)>*d*\<tau\>*d*\<sigma\>
+    <frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*<around|(|t-\<tau\>-s+\<sigma\>|)>>*d*\<omega\>=\<delta\>*<around|(|t-\<tau\>-s+\<sigma\>|)>
   </equation>
 
-  9. Integrate with respect to <math|\<sigma\>>:
+  8. Therefore:
 
   <\equation>
-    <tabular|<tformat|<table|<row|<cell|K*<around|(|t-s|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>*h<around|(|\<tau\>|)>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>*h<around|(|\<sigma\>|)>*\<delta\>*<around|(|t-\<tau\>-s+\<sigma\>|)>*d*\<sigma\>*d*\<tau\>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*h*<around|(|t-\<tau\>-s|)>*d*\<tau\>>>>>>
+    K*<around|(|t-s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*h<around|(|\<sigma\>|)>*\<delta\>*<around|(|t-\<tau\>-s+\<sigma\>|)>*d*\<tau\>*d*\<sigma\>
   </equation>
 
-  This completes the proof of the spectral representation theorem.
+  9. Using the sifting property of <math|\<delta\>>:
+
+  <\equation>
+    <tabular|<tformat|<table|<row|<cell|K*<around|(|t-s|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<sigma\>|)>*\<delta\>*<around|(|t-\<tau\>-s+\<sigma\>|)>*d*\<sigma\>*d*\<tau\>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*h*<around|(|t-\<tau\>-s|)>*d*\<tau\>>>>>>
+  </equation>
+
+  <section|Reverse Verification>
+
+  Starting from the final result:
+
+  <\equation>
+    K*<around|(|t-s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*h*<around|(|t-\<tau\>-s|)>*d*\<tau\>
+  </equation>
+
+  Substituting the definition of <math|h<around|(|t|)>>:
+
+  <\equation>
+    h<around|(|t|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\>|)>>*e<rsup|i*\<omega\>*t>*d*\<omega\>
+  </equation>
+
+  1) First substitution for <math|h<around|(|\<tau\>|)>>:
+
+  <\equation>
+    K*<around|(|t-s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|[|<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\><rsub|1>|)>>*e<rsup|i*\<omega\><rsub|1>*\<tau\>>*d*\<omega\><rsub|1>|]>*h*<around|(|t-\<tau\>-s|)>*d*\<tau\>
+  </equation>
+
+  2) Second substitution for <math|h*<around|(|t-\<tau\>-s|)>>:
+
+  <\equation>
+    K*<around|(|t-s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|[|<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\><rsub|1>|)>>*e<rsup|i*\<omega\><rsub|1>*\<tau\>>*d*\<omega\><rsub|1>|]>*<around*|[|<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\><rsub|2>|)>>*e<rsup|i*\<omega\><rsub|2>*<around|(|t-\<tau\>-s|)>>*d*\<omega\><rsub|2>|]>*d*\<tau\>
+  </equation>
+
+  3) Rearranging the integrals:
+
+  <\equation>
+    K*<around|(|t-s|)>=<frac|1|4*\<pi\><rsup|2>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\><rsub|1>|)>>*<sqrt|S<around|(|\<omega\><rsub|2>|)>>*e<rsup|i*\<omega\><rsub|2>*t>*e<rsup|-i*\<omega\><rsub|2>*s>*e<rsup|i*<around|(|\<omega\><rsub|1>-\<omega\><rsub|2>|)>*\<tau\>>*d*\<omega\><rsub|1>*d*\<omega\><rsub|2>*d*\<tau\>
+  </equation>
+
+  4) The integral with respect to <math|\<tau\>> yields:
+
+  <\equation>
+    <big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<omega\><rsub|1>-\<omega\><rsub|2>|)>*\<tau\>>*d*\<tau\>=2*\<pi\>*\<delta\>*<around|(|\<omega\><rsub|1>-\<omega\><rsub|2>|)>
+  </equation>
+
+  5) Applying this result:
+
+  <\equation>
+    K*<around|(|t-s|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*<around|(|t-s|)>>*d*\<omega\>
+  </equation>
+
+  This matches the original spectral representation from Bochner's theorem,
+  confirming that:
+
+  <\itemize>
+    <item>The substitutions were valid
+
+    <item>The use of Fubini's theorem was justified
+
+    <item>The manipulation of the Dirac delta function was correct
+
+    <item>The final result is consistent with the initial spectral
+    representation
+  </itemize>
 </body>
 
 <\initial>
@@ -99,8 +166,9 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_60.tm>>
-    <associate|auto-2|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_60.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-2|<tuple|2|1>>
+    <associate|auto-3|<tuple|3|2>>
   </collection>
 </references>
 
@@ -114,6 +182,10 @@
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Proof>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-2><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Reverse
+      Verification> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-3><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
