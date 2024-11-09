@@ -20,6 +20,15 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       towardsStandardModelWithoutTheHiggsBoson                      =
+                                                                       new Article("Towards Standard Model without the Higgs boson",
+                                                                                   "A. Sevostyanov",
+                                                                                   "2008",
+                                                                                   "arXiv:hep-th/0702149v1",
+                                                                                   "",
+                                                                                   "",
+                                                                                   "");
+
   public static Article       gauntCoeffecientsSphericalHarmonicsRecurrenceRelation         =
                                                                                     new Article("Evaluation of the Gaunt Coefficients by Using Recurrence Relations for Spherical Harmonics",
                                                                                                 "{\\\"O}zay, Selda",

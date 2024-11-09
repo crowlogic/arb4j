@@ -13,6 +13,10 @@ public class arblib {
     return arblibJNI.arb_mat_solve(RealMatrix.getCPtr(X), X, RealMatrix.getCPtr(A), A, RealMatrix.getCPtr(B), B, prec);
   }
 
+  public static void arb_sgn(Real res, Real x) {
+    arblibJNI.arb_sgn(Real.getCPtr(res), res, Real.getCPtr(x), x);
+  }
+
   public static XDO xdo_new(String display) {
     long cPtr = arblibJNI.xdo_new(display);
     return (cPtr == 0) ? null : new XDO(cPtr, false);
