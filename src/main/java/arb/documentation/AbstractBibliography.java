@@ -1,5 +1,7 @@
 package arb.documentation;
 
+import static arb.utensils.Utensils.throwOrWrap;
+
 import java.lang.reflect.Field;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -27,34 +29,35 @@ public abstract class AbstractBibliography
   @Override
   public String toString()
   {
-    return getReferences().map(field -> getReference(field).cite(field.getName()))
-                          .collect(Collectors.joining("\n\n"));
+    return getReferences().map(field -> getReference(field).cite(field.getName())).collect(Collectors.joining("\n\n"));
   }
 
   protected Stream<Field> getReferences()
   {
-    return getFieldStream().filter(field -> Reference.class.isAssignableFrom(field.getType())
-                  && getReference(field) != null).collect(Collectors.toList()).reversed().stream();
+    return getFieldStream().filter(field -> getReference(field) != null)
+                           .toList()
+                           .reversed()
+                           .stream();
   }
 
   protected Stream<Field> getFieldStream()
   {
-    return Stream.of(Bibliography.class.getFields());
+    return Stream.of(getClass().getFields());
   }
 
   protected Reference getReference(Field field)
   {
-    Reference reference;
+    Reference reference = null;
     try
     {
       reference = (Reference) field.get(this);
     }
     catch (IllegalArgumentException | IllegalAccessException e)
     {
-      throw new RuntimeException(e.getMessage(),
-                                 e);
+      throwOrWrap(e);
     }
     return reference;
+
   }
 
 }

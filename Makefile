@@ -44,7 +44,8 @@ docs: documentation
 doc: docs
 
 install:
-	gradle publishToMavenLocal
+	gradle build -x test
+	gradle publishToMavenLocal -x test
 
 desktop:
 	gradle installDesktop
