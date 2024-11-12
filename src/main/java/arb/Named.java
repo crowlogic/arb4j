@@ -16,7 +16,6 @@ public interface Named
 
   public default String toStringWithoutName()
   {
-    assert false : "todo: implement";
-    return "todo";
-  }
+    return toString();
+ }
 }
