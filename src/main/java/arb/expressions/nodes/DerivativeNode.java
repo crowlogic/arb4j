@@ -16,7 +16,7 @@ import arb.language.Term;
 import arb.logic.Clause;
 
 /**
-*
+ *
  * The exophoric nature of the differential operator syntax
  * (∂[expression]/∂[variable]) in your compiler presents a fascinating parallel
  * to natural language processing and context-dependent interpretation. This
@@ -71,10 +71,20 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
                            Node<D, R, F>
 {
 
+  @Override
+  public String toString()
+  {
+    return String.format("DerivativeNode[operand=%s, variable=%s]", operand, variable);
+  }
+
+  public Node<D, R, F> operand;
+  public Node<D, R, F> variable;
+
   public DerivativeNode(Expression<D, R, F> expression)
   {
     super(expression);
-    assert false : "TODO: implement derivative operator, the syntax is ∂a*x^2+b*x+c/∂x";
+    operand  = expression.resolve();
+    variable = expression.require('/').require('∂').resolve();
   }
 
   @Override
@@ -121,7 +131,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    assert false : "TODO";
+    assert false : "TODO: generate " + this;
     return null;
   }
 
@@ -152,7 +162,6 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     assert false : "TODO";
     return null;
   }
-
 
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,

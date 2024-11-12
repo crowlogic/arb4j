@@ -1451,7 +1451,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                         exponentiate());
 
       }
-      else if (nextCharacterIs('⁄', '/', '÷'))
+      else if (!characterAfterNextIs('∂') && nextCharacterIs('⁄', '/', '÷'))
       {
         node = new DivisionNode<>(this,
                                   node,
@@ -1506,6 +1506,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                      reference,
                                      startPos,
                                      true);
+  }
+
+  public boolean characterAfterNextIs(char ch)
+  {
+    return position +1 < expression.length() && expression.charAt(position + 1) == ch;
   }
 
   public char nextCharacter()

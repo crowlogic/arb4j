@@ -77,6 +77,7 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
    * g(x)=∫x➔f(x)dx∈(a,b)
    * 
    * </pre>
+   * 
    * The syntax to express an indefinate integral is<br>
    * <br>
    * 
@@ -97,22 +98,18 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                              new VariableReference<>(expression.parseName()),
                                              expression.position,
                                              true);
-    expression.require('➔');
-    integrand = expression.resolve();
-    expression.require('d');
-    dvar = expression.parseName();
+    integrand           = expression.require('➔').resolve();
+    dvar                = expression.require('d').parseName();
     assert dvar.equals(integrationVariable.getName()) : String.format("the format is  g(x)=∫x➔f(x)dx∈(a,b) for definite integrals and g(x)=∫x➔f(x)dx for indefinate integrals, the variable on the left "
                                                                       + "side of the arrow must match the variable on the right side of the d and "
                                                                       + "before the ( but the first var was %s and the 2nd was %s\n",
                                                                       integrationVariable,
                                                                       dvar);
 
-    if ( expression.nextCharacterIs('∈') )
+    if (expression.nextCharacterIs('∈'))
     {
-      expression.require('(');
-      lowerLimit = expression.resolve();
-      expression.require(',');
-      upperLimit = expression.resolve();
+      lowerLimit = expression.require('(').resolve();
+      upperLimit = expression.require(',').resolve();
       expression.require(')');
     }
   }
@@ -120,7 +117,6 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
   protected void assignFieldNames(Class<?> resultType)
   {
     integralFunctionFieldName   = expression.getNextIntermediateVariableFieldName("integral", resultType);
-
     lowerIntegralValueFieldName = expression.newIntermediateVariable("lowerValue", resultType);
     upperIntegralValueFieldName = expression.newIntermediateVariable("upperValue", resultType);
   }
@@ -229,7 +225,6 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     return List.of(integrand);
   }
-
 
   @Override
   public boolean isLeaf()
