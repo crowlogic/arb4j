@@ -107,7 +107,7 @@ public class ElseNode<D, R, F extends Function<? extends D, ? extends R>> extend
 
   @Override
   public Node<D, R, F>
-         derivative(VariableNode<D, R, F> variable)
+         differentiate(VariableNode<D, R, F> variable)
   {
     assert false : "TODO";
     return null;

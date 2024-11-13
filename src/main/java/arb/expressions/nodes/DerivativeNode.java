@@ -13,6 +13,7 @@ import arb.expressions.Parser;
 import arb.functions.Function;
 import arb.language.Sentence;
 import arb.language.Term;
+import arb.language.Word;
 import arb.logic.Clause;
 
 /**
@@ -77,14 +78,15 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     return String.format("DerivativeNode[operand=%s, variable=%s]", operand, variable);
   }
 
-  public Node<D, R, F> operand;
-  public Node<D, R, F> variable;
+  public Node<D, R, F>         operand;
+  public VariableNode<D, R, F> variable;
 
   public DerivativeNode(Expression<D, R, F> expression)
   {
     super(expression);
-    operand  = expression.resolve();
-    variable = expression.require('/').require('∂').resolve();
+    operand = expression.resolve();
+    var node = expression.require('/').require('∂').resolve();
+    variable = (VariableNode<D, R, F>) node;
   }
 
   @Override
@@ -108,7 +110,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   }
 
   @Override
-  public Node<D, R, F> derivative(VariableNode<D, R, F> variable)
+  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
     assert false : "TODO";
     return null;
@@ -131,9 +133,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    boolean match = operand.equals(variable);
-    assert false : "TODO: generate " + this + " match=" + match;
-    return null;
+    return operand.differentiate(variable).generate(mv, resultType);
   }
 
   @Override

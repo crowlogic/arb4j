@@ -211,7 +211,7 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
   }
 
   @Override
-  public Node<D, R, F> derivative(VariableNode<D, R, F> variable)
+  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
     assert false : "TODO";
     return null;

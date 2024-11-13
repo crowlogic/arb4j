@@ -102,7 +102,7 @@ public class AscendingFactorializationNode<D, R, F extends Function<? extends D,
   }
 
   @Override
-  public Node<D, R, F> derivative(VariableNode<D, R, F> variable)
+  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
     assert false : "TODO";
     return null;

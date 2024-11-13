@@ -74,7 +74,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public abstract Node<D, R, F> integral(VariableNode<D, R, F> variable);
 
-  public abstract Node<D, R, F> derivative(VariableNode<D, R, F> variable);
+  public abstract Node<D, R, F> differentiate(VariableNode<D, R, F> variable);
 
   public abstract List<? extends Node<D, R, F>> getBranches();
 

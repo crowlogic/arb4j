@@ -394,7 +394,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   }
 
   @Override
-  public Node<D, R, F> derivative(VariableNode<D, R, F> variable)
+  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
     return new LiteralConstantNode<>(expression,
                                      "0");
