@@ -108,11 +108,6 @@ jar {
     }
 }
 
-javafx {
-    version = '22.0.2'
-    modules = ['javafx.controls', 'javafx.fxml']
-}
-
 java {
     withSourcesJar()
     modularity.inferModulePath.set(true)
@@ -138,7 +133,6 @@ task createClasspathManifest {
 }
 
 tasks.build.dependsOn createClasspathManifest
-
 
 publishing {
     publications {

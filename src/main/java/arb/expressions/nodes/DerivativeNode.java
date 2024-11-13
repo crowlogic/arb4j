@@ -80,13 +80,15 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
 
   public Node<D, R, F>         operand;
   public VariableNode<D, R, F> variable;
+  private Node<D, R, F>        derivative;
 
   public DerivativeNode(Expression<D, R, F> expression)
   {
     super(expression);
     operand = expression.resolve();
     var node = expression.require('/').require('∂').resolve();
-    variable = (VariableNode<D, R, F>) node;
+    variable   = (VariableNode<D, R, F>) node;
+    derivative = operand.differentiate(variable);
   }
 
   @Override
@@ -133,7 +135,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    return operand.differentiate(variable).generate(mv, resultType);
+    return derivative.generate(mv, resultType);
   }
 
   @Override
@@ -153,8 +155,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public String typeset()
   {
-    assert false : "TODO";
-    return null;
+    return derivative.typeset();
   }
 
   @Override
