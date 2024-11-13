@@ -41,7 +41,7 @@ import arb.logic.Clause;
  * expressions mirrors how natural languages handle embedded {@link Clause}s or
  * {@link Reference}s. The {@link Expression} {@link Parser} must resolve these
  * potentially ambiguous structures, much like how {@link Sentence}s are
- * resolved into their constituent {@link Term}s {link Word}s
+ * resolved into their constituent {@link Term}s {@link Word}s
  * 
  * 4. Mathematical Discourse Structure: The ∂[expression]/∂[variable] syntax
  * creates a form of "mathematical discourse" within the expression. Each
@@ -131,7 +131,8 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    assert false : "TODO: generate " + this;
+    boolean match = operand.equals(variable);
+    assert false : "TODO: generate " + this + " match=" + match;
     return null;
   }
 
