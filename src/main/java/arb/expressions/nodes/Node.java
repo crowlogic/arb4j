@@ -87,9 +87,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public boolean             isResult = false;
 
+  public final int position;
+
   public Node(Expression<D, R, F> expression)
   {
     this.expression = expression;
+    this.position = expression.position;
   }
 
   public abstract MethodVisitor generate(MethodVisitor mv, Class<?> resultType);

@@ -2,6 +2,7 @@ package arb.expressions;
 
 import arb.Complex;
 import arb.Integer;
+import arb.RationalFunction;
 import arb.Real;
 import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -51,12 +52,12 @@ public class ExpressionTest extends
     assertEquals("0", x.typeset());
   }
 
-  public void testRationalNullaryDerivative()
+  public void testRationalFunctionDerivative()
   {
     var context = new Context(Real.named("a"),
                               Real.named("b"),
                               Real.named("c"));
-    var x       = RationalNullaryFunction.express("x->∂a*x+x²+b*x³+c/∂x", context);
+    var x       = RationalFunction.express("x->∂a*x+b*x²+c*x³/∂x", context);
     assertEquals("2*a*x+b", x.typeset());
   }
 

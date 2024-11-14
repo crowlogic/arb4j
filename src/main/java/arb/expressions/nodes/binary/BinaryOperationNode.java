@@ -177,7 +177,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   {
     assert left != null : "lhs is null";
     assert right != null : "rhs is null";
-    
+
     if (Expression.trace)
     {
       System.out.println(formatGenerationParameters(resultType));
@@ -438,11 +438,13 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
     if (type == null)
     {
-      throw new CompilerException(String.format("Could not determine resultant type for this=%s where left.type=%s and right.type=%s in %s",
+      throw new CompilerException(String.format("Could not determine resultant type for this=%s where left.type=%s and right.type=%s in %s at position=%d chars@pos=%s",
                                                 this,
                                                 leftType,
                                                 rightType,
-                                                toString()));
+                                                toString(),
+                                                position,
+                                                expression.expression.substring(position)));
     }
 
     return type;

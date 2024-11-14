@@ -63,8 +63,7 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO";
-    return null;
+    return this;
   }
 
   @Override
