@@ -3,7 +3,6 @@ package arb.expressions.nodes;
 import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.invokeSetMethod;
 import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-import static arb.expressions.Compiler.loadThisOntoStack;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -110,9 +109,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * own result, thus saving heap allocations. The method should be overridden by
    * every subclass of {@link Node} to provide an appropriate response. For
    * {@link LiteralConstantNode} and {@link VariableNode} nodes, they would always
-   * return false (since we cannot reuse them). For {@link BinaryOperationNode} nodes
-   * like {@link AdditionNode}, a method of determining whether they're reusable based
-   * on the state of their operands would be in order. <br>
+   * return false (since we cannot reuse them). For {@link BinaryOperationNode}
+   * nodes like {@link AdditionNode}, a method of determining whether they're
+   * reusable based on the state of their operands would be in order. <br>
    * <br>
    * 
    * The advantage to not reusing nodes is that it would allow the production of a
@@ -142,7 +141,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    *         or {@link Integer}
    */
   public abstract <C> Class<? extends C> type();
-  
+
   /**
    * TODOL Instantiates the target type instance then calls set on it with the
    * source instance then sets generatedType to to the requested type so that
@@ -167,8 +166,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                                    + " and casting to "
                                    + type
                                    + " is requested";
-    assert !generatedType.equals(type) : String.format("tried to cast from and to the same type %s\n",
-                                                       generatedType);
+    assert !generatedType.equals(type) : String.format("tried to cast from and to the same type %s\n", generatedType);
     checkClassCast(methodVisitor, generatedType);
     expression.allocateIntermediateVariable(methodVisitor, type);
     Compiler.swap(methodVisitor);
@@ -177,9 +175,8 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return generatedType;
   }
 
-  public abstract <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String variable, Node<E, S, G> arg);
+  public abstract <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
+                                                                                                Node<E, S, G> arg);
 
   public boolean isVariable()
   {
@@ -233,6 +230,13 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public boolean isPossiblyNegative()
   {
     return false;
+  }
+
+  public Node<D, R, F> add(Node<D, R, F> addend)
+  {
+    return new AdditionNode<>(expression,
+                              this,
+                              addend);
   }
 
 }

@@ -51,8 +51,7 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    return left.differentiate(variable).add(right.differentiate(variable));
   }
 
   @Override
