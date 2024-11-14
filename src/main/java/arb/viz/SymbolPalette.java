@@ -122,16 +122,17 @@ public class SymbolPalette extends
     addAliases("9", "nine");
 
     // Superscript numbers
-    addAliases("⁰", "sup0", "power0", "superscript0");
-    addAliases("¹", "sup1", "power1", "superscript1");
-    addAliases("²", "sup2", "power2", "squared");
-    addAliases("³", "sup3", "power3", "cubed");
-    addAliases("⁴", "sup4", "power4");
-    addAliases("⁵", "sup5", "power5");
-    addAliases("⁶", "sup6", "power6");
-    addAliases("⁷", "sup7", "power7");
-    addAliases("⁸", "sup8", "power8");
-    addAliases("⁹", "sup9", "power9");
+    addAliases("⁰", "sup0", "power0", "superscript0", "0");
+    addAliases("¹", "sup1", "power1", "superscript1", "1");
+    addAliases("²", "sup2", "power2", "squared", "2");
+    addAliases("³", "sup3", "power3", "cubed", "3");
+    addAliases("⁴", "sup4", "power4", "4'");
+    addAliases("⁵", "sup5", "power5", "5");
+    addAliases("⁶", "sup6", "power6", "6");
+
+    addAliases("⁷", "sup7", "power7", "7");
+    addAliases("⁸", "sup8", "power8", "8");
+    addAliases("⁹", "sup9", "power9", "9");
 
     // Subscript numbers
     addAliases("₀", "sub0");
@@ -188,7 +189,7 @@ public class SymbolPalette extends
     addAliases("ϰ", "kappa");
     addAliases("ϱ", "rho");
     addAliases("𝜏", "tau");
-    
+
     // Mathematical Symbols
     addAliases("∫", "integral", "int");
     addAliases("∂", "partial", "del");

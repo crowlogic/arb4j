@@ -56,7 +56,7 @@ public class ExpressionTest extends
     var context = new Context(Real.named("a"),
                               Real.named("b"),
                               Real.named("c"));
-    var x       = RationalNullaryFunction.express("x->∂a+x^2+b*x+c/∂x", context);
+    var x       = RationalNullaryFunction.express("x->∂a*x+x²+b*x³+c/∂x", context);
     assertEquals("2*a*x+b", x.typeset());
   }
 
