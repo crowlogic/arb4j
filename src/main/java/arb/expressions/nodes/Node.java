@@ -144,11 +144,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public abstract <C> Class<? extends C> type();
 
   /**
-   * TODOL Instantiates the target type instance then calls set on it with the
+   * Instantiates the target type instance then calls set on it with the
    * source instance then sets generatedType to to the requested type so that
-   * downstream it is none the wiser a type conversion was done in the first
+   * downstream it is none the wiser that a type conversion was done in the first
    * place. A possible optimization would be to declare the types as their
-   * intended target type in the first place but this would require messing with
+   * intended target type so that no conversion was needed but this would require messing with
    * parts of the code that are currently working and i've adopted a
    * dont-fix-it-if-it-isnt-broken policy when it comes to deciding what to work
    * on next
