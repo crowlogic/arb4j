@@ -18,6 +18,7 @@ import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.binary.AdditionNode;
 import arb.expressions.nodes.binary.BinaryOperationNode;
+import arb.expressions.nodes.binary.MultiplicationNode;
 import arb.functions.Function;
 
 /**
@@ -237,6 +238,13 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return new AdditionNode<>(expression,
                               this,
                               addend);
+  }
+
+  public Node<D, R, F> mul(Node<D, R, F> multiplicand)
+  {
+    return new MultiplicationNode<>(expression,
+                                    this,
+                                    multiplicand);
   }
 
 }

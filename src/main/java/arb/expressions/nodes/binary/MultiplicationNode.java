@@ -61,8 +61,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO";
-    return null;
+    return left.differentiate(variable).mul(right).add(left.mul(right.differentiate(variable)));
   }
 
 }
