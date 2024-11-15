@@ -9,6 +9,19 @@
     <date|>
   </author-affiliation>>>>
 
+  TODO: \ Possible Universes Are Zero Energy States of the Superspace
+  Hamiltonian of the Wheeler DeWitt equation Which is Solved By A Conformal
+  Transform of the Hardy Z function, making a direct corresponding between
+  the Riemann zeros and possible universes whereby what is presently
+  considered to be the Standard Model of particle physics has its parameters
+  determined by functions of the curvature and torsion of the conformally
+  transformed Z function in neighborhood of the roots of the \ Z function,
+  which are equivalent with the roots in the sense that the sets of roots of
+  both the Z function and its conformally transformed version are the same,
+  thus multiplicity 1 roots in Z become multiplcity 2 roots in S(Z(t)) where
+  <math|S<rsub|t><around*|(|x|)>=tanh<around*|(|log<around*|(|1+t
+  x<rsup|2>|)>|)>.>
+
   The universe emerges through the hourglass shape inherent in the
   no-boundary proposal. This shape arises from geometric origins through the
   transformation given by the hyperbolic tangent of the logarithm of
