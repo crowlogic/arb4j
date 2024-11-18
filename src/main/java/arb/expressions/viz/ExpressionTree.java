@@ -4,12 +4,10 @@ import static arb.utensils.Utensils.wrapOrThrow;
 
 import java.io.Closeable;
 import java.io.File;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import arb.*;
 import arb.Integer;
@@ -94,11 +92,11 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     return context;
   }
 
-  public final ComboBox<Class<?>> codomainTypeBox = new ComboBox<Class<?>>();
+  public ComboBox<Class<?>> codomainTypeBox;
 
-  public final ComboBox<Class<?>> domainTypeBox   = new ComboBox<Class<?>>();
+  public ComboBox<Class<?>> domainTypeBox;
 
-  public final ComboBox<Class<?>> functionTypeBox = new ComboBox<Class<?>>();
+  public ComboBox<Class<?>> functionTypeBox;
 
   public ExpressionTree(Expressor<D, C, F> expressionAnalyzer, Tab tab)
   {
@@ -106,26 +104,35 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     this.tab       = tab;
     this.expressor = expressionAnalyzer;
     this.context   = new Context();
+    try
+    {
+      codomainTypeBox = new ComboBox<Class<?>>();
+      domainTypeBox   = new ComboBox<Class<?>>();
+      functionTypeBox = new ComboBox<Class<?>>();
+      setupExpressionInput();
 
-    setupExpressionInput();
+      MiniSymbolPalette symbolPalette = new MiniSymbolPalette(expressionInput);
 
-    MiniSymbolPalette symbolPalette = new MiniSymbolPalette(expressionInput);
+      VBox              inputRow      = new VBox();
+      HBox              rhs           = new HBox();
+      inputRow.getChildren().addAll(setupTypeBoxes(), expressionInput, symbolPalette);
+      rhs.getChildren().addAll(inputRow);
+      VBox.setVgrow(expressionInput, Priority.ALWAYS);
 
-    VBox              inputRow      = new VBox();
-    HBox              rhs           = new HBox();
-    inputRow.getChildren().addAll(setupTypeBoxes(), expressionInput, symbolPalette);
-    rhs.getChildren().addAll(inputRow);
-    VBox.setVgrow(expressionInput, Priority.ALWAYS);
+      setupTreeTableView();
 
-    setupTreeTableView();
+      stackPane = new StackPane(treeTableView);
+      getChildren().addAll(rhs, stackPane);
+      setPadding(new Insets(10));
 
-    stackPane = new StackPane(treeTableView);
-    getChildren().addAll(rhs, stackPane);
-    setPadding(new Insets(10));
-
-    VBox.setVgrow(stackPane, Priority.ALWAYS);
-    HBox.setHgrow(stackPane, Priority.ALWAYS);
-    VBox.setVgrow(this, Priority.ALWAYS);
+      VBox.setVgrow(stackPane, Priority.ALWAYS);
+      HBox.setHgrow(stackPane, Priority.ALWAYS);
+      VBox.setVgrow(this, Priority.ALWAYS);
+    }
+    catch (Throwable e)
+    {
+      e.printStackTrace(System.err);
+    }
   }
 
   public void setupExpressionInput()
@@ -315,27 +322,25 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     {
       try
       {
-        SerializedExpression serializedExpression = Utensils.loadFromYamlFormat(file);
+        var serializedExpression = Utensils.loadFromYamlFormat(file);
         context.variables.clear();
 
-        Map<String, SerializedContextVariable> ctx = serializedExpression.context;
+        var ctx = serializedExpression.context;
         System.err.println("serialized context: " + ctx);
-        for (Map.Entry<String, SerializedContextVariable> k : ctx.entrySet())
+        for (var k : ctx.entrySet())
         {
-          SerializedContextVariable serializedContextVariable = k.getValue();
-          String                    name                      = k.getKey();
-          String                    type                      = serializedContextVariable.type;
+          var serializedContextVariable = k.getValue();
+          var name                      = k.getKey();
+          var type                      = serializedContextVariable.type;
 
-          String                    serializedValueString     = serializedContextVariable.value;
-          Class<?>                  typeClass                 = Class.forName(type);
-          boolean                   isInteger                 = typeClass.equals(Integer.class);
-          boolean                   needsBits                 = !isInteger;
-          Constructor<?>            constructor               =
-                                                !needsBits ? typeClass.getConstructor(String.class)
-                                                           : typeClass.getConstructor(String.class, int.class);
-          Named                     variable                  =
-                                             !needsBits ? (Named) constructor.newInstance(serializedValueString)
-                                                        : (Named) constructor.newInstance(serializedValueString, bits);
+          var serializedValueString     = serializedContextVariable.value;
+          var typeClass                 = Class.forName(type);
+          var isInteger                 = typeClass.equals(Integer.class);
+          var needsBits                 = !isInteger;
+          var constructor               = !needsBits ? typeClass.getConstructor(String.class)
+                                                     : typeClass.getConstructor(String.class, int.class);
+          var variable                  = !needsBits ? (Named) constructor.newInstance(serializedValueString)
+                                                     : (Named) constructor.newInstance(serializedValueString, bits);
           variable.setName(name);
 
           if (!context.variables.map.containsKey(variable.getName()))
@@ -351,21 +356,27 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
 
         expressor.updateContextListView();
 
-        if (serializedExpression.coDomain != null)
+        if (serializedExpression.coDomain != null && codomainTypeBox != null)
         {
           codomainTypeBox.setValue(Class.forName(serializedExpression.coDomain));
         }
-        if (serializedExpression.domain != null)
+        if (serializedExpression.domain != null && domainTypeBox != null)
         {
           domainTypeBox.setValue(Class.forName(serializedExpression.domain));
         }
-        if (serializedExpression.function != null)
+        if (serializedExpression.function != null && functionTypeBox != null)
         {
           functionTypeBox.setValue(Class.forName(serializedExpression.function));
         }
-        tab.setText(file.getName().split("\\.")[0]);
-        String expression = serializedExpression.expression;
-        expressionInput.setText(expression);
+        if (tab != null)
+        {
+          tab.setText(file.getName().split("\\.")[0]);
+        }
+        if (expressionInput != null)
+        {
+          String expression = serializedExpression.expression;
+          expressionInput.setText(expression);
+        }
         evaluateExpression();
         expandAllNodes();
       }
@@ -604,6 +615,10 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
 
   public HashMap<String, Boolean> enumerateNodeExpansionStates()
   {
+    if (treeTableView == null)
+    {
+      return null;
+    }
     return WindowManager.enumerateNodeExpansionStates(new HashMap<String, Boolean>(), treeTableView.getRoot());
   }
 

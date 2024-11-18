@@ -1,0 +1,13 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.RationalFunction
+context:
+  b:
+  - arb.Real
+  - '0'
+  c:
+  - arb.Real
+  - '0'
+domain: java.lang.Object
+expression: x->∂a*x+b*x²+c*x³/∂x
+function: arb.functions.rational.RationalNullaryFunction
+...

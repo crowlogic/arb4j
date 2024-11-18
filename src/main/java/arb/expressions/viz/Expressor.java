@@ -329,6 +329,10 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
   @SuppressWarnings("unchecked")
   public Context getCurrentContext()
   {
+    if ( tabPane == null )
+    {
+      return null;
+    }
     Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
     if (currentTab != null)
     {
