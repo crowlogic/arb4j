@@ -1,0 +1,10 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Complex
+context:
+  input:
+  - arb.Integer
+  - '13'
+domain: arb.Complex
+expression: arg(ζ(1/2+I*t))
+function: arb.functions.complex.ComplexFunction
+...

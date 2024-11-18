@@ -1,7 +1,5 @@
 package arb.viz;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.stream.IntStream;
 
 import arb.Float;
@@ -30,7 +28,7 @@ public class FunctionPlotter extends
                              FunctionSampler
 {
 
-  public boolean            darkStyle = true;
+  public boolean            darkStyle = false;
 
   public boolean            parallel  = true;
 
@@ -48,7 +46,7 @@ public class FunctionPlotter extends
   public void close()
   {
     super.close();
-    Platform.runLater(() -> stage.close());
+    Platform.runLater(stage::close);
   }
 
   public void configureChartPlugins()
@@ -74,7 +72,7 @@ public class FunctionPlotter extends
     for (var renderer : chart.getRenderers()
                              .stream()
                              .filter(renderer -> renderer instanceof ErrorDataSetRenderer)
-                             .collect(toList()))
+                             .toList())
     {
       ErrorDataSetRenderer ballDataRenderer = (ErrorDataSetRenderer) renderer;
       ballDataRenderer.addAxes(xAxis, yAxis);
