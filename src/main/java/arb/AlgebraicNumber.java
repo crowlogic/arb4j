@@ -8,8 +8,6 @@
 
 package arb;
 
-import arb.Integer;
-
 /*
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the

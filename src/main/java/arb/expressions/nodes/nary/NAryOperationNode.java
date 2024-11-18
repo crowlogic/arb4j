@@ -11,7 +11,6 @@ import static org.objectweb.asm.Opcodes.POP;
 
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;

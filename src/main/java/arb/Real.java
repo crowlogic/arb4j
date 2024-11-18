@@ -8,7 +8,10 @@
 
 package arb;
 
-import static arb.IntegerConstants.*;
+import static arb.IntegerConstants.ARB_RND;
+import static arb.IntegerConstants.ARF_RND_UP;
+import static arb.IntegerConstants.MAG_BITS;
+import static arb.IntegerConstants.PAGESIZE;
 import static arb.RealConstants.zero;
 import static arb.arblib.*;
 
@@ -17,7 +20,6 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.IntFunction;
@@ -240,6 +242,12 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
   {
     arblib.arb_sgn(result, this);
     return result;
+  }  
+  
+  @SuppressWarnings("resource")
+  public static Real valueOf(String string, int i)
+  {
+    return new Real().set(string,i);
   }  
     
   public Fraction neg(Fraction value)

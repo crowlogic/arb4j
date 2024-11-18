@@ -67,8 +67,8 @@ public class IntegerTest extends
   public void testAddRealToComplex()
   {
 
-    try ( Integer three = new Integer(3); Real four = new Real().set(4);
-          Complex seven = new Complex().set(new Integer(7));)
+    try ( Integer three = new Integer(3); Real four = Real.valueOf(4);
+          Complex seven = Complex.valueOf(7);)
     {
       three.add(four, 128, seven);
       assertEquals("7", seven.toString());

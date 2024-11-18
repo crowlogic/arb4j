@@ -1,16 +1,11 @@
 package arb.functions.real;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.IntStream;
 
 import arb.Float;
 import arb.FloatInterval;
-import arb.Real;
-import arb.RealTwoDimensionalDataSet;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import io.fair_acc.dataset.DataSet;
 
 /**
  * The {@link FunctionSampler} class performs the sampling of real functions.

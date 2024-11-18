@@ -214,6 +214,12 @@ import arb.utensils.Utensils;
     arblib.arb_sgn(result, this);
     return result;
   }  
+  
+  @SuppressWarnings("resource")
+  public static Real valueOf(String string, int i)
+  {
+    return new Real().set(string,i);
+  }  
     
   public Fraction neg(Fraction value)
   {

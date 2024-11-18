@@ -87,6 +87,8 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     super(expression);
     operand = expression.resolve();
     var node = expression.require('/').require('∂').resolve();
+    expression.nextCharacter();
+    expression.nextCharacter();
     variable   = (VariableNode<D, R, F>) node;
     derivative = operand.differentiate(variable);
   }
@@ -135,6 +137,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+    System.out.println("generate " + this );
     return derivative.generate(mv, resultType);
   }
 

@@ -42,6 +42,12 @@ import arb.space.topological.EuclideanVectorSpace;
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  @SuppressWarnings("resource")
+  public static Complex valueOf(int i)
+  {
+    return new Complex().set(i);
+  }
+  
   public Complex set(int integer)
   {
     re().set(integer);

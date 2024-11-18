@@ -123,7 +123,8 @@ public class RationalFunction implements AutoCloseable,NamedField<RationalFuncti
   {
     return evaluate(fraction, 0, new Fraction());
   }
-    
+
+  @SuppressWarnings("resource")    
   public RationalFunction pow(int power, int bits, RationalFunction res)
   {
     if ( checkPointers )

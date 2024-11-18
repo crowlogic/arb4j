@@ -13,7 +13,6 @@ import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.viz.ExpressionTree;
-import javafx.scene.control.skin.TreeTableViewSkin;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the

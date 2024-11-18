@@ -1,11 +1,13 @@
 package arb.functions.sequences;
 
-import arb.*;
+import arb.Fraction;
 import arb.Integer;
+import arb.RationalFunction;
+import arb.Real;
+import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
-import arb.functions.rational.ComplexRationalFunctionSequence;
 import arb.functions.rational.LommelPolynomial;
 import arb.functions.rational.RationalFunctionSequence;
 import arb.functions.rational.RationalNullaryFunction;

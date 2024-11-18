@@ -5,7 +5,6 @@ import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.Context;
 import arb.functions.rational.RationalFunctionSequence;
-import arb.functions.rational.RationalNullaryFunction;
 import arb.utensils.Utensils;
 import junit.framework.TestCase;
 

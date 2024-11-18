@@ -1,10 +1,7 @@
 package arb.equations;
 
-import arb.Integer;
-import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Context;
 import junit.framework.TestCase;
 
 /**

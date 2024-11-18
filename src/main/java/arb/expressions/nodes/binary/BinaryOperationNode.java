@@ -438,13 +438,14 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
     if (type == null)
     {
-      throw new CompilerException(String.format("Could not determine resultant type for this=%s where left.type=%s and right.type=%s in %s at position=%d chars@pos=%s",
+      throw new CompilerException(String.format("Could not determine resultant type for this=%s where left.type=%s and right.type=%s in %s at position=%s",
                                                 this,
                                                 leftType,
                                                 rightType,
                                                 toString(),
-                                                position,
-                                                expression.expression.substring(position)));
+                                                position)
+                                  );
+
     }
 
     return type;

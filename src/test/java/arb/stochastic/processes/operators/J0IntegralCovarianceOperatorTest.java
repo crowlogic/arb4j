@@ -3,7 +3,6 @@ package arb.stochastic.processes.operators;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;

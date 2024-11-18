@@ -20,10 +20,8 @@ public class RealTest extends
 
   public static void testResize()
   {
-    try ( Real x = new Real().set("3.4", 128); var origx = new Real().set(x);)
-
+    try ( Real x = Real.valueOf("3.4", 128); var origx = x.copy();)
     {
-
       x.resize(3);
       Real x1     = x.get(1);
       var  newval = new Real("6.9",

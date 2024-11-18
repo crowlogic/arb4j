@@ -3,7 +3,6 @@ package arb.functions.integer;
 import java.util.function.IntFunction;
 
 import arb.Integer;
-import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
