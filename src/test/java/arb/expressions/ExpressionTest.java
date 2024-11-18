@@ -29,6 +29,24 @@ public class ExpressionTest extends
                             TestCase
 {
 
+  public static void testArgOfZetaOnTheCriticalLineComplex()
+  {
+    Context         context = new Context(Integer.named("m").set(3));
+    ComplexFunction f       = ComplexFunction.express("t->arg(ζ(1/2+I*t))", context);
+    Complex         eval    = f.eval(2.3, new Complex());
+    System.out.println("f(2.3)" + eval);
+
+  }
+
+  public static void testArgOfZetaOnTheCriticalLineReal()
+  {
+    Context      context = new Context(Integer.named("m").set(3));
+    RealFunction f       = RealFunction.express("t->arg(ζ(1/2+I*t))", context);
+    Real         eval    = f.eval(2.3, new Real());
+    System.out.println("f(2.3)" + eval);
+
+  }
+
   public void testFourierTransformOftype1ChebyshevPolynomials()
   {
     Context         context = new Context(Integer.named("m").set(3));

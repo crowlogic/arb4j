@@ -33,7 +33,8 @@ import arb.utensils.RootFindingTools;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface RealFunction extends Function<Real, Real>
+public interface RealFunction extends
+                              Function<Real, Real>
 {
 
   @Override
@@ -118,8 +119,7 @@ public interface RealFunction extends Function<Real, Real>
       {
         try ( Real y = new Real())
         {
-          return RealFunction.this.evaluate(x, order, bits, result)
-                                  .add(that.evaluate(x, order, bits, y), bits, result);
+          return RealFunction.this.evaluate(x, order, bits, result).add(that.evaluate(x, order, bits, y), bits, result);
         }
 
       }
@@ -191,8 +191,7 @@ public interface RealFunction extends Function<Real, Real>
       {
         try ( Real y = new Real())
         {
-          return RealFunction.this.evaluate(x, order, bits, result)
-                                  .div(that.evaluate(x, order, bits, y), bits, result);
+          return RealFunction.this.evaluate(x, order, bits, result).div(that.evaluate(x, order, bits, y), bits, result);
         }
 
       }
@@ -222,6 +221,11 @@ public interface RealFunction extends Function<Real, Real>
     {
       return evaluate(x.get(0).set(t), 1, Double.PRECISION + 5, x.get(1)).doubleValue();
     }
+  }
+
+  public default Real eval(double t, Real res)
+  {
+    return evaluate(res.set(t), 1, Double.PRECISION + 5, res);
   }
 
   public default double eval(double t, RoundingMode roundingMode)
@@ -261,8 +265,7 @@ public interface RealFunction extends Function<Real, Real>
    * @return the convergenceFactoRealFunction C afteRealFunction it has been
    *         assigned the result
    */
-  public default Float
-         getNewtonConvergenceFactor(Real convergenceRegion, Real jet, int prec, Float convergenceFactor)
+  public default Float getNewtonConvergenceFactor(Real convergenceRegion, Real jet, int prec, Float convergenceFactor)
   {
     if (jet.dim < 3)
     {
@@ -279,8 +282,8 @@ public interface RealFunction extends Function<Real, Real>
 
   public default double integrate(double left, double right)
   {
-    try ( Magnitude acceptableUncertainty = new Magnitude(1.0e-17); Real l = new Real(left);
-          Real r = new Real(right); Real result = new Real())
+    try ( Magnitude acceptableUncertainty = new Magnitude(1.0e-17); Real l = new Real(left); Real r = new Real(right);
+          Real result = new Real())
     {
       IntegrationOptions opts = new IntegrationOptions();
       opts.verbose = verbose;
@@ -435,8 +438,7 @@ public interface RealFunction extends Function<Real, Real>
       {
         try ( Real y = new Real())
         {
-          return RealFunction.this.evaluate(x, order, bits, result)
-                                  .mul(that.evaluate(x, order, bits, y), bits, result);
+          return RealFunction.this.evaluate(x, order, bits, result).mul(that.evaluate(x, order, bits, y), bits, result);
         }
 
       }
@@ -546,10 +548,13 @@ public interface RealFunction extends Function<Real, Real>
    */
   public default RealTwoDimensionalDataSet quantize(FloatInterval interval, int bits, int n, boolean parallel)
   {
-    RealTwoDimensionalDataSet sample = new RealTwoDimensionalDataSet(toString() + " over " + interval.left().toString(5) + ".."
-                  + interval.right().toString(5),
-                                         n);
-    Real        values = sample.getRealYValues();
+    RealTwoDimensionalDataSet sample = new RealTwoDimensionalDataSet(toString()
+                                                                     + " over "
+                                                                     + interval.left().toString(5)
+                                                                     + ".."
+                                                                     + interval.right().toString(5),
+                                                                     n);
+    Real                      values = sample.getRealYValues();
 
     try ( RealPartition mesh = interval.generateRealPartition(bits, false, sample.getRealXValues()))
     {
@@ -600,8 +605,12 @@ public interface RealFunction extends Function<Real, Real>
       {
         if (verbose)
         {
-          println("the configured limit was hit at " + realRootInterval + " where the configuration is " + config
-                        + " and currently at " + found);
+          println("the configured limit was hit at "
+                  + realRootInterval
+                  + " where the configuration is "
+                  + config
+                  + " and currently at "
+                  + found);
         }
         found.add(realRootInterval);
       }
@@ -656,7 +665,12 @@ public interface RealFunction extends Function<Real, Real>
                                                    int prec,
                                                    boolean verbose)
   {
-    return RootFindingTools.refineRootViaNewtonsMethod(this, root, convergenceRegion, convergenceFactor, extraPrec, prec);
+    return RootFindingTools.refineRootViaNewtonsMethod(this,
+                                                       root,
+                                                       convergenceRegion,
+                                                       convergenceFactor,
+                                                       extraPrec,
+                                                       prec);
   }
 
   public default RealFunction sub(RealFunction that)
@@ -669,8 +683,7 @@ public interface RealFunction extends Function<Real, Real>
       {
         try ( Real y = new Real())
         {
-          return RealFunction.this.evaluate(x, order, bits, result)
-                                  .sub(that.evaluate(x, order, bits, y), bits, result);
+          return RealFunction.this.evaluate(x, order, bits, result).sub(that.evaluate(x, order, bits, y), bits, result);
         }
 
       }
