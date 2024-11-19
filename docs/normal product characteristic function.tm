@@ -3,17 +3,21 @@
 <style|<tuple|generic|framed-theorems|alt-colors>>
 
 <\body>
-  <doc-data|<doc-title|Characteristic Function of the Product of Independent
-  Standard Normal Variables>|<doc-author|<author-data|<author-name|Stephen
+  <doc-data|<doc-title|The Characteristic Function of the Product of
+  Independent Standard Normal Variables>|<doc-author|<author-data|<author-name|Stephen
   Crowley>>>|<doc-date|<date|>>>
 
-  <abstract-data|<\abstract>
-    The characteristic function of the product of two independent standard
-    normal random variables is shown to involve the Bessel function of the
-    first kind of order 0 and the orthogonality measure of the Type-1
-    Chebyshev polynomials. Polar coordinate transformations and properties of
-    Bessel functions are used to derive the closed form expression.
-  </abstract>>
+  \;
+
+  <\abstract>
+    This paper demonstrates that the characteristic function of the product
+    of two independent standard normal random variables involves the Bessel
+    function of the first kind of order 0. Polar coordinate transformations
+    and properties of Bessel functions are utilized to obtain the closed form
+    expression.
+  </abstract>
+
+  \;
 
   <\table-of-contents|toc>
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Introduction>
@@ -36,87 +40,110 @@
   <section|Introduction>
 
   The characteristic function of the product of two independent standard
-  normal random variables has important applications in probability theory
-  and statistical analysis. Here we present a complete proof of its form.
+  normal random variables serves as a fundamental result in probability
+  theory and statistical analysis. This paper presents a rigorous derivation
+  of its closed form.
 
   <section|Main Result>
 
   <\theorem>
-    Let X and Y be independent standard normal random variables. The
+    For independent standard normal random variables X and Y, the
     characteristic function of their product XY is given by:
 
     <\equation>
-      \<phi\><rsub|X*Y><around|(|t|)>=<frac|J<rsub|0><around*|(|<frac|t|<sqrt|1+t<rsup|2>>>|)>|<sqrt|1+t<rsup|2>>>*
+      \<phi\><rsub|X*Y><around|(|t|)>=<frac|J<rsub|0><around*|(|<frac|t|<sqrt|1+t<rsup|2>>>|)>|<sqrt|1+t<rsup|2>>>
     </equation>
 
-    where <math|J<rsub|0>> is the Bessel function of the first kind of order
-    zero.
+    where <math|J<rsub|0>> denotes the Bessel function of the first kind of
+    order zero.
   </theorem>
 
   <section|Proof>
 
   <\proof>
-    Starting with the definition of the characteristic function:
+    The derivation begins with the characteristic function definition:
 
     <\equation>
       \<phi\><rsub|X*Y><around|(|t|)>=E<around|[|e<rsup|i*t*X*Y>|]>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*x*y>*e<rsup|-<around|(|x<rsup|2>+y<rsup|2>|)>/2>*d*x*d*y
     </equation>
 
-    <strong|Polar Coordinate Transformation>
+    <with|font-series|bold|Polar Coordinate Transformation>
 
-    \;
-
-    Transform to polar coordinates with <math|x=r*cos \<theta\>>,
-    <math|y=r*sin \<theta\>>, and <math|d*x*d*y=r*d*r*d*\<theta\>>:
+    The introduction of polar coordinates where <math|x=r*cos \<theta\>>,
+    <math|y=r*sin \<theta\>>, and <math|d*x*d*y=r*d*r*d*\<theta\>> transforms
+    the integral to:
 
     <\equation>
       <frac|1|2*\<pi\>>*<big|int><rsub|0><rsup|\<infty\>><big|int><rsub|0><rsup|2*\<pi\>>e<rsup|i*t*r<rsup|2>*cos
       \<theta\>*sin \<theta\>>*r*e<rsup|-r<rsup|2>/2>*d*\<theta\>*d*r
     </equation>
 
-    <strong|Variable Substitution>
+    <with|font-series|bold|Variable Substitution>
 
-    Let <math|u=r<rsup|2>/2>, then <math|d*u=r*d*r>:
+    The substitution <math|u=r<rsup|2>/2>, with <math|d*u=r*d*r>, yields:
 
     <\equation>
       <frac|1|2*\<pi\>>*<big|int><rsub|0><rsup|\<infty\>><big|int><rsub|0><rsup|2*\<pi\>>e<rsup|2*i*t*u*cos
       \<theta\>*sin \<theta\>>*e<rsup|-u>*d*\<theta\>*d*u
     </equation>
 
-    <strong|Double Angle Formula>
+    <with|font-series|bold|Double Angle Formula>
 
-    Using <math|cos \<theta\>*sin \<theta\>=<frac|1|2>*sin
-    <around|(|2*\<theta\>|)>>:
+    Application of the identity <math|cos \<theta\>*sin
+    \<theta\>=<frac|1|2>*sin <around|(|2*\<theta\>|)>> gives:
 
     <\equation>
       <frac|1|2*\<pi\>>*<big|int><rsub|0><rsup|\<infty\>><big|int><rsub|0><rsup|2*\<pi\>>e<rsup|i*t*u*sin
       <around|(|2*\<theta\>|)>>*e<rsup|-u>*d*\<theta\>*d*u
     </equation>
 
-    <strong|Bessel Function Representation>
+    <with|font-series|bold|Bessel Function Connection>
 
-    The inner integral is related to the Bessel function:
+    The inner integral relates to the Bessel function through the identity:
+
+    <\equation>
+      <big|int><rsub|0><rsup|2*\<pi\>>e<rsup|i*t*u*sin
+      <around|(|2*\<theta\>|)>>*d*\<theta\>=2*\<pi\>*J<rsub|0>*<around|(|t*u|)>
+    </equation>
+
+    This follows from the integral representation of the Bessel function of
+    the first kind:
+
+    <\equation>
+      J<rsub|0><around|(|z|)>=<frac|1|2*\<pi\>>*<big|int><rsub|0><rsup|2*\<pi\>>e<rsup|i*z*sin
+      <around|(|\<theta\>|)>>*d*\<theta\>
+    </equation>
+
+    The integral thus reduces to:
 
     <\equation>
       <big|int><rsub|0><rsup|\<infty\>>J<rsub|0>*<around|(|t*u|)>*e<rsup|-u>*d*u
     </equation>
 
-    <strong|Final Evaluation>
+    <with|font-series|bold|Final Evaluation>
 
-    This integral evaluates to:
+    The evaluation proceeds through the known Laplace transform of Bessel
+    functions:
 
     <\equation>
-      \<phi\><rsub|X*Y><around|(|t|)>=<frac|J<rsub|0><around*|(|<frac|t|<sqrt|1+t<rsup|2>>>|)>|<sqrt|1+t<rsup|2>>>*
+      <big|int><rsub|0><rsup|\<infty\>>J<rsub|0>*<around|(|a*t|)>*e<rsup|-u*t>*d*t=<frac|1|<sqrt|1+a<rsup|2>>>*J<rsub|0><around*|(|<frac|a|<sqrt|1+a<rsup|2>>>|)>
+    </equation>
+
+    This leads to the final result:
+
+    <\equation>
+      \<phi\><rsub|X*Y><around|(|t|)>=<frac|J<rsub|0><around*|(|<frac|t|<sqrt|1+t<rsup|2>>>|)>|<sqrt|1+t<rsup|2>>>
     </equation>
   </proof>
 
   <section|Conclusion>
 
-  It has been proven that the characteristic function of the product of two
-  independent standard normal random variables has the stated form involving
-  the Bessel function <math|J<rsub|0>>.
-
-  \;
+  The derivation establishes that the characteristic function of the product
+  of two independent standard normal random variables takes the form
+  <math|J<rsub|0>*<around|(|t/<sqrt|1+t<rsup|2>>|)>/<sqrt|1+t<rsup|2>>>. The
+  proof relies on coordinate transformation, properties of Bessel functions,
+  and integral transforms. This result holds significance in various
+  applications of probability theory and statistical analysis.
 </body>
 
 <\initial>
@@ -134,7 +161,7 @@
     <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_61.tm>>
     <associate|auto-2|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_61.tm>>
     <associate|auto-3|<tuple|3|2|../../.TeXmacs/texts/scratch/no_name_61.tm>>
-    <associate|auto-4|<tuple|4|2|../../.TeXmacs/texts/scratch/no_name_61.tm>>
+    <associate|auto-4|<tuple|4|3|../../.TeXmacs/texts/scratch/no_name_61.tm>>
   </collection>
 </references>
 

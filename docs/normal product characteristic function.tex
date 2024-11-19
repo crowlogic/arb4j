@@ -1,102 +1,126 @@
 \documentclass{article}
 \usepackage[english]{babel}
-\usepackage{geometry}
+\usepackage{geometry,amsmath,latexsym}
 \geometry{letterpaper}
 
 %%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
 \newtheorem{theorem}{Theorem}
 %%%%%%%%%% End TeXmacs macros
 
 \begin{document}
 
-\title{Characteristic Function of the Product of Independent Standard Normal
-Variables}
+\title{The Characteristic Function of the Product of Independent Standard
+Normal Variables}
 
-\author{Author Name}
+\author{Stephen Crowley}
 
 \date{November 19, 2024}
 
 \maketitle
 
+\
+
 \begin{abstract}
-  We provide a rigorous proof for the characteristic function of the product
-  of two independent standard normal random variables. The proof utilizes
-  polar coordinate transformation and properties of Bessel functions to derive
-  the closed form expression.
+  This paper demonstrates that the characteristic function of the product of
+  two independent standard normal random variables involves the Bessel
+  function of the first kind of order 0. Polar coordinate transformations and
+  properties of Bessel functions are utilized to obtain the closed form
+  expression.
 \end{abstract}
+
+\
+
+{\tableofcontents}
 
 \section{Introduction}
 
 The characteristic function of the product of two independent standard normal
-random variables has important applications in probability theory and
-statistical analysis. Here we present a complete proof of its form.
+random variables serves as a fundamental result in probability theory and
+statistical analysis. This paper presents a rigorous derivation of its closed
+form.
 
 \section{Main Result}
 
 \begin{theorem}
-  Let X and Y be independent standard normal random variables. The
-  characteristic function of their product XY is given by:
+  For independent standard normal random variables X and Y, the characteristic
+  function of their product XY is given by:
   \begin{equation}
     \phi_{XY} (t) = \frac{J_0 \left( \frac{t}{\sqrt{1 + t^2}} \right)}{\sqrt{1
-    + t^2}} 
+    + t^2}}
   \end{equation}
-  where $J_0$ is the Bessel function of the first kind of order zero.
+  where $J_0$ denotes the Bessel function of the first kind of order zero.
 \end{theorem}
 
 \section{Proof}
 
-Starting with the definition of the characteristic function:
-\begin{equation}
-  \phi_{XY} (t) = E [e^{itXY}] = \frac{1}{2 \pi}  \int_{- \infty}^{\infty}
-  \int_{- \infty}^{\infty} e^{itxy} e^{- (x^2 + y^2) / 2} dxdy
-\end{equation}
-
-\subsection{Step 1: Polar Coordinate Transformation}
-
-Transform to polar coordinates with $x = r \cos \theta$, $y = r \sin \theta$,
-and $dxdy = rdrd \theta$:
-\begin{equation}
-  \frac{1}{2 \pi}  \int_0^{\infty} \int_0^{2 \pi} e^{itr^2 \cos \theta \sin
-  \theta} re^{- r^2 / 2} d \theta dr
-\end{equation}
-
-\subsection{Step 2: Variable Substitution}
-
-Let $u = r^2 / 2$, then $du = rdr$:
-\begin{equation}
-  \frac{1}{2 \pi}  \int_0^{\infty} \int_0^{2 \pi} e^{2 itu \cos \theta \sin
-  \theta} e^{- u} d \theta du
-\end{equation}
-
-\subsection{Step 3: Double Angle Formula}
-
-Using $\cos \theta \sin \theta = \frac{1}{2} \sin (2 \theta)$:
-\begin{equation}
-  \frac{1}{2 \pi}  \int_0^{\infty} \int_0^{2 \pi} e^{itu \sin (2 \theta)} e^{-
-  u} d \theta du
-\end{equation}
-
-\subsection{Step 4: Bessel Function Representation}
-
-The inner integral is related to the Bessel function:
-\begin{equation}
-  \int_0^{\infty} J_0  (tu) e^{- u} du
-\end{equation}
-
-\subsection{Step 5: Final Evaluation}
-
-This integral evaluates to:
-\begin{equation}
-  \phi_{XY} (t) = \frac{J_0 \left( \frac{t}{\sqrt{1 + t^2}} \right)}{\sqrt{1 +
-  t^2}} 
-\end{equation}
+\begin{proof}
+  The derivation begins with the characteristic function definition:
+  \begin{equation}
+    \phi_{XY} (t) = E [e^{itXY}] = \frac{1}{2 \pi}  \int_{- \infty}^{\infty}
+    \int_{- \infty}^{\infty} e^{itxy} e^{- (x^2 + y^2) / 2} dxdy
+  \end{equation}
+  \tmtextbf{Polar Coordinate Transformation}
+  
+  The introduction of polar coordinates where $x = r \cos \theta$, $y = r \sin
+  \theta$, and $dxdy = rdrd \theta$ transforms the integral to:
+  \begin{equation}
+    \frac{1}{2 \pi}  \int_0^{\infty} \int_0^{2 \pi} e^{itr^2 \cos \theta \sin
+    \theta} re^{- r^2 / 2} d \theta dr
+  \end{equation}
+  \tmtextbf{Variable Substitution}
+  
+  The substitution $u = r^2 / 2$, with $du = rdr$, yields:
+  \begin{equation}
+    \frac{1}{2 \pi}  \int_0^{\infty} \int_0^{2 \pi} e^{2 itu \cos \theta \sin
+    \theta} e^{- u} d \theta du
+  \end{equation}
+  \tmtextbf{Double Angle Formula}
+  
+  Application of the identity $\cos \theta \sin \theta = \frac{1}{2} \sin (2
+  \theta)$ gives:
+  \begin{equation}
+    \frac{1}{2 \pi}  \int_0^{\infty} \int_0^{2 \pi} e^{itu \sin (2 \theta)}
+    e^{- u} d \theta du
+  \end{equation}
+  \tmtextbf{Bessel Function Connection}
+  
+  The inner integral relates to the Bessel function through the identity:
+  \begin{equation}
+    \int_0^{2 \pi} e^{itu \sin (2 \theta)} d \theta = 2 \pi J_0  (tu)
+  \end{equation}
+  This follows from the integral representation of the Bessel function of the
+  first kind:
+  \begin{equation}
+    J_0 (z) = \frac{1}{2 \pi}  \int_0^{2 \pi} e^{iz \sin (\theta)} d \theta
+  \end{equation}
+  The integral thus reduces to:
+  \begin{equation}
+    \int_0^{\infty} J_0  (tu) e^{- u} du
+  \end{equation}
+  \tmtextbf{Final Evaluation}
+  
+  The evaluation proceeds through the known Laplace transform of Bessel
+  functions:
+  \begin{equation}
+    \int_0^{\infty} J_0  (at) e^{- ut} dt = \frac{1}{\sqrt{1 + a^2}} J_0
+    \left( \frac{a}{\sqrt{1 + a^2}} \right)
+  \end{equation}
+  This leads to the final result:
+  \begin{equation}
+    \phi_{XY} (t) = \frac{J_0 \left( \frac{t}{\sqrt{1 + t^2}} \right)}{\sqrt{1
+    + t^2}}
+  \end{equation}
+\end{proof}
 
 \section{Conclusion}
 
-We have proven that the characteristic function of the product of two
-independent standard normal random variables has the stated form involving the
-Bessel function $J_0$.
-
-\
+The derivation establishes that the characteristic function of the product of
+two independent standard normal random variables takes the form $J_0  (t /
+\sqrt{1 + t^2}) / \sqrt{1 + t^2}$. The proof relies on coordinate
+transformation, properties of Bessel functions, and integral transforms. This
+result holds significance in various applications of probability theory and
+statistical analysis.
 
 \end{document}
