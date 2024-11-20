@@ -335,6 +335,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
       return Compiler.scalarType(expression.coDomainType);
     }
+    
+    if ( "arg".equals(functionName))
+    {
+      return Real.class;
+    }
 
     if (argType == null)
     {
@@ -398,6 +403,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return resultType;
     }
     assert mapping.coDomain != null : "coDomain of " + mapping + " is null";
+    if (functionName.equals("arg"))
+    {
+      return Real.class;
+    }
     return mapping.coDomain;
   }
 
@@ -431,7 +440,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   static final HashSet<String> bitlessFunctions = new HashSet<>();
-  
+
   static
   {
     bitlessFunctions.add("neg");
