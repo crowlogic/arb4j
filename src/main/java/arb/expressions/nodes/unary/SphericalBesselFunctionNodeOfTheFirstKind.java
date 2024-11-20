@@ -171,4 +171,11 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
   {
     return format("j_{%s}(%s)", index.typeset(), arg == null ? "" : arg.typeset());
   }
+
+  @Override
+  public Class<?> type()
+  {
+    var scalarType = Compiler.scalarType(expression.coDomainType);
+    return scalarType;
+  }
 }
