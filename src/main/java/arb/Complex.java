@@ -91,6 +91,13 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
    set(i);
   }
 
+  public Complex arg( int prec, Complex result )
+  {
+    result.im().zero();
+    arg(prec,result.re());
+    return result;
+  }
+  
   public Complex add(Real z, int bits2)
   {
     return add(z, bits2, this);

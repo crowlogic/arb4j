@@ -66,6 +66,13 @@ import arb.space.topological.EuclideanVectorSpace;
    set(i);
   }
 
+  public Complex arg( int prec, Complex result )
+  {
+    result.im().zero();
+    arg(prec,result.re());
+    return result;
+  }
+  
   public Complex add(Real z, int bits2)
   {
     return add(z, bits2, this);
