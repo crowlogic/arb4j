@@ -340,6 +340,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return Real.class;
     }
+    
+    if ("ζ".equals(functionName))
+    {
+      return Complex.class;
+    }
 
     if (argType == null)
     {
