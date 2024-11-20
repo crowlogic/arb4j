@@ -9,6 +9,8 @@ import arb.Complex;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.real.RealFunction;
+import arb.utensils.Utensils;
 import junit.framework.TestCase;
 
 /**

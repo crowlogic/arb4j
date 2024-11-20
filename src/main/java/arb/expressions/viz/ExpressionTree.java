@@ -205,6 +205,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     treeTableView.getColumns().addAll(typesetCol, valueCol, nodeTypeCol, nodeTypeResultCol, nodeCol, fieldCol);
   }
 
+
   @SuppressWarnings("unchecked")
   public void compileExpression()
   {
@@ -315,7 +316,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
     WindowManager.showAlert("TODO", "TODO: graph.. ask for range.. 1d for real");
   }
 
-  public void load(File file)
+  public Context load(File file)
   {
 
     if (file != null)
@@ -385,6 +386,8 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
         Utensils.throwOrWrap(e);
       }
     }
+    
+    return context;
   }
 
   private ClassStringConverter<D, C, F> classStringConverter = new ClassStringConverter<D, C, F>();
