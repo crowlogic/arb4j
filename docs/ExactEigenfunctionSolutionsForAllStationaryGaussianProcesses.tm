@@ -1,11 +1,13 @@
 <TeXmacs|2.1.4>
 
-<style|generic>
+<style|<tuple|generic|alt-colors|framed-theorems>>
 
 <\body>
-  <doc-data|<doc-title|A Constructive Solution for the Exact
-  Eigenfunctions<next-line>of Stationary Gaussian
-  Processes>|<doc-author|<author-data|<author-name|Stephen Crowley>>>>
+  <doc-data|<doc-title|A Constructive Solution for the Exact Eigenfunctions
+  of Stationary Gaussian Processes>|<doc-author|<author-data|<author-name|Stephen
+  Crowley \<less\>stephencrowley214@gmail.com\<gtr\>>|<\author-affiliation>
+    <date|>
+  </author-affiliation>>>>
 
   <\abstract>
     A constructive method yielding exact eigenfunctions through uniform
@@ -184,12 +186,42 @@
       <big|int><rsub|-\<infty\>><rsup|\<infty\>><big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n>*<around|(|t-s|)>*\<phi\><rsub|k><around|(|s|)>*d*s=<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<psi\><rsub|n>|\<rangle\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|n>*<around|(|t-s|)>*\<phi\><rsub|k><around|(|s|)>*d*s
     </equation*>
 
-    By uniqueness of uniform expansions:
+    We now prove that <math|<big|int>\<psi\><rsub|n><around|(|t|)>*\<phi\><rsub|k><around|(|t|)>*d*t=0>
+    for n \<gtr\> k:
 
-    <\equation*>
-      <big|int>\<psi\><rsub|n><around|(|t|)>*\<phi\><rsub|k><around|(|t|)>*d*t=0*<text|for
-      >n\<gtr\>k
-    </equation*>
+    1) Recall <math|\<phi\><rsub|k><around|(|t|)>=\<cal-F\><around|[|p<rsub|k><around|(|\<omega\>|)>|]>>
+    and <math|\<psi\><rsub|n><around|(|t|)>=\<cal-F\><around|[|q<rsub|n><around|(|\<omega\>|)>|]>>
+    where <math|p<rsub|k>> and <math|q<rsub|n>> are orthogonal polynomials
+    w.r.t. <math|S<around|(|\<omega\>|)>> and
+    <math|<sqrt|S<around|(|\<omega\>|)>>> respectively.
+
+    2) By Parseval's theorem: <math|<big|int>\<psi\><rsub|n><around|(|t|)>*\<phi\><rsub|k><around|(|t|)>*d*t=<big|int>q<rsub|n><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>>
+
+    3) Expand <math|q<rsub|n><around|(|\<omega\>|)>> in terms of
+    <math|<around|{|p<rsub|j><around|(|\<omega\>|)>|}><rsub|j=0><rsup|n>>:
+    <math|q<rsub|n><around|(|\<omega\>|)>=<big|sum><rsub|j=0><rsup|n>a<rsub|n*j>*p<rsub|j><around|(|\<omega\>|)>>
+
+    4) Substitute this into the integral:\ 
+
+    <\equation>
+      <big|int>q<rsub|n><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>=<big|sum><rsub|j=0><rsup|n>a<rsub|n*j>*<big|int>p<rsub|j><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>
+    </equation>
+
+    5) For j \<gtr\> k, <math|<big|int>p<rsub|j><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>>S<around|(|\<omega\>|)>*d*\<omega\>=0>
+    by orthogonality of <math|<around|{|p<rsub|j>|}>>.
+
+    6) Therefore, <math|<big|int>p<rsub|j><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>=0>
+    for j \<gtr\> k as well.
+
+    7) Since n \<gtr\> k, all terms in the sum for j \<gtr\> k vanish,
+    leaving only terms up to k.
+
+    8) But <math|q<rsub|n>> is orthogonal to all polynomials of degree
+    \<less\> n w.r.t. <math|<sqrt|S<around|(|\<omega\>|)>>>, so these
+    remaining terms must sum to zero.
+
+    Therefore, <math|<big|int>\<psi\><rsub|n><around|(|t|)>*\<phi\><rsub|k><around|(|t|)>*d*t=0>
+    for n \<gtr\> k, establishing the triangular structure.
   </proof>
 </body>
 
@@ -205,10 +237,10 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_61.tm>>
-    <associate|auto-2|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_61.tm>>
-    <associate|auto-3|<tuple|3|2|../../.TeXmacs/texts/scratch/no_name_61.tm>>
-    <associate|auto-4|<tuple|4|3|../../.TeXmacs/texts/scratch/no_name_61.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-2|<tuple|2|1>>
+    <associate|auto-3|<tuple|3|2>>
+    <associate|auto-4|<tuple|4|3>>
   </collection>
 </references>
 
