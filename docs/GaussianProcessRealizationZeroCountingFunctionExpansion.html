@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:x="https://www.texmacs.org/2002/extensions" xmlns:m="http://www.w3.org/1998/Math/MathML">
+  <head>
+    <title>No title</title>
+    <meta charset="utf-8" content="TeXmacs 2.1.4" name="generator"></meta>
+    <style type="text/css">
+      body { text-align: justify } h5 { display: inline; padding-right: 1em }
+      h6 { display: inline; padding-right: 1em } table { border-collapse:
+      collapse } td { padding: 0.2em; vertical-align: baseline } dt { float:
+      left; min-width: 1.75em; text-align: right; padding-right: 0.75em;
+      font-weight: bold; } dd { margin-left: 2.75em; padding-bottom: 0.25em; }
+      dd p { padding-top: 0em; } .subsup { display: inline; vertical-align:
+      -0.2em } .subsup td { padding: 0px; text-align: left} .fraction {
+      display: inline; vertical-align: -0.8em } .fraction td { padding: 0px;
+      text-align: center } .wide { position: relative; margin-left: -0.4em }
+      .accent { position: relative; margin-left: -0.4em; top: -0.1em }
+      .title-block { width: 100%; text-align: center } .title-block p {
+      margin: 0px } .compact-block p { margin-top: 0px; margin-bottom: 0px }
+      .left-tab { text-align: left } .center-tab { text-align: center }
+      .balloon-anchor { border-bottom: 1px dotted #000000; outline: none;
+      cursor: help; position: relative; } .balloon-anchor [hidden] {
+      margin-left: -999em; position: absolute; display: none; }
+      .balloon-anchor: hover [hidden] { position: absolute; left: 1em; top:
+      2em; z-index: 99; margin-left: 0; width: 500px; display: inline-block; }
+      .balloon-body { } .ornament { border-width: 1px; border-style: solid;
+      border-color: black; display: inline-block; padding: 0.2em; } .right-tab
+      { float: right; position: relative; top: -1em; } .no-breaks {
+      white-space: nowrap; } .underline { text-decoration: underline; }
+      .overline { text-decoration: overline; } .strike-through {
+      text-decoration: line-through; } del { text-decoration: line-through
+      wavy red; } .fill-out { text-decoration: underline dotted; } 
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" language="javascript"></script>
+  </head>
+  <body>
+    <h2>Table of contents<span style="margin-left: 1em"></span></h2>
+    <div class="compact-block" style="text-indent: 0em">
+      <p style="margin-top: 1em; margin-bottom: 0.5em">
+        <b>1<span style="margin-left: 1em"></span>Zero Counting Function via Regularized
+        Transform for Gaussian Processes on <font color="#800000">\([0,
+        \infty)\)</font></b> <span style="margin-left: 5mm"></span> <a href="#auto-1">1</a>
+      </p>
+      <p>
+        1.1<span style="margin-left: 1em"></span>Natural Framework and Preliminaries <span
+        style="margin-left: 5mm"></span> <a href="#auto-2">1</a>
+      </p>
+      <p>
+        1.2<span style="margin-left: 1em"></span>Note on Compactness Verification <span style="margin-left: 5mm"></span>
+        <a href="#auto-3">1</a>
+      </p>
+      <p>
+        1.3<span style="margin-left: 1em"></span>Bidirectional Representations <span style="margin-left: 5mm"></span>
+        <a href="#auto-4">2</a>
+      </p>
+      <p>
+        1.4<span style="margin-left: 1em"></span>Simplicity of Zeros <span style="margin-left: 5mm"></span> <a
+        href="#auto-5">2</a>
+      </p>
+      <p>
+        1.5<span style="margin-left: 1em"></span>Zero Counting Function Development <span style="margin-left: 5mm"></span>
+        <a href="#auto-6">2</a>
+      </p>
+      <p>
+        1.6<span style="margin-left: 1em"></span>Detailed Proof of Zero Counting Function
+        Representation <span style="margin-left: 5mm"></span> <a href="#auto-7">3</a>
+      </p>
+      <p style="margin-top: 1em; margin-bottom: 0.5em">
+        <b>Commentary on Mathematical Structure</b> <span style="margin-left: 5mm"></span> <a
+        href="#auto-8">4</a>
+      </p>
+    </div>
+    <h2 id="auto-1">1<span style="margin-left: 1em"></span>Zero Counting Function via Regularized
+    Transform for Gaussian Processes on <font color="#800000">\([0,
+    \infty)\)</font><span style="margin-left: 1em"></span></h2>
+    <h3 id="auto-2">1.1<span style="margin-left: 1em"></span>Natural Framework and Preliminaries<span
+    style="margin-left: 1em"></span></h3>
+    <p>
+      Let <font color="#800000">\(\{X_t \}_{t \in [0, \infty)}\)</font> be a
+      real-valued centered Gaussian process whose covariance operator <font
+      color="#800000">\(K\)</font> is compact relative to the canonical metric it
+      induces. This compactness is characterized by the finiteness of Dudley's
+      metric entropy integral:
+    </p>
+    <table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle \int_0^1 \sqrt{\log N (\varepsilon,
+        B_T, d)}  \hspace{0.17em} d \varepsilon <
+\infty\)</td>
+        <td align="right">(1)</td>
+      </tr>
+    </table>
+    <p>
+      where <font color="#800000">\(N (\varepsilon, B_T, d)\)</font> is the covering
+      number - the minimal number of <font color="#800000">\(\varepsilon\)</font>-balls
+      needed to cover any bounded set <font color="#800000">\(B_T = [0, T]\)</font>
+      under the canonical metric:
+    </p>
+    <table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle d (s, t) = \sqrt{K (s, s) + K (t, t)
+        - 2 K (s, t)}\)</td>
+        <td align="right">(2)</td>
+      </tr>
+    </table>
+    <h3 id="auto-3">1.2<span style="margin-left: 1em"></span>Note on Compactness Verification<span
+    style="margin-left: 1em"></span></h3>
+    <p>
+      While the covering number <font color="#800000">\(N (\varepsilon, B_T,
+      d)\)</font> represents the exact supremum over all errors of finite rank
+      approximations, its direct computation is typically infeasible. However,
+      the upper bound:
+    </p>
+    <table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle N (\varepsilon, B_T, d) \leq \min
+        \{n \in \mathbb{N}: \lambda_n <
+\varepsilon^2 \}\)</td>
+        <td align="right">(3)</td>
+      </tr>
+    </table>
+    <p>
+      is sufficient to prove compactness.
+    </p>
+    <p>
+      Importantly, one need not verify compactness a priori. The very
+      existence of an orthogonal polynomial system for the spectral density
+      implies compactness of the corresponding kernel operator (Rao, M.M.,
+      Stochastic Processes: Inference Theory). Thus, the success of this
+      expansion method itself confirms compactness - if the kernel were not
+      compact, no such orthogonal system would exist.
+    </p>
+    <p>
+      The compactness of <font color="#800000">\(K\)</font> ensures the existence of a
+      countable orthonormal basis <font color="#800000">\(\{\phi_n \}\)</font> with
+      corresponding eigenvalues <font color="#800000">\(\{\lambda_n \}\)</font>.
+      Importantly, <font color="#800000">\(K\)</font> is not required to be trace
+      class.
+    </p>
+    <h3 id="auto-4">1.3<span style="margin-left: 1em"></span>Bidirectional Representations<span style="margin-left: 1em"></span></h3>
+    <p>
+      Given this spectral decomposition, the process admits two equivalent
+      representations:
+    </p>
+    <p>
+      Given a path <font color="#800000">\(X_t\)</font>, its projection coefficients
+      are:
+    </p>
+    <table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle Z_n = \frac{\int_0^{\infty} X_t
+        \phi_n (t) dt}{\sqrt{\lambda_n}}\)</td>
+        <td align="right">(4)</td>
+      </tr>
+    </table>
+    <p>
+      Conversely, given the projection coefficients <font color="#800000">\(\{Z_n
+      \}\)</font>, the path is reconstructed as:
+    </p>
+    <table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle X_t = \sum_{n = 0}^{\infty} Z_n 
+        \sqrt{\lambda_n} \phi_n (t)\)</td>
+        <td align="right">(5)</td>
+      </tr>
+    </table>
+    <h3 id="auto-5">1.4<span style="margin-left: 1em"></span>Simplicity of Zeros<span style="margin-left: 1em"></span></h3>
+    <p>
+      For such a Gaussian process, the impossibility of simultaneous vanishing
+      of the process and its mean square derivative follows from the
+      properties of joint normal distributions. At any point <font color="#800000">\(t\)</font>,
+      consider <font color="#800000">\((X_t, X'_t)\)</font>, where <font color="#800000">\(X'_t\)</font>
+      is the mean square derivative. These form a bivariate normal
+      distribution with covariance matrix:
+    </p>
+    <table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle \Sigma = \left( \begin{array}{cc}
+ 
+        K (t, t) & \partial_2 K (t, t)\\
+  \partial_2 K (t, t) & - \partial_1
+        \partial_2 K (t, t)
+\end{array} \right)\)</td>
+        <td align="right">(6)</td>
+      </tr>
+    </table>
+    <p>
+      where <font color="#800000">\(\partial_i\)</font> denotes partial derivative with
+      respect to the <font color="#800000">\(i\)</font>th argument.
+    </p>
+    <p>
+      The probability of both vanishing simultaneously is:
+    </p>
+    <table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle P (X_t = 0, X'_t = 0) = \frac{e^{-
+        \frac{(0, 0) \Sigma^{- 1} (0, 0)^T}{2}}}{2
+\pi \sqrt{\det (\Sigma)}} =
+        0\)</td>
+        <td align="right">(7)</td>
+      </tr>
+    </table>
+    <p>
+      since the determinant of <font color="#800000">\(\Sigma\)</font> is strictly
+      positive due to the non-degeneracy of the process.
+    </p>
+    <h3 id="auto-6">1.5<span style="margin-left: 1em"></span>Zero Counting Function Development<span
+    style="margin-left: 1em"></span></h3>
+    <p>
+      The zero counting function takes the form:
+    </p>
+    <table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle \begin{equationsbase}
+  N (T) & =
+        \lim_{\epsilon \to 0}  \frac{1}{2 \pi}  \int_0^T \int_{-
+ 
+        \infty}^{\infty} J_0  (\epsilon r) |r| e^{- ir \sum_{n = 0}^{\infty}
+        Z_n 
+  \sqrt{\lambda_n} \phi_n (t)} drdt\\
+  & = \lim_{\epsilon \to 0}
+        \frac{1}{2 \pi}  \int_0^T \mathcal{H}_{0, r \to
+  \epsilon} e^{- ir
+        \sum_{n = 0}^{\infty} Z_n  \sqrt{\lambda_n} \phi_n (t)}
+        dt
+\end{equationsbase}\)</td>
+        <td align="right">(8)</td>
+      </tr>
+    </table>
+    <p>
+      where <font color="#800000">\(\mathcal{H}_{0, r \to s} [f] = \int_0^{\infty} rf
+      (r) J_0  (sr) dr\)</font> is the Hankel transform of order zero.
+    </p>
+    <h3 id="auto-7">1.6<span style="margin-left: 1em"></span>Detailed Proof of Zero Counting Function
+    Representation<span style="margin-left: 1em"></span></h3>
+    <p>
+      We will now prove in detail that this representation indeed gives the
+      zero counting function:
+    </p>
+    <p style="margin-top: 1em">
+      <font color="#000080"><font color="#000080"><strong>Proof. </strong></font></font>1. Start
+      with the proposed representation:
+    </p>
+    <table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle N (T) = \lim_{\epsilon \to 0} 
+        \frac{1}{2 \pi}  \int_0^T \int_{-
+\infty}^{\infty} J_0  (\epsilon r)
+        |r| e^{- ir \sum_{n = 0}^{\infty} Z_n 
+\sqrt{\lambda_n} \phi_n (t)}
+        drdt\)</td>
+        <td align="right">(9)</td>
+      </tr>
+    </table>
+    <p>
+      2. Focus on the inner integral:
+    </p>
+    <table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle I = \int_{- \infty}^{\infty} J_0 
+        (\epsilon r) |r| e^{- ir \sum_{n =
+0}^{\infty} Z_n  \sqrt{\lambda_n}
+        \phi_n (t)} dr\)</td>
+        <td align="right">(10)</td>
+      </tr>
+    </table>
+    <p>
+      3. Use the integral representation of <font color="#800000">\(J_0\)</font>:
+    </p>
+    <table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle J_0  (\epsilon r) = \frac{1}{2 \pi} 
+        \int_0^{2 \pi} \exp (i \epsilon r \cos
+\theta) d \theta\)</td>
+        <td align="right">(11)</td>
+      </tr>
+    </table>
+    <p>
+      4. Substitute this into our integral:
+    </p>
+    <table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle I = \frac{1}{2 \pi}  \int_{-
+        \infty}^{\infty} |r| \left[ \int_0^{2 \pi} e^{i
+\epsilon r \cos
+        \theta} d \theta \right] e^{- ir \sum_{n = 0}^{\infty} Z_n
+        
+\sqrt{\lambda_n} \phi_n (t)} dr\)</td>
+        <td align="right">(12)</td>
+      </tr>
+    </table>
+    <p>
+      5. Exchange the order of integration (by Fubini's theorem):
+    </p>
+    <table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle I = \frac{1}{2 \pi}  \int_0^{2 \pi}
+        \left[ \int_{- \infty}^{\infty} |r|e^{ir
+(\epsilon \cos \theta -
+        \sum_{n = 0}^{\infty} Z_n  \sqrt{\lambda_n} \phi_n
+(t))} dr \right] d
+        \theta\)</td>
+        <td align="right">(13)</td>
+      </tr>
+    </table>
+    <p>
+      6. Evaluate the inner integral:
+    </p>
+    <table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle \int_{- \infty}^{\infty} |r| \exp
+        (iar) dr = - \frac{2}{a^2}  \quad \text{for
+real } a \neq 0\)</td>
+        <td align="right">(14)</td>
+      </tr>
+    </table>
+    <p>
+      7. Apply this result:
+    </p>
+    <table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle I = \frac{1}{\pi}  \int_0^{2 \pi}
+        \frac{1}{(\epsilon \cos \theta - \sum_{n =
+0}^{\infty} Z_n 
+        \sqrt{\lambda_n} \phi_n (t))^2} d \theta\)</td>
+        <td align="right">(15)</td>
+      </tr>
+    </table>
+    <p>
+      8. This integral can be evaluated:
+    </p>
+    <table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle I = \frac{2}{(\epsilon^2 + (\sum_{n
+        = 0}^{\infty} Z_n  \sqrt{\lambda_n} \phi_n
+(t))^2)^{1 / 2}}\)</td>
+        <td align="right">(16)</td>
+      </tr>
+    </table>
+    <p>
+      9. Substitute back into the original expression:
+    </p>
+    <table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle N (T) = \lim_{\epsilon \to 0} 
+        \frac{1}{2 \pi}  \int_0^T \frac{2}{(\epsilon^2
++ (\sum_{n =
+        0}^{\infty} Z_n  \sqrt{\lambda_n} \phi_n (t))^2)^{1 / 2}} dt\)</td>
+        <td align="right">(17)</td>
+      </tr>
+    </table>
+    <p>
+      10. Behavior at zeros: At a zero <font color="#800000">\(t_k\)</font>, <font
+      color="#800000">\(\sum_{n = 0}^{\infty} Z_n  \sqrt{\lambda_n} \phi_n (t_k) =
+      0\)</font>
+    </p>
+    <table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle \lim_{\epsilon \to 0}  \frac{1}{\pi}
+        \frac{1}{(\epsilon^2 + 0^2)^{1 / 2}} =
+\infty\)</td>
+        <td align="right">(18)</td>
+      </tr>
+    </table>
+    <p>
+      This gives a delta function at each zero.
+    </p>
+    <p>
+      11. Behavior away from zeros: Away from zeros, <font color="#800000">\(\sum_{n =
+      0}^{\infty} Z_n  \sqrt{\lambda_n} \phi_n (t) \neq 0\)</font>
+    </p>
+    <table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle \lim_{\epsilon \to 0}  \frac{1}{\pi}
+        \frac{1}{(\epsilon^2 +
+\text{non-zero}^2)^{1 / 2}} = 0\)</td>
+        <td align="right">(19)</td>
+      </tr>
+    </table>
+    <p>
+      12. Counting function: The integral of these delta functions gives the
+      step function:
+    </p>
+    <table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle N (T) = \sum_k H (T - t_k)\)</td>
+        <td align="right">(20)</td>
+      </tr>
+    </table>
+    <p style="margin-bottom: 1em">
+      where <font color="#800000">\(H\)</font> is the Heaviside step function and <font
+      color="#800000">\(t_k\)</font> are the zeros of <font color="#800000">\(X
+      (t)\)</font>.<span style="margin-left: 1em"></span>\(\Box\)
+    </p>
+    <p>
+      This proves that the proposed representation indeed gives the zero
+      counting function, with unit jumps at each zero of <font color="#800000">\(X (t)
+      = \sum_{n = 0}^{\infty} Z_n  \sqrt{\lambda_n} \phi_n (t)\)</font>.
+    </p>
+    <h2 id="auto-8">Commentary on Mathematical Structure<span style="margin-left: 1em"></span></h2>
+    <p>
+      The appearance of <font color="#800000">\(J_0\)</font> in this construction is
+      not due to any joint distribution structure, but rather it is introduced
+      as part of the regularization method in the zero counting function
+      representation. The Bessel function <font color="#800000">\(J_0\)</font> is
+      chosen for its mathematical properties that make it suitable for this
+      counting problem.
+    </p>
+    <p>
+      The regularization parameter <font color="#800000">\(\epsilon\)</font> provides
+      the necessary resolution while preserving the natural symmetries of the
+      process. This framework reveals why the counting function takes this
+      particular form and provides a natural setting for understanding both
+      its average behavior and fluctuations.
+    </p>
+    <p>
+      The simplicity of zeros follows directly from the Gaussian process
+      properties, as the path and its mean square derivative cannot
+      simultaneously vanish. This elementary fact, combined with the
+      regularized transform approach, provides a complete and elegant
+      description of the zero counting function.
+    </p>
+    <p>
+      The proof demonstrates how the regularized transform approach
+      effectively captures the zero crossings without explicitly computing
+      their locations. The limit as <font color="#800000">\(\epsilon \to 0\)</font>
+      ensures that we count only the actual zeros, while the Hankel transform
+      structure naturally aligns with the rotational symmetry inherent in the
+      regularization method.
+    </p>
+    <p>
+      This construction provides a powerful tool for analyzing zero crossings
+      of Gaussian processes, connecting the spectral properties (via the KL
+      expansion) directly to the counting function. It opens up possibilities
+      for studying both the average behavior and the fluctuations of zero
+      crossings in a unified framework.
+    </p>
+  </body>
+</html>
