@@ -102,15 +102,6 @@ public class Bibliography extends
                                                                  "13",
                                                                  "504-536").setNumber("8");
 
-  public static Article       besselFunctionFourierLegendreSeries                           =
-                                                                  new Article("The Fourier--Legendre Series of Bessel Functions of the First Kind and the Summed Series Involving 1F2 Hypergeometric Functions that Arise from Them",
-                                                                              "Straton, Jack C",
-                                                                              "2024",
-                                                                              "Axioms",
-                                                                              "13",
-                                                                              "134").setNumber("2")
-                                                                                    .setPublisher("MDPI");
-
   public static Article       shiftedJacobiPolynomialIntegralOperationalMatrix              =
                                                                                new Article("The shifted Jacobi polynomial integral operational matrix for solving Riccati differential equation of fractional order",
                                                                                            "A. Neamaty and B. Agheli and R. Darzi",
