@@ -18,20 +18,21 @@ public class IntegerTest extends
   {
     try ( Integer p = new Integer(3))
     {
-      var t = p.pow(new Integer(-3), 128, new Fraction() );
-      assertEquals( 1.0 / 27.0, t.doubleValue() );
+      var t = p.pow(new Integer(-3), 128, new Fraction());
+      assertEquals(1.0 / 27.0, t.doubleValue());
     }
   }
 
-  
   public static void testPositivePower()
   {
-    Integer p = new Integer(3);
-    var t = p.pow(new Integer(3), 128, new Fraction() );
-    System.out.println("t=" + t);
-    assertEquals( 27.0, t.doubleValue() );
+    try ( Integer p = new Integer(3))
+    {
+      var t = p.pow(new Integer(3), 128, new Fraction());
+      System.out.println("t=" + t);
+      assertEquals(27.0, t.doubleValue());
+    }
   }
-  
+
   public static void testMulIntComplex()
   {
     Context         context = new Context(Integer.named("v").set(42));
@@ -85,8 +86,7 @@ public class IntegerTest extends
   public void testAddRealToComplex()
   {
 
-    try ( Integer three = new Integer(3); Real four = Real.valueOf(4);
-          Complex seven = Complex.valueOf(7);)
+    try ( Integer three = new Integer(3); Real four = Real.valueOf(4); Complex seven = Complex.valueOf(7);)
     {
       three.add(four, 128, seven);
       assertEquals("7", seven.toString());
