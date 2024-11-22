@@ -47,17 +47,17 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
   @Override
   public List<Node<D, R, F>> getBranches()
   {
-    return List.of(index, arg);
+    return List.of(order, arg);
 
   }
 
   @Override
   public String toString()
   {
-    return String.format("j(%s,%s)", index, arg);
+    return String.format("j(%s,%s)", order, arg);
   }
 
-  Node<D, R, F>  index;
+  Node<D, R, F>  order;
 
   public boolean scalar;
 
@@ -68,9 +68,10 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
     super("j",
           null,
           expression);
-    index  = expression.resolve();
+    order  = expression.resolve();
     arg    = expression.require(',').resolve();
     scalar = expression.require(')').hasScalarCodomain();
+    assert !order.dependsOn(expression.getIndependentVariable()) : "TODO: handle order depending on input variable";
     expression.registerInitializer(this::generateInitializer);
 
     functionFieldName = expression.newIntermediateVariable("j", SphericalBesselFunction.class, true);
@@ -82,15 +83,15 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
     expression.insideInitializer = true;
     loadSphericalBesselFunctionOntoStack(mv);
     Compiler.getField(mv, SphericalBesselFunction.class, "n", Integer.class);
-    index.generate(mv, Integer.class);
+    order.generate(mv, Integer.class);
 
-    if (!index.getGeneratedType().equals(Integer.class))
+    if (!order.getGeneratedType().equals(Integer.class))
     {
-      index.generateCastTo(mv, Integer.class);
+      order.generateCastTo(mv, Integer.class);
     }
 
-    assert index.getGeneratedType()
-                .equals(Integer.class) : "wanted " + Integer.class + " got " + index.getGeneratedType();
+    assert order.getGeneratedType()
+                .equals(Integer.class) : "wanted " + Integer.class + " got " + order.getGeneratedType();
 
     Compiler.invokeMethod(mv, Integer.class, "set", Integer.class, false, Integer.class);
 
@@ -104,7 +105,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
     expression.insideInitializer = false;
     if (Expression.trace)
     {
-      err.printf("j.generate(ν=%s, resultType=%s\n)\n", index, resultType);
+      err.printf("j.generate(ν=%s, resultType=%s\n)\n", order, resultType);
     }
     if (isNullaryFunction)
     {
@@ -169,7 +170,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
   @Override
   public String typeset()
   {
-    return format("j_{%s}(%s)", index.typeset(), arg == null ? "" : arg.typeset());
+    return format("j_{%s}(%s)", order.typeset(), arg == null ? "" : arg.typeset());
   }
 
   @Override

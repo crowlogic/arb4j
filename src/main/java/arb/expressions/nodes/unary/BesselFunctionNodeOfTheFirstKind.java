@@ -57,6 +57,7 @@ public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends
     order  = expression.resolve();
     arg    = expression.require(',').resolve();
     scalar = expression.require(')').hasScalarCodomain();
+    // assert false : "wtf";
   }
 
   @Override
@@ -66,49 +67,66 @@ public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends
     {
       err.printf("J.generate(ν=%s, resultType=%s\n)\n", order, resultType);
     }
-    var scalarType = scalarType(resultType);
 
+    var scalarType = scalarType(resultType);
     loadOutputVariableOntoStack(mv, scalarType);
     duplicateTopOfTheStack(mv);
     order.generate(mv, scalarType);
-    assert scalar : "TODO: support non-scalar codomain";
+
+    // Add cast if order's generated type doesn't match result type
+    if (!order.generatedType.equals(resultType))
+    {
+      order.generateCastTo(mv, resultType);
+    }
 
     generateScalar(mv, resultType, scalarType);
-
     return mv;
   }
+
+  
 
   public void generateScalar(MethodVisitor mv, Class<?> resultType, Class<?> scalarType)
   {
     arg.generate(mv, resultType);
     loadBitsParameterOntoStack(mv);
-    if ( scalarType.equals(Real.class))
+    if (scalarType.equals(Real.class))
     {
-      invokeStaticMethod(mv,
-                         arblib.class,
-                         "arb_hypgeom_bessel_j",
-                         Void.class,
-                         Real.class,
-                         Real.class,
-                         Real.class,
-                         int.class);
-    } else if ( scalarType.equals(Complex.class))
+      invokeRealStaticEvaluationFunction(mv);
+    }
+    else if (scalarType.equals(Complex.class))
     {
-      invokeStaticMethod(mv,
-                         arblib.class,
-                         "acb_hypgeom_bessel_j",
-                         Void.class,
-                         Complex.class,
-                         Complex.class,
-                         Complex.class,
-                         int.class);
+      invokeComplexStaticEvaluationFunction(mv);
     }
     else
     {
       assert false : "TODO: support " + scalarType + " scalarType";
     }
-    
+
     generatedType = scalarType;
+  }
+
+  public void invokeComplexStaticEvaluationFunction(MethodVisitor mv)
+  {
+    invokeStaticMethod(mv,
+                       arblib.class,
+                       "acb_hypgeom_bessel_j",
+                       Void.class,
+                       Complex.class,
+                       Complex.class,
+                       Complex.class,
+                       int.class);
+  }
+
+  public void invokeRealStaticEvaluationFunction(MethodVisitor mv)
+  {
+    invokeStaticMethod(mv,
+                       arblib.class,
+                       "arb_hypgeom_bessel_j",
+                       Void.class,
+                       Real.class,
+                       Real.class,
+                       Real.class,
+                       int.class);
   }
 
   @Override

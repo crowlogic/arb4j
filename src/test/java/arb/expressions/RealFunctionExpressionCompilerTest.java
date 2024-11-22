@@ -134,7 +134,7 @@ public class RealFunctionExpressionCompilerTest extends
     RealFunction expression = express("t->J(k,t)", context);
     {
       Real evaluatedX = expression.evaluate(one, 1, 256, new Real());
-      assertEquals(0.7651976865579666, evaluatedX.doubleValue(RoundingMode.Up));
+      assertEquals(0.01956335398266840591890532162175150825451, evaluatedX.doubleValue(RoundingMode.Up));
     }
   }
 
