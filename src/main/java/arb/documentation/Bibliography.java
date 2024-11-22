@@ -20,6 +20,14 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       quadraticDirichletSpaceExtremals                              =
+                                                               new Article("A Quadratic Extremal Problem on the Dirichlet Space",
+                                                                           "Stephen D. Fisher",
+                                                                           "1995",
+                                                                           "Complex Variables",
+                                                                           "26",
+                                                                           "367-380");
+
   public static Article       towardsStandardModelWithoutTheHiggsBoson                      =
                                                                        new Article("Towards Standard Model without the Higgs boson",
                                                                                    "A. Sevostyanov",
@@ -35,8 +43,8 @@ public class Bibliography extends
                                                                                                 "2023",
                                                                                                 "S{\\\"u}leyman Demirel University Faculty of Arts and Science Journal of Science",
                                                                                                 "18",
-                                                                                                "3",
-                                                                                                "213--222");
+                                                                                                "213-222",
+                                                                                                "").setNumber("3");
 
   public static Article       rkhsTutorialSurvey                                            =
                                                  new Article("Reproducing Kernel Hilbert Space, Mercer's Theorem, Eigenfunctions, Nystr\\\"om Method, and Use of Kernels in Machine Learning: Tutorial and Survey",
