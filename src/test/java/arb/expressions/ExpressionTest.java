@@ -45,6 +45,13 @@ public class ExpressionTest extends
 
   }
 
+  public void testIntegerToNegativeIntegerPower()
+  {
+    RealNullaryFunction f   = RealNullaryFunction.express("3^(-3)");
+    Real                val = f.evaluate(128);
+    assertEquals(1.0 / 27.0, val.doubleValue());
+  }
+
   public void testFourierTransformOfType1ChebyshevPolynomials()
   {
     Context         context = new Context(Integer.named("m").set(3));

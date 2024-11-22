@@ -25,7 +25,6 @@ import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.VariableReference;
-import arb.expressions.Variables;
 import arb.expressions.nodes.binary.DivisionNode;
 import arb.expressions.nodes.binary.ExponentiationNode;
 import arb.expressions.nodes.binary.MultiplicationNode;
@@ -74,63 +73,18 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 {
 
   @Override
-  public int dim()
-  {
-    assert false : "TODO";
-    return 1;
-  }
-
-  @Override
-  public boolean dependsOn(VariableNode<D, R, F> variable)
-  {
-    return equals(variable);
-  }
-
-  @Override
-  public String toString()
-  {
-    return reference.toString();
-  }
-
-  @Override
-  public boolean isVariable()
+  public boolean isPossiblyNegative()
   {
     return true;
   }
 
-  @Override
-  public Class<?> getGeneratedType()
-  {
-    return generatedType;
-  }
-
-  @Override
-  public Class<?> type()
-  {
-    Class<?> returnType = null;
-    if (isIndependent)
-    {
-      returnType = expression.domainType;
-    }
-    else if (ascendentInput)
-    {
-      returnType = expression.ascendentExpression.domainType;
-    }
-    else
-    {
-      returnType = reference.type();
-    }
-    assert returnType != null : "returnType is null for " + this;
-    return returnType;
-  }
-
-  public VariableReference<D, R, F> reference;
+  public boolean                    ascendentInput;
 
   public boolean                    isIndependent   = false;
 
   public boolean                    isIndeterminate = false;
 
-  public boolean                    ascendentInput;
+  public VariableReference<D, R, F> reference;
 
   public VariableNode(Expression<D, R, F> expression,
                       VariableReference<D, R, F> reference,
@@ -138,7 +92,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                       boolean resolve)
   {
     super(expression);
-    Variables variables = expression.variables;
+    var variables = expression.variables;
     this.expression         = expression;
     this.reference          = reference;
     this.reference.position = startPos;
@@ -147,7 +101,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                   && reference.name.equals(expression.functionName)) : "variable name clashes with "
                                                                        + "the function name since it's a recursve function";
 
-    VariableNode<D, R, F> existingVariable = expression.getReference(reference.name);
+    var existingVariable = expression.getReference(reference.name);
     if (existingVariable != null)
     {
       this.reference.type = existingVariable.reference.type;
@@ -188,6 +142,38 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
+  public void accept(Consumer<Node<D, R, F>> t)
+  {
+    t.accept(this);
+  }
+
+  public ClassVisitor declareField(ClassVisitor classVisitor)
+  {
+    classVisitor.visitField(ACC_PUBLIC, reference.name, type().descriptorString(), null, null);
+    return classVisitor;
+  }
+
+  @Override
+  public boolean dependsOn(VariableNode<D, R, F> variable)
+  {
+    return equals(variable);
+  }
+
+  @Override
+  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
+  {
+    return new LiteralConstantNode<>(expression,
+                                     equals(variable) ? "1" : "0");
+  }
+
+  @Override
+  public int dim()
+  {
+    assert false : "TODO";
+    return 1;
+  }
+
+  @Override
   public boolean equals(Object obj)
   {
     if (this == obj)
@@ -220,20 +206,12 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       generatedType = type();
     }
 
-    // TODO: this should really do the conversion to resultType if generatedType !=
-    // resultType. Or better yet, generate the requested type in the first place
-
     if (isResult)
     {
       expression.generateSetResultInvocation(mv, generatedType);
     }
 
     return mv;
-  }
-
-  public String getName()
-  {
-    return reference.name;
   }
 
   private void generateIndexAccess(MethodVisitor mv)
@@ -311,9 +289,76 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
+  public List<Node<D, R, F>> getBranches()
+  {
+    return List.of();
+  }
+
+  @Override
+  public Class<?> getGeneratedType()
+  {
+    return generatedType;
+  }
+
+  @Override
+  public String getIntermediateValueFieldName()
+  {
+    return reference.name;
+  }
+
+  public String getName()
+  {
+    return reference.name;
+  }
+
+  @Override
   public int hashCode()
   {
     return Objects.hash(expression, isIndependent, reference, expression.variables);
+  }
+
+  @Override
+  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
+  {
+    if (variable.reference.equals(reference))
+    {
+      return new DivisionNode<>(expression,
+                                new ExponentiationNode<>(expression,
+                                                         variable,
+                                                         new LiteralConstantNode<>(expression,
+                                                                                   "2")),
+                                new LiteralConstantNode<>(expression,
+                                                          "2"));
+    }
+    else
+    {
+      return new MultiplicationNode<>(expression,
+                                      this,
+                                      variable);
+    }
+  }
+
+  @Override
+  public boolean isConstant()
+  {
+    return false;
+  }
+
+  public boolean isIndependent(VariableNode<D, R, F> inputVariable)
+  {
+    return equals(inputVariable) || (inputVariable == null && !expression.references(reference)
+                  && !expression.hasIndeterminateVariable());
+  }
+
+  @Override
+  public boolean isLeaf()
+  {
+    return true;
+  }
+
+  public boolean isNamed(String variable)
+  {
+    return getName().equals(variable);
   }
 
   @Override
@@ -323,10 +368,116 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
+  public boolean isScalar()
+  {
+    return type().equals(Real.class) || type().equals(Complex.class) || type().equals(Integer.class)
+                  || type().equals(Fraction.class);
+  }
+
+  @Override
+  public boolean isVariable()
+  {
+    return true;
+  }
+
+  @Override
   public MethodVisitor prepareStackForReuse(MethodVisitor mv)
   {
     assert false : "a variable is never reusable(overwritable)";
     return null;
+  }
+
+  public VariableNode<D, R, F> renameTo(String to)
+  {
+    reference.name = to;
+    return this;
+  }
+
+  public VariableNode<?, ?, ?> resolve(VariableReference<D, R, F> reference, Expression<?, ?, ?> ascendentExpression)
+  {
+    var ascendentInputNode = ascendentExpression.independentVariable;
+
+    if (ascendentInputNode != null && ascendentInputNode.reference.equals(reference))
+    {
+      if (Expression.trace)
+      {
+        System.err.format("Assigning this %s as ascendent input node=%s\n", this, ascendentInputNode);
+      }
+      ascendentInput = true;
+      reference.type = ascendentExpression.domainType;
+    }
+    else if (ascendentExpression.ascendentExpression != null)
+    {
+      return resolve(reference, ascendentExpression.ascendentExpression);
+    }
+
+    return ascendentInputNode;
+  }
+
+  public boolean resolveContextualVariable()
+  {
+    if (expression.variables != null)
+    {
+      Object instanceVariable = expression.variables.get(reference.name);
+      if (instanceVariable != null)
+      {
+        reference.type = instanceVariable.getClass();
+        if (Expression.trace)
+        {
+          System.err.println("Declaring " + reference + " as a contextual variable of type " + reference.type());
+
+        }
+
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  public void resolveIndependentVariable(VariableNode<D, R, F> inputVariable)
+  {
+    assert (inputVariable == null
+                  || inputVariable.equals(expression.independentVariable)) : "inputVariable is already "
+                                                                             + inputVariable
+                                                                             + " it doesnt make sense to change it to "
+                                                                             + this;
+
+    if (Expression.trace)
+    {
+      System.err.format("Variable(#%s).resolveIndependentVariable: declaring "
+                        + reference
+                        + " as the input node to "
+                        + expression
+                        + " which currently has input variable "
+                        + expression.independentVariable
+                        + "\n\n",
+                        System.identityHashCode(this));
+    }
+
+    expression.independentVariable = this;
+    reference.type                 = expression.domainType;
+  }
+
+  public void resolveInheritedVariableReference(VariableNode<D, R, F> variable)
+  {
+
+    var parentExpression = expression.ascendentExpression;
+    if (parentExpression != null)
+    {
+      resolve(reference, parentExpression);
+    }
+    else
+    {
+      throw new UndefinedReferenceException(format("Undefined reference to variable "
+                                                   + " '%s' at position=%d in expression=%s, independent variable is %s and ascendentExpression is %s,  remaining='%s'",
+                                                   reference.name,
+                                                   reference.position,
+                                                   expression.expression,
+                                                   variable,
+                                                   expression.ascendentExpression,
+                                                   expression.remaining()));
+    }
   }
 
   public VariableNode<D, R, F> resolveReference()
@@ -406,157 +557,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return this;
   }
 
-  public boolean resolveContextualVariable()
-  {
-    if (expression.variables != null)
-    {
-      Object instanceVariable = expression.variables.get(reference.name);
-      if (instanceVariable != null)
-      {
-        reference.type = instanceVariable.getClass();
-        if (Expression.trace)
-        {
-          System.err.println("Declaring " + reference + " as a contextual variable of type " + reference.type());
-
-        }
-
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  public void resolveIndependentVariable(VariableNode<D, R, F> inputVariable)
-  {
-    assert (inputVariable == null
-                  || inputVariable.equals(expression.independentVariable)) : "inputVariable is already "
-                                                                             + inputVariable
-                                                                             + " it doesnt make sense to change it to "
-                                                                             + this;
-
-    if (Expression.trace)
-    {
-      System.err.format("Variable(#%s).resolveIndependentVariable: declaring "
-                        + reference
-                        + " as the input node to "
-                        + expression
-                        + " which currently has input variable "
-                        + expression.independentVariable
-                        + "\n\n",
-                        System.identityHashCode(this));
-    }
-
-    expression.independentVariable = this;
-    reference.type                 = expression.domainType;
-  }
-
-  public boolean isIndependent(VariableNode<D, R, F> inputVariable)
-  {
-    return equals(inputVariable) || (inputVariable == null && !expression.references(reference)
-                  && !expression.hasIndeterminateVariable());
-  }
-
-  public void resolveInheritedVariableReference(VariableNode<D, R, F> variable)
-  {
-
-    var parentExpression = expression.ascendentExpression;
-    if (parentExpression != null)
-    {
-      resolve(reference, parentExpression);
-    }
-    else
-    {
-      throw new UndefinedReferenceException(format("Undefined reference to variable "
-                                                   + " '%s' at position=%d in expression=%s, independent variable is %s and ascendentExpression is %s,  remaining='%s'",
-                                                   reference.name,
-                                                   reference.position,
-                                                   expression.expression,
-                                                   variable,
-                                                   expression.ascendentExpression,
-                                                   expression.remaining()));
-    }
-  }
-
-  public VariableNode<?, ?, ?> resolve(VariableReference<D, R, F> reference, Expression<?, ?, ?> ascendentExpression)
-  {
-    var ascendentInputNode = ascendentExpression.independentVariable;
-
-    if (ascendentInputNode != null && ascendentInputNode.reference.equals(reference))
-    {
-      if (Expression.trace)
-      {
-        System.err.format("Assigning this %s as ascendent input node=%s\n", this, ascendentInputNode);
-      }
-      ascendentInput = true;
-      reference.type = ascendentExpression.domainType;
-    }
-    else if (ascendentExpression.ascendentExpression != null)
-    {
-      return resolve(reference, ascendentExpression.ascendentExpression);
-    }
-
-    return ascendentInputNode;
-  }
-
-  @Override
-  public String typeset()
-  {
-    return reference.typeset();
-  }
-
-  public ClassVisitor declareField(ClassVisitor classVisitor)
-  {
-    classVisitor.visitField(ACC_PUBLIC, reference.name, type().descriptorString(), null, null);
-    return classVisitor;
-  }
-
-  @Override
-  public boolean isLeaf()
-  {
-    return true;
-  }
-
-  @Override
-  public List<Node<D, R, F>> getBranches()
-  {
-    return List.of();
-  }
-
-  public VariableNode<D, R, F> resolveType()
-  {
-    resolveReference();
-    assert type() != null : "type() STILL null even after calling resolveReference";
-    return this;
-  }
-
-  @Override
-  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
-  {
-    if (variable.reference.equals(reference))
-    {
-      return new DivisionNode<>(expression,
-                                new ExponentiationNode<>(expression,
-                                                         variable,
-                                                         new LiteralConstantNode<>(expression,
-                                                                                   "2")),
-                                new LiteralConstantNode<>(expression,
-                                                          "2"));
-    }
-    else
-    {
-      return new MultiplicationNode<>(expression,
-                                      this,
-                                      variable);
-    }
-  }
-
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
-                                                                                       Node<E, S, G> arg)
-  {
-    return variable.equals(getName()) ? arg.spliceInto(expression) : this;
-  }
-
   public <E, S, G extends Function<? extends E, ? extends S>>
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
@@ -567,35 +567,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                      true);
   }
 
-  @Override
-  public void accept(Consumer<Node<D, R, F>> t)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
+                                                                                       Node<E, S, G> arg)
   {
-    t.accept(this);
-  }
-
-  public boolean isNamed(String variable)
-  {
-    return getName().equals(variable);
-  }
-
-  public VariableNode<D, R, F> renameTo(String to)
-  {
-    reference.name = to;
-    return this;
-  }
-
-  @Override
-  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
-  {
-    return new LiteralConstantNode<>(expression,
-                                     equals(variable) ? "1" : "0");
-  }
-
-  @Override
-  public boolean isScalar()
-  {
-    return type().equals(Real.class) || type().equals(Complex.class) || type().equals(Integer.class)
-                  || type().equals(Fraction.class);
+    return variable.equals(getName()) ? arg.spliceInto(expression) : this;
   }
 
   @Override
@@ -605,15 +580,35 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public boolean isConstant()
+  public String toString()
   {
-    return false;
+    return reference.toString();
   }
 
   @Override
-  public String getIntermediateValueFieldName()
+  public Class<?> type()
   {
-    return reference.name;
+    Class<?> returnType = null;
+    if (isIndependent)
+    {
+      returnType = expression.domainType;
+    }
+    else if (ascendentInput)
+    {
+      returnType = expression.ascendentExpression.domainType;
+    }
+    else
+    {
+      returnType = reference.type();
+    }
+    assert returnType != null : "returnType is null for " + this;
+    return returnType;
+  }
+
+  @Override
+  public String typeset()
+  {
+    return reference.typeset();
   }
 
 }
