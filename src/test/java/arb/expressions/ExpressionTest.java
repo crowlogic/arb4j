@@ -45,7 +45,7 @@ public class ExpressionTest extends
 
   }
 
-  public void testFourierTransformOftype1ChebyshevPolynomials()
+  public void testFourierTransformOfType1ChebyshevPolynomials()
   {
     Context         context = new Context(Integer.named("m").set(3));
     ComplexFunction f       =

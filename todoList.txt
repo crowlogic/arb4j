@@ -1,7 +1,6 @@
 NEW: implement KL expansion
 TODO: builtin sykbols for the classical orthogonal polynomials
 "limit" is null at arb4j/arb.expressions.nodes.IntegralNode.evaluateIndefiniteIntegralAt(IntegralNode.java:217)
-exponentiation: handle negative powers requiring codomain capable of expressing fractions
 todo: mouse wheel zooms control or whole scene
 java.lang.NullPointerException: Cannot read field "variables" because the return value of "arb.expressions.viz.Expressor.getCurrentContext()" is null
 expr compiler:  fractional derivatices
