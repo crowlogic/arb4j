@@ -83,19 +83,17 @@ public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends
     return mv;
   }
 
-  
-
   public void generateScalar(MethodVisitor mv, Class<?> resultType, Class<?> scalarType)
   {
     arg.generate(mv, resultType);
     loadBitsParameterOntoStack(mv);
     if (scalarType.equals(Real.class))
     {
-      invokeRealStaticEvaluationFunction(mv);
+      invokeStaticEvaluationMethod(mv, Real.class);
     }
     else if (scalarType.equals(Complex.class))
     {
-      invokeComplexStaticEvaluationFunction(mv);
+      invokeStaticEvaluationMethod(mv, Complex.class);
     }
     else
     {
@@ -105,28 +103,16 @@ public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends
     generatedType = scalarType;
   }
 
-  public void invokeComplexStaticEvaluationFunction(MethodVisitor mv)
+  public MethodVisitor invokeStaticEvaluationMethod(MethodVisitor mv, Class<?> scalarType)
   {
-    invokeStaticMethod(mv,
-                       arblib.class,
-                       "acb_hypgeom_bessel_j",
-                       Void.class,
-                       Complex.class,
-                       Complex.class,
-                       Complex.class,
-                       int.class);
-  }
-
-  public void invokeRealStaticEvaluationFunction(MethodVisitor mv)
-  {
-    invokeStaticMethod(mv,
-                       arblib.class,
-                       "arb_hypgeom_bessel_j",
-                       Void.class,
-                       Real.class,
-                       Real.class,
-                       Real.class,
-                       int.class);
+    return invokeStaticMethod(mv,
+                              arblib.class,
+                              Complex.class.equals(scalarType) ? "acb_hypgeom_bessel_j" : "arb_hypgeom_bessel_j",
+                              Void.class,
+                              scalarType,
+                              scalarType,
+                              scalarType,
+                              int.class);
   }
 
   @Override
