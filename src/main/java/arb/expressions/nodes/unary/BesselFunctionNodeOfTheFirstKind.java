@@ -87,19 +87,7 @@ public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends
   {
     arg.generate(mv, resultType);
     loadBitsParameterOntoStack(mv);
-    if (scalarType.equals(Real.class))
-    {
-      invokeStaticEvaluationMethod(mv, Real.class);
-    }
-    else if (scalarType.equals(Complex.class))
-    {
-      invokeStaticEvaluationMethod(mv, Complex.class);
-    }
-    else
-    {
-      assert false : "TODO: support " + scalarType + " scalarType";
-    }
-
+    invokeStaticEvaluationMethod(mv, scalarType);
     generatedType = scalarType;
   }
 
