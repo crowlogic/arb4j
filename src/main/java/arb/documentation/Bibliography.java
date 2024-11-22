@@ -20,6 +20,12 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Book          probabilityTheoryI                                            =
+                                                 new Book("Probability Theory I",
+                                                          "M. Loève",
+                                                          "1977",
+                                                          null).setEdition("4th").setPublisher("Springer-Verlag");
+
   public static Article       quadraticDirichletSpaceExtremals                              =
                                                                new Article("A Quadratic Extremal Problem on the Dirichlet Space",
                                                                            "Stephen D. Fisher",
@@ -95,15 +101,6 @@ public class Bibliography extends
                                                                  "Advances in Pure Mathematics",
                                                                  "13",
                                                                  "504-536").setNumber("8");
-
-  public static Article       besselFunctionFourierLegendreSeries                           =
-                                                                  new Article("The Fourier--Legendre Series of Bessel Functions of the First Kind and the Summed Series Involving 1F2 Hypergeometric Functions that Arise from Them",
-                                                                              "Straton, Jack C",
-                                                                              "2024",
-                                                                              "Axioms",
-                                                                              "13",
-                                                                              "134").setNumber("2")
-                                                                                    .setPublisher("MDPI");
 
   public static Article       shiftedJacobiPolynomialIntegralOperationalMatrix              =
                                                                                new Article("The shifted Jacobi polynomial integral operational matrix for solving Riccati differential equation of fractional order",
