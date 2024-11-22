@@ -91,6 +91,11 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
    set(i);
   }
 
+  public Complex mul( Fraction s, int prec, Complex r )
+  {
+    return mul(r.set(s),prec,r);   
+  }
+ 
   public Complex arg( int prec, Complex result )
   {
     result.im().zero();

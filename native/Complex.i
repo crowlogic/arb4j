@@ -66,6 +66,11 @@ import arb.space.topological.EuclideanVectorSpace;
    set(i);
   }
 
+  public Complex mul( Fraction s, int prec, Complex r )
+  {
+    return mul(r.set(s),prec,r);   
+  }
+ 
   public Complex arg( int prec, Complex result )
   {
     result.im().zero();
