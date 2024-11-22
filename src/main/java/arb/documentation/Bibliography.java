@@ -20,6 +20,12 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Book          probabilityTheoryI                                            =
+                                                 new Book("Probability Theory I",
+                                                          "M. Loève",
+                                                          "1977",
+                                                          null).setEdition("4th").setPublisher("Springer-Verlag");
+
   public static Article       quadraticDirichletSpaceExtremals                              =
                                                                new Article("A Quadratic Extremal Problem on the Dirichlet Space",
                                                                            "Stephen D. Fisher",
