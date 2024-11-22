@@ -70,7 +70,14 @@ import java.util.stream.Stream;
     this();
     set(val);
   }
-  
+
+  @Override
+  public Fraction inverse(Fraction res)
+  {
+    arblib.fmpq_inv(res, this );
+    return res;
+  }
+    
  public static Fraction from(double value, double accuracy, Fraction result)
   {
     int sign = value < 0 ? -1 : 1;

@@ -256,6 +256,12 @@ public class Integer implements
     init((int) dim2);
   }
 
+  public Integer(Integer copy)
+  {
+    init();
+    set(copy);
+  }
+
   public Real add(Fraction addend, int bits, Real result)
   {
     try ( Real blip = new Real())
@@ -835,8 +841,6 @@ public class Integer implements
     return result;
   }
 
- 
-
   public RationalFunction pow(Integer operand, int bits, RationalFunction result)
   {
     try ( Integer intres = new Integer())
@@ -1131,6 +1135,19 @@ public class Integer implements
   public static Integer newVectorNamed(int dim, String name)
   {
     return newVector(dim).set(name);
+  }
+
+  public Fraction pow(Integer div, int bits, Fraction res)
+  {
+    Integer in = new Integer(div);
+    boolean neg = in.sign() < 0;
+    if (neg)
+    {
+      in.neg();
+    }
+    pow(in,bits,in);
+    res.set(in);    
+    return neg ? res.inverse(res) : res;
   }
 
   public Fraction pow(Fraction div, int bits, Fraction res)

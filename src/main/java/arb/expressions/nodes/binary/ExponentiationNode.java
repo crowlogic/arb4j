@@ -71,6 +71,7 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   {
     if (right.isPossiblyNegative())
     {
+      
       assert false : "todo: type of exponetiation node can not be represented in the codomain type "
                      + expression.coDomainType
                      + " because the exponent of "

@@ -69,6 +69,12 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
                                 extends
                                 Node<D, R, F>
 {
+  @Override
+  public boolean isPossiblyNegative()
+  {
+    return false;
+  }
+
   static final String METHOD_DESCRIPTOR_WITHOUT_BITS = Compiler.getMethodDescriptor(Void.class, String.class);
 
   static final String METHOD_DESCRIPTOR_WITH_BITS    = Compiler.getMethodDescriptor(Void.class,

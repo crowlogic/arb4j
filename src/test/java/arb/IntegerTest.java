@@ -14,6 +14,24 @@ public class IntegerTest extends
                          TestCase
 {
 
+  public static void testNegativePower()
+  {
+    try ( Integer p = new Integer(3))
+    {
+      var t = p.pow(new Integer(-3), 128, new Fraction() );
+      assertEquals( 1.0 / 27.0, t.doubleValue() );
+    }
+  }
+
+  
+  public static void testPositivePower()
+  {
+    Integer p = new Integer(3);
+    var t = p.pow(new Integer(3), 128, new Fraction() );
+    System.out.println("t=" + t);
+    assertEquals( 27.0, t.doubleValue() );
+  }
+  
   public static void testMulIntComplex()
   {
     Context         context = new Context(Integer.named("v").set(42));
