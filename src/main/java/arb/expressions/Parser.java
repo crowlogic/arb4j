@@ -206,7 +206,7 @@ public class Parser
    *
    * @return The expression with the described substitutions made.
    */
-  public static String replaceArrowsEllipsesAndSuperscriptAlphabeticalExponents(String expression)
+  public static String transformToJavaAcceptableCharacters(String expression)
   {
     expression = stripInvisibleUnicodeFormattingCharacters(expression.replace("->", "➔")
                                                                      .replace("⇒", "➔")

@@ -5,11 +5,9 @@ import static arb.expressions.Compiler.loadInputParameter;
 import static arb.expressions.Compiler.loadOrderParameter;
 import static java.lang.String.format;
 import static java.lang.System.err;
-import static org.objectweb.asm.Opcodes.IFNE;
 
 import java.util.List;
 
-import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import arb.Integer;
