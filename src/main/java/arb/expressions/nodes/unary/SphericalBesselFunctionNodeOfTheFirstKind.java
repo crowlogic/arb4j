@@ -5,9 +5,11 @@ import static arb.expressions.Compiler.loadInputParameter;
 import static arb.expressions.Compiler.loadOrderParameter;
 import static java.lang.String.format;
 import static java.lang.System.err;
+import static org.objectweb.asm.Opcodes.IFNE;
 
 import java.util.List;
 
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import arb.Integer;
@@ -26,14 +28,14 @@ import arb.functions.SphericalBesselFunction;
  * <pre>
  * Let jₙ (x) is the spherical Bessel function of the first kind,
  * 
- * jₙ (z) = √(π/(2z)) Jₙ₊₁⸝₂ (x) = (sin(z) Rₙ,₁⸝₂(z) - cos(z) Rₙ₋₁,₃⸝₂(z))/z
+ * jₙ (z) = √(π/(2*z)) Jₙ₊₁⸝₂ (x) = (sin(z) Rₙ,₁⸝₂(z) - cos(z) Rₙ₋₁,₃⸝₂(z))/z
  * 
- * where Rₙ,ᵥ (z) are the (misnamed) Lommel polynomials
+ * where Rₙ,ᵥ (z) are the misleadingly named Lommel polynomials
  * 
  * Rₙ,ᵥ (z) = Γ(n + v)/Γ(v) (2/z)ⁿ ₂F₃ ([-n/2, 1/2 - n/2] ; [v, -n, 1 - v - n] ; -z²)
  * 
  * where ₂F₃ is a generalized hypergeometric function. The "Lommel polynomials"
- * are actually rational functions of z, not polynomial; but rather "polynomial
+ * are actually rational functions of z, not polynomial in z itself; but rather "polynomial
  * in 1/z".
  * </pre>
  * 
@@ -64,8 +66,9 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
     if (useInitializer = !order.dependsOn(expression.getIndependentVariable()))
     {
       expression.registerInitializer(this::generateInitializer);
-      functionFieldName = expression.newIntermediateVariable("j", SphericalBesselFunction.class, true);
     }
+
+    functionFieldName = expression.newIntermediateVariable("j", SphericalBesselFunction.class, true);
 
   }
 
@@ -79,19 +82,12 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
     {
       err.printf("j.generate(ν=%s, resultType=%s\n)\n", order, resultType);
     }
-    if (isNullaryFunction)
-    {
-      return generateNullaryFunctionInvocation(mv, resultType);
-    }
-    else
-    {
-      return generateEvaluateFunctionInvocation(mv);
-    }
+    return isNullaryFunction ? generateNullaryFunctionInvocation(mv, resultType)
+                             : generateEvaluateFunctionInvocation(mv);
   }
 
   protected MethodVisitor generateEvaluateFunctionInvocation(MethodVisitor mv)
   {
-    assert useInitializer : "TODO: support construction of the SphericalBesselFunction in the evaluate() method when it cannot be constructed in the initializer due to it depending on the input which isnt available there/then";
     loadSphericalBesselFunctionOntoStack(mv);
     checkClassCast(loadInputParameter(mv), expression.domainType);
     loadOrderParameter(mv);
@@ -102,15 +98,11 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
 
   public void generateInitializer(MethodVisitor mv)
   {
+    assert useInitializer : "generateInitializer shouldn't be called if useInitializer isn't true";
     expression.insideInitializer = true;
     loadSphericalBesselFunctionOntoStack(mv);
     Compiler.getField(mv, SphericalBesselFunction.class, "n", Integer.class);
-    order.generate(mv, Integer.class);
-
-    if (!order.getGeneratedType().equals(Integer.class))
-    {
-      order.generateCastTo(mv, Integer.class);
-    }
+    generateOrder(mv);
 
     assert order.getGeneratedType()
                 .equals(Integer.class) : "wanted " + Integer.class + " got " + order.getGeneratedType();
@@ -119,21 +111,32 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
 
   }
 
+  public void generateOrder(MethodVisitor mv)
+  {
+    order.generate(mv, Integer.class);
+    if (!order.getGeneratedType().equals(Integer.class))
+    {
+      order.generateCastTo(mv, Integer.class);
+    }
+  }
+
   protected MethodVisitor generateNullaryFunctionInvocation(MethodVisitor mv, Class<?> resultType)
   {
-    assert useInitializer : "TODO: support construction of the SphericalBesselFunction in the evaluate() method "
-                            + "when it cannot be constructed in the initializer due to it depending on the input "
-                            + "which isnt available there/then";
     loadSphericalBesselFunctionOntoStack(mv);
+    generateArgument(mv, resultType);
+    loadOrderParameter(mv);
+    loadBitsOntoStack(mv);
+    loadOutputVariableOntoStack(mv, expression.coDomainType);
+    return checkClassCast(invokeEvaluationMethod(mv, resultType), expression.coDomainType);
+  }
+
+  public void generateArgument(MethodVisitor mv, Class<?> resultType)
+  {
     arg.generate(mv, resultType);
     if (!arg.getGeneratedType().equals(resultType))
     {
       arg.generateCastTo(mv, resultType);
     }
-    loadOrderParameter(mv);
-    loadBitsOntoStack(mv);
-    loadOutputVariableOntoStack(mv, expression.coDomainType);
-    return checkClassCast(invokeEvaluationMethod(mv, resultType), expression.coDomainType);
   }
 
   @Override
@@ -156,6 +159,22 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
   }
 
   public void loadSphericalBesselFunctionOntoStack(MethodVisitor mv)
+  {
+    if (useInitializer)
+    {
+      loadFunctionFieldOntoStack(mv);
+    }
+    else
+    {
+      loadFunctionFieldOntoStack(mv);
+      Compiler.getField(mv, SphericalBesselFunction.class, "n", Integer.class);
+      generateOrder(mv);
+      Compiler.invokeMethod(mv, Integer.class, "set", Integer.class, false, Integer.class);
+      loadFunctionFieldOntoStack(mv);
+    }
+  }
+
+  public void loadFunctionFieldOntoStack(MethodVisitor mv)
   {
     expression.loadThisFieldOntoStack(mv, functionFieldName, SphericalBesselFunction.class);
   }
