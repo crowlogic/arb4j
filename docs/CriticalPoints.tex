@@ -1,0 +1,122 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{enumitem}
+
+\title{Critical Points of a Function}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+Critical points in mathematics are key locations on a function's graph where the derivative equals zero or is undefined, potentially indicating local extrema, inflection points, or other significant features of the function.
+
+\section{Defining Critical Points}
+
+Critical points are fundamental concepts in calculus, defined as the x-values where a function's derivative is either zero or undefined. These points are crucial for understanding a function's behavior and identifying its key features.
+
+To formally define critical points, let's consider a function \(f(x)\) that is differentiable on an open interval containing \(x = a\), except possibly at \(x = a\) itself. The point \(x = a\) is a critical point of f if either:
+
+\begin{itemize}
+\item \(f'(a) = 0\) (the derivative equals zero)
+\item \(f'(a)\) does not exist (the derivative is undefined)
+\end{itemize}
+
+This definition encompasses both stationary points and singular points, providing a comprehensive view of a function's significant locations.
+
+Critical points are essential for several reasons:
+\begin{itemize}
+\item They indicate potential extrema (local maxima or minima) of the function
+\item They can represent inflection points where the function's concavity changes
+\item They help identify points where the function's rate of change alters significantly
+\end{itemize}
+
+To find critical points, one typically follows these steps:
+\begin{enumerate}
+\item Calculate the function's derivative, \(f'(x)\)
+\item Set the derivative equal to zero and solve for x
+\item Identify any x-values where the derivative is undefined
+\end{enumerate}
+
+It's important to note that while all stationary points are critical points, not all critical points are stationary points. This distinction is crucial for a thorough analysis of a function's behavior.
+
+Understanding critical points is fundamental to many calculus applications, including optimization problems, curve sketching, and analyzing function behavior. Identifying these key locations provides valuable insights into the functions under study. By examining these critical areas, one can better understand how functions behave and change over their domain.
+
+\section{Types of Critical Points}
+
+Critical points can be classified into several types based on their behavior and the characteristics of the function at those points. Understanding these distinctions is crucial for a comprehensive analysis of functions in calculus, as they help identify where significant changes in the function's behavior occur.
+
+\subsection{Local Maxima and Minima}
+These are the most common types of critical points. A local maximum occurs when the function's value is greater than that of its immediate surroundings, indicating a peak, while a local minimum is where the function's value is less than that of its neighbors, indicating a trough. At these points, the first derivative equals zero, indicating a horizontal tangent line. The second derivative test can be applied: if the second derivative is positive at a critical point, it's a local minimum; if negative, it's a local maximum. If the second derivative is zero, further analysis or higher-order derivatives may be needed to determine the nature of the point.
+
+\subsection{Saddle Points}
+Saddle points are critical points where the function changes from increasing to decreasing (or vice versa) in different directions. At a saddle point, the first derivative is zero, but it does not correspond to a local maximum or minimum. The second derivative test yields an inconclusive result for saddle points because the second derivative is zero or changes sign across the point.
+
+\subsection{Inflection Points}
+Inflection points are locations on a graph where the concavity of the function changes from concave up to concave down, or vice versa. This change in concavity means that the second derivative changes sign at these points. While not all inflection points qualify as critical points, some do meet this criterion if they occur at locations where the first derivative equals zero.
+
+\subsection{Cusps}
+A cusp occurs where two smooth curves meet to form a sharp point on the graph. At such points, the derivative is typically undefined due to the abrupt change in direction, classifying them as critical points.
+
+\subsection{Vertical Tangents}
+Vertical tangents occur when the slope of the tangent line becomes infinite, such as when approaching vertical asymptotes or certain power functions. At these points, the derivative is undefined, classifying them as critical points.
+
+\subsection{Discontinuities}
+Points of discontinuity occur where there is an abrupt "jump" or break in the graph of a function. These can also be considered critical points if the derivative is undefined at these locations.
+
+\subsection{Endpoints}
+For functions defined on closed intervals, endpoints are considered critical points even if the derivative does not equal zero at these locations.
+
+\section{Inflection Points and Concavity}
+
+Inflection points are crucial features of a function's graph where the concavity changes. Concavity refers to the way a curve bends. A function is concave up if its graph lies above its tangent lines, and concave down if its graph lies below its tangent lines. Mathematically, this is determined by the second derivative:
+
+\begin{itemize}
+\item If \(f''(x) > 0\), the function is concave up
+\item If \(f''(x) < 0\), the function is concave down
+\end{itemize}
+
+An inflection point occurs at \(x = c\) if the concavity changes from concave up to concave down at \(x = c\), or vice versa.
+
+To determine whether an inflection point is also a critical point, we need to examine the first derivative:
+\begin{enumerate}
+\item If \(f'(c) = 0\), the inflection point is also a critical point (stationary point of inflection)
+\item If \(f'(c) \neq 0\), the inflection point is not a critical point (non-stationary point of inflection)
+\end{enumerate}
+
+To find inflection points:
+\begin{enumerate}
+\item Calculate \(f''(x)\)
+\item Find where \(f''(x) = 0\) or where \(f''(x)\) is undefined
+\item Check if the sign of \(f''(x)\) changes at these points
+\end{enumerate}
+
+For example, consider \(f(x) = x^3 - x\). The second derivative is \(f''(x) = 6x\). Setting this to zero, we find a potential inflection point at \(x = 0\). Checking the sign of \(f''(x)\) on either side of \(x = 0\), we confirm that it changes from negative to positive, so \(x = 0\) is indeed an inflection point.
+
+\section{Stationary vs Singular Points}
+
+When discussing critical points, it's essential to distinguish between two main categories: stationary points and singular points.
+
+Stationary points are critical points where the derivative of the function equals zero (\(f'(x) = 0\)). These points represent locations where the function's rate of change momentarily becomes zero, indicating a potential local extremum or a point of inflection. Stationary points include:
+
+\begin{itemize}
+\item Local maxima: Where the function reaches a peak
+\item Local minima: Where the function reaches a trough
+\item Saddle points: Where the function changes from increasing to decreasing in different directions
+\end{itemize}
+
+Singular points are critical points where the derivative of the function is undefined. These points often represent discontinuities or abrupt changes in the function's behavior. Examples include:
+
+\begin{itemize}
+\item Cusps: Where two smooth curves meet at a sharp point
+\item Vertical tangents: Where the slope becomes infinite
+\item Points of discontinuity: Where the function has a break or jump
+\end{itemize}
+
+To illustrate, consider the function \(f(x) = \sqrt{x}\). The derivative of this function is \(f'(x) = \frac{1}{2\sqrt{x}}\). At \(x = 0\), the derivative is undefined, making it a singular point and thus a critical point. However, there are no x-values where \(f'(x) = 0\), so this function has no stationary points.
+
+In practice, identifying whether a critical point is stationary or singular helps in determining the appropriate analytical approach. For stationary points, techniques like the first and second derivative tests can be applied to classify the nature of the extremum. For singular points, a closer examination of the function's behavior around that point is often necessary to understand its significance.
+
+\end{document}
+
