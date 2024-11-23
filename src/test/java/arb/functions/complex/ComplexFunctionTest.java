@@ -18,7 +18,6 @@ public class ComplexFunctionTest extends
 
   public static void testComplexNullaryFunctionSquareRootOfNegativeOne()
   {
-    System.setProperty("arb4j.compiler.trace", "true");
     var context = new Context(RealNullaryFunction.express("1/2").evaluate(128, Real.named("v")));
     var f       = ComplexNullaryFunction.express("sqrt(-1)", context);
     var x       = f.evaluate(128);
