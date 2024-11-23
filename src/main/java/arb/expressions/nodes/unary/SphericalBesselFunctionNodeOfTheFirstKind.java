@@ -44,24 +44,13 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
                                                       FunctionNode<D, R, F>
 {
 
-  @Override
-  public List<Node<D, R, F>> getBranches()
-  {
-    return List.of(order, arg);
-
-  }
-
-  @Override
-  public String toString()
-  {
-    return String.format("j(%s,%s)", order, arg);
-  }
+  private String functionFieldName;
 
   Node<D, R, F>  order;
 
   public boolean scalar;
 
-  private String functionFieldName;
+  final boolean  useInitializer;
 
   public SphericalBesselFunctionNodeOfTheFirstKind(Expression<D, R, F> expression)
   {
@@ -71,11 +60,44 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
     order  = expression.resolve();
     arg    = expression.require(',').resolve();
     scalar = expression.require(')').hasScalarCodomain();
-    assert !order.dependsOn(expression.getIndependentVariable()) : "TODO: handle order depending on input variable";
-    expression.registerInitializer(this::generateInitializer);
 
-    functionFieldName = expression.newIntermediateVariable("j", SphericalBesselFunction.class, true);
+    if (useInitializer = !order.dependsOn(expression.getIndependentVariable()))
+    {
+      expression.registerInitializer(this::generateInitializer);
+      functionFieldName = expression.newIntermediateVariable("j", SphericalBesselFunction.class, true);
+    }
 
+  }
+
+  @Override
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
+  {
+    boolean isNullaryFunction = expression.domainType.equals(Object.class);
+
+    expression.insideInitializer = false;
+    if (Expression.trace)
+    {
+      err.printf("j.generate(ν=%s, resultType=%s\n)\n", order, resultType);
+    }
+    if (isNullaryFunction)
+    {
+      return generateNullaryFunctionInvocation(mv, resultType);
+    }
+    else
+    {
+      return generateEvaluateFunctionInvocation(mv);
+    }
+  }
+
+  protected MethodVisitor generateEvaluateFunctionInvocation(MethodVisitor mv)
+  {
+    assert useInitializer : "TODO: support construction of the SphericalBesselFunction in the evaluate() method when it cannot be constructed in the initializer due to it depending on the input which isnt available there/then";
+    loadSphericalBesselFunctionOntoStack(mv);
+    checkClassCast(loadInputParameter(mv), expression.domainType);
+    loadOrderParameter(mv);
+    loadBitsOntoStack(mv);
+    loadOutputVariableOntoStack(mv, expression.coDomainType);
+    return checkClassCast(invokeEvaluationMethod(mv, expression.domainType), expression.coDomainType);
   }
 
   public void generateInitializer(MethodVisitor mv)
@@ -97,50 +119,12 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
 
   }
 
-  @Override
-  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
-  {
-    boolean isNullaryFunction = expression.domainType.equals(Object.class);
-
-    expression.insideInitializer = false;
-    if (Expression.trace)
-    {
-      err.printf("j.generate(ν=%s, resultType=%s\n)\n", order, resultType);
-    }
-    if (isNullaryFunction)
-    {
-      return generateNullaryFunctionInvocation(mv, resultType);
-    }
-    else
-    {
-      return generateFunction(mv);
-    }
-  }
-
-  protected MethodVisitor generateFunction(MethodVisitor mv)
-  {
-    loadSphericalBesselFunctionOntoStack(mv);
-    checkClassCast(loadInputParameter(mv), expression.domainType);
-    loadOrderParameter(mv);
-    loadBitsOntoStack(mv);
-    loadOutputVariableOntoStack(mv, expression.coDomainType);
-
-    Compiler.invokeVirtualMethod(mv,
-                                 SphericalBesselFunction.class,
-                                 "evaluate",
-                                 expression.coDomainType,
-                                 expression.domainType,
-                                 int.class,
-                                 int.class,
-                                 expression.coDomainType);
-    checkClassCast(mv, expression.coDomainType);
-    return mv;
-  }
-
   protected MethodVisitor generateNullaryFunctionInvocation(MethodVisitor mv, Class<?> resultType)
   {
+    assert useInitializer : "TODO: support construction of the SphericalBesselFunction in the evaluate() method "
+                            + "when it cannot be constructed in the initializer due to it depending on the input "
+                            + "which isnt available there/then";
     loadSphericalBesselFunctionOntoStack(mv);
-
     arg.generate(mv, resultType);
     if (!arg.getGeneratedType().equals(resultType))
     {
@@ -149,17 +133,26 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
     loadOrderParameter(mv);
     loadBitsOntoStack(mv);
     loadOutputVariableOntoStack(mv, expression.coDomainType);
+    return checkClassCast(invokeEvaluationMethod(mv, resultType), expression.coDomainType);
+  }
 
-    Compiler.invokeVirtualMethod(mv,
-                                 SphericalBesselFunction.class,
-                                 "evaluate",
-                                 expression.coDomainType,
-                                 resultType,
-                                 int.class,
-                                 int.class,
-                                 expression.coDomainType);
-    checkClassCast(mv, expression.coDomainType);
-    return mv;
+  @Override
+  public List<Node<D, R, F>> getBranches()
+  {
+    return List.of(order, arg);
+
+  }
+
+  public MethodVisitor invokeEvaluationMethod(MethodVisitor mv, Class<?> outType)
+  {
+    return Compiler.invokeVirtualMethod(mv,
+                                        SphericalBesselFunction.class,
+                                        "evaluate",
+                                        expression.coDomainType,
+                                        outType,
+                                        int.class,
+                                        int.class,
+                                        expression.coDomainType);
   }
 
   public void loadSphericalBesselFunctionOntoStack(MethodVisitor mv)
@@ -168,9 +161,9 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
   }
 
   @Override
-  public String typeset()
+  public String toString()
   {
-    return format("j_{%s}(%s)", order.typeset(), arg == null ? "" : arg.typeset());
+    return String.format("j(%s,%s)", order, arg);
   }
 
   @Override
@@ -178,5 +171,11 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
   {
     var scalarType = Compiler.scalarType(expression.coDomainType);
     return scalarType;
+  }
+
+  @Override
+  public String typeset()
+  {
+    return format("j_{%s}(%s)", order.typeset(), arg == null ? "" : arg.typeset());
   }
 }
