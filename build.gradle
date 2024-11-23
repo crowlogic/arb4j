@@ -71,7 +71,7 @@ Terminal=false
 Categories=Utility;
 """
     }   
-         doLast {
+    doLast {
         def desktopFile = new File("${buildDir}/SymbolPalette.desktop")
         desktopFile.text = """[Desktop Entry]
 Type=Application
@@ -82,6 +82,17 @@ Terminal=false
 Categories=Utility;
 """
     }
+    doLast {
+        def desktopFile = new File("${buildDir}/GaussianProcessModeller.desktop")
+        desktopFile.text = """[Desktop Entry]
+Type=Application
+Name=Gaussian Process Modeller
+Exec=${projectDir}/bin/gpModeller
+Icon=${projectDir}/src/main/resources/GaussianProcessModeller.png
+Terminal=false
+Categories=Utility;
+"""
+    }    
 }
 
 task installDesktopFile(type: Copy) {

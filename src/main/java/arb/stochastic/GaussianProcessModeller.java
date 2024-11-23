@@ -1,4 +1,4 @@
-package arb.expressions.viz;
+package arb.stochastic;
 
 import java.lang.reflect.Method;
 

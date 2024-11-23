@@ -31,6 +31,7 @@ module arb4j
   requires transitive org.fxyz3d.core;
   
   exports arb;
+  exports arb.stochastic;
   exports arb.expressions.viz;
   exports arb.theorems;
   exports arb.annotations;
