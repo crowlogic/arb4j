@@ -17,9 +17,10 @@ public class SphericalBesselFunctionNodeOfTheFirstKindTest extends
   public static void testj0ViaExpression()
   {
     RealPolynomialSequence j0 = RealPolynomialSequence.express("k->j(k,x)");
-    RealPolynomial         y  = j0.evaluate(1, 128);
-    // System.out.println("j0(2.3)=" + y);
-    assertEquals(0.0856499630648839, y.get(0).doubleValue());
+    RealPolynomial         y  = j0.evaluate(3, 128);
+  
+    System.out.println("j0(2.3)=" + y);
+    assertEquals(0.0856499630648839, y.eval(2.3));
   }
 
   public static void testj0ViaRealFunction()

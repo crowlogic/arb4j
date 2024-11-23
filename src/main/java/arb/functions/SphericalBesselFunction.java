@@ -2,6 +2,7 @@ package arb.functions;
 
 import arb.Integer;
 import arb.Real;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -18,14 +19,13 @@ public class SphericalBesselFunction implements
                                      AutoCloseable
 {
 
-  private static Context                              prototypeContext =
-                                                                       new Context(Integer.named("n"));
+  private static Context                              prototypeContext = new Context(Integer.named("n"));
 
   private static Expression<Real, Real, RealFunction> prototype        =
                                                                 RealFunction.compile("(R(n,½;x)*sin(x) - R(n-1,3⁄2;x)*cos(x))/x",
                                                                                      prototypeContext);
 
-  public final Integer                                      n                = Integer.named("n");
+  public final Integer                                n                = Integer.named("n");
 
   public final Context                                context          = new Context(n);
 
@@ -45,6 +45,14 @@ public class SphericalBesselFunction implements
     element       = prototype.instantiate();
     context.injectReferences(element);
 
+  }
+
+  public RealPolynomial evaluate(Integer t, int order, int bits, RealPolynomial res)
+  {
+    try ( Real blip = new Real())
+    {
+      return res.set(evaluate(blip.set(t), order, bits, blip));
+    }
   }
 
   @Override

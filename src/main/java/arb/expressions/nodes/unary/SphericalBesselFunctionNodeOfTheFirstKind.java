@@ -13,6 +13,7 @@ import org.objectweb.asm.MethodVisitor;
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
@@ -60,7 +61,12 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
     order  = expression.resolve();
     arg    = expression.require(',').resolve();
     scalar = expression.require(')').hasScalarCodomain();
-
+    if (!scalar)
+    {
+      throw new CompilerException(SphericalBesselFunction.class
+                                  + "s can not be represented as a "
+                                  + expression.coDomainType);
+    }
     if (useInitializer = !order.dependsOn(expression.getIndependentVariable()))
     {
       expression.registerInitializer(this::generateInitializer);
