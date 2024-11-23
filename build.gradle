@@ -97,8 +97,10 @@ Categories=Utility;
 
 task installDesktopFile(type: Copy) {
     dependsOn createDesktopFile
-    from "${buildDir}/ExpressionAnalyzer.desktop"
+    from "${buildDir}/Expressor.desktop"
     from "${buildDir}/TODO.desktop"
+    from "${buildDir}/GaussianProcessModeller.desktop"
+    from "${buildDir}/SymbolPalette.desktop"
     into "${System.getProperty('user.home')}/.local/share/applications"
 }
 
