@@ -27,9 +27,22 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-4>>
 
-    <with|par-left|1tab|1.4<space|2spc>Future Directions
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Normalization
+    and Fourier Analysis of Non-Stationary Processes>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-5>>
+    <no-break><pageref|auto-5><vspace|0.5fn>
+
+    <with|par-left|1tab|2.1<space|2spc>Zero-Crossing Rate Normalization
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-6>>
+
+    <with|par-left|1tab|2.2<space|2spc>Process Transformation
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-7>>
+
+    <with|par-left|1tab|2.3<space|2spc>Wigner-Ville Connection
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-8>>
   </table-of-contents>
 
   <section|Basis for the Modified Riemann-Siegel Theta Function>
@@ -97,6 +110,77 @@
     <item>Develop numerical methods for computation
   </enumerate>
 
+  <section|Normalization and Fourier Analysis of Non-Stationary Processes>
+
+  <subsection|Zero-Crossing Rate Normalization>
+
+  Consider a process with zero crossing rates that increase as
+  <math|<around|\||t|\|>\<to\>\<infty\>>. Through normalization:
+
+  <\itemize>
+    <item>Original process has increasing crossing rates
+
+    <item>Normalize to maintain unit rate across whole domain
+
+    <item>This enables Fourier transform analysis
+  </itemize>
+
+  <subsection|Process Transformation>
+
+  For a process with increasing zero crossing rates as
+  <math|<around|\||t|\|>\<to\>\<infty\>>:
+
+  The normalization procedure:
+
+  <\enumerate>
+    <item>Apply normalization for unit zero crossing rate
+
+    <item>Results in stationary process (constant crossing rate)
+
+    <item>Enables Fourier transform analysis
+  </enumerate>
+
+  Key insights:
+
+  <\itemize>
+    <item>Original: non-stationary (increasing crossings)
+
+    <item>Post-normalization: stationary (unit crossing rate)
+
+    <item>Makes Fourier transform well-defined
+
+    <item>Spectral process exists for normalized version
+  </itemize>
+
+  The Fourier transform of the normalized process:
+
+  <\equation>
+    <wide|Y|~><around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>Y<rsub|n*o*r*m*a*l*i*z*e*d><around|(|t|)>*e<rsup|-i*\<omega\>*t>*d*t
+  </equation>
+
+  exists because normalization creates a well-behaved stationary process with
+  constant crossing rate properties.
+
+  <subsection|Wigner-Ville Connection>
+
+  The Wigner-Ville distribution:
+
+  <\equation>
+    W<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>x*<around*|(|t+<frac|\<tau\>|2>|)>*x<rsup|\<ast\>>*<around*|(|t-<frac|\<tau\>|2>|)>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\>
+  </equation>
+
+  captures:
+
+  <\itemize>
+    <item>Process that's "almost" stationary
+
+    <item>Triangular/bilinear structure
+
+    <item>Non-stationarity enters in controlled way
+
+    <item>Maintains certain symmetries despite non-stationarity
+  </itemize>
+
   \;
 </body>
 
@@ -112,11 +196,14 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_62.tm>>
-    <associate|auto-2|<tuple|1.1|1|../../.TeXmacs/texts/scratch/no_name_62.tm>>
-    <associate|auto-3|<tuple|1.2|1|../../.TeXmacs/texts/scratch/no_name_62.tm>>
-    <associate|auto-4|<tuple|1.3|2|../../.TeXmacs/texts/scratch/no_name_62.tm>>
-    <associate|auto-5|<tuple|1.4|2|../../.TeXmacs/texts/scratch/no_name_62.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-2|<tuple|1.1|1>>
+    <associate|auto-3|<tuple|1.2|1>>
+    <associate|auto-4|<tuple|1.3|2>>
+    <associate|auto-5|<tuple|2|2>>
+    <associate|auto-6|<tuple|2.1|2>>
+    <associate|auto-7|<tuple|2.2|2>>
+    <associate|auto-8|<tuple|2.3|3>>
   </collection>
 </references>
 
@@ -140,9 +227,22 @@
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-4>>
 
-      <with|par-left|<quote|1tab>|1.4<space|2spc>Future Directions
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Normalization
+      and Fourier Analysis of Non-Stationary Processes>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-5>>
+      <no-break><pageref|auto-5><vspace|0.5fn>
+
+      <with|par-left|<quote|1tab>|2.1<space|2spc>Zero-Crossing Rate
+      Normalization <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-6>>
+
+      <with|par-left|<quote|1tab>|2.2<space|2spc>Process Transformation
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-7>>
+
+      <with|par-left|<quote|1tab>|2.3<space|2spc>Wigner-Ville Connection
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-8>>
     </associate>
   </collection>
 </auxiliary>
