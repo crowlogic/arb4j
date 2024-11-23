@@ -76,6 +76,8 @@ public class GaussianProcessModeller extends
     });
     compileButton.setOnAction(e -> compileFunction(kernelComboBox, spectralDensityComboBox));
 
+    WindowManager.setStageIcon(primaryStage, "GaussianProcessModeller.png");
+
     primaryStage.show();
   }
 
