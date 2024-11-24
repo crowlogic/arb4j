@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|generic>
+<style|<tuple|generic|alt-colors|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Factorization of Stationary Gaussian Process
@@ -12,8 +12,9 @@
   <section|Theorem: Spectral Representation>
 
   <\theorem>
-    [Spectral Factorization Theorem]: Let <math|K:\<bbb-R\>\<to\>\<bbb-R\>>
-    be a positive definite stationary kernel function.
+    <strong|[Spectral Factorization Theorem]><cite|cramerStochasticProcessTheoryContribution>
+    : Let <math|K:\<bbb-R\>\<to\>\<bbb-R\>> be a positive definite stationary
+    kernel function.
 
     By Bochner's theorem, there exists a non-negative spectral density
     function <math|S:\<bbb-R\>\<to\>\<bbb-R\>> such that:
@@ -22,7 +23,7 @@
       K*<around|(|t-s|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*<around|(|t-s|)>>*d*\<omega\>
     </equation>
 
-    Let <math|h:\<bbb-R\>\<to\>\<bbb-C\>> be defined as:
+    Let <math|h:\<bbb-R\>\<to\>\<bbb-C\>> be defined as:\ 
 
     <\equation>
       h<around|(|t|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\>|)>>*e<rsup|i*\<omega\>*t>*d*\<omega\>
@@ -31,7 +32,7 @@
     Then:
 
     <\equation>
-      K*<around|(|t-s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*h*<around|(|t-\<tau\>-s|)>*d*\<tau\>
+      K*<around|(|t-s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t+\<tau\>|)>*<wide|h*<around|(|s+\<tau\>|)>|\<bar\>>*d*\<tau\>
     </equation>
   </theorem>
 
@@ -152,6 +153,22 @@
     <item>The final result is consistent with the initial spectral
     representation
   </itemize>
+
+  <cite|cramerStochasticProcessTheoryContribution>
+
+  <\bib-list|1>
+    \;
+  </bib-list>
+
+  <\bibliography|bib|tm-plain|refs>
+    <\bib-list|1>
+      <bibitem*|1><label|bib-cramerStochasticProcessTheoryContribution>Harald
+      Cramér. <newblock>A contribution to the theory of stochastic processes.
+      <newblock><with|font-shape|italic|Proceedings of the Second Berkeley
+      Symposium on Mathematical Statistics and Probability>, 2:329\U339,
+      1951.<newblock>
+    </bib-list>
+  </bibliography>
 </body>
 
 <\initial>
@@ -169,11 +186,16 @@
     <associate|auto-1|<tuple|1|1>>
     <associate|auto-2|<tuple|2|1>>
     <associate|auto-3|<tuple|3|2>>
+    <associate|auto-4|<tuple|<with|mode|<quote|math>|\<bullet\>>|3>>
+    <associate|bib-cramerStochasticProcessTheoryContribution|<tuple|1|3>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
+    <\associate|bib>
+      cramerStochasticProcessTheoryContribution
+    </associate>
     <\associate|toc>
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Theorem:
       Spectral Representation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
@@ -186,6 +208,10 @@
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Reverse
       Verification> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-4><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
