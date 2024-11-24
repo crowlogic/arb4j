@@ -19,6 +19,7 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
 import arb.functions.SphericalBesselFunction;
+import arb.functions.real.RealFunction;
 
 /**
  * To express the spherical Bessel functions in terms of Lommel polynomials,
@@ -192,6 +193,10 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
   @Override
   public Class<?> type()
   {
+    if (RealFunction.class.equals(expression.coDomainType))
+    {
+      return expression.coDomainType;
+    }
     var scalarType = Compiler.scalarType(expression.coDomainType);
     return scalarType;
   }
