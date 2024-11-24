@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|generic>
+<style|<tuple|generic|alt-colors|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Factorization of Stationary Gaussian Process
@@ -12,8 +12,9 @@
   <section|Theorem: Spectral Representation>
 
   <\theorem>
-    [Spectral Factorization Theorem]: Let <math|K:\<bbb-R\>\<to\>\<bbb-R\>>
-    be a positive definite stationary kernel function.
+    <strong|[Spectral Factorization Theorem]><cite|cramerStochasticProcessTheoryContribution>
+    : Let <math|K:\<bbb-R\>\<to\>\<bbb-R\>> be a positive definite stationary
+    kernel function.
 
     By Bochner's theorem, there exists a non-negative spectral density
     function <math|S:\<bbb-R\>\<to\>\<bbb-R\>> such that:
@@ -22,7 +23,7 @@
       K*<around|(|t-s|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*<around|(|t-s|)>>*d*\<omega\>
     </equation>
 
-    Let <math|h:\<bbb-R\>\<to\>\<bbb-C\>> be defined as:
+    Let <math|h:\<bbb-R\>\<to\>\<bbb-C\>> be defined as:\ 
 
     <\equation>
       h<around|(|t|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\>|)>>*e<rsup|i*\<omega\>*t>*d*\<omega\>
@@ -31,7 +32,7 @@
     Then:
 
     <\equation>
-      K*<around|(|t-s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*h*<around|(|t-\<tau\>-s|)>*d*\<tau\>
+      K*<around|(|t-s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t+\<tau\>|)>*<wide|h*<around|(|s+\<tau\>|)>|\<bar\>>*d*\<tau\>
     </equation>
   </theorem>
 
@@ -154,6 +155,10 @@
   </itemize>
 
   <cite|cramerStochasticProcessTheoryContribution>
+
+  <\bib-list|1>
+    \;
+  </bib-list>
 
   <\bibliography|bib|tm-plain|refs>
     <\bib-list|1>
