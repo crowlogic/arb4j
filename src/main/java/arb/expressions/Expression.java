@@ -39,6 +39,7 @@ import arb.expressions.nodes.unary.*;
 import arb.functions.Function;
 import arb.functions.NullaryFunction;
 import arb.functions.integer.Sequence;
+import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;
 import arb.utensils.text.trees.TextTree;
 import arb.utensils.text.trees.TreeModel;
@@ -145,7 +146,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   private static final String    ASSERTION_ERROR_METHOD_DESCRIPTOR = Compiler.getMethodDescriptor(Void.class,
                                                                                                   Object.class);
 
-  static File compiledClassDir = new File("compiled");
+  static File                    compiledClassDir                  = new File("compiled");
 
   public static final String     evaluationMethodDescriptor        =
                                                             "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
@@ -185,7 +186,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Expression<?, ?, ?>                            ascendentExpression;
 
-  public char                                           character             = 0;
+  public char                                           character                     = 0;
 
   public String                                         className;
 
@@ -197,11 +198,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Class<F>                                       compiledClass;
 
-  int                                                   constantCount         = 1;
+  int                                                   constantCount                 = 1;
 
   public Context                                        context;
 
-  HashSet<String> declaredIntermediateVariables = new HashSet<>();
+  HashSet<String>                                       declaredIntermediateVariables = new HashSet<>();
 
   public final String                                   domainClassDescriptor;
 
@@ -221,43 +222,43 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public final String                                   genericFunctionClassInternalName;
 
-  public boolean                                        inAbsoluteValue       = false;
+  public boolean                                        inAbsoluteValue               = false;
 
   public VariableNode<D, C, F>                          independentVariable;
 
   public VariableNode<D, C, F>                          indeterminateVariable;
 
-  public LinkedList<Consumer<MethodVisitor>>            initializers          = new LinkedList<>();
+  public LinkedList<Consumer<MethodVisitor>>            initializers                  = new LinkedList<>();
 
-  public boolean                                        insideInitializer     = false;
+  public boolean                                        insideInitializer             = false;
 
   public F                                              instance;
 
   public byte[]                                         instructionByteCodes;
 
-  public HashMap<String, IntermediateVariable<D, C, F>> intermediateVariables = new HashMap<>();
+  public HashMap<String, IntermediateVariable<D, C, F>> intermediateVariables         = new HashMap<>();
 
-  public HashMap<String, LiteralConstantNode<D, C, F>>  literalConstants      = new HashMap<>();
+  public HashMap<String, LiteralConstantNode<D, C, F>>  literalConstants              = new HashMap<>();
 
   public FunctionMapping<D, C, F>                       mapping;
 
-  public int                                            position              = -1;
+  public int                                            position                      = -1;
 
   public char                                           previousCharacter;
 
-  public boolean                                        recursive             = false;
+  public boolean                                        recursive                     = false;
 
-  public HashMap<String, FunctionMapping<?, ?, ?>>      referencedFunctions   = new HashMap<>();
+  public HashMap<String, FunctionMapping<?, ?, ?>>      referencedFunctions           = new HashMap<>();
 
-  public HashMap<String, VariableNode<D, C, F>>         referencedVariables   = new HashMap<>();
+  public HashMap<String, VariableNode<D, C, F>>         referencedVariables           = new HashMap<>();
 
   public Node<D, C, F>                                  rootNode;
 
   public Variables                                      variables;
 
-  public boolean                                        variablesDeclared     = false;
+  public boolean                                        variablesDeclared             = false;
 
-  boolean                                               verboseTrace          = false;
+  boolean                                               verboseTrace                  = false;
 
   public Expression(String className,
                     Class<? extends D> domainClass,
@@ -1259,7 +1260,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Class<?> getThisOrAnyAscendentExpressionsPolynomialCoDomain()
   {
-    if (coDomainType.equals(RealPolynomial.class) || coDomainType.equals(ComplexPolynomial.class))
+    if (coDomainType.equals(RealPolynomial.class) || coDomainType.equals(ComplexPolynomial.class)
+                  || coDomainType.equals(RealFunction.class))
     {
       return coDomainType;
     }
@@ -1843,6 +1845,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     node = resolveAbsoluteValue(node);
     return node;
   }
+
   public Node<D, C, F> resolveSymbolicLiteralConstantKeywordOrVariable(int startPos,
                                                                        VariableReference<D, C, F> reference)
   {
@@ -1985,9 +1988,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     boolean hasIndeterminateVariable = ascendentExpression != null
                   && ascendentExpression.thisOrAnyAscendentExpressionHasIndeterminateVariable();
-    return coDomainType.equals(RationalFunction.class) || coDomainType.equals(RealPolynomial.class)
-                  || coDomainType.equals(ComplexPolynomial.class) || coDomainType.equals(IntegerPolynomial.class)
-                  || coDomainType.equals(ComplexRationalFunction.class) || hasIndeterminateVariable;
+    return coDomainType.equals(RealFunction.class) || coDomainType.equals(RationalFunction.class)
+                  || coDomainType.equals(RealPolynomial.class) || coDomainType.equals(ComplexPolynomial.class)
+                  || coDomainType.equals(IntegerPolynomial.class) || coDomainType.equals(ComplexRationalFunction.class)
+                  || hasIndeterminateVariable;
   }
 
   public void throwUnexpectedCharacterException()
