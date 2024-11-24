@@ -20,6 +20,15 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       stationaryGaussianProcessSampleFunctionProperties             =
+                                                                                new Article("Local Properties of the Sample Functions of Stationary Gaussian Processes",
+                                                                                            "Yu. K. Belyaev",
+                                                                                            "1960",
+                                                                                            "Theory of Probability and its Applications",
+                                                                                            "5",
+                                                                                            "117-120").setNumber("1")
+                                                                                                      .setVolume("5");
+  
   public static Book          probabilityTheoryI                                            =
                                                  new Book("Probability Theory I",
                                                           "M. Loève",
