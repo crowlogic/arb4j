@@ -1,0 +1,13 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.ComplexRationalFunction
+context:
+  v:
+  - arb.Real
+  - '0.5'
+  input:
+  - arb.Integer
+  - '3'
+domain: arb.Integer
+expression: n->Γ(n+v)/Γ(v)*(2/z)ⁿ*pFq([-n/2,½-n/2],[v,-n,1-v-n];-z²)
+function: arb.functions.rational.ComplexRationalFunctionSequence
+...

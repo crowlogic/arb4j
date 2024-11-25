@@ -32,7 +32,7 @@ import arb.functions.real.RealFunction;
  * 
  * where Rₙ,ᵥ (z) are the misleadingly named Lommel polynomials
  * 
- * Rₙ,ᵥ (z) = Γ(n + v)/Γ(v) (2/z)ⁿ ₂F₃ ([-n/2, 1/2 - n/2] ; [v, -n, 1 - v - n] ; -z²)
+ * Rₙ,ᵥ(z) = Γ(n+v)/Γ(v)(2/z)ⁿ₂F₃([-n/2,½-n/2];[v,-n,1-v-n];-z²)
  * 
  * where ₂F₃ is a generalized hypergeometric function. The "Lommel polynomials"
  * are actually rational functions of z, not polynomial in z itself; but rather "polynomial
