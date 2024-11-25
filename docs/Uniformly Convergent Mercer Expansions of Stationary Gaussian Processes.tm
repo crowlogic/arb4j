@@ -1,27 +1,17 @@
 <TeXmacs|2.1.4>
 
-<style|generic>
+<style|<tuple|article|alt-colors|boring-white|framed-theorems>>
 
 <\body>
   <\hide-preamble>
     \;
   </hide-preamble>
 
-  <doc-data|<doc-title|Mercer Expansions for Translation-Invariant
-  Kernels>|<doc-author|<author-data|<author-name|Stephen
+  <doc-data|<doc-title|Uniformly Convergent Mercer Expansions of Stationary
+  Gaussian Processes>|<doc-author|<author-data|<author-name|Stephen
   Crowley>|<\author-affiliation>
-    <date|>
+    <date>
   </author-affiliation>>>>
-
-  <abstract-data|<abstract|An extension of the method for deriving
-  orthonormal expansions for kernels <math|K<around*|(|t-s|)>> of
-  translation-invariant \ Gaussian processes detailed by Tronarp and
-  Karvonen<cite|orthonormalExpansionsForTranslationInvariantKernels> is
-  derived by showing selecting the orthonormal base of <math|L<rsup|2>> to be
-  such that <math|K<around*|(|t-s|)>=<big|sum><rsub|n=0><rsup|\<infty\>>\<varphi\><rsub|m><around|(|t-s|)>>
-  converges uniformly. That is, instead of just choosing any orthnormal basis
-  of <math|L<rsup|2>>, a basis whose partial sums uniformly converge to the
-  kernel itself is constructed.>>
 
   \;
 
@@ -49,11 +39,15 @@
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>Expansion
     of the Gaussian kernel> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-6><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-7><vspace|0.5fn>
   </table-of-contents>
 
   <section|Introduction><label|sec:introduction>
 
-  <cite|orthonormalExpansionsForTranslationInvariantKernels>Let
+  As in <cite|orthonormalExpansionsForTranslationInvariantKernels>, Let
   <math|\<Omega\>> be a vector space.
 
   <\definition>
@@ -82,15 +76,18 @@
   where <math|z<rsup|\<ast\>>> denotes the complex conjugate
   of<math|z\<in\>C> If <math|\<Omega\>> is a compact subset of
   <math|\<bbb-R\><rsup|d>> and <math|r> is continuous, the
-  expansion<nbsp><eqref|eq:kernel-expansion-intro> converges
-  uniformly<cite|Paulsen2016>.<space|1em>
+  expansion<nbsp><eqref|eq:kernel-expansion-intro> converges uniformly but
+  this is not by any means the only condition for which uniform convergence
+  assured.
 
   <subsection|Construction of orthonormal bases>
 
   Let <math|<around*|\||z|\|>> denote the modulus of <math|z\<in\>\<bbb-C\>>
-  and recall that <math|z<rsup|\<ast\>>> is the complex conjugate. The spaces
+  and recall that <math|z<rsup|\<ast\>>> is the complex conjugate and
+  <math|I> be a countably infinite index set, typically either
+  <math|\<bbb-N\>> or <math|\<bbb-Z\>>. The spaces
   <math|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>|)>> and
-  <math|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,1/2*\<pi\>|)>>
+  <math|<with|math-font|cal*|L><rsub|2><around*|(|\<bbb-R\>,<frac|\<pi\>|2>|)>>
   consist of all square-integrable functions
   <math|f:\<bbb-R\>\<to\>\<bbb-C\>> and are equipped with the inner products
 
@@ -101,7 +98,7 @@
   and
 
   <\equation>
-    <around|\<langle\>|f,g|\<rangle\>><rsub|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,1/2*\<pi\>|)>>=<frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<rsup|\<ast\>><space|-0.17em><around|(|t|)>*g<around|(|t|)>\<mathd\>t|2*\<pi\>>*
+    <around|\<langle\>|f,g|\<rangle\>><rsub|<with|math-font|cal*|L><rsub|2><around*|(|\<bbb-R\>,<frac|\<pi\>|2>|)>>=<frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<rsup|\<ast\>><space|-0.17em><around|(|t|)>*g<around|(|t|)>\<mathd\>t|2*\<pi\>>*
   </equation>
 
   The Fourier transform and the corresponding inverse transform for any
@@ -119,19 +116,18 @@
 
   The Fourier transform defines an isometry between
   <math|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>|)>> and
-  <math|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,1/2*\<pi\>|)>> via
-  the Plancherel theorem
+  <math|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,<frac|\<pi\>|2>|)>>
+  via the Plancherel theorem
 
   <\equation>
     <big|int><rsub|-\<infty\>><rsup|\<infty\>>f<rsup|\<ast\>><space|-0.17em><around|(|t|)>*g<around|(|t|)>\<mathd\>t=<frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|f|^><rsup|\<ast\>><space|-0.17em><around|(|\<omega\>|)>*<wide|g|^><around|(|\<omega\>|)>\<mathd\>\<omega\>|2*\<pi\>>*
   </equation>
 
   The functions <math|f> and <math|<wide|f|^>> are referred to as the
-  spatiotemporal and spectral representations, respectively. The
-  <math|<with|math-font|cal*|H><rsub|r><around|(|\<bbb-R\>|)>>-orthonormal
+  spatiotemporal and spectral representations, respectively.\ 
+
+  The <math|<with|math-font|cal*|H><rsub|r><around|(|\<bbb-R\>|)>>-orthonormal
   expansions are derived from the following rather straight-forward theorem.
-  Let <math|I> be a countably infinite index set, typically either
-  <math|\<bbb-N\>> or <math|\<bbb-Z\>>.
 
   <\theorem>
     <samp|[Construction of orthonormal bases]<label|thm:main-theorem> >Let
@@ -378,6 +374,15 @@
     <label|eq:h-gaussian>h<around|(|t|)>=2<rsup|1/4>*\<pi\><rsup|-1/4>*e<rsup|-t<rsup|2>>
   </equation>
 
+  <\bibliography|bib|tm-plain|refs>
+    <\bib-list|1>
+      <bibitem*|1><label|bib-orthonormalExpansionsForTranslationInvariantKernels>Toni<nbsp>Karvonen
+      Filip Tronarp. <newblock>Orthonormal expansions for
+      translation-invariant kernels. <newblock><with|font-shape|italic|Journal
+      of Approximation Theory>, 302:106055, 2024.<newblock>
+    </bib-list>
+  </bibliography>
+
   \;
 </body>
 
@@ -394,24 +399,26 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1>>
-    <associate|auto-2|<tuple|1.1|2>>
-    <associate|auto-3|<tuple|1.2|4>>
-    <associate|auto-4|<tuple|2|5>>
-    <associate|auto-5|<tuple|2.1|5>>
-    <associate|auto-6|<tuple|3|6>>
-    <associate|eq:RKHS-fourier|<tuple|17|4>>
-    <associate|eq:gaussian-basis-intro|<tuple|24|5>>
-    <associate|eq:gaussian-kernel|<tuple|28|6>>
-    <associate|eq:h-gaussian|<tuple|30|6>>
-    <associate|eq:kernel-expansion-intro|<tuple|1|1>>
-    <associate|eq:kernel-expansion-mercer|<tuple|22|5>>
-    <associate|eq:main-theorem-r-expansion|<tuple|13|3>>
-    <associate|eq:mercer-integral-operator|<tuple|21|4>>
-    <associate|sec:gaussian|<tuple|3|6>>
-    <associate|sec:introduction|<tuple|1|1>>
-    <associate|sec:summary|<tuple|2|5>>
-    <associate|thm:main-theorem|<tuple|2|2>>
+    <associate|auto-1|<tuple|1|1|paper.tm>>
+    <associate|auto-2|<tuple|1.1|2|paper.tm>>
+    <associate|auto-3|<tuple|1.2|4|paper.tm>>
+    <associate|auto-4|<tuple|2|5|paper.tm>>
+    <associate|auto-5|<tuple|2.1|5|paper.tm>>
+    <associate|auto-6|<tuple|3|6|paper.tm>>
+    <associate|auto-7|<tuple|30|6|paper.tm>>
+    <associate|bib-orthonormalExpansionsForTranslationInvariantKernels|<tuple|1|6|paper.tm>>
+    <associate|eq:RKHS-fourier|<tuple|17|4|paper.tm>>
+    <associate|eq:gaussian-basis-intro|<tuple|24|5|paper.tm>>
+    <associate|eq:gaussian-kernel|<tuple|28|6|paper.tm>>
+    <associate|eq:h-gaussian|<tuple|30|6|paper.tm>>
+    <associate|eq:kernel-expansion-intro|<tuple|1|2|paper.tm>>
+    <associate|eq:kernel-expansion-mercer|<tuple|22|5|paper.tm>>
+    <associate|eq:main-theorem-r-expansion|<tuple|13|3|paper.tm>>
+    <associate|eq:mercer-integral-operator|<tuple|21|4|paper.tm>>
+    <associate|sec:gaussian|<tuple|3|6|paper.tm>>
+    <associate|sec:introduction|<tuple|1|1|paper.tm>>
+    <associate|sec:summary|<tuple|2|5|paper.tm>>
+    <associate|thm:main-theorem|<tuple|2|3|paper.tm>>
   </collection>
 </references>
 
@@ -419,10 +426,6 @@
   <\collection>
     <\associate|bib>
       orthonormalExpansionsForTranslationInvariantKernels
-
-      orthonormalExpansionsForTranslationInvariantKernels
-
-      Paulsen2016
 
       Paulsen2016
 
@@ -464,6 +467,10 @@
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Expansion
       of the Gaussian kernel> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-6><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-7><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
