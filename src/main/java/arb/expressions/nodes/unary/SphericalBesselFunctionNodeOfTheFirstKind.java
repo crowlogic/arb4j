@@ -62,7 +62,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
     order  = expression.resolve();
     arg    = expression.require(',').resolve();
     scalar = expression.require(')').hasScalarCodomain();
-    if (!scalar)
+    if (!scalar && !expression.coDomainType.equals(RealFunction.class))
     {
       throw new CompilerException(String.format("%ss can not be represented as %ss",
                                                 SphericalBesselFunction.class.getSimpleName(),
