@@ -7,7 +7,7 @@
     \;
   </hide-preamble>
 
-  <doc-data|<doc-title|Uniformly Convergent Mercer Expansions of Stationary
+  <doc-data|<doc-title|Uniformly Convergent Mercer Expansions for Stationary
   Gaussian Processes>|<doc-author|<author-data|<author-name|Stephen
   Crowley>|<\author-affiliation>
     <date>
@@ -288,24 +288,11 @@
     <label|eq:kernel-expansion-mercer>r<around|(|t,u|)>=<big|sum><rsub|m=0><rsup|\<infty\>>\<mu\><rsub|m>\<vartheta\><rsub|m><rsup|\<ast\>><around|(|t|)>\<vartheta\><rsub|m><around|(|u|)>*<space|1em><text|\<forall\>>t,u\<in\>\<Omega\>
   </equation>
 
-  Constructing a Mercer expansion by first identifying a convenient weight
-  and then finding the eigendecomposition of the integral
-  operator<nbsp><eqref|eq:mercer-integral-operator> can be rather involved.
-  <strong|What makes <localize|Theorem><nbsp><reference|thm:main-theorem>
-  convenient is therefore that it does <em|not> require that the expansion be
-  Mercer for some weight.> However, identifying a weight <math|w> for which
-  the basis function <math|\<psi\><rsub|m>> constructed via
-  <localize|Theorem><nbsp><reference|thm:main-theorem> are
-  <math|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,w|)>>-orthogonal
-  shows that the expansion is Mercer because the
-  <math|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,w|)>>-normalised
-  versions of <math|\<psi\><rsub|m>> are the eigenfunctions of
-  <math|\<cal-T\><rsub|r,w>>. <section|Summary of
-  expansions><label|sec:summary>
+  \ <section|Summary of expansions><label|sec:summary>
 
-  This section summarises the expansions that we derive using
+  This section summarises the expansions that can be derived using
   <localize|Theorem><nbsp><reference|thm:main-theorem>. Each expansion
-  converges pointwise for all <math|t,u\<in\>\<bbb-R\>>. All expansions are
+  converges pointwise \<forall\><math|t,u\<in\>\<bbb-R\>>. All expansions are
   for kernels with unit scaling. Expansions of arbitrary scalings,
   <math|\<lambda\>>, may be obtained by considering the kernel
   <math|r<around|(|\<lambda\>*t,\<lambda\>*u|)>>, for which the corresponding
@@ -333,8 +320,8 @@
     r<around|(|t,u|)>=<big|sum><rsub|m=0><rsup|\<infty\>>\<psi\><rsub|m><around|(|t|)>*\<psi\><rsub|m><around|(|u|)>
   </equation>
 
-  for all <math|t,u\<in\>\<bbb-R\>>. This expansion is a special case of the
-  well-known Mercer expansion of the Gaussian
+  \<forall\><math|t,u\<in\>\<bbb-R\>>. This expansion is a special case of
+  the well-known Mercer expansion of the Gaussian
   kernel<nbsp><cite-detail|FasshauerMcCourt2015|Section<nbsp>12.2.1>. The
   basis functions<nbsp><eqref|eq:gaussian-basis-intro> are orthogonal in
   <math|<with|math-font|cal*|L><rsub|2><around|(|\<bbb-R\>,w<rsub|\<alpha\>>|)>>
