@@ -1,0 +1,95 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, hyperref}
+
+\begin{document}
+
+\title{Exponential of Infinite Sum}
+\author{}
+\date{Exported on 26/11/2024 at 04:13:22}
+\maketitle
+
+The exponential function, a fundamental concept in mathematics, possesses remarkable properties that extend from finite to infinite operations, as demonstrated by a lemma exploring the relationship between infinite sums and products involving exponentials.
+
+\section*{Finite Exponential Equality}
+
+The finite exponential equality forms the foundation for extending the exponential relationship to infinite sums and products. This fundamental property states that for any finite sequence of real or complex numbers $x_1, x_2, \dots, x_n$, the following equality holds:
+\[
+e^{(x_1+x_2+\dots+x_n)} = e^{x_1} \cdot e^{x_2} \cdot \dots \cdot e^{x_n}
+\]
+This equality stems from the basic properties of exponents, specifically the law of exponents for multiplication, which states that $a^x \cdot a^y = a^{x+y}$ for any base $a$ and exponents $x$ and $y$ \cite{source1}. The exponential function, being defined as $e^x$ where $e$ is Euler's number, inherits this property.
+
+The finite exponential equality is crucial in the proof of the infinite case because it serves as the starting point for induction. By applying this property to the partial sums and partial products, we can establish a sequence of equalities that hold for any finite $n$:
+\[
+e^{(x_1+x_2+\dots+x_n)} = e^{x_1} \cdot e^{x_2} \cdot \dots \cdot e^{x_n}
+\]
+As $n$ increases, this equality continues to hold, providing a bridge between the finite and infinite cases \cite{source2}. The transition to the infinite case relies on taking the limit as $n$ approaches infinity on both sides of this equation. The power series definition of the exponential function, which converges for all complex numbers, ensures that this finite equality holds regardless of the magnitude or sign of the $x_i$ terms \cite{source1, source3}. 
+
+This universal convergence is what allows us to confidently extend the finite case to the infinite case, provided that the series $\sum_{i=1}^\infty x_i$ converges. Understanding this finite exponential equality is essential for grasping the more complex infinite case, as it illustrates the fundamental relationship between exponentials of sums and products of exponentials, which persists in the limit.
+
+\section*{Series Convergence Analysis}
+
+The convergence of the series $\sum_{i=1}^\infty x_i$ is a crucial prerequisite for the validity of the exponential equality in the infinite case. This convergence ensures that the partial sums $S_n = \sum_{i=1}^n x_i$ approach a finite limit $S = \sum_{i=1}^\infty x_i$ as $n$ tends to infinity. The absolute convergence of the exponential function's power series for all complex numbers plays a significant role in this analysis \cite{source1, source2}.
+
+This property allows us to consider the exponential of each term $x_i$ individually, regardless of its magnitude or sign. As a result, we can confidently apply the exponential function to both sides of the equation:
+\[
+\sum_{i=1}^\infty x_i = S \implies e^{\sum_{i=1}^\infty x_i} = e^S
+\]
+The convergence of the original series also implies that the terms $x_i$ must approach zero as $i$ increases. This behavior is essential for the convergence of the infinite product $\prod_{i=1}^\infty e^{x_i}$, as it ensures that the factors $e^{x_i}$ approach 1 for large $i$.
+
+Furthermore, the convergence of $\sum_{i=1}^\infty x_i$ allows us to leverage the continuity of the exponential function \cite{source3}. As the partial sums $S_n$ converge to $S$, the continuity of $e^x$ guarantees that:
+\[
+\lim_{n\to \infty} e^{S_n} = e^{\lim_{n\to \infty} S_n} = e^S
+\]
+
+This relationship is fundamental in bridging the gap between the finite and infinite cases of the exponential equality. It's worth noting that the convergence of $\sum_{i=1}^\infty x_i$ is a sufficient condition for the equality to hold, but it may not be necessary in all cases. Some divergent series, when exponentiated term by term, can still yield convergent products. However, for the purposes of this proof and its general applicability, we focus on convergent series to ensure the validity of the exponential equality in the broadest possible context.
+
+\section*{Exponential Function Continuity}
+
+The continuity of the exponential function is a fundamental property that plays a crucial role in extending the exponential equality from finite to infinite sums. This continuity is intimately tied to the function's definition as a power series with an infinite radius of convergence \cite{source1, source2}.
+
+The exponential function, defined as $e^x = \sum_{n=0}^\infty \frac{x^n}{n!}$, converges absolutely for all complex numbers $x$ \cite{source1}. This universal convergence ensures that the function is well-defined and continuous over its entire domain, including both real and complex numbers \cite{source2}.
+
+The continuity of the exponential function allows us to interchange limits and exponentials, a key step in proving the infinite exponential equality. In the context of real numbers, the continuity of the exponential function can be rigorously proven using $\varepsilon$-$\delta$ arguments or through the properties of power series \cite{source3}. For any real number $a$, given any $\varepsilon > 0$, there exists a $\delta > 0$ such that for all $x$ satisfying $|x-a| < \delta$, we have $|e^x - e^a| < \varepsilon$.
+
+The continuity of the exponential function is particularly important when dealing with limits of sequences or series. In our proof of the infinite exponential equality, we rely on this continuity when we assert that:
+\[
+\lim_{n\to \infty} e^{S_n} = e^{\lim_{n\to \infty} S_n} = e^S
+\]
+where $S_n$ are the partial sums of the series $\sum_{i=1}^\infty x_i$ and $S$ is its limit. This step is valid precisely because of the continuity of the exponential function.
+
+Moreover, the exponential function's continuity extends to the complex plane, making it an entire function \cite{source2}. This property allows for the generalization of our results to complex-valued series, broadening the applicability of the infinite exponential equality.
+
+\section*{Product Convergence Proof}
+
+The convergence of the infinite product $\prod_{i=1}^\infty e^{x_i}$ is a crucial component in establishing the exponential equality for infinite sums. This convergence is intricately linked to the convergence of the series $\sum_{i=1}^\infty x_i$ and the properties of the exponential function.
+
+To prove the convergence of the infinite product, we first consider the partial products:
+\[
+P_n = \prod_{i=1}^n e^{x_i} = e^{x_1} \cdot e^{x_2} \cdot \dots \cdot e^{x_n}
+\]
+Using the finite exponential equality, we can rewrite this as:
+\[
+P_n = e^{(x_1+x_2+\dots+x_n)} = e^{S_n}
+\]
+
+Given that the series $\sum_{i=1}^\infty x_i$ converges to some limit $S$, we know that the sequence of partial sums $\{S_n\}$ converges to $S$. By the continuity of the exponential function, which has an infinite radius of convergence \cite{source1}, we can conclude that:
+\[
+\lim_{n\to \infty} P_n = \lim_{n\to \infty} e^{S_n} = e^{\lim_{n\to \infty} S_n} = e^S
+\]
+
+This limit exists and is finite, proving that the infinite product $\prod_{i=1}^\infty e^{x_i}$ converges to $e^S$. It's important to note that the convergence of the infinite product is conditional on the convergence of the original series. If $\sum_{i=1}^\infty x_i$ diverges, the infinite product may not converge in the traditional sense.
+
+The convergence of the infinite product can also be understood through the lens of logarithms. Taking the natural logarithm of both sides of the equality:
+\[
+\ln\left(\prod_{i=1}^\infty e^{x_i}\right) = \sum_{i=1}^\infty \ln(e^{x_i}) = \sum_{i=1}^\infty x_i
+\]
+
+This relationship further illustrates the connection between the convergence of the series and the convergence of the product \cite{source2}. The proof of product convergence relies heavily on the unique properties of the exponential function, particularly its continuity and its behavior under exponentiation. These properties allow us to bridge the gap between finite and infinite cases, providing a robust foundation for the exponential equality in the realm of infinite sums and products.
+
+\begin{thebibliography}{3}
+\bibitem{source1} \url{https://personalpages.manchester.ac.uk/staff/donald.robertson/teaching/22-23/29142/exponential.html}
+\bibitem{source2} \url{https://en.wikipedia.org/wiki/Exponential_function}
+\bibitem{source3} \url{https://proofwiki.org/wiki/Exponential_Function_is_Continuous/Real_Numbers}
+\end{thebibliography}
+
+\end{document}
