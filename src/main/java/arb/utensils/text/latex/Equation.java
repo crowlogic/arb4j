@@ -569,8 +569,7 @@ public final class Equation implements
     environment(env, isStarred);
     if (isStarred)
       label(null);
-    if (equationColumns <= 0
-                  && (env == EquationEnvironment.ALIGNAT || env == EquationEnvironment.ALIGNEDAT))
+    if (equationColumns <= 0 && (env == EquationEnvironment.ALIGNAT || env == EquationEnvironment.ALIGNEDAT))
     {
       throw new IllegalArgumentException("You did not specifiy a valid number of columns (specified: "
                                          + equationColumns
@@ -635,8 +634,8 @@ public final class Equation implements
     int labelIndex = 0;
     for (int i = 0; i < input.size(); i++)
     {
-      boolean useLabel  = ((endLines.get(i) && i != input.size() - 1) || (i == input.size() - 1))
-                    && label != null && !env.mathModeOnly();
+      boolean useLabel  = ((endLines.get(i) && i != input.size() - 1) || (i == input.size() - 1)) && label != null
+                    && !env.mathModeOnly();
 
       Object  obj       = input.get(i);
       String  currLabel = "\\label{%s%s-%d}".formatted(LABEL_NAMESPACE, label, labelIndex);
@@ -668,8 +667,7 @@ public final class Equation implements
         }
 
         ret.add(Latex.indent(n + 1) + s + spaceCorrection.get(i) + (useLabel ? currLabel : "")
-                      + (Boolean.TRUE.equals(endLines.get(i)) && i != input.size() - 1 ? "\\\\%"
-                                                                                       : ""));
+                      + (Boolean.TRUE.equals(endLines.get(i)) && i != input.size() - 1 ? "\\\\%" : ""));
 
         if (useLabel)
           labelIndex++;

@@ -86,9 +86,8 @@ public final class ContextFieldListCell<D, C extends Closeable, F extends Functi
 
       updateRepresentation(item);
 
-      if (item instanceof Integer)
+      if (item instanceof Integer integerItem)
       {
-        Integer integerItem = (Integer) item;
         if (spinner == null)
         {
           constructSpinner(item, integerItem);

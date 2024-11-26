@@ -18,7 +18,8 @@ import arb.logic.RegularProposition;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Equation<D, C, F extends Function<? extends D, ? extends C>> implements RegularProposition
+public class Equation<D, C, F extends Function<? extends D, ? extends C>> implements
+                     RegularProposition
 {
 
   final Class<? extends C> coDomainType;
@@ -73,16 +74,16 @@ public class Equation<D, C, F extends Function<? extends D, ? extends C>> implem
 
   private void parse(String string)
   {
-    lhs    = Function.parse(Parser.expressionToUniqueClassname(string),
-                            string,
-                            context,
-                            domainType,
-                            coDomainType,
-                            functionType,
-                            string,
-                            null);
+    lhs = Function.parse(Parser.expressionToUniqueClassname(string),
+                         string,
+                         context,
+                         domainType,
+                         coDomainType,
+                         functionType,
+                         string,
+                         null);
     lhs.require('=');
-    string = string.substring(lhs.position+1, string.length());
+    string = string.substring(lhs.position + 1, string.length());
     rhs    = Function.parse(Parser.expressionToUniqueClassname(string),
                             string,
                             context,

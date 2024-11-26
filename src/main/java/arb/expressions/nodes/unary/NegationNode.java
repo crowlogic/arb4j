@@ -52,12 +52,6 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public boolean isReusable()
-  {
-    return false;
-  }
-
-  @Override
   public char symbol()
   {
     return '-';

@@ -432,12 +432,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     return true;
   }
 
-  @Override
-  public boolean isReusable()
-  {
-    return false;
-  }
-
   protected MethodVisitor jumpToIfLessThanOrEquals(MethodVisitor methodVisitor, Label label)
   {
     methodVisitor.visitJumpInsn(IFLE, label);
@@ -517,7 +511,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       indexVariableFieldName = stringExpression.substring(startPos, arrowIndex);
     }
-    String lookingFor                    =
+    String lookingFor                 =
                       indexVariableFieldName != null ? String.format("{%s=", indexVariableFieldName) : "{";
     int    rangeSpecificationPosition = stringExpression.indexOf(lookingFor, expression.position);
     if (rangeSpecificationPosition == -1)
@@ -588,13 +582,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       expression.registerIntermediateVariable(getIndexVariableFieldName(), Integer.class, true);
     }
-  }
-
-  @Override
-  public MethodVisitor prepareStackForReuse(MethodVisitor mv)
-  {
-    assert false : "not recycleable";
-    return mv;
   }
 
   protected void propagateInputToFactorClass(MethodVisitor mv)

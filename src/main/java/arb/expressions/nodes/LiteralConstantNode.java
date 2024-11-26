@@ -302,19 +302,6 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   }
 
   @Override
-  public boolean isReusable()
-  {
-    return false;
-  }
-
-  @Override
-  public MethodVisitor prepareStackForReuse(MethodVisitor mv)
-  {
-    assert false : "a constant is never reusable";
-    return null;
-  }
-
-  @Override
   public String toString()
   {
     return value;

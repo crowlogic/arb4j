@@ -361,11 +361,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return getName().equals(variable);
   }
 
-  @Override
-  public boolean isReusable()
-  {
-    return false;
-  }
 
   @Override
   public boolean isScalar()
@@ -380,12 +375,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return true;
   }
 
-  @Override
-  public MethodVisitor prepareStackForReuse(MethodVisitor mv)
-  {
-    assert false : "a variable is never reusable(overwritable)";
-    return null;
-  }
 
   public VariableNode<D, R, F> renameTo(String to)
   {
@@ -602,6 +591,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       returnType = reference.type();
     }
     assert returnType != null : "returnType is null for " + this;
+    assert returnType != Object.class : "TODO: tried to return " + returnType;
     return returnType;
   }
 

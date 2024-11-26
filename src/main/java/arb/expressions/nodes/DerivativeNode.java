@@ -142,20 +142,6 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   }
 
   @Override
-  public boolean isReusable()
-  {
-    assert false : "TODO";
-    return false;
-  }
-
-  @Override
-  public MethodVisitor prepareStackForReuse(MethodVisitor mv)
-  {
-    assert false : "TODO";
-    return null;
-  }
-
-  @Override
   public String typeset()
   {
     return derivative.typeset();

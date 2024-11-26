@@ -36,18 +36,6 @@ public class ElseNode<D, R, F extends Function<? extends D, ? extends R>> extend
     return null;
   }
 
-  @Override
-  public boolean isReusable()
-  {
-    return false;
-  }
-
-  @Override
-  public MethodVisitor prepareStackForReuse(MethodVisitor mv)
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
 
   @Override
   public String typeset()

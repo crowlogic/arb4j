@@ -45,10 +45,4 @@ public class FloorNode<D, R, F extends Function<? extends D, ? extends R>> exten
           argument,
           parser);
   }
-
-  @Override
-  public boolean isReusable()
-  {
-    return false;
-  }
 }

@@ -194,23 +194,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     return invokeMethod(mv, operation, resultType);
   }
 
-  /**
-   * Returns a reusable node if it exists, it will either be this{@link #left} or
-   * this{@link #right} or null if neither are reusable
-   */
-  public Node<D, C, F> getAReusableNode()
-  {
-    if (right.isReusable())
-    {
-      return right;
-    }
-    else if (left.isReusable())
-    {
-      return left;
-    }
-    return null;
-  }
-
+ 
   @Override
   public List<Node<D, C, F>> getBranches()
   {
@@ -277,11 +261,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     return false;
   }
 
-  @Override
-  public boolean isReusable()
-  {
-    return left.isReusable() || right.isReusable();
-  }
 
   @Override
   public boolean isScalar()
@@ -291,27 +270,12 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
   public boolean loadResult(MethodVisitor mv, Class<?> resultType)
   {
-    Node<D, C, F> reusableNode;
 
     if (isResult)
     {
       checkClassCast(loadResultParameter(mv), resultType);
       intermediateVariableFieldName = "result";
-    }
-    else if ((reusableNode = getAReusableNode()) != null)
-    {
-      boolean rightReusable = reusableNode == right;
-      if (rightReusable)
-      {
-        prepareStackForReusingRightSide(mv);
-        intermediateVariableFieldName = "right";
-      }
-      else
-      {
-        prepareStackForReusingLeftSide(mv);
-        intermediateVariableFieldName = "left";
-      }
-    }
+    }   
     else
     {
       intermediateVariableFieldName = expression.allocateIntermediateVariable(mv, resultType);
@@ -332,23 +296,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                       transformation,
                       this,
                       getClass().getSimpleName());
-  }
-
-  @Override
-  public MethodVisitor prepareStackForReuse(MethodVisitor mv)
-  {
-    if (right.isReusable())
-    {
-      return prepareStackForReusingRightSide(mv);
-    }
-    else if (left.isReusable())
-    {
-      return prepareStackForReusingLeftSide(mv);
-    }
-    else
-    {
-      throw new IllegalArgumentException("Neither side is reusable: " + this);
-    }
   }
 
   public String stringFormat(Node<?, ?, ?> side)

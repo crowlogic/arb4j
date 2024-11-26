@@ -157,19 +157,6 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
     }
   }
 
-  @Override
-  public boolean isReusable()
-  {
-    assert false : "TODO: Auto-generated method stub";
-    return false;
-  }
-
-  @Override
-  public MethodVisitor prepareStackForReuse(MethodVisitor mv)
-  {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
-  }
 
   @Override
   public String typeset()

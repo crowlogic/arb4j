@@ -233,19 +233,6 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public boolean isReusable()
-  {
-    return false;
-  }
-
-  @Override
-  public MethodVisitor prepareStackForReuse(MethodVisitor mv)
-  {
-    assert false : "TODO: Auto-generated method stub";
-    return mv;
-  }
-
-  @Override
   public <C> Class<? extends C> type()
   {
     assert false : "TODO: Auto-generated method stub";
