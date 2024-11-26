@@ -1,4 +1,4 @@
 #!/bin/sh
 
 BASEDIR=$(dirname $(readlink -f $0))/..
-cd $BASEDIR && run arb.viz.TODO $@
+cd $BASEDIR && run -Dprism.order=sw arb.viz.TODO $@
