@@ -32,7 +32,9 @@ import arb.functions.Function;
  * {@link WhenNode#evaluate(Expression, int)} method when the 'when' "function"
  * is encountered. It's syntax is like this:
  * 
+ * <pre>
  * when(n=0,1,n=1,tanh(ln(1+x²)),else,-1)
+ * </pre>
  * 
  * in general its
  * when(condition1,value1,condition2,value2,..,else,valueOtherwise)
@@ -66,8 +68,8 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
                                          expression.previousCharacter));
     }
 
-    LiteralConstantNode<D, R, F> constant = evaluateCondition();
-    Node<D, R, F>                value    = expression.resolve();
+    var constant = evaluateCondition();
+    var value    = expression.resolve();
     cases.put(new Integer(constant.value), value);
   }
 
@@ -89,9 +91,8 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
          Node<D, R, F>
          evaluateDefaultCase(Expression<D, R, F> expression)
   {
-    Node<D, R, F> defaultValue;
     expression.require(',');
-    defaultValue = expression.resolve();
+    var defaultValue = expression.resolve();
     if (expression.character != ')')
     {
       throw new CompilerException(format("expected closing ) of when statement after else at position=%d expression=%s",
@@ -135,9 +136,8 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     {
       arg = evaluateDefaultCase(expression);
     }
-    else if (node.isVariable())
+    else if (node instanceof VariableNode<D, R, F> variable)
     {
-      VariableNode<D, R, F> variable = (VariableNode<D, R, F>) node;
       evaluateCase(cases, variable);
     }
     else
@@ -233,7 +233,6 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     return false;
   }
 
-
   @Override
   public List<Node<D, R, F>> getBranches()
   {
@@ -296,7 +295,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   @Override
   public boolean isConstant()
   {
-    return cases.values().stream().allMatch(Node::isConstant) && arg.isConstant();
+    return arg.isConstant() && cases.values().stream().allMatch(Node::isConstant);
   }
 
   @Override

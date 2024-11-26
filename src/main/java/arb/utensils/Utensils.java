@@ -238,9 +238,9 @@ public class Utensils
 
   public static void throwOrWrap(Throwable e)
   {
-    if (e instanceof RuntimeException)
+    if (e instanceof RuntimeException q)
     {
-      throw (RuntimeException) e;
+      throw q;
     }
     else
     {
@@ -252,13 +252,13 @@ public class Utensils
   public static void wrapOrThrow(Throwable e)
   {
 
-    if (e instanceof RuntimeException)
+    if (e instanceof RuntimeException q)
     {
-      throw (RuntimeException) e;
+      throw q;
     }
-    else if (e instanceof VerifyError)
+    else if (e instanceof VerifyError q)
     {
-      throw (VerifyError) e;
+      throw q;
     }
     else
     {
@@ -268,9 +268,9 @@ public class Utensils
 
   public static void wrapOrThrow(String msg, Throwable e)
   {
-    if (e instanceof RuntimeException)
+    if (e instanceof RuntimeException q)
     {
-      throw (RuntimeException) e;
+      throw q;
     }
     else
     {
@@ -302,11 +302,11 @@ public class Utensils
    */
   public static boolean closeIfAutoCloseable(Object a)
   {
-    if (a instanceof AutoCloseable)
+    if (a instanceof AutoCloseable b)
     {
       try
       {
-        ((AutoCloseable) a).close();
+        b.close();
       }
       catch (Exception e)
       {
