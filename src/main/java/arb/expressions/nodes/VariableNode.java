@@ -361,7 +361,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return getName().equals(variable);
   }
 
-
   @Override
   public boolean isScalar()
   {
@@ -374,7 +373,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     return true;
   }
-
 
   public VariableNode<D, R, F> renameTo(String to)
   {
@@ -591,7 +589,12 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       returnType = reference.type();
     }
     assert returnType != null : "returnType is null for " + this;
-    assert returnType != Object.class : "TODO: tried to return " + returnType;
+    assert returnType != Object.class : "TODO: tried to return "
+                                        + returnType
+                                        + " for "
+                                        + this
+                                        + " which is part of "
+                                        + expression;
     return returnType;
   }
 

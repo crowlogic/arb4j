@@ -312,25 +312,26 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  public Node<D, C, F> addAndSubtract(Node<D, C, F> node)
+  @SuppressWarnings("unchecked")
+  public <N extends Node<D, C, F>> N addAndSubtract(N node)
   {
     while (true)
     {
       if (nextCharacterIs('+', '₊'))
       {
-        node = new AdditionNode<>(this,
-                                  node,
-                                  exponentiateMultiplyAndDivide());
+        node = (N) new AdditionNode<D, C, F>(this,
+                                             node,
+                                             exponentiateMultiplyAndDivide());
       }
       else if (nextCharacterIs('-', '₋', '−'))
       {
-        Node<D, C, F> rhs = exponentiateMultiplyAndDivide();
+        N rhs = exponentiateMultiplyAndDivide();
 
-        node = node == null ? new NegationNode<>(this,
-                                                 rhs)
-                            : new SubtractionNode<>(this,
-                                                    node,
-                                                    rhs);
+        node = node == null ? (N) new NegationNode<D, C, F>(this,
+                                                            rhs)
+                            : (N) new SubtractionNode<D, C, F>(this,
+                                                               node,
+                                                               rhs);
 
       }
       else
@@ -443,7 +444,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   protected MethodVisitor
-         declareEvaluateMethodsLocalVariableArguments(MethodVisitor methodVisitor, Label startLabel, Label endLabel)
+            declareEvaluateMethodsLocalVariableArguments(MethodVisitor methodVisitor, Label startLabel, Label endLabel)
   {
     methodVisitor.visitLocalVariable("this", "L" + className + ";", null, startLabel, endLabel, 0);
     methodVisitor.visitLocalVariable(independentVariable != null ? independentVariable.getName() : "in",
@@ -582,13 +583,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * 
    * @throws CompilerException
    */
-  public Node<D, C, F> evaluate() throws CompilerException
+  @SuppressWarnings("unchecked")
+  public <N extends Node<D, C, F>> N evaluate() throws CompilerException
   {
-    Node<D, C, F> node = null;
+    N node = null;
 
     if (nextCharacterIs('['))
     {
-      node = new VectorNode<>(this);
+      node = (N) new VectorNode<D, C, F>(this);
     }
     else if (nextCharacterIs('('))
     {
@@ -597,27 +599,27 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else if (nextCharacterIs('∂'))
     {
-      node = new DerivativeNode<D, C, F>(this);
+      node = (N) new DerivativeNode<D, C, F>(this);
     }
     else if (nextCharacterIs('∫'))
     {
-      node = new IntegralNode<>(this);
+      node = (N) new IntegralNode<D, C, F>(this);
     }
     else if (nextCharacterIs('Π', '∏'))
     {
-      node = new ProductNode<>(this);
+      node = (N) new ProductNode<D, C, F>(this);
     }
     else if (nextCharacterIs('∑', 'Σ'))
     {
-      node = new SumNode<>(this);
+      node = (N) new SumNode<D, C, F>(this);
     }
     else if (isNumeric(character))
     {
-      node = evaluateNumber();
+      node = (N) evaluateNumber();
     }
     else if (isIdentifierCharacter())
     {
-      node = resolveIdentifier();
+      node = (N) resolveIdentifier();
     }
 
     return resolvePostfixOperators(node);
@@ -727,19 +729,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return null;
   }
 
-  protected Node<D, C, F> exponentiate() throws CompilerException
+  protected <N extends Node<D, C, F>> N exponentiate() throws CompilerException
   {
     return exponentiate(evaluate());
   }
 
-  protected Node<D, C, F> exponentiate(Node<D, C, F> node) throws CompilerException
+  @SuppressWarnings("unchecked")
+  protected <N extends Node<D, C, F>> N exponentiate(N node) throws CompilerException
   {
     if (nextCharacterIs('^'))
     {
       final boolean parenthetical = nextCharacterIs('(');
-      node = new ExponentiationNode<>(this,
-                                      node,
-                                      parenthetical ? resolve() : evaluate());
+      node = (N) new ExponentiationNode<D, C, F>(this,
+                                                 node,
+                                                 parenthetical ? resolve() : evaluate());
       if (parenthetical)
       {
         require(')');
@@ -757,7 +760,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @return the result of passing this{@link #exponentiate()} to
    *         this{@link #multiplyAndDivide(Node)}
    */
-  protected Node<D, C, F> exponentiateMultiplyAndDivide()
+  protected <N extends Node<D, C, F>> N exponentiateMultiplyAndDivide()
   {
     return multiplyAndDivide(exponentiate());
   }
@@ -1426,22 +1429,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return loadFieldOntoStack(loadThisOntoStack(mv), name, referenceType);
   }
 
-  public Node<D, C, F> multiplyAndDivide(Node<D, C, F> node)
+  @SuppressWarnings("unchecked")
+  public <N extends Node<D, C, F>> N multiplyAndDivide(N node)
   {
     while (true)
     {
       if (nextCharacterIs('*', '×', 'ₓ', '⋅'))
       {
-        node = new MultiplicationNode<>(this,
-                                        node,
-                                        exponentiate());
+        node = (N) new MultiplicationNode<D, C, F>(this,
+                                                   node,
+                                                   exponentiate());
 
       }
       else if (!characterAfterNextIs('∂') && nextCharacterIs('⁄', '/', '÷'))
       {
-        node = new DivisionNode<>(this,
-                                  node,
-                                  exponentiate());
+        node = (N) new DivisionNode<D, C, F>(this,
+                                             node,
+                                             exponentiate());
       }
       else
       {
@@ -1605,14 +1609,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return (E) this;
   }
 
-  public Node<D, C, F> parseSuperscript(Node<D, C, F> node, char superscript, String digit)
+  @SuppressWarnings("unchecked")
+  public <N extends Node<D, C, F>> N parseSuperscript(N node, char superscript, String digit)
   {
     if (nextCharacterIs(superscript))
     {
-      node = new ExponentiationNode<>(this,
-                                      node,
-                                      new LiteralConstantNode<>(this,
-                                                                digit));
+      node = (N) new ExponentiationNode<D, C, F>(this,
+                                                 node,
+                                                 new LiteralConstantNode<>(this,
+                                                                           digit));
     }
     return node;
   }
@@ -1623,7 +1628,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @param node
    * @return
    */
-  public Node<D, C, F> parseSuperscripts(Node<D, C, F> node)
+  public <N extends Node<D, C, F>> N parseSuperscripts(N node)
   {
     node = parseSuperscript(node, '⁰', "0");
     node = parseSuperscript(node, '¹', "1");
@@ -1734,43 +1739,46 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @return the result of passing this{@link #exponentiateMultiplyAndDivide()} to
    *         this{@link #addAndSubtract(Node)}
    */
-  public Node<D, C, F> resolve()
+  @SuppressWarnings("unchecked")
+  public <N extends Node<D, C, F>> N resolve()
   {
     var node = exponentiateMultiplyAndDivide();
-    return addAndSubtract(node);
+    return (N) addAndSubtract(node);
   }
 
-  public Node<D, C, F> resolveAbsoluteValue(Node<D, C, F> node)
+  @SuppressWarnings("unchecked")
+  public <N extends Node<D, C, F>> N resolveAbsoluteValue(N node)
   {
     if (!inAbsoluteValue && nextCharacterIs('|'))
     {
       inAbsoluteValue = true;
-      node            = new AbsoluteValueNode<D, C, F>(this,
-                                                       resolve());
+      node            = (N) new AbsoluteValueNode<D, C, F>(this,
+                                                           resolve());
       require('|');
       inAbsoluteValue = false;
     }
     return node;
   }
 
-  public Node<D, C, F> resolveFactorials(Node<D, C, F> node)
+  @SuppressWarnings("unchecked")
+  public <N extends Node<D, C, F>> N resolveFactorials(N node)
   {
     if (nextCharacterIs('!'))
     {
-      return new FactorialNode<>(this,
-                                 node);
+      return (N) new FactorialNode<D, C, F>(this,
+                                            node);
     }
     else if (nextCharacterIs('₍'))
     {
-      return new AscendingFactorializationNode<>(node,
-                                                 resolve(),
-                                                 require('₎'));
+      return (N) new AscendingFactorializationNode<D, C, F>(node,
+                                                            resolve(),
+                                                            require('₎'));
     }
     else if (nextCharacterIs('⋰'))
     {
-      return new AscendingFactorializationNode<>(node,
-                                                 resolve(),
-                                                 this);
+      return (N) new AscendingFactorializationNode<D, C, F>(node,
+                                                            resolve(),
+                                                            this);
     }
     else
     {
@@ -1778,7 +1786,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  public Node<D, C, F> resolveFloor(Node<D, C, F> node)
+  @SuppressWarnings("unchecked")
+  public <N extends Node<D, C, F>> N resolveFloor(Node<D, C, F> node)
   {
     if (nextCharacterIs('⌊'))
     {
@@ -1786,7 +1795,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                     resolve());
       require('⌋');
     }
-    return node;
+    return (N) node;
   }
 
   public Node<D, C, F> resolveFunction(int startPos, VariableReference<D, C, F> reference)
@@ -1830,7 +1839,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  public Node<D, C, F> resolvePostfixOperators(Node<D, C, F> node)
+  public <N extends Node<D, C, F>> N resolvePostfixOperators(N node)
   {
 
     node = resolveFactorials(node);
