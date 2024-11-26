@@ -9,10 +9,13 @@ import arb.documentation.references.Article;
 import arb.documentation.references.Book;
 import arb.documentation.references.MastersThesis;
 import arb.documentation.references.Miscellaneous;
-import arb.documentation.references.Reference;
 
 /**
- * A list of {@link Reference}s
+ * Bibliography<br>
+ * <br>
+ * 
+ * The pure man unites two in one; the lover unites three in one. --
+ * {@link Bibliography#walledGardenOfTruth}
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -20,6 +23,13 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Book          walledGardenOfTruth                                           =
+                                                  new Book("The Walled Garden of Truth (Hadiqat al-Haqiqa)",
+                                                           "Hakim Sanai",
+                                                           "circa 1131",
+                                                           null).setPublisher("Persian Literary Heritage")
+                                                                .setAddress("Persia");
+
   public static Article       evolutionWithoutEvolution                                     =
                                                         new Article("Evolution without evolution: Dynamics described by stationary observables",
                                                                     "D. N. Page and W. K. Wootters",
