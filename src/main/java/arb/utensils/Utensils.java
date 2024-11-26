@@ -369,4 +369,20 @@ public class Utensils
     return classA.getSimpleName().compareTo(classB.getSimpleName());
   };
 
+  public static <T extends AutoCloseable> T close(T closeable)
+  {
+    if (closeable != null)
+    {
+      try
+      {
+        closeable.close();
+      }
+      catch (Exception e)
+      {
+        throwOrWrap(e);
+      }
+    }
+    return null;
+  }
+
 }

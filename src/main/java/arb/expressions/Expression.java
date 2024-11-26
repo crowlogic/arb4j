@@ -394,14 +394,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return intermediateVariableName;
   }
 
-  public MethodVisitor annotateWith(MethodVisitor methodVisitor, Class<? extends Annotation> annotation)
+  protected MethodVisitor annotateWith(MethodVisitor methodVisitor, Class<? extends Annotation> annotation)
   {
     AnnotationVisitor av = methodVisitor.visitAnnotation(annotation.descriptorString(), true);
     av.visitEnd();
     return methodVisitor;
   }
 
-  public MethodVisitor annotateWithOverride(MethodVisitor methodVisitor)
+  protected MethodVisitor annotateWithOverride(MethodVisitor methodVisitor)
   {
     return annotateWith(methodVisitor, Override.class);
   }
@@ -422,7 +422,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return false;
   }
 
-  public boolean characterAfterNextIs(char ch)
+  protected boolean characterAfterNextIs(char ch)
   {
     return position + 1 < expression.length() && expression.charAt(position + 1) == ch;
   }
@@ -433,7 +433,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
-  public ClassVisitor declareConstants(ClassVisitor classVisitor)
+  protected ClassVisitor declareConstants(ClassVisitor classVisitor)
   {
     for (var constant : literalConstants.values())
     {
@@ -442,7 +442,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return classVisitor;
   }
 
-  public MethodVisitor
+  protected MethodVisitor
          declareEvaluateMethodsLocalVariableArguments(MethodVisitor methodVisitor, Label startLabel, Label endLabel)
   {
     methodVisitor.visitLocalVariable("this", "L" + className + ";", null, startLabel, endLabel, 0);
@@ -458,7 +458,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return methodVisitor;
   }
 
-  public void declareFields(ClassVisitor cw)
+  protected void declareFields(ClassVisitor cw)
   {
     cw.visitField(Opcodes.ACC_PUBLIC, IS_INITIALIZED, "Z", null, null);
     declareConstants(cw);
@@ -467,7 +467,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     declareIntermediateVariables(cw);
   }
 
-  public ClassVisitor declareFunctionReferences(ClassVisitor classVisitor)
+  protected ClassVisitor declareFunctionReferences(ClassVisitor classVisitor)
   {
     if (context != null)
     {
@@ -476,7 +476,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return classVisitor;
   }
 
-  public void declareIntermediateVariables(ClassVisitor classVisitor)
+  protected void declareIntermediateVariables(ClassVisitor classVisitor)
   {
     for (var variable : intermediateVariables.values())
     {
@@ -492,7 +492,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  public void declareVariableEntry(ClassVisitor classVisitor, Entry<String, Named> variable)
+  protected void declareVariableEntry(ClassVisitor classVisitor, Entry<String, Named> variable)
   {
     if (trace)
     {
@@ -515,7 +515,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  public void declareVariables(ClassVisitor classVisitor)
+  protected void declareVariables(ClassVisitor classVisitor)
   {
     // assert !variablesDeclared : "variables have already been declared";
     if (ascendentExpression != null)
@@ -550,7 +550,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     variablesDeclared = true;
   }
 
-  public Class<F> defineClass()
+  protected Class<F> defineClass()
   {
     if (compiledClass != null)
     {
@@ -623,13 +623,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return resolvePostfixOperators(node);
   }
 
-  public Node<D, C, F> evaluateIndex()
+  protected Node<D, C, F> evaluateIndex()
   {
     var index = evaluateSquareBracketedIndex();
     return index == null ? index = evaluateSubscriptedIndex() : index;
   }
 
-  public VariableReference<D, C, F> evaluateName(int startPos)
+  protected VariableReference<D, C, F> evaluateName(int startPos)
   {
     String identifier = parseName(startPos);
     var    index      = evaluateIndex();
@@ -650,7 +650,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                      expression.substring(startingPosition, position));
   }
 
-  public Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
+  protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
   {
     int rightArrowIndex = (expression = transformToJavaAcceptableCharacters(expression)).indexOf('➔');
     if (rightArrowIndex != -1)
@@ -699,7 +699,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
-  public Node<D, C, F> evaluateSquareBracketedIndex()
+  protected Node<D, C, F> evaluateSquareBracketedIndex()
   {
     Node<D, C, F> index = null;
     if (nextCharacterIs('['))
@@ -710,7 +710,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return index;
   }
 
-  public Node<D, C, F> evaluateSubscriptedIndex()
+  protected Node<D, C, F> evaluateSubscriptedIndex()
   {
     int startPos = position;
 
@@ -727,12 +727,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return null;
   }
 
-  public Node<D, C, F> exponentiate() throws CompilerException
+  protected Node<D, C, F> exponentiate() throws CompilerException
   {
     return exponentiate(evaluate());
   }
 
-  public Node<D, C, F> exponentiate(Node<D, C, F> node) throws CompilerException
+  protected Node<D, C, F> exponentiate(Node<D, C, F> node) throws CompilerException
   {
     if (nextCharacterIs('^'))
     {
@@ -757,7 +757,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @return the result of passing this{@link #exponentiate()} to
    *         this{@link #multiplyAndDivide(Node)}
    */
-  public Node<D, C, F> exponentiateMultiplyAndDivide()
+  protected Node<D, C, F> exponentiateMultiplyAndDivide()
   {
     return multiplyAndDivide(exponentiate());
   }
@@ -769,7 +769,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @return this
    * @throws CompilerException
    */
-  public Expression<D, C, F> generate() throws CompilerException
+  protected Expression<D, C, F> generate() throws CompilerException
   {
     if (trace)
     {
@@ -801,13 +801,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return storeInstructions(classVisitor);
   }
 
-  public MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor, String fieldName, Class<?> fieldType)
+  protected MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor, String fieldName, Class<?> fieldType)
   {
     getFieldFromThis(methodVisitor, className, fieldName, fieldType);
     return invokeCloseMethod(methodVisitor, fieldType);
   }
 
-  public ClassVisitor generateCloseMethod(ClassVisitor classVisitor)
+  protected ClassVisitor generateCloseMethod(ClassVisitor classVisitor)
   {
     var methodVisitor = defineMethod(classVisitor, "close", VOID_METHOD_DESCRIPTOR);
 
@@ -834,29 +834,26 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return classVisitor;
   }
 
-  public void generateCodeToSetIsInitializedToTrue(MethodVisitor methodVisitor)
+  protected void generateCodeToSetIsInitializedToTrue(MethodVisitor methodVisitor)
   {
     loadThisOntoStack(methodVisitor).visitInsn(Opcodes.ICONST_1);
     methodVisitor.visitFieldInsn(PUTFIELD, className, IS_INITIALIZED, "Z");
   }
 
-  public void generateCodeToThrowErrorIfAlreadyInitialized(MethodVisitor mv)
+  protected void generateCodeToThrowErrorIfAlreadyInitialized(MethodVisitor mv)
   {
     loadThisOntoStack(mv);
     mv.visitFieldInsn(GETFIELD, className, IS_INITIALIZED, "Z");
     var alreadyInitializedLabel = new Label();
-
     mv.visitJumpInsn(IFEQ, alreadyInitializedLabel);
-
     mv.visitTypeInsn(NEW, "java/lang/AssertionError");
     duplicateTopOfTheStack(mv).visitLdcInsn("Already initialized");
     mv.visitMethodInsn(INVOKESPECIAL, "java/lang/AssertionError", "<init>", ASSERTION_ERROR_METHOD_DESCRIPTOR, false);
     mv.visitInsn(ATHROW);
     mv.visitLabel(alreadyInitializedLabel);
-
   }
 
-  public ClassVisitor generateCoDomainTypeMethod(ClassVisitor classVisitor) throws CompilerException
+  protected ClassVisitor generateCoDomainTypeMethod(ClassVisitor classVisitor) throws CompilerException
   {
 
     MethodVisitor mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
@@ -878,14 +875,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public void generateConditionalInitializater(MethodVisitor mv)
   {
-    loadThisOntoStack(mv);
-    mv.visitFieldInsn(GETFIELD, className, IS_INITIALIZED, "Z");
     var alreadyInitialized = new Label();
+    loadThisOntoStack(mv).visitFieldInsn(GETFIELD, className, IS_INITIALIZED, "Z");
     mv.visitJumpInsn(Opcodes.IFNE, alreadyInitialized);
-
-    loadThisOntoStack(mv);
-    mv.visitMethodInsn(INVOKEVIRTUAL, className, nameOfInitializerFunction, "()V", false);
-
+    loadThisOntoStack(mv).visitMethodInsn(INVOKEVIRTUAL, className, nameOfInitializerFunction, "()V", false);
     mv.visitLabel(alreadyInitialized);
   }
 
@@ -1930,8 +1923,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                         this);
     }
 
-    VariableNode<E, S, G> substituteInputVariable     = substitution.getInputVariable();
-    String                substituteInputVariableName = substituteInputVariable.getName();
+    var substituteInputVariable     = substitution.getInputVariable();
+    var substituteInputVariableName = substituteInputVariable.getName();
     if (!variableToChange.equals(substituteInputVariableName))
     {
       substitution.rename(substituteInputVariableName, variableToChange);

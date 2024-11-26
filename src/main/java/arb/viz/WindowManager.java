@@ -122,7 +122,7 @@ public class WindowManager
       resizeMethod = TableColumnHeader.class.getDeclaredMethod("resizeColumnToFitContent", int.class);
       resizeMethod.setAccessible(true);
     }
-    catch (NoSuchMethodException | SecurityException | NoSuchFieldException e)
+    catch (Exception e)
     {
       e.printStackTrace();
     }

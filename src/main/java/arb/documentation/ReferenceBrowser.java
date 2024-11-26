@@ -22,8 +22,8 @@ import javafx.stage.Stage;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class References extends
-                         Application
+public class ReferenceBrowser extends
+                              Application
 {
   private TableView<Article>      tableView;
   private ObservableList<Article> articleData = FXCollections.observableArrayList();
@@ -89,7 +89,11 @@ public class References extends
     pagesCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getPages()));
     pagesCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
-    tableView.getColumns().addAll(titleCol, authorCol, yearCol, journalCol, volumeCol, pagesCol);
+    TableColumn<Article, String> idCol = new TableColumn<>("Identifier");
+    pagesCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getPages()));
+    pagesCol.setCellFactory(TextFieldTableCell.forTableColumn());
+
+    tableView.getColumns().addAll(titleCol, authorCol, yearCol, journalCol, volumeCol, pagesCol, idCol);
     tableView.setItems(articleData);
 
     tableView.skinProperty().addListener(listener ->

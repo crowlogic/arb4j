@@ -525,9 +525,8 @@ import java.util.stream.Stream;
     {
       return false;
     }
-    if (obj instanceof RationalFunction)
+    if (obj instanceof RationalFunction rfunc)
     {
-      RationalFunction rfunc = (RationalFunction) obj;
       if (rfunc.isFraction())
       {
         Integer otherNumerator   = rfunc.getNumerator().get(0);

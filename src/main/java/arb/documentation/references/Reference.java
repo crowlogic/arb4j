@@ -10,6 +10,11 @@ import arb.documentation.TheArb4jLibrary;
  */
 public interface Reference
 {
+  public default String citation()
+  {
+    return null;
+  }
+  
   public String year();
 
   public String title();

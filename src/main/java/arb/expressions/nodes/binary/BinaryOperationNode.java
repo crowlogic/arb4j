@@ -38,10 +38,13 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   static
   {
     assert Integer.class.equals(arb.Integer.class) : "import statement for arb.Integer is missing";
+    initializeTypeMaps();
+  }
 
-    mapScalarType(Real.class, RealPolynomial.class);
-    mapScalarType(Complex.class, ComplexPolynomial.class);
-
+  protected static void initializeTypeMaps()
+  {
+    mapPolynomialType(Real.class, RealPolynomial.class);
+    mapPolynomialType(Complex.class, ComplexPolynomial.class);    
     mapTypes(Integer.class, RationalFunction.class, RationalFunction.class);
     mapTypes(Integer.class, ComplexRationalFunction.class, ComplexRationalFunction.class);
     mapTypes(Fraction.class, Integer.class, Fraction.class);
@@ -67,7 +70,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     mapTypes(RealPolynomial.class, ComplexPolynomial.class, ComplexPolynomial.class);
   }
 
-  public static void mapScalarType(Class<?> scalarType, Class<?> polynomialType)
+  public static void mapPolynomialType(Class<?> scalarType, Class<?> polynomialType)
   {
     mapTypes(scalarType, polynomialType, polynomialType);
     mapTypes(Integer.class, scalarType, scalarType);
