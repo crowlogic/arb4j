@@ -20,6 +20,14 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       evolutionWithoutEvolution                                     =
+                                                        new Article("Evolution without evolution: Dynamics described by stationary observables",
+                                                                    "D. N. Page and W. K. Wootters",
+                                                                    "1983",
+                                                                    "Physical Review D",
+                                                                    "27",
+                                                                    "2885–2892").setNumber("12");
+
   public static Article       cramerStochasticProcessTheoryContribution                     =
                                                                         new Article("A Contribution to the Theory of Stochastic Processes",
                                                                                     "Harald Cramér",
@@ -27,7 +35,7 @@ public class Bibliography extends
                                                                                     "Proceedings of the Second Berkeley Symposium on Mathematical Statistics and Probability",
                                                                                     "2",
                                                                                     "329-339");
-  
+
   public static Article       stationaryGaussianProcessSampleFunctionProperties             =
                                                                                 new Article("Local Properties of the Sample Functions of Stationary Gaussian Processes",
                                                                                             "Yu. K. Belyaev",
