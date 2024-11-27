@@ -75,7 +75,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public String toString()
   {
-    return String.format("DerivativeNode[operand=%s, variable=%s]", operand, variable);
+    return String.format("DerivativeNode[operand=%s, variable=%s, derivative=%s]", operand, variable, derivative);
   }
 
   public Node<D, R, F>         operand;
@@ -90,6 +90,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     expression.nextCharacter();
     expression.nextCharacter();
     derivative = operand.differentiate(variable);
+    System.err.println("derivative of " + operand + " with respect to " + variable + " is " + derivative);
   }
 
   @Override

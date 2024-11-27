@@ -34,8 +34,8 @@ import arb.functions.Function;
 /**
  * This class represents a {@link VariableNode} node within an
  * {@link Expression} by extending the {@link Node} class to provide additional
- * functionality for managing {@link VariableReference}s those registered in the
- * {@link Context} and or those which are inputs to the expression, or any
+ * functionality for managing {@link VariableReference}s, those registered in the
+ * {@link Context}, and/or those which are inputs to the expression, or any
  * upstream expression (in the case of nested-expressions such as for
  * {@link ProductNode}s
  *
