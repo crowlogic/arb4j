@@ -17,7 +17,10 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.binary.AdditionNode;
+import arb.expressions.nodes.binary.DivisionNode;
+import arb.expressions.nodes.binary.ExponentiationNode;
 import arb.expressions.nodes.binary.MultiplicationNode;
+import arb.expressions.nodes.binary.SubtractionNode;
 import arb.functions.Function;
 
 /**
@@ -210,11 +213,32 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return false;
   }
 
+  public Node<D, R, F> pow(Node<D, R, F> exponent)
+  {
+    return new ExponentiationNode<>(expression,
+                                    this,
+                                    exponent);
+  }
+
+  public Node<D, R, F> sub(Node<D, R, F> subtrahend)
+  {
+    return new SubtractionNode<>(expression,
+                                 this,
+                                 subtrahend);
+  }
+
   public Node<D, R, F> add(Node<D, R, F> addend)
   {
     return new AdditionNode<>(expression,
                               this,
                               addend);
+  }
+
+  public Node<D, R, F> div(Node<D, R, F> divisor)
+  {
+    return new DivisionNode<>(expression,
+                              this,
+                              divisor);
   }
 
   public Node<D, R, F> mul(Node<D, R, F> multiplicand)
