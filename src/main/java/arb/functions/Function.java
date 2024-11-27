@@ -317,6 +317,7 @@ public interface Function<D, C> extends
 
   public default C newCoDomainInstance()
   {
+    assert !coDomainType().isInterface() : "cannot instantiate the interface class " + coDomainType();
     try
     {
       return coDomainType().getConstructor().newInstance();
