@@ -86,12 +86,16 @@ public class ExpressionTest extends
 
   public void testFourierTransformOfType1ChebyshevPolynomials()
   {
-    Context         context = new Context(Integer.named("m").set(3));
+    Context         context = new Context(Integer.named("m").set(2));
     ComplexFunction f       =
                       ComplexFunction.express("y->-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(π*m+y))-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*π*m-y)))*(4*m^2-1)*(-1)^(-m)/((4*m^2*y-2*y)*π)",
                                               context);
     Complex         eval    = f.eval(2.3, new Complex());
-    System.out.println("f(2.3)" + eval);
+
+    assertEquals("-0.2897102277656836133548571248961385757265", eval.re().doubleValue());
+    assertTrue(eval.im().isZero());
+
+    assert false : "Wtf";
   }
 
   public void testDerivative()

@@ -485,7 +485,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         if (trace)
         {
-          System.out.format("Declaring IntermediateVariable of %s: %s %s\n", className, variable.type, variable.name);
+          System.out.format("Declaring IntermediateVariable : %s %s\n", variable.type, variable.name);
         }
         variable.declareField(classVisitor);
         declaredIntermediateVariables.add(variable.name);
