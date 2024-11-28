@@ -8,7 +8,7 @@ import arb.Typesettable;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
 import junit.framework.TestCase;
 
-public class x implements
+public class xRealFuncTweaked implements
                RealPolynomialNullaryFunction,
                Typesettable,
                AutoCloseable,
@@ -35,7 +35,7 @@ public class x implements
 
   public static void main( String args[] )
   {
-    try ( x x = new x())
+    try ( xRealFuncTweaked x = new xRealFuncTweaked())
     {
       x.a = Real.named("a").set(2);
       x.b = Real.named("b").set(4);
