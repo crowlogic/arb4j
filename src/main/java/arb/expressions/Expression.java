@@ -1256,7 +1256,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Class<?> getThisOrAnyAscendentExpressionsPolynomialCoDomain()
   {
-    if (coDomainType.equals(RealPolynomial.class) || coDomainType.equals(ComplexPolynomial.class)
+    if (coDomainType.equals(RealPolynomial.class) || coDomainType.equals(ComplexPolynomial.class) 
                   || coDomainType.equals(RealFunction.class))
     {
       return coDomainType;

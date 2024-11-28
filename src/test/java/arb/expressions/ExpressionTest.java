@@ -75,13 +75,23 @@ public class ExpressionTest extends
     assertEquals("0", x.typeset());
   }
 
+  public void testRealPolynomialDerivative()
+  {
+    var context = new Context(Real.named("a"),
+                              Real.named("b"),
+                              Real.named("c"));
+    var x       = RealPolynomialNullaryFunction.express("x->∂a*x+b*x²+c*x³/∂x", context);
+    assertEquals("a+2*b*x+3*c*x^2", x.typeset());
+  }
+
+  
   public void testRationalFunctionDerivative()
   {
     var context = new Context(Real.named("a"),
                               Real.named("b"),
                               Real.named("c"));
     var x       = RationalFunction.express("x->∂a*x+b*x²+c*x³/∂x", context);
-    assertEquals("a+2*b*x+3*c*x^2", x.typeset());
+    assertEquals("2*a*x+b", x.typeset());
   }
 
   public void testSumTypeset()
