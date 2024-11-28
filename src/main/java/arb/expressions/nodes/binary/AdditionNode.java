@@ -61,4 +61,23 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return null;
   }
 
+  @Override
+  public Node<D, R, F> simplify()
+  {
+    left = left.simplify();
+    right = right.simplify();
+    
+    if (left.isConstant() && left.toString().equals("0"))
+    {
+      return right;
+    }
+
+    if (right.isConstant() && right.toString().equals("0"))
+    {
+      return left;
+    }
+
+    return this;
+  }
+
 }

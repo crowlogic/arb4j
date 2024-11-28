@@ -116,7 +116,7 @@ public class Compiler
       expression   = expression.substring(punctuationMarkIndex + 1, expression.length());
     }
     expression = expression.replace(" ", "");
-    
+
     FunctionMapping<D, R, F> mapping = null;
     if (functionName != null && context != null)
     {
@@ -349,13 +349,14 @@ public class Compiler
                                                  Class<?> returnType)
   {
 
+    String returnTypeDescriptor = returnType.descriptorString();
     mv.visitMethodInsn(INVOKEVIRTUAL,
                        Type.getInternalName(leftType),
                        operator,
                        String.format("(%sI%s)%s",
                                      rightType.descriptorString(),
-                                     returnType.descriptorString(),
-                                     returnType.descriptorString()),
+                                     returnTypeDescriptor,
+                                     returnTypeDescriptor),
                        false);
   }
 
@@ -473,12 +474,6 @@ public class Compiler
     return invokeMethod(mv, INVOKESTATIC, whichClass, methodName, returnType, argTypes);
   }
 
-  public static MethodVisitor invokeSuperclassDefaultConstructor(MethodVisitor methodVisitor)
-  {
-    methodVisitor.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
-    return methodVisitor;
-  }
-
   public static MethodVisitor invokeCloseMethod(MethodVisitor methodVisitor, Class<?> type)
   {
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(type), "close", "()V", false);
@@ -579,56 +574,6 @@ public class Compiler
     return methodVisitor;
   }
 
-  /**
-   * Prepares the stack for reusing the left node. There is no direct JVM
-   * instruction to duplicate the bottom value of the stack to the top, so a
-   * combination of instructions is necessary.
-   * 
-   * Stack: (L, R, I) -> (L, R, I, L)
-   * 
-   * DUP2_X1: (L, R, I) -> (R, I, L, R, I).
-   * 
-   * POP2: (R, I, L, R, I) -> (R,I,L)
-   * 
-   * DUP_X2: (R,I,L) -> (L, R, I, L).
-   * 
-   * @param methodVisitor The {@link MethodVisitor} to which instructions to
-   *                      transform the stack are dispatched
-   * 
-   * @return methodVisitor (fluent pattern)
-   */
-  public static MethodVisitor prepareStackForReusingLeftSide(MethodVisitor methodVisitor)
-  {
-    methodVisitor.visitInsn(DUP2_X1);
-    methodVisitor.visitInsn(POP2);
-    methodVisitor.visitInsn(DUP_X2);
-    return methodVisitor;
-  }
-
-  /**
-   * Prepares the stack for reusing the right node.
-   * 
-   * Stack: (L, R, I) -> (L, R, I, R)
-   *
-   * The method uses the following bytecode instructions:
-   *
-   * SWAP: Swaps the top two operand stack values. (L, R, I) -> (L, I, R)
-   *
-   * DUP_X1: Duplicates the top(rightmost) operand stack value and inserts it
-   * beneath the next-to-top value: (L, I, R) -> (L, R, I, R)
-   * 
-   * @param methodVisitor The {@link MethodVisitor} to which instructions to
-   *                      transform the stack are emitted
-   * 
-   * @return methodVisitor
-   */
-  public static MethodVisitor prepareStackForReusingRightSide(MethodVisitor methodVisitor)
-  {
-    methodVisitor.visitInsn(SWAP);
-    methodVisitor.visitInsn(DUP_X1);
-    return methodVisitor;
-  }
-
   public static void putField(MethodVisitor mv, String fieldType, String variableFieldName, Class<?> variableFieldType)
   {
     mv.visitFieldInsn(Opcodes.PUTFIELD, fieldType, variableFieldName, variableFieldType.descriptorString());
@@ -690,11 +635,6 @@ public class Compiler
   {
     mv.visitInsn(Opcodes.SWAP);
     return mv;
-  }
-
-  public static void loadStaticFieldOntoStack(MethodVisitor methodVisitor, String name, Class<?> fieldType)
-  {
-    methodVisitor.visitFieldInsn(GETSTATIC, Type.getInternalName(fieldType), name, fieldType.descriptorString());
   }
 
 }

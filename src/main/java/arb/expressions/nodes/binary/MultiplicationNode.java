@@ -20,6 +20,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> simplify()
   {
+    left  = left.simplify();
+    right = right.simplify();
 
     if (left.isConstant() && left.toString().equals("0"))
     {
@@ -29,6 +31,16 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     if (right.isConstant() && right.toString().equals("0"))
     {
       return right;
+    }
+
+    if (left.isConstant() && left.toString().equals("1"))
+    {
+      return right;
+    }
+
+    if (right.isConstant() && right.toString().equals("1"))
+    {
+      return left;
     }
 
     return this;

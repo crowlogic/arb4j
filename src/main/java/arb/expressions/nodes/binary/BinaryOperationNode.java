@@ -275,7 +275,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
   public boolean loadResult(MethodVisitor mv, Class<?> resultType)
   {
-
     if (isResult)
     {
       checkClassCast(loadResultParameter(mv), resultType);
@@ -424,5 +423,13 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     assert rightType != null : "rhs type is null where rhs is " + right + " and a=" + a + " b=" + b;
 
     return (leftType.equals(a) && rightType.equals(b)) || (leftType.equals(b) && rightType.equals(a));
+  }
+
+  @Override
+  public Node<D, C, F> simplify()
+  {
+    left = left.simplify();
+    right = right.simplify();
+    return this;
   }
 }
