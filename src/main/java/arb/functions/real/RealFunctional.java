@@ -1,5 +1,6 @@
 package arb.functions.real;
 
+import arb.expressions.Context;
 import arb.functions.Function;
 
 /*
@@ -15,5 +16,22 @@ import arb.functions.Function;
 public interface RealFunctional<K, F extends RealFunction> extends
                                Function<K, F>
 {
+  public static <K, F extends RealFunction> RealFunctional<K, F> express(String expression, Context context)
+  {
+    return express(null, expression, context);
+  }
+
+  public static <K, F extends RealFunction> RealFunctional<K, F> express(String expression)
+  {
+    return express(null, expression, null);
+  }
+
+  public static <K,
+                F extends RealFunction>
+         RealFunctional<K, F>
+         express(String name, String expression, Context context)
+  {
+    return Function.express(Object.class, RealFunction.class, RealFunctional.class, name, expression, context);
+  }
 
 }

@@ -16,6 +16,7 @@ import arb.functions.complex.ComplexNullaryFunction;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
+import arb.functions.real.RealFunctional;
 import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
 
@@ -84,6 +85,15 @@ public class ExpressionTest extends
     assertEquals("a+2*b*x+3*c*x^2", x.typeset());
   }
 
+  
+  public void testRealFunctionDerivative()
+  {
+    var context = new Context(Real.named("a"),
+                              Real.named("b"),
+                              Real.named("c"));
+    var x       = RealFunctional.express("x->∂a*x+b*x²+c*x³/∂x", context);
+    assertEquals("2*a*x+b", x.typeset());
+  }
   
   public void testRationalFunctionDerivative()
   {
