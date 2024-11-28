@@ -17,7 +17,7 @@ import arb.functions.Function;
  *      {@link TheArb4jLibrary}
  */
 public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>> extends
-                        BinaryOperationNode<D, R, F>
+                            BinaryOperationNode<D, R, F>
 {
 
   @Override
@@ -39,7 +39,7 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
     if (left == null)
     {
       left = new LiteralConstantNode<>(expression,
-                                   "0");
+                                       "0");
     }
   }
 
@@ -78,14 +78,13 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
          spliceInto(Expression<E, S, G> newExpression)
   {
     return new SubtractionNode<E, S, G>(newExpression,
-                                    left.spliceInto(newExpression),
-                                    right.spliceInto(newExpression));
+                                        left.spliceInto(newExpression),
+                                        right.spliceInto(newExpression));
   }
 
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO";
-    return null;
+    return left.differentiate(variable).sub(right.differentiate(variable));
   }
 }
