@@ -3,8 +3,8 @@ coDomain: arb.Real
 context:
   input:
   - arb.Real
-  - '1'
+  - '3'
 domain: arb.Real
-expression: √(π)*Γ(3/4)*J(1/4, s)*2^(1/4)/s^(1/4)
+expression: √(π)*Γ(3/4)*J(1/4, |s|)*2^(1/4)/|s|^(1/4)
 function: arb.functions.real.RealFunction
 ...

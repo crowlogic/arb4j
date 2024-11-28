@@ -30,12 +30,13 @@ import arb.expressions.nodes.binary.ExponentiationNode;
 import arb.expressions.nodes.binary.MultiplicationNode;
 import arb.expressions.nodes.nary.ProductNode;
 import arb.functions.Function;
+import arb.functions.real.RealFunction;
 
 /**
  * This class represents a {@link VariableNode} node within an
  * {@link Expression} by extending the {@link Node} class to provide additional
- * functionality for managing {@link VariableReference}s, those registered in the
- * {@link Context}, and/or those which are inputs to the expression, or any
+ * functionality for managing {@link VariableReference}s, those registered in
+ * the {@link Context}, and/or those which are inputs to the expression, or any
  * upstream expression (in the case of nested-expressions such as for
  * {@link ProductNode}s
  *
@@ -245,7 +246,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else if (isIndeterminate)
     {
+
       generateReferenceToIndeterminantVariable(mv);
+
     }
     else
     {
@@ -587,6 +590,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     else
     {
       returnType = reference.type();
+    }
+    if (returnType.equals(Object.class))
+    {
+      returnType = expression.coDomainType;
     }
     assert returnType != null : "returnType is null for " + this;
     assert returnType != Object.class : "TODO: tried to return "
