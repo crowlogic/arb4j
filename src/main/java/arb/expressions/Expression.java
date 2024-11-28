@@ -383,6 +383,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   public String allocateIntermediateVariable(MethodVisitor methodVisitor, Class<?> type)
   {
+    assert !type.isInterface() : "cannot instantiate interface " + type;
+
     String intermediateVariableName = newIntermediateVariable(type);
     loadThisFieldOntoStack(methodVisitor, intermediateVariableName, type);
     return intermediateVariableName;
@@ -1672,6 +1674,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String registerIntermediateVariable(String intermediateVarName, Class<?> type, boolean initialize)
   {
+    assert !type.isInterface() : "cannot instantiate interface " + type;
+    
     var newIntermediateVariable = new IntermediateVariable<>(this,
                                                              intermediateVarName,
                                                              type,
