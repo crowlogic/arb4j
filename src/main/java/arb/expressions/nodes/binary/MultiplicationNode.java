@@ -20,6 +20,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> simplify()
   {
+    assert false : "wtf";
+    
     if (left.isConstant() && left.toString().equals("0"))
     {
       assert false : "TODO";
