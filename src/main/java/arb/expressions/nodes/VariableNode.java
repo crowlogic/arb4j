@@ -286,6 +286,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else
     {
+      assert !(reference.type.isInterface() || reference.type == Object.class) : "reference type should not be an Object or an interface";
       expression.allocateIntermediateVariable(mv, reference.type);
     }
     Compiler.invokeVirtualMethod(mv, reference.type, "identity", reference.type);
