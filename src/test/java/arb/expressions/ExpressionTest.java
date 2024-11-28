@@ -18,6 +18,7 @@ import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealFunctional;
 import arb.functions.real.RealNullaryFunction;
+import arb.functions.real.TestCompiledDerivative;
 import junit.framework.TestCase;
 
 /**
@@ -36,7 +37,7 @@ public class ExpressionTest extends
     assertEquals(0.0, f.instantiate().evaluate(128).doubleValue());
     assertEquals("0", f.toString());
   }
-  
+
   public static void testSimplificationAConstantTimesOneIsTheConstant()
   {
     var f = RealNullaryFunction.parse("5*1");
@@ -127,6 +128,11 @@ public class ExpressionTest extends
     assertEquals("a+2*b*x+3*c*x^2", x.typeset());
   }
 
+  /**
+   * See {@link TestCompiledDerivative} for modified decompiled thing that the
+   * code needs to be modified to generate
+   * 
+   */
   public void testRealFunctionDerivative()
   {
     var context = new Context(Real.named("a"),
