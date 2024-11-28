@@ -486,9 +486,9 @@ public class RealFunctionExpressionCompilerTest extends
 
   public void testOnePlusTwoPlusThree()
   {
-    RealFunction expression = express("1+(2)+(3)", context);
+    RealNullaryFunction expression = RealNullaryFunction.express("1+(2)+(3)");
     {
-      Real evaluatedX = expression.evaluate(one, 1, 256, new Real());
+      Real evaluatedX = expression.evaluate(128);
 
       assertEquals(6.0, evaluatedX.doubleValue(RoundingMode.Up));
     }

@@ -324,7 +324,10 @@ public class Integer implements
 
   public Real add(Integer operand, int prec, Real result)
   {
-    return result.set(this).add(operand, prec);
+    try ( Real blip = new Real())
+    {
+      return blip.set(this).add(operand, prec, result);
+    }
   }
 
   public AlgebraicNumber add(Integer addend, int bits, AlgebraicNumber result)
@@ -1139,14 +1142,14 @@ public class Integer implements
 
   public Fraction pow(Integer div, int bits, Fraction res)
   {
-    Integer in = new Integer(div);
+    Integer in  = new Integer(div);
     boolean neg = in.sign() < 0;
     if (neg)
     {
       in.neg();
     }
-    pow(in,bits,in);
-    res.set(in);    
+    pow(in, bits, in);
+    res.set(in);
     return neg ? res.inverse(res) : res;
   }
 
