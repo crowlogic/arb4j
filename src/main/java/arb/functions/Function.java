@@ -236,7 +236,8 @@ public interface Function<D, C> extends
 
   public default C evaluate(D t, int order, int bits)
   {
-    return evaluate(t, order, bits, newCoDomainInstance());
+    C result = coDomainType().isInterface() ? null : newCoDomainInstance();
+    return evaluate(t, order, bits, result);
   }
 
   /**
