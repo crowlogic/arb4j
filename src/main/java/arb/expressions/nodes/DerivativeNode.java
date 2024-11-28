@@ -144,6 +144,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+    assert !resultType.equals(Object.class) : "Objects shan't be generated";
     System.out.println("generate " + this);
     return derivative.generate(mv, resultType);
   }
