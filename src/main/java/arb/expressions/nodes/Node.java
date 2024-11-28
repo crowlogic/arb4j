@@ -65,6 +65,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Consumer<Consumer<Node<D, R, F>>>
 {
 
+  public Node<D, R, F> simplify()
+  {
+    return this;
+  }
+
   @Override
   public Object clone()
   {

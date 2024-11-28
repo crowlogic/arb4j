@@ -14,8 +14,7 @@
     expansions is presented for stationary Gaussian processes. While Mercer's
     theorem guarantees existence and Aronszajn's theory provides the RKHS
     framework, this method explicitly constructs these objects through finite
-    expressions. The triangular structure that emerges reveals deep
-    connections to the Cameron-Martin space.
+    expressions.\ 
   </abstract>
 
   <\table-of-contents|toc>
@@ -36,22 +35,7 @@
     <no-break><pageref|auto-4><vspace|0.5fn>
   </table-of-contents>
 
-  <section|Introduction>
-
-  For a stationary Gaussian process with covariance operator <math|Q>, there
-  exists a unique positive operator <math|Q<rsup|1/2>> such that
-  <math|<around|(|Q<rsup|1/2>|)><rsup|2>=Q>. The Cameron-Martin space
-  <math|H> is defined as:
-
-  <\equation*>
-    H=<around|{|Q<rsup|1/2>*h:h\<in\>L<rsup|2><around|(|\<bbb-R\>|)>|}>
-  </equation*>
-
-  This space exists for every Gaussian process, though explicit construction
-  of <math|Q<rsup|1/2>> is unnecessary. The method works directly with
-  uniform expansions of the kernel <math|K*<around|(|t-s|)>> and the Fourier
-  transform of <math|<sqrt|S<around|(|\<omega\>|)>>>, where
-  <math|S<around|(|\<omega\>|)>> is the spectral density.
+  \;
 
   <section|Novel Expansion Method>
 
@@ -60,31 +44,29 @@
   <math|K*<around|(|t-s|)>>, construct an orthonormal basis
   <math|<around|{|\<phi\><rsub|n>|}>> whose partial sums converge uniformly:
 
-  <\equation*>
+  <\equation>
     K*<around|(|t-s|)>=<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|K,\<phi\><rsub|n>|\<rangle\>>*\<phi\><rsub|n>*<around|(|t-s|)>
-  </equation*>
+  </equation>
 
   The kernel also admits a Mercer expansion:
 
-  <\equation*>
+  <\equation>
     K*<around|(|t-s|)>=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*f<rsub|n><around|(|t|)>*f<rsub|n><around|(|s|)>
-  </equation*>
+  </equation>
 
   where the Mercer basis elements <math|<around|{|f<rsub|n>|}>> are given by:
 
-  <\equation*>
+  <\equation>
     f<rsub|n><around|(|t|)>=<big|int>g*<around|(|t-s|)>*\<phi\><rsub|n><around|(|s|)>*d*s
-  </equation*>
+  </equation>
 
   with <math|g<around|(|t|)>=\<cal-F\><around|[|<sqrt|S<around|(|\<omega\>|)>>|]>>.
-
   Rather than computing this convolution directly, <math|g<around|(|t|)>> is
-  expanded in the Cameron-Martin basis <math|<around|{|\<psi\><rsub|n>|}>>
-  whose partial sums converge uniformly:
+  expanded in an orthonormal basis \ whose partial sums converge uniformly:
 
-  <\equation*>
-    g<around|(|t|)>=<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n><around|(|t|)>
-  </equation*>
+  <\equation>
+    g<around|(|t|)>=<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n><around|(|t|)>=\<cal-F\><around|[|<sqrt|S<around|(|\<omega\>|)>>|]>
+  </equation>
 
   This allows exact computation of the Mercer basis elements through
   term-by-term convolution, yielding the exact eigenfunctions rather than an
@@ -95,57 +77,57 @@
   The construction begins with orthogonal polynomials with respect to
   <math|S<around|(|\<omega\>|)>>. For <math|n\<geq\>0>:
 
-  <\equation*>
+  <\equation>
     p<rsub|n><around|(|\<omega\>|)>=\<omega\><rsup|n>-<big|sum><rsub|k=0><rsup|n-1><frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<omega\><rsup|n>*p<rsub|k><around|(|\<omega\>|)>*S<around|(|\<omega\>|)>*d*\<omega\>|<big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|k><rsup|2><around|(|\<omega\>|)>*S<around|(|\<omega\>|)>*d*\<omega\>>*p<rsub|k><around|(|\<omega\>|)>
-  </equation*>
+  </equation>
 
   Taking their Fourier transforms:
 
-  <\equation*>
+  <\equation>
     <wide|p|^><rsub|n><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|n><around|(|\<omega\>|)>*e<rsup|i*t*\<omega\>>*d*\<omega\>
-  </equation*>
+  </equation>
 
   The orthogonal complement construction yields the basis, and the kernel
   expands as:
 
-  <\equation*>
+  <\equation>
     u<rsub|n>=K-<big|sum><rsub|k=0><rsup|n-1><frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around|(|t|)>*<wide|p|^><rsub|k><around|(|t|)>*d*t|<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|p|^><rsub|k><rsup|2><around|(|t|)>*d*t>*<wide|p|^><rsub|k>
-  </equation*>
+  </equation>
 
-  <\equation*>
+  <\equation>
     \<phi\><rsub|n>=<frac|u<rsub|n>|<around|\<\|\|\>|u<rsub|n>|\<\|\|\>>>
-  </equation*>
+  </equation>
 
-  <\equation*>
+  <\equation>
     K<around|(|t|)>=<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|K,\<phi\><rsub|n>|\<rangle\>>*\<phi\><rsub|n><around|(|t|)>
-  </equation*>
+  </equation>
 
-  Similarly for the Cameron-Martin basis, using
+  Similiarly, for the spectral factor <math|g<around*|(|t|)>> using
   <math|<sqrt|S<around|(|\<omega\>|)>>>:
 
-  <\equation*>
+  <\equation>
     q<rsub|n><around|(|\<omega\>|)>=\<omega\><rsup|n>-<big|sum><rsub|k=0><rsup|n-1><frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<omega\><rsup|n>*q<rsub|k><around|(|\<omega\>|)><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>|<big|int><rsub|-\<infty\>><rsup|\<infty\>>q<rsub|k><rsup|2><around|(|\<omega\>|)><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>>*q<rsub|k><around|(|\<omega\>|)>
-  </equation*>
+  </equation>
 
   Their Fourier transforms:
 
-  <\equation*>
+  <\equation>
     <wide|q|^><rsub|n><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>q<rsub|n><around|(|\<omega\>|)>*e<rsup|i*t*\<omega\>>*d*\<omega\>
-  </equation*>
+  </equation>
 
   And the Cameron-Martin basis with its expansion:
 
-  <\equation*>
+  <\equation>
     v<rsub|n>=g-<big|sum><rsub|k=0><rsup|n-1><frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|t|)>*<wide|q|^><rsub|k><around|(|t|)>*d*t|<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|q|^><rsub|k><rsup|2><around|(|t|)>*d*t>*<wide|q|^><rsub|k>
-  </equation*>
+  </equation>
 
-  <\equation*>
+  <\equation>
     \<psi\><rsub|n>=<frac|v<rsub|n>|<around|\<\|\|\>|v<rsub|n>|\<\|\|\>>>
-  </equation*>
+  </equation>
 
-  <\equation*>
+  <\equation>
     g<around|(|t|)>=<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n><around|(|t|)>
-  </equation*>
+  </equation>
 
   <section|Triangular Structure>
 
@@ -170,48 +152,78 @@
     Fix <math|k>. The Mercer basis elements are given by the convolution of
     <math|\<phi\><rsub|k>> with <math|g<around|(|t|)>=\<cal-F\><around|[|<sqrt|S<around|(|\<omega\>|)>>|]>>:
 
-    <\equation*>
+    <\equation>
       <big|int>g*<around|(|t-s|)>*\<phi\><rsub|k><around|(|s|)>*d*s
-    </equation*>
+    </equation>
 
     Using the uniform expansion of <math|g>, this integral equals:
 
-    <\equation*>
-      <big|int><around*|(|<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n>*<around|(|t-s|)>|)>*\<phi\><rsub|k><around|(|s|)>*d*s=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n>*<around|(|t-s|)>*\<phi\><rsub|k><around|(|s|)>*d*s
-    </equation*>
+    <\equation>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|(|<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n>*<around|(|t-s|)>|)>*\<phi\><rsub|k><around|(|s|)>*d*s=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n>*<around|(|t-s|)>*\<phi\><rsub|k><around|(|s|)>*d*s
+    </equation>
 
     By Fubini's theorem:
 
-    <\equation*>
+    <\equation>
       <big|int><rsub|-\<infty\>><rsup|\<infty\>><big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n>*<around|(|t-s|)>*\<phi\><rsub|k><around|(|s|)>*d*s=<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<psi\><rsub|n>|\<rangle\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|n>*<around|(|t-s|)>*\<phi\><rsub|k><around|(|s|)>*d*s
-    </equation*>
+    </equation>
 
-    We now prove that <math|<big|int>\<psi\><rsub|n><around|(|t|)>*\<phi\><rsub|k><around|(|t|)>*d*t=0>
-    for n \<gtr\> k:
+    Now, to see that
 
-    1) Recall <math|\<phi\><rsub|k><around|(|t|)>=\<cal-F\><around|[|p<rsub|k><around|(|\<omega\>|)>|]>>
-    and <math|\<psi\><rsub|n><around|(|t|)>=\<cal-F\><around|[|q<rsub|n><around|(|\<omega\>|)>|]>>
-    where <math|p<rsub|k>> and <math|q<rsub|n>> are orthogonal polynomials
+    <\equation>
+      <big|int><rsub|0><rsup|\<infty\>>\<psi\><rsub|n><around|(|t|)>*\<phi\><rsub|k><around|(|t|)>*d*t=0\<forall\>n\<gtr\>k
+    </equation>
+
+    1) Recall
+
+    <\equation>
+      \<phi\><rsub|k><around|(|t|)>=\<cal-F\><around|[|p<rsub|k><around|(|\<omega\>|)>|]>
+    </equation>
+
+    \ and
+
+    <\equation>
+      \<psi\><rsub|n><around|(|t|)>=\<cal-F\><around|[|q<rsub|n><around|(|\<omega\>|)>|]>
+    </equation>
+
+    \ where <math|p<rsub|k>> and <math|q<rsub|n>> are orthogonal polynomials
     w.r.t. <math|S<around|(|\<omega\>|)>> and
     <math|<sqrt|S<around|(|\<omega\>|)>>> respectively.
 
-    2) By Parseval's theorem: <math|<big|int>\<psi\><rsub|n><around|(|t|)>*\<phi\><rsub|k><around|(|t|)>*d*t=<big|int>q<rsub|n><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>>
+    2) By Parseval's theorem:
+
+    <\equation>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|n><around|(|t|)>*\<phi\><rsub|k><around|(|t|)>*d*t=<big|int><rsub|-\<infty\>><rsup|\<infty\>>q<rsub|n><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>
+    </equation>
 
     3) Expand <math|q<rsub|n><around|(|\<omega\>|)>> in terms of
-    <math|<around|{|p<rsub|j><around|(|\<omega\>|)>|}><rsub|j=0><rsup|n>>:
-    <math|q<rsub|n><around|(|\<omega\>|)>=<big|sum><rsub|j=0><rsup|n>a<rsub|n*j>*p<rsub|j><around|(|\<omega\>|)>>
+    <math|<around|{|p<rsub|j><around|(|\<omega\>|)>|}><rsub|j=0><rsup|n>>
+
+    <\equation>
+      q<rsub|n><around|(|\<omega\>|)>=<big|sum><rsub|j=0><rsup|n>a<rsub|n*j>*p<rsub|j><around|(|\<omega\>|)>
+    </equation>
 
     4) Substitute this into the integral:\ 
 
     <\equation>
-      <big|int>q<rsub|n><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>=<big|sum><rsub|j=0><rsup|n>a<rsub|n*j>*<big|int>p<rsub|j><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>>q<rsub|n><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>=<big|sum><rsub|j=0><rsup|n>a<rsub|n*j>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|j><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>
     </equation>
 
-    5) For j \<gtr\> k, <math|<big|int>p<rsub|j><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>>S<around|(|\<omega\>|)>*d*\<omega\>=0>
-    by orthogonality of <math|<around|{|p<rsub|j>|}>>.
+    5)\ 
 
-    6) Therefore, <math|<big|int>p<rsub|j><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>=0>
-    for j \<gtr\> k as well.
+    <\equation>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|j><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>>S<around|(|\<omega\>|)>*d*\<omega\>=0\<forall\>j\<gtr\>k
+    </equation>
+
+    \ by orthogonality of <math|<around|{|p<rsub|j>|}>>.
+
+    6) Therefore,\ 
+
+    <\equation>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|j><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>=0\<forall\>j\<gtr\>k
+    </equation>
+
+    \ as well.
 
     7) Since n \<gtr\> k, all terms in the sum for j \<gtr\> k vanish,
     leaving only terms up to k.

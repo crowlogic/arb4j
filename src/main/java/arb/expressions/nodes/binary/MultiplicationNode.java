@@ -17,6 +17,16 @@ import arb.functions.Function;
 public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                BinaryOperationNode<D, R, F>
 {
+  @Override
+  public Node<D, R, F> simplify()
+  {
+    if (left.isConstant() && left.toString().equals("0"))
+    {
+      assert false : "TODO";
+    }
+    return this;
+  }
+
   public MultiplicationNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
     super(expression,

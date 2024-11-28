@@ -21,6 +21,7 @@ import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
+import arb.functions.real.RealFunction;
 
 /**
  * @author Stephen Andrew Crowley ©2024
@@ -44,7 +45,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   protected static void initializeTypeMaps()
   {
     mapPolynomialType(Real.class, RealPolynomial.class);
-    mapPolynomialType(Complex.class, ComplexPolynomial.class);    
+    mapPolynomialType(Complex.class, ComplexPolynomial.class);
     mapTypes(Integer.class, RationalFunction.class, RationalFunction.class);
     mapTypes(Integer.class, ComplexRationalFunction.class, ComplexRationalFunction.class);
     mapTypes(Fraction.class, Integer.class, Fraction.class);
@@ -68,6 +69,9 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     mapTypes(IntegerPolynomial.class, ComplexPolynomial.class, ComplexPolynomial.class);
     mapTypes(RealPolynomial.class, Complex.class, ComplexPolynomial.class);
     mapTypes(RealPolynomial.class, ComplexPolynomial.class, ComplexPolynomial.class);
+    mapTypes(RealFunction.class, Integer.class, RealFunction.class);
+    mapTypes(RealFunction.class, Real.class, RealFunction.class);
+
   }
 
   public static void mapPolynomialType(Class<?> scalarType, Class<?> polynomialType)
@@ -194,7 +198,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     return invokeMethod(mv, operation, resultType);
   }
 
- 
   @Override
   public List<Node<D, C, F>> getBranches()
   {
@@ -261,7 +264,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     return false;
   }
 
-
   @Override
   public boolean isScalar()
   {
@@ -275,7 +277,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     {
       checkClassCast(loadResultParameter(mv), resultType);
       intermediateVariableFieldName = "result";
-    }   
+    }
     else
     {
       intermediateVariableFieldName = expression.allocateIntermediateVariable(mv, resultType);
@@ -393,8 +395,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                                                 leftType,
                                                 rightType,
                                                 toString(),
-                                                position)
-                                  );
+                                                position));
 
     }
 
