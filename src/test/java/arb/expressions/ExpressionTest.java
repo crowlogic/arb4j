@@ -2,10 +2,8 @@ package arb.expressions;
 
 import arb.Complex;
 import arb.Integer;
-import arb.RationalFunction;
 import arb.Real;
 import arb.RealConstants;
-import arb.RoundingMode;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
@@ -129,9 +127,13 @@ public class ExpressionTest extends
     assertEquals("x➔∂a*x+b*x²+c*x³/∂x", x.toString());
     var poly = x.evaluate(128);
     assertEquals("18*x² + 8*x + 2", poly.toString());
-    var y = poly.evaluate(new Real("2.3", 128), 1, 128, new Real() );
+    var y = poly.evaluate(new Real("2.3",
+                                   128),
+                          1,
+                          128,
+                          new Real());
     y.printPrecision = false;
-    assertEquals( "115.62", y.toString() );   
+    assertEquals("115.62", y.toString());
   }
 
   /**
@@ -150,11 +152,19 @@ public class ExpressionTest extends
 
   public void testRationalFunctionDerivative()
   {
-    var context = new Context(Real.named("a"),
-                              Real.named("b"),
-                              Real.named("c"));
-    var x       = RationalFunction.express("x->∂a*x+b*x²+c*x³/∂x", context);
-    assertEquals("2*a*x+b", x.typeset());
+    var context = new Context(Real.named("a").set(2),
+                              Real.named("b").set(4),
+                              Real.named("c").set(6));
+    var x       = RationalNullaryFunction.express("x->∂a*x+b*x²+c*x³/∂x", context);
+    var poly    = x.evaluate(128);
+    assertEquals("18*x^2+8*x+2", poly.toString());
+    var y = poly.evaluate(new Real("2.3",
+                                   128),
+                          1,
+                          128,
+                          new Real());
+    y.printPrecision = false;
+    assertEquals("115.62", y.toString());
   }
 
   public void testSumTypeset()
