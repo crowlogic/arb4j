@@ -29,6 +29,14 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  public static void testSimplificationOneTimesZero()
+  {
+    var f = RealNullaryFunction.parse("1*0");
+    f.simplify();
+    assertEquals(0.0, f.instantiate().evaluate(128).doubleValue());
+    assertEquals("0", f.toString());
+  }
+  
   public static void testSimplificationAConstantTimesOneIsTheConstant()
   {
     var f = RealNullaryFunction.parse("5*1");
@@ -95,7 +103,6 @@ public class ExpressionTest extends
     assertEquals("-0.2897102277656836133548571248961385757265", eval.re().doubleValue());
     assertTrue(eval.im().isZero());
 
-    assert false : "Wtf";
   }
 
   public void testDerivative()
