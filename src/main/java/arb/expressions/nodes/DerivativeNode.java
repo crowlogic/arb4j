@@ -85,20 +85,9 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   public DerivativeNode(Expression<D, R, F> expression)
   {
     super(expression);
-    operand  = expression.resolve();
-    variable = expression.require('/').require('∂').resolve();
-    expression.nextCharacter();
-    expression.nextCharacter();
-    derivative = operand.differentiate(variable);
-    System.err.println("derivative of " + operand + " with respect to " + variable + " is " + derivative);
-    derivative = derivative.simplify();
-    
-    System.err.println("AFTER SIMPLIFICATION\nderivative of "
-                       + operand
-                       + " with respect to "
-                       + variable
-                       + " is "
-                       + derivative);
+    operand    = expression.resolve();
+    variable   = expression.require('/').require('∂').resolve();
+    derivative = operand.differentiate(variable).simplify();
   }
 
   @Override
