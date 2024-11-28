@@ -23,6 +23,15 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+
+  public static Article       gaussianProcessLevelCrossings                                 =
+                                                            new Article("On the Number of Intersections of a Level by a Gaussian Stochastic Process. I",
+                                                                        "Yu. K. Belyaev",
+                                                                        "1966",
+                                                                        "Theory of Probability & Its Applications",
+                                                                        "11",
+                                                                        "106-113").setNumber("1");
+
   public static Book          walledGardenOfTruth                                           =
                                                   new Book("The Walled Garden of Truth (Hadiqat al-Haqiqa)",
                                                            "Hakim Sanai",
