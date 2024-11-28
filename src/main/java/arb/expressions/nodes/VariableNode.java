@@ -598,10 +598,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       returnType = reference.type();
     }
-    if (returnType.equals(Object.class))
-    {
-      returnType = expression.coDomainType;
-    }
+
     assert returnType != null : "returnType is null for " + this;
     assert returnType != Object.class : "TODO: tried to return "
                                         + returnType

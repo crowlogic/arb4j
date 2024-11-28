@@ -680,7 +680,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         var variable = new VariableNode<>(this,
                                           new VariableReference<>(inputVariableName,
                                                                   null,
-                                                                  domainType),
+                                                                  coDomainType),
                                           position,
                                           false);
 
