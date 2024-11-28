@@ -420,7 +420,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   @Override
-  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
+  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;

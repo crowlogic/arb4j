@@ -224,7 +224,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   }
 
   @Override
-  public Node<D, C, F> integral(VariableNode<D, C, F> variable)
+  public Node<D, C, F> integrate(VariableNode<D, C, F> variable)
   {
     throw new UnsupportedOperationException("Integration of Lommel polynomials is not yet implemented");
   }

@@ -55,7 +55,7 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
+  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
@@ -64,9 +64,7 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> simplify()
   {
-    left = left.simplify();
-    right = right.simplify();
-    
+    super.simplify();
     if (left.isConstant() && left.toString().equals("0"))
     {
       return right;

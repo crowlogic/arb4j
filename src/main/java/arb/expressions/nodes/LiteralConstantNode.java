@@ -357,7 +357,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   }
 
   @Override
-  public Node<D, R, F> integral(VariableNode<D, R, F> variable)
+  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
     return new MultiplicationNode<>(expression,
                                 this,
