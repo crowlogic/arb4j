@@ -5,6 +5,7 @@ import arb.Integer;
 import arb.RationalFunction;
 import arb.Real;
 import arb.RealConstants;
+import arb.RoundingMode;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
@@ -121,11 +122,16 @@ public class ExpressionTest extends
 
   public void testRealPolynomialDerivative()
   {
-    var context = new Context(Real.named("a"),
-                              Real.named("b"),
-                              Real.named("c"));
+    var context = new Context(Real.named("a").set(2),
+                              Real.named("b").set(4),
+                              Real.named("c").set(6));
     var x       = RealPolynomialNullaryFunction.express("x->∂a*x+b*x²+c*x³/∂x", context);
-    assertEquals("a+2*b*x+3*c*x^2", x.typeset());
+    assertEquals("x➔∂a*x+b*x²+c*x³/∂x", x.toString());
+    var poly = x.evaluate(128);
+    assertEquals("18*x² + 8*x + 2", poly.toString());
+    var y = poly.evaluate(new Real("2.3", 128), 1, 128, new Real() );
+    y.printPrecision = false;
+    assertEquals( "115.62", y.toString() );   
   }
 
   /**

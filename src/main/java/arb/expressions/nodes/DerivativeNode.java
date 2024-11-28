@@ -75,7 +75,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public String toString()
   {
-    return String.format("DerivativeNode[operand=%s, variable=%s, derivative=%s]", operand, variable, derivative);
+    return derivative.toString();
   }
 
   public Node<D, R, F>         operand;

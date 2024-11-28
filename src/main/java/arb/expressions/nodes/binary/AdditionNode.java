@@ -43,9 +43,7 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new AdditionNode<E, S, G>(newExpression,
-                                     left.spliceInto(newExpression),
-                                     right.spliceInto(newExpression));
+    return left.spliceInto(newExpression).add(right.spliceInto(newExpression));
   }
 
   @Override
