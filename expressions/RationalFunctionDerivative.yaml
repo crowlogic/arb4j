@@ -1,6 +1,9 @@
 --- !!arb.expressions.SerializedExpression
 coDomain: arb.RationalFunction
 context:
+  a:
+  - arb.Real
+  - '0'
   b:
   - arb.Real
   - '0'

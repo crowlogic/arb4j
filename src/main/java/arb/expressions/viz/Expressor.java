@@ -36,6 +36,7 @@ import javafx.util.StringConverter;
 /**
  * TODO: save/restore/copy/paste/drag&drop context variables
  * 
+ * TODO: add Parse button that only parses the AST but does not call generate
  * 
  * @param <D>
  * @param <C>
@@ -329,7 +330,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
   @SuppressWarnings("unchecked")
   public Context getCurrentContext()
   {
-    if ( tabPane == null )
+    if (tabPane == null)
     {
       return null;
     }
