@@ -6,6 +6,7 @@ import arb.Real;
 import arb.RealPolynomial;
 import arb.Typesettable;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
+import junit.framework.TestCase;
 
 public class x implements
                RealPolynomialNullaryFunction,
@@ -32,6 +33,19 @@ public class x implements
   public RealPolynomial iXℝ6 = new RealPolynomial();
   public RealPolynomial iXℝ8 = new RealPolynomial();
 
+  public static void main( String args[] )
+  {
+    try ( x x = new x())
+    {
+      x.a = Real.named("a").set(2);
+      x.b = Real.named("b").set(4);
+      x.c = Real.named("c").set(6);
+      RealPolynomial val = x.evaluate(128);
+      System.out.println( x + "=" + val );
+      TestCase.assertEquals("18*x² + 8*x + 2", val.toString());
+    }
+  }
+  
   @Override
   public Class<RealPolynomial> coDomainType()
   {
@@ -46,12 +60,12 @@ public class x implements
       initialize();
     }
 
-    return a.add(b.mul(cℤ1.mul(in.identity().pow(cℤ1.sub(cℤ4, bits, iℤ1), bits, iXℝ1), bits, iXℝ2), bits, iXℝ3),
+    return a.add(b.mul(cℤ1.mul(result.identity().pow(cℤ1.sub(cℤ4, bits, iℤ1), bits, iXℝ1), bits, iXℝ2), bits, iXℝ3),
                  bits,
                  iXℝ4)
-            .add(c.mul(cℤ2.mul(in.identity().pow(cℤ2.sub(cℤ4, bits, iℤ2), bits, iXℝ5), bits, iXℝ6), bits, iXℝ7),
+            .add(c.mul(cℤ2.mul(result.identity().pow(cℤ2.sub(cℤ4, bits, iℤ2), bits, iXℝ5), bits, iXℝ6), bits, iXℝ7),
                  bits,
-                 iXℝ8);
+                 result);
   }
 
   @Override
