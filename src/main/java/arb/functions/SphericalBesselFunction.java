@@ -47,12 +47,12 @@ public class SphericalBesselFunction implements
 
   }
 
-  public RealPolynomial evaluate(Integer t, int order, int bits, RealPolynomial res)
+  public RealFunction evaluate(Integer t, int order, int bits, RealFunction res)
   {
-    try ( Real blip = new Real())
+    return (y, functionalOrder, functionalBits, result) ->
     {
-      return res.set(evaluate(blip.set(t), order, bits, blip));
-    }
+      return evaluate( y, functionalOrder, functionalBits, result);
+    };
   }
 
   @Override

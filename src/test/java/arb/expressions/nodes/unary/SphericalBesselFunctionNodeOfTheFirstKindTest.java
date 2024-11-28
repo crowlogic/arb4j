@@ -21,11 +21,11 @@ public class SphericalBesselFunctionNodeOfTheFirstKindTest extends
     boolean              caught = false;
 
     RealFunctionSequence jk     = RealFunctionSequence.express("k->j(k,x)");
-    RealFunction       y      = jk.evaluate(3, 128);
+    RealFunction         y      = jk.evaluate(3, 128);
+    var                  z      = y.eval(2.3);
+   // System.out.println("j0(3)=" + z);
+    assertEquals(0.0856499630648839, z);
 
-    System.out.println("j0(3)=" + y);
-
-    assert false : "cool";
   }
 
   public static void testj0ViaExpression()
