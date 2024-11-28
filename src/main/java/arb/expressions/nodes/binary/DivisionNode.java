@@ -14,7 +14,7 @@ import arb.functions.Function;
  *      {@link TheArb4jLibrary}
  */
 public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> extends
-                     BinaryOperationNode<D, R, F>
+                         BinaryOperationNode<D, R, F>
 {
 
   public DivisionNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
@@ -41,7 +41,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
-   // return  new 
+    // return new
     assert false : "TODO: implement integration rule for division, left=" + left + " right=" + right;
     return null;
   }
@@ -51,9 +51,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new DivisionNode<E, S, G>(newExpression,
-                                 left.spliceInto(newExpression),
-                                 right.spliceInto(newExpression));
+    return left.spliceInto(newExpression).div(right.spliceInto(newExpression));
   }
 
   @Override

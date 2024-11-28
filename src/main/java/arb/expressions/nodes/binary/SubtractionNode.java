@@ -77,9 +77,7 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new SubtractionNode<E, S, G>(newExpression,
-                                        left.spliceInto(newExpression),
-                                        right.spliceInto(newExpression));
+    return left.spliceInto(newExpression).sub(right.spliceInto(newExpression));
   }
 
   @Override

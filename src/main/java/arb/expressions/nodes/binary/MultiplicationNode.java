@@ -81,9 +81,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new MultiplicationNode<E, S, G>(newExpression,
-                                           left.spliceInto(newExpression),
-                                           right.spliceInto(newExpression));
+    return left.spliceInto(newExpression).mul(right.spliceInto(newExpression));
   }
 
   @Override
