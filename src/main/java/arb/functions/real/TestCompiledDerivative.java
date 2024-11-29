@@ -16,7 +16,7 @@ import junit.framework.TestCase;
  *      {@link TheArb4jLibrary}
  */
 public class TestCompiledDerivative implements
-                                    RealFunctional<Object, RealFunction>,
+                                    RealFunctional<Object>,
                                     Typesettable,
                                     AutoCloseable,
                                     Initializable

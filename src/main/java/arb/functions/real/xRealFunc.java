@@ -86,7 +86,7 @@ Variable(#153245266).generate( this=x, resultType=interface arb.functions.real.R
  * 
  */
 public class xRealFunc implements
-                       RealFunctional<Object, RealFunction>,
+                       RealFunctional<Object>,
                        Typesettable,
                        AutoCloseable,
                        Initializable
