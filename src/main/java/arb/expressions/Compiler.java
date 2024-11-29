@@ -25,7 +25,6 @@ import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
 import arb.functions.rational.ComplexRationalHypergeometricFunction;
 import arb.functions.rational.LommelPolynomial;
 import arb.functions.rational.RationalHypergeometricFunction;
-import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;
 
 /**
@@ -330,7 +329,6 @@ public class Compiler
     typePrefixes.put(ComplexFraction.class, "fℂ");
     typePrefixes.put(SphericalBesselFunction.class, "sph");
     typePrefixes.put(IntegerPolynomial.class, "Xℤ");
-   //typePrefixes.put(RealFunction.class, "funcℝ");
   }
 
   public static String getVariablePrefix(Class<?> type)

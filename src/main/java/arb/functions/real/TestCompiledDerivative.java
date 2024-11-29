@@ -81,7 +81,7 @@ public class TestCompiledDerivative implements
                      ifuncℝ4)
                 .add(c.mul(cℤ2.mul(input.pow(cℤ2.sub(cℤ4, bits, iℤ2), bits, ifuncℝ5), bits, ifuncℝ6), bits, ifuncℝ7),
                      bits,
-                     ifuncℝ8);
+                     res);
 
       }
 

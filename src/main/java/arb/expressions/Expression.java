@@ -939,7 +939,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       System.out.format("Expression(#%s) Generating %s\n\n", System.identityHashCode(this), expression);
     }
+    assert ! coDomainType.isInterface() : "TODO: generate functional seperately for coDomainType " + coDomainType;
+    {
     rootNode.generate(mv, coDomainType);
+    }
     mv.visitInsn(Opcodes.ARETURN);
     mv.visitLabel(endLabel);
     declareEvaluateMethodsLocalVariableArguments(mv, startLabel, endLabel);
