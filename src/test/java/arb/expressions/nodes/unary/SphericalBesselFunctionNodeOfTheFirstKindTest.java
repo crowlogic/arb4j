@@ -18,7 +18,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKindTest extends
 {
   public static void testj0ViaRealFunctionalExpression()
   {
-    boolean              caught = false;
+
 
     RealFunctionSequence jk     = RealFunctionSequence.express("k->2*j(k,x)");
     RealFunction         y      = jk.evaluate(3, 128);
@@ -30,7 +30,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKindTest extends
 
   public static void testj0ViaExpression()
   {
-    boolean caught = false;
+    boolean caughtExpectedException = false;
 
     try
     {
@@ -42,10 +42,10 @@ public class SphericalBesselFunctionNodeOfTheFirstKindTest extends
     }
     catch (CompilerException e)
     {
-      caught = true;
+      caughtExpectedException = true;
       assertTrue(e.getMessage().contains("can not be represented"));
     }
-    assertTrue(caught);
+    assertTrue(caughtExpectedException);
   }
 
   public static void testj0ViaRealFunction()
