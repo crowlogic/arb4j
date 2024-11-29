@@ -4,6 +4,8 @@ import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
+import arb.expressions.nodes.Node;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
@@ -30,6 +32,20 @@ public class ProductNode<D, C, F extends Function<? extends D, ? extends C>> ext
           "prod",
           "mul",
           "Π");
+  }
+
+  @Override
+  public Node<D, C, F> integrate(VariableNode<D, C, F> variable)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
+  @Override
+  public Node<D, C, F> differentiate(VariableNode<D, C, F> variable)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
   }
 
 }

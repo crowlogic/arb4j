@@ -298,19 +298,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     setIndexToTheStartIndex(mv);
     loadIndex(mv);
     generateEndingIndex(mv);
-
     designateLabel(mv, beginningOfTheLoop);
-
     compareIndexToEndIndex(mv);
     jumpToIfGreaterThan(mv, endOfTheLoop);
-
     generateInnerLoop(mv);
-
     jumpTo(mv, beginningOfTheLoop);
-
     designateLabel(mv, endOfTheLoop);
     assignResult(mv, resultType);
-
     return mv;
   }
 

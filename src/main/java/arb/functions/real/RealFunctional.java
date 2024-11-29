@@ -1,5 +1,6 @@
 package arb.functions.real;
 
+import arb.Real;
 import arb.expressions.Context;
 import arb.functions.Function;
 
@@ -10,7 +11,7 @@ import arb.functions.Function;
  * @param <K> domain
  */
 public interface RealFunctional<K> extends
-                               Function<K, RealFunction>
+                               Functional<K, Real, Real, RealFunction>
 {
   public static <K> RealFunctional<K> express(String expression, Context context)
   {
@@ -22,6 +23,7 @@ public interface RealFunctional<K> extends
     return express(null, expression, null);
   }
 
+  @SuppressWarnings("unchecked")
   public static <K> RealFunctional<K> express(String name, String expression, Context context)
   {
     return Function.express(Object.class, RealFunction.class, RealFunctional.class, name, expression, context);
