@@ -941,7 +941,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (coDomainType.isInterface())
     {
-      assert false : "TODO: generate function implementation of coDomainType then generate code to have the evaluate method instantiate and return it";
+      assert false : "TODO: generate function implementation of "
+                     + coDomainType
+                     + " then generate code for "
+                     + expression
+                     + " to have the evaluate method instantiate and return it";
     }
     else
     {
