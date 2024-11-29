@@ -939,9 +939,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       System.out.format("Expression(#%s) Generating %s\n\n", System.identityHashCode(this), expression);
     }
-    assert ! coDomainType.isInterface() : "TODO: generate functional seperately for coDomainType " + coDomainType;
+    if (coDomainType.isInterface())
     {
-    rootNode.generate(mv, coDomainType);
+      assert false : "TODO: generate function implementation of coDomainType then generate code to have the evaluate method instantiate and return it";
+    }
+    else
+    {
+      rootNode.generate(mv, coDomainType);
     }
     mv.visitInsn(Opcodes.ARETURN);
     mv.visitLabel(endLabel);
@@ -1261,7 +1265,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Class<?> getThisOrAnyAscendentExpressionsPolynomialCoDomain()
   {
-    if (coDomainType.equals(RealPolynomial.class) || coDomainType.equals(ComplexPolynomial.class) 
+    if (coDomainType.equals(RealPolynomial.class) || coDomainType.equals(ComplexPolynomial.class)
                   || coDomainType.equals(RealFunction.class))
     {
       return coDomainType;
@@ -1678,7 +1682,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public String registerIntermediateVariable(String intermediateVarName, Class<?> type, boolean initialize)
   {
     assert !type.isInterface() : "cannot instantiate interface " + type;
-    
+
     var newIntermediateVariable = new IntermediateVariable<>(this,
                                                              intermediateVarName,
                                                              type,
