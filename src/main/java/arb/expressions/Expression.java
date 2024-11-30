@@ -260,6 +260,29 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   boolean                                               verboseTrace                  = false;
 
+  public Expression(Class<? extends D> domain, Class<? extends C> codomain, Class<? extends F> function)
+  {
+    this.ascendentExpression              = null;
+    this.coDomainClassDescriptor          = codomain.descriptorString();
+    this.domainClassDescriptor            = domain.descriptorString();
+    this.domainType                       = domain;
+    this.coDomainType                     = codomain;
+    this.functionClass                    = function;
+    this.coDomainClassInternalName        = Type.getInternalName(codomain);
+    this.domainClassInternalName          = Type.getInternalName(domain);
+    this.genericFunctionClassInternalName = Type.getInternalName(function);
+    this.functionClassDescriptor          = function.descriptorString();
+    this.variables                        = context != null ? context.variables : null;
+    evaluateMethodSignature               = String.format("(L%s;IIL%s;)L%s;",
+                                                          domainClassInternalName,
+                                                          coDomainClassInternalName,
+                                                          coDomainClassInternalName);
+    if (context != null && context.saveClasses)
+    {
+      saveClasses = true;
+    }
+  }
+
   public Expression(String className,
                     Class<? extends D> domainClass,
                     Class<? extends C> coDomainClass,
@@ -916,6 +939,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return classVisitor;
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public ClassVisitor generateEvaluationMethod(ClassVisitor classVisitor) throws CompilerException
   {
     if (rootNode == null)
@@ -941,16 +965,60 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (coDomainType.isInterface())
     {
-      assert false : "TODO: generate function implementation of "
-                     + coDomainType
-                     + " then generate code for "
-                     + expression
-                     + " to have the evaluate method instantiate and return it";
+      Class<?>                        funcDomain;
+      Class<?>                        funcCoDomain;
+      Class<? extends Function<?, ?>> funcClass;
+      if (RealFunction.class.equals(coDomainType))
+      {
+        funcDomain   = Real.class;
+        funcCoDomain = Real.class;
+        funcClass    = RealFunction.class;
+      }
+      else
+      {
+        throw new CompilerException("TODO: support functional " + coDomainType);
+      }
+
+      // Create new Expression for function implementation
+      Expression<?, ?, ?> functionImplementation = new Expression<Object, Object, Function<?, ?>>(funcDomain,
+                                                                                                  funcCoDomain,
+                                                                                                  funcClass);
+
+      // Splice the current rootNode into the new expression
+      functionImplementation.rootNode = (Node) rootNode.spliceInto(functionImplementation);
+      functionImplementation.className = className + "func";
+      
+      // Generate the implementation
+      functionImplementation.generate();
+
+      // Generate code to instantiate the new function
+      mv.visitTypeInsn(NEW, functionImplementation.className);
+      mv.visitInsn(DUP);
+      mv.visitMethodInsn(INVOKESPECIAL, functionImplementation.className, "<init>", "()V", false);
+
+      // Copy fields from this expression to the new function instance
+      for (Entry<String, Named> entry : variables.map.entrySet() )
+      {
+        String   fieldName = entry.getKey();
+        Class<?> fieldType = entry.getValue().getClass();
+        mv.visitInsn(DUP);
+        loadThisOntoStack(mv);
+        loadFieldOntoStack(mv, fieldName, fieldType);
+        Compiler.putField(mv, functionImplementation.className, fieldName, fieldType);
+      }
+
+      // Initialize the new function
+      mv.visitMethodInsn(INVOKEVIRTUAL, functionImplementation.className, "initialize", "()V", false);
+
+      // Return the new function instance
+      mv.visitInsn(ARETURN);
     }
     else
     {
       rootNode.generate(mv, coDomainType);
+      mv.visitInsn(ARETURN);
     }
+
     mv.visitInsn(Opcodes.ARETURN);
     mv.visitLabel(endLabel);
     declareEvaluateMethodsLocalVariableArguments(mv, startLabel, endLabel);
