@@ -254,7 +254,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Node<D, C, F>                                  rootNode;
 
-
   public boolean                                        variablesDeclared             = false;
 
   boolean                                               verboseTrace                  = false;
@@ -992,10 +991,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         assert false : "gone surfing";
       }
-      function.rootNode  = (Node) rootNode.spliceInto(function);
-      function.className = className + "func";
+      function.rootNode          = (Node) rootNode.spliceInto(function);
+      function.className         = className + "func";
       function.rootNode.isResult = true;
-      
+
       // Generate the implementation
       function.generate();
 
@@ -1011,9 +1010,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         {
           String   fieldName = entry.getKey();
           Class<?> fieldType = entry.getValue().getClass();
-          mv.visitInsn(DUP);
-          loadThisOntoStack(mv);
-          loadFieldOntoStack(mv, fieldName, fieldType);
+          Compiler.duplicateTopOfTheStack(mv);
+          loadThisFieldOntoStack(mv, fieldName, fieldType);
           Compiler.putField(mv, function.className, fieldName, fieldType);
         }
       }
@@ -1026,6 +1024,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
       // Return the new function instance
       mv.visitInsn(ARETURN);
+      
+      function.defineClass();
     }
     else
     {
@@ -2025,7 +2025,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (context == null)
     {
-      context   = new Context();
+      context = new Context();
     }
 
     if (Expression.trace)
@@ -2061,7 +2061,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (context == null)
     {
-      context   = new Context();
+      context = new Context();
     }
 
     if (Expression.trace)

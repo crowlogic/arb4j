@@ -29,4 +29,14 @@ public interface RealFunctional<K> extends
     return Function.express(Object.class, RealFunction.class, RealFunctional.class, name, expression, context);
   }
 
+  public default RealFunction evaluate()
+  {
+    return evaluate(null, 0);
+  }
+  
+  public default RealFunction evaluate(int bits)
+  {
+    return evaluate(null, bits);
+  }
+
 }

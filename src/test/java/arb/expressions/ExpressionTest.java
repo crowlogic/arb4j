@@ -19,6 +19,7 @@ import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealFunctional;
 import arb.functions.real.RealNullaryFunction;
+import arb.functions.real.RealNullaryFunctional;
 import arb.functions.real.TestCompiledDerivative;
 import junit.framework.TestCase;
 
@@ -37,8 +38,8 @@ public class ExpressionTest extends
     f.simplify();
     assertEquals("3/4", f.toString());
     RationalNullaryFunction instance = f.instantiate();
-    RationalFunction val = instance.evaluate();
-    Fraction hmm = val.evaluate(new Fraction());
+    RationalFunction        val      = instance.evaluate();
+    Fraction                hmm      = val.evaluate(new Fraction());
     assertEquals(0.75, hmm.doubleValue());
   }
 
@@ -165,12 +166,19 @@ public class ExpressionTest extends
    */
   public void testRealFunctionDerivative()
   {
-    var context = new Context(Real.named("a"),
-                              Real.named("b"),
-                              Real.named("c"));
-    var x       = RealFunctional.express("x->∂a*x+b*x²+c*x³/∂x", context);
-    var y = x.evaluate(null, 128);
-    assertEquals("2*a*x+b", y.toString());    
+    var                   context = new Context(Real.named("a").set(2),
+                                                Real.named("b").set(4),
+                                                Real.named("c").set(6));
+    RealNullaryFunctional x       = RealNullaryFunctional.express("x->∂a*x+b*x²+c*x³/∂x", context);
+    var                   poly    = x.evaluate();
+
+    var                   y       = poly.evaluate(new Real("2.3",
+                                                           128),
+                                                  1,
+                                                  128,
+                                                  new Real());
+    y.printPrecision = false;
+    assertEquals("115.62", y.toString());
   }
 
   public void testRationalFunctionDerivative()

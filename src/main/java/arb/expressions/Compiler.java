@@ -509,6 +509,10 @@ public class Compiler
     {
       CompiledExpressionClassLoader loader =
                                            context != null ? context.classLoader : new CompiledExpressionClassLoader();
+      if ( context != null && context.classLoader == null )
+      {
+        context.classLoader = loader;
+      }
       return (Class<F>) loader.defineClass(className, bytecodes);
       // return (Class<F>) loader.findClass(className);
     }
