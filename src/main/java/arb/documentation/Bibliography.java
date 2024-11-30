@@ -23,6 +23,14 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       stochasticProcessesFourierTransforms                          =
+                                                                   new Article("Stochastic processes as Fourier transforms of stochastic measures",
+                                                                               "Hannu Niemi",
+                                                                               "1975",
+                                                                               "Annales Fennici Mathematici",
+                                                                               null,
+                                                                               null).setNumber("591");
+  
   public static Article       harmonicProbabilisticApproachesToTheRiemannHypothesis         =
                                                                                     new Article("Harmonic and Probabilistic Approaches to Zeros of Riemann's Zeta Function",
                                                                                                 "M. M. Rao",
