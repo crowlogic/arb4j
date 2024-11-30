@@ -23,6 +23,14 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       gaussianProcessLevelIntersections                             =
+                                                                new Article("On the Number of Intersections of a Level by a Gaussian Stochastic Process. I",
+                                                                            "Yu. K. Belyaev",
+                                                                            "1966",
+                                                                            "Theory of Probability & Its Applications",
+                                                                            "11",
+                                                                            "106-113").setNumber("1");
+
   public static Article       levelAndCurveCrossings                                        =
                                                      new Article("On Crossings of Levels and Curves by a Wide Class of Stochastic Processes",
                                                                  "M. R. Leadbetter",
