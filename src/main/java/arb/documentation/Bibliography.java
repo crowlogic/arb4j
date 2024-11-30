@@ -23,6 +23,31 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       stochasticProcessesFourierTransforms                          =
+                                                                   new Article("Stochastic processes as Fourier transforms of stochastic measures",
+                                                                               "Hannu Niemi",
+                                                                               "1975",
+                                                                               "Annales Fennici Mathematici",
+                                                                               null,
+                                                                               null).setNumber("591");
+  
+  public static Article       harmonicProbabilisticApproachesToTheRiemannHypothesis         =
+                                                                                    new Article("Harmonic and Probabilistic Approaches to Zeros of Riemann's Zeta Function",
+                                                                                                "M. M. Rao",
+                                                                                                "2012",
+                                                                                                "Stochastic Analysis and Applications",
+                                                                                                "30",
+                                                                                                "906-915").setNumber("5")
+                                                                                                          .setPublisher("Taylor & Francis");
+
+  public static Article       gaussianProcessLevelIntersections                             =
+                                                                new Article("On the Number of Intersections of a Level by a Gaussian Stochastic Process. I",
+                                                                            "Yu. K. Belyaev",
+                                                                            "1966",
+                                                                            "Theory of Probability & Its Applications",
+                                                                            "11",
+                                                                            "106-113").setNumber("1");
+
   public static Article       levelAndCurveCrossings                                        =
                                                      new Article("On Crossings of Levels and Curves by a Wide Class of Stochastic Processes",
                                                                  "M. R. Leadbetter",
