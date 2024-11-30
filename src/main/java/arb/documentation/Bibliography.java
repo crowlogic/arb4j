@@ -23,6 +23,14 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       levelAndCurveCrossings                                        =
+                                                     new Article("On Crossings of Levels and Curves by a Wide Class of Stochastic Processes",
+                                                                 "M. R. Leadbetter",
+                                                                 "1966",
+                                                                 "The Annals of Mathematical Statistics",
+                                                                 "37",
+                                                                 "260-267").setNumber("1")
+                                                                           .setPublisher("Institute of Mathematical Statistics");
 
   public static Article       specialRepresentationsOfWeaklyHarmonizableProcesses           =
                                                                                   new Article("Special representations of weakly harmonizable processes",
