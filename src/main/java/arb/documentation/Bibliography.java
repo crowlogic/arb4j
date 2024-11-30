@@ -23,6 +23,15 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       harmonicProbabilisticApproachesToTheRiemannHypothesis         =
+                                                                                    new Article("Harmonic and Probabilistic Approaches to Zeros of Riemann's Zeta Function",
+                                                                                                "M. M. Rao",
+                                                                                                "2012",
+                                                                                                "Stochastic Analysis and Applications",
+                                                                                                "30",
+                                                                                                "906-915").setNumber("5")
+                                                                                                          .setPublisher("Taylor & Francis");
+
   public static Article       gaussianProcessLevelIntersections                             =
                                                                 new Article("On the Number of Intersections of a Level by a Gaussian Stochastic Process. I",
                                                                             "Yu. K. Belyaev",
