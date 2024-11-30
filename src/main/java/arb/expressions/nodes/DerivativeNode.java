@@ -165,8 +165,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    assert false : "TODO: https://github.com/crowlogic/arb4j/issues/540";
-    return null;
+    return derivative.spliceInto(newExpression);
   }
 
   @Override
