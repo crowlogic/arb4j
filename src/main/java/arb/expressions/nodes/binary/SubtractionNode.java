@@ -4,6 +4,7 @@ import static java.lang.String.format;
 
 import org.objectweb.asm.MethodVisitor;
 
+import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
@@ -20,18 +21,19 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
                             BinaryOperationNode<D, R, F>
 {
 
-  @Override
-  public Class<?> type()
+  public SubtractionNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
-    fillInNullLeftHandSide();
-    return super.type();
+    super(expression,
+          left,
+          "sub",
+          right,
+          "-");
   }
 
   @Override
-  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
+  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    fillInNullLeftHandSide();
-    return super.generate(mv, resultType);
+    return left.differentiate(variable).sub(right.differentiate(variable));
   }
 
   private void fillInNullLeftHandSide()
@@ -44,25 +46,10 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public String typeset()
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    String lhs = left == null ? "" : left.typeset();
-    return format("\\left(%s-%s\\right)", "0".equals(lhs) ? "" : lhs, right.typeset());
-  }
-
-  public SubtractionNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
-  {
-    super(expression,
-          left,
-          "sub",
-          right,
-          "-");
-  }
-
-  @Override
-  public boolean isCommutative()
-  {
-    return false;
+    fillInNullLeftHandSide();
+    return super.generate(mv, resultType);
   }
 
   @Override
@@ -70,6 +57,12 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
+  }
+
+  @Override
+  public boolean isCommutative()
+  {
+    return false;
   }
 
   @Override
@@ -81,8 +74,39 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
   }
 
   @Override
-  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
+  public Class<?> type()
   {
-    return left.differentiate(variable).sub(right.differentiate(variable));
+    fillInNullLeftHandSide();
+    return super.type();
+  }
+
+  @Override
+  public String typeset()
+  {
+    String lhs = left == null ? "" : left.typeset();
+    return format("\\left(%s-%s\\right)", "0".equals(lhs) ? "" : lhs, right.typeset());
+  }
+
+  @Override
+  public Node<D, R, F> simplify()
+  {
+    if (left instanceof LiteralConstantNode lconst && right instanceof LiteralConstantNode rconst)
+    {
+      if (lconst.isInt && rconst.isInt)
+      {
+        try ( var lint = new Integer(lconst.value); var rint = new Integer(rconst.value);)
+        {
+          var sum = lint.sub(rint, 0, rint);
+          return new LiteralConstantNode<>(expression,
+                                           sum.toString());
+        }
+      }
+      assert false : "TODO: simplify " + this;
+      return this;
+    }
+    else
+    {
+      return this;
+    }
   }
 }

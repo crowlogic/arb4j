@@ -65,8 +65,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends R>>
-                                extends
+public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                 Node<D, R, F>
 {
   @Override
@@ -77,9 +76,8 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 
   static final String METHOD_DESCRIPTOR_WITHOUT_BITS = Compiler.getMethodDescriptor(Void.class, String.class);
 
-  static final String METHOD_DESCRIPTOR_WITH_BITS    = Compiler.getMethodDescriptor(Void.class,
-                                                                                    String.class,
-                                                                                    int.class);
+  static final String METHOD_DESCRIPTOR_WITH_BITS    =
+                                                  Compiler.getMethodDescriptor(Void.class, String.class, int.class);
 
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
@@ -192,7 +190,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 
   public ClassVisitor declareField(ClassVisitor classVisitor)
   {
-    classVisitor.visitField(ACC_PUBLIC | ACC_FINAL , fieldName, type().descriptorString(), null, null);
+    classVisitor.visitField(ACC_PUBLIC | ACC_FINAL, fieldName, type().descriptorString(), null, null);
     return classVisitor;
   }
 
@@ -259,12 +257,9 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
       {
         methodVisitor.visitIntInsn(SIPUSH, bits);
       }
-      String constructorDescriptor = needsBitsPassedToStringConstructor ? METHOD_DESCRIPTOR_WITH_BITS : METHOD_DESCRIPTOR_WITHOUT_BITS;
-      methodVisitor.visitMethodInsn(INVOKESPECIAL,
-                                    Type.getInternalName(type),
-                                    "<init>",
-                                    constructorDescriptor,
-                                    false);
+      String constructorDescriptor = needsBitsPassedToStringConstructor ? METHOD_DESCRIPTOR_WITH_BITS
+                                                                        : METHOD_DESCRIPTOR_WITHOUT_BITS;
+      methodVisitor.visitMethodInsn(INVOKESPECIAL, Type.getInternalName(type), "<init>", constructorDescriptor, false);
     }
 
     expression.putField(methodVisitor, fieldName, type);
@@ -309,11 +304,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 
   public String toString(int depth)
   {
-    return String.format("%s[fieldName=%s, value=%s, depth=%s]",
-                         getClass().getSimpleName(),
-                         fieldName,
-                         value,
-                         depth);
+    return String.format("%s[fieldName=%s, value=%s, depth=%s]", getClass().getSimpleName(), fieldName, value, depth);
   }
 
   @Override
@@ -349,7 +340,6 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return true;
   }
 
-
   @Override
   public List<Node<D, R, F>> getBranches()
   {
@@ -359,9 +349,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
-    return new MultiplicationNode<>(expression,
-                                this,
-                                variable);
+    return mul(variable);
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,

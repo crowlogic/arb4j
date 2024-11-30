@@ -998,21 +998,28 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mv.visitMethodInsn(INVOKESPECIAL, functionImplementation.className, "<init>", "()V", false);
 
       // Copy fields from this expression to the new function instance
-      for (Entry<String, Named> entry : variables.map.entrySet())
+      if (variables != null)
       {
-        String   fieldName = entry.getKey();
-        Class<?> fieldType = entry.getValue().getClass();
-        mv.visitInsn(DUP);
-        loadThisOntoStack(mv);
-        loadFieldOntoStack(mv, fieldName, fieldType);
-        Compiler.putField(mv, functionImplementation.className, fieldName, fieldType);
+        for (Entry<String, Named> entry : variables.map.entrySet())
+        {
+          String   fieldName = entry.getKey();
+          Class<?> fieldType = entry.getValue().getClass();
+          mv.visitInsn(DUP);
+          loadThisOntoStack(mv);
+          loadFieldOntoStack(mv, fieldName, fieldType);
+          Compiler.putField(mv, functionImplementation.className, fieldName, fieldType);
+        }
       }
+      mv.visitInsn(DUP);
 
       // Initialize the new function
       mv.visitMethodInsn(INVOKEVIRTUAL, functionImplementation.className, "initialize", "()V", false);
 
       // Return the new function instance
       mv.visitInsn(ARETURN);
+
+//      assert false : "todo: register the function to be returned by the functional in the Context/classloader for "
+//                     + this;
     }
     else
     {
@@ -1177,7 +1184,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     methodVisitor.visitCode();
 
-    String name  = functionName != null ? (functionName + ":") : "";
+    String name = functionName != null ? (functionName + ":") : "";
+    if (expression == null)
+    {
+      expression = rootNode.toString();
+    }
     String arrow = expression.contains("➔") || independentVariable == null ? "" : (independentVariable.getName() + "➔");
     methodVisitor.visitLdcInsn(String.format("%s%s%s", name, arrow, expression.replace("sqrt", "√")));
 
