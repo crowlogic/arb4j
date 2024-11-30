@@ -22,26 +22,40 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   {
     super.simplify();
 
-    if (left.isConstant() && left.toString().equals("0"))
+    boolean leftIsConstant = left.isConstant();
+    boolean rightIsConstant = right.isConstant();
+
+    if (leftIsConstant)
     {
-      return left;
+      var leftString = left.toString();
+      if (leftString.equals("0"))
+      {
+        return left;
+      }
+      if (leftString.equals("1"))
+      {
+        return right;
+      }
     }
 
-    if (right.isConstant() && right.toString().equals("0"))
+    if (rightIsConstant)
     {
-      return right;
+      var rightString = right.toString();
+      if (rightString.equals("0"))
+      {
+        return right;
+      }
+      if (rightString.equals("1"))
+      {
+        return left;
+      }
     }
-
-    if (left.isConstant() && left.toString().equals("1"))
+    
+    if ( leftIsConstant && rightIsConstant )
     {
-      return right;
+      assert false : "todo: combine " + this;
     }
-
-    if (right.isConstant() && right.toString().equals("1"))
-    {
-      return left;
-    }
-
+    
     return this;
   }
 
