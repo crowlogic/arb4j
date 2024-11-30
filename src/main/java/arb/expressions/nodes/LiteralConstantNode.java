@@ -405,4 +405,10 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     assert fieldName != null;
     return fieldName;
   }
+
+  public static <D, R, F extends Function<? extends D, ? extends R>> Node<D, R, F> of(Expression<D, R, F> expr, int i)
+  {
+    return new LiteralConstantNode<>(expr,
+                                     java.lang.Integer.toString(i));
+  }
 }

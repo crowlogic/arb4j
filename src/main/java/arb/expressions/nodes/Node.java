@@ -189,7 +189,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     assert isLiteralConstant() : this + " isn't a Variable";
     return (LiteralConstantNode<D, R, F>) this;
   }
-  
+
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
     assert false : "TODO: implement in " + getClass();
@@ -257,6 +257,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return new MultiplicationNode<>(expression,
                                     this,
                                     multiplicand);
+  }
+
+  public Node<D, R, F> pow(int i)
+  {
+    return pow(LiteralConstantNode.of(expression, i));
   }
 
 }
