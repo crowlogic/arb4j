@@ -1,7 +1,9 @@
 package arb.expressions;
 
 import arb.Complex;
+import arb.Fraction;
 import arb.Integer;
+import arb.RationalFunction;
 import arb.Real;
 import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -29,14 +31,26 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
-  public static void testConstantTimesAConstant()
+  public static void testAFractionConstantTimesAFractionConstant()
+  {
+    var f = RationalNullaryFunction.parse("½+¼");
+    f.simplify();
+    assertEquals("3/4", f.toString());
+    RationalNullaryFunction instance = f.instantiate();
+    RationalFunction val = instance.evaluate();
+    
+    Fraction hmm = val.evaluate(new Fraction());
+    assertEquals(0.75, hmm.doubleValue());
+  }
+
+  public static void testConstantIntegerTimesAConstantInteger()
   {
     var f = RealNullaryFunction.parse("5*3");
     f.simplify();
     assertEquals(15.0, f.instantiate().evaluate(128).doubleValue());
     assertEquals("15", f.toString());
   }
-  
+
   public static void testSimplificationOneTimesZero()
   {
     var f = RealNullaryFunction.parse("1*0");

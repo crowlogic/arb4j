@@ -2,9 +2,11 @@ package arb.expressions.nodes.binary;
 
 import static java.lang.String.format;
 
+import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
+import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -72,8 +74,24 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return left;
     }
-
-    return this;
+    if (left instanceof LiteralConstantNode lconst && right instanceof LiteralConstantNode rconst)
+    {
+      if (lconst.isInt && rconst.isInt)
+      {
+        try ( var lint = new Integer(lconst.value); var rint = new Integer(rconst.value);)
+        {
+          var sum = lint.add(rint, 0, rint);
+          return new LiteralConstantNode<>(expression,
+                                           sum.toString());
+        }
+      }
+      assert false : "TODO: simplify " + this;
+      return this;
+    }
+    else
+    {
+      return this;
+    }
   }
 
 }

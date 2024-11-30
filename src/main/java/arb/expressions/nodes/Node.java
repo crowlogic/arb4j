@@ -21,6 +21,7 @@ import arb.expressions.nodes.binary.DivisionNode;
 import arb.expressions.nodes.binary.ExponentiationNode;
 import arb.expressions.nodes.binary.MultiplicationNode;
 import arb.expressions.nodes.binary.SubtractionNode;
+import arb.expressions.nodes.unary.NegationNode;
 import arb.functions.Function;
 
 /**
@@ -262,6 +263,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public Node<D, R, F> pow(int i)
   {
     return pow(LiteralConstantNode.of(expression, i));
+  }
+
+  public Node<D, R, F> neg()
+  {
+    return new NegationNode<>(expression,
+                              this);
   }
 
 }

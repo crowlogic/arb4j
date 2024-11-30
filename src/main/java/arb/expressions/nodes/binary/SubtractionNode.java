@@ -90,6 +90,16 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public Node<D, R, F> simplify()
   {
+    super.simplify();
+    if (left.isLiteralConstant() && left.toString().equals("0"))
+    {
+      return right.neg();
+    }
+
+    if (right.isLiteralConstant() && right.toString().equals("0"))
+    {
+      return left;
+    }
     if (left instanceof LiteralConstantNode lconst && right instanceof LiteralConstantNode rconst)
     {
       if (lconst.isInt && rconst.isInt)
