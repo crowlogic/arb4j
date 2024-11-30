@@ -1789,7 +1789,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String remaining()
   {
-    return expression.substring(Math.max(0, position), expression.length());
+    return expression == null ? null : expression.substring(Math.max(0, position), expression.length());
   }
 
   protected void rename(String from, String to)

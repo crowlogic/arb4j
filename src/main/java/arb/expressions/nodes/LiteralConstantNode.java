@@ -129,44 +129,22 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   {
     super(expression);
     assert Integer.class.equals(arb.Integer.class) : "an import statement for arb.Integer is probably missing";
-    value = Parser.subscriptToRegular(constantValueString.trim());
+    value       = Parser.subscriptToRegular(constantValueString.trim());
 
-    if (value.contains("/"))
+    isDecimal   = value.contains(".");
+    isInt       = !((isDecimal || constantSymbols.contains(value)));
+    isImaginary = ⅈ.equals(value);
+    char firstCharOfValue = value.charAt(0);
+    fractionValue = Parser.fractions.get(firstCharOfValue);
+    if (fractionValue != null)
     {
-      String[] parts = value.split("/");
-
-      if (parts.length == 2)
-      {
-        fractionValue = new Fraction();
-        fractionValue.getNumerator().set(parts[0]);
-        fractionValue.getDenominator().set(parts[1]);
-        isInt       = false;
-        isImaginary = false;
-        isDecimal   = false;
-        isFraction  = true;
-      }
-      else
-      {
-        throw new ArbException("invalid literal constant '" + value + "'");
-      }
+      fieldName  = Parser.fractionFieldNames.get(firstCharOfValue);
+      isFraction = true;
+      return;
     }
     else
     {
-      isDecimal   = value.contains(".");
-      isInt       = !((isDecimal || constantSymbols.contains(value)));
-      isImaginary = ⅈ.equals(value);
-      char firstCharOfValue = value.charAt(0);
-      fractionValue = Parser.fractions.get(firstCharOfValue);
-      if (fractionValue != null)
-      {
-        fieldName  = Parser.fractionFieldNames.get(firstCharOfValue);
-        isFraction = true;
-        return;
-      }
-      else
-      {
-        isFraction = false;
-      }
+      isFraction = false;
     }
 
     if (isPredefinedConstant(constantValueString) || fractionValue != null)
