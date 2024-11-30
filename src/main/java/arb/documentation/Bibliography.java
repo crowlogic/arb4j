@@ -24,6 +24,15 @@ public class Bibliography extends
                           AbstractBibliography
 {
 
+  public static Article       specialRepresentationsOfWeaklyHarmonizableProcesses           =
+                                                                                  new Article("Special representations of weakly harmonizable processes",
+                                                                                              "Derek K. Chang and M.M. Rao",
+                                                                                              "1988",
+                                                                                              "Stochastic Analysis and Applications",
+                                                                                              "6",
+                                                                                              "169-189").setNumber("2")
+                                                                                                        .setPublisher("Taylor & Francis");
+
   public static Article       gaussianProcessLevelCrossings                                 =
                                                             new Article("On the Number of Intersections of a Level by a Gaussian Stochastic Process. I",
                                                                         "Yu. K. Belyaev",
