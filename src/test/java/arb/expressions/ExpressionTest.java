@@ -38,7 +38,6 @@ public class ExpressionTest extends
     assertEquals("3/4", f.toString());
     RationalNullaryFunction instance = f.instantiate();
     RationalFunction val = instance.evaluate();
-    
     Fraction hmm = val.evaluate(new Fraction());
     assertEquals(0.75, hmm.doubleValue());
   }
@@ -46,9 +45,10 @@ public class ExpressionTest extends
   public static void testConstantIntegerTimesAConstantInteger()
   {
     var f = RealNullaryFunction.parse("5*3");
+    assertEquals("5*3", f.toString());
     f.simplify();
-    assertEquals(15.0, f.instantiate().evaluate(128).doubleValue());
     assertEquals("15", f.toString());
+    assertEquals(15.0, f.instantiate().evaluate(128).doubleValue());
   }
 
   public static void testSimplificationOneTimesZero()
