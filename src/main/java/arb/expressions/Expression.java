@@ -254,7 +254,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Node<D, C, F>                                  rootNode;
 
-  public Variables                                      variables;
 
   public boolean                                        variablesDeclared             = false;
 
@@ -272,7 +271,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     this.domainClassInternalName          = Type.getInternalName(domain);
     this.genericFunctionClassInternalName = Type.getInternalName(function);
     this.functionClassDescriptor          = function.descriptorString();
-    this.variables                        = context != null ? context.variables : null;
     evaluateMethodSignature               = String.format("(L%s;IIL%s;)L%s;",
                                                           domainClassInternalName,
                                                           coDomainClassInternalName,
@@ -323,7 +321,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     this.functionClassDescriptor          = function.descriptorString();
     this.expression                       = Parser.transformToJavaAcceptableCharacters(expression);
     this.context                          = context;
-    this.variables                        = context != null ? context.variables : null;
     this.functionName                     = functionName;
     evaluateMethodSignature               = String.format("(L%s;IIL%s;)L%s;",
                                                           domainClassInternalName,
@@ -997,7 +994,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       function.rootNode  = (Node) rootNode.spliceInto(function);
       function.className = className + "func";
-
+      function.rootNode.isResult = true;
+      
       // Generate the implementation
       function.generate();
 
@@ -1007,9 +1005,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       mv.visitMethodInsn(INVOKESPECIAL, function.className, "<init>", "()V", false);
 
       // Copy fields from this expression to the new function instance
-      if (variables != null)
+      if (context != null && context.variables != null)
       {
-        for (var entry : variables.map.entrySet())
+        for (var entry : context.variables.map.entrySet())
         {
           String   fieldName = entry.getKey();
           Class<?> fieldType = entry.getValue().getClass();
@@ -2028,7 +2026,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (context == null)
     {
       context   = new Context();
-      variables = context.variables;
     }
 
     if (Expression.trace)
@@ -2065,7 +2062,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (context == null)
     {
       context   = new Context();
-      variables = context.variables;
     }
 
     if (Expression.trace)

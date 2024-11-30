@@ -169,7 +169,8 @@ public class ExpressionTest extends
                               Real.named("b"),
                               Real.named("c"));
     var x       = RealFunctional.express("x->∂a*x+b*x²+c*x³/∂x", context);
-    assertEquals("2*a*x+b", x.typeset());
+    var y = x.evaluate(null, 128);
+    assertEquals("2*a*x+b", y.toString());    
   }
 
   public void testRationalFunctionDerivative()

@@ -680,7 +680,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     expression.instance             = null;
     expression.instructionByteCodes = null;
     expression.context.functions.map.remove(this.factorFunctionFieldName);
-    expression.variables.map.remove(this.factorValueFieldName);
+    expression.context.variables.map.remove(this.factorValueFieldName);
     factorFunctionFieldName = null;
     factorValueFieldName    = null;
     factor                  = null;

@@ -92,7 +92,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                       boolean resolve)
   {
     super(expression);
-    var variables = expression.variables;
+    var variables = expression.context != null ? expression.context.variables : null;
     this.expression         = expression;
     this.reference          = reference;
     this.reference.position = startPos;
@@ -321,12 +321,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public int hashCode()
-  {
-    return Objects.hash(expression, isIndependent, reference, expression.variables);
-  }
-
-  @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
     if (variable.reference.equals(reference))
@@ -412,9 +406,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public boolean resolveContextualVariable()
   {
-    if (expression.variables != null)
+    if (expression.context != null && expression.context.variables != null)
     {
-      Object instanceVariable = expression.variables.get(reference.name);
+      Object instanceVariable = expression.context.variables.get(reference.name);
       if (instanceVariable != null)
       {
         reference.type = instanceVariable.getClass();
@@ -597,9 +591,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       returnType = reference.type();
     }
-    assert !returnType.isInterface() : "returnType is "
-                                       + returnType
-                                       + " and therefore cannot be instantiated";
+    assert !returnType.isInterface() : "returnType is " + returnType + " and therefore cannot be instantiated";
     assert returnType != null : "returnType is null for " + this;
     assert returnType != Object.class : "TODO: tried to return "
                                         + returnType
