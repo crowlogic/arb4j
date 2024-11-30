@@ -132,7 +132,6 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     value       = Parser.subscriptToRegular(constantValueString.trim());
 
     isDecimal   = value.contains(".");
-    isInt       = !((isDecimal || constantSymbols.contains(value)));
     isImaginary = ⅈ.equals(value);
     char firstCharOfValue = value.charAt(0);
     fractionValue = Parser.fractions.get(firstCharOfValue);
@@ -146,6 +145,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     {
       isFraction = false;
     }
+    isInt = !((isDecimal || constantSymbols.contains(value)) || isFraction);
 
     if (isPredefinedConstant(constantValueString) || fractionValue != null)
     {
