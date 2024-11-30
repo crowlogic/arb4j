@@ -2,6 +2,7 @@ package arb.expressions.nodes.binary;
 
 import static java.lang.String.format;
 
+import arb.Fraction;
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -85,6 +86,21 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                            sum.toString());
         }
       }
+      else if (lconst.isFraction && rconst.isFraction)
+      {
+        var lint = lconst.fractionValue;
+        var rint = rconst.fractionValue;
+
+        try ( Fraction sum = lint.add(rint, 0, new Fraction()))
+        {
+          return new DivisionNode<>(expression,
+                                    new LiteralConstantNode<>(expression,
+                                                              sum.getNumerator().toString()),
+                                    new LiteralConstantNode<>(expression,
+                                                              sum.getDenominator().toString()));
+        }
+      }
+
       assert false : "TODO: simplify " + this;
       return this;
     }
