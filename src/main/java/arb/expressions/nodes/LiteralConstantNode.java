@@ -26,7 +26,6 @@ import arb.exceptions.ArbException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
-import arb.expressions.nodes.binary.MultiplicationNode;
 import arb.functions.Function;
 
 /**
@@ -99,20 +98,24 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     constantSymbols.add(infinity);
   }
 
-  public static boolean isConstant(String var)
+  public static boolean isPredefinedConstant(String var)
   {
     return constantSymbols.contains(var);
   }
 
-  public boolean      isInt     = false;
+  public boolean       isInt       = false;
 
-  public final String value;
+  public final String  value;
 
-  public String       fieldName;
+  public String        fieldName;
 
-  public boolean      isComplex = false;
+  public boolean       isImaginary = false;
 
-  public Fraction     fractionValue;
+  public Fraction      fractionValue;
+
+  public final boolean isDecimal;
+
+  public final boolean isFraction;
 
   public LiteralConstantNode(Expression<D, R, F> expression, String constantValueString)
   {
@@ -137,8 +140,10 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
         fractionValue = new Fraction();
         fractionValue.getNumerator().set(parts[0]);
         fractionValue.getDenominator().set(parts[1]);
-        isInt     = false;
-        isComplex = false;
+        isInt       = false;
+        isImaginary = false;
+        isDecimal   = false;
+        isFraction  = true;
       }
       else
       {
@@ -147,18 +152,24 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     }
     else
     {
-      isInt     = !((value.contains(".") || constantSymbols.contains(value)));
-      isComplex = ⅈ.equals(value);
+      isDecimal   = value.contains(".");
+      isInt       = !((isDecimal || constantSymbols.contains(value)));
+      isImaginary = ⅈ.equals(value);
       char firstCharOfValue = value.charAt(0);
       fractionValue = Parser.fractions.get(firstCharOfValue);
       if (fractionValue != null)
       {
-        fieldName = Parser.fractionFieldNames.get(firstCharOfValue);
+        fieldName  = Parser.fractionFieldNames.get(firstCharOfValue);
+        isFraction = true;
         return;
+      }
+      else
+      {
+        isFraction = false;
       }
     }
 
-    if (isConstant(constantValueString) || fractionValue != null)
+    if (isPredefinedConstant(constantValueString) || fractionValue != null)
     {
       fieldName = constantValueString;
       return;
@@ -276,17 +287,6 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     loadConstantOntoStack(mv, fn, Complex.class, ComplexConstants.class);
   }
 
-  /**
-   * Calls {@link MethodVisitor#visitFieldInsn(int, String, String, String)} with
-   * {@link Opcodes#GETSTATIC}
-   * 
-   * @param mv
-   * @param fieldName
-   * @param typeClass            the {@link Class#descriptorString()}
-   * @param staticConstantsClass the {@link Class} that has the static field with
-   *                             the given fieldName
-   * 
-   */
   public void
          loadConstantOntoStack(MethodVisitor mv, String fieldName, Class<?> typeClass, Class<?> staticConstantsClass)
   {
@@ -314,7 +314,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     {
       return Fraction.class;
     }
-    return isInt ? Integer.class : isComplex ? Complex.class : Real.class;
+    return isInt ? Integer.class : isImaginary ? Complex.class : Real.class;
   }
 
   @Override
