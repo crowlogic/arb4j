@@ -293,9 +293,9 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   }
 
   @Override
-  public boolean isConstant()
+  public boolean isLiteralConstant()
   {
-    return arg.isConstant() && cases.values().stream().allMatch(Node::isConstant);
+    return arg.isLiteralConstant() && cases.values().stream().allMatch(Node::isLiteralConstant);
   }
 
   @Override

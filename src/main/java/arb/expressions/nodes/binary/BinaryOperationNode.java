@@ -256,9 +256,9 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   public abstract boolean isCommutative();
 
   @Override
-  public boolean isConstant()
+  public boolean isLiteralConstant()
   {
-    return left.isConstant() && right.isConstant();
+    return left.isLiteralConstant() && right.isLiteralConstant();
   }
 
   @Override

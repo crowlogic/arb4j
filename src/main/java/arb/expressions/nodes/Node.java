@@ -184,6 +184,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return (VariableNode<D, R, F>) this;
   }
 
+  public LiteralConstantNode<D, R, F> asLiteralConstant()
+  {
+    assert isLiteralConstant() : this + " isn't a Variable";
+    return (LiteralConstantNode<D, R, F>) this;
+  }
+  
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
     assert false : "TODO: implement in " + getClass();
@@ -192,7 +198,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public abstract char symbol();
 
-  public abstract boolean isConstant();
+  public abstract boolean isLiteralConstant();
 
   public int dim()
   {

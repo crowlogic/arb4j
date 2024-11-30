@@ -284,9 +284,9 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
   }
 
   @Override
-  public boolean isConstant()
+  public boolean isLiteralConstant()
   {
-    return order.isConstant() && index.isConstant() && arg.isConstant();
+    return order.isLiteralConstant() && index.isLiteralConstant() && arg.isLiteralConstant();
   }
 
 }

@@ -2,10 +2,12 @@ package arb.expressions.nodes.binary;
 
 import static java.lang.String.format;
 
+import arb.Integer;
 import arb.Quaternion;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
+import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -17,13 +19,44 @@ import arb.functions.Function;
 public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                BinaryOperationNode<D, R, F>
 {
+  public MultiplicationNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
+  {
+    super(expression,
+          left,
+          "mul",
+          right,
+          "*");
+  }
+
+  @Override
+  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
+  {
+    return left.differentiate(variable).mul(right).add(left.mul(right.differentiate(variable)));
+  }
+
+  @Override
+  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
+  /**
+   * @return true if {@link Expression#coDomainType} is not a {@link Quaternion}
+   */
+  @Override
+  public boolean isCommutative()
+  {
+    return !expression.coDomainType.equals(Quaternion.class);
+  }
+
   @Override
   public Node<D, R, F> simplify()
   {
     super.simplify();
 
-    boolean leftIsConstant = left.isConstant();
-    boolean rightIsConstant = right.isConstant();
+    boolean leftIsConstant  = left.isLiteralConstant();
+    boolean rightIsConstant = right.isLiteralConstant();
 
     if (leftIsConstant)
     {
@@ -50,44 +83,21 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
         return left;
       }
     }
-    
-    if ( leftIsConstant && rightIsConstant )
+
+    if (leftIsConstant && rightIsConstant)
     {
-      assert false : "todo: combine " + this;
+      var lconst = left.asLiteralConstant();
+      var rconst = right.asLiteralConstant();
+
+      try ( var lint = new Integer(lconst.value); var rint = new Integer(rconst.value);)
+      {
+        var sum = lint.mul(rint, 0, rint);
+        return new LiteralConstantNode<>(expression,
+                                         sum.toString());
+      }
     }
-    
+
     return this;
-  }
-
-  public MultiplicationNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
-  {
-    super(expression,
-          left,
-          "mul",
-          right,
-          "*");
-  }
-
-  @Override
-  public String typeset()
-  {
-    return format("%s \\cdot %s", left.typeset(), right.typeset());
-  }
-
-  /**
-   * @return true if {@link Expression#coDomainType} is not a {@link Quaternion}
-   */
-  @Override
-  public boolean isCommutative()
-  {
-    return !expression.coDomainType.equals(Quaternion.class);
-  }
-
-  @Override
-  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
-  {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
   }
 
   @Override
@@ -99,9 +109,9 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   }
 
   @Override
-  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
+  public String typeset()
   {
-    return left.differentiate(variable).mul(right).add(left.mul(right.differentiate(variable)));
+    return format("%s \\cdot %s", left.typeset(), right.typeset());
   }
 
 }
