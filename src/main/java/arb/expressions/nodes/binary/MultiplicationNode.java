@@ -6,6 +6,7 @@ import arb.Integer;
 import arb.Quaternion;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.exceptions.CompilerException;
 import arb.expressions.Expression;
 import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
@@ -89,11 +90,18 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       var lconst = left.asLiteralConstant();
       var rconst = right.asLiteralConstant();
 
-      try ( var lint = new Integer(lconst.value); var rint = new Integer(rconst.value);)
+      if (lconst.isInt && rconst.isInt)
       {
-        var sum = lint.mul(rint, 0, rint);
-        return new LiteralConstantNode<>(expression,
-                                         sum.toString());
+        try ( var lint = new Integer(lconst.value); var rint = new Integer(rconst.value);)
+        {
+          var sum = lint.mul(rint, 0, rint);
+          return new LiteralConstantNode<>(expression,
+                                           sum.toString());
+        }
+      }
+      else
+      {
+        throw new CompilerException("TODO: combine " + this);
       }
     }
 
