@@ -980,46 +980,54 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         throw new CompilerException("TODO: support functional " + coDomainType);
       }
 
-      // Create new Expression for function implementation
-      Expression<?, ?, ?> functionImplementation = new Expression<Object, Object, Function<?, ?>>(funcDomain,
-                                                                                                  funcCoDomain,
-                                                                                                  funcClass);
-
+      // Create new Expression for function implementation to be returned as the
+      // codomain of the function the one finds itself within
+      var function = new Expression<Object, Object, Function<?, ?>>(funcDomain,
+                                                                    funcCoDomain,
+                                                                    funcClass);
+      function.context = context;
       // Splice the current rootNode into the new expression
-      functionImplementation.rootNode  = (Node) rootNode.spliceInto(functionImplementation);
-      functionImplementation.className = className + "func";
+      if (indeterminateVariable != null)
+      {
+        function.independentVariable = indeterminateVariable.spliceInto(function).asVariable();
+      }
+      else
+      {
+        assert false : "gone surfing";
+      }
+      function.rootNode  = (Node) rootNode.spliceInto(function);
+      function.className = className + "func";
 
       // Generate the implementation
-      functionImplementation.generate();
+      function.generate();
 
       // Generate code to instantiate the new function
-      mv.visitTypeInsn(NEW, functionImplementation.className);
+      mv.visitTypeInsn(NEW, function.className);
       mv.visitInsn(DUP);
-      mv.visitMethodInsn(INVOKESPECIAL, functionImplementation.className, "<init>", "()V", false);
+      mv.visitMethodInsn(INVOKESPECIAL, function.className, "<init>", "()V", false);
 
       // Copy fields from this expression to the new function instance
       if (variables != null)
       {
-        for (Entry<String, Named> entry : variables.map.entrySet())
+        for (var entry : variables.map.entrySet())
         {
           String   fieldName = entry.getKey();
           Class<?> fieldType = entry.getValue().getClass();
           mv.visitInsn(DUP);
           loadThisOntoStack(mv);
           loadFieldOntoStack(mv, fieldName, fieldType);
-          Compiler.putField(mv, functionImplementation.className, fieldName, fieldType);
+          Compiler.putField(mv, function.className, fieldName, fieldType);
         }
       }
+      // Duplicate the reference to this which will be consumed by the following
+      // invocation of the initialize method
       mv.visitInsn(DUP);
 
       // Initialize the new function
-      mv.visitMethodInsn(INVOKEVIRTUAL, functionImplementation.className, "initialize", "()V", false);
+      mv.visitMethodInsn(INVOKEVIRTUAL, function.className, "initialize", "()V", false);
 
       // Return the new function instance
       mv.visitInsn(ARETURN);
-
-//      assert false : "todo: register the function to be returned by the functional in the Context/classloader for "
-//                     + this;
     }
     else
     {
@@ -2192,7 +2200,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   public Expression<D, C, F> simplify()
   {
-    rootNode = rootNode.simplify();
+    rootNode   = rootNode.simplify();
+    expression = rootNode.toString();
     return this;
   }
 
