@@ -1,8 +1,8 @@
 package arb.functions;
 
+import arb.Complex;
 import arb.Integer;
 import arb.Real;
-import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -51,7 +51,7 @@ public class SphericalBesselFunction implements
   {
     return (y, functionalOrder, functionalBits, result) ->
     {
-      return evaluate( y, functionalOrder, functionalBits, result);
+      return evaluate(y, functionalOrder, functionalBits, result);
     };
   }
 
@@ -63,6 +63,17 @@ public class SphericalBesselFunction implements
       initialize();
     }
     return element.evaluate(t, order, bits, res);
+  }
+
+  public Complex evaluate(Real t, int order, int bits, Complex res)
+  {
+    if (!isInitialized)
+    {
+      initialize();
+    }
+    res.zero();
+    element.evaluate(t, order, bits, res.re());
+    return res;
   }
 
   @Override
