@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|alt-colors|framed-theorems>>
+<style|<tuple|generic|boring-white|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Factorization of Stationary Gaussian Process
@@ -38,63 +38,65 @@
 
   <section|Proof>
 
-  1. Since K is positive definite and stationary, Bochner's theorem
-  guarantees the existence of <math|S<around|(|\<omega\>|)>\<geq\>0> such
-  that:
+  <\enumerate-numeric>
+    <item>Since K is positive definite and stationary, Bochner's theorem
+    guarantees the existence of <math|S<around|(|\<omega\>|)>\<geq\>0> such
+    that:
 
-  <\equation>
-    K*<around|(|t-s|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*<around|(|t-s|)>>*d*\<omega\>
-  </equation>
+    <\equation>
+      K*<around|(|t-s|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*<around|(|t-s|)>>*d*\<omega\>
+    </equation>
 
-  2. Since <math|S<around|(|\<omega\>|)>\<geq\>0> by Bochner's theorem:
+    <item>Since <math|S<around|(|\<omega\>|)>\<geq\>0> by Bochner's theorem:
 
-  <\equation>
-    K*<around|(|t-s|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\>|)>>*e<rsup|i*\<omega\>*t>\<cdot\><sqrt|S<around|(|\<omega\>|)>>*e<rsup|-i*\<omega\>*s>*d*\<omega\>
-  </equation>
+    <\equation>
+      K*<around|(|t-s|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\>|)>>*e<rsup|i*\<omega\>*t>\<cdot\><sqrt|S<around|(|\<omega\>|)>>*e<rsup|-i*\<omega\>*s>*d*\<omega\>
+    </equation>
 
-  3. Using the definition of <math|h<around|(|t|)>> as the inverse Fourier
-  transform of the square root of the spectral density
-  <math|S<around*|(|\<omega\>|)>>:
+    <item>Using the definition of <math|h<around|(|t|)>> as the inverse
+    Fourier transform of the square root of the spectral density
+    <math|S<around*|(|\<omega\>|)>>:
 
-  <\equation>
-    h<around|(|t|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\>|)>>*e<rsup|i*\<omega\>*t>*d*\<omega\>
-  </equation>
+    <\equation>
+      h<around|(|t|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\>|)>>*e<rsup|i*\<omega\>*t>*d*\<omega\>
+    </equation>
 
-  4. The Fourier transform of <math|h<around|(|t|)>> gives:
+    <item> The Fourier transform of <math|h<around|(|t|)>> gives:
 
-  <\equation>
-    <sqrt|S<around|(|\<omega\>|)>>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\>
-  </equation>
+    <\equation>
+      <sqrt|S<around|(|\<omega\>|)>>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\>
+    </equation>
 
-  5. Substituting this representation:
+    <item>Substituting this representation:
 
-  <\equation>
-    K*<around|(|t-s|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\>|)>*e<rsup|i*\<omega\>*t><around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<sigma\>|)>*e<rsup|-i*\<omega\>*\<sigma\>>*d*\<sigma\>|)>*e<rsup|-i*\<omega\>*s>*d*\<omega\>
-  </equation>
+    <\equation>
+      K*<around|(|t-s|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\>|)>*e<rsup|i*\<omega\>*t><around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<sigma\>|)>*e<rsup|-i*\<omega\>*\<sigma\>>*d*\<sigma\>|)>*e<rsup|-i*\<omega\>*s>*d*\<omega\>
+    </equation>
 
-  6. By Fubini's theorem (valid since K is PD):
+    <item>By Fubini's theorem (valid since K is PD):
 
-  <\equation>
-    K*<around|(|t-s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*h<around|(|\<sigma\>|)><frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*<around|(|t-\<tau\>-s+\<sigma\>|)>>*d*\<omega\>*d*\<tau\>*d*\<sigma\>
-  </equation>
+    <\equation>
+      K*<around|(|t-s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*h<around|(|\<sigma\>|)><frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*<around|(|t-\<tau\>-s+\<sigma\>|)>>*d*\<omega\>*d*\<tau\>*d*\<sigma\>
+    </equation>
 
-  7. The inner integral yields the Dirac delta function:
+    <item>The inner integral yields the Dirac delta function:
 
-  <\equation>
-    <frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*<around|(|t-\<tau\>-s+\<sigma\>|)>>*d*\<omega\>=\<delta\>*<around|(|t-\<tau\>-s+\<sigma\>|)>
-  </equation>
+    <\equation>
+      <frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*<around|(|t-\<tau\>-s+\<sigma\>|)>>*d*\<omega\>=\<delta\>*<around|(|t-\<tau\>-s+\<sigma\>|)>
+    </equation>
 
-  8. Therefore:
+    <item> Therefore:
 
-  <\equation>
-    K*<around|(|t-s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*h<around|(|\<sigma\>|)>*\<delta\>*<around|(|t-\<tau\>-s+\<sigma\>|)>*d*\<tau\>*d*\<sigma\>
-  </equation>
+    <\equation>
+      K*<around|(|t-s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*h<around|(|\<sigma\>|)>*\<delta\>*<around|(|t-\<tau\>-s+\<sigma\>|)>*d*\<tau\>*d*\<sigma\>
+    </equation>
 
-  9. Using the sifting property of <math|\<delta\>>:
+    <item>Using the sifting property of <math|\<delta\>>:
 
-  <\equation>
-    <tabular|<tformat|<table|<row|<cell|K*<around|(|t-s|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<sigma\>|)>*\<delta\>*<around|(|t-\<tau\>-s+\<sigma\>|)>*d*\<sigma\>*d*\<tau\>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*h*<around|(|t-\<tau\>-s|)>*d*\<tau\>>>>>>
-  </equation>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|K*<around|(|t-s|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<sigma\>|)>*\<delta\>*<around|(|t-\<tau\>-s+\<sigma\>|)>*d*\<sigma\>*d*\<tau\>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<tau\>|)>*h*<around|(|t-\<tau\>-s|)>*d*\<tau\>>>>>>
+    </equation>
+  </enumerate-numeric>
 
   <section|Reverse Verification>
 
@@ -154,15 +156,20 @@
     representation
   </itemize>
 
-  <cite|cramerStochasticProcessTheoryContribution>
+  <cite|cramerStochasticProcessTheoryContribution><cite|specialRepresentationsOfWeaklyHarmonizableProcesses>
 
   <\bib-list|1>
     \;
   </bib-list>
 
   <\bibliography|bib|tm-plain|refs>
-    <\bib-list|1>
-      <bibitem*|1><label|bib-cramerStochasticProcessTheoryContribution>Harald
+    <\bib-list|2>
+      <bibitem*|1><label|bib-specialRepresentationsOfWeaklyHarmonizableProcesses>Derek<nbsp>K.<nbsp>Chang<localize|
+      and >M.M.<nbsp>Rao. <newblock>Special representations of weakly
+      harmonizable processes. <newblock><with|font-shape|italic|Stochastic
+      Analysis and Applications>, 6(2):169\U189, 1988.<newblock>
+
+      <bibitem*|2><label|bib-cramerStochasticProcessTheoryContribution>Harald
       Cramér. <newblock>A contribution to the theory of stochastic processes.
       <newblock><with|font-shape|italic|Proceedings of the Second Berkeley
       Symposium on Mathematical Statistics and Probability>, 2:329\U339,
@@ -187,7 +194,8 @@
     <associate|auto-2|<tuple|2|1>>
     <associate|auto-3|<tuple|3|2>>
     <associate|auto-4|<tuple|<with|mode|<quote|math>|\<bullet\>>|3>>
-    <associate|bib-cramerStochasticProcessTheoryContribution|<tuple|1|3>>
+    <associate|bib-cramerStochasticProcessTheoryContribution|<tuple|2|3>>
+    <associate|bib-specialRepresentationsOfWeaklyHarmonizableProcesses|<tuple|1|3>>
   </collection>
 </references>
 
@@ -195,6 +203,10 @@
   <\collection>
     <\associate|bib>
       cramerStochasticProcessTheoryContribution
+
+      cramerStochasticProcessTheoryContribution
+
+      specialRepresentationsOfWeaklyHarmonizableProcesses
     </associate>
     <\associate|toc>
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Theorem:
