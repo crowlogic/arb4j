@@ -21,6 +21,7 @@ import arb.expressions.nodes.binary.DivisionNode;
 import arb.expressions.nodes.binary.ExponentiationNode;
 import arb.expressions.nodes.binary.MultiplicationNode;
 import arb.expressions.nodes.binary.SubtractionNode;
+import arb.expressions.nodes.unary.FunctionNode;
 import arb.expressions.nodes.unary.NegationNode;
 import arb.functions.Function;
 
@@ -185,6 +186,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return (VariableNode<D, R, F>) this;
   }
 
+  public FunctionNode<D, R, F> asFunction()
+  {
+    assert isLiteralConstant() : this + " isn't a Variable";
+    return (FunctionNode<D, R, F>) this;
+  }
+  
   public LiteralConstantNode<D, R, F> asLiteralConstant()
   {
     assert isLiteralConstant() : this + " isn't a Variable";

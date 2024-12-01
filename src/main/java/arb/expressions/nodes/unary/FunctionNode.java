@@ -335,12 +335,12 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
       return Compiler.scalarType(expression.coDomainType);
     }
-    
-    if ( "arg".equals(functionName))
+
+    if ("arg".equals(functionName))
     {
       return Real.class;
     }
-    
+
     if ("ζ".equals(functionName))
     {
       return Complex.class;
@@ -425,7 +425,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO";
+    assert false : "TODO: apply chain rule, diff(f(g(x)),x)=D(f)(g(x))*diff(g(x),x)\n";
     return null;
   }
 
