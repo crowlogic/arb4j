@@ -191,7 +191,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     assert isLiteralConstant() : this + " isn't a Variable";
     return (FunctionNode<D, R, F>) this;
   }
-  
+
   public LiteralConstantNode<D, R, F> asLiteralConstant()
   {
     assert isLiteralConstant() : this + " isn't a Variable";
@@ -276,6 +276,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     return new NegationNode<>(expression,
                               this);
+  }
+
+  public Node<D, R, F> sub(int i)
+  {
+    return sub(new LiteralConstantNode<>(expression,
+                                         java.lang.Integer.toString(i)));
   }
 
 }

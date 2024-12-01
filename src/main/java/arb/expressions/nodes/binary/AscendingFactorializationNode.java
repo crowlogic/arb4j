@@ -21,8 +21,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class AscendingFactorializationNode<D, R, F extends Function<? extends D, ? extends R>>
-                                          extends
+public class AscendingFactorializationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                           BinaryOperationNode<D, R, F>
 {
 
@@ -61,9 +60,7 @@ public class AscendingFactorializationNode<D, R, F extends Function<? extends D,
    * @param right
    * @param expression
    */
-  public AscendingFactorializationNode(Node<D, R, F> left,
-                                       Node<D, R, F> right,
-                                       Expression<D, R, F> expression)
+  public AscendingFactorializationNode(Node<D, R, F> left, Node<D, R, F> right, Expression<D, R, F> expression)
   {
     super(expression,
           left,
@@ -104,7 +101,7 @@ public class AscendingFactorializationNode<D, R, F extends Function<? extends D,
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO";
+    assert false : "TODO: differentiate " + this + " with respect to " + variable;
     return null;
   }
 

@@ -64,8 +64,7 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    return right.mul(left.pow(right.sub(new LiteralConstantNode<>(expression,
-                                                                  "1"))));
+    return right.mul(left.pow(right.sub(1)));
   }
 
   @Override
