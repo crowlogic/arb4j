@@ -13,9 +13,8 @@ import arb.documentation.references.Miscellaneous;
 /**
  * Bibliography<br>
  * <br>
- * 
- * The pure man unites two in one; the lover unites three in one. --
- * {@link Bibliography#walledGardenOfTruth}
+ *
+ * 1 gives rise to 2, gives birth to 3, gives rise to all things. -- The Tao
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -23,6 +22,15 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       measuresEquivalentToWienerMeasure                             =
+                                                                new Article("On Measures Equivalent to Wiener Measure",
+                                                                            "Thomas Kailath",
+                                                                            "1967",
+                                                                            "The Annals of Mathematical Statistics",
+                                                                            "38",
+                                                                            "261-263").setNumber("1")
+                                                                                      .setPublisher("Institute of Mathematical Statistics");
+
   public static Article       stochasticProcessesFourierTransforms                          =
                                                                    new Article("Stochastic processes as Fourier transforms of stochastic measures",
                                                                                "Hannu Niemi",
@@ -30,7 +38,7 @@ public class Bibliography extends
                                                                                "Annales Fennici Mathematici",
                                                                                null,
                                                                                null).setNumber("591");
-  
+
   public static Article       harmonicProbabilisticApproachesToTheRiemannHypothesis         =
                                                                                     new Article("Harmonic and Probabilistic Approaches to Zeros of Riemann's Zeta Function",
                                                                                                 "M. M. Rao",
@@ -73,13 +81,6 @@ public class Bibliography extends
                                                                         "Theory of Probability & Its Applications",
                                                                         "11",
                                                                         "106-113").setNumber("1");
-
-  public static Book          walledGardenOfTruth                                           =
-                                                  new Book("The Walled Garden of Truth (Hadiqat al-Haqiqa)",
-                                                           "Hakim Sanai",
-                                                           "circa 1131",
-                                                           null).setPublisher("Persian Literary Heritage")
-                                                                .setAddress("Persia");
 
   public static Article       evolutionWithoutEvolution                                     =
                                                         new Article("Evolution without evolution: Dynamics described by stationary observables",
