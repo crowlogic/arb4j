@@ -12,7 +12,7 @@
     is:
 
     <\equation*>
-      v/G=k*M*f*a<rsup|2>/r<rsup|2>
+      <with|font-base-size|16|<frac|v|G>=<frac|k*M*f*a<rsup|2>|r<rsup|2>><rsup|>>
     </equation*>
 
     where the <math|v> is the velocity of the craft, <math|G> the

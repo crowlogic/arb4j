@@ -22,6 +22,15 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       radonNikodymWienerDerivatives                                 =
+                                                            new Article("The Structure of Radon-Nikodym Derivatives with Respect to Wiener and Related Measures",
+                                                                        "Thomas Kailath",
+                                                                        "1971",
+                                                                        "The Annals of Mathematical Statistics",
+                                                                        "42",
+                                                                        "1054-1067").setNumber("3")
+                                                                                    .setPublisher("Institute of Mathematical Statistics");
+
   public static Article       inversionOfLambertTransform                                   =
                                                           new Article("An Inversion of the Lambert Transform",
                                                                       "D. V. Widder",
