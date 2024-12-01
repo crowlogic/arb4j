@@ -2,6 +2,8 @@ package arb.functions;
 
 import static arb.utensils.Utensils.throwOrWrap;
 
+import java.io.Closeable;
+
 import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -20,6 +22,7 @@ import arb.space.topological.VectorSpace;
  *      {@link TheArb4jLibrary}
  */
 public interface Function<D, C> extends
+                         Closeable,
                          AutoCloseable,
                          Typesettable,
                          VectorSpace<C>

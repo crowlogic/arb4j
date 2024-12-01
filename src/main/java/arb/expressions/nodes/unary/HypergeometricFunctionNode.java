@@ -54,7 +54,8 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                                        FunctionNode<D, R, F>
 {
 
-  public String defaulttoString()
+  @Override
+  public String toString()
   {
     return String.format("pFq(%s,%s;%s)", α, β, arg);
   }

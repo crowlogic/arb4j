@@ -37,17 +37,9 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>, C extends N
   @Override
   public String toString()
   {
-    return String.format("HypergeometricFunction[context=%s, f=%s, F=%s, initialized=%s, N=%s, p=%s, q=%s, α=%s, β=%s]",
-                         context,
-                         f,
-                         F,
-                         initialized,
-                         N,
-                         p,
-                         q,
-                         α,
-                         β);
+    return String.format("pFq(%s,%s;%s)", α, β, arg);
   }
+
 
   public Context                  context;
 
@@ -64,6 +56,8 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>, C extends N
   public P                        α, β;
 
   public Class<?>                 paramType;
+
+  private Expression<Object, C, N> arg;
 
   public HypergeometricFunction()
   {
@@ -166,6 +160,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>, C extends N
                               context);
     F = F.substitute("z", arg);
     f = F.instantiate();
+    this.arg = arg;
   }
 
   public void initializeContext()

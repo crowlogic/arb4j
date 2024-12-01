@@ -1024,7 +1024,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
       // Return the new function instance
       mv.visitInsn(ARETURN);
-      
+
       function.defineClass();
     }
     else
@@ -2199,6 +2199,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     rootNode   = rootNode.simplify();
     expression = rootNode.toString();
     return this;
+  }
+
+  /**
+   * 
+   * @return true if this{@link #coDomainType} is an interface (that extends
+   *         {@link Function})
+   */
+  public boolean isFunctional()
+  {
+    return coDomainType.isInterface();
   }
 
 }
