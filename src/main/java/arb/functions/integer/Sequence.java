@@ -26,8 +26,11 @@ public interface Sequence<C> extends
     return 128;
   }
 
-  public C enumerate(int i, int j);
-  
+  public default C enumerate(int i, int j)
+  {
+    throw new UnsupportedOperationException("TODO: implement me for " + getClass());
+  }
+
   @Override
   default C apply(int value)
   {
@@ -56,11 +59,7 @@ public interface Sequence<C> extends
     }
   }
 
-  public static <R,
-                F extends Sequence<? extends R>,
-                PD,
-                PR,
-                PF extends Function<? extends PD, ? extends PR>>
+  public static <R, F extends Sequence<? extends R>, PD, PR, PF extends Function<? extends PD, ? extends PR>>
          Expression<Integer, R, F>
          parse(String className,
                String expressionString,
