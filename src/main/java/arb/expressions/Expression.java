@@ -935,8 +935,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return classVisitor;
   }
 
-  @SuppressWarnings(
-  { "unchecked", "rawtypes" })
   protected ClassVisitor generateEvaluationMethod(ClassVisitor classVisitor) throws CompilerException
   {
     if (rootNode == null)
@@ -962,70 +960,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (coDomainType.isInterface())
     {
-      Class<?>                        funcDomain;
-      Class<?>                        funcCoDomain;
-      Class<? extends Function<?, ?>> funcClass;
-      if (RealFunction.class.equals(coDomainType))
-      {
-        funcDomain   = Real.class;
-        funcCoDomain = Real.class;
-        funcClass    = RealFunction.class;
-      }
-      else
-      {
-        throw new CompilerException("TODO: support functional " + coDomainType);
-      }
-
-      // Create new Expression for function implementation to be returned as the
-      // codomain of the function the one finds itself within
-      var function = new Expression<Object, Object, Function<?, ?>>(funcDomain,
-                                                                    funcCoDomain,
-                                                                    funcClass);
-      function.context = context;
-      // Splice the current rootNode into the new expression
-      if (indeterminateVariable != null)
-      {
-        function.independentVariable = indeterminateVariable.spliceInto(function).asVariable();
-      }
-      else
-      {
-        assert false : "gone surfing";
-      }
-      function.rootNode          = (Node) rootNode.spliceInto(function);
-      function.className         = className + "func";
-      function.rootNode.isResult = true;
-
-      // Generate the implementation
-      function.generate();
-
-      // Generate code to instantiate the new function
-      mv.visitTypeInsn(NEW, function.className);
-      mv.visitInsn(DUP);
-      mv.visitMethodInsn(INVOKESPECIAL, function.className, "<init>", "()V", false);
-
-      // Copy fields from this expression to the new function instance
-      if (context != null && context.variables != null)
-      {
-        for (var entry : context.variables.map.entrySet())
-        {
-          String   fieldName = entry.getKey();
-          Class<?> fieldType = entry.getValue().getClass();
-          Compiler.duplicateTopOfTheStack(mv);
-          loadThisFieldOntoStack(mv, fieldName, fieldType);
-          Compiler.putField(mv, function.className, fieldName, fieldType);
-        }
-      }
-      // Duplicate the reference to this which will be consumed by the following
-      // invocation of the initialize method
-      mv.visitInsn(DUP);
-
-      // Initialize the new function
-      mv.visitMethodInsn(INVOKEVIRTUAL, function.className, "initialize", "()V", false);
-
-      // Return the new function instance
-      mv.visitInsn(ARETURN);
-
-      function.defineClass();
+      generateFunctional(mv);
     }
     else
     {
@@ -1039,6 +974,77 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitMaxs(10, 10);
     mv.visitEnd();
     return classVisitor;
+  }
+
+  protected Expression<Object, Object, Function<?, ?>> generateFunctional(MethodVisitor mv)
+  {
+    Class<?>                        funcDomain;
+    Class<?>                        funcCoDomain;
+    Class<? extends Function<?, ?>> funcClass;
+    if (RealFunction.class.equals(coDomainType))
+    {
+      funcDomain   = Real.class;
+      funcCoDomain = Real.class;
+      funcClass    = RealFunction.class;
+    }
+    else
+    {
+      throw new CompilerException("TODO: support functional " + coDomainType);
+    }
+
+    // Create new Expression for function implementation to be returned as the
+    // codomain of the function that this Expression finds itself within
+    var function = new Expression<Object, Object, Function<?, ?>>(funcDomain,
+                                                                  funcCoDomain,
+                                                                  funcClass);
+    function.ascendentExpression = this;
+    function.context             = context;
+    // Splice the current rootNode into the new expression
+    if (indeterminateVariable != null)
+    {
+      function.independentVariable = indeterminateVariable.spliceInto(function).asVariable();
+    }
+    else
+    {
+      assert false : "gone surfing";
+    }
+    function.rootNode          = (Node<Object, Object, Function<?, ?>>) rootNode.spliceInto(function);
+    function.className         = className + "func";
+    function.rootNode.isResult = true;
+
+    // Generate the implementation
+    function.generate();
+
+    // Generate code to instantiate the new function
+    mv.visitTypeInsn(NEW, function.className);
+    mv.visitInsn(DUP);
+    mv.visitMethodInsn(INVOKESPECIAL, function.className, "<init>", "()V", false);
+
+    // Copy fields from this expression to the new function instance
+    if (context != null && context.variables != null)
+    {
+      for (var entry : context.variables.map.entrySet())
+      {
+        String   fieldName = entry.getKey();
+        Class<?> fieldType = entry.getValue().getClass();
+        Compiler.duplicateTopOfTheStack(mv);
+        loadThisFieldOntoStack(mv, fieldName, fieldType);
+        Compiler.putField(mv, function.className, fieldName, fieldType);
+      }
+    }
+    // Duplicate the reference to this which will be consumed by the following
+    // invocation of the initialize method
+    mv.visitInsn(DUP);
+
+    // Initialize the new function
+    mv.visitMethodInsn(INVOKEVIRTUAL, function.className, "initialize", "()V", false);
+
+    // Return the new function instance
+    mv.visitInsn(ARETURN);
+
+    function.defineClass();
+
+    return function;
   }
 
   protected MethodVisitor generateFunctionInitializer(MethodVisitor mv, FunctionMapping<?, ?, ?> nestedFunction)
