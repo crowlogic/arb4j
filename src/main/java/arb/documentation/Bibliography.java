@@ -22,6 +22,15 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       inversionOfLambertTransform                                   =
+                                                          new Article("An Inversion of the Lambert Transform",
+                                                                      "D. V. Widder",
+                                                                      "1950",
+                                                                      "Mathematics Magazine",
+                                                                      "23",
+                                                                      "171-182").setNumber("4")
+                                                                                .setPublisher("Mathematical Association of America, Taylor & Francis, Ltd.");
+
   public static Article       measuresEquivalentToWienerMeasure                             =
                                                                 new Article("On Measures Equivalent to Wiener Measure",
                                                                             "Thomas Kailath",
@@ -47,14 +56,6 @@ public class Bibliography extends
                                                                                                 "30",
                                                                                                 "906-915").setNumber("5")
                                                                                                           .setPublisher("Taylor & Francis");
-
-  public static Article       gaussianProcessLevelIntersections                             =
-                                                                new Article("On the Number of Intersections of a Level by a Gaussian Stochastic Process. I",
-                                                                            "Yu. K. Belyaev",
-                                                                            "1966",
-                                                                            "Theory of Probability & Its Applications",
-                                                                            "11",
-                                                                            "106-113").setNumber("1");
 
   public static Article       levelAndCurveCrossings                                        =
                                                      new Article("On Crossings of Levels and Curves by a Wide Class of Stochastic Processes",

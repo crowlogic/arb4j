@@ -18,6 +18,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.real.RealBesselFunctionOfTheFirstKind;
 
@@ -31,6 +32,12 @@ import arb.functions.real.RealBesselFunctionOfTheFirstKind;
 public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends D, ? extends R>> extends
                                              FunctionNode<D, R, F>
 {
+
+  @Override
+  public boolean dependsOn(VariableNode<D, R, F> variable)
+  {
+    return order.dependsOn(variable) || arg.dependsOn(variable);
+  }
 
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>>

@@ -338,20 +338,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       if (nextCharacterIs('+', '₊'))
       {
-        node = (N) new AdditionNode<D, C, F>(this,
-                                             node,
-                                             exponentiateMultiplyAndDivide());
+        node = (N) node.add(exponentiateMultiplyAndDivide());
       }
       else if (nextCharacterIs('-', '₋', '−'))
       {
         N rhs = exponentiateMultiplyAndDivide();
-
-        node = node == null ? (N) new NegationNode<D, C, F>(this,
-                                                            rhs)
-                            : (N) new SubtractionNode<D, C, F>(this,
-                                                               node,
-                                                               rhs);
-
+        node = node == null ? (N) rhs.neg() : (N) node.sub(rhs);
       }
       else
       {
@@ -542,12 +534,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // assert !variablesDeclared : "variables have already been declared";
     if (ascendentExpression != null)
     {
-      var parentIndependentVariableNode = ascendentExpression.independentVariable;
-      if (parentIndependentVariableNode != null && !parentIndependentVariableNode.type().equals(Object.class))
+      var ascendentIndependentVariableNode = ascendentExpression.independentVariable;
+      if (ascendentIndependentVariableNode != null && !ascendentIndependentVariableNode.type().equals(Object.class))
       {
         classVisitor.visitField(ACC_PUBLIC,
-                                parentIndependentVariableNode.reference.name,
-                                parentIndependentVariableNode.type().descriptorString(),
+                                ascendentIndependentVariableNode.reference.name,
+                                ascendentIndependentVariableNode.type().descriptorString(),
                                 null,
                                 null);
       }
@@ -594,6 +586,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
+   * Process the next character
+   * 
    * @return a parenthetical {@link Node}, a {@link ProductNode}, a
    *         {@link LiteralConstantNode},a {@link Function}, a
    *         {@link VariableNode} or null if for instance "-t" is encountered, as
@@ -646,12 +640,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return resolvePostfixOperators(node);
   }
 
+  /**
+   * 
+   * @return the results of this{@link #evaluateSquareBracketedIndex()} and
+   *         this{@link #evaluateSubscriptedIndex()} being applied in succession
+   */
   protected Node<D, C, F> evaluateIndex()
   {
     var index = evaluateSquareBracketedIndex();
     return index == null ? index = evaluateSubscriptedIndex() : index;
   }
 
+  /**
+   * 
+   * @param startPos
+   * @return a new {@link VariableReference} constructed from the results of
+   *         calling this{@link #parseName()} and this{@link #evaluateIndex()}
+   */
   protected VariableReference<D, C, F> evaluateName(int startPos)
   {
     String identifier = parseName(startPos);
@@ -660,6 +665,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                           index);
   }
 
+  /**
+   * 
+   * @return a new {@link LiteralConstantNode} constucted by iterating
+   *         this{@link #nextCharacter()} while {@link Parser#isNumeric(char)}
+   *         applied to this{@link #character} is true
+   */
   protected Node<D, C, F> evaluateNumber()
   {
     int startingPosition = position;
@@ -761,9 +772,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (nextCharacterIs('^'))
     {
       final boolean parenthetical = nextCharacterIs('(');
-      node = (N) new ExponentiationNode<D, C, F>(this,
-                                                 node,
-                                                 parenthetical ? resolve() : evaluate());
+      node = (N) node.pow(parenthetical ? resolve() : evaluate());
       if (parenthetical)
       {
         require(')');
@@ -1000,15 +1009,33 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                   funcClass);
     function.ascendentExpression = this;
     function.context             = context;
-    
     if (indeterminateVariable != null)
     {
       function.independentVariable = indeterminateVariable.spliceInto(function).asVariable();
     }
+
     // Splice the current rootNode into the new expression
     function.rootNode          = (Node<Object, Object, Function<?, ?>>) rootNode.spliceInto(function);
     function.className         = className + "func";
     function.rootNode.isResult = true;
+
+    if (independentVariable != null)
+    {
+      var     independentVariableMappedToFunctional  = independentVariable.spliceInto(function).asVariable();
+      boolean functionalDependsOnIndependentVariable =
+                                                     function.rootNode.dependsOn(independentVariableMappedToFunctional);
+      assert !functionalDependsOnIndependentVariable : "TODO: map functionalDependsOnIndependentVariable="
+                                                       + functionalDependsOnIndependentVariable
+                                                       + "'"
+                                                       + independentVariable
+                                                       + "'"
+                                                       + " context="
+                                                       + context
+                                                       + " depends="
+                                                       + functionalDependsOnIndependentVariable
+                                                       + " functional="
+                                                       + function.rootNode.toString();
+    }
 
     // Generate the implementation
     function.generate();
@@ -1021,8 +1048,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // Copy fields from this expression to the new function instance
     if (context != null && context.variables != null)
     {
+
       for (var entry : context.variables.map.entrySet())
-      {       
+      {
         var fieldName = entry.getKey();
         var fieldType = entry.getValue().getClass();
         duplicateTopOfTheStack(mv);
@@ -1033,7 +1061,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // Duplicate the reference to this which will be consumed by the following
     // invocation of the initialize method
     duplicateTopOfTheStack(mv);
-    
+
     // invoke the initializer
     Compiler.invokeMethod(mv, function.className, "initialize", "()V", false);
 
@@ -1087,20 +1115,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected MethodVisitor generateInitializationCode(MethodVisitor mv)
   {
     generateCodeToThrowErrorIfAlreadyInitialized(mv);
-
     addChecksForNullVariableReferences(mv);
-
     referencedFunctions.values().forEach(mapping -> generateFunctionInitializer(mv, mapping));
-
     initializers.forEach(initializer -> initializer.accept(mv));
-
     if (recursive)
     {
       generateSelfReference(mv);
     }
-
     generateCodeToSetIsInitializedToTrue(mv);
-
     return mv;
   }
 

@@ -17,6 +17,7 @@ import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.SphericalBesselFunction;
 import arb.functions.real.RealFunction;
@@ -225,5 +226,11 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
   public String typeset()
   {
     return format("j_{%s}(%s)", order.typeset(), arg == null ? "" : arg.typeset());
+  }
+
+  @Override
+  public boolean dependsOn(VariableNode<D, R, F> variable)
+  {
+    return order.dependsOn(variable) || arg.dependsOn(variable);
   }
 }
