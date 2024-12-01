@@ -992,22 +992,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       throw new CompilerException("TODO: support functional " + coDomainType);
     }
 
-    // Create new Expression for function implementation to be returned as the
-    // codomain of the function that this Expression finds itself within
+    // Create new Expression for the function implementation to be returned as the
+    // value in the codomain of the function that this Expression finds itself
+    // within
     var function = new Expression<Object, Object, Function<?, ?>>(funcDomain,
                                                                   funcCoDomain,
                                                                   funcClass);
     function.ascendentExpression = this;
     function.context             = context;
-    // Splice the current rootNode into the new expression
+    
     if (indeterminateVariable != null)
     {
       function.independentVariable = indeterminateVariable.spliceInto(function).asVariable();
     }
-    else
-    {
-      assert false : "gone surfing";
-    }
+    // Splice the current rootNode into the new expression
     function.rootNode          = (Node<Object, Object, Function<?, ?>>) rootNode.spliceInto(function);
     function.className         = className + "func";
     function.rootNode.isResult = true;
@@ -1016,28 +1014,28 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     function.generate();
 
     // Generate code to instantiate the new function
-    mv.visitTypeInsn(NEW, function.className);
-    mv.visitInsn(DUP);
-    mv.visitMethodInsn(INVOKESPECIAL, function.className, "<init>", "()V", false);
+    constructNewObject(mv, function.className);
+    duplicateTopOfTheStack(mv);
+    invokeDefaultConstructor(mv, function.className);
 
     // Copy fields from this expression to the new function instance
     if (context != null && context.variables != null)
     {
       for (var entry : context.variables.map.entrySet())
       {
-        String   fieldName = entry.getKey();
-        Class<?> fieldType = entry.getValue().getClass();
-        Compiler.duplicateTopOfTheStack(mv);
+        var fieldName = entry.getKey();
+        var fieldType = entry.getValue().getClass();
+        duplicateTopOfTheStack(mv);
         loadThisFieldOntoStack(mv, fieldName, fieldType);
         Compiler.putField(mv, function.className, fieldName, fieldType);
       }
     }
     // Duplicate the reference to this which will be consumed by the following
     // invocation of the initialize method
-    mv.visitInsn(DUP);
-
-    // Initialize the new function
-    mv.visitMethodInsn(INVOKEVIRTUAL, function.className, "initialize", "()V", false);
+    duplicateTopOfTheStack(mv);
+    
+    // invoke the initializer
+    Compiler.invokeMethod(mv, function.className, "initialize", "()V", false);
 
     // Return the new function instance
     mv.visitInsn(ARETURN);
