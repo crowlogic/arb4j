@@ -5,6 +5,7 @@ import arb.Integer;
 import arb.Typesettable;
 import arb.functions.SphericalBesselFunction;
 import arb.functions.integer.RealFunctionSequence;
+import junit.framework.TestCase;
 
 public class k implements
                RealFunctionSequence,
@@ -16,12 +17,17 @@ public class k implements
   public final Integer           cℤ1   = new Integer("2");
   public SphericalBesselFunction jsph1 = new SphericalBesselFunction();
 
-  public static void main( String args[] )
+  public static void main(String args[])
   {
-    k k = new k();
+    k            k = new k();
     RealFunction x = k.evaluate(3, 128);
-    System.out.println( x );
+    System.out.println(x);
+    double y = x.eval(2.3);
+    System.out.println("y=" + y);
+    TestCase.assertEquals(0.1712999261297678, y);
+
   }
+
   @Override
   public Class<RealFunction> coDomainType()
   {
@@ -37,6 +43,7 @@ public class k implements
     }
 
     kfunc var10000 = new kfunc();
+    var10000.k = Integer.named("k").set(3);
     var10000.initialize();
     return var10000;
   }
