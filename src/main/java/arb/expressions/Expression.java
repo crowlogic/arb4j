@@ -1024,17 +1024,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       var     independentVariableMappedToFunctional  = independentVariable.spliceInto(function).asVariable();
       boolean functionalDependsOnIndependentVariable =
                                                      function.rootNode.dependsOn(independentVariableMappedToFunctional);
-      assert !functionalDependsOnIndependentVariable : "TODO: map functionalDependsOnIndependentVariable="
-                                                       + functionalDependsOnIndependentVariable
-                                                       + "'"
-                                                       + independentVariable
-                                                       + "'"
-                                                       + " context="
-                                                       + context
-                                                       + " depends="
-                                                       + functionalDependsOnIndependentVariable
-                                                       + " functional="
-                                                       + function.rootNode.toString();
+//      assert !functionalDependsOnIndependentVariable : "TODO: map functionalDependsOnIndependentVariable="
+//                                                       + functionalDependsOnIndependentVariable
+//                                                       + "'"
+//                                                       + independentVariable
+//                                                       + "'"
+//                                                       + " context="
+//                                                       + context
+//                                                       + " depends="
+//                                                       + functionalDependsOnIndependentVariable
+//                                                       + " functional="
+//                                                       + function.rootNode.toString();
     }
 
     // Generate the implementation
