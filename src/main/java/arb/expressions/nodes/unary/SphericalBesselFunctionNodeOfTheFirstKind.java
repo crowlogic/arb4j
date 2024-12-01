@@ -56,12 +56,22 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
 
   public SphericalBesselFunctionNodeOfTheFirstKind(Expression<D, R, F> expression)
   {
+    this(expression,
+         expression.resolve(),
+         expression.require(',').resolve());
+    expression.require(')');
+  }
+
+  public SphericalBesselFunctionNodeOfTheFirstKind(Expression<D, R, F> expression,
+                                                   Node<D, R, F> order,
+                                                   Node<D, R, F> arg)
+  {
     super("j",
           null,
           expression);
-    order  = expression.resolve();
-    arg    = expression.require(',').resolve();
-    scalar = expression.require(')').hasScalarCodomain();
+    this.order  = order;
+    this.arg    = arg;
+    this.scalar = expression.hasScalarCodomain();
     if (!scalar && !expression.coDomainType.equals(RealFunction.class))
     {
       throw new CompilerException(String.format("%ss can not be represented as %ss",
@@ -91,6 +101,15 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
                              : generateEvaluateFunctionInvocation(mv);
   }
 
+  public void generateArgument(MethodVisitor mv, Class<?> resultType)
+  {
+    arg.generate(mv, resultType);
+    if (!arg.getGeneratedType().equals(resultType))
+    {
+      arg.generateCastTo(mv, resultType);
+    }
+  }
+
   protected MethodVisitor generateEvaluateFunctionInvocation(MethodVisitor mv)
   {
     loadSphericalBesselFunctionOntoStack(mv);
@@ -116,15 +135,6 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
 
   }
 
-  public void generateOrder(MethodVisitor mv)
-  {
-    order.generate(mv, Integer.class);
-    if (!order.getGeneratedType().equals(Integer.class))
-    {
-      order.generateCastTo(mv, Integer.class);
-    }
-  }
-
   protected MethodVisitor generateNullaryFunctionInvocation(MethodVisitor mv, Class<?> resultType)
   {
     loadSphericalBesselFunctionOntoStack(mv);
@@ -135,12 +145,12 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
     return checkClassCast(invokeEvaluationMethod(mv, resultType), expression.coDomainType);
   }
 
-  public void generateArgument(MethodVisitor mv, Class<?> resultType)
+  public void generateOrder(MethodVisitor mv)
   {
-    arg.generate(mv, resultType);
-    if (!arg.getGeneratedType().equals(resultType))
+    order.generate(mv, Integer.class);
+    if (!order.getGeneratedType().equals(Integer.class))
     {
-      arg.generateCastTo(mv, resultType);
+      order.generateCastTo(mv, Integer.class);
     }
   }
 
@@ -163,6 +173,11 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
                                         expression.coDomainType);
   }
 
+  public void loadFunctionFieldOntoStack(MethodVisitor mv)
+  {
+    expression.loadThisFieldOntoStack(mv, functionFieldName, SphericalBesselFunction.class);
+  }
+
   public void loadSphericalBesselFunctionOntoStack(MethodVisitor mv)
   {
     if (useInitializer)
@@ -179,9 +194,14 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
     }
   }
 
-  public void loadFunctionFieldOntoStack(MethodVisitor mv)
+  @Override
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<E, S, G>
+         spliceInto(Expression<E, S, G> newExpression)
   {
-    expression.loadThisFieldOntoStack(mv, functionFieldName, SphericalBesselFunction.class);
+    return new SphericalBesselFunctionNodeOfTheFirstKind<>(newExpression,
+                                                           order.spliceInto(newExpression),
+                                                           arg.spliceInto(newExpression));
   }
 
   @Override
