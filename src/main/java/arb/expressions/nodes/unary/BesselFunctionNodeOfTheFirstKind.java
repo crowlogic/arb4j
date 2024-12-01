@@ -33,6 +33,16 @@ public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends
 {
 
   @Override
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<E, S, G>
+         spliceInto(Expression<E, S, G> newExpression)
+  {
+    return new BesselFunctionNodeOfTheFirstKind<>(newExpression,
+                                                  order.spliceInto(newExpression),
+                                                  arg.spliceInto(newExpression));
+  }
+
+  @Override
   public List<Node<D, R, F>> getBranches()
   {
     return List.of(order, arg);
@@ -49,15 +59,22 @@ public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends
 
   public boolean scalar;
 
-  public BesselFunctionNodeOfTheFirstKind(Expression<D, R, F> expression)
+  public BesselFunctionNodeOfTheFirstKind(Expression<D, R, F> expression, Node<D, R, F> order, Node<D, R, F> arg)
   {
     super("J",
           null,
           expression);
-    order  = expression.resolve();
-    arg    = expression.require(',').resolve();
-    scalar = expression.require(')').hasScalarCodomain();
-    // assert false : "wtf";
+    this.order  = order;
+    this.arg    = arg;
+    this.scalar = expression.hasScalarCodomain();
+  }
+
+  public BesselFunctionNodeOfTheFirstKind(Expression<D, R, F> expression)
+  {
+    this(expression,
+         expression.resolve(),
+         expression.require(',').resolve());
+    expression.require(')');
   }
 
   @Override

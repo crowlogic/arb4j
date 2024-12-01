@@ -1025,8 +1025,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       for (var entry : context.variables.map.entrySet())
       {
-        String   fieldName = entry.getKey();
-        Class<?> fieldType = entry.getValue().getClass();
+        var fieldName = entry.getKey();
+        var fieldType = entry.getValue().getClass();
         Compiler.duplicateTopOfTheStack(mv);
         loadThisFieldOntoStack(mv, fieldName, fieldType);
         Compiler.putField(mv, function.className, fieldName, fieldType);
@@ -1114,9 +1114,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     try
     {
       methodVisitor.visitCode();
-
       generateInitializationCode(methodVisitor);
-
       methodVisitor.visitInsn(Opcodes.RETURN);
       methodVisitor.visitMaxs(10, 10);
     }
@@ -1163,13 +1161,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     duplicateTopOfTheStack(mv);
     invokeDefaultConstructor(mv, functionName);
     Compiler.putField(mv, className, functionName, "L" + functionName + ";");
-
     initializeNestedFunctionVariableReferences(loadThisOntoStack(mv),
                                                className,
                                                functionName,
                                                functionName,
                                                context.variableClassStream());
-
     return mv;
   }
 
@@ -1203,11 +1199,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     String arrow = expression.contains("➔") || independentVariable == null ? "" : (independentVariable.getName() + "➔");
     methodVisitor.visitLdcInsn(String.format("%s%s%s", name, arrow, expression.replace("sqrt", "√")));
-
     methodVisitor.visitInsn(Opcodes.ARETURN);
     methodVisitor.visitMaxs(10, 10);
     methodVisitor.visitEnd();
-
     return classVisitor;
   }
 
@@ -1225,15 +1219,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                  null);
 
     annotateWithOverride(methodVisitor);
-
     methodVisitor.visitCode();
-
     methodVisitor.visitLdcInsn(typeset());
-
     methodVisitor.visitInsn(Opcodes.ARETURN);
     methodVisitor.visitMaxs(10, 10);
     methodVisitor.visitEnd();
-
     return classVisitor;
   }
 
@@ -1288,7 +1278,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       sw.visitInterface();
       sw.visitClassType(Type.getInternalName(interfaceClass));
-
       sw.visitEnd();
     }
     classSignature = sw.toString();
@@ -1674,7 +1663,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       nextCharacter();
       if (isLatinOrGreek)
       {
-        entirelySubscripted = false;
         entirelySubscripted = false;
       }
     }
