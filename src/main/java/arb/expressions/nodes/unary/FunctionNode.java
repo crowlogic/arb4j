@@ -26,6 +26,7 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.FunctionMapping;
 import arb.expressions.Parser;
+import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -473,6 +474,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                 expression).neg(); // derivative of cos is -sin
     case "exp":
       return this; // derivative of exp is exp
+    case "log":
+      return new LiteralConstantNode<>(expression,
+                                       "1").div(arg);
     // Add other built-in function derivatives
     default:
       throw new UnsupportedOperationException("Derivative not implemented for function: " + functionName);

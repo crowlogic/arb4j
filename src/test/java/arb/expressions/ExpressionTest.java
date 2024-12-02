@@ -31,6 +31,13 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  public void testDerivativeOfLogarithm()
+  {
+    var x = RealFunction.parse("∂ln(x)/∂x");
+    assertEquals("1/x", x.rootNode.toString());
+  }
+
+  
   public void testDerivativeOfExponentialFunction()
   {
     var x = RealFunction.parse("∂exp(x)/∂x");
