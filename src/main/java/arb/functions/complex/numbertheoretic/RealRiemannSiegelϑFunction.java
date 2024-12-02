@@ -31,7 +31,7 @@ import arb.functions.real.RealFunction;
 public class RealRiemannSiegelϑFunction implements
                                     RealFunction
 {
-  public static final RealFunction ϑ = RealFunction.express("ϑ:t->(-ⅈ*(ln⁡Γ(1/4 + ⅈ*t/2) - lnΓ(1/4 − ⅈ*t/2) ) − ln⁡(π)*t)/2");
+  public static final RealFunction ϑ = RealFunction.express("ϑ:t->(-ⅈ*(ln⁡Γ(¼+ⅈ*t/2)-lnΓ(¼−ⅈ*t/2))−ln⁡(π)*t)/2");
 
   public RealRiemannSiegelϑFunction()
   {

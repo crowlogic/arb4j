@@ -10,7 +10,7 @@ import arb.functions.complex.ComplexFunction;
  * <pre>
  * The Riemann-Siegel ϑ function  defined by 
  * 
- * ϑ(t) = arg(Γ(¼ + it/2)) - t*log(π)/2
+ * ϑ(t) = arg(Γ(¼+it/2))-t*log(π)/2
  * 
  * plays a crucial role in the study of the {@link RiemannζFunction}. The almost-periodic 
  * behavior after t~=20 and the crossing near the first Riemann zero  are noteworthy. The 
@@ -31,7 +31,7 @@ import arb.functions.complex.ComplexFunction;
 public class RiemannSiegelϑFunction implements
                                     ComplexFunction
 {
-  public static final ComplexFunction ϑ = ComplexFunction.express("ϑ:t->(-ⅈ*(ln⁡Γ(1/4 + ⅈ*t/2) - lnΓ(1/4 − ⅈ*t/2) ) − ln⁡(π)*t)/2");
+  public static final ComplexFunction ϑ = ComplexFunction.express("ϑ:t->(-ⅈ*(ln⁡Γ(¼+ⅈ*t/2)-lnΓ(¼−ⅈ*t/2))−ln⁡(π)*t)/2");
 
   public RiemannSiegelϑFunction()
   {
