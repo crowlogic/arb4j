@@ -288,4 +288,10 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return div(LiteralConstantNode.of(expression, i));
   }
 
+  public Node<D, R, F> pow(String exponent)
+  {
+    return new LiteralConstantNode<D, R, F>(expression,
+                                            exponent);
+  }
+
 }
