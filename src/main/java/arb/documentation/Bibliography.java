@@ -22,6 +22,13 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Book          rkhsIntro                                                     =
+                                        new Book("An Introduction to the Theory of Reproducing Kernel Hilbert Spaces",
+                                                 "V.I. Paulsen and M. Raghupathi",
+                                                 "2016").setPublisher("Cambridge University Press")
+                                                        .setIsbn("9781107104099")
+                                                        .setSeries("Cambridge Studies in Advanced Mathematics");
+
   public static Article       stationaryLevelCrossingMoments                                =
                                                              new Article("The Moments of the Number of Crossings of a Level by a Stationary Normal Process",
                                                                          "Harald Cramér and M. R. Leadbetter",
