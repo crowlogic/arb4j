@@ -51,8 +51,8 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
 
   static
   {
-    Arrays.sort(ExpressionTree.INTERFACES, Utensils.classNameComparator);
-    Arrays.sort(ExpressionTree.TYPES, Utensils.classNameComparator);
+    Arrays.sort(ExpressionTreeView.INTERFACES, Utensils.classNameComparator);
+    Arrays.sort(ExpressionTreeView.TYPES, Utensils.classNameComparator);
   }
 
   public static void main(String[] args)
@@ -74,10 +74,10 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
 
   private double[]       lastDividerPositions = null;
 
-  ExpressionTree<D, C, F> addNewExpressionTab()
+  ExpressionTreeView<D, C, F> addNewExpressionTab()
   {
     Tab tab            = new Tab("Expression " + (tabPane.getTabs().size() + 1));
-    var expressionTree = new ExpressionTree<D, C, F>(this,
+    var expressionTree = new ExpressionTreeView<D, C, F>(this,
                                                      tab);
     tab.setContent(expressionTree);
     tabPane.getTabs().add(tab);
@@ -199,7 +199,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
   public Optional<Class<?>> showVariableTypeDialog()
   {
     ChoiceDialog<Class<?>> choiceDialog = new ChoiceDialog<>(Real.class,
-                                                             ExpressionTree.TYPES);
+                                                             ExpressionTreeView.TYPES);
     choiceDialog.setTitle("Select Type");
     choiceDialog.setContentText("What's the new variable type?");
     choiceDialog.initOwner(tabPane.getScene().getWindow());
@@ -308,14 +308,14 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     return deleteVariableMenuItem;
   }
 
-  private void executeTabAction(Consumer<ExpressionTree<D, C, F>> action)
+  private void executeTabAction(Consumer<ExpressionTreeView<D, C, F>> action)
   {
     var expressionTab = getCurrentExpressionTree();
     action.accept(expressionTab);
   }
 
   @SuppressWarnings("unchecked")
-  public ExpressionTree<D, C, F> getCurrentExpressionTree()
+  public ExpressionTreeView<D, C, F> getCurrentExpressionTree()
   {
     Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
     if (currentTab == null)
@@ -323,7 +323,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
       addNewExpressionTab();
     }
     var content       = currentTab.getContent();
-    var expressionTab = (ExpressionTree<D, C, F>) content;
+    var expressionTab = (ExpressionTreeView<D, C, F>) content;
     return expressionTab;
   }
 
@@ -338,7 +338,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     if (currentTab != null)
     {
       var content       = currentTab.getContent();
-      var expressionTab = (ExpressionTree<D, C, F>) content;
+      var expressionTab = (ExpressionTreeView<D, C, F>) content;
       return expressionTab.context;
     }
     return null;
@@ -350,10 +350,10 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     addTabButton.setOnAction(e -> addNewExpressionTab());
 
     Button compileButton = new Button("Compile");
-    compileButton.setOnAction(e -> executeTabAction(ExpressionTree::compileExpression));
+    compileButton.setOnAction(e -> executeTabAction(ExpressionTreeView::compileExpression));
 
     Button expandAllButton = new Button("Expand All");
-    expandAllButton.setOnAction(e -> executeTabAction(ExpressionTree::expandAllNodes));
+    expandAllButton.setOnAction(e -> executeTabAction(ExpressionTreeView::expandAllNodes));
 
     Button evaluateButton = new Button("Evaluate");
     evaluateButton.setOnAction(e -> evaluate());
@@ -362,7 +362,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     toggleContextButton.setOnAction(e -> toggleContextView());
 
     Button saveButton = new Button("Save");
-    saveButton.setOnAction(e -> executeTabAction(ExpressionTree::save));
+    saveButton.setOnAction(e -> executeTabAction(ExpressionTreeView::save));
 
     Button loadButton = new Button("Load");
     loadButton.setOnAction(e ->
@@ -381,7 +381,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     });
 
     Button graphButton = new Button("Graph");
-    graphButton.setOnAction(e -> executeTabAction(ExpressionTree::graph));
+    graphButton.setOnAction(e -> executeTabAction(ExpressionTreeView::graph));
 
     return new HBox(10,
                     addTabButton,
@@ -396,7 +396,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
 
   public void evaluate()
   {
-    executeTabAction(ExpressionTree::evaluateExpression);
+    executeTabAction(ExpressionTreeView::evaluateExpression);
   }
 
   @Override

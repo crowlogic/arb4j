@@ -9,6 +9,7 @@ import static org.objectweb.asm.Opcodes.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -986,18 +987,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   /**
    * Generate the code when the {@link #coDomainType} {@link Class#isInterface()}
-   * so that return value is itself a {@link Function}, in this case the passed in
-   * result is ignored since there is no possible way to use the {@link Function}
-   * reference as a changeable object
+   * so that the return value is itself a {@link Function}, in this case the
+   * result argument is ignored since there is no possible way to use the
+   * {@link Function} reference as a changeable object, since it is not in general
+   * {@link Becomable}
    * 
    * @param mv
    * @return
    */
+  @SuppressWarnings("unchecked")
   protected Expression<Object, Object, Function<?, ?>> generateFunctionalElement(MethodVisitor mv)
   {
     Class<?>                        funcDomain;
     Class<?>                        funcCoDomain;
     Class<? extends Function<?, ?>> funcClass;
+
     if (RealFunction.class.equals(coDomainType))
     {
       funcDomain   = Real.class;
@@ -1006,7 +1010,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else
     {
-      throw new CompilerException("TODO: support functional " + coDomainType);
+      try ( Function<?, ?> instance = newCoDomainInstance())
+      {
+        funcDomain   = instance.domainType();
+        funcCoDomain = instance.coDomainType();
+        funcClass    = (Class<? extends Function<?, ?>>) coDomainType;
+      }
     }
 
     // Create new Expression for the function implementation to be returned as the
@@ -1046,9 +1055,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (functionalDependsOnIndependentVariable)
     {
+      duplicateTopOfTheStack(mv);
+
+      assert true : "TODO: generate code to set the field by the given name of the function.className "
+                     + "object thats currently at the top of the stack";
       var fieldName = independentVariableMappedToFunctional.getName();
       var fieldType = independentVariableMappedToFunctional.type();
-      loadThisFieldOntoStack(mv, fieldName, "L" + function.className + ";");
+      //loadThisFieldOntoStack(mv, fieldName, "L" + function.className + ";");
       mv.visitInsn(Opcodes.ACONST_NULL);
       Compiler.putField(mv, function.className, fieldName, fieldType);
     }
