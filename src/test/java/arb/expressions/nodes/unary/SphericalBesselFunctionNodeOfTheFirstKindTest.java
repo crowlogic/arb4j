@@ -19,12 +19,15 @@ public class SphericalBesselFunctionNodeOfTheFirstKindTest extends
   public static void testj0ViaRealFunctionalExpression()
   {
 
-
-    RealFunctionSequence jk     = RealFunctionSequence.express("k->2*j(k,x)");
-    RealFunction         y      = jk.evaluate(3, 128);
-    var                  z      = y.eval(2.3);
-   // System.out.println("j0(3)=" + z);
-    assertEquals(2*0.0856499630648839, z);
+    RealFunctionSequence jk = RealFunctionSequence.express("k->2*j(k,x)");
+    RealFunction         y  = jk.evaluate(3, 128);
+    var                  z  = y.eval(2.3);
+    // System.out.println("j0(3)=" + z);
+    assertEquals(2 * 0.0856499630648839, z);
+    y = jk.evaluate(4, 128);
+    var z4 = y.eval(2.3);
+    // System.out.println("j0(3)=" + z);
+    assertEquals(0.046351363745632215, z4);
 
   }
 

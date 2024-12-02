@@ -9,7 +9,6 @@ import static org.objectweb.asm.Opcodes.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1058,15 +1057,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       duplicateTopOfTheStack(mv);
 
       assert true : "TODO: generate code to set the field by the given name of the function.className "
-                     + "object thats currently at the top of the stack";
+                     + "object thats currently at the top of the stack: independentVariableMappedToFunctional="
+                     + independentVariableMappedToFunctional
+                     + " domainType="
+                     + domainType;
+
       var fieldName = independentVariableMappedToFunctional.getName();
-      var fieldType = independentVariableMappedToFunctional.type();
-      //loadThisFieldOntoStack(mv, fieldName, "L" + function.className + ";");
-      mv.visitInsn(Opcodes.ACONST_NULL);
-      Compiler.putField(mv, function.className, fieldName, fieldType);
+      independentVariable.generate(mv, domainType);
+      Compiler.putField(mv, function.className, fieldName, domainType);
     }
 
-    // Copy fields from this expression to the new function instance
+    // link fields from this expression to the new function instance
     if (context != null && context.variables != null)
     {
 
