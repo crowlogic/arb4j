@@ -24,8 +24,7 @@ import arb.space.topological.VectorSpace;
 public interface Function<D, C> extends
                          Closeable,
                          AutoCloseable,
-                         Typesettable,
-                         VectorSpace<C>
+                         Typesettable
 {
 
   public static <D, C, F extends Function<? extends D, ? extends C>>

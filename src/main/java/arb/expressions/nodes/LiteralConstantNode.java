@@ -201,7 +201,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     }
     else if (ⅈ.equals(fieldName))
     {
-      loadComplexConstantOntoStack(mv, ⅈ);
+      loadImaginaryUnitConstantOntoStack(mv, ⅈ);
     }
     else
     {
@@ -260,7 +260,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     loadConstantOntoStack(mv, fn, Real.class, RealConstants.class);
   }
 
-  public void loadComplexConstantOntoStack(MethodVisitor mv, String fn)
+  public void loadImaginaryUnitConstantOntoStack(MethodVisitor mv, String fn)
   {
     loadConstantOntoStack(mv, fn, Complex.class, ComplexConstants.class);
   }

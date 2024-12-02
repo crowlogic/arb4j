@@ -1040,7 +1040,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       var fieldName = independentVariableMappedToFunctional.getName();
       var fieldType = independentVariableMappedToFunctional.type();
-      //ndependentVariableMappedToFunctional.generate(mv, fieldType);
       loadThisFieldOntoStack(mv, fieldName, "L" + function.className + ";");
       mv.visitInsn(Opcodes.ACONST_NULL);
       Compiler.putField(mv, function.className, fieldName, fieldType);
