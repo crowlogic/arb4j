@@ -47,14 +47,6 @@ public class SphericalBesselFunction implements
 
   }
 
-  public RealFunction evaluate(Integer t, int order, int bits, RealFunction res)
-  {
-    return (y, functionalOrder, functionalBits, result) ->
-    {
-      return evaluate(y, functionalOrder, functionalBits, result);
-    };
-  }
-
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)
   {
