@@ -1054,15 +1054,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (functionalDependsOnIndependentVariable)
     {
-      duplicateTopOfTheStack(mv);
-
-      assert true : "TODO: generate code to set the field by the given name of the function.className "
-                     + "object thats currently at the top of the stack: independentVariableMappedToFunctional="
-                     + independentVariableMappedToFunctional
-                     + " domainType="
-                     + domainType;
-
       var fieldName = independentVariableMappedToFunctional.getName();
+      duplicateTopOfTheStack(mv);
       independentVariable.generate(mv, domainType);
       Compiler.putField(mv, function.className, fieldName, domainType);
     }
