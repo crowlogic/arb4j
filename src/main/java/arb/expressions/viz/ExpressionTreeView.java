@@ -583,9 +583,9 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
       String intermediateValueFieldName = node.getIntermediateValueFieldName();
       if (intermediateValueFieldName == null)
       {
-        return "null";
+        return "zilch";
       }
-      if (intermediateValueFieldName.equals("result"))
+      if ("result".equals(intermediateValueFieldName))
       {
         return result.toString();
       }
@@ -693,6 +693,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
             {
               result = expr.newCoDomainInstance();
             }
+           
           }
           result = instance.evaluate(input, 128, result);
         }
