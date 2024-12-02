@@ -96,9 +96,9 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       {
         try ( var lint = new Integer(lconst.value); var rint = new Integer(rconst.value);)
         {
-          var sum = lint.mul(rint, 0, rint);
+          var product = lint.mul(rint, 0, rint);
           return new LiteralConstantNode<>(expression,
-                                           sum.toString());
+                                           product.toString());
         }
       }
       else

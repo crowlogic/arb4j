@@ -106,9 +106,9 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
       {
         try ( var lint = new Integer(lconst.value); var rint = new Integer(rconst.value);)
         {
-          var sum = lint.sub(rint, 0, rint);
+          var difference = lint.sub(rint, 0, rint);
           return new LiteralConstantNode<>(expression,
-                                           sum.toString());
+                                           difference.toString());
         }
       }
       assert false : "TODO: simplify " + this;

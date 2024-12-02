@@ -26,7 +26,7 @@ public class AscendingFactorializationNode<D, R, F extends Function<? extends D,
 {
 
   /**
-   * 
+   * <pre>
    * 1. Binary Operator Version: You've adapted the ascending factorial to be used
    * as an infix binary operator, which is an interesting and useful approach for
    * text representations.
@@ -55,7 +55,8 @@ public class AscendingFactorializationNode<D, R, F extends Function<? extends D,
    * mathematical expressions in plain text environments, programming languages,
    * or other contexts where standard mathematical notation might be difficult to
    * implement.
-   *
+   * </pre>
+   * 
    * @param left
    * @param right
    * @param expression
