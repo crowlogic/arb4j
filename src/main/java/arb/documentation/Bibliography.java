@@ -22,6 +22,15 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       stationaryLevelCrossingMoments                                =
+                                                             new Article("The Moments of the Number of Crossings of a Level by a Stationary Normal Process",
+                                                                         "Harald Cramér and M. R. Leadbetter",
+                                                                         "1965",
+                                                                         "The Annals of Mathematical Statistics",
+                                                                         "36",
+                                                                         "1656-1663").setNumber("6")
+                                                                                     .setPublisher("Institute of Mathematical Statistics");
+
   public static Article       radonNikodymWienerDerivatives                                 =
                                                             new Article("The Structure of Radon-Nikodym Derivatives with Respect to Wiener and Related Measures",
                                                                         "Thomas Kailath",
@@ -503,7 +512,7 @@ public class Bibliography extends
                                                                                  .setPublisher("Elsevier North Holland");
 
   public static Article       theBesselPolynomialMoments                                    =
-                                                         new Article("The Besel Polynomial Moment Problem",
+                                                         new Article("The Bessel Polynomial Moment Problem",
                                                                      "A.M. Krall",
                                                                      "1981",
                                                                      "Acta Mathematica Academiae Scientiarum Hungarica",
