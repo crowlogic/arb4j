@@ -31,6 +31,12 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  public void testDerivativeOfExponentialFunction()
+  {
+    var x = RealFunction.parse("∂exp(x)/∂x");
+    assertEquals("exp(x)", x.rootNode.toString());
+  }
+
   public static void testAFractionConstantTimesAFractionConstant()
   {
     var f = RationalNullaryFunction.parse("½+¼");
