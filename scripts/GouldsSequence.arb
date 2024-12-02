@@ -1,5 +1,0 @@
-var h = new HammingWeights();
-var context = new Context();
-context.registerSequence("h",h);
-var gouldsSequence = IntegerSequence.express("2^h(n)",context);
-System.out.format( "The first 50 terms of A001316:Gould's sequence are %s\n", seq(0,50,gouldsSequence) );

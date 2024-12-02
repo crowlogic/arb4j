@@ -6,7 +6,7 @@ import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.polynomials.orthogonal.real.RealChebyshevPolynomialsOfTheFirstKind;
-import arb.functions.polynomials.orthogonal.real.RealHermitePolynomials;
+import arb.functions.polynomials.orthogonal.real.HermitePolynomials;
 import arb.functions.polynomials.orthogonal.real.RealLegendrePolynomials;
 import arb.functions.polynomials.orthogonal.real.Type1ChebyshevPolynomials;
 import junit.framework.TestCase;
@@ -51,7 +51,7 @@ public class OrthogonalPolynomialSequenceTest extends
 
   public void testHermitePolynomials()
   {
-    try ( RealHermitePolynomials H = new RealHermitePolynomials(128))
+    try ( HermitePolynomials H = new HermitePolynomials(128))
 
     {
 

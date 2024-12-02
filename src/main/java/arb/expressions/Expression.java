@@ -1936,6 +1936,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     case "R":
       return new LommelPolynomialNode<>(this);
     case "ℭ":
+    case "binom":
+    case "binomial":
       return new BinomialCoefficientNode<>(this);
     case "pFq":
       return new HypergeometricFunctionNode<>(this);

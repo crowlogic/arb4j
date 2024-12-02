@@ -47,6 +47,7 @@ import arb.FloatInterval;
 import arb.functions.complex.numbertheoretic.*;
 import arb.functions.polynomials.*;
 import arb.functions.polynomials.orthogonal.*;
+import arb.functions.polynomials.orthogonal.real.*;
 import arb.functions.real.*;
 import java.util.ArrayList;
 import java.lang.reflect.Array;

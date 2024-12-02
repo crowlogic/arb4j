@@ -13,22 +13,20 @@ import arb.functions.real.RealFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealHermitePolynomials extends
+public class HermitePolynomials extends
                                 RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence
 {
-  public RealHermitePolynomials(int bits)
+  public HermitePolynomials(int bits)
   {
     super(bits,
           "2",
           "0",
           "2*n");
-    p1.set(2)
-      .shiftLeft(1);
+    p1.set(2).shiftLeft(1);
   }
 
   @Override
-  public Domain<Real>
-         domainOfOrthogonality()
+  public Domain<Real> domainOfOrthogonality()
   {
     return ExtendedRealLine.instance;
   }
@@ -36,8 +34,7 @@ public class RealHermitePolynomials extends
   public final RealFunction w = RealFunction.express("exp(-x²)");
 
   @Override
-  public RealFunction
-         orthogonalityMeasure()
+  public RealFunction orthogonalityMeasure()
   {
     return w;
   }
