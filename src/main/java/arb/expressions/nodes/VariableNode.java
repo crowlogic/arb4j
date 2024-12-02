@@ -583,12 +583,12 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     // assert !returnType.isInterface() : "returnType is " + returnType + " and
     // therefore cannot be instantiated";
     assert returnType != null : "returnType is null for " + this;
-    assert returnType != Object.class : "TODO: tried to return "
-                                        + returnType
-                                        + " for "
-                                        + this
-                                        + " which is part of "
-                                        + expression;
+//    assert returnType != Object.class : "TODO: tried to return "
+//                                        + returnType
+//                                        + " for "
+//                                        + this
+//                                        + " which is part of "
+//                                        + expression;
     return returnType;
   }
 
