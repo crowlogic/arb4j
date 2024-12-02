@@ -994,12 +994,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @param mv
    * @return
    */
-  @SuppressWarnings("unchecked")
   protected Expression<Object, Object, Function<?, ?>> generateFunctionalElement(MethodVisitor mv)
   {
-    Class<?>                        funcDomain;
-    Class<?>                        funcCoDomain;
-    Class<? extends Function<?, ?>> funcClass;
+    Class<?>                        funcDomain   = null;
+    Class<?>                        funcCoDomain = null;
+    Class<? extends Function<?, ?>> funcClass    = null;
 
     if (RealFunction.class.equals(coDomainType))
     {
@@ -1009,12 +1008,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else
     {
-      try ( Function<?, ?> instance = newCoDomainInstance())
-      {
-        funcDomain   = instance.domainType();
-        funcCoDomain = instance.coDomainType();
-        funcClass    = (Class<? extends Function<?, ?>>) coDomainType;
-      }
+      assert false : "TODO: handle " + coDomainType;
+
     }
 
     // Create new Expression for the function implementation to be returned as the
