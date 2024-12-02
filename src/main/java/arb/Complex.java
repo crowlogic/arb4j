@@ -42,7 +42,7 @@ import arb.space.topological.EuclideanVectorSpace;
  *      {@link TheArb4jLibrary}
  */
 
-public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<Complex>,Iterable<Complex>,Serializable,Lockable<Complex>,IntFunction<Complex>,Assignable<Complex> {
+public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Complex>,Comparable<Complex>,Iterable<Complex>,Serializable,Lockable<Complex>,IntFunction<Complex>,Assignable<Complex> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
@@ -322,6 +322,7 @@ public class Complex implements Domain<Complex>,NamedField<Complex>,Comparable<C
    * @param that
    * @return this after becoming that
    */
+  @Override
   public Complex become(Complex that)
   {
     close();

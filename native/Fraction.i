@@ -1,4 +1,4 @@
-%typemap(javainterfaces) fmpq "AutoCloseable,NamedField<Fraction>,Verifiable"
+%typemap(javainterfaces) fmpq "Becomable<Fraction>,AutoCloseable,NamedField<Fraction>,Verifiable"
 %typemap(javafinalize) fmpq ""
 %typemap(javaimports) fmpq %{
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;

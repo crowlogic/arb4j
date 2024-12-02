@@ -64,7 +64,7 @@ import arb.expressions.Parser;
 %}
 
 %typemap(javafinalize) arb_poly_struct ""
-%typemap(javainterfaces) arb_poly_struct "Polynomial<Real,RealPolynomial>,RealFunction"
+%typemap(javainterfaces) arb_poly_struct "Becomable<RealPolynomial>,Polynomial<Real,RealPolynomial>,RealFunction"
 
 %typemap(javacode) arb_poly_struct %{
 

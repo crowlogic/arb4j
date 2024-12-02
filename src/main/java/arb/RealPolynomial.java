@@ -71,7 +71,7 @@ import arb.expressions.Parser;
  *      {@link TheArb4jLibrary}
  */
 
-public class RealPolynomial implements Polynomial<Real,RealPolynomial>,RealFunction {
+public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real,RealPolynomial>,RealFunction {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 

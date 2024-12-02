@@ -15,10 +15,12 @@ import arb.functions.NullaryFunction;
  *      {@link TheArb4jLibrary}
  */
 public class ComplexFraction implements
+                             Becomable<ComplexFraction>,
                              Field<ComplexFraction>,
                              AutoCloseable
 {
 
+  @Override
   public ComplexFraction become(ComplexFraction that)
   {
     close();
@@ -48,15 +50,13 @@ public class ComplexFraction implements
 
   public static NullaryFunction<ComplexFraction> express(String string)
   {
-    Expression<Object,
-                  ComplexFraction,
-                  NullaryFunction<ComplexFraction>> express =
-                                                            Compiler.express(string,
-                                                                             null,
-                                                                             Object.class,
-                                                                             ComplexFraction.class,
-                                                                             NullaryFunction.class,
-                                                                             null);
+    Expression<Object, ComplexFraction,
+                  NullaryFunction<ComplexFraction>> express = Compiler.express(string,
+                                                                               null,
+                                                                               Object.class,
+                                                                               ComplexFraction.class,
+                                                                               NullaryFunction.class,
+                                                                               null);
 
     return express.getInstance();
   }

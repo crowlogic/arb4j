@@ -37,7 +37,7 @@ import arb.space.topological.EuclideanVectorSpace;
 
 %typemap(javafinalize) acb_struct ""
 
-%typemap(javainterfaces) acb_struct "Domain<Complex>,NamedField<Complex>,Comparable<Complex>,Iterable<Complex>,Serializable,Lockable<Complex>,IntFunction<Complex>,Assignable<Complex>"
+%typemap(javainterfaces) acb_struct "Becomable<Complex>,Domain<Complex>,NamedField<Complex>,Comparable<Complex>,Iterable<Complex>,Serializable,Lockable<Complex>,IntFunction<Complex>,Assignable<Complex>"
 
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }
@@ -297,6 +297,7 @@ import arb.space.topological.EuclideanVectorSpace;
    * @param that
    * @return this after becoming that
    */
+  @Override
   public Complex become(Complex that)
   {
     close();

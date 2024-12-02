@@ -43,7 +43,6 @@ import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;
 import arb.utensils.text.trees.TextTree;
 import arb.utensils.text.trees.TreeModel;
-import arb.viz.ArbShellExecutionController;
 
 /**
  * The {@link Expression} class represents mathematical expressions in infix and
@@ -969,7 +968,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (coDomainType.isInterface())
     {
-      generateFunctional(mv);
+      generateFunctionalElement(mv);
     }
     else
     {
@@ -985,7 +984,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return classVisitor;
   }
 
-  protected Expression<Object, Object, Function<?, ?>> generateFunctional(MethodVisitor mv)
+  /**
+   * Generate the code when the {@link #coDomainType} {@link Class#isInterface()}
+   * so that return value is itself a {@link Function}, in this case the passed in
+   * result is ignored since there is no possible way to use the {@link Function}
+   * reference as a changeable object
+   * 
+   * @param mv
+   * @return
+   */
+  protected Expression<Object, Object, Function<?, ?>> generateFunctionalElement(MethodVisitor mv)
   {
     Class<?>                        funcDomain;
     Class<?>                        funcCoDomain;
@@ -1942,6 +1950,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     case "pFq":
       return new HypergeometricFunctionNode<>(this);
     case "Beta":
+    case "beta":
       return new BetaFunctionNode<D, C, F>(this);
     default:
       return new FunctionNode<>(reference.name,
@@ -1968,7 +1977,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected <N extends Node<D, C, F>> N resolvePostfixOperators(N node)
   {
-
     node = resolveFactorials(node);
     node = resolveFloor(node);
     node = resolveAbsoluteValue(node);
@@ -2009,13 +2017,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  /**
-   * TODO: See how this can be integrated with {@link ArbShellExecutionController}
-   * via
-   * 
-   * @param classVisitor
-   * @return
-   */
   protected Expression<D, C, F> storeInstructions(ClassVisitor classVisitor)
   {
     if (classVisitor instanceof TraceClassVisitor)

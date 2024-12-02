@@ -141,7 +141,7 @@ import arb.utensils.Utensils;
  *      {@link TheArb4jLibrary}
  */
 
-public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,NamedField<Real>,Lockable<Real>,IntFunction<Real>,Assignable<Real> {
+public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,NamedField<Real>,Lockable<Real>,IntFunction<Real>,Assignable<Real> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
@@ -392,6 +392,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
    * @param that
    * @return this after becoming that
    */
+  @Override
   public Real become(Real that)
   {
     close();
