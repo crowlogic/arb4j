@@ -46,7 +46,7 @@ public class SumNode<D, C, F extends Function<? extends D, ? extends C>> extends
   @Override
   public Node<D, C, F> differentiate(VariableNode<D, C, F> variable)
   {
-    assert false : "TODO: implemenmt ∂[∑ᵢ₌₁ⁿfᵢ(x)]/∂x = ∑ᵢ₌₁ⁿ[∂fᵢ(x)/∂x]";
+    assert false : "TODO: implement ∂[∑ᵢ₌₁ⁿfᵢ(x)]/∂x = ∑ᵢ₌₁ⁿ[∂fᵢ(x)/∂x]";
     return null;
   }
 }
