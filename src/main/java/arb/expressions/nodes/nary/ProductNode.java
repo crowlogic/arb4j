@@ -22,7 +22,7 @@ import arb.functions.Function;
  *      {@link TheArb4jLibrary}
  */
 public class ProductNode<D, C, F extends Function<? extends D, ? extends C>> extends
-                    NAryOperationNode<D, C, F>
+                        NAryOperationNode<D, C, F>
 {
 
   public ProductNode(Expression<D, C, F> expression)
@@ -44,7 +44,7 @@ public class ProductNode<D, C, F extends Function<? extends D, ? extends C>> ext
   @Override
   public Node<D, C, F> differentiate(VariableNode<D, C, F> variable)
   {
-    assert false : "TODO: Auto-generated method stub";
+    assert false : "TODO: implement ∂/∂x[∏ᵢ₌₁ᵏfᵢ(x)] = ∑ᵢ₌₁ᵏ[(∂/∂x fᵢ(x))∏ⱼ₌₁,ⱼ≠ᵢᵏfⱼ(x)]";
     return null;
   }
 

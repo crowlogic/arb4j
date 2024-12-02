@@ -25,9 +25,6 @@ import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.VariableReference;
-import arb.expressions.nodes.binary.DivisionNode;
-import arb.expressions.nodes.binary.ExponentiationNode;
-import arb.expressions.nodes.binary.MultiplicationNode;
 import arb.expressions.nodes.nary.ProductNode;
 import arb.functions.Function;
 

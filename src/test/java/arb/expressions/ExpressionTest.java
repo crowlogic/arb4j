@@ -17,7 +17,6 @@ import arb.functions.complex.ComplexNullaryFunction;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
-import arb.functions.real.RealFunctional;
 import arb.functions.real.RealNullaryFunction;
 import arb.functions.real.RealNullaryFunctional;
 import arb.functions.real.TestCompiledDerivative;
