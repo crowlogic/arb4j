@@ -499,7 +499,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public char symbol()
   {
-    return "sqrt".equals(functionName) ? '√' : 'f';
+    return "sqrt".equals(functionName) ? '√' : "exp".equals(functionName) ? 'e' : 'f';
   }
 
   static final HashSet<String> bitlessFunctions = new HashSet<>();

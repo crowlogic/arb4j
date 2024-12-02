@@ -22,7 +22,6 @@ import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
-import arb.exceptions.ArbException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
