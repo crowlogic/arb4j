@@ -284,4 +284,10 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                                          java.lang.Integer.toString(i)));
   }
 
+  public Node<D, R, F> div(int i)
+  {
+    return div(new LiteralConstantNode<>(expression,
+                                         java.lang.Integer.toString(i)));
+  }
+
 }

@@ -43,7 +43,7 @@ public class k implements
     }
 
     kfunc var10000 = new kfunc();
-    var10000.k = Integer.named("k").set(3);
+    var10000.k = k;
     var10000.initialize();
     return var10000;
   }

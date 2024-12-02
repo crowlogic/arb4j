@@ -325,19 +325,11 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     if (variable.reference.equals(reference))
     {
-      return new DivisionNode<>(expression,
-                                new ExponentiationNode<>(expression,
-                                                         variable,
-                                                         new LiteralConstantNode<>(expression,
-                                                                                   "2")),
-                                new LiteralConstantNode<>(expression,
-                                                          "2"));
+      return variable.pow(2).div(2);
     }
     else
     {
-      return new MultiplicationNode<>(expression,
-                                      this,
-                                      variable);
+      return mul(variable);
     }
   }
 
@@ -591,7 +583,8 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       returnType = reference.type();
     }
-    //assert !returnType.isInterface() : "returnType is " + returnType + " and therefore cannot be instantiated";
+    // assert !returnType.isInterface() : "returnType is " + returnType + " and
+    // therefore cannot be instantiated";
     assert returnType != null : "returnType is null for " + this;
     assert returnType != Object.class : "TODO: tried to return "
                                         + returnType

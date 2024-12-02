@@ -1019,31 +1019,32 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     function.className         = className + "func";
     function.rootNode.isResult = true;
 
+    boolean                                      functionalDependsOnIndependentVariable = false;
+    VariableNode<Object, Object, Function<?, ?>> independentVariableMappedToFunctional  = null;
     if (independentVariable != null)
     {
-      var     independentVariableMappedToFunctional  = independentVariable.spliceInto(function).asVariable();
-      boolean functionalDependsOnIndependentVariable =
-                                                     function.rootNode.dependsOn(independentVariableMappedToFunctional);
-//      assert !functionalDependsOnIndependentVariable : "TODO: map functionalDependsOnIndependentVariable="
-//                                                       + functionalDependsOnIndependentVariable
-//                                                       + "'"
-//                                                       + independentVariable
-//                                                       + "'"
-//                                                       + " context="
-//                                                       + context
-//                                                       + " depends="
-//                                                       + functionalDependsOnIndependentVariable
-//                                                       + " functional="
-//                                                       + function.rootNode.toString();
+      independentVariableMappedToFunctional  = independentVariable.spliceInto(function).asVariable();
+      functionalDependsOnIndependentVariable = function.rootNode.dependsOn(independentVariableMappedToFunctional);
     }
 
     // Generate the implementation
     function.generate();
 
+    // context.variables.put("func", function.instantiate() );
     // Generate code to instantiate the new function
     constructNewObject(mv, function.className);
     duplicateTopOfTheStack(mv);
     invokeDefaultConstructor(mv, function.className);
+
+    if (functionalDependsOnIndependentVariable)
+    {
+      var fieldName = independentVariableMappedToFunctional.getName();
+      var fieldType = independentVariableMappedToFunctional.type();
+      //ndependentVariableMappedToFunctional.generate(mv, fieldType);
+      loadThisFieldOntoStack(mv, fieldName, "L" + function.className + ";");
+      mv.visitInsn(Opcodes.ACONST_NULL);
+      Compiler.putField(mv, function.className, fieldName, fieldType);
+    }
 
     // Copy fields from this expression to the new function instance
     if (context != null && context.variables != null)
@@ -1541,6 +1542,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public MethodVisitor loadThisFieldOntoStack(MethodVisitor mv, String name, Class<?> referenceType)
   {
     return loadFieldOntoStack(loadThisOntoStack(mv), name, referenceType);
+  }
+
+  public MethodVisitor loadThisFieldOntoStack(MethodVisitor mv, String name, String referenceTypeDescriptor)
+  {
+    return loadFieldOntoStack(loadThisOntoStack(mv), name, referenceTypeDescriptor);
   }
 
   @SuppressWarnings("unchecked")
