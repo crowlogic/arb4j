@@ -54,8 +54,8 @@ import javafx.stage.FileChooser.ExtensionFilter;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> extends
-                           VBox
+public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>> extends
+                               VBox
 {
 
   public static final int bits = 128;
@@ -100,7 +100,7 @@ public class ExpressionTree<D, C extends Closeable, F extends Function<D, C>> ex
 
   public ComboBox<Class<?>> functionTypeBox;
 
-  public ExpressionTree(Expressor<D, C, F> expressionAnalyzer, Tab tab)
+  public ExpressionTreeView(Expressor<D, C, F> expressionAnalyzer, Tab tab)
   {
     super(10);
     this.tab       = tab;

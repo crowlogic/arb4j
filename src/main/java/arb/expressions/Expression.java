@@ -1740,10 +1740,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (nextCharacterIs(superscript))
     {
-      node = (N) new ExponentiationNode<D, C, F>(this,
-                                                 node,
-                                                 new LiteralConstantNode<>(this,
-                                                                           digit));
+      node = (N) node.pow(new LiteralConstantNode<>(this,
+                                                    digit));
     }
     return node;
   }

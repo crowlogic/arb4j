@@ -12,7 +12,7 @@ import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.viz.ExpressionTree;
+import arb.expressions.viz.ExpressionTreeView;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -29,9 +29,9 @@ public class ArbTypeRepresenter extends
     representers.put(Context.class, new ContextRepresentation());
     representers.put(Integer.class, new IntegerRepresentation());
     representers.put(Real.class, new RealRepresentation());
-    representers.put(ExpressionTree.class, data ->
+    representers.put(ExpressionTreeView.class, data ->
     {
-      return representData(((ExpressionTree<?, ?, ?>) data).expressionInput.getText());
+      return representData(((ExpressionTreeView<?, ?, ?>) data).expressionInput.getText());
     });
 
     representers.put(SerializedContextVariable.class, data ->
