@@ -294,4 +294,18 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                                             exponent);
   }
 
+  public Node<D, R, F> cos()
+  {
+    return new FunctionNode<>("cos",
+                              this,
+                              expression);
+  }
+
+  public Node<D, R, F> sin()
+  {
+    return new FunctionNode<>("sin",
+                              this,
+                              expression);
+  }
+
 }

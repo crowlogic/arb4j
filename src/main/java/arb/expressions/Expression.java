@@ -2254,4 +2254,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return coDomainType.isInterface();
   }
 
+  public LiteralConstantNode<D, C, F> newLiteralConstant(String i)
+  {
+    return new LiteralConstantNode<D, C, F>(this,
+                                            i);
+  }
+
+  public LiteralConstantNode<D, C, F> newLiteralConstant(int i)
+  {
+    return new LiteralConstantNode<D, C, F>(this,
+                                            java.lang.Integer.toString(i));
+  }
+
 }

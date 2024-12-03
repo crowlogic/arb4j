@@ -465,19 +465,13 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     switch (functionName)
     {
     case "sin":
-      return new FunctionNode<>("cos",
-                                arg,
-                                expression); // derivative of sin is cos
+      return arg.cos();
     case "cos":
-      return new FunctionNode<>("sin",
-                                arg,
-                                expression).neg(); // derivative of cos is -sin
+      return arg.sin().neg();
     case "exp":
-      return this; // derivative of exp is exp
+      return this;
     case "log":
-      return new LiteralConstantNode<>(expression,
-                                       "1").div(arg);
-    // Add other built-in function derivatives
+      return expression.newLiteralConstant(1).div(arg);
     default:
       throw new UnsupportedOperationException("Derivative not implemented for function: " + functionName);
     }
