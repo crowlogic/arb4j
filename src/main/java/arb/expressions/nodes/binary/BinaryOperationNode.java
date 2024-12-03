@@ -304,14 +304,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
   public String stringFormat(Node<?, ?, ?> side)
   {
-    boolean isCommutativeBinaryLeaf = isCommutative() && side instanceof BinaryOperationNode;
-    if (isCommutativeBinaryLeaf)
-    {
-      BinaryOperationNode<?, ?, ?> binNode = (BinaryOperationNode<?, ?, ?>) side;
-      isCommutativeBinaryLeaf = (binNode.left == null || binNode.left.isLeaf())
-                    && (binNode.right == null || binNode.right.isLeaf());
-    }
-    return (isCommutativeBinaryLeaf || (side == null || side.isLeaf())) ? "%s" : "(%s)";
+    return side.isLeaf() ? "%s" : "(%s)";
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>> Node<D, C, F> substitute(String name,
@@ -341,11 +334,13 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   @Override
   public String toString()
   {
-    return isCommutative() ? String.format("%s%s%s", left, symbol,right)
-                           : String.format(String.format("%s%s%s", stringFormat(left), "%s", stringFormat(right)),
-                                           left == null ? "0" : left,
-                                           symbol,
-                                           right == null ? "0" : right);
+    boolean needsImprovement = isCommutative() || (left.isLeaf() && right.isLeaf());
+    String  string = needsImprovement ? String.format("%s%s%s", left, symbol, right)
+                            : String.format(String.format("%s%s%s", stringFormat(left), "%s", stringFormat(right)),
+                                            left == null ? "0" : left,
+                                            symbol,
+                                            right == null ? "0" : right);
+    return string;
   }
 
   public String toString(int depth)

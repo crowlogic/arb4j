@@ -290,7 +290,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public boolean isLeaf()
   {
-    return arg == null || (arg != null && Object.class.equals(arg.type()));
+    return true;
   }
 
   private void loadFunctionReferenceOntoStack(MethodVisitor mv, FunctionMapping<D, R, F> mapping)
@@ -464,6 +464,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     switch (functionName)
     {
+    case "arcsin":
+      var one = expression.newLiteralConstant(1);
+      return one.div(one.sub(arg.pow(2)).sqrt());
     case "sin":
       return arg.cos();
     case "cos":

@@ -15,6 +15,13 @@ import junit.framework.TestCase;
 public class DerivativeNodeTest extends
                                 TestCase
 {
+  public void testArcSinDerivative()
+  {
+    var f  = RealFunction.parse("∂arcsin(x)/∂x");
+    var df = RealFunction.parse("1/√(1-x^2)");
+    assertEquals(df.rootNode.toString(), f.rootNode.toString());
+  }
+
   public void testRealFunctionDerivative()
   {
     var context    = new Context(Real.named("a").set(2),
