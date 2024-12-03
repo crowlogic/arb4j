@@ -36,15 +36,6 @@ public class XDO {
     }
   }
 
-  public void setXdpy(SWIGTYPE_p_Display value) {
-    arblibJNI.XDO_xdpy_set(swigCPtr, this, SWIGTYPE_p_Display.getCPtr(value));
-  }
-
-  public SWIGTYPE_p_Display getXdpy() {
-    long cPtr = arblibJNI.XDO_xdpy_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_Display(cPtr, false);
-  }
-
   public void setDisplay_name(String value) {
     arblibJNI.XDO_display_name_set(swigCPtr, this, value);
   }
@@ -68,24 +59,6 @@ public class XDO {
 
   public int getCharcodes_len() {
     return arblibJNI.XDO_charcodes_len_get(swigCPtr, this);
-  }
-
-  public void setModmap(SWIGTYPE_p_XModifierKeymap value) {
-    arblibJNI.XDO_modmap_set(swigCPtr, this, SWIGTYPE_p_XModifierKeymap.getCPtr(value));
-  }
-
-  public SWIGTYPE_p_XModifierKeymap getModmap() {
-    long cPtr = arblibJNI.XDO_modmap_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_XModifierKeymap(cPtr, false);
-  }
-
-  public void setKeymap(SWIGTYPE_p_KeySym value) {
-    arblibJNI.XDO_keymap_set(swigCPtr, this, SWIGTYPE_p_KeySym.getCPtr(value));
-  }
-
-  public SWIGTYPE_p_KeySym getKeymap() {
-    long cPtr = arblibJNI.XDO_keymap_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_KeySym(cPtr, false);
   }
 
   public void setKeycode_high(int value) {

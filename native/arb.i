@@ -33,7 +33,11 @@ typedef mag_struct * mag_ptr;
 typedef unsigned long* unsigned_long_ptr;
 typedef unsigned long int mp_limb_t;
 
-
+%ignore modmap;
+%ignore keymap;
+%ignore symbol;
+%ignore code;
+%ignore xdpy;
 %ignore size;
 %ignore mp_size_t;
 %ignore d;

@@ -44,22 +44,6 @@ public class CharacterCodeMap {
     return arblibJNI.CharacterCodeMap_key_get(swigCPtr, this);
   }
 
-  public void setCode(SWIGTYPE_p_KeyCode value) {
-    arblibJNI.CharacterCodeMap_code_set(swigCPtr, this, SWIGTYPE_p_KeyCode.getCPtr(value));
-  }
-
-  public SWIGTYPE_p_KeyCode getCode() {
-    return new SWIGTYPE_p_KeyCode(arblibJNI.CharacterCodeMap_code_get(swigCPtr, this), true);
-  }
-
-  public void setSymbol(SWIGTYPE_p_KeySym value) {
-    arblibJNI.CharacterCodeMap_symbol_set(swigCPtr, this, SWIGTYPE_p_KeySym.getCPtr(value));
-  }
-
-  public SWIGTYPE_p_KeySym getSymbol() {
-    return new SWIGTYPE_p_KeySym(arblibJNI.CharacterCodeMap_symbol_get(swigCPtr, this), true);
-  }
-
   public void setGroup(int value) {
     arblibJNI.CharacterCodeMap_group_set(swigCPtr, this, value);
   }
