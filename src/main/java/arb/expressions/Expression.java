@@ -474,7 +474,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected void declareFields(ClassVisitor cw)
   {
     cw.visitField(Opcodes.ACC_PUBLIC, IS_INITIALIZED, "Z", null, null);
-    declareConstants(cw);
+    if (!coDomainType.isInterface())
+    {
+      declareConstants(cw);
+    }
     declareFunctionReferences(cw);
     declareVariables(cw);
     declareIntermediateVariables(cw);
@@ -845,19 +848,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     methodVisitor.visitCode();
 
-    literalConstants.values()
-                    .forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
-                                                                constant.fieldName,
-                                                                constant.type()));
+    if (!coDomainType.isInterface())
+    {
+      literalConstants.values()
+                      .forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
+                                                                  constant.fieldName,
+                                                                  constant.type()));
 
-    intermediateVariables.values()
-                         .forEach(intermediateVariable -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
-                                                                                 intermediateVariable.name,
-                                                                                 intermediateVariable.type));
+      intermediateVariables.values()
+                           .forEach(intermediateVariable -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
+                                                                                   intermediateVariable.name,
+                                                                                   intermediateVariable.type));
 
-    referencedFunctions.forEach((name, mapping) -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
-                                                                          name,
-                                                                          mapping.type()));
+      referencedFunctions.forEach((name, mapping) -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
+                                                                            name,
+                                                                            mapping.type()));
+    }
 
     methodVisitor.visitInsn(Opcodes.RETURN);
     methodVisitor.visitMaxs(10, 10);
@@ -933,7 +939,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        .filter(func -> func.expression != null)
                        .forEach(mapping -> generateFunctionInstance(mv, mapping));
 
-    generateLiteralConstantInitializers(mv);
+    if (!coDomainType.isInterface())
+    {
+      generateLiteralConstantInitializers(mv);
+    }
 
     generateIntermediateVariableInitializers(mv);
 
