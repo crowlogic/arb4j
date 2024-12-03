@@ -16,9 +16,12 @@ import io.fair_acc.chartfx.plugins.*;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -93,6 +96,15 @@ public class FunctionPlotter extends
     {
       evt.consume();
       stage.hide();
+    });
+
+    scene.addEventFilter(KeyEvent.KEY_PRESSED, event ->
+    {
+      if (event.getCode() == KeyCode.ESCAPE)
+      {
+        stage.fireEvent(new WindowEvent(stage,
+                                        WindowEvent.WINDOW_CLOSE_REQUEST));
+      }
     });
 
     stage.showingProperty().addListener((obs, old, newthing) ->
@@ -199,7 +211,7 @@ public class FunctionPlotter extends
   @Override
   public String toString()
   {
-    return String.format("FunctionPlotter[%s]", chart.getDatasets());
+    return String.format("FunctionPlotter[%s]", this.chart);
   }
 
   public void updateLegend()

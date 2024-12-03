@@ -48,10 +48,17 @@ import arb.functions.real.RealNullaryFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealJacobiPolynomials implements
+public class JacobiPolynomials implements
                                AutoCloseable,
                                RealOrthogonalPolynomialSequence
 {
+
+  @Override
+  public Class<RealPolynomial> coDomainType()
+  {
+   return RealPolynomial.class;
+              
+  }
 
   public static Real                  domain  = new Real("0+/-1",
                                                          128);
@@ -73,18 +80,21 @@ public class RealJacobiPolynomials implements
 
   final public RealNullaryFunction    G       = RealNullaryFunction.express("G", "α²-β²", context);
 
-  final public RealPolynomialSequence A       = RealPolynomialSequence.express("A", "n➔(F(n)*x+G())*(C(n)-1)/2", context);
+  final public RealPolynomialSequence A       =
+                                        RealPolynomialSequence.express("A", "n➔(F(n)*x+G())*(C(n)-1)/2", context);
 
   final public RealSequence           E       = RealSequence.express("E", "n➔n*C(n/2)*C(n-1)", context);
 
   final public RealSequence           B       = RealSequence.express("B", "n➔(n+α-1)*(n+β-1)*C(n)", context);
 
-  final public RealPolynomialSequence P       = RealPolynomialSequence.express("P", "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2.0,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))", context);
+  final public RealPolynomialSequence P       =
+                                        RealPolynomialSequence.express("P",
+                                                                       "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2.0,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
+                                                                       context);
 
   private RealFunction                orthogonalityMeasure;
 
-  public RealJacobiPolynomials(Real a,
-                           Real b)
+  public JacobiPolynomials(Real a, Real b)
   {
     bits = Math.max(128, Math.max(a.bits(), b.bits()));
     this.α.set(a);
@@ -93,8 +103,7 @@ public class RealJacobiPolynomials implements
   }
 
   @Override
-  public void
-         close()
+  public void close()
   {
     α.close();
     β.close();
@@ -102,25 +111,19 @@ public class RealJacobiPolynomials implements
   }
 
   @Override
-  public RealPolynomial
-         evaluate(Integer t,
-                  int order,
-                  int bits,
-                  RealPolynomial res)
+  public RealPolynomial evaluate(Integer t, int order, int bits, RealPolynomial res)
   {
     return P.evaluate(t, order, bits, res);
   }
 
   @Override
-  public Domain<Real>
-         domainOfOrthogonality()
+  public Domain<Real> domainOfOrthogonality()
   {
     return domain;
   }
 
   @Override
-  public RealFunction
-         orthogonalityMeasure()
+  public RealFunction orthogonalityMeasure()
   {
     if (orthogonalityMeasure == null)
     {
@@ -130,8 +133,7 @@ public class RealJacobiPolynomials implements
   }
 
   @Override
-  public Iterator<RealPolynomial>
-         iterator()
+  public Iterator<RealPolynomial> iterator()
   {
     return new RealPolynomialSequenceIterator(this);
   }
