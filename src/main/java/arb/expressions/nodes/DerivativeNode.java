@@ -79,7 +79,9 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   }
 
   public Node<D, R, F>         operand;
+
   public VariableNode<D, R, F> variable;
+
   private Node<D, R, F>        derivative;
 
   public DerivativeNode(Expression<D, R, F> expression)
@@ -93,49 +95,43 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public void accept(Consumer<Node<D, R, F>> t)
   {
-    assert false : "TODO";
+    derivative.accept(t);
   }
 
   @Override
   public boolean isScalar()
   {
-    assert false : "TODO";
-    return false;
+    return derivative.isScalar();
   }
 
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO";
-    return null;
+    return derivative.integrate(variable);
   }
 
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO";
-    return null;
+    return derivative.differentiate(variable);
   }
 
   @Override
   public List<? extends Node<D, R, F>> getBranches()
   {
-    assert false : "TODO";
-    return null;
+    return derivative.getBranches();
   }
 
   @Override
   public boolean isLeaf()
   {
-    assert false : "TODO";
-    return false;
+    return derivative.isLeaf();
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     assert !resultType.equals(Object.class) : "Objects shan't be generated";
-    System.out.println("generate " + this);
     return derivative.generate(mv, resultType);
   }
 
@@ -148,16 +144,15 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public <C> Class<? extends C> type()
   {
-    assert false : "TODO";
-    return null;
+    return derivative.type();
   }
 
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
                                                                                        Node<E, S, G> arg)
   {
-    assert false : "TODO";
-    return null;
+    derivative = derivative.substitute(variable, arg);
+    return this;
   }
 
   @Override
@@ -171,21 +166,18 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public char symbol()
   {
-    assert false : "TODO";
-    return ' ';
+    return '∂';
   }
 
   @Override
   public boolean isLiteralConstant()
   {
-    assert false : "TODO";
     return false;
   }
 
   @Override
   public String getIntermediateValueFieldName()
   {
-    assert false : "TODO";
     return null;
   }
 
