@@ -1832,6 +1832,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else
     {
+      // if the coDomain is a functon, then it will be an interface and thus
+      // no intermediate variables will be declare in this class, but only declared in
+      // the class that will be returned
       return null;
     }
 
