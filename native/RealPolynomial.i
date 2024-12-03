@@ -255,6 +255,11 @@ import arb.expressions.Parser;
     return resultingQuotient;
   }
 
+  public RealPolynomial mul(int multiplicand, int bits, RealPolynomial res)
+  {
+    return mul(res.set(multiplicand), bits, res);
+  }
+  
   public RealPolynomial mul(Integer multiplicand, int prec, RealPolynomial res)
   {
     return mul(res.set(multiplicand), prec, res);

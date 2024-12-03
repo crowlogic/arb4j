@@ -92,7 +92,7 @@ public class JacobiPolynomials implements
                                                                        "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2.0,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
                                                                        context);
 
-  private RealFunction                orthogonalityMeasure;
+  protected RealFunction                orthogonalityMeasure;
 
   public JacobiPolynomials(Real a, Real b)
   {
