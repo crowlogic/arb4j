@@ -477,10 +477,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (!coDomainType.isInterface())
     {
       declareConstants(cw);
+      declareIntermediateVariables(cw);
     }
     declareFunctionReferences(cw);
     declareVariables(cw);
-    declareIntermediateVariables(cw);
   }
 
   protected ClassVisitor declareFunctionReferences(ClassVisitor classVisitor)
@@ -1816,17 +1816,24 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     assert !type.isInterface() : "cannot instantiate interface " + type;
 
-    var newIntermediateVariable = new IntermediateVariable<>(this,
-                                                             intermediateVarName,
-                                                             type,
-                                                             initialize);
-    if (intermediateVariables.containsKey(intermediateVarName))
+    if (!coDomainType.isInterface())
     {
-      throw new CompilerException(String.format("an intermediate variable named %s already exists",
-                                                intermediateVarName));
-    }
+      var newIntermediateVariable = new IntermediateVariable<>(this,
+                                                               intermediateVarName,
+                                                               type,
+                                                               initialize);
+      if (intermediateVariables.containsKey(intermediateVarName))
+      {
+        throw new CompilerException(String.format("an intermediate variable named %s already exists",
+                                                  intermediateVarName));
+      }
 
-    intermediateVariables.put(intermediateVarName, newIntermediateVariable);
+      intermediateVariables.put(intermediateVarName, newIntermediateVariable);
+    }
+    else
+    {
+      return null;
+    }
 
     return intermediateVarName;
   }

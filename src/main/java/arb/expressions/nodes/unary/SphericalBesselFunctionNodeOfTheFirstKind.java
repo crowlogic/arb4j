@@ -85,7 +85,6 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
     }
 
     functionFieldName = expression.newIntermediateVariable("j", SphericalBesselFunction.class, true);
-
   }
 
   @Override
