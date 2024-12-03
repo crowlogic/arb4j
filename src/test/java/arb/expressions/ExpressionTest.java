@@ -37,7 +37,6 @@ public class ExpressionTest extends
     assertEquals("1/x", x.rootNode.toString());
   }
 
-  
   public void testDerivativeOfExponentialFunction()
   {
     var x = RealFunction.parse("∂exp(x)/∂x");
@@ -130,8 +129,9 @@ public class ExpressionTest extends
   public void testFourierTransformOfType1ChebyshevPolynomials()
   {
     Context         context = new Context(Integer.named("m").set(2));
+    ComplexFunction F       = ComplexFunction.express("F:pFq([1,m,-m],[1/2],I/2/y)", context);
     ComplexFunction f       =
-                      ComplexFunction.express("y->-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(π*m+y))-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*π*m-y)))*(4*m^2-1)*(-1)^(-m)/((4*m^2*y-2*y)*π)",
+                      ComplexFunction.express("y->-I*F(-y)*exp(I*(π*m+y))-I*F(y)*exp(I*(2*π*m-y))*(4*m^2-1)*(-1)^(-m)/((4*m^2*y-2*y)*π)",
                                               context);
     Complex         eval    = f.eval(2.3, new Complex());
 
@@ -319,7 +319,9 @@ public class ExpressionTest extends
     var F                     =
           RealPolynomialNullaryFunction.parse("F", "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}", context);
     var transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
-    assertEquals("Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}", transformedExpression.toString());
+    String str = transformedExpression.toString();
+    //System.out.println( "str=" + str );
+    assertEquals("Σn➔((2*z)^n*Πk➔α[k]⋰n{k=1…p})/(n!*Πk➔β[k]⋰n{k=1…q}){n=0…N}", str);
   }
 
   public void testSubstitutionToo2()
@@ -331,7 +333,7 @@ public class ExpressionTest extends
     var F                     =
           RealPolynomialNullaryFunction.parse("F", "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}", context);
     var transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
-    assertEquals("Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}", transformedExpression.toString());
+    assertEquals("Σn➔((2*z)^n*Πk➔α[k]⋰n{k=1…p})/(n!*Πk➔β[k]⋰n{k=1…q}){n=0…N}", transformedExpression.toString());
   }
 
   public void testSubstitution()

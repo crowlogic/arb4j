@@ -341,10 +341,11 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   @Override
   public String toString()
   {
-    return String.format(String.format("%s%s%s", stringFormat(left), "%s", stringFormat(right)),
-                         left == null ? "0" : left,
-                         symbol,
-                         right == null ? "0" : right);
+    return isCommutative() ? String.format("%s%s%s", left, symbol,right)
+                           : String.format(String.format("%s%s%s", stringFormat(left), "%s", stringFormat(right)),
+                                           left == null ? "0" : left,
+                                           symbol,
+                                           right == null ? "0" : right);
   }
 
   public String toString(int depth)
@@ -428,7 +429,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   @Override
   public Node<D, C, F> simplify()
   {
-    left = left.simplify();
+    left  = left.simplify();
     right = right.simplify();
     return this;
   }
