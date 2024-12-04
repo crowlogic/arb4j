@@ -17,6 +17,7 @@ public interface OrthogonalBasis<X, E> extends
 
 {
 
+
   /**
    * 
    * @return the {@link Measure} to which the elements of this
@@ -27,6 +28,6 @@ public interface OrthogonalBasis<X, E> extends
     return (domain, order, bits, coDomain) -> RealConstants.one;
   }
 
-  Domain<X> domainOfOrthogonality();
+  Domain<? extends X> domainOfOrthogonality();
 
 }

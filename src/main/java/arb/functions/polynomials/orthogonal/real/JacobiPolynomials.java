@@ -3,6 +3,7 @@ package arb.functions.polynomials.orthogonal.real;
 import java.util.Iterator;
 
 import arb.Integer;
+import arb.OrthonormalBasis;
 import arb.Real;
 import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -11,8 +12,8 @@ import arb.domains.Domain;
 import arb.expressions.Context;
 import arb.functions.integer.RealPolynomialSequence;
 import arb.functions.integer.RealSequence;
-import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
 import arb.functions.polynomials.RealOrthogonalPolynomialSequenceIterator;
+import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
 
@@ -56,8 +57,8 @@ public class JacobiPolynomials implements
   @Override
   public Class<RealPolynomial> coDomainType()
   {
-   return RealPolynomial.class;
-              
+    return RealPolynomial.class;
+
   }
 
   public static Real                  domain  = new Real("0+/-1",
@@ -92,7 +93,7 @@ public class JacobiPolynomials implements
                                                                        "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2.0,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
                                                                        context);
 
-  protected RealFunction                orthogonalityMeasure;
+  protected RealFunction              orthogonalityMeasure;
 
   public JacobiPolynomials(Real a, Real b)
   {
