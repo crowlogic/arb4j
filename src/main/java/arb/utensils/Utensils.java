@@ -94,7 +94,6 @@ public class Utensils
     return input.substring(0, lastIndex + 1);
   }
 
-  public static final int glStepCount = IntegrationTools.glSteps.length;
 
   public static File save(BufferedImage image, String file)
   {

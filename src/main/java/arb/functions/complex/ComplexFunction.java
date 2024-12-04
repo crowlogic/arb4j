@@ -13,7 +13,6 @@ import arb.expressions.Parser;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
 import arb.space.topological.VectorSpace;
-import arb.utensils.IntegrationTools;
 
 /**
  * <pre>
@@ -174,22 +173,6 @@ public interface ComplexFunction extends
     // multiplicity of the root at the point " + z + " here, or throw an exception
     // or something if there isn't a root at the requested point within whatever
     // uncertainty radius is there");
-  }
-
-  /**
-   * Calculate the simple quadrature f([a,b])*(b-a) where
-   * f=this{@link #evaluate(Complex, int, int, Complex)} with a single function
-   * evaluation
-   * 
-   * @param a
-   * @param b
-   * @param prec
-   * @param res
-   * @return res
-   */
-  public default Complex simpleQuadrature(Complex a, Complex b, int prec, Complex res)
-  {
-    return IntegrationTools.calculateSimpleQuadrature(this, a, b, prec, res);
   }
 
   public default Complex eval(double t, Complex result)
