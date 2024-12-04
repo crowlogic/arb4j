@@ -1,8 +1,6 @@
 package arb.functions.complex;
 
 import arb.Complex;
-import arb.IntegrationOptions;
-import arb.Magnitude;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
