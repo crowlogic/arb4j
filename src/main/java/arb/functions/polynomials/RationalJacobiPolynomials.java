@@ -74,7 +74,7 @@ public class RationalJacobiPolynomials implements
   final public Context                  context = new Context(α,
                                                               β);
 
-  final public RealFunction             C       = RealFunction.express("C", "n➔2*n+α+β", context);
+  final public RealSequence             C       = RealSequence.express("C", "n➔2*n+α+β", context);
 
   final public RealSequence             F       = RealSequence.express("F", "n➔C(n-1)*C(n)", context);
 

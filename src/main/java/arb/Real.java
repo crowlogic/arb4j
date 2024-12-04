@@ -168,6 +168,11 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
 
   static { System.loadLibrary( "arblib" ); }
 
+  public RationalFunction sub(Real that, int prec, RationalFunction res)
+  {
+    return res.set(this).sub(that,prec,res);
+  }
+
   public Real(Arena arena)
   {
     this(arena.allocate(Real.BYTES).address(),
