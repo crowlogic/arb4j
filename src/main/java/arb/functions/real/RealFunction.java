@@ -280,60 +280,6 @@ public interface RealFunction extends
     return convergenceFactor;
   }
 
-  public default double integrate(double left, double right)
-  {
-    try ( Magnitude acceptableUncertainty = new Magnitude(1.0e-17); Real l = new Real(left); Real r = new Real(right);
-          Real result = new Real())
-    {
-      IntegrationOptions opts = new IntegrationOptions();
-      opts.verbose = verbose;
-      return integrate(l, r, 64, acceptableUncertainty, opts, 128, result).doubleValue();
-    }
-  }
-
-  public default Real integrate(Real l, Real r)
-  {
-    try ( Magnitude acceptableUncertainty = new Magnitude(1.0e-17); Real result = new Real())
-    {
-      int                bits = Math.max(l.bits(), r.bits());
-      IntegrationOptions opts = new IntegrationOptions();
-      opts.verbose = verbose;
-      return integrate(l, r, bits / 2, acceptableUncertainty, opts, bits, result);
-    }
-  }
-
-  /**
-   * FIXME: there needs to be a sleekeRealFunction alternative to specifying so
-   * many parameters: create anotheRealFunction integrate method that accepts a
-   * smalleRealFunction set of arguments and calls this one with a reasonable set
-   * of values
-   * 
-   * @param left
-   * @param right
-   * @param relativeAccuracyBitsGoal
-   * @param absoluteErrorToleranceGoal
-   * @param options
-   * @param bits
-   * @param res
-   * @return
-   */
-  public default Real integrate(Real left,
-                                Real right,
-                                int relativeAccuracyBitsGoal,
-                                Magnitude absoluteErrorToleranceGoal,
-                                IntegrationOptions options,
-                                int bits,
-                                Real res)
-  {
-    return Integrators.integrate(this,
-                                 left,
-                                 right,
-                                 relativeAccuracyBitsGoal,
-                                 absoluteErrorToleranceGoal,
-                                 options,
-                                 bits,
-                                 res);
-  }
 
   /**
    * 

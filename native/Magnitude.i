@@ -141,15 +141,6 @@ import static arb.arblib.*;
     mag_set_d(this, d );
     return this;
   }
-  
-  public Magnitude resize(int alloc)
-  {
-    swigCPtr = (SWIGTYPE_p_void.getCPtr(flint_realloc(new SWIGTYPE_p_void(Magnitude.getCPtr(this),
-                                                                                        false),
-                                                                    2 * alloc * Magnitude.BYTES)));
-    this.dim = alloc;
-    return this;    
-  }
      
   public Magnitude get( int index )
   {

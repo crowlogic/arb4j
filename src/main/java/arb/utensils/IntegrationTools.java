@@ -27,34 +27,17 @@ public class IntegrationTools
     {
       /* δ = (b-a)/2 */
       b.sub(a, prec, δ).mul2e(-1);
-  
+
       /* mid = (a+b)/2 */
       a.add(b, prec, midpoint).mul2e(-1);
-  
+
       /* wide = mid +- [δ] */
       widePoint.set(midpoint).addUncertainty(δ);
-  
+
       /* Direct evaluation: integral = f([a,b]) * (b-a) */
       Complex result = f.evaluate(widePoint, 0, prec, res).mul(δ, prec, res).mul2e(-1);
       assert result.isFinite() : String.format("f(%s)=%s\n", widePoint, result);
       return result;
-    }
-  }
-
-  public static void resizeVectors(int allocation, Complex as, Complex bs, Complex vs, Magnitude ms)
-  {
-    int k;
-    allocation *= 2;
-    as.resize(allocation);
-    bs.resize(allocation);
-    vs.resize(allocation);
-    ms.resize(allocation);
-    for (k = allocation; k < allocation; k++)
-    {
-      as.get(k).init();
-      bs.get(k).init();
-      vs.get(k).init();
-      ms.get(k).init();
     }
   }
 
@@ -79,13 +62,13 @@ public class IntegrationTools
       {
         Real w = x.get(1);
         assert best_n != -1;
-  
+
         for (i = 0; i < Utensils.glStepCount; i++)
           if (IntegrationTools.glSteps[i] == best_n)
             break;
-  
+
         s.zero();
-  
+
         for (k = 0; k < best_n; k++)
         {
           acb_calc_gl_node(x, w, i, k, bits);
@@ -93,11 +76,11 @@ public class IntegrationTools
           f.evaluate(widePoint, 0, bits, v);
           v.addmul(x.get(1), bits, s);
         }
-  
+
         evalCount.getAndAdd(best_n);
-  
+
         acb_add_error_mag(s.mul(δ, bits, res), err);
-  
+
       }
     }
     else
@@ -122,23 +105,6 @@ public class IntegrationTools
     ms.swap(ms.get(depth));
   }
 
-  public static void resizeRegisters(int allocation, Real as, Real bs, Complex vs, Magnitude ms)
-  {
-    int k = allocation;
-    allocation *= 2;
-    as.resize(allocation);
-    bs.resize(allocation);
-    vs.resize(allocation);
-    ms.resize(allocation);
-    for (; k < allocation; k++)
-    {
-      arb_init(as.get(k));
-      arb_init(bs.get(k));
-      acb_init(vs.get(k));
-      mag_init(ms.get(k));
-    }
-  }
-
   public static void heapUp(Real as, Real bs, Complex vs, Magnitude ms, int n)
   {
     int i, max, l, r;
@@ -158,7 +124,7 @@ public class IntegrationTools
         bs.swap(i, max);
         vs.swap(i, max);
         ms.swap(i, max);
-  
+
         i = max;
       }
       else
@@ -200,7 +166,7 @@ public class IntegrationTools
   {
     int k = n - 1;
     int j = (k - 1) / 2;
-  
+
     while (k > 0 && ms.get(j).compareTo(ms.get(k)) < 0)
     {
       as.swap(j, k);
@@ -224,7 +190,7 @@ public class IntegrationTools
   {
     int k = n - 1;
     int j = (k - 1) / 2;
-  
+
     while (k > 0 && ms.get(j).compareTo(ms.get(k)) < 0)
     {
       as.swap(j, k);
@@ -236,44 +202,8 @@ public class IntegrationTools
     }
   }
 
-  public static final int glSteps[]   =
-  { 1,
-    2,
-    4,
-    6,
-    8,
-    12,
-    16,
-    22,
-    32,
-    46,
-    64,
-    90,
-    128,
-    182,
-    256,
-    362,
-    512,
-    724,
-    1024,
-    1448,
-    2048,
-    2896,
-    4096,
-    5792,
-    8192,
-    11586,
-    16384,
-    23170,
-    32768,
-    46340,
-    65536,
-    92682,
-    131072,
-    185364,
-    262144,
-    370728,
-    524288,
-    741456 };
+  public static final int glSteps[] =
+  { 1, 2, 4, 6, 8, 12, 16, 22, 32, 46, 64, 90, 128, 182, 256, 362, 512, 724, 1024, 1448, 2048, 2896, 4096, 5792, 8192,
+    11586, 16384, 23170, 32768, 46340, 65536, 92682, 131072, 185364, 262144, 370728, 524288, 741456 };
 
 }

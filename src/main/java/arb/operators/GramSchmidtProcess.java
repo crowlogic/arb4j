@@ -24,12 +24,6 @@ public class GramSchmidtProcess
     this.weightFunction = weightFunction;
   }
 
-  public double innerProduct(RealFunction f1, RealFunction f2)
-  {
-    RealFunction product = f1.mul(f2).mul(weightFunction);
-    return product.integrate(-1, 1);
-  }
-
   public List<RealFunction> applyGramSchmidt()
   {
     List<RealFunction> orthogonalizedFunctions = new ArrayList<>();
@@ -50,5 +44,11 @@ public class GramSchmidtProcess
     }
 
     return orthogonalizedFunctions;
+  }
+
+  private double innerProduct(RealFunction newFunction, RealFunction prevFunction)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return 0.0;
   }
 }

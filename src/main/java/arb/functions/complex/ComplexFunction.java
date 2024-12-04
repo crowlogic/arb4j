@@ -133,49 +133,6 @@ public interface ComplexFunction extends
     return new RealPartOfHolomorphicMapping(this);
   }
 
-  /**
-   * Calculates the line integral of this holomorphic function along a given curve
-   * using numerical integration with Gauss-Kronrod quadrature via
-   * {@link RealToComplexFunction#integrate(Real, Real, int, Magnitude, IntegrationOptions, int, Complex)}
-   * 
-   * @param curve                      the curve of integration represented as a
-   *                                   Function<Real, Complex>
-   * @param left                       the left endpoint of the interval of
-   *                                   integration along the curve
-   * @param right                      the right endpoint of the interval of
-   *                                   integration along the curve
-   * @param relativeAccuracyBitsGoal   the desired relative accuracy in bits of
-   *                                   the numerical integration
-   * @param absoluteErrorToleranceGoal the desired absolute error tolerance of the
-   *                                   numerical integration
-   * @param options                    additional options for the numerical
-   *                                   integration
-   * @param bits                       the number of bits of working precision to
-   *                                   use during the integration
-   * @param res                        a Complex object to store the result of the
-   *                                   integration
-   * @return the value of the line integral
-   * @throws NotIntegrableException if the function is not integrable
-   */
-  public default Complex integrateAlongLine(Function<Real, Complex> curve,
-                                            Real left,
-                                            Real right,
-                                            int relativeAccuracyBitsGoal,
-                                            Magnitude absoluteErrorToleranceGoal,
-                                            IntegrationOptions options,
-                                            int bits,
-                                            Complex res)
-  {
-
-    try ( RealToComplexFunction integrand = (t, order, prec, w) -> evaluate(curve.evaluate(t, 0, prec, w),
-                                                                            order,
-                                                                            prec,
-                                                                            w))
-    {
-      return integrand.integrate(left, right, relativeAccuracyBitsGoal, absoluteErrorToleranceGoal, options, bits, res);
-    }
-
-  }
 
   public default ComplexFunction differential() throws NotDifferentiableException
   {
