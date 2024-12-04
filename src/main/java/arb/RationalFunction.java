@@ -41,6 +41,11 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
   }
 
 
+  public RationalFunction sub(Real addend, int prec, RationalFunction result)
+  {
+    return sub(result.set(addend),prec,result);
+  }
+  
   public RationalFunction add(Real real, int bits)
   {
    return add(real,bits,this);

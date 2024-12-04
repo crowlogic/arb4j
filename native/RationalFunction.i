@@ -22,6 +22,11 @@ import java.util.stream.Stream;
 
 %typemap(javacode) fmpz_poly_q_struct %{
 
+  public RationalFunction sub(Real addend, int prec, RationalFunction result)
+  {
+    return sub(result.set(addend),prec,result);
+  }
+  
   public RationalFunction add(Real real, int bits)
   {
    return add(real,bits,this);

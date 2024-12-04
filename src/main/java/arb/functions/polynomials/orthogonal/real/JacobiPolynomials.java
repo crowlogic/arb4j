@@ -3,7 +3,6 @@ package arb.functions.polynomials.orthogonal.real;
 import java.util.Iterator;
 
 import arb.Integer;
-import arb.OrthonormalBasis;
 import arb.Real;
 import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
