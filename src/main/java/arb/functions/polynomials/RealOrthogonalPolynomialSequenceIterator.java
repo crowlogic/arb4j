@@ -10,11 +10,11 @@ import arb.documentation.TheArb4jLibrary;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealPolynomialSequenceIterator extends
-                                            SequenceIterator<RealPolynomial>
+public class RealOrthogonalPolynomialSequenceIterator extends
+                                                      SequenceIterator<RealPolynomial>
 {
 
-  public RealPolynomialSequenceIterator(PolynomialSequence<Real, RealPolynomial> seq)
+  public RealOrthogonalPolynomialSequenceIterator(OrthogonalSequence<Real, RealPolynomial> seq)
   {
     super(seq);
   }

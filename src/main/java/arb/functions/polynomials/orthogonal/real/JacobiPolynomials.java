@@ -12,7 +12,7 @@ import arb.expressions.Context;
 import arb.functions.integer.RealPolynomialSequence;
 import arb.functions.integer.RealSequence;
 import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
-import arb.functions.polynomials.RealPolynomialSequenceIterator;
+import arb.functions.polynomials.RealOrthogonalPolynomialSequenceIterator;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
 
@@ -135,7 +135,7 @@ public class JacobiPolynomials implements
   @Override
   public Iterator<RealPolynomial> iterator()
   {
-    return new RealPolynomialSequenceIterator(this);
+    return new RealOrthogonalPolynomialSequenceIterator(this);
   }
 
   @Override

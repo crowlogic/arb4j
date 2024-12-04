@@ -3,6 +3,7 @@ package arb.utensils;
 import static arb.utensils.Utensils.wrapOrThrow;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -15,7 +16,9 @@ import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
 import arb.viz.FunctionPlotter;
 import arb.viz.WindowManager;
+import io.fair_acc.dataset.DataSet;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -91,7 +94,7 @@ public class ShellFunctions
 
   public static <R extends RealFunction>
          FunctionPlotter
-         plot(double left, double right, int n, Iterable<? extends R> functions)
+         plot(double left, double right, int n, Collection<? extends R> functions)
   {
     AtomicReference<FunctionPlotter> ref = new AtomicReference<>();
 
@@ -109,10 +112,10 @@ public class ShellFunctions
         plotter.createScene();
         plotter.chart.getDatasets().clear();
 
+        var datasets = plotter.chart.getDatasets();
         for (var func : functions)
         {
-          var sample = func.quantize(left, right, n);
-          plotter.chart.getDatasets().add(sample);
+          datasets.add(func.quantize(left, right, n));
         }
 
         plotter.stage.show();

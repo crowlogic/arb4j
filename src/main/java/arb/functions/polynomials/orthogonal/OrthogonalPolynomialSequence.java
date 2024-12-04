@@ -2,7 +2,7 @@ package arb.functions.polynomials.orthogonal;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.polynomials.PolynomialSequence;
+import arb.functions.polynomials.OrthogonalSequence;
 
 /**
  *
@@ -11,7 +11,8 @@ import arb.functions.polynomials.PolynomialSequence;
  */
 public interface OrthogonalPolynomialSequence<R, E> extends
                                              OrthogonalPolynomialBasis<R, E>,
-                                             PolynomialSequence<R, E>
+                                             OrthogonalSequence<R,E>
+                                             
 {
 
 }

@@ -9,7 +9,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
 import arb.functions.integer.RealPolynomialSequence;
-import arb.functions.polynomials.RealPolynomialSequenceIterator;
+import arb.functions.polynomials.RealOrthogonalPolynomialSequenceIterator;
 import arb.functions.polynomials.orthogonal.RecurrentlyGeneratedOrthogonalPolynomialSequence;
 import arb.functions.real.RealFunction;
 
@@ -87,7 +87,7 @@ public class RealChebyshevPolynomialsOfTheFirstKind implements
   public Iterator<RealPolynomial>
          iterator()
   {
-    return new RealPolynomialSequenceIterator(this);
+    return new RealOrthogonalPolynomialSequenceIterator(this);
   }
 
   @Override
