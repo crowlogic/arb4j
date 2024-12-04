@@ -10,7 +10,6 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
 import arb.expressions.Context;
-import arb.functions.integer.FractionSequence;
 import arb.functions.integer.RealSequence;
 import arb.functions.rational.RationalFunctionSequence;
 import arb.functions.rational.RationalNullaryFunction;
@@ -74,7 +73,7 @@ public class RationalJacobiPolynomials implements
   final public Context                  context = new Context(α,
                                                               β);
 
-  final public FractionSequence         C       = FractionSequence.express("C", "n➔2*n+α+β", context);
+  final public RealSequence             C       = RealSequence.express("C", "n➔2*n+α+β", context);
 
   final public RealSequence             F       = RealSequence.express("F", "n➔C(n-1)*C(n)", context);
 
@@ -85,7 +84,7 @@ public class RationalJacobiPolynomials implements
 
   final public RealSequence             E       = RealSequence.express("E", "n➔n*C(n/2)*C(n-1)", context);
 
-  final public FractionSequence         B       = FractionSequence.express("B", "n➔(n+α-1)*(n+β-1)*C(n)", context);
+  final public RealSequence             B       = RealSequence.express("B", "n➔(n+α-1)*(n+β-1)*C(n)", context);
 
   final public RationalFunctionSequence P       =
                                           RationalFunctionSequence.express("P",

@@ -34,13 +34,16 @@ public class JacobiPolynomialSequenceTest extends
 
       Integer won = new Integer("1");
 
-      try ( RationalFunction result = seq.P.evaluate(won, 0, bits, new RationalFunction()))
+      try ( RationalFunction result = seq.evaluate(won, 0, bits, new RationalFunction()))
       {
         Real valAtOne = result.evaluate(RealConstants.one, 1, 128, new Real());
         assertEquals(RealConstants.half, valAtOne);
         Real valAtTwo = result.evaluate(RealConstants.two, 1, 128, new Real());
 
         assertEquals(RealConstants.one, valAtTwo);
+
+        RationalFunction p2 = seq.evaluate(2, 128);
+        assertEquals("(6*x^2-3)/8", p2.toString());
 
       }
 
