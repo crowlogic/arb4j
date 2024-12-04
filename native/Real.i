@@ -147,6 +147,14 @@ import arb.utensils.Utensils;
          false);
   }
   
+  public Fraction mul(Real that, int prec, Fraction res)
+  {
+    try ( Real blip = new Real())
+    {
+      return res.set(mul(that, prec, blip));
+    }
+  }
+  
   public RationalFunction add( Real z, int bits, RationalFunction result )
   {
     return result.set(this).add(z,bits,result);

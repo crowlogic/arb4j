@@ -174,9 +174,12 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
          false);
   }
   
-  public RationalFunction sub(Real operand, int bits, RationalFunction result)
+  public Fraction mul(Real that, int prec, Fraction res)
   {
-    return result.set(this).sub(operand,bits,result);
+    try ( Real blip = new Real())
+    {
+      return res.set(mul(that, prec, blip));
+    }
   }
   
   public RationalFunction add( Real z, int bits, RationalFunction result )
@@ -188,8 +191,6 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   {
     return result.set(this).add(z,bits,result);
   }
-  
-
 
   public Real(Integer val)
   {
@@ -223,7 +224,6 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     return new Real().setName(name);
   }
 
- 
   public RationalFunction add(RationalFunction a, int bits, RationalFunction res)
   {
     return a.add(this,bits,res);
@@ -677,7 +677,6 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     return set(fraction,bits);
   }
   
-
   public RationalFunction sub(RationalFunction operand, int bits, RationalFunction result)
   {
     return result.set(this).sub(operand,bits,result);
