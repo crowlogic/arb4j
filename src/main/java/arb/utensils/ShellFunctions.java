@@ -16,9 +16,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
 import arb.viz.FunctionPlotter;
 import arb.viz.WindowManager;
-import io.fair_acc.dataset.DataSet;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -142,7 +140,7 @@ public class ShellFunctions
     {
       wrapOrThrow(e);
     }
-    FunctionPlotter functionPlotter = ref.get();
+    var functionPlotter = ref.get();
     functionPlotter.show();
     return functionPlotter;
   }
