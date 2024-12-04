@@ -3,11 +3,13 @@ package arb.functions.polynomials.orthogonal;
 import static arb.RealConstants.negHalf;
 
 import arb.Integer;
+import arb.RationalFunction;
 import arb.Real;
 import arb.RealConstants;
 import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.polynomials.RationalJacobiPolynomials;
 import arb.functions.polynomials.orthogonal.real.JacobiPolynomials;
 import junit.framework.TestCase;
 
@@ -22,6 +24,29 @@ public class JacobiPolynomialSequenceTest extends
   public static final int bits = 128;
 
   public static final int N    = 3;
+
+  public static void testPRational()
+  {
+
+    try ( var seq = new RationalJacobiPolynomials(negHalf,
+                                                  negHalf))
+    {
+
+      Integer won = new Integer("1");
+
+      try ( RationalFunction result = seq.P.evaluate(won, 0, bits, new RationalFunction()))
+      {
+        Real valAtOne = result.evaluate(RealConstants.one, 1, 128, new Real());
+        assertEquals(RealConstants.half, valAtOne);
+        Real valAtTwo = result.evaluate(RealConstants.two, 1, 128, new Real());
+
+        assertEquals(RealConstants.one, valAtTwo);
+
+      }
+
+    }
+
+  }
 
   public static void testP()
   {

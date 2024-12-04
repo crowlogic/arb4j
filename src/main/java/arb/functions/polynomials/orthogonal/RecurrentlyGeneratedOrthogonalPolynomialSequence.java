@@ -14,7 +14,7 @@ import arb.domains.Domain;
 import arb.expressions.Context;
 import arb.functions.integer.Sequence;
 import arb.functions.polynomials.PolynomialSequence;
-import arb.functions.polynomials.PolynomialSequenceIterator;
+import arb.functions.polynomials.SequenceIterator;
 
 /**
  * All orthogonal polynomials can be expressed by specifying 3
@@ -49,10 +49,10 @@ public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R,
   @Override
   public E enumerate(int i, int j)
   {
-   assert false : "TODO: fill the cache entry if its not there";
-   return null;
+    assert false : "TODO: fill the cache entry if its not there";
+    return null;
   }
-  
+
   @Override
   public String toString()
   {
@@ -146,13 +146,11 @@ public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R,
   }
 
   @Override
-  public PolynomialSequenceIterator<R, E> iterator()
+  public SequenceIterator<E> iterator()
   {
-    return new PolynomialSequenceIterator<R, E>(this);
+    return new SequenceIterator<E>(this);
   }
 
-  HashMap<R,E> cache = new HashMap<>();
-  
-
+  HashMap<R, E> cache = new HashMap<>();
 
 }

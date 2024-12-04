@@ -45,7 +45,7 @@ import java.util.stream.Stream;
  *      {@link TheArb4jLibrary}
  */
 
-public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fraction>,Verifiable {
+public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fraction>,Verifiable,Comparable<Fraction> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
@@ -839,6 +839,13 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
   {
     return arblib.fmpq_sgn(this);
   }
+  
+  @Override
+  public int compareTo(Fraction o)
+  {
+    return arblib.fmpq_cmp(this, o);
+  }
+  
   
 
   public void setNumeratorAddress(long value) {

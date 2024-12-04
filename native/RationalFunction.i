@@ -1,4 +1,4 @@
-%typemap(javainterfaces) fmpz_poly_q_struct "AutoCloseable,NamedField<RationalFunction>,Function<Fraction,Fraction>,Verifiable"
+%typemap(javainterfaces) fmpz_poly_q_struct "NamedField<RationalFunction>,Function<Fraction,Fraction>,Verifiable,AutoCloseableAssignable<RationalFunction>"
 %typemap(javafinalize) fmpz_poly_q_struct ""
 %typemap(javaimports) fmpz_poly_q_struct %{
 import arb.exceptions.ArbException;

@@ -15,6 +15,11 @@
 #include <unistd.h>
 #include <wchar.h>
 
+int fmpq_cmp_si(const fmpq_t x, slong c);
+int fmpq_cmp_ui(const fmpq_t x, ulong c);
+int fmpq_cmp_fmpz(const fmpq_t x, const fmpz_t y);
+int fmpq_cmp(const fmpq_t x, const fmpq_t y);
+
 int arb_mat_solve(arb_mat_t X, const arb_mat_t A, const arb_mat_t B, slong prec);
 
 void arb_sgn(arb_t res, const arb_t x);

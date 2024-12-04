@@ -9,6 +9,22 @@
 package arb;
 
 public class arblib {
+  public static int fmpq_cmp_si(Fraction x, int numCols) {
+    return arblibJNI.fmpq_cmp_si(Fraction.getCPtr(x), x, numCols);
+  }
+
+  public static int fmpq_cmp_ui(Fraction x, long numCols) {
+    return arblibJNI.fmpq_cmp_ui(Fraction.getCPtr(x), x, numCols);
+  }
+
+  public static int fmpq_cmp_fmpz(Fraction x, long y) {
+    return arblibJNI.fmpq_cmp_fmpz(Fraction.getCPtr(x), x, y);
+  }
+
+  public static int fmpq_cmp(Fraction x, Fraction y) {
+    return arblibJNI.fmpq_cmp(Fraction.getCPtr(x), x, Fraction.getCPtr(y), y);
+  }
+
   public static int arb_mat_solve(RealMatrix X, RealMatrix A, RealMatrix B, int prec) {
     return arblibJNI.arb_mat_solve(RealMatrix.getCPtr(X), X, RealMatrix.getCPtr(A), A, RealMatrix.getCPtr(B), B, prec);
   }

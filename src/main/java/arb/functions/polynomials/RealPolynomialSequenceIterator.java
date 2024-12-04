@@ -11,7 +11,7 @@ import arb.documentation.TheArb4jLibrary;
  *      {@link TheArb4jLibrary}
  */
 public class RealPolynomialSequenceIterator extends
-                                            PolynomialSequenceIterator<Real, RealPolynomial>
+                                            SequenceIterator<RealPolynomial>
 {
 
   public RealPolynomialSequenceIterator(PolynomialSequence<Real, RealPolynomial> seq)

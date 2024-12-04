@@ -6,22 +6,23 @@ import arb.AutoCloseableAssignable;
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.integer.Sequence;
 
 /**
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class PolynomialSequenceIterator<R, E extends AutoCloseableAssignable<? extends E>> implements
-                                             Iterator<E>,
-                                             AutoCloseable
+public class SequenceIterator<E extends AutoCloseableAssignable<? extends E>> implements
+                             Iterator<E>,
+                             AutoCloseable
 {
 
-  public final PolynomialSequence<R, E> sequence;
+  public final Sequence<? extends E> sequence;
 
-  public PolynomialSequenceIterator(PolynomialSequence<R, E> recurrentlyGeneratedOrthogonalPolynomialSequence)
+  public SequenceIterator(Sequence<? extends E> seq)
   {
-    sequence = recurrentlyGeneratedOrthogonalPolynomialSequence;
+    sequence = seq;
   }
 
   Integer index = new Integer();

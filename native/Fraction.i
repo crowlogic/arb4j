@@ -1,4 +1,4 @@
-%typemap(javainterfaces) fmpq "Becomable<Fraction>,AutoCloseable,NamedField<Fraction>,Verifiable"
+%typemap(javainterfaces) fmpq "Becomable<Fraction>,AutoCloseable,NamedField<Fraction>,Verifiable,Comparable<Fraction>"
 %typemap(javafinalize) fmpq ""
 %typemap(javaimports) fmpq %{
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -811,6 +811,13 @@ import java.util.stream.Stream;
   {
     return arblib.fmpq_sgn(this);
   }
+  
+  @Override
+  public int compareTo(Fraction o)
+  {
+    return arblib.fmpq_cmp(this, o);
+  }
+  
   
 %};
  
