@@ -34,7 +34,7 @@ typedef unsigned long* unsigned_long_ptr;
 typedef unsigned long int mp_limb_t;
 
 %ignore modmap;
-%ignore keymap;
+%ignore keymap; 
 %ignore symbol;
 %ignore code;
 %ignore xdpy;

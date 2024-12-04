@@ -1796,24 +1796,8 @@ public class arblib {
     return arblibJNI.arf_div(Float.getCPtr(z), z, Float.getCPtr(x), x, Float.getCPtr(y), y, prec, rnd);
   }
 
-  public static void gmp_randclear(GMPRandomState state) {
-    arblibJNI.gmp_randclear(GMPRandomState.getCPtr(state), state);
-  }
-
   public static void acb_hypgeom_hermite_h(Complex res, Complex n, Complex z, int prec) {
     arblibJNI.acb_hypgeom_hermite_h(Complex.getCPtr(res), res, Complex.getCPtr(n), n, Complex.getCPtr(z), z, prec);
-  }
-
-  public static void gmp_randinit_mt(GMPRandomState state) {
-    arblibJNI.gmp_randinit_mt(GMPRandomState.getCPtr(state), state);
-  }
-
-  public static void gmp_randinit_default(GMPRandomState arg0) {
-    arblibJNI.gmp_randinit_default(GMPRandomState.getCPtr(arg0), arg0);
-  }
-
-  public static void gmp_randseed_ui(GMPRandomState arg0, long arg1) {
-    arblibJNI.gmp_randseed_ui(GMPRandomState.getCPtr(arg0), arg0, arg1);
   }
 
   public static void arb_log(Real z, Real x, int prec) {

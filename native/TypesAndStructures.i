@@ -159,27 +159,6 @@ fmpq;
 
 typedef fmpq fmpq_t[1];
 
-typedef enum
-{
-  GMP_RAND_ALG_DEFAULT = 0,
-  GMP_RAND_ALG_LC = GMP_RAND_ALG_DEFAULT /* Linear congruential.  */
-} gmp_randalg_t;
-
-
-
-/* Random state struct.  */
-typedef struct
-{
-  mpz_t _mp_seed;	    
-  gmp_randalg_t _mp_alg;  
-  union 
-  {
-    void *_mp_lc;         
-  } _mp_algdata;
-} __gmp_randstate_struct;
-
-typedef __gmp_randstate_struct gmp_randstate_t[1];
-
 
  
 typedef struct

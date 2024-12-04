@@ -927,18 +927,10 @@ void arb_hypgeom_m(arb_t res, const arb_t a, const arb_t b, const arb_t z, int r
 
 int arf_div(arf_ptr z, arf_srcptr x, arf_srcptr y, slong prec, arf_rnd_t rnd);
  
-void gmp_randclear (gmp_randstate_t state);
 
 void arb_hypgeom_hermite_h(arb_t res, const arb_t nu, const arb_t z, slong prec);
 void acb_hypgeom_hermite_h(acb_t res, const acb_t n, const acb_t z, slong prec);
- 
-
-void gmp_randinit_mt (gmp_randstate_t state);
-
-void gmp_randinit_default (gmp_randstate_t);
-
-void gmp_randseed_ui (gmp_randstate_t, unsigned long int);
- 
+  
 void arb_log(arb_t z, const arb_t x, slong prec);
 
 void arb_exp(arb_t z, const arb_t x, slong prec);
