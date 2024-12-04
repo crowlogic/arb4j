@@ -168,6 +168,14 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
 
   static { System.loadLibrary( "arblib" ); }
 
+  public Fraction mul(Fraction that, int prec, Fraction res)
+  {
+    try ( Real blip = new Real())
+    {
+      return res.set(mul(res.set(that), prec, blip));
+    }
+  }
+  
   public RationalFunction sub(Real that, int prec, RationalFunction res)
   {
     return res.set(this).sub(that,prec,res);

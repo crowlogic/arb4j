@@ -58,7 +58,14 @@ import java.util.stream.Stream;
     return result.add(that, bits);   
   }
 
-  
+  public Real mul(Fraction element, int prec, Real result)
+  {
+    try ( Real tmp = new Real())
+    {
+      return mul(result.set(element), prec,result);
+    }
+  }
+    
   public RealPolynomial add(RealPolynomial that, int bits, RealPolynomial result)
   {
     result.set(this);

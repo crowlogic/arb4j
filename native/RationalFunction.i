@@ -41,7 +41,12 @@ import java.util.stream.Stream;
   {
     return add(result.set(addend),prec,result);
   }
-  
+
+  public RationalFunction mul(Fraction real, int prec, RationalFunction realPart)
+  {
+    return realPart.set(real).mul(this,prec,realPart);
+  }
+    
   public RationalFunction mul(Real real, int prec)
   {
     return mul(real,prec,this);
