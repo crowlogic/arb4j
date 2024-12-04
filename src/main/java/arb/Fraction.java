@@ -93,6 +93,11 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
       return mul(result.set(element), prec,result);
     }
   }
+  
+  public RealPolynomial mul(RealPolynomial that, int bits, RealPolynomial result)
+  {
+    return result.set(this).mul(that,bits,result);
+  }
     
   public RealPolynomial add(RealPolynomial that, int bits, RealPolynomial result)
   {

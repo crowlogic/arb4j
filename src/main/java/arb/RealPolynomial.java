@@ -96,7 +96,12 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
 
 
   public String name;
-  
+
+  public RealPolynomial add(Fraction a, int bits, RealPolynomial res)
+  {
+    return add(res.set(a),bits,res);
+  }
+    
   @SuppressWarnings("unchecked")
   public RealPolynomial setName(String name)
   {

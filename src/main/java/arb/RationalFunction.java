@@ -165,10 +165,10 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
     
   public RationalFunction sub(Integer element, int prec, RationalFunction result)
   {
-    try ( var bleep = new RationalFunction(); var blip = new RationalFunction())
+    try ( RationalFunction e = new RationalFunction())
     {
-      blip.set(element);
-      return bleep.set(this).sub(blip, prec, result);
+      e.set(element);
+      return result.set(this).sub(e, prec);
     }
   }
   
