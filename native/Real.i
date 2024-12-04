@@ -146,6 +146,11 @@ import arb.utensils.Utensils;
     return res.set(this).sub(that,prec,res);
   }
 
+  public Fraction add(Real element, int prec, Fraction result)
+  {
+    return result.set(this).add(element, prec, result);
+  }
+  
   public Real(Arena arena)
   {
     this(arena.allocate(Real.BYTES).address(),
