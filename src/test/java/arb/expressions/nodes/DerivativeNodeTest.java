@@ -15,6 +15,14 @@ import junit.framework.TestCase;
 public class DerivativeNodeTest extends
                                 TestCase
 {
+
+  public void testTanhDerivative()
+  {
+    var f  = RealFunction.parse("∂tanh(x)/∂x");
+    var df = RealFunction.parse("1-tanh(x)²");
+    assertEquals(df.rootNode.toString(), f.rootNode.toString());
+  }
+
   public void testArcSinDerivative()
   {
     var f  = RealFunction.parse("∂arcsin(x)/∂x");

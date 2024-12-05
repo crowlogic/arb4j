@@ -48,8 +48,8 @@ try (Real x = new Real("25", 128)) {
 
 #### Expression Compiler
 - The [arb.expressions](https://github.com/crowlogic/arb4j/tree/master/src/main/java/arb/expressions) package in arb4j includes tools for compiling mathematical [expressions](https://github.com/crowlogic/arb4j/blob/master/src/main/java/arb/expressions/Expression.java) directly into Java bytecode, saving milleniums of development time, reducing the need to laborously and tediously write new code for each different formula to be evaluated whilst also ensuring efficiency and correctness; it would be challenging to write code manually that would significantly outperform the generated code
-##### ExpressionAnalyzer
-The [ExpressionAnalyzer](https://github.com/crowlogic/arb4j/tree/master/src/main/java/arb/viz/ExpressionAnalyzer.java) provides a tree-list view that shows the abstract-syntex-tree that constitutes
+##### Expressor
+The [Expressor](https://github.com/crowlogic/arb4j/tree/master/src/main/java/arb/expressions/viz/Expressor.java) program provides a tree-list view that shows the abstract-syntex-tree that constitutes
 a given expression and the intermediate values that combine to produce a given result.
 
 ![Screenshot from 2024-08-25 21-42-44](https://github.com/user-attachments/assets/cd1d71de-bcef-4be6-b25a-3c41293de158)

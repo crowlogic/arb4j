@@ -269,7 +269,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public Node<D, R, F> pow(int i)
   {
-    return pow(LiteralConstantNode.of(expression, i));
+    return pow(nodeOf(i));
+  }
+
+  public Node<D, R, F> nodeOf(int i)
+  {
+    return LiteralConstantNode.of(expression, i);
   }
 
   public Node<D, R, F> neg()
@@ -280,12 +285,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public Node<D, R, F> sub(int i)
   {
-    return sub(LiteralConstantNode.of(expression, i));
+    return sub(nodeOf(i));
   }
 
   public Node<D, R, F> div(int i)
   {
-    return div(LiteralConstantNode.of(expression, i));
+    return div(nodeOf(i));
   }
 
   public Node<D, R, F> pow(String exponent)
@@ -296,23 +301,34 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public Node<D, R, F> cos()
   {
-    return new FunctionNode<>("cos",
+    return apply("cos");
+  }
+
+  public Node<D, R, F> apply(String functionName)
+  {
+    return new FunctionNode<>(functionName,
                               this,
                               expression);
   }
 
   public Node<D, R, F> sin()
   {
-    return new FunctionNode<>("sin",
-                              this,
-                              expression);
+    return apply("sin");
   }
 
   public Node<D, R, F> sqrt()
   {
-    return new FunctionNode<>("sqrt",
-                              this,
-                              expression);
+    return apply("sqrt");
+  }
+
+  public Node<D, R, F> tan()
+  {
+    return apply("tan");
+  }
+
+  public Node<D, R, F> tanh()
+  {
+    return apply("tanh");
   }
 
 }

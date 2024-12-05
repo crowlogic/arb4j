@@ -465,7 +465,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     switch (functionName)
     {
     case "arcsin":
-      var one = expression.newLiteralConstant(1);
+      var one = nodeOf(1);
       return one.div(one.sub(arg.pow(2)).sqrt());
     case "sin":
       return arg.cos();
@@ -474,7 +474,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     case "exp":
       return this;
     case "log":
-      return expression.newLiteralConstant(1).div(arg);
+      return nodeOf(1).div(arg);
+    case "tanh":
+      return nodeOf(1).sub(arg.tanh().pow(2));
     default:
       throw new UnsupportedOperationException("Derivative not implemented for function: " + functionName);
     }

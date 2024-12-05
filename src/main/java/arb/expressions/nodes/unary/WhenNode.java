@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
@@ -46,8 +47,81 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
                      UnaryOperationNode<D, R, F>
 {
 
-  private static final String INTEGER_CLASS_INTERNAL_NAME = Type.getInternalName(Integer.class);
   private static final String INT_METHOD_DESCRIPTOR       = Type.getMethodDescriptor(Type.getType(int.class));
+  private static final String INTEGER_CLASS_INTERNAL_NAME = Type.getInternalName(Integer.class);
+
+  public static <D, R, F extends Function<? extends D, ? extends R>>
+         Node<D, R, F>
+         evaluateDefaultCase(Expression<D, R, F> expression)
+  {
+    expression.require(',');
+    var defaultValue = expression.resolve();
+    if (expression.character != ')')
+    {
+      throw new CompilerException(format("expected closing ) of when statement after else at position=%d expression=%s",
+                                         expression.position,
+                                         expression));
+    }
+    return defaultValue;
+  }
+
+  public TreeMap<Integer, Node<D, R, F>> cases;
+
+  private Label                          defaultLabel = new Label();
+
+  private Label                          endSwitch    = new Label();
+  private Label[]                        labels       = null;
+
+  public WhenNode(Expression<D, R, F> expression)
+  {
+    super(null,
+          expression);
+    cases = new TreeMap<>();
+
+    do
+    {
+      evaluateCases();
+    }
+    while (expression.nextCharacterIs(','));
+    expression.require(')');
+    if (arg == null)
+    {
+      throw new CompilerException("default value of when function not specified with else keyword at position="
+                                  + expression.position
+                                  + " of expression="
+                                  + expression);
+    }
+  }
+
+  public <E, S, G extends Function<? extends E, ? extends S>> WhenNode(Expression<D, R, F> expression,
+                                                                       TreeMap<Integer, Node<E, S, G>> cases)
+  {
+    super(null,
+          expression);
+    this.cases = new TreeMap<>();
+
+    for (var entry : cases.entrySet())
+    {
+      var value = entry.getValue().spliceInto(expression);
+      this.cases.put(entry.getKey(), value);
+    }
+
+  }
+
+  @Override
+  public void accept(Consumer<Node<D, R, F>> t)
+  {
+    cases.forEach((id, branch) -> branch.accept(t));
+    arg.accept(t);
+    t.accept(this);
+  }
+
+  @Override
+  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
+  {
+    assert false : "TODO";
+    return null;
+  }
 
   void evaluateCase(TreeMap<Integer, Node<D, R, F>> cases, VariableNode<D, R, F> variable)
   {
@@ -73,62 +147,6 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     cases.put(new Integer(constant.value), value);
   }
 
-  public LiteralConstantNode<D, R, F> evaluateCondition()
-  {
-    Node<D, R, F> condition = expression.evaluate();
-    if (!(condition instanceof LiteralConstantNode))
-    {
-      throw new CompilerException("condition of when statement must be the equality of the input variable to an "
-                                  + "Integer LiteralConstant type, but got "
-                                  + condition);
-    }
-    LiteralConstantNode<D, R, F> constant = (LiteralConstantNode<D, R, F>) condition;
-    expression.require(',');
-    return constant;
-  }
-
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         Node<D, R, F>
-         evaluateDefaultCase(Expression<D, R, F> expression)
-  {
-    expression.require(',');
-    var defaultValue = expression.resolve();
-    if (expression.character != ')')
-    {
-      throw new CompilerException(format("expected closing ) of when statement after else at position=%d expression=%s",
-                                         expression.position,
-                                         expression));
-    }
-    return defaultValue;
-  }
-
-  public TreeMap<Integer, Node<D, R, F>> cases;
-  private Label                          defaultLabel = new Label();
-  private Label                          endSwitch    = new Label();
-
-  private Label[]                        labels       = null;
-
-  public WhenNode(Expression<D, R, F> expression)
-  {
-    super(null,
-          expression);
-    cases = new TreeMap<>();
-
-    do
-    {
-      evaluateCases();
-    }
-    while (expression.nextCharacterIs(','));
-    expression.require(')');
-    if (arg == null)
-    {
-      throw new CompilerException("default value of when function not specified with else keyword at position="
-                                  + expression.position
-                                  + " of expression="
-                                  + expression);
-    }
-  }
-
   public void evaluateCases()
   {
     Node<D, R, F> node = expression.evaluate();
@@ -145,6 +163,20 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
       throw new CompilerException("the cases of the when statement must be either an else statement or a VariableNode but it was a "
                                   + node.getClass());
     }
+  }
+
+  public LiteralConstantNode<D, R, F> evaluateCondition()
+  {
+    Node<D, R, F> condition = expression.evaluate();
+    if (!condition.isLiteralConstant())
+    {
+      throw new CompilerException("condition of when statement must be the equality of the input variable to an "
+                                  + "Integer LiteralConstant type, but got "
+                                  + condition);
+    }
+    var constant = condition.asLiteralConstant();
+    expression.require(',');
+    return constant;
   }
 
   @Override
@@ -174,7 +206,6 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
       for (int i = 0; i < labels.length; i++)
       {
         mv.visitLabel(labels[i]);
-
         branches.get(i).generate(mv, resultType);
         mv.visitJumpInsn(GOTO, endSwitch);
       }
@@ -203,14 +234,77 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   }
 
   @Override
+  public List<Node<D, R, F>> getBranches()
+  {
+    // the default branch is stored in this.arg
+    return Stream.concat(cases.values().stream(), Stream.of(arg)).toList();
+  }
+
+  @Override
+  public String getIntermediateValueFieldName()
+  {
+    return null;
+  }
+
+  @Override
+  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
+  @Override
+  public boolean isLeaf()
+  {
+    return false;
+  }
+
+  @Override
+  public boolean isLiteralConstant()
+  {
+    return arg.isLiteralConstant() && cases.values().stream().allMatch(Node::isLiteralConstant);
+  }
+
+  @Override
+  public boolean isScalar()
+  {
+    return arg.isScalar();
+  }
+
+  @Override
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<E, S, G>
+         spliceInto(Expression<E, S, G> newExpression)
+  {
+    return new WhenNode<E, S, G>(newExpression,
+                                 cases);
+  }
+
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
+                                                                                       Node<E, S, G> arg)
+  {
+    cases.entrySet()
+         .stream()
+         .toList()
+         .forEach(event -> cases.put(event.getKey(), event.getValue().substitute(variable, arg)));
+    return this;
+  }
+
+  @Override
+  public char symbol()
+  {
+    return '≡';
+  }
+
+  @Override
   public String toString()
   {
     return String.format("When[cases=%s,default=%s]",
                          cases.entrySet()
                               .stream()
-                              .map(node -> node.getKey() + "=" + node.getValue().typeset())
+                              .map(node -> node.getKey() + "=" + node.getValue())
                               .collect(Collectors.toList()),
-                         arg.typeset());
+                         arg);
   }
 
   @Override
@@ -225,83 +319,6 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     return cases.entrySet().stream().map(entry -> entry.getValue().typeset()).collect(Collectors.joining(", "))
            + " \text{otherwise} "
            + arg.typeset();
-  }
-
-  @Override
-  public boolean isLeaf()
-  {
-    return false;
-  }
-
-  @Override
-  public List<Node<D, R, F>> getBranches()
-  {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
-  }
-
-  @Override
-  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
-  {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
-  }
-
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
-                                                                                       Node<E, S, G> arg)
-  {
-    cases.entrySet()
-         .stream()
-         .toList()
-         .forEach(event -> cases.put(event.getKey(), event.getValue().substitute(variable, arg)));
-    return this;
-  }
-
-  @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
-  {
-    return new WhenNode<E, S, G>(newExpression);
-  }
-
-  @Override
-  public void accept(Consumer<Node<D, R, F>> t)
-  {
-    cases.forEach((id, branch) -> branch.accept(t));
-    arg.accept(t);
-    t.accept(this);
-  }
-
-  @Override
-  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
-  {
-    assert false : "TODO";
-    return null;
-  }
-
-  @Override
-  public boolean isScalar()
-  {
-    return arg.isScalar();
-  }
-
-  @Override
-  public char symbol()
-  {
-    return '≡';
-  }
-
-  @Override
-  public boolean isLiteralConstant()
-  {
-    return arg.isLiteralConstant() && cases.values().stream().allMatch(Node::isLiteralConstant);
-  }
-
-  @Override
-  public String getIntermediateValueFieldName()
-  {
-    return null;
   }
 
 }
