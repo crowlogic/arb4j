@@ -16,6 +16,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
+import arb.expressions.SyntaxTree;
 import arb.expressions.nodes.binary.AdditionNode;
 import arb.expressions.nodes.binary.DivisionNode;
 import arb.expressions.nodes.binary.ExponentiationNode;
@@ -27,12 +28,12 @@ import arb.functions.Function;
 
 /**
  * <pre>
- * Represents the abstract base class for all nodes within a syntax tree in
- * symbolic computation systems. This class is a fundamental part of the
- * framework, facilitating the construction, manipulation, and evaluation of
- * symbolic expressions. Nodes in the tree can perform a variety of operations
- * such as differentiation, integration, and algebraic simplifications,
- * employing generics to accommodate different data and function types.
+ * Represents the abstract base class for elements of the abstract {@link SyntaxTree} 
+ * constituting an {@link Expression}. This class is a fundamental part of the framework, 
+ * facilitating the construction, manipulation, and evaluation of symbolic express
+ * ions. Nodes in the tree can perform a variety of operations such as differentiation, 
+ * integration, and algebraic simplifications, employing generics to accommodate 
+ * different data and function types.
  *
  * Each node can be a composite, containing other nodes, or a leaf, representing
  * terminal operations or values. The class supports dynamic type
@@ -67,32 +68,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Consumer<Consumer<Node<D, R, F>>>
 {
 
-  public Node<D, R, F> simplify()
-  {
-    return this;
-  }
-
-  @Override
-  public Object clone()
-  {
-    assert false : "TODO";
-    return null;
-  }
-
-  public abstract boolean isScalar();
-
-  public abstract Node<D, R, F> integrate(VariableNode<D, R, F> variable);
-
-  public abstract Node<D, R, F> differentiate(VariableNode<D, R, F> variable);
-
-  public abstract List<? extends Node<D, R, F>> getBranches();
-
-  /**
-   * @return true if this node has any subnodes
-   */
-  public abstract boolean isLeaf();
+  public int                 bits     = 128;
 
   public Expression<D, R, F> expression;
+
+  public Class<?>            generatedType;
 
   public boolean             isResult = false;
 
@@ -104,31 +84,76 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     this.position   = expression.position;
   }
 
-  public abstract MethodVisitor generate(MethodVisitor mv, Class<?> resultType);
-
-  public Class<?> generatedType;
-
-  public Class<?> getGeneratedType()
+  public Node<D, R, F> add(Node<D, R, F> addend)
   {
-    return generatedType;
+    return new AdditionNode<>(expression,
+                              this,
+                              addend);
   }
 
-  public int bits = 128;
+  public Node<D, R, F> apply(String functionName)
+  {
+    return new FunctionNode<>(functionName,
+                              this,
+                              expression);
+  }
 
-  /**
-   * 
-   * @return the {@link LaTeXAtom} string that represents this node
-   */
-  public abstract String typeset();
+  public FunctionNode<D, R, F> asFunction()
+  {
+    assert this instanceof FunctionNode : this + " isn't a FunctionNode";
+    return (FunctionNode<D, R, F>) this;
+  }
 
-  /**
-   * 
-   * @return the type that this node results in when evaluated, should usually be
-   *         one of {@link Real}, {@link Complex}, {@link RealPolynomial}, or
-   *         {@link RealMatrix}, {@link ComplexMatrix}, {@link ComplexPolynomial},
-   *         or {@link Integer}
-   */
-  public abstract <C> Class<? extends C> type();
+  public LiteralConstantNode<D, R, F> asLiteralConstant()
+  {
+    assert this instanceof LiteralConstantNode : this + " isn't a Literal constant";
+    return (LiteralConstantNode<D, R, F>) this;
+  }
+
+  public VariableNode<D, R, F> asVariable()
+  {
+    assert isVariable() : this + " isn't a Variable";
+    return (VariableNode<D, R, F>) this;
+  }
+
+  @Override
+  public Object clone()
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  public Node<D, R, F> cos()
+  {
+    return apply("cos");
+  }
+
+  public boolean dependsOn(VariableNode<D, R, F> variable)
+  {
+    assert false : "TODO: implement in " + getClass();
+    return false;
+  }
+
+  public abstract Node<D, R, F> differentiate(VariableNode<D, R, F> variable);
+
+  public int dim()
+  {
+    return 1;
+  }
+
+  public Node<D, R, F> div(int i)
+  {
+    return div(nodeOf(i));
+  }
+
+  public Node<D, R, F> div(Node<D, R, F> divisor)
+  {
+    return new DivisionNode<>(expression,
+                              this,
+                              divisor);
+  }
+
+  public abstract MethodVisitor generate(MethodVisitor mv, Class<?> resultType);
 
   /**
    * Instantiates the target type instance then calls set on it with the source
@@ -147,14 +172,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    */
   public Class<?> generateCastTo(MethodVisitor methodVisitor, Class<?> type)
   {
-    assert generatedType != null : "generatedType of "
-                                   + this
-                                   + " is null where this.class="
-                                   + getClass()
-                                   + " and casting to "
-                                   + type
-                                   + " is requested";
-    assert !generatedType.equals(type) : String.format("tried to cast from and to the same type %s\n", generatedType);
     checkClassCast(methodVisitor, generatedType);
     expression.allocateIntermediateVariable(methodVisitor, type);
     Compiler.swap(methodVisitor);
@@ -163,8 +180,30 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return generatedType;
   }
 
-  public abstract <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
-                                                                                                Node<E, S, G> arg);
+  public abstract List<? extends Node<D, R, F>> getBranches();
+
+  public Class<?> getGeneratedType()
+  {
+    return generatedType;
+  }
+
+  public abstract String getIntermediateValueFieldName();
+
+  public abstract Node<D, R, F> integrate(VariableNode<D, R, F> variable);
+
+  /**
+   * @return true if this node has any subnodes
+   */
+  public abstract boolean isLeaf();
+
+  public abstract boolean isLiteralConstant();
+
+  public boolean isPossiblyNegative()
+  {
+    return false;
+  }
+
+  public abstract boolean isScalar();
 
   public boolean isVariable()
   {
@@ -175,45 +214,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     return isVariable() && asVariable().isNamed(variable);
   }
-
-  public abstract <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression);
-
-  public VariableNode<D, R, F> asVariable()
-  {
-    assert isVariable() : this + " isn't a Variable";
-    return (VariableNode<D, R, F>) this;
-  }
-
-  public FunctionNode<D, R, F> asFunction()
-  {
-    assert this instanceof FunctionNode : this + " isn't a FunctionNode";
-    return (FunctionNode<D, R, F>) this;
-  }
-
-  public LiteralConstantNode<D, R, F> asLiteralConstant()
-  {
-    assert this instanceof LiteralConstantNode : this + " isn't a Literal constant";
-    return (LiteralConstantNode<D, R, F>) this;
-  }
-
-  public boolean dependsOn(VariableNode<D, R, F> variable)
-  {
-    assert false : "TODO: implement in " + getClass();
-    return false;
-  }
-
-  public abstract char symbol();
-
-  public abstract boolean isLiteralConstant();
-
-  public int dim()
-  {
-    return 1;
-  }
-
-  public abstract String getIntermediateValueFieldName();
 
   protected void loadBitsOntoStack(MethodVisitor mv)
   {
@@ -227,9 +227,27 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     }
   }
 
-  public boolean isPossiblyNegative()
+  public Node<D, R, F> mul(Node<D, R, F> multiplicand)
   {
-    return false;
+    return new MultiplicationNode<>(expression,
+                                    this,
+                                    multiplicand);
+  }
+
+  public Node<D, R, F> neg()
+  {
+    return new NegationNode<>(expression,
+                              this);
+  }
+
+  public Node<D, R, F> nodeOf(int i)
+  {
+    return LiteralConstantNode.of(expression, i);
+  }
+
+  public Node<D, R, F> pow(int i)
+  {
+    return pow(nodeOf(i));
   }
 
   public Node<D, R, F> pow(Node<D, R, F> exponent)
@@ -239,76 +257,15 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                                     exponent);
   }
 
-  public Node<D, R, F> sub(Node<D, R, F> subtrahend)
-  {
-    return new SubtractionNode<>(expression,
-                                 this,
-                                 subtrahend);
-  }
-
-  public Node<D, R, F> add(Node<D, R, F> addend)
-  {
-    return new AdditionNode<>(expression,
-                              this,
-                              addend);
-  }
-
-  public Node<D, R, F> div(Node<D, R, F> divisor)
-  {
-    return new DivisionNode<>(expression,
-                              this,
-                              divisor);
-  }
-
-  public Node<D, R, F> mul(Node<D, R, F> multiplicand)
-  {
-    return new MultiplicationNode<>(expression,
-                                    this,
-                                    multiplicand);
-  }
-
-  public Node<D, R, F> pow(int i)
-  {
-    return pow(nodeOf(i));
-  }
-
-  public Node<D, R, F> nodeOf(int i)
-  {
-    return LiteralConstantNode.of(expression, i);
-  }
-
-  public Node<D, R, F> neg()
-  {
-    return new NegationNode<>(expression,
-                              this);
-  }
-
-  public Node<D, R, F> sub(int i)
-  {
-    return sub(nodeOf(i));
-  }
-
-  public Node<D, R, F> div(int i)
-  {
-    return div(nodeOf(i));
-  }
-
   public Node<D, R, F> pow(String exponent)
   {
     return new LiteralConstantNode<D, R, F>(expression,
                                             exponent);
   }
 
-  public Node<D, R, F> cos()
+  public Node<D, R, F> simplify()
   {
-    return apply("cos");
-  }
-
-  public Node<D, R, F> apply(String functionName)
-  {
-    return new FunctionNode<>(functionName,
-                              this,
-                              expression);
+    return this;
   }
 
   public Node<D, R, F> sin()
@@ -316,10 +273,31 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return apply("sin");
   }
 
+  public abstract <E, S, G extends Function<? extends E, ? extends S>>
+         Node<E, S, G>
+         spliceInto(Expression<E, S, G> newExpression);
+
   public Node<D, R, F> sqrt()
   {
     return apply("sqrt");
   }
+
+  public Node<D, R, F> sub(int i)
+  {
+    return sub(nodeOf(i));
+  }
+
+  public Node<D, R, F> sub(Node<D, R, F> subtrahend)
+  {
+    return new SubtractionNode<>(expression,
+                                 this,
+                                 subtrahend);
+  }
+
+  public abstract <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
+                                                                                                Node<E, S, G> arg);
+
+  public abstract char symbol();
 
   public Node<D, R, F> tan()
   {
@@ -330,5 +308,20 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     return apply("tanh");
   }
+
+  /**
+   * 
+   * @return the type that this node results in when evaluated, should usually be
+   *         one of {@link Real}, {@link Complex}, {@link RealPolynomial}, or
+   *         {@link RealMatrix}, {@link ComplexMatrix}, {@link ComplexPolynomial},
+   *         or {@link Integer}
+   */
+  public abstract <C> Class<? extends C> type();
+
+  /**
+   * 
+   * @return the {@link LaTeXAtom} string that represents this node
+   */
+  public abstract String typeset();
 
 }
