@@ -43,36 +43,62 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
 
   public RationalFunction sub(Real addend, int prec, RationalFunction result)
   {
+      assertPointerConsistency();
+  
     return sub(result.set(addend),prec,result);
   }
   
   public RationalFunction add(Real real, int bits)
   {
+      assertPointerConsistency();
+  
    return add(real,bits,this);
   }
   
+ public RationalFunction div(Fraction operand, int prec, RationalFunction result)
+  {
+      assertPointerConsistency();
+  
+    try ( RationalFunction e = new RationalFunction())
+    {
+      e.set(operand);
+      return result.set(this).div(e, prec);
+    }    
+  }
+  
+    
   public RationalFunction div(Real operand, int prec, RationalFunction result)
   {
+      assertPointerConsistency();
+  
     return div(result.set(operand),prec,result);
   }
   
   public RationalFunction add(Real addend, int prec, RationalFunction result)
   {
+      assertPointerConsistency();
+  
     return add(result.set(addend),prec,result);
   }
 
   public RationalFunction mul(Fraction real, int prec, RationalFunction realPart)
   {
+      assertPointerConsistency();
+  
     return realPart.set(real).mul(this,prec,realPart);
   }
     
   public RationalFunction mul(Real real, int prec)
   {
+      assertPointerConsistency();
+  
     return mul(real,prec,this);
   }
 
   public RationalFunction mul(Real real, int prec, RationalFunction realPart)
   {
+      assertPointerConsistency();
+  
     return realPart.set(real).mul(this,prec,realPart);
   }
   
@@ -90,6 +116,8 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
   @Override
   public RationalFunction inverse(RationalFunction x)
   {
+      assertPointerConsistency();
+  
     arblib.fmpz_poly_q_inv(x, this);
     return null;
   }
@@ -105,6 +133,8 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
     
   public ComplexFraction evaluate(ComplexFraction input, int bits, ComplexFraction result)
   {
+    assertPointerConsistency();
+  
     evaluate(input.realPart, bits, result.realPart);
     evaluate(input.imaginaryPart, bits, result.imaginaryPart);
     return result;
@@ -112,6 +142,8 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
 
   public RationalFunction pow(Real power, int bits, RationalFunction result)
   {
+      assertPointerConsistency();
+  
     assert power.isInteger() : "TODO: support non-integer power " + power;
     try ( var intPower = power.integerValue(new Integer()))
     {
@@ -122,6 +154,8 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
      
   public RationalFunction mul(Integer multiplicand, int bits, RationalFunction result)
   {
+      assertPointerConsistency();
+  
     assert swigCPtr != 0 : "this.swigCPtr is null";
     assert multiplicand.swigCPtr != 0 : "multiplicand.swigCPtr is null";
     assert result.swigCPtr != 0 : "result.swigCPtr is null";    
@@ -137,10 +171,8 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
   @SuppressWarnings("resource")    
   public RationalFunction pow(int power, int bits, RationalFunction res)
   {
-    if ( checkPointers )
-    {
       assertPointerConsistency();
-    }
+  
     RationalFunction thiz = this;
     if ( power < 0 )
     {
@@ -153,6 +185,8 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
   
   public ComplexFraction evaluate(ComplexFraction t, int order, int bits, ComplexFraction result)
   {
+      assertPointerConsistency();
+  
     evaluate(t.realPart,order,bits,result.realPart);
     evaluate(t.imaginaryPart,order,bits,result.imaginaryPart );
     return result;
@@ -160,11 +194,15 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
 
   public RationalFunction sub(Fraction element, int prec, RationalFunction result)
   {     
+    assertPointerConsistency();
+  
       return this.sub(result.set(element), prec,result);
   }  
     
   public RationalFunction sub(Integer element, int prec, RationalFunction result)
   {
+    assertPointerConsistency();
+  
     try ( RationalFunction e = new RationalFunction())
     {
       e.set(element);
@@ -176,11 +214,15 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
 
   public boolean isOne()
   {
+    assertPointerConsistency();
+  
     return arblib.fmpz_poly_q_is_one(this) != 0;
   }
 
   public boolean isZero()
   {
+      assertPointerConsistency();
+  
     return arblib.fmpz_poly_q_is_zero(this) != 0;
   }
 
@@ -268,6 +310,8 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
   @SuppressWarnings("resource")
   public Real evaluate(Real t, int order, int bits, Real res)
   {
+      assertPointerConsistency();
+  
     if  (res == null )
     {
       res = new Real();
@@ -281,24 +325,15 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
   @Override
   public boolean verify()
   {
-    if (!checkPointers)
-    {
-      return true;
-    }
     boolean denominatorConsistent = denominator == null || denominator.swigCPtr == getDenominatorAddress();
     boolean numeratorConsistent   = numerator == null || numerator.swigCPtr == getNumeratorAddress();
     return denominatorConsistent && numeratorConsistent;
   }
   
-  public static boolean checkPointers = true;
   
   @SuppressWarnings("resource")
   public RationalFunction pow(Integer power, int unused, RationalFunction res)
   {
-    if ( checkPointers )
-    {
-      assertPointerConsistency();
-    }
     assert power != null && power.swigCPtr != 0 : "null pointer or reference";
     RationalFunction thiz = this;
     if ( power.getSignedValue() < 0 )
@@ -326,6 +361,8 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
   @Override
   public boolean equals(Object obj)
   {
+      assertPointerConsistency();
+  
     if (obj instanceof Fraction)
     {
       if (!isFraction())
@@ -392,6 +429,8 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
   @Override
   public void close() 
   {
+      assertPointerConsistency();
+  
     delete();
     if ( realVersion != null ) 
     {
@@ -422,6 +461,8 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
   
   public RationalFunction identity()
   {
+      assertPointerConsistency();
+  
     getNumerator().set(0);
     getNumerator().set(1,1);
     getDenominator().set(1);
@@ -503,6 +544,7 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
   @Override
   public RationalFunction mul(RationalFunction x, int prec, RationalFunction result)
   {
+  
     assertPointerConsistency();
     arblib.fmpz_poly_q_mul(result, this, x);
     refreshPointers();
@@ -511,6 +553,8 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
   
   public RationalFunction add(Integer element, int prec, RationalFunction result)
   {
+      assertPointerConsistency();
+  
     try ( RationalFunction e = new RationalFunction())
     {
       e.set(element);
@@ -570,6 +614,8 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
   @Override
   public RationalFunction set(RationalFunction value)
   {
+    assertPointerConsistency();
+    
     arblib.fmpz_poly_q_set(this, value);
     refreshPointers();
     return this;
@@ -600,28 +646,33 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
 
   public RationalFunction set(Real real)
   {
-    assertPointerConsistency();  
-    try ( Fraction tmp = new Fraction() )
+    assertPointerConsistency();
+    try ( Fraction blip = new Fraction() )
     {
-      tmp.set(real);
-      return set(tmp);
+      return set( blip.set(real) );
     }
   }  
   
   @Override
   public RationalFunction zero()
   {
+      assertPointerConsistency();
+  
     arblib.fmpz_poly_q_zero(this);
     return this;
   }
 
   public RationalFunction add(RationalFunction x, int prec)
   {
+      assertPointerConsistency();
+  
     return add(x,prec,this);
   }
   
   public RationalFunction mul(RationalFunction x, int prec)
   {
+      assertPointerConsistency();
+  
     return mul(x,prec,this);
   }
   
@@ -633,6 +684,8 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
 
   public RationalFunction neg(RationalFunction res)
   {
+      assertPointerConsistency();
+  
     arblib.fmpz_poly_q_neg(res, this);
     return res;
   }
@@ -655,6 +708,8 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
   
   public RationalFunction set(Fraction fraction)
   {
+      assertPointerConsistency();
+  
     getNumerator().set(fraction.getNumerator());
     getDenominator().set(fraction.getDenominator());
     return this;
@@ -662,6 +717,8 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
   
   public RationalFunction add(Fraction element, int prec, RationalFunction result)
   {
+      assertPointerConsistency();
+  
     try ( RationalFunction e = new RationalFunction())
     {
       e.set(element);

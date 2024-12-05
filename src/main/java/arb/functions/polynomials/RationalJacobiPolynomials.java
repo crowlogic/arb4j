@@ -85,7 +85,7 @@ public class RationalJacobiPolynomials implements
 
   final public RealSequence             E       = RealSequence.express("E", "n➔n*C(n/2)*C(n-1)", context);
 
-  final public FractionSequence         B       = FractionSequence.express("B", "n➔(n+α-1)*(n+β-1)*C(n)", context);
+  final public RealSequence             B       = RealSequence.express("B", "n➔(n+α-1)*(n+β-1)*C(n)", context);
 
   final public RationalFunctionSequence P       =
                                           RationalFunctionSequence.express("P",
@@ -113,7 +113,9 @@ public class RationalJacobiPolynomials implements
   @Override
   public RationalFunction evaluate(Integer t, int order, int bits, RationalFunction res)
   {
-    return P.evaluate(t, order, bits, res);
+    P.evaluate(t, order, bits, res);
+    res.refreshPointers();
+    return res;
   }
 
   @SuppressWarnings("resource")
