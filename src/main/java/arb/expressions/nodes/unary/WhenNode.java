@@ -28,17 +28,13 @@ import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
- * The {@link WhenNode} class represents a {@link Node} in the
- * {@link Expression} that is constructed by the
- * {@link WhenNode#evaluate(Expression, int)} method when the 'when' "function"
+ * The {@link WhenNode} class represents a {@link Node} that the
+ * {@link Expression#resolveFunction()} method creates when the 'when' keyword
  * is encountered. It's syntax is like this:
  * 
  * <pre>
- * when(n=0,1,n=1,tanh(ln(1+x²)),else,-1)
- * </pre>
- * 
- * in general its
  * when(condition1,value1,condition2,value2,..,else,valueOtherwise)
+ * </pre>
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
