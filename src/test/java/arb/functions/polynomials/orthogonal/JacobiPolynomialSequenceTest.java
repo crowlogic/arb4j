@@ -50,7 +50,7 @@ public class JacobiPolynomialSequenceTest extends
         RationalFunction p2 = seq.evaluate(2, 128);
         assertEquals("(6*x^2-3)/8", p2.toString());
 
-        RationalFunction p3 = seq.evaluate(2, 128);
+        RationalFunction p3 = seq.evaluate(3, 128);
         assertEquals("5/4*x^3-15/16*x", p3.toString());
       }
 
