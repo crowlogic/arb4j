@@ -23,12 +23,12 @@ public class Bibliography extends
                           AbstractBibliography
 {
   public static Article       newOperationalMatrixFractionalIntegration                     =
-                                                                        new Article("A new operational matrix of fractional integration for shifted Jacobi polynomials",
+                                                                        new Article("A New Operational Matrix of Fractional Integration for Shifted Jacobi Polynomials.",
                                                                                     "Ali H. Bhrawy, Mohamed Mahmoud Tharwat, Mohammad A. Alghamdi",
                                                                                     "2014",
-                                                                                    "Bull. Malays. Math. Sci. Soc",
+                                                                                    "Bulletin of the Malaysian Mathematical Sciences Society",
                                                                                     "37",
-                                                                                    "983-995").setNumber("4");
+                                                                                    null).setNumber("4");
 
   public static Article       harmonizableProcessesStructure                                =
                                                              new Article("Harmonizable Processes: Structure",
@@ -239,6 +239,7 @@ public class Bibliography extends
                                                                                            "Applications and Applied Mathematics: An International Journal (AAM)",
                                                                                            "10",
                                                                                            "878-892").setNumber("2");
+  
   public static Article       orthonormalExpansionsForTranslationInvariantKernels           =
                                                                                   new Article("Orthonormal expansions for translation-invariant kernels",
                                                                                               "Filip Tronarp, Toni Karvonen",
