@@ -22,6 +22,14 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       newOperationalMatrixFractionalIntegration                     =
+                                                                        new Article("A new operational matrix of fractional integration for shifted Jacobi polynomials",
+                                                                                    "Ali H. Bhrawy, Mohamed Mahmoud Tharwat, Mohammad A. Alghamdi",
+                                                                                    "2014",
+                                                                                    "Bull. Malays. Math. Sci. Soc",
+                                                                                    "37",
+                                                                                    "983-995").setNumber("4");
+
   public static Article       harmonizableProcessesStructure                                =
                                                              new Article("Harmonizable Processes: Structure",
                                                                          "M. M. Rao",
