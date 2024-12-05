@@ -63,18 +63,18 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                          UnaryOperationNode<D, R, F>
 {
 
-  static final HashSet<String> bitlessFunctions = new HashSet<>();
+  static final HashSet<String>  bitlessFunctions                   = new HashSet<>();
 
-  public static HashSet<String>   complexFunctionsWithComplexResults = new HashSet<>(Arrays.asList("log", "logΓ", "ζ"));
+  public static HashSet<String> complexFunctionsWithComplexResults = new HashSet<>(Arrays.asList("log", "logΓ", "ζ"));
 
-  public static HashSet<String>   complexFunctionsWithRealResults    = new HashSet<>(Arrays.asList("arg",
-                                                                                                   "re",
-                                                                                                   "im",
-                                                                                                   "real",
-                                                                                                   "imag"));
+  public static HashSet<String> complexFunctionsWithRealResults    = new HashSet<>(Arrays.asList("arg",
+                                                                                                 "re",
+                                                                                                 "im",
+                                                                                                 "real",
+                                                                                                 "imag"));
 
-  public static HashSet<String>   integerFunctionsWithRealResults    =
-                                                                  new HashSet<>(Arrays.asList("sqrt", "tanh", "log"));
+  public static HashSet<String> integerFunctionsWithRealResults    =
+                                                                new HashSet<>(Arrays.asList("sqrt", "tanh", "log"));
 
   static
   {
@@ -82,7 +82,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     bitlessFunctions.add("sign");
   }
 
-  public boolean                  contextual                         = false;
+  public boolean                  contextual = false;
 
   public String                   functionName;
 
@@ -164,8 +164,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     switch (functionName)
     {
     case "arcsin":
-      var one = nodeOf(1);
-      return one.div(one.sub(arg.pow(2)).sqrt());
+      return arcsinDerivative();
+    case "arcscos":
+      return arcsinDerivative().neg();
     case "sin":
       return arg.cos();
     case "cos":
@@ -179,6 +180,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     default:
       throw new UnsupportedOperationException("Derivative not implemented for function: " + functionName);
     }
+  }
+
+  public Node<D, R, F> arcsinDerivative()
+  {
+    return nodeOf(1).div(nodeOf(1).sub(arg.pow(2)).sqrt());
   }
 
   private Node<D, R, F> differentiateContextualFunction()
