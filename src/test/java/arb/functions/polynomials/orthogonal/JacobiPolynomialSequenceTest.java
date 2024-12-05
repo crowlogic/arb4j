@@ -31,6 +31,11 @@ public class JacobiPolynomialSequenceTest extends
     try ( var seq = new RationalJacobiPolynomials(negHalf,
                                                   negHalf))
     {
+      RationalFunction p0 = seq.evaluate(0, 128);
+      assertEquals("1", p0.toString());
+
+      RationalFunction p1 = seq.evaluate(1, 128);
+      assertEquals("(x)/2", p1.toString());
 
       Integer won = new Integer("1");
 
@@ -45,6 +50,8 @@ public class JacobiPolynomialSequenceTest extends
         RationalFunction p2 = seq.evaluate(2, 128);
         assertEquals("(6*x^2-3)/8", p2.toString());
 
+        RationalFunction p3 = seq.evaluate(2, 128);
+        assertEquals("5/4*x^3-15/16*x", p3.toString());
       }
 
     }
