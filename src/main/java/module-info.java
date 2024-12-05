@@ -68,7 +68,6 @@ module arb4j
   exports arb.functions.complex;
   exports arb.functions.complex.numbertheoretic;
   exports arb.functions.complex.hyperbolic;
-  exports arb.functions.complex.trigonometric;
   exports arb.functions.integer;
   exports arb.groups;
   exports arb.space.bornological;
