@@ -165,7 +165,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
     case "arcsin":
       return arcsinDerivative();
-    case "arcscos":
+    case "arccos":
       return arcsinDerivative().neg();
     case "sin":
       return arg.cos();
@@ -175,6 +175,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     case "log":
       return nodeOf(1).div(arg);
+    case "tan":
+      return nodeOf(1).add(arg.tan().pow(2));
     case "tanh":
       return nodeOf(1).sub(arg.tanh().pow(2));
     default:
