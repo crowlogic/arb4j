@@ -112,15 +112,15 @@ import arb.utensils.Utensils;
  * attempts to modify the variables value at that the memory level, completely bypassing any of Java's
  * notions of virtual machine yet interoperating with it perfectly. For this to work the 
  * {@link Real} must have been allocated with {@link Real#newAlignedVector(int)} and the bits of 
- * precision allocated must be no more than 128 but this is not asserted presently so as to avoid a this{@link #bits()} function call. The limit
- * of 128 bits exists because this is the maximum number of bits that can be stored in arblib's 
- * inline number format. Any greater than 128 and arblib stores a pointer to the numerical contents 
- * rather than the numerical contents itself. In principle it would be possible to use 
- * {@link arblib#mprotect(SWIGTYPE_p_void, long, int)} to prevent this secondary data from being modified, 
- * but it too would have to be allocated in such a way that it is aligned on a page boundary. The 
- * this{@link #unlock()} call restores the read/writeability by calling {@link arblib#mprotect(SWIGTYPE_p_void, long, int)} 
- * with the appropriate flags and this{@link #locked} can be called to test for locking without triggering 
- * an access violation.
+ * precision allocated must be no more than 128 but this is not asserted presently so as to avoid a 
+ * this{@link #bits()} function call. The limit of 128 bits exists because this is the maximum number 
+ * of bits that can be stored in arblib's inline number format. Any greater than 128 and arblib stores a 
+ * pointer to the numerical contents rather than the numerical contents itself. In principle it would be 
+ * possible to use {@link arblib#mprotect(SWIGTYPE_p_void, long, int)} to prevent this secondary data from 
+ * being modified, but it too would have to be allocated in such a way that it is aligned on a page boundary. 
+ * The this{@link #unlock()} call restores the read/writeability by calling 
+ * {@link arblib#mprotect(SWIGTYPE_p_void, long, int)} with the appropriate flags and this{@link #locked} can 
+ * be called to test for locking without triggering an access violation.
  *
  * It also provides a way to interact with complex numbers with a subset of
  * operations. The class also includes facilities to manage an array of real

@@ -614,8 +614,6 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
   @Override
   public RationalFunction set(RationalFunction value)
   {
-    assertPointerConsistency();
-    
     arblib.fmpz_poly_q_set(this, value);
     refreshPointers();
     return this;
