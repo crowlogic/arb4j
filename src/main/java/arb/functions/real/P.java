@@ -51,109 +51,113 @@ public class P implements
   @Override
   public RationalFunction evaluate(Integer n, int order, int bits, RationalFunction result)
   {
-    if (!this.isInitialized)
+    if (!isInitialized)
     {
-      this.initialize();
+      initialize();
     }
     return switch (n.getSignedValue())
     {
-    case 0 -> result.set(this.iℚ6.set(this.cℤ2));
-    case 1 -> ((Real) this.C.evaluate(this.cℤ2, order, bits, this.iℝ18)).mul(this.iℚ7.identity(), bits, this.iℚ8)
-                                                                        .sub(this.β, bits, this.iℚ9)
-                                                                        .add(this.α, bits, this.iℚ10)
-                                                                        .div(this.cℝ3, bits, result);
-    default -> ((RationalFunction) this.A.evaluate(n,
-                                                   order,
-                                                   bits,
-                                                   this.iℚ11)).mul((RationalFunction) this.P.evaluate(n.sub(this.cℤ2, bits, this.iℤ5), order, bits, this.iℚ12), bits, this.iℚ13).sub(((Real) this.B.evaluate(n, order, bits, this.iℝ19)).mul((RationalFunction) this.P.evaluate(n.sub(this.cℤ4, bits, this.iℤ6), order, bits, this.iℚ14), bits, this.iℚ15), bits, this.iℚ16).div((Real) this.E.evaluate(n, order, bits, this.iℝ20), bits, result);
+    case 0 -> result.set(iℚ6.set(cℤ2));
+    case 1 -> C.evaluate(cℤ2, order, bits, iℝ18)
+               .mul(iℚ7.identity(), bits, iℚ8)
+               .sub(β, bits, iℚ9)
+               .add(α, bits, iℚ10)
+               .div(cℝ3, bits, result);
+    default -> A.evaluate(n, order, bits, iℚ11)
+                .mul(P.evaluate(n.sub(cℤ2, bits, iℤ5), order, bits, iℚ12), bits, iℚ13)
+                .sub(B.evaluate(n, order, bits, iℝ19)
+                      .mul(P.evaluate(n.sub(cℤ4, bits, iℤ6), order, bits, iℚ14), bits, iℚ15),
+                     bits,
+                     iℚ16)
+                .div(E.evaluate(n, order, bits, iℝ20), bits, result);
     };
   }
 
   @Override
   public void initialize()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (this.α == null)
+    else if (α == null)
     {
       throw new AssertionError("P.α is null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("P.β is null");
     }
     else
     {
-      this.A.α           = this.α;
-      this.A.β           = this.β;
-      this.B.α           = this.α;
-      this.B.β           = this.β;
-      this.C.α           = this.α;
-      this.C.β           = this.β;
-      this.E.α           = this.α;
-      this.E.β           = this.β;
-      this.P             = new P();
-      this.P.α           = this.α;
-      this.P.β           = this.β;
-      this.isInitialized = true;
+      A.α           = α;
+      A.β           = β;
+      B.α           = α;
+      B.β           = β;
+      C.α           = α;
+      C.β           = β;
+      E.α           = α;
+      E.β           = β;
+      P             = new P();
+      P.α           = α;
+      P.β           = β;
+      isInitialized = true;
     }
   }
 
   public P()
   {
-    this.cℤ2  = new Integer("1");
-    this.cℤ1  = new Integer("0");
-    this.cℤ4  = new Integer("2");
-    this.cℝ3  = new Real("2.0",
-                         128);
-    this.iℚ6  = new RationalFunction();
-    this.iℚ8  = new RationalFunction();
-    this.iℚ7  = new RationalFunction();
-    this.iℚ9  = new RationalFunction();
-    this.iℝ19 = new Real();
-    this.iℝ18 = new Real();
-    this.iℚ14 = new RationalFunction();
-    this.iℚ15 = new RationalFunction();
-    this.iℚ16 = new RationalFunction();
-    this.iℚ10 = new RationalFunction();
-    this.iℚ11 = new RationalFunction();
-    this.iℚ12 = new RationalFunction();
-    this.iℤ6  = new Integer();
-    this.iℝ20 = new Real();
-    this.iℤ5  = new Integer();
-    this.iℚ13 = new RationalFunction();
+    cℤ2  = new Integer("1");
+    cℤ1  = new Integer("0");
+    cℤ4  = new Integer("2");
+    cℝ3  = new Real("2.0",
+                    128);
+    iℚ6  = new RationalFunction();
+    iℚ8  = new RationalFunction();
+    iℚ7  = new RationalFunction();
+    iℚ9  = new RationalFunction();
+    iℝ19 = new Real();
+    iℝ18 = new Real();
+    iℚ14 = new RationalFunction();
+    iℚ15 = new RationalFunction();
+    iℚ16 = new RationalFunction();
+    iℚ10 = new RationalFunction();
+    iℚ11 = new RationalFunction();
+    iℚ12 = new RationalFunction();
+    iℤ6  = new Integer();
+    iℝ20 = new Real();
+    iℤ5  = new Integer();
+    iℚ13 = new RationalFunction();
   }
 
   @Override
   public void close()
   {
-    this.cℤ2.close();
-    this.cℤ1.close();
-    this.cℤ4.close();
-    this.cℝ3.close();
-    this.iℚ6.close();
-    this.iℚ8.close();
-    this.iℚ7.close();
-    this.iℚ9.close();
-    this.iℝ19.close();
-    this.iℝ18.close();
-    this.iℚ14.close();
-    this.iℚ15.close();
-    this.iℚ16.close();
-    this.iℚ10.close();
-    this.iℚ11.close();
-    this.iℚ12.close();
-    this.iℤ6.close();
-    this.iℝ20.close();
-    this.iℤ5.close();
-    this.iℚ13.close();
-    this.P.close();
-    this.A.close();
-    this.B.close();
-    this.C.close();
-    this.E.close();
+    cℤ2.close();
+    cℤ1.close();
+    cℤ4.close();
+    cℝ3.close();
+    iℚ6.close();
+    iℚ8.close();
+    iℚ7.close();
+    iℚ9.close();
+    iℝ19.close();
+    iℝ18.close();
+    iℚ14.close();
+    iℚ15.close();
+    iℚ16.close();
+    iℚ10.close();
+    iℚ11.close();
+    iℚ12.close();
+    iℤ6.close();
+    iℝ20.close();
+    iℤ5.close();
+    iℚ13.close();
+    P.close();
+    A.close();
+    B.close();
+    C.close();
+    E.close();
   }
 
   @Override

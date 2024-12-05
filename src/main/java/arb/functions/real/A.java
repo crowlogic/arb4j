@@ -39,86 +39,75 @@ public class A implements
   @Override
   public RationalFunction evaluate(Integer n, int order, int bits, RationalFunction result)
   {
-    if (!this.isInitialized)
+    if (!isInitialized)
     {
-      this.initialize();
+      initialize();
     }
 
-    return ((Real) this.F.evaluate(n, order, bits, this.iℝ6)).mul(this.iℚ1.identity(), bits, this.iℚ2)
-                                                             .add((RationalFunction) this.G.evaluate(null,
-                                                                                                     order,
-                                                                                                     bits,
-                                                                                                     this.iℚ3),
-                                                                  bits,
-                                                                  this.iℚ4)
-                                                             .mul(((Real) this.C.evaluate(n,
-                                                                                          order,
-                                                                                          bits,
-                                                                                          this.iℝ7)).sub(this.cℤ1,
-                                                                                                         bits,
-                                                                                                         this.iℝ8),
-                                                                  bits,
-                                                                  this.iℚ5)
-                                                             .div(this.cℤ2, bits, result);
+    return F.evaluate(n, order, bits, iℝ6)
+            .mul(iℚ1.identity(), bits, iℚ2)
+            .add(G.evaluate(null, order, bits, iℚ3), bits, iℚ4)
+            .mul(C.evaluate(n, order, bits, iℝ7).sub(cℤ1, bits, iℝ8), bits, iℚ5)
+            .div(cℤ2, bits, result);
   }
 
   @Override
   public void initialize()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (this.α == null)
+    else if (α == null)
     {
       throw new AssertionError("A.α is null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("A.β is null");
     }
     else
     {
-      this.C.α           = this.α;
-      this.C.β           = this.β;
-      this.F.α           = this.α;
-      this.F.β           = this.β;
-      this.G.α           = this.α;
-      this.G.β           = this.β;
-      this.isInitialized = true;
+      C.α           = α;
+      C.β           = β;
+      F.α           = α;
+      F.β           = β;
+      G.α           = α;
+      G.β           = β;
+      isInitialized = true;
     }
   }
 
   public A()
   {
-    this.cℤ2 = new Integer("2");
-    this.cℤ1 = new Integer("1");
-    this.iℝ8 = new Real();
-    this.iℚ5 = new RationalFunction();
-    this.iℚ2 = new RationalFunction();
-    this.iℚ1 = new RationalFunction();
-    this.iℚ4 = new RationalFunction();
-    this.iℝ7 = new Real();
-    this.iℝ6 = new Real();
-    this.iℚ3 = new RationalFunction();
+    cℤ2 = new Integer("2");
+    cℤ1 = new Integer("1");
+    iℝ8 = new Real();
+    iℚ5 = new RationalFunction();
+    iℚ2 = new RationalFunction();
+    iℚ1 = new RationalFunction();
+    iℚ4 = new RationalFunction();
+    iℝ7 = new Real();
+    iℝ6 = new Real();
+    iℚ3 = new RationalFunction();
   }
 
   @Override
   public void close()
   {
-    this.cℤ2.close();
-    this.cℤ1.close();
-    this.iℝ8.close();
-    this.iℚ5.close();
-    this.iℚ2.close();
-    this.iℚ1.close();
-    this.iℚ4.close();
-    this.iℝ7.close();
-    this.iℝ6.close();
-    this.iℚ3.close();
-    this.C.close();
-    this.F.close();
-    this.G.close();
+    cℤ2.close();
+    cℤ1.close();
+    iℝ8.close();
+    iℚ5.close();
+    iℚ2.close();
+    iℚ1.close();
+    iℚ4.close();
+    iℝ7.close();
+    iℝ6.close();
+    iℚ3.close();
+    C.close();
+    F.close();
+    G.close();
   }
 
   @Override

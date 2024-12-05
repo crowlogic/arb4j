@@ -33,62 +33,62 @@ public class B implements
   @Override
   public Real evaluate(Integer n, int order, int bits, Real result)
   {
-    if (!this.isInitialized)
+    if (!isInitialized)
     {
-      this.initialize();
+      initialize();
     }
 
-    return n.add(this.α, bits, this.iℝ12)
-            .sub(this.cℤ1, bits, this.iℝ13)
-            .mul(n.add(this.β, bits, this.iℝ14).sub(this.cℤ1, bits, this.iℝ15), bits, this.iℝ16)
-            .mul((Real) this.C.evaluate(n, order, bits, this.iℝ17), bits, result);
+    return n.add(α, bits, iℝ12)
+            .sub(cℤ1, bits, iℝ13)
+            .mul(n.add(β, bits, iℝ14).sub(cℤ1, bits, iℝ15), bits, iℝ16)
+            .mul(C.evaluate(n, order, bits, iℝ17), bits, result);
   }
 
   @Override
   public void initialize()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (this.α == null)
+    else if (α == null)
     {
       throw new AssertionError("B.α is null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("B.β is null");
     }
     else
     {
-      this.C.α           = this.α;
-      this.C.β           = this.β;
-      this.isInitialized = true;
+      C.α           = α;
+      C.β           = β;
+      isInitialized = true;
     }
   }
 
   public B()
   {
-    this.cℤ1  = new Integer("1");
-    this.iℝ15 = new Real();
-    this.iℝ16 = new Real();
-    this.iℝ17 = new Real();
-    this.iℝ12 = new Real();
-    this.iℝ13 = new Real();
-    this.iℝ14 = new Real();
+    cℤ1  = new Integer("1");
+    iℝ15 = new Real();
+    iℝ16 = new Real();
+    iℝ17 = new Real();
+    iℝ12 = new Real();
+    iℝ13 = new Real();
+    iℝ14 = new Real();
   }
 
   @Override
   public void close()
   {
-    this.cℤ1.close();
-    this.iℝ15.close();
-    this.iℝ16.close();
-    this.iℝ17.close();
-    this.iℝ12.close();
-    this.iℝ13.close();
-    this.iℝ14.close();
-    this.C.close();
+    cℤ1.close();
+    iℝ15.close();
+    iℝ16.close();
+    iℝ17.close();
+    iℝ12.close();
+    iℝ13.close();
+    iℝ14.close();
+    C.close();
   }
 
   @Override

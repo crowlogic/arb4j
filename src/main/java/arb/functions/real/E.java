@@ -33,60 +33,60 @@ public class E implements
   @Override
   public Real evaluate(Integer n, int order, int bits, Real result)
   {
-    if (!this.isInitialized)
+    if (!isInitialized)
     {
-      this.initialize();
+      initialize();
     }
 
-    return n.mul((Real) this.C.evaluate(n.div(this.cℤ1, bits, this.iℤ3), order, bits, this.iℝ9), bits, this.iℝ10)
-            .mul((Real) this.C.evaluate(n.sub(this.cℤ2, bits, this.iℤ4), order, bits, this.iℝ11), bits, result);
+    return n.mul(C.evaluate(n.div(cℤ1, bits, iℤ3), order, bits, iℝ9), bits, iℝ10)
+            .mul(C.evaluate(n.sub(cℤ2, bits, iℤ4), order, bits, iℝ11), bits, result);
   }
 
   @Override
   public void initialize()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (this.α == null)
+    else if (α == null)
     {
       throw new AssertionError("E.α is null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("E.β is null");
     }
     else
     {
-      this.C.α           = this.α;
-      this.C.β           = this.β;
-      this.isInitialized = true;
+      C.α           = α;
+      C.β           = β;
+      isInitialized = true;
     }
   }
 
   public E()
   {
-    this.cℤ2  = new Integer("1");
-    this.cℤ1  = new Integer("2");
-    this.iℝ9  = new Real();
-    this.iℝ11 = new Real();
-    this.iℤ4  = new Integer();
-    this.iℤ3  = new Integer();
-    this.iℝ10 = new Real();
+    cℤ2  = new Integer("1");
+    cℤ1  = new Integer("2");
+    iℝ9  = new Real();
+    iℝ11 = new Real();
+    iℤ4  = new Integer();
+    iℤ3  = new Integer();
+    iℝ10 = new Real();
   }
 
   @Override
   public void close()
   {
-    this.cℤ2.close();
-    this.cℤ1.close();
-    this.iℝ9.close();
-    this.iℝ11.close();
-    this.iℤ4.close();
-    this.iℤ3.close();
-    this.iℝ10.close();
-    this.C.close();
+    cℤ2.close();
+    cℤ1.close();
+    iℝ9.close();
+    iℝ11.close();
+    iℤ4.close();
+    iℤ3.close();
+    iℝ10.close();
+    C.close();
   }
 
   @Override

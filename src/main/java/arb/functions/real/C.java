@@ -28,41 +28,41 @@ public class C implements
   @Override
   public Real evaluate(Integer n, int order, int bits, Real result)
   {
-    if (!this.isInitialized)
+    if (!isInitialized)
     {
-      this.initialize();
+      initialize();
     }
 
-    return this.cℤ1.mul(n, bits, this.iℤ1).add(this.α, bits, this.iℝ1).add(this.β, bits, result);
+    return cℤ1.mul(n, bits, iℤ1).add(α, bits, iℝ1).add(β, bits, result);
   }
 
   @Override
   public void initialize()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (this.α == null)
+    else if (α == null)
     {
       throw new AssertionError("C.α is null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("C.β is null");
     }
     else
     {
-      this.isInitialized = true;
+      isInitialized = true;
     }
   }
 
   @Override
   public void close()
   {
-    this.cℤ1.close();
-    this.iℤ1.close();
-    this.iℝ1.close();
+    cℤ1.close();
+    iℤ1.close();
+    iℝ1.close();
   }
 
   @Override

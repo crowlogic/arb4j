@@ -29,41 +29,41 @@ public class G implements
   @Override
   public RationalFunction evaluate(Object in, int order, int bits, RationalFunction result)
   {
-    if (!this.isInitialized)
+    if (!isInitialized)
     {
-      this.initialize();
+      initialize();
     }
 
-    return this.α.pow(this.cℤ1, bits, this.iℝ4).sub(this.β.pow(this.cℤ1, bits, this.iℝ5), bits, result);
+    return α.pow(cℤ1, bits, iℝ4).sub(β.pow(cℤ1, bits, iℝ5), bits, result);
   }
 
   @Override
   public void initialize()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (this.α == null)
+    else if (α == null)
     {
       throw new AssertionError("G.α is null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("G.β is null");
     }
     else
     {
-      this.isInitialized = true;
+      isInitialized = true;
     }
   }
 
   @Override
   public void close()
   {
-    this.cℤ1.close();
-    this.iℝ5.close();
-    this.iℝ4.close();
+    cℤ1.close();
+    iℝ5.close();
+    iℝ4.close();
   }
 
   @Override

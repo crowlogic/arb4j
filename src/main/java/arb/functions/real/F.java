@@ -30,56 +30,53 @@ public class F implements
   @Override
   public Real evaluate(Integer n, int order, int bits, Real result)
   {
-    if (!this.isInitialized)
+    if (!isInitialized)
     {
-      this.initialize();
+      initialize();
     }
 
-    return ((Real) this.C.evaluate(n.sub(this.cℤ1, bits, this.iℤ2),
-                                   order,
-                                   bits,
-                                   this.iℝ2)).mul((Real) this.C.evaluate(n, order, bits, this.iℝ3), bits, result);
+    return C.evaluate(n.sub(cℤ1, bits, iℤ2), order, bits, iℝ2).mul(C.evaluate(n, order, bits, iℝ3), bits, result);
   }
 
   @Override
   public void initialize()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (this.α == null)
+    else if (α == null)
     {
       throw new AssertionError("F.α is null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("F.β is null");
     }
     else
     {
-      this.C.α           = this.α;
-      this.C.β           = this.β;
-      this.isInitialized = true;
+      C.α           = α;
+      C.β           = β;
+      isInitialized = true;
     }
   }
 
   public F()
   {
-    this.cℤ1 = new Integer("1");
-    this.iℤ2 = new Integer();
-    this.iℝ3 = new Real();
-    this.iℝ2 = new Real();
+    cℤ1 = new Integer("1");
+    iℤ2 = new Integer();
+    iℝ3 = new Real();
+    iℝ2 = new Real();
   }
 
   @Override
   public void close()
   {
-    this.cℤ1.close();
-    this.iℤ2.close();
-    this.iℝ3.close();
-    this.iℝ2.close();
-    this.C.close();
+    cℤ1.close();
+    iℤ2.close();
+    iℝ3.close();
+    iℝ2.close();
+    C.close();
   }
 
   @Override
