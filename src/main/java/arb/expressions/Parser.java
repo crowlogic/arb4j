@@ -259,11 +259,6 @@ public class Parser
     return str;
   }
 
-  public static boolean isSubscriptedParenthesis(char character)
-  {
-    return character == '₍' || character == '₎';
-  }
-
   public static final HashSet<Character> SUBSCRIPT_CHARACTERS         = new HashSet<Character>(Arrays.asList('₀',
                                                                                                              '₁',
                                                                                                              '₂',

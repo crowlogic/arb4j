@@ -146,15 +146,6 @@ public class Compiler
     return compiledExpression;
   }
 
-  public static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String className,
-                                                                             String expression,
-                                                                             Class<D> domainClass,
-                                                                             Class<R> coDomainClass,
-                                                                             Class<F> functionClass)
-  {
-    return express(className, expression, null, domainClass, coDomainClass, functionClass, false);
-  }
-
   public static <D, R, F extends Function<? extends D, ? extends R>, PD, PR,
                 PF extends Function<? extends PD, ? extends PR>>
          Expression<D, R, F>
