@@ -75,6 +75,7 @@ arb.exceptions.CompilerException: unexpected ')'(0x29) character at position=11 
 	at arb4j/arb.RationalFunctionTest.testPowers(RationalFunctionTest.java:49)
 ```
 which was generated because of the buggy test
+
 ```java
   public void testPowers()
   {

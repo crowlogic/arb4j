@@ -63,18 +63,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                          UnaryOperationNode<D, R, F>
 {
 
-  @Override
-  public String getIntermediateValueFieldName()
-  {
-    return intermediateVariableFieldName;
-  }
+  static final HashSet<String> bitlessFunctions = new HashSet<>();
 
-  public boolean                  contextual                         = false;
-
-  public String                   functionName;
-
-  public static HashSet<String>   integerFunctionsWithRealResults    =
-                                                                  new HashSet<>(Arrays.asList("sqrt", "tanh", "log"));
+  public static HashSet<String>   complexFunctionsWithComplexResults = new HashSet<>(Arrays.asList("log", "logΓ", "ζ"));
 
   public static HashSet<String>   complexFunctionsWithRealResults    = new HashSet<>(Arrays.asList("arg",
                                                                                                    "re",
@@ -82,7 +73,18 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                                                                    "real",
                                                                                                    "imag"));
 
-  public static HashSet<String>   complexFunctionsWithComplexResults = new HashSet<>(Arrays.asList("log", "logΓ", "ζ"));
+  public static HashSet<String>   integerFunctionsWithRealResults    =
+                                                                  new HashSet<>(Arrays.asList("sqrt", "tanh", "log"));
+
+  static
+  {
+    bitlessFunctions.add("neg");
+    bitlessFunctions.add("sign");
+  }
+
+  public boolean                  contextual                         = false;
+
+  public String                   functionName;
 
   public FunctionMapping<D, R, F> mapping;
 
@@ -115,6 +117,13 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     t.accept(this);
   }
 
+  private void assignFunctionName()
+  {
+    this.functionName = Parser.transformToJavaAcceptableCharacters(functionName)
+                              .replaceAll("ln", "log")
+                              .replaceAll("√", "sqrt");
+  }
+
   public boolean checkForArgumentConversionNeed(FunctionMapping<D, R, F> functionMapping, boolean isNullaryFunction)
   {
     return arg != null && !arg.getGeneratedType().equals(functionMapping.domain) && !isNullaryFunction;
@@ -137,6 +146,64 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     mapping.domain       = getDomainType();
     mapping.functionName = functionName;
     expression.recursive = true;
+  }
+
+  @Override
+  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
+  {
+    var argDerivative      = arg.differentiate(variable);
+    var functionDerivative = differentiateFunction();
+    return functionDerivative.mul(argDerivative);
+  }
+
+  /**
+   * Handles differentiation for built-in functions.
+   */
+  private Node<D, R, F> differentiateBuiltinFunction()
+  {
+    switch (functionName)
+    {
+    case "arcsin":
+      var one = nodeOf(1);
+      return one.div(one.sub(arg.pow(2)).sqrt());
+    case "sin":
+      return arg.cos();
+    case "cos":
+      return arg.sin().neg();
+    case "exp":
+      return this;
+    case "log":
+      return nodeOf(1).div(arg);
+    case "tanh":
+      return nodeOf(1).sub(arg.tanh().pow(2));
+    default:
+      throw new UnsupportedOperationException("Derivative not implemented for function: " + functionName);
+    }
+  }
+
+  private Node<D, R, F> differentiateContextualFunction()
+  {
+    throw new UnsupportedOperationException("Contextual function differentiation not implemented: " + functionName);
+  }
+
+  /**
+   * Returns the node representing the derivative of the function. This will vary
+   * based on whether the function is built-in or contextual.
+   */
+  private Node<D, R, F> differentiateFunction()
+  {
+    if (isBuiltin())
+    {
+      return differentiateBuiltinFunction();
+    }
+    else if (contextual)
+    {
+      return differentiateContextualFunction();
+    }
+    else
+    {
+      throw new UnsupportedOperationException("Cannot differentiate function: " + functionName);
+    }
   }
 
   @Override
@@ -217,11 +284,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return methodVisitor;
   }
 
-  public Class<?> getArgType()
-  {
-    return arg.type();
-  }
-
   public MethodVisitor generateContextualFunctionCall(MethodVisitor mv, Class<?> resultType)
   {
     generatedType = type();
@@ -247,6 +309,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
   }
 
+  public Class<?> getArgType()
+  {
+    return arg.type();
+  }
+
   @Override
   public List<Node<D, R, F>> getBranches()
   {
@@ -270,9 +337,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return mapping;
   }
 
-  public boolean isSelfReferential(FunctionMapping<D, R, F> mapping)
+  @Override
+  public String getIntermediateValueFieldName()
   {
-    return mapping == null && functionName != null && expression.context != null;
+    return intermediateVariableFieldName;
   }
 
   @Override
@@ -280,6 +348,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
+  }
+
+  public boolean isBitless()
+  {
+    return bitlessFunctions.contains(functionName);
   }
 
   public boolean isBuiltin()
@@ -291,6 +364,23 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public boolean isLeaf()
   {
     return true;
+  }
+
+  @Override
+  public boolean isLiteralConstant()
+  {
+    return arg.isLiteralConstant();
+  }
+
+  @Override
+  public boolean isScalar()
+  {
+    return arg.isScalar();
+  }
+
+  public boolean isSelfReferential(FunctionMapping<D, R, F> mapping)
+  {
+    return mapping == null && functionName != null && expression.context != null;
   }
 
   private void loadFunctionReferenceOntoStack(MethodVisitor mv, FunctionMapping<D, R, F> mapping)
@@ -369,13 +459,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return retType;
   }
 
-  private void assignFunctionName()
-  {
-    this.functionName = Parser.transformToJavaAcceptableCharacters(functionName)
-                              .replaceAll("ln", "log")
-                              .replaceAll("√", "sqrt");
-  }
-
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>>
          Node<E, S, G>
@@ -392,6 +475,12 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     arg = arg.substitute(variable, transformation);
     return this;
+  }
+
+  @Override
+  public char symbol()
+  {
+    return "sqrt".equals(functionName) ? '√' : "exp".equals(functionName) ? 'e' : 'f';
   }
 
   @Override
@@ -421,107 +510,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     String name = functionName.replaceAll("√", "sqrt").replaceAll("J0", "J_0").replaceAll("ζ", "zeta");
     return format(name.equals("sqrt") ? "\\%s{%s}" : "\\%s(%s)", name, arg == null ? "" : arg.typeset());
-  }
-
-  @Override
-  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
-  {
-    // Step 1: Differentiate the argument (g'(x)).
-    Node<D, R, F> argDerivative = arg.differentiate(variable);
-
-    // Step 2: Differentiate the function (f'(g(x))).
-    Node<D, R, F> functionDerivative = differentiateFunction();
-
-    // Step 3: Apply the chain rule: f'(g(x)) * g'(x).
-    return functionDerivative.mul(argDerivative);
-  }
-
-  /**
-   * Returns the node representing the derivative of the function. This will vary
-   * based on whether the function is built-in or contextual.
-   */
-  private Node<D, R, F> differentiateFunction()
-  {
-    // Check if the function is built-in or contextual.
-    if (isBuiltin())
-    {
-      return differentiateBuiltinFunction();
-    }
-    else if (contextual)
-    {
-      return differentiateContextualFunction();
-    }
-    else
-    {
-      throw new UnsupportedOperationException("Cannot differentiate function: " + functionName);
-    }
-  }
-
-  /**
-   * Handles differentiation for built-in functions.
-   */
-  private Node<D, R, F> differentiateBuiltinFunction()
-  {
-    switch (functionName)
-    {
-    case "arcsin":
-      var one = nodeOf(1);
-      return one.div(one.sub(arg.pow(2)).sqrt());
-    case "sin":
-      return arg.cos();
-    case "cos":
-      return arg.sin().neg();
-    case "exp":
-      return this;
-    case "log":
-      return nodeOf(1).div(arg);
-    case "tanh":
-      return nodeOf(1).sub(arg.tanh().pow(2));
-    default:
-      throw new UnsupportedOperationException("Derivative not implemented for function: " + functionName);
-    }
-  }
-
-  /**
-   * Handles differentiation for contextual functions.
-   */
-  private Node<D, R, F> differentiateContextualFunction()
-  {
-    throw new UnsupportedOperationException("Contextual function differentiation not implemented: " + functionName);
-  }
-
-  @Override
-  public boolean isScalar()
-  {
-    return arg.isScalar();
-  }
-
-  /**
-   * 0xw00
-   */
-  @Override
-  public char symbol()
-  {
-    return "sqrt".equals(functionName) ? '√' : "exp".equals(functionName) ? 'e' : 'f';
-  }
-
-  static final HashSet<String> bitlessFunctions = new HashSet<>();
-
-  static
-  {
-    bitlessFunctions.add("neg");
-    bitlessFunctions.add("sign");
-  }
-
-  public boolean isBitless()
-  {
-    return bitlessFunctions.contains(functionName);
-  }
-
-  @Override
-  public boolean isLiteralConstant()
-  {
-    return arg.isLiteralConstant();
   }
 
 }
