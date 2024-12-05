@@ -90,7 +90,7 @@ public class JacobiPolynomials implements
 
   final public RealPolynomialSequence    P       =
                                            RealPolynomialSequence.express("P",
-                                                                          "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2.0,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
+                                                                          "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
                                                                           context);
 
   protected RealFunction                 orthogonalityMeasure;
