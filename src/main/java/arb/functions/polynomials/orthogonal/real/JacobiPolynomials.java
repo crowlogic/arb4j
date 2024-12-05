@@ -11,7 +11,6 @@ import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
 import arb.expressions.Context;
 import arb.functions.NullaryFunction;
-import arb.functions.integer.FractionSequence;
 import arb.functions.integer.RealPolynomialSequence;
 import arb.functions.integer.RealSequence;
 import arb.functions.polynomials.RealOrthogonalPolynomialSequenceIterator;
@@ -87,7 +86,7 @@ public class JacobiPolynomials implements
 
   final public RealSequence              E       = RealSequence.express("E", "n➔n*C(n/2)*C(n-1)", context);
 
-  final public FractionSequence          B       = FractionSequence.express("B", "n➔(n+α-1)*(n+β-1)*C(n)", context);
+  final public RealSequence              B       = RealSequence.express("B", "n➔(n+α-1)*(n+β-1)*C(n)", context);
 
   final public RealPolynomialSequence    P       =
                                            RealPolynomialSequence.express("P",
