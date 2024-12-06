@@ -124,7 +124,10 @@ import arb.utensils.text.trees.TreeModel;
  * effort, correctness, and overall performance.
  * </pre>
  * 
- * See Also: <a href="https://github.com/crowlogic/arb4j/wiki/ExpressionCompiler">arb4j wiki page</a><br><br>
+ * See Also:
+ * <a href="https://github.com/crowlogic/arb4j/wiki/ExpressionCompiler">arb4j
+ * wiki page</a><br>
+ * <br>
  * 
  * @param <D> The domain type over which the expression operates, such as
  *            {@link Integer}, {@link Real}, {@link Complex},
@@ -1444,10 +1447,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     var ifaces = new ArrayList<>();
     ifaces.add(genericFunctionClassInternalName);
-    for (var iface : implementedInterfaces)
-    {
-      ifaces.add(Type.getInternalName(iface));
-    }
+    Stream.of(implementedInterfaces).map(Type::getInternalName).forEach(ifaces::add);
     return ifaces.toArray(new String[ifaces.size()]);
   }
 
