@@ -22,8 +22,11 @@ public class TopologicalSorter
    */
   public static List<String> sort(Map<String, List<String>> graph)
   {
-    // Step 1: Compute in-degrees for all nodes
     var inDegree = new HashMap<String, Integer>();
+    var queue = new LinkedList<String>();
+    var sortedOrder = new ArrayList<String>();
+
+    // Step 1: Compute in-degrees for all nodes
     graph.keySet().forEach(node -> inDegree.put(node, 0));
     graph.values()
          .forEach(dependencies -> dependencies.forEach(dependency -> inDegree.put(dependency,
@@ -37,17 +40,9 @@ public class TopologicalSorter
                                               .forEach(dependency -> inDegree.put(dependency, 0)));
 
     // Step 2: Add all nodes with in-degree 0 to the queue
-    var queue = new LinkedList<String>();
-    for (var entry : inDegree.entrySet())
-    {
-      if (entry.getValue() == 0)
-      {
-        queue.add(entry.getKey());
-      }
-    }
+    inDegree.entrySet().stream().filter(entry -> entry.getValue() == 0).forEach(entry -> queue.add(entry.getKey()));
 
     // Step 3: Perform topological sort
-    var sortedOrder = new ArrayList<String>();
     while (!queue.isEmpty())
     {
       var current = queue.poll();
