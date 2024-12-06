@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1445,10 +1444,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected String[] implementedInterfaces()
   {
-    var ifaces = new ArrayList<>();
-    ifaces.add(genericFunctionClassInternalName);
-    Stream.of(implementedInterfaces).map(Type::getInternalName).forEach(ifaces::add);
-    return ifaces.toArray(new String[ifaces.size()]);
+    return Stream.concat(Stream.of(genericFunctionClassInternalName),
+                         Stream.of(implementedInterfaces).map(Type::getInternalName))
+                 .toArray(n -> new String[n]);
   }
 
   /**
