@@ -45,6 +45,7 @@ import javafx.util.StringConverter;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
+@SuppressWarnings("unused")
 public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
                       Application
 {
@@ -78,7 +79,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
   {
     Tab tab            = new Tab("Expression " + (tabPane.getTabs().size() + 1));
     var expressionTree = new ExpressionTreeView<D, C, F>(this,
-                                                     tab);
+                                                         tab);
     tab.setContent(expressionTree);
     tabPane.getTabs().add(tab);
     tabPane.getSelectionModel().select(tab);

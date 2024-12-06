@@ -1,7 +1,6 @@
 package arb.utensils;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Comparator;
@@ -25,7 +24,6 @@ import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
-import arb.Complex;
 import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -99,7 +97,7 @@ public class Utensils
   {
 
     // Create the output file
-    File outputFile = new File(file);
+    var outputFile = new File(file);
 
     // Write the image to the output file
     try
@@ -116,10 +114,10 @@ public class Utensils
 
   public static BufferedImage image(Icon icon)
   {
-    BufferedImage image = new BufferedImage(icon.getIconWidth(),
-                                            icon.getIconHeight(),
-                                            BufferedImage.TYPE_INT_ARGB);
-    Graphics2D    g2d   = image.createGraphics();
+    var image = new BufferedImage(icon.getIconWidth(),
+                                  icon.getIconHeight(),
+                                  BufferedImage.TYPE_INT_ARGB);
+    var g2d   = image.createGraphics();
     icon.paintIcon(null, g2d, 0, 0);
     g2d.dispose();
     return image;
@@ -128,8 +126,8 @@ public class Utensils
   public static ImageViewer showFormula(Typesettable formula)
   {
 
-    ImageViewer imageViewer = new ImageViewer(formula.toString(),
-                                              renderFormula(formula.typeset()));
+    var imageViewer = new ImageViewer(formula.toString(),
+                                      renderFormula(formula.typeset()));
     imageViewer.setVisible(true);
     return imageViewer;
 
@@ -137,9 +135,8 @@ public class Utensils
 
   public static void saveFormula(String formula, String path) throws IOException
   {
-    BufferedImage bimg = renderFormula(formula);
-
-    File          out  = new File(path);
+    var bimg = renderFormula(formula);
+    var out  = new File(path);
     ImageIO.write(bimg, "png", out);
   }
 
@@ -150,20 +147,20 @@ public class Utensils
 
   public static BufferedImage renderFormula(String formula, int size)
   {
-    TeXFormula    tf   = new TeXFormula(formula);
-    TeXIcon       ti   = tf.createTeXIcon(TeXConstants.STYLE_DISPLAY, size);
-    BufferedImage bimg = new BufferedImage(ti.getIconWidth(),
-                                           ti.getIconHeight(),
-                                           BufferedImage.TYPE_4BYTE_ABGR);
+    var tf   = new TeXFormula(formula);
+    var ti   = tf.createTeXIcon(TeXConstants.STYLE_DISPLAY, size);
+    var bimg = new BufferedImage(ti.getIconWidth(),
+                                 ti.getIconHeight(),
+                                 BufferedImage.TYPE_4BYTE_ABGR);
 
-    Graphics2D    g2d  = bimg.createGraphics();
+    var g2d  = bimg.createGraphics();
     g2d.setColor(new Color(112,
                            128,
                            144,
                            0));
     g2d.fillRect(0, 0, ti.getIconWidth(), ti.getIconHeight());
 
-    JLabel jl = new JLabel();
+    var jl = new JLabel();
     jl.setForeground(new Color(0,
                                0,
                                0));
@@ -175,24 +172,7 @@ public class Utensils
   {
     var formula = new TeXFormula(latex);
     var icon    = formula.createTeXIcon(TeXConstants.STYLE_TEXT, size, true);
-
     return icon;
-  }
-
-  /**
-   * A version of {@link Complex#overlaps(Complex)} used by the integration code
-   * which is less accurate by design in that it determines the regions to overlay
-   * they do so within a specified precision
-   * 
-   * @param tmp
-   * @param a
-   * @param b
-   * @param prec
-   * @return (a-b).containsZero()
-   */
-  public static boolean overlaps(Complex tmp, Complex a, Complex b, int prec)
-  {
-    return a.sub(b, prec, tmp).containsZero();
   }
 
   public static void println(Object s)

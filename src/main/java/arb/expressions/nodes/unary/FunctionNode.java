@@ -26,7 +26,6 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.FunctionMapping;
 import arb.expressions.Parser;
-import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;

@@ -3,14 +3,11 @@ package arb.utensils;
 import static arb.utensils.Utensils.wrapOrThrow;
 
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
-
-import org.yaml.snakeyaml.Yaml;
 
 import arb.Real;
 import arb.RealTwoDimensionalDataSet;
