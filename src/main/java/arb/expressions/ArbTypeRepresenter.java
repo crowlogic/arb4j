@@ -11,6 +11,7 @@ import org.yaml.snakeyaml.representer.Representer;
 import arb.Fraction;
 import arb.Integer;
 import arb.Real;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.viz.ExpressionTreeView;
@@ -37,6 +38,8 @@ public class ArbTypeRepresenter extends
     representers.put(Integer.class, new IntegerRepresentation());
     representers.put(Real.class, new RealRepresentation());
     representers.put(Fraction.class, new FractionRepresentation());
+    representers.put(RealPolynomial.class, new RealPolynomialRepresentation());
+
     representers.put(ExpressionTreeView.class, data ->
     {
       return representData(((ExpressionTreeView<?, ?, ?>) data).expressionInput.getText());
@@ -73,9 +76,23 @@ public class ArbTypeRepresenter extends
     @Override
     public Node representData(Object data)
     {
-      Fraction integer = (Fraction) data;
+      Fraction fraction = (Fraction) data;
 
-      return ArbTypeRepresenter.this.representData(new SerializedContextVariable(integer));
+      return ArbTypeRepresenter.this.representData(new SerializedContextVariable(fraction));
+    }
+
+  }
+
+  public class RealPolynomialRepresentation implements
+                                            Represent
+  {
+
+    @Override
+    public Node representData(Object data)
+    {
+      RealPolynomial RealPolynomial = (RealPolynomial) data;
+
+      return ArbTypeRepresenter.this.representData(new SerializedContextVariable(RealPolynomial));
     }
 
   }
