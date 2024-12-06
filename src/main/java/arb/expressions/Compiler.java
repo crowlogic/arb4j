@@ -632,4 +632,11 @@ public class Compiler
     return mv;
   }
 
+  public static void generateReturnInstructionAndEndTheVisit(MethodVisitor methodVisitor)
+  {
+    methodVisitor.visitInsn(Opcodes.ARETURN);
+    methodVisitor.visitMaxs(10, 10);
+    methodVisitor.visitEnd();
+  }
+
 }

@@ -914,9 +914,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     mv.visitCode();
     mv.visitLdcInsn(Type.getType(coDomainType));
-    mv.visitInsn(Opcodes.ARETURN);
-    mv.visitMaxs(1, 0);
-    mv.visitEnd();
+    Compiler.generateReturnInstructionAndEndTheVisit(mv);
+
 
     return classVisitor;
   }
@@ -972,11 +971,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Label         startLabel = new Label();
     Label         endLabel   = new Label();
 
-    MethodVisitor mv         = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                        "evaluate",
-                                                        evaluationMethodDescriptor,
-                                                        evaluateMethodSignature,
-                                                        null);
+    String methodName = "evaluate";
+    MethodVisitor mv = visitMethod(classVisitor, methodName);
     mv.visitCode();
     mv.visitLabel(startLabel);
     annotateWithOverride(mv);
@@ -993,7 +989,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       rootNode.isResult = true;
       rootNode.generate(mv, coDomainType);
-      // mv.visitInsn(ARETURN);
     }
 
     mv.visitInsn(Opcodes.ARETURN);
@@ -1002,6 +997,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitMaxs(10, 10);
     mv.visitEnd();
     return classVisitor;
+  }
+
+  protected MethodVisitor visitMethod(ClassVisitor classVisitor, String methodName)
+  {
+    MethodVisitor mv         = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                                        methodName,
+                                                        evaluationMethodDescriptor,
+                                                        evaluateMethodSignature,
+                                                        null);
+    return mv;
   }
 
   /**
@@ -1015,6 +1020,51 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @return
    */
   protected Expression<Object, Object, Function<?, ?>> generateFunctionalElement(MethodVisitor mv)
+  {
+    var                                          function                               = newFunctionalExpression();
+
+    boolean                                      functionalDependsOnIndependentVariable = false;
+    VariableNode<Object, Object, Function<?, ?>> independentVariableMappedToFunctional  = null;
+    if (independentVariable != null)
+    {
+      independentVariableMappedToFunctional  = independentVariable.spliceInto(function).asVariable();
+      functionalDependsOnIndependentVariable = function.rootNode.dependsOn(independentVariableMappedToFunctional);
+    }
+
+    function.generate();
+
+    constructNewObject(mv, function.className);
+    duplicateTopOfTheStack(mv);
+    invokeDefaultConstructor(mv, function.className);
+
+    if (functionalDependsOnIndependentVariable)
+    {
+      var fieldName = independentVariableMappedToFunctional.getName();
+      duplicateTopOfTheStack(mv);
+      independentVariable.generate(mv, domainType);
+      Compiler.putField(mv, function.className, fieldName, domainType);
+    }
+
+    if (context != null && context.variables != null)
+    {
+      for (var entry : context.variables.map.entrySet())
+      {
+        var fieldName = entry.getKey();
+        var fieldType = entry.getValue().getClass();
+        duplicateTopOfTheStack(mv);
+        loadThisFieldOntoStack(mv, fieldName, fieldType);
+        Compiler.putField(mv, function.className, fieldName, fieldType);
+      }
+    }
+
+    duplicateTopOfTheStack(mv);
+    Compiler.invokeMethod(mv, function.className, "initialize", "()V", false);
+    function.defineClass();
+
+    return function;
+  }
+
+  protected Expression<Object, Object, Function<?, ?>> newFunctionalExpression()
   {
     Class<?>                        funcDomain   = null;
     Class<?>                        funcCoDomain = null;
@@ -1032,9 +1082,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     }
 
-    // Create new Expression for the function implementation to be returned as the
-    // value in the codomain of the function that this Expression finds itself
-    // within
     var function = new Expression<Object, Object, Function<?, ?>>(funcDomain,
                                                                   funcCoDomain,
                                                                   funcClass);
@@ -1045,61 +1092,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       function.independentVariable = indeterminateVariable.spliceInto(function).asVariable();
     }
 
-    // Splice the current rootNode into the new expression
     function.rootNode          = (Node<Object, Object, Function<?, ?>>) rootNode.spliceInto(function);
     function.className         = className + "func";
     function.rootNode.isResult = true;
-
-    boolean                                      functionalDependsOnIndependentVariable = false;
-    VariableNode<Object, Object, Function<?, ?>> independentVariableMappedToFunctional  = null;
-    if (independentVariable != null)
-    {
-      independentVariableMappedToFunctional  = independentVariable.spliceInto(function).asVariable();
-      functionalDependsOnIndependentVariable = function.rootNode.dependsOn(independentVariableMappedToFunctional);
-    }
-
-    // Generate the implementation
-    function.generate();
-
-    // context.variables.put("func", function.instantiate() );
-    // Generate code to instantiate the new function
-    constructNewObject(mv, function.className);
-    duplicateTopOfTheStack(mv);
-    invokeDefaultConstructor(mv, function.className);
-
-    if (functionalDependsOnIndependentVariable)
-    {
-      var fieldName = independentVariableMappedToFunctional.getName();
-      duplicateTopOfTheStack(mv);
-      independentVariable.generate(mv, domainType);
-      Compiler.putField(mv, function.className, fieldName, domainType);
-    }
-
-    // link fields from this expression to the new function instance
-    if (context != null && context.variables != null)
-    {
-
-      for (var entry : context.variables.map.entrySet())
-      {
-        var fieldName = entry.getKey();
-        var fieldType = entry.getValue().getClass();
-        duplicateTopOfTheStack(mv);
-        loadThisFieldOntoStack(mv, fieldName, fieldType);
-        Compiler.putField(mv, function.className, fieldName, fieldType);
-      }
-    }
-    // Duplicate the reference to this which will be consumed by the following
-    // invocation of the initialize method
-    duplicateTopOfTheStack(mv);
-
-    // invoke the initializer
-    Compiler.invokeMethod(mv, function.className, "initialize", "()V", false);
-
-    // Return the new function instance
-    // mv.visitInsn(ARETURN);
-
-    function.defineClass();
-
     return function;
   }
 
@@ -1249,9 +1244,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     String arrow = expression.contains("➔") || independentVariable == null ? "" : (independentVariable.getName() + "➔");
     methodVisitor.visitLdcInsn(String.format("%s%s%s", name, arrow, expression.replace("sqrt", "√")));
-    methodVisitor.visitInsn(Opcodes.ARETURN);
-    methodVisitor.visitMaxs(10, 10);
-    methodVisitor.visitEnd();
+    Compiler.generateReturnInstructionAndEndTheVisit(methodVisitor);
     return classVisitor;
   }
 
@@ -1271,9 +1264,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     annotateWithOverride(methodVisitor);
     methodVisitor.visitCode();
     methodVisitor.visitLdcInsn(typeset());
-    methodVisitor.visitInsn(Opcodes.ARETURN);
-    methodVisitor.visitMaxs(10, 10);
-    methodVisitor.visitEnd();
+    Compiler.generateReturnInstructionAndEndTheVisit(methodVisitor);
     return classVisitor;
   }
 
