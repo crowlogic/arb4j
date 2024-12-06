@@ -19,7 +19,6 @@ import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
 import arb.functions.real.RealNullaryFunctional;
-import arb.functions.real.TestCompiledDerivative;
 import junit.framework.TestCase;
 
 /**
@@ -316,11 +315,11 @@ public class ExpressionTest extends
     Context context = new Context();
     context.registerVariable("p", new Integer(3));
     context.registerVariable("q", new Integer(2));
-    var F                     =
-          RealPolynomialNullaryFunction.parse("F", "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}", context);
-    var transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
-    String str = transformedExpression.toString();
-    //System.out.println( "str=" + str );
+    var    F                     =
+             RealPolynomialNullaryFunction.parse("F", "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}", context);
+    var    transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
+    String str                   = transformedExpression.toString();
+    // System.out.println( "str=" + str );
     assertEquals("Σn➔((2*z)^n*Πk➔α[k]⋰n{k=1…p})/(n!*Πk➔β[k]⋰n{k=1…q}){n=0…N}", str);
   }
 
