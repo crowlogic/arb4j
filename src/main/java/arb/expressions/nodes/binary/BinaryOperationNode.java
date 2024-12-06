@@ -282,7 +282,10 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     }
     else
     {
-      intermediateVariableFieldName = expression.allocateIntermediateVariable(mv, resultType);
+      if (intermediateVariableFieldName == null)
+      {
+        intermediateVariableFieldName = expression.allocateIntermediateVariable(mv, resultType);
+      }
       return true;
 
     }
@@ -335,11 +338,14 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   public String toString()
   {
     boolean needsImprovement = isCommutative() || (left.isLeaf() && right.isLeaf());
-    String  string = needsImprovement ? String.format("%s%s%s", left, symbol, right)
-                            : String.format(String.format("%s%s%s", stringFormat(left), "%s", stringFormat(right)),
-                                            left == null ? "0" : left,
-                                            symbol,
-                                            right == null ? "0" : right);
+    String  string           = needsImprovement ? String.format("%s%s%s", left, symbol, right)
+                                                : String.format(String.format("%s%s%s",
+                                                                              stringFormat(left),
+                                                                              "%s",
+                                                                              stringFormat(right)),
+                                                                left == null ? "0" : left,
+                                                                symbol,
+                                                                right == null ? "0" : right);
     return string;
   }
 

@@ -516,6 +516,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public String typeset()
   {
+    if ( "abs".equals(functionName))
+    {
+      return String.format("|%s|", arg.typeset());
+    }
+    
     String name = functionName.replaceAll("√", "sqrt").replaceAll("J0", "J_0").replaceAll("ζ", "zeta");
     return format(name.equals("sqrt") ? "\\%s{%s}" : "\\%s(%s)", name, arg == null ? "" : arg.typeset());
   }

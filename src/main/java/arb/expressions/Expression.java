@@ -231,7 +231,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean                                        insideInitializer             = false;
 
-  public F                                              instance;
+  protected F                                           instance;
 
   public byte[]                                         instructionByteCodes;
 
@@ -438,6 +438,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected boolean characterAfterNextIs(char ch)
   {
     return position + 1 < expression.length() && expression.charAt(position + 1) == ch;
+  }
+
+  public Expression<D, C, F> recompile()
+  {
+    updateStringRepresentation();
+    instructionByteCodes = null;
+    compiledClass        = null;
+    return compile();
   }
 
   public Expression<D, C, F> compile()
@@ -981,8 +989,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else
     {
+      rootNode.isResult = true;
       rootNode.generate(mv, coDomainType);
-      mv.visitInsn(ARETURN);
+      // mv.visitInsn(ARETURN);
     }
 
     mv.visitInsn(Opcodes.ARETURN);
@@ -1085,7 +1094,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Compiler.invokeMethod(mv, function.className, "initialize", "()V", false);
 
     // Return the new function instance
-    mv.visitInsn(ARETURN);
+    // mv.visitInsn(ARETURN);
 
     function.defineClass();
 
@@ -2264,6 +2273,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     return new LiteralConstantNode<D, C, F>(this,
                                             java.lang.Integer.toString(i));
+  }
+
+  public Expression<D, C, F> transplant( Node<D, C, F> newRoot )
+  {
+    rootNode.isResult = false;  
+    instance = null;
+    instructionByteCodes = null;
+    compiledClass = null;
+    rootNode = newRoot;
+    updateStringRepresentation();
+    className = Parser.expressionToUniqueClassname(expression);    
+    return this;
   }
 
 }

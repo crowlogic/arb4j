@@ -148,7 +148,7 @@ public class Utensils
 
   public static BufferedImage renderFormula(String formula)
   {
-    return renderFormula(formula, 20);
+    return renderFormula(formula, 40);
   }
 
   public static BufferedImage renderFormula(String formula, int size)
@@ -180,11 +180,6 @@ public class Utensils
     var icon    = formula.createTeXIcon(TeXConstants.STYLE_TEXT, size, true);
 
     return icon;
-  }
-
-  public static boolean overlaps(Real tmp, Real a, Real b, int fidelity)
-  {
-    return a.sub(b, fidelity, tmp).containsZero();
   }
 
   /**

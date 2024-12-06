@@ -677,8 +677,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       return this;
     }
-    expression.instance             = null;
-    expression.instructionByteCodes = null;
+  //  expression.reset();
     expression.context.functions.map.remove(this.factorFunctionFieldName);
     expression.context.variables.map.remove(this.factorValueFieldName);
     factorFunctionFieldName = null;
@@ -687,32 +686,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     assignFieldNamesIfNecessary(expression.coDomainType);
     parseFactorExpression(expression.coDomainType);
 
-    if (Expression.trace)
-    {
-      logSubstitution(variable, substitution);
-    }
-
     factor                 = factor.substitute(variable, substitution.expression);
     startIndex             = startIndex.substitute(variable, substitution);
     endIndex               = endIndex.substitute(variable, substitution);
     factorExpressionString = factor.toString();
     return this;
-  }
-
-  protected <E, S, G extends Function<? extends E, ? extends S>> void logSubstitution(String variable,
-                                                                                      Node<E, S, G> substitution)
-  {
-    System.err.format("%s of Expression(#%s) Substituting %s for %s in %s\n\n",
-                      getClass().getSimpleName(),
-                      System.identityHashCode(this),
-                      substitution,
-                      variable,
-                      expression);
-    err.format("%s(#%s).substitute(variable=%s, substitution=%s)\n",
-               factor,
-               System.identityHashCode(this),
-               variable,
-               substitution.expression);
   }
 
   @Override
