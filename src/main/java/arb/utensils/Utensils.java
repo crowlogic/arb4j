@@ -20,13 +20,13 @@ import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.DumperOptions.NonPrintableStyle;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import arb.Complex;
-import arb.Real;
-import arb.RealMatrix;
+import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.ArbTypeRepresenter;
@@ -50,6 +50,7 @@ public class Utensils
     yamlConfig.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
     yamlConfig.setPrettyFlow(true);
     yamlConfig.setSplitLines(false);
+    yamlConfig.setNonPrintableStyle(NonPrintableStyle.ESCAPE);
     NewCommandMacro.addNewCommand("Z", "\\operatorname{Z} {#1}", 1);
     NewCommandMacro.addNewCommand("Γ", "\\Gamma", 0);
     NewCommandMacro.addNewCommand("re", "\\operatorname{Re} {#1}", 1);
@@ -94,7 +95,6 @@ public class Utensils
     return input.substring(0, lastIndex + 1);
   }
 
-
   public static File save(BufferedImage image, String file)
   {
 
@@ -125,16 +125,13 @@ public class Utensils
     return image;
   }
 
-  public static ImageViewer showFormula(String formula)
+  public static ImageViewer showFormula(Typesettable formula)
   {
-    // Create and show the Image Viewer window
-    // SwingUtilities.invokeLater(() ->
-    {
-      ImageViewer imageViewer = new ImageViewer(formula,
-                                                renderFormula(formula));
-      imageViewer.setVisible(true);
-      return imageViewer;
-    }
+
+    ImageViewer imageViewer = new ImageViewer(formula.toString(),
+                                              renderFormula(formula.typeset()));
+    imageViewer.setVisible(true);
+    return imageViewer;
 
   }
 
@@ -203,28 +200,6 @@ public class Utensils
     System.out.println(s);
   }
 
-  public static RealMatrix newBivariateCorrelationMatrix(Real ρ)
-  {
-    var correlation = RealMatrix.newMatrix(2, 2);
-    correlation.get(0, 0).set(correlation.get(1, 1).identity());
-    correlation.get(1, 0).set(correlation.get(0, 1).set(ρ));
-    return correlation;
-  }
-
-  public static String normalizeSubscriptedDigits(String subscript)
-  {
-    return subscript.replace("₀", "0")
-                    .replace("₁", "1")
-                    .replace("₂", "2")
-                    .replace("₃", "3")
-                    .replace("₄", "4")
-                    .replace("₅", "5")
-                    .replace("₆", "6")
-                    .replace("₇", "7")
-                    .replace("₈", "8")
-                    .replace("₉", "9");
-  }
-
   public static List<Type> classTypes(Class<?>... args)
   {
     return Stream.of(args).map(Type::getType).collect(Collectors.toList());
@@ -287,28 +262,6 @@ public class Utensils
       e.printStackTrace();
     }
     return outputStream.toString();
-  }
-
-  /**
-   * 
-   * @param a
-   * @return true if it was an AutoCloseable, false if not
-   */
-  public static boolean closeIfAutoCloseable(Object a)
-  {
-    if (a instanceof AutoCloseable b)
-    {
-      try
-      {
-        b.close();
-      }
-      catch (Exception e)
-      {
-        throwOrWrap(e);
-      }
-      return true;
-    }
-    return false;
   }
 
   public static SerializedExpression loadFromYamlFormat(File file) throws FileNotFoundException

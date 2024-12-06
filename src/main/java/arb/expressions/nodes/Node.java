@@ -17,11 +17,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.SyntaxTree;
-import arb.expressions.nodes.binary.AdditionNode;
-import arb.expressions.nodes.binary.DivisionNode;
-import arb.expressions.nodes.binary.ExponentiationNode;
-import arb.expressions.nodes.binary.MultiplicationNode;
-import arb.expressions.nodes.binary.SubtractionNode;
+import arb.expressions.nodes.binary.*;
 import arb.expressions.nodes.unary.FunctionNode;
 import arb.expressions.nodes.unary.NegationNode;
 import arb.functions.Function;
@@ -98,6 +94,13 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                               expression);
   }
 
+  public BinaryOperationNode<D, R, F> asBinaryOperationNode()
+  {
+    assert this instanceof BinaryOperationNode : this + " isn't a BinaryOperationNode";
+    return (BinaryOperationNode<D, R, F>) this;
+  }
+
+  
   public FunctionNode<D, R, F> asFunction()
   {
     assert this instanceof FunctionNode : this + " isn't a FunctionNode";

@@ -1373,7 +1373,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String getNextConstantFieldName(Class<?> type)
   {
-    return "c" + getVariablePrefix(type) + constantCount++;
+    return "c" + getVariablePrefix(type) + String.format("%04d", constantCount++);
   }
 
   public String getNextIntermediateVariableFieldName(String name, Class<?> type)
@@ -1388,7 +1388,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       context.intermediateVariableCounters.put(prefix, counter = new AtomicInteger(1));
     }
-    return prefix + counter.getAndIncrement();
+    return prefix + String.format("%04d", counter.getAndIncrement());
   }
 
   public VariableNode<D, C, F> getReference(String reference)
@@ -1636,7 +1636,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected String newIntermediateVariable(Class<?> type)
   {
-    return newIntermediateVariable("i", type);
+    return newIntermediateVariable("", type);
   }
 
   public String newIntermediateVariable(String prefix, Class<?> type)
@@ -2275,15 +2275,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                             java.lang.Integer.toString(i));
   }
 
-  public Expression<D, C, F> transplant( Node<D, C, F> newRoot )
+  public Expression<D, C, F> transplant(Node<D, C, F> newRoot)
   {
-    rootNode.isResult = false;  
-    instance = null;
+    rootNode.isResult    = false;
+    instance             = null;
     instructionByteCodes = null;
-    compiledClass = null;
-    rootNode = newRoot;
+    compiledClass        = null;
+    rootNode             = newRoot;
     updateStringRepresentation();
-    className = Parser.expressionToUniqueClassname(expression);    
+    className = Parser.expressionToUniqueClassname(expression);
     return this;
   }
 

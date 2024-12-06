@@ -8,6 +8,7 @@ import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Represent;
 import org.yaml.snakeyaml.representer.Representer;
 
+import arb.Fraction;
 import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -29,6 +30,7 @@ public class ArbTypeRepresenter extends
     representers.put(Context.class, new ContextRepresentation());
     representers.put(Integer.class, new IntegerRepresentation());
     representers.put(Real.class, new RealRepresentation());
+    representers.put(Fraction.class, new FractionRepresentation());
     representers.put(ExpressionTreeView.class, data ->
     {
       return representData(((ExpressionTreeView<?, ?, ?>) data).expressionInput.getText());
@@ -54,6 +56,20 @@ public class ArbTypeRepresenter extends
       Real real = (Real) data;
 
       return represent(new SerializedContextVariable(real));
+    }
+
+  }
+
+  public class FractionRepresentation implements
+                                      Represent
+  {
+
+    @Override
+    public Node representData(Object data)
+    {
+      Fraction integer = (Fraction) data;
+
+      return represent(new SerializedContextVariable(integer));
     }
 
   }
