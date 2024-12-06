@@ -16,6 +16,12 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.viz.ExpressionTreeView;
 
 /**
+ * A custom {@link Representer} implementation for serializing various Arb4j
+ * types into YAML. This class ensures that objects are serialized efficiently
+ * using SnakeYAML's automatic anchoring and aliasing mechanism, while allowing
+ * for custom representations of specific types such as {@link Real},
+ * {@link Fraction}, and {@link Integer}.
+ *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
@@ -55,7 +61,7 @@ public class ArbTypeRepresenter extends
     {
       Real real = (Real) data;
 
-      return represent(new SerializedContextVariable(real));
+      return ArbTypeRepresenter.this.representData(new SerializedContextVariable(real));
     }
 
   }
@@ -69,7 +75,7 @@ public class ArbTypeRepresenter extends
     {
       Fraction integer = (Fraction) data;
 
-      return represent(new SerializedContextVariable(integer));
+      return ArbTypeRepresenter.this.representData(new SerializedContextVariable(integer));
     }
 
   }
@@ -83,7 +89,7 @@ public class ArbTypeRepresenter extends
     {
       Integer integer = (Integer) data;
 
-      return represent(new SerializedContextVariable(integer));
+      return ArbTypeRepresenter.this.representData(new SerializedContextVariable(integer));
     }
 
   }
@@ -95,7 +101,9 @@ public class ArbTypeRepresenter extends
     public Node representData(Object data)
     {
       Context context = (Context) data;
-      return representMapping(getTag(data.getClass(), Tag.MAP), context.variables.map, defaultFlowStyle);
+      return ArbTypeRepresenter.this.representMapping(getTag(data.getClass(), Tag.MAP),
+                                                      context.variables.map,
+                                                      defaultFlowStyle);
     }
   }
 }

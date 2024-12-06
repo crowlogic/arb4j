@@ -280,11 +280,12 @@ public class Utensils
   {
     LoaderOptions loadingConfig = new LoaderOptions();
     loadingConfig.setTagInspector(tag -> true);
-    loadingConfig.setAllowRecursiveKeys(true);
+    loadingConfig.setAllowRecursiveKeys(false);   
     Yaml yaml = new Yaml(new Constructor(SerializedExpression.class,
                                          loadingConfig),
                          new ArbTypeRepresenter(yamlConfig),
                          yamlConfig);
+    
 
     return yaml;
   }
