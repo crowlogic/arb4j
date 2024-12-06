@@ -9,6 +9,8 @@
 package arb;
 
 public class arblibJNI {
+  public final static native int fmpz_is_one(long jarg1);
+  public final static native int fmpz_is_pm1(long jarg1);
   public final static native int fmpq_cmp_si(long jarg1, Fraction jarg1_, int jarg2);
   public final static native int fmpq_cmp_ui(long jarg1, Fraction jarg1_, long jarg2);
   public final static native int fmpq_cmp_fmpz(long jarg1, Fraction jarg1_, long jarg2);

@@ -1,6 +1,11 @@
 package arb.utensils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.LinkedTransferQueue;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -22,8 +27,8 @@ public class TopologicalSorter
    */
   public static List<String> sort(Map<String, List<String>> graph)
   {
-    var inDegree = new HashMap<String, Integer>();
-    var queue = new LinkedList<String>();
+    var inDegree    = new HashMap<String, Integer>();
+    var queue       = new LinkedTransferQueue<String>();
     var sortedOrder = new ArrayList<String>();
 
     // Step 1: Compute in-degrees for all nodes
@@ -47,16 +52,7 @@ public class TopologicalSorter
     {
       var current = queue.poll();
       sortedOrder.add(current);
-
-      // Reduce the in-degree of dependent nodes
-      for (var neighbor : graph.getOrDefault(current, Collections.emptyList()))
-      {
-        inDegree.put(neighbor, inDegree.get(neighbor) - 1);
-        if (inDegree.get(neighbor) == 0)
-        {
-          queue.add(neighbor);
-        }
-      }
+      reduceDependentNodesInDegree(graph, inDegree, queue, current);
     }
 
     // Step 4: Check for cycles
@@ -68,6 +64,21 @@ public class TopologicalSorter
     Collections.reverse(sortedOrder);
 
     return sortedOrder;
+  }
+
+  protected static void reduceDependentNodesInDegree(Map<String, List<String>> graph,
+                                                     HashMap<String, Integer> inDegree,
+                                                     LinkedTransferQueue<String> queue,
+                                                     String current)
+  {
+    graph.getOrDefault(current, Collections.emptyList()).forEach(node ->
+    {
+      Integer prev = inDegree.put(node, inDegree.get(node) - 1);
+      if (prev != null && prev.intValue() == 1)
+      {
+        queue.add(node);
+      }
+    });
   }
 
 }

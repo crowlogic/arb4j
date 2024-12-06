@@ -15,6 +15,9 @@
 #include <unistd.h>
 #include <wchar.h>
 
+ int fmpz_is_one(const fmpz_t f) { return (*f == 1); }
+ int fmpz_is_pm1(const fmpz_t f) { return (*f == 1 || *f == -1); }
+
 int fmpq_cmp_si(const fmpq_t x, slong c);
 int fmpq_cmp_ui(const fmpq_t x, ulong c);
 int fmpq_cmp_fmpz(const fmpq_t x, const fmpz_t y);

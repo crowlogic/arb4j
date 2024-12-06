@@ -9,6 +9,14 @@
 package arb;
 
 public class arblib {
+  public static int fmpz_is_one(long f) {
+    return arblibJNI.fmpz_is_one(f);
+  }
+
+  public static int fmpz_is_pm1(long f) {
+    return arblibJNI.fmpz_is_pm1(f);
+  }
+
   public static int fmpq_cmp_si(Fraction x, int numCols) {
     return arblibJNI.fmpq_cmp_si(Fraction.getCPtr(x), x, numCols);
   }

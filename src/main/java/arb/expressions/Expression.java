@@ -124,6 +124,8 @@ import arb.utensils.text.trees.TreeModel;
  * effort, correctness, and overall performance.
  * </pre>
  * 
+ * See Also: <a href="https://github.com/crowlogic/arb4j/wiki/ExpressionCompiler">arb4j wiki page</a><br><br>
+ * 
  * @param <D> The domain type over which the expression operates, such as
  *            {@link Integer}, {@link Real}, {@link Complex},
  *            {@link RealPolynomial}, etc
@@ -132,9 +134,7 @@ import arb.utensils.text.trees.TreeModel;
  * @param <F> The function type of the expression, extending the
  *            {@link Function} interface, encapsulating the compiled expression
  *            as an evaluatable function in the sense of Java
- * 
  * @author Stephen Andrew Crowley ©2024
- * 
  * @see BusinessSourceLicenseVersionOnePointOne#gett for the terms of use of the
  *      {@link TheArb4jLibrary}
  */
