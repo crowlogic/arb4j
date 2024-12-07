@@ -144,6 +144,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Typesettable
 {
 
+  private static final String    JAVA_LANG_ASSERTION_ERROR         = "java/lang/AssertionError";
+
   private static final String    ASSERTION_ERROR_METHOD_DESCRIPTOR = Compiler.getMethodDescriptor(Void.class,
                                                                                                   Object.class);
 
@@ -894,9 +896,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitFieldInsn(GETFIELD, className, IS_INITIALIZED, "Z");
     var alreadyInitializedLabel = new Label();
     mv.visitJumpInsn(IFEQ, alreadyInitializedLabel);
-    mv.visitTypeInsn(NEW, "java/lang/AssertionError");
+    mv.visitTypeInsn(NEW, JAVA_LANG_ASSERTION_ERROR);
     duplicateTopOfTheStack(mv).visitLdcInsn("Already initialized");
-    mv.visitMethodInsn(INVOKESPECIAL, "java/lang/AssertionError", "<init>", ASSERTION_ERROR_METHOD_DESCRIPTOR, false);
+    mv.visitMethodInsn(INVOKESPECIAL, JAVA_LANG_ASSERTION_ERROR, "<init>", ASSERTION_ERROR_METHOD_DESCRIPTOR, false);
     mv.visitInsn(ATHROW);
     mv.visitLabel(alreadyInitializedLabel);
   }
@@ -915,7 +917,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitCode();
     mv.visitLdcInsn(Type.getType(coDomainType));
     Compiler.generateReturnInstructionAndEndTheVisit(mv);
-
 
     return classVisitor;
   }
@@ -971,8 +972,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Label         startLabel = new Label();
     Label         endLabel   = new Label();
 
-    String methodName = "evaluate";
-    MethodVisitor mv = visitMethod(classVisitor, methodName);
+    String        methodName = "evaluate";
+    MethodVisitor mv         = visitMethod(classVisitor, methodName);
     mv.visitCode();
     mv.visitLabel(startLabel);
     annotateWithOverride(mv);
@@ -1001,11 +1002,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor visitMethod(ClassVisitor classVisitor, String methodName)
   {
-    MethodVisitor mv         = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                        methodName,
-                                                        evaluationMethodDescriptor,
-                                                        evaluateMethodSignature,
-                                                        null);
+    MethodVisitor mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                                methodName,
+                                                evaluationMethodDescriptor,
+                                                evaluateMethodSignature,
+                                                null);
     return mv;
   }
 
@@ -1039,29 +1040,55 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (functionalDependsOnIndependentVariable)
     {
-      var fieldName = independentVariableMappedToFunctional.getName();
-      duplicateTopOfTheStack(mv);
-      independentVariable.generate(mv, domainType);
-      Compiler.putField(mv, function.className, fieldName, domainType);
+      generateCodeToPropagateIndependentVariableToFunctionalElement(mv,
+                                                                    function,
+                                                                    independentVariableMappedToFunctional);
     }
 
     if (context != null && context.variables != null)
     {
-      for (var entry : context.variables.map.entrySet())
-      {
-        var fieldName = entry.getKey();
-        var fieldType = entry.getValue().getClass();
-        duplicateTopOfTheStack(mv);
-        loadThisFieldOntoStack(mv, fieldName, fieldType);
-        Compiler.putField(mv, function.className, fieldName, fieldType);
-      }
+      generateCodeToPropagateContextVariablesToFunctionalElement(mv, function);
     }
 
-    duplicateTopOfTheStack(mv);
-    Compiler.invokeMethod(mv, function.className, "initialize", "()V", false);
+    generateCodeToInvokeTheInitializationMethod(mv, function);
+
     function.defineClass();
 
     return function;
+  }
+
+  protected void generateCodeToInvokeTheInitializationMethod(MethodVisitor mv,
+                                                             Expression<Object, Object, Function<?, ?>> function)
+  {
+    duplicateTopOfTheStack(mv);
+    Compiler.invokeMethod(mv, function.className, "initialize", "()V", false);
+  }
+
+  protected void generateCodeToPropagateContextVariablesToFunctionalElement(MethodVisitor mv,
+                                                                            Expression<Object, Object,
+                                                                                          Function<?, ?>> function)
+  {
+    for (var entry : context.variables.map.entrySet())
+    {
+      var fieldName = entry.getKey();
+      var fieldType = entry.getValue().getClass();
+      duplicateTopOfTheStack(mv);
+      loadThisFieldOntoStack(mv, fieldName, fieldType);
+      Compiler.putField(mv, function.className, fieldName, fieldType);
+    }
+  }
+
+  protected void
+            generateCodeToPropagateIndependentVariableToFunctionalElement(MethodVisitor mv,
+                                                                          Expression<Object, Object,
+                                                                                        Function<?, ?>> function,
+                                                                          VariableNode<Object, Object, Function<?,
+                                                                                        ?>> independentVariableMappedToFunctional)
+  {
+    var fieldName = independentVariableMappedToFunctional.getName();
+    duplicateTopOfTheStack(mv);
+    independentVariable.generate(mv, domainType);
+    Compiler.putField(mv, function.className, fieldName, domainType);
   }
 
   protected Expression<Object, Object, Function<?, ?>> newFunctionalExpression()
