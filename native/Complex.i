@@ -55,6 +55,12 @@ import arb.space.topological.EuclideanVectorSpace;
     return this;
   }
 
+  public Complex pow(Complex k, int prec, Complex r)
+  {
+    arblib.acb_pow(r, this, k, prec);
+    return r;
+  }
+  
   public ComplexPolynomial div(ComplexPolynomial dividend, int prec, ComplexPolynomial result)
   {
     return result.set(this).div(dividend, prec);
