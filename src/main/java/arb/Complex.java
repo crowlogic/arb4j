@@ -657,20 +657,6 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
     return exp(prec,this);
   }
 
-  public Real getRealCoordinate(int dim)
-  {
-    assert dim == 0 || dim == 1 : "dimension must be 0 or 1";
-    switch (dim)
-    {
-    case 0:
-      return getReal();
-    case 1:
-      return getImag();
-    default:
-      assert false : "index=" + dim + " is out of bounds since it does not satisfy 0 <= index < 2";
-      return null;
-    }
-  }
   
   public Complex(double r, double i)
   {
