@@ -130,6 +130,16 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return apply("cos");
   }
 
+  public Node<D, R, F> cosh()
+  {
+    return apply("cosh");
+  }
+
+  public Node<D, R, F> cot()
+  {
+    return apply("cot");
+  }
+
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
     assert false : "TODO: implement in " + getClass();
@@ -157,29 +167,13 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public abstract MethodVisitor generate(MethodVisitor mv, Class<?> resultType);
 
-  /**
-   * Instantiates the target type instance then calls set on it with the source
-   * instance then sets generatedType to to the requested type so that downstream
-   * it is none the wiser that a type conversion was done in the first place. A
-   * possible optimization would be to declare the types as their intended target
-   * type so that no conversion was needed but this would require messing with
-   * parts of the code that are currently working and i've adopted a
-   * dont-fix-it-if-it-isnt-broken policy when it comes to deciding what to work
-   * on next
-   * 
-   * 
-   * @param methodVisitor
-   * @param type
-   * @return
-   */
   public Class<?> generateCastTo(MethodVisitor methodVisitor, Class<?> type)
   {
     checkClassCast(methodVisitor, generatedType);
     expression.allocateIntermediateVariable(methodVisitor, type);
     Compiler.swap(methodVisitor);
     invokeSetMethod(methodVisitor, generatedType, type);
-    generatedType = type;
-    return generatedType;
+    return generatedType = type;
   }
 
   public abstract List<? extends Node<D, R, F>> getBranches();
@@ -194,7 +188,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public abstract Node<D, R, F> integrate(VariableNode<D, R, F> variable);
 
   /**
-   * @return true if this node has any subnodes
+   * @return true if this node does not have any subnodes
    */
   public abstract boolean isLeaf();
 
@@ -275,6 +269,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return apply("sin");
   }
 
+  public Node<D, R, F> sinh()
+  {
+    return apply("sinh");
+  }
+
   public abstract <E, S, G extends Function<? extends E, ? extends S>>
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression);
@@ -325,20 +324,5 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * @return the {@link LaTeXAtom} string that represents this node
    */
   public abstract String typeset();
-
-  public Node<D, R, F> cot()
-  {
-    return apply("cot");
-  }
-
-  public Node<D, R, F> sinh()
-  {
-    return apply("sinh");
-  }
-
-  public Node<D, R, F> cosh()
-  {
-    return apply("cosh");
-  }
 
 }
