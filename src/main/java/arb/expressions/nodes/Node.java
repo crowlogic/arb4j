@@ -100,7 +100,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return (BinaryOperationNode<D, R, F>) this;
   }
 
-  
   public FunctionNode<D, R, F> asFunction()
   {
     assert this instanceof FunctionNode : this + " isn't a FunctionNode";
@@ -326,5 +325,10 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * @return the {@link LaTeXAtom} string that represents this node
    */
   public abstract String typeset();
+
+  public Node<D, R, F> cot()
+  {
+    return apply("cot");
+  }
 
 }

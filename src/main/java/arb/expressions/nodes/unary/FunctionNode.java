@@ -180,6 +180,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return nodeOf(1).sub(arg.tanh().pow(2));
     case "sec":
       return mul(arg.tan());
+    case "csc":
+      return neg().mul(arg.cot());
     default:
       throw new UnsupportedOperationException("Derivative not implemented for function: " + functionName);
     }

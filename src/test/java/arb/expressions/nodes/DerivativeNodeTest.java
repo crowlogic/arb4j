@@ -16,6 +16,13 @@ public class DerivativeNodeTest extends
                                 TestCase
 {
 
+  public void testCosecantDerivative()
+  {
+    var f  = RealFunction.parse("∂csc(x)/∂x");
+    var df = RealFunction.parse("-csc(x)*cot(x)");
+    assertEquals(df.rootNode.toString(), f.rootNode.toString());
+  }
+  
   public void testSecantDerivative()
   {
     var f  = RealFunction.parse("∂sec(x)/∂x");
