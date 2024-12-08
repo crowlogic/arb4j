@@ -178,6 +178,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return nodeOf(1).add(arg.tan().pow(2));
     case "tanh":
       return nodeOf(1).sub(arg.tanh().pow(2));
+    case "sec":
+      return mul(arg.tan());
     default:
       throw new UnsupportedOperationException("Derivative not implemented for function: " + functionName);
     }
@@ -515,11 +517,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public String typeset()
   {
-    if ( "abs".equals(functionName))
+    if ("abs".equals(functionName))
     {
       return String.format("|%s|", arg.typeset());
     }
-    
+
     String name = functionName.replaceAll("√", "sqrt").replaceAll("J0", "J_0").replaceAll("ζ", "zeta");
     return format(name.equals("sqrt") ? "\\%s{%s}" : "\\%s(%s)", name, arg == null ? "" : arg.typeset());
   }
