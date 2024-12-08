@@ -174,6 +174,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return this;
     case "log":
       return nodeOf(1).div(arg);
+    case "cot":
+      return nodeOf(-1).sub(pow(2));
     case "tan":
       return nodeOf(1).add(arg.tan().pow(2));
     case "tanh":

@@ -15,6 +15,14 @@ import junit.framework.TestCase;
 public class DerivativeNodeTest extends
                                 TestCase
 {
+  
+  public void testCotangentDerivative()
+  {
+    var f  = RealFunction.parse("∂cot(x)/∂x");
+    var df = RealFunction.parse("-1-cot(x)^2");
+    assertEquals(df.rootNode.toString(), f.rootNode.toString());
+  }
+  
 
   public void testCosecantDerivative()
   {
