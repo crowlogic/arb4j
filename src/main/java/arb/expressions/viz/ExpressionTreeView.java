@@ -397,7 +397,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
   { AlgebraicNumber.class, Object.class, Integer.class, GaussianInteger.class, Real.class, Complex.class,
     IntegerPolynomial.class, RealPolynomial.class, ComplexPolynomial.class, RationalFunction.class,
     ComplexRationalFunction.class, Fraction.class, ComplexFraction.class, RealMatrix.class, ComplexMatrix.class,
-    RealFunction.class };
+    RealFunction.class, Quaternion.class };
 
   public static Class<?>[]              INTERFACES           = new Class<?>[]
   { IntegerSequence.class, RealSequence.class, Function.class, NullaryFunction.class, IntegerFunction.class,
@@ -693,7 +693,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
             {
               result = expr.newCoDomainInstance();
             }
-           
+
           }
           result = instance.evaluate(input, 128, result);
         }

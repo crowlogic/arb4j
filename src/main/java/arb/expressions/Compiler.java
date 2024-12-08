@@ -500,7 +500,7 @@ public class Compiler
     {
       CompiledExpressionClassLoader loader =
                                            context != null ? context.classLoader : new CompiledExpressionClassLoader();
-      if ( context != null && context.classLoader == null )
+      if (context != null && context.classLoader == null)
       {
         context.classLoader = loader;
       }
@@ -618,6 +618,10 @@ public class Compiler
     else if (Integer.class.equals(resultType))
     {
       return resultType;
+    }
+    else if (Quaternion.class.equals(resultType))
+    {
+      return Quaternion.class;
     }
     else
     {

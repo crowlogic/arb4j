@@ -280,6 +280,13 @@ public class Quaternion implements
     return new Quaternion();
   }
 
+  @SuppressWarnings("resource")
+  public Quaternion set(Real real)
+  {
+   zero().left.re().set(real);
+   return this;
+  }
+  
   @Override
   public Quaternion set(Quaternion value)
   {
@@ -302,4 +309,6 @@ public class Quaternion implements
     assert false : "TODO: Auto-generated method stub";
     return null;
   }
+
+
 }

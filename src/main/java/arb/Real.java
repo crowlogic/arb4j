@@ -205,6 +205,13 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     return result.set(this).add(z,bits,result);
   }  
 
+  public Quaternion sqrt(int prec, Quaternion res)
+  {
+    res.set(this);
+    res.left.re().sqrt(prec);
+    return res;
+  }
+  
   public RationalFunction add( Integer z, int bits, RationalFunction result )
   {
     return result.set(this).add(z,bits,result);

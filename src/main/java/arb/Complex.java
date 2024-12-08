@@ -656,7 +656,6 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
   {
     return exp(prec,this);
   }
-
   
   public Complex(double r, double i)
   {
