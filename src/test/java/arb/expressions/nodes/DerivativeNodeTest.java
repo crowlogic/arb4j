@@ -16,6 +16,20 @@ public class DerivativeNodeTest extends
                                 TestCase
 {
   
+  public void testHyperbolicSineDerivative()
+  {
+    var f  = RealFunction.parse("∂sinh(x)/∂x");
+    var df = RealFunction.parse("cosh(x)");
+    assertEquals(df.rootNode.toString(), f.rootNode.toString());
+  }
+  
+  public void testHyperbolicCosineDerivative()
+  {
+    var f  = RealFunction.parse("∂cosh(x)/∂x");
+    var df = RealFunction.parse("sinh(x)");
+    assertEquals(df.rootNode.toString(), f.rootNode.toString());
+  }
+  
   public void testCotangentDerivative()
   {
     var f  = RealFunction.parse("∂cot(x)/∂x");

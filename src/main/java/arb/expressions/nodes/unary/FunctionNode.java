@@ -160,6 +160,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
    */
   private Node<D, R, F> differentiateBuiltinFunction()
   {
+
     switch (functionName)
     {
     case "arcsin":
@@ -170,6 +171,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return arg.cos();
     case "cos":
       return arg.sin().neg();
+    case "sinh":
+      return arg.cosh();
+    case "cosh":
+      return arg.sinh();
     case "exp":
       return this;
     case "log":

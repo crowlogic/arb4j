@@ -331,4 +331,14 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return apply("cot");
   }
 
+  public Node<D, R, F> sinh()
+  {
+    return apply("sinh");
+  }
+
+  public Node<D, R, F> cosh()
+  {
+    return apply("cosh");
+  }
+
 }
