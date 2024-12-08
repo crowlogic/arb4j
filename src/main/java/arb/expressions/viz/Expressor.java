@@ -50,6 +50,10 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
                       Application
 {
 
+  public record NewVariable(String name, Class<?> type)
+  {
+  }
+
   static
   {
     Arrays.sort(ExpressionTreeView.INTERFACES, Utensils.classNameComparator);
@@ -69,11 +73,11 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
 
   private boolean        contextViewVisible   = false;
 
+  private double[]       lastDividerPositions = null;
+
   private SplitPane      splitPane;
 
   private TabPane        tabPane;
-
-  private double[]       lastDividerPositions = null;
 
   ExpressionTreeView<D, C, F> addNewExpressionTab()
   {
@@ -97,13 +101,12 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     return expressionTree;
   }
 
-  void updateContextListView()
+  public void constructContextListView()
   {
-    Context currentContext = getCurrentContext();
-    if (currentContext != null && contextListView != null)
-    {
-      contextListView.setItems(currentContext.variables);
-    }
+    contextListView = new ListView<Named>();
+
+    contextListView.setOnEditCommit(new ContextVariableEditCommitHandler<D, C, F>(this));
+
   }
 
   public VBox createMainLayout()
@@ -140,8 +143,8 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     contextBox = new VBox(10);
     constructContextListView();
 
-    var         converter   = new ContextVariableStringConverter<D, C, F>(this);
-    ContextMenu contextMenu = newContextMenu(converter);
+    var converter   = new ContextVariableStringConverter<D, C, F>(this);
+    var contextMenu = newContextMenu(converter);
     contextListView.setContextMenu(contextMenu);
     contextBox.getChildren().addAll(new Label("Context Variables:"), contextListView);
     VBox.setVgrow(splitPane, Priority.ALWAYS);
@@ -149,74 +152,102 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     return splitPane;
   }
 
-  public void constructContextListView()
+  public void evaluate()
   {
-    contextListView = new ListView<Named>();
-
-    contextListView.setOnEditCommit(new ContextVariableEditCommitHandler<D, C, F>(this));
-
+    executeTabAction(ExpressionTreeView::evaluateExpression);
   }
 
-  public record NewVariable(String name, Class<?> type)
+  private void executeTabAction(Consumer<ExpressionTreeView<D, C, F>> action)
   {
+    var expressionTab = getCurrentExpressionTree();
+    action.accept(expressionTab);
   }
 
-  private NewVariable showNewVariableDialogs(boolean rename)
+  @SuppressWarnings("unchecked")
+  public Context getCurrentContext()
   {
-    var typeChoice = showVariableTypeDialog();
-    if (typeChoice.isEmpty())
+    if (tabPane == null)
     {
       return null;
     }
-    var type       = typeChoice.get();
-    var newVarName = showVariableNameDialog(rename);
-    if (newVarName != null)
+    var currentTab = tabPane.getSelectionModel().getSelectedItem();
+    if (currentTab != null)
     {
-      NewVariable newVar = new NewVariable(newVarName,
-                                           type);
-      return newVar;
+      var content       = currentTab.getContent();
+      var expressionTab = (ExpressionTreeView<D, C, F>) content;
+      return expressionTab.context;
     }
-    else
-    {
-      return null;
-    }
+    return null;
   }
 
-  public String showVariableNameDialog(boolean rename)
+  @SuppressWarnings("unchecked")
+  public ExpressionTreeView<D, C, F> getCurrentExpressionTree()
   {
-    TextInputDialog dialog = new TextInputDialog();
-    dialog.setTitle("New Variable");
-    dialog.setHeaderText(rename ? "Enter the new name for the variable:" : "Enter the name for the new variable:");
-    dialog.setContentText("Variable name:");
-    dialog.initOwner(tabPane.getScene().getWindow());
-    Optional<String> newVarName = dialog.showAndWait();
-    if (newVarName.isEmpty())
+    var currentTab = tabPane.getSelectionModel().getSelectedItem();
+    if (currentTab == null)
     {
-      return null;
+      addNewExpressionTab();
     }
-    return newVarName.get();
+    var content       = currentTab.getContent();
+    var expressionTab = (ExpressionTreeView<D, C, F>) content;
+    return expressionTab;
   }
 
-  public Optional<Class<?>> showVariableTypeDialog()
+  private HBox newButtonBox()
   {
-    ChoiceDialog<Class<?>> choiceDialog = new ChoiceDialog<>(Real.class,
-                                                             ExpressionTreeView.TYPES);
-    choiceDialog.setTitle("Select Type");
-    choiceDialog.setContentText("What's the new variable type?");
-    choiceDialog.initOwner(tabPane.getScene().getWindow());
-    var typeChoice = choiceDialog.showAndWait();
-    if (typeChoice.isEmpty())
+    var addTabButton = new Button("New");
+    addTabButton.setOnAction(e -> addNewExpressionTab());
+
+    var compileButton = new Button("Compile");
+    compileButton.setOnAction(e -> executeTabAction(ExpressionTreeView::compileExpression));
+
+    var expandAllButton = new Button("Expand All");
+    expandAllButton.setOnAction(e -> executeTabAction(ExpressionTreeView::expandAllNodes));
+
+    var evaluateButton = new Button("Evaluate");
+    evaluateButton.setOnAction(e -> evaluate());
+
+    var toggleContextButton = new Button("Toggle Context");
+    toggleContextButton.setOnAction(e -> toggleContextView());
+
+    var saveButton = new Button("Save");
+    saveButton.setOnAction(e -> executeTabAction(ExpressionTreeView::save));
+
+    var loadButton = new Button("Load");
+    loadButton.setOnAction(e ->
     {
-      return null;
-    }
-    return typeChoice;
+      FileChooser fileChooser = new FileChooser();
+      fileChooser.getExtensionFilters()
+                 .add(new ExtensionFilter("Expressions serialized in YAML Format",
+                                          List.of("*.yaml")));
+      File file = fileChooser.showOpenDialog(null);
+      if (file != null)
+      {
+        addNewExpressionTab();
+
+        getCurrentExpressionTree().load(file);
+      }
+    });
+
+    var graphButton = new Button("Graph");
+    graphButton.setOnAction(e -> executeTabAction(ExpressionTreeView::graph));
+
+    return new HBox(10,
+                    addTabButton,
+                    compileButton,
+                    expandAllButton,
+                    evaluateButton,
+                    toggleContextButton,
+                    saveButton,
+                    loadButton,
+                    graphButton);
   }
 
   protected ContextMenu newContextMenu(StringConverter<Named> converter)
   {
-    ContextMenu contextMenu = new ContextMenu(newDeleteVariableMenuItem(),
-                                              newNewVariableMenuItem(),
-                                              newRenameVariableMenuItem());
+    var contextMenu = new ContextMenu(newDeleteVariableMenuItem(),
+                                      newNewVariableMenuItem(),
+                                      newRenameVariableMenuItem());
 
     contextListView.setCellFactory(ContextMenuListCell.forListView(contextMenu,
                                                                    param -> new ContextFieldListCell<D, C, F>(this,
@@ -226,42 +257,35 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     return contextMenu;
   }
 
-  public MenuItem newRenameVariableMenuItem()
+  @SuppressWarnings("unlikely-arg-type")
+  public MenuItem newDeleteVariableMenuItem()
   {
-    MenuItem renameVariable = new MenuItem("Rename Variable");
-    renameVariable.setOnAction(e ->
+    var deleteVariableMenuItem = new MenuItem("Delete Variable");
+    deleteVariableMenuItem.setOnAction(e ->
     {
-      Named selectedItem = contextListView.getSelectionModel().getSelectedItem();
-      if (selectedItem == null)
+      var selectedItem = contextListView.getSelectionModel().getSelectedItem();
+      if (selectedItem != null)
       {
-        WindowManager.showAlert("Error", "The variable to rename must be selected.");
-        return;
-      }
-
-      var newVar = showVariableNameDialog(true);
-      if (newVar != null)
-      {
-        Context currentContext = getCurrentContext();
+        var currentContext = getCurrentContext();
         if (currentContext != null)
         {
-          String oldName = selectedItem.getName();
-          currentContext.variables.rename(oldName, newVar);
-          updateContextListView();
+          currentContext.variables.remove(selectedItem.getName());
+          contextListView.getItems().remove(selectedItem);
         }
       }
     });
-    return renameVariable;
+    return deleteVariableMenuItem;
   }
 
   public MenuItem newNewVariableMenuItem()
   {
-    MenuItem insertNewRealVariable = new MenuItem("New Variable");
+    var insertNewRealVariable = new MenuItem("New Variable");
     insertNewRealVariable.setOnAction(e ->
     {
-      NewVariable newVar = showNewVariableDialogs(false);
+      var newVar = showNewVariableDialogs(false);
       if (newVar != null)
       {
-        Context currentContext = getCurrentContext();
+        var currentContext = getCurrentContext();
         if (currentContext != null)
         {
           Named newInstance;
@@ -289,115 +313,91 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     return insertNewRealVariable;
   }
 
-  @SuppressWarnings("unlikely-arg-type")
-  public MenuItem newDeleteVariableMenuItem()
+  public MenuItem newRenameVariableMenuItem()
   {
-    MenuItem deleteVariableMenuItem = new MenuItem("Delete Variable");
-    deleteVariableMenuItem.setOnAction(e ->
+    var renameVariable = new MenuItem("Rename Variable");
+    renameVariable.setOnAction(e ->
     {
       Named selectedItem = contextListView.getSelectionModel().getSelectedItem();
-      if (selectedItem != null)
+      if (selectedItem == null)
       {
-        Context currentContext = getCurrentContext();
+        WindowManager.showAlert("Error", "The variable to rename must be selected.");
+        return;
+      }
+
+      var newVar = showVariableNameDialog(true);
+      if (newVar != null)
+      {
+        var currentContext = getCurrentContext();
         if (currentContext != null)
         {
-          currentContext.variables.remove(selectedItem.getName());
-          contextListView.getItems().remove(selectedItem);
+          var oldName = selectedItem.getName();
+          currentContext.variables.rename(oldName, newVar);
+          updateContextListView();
         }
       }
     });
-    return deleteVariableMenuItem;
+    return renameVariable;
   }
 
-  private void executeTabAction(Consumer<ExpressionTreeView<D, C, F>> action)
+  public void setStageIcon(Stage primaryStage)
   {
-    var expressionTab = getCurrentExpressionTree();
-    action.accept(expressionTab);
+    WindowManager.setStageIcon(primaryStage, "ExpressionAnalyzer.png");
   }
 
-  @SuppressWarnings("unchecked")
-  public ExpressionTreeView<D, C, F> getCurrentExpressionTree()
+  boolean shouldConfirmClose()
   {
-    Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
-    if (currentTab == null)
-    {
-      addNewExpressionTab();
-    }
-    var content       = currentTab.getContent();
-    var expressionTab = (ExpressionTreeView<D, C, F>) content;
-    return expressionTab;
+    return false;
   }
 
-  @SuppressWarnings("unchecked")
-  public Context getCurrentContext()
+  private NewVariable showNewVariableDialogs(boolean rename)
   {
-    if (tabPane == null)
+    var typeChoice = showVariableTypeDialog();
+    if (typeChoice.isEmpty())
     {
       return null;
     }
-    Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
-    if (currentTab != null)
+    var type       = typeChoice.get();
+    var newVarName = showVariableNameDialog(rename);
+    if (newVarName != null)
     {
-      var content       = currentTab.getContent();
-      var expressionTab = (ExpressionTreeView<D, C, F>) content;
-      return expressionTab.context;
+      return new NewVariable(newVarName,
+                             type);
     }
-    return null;
-  }
-
-  private HBox newButtonBox()
-  {
-    Button addTabButton = new Button("New");
-    addTabButton.setOnAction(e -> addNewExpressionTab());
-
-    Button compileButton = new Button("Compile");
-    compileButton.setOnAction(e -> executeTabAction(ExpressionTreeView::compileExpression));
-
-    Button expandAllButton = new Button("Expand All");
-    expandAllButton.setOnAction(e -> executeTabAction(ExpressionTreeView::expandAllNodes));
-
-    Button evaluateButton = new Button("Evaluate");
-    evaluateButton.setOnAction(e -> evaluate());
-
-    Button toggleContextButton = new Button("Toggle Context");
-    toggleContextButton.setOnAction(e -> toggleContextView());
-
-    Button saveButton = new Button("Save");
-    saveButton.setOnAction(e -> executeTabAction(ExpressionTreeView::save));
-
-    Button loadButton = new Button("Load");
-    loadButton.setOnAction(e ->
+    else
     {
-      FileChooser fileChooser = new FileChooser();
-      fileChooser.getExtensionFilters()
-                 .add(new ExtensionFilter("Expressions serialized in YAML Format",
-                                          List.of("*.yaml")));
-      File file = fileChooser.showOpenDialog(null);
-      if (file != null)
-      {
-        addNewExpressionTab();
-
-        getCurrentExpressionTree().load(file);
-      }
-    });
-
-    Button graphButton = new Button("Graph");
-    graphButton.setOnAction(e -> executeTabAction(ExpressionTreeView::graph));
-
-    return new HBox(10,
-                    addTabButton,
-                    compileButton,
-                    expandAllButton,
-                    evaluateButton,
-                    toggleContextButton,
-                    saveButton,
-                    loadButton,
-                    graphButton);
+      return null;
+    }
   }
 
-  public void evaluate()
+  public String showVariableNameDialog(boolean rename)
   {
-    executeTabAction(ExpressionTreeView::evaluateExpression);
+    var dialog = new TextInputDialog();
+    dialog.setTitle("New Variable");
+    dialog.setHeaderText(rename ? "Enter the new name for the variable:" : "Enter the name for the new variable:");
+    dialog.setContentText("Variable name:");
+    dialog.initOwner(tabPane.getScene().getWindow());
+    var newVarName = dialog.showAndWait();
+    if (newVarName.isEmpty())
+    {
+      return null;
+    }
+    return newVarName.get();
+  }
+
+  public Optional<Class<?>> showVariableTypeDialog()
+  {
+    var choiceDialog = new ChoiceDialog<>(Real.class,
+                                          ExpressionTreeView.TYPES);
+    choiceDialog.setTitle("Select Type");
+    choiceDialog.setContentText("What's the new variable type?");
+    choiceDialog.initOwner(tabPane.getScene().getWindow());
+    var typeChoice = choiceDialog.showAndWait();
+    if (typeChoice.isEmpty())
+    {
+      return null;
+    }
+    return typeChoice;
   }
 
   @Override
@@ -408,7 +408,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     primaryStage.setWidth(2000);
     primaryStage.setHeight(950);
 
-    Scene scene = new Scene(createMainLayout());
+    var scene = new Scene(createMainLayout());
 
     scene.getStylesheets().add(Stylesheet.convertStylesheetToDataURI(Stylesheet.DarkerStyle));
 
@@ -425,7 +425,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     {
       if (shouldConfirmClose())
       {
-        Alert alert = new Alert(AlertType.CONFIRMATION);
+        var alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Confirm Close");
         alert.setHeaderText("Close program?");
         alert.showAndWait().filter(r -> r != ButtonType.OK).ifPresent(r -> evt.consume());
@@ -448,16 +448,6 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
 
   }
 
-  boolean shouldConfirmClose()
-  {
-    return false;
-  }
-
-  public void setStageIcon(Stage primaryStage)
-  {
-    WindowManager.setStageIcon(primaryStage, "ExpressionAnalyzer.png");
-  }
-
   private void toggleContextView()
   {
     if (contextViewVisible)
@@ -474,6 +464,15 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
 
     }
     contextViewVisible = !contextViewVisible;
+  }
+
+  void updateContextListView()
+  {
+    Context currentContext = getCurrentContext();
+    if (currentContext != null && contextListView != null)
+    {
+      contextListView.setItems(currentContext.variables);
+    }
   }
 
 }
