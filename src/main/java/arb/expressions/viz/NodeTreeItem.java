@@ -18,8 +18,6 @@ public class NodeTreeItem<D, C, F extends Function<? extends D, ? extends C>> ex
                          TreeItem<Node<D, C, F>>
 {
 
-  private boolean isFirstTimeChildren = true;
-
   public NodeTreeItem(Node<D, C, F> node)
   {
     super(node);
@@ -34,26 +32,13 @@ public class NodeTreeItem<D, C, F extends Function<? extends D, ? extends C>> ex
   @Override
   public ObservableList<TreeItem<Node<D, C, F>>> getChildren()
   {
-    if (isFirstTimeChildren)
-    {
-      isFirstTimeChildren = false;
-      super.getChildren().setAll(buildChildren(this));
-    }
-    return super.getChildren();
-  }
-
-  private ObservableList<TreeItem<Node<D, C, F>>> buildChildren(TreeItem<Node<D, C, F>> treeItem)
-  {
-    if (treeItem.getValue() == null || treeItem.getValue().getBranches() == null)
+    if (getValue() == null || getValue().getBranches() == null)
     {
       return FXCollections.observableArrayList();
     }
-    ObservableList<TreeItem<Node<D, C, F>>> collect =
-                                                    treeItem.getValue()
-                                                            .getBranches()
-                                                            .stream()
-                                                            .map(NodeTreeItem::new)
-                                                            .collect(toCollection(FXCollections::observableArrayList));
-    return collect;
+    return getValue().getBranches()
+                     .stream()
+                     .map(NodeTreeItem::new)
+                     .collect(toCollection(FXCollections::observableArrayList));
   }
 }
