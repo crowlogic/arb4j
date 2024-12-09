@@ -4,4 +4,19 @@ TODO: builtin sykbols for the classical orthogonal polynomials
 todo: mouse wheel zooms control or whole scene
 expr compiler:  fractional derivatices
 implement ∂/∂x[∏ᵢ₌₁ᵏfᵢ(x)] = ∑ᵢ₌₁ᵏ[(∂/∂x fᵢ(x))∏ⱼ₌₁,ⱼ≠ᵢᵏfⱼ(x)]
-RationalFunction RationalJacobiPolynomials.evaluate(Integer t, int order, int bits, RationalFunction res)<press tab again to see documentation>jshell> P.evaluate(0,128);$2 ==> 1jshell> P.evaluate(1,128);$3 ==> (3*x)/2jshell> P.evaluate(2,128);$4 ==> (20*x^2-5)/8jshell> P.evaluate(3,128);|  Exception arb.exceptions.ArbException: numeratorAddress=123494138668048denominatorAddress=123494138667984numerator=123494139639664denominator=123494139639696|        at RationalFunction.assertPointerConsistency (RationalFunction.java:532)|        at RationalFunction.set (RationalFunction.java:598)|        at RationalFunction.div (RationalFunction.java:56)|        at P.evaluate (Unknown Source)|        at P.evaluate (Unknown Source)|        at RationalJacobiPolynomials.evaluate (RationalJacobiPolynomials.java:115)|        at RationalJacobiPolynomials.evaluate (RationalJacobiPolynomials.java:1)|        at Function.evaluate (Function.java:242)|        at Function.evaluate (Function.java:222)|        at Sequence.evaluate (Sequence.java:50)|        at (#5:1)
+#550 Expression Compiler: improve nested function references by using 1 instance of each type of function instead of each function having its own instance versions of each function
+#551 expr compiler: context variable loading prob
+#547 RationalFunction pointer consistency issue
+#549  Expression Compiler: implement switching of order-of-integration via Fubini's or Tonelli's theorem
+#539  expression compiler: integration
+#538  implement (abstract syntax) Expression tree simplification
+#541  expr compiler: simplify binary operations on constants
+#535 Uniformly convergent expansions for continuous positive definite functions
+#531  Triangular eigenfunctions
+#527  Improve hypergeometric function node by using function reference instead of substitution
+#546  implement orthogonal function sequence expansion api
+#518  expr compiler: Implement common subexpression elimination
+#520  implement Gaussian Process modeller features
+#522  3d Bessel function surface of revolution plotter
+#261  Create Fractional Riccati Differential Equation Solver using Jacobi Tau Method
+#253  expression compiler: automatic differentiation
