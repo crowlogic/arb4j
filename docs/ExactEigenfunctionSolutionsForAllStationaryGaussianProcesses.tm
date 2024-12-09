@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|alt-colors|framed-theorems>>
+<style|<tuple|generic|boring-white|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|A Constructive Solution for the Exact Eigenfunctions
@@ -10,230 +10,127 @@
   </author-affiliation>>>>
 
   <\abstract>
-    A constructive method yielding exact eigenfunctions through uniform
-    expansions is presented for stationary Gaussian processes. While Mercer's
-    theorem guarantees existence and Aronszajn's theory provides the RKHS
-    framework, this method explicitly constructs these objects through finite
-    expressions.\ 
+    An effective(constructive) method, not limited to compact intervals or
+    square-integrable kernels, and yielding exact eigenfunctions for
+    stationary Gaussian processes through uniform expansions, is presented
+    for stationary Gaussian processes. While Mercer's theorem guarantees
+    existence and Aronszajn's theory provides the RKHS framework, they are
+    both ineffective in the sense that don't provide a method to actually
+    generate the basis, whereas this theorem does. Therefore, this is
+    complete solution for all stationary Gaussian processes since the
+    triangularity of the eigenfunction expansion means that the
+    eigenfunctions are expressible as finite linear combinations of the basis
+    functions derived from the orthogonal complement of the Fourier
+    transforms of the spectral density and its square root and therefore they
+    are exact, not requiring us to truncate the expansion of each
+    eigenfunction which would be the case if an arbitary orthonormal basis
+    had been used to derive the expansion rather than the one derived via
+    this procedure involving the polynomials orthogonal to the spectral
+    density and its square root.
   </abstract>
 
-  <\table-of-contents|toc>
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Introduction>
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-1><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Novel
-    Expansion Method> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-2><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>The
-    Uniform Expansion Method> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-3><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>Triangular
-    Structure> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-4><vspace|0.5fn>
-  </table-of-contents>
-
-  \;
-
-  <section|Novel Expansion Method>
-
-  A new technique is presented for expanding positive definite functions
-  uniformly. For a stationary Gaussian process with kernel
-  <math|K*<around|(|t-s|)>>, construct an orthonormal basis
-  <math|<around|{|\<phi\><rsub|n>|}>> whose partial sums converge uniformly:
-
-  <\equation>
-    K*<around|(|t-s|)>=<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|K,\<phi\><rsub|n>|\<rangle\>>*\<phi\><rsub|n>*<around|(|t-s|)>
-  </equation>
-
-  The kernel also admits a Mercer expansion:
-
-  <\equation>
-    K*<around|(|t-s|)>=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*f<rsub|n><around|(|t|)>*f<rsub|n><around|(|s|)>
-  </equation>
-
-  where the Mercer basis elements <math|<around|{|f<rsub|n>|}>> are given by:
-
-  <\equation>
-    f<rsub|n><around|(|t|)>=<big|int>g*<around|(|t-s|)>*\<phi\><rsub|n><around|(|s|)>*d*s
-  </equation>
-
-  with <math|g<around|(|t|)>=\<cal-F\><around|[|<sqrt|S<around|(|\<omega\>|)>>|]>>.
-  Rather than computing this convolution directly, <math|g<around|(|t|)>> is
-  expanded in an orthonormal basis \ whose partial sums converge uniformly:
-
-  <\equation>
-    g<around|(|t|)>=<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n><around|(|t|)>=\<cal-F\><around|[|<sqrt|S<around|(|\<omega\>|)>>|]>
-  </equation>
-
-  This allows exact computation of the Mercer basis elements through
-  term-by-term convolution, yielding the exact eigenfunctions rather than an
-  approximation.
-
-  <section|The Uniform Expansion Method>
-
-  The construction begins with orthogonal polynomials with respect to
-  <math|S<around|(|\<omega\>|)>>. For <math|n\<geq\>0>:
-
-  <\equation>
-    p<rsub|n><around|(|\<omega\>|)>=\<omega\><rsup|n>-<big|sum><rsub|k=0><rsup|n-1><frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<omega\><rsup|n>*p<rsub|k><around|(|\<omega\>|)>*S<around|(|\<omega\>|)>*d*\<omega\>|<big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|k><rsup|2><around|(|\<omega\>|)>*S<around|(|\<omega\>|)>*d*\<omega\>>*p<rsub|k><around|(|\<omega\>|)>
-  </equation>
-
-  Taking their Fourier transforms:
-
-  <\equation>
-    <wide|p|^><rsub|n><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|n><around|(|\<omega\>|)>*e<rsup|i*t*\<omega\>>*d*\<omega\>
-  </equation>
-
-  The orthogonal complement construction yields the basis, and the kernel
-  expands as:
-
-  <\equation>
-    u<rsub|n>=K-<big|sum><rsub|k=0><rsup|n-1><frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around|(|t|)>*<wide|p|^><rsub|k><around|(|t|)>*d*t|<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|p|^><rsub|k><rsup|2><around|(|t|)>*d*t>*<wide|p|^><rsub|k>
-  </equation>
-
-  <\equation>
-    \<phi\><rsub|n>=<frac|u<rsub|n>|<around|\<\|\|\>|u<rsub|n>|\<\|\|\>>>
-  </equation>
-
-  <\equation>
-    K<around|(|t|)>=<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|K,\<phi\><rsub|n>|\<rangle\>>*\<phi\><rsub|n><around|(|t|)>
-  </equation>
-
-  Similiarly, for the spectral factor <math|g<around*|(|t|)>> using
-  <math|<sqrt|S<around|(|\<omega\>|)>>>:
-
-  <\equation>
-    q<rsub|n><around|(|\<omega\>|)>=\<omega\><rsup|n>-<big|sum><rsub|k=0><rsup|n-1><frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<omega\><rsup|n>*q<rsub|k><around|(|\<omega\>|)><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>|<big|int><rsub|-\<infty\>><rsup|\<infty\>>q<rsub|k><rsup|2><around|(|\<omega\>|)><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>>*q<rsub|k><around|(|\<omega\>|)>
-  </equation>
-
-  Their Fourier transforms:
-
-  <\equation>
-    <wide|q|^><rsub|n><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>q<rsub|n><around|(|\<omega\>|)>*e<rsup|i*t*\<omega\>>*d*\<omega\>
-  </equation>
-
-  And the Cameron-Martin basis with its expansion:
-
-  <\equation>
-    v<rsub|n>=g-<big|sum><rsub|k=0><rsup|n-1><frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|t|)>*<wide|q|^><rsub|k><around|(|t|)>*d*t|<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|q|^><rsub|k><rsup|2><around|(|t|)>*d*t>*<wide|q|^><rsub|k>
-  </equation>
-
-  <\equation>
-    \<psi\><rsub|n>=<frac|v<rsub|n>|<around|\<\|\|\>|v<rsub|n>|\<\|\|\>>>
-  </equation>
-
-  <\equation>
-    g<around|(|t|)>=<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n><around|(|t|)>
-  </equation>
-
-  <section|Triangular Structure>
+  <section|Novel Double Gram-Schmidt Method for Eigenfunction Expansion>
 
   <\theorem>
-    For a stationary Gaussian process with kernel <math|K<around|(|t|)>> and
-    spectral factor <math|g<around|(|t|)>=\<cal-F\><around|[|<sqrt|S<around|(|\<omega\>|)>>|]>>,
-    let:
+    <dueto|Double Gram-Schmidt Expansion>Let <math|K*<around|(|t-s|)>> be the
+    kernel of a stationary Gaussian process with spectral density
+    <math|S<around|(|\<omega\>|)>>. Then there exist two orthonormal bases
+    <math|<around|{|\<phi\><rsub|n>|}><rsub|n=0><rsup|\<infty\>>> and
+    <math|<around|{|\<psi\><rsub|n>|}><rsub|n=0><rsup|\<infty\>>> constructed
+    through a double Gram-Schmidt process such that:
 
-    <\equation*>
-      K<around|(|t|)>=<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|K,\<phi\><rsub|n>|\<rangle\>>*\<phi\><rsub|n><around|(|t|)>
-    </equation*>
+    <\enumerate>
+      <item><math|K*<around|(|t-s|)>=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*\<phi\><rsub|n>*<around|(|t-s|)>>
+      where <math|\<lambda\><rsub|n>=<around|\<langle\>|K,\<phi\><rsub|n>|\<rangle\>>>
 
-    <\equation*>
-      g<around|(|t|)>=<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n><around|(|t|)>
-    </equation*>
+      <item><math|g<around|(|t|)>=\<cal-F\><around|[|<sqrt|S<around|(|\<omega\>|)>>|]>=<big|sum><rsub|n=0><rsup|\<infty\>>\<gamma\><rsub|n>*\<psi\><rsub|n><around|(|t|)>>
+      where <math|\<gamma\><rsub|n>=<around|\<langle\>|g,\<psi\><rsub|n>|\<rangle\>>>
 
-    be their respective uniform expansions. Then the infinite convolution sum
-    reduces to a finite sum due to triangularity.
+      <item><math|<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|n><around|(|t|)>*\<phi\><rsub|k><around|(|t|)>*d*t=0>
+      for all <math|n\<gtr\>k>
+    </enumerate>
   </theorem>
 
   <\proof>
-    Fix <math|k>. The Mercer basis elements are given by the convolution of
-    <math|\<phi\><rsub|k>> with <math|g<around|(|t|)>=\<cal-F\><around|[|<sqrt|S<around|(|\<omega\>|)>>|]>>:
+    We proceed in several steps:
+
+    <with|font-series|bold|Step 1:> First, we establish the existence of
+    orthogonal polynomials in the spectral domain. Define for
+    <math|n\<geq\>0>:
 
     <\equation>
-      <big|int>g*<around|(|t-s|)>*\<phi\><rsub|k><around|(|s|)>*d*s
+      p<rsub|n><around|(|\<omega\>|)>=\<omega\><rsup|n>-<big|sum><rsub|k=0><rsup|n-1><frac|<around|\<langle\>|\<omega\><rsup|n>,p<rsub|k>|\<rangle\>><rsub|S>|<around|\<\|\|\>|p<rsub|k>|\<\|\|\>><rsub|S><rsup|2>>*p<rsub|k><around|(|\<omega\>|)>
     </equation>
 
-    Using the uniform expansion of <math|g>, this integral equals:
+    where
 
     <\equation>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|(|<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n>*<around|(|t-s|)>|)>*\<phi\><rsub|k><around|(|s|)>*d*s=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n>*<around|(|t-s|)>*\<phi\><rsub|k><around|(|s|)>*d*s
+      <around|\<langle\>|f,g|\<rangle\>><rsub|S>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|\<omega\>|)>*g<around|(|\<omega\>|)>*S<around|(|\<omega\>|)>*d*\<omega\>
     </equation>
 
-    By Fubini's theorem:
+    Similarly for the spectral factor:
 
     <\equation>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>><big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<psi\><rsub|n>|\<rangle\>>*\<psi\><rsub|n>*<around|(|t-s|)>*\<phi\><rsub|k><around|(|s|)>*d*s=<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<psi\><rsub|n>|\<rangle\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|n>*<around|(|t-s|)>*\<phi\><rsub|k><around|(|s|)>*d*s
+      q<rsub|n><around|(|\<omega\>|)>=\<omega\><rsup|n>-<big|sum><rsub|k=0><rsup|n-1><frac|<around|\<langle\>|\<omega\><rsup|n>,q<rsub|k>|\<rangle\>><rsub|<sqrt|S>>|<around|\<\|\|\>|q<rsub|k>|\<\|\|\>><rsub|<sqrt|S>><rsup|2>>*q<rsub|k><around|(|\<omega\>|)>
     </equation>
 
-    Now, to see that
+    where
 
     <\equation>
-      <big|int><rsub|0><rsup|\<infty\>>\<psi\><rsub|n><around|(|t|)>*\<phi\><rsub|k><around|(|t|)>*d*t=0\<forall\>n\<gtr\>k
+      <around|\<langle\>|f,g|\<rangle\>><rsub|<sqrt|S>>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|\<omega\>|)>*g<around|(|\<omega\>|)><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>
     </equation>
 
-    1) Recall
+    <with|font-series|bold|Step 2:> By the standard properties of
+    Gram-Schmidt orthogonalization:
+
+    <\equation*>
+      <around|\<langle\>|p<rsub|n>,p<rsub|m>|\<rangle\>><rsub|S>=0*<space|1em><text|and><space|1em><around|\<langle\>|q<rsub|n>,q<rsub|m>|\<rangle\>><rsub|<sqrt|S>>=0*<space|1em><text|for
+      >n\<neq\>m
+    </equation*>
+
+    <with|font-series|bold|Step 3:> Define the Fourier transforms:
 
     <\equation>
-      \<phi\><rsub|k><around|(|t|)>=\<cal-F\><around|[|p<rsub|k><around|(|\<omega\>|)>|]>
+      <text|<math|<wide|p|^><rsub|n><around|(|t|)>=\<cal-F\><around|[|p<rsub|n><around|(|\<omega\>|)>|]>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|n><around|(|\<omega\>|)>*e<rsup|i*t*\<omega\>>*d*\<omega\>>>
     </equation>
-
-    \ and
 
     <\equation>
-      \<psi\><rsub|n><around|(|t|)>=\<cal-F\><around|[|q<rsub|n><around|(|\<omega\>|)>|]>
+      <wide|q|^><rsub|n><around|(|t|)>=\<cal-F\><around|[|q<rsub|n><around|(|\<omega\>|)>|]>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>q<rsub|n><around|(|\<omega\>|)>*e<rsup|i*t*\<omega\>>*d*\<omega\>
     </equation>
 
-    \ where <math|p<rsub|k>> and <math|q<rsub|n>> are orthogonal polynomials
-    w.r.t. <math|S<around|(|\<omega\>|)>> and
-    <math|<sqrt|S<around|(|\<omega\>|)>>> respectively.
-
-    2) By Parseval's theorem:
+    <with|font-series|bold|Step 4:> Apply second Gram-Schmidt process in time
+    domain:
 
     <\equation>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|n><around|(|t|)>*\<phi\><rsub|k><around|(|t|)>*d*t=<big|int><rsub|-\<infty\>><rsup|\<infty\>>q<rsub|n><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>
+      \<phi\><rsub|n><around|(|t|)>=<frac|<wide|p|^><rsub|n><around|(|t|)>-<big|sum><rsub|k=0><rsup|n-1><around|\<langle\>|<wide|p|^><rsub|n>,\<phi\><rsub|k>|\<rangle\>>*\<phi\><rsub|k><around|(|t|)>|<around|\<\|\|\>|<wide|p|^><rsub|n>-<big|sum><rsub|k=0><rsup|n-1><around|\<langle\>|<wide|p|^><rsub|n>,\<phi\><rsub|k>|\<rangle\>>*\<phi\><rsub|k>|\<\|\|\>>>
     </equation>
-
-    3) Expand <math|q<rsub|n><around|(|\<omega\>|)>> in terms of
-    <math|<around|{|p<rsub|j><around|(|\<omega\>|)>|}><rsub|j=0><rsup|n>>
 
     <\equation>
-      q<rsub|n><around|(|\<omega\>|)>=<big|sum><rsub|j=0><rsup|n>a<rsub|n*j>*p<rsub|j><around|(|\<omega\>|)>
+      \<psi\><rsub|n><around|(|t|)>=<frac|<wide|q|^><rsub|n><around|(|t|)>-<big|sum><rsub|k=0><rsup|n-1><around|\<langle\>|<wide|q|^><rsub|n>,\<psi\><rsub|k>|\<rangle\>>*\<psi\><rsub|k><around|(|t|)>|<around|\<\|\|\>|<wide|q|^><rsub|n>-<big|sum><rsub|k=0><rsup|n-1><around|\<langle\>|<wide|q|^><rsub|n>,\<psi\><rsub|k>|\<rangle\>>*\<psi\><rsub|k>|\<\|\|\>>>
     </equation>
 
-    4) Substitute this into the integral:\ 
+    <with|font-series|bold|Step 5:> The crucial triangular structure follows
+    from Parseval's theorem:
 
     <\equation>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>>q<rsub|n><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>=<big|sum><rsub|j=0><rsup|n>a<rsub|n*j>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|j><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|n><around|(|t|)>*\<phi\><rsub|k><around|(|t|)>*d*t=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>q<rsub|n><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>
     </equation>
 
-    5)\ 
+    For <math|n\<gtr\>k>, <math|q<rsub|n><around|(|\<omega\>|)>> is
+    orthogonal to all polynomials of degree less than <math|n> with respect
+    to <math|<sqrt|S<around|(|\<omega\>|)>>>, including
+    <math|p<rsub|k><around|(|\<omega\>|)><sqrt|S<around|(|\<omega\>|)>>>.
+    Therefore:
 
     <\equation>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|j><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>>S<around|(|\<omega\>|)>*d*\<omega\>=0\<forall\>j\<gtr\>k
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|n><around|(|t|)>*\<phi\><rsub|k><around|(|t|)>*d*t=0*<space|1em>\<forall\><text|>n\<gtr\>k
     </equation>
 
-    \ by orthogonality of <math|<around|{|p<rsub|j>|}>>.
-
-    6) Therefore,\ 
-
-    <\equation>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|j><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>=0\<forall\>j\<gtr\>k
-    </equation>
-
-    \ as well.
-
-    7) Since n \<gtr\> k, all terms in the sum for j \<gtr\> k vanish,
-    leaving only terms up to k.
-
-    8) But <math|q<rsub|n>> is orthogonal to all polynomials of degree
-    \<less\> n w.r.t. <math|<sqrt|S<around|(|\<omega\>|)>>>, so these
-    remaining terms must sum to zero.
-
-    Therefore, <math|<big|int>\<psi\><rsub|n><around|(|t|)>*\<phi\><rsub|k><around|(|t|)>*d*t=0>
-    for n \<gtr\> k, establishing the triangular structure.
+    <with|font-series|bold|Step 6:> The convergence of the expansions follows
+    from the completeness of polynomials in
+    <math|L<rsup|2><around|(|\<bbb-R\>,S<around|(|\<omega\>|)>|)>> and
+    <math|L<rsup|2><around|(|\<bbb-R\>,<sqrt|S<around|(|\<omega\>|)>>|)>>
+    respectively.
   </proof>
 </body>
 
@@ -250,30 +147,16 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|1|1>>
-    <associate|auto-2|<tuple|2|1>>
-    <associate|auto-3|<tuple|3|2>>
-    <associate|auto-4|<tuple|4|3>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
     <\associate|toc>
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Introduction>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Novel
+      Double Gram-Schmidt Method for Eigenfunction Expansion>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-1><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Novel
-      Expansion Method> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-2><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>The
-      Uniform Expansion Method> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-3><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Triangular
-      Structure> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-4><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
