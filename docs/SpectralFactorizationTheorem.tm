@@ -51,7 +51,7 @@
     4. The inner integral gives <math|2*\<pi\>*\<delta\>*<around|(|\<omega\><rsub|1>-\<omega\><rsub|2>|)>>:
 
     <\equation>
-      =<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*<around|(|t-s|)>>*d*\<omega\>=K*<around|(|t-s|)>
+      <tabular|<tformat|<table|<row|<cell|=<frac|1|4*\<pi\><rsup|2>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\><rsub|1>|)>*S<around|(|\<omega\><rsub|2>|)>>*e<rsup|i*\<omega\><rsub|1>*t>e<rsup|-i*\<omega\><rsub|2>*s>*2*\<pi\>*\<delta\>*<around|(|\<omega\><rsub|1>-\<omega\><rsub|2>|)>*d*\<omega\><rsub|1>*d*\<omega\><rsub|2>>>|<row|<cell|=<frac|1|4*\<pi\><rsup|2>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\><rsub|1>|)>*S<around|(|\<omega\><rsub|2>|)>>*e<rsup|i*<around*|(|\<omega\><rsub|1>*t-\<omega\><rsub|2>*s|)>>*2*\<pi\>*\<delta\>*<around|(|\<omega\><rsub|1>-\<omega\><rsub|2>|)>*d*\<omega\><rsub|1>*d*\<omega\><rsub|2>>>|<row|<cell|=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*<around|(|t-s|)>>*d*\<omega\>=K*<around|(|t-s|)>>>>>>
     </equation>
 
     \;
@@ -80,17 +80,22 @@
       <tabular|<tformat|<table|<row|<cell|<around|\<langle\>|h<rsub|i>,h<rsub|j>|\<rangle\>>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|i><around|(|t|)><wide|h<rsub|j><around|(|t|)>|\<bar\>>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>h*<around|(|t+\<tau\><rsub|1>|)><wide|h*<around|(|t+\<tau\><rsub|2>|)>|\<bar\>><wide|e<rsub|i><around|(|\<tau\><rsub|1>|)>|\<bar\>>e<rsub|j><around|(|\<tau\><rsub|2>|)>*d*\<tau\><rsub|1>*d*\<tau\><rsub|2>*d*t>>>>>
     </equation>
 
-    2. Change variables <math|u=t+\<tau\><rsub|1>>:
+    2. Change variables <math|u=t+\<tau\><rsub|1>> and apply Fubini's theorem
+    to switch the order of integration:
 
     <\equation>
-      =<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|u|)><wide|h*<around|(|u-\<tau\><rsub|1>+\<tau\><rsub|2>|)>|\<bar\>><wide|e<rsub|i><around|(|\<tau\><rsub|1>|)>|\<bar\>>e<rsub|j><around|(|\<tau\><rsub|2>|)>*d*\<tau\><rsub|1>*d*\<tau\><rsub|2>*d*u
+      <tabular|<tformat|<table|<row|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|u|)><wide|h*<around|(|u-\<tau\><rsub|1>+\<tau\><rsub|2>|)>|\<bar\>><wide|e<rsub|i><around|(|\<tau\><rsub|1>|)>|\<bar\>>e<rsub|j><around|(|\<tau\><rsub|2>|)>*d*u
+      d*\<tau\><rsub|1>*d*\<tau\><rsub|2>*>>|<row|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsub|j><around|(|\<tau\><rsub|2>|)><wide|e<rsub|i><around|(|\<tau\><rsub|1>|)>|\<bar\>>h<around|(|u|)><wide|h*<around|(|u-\<tau\><rsub|1>+\<tau\><rsub|2>|)>|\<bar\>>*d*u
+      d*\<tau\><rsub|1>*d*\<tau\><rsub|2>>>|<row|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsub|j><around|(|\<tau\><rsub|2>|)><wide|e<rsub|i><around|(|\<tau\><rsub|1>|)>|\<bar\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|u|)><wide|h*<around|(|u-\<tau\><rsub|1>+\<tau\><rsub|2>|)>|\<bar\>>*d*u
+      d*\<tau\><rsub|1>*d*\<tau\><rsub|2>>>>>>
     </equation>
 
-    3. The inner integral gives <math|K*<around|(|\<tau\><rsub|1>-\<tau\><rsub|2>|)>>
+    3. The inner integral over <math|u> gives
+    <math|<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|u|)><wide|h*<around|(|u-\<tau\><rsub|1>+\<tau\><rsub|2>|)>|\<bar\>>*d*u=K*<around|(|\<tau\><rsub|1>-\<tau\><rsub|2>|)>>
     by definition of <math|h>:
 
     <\equation*>
-      =<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>K*<around|(|\<tau\><rsub|1>-\<tau\><rsub|2>|)><wide|e<rsub|i><around|(|\<tau\><rsub|1>|)>|\<bar\>>e<rsub|j><around|(|\<tau\><rsub|2>|)>*d*\<tau\><rsub|1>*d*\<tau\><rsub|2>
+      =<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsub|j><around|(|\<tau\><rsub|2>|)><wide|e<rsub|i><around|(|\<tau\><rsub|1>|)>|\<bar\>>K*<around|(|\<tau\><rsub|1>-\<tau\><rsub|2>|)>*d*\<tau\><rsub|1>*d*\<tau\><rsub|2>
     </equation*>
   </proof>
 
@@ -111,22 +116,21 @@
       <tabular|<tformat|<table|<row|<cell|<around|\<langle\>|\<psi\><rsub|i>,\<psi\><rsub|j>|\<rangle\>>>|<cell|=<around*|\<langle\>|<frac|h<rsub|i>|<sqrt|<around|\||h<rsub|i>|\|><rsup|2>>>,<frac|h<rsub|j>|<sqrt|<around|\||h<rsub|j>|\|><rsup|2>>>|\<rangle\>>>>|<row|<cell|>|<cell|=<frac|1|<sqrt|<around|\||h<rsub|i>|\|><rsup|2><around|\||h<rsub|j>|\|><rsup|2>>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|i><around|(|t|)><wide|h<rsub|j><around|(|t|)>|\<bar\>>d*t>>|<row|<cell|>|<cell|=<frac|<around|\<langle\>|h<rsub|i>,h<rsub|j>|\<rangle\>>|<sqrt|<around|\||h<rsub|i>|\|><rsup|2><around|\||h<rsub|j>|\|><rsup|2>>>=\<delta\><rsub|i*j>>>>>>
     </equation>
 
-    2. For completeness, show any <math|f\<in\>\<cal-H\>> can be expanded:
+    2. Completeness follows from completeness of
+    <math|<around|{|e<rsub|i>|}>> in <math|L<rsup|2>> and the fact that
+    <math|h> maps <math|L<rsup|2>> to <math|\<cal-H\>> shows any
+    <math|f\<in\>\<cal-H\>> can be expanded as:
 
     <\equation>
       f<around|(|t|)>=<big|sum><rsub|i><around|\<langle\>|f,\<psi\><rsub|i>|\<rangle\>>*\<psi\><rsub|i><around|(|t|)>
     </equation>
-
-    3. This follows from completeness of <math|<around|{|e<rsub|i>|}>> in
-    <math|L<rsup|2>> and the fact that <math|h> maps <math|L<rsup|2>> to
-    <math|\<cal-H\>>.
   </proof>
 
   <\theorem>
     <label|ke><strong|[Kernel Expansion]> The kernel has the expansion:
 
     <\equation>
-      K<around|(|t,s|)>=<big|sum><rsub|i>h<rsub|i><around|(|t|)>*h<rsub|i><around|(|s|)>
+      K<around|(|t,s|)>=<big|sum><rsub|i=0><rsup|\<infty\>>h<rsub|i><around|(|t|)>*h<rsub|i><around|(|s|)>
     </equation>
 
     which converges in the RKHS norm.
@@ -136,19 +140,19 @@
     1. Start with normalized basis expansion:
 
     <\equation>
-      K<around|(|t,s|)>=<big|sum><rsub|i><around|\||h<rsub|i>|\|><rsup|2>*\<psi\><rsub|i><around|(|t|)>*\<psi\><rsub|i><around|(|s|)>
+      K<around|(|t,s|)><big|sum><rsub|i=0><rsup|\<infty\>><rsub|i><around|\||h<rsub|i>|\|><rsup|2>*\<psi\><rsub|i><around|(|t|)>*\<psi\><rsub|i><around|(|s|)>
     </equation>
 
     2. Substitute normalized basis functions:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|>|<cell|=<big|sum><rsub|i><around|\||h<rsub|i>|\|><rsup|2><frac|h<rsub|i><around|(|t|)>|<sqrt|<around|\||h<rsub|i>|\|><rsup|2>>>*<frac|h<rsub|i><around|(|s|)>|<sqrt|<around|\||h<rsub|i>|\|><rsup|2>>>>>|<row|<cell|>|<cell|=<big|sum><rsub|i>h<rsub|i><around|(|t|)>*h<rsub|i><around|(|s|)>>>>>>
+      <tabular|<tformat|<table|<row|<cell|>|<cell|=<big|sum><rsub|i=0><rsup|\<infty\>><around|\||h<rsub|i>|\|><rsup|2><frac|h<rsub|i><around|(|t|)>|<sqrt|<around|\||h<rsub|i>|\|><rsup|2>>>*<frac|h<rsub|i><around|(|s|)>|<sqrt|<around|\||h<rsub|i>|\|><rsup|2>>>>>|<row|<cell|>|<cell|=<big|sum><rsub|i=0><rsup|\<infty\>>h<rsub|i><around|(|t|)>*h<rsub|i><around|(|s|)>>>>>>
     </equation>
 
     3. Expand using convolution definition:
 
     <\equation>
-      =<big|sum><rsub|i><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>h*<around|(|t+\<tau\><rsub|1>|)>*h*<around|(|s+\<tau\><rsub|2>|)><wide|e<rsub|i><around|(|\<tau\><rsub|1>|)>|\<bar\>>e<rsub|i><around|(|\<tau\><rsub|2>|)>*d*\<tau\><rsub|1>*d*\<tau\><rsub|2>
+      =<big|sum><rsub|i=0><rsup|\<infty\>><rsub|><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>h*<around|(|t+\<tau\><rsub|1>|)>*h*<around|(|s+\<tau\><rsub|2>|)><wide|e<rsub|i><around|(|\<tau\><rsub|1>|)>|\<bar\>>e<rsub|i><around|(|\<tau\><rsub|2>|)>*d*\<tau\><rsub|1>*d*\<tau\><rsub|2>
     </equation>
 
     4. By completeness of <math|<around|{|e<rsub|i>|}>>:
@@ -169,7 +173,7 @@
     expansions:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|K<around|(|t,s|)>>|<cell|=<big|sum><rsub|i>h<rsub|i><rsup|e><around|(|t|)>*h<rsub|i><rsup|e><around|(|s|)>>>|<row|<cell|K<around|(|t,s|)>>|<cell|=<big|sum><rsub|i>h<rsub|i><rsup|f><around|(|t|)>*h<rsub|i><rsup|f><around|(|s|)>>>>>>
+      <tabular|<tformat|<table|<row|<cell|K<around|(|t,s|)>>|<cell|=<big|sum><rsub|i=0><rsup|\<infty\>>h<rsub|i><rsup|e><around|(|t|)>*h<rsub|i><rsup|e><around|(|s|)>>>|<row|<cell|K<around|(|t,s|)>>|<cell|=<big|sum><rsub|i=0><rsup|\<infty\>>h<rsub|i><rsup|f><around|(|t|)>*h<rsub|i><rsup|f><around|(|s|)>>>>>>
     </equation>
 
     where superscripts indicate the basis used, must be equal as they both
@@ -205,9 +209,9 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|19|4|../../.TeXmacs/texts/scratch/no_name_62.tm>>
-    <associate|bib-cramerStochasticProcessTheoryContribution|<tuple|1|4|../../.TeXmacs/texts/scratch/no_name_62.tm>>
-    <associate|ke|<tuple|4|3|../../.TeXmacs/texts/scratch/no_name_62.tm>>
+    <associate|auto-1|<tuple|19|4>>
+    <associate|bib-cramerStochasticProcessTheoryContribution|<tuple|1|4>>
+    <associate|ke|<tuple|4|3>>
   </collection>
 </references>
 
