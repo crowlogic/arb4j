@@ -982,13 +982,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       System.out.format("Expression(#%s) Generating %s\n\n", System.identityHashCode(this), expression);
     }
+    rootNode.isResult = true;
     if (coDomainType.isInterface())
     {
       generateFunctionalElement(mv);
     }
     else
     {
-      rootNode.isResult = true;
       rootNode.generate(mv, coDomainType);
     }
 
@@ -1119,9 +1119,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       function.independentVariable = indeterminateVariable.spliceInto(function).asVariable();
     }
 
+    rootNode.isResult = true;
     function.rootNode          = (Node<Object, Object, Function<?, ?>>) rootNode.spliceInto(function);
-    function.className         = className + "func";
     function.rootNode.isResult = true;
+    function.className         = className + "func";
     return function;
   }
 
@@ -1676,7 +1677,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public String newIntermediateVariable(String prefix, Class<?> type, boolean initialize)
   {
     assert prefix != null : "name shan't be null";
-    assert type != Object.class : "dont generate a variable for the Object type";
+    //assert type != Object.class : "dont generate a variable for the Object type";
     var intermediateVarName = getNextIntermediateVariableFieldName(prefix, type);
     return registerIntermediateVariable(intermediateVarName, type, initialize);
   }
@@ -2291,16 +2292,5 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                             java.lang.Integer.toString(i));
   }
 
-  public Expression<D, C, F> transplant(Node<D, C, F> newRoot)
-  {
-    rootNode.isResult    = false;
-    instance             = null;
-    instructionByteCodes = null;
-    compiledClass        = null;
-    rootNode             = newRoot;
-    updateStringRepresentation();
-    className = Parser.expressionToUniqueClassname(expression);
-    return this;
-  }
 
 }

@@ -30,6 +30,13 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  public static void testSimplificationAConstantIntegerRaisedToAConstnatInteger()
+  {
+    var f = RealNullaryFunction.parse("5^3");
+    f.simplify();
+    assertEquals("125", f.toString());
+  }
+  
   public void testDerivativeOfLogarithm()
   {
     var x = RealFunction.parse("∂ln(x)/∂x");

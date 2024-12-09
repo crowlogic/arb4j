@@ -71,6 +71,8 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     mapTypes(RealPolynomial.class, ComplexPolynomial.class, ComplexPolynomial.class);
     mapTypes(RealFunction.class, Integer.class, RealFunction.class);
     mapTypes(RealFunction.class, Real.class, RealFunction.class);
+    mapTypes(Integer.class,Object.class,Object.class);
+    mapTypes(Real.class,Object.class,Object.class);
 
   }
 
@@ -239,7 +241,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     {
       loadBitsParameterOntoStack(mv);
     }
-    loadResult(mv, resultType);
+    loadOutput(mv, resultType);
 
     var leftType = left.getGeneratedType();
     leftType = leftType != null ? leftType : left.type();
@@ -273,7 +275,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     return (left == null || left.isScalar()) && (right == null || right.isScalar());
   }
 
-  public boolean loadResult(MethodVisitor mv, Class<?> resultType)
+  public boolean loadOutput(MethodVisitor mv, Class<?> resultType)
   {
     if (isResult)
     {

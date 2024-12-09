@@ -102,6 +102,21 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     {
       return new LiteralConstantNode<>(expression, "1");
     }
+    if ( left.isLiteralConstant() && right.isLiteralConstant() )
+    {
+
+      var lconst = left.asLiteralConstant();
+      var rconst = right.asLiteralConstant();
+      if (lconst.isInt && rconst.isInt)
+      {
+        try ( var lint = new Integer(lconst.value); var rint = new Integer(rconst.value);)
+        {
+          var power = lint.pow(rint, 0, rint);
+          return new LiteralConstantNode<>(expression,
+                                           power.toString());
+        }
+      }
+    }
     return this;
   }
 }

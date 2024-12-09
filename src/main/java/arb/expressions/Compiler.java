@@ -320,6 +320,7 @@ public class Compiler
     typePrefixes.put(ComplexFraction.class, "fℂ");
     typePrefixes.put(SphericalBesselFunction.class, "sph");
     typePrefixes.put(IntegerPolynomial.class, "Xℤ");
+    typePrefixes.put(Object.class, "o");
   }
 
   public static String getVariablePrefix(Class<?> type)
