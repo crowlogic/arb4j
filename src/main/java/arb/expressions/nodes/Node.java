@@ -325,4 +325,15 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    */
   public abstract String typeset();
 
+  /**
+   * 
+   * @return the {@link String} string that would be what would be said to express
+   *         this Node in the most precise wa
+   */
+  public  String say()
+  {
+    assert false : "TODO: implement";
+    return null;
+  }
+
 }
