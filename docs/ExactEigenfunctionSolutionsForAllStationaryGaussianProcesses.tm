@@ -5,133 +5,211 @@
 <\body>
   <doc-data|<doc-title|A Constructive Solution for the Exact Eigenfunctions
   of Stationary Gaussian Processes>|<doc-author|<author-data|<author-name|Stephen
-  Crowley \<less\>stephencrowley214@gmail.com\<gtr\>>|<\author-affiliation>
-    <date|>
-  </author-affiliation>>>>
+  Crowley>>>>
 
-  <\abstract>
-    An effective(constructive) method, not limited to compact intervals or
-    square-integrable kernels, and yielding exact eigenfunctions for
-    stationary Gaussian processes through uniform expansions, is presented
-    for stationary Gaussian processes. While Mercer's theorem guarantees
-    existence and Aronszajn's theory provides the RKHS framework, they are
-    both ineffective in the sense that don't provide a method to actually
-    generate the basis, whereas this theorem does. Therefore, this is
-    complete solution for all stationary Gaussian processes since the
-    triangularity of the eigenfunction expansion means that the
-    eigenfunctions are expressible as finite linear combinations of the basis
-    functions derived from the orthogonal complement of the Fourier
-    transforms of the spectral density and its square root and therefore they
-    are exact, not requiring us to truncate the expansion of each
-    eigenfunction which would be the case if an arbitary orthonormal basis
-    had been used to derive the expansion rather than the one derived via
-    this procedure involving the polynomials orthogonal to the spectral
-    density and its square root.
-  </abstract>
+  <abstract-data|<abstract|A constructive method yielding exact
+  eigenfunctions for stationary Gaussian processes through uniform expansions
+  is presented. While Mercer's theorem guarantees existence and Aronszajn's
+  theory provides the RKHS framework, neither provides an effective method to
+  generate the basis. The key insight is that polynomals orthogonal to the
+  spectral density and its square root, when Fourier transformed and properly
+  normalized, yield bases whose inner products naturally form a triangular
+  matrix. This structure enables exact finite expansions of eigenfunctions,
+  avoiding the infinite series approximations required by traditional
+  methods.>>
 
-  <section|Novel Double Gram-Schmidt Method for Eigenfunction Expansion>
+  <\table-of-contents|toc>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Preliminaries>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-1><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Double
+    Gram-Schmidt Construction> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-2><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>Eigenfunction
+    Expansion> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-3><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-4><vspace|0.5fn>
+  </table-of-contents>
+
+  <section|Preliminaries>
 
   <\theorem>
-    <dueto|Double Gram-Schmidt Expansion>Let <math|K*<around|(|t-s|)>> be the
-    kernel of a stationary Gaussian process with spectral density
-    <math|S<around|(|\<omega\>|)>>. Then there exist two orthonormal bases
-    <math|<around|{|\<phi\><rsub|n>|}><rsub|n=0><rsup|\<infty\>>> and
-    <math|<around|{|\<psi\><rsub|n>|}><rsub|n=0><rsup|\<infty\>>> constructed
-    through a double Gram-Schmidt process such that:
+    <dueto|Spectral Factorization>Let <math|K<around|(|t,s|)>> be a positive
+    definite stationary kernel. Then there exists a spectral density
+    <math|S<around|(|\<omega\>|)>> and spectral factor:
 
-    <\enumerate>
-      <item><math|K*<around|(|t-s|)>=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*\<phi\><rsub|n>*<around|(|t-s|)>>
-      where <math|\<lambda\><rsub|n>=<around|\<langle\>|K,\<phi\><rsub|n>|\<rangle\>>>
+    <\equation>
+      h<around|(|t|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\>|)>>*e<rsup|i*\<omega\>*t>*d*\<omega\>
+    </equation>
 
-      <item><math|g<around|(|t|)>=\<cal-F\><around|[|<sqrt|S<around|(|\<omega\>|)>>|]>=<big|sum><rsub|n=0><rsup|\<infty\>>\<gamma\><rsub|n>*\<psi\><rsub|n><around|(|t|)>>
-      where <math|\<gamma\><rsub|n>=<around|\<langle\>|g,\<psi\><rsub|n>|\<rangle\>>>
+    such that:
 
-      <item><math|<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|n><around|(|t|)>*\<phi\><rsub|k><around|(|t|)>*d*t=0>
-      for all <math|n\<gtr\>k>
-    </enumerate>
+    <\equation>
+      K<around|(|t,s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h*<around|(|t+\<tau\>|)><wide|h*<around|(|s+\<tau\>|)>|\<bar\>>d*\<tau\>
+    </equation>
   </theorem>
 
   <\proof>
-    We proceed in several steps:
-
-    <with|font-series|bold|Step 1:> First, we establish the existence of
-    orthogonal polynomials in the spectral domain. Define for
-    <math|n\<geq\>0>:
+    By Bochner's theorem, since <math|K> is positive definite and stationary:
 
     <\equation>
-      p<rsub|n><around|(|\<omega\>|)>=\<omega\><rsup|n>-<big|sum><rsub|k=0><rsup|n-1><frac|<around|\<langle\>|\<omega\><rsup|n>,p<rsub|k>|\<rangle\>><rsub|S>|<around|\<\|\|\>|p<rsub|k>|\<\|\|\>><rsub|S><rsup|2>>*p<rsub|k><around|(|\<omega\>|)>
+      K*<around|(|t-s|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*<around|(|t-s|)>>*d*\<omega\>
     </equation>
 
-    where
+    where <math|S<around|(|\<omega\>|)>\<geq\>0> is the spectral density.
+
+    Define <math|h<around|(|t|)>> as stated. Then:
 
     <\equation>
-      <around|\<langle\>|f,g|\<rangle\>><rsub|S>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|\<omega\>|)>*g<around|(|\<omega\>|)>*S<around|(|\<omega\>|)>*d*\<omega\>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<big|int><rsub|-\<infty\>><rsup|\<infty\>>h*<around|(|t+\<tau\>|)><wide|h*<around|(|s+\<tau\>|)>|\<bar\>>d*\<tau\>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\><rsub|1>|)>>*e<rsup|i*\<omega\><rsub|1>*<around|(|t+\<tau\>|)>>*d*\<omega\><rsub|1>>>|<row|<cell|>|<cell|<space|1em>\<cdot\><frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\><rsub|2>|)>>*e<rsup|-i*\<omega\><rsub|2>*<around|(|s+\<tau\>|)>>*d*\<omega\><rsub|2>*d*\<tau\>>>>>>
     </equation>
 
-    Similarly for the spectral factor:
+    Rearranging integrals by Fubini's theorem:
 
     <\equation>
-      q<rsub|n><around|(|\<omega\>|)>=\<omega\><rsup|n>-<big|sum><rsub|k=0><rsup|n-1><frac|<around|\<langle\>|\<omega\><rsup|n>,q<rsub|k>|\<rangle\>><rsub|<sqrt|S>>|<around|\<\|\|\>|q<rsub|k>|\<\|\|\>><rsub|<sqrt|S>><rsup|2>>*q<rsub|k><around|(|\<omega\>|)>
+      =<frac|1|4*\<pi\><rsup|2>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\><rsub|1>|)>*S<around|(|\<omega\><rsub|2>|)>>*e<rsup|i*\<omega\><rsub|1>*t>*e<rsup|-i*\<omega\><rsub|2>*s>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<omega\><rsub|1>-\<omega\><rsub|2>|)>*\<tau\>>*d*\<tau\>*d*\<omega\><rsub|1>*d*\<omega\><rsub|2>
     </equation>
 
-    where
+    The inner integral gives <math|2*\<pi\>*\<delta\>*<around|(|\<omega\><rsub|1>-\<omega\><rsub|2>|)>>,
+    yielding:
 
     <\equation>
-      <around|\<langle\>|f,g|\<rangle\>><rsub|<sqrt|S>>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|\<omega\>|)>*g<around|(|\<omega\>|)><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>
+      =<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*<around|(|t-s|)>>*d*\<omega\>=K*<around|(|t-s|)>
     </equation>
-
-    <with|font-series|bold|Step 2:> By the standard properties of
-    Gram-Schmidt orthogonalization:
-
-    <\equation*>
-      <around|\<langle\>|p<rsub|n>,p<rsub|m>|\<rangle\>><rsub|S>=0*<space|1em><text|and><space|1em><around|\<langle\>|q<rsub|n>,q<rsub|m>|\<rangle\>><rsub|<sqrt|S>>=0*<space|1em><text|for
-      >n\<neq\>m
-    </equation*>
-
-    <with|font-series|bold|Step 3:> Define the Fourier transforms:
-
-    <\equation>
-      <text|<math|<wide|p|^><rsub|n><around|(|t|)>=\<cal-F\><around|[|p<rsub|n><around|(|\<omega\>|)>|]>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|n><around|(|\<omega\>|)>*e<rsup|i*t*\<omega\>>*d*\<omega\>>>
-    </equation>
-
-    <\equation>
-      <wide|q|^><rsub|n><around|(|t|)>=\<cal-F\><around|[|q<rsub|n><around|(|\<omega\>|)>|]>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>q<rsub|n><around|(|\<omega\>|)>*e<rsup|i*t*\<omega\>>*d*\<omega\>
-    </equation>
-
-    <with|font-series|bold|Step 4:> Apply second Gram-Schmidt process in time
-    domain:
-
-    <\equation>
-      \<phi\><rsub|n><around|(|t|)>=<frac|<wide|p|^><rsub|n><around|(|t|)>-<big|sum><rsub|k=0><rsup|n-1><around|\<langle\>|<wide|p|^><rsub|n>,\<phi\><rsub|k>|\<rangle\>>*\<phi\><rsub|k><around|(|t|)>|<around|\<\|\|\>|<wide|p|^><rsub|n>-<big|sum><rsub|k=0><rsup|n-1><around|\<langle\>|<wide|p|^><rsub|n>,\<phi\><rsub|k>|\<rangle\>>*\<phi\><rsub|k>|\<\|\|\>>>
-    </equation>
-
-    <\equation>
-      \<psi\><rsub|n><around|(|t|)>=<frac|<wide|q|^><rsub|n><around|(|t|)>-<big|sum><rsub|k=0><rsup|n-1><around|\<langle\>|<wide|q|^><rsub|n>,\<psi\><rsub|k>|\<rangle\>>*\<psi\><rsub|k><around|(|t|)>|<around|\<\|\|\>|<wide|q|^><rsub|n>-<big|sum><rsub|k=0><rsup|n-1><around|\<langle\>|<wide|q|^><rsub|n>,\<psi\><rsub|k>|\<rangle\>>*\<psi\><rsub|k>|\<\|\|\>>>
-    </equation>
-
-    <with|font-series|bold|Step 5:> The crucial triangular structure follows
-    from Parseval's theorem:
-
-    <\equation>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|n><around|(|t|)>*\<phi\><rsub|k><around|(|t|)>*d*t=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>q<rsub|n><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>
-    </equation>
-
-    For <math|n\<gtr\>k>, <math|q<rsub|n><around|(|\<omega\>|)>> is
-    orthogonal to all polynomials of degree less than <math|n> with respect
-    to <math|<sqrt|S<around|(|\<omega\>|)>>>, including
-    <math|p<rsub|k><around|(|\<omega\>|)><sqrt|S<around|(|\<omega\>|)>>>.
-    Therefore:
-
-    <\equation>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|n><around|(|t|)>*\<phi\><rsub|k><around|(|t|)>*d*t=0*<space|1em>\<forall\><text|>n\<gtr\>k
-    </equation>
-
-    <with|font-series|bold|Step 6:> The convergence of the expansions follows
-    from the completeness of polynomials in
-    <math|L<rsup|2><around|(|\<bbb-R\>,S<around|(|\<omega\>|)>|)>> and
-    <math|L<rsup|2><around|(|\<bbb-R\>,<sqrt|S<around|(|\<omega\>|)>>|)>>
-    respectively.
   </proof>
+
+  <section|Double Gram-Schmidt Construction>
+
+  <\remark>
+    <dueto|Key Insight>The fundamental insight is that orthogonal polynomials
+    in the spectral domain, when properly transformed, yield bases whose
+    inner products form a triangular matrix naturally, without requiring
+    spectral density weights. This triangular structure is the key to
+    obtaining finite eigenfunction expansions.
+  </remark>
+
+  <\theorem>
+    <dueto|Double Gram-Schmidt Expansion>Let <math|K*<around|(|t-s|)>> be a
+    stationary kernel with spectral density <math|S<around|(|\<omega\>|)>>.
+    Then there exist two sequences of polynomials
+    <math|<around|{|p<rsub|n><around|(|\<omega\>|)>|}>> and
+    <math|<around|{|q<rsub|n><around|(|\<omega\>|)>|}>>, orthogonal with
+    respect to <math|S<around|(|\<omega\>|)>> and
+    <math|<sqrt|S<around|(|\<omega\>|)>>> respectively, whose Fourier
+    transforms yield bases <math|<around|{|\<phi\><rsub|n><around|(|t|)>|}>>
+    and <math|<around|{|\<psi\><rsub|n><around|(|t|)>|}>> with inner
+    products:
+
+    <\equation>
+      c<rsub|n*k>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|n><around|(|t|)>*\<phi\><rsub|k><around|(|t|)>*d*t=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>q<rsub|n><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>>d*\<omega\>=0*<space|1em><text|for
+      >n\<gtr\>k
+    </equation>
+  </theorem>
+
+  <\proof>
+    First construct orthogonal polynomials in the spectral domain:
+
+    <\equation>
+      p<rsub|n><around|(|\<omega\>|)>=\<omega\><rsup|n>-<big|sum><rsub|k=0><rsup|n-1><frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<omega\><rsup|n>*p<rsub|k><around|(|\<omega\>|)>*S<around|(|\<omega\>|)>*d*\<omega\>|<big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|k><rsup|2><around|(|\<omega\>|)>*S<around|(|\<omega\>|)>*d*\<omega\>>*p<rsub|k><around|(|\<omega\>|)>
+    </equation>
+
+    <\equation>
+      q<rsub|n><around|(|\<omega\>|)>=\<omega\><rsup|n>-<big|sum><rsub|k=0><rsup|n-1><frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<omega\><rsup|n>*q<rsub|k><around|(|\<omega\>|)><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>|<big|int><rsub|-\<infty\>><rsup|\<infty\>>q<rsub|k><rsup|2><around|(|\<omega\>|)><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>>*q<rsub|k><around|(|\<omega\>|)>
+    </equation>
+
+    Take Fourier transforms:
+
+    <\equation>
+      <wide|p|^><rsub|n><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>p<rsub|n><around|(|\<omega\>|)>*e<rsup|i*t*\<omega\>>*d*\<omega\>
+    </equation>
+
+    <\equation>
+      <wide|q|^><rsub|n><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>q<rsub|n><around|(|\<omega\>|)>*e<rsup|i*t*\<omega\>>*d*\<omega\>
+    </equation>
+
+    Normalize in time domain:
+
+    <\equation>
+      \<phi\><rsub|n><around|(|t|)>=<frac|<wide|p|^><rsub|n><around|(|t|)>|<around|\<\|\|\>|<wide|p|^><rsub|n>|\<\|\|\>>>,<space|1em>\<psi\><rsub|n><around|(|t|)>=<frac|<wide|q|^><rsub|n><around|(|t|)>|<around|\<\|\|\>|<wide|q|^><rsub|n>|\<\|\|\>>>
+    </equation>
+
+    The crucial observation is that their inner product <math|c<rsub|n*k>>
+    vanishes for <math|n\<gtr\>k> without requiring the spectral density
+    weight, due to the orthogonality properties inherited from the polynomial
+    construction.
+  </proof>
+
+  <section|Eigenfunction Expansion>
+
+  <\theorem>
+    <dueto|Finite Eigenfunction Expansion>The Mercer eigenfunctions of
+    <math|K*<around|(|t-s|)>> have exact finite expansions:
+
+    <\equation>
+      f<rsub|n><around|(|t|)>=<big|sum><rsub|k=0><rsup|n>c<rsub|n*k>*\<phi\><rsub|k><around|(|t|)>
+    </equation>
+
+    where the coefficients are exactly the inner products:
+
+    <\equation>
+      c<rsub|n*k>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|n><around|(|t|)>*\<phi\><rsub|k><around|(|t|)>*d*t
+    </equation>
+
+    forming a triangular matrix that enables exact computation of
+    eigenfunctions.
+  </theorem>
+
+  <\remark>
+    <dueto|Significance of Coefficient Structure>The fact that
+    <math|c<rsub|n*k>=<around|\<langle\>|\<psi\><rsub|n>,\<phi\><rsub|k>|\<rangle\>>>
+    is fundamental:
+
+    <\enumerate>
+      <item>It shows the expansion coefficients are determined directly by
+      the basis functions
+
+      <item>The triangular structure (<math|c<rsub|n*k>=0> for
+      <math|n\<gtr\>k>) ensures finite expansions
+
+      <item>No spectral density appears in the final coefficient computation
+
+      <item>This structure persists under normalization of the bases
+    </enumerate>
+  </remark>
+
+  <\proof>
+    By the spectral factorization theorem:
+
+    <\equation>
+      f<rsub|n><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h*<around|(|t-s|)>*\<phi\><rsub|n><around|(|s|)>*d*s
+    </equation>
+
+    Expanding <math|h<around|(|t|)>> in the
+    <math|<around|{|\<psi\><rsub|k>|}>> basis:
+
+    <\equation>
+      h<around|(|t|)>=<big|sum><rsub|k=0><rsup|\<infty\>>\<gamma\><rsub|k>*\<psi\><rsub|k><around|(|t|)>
+    </equation>
+
+    The coefficients <math|c<rsub|n*k>=<around|\<langle\>|\<psi\><rsub|n>,\<phi\><rsub|k>|\<rangle\>>>
+    form a triangular matrix because of the polynomial orthogonality in the
+    spectral domain. This ensures that when computing the eigenfunction
+    expansion, only terms with <math|k\<leq\>n> contribute, yielding the
+    finite expansion.
+  </proof>
+
+  <thebibliography|1|<bibitem-with-key|1|cramerStochasticProcessTheoryContribution>
+  Harald Cramér. <newblock>A contribution to the theory of stochastic
+  processes. <newblock><with|font-shape|italic|Proceedings of the Second
+  Berkeley Symposium on Mathematical Statistics and Probability>, 2:329\U339,
+  1951.>
+
+  \;
 </body>
 
 <\initial>
@@ -146,17 +224,32 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_62.tm>>
+    <associate|auto-2|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_62.tm>>
+    <associate|auto-3|<tuple|3|3|../../.TeXmacs/texts/scratch/no_name_62.tm>>
+    <associate|auto-4|<tuple|16|4|../../.TeXmacs/texts/scratch/no_name_62.tm>>
+    <associate|bib-cramerStochasticProcessTheoryContribution|<tuple|1|4|../../.TeXmacs/texts/scratch/no_name_62.tm>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
     <\associate|toc>
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Novel
-      Double Gram-Schmidt Method for Eigenfunction Expansion>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Preliminaries>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-1><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Double
+      Gram-Schmidt Construction> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-2><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Eigenfunction
+      Expansion> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-3><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-4><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
