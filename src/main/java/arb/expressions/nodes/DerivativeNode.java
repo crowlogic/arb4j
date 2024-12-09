@@ -73,6 +73,13 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
 {
 
   @Override
+  public Node<D, R, F> simplify()
+  {
+    derivative.isResult = isResult;
+    return derivative;
+  }
+
+  @Override
   public String toString()
   {
     return derivative.toString();
@@ -132,6 +139,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     assert !resultType.equals(Object.class) : "Objects shan't be generated";
+    derivative.isResult = isResult;
     return derivative.generate(mv, resultType);
   }
 
