@@ -160,7 +160,7 @@ public class IntegerTest extends
   {
     try ( Integer five = new Integer("5"); Integer three = new Integer(3);)
     {
-      Real twoTen = five.risingFactorial(three, 128, new Real());
+      Real twoTen = five.ascendingFactorial(three, 128, new Real());
       assertTrue(twoTen.isExact());
       assertTrue(twoTen.doubleValue() == 210.0);
     }

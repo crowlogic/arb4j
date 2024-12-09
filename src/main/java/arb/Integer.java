@@ -385,13 +385,32 @@ public class Integer implements
     return set(0);
   }
 
-  public Real ascendingFactorial(Integer n, int bits, Real res)
+  public Real ascendingFactorial(Integer n, int bits, Real result)
   {
-    assert n.sign() >= 0 : "negative arguments to the ascending factorial are not supported, n=" + n;
-    arblib.arb_hypgeom_rising_ui(res, res.set(this), n.getUnsignedValue(), bits);
-    return res.set(res);
+    assert n.getSignedValue() >= 0 : "power must be non-negative";
+
+    try ( Real x = new Real();)
+    {
+      arblib.arb_rising(result, x.set(this), result.set(n), bits);
+    }
+    return result;
   }
 
+  public Integer ascendingFactorial(Integer n, int bits, Integer result)
+  {
+    assert n.getSignedValue() >= 0 : String.format("power=%d must be non-negative where this=%d",
+                                                   n.getSignedValue(),
+                                                   getSignedValue());
+    ;
+
+    try ( Real x = new Real(); Real realResult = new Real();)
+    {
+      arblib.arb_rising(realResult, x.set(this), realResult.set(n), bits);
+      assert realResult.isInteger() : realResult + " is not an integer";
+      return realResult.getInteger(result);
+    }
+  }
+  
   public Real ascendingFactorial(Fraction n, int bits, Real result)
   {
     try ( Real blip = new Real())
@@ -863,31 +882,9 @@ public class Integer implements
     return result.set(this).pow(operand, prec);
   }
 
-  public Integer risingFactorial(Integer n, int bits, Integer result)
-  {
-    assert n.getSignedValue() >= 0 : String.format("power=%d must be non-negative where this=%d",
-                                                   n.getSignedValue(),
-                                                   getSignedValue());
-    ;
 
-    try ( Real x = new Real(); Real realResult = new Real();)
-    {
-      arblib.arb_rising_ui(realResult, x.set(this), n.getUnsignedValue(), bits);
-      assert realResult.isInteger() : realResult + " is not an integer";
-      return realResult.getInteger(result);
-    }
-  }
 
-  public Real risingFactorial(Integer n, int bits, Real result)
-  {
-    assert n.getSignedValue() >= 0 : "power must be non-negative";
 
-    try ( Real x = new Real();)
-    {
-      arblib.arb_rising(result, x.set(this), result.set(n), bits);
-    }
-    return result;
-  }
 
   /**
    * @see arblib#fmpz_set_si(long, int)
