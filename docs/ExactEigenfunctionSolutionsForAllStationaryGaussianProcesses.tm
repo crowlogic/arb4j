@@ -4,8 +4,9 @@
 
 <\body>
   <doc-data|<doc-title|A Constructive Solution for the Exact Eigenfunctions
-  of Stationary Gaussian Processes>|<doc-author|<author-data|<author-name|Stephen
-  Crowley>>>>
+  of Stationary Gaussian Processes Over Unbounded Domains Whose Integral
+  Covariance Operators Are Compact Relative To The Induced Canonical
+  Metric>|<doc-author|<author-data|<author-name|Stephen Crowley>>>>
 
   <abstract-data|<abstract|A constructive method yielding exact
   eigenfunctions for stationary Gaussian processes through uniform expansions
@@ -35,6 +36,32 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-4><vspace|0.5fn>
   </table-of-contents>
+
+  <\abstract>
+    A constructive method yielding exact eigenfunctions for stationary
+    Gaussian processes through uniform expansions is presented. While
+    Mercer's theorem guarantees existence and Aronszajn's theory provides the
+    RKHS framework, neither provides an effective method to generate the
+    basis. The key insight is that orthogonal polynomials in the spectral
+    domain, when Fourier transformed and properly normalized, yield bases
+    whose inner products naturally form a triangular matrix. This structure
+    enables exact finite expansions of eigenfunctions, avoiding the infinite\ 
+  </abstract>
+
+  \;
+
+  <\abstract>
+    A constructive method yielding exact eigenfunctions for stationary
+    Gaussian processes through uniform expansions is presented. While
+    Mercer's theorem guarantees existence and Aronszajn's theory provides the
+    RKHS framework, neither provides an effective method to generate the
+    basis. The key insight is that orthogonal polynomials in the spectral
+    domain, when Fourier transformed and orthogonalized again in the time
+    domain, yield bases whose inner products naturally form a triangular
+    matrix. This structure enables exact finite expansions of eigenfunctions,
+    avoiding the infinite series approximations required by traditional
+    methods.
+  </abstract>
 
   <section|Preliminaries>
 
@@ -69,7 +96,7 @@
       <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<big|int><rsub|-\<infty\>><rsup|\<infty\>>h*<around|(|t+\<tau\>|)><wide|h*<around|(|s+\<tau\>|)>|\<bar\>>d*\<tau\>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\><rsub|1>|)>>*e<rsup|i*\<omega\><rsub|1>*<around|(|t+\<tau\>|)>>*d*\<omega\><rsub|1>>>|<row|<cell|>|<cell|<space|1em>\<cdot\><frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\><rsub|2>|)>>*e<rsup|-i*\<omega\><rsub|2>*<around|(|s+\<tau\>|)>>*d*\<omega\><rsub|2>*d*\<tau\>>>>>>
     </equation>
 
-    Rearranging integrals by Fubini's theorem:
+    By Fubini's theorem:
 
     <\equation>
       =<frac|1|4*\<pi\><rsup|2>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\><rsub|1>|)>*S<around|(|\<omega\><rsub|2>|)>>*e<rsup|i*\<omega\><rsub|1>*t>*e<rsup|-i*\<omega\><rsub|2>*s>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<omega\><rsub|1>-\<omega\><rsub|2>|)>*\<tau\>>*d*\<tau\>*d*\<omega\><rsub|1>*d*\<omega\><rsub|2>
@@ -85,14 +112,6 @@
 
   <section|Double Gram-Schmidt Construction>
 
-  <\remark>
-    <dueto|Key Insight>The fundamental insight is that orthogonal polynomials
-    in the spectral domain, when properly transformed, yield bases whose
-    inner products form a triangular matrix naturally, without requiring
-    spectral density weights. This triangular structure is the key to
-    obtaining finite eigenfunction expansions.
-  </remark>
-
   <\theorem>
     <dueto|Double Gram-Schmidt Expansion>Let <math|K*<around|(|t-s|)>> be a
     stationary kernel with spectral density <math|S<around|(|\<omega\>|)>>.
@@ -101,9 +120,9 @@
     <math|<around|{|q<rsub|n><around|(|\<omega\>|)>|}>>, orthogonal with
     respect to <math|S<around|(|\<omega\>|)>> and
     <math|<sqrt|S<around|(|\<omega\>|)>>> respectively, whose Fourier
-    transforms yield bases <math|<around|{|\<phi\><rsub|n><around|(|t|)>|}>>
-    and <math|<around|{|\<psi\><rsub|n><around|(|t|)>|}>> with inner
-    products:
+    transforms, when orthogonalized again in the time domain, yield bases
+    <math|<around|{|\<phi\><rsub|n><around|(|t|)>|}>> and
+    <math|<around|{|\<psi\><rsub|n><around|(|t|)>|}>> with inner products:
 
     <\equation>
       c<rsub|n*k>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<psi\><rsub|n><around|(|t|)>*\<phi\><rsub|k><around|(|t|)>*d*t=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>q<rsub|n><around|(|\<omega\>|)><wide|p<rsub|k><around|(|\<omega\>|)>|\<bar\>>d*\<omega\>=0*<space|1em><text|for
@@ -132,16 +151,27 @@
       <wide|q|^><rsub|n><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>q<rsub|n><around|(|\<omega\>|)>*e<rsup|i*t*\<omega\>>*d*\<omega\>
     </equation>
 
-    Normalize in time domain:
+    Apply second Gram-Schmidt process in time domain:
 
     <\equation>
-      \<phi\><rsub|n><around|(|t|)>=<frac|<wide|p|^><rsub|n><around|(|t|)>|<around|\<\|\|\>|<wide|p|^><rsub|n>|\<\|\|\>>>,<space|1em>\<psi\><rsub|n><around|(|t|)>=<frac|<wide|q|^><rsub|n><around|(|t|)>|<around|\<\|\|\>|<wide|q|^><rsub|n>|\<\|\|\>>>
+      u<rsub|n><around|(|t|)>=<wide|p|^><rsub|n><around|(|t|)>-<big|sum><rsub|k=0><rsup|n-1><frac|<around|\<langle\>|<wide|p|^><rsub|n>,\<phi\><rsub|k>|\<rangle\>>|<around|\<\|\|\>|\<phi\><rsub|k>|\<\|\|\>><rsup|2>>*\<phi\><rsub|k><around|(|t|)>
+    </equation>
+
+    <\equation>
+      \<phi\><rsub|n><around|(|t|)>=<frac|u<rsub|n><around|(|t|)>|<around|\<\|\|\>|u<rsub|n>|\<\|\|\>>>
+    </equation>
+
+    <\equation>
+      v<rsub|n><around|(|t|)>=<wide|q|^><rsub|n><around|(|t|)>-<big|sum><rsub|k=0><rsup|n-1><frac|<around|\<langle\>|<wide|q|^><rsub|n>,\<psi\><rsub|k>|\<rangle\>>|<around|\<\|\|\>|\<psi\><rsub|k>|\<\|\|\>><rsup|2>>*\<psi\><rsub|k><around|(|t|)>
+    </equation>
+
+    <\equation>
+      \<psi\><rsub|n><around|(|t|)>=<frac|v<rsub|n><around|(|t|)>|<around|\<\|\|\>|v<rsub|n>|\<\|\|\>>>
     </equation>
 
     The crucial observation is that their inner product <math|c<rsub|n*k>>
     vanishes for <math|n\<gtr\>k> without requiring the spectral density
-    weight, due to the orthogonality properties inherited from the polynomial
-    construction.
+    weight, due to the double orthogonalization process.
   </proof>
 
   <section|Eigenfunction Expansion>
@@ -165,20 +195,20 @@
   </theorem>
 
   <\remark>
-    <dueto|Significance of Coefficient Structure>The fact that
-    <math|c<rsub|n*k>=<around|\<langle\>|\<psi\><rsub|n>,\<phi\><rsub|k>|\<rangle\>>>
-    is fundamental:
+    <dueto|Significance of Double Orthogonalization>The double Gram-Schmidt
+    process is essential:
 
     <\enumerate>
-      <item>It shows the expansion coefficients are determined directly by
-      the basis functions
+      <item>First GS in frequency domain creates polynomials orthogonal to
+      spectral weights
 
-      <item>The triangular structure (<math|c<rsub|n*k>=0> for
-      <math|n\<gtr\>k>) ensures finite expansions
+      <item>Fourier transform preserves this structure
 
-      <item>No spectral density appears in the final coefficient computation
+      <item>Second GS in time domain ensures proper normalization without
+      weights
 
-      <item>This structure persists under normalization of the bases
+      <item>The resulting coefficients <math|c<rsub|n*k>> form a triangular
+      matrix naturally
     </enumerate>
   </remark>
 
@@ -197,10 +227,9 @@
     </equation>
 
     The coefficients <math|c<rsub|n*k>=<around|\<langle\>|\<psi\><rsub|n>,\<phi\><rsub|k>|\<rangle\>>>
-    form a triangular matrix because of the polynomial orthogonality in the
-    spectral domain. This ensures that when computing the eigenfunction
-    expansion, only terms with <math|k\<leq\>n> contribute, yielding the
-    finite expansion.
+    form a triangular matrix because of the double orthogonalization process.
+    This ensures that when computing the eigenfunction expansion, only terms
+    with <math|k\<leq\>n> contribute, yielding the finite expansion.
   </proof>
 
   <thebibliography|1|<bibitem-with-key|1|cramerStochasticProcessTheoryContribution>
@@ -208,8 +237,6 @@
   processes. <newblock><with|font-shape|italic|Proceedings of the Second
   Berkeley Symposium on Mathematical Statistics and Probability>, 2:329\U339,
   1951.>
-
-  \;
 </body>
 
 <\initial>
@@ -224,10 +251,10 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_62.tm>>
-    <associate|auto-2|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_62.tm>>
-    <associate|auto-3|<tuple|3|3|../../.TeXmacs/texts/scratch/no_name_62.tm>>
-    <associate|auto-4|<tuple|16|4|../../.TeXmacs/texts/scratch/no_name_62.tm>>
+    <associate|auto-1|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_62.tm>>
+    <associate|auto-2|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_62.tm>>
+    <associate|auto-3|<tuple|3|4|../../.TeXmacs/texts/scratch/no_name_62.tm>>
+    <associate|auto-4|<tuple|19|4|../../.TeXmacs/texts/scratch/no_name_62.tm>>
     <associate|bib-cramerStochasticProcessTheoryContribution|<tuple|1|4|../../.TeXmacs/texts/scratch/no_name_62.tm>>
   </collection>
 </references>
