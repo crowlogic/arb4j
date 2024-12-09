@@ -1,5 +1,6 @@
 package arb;
 
+import java.io.Closeable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.util.Arrays;
@@ -35,7 +36,7 @@ import arb.functions.IntegerNullaryFunction;
  *      {@link TheArb4jLibrary}
  */
 public class Integer implements
-                     AutoCloseable,
+                     Closeable,
                      Comparable<Integer>,
                      Ring<Integer>,
                      Named
@@ -314,6 +315,11 @@ public class Integer implements
     return result.set(this).add(operand, prec);
   }
 
+  public Integer add(Integer operand, int prec)
+  {
+    return add(operand,prec,this);
+  }
+  
   @Override
   public Integer add(Integer operand, int prec, Integer result)
   {

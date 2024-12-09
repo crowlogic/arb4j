@@ -19,6 +19,7 @@ import arb.functions.Function;
 import arb.utensils.Utensils;
 import arb.viz.WindowManager;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -444,7 +445,22 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
       }
     });
 
-    addNewExpressionTab();
+    Parameters params = getParameters();
+    if (params.getRaw().isEmpty())
+    {
+      addNewExpressionTab();
+    }
+    else
+    {
+      Platform.runLater(() ->
+      {
+        for (String param : params.getRaw())
+        {
+          var newTab = addNewExpressionTab();
+          newTab.load(new File(param));
+        }
+      });
+    }
 
   }
 
