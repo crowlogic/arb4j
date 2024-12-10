@@ -6,6 +6,7 @@ import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 import static arb.expressions.Compiler.loadResultParameter;
 import static arb.utensils.Utensils.indent;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -206,12 +207,16 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   @Override
   public List<Node<D, C, F>> getBranches()
   {
-    return List.of(left == null ? new LiteralConstantNode<>(expression,
-                                                            "0")
-                                : left,
-                   right == null ? new LiteralConstantNode<>(expression,
-                                                             "0")
-                                 : right);
+    var b = new ArrayList<Node<D, C, F>>();
+    if (left != null)
+    {
+      b.add(left);
+    }
+    if (right != null)
+    {
+      b.add(right);
+    }
+    return b;
   }
 
   public Class<?> getGeneratedType()
