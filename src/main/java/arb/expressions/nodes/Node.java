@@ -158,9 +158,10 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return div(nodeOf(i));
   }
 
-  public Node<D, R, F> div(Node<D, R, F> divisor)
+  @SuppressWarnings("unchecked")
+  public <N extends Node<D, R, F>> N div(Node<D, R, F> divisor)
   {
-    return new DivisionNode<>(expression,
+    return (N)new DivisionNode<>(expression,
                               this,
                               divisor);
   }
@@ -223,11 +224,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     }
   }
 
-  public Node<D, R, F> mul(Node<D, R, F> multiplicand)
+  @SuppressWarnings("unchecked")
+  public <N extends Node<D, R, F>> N mul(Node<D, R, F> multiplicand)
   {
-    return new MultiplicationNode<>(expression,
-                                    this,
-                                    multiplicand);
+    return (N) new MultiplicationNode<>(expression,
+                                        this,
+                                        multiplicand);
   }
 
   public Node<D, R, F> neg()
@@ -330,7 +332,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * @return the {@link String} string that would be what would be said to express
    *         this Node in the most precise wa
    */
-  public  String say()
+  public String say()
   {
     assert false : "TODO: implement";
     return null;

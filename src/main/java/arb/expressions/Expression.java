@@ -1119,7 +1119,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       function.independentVariable = indeterminateVariable.spliceInto(function).asVariable();
     }
 
-    rootNode.isResult = true;
+    rootNode.isResult          = true;
     function.rootNode          = (Node<Object, Object, Function<?, ?>>) rootNode.spliceInto(function);
     function.rootNode.isResult = true;
     function.className         = className + "func";
@@ -1593,23 +1593,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return loadFieldOntoStack(loadThisOntoStack(mv), name, referenceTypeDescriptor);
   }
 
-  @SuppressWarnings("unchecked")
   protected <N extends Node<D, C, F>> N multiplyAndDivide(N node)
   {
     while (true)
     {
       if (nextCharacterIs('*', '×', 'ₓ', '⋅'))
       {
-        node = (N) new MultiplicationNode<D, C, F>(this,
-                                                   node,
-                                                   exponentiate());
-
+        node = node.mul(exponentiate());
       }
       else if (!characterAfterNextIs('∂') && nextCharacterIs('⁄', '/', '÷'))
       {
-        node = (N) new DivisionNode<D, C, F>(this,
-                                             node,
-                                             exponentiate());
+        node = node.div(exponentiate());
       }
       else
       {
@@ -1677,7 +1671,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public String newIntermediateVariable(String prefix, Class<?> type, boolean initialize)
   {
     assert prefix != null : "name shan't be null";
-    //assert type != Object.class : "dont generate a variable for the Object type";
+    // assert type != Object.class : "dont generate a variable for the Object type";
     var intermediateVarName = getNextIntermediateVariableFieldName(prefix, type);
     return registerIntermediateVariable(intermediateVarName, type, initialize);
   }
@@ -2291,6 +2285,5 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return new LiteralConstantNode<D, C, F>(this,
                                             java.lang.Integer.toString(i));
   }
-
 
 }
