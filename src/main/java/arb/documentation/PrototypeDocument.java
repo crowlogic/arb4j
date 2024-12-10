@@ -12,15 +12,18 @@ public final class PrototypeDocument
                              .documentclass("article")
                              .folder(".")
                              .filename("output.tex")
-                             .title("Understanding E=$mc^2$")
-                             .authors("Author Name")
-                             .maketitle(false);
+                             .title("Prototype")
+                             .authors("Stephen Andrew Crowley")
+                             .maketitle(true);
 
     latex.section("Introduction");
+    latex.subsection("Dammit Dammit");
+    latex.subsubsection("WooHoo");
     latex.add("This document contains some statements and whatnot.");
     latex.add("This is the first paragraph of the paper.");
     latex.add("This is the second paragraph of the paper.");
-
+    latex.equation("a*x=b");
+    latex.show();
     int errorCode = latex.exec();
     System.out.println("LaTeX compilation finished with error code: " + errorCode);
   }
