@@ -694,8 +694,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     assert position > startingPosition : "didn't read any digits";
 
-    return new LiteralConstantNode<>(this,
-                                     expression.substring(startingPosition, position));
+    return newLiteralConstant(expression.substring(startingPosition, position));
   }
 
   protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
@@ -765,8 +764,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (nextCharacterIs(Parser.SUBSCRIPT_DIGITS_ARRAY))
     {
       while (nextCharacterIs(Parser.SUBSCRIPT_DIGITS_ARRAY));
-      return new LiteralConstantNode<>(this,
-                                       expression.substring(startPos, position));
+      return newLiteralConstant(expression.substring(startPos, position));
     }
     else if (isIdentifierCharacter())
     {
@@ -780,13 +778,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return exponentiate(evaluate());
   }
 
-  @SuppressWarnings("unchecked")
   protected <N extends Node<D, C, F>> N exponentiate(N node) throws CompilerException
   {
     if (nextCharacterIs('^'))
     {
       final boolean parenthetical = nextCharacterIs('(');
-      node = (N) node.pow(parenthetical ? resolve() : evaluate());
+      node = node.pow(parenthetical ? resolve() : evaluate());
       if (parenthetical)
       {
         require(')');
@@ -1317,31 +1314,28 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     sw.visitSuperclass().visitClassType(Type.getInternalName(Object.class));
     sw.visitEnd();
-
+    sw.visitInterface();
+    sw.visitClassType(Type.getInternalName(functionClass));
+    if (Sequence.class.isAssignableFrom(functionClass) || NullaryFunction.class.isAssignableFrom(functionClass))
     {
-      sw.visitInterface();
-      sw.visitClassType(Type.getInternalName(functionClass));
-      if (Sequence.class.isAssignableFrom(functionClass) || NullaryFunction.class.isAssignableFrom(functionClass))
+      if (functionClass.getTypeParameters().length == 1)
       {
-        if (functionClass.getTypeParameters().length == 1)
-        {
-          sw.visitTypeArgument('=').visitClassType(Type.getInternalName(coDomainType));
-          sw.visitEnd();
-        }
+        sw.visitTypeArgument('=').visitClassType(Type.getInternalName(coDomainType));
+        sw.visitEnd();
       }
-      else if (Function.class.isAssignableFrom(functionClass))
-      {
-        if (functionClass.getTypeParameters().length == 2)
-        {
-          sw.visitTypeArgument('=').visitClassType(Type.getInternalName(domainType));
-          sw.visitEnd();
-          sw.visitTypeArgument('=').visitClassType(Type.getInternalName(coDomainType));
-          sw.visitEnd();
-        }
-      }
-
-      sw.visitEnd();
     }
+    else if (Function.class.isAssignableFrom(functionClass))
+    {
+      if (functionClass.getTypeParameters().length == 2)
+      {
+        sw.visitTypeArgument('=').visitClassType(Type.getInternalName(domainType));
+        sw.visitEnd();
+        sw.visitTypeArgument('=').visitClassType(Type.getInternalName(coDomainType));
+        sw.visitEnd();
+      }
+    }
+
+    sw.visitEnd();
 
     for (var interfaceClass : implementedInterfaces)
     {
@@ -1766,15 +1760,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return (E) this;
   }
 
-  @SuppressWarnings("unchecked")
   protected <N extends Node<D, C, F>> N parseSuperscript(N node, char superscript, String digit)
   {
     if (nextCharacterIs(superscript))
     {
-      node = (N) new ExponentiationNode<D, C, F>(this,
-                                                 node,
-                                                 new LiteralConstantNode<>(this,
-                                                                           digit));
+      node = node.pow(newLiteralConstant(digit));
     }
     return node;
   }
@@ -2029,20 +2019,24 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (LiteralConstantNode.constantSymbols.contains(reference.name))
     {
-      return new LiteralConstantNode<>(this,
-                                       reference.name);
+      return newLiteralConstant(reference.name);
     }
     else
     {
       if (reference.isElse())
       {
-        return new ElseNode<D, C, F>(this);
+        return otherwise();
       }
       else
       {
         return newVariable(startPos, reference);
       }
     }
+  }
+
+  public ElseNode<D, C, F> otherwise()
+  {
+    return new ElseNode<D, C, F>(this);
   }
 
   protected void skip(int n)

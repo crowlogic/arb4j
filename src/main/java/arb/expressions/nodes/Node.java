@@ -161,9 +161,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   @SuppressWarnings("unchecked")
   public <N extends Node<D, R, F>> N div(Node<D, R, F> divisor)
   {
-    return (N)new DivisionNode<>(expression,
-                              this,
-                              divisor);
+    return (N) new DivisionNode<>(expression,
+                                  this,
+                                  divisor);
   }
 
   public abstract MethodVisitor generate(MethodVisitor mv, Class<?> resultType);
@@ -248,11 +248,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return pow(nodeOf(i));
   }
 
-  public Node<D, R, F> pow(Node<D, R, F> exponent)
+  @SuppressWarnings("unchecked")
+  public <N extends Node<D, R, F>> N pow(Node<D, R, F> exponent)
   {
-    return new ExponentiationNode<>(expression,
-                                    this,
-                                    exponent);
+    return (N) new ExponentiationNode<>(expression,
+                                        this,
+                                        exponent);
   }
 
   public Node<D, R, F> pow(String exponent)

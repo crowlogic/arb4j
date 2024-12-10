@@ -94,15 +94,16 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   public Node<D, R, F> simplify()
   {
     super.simplify();
-    if ( right.isLiteralConstant() && right.asLiteralConstant().value.equals("1"))
+    if (right.isLiteralConstant() && right.asLiteralConstant().value.equals("1"))
     {
       return left;
     }
-    if ( right.isLiteralConstant() && right.asLiteralConstant().value.equals("0"))
+    if (right.isLiteralConstant() && right.asLiteralConstant().value.equals("0"))
     {
-      return new LiteralConstantNode<>(expression, "1");
+      return new LiteralConstantNode<>(expression,
+                                       "1");
     }
-    if ( left.isLiteralConstant() && right.isLiteralConstant() )
+    if (left.isLiteralConstant() && right.isLiteralConstant())
     {
 
       var lconst = left.asLiteralConstant();
