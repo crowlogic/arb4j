@@ -8,9 +8,7 @@ import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -21,7 +19,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.objectweb.asm.*;
-import org.objectweb.asm.signature.SignatureWriter;
 import org.objectweb.asm.util.TraceClassVisitor;
 
 import arb.*;
@@ -36,7 +33,6 @@ import arb.expressions.nodes.nary.ProductNode;
 import arb.expressions.nodes.nary.SumNode;
 import arb.expressions.nodes.unary.*;
 import arb.functions.Function;
-import arb.functions.NullaryFunction;
 import arb.functions.integer.Sequence;
 import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;
@@ -334,19 +330,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  @SuppressWarnings("unchecked")
   protected <N extends Node<D, C, F>> N addAndSubtract(N node)
   {
     while (true)
     {
       if (nextCharacterIs('+', '₊'))
       {
-        node = (N) node.add(exponentiateMultiplyAndDivide());
+        node = node.add(exponentiateMultiplyAndDivide());
       }
       else if (nextCharacterIs('-', '₋', '−'))
       {
         N rhs = exponentiateMultiplyAndDivide();
-        node = node == null ? (N) rhs.neg() : (N) node.sub(rhs);
+        node = node == null ? rhs.neg() : node.sub(rhs);
       }
       else
       {
@@ -409,18 +404,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     String intermediateVariableName = newIntermediateVariable(prefix, type);
     loadFieldOntoStack(loadThisOntoStack(methodVisitor), intermediateVariableName, type.descriptorString());
     return intermediateVariableName;
-  }
-
-  protected MethodVisitor annotateWith(MethodVisitor methodVisitor, Class<? extends Annotation> annotation)
-  {
-    AnnotationVisitor av = methodVisitor.visitAnnotation(annotation.descriptorString(), true);
-    av.visitEnd();
-    return methodVisitor;
-  }
-
-  protected MethodVisitor annotateWithOverride(MethodVisitor methodVisitor)
-  {
-    return annotateWith(methodVisitor, Override.class);
   }
 
   public boolean anyAscendentIndependentVariableIsEqualTo(String name)
@@ -909,7 +892,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                 getCoDomainTypeMethodSignature(),
                                                 null);
 
-    annotateWithOverride(mv);
+    Compiler.annotateWithOverride(mv);
 
     mv.visitCode();
     mv.visitLdcInsn(Type.getType(coDomainType));
@@ -973,7 +956,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     MethodVisitor mv         = visitMethod(classVisitor, methodName);
     mv.visitCode();
     mv.visitLabel(startLabel);
-    annotateWithOverride(mv);
+    Compiler.annotateWithOverride(mv);
     generateConditionalInitializater(mv);
     if (trace)
     {
@@ -1179,7 +1162,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)
   {
     var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, nameOfInitializerFunction, "()V", null, null);
-    annotateWithOverride(methodVisitor);
+    Compiler.annotateWithOverride(methodVisitor);
 
     try
     {
@@ -1263,10 +1246,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     methodVisitor.visitCode();
 
     String name = functionName != null ? (functionName + ":") : "";
-    if (expression == null)
-    {
-      expression = rootNode.toString();
-    }
+    updateStringRepresentation();
     String arrow = expression.contains("➔") || independentVariable == null ? "" : (independentVariable.getName() + "➔");
     methodVisitor.visitLdcInsn(String.format("%s%s%s", name, arrow, expression.replace("sqrt", "√")));
     Compiler.generateReturnInstructionAndEndTheVisit(methodVisitor);
@@ -1279,72 +1259,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       System.err.format("generateTypesetMethod(expression=%s)\n", expression);
     }
-
-    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                 "typeset",
-                                                 Compiler.getMethodDescriptor(String.class),
-                                                 null,
-                                                 null);
-
-    annotateWithOverride(methodVisitor);
-    methodVisitor.visitCode();
-    methodVisitor.visitLdcInsn(typeset());
-    Compiler.generateReturnInstructionAndEndTheVisit(methodVisitor);
-    return classVisitor;
+    return Compiler.generateTypesetMethod(classVisitor, typeset());
   }
 
   protected String getCoDomainTypeMethodSignature()
   {
-    SignatureWriter sigWriter = new SignatureWriter();
-    sigWriter.visitParameterType();
-    sigWriter.visitReturnType();
-    sigWriter.visitClassType(Type.getInternalName(Class.class));
-    sigWriter.visitTypeArgument('=');
-    sigWriter.visitClassType(Type.getInternalName(coDomainType));
-    sigWriter.visitEnd();
-    sigWriter.visitEnd();
-    return sigWriter.toString();
+    return Compiler.getCoDomainTypeMethodSignature(coDomainType);
   }
 
   protected String getFunctionClassTypeSignature(Class<?> functionClass)
   {
-
-    String classSignature;
-    var    sw = new SignatureWriter();
-
-    sw.visitSuperclass().visitClassType(Type.getInternalName(Object.class));
-    sw.visitEnd();
-    sw.visitInterface();
-    sw.visitClassType(Type.getInternalName(functionClass));
-    if (Sequence.class.isAssignableFrom(functionClass) || NullaryFunction.class.isAssignableFrom(functionClass))
-    {
-      if (functionClass.getTypeParameters().length == 1)
-      {
-        sw.visitTypeArgument('=').visitClassType(Type.getInternalName(coDomainType));
-        sw.visitEnd();
-      }
-    }
-    else if (Function.class.isAssignableFrom(functionClass))
-    {
-      if (functionClass.getTypeParameters().length == 2)
-      {
-        sw.visitTypeArgument('=').visitClassType(Type.getInternalName(domainType));
-        sw.visitEnd();
-        sw.visitTypeArgument('=').visitClassType(Type.getInternalName(coDomainType));
-        sw.visitEnd();
-      }
-    }
-
-    sw.visitEnd();
-
-    for (var interfaceClass : implementedInterfaces)
-    {
-      sw.visitInterface();
-      sw.visitClassType(Type.getInternalName(interfaceClass));
-      sw.visitEnd();
-    }
-    classSignature = sw.toString();
-    return classSignature;
+    return Compiler.getFunctionClassTypeSignature(functionClass, domainType, coDomainType, implementedInterfaces);
   }
 
   public VariableNode<D, C, F> getIndependentVariable()
@@ -1665,7 +1590,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public String newIntermediateVariable(String prefix, Class<?> type, boolean initialize)
   {
     assert prefix != null : "name shan't be null";
-    // assert type != Object.class : "dont generate a variable for the Object type";
     var intermediateVarName = getNextIntermediateVariableFieldName(prefix, type);
     return registerIntermediateVariable(intermediateVarName, type, initialize);
   }
@@ -1910,14 +1834,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return (N) addAndSubtract(node);
   }
 
-  @SuppressWarnings("unchecked")
   protected <N extends Node<D, C, F>> N resolveAbsoluteValue(N node)
   {
     if (!inAbsoluteValue && nextCharacterIs('|'))
     {
       inAbsoluteValue = true;
-      node            = (N) new AbsoluteValueNode<D, C, F>(this,
-                                                           resolve());
+      node            = resolve().abs();
       require('|');
       inAbsoluteValue = false;
     }
@@ -2171,8 +2093,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public void throwUnexpectedCharacterException(String msg, char... which)
   {
-    String result = Arrays.asList(which)
-                          .stream()
+    String result = Stream.of(which)
                           .map(ch -> String.format("'%s'", String.valueOf(ch)))
                           .collect(Collectors.joining(","));
 

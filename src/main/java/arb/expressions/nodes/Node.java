@@ -18,6 +18,7 @@ import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.SyntaxTree;
 import arb.expressions.nodes.binary.*;
+import arb.expressions.nodes.unary.AbsoluteValueNode;
 import arb.expressions.nodes.unary.FunctionNode;
 import arb.expressions.nodes.unary.NegationNode;
 import arb.functions.Function;
@@ -80,11 +81,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     this.position   = expression.position;
   }
 
-  public Node<D, R, F> add(Node<D, R, F> addend)
+  @SuppressWarnings("unchecked")
+  public <N extends Node<D, R, F>> N add(Node<D, R, F> addend)
   {
-    return new AdditionNode<>(expression,
-                              this,
-                              addend);
+    return (N) new AdditionNode<>(expression,
+                                  this,
+                                  addend);
   }
 
   public Node<D, R, F> apply(String functionName)
@@ -232,10 +234,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                                         multiplicand);
   }
 
-  public Node<D, R, F> neg()
+  @SuppressWarnings("unchecked")
+  public <N extends Node<D, R, F>> N neg()
   {
-    return new NegationNode<>(expression,
-                              this);
+    return (N) new NegationNode<>(expression,
+                                  this);
   }
 
   public Node<D, R, F> nodeOf(int i)
@@ -291,11 +294,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return sub(nodeOf(i));
   }
 
-  public Node<D, R, F> sub(Node<D, R, F> subtrahend)
+  @SuppressWarnings("unchecked")
+  public <N extends Node<D, R, F>> N sub(Node<D, R, F> subtrahend)
   {
-    return new SubtractionNode<>(expression,
-                                 this,
-                                 subtrahend);
+    return (N) new SubtractionNode<>(expression,
+                                     this,
+                                     subtrahend);
   }
 
   public abstract <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
@@ -337,6 +341,13 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     assert false : "TODO: implement";
     return null;
+  }
+
+  @SuppressWarnings("unchecked")
+  public <N extends Node<D, R, F>> N abs()
+  {
+    return (N) new AbsoluteValueNode<D, R, F>(expression,
+                                              this);
   }
 
 }

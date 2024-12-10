@@ -36,7 +36,7 @@ public class ExpressionTest extends
     f.simplify();
     assertEquals("125", f.toString());
   }
-  
+
   public void testDerivativeOfLogarithm()
   {
     var x = RealFunction.parse("∂ln(x)/∂x");
@@ -165,7 +165,9 @@ public class ExpressionTest extends
                               Real.named("b").set(4),
                               Real.named("c").set(6));
     var x       = RealPolynomialNullaryFunction.express("x->∂a*x+b*x²+c*x³/∂x", context);
-    assertEquals("x➔∂a*x+b*x²+c*x³/∂x", x.toString());
+    var z       = RealPolynomialNullaryFunction.parse("a+2*x*b+3*x^2*c", context);
+
+    assertEquals(z.toString(), x.toString());
     var poly = x.evaluate(128);
     assertEquals("18*x² + 8*x + 2", poly.toString());
     var y = poly.evaluate(new Real("2.3",

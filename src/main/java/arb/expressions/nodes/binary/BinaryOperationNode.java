@@ -1,6 +1,9 @@
 package arb.expressions.nodes.binary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.invokeBinaryOperationMethod;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.loadResultParameter;
 import static arb.utensils.Utensils.indent;
 
 import java.util.HashMap;
@@ -71,9 +74,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     mapTypes(RealPolynomial.class, ComplexPolynomial.class, ComplexPolynomial.class);
     mapTypes(RealFunction.class, Integer.class, RealFunction.class);
     mapTypes(RealFunction.class, Real.class, RealFunction.class);
-    mapTypes(Integer.class,Object.class,Object.class);
-    mapTypes(Real.class,Object.class,Object.class);
-
   }
 
   public static void mapPolynomialType(Class<?> scalarType, Class<?> polynomialType)

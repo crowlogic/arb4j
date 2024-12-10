@@ -3,15 +3,13 @@ package arb.expressions;
 import static arb.expressions.Parser.expressionToUniqueClassname;
 import static org.objectweb.asm.Opcodes.*;
 
+import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
+import org.objectweb.asm.signature.SignatureWriter;
 
 import arb.*;
 import arb.Integer;
@@ -19,7 +17,9 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.functions.Function;
+import arb.functions.NullaryFunction;
 import arb.functions.SphericalBesselFunction;
+import arb.functions.integer.Sequence;
 import arb.functions.polynomials.ComplexPolynomialHypergeometricFunction;
 import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
 import arb.functions.rational.ComplexRationalHypergeometricFunction;
@@ -642,6 +642,90 @@ public class Compiler
     methodVisitor.visitInsn(Opcodes.ARETURN);
     methodVisitor.visitMaxs(10, 10);
     methodVisitor.visitEnd();
+  }
+
+  public static String getFunctionClassTypeSignature(Class<?> fclass,
+                                                     Class<?> domainClass,
+                                                     Class<?> codomainClass,
+                                                     Class<?>[] implementations)
+  {
+    String classSignature;
+  
+    var    sw = new SignatureWriter();
+  
+    sw.visitSuperclass().visitClassType(Type.getInternalName(Object.class));
+    sw.visitEnd();
+    sw.visitInterface();
+    sw.visitClassType(Type.getInternalName(fclass));
+    if (Sequence.class.isAssignableFrom(fclass) || NullaryFunction.class.isAssignableFrom(fclass))
+    {
+      if (fclass.getTypeParameters().length == 1)
+      {
+        sw.visitTypeArgument('=').visitClassType(Type.getInternalName(codomainClass));
+        sw.visitEnd();
+      }
+    }
+    else if (Function.class.isAssignableFrom(fclass))
+    {
+      if (fclass.getTypeParameters().length == 2)
+      {
+        sw.visitTypeArgument('=').visitClassType(Type.getInternalName(domainClass));
+        sw.visitEnd();
+        sw.visitTypeArgument('=').visitClassType(Type.getInternalName(codomainClass));
+        sw.visitEnd();
+      }
+    }
+  
+    sw.visitEnd();
+  
+    for (var interfaceClass : implementations)
+    {
+      sw.visitInterface();
+      sw.visitClassType(Type.getInternalName(interfaceClass));
+      sw.visitEnd();
+    }
+    classSignature = sw.toString();
+    return classSignature;
+  }
+
+  protected static MethodVisitor annotateWith(MethodVisitor methodVisitor, Class<? extends Annotation> annotation)
+  {
+    AnnotationVisitor av = methodVisitor.visitAnnotation(annotation.descriptorString(), true);
+    av.visitEnd();
+    return methodVisitor;
+  }
+
+  protected static MethodVisitor annotateWithOverride(MethodVisitor methodVisitor)
+  {
+    return annotateWith(methodVisitor, Override.class);
+  }
+
+  public static ClassVisitor generateTypesetMethod(ClassVisitor classVisitor, String typeset)
+  {
+    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                                 "typeset",
+                                                 getMethodDescriptor(String.class),
+                                                 null,
+                                                 null);
+  
+    annotateWithOverride(methodVisitor);
+    methodVisitor.visitCode();
+    methodVisitor.visitLdcInsn(typeset);
+    generateReturnInstructionAndEndTheVisit(methodVisitor);
+    return classVisitor;
+  }
+
+  public static String getCoDomainTypeMethodSignature(Class<?> coDomainType2)
+  {
+    SignatureWriter sigWriter = new SignatureWriter();
+    sigWriter.visitParameterType();
+    sigWriter.visitReturnType();
+    sigWriter.visitClassType(Type.getInternalName(Class.class));
+    sigWriter.visitTypeArgument('=');
+    sigWriter.visitClassType(Type.getInternalName(coDomainType2));
+    sigWriter.visitEnd();
+    sigWriter.visitEnd();
+    return sigWriter.toString();
   }
 
 }

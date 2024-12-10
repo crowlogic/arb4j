@@ -18,19 +18,12 @@ public interface RealPolynomialNullaryFunction extends
                                                NullaryFunction<RealPolynomial>
 {
 
-  public static <E extends Expression<Object, RealPolynomial, RealPolynomialNullaryFunction>>
-         E
-         parse(String string)
+  public static <E extends Expression<Object, RealPolynomial, RealPolynomialNullaryFunction>> E parse(String string)
   {
-    return parse(null,
-                 string,
-                 null);
+    return parse(null, string, null);
   }
 
-  public static RealPolynomialNullaryFunction
-         express(String functionName,
-                 String expression,
-                 Context context)
+  public static RealPolynomialNullaryFunction express(String functionName, String expression, Context context)
   {
     return Function.instantiate(expression,
                                 context,
@@ -40,32 +33,35 @@ public interface RealPolynomialNullaryFunction extends
                                 functionName);
   }
 
-  public static NullaryFunction<RealPolynomial>
-         express(String expression,
-                 Context context)
+  public static NullaryFunction<RealPolynomial> express(String expression, Context context)
   {
-    return express(null,
-                   expression,
-                   context);
+    return express(null, expression, context);
   }
 
-  public static NullaryFunction<RealPolynomial>
-         express(String expression)
+  public static NullaryFunction<RealPolynomial> express(String expression)
   {
-    return express(null,
-                   expression,
-                   null);
+    return express(null, expression, null);
+  }
+
+  public static <E extends Expression<Object, RealPolynomial, RealPolynomialNullaryFunction>>
+         E
+         parse(String functionName, String expression)
+  {
+    return parse(functionName, expression);
+  }
+
+  public static <E extends Expression<Object, RealPolynomial, RealPolynomialNullaryFunction>> E parse(String expression,
+                                                                                                      Context context)
+  {
+    return parse(null, expression, context);
   }
 
   @SuppressWarnings("unchecked")
   public static <E extends Expression<Object, RealPolynomial, RealPolynomialNullaryFunction>>
          E
-         parse(String functionName,
-               String expression,
-               Context context)
+         parse(String functionName, String expression, Context context)
   {
-    return (E) Function.parse(functionName != null ? functionName : Parser
-                                                                          .expressionToUniqueClassname(expression),
+    return (E) Function.parse(functionName != null ? functionName : Parser.expressionToUniqueClassname(expression),
                               expression,
                               context,
                               Object.class,
@@ -76,9 +72,7 @@ public interface RealPolynomialNullaryFunction extends
   }
 
   public static Expression<Object, RealPolynomial, RealPolynomialNullaryFunction>
-         compile(String functionName,
-                 String expression,
-                 Context context)
+         compile(String functionName, String expression, Context context)
   {
     return Compiler.compile(functionName,
                             expression,
