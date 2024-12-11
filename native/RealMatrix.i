@@ -27,6 +27,21 @@ import arb.algebra.Ring;
 %typemap(javacode) arb_mat_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  public RealMatrix add(Integer operand, int prec, RealMatrix result)
+  {
+    assert false : "TODO";
+    return null;
+  }
+  
+  public RealMatrix set(Integer integer)
+  {
+    setNumCols(1);
+    setNumRows(1);
+    getRow(0).get(0).set(integer);
+    return this;
+  }
+  
+  
   /**
    * Solve this*result=that, in other words this=A, result=X and that=B
    * 

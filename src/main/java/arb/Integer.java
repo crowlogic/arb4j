@@ -305,6 +305,11 @@ public class Integer implements
     return result.set(this).add(operand, prec, result);
   }
 
+  public RealMatrix add(Integer operand, int prec, RealMatrix result)
+  {
+    return result.set(this).add(operand, prec, result);
+  }
+  
   public ComplexRationalFunction add(Integer operand, int prec, ComplexRationalFunction result)
   {
     return result.set(this).add(operand, prec, result);
