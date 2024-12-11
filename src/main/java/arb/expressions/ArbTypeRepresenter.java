@@ -10,6 +10,8 @@ import org.yaml.snakeyaml.representer.Representer;
 
 import arb.Fraction;
 import arb.Integer;
+import arb.Named;
+import arb.RationalFunction;
 import arb.Real;
 import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -33,12 +35,13 @@ public class ArbTypeRepresenter extends
   public ArbTypeRepresenter(DumperOptions options)
   {
     super(options);
-
+    var namedStringRepresentation = new NamedStringRepresentation();
     representers.put(Context.class, new ContextRepresentation());
-    representers.put(Integer.class, new IntegerRepresentation());
-    representers.put(Real.class, new RealRepresentation());
-    representers.put(Fraction.class, new FractionRepresentation());
-    representers.put(RealPolynomial.class, new RealPolynomialRepresentation());
+    representers.put(Integer.class, namedStringRepresentation);
+    representers.put(Real.class, namedStringRepresentation);
+    representers.put(Fraction.class, namedStringRepresentation);
+    representers.put(RealPolynomial.class, namedStringRepresentation);
+    representers.put(RationalFunction.class, namedStringRepresentation);
 
     representers.put(ExpressionTreeView.class, data ->
     {
@@ -55,58 +58,14 @@ public class ArbTypeRepresenter extends
 
   }
 
-  public class RealRepresentation implements
-                                  Represent
+  public class NamedStringRepresentation implements
+                                         Represent
   {
 
     @Override
     public Node representData(Object data)
     {
-      Real real = (Real) data;
-
-      return ArbTypeRepresenter.this.representData(new SerializedContextVariable(real));
-    }
-
-  }
-
-  public class FractionRepresentation implements
-                                      Represent
-  {
-
-    @Override
-    public Node representData(Object data)
-    {
-      Fraction fraction = (Fraction) data;
-
-      return ArbTypeRepresenter.this.representData(new SerializedContextVariable(fraction));
-    }
-
-  }
-
-  public class RealPolynomialRepresentation implements
-                                            Represent
-  {
-
-    @Override
-    public Node representData(Object data)
-    {
-      RealPolynomial RealPolynomial = (RealPolynomial) data;
-
-      return ArbTypeRepresenter.this.representData(new SerializedContextVariable(RealPolynomial));
-    }
-
-  }
-
-  public class IntegerRepresentation implements
-                                     Represent
-  {
-
-    @Override
-    public Node representData(Object data)
-    {
-      Integer integer = (Integer) data;
-
-      return ArbTypeRepresenter.this.representData(new SerializedContextVariable(integer));
+      return ArbTypeRepresenter.this.representData(new SerializedContextVariable((Named) data));
     }
 
   }
