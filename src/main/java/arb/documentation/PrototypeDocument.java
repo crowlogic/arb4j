@@ -3,6 +3,10 @@ package arb.documentation;
 import arb.utensils.text.latex.Latex;
 import arb.utensils.text.latex.TexCompiler;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public final class PrototypeDocument
 {
 
