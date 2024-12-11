@@ -15,6 +15,7 @@ import arb.functions.IntegerNullaryFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexNullaryFunction;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
+import arb.functions.rational.ComplexRationalFunctionSequence;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
@@ -134,10 +135,11 @@ public class ExpressionTest extends
 
   public void testFourierTransformOfType1ChebyshevPolynomials()
   {
-    Context         context = new Context(Integer.named("m").set(2));
-    ComplexFunction F       = ComplexFunction.express("F:pFq([1,m,-m],[1/2],I/2/y)", context);
+    var             context = new Context();
+    var             F       = ComplexRationalFunctionSequence.express("F:m->pFq([1,m,-m],[1/2],I/2/y)", context);
+
     ComplexFunction f       =
-                      ComplexFunction.express("y->-I*F(-y)*exp(I*(π*m+y))-I*F(y)*exp(I*(2*π*m-y))*(4*m^2-1)*(-1)^(-m)/((4*m^2*y-2*y)*π)",
+                      ComplexFunction.express("y->-I*F(3)*exp(I*(π*3+y))-F(3)*exp(I*(2*π*3-y))*(4*3^2-1)*(-1)^(-3)/((4*3^2*y-2*y)*π)",
                                               context);
     Complex         eval    = f.eval(2.3, new Complex());
 

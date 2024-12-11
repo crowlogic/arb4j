@@ -719,9 +719,6 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     catch (Throwable e)
     {
       Utensils.throwOrWrap(e);
-      // e.printStackTrace(System.err);
-      // Platform.runLater(() -> WindowManager.showAlert("Evaluation Error",
-      // e.getClass().getName(), e));
     }
   }
 
