@@ -102,6 +102,11 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
 
   public Real getRow(int i)
   {
+    if ( rows == null )
+    {
+      initRows();
+    }
+  
     return rows[i];
   }  
 
@@ -110,12 +115,14 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     return rows[i].swigCPtr;
   }      
   
-  private void initRows()
+ private void initRows()
   {
+    assert rowPointers != null : "rowPointers is null";
     if ( rows == null )
     {
       rows        = new Real[getNumRows()];
     }
+    
     for (int i = 0; i < getNumRows(); i++)
     {
       if ( rows[i] == null )
