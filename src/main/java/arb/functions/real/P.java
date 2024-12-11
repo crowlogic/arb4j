@@ -90,14 +90,20 @@ public class P implements
     }
     else
     {
+      C             = new C();
+      A.C           = C;
       A.α           = α;
       A.β           = β;
+      B.C           = C;
       B.α           = α;
       B.β           = β;
       C.α           = α;
+      A.F.C         = C;
       C.β           = β;
+      E.C           = C;
       E.α           = α;
       E.β           = β;
+      
       P             = new P();
       P.α           = α;
       P.β           = β;

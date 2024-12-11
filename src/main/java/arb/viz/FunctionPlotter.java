@@ -72,15 +72,12 @@ public class FunctionPlotter extends
     configureChartPlugins();
     root.getChildren().add(chart);
     stage.initModality(Modality.WINDOW_MODAL);
-    for (var renderer : chart.getRenderers()
-                             .stream()
-                             .filter(renderer -> renderer instanceof ErrorDataSetRenderer)
-                             .toList())
+    chart.getRenderers().stream().filter(renderer -> renderer instanceof ErrorDataSetRenderer).forEach(renderer ->
     {
       ErrorDataSetRenderer ballDataRenderer = (ErrorDataSetRenderer) renderer;
       ballDataRenderer.addAxes(xAxis, yAxis);
       ballDataRenderer.setDrawMarker(false);
-    }
+    });
 
     scene = new Scene(root,
                       1500,
