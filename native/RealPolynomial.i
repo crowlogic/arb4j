@@ -200,9 +200,12 @@ import arb.expressions.Parser;
         
   public RealPolynomial add(int a, int bits, RealPolynomial res)
   {
-    res.set(a);
-    return add( res, bits, res );
-  }  
+    try ( var blip = new RealPolynomial())
+    {
+      blip.set(a);
+      return add(blip, bits, res);
+    }
+  }
   
   public int bits;
 
