@@ -12,6 +12,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
 import arb.Complex;
+import arb.Quaternion;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -155,9 +156,7 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     assignFieldNames(resultType);
     generatedType = resultType;
-
     computeIndefiniteIntegral((Class<? extends R>) resultType);
-
     evaluateIndefiniteIntegralAt(mv, upperLimit, resultType, lowerIntegralValueFieldName);
     evaluateIndefiniteIntegralAt(mv, lowerLimit, resultType, upperIntegralValueFieldName);
     loadBitsParameterOntoStack(mv);
@@ -169,18 +168,14 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       intermediateValueFieldName = expression.allocateIntermediateVariable(mv, "integralDifference", resultType);
     }
-
     Compiler.invokeBinaryOperationMethod(mv, "sub", resultType, resultType, resultType);
-
     return mv;
   }
 
   private void computeIndefiniteIntegral(Class<? extends R> resultType)
   {
-
     integralNode = integrand.integrate(integrationVariable.asVariable());
-    String expr = integralNode.toString();
-
+    var expr = integralNode.toString();
     integralExpression = Function.parse(integralFunctionFieldName,
                                         expr,
                                         expression.context,
@@ -189,9 +184,7 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                         Function.class,
                                         integralFunctionFieldName,
                                         expression);
-
     integralFunction   = integralExpression.instantiate();
-
     integralMapping    = expression.context.registerFunctionMapping(integralFunctionFieldName,
                                                                     integralExpression.instantiate(),
                                                                     expression.coDomainType,
@@ -200,7 +193,6 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                                     false,
                                                                     integralExpression,
                                                                     expr);
-
     expression.referencedFunctions.put(integralFunctionFieldName, integralMapping);
   }
 
@@ -211,9 +203,6 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     loadIntegral(mv);
     limit.generate(mv, Real.class);
-//    assert limit.getGeneratedType()
-//                .equals(Real.class) : String.format("limit.generatedType=%s != Real",
-//                                                    limit.getGeneratedType());
     loadBitsParameterOntoStack(mv);
     loadFieldFromThis(mv, integralValueFieldName, generatedType);
     evaluateIntegral(mv);
@@ -263,7 +252,7 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    IntegralNode<E, S, G> integral = new IntegralNode<E, S, G>(newExpression);
+    var integral = new IntegralNode<E, S, G>(newExpression);
     integral.integralFunctionFieldName   = integralFunctionFieldName;
     integral.lowerIntegralValueFieldName = integral.lowerIntegralValueFieldName;
     integral.upperIntegralValueFieldName = integral.upperIntegralValueFieldName;
@@ -293,7 +282,7 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public boolean isScalar()
   {
-    return type().equals(Real.class) || type().equals(Complex.class);
+    return type().equals(Real.class) || type().equals(Complex.class) || type().equals(Quaternion.class);
   }
 
   @Override
