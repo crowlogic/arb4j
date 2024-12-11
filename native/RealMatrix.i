@@ -396,13 +396,17 @@ import arb.algebra.Ring;
   {
     RealMatrix m = new RealMatrix();
     m.init(rows, cols);
-
     m.rows = new Real[rows];
-    MemorySegment ms = MemorySegment.ofAddress(m.getRowPointers()).reinterpret(Long.BYTES * rows);
-
-    m.rowPointers = ms.asByteBuffer().order(ByteOrder.nativeOrder()).asLongBuffer();
+    m.initRowPointers();
     m.initRows();
     return m;
+  }
+
+  public RealMatrix initRowPointers()
+  {
+    MemorySegment ms = MemorySegment.ofAddress(getRowPointers()).reinterpret(Long.BYTES * rows.length);
+    rowPointers = ms.asByteBuffer().order(ByteOrder.nativeOrder()).asLongBuffer();
+    return this;
   }
   
   /**
