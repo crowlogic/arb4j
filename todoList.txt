@@ -15,7 +15,6 @@ implement ∂/∂x[∏ᵢ₌₁ᵏfᵢ(x)] = ∑ᵢ₌₁ᵏ[(∂/∂x fᵢ(x))�
 #546  implement orthogonal function sequence expansion api
 #518  expr compiler: Implement common subexpression elimination
 #520  implement Gaussian Process modeller features
-#522  3d Bessel function surface of revolution plotter
 #261  Create Fractional Riccati Differential Equation Solver using Jacobi Tau Method
 #253  expression compiler: automatic differentiation
 java.lang.NullPointerException: Cannot load from object array because "this.rows" is nullat arb4j/arb.RealMatrix.getRow(RealMatrix.java:104)at arb4j/arb.RealMatrix.set(RealMatrix.java:68)at arb4j/arb.Integer.add(Integer.java:310)

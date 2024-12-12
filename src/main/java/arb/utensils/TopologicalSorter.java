@@ -66,10 +66,10 @@ public class TopologicalSorter
     return sortedOrder;
   }
 
-  protected static void reduceDependentNodesInDegree(Map<String, List<String>> graph,
-                                                     HashMap<String, Integer> inDegree,
-                                                     LinkedTransferQueue<String> queue,
-                                                     String current)
+  public static void reduceDependentNodesInDegree(Map<String, List<String>> graph,
+                                                  HashMap<String, Integer> inDegree,
+                                                  LinkedTransferQueue<String> queue,
+                                                  String current)
   {
     graph.getOrDefault(current, Collections.emptyList()).forEach(node ->
     {

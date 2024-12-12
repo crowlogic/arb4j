@@ -9,9 +9,7 @@ import static org.objectweb.asm.Opcodes.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
@@ -35,6 +33,7 @@ import arb.expressions.nodes.unary.*;
 import arb.functions.Function;
 import arb.functions.integer.Sequence;
 import arb.functions.real.RealFunction;
+import arb.utensils.TopologicalSorter;
 import arb.utensils.Utensils;
 import arb.utensils.text.trees.TextTree;
 import arb.utensils.text.trees.TreeModel;
@@ -256,6 +255,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public boolean                                        variablesDeclared             = false;
 
   boolean                                               verboseTrace                  = false;
+
+  public Map<String, List<String>>                      functionReferenceGraph        =
+                                                                               new HashMap<String, List<String>>();
 
   public Expression(Class<? extends D> domain, Class<? extends C> codomain, Class<? extends F> function)
   {
@@ -480,11 +482,43 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected ClassVisitor declareFunctionReferences(ClassVisitor classVisitor)
   {
-    if (context != null)
+    populateFunctionReferenceGraph();
+
+    List<String> sortedFunctions = TopologicalSorter.sort(functionReferenceGraph);
+
+    // Declare functions in dependency order
+    for (String functionName : sortedFunctions)
     {
-      referencedFunctions.forEach((name, function) -> function.declare(classVisitor, name));
+      FunctionMapping<?, ?, ?> function = referencedFunctions.get(functionName);
+      if (function != null)
+      {
+        function.declare(classVisitor, functionName);
+      }
     }
+
     return classVisitor;
+  }
+
+  public void populateFunctionReferenceGraph()
+  {
+    // Build dependency graph directly from referencedFunctions
+    for (Map.Entry<String, FunctionMapping<?, ?, ?>> entry : referencedFunctions.entrySet())
+    {
+      String                   functionName = entry.getKey();
+      FunctionMapping<?, ?, ?> function     = entry.getValue();
+
+      // Get referenced functions from the function mapping
+      List<String>             dependencies = new ArrayList<>();
+      if (function.expression.referencedFunctions != null)
+      {
+        dependencies.addAll(function.expression.referencedFunctions.keySet()
+                                                                   .stream()
+                                                                   .filter(name -> !name.equals(functionName))
+                                                                   .toList());
+      }
+
+      functionReferenceGraph.put(functionName, dependencies);
+    }
   }
 
   protected void declareIntermediateVariables(ClassVisitor classVisitor)
