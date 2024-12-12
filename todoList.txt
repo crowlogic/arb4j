@@ -10,7 +10,6 @@ implement ∂/∂x[∏ᵢ₌₁ᵏfᵢ(x)] = ∑ᵢ₌₁ᵏ[(∂/∂x fᵢ(x))�
 #549  Expression Compiler: implement switching of order-of-integration via Fubini's or Tonelli's theorem
 #539  expression compiler: integration
 #538  implement (abstract syntax) Expression tree simplification
-#541  expr compiler: simplify binary operations on constants
 #535 Uniformly convergent expansions for continuous positive definite functions
 #531  Triangular eigenfunctions
 #527  Improve hypergeometric function node by using function reference instead of substitution
@@ -20,3 +19,7 @@ implement ∂/∂x[∏ᵢ₌₁ᵏfᵢ(x)] = ∑ᵢ₌₁ᵏ[(∂/∂x fᵢ(x))�
 #522  3d Bessel function surface of revolution plotter
 #261  Create Fractional Riccati Differential Equation Solver using Jacobi Tau Method
 #253  expression compiler: automatic differentiation
+java.lang.NullPointerException: Cannot load from object array because "this.rows" is nullat arb4j/arb.RealMatrix.getRow(RealMatrix.java:104)at arb4j/arb.RealMatrix.set(RealMatrix.java:68)at arb4j/arb.Integer.add(Integer.java:310)
+find a good way to hande Integer.pow(Integer x) when x is negative or possibly negative without always assuming it is necessarily negative
+ComplexFunctionSequence.express("Vplus:m->I*pFq([1,m,-m],[1/2],(I/2)/y)");
+RealFunctionSequence.express("Vplus:m->pFq([1,m,-m],[1/2],(1/2)/y)");

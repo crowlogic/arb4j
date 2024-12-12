@@ -1089,21 +1089,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     }
 
-    var function = new Expression<Object, Object, Function<?, ?>>(funcDomain,
-                                                                  funcCoDomain,
-                                                                  funcClass);
-    function.ascendentExpression = this;
-    function.context             = context;
+    var functionalExpression = new Expression<Object, Object, Function<?, ?>>(funcDomain,
+                                                                              funcCoDomain,
+                                                                              funcClass);
+    functionalExpression.ascendentExpression = this;
+    functionalExpression.context             = context;
     if (indeterminateVariable != null)
     {
-      function.independentVariable = indeterminateVariable.spliceInto(function).asVariable();
+      functionalExpression.independentVariable = indeterminateVariable.spliceInto(functionalExpression).asVariable();
     }
 
-    rootNode.isResult          = true;
-    function.rootNode          = (Node<Object, Object, Function<?, ?>>) rootNode.spliceInto(function);
-    function.rootNode.isResult = true;
-    function.className         = className + "func";
-    return function;
+    rootNode.isResult             = true;
+    functionalExpression.rootNode = (Node<Object, Object, Function<?, ?>>) rootNode.spliceInto(functionalExpression);
+    assert functionalExpression.rootNode
+                  != null : functionalExpression.rootNode + ".spliceInto(" + functionalExpression + ") returned null";
+    functionalExpression.rootNode.isResult = true;
+    functionalExpression.className         = className + "func";
+    return functionalExpression;
   }
 
   protected MethodVisitor generateFunctionInitializer(MethodVisitor mv, FunctionMapping<?, ?, ?> nestedFunction)

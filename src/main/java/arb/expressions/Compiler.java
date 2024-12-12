@@ -19,12 +19,14 @@ import arb.exceptions.CompilerException;
 import arb.functions.Function;
 import arb.functions.NullaryFunction;
 import arb.functions.SphericalBesselFunction;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.Sequence;
 import arb.functions.polynomials.ComplexPolynomialHypergeometricFunction;
 import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
 import arb.functions.rational.ComplexRationalHypergeometricFunction;
 import arb.functions.rational.LommelPolynomial;
 import arb.functions.rational.RationalHypergeometricFunction;
+import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;
 
 /**
@@ -624,6 +626,14 @@ public class Compiler
     {
       return Quaternion.class;
     }
+    else if (ComplexFunction.class.equals(resultType))
+    {
+      return Complex.class;
+    }
+    else if (RealFunction.class.equals(resultType))
+    {
+      return Real.class;
+    }
     else
     {
       assert false : "dont know what the scalar type is for " + resultType;
@@ -650,9 +660,9 @@ public class Compiler
                                                      Class<?>[] implementations)
   {
     String classSignature;
-  
+
     var    sw = new SignatureWriter();
-  
+
     sw.visitSuperclass().visitClassType(Type.getInternalName(Object.class));
     sw.visitEnd();
     sw.visitInterface();
@@ -675,9 +685,9 @@ public class Compiler
         sw.visitEnd();
       }
     }
-  
+
     sw.visitEnd();
-  
+
     for (var interfaceClass : implementations)
     {
       sw.visitInterface();
@@ -707,7 +717,7 @@ public class Compiler
                                                  getMethodDescriptor(String.class),
                                                  null,
                                                  null);
-  
+
     annotateWithOverride(methodVisitor);
     methodVisitor.visitCode();
     methodVisitor.visitLdcInsn(typeset);

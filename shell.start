@@ -1,7 +1,6 @@
 import arb.functions.polynomials.orthogonal.real.Type1ChebyshevPolynomials;
 import javafx.application.Platform;
-import arb.functions.integer.RealPolynomialSequence;
-import arb.functions.integer.RealFunctionSequence;
+import arb.functions.integer.*;
 import arb.arblib;
 import arb.functions.rational.ComplexRationalFunctionSequence;
 import arb.Initializable;

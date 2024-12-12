@@ -55,6 +55,23 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 {
 
   @Override
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<E, S, G>
+         spliceInto(Expression<E, S, G> newExpression)
+  {
+    assert newExpression != null : "newExpression is null";
+    assert false : "TODO: splice "
+                   + this
+                   + " into "
+                   + newExpression.getClass()
+                   + "(hashcode="
+                   + System.identityHashCode(newExpression)
+                   + ")";
+
+    return null;
+  }
+
+  @Override
   public String toString()
   {
     return String.format("pFq(%s,%s;%s)", α, β, arg);
