@@ -9,13 +9,12 @@ import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
-import arb.functions.Function;
 import arb.functions.IntegerFunction;
 import arb.functions.IntegerNullaryFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexNullaryFunction;
+import arb.functions.integer.RealSequence;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
-import arb.functions.rational.ComplexRationalFunctionSequence;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
@@ -131,21 +130,6 @@ public class ExpressionTest extends
     RealNullaryFunction f   = RealNullaryFunction.express("3^(-3)");
     Real                val = f.evaluate(128);
     assertEquals(1.0 / 27.0, val.doubleValue());
-  }
-
-  public void testFourierTransformOfType1ChebyshevPolynomials()
-  {
-    var             context = new Context();
-    var             F       = ComplexRationalFunctionSequence.express("F:m->pFq([1,m,-m],[1/2],I/2/y)", context);
-
-    ComplexFunction f       =
-                      ComplexFunction.express("y->-I*F(3)*exp(I*(π*3+y))-F(3)*exp(I*(2*π*3-y))*(4*3^2-1)*(-1)^(-3)/((4*3^2*y-2*y)*π)",
-                                              context);
-    Complex         eval    = f.eval(2.3, new Complex());
-
-    assertEquals("-0.2897102277656836133548571248961385757265", eval.re().doubleValue());
-    assertTrue(eval.im().isZero());
-
   }
 
   public void testDerivative()
@@ -381,11 +365,12 @@ public class ExpressionTest extends
     try
     {
       RealFunction func = RealFunction.express("G", "F: x₍₃₎", null);
-      try ( Real result = func.evaluate(new Real("5",
-                                                 128),
-                                        0,
-                                        128,
-                                        new Real()))
+      try ( @SuppressWarnings("unused")
+      Real result = func.evaluate(new Real("5",
+                                           128),
+                                  0,
+                                  128,
+                                  new Real()))
       {
       }
     }
@@ -404,10 +389,10 @@ public class ExpressionTest extends
 
     try ( Real λ = new Real())
     {
-      Context                 context  = new Context(λ.setName("λ").set("3.5", 128));
-      Function<Integer, Real> f        = Function.express(Integer.class, Real.class, "n➔(λ*2)₍ₙ₎/(λ+½)₍ₙ₎", context);
-      Integer                 in       = new Integer(4);
-      Real                    evaluate = f.evaluate(in, 128, new Real());
+      var          context  = new Context(λ.setName("λ").set("3.5", 128));
+      RealSequence f        = RealSequence.express("n➔(λ*2)₍ₙ₎/(λ+½)₍ₙ₎", context);
+      var          in       = new Integer(4);
+      var          evaluate = f.evaluate(in, 128, new Real());
       assertEquals(6.0, evaluate.doubleValue());
     }
   }

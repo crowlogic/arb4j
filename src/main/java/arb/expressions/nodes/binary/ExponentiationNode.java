@@ -5,7 +5,6 @@ import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
-import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -67,26 +66,33 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     return right.mul(left.pow(right.sub(1)));
   }
 
+  Class<?> type = null;
+
   @Override
   public Class<?> type()
   {
+    if (type != null)
+    {
+      return type;
+    }
     if (right.isPossiblyNegative())
     {
       var superType = super.type();
       if (Integer.class.equals(superType))
       {
-        return Fraction.class;
+        type = Fraction.class;
       }
       else
       {
-        return superType;
+        type = superType;
       }
     }
     else
     {
-      return super.type();
+      type = super.type();
 
     }
+    return type;
 
   }
 

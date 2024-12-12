@@ -881,6 +881,15 @@ public class Integer implements
       return result.set(pow(operand, bits, intres));
     }
   }
+  
+  public ComplexRationalFunction pow(Integer operand, int bits, ComplexRationalFunction result)
+  {
+    try ( Integer intres = new Integer())
+    {
+      return result.set(pow(operand, bits, intres));
+    }
+  }
+  
 
   public Real pow(Integer operand, int prec, Real result)
   {
