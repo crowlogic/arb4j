@@ -12,7 +12,6 @@ implement ∂/∂x[∏ᵢ₌₁ᵏfᵢ(x)] = ∑ᵢ₌₁ᵏ[(∂/∂x fᵢ(x))�
 #538  implement (abstract syntax) Expression tree simplification
 #535 Uniformly convergent expansions for continuous positive definite functions
 #531  Triangular eigenfunctions
-#527  Improve hypergeometric function node by using function reference instead of substitution
 #546  implement orthogonal function sequence expansion api
 #518  expr compiler: Implement common subexpression elimination
 #520  implement Gaussian Process modeller features
@@ -23,3 +22,4 @@ java.lang.NullPointerException: Cannot load from object array because "this.rows
 find a good way to hande Integer.pow(Integer x) when x is negative or possibly negative without always assuming it is necessarily negative
 ComplexFunctionSequence.express("Vplus:m->I*pFq([1,m,-m],[1/2],(I/2)/y)");
 RealFunctionSequence.express("Vplus:m->pFq([1,m,-m],[1/2],(1/2)/y)");
+#527  Improve hypergeometric function node by using function reference instead of substitution
