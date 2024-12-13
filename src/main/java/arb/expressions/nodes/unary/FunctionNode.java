@@ -118,9 +118,17 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   private void assignFunctionName()
   {
-    this.functionName = Parser.transformToJavaAcceptableCharacters(functionName)
-                              .replaceAll("ln", "log")
-                              .replaceAll("√", "sqrt");
+    functionName = switch (Parser.transformToJavaAcceptableCharacters(functionName))
+    {
+    case "ln":
+      yield "log";
+    case "√":
+      yield "sqrt";
+    case "gamma":
+      yield "Γ";
+    default:
+      yield functionName;
+    };
   }
 
   public boolean checkForArgumentConversionNeed(FunctionMapping<D, R, F> functionMapping, boolean isNullaryFunction)
