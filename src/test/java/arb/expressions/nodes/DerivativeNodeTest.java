@@ -16,6 +16,13 @@ public class DerivativeNodeTest extends
                                 TestCase
 {
   
+  public void testGammaDerivative()
+  {
+    var f  = RealFunction.parse("∂Γ(x)/∂x");
+    var df = RealFunction.parse("Γ(x)*digamma(x)");
+    assertEquals(df.rootNode.toString(), f.rootNode.toString());
+  }
+  
   public void testHyperbolicSineDerivative()
   {
     var f  = RealFunction.parse("∂sinh(x)/∂x");

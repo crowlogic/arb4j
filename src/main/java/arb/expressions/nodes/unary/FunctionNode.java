@@ -189,6 +189,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return mul(arg.tan());
     case "csc":
       return neg().mul(arg.cot());
+    case "Γ":
+    case "gamma":
+      return mul(arg.digamma());
     default:
       throw new UnsupportedOperationException("Derivative not implemented for function: " + functionName);
     }

@@ -350,4 +350,10 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                                               this);
   }
 
+  @SuppressWarnings("unchecked")
+  public <N extends Node<D, R, F>> N digamma()
+  {
+    return (N) apply("digamma");
+  }
+
 }
