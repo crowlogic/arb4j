@@ -14,8 +14,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.skin.VirtualFlow;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * 
@@ -47,6 +50,14 @@ public class ReferenceBrowser extends
                             800,
                             600);
     WindowManager.setMoreConduciveStyle(scene);
+    scene.addEventFilter(KeyEvent.KEY_PRESSED, event ->
+    {
+      if (event.getCode() == KeyCode.ESCAPE)
+      {
+        primaryStage.fireEvent(new WindowEvent(primaryStage,
+                                               WindowEvent.WINDOW_CLOSE_REQUEST));
+      }
+    });
     primaryStage.setScene(scene);
     primaryStage.show();
 
