@@ -15,6 +15,8 @@
 #include <unistd.h>
 #include <wchar.h>
 
+void arb_digamma(arb_t y, const arb_t x, slong prec);
+
  int fmpz_is_one(const fmpz_t f) { return (*f == 1); }
  int fmpz_is_pm1(const fmpz_t f) { return (*f == 1 || *f == -1); }
 

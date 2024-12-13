@@ -97,6 +97,18 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
    set(i);
   }
 
+  public Complex digamma(int bits)
+  {
+    return digamma(bits, this);
+  }
+  
+  public Complex digamma(int bits, Complex result)
+  {
+    arblib.acb_digamma(result, this, bits);
+    result.bits = bits;
+    return result;  
+  }
+  
   public Complex mul( Fraction s, int prec, Complex r )
   {
     return mul(r.set(s),prec,r);   

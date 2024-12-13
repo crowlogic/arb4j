@@ -173,6 +173,18 @@ import arb.utensils.Utensils;
     }
   }
   
+  public Real digamma(int bits)
+  {
+    return digamma(bits, this);
+  }
+  
+  public Real digamma(int bits, Real result)
+  {
+    arblib.arb_digamma(result, this, bits);
+    result.bits = bits;
+    return result;  
+  }
+    
   public RationalFunction add( Real z, int bits, RationalFunction result )
   {
     return result.set(this).add(z,bits,result);

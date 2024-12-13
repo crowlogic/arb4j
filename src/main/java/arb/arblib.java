@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void arb_digamma(Real y, Real x, int prec) {
+    arblibJNI.arb_digamma(Real.getCPtr(y), y, Real.getCPtr(x), x, prec);
+  }
+
   public static int fmpz_is_one(long f) {
     return arblibJNI.fmpz_is_one(f);
   }
