@@ -45,7 +45,7 @@ public class Utensils
     yamlConfig.setAllowUnicode(true);
     yamlConfig.setExplicitStart(true);
     yamlConfig.setExplicitEnd(true);
-    yamlConfig.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+    yamlConfig.setDefaultFlowStyle(DumperOptions.FlowStyle.FLOW);
     yamlConfig.setPrettyFlow(true);
     yamlConfig.setSplitLines(false);
     yamlConfig.setNonPrintableStyle(NonPrintableStyle.ESCAPE);

@@ -8,6 +8,7 @@ import arb.RealConstants;
 import arb.Typesettable;
 import arb.functions.integer.FractionSequence;
 import arb.utensils.ShellFunctions;
+import arb.utensils.Utensils;
 
 public class C implements
                FractionSequence,
@@ -15,7 +16,14 @@ public class C implements
                AutoCloseable,
                Initializable
 {
-  public static void main( String args[] )
+  public C()
+  {
+    super();
+    System.err.println("newC " + Utensils.stackTraceToString(new Throwable( )) );
+    System.err.flush();
+  }
+
+  public static void main(String args[])
   {
     C C = new C();
     C.α = RealConstants.negHalf;
@@ -26,7 +34,8 @@ public class C implements
 
     System.out.println(C);
   }
-  //@Override
+
+  // @Override
   public String toString()
   {
     return String.format("C[vℤ0001=%s, vℝ0001=%s]", vℤ0001, vℝ0001);
@@ -85,7 +94,7 @@ public class C implements
     this.vℝ0001.close();
   }
 
- // @Override
+  // @Override
   public String toFormulaString()
   {
     return "C:n➔2*n+α+β";

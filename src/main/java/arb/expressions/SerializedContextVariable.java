@@ -1,5 +1,7 @@
 package arb.expressions;
 
+import java.util.Objects;
+
 import arb.Named;
 
 /**
@@ -9,6 +11,27 @@ import arb.Named;
  */
 public class SerializedContextVariable
 {
+  @Override
+  public int hashCode()
+  {
+    return Objects.hash(type, value);
+  }
+
+
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    SerializedContextVariable other = (SerializedContextVariable) obj;
+    return Objects.equals(type, other.type) && Objects.equals(value, other.value);
+  }
+
+
   public SerializedContextVariable(String type, String value)
   {
     this.value = value;

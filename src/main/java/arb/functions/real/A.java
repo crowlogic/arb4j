@@ -13,6 +13,15 @@ public class A implements
                AutoCloseable,
                Initializable
 {
+  public A()
+  {
+    super();
+   
+    System.err.println( "init A");
+    System.err.flush();
+    // TODO Auto-generated constructor stub
+  }
+
   public boolean          isInitialized;
   public final Integer    cℤ0002 = new Integer("1");
   public final Integer    cℤ0001 = new Integer("2");
