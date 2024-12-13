@@ -2,8 +2,8 @@ package arb.functions.polynomials;
 
 import java.util.stream.Stream;
 
-import arb.Initializable;
 import arb.Fraction;
+import arb.Initializable;
 import arb.Real;
 import arb.RealConstants;
 import arb.documentation.Bibliography;
@@ -42,7 +42,7 @@ public class ModifiedLommelPolynomials extends
   public void initialize()
   {
     super.initialize();
-    p1.set(2).mul(v, bits).shiftLeft(1);
+    RealPolynomialNullaryFunction.express("2*v*x", context).evaluate(bits, p1);
   }
 
   public Real v = Real.named("v").set(RealConstants.half);
