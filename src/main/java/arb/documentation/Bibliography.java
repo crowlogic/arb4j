@@ -22,6 +22,24 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       coveringNumbersGaussianRKHS                                     =
+                                                          new Article("Covering Numbers of Gaussian Reproducing Kernel Hilbert Spaces",
+                                                                      "Thomas K\"{u}hn",
+                                                                      "2011",
+                                                                      "J. Complex.",
+                                                                      "27",
+                                                                      "489-499").setNumber("5")
+                                                                                .setPublisher("Academic Press, Inc.")
+                                                                                .setAddress("USA");
+
+  public static Article       analyticStationaryRKHS                                          =
+                                                     new Article("Reproducing Kernel Hilbert Spaces Associated with Analytic Translation-Invariant Mercer Kernels",
+                                                                 "Hong-Wei Sun and Ding-Xuan Zhou",
+                                                                 "2008",
+                                                                 "Journal of Fourier Analysis and Applications",
+                                                                 "14",
+                                                                 "89-101").setNumber("1");
+
   public static Article       stationarityBoundednessAlmostPeriodicityOfRandomValuedFunctions =
                                                                                               new Article("Stationarity, boundedness, almost periodicity of random-valued functions",
                                                                                                           "Salomon Bochner",
