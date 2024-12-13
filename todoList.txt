@@ -6,7 +6,6 @@ expr compiler:  fractional derivatices
 implement ∂/∂x[∏ᵢ₌₁ᵏfᵢ(x)] = ∑ᵢ₌₁ᵏ[(∂/∂x fᵢ(x))∏ⱼ₌₁,ⱼ≠ᵢᵏfⱼ(x)]
 #550 Expression Compiler: improve nested function references by using 1 instance of each type of function instead of each function having its own instance versions of each function
 #551 expr compiler: context variable loading prob
-#547 RationalFunction pointer consistency issue
 #549  Expression Compiler: implement switching of order-of-integration via Fubini's or Tonelli's theorem
 #539  expression compiler: integration
 #538  implement (abstract syntax) Expression tree simplification
@@ -21,4 +20,4 @@ java.lang.NullPointerException: Cannot load from object array because "this.rows
 find a good way to hande Integer.pow(Integer x) when x is negative or possibly negative without always assuming it is necessarily negative
 ComplexFunctionSequence.express("Vplus:m->I*pFq([1,m,-m],[1/2],(I/2)/y)");
 RealFunctionSequence.express("Vplus:m->pFq([1,m,-m],[1/2],(1/2)/y)");
-#527  Improve hypergeometric function node by using function reference instead of substitution
+#547 RationalFunction pointer consistency issue
