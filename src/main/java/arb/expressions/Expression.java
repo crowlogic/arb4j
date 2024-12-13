@@ -834,7 +834,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (trace)
     {
-      System.err.format("Expression(#%s).generate() className=%s\n\n", System.identityHashCode(this), className);
+      System.err.format("Expression(#%s).generate() className=%s expression='%s'\n\n",
+                        System.identityHashCode(this),
+                        className,
+                        expression);
     }
     ClassVisitor classVisitor = constructClassVisitor();
 
@@ -980,10 +983,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitLabel(startLabel);
     Compiler.annotateWithOverride(mv);
     generateConditionalInitializater(mv);
-    if (trace)
-    {
-      System.out.format("Expression(#%s) Generating %s\n\n", System.identityHashCode(this), expression);
-    }
+
     rootNode.isResult = true;
     if (coDomainType.isInterface())
     {
@@ -2166,25 +2166,31 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   @Override
   public String toString()
   {
+    String str = null;
     if (Object.class.equals(domainType))
     {
-      return rootNode != null ? rootNode.toString() : expression;
+      str = rootNode != null ? rootNode.toString() : expression;
     }
     if (rootNode != null)
     {
       if (independentVariable == null)
       {
-        return rootNode.toString();
+        str = rootNode.toString();
       }
       else
       {
-        return String.format("%s➔%s", independentVariable.getName(), rootNode.toString());
+        str = String.format("%s➔%s", independentVariable.getName(), rootNode.toString());
       }
     }
     else
     {
-      return expression;
+      str = expression;
     }
+    if (functionName != null && !functionName.startsWith("_") && !functionName.startsWith("factor"))
+    {
+      str = String.format("%s:%s", functionName, expression);
+    }
+    return str;
   }
 
   @Override
