@@ -161,7 +161,7 @@ public class JacobiPolynomialSequenceTest extends
 
   }
   
-  public static void testRational()
+  public static void testP3Rational()
   {
 
     try ( var seq = new RationalJacobiPolynomials(negHalf,
@@ -171,6 +171,7 @@ public class JacobiPolynomialSequenceTest extends
 
       try ( RationalFunction rationalResult = seq.P.evaluate(too, 0, bits, new RationalFunction()))
       {
+        ShellFunctions.inspect(seq.P);
         var result = rationalResult.asRealFunction();
         Real valAtOne = result.evaluate(RealConstants.one, 128, new Real());
         assertEquals(0.3125, valAtOne.doubleValue());
