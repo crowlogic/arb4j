@@ -52,17 +52,26 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
 
   public VectorNode(Expression<D, R, F> expression)
   {
+    this(expression,
+         true);
+  }
+
+  public VectorNode(Expression<D, R, F> expression, boolean parse)
+  {
     super(expression);
-    do
+    if (parse)
     {
-      var e = expression.resolve();
-      if (e != null)
+      do
       {
-        elements.add(e);
+        var e = expression.resolve();
+        if (e != null)
+        {
+          elements.add(e);
+        }
       }
+      while (expression.nextCharacterIs(','));
+      expression.require(']');
     }
-    while (expression.nextCharacterIs(','));
-    expression.require(']');
   }
 
   @Override
@@ -157,7 +166,6 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
     }
   }
 
-
   @Override
   public String typeset()
   {
@@ -181,11 +189,11 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    var vec = new VectorNode<E, S, G>(newExpression);
+    var vec = new VectorNode<E, S, G>(newExpression,false);
     vec.elements = new ArrayList<Node<E, S, G>>(elements.size());
     for (int i = 0; i < elements.size(); i++)
     {
-      vec.elements.set(i, elements.get(i).spliceInto(newExpression));
+      vec.elements.add(i, elements.get(i).spliceInto(newExpression));
     }
     return vec;
   }

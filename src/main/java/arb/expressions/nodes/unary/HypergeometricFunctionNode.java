@@ -51,7 +51,8 @@ import arb.functions.rational.RationalNullaryFunction;
  *      {@link TheArb4jLibrary}
  */
 public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
-                                       FunctionNode<D, R, F>
+                                       FunctionNode<D, R, F> implements
+                                       Initializable
 {
 
   @Override
@@ -59,16 +60,13 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    assert newExpression != null : "newExpression is null";
-    assert false : "TODO: splice "
-                   + this
-                   + " into "
-                   + newExpression.getClass()
-                   + "(hashcode="
-                   + System.identityHashCode(newExpression)
-                   + ")";
-
-    return null;
+    HypergeometricFunctionNode<E, S, G> newNode = new HypergeometricFunctionNode<E, S, G>(newExpression,
+                                                          false);
+    newNode.arg = arg.spliceInto(newExpression);
+    newNode.α   = α.spliceInto(newExpression);
+    newNode.β   = β.spliceInto(newExpression);
+    newNode.initialize();
+    return newNode;
   }
 
   @Override
@@ -88,29 +86,29 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                          arg.typeset());
   }
 
-  public final Node<D, R, F> α;
+  public Node<D, R, F>       α;
 
-  public final Node<D, R, F> β;
+  public Node<D, R, F>       β;
 
-  public final Class<?>      hypergeometricFunctionClass;
+  public Class<?>            hypergeometricFunctionClass;
 
-  public final boolean       dependsOnInput;
+  public boolean             dependsOnInput;
 
-  public final String        hypergeometricFunctionFieldName;
+  public String              hypergeometricFunctionFieldName;
 
-  public final String        elementFieldName;
+  public String              elementFieldName;
 
-  public final boolean       isRational;
+  public boolean             isRational;
 
-  public final boolean       isReal;
+  public boolean             isReal;
 
-  public final boolean       isComplex;
+  public boolean             isComplex;
 
-  public final Class<?>      scalarType;
+  public Class<?>            scalarType;
 
-  public final Class<?>      nullaryFunctionClass;
+  public Class<?>            nullaryFunctionClass;
 
-  public final boolean       isNullaryFunctionOrHasScalarCodomain;
+  public boolean             isNullaryFunctionOrHasScalarCodomain;
 
   public boolean             hasScalarCodomain;
 
@@ -120,13 +118,32 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   public HypergeometricFunctionNode(Expression<D, R, F> expression)
   {
+    this(expression,
+         true);
+  }
+
+  public HypergeometricFunctionNode(Expression<D, R, F> expression, boolean parseAndInitialize)
+  {
     super("pFq",
           null,
           expression);
+    if (parseAndInitialize)
+    {
+      parse();
+      initialize();
+    }
+  }
+
+  public void parse()
+  {
     α   = expression.resolve();
     β   = expression.require(',').resolve();
     arg = expression.require(',', ';').resolve();
     expression.require(')');
+  }
+
+  public void initialize()
+  {
     coDomaintype                         = expression.coDomainType;
     scalarType                           = Compiler.scalarType(coDomaintype);
 
@@ -201,7 +218,6 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     {
       expression.registerInitializer(this::generateHypergeometricFunctionInitializer);
     }
-
   }
 
   public void generateHypergeometricFunctionInitializer(MethodVisitor mv)

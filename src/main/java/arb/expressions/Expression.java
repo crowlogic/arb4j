@@ -1139,11 +1139,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (nestedFunction.instance != null)
     {
-      initializeNestedFunctionVariableReferences(loadThisOntoStack(mv),
-                                                 className,
-                                                 Type.getInternalName(nestedFunction.type()),
-                                                 nestedFunction.functionName,
-                                                 context.variableClassStream());
+      initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv),
+                                                     className,
+                                                     Type.getInternalName(nestedFunction.type()),
+                                                     nestedFunction.functionName,
+                                                     context.variableClassStream());
     }
     else
     {
@@ -1153,20 +1153,35 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return mv;
   }
 
-  protected void generateReferencedFunctionInstance(MethodVisitor mv, FunctionMapping<?, ?, ?> mapping)
+  protected void constructReferencedFunctionInstanceIfItIsNull(MethodVisitor mv, FunctionMapping<?, ?, ?> mapping)
   {
-    Class<?> type = mapping.type();
-    if (type == null)
+    if ((mapping.functionName == null || functionName == null || !functionName.equals(mapping.functionName))
+                  && mapping.expression != null)
     {
-      mapping.instantiate();
-      type = mapping.type();
+      Class<?> type = mapping.type();
+      if (type == null)
+      {
+        mapping.instantiate();
+        type = mapping.type();
+      }
+      assert type != null : "type is  null for mapping=" + mapping;
+      var alreadyInitialized = new Label();
+      loadThisOntoStack(mv).visitFieldInsn(GETFIELD,
+                                           className,
+                                           mapping.functionName,
+                                           mapping.functionFieldDescriptor());
+      mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
+      loadThisOntoStack(mv);
+      constructNewObject(mv, type);
+      duplicateTopOfTheStack(mv);
+      invokeDefaultConstructor(mv, type);
+      Compiler.putField(mv, className, mapping.functionName, type);
+
+//      loadThisOntoStack(mv);
+//      generateFunctionInitializer(mv, mapping);
+
+      mv.visitLabel(alreadyInitialized);
     }
-    assert type != null : "type is  null for mapping=" + mapping;
-    loadThisOntoStack(mv);
-    constructNewObject(mv, type);
-    duplicateTopOfTheStack(mv);
-    invokeDefaultConstructor(mv, type);
-    Compiler.putField(mv, className, mapping.functionName, type);
   }
 
   protected MethodVisitor generateInitializationCode(MethodVisitor mv)
@@ -1183,6 +1198,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     generateReferencedFunctionInstances(mv);
 
     referencedFunctions.values().forEach(mapping -> generateFunctionInitializer(mv, mapping));
+
     initializers.forEach(initializer -> initializer.accept(mv));
     if (recursive)
     {
@@ -1196,10 +1212,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     referencedFunctions.values()
                        .stream()
-                       .filter(func -> func.functionName == null || functionName == null
-                                     || !functionName.equals(func.functionName))
-                       .filter(func -> func.expression != null)
-                       .forEach(mapping -> generateReferencedFunctionInstance(mv, mapping));
+                       .forEach(mapping -> constructReferencedFunctionInstanceIfItIsNull(mv, mapping));
   }
 
   protected ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)
@@ -1257,11 +1270,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     duplicateTopOfTheStack(mv);
     invokeDefaultConstructor(mv, functionName);
     Compiler.putField(mv, className, functionName, "L" + functionName + ";");
-    initializeNestedFunctionVariableReferences(loadThisOntoStack(mv),
-                                               className,
-                                               functionName,
-                                               functionName,
-                                               context.variableClassStream());
+    initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv),
+                                                   className,
+                                                   functionName,
+                                                   functionName,
+                                                   context.variableClassStream());
     return mv;
   }
 
@@ -1447,11 +1460,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    *           file and made it available to be instantiated yet and hence there
    *           is no .class to refer to
    */
-  protected void initializeNestedFunctionVariableReferences(MethodVisitor mv,
-                                                            String generatedFunctionClassInternalName,
-                                                            String fieldType,
-                                                            String functionFieldName,
-                                                            Stream<OrderedPair<String, Class<?>>> variables)
+  protected void initializeReferencedFunctionVariableReferences(MethodVisitor mv,
+                                                                String generatedFunctionClassInternalName,
+                                                                String fieldType,
+                                                                String functionFieldName,
+                                                                Stream<OrderedPair<String, Class<?>>> variables)
   {
     String typeDesc = "L" + fieldType + ";";
 
