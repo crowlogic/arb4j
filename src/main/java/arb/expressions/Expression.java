@@ -951,18 +951,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     generateInvocationOfDefaultNoArgConstructor(mv, true);
 
-    if (trace)
-    {
-      System.err.println("referencedFunctions=" + referencedFunctions);
-    }
-
-    referencedFunctions.values()
-                       .stream()
-                       .filter(func -> func.functionName == null || functionName == null
-                                     || !functionName.equals(func.functionName))
-                       .filter(func -> func.expression != null)
-                       .forEach(mapping -> generateFunctionInstance(mv, mapping));
-
     if (!coDomainType.isInterface())
     {
       generateLiteralConstantInitializers(mv);
@@ -1165,7 +1153,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return mv;
   }
 
-  protected void generateFunctionInstance(MethodVisitor mv, FunctionMapping<?, ?, ?> mapping)
+  protected void generateReferencedFunctionInstance(MethodVisitor mv, FunctionMapping<?, ?, ?> mapping)
   {
     Class<?> type = mapping.type();
     if (type == null)
@@ -1184,7 +1172,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected MethodVisitor generateInitializationCode(MethodVisitor mv)
   {
     generateCodeToThrowErrorIfAlreadyInitialized(mv);
+
+    if (trace)
+    {
+      System.err.println("referencedFunctions=" + referencedFunctions);
+    }
+
     addChecksForNullVariableReferences(mv);
+
+    generateReferencedFunctionInstances(mv);
+
     referencedFunctions.values().forEach(mapping -> generateFunctionInitializer(mv, mapping));
     initializers.forEach(initializer -> initializer.accept(mv));
     if (recursive)
@@ -1193,6 +1190,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     generateCodeToSetIsInitializedToTrue(mv);
     return mv;
+  }
+
+  public void generateReferencedFunctionInstances(MethodVisitor mv)
+  {
+    referencedFunctions.values()
+                       .stream()
+                       .filter(func -> func.functionName == null || functionName == null
+                                     || !functionName.equals(func.functionName))
+                       .filter(func -> func.expression != null)
+                       .forEach(mapping -> generateReferencedFunctionInstance(mv, mapping));
   }
 
   protected ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)
