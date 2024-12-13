@@ -13,6 +13,7 @@ import arb.functions.IntegerFunction;
 import arb.functions.IntegerNullaryFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexNullaryFunction;
+import arb.functions.integer.RealFunctionSequence;
 import arb.functions.integer.RealSequence;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
 import arb.functions.rational.RationalNullaryFunction;
@@ -30,6 +31,13 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  public static void testRealSequenceOfHypergeometricFunctions()
+  {
+    var f = RealFunctionSequence.express("Vplus:m->pFq([1,m,-m],[1/2],(1/2)/y)");
+    RealFunction Vplus3 = f.evaluate(3, 128);
+    assertEquals("something", Vplus3.toString());
+  }
+
   public static void testSimplificationAConstantIntegerRaisedToAConstnatInteger()
   {
     var f = RealNullaryFunction.parse("5^3");

@@ -16,6 +16,7 @@ import arb.expressions.viz.context.ContextFieldListCell;
 import arb.expressions.viz.context.ContextMenuListCell;
 import arb.expressions.viz.context.ContextVariableStringConverter;
 import arb.functions.Function;
+import arb.functions.polynomials.orthogonal.real.JacobiPolynomials;
 import arb.utensils.Utensils;
 import arb.viz.WindowManager;
 import javafx.application.Application;
@@ -38,6 +39,10 @@ import javafx.util.StringConverter;
  * TODO: save/restore/copy/paste/drag&drop context variables
  * 
  * TODO: add Parse button that only parses the AST but does not call generate
+ * 
+ * TODO: make Expressor have only a single global Context, that will make it
+ * easier to cross-reference all functions within the global context to debug
+ * sets of equations like is used in {@link JacobiPolynomials}
  * 
  * @param <D>
  * @param <C>

@@ -11,6 +11,8 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.polynomials.RationalJacobiPolynomials;
 import arb.functions.polynomials.orthogonal.real.JacobiPolynomials;
+import arb.utensils.ShellFunctions;
+import arb.utensils.Utensils;
 import junit.framework.TestCase;
 
 /**
@@ -27,7 +29,7 @@ public class JacobiPolynomialSequenceTest extends
 
   public static void testPRational()
   {
-
+    System.setProperty("arb4j.compiler.trace", "true");
     try ( var seq = new RationalJacobiPolynomials(negHalf,
                                                   negHalf))
     {
@@ -51,6 +53,7 @@ public class JacobiPolynomialSequenceTest extends
         assertEquals("(6*x^2-3)/8", p2.toString());
 
         RationalFunction p3 = seq.evaluate(3, 128);
+        ShellFunctions.inspect(seq);
         assertEquals("5/4*x^3-15/16*x", p3.toString());
       }
 
