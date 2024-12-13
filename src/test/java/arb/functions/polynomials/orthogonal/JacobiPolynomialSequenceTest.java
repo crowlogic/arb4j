@@ -160,6 +160,27 @@ public class JacobiPolynomialSequenceTest extends
     }
 
   }
+  
+  public static void testRational()
+  {
+
+    try ( var seq = new RationalJacobiPolynomials(negHalf,
+                                          negHalf))
+    {
+      Integer too = new Integer("3");
+
+      try ( RationalFunction rationalResult = seq.P.evaluate(too, 0, bits, new RationalFunction()))
+      {
+        var result = rationalResult.asRealFunction();
+        Real valAtOne = result.evaluate(RealConstants.one, 128, new Real());
+        assertEquals(0.3125, valAtOne.doubleValue());
+        Real valAtTwo = result.evaluate(RealConstants.two, 128, new Real());
+        assertEquals(8.125, valAtTwo.doubleValue());
+
+      }
+    }
+
+  }
 
   public static void testP4()
   {
