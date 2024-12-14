@@ -9,7 +9,10 @@ import static org.objectweb.asm.Opcodes.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
@@ -256,9 +259,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   boolean                                               verboseTrace                  = false;
 
-  public Map<String, List<String>>                      functionReferenceGraph        =
-                                                                               new HashMap<String, List<String>>();
-
   public Expression(Class<? extends D> domain, Class<? extends C> codomain, Class<? extends F> function)
   {
     this.ascendentExpression              = null;
@@ -482,15 +482,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected ClassVisitor declareFunctionReferences(ClassVisitor classVisitor)
   {
-    populateFunctionReferenceGraph();
+
+    context.populateFunctionReferenceGraph();
+    List<String> sortedFunctions = TopologicalSorter.sort(context.functionReferenceGraph);
+
     if (trace)
     {
-      System.err.println("functionReferenceGraph=" + functionReferenceGraph);
-    }
-    List<String> sortedFunctions = TopologicalSorter.sort(functionReferenceGraph);
-    if (trace)
-    {
-      saveDependencyGraph(sortedFunctions);
+      var graphFile = context.saveDependencyGraph(sortedFunctions);
+      if (graphFile != null)
+      {
+        System.err.println("Function Graph written to " + graphFile);
+      }
     }
     // Declare functions in dependency order
     for (String functionName : sortedFunctions)
@@ -503,42 +505,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     return classVisitor;
-  }
-
-  public void saveDependencyGraph(List<String> sortedFunctions)
-  {
-    HashMap<String, List<String>> sortedMap = new HashMap<>();
-    for (String function : sortedFunctions)
-    {
-      sortedMap.put(function, functionReferenceGraph.getOrDefault(function, Collections.emptyList()));
-    }
-    if (sortedMap.values().stream().mapToInt(List::size).sum() > 0)
-    {
-      // TopologicalSorter.addTransitiveDependencies(sortedMap);
-      TopologicalSorter.saveToDotFile(TopologicalSorter.toDotFormatReversedDirect(sortedMap), functionName + ".dot");
-    }
-  }
-
-  public void populateFunctionReferenceGraph()
-  {
-    // Build dependency graph directly from referencedFunctions
-    for (Map.Entry<String, FunctionMapping<?, ?, ?>> entry : referencedFunctions.entrySet())
-    {
-      String                   functionName = entry.getKey();
-      FunctionMapping<?, ?, ?> function     = entry.getValue();
-
-      // Get referenced functions from the function mapping
-      List<String>             dependencies = new ArrayList<>();
-      if (function.expression.referencedFunctions != null)
-      {
-        dependencies.addAll(function.expression.referencedFunctions.keySet()
-                                                                   .stream()
-                                                                   .filter(name -> !name.equals(functionName))
-                                                                   .toList());
-      }
-
-      functionReferenceGraph.put(functionName, dependencies);
-    }
   }
 
   protected void declareIntermediateVariables(ClassVisitor classVisitor)

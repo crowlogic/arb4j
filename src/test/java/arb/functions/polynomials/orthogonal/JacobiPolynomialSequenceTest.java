@@ -12,7 +12,6 @@ import arb.documentation.TheArb4jLibrary;
 import arb.functions.polynomials.RationalJacobiPolynomials;
 import arb.functions.polynomials.orthogonal.real.JacobiPolynomials;
 import arb.utensils.ShellFunctions;
-import arb.utensils.Utensils;
 import junit.framework.TestCase;
 
 /**
@@ -160,19 +159,19 @@ public class JacobiPolynomialSequenceTest extends
     }
 
   }
-  
+
   public static void testP3Rational()
   {
-
+    System.setProperty("arb4j.compiler.trace", "true");
     try ( var seq = new RationalJacobiPolynomials(negHalf,
-                                          negHalf))
+                                                  negHalf))
     {
       Integer too = new Integer("3");
 
       try ( RationalFunction rationalResult = seq.P.evaluate(too, 0, bits, new RationalFunction()))
       {
         ShellFunctions.inspect(seq.P);
-        var result = rationalResult.asRealFunction();
+        var  result   = rationalResult.asRealFunction();
         Real valAtOne = result.evaluate(RealConstants.one, 128, new Real());
         assertEquals(0.3125, valAtOne.doubleValue());
         Real valAtTwo = result.evaluate(RealConstants.two, 128, new Real());

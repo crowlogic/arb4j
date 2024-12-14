@@ -5,10 +5,10 @@ import static java.lang.String.format;
 import static java.lang.System.err;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import arb.Integer;
@@ -22,6 +22,7 @@ import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.integer.Sequence;
+import arb.utensils.TopologicalSorter;
 
 /**
  * The {@link Context} class is an integral part of the {@link Expression}
@@ -69,6 +70,48 @@ public class Context
     classLoader = new CompiledExpressionClassLoader(this);
     return this;
   }
+
+  public String saveDependencyGraph(List<String> sortedFunctions)
+  {
+    String filename = null;
+    HashMap<String, List<String>> sortedMap = new HashMap<>();
+    for (String function : sortedFunctions)
+    {
+      sortedMap.put(function, functionReferenceGraph.getOrDefault(function, Collections.emptyList()));
+    }
+    if (sortedMap.values().stream().mapToInt(List::size).sum() > 0)
+    {
+      // TopologicalSorter.addTransitiveDependencies(sortedMap);
+      filename = sortedMap.keySet().stream().collect(Collectors.joining()) + ".dot";
+      TopologicalSorter.saveToDotFile(TopologicalSorter.toDotFormatReversedDirect(sortedMap),
+                                      filename);
+    }
+    return filename;
+  }
+
+  public void populateFunctionReferenceGraph()
+  {
+    // Build dependency graph directly from referencedFunctions
+    for (Map.Entry<String, FunctionMapping<?, ?, ?>> entry : functions.map.entrySet())
+    {
+      String                   functionName = entry.getKey();
+      FunctionMapping<?, ?, ?> function     = entry.getValue();
+
+      // Get referenced functions from the function mapping
+      List<String>             dependencies = new ArrayList<>();
+      if (function.expression.referencedFunctions != null)
+      {
+        dependencies.addAll(function.expression.referencedFunctions.keySet()
+                                                                   .stream()
+                                                                   .filter(name -> !name.equals(functionName))
+                                                                   .toList());
+      }
+
+      functionReferenceGraph.put(functionName, dependencies);
+    }
+  }
+
+  public Map<String, List<String>> functionReferenceGraph = new HashMap<String, List<String>>();
 
   public Context()
   {
