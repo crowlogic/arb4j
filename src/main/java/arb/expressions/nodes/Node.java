@@ -16,7 +16,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
-import arb.expressions.SyntaxTree;
+import arb.expressions.ExpressionTree;
 import arb.expressions.nodes.binary.*;
 import arb.expressions.nodes.unary.AbsoluteValueNode;
 import arb.expressions.nodes.unary.FunctionNode;
@@ -25,7 +25,7 @@ import arb.functions.Function;
 
 /**
  * <pre>
- * Represents the abstract base class for elements of the abstract {@link SyntaxTree} 
+ * Represents the abstract base class for elements of the abstract {@link ExpressionTree} 
  * constituting an {@link Expression}. This class is a fundamental part of the framework, 
  * facilitating the construction, manipulation, and evaluation of symbolic express
  * ions. Nodes in the tree can perform a variety of operations such as differentiation, 

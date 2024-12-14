@@ -1,5 +1,6 @@
 var F = RealFunction.parse("tanh(log(1+x^2))");
 var f = F.instantiate();
-f
-f.eval(2.3)
-F.inspect(f);
+var y = 2.3;
+var x = f.eval(y)
+var str = F.inspect(f);
+System.out.format("F=%s\nf(%s)=%s\n%s\n", F, y, x, str );

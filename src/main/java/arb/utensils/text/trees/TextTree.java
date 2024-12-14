@@ -97,8 +97,8 @@ public class TextTree<N>
       sb.append("━━ ");
       if (node instanceof Node arbNode)
       {
-        sb.append(arbNode.getIntermediateValueFieldName() + "=");
-        sb.append(node.toString());
+        sb.append(node.toString()+ "=");
+        sb.append(arbNode.getIntermediateValueFieldName() );
 
         try
         {
