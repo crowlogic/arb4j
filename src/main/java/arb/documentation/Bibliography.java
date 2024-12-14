@@ -248,7 +248,7 @@ public class Bibliography extends
                                                                                                         "2024",
                                                                                                         "arXiv preprint",
                                                                                                         "2408.08064",
-                                                                                                        "Aug 15");
+                                                                                                        null);
 
   public static Article       besselChebyshevDuality                                          =
                                                      new Article("Duality between Bessel Functions and Chebyshev Polynomials in Expansions of Functions",
@@ -370,7 +370,7 @@ public class Bibliography extends
                                                                            "1978",
                                                                            "Pacific Journal of Mathematics",
                                                                            "78",
-                                                                           "No. 1");
+                                                                           null).setNumber("1");
 
   public static Book          besselFunctionTreatise                                          =
                                                      new Book("A Treatise on the Theory of Bessel Functions",
