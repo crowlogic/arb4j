@@ -13,15 +13,15 @@ import arb.utensils.text.trees.TreeModel;
 
 /**
  * For structured pretty-printing of an {@link Expression}s parsed
- * {@link SyntaxTree} via {@link TextTree}
+ * {@link ExpressionTree} via {@link TextTree}
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class SyntaxTree<D, R, F extends Function<? extends D, ? extends R>> implements
+public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> implements
                             TreeModel<Node<D, R, F>>
 {
-  public SyntaxTree(Node<D, R, F> root)
+  public ExpressionTree(Node<D, R, F> root)
   {
     indexBranches(this.root = root);
   }
