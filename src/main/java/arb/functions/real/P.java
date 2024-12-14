@@ -187,29 +187,28 @@ public class P implements
     return "P:n➔When[cases=[0=1, 1=((C(1)*x)-β+α)/2],default=((A(n)*P(n-1))-(B(n)*P(n-2)))/E(n)]";
   }
 
-  public Typesettable intermediateStates()
+  public String intermediateStates()
   {
-    return () -> String.format("P[cℤ0001=%s, cℤ0002=%s, cℤ0003=%s, vf0010=%s, vf0011=%s, vf0012=%s, vℚ0006=%s, vℚ0007=%s, vℚ0008=%s, vℚ0009=%s, vℚ0010=%s, vℚ0011=%s, vℚ0012=%s, vℚ0013=%s, vℚ0014=%s, vℚ0015=%s, vℚ0016=%s, vℤ0005=%s, vℤ0006=%s]",
-                               cℤ0001,
-                               cℤ0002,
-                               cℤ0003,
-                               vf0010,
-                               vf0011,
-                               vf0012,
-                               vℚ0006,
-                               vℚ0007,
-                               vℚ0008,
-                               vℚ0009,
-                               vℚ0010,
-                               vℚ0011,
-                               vℚ0012,
-                               vℚ0013,
-                               vℚ0014,
-                               vℚ0015,
-                               vℚ0016,
-                               vℤ0005,
-                               vℤ0006);
-
+    return String.format("P[cℤ0001=%s, cℤ0002=%s, cℤ0003=%s, vf0010=%s, vf0011=%s, vf0012=%s, vℚ0006=%s, vℚ0007=%s, vℚ0008=%s, vℚ0009=%s, vℚ0010=%s, vℚ0011=%s, vℚ0012=%s, vℚ0013=%s, vℚ0014=%s, vℚ0015=%s, vℚ0016=%s, vℤ0005=%s, vℤ0006=%s]",
+                         cℤ0001,
+                         cℤ0002,
+                         cℤ0003,
+                         vf0010,
+                         vf0011,
+                         vf0012,
+                         vℚ0006,
+                         vℚ0007,
+                         vℚ0008,
+                         vℚ0009,
+                         vℚ0010,
+                         vℚ0011,
+                         vℚ0012,
+                         vℚ0013,
+                         vℚ0014,
+                         vℚ0015,
+                         vℚ0016,
+                         vℤ0005,
+                         vℤ0006);
   }
 
   @Override
