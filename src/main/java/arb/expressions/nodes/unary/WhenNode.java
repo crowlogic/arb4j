@@ -157,7 +157,12 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     else
     {
       throw new CompilerException("the cases of the when statement must be either an else statement or a VariableNode but it was a "
-                                  + node.getClass());
+                                  + node.getClass()
+                                  + " expr="
+                                  + expression.expression
+                                  + "' with remaining='"
+                                  + expression.remaining()
+                                  + "'");
     }
   }
 
@@ -239,7 +244,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   @Override
   public String getIntermediateValueFieldName()
   {
-    return null;
+    return "hmm";
   }
 
   @Override
@@ -292,14 +297,18 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     return '≡';
   }
 
+  /**
+   * @return something that looks like
+   *         'when(n=0,1,n=1,(C(1)*x-β+α)/2,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))'
+   */
   @Override
   public String toString()
   {
-    return String.format("When[cases=%s,default=%s]",
+    return String.format("when(%s,else,%s)",
                          cases.entrySet()
                               .stream()
-                              .map(node -> node.getKey() + "=" + node.getValue())
-                              .collect(Collectors.toList()),
+                              .map(node -> expression.independentVariable + "=" + node.getKey() + "," + node.getValue())
+                              .collect(Collectors.joining(",")),
                          arg);
   }
 

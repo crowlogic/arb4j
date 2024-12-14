@@ -2168,11 +2168,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                           .map(ch -> String.format("'%s'", String.valueOf(ch)))
                           .collect(Collectors.joining(","));
 
-    throw new CompilerException(format("Expecting %s %s at position %d but got char '%c' instead, remaining=%s%s\n",
+    throw new CompilerException(format("Expecting %s %s at position %d but got char '%c' instead in expr='%s', remaining=%s%s\n",
                                        which.length > 1 ? "one of" : "",
                                        result,
                                        position,
                                        character == 0 ? '0' : character,
+                                       expression,
                                        remaining(),
                                        msg != null ? " syntax=\"" + msg : "",
                                        implementedInterfaces));

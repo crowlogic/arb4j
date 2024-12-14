@@ -97,21 +97,24 @@ public class TextTree<N>
       sb.append("━━ ");
       if (node instanceof Node arbNode)
       {
-        sb.append(node.toString()+ "=");
-        sb.append(arbNode.getIntermediateValueFieldName() );
+        sb.append(node.toString() + "=");
+        sb.append(arbNode.getIntermediateValueFieldName());
 
         try
         {
-
-          Field field;
-          try
+          String intermediateValueFieldName = arbNode.getIntermediateValueFieldName();
+          if (intermediateValueFieldName != null)
           {
-            field = instance.getClass().getField(arbNode.getIntermediateValueFieldName());
-            field.setAccessible(true);
-            sb.append("=" + field.get(instance));
-          }
-          catch (NoSuchFieldException e)
-          {
+            Field field;
+            try
+            {
+              field = instance.getClass().getField(intermediateValueFieldName);
+              field.setAccessible(true);
+              sb.append("=" + field.get(instance));
+            }
+            catch (NoSuchFieldException e)
+            {
+            }
           }
         }
         catch (SecurityException | IllegalArgumentException | IllegalAccessException e)

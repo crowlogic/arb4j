@@ -1,12 +1,15 @@
 package arb.functions.real;
 
-import arb.*;
+import arb.Fraction;
+import arb.Initializable;
 import arb.Integer;
+import arb.RationalFunction;
+import arb.Real;
+import arb.Typesettable;
+import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.functions.Function;
 import arb.functions.integer.Sequence;
 import arb.functions.rational.RationalFunctionSequence;
-import arb.utensils.ShellFunctions;
 import arb.utensils.Utensils;
 
 public class P implements
@@ -17,15 +20,31 @@ public class P implements
 {
   public Expression<Integer, RationalFunction, RationalFunctionSequence> expression()
   {
-    return Sequence.parse("P", RationalFunctionSequence.class, RationalFunction.class, toString());
+    Context context  = new Context();
+    Real    newAlpha = new Real();
+    context.registerVariable("α", newAlpha);
+    Real newBeta = new Real();
+    context.registerVariable("β", newBeta);
+    if (α != null)
+    {
+      newBeta.set(this.α);
+    }
+
+    if (β != null)
+    {
+      newBeta.set(this.β);
+    }
+
+    return Sequence.parse("P", RationalFunctionSequence.class, RationalFunction.class, toString(), context);
   }
 
   public static void main(String args[])
   {
     P   P    = new P();
     var expr = P.expression();
-    var f = expr.instantiate();
-    
+    var f    = expr.instantiate();
+    System.out.println(expr.className + "=" + expr.inspect(f));
+
 //    P.α = RealConstants.negHalf;
 //    P.β = RealConstants.negHalf;
 //
@@ -195,7 +214,7 @@ public class P implements
   @Override
   public String toString()
   {
-    return "n➔When[cases=[0=1, 1=((C(1)*x)-β+α)/2],default=((A(n)*P(n-1))-(B(n)*P(n-2)))/E(n)]";
+    return "n➔when(n=0,1, n=1,((C(1)*x)-β+α)/2,else,((A(n)*P(n-1))-(B(n)*P(n-2)))/E(n))";
   }
 
   public String intermediateStates()

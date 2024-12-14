@@ -118,4 +118,11 @@ public interface Sequence<C> extends
     return Function.parse(className, expr, null, Integer.class, coDomainType, seq, expr, null);
   }
 
+  public static <C, S extends Sequence<? extends C>>
+         Expression<Integer, C, S>
+         parse(String className, Class<S> seq, Class<C> coDomainType, String expr, Context context)
+  {
+    return Function.parse(className, expr, context, Integer.class, coDomainType, seq, expr, null);
+  }
+
 }
