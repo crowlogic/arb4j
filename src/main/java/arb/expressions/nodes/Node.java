@@ -82,6 +82,13 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   }
 
   @SuppressWarnings("unchecked")
+  public <N extends Node<D, R, F>> N abs()
+  {
+    return (N) new AbsoluteValueNode<D, R, F>(expression,
+                                              this);
+  }
+
+  @SuppressWarnings("unchecked")
   public <N extends Node<D, R, F>> N add(Node<D, R, F> addend)
   {
     return (N) new AdditionNode<>(expression,
@@ -149,6 +156,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   }
 
   public abstract Node<D, R, F> differentiate(VariableNode<D, R, F> variable);
+
+  @SuppressWarnings("unchecked")
+  public <N extends Node<D, R, F>> N digamma()
+  {
+    return (N) apply("digamma");
+  }
 
   public int dim()
   {
@@ -265,6 +278,17 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                                             exponent);
   }
 
+  /**
+   * 
+   * @return the {@link String} string that would be what would be said to express
+   *         this Node in the most precise wa
+   */
+  public String say()
+  {
+    assert false : "TODO: implement";
+    return null;
+  }
+
   public Node<D, R, F> simplify()
   {
     return this;
@@ -331,29 +355,5 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * @return the {@link LaTeXAtom} string that represents this node
    */
   public abstract String typeset();
-
-  /**
-   * 
-   * @return the {@link String} string that would be what would be said to express
-   *         this Node in the most precise wa
-   */
-  public String say()
-  {
-    assert false : "TODO: implement";
-    return null;
-  }
-
-  @SuppressWarnings("unchecked")
-  public <N extends Node<D, R, F>> N abs()
-  {
-    return (N) new AbsoluteValueNode<D, R, F>(expression,
-                                              this);
-  }
-
-  @SuppressWarnings("unchecked")
-  public <N extends Node<D, R, F>> N digamma()
-  {
-    return (N) apply("digamma");
-  }
 
 }

@@ -4,6 +4,7 @@ import arb.*;
 import arb.Integer;
 import arb.functions.rational.RationalFunctionSequence;
 import arb.utensils.ShellFunctions;
+import arb.utensils.Utensils;
 
 public class P implements
                RationalFunctionSequence,
@@ -11,13 +12,20 @@ public class P implements
                AutoCloseable,
                Initializable
 {
+  public P()
+  {
+    super();
+    System.err.println("newP " + Utensils.stackTraceToString(new Throwable()));
+    System.err.flush();
+  }
+
   public static void main(String args[])
   {
     P P = new P();
     P.α = RealConstants.negHalf;
     P.β = RealConstants.negHalf;
 
-    var P3 = P.evaluate(6, 128);
+    var P3 = P.evaluate(3, 128);
     ShellFunctions.inspect(P);
 
     System.out.println(P + "(3)=" + P3);
@@ -99,50 +107,48 @@ public class P implements
     }
     else
     {
-      if (A == null)
-      {
-        A = new A();
-      }
+      constructReferencedFunctions();
 
-      if (B == null)
-      {
-        B = new B();
-      }
+      injectVariableReferences();
 
-      if (C == null)
-      {
-        C = new C();
-      }
-
-      if (E == null)
-      {
-        E = new E();
-      }
-
-      A.α           = α;
-      A.β           = β;
-      B.α           = α;
-      B.β           = β;
-      C.α           = α;
-      C.β           = β;
-      E.α           = α;
-      E.β           = β;
-      P             = new P();
-      P.α           = α;
-      P.β           = β;
-      E.C           = C;
-      A.C           = C;
-      A.F           = new F();
-      A.F.α         = α;
-      A.F.β         = β;
-      A.F.C         = C;
+      P.C           = B.C = E.C = A.C = A.F.C = C;
       P.A           = A;
       P.B           = B;
-      P.C           = C;
       P.E           = E;
-      B.C           = C;
       isInitialized = true;
     }
+  }
+
+  protected void injectVariableReferences()
+  {
+    A.α           = B.α = C.α = E.α = P.α = A.F.α = α;
+    A.β           = B.β = C.β = E.β = P.β = A.F.β = β;
+  }
+
+  protected void constructReferencedFunctions()
+  {
+    if (A == null)
+    {
+      A = new A();
+    }
+
+    if (B == null)
+    {
+      B = new B();
+    }
+
+    if (C == null)
+    {
+      C = new C();
+    }
+
+    if (E == null)
+    {
+      E = new E();
+    }
+    P   = new P();
+    P.A = A;
+    P.A.F = A.F = new F();
   }
 
   @Override

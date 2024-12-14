@@ -45,7 +45,7 @@ public class Utensils
     yamlConfig.setAllowUnicode(true);
     yamlConfig.setExplicitStart(true);
     yamlConfig.setExplicitEnd(true);
-    yamlConfig.setDefaultFlowStyle(DumperOptions.FlowStyle.FLOW);
+    yamlConfig.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
     yamlConfig.setPrettyFlow(true);
     yamlConfig.setSplitLines(false);
     yamlConfig.setNonPrintableStyle(NonPrintableStyle.ESCAPE);
@@ -142,7 +142,7 @@ public class Utensils
 
   public static BufferedImage renderFormula(String formula)
   {
-    return renderFormula(formula, 40);
+    return renderFormula(formula, 20);
   }
 
   public static BufferedImage renderFormula(String formula, int size)

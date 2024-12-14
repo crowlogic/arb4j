@@ -8,6 +8,7 @@ import arb.RealConstants;
 import arb.Typesettable;
 import arb.functions.NullaryFunction;
 import arb.utensils.ShellFunctions;
+import arb.utensils.Utensils;
 
 public class G implements
                NullaryFunction<Fraction>,
@@ -15,6 +16,13 @@ public class G implements
                AutoCloseable,
                Initializable
 {
+  public G()
+  {
+    super();
+    System.err.println("newG " + Utensils.stackTraceToString(new Throwable( )) );
+    System.err.flush();
+  }
+  
   public boolean       isInitialized;
   public final Integer cℤ0001 = new Integer("2");
   public Real          vℝ0007 = new Real();

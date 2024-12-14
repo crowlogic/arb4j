@@ -6,6 +6,7 @@ import arb.*;
 import arb.Integer;
 import arb.functions.rational.RationalFunctionSequence;
 import arb.utensils.ShellFunctions;
+import arb.utensils.Utensils;
 
 public class A implements
                RationalFunctionSequence,
@@ -16,10 +17,8 @@ public class A implements
   public A()
   {
     super();
-   
-    System.err.println( "init A");
+    System.err.println("newA " + Utensils.stackTraceToString(new Throwable( )) );
     System.err.flush();
-    // TODO Auto-generated constructor stub
   }
 
   public boolean          isInitialized;

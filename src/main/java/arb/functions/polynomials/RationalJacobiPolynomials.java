@@ -10,6 +10,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
 import arb.expressions.Context;
+import arb.functions.NullaryFunction;
 import arb.functions.integer.FractionSequence;
 import arb.functions.rational.RationalFunctionSequence;
 import arb.functions.real.RealFunction;
@@ -58,37 +59,39 @@ public class RationalJacobiPolynomials implements
 
   }
 
-  public static Real                    domain  = new Real("0+/-1",
-                                                           128);
+  public static Real                     domain  = new Real("0+/-1",
+                                                            128);
 
-  public int                            bits    = 128;
-
-  @SuppressWarnings("resource")
-  public final Real                     α       = new Real().setName("α");
+  public int                             bits    = 128;
 
   @SuppressWarnings("resource")
-  public final Real                     β       = new Real().setName("β");
+  public final Real                      α       = new Real().setName("α");
 
-  final public Context                  context = new Context(α,
-                                                              β);
+  @SuppressWarnings("resource")
+  public final Real                      β       = new Real().setName("β");
 
-  final public FractionSequence         C       = FractionSequence.express("C", "n➔2*n+α+β", context);
+  final public Context                   context = new Context(α,
+                                                               β);
 
-  final public FractionSequence         F       = FractionSequence.express("F", "n➔C(n-1)*C(n)", context);
+  final public FractionSequence          C       = FractionSequence.express("C", "n➔2*n+α+β", context);
 
-  final public RationalFunctionSequence A       =
-                                          RationalFunctionSequence.express("A", "n➔(F(n)*x+α²-β²)*(C(n)-1)/2", context);
+  final public FractionSequence          F       = FractionSequence.express("F", "n➔C(n-1)*C(n)", context);
 
-  final public FractionSequence         E       = FractionSequence.express("E", "n➔n*C(n/2)*C(n-1)", context);
+  final public NullaryFunction<Fraction> G       = NullaryFunction.express(Fraction.class, "G", "α²-β²", context);
 
-  final public FractionSequence         B       = FractionSequence.express("B", "n➔(n+α-1)*(n+β-1)*C(n)", context);
+  final public RationalFunctionSequence  A       =
+                                           RationalFunctionSequence.express("A", "n➔(F(n)*x+G())*(C(n)-1)/2", context);
 
-  final public RationalFunctionSequence P       =
-                                          RationalFunctionSequence.express("P",
-                                                                           "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
-                                                                           context);
+  final public FractionSequence          E       = FractionSequence.express("E", "n➔n*C(n/2)*C(n-1)", context);
 
-  protected RealFunction                orthogonalityMeasure;
+  final public FractionSequence          B       = FractionSequence.express("B", "n➔(n+α-1)*(n+β-1)*C(n)", context);
+
+  final public RationalFunctionSequence  P       =
+                                           RationalFunctionSequence.express("P",
+                                                                            "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
+                                                                            context);
+
+  protected RealFunction                 orthogonalityMeasure;
 
   public RationalJacobiPolynomials(Real a, Real b)
   {

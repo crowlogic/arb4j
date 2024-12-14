@@ -8,6 +8,7 @@ import arb.RealConstants;
 import arb.Typesettable;
 import arb.functions.integer.FractionSequence;
 import arb.utensils.ShellFunctions;
+import arb.utensils.Utensils;
 
 public class E implements
                FractionSequence,
@@ -27,6 +28,13 @@ public class E implements
   public Real          α;
   public Real          β;
 
+  public E()
+  {
+    super();
+    System.err.println("newE " + Utensils.stackTraceToString(new Throwable( )) );
+    System.err.flush();
+  }
+  
   @Override
   public Class<Fraction> coDomainType()
   {

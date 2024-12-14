@@ -8,6 +8,7 @@ import arb.RealConstants;
 import arb.Typesettable;
 import arb.functions.integer.FractionSequence;
 import arb.utensils.ShellFunctions;
+import arb.utensils.Utensils;
 
 public class F implements
                FractionSequence,
@@ -24,6 +25,13 @@ public class F implements
   public Real          α;
   public Real          β;
 
+  public F()
+  {
+    super();
+    System.err.println("newF " + Utensils.stackTraceToString(new Throwable( )) );
+    System.err.flush();
+  }
+  
   public static void main( String args[] )
   {
     F F = new F();
