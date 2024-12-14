@@ -1,10 +1,8 @@
 package arb.utensils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.*;
 import java.util.concurrent.LinkedTransferQueue;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -81,4 +79,134 @@ public class TopologicalSorter
     });
   }
 
+  public static String toDotFormat(Map<String, List<String>> graph)
+  {
+    StringBuilder dot = new StringBuilder();
+
+    // Start the digraph
+    dot.append("digraph DependencyGraph {\n");
+    dot.append("    rankdir=LR;\n"); // Left to right direction
+    dot.append("    node [shape=box];\n\n");
+
+    // Add all edges
+    for (Map.Entry<String, List<String>> entry : graph.entrySet())
+    {
+      String       node         = entry.getKey();
+      List<String> dependencies = entry.getValue();
+
+      // Add edges for each dependency
+      for (String dependency : dependencies)
+      {
+        dot.append(String.format("    \"%s\" -> \"%s\";\n", node, dependency));
+      }
+    }
+
+    // Close the digraph
+    dot.append("}\n");
+
+    return dot.toString();
+  }
+
+  public static String toDotFormatReversedDirect(Map<String, List<String>> graph)
+  {
+    StringBuilder dot = new StringBuilder();
+    dot.append("digraph DependencyGraph {\n");
+    dot.append("    rankdir=LR;\n");
+    dot.append("    node [shape=box];\n\n");
+
+    // Only add direct edges, but in reverse direction
+    for (Map.Entry<String, List<String>> entry : graph.entrySet())
+    {
+      String node = entry.getKey();
+      for (String dependency : entry.getValue())
+      {
+        // Reverse: dependency points TO node instead of node pointing TO dependency
+        dot.append(String.format("    \"%s\" -> \"%s\";\n", dependency, node));
+      }
+    }
+
+    dot.append("}\n");
+    return dot.toString();
+  }
+
+  public static String toDotFormatReversed(Map<String, List<String>> graph)
+  {
+    StringBuilder dot = new StringBuilder();
+    dot.append("digraph DependencyGraph {\n");
+    dot.append("    rankdir=LR;\n");
+    dot.append("    node [shape=box];\n\n");
+
+    // Add edges in reverse direction
+    for (Map.Entry<String, List<String>> entry : graph.entrySet())
+    {
+      String       node         = entry.getKey();
+      List<String> dependencies = entry.getValue();
+
+      // Reverse the direction: instead of node -> dependency
+      // we do dependency -> node
+      for (String dependency : dependencies)
+      {
+        dot.append(String.format("    \"%s\" -> \"%s\";\n", dependency, node)); // Note the swap here
+      }
+    }
+
+    dot.append("}\n");
+    return dot.toString();
+  }
+
+  public static void addTransitiveDependencies(Map<String, List<String>> graph)
+  {
+    // For each node in the graph
+    for (String node : new ArrayList<>(graph.keySet()))
+    {
+      // Get or create its dependency list
+      List<String> dependencies = graph.computeIfAbsent(node, k -> new ArrayList<>());
+
+      // For each direct dependency
+      for (String dep : new ArrayList<>(dependencies))
+      {
+        // Get that dependency's dependencies
+        List<String> transitive = graph.getOrDefault(dep, Collections.emptyList());
+
+        // Add all transitive dependencies if they're not already present
+        for (String trans : transitive)
+        {
+          if (!dependencies.contains(trans))
+          {
+            dependencies.add(trans);
+          }
+        }
+      }
+    }
+  }
+
+// Utility method to save the DOT content to a file
+  public static void saveToDotFile(String dotContent, String filePath)
+  {
+    try ( PrintWriter out = new PrintWriter(filePath))
+    {
+      out.println(dotContent);
+    }
+    catch (FileNotFoundException e)
+    {
+      e.printStackTrace();
+    }
+  }
+
+// Example usage
+  public static void main(String[] args)
+  {
+    // Example graph
+    Map<String, List<String>> graph = new HashMap<>();
+    graph.put("A", Arrays.asList("B", "C"));
+    graph.put("B", Arrays.asList("D"));
+    graph.put("C", Arrays.asList("D"));
+    graph.put("D", new ArrayList<>());
+
+    String dotContent = toDotFormat(graph);
+    saveToDotFile(dotContent, "dependency_graph.dot");
+
+    // Print the DOT content
+    System.out.println(dotContent);
+  }
 }

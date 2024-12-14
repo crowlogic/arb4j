@@ -483,12 +483,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected ClassVisitor declareFunctionReferences(ClassVisitor classVisitor)
   {
     populateFunctionReferenceGraph();
-    if ( trace )
+    if (trace)
     {
       System.err.println("functionReferenceGraph=" + functionReferenceGraph);
     }
     List<String> sortedFunctions = TopologicalSorter.sort(functionReferenceGraph);
-
+    if (trace)
+    {
+      saveDependencyGraph(sortedFunctions);
+    }
     // Declare functions in dependency order
     for (String functionName : sortedFunctions)
     {
@@ -500,6 +503,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     return classVisitor;
+  }
+
+  public void saveDependencyGraph(List<String> sortedFunctions)
+  {
+    HashMap<String, List<String>> sortedMap = new HashMap<>();
+    for (String function : sortedFunctions)
+    {
+      sortedMap.put(function, functionReferenceGraph.getOrDefault(function, Collections.emptyList()));
+    }
+    if (sortedMap.values().stream().mapToInt(List::size).sum() > 0)
+    {
+      // TopologicalSorter.addTransitiveDependencies(sortedMap);
+      TopologicalSorter.saveToDotFile(TopologicalSorter.toDotFormatReversedDirect(sortedMap), functionName + ".dot");
+    }
   }
 
   public void populateFunctionReferenceGraph()
