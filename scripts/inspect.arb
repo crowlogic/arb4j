@@ -1,0 +1,5 @@
+var F = RealFunction.parse("tanh(log(1+x^2))");
+var f = F.instantiate();
+f
+f.eval(2.3)
+F.inspect(f);

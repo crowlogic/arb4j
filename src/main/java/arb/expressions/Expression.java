@@ -2123,9 +2123,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
+  public TextTree<Node<D, C, F>> inspect(F f)
+  {
+    SyntaxTree<D, C, F> syntaxTree = syntaxTree();
+    return new TextTree<Node<D, C, F>>(syntaxTree,
+                                       f);
+  }
+
   public SyntaxTree<D, C, F> syntaxTree()
   {
-    return new SyntaxTree<>(rootNode);
+    return new SyntaxTree<D, C, F>(rootNode);
   }
 
   public boolean thisOrAnyAscendentExpressionHasIndeterminateVariable()

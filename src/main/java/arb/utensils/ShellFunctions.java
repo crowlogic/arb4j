@@ -3,13 +3,18 @@ package arb.utensils;
 import static arb.utensils.Utensils.wrapOrThrow;
 
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.IntFunction;
+import java.util.stream.IntStream;
 
 import arb.Real;
+import arb.RealPolynomial;
 import arb.RealTwoDimensionalDataSet;
 import arb.SequenceDataSet;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -26,7 +31,38 @@ import javafx.application.Platform;
 public class ShellFunctions
 {
 
-  public static FunctionPlotter plot(RealTwoDimensionalDataSet sequence)
+  public static <A> List<A>  seq(int m, int n,IntFunction<A> f) { return IntStream.rangeClosed(m,n).mapToObj(f).toList();};
+
+  @SuppressWarnings("unchecked")
+  public static <A> A[] array( List<A> list, Class<A> type ) { return (A[])list.toArray((A[])Array.newInstance(type,list.size()));}
+
+  public static List<Real> coeffs( List<RealPolynomial> s) { return s.stream().map(p->p.getCoeffs()).toList();};
+
+  public static void matrix( List<RealPolynomial> s)
+  {
+    s.forEach( h->
+    {
+      h.getCoeffs().forEach( g -> g.printPrecision = false );
+      System.out.format("#%s=%s\n\n",h.getLength(),h.coeffs);
+    });
+  }
+
+  public static RealPolynomial[] rarray( List<RealPolynomial> list )
+  {
+    return array( list, RealPolynomial.class);
+  }
+
+  public static Integer[] iarray( List<Integer> list )
+  {
+    return array( list, Integer.class);
+  }
+
+  public static RealFunction[] rfarray( List<RealFunction> funcs )
+  {
+    return array( funcs, RealFunction.class);
+  }
+
+  public  static FunctionPlotter plot(RealTwoDimensionalDataSet sequence)
   {
     WindowManager.initializeJavaFxIfNecessary();
     AtomicReference<FunctionPlotter> ref = new AtomicReference<>();

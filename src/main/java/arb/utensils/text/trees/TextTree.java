@@ -1,9 +1,14 @@
 package arb.utensils.text.trees;
 
+import static arb.utensils.Utensils.throwOrWrap;
+
 import java.io.PrintStream;
+import java.lang.reflect.Field;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.nodes.Node;
+import arb.utensils.Utensils;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -12,13 +17,20 @@ import arb.documentation.TheArb4jLibrary;
 public class TextTree<N>
 {
 
-  private TreeModel<N>       model;
+  private TreeModel<N>  model;
   private boolean       showRoot = true;
   private StringBuilder sb;
+  public Object         instance;
 
-  public TextTree(TreeModel<N> model)
+  public TextTree(TreeModel<N> tree)
   {
-    this.model = model;
+    this.model = tree;
+  }
+
+  public TextTree(TreeModel<N> tree, Object f)
+  {
+    this.model    = tree;
+    this.instance = f;
   }
 
   /**
@@ -83,7 +95,32 @@ public class TextTree<N>
       sb.append(prefix);
       sb.append(bud);
       sb.append("━━ ");
-      sb.append(node.toString());
+      if (node instanceof Node arbNode)
+      {
+        sb.append(arbNode.getIntermediateValueFieldName() + "=");
+        sb.append(node.toString());
+
+        try
+        {
+
+          Field field;
+          try
+          {
+            field = instance.getClass().getField(arbNode.getIntermediateValueFieldName());
+            field.setAccessible(true);
+            sb.append("=" + field.get(instance));
+          }
+          catch (NoSuchFieldException e)
+          {
+          }
+        }
+        catch (SecurityException | IllegalArgumentException | IllegalAccessException e)
+        {
+          System.err.println(Utensils.stackTraceToString(e));
+          System.err.flush();
+          throwOrWrap(e);
+        }
+      }
       sb.append("\n");
     }
     String lastPrefix        = prefix + "   ";
