@@ -482,7 +482,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected ClassVisitor declareFunctionReferences(ClassVisitor classVisitor)
   {
-
+    if ( context == null )
+    {
+      return classVisitor;
+    }
     context.populateFunctionReferenceGraph();
     List<String> sortedFunctions = TopologicalSorter.sort(context.functionReferenceGraph);
 
