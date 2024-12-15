@@ -1,11 +1,7 @@
 package arb.functions.real;
 
-import arb.Fraction;
-import arb.Initializable;
+import arb.*;
 import arb.Integer;
-import arb.RationalFunction;
-import arb.Real;
-import arb.Typesettable;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.integer.Sequence;
@@ -41,12 +37,12 @@ public class P implements
   public static void main(String args[])
   {
     P   P    = new P();
+    P.α = RealConstants.negHalf;
+    P.β = RealConstants.negHalf;
     var expr = P.expression();
-    var f    = expr.instantiate();
-    System.out.println(expr.className + "=" + expr.inspect(f));
+    var f3 = P.evaluate(3, 128);
+    System.out.println(expr.className + "=" + expr.inspect(P));
 
-//    P.α = RealConstants.negHalf;
-//    P.β = RealConstants.negHalf;
 //
 //    var P3 = P.evaluate(3, 128);
 //    ShellFunctions.inspect(P);

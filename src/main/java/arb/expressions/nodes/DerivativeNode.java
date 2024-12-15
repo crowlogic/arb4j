@@ -93,9 +93,23 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
 
   public DerivativeNode(Expression<D, R, F> expression)
   {
+    this(expression,
+         false);
+  }
+
+  public DerivativeNode(Expression<D, R, F> expression, boolean functionalForm)
+  {
     super(expression);
-    operand    = expression.resolve();
-    variable   = expression.require('/').require('∂').resolve();
+    operand = expression.resolve();
+    if (!functionalForm)
+    {
+      variable = expression.require('/').require('∂').resolve();
+    }
+    else
+    {
+      variable = expression.require(',').resolve();
+      expression.require(')');
+    }
     derivative = operand.differentiate(variable).simplify();
   }
 
