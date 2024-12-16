@@ -1,0 +1,83 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+
+\begin{document}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+
+\section*{Definitions and Theorem}
+
+\begin{definition}
+For a Gaussian process $\{X(t) : t \in T\}$, the \textbf{canonical metric} $d$ is defined as:
+\[
+d(s, t) := \sqrt{\mathbb{E}[(X(s) - X(t))^2]}.
+\]
+This metric reflects the expected distance between the process values at any two points $s, t \in T$.
+\end{definition}
+
+\begin{definition}
+The \textbf{spectral radius} $R$ of the covariance operator $K$ associated with a Gaussian process is defined as the square of the largest eigenvalue $\lambda_1$ of $K$:
+\[
+R := \lambda_1^2.
+\]
+The spectral radius indicates the maximum variance contributed by the process in the direction of the first eigenfunction.
+\end{definition}
+
+\begin{definition}
+The \textbf{covering number} $N(T, d, \varepsilon)$ is the minimum number of points needed to cover the space $T$ within distance $\varepsilon$ using the canonical metric $d$. An upper bound for the covering number is given by:
+\[
+N(T, d, \varepsilon) \leq \min \left\{ n \in \mathbb{N} : \lambda_{n+1}^2 \leq \varepsilon \right\},
+\]
+where $\{\lambda_k\}$ are the eigenvalues of the covariance operator, ordered in decreasing order.
+\end{definition}
+
+\begin{definition}
+The \textbf{metric entropy} is the logarithm of the covering number:
+\[
+\log N(T, d, \varepsilon),
+\]
+which measures the complexity of the set $T$ in the canonical metric $d$ at scale $\varepsilon > 0$.
+\end{definition}
+
+\begin{definition}
+The \textbf{metric entropy integral} is defined as:
+\[
+\int_0^R \log N(T, d, \varepsilon) \, d\varepsilon,
+\]
+where $R := \lambda_1^2$ is the spectral radius. This integral quantifies the total complexity of covering the metric space $(T, d)$ as $\varepsilon$ varies from $R$ to $0$.
+\end{definition}
+
+\section*{Theorem}
+
+\begin{theorem}
+Let $\{X(t) : t \in T\}$ be a Gaussian process with covariance operator $K$ having eigenvalues $\{\lambda_k\}$. If the eigenvalues satisfy $\lambda_k \to 0$ as $k \to \infty$, then the metric entropy integral
+\[
+\int_0^R \log N(T, d, \varepsilon) \, d\varepsilon
+\]
+is finite, indicating that the space is relatively compact in the canonical metric $d$.
+\end{theorem}
+
+\section*{Proof}
+
+Given $\lambda_k \to 0$, for any $\varepsilon > 0$, there exists a finite set of indices such that $\lambda_k^2 > \varepsilon$. Thus, the covering number $N(T, d, \varepsilon)$ is finite for any $\varepsilon > 0$. 
+
+The metric entropy integral is:
+\[
+\int_0^R \log N(T, d, \varepsilon) \, d\varepsilon.
+\]
+
+Breaking this integral into contributions over intervals defined by the eigenvalue decay:
+\[
+\int_0^R \log N(T, d, \varepsilon) \, d\varepsilon = \sum_{k=1}^{\min\{N(T, d, R)\}} \log k \cdot (\lambda_k^2 - \lambda_{k+1}^2).
+\]
+
+Here:
+- $\log k$ is finite for each $k$ because $N(T, d, \varepsilon)$ is finite.
+- $(\lambda_k^2 - \lambda_{k+1}^2)$ shrinks as $k$ increases because $\lambda_k \to 0$.
+
+Thus, the sum is finite, ensuring that the metric entropy integral is finite, implying relative compactness.
+\end{proof}
+
+\end{document}
+

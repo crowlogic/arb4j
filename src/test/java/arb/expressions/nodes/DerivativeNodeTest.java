@@ -16,6 +16,13 @@ public class DerivativeNodeTest extends
                                 TestCase
 {
   
+  public void testCosineDerivativeSimplerSyntax()
+  {
+    var f  = RealFunction.parse("diff(cos(x),x)");
+    var df = RealFunction.parse("-sin(x)");
+    assertEquals(df.rootNode.toString(), f.rootNode.toString());
+  }
+  
   public void testGammaDerivative()
   {
     var f  = RealFunction.parse("∂Γ(x)/∂x");
