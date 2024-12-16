@@ -9,17 +9,14 @@
     <date|>
   </author-affiliation>>>>
 
-  <\definition>
-    For a Gaussian process <math|<around|{|X<around|(|t|)>:t\<in\>T|}>>, the
-    <with|font-series|bold|canonical metric> <math|d> is defined as:
+  For a Gaussian process <math|<around|{|X<around|(|t|)>:t\<in\>T|}>>, the
+  <with|font-series|bold|canonical metric> <math|d> measures the square root
+  of the variance of the length of the interval spanning any given pair of
+  points and it is defined as:
 
-    <\equation>
-      d<around|(|s,t|)>\<assign\><sqrt|\<bbb-E\><around|[|<around|(|X<around|(|s|)>-X<around|(|t|)>|)><rsup|2>|]>>
-    </equation>
-
-    This metric reflects the expected distance between the process values at
-    any two points <math|s,t\<in\>T>.
-  </definition>
+  <\equation>
+    d<around|(|s,t|)>\<assign\><sqrt|\<bbb-E\><around|[|<around|(|X<around|(|s|)>-X<around|(|t|)>|)><rsup|2>|]>>
+  </equation>
 
   <\definition>
     The <with|font-series|bold|spectral radius> <math|R> of the covariance
@@ -43,11 +40,12 @@
 
     <\equation>
       N<around|(|T,d,\<varepsilon\>|)>\<leq\>min
-      <around|{|n\<in\>\<bbb-N\>:\<lambda\><rsub|n+1><rsup|2>\<leq\>\<varepsilon\>|}>
+      <around|{|n\<in\>\<bbb-N\>:\<lambda\><rsub|n+1><rsup|2>\<leq\>\<varepsilon\>|}>=<big|sum><rsub|k=1><rsup|\<infty\>>\<theta\><around|(|\<lambda\><rsub|k><rsup|2>-\<varepsilon\>|)>
     </equation>
 
     where <math|<around|{|\<lambda\><rsub|k>|}>> are the eigenvalues of the
-    covariance operator, ordered in decreasing order.
+    covariance operator, ordered in decreasing order and <math|\<theta\>> is
+    the Heaviside step function.
   </definition>
 
   <\definition>
@@ -103,8 +101,11 @@
   The metric entropy integral is:
 
   <\equation>
-    <tabular|<tformat|<table|<row|<cell|<big|int><rsub|0><rsup|R>log
-    N<around|(|T,d,\<varepsilon\>|)>*<space|0.17em>d*\<varepsilon\>>|<cell|=<big|sum><rsub|k=1><rsup|N<around|(|T,d,R|)>>log<around*|(|k|)>*<around|(|\<lambda\><rsub|k><rsup|2>-\<lambda\><rsub|k+1><rsup|2>|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|\<lambda\><rsub|k+1><rsup|2>\<leq\>\<varepsilon\>>log<around*|(|k|)>*<around|(|\<lambda\><rsub|k><rsup|2>-\<lambda\><rsub|k+1><rsup|2>|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|\<lambda\><rsub|k+1><rsup|>\<leq\><sqrt|\<varepsilon\>><rsup|>>log<around*|(|k|)>*<around|(|\<lambda\><rsub|k><rsup|2>-\<lambda\><rsub|k+1><rsup|2>|)>>>>>>
+    <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<big|int><rsub|0><rsup|R>log
+    N<around|(|T,d,\<varepsilon\>|)>*<space|0.17em>d*\<varepsilon\>>|<cell|=<big|sum><rsub|k=1><rsup|N<around|(|T,d,R|)>>log
+    <around|(|k|)>*<around|(|\<lambda\><rsub|k><rsup|2>-\<lambda\><rsub|k+1><rsup|2>|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|\<lambda\><rsub|k+1><rsup|2>\<leq\>\<varepsilon\>>log
+    <around|(|k|)>*<around|(|\<lambda\><rsub|k><rsup|2>-\<lambda\><rsub|k+1><rsup|2>|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|\<lambda\><rsub|k+1>\<leq\><sqrt|\<varepsilon\>>>log
+    <around|(|k|)>*<around|(|\<lambda\><rsub|k><rsup|2>-\<lambda\><rsub|k+1><rsup|2>|)>>>>>>
   </equation>
 
   Both <math|log k> and <math|<around|(|\<lambda\><rsub|k><rsup|2>-\<lambda\><rsub|k+1><rsup|2>|)>>
@@ -124,7 +125,7 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|5|1|../.TeXmacs/texts/scratch/no_name_64.tm>>
+    <associate|auto-1|<tuple|5|2|../.TeXmacs/texts/scratch/no_name_64.tm>>
     <associate|auto-2|<tuple|6|2|../.TeXmacs/texts/scratch/no_name_64.tm>>
     <associate|auto-3|<tuple|6|2|../.TeXmacs/texts/scratch/no_name_64.tm>>
   </collection>
@@ -133,17 +134,13 @@
 <\auxiliary>
   <\collection>
     <\associate|toc>
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Definitions
-      and Theorem> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-1><vspace|0.5fn>
-
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Theorem>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-2><vspace|0.5fn>
+      <no-break><pageref|auto-1><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Proof>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-3><vspace|0.5fn>
+      <no-break><pageref|auto-2><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
