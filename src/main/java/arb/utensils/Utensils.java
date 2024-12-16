@@ -3,6 +3,7 @@ package arb.utensils;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,7 +13,6 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 
-import org.apache.commons.lang3.StringUtils;
 import org.objectweb.asm.Type;
 import org.scilab.forge.jlatexmath.NewCommandMacro;
 import org.scilab.forge.jlatexmath.TeXConstants;
@@ -55,9 +55,20 @@ public class Utensils
     NewCommandMacro.addNewCommand("im", "\\operatorname{Im} {#1}", 1);
   }
 
+  public static String repeat(final char ch, final int repeat)
+  {
+    if (repeat <= 0)
+    {
+      return "";
+    }
+    final char[] buf = new char[repeat];
+    Arrays.fill(buf, ch);
+    return new String(buf);
+  }
+
   public static String indent(int n)
   {
-    return StringUtils.repeat(' ', n);
+    return repeat(' ', n);
   }
 
   /**
@@ -280,12 +291,11 @@ public class Utensils
   {
     LoaderOptions loadingConfig = new LoaderOptions();
     loadingConfig.setTagInspector(tag -> true);
-    loadingConfig.setAllowRecursiveKeys(true);   
+    loadingConfig.setAllowRecursiveKeys(true);
     Yaml yaml = new Yaml(new Constructor(SerializedExpression.class,
                                          loadingConfig),
                          new ArbTypeRepresenter(yamlConfig),
                          yamlConfig);
-    
 
     return yaml;
   }

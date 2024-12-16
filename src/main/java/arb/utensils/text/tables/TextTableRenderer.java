@@ -1,11 +1,12 @@
 package arb.utensils.text.tables;
 
+import static arb.utensils.Utensils.indent;
+import static arb.utensils.Utensils.repeat;
+
 import java.io.OutputStream;
 import java.io.PrintStream;
 
 import javax.swing.table.TableModel;
-
-import org.apache.commons.lang3.StringUtils;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -53,7 +54,7 @@ public class TextTableRenderer implements
       ps = new PrintStream(os);
     }
     TableModel tableModel = textTable.getTableModel();
-    String     indentStr  = StringUtils.repeat(" ", indent);
+    String     indentStr  = indent(indent);
 
     // Find the maximum length of a string in each column
     resolveColumnLengths();
@@ -67,7 +68,7 @@ public class TextTableRenderer implements
     // Generate a format string for each column and calc totalLength
     int    totLength       = resolveFormats();
 
-    String headerStartSep  = StringUtils.repeat("_", totLength + tableModel.getColumnCount() * 2);
+    String headerStartSep  = repeat('_', totLength + tableModel.getColumnCount() * 2);
     ps.print(indentStr);
     indentAccordingToNumbering(ps, indexFormat1);
     ps.println(headerStartSep);
@@ -80,7 +81,7 @@ public class TextTableRenderer implements
     }
 
     indentAccordingToNumbering(ps, indexFormat1);
-    String headerSep = StringUtils.repeat("=", totLength + tableModel.getColumnCount() * 2 - 1);
+    String headerSep = repeat('=', totLength + tableModel.getColumnCount() * 2 - 1);
     ps.print(indentStr);
     ps.print("|");
     ps.print(headerSep);
@@ -140,7 +141,7 @@ public class TextTableRenderer implements
       }
       lengths[j] = Math.max(tableModel.getColumnName(j).length(), lengths[j]);
       // add 1 because of the leading space in each column
-      sepSb.append(StringUtils.repeat("-", lengths[j] + 1));
+      sepSb.append(repeat('-', lengths[j] + 1));
       sepSb.append("|");
     }
     String separator = sepSb.toString();

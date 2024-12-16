@@ -2,12 +2,17 @@ package arb.expressions.nodes.binary;
 
 import static java.lang.String.format;
 
+import org.objectweb.asm.MethodVisitor;
+
+import arb.Fraction;
+
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
+import arb.Integer;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -16,6 +21,30 @@ import arb.functions.Function;
 public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          BinaryOperationNode<D, R, F>
 {
+
+  @Override
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
+  {
+    assert !(resultType.equals(Integer.class) && type().equals(Fraction.class)) : String.format("resultType = %s != type() = %s\n", resultType, type() );
+    return super.generate(mv, resultType);
+  }
+
+  static
+  {
+    assert arb.Integer.class.equals(Integer.class) : "you forgot to import arb.Integer";
+  }
+  @Override
+  public Class<?> type()
+  {
+    if (left.type().equals(Integer.class) && right.type().equals(Integer.class))
+    {
+      return Fraction.class;
+    }
+    else
+    {
+      return super.type();
+    }
+  }
 
   public DivisionNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
