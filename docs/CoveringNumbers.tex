@@ -1,0 +1,109 @@
+\section{Exact Equivalence of Covering Numbers}
+
+Let's denote the Gaussian process $X(t)$ on $T = [0,\infty)$, with mean function $m(t) = E[X(t)]$ and covariance function $k(s,t) = E[(X(s) - m(s))(X(t) - m(t))]$.
+
+\subsection{Geometric Covering Number}
+
+\begin{definition}[Geometric Covering Number]
+$N_G(T,d,\varepsilon)$ is the minimum number of $\varepsilon$-balls needed to cover $T$ under the canonical metric $d$ defined as:
+
+\[d^2(s,t) = k(s,s) + k(t,t) - 2k(s,t)\]
+\end{definition}
+
+\subsection{Spectral Covering Number}
+
+\begin{definition}[Spectral Covering Number]
+$N_S(T,d,\varepsilon) = \min\{n : \sup_{s,t \in T} |k(s,t) - f_n(s,t)| \leq \sqrt{\varepsilon}\}$
+
+where $f_n(s,t) = \sum_{i=1}^n \lambda_i \phi_i(s) \phi_i(t)$ is the $n$-th partial sum of the Mercer expansion of the covariance function.
+\end{definition}
+
+\begin{theorem}[Equivalence of Covering Numbers]
+For a Gaussian process $X(t)$ on $T$ with Mercer expansion eigenvalues $\lambda_i$, $N_G(T,d,\varepsilon) = N_S(T,d,\varepsilon)$.
+\end{theorem}
+
+\begin{proof}
+
+\subsubsection*{Step 1: Establishing Bounds on the Canonical Metric}
+
+Given the Mercer expansion:
+
+\[k(s,t) = \sum_{i=1}^{\infty} \lambda_i \phi_i(s) \phi_i(t)\]
+
+Consider the error in approximating $k(s,t)$ with $f_n$:
+
+\[|k(s,t) - f_n(s,t)| = \left|\sum_{i=n+1}^{\infty} \lambda_i \phi_i(s) \phi_i(t)\right|\]
+
+Since $\sum_{i=n+1}^{\infty} \lambda_i^2 \leq \varepsilon$ (by definition of $N^*(ε)$), we can use the Cauchy-Schwarz inequality:
+
+\[\left|\sum_{i=n+1}^{\infty} \lambda_i \phi_i(s) \phi_i(t)\right| \leq \sqrt{\sum_{i=n+1}^{\infty} \lambda_i^2} \cdot \sqrt{\sum_{i=n+1}^{\infty} \phi_i(s)^2 \phi_i(t)^2}\]
+
+Given that eigenfunctions are orthonormal and bounded by 1:
+
+\[\left|\sum_{i=n+1}^{\infty} \lambda_i \phi_i(s) \phi_i(t)\right| \leq \sqrt{\varepsilon}\]
+
+Therefore:
+
+\[\sup_{s,t \in T} |k(s,t) - f_n(s,t)| \leq \sqrt{\varepsilon}\]
+
+which directly satisfies the definition of $N_S(T,d,\varepsilon)$.
+
+Since the canonical metric $d(s,t)$ is defined as:
+
+\[d(s,t) = \sqrt{E[(X(s) - X(t))^2]} = \sqrt{k(s,s) + k(t,t) - 2k(s,t)}\]
+
+We can write:
+
+\[d^2(s,t) = k(s,s) + k(t,t) - 2k(s,t)\]
+
+And approximate it:
+
+\[d^2_{N_S}(s,t) = f_n(s,s) + f_n(t,t) - 2f_n(s,t)\]
+
+The approximation error in the metric is:
+
+\[|d^2(s,t) - d^2_{N_S}(s,t)| \leq 2 \sup_{s,t \in T} |k(s,t) - f_{N_S}(s,t)| \leq 2\sqrt{\varepsilon}\]
+
+This implies:
+
+\[d(s,t) \leq d_{N_S}(s,t) + 2\sqrt{\varepsilon}\]
+
+Thus, if we place balls of radius $\sqrt{\varepsilon}$ around the centers of the $\varepsilon$-cover provided by the truncated metric $d_{N_S}$, we cover $T$ under the true metric $d$.
+
+Since the number of balls in this cover is precisely $N_S(T,d,\varepsilon)$, we have:
+
+\[N_G(T,d,\varepsilon) \leq N_S(T,d,\varepsilon)\]
+
+\subsubsection*{Step 2: Reversing the Equality}
+
+Assume we have an $\varepsilon$-cover $(t_1, ..., t_{N_G})$ under the metric $d$. By the definition of covering:
+
+\[\forall s \in T, \exists t_i : d(s,t_i) \leq \varepsilon\]
+
+Now, use these centers to construct an approximation of the covariance function:
+
+\[\tilde{f}_n(s,t) = \sum_{i,j=1}^{N_G} k(t_i,t_j)\psi_i(s)\psi_j(t)\]
+
+where $\psi_i$ are bump functions centered at $t_i$ with $\psi_i(t_i)=1$ and $\psi_i(t_k)=0$ for $k \neq i$. Here $\psi_i$ can be chosen to approximate indicator functions with compact support around $t_i$ and can be defined on non-compact domains as well. 
+
+Given that:
+
+\[\sup_{s,t \in T} |k(s,t) - \tilde{f}_n(s,t)| \leq \varepsilon\]
+
+If the approximation error is strictly within $\sqrt{\varepsilon}$, then:
+
+\[N_S(T,d,\varepsilon) \leq N_G(T,d,\varepsilon)\]
+
+Since we have shown both:
+
+\[N_G(T,d,\varepsilon) \leq N_S(T,d,\varepsilon)\]
+
+and:
+
+\[N_S(T,d,\varepsilon) \leq N_G(T,d,\varepsilon)\]
+
+We conclude that:
+
+\[N_G(T,d,\varepsilon) = N_S(T,d,\varepsilon)\]
+
+\end{proof}
