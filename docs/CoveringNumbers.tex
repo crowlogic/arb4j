@@ -34,7 +34,7 @@ Consider the error in approximating $k(s,t)$ with $f_n$:
 
 \[|k(s,t) - f_n(s,t)| = \left|\sum_{i=n+1}^{\infty} \lambda_i \phi_i(s) \phi_i(t)\right|\]
 
-Since $\sum_{i=n+1}^{\infty} \lambda_i^2 \leq \varepsilon$ (by definition of $N^*(ε)$), we can use the Cauchy-Schwarz inequality:
+Since $\sum_{i=n+1}^{\infty} \lambda_i^2 \leq \varepsilon$ (by definition of $N^*(\varepsilon)$), we can use the Cauchy-Schwarz inequality:
 
 \[\left|\sum_{i=n+1}^{\infty} \lambda_i \phi_i(s) \phi_i(t)\right| \leq \sqrt{\sum_{i=n+1}^{\infty} \lambda_i^2} \cdot \sqrt{\sum_{i=n+1}^{\infty} \phi_i(s)^2 \phi_i(t)^2}\]
 
@@ -66,13 +66,13 @@ The approximation error in the metric is:
 
 This implies:
 
-\[d(s,t) \leq d_{N_S}(s,t) + 2\sqrt{\varepsilon}\]
+\[d(s,t) \leq d_{N_S}(s,t) + \sqrt{2\varepsilon}\]
 
-Thus, if we place balls of radius $\sqrt{\varepsilon}$ around the centers of the $\varepsilon$-cover provided by the truncated metric $d_{N_S}$, we cover $T$ under the true metric $d$.
+Thus, if we place balls of radius $\sqrt{\varepsilon}$ around the centers of the $\frac{\varepsilon}{2}$-cover provided by the truncated metric $d_{N_S}$, we cover $T$ under the true metric $d$. 
 
-Since the number of balls in this cover is precisely $N_S(T,d,\varepsilon)$, we have:
+Since the number of balls in this cover is precisely $N_S(T,d,\sqrt{\frac{\varepsilon}{2}})$, we have:
 
-\[N_G(T,d,\varepsilon) \leq N_S(T,d,\varepsilon)\]
+\[N_G(T,d,\varepsilon) \leq N_S(T,d,\sqrt{\frac{\varepsilon}{2}})\]
 
 \subsubsection*{Step 2: Reversing the Equality}
 
@@ -84,7 +84,7 @@ Now, use these centers to construct an approximation of the covariance function:
 
 \[\tilde{f}_n(s,t) = \sum_{i,j=1}^{N_G} k(t_i,t_j)\psi_i(s)\psi_j(t)\]
 
-where $\psi_i$ are bump functions centered at $t_i$ with $\psi_i(t_i)=1$ and $\psi_i(t_k)=0$ for $k \neq i$. Here $\psi_i$ can be chosen to approximate indicator functions with compact support around $t_i$ and can be defined on non-compact domains as well. 
+where $\psi_i$ are bump functions centered at $t_i$ with $\psi_i(t_i) = 1$ and $\psi_i(t_k) = 0$ for $k \neq i$. Here $\psi_i$ can be chosen to approximate indicator functions with compact support around $t_i$ and can be defined on non-compact domains as well.
 
 Given that:
 
@@ -96,7 +96,7 @@ If the approximation error is strictly within $\sqrt{\varepsilon}$, then:
 
 Since we have shown both:
 
-\[N_G(T,d,\varepsilon) \leq N_S(T,d,\varepsilon)\]
+\[N_G(T,d,\varepsilon) \leq N_S(T,d,\sqrt{\frac{\varepsilon}{2}})\]
 
 and:
 
