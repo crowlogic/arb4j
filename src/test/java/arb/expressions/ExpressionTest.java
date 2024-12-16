@@ -31,6 +31,12 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  public void testIntegralOfSine()
+  {
+    var x = RealFunction.parse("int(sin(x),x)");
+    assertEquals("∫x➔sin(x)dx", x.rootNode.toString());
+  }
+
   public static void testRealSequenceOfHypergeometricFunctions()
   {
     var          f      = RealFunctionSequence.express("Vplus:m->pFq([1,m,-m],[1/2],(1/2)/y)");

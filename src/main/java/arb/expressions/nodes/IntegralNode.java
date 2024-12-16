@@ -35,6 +35,18 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
 {
 
   @Override
+  public String toString()
+  {
+    return (lowerLimit == null && upperLimit == null) ? String.format("∫%s➔%sd%s", dvar, integrand, dvar)
+                                                      : String.format("∫%s➔%sd%s∈(%s,%s)",
+                                                                      dvar,
+                                                                      integrand,
+                                                                      dvar,
+                                                                      lowerLimit,
+                                                                      upperLimit);
+  }
+
+  @Override
   public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
                                                                                        Node<E, S, G> arg)
   {
@@ -69,6 +81,12 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   private String                                               upperIntegralValueFieldName;
 
+  public IntegralNode(Expression<D, R, F> expression)
+  {
+    this(expression,
+         false);
+  }
+
   /**
    * The syntax to express a definate integral is<br>
    * <br>
@@ -91,26 +109,36 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
    * 
    * 
    * @param expression
+   * @param functionForm
    */
-  public IntegralNode(Expression<D, R, F> expression)
+  public IntegralNode(Expression<D, R, F> expression, boolean functionForm)
   {
     super(expression);
-    integrationVariable = new VariableNode<>(expression,
-                                             new VariableReference<>(expression.parseName()),
-                                             expression.position,
-                                             true);
-    integrand           = expression.require('➔').resolve();
-    dvar                = expression.require('d').parseName();
-    assert dvar.equals(integrationVariable.getName()) : String.format("the format is  g(x)=∫x➔f(x)dx∈(a,b) for definite integrals and g(x)=∫x➔f(x)dx for indefinate integrals, the variable on the left "
-                                                                      + "side of the arrow must match the variable on the right side of the d and "
-                                                                      + "before the ( but the first var was %s and the 2nd was %s\n",
-                                                                      integrationVariable,
-                                                                      dvar);
-
-    if (expression.nextCharacterIs('∈'))
+    if (!functionForm)
     {
-      lowerLimit = expression.require('(').resolve();
-      upperLimit = expression.require(',').resolve();
+      integrationVariable = new VariableNode<>(expression,
+                                               new VariableReference<>(expression.parseName()),
+                                               expression.position,
+                                               true);
+      integrand           = expression.require('➔').resolve();
+      dvar                = expression.require('d').parseName();
+      assert dvar.equals(integrationVariable.getName()) : String.format("the format is  g(x)=∫x➔f(x)dx∈(a,b) for definite integrals and g(x)=∫x➔f(x)dx for indefinate integrals, the variable on the left "
+                                                                        + "side of the arrow must match the variable on the right side of the d and "
+                                                                        + "before the ( but the first var was %s and the 2nd was %s\n",
+                                                                        integrationVariable,
+                                                                        dvar);
+
+      if (expression.nextCharacterIs('∈'))
+      {
+        lowerLimit = expression.require('(').resolve();
+        upperLimit = expression.require(',').resolve();
+        expression.require(')');
+      }
+    }
+    else
+    {
+      integrand = expression.resolve();
+      dvar      = expression.require(',').parseName();
       expression.require(')');
     }
   }

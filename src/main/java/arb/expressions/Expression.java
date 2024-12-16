@@ -1957,6 +1957,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     case "diff":
       return new DerivativeNode<D, C, F>(this,
                                          true);
+    case "int":
+      return new IntegralNode<D, C, F>(this,
+                                       true);
     case "J":
       return new BesselFunctionNodeOfTheFirstKind<>(this);
     case "j":
