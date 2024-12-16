@@ -10,6 +10,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
 import arb.expressions.Context;
+import arb.functions.FractionFunction;
 import arb.functions.NullaryFunction;
 import arb.functions.integer.FractionSequence;
 import arb.functions.rational.RationalFunctionSequence;
@@ -73,7 +74,12 @@ public class RationalJacobiPolynomials implements
   final public Context                   context = new Context(α,
                                                                β);
 
-  final public FractionSequence          C       = FractionSequence.express("C", "n➔2*n+α+β", context);
+  /**
+   * This must have a domain of Fraction rather than being a FractionSequence
+   * which would have a domain of Integers, this is because the E function calls C
+   * with non-integer n
+   */
+  final public FractionFunction          C       = FractionFunction.express("C", "n➔2*n+α+β", context);
 
   final public FractionSequence          F       = FractionSequence.express("F", "n➔C(n-1)*C(n)", context);
 

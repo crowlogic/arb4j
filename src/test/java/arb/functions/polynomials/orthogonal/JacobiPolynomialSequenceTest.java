@@ -28,7 +28,6 @@ public class JacobiPolynomialSequenceTest extends
 
   public static void testPRational()
   {
-    System.setProperty("arb4j.compiler.trace", "true");
     try ( var seq = new RationalJacobiPolynomials(negHalf,
                                                   negHalf))
     {
@@ -52,8 +51,10 @@ public class JacobiPolynomialSequenceTest extends
         assertEquals("(6*x^2-3)/8", p2.toString());
 
         RationalFunction p3 = seq.evaluate(3, 128);
-        ShellFunctions.inspect(seq);
-        assertEquals("5/4*x^3-15/16*x", p3.toString());
+        var correctResult = new RationalFunction("5/4*x^3-15/16*x");
+        assertEquals(correctResult.toString(), p3.toString());
+        assertEquals(correctResult, p3);
+
       }
 
     }
@@ -162,7 +163,6 @@ public class JacobiPolynomialSequenceTest extends
 
   public static void testP3Rational()
   {
-    System.setProperty("arb4j.compiler.trace", "true");
     try ( var seq = new RationalJacobiPolynomials(negHalf,
                                                   negHalf))
     {
@@ -170,7 +170,6 @@ public class JacobiPolynomialSequenceTest extends
 
       try ( RationalFunction rationalResult = seq.P.evaluate(too, 0, bits, new RationalFunction()))
       {
-        ShellFunctions.inspect(seq.P);
         var  result   = rationalResult.asRealFunction();
         Real valAtOne = result.evaluate(RealConstants.one, 128, new Real());
         assertEquals(0.3125, valAtOne.doubleValue());

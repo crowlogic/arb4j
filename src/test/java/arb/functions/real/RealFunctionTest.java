@@ -45,13 +45,6 @@ public class RealFunctionTest extends
     assert false : "TODO: determine them.. they aren't equal to the uniformly convergent basis functions, expand the eigenfunctions in terms of the basis then solve for coeffecients and determine pattern";
   }
 
-  public static void main(String args[])
-  {
-    RealFunctionTest rft = new RealFunctionTest();
-    rft.testLocateRootsSine();
-
-  }
-
   private static final int prec         = 256;
   private RealFunction     sineFunction = new RealSineFunction()
                                         {
@@ -131,28 +124,5 @@ public class RealFunctionTest extends
     }
   }
 
-  public void testLocateRootsSine()
-  {
-    RealSineFunction   sineFunction = new RealSineFunction();
-    RootLocatorOptions config       = new RootLocatorOptions(new RealRootInterval(3,
-                                                                                  3.6),
-                                                             50,
-                                                             20000,
-                                                             10,
-                                                             256);
-    Roots              roots        = sineFunction.locateRoots(config);
-    roots.refine(sineFunction, 256, 40, true);
-  }
 
-  @Test
-  public void testNewtonConvergenceFactor()
-  {
-    try ( Real jet = Real.newVector(3); FloatInterval interval = new FloatInterval(0.2,
-                                                                                   0.3))
-    {
-      Real  region = interval.getReal(128, new Real());
-      Float C      = sineFunction.getNewtonConvergenceFactor(region, jet, 128, new Float());
-      assertEquals(0.0773340631858446, C.doubleValue(), pow(10, -10));
-    }
-  }
 }

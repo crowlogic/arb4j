@@ -775,5 +775,11 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
     init();
   }
 
+  public RationalFunction(String string)
+  {
+    this();
+    set(string);
+  }
+
 
 }

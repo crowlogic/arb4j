@@ -25,7 +25,12 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    assert !(resultType.equals(Integer.class) && type().equals(Fraction.class)) : String.format("resultType = %s != type() = %s\n", resultType, type() );
+    if (resultType.equals(Integer.class) && type().equals(Fraction.class))
+    {
+      throw new IllegalArgumentException(String.format("type() = %s is not assignable to resultType = %s",
+                                                       type(),
+                                                       resultType));
+    }
     return super.generate(mv, resultType);
   }
 
@@ -33,6 +38,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     assert arb.Integer.class.equals(Integer.class) : "you forgot to import arb.Integer";
   }
+
   @Override
   public Class<?> type()
   {
