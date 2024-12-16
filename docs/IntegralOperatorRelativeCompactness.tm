@@ -3,7 +3,11 @@
 <style|<tuple|generic|boring-white|framed-theorems>>
 
 <\body>
-  <section*|Definitions and Theorem>
+  <doc-data|<doc-title|Metric Entropy and Compactness Properties of Gaussian
+  Processes>|<doc-author|<author-data|<author-name|Stephen
+  Crowley>|<\author-affiliation>
+    <date|>
+  </author-affiliation>>>>
 
   <\definition>
     For a Gaussian process <math|<around|{|X<around|(|t|)>:t\<in\>T|}>>, the
@@ -90,40 +94,22 @@
 
   <section*|Proof>
 
-  Given <math|\<lambda\><rsub|k>\<to\>0> as <math|k\<to\>\<infty\>>, for any
-  <math|\<varepsilon\>\<gtr\>0>, there exists a finite <math|k> such that
-  <math|\<lambda\><rsub|k><rsup|2>\<leq\>\<varepsilon\>>. This implies that
-  the covering number <math|N<around|(|T,d,\<varepsilon\>|)>> is finite for
-  any <math|\<varepsilon\>\<gtr\>0>.
+  Given <math|\<lambda\><rsub|k>\<to\>0>, for any
+  <math|\<varepsilon\>\<gtr\>0>, there exists a finite set of indices such
+  that <math|\<lambda\><rsub|k><rsup|2>\<gtr\>\<varepsilon\>>. Thus, the
+  covering number <math|N<around|(|T,d,\<varepsilon\>|)>> is finite for any
+  <math|\<varepsilon\>\<gtr\>0>.
 
-  The finiteness of <math|N<around|(|T,d,\<varepsilon\>|)>> for each
-  <math|\<varepsilon\>\<gtr\>0> is the key fact that ensures the metric
-  entropy integral is finite:
+  The metric entropy integral is:
 
   <\equation>
-    <big|int><rsub|0><rsup|R>log N<around|(|T,d,\<varepsilon\>|)>*<space|0.17em>d*\<varepsilon\>\<less\>\<infty\>
+    <tabular|<tformat|<table|<row|<cell|<big|int><rsub|0><rsup|R>log
+    N<around|(|T,d,\<varepsilon\>|)>*<space|0.17em>d*\<varepsilon\>>|<cell|=<big|sum><rsub|k=1><rsup|N<around|(|T,d,R|)>>log<around*|(|k|)>*<around|(|\<lambda\><rsub|k><rsup|2>-\<lambda\><rsub|k+1><rsup|2>|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|\<lambda\><rsub|k+1><rsup|2>\<leq\>\<varepsilon\>>log<around*|(|k|)>*<around|(|\<lambda\><rsub|k><rsup|2>-\<lambda\><rsub|k+1><rsup|2>|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|\<lambda\><rsub|k+1><rsup|>\<leq\><sqrt|\<varepsilon\>><rsup|>>log<around*|(|k|)>*<around|(|\<lambda\><rsub|k><rsup|2>-\<lambda\><rsub|k+1><rsup|2>|)>>>>>>
   </equation>
 
-  To see this, note that <math|log N<around|(|T,d,\<varepsilon\>|)>> is a
-  decreasing function of <math|\<varepsilon\>>, and it is bounded for each
-  <math|\<varepsilon\>\<gtr\>0>. The integral of this bounded, decreasing
-  function over a finite interval <math|<around|[|0,R|]>> is necessarily
-  finite.
-
-  While we can express this integral as a sum:
-
-  <\equation>
-    <big|int><rsub|0><rsup|R>log N<around|(|T,d,\<varepsilon\>|)>*<space|0.17em>d*\<varepsilon\>=<big|sum><rsub|k=1><rsup|N<around|(|T,d,R|)>>log
-    k\<cdot\><around|(|\<lambda\><rsub|k><rsup|2>-\<lambda\><rsub|k+1><rsup|2>|)>
-  </equation>
-
-  The finiteness of this sum follows from the finiteness of
-  <math|N<around|(|T,d,\<varepsilon\>|)>> for each <math|\<varepsilon\>>,
-  rather than from any specific behavior of
-  <math|<around|(|\<lambda\><rsub|k><rsup|2>-\<lambda\><rsub|k+1><rsup|2>|)>>.
-
-  Thus, the metric entropy integral is finite, implying that the space is
-  relatively compact in the canonical metric <math|d>.
+  Both <math|log k> and <math|<around|(|\<lambda\><rsub|k><rsup|2>-\<lambda\><rsub|k+1><rsup|2>|)>>
+  are finite, thus the sum is finite, ensuring that the metric entropy
+  integral is finite, implying relative compactness.
 </body>
 
 <\initial>
@@ -138,8 +124,8 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|?|1|../.TeXmacs/texts/scratch/no_name_64.tm>>
-    <associate|auto-2|<tuple|5|2|../.TeXmacs/texts/scratch/no_name_64.tm>>
+    <associate|auto-1|<tuple|5|1|../.TeXmacs/texts/scratch/no_name_64.tm>>
+    <associate|auto-2|<tuple|6|2|../.TeXmacs/texts/scratch/no_name_64.tm>>
     <associate|auto-3|<tuple|6|2|../.TeXmacs/texts/scratch/no_name_64.tm>>
   </collection>
 </references>
