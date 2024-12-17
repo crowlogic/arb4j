@@ -34,6 +34,7 @@ import arb.expressions.nodes.nary.ProductNode;
 import arb.expressions.nodes.nary.SumNode;
 import arb.expressions.nodes.unary.*;
 import arb.functions.Function;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.Sequence;
 import arb.functions.real.RealFunction;
 import arb.utensils.TopologicalSorter;
@@ -1403,7 +1404,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public Class<?> getThisOrAnyAscendentExpressionsPolynomialCoDomain()
   {
     if (coDomainType.equals(RealPolynomial.class) || coDomainType.equals(ComplexPolynomial.class)
-                  || coDomainType.equals(RealFunction.class))
+                  || coDomainType.equals(RealFunction.class) || coDomainType.equals(ComplexFunction.class) )
     {
       return coDomainType;
     }
@@ -1431,13 +1432,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   public boolean hasScalarCodomain()
-  {
-    return coDomainType.equals(Real.class) || coDomainType.equals(Complex.class) || coDomainType.equals(Fraction.class)
-                  || coDomainType.equals(Integer.class) || coDomainType.equals(ComplexFraction.class)
-                  || coDomainType.equals(GaussianInteger.class);
-  }
-
-  protected boolean hasScalarCodomain(Expression<D, C, F> expression)
   {
     return coDomainType.equals(Real.class) || coDomainType.equals(Complex.class) || coDomainType.equals(Fraction.class)
                   || coDomainType.equals(Integer.class) || coDomainType.equals(ComplexFraction.class)
