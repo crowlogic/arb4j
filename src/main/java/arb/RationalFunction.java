@@ -66,7 +66,12 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
     }    
   }
   
-    
+  public RationalFunction(String string)
+  {
+    this();
+    set(string);
+  }
+      
   public RationalFunction div(Real operand, int prec, RationalFunction result)
   {
       assertPointerConsistency();
@@ -773,12 +778,6 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
   {
     this(arblibJNI.new_RationalFunction(), true);
     init();
-  }
-
-  public RationalFunction(String string)
-  {
-    this();
-    set(string);
   }
 
 

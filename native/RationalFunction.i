@@ -47,7 +47,12 @@ import java.util.stream.Stream;
     }    
   }
   
-    
+  public RationalFunction(String string)
+  {
+    this();
+    set(string);
+  }
+      
   public RationalFunction div(Real operand, int prec, RationalFunction result)
   {
       assertPointerConsistency();

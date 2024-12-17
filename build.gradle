@@ -167,10 +167,15 @@ sourceSets {
     main {
         java.destinationDirectory.set(file('bin/main'))
         output.resourcesDir = file('bin/main')
+        output.setClassesDir(file('bin/main')) // explicitly set classes dir
     }
     test {
         java.destinationDirectory.set(file('bin/test'))
         output.resourcesDir = file('bin/test')
+        output.setClassesDir(file('bin/test'))
+        compileClasspath += sourceSets.main.output // ensure test can see main classes
+        runtimeClasspath += sourceSets.main.output
     }
 }
+
 
