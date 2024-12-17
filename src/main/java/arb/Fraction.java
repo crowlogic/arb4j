@@ -126,6 +126,11 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
     return res;
   }
     
+  public RealPolynomial div(RealPolynomial divisor, int prec, RealPolynomial result)
+  {
+    return result.set(this).div(divisor, prec, result);
+  }
+ 
  public static Fraction from(double value, double accuracy, Fraction result)
   {
     int sign = value < 0 ? -1 : 1;
@@ -797,7 +802,7 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
     return result.set(this).div(divisor, prec, result);
   }
 
-  
+ 
   public Fraction pow(Integer n, int bits)
   {
     return pow(n,bits,this);

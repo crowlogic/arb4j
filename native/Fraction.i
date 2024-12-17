@@ -98,6 +98,11 @@ import java.util.stream.Stream;
     return res;
   }
     
+  public RealPolynomial div(RealPolynomial divisor, int prec, RealPolynomial result)
+  {
+    return result.set(this).div(divisor, prec, result);
+  }
+ 
  public static Fraction from(double value, double accuracy, Fraction result)
   {
     int sign = value < 0 ? -1 : 1;
