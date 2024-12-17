@@ -1097,6 +1097,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       funcCoDomain = Real.class;
       funcClass    = RealFunction.class;
     }
+    else if (ComplexFunction.class.equals(coDomainType))
+    {
+      funcDomain   = Complex.class;
+      funcCoDomain = Complex.class;
+      funcClass    = ComplexFunction.class;
+    }
     else
     {
       assert false : "TODO: handle " + coDomainType;

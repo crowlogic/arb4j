@@ -24,6 +24,7 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
 
 /**
@@ -74,6 +75,11 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     mapTypes(RealPolynomial.class, ComplexPolynomial.class, ComplexPolynomial.class);
     mapTypes(RealFunction.class, Integer.class, RealFunction.class);
     mapTypes(RealFunction.class, Real.class, RealFunction.class);
+    mapTypes(RealFunction.class, Fraction.class, RealFunction.class);
+    mapTypes(ComplexFunction.class, Complex.class, ComplexFunction.class);
+    mapTypes(ComplexFunction.class, Real.class, ComplexFunction.class);
+    mapTypes(ComplexFunction.class, Integer.class, ComplexFunction.class);
+    mapTypes(ComplexFunction.class, Fraction.class, ComplexFunction.class);
   }
 
   public static void mapPolynomialType(Class<?> scalarType, Class<?> polynomialType)

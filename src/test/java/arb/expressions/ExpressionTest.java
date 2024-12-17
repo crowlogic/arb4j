@@ -35,10 +35,10 @@ public class ExpressionTest extends
   public void testComplexHypergeometricFunctionSequence()
   {
     ComplexFunctionSequence express  =
-                                    ComplexFunctionSequence.express("m->-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(π*m+y))-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*π*m-y)))*(4*m^2-1)*(-1)^(-m)/((4*m^2-2)*y*π))");
-    ComplexFunction         evaluate = express.evaluate(3, 128);
-    System.out.println(evaluate);
-    assertEquals("cool",evaluate.toString());
+                                    ComplexFunctionSequence.express("m->pFq([1,m,-m],[1/2],-((1/2)*I)/y)");
+    ComplexFunction         p3 = express.evaluate(3, 128);
+    Complex eval = p3.eval(2.3, new Complex());
+    assertEquals("cool",eval.toString());
   }
 
   public void testIntegralOfSine()
