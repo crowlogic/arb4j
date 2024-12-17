@@ -137,8 +137,11 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else
     {
-      integrand = expression.resolve();
-      dvar      = expression.require(',').parseName();
+      integrand           = expression.resolve();
+      integrationVariable = new VariableNode<>(expression,
+                                               new VariableReference<>(dvar = expression.require(',').parseName()),
+                                               expression.position,
+                                               true);
       expression.require(')');
     }
   }
