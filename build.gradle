@@ -160,5 +160,17 @@ processResources {
    from('src/main/resources') {
         include '**/*'
     }
-    into 'build/classes/java/main'
+    into 'bin/main'
 }
+
+sourceSets {
+    main {
+        java.destinationDirectory.set(file('bin/main'))
+        output.resourcesDir = file('bin/main')
+    }
+    test {
+        java.destinationDirectory.set(file('bin/test'))
+        output.resourcesDir = file('bin/test')
+    }
+}
+
