@@ -1,8 +1,9 @@
-package arb.functions;
+package arb.functions.polynomials.orthogonal;
 
 import arb.OrthonormalBasis;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.Expansion;
 
 /**
  *

@@ -4,7 +4,6 @@ import arb.Complex;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.exceptions.NotDifferentiableException;
 import arb.exceptions.NotIntegrableException;
 import arb.expressions.Compiler;
 import arb.expressions.Context;
@@ -128,12 +127,6 @@ public interface ComplexFunction extends
   public default RealToComplexFunction asRealToComplexFunction()
   {
     return new RealPartOfHolomorphicMapping(this);
-  }
-
-
-  public default ComplexFunction differential() throws NotDifferentiableException
-  {
-    return new TaylorShift<ComplexFunction>(this);
   }
 
   /**

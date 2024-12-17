@@ -5,7 +5,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 
 /**
- * Wψ(x,p)= ∫(ψ^(x+y)*ψ(x-y)*e^(2*i*p*y/ℏ)*d*y){y=-∞..∞}/(π*ℏ)<br>
+ * Wψ(x,p)= ∫ψ^(x+y)*ψ(x-y)*e^(2*i*p*y/ℏ)dy∈{-∞,∞}/(π*ℏ)<br>
  * <br>
  * 
  * 

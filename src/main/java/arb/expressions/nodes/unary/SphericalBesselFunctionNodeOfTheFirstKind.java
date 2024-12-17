@@ -19,8 +19,8 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
-import arb.functions.SphericalBesselFunction;
 import arb.functions.real.RealFunction;
+import arb.functions.real.SphericalBesselFunction;
 
 /**
  * To express the spherical Bessel functions in terms of Lommel polynomials,

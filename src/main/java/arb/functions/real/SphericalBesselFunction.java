@@ -1,4 +1,4 @@
-package arb.functions;
+package arb.functions.real;
 
 import arb.Complex;
 import arb.Integer;
@@ -7,7 +7,6 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.functions.real.RealFunction;
 
 /**
  *

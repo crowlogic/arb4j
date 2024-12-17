@@ -18,7 +18,6 @@ import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.functions.Function;
 import arb.functions.NullaryFunction;
-import arb.functions.SphericalBesselFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.Sequence;
 import arb.functions.polynomials.ComplexPolynomialHypergeometricFunction;
@@ -27,6 +26,7 @@ import arb.functions.rational.ComplexRationalHypergeometricFunction;
 import arb.functions.rational.LommelPolynomial;
 import arb.functions.rational.RationalHypergeometricFunction;
 import arb.functions.real.RealFunction;
+import arb.functions.real.SphericalBesselFunction;
 import arb.utensils.Utensils;
 
 /**

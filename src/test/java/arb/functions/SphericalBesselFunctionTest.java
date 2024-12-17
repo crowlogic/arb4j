@@ -1,5 +1,6 @@
 package arb.functions;
 
+import arb.functions.real.SphericalBesselFunction;
 import junit.framework.TestCase;
 
 /**
