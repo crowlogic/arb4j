@@ -851,7 +851,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       generateToStringMethod(classVisitor);
       generateTypesetMethod(classVisitor);
-      generateIntermediateStatesMethod(classVisitor);
     }
     finally
     {
@@ -1323,23 +1322,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return classVisitor;
   }
 
-  protected ClassVisitor generateIntermediateStatesMethod(ClassVisitor classVisitor)
-  {
-    if (Expression.trace)
-    {
-      System.err.format("generateTypesetMethod(expression=%s)\n", expression);
-    }
-    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                 "intermediateStates",
-                                                 getMethodDescriptor(String.class),
-                                                 null,
-                                                 null);
-
-    methodVisitor.visitCode();
-    methodVisitor.visitLdcInsn("TODO: insert intermediate states here");
-    generateReturnInstructionAndEndTheVisit(methodVisitor);
-    return classVisitor;
-  }
 
   protected ClassVisitor generateTypesetMethod(ClassVisitor classVisitor)
   {
