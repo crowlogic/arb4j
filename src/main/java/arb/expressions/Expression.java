@@ -1034,13 +1034,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       functionalDependsOnIndeterminantVariable = function.rootNode.dependsOn(indeterminantVariableMappedToFunctional);
     }
 
-    System.err.format("DAMN indeterminantVariable = %s\nindependentVariable = %s\nexpr=%s\nfunctionalDependsOnIndependentVariable=%s\nfunctionalDependsOnIndeterminantVariable=%s\n",
-                      indeterminateVariable,
-                      independentVariable,
-                      expression,
-                      functionalDependsOnIndependentVariable,
-                      functionalDependsOnIndeterminantVariable);
-
     function.generate();
 
     constructNewObject(mv, function.className);
