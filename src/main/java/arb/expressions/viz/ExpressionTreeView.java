@@ -397,7 +397,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
   { AlgebraicNumber.class, Object.class, Integer.class, GaussianInteger.class, Real.class, Complex.class,
     IntegerPolynomial.class, RealPolynomial.class, ComplexPolynomial.class, RationalFunction.class,
     ComplexRationalFunction.class, Fraction.class, ComplexFraction.class, RealMatrix.class, ComplexMatrix.class,
-    RealFunction.class, Quaternion.class };
+    RealFunction.class, ComplexFunction.class, Quaternion.class };
 
   public static Class<?>[]              INTERFACES           = new Class<?>[]
   { IntegerSequence.class, RealSequence.class, Function.class, NullaryFunction.class, IntegerFunction.class,
@@ -406,7 +406,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     ComplexPolynomialSequence.class, ComplexNullaryFunction.class, RationalFunctionSequence.class,
     RationalNullaryFunction.class, RealPolynomialSequence.class, RealToComplexFunction.class, RealNullaryFunction.class,
     ComplexToRealFunction.class, ComplexRationalFunctionSequence.class, ComplexRationalNullaryFunction.class,
-    Sequence.class, RealFunctionSequence.class, RealNullaryFunctional.class, Functional.class };
+    Sequence.class, RealFunctionSequence.class, RealNullaryFunctional.class, Functional.class, ComplexFunctionSequence.class };
 
   private HBox setupTypeBoxes()
   {
@@ -538,6 +538,10 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     else if (functionType.equals(RationalFunctionSequence.class))
     {
       selectTypes(Integer.class, RationalFunction.class);
+    }
+    else if (functionType.equals(ComplexFunctionSequence.class))
+    {
+      selectTypes(Integer.class, ComplexFunction.class);
     }
     else if (functionType.equals(RealSequence.class))
     {
