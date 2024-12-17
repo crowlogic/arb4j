@@ -147,14 +147,6 @@ task createClasspathManifest {
 
 tasks.build.dependsOn createClasspathManifest
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from(components.java)
-        }
-    }
-}
-
 processResources {
    duplicatesStrategy = DuplicatesStrategy.EXCLUDE;
    from('src/main/resources') {
