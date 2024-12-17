@@ -6,14 +6,14 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
-import arb.functions.real.RealFunction;
+import arb.functions.complex.ComplexFunction;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
 public interface ComplexFunctionSequence extends
-                                      Sequence<RealFunction>
+                                         Sequence<ComplexFunction>
 {
   public static ComplexFunctionSequence express(String expression, Context context)
   {
@@ -27,11 +27,16 @@ public interface ComplexFunctionSequence extends
 
   public static ComplexFunctionSequence express(String name, String expression, Context context)
   {
-    return Function.express(Integer.class, RealFunction.class, ComplexFunctionSequence.class, name, expression, context);
+    return Function.express(Integer.class,
+                            ComplexFunction.class,
+                            ComplexFunctionSequence.class,
+                            name,
+                            expression,
+                            context);
   }
 
-  public static Expression<Integer, RealFunction, ComplexFunctionSequence> parse(String className, String string)
+  public static Expression<Integer, ComplexFunction, ComplexFunctionSequence> parse(String className, String string)
   {
-    return Sequence.parse(className, ComplexFunctionSequence.class, RealFunction.class, string);
+    return Sequence.parse(className, ComplexFunctionSequence.class, ComplexFunction.class, string);
   }
 }

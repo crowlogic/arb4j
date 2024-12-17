@@ -9,6 +9,7 @@ import static org.objectweb.asm.Opcodes.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -1404,7 +1405,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public Class<?> getThisOrAnyAscendentExpressionsPolynomialCoDomain()
   {
     if (coDomainType.equals(RealPolynomial.class) || coDomainType.equals(ComplexPolynomial.class)
-                  || coDomainType.equals(RealFunction.class) || coDomainType.equals(ComplexFunction.class) )
+                  || coDomainType.equals(RealFunction.class) || coDomainType.equals(ComplexFunction.class))
     {
       return coDomainType;
     }
@@ -2135,14 +2136,24 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return new ExpressionTree<D, C, F>(rootNode);
   }
 
+  static HashSet<Class<?>> indeterminantTypes = new HashSet<Class<?>>();
+
+  static
+  {
+    indeterminantTypes.addAll(Arrays.asList(RealFunction.class,
+                                            ComplexFunction.class,
+                                            RationalFunction.class,
+                                            RealPolynomial.class,
+                                            ComplexPolynomial.class,
+                                            IntegerPolynomial.class,
+                                            ComplexRationalFunction.class));
+  }
+
   public boolean thisOrAnyAscendentExpressionHasIndeterminateVariable()
   {
     boolean hasIndeterminateVariable = ascendentExpression != null
                   && ascendentExpression.thisOrAnyAscendentExpressionHasIndeterminateVariable();
-    return coDomainType.equals(RealFunction.class) || coDomainType.equals(RationalFunction.class)
-                  || coDomainType.equals(RealPolynomial.class) || coDomainType.equals(ComplexPolynomial.class)
-                  || coDomainType.equals(IntegerPolynomial.class) || coDomainType.equals(ComplexRationalFunction.class)
-                  || hasIndeterminateVariable;
+    return indeterminantTypes.contains(coDomainType) || hasIndeterminateVariable;
   }
 
   protected void throwUnexpectedCharacterException()

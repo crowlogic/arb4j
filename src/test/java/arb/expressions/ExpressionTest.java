@@ -13,6 +13,7 @@ import arb.functions.IntegerFunction;
 import arb.functions.IntegerNullaryFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexNullaryFunction;
+import arb.functions.integer.ComplexFunctionSequence;
 import arb.functions.integer.RealFunctionSequence;
 import arb.functions.integer.RealSequence;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
@@ -31,6 +32,15 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  public void testComplexHypergeometricFunctionSequence()
+  {
+    ComplexFunctionSequence express  =
+                                    ComplexFunctionSequence.express("m->-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(π*m+y))-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*π*m-y)))*(4*m^2-1)*(-1)^(-m)/((4*m^2-2)*y*π))");
+    ComplexFunction         evaluate = express.evaluate(3, 128);
+    System.out.println(evaluate);
+    assertEquals("cool",evaluate.toString());
+  }
+
   public void testIntegralOfSine()
   {
     var x = RealFunction.parse("int(sin(x),x)");
