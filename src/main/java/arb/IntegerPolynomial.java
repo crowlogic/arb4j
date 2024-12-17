@@ -45,6 +45,11 @@ public class IntegerPolynomial implements Named,AutoCloseable,Ring<IntegerPolyno
 
   static { System.loadLibrary( "arblib" ); }
 
+  public int degree()
+  {
+    return arblib.fmpz_poly_degree(this);
+  }
+  
   public RationalFunction div(IntegerPolynomial operand, int prec, RationalFunction result)
   {
     result.getNumerator().set(this);

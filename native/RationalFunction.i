@@ -22,6 +22,11 @@ import java.util.stream.Stream;
 
 %typemap(javacode) fmpz_poly_q_struct %{
 
+  public int totalDegree()
+  {
+    return Math.max(getNumerator().degree(), getDenominator().degree());
+  }
+  
   public RationalFunction sub(Real addend, int prec, RationalFunction result)
   {
       assertPointerConsistency();

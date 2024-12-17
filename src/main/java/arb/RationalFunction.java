@@ -41,6 +41,11 @@ public class RationalFunction implements NamedField<RationalFunction>,Function<F
   }
 
 
+  public int totalDegree()
+  {
+    return Math.max(getNumerator().degree(), getDenominator().degree());
+  }
+  
   public RationalFunction sub(Real addend, int prec, RationalFunction result)
   {
       assertPointerConsistency();

@@ -19,6 +19,11 @@ import arb.expressions.Context;
 %typemap(javacode) fmpz_poly_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  public int degree()
+  {
+    return arblib.fmpz_poly_degree(this);
+  }
+  
   public RationalFunction div(IntegerPolynomial operand, int prec, RationalFunction result)
   {
     result.getNumerator().set(this);

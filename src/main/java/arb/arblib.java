@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static int fmpz_poly_degree(IntegerPolynomial poly) {
+    return arblibJNI.fmpz_poly_degree(IntegerPolynomial.getCPtr(poly), poly);
+  }
+
   public static void arb_digamma(Real y, Real x, int prec) {
     arblibJNI.arb_digamma(Real.getCPtr(y), y, Real.getCPtr(x), x, prec);
   }

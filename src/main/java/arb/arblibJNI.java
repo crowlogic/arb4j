@@ -9,6 +9,7 @@
 package arb;
 
 public class arblibJNI {
+  public final static native int fmpz_poly_degree(long jarg1, IntegerPolynomial jarg1_);
   public final static native void arb_digamma(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native int fmpz_is_one(long jarg1);
   public final static native int fmpz_is_pm1(long jarg1);

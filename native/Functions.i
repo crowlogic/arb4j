@@ -15,6 +15,8 @@
 #include <unistd.h>
 #include <wchar.h>
 
+slong fmpz_poly_degree(const fmpz_poly_t poly);
+
 void arb_digamma(arb_t y, const arb_t x, slong prec);
 
  int fmpz_is_one(const fmpz_t f) { return (*f == 1); }
