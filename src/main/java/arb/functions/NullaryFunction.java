@@ -1,5 +1,6 @@
 package arb.functions;
 
+import arb.RealMatrix;
 import arb.algebra.Ring;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -22,7 +23,7 @@ public interface NullaryFunction<R> extends
   {
     return Object.class;
   }
-  
+
   public static <R extends Ring<?>, N extends NullaryFunction<? extends R>>
          Expression<Object, R, N>
          parse(Class<? extends R> elementType,
@@ -31,8 +32,7 @@ public interface NullaryFunction<R> extends
                String expression,
                Context context)
   {
-    return Function.parse(functionName != null ? functionName : Parser.expressionToUniqueClassname(
-                                                                                                   expression),
+    return Function.parse(functionName != null ? functionName : Parser.expressionToUniqueClassname(expression),
                           expression,
                           context,
                           Object.class,
@@ -45,10 +45,7 @@ public interface NullaryFunction<R> extends
   @SuppressWarnings("unchecked")
   public static <R, F extends Function<Object, R>>
          F
-         express(Class<? extends R> coDomainClass,
-                 String functionName,
-                 String expression,
-                 Context context)
+         express(Class<? extends R> coDomainClass, String functionName, String expression, Context context)
   {
     return (F) Function.instantiate(expression,
                                     context,
@@ -58,20 +55,20 @@ public interface NullaryFunction<R> extends
                                     functionName);
   }
 
-  public static <R, F extends Function<Object, R>>
-         F
-         express(Class<? extends R> coDomainClass,
-                 String expression)
+  public static <R, F extends Function<Object, R>> F express(Class<? extends R> coDomainClass,
+                                                             Class<? extends F> functionClass,
+                                                             String expression)
   {
-    return express(coDomainClass,
-                   null,
-                   expression,
-                   null);
+    return (F) Function.instantiate(expression, null, Object.class, coDomainClass, functionClass, null);
   }
 
-  public default R
-         evaluate(int bits,
-                  R realPolynomial)
+  public static <R, F extends Function<Object, R>> F express(Class<? extends R> coDomainClass, String expression)
+  {
+    return express(coDomainClass, null, expression, null);
+  }
+
+
+  public default R evaluate(int bits, R realPolynomial)
   {
     assert realPolynomial != null : "realPolynomial should not be null";
     assert bits > 0 : "bits must be positive";
@@ -81,10 +78,7 @@ public interface NullaryFunction<R> extends
 
   public default R evaluate(int order, int bits, R realPolynomial)
   {
-    return evaluate(null,
-                    order,
-                    bits,
-                    realPolynomial);
+    return evaluate(null, order, bits, realPolynomial);
   }
 
   /**
@@ -95,12 +89,9 @@ public interface NullaryFunction<R> extends
    * @return newly allocated via this{@link #newCoDomainInstance()} element of
    *         type this{@link #coDomainType()}
    */
-  public default R
-         evaluate(int bits)
+  public default R evaluate(int bits)
   {
-    return evaluate(null,
-                    0,
-                    bits,
-                    newCoDomainInstance());
+    return evaluate(null, 0, bits, newCoDomainInstance());
   }
+
 }
