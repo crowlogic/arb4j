@@ -13,6 +13,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
+import arb.expressions.nodes.VariableNode;
 import arb.expressions.nodes.VectorNode;
 import arb.functions.Function;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
@@ -56,12 +57,18 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 {
 
   @Override
+  public boolean dependsOn(VariableNode<D, R, F> variable)
+  {
+    return super.dependsOn(variable) || α.dependsOn(variable) || β.dependsOn(variable);
+  }
+
+  @Override
   public <E, S, G extends Function<? extends E, ? extends S>>
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
     HypergeometricFunctionNode<E, S, G> newNode = new HypergeometricFunctionNode<E, S, G>(newExpression,
-                                                          false);
+                                                                                          false);
     newNode.arg = arg.spliceInto(newExpression);
     newNode.α   = α.spliceInto(newExpression);
     newNode.β   = β.spliceInto(newExpression);

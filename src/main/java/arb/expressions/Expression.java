@@ -261,6 +261,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   boolean                                               verboseTrace                  = false;
 
+  private boolean                                       functionalDependsOnIndeterminantVariable;
+
+  private VariableNode<Object, Object, Function<?, ?>>  indeterminantVariableMappedToFunctional;
+
   public Expression(Class<? extends D> domain, Class<? extends C> codomain, Class<? extends F> function)
   {
     this.ascendentExpression              = null;
@@ -1025,6 +1029,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       independentVariableMappedToFunctional  = independentVariable.spliceInto(function).asVariable();
       functionalDependsOnIndependentVariable = function.rootNode.dependsOn(independentVariableMappedToFunctional);
     }
+    if (indeterminateVariable != null)
+    {
+      indeterminantVariableMappedToFunctional  = indeterminateVariable.spliceInto(function).asVariable();
+      functionalDependsOnIndeterminantVariable = function.rootNode.dependsOn(indeterminantVariableMappedToFunctional);
+    }
+
+    System.err.format("DAMN indeterminantVariable = %s\nindependentVariable = %s\nexpr=%s\nfunctionalDependsOnIndependentVariable=%s\nfunctionalDependsOnIndeterminantVariable=%s\n",
+                      indeterminateVariable,
+                      independentVariable,
+                      expression,
+                      functionalDependsOnIndependentVariable,
+                      functionalDependsOnIndeterminantVariable);
 
     function.generate();
 

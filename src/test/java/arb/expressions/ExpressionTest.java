@@ -34,11 +34,11 @@ public class ExpressionTest extends
 {
   public void testComplexHypergeometricFunctionSequence()
   {
-    ComplexFunctionSequence express  =
-                                    ComplexFunctionSequence.express("m->pFq([1,m,-m],[1/2],-((1/2)*I)/y)");
-    ComplexFunction         p3 = express.evaluate(3, 128);
-    Complex eval = p3.eval(2.3, new Complex());
-    assertEquals("cool",eval.toString());
+    ComplexFunctionSequence express =
+                                    ComplexFunctionSequence.express("Vpluscomplex:m->pFq([1,m,-m],[1/2],-((1/2)*I)/y)");
+    ComplexFunction         p3      = express.evaluate(3, 128);
+    Complex                 eval    = p3.eval(2.3, new Complex());
+    assertEquals("-3.536862006+1.940494780*I", eval.toString());
   }
 
   public void testIntegralOfSine()
@@ -49,9 +49,11 @@ public class ExpressionTest extends
 
   public static void testRealSequenceOfHypergeometricFunctions()
   {
+    System.setProperty("arb4j.compiler.trace", "true");
     var          f      = RealFunctionSequence.express("Vplus:m->pFq([1,m,-m],[1/2],(1/2)/y)");
     RealFunction Vplus3 = f.evaluate(3, 128);
-    assertEquals("something", Vplus3.toString());
+    double       y      = Vplus3.eval(2.3);
+    assertEquals(-0.348730171776115722856908029915, y);
   }
 
   public static void testSimplificationAConstantIntegerRaisedToAConstnatInteger()

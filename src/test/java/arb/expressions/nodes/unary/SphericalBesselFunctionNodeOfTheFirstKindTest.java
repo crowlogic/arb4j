@@ -18,6 +18,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKindTest extends
 {
   public static void testj0ViaRealFunctionalExpression()
   {
+    System.setProperty("arb4j.compiler.trace", "true");
 
     RealFunctionSequence jk = RealFunctionSequence.express("k->2*j(k,x)");
     RealFunction         y  = jk.evaluate(3, 128);

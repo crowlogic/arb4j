@@ -421,21 +421,23 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                                              + inputVariable
                                                                              + " it doesnt make sense to change it to "
                                                                              + this;
-
-    if (Expression.trace)
+    if (!equals(inputVariable))
     {
-      System.err.format("Variable(#%s).resolveIndependentVariable: declaring "
-                        + reference
-                        + " as the input node to "
-                        + expression
-                        + " which currently has input variable "
-                        + expression.independentVariable
-                        + "\n\n",
-                        System.identityHashCode(this));
-    }
+      if (Expression.trace)
+      {
+        System.err.format("Variable(#%s).resolveIndependentVariable: declaring "
+                          + reference
+                          + " as the input node to "
+                          + expression
+                          + " which currently has input variable "
+                          + expression.independentVariable
+                          + "\n\n",
+                          System.identityHashCode(this));
+      }
 
-    expression.independentVariable = this;
-    reference.type                 = expression.domainType;
+      expression.independentVariable = this;
+      reference.type                 = expression.domainType;
+    }
   }
 
   public void resolveInheritedVariableReference(VariableNode<D, R, F> variable)
