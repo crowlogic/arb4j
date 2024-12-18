@@ -9,11 +9,7 @@ import static org.objectweb.asm.Opcodes.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
@@ -449,9 +445,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
-  protected ClassVisitor declareConstants(ClassVisitor classVisitor)
+  protected ClassVisitor declareLiteralConstants(ClassVisitor classVisitor)
   {
-    for (var constant : literalConstants.values())
+    for (var constant : getSortedLiteralConstantNodes())
     {
       constant.declareField(classVisitor);
     }
@@ -479,7 +475,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     cw.visitField(Opcodes.ACC_PUBLIC, IS_INITIALIZED, "Z", null, null);
     if (!coDomainType.isInterface())
     {
-      declareConstants(cw);
+      declareLiteralConstants(cw);
       declareIntermediateVariables(cw);
     }
     declareFunctionReferences(cw);
@@ -518,7 +514,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void declareIntermediateVariables(ClassVisitor classVisitor)
   {
-    for (var variable : intermediateVariables.values())
+
+    for (var variable : getSortedIntermediateVariables())
     {
       if (!declaredIntermediateVariables.contains(variable.name))
       {
@@ -874,15 +871,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (!coDomainType.isInterface())
     {
-      literalConstants.values()
-                      .forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
-                                                                  constant.fieldName,
-                                                                  constant.type()));
+      getSortedLiteralConstantNodes().forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
+                                                                                 constant.fieldName,
+                                                                                 constant.type()));
 
-      intermediateVariables.values()
-                           .forEach(intermediateVariable -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
-                                                                                   intermediateVariable.name,
-                                                                                   intermediateVariable.type));
+      getSortedIntermediateVariables().forEach(intermediateVariable -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
+                                                                                              intermediateVariable.name,
+                                                                                              intermediateVariable.type));
 
       referencedFunctions.forEach((name, mapping) -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
                                                                             name,
@@ -1243,11 +1238,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor generateIntermediateVariableInitializers(MethodVisitor methodVisitor)
   {
-    for (var intermediateVariable : intermediateVariables.values())
+    for (var intermediateVariable : getSortedIntermediateVariables())
     {
       intermediateVariable.generateInitializer(methodVisitor);
     }
     return methodVisitor;
+  }
+
+  protected Collection<IntermediateVariable<D, C, F>> getSortedIntermediateVariables()
+  {
+    var intermediateVariableValues = new ArrayList<>(intermediateVariables.values().stream().toList());
+    Collections.sort(intermediateVariableValues, (a, b) -> a.name.compareTo(b.name));
+
+    return intermediateVariableValues;
   }
 
   protected void generateInvocationOfDefaultNoArgConstructor(MethodVisitor methodVisitor, boolean object)
@@ -1262,11 +1265,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor generateLiteralConstantInitializers(MethodVisitor methodVisitor)
   {
-    for (var literal : literalConstants.values())
+
+    for (var literal : getSortedLiteralConstantNodes())
     {
       literal.generateLiteralConstantInitializerWithString(methodVisitor);
     }
     return methodVisitor;
+  }
+
+  protected ArrayList<LiteralConstantNode<D, C, F>> getSortedLiteralConstantNodes()
+  {
+    if (literalConstantNodes == null)
+    {
+      literalConstantNodes = new ArrayList<>(literalConstants.values().stream().toList());
+      Collections.sort(literalConstantNodes, (a, b) -> a.fieldName.compareTo(b.fieldName));
+      return literalConstantNodes;
+    }
+    return literalConstantNodes;
   }
 
   protected MethodVisitor generateSelfReference(MethodVisitor mv)
@@ -1314,7 +1329,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Compiler.generateReturnInstructionAndEndTheVisit(methodVisitor);
     return classVisitor;
   }
-
 
   protected ClassVisitor generateTypesetMethod(ClassVisitor classVisitor)
   {
@@ -2133,7 +2147,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return new ExpressionTree<D, C, F>(rootNode);
   }
 
-  static HashSet<Class<?>> indeterminantTypes = new HashSet<Class<?>>();
+  static HashSet<Class<?>>                        indeterminantTypes = new HashSet<Class<?>>();
+
+  private ArrayList<LiteralConstantNode<D, C, F>> literalConstantNodes;
 
   static
   {
