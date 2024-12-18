@@ -12,6 +12,8 @@ public interface RealNullaryMatrixFunction extends
                                            NullaryFunction<RealMatrix>
 {
 
+
+
   public static RealNullaryMatrixFunction express(String string)
   {
     return NullaryFunction.express(RealMatrix.class, RealNullaryMatrixFunction.class, string);
