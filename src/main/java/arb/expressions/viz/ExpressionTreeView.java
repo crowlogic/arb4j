@@ -30,6 +30,7 @@ import arb.functions.rational.ComplexRationalNullaryFunction;
 import arb.functions.rational.RationalFunctionSequence;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.Functional;
+import arb.functions.real.NullaryFunctional;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
 import arb.functions.real.RealNullaryFunctional;
@@ -406,7 +407,8 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     ComplexPolynomialSequence.class, ComplexNullaryFunction.class, RationalFunctionSequence.class,
     RationalNullaryFunction.class, RealPolynomialSequence.class, RealToComplexFunction.class, RealNullaryFunction.class,
     ComplexToRealFunction.class, ComplexRationalFunctionSequence.class, ComplexRationalNullaryFunction.class,
-    Sequence.class, RealFunctionSequence.class, RealNullaryFunctional.class, Functional.class, ComplexFunctionSequence.class };
+    Sequence.class, RealFunctionSequence.class, RealNullaryFunctional.class, Functional.class,
+    ComplexFunctionSequence.class };
 
   private HBox setupTypeBoxes()
   {
@@ -446,6 +448,14 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     else if (functionType.equals(NullaryFunction.class))
     {
       domainTypeBox.getSelectionModel().select(Object.class);
+    }
+    else if (functionType.equals(NullaryFunctional.class))
+    {
+      domainTypeBox.getSelectionModel().select(Object.class);
+    }
+    else if (functionType.equals(RealNullaryFunctional.class))
+    {
+      selectTypes(Object.class, RealFunction.class);
     }
     else if (functionType.equals(IntegerFunction.class))
     {

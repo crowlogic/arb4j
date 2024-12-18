@@ -40,14 +40,14 @@ import javafx.stage.Window;
  */
 public class WindowManager
 {
-  static
-  {
-    System.loadLibrary("arblib");
-  }
-
+ 
   static
   {
     Thread.setDefaultUncaughtExceptionHandler(WindowManager::showError);
+  }
+  static
+  {
+    System.loadLibrary("arblib");
   }
 
   public static final String MORE_CONDUCIVE_STYLESHEET = ".scroll-bar .thumb {\n"

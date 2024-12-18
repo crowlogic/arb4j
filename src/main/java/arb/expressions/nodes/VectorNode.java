@@ -1,7 +1,6 @@
 package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.duplicateTopOfTheStack;
-import static java.util.stream.Collectors.joining;
 import static org.objectweb.asm.Opcodes.AASTORE;
 import static org.objectweb.asm.Opcodes.ANEWARRAY;
 import static org.objectweb.asm.Opcodes.BIPUSH;
@@ -21,7 +20,12 @@ import arb.expressions.Expression;
 import arb.functions.Function;
 
 /**
- *
+ * Vector/array syntax: [expr1,expr2,...]
+ * 
+ * @param <D>
+ * @param <R>
+ * @param <F>
+ * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
@@ -113,17 +117,19 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
       mv.visitInsn(AASTORE);
     });
 
+    var arrayType = scalarType.arrayType();
+    
     if (isResult)
     {
-      expression.generateSetResultInvocation(mv, scalarType.arrayType());
+      expression.generateSetResultInvocation(mv, arrayType);
     }
     else
     {
       intermediateValueFieldName = expression.allocateIntermediateVariable(mv, "v", scalarType);
       Compiler.swap(mv);
-      Compiler.invokeSetMethod(mv, scalarType.arrayType(), scalarType);
+      Compiler.invokeSetMethod(mv, arrayType, scalarType);
     }
-
+    generatedType = scalarType;
     return mv;
   }
 
@@ -169,7 +175,7 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
   @Override
   public String typeset()
   {
-    return elements.stream().map(Node::typeset).collect(joining(",", "\\left[", "\\right]"));
+    return elements.stream().map(Node::typeset).collect(Collectors.joining(",", "\\left[", "\\right]"));
   }
 
   @Override
@@ -189,7 +195,8 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    var vec = new VectorNode<E, S, G>(newExpression,false);
+    var vec = new VectorNode<E, S, G>(newExpression,
+                                      false);
     vec.elements = new ArrayList<Node<E, S, G>>(elements.size());
     for (int i = 0; i < elements.size(); i++)
     {
