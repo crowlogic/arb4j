@@ -75,7 +75,18 @@ public class ExpressionTest extends
     assertEquals("exp(x)", x.rootNode.toString());
   }
 
-  public static void testAFractionConstantTimesAFractionConstant()
+  public static void testAFractionConstantMinusAFractionConstant()
+  {
+    var f = RationalNullaryFunction.parse("½-¼");
+    f.simplify();
+    assertEquals("1/4", f.toString());
+    RationalNullaryFunction instance = f.instantiate();
+    RationalFunction        val      = instance.evaluate();
+    Fraction                hmm      = val.evaluate(new Fraction());
+    assertEquals(0.25, hmm.doubleValue());
+  }
+  
+  public static void testAFractionConstantPlusAFractionConstant()
   {
     var f = RationalNullaryFunction.parse("½+¼");
     f.simplify();

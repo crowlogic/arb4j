@@ -802,7 +802,7 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
     return result.set(this).div(divisor, prec, result);
   }
 
- 
+  
   public Fraction pow(Integer n, int bits)
   {
     return pow(n,bits,this);

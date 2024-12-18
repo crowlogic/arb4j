@@ -82,8 +82,7 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
         try ( var lint = new Integer(lconst.value); var rint = new Integer(rconst.value);)
         {
           var sum = lint.add(rint, 0, rint);
-          return new LiteralConstantNode<>(expression,
-                                           sum.toString());
+          return expression.newLiteralConstant(sum.toString());
         }
       }
       else if (lconst.isFraction && rconst.isFraction)
@@ -93,15 +92,12 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
         try ( Fraction sum = lint.add(rint, 0, new Fraction()))
         {
-          return new DivisionNode<>(expression,
-                                    new LiteralConstantNode<>(expression,
-                                                              sum.getNumerator().toString()),
-                                    new LiteralConstantNode<>(expression,
-                                                              sum.getDenominator().toString()));
+          var numerator   = expression.newLiteralConstant(sum.getNumerator().toString());
+          var denominator = expression.newLiteralConstant(sum.getDenominator().toString());
+          return numerator.div(denominator);
         }
       }
 
-      assert false : "TODO: simplify " + this;
       return this;
     }
     else

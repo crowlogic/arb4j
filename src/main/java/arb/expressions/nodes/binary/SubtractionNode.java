@@ -4,6 +4,7 @@ import static java.lang.String.format;
 
 import org.objectweb.asm.MethodVisitor;
 
+import arb.Fraction;
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -107,11 +108,21 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
         try ( var lint = new Integer(lconst.value); var rint = new Integer(rconst.value);)
         {
           var difference = lint.sub(rint, 0, rint);
-          return new LiteralConstantNode<>(expression,
-                                           difference.toString());
+          return expression.newLiteralConstant(difference.toString());
         }
       }
-      assert false : "TODO: simplify " + this;
+      else if (lconst.isFraction && rconst.isFraction)
+      {
+        var lint = lconst.fractionValue;
+        var rint = rconst.fractionValue;
+
+        try ( Fraction sum = lint.sub(rint, 0, new Fraction()))
+        {
+          var numerator   = expression.newLiteralConstant(sum.getNumerator().toString());
+          var denominator = expression.newLiteralConstant(sum.getDenominator().toString());
+          return numerator.div(denominator);
+        }
+      }
       return this;
     }
     else
