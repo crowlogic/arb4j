@@ -56,6 +56,27 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                                        Initializable
 {
 
+  public String debugString()
+  {
+    return String.format("HypergeometricFunctionNode[α=%s, β=%s, hypergeometricFunctionClass=%s, dependsOnInput=%s, hypergeometricFunctionFieldName=%s, elementFieldName=%s, isFunctional=%s, isRational=%s, isReal=%s, isComplex=%s, scalarType=%s, nullaryFunctionClass=%s, isNullaryFunctionOrHasScalarCodomain=%s, hasScalarCodomain=%s, elementType=%s, coDomaintype=%s]",
+                         α,
+                         β,
+                         hypergeometricFunctionClass,
+                         dependsOnInput,
+                         hypergeometricFunctionFieldName,
+                         elementFieldName,
+                         isFunctional,
+                         isRational,                         
+                         isReal,
+                         isComplex,
+                         scalarType,
+                         nullaryFunctionClass,
+                         isNullaryFunctionOrHasScalarCodomain,
+                         hasScalarCodomain,
+                         elementType,
+                         coDomaintype);
+  }
+
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
   {
@@ -123,6 +144,8 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   private Class<? extends R> coDomaintype;
 
+  private boolean            isFunctional;
+
   public HypergeometricFunctionNode(Expression<D, R, F> expression)
   {
     this(expression,
@@ -153,7 +176,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   {
     coDomaintype                         = expression.coDomainType;
     scalarType                           = Compiler.scalarType(coDomaintype);
-
+    isFunctional                         = Function.class.isAssignableFrom(coDomaintype) && coDomaintype.isInterface();
     isRational                           = RationalFunction.class.isAssignableFrom(coDomaintype)
                   || ComplexRationalFunction.class.isAssignableFrom(coDomaintype);
 
@@ -219,6 +242,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     else
     {
       elementFieldName = null;
+      assert !isFunctional : "TODO: functional";
     }
 
     if (!dependsOnInput)
