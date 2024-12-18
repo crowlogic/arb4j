@@ -1,5 +1,7 @@
 package arb.functions.integer;
 
+import java.util.List;
+
 import arb.Integer;
 import arb.Real;
 import arb.RealPolynomial;
@@ -50,7 +52,7 @@ public class PascalsTriangle implements
   }
 
   @Override
-  public RealPolynomial enumerate(int i, int j)
+  public List<RealPolynomial> enumerate(int i, int j)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;

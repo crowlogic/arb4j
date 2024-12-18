@@ -2,7 +2,7 @@ package arb.functions.integer;
 
 import static java.util.stream.IntStream.rangeClosed;
 
-import java.lang.foreign.Arena;
+import java.util.List;
 
 import arb.Fraction;
 import arb.Integer;
@@ -45,11 +45,9 @@ public interface FractionSequence extends
    * @return a {@link Real} whose {@link Real#dim} is equal to the number of
    *         elements of f
    */
-  public default Fraction enumerate(int i, int j)
+  public default List<Fraction> enumerate(int i, int j)
   {
-    return Fraction.newVector(Arena.ofAuto(), j - i)
-                   .set(rangeClosed(i, j).mapToObj(this).toArray(k -> new Fraction[k]))
-                   .setName(String.format("%s over %d..%d", toString(), i, j));
+    return rangeClosed(i, j).mapToObj(this).toList();
   }
 
   public static FractionSequence express(String expression)

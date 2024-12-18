@@ -415,7 +415,6 @@ public interface Field<X extends Field<X>> extends
    *         {@link #add(Field, int, Field)} ) of this array of field elements
    *         regarded as an array of length this{@link #dim()}
    */
-  @SuppressWarnings("resource")
   public default X
          Σ(int prec,
            X result)

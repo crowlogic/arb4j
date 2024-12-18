@@ -18,7 +18,7 @@ public class AscendingFactorializationTest extends
   public void testAlternativeSyntax()
   {
     var  f    = RealSequence.express("n⋰3");
-    Real list = f.enumerate(0, 9);
+    Real list = new Real(f.enumerate(0, 9));
     assertEquals("n➔n⋰3 over 0..9=[0, 6, 24, 60, 120, 210, 336, 504, 720, 990]", list.toString());
   }
 

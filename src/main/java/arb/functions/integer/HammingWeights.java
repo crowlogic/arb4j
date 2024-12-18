@@ -1,6 +1,9 @@
 package arb.functions.integer;
 
+import java.util.List;
+
 import arb.Integer;
+import arb.RealPolynomial;
 import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -24,7 +27,7 @@ public class HammingWeights implements
   }
 
   @Override
-  public Integer enumerate(int i, int j)
+  public List<Integer> enumerate(int i, int j)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;

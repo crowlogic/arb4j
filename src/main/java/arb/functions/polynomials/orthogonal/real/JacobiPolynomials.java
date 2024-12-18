@@ -1,6 +1,7 @@
 package arb.functions.polynomials.orthogonal.real;
 
 import java.util.Iterator;
+import java.util.List;
 
 import arb.Fraction;
 import arb.Integer;
@@ -140,10 +141,16 @@ public class JacobiPolynomials implements
   }
 
   @Override
-  public RealPolynomial enumerate(int i, int j)
+  public List<RealPolynomial> enumerate(int i, int j)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
+  }
+
+  @Override
+  public String toString()
+  {
+    return String.format("JacobiPolynomials[α=%s, β=%s]", α, β);
   }
 
 }

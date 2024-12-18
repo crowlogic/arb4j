@@ -1,6 +1,7 @@
 package arb.functions.polynomials.orthogonal.real;
 
 import java.util.Iterator;
+import java.util.List;
 
 import arb.Integer;
 import arb.Real;
@@ -91,7 +92,7 @@ public class RealChebyshevPolynomialsOfTheFirstKind implements
   }
 
   @Override
-  public RealPolynomial enumerate(int i, int j)
+  public List<RealPolynomial> enumerate(int i, int j)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;

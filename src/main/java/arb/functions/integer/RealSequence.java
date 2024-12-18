@@ -2,6 +2,8 @@ package arb.functions.integer;
 
 import static java.util.stream.IntStream.rangeClosed;
 
+import java.util.List;
+
 import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -41,13 +43,9 @@ public interface RealSequence extends
    * @return a {@link Real} whose {@link Real#dim} is equal to the number of
    *         elements of f
    */
-  @SuppressWarnings("resource")
-  public default Real enumerate(int i, int j)
+  public default List<Real> enumerate(int i, int j)
   {
-    return new Real(rangeClosed(i, j).mapToObj(this)).setName(String.format("%s over %d..%d",
-                                                                            toString(),
-                                                                            i,
-                                                                            j));
+    return rangeClosed(i, j).mapToObj(this).toList();
   }
 
   @Override

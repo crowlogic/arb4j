@@ -18,8 +18,8 @@ public class RealSequenceTest extends
   public void testRealFactorialSequence() throws Exception
   {
     RealSequence f    = RealSequence.express("n!");
-    Real         list = f.enumerate(0, 9);
-    assertEquals("n➔n! over 0..9=[1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880]", list.toString());
+    Real         list = new Real(f.enumerate(0, 9));
+    assertEquals("[1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880]", list.toString());
   }
 
 }

@@ -1,6 +1,7 @@
 package arb.functions.polynomials;
 
 import java.util.Iterator;
+import java.util.List;
 
 import arb.Fraction;
 import arb.Integer;
@@ -15,6 +16,7 @@ import arb.functions.NullaryFunction;
 import arb.functions.integer.FractionSequence;
 import arb.functions.rational.RationalFunctionSequence;
 import arb.functions.real.RealFunction;
+import arb.utensils.ShellFunctions;
 
 /**
  *
@@ -159,10 +161,16 @@ public class RationalJacobiPolynomials implements
   }
 
   @Override
-  public RationalFunction enumerate(int i, int j)
+  public List<RationalFunction> enumerate(int i, int j)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    return ShellFunctions.seq(i, j, this);
   }
+  
+  @Override
+  public String toString()
+  {
+    return String.format("JacobiPolynomials[α=%s, β=%s]", α, β);
+  }
+
 
 }
