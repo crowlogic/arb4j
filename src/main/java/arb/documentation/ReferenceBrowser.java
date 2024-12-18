@@ -3,6 +3,7 @@ package arb.documentation;
 import java.lang.reflect.Field;
 
 import arb.documentation.references.Article;
+import arb.documentation.references.Reference;
 import arb.viz.WindowManager;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
@@ -28,8 +29,8 @@ import javafx.stage.WindowEvent;
 public class ReferenceBrowser extends
                               Application
 {
-  private TableView<Article>      tableView;
-  private ObservableList<Article> articleData = FXCollections.observableArrayList();
+  private TableView<Reference>      tableView;
+  private ObservableList<Reference> citations = FXCollections.observableArrayList();
 
   @Override
   public void start(Stage primaryStage)
@@ -76,36 +77,36 @@ public class ReferenceBrowser extends
     tableView.setEditable(true);
 
     // Create columns using record accessor methods
-    TableColumn<Article, String> titleCol = new TableColumn<>("Title");
+    TableColumn<Reference, String> titleCol = new TableColumn<>("Title");
     titleCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().title()));
     titleCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
-    TableColumn<Article, String> authorCol = new TableColumn<>("Author");
+    TableColumn<Reference, String> authorCol = new TableColumn<>("Author");
     authorCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().author()));
     authorCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
-    TableColumn<Article, String> yearCol = new TableColumn<>("Year");
+    TableColumn<Reference, String> yearCol = new TableColumn<>("Year");
     yearCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().year()));
     yearCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
-    TableColumn<Article, String> journalCol = new TableColumn<>("Journal");
+    TableColumn<Reference, String> journalCol = new TableColumn<>("Journal");
     journalCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().journal()));
     journalCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
-    TableColumn<Article, String> volumeCol = new TableColumn<>("Volume");
+    TableColumn<Reference, String> volumeCol = new TableColumn<>("Volume");
     volumeCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getVolume()));
     volumeCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
-    TableColumn<Article, String> pagesCol = new TableColumn<>("Pages");
+    TableColumn<Reference, String> pagesCol = new TableColumn<>("Pages");
     pagesCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getPages()));
     pagesCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
-    TableColumn<Article, String> idCol = new TableColumn<>("Identifier");
+    TableColumn<Reference, String> idCol = new TableColumn<>("Identifier");
     pagesCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getPages()));
     pagesCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
     tableView.getColumns().addAll(titleCol, authorCol, yearCol, journalCol, volumeCol, pagesCol, idCol);
-    tableView.setItems(articleData);
+    tableView.setItems(citations);
 
     tableView.skinProperty().addListener(listener ->
     {
@@ -131,9 +132,9 @@ public class ReferenceBrowser extends
       try
       {
         Object value = field.get(null); // Get static field value
-        if (value instanceof Article article)
+        if (value instanceof Reference citation)
         {
-          articleData.add(article);
+          citations.add(citation);
         }
       }
       catch (IllegalAccessException e)

@@ -22,6 +22,7 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  
   public static Article       coveringNumbersGaussianRKHS                                     =
                                                           new Article("Covering Numbers of Gaussian Reproducing Kernel Hilbert Spaces",
                                                                       "Thomas K\"{u}hn",
