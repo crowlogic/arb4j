@@ -37,31 +37,38 @@ import arb.functions.Function;
  * {@link ProductNode}s
  *
  * <p>
- * A variable can either be the independent variable , or the independent(input)
- * variable to the containing expression, or the
- * containtain-containing-expressions input, etc; otherwise the variable should
- * be defined in the {@link Context} associated with this
- * this{@link #expression} where its reference is stored and subsequently acts
+ * A variable can be one of three types:
+ * <ul>
+ * <li>The independent (input) variable to the containing expression or any
+ * containing-expressions input</li>
+ * <li>An indeterminate variable used in symbolic computations, including
+ * polynomial expressions, rational functions, and functionals (functions whose
+ * codomain is itself a function)</li>
+ * <li>A variable defined in the {@link Context} associated with this
+ * {@link #expression}</li>
+ * </ul>
+ * 
+ * For context-defined variables, the reference is stored and subsequently acts
  * as a mutable variable reference but remains a constant if not modified. If
  * one really wants the constant to be immutable then calling
  * {@link Real#lock()} will do the trick, but for that to work the Real (scalar
  * or vector) should have been constructed with the alignment option specified
  * as true so that its address is aligned on a page boundary, where it must be
- * for locking to occur. ( At least on x86-64 machines)
+ * for locking to occur. (At least on x86-64 machines)
  * </p>
  *
  * <p>
  * This class is also responsible for generating bytecode for this variable node
  * through its {@link #generate(MethodVisitor, Class)} method.
  * </p>
- * 
+ *
  * @param <D> Type of domain field
  * @param <R> Type of coDomain field
  * @param <F> Type of function that maps domain to coDomain, must implement
  *            {@link Function}.
  *
  * @author ©2024 Stephen Crowley
- * 
+ *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
