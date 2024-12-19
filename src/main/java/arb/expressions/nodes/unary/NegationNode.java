@@ -16,6 +16,15 @@ public class NegationNode<D, R, F extends Function<? extends D, ? extends R>> ex
 {
 
   @Override
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<E, S, G>
+         spliceInto(Expression<E, S, G> newExpression)
+  {
+    return new NegationNode<E, S, G>(newExpression,
+                                     arg.spliceInto(newExpression));
+  }
+
+  @Override
   public boolean isPossiblyNegative()
   {
     return arg.isPossiblyNegative();

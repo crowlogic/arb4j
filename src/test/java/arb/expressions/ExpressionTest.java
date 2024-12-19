@@ -38,7 +38,7 @@ public class ExpressionTest extends
                                     ComplexFunctionSequence.express("Vpluscomplex:m->pFq([1,m,-m],[1/2],-((1/2)*I)/y)");
     ComplexFunction         p3      = express.evaluate(3, 128);
     Complex                 eval    = p3.eval(2.3, new Complex());
-    assertEquals("-3.536862006+1.940494780*I", eval.toString());
+    assertEquals("-3.5368620037807190372740058454181982612 +/- 4.70e-38 + i*1.9404947809649049162726572840572966165 +/- 1.48e-38", eval.toString());
   }
 
   public void testIntegralOfSine()
