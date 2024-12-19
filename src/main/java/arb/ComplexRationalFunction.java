@@ -22,6 +22,7 @@ public class ComplexRationalFunction implements
 {
   public Complex evaluate(Complex t, int order, int bits, Complex result)
   {
+    assert t.im().isZero() : "TODO: implement evaluation with imaginary component";
     if (result == null)
     {
       result = new Complex();

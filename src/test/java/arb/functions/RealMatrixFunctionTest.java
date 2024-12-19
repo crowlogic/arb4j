@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 public class RealMatrixFunctionTest extends
                                     TestCase
 {
-  public void testAdd()
+  public void testMatrixAdd()
   {
     RealNullaryMatrixFunction func = RealNullaryMatrixFunction.express("2+3");
     var                       A    = func.evaluate(128);
