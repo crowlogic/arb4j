@@ -11,6 +11,8 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
+import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.ComplexNullaryFunction;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
@@ -48,17 +50,15 @@ public class HypergeometricFunctionTest extends
   {
     var    f = RealFunction.express("pFq([-5,3.75,1.2],[1.4,2.7,3.4],-x^2)");
     double x = f.eval(2.3);
-   // System.out.format("%s(2.3)=%s\n", f, x);
     assertEquals(82.03626613894305, x);
   }
 
   public void testHypergeometricFuntionExpressionComplex()
   {
     var               poly      =
-                           ComplexPolynomialNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
-    ComplexPolynomial expressed = poly.evaluate(bits, new ComplexPolynomial());
-    expressed.getCoeffs().printPrecision = false;
-    assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
+                           ComplexFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
+    Complex y = poly.eval(2.3, new Complex());
+    assertEquals("0.065625*x² + 0.30625*x + 0.628125", y);
   }
 
   public void testHypergeometricFunctionExpressionRealPolynomial()

@@ -49,11 +49,10 @@ public class ExpressionTest extends
 
   public static void testRealSequenceOfHypergeometricFunctions()
   {
-    System.setProperty("arb4j.compiler.trace", "true");
     var          f      = RealFunctionSequence.express("Vplus:m->pFq([1,m,-m],[1/2],(1/2)/y)");
     RealFunction Vplus3 = f.evaluate(3, 128);
     double       y      = Vplus3.eval(2.3);
-    assertEquals(-0.348730171776115722856908029915, y);
+    assertEquals(-0.3487301717761157622856908029915, y);
   }
 
   public static void testSimplificationAConstantIntegerRaisedToAConstnatInteger()

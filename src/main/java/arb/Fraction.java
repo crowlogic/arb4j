@@ -116,6 +116,11 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
     return result.add(that, bits);   
   }
 
+  public RationalFunction div(RationalFunction divisor, int prec, RationalFunction result)
+  {
+    return result.set(this).div(divisor, prec, result);
+  }
+  
   public Fraction(Real val)
   {
     this();
