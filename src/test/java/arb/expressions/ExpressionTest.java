@@ -36,7 +36,7 @@ public class ExpressionTest extends
   {
     var f = RealFunction.parse("int(sin(x),x)");
     f.simplify();
-    assertEquals("x➔-cos(x)",f.toString());
+    assertEquals("x➔-cos(x)", f.toString());
   }
 
   public void testComplexHypergeometricFunctionSequence()
@@ -55,7 +55,21 @@ public class ExpressionTest extends
     x.simplify();
     assertEquals("log(sec(x)+tan(x))", x.rootNode.toString());
   }
-  
+
+  public void testIntegralOfTangent()
+  {
+    var x = RealFunction.parse("int(tan(x),x)");
+    x.simplify();
+    assertEquals("-log(cos(x))", x.rootNode.toString());
+  }
+
+  public void testIntegralOfCosine()
+  {
+    var x = RealFunction.parse("int(cos(x),x)");
+    x.simplify();
+    assertEquals("sin(x)", x.rootNode.toString());
+  }
+
   public void testIntegralOfSine()
   {
     var x = RealFunction.parse("int(sin(x),x)");
