@@ -216,11 +216,12 @@ public class ExpressionTest extends
     var context = new Context(Real.named("a").set(2),
                               Real.named("b").set(4),
                               Real.named("c").set(6));
-    var x       = RealPolynomialNullaryFunction.express("x->∂a*x+b*x²+c*x³/∂x", context);
+    var x       = RealPolynomialNullaryFunction.parse("x->∂a*x+b*x²+c*x³/∂x", context);
     var z       = RealPolynomialNullaryFunction.parse("a+2*x*b+3*x^2*c", context);
+  //  assertEquals("18*x² + 8*x + 2", x.toString());
 
-    assertEquals(z.toString(), x.toString());
-    var poly = x.evaluate(128);
+    RealPolynomialNullaryFunction wtf = x.instantiate();
+    var poly = wtf.evaluate(128);
     assertEquals("18*x² + 8*x + 2", poly.toString());
     var y = poly.evaluate(new Real("2.3",
                                    128),

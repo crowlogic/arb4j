@@ -833,11 +833,6 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
 
   public RealPolynomial set(RealPolynomial a)
   {
-    if (a == null)
-    {
-      setLength(0);
-      return this;
-    }
     assert a != null;
     assert a.swigCPtr != 0;
     arblib.arb_poly_set(this, a);
@@ -976,7 +971,7 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
   {
     try ( Real tmp = new Real();)
     {
-      zero().set(0, tmp.set(c1));
+      set(tmp.set(c1));
     }
     return this;
   }
@@ -985,7 +980,7 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
   {
     try ( Real tmp = new Real();)
     {
-      zero().set(0, tmp.set(c1));
+      zero().set(tmp.set(c1));
     }
     return this;
   }

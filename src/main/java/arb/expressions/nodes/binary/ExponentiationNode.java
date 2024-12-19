@@ -46,13 +46,6 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   }
 
   @Override
-  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
-  {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
-  }
-
-  @Override
   public <E, S, G extends Function<? extends E, ? extends S>>
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
@@ -61,9 +54,30 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   }
 
   @Override
+  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
+  {
+
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
+  @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    return right.mul(left.pow(right.sub(1)));
+    // For f(x)^g(x), the derivative is:
+    // f(x)^g(x) * (g(x) * f'(x)/f(x) + g'(x) * ln(f(x)))
+
+    // Create ln(f(x))
+    Node<D, R, F> lnBase = left.log();
+
+    // First term: g(x) * f'(x)/f(x)
+    Node<D, R, F> term1 = right.mul(left.differentiate(variable)).div(left);
+
+    // Second term: g'(x) * ln(f(x))
+    Node<D, R, F> term2 = right.differentiate(variable).mul(lnBase);
+
+    // Combine terms and multiply by original expression
+    return this.mul(term1.add(term2));
   }
 
   Class<?> type = null;
