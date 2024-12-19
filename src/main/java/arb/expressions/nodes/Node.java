@@ -356,7 +356,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    */
   public abstract String typeset();
 
-  public Node<D, R, F> log(Node<D, R, F> cos)
+  public Node<D, R, F> log()
   {
     return apply("log");
   }

@@ -49,6 +49,13 @@ public class ExpressionTest extends
                  eval.toString());
   }
 
+  public void testIntegralOfSecant()
+  {
+    var x = RealFunction.parse("int(sec(x),x)");
+    x.simplify();
+    assertEquals("log(sec(x)+tan(x))", x.rootNode.toString());
+  }
+  
   public void testIntegralOfSine()
   {
     var x = RealFunction.parse("int(sin(x),x)");

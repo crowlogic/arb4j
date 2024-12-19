@@ -411,9 +411,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     case "exp":
       return this;
     case "tan":
-      return neg().mul(arg.log(arg.cos()));
+      return arg.cos().log().neg();
     case "sec":
-      return arg.log(arg.sec().add(arg.tan()));
+      return arg.sec().add(arg.tan()).log();
     // Add more cases for other functions
     default:
       throw new UnsupportedOperationException("Integration not implemented for: " + functionName);
