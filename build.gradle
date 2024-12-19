@@ -48,6 +48,11 @@ dependencies {
     
 }
 
+configurations.all {
+    exclude group: 'org.apache.commons', module: 'commons-math3'
+}
+
+
 task createDesktopFile {
     doLast {
         def desktopFile = new File("${buildDir}/Expressor.desktop")

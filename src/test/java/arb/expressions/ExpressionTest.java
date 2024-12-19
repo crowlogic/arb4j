@@ -219,6 +219,7 @@ public class ExpressionTest extends
    */
   public void testRealFunctionDerivative()
   {
+
     var                   context = new Context(Real.named("a").set(2),
                                                 Real.named("b").set(4),
                                                 Real.named("c").set(6));
