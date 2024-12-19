@@ -16,10 +16,6 @@ import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.expressions.nodes.VectorNode;
 import arb.functions.Function;
-import arb.functions.complex.ComplexPolynomialNullaryFunction;
-import arb.functions.polynomials.ComplexPolynomialHypergeometricFunction;
-import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
-import arb.functions.polynomials.RealPolynomialNullaryFunction;
 import arb.functions.rational.ComplexRationalHypergeometricFunction;
 import arb.functions.rational.ComplexRationalNullaryFunction;
 import arb.functions.rational.RationalHypergeometricFunction;
@@ -185,27 +181,24 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
     isComplex                            = Complex.class.equals(scalarType) || ComplexFraction.class.equals(scalarType);
 
-    hasScalarCodomain                    = expression.hasScalarCodomain();
+    hasScalarCodomain                    = expression.hasScalarCodomain() || (expression.isFunctional());
 
     isNullaryFunctionOrHasScalarCodomain = expression.isNullaryFunction() || hasScalarCodomain;
-
+    
     var rationalClass       = isReal ? RationalHypergeometricFunction.class
                                      : isComplex ? ComplexRationalHypergeometricFunction.class : null;
 
-    var realPolynomialClass = RealPolynomialHypergeometricFunction.class;
 
-    var polynomialClass     =
-                        isReal ? realPolynomialClass : isComplex ? ComplexPolynomialHypergeometricFunction.class : null;
 
-    hypergeometricFunctionClass = isRational ? rationalClass : polynomialClass;
+
+    hypergeometricFunctionClass = rationalClass;
 
     var rationalNullaryClass   = isReal ? RationalNullaryFunction.class
                                         : isComplex ? ComplexRationalNullaryFunction.class : null;
 
-    var polynomialNullaryClass = isReal ? RealPolynomialNullaryFunction.class
-                                        : isComplex ? ComplexPolynomialNullaryFunction.class : null;
+    
 
-    nullaryFunctionClass            = isRational ? rationalNullaryClass : polynomialNullaryClass;
+    nullaryFunctionClass            = rationalNullaryClass;
 
     hypergeometricFunctionFieldName = expression.newIntermediateVariable("hyp", hypergeometricFunctionClass, true);
 
@@ -224,14 +217,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       {
         elementType = ComplexRationalFunction.class;
       }
-      else if (nullaryFunctionClass.equals(RealPolynomialNullaryFunction.class))
-      {
-        elementType = RealPolynomial.class;
-      }
-      else if (nullaryFunctionClass.equals(ComplexPolynomialNullaryFunction.class))
-      {
-        elementType = ComplexPolynomial.class;
-      }
+     
       elementFieldName = expression.newIntermediateVariable("element", elementType);
       if (Expression.trace)
       {
@@ -242,7 +228,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     else
     {
       elementFieldName = null;
-      assert !isFunctional : "TODO: functional";
+      assert !isFunctional : "TODO: functional " + debugString();
     }
 
     if (!dependsOnInput)

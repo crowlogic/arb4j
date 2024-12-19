@@ -197,8 +197,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Class<F>                                       compiledClass;
 
-  int                                                   constantCount                 = 1;
-
   public Context                                        context;
 
   HashSet<String>                                       declaredIntermediateVariables = new HashSet<>();
@@ -370,7 +368,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (fieldClass != null)
     {
       String fieldDesc = fieldClass.descriptorString();
-
       addNullCheckForField(mv, className, varName, fieldDesc);
     }
 
@@ -570,15 +567,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (context != null)
     {
+      var varList =
+                  context.variables.map.entrySet().stream().sorted((a, b) -> a.getKey().compareTo(b.getKey())).toList();
       if (trace)
       {
-        String vars = context.variables.map.entrySet().stream().map(x -> x.toString()).collect(Collectors.joining(","));
+        String vars = varList.stream().map(f -> f.getKey()).collect(Collectors.joining(","));
         System.out.println("declareVariables: " + vars);
       }
-      for (var variable : context.variables.map.entrySet()
-                                               .stream()
-                                               .sorted((a, b) -> a.getKey().compareTo(b.getKey()))
-                                               .toList())
+      for (var variable : varList)
       {
         declareVariableEntry(classVisitor, variable);
       }
@@ -1388,9 +1384,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   }
 
+  HashMap<Class<?>, AtomicInteger> constantCounts = new HashMap<>();
+
   public String getNextConstantFieldName(Class<?> type)
   {
-    return "c" + getVariablePrefix(type) + String.format("%04d", constantCount++);
+    return "c" + getVariablePrefix(type) + String.format("%04d", getConstantCounter(type).getAndIncrement());
+  }
+
+  public AtomicInteger getConstantCounter(Class<?> type)
+  {
+    AtomicInteger counter = constantCounts.get(type);
+    if (counter == null)
+    {
+      counter = new AtomicInteger();
+      constantCounts.put(type, counter);
+    }
+    return counter;
   }
 
   public String getNextIntermediateVariableFieldName(String name, Class<?> type)

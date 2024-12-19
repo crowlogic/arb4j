@@ -1,13 +1,16 @@
 %typemap(javainterfaces) fmpq "Becomable<Fraction>,AutoCloseable,NamedField<Fraction>,Verifiable,Comparable<Fraction>"
 %typemap(javafinalize) fmpq ""
 %typemap(javaimports) fmpq %{
+import java.lang.foreign.Arena;
+import java.lang.foreign.MemorySegment;
+import java.util.Objects;
+import java.util.stream.Stream;
+
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ArbException;
-import java.util.Objects;
-import java.lang.foreign.Arena;
-import java.lang.foreign.MemorySegment;
-import java.util.stream.Stream;
+import arb.functions.NullaryFunction;
+import arb.utensils.Utensils;
 
 /**
  * <pre>
@@ -510,13 +513,26 @@ import java.util.stream.Stream;
       Real ithElement = value.get(i);
       if (!ithElement.isExact())
       {
-        Fraction.from(ithElement.doubleValue(), 1e-15, this);
-        // FIXME: when does the result not make sense?
+        var str   = String.valueOf(ithElement.doubleValue());
+        var point = str.indexOf('.');
+        if (point < 0)
+        {
+          get(i).set(str);
+        }
+        else
+        {
+          var    integerPart     = str.substring(0, point);
+          var    fractionalPart  = str.substring(point + 1);
+          var    fractionalUnits = "1" + Utensils.repeat('0', fractionalPart.length());
+          String expr            = String.format("%s+%s/%s", integerPart, fractionalPart, fractionalUnits);
+          NullaryFunction.express(Fraction.class, expr).evaluate(null, 128, get(i));
+        }
       }
       else
       {
         arblib.arf_get_fmpq(this.get(i), ithElement.getMid());
       }
+
     }
     return this;
   }
