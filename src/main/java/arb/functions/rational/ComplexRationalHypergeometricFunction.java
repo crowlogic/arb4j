@@ -48,22 +48,14 @@ import arb.functions.HypergeometricFunction;
  *      {@link TheArb4jLibrary}
  */
 public class ComplexRationalHypergeometricFunction extends
-                                                   HypergeometricFunction<Complex,
-                                                                 ComplexRationalFunction,
+                                                   HypergeometricFunction<Complex, ComplexRationalFunction,
                                                                  ComplexRationalNullaryFunction>
 {
 
   public ComplexRationalHypergeometricFunction
-         init(Fraction α,
-              Fraction β,
-              Expression<Object, ComplexRationalFunction, ComplexRationalNullaryFunction> arg)
+         init(Fraction α, Fraction β, Expression<Object, ComplexRationalFunction, ComplexRationalNullaryFunction> arg)
   {
-    super.init(Complex.class,
-               ComplexRationalFunction.class,
-               ComplexRationalNullaryFunction.class,
-               α,
-               β,
-               arg);
+    super.init(Complex.class, ComplexRationalFunction.class, ComplexRationalNullaryFunction.class, α, β, arg);
     return this;
   }
 
@@ -75,6 +67,18 @@ public class ComplexRationalHypergeometricFunction extends
     assert numerator.imaginaryPart.isZero();
     assert denominator.imaginaryPart.isZero();
     return init(numerator.realPart, denominator.realPart, arg);
+  }
+
+  public ComplexRationalHypergeometricFunction
+         init(Complex numerator,
+              Complex denominator,
+              Expression<Object, ComplexRationalFunction, ComplexRationalNullaryFunction> arg)
+  {
+    var n = new ComplexFraction();
+    var d = new ComplexFraction();
+    n.set(numerator);
+    d.set(denominator);
+    return init(n, d, arg);
   }
 
 }
