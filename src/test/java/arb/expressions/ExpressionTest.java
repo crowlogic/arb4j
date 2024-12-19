@@ -32,10 +32,11 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
-  public void testIndefinateIntegral()
+  public void testIndefiniteIntegral()
   {
-    var f = RealFunction.express("int(sin(x),x)");
-    f.eval(2.3);
+    var f = RealFunction.parse("int(sin(x),x)");
+    f.simplify();
+    assertEquals("x➔-cos(x)",f.toString());
   }
 
   public void testComplexHypergeometricFunctionSequence()
@@ -51,7 +52,8 @@ public class ExpressionTest extends
   public void testIntegralOfSine()
   {
     var x = RealFunction.parse("int(sin(x),x)");
-    assertEquals("∫x➔sin(x)dx", x.rootNode.toString());
+    x.simplify();
+    assertEquals("-cos(x)", x.rootNode.toString());
   }
 
   public static void testRealSequenceOfHypergeometricFunctions()

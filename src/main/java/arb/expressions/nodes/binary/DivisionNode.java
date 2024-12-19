@@ -5,14 +5,13 @@ import static java.lang.String.format;
 import org.objectweb.asm.MethodVisitor;
 
 import arb.Fraction;
-
+import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
-import arb.Integer;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -21,6 +20,19 @@ import arb.Integer;
 public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          BinaryOperationNode<D, R, F>
 {
+
+  @Override
+  public Node<D, R, F> simplify()
+  {
+    if ("1".equals(right.toString()))
+    {
+      return left;
+    }
+    else
+    {
+      return this;
+    }
+  }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)

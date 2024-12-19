@@ -30,24 +30,25 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> extends
-                         Node<D, R, F>
+public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> extends
+                         Node<D, C, F>
 {
+
+  @Override
+  public Node<D, C, F> simplify()
+  {
+    integral = integral.simplify();
+    return this;
+  }
 
   @Override
   public String toString()
   {
-    return (lowerLimit == null && upperLimit == null) ? String.format("∫%s➔%sd%s", dvar, integrand, dvar)
-                                                      : String.format("∫%s➔%sd%s∈(%s,%s)",
-                                                                      dvar,
-                                                                      integrand,
-                                                                      dvar,
-                                                                      lowerLimit,
-                                                                      upperLimit);
+    return integral.toString();
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, C, F> substitute(String variable,
                                                                                        Node<E, S, G> arg)
   {
     integrand           = integrand.substitute(variable, arg);
@@ -59,15 +60,15 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public int                                                   bits = 128;
 
-  Node<D, R, F>                                                integrand;
+  Node<D, C, F>                                                integrand;
 
-  Node<D, R, F>                                                lowerLimit;
+  Node<D, C, F>                                                lowerLimit;
 
-  Node<D, R, F>                                                upperLimit;
+  Node<D, C, F>                                                upperLimit;
 
-  VariableNode<D, R, F>                                        integrationVariable;
+  VariableNode<D, C, F>                                        integrationVariable;
 
-  Function<? extends R, ? extends R>                           integralFunction;
+  Function<? extends C, ? extends C>                           integralFunction;
 
   String                                                       integralFunctionFieldName;
 
@@ -75,13 +76,13 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   String                                                       dvar;
 
-  private Expression<R, R, Function<? extends R, ? extends R>> integralExpression;
+  private Expression<C, C, Function<? extends C, ? extends C>> integralExpression;
 
-  private Node<D, R, F>                                        integralNode;
+  private Node<D, C, F>                                        integral;
 
   private String                                               upperIntegralValueFieldName;
 
-  public IntegralNode(Expression<D, R, F> expression)
+  public IntegralNode(Expression<D, C, F> expression)
   {
     this(expression,
          false);
@@ -111,7 +112,7 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
    * @param expression
    * @param functionForm
    */
-  public IntegralNode(Expression<D, R, F> expression, boolean functionForm)
+  public IntegralNode(Expression<D, C, F> expression, boolean functionForm)
   {
     super(expression);
     if (!functionForm)
@@ -144,6 +145,10 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                true);
       expression.require(')');
     }
+
+    var type = type();
+    assignFieldNames(type);
+    computeIndefiniteIntegral(type);
   }
 
   protected void assignFieldNames(Class<?> resultType)
@@ -167,7 +172,7 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                                                                                          int.class,
                                                                                                                          Object.class);
 
-  FunctionMapping<R, R, Function<? extends R, ? extends R>> integralMapping;
+  FunctionMapping<C, C, Function<? extends C, ? extends C>> integralMapping;
 
   private String                                            intermediateValueFieldName;
 
@@ -181,13 +186,11 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return getFieldFromThis(mv, expression.className, fieldName, type);
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    assignFieldNames(resultType);
     generatedType = resultType;
-    computeIndefiniteIntegral((Class<? extends R>) resultType);
+    ;
     evaluateIndefiniteIntegralAt(mv, upperLimit, resultType, lowerIntegralValueFieldName);
     evaluateIndefiniteIntegralAt(mv, lowerLimit, resultType, upperIntegralValueFieldName);
     loadBitsParameterOntoStack(mv);
@@ -203,10 +206,10 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return mv;
   }
 
-  private void computeIndefiniteIntegral(Class<? extends R> resultType)
+  private void computeIndefiniteIntegral(Class<? extends C> resultType)
   {
-    integralNode = integrand.integrate(integrationVariable.asVariable());
-    var expr = integralNode.toString();
+    integral = integrand.integrate(integrationVariable.asVariable());
+    var expr = integral.toString();
     integralExpression = Function.parse(integralFunctionFieldName,
                                         expr,
                                         expression.context,
@@ -228,7 +231,7 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   private void evaluateIndefiniteIntegralAt(MethodVisitor mv,
-                                            Node<D, R, F> limit,
+                                            Node<D, C, F> limit,
                                             Class<?> resultType,
                                             String integralValueFieldName)
   {
@@ -241,7 +244,7 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public List<Node<D, R, F>> getBranches()
+  public List<Node<D, C, F>> getBranches()
   {
     return List.of(integrand);
   }
@@ -253,10 +256,9 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public <C> Class<? extends C> type()
+  public Class<? extends C> type()
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    return expression.coDomainType;
   }
 
   @Override
@@ -272,7 +274,7 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
+  public Node<D, C, F> integrate(VariableNode<D, C, F> variable)
   {
     assert false : "TODO: Auto-generated method stub";
     return null;
@@ -295,7 +297,7 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public void accept(Consumer<Node<D, R, F>> t)
+  public void accept(Consumer<Node<D, C, F>> t)
   {
     integrationVariable.accept(t);
     integrand.accept(t);
@@ -305,7 +307,7 @@ public class IntegralNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
+  public Node<D, C, F> differentiate(VariableNode<D, C, F> variable)
   {
     return integrand;
   }

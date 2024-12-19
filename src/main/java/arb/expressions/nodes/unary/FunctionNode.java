@@ -212,7 +212,13 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   private Node<D, R, F> differentiateContextualFunction()
   {
-    throw new UnsupportedOperationException("Contextual function differentiation not implemented: " + functionName);
+    throw new UnsupportedOperationException("Contextual function differentiation not yet implemented: " + functionName);
+  }
+
+  private Node<D, R, F> integrateContextualFunction()
+  {
+    throw new UnsupportedOperationException("Contextual function integration not yet implemented: " + functionName);
+
   }
 
   /**
@@ -375,8 +381,43 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    // Need to handle chain rule for integration
+    var functionIntegral = integrateFunction();
+    var argDerivative    = arg.differentiate(variable);
+    return functionIntegral.div(argDerivative);
+  }
+
+  public Node<D, R, F> integrateFunction()
+  {
+    if (isBuiltin())
+    {
+      return integrateBuiltinFunction();
+    }
+    else if (contextual)
+    {
+      return integrateContextualFunction();
+    }
+    throw new UnsupportedOperationException("Cannot integrate function: " + functionName);
+  }
+
+  private Node<D, R, F> integrateBuiltinFunction()
+  {
+    switch (functionName)
+    {
+    case "sin":
+      return arg.cos().neg();
+    case "cos":
+      return arg.sin();
+    case "exp":
+      return this;
+    case "tan":
+      return neg().mul(arg.log(arg.cos()));
+    case "sec":
+      return arg.log(arg.sec().add(arg.tan()));
+    // Add more cases for other functions
+    default:
+      throw new UnsupportedOperationException("Integration not implemented for: " + functionName);
+    }
   }
 
   public boolean isBitless()
