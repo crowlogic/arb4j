@@ -1,8 +1,8 @@
 package arb.expressions.nodes.unary;
 
 import arb.Complex;
-import arb.ComplexPolynomial;
 import arb.Integer;
+import arb.RationalFunction;
 import arb.Real;
 import arb.RealConstants;
 import arb.RealPolynomial;
@@ -11,12 +11,10 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
-import arb.functions.complex.ComplexFunction;
-import arb.functions.complex.ComplexNullaryFunction;
-import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
 import arb.functions.rational.ComplexRationalNullaryFunction;
+import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
@@ -86,12 +84,31 @@ public class HypergeometricFunctionTest extends
     assertEquals("1.67965625", y.toString());
   }
 
+  public void testHypergeometricFunctionExpressionRationalFunction()
+  {
+    var              poly = RationalNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
+    RationalFunction f    = poly.evaluate(bits, new RationalFunction());
+    var              g    = RationalNullaryFunction.express("201/320+49/160*x+21/320*x^2").evaluate(128);
+    assertEquals(g, f);
+  }
+
   public void testHypergeometricFunctionExpressionRealPolynomial()
   {
-    var            poly      = RealPolynomialNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
-    RealPolynomial expressed = poly.evaluate(bits, new RealPolynomial());
+    boolean caughtExpectedException = false;
+    try
+    {
+      var poly = RealPolynomialNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
+      try ( @SuppressWarnings("unused")
+      RealPolynomial expressed = poly.evaluate(bits, new RealPolynomial()))
+      {
 
-    assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
+      }
+    }
+    catch (UnsupportedOperationException e)
+    {
+      caughtExpectedException = e.getMessage().contains("functionals");
+    }
+    assertTrue(caughtExpectedException);
   }
 
   public static void testSum2()

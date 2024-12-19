@@ -54,7 +54,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   public String debugString()
   {
-    return String.format("HypergeometricFunctionNode[α=%s, β=%s, hypergeometricFunctionClass=%s, dependsOnInput=%s, hypergeometricFunctionFieldName=%s, elementFieldName=%s, isFunctional=%s, isRational=%s, isReal=%s, isComplex=%s, scalarType=%s, nullaryFunctionClass=%s, isNullaryFunctionOrHasScalarCodomain=%s, hasScalarCodomain=%s, elementType=%s, coDomaintype=%s]",
+    return String.format("HypergeometricFunctionNode[α=%s, β=%s, hypergeometricFunctionClass=%s, dependsOnInput=%s, hypergeometricFunctionFieldName=%s, elementFieldName=%s, isFunctional=%s, isRational=%s, isReal=%s, isComplex=%s, scalarType=%s, nullaryFunctionClass=%s, isNullaryFunctionOrHasScalarCodomain=%s, hasScalarCodomain=%s, elementType=%s, expression.coDomainType=%s]",
                          α,
                          β,
                          hypergeometricFunctionClass,
@@ -62,7 +62,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                          hypergeometricFunctionFieldName,
                          elementFieldName,
                          isFunctional,
-                         isRational,                         
+                         isRational,
                          isReal,
                          isComplex,
                          scalarType,
@@ -70,7 +70,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                          isNullaryFunctionOrHasScalarCodomain,
                          hasScalarCodomain,
                          elementType,
-                         coDomaintype);
+                         expression.coDomainType);
   }
 
   @Override
@@ -138,8 +138,6 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   private Class<?>           elementType;
 
-  private Class<? extends R> coDomaintype;
-
   private boolean            isFunctional;
 
   public HypergeometricFunctionNode(Expression<D, R, F> expression)
@@ -153,11 +151,16 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     super("pFq",
           null,
           expression);
+    if (expression.coDomainType.equals(RealPolynomial.class))
+    {
+      throw new UnsupportedOperationException("polynomial functionals are not implemented since rational functionals are available");
+    }
     if (parseAndInitialize)
     {
       parse();
       initialize();
     }
+
   }
 
   public void parse()
@@ -170,11 +173,10 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   public void initialize()
   {
-    coDomaintype                         = expression.coDomainType;
-    scalarType                           = Compiler.scalarType(coDomaintype);
-    isFunctional                         = Function.class.isAssignableFrom(coDomaintype) && coDomaintype.isInterface();
-    isRational                           = RationalFunction.class.isAssignableFrom(coDomaintype)
-                  || ComplexRationalFunction.class.isAssignableFrom(coDomaintype);
+    scalarType                           = Compiler.scalarType(expression.coDomainType);
+    isFunctional                         = Function.class.isAssignableFrom(expression.coDomainType) && expression.coDomainType.isInterface();
+    isRational                           = RationalFunction.class.isAssignableFrom(expression.coDomainType)
+                  || ComplexRationalFunction.class.isAssignableFrom(expression.coDomainType);
 
     isReal                               =
            Real.class.equals(scalarType) || Fraction.class.equals(scalarType) || Integer.class.equals(scalarType);
@@ -184,19 +186,14 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     hasScalarCodomain                    = expression.hasScalarCodomain() || (expression.isFunctional());
 
     isNullaryFunctionOrHasScalarCodomain = expression.isNullaryFunction() || hasScalarCodomain;
-    
-    var rationalClass       = isReal ? RationalHypergeometricFunction.class
-                                     : isComplex ? ComplexRationalHypergeometricFunction.class : null;
 
-
-
+    var rationalClass = isReal ? RationalHypergeometricFunction.class
+                               : isComplex ? ComplexRationalHypergeometricFunction.class : null;
 
     hypergeometricFunctionClass = rationalClass;
 
-    var rationalNullaryClass   = isReal ? RationalNullaryFunction.class
-                                        : isComplex ? ComplexRationalNullaryFunction.class : null;
-
-    
+    var rationalNullaryClass = isReal ? RationalNullaryFunction.class : isComplex ? ComplexRationalNullaryFunction.class
+                                      : null;
 
     nullaryFunctionClass            = rationalNullaryClass;
 
@@ -208,7 +205,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
     if (isNullaryFunctionOrHasScalarCodomain)
     {
-      elementType = coDomaintype;
+      elementType = expression.coDomainType;
       if (nullaryFunctionClass.equals(RationalNullaryFunction.class))
       {
         elementType = RationalFunction.class;
@@ -217,7 +214,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       {
         elementType = ComplexRationalFunction.class;
       }
-     
+
       elementFieldName = expression.newIntermediateVariable("element", elementType);
       if (Expression.trace)
       {
@@ -321,9 +318,9 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       }
       else
       {
-        assert resultType.equals(coDomaintype) : String.format("TODO: handle resultType = %s != coDomainType = %s",
+        assert resultType.equals(expression.coDomainType) : String.format("TODO: handle resultType = %s != expression.coDomainType = %s",
                                                                resultType,
-                                                               coDomaintype);
+                                                               expression.coDomainType);
         loadOutputOntoStack(mv, resultType);
         expression.loadThisFieldOntoStack(mv, elementFieldName, elementType);
         checkClassCast(mv, elementType);
@@ -339,7 +336,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                             expression.domainType,
                             int.class,
                             int.class,
-                            coDomaintype);
+                            expression.coDomainType);
         checkClassCast(mv, resultType);
 
       }

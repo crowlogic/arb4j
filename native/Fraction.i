@@ -111,6 +111,11 @@ import arb.utensils.Utensils;
     return result.set(this).div(divisor, prec, result);
   }
  
+   public RationalFunction add(RationalFunction element, int prec, RationalFunction result)
+  {
+    return result.set(this).add(element, prec, result);
+  }
+  
  public static Fraction from(double value, double accuracy, Fraction result)
   {
     int sign = value < 0 ? -1 : 1;
