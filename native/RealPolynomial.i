@@ -366,10 +366,8 @@ import arb.expressions.Parser;
     return arblib.arb_poly_overlaps(this, that) != 0;
   }
   
-  @SuppressWarnings("resource")
   @Override
-  public boolean
-         equals(Object obj)
+  public boolean equals(Object obj)
   {
     if (obj instanceof RealPolynomial)
     {
@@ -379,9 +377,7 @@ import arb.expressions.Parser;
     else if (obj instanceof ComplexPolynomial)
     {
       ComplexPolynomial that = (ComplexPolynomial) obj;
-      return getCoeffs().equals(that.getCoeffs().real) && that.getCoeffs()
-                                                              .getImag()
-                                                              .isZero();
+      return getCoeffs().equals(that.getCoeffs().re()) && that.getCoeffs().im().isZero();
     }
     else
     {

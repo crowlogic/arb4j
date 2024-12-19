@@ -98,8 +98,8 @@ import java.util.stream.Stream;
     try ( ComplexFraction tf = new ComplexFraction())
     {
       tf.set(t);
-      evaluate(t.real, order, bits, result.real);
-      evaluate(t.imag, order, bits, result.imag);
+      evaluate(t.re(), order, bits, result.re());
+      evaluate(t.im(), order, bits, result.im());
       return result;
     }
   }  

@@ -16,6 +16,7 @@ import arb.functions.complex.ComplexNullaryFunction;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
 import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
+import arb.functions.rational.ComplexRationalNullaryFunction;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
@@ -53,18 +54,41 @@ public class HypergeometricFunctionTest extends
     assertEquals(82.03626613894305, x);
   }
 
-  public void testHypergeometricFuntionExpressionComplex()
+  public void testHypergeometricFuntionExpressionComplexRealArg()
   {
-    var               poly      =
-                           ComplexFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
-    Complex y = poly.eval(2.3, new Complex());
-    assertEquals("0.065625*x² + 0.30625*x + 0.628125", y);
+    var poly = ComplexRationalNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
+    var f    = poly.evaluate(128);
+    var g    = ComplexRationalNullaryFunction.express("201/320+49/160*x+21/320*x^2").evaluate(128);
+    assertEquals(g, f);
+
+    Complex y = f.evaluate(new Real("2.3",
+                                    128),
+                           1,
+                           128,
+                           new Complex());
+    y.printPrecision = false;
+    assertEquals("1.67965625", y.toString());
+  }
+
+  public void testHypergeometricFuntionExpressionComplexComplexArg()
+  {
+    var poly = ComplexRationalNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
+    var f    = poly.evaluate(128);
+    var g    = ComplexRationalNullaryFunction.express("201/320+49/160*x+21/320*x^2").evaluate(128);
+    assertEquals(g, f);
+
+    Complex y = f.evaluate(new Complex("2.3",
+                                       128),
+                           1,
+                           128,
+                           new Complex());
+    y.printPrecision = false;
+    assertEquals("1.67965625", y.toString());
   }
 
   public void testHypergeometricFunctionExpressionRealPolynomial()
   {
-    var            poly      =
-                        RealPolynomialNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
+    var            poly      = RealPolynomialNullaryFunction.express("pFq([-2,3.5,1],[2,4],1/2-x/2)");
     RealPolynomial expressed = poly.evaluate(bits, new RealPolynomial());
 
     assertEquals("0.065625*x² + 0.30625*x + 0.628125", expressed.toString());
@@ -77,8 +101,8 @@ public class HypergeometricFunctionTest extends
                               "p");
           var q = new Integer(1,
                               "q");
-          var α = Real.newVector(p.getSignedValue(), "α");
-          var β = Real.newVector(q.getSignedValue(), "β"); var N = new Integer();)
+          var α = Real.newVector(p.getSignedValue(), "α"); var β = Real.newVector(q.getSignedValue(), "β");
+          var N = new Integer();)
     {
       var  context    = new Context(p,
                                     q,
@@ -86,9 +110,7 @@ public class HypergeometricFunctionTest extends
                                     β.set(1),
                                     N.set(4).setName("N"));
 
-      var  expression =
-                      RealFunction.compile("z➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
-                                           context);
+      var  expression = RealFunction.compile("z➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}", context);
 
       var  sum        = expression.instantiate();
 
@@ -137,15 +159,13 @@ public class HypergeometricFunctionTest extends
                               "p");
           var q = new Integer(1,
                               "q");
-          var α = Real.newVector(p.getSignedValue(), "α");
-          var β = Real.newVector(q.getSignedValue(), "β"); var z = new Real();)
+          var α = Real.newVector(p.getSignedValue(), "α"); var β = Real.newVector(q.getSignedValue(), "β");
+          var z = new Real();)
     {
       z.set(RealConstants.π);
       var                                                context   = new Context(p,
                                                                                  q,
-                                                                                 α.set(1.5,
-                                                                                       0.75,
-                                                                                       -3),
+                                                                                 α.set(1.5, 0.75, -3),
                                                                                  β.set(1),
                                                                                  z.setName("z"));
 
@@ -158,10 +178,7 @@ public class HypergeometricFunctionTest extends
       var                                                summand   = prototype.instantiate();
 
       Real                                               res       =
-                                                             summand.evaluate(new Integer(3),
-                                                                              1,
-                                                                              128,
-                                                                              new Real());
+                                                             summand.evaluate(new Integer(3), 1, 128, new Real());
       assertEquals(-244.81029976584379503781836652101052755, res.doubleValue());
     }
   }
@@ -172,15 +189,13 @@ public class HypergeometricFunctionTest extends
                               "p");
           var q = new Integer(1,
                               "q");
-          var α = Real.newVector(p.getSignedValue(), "α");
-          var β = Real.newVector(q.getSignedValue(), "β"); var z = new Real();)
+          var α = Real.newVector(p.getSignedValue(), "α"); var β = Real.newVector(q.getSignedValue(), "β");
+          var z = new Real();)
     {
       z.set(RealConstants.π);
       var                                                      context   = new Context(p,
                                                                                        q,
-                                                                                       α.set(1.5,
-                                                                                             0.75,
-                                                                                             -3),
+                                                                                       α.set(1.5, 0.75, -3),
                                                                                        β.set(1),
                                                                                        z.setName("z"));
 
@@ -192,11 +207,10 @@ public class HypergeometricFunctionTest extends
                                                                                           context);
       var                                                      summand   = prototype.instantiate();
 
-      Complex                                                  res       =
-                                                                   summand.evaluate(new Integer(3),
-                                                                                    1,
-                                                                                    128,
-                                                                                    new Complex());
+      Complex                                                  res       = summand.evaluate(new Integer(3),
+                                                                                            1,
+                                                                                            128,
+                                                                                            new Complex());
       assertEquals(-244.81029976584379503781836652101052755, res.re().doubleValue());
       assertEquals(0.0, res.im().doubleValue());
 

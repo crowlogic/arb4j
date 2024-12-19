@@ -9,7 +9,6 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.functions.rational.ComplexRationalNullaryFunction;
-import arb.functions.real.RealFunction;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -21,39 +20,23 @@ public class ComplexRationalFunction implements
                                      Function<Fraction, ComplexFraction>,
                                      Verifiable
 {
+  public Complex evaluate(Complex t, int order, int bits, Complex result)
+  {
+    if (result == null)
+    {
+      result = new Complex();
+    }
+    try ( Complex PoverQ = new Complex(); Complex RoverS = new Complex())
+    {
+      evaluate(t.re(),order,bits,result);
+      return result;
+    }
+  }
+
   public ComplexRationalFunction(Integer val)
   {
     this();
     set(val);
-  }
-
-  public final class Part implements
-                          RealFunction
-  {
-    final RationalFunction part;
-
-    public Part(boolean real)
-    {
-      part = real ? realPart : imaginaryPart;
-    }
-
-    @Override
-    public Real evaluate(Real t, int order, int bits, Real res)
-    {
-      return part.evaluate(t, order, bits, res);
-    }
-
-    @Override
-    public String toString()
-    {
-      return part.toString();
-    }
-
-    @Override
-    public String typeset()
-    {
-      return part.typeset();
-    }
   }
 
   @Override
@@ -71,8 +54,11 @@ public class ComplexRationalFunction implements
       return false;
     if (getClass() != obj.getClass())
       return false;
-    ComplexRationalFunction other = (ComplexRationalFunction) obj;
-    return Objects.equals(imaginaryPart, other.imaginaryPart) && Objects.equals(realPart, other.realPart);
+    ComplexRationalFunction other    = (ComplexRationalFunction) obj;
+    boolean                 imEquals = Objects.equals(im(), other.im());
+    boolean                 reEquals = Objects.equals(re(), other.re());
+
+    return imEquals && reEquals;
   }
 
   @SuppressWarnings("resource")
@@ -397,24 +383,19 @@ public class ComplexRationalFunction implements
 
   public static ComplexFraction imaginaryUnit = new ComplexFraction();
 
-  public RealFunction realPart()
+  public RationalFunction realPart()
   {
-    return new Part(true);
+    return realPart;
   }
 
-  public RealFunction imaginaryPart()
-  {
-    return new Part(false);
-  }
-
-  public RealFunction re()
+  public RationalFunction re()
   {
     return realPart();
   }
 
-  public RealFunction im()
+  public RationalFunction im()
   {
-    return imaginaryPart();
+    return imaginaryPart;
   }
 
   static
@@ -677,6 +658,18 @@ public class ComplexRationalFunction implements
     res.set(this);
     res.realPart.add(real, bits);
     return res;
+  }
+
+  public Complex eval(double d, Complex complex)
+  {
+    return evaluate(Real.valueOf(d), 1, 128, complex);
+  }
+
+  public Complex evaluate(Real valueOf, int order, int bits, Complex complex)
+  {
+    re().evaluate(valueOf, order, bits, complex.re());
+    im().evaluate(valueOf, order, bits, complex.im());
+    return complex;
   }
 
 }
