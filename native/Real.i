@@ -647,9 +647,18 @@ import arb.utensils.Utensils;
   
   public RealPolynomial add(RealPolynomial a, int bits, RealPolynomial res)
   {
-    res.set(a);
-    Real x = res.getCoeffs().get(0);
-    x.add(this,bits);
+    assert a != null;
+    if (a.isEmpty())
+    {
+      res.set(0);
+    }
+    else
+    {
+      res.set(a);
+
+    }
+    Real x = res.get(0);
+    x.add(this, bits);
     x.bits = bits;
     return res;
   }

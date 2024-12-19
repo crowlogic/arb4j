@@ -43,7 +43,7 @@ public class x implements
     var context = new Context(Real.named("a").set(2),
                               Real.named("b").set(4),
                               Real.named("c").set(6));
-    x   x = new x();
+    x   x       = new x();
     context.injectReferences(x);
     var y = x.evaluate(128);
     System.out.println(x + "=" + y);
@@ -64,18 +64,18 @@ public class x implements
       initialize();
     }
 
-    return a.add(vXℝ0001.identity()
-                        .pow(cℤ0000, bits, vXℝ0002)
-                        .mul(cℤ0000.mul(cℤ0003, bits, vℤ0001).div(vXℝ0003.identity(), bits, vXℝ0004), bits, vXℝ0005)
-                        .mul(b, bits, vXℝ0006),
-                 bits,
-                 vXℝ0007)
-            .add(vXℝ0008.identity()
-                        .pow(cℤ0001, bits, vXℝ0009)
-                        .mul(cℤ0001.mul(cℤ0003, bits, vℤ0002).div(vXℝ0010.identity(), bits, vXℝ0011), bits, vXℝ0012)
-                        .mul(c, bits, vXℝ0013),
-                 bits,
-                 result);
+    RealPolynomial r1 = vXℝ0001.identity().pow(cℤ0000, bits, vXℝ0002);
+    Integer        r2 = cℤ0000.mul(cℤ0003, bits, vℤ0001);
+    RealPolynomial r3 = r2.div(vXℝ0003.identity(), bits, vXℝ0004);
+    RealPolynomial r4 = vXℝ0008.identity().pow(cℤ0001, bits, vXℝ0009);
+    RealPolynomial r5 = r1.mul(r3, bits, vXℝ0005);
+    Integer        r6 = cℤ0001.mul(cℤ0003, bits, vℤ0002);
+    RealPolynomial r7 = r6.div(vXℝ0010.identity(), bits, vXℝ0011);
+    RealPolynomial r8 = r5.mul(b, bits, vXℝ0006);
+    RealPolynomial r9 = r4.mul(r7, bits, vXℝ0012);
+    RealPolynomial r10 = a.add(r8, bits, vXℝ0007);
+    RealPolynomial r11 = r9.mul(c, bits, vXℝ0013);
+    return r10.add(r11, bits, result);
   }
 
   @Override

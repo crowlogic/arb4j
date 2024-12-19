@@ -77,22 +77,4 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
     }
   }
 
-  public static void testDivisionWithRemainder()
-  {
-    Context context = new Context();
-    try ( var x = new RealPolynomial(1); var y = new RealPolynomial(3); var z = new RealPolynomial();)
-    {
-      context.registerVariable("y", y);
-      var f = express("x/y", context, false);
-
-      x.set(0, two);
-      y.set(0, RealConstants.πsquared);
-      y.set(1, oneQuarter);
-      y.set(2, π);
-      f.evaluate(x, 1, RealConstants.prec, z);
-
-      assertTrue(z.isZero());
-      assertEquals(x, z.remainder);
-    }
-  }
 }

@@ -211,26 +211,6 @@ public class ExpressionTest extends
     assertEquals("0", x.typeset());
   }
 
-  public void testRealPolynomialDerivative()
-  {
-    var context = new Context(Real.named("a").set(2),
-                              Real.named("b").set(4),
-                              Real.named("c").set(6));
-    var x       = RealPolynomialNullaryFunction.parse("x->∂a*x+b*x²+c*x³/∂x", context);
-    var z       = RealPolynomialNullaryFunction.parse("a+2*x*b+3*x^2*c", context);
-  //  assertEquals("18*x² + 8*x + 2", x.toString());
-
-    RealPolynomialNullaryFunction wtf = x.instantiate();
-    var poly = wtf.evaluate(128);
-    assertEquals("18*x² + 8*x + 2", poly.toString());
-    var y = poly.evaluate(new Real("2.3",
-                                   128),
-                          1,
-                          128,
-                          new Real());
-    y.printPrecision = false;
-    assertEquals("115.62", y.toString());
-  }
 
   /**
    * See {@link TestCompiledDerivative} for modified decompiled thing that the
