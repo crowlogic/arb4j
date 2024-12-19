@@ -22,7 +22,7 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
-  
+
   public static Article       coveringNumbersGaussianRKHS                                     =
                                                           new Article("Covering Numbers of Gaussian Reproducing Kernel Hilbert Spaces",
                                                                       "Thomas K\"{u}hn",
@@ -602,7 +602,7 @@ public class Bibliography extends
                                                                     "2965-2975").setNumber("12");
 
   public static Book          whittakerAndWatsonCourseOfModernAnalysis                        =
-                                                                       new Book("A course of modern analysis: an introduction to the general theory of infinite processes and of analytic functions; with an account of the principal transcendental functions",
+                                                                       new Book("A course of modern analysis",
                                                                                 "Edmund Taylor Whittaker, George Neville Watson",
                                                                                 "1920").setPublisher("University Press");
 
