@@ -1173,10 +1173,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       duplicateTopOfTheStack(mv);
       invokeDefaultConstructor(mv, type);
       Compiler.putField(mv, className, mapping.functionName, type);
-
-//      loadThisOntoStack(mv);
-//      generateFunctionInitializer(mv, mapping);
-
       mv.visitLabel(alreadyInitialized);
     }
   }
@@ -1184,18 +1180,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected MethodVisitor generateInitializationCode(MethodVisitor mv)
   {
     generateCodeToThrowErrorIfAlreadyInitialized(mv);
-
     if (trace)
     {
       System.err.println("referencedFunctions=" + referencedFunctions);
     }
-
     addChecksForNullVariableReferences(mv);
-
     generateReferencedFunctionInstances(mv);
-
     referencedFunctions.values().forEach(mapping -> generateFunctionInitializer(mv, mapping));
-
     initializers.forEach(initializer -> initializer.accept(mv));
     if (recursive)
     {
@@ -1245,7 +1236,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     var intermediateVariableValues = new ArrayList<>(intermediateVariables.values().stream().toList());
     Collections.sort(intermediateVariableValues, (a, b) -> a.name.compareTo(b.name));
-
     return intermediateVariableValues;
   }
 
@@ -1261,7 +1251,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor generateLiteralConstantInitializers(MethodVisitor methodVisitor)
   {
-
     for (var literal : getSortedLiteralConstantNodes())
     {
       literal.generateLiteralConstantInitializerWithString(methodVisitor);
@@ -1420,26 +1409,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public VariableNode<D, C, F> getReference(String reference)
   {
     return referencedVariables.get(reference);
-  }
-
-  public Class<?> getThisOrAnyAscendentExpressionsPolynomialCoDomain()
-  {
-    if (coDomainType.equals(RealPolynomial.class) || coDomainType.equals(ComplexPolynomial.class)
-                  || coDomainType.equals(RealFunction.class) || coDomainType.equals(ComplexFunction.class))
-    {
-      return coDomainType;
-    }
-    if (ascendentExpression != null)
-    {
-      var ascendentPolynomialCoDomainType = ascendentExpression.getThisOrAnyAscendentExpressionsPolynomialCoDomain();
-
-      if (ascendentPolynomialCoDomainType != null)
-      {
-        return ascendentPolynomialCoDomainType;
-      }
-    }
-
-    return null;
   }
 
   public <Q> Q getVariable(VariableReference<D, C, F> reference)
@@ -2173,9 +2142,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean thisOrAnyAscendentExpressionHasIndeterminateVariable()
   {
-    boolean hasIndeterminateVariable = ascendentExpression != null
+    boolean contains = indeterminantTypes.contains(coDomainType);
+    if (contains)
+    {
+      return true;
+    }
+    boolean ascendentExpressionContains = ascendentExpression != null
                   && ascendentExpression.thisOrAnyAscendentExpressionHasIndeterminateVariable();
-    return indeterminantTypes.contains(coDomainType) || hasIndeterminateVariable;
+    return ascendentExpressionContains;
   }
 
   protected void throwUnexpectedCharacterException()

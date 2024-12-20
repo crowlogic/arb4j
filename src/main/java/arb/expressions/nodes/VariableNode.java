@@ -478,11 +478,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                         expression);
     }
 
-    if (isIndeterminate)
-    {
-      reference.type = expression.getThisOrAnyAscendentExpressionsPolynomialCoDomain();
-    }
-
     var inputVariable = expression.independentVariable;
 
     if (resolveContextualVariable())
