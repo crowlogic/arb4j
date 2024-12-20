@@ -1,11 +1,8 @@
 package arb.functions;
 
-import arb.Fraction;
-import arb.Initializable;
+import arb.*;
 import arb.Integer;
-import arb.RationalFunction;
-import arb.Real;
-import arb.Typesettable;
+import arb.expressions.Context;
 import arb.functions.rational.RationalFunctionSequence;
 
 public class P implements
@@ -14,12 +11,21 @@ public class P implements
                AutoCloseable,
                Initializable
 {
+  public static void main(String args[])
+  {
+    Context context = new Context(Real.named("α").set(RealConstants.negHalf),
+                                  Real.named("β").set(RealConstants.negHalf));
+    P       P       = new P();
+    context.injectReferences(P);
+    var P3 = P.evaluate(3, 128);
+    System.out.println("P3=" + P3);
+  }
+
   public boolean          isInitialized;
   public Fraction         vf0018 = new Fraction();
   public Fraction         vf0019 = new Fraction();
   public Fraction         vf0020 = new Fraction();
   public Fraction         vf0021 = new Fraction();
-  public RationalFunction vℚ0005 = new RationalFunction();
   public RationalFunction vℚ0006 = new RationalFunction();
   public RationalFunction vℚ0007 = new RationalFunction();
   public RationalFunction vℚ0008 = new RationalFunction();
@@ -130,7 +136,6 @@ public class P implements
     vf0019.close();
     vf0020.close();
     vf0021.close();
-    vℚ0005.close();
     vℚ0006.close();
     vℚ0007.close();
     vℚ0008.close();
