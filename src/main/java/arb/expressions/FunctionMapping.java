@@ -86,7 +86,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
   public void declare(ClassVisitor classVisitor, String name)
   {
     String descriptor = functionFieldDescriptor();
-    classVisitor.visitField(ACC_PUBLIC | (name.equals(functionName) ? 0 : ACC_FINAL), name, descriptor, null, null);
+    classVisitor.visitField(ACC_PUBLIC , name, descriptor, null, null);
   }
 
   public void loadFunctionReferenceOntoStack(MethodVisitor mv)
