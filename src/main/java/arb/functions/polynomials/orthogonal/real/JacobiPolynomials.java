@@ -3,7 +3,6 @@ package arb.functions.polynomials.orthogonal.real;
 import java.util.Iterator;
 import java.util.List;
 
-import arb.Fraction;
 import arb.Integer;
 import arb.Real;
 import arb.RealPolynomial;
@@ -11,12 +10,12 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
 import arb.expressions.Context;
-import arb.functions.NullaryFunction;
 import arb.functions.integer.RealPolynomialSequence;
 import arb.functions.integer.RealSequence;
 import arb.functions.polynomials.RealOrthogonalPolynomialSequenceIterator;
 import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
 import arb.functions.real.RealFunction;
+import arb.functions.real.RealNullaryFunction;
 
 /**
  *
@@ -62,39 +61,39 @@ public class JacobiPolynomials implements
 
   }
 
-  public static Real                     domain  = new Real("0+/-1",
-                                                            128);
+  public static Real                  domain  = new Real("0+/-1",
+                                                         128);
 
-  public int                             bits    = 128;
-
-  @SuppressWarnings("resource")
-  public final Real                      α       = new Real().setName("α");
+  public int                          bits    = 128;
 
   @SuppressWarnings("resource")
-  public final Real                      β       = new Real().setName("β");
+  public final Real                   α       = new Real().setName("α");
 
-  final public Context                   context = new Context(α,
-                                                               β);
+  @SuppressWarnings("resource")
+  public final Real                   β       = new Real().setName("β");
 
-  final public RealFunction              C       = RealFunction.express("C", "n➔2*n+α+β", context);
+  final public Context                context = new Context(α,
+                                                            β);
 
-  final public RealSequence              F       = RealSequence.express("F", "n➔C(n-1)*C(n)", context);
+  final public RealFunction           C       = RealFunction.express("C", "n➔2*n+α+β", context);
 
-  final public NullaryFunction<Fraction> G       = NullaryFunction.express(Fraction.class, "G", "α²-β²", context);
+  final public RealSequence           F       = RealSequence.express("F", "n➔C(n-1)*C(n)", context);
 
-  final public RealPolynomialSequence    A       =
-                                           RealPolynomialSequence.express("A", "n➔(F(n)*x+G())*(C(n)-1)/2", context);
+  final public RealNullaryFunction    G       = RealNullaryFunction.express("G", "α²-β²", context);
 
-  final public RealSequence              E       = RealSequence.express("E", "n➔n*C(n/2)*C(n-1)", context);
+  final public RealPolynomialSequence A       =
+                                        RealPolynomialSequence.express("A", "n➔(F(n)*x+G())*(C(n)-1)/2", context);
 
-  final public RealSequence              B       = RealSequence.express("B", "n➔(n+α-1)*(n+β-1)*C(n)", context);
+  final public RealSequence           E       = RealSequence.express("E", "n➔n*C(n/2)*C(n-1)", context);
 
-  final public RealPolynomialSequence    P       =
-                                           RealPolynomialSequence.express("P",
-                                                                          "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
-                                                                          context);
+  final public RealSequence           B       = RealSequence.express("B", "n➔(n+α-1)*(n+β-1)*C(n)", context);
 
-  protected RealFunction                 orthogonalityMeasure;
+  final public RealPolynomialSequence P       =
+                                        RealPolynomialSequence.express("P",
+                                                                       "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
+                                                                       context);
+
+  protected RealFunction              orthogonalityMeasure;
 
   public JacobiPolynomials(Real a, Real b)
   {
