@@ -11,7 +11,7 @@ arithmetic operations.
 
 ### Fluent Interface Pattern
 - arb4j employs a fluent pattern wherever possible, enhancing the way functions receive and return values.
-- Typically, the last argument in a function call becomes the return value, defaulting to `'this'` if not specified.
+- The last argument in a function call becomes the return value, defaulting to `'this'` if not specified.
 
 **Example:**
 ```java
