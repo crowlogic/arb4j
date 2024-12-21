@@ -621,7 +621,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       System.err.format("\nregisterFactor(factor=%s,\nfactorMapping=%s\n)\n\n", factorExpression, factorMapping);
     }
 
-    expression.referencedFunctions.put(factorFunctionFieldName, factorMapping);
+    expression.referencedFunctionMappings.put(factorFunctionFieldName, factorMapping);
   }
 
   public FunctionMapping<Integer, R, Sequence<R>> registerFunctionMapping(Expression<Integer, R, Sequence<R>> factor,

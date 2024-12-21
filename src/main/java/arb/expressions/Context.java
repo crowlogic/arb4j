@@ -86,7 +86,7 @@ public class Context
                     functionReferenceGraph.getOrDefault(dependency.variableName,
                                                         new DependencyInfo(dependency.variableName)));
     }
-    if (sortedMap.values().stream().mapToInt(f -> f.constructionDependencies.size()).sum() > 0)
+    if (sortedMap.values().stream().mapToInt(f -> f.dependencies.size()).sum() > 0)
     {
       // TopologicalSorter.addTransitiveDependencies(sortedMap);
       filename = sortedMap.keySet().stream().collect(Collectors.joining()) + ".dot";
@@ -106,10 +106,10 @@ public class Context
       // Get referenced functions from the function mapping
       DependencyInfo           depInfo      = new DependencyInfo(functionName);
 
-      List<String>             dependencies = depInfo.constructionDependencies;
-      if (function.expression.referencedFunctions != null)
+      List<String>             dependencies = depInfo.dependencies;
+      if (function.expression.referencedFunctionMappings != null)
       {
-        dependencies.addAll(function.expression.referencedFunctions.keySet()
+        dependencies.addAll(function.expression.referencedFunctionMappings.keySet()
                                                                    .stream()
                                                                    .filter(name -> !name.equals(functionName))
                                                                    .toList());

@@ -246,7 +246,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean                                        recursive                     = false;
 
-  public HashMap<String, FunctionMapping<?, ?, ?>>      referencedFunctions           = new HashMap<>();
+  public HashMap<String, FunctionMapping<?, ?, ?>>      referencedFunctionMappings    = new HashMap<>();
 
   public HashMap<String, VariableNode<D, C, F>>         referencedVariables           = new HashMap<>();
 
@@ -487,7 +487,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return classVisitor;
     }
     context.populateFunctionReferenceGraph();
-    List<DependencyInfo> sortedFunctions = TopologicalSorter.findDependencyOrderUsingDepthFirstSearch(context.functionReferenceGraph);
+    sortedFunctions = TopologicalSorter.findDependencyOrderUsingDepthFirstSearch(context.functionReferenceGraph);
 
     if (trace)
     {
@@ -500,8 +500,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // Declare functions in dependency order
     for (DependencyInfo dependency : sortedFunctions)
     {
-      String dependencyVariableName = dependency.variableName;
-      FunctionMapping<?, ?, ?> function = referencedFunctions.get(dependencyVariableName);
+      String                   dependencyVariableName = dependency.variableName;
+      FunctionMapping<?, ?, ?> function               = referencedFunctionMappings.get(dependencyVariableName);
+      if (trace && className.equals("P"))
+      {
+        System.err.println(className + ": Declaring " + dependency);
+      }
+
       if (function != null)
       {
         function.declare(classVisitor, dependencyVariableName);
@@ -877,9 +882,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                                               intermediateVariable.name,
                                                                                               intermediateVariable.type));
 
-      referencedFunctions.forEach((name, mapping) -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
-                                                                            name,
-                                                                            mapping.type()));
+      referencedFunctionMappings.forEach((name, mapping) -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
+                                                                                   name,
+                                                                                   mapping.type()));
     }
 
     methodVisitor.visitInsn(Opcodes.RETURN);
@@ -1146,7 +1151,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else
     {
-      referencedFunctions.put(nestedFunction.functionName, nestedFunction);
+      referencedFunctionMappings.put(nestedFunction.functionName, nestedFunction);
     }
 
     return mv;
@@ -1184,11 +1189,29 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     generateCodeToThrowErrorIfAlreadyInitialized(mv);
     if (trace)
     {
-      System.err.println("referencedFunctions=" + referencedFunctions);
+      System.err.println("referencedFunctions=" + referencedFunctionMappings);
     }
     addChecksForNullVariableReferences(mv);
-    generateReferencedFunctionInstances(mv);
-    referencedFunctions.values().forEach(mapping -> generateFunctionInitializer(mv, mapping));
+
+    // Initialize in proper dependency order
+    if (sortedFunctions != null)
+    {
+      for (DependencyInfo dependency : sortedFunctions)
+      {
+        if (trace && className.equals("P"))
+        {
+          System.err.println(className + "  Initializing " + dependency);
+        }
+        String                   functionName = dependency.variableName;
+        FunctionMapping<?, ?, ?> mapping      = referencedFunctionMappings.get(functionName);
+        if (mapping != null)
+        {
+          constructReferencedFunctionInstanceIfItIsNull(mv, mapping);
+          generateFunctionInitializer(mv, mapping);
+        }
+      }
+    }
+
     initializers.forEach(initializer -> initializer.accept(mv));
     if (recursive)
     {
@@ -1200,9 +1223,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public void generateReferencedFunctionInstances(MethodVisitor mv)
   {
-    referencedFunctions.values()
-                       .stream()
-                       .forEach(mapping -> constructReferencedFunctionInstanceIfItIsNull(mv, mapping));
+    referencedFunctionMappings.values()
+                              .stream()
+                              .forEach(mapping -> constructReferencedFunctionInstanceIfItIsNull(mv, mapping));
   }
 
   protected ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)
@@ -2130,6 +2153,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   static HashSet<Class<?>>                        indeterminantTypes = new HashSet<Class<?>>();
 
   private ArrayList<LiteralConstantNode<D, C, F>> literalConstantNodes;
+
+  private List<DependencyInfo>                    sortedFunctions;
 
   static
   {
