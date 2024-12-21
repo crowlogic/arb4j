@@ -45,6 +45,7 @@ public class P implements
   public P                P;
   public Real             α;
   public Real             β;
+  public F F;
 
   @Override
   public Class<RationalFunction> coDomainType()
@@ -103,16 +104,19 @@ public class P implements
       {
         B = new B();
       }
-
-      if (C == null)
-      {
-        C = new C();
-      }
-
       if (E == null)
       {
         E = new E();
       }
+      if (F == null)
+      {
+       F = A.F = new F();
+      }
+      if (C == null)
+      {
+        C = A.C = B.C = E.C = F.C = new C();
+      }
+
 
       A.α           = α;
       A.β           = β;

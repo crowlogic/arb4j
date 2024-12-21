@@ -16,6 +16,115 @@ public class TopologicalSorter
 {
 
   /**
+   * Represents a field assignment in a variable's initialization
+   */
+  public static class FieldAssignment
+  {
+    public final String targetObject; // Object being assigned to
+    public final String targetField;  // Field being assigned
+    public final String sourceObject; // Object being assigned from
+    public final String sourceField;  // Field being assigned from
+
+    public FieldAssignment(String targetObj, String targetField, String sourceObj, String sourceField)
+    {
+      this.targetObject = targetObj;
+      this.targetField  = targetField;
+      this.sourceObject = sourceObj;
+      this.sourceField  = sourceField;
+    }
+  }
+
+  /**
+   * Tracks all dependency information for a variable
+   */
+  public static class DependencyInfo
+  {
+    public final String                variableName;
+    public final List<String>          constructionDependencies = new ArrayList<>();
+    public final List<FieldAssignment> fieldAssignments         = new ArrayList<>();
+
+    public DependencyInfo(String name)
+    {
+      this.variableName = name;
+    }
+  }
+
+  /**
+   * Determines initialization order and field assignments for variables with
+   * dependencies
+   * 
+   * @param dependencies Map where key is variable name and value contains all
+   *                     dependency info
+   * @return Ordered list of dependency info with optimal initialization sequence
+   */
+  public static List<DependencyInfo> findDependencyOrderUsingDepthFirstSearch(Map<String, DependencyInfo> dependencies)
+  {
+    List<DependencyInfo>      initializationOrder = new ArrayList<>();
+    Set<String>               processedVariables  = new HashSet<>();
+
+    // Build graph of construction dependencies
+    Map<String, List<String>> constructionGraph   = new HashMap<>();
+    dependencies.forEach((name, info) -> constructionGraph.put(name, info.constructionDependencies));
+
+    // Do DFS traversal for construction order
+    for (String variable : constructionGraph.keySet())
+    {
+      if (!processedVariables.contains(variable))
+      {
+        depthFirstDependencySearch(variable, constructionGraph, processedVariables, initializationOrder, dependencies);
+      }
+    }
+
+    Collections.reverse(initializationOrder);
+    return initializationOrder;
+  }
+
+  public static void depthFirstDependencySearch(String variable,
+                                                Map<String, List<String>> constructionGraph,
+                                                Set<String> processedVariables,
+                                                List<DependencyInfo> initializationOrder,
+                                                Map<String, DependencyInfo> dependencies)
+  {
+
+    if (processedVariables.contains(variable))
+      return;
+
+    processedVariables.add(variable);
+    for (String dependency : constructionGraph.getOrDefault(variable, Collections.emptyList()))
+    {
+      depthFirstDependencySearch(dependency, constructionGraph, processedVariables, initializationOrder, dependencies);
+    }
+
+    initializationOrder.add(dependencies.get(variable));
+  }
+
+  /**
+   * Performs depth-first search traversal of dependency graph.
+   * 
+   * @param variable            Current variable being processed
+   * @param dependencies        Map of all variable dependencies
+   * @param processedVariables  Set of variables already processed
+   * @param initializationOrder Result list containing variables in initialization
+   *                            order
+   */
+  public static void depthFirstDependencySearch(String variable,
+                                                Map<String, List<String>> dependencies,
+                                                Set<String> processedVariables,
+                                                List<String> initializationOrder)
+  {
+
+    if (processedVariables.contains(variable))
+      return;
+
+    processedVariables.add(variable);
+    for (String dependency : dependencies.getOrDefault(variable, Collections.emptyList()))
+    {
+      depthFirstDependencySearch(dependency, dependencies, processedVariables, initializationOrder);
+    }
+    initializationOrder.add(variable);
+  }
+
+  /**
    * Performs topological sorting on a dependency graph.
    *
    * @param graph A map where each key is a node and its value is a list of nodes
@@ -107,7 +216,7 @@ public class TopologicalSorter
     return dot.toString();
   }
 
-  public static String toDotFormatReversedDirect(Map<String, List<String>> graph)
+  public static String toDotFormatReversedDirect(HashMap<String, DependencyInfo> sortedMap)
   {
     StringBuilder dot = new StringBuilder();
     dot.append("digraph DependencyGraph {\n");
@@ -115,10 +224,10 @@ public class TopologicalSorter
     dot.append("    node [shape=box];\n\n");
 
     // Only add direct edges, but in reverse direction
-    for (Map.Entry<String, List<String>> entry : graph.entrySet())
+    for (Map.Entry<String,DependencyInfo> entry : sortedMap.entrySet())
     {
       String node = entry.getKey();
-      for (String dependency : entry.getValue())
+      for (String dependency : entry.getValue().constructionDependencies )
       {
         // Reverse: dependency points TO node instead of node pointing TO dependency
         dot.append(String.format("    \"%s\" -> \"%s\";\n", dependency, node));

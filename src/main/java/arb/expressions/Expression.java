@@ -35,6 +35,7 @@ import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.Sequence;
 import arb.functions.real.RealFunction;
 import arb.utensils.TopologicalSorter;
+import arb.utensils.TopologicalSorter.DependencyInfo;
 import arb.utensils.Utensils;
 import arb.utensils.text.trees.TextTree;
 import arb.utensils.text.trees.TreeModel;
@@ -486,7 +487,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return classVisitor;
     }
     context.populateFunctionReferenceGraph();
-    List<String> sortedFunctions = TopologicalSorter.sort(context.functionReferenceGraph);
+    List<DependencyInfo> sortedFunctions = TopologicalSorter.findDependencyOrderUsingDepthFirstSearch(context.functionReferenceGraph);
 
     if (trace)
     {
@@ -497,12 +498,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
     }
     // Declare functions in dependency order
-    for (String functionName : sortedFunctions)
+    for (DependencyInfo dependency : sortedFunctions)
     {
-      FunctionMapping<?, ?, ?> function = referencedFunctions.get(functionName);
+      String dependencyVariableName = dependency.variableName;
+      FunctionMapping<?, ?, ?> function = referencedFunctions.get(dependencyVariableName);
       if (function != null)
       {
-        function.declare(classVisitor, functionName);
+        function.declare(classVisitor, dependencyVariableName);
       }
     }
 

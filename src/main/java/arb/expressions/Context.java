@@ -5,7 +5,11 @@ import static java.lang.String.format;
 import static java.lang.System.err;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -23,6 +27,7 @@ import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.integer.Sequence;
 import arb.utensils.TopologicalSorter;
+import arb.utensils.TopologicalSorter.DependencyInfo;
 
 /**
  * The {@link Context} class is an integral part of the {@link Expression}
@@ -71,20 +76,21 @@ public class Context
     return this;
   }
 
-  public String saveDependencyGraph(List<String> sortedFunctions)
+  public String saveDependencyGraph(List<DependencyInfo> sortedFunctions)
   {
-    String filename = null;
-    HashMap<String, List<String>> sortedMap = new HashMap<>();
-    for (String function : sortedFunctions)
+    String                          filename  = null;
+    HashMap<String, DependencyInfo> sortedMap = new HashMap<>();
+    for (DependencyInfo dependency : sortedFunctions)
     {
-      sortedMap.put(function, functionReferenceGraph.getOrDefault(function, Collections.emptyList()));
+      sortedMap.put(dependency.variableName,
+                    functionReferenceGraph.getOrDefault(dependency.variableName,
+                                                        new DependencyInfo(dependency.variableName)));
     }
-    if (sortedMap.values().stream().mapToInt(List::size).sum() > 0)
+    if (sortedMap.values().stream().mapToInt(f -> f.constructionDependencies.size()).sum() > 0)
     {
       // TopologicalSorter.addTransitiveDependencies(sortedMap);
       filename = sortedMap.keySet().stream().collect(Collectors.joining()) + ".dot";
-      TopologicalSorter.saveToDotFile(TopologicalSorter.toDotFormatReversedDirect(sortedMap),
-                                      filename);
+      TopologicalSorter.saveToDotFile(TopologicalSorter.toDotFormatReversedDirect(sortedMap), filename);
     }
     return filename;
   }
@@ -98,7 +104,9 @@ public class Context
       FunctionMapping<?, ?, ?> function     = entry.getValue();
 
       // Get referenced functions from the function mapping
-      List<String>             dependencies = new ArrayList<>();
+      DependencyInfo           depInfo      = new DependencyInfo(functionName);
+
+      List<String>             dependencies = depInfo.constructionDependencies;
       if (function.expression.referencedFunctions != null)
       {
         dependencies.addAll(function.expression.referencedFunctions.keySet()
@@ -107,11 +115,11 @@ public class Context
                                                                    .toList());
       }
 
-      functionReferenceGraph.put(functionName, dependencies);
+      functionReferenceGraph.put(functionName, depInfo);
     }
   }
 
-  public Map<String, List<String>> functionReferenceGraph = new HashMap<String, List<String>>();
+  public Map<String, DependencyInfo> functionReferenceGraph = new HashMap<String, DependencyInfo>();
 
   public Context()
   {

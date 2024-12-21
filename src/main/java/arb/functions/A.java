@@ -70,16 +70,17 @@ public class A implements
     }
     else
     {
-      if (C == null)
-      {
-        C = new C();
-      }
+   
 
       if (F == null)
       {
         F = new F();
       }
-
+      if (C == null)
+      {
+        C = new C();
+      }
+      F.C = C;
       if (G == null)
       {
         G = new G();
