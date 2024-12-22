@@ -22,10 +22,14 @@ public class P implements
   }
 
   public boolean          isInitialized;
+  public final Integer    cℤ0000 = new Integer("0");
+  public final Integer    cℤ0001 = new Integer("1");
+  public final Integer    cℤ0002 = new Integer("2");
   public Fraction         vf0018 = new Fraction();
   public Fraction         vf0019 = new Fraction();
   public Fraction         vf0020 = new Fraction();
   public Fraction         vf0021 = new Fraction();
+  public RationalFunction vℚ0005 = new RationalFunction();
   public RationalFunction vℚ0006 = new RationalFunction();
   public RationalFunction vℚ0007 = new RationalFunction();
   public RationalFunction vℚ0008 = new RationalFunction();
@@ -38,14 +42,13 @@ public class P implements
   public RationalFunction vℚ0015 = new RationalFunction();
   public Integer          vℤ0001 = new Integer();
   public Integer          vℤ0002 = new Integer();
-  public C                C;
+  public P                P;
   public E                E;
   public B                B;
   public A                A;
-  public P                P;
+  public C                C;
   public Real             α;
   public Real             β;
-  public F F;
 
   @Override
   public Class<RationalFunction> coDomainType()
@@ -56,107 +59,108 @@ public class P implements
   @Override
   public RationalFunction evaluate(Integer n, int order, int bits, RationalFunction result)
   {
-    if (!isInitialized)
+    if (!this.isInitialized)
     {
-      initialize();
+      this.initialize();
     }
     return switch (n.getSignedValue())
     {
-    case 0 -> result.set(1);
-    case 1 -> C.evaluate(vf0018.set(1), order, bits, vf0019)
-               .mul(vℚ0006.identity(), bits, vℚ0007)
-               .sub(β, bits, vℚ0008)
-               .add(α, bits, vℚ0009)
-               .div(2, bits, result);
-    default -> A.evaluate(n, order, bits, vℚ0010)
-                .mul(P.evaluate(n.sub(1, bits, vℤ0001), order, bits, vℚ0011), bits, vℚ0012)
-                .sub(B.evaluate(n, order, bits, vf0020)
-                      .mul(P.evaluate(n.sub(2, bits, vℤ0002), order, bits, vℚ0013), bits, vℚ0014),
-                     bits,
-                     vℚ0015)
-                .div(E.evaluate(n, order, bits, vf0021), bits, result);
+    case 0 -> result.set(this.vℚ0005.set(this.cℤ0001));
+    case 1 -> ((Fraction) this.C.evaluate(this.vf0018.set(this.cℤ0001),
+                                          order,
+                                          bits,
+                                          this.vf0019)).mul(this.vℚ0006.identity(), bits, this.vℚ0007)
+                                                       .sub(this.β, bits, this.vℚ0008)
+                                                       .add(this.α, bits, this.vℚ0009)
+                                                       .div(this.cℤ0002, bits, result);
+    default ->
+            ((RationalFunction) this.A.evaluate(n,
+                                                order,
+                                                bits,
+                                                this.vℚ0010)).mul((RationalFunction) this.P.evaluate(n.sub(this.cℤ0001, bits, this.vℤ0001), order, bits, this.vℚ0011), bits, this.vℚ0012).sub(((Fraction) this.B.evaluate(n, order, bits, this.vf0020)).mul((RationalFunction) this.P.evaluate(n.sub(this.cℤ0002, bits, this.vℤ0002), order, bits, this.vℚ0013), bits, this.vℚ0014), bits, this.vℚ0015).div((Fraction) this.E.evaluate(n, order, bits, this.vf0021), bits, result);
     };
   }
 
   @Override
   public void initialize()
   {
-    if (isInitialized)
+    if (this.isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (α == null)
+    else if (this.α == null)
     {
       throw new AssertionError("P.α is null");
     }
-    else if (β == null)
+    else if (this.β == null)
     {
       throw new AssertionError("P.β is null");
     }
     else
     {
-      if (A == null)
+      if (this.E == null)
       {
-        A = new A();
+        this.E = new E();
       }
 
-      if (B == null)
+      this.E.α = this.α;
+      this.E.β = this.β;
+      if (this.B == null)
       {
-        B = new B();
-      }
-      if (E == null)
-      {
-        E = new E();
-      }
-      if (F == null)
-      {
-       F = A.F = new F();
-      }
-      if (C == null)
-      {
-        C = A.C = B.C = E.C = F.C = new C();
+        this.B = new B();
       }
 
+      this.B.α = this.α;
+      this.B.β = this.β;
+      if (this.A == null)
+      {
+        this.A = new A();
+      }
 
-      A.α           = α;
-      A.β           = β;
-      B.α           = α;
-      B.β           = β;
-      C.α           = α;
-      C.β           = β;
-      E.α           = α;
-      E.β           = β;
-      P             = new P();
-      P.α           = α;
-      P.β           = β;
-      isInitialized = true;
+      this.A.α = this.α;
+      this.A.β = this.β;
+      if (this.C == null)
+      {
+        this.C = A.C = B.C = E.C = new C();
+      } 
+
+      this.C.α           = this.α;
+      this.C.β           = this.β;
+      this.P           = new P();
+      this.P.α           = this.α;
+      this.P.β           = this.β;
+      this.isInitialized = true;
     }
   }
 
   @Override
   public void close()
   {
-    vf0018.close();
-    vf0019.close();
-    vf0020.close();
-    vf0021.close();
-    vℚ0006.close();
-    vℚ0007.close();
-    vℚ0008.close();
-    vℚ0009.close();
-    vℚ0010.close();
-    vℚ0011.close();
-    vℚ0012.close();
-    vℚ0013.close();
-    vℚ0014.close();
-    vℚ0015.close();
-    vℤ0001.close();
-    vℤ0002.close();
-    P.close();
-    A.close();
-    B.close();
-    C.close();
-    E.close();
+    this.cℤ0000.close();
+    this.cℤ0001.close();
+    this.cℤ0002.close();
+    this.vf0018.close();
+    this.vf0019.close();
+    this.vf0020.close();
+    this.vf0021.close();
+    this.vℚ0005.close();
+    this.vℚ0006.close();
+    this.vℚ0007.close();
+    this.vℚ0008.close();
+    this.vℚ0009.close();
+    this.vℚ0010.close();
+    this.vℚ0011.close();
+    this.vℚ0012.close();
+    this.vℚ0013.close();
+    this.vℚ0014.close();
+    this.vℚ0015.close();
+    this.vℤ0001.close();
+    this.vℤ0002.close();
+    this.P.close();
+    this.A.close();
+    this.B.close();
+    this.C.close();
+    this.E.close();
   }
 
   @Override

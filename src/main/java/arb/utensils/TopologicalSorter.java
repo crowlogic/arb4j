@@ -6,6 +6,7 @@ import java.util.*;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.FunctionMapping;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -34,7 +35,9 @@ public class TopologicalSorter
     }
   }
 
-  public static List<DependencyInfo> findDependencyOrderUsingDepthFirstSearch(Map<String, DependencyInfo> dependencies)
+  public static List<DependencyInfo>
+         findDependencyOrderUsingDepthFirstSearch(Map<String, DependencyInfo> dependencies,
+                                                  HashMap<String, FunctionMapping<?, ?, ?>> mappings)
   {
     List<DependencyInfo> initializationOrder = new ArrayList<>();
     Set<String>          processedVariables  = new HashSet<>();
@@ -51,8 +54,9 @@ public class TopologicalSorter
         depthFirstDependencySearch(variable, dependencies, processedVariables, initializationOrder);
       }
     }
-
+ 
     Collections.reverse(initializationOrder); // Now we need the reverse again
+   
     return initializationOrder;
   }
 
@@ -133,27 +137,6 @@ public class TopologicalSorter
 
     dot.append("}\n");
     return dot.toString();
-  }
-
-  public static void addTransitiveDependencies(Map<String, List<String>> graph)
-  {
-    for (String node : new ArrayList<>(graph.keySet()))
-    {
-      List<String> dependencies = graph.computeIfAbsent(node, k -> new ArrayList<>());
-
-      for (String dep : new ArrayList<>(dependencies))
-      {
-        List<String> transitive = graph.getOrDefault(dep, Collections.emptyList());
-
-        for (String trans : transitive)
-        {
-          if (!dependencies.contains(trans))
-          {
-            dependencies.add(trans);
-          }
-        }
-      }
-    }
   }
 
   public static void saveToDotFile(String dotContent, String filePath)

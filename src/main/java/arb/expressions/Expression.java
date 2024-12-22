@@ -487,7 +487,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return classVisitor;
     }
     context.populateFunctionReferenceGraph();
-    sortedFunctions = TopologicalSorter.findDependencyOrderUsingDepthFirstSearch(context.functionReferenceGraph);
+    sortedFunctions = TopologicalSorter.findDependencyOrderUsingDepthFirstSearch(context.functionReferenceGraph,
+                                                                                 referencedFunctionMappings);
 
     if (trace)
     {
@@ -1196,7 +1197,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         if (className.equals("P"))
         {
-          System.err.println(className + "  Initializing " + dependency);
+          var filtered = dependency.reverseDependencies.stream()
+                                                       .filter(key -> referencedFunctionMappings.containsKey(key))
+                                                       .toList();
+          System.err.println(className + "  Initializing " + dependency + " filtered " + filtered);
         }
         String                   functionName = dependency.variableName;
         FunctionMapping<?, ?, ?> mapping      = referencedFunctionMappings.get(functionName);
