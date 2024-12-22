@@ -502,7 +502,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       String                   dependencyVariableName = dependency.variableName;
       FunctionMapping<?, ?, ?> function               = referencedFunctionMappings.get(dependencyVariableName);
-      if (trace && className.equals("P"))
+      if (className.equals("P"))
       {
         System.err.println(className + ": Declaring " + dependency);
       }
@@ -1194,7 +1194,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       for (DependencyInfo dependency : sortedFunctions)
       {
-        if (trace && className.equals("P"))
+        if (className.equals("P"))
         {
           System.err.println(className + "  Initializing " + dependency);
         }
