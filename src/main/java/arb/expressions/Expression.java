@@ -494,10 +494,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       String                   dependencyVariableName = dependency.variableName;
       FunctionMapping<?, ?, ?> function               = referencedFunctionMappings.get(dependencyVariableName);
-      if (className.equals("P"))
-      {
-        System.err.println(className + ": Declaring " + dependency);
-      }
 
       if (function != null)
       {
@@ -1159,15 +1155,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // Initialize in proper dependency order
     if (sortedFunctions != null)
     {
+      System.err.println();
       for (DependencyInfo dependency : sortedFunctions)
       {
-        if (className.equals("P"))
-        {
-          var filtered = dependency.reverseDependencies.stream()
-                                                       .filter(key -> referencedFunctionMappings.containsKey(key))
-                                                       .toList();
-          System.err.println(className + "  Initializing " + dependency + " filtered " + filtered);
-        }
+        var filtered = dependency.reverseDependencies.stream()
+                                                     .filter(key -> referencedFunctionMappings.containsKey(key))
+                                                     .toList();
+        System.err.println(className + "  Initializing " + dependency.variableName + " to be assigned to " + filtered);
         String                   functionName = dependency.variableName;
         FunctionMapping<?, ?, ?> mapping      = referencedFunctionMappings.get(functionName);
         if (mapping != null)
@@ -2257,4 +2251,3 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
 }
-

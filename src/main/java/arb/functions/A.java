@@ -99,7 +99,8 @@ public class A implements
       {
         this.C = new C();
       }
-
+      F.C = C;
+      
       this.C.α           = this.α;
       this.C.β           = this.β;
       this.isInitialized = true;

@@ -4,6 +4,7 @@ import arb.*;
 import arb.Integer;
 import arb.expressions.Context;
 import arb.functions.rational.RationalFunctionSequence;
+import arb.utensils.ShellFunctions;
 
 public class P implements
                RationalFunctionSequence,
@@ -17,8 +18,9 @@ public class P implements
                                   Real.named("β").set(RealConstants.negHalf));
     P       P       = new P();
     context.injectReferences(P);
-    var P3 = P.evaluate(3, 128);
-    System.out.println("P3=" + P3);
+    var P2 = P.evaluate(2, 128);
+    System.out.println("P2=" + P2);
+    ShellFunctions.inspect(P);
   }
 
   public boolean          isInitialized;
