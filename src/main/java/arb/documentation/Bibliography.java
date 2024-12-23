@@ -23,6 +23,14 @@ public class Bibliography extends
                           AbstractBibliography
 {
 
+  public static Article       besselFunctionsAndWaveEquation                                  =
+                                                             new Article("Bessel Functions and the Wave Equation",
+                                                                         "Alberto Torchinsky",
+                                                                         "2018",
+                                                                         "arXiv preprint arXiv:1812.09265",
+                                                                         "",
+                                                                         "");
+
   public static Article       coveringNumbersGaussianRKHS                                     =
                                                           new Article("Covering Numbers of Gaussian Reproducing Kernel Hilbert Spaces",
                                                                       "Thomas K\"{u}hn",
