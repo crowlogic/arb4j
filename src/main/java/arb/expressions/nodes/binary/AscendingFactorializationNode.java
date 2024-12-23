@@ -1,8 +1,8 @@
 package arb.expressions.nodes.binary;
 
 import arb.Field;
-import arb.Real;
 import arb.Fraction;
+import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
@@ -102,8 +102,30 @@ public class AscendingFactorializationNode<D, R, F extends Function<? extends D,
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO: differentiate " + this + " with respect to " + variable;
-    return null;
+    // Case 1: Diff(pochhammer(f(x),y),x)
+    if (right.isIndependentOf(variable))
+    {
+      // diff(f(x),x)*pochhammer(f(x),y)*(Psi(y+f(x))-Psi(f(x)))
+      var dfx     = left.differentiate(variable);
+      var psiSum  = right.add(left).digamma();
+      var psiLeft = left.digamma();
+      var psiDiff = psiSum.sub(psiLeft);
+      return dfx.mul(this).mul(psiDiff);
+    }
+    // Case 2: Diff(pochhammer(x,f(y)),y)
+    else if (left.isIndependentOf(variable))
+    {
+      // diff(f(y),y)*pochhammer(x,f(y))*Psi(f(y)+x)
+      var dfy     = right.differentiate(variable);
+      var psiTerm = right.add(left).digamma();
+      return dfy.mul(this).mul(psiTerm);
+    }
+    // Case 3: Both terms depend on the variable
+    else
+    {
+      throw new UnsupportedOperationException("TODO: implement Differentiation of Pochhammer symbol with both terms dependent on the variable is not implemented: "
+                                              + this);
+    }
   }
 
   @Override

@@ -366,4 +366,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return apply("sec");
   }
 
+  public boolean isIndependentOf(VariableNode<D, R, F> variable)
+  {
+    return !dependsOn(variable);
+  }
+
 }
