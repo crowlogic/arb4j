@@ -1093,11 +1093,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return functionalExpression;
   }
 
-  protected MethodVisitor generateFunctionInitializer(MethodVisitor mv, FunctionMapping<?, ?, ?> nestedFunction)
+  protected MethodVisitor generateFunctionInitializer(MethodVisitor mv,
+                                                      FunctionMapping<?, ?, ?> nestedFunction,
+                                                      List<String> assignments)
   {
     if (trace)
     {
-      err.format("Expression.generateFunctionInitializer( nestedFunction=%s )\n\n", nestedFunction);
+      err.format("Expression.generateFunctionInitializer( nestedFunction=%s, assignments=%s )\n\n",
+                 nestedFunction,
+                 assignments);
     }
 
     if (nestedFunction.instance != null)
@@ -1158,16 +1162,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       System.err.println();
       for (DependencyInfo dependency : sortedFunctions)
       {
-        var filtered = dependency.reverseDependencies.stream()
-                                                     .filter(key -> referencedFunctionMappings.containsKey(key))
-                                                     .toList();
-        System.err.println(className + "  Initializing " + dependency.variableName + " to be assigned to " + filtered);
+        var assignments = dependency.reverseDependencies.stream()
+                                                        .filter(referencedFunctionMappings::containsKey)
+                                                        .toList();
+        System.err.println(className
+                           + "  Initializing "
+                           + dependency.variableName
+                           + " to be assigned to "
+                           + assignments);
         String                   functionName = dependency.variableName;
         FunctionMapping<?, ?, ?> mapping      = referencedFunctionMappings.get(functionName);
         if (mapping != null)
         {
           constructReferencedFunctionInstanceIfItIsNull(mv, mapping);
-          generateFunctionInitializer(mv, mapping);
+          generateFunctionInitializer(mv, mapping, assignments);
         }
       }
     }
