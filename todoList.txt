@@ -3,13 +3,13 @@ TODO: builtin sykbols for the classical orthogonal polynomials
 "limit" is null at arb4j/arb.expressions.nodes.IntegralNode.evaluateIndefiniteIntegralAt(IntegralNode.java:217)
 todo: mouse wheel zooms control or whole scene
 implement ∂/∂x[∏ᵢ₌₁ᵏfᵢ(x)] = ∑ᵢ₌₁ᵏ[(∂/∂x fᵢ(x))∏ⱼ₌₁,ⱼ≠ᵢᵏfⱼ(x)]
-find a good way to hande Integer.pow(Integer x) when x is negative or possibly negative without always assuming it is necessarily negative
-java.lang.AssertionError: rowPointers is nullat arb4j/arb.RealMatrix.initRows(RealMatrix.java:120)at arb4j/arb.RealMatrix.getRow(RealMatrix.java:107)at arb4j/arb.RealMatrix.set(RealMatrix.java:68)at arb4j/arb.Integer.add(Integer.java:310)at _2+3.evaluate(Unknown Source)at arb4j/arb.functions.NullaryFunction.evaluate(NullaryFunction.java:94)at arb4j/arb.functions.RealMatrixFunctionTest.testAdd(RealMatrixFunctionTest.java:17)at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)at java.base/java.lang.reflect.Method.invoke(Method.java:580)at junit@4.13.2/junit.framework.TestCase.runTest(TestCase.java:177)at junit@4.13.2/junit.framework.TestCase.runBare(TestCase.java:142)at junit@4.13.2/junit.framework.TestResult$1.protect(TestResult.java:122)at junit@4.13.2/junit.framework.TestResult.runProtected(TestResult.java:142)at junit@4.13.2/junit.framework.TestResult.run(TestResult.java:125)at junit@4.13.2/junit.framework.TestCase.run(TestCase.java:130)at junit@4.13.2/junit.framework.TestSuite.runTest(TestSuite.java:241)at junit@4.13.2/junit.framework.TestSuite.run(TestSuite.java:236)at junit@4.13.2/org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:90)at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:93)at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:40)at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:530)at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:758)at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:453)at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:211)
+find a good way to hande Integer.pow(Integer x) when x is possiblty negative
+java.lang.AssertionError: rowPointers is nullat arb4j/arb.RealMatrix.initRows(RealMatrix.java:120)
 #558 expression compiler: RealMatrix support
 #556 Non-stationary process representation
 #555 expression compiler: implement caching
 #552 Spectral factorization Theorem
-#550 Expression Compiler: improve nested function references by using 1 instance of each type of function instead of each function having its own instance versions of each function
+#550 Expression Compiler: improve nested function references 
 #549 Expression Compiler: implement switching of order-of-integration via Fubini's or Tonelli's theorem
 #546 implement orthogonal function sequence expansion api
 #539 expression compiler: integration
