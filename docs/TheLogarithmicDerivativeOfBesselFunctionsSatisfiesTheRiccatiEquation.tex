@@ -1,0 +1,48 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\title{The Logarithmic Derivative of Bessel Functions}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+The Bessel function J n ( t ) satisfies:
+[
+t^2J_n''(t) + tJ_n'(t) + (t^2 - n^2)J_n(t) = 0
+]
+
+Its logarithmic derivative is:
+[
+w(t) = \frac{J_n'(t)}{J_n(t)}
+]
+
+The logarithmic derivative satisfies a Riccati equation, as follows:
+
+\begin{enumerate}
+\item The definition directly implies:
+[J_n'(t) = w(t)J_n(t)]
+
+\item The derivative of this equation is:
+[J_n''(t) = w'(t)J_n(t) + w(t)^2J_n(t)]
+
+\item These expressions in the Bessel equation yield:
+[t^2(w'(t)J_n(t) + w(t)^2J_n(t)) + t(w(t)J_n(t)) + (t^2 - n^2)J_n(t) = 0]
+
+\item Division by J n ( t ) produces:
+[t^2w'(t) + t^2w(t)^2 + tw(t) + (t^2 - n^2) = 0]
+
+\item The equation rearranges to:
+[w'(t) = -w(t)^2 - \frac{w(t)}{t} - (1 - \frac{n^2}{t^2})]
+\end{enumerate}
+
+This Riccati equation has the standard form:
+[w'(t) = p(t) + q(t)w(t) + r(t)w(t)^2]
+
+where:
+[p(t) = -(1 - \frac{n^2}{t^2})]
+[q(t) = -\frac{1}{t}]
+[r(t) = -1]
+
+\end{document}
