@@ -22,6 +22,14 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       symmetrisableFunctionsExpansion                                 =
+                                                              new Article("Symmetrisable Functions and Their Expansion in Terms of Biorthogonal Functions",
+                                                                          "James Mercer",
+                                                                          "1920",
+                                                                          "Proceedings of the Royal Society of London. Series A, Containing Papers of a Mathematical and Physical Character",
+                                                                          "97",
+                                                                          "401-413").setNumber("686")
+                                                                                    .setPublisher("The Royal Society");
 
   public static Article       besselFunctionsAndWaveEquation                                  =
                                                              new Article("Bessel Functions and the Wave Equation",
