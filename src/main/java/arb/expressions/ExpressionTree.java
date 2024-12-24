@@ -25,6 +25,12 @@ import arb.utensils.text.trees.TreeModel;
 public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> implements
                            TreeModel<Node<D, R, F>>
 {
+  @Override
+  public String toString()
+  {
+    return String.format("ExpressionTree[indexedBranches=%s, root=%s]", indexedBranches, root);
+  }
+
   /**
    * Exports the expression tree to a DOT format file with field names as link
    * labels
@@ -44,7 +50,7 @@ public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> 
 
     while (!queue.isEmpty())
     {
-      Node<D, R, F> current = queue.poll();
+      var current = queue.poll();
 
       // Add node definition
       dot.append(String.format("  \"%s\" [label=\"%s\"];\n", current.toString(), current.toString()));
@@ -53,20 +59,23 @@ public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> 
       List<Node<D, R, F>> branches = indexedBranches.get(current);
       if (branches != null)
       {
-        for (Node<D, R, F> child : branches)
+        for (var branch : branches)
         {
-          queue.add(child);
+          queue.add(branch);
 
           // Get the field name if available
           String fieldName = "";
-          if (child instanceof Node arbNode)
+          if (branch instanceof Node arbNode)
           {
-            fieldName = arbNode.getIntermediateValueFieldName();
+            fieldName = arbNode.getFieldName();
           }
-
+          else
+          {
+            assert false : "wtf isnt a node" + branch;
+          }
           // Add edge with field name as label, with reversed direction
           dot.append(String.format("  \"%s\" -> \"%s\" [label=\"%s\"];\n",
-                                   child.toString(), // child is now the source
+                                   branch.toString(), // child is now the source
                                    current.toString(), // current is now the target
                                    fieldName));
         }
@@ -92,8 +101,6 @@ public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> 
     indexBranches(this.root = root);
   }
 
-  public ArrayList<Node<D, R, F>>                    nodes           = new ArrayList<>();
-
   public HashMap<Node<D, R, F>, List<Node<D, R, F>>> indexedBranches =
                                                                      new HashMap<Node<D, R, F>, List<Node<D, R, F>>>();
 
@@ -102,15 +109,17 @@ public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> 
     if (stem == null)
       return;
 
-    nodes.add(stem);
-
+    ArrayList<Node<D, R, F>> branches = new ArrayList<>(stem.getBranches());
+    System.err.format("Adding %s with key %s\n", branches, stem);
+    indexedBranches.put(stem, branches);
+    
     for (var branch : stem.getBranches())
     {
       assert branch != null;
       indexBranches(branch);
     }
 
-    indexedBranches.put(stem, new ArrayList<>(stem.getBranches()));
+
   }
 
   Node<D, R, F> root;
@@ -124,20 +133,7 @@ public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public Node<D, R, F> getNode(Node<D, R, F> parent, int index)
   {
-    List<Node<D, R, F>> list      = indexedBranches.get(parent);
-    String              parentStr = parent.toString();
-    if (list == null)
-    {
-      for (var branch : indexedBranches.entrySet())
-      {
-        if (branch.getKey().toString().equals(parentStr))
-        {
-          return branch.getValue().get(index);
-        }
-        // err.println( branch.getKey() + "\n" + parent + "\n" );
-      }
-    }
-    assert list != null : "list is null for " + parent + " indexedBranches=" + indexedBranches;
+    List<Node<D, R, F>> list = indexedBranches.get(parent);
 
     return list.get(index);
   }
@@ -145,20 +141,7 @@ public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public int getNodeCount(Node<D, R, F> parent)
   {
-    List<Node<D, R, F>> list      = indexedBranches.get(parent);
-    String              parentStr = parent.toString();
-    if (list == null)
-    {
-      for (var branch : indexedBranches.entrySet())
-      {
-        if (branch.getKey().toString().equals(parentStr))
-        {
-          return branch.getValue().size();
-        }
-        // err.println( branch.getKey() + "\n" + parent + "\n" );
-      }
-    }
-    assert list != null : "list is null for " + parent + " indexedBranches=" + indexedBranches;
+    List<Node<D, R, F>> list = indexedBranches.get(parent);
 
     return list.size();
   }

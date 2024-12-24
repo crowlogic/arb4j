@@ -109,7 +109,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public final String                             prefix;
 
-  public String                                   resultVariable;
 
   public Node<D, R, F>                            startIndex;
 
@@ -404,7 +403,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public void initializeResult(MethodVisitor mv, Class<?> resultType, String identityFunction, String prefix)
   {
-    resultVariable = expression.allocateIntermediateVariable(mv, prefix, resultType);
+    fieldName = expression.allocateIntermediateVariable(mv, prefix, resultType);
     pop(invokeVirtualMethod(mv, resultType, identityFunction, resultType));
   }
 
@@ -472,11 +471,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
       System.err.format("%s.loadResultvariable( resultVariable= %s, generatedType=%s )\n",
                         getClass().getSimpleName(),
-                        resultVariable,
+                        fieldName,
                         generatedType);
 
     }
-    Compiler.getFieldFromThis(methodVisitor, expression.className, resultVariable, generatedType);
+    Compiler.getFieldFromThis(methodVisitor, expression.className, fieldName, generatedType);
   }
 
   void loadVariableThatHoldsTheEvaluatedFactor(MethodVisitor methodVisitor)
@@ -749,10 +748,5 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   }
 
-  @Override
-  public String getIntermediateValueFieldName()
-  {
-    return resultVariable;
-  }
 
 }

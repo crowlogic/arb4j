@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
@@ -61,6 +62,25 @@ import arb.functions.Function;
 public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          UnaryOperationNode<D, R, F>
 {
+
+  @Override
+  public int hashCode()
+  {
+    return Objects.hash(functionName);
+  }
+
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    FunctionNode<?, ?, ?> other = (FunctionNode<?, ?, ?>) obj;
+    return Objects.equals(functionName, other.functionName);
+  }
 
   static final HashSet<String>  bitlessFunctions                   = new HashSet<>();
 
@@ -372,11 +392,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return mapping;
   }
 
-  @Override
-  public String getIntermediateValueFieldName()
-  {
-    return intermediateVariableFieldName;
-  }
 
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)

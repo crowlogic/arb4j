@@ -5,6 +5,7 @@ import static arb.expressions.Compiler.invokeBinaryOperationMethod;
 import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 import static arb.expressions.Compiler.loadResultParameter;
 import static arb.utensils.Utensils.indent;
+import static java.lang.System.err;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -108,8 +109,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     typeMap.computeIfAbsent(rightType, k -> new HashMap<>()).put(leftType, resultantType);
   }
 
-  private String       intermediateVariableFieldName;
-
   public Node<D, C, F> left;
 
   public String        operation;
@@ -190,8 +189,10 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
       int operandsHash  = left.hashCode() + right.hashCode(); // Simple sum is order-independent
       hash = operationHash + operandsHash;
     }
-
-    hash = Objects.hash(left, operation, right, symbol);
+    else
+    {
+      hash = Objects.hash(left, operation, right, symbol);
+    }
 
     return hash;
   }
@@ -231,23 +232,36 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     String existingVar = expression.generatedNodes.get(this);
     if (existingVar != null)
     {
-      // assert false : "woo it worked " + existingVar;
-      // Load the existing variable instead of regenerating
-      intermediateVariableFieldName = existingVar;
+      if (isResult)
+      {
+        assert false : "hmm";
+        // checkClassCast(loadResultParameter(mv), resultType);
+        fieldName = "result";
+      }
+      else
+      {
+        fieldName = existingVar;
+        assert fieldName != null;
+      }
+      err.println("Assigning existingVar=" + existingVar + " to " + this);
       expression.loadThisFieldOntoStack(mv, existingVar, resultType);
       return mv;
     }
+    else
+    {
 
-    left.generate(mv, left.type());
+      left.generate(mv, left.type());
 
-    right.generate(mv, right.type());
+      right.generate(mv, right.type());
 
-    return invokeMethod(mv, operation, resultType);
+      return invokeMethod(mv, operation, resultType);
+    }
   }
 
   @Override
   public List<Node<D, C, F>> getBranches()
   {
+
     var b = new ArrayList<Node<D, C, F>>();
     if (left != null)
     {
@@ -263,12 +277,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   public Class<?> getGeneratedType()
   {
     return generatedType;
-  }
-
-  @Override
-  public String getIntermediateValueFieldName()
-  {
-    return intermediateVariableFieldName;
   }
 
   public MethodVisitor invokeMethod(MethodVisitor mv, String operator, Class<?> resultType)
@@ -320,14 +328,14 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     if (isResult)
     {
       checkClassCast(loadResultParameter(mv), resultType);
-      intermediateVariableFieldName = "result";
+      fieldName = "result";
     }
     else
     {
-      if (intermediateVariableFieldName == null)
+      if (fieldName == null)
       {
-        intermediateVariableFieldName = expression.allocateIntermediateVariable(mv, resultType);
-        expression.generatedNodes.put(this, intermediateVariableFieldName);
+        fieldName = expression.allocateIntermediateVariable(mv, resultType);
+        expression.generatedNodes.put(this, fieldName);
       }
       return true;
     }

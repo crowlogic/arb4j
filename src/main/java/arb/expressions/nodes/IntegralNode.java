@@ -330,10 +330,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     return integrand.isLiteralConstant() && lowerLimit.isLiteralConstant() && upperLimit.isLiteralConstant();
   }
 
-  @Override
-  public String getIntermediateValueFieldName()
-  {
-    return intermediateValueFieldName;
-  }
+
 
 }

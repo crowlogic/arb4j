@@ -122,9 +122,4 @@ public class ElseNode<D, R, F extends Function<? extends D, ? extends R>> extend
     return true;
   }
 
-  @Override
-  public String getIntermediateValueFieldName()
-  {
-    return null;
-  }
 }

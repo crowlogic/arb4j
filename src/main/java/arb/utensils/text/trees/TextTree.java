@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.ExpressionTree;
 import arb.expressions.nodes.Node;
 import arb.utensils.Utensils;
 
@@ -17,19 +18,19 @@ import arb.utensils.Utensils;
 public class TextTree<N>
 {
 
-  private TreeModel<N>  model;
+  private TreeModel<N>  tree;
   private boolean       showRoot = true;
   private StringBuilder sb;
   public Object         instance;
 
   public TextTree(TreeModel<N> tree)
   {
-    this.model = tree;
+    this.tree = tree;
   }
 
   public TextTree(TreeModel<N> tree, Object f)
   {
-    this.model    = tree;
+    this.tree     = tree;
     this.instance = f;
   }
 
@@ -73,7 +74,7 @@ public class TextTree<N>
   public String toString()
   {
     sb = new StringBuilder("\n");
-    N root = model.getRoot();
+    N root = tree.getRoot();
     printNode(root, "", "", showRoot);
     return sb.toString();
   }
@@ -98,11 +99,22 @@ public class TextTree<N>
       if (node instanceof Node arbNode)
       {
         sb.append(node.toString() + "=");
-        sb.append(arbNode.getIntermediateValueFieldName());
+        String fieldName = arbNode.getFieldName();
+        if (fieldName == null)
+        {
+          if (tree instanceof ExpressionTree syntax)
+          {
+            System.err.println( "fieldName is null for " + node + " " + syntax );
+
+          }
+
+        }
+
+        sb.append(fieldName);
 
         try
         {
-          String intermediateValueFieldName = arbNode.getIntermediateValueFieldName();
+          String intermediateValueFieldName = arbNode.getFieldName();
           if (intermediateValueFieldName != null)
           {
             Field field;
@@ -124,12 +136,16 @@ public class TextTree<N>
           throwOrWrap(e);
         }
       }
+      else
+      {
+        throw new RuntimeException(node + " is not a Node");
+      }
       sb.append("\n");
     }
     String lastPrefix        = prefix + "   ";
     String innerPrefix       = prefix + "   ┃";
     String notRenderedPrefix = prefix + "";
-    int    childCount        = model.getNodeCount(node);
+    int    childCount        = tree.getNodeCount(node);
     String indentation;
     String thisBud;
 
@@ -138,7 +154,7 @@ public class TextTree<N>
       if (i == childCount - 1)
       {
         indentation = lastPrefix;
-        thisBud     = String.valueOf(model.getNodeSymbol(node));
+        thisBud     = String.valueOf(tree.getNodeSymbol(node));
       }
       else
       {
@@ -147,7 +163,7 @@ public class TextTree<N>
       }
       String renderedPrefix = render ? indentation : notRenderedPrefix;
       String renderedBud    = render ? thisBud : "";
-      printNode(model.getNode(node, i), renderedPrefix, renderedBud, true);
+      printNode(tree.getNode(node, i), renderedPrefix, renderedBud, true);
     }
 
   }

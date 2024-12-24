@@ -196,7 +196,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return generatedType;
   }
 
-  public abstract String getIntermediateValueFieldName();
+  public String fieldName;
+
+  public final String getFieldName()
+  {
+    return isResult ? "result" : fieldName;
+  }
 
   public abstract Node<D, R, F> integrate(VariableNode<D, R, F> variable);
 

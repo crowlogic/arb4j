@@ -127,8 +127,6 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 
   public final String  value;
 
-  public String        fieldName;
-
   public boolean       isImaginary = false;
 
   public Fraction      fractionValue;
@@ -395,13 +393,6 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   public boolean isLiteralConstant()
   {
     return true;
-  }
-
-  @Override
-  public String getIntermediateValueFieldName()
-  {
-    assert fieldName != null;
-    return fieldName;
   }
 
   public static <D, R, F extends Function<? extends D, ? extends R>> Node<D, R, F> of(Expression<D, R, F> expr, int i)

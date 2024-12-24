@@ -21,7 +21,6 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
 {
 
   public Node<D, R, F> arg;
-  public String        intermediateVariableFieldName;
 
   public UnaryOperationNode(Node<D, R, F> arg)
   {
@@ -52,19 +51,12 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
     if (isResult)
     {
       checkClassCast(loadResultParameter(methodVisitor), resultType);
-      intermediateVariableFieldName = "result";
+      fieldName = "result";
     }
     else
     {
-      intermediateVariableFieldName = expression.allocateIntermediateVariable(methodVisitor, resultType);
-
+      fieldName = expression.allocateIntermediateVariable(methodVisitor, resultType);
     }
-  }
-
-  @Override
-  public String getIntermediateValueFieldName()
-  {
-    return intermediateVariableFieldName;
   }
 
   @Override

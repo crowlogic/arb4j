@@ -301,7 +301,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     TreeTableColumn<Node<D, C, F>, String> fieldCol = new TreeTableColumn<>("Field");
     fieldCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
                                                                          .getValue()
-                                                                         .getIntermediateValueFieldName()));
+                                                                         .getFieldName()));
 
     return fieldCol;
   }
@@ -594,7 +594,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     }
     try
     {
-      String intermediateValueFieldName = node.getIntermediateValueFieldName();
+      String intermediateValueFieldName = node.getFieldName();
       if (intermediateValueFieldName == null)
       {
         return "zilch";

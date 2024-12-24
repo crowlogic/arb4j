@@ -52,7 +52,6 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
   }
 
   public ArrayList<Node<D, R, F>> elements = new ArrayList<>();
-  private String                  intermediateValueFieldName;
 
   public VectorNode(Expression<D, R, F> expression)
   {
@@ -125,7 +124,7 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
     }
     else
     {
-      intermediateValueFieldName = expression.allocateIntermediateVariable(mv, "v", scalarType);
+      fieldName = expression.allocateIntermediateVariable(mv, "v", scalarType);
       Compiler.swap(mv);
       Compiler.invokeSetMethod(mv, arrayType, scalarType);
     }
@@ -237,10 +236,5 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
     return elements.stream().allMatch(Node::isLiteralConstant);
   }
 
-  @Override
-  public String getIntermediateValueFieldName()
-  {
-    return intermediateValueFieldName;
-  }
 
 }

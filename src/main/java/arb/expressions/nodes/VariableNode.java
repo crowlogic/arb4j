@@ -143,6 +143,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         reference.type = expression.domainType;
       }
     }
+    fieldName = reference.name;
   }
 
   @Override
@@ -317,12 +318,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public Class<?> getGeneratedType()
   {
     return generatedType;
-  }
-
-  @Override
-  public String getIntermediateValueFieldName()
-  {
-    return reference.name;
   }
 
   public String getName()

@@ -241,11 +241,6 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     return Stream.concat(cases.values().stream(), Stream.of(arg)).toList();
   }
 
-  @Override
-  public String getIntermediateValueFieldName()
-  {
-    return "hmm";
-  }
 
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
