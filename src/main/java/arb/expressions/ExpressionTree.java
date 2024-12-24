@@ -61,11 +61,7 @@ public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> 
           String fieldName = "";
           if (child instanceof Node arbNode)
           {
-            String intermediateFieldName = arbNode.getIntermediateValueFieldName();
-            if (intermediateFieldName != null)
-            {
-              fieldName = intermediateFieldName;
-            }
+            fieldName = arbNode.getIntermediateValueFieldName();
           }
 
           // Add edge with field name as label, with reversed direction

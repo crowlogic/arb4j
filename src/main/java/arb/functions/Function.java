@@ -12,7 +12,6 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
 import arb.functions.complex.ComplexFunction;
-import arb.space.topological.VectorSpace;
 
 /**
  * 
@@ -21,6 +20,7 @@ import arb.space.topological.VectorSpace;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
+@SuppressWarnings("hiding")
 public interface Function<D, C> extends
                          Closeable,
                          AutoCloseable,
@@ -244,9 +244,8 @@ public interface Function<D, C> extends
 
   /**
    * <pre>
-   * Evaluates this function f(t). It can be assumed that the result and input(t)
-   * are not aliased. When called with order = 0, func should write to out the
-   * value of f at the point t, evaluated at a precision of prec bits.
+   * Evaluates this function f(t). When called with order = 0, func should write
+   * to out the value of f at the point t, evaluated at a precision of prec bits.
    * 
    * In this case, f can be an arbitrary complex function, which may have branch
    * cuts or even be non-holomorphic.
@@ -256,7 +255,7 @@ public interface Function<D, C> extends
    * the first n coefficients in the Taylor series expansion of f at the point t,
    * evaluated at a precision of prec bits.
    * 
-   * NOTE: In this case, the implementation must verify that f is a
+   * NOTE: In this case, the implementation should verify that f is a
    * {@link ComplexFunction} on the complex interval defined by t, and set the
    * coefficients in the result(res) to non-finite values otherwise.
    * 
@@ -293,17 +292,6 @@ public interface Function<D, C> extends
    */
   public C evaluate(D t, int order, int bits, C res);
 
-  public default int getInverseBranchCount()
-  {
-    assert false : "TODO: implement in " + getClass();
-    return 0;
-  }
-
-  public default Function<C, D> inverse(int branch)
-  {
-    assert false : "TODO: implement in " + getClass();
-    return null;
-  }
 
   public default D newDomainInstance()
   {

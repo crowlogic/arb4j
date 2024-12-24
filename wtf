@@ -1,0 +1,6 @@
+var P = new RationalJacobiPolynomials(RealConstants.zero,RealConstants.zero);
+P
+P.P
+P.context
+P.F
+var F = FractionSequence.parse(P.F.toString());

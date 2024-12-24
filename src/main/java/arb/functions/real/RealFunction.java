@@ -97,60 +97,10 @@ public interface RealFunction extends
                           null);
   }
 
-  public default RealFunction add(RealFunction that)
-  {
-    return new RealFunction()
-    {
-
-      @Override
-      public Real evaluate(Real x, int order, int bits, Real result)
-      {
-        try ( Real y = new Real())
-        {
-          return RealFunction.this.evaluate(x, order, bits, result).add(that.evaluate(x, order, bits, y), bits, result);
-        }
-
-      }
-
-      @Override
-      public String toString()
-      {
-        return String.format("(%s) + (%s)",
-                             RealFunction.this.toStringWithoutIndependentVariableSpecified(),
-                             that.toStringWithoutIndependentVariableSpecified());
-      }
-    };
-  }
-
   @Override
   public default void close()
   {
 
-  }
-
-  public default RealFunction div(RealFunction that)
-  {
-    return new RealFunction()
-    {
-
-      @Override
-      public Real evaluate(Real x, int order, int bits, Real result)
-      {
-        try ( Real y = new Real())
-        {
-          return RealFunction.this.evaluate(x, order, bits, result).div(that.evaluate(x, order, bits, y), bits, result);
-        }
-
-      }
-
-      @Override
-      public String toString()
-      {
-        return String.format("(%s) / (%s)",
-                             RealFunction.this.toStringWithoutIndependentVariableSpecified(),
-                             that.toStringWithoutIndependentVariableSpecified());
-      }
-    };
   }
 
   /**
@@ -192,41 +142,6 @@ public interface RealFunction extends
   public default Real evaluate(Real x, int bits, Real result)
   {
     return evaluate(x, 1, bits, result);
-  }
-
-  /**
-   * 
-   * @return the first inverse branch, oRealFunction the only one if there is only
-   *         one, which is the case if the function is properly invertible
-   */
-  public default Function<Real, Real> inverse()
-  {
-    return inverse(0);
-  }
-
-  public default RealFunction mul(RealFunction that)
-  {
-    return new RealFunction()
-    {
-
-      @Override
-      public Real evaluate(Real x, int order, int bits, Real result)
-      {
-        try ( Real y = new Real())
-        {
-          return RealFunction.this.evaluate(x, order, bits, result).mul(that.evaluate(x, order, bits, y), bits, result);
-        }
-
-      }
-
-      @Override
-      public String toString()
-      {
-        return String.format("(%s) * (%s)",
-                             RealFunction.this.toStringWithoutIndependentVariableSpecified(),
-                             that.toStringWithoutIndependentVariableSpecified());
-      }
-    };
   }
 
   /**
@@ -330,31 +245,6 @@ public interface RealFunction extends
       coDomain.forEach(i -> evaluate(mesh.get(i), 1, bits, values.get(i)));
       return sample;
     }
-  }
-
-  public default RealFunction sub(RealFunction that)
-  {
-    return new RealFunction()
-    {
-
-      @Override
-      public Real evaluate(Real x, int order, int bits, Real result)
-      {
-        try ( Real y = new Real())
-        {
-          return RealFunction.this.evaluate(x, order, bits, result).sub(that.evaluate(x, order, bits, y), bits, result);
-        }
-
-      }
-
-      @Override
-      public String toString()
-      {
-        return String.format("(%s) - (%s)",
-                             RealFunction.this.toStringWithoutIndependentVariableSpecified(),
-                             that.toStringWithoutIndependentVariableSpecified());
-      }
-    };
   }
 
   public default String toStringWithoutIndependentVariableSpecified()

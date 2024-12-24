@@ -327,6 +327,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                           domainClassInternalName,
                                                           coDomainClassInternalName,
                                                           coDomainClassInternalName);
+    if (expression.contains(":"))
+    {
+      int colonCharacterIndex = expression.indexOf(':');
+      className  = expression.substring(0, colonCharacterIndex);
+      expression = expression.substring(colonCharacterIndex + 1);
+    }
     if (context != null && context.saveClasses)
     {
       saveClasses = true;
