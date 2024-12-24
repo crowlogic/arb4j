@@ -178,6 +178,12 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
+  public int hashCode()
+  {
+    return Objects.hash(reference);
+  }
+
+  @Override
   public boolean equals(Object obj)
   {
     if (this == obj)

@@ -10,6 +10,7 @@ import static org.objectweb.asm.Opcodes.SIPUSH;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.ClassVisitor;
@@ -66,6 +67,26 @@ import arb.functions.Function;
 public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                 Node<D, R, F>
 {
+
+  @Override
+  public int hashCode()
+  {
+    return Objects.hash(value);
+  }
+
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    LiteralConstantNode<?, ?, ?> other = (LiteralConstantNode<?, ?, ?>) obj;
+    return Objects.equals(value, other.value);
+  }
+
   @Override
   public boolean isPossiblyNegative()
   {

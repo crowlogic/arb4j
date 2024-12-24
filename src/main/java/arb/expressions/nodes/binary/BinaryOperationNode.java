@@ -151,14 +151,13 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   @Override
   public boolean dependsOn(VariableNode<D, C, F> variable)
   {
-    var dependsOnLeft  = left != null && left.dependsOn(variable);
-    var dependsOnRight = right != null && right.dependsOn(variable);
-    return dependsOnLeft || dependsOnRight;
+    return (left != null && left.dependsOn(variable)) || (right != null && right.dependsOn(variable));
   }
 
   @Override
   public boolean equals(Object obj)
   {
+
     if (this == obj)
       return true;
     if (obj == null)
@@ -166,25 +165,52 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     if (getClass() != obj.getClass())
       return false;
     BinaryOperationNode<?, ?, ?> other = (BinaryOperationNode<?, ?, ?>) obj;
-    return Objects.equals(left, other.left) && Objects.equals(operation, other.operation)
-                  && Objects.equals(right, other.right) && Objects.equals(symbol, other.symbol);
+
+    if (!Objects.equals(operation, other.operation) || !Objects.equals(symbol, other.symbol))
+    {
+      return false;
+    }
+
+    if (isCommutative())
+    {
+      return (Objects.equals(left, other.left) && Objects.equals(right, other.right))
+                    || (Objects.equals(left, other.right) && Objects.equals(right, other.left));
+    }
+    return Objects.equals(left, other.left) && Objects.equals(right, other.right);
+  }
+
+  @Override
+  public int hashCode()
+  {
+    int hash = 0;
+    if (isCommutative())
+    {
+      // For commutative operations, order shouldn't matter
+      int operationHash = Objects.hash(operation, symbol);
+      int operandsHash  = left.hashCode() + right.hashCode(); // Simple sum is order-independent
+      hash = operationHash + operandsHash;
+    }
+
+    hash = Objects.hash(left, operation, right, symbol);
+
+    return hash;
   }
 
   public String formatGenerationParameters(Class<?> resultType)
   {
-    return String.format("BinaryOperation.generate( this=%s,\n%sleft=%s(%s), left.type=%s,\n%soperation=%s,\n%sright=%s(%s),"
-                         + " right.type=%s,\n%sresultType=%s )\n\n",
+    return String.format("BinaryOperation.generate( this=%s,\n%sleft=%s    (%s %s)\n%soperation=%s,\n%sright=%s    (%s %s),"
+                         + " \n%sresultType=%s )\n\n",
                          this,
                          indent(26),
                          left,
+                         left.type().getSimpleName(),
                          left.getClass().getSimpleName(),
-                         left.type(),
                          indent(26),
                          operation,
                          indent(26),
                          right,
+                         right.type().getSimpleName(),
                          right.getClass().getSimpleName(),
-                         right.type(),
                          indent(26),
                          resultType);
   }
@@ -200,6 +226,17 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
       System.out.println(formatGenerationParameters(resultType));
     }
     generatedType = resultType;
+
+    // Check if we've already generated this node
+    String existingVar = expression.generatedNodes.get(this);
+    if (existingVar != null)
+    {
+      // assert false : "woo it worked " + existingVar;
+      // Load the existing variable instead of regenerating
+      intermediateVariableFieldName = existingVar;
+      expression.loadThisFieldOntoStack(mv, existingVar, resultType);
+      return mv;
+    }
 
     left.generate(mv, left.type());
 
@@ -232,12 +269,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   public String getIntermediateValueFieldName()
   {
     return intermediateVariableFieldName;
-  }
-
-  @Override
-  public int hashCode()
-  {
-    return Objects.hash(left, operation, right, symbol);
   }
 
   public MethodVisitor invokeMethod(MethodVisitor mv, String operator, Class<?> resultType)
@@ -296,9 +327,9 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
       if (intermediateVariableFieldName == null)
       {
         intermediateVariableFieldName = expression.allocateIntermediateVariable(mv, resultType);
+        expression.generatedNodes.put(this, intermediateVariableFieldName);
       }
       return true;
-
     }
     return false;
   }

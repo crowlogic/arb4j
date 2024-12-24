@@ -484,19 +484,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return classVisitor;
     }
     context.populateFunctionReferenceGraph();
-    sortedFunctions = TopologicalSorter.findDependencyOrderUsingDepthFirstSearch(context.functionReferenceGraph,
-                                                                                 referencedFunctionMappings);
+    dependencies = TopologicalSorter.findDependencyOrderUsingDepthFirstSearch(context.functionReferenceGraph,
+                                                                              referencedFunctionMappings);
 
     if (trace)
     {
-      var graphFile = context.saveDependencyGraph(sortedFunctions);
+      var graphFile = context.saveDependencyGraph(dependencies);
       if (graphFile != null)
       {
         System.err.println("Function Graph written to " + graphFile);
       }
     }
     // Declare functions in dependency order
-    for (DependencyInfo dependency : sortedFunctions)
+    for (DependencyInfo dependency : dependencies)
     {
       String                   dependencyVariableName = dependency.variableName;
       FunctionMapping<?, ?, ?> function               = referencedFunctionMappings.get(dependencyVariableName);
@@ -790,8 +790,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @return this
    * @throws CompilerException
    */
-  protected Expression<D, C, F> generate() throws CompilerException
+  public Expression<D, C, F> generate() throws CompilerException
   {
+    assert instructionByteCodes == null;
     if (trace)
     {
       System.err.format("Expression(#%s).generate() className=%s expression='%s'\n\n",
@@ -1163,10 +1164,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     addChecksForNullVariableReferences(mv);
 
     // Initialize in proper dependency order
-    if (sortedFunctions != null)
+    if (dependencies != null)
     {
       System.err.println();
-      for (DependencyInfo dependency : sortedFunctions)
+      for (DependencyInfo dependency : dependencies)
       {
         var assignments = dependency.reverseDependencies.stream()
                                                         .filter(referencedFunctionMappings::containsKey)
@@ -1176,8 +1177,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                            + dependency.variableName
                            + " to be assigned to "
                            + assignments);
-        String                   functionName = dependency.variableName;
-        FunctionMapping<?, ?, ?> mapping      = referencedFunctionMappings.get(functionName);
+        var functionName = dependency.variableName;
+        var mapping      = referencedFunctionMappings.get(functionName);
         if (mapping != null)
         {
           constructReferencedFunctionInstanceIfItIsNull(mv, mapping);
@@ -1274,7 +1275,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     constructNewObject(mv, functionName);
     duplicateTopOfTheStack(mv);
     invokeDefaultConstructor(mv, functionName);
-    Compiler.putField(mv, className, functionName, "L" + functionName + ";");
+    Compiler.putField(mv, className, functionName, String.format("L%s;", functionName));
     initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv),
                                                    className,
                                                    functionName,
@@ -1434,35 +1435,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                  .toArray(n -> new String[n]);
   }
 
-  /**
-   * 
-   * 
-   * @param mv
-   * @param generatedFunctionClassInternalName
-   * @param fieldType
-   * @param functionFieldName
-   * @param variables
-   * @implNote The parameters are {@link String}s here because since this function
-   *           is actually generating the {@link Class} file it is referrring to
-   *           it is not yet available to be referred to by the JVM as realizable
-   *           {@link Object} ( because {@link #generate()} hasn't yet completed
-   *           generating the this{@link #instructionByteCodes} and the
-   *           {@link CompiledExpressionClassLoader} hasn't assembled the .class
-   *           file and made it available to be instantiated yet and hence there
-   *           is no .class to refer to
-   */
   protected void initializeReferencedFunctionVariableReferences(MethodVisitor mv,
                                                                 String generatedFunctionClassInternalName,
                                                                 String fieldType,
                                                                 String functionFieldName,
                                                                 Stream<OrderedPair<String, Class<?>>> variables)
   {
-    String typeDesc = "L" + fieldType + ";";
+    String typeDesc = String.format("L%s;", fieldType);
 
     variables.forEach(variable ->
     {
-      String variableFieldName           = variable.getLeft();
-      String variableFieldTypeDescriptor = variable.getRight().descriptorString();
+      var variableFieldName           = variable.getLeft();
+      var variableFieldTypeDescriptor = variable.getRight().descriptorString();
       getField(loadThisOntoStack(mv), generatedFunctionClassInternalName, functionFieldName, typeDesc);
       getField(loadThisOntoStack(mv),
                generatedFunctionClassInternalName,
@@ -1500,12 +1484,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return instance;
   }
 
-  /**
-   * @return true if this{@link #character} any of
-   *         {@link Parser#isLatinGreekSpecialOrBlackLetter(char, boolean)},
-   *         {@link Parser#isAlphabeticalSuperscript(char)} or
-   *         {@link Parser#isAlphabeticalOrNumericSubscript(char)} are true
-   */
   protected boolean isIdentifierCharacter()
   {
     return isLatinGreekSpecialOrBlackLetter(character, false) || isAlphabeticalOrNumericSubscript(character)
@@ -1552,11 +1530,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public MethodVisitor loadThisFieldOntoStack(MethodVisitor mv, String name, Class<?> referenceType)
   {
     return loadFieldOntoStack(loadThisOntoStack(mv), name, referenceType);
-  }
-
-  public MethodVisitor loadThisFieldOntoStack(MethodVisitor mv, String name, String referenceTypeDescriptor)
-  {
-    return loadFieldOntoStack(loadThisOntoStack(mv), name, referenceTypeDescriptor);
   }
 
   protected <N extends Node<D, C, F>> N multiplyAndDivide(N node)
@@ -1774,7 +1747,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     assert !type.isInterface() : "cannot instantiate interface " + type;
 
-    if (!coDomainType.isInterface())
+    if (!isFunctional())
     {
       var newIntermediateVariable = new IntermediateVariable<>(this,
                                                                intermediateVarName,
@@ -2091,9 +2064,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public TextTree<Node<D, C, F>> inspect(F f)
   {
-    ExpressionTree<D, C, F> syntaxTree = syntaxTree();
-    return new TextTree<Node<D, C, F>>(syntaxTree,
-                                       f);
+    return new TextTree<>(syntaxTree(),
+                          f);
   }
 
   public ExpressionTree<D, C, F> syntaxTree()
@@ -2101,21 +2073,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return new ExpressionTree<D, C, F>(rootNode);
   }
 
-  static HashSet<Class<?>>                        indeterminantTypes = new HashSet<Class<?>>();
+  static HashSet<Class<?>>                        indeterminantTypes = new HashSet<>();
 
   private ArrayList<LiteralConstantNode<D, C, F>> literalConstantNodes;
 
-  private List<DependencyInfo>                    sortedFunctions;
+  private List<DependencyInfo>                    dependencies;
+
+  public HashMap<Node<D, C, F>, String>           generatedNodes     = new HashMap<>();
 
   static
   {
     indeterminantTypes.addAll(Arrays.asList(RealFunction.class,
                                             ComplexFunction.class,
                                             RationalFunction.class,
+                                            ComplexRationalFunction.class,
                                             RealPolynomial.class,
                                             ComplexPolynomial.class,
-                                            IntegerPolynomial.class,
-                                            ComplexRationalFunction.class));
+                                            IntegerPolynomial.class));
   }
 
   public boolean thisOrAnyAscendentExpressionHasIndeterminateVariable()

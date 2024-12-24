@@ -10,8 +10,7 @@ import java.util.function.Consumer;
 import org.objectweb.asm.MethodVisitor;
 import org.scilab.forge.jlatexmath.LaTeXAtom;
 
-import arb.*;
-import arb.Integer;
+import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
@@ -22,6 +21,7 @@ import arb.expressions.nodes.unary.AbsoluteValueNode;
 import arb.expressions.nodes.unary.FunctionNode;
 import arb.expressions.nodes.unary.NegationNode;
 import arb.functions.Function;
+import arb.utensils.text.latex.Latex;
 
 /**
  * <pre>
@@ -60,6 +60,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
+@SuppressWarnings("unchecked")
 public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> implements
                           Typesettable,
                           Consumer<Consumer<Node<D, R, F>>>
@@ -81,14 +82,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     this.position   = expression.position;
   }
 
-  @SuppressWarnings("unchecked")
   public <N extends Node<D, R, F>> N abs()
   {
-    return (N) new AbsoluteValueNode<D, R, F>(expression,
-                                              this);
+    return (N) new AbsoluteValueNode<>(expression,
+                                       this);
   }
 
-  @SuppressWarnings("unchecked")
   public <N extends Node<D, R, F>> N add(Node<D, R, F> addend)
   {
     return (N) new AdditionNode<>(expression,
@@ -157,7 +156,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public abstract Node<D, R, F> differentiate(VariableNode<D, R, F> variable);
 
-  @SuppressWarnings("unchecked")
   public <N extends Node<D, R, F>> N digamma()
   {
     return (N) apply("digamma");
@@ -173,7 +171,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return div(nodeOf(i));
   }
 
-  @SuppressWarnings("unchecked")
   public <N extends Node<D, R, F>> N div(Node<D, R, F> divisor)
   {
     return (N) new DivisionNode<>(expression,
@@ -202,6 +199,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public abstract String getIntermediateValueFieldName();
 
   public abstract Node<D, R, F> integrate(VariableNode<D, R, F> variable);
+
+  public boolean isIndependentOf(VariableNode<D, R, F> variable)
+  {
+    return !dependsOn(variable);
+  }
 
   /**
    * @return true if this node does not have any subnodes
@@ -239,7 +241,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     }
   }
 
-  @SuppressWarnings("unchecked")
+  public Node<D, R, F> log()
+  {
+    return apply("log");
+  }
+
   public <N extends Node<D, R, F>> N mul(Node<D, R, F> multiplicand)
   {
     return (N) new MultiplicationNode<>(expression,
@@ -247,7 +253,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                                         multiplicand);
   }
 
-  @SuppressWarnings("unchecked")
   public <N extends Node<D, R, F>> N neg()
   {
     return (N) new NegationNode<>(expression,
@@ -264,7 +269,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return pow(nodeOf(i));
   }
 
-  @SuppressWarnings("unchecked")
   public <N extends Node<D, R, F>> N pow(Node<D, R, F> exponent)
   {
     return (N) new ExponentiationNode<>(expression,
@@ -274,19 +278,13 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public Node<D, R, F> pow(String exponent)
   {
-    return new LiteralConstantNode<D, R, F>(expression,
-                                            exponent);
+    return new LiteralConstantNode<>(expression,
+                                     exponent);
   }
 
-  /**
-   * 
-   * @return the {@link String} string that would be what would be said to express
-   *         this Node in the most precise wa
-   */
-  public String say()
+  public Node<D, R, F> sec()
   {
-    assert false : "TODO: implement";
-    return null;
+    return apply("sec");
   }
 
   public Node<D, R, F> simplify()
@@ -318,7 +316,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return sub(nodeOf(i));
   }
 
-  @SuppressWarnings("unchecked")
   public <N extends Node<D, R, F>> N sub(Node<D, R, F> subtrahend)
   {
     return (N) new SubtractionNode<>(expression,
@@ -343,32 +340,15 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   /**
    * 
-   * @return the type that this node results in when evaluated, should usually be
-   *         one of {@link Real}, {@link Complex}, {@link RealPolynomial}, or
-   *         {@link RealMatrix}, {@link ComplexMatrix}, {@link ComplexPolynomial},
-   *         or {@link Integer}
+   * @return the type that this node leaves on the stack when
+   *         this{@link #generate(MethodVisitor, Class)} is called
    */
   public abstract <C> Class<? extends C> type();
 
   /**
    * 
-   * @return the {@link LaTeXAtom} string that represents this node
+   * @return the string that represents this node in {@link Latex} format
    */
   public abstract String typeset();
-
-  public Node<D, R, F> log()
-  {
-    return apply("log");
-  }
-
-  public Node<D, R, F> sec()
-  {
-    return apply("sec");
-  }
-
-  public boolean isIndependentOf(VariableNode<D, R, F> variable)
-  {
-    return !dependsOn(variable);
-  }
 
 }
