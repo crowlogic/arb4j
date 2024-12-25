@@ -386,7 +386,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public String allocateIntermediateVariable(MethodVisitor methodVisitor, Class<?> type)
   {
     assert !type.isInterface() : "cannot instantiate interface " + type;
-
     String intermediateVariableName = newIntermediateVariable(type);
     loadThisFieldOntoStack(methodVisitor, intermediateVariableName, type);
     return intermediateVariableName;
@@ -1163,20 +1162,26 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       System.err.println();
       for (Dependency dependency : dependencies)
       {
-        var assignments = dependency.reverseDependencies.stream()
-                                                        .filter(referencedFunctionMappings::containsKey)
-                                                        .toList();
-        System.err.println(className
-                           + "  Initializing "
-                           + dependency.variableName
-                           + " to be assigned to "
-                           + assignments);
+        var assignments  = dependency.reverseDependencies.stream()
+                                                         .filter(referencedFunctionMappings::containsKey)
+                                                         .toList();
+
         var functionName = dependency.variableName;
         var mapping      = referencedFunctionMappings.get(functionName);
         if (mapping != null)
         {
           constructReferencedFunctionInstanceIfItIsNull(mv, mapping);
           generateFunctionInitializer(mv, mapping, assignments);
+        }
+
+        System.err.println(className
+                           + "  Initializing "
+                           + dependency.variableName
+                           + " to be assigned to "
+                           + assignments);
+        for (String assignment : assignments)
+        {
+          System.err.format("Set %s.%s=%s\n", assignment, functionName, functionName);
         }
       }
     }
@@ -2071,7 +2076,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private ArrayList<LiteralConstantNode<D, C, F>> literalConstantNodes;
 
-  private List<Dependency>                    dependencies;
+  private List<Dependency>                        dependencies;
 
   public HashMap<Node<D, C, F>, String>           generatedNodes     = new HashMap<>();
 

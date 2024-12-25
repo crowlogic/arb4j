@@ -97,4 +97,11 @@ public interface NullaryFunction<R> extends
     return evaluate(128);
   }
 
+  public static <R extends Ring<?>, N extends NullaryFunction<? extends R>>
+         Expression<Object, R, N>
+         parse(Class<? extends R> domainClass, Class<? extends N> functionClass, String expression)
+  {
+    return parse(domainClass, functionClass, null, expression, null);
+  }
+
 }

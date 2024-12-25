@@ -241,7 +241,6 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     return Stream.concat(cases.values().stream(), Stream.of(arg)).toList();
   }
 
-
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
@@ -313,6 +312,16 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     return expression.coDomainType;
   }
 
+  /**
+   * TODO: make it generate this
+   * <pre>
+     $\left\{\begin{array}{ll}
+      \text{val1} & \text{case1}\\
+      \text{val2} & \text{case2}\\
+      \text{val3} & \text{otherwise}\\}
+      \end{array}\right$
+   * </pre>
+   */
   @Override
   public String typeset()
   {

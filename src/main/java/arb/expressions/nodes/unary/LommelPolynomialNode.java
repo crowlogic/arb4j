@@ -3,6 +3,7 @@ package arb.expressions.nodes.unary;
 import static arb.expressions.Compiler.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
@@ -35,6 +36,28 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
                                  FunctionNode<D, C, F>
 {
 
+  @Override
+  public int hashCode()
+  {
+    final int prime  = 31337;
+    int       result = super.hashCode();
+    result = prime * result + Objects.hash(index, order);
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj)
+      return true;
+    if (!super.equals(obj))
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    LommelPolynomialNode<?,?,?> other = (LommelPolynomialNode<?,?,?>) obj;
+    return Objects.equals(index, other.index) && Objects.equals(order, other.order);
+  }
+
   public Node<D, C, F> order;
   public Node<D, C, F> index;
   public String        functionFieldName;
@@ -55,19 +78,9 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
     scalarType                           = Compiler.scalarType(expression.coDomainType);
     hasScalarCodomain                    = expression.hasScalarCodomain();
     isNullaryFunctionOrHasScalarCodomain = expression.domainType.equals(Object.class) || hasScalarCodomain;
-
     functionFieldName                    = expression.newIntermediateVariable("r", LommelPolynomial.class, true);
-
     elementFieldName                     = expression.newIntermediateVariable("element", RationalFunction.class, true);
-
-    if (Expression.trace)
-    {
-      System.out.println("seqFieldName=" + functionFieldName);
-      System.out.println("elementFieldName=" + elementFieldName);
-    }
-
     expression.registerInitializer(this::generateFunctionInitializer);
-
   }
 
   public void generateFunctionInitializer(MethodVisitor mv)
@@ -147,8 +160,6 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
 
     if (isRationalFunctionSequence)
     {
-      // loadOutputVariableOntoStack(mv, resultType);
-
       loadFunctionOntoStack(mv);
       Compiler.getField(mv, LommelPolynomial.class, "n", Integer.class);
       loadInputParameter(mv);
@@ -184,8 +195,6 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
         expression.loadThisFieldOntoStack(mv, elementFieldName, RationalFunction.class);
         Compiler.invokeSetMethod(mv, resultType, resultType);
         generatedType = RationalFunction.class;
-
-        // checkClassCast(mv, resultType);
       }
       else
       {

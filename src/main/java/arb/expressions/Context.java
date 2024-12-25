@@ -6,7 +6,6 @@ import static java.lang.System.err;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +76,7 @@ public class Context
 
   public String saveDependencyGraph(List<Dependency> sortedFunctions)
   {
-    String                          filename  = null;
+    String                      filename  = null;
     HashMap<String, Dependency> sortedMap = new HashMap<>();
     for (Dependency dependency : sortedFunctions)
     {
@@ -103,15 +102,15 @@ public class Context
       FunctionMapping<?, ?, ?> function     = entry.getValue();
 
       // Get referenced functions from the function mapping
-      Dependency           depInfo      = new Dependency(functionName);
+      Dependency               depInfo      = new Dependency(functionName);
 
       List<String>             dependencies = depInfo.dependencies;
       if (function.expression.referencedFunctionMappings != null)
       {
         dependencies.addAll(function.expression.referencedFunctionMappings.keySet()
-                                                                   .stream()
-                                                                   .filter(name -> !name.equals(functionName))
-                                                                   .toList());
+                                                                          .stream()
+                                                                          .filter(name -> !name.equals(functionName))
+                                                                          .toList());
       }
 
       functionReferenceGraph.put(functionName, depInfo);
@@ -336,8 +335,8 @@ public class Context
   public Stream<OrderedPair<String, Class<?>>> variableClassStream()
   {
     return variableEntryStream().filter(entry -> entry.getValue() != null)
-                                .map(entry -> new OrderedPair<String, Class<?>>(entry.getKey(),
-                                                                                entry.getValue().getClass()));
+                                .map(entry -> new OrderedPair<>(entry.getKey(),
+                                                                entry.getValue().getClass()));
   }
 
   public <D, R, F extends Function<? extends D, ? extends R>> void injectReferences(F f)
