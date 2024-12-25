@@ -1,4 +1,4 @@
-package arb.utensils;
+package arb.expressions;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -6,7 +6,7 @@ import java.util.*;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.FunctionMapping;
+import arb.utensils.Dependency;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -14,63 +14,42 @@ import arb.expressions.FunctionMapping;
  */
 public class TopologicalSorter
 {
-  public static class DependencyInfo
-  {
-    public final String       variableName;
-    public final List<String> dependencies        = new ArrayList<>(); // was constructionDependencies
-    public final List<String> reverseDependencies = new ArrayList<>(); // was fieldAssignments
-
-    public DependencyInfo(String name)
-    {
-      this.variableName = name;
-    }
-
-    @Override
-    public String toString()
-    {
-      return String.format("DependencyInfo[variableName=%s, dependencies=%s, reverseDependencies=%s]",
-                           variableName,
-                           dependencies,
-                           reverseDependencies);
-    }
-  }
-
-  public static List<DependencyInfo>
-         findDependencyOrderUsingDepthFirstSearch(Map<String, DependencyInfo> dependencies,
+  public static List<Dependency>
+         findDependencyOrderUsingDepthFirstSearch(Map<String, Dependency> dependencies,
                                                   HashMap<String, FunctionMapping<?, ?, ?>> mappings)
   {
-    List<DependencyInfo> initializationOrder = new ArrayList<>();
-    Set<String>          processedVariables  = new HashSet<>();
+    List<Dependency> initializationOrder = new ArrayList<>();
+    Set<String>      processedVariables  = new HashSet<>();
 
     // Build reverse dependency graph
     dependencies.forEach((name,
                           info) -> info.dependencies.forEach(dep -> dependencies.get(dep).reverseDependencies.add(name)));
 
     // Do DFS traversal using dependencies
-    for (String variable : dependencies.keySet())
-    {
-      if (!processedVariables.contains(variable))
-      {
-        depthFirstDependencySearch(variable, dependencies, processedVariables, initializationOrder);
-      }
-    }
- 
-    Collections.reverse(initializationOrder); // Now we need the reverse again
-   
+    dependencies.keySet()
+                .stream()
+                .filter(variable -> !processedVariables.contains(variable))
+                .forEach(variable -> depthFirstDependencySearch(variable,
+                                                                dependencies,
+                                                                processedVariables,
+                                                                initializationOrder));
+
+    Collections.reverse(initializationOrder); 
+
     return initializationOrder;
   }
 
   private static void depthFirstDependencySearch(String variable,
-                                                 Map<String, DependencyInfo> dependencies,
+                                                 Map<String, Dependency> dependencies,
                                                  Set<String> processedVariables,
-                                                 List<DependencyInfo> initializationOrder)
+                                                 List<Dependency> initializationOrder)
   {
 
     if (processedVariables.contains(variable))
       return;
 
     processedVariables.add(variable);
-    DependencyInfo info = dependencies.get(variable);
+    Dependency info = dependencies.get(variable);
     for (String dep : info.dependencies)
     {
       depthFirstDependencySearch(dep, dependencies, processedVariables, initializationOrder);
@@ -119,14 +98,14 @@ public class TopologicalSorter
     return dot.toString();
   }
 
-  public static String toDotFormatReversedDirect(Map<String, DependencyInfo> graph)
+  public static String toDotFormatReversedDirect(Map<String, Dependency> graph)
   {
     StringBuilder dot = new StringBuilder();
     dot.append("digraph DependencyGraph {\n");
     dot.append(" rankdir=LR;\n");
     dot.append(" node [shape=box];\n\n");
 
-    for (Map.Entry<String, DependencyInfo> entry : graph.entrySet())
+    for (Map.Entry<String, Dependency> entry : graph.entrySet())
     {
       String node = entry.getKey();
       for (String dependency : entry.getValue().dependencies)

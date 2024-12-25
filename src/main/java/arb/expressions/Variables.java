@@ -1,149 +1,82 @@
 package arb.expressions;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.TreeMap;
-import java.util.stream.Stream;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import arb.Named;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import javafx.collections.ModifiableObservableListBase;
 
-/**
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
- *
- * @author ©2024 Stephen Crowley
- */
 public class Variables extends
                        ModifiableObservableListBase<Named>
 {
+  public final Map<String, Named> map              = new LinkedHashMap<>();
+  private final List<Named>       orderedVariables = new ArrayList<>();
 
-  public final HashMap<String, Named> map  = new HashMap<>();
-  public final List<Named>            list = new ArrayList<>();
-
-  @Override
-  public String toString()
-  {
-    return String.format("Variables(#%s)[%s]",
-                         System.identityHashCode(this),
-                         map.entrySet()
-                            .stream()
-                            .filter(entry -> entry != null && entry.getValue() != null)
-                            .map(entry -> String.format("%s:%s=%s",
-                                                        entry.getValue().getClass().getName(),
-                                                        entry.getKey(),
-                                                        entry.getValue().toStringWithoutName()))
-                            .toList());
-  }
-
+  /**
+   * Creates Variables instance with initial set of named variables
+   * 
+   * @param variables Initial variables to add
+   */
   @SafeVarargs
   public Variables(Named... variables)
   {
-    TreeMap<String, Named> uniqueVars = new TreeMap<>();
-    Stream.of(variables).forEach(named ->
+    if (variables != null)
     {
-      if (!uniqueVars.containsKey(named.getName()))
-      {
-        uniqueVars.put(named.getName(), named);
-      }
-      else
-      {
-        System.err.format("Ignored duplicate variable " + named);
-      }
-    });
-    for (Named variable : uniqueVars.values())
-    {
-      add(variable);
+      Arrays.stream(variables).filter(Objects::nonNull).forEach(this::addVariable);
     }
   }
 
-  public Named register(String name, Named field)
+  /**
+   * Adds a variable ensuring no duplicates by name
+   */
+  private void addVariable(Named variable)
   {
-    return put(name, field);
-  }
-
-  @SuppressWarnings("unchecked")
-  public <R extends Named> R get(String name)
-  {
-    return (R) map.get(name);
-  }
-
-  public <R extends Named> R put(String name, R variable)
-  {
-    Named oldValue = map.put(name, variable);
-    if (oldValue != null)
+    if (!map.containsKey(variable.getName()))
     {
-      int index = list.indexOf(oldValue);
-      if (index != -1)
-      {
-        list.set(index, variable);
-      }
+      doAdd(size(), variable);
     }
     else
     {
-      list.add(variable);
+      System.err.printf("Ignored duplicate variable: %s%n", variable);
     }
+  }
+
+  /**
+   * Registers a new variable with given name
+   */
+  public Named register(String name, Named variable)
+  {
+    Objects.requireNonNull(name, "Name cannot be null");
+    Objects.requireNonNull(variable, "Variable cannot be null");
+
+    variable.setName(name);
+    doAdd(size(), variable);
     return variable;
   }
 
-  @Override
-  public int size()
+  /**
+   * Gets a variable by name with type safety
+   */
+  @SuppressWarnings("unchecked")
+  public <T extends Named> T get(String name)
   {
-    return list.size();
+    return (T) map.get(name);
   }
 
-  @Override
-  public Named get(int index)
-  {
-    return list.get(index);
-  }
-
-  @Override
-  protected void doAdd(int index, Named element)
-  {
-    list.add(index, element);
-    map.put(element.getName(), element);
-  }
-
-  @Override
-  protected Named doSet(int index, Named element)
-  {
-    Named oldElement = list.set(index, element);
-    if (oldElement != null)
-    {
-      map.remove(oldElement.getName());
-    }
-    if (element != null)
-    {
-      map.put(element.getName(), element);
-    }
-    return oldElement;
-  }
-
-  @Override
-  protected Named doRemove(int index)
-  {
-    Named removed = list.remove(index);
-    if (removed != null)
-    {
-      map.remove(removed.getName());
-    }
-    return removed;
-  }
-
+  /**
+   * Renames an existing variable
+   */
   public void rename(String oldName, String newName)
   {
-    System.err.format("rename(%s,%s)", oldName,newName);
-    Named variable = map.get(oldName);
+    Objects.requireNonNull(oldName, "Old name cannot be null");
+    Objects.requireNonNull(newName, "New name cannot be null");
+
+    Named variable = map.remove(oldName);
     if (variable != null)
     {
-      map.remove(oldName);
       variable.setName(newName);
       map.put(newName, variable);
-      int index = list.indexOf(variable);
+      int index = orderedVariables.indexOf(variable);
       if (index != -1)
       {
         fireChange(new ContextVariableChange(this,
@@ -153,4 +86,58 @@ public class Variables extends
     }
   }
 
+  @Override
+  public String toString()
+  {
+    return map.entrySet()
+              .stream()
+              .map(entry -> String.format("%s:%s=%s",
+                                          entry.getValue().getClass().getSimpleName(),
+                                          entry.getKey(),
+                                          entry.getValue().toStringWithoutName()))
+              .collect(Collectors.joining(", ", "Variables[", "]"));
+  }
+
+  // ModifiableObservableListBase implementation
+  @Override
+  public int size()
+  {
+    return orderedVariables.size();
+  }
+
+  @Override
+  public Named get(int index)
+  {
+    return orderedVariables.get(index);
+  }
+
+  @Override
+  protected void doAdd(int index, Named element)
+  {
+    orderedVariables.add(index, element);
+    map.put(element.getName(), element);
+  }
+
+  @Override
+  protected Named doSet(int index, Named element)
+  {
+    Named old = orderedVariables.set(index, element);
+    if (old != null)
+    {
+      map.remove(old.getName());
+    }
+    map.put(element.getName(), element);
+    return old;
+  }
+
+  @Override
+  protected Named doRemove(int index)
+  {
+    Named removed = orderedVariables.remove(index);
+    if (removed != null)
+    {
+      map.remove(removed.getName());
+    }
+    return removed;
+  }
 }

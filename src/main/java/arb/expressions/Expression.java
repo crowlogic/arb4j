@@ -34,8 +34,7 @@ import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.Sequence;
 import arb.functions.real.RealFunction;
-import arb.utensils.TopologicalSorter;
-import arb.utensils.TopologicalSorter.DependencyInfo;
+import arb.utensils.Dependency;
 import arb.utensils.Utensils;
 import arb.utensils.text.trees.TextTree;
 import arb.utensils.text.trees.TreeModel;
@@ -173,15 +172,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   static
   {
-    if (!compiledClassDir.canWrite())
+    if (saveClasses && !compiledClassDir.canWrite())
     {
       compiledClassDir.mkdir();
     }
-  }
-
-  public static ClassVisitor constructClassVisitor()
-  {
-    return new ClassWriter(ClassWriter.COMPUTE_FRAMES);
   }
 
   public Expression<?, ?, ?>                            ascendentExpression;
@@ -496,7 +490,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
     }
     // Declare functions in dependency order
-    for (DependencyInfo dependency : dependencies)
+    for (Dependency dependency : dependencies)
     {
       String                   dependencyVariableName = dependency.variableName;
       FunctionMapping<?, ?, ?> function               = referencedFunctionMappings.get(dependencyVariableName);
@@ -800,7 +794,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                         className,
                         expression);
     }
-    ClassVisitor classVisitor = constructClassVisitor();
+    ClassVisitor classVisitor = Compiler.constructClassVisitor();
 
     try
     {
@@ -1167,7 +1161,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (dependencies != null)
     {
       System.err.println();
-      for (DependencyInfo dependency : dependencies)
+      for (Dependency dependency : dependencies)
       {
         var assignments = dependency.reverseDependencies.stream()
                                                         .filter(referencedFunctionMappings::containsKey)
@@ -2077,7 +2071,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private ArrayList<LiteralConstantNode<D, C, F>> literalConstantNodes;
 
-  private List<DependencyInfo>                    dependencies;
+  private List<Dependency>                    dependencies;
 
   public HashMap<Node<D, C, F>, String>           generatedNodes     = new HashMap<>();
 

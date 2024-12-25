@@ -738,4 +738,9 @@ public class Compiler
     return sigWriter.toString();
   }
 
+  public static ClassVisitor constructClassVisitor()
+  {
+    return new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+  }
+
 }

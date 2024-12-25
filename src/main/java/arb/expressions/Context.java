@@ -26,8 +26,7 @@ import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.integer.Sequence;
-import arb.utensils.TopologicalSorter;
-import arb.utensils.TopologicalSorter.DependencyInfo;
+import arb.utensils.Dependency;
 
 /**
  * The {@link Context} class is an integral part of the {@link Expression}
@@ -76,15 +75,15 @@ public class Context
     return this;
   }
 
-  public String saveDependencyGraph(List<DependencyInfo> sortedFunctions)
+  public String saveDependencyGraph(List<Dependency> sortedFunctions)
   {
     String                          filename  = null;
-    HashMap<String, DependencyInfo> sortedMap = new HashMap<>();
-    for (DependencyInfo dependency : sortedFunctions)
+    HashMap<String, Dependency> sortedMap = new HashMap<>();
+    for (Dependency dependency : sortedFunctions)
     {
       sortedMap.put(dependency.variableName,
                     functionReferenceGraph.getOrDefault(dependency.variableName,
-                                                        new DependencyInfo(dependency.variableName)));
+                                                        new Dependency(dependency.variableName)));
     }
     if (sortedMap.values().stream().mapToInt(f -> f.dependencies.size()).sum() > 0)
     {
@@ -104,7 +103,7 @@ public class Context
       FunctionMapping<?, ?, ?> function     = entry.getValue();
 
       // Get referenced functions from the function mapping
-      DependencyInfo           depInfo      = new DependencyInfo(functionName);
+      Dependency           depInfo      = new Dependency(functionName);
 
       List<String>             dependencies = depInfo.dependencies;
       if (function.expression.referencedFunctionMappings != null)
@@ -119,7 +118,7 @@ public class Context
     }
   }
 
-  public Map<String, DependencyInfo> functionReferenceGraph = new HashMap<String, DependencyInfo>();
+  public Map<String, Dependency> functionReferenceGraph = new HashMap<String, Dependency>();
 
   public Context()
   {
@@ -294,7 +293,7 @@ public class Context
                                            same ? "IS" : "IS NOT"));
       }
     }
-    variables.put(name, variable);
+    variables.map.put(name, variable);
     return variable;
   }
 

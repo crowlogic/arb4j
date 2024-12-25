@@ -167,14 +167,12 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    return new LiteralConstantNode<>(expression,
-                                     equals(variable) ? "1" : "0");
+    return expression.newLiteralConstant(equals(variable) ? 1 : 0);
   }
 
   @Override
   public int dim()
   {
-    assert false : "TODO";
     return 1;
   }
 
@@ -271,12 +269,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (reference.type() == null)
     {
       resolveReference();
-      assert reference.type != null : "type is null for "
-                                      + reference
-                                      + " expression="
-                                      + expression
-                                      + " expression.ascendentExpression="
-                                      + expression.ascendentExpression;
     }
     Class<?> referenceType = reference.type();
 
@@ -431,7 +423,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                                              + this;
     if (!equals(inputVariable))
     {
-      if (Expression.trace)
+      if (expression.trace)
       {
         System.err.format("Variable(#%s).resolveIndependentVariable: declaring "
                           + reference

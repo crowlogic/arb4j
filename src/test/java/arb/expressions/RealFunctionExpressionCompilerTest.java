@@ -69,31 +69,31 @@ public class RealFunctionExpressionCompilerTest extends
   {
     Real vars = Real.newAlignedVector(6);
 
-    variables.put("b", one);
+    variables.map.put("b", one);
 
-    variables.put("a", one);
+    variables.map.put("a", one);
 
-    variables.put("λ", one);
+    variables.map.put("λ", one);
 
     v = Real.newVector(5);
-    variables.put("v", v);
+    variables.map.put("v", v);
     v.get(0).set("1.0", 128);
     v.get(1).set("2.0", 128);
     v3 = v.get(2).set("8081.2024", 128);
     v.get(3).set("4.0", 128);
     v.get(4).set("5.0", 128);
 
-    variables.put("x", vars.get(0).set(1e6));
+    variables.map.put("x", vars.get(0).set(1e6));
 
-    variables.put("y", vars.get(1).set(2));
+    variables.map.put("y", vars.get(1).set(2));
 
-    variables.put("z", vars.get(2).set(-1));
+    variables.map.put("z", vars.get(2).set(-1));
 
-    variables.put("r", vars.get(3).set("1.67", 128));
+    variables.map.put("r", vars.get(3).set("1.67", 128));
 
-    variables.put("α", vars.get(4).set("0.6", 128));
+    variables.map.put("α", vars.get(4).set("0.6", 128));
 
-    variables.put("n", vars.get(5).set("20", 128));
+    variables.map.put("n", vars.get(5).set("20", 128));
 
     vars.lock();
   }

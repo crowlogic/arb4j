@@ -16,6 +16,12 @@ import junit.framework.TestCase;
 public class RealFunctionTest extends
                               TestCase
 {
+  public static void testRandomWavePropagator()
+  {
+    var    f = RealFunction.express("√(π)*Γ(3/4)*J(1/4, |s|)*2^(1/4)/|s|^(1/4)");
+    double y = f.eval(2.3);
+    System.err.println("y=" + y);
+  }
 
   public static void testBetaFunctionReal()
   {
