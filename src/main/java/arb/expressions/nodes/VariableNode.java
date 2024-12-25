@@ -492,35 +492,9 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else
     {
-
-      boolean a = expression.thisOrAnyAscendentExpressionHasIndeterminateVariable();
-      boolean b = expression.anyAscendentIndependentVariableIsEqualTo(getName());
-      boolean c = expression.getVariable(reference) == null;
-      boolean d = expression.independentVariable == null || !expression.independentVariable.getName().equals(getName());
-      boolean h = expression.independentVariable == null || !expression.independentVariable.reference.equals(reference);
-
-      if (isIndeterminate = ((a && !b) && c && d) && h)
+      if (isIndeterminate = !expression.anyAscendentIndependentVariableIsEqualTo(getName()))
       {
-        if (expression.indeterminateVariable != null)
-        {
-          throw new CompilerException(String.format("undefined variable reference '%s' at position=%s in expression '%s' since the inderminate variable has already been declared to be '%s'",
-                                                    reference,
-                                                    expression.position,
-                                                    expression,
-                                                    expression.indeterminateVariable));
-        }
-
-        if (!VariableNode.this.equals(expression.indeterminateVariable) && Expression.trace)
-        {
-          System.err.format("Expression(#%s) declaring %s to be the indeterminant in %s\nvariables=%s\n\n",
-                            System.identityHashCode(expression),
-                            this,
-                            expression,
-                            expression.context == null ? null : expression.context.variables);
-
-        }
-        expression.referencedVariables.put(reference.name, this);
-        expression.indeterminateVariable = this;
+        declareThisToBeTheIndeterminantVariable();
       }
       else
       {
@@ -529,16 +503,51 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     if (expression.independentVariable != null && !isIndeterminate && !isIndependent && !ascendentInput)
     {
-      throw new UndefinedReferenceException(format("Undefined reference '%s' at position=%d in expression=%s, "
-                                                   + "independent variable is %s and parentExpression is %s,  remaining='%s'",
-                                                   reference.name,
-                                                   reference.position,
-                                                   expression.expression,
-                                                   expression.independentVariable,
-                                                   expression.ascendentExpression,
-                                                   expression.remaining()));
+      throwNewUndefinedReferenceException();
     }
     return this;
+  }
+
+  protected void throwNewUndefinedReferenceException()
+  {
+    throw new UndefinedReferenceException(format("Undefined reference '%s' at position=%d in expression=%s, "
+                                                 + "independent variable is %s and parentExpression is %s,  remaining='%s'",
+                                                 reference.name,
+                                                 reference.position,
+                                                 expression.expression,
+                                                 expression.independentVariable,
+                                                 expression.ascendentExpression,
+                                                 expression.remaining()));
+  }
+
+  protected void declareThisToBeTheIndeterminantVariable()
+  {
+    if (expression.indeterminateVariable != null)
+    {
+      throwNewIndeterminantVariableAlreadyDeclared();
+    }
+
+    if (!VariableNode.this.equals(expression.indeterminateVariable) && Expression.trace)
+    {
+      System.err.format("Expression(#%s) declaring %s to be the indeterminant in %s\nvariables=%s\n\n",
+                        System.identityHashCode(expression),
+                        this,
+                        expression,
+                        expression.context == null ? null : expression.context.variables);
+
+    }
+    expression.referencedVariables.put(reference.name, this);
+    expression.indeterminateVariable = this;
+  }
+
+  protected void throwNewIndeterminantVariableAlreadyDeclared()
+  {
+    throw new CompilerException(String.format("undefined variable reference '%s' at position=%s in expression '%s' "
+                                              + "since the inderminate variable has already been declared to be '%s'",
+                                              reference,
+                                              expression.position,
+                                              expression,
+                                              expression.indeterminateVariable));
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>>
