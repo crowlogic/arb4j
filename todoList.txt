@@ -21,3 +21,4 @@ java.lang.AssertionError: rowPointers is nullat arb4j/arb.RealMatrix.initRows(Re
 #253 expression compiler: automatic differentiation
 expr compiler:  fractional derivatives
 Expressor: Use graphviz-javato show ExpressionTree and also add .dot file export for ExpressionTree (or any Node really) #560
+Expressor: add decompiled source code view button
