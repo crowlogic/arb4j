@@ -1,5 +1,11 @@
 package arb.expressions;
 
+import static arb.utensils.Utensils.throwOrWrap;
+import static guru.nidi.graphviz.model.Factory.mutGraph;
+import static guru.nidi.graphviz.model.Factory.mutNode;
+import static guru.nidi.graphviz.model.Factory.to;
+
+import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.*;
@@ -7,6 +13,14 @@ import java.util.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.utensils.Dependency;
+import guru.nidi.graphviz.engine.Format;
+import guru.nidi.graphviz.engine.Graphviz;
+import guru.nidi.graphviz.model.MutableGraph;
+import guru.nidi.graphviz.model.MutableNode;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -14,6 +28,43 @@ import arb.utensils.Dependency;
  */
 public class TopologicalSorter
 {
+
+//Convert AWT BufferedImage to JavaFX Image
+  public static Image awtToFX(java.awt.image.BufferedImage awtImage)
+  {
+    WritableImage fxImage = null;
+    if (awtImage != null)
+    {
+      fxImage = new WritableImage(awtImage.getWidth(),
+                                  awtImage.getHeight());
+      SwingFXUtils.toFXImage(awtImage, fxImage);
+    }
+    return fxImage;
+  }
+
+  public static ImageView createGraphView(Map<String, Dependency> dependencies)
+  {
+    MutableGraph g = mutGraph("DependencyGraph").setDirected(true);
+
+    dependencies.forEach((name, dep) ->
+    {
+      MutableNode node = mutNode(name);
+      dep.dependencies.forEach(d -> node.addLink(to(mutNode(d))));
+      g.add(node);
+    });
+
+    try
+    {
+      BufferedImage image = Graphviz.fromGraph(g).render(Format.PNG).toImage();
+      return new ImageView(awtToFX(image));
+    }
+    catch (Exception e)
+    {
+      throwOrWrap(e);
+      return null;
+    }
+  }
+
   public static List<Dependency>
          findDependencyOrderUsingDepthFirstSearch(Map<String, Dependency> dependencies,
                                                   HashMap<String, FunctionMapping<?, ?, ?>> mappings)
@@ -34,7 +85,7 @@ public class TopologicalSorter
                                                                 processedVariables,
                                                                 initializationOrder));
 
-    Collections.reverse(initializationOrder); 
+    Collections.reverse(initializationOrder);
 
     return initializationOrder;
   }
@@ -129,4 +180,5 @@ public class TopologicalSorter
       e.printStackTrace();
     }
   }
+
 }
