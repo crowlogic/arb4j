@@ -166,7 +166,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     BinaryOperationNode<?, ?, ?> other = (BinaryOperationNode<?, ?, ?>) obj;
 
     if (!Objects.equals(operation, other.operation) || !Objects.equals(symbol, other.symbol)
-                  || !Objects.equals(type(), other.type()))
+                  || !Objects.equals(type(), other.generatedType))
     {
       return false;
     }
@@ -176,7 +176,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
       return type().equals(other.type()) && ((Objects.equals(left, other.left) && Objects.equals(right, other.right))
                     || (Objects.equals(left, other.right) && Objects.equals(right, other.left)));
     }
-    return type().equals(other.type()) && Objects.equals(left, other.left) && Objects.equals(right, other.right);
+    return type().equals(other.generatedType) && Objects.equals(left, other.left) && Objects.equals(right, other.right);
   }
 
   @Override
@@ -186,13 +186,13 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     if (isCommutative())
     {
       // For commutative operations, order shouldn't matter
-      int operationHash = Objects.hash(operation, symbol, type());
+      int operationHash = Objects.hash(operation, symbol, generatedType);
       int operandsHash  = left.hashCode() + right.hashCode();     // Simple sum is order-independent
       hash = operationHash + operandsHash;
     }
     else
     {
-      hash = Objects.hash(left, operation, right, symbol, type());
+      hash = Objects.hash(left, operation, right, symbol, generatedType);
     }
 
     return hash;
@@ -228,7 +228,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
     // Check if we've already generated this node
     String existingVar = expression.generatedNodes.get(this);
-    if (existingVar != null)
+    if ( existingVar != null)
     {
 
       fieldName = existingVar;
