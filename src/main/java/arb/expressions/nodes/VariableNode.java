@@ -521,11 +521,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (!VariableNode.this.equals(expression.indeterminateVariable) && Expression.trace)
     {
-      System.err.format("Expression(#%s) declaring %s to be the indeterminant in %s\nvariables=%s\n\n",
+      System.err.format("Expression(#%s) declaring %s to be the indeterminant in %s\n\n",
                         System.identityHashCode(expression),
                         this,
-                        expression,
-                        expression.context == null ? null : expression.context.variables);
+                        expression);
 
     }
     expression.referencedVariables.put(reference.name, this);

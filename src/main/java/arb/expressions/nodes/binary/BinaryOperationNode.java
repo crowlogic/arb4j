@@ -201,7 +201,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   public String formatGenerationParameters(Class<?> resultType)
   {
     return String.format("BinaryOperation.generate( this=%s,\n%sleft=%s    (%s %s)\n%soperation=%s,\n%sright=%s    (%s %s),"
-                         + " \n%sresultType=%s )\n\n",
+                         + " \n%sresultType=%s  fieldName=%s )\n\n",
                          this,
                          indent(26),
                          left,
@@ -214,7 +214,8 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                          right.type().getSimpleName(),
                          right.getClass().getSimpleName(),
                          indent(26),
-                         resultType);
+                         resultType,
+                         fieldName);
   }
 
   @Override
@@ -223,30 +224,18 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     assert left != null : "lhs is null";
     assert right != null : "rhs is null";
 
-    if (Expression.trace)
-    {
-      System.out.println(formatGenerationParameters(resultType));
-    }
     generatedType = resultType;
 
     // Check if we've already generated this node
     String existingVar = expression.generatedNodes.get(this);
     if (existingVar != null)
     {
-      if (isResult)
-      {
-        assert false : "hmm";
-        // checkClassCast(loadResultParameter(mv), resultType);
-        fieldName = "result";
-      }
-      else
-      {
-        fieldName = existingVar;
-        assert fieldName != null;
-      }
+
+      fieldName = existingVar;
+      assert fieldName != null;
+
       err.println("Assigning existingVar=" + existingVar + " to " + this);
       expression.loadThisFieldOntoStack(mv, existingVar, resultType);
-      return mv;
     }
     else
     {
@@ -255,8 +244,16 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
       right.generate(mv, right.type());
 
-      return invokeMethod(mv, operation, resultType);
+      invokeMethod(mv, operation, resultType);
     }
+
+    if (Expression.trace)
+    {
+      System.out.println(formatGenerationParameters(resultType));
+    }
+
+    return mv;
+
   }
 
   @Override

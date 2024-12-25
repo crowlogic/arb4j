@@ -320,7 +320,7 @@ public class Context
     return String.format("Context(#%s)[functions=%s,variables=%s]",
                          System.identityHashCode(this),
                          functions.map.keySet(),
-                         variables);
+                         variables.map.keySet());
   }
 
   public Collection<Entry<String, Named>> variableEntries()
