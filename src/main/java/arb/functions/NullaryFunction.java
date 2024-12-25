@@ -1,6 +1,5 @@
 package arb.functions;
 
-import arb.RealMatrix;
 import arb.algebra.Ring;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -62,11 +61,10 @@ public interface NullaryFunction<R> extends
     return (F) Function.instantiate(expression, null, Object.class, coDomainClass, functionClass, null);
   }
 
-  public static <R, F extends Function<Object, R>> F express(Class<? extends R> coDomainClass, String expression)
+  public static <R, F extends NullaryFunction<R>> F express(Class<? extends R> coDomainClass, String expression)
   {
     return express(coDomainClass, null, expression, null);
   }
-
 
   public default R evaluate(int bits, R realPolynomial)
   {
@@ -92,6 +90,11 @@ public interface NullaryFunction<R> extends
   public default R evaluate(int bits)
   {
     return evaluate(null, 0, bits, newCoDomainInstance());
+  }
+
+  public default R evaluate()
+  {
+    return evaluate(128);
   }
 
 }

@@ -4,6 +4,7 @@ import java.lang.foreign.Arena;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.NullaryFunction;
 import junit.framework.TestCase;
 
 /**
@@ -13,6 +14,13 @@ import junit.framework.TestCase;
 public class FractionTest extends
                           TestCase
 {
+
+  public void testRaiseIntegerToFractionalPower()
+  {
+    var f = NullaryFunction.express(Fraction.class, "2^(1/4)");
+    var y = f.evaluate();
+    assertEquals(1.189207115002721066717499970560475915293, y.doubleValue());
+  }
 
   public void testAscendingFactorialOfFractionToIntegerWithRealResult()
   {
