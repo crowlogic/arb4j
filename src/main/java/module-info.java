@@ -29,7 +29,6 @@ module arb4j
   requires transitive org.yaml.snakeyaml;
   requires transitive org.fxyz3d.core;
   requires transitive guru.nidi.graphviz;
-  requires transitive com.kitfox.svg;
 
   
   exports arb;
