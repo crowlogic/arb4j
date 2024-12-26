@@ -358,6 +358,10 @@ public class arblib {
     arblibJNI.qqbar_get_fexpr_repr(SymbolicExpression.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x);
   }
 
+  public static int qqbar_get_fexpr_formula(SymbolicExpression res, AlgebraicNumber x, long flags) {
+    return arblibJNI.qqbar_get_fexpr_formula(SymbolicExpression.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x, flags);
+  }
+
   public static void fexpr_init(SymbolicExpression expr) {
     arblibJNI.fexpr_init(SymbolicExpression.getCPtr(expr), expr);
   }

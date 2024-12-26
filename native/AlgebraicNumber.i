@@ -23,7 +23,27 @@ import arb.Integer;
 
 %typemap(javacode) qqbar_struct %{
 
+  public SymbolicExpression getSymbolicRepresentation(SymbolicExpression result)
+  {
+    arblib.qqbar_get_fexpr_repr(result, this);
+    return result;
+  }
 
+  public SymbolicExpression getSymbolicFormula(SymbolicExpression result, FormulaGenerationMethod... methods)
+  {
+    long flags = 0;
+    for (FormulaGenerationMethod method : methods)
+    {
+      flags = flags | method.value();
+    }
+    return getSymbolicFormula(result, flags);
+  }
+
+  protected SymbolicExpression getSymbolicFormula(SymbolicExpression result, long flags)
+  {
+    arblib.qqbar_get_fexpr_formula(result, this, flags);
+    return result;
+  }
 
   public AlgebraicNumber add(Integer addend, int bits, AlgebraicNumber result)
   {

@@ -217,6 +217,7 @@ void qqbar_init(qqbar_t res);
 void qqbar_clear(qqbar_t res);
 
 void qqbar_get_fexpr_repr(fexpr_t res, const qqbar_t x);
+int qqbar_get_fexpr_formula(fexpr_t res, const qqbar_t x, ulong flags);
 
 void fexpr_init(fexpr_t expr);
 
