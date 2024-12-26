@@ -1159,29 +1159,31 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // Initialize in proper dependency order
     if (dependencies != null)
     {
-      System.err.println();
       for (Dependency dependency : dependencies)
       {
-        var assignments  = dependency.reverseDependencies.stream()
-                                                         .filter(referencedFunctionMappings::containsKey)
-                                                         .toList();
+        var assignments        =
+                        dependency.reverseDependencies.stream()
+                                                      .filter(key -> referencedFunctionMappings.containsKey(key)
+                                                                    && !key.equals(className))
+                                                      .toList();
 
-        var functionName = dependency.variableName;
-        var mapping      = referencedFunctionMappings.get(functionName);
+        var functionName       = dependency.variableName;
+        var mapping            = referencedFunctionMappings.get(functionName);
+        var functionDescriptor = "L" + functionName + ";";
+
         if (mapping != null)
         {
           constructReferencedFunctionInstanceIfItIsNull(mv, mapping);
           generateFunctionInitializer(mv, mapping, assignments);
-        }
 
-        System.err.println(className
-                           + "  Initializing "
-                           + dependency.variableName
-                           + " to be assigned to "
-                           + assignments);
-        for (String assignment : assignments)
-        {
-          System.err.format("Set %s.%s=%s\n", assignment, functionName, functionName);
+          for (String assignment : assignments)
+          {
+            loadThisOntoStack(mv);
+            mv.visitFieldInsn(GETFIELD, className, assignment, String.format("L%s;", assignment));
+            loadThisOntoStack(mv);
+            mv.visitFieldInsn(GETFIELD, className, functionName, functionDescriptor);
+            mv.visitFieldInsn(PUTFIELD, assignment, functionName, functionDescriptor);
+          }
         }
       }
     }
@@ -2076,7 +2078,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private ArrayList<LiteralConstantNode<D, C, F>> literalConstantNodes;
 
-  public List<Dependency>                        dependencies;
+  public List<Dependency>                         dependencies;
 
   public HashMap<Node<D, C, F>, String>           generatedNodes     = new HashMap<>();
 

@@ -29,28 +29,7 @@ public class RealFunctionExpressionCompilerTest extends
 
   private Real v;
   private Real v3;
-
-  public static void testExpansion()
-  {
-    boolean before = Expression.trace;
-    //Expression.trace = true;
-    try
-    {
-      Context context = new Context();
-      context.variables.add(Integer.named("k").set(3));
-      RealFunction f    =
-                     RealFunction.express("x➔∑j➔1/2*J(k,x)*√(π)*√(8*j+2)*(-1)^j*Γ(k/2+j+1/2)/Γ(k/2-j+1/2)/Γ(j+1-k/2)/Γ(k/2+j+1){j = -10 … 10}",
-                                          context);
-      double       eval = f.eval(2.3);
-      System.out.println("f(2.3)=" + eval);
-    }
-    finally
-    {
-      Expression.trace = before;
-    }
-
-  }
-
+  
   public static void testSphericalBesselFunctionViaRealNullaryFunction()
   {
 

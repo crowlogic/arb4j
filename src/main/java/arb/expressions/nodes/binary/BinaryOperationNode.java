@@ -234,7 +234,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
       fieldName = existingVar;
       assert fieldName != null;
 
-      err.println("Assigning existingVar=" + existingVar + " to " + this);
       expression.loadThisFieldOntoStack(mv, existingVar, resultType);
     }
     else

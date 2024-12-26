@@ -28,7 +28,6 @@ public class IntegerTest extends
     try ( Integer p = new Integer(3))
     {
       var t = p.pow(new Integer(3), 128, new Fraction());
-      System.out.println("t=" + t);
       assertEquals(27.0, t.doubleValue());
     }
   }

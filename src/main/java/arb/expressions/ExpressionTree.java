@@ -101,24 +101,21 @@ public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> 
     indexBranches(this.root = root);
   }
 
-  public HashMap<Node<D, R, F>, List<Node<D, R, F>>> indexedBranches =
-                                                                     new HashMap<Node<D, R, F>, List<Node<D, R, F>>>();
+  public HashMap<Node<D, R, F>, List<Node<D, R, F>>> indexedBranches = new HashMap<>();
 
   void indexBranches(Node<D, R, F> stem)
   {
     if (stem == null)
       return;
 
-    ArrayList<Node<D, R, F>> branches = new ArrayList<>(stem.getBranches());
-    System.err.format("Adding %s with key %s\n", branches, stem);
+    var branches = new ArrayList<Node<D, R, F>>(stem.getBranches());
     indexedBranches.put(stem, branches);
-    
+
     for (var branch : stem.getBranches())
     {
       assert branch != null;
       indexBranches(branch);
     }
-
 
   }
 

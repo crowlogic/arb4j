@@ -125,10 +125,11 @@ public class P implements
       {
         C = new C();
       }
-      A.C           = B.C = E.C = C;
-
       C.α           = α;
       C.β           = β;
+      A.C           = C;
+      B.C           = C;
+      E.C           = C;
       P             = new P();
       P.α           = α;
       P.β           = β;

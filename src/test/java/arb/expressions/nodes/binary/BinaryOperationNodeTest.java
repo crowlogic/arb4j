@@ -27,7 +27,6 @@ public class BinaryOperationNodeTest extends
     var f = F.instantiate();
     var y = f.eval(2.3);
     assertEquals(0.151143929930069, y);
-    System.out.println(f + "=" + F.inspect(f));
   }
 
 }

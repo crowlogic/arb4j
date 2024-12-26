@@ -179,16 +179,15 @@ public class ExpressionTest extends
   {
     ComplexFunction f    = ComplexFunction.express("t->arg(ζ(1/2+I*t))");
     Complex         eval = f.eval(2.3, new Complex());
-    System.out.println("f(2.3)" + eval);
-
+    assertEquals( -0.452709380316814, eval.re().doubleValue()  );
+    assertTrue( eval.im().isZero() );
   }
 
   public static void testArgOfZetaOnTheCriticalLineReal()
   {
     RealFunction f    = RealFunction.express("t->arg(ζ(1/2+I*t))");
     Real         eval = f.eval(2.3, new Real());
-    System.out.println("f(2.3)" + eval);
-
+    assertEquals( -0.452709380316814, eval.doubleValue()  );
   }
 
   public void testIntegerToNegativeIntegerPower()
