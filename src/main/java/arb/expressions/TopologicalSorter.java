@@ -19,7 +19,6 @@ import guru.nidi.graphviz.model.MutableGraph;
 import guru.nidi.graphviz.model.MutableNode;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 
 /**
@@ -42,7 +41,7 @@ public class TopologicalSorter
     return fxImage;
   }
 
-  public static ImageView createGraphView(Map<String, Dependency> dependencies)
+  public static BufferedImage createDependencyGraphImage(Map<String, Dependency> dependencies)
   {
     MutableGraph g = mutGraph("DependencyGraph").setDirected(true);
 
@@ -52,17 +51,17 @@ public class TopologicalSorter
       dep.dependencies.forEach(d -> node.addLink(to(mutNode(d))));
       g.add(node);
     });
-
+    BufferedImage image;
     try
     {
-      BufferedImage image = Graphviz.fromGraph(g).render(Format.PNG).toImage();
-      return new ImageView(awtToFX(image));
+      image = Graphviz.fromGraph(g).render(Format.PNG).toImage();
     }
     catch (Exception e)
     {
       throwOrWrap(e);
       return null;
     }
+    return image;
   }
 
   public static List<Dependency>

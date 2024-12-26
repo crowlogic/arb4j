@@ -2076,7 +2076,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private ArrayList<LiteralConstantNode<D, C, F>> literalConstantNodes;
 
-  private List<Dependency>                        dependencies;
+  public List<Dependency>                        dependencies;
 
   public HashMap<Node<D, C, F>, String>           generatedNodes     = new HashMap<>();
 

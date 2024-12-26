@@ -2,6 +2,7 @@ package arb.expressions.viz;
 
 import static arb.utensils.Utensils.wrapOrThrow;
 
+import java.awt.image.BufferedImage;
 import java.io.Closeable;
 import java.io.File;
 import java.lang.reflect.Field;
@@ -17,6 +18,7 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.SerializedContextVariable;
 import arb.expressions.SerializedExpression;
+import arb.expressions.TopologicalSorter;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.*;
@@ -34,6 +36,7 @@ import arb.functions.real.NullaryFunctional;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
 import arb.functions.real.RealNullaryFunctional;
+import arb.utensils.ImageViewer;
 import arb.utensils.Utensils;
 import arb.viz.WindowManager;
 import javafx.application.Platform;
@@ -299,9 +302,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
   protected TreeTableColumn<Node<D, C, F>, String> newFieldColumn()
   {
     TreeTableColumn<Node<D, C, F>, String> fieldCol = new TreeTableColumn<>("Field");
-    fieldCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
-                                                                         .getValue()
-                                                                         .getFieldName()));
+    fieldCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().getFieldName()));
 
     return fieldCol;
   }
@@ -313,9 +314,14 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     return valueCol;
   }
 
-  public void graph()
+  public ImageViewer graph()
   {
-    WindowManager.showAlert("TODO", "TODO: graph.. ask for range.. 1d for real");
+    // this needs to create the graph of the AST, not the functions within a Context
+    BufferedImage graphImage = TopologicalSorter.createDependencyGraphImage(expr.context.functionReferenceGraph);
+    ImageViewer   view       = new ImageViewer(expr.className,
+                                               graphImage);
+    view.setVisible(true);
+    return view;
   }
 
   public Context load(File file)
