@@ -3,6 +3,7 @@
 #define wchar_t int
 #define ulong unsigned long
 
+#include <qqbar.h>
 #include <gmp.h>
 #include <arb_mat.h>
 #include <flint/fmpq.h>
@@ -14,6 +15,7 @@
 #include <X11/X.h>
 #include <unistd.h>
 #include <wchar.h>
+
 
 slong fmpz_poly_degree(const fmpz_poly_t poly);
 
@@ -213,6 +215,10 @@ int qqbar_set_re_im_d(qqbar_t res, double x, double y);
 void qqbar_init(qqbar_t res);
 
 void qqbar_clear(qqbar_t res);
+
+void qqbar_get_fexpr_repr(fexpr_t res, const qqbar_t x);
+
+void fexpr_init(fexpr_t expr);
 
 ulong n_nth_prime(ulong n);
  

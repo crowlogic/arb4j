@@ -3,6 +3,8 @@
 
 
 #include <flint/fmpz.h>
+#include <flint/fexpr.h>
+#define FEXPR_H
 #include <flint/qqbar.h>
 #include <mpfr.h>
 #include <flint/flint.h>
@@ -32,6 +34,7 @@
 #include <X11/X.h>
 #include <unistd.h>
 #include <wchar.h>
+
 
 typedef unsigned long Window;
 

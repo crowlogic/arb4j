@@ -354,6 +354,14 @@ public class arblib {
     arblibJNI.qqbar_clear(AlgebraicNumber.getCPtr(res), res);
   }
 
+  public static void qqbar_get_fexpr_repr(SymbolicExpression res, AlgebraicNumber x) {
+    arblibJNI.qqbar_get_fexpr_repr(SymbolicExpression.getCPtr(res), res, AlgebraicNumber.getCPtr(x), x);
+  }
+
+  public static void fexpr_init(SymbolicExpression expr) {
+    arblibJNI.fexpr_init(SymbolicExpression.getCPtr(expr), expr);
+  }
+
   public static long n_nth_prime(long n) {
     return arblibJNI.n_nth_prime(n);
   }

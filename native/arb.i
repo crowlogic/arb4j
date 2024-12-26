@@ -179,5 +179,7 @@ typedef unsigned long int mp_limb_t;
 
 %include "AlgebraicNumber.i"
 
+%include "SymbolicExpression.i"
+
 %include "TypesAndStructures.i"
 

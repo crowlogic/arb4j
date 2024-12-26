@@ -10,7 +10,7 @@ JAVA_HOME=$(shell readlink -f /usr/bin/javac | sed "s:bin/javac::")
 
 C_INCLUDES=-I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux -I/usr/local/include -I/usr/local/include/flint
 
-CFLAGS=-g -O3 -fPIC -shared -Wno-int-conversion
+CFLAGS=-g -O3 -fPIC -shared -Wno-int-conversion 
 
 SWIGFLAGS=-v -java -package arb -outdir src/main/java/arb
 
