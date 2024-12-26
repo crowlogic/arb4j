@@ -22,6 +22,12 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Book          riemannHypothesisEquivalents                                    =
+                                                           new Book("Equivalents of the Riemann Hypothesis",
+                                                                    "Kevin A. Broughan",
+                                                                    "2023").setPublisher("Cambridge University Press")
+                                                                           .setVolume("3");
+
   public static Article       symmetrisableFunctionsExpansion                                 =
                                                               new Article("Symmetrisable Functions and Their Expansion in Terms of Biorthogonal Functions",
                                                                           "James Mercer",
