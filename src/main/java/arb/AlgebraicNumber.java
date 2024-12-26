@@ -10,10 +10,48 @@ package arb;
 
 import arb.Integer;
 
-/*
- * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+
+import arb.documentation.TheArb4jLibrary;
+
+/**
+ * <p>
+ * A
+ * <a class="reference internal" href="#c.qqbar_t" title="qqbar_t"><code class=
+ * "xref c c-type docutils literal notranslate"><span class=
+ * "pre">qqbar_t</span></code></a> represents a real or complex algebraic number
+ * (an element of
+ * <span class="math notranslate nohighlight">\(\overline{\mathbb{Q}}\)</span>)
+ * by its unique reduced minimal polynomial in
+ * <span class="math notranslate nohighlight">\(\mathbb{Z}[x]\)</span> and an
+ * isolating complex interval. The precision of isolating intervals is
+ * maintained automatically to ensure that all operations on
+ * <a class="reference internal" href="#c.qqbar_t" title="qqbar_t"><code class=
+ * "xref c c-type docutils literal notranslate"><span class=
+ * "pre">qqbar_t</span></code></a> instances are exact.
+ * </p>
+ * <p>
+ * This representation is useful for working with individual algebraic numbers
+ * of moderate degree (up to 100, say). Arithmetic in this representation is
+ * expensive: an arithmetic operation on numbers of degrees <em>m</em> and
+ * <em>n</em> involves computing and then factoring an annihilating polynomial
+ * of degree <em>mn</em> and potentially also performing numerical root-finding.
+ * For doing repeated arithmetic, it is generally more efficient to work with
+ * the
+ * <a class="reference internal" href="ca.html#c.ca_t" title="ca_t"><code class=
+ * "xref c c-type docutils literal notranslate"><span class=
+ * "pre">ca_t</span></code></a> type in a fixed number field. The
+ * <a class="reference internal" href="#c.qqbar_t" title="qqbar_t"><code class=
+ * "xref c c-type docutils literal notranslate"><span class=
+ * "pre">qqbar_t</span></code></a> type is used internally by the
+ * <a class="reference internal" href="ca.html#c.ca_t" title="ca_t"><code class=
+ * "xref c c-type docutils literal notranslate"><span class=
+ * "pre">ca_t</span></code></a> type to represent the embedding of number fields
+ * in <span class="math notranslate nohighlight">\(\mathbb{R}\)</span> or
+ * <span class="math notranslate nohighlight">\(\mathbb{C}\)</span> and to
+ * decide predicates for algebraic numbers.
+ * </p>
+ * * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ * {@link TheArb4jLibrary}
  * 
  * @author ©2024 Stephen Crowley
  */
