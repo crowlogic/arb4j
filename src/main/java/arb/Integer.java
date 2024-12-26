@@ -1175,11 +1175,10 @@ public class Integer implements
     return neg ? res.inverse(res) : res;
   }
 
-  public Fraction pow(Fraction div, int bits, Fraction res)
+  public Fraction pow(Fraction operand, int bits, Fraction res)
   {
-    pow(div.getNumerator(), bits, res.getNumerator());
-    pow(div.getDenominator(), bits, res.getDenominator());
-    return res;
+    assert false : "the result type should be AlgebraicNumber not Fraction";
+    return null;
   }
 
 }
