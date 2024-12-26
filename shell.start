@@ -10,6 +10,7 @@ import arb.IntegerConstants;
 import arb.ComplexRationalFunction;
 import arb.functions.rational.LommelPolynomial;
 import arb.Fraction;
+import arb.AlgebraicNumber;
 import arb.expressions.Context;
 import arb.RationalFunction;
 import arb.functions.rational.RationalFunctionSequence;
