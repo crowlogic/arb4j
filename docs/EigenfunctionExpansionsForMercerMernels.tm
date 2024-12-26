@@ -9,14 +9,20 @@
     <date|>
   </author-affiliation>>>>
 
-  Consider an integral operator with kernel <math|R<around|(|s,t|)>> acting
-  on functions in <math|L<rsup|2><around|[|0,\<infty\>|)>>.
+  \;
 
   <\definition>
+    Consider an integral covariance operator with Mercer kernel
+    <math|R<around|(|s,t|)>>
+
+    <\equation>
+      T f<around*|(|t|)>=<big|int><rsub|0><rsup|\<infty\>>R<around|(|s,t|)>*f<around|(|s|)>*<space|0.17em>d*s
+    </equation>
+
     The eigenfunctions satisfy the equation:
 
     <\equation>
-      <big|int><rsub|0><rsup|\<infty\>>R<around|(|s,t|)>*\<psi\><around|(|s|)>*<space|0.17em>d*s=\<lambda\>*\<psi\><around|(|t|)>
+      T \<psi\><around*|(|s|)>=<big|int><rsub|0><rsup|\<infty\>>R<around|(|s,t|)>*\<psi\><around|(|s|)>*<space|0.17em>d*s=\<lambda\>*\<psi\><around|(|t|)>
     </equation>
 
     where <math|<around|{|\<psi\><rsub|n>|}><rsub|n=1><rsup|\<infty\>>> are
@@ -34,14 +40,12 @@
     </equation>
   </definition>
 
-  \ 
-
   <\theorem>
     If <math|\<psi\><rsub|n><around|(|t|)>=<big|sum><rsub|j=1><rsup|\<infty\>>c<rsub|n,j>*\<phi\><rsub|j><around|(|t|)>>
     is an eigenfunction expansion, then:
 
     <\equation>
-      c<rsub|n,k>=<frac|<big|int><rsub|0><rsup|\<infty\>>\<phi\><rsub|k><around|(|t|)>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t|\<lambda\><rsub|n>>*
+      c<rsub|n,k>=<big|int><rsub|0><rsup|\<infty\>>\<phi\><rsub|k><around|(|t|)>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t
     </equation>
   </theorem>
 
@@ -49,43 +53,43 @@
     <\enumerate>
       <item>Begin with the eigenfunction equation for <math|\<psi\><rsub|n>>:
 
-      <\equation>
+      <\equation*>
         <big|int><rsub|0><rsup|\<infty\>>R<around|(|s,t|)>*\<psi\><rsub|n><around|(|s|)>*<space|0.17em>d*s=\<lambda\><rsub|n>*\<psi\><rsub|n><around|(|t|)>
-      </equation>
+      </equation*>
 
       <item>Multiply both sides by <math|\<phi\><rsub|k><around|(|t|)>> and
       integrate over t:
 
-      <\equation>
+      <\equation*>
         <big|int><rsub|0><rsup|\<infty\>>\<phi\><rsub|k><around|(|t|)>*<big|int><rsub|0><rsup|\<infty\>>R<around|(|s,t|)>*\<psi\><rsub|n><around|(|s|)>*<space|0.17em>d*s*<space|0.17em>d*t=\<lambda\><rsub|n>*<big|int><rsub|0><rsup|\<infty\>>\<phi\><rsub|k><around|(|t|)>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t
-      </equation>
+      </equation*>
 
       <item>Apply Fubini's theorem to swap integration order on the left
       side:
 
-      <\equation>
+      <\equation*>
         <big|int><rsub|0><rsup|\<infty\>><big|int><rsub|0><rsup|\<infty\>>R<around|(|s,t|)>*\<phi\><rsub|k><around|(|t|)>*<space|0.17em>d*t*<space|0.17em>\<psi\><rsub|n><around|(|s|)>*<space|0.17em>d*s=\<lambda\><rsub|n>*<big|int><rsub|0><rsup|\<infty\>>\<phi\><rsub|k><around|(|t|)>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t
-      </equation>
+      </equation*>
 
       <item>Substitute the eigenfunction expansion
       <math|\<psi\><rsub|n><around|(|s|)>=<big|sum><rsub|j=1><rsup|\<infty\>>c<rsub|n,j>*\<phi\><rsub|j><around|(|s|)>>:
 
-      <\equation>
+      <\equation*>
         <big|int><rsub|0><rsup|\<infty\>><big|int><rsub|0><rsup|\<infty\>>R<around|(|s,t|)>*\<phi\><rsub|k><around|(|t|)>*<space|0.17em>d*t*<space|0.17em><big|sum><rsub|j=1><rsup|\<infty\>>c<rsub|n,j>*\<phi\><rsub|j><around|(|s|)>*<space|0.17em>d*s=\<lambda\><rsub|n>*<big|int><rsub|0><rsup|\<infty\>>\<phi\><rsub|k><around|(|t|)>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t
-      </equation>
+      </equation*>
 
       <item>Exchange summation and integration (justified by <math|L<rsup|2>>
       convergence):
 
-      <\equation>
+      <\equation*>
         <big|sum><rsub|j=1><rsup|\<infty\>>c<rsub|n,j>*<big|int><rsub|0><rsup|\<infty\>><big|int><rsub|0><rsup|\<infty\>>R<around|(|s,t|)>*\<phi\><rsub|k><around|(|t|)>*\<phi\><rsub|j><around|(|s|)>*<space|0.17em>d*t*<space|0.17em>d*s=\<lambda\><rsub|n>*<big|int><rsub|0><rsup|\<infty\>>\<phi\><rsub|k><around|(|t|)>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t
-      </equation>
+      </equation*>
 
       <item>Recognize the kernel matrix elements:
 
-      <\equation>
+      <\equation*>
         <big|sum><rsub|j=1><rsup|\<infty\>>c<rsub|n,j>*K<rsub|k*j>=\<lambda\><rsub|n>*<big|int><rsub|0><rsup|\<infty\>>\<phi\><rsub|k><around|(|t|)>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t
-      </equation>
+      </equation*>
 
       <item>Note that <math|<big|sum><rsub|j=1><rsup|\<infty\>>c<rsub|n,j>*K<rsub|k*j>>
       is the <math|k>-th component of <math|K<math-bf|c><rsub|n>>. Since
@@ -93,22 +97,21 @@
       must satisfy <math|K<math-bf|c><rsub|n>=\<lambda\><rsub|n><math-bf|c><rsub|n>>,
       thus:
 
-      <\equation>
+      <\equation*>
         \<lambda\><rsub|n>*c<rsub|n,k>=\<lambda\><rsub|n>*<big|int><rsub|0><rsup|\<infty\>>\<phi\><rsub|k><around|(|t|)>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t
-      </equation>
+      </equation*>
 
       <item>Divide both sides by <math|\<lambda\><rsub|n>> (noting
       <math|\<lambda\><rsub|n>\<neq\>0> for non-trivial eigenfunctions):
 
-      <\equation>
-        c<rsub|n,k>=<frac|<big|int><rsub|0><rsup|\<infty\>>\<phi\><rsub|k><around|(|t|)>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t|\<lambda\><rsub|n>>*
-      </equation>
+      <\equation*>
+        c<rsub|n,k>=<big|int><rsub|0><rsup|\<infty\>>\<phi\><rsub|k><around|(|t|)>*\<psi\><rsub|n><around|(|t|)>*<space|0.17em>d*t
+      </equation*>
     </enumerate>
 
     This establishes that the coefficient <math|c<rsub|n,k>> in the
-    eigenfunction expansion equals the normalized inner product of the basis
-    function <math|\<phi\><rsub|k>> with the eigenfunction
-    <math|\<psi\><rsub|n>>.
+    eigenfunction expansion equals the inner product of the basis function
+    <math|\<phi\><rsub|k>> with the eigenfunction <math|\<psi\><rsub|n>>.
   </proof>
 </body>
 
