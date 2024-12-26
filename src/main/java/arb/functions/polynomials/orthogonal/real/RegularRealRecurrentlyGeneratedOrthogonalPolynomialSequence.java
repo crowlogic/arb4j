@@ -1,7 +1,14 @@
 package arb.functions.polynomials.orthogonal.real;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.integer.RealSequence;
 
+/**
+*
+* @see BusinessSourceLicenseVersionOnePointOne © terms of the
+*      {@link TheArb4jLibrary}
+*/
 public abstract class RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence extends
                                                                                   RealRecurrentlyGeneratedOrthogonalPolynomialSequence
 {

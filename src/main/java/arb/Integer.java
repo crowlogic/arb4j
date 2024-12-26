@@ -309,7 +309,7 @@ public class Integer implements
   {
     return result.set(this).add(operand, prec, result);
   }
-  
+
   public ComplexRationalFunction add(Integer operand, int prec, ComplexRationalFunction result)
   {
     return result.set(this).add(operand, prec, result);
@@ -322,9 +322,9 @@ public class Integer implements
 
   public Integer add(Integer operand, int prec)
   {
-    return add(operand,prec,this);
+    return add(operand, prec, this);
   }
-  
+
   @Override
   public Integer add(Integer operand, int prec, Integer result)
   {
@@ -368,6 +368,16 @@ public class Integer implements
     assert bits > 0;
     arblib.arb_add_fmpz(result, addend, this.swigCPtr, bits);
     return result;
+  }
+
+  public RealPolynomial add(RealPolynomial addend, int bits, RealPolynomial result)
+  {
+    return result.set(this).add(addend, bits, result);
+  }
+
+  public ComplexPolynomial add(ComplexPolynomial addend, int bits, ComplexPolynomial result)
+  {
+    return result.set(this).add(addend, bits, result);
   }
 
   public RationalFunction add(RationalFunction addend, int bits, RationalFunction result)
@@ -415,7 +425,7 @@ public class Integer implements
       return realResult.getInteger(result);
     }
   }
-  
+
   public Real ascendingFactorial(Fraction n, int bits, Real result)
   {
     try ( Real blip = new Real())
@@ -881,7 +891,7 @@ public class Integer implements
       return result.set(pow(operand, bits, intres));
     }
   }
-  
+
   public ComplexRationalFunction pow(Integer operand, int bits, ComplexRationalFunction result)
   {
     try ( Integer intres = new Integer())
@@ -889,16 +899,11 @@ public class Integer implements
       return result.set(pow(operand, bits, intres));
     }
   }
-  
 
   public Real pow(Integer operand, int prec, Real result)
   {
     return result.set(this).pow(operand, prec);
   }
-
-
-
-
 
   /**
    * @see arblib#fmpz_set_si(long, int)

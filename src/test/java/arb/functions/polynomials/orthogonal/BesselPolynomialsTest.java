@@ -3,7 +3,7 @@ package arb.functions.polynomials.orthogonal;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.polynomials.orthogonal.complex.ComplexBesselPolynomials;
-import arb.functions.polynomials.orthogonal.real.RealBesselPolynomials;
+import arb.functions.polynomials.orthogonal.real.BesselPolynomials;
 import arb.functions.polynomials.orthogonal.real.RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence;
 import junit.framework.TestCase;
 
@@ -35,7 +35,7 @@ public class BesselPolynomialsTest extends
   public void testBesselPolynomials()
   {
 
-    try ( RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence y = new RealBesselPolynomials(128))
+    try ( RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence y = new BesselPolynomials(128))
     {
       for (int i = 0; i < 10; i++)
       {

@@ -9,9 +9,10 @@ import java.io.Closeable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.DivisionByZeroException;
-import arb.functions.real.RealFunction;
+import arb.expressions.Context;
 import arb.expressions.Parser;
-
+import arb.functions.polynomials.RealPolynomialNullaryFunction;
+import arb.functions.real.RealFunction;
 
 /**
  * <pre>
@@ -109,6 +110,12 @@ import arb.expressions.Parser;
     }
     return this;
   }
+  
+  public RealPolynomial set(String string)
+  {
+    RealPolynomialNullaryFunction.express(string).evaluate(bits, this);
+    return this;
+  }  
       
   public RealPolynomial become(RealPolynomial that)
   {
@@ -207,7 +214,7 @@ import arb.expressions.Parser;
     }
   }
   
-  public int bits;
+  public int bits = 128;
 
   static { System.loadLibrary("arblib"); }
 
@@ -335,6 +342,12 @@ import arb.expressions.Parser;
     }
   }
 
+  public RealPolynomial set(String string, Context context)
+  {
+    RealPolynomialNullaryFunction.express(string,context).evaluate(bits, this);
+    return this;
+  }
+  
   public RealPolynomial add(Real addend, int bits)
   {
     return add( addend, bits, this );

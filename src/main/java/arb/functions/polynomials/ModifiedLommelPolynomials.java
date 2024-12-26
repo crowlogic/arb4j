@@ -42,7 +42,7 @@ public class ModifiedLommelPolynomials extends
   public void initialize()
   {
     super.initialize();
-    RealPolynomialNullaryFunction.express("2*v*x", context).evaluate(bits, p1);
+    p1.set("2*v*x", context);
   }
 
   public Real v = Real.named("v").set(RealConstants.half);
@@ -108,7 +108,6 @@ public class ModifiedLommelPolynomials extends
    * ∑ₖ=₁^∞ (Rₘ,ᵥ(1/zᵥ,ₖ) Rₙ,ᵥ(1/zᵥ,ₖ) / (zᵥ,ₖ² [Jᵥ₊₁(zᵥ,ₖ)]²)) = δₘ,ₙ / (2(n+ᵥ))
    * </pre>
    */
-
   @Override
   public RealFunction orthogonalityMeasure()
   {

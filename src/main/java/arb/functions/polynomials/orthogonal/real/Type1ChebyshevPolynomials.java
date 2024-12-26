@@ -23,7 +23,7 @@ public class Type1ChebyshevPolynomials extends
           "2",
           "0",
           "1");
-    p1.set(1).shiftLeft(1);
+    p1.set("x");
   }
 
   @Override

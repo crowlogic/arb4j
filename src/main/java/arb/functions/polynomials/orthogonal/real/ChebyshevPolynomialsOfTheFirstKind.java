@@ -25,7 +25,7 @@ import arb.functions.real.RealFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealChebyshevPolynomialsOfTheFirstKind implements
+public class ChebyshevPolynomialsOfTheFirstKind implements
                                                 RealOrthogonalPolynomialSequence
 {
 
@@ -36,12 +36,12 @@ public class RealChebyshevPolynomialsOfTheFirstKind implements
     return RealPolynomial.class;
   }
 
-  public RealChebyshevPolynomialsOfTheFirstKind()
+  public ChebyshevPolynomialsOfTheFirstKind()
   {
 
   }
 
-  public RealChebyshevPolynomialsOfTheFirstKind(int bits)
+  public ChebyshevPolynomialsOfTheFirstKind(int bits)
   {
     this.bits = bits;
   }

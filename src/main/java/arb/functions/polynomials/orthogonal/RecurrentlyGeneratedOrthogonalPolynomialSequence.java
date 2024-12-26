@@ -2,7 +2,6 @@ package arb.functions.polynomials.orthogonal;
 
 import static arb.utensils.Utensils.wrapOrThrow;
 
-import java.util.HashMap;
 import java.util.List;
 
 import arb.AutoCloseableAssignable;
@@ -151,7 +150,5 @@ public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R,
   {
     return new SequenceIterator<E>(this);
   }
-
-  HashMap<R, E> cache = new HashMap<>();
 
 }

@@ -5,9 +5,10 @@ import arb.Real;
 import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.polynomials.orthogonal.real.RealChebyshevPolynomialsOfTheFirstKind;
+import arb.functions.polynomials.orthogonal.real.ChebyshevPolynomialsOfTheFirstKind;
 import arb.functions.polynomials.orthogonal.real.HermitePolynomials;
-import arb.functions.polynomials.orthogonal.real.RealLegendrePolynomials;
+import arb.functions.polynomials.orthogonal.real.LaguerrePolynomials;
+import arb.functions.polynomials.orthogonal.real.LegendrePolynomials;
 import arb.functions.polynomials.orthogonal.real.Type1ChebyshevPolynomials;
 import junit.framework.TestCase;
 
@@ -20,9 +21,20 @@ public class OrthogonalPolynomialSequenceTest extends
                                               TestCase
 {
 
+  public static void testLaguerrePolynomials()
+  {
+    try ( LaguerrePolynomials P = new LaguerrePolynomials(128))
+
+    {
+      RealPolynomial r = P.evaluate(2, 128);
+      assertEquals("0.5*x² - 2*x + 1", r.toString());
+
+    }
+  }
+
   public static void test4thType1ChebyshevPolynomial()
   {
-    try ( RealChebyshevPolynomialsOfTheFirstKind T = new RealChebyshevPolynomialsOfTheFirstKind(); Integer n = new Integer();
+    try ( ChebyshevPolynomialsOfTheFirstKind T = new ChebyshevPolynomialsOfTheFirstKind(); Integer n = new Integer();
           Real correct = Real.newVector(5);)
     {
       RealPolynomial T4 = T.evaluate(n.set(4), 1, 128, new RealPolynomial());
@@ -33,7 +45,7 @@ public class OrthogonalPolynomialSequenceTest extends
 
   public static void testLegendrePolynomials()
   {
-    try ( RealLegendrePolynomials P = new RealLegendrePolynomials(128))
+    try ( LegendrePolynomials P = new LegendrePolynomials(128))
 
     {
 
@@ -86,7 +98,7 @@ public class OrthogonalPolynomialSequenceTest extends
 
   public void testChebyshevPolynomialsOfTheFirstKind()
   {
-    try ( RealChebyshevPolynomialsOfTheFirstKind T = new RealChebyshevPolynomialsOfTheFirstKind(128))
+    try ( ChebyshevPolynomialsOfTheFirstKind T = new ChebyshevPolynomialsOfTheFirstKind(128))
     {
       for (int i = 0; i < 10; i++)
       {

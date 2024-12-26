@@ -31,19 +31,17 @@ import arb.functions.real.RealFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealBesselPolynomials
-                                   extends
-                                   RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence implements
-                                   Concept
+public class BesselPolynomials extends
+                               RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence implements
+                               Concept
 {
-  public RealBesselPolynomials(int bits)
+  public BesselPolynomials(int bits)
   {
     super(bits,
           "2*n+1",
           "0",
           "-1");
-    p1.set(0, 1);
-    p1.set(1, 1);
+    p1.set("1+x");
   }
 
   @Override

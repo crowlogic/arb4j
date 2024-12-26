@@ -22,7 +22,7 @@ public class HermitePolynomials extends
           "2",
           "0",
           "2*n");
-    p1.set(2).shiftLeft(1);
+    p1.set("2*x");
   }
 
   @Override

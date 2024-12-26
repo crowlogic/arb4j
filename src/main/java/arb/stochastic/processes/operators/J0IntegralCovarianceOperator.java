@@ -13,8 +13,8 @@ import arb.functions.FourierTransform;
 import arb.functions.Function;
 import arb.functions.RealSquareIntegrableFunction;
 import arb.functions.integer.RealSequence;
-import arb.functions.polynomials.orthogonal.real.RealChebyshevPolynomialsOfTheFirstKind;
-import arb.functions.polynomials.orthogonal.real.RealLegendrePolynomials;
+import arb.functions.polynomials.orthogonal.real.ChebyshevPolynomialsOfTheFirstKind;
+import arb.functions.polynomials.orthogonal.real.LegendrePolynomials;
 import arb.functions.polynomials.orthogonal.real.Type1ChebyshevPolynomials;
 import arb.functions.rational.RationalFunctionSequence;
 import arb.functions.real.RealBesselFunctionOfTheFirstKind;
@@ -29,7 +29,7 @@ import arb.stochastic.processes.RealKarhunenLoeveExpansion;
  * {@link RealBesselFunctionOfTheFirstKind} of order 0, J₀, as its
  * {@link TranslationInvariantKernel}. This {@link Operator} has a special
  * relationship with the orthogonal complement of the Fourier transforms of the
- * {@link RealChebyshevPolynomialsOfTheFirstKind} by virtue of the fact that
+ * {@link ChebyshevPolynomialsOfTheFirstKind} by virtue of the fact that
  * they comprise its eigenfunctions.
  *
  * 
@@ -152,7 +152,7 @@ public class J0IntegralCovarianceOperator implements
    * K(x,y)=∑ₖλₖΨₖ(x-y)∀ₖ∈₀⸴₁⸴₂…∞
    * </p>
    * where Ψₖ are the eigenfunctions and {@link #λₖ} are the eigenvalues
-   * {@link FourierTransform} of the {@link RealLegendrePolynomials} with odd k
+   * {@link FourierTransform} of the {@link LegendrePolynomials} with odd k
    *
    * @param f      The input {@link Function}.
    * @param bits   The number of bits of precision for the computation.
