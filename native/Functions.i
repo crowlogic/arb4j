@@ -142,6 +142,9 @@ int qqbar_cmpabs_im(const qqbar_t x, const qqbar_t y);
 int qqbar_cmpabs(const qqbar_t x, const qqbar_t y);
 int qqbar_cmp_root_order(const qqbar_t x, const qqbar_t y);
 
+ void qqbar_zero(qqbar_t res);
+ void qqbar_one(qqbar_t res);
+
 ulong qqbar_hash(const qqbar_t x);
 void qqbar_mul(qqbar_t res, const qqbar_t x, const qqbar_t y);
 void qqbar_mul_fmpq(qqbar_t res, const qqbar_t x, const fmpq_t y);

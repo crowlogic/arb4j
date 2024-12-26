@@ -153,38 +153,52 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   @Override
   public int bits()
   {
-    assert false : "TODO: Auto-generated method stub";
     return 128;
   }
 
   @Override
   public int dim()
   {
-    assert false : "TODO: Auto-generated method stub";
     return 1;
   }
 
   @Override
   public AlgebraicNumber div(int j, int prec, AlgebraicNumber result)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    assert result != null && result.swigCPtr != 0 : "result is null or has null swigCPtr";
+    arblib.qqbar_div_si(result, this, j);
+    return result;
   }
 
+  public AlgebraicNumber mul(Fraction x, int prec, AlgebraicNumber result)
+  {
+    assert x != null && x.swigCPtr != 0 : "x is null or has null swigCPtr";
+    assert result != null && result.swigCPtr != 0 : "result is null or has null swigCPtr";
+    arblib.qqbar_mul_fmpq(result, this, x);
+    return result;
+  }
+  
+  public AlgebraicNumber mul(Integer x, int prec, AlgebraicNumber result)
+  {
+    assert x != null && x.swigCPtr != 0 : "x is null or has null swigCPtr";
+    assert result != null && result.swigCPtr != 0 : "result is null or has null swigCPtr";
+    arblib.qqbar_mul_fmpz(result, this, x.swigCPtr);
+    return result;
+  }  
 
   @Override
   public AlgebraicNumber mul(int x, int prec, AlgebraicNumber result)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    assert result != null && result.swigCPtr != 0 : "result is null or has null swigCPtr";
+    arblib.qqbar_mul_si(result, this, x);
+    return result;
   }
 
 
   @Override
   public AlgebraicNumber newFieldElement()
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    return new AlgebraicNumber();
   }
 
   @Override

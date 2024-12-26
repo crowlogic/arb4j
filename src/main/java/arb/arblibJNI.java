@@ -84,6 +84,8 @@ public class arblibJNI {
   public final static native int qqbar_cmpabs_im(long jarg1, AlgebraicNumber jarg1_, long jarg2, AlgebraicNumber jarg2_);
   public final static native int qqbar_cmpabs(long jarg1, AlgebraicNumber jarg1_, long jarg2, AlgebraicNumber jarg2_);
   public final static native int qqbar_cmp_root_order(long jarg1, AlgebraicNumber jarg1_, long jarg2, AlgebraicNumber jarg2_);
+  public final static native void qqbar_zero(long jarg1, AlgebraicNumber jarg1_);
+  public final static native void qqbar_one(long jarg1, AlgebraicNumber jarg1_);
   public final static native long qqbar_hash(long jarg1, AlgebraicNumber jarg1_);
   public final static native void qqbar_mul(long jarg1, AlgebraicNumber jarg1_, long jarg2, AlgebraicNumber jarg2_, long jarg3, AlgebraicNumber jarg3_);
   public final static native void qqbar_mul_fmpq(long jarg1, AlgebraicNumber jarg1_, long jarg2, AlgebraicNumber jarg2_, long jarg3, Fraction jarg3_);

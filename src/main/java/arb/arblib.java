@@ -182,6 +182,14 @@ public class arblib {
     return arblibJNI.qqbar_cmp_root_order(AlgebraicNumber.getCPtr(x), x, AlgebraicNumber.getCPtr(y), y);
   }
 
+  public static void qqbar_zero(AlgebraicNumber res) {
+    arblibJNI.qqbar_zero(AlgebraicNumber.getCPtr(res), res);
+  }
+
+  public static void qqbar_one(AlgebraicNumber res) {
+    arblibJNI.qqbar_one(AlgebraicNumber.getCPtr(res), res);
+  }
+
   public static long qqbar_hash(AlgebraicNumber x) {
     return arblibJNI.qqbar_hash(AlgebraicNumber.getCPtr(x), x);
   }
