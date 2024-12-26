@@ -10,6 +10,7 @@ import static org.objectweb.asm.Opcodes.IFLE;
 import static org.objectweb.asm.Opcodes.POP;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.Label;
@@ -109,7 +110,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public final String                             prefix;
 
-
   public Node<D, R, F>                            startIndex;
 
   public final String                             symbol;
@@ -137,6 +137,26 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     generatedType = expression.coDomainType;
 
     evaluateIntegralRangeSpecification();
+  }
+
+  @Override
+  public int hashCode()
+  {
+    return Objects.hash(endIndex, operation, startIndex);
+  }
+
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    NAryOperationNode<?, ?, ?> other = (NAryOperationNode<?, ?, ?>) obj;
+    return Objects.equals(endIndex, other.endIndex) && Objects.equals(operation, other.operation)
+                  && Objects.equals(startIndex, other.startIndex);
   }
 
   public NAryOperationNode(Expression<D, R, F> expression,
@@ -261,11 +281,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       indexVariableFieldName = expression.parseName();
     }
-
     expression.context.variables.map.put(indexVariableFieldName, null);
-
     expression.require('=');
-
     parseStartIndex();
     parseEndIndex();
     return this;
@@ -676,7 +693,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       return this;
     }
-  //  expression.reset();
+    // expression.reset();
     expression.context.functions.map.remove(this.factorFunctionFieldName);
     expression.context.variables.map.remove(this.factorValueFieldName);
     factorFunctionFieldName = null;
@@ -744,9 +761,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @Override
   public boolean isLiteralConstant()
   {
-    return this.endIndex.isLiteralConstant() && startIndex.isLiteralConstant() && getBranches().stream().allMatch(Node::isLiteralConstant);
+    return this.endIndex.isLiteralConstant() && startIndex.isLiteralConstant()
+                  && getBranches().stream().allMatch(Node::isLiteralConstant);
 
   }
-
 
 }

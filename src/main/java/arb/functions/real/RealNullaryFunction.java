@@ -56,4 +56,9 @@ public interface RealNullaryFunction extends
   {
     return express(null, expression, null);
   }
+
+  public default double eval()
+  {
+    return evaluate().doubleValue();
+  }
 }

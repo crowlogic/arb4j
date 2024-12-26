@@ -6,6 +6,7 @@ import static arb.expressions.Compiler.invokeMethod;
 import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
@@ -33,6 +34,26 @@ import arb.functions.Function;
 public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> extends
                          Node<D, C, F>
 {
+
+  @Override
+  public int hashCode()
+  {
+    return Objects.hash(integrand, integrationVariable, lowerLimit, upperLimit);
+  }
+
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    IntegralNode<?, ?, ?> other = (IntegralNode<?, ?, ?>) obj;
+    return Objects.equals(integrand, other.integrand) && Objects.equals(integrationVariable, other.integrationVariable)
+                  && Objects.equals(lowerLimit, other.lowerLimit) && Objects.equals(upperLimit, other.upperLimit);
+  }
 
   @Override
   public Node<D, C, F> simplify()

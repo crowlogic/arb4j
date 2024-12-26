@@ -8,6 +8,7 @@ import static java.lang.String.format;
 import static java.lang.System.err;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.objectweb.asm.MethodVisitor;
 
@@ -32,6 +33,28 @@ import arb.functions.real.RealBesselFunctionOfTheFirstKind;
 public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends D, ? extends R>> extends
                                              FunctionNode<D, R, F>
 {
+
+  @Override
+  public int hashCode()
+  {
+    final int prime  = 31337;
+    int       result = super.hashCode();
+    result = prime * result + Objects.hash(order);
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj)
+      return true;
+    if (!super.equals(obj))
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    BesselFunctionNodeOfTheFirstKind<?, ?, ?> other = (BesselFunctionNodeOfTheFirstKind<?, ?, ?>) obj;
+    return Objects.equals(order, other.order);
+  }
 
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
