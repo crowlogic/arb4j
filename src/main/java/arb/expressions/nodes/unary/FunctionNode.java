@@ -66,7 +66,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public int hashCode()
   {
-    return Objects.hash(functionName);
+    final int prime  = 31337;
+    int       result = super.hashCode();
+    result = prime * result + Objects.hash(functionName);
+    return result;
   }
 
   @Override
@@ -74,12 +77,12 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     if (this == obj)
       return true;
-    if (obj == null)
+    if (!super.equals(obj))
       return false;
     if (getClass() != obj.getClass())
       return false;
     FunctionNode<?, ?, ?> other = (FunctionNode<?, ?, ?>) obj;
-    return Objects.equals(functionName, other.functionName);
+    return super.equals(obj) && Objects.equals(functionName, other.functionName);
   }
 
   static final HashSet<String>  bitlessFunctions                   = new HashSet<>();
@@ -322,13 +325,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     String functionDescriptor = bitless ? Compiler.getMethodDescriptor(coDomainType, coDomainType)
                                         : Compiler.getMethodDescriptor(coDomainType, int.class, coDomainType);
 
-    assert !(functionName.equals("neg") && !bitless) : "this.class="
-                                                       + this.getClass()
-                                                       + " this="
-                                                       + this
-                                                       + "this.bitless="
-                                                       + this.isBitless();
-
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   Type.getInternalName(domainType),
                                   functionName,
@@ -391,7 +387,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     assert mapping != null : "FunctionMapping for " + functionName + " missing";
     return mapping;
   }
-
 
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)

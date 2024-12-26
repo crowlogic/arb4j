@@ -3,6 +3,8 @@ package arb.expressions.nodes.unary;
 import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.loadResultParameter;
 
+import java.util.Objects;
+
 import org.objectweb.asm.MethodVisitor;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -19,6 +21,25 @@ import arb.functions.Function;
 public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ? extends R>> extends
                                         Node<D, R, F>
 {
+
+  @Override
+  public int hashCode()
+  {
+    return Objects.hash(arg);
+  }
+
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    UnaryOperationNode<?, ?, ?> other = (UnaryOperationNode<?, ?, ?>) obj;
+    return Objects.equals(arg, other.arg);
+  }
 
   public Node<D, R, F> arg;
 
