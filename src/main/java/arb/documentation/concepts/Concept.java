@@ -1,10 +1,7 @@
 package arb.documentation.concepts;
 
-import java.util.stream.Stream;
-
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.documentation.references.Reference;
 
 /**
  * <pre>
@@ -21,8 +18,8 @@ import arb.documentation.references.Reference;
  *      {@link TheArb4jLibrary}
  */
 public interface Concept extends
-                         Notion
+                         Notion,
+                         HasReferences
 {
-  public Stream<? extends Reference> getReferences();
 
 }

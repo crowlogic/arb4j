@@ -1,10 +1,12 @@
-package arb.logic.inference;
+package arb.logic;
 
 /**
+ *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface Decision
+public interface Conjecture extends
+                            Hypothesis
 {
 
 }

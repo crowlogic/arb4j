@@ -8,13 +8,15 @@ import arb.theorems.RegularTheorem;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class TheoremReference implements Reference, RegularTheorem
+public class TheoremReference implements
+                              Reference,
+                              RegularTheorem
 {
 
   @Override
   public String toString()
   {
-    return String.format("Theorem %s in %s", reference, book);
+    return String.format("Theorem %s in %s by %s", reference, book.title(), book.author());
   }
 
   public Book   book;

@@ -1,5 +1,0 @@
-
-/**
- * 
- */
-package arb.logic.inference;
