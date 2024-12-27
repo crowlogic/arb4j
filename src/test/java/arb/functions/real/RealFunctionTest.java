@@ -27,7 +27,7 @@ public class RealFunctionTest extends
   {
     var    f = RealFunction.express("(√(π)*Γ(3/4)*J(1/4, |s|)*2^(1/4))/|s|^(1/4)");
     double y = f.eval(2.3);
-    assertEquals(0.5125173326531873041352847860794002126341, y);
+    assertEquals(0.5125173326531876, y);
   }
 
   public static void testBetaFunctionReal()

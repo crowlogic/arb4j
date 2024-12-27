@@ -196,6 +196,17 @@ import arb.utensils.Utensils;
     res.left.re().sqrt(prec);
     return res;
   }
+
+  public Real set(AlgebraicNumber a, int bits )
+  {
+    arblib.qqbar_get_arb(this, a, bits);
+    return this;
+  }
+
+  public Real mul(AlgebraicNumber a, int bits, Real res)
+  {
+    return res.set(a,bits).mul(this, bits, res);
+  }
   
   public RationalFunction add( Integer z, int bits, RationalFunction result )
   {
