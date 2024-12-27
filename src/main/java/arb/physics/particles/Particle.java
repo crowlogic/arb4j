@@ -12,13 +12,13 @@ import arb.physics.particles.matter.Fermion;
  * physical or chemical properties, such as volume, mass, or charge. In the
  * context of physics, particles are the basic units of matter and the
  * fundamental constituents of the universe. Particles can be classified into
- * two main types: elementary particles, which are not composed of smaller parts
- * and are defined as the basic building blocks of matter (such as quarks and
- * leptons, including electrons), and composite particles, which are made up of
- * two or more elementary particles bound together (such as protons, neutrons,
- * and atoms). The behavior and interactions of particles are described by
- * fields and fundamental forces in the framework of quantum mechanics and
- * quantum field theory.
+ * two main types: elementary {@link Particle}, which are not composed of
+ * smaller parts and are defined as the basic building blocks of matter (such as
+ * quarks and leptons, including electrons), and composite particles, which are
+ * made up of two or more elementary particles bound together (such as protons,
+ * neutrons, and atoms). The behavior and interactions of particles are
+ * described by fields and fundamental forces in the framework of quantum
+ * mechanics and quantum field theory.
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
