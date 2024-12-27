@@ -61,6 +61,18 @@ import arb.documentation.TheArb4jLibrary;
 
 %typemap(javacode) qqbar_struct %{
 
+  public Real getReal(int bits, Real result)
+  {
+    arblib.qqbar_get_arb(result, this, bits);
+    return result;
+  }
+
+  public Complex getComplex(int bits, Complex result)
+  {
+    arblib.qqbar_get_acb(result, this, bits);
+    return result;
+  }
+  
   public AlgebraicNumber pow(AlgebraicNumber operand, AlgebraicNumber res)
   {
     arblib.qqbar_pow(res, this, operand);
