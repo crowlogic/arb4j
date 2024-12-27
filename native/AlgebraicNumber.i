@@ -61,6 +61,18 @@ import arb.documentation.TheArb4jLibrary;
 
 %typemap(javacode) qqbar_struct %{
 
+  public AlgebraicNumber pow(AlgebraicNumber operand, AlgebraicNumber res)
+  {
+    arblib.qqbar_pow(res, this, operand);
+    return res;
+  }
+  
+  public AlgebraicNumber pow(Fraction operand, AlgebraicNumber res)
+  {
+    arblib.qqbar_pow_fmpq(res, this, operand);
+    return res;
+  }
+  
   public AlgebraicNumber inverse()
   {
     return inverse(this);

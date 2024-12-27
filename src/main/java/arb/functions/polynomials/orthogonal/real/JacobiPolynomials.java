@@ -13,7 +13,7 @@ import arb.expressions.Context;
 import arb.functions.integer.RealPolynomialSequence;
 import arb.functions.integer.RealSequence;
 import arb.functions.polynomials.RealOrthogonalPolynomialSequenceIterator;
-import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
+import arb.functions.polynomials.RealHypergeometricPolynomialFunction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
 
@@ -29,7 +29,7 @@ import arb.functions.real.RealNullaryFunction;
  * over the interval [-1,1] when α,β>-1 and are recursively defined by
  * 
  * The Jacobi polynomials are also known as a
- * {@link RealPolynomialHypergeometricFunction}s
+ * {@link RealHypergeometricPolynomialFunction}s
  * 
  * <pre>
  *  C(n)=2n+α+β

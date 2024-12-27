@@ -46,12 +46,12 @@ import arb.functions.HypergeometricFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealPolynomialHypergeometricFunction extends
+public class RealHypergeometricPolynomialFunction extends
                                                   HypergeometricFunction<Real, RealPolynomial,
                                                   RealPolynomialNullaryFunction>
 {
 
-  public RealPolynomialHypergeometricFunction
+  public RealHypergeometricPolynomialFunction
          init(Real alpha,
               Real beta,
               Expression<Object, RealPolynomial, RealPolynomialNullaryFunction> arg)

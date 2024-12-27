@@ -11,7 +11,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
-import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
+import arb.functions.polynomials.RealHypergeometricPolynomialFunction;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
 import arb.functions.rational.ComplexRationalNullaryFunction;
 import arb.functions.rational.RationalNullaryFunction;
@@ -29,7 +29,7 @@ public class HypergeometricFunctionTest extends
 
   public void testHypergeometricPolynomialReal()
   {
-    try ( RealPolynomialHypergeometricFunction poly = new RealPolynomialHypergeometricFunction())
+    try ( RealHypergeometricPolynomialFunction poly = new RealHypergeometricPolynomialFunction())
     {
 
       poly.init(Real.class,
@@ -157,7 +157,7 @@ public class HypergeometricFunctionTest extends
   {
     var arg = RealPolynomialNullaryFunction.parse("x");
 
-    try ( RealPolynomialHypergeometricFunction F = new RealPolynomialHypergeometricFunction();
+    try ( RealHypergeometricPolynomialFunction F = new RealHypergeometricPolynomialFunction();
           RealPolynomial y = new RealPolynomial();)
     {
       F.init(Real.newVector(-6, 2.5), Real.newVector(1.0), arg);

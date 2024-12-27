@@ -20,8 +20,8 @@ import arb.functions.Function;
 import arb.functions.NullaryFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.Sequence;
-import arb.functions.polynomials.ComplexPolynomialHypergeometricFunction;
-import arb.functions.polynomials.RealPolynomialHypergeometricFunction;
+import arb.functions.polynomials.ComplexHypergeometricPolynomialFunction;
+import arb.functions.polynomials.RealHypergeometricPolynomialFunction;
 import arb.functions.rational.ComplexRationalHypergeometricFunction;
 import arb.functions.rational.LommelPolynomial;
 import arb.functions.rational.RationalHypergeometricFunction;
@@ -316,18 +316,16 @@ public class Compiler
     typePrefixes.put(Fraction.class, "f");
     typePrefixes.put(LommelPolynomial.class, "XR");
     typePrefixes.put(RationalHypergeometricFunction.class, "ℚF");
-    typePrefixes.put(RealPolynomialHypergeometricFunction.class, "XℝF");
-    typePrefixes.put(ComplexPolynomialHypergeometricFunction.class, "XℂF");
+    typePrefixes.put(RealHypergeometricPolynomialFunction.class, "XℝF");
+    typePrefixes.put(ComplexHypergeometricPolynomialFunction.class, "XℂF");
     typePrefixes.put(ComplexRationalHypergeometricFunction.class, "ℚℂF");
     typePrefixes.put(ComplexFraction.class, "fℂ");
     typePrefixes.put(SphericalBesselFunction.class, "sph");
     typePrefixes.put(IntegerPolynomial.class, "Xℤ");
-    typePrefixes.put(Object.class, "o");
   }
 
   public static String getVariablePrefix(Class<?> type)
   {
-
     String typePrefix = typePrefixes.get(type);
     if (typePrefix == null)
     {

@@ -64,21 +64,21 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    // For f(x)^g(x), the derivative is:
-    // f(x)^g(x) * (g(x) * f'(x)/f(x) + g'(x) * ln(f(x)))
-
-    // Create ln(f(x))
-    Node<D, R, F> lnBase = left.log();
-
+    // diff( f(x)^g(x), x) = f(x)^g(x) * (g(x) * f'(x)/f(x) + g'(x) * ln(f(x)))
+    // f=this.left
+    // f=this.right
+    
     // First term: g(x) * f'(x)/f(x)
     Node<D, R, F> term1 = right.mul(left.differentiate(variable)).div(left);
 
     // Second term: g'(x) * ln(f(x))
-    Node<D, R, F> term2 = right.differentiate(variable).mul(lnBase);
+    Node<D, R, F> term2 = right.differentiate(variable).mul(left.log());
 
     // Combine terms and multiply by original expression
     return this.mul(term1.add(term2));
   }
+
+
 
   @Override
   public Class<?> type()

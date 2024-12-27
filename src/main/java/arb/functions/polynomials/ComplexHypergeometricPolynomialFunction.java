@@ -14,7 +14,7 @@ import arb.functions.complex.ComplexPolynomialNullaryFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ComplexPolynomialHypergeometricFunction extends
+public class ComplexHypergeometricPolynomialFunction extends
                                                      HypergeometricFunction<Complex,
                                                                    ComplexPolynomial,
                                                                    ComplexPolynomialNullaryFunction>
@@ -22,7 +22,7 @@ public class ComplexPolynomialHypergeometricFunction extends
                                                      Verifiable
 {
 
-  public ComplexPolynomialHypergeometricFunction
+  public ComplexHypergeometricPolynomialFunction
          init(Complex alpha,
               Complex beta,
               Expression<Object, ComplexPolynomial, ComplexPolynomialNullaryFunction> arg)
