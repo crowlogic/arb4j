@@ -11,7 +11,6 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.polynomials.RationalJacobiPolynomials;
 import arb.functions.polynomials.orthogonal.real.JacobiPolynomials;
-import arb.utensils.ShellFunctions;
 import junit.framework.TestCase;
 
 /**

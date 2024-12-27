@@ -80,8 +80,6 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     return this.mul(term1.add(term2));
   }
 
-  Class<?> type = null;
-
   @Override
   public Class<?> type()
   {

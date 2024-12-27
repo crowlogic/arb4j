@@ -3,7 +3,6 @@ package arb.functions.integer;
 import java.util.List;
 
 import arb.Integer;
-import arb.RealPolynomial;
 import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;

@@ -7,7 +7,6 @@ import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
 import arb.functions.real.RealFunction;
-import arb.functions.real.RealNullaryFunction;
 
 /**
  * 

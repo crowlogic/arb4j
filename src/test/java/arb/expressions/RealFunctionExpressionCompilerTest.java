@@ -22,6 +22,13 @@ import junit.framework.TestCase;
 public class RealFunctionExpressionCompilerTest extends
                                                 TestCase
 {
+  
+  public static void testRealRandomWavePropagator()
+  {
+    var    f = RealFunction.express("(√(π)*Γ(3/4)*J(1/4, |s|)*2^(0.25))/|s|^(0.25)");
+    var y = f.eval(2.3);
+    assertEquals( 1.2, y );
+  }
 
   Context      context   = new Context();
 
@@ -29,7 +36,7 @@ public class RealFunctionExpressionCompilerTest extends
 
   private Real v;
   private Real v3;
-  
+
   public static void testSphericalBesselFunctionViaRealNullaryFunction()
   {
 
@@ -255,123 +262,115 @@ public class RealFunctionExpressionCompilerTest extends
     Real         three      = new Real(3.0);
     Real         two        = new Real(2.0);
     RealFunction expression = express("y⁵");
-    {
-      Real result     = new Real();
 
-      Real evaluatedX = expression.evaluate(two, 1, 256, result);
-      assert result == evaluatedX;
-      assertEquals(32.0, evaluatedX.doubleValue());
+    Real         result     = new Real();
+    Real         evaluatedX = expression.evaluate(two, 1, 256, result);
+    assert result == evaluatedX;
+    assertEquals(32.0, evaluatedX.doubleValue());
+    evaluatedX = expression.evaluate(three, 1, 256, result);
+    assert result == evaluatedX;
+    assertEquals(243.0, evaluatedX.doubleValue());
 
-      evaluatedX = expression.evaluate(three, 1, 256, result);
-      assert result == evaluatedX;
-      assertEquals(243.0, evaluatedX.doubleValue());
-    }
   }
 
   public void testInputSquared()
   {
     RealFunction expression = express("y^2");
-    {
-      Real result     = new Real();
-      Real evaluatedX = expression.evaluate(new Real(2.0), 1, 256, result);
-      assert result == evaluatedX;
-      assertEquals(4.0, evaluatedX.doubleValue());
 
-      evaluatedX = expression.evaluate(new Real(3.0), 1, 256, result);
-      assert result == evaluatedX;
-      assertEquals(9.0, evaluatedX.doubleValue());
-    }
+    Real         result     = new Real();
+    Real         evaluatedX = expression.evaluate(new Real(2.0), 1, 256, result);
+    assert result == evaluatedX;
+    assertEquals(4.0, evaluatedX.doubleValue());
+    evaluatedX = expression.evaluate(new Real(3.0), 1, 256, result);
+    assert result == evaluatedX;
+    assertEquals(9.0, evaluatedX.doubleValue());
+
   }
 
   public void testInputSquaredPlusOne()
   {
     RealFunction expression = express("y^2+1");
-    {
-      Real result     = new Real();
-      Real evaluatedX = expression.evaluate(new Real(2.0), 1, 256, result);
-      assert result == evaluatedX;
-      assertEquals(5.0, evaluatedX.doubleValue());
 
-      evaluatedX = expression.evaluate(new Real(3.0), 1, 256, result);
-      assert result == evaluatedX;
-      assertEquals(10.0, evaluatedX.doubleValue());
+    Real         result     = new Real();
+    Real         evaluatedX = expression.evaluate(new Real(2.0), 1, 256, result);
+    assert result == evaluatedX;
+    assertEquals(5.0, evaluatedX.doubleValue());
+    evaluatedX = expression.evaluate(new Real(3.0), 1, 256, result);
+    assert result == evaluatedX;
+    assertEquals(10.0, evaluatedX.doubleValue());
 
-    }
   }
 
   public void testInputSquaredWithBetterLookingUnicodeSymbols()
   {
     RealFunction expression = express("y²");
-    {
-      Real result     = new Real();
-      Real evaluatedX = expression.evaluate(new Real(2.0), 1, 256, result);
-      assert result == evaluatedX;
-      assertEquals(4.0, evaluatedX.doubleValue());
 
-      evaluatedX = expression.evaluate(new Real(3.0), 1, 256, result);
-      assert result == evaluatedX;
-      assertEquals(9.0, evaluatedX.doubleValue());
-    }
+    Real         result     = new Real();
+    Real         evaluatedX = expression.evaluate(new Real(2.0), 1, 256, result);
+    assert result == evaluatedX;
+    assertEquals(4.0, evaluatedX.doubleValue());
+    evaluatedX = expression.evaluate(new Real(3.0), 1, 256, result);
+    assert result == evaluatedX;
+    assertEquals(9.0, evaluatedX.doubleValue());
+
   }
 
   public void testLogOnePlusInputSquared()
   {
     RealFunction expression = express("ln(t^2+1)", context);
-    {
-      Real result     = new Real();
-      Real evaluatedX = expression.evaluate(one, 1, 256, result);
-      assert result == evaluatedX;
-      assertEquals(0.6931471805599453, evaluatedX.doubleValue());
 
-      evaluatedX = expression.evaluate(one, 1, 256, result);
-      assert result == evaluatedX;
-      assertEquals(0.6931471805599453, evaluatedX.doubleValue());
+    Real         result     = new Real();
+    Real         evaluatedX = expression.evaluate(one, 1, 256, result);
+    assert result == evaluatedX;
+    assertEquals(0.6931471805599453, evaluatedX.doubleValue());
 
-      evaluatedX = expression.evaluate(new Real("0.5",
-                                                128),
-                                       1,
-                                       256,
-                                       result);
-      assert result == evaluatedX;
-      assertEquals(0.22314355131420976, evaluatedX.doubleValue(RoundingMode.Up));
-    }
+    evaluatedX = expression.evaluate(one, 1, 256, result);
+    assert result == evaluatedX;
+    assertEquals(0.6931471805599453, evaluatedX.doubleValue());
+
+    evaluatedX = expression.evaluate(new Real("0.5",
+                                              128),
+                                     1,
+                                     256,
+                                     result);
+    assert result == evaluatedX;
+    assertEquals(0.22314355131420976, evaluatedX.doubleValue(RoundingMode.Up));
+
   }
 
   public void testMultiplyConstants()
   {
     RealFunction expression = express("6 × 7", context);
-    {
-      Real func = expression.evaluate(one, 1, 256, new Real());
-      assertEquals(42.0, func.doubleValue(RoundingMode.Up));
-    }
+
+    Real         func       = expression.evaluate(one, 1, 256, new Real());
+    assertEquals(42.0, func.doubleValue(RoundingMode.Up));
+
   }
 
   public void testOnePlusInputSquared()
   {
 
     RealFunction expression = express("1+t^2", context);
-    {
-      Real result     = new Real();
-      Real evaluatedX = expression.evaluate(one, 1, 256, result);
-      assert result == evaluatedX;
-      assertEquals(2.0, evaluatedX.doubleValue());
 
-      evaluatedX = expression.evaluate(new Real("2",
-                                                128),
-                                       1,
-                                       256,
-                                       result);
-      assert result == evaluatedX;
-      assertEquals(5.0, evaluatedX.doubleValue());
+    Real         result     = new Real();
+    Real         evaluatedX = expression.evaluate(one, 1, 256, result);
+    assert result == evaluatedX;
+    assertEquals(2.0, evaluatedX.doubleValue());
+    evaluatedX = expression.evaluate(new Real("2",
+                                              128),
+                                     1,
+                                     256,
+                                     result);
+    assert result == evaluatedX;
+    assertEquals(5.0, evaluatedX.doubleValue());
+    evaluatedX = expression.evaluate(new Real("0.5",
+                                              128),
+                                     1,
+                                     256,
+                                     result);
+    assert result == evaluatedX;
+    assertEquals(1.25, evaluatedX.doubleValue(RoundingMode.Up));
 
-      evaluatedX = expression.evaluate(new Real("0.5",
-                                                128),
-                                       1,
-                                       256,
-                                       result);
-      assert result == evaluatedX;
-      assertEquals(1.25, evaluatedX.doubleValue(RoundingMode.Up));
-    }
   }
 
   public void testOnePlusInputOver2PlusZero()
@@ -379,27 +378,19 @@ public class RealFunctionExpressionCompilerTest extends
     RealFunction expression = express("1+i/2+0", context);
     Real         x          = new Real("2",
                                        128);
-    {
 
-      Real evaluatedX = expression.evaluate(x, 1, 256, x);
-
-      assertEquals(2.0, evaluatedX.doubleValue());
-
-      expression.evaluate(x.set("4", 128), 1, 256, evaluatedX);
-
-      assertEquals(3.0, evaluatedX.doubleValue());
-    }
+    Real         evaluatedX = expression.evaluate(x, 1, 256, x);
+    assertEquals(2.0, evaluatedX.doubleValue());
+    expression.evaluate(x.set("4", 128), 1, 256, evaluatedX);
+    assertEquals(3.0, evaluatedX.doubleValue());
 
   }
 
   public void testRaiseConstantToAConstantPower()
   {
-
     RealFunction expression = express(" 5   ^  2  ", context);
-    {
-      Real func = expression.evaluate(one, 1, 256, new Real());
-      assertEquals(25.0, func.doubleValue(RoundingMode.Up));
-    }
+    Real         func       = expression.evaluate(one, 1, 256, new Real());
+    assertEquals(25.0, func.doubleValue(RoundingMode.Up));
   }
 
   public void testPi()
@@ -414,17 +405,17 @@ public class RealFunctionExpressionCompilerTest extends
   public void testSFunction()
   {
     RealFunction expression = express("tanh(ln(1+t^2))", context);
-    {
-      Real result     = new Real();
-      Real evaluatedX = expression.evaluate(one, 1, 256, result);
-      assert result == evaluatedX;
-      assertEquals(0.6, evaluatedX.doubleValue());
 
-      evaluatedX = expression.evaluate(RealConstants.zero, 1, 256, result);
-      assert result == evaluatedX;
-      // assertTrue( result.isZero() );
-      assertEquals(0.0, evaluatedX.doubleValue(RoundingMode.Up));
-    }
+    Real         result     = new Real();
+    Real         evaluatedX = expression.evaluate(one, 1, 256, result);
+    assert result == evaluatedX;
+    assertEquals(0.6, evaluatedX.doubleValue());
+
+    evaluatedX = expression.evaluate(RealConstants.zero, 1, 256, result);
+    assert result == evaluatedX;
+    // assertTrue( result.isZero() );
+    assertEquals(0.0, evaluatedX.doubleValue(RoundingMode.Up));
+
   }
 
   public void testSFunctionWithGreekInputSplitIntoTwoFunctions()
@@ -433,54 +424,52 @@ public class RealFunctionExpressionCompilerTest extends
     express("yay", "1+ρ^2", context);
     RealFunction expression = express("x->tanh(ln(yay(x)))", context);
 
-    {
-      Real result     = new Real();
-      Real evaluatedX = expression.evaluate(one, 1, 256, result);
-      assert result == evaluatedX;
-      assertEquals(0.6, evaluatedX.doubleValue());
-    }
+    Real         result     = new Real();
+    Real         evaluatedX = expression.evaluate(one, 1, 256, result);
+    assert result == evaluatedX;
+    assertEquals(0.6, evaluatedX.doubleValue());
+
   }
 
   public void testSFunctionWithGreekInput()
   {
     RealFunction expression = express("tanh(ln(1+ρ^2))", context);
-    {
-      Real result     = new Real();
-      Real evaluatedX = expression.evaluate(one, 1, 256, result);
-      assert result == evaluatedX;
-      assertEquals(0.6, evaluatedX.doubleValue());
-    }
+
+    Real         result     = new Real();
+    Real         evaluatedX = expression.evaluate(one, 1, 256, result);
+    assert result == evaluatedX;
+    assertEquals(0.6, evaluatedX.doubleValue());
+
   }
 
   public void testSFunctionWithVar()
   {
     RealFunction expression = express("tanh(ln(1+y^2))", context);
-    {
-      Real result     = new Real();
-      Real evaluatedX = expression.evaluate(one, 1, 256, result);
-      assert result == evaluatedX;
-      assertEquals(0.9230769230769231, evaluatedX.doubleValue());
-    }
+
+    Real         result     = new Real();
+    Real         evaluatedX = expression.evaluate(one, 1, 256, result);
+    assert result == evaluatedX;
+    assertEquals(0.9230769230769231, evaluatedX.doubleValue());
+
   }
 
   public void testOnePlusTwoPlusThree()
   {
     RealNullaryFunction expression = RealNullaryFunction.express("1+(2)+(3)");
-    {
-      Real evaluatedX = expression.evaluate(128);
 
-      assertEquals(6.0, evaluatedX.doubleValue(RoundingMode.Up));
-    }
+    Real                evaluatedX = expression.evaluate(128);
+
+    assertEquals(6.0, evaluatedX.doubleValue(RoundingMode.Up));
 
   }
 
   public void testSquareRootOfTwentyFive()
   {
     RealFunction expression = express("√(25)", context);
-    {
-      Real evaluatedX = expression.evaluate(one, 1, 256, new Real());
-      assertEquals(5.0, evaluatedX.doubleValue(RoundingMode.Up));
-    }
+
+    Real         evaluatedX = expression.evaluate(one, 1, 256, new Real());
+    assertEquals(5.0, evaluatedX.doubleValue(RoundingMode.Up));
+
   }
 
   public void testSubtractConstants()
@@ -498,43 +487,42 @@ public class RealFunctionExpressionCompilerTest extends
      * This should be allocating a new intermediate variable
      */
     RealFunction expression = express("tanh(ln(1))", context);
-    {
-      Real result     = new Real();
-      Real evaluatedX = expression.evaluate(one, 1, 256, result);
-      assert result == evaluatedX;
 
-      assertTrue(result.isZero());
-      assertEquals(0.0, evaluatedX.doubleValue(RoundingMode.Up));
-    }
+    Real         result     = new Real();
+    Real         evaluatedX = expression.evaluate(one, 1, 256, result);
+    assert result == evaluatedX;
+
+    assertTrue(result.isZero());
+    assertEquals(0.0, evaluatedX.doubleValue(RoundingMode.Up));
+
   }
 
   public void testVariable()
   {
     RealFunction expression = express("x", context);
-    {
-      Real result     = new Real();
-      Real evaluatedX = expression.evaluate(one, 1, 256, result);
-      assert result == evaluatedX;
-      assertEquals(1000000.0, evaluatedX.doubleValue(RoundingMode.Up));
-    }
+
+    Real         result     = new Real();
+    Real         evaluatedX = expression.evaluate(one, 1, 256, result);
+    assert result == evaluatedX;
+    assertEquals(1000000.0, evaluatedX.doubleValue(RoundingMode.Up));
+
   }
 
   public void testcontextquared()
   {
     RealFunction expression = express("y^2", context);
-    {
-      Real func = expression.evaluate(one, 1, 128, new Real());
-      assertEquals(4.0, func.doubleValue(RoundingMode.Up));
-    }
+
+    Real         func       = expression.evaluate(one, 1, 128, new Real());
+    assertEquals(4.0, func.doubleValue(RoundingMode.Up));
+
   }
 
   public void testVariableToThePowerOfOneMinusAVariable()
   {
     RealFunction expression = express("r^(1-α)", context);
     Real         won        = expression.evaluate(zero, 1, 128, new Real());
-    {
-      assertEquals(1.2276839790698644, won.doubleValue());
-    }
+
+    assertEquals(1.2276839790698644, won.doubleValue());
 
   }
 

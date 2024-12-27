@@ -2,7 +2,6 @@ package arb.documentation;
 
 import java.lang.reflect.Field;
 
-import arb.documentation.references.Article;
 import arb.documentation.references.Reference;
 import arb.viz.WindowManager;
 import javafx.application.Application;
