@@ -130,6 +130,7 @@ public class arblibJNI {
   public final static native void qqbar_get_fexpr_repr(long jarg1, SymbolicExpression jarg1_, long jarg2, AlgebraicNumber jarg2_);
   public final static native int qqbar_get_fexpr_formula(long jarg1, SymbolicExpression jarg1_, long jarg2, AlgebraicNumber jarg2_, long jarg3);
   public final static native void fexpr_init(long jarg1, SymbolicExpression jarg1_);
+  public final static native String fexpr_get_str_latex(long jarg1, SymbolicExpression jarg1_, long jarg2);
   public final static native long n_nth_prime(long jarg1);
   public final static native int fmpq_sgn(long jarg1, Fraction jarg1_);
   public final static native void fmpz_poly_q_inv(long jarg1, RationalFunction jarg1_, long jarg2, RationalFunction jarg2_);

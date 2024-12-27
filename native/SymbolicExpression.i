@@ -233,6 +233,12 @@ import arb.documentation.TheArb4jLibrary;
 
 %typemap(javacode) fexpr_struct %{
 
+  @Override
+  public String toString()
+  {
+    return arblib.fexpr_get_str(this);
+  }
+
   public SymbolicExpression init()
   {
     arblib.fexpr_init(this);

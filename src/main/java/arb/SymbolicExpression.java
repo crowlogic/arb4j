@@ -251,6 +251,12 @@ public class SymbolicExpression implements AutoCloseable {
   }
 
 
+  @Override
+  public String toString()
+  {
+    return arblib.fexpr_get_str(this);
+  }
+
   public SymbolicExpression init()
   {
     arblib.fexpr_init(this);

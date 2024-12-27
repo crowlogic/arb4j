@@ -865,30 +865,45 @@ public class Integer implements
 
   public Fraction neg(Fraction res)
   {
-    res.set(this);
-    res.neg();
-    return res;
+    return res.set(this).neg();
   }
 
   public RationalFunction neg(RationalFunction res)
   {
-    res.set(this);
-    res.neg();
-    return res;
+    return res.set(this).neg();
+  }
+
+  public AlgebraicNumber pow(Integer exp, int bits, AlgebraicNumber result)
+  {
+    result.set(this);
+    if (exp.sign() >= 0)
+    {
+      return result.pow(exp);
+    }
+    else
+    {
+      try ( var negExp = exp.neg(new Integer()))
+      {
+        return result.pow(negExp).inverse();
+      }
+    }
   }
 
   public Integer pow(Integer operand, int bits, Integer result)
   {
-    assert operand.isPositive() : operand + " is not positive";
+    if (!operand.isPositive())
+    {
+      throw new IllegalArgumentException(operand + " must be positive if an Integer result is required");
+    }
     arblib.fmpz_pow_fmpz(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
   }
 
   public RationalFunction pow(Integer operand, int bits, RationalFunction result)
-  {
-    try ( Integer intres = new Integer())
+  {    
+    try ( Integer blip = new Integer())
     {
-      return result.set(pow(operand, bits, intres));
+      return result.set(pow(operand, bits, blip));
     }
   }
 

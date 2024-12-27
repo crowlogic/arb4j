@@ -366,6 +366,10 @@ public class arblib {
     arblibJNI.fexpr_init(SymbolicExpression.getCPtr(expr), expr);
   }
 
+  public static String fexpr_get_str_latex(SymbolicExpression expr, long flags) {
+    return arblibJNI.fexpr_get_str_latex(SymbolicExpression.getCPtr(expr), expr, flags);
+  }
+
   public static long n_nth_prime(long n) {
     return arblibJNI.n_nth_prime(n);
   }

@@ -61,6 +61,16 @@ import arb.documentation.TheArb4jLibrary;
 
 %typemap(javacode) qqbar_struct %{
 
+  public AlgebraicNumber inverse()
+  {
+    return inverse(this);
+  }
+  
+  public AlgebraicNumber pow(Integer exp)
+  {
+    return pow(exp,this);
+  }
+  
   public SymbolicExpression getSymbolicRepresentation(SymbolicExpression result)
   {
     arblib.qqbar_get_fexpr_repr(result, this);
@@ -77,6 +87,13 @@ import arb.documentation.TheArb4jLibrary;
     return getSymbolicFormula(result, flags);
   }
 
+  @Override
+  public AlgebraicNumber inverse(AlgebraicNumber result)
+  {
+    arblib.qqbar_inv(result, this);
+    return result;
+  }
+  
   protected SymbolicExpression getSymbolicFormula(SymbolicExpression result, long flags)
   {
     arblib.qqbar_get_fexpr_formula(result, this, flags);
