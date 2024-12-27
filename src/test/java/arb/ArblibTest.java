@@ -1,6 +1,8 @@
 package arb;
 
-import static arb.arblib.*;
+import static arb.arblib.acb_dirichlet_hardy_theta;
+import static arb.arblib.acb_exp;
+import static arb.arblib.arb_set_d;
 import static java.lang.Math.pow;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;

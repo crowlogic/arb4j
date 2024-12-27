@@ -9,6 +9,7 @@ import arb.functions.Function;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
 import java.util.stream.Stream;
+import arb.utensils.Utensils;
 %}
 
 %typemap(javaconstruct) fmpz_poly_q_struct %{
@@ -245,10 +246,8 @@ import java.util.stream.Stream;
     @Override
     public void close()
     {
-      x.close();
-      x = null;
-      y.close();
-      y = null;
+      x = Utensils.close(x);
+      y = Utensils.close(x);
     }
 
     Fraction x = new Fraction();
