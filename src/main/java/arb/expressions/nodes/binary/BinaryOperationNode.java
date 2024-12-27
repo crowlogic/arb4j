@@ -5,7 +5,6 @@ import static arb.expressions.Compiler.invokeBinaryOperationMethod;
 import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 import static arb.expressions.Compiler.loadResultParameter;
 import static arb.utensils.Utensils.indent;
-import static java.lang.System.err;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +28,13 @@ import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
 
 /**
+ * 
+ * @param <D> domain
+ * @param <C> codomain
+ * @param <F> {@link Function}
+ * 
  * @author Stephen Andrew Crowley ©2024
+ * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
@@ -63,6 +68,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     mapTypes(Real.class, ComplexPolynomial.class, ComplexPolynomial.class);
     mapTypes(Real.class, RationalFunction.class, RationalFunction.class);
     mapTypes(Real.class, ComplexRationalFunction.class, ComplexRationalFunction.class);
+    mapTypes(Real.class, AlgebraicNumber.class, AlgebraicNumber.class);
     mapTypes(RealPolynomial.class, RationalFunction.class, RationalFunction.class);
     mapTypes(Complex.class, RationalFunction.class, ComplexRationalFunction.class);
     mapTypes(ComplexRationalFunction.class, RationalFunction.class, ComplexRationalFunction.class);
@@ -185,9 +191,10 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     int hash = 0;
     if (isCommutative())
     {
-      // For commutative operations, order shouldn't matter
+      // For commutative operations, order doesn't matter and since the sum is
+      // order-independent thats what is used as the hash
       int operationHash = Objects.hash(operation, symbol, generatedType);
-      int operandsHash  = left.hashCode() + right.hashCode();     // Simple sum is order-independent
+      int operandsHash  = left.hashCode() + right.hashCode();
       hash = operationHash + operandsHash;
     }
     else
@@ -226,23 +233,16 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
     generatedType = resultType;
 
-    // Check if we've already generated this node
     String existingVar = expression.generatedNodes.get(this);
-    if ( existingVar != null)
+    if (existingVar != null)
     {
-
       fieldName = existingVar;
-      assert fieldName != null;
-
       expression.loadThisFieldOntoStack(mv, existingVar, resultType);
     }
     else
     {
-
       left.generate(mv, left.type());
-
       right.generate(mv, right.type());
-
       invokeMethod(mv, operation, resultType);
     }
 
@@ -424,7 +424,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     }
     else
     {
-      Map<Class<?>, Class<?>> innerTypeMap = typeMap.get(leftType);
+      var innerTypeMap = typeMap.get(leftType);
       if (innerTypeMap != null)
       {
         type = innerTypeMap.get(rightType);
@@ -459,8 +459,8 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
    * @param a
    * @param b
    * @return true if ({@link #left},{@link #right}) in { (a,b) , (b,a) }
-   */
-  public boolean typesSymmetryicallyEqual(Class<?> a, Class<?> b)
+    */              
+  public boolean typesSymmetricallyEqual(Class<?> a, Class<?> b)
   {
     assert a != null : "a is null";
     assert b != null : "b is null";
