@@ -900,7 +900,7 @@ public class Integer implements
   }
 
   public RationalFunction pow(Integer operand, int bits, RationalFunction result)
-  {    
+  {
     try ( Integer blip = new Integer())
     {
       return result.set(pow(operand, bits, blip));
@@ -1190,12 +1190,14 @@ public class Integer implements
     return neg ? res.inverse(res) : res;
   }
 
+  public Real pow(Real operand, int bits, Real res)
+  {
+    return res.set(this).pow(operand, bits, res);
+  }
+
   public AlgebraicNumber pow(Fraction operand, int bits, AlgebraicNumber res)
   {
-    res.set(this);
-    res.pow(operand,res);
-    return res;
+    return res.set(this).pow(operand, res);
   }
-  
 
 }

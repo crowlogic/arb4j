@@ -27,7 +27,7 @@ public class RealFunctionExpressionCompilerTest extends
   {
     var    f = RealFunction.express("(√(π)*Γ(3/4)*J(1/4, |s|)*2^(0.25))/|s|^(0.25)");
     var y = f.eval(2.3);
-    assertEquals( 1.2, y );
+    assertEquals( 0.5125173326531876, y );
   }
 
   Context      context   = new Context();
