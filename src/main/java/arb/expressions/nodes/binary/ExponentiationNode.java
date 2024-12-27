@@ -1,5 +1,6 @@
 package arb.expressions.nodes.binary;
 
+import arb.AlgebraicNumber;
 import arb.Fraction;
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -67,7 +68,7 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     // diff( f(x)^g(x), x) = f(x)^g(x) * (g(x) * f'(x)/f(x) + g'(x) * ln(f(x)))
     // f=this.left
     // f=this.right
-    
+
     // First term: g(x) * f'(x)/f(x)
     Node<D, R, F> term1 = right.mul(left.differentiate(variable)).div(left);
 
@@ -78,8 +79,6 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     return this.mul(term1.add(term2));
   }
 
-
-
   @Override
   public Class<?> type()
   {
@@ -87,6 +86,14 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     {
       return type;
     }
+
+    // Check if base is integer and exponent is a fraction
+    if (Integer.class.equals(left.type()) && Fraction.class.equals(right.type()))
+    {
+      type = AlgebraicNumber.class; // You'll need to create this class
+      return type;
+    }
+
     if (right.isPossiblyNegative())
     {
       var superType = super.type();
@@ -102,10 +109,8 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     else
     {
       type = super.type();
-
     }
     return type;
-
   }
 
   @Override

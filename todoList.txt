@@ -1,24 +1,5 @@
 NEW: implement KL expansion
 TODO: builtin sykbols for the classical orthogonal polynomials
 "limit" is null at arb4j/arb.expressions.nodes.IntegralNode.evaluateIndefiniteIntegralAt(IntegralNode.java:217)
-todo: mouse wheel zooms control or whole scene
 implement ∂/∂x[∏ᵢ₌₁ᵏfᵢ(x)] = ∑ᵢ₌₁ᵏ[(∂/∂x fᵢ(x))∏ⱼ₌₁,ⱼ≠ᵢᵏfⱼ(x)]
-find a good way to hande Integer.pow(Integer x) when x is possiblty negative
-java.lang.AssertionError: rowPointers is nullat arb4j/arb.RealMatrix.initRows(RealMatrix.java:120)
-#558 expression compiler: RealMatrix support
-#556 Non-stationary process representation
-#555 expression compiler: implement caching
-#552 Spectral factorization Theorem
-#550 Expression Compiler: improve nested function references 
-#549 Expression Compiler: implement switching of order-of-integration via Fubini's or Tonelli's theorem
-#546 implement orthogonal function sequence expansion api
-#539 expression compiler: integration
-#538 implement (abstract syntax) Expression tree simplification
-#535 Uniformly convergent expansions for continuous positive definite functions
-#531 Triangular eigenfunctions
-#518 expr compiler: Implement common subexpression elimination
-#261 Create Fractional Riccati Differential Equation Solver using Jacobi Tau Method top_priority
-#253 expression compiler: automatic differentiation
 expr compiler:  fractional derivatives
-Expressor: Use graphviz-javato show ExpressionTree and also add .dot file export for ExpressionTree (or any Node really) #560
-Expressor: add decompiled source code view button
