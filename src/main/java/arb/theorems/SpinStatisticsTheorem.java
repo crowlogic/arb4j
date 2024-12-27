@@ -3,8 +3,8 @@ package arb.theorems;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.documentation.annotations.AppliesTo;
-import arb.physics.particles.Boson;
-import arb.physics.particles.Fermion;
+import arb.physics.particles.forces.Boson;
+import arb.physics.particles.matter.Fermion;
 
 /**
  * The spin–statistics theorem proves that the observed relationship between the

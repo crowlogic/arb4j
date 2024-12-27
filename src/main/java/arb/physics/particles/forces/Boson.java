@@ -1,6 +1,7 @@
-package arb.physics.particles;
+package arb.physics.particles.forces;
 
 import arb.physics.CountableOccupationBasis;
+import arb.physics.particles.Particle;
 
 /**
  *

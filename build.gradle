@@ -9,7 +9,7 @@ plugins {
 
 
 group = 'org.arblib'
-version = '0.99.7.5'
+version = '0.99.8'
 description = 'arb4j'
 java.sourceCompatibility = JavaVersion.VERSION_23
 
@@ -131,6 +131,16 @@ jar {
 java {
     withSourcesJar()
     modularity.inferModulePath.set(true)
+        withJavadocJar()  // This will create the javadoc jar properly
+  
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java  // This will automatically include main jar, sources jar, and javadoc jar
+        }
+    }
 }
 
 tasks.withType(JavaCompile) {
@@ -161,6 +171,7 @@ processResources {
     }
     into 'bin/main'
 }
+
 
 sourceSets {
     main {

@@ -1,11 +1,11 @@
-package arb.physics.particles;
+package arb.physics.particles.matter;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface DownQuark extends
-                           Quark
+public interface Neutrino extends
+                          Lepton
 {
 
 }

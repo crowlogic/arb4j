@@ -4,6 +4,8 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.documentation.concepts.Concept;
 import arb.functions.integer.Sequence;
+import arb.physics.particles.forces.Boson;
+import arb.physics.particles.matter.Fermion;
 
 /**
  * A particle is a small, localized object to which can be ascribed several
