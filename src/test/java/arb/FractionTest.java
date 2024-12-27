@@ -4,7 +4,7 @@ import java.lang.foreign.Arena;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.NullaryFunction;
+import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
 
 /**
@@ -17,8 +17,8 @@ public class FractionTest extends
 
   public void testRaiseIntegerToFractionalPower()
   {
-    NullaryFunction<AlgebraicNumber> f = NullaryFunction.express(AlgebraicNumber.class, "2^(1/4)");
-    var                              y = f.evaluate();
+    var f = RealNullaryFunction.express("2^(1/4)");
+    var y = f.evaluate();
     assertEquals(1.189207115002721066717499970560475915293, y.toString());
   }
 
