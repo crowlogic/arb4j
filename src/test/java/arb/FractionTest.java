@@ -19,7 +19,7 @@ public class FractionTest extends
   {
     var f = RealNullaryFunction.express("2^(1/4)");
     var y = f.evaluate();
-    assertEquals(1.189207115002721066717499970560475915293, y.toString());
+    assertEquals(1.189207115002721066717499970560475915293, y.doubleValue());
   }
 
   public void testAscendingFactorialOfFractionToIntegerWithRealResult()

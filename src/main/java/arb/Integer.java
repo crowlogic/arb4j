@@ -43,9 +43,9 @@ public class Integer implements
 {
   public static int BYTES = Long.BYTES;
 
-  public static long prime(long n)
+  static
   {
-    return arblib.n_nth_prime(n);
+    System.loadLibrary("arblib");
   }
 
   public static Integer express(String expression)
@@ -53,108 +53,14 @@ public class Integer implements
     return express(expression, 128);
   }
 
-  public static Integer express(String expression, int bits)
-  {
-    return express(expression, null, bits);
-  }
-
   public static Integer express(String expression, Context context, int bits)
   {
     return IntegerNullaryFunction.compile(expression, context).evaluate(bits);
   }
 
-  public Integer set(Fraction f)
+  public static Integer express(String expression, int bits)
   {
-    assert false : "set " + f;
-    return null;
-  }
-
-  public Fraction mul(Fraction subtrahend, int prec, Fraction result)
-  {
-    return result.set(this).mul(subtrahend, prec, result);
-  }
-
-  public Fraction mul(Integer subtrahend, int prec, Fraction result)
-  {
-    return result.set(this).mul(subtrahend, prec, result);
-  }
-
-  public Fraction add(Integer subtrahend, int prec, Fraction result)
-  {
-    return result.set(this).add(subtrahend, prec, result);
-  }
-
-  public Fraction sub(Integer subtrahend, int prec, Fraction result)
-  {
-    return result.set(this).sub(subtrahend, prec, result);
-  }
-
-  public ComplexRationalFunction neg(ComplexRationalFunction result)
-  {
-    return result.set(this).neg();
-  }
-
-  public Complex cos(int prec, Complex result)
-  {
-    return result.set(this).cos(prec, result);
-  }
-
-  public Complex sin(int prec, Complex result)
-  {
-    return result.set(this).sin(prec, result);
-  }
-
-  public Real cos(int prec, Real result)
-  {
-    return result.set(this).cos(prec, result);
-  }
-
-  public Real sin(int prec, Real result)
-  {
-    return result.set(this).sin(prec, result);
-  }
-
-  @SuppressWarnings("resource")
-  public static Integer named(String name)
-  {
-    return new Integer().setName(name);
-  }
-
-  static
-  {
-    System.loadLibrary("arblib");
-  }
-
-  public RationalFunction div(Real operand, int prec, RationalFunction result)
-  {
-    return result.set(this).div(operand, prec, result);
-  }
-
-  /**
-   * Divides this Integer by another Integer and returns the result as a
-   * RationalFunction.
-   *
-   * @param operand The Integer to divide by
-   * @param prec    The precision to use for the operation (not used for exact
-   *                division)
-   * @param result  The RationalFunction to store the result in
-   * @return The resulting RationalFunction
-   */
-  public RationalFunction div(Integer operand, int prec, RationalFunction result)
-  {
-    assert operand.swigCPtr != 0;
-    assert swigCPtr != 0;
-    result.getNumerator().set(this);
-    result.getDenominator().set(operand);
-    result.reduce();
-    return result;
-  }
-
-  public static Integer newVector(int dim)
-  {
-    Integer vec = new Integer((long) dim);
-    vec.dim = dim;
-    return vec;
+    return express(expression, null, bits);
   }
 
   public static Real factorial(Integer n, int bits, Real result)
@@ -175,16 +81,6 @@ public class Integer implements
     return result;
   }
 
-  public RationalFunction div(RationalFunction operand, int prec, RationalFunction result)
-  {
-    return result.set(this).div(operand, prec);
-  }
-
-  public RationalFunction mul(RationalFunction operand, int prec, RationalFunction result)
-  {
-    return result.set(this).mul(operand, prec);
-  }
-
   public static Integer factorial(long n, Integer result)
   {
     arblib.fmpz_fac_ui(result.swigCPtr, n);
@@ -196,7 +92,34 @@ public class Integer implements
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
+  @SuppressWarnings("resource")
+  public static Integer named(String name)
+  {
+    return new Integer().setName(name);
+  }
+
+  public static Integer newVector(int dim)
+  {
+    Integer vec = new Integer((long) dim);
+    vec.dim = dim;
+    return vec;
+  }
+
+  public static Integer newVectorNamed(int dim, String name)
+  {
+    return newVector(dim).set(name);
+  }
+
+  public static long prime(long n)
+  {
+    return arblib.n_nth_prime(n);
+  }
+
+  private Arena         arena;
+
   public int            dim         = 1;
+
+  public Integer        divisor;
 
   public Integer[]      elements;
 
@@ -210,13 +133,17 @@ public class Integer implements
 
   public long           swigCPtr;
 
-  public Integer        divisor;
-
-  private Arena         arena;
-
   public Integer()
   {
     init(1);
+  }
+
+  public Integer(Complex val)
+  {
+    this();
+    assert val.im().isZero() : "imaginary part must be 0 but instead it is " + val;
+    assert val.re().isExact() : "real part must be exact but instead it is " + val;
+    val.re().integerValue(this);
   }
 
   public Integer(int i)
@@ -231,19 +158,22 @@ public class Integer implements
     setName(name);
   }
 
+  public Integer(Integer copy)
+  {
+    init();
+    set(copy);
+  }
+
+  public Integer(long dim2)
+  {
+    init((int) dim2);
+  }
+
   public Integer(long cPtr, boolean cMemoryOwn)
   {
     swigCMemOwn = cMemoryOwn;
     swigCPtr    = cPtr;
     assert swigCPtr % 4 == 0 : "fmpz pointer not aligned on 4-byte boundary";
-  }
-
-  public Integer(Complex val)
-  {
-    this();
-    assert val.im().isZero() : "imaginary part must be 0 but instead it is " + val;
-    assert val.re().isExact() : "real part must be exact but instead it is " + val;
-    val.re().integerValue(this);
   }
 
   public Integer(String string)
@@ -252,39 +182,25 @@ public class Integer implements
     set(string);
   }
 
-  public Integer(long dim2)
+  public Integer abs(Integer res)
   {
-    init((int) dim2);
+    arblib.fmpz_abs(res.swigCPtr, swigCPtr);
+    return this;
   }
 
-  public Integer(Integer copy)
+  public Complex add(Complex addend, int bits, Complex result)
   {
-    init();
-    set(copy);
+    return result.set(this).add(addend, bits);
   }
 
-  public Real add(Fraction addend, int bits, Real result)
+  public ComplexPolynomial add(ComplexPolynomial addend, int bits, ComplexPolynomial result)
   {
-    try ( Real blip = new Real())
-    {
-      return blip.set(this).add(addend, bits, result);
-    }
+    return result.set(this).add(addend, bits, result);
   }
 
-  public Fraction add(Fraction frac, int bits, Fraction result)
+  public ComplexRationalFunction add(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
   {
-    return result.set(this).add(frac, bits);
-  }
-
-  public Integer add(int i)
-  {
-    return add(i, this);
-  }
-
-  public Integer add(int i, Integer result)
-  {
-    arblib.fmpz_add_si(result.swigCPtr, this.swigCPtr, i);
-    return result;
+    return result.set(this).add(addend, bits, result);
   }
 
   public Complex add(Fraction operand, int prec, Complex result)
@@ -305,14 +221,38 @@ public class Integer implements
     return result.set(this).add(operand, prec, result);
   }
 
-  public RealMatrix add(Integer operand, int prec, RealMatrix result)
+  public Fraction add(Fraction frac, int bits, Fraction result)
   {
-    return result.set(this).add(operand, prec, result);
+    return result.set(this).add(frac, bits);
   }
 
-  public ComplexRationalFunction add(Integer operand, int prec, ComplexRationalFunction result)
+  public Real add(Fraction addend, int bits, Real result)
   {
-    return result.set(this).add(operand, prec, result);
+    try ( Real blip = new Real())
+    {
+      return blip.set(this).add(addend, bits, result);
+    }
+  }
+
+  public Integer add(int i)
+  {
+    return add(i, this);
+  }
+
+  public Integer add(int i, Integer result)
+  {
+    arblib.fmpz_add_si(result.swigCPtr, this.swigCPtr, i);
+    return result;
+  }
+
+  public Integer add(Integer operand, int prec)
+  {
+    return add(operand, prec, this);
+  }
+
+  public AlgebraicNumber add(Integer addend, int bits, AlgebraicNumber result)
+  {
+    return result.set(this).add(addend, bits, result);
   }
 
   public Complex add(Integer operand, int prec, Complex result)
@@ -320,9 +260,14 @@ public class Integer implements
     return result.set(this).add(operand, prec);
   }
 
-  public Integer add(Integer operand, int prec)
+  public ComplexRationalFunction add(Integer operand, int prec, ComplexRationalFunction result)
   {
-    return add(operand, prec, this);
+    return result.set(this).add(operand, prec, result);
+  }
+
+  public Fraction add(Integer subtrahend, int prec, Fraction result)
+  {
+    return result.set(this).add(subtrahend, prec, result);
   }
 
   @Override
@@ -341,17 +286,17 @@ public class Integer implements
     }
   }
 
-  public AlgebraicNumber add(Integer addend, int bits, AlgebraicNumber result)
+  public RealMatrix add(Integer operand, int prec, RealMatrix result)
   {
-    return result.set(this).add(addend, bits, result);
+    return result.set(this).add(operand, prec, result);
   }
 
-  public Complex add(Complex addend, int bits, Complex result)
+  public Integer add(Integer operand, Integer result)
   {
-    return result.set(this).add(addend, bits);
+    return add(operand, 0, result);
   }
 
-  public IntegerPolynomial add(Real addend, int bits, IntegerPolynomial result)
+  public RationalFunction add(RationalFunction addend, int bits, RationalFunction result)
   {
     return result.set(this).add(addend, bits, result);
   }
@@ -361,6 +306,11 @@ public class Integer implements
     this.add(addend, bits, result.re());
     result.im().zero();
     return result;
+  }
+
+  public IntegerPolynomial add(Real addend, int bits, IntegerPolynomial result)
+  {
+    return result.set(this).add(addend, bits, result);
   }
 
   public Real add(Real addend, int bits, Real result)
@@ -375,40 +325,17 @@ public class Integer implements
     return result.set(this).add(addend, bits, result);
   }
 
-  public ComplexPolynomial add(ComplexPolynomial addend, int bits, ComplexPolynomial result)
-  {
-    return result.set(this).add(addend, bits, result);
-  }
-
-  public RationalFunction add(RationalFunction addend, int bits, RationalFunction result)
-  {
-    return result.set(this).add(addend, bits, result);
-  }
-
-  public ComplexRationalFunction add(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
-  {
-    return result.set(this).add(addend, bits, result);
-  }
-
-  public ComplexRationalFunction sub(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
-  {
-    return result.set(this).sub(addend, bits, result);
-  }
-
   public Integer additiveIdentity()
   {
     return set(0);
   }
 
-  public Real ascendingFactorial(Integer n, int bits, Real result)
+  public Real ascendingFactorial(Fraction n, int bits, Real result)
   {
-    assert n.getSignedValue() >= 0 : "power must be non-negative";
-
-    try ( Real x = new Real();)
+    try ( Real blip = new Real())
     {
-      arblib.arb_rising(result, x.set(this), result.set(n), bits);
+      return result.set(this).ascendingFactorial(blip.set(n), bits);
     }
-    return result;
   }
 
   public Integer ascendingFactorial(Integer n, int bits, Integer result)
@@ -426,12 +353,15 @@ public class Integer implements
     }
   }
 
-  public Real ascendingFactorial(Fraction n, int bits, Real result)
+  public Real ascendingFactorial(Integer n, int bits, Real result)
   {
-    try ( Real blip = new Real())
+    assert n.getSignedValue() >= 0 : "power must be non-negative";
+
+    try ( Real x = new Real();)
     {
-      return result.set(this).ascendingFactorial(blip.set(n), bits);
+      arblib.arb_rising(result, x.set(this), result.set(n), bits);
     }
+    return result;
   }
 
   public Real ascendingFactorial(Real n, int bits, Real result)
@@ -481,6 +411,16 @@ public class Integer implements
     return arblib.fmpz_cmp(swigCPtr, o.swigCPtr);
   }
 
+  public Complex cos(int prec, Complex result)
+  {
+    return result.set(this).cos(prec, result);
+  }
+
+  public Real cos(int prec, Real result)
+  {
+    return result.set(this).cos(prec, result);
+  }
+
   public void delete()
   {
     if (swigCPtr != 0 && swigCMemOwn)
@@ -490,7 +430,19 @@ public class Integer implements
     }
   }
 
+  @Override
+  public int dim()
+  {
+    return dim;
+  }
+
   public Complex div(Complex dividend, int prec, Complex res)
+  {
+    res.bits = prec;
+    return res.set(this).div(dividend, prec);
+  }
+
+  public ComplexPolynomial div(ComplexPolynomial dividend, int prec, ComplexPolynomial res)
   {
     res.bits = prec;
     return res.set(this).div(dividend, prec);
@@ -498,12 +450,6 @@ public class Integer implements
 
   public ComplexRationalFunction div(ComplexRationalFunction dividend, int prec, ComplexRationalFunction res)
   {
-    return res.set(this).div(dividend, prec);
-  }
-
-  public ComplexPolynomial div(ComplexPolynomial dividend, int prec, ComplexPolynomial res)
-  {
-    res.bits = prec;
     return res.set(this).div(dividend, prec);
   }
 
@@ -515,6 +461,21 @@ public class Integer implements
   public Complex div(Integer operand, int prec, Complex result)
   {
     return result.set(this).div(operand, prec);
+  }
+
+  public ComplexFraction div(Integer i, int bits, ComplexFraction result)
+  {
+    div(i, bits, result.realPart);
+    result.imaginaryPart.zero();
+    return result;
+  }
+
+  public Fraction div(Integer dividend, int prec, Fraction res)
+  {
+    res.getNumerator().set(this);
+    res.getDenominator().set(dividend);
+    res.reduce();
+    return res;
   }
 
   /**
@@ -540,6 +501,26 @@ public class Integer implements
     return result;
   }
 
+  /**
+   * Divides this Integer by another Integer and returns the result as a
+   * RationalFunction.
+   *
+   * @param operand The Integer to divide by
+   * @param prec    The precision to use for the operation (not used for exact
+   *                division)
+   * @param result  The RationalFunction to store the result in
+   * @return The resulting RationalFunction
+   */
+  public RationalFunction div(Integer operand, int prec, RationalFunction result)
+  {
+    assert operand.swigCPtr != 0;
+    assert swigCPtr != 0;
+    result.getNumerator().set(this);
+    result.getDenominator().set(operand);
+    result.reduce();
+    return result;
+  }
+
   public Real div(Integer operand, int prec, Real result)
   {
     result.set(this).div(operand, prec);
@@ -550,14 +531,6 @@ public class Integer implements
   {
     res.bits = prec;
     return res.set(this).div(dividend, prec, res);
-  }
-
-  public Fraction div(Integer dividend, int prec, Fraction res)
-  {
-    res.getNumerator().set(this);
-    res.getDenominator().set(dividend);
-    res.reduce();
-    return res;
   }
 
   /**
@@ -571,6 +544,16 @@ public class Integer implements
   public Integer div(Integer operand, Integer result)
   {
     return div(operand, 0, result);
+  }
+
+  public RationalFunction div(RationalFunction operand, int prec, RationalFunction result)
+  {
+    return result.set(this).div(operand, prec);
+  }
+
+  public RationalFunction div(Real operand, int prec, RationalFunction result)
+  {
+    return result.set(this).div(operand, prec, result);
   }
 
   public Real div(Real dividend, int prec, Real res)
@@ -703,6 +686,12 @@ public class Integer implements
     return this;
   }
 
+  public Integer init(Arena arena, int n)
+  {
+    this.dim = n;
+    return initialize(arena, n);
+  }
+
   /**
    * Calls this{@link #initialize(Arena, int)} with {@link Arena#ofShared()}
    * 
@@ -712,12 +701,6 @@ public class Integer implements
   public Integer init(int n)
   {
     return init(Arena.ofShared(), n);
-  }
-
-  public Integer init(Arena arena, int n)
-  {
-    this.dim = n;
-    return initialize(arena, n);
   }
 
   /**
@@ -753,6 +736,11 @@ public class Integer implements
     return sign() > 0;
   }
 
+  public boolean isZero()
+  {
+    return arblib.fmpz_is_zero(swigCPtr) != 0;
+  }
+
   public Complex log(int bits, Complex result)
   {
     return result.set(this).log(bits);
@@ -768,30 +756,35 @@ public class Integer implements
     return result.set(this).mul(x, bits);
   }
 
+  public ComplexPolynomial mul(ComplexPolynomial x, int bits, ComplexPolynomial res)
+  {
+    return res.set(this).mul(x, bits);
+  }
+
   public ComplexRationalFunction mul(ComplexRationalFunction x, int bits, ComplexRationalFunction res)
   {
     return res.set(this).mul(x, bits);
   }
 
-  public IntegerPolynomial sub(IntegerPolynomial x, int bits, IntegerPolynomial res)
+  public Fraction mul(Fraction subtrahend, int prec, Fraction result)
   {
-    return res.set(this).sub(x, bits);
-  }
-
-  public IntegerPolynomial mul(IntegerPolynomial x, int bits, IntegerPolynomial res)
-  {
-    return res.set(this).mul(x, bits);
-  }
-
-  public ComplexPolynomial mul(ComplexPolynomial x, int bits, ComplexPolynomial res)
-  {
-    return res.set(this).mul(x, bits);
+    return result.set(this).mul(subtrahend, prec, result);
   }
 
   @Override
   public Integer mul(Integer operand, int prec)
   {
     return mul(operand, prec, this);
+  }
+
+  public Complex mul(Integer operand, int prec, Complex result)
+  {
+    return result.set(this).mul(operand, prec, result);
+  }
+
+  public Fraction mul(Integer subtrahend, int prec, Fraction result)
+  {
+    return result.set(this).mul(subtrahend, prec, result);
   }
 
   @Override
@@ -803,12 +796,22 @@ public class Integer implements
     return result;
   }
 
-  public Complex mul(Integer operand, int prec, Complex result)
+  public Real mul(Integer operand, int prec, Real result)
   {
-    return result.set(this).mul(operand, prec, result);
+    return result.set(this).mul(operand, prec);
   }
 
-  public Real mul(Integer operand, int prec, Real result)
+  public Integer mul(Integer four, Integer result)
+  {
+    return mul(four, 0, result);
+  }
+
+  public IntegerPolynomial mul(IntegerPolynomial x, int bits, IntegerPolynomial res)
+  {
+    return res.set(this).mul(x, bits);
+  }
+
+  public RationalFunction mul(RationalFunction operand, int prec, RationalFunction result)
   {
     return result.set(this).mul(operand, prec);
   }
@@ -845,17 +848,6 @@ public class Integer implements
     return result.set(this).neg();
   }
 
-  public Integer neg(Integer result)
-  {
-    arblib.fmpz_neg(result.swigCPtr, swigCPtr);
-    return result;
-  }
-
-  public Real neg(Real result)
-  {
-    return result.set(this).neg();
-  }
-
   public ComplexFraction neg(ComplexFraction res)
   {
     neg(res.realPart);
@@ -863,14 +855,35 @@ public class Integer implements
     return res;
   }
 
+  public ComplexRationalFunction neg(ComplexRationalFunction result)
+  {
+    return result.set(this).neg();
+  }
+
   public Fraction neg(Fraction res)
   {
     return res.set(this).neg();
   }
 
+  public Integer neg(Integer result)
+  {
+    arblib.fmpz_neg(result.swigCPtr, swigCPtr);
+    return result;
+  }
+
   public RationalFunction neg(RationalFunction res)
   {
     return res.set(this).neg();
+  }
+
+  public Real neg(Real result)
+  {
+    return result.set(this).neg();
+  }
+
+  public AlgebraicNumber pow(Fraction operand, int bits, AlgebraicNumber res)
+  {
+    return res.set(this).pow(operand, res);
   }
 
   public AlgebraicNumber pow(Integer exp, int bits, AlgebraicNumber result)
@@ -887,6 +900,27 @@ public class Integer implements
         return result.pow(negExp).inverse();
       }
     }
+  }
+
+  public ComplexRationalFunction pow(Integer operand, int bits, ComplexRationalFunction result)
+  {
+    try ( Integer intres = new Integer())
+    {
+      return result.set(pow(operand, bits, intres));
+    }
+  }
+
+  public Fraction pow(Integer div, int bits, Fraction res)
+  {
+    Integer in  = new Integer(div);
+    boolean neg = in.sign() < 0;
+    if (neg)
+    {
+      in.neg();
+    }
+    pow(in, bits, in);
+    res.set(in);
+    return neg ? res.inverse(res) : res;
   }
 
   public Integer pow(Integer operand, int bits, Integer result)
@@ -907,17 +941,21 @@ public class Integer implements
     }
   }
 
-  public ComplexRationalFunction pow(Integer operand, int bits, ComplexRationalFunction result)
-  {
-    try ( Integer intres = new Integer())
-    {
-      return result.set(pow(operand, bits, intres));
-    }
-  }
-
   public Real pow(Integer operand, int prec, Real result)
   {
     return result.set(this).pow(operand, prec);
+  }
+
+  public Real pow(Real operand, int bits, Real res)
+  {
+    assert res != operand : "aliasing not implemented";
+    return res.set(this).pow(operand, bits, res);
+  }
+
+  public Integer set(Fraction f)
+  {
+    assert false : "set " + f;
+    return null;
   }
 
   /**
@@ -973,14 +1011,24 @@ public class Integer implements
     return arblib.fmpz_sgn(swigCPtr);
   }
 
-  public Complex sqrt(int bits, Complex result)
+  public Complex sin(int prec, Complex result)
   {
-    return result.set(this).sqrt(bits);
+    return result.set(this).sin(prec, result);
+  }
+
+  public Real sin(int prec, Real result)
+  {
+    return result.set(this).sin(prec, result);
   }
 
   public AlgebraicNumber sqrt(AlgebraicNumber result)
   {
     return result.set(this).sqrt(result);
+  }
+
+  public Complex sqrt(int bits, Complex result)
+  {
+    return result.set(this).sqrt(bits);
   }
 
   public Real sqrt(int bits, Real result)
@@ -991,6 +1039,16 @@ public class Integer implements
   public Complex sub(Complex operand, int prec, Complex result)
   {
     return result.set(this).sub(operand, prec);
+  }
+
+  public ComplexRationalFunction sub(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
+  {
+    return result.set(this).sub(addend, bits, result);
+  }
+
+  public Fraction sub(Fraction subtrahend, int prec, Fraction res)
+  {
+    return res.set(this).sub(subtrahend, prec);
   }
 
   public Integer sub(int i)
@@ -1021,6 +1079,11 @@ public class Integer implements
     return result.set(this).sub(operand, prec);
   }
 
+  public Fraction sub(Integer subtrahend, int prec, Fraction result)
+  {
+    return result.set(this).sub(subtrahend, prec, result);
+  }
+
   @Override
   public Integer sub(Integer operand, int prec, Integer result)
   {
@@ -1032,6 +1095,22 @@ public class Integer implements
   public Real sub(Integer operand, int prec, Real result)
   {
     return result.set(this).sub(operand, prec);
+  }
+
+  public Integer sub(Integer operand, Integer result)
+  {
+    return sub(operand, 0, result);
+  }
+
+  public IntegerPolynomial sub(IntegerPolynomial x, int bits, IntegerPolynomial res)
+  {
+    return res.set(this).sub(x, bits);
+  }
+
+  public RationalFunction sub(RationalFunction subtrahend, int prec, RationalFunction res)
+  {
+    res.bits = prec;
+    return res.set(this).sub(subtrahend, prec);
   }
 
   public Real sub(Real subtrahend, int bits, Real result)
@@ -1050,17 +1129,6 @@ public class Integer implements
     return res.set(this).sub(subtrahend, prec);
   }
 
-  public Fraction sub(Fraction subtrahend, int prec, Fraction res)
-  {
-    return res.set(this).sub(subtrahend, prec);
-  }
-
-  public RationalFunction sub(RationalFunction subtrahend, int prec, RationalFunction res)
-  {
-    res.bits = prec;
-    return res.set(this).sub(subtrahend, prec);
-  }
-
   public Complex tanh(int bits, Complex result)
   {
     return result.set(this).tanh(bits);
@@ -1069,30 +1137,6 @@ public class Integer implements
   public Real tanh(int bits, Real result)
   {
     return result.set(this).tanh(bits);
-  }
-
-  public String toStringWithoutName()
-  {
-    String nameStr = "";
-
-    if (dim > 1)
-    {
-      StringBuffer buf = new StringBuffer(nameStr + "[");
-      for (int i = 0; i < dim; i++)
-      {
-        if (i > 0)
-        {
-          buf.append(" ");
-        }
-        buf.append(arblib.fmpz_get_str(null, 10, elements[i].swigCPtr));
-      }
-      buf.append("]");
-      return buf.toString();
-    }
-    else
-    {
-      return nameStr + arblib.fmpz_get_str(null, 10, swigCPtr);
-    }
   }
 
   @Override
@@ -1120,11 +1164,35 @@ public class Integer implements
     }
   }
 
+  public String toStringWithoutName()
+  {
+    String nameStr = "";
+
+    if (dim > 1)
+    {
+      StringBuffer buf = new StringBuffer(nameStr + "[");
+      for (int i = 0; i < dim; i++)
+      {
+        if (i > 0)
+        {
+          buf.append(" ");
+        }
+        buf.append(arblib.fmpz_get_str(null, 10, elements[i].swigCPtr));
+      }
+      buf.append("]");
+      return buf.toString();
+    }
+    else
+    {
+      return nameStr + arblib.fmpz_get_str(null, 10, swigCPtr);
+    }
+  }
+
   public RationalFunction Γ(int bits, RationalFunction result)
   {
-    try ( Real tmp = new Real())
+    try ( Real blip = new Real())
     {
-      return result.set(Γ(bits, tmp));
+      return result.set(Γ(bits, blip));
     }
   }
 
@@ -1133,71 +1201,12 @@ public class Integer implements
     return result.set(this).Γ(bits);
   }
 
-  public Integer add(Integer operand, Integer result)
+  public Real pow(Fraction exponent, int bits, Real result)
   {
-    return add(operand, 0, result);
-  }
-
-  public Integer sub(Integer operand, Integer result)
-  {
-    return sub(operand, 0, result);
-  }
-
-  public Integer mul(Integer four, Integer result)
-  {
-    return mul(four, 0, result);
-  }
-
-  @Override
-  public int dim()
-  {
-    return dim;
-  }
-
-  public ComplexFraction div(Integer i, int bits, ComplexFraction result)
-  {
-    div(i, bits, result.realPart);
-    result.imaginaryPart.zero();
-    return result;
-  }
-
-  public boolean isZero()
-  {
-    return arblib.fmpz_is_zero(swigCPtr) != 0;
-  }
-
-  public Integer abs(Integer res)
-  {
-    arblib.fmpz_abs(res.swigCPtr, swigCPtr);
-    return this;
-  }
-
-  public static Integer newVectorNamed(int dim, String name)
-  {
-    return newVector(dim).set(name);
-  }
-
-  public Fraction pow(Integer div, int bits, Fraction res)
-  {
-    Integer in  = new Integer(div);
-    boolean neg = in.sign() < 0;
-    if (neg)
+    try ( Real blip = new Real())
     {
-      in.neg();
+      return pow(blip.set(exponent), bits, result);
     }
-    pow(in, bits, in);
-    res.set(in);
-    return neg ? res.inverse(res) : res;
-  }
-
-  public Real pow(Real operand, int bits, Real res)
-  {
-    return res.set(this).pow(operand, bits, res);
-  }
-
-  public AlgebraicNumber pow(Fraction operand, int bits, AlgebraicNumber res)
-  {
-    return res.set(this).pow(operand, res);
   }
 
 }
