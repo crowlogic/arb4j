@@ -30,7 +30,7 @@ import arb.algebra.Ring;
  *      {@link TheArb4jLibrary}
  */
 
-public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix> {
+public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>,Becomable<RealMatrix> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
@@ -55,20 +55,41 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
 
   static { System.loadLibrary( "arblib" ); }
 
+  public RealMatrix set(int i, int j, Integer l)
+  {
+    get(i, j).set(l);
+    return this;
+  }
+
+  public RealMatrix set(Integer integer)
+  {
+    if (getNumRows() != 1 || getNumCols() != 1)
+    {
+      become(RealMatrix.newMatrix(1, 1));
+    }
+    return set(0, 0, integer);
+  }
+  
+  @Override
+  public Becomable<RealMatrix> become(RealMatrix that)
+  {
+    close();
+    this.rows           = that.rows;
+    this.rowPointers    = that.rowPointers;
+    this.printPrecision = that.printPrecision;
+    this.diagonal       = that.diagonal;
+    swigCPtr            = that.swigCPtr;
+    swigCMemOwn         = that.swigCMemOwn;
+    name                = that.name;
+    that.swigCMemOwn    = false;
+    return this;
+  }
+
   public RealMatrix add(Integer operand, int prec, RealMatrix result)
   {
     assert false : "TODO";
     return null;
   }
-  
-  public RealMatrix set(Integer integer)
-  {
-    setNumCols(1);
-    setNumRows(1);
-    getRow(0).get(0).set(integer);
-    return this;
-  }
-  
   
   /**
    * Solve this*result=that, in other words this=A, result=X and that=B
