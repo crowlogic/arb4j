@@ -366,12 +366,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       fieldClass = context.functions.get(varName).type();
     }
 
-    if (fieldClass != null)
-    {
-      String fieldDesc = fieldClass.descriptorString();
-      addNullCheckForField(mv, className, varName, fieldDesc);
-    }
-
+    addNullCheckForField(mv, className, varName, fieldClass.descriptorString());
   }
 
   protected void addChecksForNullVariableReferences(MethodVisitor mv)

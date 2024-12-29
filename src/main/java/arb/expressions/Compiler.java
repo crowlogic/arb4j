@@ -74,7 +74,7 @@ public class Compiler
     mv.visitJumpInsn(Opcodes.IFNONNULL, notNullLabel);
     mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(AssertionError.class));
     mv.visitInsn(Opcodes.DUP);
-    mv.visitLdcInsn(className + "." + fieldName + " is null");
+    mv.visitLdcInsn(fieldName + " is null");
     mv.visitMethodInsn(Opcodes.INVOKESPECIAL,
                        Type.getInternalName(AssertionError.class),
                        "<init>",
