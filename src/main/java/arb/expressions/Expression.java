@@ -240,7 +240,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean                                        recursive                     = false;
 
-  public HashMap<String, FunctionMapping<?, ?, ?>>      referencedFunctionMappings    = new HashMap<>();
+  public HashMap<String, FunctionMapping<?, ?, ?>>      referencedFunctions           = new HashMap<>();
 
   public HashMap<String, VariableNode<D, C, F>>         referencedVariables           = new HashMap<>();
 
@@ -473,7 +473,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     context.populateFunctionReferenceGraph();
     dependencies = TopologicalSorter.findDependencyOrderUsingDepthFirstSearch(context.functionReferenceGraph,
-                                                                              referencedFunctionMappings);
+                                                                              referencedFunctions);
 
     if (trace)
     {
@@ -487,7 +487,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     for (Dependency dependency : dependencies)
     {
       String                   dependencyVariableName = dependency.variableName;
-      FunctionMapping<?, ?, ?> function               = referencedFunctionMappings.get(dependencyVariableName);
+      FunctionMapping<?, ?, ?> function               = referencedFunctions.get(dependencyVariableName);
 
       if (function != null)
       {
@@ -836,9 +836,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                                               intermediateVariable.name,
                                                                                               intermediateVariable.type));
 
-      referencedFunctionMappings.forEach((name, mapping) -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
-                                                                                   name,
-                                                                                   mapping.type()));
+      referencedFunctions.forEach((name, mapping) -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
+                                                                            name,
+                                                                            mapping.type()));
     }
 
     methodVisitor.visitInsn(Opcodes.RETURN);
@@ -1034,9 +1034,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void
             generateCodeToPropagateIndependentVariableToFunctionalElement(MethodVisitor mv,
-                                                                          Expression<Object, Object,
-                                                                                        Function<?, ?>> function,
-                                                                          VariableNode<Object, Object, Function<?,
+                                                                          Expression<?, ?, Function<?, ?>> function,
+                                                                          VariableNode<?, ?, Function<?,
                                                                                         ?>> independentVariableMappedToFunctional)
   {
     var fieldName = independentVariableMappedToFunctional.getName();
@@ -1065,8 +1064,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else
     {
-      assert false : "TODO: handle " + coDomainType;
-
+      throw new UnsupportedOperationException("TODO: implement " + coDomainType + " codomain functional");
     }
 
     var functionalExpression = new Expression<Object, Object, Function<?, ?>>(funcDomain,
@@ -1079,10 +1077,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       functionalExpression.independentVariable = indeterminateVariable.spliceInto(functionalExpression).asVariable();
     }
 
-    rootNode.isResult             = true;
-    functionalExpression.rootNode = (Node<Object, Object, Function<?, ?>>) rootNode.spliceInto(functionalExpression);
-    assert functionalExpression.rootNode
-                  != null : functionalExpression.rootNode + ".spliceInto(" + functionalExpression + ") returned null";
+    rootNode.isResult                      = true;
+    functionalExpression.rootNode          =
+                                  (Node<Object, Object, Function<?, ?>>) rootNode.spliceInto(functionalExpression);
     functionalExpression.rootNode.isResult = true;
     functionalExpression.className         = className + "func";
     return functionalExpression;
@@ -1109,7 +1106,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else
     {
-      referencedFunctionMappings.put(nestedFunction.functionName, nestedFunction);
+      referencedFunctions.put(nestedFunction.functionName, nestedFunction);
     }
 
     return mv;
@@ -1147,7 +1144,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     generateCodeToThrowErrorIfAlreadyInitialized(mv);
     if (trace)
     {
-      System.err.println("referencedFunctions=" + referencedFunctionMappings);
+      System.err.println("referencedFunctions=" + referencedFunctions);
     }
     addChecksForNullVariableReferences(mv);
 
@@ -1156,14 +1153,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       for (Dependency dependency : dependencies)
       {
-        var assignments        =
-                        dependency.reverseDependencies.stream()
-                                                      .filter(key -> referencedFunctionMappings.containsKey(key)
-                                                                    && !key.equals(className))
-                                                      .toList();
+        var assignments        = dependency.reverseDependencies.stream()
+                                                               .filter(key -> referencedFunctions.containsKey(key)
+                                                                             && !key.equals(className))
+                                                               .toList();
 
         var functionName       = dependency.variableName;
-        var mapping            = referencedFunctionMappings.get(functionName);
+        var mapping            = referencedFunctions.get(functionName);
         var functionDescriptor = "L" + functionName + ";";
 
         if (mapping != null)
@@ -1194,9 +1190,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public void generateReferencedFunctionInstances(MethodVisitor mv)
   {
-    referencedFunctionMappings.values()
-                              .stream()
-                              .forEach(mapping -> constructReferencedFunctionInstanceIfItIsNull(mv, mapping));
+    referencedFunctions.values()
+                       .stream()
+                       .forEach(mapping -> constructReferencedFunctionInstanceIfItIsNull(mv, mapping));
   }
 
   protected ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)

@@ -127,7 +127,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       contextual = mapping != null;
       if (contextual)
       {
-        expression.referencedFunctionMappings.put(functionName, mapping);
+        expression.referencedFunctions.put(functionName, mapping);
       }
     }
   }
@@ -491,7 +491,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                              false,
                                                              expression,
                                                              expression.expression);
-    expression.referencedFunctionMappings.put(functionName, mapping);
+    expression.referencedFunctions.put(functionName, mapping);
     return mapping;
   }
 

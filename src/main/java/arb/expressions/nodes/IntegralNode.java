@@ -248,7 +248,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                                                                     false,
                                                                     integralExpression,
                                                                     expr);
-    expression.referencedFunctionMappings.put(integralFunctionFieldName, integralMapping);
+    expression.referencedFunctions.put(integralFunctionFieldName, integralMapping);
   }
 
   private void evaluateIndefiniteIntegralAt(MethodVisitor mv,
