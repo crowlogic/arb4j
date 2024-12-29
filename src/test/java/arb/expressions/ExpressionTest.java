@@ -231,7 +231,7 @@ public class ExpressionTest extends
                                                   128,
                                                   new Real());
     y.printPrecision = false;
-    assertEquals("115.62", y.toString());
+    assertEquals(115.62, y.doubleValue());
   }
 
   public void testRationalFunctionDerivative()
