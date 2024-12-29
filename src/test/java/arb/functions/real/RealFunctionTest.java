@@ -35,8 +35,8 @@ public class RealFunctionTest extends
     var oneOverThirthy = new Fraction(1,
                                       30);
     var oneThirtieth   = RealNullaryFunction.express("Beta(5,2)");
-    var val            = oneThirtieth.evaluate(128);
-    assertEquals(oneOverThirthy.doubleValue(), val.doubleValue());
+    var oneDividedByThirty            = oneThirtieth.evaluate(128);
+    assertEquals(oneOverThirthy.doubleValue(), oneDividedByThirty.doubleValue());
   }
 
   public static void testBetaFunctionRational()
