@@ -17,9 +17,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.functions.Function;
-import arb.functions.NullaryFunction;
 import arb.functions.complex.ComplexFunction;
-import arb.functions.integer.Sequence;
 import arb.functions.polynomials.ComplexHypergeometricPolynomialFunction;
 import arb.functions.polynomials.RealHypergeometricPolynomialFunction;
 import arb.functions.rational.ComplexRationalHypergeometricFunction;
@@ -80,17 +78,13 @@ public class Compiler
                        "<init>",
                        Compiler.getMethodDescriptor(Void.class, Object.class),
                        false);
-
     mv.visitInsn(Opcodes.ATHROW);
-
     mv.visitLabel(notNullLabel);
-
   }
 
   public static MethodVisitor cast(MethodVisitor methodVisitor, Class<?> type)
   {
-    String checking = Type.getInternalName(type);
-    methodVisitor.visitTypeInsn(Opcodes.CHECKCAST, checking);
+    methodVisitor.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(type));
     return methodVisitor;
   }
 
@@ -169,8 +163,6 @@ public class Compiler
                                                  functionClass,
                                                  functionName,
                                                  containingExpression);
-    // expression.generate();
-    // expression.defineClass();
 
     return expression;
   }
@@ -303,6 +295,9 @@ public class Compiler
 
   static
   {
+    // note: this could probably be implemented in a more organized way with
+    // annotations so that the prefix could be in the same place the type is
+    // declared rather than centralized here in this static initializer
     typePrefixes.put(AlgebraicNumber.class, "𝔸");
     typePrefixes.put(Real.class, "ℝ");
     typePrefixes.put(Complex.class, "ℂ");
@@ -446,8 +441,6 @@ public class Compiler
   public static MethodVisitor invokeSetMethod(MethodVisitor mv, Class<?> inType, Class<?> outType)
   {
     assert !outType.getClass().equals(Object.class) : "invokeSetMethod shouldn't be called for Object type";
-
-    // Compiler.invokeVirtualMethod(mv, inType, objectDesc, outType, null)
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        Type.getInternalName(outType),
                        "set",
@@ -499,14 +492,12 @@ public class Compiler
     }
     try
     {
-      CompiledExpressionClassLoader loader =
-                                           context != null ? context.classLoader : new CompiledExpressionClassLoader();
+      var loader = context != null ? context.classLoader : new CompiledExpressionClassLoader();
       if (context != null && context.classLoader == null)
       {
         context.classLoader = loader;
       }
       return (Class<F>) loader.defineClass(className, bytecodes);
-      // return (Class<F>) loader.findClass(className);
     }
     catch (Exception e)
     {
@@ -580,22 +571,18 @@ public class Compiler
     mv.visitFieldInsn(Opcodes.PUTFIELD, fieldType, variableFieldName, variableFieldType);
   }
 
-  public static HashSet<Class<?>> realScalarTypes    = new HashSet<>();
-  public static HashSet<Class<?>> complexScalarTypes = new HashSet<>();
+  public static HashSet<Class<?>> realScalarTypes    = new HashSet<>(Arrays.asList(AlgebraicNumber.class,
+                                                                                   Integer.class,
+                                                                                   Real.class,
+                                                                                   RealPolynomial.class,
+                                                                                   RealMatrix.class));
 
-  static
-  {
-    realScalarTypes.addAll(Arrays.asList(Object.class,
-                                         Real.class,
-                                         RealPolynomial.class,
-                                         RealMatrix.class,
-                                         RationalFunction.class));
-    complexScalarTypes.addAll(Arrays.asList(Complex.class, ComplexPolynomial.class, ComplexMatrix.class));
-  }
+  public static HashSet<Class<?>> complexScalarTypes = new HashSet<>(Arrays.asList(Complex.class,
+                                                                                   ComplexPolynomial.class,
+                                                                                   ComplexMatrix.class));
 
   public static Class<?> scalarType(Class<?> resultType)
   {
-
     if (resultType.equals(RationalFunction.class) || resultType.equals(Fraction.class))
     {
       return Fraction.class;
@@ -604,38 +591,25 @@ public class Compiler
     {
       return ComplexFraction.class;
     }
-    else if (realScalarTypes.contains(resultType))
+    else if (realScalarTypes.contains(resultType) || RealFunction.class.equals(resultType))
     {
       return Real.class;
     }
-    else if (complexScalarTypes.contains(resultType))
+    else if (complexScalarTypes.contains(resultType) || ComplexFunction.class.equals(resultType))
     {
       return Complex.class;
     }
-    else if (IntegerPolynomial.class.equals(resultType))
+    else if (IntegerPolynomial.class.equals(resultType) || Integer.class.equals(resultType))
     {
       return Integer.class;
-    }
-    else if (Integer.class.equals(resultType))
-    {
-      return resultType;
     }
     else if (Quaternion.class.equals(resultType))
     {
       return Quaternion.class;
     }
-    else if (ComplexFunction.class.equals(resultType))
-    {
-      return Complex.class;
-    }
-    else if (RealFunction.class.equals(resultType))
-    {
-      return Real.class;
-    }
     else
     {
-      assert false : "dont know what the scalar type is for " + resultType;
-      return resultType;
+      throw new CompilerException("dont know what the scalar type is for " + resultType);
     }
   }
 
@@ -645,61 +619,63 @@ public class Compiler
     return mv;
   }
 
-  public static void generateReturnInstructionAndEndTheVisit(MethodVisitor methodVisitor)
+  public static void returnFromMethod(MethodVisitor methodVisitor)
   {
     methodVisitor.visitInsn(Opcodes.ARETURN);
     methodVisitor.visitMaxs(10, 10);
     methodVisitor.visitEnd();
   }
 
-  public static String getFunctionClassTypeSignature(Class<?> fclass,
+  public static String getFunctionClassTypeSignature(Class<? extends Function<?, ?>> functionClass,
                                                      Class<?> domainClass,
-                                                     Class<?> codomainClass,
-                                                     Class<?>[] implementations)
+                                                     Class<?> coDomainClass,
+                                                     Class<?>[] implementedInterfaces)
   {
-    String classSignature;
-
-    var    sw = new SignatureWriter();
+    var sw = new SignatureWriter();
 
     sw.visitSuperclass().visitClassType(Type.getInternalName(Object.class));
     sw.visitEnd();
-    sw.visitInterface();
-    sw.visitClassType(Type.getInternalName(fclass));
-    if (Sequence.class.isAssignableFrom(fclass) || NullaryFunction.class.isAssignableFrom(fclass))
-    {
-      if (fclass.getTypeParameters().length == 1)
-      {
-        sw.visitTypeArgument('=').visitClassType(Type.getInternalName(codomainClass));
-        sw.visitEnd();
-      }
-    }
-    else if (Function.class.isAssignableFrom(fclass))
-    {
-      if (fclass.getTypeParameters().length == 2)
-      {
-        sw.visitTypeArgument('=').visitClassType(Type.getInternalName(domainClass));
-        sw.visitEnd();
-        sw.visitTypeArgument('=').visitClassType(Type.getInternalName(codomainClass));
-        sw.visitEnd();
-      }
-    }
 
+    sw.visitInterface().visitClassType(Type.getInternalName(functionClass));
+    generateFunctionTypeParameterSignature(functionClass, domainClass, coDomainClass, sw);
     sw.visitEnd();
 
-    for (var interfaceClass : implementations)
+    for (var interfaceClass : implementedInterfaces)
     {
       sw.visitInterface();
       sw.visitClassType(Type.getInternalName(interfaceClass));
       sw.visitEnd();
     }
-    classSignature = sw.toString();
-    return classSignature;
+    return sw.toString();
+  }
+
+  public static void generateFunctionTypeParameterSignature(Class<?> fclass,
+                                                            Class<?> domainClass,
+                                                            Class<?> codomainClass,
+                                                            SignatureWriter sw)
+  {
+    switch (fclass.getTypeParameters().length)
+    {
+    case 0:
+      break;
+    case 1:
+      sw.visitTypeArgument('=').visitClassType(Type.getInternalName(codomainClass));
+      sw.visitEnd();
+      break;
+    case 2:
+      sw.visitTypeArgument('=').visitClassType(Type.getInternalName(domainClass));
+      sw.visitEnd();
+      sw.visitTypeArgument('=').visitClassType(Type.getInternalName(codomainClass));
+      sw.visitEnd();
+      break;
+    default:
+      assert false : "this can't happen";
+    }
   }
 
   protected static MethodVisitor annotateWith(MethodVisitor methodVisitor, Class<? extends Annotation> annotation)
   {
-    AnnotationVisitor av = methodVisitor.visitAnnotation(annotation.descriptorString(), true);
-    av.visitEnd();
+    methodVisitor.visitAnnotation(annotation.descriptorString(), true).visitEnd();
     return methodVisitor;
   }
 
@@ -719,18 +695,18 @@ public class Compiler
     annotateWithOverride(methodVisitor);
     methodVisitor.visitCode();
     methodVisitor.visitLdcInsn(typeset);
-    generateReturnInstructionAndEndTheVisit(methodVisitor);
+    returnFromMethod(methodVisitor);
     return classVisitor;
   }
 
-  public static String getCoDomainTypeMethodSignature(Class<?> coDomainType2)
+  public static String getCoDomainTypeMethodSignature(Class<?> coDomainType)
   {
     SignatureWriter sigWriter = new SignatureWriter();
     sigWriter.visitParameterType();
     sigWriter.visitReturnType();
     sigWriter.visitClassType(Type.getInternalName(Class.class));
     sigWriter.visitTypeArgument('=');
-    sigWriter.visitClassType(Type.getInternalName(coDomainType2));
+    sigWriter.visitClassType(Type.getInternalName(coDomainType));
     sigWriter.visitEnd();
     sigWriter.visitEnd();
     return sigWriter.toString();

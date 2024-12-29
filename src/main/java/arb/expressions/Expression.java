@@ -880,7 +880,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     mv.visitCode();
     mv.visitLdcInsn(Type.getType(coDomainType));
-    Compiler.generateReturnInstructionAndEndTheVisit(mv);
+    Compiler.returnFromMethod(mv);
 
     return classVisitor;
   }
@@ -1307,7 +1307,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     updateStringRepresentation();
     String arrow = expression.contains("➔") || independentVariable == null ? "" : (independentVariable.getName() + "➔");
     methodVisitor.visitLdcInsn(String.format("%s%s%s", name, arrow, expression.replace("sqrt", "√")));
-    Compiler.generateReturnInstructionAndEndTheVisit(methodVisitor);
+    Compiler.returnFromMethod(methodVisitor);
     return classVisitor;
   }
 
@@ -1325,7 +1325,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return Compiler.getCoDomainTypeMethodSignature(coDomainType);
   }
 
-  protected String getFunctionClassTypeSignature(Class<?> functionClass)
+  protected String getFunctionClassTypeSignature(Class<? extends Function<?, ?>> functionClass)
   {
     return Compiler.getFunctionClassTypeSignature(functionClass, domainType, coDomainType, implementedInterfaces);
   }
