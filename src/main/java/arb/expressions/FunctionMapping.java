@@ -2,7 +2,6 @@ package arb.expressions;
 
 import static arb.expressions.Compiler.cast;
 import static arb.expressions.Compiler.loadThisOntoStack;
-import static org.objectweb.asm.Opcodes.ACC_FINAL;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 
 import java.util.Objects;
@@ -110,14 +109,6 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
   public Class<?> type()
   {
     return instance == null ? functionClass : instance.getClass();
-  }
-
-  public void checkForUndefinedReferenced()
-  {
-    if (instance == null && functionClass == null)
-    {
-      throw new IllegalArgumentException(String.format("Undefined reference to function %s", this));
-    }
   }
 
 }
