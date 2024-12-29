@@ -59,8 +59,11 @@ import arb.algebra.Ring;
 
   public RealMatrix add(Integer operand, int prec, RealMatrix result)
   {
-    assert false : "TODO";
-    return null;
+    for ( Real row : rows )
+    {
+      row.add(operand,prec);
+    }
+    return this;
   }
   
   /**

@@ -719,15 +719,13 @@ import arb.utensils.Utensils;
     return res;
   }
  
-  public Real add( Integer i, int bits, Real result )
+  public Real add(Integer i, int bits, Real result)
   {
     assert i != null : "exponent is null";
     assert result != null : "result is null";
     assert i.swigCPtr != 0 : "exponent's pointer is null";
     assert result.swigCPtr != 0 : "result's pointer is null";
-    arblib.arb_pow_fmpz(result, this, i.swigCPtr, bits);  
-    arblib.arb_add_fmpz(result, this, i.swigCPtr, bits);
-    return result;
+    return i.add(this,bits,result);
   }
   
   public Real pow( Integer i, int bits, Real result )
