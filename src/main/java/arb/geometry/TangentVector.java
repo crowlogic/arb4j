@@ -1,9 +1,9 @@
 package arb.geometry;
 
 import arb.Field;
+import arb.differential.geometry.Surface;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-
 import arb.space.topological.EuclideanSpace;
 import arb.space.topological.TangentSpace;
 

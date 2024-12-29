@@ -1,5 +1,7 @@
 package arb.physics.particles.forces;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.physics.CountableOccupationBasis;
 import arb.physics.particles.Particle;
 

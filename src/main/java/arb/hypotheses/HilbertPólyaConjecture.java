@@ -3,6 +3,7 @@ package arb.hypotheses;
 import java.util.stream.Stream;
 
 import arb.documentation.Bibliography;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.documentation.references.Reference;
 import arb.logic.Conjecture;

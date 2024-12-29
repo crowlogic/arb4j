@@ -3,7 +3,9 @@ package arb.documentation.concepts.stochastic.randomfields.isotropy;
 import java.util.stream.Stream;
 
 import arb.documentation.Bibliography;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.Referral;
+import arb.documentation.TheArb4jLibrary;
 import arb.documentation.concepts.Concept;
 
 /**

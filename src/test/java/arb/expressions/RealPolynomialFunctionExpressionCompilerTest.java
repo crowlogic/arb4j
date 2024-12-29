@@ -1,11 +1,6 @@
 package arb.expressions;
 
-import static arb.RealConstants.half;
-import static arb.RealConstants.oneQuarter;
-import static arb.RealConstants.two;
-import static arb.RealConstants.twoπ;
-import static arb.RealConstants.zero;
-import static arb.RealConstants.π;
+import static arb.RealConstants.*;
 import static arb.functions.polynomials.RealPolynomialFunction.express;
 
 import arb.RealConstants;

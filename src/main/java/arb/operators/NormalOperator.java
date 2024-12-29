@@ -1,6 +1,7 @@
 package arb.operators;
 
 import arb.Field;
+import arb.annotations.Commutative;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.space.topological.VectorSpace;

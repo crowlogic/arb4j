@@ -2,6 +2,8 @@ package arb.documentation.concepts;
 
 import java.lang.ref.Reference;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.language.Phrase;
 
 /**

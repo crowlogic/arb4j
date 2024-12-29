@@ -1,8 +1,8 @@
 package arb.domains;
 
+import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.Integer;
 
 /**
  *

@@ -1,6 +1,8 @@
 package arb.domains;
 
-import arb.*;
+import arb.Complex;
+import arb.Real;
+import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import junit.framework.TestCase;

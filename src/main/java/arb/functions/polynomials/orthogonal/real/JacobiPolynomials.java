@@ -12,8 +12,8 @@ import arb.domains.Domain;
 import arb.expressions.Context;
 import arb.functions.integer.RealPolynomialSequence;
 import arb.functions.integer.RealSequence;
-import arb.functions.polynomials.RealOrthogonalPolynomialSequenceIterator;
 import arb.functions.polynomials.RealHypergeometricPolynomialFunction;
+import arb.functions.polynomials.RealOrthogonalPolynomialSequenceIterator;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
 

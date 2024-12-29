@@ -1,6 +1,10 @@
 package arb.domains;
 
-import static arb.FloatConstants.*;
+import static arb.FloatConstants.half;
+import static arb.FloatConstants.negOne;
+import static arb.FloatConstants.one;
+import static arb.FloatConstants.zero;
+import static arb.FloatConstants.π;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;

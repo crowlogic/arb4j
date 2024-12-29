@@ -1,5 +1,6 @@
 package arb.groups;
 
+import arb.functions.FourierTransform;
 
 /**
  * The {@link FourierTransform} uniquely and unitarily intertwines symplectic

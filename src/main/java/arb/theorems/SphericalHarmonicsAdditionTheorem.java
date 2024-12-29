@@ -1,5 +1,8 @@
 package arb.theorems;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+
 /**
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the

@@ -16,6 +16,3 @@
  *      {@link TheArb4jLibrary}
  */
 package arb.differential.geometry;
-
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;

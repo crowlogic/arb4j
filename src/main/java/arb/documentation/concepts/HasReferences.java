@@ -2,6 +2,7 @@ package arb.documentation.concepts;
 
 import java.util.stream.Stream;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.documentation.references.Reference;
 
