@@ -753,7 +753,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         require(')');
       }
-
       return node;
     }
     else
