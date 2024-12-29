@@ -1076,10 +1076,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       functionalExpression.independentVariable = indeterminateVariable.spliceInto(functionalExpression).asVariable();
     }
-
     rootNode.isResult                      = true;
-    functionalExpression.rootNode          =
-                                  (Node<Object, Object, Function<?, ?>>) rootNode.spliceInto(functionalExpression);
+    functionalExpression.rootNode          = rootNode.spliceInto(functionalExpression);
     functionalExpression.rootNode.isResult = true;
     functionalExpression.className         = className + "func";
     return functionalExpression;
