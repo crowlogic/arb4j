@@ -48,9 +48,9 @@ public class RealFunctionTest extends
     assertEquals(oneOverThirthy, val);
   }
 
-  public static void testJ0Eigenfunctions()
+  public static void testRandomWaveEigenfunctions()
   {
-    assert false : "TODO: determine them.. they aren't equal to the uniformly convergent basis functions, expand the eigenfunctions in terms of the basis then solve for coeffecients and determine pattern";
+    assert false : "TODO: complete https://github.com/crowlogic/arb4j/issues/531 including extracting the latex snippets hastily strewn together on the mobile";
   }
 
 }
