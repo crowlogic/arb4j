@@ -17,11 +17,13 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import arb.Complex;
+import arb.ComplexRationalFunction;
 import arb.Fraction;
 import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.exceptions.CompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
@@ -583,6 +585,13 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Class<?> type()
   {
+    if (expression.coDomainType.equals(ComplexRationalFunction.class) && "exp".equals(functionName))
+    {
+      throw new CompilerException("The exponential of a "
+                                  + expression.coDomainType
+                                  + " cannot be represented as a "
+                                  + expression.coDomainType);
+    }
     if (isBuiltin())
     {
       Class<?> resultType = resultTypeFor(functionName);
@@ -593,6 +602,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return Real.class;
     }
+
     return mapping.coDomain;
   }
 

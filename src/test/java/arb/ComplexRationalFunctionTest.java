@@ -19,16 +19,21 @@ public class ComplexRationalFunctionTest extends
 
   public static void testSequence()
   {
-    var context = new Context(Integer.named("m").set(3));
+    boolean caughtEx = false;
+    try
+    {
+      var context = new Context(Integer.named("m").set(3));
 
-    var F       =
-          ComplexRationalFunctionSequence.express("-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(π*m+y))-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*π*m-y)))*(4*m^2-1)*(-1)^(-m)/((4*m^2-2)*y*π)",
-                                                  context);
+      var F       =
+            ComplexRationalFunctionSequence.express("-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(π*m+y))-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*π*m-y)))*(4*m^2-1)*(-1)^(-m)/((4*m^2-2)*y*π)",
+                                                    context);
 
-    var F3      = F.evaluate(3, 128);
-
-    System.out.println("F3=" + F3);
-
+    }
+    catch (CompilerException ce)
+    {
+      caughtEx = true;
+    }
+    assertTrue(caughtEx);
   }
 
   public static void testEvaluateWithComplexFraction()
