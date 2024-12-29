@@ -168,7 +168,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public Node<D, R, F> div(int i)
   {
-    return div(nodeOf(i));
+    return div(expression.newLiteralConstant(i));
   }
 
   public <N extends Node<D, R, F>> N div(Node<D, R, F> divisor)
@@ -264,14 +264,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                                   this);
   }
 
-  public Node<D, R, F> nodeOf(int i)
-  {
-    return LiteralConstantNode.of(expression, i);
-  }
-
   public Node<D, R, F> pow(int i)
   {
-    return pow(nodeOf(i));
+    return pow(expression.newLiteralConstant(i));
   }
 
   public <N extends Node<D, R, F>> N pow(Node<D, R, F> exponent)
@@ -318,7 +313,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public Node<D, R, F> sub(int i)
   {
-    return sub(nodeOf(i));
+    return sub(expression.newLiteralConstant(i));
   }
 
   public <N extends Node<D, R, F>> N sub(Node<D, R, F> subtrahend)

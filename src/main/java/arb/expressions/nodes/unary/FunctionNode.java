@@ -27,6 +27,7 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.FunctionMapping;
 import arb.expressions.Parser;
+import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -209,13 +210,13 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     case "exp":
       return this;
     case "log":
-      return nodeOf(1).div(arg);
+      return one().div(arg);
     case "cot":
-      return nodeOf(-1).sub(pow(2));
+      return negativeOne().sub(pow(2));
     case "tan":
-      return nodeOf(1).add(arg.tan().pow(2));
+      return one().add(arg.tan().pow(2));
     case "tanh":
-      return nodeOf(1).sub(arg.tanh().pow(2));
+      return one().sub(arg.tanh().pow(2));
     case "sec":
       return mul(arg.tan());
     case "csc":
@@ -228,9 +229,19 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
   }
 
+  public LiteralConstantNode<D, R, F> negativeOne()
+  {
+    return expression.newLiteralConstant(-1);
+  }
+
+  public LiteralConstantNode<D, R, F> one()
+  {
+    return expression.newLiteralConstant(1);
+  }
+
   public Node<D, R, F> arcsinDerivative()
   {
-    return nodeOf(1).div(nodeOf(1).sub(arg.pow(2)).sqrt());
+    return one().div(one().sub(arg.pow(2)).sqrt());
   }
 
   private Node<D, R, F> differentiateContextualFunction()

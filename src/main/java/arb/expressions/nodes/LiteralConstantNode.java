@@ -373,8 +373,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    return new LiteralConstantNode<>(expression,
-                                     "0");
+    return expression.newLiteralConstant(0);
   }
 
   @Override
@@ -395,9 +394,14 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return true;
   }
 
-  public static <D, R, F extends Function<? extends D, ? extends R>> Node<D, R, F> of(Expression<D, R, F> expr, int i)
+  public boolean isZero()
   {
-    return new LiteralConstantNode<>(expr,
-                                     java.lang.Integer.toString(i));
+    return "0".equals(value);
   }
+
+  public boolean isOne()
+  {
+    return "1".equals(value);
+  }
+
 }
