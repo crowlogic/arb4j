@@ -6,6 +6,7 @@ import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
+import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -117,13 +118,17 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   public Node<D, R, F> simplify()
   {
     super.simplify();
-    if (right.isLiteralConstant() && right.asLiteralConstant().value.equals("1"))
+    if (right.isLiteralConstant())
     {
-      return left;
-    }
-    if (right.isLiteralConstant() && right.asLiteralConstant().value.equals("0"))
-    {
-      return expression.newLiteralConstant(1);
+      var rhsConstant = right.asLiteralConstant();
+      if (rhsConstant.isOne())
+      {
+        return left;
+      }
+      if ( rhsConstant.isZero())
+      {
+        return expression.newLiteralConstant(1);
+      }
     }
     if (left.isLiteralConstant() && right.isLiteralConstant())
     {
