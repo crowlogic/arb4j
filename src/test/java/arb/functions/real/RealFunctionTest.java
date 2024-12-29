@@ -32,11 +32,11 @@ public class RealFunctionTest extends
 
   public static void testBetaFunctionReal()
   {
-    var oneOverThirthy = new Fraction(1,
-                                      30);
-    var oneThirtieth   = RealNullaryFunction.express("Beta(5,2)");
-    var oneDividedByThirty            = oneThirtieth.evaluate(128);
-    assertEquals(oneOverThirthy.doubleValue(), oneDividedByThirty.doubleValue());
+    var oneOverThirty      = new Fraction(1,
+                                          30);
+    var oneThirtieth       = RealNullaryFunction.express("Beta(5,2)");
+    var oneDividedByThirty = oneThirtieth.evaluate(128);
+    assertEquals(oneOverThirty.doubleValue(), oneDividedByThirty.doubleValue());
   }
 
   public static void testBetaFunctionRational()
