@@ -15,6 +15,6 @@ public class RealMatrixFunctionTest extends
   {
     RealNullaryMatrixFunction func = RealNullaryMatrixFunction.express("2+3");
     var                       A    = func.evaluate(128);
-    assertEquals("[5]", func.toString());
+    assertEquals("5", A.get(0,0).toString());
   }
 }
