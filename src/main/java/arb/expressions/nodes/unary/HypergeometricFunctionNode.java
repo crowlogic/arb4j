@@ -302,7 +302,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                           int.class,
                           int.class,
                           Object.class);
-      checkClassCast(mv, resultType);
+      cast(mv, resultType);
 
     }
     else
@@ -321,9 +321,9 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                                                                           expression.coDomainType);
         loadOutputOntoStack(mv, resultType);
         expression.loadThisFieldOntoStack(mv, elementFieldName, elementType);
-        checkClassCast(mv, elementType);
+        cast(mv, elementType);
         loadInputParameter(mv);
-        checkClassCast(mv, expression.domainType);
+        cast(mv, expression.domainType);
         loadOrderParameter(mv);
         loadBitsOntoStack(mv);
         loadOutputOntoStack(mv, resultType);
@@ -335,7 +335,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                             int.class,
                             int.class,
                             expression.coDomainType);
-        checkClassCast(mv, resultType);
+        cast(mv, resultType);
 
       }
 
@@ -385,7 +385,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
     if (isResult)
     {
 
-      checkClassCast(loadResultParameter(mv), resultType);
+      cast(loadResultParameter(mv), resultType);
 
     }
     else

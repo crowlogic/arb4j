@@ -224,7 +224,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       Compiler.loadResultParameter(mv);
       Class<?> type = type();
-      Compiler.checkClassCast(mv, type);
+      Compiler.cast(mv, type);
       loadResultVariable(mv);
       invokeSetMethod(mv, type, type);
     }
@@ -355,7 +355,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     loadBitsParameterOntoStack(mv);
     loadFactorValue(mv);
     evaluateFactor(mv);
-    checkClassCast(mv, generatedType);
+    cast(mv, generatedType);
     loadBitsParameterOntoStack(mv);
     combine(mv);
     pop(mv);
@@ -602,7 +602,7 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       loadThisOntoStack(mv);
       expression.loadFieldOntoStack(mv, factorFunctionFieldName, "L" + factorFunctionFieldName + ";");
       loadInputParameter(mv);
-      checkClassCast(mv, independentVariableNode.type());
+      cast(mv, independentVariableNode.type());
       if (Expression.trace)
       {
         logInputPropagationToFactorClass(independentVariableNode);

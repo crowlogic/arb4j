@@ -1,6 +1,6 @@
 package arb.expressions.nodes.binary;
 
-import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.cast;
 import static arb.expressions.Compiler.invokeBinaryOperationMethod;
 import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 import static arb.expressions.Compiler.loadResultParameter;
@@ -319,7 +319,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   {
     if (isResult)
     {
-      checkClassCast(loadResultParameter(mv), resultType);
+      cast(loadResultParameter(mv), resultType);
       fieldName = "result";
     }
     else

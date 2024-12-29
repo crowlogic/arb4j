@@ -87,7 +87,7 @@ public class Compiler
 
   }
 
-  public static MethodVisitor checkClassCast(MethodVisitor methodVisitor, Class<?> type)
+  public static MethodVisitor cast(MethodVisitor methodVisitor, Class<?> type)
   {
     String checking = Type.getInternalName(type);
     methodVisitor.visitTypeInsn(Opcodes.CHECKCAST, checking);

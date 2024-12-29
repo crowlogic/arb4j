@@ -1,6 +1,6 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.cast;
 import static arb.expressions.Compiler.invokeSetMethod;
 import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 
@@ -182,7 +182,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public Class<?> generateCastTo(MethodVisitor methodVisitor, Class<?> type)
   {
-    checkClassCast(methodVisitor, generatedType);
+    cast(methodVisitor, generatedType);
     expression.allocateIntermediateVariable(methodVisitor, type);
     Compiler.swap(methodVisitor);
     invokeSetMethod(methodVisitor, generatedType, type);

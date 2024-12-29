@@ -1,6 +1,6 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.cast;
 import static arb.expressions.Compiler.loadInputParameter;
 import static arb.expressions.Compiler.loadResultParameter;
 import static java.lang.String.format;
@@ -250,7 +250,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     if (isIndependent)
     {
-      Compiler.checkClassCast(loadInputParameter(mv), expression.domainType);
+      Compiler.cast(loadInputParameter(mv), expression.domainType);
     }
     else if (isIndeterminate)
     {
@@ -284,7 +284,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     if (isResult)
     {
-      checkClassCast(loadResultParameter(mv), reference.type);
+      cast(loadResultParameter(mv), reference.type);
     }
     else
     {

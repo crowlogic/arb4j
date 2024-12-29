@@ -1,6 +1,6 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.cast;
 import static arb.expressions.Compiler.loadInputParameter;
 import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.GOTO;
@@ -226,7 +226,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
 
   public void generateIndex(MethodVisitor mv)
   {
-    checkClassCast(loadInputParameter(mv), expression.domainType);
+    cast(loadInputParameter(mv), expression.domainType);
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        INTEGER_CLASS_INTERNAL_NAME,
                        "getSignedValue",

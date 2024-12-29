@@ -163,7 +163,7 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
       loadFunctionOntoStack(mv);
       Compiler.getField(mv, LommelPolynomial.class, "n", Integer.class);
       loadInputParameter(mv);
-      checkClassCast(mv, Integer.class);
+      cast(mv, Integer.class);
       invokeSetMethod(mv, Integer.class, Integer.class);
 
       loadFunctionOntoStack(mv);

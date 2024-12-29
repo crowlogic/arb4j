@@ -1,6 +1,6 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.cast;
 import static arb.expressions.Compiler.loadInputParameter;
 import static arb.expressions.Compiler.loadOrderParameter;
 import static java.lang.String.format;
@@ -113,11 +113,11 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
   protected MethodVisitor generateEvaluateFunctionInvocation(MethodVisitor mv)
   {
     loadSphericalBesselFunctionOntoStack(mv);
-    checkClassCast(loadInputParameter(mv), expression.domainType);
+    cast(loadInputParameter(mv), expression.domainType);
     loadOrderParameter(mv);
     loadBitsOntoStack(mv);
     loadOutputVariableOntoStack(mv, expression.coDomainType);
-    return checkClassCast(invokeEvaluationMethod(mv, expression.domainType), expression.coDomainType);
+    return cast(invokeEvaluationMethod(mv, expression.domainType), expression.coDomainType);
   }
 
   public void generateInitializer(MethodVisitor mv)
@@ -142,7 +142,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
     loadOrderParameter(mv);
     loadBitsOntoStack(mv);
     loadOutputVariableOntoStack(mv, expression.coDomainType);
-    return checkClassCast(invokeEvaluationMethod(mv, resultType), expression.coDomainType);
+    return cast(invokeEvaluationMethod(mv, resultType), expression.coDomainType);
   }
 
   public void generateOrder(MethodVisitor mv)

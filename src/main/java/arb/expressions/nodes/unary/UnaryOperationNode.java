@@ -1,6 +1,6 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.cast;
 import static arb.expressions.Compiler.loadResultParameter;
 
 import java.util.Objects;
@@ -71,7 +71,7 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
   {
     if (isResult)
     {
-      checkClassCast(loadResultParameter(methodVisitor), resultType);
+      cast(loadResultParameter(methodVisitor), resultType);
       fieldName = "result";
     }
     else

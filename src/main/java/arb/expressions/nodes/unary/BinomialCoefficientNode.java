@@ -1,6 +1,6 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.cast;
 import static arb.expressions.Compiler.duplicateTopOfTheStack;
 import static arb.expressions.Compiler.invokeStaticMethod;
 import static arb.expressions.Compiler.loadResultParameter;
@@ -35,7 +35,7 @@ public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? ext
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    loadPointer(checkClassCast(duplicateTopOfTheStack(loadResultParameter(mv)), Integer.class));
+    loadPointer(cast(duplicateTopOfTheStack(loadResultParameter(mv)), Integer.class));
 
     loadUnsignedValue(combinations.generate(mv, Integer.class));
 

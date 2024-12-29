@@ -1,6 +1,6 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.cast;
 import static arb.expressions.Compiler.loadThisOntoStack;
 import static org.objectweb.asm.Opcodes.ACC_FINAL;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
@@ -46,7 +46,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
                        "evaluate",
                        Expression.evaluationMethodDescriptor,
                        isInterface);
-    return checkClassCast(mv, type);
+    return cast(mv, type);
   }
 
   @Override

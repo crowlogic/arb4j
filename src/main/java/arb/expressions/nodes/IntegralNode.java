@@ -1,6 +1,6 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.cast;
 import static arb.expressions.Compiler.getFieldFromThis;
 import static arb.expressions.Compiler.invokeMethod;
 import static arb.expressions.Compiler.loadBitsParameterOntoStack;
@@ -217,7 +217,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     loadBitsParameterOntoStack(mv);
     if (isResult)
     {
-      Compiler.checkClassCast(Compiler.loadResultParameter(mv), resultType);
+      Compiler.cast(Compiler.loadResultParameter(mv), resultType);
     }
     else
     {
@@ -261,7 +261,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     loadBitsParameterOntoStack(mv);
     loadFieldFromThis(mv, integralValueFieldName, generatedType);
     evaluateIntegral(mv);
-    checkClassCast(mv, resultType);
+    cast(mv, resultType);
   }
 
   @Override

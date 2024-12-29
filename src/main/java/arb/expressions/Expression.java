@@ -1283,7 +1283,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public MethodVisitor generateSetResultInvocation(MethodVisitor mv, Class<?> inputType)
   {
     loadResultParameter(mv);
-    checkClassCast(mv, coDomainType);
+    cast(mv, coDomainType);
     swap(mv);
     return invokeSetMethod(mv, inputType, coDomainType);
   }
