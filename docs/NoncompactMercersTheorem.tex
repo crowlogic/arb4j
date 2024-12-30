@@ -1,0 +1,50 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm}
+
+\begin{document}
+
+\begin{theorem}[RKHS Spectral Truncation Bound]
+Let $\mathcal{H}$ be a reproducing kernel Hilbert space with reproducing kernel $K: [0,\infty) \times [0,\infty) \to \mathbb{R}$ having the spectral representation
+\[ K(x,y) = \sum_{n=1}^{\infty} \lambda_n\phi_n(x)\phi_n(y) \]
+where $\{\phi_n\}_{n=1}^{\infty}$ is an orthonormal sequence of eigenfunctions in $L^2[0,\infty)$ and $\{\lambda_n\}_{n=1}^{\infty}$ are the corresponding eigenvalues with $\lambda_n \to 0$ as $n \to \infty$, and $\lambda_n \geq \lambda_{n+1}$ for all $n$.
+
+Then for any $N \in \mathbb{N}$:
+\[ |K(x,y) - \sum_{n=1}^N \lambda_n\phi_n(x)\phi_n(y)| \leq \lambda_{N+1}\sqrt{K(x,x)K(y,y)} \]
+for all $x,y \in [0,\infty)$.
+\end{theorem}
+
+\begin{proof}
+Let $E_N(x,y) = K(x,y) - \sum_{n=1}^N \lambda_n\phi_n(x)\phi_n(y)$. 
+
+Since $K$ is a reproducing kernel, $E_N$ is also a reproducing kernel (as the difference of reproducing kernels). For any $x \in [0,\infty)$, let $K_x(\cdot) = K(x,\cdot)$ be the corresponding feature map. Then for any $x,y$:
+
+\[ |E_N(x,y)| = |\langle E_NK_x, K_y \rangle_{\mathcal{H}}| \leq \|E_NK_x\|_{\mathcal{H}} \|K_y\|_{\mathcal{H}} \]
+
+By the reproducing property:
+\[ \|K_x\|_{\mathcal{H}}^2 = K(x,x) \]
+\[ \|K_y\|_{\mathcal{H}}^2 = K(y,y) \]
+
+And:
+\[ \|E_NK_x\|_{\mathcal{H}} \leq \|E_N\| \|K_x\|_{\mathcal{H}} \]
+
+For the self-adjoint operator $E_N$, the spectral theorem gives:
+\[ \|E_N\| = \sup\{|\langle E_N\phi, \phi \rangle|: \phi \in L^2, \|\phi\| = 1\} = \lambda_{N+1} \]
+
+Therefore:
+\[ |E_N(x,y)| \leq \|E_N\| \|K_x\|_{\mathcal{H}} \|K_y\|_{\mathcal{H}} = \lambda_{N+1} \sqrt{K(x,x)K(y,y)} \]
+for all $x,y \in [0,\infty)$.
+\end{proof}
+
+\begin{remark}
+This proof explicitly uses the RKHS structure through the feature map and reproducing property, showing how the operator norm bounds the pointwise values without requiring trace-class properties or convergence of tail sums.
+\end{remark}
+
+\begin{remark}
+For normalized kernels where $K(x,x) \leq 1$ for all $x$, the bound simplifies to $|E_N(x,y)| \leq \lambda_{N+1}$. The general form given here applies to any RKHS kernel regardless of normalization.
+\end{remark}
+
+\begin{remark}
+The reproducing property is essential here - it allows us to relate pointwise values of the kernel to the operator norm through the feature map. This connection does not exist for general integral operators, which is why such uniform bounds typically fail in that setting.
+\end{remark}
+
+\end{document}

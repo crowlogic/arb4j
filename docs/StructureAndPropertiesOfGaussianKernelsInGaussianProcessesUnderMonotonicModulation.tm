@@ -232,7 +232,7 @@
 
 <\initial>
   <\collection>
-    <associate|magnification|1.2>
+    <associate|magnification|1.4>
     <associate|page-height|auto>
     <associate|page-medium|paper>
     <associate|page-screen-margin|true>
@@ -240,9 +240,3 @@
     <associate|page-width|auto>
   </collection>
 </initial>
-
-<\references>
-  <\collection>
-    <associate|auto-1|<tuple|1|?|../../.local/share/XmacsLabs/texts/scratch/no_name_1.tm>>
-  </collection>
-</references>

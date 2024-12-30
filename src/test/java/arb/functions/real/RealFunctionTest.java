@@ -32,6 +32,8 @@ public class RealFunctionTest extends
 
   public static void testBetaFunctionReal()
   {
+    var cool = "🤙";
+    
     var oneOverThirty      = new Fraction(1,
                                           30);
     var oneThirtieth       = RealNullaryFunction.express("Beta(5,2)");
