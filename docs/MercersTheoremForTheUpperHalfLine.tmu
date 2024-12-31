@@ -4,28 +4,28 @@
 
 <\body>
   <\theorem>
-    <dueto|Integral Operator Coverring Number Upper Bounds>Let <math|T<rsub|K>> be the compact self-adjoint integral operator on <math|L<rsup|2><around|[|0,\<infty\>|)>> defined by kernel <math|K>:
+    Let <math|T<rsub|K>> be the compact self-adjoint integral covariance operator on <math|L<rsup|2><around|[|0,\<infty\>|)>>\ 
 
     <\equation>
       <around|(|T<rsub|K>*f|)><around|(|z|)>=<big|int><rsub|0><rsup|\<infty\>>K<around|(|z,w|)>*f<around|(|w|)>*d*w
     </equation>
 
-    where
+    defined by kernel <math|K>:
+
+    <\equation*>
+      K<around*|(|x,y|)>=<big|sum><rsub|k=0><rsup|\<infty\>>\<lambda\><rsub|k>\<phi\><rsub|k><around*|(|x|)>\<phi\><rsub|k><around*|(|y|)>
+    </equation*>
+
+    where <math|<around|{|\<phi\><rsub|n>|}><rsub|n=0><rsup|\<infty\>>> is a sequence of orthonormal eigenfunctions in <math|L<rsup|2><around|[|0,\<infty\>|)>> and <math|<around|{|\<lambda\><rsub|n>|}><rsub|n=0><rsup|\<infty\>>> the corresponding eigenvalues ordered such that
 
     <\equation>
-      K<around|(|z,w|)>=<big|sum><rsub|n=1><rsup|\<infty\>>\<lambda\><rsub|n>*\<phi\><rsub|n><around|(|z|)>*\<phi\><rsub|n><around|(|w|)>
-    </equation>
-
-    \ with <math|<around|{|\<phi\><rsub|n>|}><rsub|n=1><rsup|\<infty\>>> an orthonormal sequence in <math|L<rsup|2><around|[|0,\<infty\>|)>> and <math|<around|{|\<lambda\><rsub|n>|}><rsub|n=1><rsup|\<infty\>>> the corresponding eigenvalues ordered such that
-
-    <\equation>
-      <around|\||\<lambda\><rsub|n>|\|>\<geq\><around|\||\<lambda\><rsub|n+1>|\|\<forall\>n>
+      <around|\||\<lambda\><rsub|n+1>|\|>\<less\><around|\||\<lambda\><rsub|n>|\|>\<forall\>n
     </equation>
 
     Let <math|T<rsub|K<rsub|N>>> be the truncated operator with kernel
 
     <\equation>
-      K<rsub|N><around|(|z,w|)>=<big|sum><rsub|n=1><rsup|N>\<lambda\><rsub|n>*\<phi\><rsub|n><around|(|z|)>*\<phi\><rsub|n><around|(|w|)>
+      K<rsub|N><around|(|z,w|)>=<big|sum><rsub|n=0><rsup|N>\<lambda\><rsub|n>*\<phi\><rsub|n><around|(|z|)>*\<phi\><rsub|n><around|(|w|)>
     </equation>
 
     then:
@@ -36,34 +36,42 @@
   </theorem>
 
   <\proof>
-    Let <math|E<rsub|N>=T<rsub|K>-T<rsub|K<rsub|N>>> be the difference of integral operators. For any unit vector <math|f\<in\>L<rsup|2><around|[|0,\<infty\>|)>>:
+    Let <math|E<rsub|N>> be the difference <math|T<rsub|K>-T<rsub|K<rsub|N>>>. For any <math|f\<in\>L<rsup|2><around|[|0,\<infty\>|)>>:
+
+    Let <math|f=g+h> where <math|g\<in\><text|span><around|{|\<phi\><rsub|k>|}><rsub|k\<leq\>N>> and <math|h\<in\><text|span><around|{|\<phi\><rsub|k>|}><rsub|k\<gtr\>N>> so that\ 
 
     <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<around|\<\|\|\>|E<rsub|N>*f|\<\|\|\>><rsup|2>>|<cell|=<around|\<langle\>|E<rsub|N>*f,E<rsub|N>*f|\<rangle\>>>>|<row|<cell|>|<cell|=<around|\<langle\>|E<rsub|N><rsup|\<ast\>>*E<rsub|N>*f,f|\<rangle\>>>>>>>
+      g<around*|(|x|)>=<big|sum><rsub|k=0><rsup|N><around|\<langle\>|f,\<phi\><rsub|k>|\<rangle\>>*\<phi\><rsub|k><around*|(|x|)>
     </equation>
 
-    Since <math|E<rsub|N>> is self-adjoint (as difference of self-adjoint operators <math|T<rsub|K>> and <math|T<rsub|K<rsub|N>>>), we have:
+    \ and
 
     <\equation>
-      <around|\<\|\|\>|E<rsub|N>|\<\|\|\>>=sup<rsub|<around|\<\|\|\>|f|\<\|\|\>>=1><around|\||<around|\<langle\>|E<rsub|N>*f,f|\<rangle\>>|\|>
+      h<around*|(|x|)>=<big|sum><rsub|k=N+1><rsup|\<infty\>><around|\<langle\>|f,\<phi\><rsub|k>|\<rangle\>>*\<phi\><rsub|k><around*|(|x|)>
     </equation>
 
-    Let <math|f=g+h> where <math|g> is in span<math|<around|{|\<phi\><rsub|k>|}><rsub|k\<leq\>N>> and <math|h> is in span<math|<around|{|\<phi\><rsub|k>|}><rsub|k\<gtr\>N>>. Then:
+    \ where by orthogonality of <math|g> and <math|h>
 
     <\equation>
-      <around|\<langle\>|E<rsub|N>*f,f|\<rangle\>>=<around|\<langle\>|E<rsub|N>*g,g|\<rangle\>>+2*\<Re\><around|\<langle\>|E<rsub|N>*g,h|\<rangle\>>+<around|\<langle\>|E<rsub|N>*h,h|\<rangle\>>
+      <around*|\<langle\>|g,h|\<rangle\>>=<big|int><rsub|0><rsup|\<infty\>>g<around*|(|x|)>h<around*|(|x|)>\<mathd\>x=0
     </equation>
 
-    By construction of <math|E<rsub|N>>, for any <math|g> in span<math|<around|{|\<phi\><rsub|k>|}><rsub|k\<leq\>N>>:
+    we have
 
     <\equation>
-      E<rsub|N>*g=0\<Longrightarrow\><around|\<langle\>|E<rsub|N>*g,g|\<rangle\>>=0*<text|and ><around|\<langle\>|E<rsub|N>*g,h|\<rangle\>>=0
+      <around|\<\|\|\>|E<rsub|N>*f|\<\|\|\>><rsup|2>=<around|\<langle\>|E<rsub|N>*f,E<rsub|N>*f|\<rangle\>>=<around|\<langle\>|E<rsub|N>*h,h|\<rangle\>>
     </equation>
 
-    For <math|h> in span<math|<around|{|\<phi\><rsub|k>|}><rsub|k\<gtr\>N>>, <math|E<rsub|N>*h=\<lambda\><rsub|k>*h> where <math|<around|\||\<lambda\><rsub|k>|\|>\<leq\><around|\||\<lambda\><rsub|N+1>|\|>>, thus:
+    because <math|E<rsub|N>*g=0> by construction and since <math|h> is orthogonal to the first N eigenfunctions and\ 
 
     <\equation>
-      <around|\||<around|\<langle\>|E<rsub|N>*h,h|\<rangle\>>|\|>\<leq\><around|\||\<lambda\><rsub|N+1>|\|><around|\<\|\|\>|h|\<\|\|\>><rsup|2>\<leq\><around|\||\<lambda\><rsub|N+1>|\|><around|\<\|\|\>|f|\<\|\|\>><rsup|2>
+      <around|\||\<lambda\><rsub|k>|\|>\<leq\><around|\||\<lambda\><rsub|N+1>|\|>\<forall\>k\<gtr\>N
+    </equation>
+
+    we have
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|<around|\||<around|\<langle\>|E<rsub|N>*h,h|\<rangle\>>|\|>>|<cell|\<leq\><around|\||\<lambda\><rsub|N+1>|\|><around|\<\|\|\>|h|\<\|\|\>><rsup|2>>>|<row|<cell|>|<cell|\<leq\><around|\||\<lambda\><rsub|N+1>|\|><around|\<\|\|\>|f|\<\|\|\>><rsup|2>>>>>>
     </equation>
 
     Therefore:
@@ -74,7 +82,7 @@
   </proof>
 
   <\remark>
-    The appearance of <math|\<Re\>> in the expansion <math|<around|\<langle\>|E<rsub|N>*f,f|\<rangle\>>=<around|\<langle\>|E<rsub|N>*g,g|\<rangle\>>+2*\<Re\><around|\<langle\>|E<rsub|N>*g,h|\<rangle\>>+<around|\<langle\>|E<rsub|N>*h,h|\<rangle\>>> is due to the properties of inner products in complex Hilbert spaces. When expanding <math|<around|\<langle\>|E<rsub|N>*f,f|\<rangle\>>> with <math|f=g+h>, the cross terms <math|<around|\<langle\>|E<rsub|N>*g,h|\<rangle\>>> and <math|<around|\<langle\>|E<rsub|N>*h,g|\<rangle\>>> are complex conjugates. Since <math|<around|\<langle\>|E<rsub|N>*h,g|\<rangle\>>=<wide|<around|\<langle\>|E<rsub|N>*g,h|\<rangle\>>|\<bar\>>>, their sum equals <math|2*\<Re\><around|\<langle\>|E<rsub|N>*g,h|\<rangle\>>>. While this term ultimately vanishes in our proof due to orthogonality, this expansion technique is standard when dealing with sesquilinear forms.
+    This is an extension of Mercer's theorem to unbounded domains with uniform convergence.
   </remark>
 </body>
 
