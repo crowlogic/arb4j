@@ -4,7 +4,7 @@
 
 <\body>
   <\theorem>
-    Let <math|T<rsub|K>> be the compact self-adjoint integral covariance operator on <math|L<rsup|2><around|[|0,\<infty\>|)>>\ 
+    Let <math|T<rsub|K>> be a compact self-adjoint integral covariance operator on <math|L<rsup|2><around|[|0,\<infty\>|)>>\ 
 
     <\equation>
       <around|(|T<rsub|K>*f|)><around|(|z|)>=<big|int><rsub|0><rsup|\<infty\>>K<around|(|z,w|)>*f<around|(|w|)>*d*w
