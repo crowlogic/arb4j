@@ -155,19 +155,19 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
     return result.set(this).floor(bits, result);
   }
  
-  public Fraction sub(Real element, int prec, Fraction result)
+  public Fraction sub(Real subtrahend, int prec, Fraction result)
   {
-    try ( Real tmp = new Real())
+    try ( Fraction blip = new Fraction())
     {
-      return result.set(tmp.set(this).sub(element, prec));
+      return sub(blip.set(subtrahend), prec, result);
     }
   }
   
-  public Fraction add(Real element, int prec, Fraction result)
+  public Fraction add(Real addend, int prec, Fraction result)
   {
-    try ( Real tmp = new Real())
+    try ( Fraction blip = new Fraction())
     {
-      return result.set(tmp.set(this).add(element, prec));
+      return add(blip.set(addend), prec, result);
     }
   }
   
