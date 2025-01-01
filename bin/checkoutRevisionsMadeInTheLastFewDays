@@ -1,0 +1,27 @@
+#!/bin/bash
+# Usage: checkoutRevisionsMadeInTheLastFewDays <number_of_days>
+
+days=$1
+script_dir=$(dirname "$(readlink -f "$0")")
+base_dir="${script_dir}/revisions_below"
+mkdir -p $base_dir
+
+# Change to the git repository root directory
+git_root=$(git rev-parse --show-toplevel)
+cd "$git_root"
+
+# Get all commit hashes with dates, using ISO 8601 format
+git log --since="$days days ago" --pretty=format:"%h %ai" | while read commit date time zone; do
+    # Create directory with sortable timestamp format
+    # Convert to: YYYY-MM-DD_HHMMSS_hash
+    formatted_date=$(echo $date | tr -d '-')
+    formatted_time=$(echo $time | tr ':' '' | cut -d'.' -f1)
+    checkout_dir="${base_dir}/${date}_${formatted_time}_${commit}"
+    
+    mkdir -p $checkout_dir
+    git --work-tree=$checkout_dir checkout $commit -- .
+    
+    echo "Checked out $commit from ${date} ${time} to $checkout_dir"
+done
+
+echo "All revisions checked out to: $base_dir"

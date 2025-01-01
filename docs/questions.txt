@@ -1,2 +1,0 @@
-In what sense is Vitali variation "stronger" than the "weaker" Frechet variation?
-
