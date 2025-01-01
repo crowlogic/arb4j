@@ -3,7 +3,34 @@
 <style|<tuple|article|boring-white|framed-theorems>>
 
 <\body>
-  \;
+  <doc-data|<doc-title|Compact Self-Adjoint Integral Covariance<line-break>
+  Operators on <math|L<rsup|2><around|[|0,\<infty\>|)>>>|<doc-author|<author-data|<author-name|Stephen
+  Crowley>|<\author-affiliation>
+    <date|>
+  </author-affiliation>>>>
+
+  <abstract-data|<abstract|The spectral theory of compact self-adjoint
+  integral operators on <math|L<rsup|2><around|[|0,\<infty\>|)>> is applied
+  to extend Mercer's theorem, which is relegated to bounded(compact)
+  intervals to the non-compact (unbounded) semi-infinite interval
+  <math|<around|[|0,\<infty\>|)>>, focusing on eigenfunction expansions and
+  norm bounds. For operators with kernels <math|K<around|(|z,w|)>>
+  represented as Mercer expansions, which are infinite series of
+  eigenfunction products, the main result establishes the operator norm bound
+  <math|<around|\<\|\|\>|T<rsub|K>-T<rsub|K<rsub|N>>|\<\|\|\>>\<leq\><around|\||\<lambda\><rsub|N+1>|\|>>
+  for the integral covariance operator <math|<around*|(|T
+  f|)><around*|(|y|)>=<big|int><rsub|0><rsup|\<infty\>>K<around*|(|x,y|)>f<around*|(|x|)>\<mathd\>x>
+  derived using orthogonal projection methods. An extension of Mercer's
+  Theorem to the semi-infinite interval <math|<around|[|0,\<infty\>|)>>
+  demonstrates that it is the the compactness of the operator relative to the
+  induced canonical metric(square root of the variance structure function
+  which is in one-to-one correspondence with the covariance kernel function
+  <math|K> in the case of real-valued processes), rather than the domain,
+  underpins these results. Furthermore, the completeness of the eigenfunction
+  system is proven through the spectral properties of compact self-adjoint
+  operators. These findings provide a refined understanding of the integral
+  covariance operators operators on <math|L<rsup|2><around|[|0,\<infty\>|)>>the
+  sequences of finite-dimensional subspaces which converge to them.>>
 
   <\theorem>
     Let <math|T<rsub|K>> be a compact self-adjoint integral covariance
@@ -21,9 +48,9 @@
 
     where <math|<around|{|\<phi\><rsub|n>|}><rsub|n=0><rsup|\<infty\>>> is a
     sequence of orthonormal eigenfunctions in
-    <math|L<rsup|2><around|[|0,\<infty\>|)>> and
-    <math|<around|{|\<lambda\><rsub|n>|}><rsub|n=0><rsup|\<infty\>>> the
-    corresponding eigenvalues ordered by decreasing magnitude
+    <math|L<rsup|2><around|[|0,\<infty\>|)>> and the corresponding
+    eigenvalues \ <math|<around|{|\<lambda\><rsub|n>|}><rsub|n=0><rsup|\<infty\>>>
+    which are ordered by decreasing magnitude
 
     <\equation>
       <around|\||\<lambda\><rsub|n+1>|\|>\<less\><around|\||\<lambda\><rsub|n>|\|>\<forall\>n
@@ -32,7 +59,7 @@
     satisfy the eigenfunction equations
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|<around|(|T<rsub|K>*\<phi\><rsub|n>|)><around|(|z|)>>|<cell|=<big|int><rsub|0><rsup|\<infty\>>K<around|(|z,w|)>*\<phi\><rsub|n><around*|(|w|)>*d*w>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>><around*|(|<big|sum><rsub|k=0><rsup|\<infty\>>\<lambda\><rsub|k>\<phi\><rsub|k><around*|(|z|)>\<phi\><rsub|k><around*|(|w|)>|)>*\<phi\><rsub|n><around*|(|w|)>*d*w>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>\<phi\><rsub|n><around*|(|w|)>*<around*|(|<big|sum><rsub|k=0><rsup|\<infty\>>\<lambda\><rsub|k>\<phi\><rsub|k><around*|(|z|)>\<phi\><rsub|k><around*|(|w|)>|)>*d*w>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>*<big|sum><rsub|k=0><rsup|\<infty\>>\<phi\><rsub|n><around*|(|w|)>\<lambda\><rsub|k>\<phi\><rsub|k><around*|(|z|)>\<phi\><rsub|k><around*|(|w|)>*d*w>>|<row|<cell|>|<cell|=*<big|sum><rsub|k=0><rsup|\<infty\>><big|int><rsub|0><rsup|\<infty\>>\<phi\><rsub|n><around*|(|w|)>\<lambda\><rsub|k>\<phi\><rsub|k><around*|(|z|)>\<phi\><rsub|k><around*|(|w|)>*d*w>>|<row|<cell|>|<cell|=*<big|sum><rsub|k=0><rsup|\<infty\>>\<phi\><rsub|k><around*|(|z|)>\<lambda\><rsub|k><big|int><rsub|0><rsup|\<infty\>>\<phi\><rsub|n><around*|(|w|)>\<phi\><rsub|k><around*|(|w|)>*d*w>>|<row|<cell|>|<cell|=*<big|sum><rsub|k=0><rsup|\<infty\>>\<phi\><rsub|k><around*|(|z|)>\<lambda\><rsub|k>\<delta\><rsub|n,k>>>|<row|<cell|>|<cell|=
+      <tabular|<tformat|<table|<row|<cell|<around|(|T<rsub|K>*\<phi\><rsub|n>|)><around|(|z|)>>|<cell|=<big|int><rsub|0><rsup|\<infty\>>K<around|(|z,w|)>*\<phi\><rsub|n><around*|(|w|)>*d*w>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>><around*|(|<big|sum><rsub|k=0><rsup|\<infty\>>\<lambda\><rsub|k>\<phi\><rsub|k><around*|(|z|)>\<phi\><rsub|k><around*|(|w|)>|)>*\<phi\><rsub|n><around*|(|w|)>*d*w>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>\<phi\><rsub|n><around*|(|w|)>*<around*|(|<big|sum><rsub|k=0><rsup|\<infty\>>\<lambda\><rsub|k>\<phi\><rsub|k><around*|(|z|)>\<phi\><rsub|k><around*|(|w|)>|)>*d*w>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>*\<phi\><rsub|n><around*|(|w|)><big|sum><rsub|k=0><rsup|\<infty\>>\<lambda\><rsub|k>\<phi\><rsub|k><around*|(|z|)>\<phi\><rsub|k><around*|(|w|)>*d*w>>|<row|<cell|>|<cell|=*<big|sum><rsub|k=0><rsup|\<infty\>>\<phi\><rsub|n><around*|(|w|)><big|int><rsub|0><rsup|\<infty\>>\<lambda\><rsub|k>\<phi\><rsub|k><around*|(|z|)>\<phi\><rsub|k><around*|(|w|)>*d*w>>|<row|<cell|>|<cell|=*<big|sum><rsub|k=0><rsup|\<infty\>>\<phi\><rsub|k><around*|(|z|)>\<lambda\><rsub|k><big|int><rsub|0><rsup|\<infty\>>\<phi\><rsub|n><around*|(|w|)>\<phi\><rsub|k><around*|(|w|)>*d*w>>|<row|<cell|>|<cell|=*<big|sum><rsub|k=0><rsup|\<infty\>>\<phi\><rsub|k><around*|(|z|)>\<lambda\><rsub|k>\<delta\><rsub|n,k>>>|<row|<cell|>|<cell|=
       \<phi\><rsub|n><around*|(|z|)> \<lambda\><rsub|n>>>>>>
     </equation>
 
@@ -50,28 +77,35 @@
   </theorem>
 
   <\proof>
-    Let <math|E<rsub|N>> be the difference
-    <math|T<rsub|K>-T<rsub|K<rsub|N>>>. For any
-    <math|f\<in\>L<rsup|2><around|[|0,\<infty\>|)>>:
-
-    Let <math|f=g+h> where <math|g\<in\><text|span><around|{|\<phi\><rsub|k>|}><rsub|k\<leq\>N>>
-    and <math|h\<in\><text|span><around|{|\<phi\><rsub|k>|}><rsub|k\<gtr\>N>>
-    so that\ 
+    Let
 
     <\equation>
-      g<around*|(|x|)>=<big|sum><rsub|k=0><rsup|N><around|\<langle\>|f,\<phi\><rsub|k>|\<rangle\>>*\<phi\><rsub|k><around*|(|x|)>
+      <around*|(|E<rsub|N> f|)><around*|(|z|)>=<around|(|T<rsub|K>*f|)><around|(|z|)>-<around|(|T<rsub|K<rsub|N>>*f|)><around|(|z|)>
+    </equation>
+
+    \ be the difference <math|T<rsub|K>-T<rsub|K<rsub|N>>> then let
+
+    <\equation>
+      f=g+h\<forall\>f\<in\>L<rsup|2><around|[|0,\<infty\>|)>
+    </equation>
+
+    \ where\ 
+
+    <\equation>
+      g<around*|(|x|)>=<big|sum><rsub|k=0><rsup|N><around|\<langle\>|f,\<phi\><rsub|k>|\<rangle\>>*\<phi\><rsub|k><around*|(|x|)>\<forall\>g\<in\><text|span><around|{|\<phi\><rsub|k>|}><rsub|k\<leq\>N>
     </equation>
 
     \ and
 
     <\equation>
-      h<around*|(|x|)>=<big|sum><rsub|k=N+1><rsup|\<infty\>><around|\<langle\>|f,\<phi\><rsub|k>|\<rangle\>>*\<phi\><rsub|k><around*|(|x|)>
+      h<around*|(|x|)>=<big|sum><rsub|k=N+1><rsup|\<infty\>><around|\<langle\>|f,\<phi\><rsub|k>|\<rangle\>>*\<phi\><rsub|k><around*|(|x|)>\<forall\>h\<in\><text|span><around|{|\<phi\><rsub|k>|}><rsub|k\<gtr\>N>
     </equation>
 
-    \ where by orthogonality of <math|g> and <math|h>
+    where by orthogonality of <math|g> and <math|h> (which follows from the
+    orthogonality of eigenfunctions <math|\<varphi\><rsub|k>>)
 
     <\equation>
-      <around*|\<langle\>|g,h|\<rangle\>>=<big|int><rsub|0><rsup|\<infty\>>g<around*|(|x|)>h<around*|(|x|)>\<mathd\>x=0
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<around|\<langle\>|g,h|\<rangle\>>>|<cell|=<around*|\<langle\>|<big|sum><rsub|k=0><rsup|N><around|\<langle\>|f,\<phi\><rsub|k>|\<rangle\>>*\<phi\><rsub|k>,<big|sum><rsub|j=N+1><rsup|\<infty\>><around|\<langle\>|f,\<phi\><rsub|j>|\<rangle\>>*\<phi\><rsub|j>|\<rangle\>>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|N><big|sum><rsub|j=N+1><rsup|\<infty\>><around|\<langle\>|f,\<phi\><rsub|k>|\<rangle\>><around|\<langle\>|f,\<phi\><rsub|j>|\<rangle\>><around|\<langle\>|\<phi\><rsub|k>,\<phi\><rsub|j>|\<rangle\>>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|N><big|sum><rsub|j=N+1><rsup|\<infty\>><around|\<langle\>|f,\<phi\><rsub|k>|\<rangle\>><around|\<langle\>|f,\<phi\><rsub|j>|\<rangle\>>*\<delta\><rsub|k,j>>>|<row|<cell|>|<cell|=0>>>>>
     </equation>
 
     we have
@@ -80,8 +114,15 @@
       <around|\<\|\|\>|E<rsub|N>*f|\<\|\|\>><rsup|2>=<around|\<langle\>|E<rsub|N>*f,E<rsub|N>*f|\<rangle\>>=<around|\<langle\>|E<rsub|N>*h,h|\<rangle\>>
     </equation>
 
-    because <math|E<rsub|N>*g=0> by construction and since <math|h> is
-    orthogonal to the first N eigenfunctions and\ 
+    since
+
+    <\equation>
+      <tformat|<table|<row|<cell|<around|(|E<rsub|N>*g|)><around|(|x|)>>|<cell|=<around*|(|E<rsub|N>*<big|sum><rsub|k=0><rsup|N><around|\<langle\>|f,\<phi\><rsub|k>|\<rangle\>>*\<phi\><rsub|k>|)><around|(|x|)>>>|<row|<cell|>|<cell|=<around|(|T<rsub|K>*g|)><around|(|x|)>-<around|(|T<rsub|K<rsub|N>>*g|)><around|(|x|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|N>\<lambda\><rsub|k><around|\<langle\>|f,\<phi\><rsub|k>|\<rangle\>>*\<phi\><rsub|k><around|(|z|)>-<big|sum><rsub|k=0><rsup|N>\<lambda\><rsub|k><around|\<langle\>|f,\<phi\><rsub|k>|\<rangle\>>*\<phi\><rsub|k><around|(|z|)>>>|<row|<cell|>|<cell|=0>>>>
+    </equation>
+
+    \ by construction and since <math|h> is orthogonal to the first N
+    eigenfunctions and along with the fact that the eigenvalues are ordered
+    by decreasing magnitude
 
     <\equation>
       <around|\||\<lambda\><rsub|k>|\|>\<leq\><around|\||\<lambda\><rsub|N+1>|\|>\<forall\>k\<gtr\>N
@@ -170,7 +211,7 @@
 
 <\initial>
   <\collection>
-    <associate|magnification|1.4>
+    <associate|magnification|1.2>
     <associate|page-height|auto>
     <associate|page-medium|paper>
     <associate|page-screen-margin|true>
