@@ -144,41 +144,6 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
     return result.set(this).add(element, prec, result);
   }
   
- public static Fraction from(double value, double accuracy, Fraction result)
-  {
-    int sign = value < 0 ? -1 : 1;
-    value = value < 0 ? -value : value;
-    int integerpart = (int) value;
-    value -= integerpart;
-    double minimalvalue = value - accuracy;
-    if (minimalvalue < 0.0)
-      return new Fraction(sign * integerpart,
-                          1);
-    double maximumvalue = value + accuracy;
-    if (maximumvalue > 1.0)
-      return new Fraction(sign * (integerpart + 1),
-                          1);
-    int a = 0;
-    int b = 1;
-    int c = 1;
-    int d = (int) (1 / maximumvalue);
-    while (true)
-    {
-      int n = (int) ((b * minimalvalue - a) / (c - d * minimalvalue));
-      if (n == 0)
-        break;
-      a += n * c;
-      b += n * d;
-      n  = (int) ((c - d * maximumvalue) / (b * maximumvalue - a));
-      if (n == 0)
-        break;
-      c += n * a;
-      d += n * b;
-    }
-    int denominator = b + d;
-    return result.set(sign * (integerpart * denominator + (a + c)), denominator);
-  }
-  
   public Real sqrt(int bits, Real result)
   {
     assert bits > 0 : "bits must be strictly positive";

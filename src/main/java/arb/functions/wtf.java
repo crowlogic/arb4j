@@ -68,7 +68,7 @@ public class wtf implements
   {
     // COMPARE AGAINST LAST WORKING VERSION A FEW DAYS AGO
     wtf wtf = new wtf();
-    wtf.m= new Integer().set(4);
+    wtf.m = new Integer().set(4);
     System.out.println(wtf.eval(2.3, new Complex()));
   }
 
@@ -86,36 +86,31 @@ public class wtf implements
       initialize();
     }
 
+    Complex ⅈ = ComplexConstants.ⅈ;
+    Real    π = RealConstants.π;
     return elementℚℂ0001.evaluate(y, order, bits, vℂ0002)
-                        .mul(ComplexConstants.ⅈ.mul(RealConstants.π.mul(m, bits, vℝ0001).add(y, bits, vℂ0003),
-                                                    bits,
-                                                    vℂ0004)
-                                               .exp(bits, vℂ0005),
+                        .mul(ⅈ.mul(π.mul(m, bits, vℝ0001).add(y, bits, vℂ0003), bits, vℂ0004).exp(bits, vℂ0005),
                              bits,
                              vℂ0006)
                         .mul(vℂ0007.sub(elementℚℂ0002.evaluate(y, order, bits, vℂ0008)
-                                                     .mul(ComplexConstants.ⅈ.mul(cℤ0001.mul(RealConstants.π,
-                                                                                            bits,
-                                                                                            vℝ0002)
-                                                                                       .mul(m, bits, vℝ0003)
-                                                                                       .sub(y, bits, vℂ0009),
-                                                                                 bits,
-                                                                                 vℂ0010)
-                                                                            .exp(bits, vℂ0011),
+                                                     .mul(ⅈ.mul(cℤ0001.mul(π, bits, vℝ0002)
+                                                                      .mul(m, bits, vℝ0003)
+                                                                      .sub(y, bits, vℂ0009),
+                                                                bits,
+                                                                vℂ0010)
+                                                           .exp(bits, vℂ0011),
                                                           bits,
                                                           vℂ0012),
                                         bits,
                                         vℂ0013),
                              bits,
                              vℂ0014)
-                        .mul(cℤ0002.mul(m.pow(cℤ0001, bits, vℤ0001), bits, vℤ0002).sub(cℤ0000, bits, vℤ0003),
-                             bits,
-                             vℂ0015)
+                        .mul(cℤ0002.mul(m.pow(cℤ0001, bits, vℤ0001), bits, vℤ0002).sub(1, bits, vℤ0003), bits, vℂ0015)
                         .mul(cℤ0000.neg(vℤ0004).pow(m.neg(vℤ0005), bits, vf0001), bits, vℂ0016)
                         .div(cℤ0002.mul(vℤ0001, bits, vℤ0006)
                                    .sub(cℤ0001, bits, vℤ0007)
                                    .mul(y, bits, vℂ0017)
-                                   .mul(RealConstants.π, bits, vℂ0018),
+                                   .mul(π, bits, vℂ0018),
                              bits,
                              vℂ0019)
                         .neg(result);
@@ -134,14 +129,14 @@ public class wtf implements
     }
     else
     {
-      hypℚℂF0001.init(vℂ0023.set(new Complex[]
-      { vℂ0020.set(cℤ0000), vℂ0021.set(m), m.neg(vℂ0022) }), vℂ0025.set(new Complex[]
-      { cℤ0000.div(cℤ0001, 128, vℂ0024) }), ComplexRationalNullaryFunction.parse("-(1/2*ⅈ)/y"));
-      hypℚℂF0001.evaluate(null, 1, 128, elementℚℂ0001);
-      hypℚℂF0002.init(vℂ0029.set(new Complex[]
-      { vℂ0026.set(cℤ0000), vℂ0027.set(m), m.neg(vℂ0028) }), vℂ0031.set(new Complex[]
-      { cℤ0000.div(cℤ0001, 128, vℂ0030) }), ComplexRationalNullaryFunction.parse("(1/2*ⅈ)/y"));
-      hypℚℂF0002.evaluate(null, 1, 128, elementℚℂ0002);
+      hypℚℂF0001.init(vℂ0023.set(vℂ0020.set(1), vℂ0021.set(m), m.neg(vℂ0022)),
+                      vℂ0025.set(cℤ0000.div(cℤ0001, 128, vℂ0024)),
+                      ComplexRationalNullaryFunction.parse("-(1/2*ⅈ)/y"))
+                .evaluate(null, 1, 128, elementℚℂ0001);
+      hypℚℂF0002.init(vℂ0029.set(vℂ0026.set(1), vℂ0027.set(m), m.neg(vℂ0028)),
+                      vℂ0031.set(RealConstants.half),
+                      ComplexRationalNullaryFunction.parse("(1/2*ⅈ)/y"))
+                .evaluate(null, 1, 128, elementℚℂ0002);
       isInitialized = true;
     }
   }
