@@ -63,7 +63,7 @@ import arb.utensils.Utensils;
 
   public Real mul(Fraction element, int prec, Real result)
   {
-    try ( Real tmp = new Real())
+    try ( Real blip = new Real())
     {
       return mul(result.set(element), prec,result);
     }
@@ -127,19 +127,19 @@ import arb.utensils.Utensils;
     return result.set(this).floor(bits, result);
   }
  
-  public Fraction sub(Real element, int prec, Fraction result)
+  public Fraction sub(Real subtrahend, int prec, Fraction result)
   {
-    try ( Real tmp = new Real())
+    try ( Fraction blip = new Fraction())
     {
-      return result.set(tmp.set(this).sub(element, prec));
+      return sub(blip.set(subtrahend), prec, result);
     }
   }
   
-  public Fraction add(Real element, int prec, Fraction result)
+  public Fraction add(Real addend, int prec, Fraction result)
   {
-    try ( Real tmp = new Real())
+    try ( Fraction blip = new Fraction())
     {
-      return result.set(tmp.set(this).add(element, prec));
+      return add(blip.set(addend), prec, result);
     }
   }
   
@@ -308,9 +308,9 @@ import arb.utensils.Utensils;
     {
       result = new Real();
     }
-    try ( Real tmp = new Real())
+    try ( Real blip = new Real())
     {
-      return tmp.set(this).add(real, bits, result);
+      return blip.set(this).add(real, bits, result);
     }
   }  
 
@@ -463,9 +463,9 @@ import arb.utensils.Utensils;
    
   public Real sub(Fraction element, int prec, Real result)
   {
-    try ( Fraction tmp = new Fraction())
+    try ( Fraction blip = new Fraction())
     {      
-      return result.set(sub(element, prec, tmp));
+      return result.set(sub(element, prec, blip));
     }
   }
   
@@ -773,11 +773,9 @@ import arb.utensils.Utensils;
 
   public RationalFunction pow(Integer n, int bits, RationalFunction result)
   {
-    try ( RationalFunction tmp = new RationalFunction() )
+    try ( RationalFunction blip = new RationalFunction() )
     {
-      tmp.set(this);
-      tmp.pow(n, bits, result);
-      return result;
+      return blip.set(this).pow(n, bits, result);
     }
   }
     
