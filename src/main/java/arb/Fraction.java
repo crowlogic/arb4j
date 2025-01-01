@@ -803,9 +803,7 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
   {
     try ( RationalFunction blip = new RationalFunction() )
     {
-      blip.set(this);
-      blip.pow(n, bits, result);
-      return result;
+      return blip.set(this).pow(n, bits, result);
     }
   }
     
