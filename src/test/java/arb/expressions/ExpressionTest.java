@@ -32,6 +32,16 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  
+  public void testFourierTransformOfType1ChebyshevPolynomialsComplexFunction()
+  {
+    var context = new Context( Integer.named("m").set(4));
+    var f = ComplexFunction.express("y->-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(π*m+y))-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*π*m-y)))*(4*m^2-1)*(-1)^(-m)/((4*m^2-2)*y*π)",context);
+    var y = f.eval(2.3, new Complex());
+    System.out.println("f(2.3)=" + y );
+    assert false : "nah";
+    
+  }
   public void testIndefiniteIntegral()
   {
     var f = RealFunction.parse("int(sin(x),x)");
