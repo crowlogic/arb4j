@@ -28,7 +28,7 @@ public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> 
   @Override
   public String toString()
   {
-    return String.format("ExpressionTree[indexedBranches=%s, root=%s]", indexedBranches, root);
+    return String.format("ExpressionTree[%s]", root.expression);
   }
 
   /**

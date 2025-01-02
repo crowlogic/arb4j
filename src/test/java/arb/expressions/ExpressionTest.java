@@ -9,8 +9,10 @@ import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
+import arb.functions.Function;
 import arb.functions.IntegerFunction;
 import arb.functions.IntegerNullaryFunction;
+import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexNullaryFunction;
 import arb.functions.integer.ComplexFunctionSequence;
@@ -32,16 +34,8 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
-  
-  public void testFourierTransformOfType1ChebyshevPolynomialsComplexFunction()
-  {
-    var context = new Context( Integer.named("m").set(4));
-    var f = ComplexFunction.express("y->-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(π*m+y))-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*π*m-y)))*(4*m^2-1)*(-1)^(-m)/((4*m^2-2)*y*π)",context);
-    var y = f.eval(2.3, new Complex());
-    System.out.println("f(2.3)=" + y );
-    assert false : "nah";
-    
-  }
+
+ 
   public void testIndefiniteIntegral()
   {
     var f = RealFunction.parse("int(sin(x),x)");
@@ -189,15 +183,15 @@ public class ExpressionTest extends
   {
     ComplexFunction f    = ComplexFunction.express("t->arg(ζ(1/2+I*t))");
     Complex         eval = f.eval(2.3, new Complex());
-    assertEquals( -0.452709380316814, eval.re().doubleValue()  );
-    assertTrue( eval.im().isZero() );
+    assertEquals(-0.452709380316814, eval.re().doubleValue());
+    assertTrue(eval.im().isZero());
   }
 
   public static void testArgOfZetaOnTheCriticalLineReal()
   {
     RealFunction f    = RealFunction.express("t->arg(ζ(1/2+I*t))");
     Real         eval = f.eval(2.3, new Real());
-    assertEquals( -0.452709380316814, eval.doubleValue()  );
+    assertEquals(-0.452709380316814, eval.doubleValue());
   }
 
   public void testIntegerToNegativeIntegerPower()
@@ -219,7 +213,6 @@ public class ExpressionTest extends
     var     x       = RealNullaryFunction.express("∂y/∂x", context);
     assertEquals("0", x.typeset());
   }
-
 
   /**
    * See {@link TestCompiledDerivative} for modified decompiled thing that the

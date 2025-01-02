@@ -291,6 +291,11 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     var leftType = left.getGeneratedType();
     leftType = leftType != null ? leftType : left.type();
     var rightType = right.type();
+    if (Object.class.equals(leftType))
+    {
+      leftType = expression.coDomainType;
+    }
+
     invokeBinaryOperationMethod(mv, operator, leftType, rightType, resultType);
     return mv;
   }
@@ -454,7 +459,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
    * @param a
    * @param b
    * @return true if ({@link #left},{@link #right}) in { (a,b) , (b,a) }
-    */              
+   */
   public boolean typesSymmetricallyEqual(Class<?> a, Class<?> b)
   {
     assert a != null : "a is null";
