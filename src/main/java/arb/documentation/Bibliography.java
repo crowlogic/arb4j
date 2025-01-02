@@ -627,7 +627,7 @@ public class Bibliography extends
 
   public static Article       waveFunctionOfTheUniverse                                       =
                                                         new Article("Wave function of the Universe",
-                                                                    "J.B. Hartle and S.W. Hawking",
+                                                                    "James B. Hartle and Stephen W. Hawking",
                                                                     "1983",
                                                                     "Physical Review D",
                                                                     "28",
