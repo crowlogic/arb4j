@@ -28,9 +28,9 @@
   <math|K> in the case of real-valued processes), rather than the domain,
   underpins these results. Furthermore, the completeness of the eigenfunction
   system is proven through the spectral properties of compact self-adjoint
-  operators. These findings provide a refined understanding of the integral
-  covariance operators operators on <math|L<rsup|2><around|[|0,\<infty\>|)>>the
-  sequences of finite-dimensional subspaces which converge to them.>>
+  operators. These findings provide a refined understanding of integral
+  covariance operators operators on <math|L<rsup|2><around|[|0,\<infty\>|)>>
+  and their finite-dimensional subspaces.>>
 
   <\theorem>
     Let <math|T<rsub|K>> be a compact self-adjoint integral covariance
