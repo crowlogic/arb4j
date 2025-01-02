@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 
 import arb.documentation.references.Article;
 import arb.documentation.references.Book;
+import arb.documentation.references.InCollection;
 import arb.documentation.references.MastersThesis;
 import arb.documentation.references.Miscellaneous;
 
@@ -22,6 +23,15 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static InCollection  harmonizableProcessesView                                       =
+                                                        new InCollection("A View of Harmonizable Processes",
+                                                                         "M.M. Rao",
+                                                                         "1989",
+                                                                         "Statistical Data Analysis and Inference",
+                                                                         "597-615").setPublisher("North-Holland")
+                                                                                   .setAddress("Amsterdam")
+                                                                                   .setEditor("Yadolah DODGE");
+
   public static Book          riemannHypothesisEquivalents                                    =
                                                            new Book("Equivalents of the Riemann Hypothesis",
                                                                     "Kevin A. Broughan",
