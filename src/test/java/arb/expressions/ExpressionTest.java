@@ -9,10 +9,8 @@ import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
-import arb.functions.Function;
 import arb.functions.IntegerFunction;
 import arb.functions.IntegerNullaryFunction;
-import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexNullaryFunction;
 import arb.functions.integer.ComplexFunctionSequence;
@@ -35,7 +33,18 @@ public class ExpressionTest extends
                             TestCase
 {
 
- 
+  public void testFourierTransformOfType1ChebyshevPolynomialsComplexFunction()
+  {
+    var context = new Context(Integer.named("m").set(4));
+    var f       =
+          ComplexFunction.express("y->-I*(pFq([1,4,-4],[1/2],-((1/2)*I)/y)*exp(I*(π*4+y))-pFq([1,4,-4],[1/2],((1/2)*I)/y)*exp(I*(2*π*4-y)))*(4*4^2-1)*(-1)^(-4)/((4*4^2-2)*y*π)",
+                                  context);
+    var y       = f.eval(2.3, new Complex());
+    System.out.println("f(2.3)=" + y);
+    assert false : "nah";
+
+  }
+
   public void testIndefiniteIntegral()
   {
     var f = RealFunction.parse("int(sin(x),x)");

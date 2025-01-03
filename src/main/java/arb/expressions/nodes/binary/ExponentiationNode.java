@@ -87,10 +87,12 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
       return type;
     }
 
-    // Check if base is integer and exponent is a fraction
-    if (Integer.class.equals(left.type()) && Fraction.class.equals(right.type()))
+    // Check if base is integer and exponent is a (fraction or integer to handle
+    // possibility of negative values)
+    if (Integer.class.equals(left.type())
+                  && (Fraction.class.equals(right.type()) || Integer.class.equals(right.type())))
     {
-      type = AlgebraicNumber.class; // You'll need to create this class
+      type = AlgebraicNumber.class; 
       return type;
     }
 
