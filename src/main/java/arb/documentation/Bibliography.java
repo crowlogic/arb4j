@@ -23,6 +23,15 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       harmonizableProcessSpectralDomain                               =
+                                                                new Article("Conditions for the completeness of the spectral domain of a harmonizable process",
+                                                                            "Roland Averkamp",
+                                                                            "1997",
+                                                                            "Stochastic processes and their applications",
+                                                                            "72",
+                                                                            "1-9").setNumber("1")
+                                                                                  .setPublisher("Elsevier");
+
   public static InCollection  harmonizableProcessesView                                       =
                                                         new InCollection("A View of Harmonizable Processes",
                                                                          "M.M. Rao",
