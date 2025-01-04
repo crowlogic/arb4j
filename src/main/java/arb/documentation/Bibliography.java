@@ -23,6 +23,19 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  /**
+   * Note: weakly harmonizable processes should really be called something else
+   * that doesn't imply frailty, feebleness or lack of vitality
+   */
+  public static Article       strongLawOfLargeNumbersForWeaklyHarmonizableProcesses           =
+                                                                                    new Article("Strong law of large numbers for weakly harmonizable processes",
+                                                                                                "Dominique Dehay",
+                                                                                                "1987",
+                                                                                                "Stochastic processes and their applications",
+                                                                                                "24",
+                                                                                                "259-267").setNumber("2")
+                                                                                                          .setPublisher("Elsevier");
+
   public static Article       stonesTheoremAndCompleteness                                    =
                                                            new Article("Stone's theorem and completeness of orthogonal systems",
                                                                        "BD Craven",
