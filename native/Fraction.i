@@ -74,6 +74,11 @@ import arb.utensils.Utensils;
     return result.set(this).mul(that,bits,result);
   }
 
+  public ComplexRationalFunction div(ComplexRationalFunction divisor, int prec, ComplexRationalFunction result)
+  {
+    return result.set(this).div(divisor, prec, result);
+  }
+  
   public Integer floor(int bits, Integer result)
   {
     try ( var blip = new Real())
