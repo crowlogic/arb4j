@@ -771,6 +771,12 @@ public class Integer implements
     return result.set(this).mul(subtrahend, prec, result);
   }
 
+  public AlgebraicNumber mul(AlgebraicNumber multiplicand, int prec, AlgebraicNumber result)
+  {
+    return result.set(this).mul(multiplicand, prec, result);
+  }
+
+  
   @Override
   public Integer mul(Integer operand, int prec)
   {
