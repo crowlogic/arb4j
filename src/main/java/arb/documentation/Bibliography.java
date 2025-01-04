@@ -23,6 +23,15 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       stonesTheoremAndCompleteness                                    =
+                                                           new Article("Stone's theorem and completeness of orthogonal systems",
+                                                                       "BD Craven",
+                                                                       "1971",
+                                                                       "Journal of the Australian Mathematical Society",
+                                                                       "12",
+                                                                       "211-223").setNumber("2")
+                                                                                 .setPublisher("Cambridge University Press");
+
   public static Article       harmonizableProcessSpectralDomain                               =
                                                                 new Article("Conditions for the completeness of the spectral domain of a harmonizable process",
                                                                             "Roland Averkamp",
