@@ -141,15 +141,6 @@ public class Bibliography extends
                                                                         "1054-1067").setNumber("3")
                                                                                     .setPublisher("Institute of Mathematical Statistics");
 
-  public static Article       inversionOfLambertTransform                                     =
-                                                          new Article("An Inversion of the Lambert Transform",
-                                                                      "D. V. Widder",
-                                                                      "1950",
-                                                                      "Mathematics Magazine",
-                                                                      "23",
-                                                                      "171-182").setNumber("4")
-                                                                                .setPublisher("Mathematical Association of America, Taylor & Francis, Ltd.");
-
   public static Article       measuresEquivalentToWienerMeasure                               =
                                                                 new Article("On Measures Equivalent to Wiener Measure",
                                                                             "Thomas Kailath",
