@@ -218,12 +218,6 @@ public class Bibliography extends
                                                                                             "117-120").setNumber("1")
                                                                                                       .setVolume("5");
 
-  public static Book          probabilityTheoryI                                              =
-                                                 new Book("Probability Theory I",
-                                                          "M. Loève",
-                                                          "1977",
-                                                          null).setEdition("4th").setPublisher("Springer-Verlag");
-
   public static Article       quadraticDirichletSpaceExtremals                                =
                                                                new Article("A Quadratic Extremal Problem on the Dirichlet Space",
                                                                            "Stephen D. Fisher",
