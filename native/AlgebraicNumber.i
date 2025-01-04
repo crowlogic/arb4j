@@ -69,7 +69,8 @@ import arb.documentation.TheArb4jLibrary;
 
   public AlgebraicNumber sub(Integer x, int prec, AlgebraicNumber result)
   {
-    return sub(result.set(x), prec, result);
+    arblib.qqbar_sub_fmpz(result, this, x.swigCPtr);
+    return result;
   }
   
   public Complex getComplex(int bits, Complex result)
