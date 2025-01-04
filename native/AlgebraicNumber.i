@@ -116,6 +116,11 @@ import arb.documentation.TheArb4jLibrary;
     }
     return getSymbolicFormula(result, flags);
   }
+  
+  public Complex mul(Complex x, int prec, Complex result)
+  {
+    return getComplex(prec, result).mul(x,prec);
+  }  
 
   @Override
   public AlgebraicNumber inverse(AlgebraicNumber result)

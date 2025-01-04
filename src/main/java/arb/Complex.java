@@ -93,9 +93,8 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
 
   public Complex mul(AlgebraicNumber operand, int bits, Complex result)
   {  
-      return operand.getComplex(bits, result).mul(this, bits);    
+    return operand.getComplex(bits, result).mul(this, bits);    
   }
-
     
   public Complex(int i)
   {

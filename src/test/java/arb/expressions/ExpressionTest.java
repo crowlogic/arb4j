@@ -33,6 +33,19 @@ public class ExpressionTest extends
                             TestCase
 {
 
+  public static void testSequenceOfRealValuyedHypergeometricFunctionsAsComplexValuedFunctions()
+  {
+    var             f      = ComplexFunctionSequence.express("Vplus:m->pFq([1,m,-m],[1/2],(1/2)/y)");
+    ComplexFunction Vplus3 = f.evaluate(3, 128);
+    Complex         y      = Vplus3.evaluate(new Real("2.3",
+                                                      128),
+                                             1,
+                                             128,
+                                             new Complex());
+    assertEquals(-0.3487301717761157622856908029915, y.re().doubleValue());
+    assertEquals(0.0, y.im().doubleValue());
+  }
+
   public void testFourierTransformOfType1ChebyshevPolynomialsComplexFunction()
   {
     var context = new Context(Integer.named("m").set(4));
