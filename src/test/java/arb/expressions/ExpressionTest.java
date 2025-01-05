@@ -1,5 +1,7 @@
 package arb.expressions;
 
+import static arb.expressions.Parser.caretNormals;
+
 import arb.Complex;
 import arb.Fraction;
 import arb.Integer;
@@ -33,7 +35,7 @@ public class ExpressionTest extends
                             TestCase
 {
 
-  public static void testSequenceOfRealValuyedHypergeometricFunctionsAsComplexValuedFunctions()
+  public static void testSequenceOfRealValuyedHypergeometricFunctionAsComplexValuedFunctions()
   {
     var             f      = ComplexFunctionSequence.express("Vplus:m->pFq([1,m,-m],[1/2],(1/2)/y)");
     ComplexFunction Vplus3 = f.evaluate(3, 128);
@@ -53,8 +55,8 @@ public class ExpressionTest extends
     var f = F.instantiate();
     var y = f.eval(2.3, new Complex());
     System.out.println("f(2.3)=" + y + "\n" + F.inspect(f));
-    assert false : "nah";
-
+    assertEquals(0.1304867810087250797044854464515771264655, y.re().doubleValue() );
+    assertEquals(0.0, y.im().doubleValue() );
   }
 
   public void testIndefiniteIntegral()
