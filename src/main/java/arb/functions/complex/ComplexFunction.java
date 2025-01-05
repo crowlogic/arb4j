@@ -103,6 +103,18 @@ public interface ComplexFunction extends
                           null);
   }
 
+  public static Expression<Complex, Complex, ComplexFunction> parse(String expression, Context context)
+  {
+    return Function.parse(Parser.expressionToUniqueClassname(expression),
+                          expression,
+                          context,
+                          Complex.class,
+                          Complex.class,
+                          ComplexFunction.class,
+                          null,
+                          null);
+  }
+
   /**
    * The proper term to describe a function that maps from the set of real numbers
    * (R) to the set of complex numbers (C) is a "real-valued function" or a

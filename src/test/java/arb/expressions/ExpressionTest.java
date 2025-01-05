@@ -50,13 +50,15 @@ public class ExpressionTest extends
 
   public void testFourierTransformOfType1ChebyshevPolynomialsComplexFunction()
   {
-    var F =
-          ComplexFunction.parse("y->-I*(pFq([1,4,-4],[1/2],-((1/2)*I)/y)*exp(I*(π*4+y))-pFq([1,4,-4],[1/2],((1/2)*I)/y)*exp(I*(2*π*4-y)))*(4*4^2-1)*(-1)^(-4)/((4*4^2-2)*y*π)");
-    var f = F.instantiate();
-    var y = f.eval(2.3, new Complex());
+    var context = new Context();
+    var A       = ComplexFunction.express("A:pFq([1,4,-4],[1/2],-((1/2)*I)/y)*exp(I*(π*4+y))", context);
+    var B       = ComplexFunction.express("B:pFq([1,4,-4],[1/2],((1/2)*I)/y)*exp(I*(2*π*4-y))", context);
+    var F       = ComplexFunction.parse("y->-I*(A(y)-B(y))*(4*4^2-1)*(-1)^(-4)/((4*4^2-2)*y*π)", context);
+    var f       = F.instantiate();
+    var y       = f.eval(2.3, new Complex());
     System.out.println("f(2.3)=" + y + "\n" + F.inspect(f));
-    assertEquals(0.1304867810087250797044854464515771264655, y.re().doubleValue() );
-    assertEquals(0.0, y.im().doubleValue() );
+    assertEquals(0.1304867810087250797044854464515771264655, y.re().doubleValue());
+    assertEquals(0.0, y.im().doubleValue());
   }
 
   public void testIndefiniteIntegral()
