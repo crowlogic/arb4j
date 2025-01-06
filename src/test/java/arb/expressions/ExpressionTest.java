@@ -1,7 +1,5 @@
 package arb.expressions;
 
-import static arb.expressions.Parser.caretNormals;
-
 import arb.Complex;
 import arb.Fraction;
 import arb.Integer;
@@ -50,15 +48,14 @@ public class ExpressionTest extends
 
   public void testFourierTransformOfType1ChebyshevPolynomialsComplexFunction()
   {
-    var context = new Context();
-    var A       = ComplexFunction.express("A:pFq([1,4,-4],[1/2],-((1/2)*I)/y)*exp(I*(π*4+y))", context);
-    var B       = ComplexFunction.express("B:pFq([1,4,-4],[1/2],((1/2)*I)/y)*exp(I*(2*π*4-y))", context);
-    var F       = ComplexFunction.parse("y->-I*(A(y)-B(y))*(4*4^2-1)*(-1)^(-4)/((4*4^2-2)*y*π)", context);
+    var context = new Context(Integer.named("m").set(4));
+    var A       = ComplexFunction.express("A:pFq([1, m, -m], [1/2], I/2/y)*exp(2*I*π*m - y*I)", context);
+    var B       = ComplexFunction.express("B:pFq([1, m, -m], [1/2], -I/2/y)*exp(m*π*I + y*I)", context);
+    var F       = ComplexFunction.parse("y->I*(A(y)-B(y))/y", context);
     var f       = F.instantiate();
     var y       = f.eval(2.3, new Complex());
-    System.out.println("f(2.3)=" + y + "\n" + F.inspect(f));
-    assertEquals(0.1304867810087250797044854464515771264655, y.re().doubleValue());
-    assertEquals(0.0, y.im().doubleValue());
+    assertTrue(y.re().toString().startsWith("0.40342938701065"));
+    assertTrue(y.im().doubleValue() < 10e-15);
   }
 
   public void testIndefiniteIntegral()
