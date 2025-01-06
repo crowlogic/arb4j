@@ -28,11 +28,11 @@ import arb.expressions.viz.ExpressionTreeView;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ArbTypeRepresenter extends
+public class TypeRepresenter extends
                                 Representer
 {
 
-  public ArbTypeRepresenter(DumperOptions options)
+  public TypeRepresenter(DumperOptions options)
   {
     super(options);
     var namedStringRepresentation = new NamedStringRepresentation();
@@ -65,7 +65,7 @@ public class ArbTypeRepresenter extends
     @Override
     public Node representData(Object data)
     {
-      return ArbTypeRepresenter.this.representData(new SerializedContextVariable((Named) data));
+      return TypeRepresenter.this.representData(new SerializedContextVariable((Named) data));
     }
 
   }
@@ -77,7 +77,7 @@ public class ArbTypeRepresenter extends
     public Node representData(Object data)
     {
       Context context = (Context) data;
-      return ArbTypeRepresenter.this.representMapping(getTag(data.getClass(), Tag.MAP),
+      return TypeRepresenter.this.representMapping(getTag(data.getClass(), Tag.MAP),
                                                       context.variables.map,
                                                       defaultFlowStyle);
     }

@@ -27,7 +27,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.ArbTypeRepresenter;
+import arb.expressions.TypeRepresenter;
 import arb.expressions.SerializedExpression;
 import arb.viz.WindowManager;
 import javafx.application.Platform;
@@ -294,7 +294,7 @@ public class Utensils
     loadingConfig.setAllowRecursiveKeys(true);
     Yaml yaml = new Yaml(new Constructor(SerializedExpression.class,
                                          loadingConfig),
-                         new ArbTypeRepresenter(yamlConfig),
+                         new TypeRepresenter(yamlConfig),
                          yamlConfig);
 
     return yaml;
