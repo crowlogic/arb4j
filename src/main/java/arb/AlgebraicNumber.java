@@ -56,12 +56,6 @@ import arb.documentation.TheArb4jLibrary;
  * @author ©2024 Stephen Crowley
  */
 public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber> {
-  @Override
-  public String toString()
-  {
-    return getSymbolicRepresentation(new SymbolicExpression()).toString();
-  }
-
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 

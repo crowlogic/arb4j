@@ -3,3 +3,4 @@ TODO: builtin sykbols for the classical orthogonal polynomials
 "limit" is null at arb4j/arb.expressions.nodes.IntegralNode.evaluateIndefiniteIntegralAt(IntegralNode.java:217)
 implement ∂/∂x[∏ᵢ₌₁ᵏfᵢ(x)] = ∑ᵢ₌₁ᵏ[(∂/∂x fᵢ(x))∏ⱼ₌₁,ⱼ≠ᵢᵏfⱼ(x)]
 expr compiler:  fractional derivatives
+https://github.com/crowlogic/arb4j/issues/573 functional indep toSTring
