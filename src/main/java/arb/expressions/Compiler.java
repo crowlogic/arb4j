@@ -619,7 +619,7 @@ public class Compiler
     return mv;
   }
 
-  public static void returnFromMethod(MethodVisitor methodVisitor)
+  public static void generateReturnFromMethod(MethodVisitor methodVisitor)
   {
     methodVisitor.visitInsn(Opcodes.ARETURN);
     methodVisitor.visitMaxs(10, 10);
@@ -695,7 +695,7 @@ public class Compiler
     annotateWithOverride(methodVisitor);
     methodVisitor.visitCode();
     methodVisitor.visitLdcInsn(typeset);
-    returnFromMethod(methodVisitor);
+    generateReturnFromMethod(methodVisitor);
     return classVisitor;
   }
 

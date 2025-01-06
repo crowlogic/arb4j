@@ -250,9 +250,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   boolean                                               verboseTrace                  = false;
 
-  private boolean                                       functionalDependsOnIndeterminantVariable;
+  public boolean                                        functionalDependsOnIndeterminantVariable;
 
-  private VariableNode<Object, Object, Function<?, ?>>  indeterminantVariableMappedToFunctional;
+  public VariableNode<Object, Object, Function<?, ?>>   functionalIndeterminantVariable;
 
   public Expression(Class<? extends D> domain, Class<? extends C> codomain, Class<? extends F> function)
   {
@@ -802,8 +802,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         generateCloseMethod(classVisitor);
       }
+
       generateToStringMethod(classVisitor);
       generateTypesetMethod(classVisitor);
+
     }
     finally
     {
@@ -879,7 +881,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     mv.visitCode();
     mv.visitLdcInsn(Type.getType(coDomainType));
-    Compiler.returnFromMethod(mv);
+    Compiler.generateReturnFromMethod(mv);
 
     return classVisitor;
   }
@@ -970,19 +972,19 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   protected Expression<Object, Object, Function<?, ?>> generateFunctionalElement(MethodVisitor mv)
   {
-    var                                          function                               = newFunctionalExpression();
+    var function = newFunctionalExpression();
 
-    boolean                                      functionalDependsOnIndependentVariable = false;
-    VariableNode<Object, Object, Function<?, ?>> independentVariableMappedToFunctional  = null;
+    functionalDependsOnIndependentVariable = false;
+    functionalIndependentVariable          = null;
     if (independentVariable != null)
     {
-      independentVariableMappedToFunctional  = independentVariable.spliceInto(function).asVariable();
-      functionalDependsOnIndependentVariable = function.rootNode.dependsOn(independentVariableMappedToFunctional);
+      functionalIndependentVariable          = independentVariable.spliceInto(function).asVariable();
+      functionalDependsOnIndependentVariable = function.rootNode.dependsOn(functionalIndependentVariable);
     }
     if (indeterminateVariable != null)
     {
-      indeterminantVariableMappedToFunctional  = indeterminateVariable.spliceInto(function).asVariable();
-      functionalDependsOnIndeterminantVariable = function.rootNode.dependsOn(indeterminantVariableMappedToFunctional);
+      functionalIndeterminantVariable          = indeterminateVariable.spliceInto(function).asVariable();
+      functionalDependsOnIndeterminantVariable = function.rootNode.dependsOn(functionalIndeterminantVariable);
     }
 
     function.generate();
@@ -993,9 +995,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (functionalDependsOnIndependentVariable)
     {
-      generateCodeToPropagateIndependentVariableToFunctionalElement(mv,
-                                                                    function,
-                                                                    independentVariableMappedToFunctional);
+      generateCodeToPropagateIndependentVariableToFunctionalElement(mv, function, functionalIndependentVariable);
     }
 
     if (context != null && context.variables != null)
@@ -1288,6 +1288,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       System.err.format("generateToStringMethod(expression=%s)\n", expression);
     }
 
+    // assert !functionalDependsOnIndeterminantVariable : "TODO: handle
+    // functionalDependsOnIndeterminantVariable";
+
     var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
                                                  "toString",
                                                  Compiler.getMethodDescriptor(String.class),
@@ -1299,8 +1302,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     String name = functionName != null ? (functionName + ":") : "";
     updateStringRepresentation();
     String arrow = expression.contains("➔") || independentVariable == null ? "" : (independentVariable.getName() + "➔");
+    // TODO: need to generate instructions so that the toString() uses String.format to include the value (only if it was part of the independent variable because thats the only timne
+    // its fixed for the whole class, if its just a Context variable then it can change between invocations
+//    assert !functionalDependsOnIndependentVariable : "TODO: handle functionalDependsOnIndependentVariable "
+//                                                     + functionalIndependentVariable + "  " + context.getVariable(functionalIndependentVariable));
+//                                                                  
+//                                                    
     methodVisitor.visitLdcInsn(String.format("%s%s%s", name, arrow, expression.replace("sqrt", "√")));
-    Compiler.returnFromMethod(methodVisitor);
+    Compiler.generateReturnFromMethod(methodVisitor);
     return classVisitor;
   }
 
@@ -2062,13 +2071,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return new ExpressionTree<D, C, F>(rootNode);
   }
 
-  static HashSet<Class<?>>                        indeterminantTypes = new HashSet<>();
+  static HashSet<Class<?>>                             indeterminantTypes = new HashSet<>();
 
-  private ArrayList<LiteralConstantNode<D, C, F>> literalConstantNodes;
+  private ArrayList<LiteralConstantNode<D, C, F>>      literalConstantNodes;
 
-  public List<Dependency>                         dependencies;
+  public List<Dependency>                              dependencies;
 
-  public HashMap<Node<D, C, F>, String>           generatedNodes     = new HashMap<>();
+  public HashMap<Node<D, C, F>, String>                generatedNodes     = new HashMap<>();
+
+  public boolean                                       functionalDependsOnIndependentVariable;
+
+  private VariableNode<Object, Object, Function<?, ?>> functionalIndependentVariable;
 
   static
   {
