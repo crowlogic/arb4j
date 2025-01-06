@@ -103,15 +103,15 @@ public interface ComplexFunction extends
                           null);
   }
 
-  public static Expression<Complex, Complex, ComplexFunction> parse(String expression, Context context)
+  public static Expression<Complex, Complex, ComplexFunction> parse(String name, String expression, Context context)
   {
-    return Function.parse(Parser.expressionToUniqueClassname(expression),
+    return Function.parse(name,
                           expression,
                           context,
                           Complex.class,
                           Complex.class,
                           ComplexFunction.class,
-                          null,
+                          name,
                           null);
   }
 

@@ -1,5 +1,7 @@
 package arb.expressions;
 
+import static arb.expressions.Parser.caretNormals;
+
 import arb.Complex;
 import arb.Fraction;
 import arb.Integer;
@@ -49,11 +51,13 @@ public class ExpressionTest extends
   public void testFourierTransformOfType1ChebyshevPolynomialsComplexFunction()
   {
     var context = new Context(Integer.named("m").set(4));
+
     var A       = ComplexFunction.express("A:pFq([1, m, -m], [1/2], I/2/y)*exp(2*I*π*m - y*I)", context);
     var B       = ComplexFunction.express("B:pFq([1, m, -m], [1/2], -I/2/y)*exp(m*π*I + y*I)", context);
-    var F       = ComplexFunction.parse("y->I*(A(y)-B(y))/y", context);
-    var f       = F.instantiate();
+    var f       = ComplexFunction.express("F", "y->I*(A(y)-B(y))/y", context);
+
     var y       = f.eval(2.3, new Complex());
+
     assertTrue(y.re().toString().startsWith("0.40342938701065"));
     assertTrue(y.im().doubleValue() < 10e-15);
   }
