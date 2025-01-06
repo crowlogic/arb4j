@@ -6,6 +6,9 @@ import jdk.jshell.spi.ExecutionControl;
 import jdk.jshell.spi.ExecutionControlProvider;
 import jdk.jshell.spi.ExecutionEnv;
 
+/**
+ * A JShell {@link ExpressionExecutionControlProvider} 
+ */
 public class ExpressionExecutionControlProvider implements
                                                 ExecutionControlProvider
 {
