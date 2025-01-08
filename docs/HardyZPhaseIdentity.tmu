@@ -1,0 +1,114 @@
+<TMU|<tuple|1.0.5|1.2.9.7>>
+
+<style|generic>
+
+<\body>
+  \;
+
+  <\theorem>
+    For the phase function <math|\<theta\><around|(|t|)>> used in Hardy's Z-function and the gamma factor <math|\<chi\><around|(|s|)>> in the functional equation of the Riemann zeta function:
+
+    <\equation*>
+      e<rsup|i*\<theta\><around|(|t|)>>=<frac|1|<sqrt|\<chi\>*<around|(|1/2+i*t|)>>>
+    </equation*>
+
+    for all real <math|t>.
+  </theorem>
+
+  <\proof>
+    1. By definition, Hardy's Z-function is real-valued and given by:
+
+    <\equation*>
+      Z<around|(|t|)>=e<rsup|i*\<theta\><around|(|t|)>>*\<zeta\>*<around|(|1/2+i*t|)>
+    </equation*>
+
+    2. By the functional equation:
+
+    <\equation*>
+      \<zeta\>*<around|(|1/2+i*t|)>=\<chi\>*<around|(|1/2+i*t|)>*\<zeta\>*<around|(|1/2-i*t|)>
+    </equation*>
+
+    3. For real <math|t>:
+
+    <\equation*>
+      \<zeta\>*<around|(|1/2-i*t|)>=<wide|\<zeta\>*<around|(|1/2+i*t|)>|\<bar\>>
+    </equation*>
+
+    4. Therefore:
+
+    <\equation*>
+      Z<around|(|t|)>=e<rsup|i*\<theta\><around|(|t|)>>*\<chi\>*<around|(|1/2+i*t|)><wide|\<zeta\>*<around|(|1/2+i*t|)>|\<bar\>>
+    </equation*>
+
+    5. Since <math|Z<around|(|t|)>> is real:
+
+    <\equation*>
+      Z<around|(|t|)>=<wide|Z<around|(|t|)>|\<bar\>>
+    </equation*>
+
+    <\equation*>
+      e<rsup|i*\<theta\><around|(|t|)>>*\<chi\>*<around|(|1/2+i*t|)><wide|\<zeta\>*<around|(|1/2+i*t|)>|\<bar\>>=<wide|e<rsup|i*\<theta\><around|(|t|)>>|\<bar\>><space|0.22em><wide|\<chi\>*<around|(|1/2+i*t|)>|\<bar\>>\<zeta\>*<around|(|1/2+i*t|)>
+    </equation*>
+
+    6. For the gamma factor <math|\<chi\><around|(|s|)>>, we know:
+
+    <\equation*>
+      \<chi\><around|(|s|)><wide|\<chi\><around|(|s|)>|\<bar\>>=1
+    </equation*>
+
+    when <math|s=1/2+i*t> for real <math|t>
+
+    7. The equation in step 5 must hold for all values of <math|\<zeta\>*<around|(|1/2+i*t|)>>. This is only possible if:
+
+    <\equation*>
+      e<rsup|i*\<theta\><around|(|t|)>>*\<chi\>*<around|(|1/2+i*t|)>=<frac|1|e<rsup|i*\<theta\><around|(|t|)>>>
+    </equation*>
+
+    8. Therefore:
+
+    <\equation*>
+      e<rsup|2*i*\<theta\><around|(|t|)>>*\<chi\>*<around|(|1/2+i*t|)>=1
+    </equation*>
+
+    <\equation*>
+      e<rsup|i*\<theta\><around|(|t|)>>=<frac|1|<sqrt|\<chi\>*<around|(|1/2+i*t|)>>>
+    </equation*>
+  </proof>
+
+  <\corollary>
+    For the Hardy Z-function and the Riemann zeta function:
+
+    <\equation*>
+      Z<around|(|t|)>=<frac|\<zeta\>*<around|(|1/2+i*t|)>|<sqrt|\<chi\>*<around|(|1/2+i*t|)>>>
+    </equation*>
+
+    for all real <math|t>.
+  </corollary>
+
+  <\proof>
+    From the definition of Hardy's Z-function:
+
+    <\equation*>
+      Z<around|(|t|)>=e<rsup|i*\<theta\><around|(|t|)>>*\<zeta\>*<around|(|1/2+i*t|)>
+    </equation*>
+
+    Using the theorem that:
+
+    <\equation*>
+      e<rsup|i*\<theta\><around|(|t|)>>=<frac|1|<sqrt|\<chi\>*<around|(|1/2+i*t|)>>>
+    </equation*>
+
+    Substituting this expression for <math|e<rsup|i*\<theta\><around|(|t|)>>>:
+
+    <\equation*>
+      Z<around|(|t|)>=<frac|1|<sqrt|\<chi\>*<around|(|1/2+i*t|)>>>*\<zeta\>*<around|(|1/2+i*t|)>=<frac|\<zeta\>*<around|(|1/2+i*t|)>|<sqrt|\<chi\>*<around|(|1/2+i*t|)>>>
+    </equation*>
+  </proof>
+</body>
+
+<\initial>
+  <\collection>
+    <associate|page-medium|paper>
+    <associate|page-screen-margin|false>
+  </collection>
+</initial>
