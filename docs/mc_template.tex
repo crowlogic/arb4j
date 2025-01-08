@@ -1,0 +1,315 @@
+\documentclass{mc}
+%%%%% journal  info -- DO NOT CHANGE %%%%%%%%%
+\setcounter{page}{1}
+\renewcommand\thisnumber{x}
+\renewcommand\thisyear {202x}
+\renewcommand\thismonth{xxx}
+\renewcommand\thisvolume{xx}
+\renewcommand\datereceived{}
+\renewcommand\dateaccepted{??}
+%%%%%%%%   end journal info   %%%%%%%%%%%%%
+
+
+%%%%% author macros %%%%%%%%%
+% place your own macros HERE
+%%%%% end %%%%%%%%%
+
+%%%%%%%%%    already loaded packages -- DO NOT RELOAD  %%%%%
+% \usepackage{amssymb}
+% \usepackage{amsmath,amsthm}
+% \usepackage{latexsym}
+% \usepackage{amsfonts}
+% \usepackage{amsbsyt}
+% \usepackage{graphicx}
+%%%%%%    end   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%% title and author(s):
+% \markboth{Author(s)}{Short Title}
+% \title{Title}
+
+\markboth{A.\,Author}{How to use the {\sf mc.cls} class file}
+\title[How to use the {\sf mc.cls} class file]{A demonstration of the \LaTeXe \ class file
+                                              for  Mathematical Communications\thanks{This work was supported by the ...}}
+
+% single author:
+% \author[AUTHOR]{AUTHOR}
+% \address{address of AUTHOR}
+% \email{{\tt email address of AUTHOR} (AUTHOR)}
+
+\author[A. Author]{Author Author\corrauth}
+\address{School of Applied Mathematics and Informatics, University of Osijek, Trg Ljudevita Gaja 6, HR-31 000 Osijek, Croatia}
+\email{{\tt author@mathos.hr} (A. Author)}
+
+
+% multiple authors:
+% Please mark \corrauth after the name of the corresponding author.
+% different addresses:
+%\author[AUTHOR1 and AUTHOR2]{AUTHOR1\affil{1}\comma\corrauth and AUTHOR2\affil{2}}
+%\address{\affilnum{1}\ address of AUTHOR1\\   \affilnum{2}\ address of AUTHOR2}
+%
+%same address:
+%\author[AUTHOR1, AUTHOR2 and AUTHOR3]{AUTHOR1, AUTHOR2\corrauth and AUTHOR3}
+%\address{address of AUTHOR1, AUTHOR2 and AUTHOR3}
+%
+%\emails{{\tt email of AUTHOR1} (AUTHOR1), {\tt email of AUTHOR2} (AUTHOR2), {\tt email of AUTHOR3} (AUTHOR3)}
+%
+
+
+
+
+%%%%% Begin Abstract %%%%%%%%%%%
+\begin{abstract}
+This paper describes the use of the \LaTeXe \ {\sf mc.cls} class
+file for setting papers for  {\it Mathematical Communications}.
+\end{abstract}
+%%%%% end %%%%%%%%%%%
+
+%%%%% Keywords %%%%%%%%%%%
+\keywords{\LaTeXe, instructions}
+
+%%%% AMS subject classifications %%%%
+\ams{65D10, 92C45}
+
+%%%% maketitle %%%%%
+\maketitle
+
+%%%% Start %%%%%%
+\section{Introduction}
+
+
+
+The {\sf mc.cls}  document class is designed to produce papers suitable for publication in the {\em Mathematical Communications}.
+It is based on the standard article \LaTeX2e class.
+The following standard packages
+are  already loaded:
+{\tt amssymb, amsmath,amsthm, latexsym, amsfonts,amsbsyt, graphicx}.
+
+\underline{This is a template article, which you can use as a skeleton for your own article}.
+
+
+
+\section{Guide for authors}
+
+\subsection{Submission of manuscript}
+
+Manuscripts MUST be submitted using the online submission system. We do NOT accept submissions by mail.
+It is journal policy that the online submission process MUST be carried out by the corresponding author.
+The corresponding author will receive all correspondence, including an initial acknowledgment and the decision, by email.
+
+\subsubsection{Initial submission (manuscript for review)}
+
+The submission file MUST be a single PDF created from \LaTeX\ source (avoid false converting software!) prepared according to the journal's \LaTeX\ class file mc.cls. No other file format will be accepted. The easiest way to prepare your manuscript is to download the style file mc.cls and fill in this  template article. Try to avoid using extra files (macros).
+
+The manuscript should contain the following elements:
+\begin{itemize}
+\item {\em Full title} (up to 150 characters)
+\item {\em Short title} (not more than 50 characters including spaces)
+\item {\em Author names and affiliations.} For each author add his/her affiliation which should include the full postal address and the country name. If avilable, specify the e-mail address of each author. Clearly indicate who is the corresponding author of the paper.
+\item {\em Abstract.} A concise abstract is required (not more than 50 words). The abstract should state the problem studied and the principal results proven.
+\item {\em Keywords} (at least two, up to six key words).
+\item {\em Mathematics Subject Classification.} Include one or more Math. Subj. Class. 2010 codes (see http://www.ams.org/msc).
+\item Main text
+\item {\em References.} References in the text are cited by numbers in square brackets, e.g. \cite{Boggs1987}. A full list of references should be given at the end of the manuscript in alphabetical order by the first author's last name and formatted as it is in this template article.
+
+Ensure the references are quoted accurately, and use the standard abbreviations for journal names prepared by the American Mathematical Society (see Mathematical Reviews Serials Abbreviations List). Unpublished materials should not appear in the reference list.
+\end{itemize}
+
+All figures MUST be in EPS black-and-white format. To include your graphics files into the \LaTeX\ code, use one of the standard figure inclusion commands (e.g. {\em includegraphics}) and the standard \LaTeX\ figure packages such as {\em graphics} and {\em graphicx}.
+
+\subsubsection{Revised manuscript}
+ Revised manuscripts MUST be uploaded within 2 weeks (for minor revisions) or 4 weeks (for major revisions) of authors being notified of conditional acceptance pending satisfactory revision. Revisions must still be uploaded as a single PDF generated from the revised \LaTeX\ source files. If the revised version of a manuscript is not uploaded within the specified time, the manuscript will be withdrawn from the system, unless the editor concerned agrees to extend the deadline.
+
+\subsubsection{Final submission (accepted paper for publication)}
+ If a submission is accepted, the contact person will receive instructions for submitting \LaTeX\ source of final version of accepted paper, as well as all figures in EPS format.
+
+\subsubsection{Proof correction}
+ The corresponding author will receive a proof of the paper for checking before it is published. Authors should keep in mind that reading proofs is their responsibility. Corrections should therefore be clear and unambiguous. The main aim of proofreading is to correct errors that may have occurred during the production process, and not to modify the content of the paper. Please correct your galley proofs and return them within 5 working days.
+
+Note: The authors do not receive a print copy of the journal/paper, but the corresponding author receive by email a copy of published paper in PDF format.
+
+
+
+
+\subsection{Instructions for authors how to use the {\em mc.cls}  }
+
+\subsubsection{Header information}
+The heading for any file using {\sf mc.cls} is like this;
+\begin{verbatim}
+\documentclass{mc}
+
+%%%%% journal  info -- DO NOT CHANGE %%%%%%%%%
+\setcounter{page}{1}
+\renewcommand\thisnumber{x}
+\renewcommand\thisyear {201x}
+\renewcommand\thismonth{xxx}
+\renewcommand\thisvolume{xx}
+\renewcommand\datereceived{}
+\renewcommand\dateaccepted{??}
+%%%%%%%%   end journal info   %%%%%%%%%%%%%
+
+
+%%%%% author macros %%%%%%%%%
+% place your own macros HERE
+%%%%% end %%%%%%%%%
+
+\begin{document}
+
+\markboth{Author(s)}{Short Title}
+
+\title[Short running title]{Make the Title in Title Case}
+
+\author[Author(s)]{First Author\affil{1}, Second
+Author\affil{2}\comma\corrauth and Third Author\affil{2}}
+
+\address{\affilnum{1}\ Address for first  author\\
+\affilnum{2}\ Address for second and third author}
+
+\emails{{\tt Email address of First Author} (First Author), {\tt
+Email address of Second Author} (Second Author), {\tt Email address
+of Third Author} (Third Author)}
+
+\begin{abstract}
+Text here.
+\end{abstract}
+
+\keywords{list here}
+
+\ams{list here}
+
+\maketitle
+
+\section{First Section}
+
+\end{document}
+
+\end{verbatim}
+
+\subsubsection{Theorems and other environments}
+
+The {\em mc.cls} \ document class offers a number of environments
+to declare theorems and related structures.
+
+Theorems are declared using the environment
+\begin{verbatim}
+\begin{theorem}
+Suppose that xxxx    xxxx   xxxx
+xxxx    xxxx   xxxx   xxxx.
+\label{theorem1}
+\end{theorem}
+\end{verbatim}
+The result of the above is as follows:
+\begin{theorem}
+Suppose that xxxx    xxxx   xxxx
+xxxx    xxxx   xxxx   xxxx.
+\label{theorem1}
+\end{theorem}
+
+
+Proofs are handled by the environment
+\begin{verbatim}
+\begin{proof}
+To prove xxx   xxx   xxx
+\end{proof}
+\end{verbatim}
+The symbol $\Box$ is automatically placed at the end of each proof.
+
+In much the same way, lemma,
+proposition, corollary, remark, definition, condition, example, conclusion, conjecture, algorithm, assumption, assertion, property, problem and claim
+environments are declared. For example,
+
+\begin{verbatim}
+\begin{definition}[see \cite{Boggs1987}]
+We say that xxxx    xxxx   xxxx
+xxxx    xxxx   xxxx   xxxx.
+\label{definition1}
+\end{definition}
+\end{verbatim}
+results in
+\begin{definition}[see \cite{Boggs1987}]
+We say that xxxx    xxxx   xxxx
+xxxx    xxxx   xxxx   xxxx.
+\label{definition1}
+\end{definition}
+
+\subsubsection{Floating material}
+
+To include a figure, use the figure environment.  The commands
+\begin{verb}
+\begin{figure}
+ \end{verb}
+ and
+ \begin{verb}
+\end{figure}
+ \end{verb}
+ should surround the figure, including the figure caption. %
+ The
+ \begin{verb}
+\begin{figure}
+ \end{verb}
+  command should be followed by the command
+ \begin{verb}
+ \centering
+ \end{verb}
+ (which takes no argument) to center the graphic horizontally on the page.
+For example,
+
+\begin{verbatim}
+\begin{figure}
+\centering
+\includegraphics[width=6.5cm]{fig1.eps}
+\caption{Figure example}
+\label{fig1}
+\end{figure}
+\end{verbatim}
+
+Tables are defined in a standard manner.
+For example, the code
+
+ \begin{verbatim}
+\begin{table}[h]
+\centering
+\label{table1}
+\begin{tabular}{|c|c|c|}\hline
+MAE & RMSE& MARE\\\hline
+10 & 15 & 10\\\hline
+3 & 9 & 8\\\hline
+\end{tabular}
+\caption{Data listing}
+\end{table}
+\end{verbatim}
+results in
+\begin{table}[h]
+\centering
+\label{table1}
+\begin{tabular}{|c|c|c|}\hline
+MAE & RMSE& MARE\\\hline
+10 & 15 & 10\\\hline
+3 & 9 & 8\\\hline
+\end{tabular}
+\caption{Data listing}
+\end{table}
+
+
+
+
+%%%% Acknowledgment %%%%%%%%
+\section*{Acknowledgement}
+The author would like to thank the referees for the helpful
+suggestions.
+
+%%%% Bibliography  %%%%%%%%%%
+\begin{thebibliography}{99}
+ \bibitem{Boggs1987}
+ {\sc P.T. Boggs, R.H. Byrd, R.B. Schnabel}, {\em A stable and efficient algorithm for nonlinear orthogonal distance regression},
+ SIAM J. Sci. Statist. Comput. {\bf 8}(1987), 1052--1078.
+
+ \bibitem{Dennis1996}
+ {\sc J.E. Dennis, Jr, R.B. Schnabel}, {\em Numerical Methods for Unconstrained Optimization and Nonlinear Equations}, SIAM, Philadelphia, 1996.
+
+ \bibitem{Watson1983}
+ {\sc G.A. Watson}, {\em The total approximation problem}, in: {\em Approximation Theory IV}, (C.K. Chui, L.L. Schumaker and J.D. Ward, Eds.), Academic Press, New York, 1983, 723--728.
+ \end{thebibliography}
+
+\end{document}
