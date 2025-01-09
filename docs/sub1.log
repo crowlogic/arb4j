@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex 2024.5.22)  8 JAN 2025 18:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex 2024.5.22)  8 JAN 2025 18:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -294,4 +294,4 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  72i,11n,79p,270b,402s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on sub1.dvi (5 pages, 17488 bytes).
+Output written on sub1.dvi (5 pages, 17608 bytes).

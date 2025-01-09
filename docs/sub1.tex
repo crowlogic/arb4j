@@ -109,7 +109,7 @@ transform when modulated by monotonically increasing functions.
       & = \lambda_n \phi_n (t)
     \end{array}
   \end{equation}
-  where $\psi_n$ are the normalized eigenfunctions of the original unmodulated
+  where $\psi_n$ are the normalized eigenfunctions of the covariance operator defined by the original unmodulated
   kernel $K (|t - s|)$ which satisfy
   \begin{equation}
     \begin{array}{ll}
@@ -121,7 +121,7 @@ transform when modulated by monotonically increasing functions.
 \end{theorem}
 
 \begin{proof}
-  The eigenfunction equation for the modulated kernel is:
+  The eigenfunction equation for the modulated kernel's covariance operator is:
   \begin{equation}
     \int_{- \infty}^{\infty} K (| \theta (t) - \theta (s) |) \phi_n (s) ds =
     \lambda_n \phi_n (t)
@@ -143,21 +143,18 @@ transform when modulated by monotonically increasing functions.
   \begin{equation}
     \int_{- \infty}^{\infty} K (|v - u|) \psi_n (u) du = \lambda_n \psi_n (v)
   \end{equation}
-  This is precisely the eigenfunction equation for the original kernel $K (|t
-  - s|)$. Therefore,
+  This is precisely the eigenfunction equation for the original kernel $K$'s covariance operator. Therefore,
   \begin{equation}
     \phi_n (t) = \psi_n (\theta (t)) \sqrt{\dot{\theta} (t)}
   \end{equation}
-  are the eigenfunctions of the integral covariance operator with modulated
-  kernel
+  are the eigenfunctions of the modulated kernel's covariance operator 
   \begin{equation}
     \begin{array}{ll}
       T_{K_{\theta}} [\phi_n] (t) & = \lambda_n \int_0^{\infty} K_{\theta} (|
       t - s |) \phi_n (s) \mathd s
     \end{array}
   \end{equation}
-  and $\psi_n$ are the eigenfunctions of the covariance operator \ defined by
-  the original kernel which satisfy
+  and $\psi_n$ are the eigenfunctions of the original kernel's covariance operator which satisfy
   \begin{equation}
     \begin{array}{ll}
       T_K [\psi_n] (t) & = \lambda_n \int_0^{\infty} K  (| t - s |) \psi_n (s)
@@ -168,8 +165,7 @@ transform when modulated by monotonically increasing functions.
 \end{proof}
 
 \begin{corollary}[Eigenvalue Invariance]
-  The eigenvalues $\{\lambda_n \}$ of the modulated kernel $K_{\theta} \forall
-  \theta \in \mathcal{F}$ are identical to those of the original kernel $K$.
+  The eigenvalues $\{\lambda_n \}$ of the modulated kernel $K_{\theta}$'s covariance operator are identical to those of the original kernel $K$'s covariance operator.
 \end{corollary}
 
 \begin{proof}
