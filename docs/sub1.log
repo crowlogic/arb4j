@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex 2024.5.22)  8 JAN 2025 16:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex 2024.5.22)  8 JAN 2025 18:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -244,24 +244,24 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 18.
 LaTeX Font Info:    ... okay on input line 18.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 18.
 LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Trying to load font information for U+lasy on input line 28
+LaTeX Font Info:    Trying to load font information for U+lasy on input line 30
 .
  (/usr/share/texlive/texmf-dist/tex/latex/base/ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 28.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 30.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 28.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 30.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 28
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 30
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd
@@ -284,14 +284,14 @@ LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
  )
-(\end occurred when \ifx on line 35 was incomplete) 
+(\end occurred when \ifx on line 38 was incomplete) 
 Here is how much of TeX's memory you used:
  3879 strings out of 474223
  55925 string characters out of 5748759
- 1937972 words of memory out of 5000000
+ 1936972 words of memory out of 5000000
  26078 multiletter control sequences out of 15000+600000
  569712 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 72i,12n,79p,601b,384s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 72i,11n,79p,270b,402s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on sub1.dvi (5 pages, 17212 bytes).
+Output written on sub1.dvi (5 pages, 17488 bytes).
