@@ -197,11 +197,11 @@ transform when modulated by monotonically increasing functions.
       [\phi]]] (t)\\
       & = M \left[ \int_0^{\infty} K (|t - s|) \frac{\phi (\theta^{- 1}
       (s))}{\sqrt{\dot{\theta} (\theta^{- 1} (s))}} \mathd s \right] (t)\\
-      & = \sqrt{\dot{\theta} (t)}  \int_0^{\infty} K (| \theta (t) - s|)
+      & = \sqrt{\dot{\theta} (t)}  \int_0^{\infty} K (| \theta (t) - \theta (s)|)
       \frac{\phi (\theta^{- 1} (s))}{\sqrt{\dot{\theta} (\theta^{- 1} (s))}}
       \mathd s\\
       & = \int_0^{\infty} K (| \theta (t) - \theta (s) |) \phi (s) \mathd s\\
-      & = \int_0^{\infty} K_{\theta} (| t - s |) f (s) \mathd s
+      & = \int_0^{\infty} K_{\theta} (| t - s |) \phi (s) \mathd s
     \end{array} \label{a}
   \end{equation}
   providing an explicit isometry between the original and modulated kernel
