@@ -46,34 +46,13 @@
   </definition>
 
   <\definition>
-    <strong|[The Gram-Schmidt Recursions]>
-
-    <\equation>
-      f<rsub|k><rsup|\<perp\>><around|(|x|)>=f<rsub|k><around|(|x|)>-<big|sum><rsub|j=1><rsup|k-1><around|\<langle\>|f<rsub|k>,<wide|f|~><rsub|j><rsup|\<perp\>>|\<rangle\>>*<wide|f|~><rsub|j><rsup|\<perp\>><around|(|x|)>
-    </equation>
-
-    <\equation>
-      <wide|f|~><rsub|k><rsup|\<perp\>><around|(|x|)>=<frac|f<rsub|k><rsup|\<perp\>><around|(|x|)>|<around|\<\|\|\>|f<rsub|k><rsup|\<perp\>>|\<\|\|\>>>
-    </equation>
-
-    <\equation>
-      <around|\<\|\|\>|f<rsub|k><rsup|\<perp\>>|\<\|\|\>>=<sqrt|<around|\<langle\>|f<rsub|k><rsup|\<perp\>>,f<rsub|k><rsup|\<perp\>>|\<rangle\>>>=<sqrt|<big|int><rsub|0><rsup|\<infty\>><around|\||f<rsub|k><rsup|\<perp\>><around|(|x|)>|\|><rsup|2>*d*x>
-    </equation>
-
-    <\equation>
-      <wide|f|~><rsub|k><rsup|\<perp\>><around|(|x|)>=<frac|f<rsub|k><around|(|x|)>-<big|sum><rsub|j=1><rsup|k-1><around|\<langle\>|f<rsub|k>,<wide|f|~><rsub|j><rsup|\<perp\>>|\<rangle\>>*<wide|f|~><rsub|j><rsup|\<perp\>><around|(|x|)>|<sqrt|<big|int><rsub|0><rsup|\<infty\>><around*|\||f<rsub|k><around|(|x|)>-<big|sum><rsub|j=1><rsup|k-1><around|\<langle\>|f<rsub|k>,<wide|f|~><rsub|j><rsup|\<perp\>>|\<rangle\>>*<wide|f|~><rsub|j><rsup|\<perp\>><around|(|x|)>|\|><rsup|2>*d*x>>
-    </equation>
-  </definition>
-
-  <\definition>
     [<strong|Spectral Polynomials] >Let <math|>\ 
 
-    <\equation>
-      f<rsup|\<perp\>><rsub|k><around|(|x|)>=f<rsub|k><around|(|x|)>-<big|sum><rsub|j=1><rsup|k-1><around|\<langle\>|f<rsub|k>,\<phi\><rsub|j>|\<rangle\>>*\<phi\><rsub|j><around|(|x|)>
-    </equation>
+    \;
 
     <\equation>
-      P<rsub|n><around|(|\<omega\>|)>=x<rsup|n>-<big|sum><rsub|j=0><rsup|n-1><frac|<around*|\<langle\>|P<rsub|n>,x<rsup|j>|\<rangle\>>|<around*|\<langle\>|P<rsup|2><rsub|n<rsup|>>|\<rangle\>>>
+      P<rsub|n><around|(|\<omega\>|)>=\<omega\><rsup|n>-<big|sum><rsub|j=0><rsup|n-1><frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>>P<rsub|j><around*|(|\<omega\>|)>\<omega\><rsup|j>S<around*|(|\<omega\>|)>d
+      \<omega\>|<around*|\<langle\>|P<rsup|2><rsub|j<rsup|>>|\<rangle\>>>
     </equation>
 
     be polynomials orthogonal with respect to the spectral density
@@ -116,7 +95,7 @@
     Let
 
     <\equation>
-      f<rsup|\<perp\>><rsub|k><around|(|x|)>=f<rsub|k><around|(|x|)>-<big|sum><rsub|j=1><rsup|k-1><frac|<around|\<langle\>|f<rsub|k>,f<rsup|\<perp\>><rsub|k>|\<rangle\>>|<around|\<\|\|\>|f<rsup|\<perp\>><rsub|k>|\<\|\|\>><rsup|2>>*f<rsup|\<perp\>><rsub|k><around|(|x|)>
+      f<rsup|\<perp\>><rsub|k><around|(|x|)>=f<rsub|k><around|(|x|)>-<big|sum><rsub|j=1><rsup|k-1><frac|<around|\<langle\>|f<rsub|k>,f<rsup|\<perp\>><rsub|j>|\<rangle\>>|<around|\<\|\|\>|f<rsup|\<perp\>><rsub|j>|\<\|\|\>><rsup|2>>*f<rsup|\<perp\>><rsub|j><around|(|x|)>
     </equation>
 
     \;
@@ -125,7 +104,7 @@
     defined in Equation (<reference|nullSpace>) then
 
     <\equation>
-      K<around|(|x-y|)>=<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|K,f<rsup|\<perp\>><rsub|k>|\<rangle\>>*f<rsup|\<perp\>><rsub|k><around|(|x-y|)>
+      K<around|(|x-y|)>=<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|K,f<rsup|\<perp\>><rsub|n>|\<rangle\>>*f<rsup|\<perp\>><rsub|n><around|(|x-y|)>
     </equation>
 
     converges uniformly <math|\<forall\>x-y\<in\>\<bbb-R\>>
@@ -133,24 +112,40 @@
     \;
   </theorem>
 
+  <\proof>
+    Let\ 
+
+    <\equation>
+      K<rsub|N><around*|(|x-y|)>=<big|sum><rsub|n=0><rsup|N><around|\<langle\>|K,f<rsup|\<perp\>><rsub|n>|\<rangle\>>*f<rsup|\<perp\>><rsub|n><around|(|x-y|)>
+    </equation>
+
+    then define the error
+
+    <\equation*>
+      E<rsub|N><around*|(|x|)>=K<around*|(|x|)>-K<rsub|N><around*|(|x|)>
+    </equation*>
+
+    whose <math|L<rsup|2>> norm has the upper bound
+
+    <\equation>
+      <around*|\<\|\|\>|E<rsub|N>|\<\|\|\>>\<leqslant\><around|\<langle\>|K,f<rsup|\<perp\>><rsub|N>|\<rangle\>>
+    </equation>
+
+    since
+
+    <\equation>
+      <around*|\<\|\|\>|f<rsub|k><rsup|\<perp\>>|\<\|\|\>>\<leqslant\>1
+    </equation>
+
+    by orthornormality.
+  </proof>
+
   <\remark>
     This is not a Mercer expansion. Notice that it is a sum over
     <math|\<psi\><rsub|n><around*|(|x-y|)>> not the product
     <math|\<psi\><rsub|n><around*|(|x|)>\<psi\><around*|(|y|)>> which is the
     form it would have to have to be a Mercer expansion.
   </remark>
-
-  Now, just repeat the process to construct the propagator which is the
-  function that which when convolved with itself results in the kernel.\ 
-
-  \;
-
-  TODO: link in spectral factorization theorem here and copy cleaner stuff
-  from above for that.. then expand the propagator in its uniuform basis and
-  do term-by-term convolution and demonstrate tringularity means the
-  eigenufnctions are EXACT FINITE functions of the uniform basis for K. so
-  propagator=inverseFourierTransformOfSquareRootOfFOurierTransformOfKernel so
-  that propagator.convolve(propagator)=kernel.
 
   <section|Uniform Basis of the Spectral Factor>
 
@@ -203,21 +198,70 @@
     f<rsub|n><around|(|x|)>=<big|sum><rsub|k=0><rsup|n>c<rsub|n*k>*\<psi\><rsub|k><around|(|x|)>
   </equation>
 
-  where coefficients <math|c<rsub|n*k>> are determined by the recurrence
-  relations of the underlying orthogonal polynomials.
+  where\ 
 
-  Substituting into Mercer's theorem:
+  <\equation>
+    c<rsub|n*k>=<around*|\<langle\>|f<rsub|n>,\<psi\><rsub|k>|\<rangle\>>
+  </equation>
+
+  Substituting into Mercer expansion form:
 
   <\equation>
     <tabular|<tformat|<table|<row|<cell|<text|<math|K*<around|(|x-y|)>>>>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*f<rsub|n><around|(|x|)>*f<rsub|n><around|(|y|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*<big|sum><rsub|k=0><rsup|n><big|sum><rsub|j=0><rsup|n>c<rsub|n*k>*c<rsub|n*j>*\<psi\><rsub|k><around|(|x|)>*\<psi\><rsub|j><around|(|y|)>>>>>>
   </equation>
 
-  This double sum structure with coefficients is precisely the inner product
-  representation guaranteed by Moore-Aronszajn's theorem for reproducing
-  kernel Hilbert spaces.
+  This double sum structure with coefficients is the spectral version of
+  spatiotemporal inner product representation guaranteed by Moore-Aronszajn's
+  theorem for reproducing kernel Hilbert spaces.
 
-  The triangular structure emerges naturally from the polynomial degree
-  preservation under convolution in the spectral domain.
+  <\theorem>
+    <dueto|Triangularity of Eigenfunction Coefficients>The coefficients
+    <math|c<rsub|n,k>> in the eigenfunction expansion
+
+    <\equation>
+      f<rsub|n><around|(|x|)>=<big|sum><rsub|k=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|k><around|(|x|)>
+    </equation>
+
+    form a triangular matrix with <math|c<rsub|n,k>=0> for <math|k\<gtr\>n>.
+  </theorem>
+
+  <\proof>
+    The spectral polynomials <math|P<rsub|n><around|(|\<omega\>|)>> are
+    constructed recursively:
+
+    <\equation>
+      P<rsub|n><around|(|\<omega\>|)>=\<omega\><rsup|n>-<big|sum><rsub|k=0><rsup|n-1>\<alpha\><rsub|n,k>*P<rsub|k><around|(|\<omega\>|)>
+    </equation>
+
+    where <math|\<alpha\><rsub|n,k>> are determined by orthogonality with
+    respect to <math|S<around|(|\<omega\>|)>>.
+
+    Taking the inverse Fourier transform:
+
+    <\equation>
+      \<psi\><rsub|n><around|(|x|)>=\<cal-F\><rsup|-1><around|[|P<rsub|n><around|(|\<omega\>|)>|]><around|(|x|)>=\<cal-F\><rsup|-1><around|[|\<omega\><rsup|n>|]><around|(|x|)>-<big|sum><rsub|k=0><rsup|n-1>\<alpha\><rsub|n,k>*\<psi\><rsub|k><around|(|x|)>
+    </equation>
+
+    The basis functions <math|<around|{|\<psi\><rsub|n><around|(|x|)>|}>>
+    thus satisfy:
+
+    <\equation>
+      \<psi\><rsub|n><around|(|x|)>=\<phi\><rsub|n><around|(|x|)>-<big|sum><rsub|k=0><rsup|n-1>\<alpha\><rsub|n,k>*\<psi\><rsub|k><around|(|x|)>
+    </equation>
+
+    where <math|\<phi\><rsub|n><around|(|x|)>=\<cal-F\><rsup|-1><around|[|\<omega\><rsup|n>|]><around|(|x|)>>.
+    By construction, each <math|\<psi\><rsub|n><around|(|x|)>> is expressed
+    only in terms of <math|<around|{|\<psi\><rsub|k><around|(|x|)>|}><rsub|k=0><rsup|n-1>>.
+    Therefore, when expressing eigenfunctions in this basis:
+
+    <\equation>
+      f<rsub|n><around|(|x|)>=<big|sum><rsub|k=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|k><around|(|x|)>
+    </equation>
+
+    the coefficients <math|c<rsub|n,k>> must be zero for <math|k\<gtr\>n>, as
+    these basis functions cannot appear in the expansion of
+    <math|\<psi\><rsub|n>>.
+  </proof>
 </body>
 
 <\initial>
@@ -238,7 +282,7 @@
     <associate|auto-4|<tuple|4|6>>
     <associate|auto-5|<tuple|5|3>>
     <associate|auto-6|<tuple|6|4>>
-    <associate|nullSpace|<tuple|12|?>>
+    <associate|nullSpace|<tuple|7|?>>
     <associate|nullSpacePoly|<tuple|12|?>>
   </collection>
 </references>
