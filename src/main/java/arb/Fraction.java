@@ -20,31 +20,26 @@ import arb.functions.NullaryFunction;
 import arb.utensils.Utensils;
 
 /**
- * <pre>
- * TODO: implement this in toString: ²³⁄₅₇
+ * <h3>Unicode Characters</h3>
+ * <ol>
+ * <li>Superscripts: The code uses Unicode superscript characters (e.g., ⁰ ¹ ² ³
+ * ⁴ ⁵ ⁶ ⁷ ⁸ ⁹) to represent the numerator</li>
  * 
- * 1. **Unicode Characters:** Superscripts:** The code uses Unicode superscript
- * characters (e.g., ⁰ ¹ ² ³ ⁴ ⁵ ⁶ ⁷ ⁸ ⁹) to represent the numerator (the number
- * on top of the fraction).
+ * <li>Subscripts: Similarly, it employs Unicode subscript characters (e.g., ₀ ₁
+ * ₂ ₃ ₄ ₅ ₆ ₇ ₈ ₉) to represent the denominator</li>
  * 
- * **Subscripts:** Similarly, it employs Unicode subscript characters (e.g., ₀ ₁
- * ₂ ₃ ₄ ₅ ₆ ₇ ₈ ₉) to represent the denominator (the number below the
- * fraction).
+ * <li>Slash: A special Unicode character '⁄' (U+2044, FRACTION SLASH) is used
+ * to create the slash that separates the numerator and denominator.</li>
  * 
- * **Slash:** A special Unicode character '⁄' (U+2044, FRACTION SLASH) is used
- * to create the slash that separates the numerator and denominator.
+ * <li>Visual Clarity: This approach produces fractions that closely resemble
+ * their mathematical representation, enhancing readability.</li>
  * 
- * 
- * **Visual Clarity:** This approach produces fractions that closely resemble
- * their mathematical representation, enhancing readability.
- * 
- * **Wide Compatibility:** Unicode characters are generally well-supported
+ * <li>Wide Compatibility: Unicode characters are generally well-supported
  * across modern browsers and platforms, ensuring the fractions display
- * correctly in most environments. 
- *
- * </pre>
+ * correctly in most environments.</li>
+ * </ol>
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ * @see BusinessSourceLicenseVersionOnePointOne &copy; terms of the
  *      {@link TheArb4jLibrary}
  */
 
@@ -72,6 +67,14 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
   }
 
 
+  public Complex Γ(int bits, Complex result)
+  {
+    result.set(this);
+    arblib.acb_gamma(result, result, bits);
+    result.bits = bits;
+    return result;
+  }
+  
   public Real Γ(int bits, Real res)
   {
     return res.set(this).Γ(bits);
