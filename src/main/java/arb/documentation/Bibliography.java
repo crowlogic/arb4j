@@ -23,6 +23,12 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+
+  public static Book          gaussianProcessesForMachineLearning                             =
+                                                                  new Book("Gaussian Processes for Machine Learning",
+                                                                           "Carl Edward Rasmussen and Christopher K. I. Williams",
+                                                                           "2006").setPublisher("The MIT Press");
+
   /**
    * Note: weakly harmonizable processes should really be called something else
    * that doesn't imply frailty, feebleness or lack of vitality
