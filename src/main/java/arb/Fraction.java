@@ -20,27 +20,32 @@ import arb.functions.NullaryFunction;
 import arb.utensils.Utensils;
 
 /**
- * <h3>Unicode Characters</h3>
- * <ol>
- * <li>Superscripts: The code uses Unicode superscript characters (e.g., ⁰ ¹ ² ³
- * ⁴ ⁵ ⁶ ⁷ ⁸ ⁹) to represent the numerator</li>
- * 
- * <li>Subscripts: Similarly, it employs Unicode subscript characters (e.g., ₀ ₁
- * ₂ ₃ ₄ ₅ ₆ ₇ ₈ ₉) to represent the denominator</li>
- * 
- * <li>Slash: A special Unicode character '⁄' (U+2044, FRACTION SLASH) is used
- * to create the slash that separates the numerator and denominator.</li>
- * 
- * <li>Visual Clarity: This approach produces fractions that closely resemble
- * their mathematical representation, enhancing readability.</li>
- * 
- * <li>Wide Compatibility: Unicode characters are generally well-supported
- * across modern browsers and platforms, ensuring the fractions display
- * correctly in most environments.</li>
- * </ol>
- * 
- * @see BusinessSourceLicenseVersionOnePointOne &copy; terms of the
- *      {@link TheArb4jLibrary}
+ * The {@link Fraction} class models rational numbers by mapping to FLINT's
+ * fmpq_t type via SWIG, <br>
+ * providing exact arithmetic and mathematical functions through JNI bindings to
+ * the Arb library.
+ *
+ * <p>
+ * Core features:
+ * <ul>
+ * <li>Basic arithmetic (+, -, *, /)</li>
+ * <li>Advanced mathematical functions (gamma, factorial, powers)</li>
+ * <li>Field operations and vector arithmetic</li>
+ * <li>Automatic reduction to canonical form</li>
+ * <li>Conversions to/from Real and Complex numbers</li>
+ * </ul>
+ *
+ * <p>
+ * String representation uses Unicode characters for display:
+ * <ul>
+ * <li>Superscripts (⁰ ¹ ² ³ ⁴ ⁵ ⁶ ⁷ ⁸ ⁹) for numerators</li>
+ * <li>Subscripts (₀ ₁ ₂ ₃ ₄ ₅ ₆ ₇ ₈ ₉) for denominators</li>
+ * <li>Fraction slash (⁄, U+2044) to make the fraction appear with the numerator
+ * raised and the denomnitor lowered</li>
+ * </ul>
+ *
+ * @see BusinessSourceLicenseVersionOnePointOne
+ * @see TheArb4jLibrary
  */
 
 public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fraction>,Verifiable,Comparable<Fraction> {
