@@ -17,6 +17,8 @@ import java.util.Set;
  * provide functionality that is specific to the particular topology.
  * 
  * @param <X> the type of elements in the sets of the topology
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public interface Topology<X>
 {
