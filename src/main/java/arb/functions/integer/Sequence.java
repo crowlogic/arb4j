@@ -9,6 +9,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
+import arb.utensils.ShellFunctions;
 
 /**
  * 
@@ -29,7 +30,7 @@ public interface Sequence<C> extends
 
   public default List<C> enumerate(int i, int j)
   {
-    throw new UnsupportedOperationException("TODO: implement me for " + getClass());
+    return ShellFunctions.seq(i, j, m -> evaluate(m, bits()));
   }
 
   @Override
