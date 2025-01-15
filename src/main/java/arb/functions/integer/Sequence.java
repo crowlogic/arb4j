@@ -9,6 +9,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
+import arb.functions.polynomials.OrthogonalSequence;
 import arb.utensils.ShellFunctions;
 
 /**
@@ -27,7 +28,7 @@ public interface Sequence<C> extends
   {
     return 128;
   }
-
+  
   public default List<C> enumerate(int i, int j)
   {
     return ShellFunctions.seq(i, j, m -> evaluate(m, bits()));

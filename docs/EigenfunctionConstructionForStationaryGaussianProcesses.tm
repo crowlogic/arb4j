@@ -1,6 +1,6 @@
-<TeXmacs|2.1.2>
+<TeXmacs|2.1.4>
 
-<style|<tuple|letter|boring-white|framed-theorems>>
+<style|<tuple|letter|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Eigenfunction Construction for Stationary Gaussian
@@ -188,42 +188,47 @@
   By Fubini's theorem and uniform convergence:
 
   <\equation>
-    <tabular|<tformat|<table|<row|<cell|K*<around|(|x-y|)>>|<cell|=<around|(|g\<ast\>g|)>*<around|(|x-y|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|m=0><rsup|\<infty\>><big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<phi\><rsub|m>|\<rangle\>><around|\<langle\>|g,\<phi\><rsub|n>|\<rangle\>>*<around|(|\<phi\><rsub|m>\<ast\>\<phi\><rsub|n>|)>*<around|(|x-y|)>>>>>>
+    <tabular|<tformat|<table|<row|<cell|K*<around|(|x-y|)>>|<cell|=<around|(|g\<ast\>g|)>*<around|(|x-y|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|m=0><rsup|\<infty\>><big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<phi\><rsub|m>|\<rangle\>><around|\<langle\>|g,\<phi\><rsub|n>|\<rangle\>>*<around|(|\<phi\><rsub|m>\<ast\>\<phi\><rsub|n>|)>*<around|(|x-y|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|g,\<phi\><rsub|n>|\<rangle\>><rsup|2>*\<phi\><rsub|n><around*|(|x|)>\<phi\><rsub|n><around*|(|y|)>>>>>>
   </equation>
 
-  The eigenfunctions <math|<around|{|f<rsub|n>|}>> can be expressed in the
-  uniform basis <math|<around|{|\<psi\><rsub|n>|}>> with finitely many terms:
+  The eigenfunctions <math|<around|{|\<phi\><rsub|n>|}>> can be expressed in
+  the uniform basis <math|<around|{|\<psi\><rsub|n>|}>> with finitely many
+  terms:
 
   <\equation>
-    f<rsub|n><around|(|x|)>=<big|sum><rsub|k=0><rsup|n>c<rsub|n*k>*\<psi\><rsub|k><around|(|x|)>
+    \<phi\><rsub|n><around|(|x|)>=<big|sum><rsub|k=0><rsup|n>c<rsub|n*k>*\<psi\><rsub|k><around|(|x|)>
   </equation>
 
   where\ 
 
   <\equation>
-    c<rsub|n*k>=<around*|\<langle\>|f<rsub|n>,\<psi\><rsub|k>|\<rangle\>>
+    c<rsub|n*k>=<around*|\<langle\>|\<phi\><rsub|n>,\<psi\><rsub|k>|\<rangle\>>
   </equation>
 
   Substituting into Mercer expansion form:
 
   <\equation>
-    <tabular|<tformat|<table|<row|<cell|<text|<math|K*<around|(|x-y|)>>>>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*f<rsub|n><around|(|x|)>*f<rsub|n><around|(|y|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*<big|sum><rsub|k=0><rsup|n><big|sum><rsub|j=0><rsup|n>c<rsub|n*k>*c<rsub|n*j>*\<psi\><rsub|k><around|(|x|)>*\<psi\><rsub|j><around|(|y|)>>>>>>
+    <tabular|<tformat|<table|<row|<cell|<text|<math|K*<around|(|x-y|)>>>>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*\<phi\><rsub|n><around|(|x|)>*\<phi\><rsub|n><around|(|y|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*<around*|(|<big|sum><rsub|j=0><rsup|n>c<rsub|n*k>**\<psi\><rsub|k><around|(|x|)>|)><around*|(|<big|sum><rsub|k=0><rsup|n>c<rsub|n*j>*\<psi\><rsub|j><around|(|y|)>|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*<big|sum><rsub|k=0><rsup|n>c<rsub|n*k>\<psi\><rsub|k><around|(|x|)><big|sum><rsub|j=0><rsup|n>*c<rsub|n*j>**\<psi\><rsub|j><around|(|y|)>>>>>>
   </equation>
 
-  This double sum structure with coefficients is the spectral version of
-  spatiotemporal inner product representation guaranteed by Moore-Aronszajn's
-  theorem for reproducing kernel Hilbert spaces.
+  This double sum structure spectral version of spatiotemporal inner product
+  representation guaranteed by Moore-Aronszajn's theorem for reproducing
+  kernel Hilbert spaces.
 
-  <\theorem>
+  <\theorem*>
     <dueto|Triangularity of Eigenfunction Coefficients>The coefficients
     <math|c<rsub|n,k>> in the eigenfunction expansion
 
     <\equation>
-      f<rsub|n><around|(|x|)>=<big|sum><rsub|k=0><rsup|\<infty\>>c<rsub|n,k>*\<psi\><rsub|k><around|(|x|)>
+      \<phi\><rsub|n><around|(|x|)>=<big|sum><rsub|k=0><rsup|\<infty\>>c<rsub|n,k>*\<phi\><rsub|k><around|(|x|)>
     </equation>
 
-    form a triangular matrix with <math|c<rsub|n,k>=0> for <math|k\<gtr\>n>.
-  </theorem>
+    form a triangular matrix where the coeffecients satisfy
+
+    <\equation>
+      <choice|<tformat|<table|<row|<cell|c<rsub|n*k>=<around*|\<langle\>|\<phi\><rsub|n>,\<psi\><rsub|k>|\<rangle\>>>|<cell|k\<less\>n>>|<row|<cell|0>|<cell|k\<geqslant\>n>>>>>
+    </equation>
+  </theorem*>
 
   <\proof>
     The spectral polynomials <math|P<rsub|n><around|(|\<omega\>|)>> are
@@ -278,12 +283,8 @@
   <\collection>
     <associate|auto-1|<tuple|1|1>>
     <associate|auto-2|<tuple|2|4>>
-    <associate|auto-3|<tuple|3|5>>
-    <associate|auto-4|<tuple|4|6>>
-    <associate|auto-5|<tuple|5|3>>
-    <associate|auto-6|<tuple|6|4>>
-    <associate|nullSpace|<tuple|7|?>>
-    <associate|nullSpacePoly|<tuple|12|?>>
+    <associate|auto-3|<tuple|3|4>>
+    <associate|nullSpace|<tuple|7|2>>
   </collection>
 </references>
 
@@ -295,16 +296,12 @@
       <no-break><pageref|auto-1><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Uniform
-      Basis of the Kernel> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      Basis of the Spectral Factor> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-2><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Uniform
-      Basis of the Spectral Factor> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-3><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Eigenfunction
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Eigenfunction
       Construction> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-4><vspace|0.5fn>
+      <no-break><pageref|auto-3><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
