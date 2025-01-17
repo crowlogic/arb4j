@@ -153,8 +153,8 @@
     </equation>
 
     Thus <math|\<psi\><rsub|k><rsup|\<perp\>><around|(|<around|\||x|\|>|)>>
-    is an eigenfunction of the kernel operator with eigenvalue
-    <math|\<lambda\><rsub|k>\<gtr\>0>.
+    is an eigenfunction of the integral covariance operator <math|T> with
+    eigenvalue <math|\<lambda\><rsub|k>\<gtr\>0>.
   </proof>
 
   <\algorithm>
@@ -212,7 +212,7 @@
 
 <\references>
   <\collection>
-    <associate|T|<tuple|10|2>>
+    <associate|T|<tuple|10|3>>
     <associate|eig|<tuple|8|2>>
     <associate|ift|<tuple|7|2>>
   </collection>
