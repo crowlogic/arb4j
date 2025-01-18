@@ -250,6 +250,27 @@
     inner product space defined by <math|w<around|(|x|)>>.
   </proof>
 
+  <\big-table|<tabular|<tformat|<table|<row|<cell|<left|[><tabular*|<tformat|<cwith|1|-1|2|2|cell-halign|c>|<cwith|1|-1|2|2|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<math|p<rsub|0><around*|(|x|)>>=>|<cell|<frac|2<rsup|<frac|1|4>>
+  \<pi\><rsup|<frac|1|4>>|2 \<Gamma\><left|(><frac|3|4><right|)>>>>|<row|<cell|<math|p<rsub|1><around*|(|x|)>>=>|<cell|<frac|<left|(>5
+  x<rsup|2>-2<right|)> <sqrt|3><space|0.17em> \<pi\><rsup|<frac|1|4>>
+  2<rsup|<frac|3|4>>|8 \<Gamma\><left|(><frac|3|4><right|)>>>>|<row|<cell|<math|p<rsub|2><around*|(|x|)>>=>|<cell|<frac|<left|(>39
+  x<rsup|4>-36 x<rsup|2>+4<right|)> <sqrt|595><space|0.17em>
+  \<pi\><rsup|<frac|1|4>> 2<rsup|<frac|3|4>>|224
+  \<Gamma\><left|(><frac|3|4><right|)>>>>|<row|<cell|<math|p<rsub|3><around*|(|x|)>>=>|<cell|<frac|5
+  <left|(>1547 x<rsup|6>-2210 x<rsup|4>+780 x<rsup|2>-40<right|)>
+  2<rsup|<frac|1|4>> <sqrt|231><space|0.17em> \<pi\><rsup|<frac|1|4>>|4928
+  \<Gamma\><left|(><frac|3|4><right|)>>>>|<row|<cell|<math|p<rsub|4><around*|(|x|)>=>>|<cell|<frac|<left|(>2465
+  x<rsup|8>-4760 x<rsup|6>+2856 x<rsup|4>-544 x<rsup|2>+16<right|)>
+  <sqrt|195><space|0.17em> \<pi\><rsup|<frac|1|4>> 2<rsup|<frac|3|4>>|512
+  \<Gamma\><left|(><frac|3|4><right|)>>>>|<row|<cell|<math|p<rsub|5><around*|(|x|)>>=>|<cell|<frac|<left|(>59015
+  x<rsup|10>-143550 x<rsup|8>+121800 x<rsup|6>-42000 x<rsup|4>+5040
+  x<rsup|2>-96<right|)> 2<rsup|<frac|1|4>> <sqrt|1893749><space|0.17em>
+  \<pi\><rsup|<frac|1|4>>|214016 \<Gamma\><left|(><frac|3|4><right|)>>>>>>><right|]>
+  >>>>>>
+    The first 6 polynomials orthogonal to the square root of the spectral
+    density of the random wave process over <math|y=-1\<ldots\>1>
+  </big-table>
+
   <\proposition>
     <strong|[Integral Representation] >The three-term recurrence coefficients
     can be equivalently derived from the inner product representation:
@@ -351,7 +372,7 @@
 
 <\initial>
   <\collection>
-    <associate|magnification|1.2>
+    <associate|magnification|1>
     <associate|page-height|auto>
     <associate|page-medium|paper>
     <associate|page-type|letter>
@@ -365,9 +386,10 @@
     <associate|auto-2|<tuple|2|1>>
     <associate|auto-3|<tuple|3|3>>
     <associate|auto-4|<tuple|3.1|3>>
-    <associate|auto-5|<tuple|4|6>>
-    <associate|auto-6|<tuple|4|6>>
-    <associate|bib-cramerStochasticProcessTheoryContribution|<tuple|1|6>>
+    <associate|auto-5|<tuple|1|4>>
+    <associate|auto-6|<tuple|4|5>>
+    <associate|auto-7|<tuple|4|5>>
+    <associate|bib-cramerStochasticProcessTheoryContribution|<tuple|1|5>>
     <associate|sf|<tuple|1|1>>
   </collection>
 </references>
@@ -376,6 +398,13 @@
   <\collection>
     <\associate|bib>
       cramerStochasticProcessTheoryContribution
+    </associate>
+    <\associate|table>
+      <tuple|normal|<\surround|<hidden-binding|<tuple>|1>|>
+        The first 6 polynomials orthogonal to the square root of the spectral
+        density of the random wave process over
+        <with|mode|<quote|math>|y=-1\<ldots\>1>
+      </surround>|<pageref|auto-5>>
     </associate>
     <\associate|toc>
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Introduction>
@@ -396,11 +425,11 @@
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Conclusion>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-5><vspace|0.5fn>
+      <no-break><pageref|auto-6><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-6><vspace|0.5fn>
+      <no-break><pageref|auto-7><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
