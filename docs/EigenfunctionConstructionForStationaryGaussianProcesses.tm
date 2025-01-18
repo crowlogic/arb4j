@@ -82,7 +82,7 @@
     orthogonal to <math|<sqrt|S<around|(|\<omega\>|)>>>:
 
     <\equation>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>>P<rsub|n><around|(|\<omega\>|)><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>=0
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>>P<rsub|n><around|(|\<omega\>|)>P<rsub|m><around*|(|\<omega\>|)><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>=\<delta\><rsub|n,m>
     </equation>
 
     Take their inverse Fourier transforms:
