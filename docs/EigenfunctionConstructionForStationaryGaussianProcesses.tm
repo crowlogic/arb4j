@@ -103,7 +103,7 @@
     </equation>
 
     The Gram-Schmidt recursion generates the orthogonal complement of the
-    spectral factor null space:
+    spectral factor inner product null space:
 
     <\equation>
       \<psi\><rsub|n><around|(|t|)>=\<phi\><rsub|n><around|(|t|)>-<big|sum><rsub|k=1><rsup|n-1><frac|<around|\<langle\>|\<phi\><rsub|n>,\<psi\><rsub|k>|\<rangle\>>|<around|\<\|\|\>|\<psi\><rsub|k>|\<\|\|\>><rsup|2>>*\<psi\><rsub|k><around|(|t|)>
