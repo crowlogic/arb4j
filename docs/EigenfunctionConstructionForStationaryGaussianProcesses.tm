@@ -1,4 +1,4 @@
-<TeXmacs|2.1.2>
+<TeXmacs|2.1.4>
 
 <style|<tuple|letter|framed-theorems>>
 
@@ -20,184 +20,149 @@
     </abstract>
   </author-affiliation>>>>
 
-  <\definition>
-    The Gram-Schmidt formula expresses the orthogonal complement
-    <math|f<rsub|n><rsup|\<perp\>p><around|(|x|)>> of a function sequence
-    <math|f<rsub|n><around|(|x|)>> with respect to the orthogonality measure
-    <math|p<around|(|x|)>> by the recursive equation
-
-    <\equation>
-      f<rsub|k><rsup|\<perp\>p><around|(|x|)>=f<rsub|k><around|(|x|)>-<big|sum><rsub|j=1><rsup|k-1><frac|<around|\<langle\>|f<rsub|k>,f<rsub|j><rsup|\<perp\>p>|\<rangle\>><rsub|p>|<around|\<langle\>|f<rsub|j><rsup|\<perp\>p>,f<rsub|j><rsup|\<perp\>p>|\<rangle\>>>*f<rsub|j><rsup|\<perp\>p><around|(|x|)>
-    </equation>
-
-    where the inner product is defined as:
-
-    <\equation>
-      <around|\<langle\>|f,g|\<rangle\>><rsub|p>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|<around|\||x|\|>|)>*g<around|(|<around|\||x|\|>|)>*p<around|(|<around|\||x|\|>|)>*\<mathd\>*x
-    </equation>
-
-    where <math|<around|\<langle\>|f,g|\<rangle\>>=<around|\<langle\>|f,g|\<rangle\>><rsub|1>>
-    and the normalized functions are denoted with a wide bar
-
-    <\equation>
-      <wide|f<rsub|k><rsup|\<perp\>>|\<bar\>><around|(|x|)>=<frac|f<rsub|k><rsup|\<perp\>><around|(|x|)>|<around|\<\|\|\>|f<rsub|k><rsup|\<perp\>>|\<\|\|\>>>=<frac|f<rsub|k><rsup|\<perp\>><around|(|x|)>|<sqrt|<around|\<langle\>|f<rsub|k><rsup|\<perp\>>,f<rsub|k><rsup|\<perp\>>|\<rangle\>>>>
-    </equation>
-  </definition>
-
-  <\definition>
-    The Fourier transform <math|\<cal-F\>> and its inverse
-    <math|\<cal-F\><rsup|-1>> are defined as:
-
-    <\equation>
-      \<cal-F\><around|[|f|]><around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|<around|\||x|\|>|)>*e<rsup|-i*\<omega\>*x>*d*x
-    </equation>
-
-    <\equation>
-      \<cal-F\><rsup|-1><around|[|g|]><around|(|x|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*x>*d*\<omega\>
-    </equation>
-  </definition>
-
   <\theorem>
-    The eigenfunctions of a stationary gaussian process are given by the
-    orthogonal complement of the inverse Fourier transforms of the
-    polynomials orthogonal to the square root of the spectral density.
+    <strong|[Spectral Factorization]> Let <math|K<around|(|t,s|)>> be a
+    positive definite stationary kernel. Then there exists a spectral density
+    <math|S<around|(|\<omega\>|)>> and spectral factor:
+
+    <\equation>
+      h<around|(|t|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\>|)>>*e<rsup|i*\<omega\>*t>*d*\<omega\><label|sf>
+    </equation>
+
+    such that:
+
+    <\equation>
+      K<around|(|t,s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h*<around|(|t+\<tau\>|)><wide|h*<around|(|s+\<tau\>|)>|\<bar\>>d*\<tau\>
+    </equation>
+
+    <cite|cramerStochasticProcessTheoryContribution>
   </theorem>
 
   <\proof>
-    Let <math|S<around|(|\<omega\>|)>> be the spectral density of a
-    stationary Gaussian process, <math|K<around|(|<around|\||x-y|\|>|)>=<around|(|\<cal-F\><rsup|-1><around|[|S<around|(|\<omega\>|)>|]>|)><around|(|<around|\||x-y|\|>|)>>
-    be its covariance kernel and <math|<around|{|Q<rsub|k><around|(|\<omega\>|)>|}>>
-    be the sequence of polynomials orthogonal with respect to
-    <math|<sqrt|S<around|(|\<omega\>|)>>>
+    1. By Bochner's theorem, since <math|K> is positive definite and
+    stationary:
 
     <\equation>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>>Q<rsub|k><around|(|\<omega\>|)>*Q<rsub|j><around|(|\<omega\>|)><sqrt|S<around|(|\<omega\>|)>>*<space|0.17em>d*\<omega\>=0\<forall\>k\<neq\>j
+      K*<around|(|t-s|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*<around|(|t-s|)>>*d*\<omega\>
     </equation>
 
-    Let
+    where <math|S<around|(|\<omega\>|)>\<geq\>0> is the spectral density.
+
+    2. Define <math|h<around|(|t|)>> as stated. Then:
 
     <\equation>
-      \<psi\><rsub|k><around|(|x|)>=\<cal-F\><rsup|-1><around|[|Q<rsub|k><around|(|\<omega\>|)>|]><around|(|<around|\||x|\|>|)><label|ift>
+      <tabular|<tformat|<table|<row|<cell|<big|int><rsub|-\<infty\>><rsup|\<infty\>>h*<around|(|t+\<tau\>|)><wide|h*<around|(|s+\<tau\>|)>|\<bar\>>d*\<tau\>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\><rsub|1>|)>>*e<rsup|i*\<omega\><rsub|1>*<around|(|t+\<tau\>|)>>*d*\<omega\><rsub|1>>>|<row|<cell|>|<cell|<space|1em>\<cdot\><frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\><rsub|2>|)>>*e<rsup|-i*\<omega\><rsub|2>*<around|(|s+\<tau\>|)>>*d*\<omega\><rsub|2>*d*\<tau\>>>>>>
     </equation>
 
-    be the inverse Fourier Transform of the polynomials orthogonal to the
-    square root of the spectral density and
+    3. Rearranging integrals (justified by Fubini's theorem since
+    <math|S<around|(|\<omega\>|)>\<geq\>0>):
 
     <\equation>
-      \<psi\><rsub|k><rsup|\<perp\>><around|(|x|)>=\<psi\><rsub|k><around|(|x|)>-<big|sum><rsub|j=1><rsup|k-1><frac|<around|\<langle\>|\<psi\><rsub|k>,\<psi\><rsub|j><rsup|\<perp\>>|\<rangle\>>|<around|\<langle\>|\<psi\><rsub|j><rsup|\<perp\>>,\<psi\><rsub|j><rsup|\<perp\>>|\<rangle\>>>*\<psi\><rsub|j><rsup|\<perp\>><around|(|x|)><label|eig>
+      =<frac|1|4*\<pi\><rsup|2>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\><rsub|1>|)>*S<around|(|\<omega\><rsub|2>|)>>*e<rsup|i*\<omega\><rsub|1>*t>*e<rsup|-i*\<omega\><rsub|2>*s><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<omega\><rsub|1>-\<omega\><rsub|2>|)>*\<tau\>>*d*\<tau\>*d*\<omega\><rsub|1>*d*\<omega\><rsub|2>
     </equation>
 
-    denote its orthogonal complement. Then apply the covariance operator
+    4. The inner integral gives <math|2*\<pi\>*\<delta\>*<around|(|\<omega\><rsub|1>-\<omega\><rsub|2>|)>>:
 
     <\equation>
-      T<around|[|f|]><around|(|y|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around|(|<around|\||x-y|\|>|)>*f<around|(|<around|\||x|\|>|)>*\<mathd\>*x
+      <tabular|<tformat|<table|<row|<cell|=<frac|1|4*\<pi\><rsup|2>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\><rsub|1>|)>*S<around|(|\<omega\><rsub|2>|)>>*e<rsup|i*\<omega\><rsub|1>*t>e<rsup|-i*\<omega\><rsub|2>*s>*2*\<pi\>*\<delta\>*<around|(|\<omega\><rsub|1>-\<omega\><rsub|2>|)>*d*\<omega\><rsub|1>*d*\<omega\><rsub|2>>>|<row|<cell|=<frac|1|4*\<pi\><rsup|2>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|S<around|(|\<omega\><rsub|1>|)>*S<around|(|\<omega\><rsub|2>|)>>*e<rsup|i*<around*|(|\<omega\><rsub|1>*t-\<omega\><rsub|2>*s|)>>*2*\<pi\>*\<delta\>*<around|(|\<omega\><rsub|1>-\<omega\><rsub|2>|)>*d*\<omega\><rsub|1>*d*\<omega\><rsub|2>>>|<row|<cell|=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*<around|(|t-s|)>>*d*\<omega\>=K*<around|(|t-s|)>>>>>>
     </equation>
 
-    to <math|\<psi\><rsub|k><rsup|\<perp\>><around|(|x|)>> to get
+    \;
+  </proof>
+
+  <\theorem>
+    The eigenfunctions of a stationary Gaussian process are given by the
+    orthogonal complement of the inverse Fourier transforms of the
+    polynomials orthogonal with respect to the square root of the spectral
+    density.
+  </theorem>
+
+  <\proof>
+    The polynomials <math|<around|{|P<rsub|n><around|(|\<omega\>|)>|}>> are
+    orthogonal to <math|<sqrt|S<around|(|\<omega\>|)>>>:
 
     <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|T<around|[|\<psi\><rsub|k><rsup|\<perp\>>|]><around|(|x|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around|(|<around|\||x-y|\|>|)>*\<psi\><rsub|k><rsup|\<perp\>><around|(|<around|\||y|\|>|)>*\<mathd\>*y>>|<row|<cell|>|<cell|=\<cal-F\><rsup|-1>*<around|[|S<around|(|\<omega\>|)>\<cdot\>\<cal-F\><around|[|\<psi\><rsub|k><rsup|\<perp\>>|]><around|(|\<omega\>|)>|]><around|(|<around|\||x|\|>|)>>>>>><label|T>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>>P<rsub|n><around|(|\<omega\>|)><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>=0
     </equation>
 
-    where the equality is due to the convolution theorem. By the linearity of
-    the Fourier transform and the Gram-Schmidt construction in Equation
-    (<reference|eig>):
+    Take their inverse Fourier transforms:
 
     <\equation>
-      \<cal-F\><around|[|\<psi\><rsub|k><rsup|\<perp\>>|]><around|(|\<omega\>|)>=Q<rsub|k><around|(|\<omega\>|)>-<big|sum><rsub|j=1><rsup|k-1><frac|<around|\<langle\>|\<psi\><rsub|k>,\<psi\><rsub|j><rsup|\<perp\>>|\<rangle\>>|<around|\<langle\>|\<psi\><rsub|j><rsup|\<perp\>>,\<psi\><rsub|j><rsup|\<perp\>>|\<rangle\>>>*\<cal-F\><around|[|\<psi\><rsub|j><rsup|\<perp\>>|]><around|(|\<omega\>|)>
+      \<phi\><rsub|n><around|(|t|)>=\<cal-F\><rsup|-1><around|{|P<rsub|n><around|(|\<omega\>|)>|}>
     </equation>
 
-    Substituting this into Equation (<reference|T>):
+    which span the null space of the inner product with the spectral factor
+    (<reference|sf>)
 
     <\equation>
-      T<around|[|\<psi\><rsub|k><rsup|\<perp\>>|]><around|(|x|)>=\<cal-F\><rsup|-1>*<around|[|S<around|(|\<omega\>|)>\<cdot\><around|(|Q<rsub|k><around|(|\<omega\>|)>-<big|sum><rsub|j=1><rsup|k-1>c<rsub|j>*\<cal-F\><around|[|\<psi\><rsub|j><rsup|\<perp\>>|]><around|(|\<omega\>|)>|)>|]><around|(|<around|\||x|\|>|)>
+      <around*|\<langle\>|h,\<phi\><rsub|n>|\<rangle\>>=0\<forall\>n\<gtr\>0
     </equation>
 
-    where
+    The Gram-Schmidt recursion generates the orthogonal complement of the
+    spectral factor null space:
 
     <\equation>
-      c<rsub|j>=<frac|<around|\<langle\>|\<psi\><rsub|k>,\<psi\><rsub|j><rsup|\<perp\>>|\<rangle\>>|<around|\<langle\>|\<psi\><rsub|j><rsup|\<perp\>>,\<psi\><rsub|j><rsup|\<perp\>>|\<rangle\>>>
+      \<psi\><rsub|n><around|(|t|)>=\<phi\><rsub|n><around|(|t|)>-<big|sum><rsub|k=1><rsup|n-1><frac|<around|\<langle\>|\<phi\><rsub|n>,\<psi\><rsub|k>|\<rangle\>>|<around|\<\|\|\>|\<psi\><rsub|k>|\<\|\|\>><rsup|2>>*\<psi\><rsub|k><around|(|t|)>
     </equation>
 
-    By the orthogonality of <math|Q<rsub|k><around|(|\<omega\>|)>> with
-    respect to <math|<sqrt|S<around|(|\<omega\>|)>>>, and the fact that
-    <math|Q<rsub|k><around|(|\<omega\>|)>> are constructed as orthogonal
-    polynomials with respect to the weight
-    <math|<sqrt|S<around|(|\<omega\>|)>>>, it follows that
-    <math|Q<rsub|k><around|(|\<omega\>|)>> are eigenfunctions of the
-    multiplication operator defined by <math|S<around|(|\<omega\>|)>>.
-    Specifically, since <math|S<around|(|\<omega\>|)>=<around|(|<sqrt|S<around|(|\<omega\>|)>>|)><rsup|2>>,
-    we have:
+    Apply covariance operator:
 
     <\equation>
-      S<around|(|\<omega\>|)>*Q<rsub|k><around|(|\<omega\>|)>=\<lambda\><rsub|k>*Q<rsub|k><around|(|\<omega\>|)>
+      T<around*|[|\<psi\><rsub|n>|]>*<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around|(|<around*|\||t-s|\|>|)>*\<psi\><rsub|n><around|(|s|)>*d*s
     </equation>
 
-    And since:
+    Take Fourier transform:
 
     <\equation>
-      S<around|(|\<omega\>|)>*\<cal-F\><around|[|\<psi\><rsub|j><rsup|\<perp\>>|]><around|(|\<omega\>|)>=\<lambda\><rsub|j>*\<cal-F\><around|[|\<psi\><rsub|j><rsup|\<perp\>>|]><around|(|\<omega\>|)>\<forall\>j\<less\>k
+      \<cal-F\>*<around|{|T*<around*|[|\<psi\><rsub|n>|]><around|(|t|)>|}><around*|(|\<omega\>|)>=S<around|(|\<omega\>|)>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>
+    </equation>
+
+    Consider the eigenvalue equation\ 
+
+    <\equation>
+      T<around*|[|*\<psi\><rsub|n>|]><around|(|t|)>=\<lambda\><rsub|n>*\<psi\><rsub|n><around|(|t|)>
+    </equation>
+
+    . Fourier transforming this equation yields:
+
+    <\equation>
+      \<cal-F\>*<around|{|T*<around*|[|\<psi\><rsub|n>|]><around|(|t|)>|}><around*|(|\<omega\>|)>=\<lambda\><rsub|n>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>
+    </equation>
+
+    From the previous Fourier transform equation and the eigenvalue equation:
+
+    <\equation>
+      S<around|(|\<omega\>|)>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>=\<lambda\><rsub|n>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>
+    </equation>
+
+    The unique solution satisfying these conditions is:
+
+    <\equation>
+      \<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>=\<lambda\><rsub|n>*<sqrt|S<around|(|\<omega\>|)>>
     </equation>
 
     Therefore:
 
     <\equation>
-      T<around|[|\<psi\><rsub|k><rsup|\<perp\>>|]><around|(|x|)>=\<lambda\><rsub|k>*\<psi\><rsub|k><around|(|<around|\||x|\|>|)>-<big|sum><rsub|j=1><rsup|k-1>c<rsub|j>*\<lambda\><rsub|j>*\<psi\><rsub|j><rsup|\<perp\>><around|(|<around|\||x|\|>|)>
+      S<around|(|\<omega\>|)>\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>=\<lambda\><rsub|n>*S<around|(|\<omega\>|)><sqrt|S<around|(|\<omega\>|)>>=\<lambda\><rsub|n>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>
     </equation>
 
-    By the construction of <math|\<psi\><rsub|k><rsup|\<perp\>><around|(|x|)>>,
-    this equals:
+    Taking inverse Fourier transform:
 
     <\equation>
-      T<around|[|\<psi\><rsub|k><rsup|\<perp\>>|]><around|(|x|)>=\<lambda\><rsub|k>*\<psi\><rsub|k><rsup|\<perp\>><around|(|<around|\||x|\|>|)>
+      T*<around*|[|\<psi\><rsub|n>|]><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around*|(|<around*|\||t-s|\|>|)>\<psi\><rsub|n><around*|(|t|)>\<mathd\>t=\<lambda\><rsub|n>*\<psi\><rsub|n><around|(|t|)>
     </equation>
-
-    Thus <math|\<psi\><rsub|k><rsup|\<perp\>><around|(|<around|\||x|\|>|)>>
-    is an eigenfunction of the integral covariance operator <math|T> with
-    eigenvalue <math|\<lambda\><rsub|k>\<gtr\>0>.
   </proof>
 
-  <\algorithm>
-    \ <with|font-series|bold|Input:> Spectral density
-    <math|S<around|(|\<omega\>|)>>
-
-    1. Form weight function <math|w<around|(|\<omega\>|)>=<sqrt|S<around|(|\<omega\>|)>>>
-
-    2. Apply Gram-Schmidt to <math|<around|{|1,\<omega\>,\<omega\><rsup|2>,...|}>>
-    with inner product:\ 
-
-    <\equation>
-      <around|\<langle\>|f,g|\<rangle\>>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|\<omega\>|)>*g<around|(|\<omega\>|)>*w<around|(|\<omega\>|)>*d*\<omega\>
-    </equation>
-
-    \ to get polynomials <math|<around|{|Q<rsub|k><around|(|\<omega\>|)>|}>>
-
-    3. Take inverse Fourier transforms:\ 
-
-    <\equation>
-      \<psi\><rsub|k><around|(|x|)>=\<cal-F\><rsup|-1><around|[|Q<rsub|k><around|(|\<omega\>|)>|]><around|(|<around|\||x|\|>|)>
-    </equation>
-
-    4. Apply Gram-Schmidt again to <math|<around|{|\<psi\><rsub|k><around|(|x|)>|}>>
-    to get eigenfunctions <math|<around|{|\<psi\><rsub|k><rsup|\<perp\>><around|(|x|)>|}>>
-  </algorithm>
-
-  <\remark>
-    The absolute value in the kernel <math|K<around*|(|<around*|\||x-y|\|>|)>>
-    is not merely a notational choice but fundamentally defines the isotropic
-    nature of the process. While stationarity requires
-    <math|K<around*|(|x,y|)>=K<around*|(|y,x|)>>, isotropy imposes the
-    stronger condition <math|K<around*|(|x,y|)>=K<around*|(|<around*|\||x-y|\|>|)>>,
-    ensuring that correlations depend solely on distance. This property
-    induces symmetries in both the spatial and spectral domains, with the
-    spectral density <math|S<around*|(|\<omega\>|)>> necessarily being even
-    and the eigenfunctions preserving these symmetry properties through the
-    Fourier transform.
-  </remark>
-
-  \;
-
-  \;
+  <\bibliography|bib|tm-plain|refs>
+    <\bib-list|1>
+      <bibitem*|1><label|bib-cramerStochasticProcessTheoryContribution>Harald
+      Cramér. <newblock>A contribution to the theory of stochastic processes.
+      <newblock><with|font-shape|italic|Proceedings of the Second Berkeley
+      Symposium on Mathematical Statistics and Probability>, 2:329\U339,
+      1951.<newblock>
+    </bib-list>
+  </bibliography>
 </body>
 
 <\initial>
@@ -212,8 +177,21 @@
 
 <\references>
   <\collection>
-    <associate|T|<tuple|10|3>>
-    <associate|eig|<tuple|8|2>>
-    <associate|ift|<tuple|7|2>>
+    <associate|auto-1|<tuple|18|4>>
+    <associate|bib-cramerStochasticProcessTheoryContribution|<tuple|1|4>>
+    <associate|sf|<tuple|1|1>>
   </collection>
 </references>
+
+<\auxiliary>
+  <\collection>
+    <\associate|bib>
+      cramerStochasticProcessTheoryContribution
+    </associate>
+    <\associate|toc>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-1><vspace|0.5fn>
+    </associate>
+  </collection>
+</auxiliary>
