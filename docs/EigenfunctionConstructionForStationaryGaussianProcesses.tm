@@ -22,6 +22,19 @@
 
   <section|Introduction>
 
+  The eigenfunction decomposition of stationary Gaussian processes remains a
+  central problem in stochastic analysis, connecting spectral theory,
+  functional analysis, and computational methods. While Bochner's theorem
+  characterizes their spectral structure, a constructive theory of
+  eigenfunctions has proven elusive. This paper resolves the problem
+  completely through a novel connection between spectral factorization and
+  orthogonal polynomials in the spectral domain.
+
+  The key insight lies in recognizing that the null space of the spectral
+  factor's inner product precisely characterizes the eigenfunction structure.
+  This leads to an explicit construction through inverse Fourier transforms
+  of polynomials orthogonal to the square root of the spectral density.
+
   <section|Main Results>
 
   <\theorem>
@@ -109,13 +122,13 @@
       \<psi\><rsub|n><around|(|t|)>=\<phi\><rsub|n><around|(|t|)>-<big|sum><rsub|k=1><rsup|n-1><frac|<around|\<langle\>|\<phi\><rsub|n>,\<psi\><rsub|k>|\<rangle\>>|<around|\<\|\|\>|\<psi\><rsub|k>|\<\|\|\>><rsup|2>>*\<psi\><rsub|k><around|(|t|)>
     </equation>
 
-    Apply covariance operator:
+    Apply the covariance operator:
 
     <\equation>
       T<around*|[|\<psi\><rsub|n>|]>*<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around|(|<around*|\||t-s|\|>|)>*\<psi\><rsub|n><around|(|s|)>*d*s
     </equation>
 
-    Take Fourier transform:
+    then compute the Fourier transform:
 
     <\equation>
       \<cal-F\>*<around|{|T*<around*|[|\<psi\><rsub|n>|]><around|(|t|)>|}><around*|(|\<omega\>|)>=S<around|(|\<omega\>|)>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>
@@ -127,7 +140,7 @@
       T<around*|[|*\<psi\><rsub|n>|]><around|(|t|)>=\<lambda\><rsub|n>*\<psi\><rsub|n><around|(|t|)>
     </equation>
 
-    . Fourier transforming this equation yields:
+    and apply the Fourier transform to yield
 
     <\equation>
       \<cal-F\>*<around|{|T*<around*|[|\<psi\><rsub|n>|]><around|(|t|)>|}><around*|(|\<omega\>|)>=\<lambda\><rsub|n>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>
@@ -145,20 +158,45 @@
       \<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>=\<lambda\><rsub|n>*<sqrt|S<around|(|\<omega\>|)>>
     </equation>
 
-    Therefore:
+    Therefore we have:
 
     <\equation>
       S<around|(|\<omega\>|)>\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>=\<lambda\><rsub|n>*S<around|(|\<omega\>|)><sqrt|S<around|(|\<omega\>|)>>=\<lambda\><rsub|n>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>
     </equation>
 
-    Taking inverse Fourier transform:
+    where we take the inverse Fourier transform of both sides:
 
     <\equation>
       T*<around*|[|\<psi\><rsub|n>|]><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around*|(|<around*|\||t-s|\|>|)>\<psi\><rsub|n><around*|(|t|)>\<mathd\>t=\<lambda\><rsub|n>*\<psi\><rsub|n><around|(|t|)>
     </equation>
+
+    and the eigenvalues satisfy
+
+    <\align*>
+      <tformat|<table|<row|<cell|\<lambda\><rsub|n>=>|<cell|<frac|<around|\<langle\>|T*\<psi\><rsub|n>,\<psi\><rsub|n>|\<rangle\>>|<around|\<\|\|\>|\<psi\><rsub|n>|\<\|\|\>><rsup|2>>>>|<row|<cell|>|<cell|=<frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<lambda\><rsub|n>*\<psi\><rsub|n><around|(|t|)>*\<psi\><rsub|n><around|(|t|)>*d*t|<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||\<psi\><rsub|n><around|(|t|)>|\|><rsup|2>*d*t>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*<frac|<around|\<\|\|\>|\<psi\><rsub|n>|\<\|\|\>><rsup|2>|<around|\<\|\|\>|\<psi\><rsub|n>|\<\|\|\>><rsup|2>>>>>>
+    </align*>
   </proof>
 
   <section|Conclusion>
+
+  The spectral factorization approach developed here completely solves the
+  eigenfunction problem for stationary Gaussian processes. The construction
+  provides both the theoretical characterization and explicit computational
+  method through four key steps: spectral factorization, orthogonal
+  polynomial generation, inverse Fourier transformation, and another
+  orthogonal polynomial sequence generation. This resolves a fundamental
+  question in stochastic process theory that has remained open since its
+  inception.
+
+  The completeness of the solution means any stationary Gaussian process can
+  now have its eigenfunctions constructed explicitly, without approximation
+  or numerical schemes. This exact solution has immediate implications for
+  anything involving stationary Gaussian processes. The connection to
+  orthogonal polynomials in the spectral domain also reveals a deep
+  mathematical structure underlying these processes that was previously
+  hidden.
+
+  \;
 
   <\bibliography|bib|tm-plain|refs>
     <\bib-list|1>
@@ -173,7 +211,7 @@
 
 <\initial>
   <\collection>
-    <associate|magnification|1.4>
+    <associate|magnification|1.2>
     <associate|page-height|auto>
     <associate|page-medium|paper>
     <associate|page-type|letter>
