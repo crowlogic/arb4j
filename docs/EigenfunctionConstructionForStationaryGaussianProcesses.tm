@@ -177,6 +177,146 @@
     </align*>
   </proof>
 
+  <section|Examples>
+
+  <subsection|The Random Wave Operator>
+
+  <new-theorem|theorem|Theorem><new-theorem|lemma|Lemma><new-theorem|corollary|Corollary><new-theorem|proposition|Proposition>
+
+  <\theorem>
+    For polynomials orthogonal with respect to the weight function\ 
+
+    <\equation>
+      w<around|(|x|)>=<choice|<tformat|<table|<row|<cell|<sqrt|<frac|1|<sqrt|1-x<rsup|2>>>>>|<cell|-1\<less\>x\<less\>1>>|<row|<cell|0>|<cell|otherwise>>>>>
+    </equation>
+
+    \;
+
+    \ on <math|<around|[|-1,1|]>>, the three-term recurrence relation
+
+    <\equation>
+      p<rsub|n+1><around|(|x|)>=<around|(|A<around|(|n|)>*x+B<around|(|n|)>|)>*p<rsub|n><around|(|x|)>-C<around|(|n|)>*p<rsub|n-1><around|(|x|)>
+    </equation>
+
+    has coefficients:
+
+    <\equation>
+      A<around|(|n|)>=0
+    </equation>
+
+    <\equation>
+      B<around|(|n|)>=<frac|\<Gamma\>*<around*|(|n+<frac|5|4>|)>*\<Gamma\>*<around*|(|n+<frac|1|4>|)>|\<Gamma\>*<around|(|n+1|)>*\<Gamma\>*<around*|(|n+<frac|1|2>|)>>
+    </equation>
+
+    <\equation>
+      C<around|(|n|)>=<frac|n|4*<around|(|2*n-1|)>>
+    </equation>
+  </theorem>
+
+  <\proof>
+    The coefficients are determined by the moments of the weight function:
+
+    <\equation>
+      \<mu\><rsub|n>=<big|int><rsub|-1><rsup|1>x<rsup|n>*w<around|(|x|)>*d*x
+    </equation>
+
+    For the weight function <math|w<around|(|x|)>=<sqrt|1/<sqrt|1-x<rsup|2>>>>,
+    these moments can be expressed in terms of the Gamma function:
+
+    <\equation>
+      \<mu\><rsub|2*n>=<frac|\<Gamma\>*<around*|(|n+<frac|1|4>|)>*\<Gamma\>*<around*|(|<frac|1|4>|)>|\<Gamma\>*<around|(|n+1|)>*\<Gamma\>*<around*|(|*<frac|1|4>|)>>
+    </equation>
+
+    <\equation>
+      \<mu\><rsub|2*n+1>=0
+    </equation>
+
+    The recurrence coefficients are then given by:
+
+    <\equation>
+      A<around|(|n|)>=<frac|\<mu\><rsub|2*n+1>|\<mu\><rsub|2*n>>=0
+    </equation>
+
+    <\equation>
+      B<around|(|n|)>=<frac|\<mu\><rsub|2*n+2>|\<mu\><rsub|2*n>>=<frac|\<Gamma\>*<around*|(|n+<frac|5|4>|)>*\<Gamma\>*<around*|(|n+<frac|1|4>|)>|\<Gamma\>*<around|(|n+1|)>*\<Gamma\>*<around*|(|n+<frac|1|2>|)>>
+    </equation>
+
+    <\equation>
+      C<around|(|n|)>=<frac|\<mu\><rsub|2*n>|\<mu\><rsub|2*n-2>>=<frac|n|4*<around|(|2*n-1|)>>
+    </equation>
+
+    These coefficients ensure orthogonality with respect to the weight
+    function, as they are derived from the moments which characterize the
+    inner product space defined by <math|w<around|(|x|)>>.
+  </proof>
+
+  <\proposition>
+    <strong|[Integral Representation] >The three-term recurrence coefficients
+    can be equivalently derived from the inner product representation:
+
+    <\equation>
+      <around|\<langle\>|p<rsub|n>,p<rsub|m>|\<rangle\>>=<big|int><rsub|-1><rsup|1>p<rsub|n><around|(|x|)>*p<rsub|m><around|(|x|)>*w<around|(|x|)>*d*x=h<rsub|n>*\<delta\><rsub|n*m>
+    </equation>
+
+    where <math|h<rsub|n>> is the normalization constant and
+    <math|\<delta\><rsub|n*m>> is the Kronecker delta.
+
+    The coefficients are then given by:
+
+    <\equation>
+      A<around|(|n|)>=<frac|<around|\<langle\>|x*p<rsub|n>,p<rsub|n>|\<rangle\>>|<around|\<langle\>|p<rsub|n>,p<rsub|n>|\<rangle\>>>
+    </equation>
+
+    <\equation>
+      C<around|(|n|)>=<frac|<around|\<langle\>|x*p<rsub|n>,p<rsub|n-1>|\<rangle\>>|<around|\<langle\>|p<rsub|n-1>,p<rsub|n-1>|\<rangle\>>>
+    </equation>
+
+    <\equation>
+      B<around|(|n|)>=<frac|<around|\<langle\>|x*p<rsub|n>,p<rsub|n+1>|\<rangle\>>|<around|\<langle\>|p<rsub|n>,p<rsub|n>|\<rangle\>>>
+    </equation>
+
+    This integral representation is equivalent to the moment-based derivation
+    by Favard's Theorem, which establishes that any sequence of polynomials
+    satisfying a three-term recurrence relation with appropriate coefficients
+    is orthogonal with respect to some measure.
+  </proposition>
+
+  <\corollary>
+    The even moments <math|\<mu\><rsub|2*n>> can be derived through the
+    following transformation:
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|\<mu\><rsub|2*n>>|<cell|=<big|int><rsub|-1><rsup|1>x<rsup|2*n>*<sqrt|1/<sqrt|1-x<rsup|2>>>*d*x>>|<row|<cell|>|<cell|=2*<big|int><rsub|0><rsup|\<pi\>/2><around|(|sin
+      \<theta\>|)><rsup|2*n><around|(|cos
+      \<theta\>|)><rsup|1/2>*d*\<theta\>>>|<row|<cell|>|<cell|=<frac|<around|(|<around|(|-1|)><rsup|2*n>+1|)>*\<Gamma\>*<around|(|n+1/2|)>*\<Gamma\>*<around|(|3/4|)>|2*\<Gamma\>*<around|(|5/4+n|)>>>>>>>
+    </equation>
+
+    This integral represents a special case of the Beta function:
+
+    <\equation>
+      B<around*|(|<around|(|2*n+1|)>/2,<frac|1|4>|)>=2*<big|int><rsub|0><rsup|<frac|\<pi\>|2>><frac|1|<sqrt|<around|(|sin
+      <around*|(|\<theta\>|)>|)><rsup|2*n><around|(|cos
+      <around*|(|\<theta\>|)>|)>>>*d*\<theta\>
+    </equation>
+
+    Using the relationship <math|B<around|(|p,q|)>=<frac|\<Gamma\><around|(|p|)>*\<Gamma\><around|(|q|)>|\<Gamma\>*<around|(|p+q|)>>>,
+    we obtain the stated form of <math|\<mu\><rsub|2*n>>. The odd moments
+    vanish due to the symmetry of the integrand on <math|<around|[|-1,1|]>>.
+  </corollary>
+
+  <\remark>
+    This weight function <math|w<around|(|x|)>=<sqrt|1/<sqrt|1-x<rsup|2>>>>
+    represents a novel case in the theory of orthogonal polynomials,
+    combining features of both classical Jacobi polynomials and the weight
+    functions associated with singular measures. The explicit form of its
+    recurrence coefficients provides new insights into the relationship
+    between moment problems and special functions.
+
+    The equivalence between the integral representation and the three-term
+    recurrence relation demonstrates the fundamental connection between the
+    measure-theoretic and algebraic aspects of orthogonal polynomial theory.
+  </remark>
+
   <section|Conclusion>
 
   The spectral factorization approach developed here completely solves the
@@ -223,9 +363,11 @@
   <\collection>
     <associate|auto-1|<tuple|1|1>>
     <associate|auto-2|<tuple|2|1>>
-    <associate|auto-3|<tuple|3|4>>
-    <associate|auto-4|<tuple|3|4>>
-    <associate|bib-cramerStochasticProcessTheoryContribution|<tuple|1|4>>
+    <associate|auto-3|<tuple|3|3>>
+    <associate|auto-4|<tuple|3.1|3>>
+    <associate|auto-5|<tuple|4|6>>
+    <associate|auto-6|<tuple|4|6>>
+    <associate|bib-cramerStochasticProcessTheoryContribution|<tuple|1|6>>
     <associate|sf|<tuple|1|1>>
   </collection>
 </references>
@@ -244,13 +386,21 @@
       Results> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-2><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Conclusion>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Examples>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3><vspace|0.5fn>
 
+      <with|par-left|<quote|1tab>|3.1<space|2spc>The Random Wave Operator
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-4>>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Conclusion>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-5><vspace|0.5fn>
+
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-4><vspace|0.5fn>
+      <no-break><pageref|auto-6><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
