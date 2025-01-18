@@ -157,12 +157,15 @@
     then compute the Fourier transform:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|\<cal-F\>*<around|{|T*<around*|[|\<psi\><rsub|n>|]><around|(|t|)>|}><around*|(|\<omega\>|)>>|<cell|=S<around|(|\<omega\>|)>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=S<around|(|\<omega\>|)>*P<rsub|n><around*|(|\<omega\>|)>>>>>>
+      <tabular|<tformat|<table|<row|<cell|\<cal-F\>*<around|{|T*<around*|[|\<psi\><rsub|n>|]><around|(|t|)>|}><around*|(|\<omega\>|)>>|<cell|=S<around|(|\<omega\>|)>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=S<around|(|\<omega\>|)>*P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>>>>>
     </equation>
 
-    where <math|\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>=P<rsub|n><around*|(|\<omega\>|)>>
-    is the inverse of Equation (<reference|ift>). Consider the eigenvalue
-    equation\ 
+    where <math|\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>=P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>
+    is Fourier transform of the orthogonal complement of the inverse Fourier
+    transform of the functions orthogonal to
+    <math|<sqrt|S<around*|(|\<omega\>|)>>> and thus equal to the orthogonal
+    (unweighted) complement of the functions orthogonal to
+    <math|<sqrt|S<around*|(|\<omega\>|)>>>. Consider the eigenvalue equation\ 
 
     <\equation>
       T<around*|[|*\<psi\><rsub|n>|]><around|(|t|)>=\<lambda\><rsub|n>*\<psi\><rsub|n><around|(|t|)>
@@ -171,26 +174,26 @@
     and apply the Fourier transform to both sides\ 
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|\<cal-F\>*<around|{|T*<around*|[|\<psi\><rsub|n>|]><around|(|t|)>|}><around*|(|\<omega\>|)>>|<cell|=\<lambda\><rsub|n>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*P<rsub|n><around*|(|\<omega\>|)>>>>>>
+      <tabular|<tformat|<table|<row|<cell|\<cal-F\>*<around|{|T*<around*|[|\<psi\><rsub|n>|]><around|(|t|)>|}><around*|(|\<omega\>|)>>|<cell|=\<lambda\><rsub|n>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>>>>>
     </equation>
 
     From the previous Fourier transform equation and the eigenvalue equation:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|S<around|(|\<omega\>|)>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>|<cell|=S<around*|(|\<omega\>|)>P<rsub|n><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>
-      P<rsub|n><around*|(|\<omega\>|)>>>>>>
+      <tabular|<tformat|<table|<row|<cell|S<around|(|\<omega\>|)>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>|<cell|=S<around*|(|\<omega\>|)>P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>
+      P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>>>>>
     </equation>
 
     The unique solution satisfying these conditions is:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>|<cell|=P<rsub|n><around*|(|\<omega\>|)>>|<cell|=\<lambda\><rsub|n>*<sqrt|S<around|(|\<omega\>|)>>>>>>>
+      <tabular|<tformat|<table|<row|<cell|\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>|<cell|=P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>|<cell|=\<lambda\><rsub|n>*<sqrt|S<around|(|\<omega\>|)>>>>>>>
     </equation>
 
     Therefore
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|S<around|(|\<omega\>|)>\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>|<cell|=S<around*|(|\<omega\>|)>P<rsub|n><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*S<around|(|\<omega\>|)><sqrt|S<around|(|\<omega\>|)>>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*P<rsub|n><around*|(|\<omega\>|)>>>>>>
+      <tabular|<tformat|<table|<row|<cell|S<around|(|\<omega\>|)>\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>|<cell|=S<around*|(|\<omega\>|)>P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*S<around|(|\<omega\>|)><sqrt|S<around|(|\<omega\>|)>>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>>>>>
     </equation>
 
     where the inverse Fourier transform of both sides is
