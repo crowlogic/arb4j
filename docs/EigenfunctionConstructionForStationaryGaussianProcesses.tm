@@ -121,108 +121,132 @@
   </theorem>
 
   <\proof>
-    The polynomials <math|<around|{|P<rsub|n><around|(|\<omega\>|)>|}>> are
-    orthogonal to <math|<sqrt|S<around|(|\<omega\>|)>>>:
+    Let <math|<around|{|P<rsub|n><around|(|\<omega\>|)>|}>> be the unique set
+    of polynomials orthogonal to <math|<sqrt|S<around|(|\<omega\>|)>>>:
 
     <\equation>
       <big|int><rsub|-\<infty\>><rsup|\<infty\>>P<rsub|n><around|(|\<omega\>|)>P<rsub|m><around*|(|\<omega\>|)><sqrt|S<around|(|\<omega\>|)>>*d*\<omega\>=\<delta\><rsub|n,m>
     </equation>
 
-    Take their inverse Fourier transforms:
+    and let their inverse Fourier transforms be defined by
 
     <\equation>
-      \<phi\><rsub|n><around|(|t|)>=\<cal-F\><rsup|-1><around|{|P<rsub|n><around|(|\<omega\>|)>|}><label|ift>
+      \<phi\><rsub|n><around|(|t|)>=\<cal-F\><rsup|-1><around|{|P<rsub|n><around|(|\<omega\>|)>|}><around*|(|t|)><label|ift>
     </equation>
 
-    which span the null space of the inner product with the spectral factor
+    which constitutes the null space of the spectral factor inner product
     (<reference|sf>)
 
     <\equation>
       <around*|\<langle\>|h,\<phi\><rsub|n>|\<rangle\>>=0\<forall\>n\<gtr\>0
     </equation>
 
-    The Gram-Schmidt recursion generates the orthogonal complement of the
-    spectral factor inner product null space:
+    Apply the Gram-Schmidt recursion to generate the orthogonal complement of
+    the null space:
 
     <\equation>
-      \<psi\><rsub|n><around|(|t|)>=\<phi\><rsub|n><around|(|t|)>-<big|sum><rsub|k=1><rsup|n-1><frac|<around|\<langle\>|\<phi\><rsub|n>,\<psi\><rsub|k>|\<rangle\>>|<around|\<\|\|\>|\<psi\><rsub|k>|\<\|\|\>><rsup|2>>*\<psi\><rsub|k><around|(|t|)>
+      \<phi\><rsup|\<perp\>><rsub|n><around|(|t|)>=\<phi\><rsub|n><around|(|t|)>-<big|sum><rsub|k=1><rsup|n-1><frac|<around|\<langle\>|\<phi\><rsub|n>,\<phi\><rsup|\<perp\>><rsub|n>|\<rangle\>>|<around|\<\|\|\>|\<phi\><rsup|\<perp\>><rsub|n>|\<\|\|\>><rsup|2>>\<phi\><rsup|\<perp\>><rsub|n><around*|(|t|)><label|gsr>
     </equation>
 
     Apply the covariance operator:
 
     <\equation>
-      T<around*|[|\<psi\><rsub|n>|]>*<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around|(|<around*|\||t-s|\|>|)>*\<psi\><rsub|n><around|(|s|)>*d*s
+      T<around*|[|\<psi\><rsub|n>|]>*<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around|(|<around*|\||t-s|\|>|)>*\<phi\><rsup|\<perp\>><rsub|n><around*|(|s|)>*d*s
     </equation>
 
     then compute the Fourier transform:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|\<cal-F\>*<around|{|T*<around*|[|\<psi\><rsub|n>|]><around|(|t|)>|}><around*|(|\<omega\>|)>>|<cell|=S<around|(|\<omega\>|)>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=S<around|(|\<omega\>|)>*P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>>>>>
+      <tabular|<tformat|<table|<row|<cell|\<cal-F\>*<around|{|T*<around*|[|\<phi\><rsup|\<perp\>><rsub|n>|]><around|(|t|)>|}><around*|(|\<omega\>|)>>|<cell|=S<around|(|\<omega\>|)>*\<cal-F\><around|{|\<phi\><rsup|\<perp\>><rsub|n><around*|(|t|)>|}><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=S<around|(|\<omega\>|)>*P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>>>>>
     </equation>
 
-    where <math|\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>=P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>
+    where <math|\<cal-F\><around|{|\<phi\><rsup|\<perp\>><rsub|n>|}><around*|(|\<omega\>|)>=P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>
     is Fourier transform of the orthogonal complement of the inverse Fourier
-    transform of the functions orthogonal to
-    <math|<sqrt|S<around*|(|\<omega\>|)>>> and thus equal to the orthogonal
-    (unweighted) complement of the functions orthogonal to
+    transforms of the functions <math|P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>
+    orthogonal to <math|<sqrt|S<around*|(|\<omega\>|)>>> and thus equal to
+    the orthogonal (unweighted) complement of the functions orthogonal to
     <math|<sqrt|S<around*|(|\<omega\>|)>>>. Consider the eigenvalue equation\ 
 
     <\equation>
-      T<around*|[|*\<psi\><rsub|n>|]><around|(|t|)>=\<lambda\><rsub|n>*\<psi\><rsub|n><around|(|t|)>
+      T<around*|[|*\<phi\><rsup|\<perp\>><rsub|n>|]><around|(|t|)>=\<lambda\><rsub|n>*\<phi\><rsup|\<perp\>><rsub|n><around|(|t|)>
     </equation>
 
     and apply the Fourier transform to both sides\ 
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|\<cal-F\>*<around|{|T*<around*|[|\<psi\><rsub|n>|]><around|(|t|)>|}><around*|(|\<omega\>|)>>|<cell|=\<lambda\><rsub|n>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>>>>>
+      <tabular|<tformat|<table|<row|<cell|\<cal-F\>*<around|{|T*<around*|[|\<phi\><rsup|\<perp\>><rsub|n>|]><around|(|t|)>|}><around*|(|\<omega\>|)>>|<cell|=\<lambda\><rsub|n>*\<cal-F\><around|{|\<phi\><rsup|\<perp\>><rsub|n><around*|(|t|)>|}><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>>>>>
     </equation>
 
     From the previous Fourier transform equation and the eigenvalue equation:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|S<around|(|\<omega\>|)>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>|<cell|=S<around*|(|\<omega\>|)>P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>
+      <tabular|<tformat|<table|<row|<cell|S<around|(|\<omega\>|)>*\<cal-F\><around|{|\<phi\><rsup|\<perp\>><rsub|n><around*|(|t|)>|}><around*|(|\<omega\>|)>>|<cell|=S<around*|(|\<omega\>|)>P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*\<cal-F\><around|{|\<phi\><rsup|\<perp\>><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>
       P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>>>>>
     </equation>
 
     The unique solution satisfying these conditions is:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>|<cell|=P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>|<cell|=\<lambda\><rsub|n>*<sqrt|S<around|(|\<omega\>|)>>>>>>>
+      <tabular|<tformat|<table|<row|<cell|\<cal-F\><around|{|\<phi\><rsup|\<perp\>><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>|<cell|=P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>|<cell|=\<lambda\><rsub|n>*<sqrt|S<around|(|\<omega\>|)>>>>>>>
     </equation>
 
     Therefore
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|S<around|(|\<omega\>|)>\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>|<cell|=S<around*|(|\<omega\>|)>P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*S<around|(|\<omega\>|)><sqrt|S<around|(|\<omega\>|)>>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*\<cal-F\><around|{|\<psi\><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>>>>>
+      <tabular|<tformat|<table|<row|<cell|S<around|(|\<omega\>|)>\<cal-F\><around|{|\<phi\><rsup|\<perp\>><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>|<cell|=S<around*|(|\<omega\>|)>P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*\<cal-F\><around|{|\<phi\><rsup|\<perp\>><rsub|n><around|(|t|)>|}><around*|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>P<rsup|\<perp\>><rsub|n><around*|(|\<omega\>|)>>>>>>
     </equation>
 
     where the inverse Fourier transform of both sides is
 
     <\equation>
-      T*<around*|[|\<psi\><rsub|n>|]><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around*|(|<around*|\||t-s|\|>|)>\<psi\><rsub|n><around*|(|t|)>\<mathd\>t=\<lambda\><rsub|n>*\<psi\><rsub|n><around|(|t|)>
+      T*<around*|[|\<psi\><rsub|n>|]><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around*|(|<around*|\||t-s|\|>|)>\<phi\><rsup|\<perp\>><rsub|n><around*|(|t|)>\<mathd\>t=\<lambda\><rsub|n>\<phi\><rsup|\<perp\>><rsub|n><around|(|t|)><style-only*|<label|icv>>
     </equation>
 
     and the eigenvalues satisfy
 
-    <\align*>
-      <tformat|<table|<row|<cell|\<lambda\><rsub|n>=>|<cell|<frac|<around|\<langle\>|T*\<psi\><rsub|n>,\<psi\><rsub|n>|\<rangle\>>|<around|\<\|\|\>|\<psi\><rsub|n>|\<\|\|\>><rsup|2>>>>|<row|<cell|>|<cell|=<frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<lambda\><rsub|n>*\<psi\><rsub|n><around|(|t|)>*\<psi\><rsub|n><around|(|t|)>*d*t|<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||\<psi\><rsub|n><around|(|t|)>|\|><rsup|2>*d*t>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*<frac|<around|\<\|\|\>|\<psi\><rsub|n>|\<\|\|\>><rsup|2>|<around|\<\|\|\>|\<psi\><rsub|n>|\<\|\|\>><rsup|2>>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>>>>>
-    </align*>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|\<lambda\><rsub|n>>|<cell|=<frac|T<around*|[|\<phi\><rsup|\<perp\>><rsub|n>|]><around*|(|t|)>|\<phi\><rsup|\<perp\>><rsub|n><around*|(|t|)>>>>|<row|<cell|>|<cell|=<frac|<around|\<langle\>|T*\<phi\><rsup|\<perp\>><rsub|n>,\<phi\><rsup|\<perp\>><rsub|n>|\<rangle\>>|<around|\<\|\|\>|\<phi\><rsup|\<perp\>><rsub|n>|\<\|\|\>><rsup|2>>>>|<row|<cell|>|<cell|=<frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<lambda\><rsub|n>*\<phi\><rsup|\<perp\>><rsub|n><around|(|t|)>*\<phi\><rsup|\<perp\>><rsub|n><around|(|t|)>*d*t|<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||\<phi\><rsup|\<perp\>><rsub|n><around|(|t|)>|\|><rsup|2>*d*t>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n><frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>>*\<phi\><rsup|\<perp\>><rsub|n><around|(|t|)>*\<phi\><rsup|\<perp\>><rsub|n><around|(|t|)>*d*t|<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||\<phi\><rsup|\<perp\>><rsub|n><around|(|t|)>|\|><rsup|2>*d*t>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*<frac|<around|\<\|\|\>|\<phi\><rsup|\<perp\>><rsub|n>|\<\|\|\>><rsup|2>|<around|\<\|\|\>|\<phi\><rsup|\<perp\>><rsub|n>|\<\|\|\>><rsup|2>>>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>>>>>>
+    </equation>
+
+    \;
   </proof>
+
+  <\remark>
+    It is important to note that a significant misconception pervades much of
+    the literature regarding stationary processes. Many texts incorrectly
+    assert that the eigenfunctions are `always complex exponentials' and
+    further compound this error by claiming these are eigenfunctions of the
+    kernel <math|K*<around|(|t-s|)>>. This is mathematically imprecise - the
+    kernel itself does not possess eigenfunctions or eigenvalues. Rather, as
+    equations (<reference|gsr>)\U(<reference|icv>) demonstrate, the
+    eigenfunctions emerge from the Gram-Schmidt orthogonalization process
+    applied to the spectral factor inner product null space, and the
+    eigenvalues belong to the integral operator <math|T> defined by the
+    kernel in equation (11):
+
+    <\equation>
+      T<around|[|\<phi\><rsup|\<perp\>><rsub|n><around|(|t|)>|]><around|(|t|)>=<big|int>K<around|(|<around|\||t-s|\|>|)>*\<phi\><rsup|\<perp\>><rsub|n><around|(|s|)>*<space|0.17em>d*s
+    </equation>
+
+    <no-indent>This distinction is crucial for proper understanding of the
+    mathematical framework and its implementation.
+  </remark>
 
   <section|Examples>
 
   <subsection|The Random Wave Operator>
 
   <\theorem>
-    For polynomials orthogonal with respect to the weight function\ 
+    The polynomials orthogonal with respect to the square root of the
+    spectral density of the random wave model\ 
 
     <\equation>
-      w<around|(|x|)>=<choice|<tformat|<table|<row|<cell|<sqrt|<frac|1|<sqrt|1-x<rsup|2>>>>>|<cell|-1\<less\>x\<less\>1>>|<row|<cell|0>|<cell|otherwise>>>>>
+      <sqrt|S<around*|(|\<omega\>|)>>=<choice|<tformat|<table|<row|<cell|<sqrt|<frac|1|<sqrt|1-\<omega\><rsup|2>>>>>|<cell|-1\<less\>x\<less\>1>>|<row|<cell|0>|<cell|otherwise>>>>>
     </equation>
 
     \;
 
-    \ on <math|<around|[|-1,1|]>>, the three-term recurrence relation
+    \ on <math|<around|[|-1,1|]>> \ the three-term recurrence relation
 
     <\equation>
       p<rsub|n+1><around|(|x|)>=<around|(|A<around|(|n|)>*x+B<around|(|n|)>|)>*p<rsub|n><around|(|x|)>-C<around|(|n|)>*p<rsub|n-1><around|(|x|)>
@@ -247,10 +271,10 @@
     The coefficients are determined by the moments of the weight function:
 
     <\equation>
-      \<mu\><rsub|n>=<big|int><rsub|-1><rsup|1>x<rsup|n>*w<around|(|x|)>*d*x
+      \<mu\><rsub|n>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<omega\><rsup|n>*<sqrt|S<around*|(|\<omega\>|)>>*d*\<omega\>
     </equation>
 
-    For the weight function <math|w<around|(|x|)>=<sqrt|1/<sqrt|1-x<rsup|2>>>>,
+    For the weight function <math|<sqrt|S<around*|(|\<omega\>|)>>=<choice|<tformat|<table|<row|<cell|<sqrt|<frac|1|<sqrt|1-\<omega\><rsup|2>>>|>>|<cell|<around*|\||\<omega\>|\|>\<less\>1>>|<row|<cell|0>|<cell|<around*|\||\<omega\>|\|>\<geqslant\>1>>>>>>,
     these moments can be expressed in terms of the Gamma function:
 
     <\equation>
@@ -277,144 +301,116 @@
 
     These coefficients ensure orthogonality with respect to the weight
     function, as they are derived from the moments which characterize the
-    inner product space defined by <math|w<around|(|x|)>>.
+    inner product space defined by <math|<sqrt|S<around*|(|\<omega\>|)>>>.
   </proof>
 
-  <\big-table|<tabular|<tformat|<table|<row|<cell|<left|[><tabular*|<tformat|<cwith|1|-1|2|2|cell-halign|c>|<cwith|1|-1|2|2|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<math|p<rsub|0><around*|(|x|)>>=>|<cell|<frac|2<rsup|<frac|1|4>>
-  \<pi\><rsup|<frac|1|4>>|2 \<Gamma\><left|(><frac|3|4><right|)>>>>|<row|<cell|<math|p<rsub|1><around*|(|x|)>>=>|<cell|<frac|<left|(>5
-  x<rsup|2>-2<right|)> <sqrt|3><space|0.17em> \<pi\><rsup|<frac|1|4>>
-  2<rsup|<frac|3|4>>|8 \<Gamma\><left|(><frac|3|4><right|)>>>>|<row|<cell|<math|p<rsub|2><around*|(|x|)>>=>|<cell|<frac|<left|(>39
-  x<rsup|4>-36 x<rsup|2>+4<right|)> <sqrt|595><space|0.17em>
-  \<pi\><rsup|<frac|1|4>> 2<rsup|<frac|3|4>>|224
-  \<Gamma\><left|(><frac|3|4><right|)>>>>|<row|<cell|<math|p<rsub|3><around*|(|x|)>>=>|<cell|<frac|5
-  <left|(>1547 x<rsup|6>-2210 x<rsup|4>+780 x<rsup|2>-40<right|)>
-  2<rsup|<frac|1|4>> <sqrt|231><space|0.17em> \<pi\><rsup|<frac|1|4>>|4928
-  \<Gamma\><left|(><frac|3|4><right|)>>>>|<row|<cell|<math|p<rsub|4><around*|(|x|)>=>>|<cell|<frac|<left|(>2465
-  x<rsup|8>-4760 x<rsup|6>+2856 x<rsup|4>-544 x<rsup|2>+16<right|)>
-  <sqrt|195><space|0.17em> \<pi\><rsup|<frac|1|4>> 2<rsup|<frac|3|4>>|512
-  \<Gamma\><left|(><frac|3|4><right|)>>>>|<row|<cell|<math|p<rsub|5><around*|(|x|)>>=>|<cell|<frac|<left|(>59015
-  x<rsup|10>-143550 x<rsup|8>+121800 x<rsup|6>-42000 x<rsup|4>+5040
-  x<rsup|2>-96<right|)> 2<rsup|<frac|1|4>> <sqrt|1893749><space|0.17em>
-  \<pi\><rsup|<frac|1|4>>|214016 \<Gamma\><left|(><frac|3|4><right|)>>>>>>><right|]>
-  >>>>>>
-    The first 6 polynomials orthogonal to the square root of the spectral
-    density of the random wave process over <math|y=-1\<ldots\>1>
+  <\big-table|<tabular|<tformat|<cwith|1|6|1|1|cell-halign|l>|<cwith|1|6|1|1|cell-lborder|0ln>|<cwith|1|6|1|2|cell-valign|c>|<cwith|1|1|1|2|cell-valign|top>|<cwith|1|1|1|2|cell-vmode|exact>|<cwith|1|1|1|2|cell-height|<plus|1fn|1em>>|<cwith|2|2|1|2|cell-valign|top>|<cwith|2|2|1|2|cell-vmode|exact>|<cwith|2|2|1|2|cell-height|<plus|1fn|1em>>|<cwith|3|3|1|2|cell-valign|top>|<cwith|3|3|1|2|cell-vmode|exact>|<cwith|3|3|1|2|cell-height|<plus|1fn|1em>>|<cwith|4|4|1|2|cell-valign|top>|<cwith|4|4|1|2|cell-vmode|exact>|<cwith|4|4|1|2|cell-height|<plus|1fn|1em>>|<cwith|5|5|1|2|cell-valign|top>|<cwith|5|5|1|2|cell-vmode|exact>|<cwith|5|5|1|2|cell-height|<plus|1fn|1em>>|<table|<row|<cell|<math|P<rsub|0><around|(|\<omega\>|)>>=>|<cell|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<cwith|1|-1|1|-1|cell-valign|c>|<table|<row|<cell|<math|<frac|2<rsup|1/4>*\<pi\><rsup|1/4>|2*\<Gamma\>*<around|(|3/4|)>>>>>|<row|<cell|<math|<frac|<around|(|5*\<omega\><rsup|2>-2|)>*<sqrt|3>*\<pi\><rsup|1/4>*2<rsup|3/4>|8*\<Gamma\>*<around|(|3/4|)>>>>>|<row|<cell|<math|<frac|<around|(|39*\<omega\><rsup|4>-36*\<omega\><rsup|2>+4|)>*<sqrt|595>*\<pi\><rsup|1/4>*2<rsup|3/4>|224*\<Gamma\>*<around|(|3/4|)>>>>>|<row|<cell|<math|<frac|5*<around|(|1547*\<omega\><rsup|6>-2210*\<omega\><rsup|4>+780*\<omega\><rsup|2>-40|)>*2<rsup|1/4>*<sqrt|231>*\<pi\><rsup|1/4>|4928*\<Gamma\>*<around|(|3/4|)>>>>>|<row|<cell|<math|<frac|<around|(|2465*\<omega\><rsup|8>-4760*\<omega\><rsup|6>+2856*\<omega\><rsup|4>-544*\<omega\><rsup|2>+16|)>*<sqrt|195>*\<pi\><rsup|1/4>*2<rsup|3/4>|512*\<Gamma\>*<around|(|3/4|)>>>>>|<row|<cell|<math|<frac|<around|(|59015*\<omega\><rsup|10>-143550*\<omega\><rsup|8>+121800*\<omega\><rsup|6>-42000*\<omega\><rsup|4>+5040*\<omega\><rsup|2>-96|)>*2<rsup|1/4>*<sqrt|1893749>*\<pi\><rsup|1/4>|214016*\<Gamma\>*<around|(|3/4|)>>>>>>>>>>|<row|<cell|<math|P<rsub|1><around|(|\<omega\>|)>>=>|<cell|>>|<row|<cell|<math|P<rsub|2><around|(|\<omega\>|)>>=>|<cell|>>|<row|<cell|<math|P<rsub|3><around|(|\<omega\>|)>>=>|<cell|>>|<row|<cell|<math|P<rsub|4><around|(|\<omega\>|)>>=>|<cell|>>|<row|<cell|<math|P<rsub|5><around|(|\<omega\>|)>>=>|<cell|>>>>>>
+    First 6 polynomials that are orthogonal with respect to
+    <math|<sqrt|S<around*|(|\<omega\>|)>>=<choice|<tformat|<table|<row|<cell|<sqrt|<frac|1|<sqrt|1-\<omega\><rsup|2>>>|>>|<cell|<around*|\||\<omega\>|\|>\<less\>1>>|<row|<cell|0>|<cell|<around*|\||\<omega\>|\|>\<geqslant\>1>>>>>>
   </big-table>
-
-  <\proposition>
-    <strong|[Integral Representation] >The three-term recurrence coefficients
-    can be equivalently derived from the inner product representation:
-
-    <\equation>
-      <around|\<langle\>|p<rsub|n>,p<rsub|m>|\<rangle\>>=<big|int><rsub|-1><rsup|1>p<rsub|n><around|(|x|)>*p<rsub|m><around|(|x|)>*w<around|(|x|)>*d*x=h<rsub|n>*\<delta\><rsub|n*m>
-    </equation>
-
-    where <math|h<rsub|n>> is the normalization constant and
-    <math|\<delta\><rsub|n*m>> is the Kronecker delta.
-
-    The coefficients are then given by:
-
-    <\equation>
-      A<around|(|n|)>=<frac|<around|\<langle\>|x*p<rsub|n>,p<rsub|n>|\<rangle\>>|<around|\<langle\>|p<rsub|n>,p<rsub|n>|\<rangle\>>>
-    </equation>
-
-    <\equation>
-      C<around|(|n|)>=<frac|<around|\<langle\>|x*p<rsub|n>,p<rsub|n-1>|\<rangle\>>|<around|\<langle\>|p<rsub|n-1>,p<rsub|n-1>|\<rangle\>>>
-    </equation>
-
-    <\equation>
-      B<around|(|n|)>=<frac|<around|\<langle\>|x*p<rsub|n>,p<rsub|n+1>|\<rangle\>>|<around|\<langle\>|p<rsub|n>,p<rsub|n>|\<rangle\>>>
-    </equation>
-
-    This integral representation is equivalent to the moment-based derivation
-    by Favard's Theorem, which establishes that any sequence of polynomials
-    satisfying a three-term recurrence relation with appropriate coefficients
-    is orthogonal with respect to some measure.
-  </proposition>
 
   <\theorem>
     <dueto|Moment Relations>For any orthogonal polynomial system
-    p\<#2099\>(x) with weight w(x), let \<mu\>\<#2099\> denote the moments:
+    <math|P<rsub|n><around*|(|x|)>> with weight
+    <math|<sqrt|S<around*|(|\<omega\>|)>>>, let <math|\<mu\><rsub|n>> denote
+    the moments:
 
-    <\equation*>
-      \<mu\>*\<#2099\>=<big|int>x<rsup|n>*w<around|(|x|)>*d*x
-    </equation*>
+    <\equation>
+      \<mu\><rsub|n>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<omega\><rsup|n><sqrt|S<around*|(|\<omega\>|)>>*d*\<omega\>
+    </equation>
 
-    Then the three-term recurrence coefficients are given by the moment
-    ratios:
+    <strong|>The three-term recurrence coefficients can be \ derived from the
+    inner product representation:
+
+    <\equation>
+      <around|\<langle\>|p<rsub|n>,p<rsub|m>|\<rangle\>>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>P<rsub|m><around*|(|\<omega\>|)>*P<rsub|n><around|(|\<omega\>|)>*<sqrt|S<around*|(|\<omega\>|)>>d*\<omega\>=h<rsub|n>*\<delta\><rsub|n*m>
+    </equation>
+
+    where <math|h<rsub|n>> is the normalization constant and
+    <math|\<delta\><rsub|n*m>> is the Kronecker delta. Then the three-term
+    recurrence coefficients are given by the moment ratios:
+
+    <\equation>
+      A<around|(|n|)>=<frac|\<mu\><rsub|2*n+1>|\<mu\><rsub|2*n>>=<frac|<around|\<langle\>|\<omega\>
+      P<rsub|n><around*|(|\<omega\>|)>,P<rsub|n><around*|(|\<omega\>|)>|\<rangle\>>|<around|\<langle\>|P<rsub|n><around*|(|\<omega\>|)>,P<rsub|n><around*|(|\<omega\>|)>|\<rangle\>>>
+    </equation>
+
+    <\equation>
+      B<around|(|n|)>=<frac|\<mu\><rsub|2*n+2>|\<mu\><rsub|2*n>>=<frac|<around|\<langle\>|x*P<rsub|n><around*|(|\<omega\>|)>,P<rsub|n-1><around*|(|\<omega\>|)>|\<rangle\>>|<around|\<langle\>|P<rsub|n-1><around*|(|\<omega\>|)>,P<rsub|n-1><around*|(|\<omega\>|)>|\<rangle\>>>
+    </equation>
+
+    <\equation>
+      C<around|(|n|)>=<frac|\<mu\><rsub|2*n>|\<mu\><rsub|2*n-2>>=<frac|<around|\<langle\>|x*P<rsub|n><around*|(|\<omega\>|)>,P<rsub|n+1><around*|(|\<omega\>|)>|\<rangle\>>|<around|\<langle\>|P<rsub|n><around*|(|\<omega\>|)>,P<rsub|n><around*|(|\<omega\>|)>|\<rangle\>>>
+    </equation>
+
+    The integral representation is equivalent to the moment-based derivation
+    by Favard's Theorem, which establishes that any sequence of polynomials
+    satisfying a three-term recurrence relation with appropriate coefficients
+    is orthogonal with respect to some measure.
+  </theorem>
+
+  <\proof>
+    From the orthogonality condition:
+
+    <\equation>
+      <around|\<langle\>|P<rsub|n>,P<rsub|m>|\<rangle\>>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>P<rsub|n><around|(|\<omega\>|)>*P<rsub|m><around|(|\<omega\>|)>*<sqrt|S<around*|(|\<omega\>|)>>*d*\<omega\>=h<rsub|n>*\<delta\><rsub|n*m>
+    </equation>
+
+    Given the three-term recurrence:
+
+    <\equation>
+      P<rsub|n+1><around|(|\<omega\>|)>=<around|(|A<around|(|n|)>*\<omega\>+B<around|(|n|)>|)>*P<rsub|n><around|(|\<omega\>|)>-C<around|(|n|)>*P<rsub|n-1><around|(|\<omega\>|)>
+    </equation>
+
+    Multiply by <math|\<omega\> P<rsub|n><around*|(|\<omega\>|)><sqrt|S<around*|(|\<omega\>|)>>>
+    \ and integrate:
+
+    <\equation>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>>\<omega\>P<rsub|n><rsup|2><around|(|\<omega\>|)>*<sqrt|S*<around*|(|\<omega\>|)>>*d*\<omega\>=A<around|(|n|)>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>P<rsub|n><rsup|2><around|(|\<omega\>|)>*<sqrt|S<around*|(|\<omega\>|)>>*d*\<omega\>
+    </equation>
+
+    The left side equals <math|\<mu\><rsub|2n+1>>, the right side equals
+    <math|A<around*|(|n|)>\<mu\><rsub|2n>>, therefore:
 
     <\equation>
       A<around|(|n|)>=<frac|\<mu\><rsub|2*n+1>|\<mu\><rsub|2*n>>
     </equation>
 
+    Multiply by <math|P<rsub|n+1><around*|(|\<omega\>|)><sqrt|S<around*|(|\<omega\>|)>>>
+    and integrate:
+
+    <\equation>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>>P<rsub|n+1><rsup|2><around|(|\<omega\>|)>*<sqrt|S<around*|(|\<omega\>|)>>*d*\<omega\>=B<around|(|n|)><big|int><rsub|-\<infty\>><rsup|\<infty\>>P<rsub|n><around|(|\<omega\>|)>*P<rsub|n+1><around|(|\<omega\>|)>*<sqrt|S<around*|(|\<omega\>|)>>*d*\<omega\>
+    </equation>
+
+    The left side equals <math|\<mu\><rsub|2n+1>>, the right side equals
+    <math|B*<around*|(|n|)>\<mu\><rsub|2n>>, therefore:
+
     <\equation>
       B<around|(|n|)>=<frac|\<mu\><rsub|2*n+2>|\<mu\><rsub|2*n>>
     </equation>
 
+    Multiply by <math|P<rsub|n-1><around*|(|\<omega\>|)><sqrt|S<around*|(|\<omega\>|)>>>
+    and integrate:
+
     <\equation>
-      C<around|(|n|)>=<frac|\<mu\><rsub|2*n>|\<mu\><rsub|2*n-2>>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>>P<rsub|n-1><rsup|2><around|(|\<omega\>|)>*<sqrt|S<around*|(|\<omega\>|)>>*d*\<omega\>=C<around|(|n|)><big|int><rsub|-\<infty\>><rsup|\<infty\>>P<rsub|n><around|(|\<omega\>|)>*P<rsub|n-1><around|(|\<omega\>|)>*<sqrt|S<around*|(|\<omega\>|)>>*d*\<omega\>
     </equation>
 
-    <\proof>
-      From the orthogonality condition:
+    The left side equals <math|\<mu\><rsub|2n>>, the right side equals
+    <math|C<around*|(|*n|)>\<mu\><rsub|2n-2>>, therefore:
 
-      <\equation>
-        <around|\<langle\>|p<rsub|n>,p<rsub|m>|\<rangle\>>=<big|int>p<rsub|n><around|(|x|)>*p<rsub|m><around|(|x|)>*w<around|(|x|)>*d*x=h<rsub|n>*\<delta\><rsub|n*m>
-      </equation>
-
-      Given the three-term recurrence:
-
-      <\equation>
-        p<rsub|n+1><around|(|x|)>=<around|(|A<around|(|n|)>*x+B<around|(|n|)>|)>*p<rsub|n><around|(|x|)>-C<around|(|n|)>*p<rsub|n-1><around|(|x|)>
-      </equation>
-
-      Multiply by xp<rsub|n>(x)w(x) and integrate:
-
-      <\equation>
-        <big|int>x*p<rsub|n><rsup|2><around|(|x|)>*w<around|(|x|)>*d*x=A<around|(|n|)>*<big|int>p<rsub|n><rsup|2><around|(|x|)>*w<around|(|x|)>*d*x
-      </equation>
-
-      The left side equals \<mu\><rsub|2n+1>, the right side equals
-      A(n)\<mu\><rsub|2n>, therefore:
-
-      <\equation>
-        A<around|(|n|)>=<frac|\<mu\><rsub|2*n+1>|\<mu\><rsub|2*n>>
-      </equation>
-
-      Multiply by p<rsub|n+1>(x)w(x) and integrate:
-
-      <\equation>
-        <big|int>p<rsub|n+1><rsup|2><around|(|x|)>*w<around|(|x|)>*d*x=B<around|(|n|)>*<big|int>p<rsub|n><around|(|x|)>*p<rsub|n+1><around|(|x|)>*w<around|(|x|)>*d*x
-      </equation>
-
-      The left side equals \<mu\><rsub|2n+2>, the right side equals
-      B(n)\<mu\><rsub|2n>, therefore:
-
-      <\equation>
-        B<around|(|n|)>=<frac|\<mu\><rsub|2*n+2>|\<mu\><rsub|2*n>>
-      </equation>
-
-      Multiply by p<rsub|n-1>(x)w(x) and integrate:
-
-      <\equation>
-        <big|int>p<rsub|n-1><rsup|2><around|(|x|)>*w<around|(|x|)>*d*x=C<around|(|n|)>*<big|int>p<rsub|n><around|(|x|)>*p<rsub|n-1><around|(|x|)>*w<around|(|x|)>*d*x
-      </equation>
-
-      The left side equals \<mu\><rsub|2n>, the right side equals
-      C(n)\<mu\><rsub|2n-2>, therefore:
-
-      <\equation*>
-        C<around|(|n|)>=<frac|\<mu\><rsub|2*n>|\<mu\><rsub|2*n-2>>
-      </equation*>
-    </proof>
-  </theorem>
+    <\equation*>
+      C<around|(|n|)>=<frac|\<mu\><rsub|2*n>|\<mu\><rsub|2*n-2>>
+    </equation*>
+  </proof>
 
   <\corollary>
     The even moments <math|\<mu\><rsub|2*n>> can be derived through the
     following transformation:
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|\<mu\><rsub|2*n>>|<cell|=<big|int><rsub|-1><rsup|1>x<rsup|2*n>*<sqrt|<frac|1|<sqrt|1-x<rsup|2>>>>*d*x>>|<row|<cell|>|<cell|=<frac|<around|(|<around|(|-1|)><rsup|2*n>+1|)>*\<Gamma\>*<around*|(|n+<frac|1|2>|)>*\<Gamma\>*<around*|(|<frac|3|4>|)>|2*\<Gamma\>*<around*|(|<frac|5|4>+n|)>>>>>>>
+      <tabular|<tformat|<table|<row|<cell|\<mu\><rsub|2*n>>|<cell|=<big|int><rsup|\<infty\>><rsub|-\<infty\>><rsup|>\<omega\><rsup|2*n>*<sqrt|<frac|1|<sqrt|1-\<omega\><rsup|2>>>>*d*\<omega\>>>|<row|<cell|>|<cell|=<frac|<around|(|<around|(|-1|)><rsup|2*n>+1|)>*\<Gamma\>*<around*|(|n+<frac|1|2>|)>*\<Gamma\>*<around*|(|<frac|3|4>|)>|2*\<Gamma\>*<around*|(|<frac|5|4>+n|)>>>>>>>
     </equation>
 
     The odd moments vanish due to the symmetry of the integrand on
@@ -422,7 +418,7 @@
   </corollary>
 
   <\remark>
-    This weight function <math|w<around|(|x|)>=<sqrt|<frac|1|<sqrt|1-x<rsup|2>>>>>
+    This weight function <math|<sqrt|S<around*|(|\<omega\>|)>>=<sqrt|<frac|1|<sqrt|1-x<rsup|2>>>>>
     represents a novel case in the theory of orthogonal polynomials,
     combining features of both classical Jacobi polynomials and the weight
     functions associated with singular measures. The explicit form of its
@@ -485,6 +481,8 @@
     <associate|auto-6|<tuple|4|7>>
     <associate|auto-7|<tuple|4|7>>
     <associate|bib-cramerStochasticProcessTheoryContribution|<tuple|1|7>>
+    <associate|gsr|<tuple|10|2>>
+    <associate|icv|<tuple|18|3>>
     <associate|ift|<tuple|8|2>>
     <associate|sf|<tuple|1|1>>
   </collection>
@@ -497,9 +495,8 @@
     </associate>
     <\associate|table>
       <tuple|normal|<\surround|<hidden-binding|<tuple>|1>|>
-        The first 6 polynomials orthogonal to the square root of the spectral
-        density of the random wave process over
-        <with|mode|<quote|math>|y=-1\<ldots\>1>
+        First 6 polynomials that are orthogonal with respect to
+        <with|mode|<quote|math>|<sqrt|S<around*|(|\<omega\>|)>>=<with|math-level|<quote|1>|math-top-swell-start|<quote|1.6ex>|math-top-swell-end|<quote|2.5ex>|math-bot-swell-start|<quote|-0.6ex>|math-bot-swell-end|<quote|-1.5ex>|<left|{><tformat|<cwith|1|-1|1|-1|cell-swell|0.9ex>|<tformat|<table|<row|<cell|<sqrt|<frac|1|<sqrt|1-\<omega\><rsup|2>>>|>>|<cell|<around*|\||\<omega\>|\|>\<less\>1>>|<row|<cell|0>|<cell|<around*|\||\<omega\>|\|>\<geqslant\>1>>>>><right|.>>>
       </surround>|<pageref|auto-5>>
     </associate>
     <\associate|toc>
