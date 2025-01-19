@@ -217,24 +217,25 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   @Override
   public NamedRing<AlgebraicNumber> set(Fraction val)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+	assert val != null && val.swigCPtr != 0 : "val is null or has null swigCPtr";
+    arblib.qqbar_set_fmpq(this, val);
+    return this;
   }
 
-
-
+  String name;
+  
+  @SuppressWarnings("unchecked")
   @Override
   public <N extends Named> N setName(String name)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    this.name = name;
+    return (N) this;
   }
 
   @Override
   public String getName()
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    return name;
   }
 
   @Override

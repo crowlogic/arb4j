@@ -56,13 +56,27 @@ import arb.utensils.Utensils;
   {
     return res.set(this).Γ(bits);
   }
-  
+
+  public AlgebraicNumber mul(AlgebraicNumber x, int prec, AlgebraicNumber result)
+  {
+    return result.set(this).mul(x, prec, result);
+  }
+    
   @SuppressWarnings("resource")
   public static Fraction named(String string)
   {
     return new Fraction().setName(string);
   }
 
+  public RealPolynomial Γ(int bits, RealPolynomial res)
+  {
+    try ( var blip = new Real())
+    {
+      blip.set(this).Γ(bits, blip);
+      return res.set(blip);
+    }
+  }
+  
   public ComplexPolynomial add(ComplexPolynomial that, int bits, ComplexPolynomial result)
   {
     result.set(this);
@@ -368,7 +382,6 @@ import arb.utensils.Utensils;
   {
     return name;
   }
-
 
   @SuppressWarnings("unchecked")
   @Override
