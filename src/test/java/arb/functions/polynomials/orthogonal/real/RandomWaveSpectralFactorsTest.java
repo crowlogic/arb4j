@@ -20,5 +20,6 @@ public class RandomWaveSpectralFactorsTest extends
     RandomWaveSpectralFactors P = new RandomWaveSpectralFactors(128);
     List<RealPolynomial> seq = ShellFunctions.seq(0, 4, P);
     seq.forEach(System.out::println);
+    assertEquals( new RealPolynomial().set("1/8*(5*x^2-2)*3^(1/2)*π^(1/4)*2^(3/4)/Γ(3/4)").toString(), seq.get(2).toString() );
   }
 }

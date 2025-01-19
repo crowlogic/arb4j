@@ -1262,10 +1262,6 @@ public class arblib {
     arblibJNI.arb_poly_fit_length(RealPolynomial.getCPtr(poly), poly, len);
   }
 
-  public static void acb_calc_gl_node(Real x, Real w, int i, int k, int prec) {
-    arblibJNI.acb_calc_gl_node(Real.getCPtr(x), x, Real.getCPtr(w), w, i, k, prec);
-  }
-
   public static void arb_ceil(Real z, Real x, int prec) {
     arblibJNI.arb_ceil(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
   }

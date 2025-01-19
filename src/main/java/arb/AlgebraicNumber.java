@@ -224,6 +224,11 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
 
   String name;
   
+  public RealPolynomial div(RealPolynomial x, int prec, RealPolynomial result)
+  {   
+      return result.set(this).div(x, prec, result);    
+  }
+  
   @SuppressWarnings("unchecked")
   @Override
   public <N extends Named> N setName(String name)

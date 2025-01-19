@@ -354,7 +354,6 @@ public class arblibJNI {
   public final static native void arb_poly_add(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_, long jarg3, RealPolynomial jarg3_, int jarg4);
   public final static native void arb_poly_sub(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_, long jarg3, RealPolynomial jarg3_, int jarg4);
   public final static native void arb_poly_fit_length(long jarg1, RealPolynomial jarg1_, int jarg2);
-  public final static native void acb_calc_gl_node(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, int jarg4, int jarg5);
   public final static native void arb_ceil(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_mat_bound_frobenius_norm(long jarg1, Magnitude jarg1_, long jarg2, RealMatrix jarg2_);
   public final static native void arb_mat_bound_inf_norm(long jarg1, Magnitude jarg1_, long jarg2, RealMatrix jarg2_);

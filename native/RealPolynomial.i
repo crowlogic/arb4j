@@ -110,7 +110,15 @@ import arb.functions.real.RealFunction;
     }
     return this;
   }
-  
+
+  public RealPolynomial set(AlgebraicNumber algebraicNumber)
+  {
+    try ( var blip = new Real())
+    {
+      return set(algebraicNumber.getReal(bits, blip));
+    }
+  }
+    
   public RealPolynomial set(String string)
   {
     RealPolynomialNullaryFunction.express(string).evaluate(bits, this);

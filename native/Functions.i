@@ -675,7 +675,6 @@ void arb_poly_sub(arb_poly_t res, const arb_poly_t poly1,
 
 void arb_poly_fit_length(arb_poly_t poly, slong len);
               
-void acb_calc_gl_node(arb_t x, arb_t w, slong i, slong k, slong prec);
 void arb_ceil(arb_t z, const arb_t x, slong prec);
 
 void arb_mat_bound_frobenius_norm(mag_t b, const arb_mat_t A);
@@ -1048,8 +1047,6 @@ void flint_cleanup_master(void);
 
 
 extern "C" {
-
-void acb_calc_gl_node(arb_t x, arb_t w, slong i, slong k, slong prec);
 
 int arf_cmp(const arf_t x, const arf_t y);
  
