@@ -449,7 +449,8 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                                                 right,
                                                 rightType,
                                                 toString(),
-                                                position));
+                                                position,
+                                                operation));
 
     }
 
