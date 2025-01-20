@@ -140,6 +140,11 @@ import arb.functions.real.RealFunction;
     return this;
   }
 
+  public RealPolynomial mul(AlgebraicNumber x, int bits, RealPolynomial result)
+  {
+    return result.set(x).mul(this, bits, result);
+  }
+  
   public RealPolynomial neg(int bits, RealPolynomial result)
   {
     return neg(result);

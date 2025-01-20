@@ -405,6 +405,14 @@
     </equation*>
   </proof>
 
+  \;
+
+  \;
+
+  \;
+
+  \;
+
   <\corollary>
     The even moments <math|\<mu\><rsub|2*n>> can be derived through the
     following transformation:

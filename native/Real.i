@@ -158,7 +158,12 @@ import arb.utensils.Utensils;
   {
     return result.set(this).add(element, prec, result);
   }
-  
+
+  public Real set(AlgebraicNumber x)
+  {
+   return set(x,bits());
+  }
+    
   public Real(Arena arena)
   {
     this(arena.allocate(Real.BYTES).address(),
@@ -669,11 +674,23 @@ import arb.utensils.Utensils;
 
     }
     Real x = res.get(0);
-    x.add(this, bits);
-    x.bits = bits;
+    if (x != null)
+    {
+      x.add(this, bits);
+      x.bits = bits;
+    }
+    else
+    {
+      res.set(this);
+    }
     return res;
   }
 
+  public RealPolynomial mul(AlgebraicNumber x, int bits, RealPolynomial result)
+  {
+    return result.set(x).mul(this, bits, result);
+  }
+  
   public static Real of(String string, int bits)
   {
     return new Real(string,bits);
