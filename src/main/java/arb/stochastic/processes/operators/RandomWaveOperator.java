@@ -11,7 +11,7 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.FourierTransform;
 import arb.functions.Function;
-import arb.functions.RealSquareIntegrableFunction;
+import arb.functions.RealSquareIntegrableFunctions;
 import arb.functions.integer.RealSequence;
 import arb.functions.polynomials.orthogonal.real.ChebyshevPolynomialsOfTheFirstKind;
 import arb.functions.polynomials.orthogonal.real.LegendrePolynomials;
@@ -24,13 +24,13 @@ import arb.operators.Operator;
 import arb.stochastic.processes.RealKarhunenLoeveExpansion;
 
 /**
- * The {@link J0IntegralCovarianceOperator} represents the
+ * The {@link RandomWaveOperator} represents the
  * {@link IntegralCovarianceOperator} with the
  * {@link RealBesselFunctionOfTheFirstKind} of order 0, J₀, as its
  * {@link TranslationInvariantKernel}. This {@link Operator} has a special
  * relationship with the orthogonal complement of the Fourier transforms of the
- * {@link ChebyshevPolynomialsOfTheFirstKind} by virtue of the fact that
- * they comprise its eigenfunctions.
+ * {@link ChebyshevPolynomialsOfTheFirstKind} by virtue of the fact that they
+ * comprise its eigenfunctions.
  *
  * 
  * <p>
@@ -74,28 +74,27 @@ import arb.stochastic.processes.RealKarhunenLoeveExpansion;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class J0IntegralCovarianceOperator implements
-                                          IntegralCovarianceOperator<Real,
-                                                        RealBesselFunctionOfTheFirstKind,
-                                                        RealSquareIntegrableFunction>
+public class RandomWaveOperator implements
+                                StationaryIntegralCovarianceOperator<RealBesselFunctionOfTheFirstKind>
 {
   /**
    * <pre>
-   * h(s)=InvFourier(sqrt(S(w)),w,s)=Sqrt[\[Pi]] Gamma[3/4] Hypergeometric0F1Regularized[5/4, -(s^2/4)]
-   * S(w)=Fourier(J0(t),t,w)=1/sqrt(1-w^2);
+   * h(s)=(√(π)⋅Γ(3/4)⋅J(1/4,s)⋅2^(1/4))/(s^(1/4))
+   * S(w)=Fourier(J0(t),t,w)=1/sqrt(1-w^2)
+   * √(S(w))=Fourier(h(s),s,w)
    * </pre>
    * 
    * @param args
    */
   public static void main(String args[])
   {
-    J0IntegralCovarianceOperator j0      = new J0IntegralCovarianceOperator();
-    Context                      context = new Context(Integer.named("k").set(3));
-    RationalFunctionSequence     seq     =
-                                     RationalFunctionSequence.express("Ψ:x->√((2*k+½)/π)*((k+1)⋰-½)²*√((8*k+2)/π)*(-1)ᵏ*j(2*k,x)",
-                                                                      context);
+    RandomWaveOperator       j0      = new RandomWaveOperator();
+    Context                  context = new Context(Integer.named("k").set(3));
+    RationalFunctionSequence seq     =
+                                 RationalFunctionSequence.express("Ψ:x->√((2*k+½)/π)*((k+1)⋰-½)²*√((8*k+2)/π)*(-1)ᵏ*j(2*k,x)",
+                                                                  context);
 
-    RationalFunction             func    = seq.evaluate(3, 128);
+    RationalFunction         func    = seq.evaluate(3, 128);
     System.out.println("psi(3)=" + func);
 
   }
@@ -112,22 +111,16 @@ public class J0IntegralCovarianceOperator implements
    * FourierTransform} of 1/√(1-x²) which is the the orthogonality {@link Measure}
    * of the {@link RealChebyshevPolynomialsOfTheFirstKind} . </p>
    */
-  public static RealSequence                         λₖ      =
-                                                        RealSequence.express("λₖ:k➔√((2*k+½)/π)*((k+1)⋰-½)²");
+  public static RealSequence                         λₖ      = RealSequence.express("λₖ:k➔√((2*k+½)/π)*((k+1)⋰-½)²");
 
   public static Context                              context = new Context(Integer.named("k"));
 
-  public static Expression<Real, Real, RealFunction> Ψ       =
-                                                       RealFunction.compile("Ψ:x->√((8*k+2)/π)*(-1)ᵏ*j(2*k,x)",
-                                                                            context);
+  public static Expression<Real, Real, RealFunction> Ψ       = RealFunction.compile("Ψ:x->√((8*k+2)/π)*(-1)ᵏ*j(2*k,x)",
+                                                                                    context);
 
-  private RealBesselFunctionOfTheFirstKind           kernel  =
-                                                            new RealBesselFunctionOfTheFirstKind(0);
+  private RealBesselFunctionOfTheFirstKind           kernel  = new RealBesselFunctionOfTheFirstKind(0);
 
-  public RealKarhunenLoeveExpansion<RealFunction,
-                RealSquareIntegrableFunction,
-                J0IntegralCovarianceOperator>
-         getKLExpansion()
+  public RealKarhunenLoeveExpansion<RealFunction, RealSquareIntegrableFunctions, RandomWaveOperator> getKLExpansion()
   {
     return new RealKarhunenLoeveExpansion<>()
     {
@@ -160,8 +153,8 @@ public class J0IntegralCovarianceOperator implements
    * @return The result of applying the {@link IntegralCovarianceOperator} to x.
    */
   @Override
-  public RealSquareIntegrableFunction
-         apply(RealSquareIntegrableFunction f, int bits, RealSquareIntegrableFunction result)
+  public RealSquareIntegrableFunctions
+         apply(RealSquareIntegrableFunctions f, int bits, RealSquareIntegrableFunctions result)
   {
     assert false : "TODO: return the eigenfunction expansion √((4k-3)/2π)*P^(2(k-½),x-y) where P^ is the Fourier transform of the (2(k-½)-th Legendre polynomial";
     return null;

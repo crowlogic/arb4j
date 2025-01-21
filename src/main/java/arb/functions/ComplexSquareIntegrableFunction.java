@@ -10,7 +10,7 @@ import arb.documentation.TheArb4jLibrary;
  *      {@link TheArb4jLibrary}
  */
 public interface ComplexSquareIntegrableFunction extends
-                                                 SquareInterableFunction<Complex>
+                                                 SquareInterableFunctions<Complex>
 {
 
 }

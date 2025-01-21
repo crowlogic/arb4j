@@ -10,7 +10,7 @@ import arb.operators.IntegralOperator;
  *      {@link TheArb4jLibrary}
  */
 public interface FourierTransform<D extends Field<? extends D>, F extends Function<? extends D, ? extends D>> extends
-                                 IntegralOperator<D, F, SquareInterableFunction<D>, SquareInterableFunction<D>>
+                                 IntegralOperator<D, F, SquareInterableFunctions<D>, SquareInterableFunctions<D>>
 {
 
 }

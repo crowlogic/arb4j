@@ -10,9 +10,9 @@ import arb.space.topological.VectorSpace;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface SquareInterableFunction<R extends Field<? extends R>> extends
-                                        VectorSpace<R>,
-                                        Function<R, R>
+public interface SquareInterableFunctions<R extends Field<? extends R>> extends
+                                         VectorSpace<R>,
+                                         Function<R, R>
 {
 
 }

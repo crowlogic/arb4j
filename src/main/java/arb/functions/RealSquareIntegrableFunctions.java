@@ -10,8 +10,8 @@ import arb.space.topological.RealVectorSpace;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface RealSquareIntegrableFunction extends
-                                              SquareInterableFunction<Real>,
+public interface RealSquareIntegrableFunctions extends
+                                              SquareInterableFunctions<Real>,
                                               RealVectorSpace
 {
 

@@ -3,7 +3,7 @@ package arb.documentation.examples.quantum.mechanics;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.RealSquareIntegrableFunction;
+import arb.functions.RealSquareIntegrableFunctions;
 
 /**
  *
@@ -12,7 +12,7 @@ import arb.functions.RealSquareIntegrableFunction;
  */
 public class RealPositionOperator extends
                                             PositionOperator<Real,
-                                                          RealSquareIntegrableFunction>
+                                                          RealSquareIntegrableFunctions>
 {
 
 }
