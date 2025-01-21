@@ -1,1 +1,0 @@
-package arb.documentation.examples.quantum.mechanics;

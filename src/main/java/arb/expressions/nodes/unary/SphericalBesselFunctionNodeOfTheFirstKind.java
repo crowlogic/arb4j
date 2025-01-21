@@ -47,7 +47,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
                                                       FunctionNode<D, R, F>
 {
 
-  private String functionFieldName;
+  final private String functionFieldName;
 
   Node<D, R, F>  order;
 
@@ -85,6 +85,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
     }
 
     functionFieldName = expression.newIntermediateVariable("j", SphericalBesselFunction.class, true);
+    //assert functionFieldName != null : "functionFieldName is null when it shouldn't be";
   }
 
   @Override
@@ -124,6 +125,8 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
   {
     assert useInitializer : "generateInitializer shouldn't be called if useInitializer isn't true";
     expression.insideInitializer = true;
+    assert !expression.isFunctional() : "TODO: handle functional";
+    
     loadSphericalBesselFunctionOntoStack(mv);
     Compiler.getField(mv, SphericalBesselFunction.class, "n", Integer.class);
     generateOrder(mv);
@@ -175,6 +178,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
 
   public void loadFunctionFieldOntoStack(MethodVisitor mv)
   {
+    assert functionFieldName != null : "functionFieldName is null for " + this;
     expression.loadThisFieldOntoStack(mv, functionFieldName, SphericalBesselFunction.class);
   }
 

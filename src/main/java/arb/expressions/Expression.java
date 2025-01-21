@@ -1502,6 +1502,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                         fieldName,
                         fieldType.descriptorString());
     }
+    assert fieldName != null : "fieldName is null";
+    assert fieldType != null : "fieldType is null";
+    
     methodVisitor.visitFieldInsn(GETFIELD, className, fieldName, fieldType.descriptorString());
     return methodVisitor;
   }

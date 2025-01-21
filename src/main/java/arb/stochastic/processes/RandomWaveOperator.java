@@ -1,6 +1,10 @@
+package arb.stochastic.processes;
+
 /**
- * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-package arb.documentation.examples.quantum;
+public class RandomWaveOperator
+{
+
+}
