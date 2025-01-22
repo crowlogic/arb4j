@@ -50,9 +50,5 @@ public class RealFunctionTest extends
     assertEquals(oneOverThirthy, val);
   }
 
-  public static void testRandomWaveEigenfunctions()
-  {
-    assert false : "TODO: complete https://github.com/crowlogic/arb4j/issues/531 including extracting the latex snippets hastily strewn together on the mobile";
-  }
 
 }
