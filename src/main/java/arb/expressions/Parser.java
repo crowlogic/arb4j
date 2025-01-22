@@ -116,7 +116,7 @@ public class Parser
    * fifteen sixteenths, Any zero-width, invisible character can be used to separate the "1" from 
    * the "15" in an expression such as "15⁄16"  because the rendering engine will declare the fraction 
    * ended when it encounters a symbol such as U+2064 INVISIBLE PLUS, U+200C ZERO WIDTH NON-JOINER, 
-   * U+2060 WORD JOINER or other invisible character which produces the same result  
+   * U+2060 WORD JOINER or other invisible character which produces the same result
    * </pre>
    * 
    * @param input
@@ -320,7 +320,7 @@ public class Parser
     return superscriptChars.contains(character);
   }
 
-  public static String subscriptToRegular(String input)
+  public static String subscriptAndSuperscriptsToRegular(String input)
   {
     return input.replace("₀", "0")
                 .replace("₁", "1")
@@ -348,7 +348,9 @@ public class Parser
                 .replace("ₜ", "t")
                 .replace("ᵤ", "u")
                 .replace("ᵥ", "v")
-                .replace("ₓ", "x");
+                .replace("ₓ", "x")
+                .replace("⁽", "(")
+                .replace("⁾", ")");
   }
 
   public static String toSuperscript(int number)

@@ -598,10 +598,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       node = (N) new VectorNode<D, C, F>(this);
     }
-    else if (nextCharacterIs('('))
+    else if (nextCharacterIs('(', '⁽'))
     {
       node = resolve();
-      require(')');
+      require(')', '⁾');
     }
     else if (nextCharacterIs('∂'))
     {
@@ -747,11 +747,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (nextCharacterIs('^'))
     {
-      final boolean parenthetical = nextCharacterIs('(');
+      final boolean parenthetical = nextCharacterIs('(', '⁽');
       node = node.pow(parenthetical ? resolve() : evaluate());
       if (parenthetical)
       {
-        require(')');
+        require(')', '⁾');
       }
       return node;
     }
@@ -1302,8 +1302,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     String name = functionName != null ? (functionName + ":") : "";
     updateStringRepresentation();
     String arrow = expression.contains("➔") || independentVariable == null ? "" : (independentVariable.getName() + "➔");
-    // TODO: need to generate instructions so that the toString() uses String.format to include the value (only if it was part of the independent variable because thats the only timne
-    // its fixed for the whole class, if its just a Context variable then it can change between invocations
+    // TODO: need to generate instructions so that the toString() uses String.format
+    // to include the value (only if it was part of the independent variable because
+    // thats the only timne
+    // its fixed for the whole class, if its just a Context variable then it can
+    // change between invocations
 //    assert !functionalDependsOnIndependentVariable : "TODO: handle functionalDependsOnIndependentVariable "
 //                                                     + functionalIndependentVariable + "  " + context.getVariable(functionalIndependentVariable));
 //                                                                  
@@ -1504,7 +1507,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     assert fieldName != null : "fieldName is null";
     assert fieldType != null : "fieldType is null";
-    
+
     methodVisitor.visitFieldInsn(GETFIELD, className, fieldName, fieldType.descriptorString());
     return methodVisitor;
   }
@@ -1657,7 +1660,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
     }
     var substring = expression.substring(startPos, position);
-    return Parser.subscriptToRegular(substring.trim());
+    return Parser.subscriptAndSuperscriptsToRegular(substring.trim());
   }
 
   /**

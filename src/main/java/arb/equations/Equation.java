@@ -22,10 +22,10 @@ public class Equation<D, C, F extends Function<? extends D, ? extends C>> implem
                      RegularProposition
 {
 
-  final Class<? extends C> coDomainType;
-  final Class<? extends F> functionType;
-  final Class<? extends D> domainType;
-  private Context          context;
+  public Class<? extends C> coDomainType;
+  public Class<? extends F> functionType;
+  public Class<? extends D> domainType;
+  public Context            context;
 
   public Equation(Class<? extends D> domainType,
                   Class<? extends C> coDomainType,
@@ -34,6 +34,15 @@ public class Equation<D, C, F extends Function<? extends D, ? extends C>> implem
                   F rightSide)
   {
     super();
+    initialize(domainType, coDomainType, functionClass, leftSide, rightSide);
+  }
+
+  public void initialize(Class<? extends D> domainType,
+                         Class<? extends C> coDomainType,
+                         Class<? extends F> functionClass,
+                         F leftSide,
+                         F rightSide)
+  {
     this.leftSide     = leftSide;
     this.rightSide    = rightSide;
     this.domainType   = domainType;
@@ -48,11 +57,28 @@ public class Equation<D, C, F extends Function<? extends D, ? extends C>> implem
                   Context context)
   {
     super();
+    initialize(domainType, coDomainType, functionClass, equationString, context);
+  }
+
+  public void initialize(Class<? extends D> domainType,
+                         Class<? extends C> coDomainType,
+                         Class<? extends F> functionClass,
+                         String equationString,
+                         Context context)
+  {
+    initialize(domainType, coDomainType, functionClass, context);
+    parse(equationString);
+  }
+
+  public void initialize(Class<? extends D> domainType,
+                         Class<? extends C> coDomainType,
+                         Class<? extends F> functionClass,
+                         Context context)
+  {
     this.domainType   = domainType;
     this.coDomainType = coDomainType;
     this.functionType = functionClass;
     this.context      = context;
-    parse(equationString);
   }
 
   public Equation(Class<? extends D> domainType,
@@ -61,36 +87,52 @@ public class Equation<D, C, F extends Function<? extends D, ? extends C>> implem
                   String equationString)
   {
     super();
+    initialize(domainType, coDomainType, functionClass, equationString);
+  }
+
+  public Equation(Class<? extends D> domainType,
+                  Class<? extends C> coDomainType,
+                  Class<? extends F> functionClass,
+                  Context context)
+  {
+    initialize(domainType, coDomainType, functionClass, context);
+  }
+
+  public void initialize(Class<? extends D> domainType,
+                         Class<? extends C> coDomainType,
+                         Class<? extends F> functionClass,
+                         String equationString)
+  {
     this.domainType   = domainType;
     this.coDomainType = coDomainType;
     this.functionType = functionClass;
     parse(equationString);
   }
 
-  F                           leftSide;
-  F                           rightSide;
-  private Expression<D, C, F> lhs;
-  private Expression<D, C, F> rhs;
+  F                   leftSide;
+  F                   rightSide;
+  Expression<D, C, F> lhs;
+  Expression<D, C, F> rhs;
 
   private void parse(String string)
   {
-    lhs = Function.parse(Parser.expressionToUniqueClassname(string),
+    lhs = Function.parse("lhs" + Parser.expressionToUniqueClassname(string),
                          string,
                          context,
                          domainType,
                          coDomainType,
                          functionType,
-                         string,
+                         "lhs",
                          null);
     lhs.require('=');
-    string = string.substring(lhs.position + 1, string.length());
-    rhs    = Function.parse(Parser.expressionToUniqueClassname(string),
+    string = string.substring(lhs.position-1, string.length());
+    rhs    = Function.parse("rhs" + Parser.expressionToUniqueClassname(string),
                             string,
                             context,
                             domainType,
                             coDomainType,
                             functionType,
-                            string,
+                            "rhs",
                             null);
     try
     {
@@ -102,6 +144,20 @@ public class Equation<D, C, F extends Function<? extends D, ? extends C>> implem
       throwOrWrap(e);
     }
 
+  }
+
+  @Override
+  public String toString()
+  {
+    return String.format("Equation[coDomainType=%s, functionType=%s, domainType=%s, context=%s, leftSide=%s, rightSide=%s, lhs=%s, rhs=%s]",
+                         coDomainType,
+                         functionType,
+                         domainType,
+                         context,
+                         leftSide,
+                         rightSide,
+                         lhs,
+                         rhs);
   }
 
 }

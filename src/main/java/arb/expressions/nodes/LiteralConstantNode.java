@@ -147,7 +147,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   {
     super(expression);
     assert Integer.class.equals(arb.Integer.class) : "an import statement for arb.Integer is probably missing";
-    value       = Parser.subscriptToRegular(constantValueString.trim());
+    value       = Parser.subscriptAndSuperscriptsToRegular(constantValueString.trim());
 
     isDecimal   = value.contains(".");
     isImaginary = ⅈ.equals(value);
