@@ -1,5 +1,6 @@
 package arb.equations;
 
+import arb.Complex;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -9,9 +10,9 @@ import arb.functions.complex.ComplexFunction;
 /**
  * <h2>The Discriminant</h2>
  * <p>
- * The discriminant is a mathematical function that helps determine the nature
- * of roots in a quadratic equation. For a quadratic equation ax² + bx + c = 0,
- * the discriminant is defined by the formula D = b² - 4ac.
+ * The discriminant is a function that determines the nature of roots in a
+ * quadratic equation. For a quadratic equation ax² + bx + c = 0, the
+ * discriminant is defined by the formula D = b² - 4ac.
  * </p>
  * 
  * <h3>Discriminant and Root Nature</h3>
@@ -20,9 +21,9 @@ import arb.functions.complex.ComplexFunction;
  * equation:
  * </p>
  * <ul>
- * <li>If D > 0: Two distinct real roots</li>
- * <li>If D = 0: One repeated real root</li>
- * <li>If D < 0: No real roots (complex roots)</li>
+ * <li>If D > 0: There are two distinct {@link Real} roots</li>
+ * <li>If D = 0: There is one repeated {@link Real} root</li>
+ * <li>If D < 0: There are no real roots, it has only {@link Complex} roots</li>
  * </ul>
  * 
  * <h2>Relationship to Riccati Equation</h2>
@@ -31,7 +32,7 @@ import arb.functions.complex.ComplexFunction;
  * quadratic in the unknown function, expressed as:
  * </p>
  * <p>
- * y′(x) = =p(x) + q(x)y(x) + r(x)y²(x)
+ * y′(x) = p(x) + q(x)y(x) + r(x)y²(x)
  * </p>
  * 
  * <h3>Fractional Riccati Differential Equation</h3>
@@ -52,6 +53,25 @@ import arb.functions.complex.ComplexFunction;
  * <p>
  * The discriminant provides a direct method to classify the solution space of
  * both standard and fractional Riccati equations.
+ * </p>
+ * <h2>Discriminant as Convergence Measure</h2>
+ * <p>
+ * The discriminant △(x) = q²(x) - 4p(x)r(x) is a function of all parameters
+ * embedded in p(x), q(x), and r(x). When Newton's method converges, it finds
+ * values making △(x) = 0 (or arbitrarily close).
+ * </p>
+ * 
+ * <h3>Convergence Properties</h3>
+ * <ol>
+ * <li>At convergence, we've found a solution where the quadratic, linear, and
+ * constant terms balance</li>
+ * <li>This balance point is exactly where △(x) = 0</li>
+ * <li>The parameters in p,q,r determine where these balance points exist</li>
+ * </ol>
+ * 
+ * <p>
+ * The discriminant isn't a static property - it's a dynamic measure of how
+ * close we are to a solution given the parameter values we're working with.
  * </p>
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
