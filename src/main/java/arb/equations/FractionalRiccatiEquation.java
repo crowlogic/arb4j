@@ -100,4 +100,9 @@ public class FractionalRiccatiEquation extends
          r);
   }
 
+  public ComplexFunction discriminant()
+  {
+    return ComplexFunction.express("discriminant", "t➔q(t)²-4*p(t)*r(t)", context);
+  }
+
 }

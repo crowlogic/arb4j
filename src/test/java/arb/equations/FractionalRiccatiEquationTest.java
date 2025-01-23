@@ -20,7 +20,12 @@ public class FractionalRiccatiEquationTest extends
                                                                                         "0",
                                                                                         "-1",
                                                                                         "1");
+
+    var                       discriminant              = fractionalRiccatiEquation.discriminant();
+
     System.out.println(fractionalRiccatiEquation);
+    System.out.println("discriminant=" + discriminant);
+
   }
 
 }
