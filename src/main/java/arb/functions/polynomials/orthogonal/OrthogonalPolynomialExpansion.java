@@ -1,5 +1,8 @@
 package arb.functions.polynomials.orthogonal;
 
+import java.util.ArrayList;
+
+import arb.Field;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;
@@ -15,10 +18,25 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface OrthogonalPolynomialExpansion<D, V, C,
-              O extends OrthogonalPolynomialSequence<? extends D, ? extends V, ? extends C>> extends
-                                              Function<D, V>
+public abstract class OrthogonalPolynomialExpansion<D extends Field<?>, V, C,
+              O extends OrthogonalPolynomialSequence<? extends D, ? extends V, ? extends C>> implements
+                                                   Function<D, V>
 {
-  public O basis();
+  public D projections;
+  public ArrayList<C> basisElements;
+
+  public OrthogonalPolynomialExpansion(O basis, D projections)
+  {
+    this.basis         = basis;
+    this.projections   = projections;
+    this.basisElements = new ArrayList<>(projections.dim());
+    var basisIterator = basis.iterator();
+    for (int i = 0; i < projections.dim(); i++)
+    {
+      basisElements.add(basisIterator.next());
+    }
+  }
+
+  public O basis;
 
 }

@@ -25,13 +25,12 @@ import arb.functions.real.RealFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ChebyshevPolynomialsOfTheFirstKind implements
+public class ChebyshevPolynomialsOfTheFirstKind extends
                                                 RealOrthogonalPolynomialSequence
 {
 
   @Override
-  public Class<RealPolynomial>
-         coDomainType()
+  public Class<RealPolynomial> coDomainType()
   {
     return RealPolynomial.class;
   }
@@ -49,11 +48,7 @@ public class ChebyshevPolynomialsOfTheFirstKind implements
   RealPolynomialSequence T = RealPolynomialSequence.express("T:n➔when(n=0,1,n=1,x,else,2*x*T(n-1)-T(n-2))");
 
   @Override
-  public RealPolynomial
-         evaluate(Integer n,
-                  int order,
-                  int bits,
-                  RealPolynomial res)
+  public RealPolynomial evaluate(Integer n, int order, int bits, RealPolynomial res)
   {
     return T.evaluate(n, order, bits, res);
 
@@ -67,15 +62,13 @@ public class ChebyshevPolynomialsOfTheFirstKind implements
   private RealFunction orthogonalityMeasure;
 
   @Override
-  public Domain<Real>
-         domainOfOrthogonality()
+  public Domain<Real> domainOfOrthogonality()
   {
     return domain;
   }
 
   @Override
-  public RealFunction
-         orthogonalityMeasure()
+  public RealFunction orthogonalityMeasure()
   {
     if (orthogonalityMeasure == null)
     {
@@ -85,8 +78,7 @@ public class ChebyshevPolynomialsOfTheFirstKind implements
   }
 
   @Override
-  public Iterator<RealPolynomial>
-         iterator()
+  public Iterator<RealPolynomial> iterator()
   {
     return new RealOrthogonalPolynomialSequenceIterator(this);
   }

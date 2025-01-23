@@ -49,9 +49,10 @@ import arb.functions.real.RealNullaryFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class JacobiPolynomials implements
-                               AutoCloseable,
-                               RealOrthogonalPolynomialSequence
+public class JacobiPolynomials extends
+                               RealOrthogonalPolynomialSequence implements
+                               AutoCloseable
+
 {
 
   @Override

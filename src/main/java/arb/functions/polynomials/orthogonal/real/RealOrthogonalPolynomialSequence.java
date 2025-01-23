@@ -13,12 +13,12 @@ import arb.functions.real.RealFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface RealOrthogonalPolynomialSequence extends
-                                                  OrthogonalPolynomialSequence<Real, Real, RealPolynomial>
+public abstract class RealOrthogonalPolynomialSequence extends
+                                                       OrthogonalPolynomialSequence<Real, Real, RealPolynomial>
 {
 
-  Domain<Real> domainOfOrthogonality();
+  public abstract Domain<Real> domainOfOrthogonality();
 
-  RealFunction orthogonalityMeasure();
+  public abstract RealFunction orthogonalityMeasure();
 
 }

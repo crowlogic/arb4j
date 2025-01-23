@@ -1,5 +1,7 @@
 package arb.functions.polynomials.orthogonal;
 
+import java.util.ArrayList;
+
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.polynomials.OrthogonalSequence;
@@ -9,10 +11,13 @@ import arb.functions.polynomials.OrthogonalSequence;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface OrthogonalPolynomialSequence<D, V, C> extends
-                                             OrthogonalPolynomialBasis<D, C>,
-                                             OrthogonalSequence<D,C>
-                                             
+public abstract class OrthogonalPolynomialSequence<D, V, C> implements
+                                                  OrthogonalPolynomialBasis<D, C>,
+                                                  OrthogonalSequence<D, C>
+
 {
+  public C            basis;
+  public D            projections;
+  public ArrayList<V> basisElements;
 
 }

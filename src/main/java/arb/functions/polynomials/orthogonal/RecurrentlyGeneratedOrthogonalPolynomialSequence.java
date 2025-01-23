@@ -41,8 +41,8 @@ import arb.functions.polynomials.SequenceIterator;
  *      {@link TheArb4jLibrary}
  */
 public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R, V,
-              E extends AutoCloseableAssignable<? extends E>> implements
-                                                                      OrthogonalPolynomialSequence<R, V, E>,
+              E extends AutoCloseableAssignable<? extends E>> extends
+                                                                      OrthogonalPolynomialSequence<R, V, E> implements
                                                                       Initializable
 {
 

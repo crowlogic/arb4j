@@ -14,13 +14,9 @@ import arb.documentation.TheArb4jLibrary;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class JacobiPolynomialExpansion implements
+public class JacobiPolynomialExpansion extends
                                        RealOrthogonalPolynomialExpansion<JacobiPolynomials>
 {
-
-  public final JacobiPolynomials         basis;
-  public final Real                      projections;
-  public final ArrayList<RealPolynomial> basisElements;
 
   /**
    * Default to α=β=-½ which is the {@link Type1ChebyshevPolynomials}
@@ -41,32 +37,20 @@ public class JacobiPolynomialExpansion implements
 
   public JacobiPolynomialExpansion(Real α, Real β, Real projections)
   {
-    basis              = new JacobiPolynomials(α,
-                                               β);
-    this.projections   = projections;
-    this.basisElements = new ArrayList<>(projections.size());
-    JacobiPolynomials        basis         = basis();
-    Iterator<RealPolynomial> basisIterator = basis.iterator();
-    for (int i = 0; i < projections.size(); i++)
-    {
-      basisElements.add(basisIterator.next());
-    }
+    super(new JacobiPolynomials(α,
+                                β),
+          projections);
+
   }
 
   @Override
-  public JacobiPolynomials basis()
-  {
-    return basis;
-  }
-
-  @Override
-  public Real evaluate(Real t, int order, int bits, Real res)
+  public Real evaluate(Real t, int order, int bits, Real result)
   {
 
     var measure = basis.orthogonalityMeasure();
 
-    res.zero();
-    try ( Real blip = new Real(); Real bloop = new Real())
+    result.zero();
+    try ( Real blip = new Real();)
     {
       Iterator<RealPolynomial> basisIterator = basisElements.iterator();
 
@@ -74,11 +58,10 @@ public class JacobiPolynomialExpansion implements
       {
         RealPolynomial basisElement                  = basisIterator.next();
         Real           basisElementAtEvaluationPoint = basisElement.evaluate(t, bits, blip);
-        res.add(basisElementAtEvaluationPoint.mul(projection, bits));
+        result.add(basisElementAtEvaluationPoint.mul(projection, bits));
       }
-      Real measureAtEvaluationPoint = measure.evaluate(t, order, bits, bloop);
-
-      return res.mul(measureAtEvaluationPoint, bits);
+      Real measureAtEvaluationPoint = measure.evaluate(t, order, bits, blip);
+      return result.mul(measureAtEvaluationPoint, bits);
     }
 
   }
