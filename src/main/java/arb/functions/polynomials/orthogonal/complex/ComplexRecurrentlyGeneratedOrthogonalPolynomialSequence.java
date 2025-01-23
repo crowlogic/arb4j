@@ -13,7 +13,9 @@ import arb.functions.polynomials.orthogonal.RecurrentlyGeneratedOrthogonalPolyno
  *      {@link TheArb4jLibrary}
  */
 public abstract class ComplexRecurrentlyGeneratedOrthogonalPolynomialSequence extends
-                                                                              RecurrentlyGeneratedOrthogonalPolynomialSequence<Complex, ComplexPolynomial>
+                                                                              RecurrentlyGeneratedOrthogonalPolynomialSequence<
+                                                                                            Complex, Complex,
+                                                                                            ComplexPolynomial>
 {
 
   @Override

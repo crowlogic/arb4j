@@ -9,9 +9,9 @@ import arb.functions.polynomials.OrthogonalSequence;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface OrthogonalPolynomialSequence<R, E> extends
-                                             OrthogonalPolynomialBasis<R, E>,
-                                             OrthogonalSequence<R,E>
+public interface OrthogonalPolynomialSequence<D, V, C> extends
+                                             OrthogonalPolynomialBasis<D, C>,
+                                             OrthogonalSequence<D,C>
                                              
 {
 

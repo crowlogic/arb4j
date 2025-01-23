@@ -15,8 +15,10 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface OrthogonalPolynomialExpansion<D, C, F extends Function<? extends D, ? extends C>,
-              O extends OrthogonalPolynomialSequence<? extends D, ? extends C>>
+public interface OrthogonalPolynomialExpansion<D, V, C,
+              O extends OrthogonalPolynomialSequence<? extends D, ? extends V, ? extends C>> extends
+                                              Function<D, V>
 {
+  public O basis();
 
 }

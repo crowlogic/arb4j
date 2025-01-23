@@ -40,9 +40,9 @@ import arb.functions.polynomials.SequenceIterator;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R,
+public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R, V,
               E extends AutoCloseableAssignable<? extends E>> implements
-                                                                      OrthogonalPolynomialSequence<R, E>,
+                                                                      OrthogonalPolynomialSequence<R, V, E>,
                                                                       Initializable
 {
 

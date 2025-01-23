@@ -12,7 +12,8 @@ import arb.functions.polynomials.orthogonal.RecurrentlyGeneratedOrthogonalPolyno
  *      {@link TheArb4jLibrary}
  */
 public abstract class RealRecurrentlyGeneratedOrthogonalPolynomialSequence extends
-                                                                           RecurrentlyGeneratedOrthogonalPolynomialSequence<Real, RealPolynomial>
+                                                                           RecurrentlyGeneratedOrthogonalPolynomialSequence<
+                                                                                         Real, Real, RealPolynomial>
 {
 
   @Override
@@ -23,7 +24,8 @@ public abstract class RealRecurrentlyGeneratedOrthogonalPolynomialSequence exten
 
   public RealRecurrentlyGeneratedOrthogonalPolynomialSequence(int bits)
   {
-    super(bits, RealPolynomial.class);
+    super(bits,
+          RealPolynomial.class);
     p0.set(1);
   }
 

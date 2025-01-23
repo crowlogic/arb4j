@@ -91,6 +91,8 @@ public class FractionalRiccatiEquation extends
     initialize("t➔Dᵅy(t)=t➔p(t)+q(t)*y(t)+r(t)*y(t)²", context);
   }
 
+  Real c;
+
   public FractionalRiccatiEquation(Real alpha, String p, String q, String r)
   {
     this(new Context(),
@@ -98,6 +100,15 @@ public class FractionalRiccatiEquation extends
          p,
          q,
          r);
+  }
+
+  public ComplexFunction solve(int order, int bits)
+  {
+    c = Real.newVector(order).setName("c");
+    assert false : "TODO: form newton step and iterate until the coeffecient vector c converges, when it does"
+                   + "it will be the coeffecients by which to expand in shifted Jacobi polynomials which will "
+                   + "represent the result";
+    return null;
   }
 
   public ComplexFunction discriminant()
