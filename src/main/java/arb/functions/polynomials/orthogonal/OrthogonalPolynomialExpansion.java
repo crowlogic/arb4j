@@ -22,8 +22,8 @@ public abstract class OrthogonalPolynomialExpansion<D extends Field<?>, V, C,
               O extends OrthogonalPolynomialSequence<? extends D, ? extends V, ? extends C>> implements
                                                    Function<D, V>
 {
-  public D projections;
-  public ArrayList<C> basisElements;
+  public final D projections;
+  public final ArrayList<C> basisElements;
 
   public OrthogonalPolynomialExpansion(O basis, D projections)
   {
