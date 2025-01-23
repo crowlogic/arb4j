@@ -44,15 +44,22 @@ public class JacobiPolynomialExpansion implements
   @Override
   public JacobiPolynomials basis()
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    return basis;
   }
 
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
-  }
+    var basisIterator = basis().iterator();
 
+    try ( Real blip = new Real())
+    {
+      for (Real projection : projections)
+      {
+        res.add(basisIterator.next().evaluate(t, bits, blip).mul(projection, bits), bits);
+      }
+      return res;
+    }
+
+  }
 }

@@ -26,8 +26,9 @@ public class JacobiPolynomialExpansionTest extends
     coeffs.get(6).set(" 0.0374528634467102054861354928430", 128);
     coeffs.get(7).set("0.0302565632558780302891566017182", 128);
     coeffs.get(8).set("0.0251020200671198299517251326431", 128);
-    var expansion = new JacobiPolynomialExpansion(coeffs);
-    ShellFunctions.plot(-1.0, 1.0, 1000, expansion);
+    RealFunction expansion = new JacobiPolynomialExpansion(coeffs);
+    var y = expansion.eval(0.76);
+    System.out.println("y(0.76)=" + y );
   }
 
 }
