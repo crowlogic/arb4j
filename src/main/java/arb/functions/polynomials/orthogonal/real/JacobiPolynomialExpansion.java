@@ -2,6 +2,7 @@ package arb.functions.polynomials.orthogonal.real;
 
 import arb.Real;
 import arb.RealConstants;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 
@@ -50,15 +51,22 @@ public class JacobiPolynomialExpansion implements
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)
   {
-    var basisIterator = basis().iterator();
+    JacobiPolynomials basis         = basis();
+    var               basisIterator = basis.iterator();
+    var               measure       = basis.orthogonalityMeasure();
 
-    try ( Real blip = new Real())
+    res.zero();
+    try ( Real blip = new Real(); Real bloop = new Real())
     {
       for (Real projection : projections)
       {
-        res.add(basisIterator.next().evaluate(t, bits, blip).mul(projection, bits), bits);
+        RealPolynomial basisElement                  = basisIterator.next();
+        Real           basisElementAtEvaluationPoint = basisElement.evaluate(t, bits, blip);
+        res.add(basisElementAtEvaluationPoint.mul(projection, bits));
       }
-      return res;
+      Real measureAtEvaluationPoint = measure.evaluate(t, order, bits, bloop);
+
+      return res.mul(measureAtEvaluationPoint, bits);
     }
 
   }
