@@ -24,6 +24,22 @@ public class Bibliography extends
                           AbstractBibliography
 {
 
+  public static Article       spectralAnalysisOfAbstractFunctions                             =
+                                                                  new Article("Spectral Analysis of Abstract Functions",
+                                                                              "Yu. A. Rozanov",
+                                                                              "1959",
+                                                                              "Theory of Probability & Its Applications",
+                                                                              "4",
+                                                                              "271-287").setNumber("3");
+
+  public static Article       asymptoticallyStationaryHarmonizableProcesses                   =
+                                                                            new Article("On a class of asymptotically stationary harmonizable processes",
+                                                                                        "Dominique Dehay",
+                                                                                        "1987",
+                                                                                        "Journal of Multivariate Analysis",
+                                                                                        "22",
+                                                                                        "251-257").setNumber("2");
+
   public static Book          gaussianProcessesForMachineLearning                             =
                                                                   new Book("Gaussian Processes for Machine Learning",
                                                                            "Carl Edward Rasmussen and Christopher K. I. Williams",
