@@ -1,6 +1,10 @@
 package arb.functions.polynomials.orthogonal.real;
 
+import java.time.Duration;
+
 import arb.Real;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
 import arb.utensils.ShellFunctions;
 import junit.framework.TestCase;
@@ -14,10 +18,10 @@ public class JacobiPolynomialExpansionTest extends
                                            TestCase
 {
 
-  public static void main(String args[])
+  public static void testRealJacobiPolynomialExpansionForArctanh() throws InterruptedException
   {
     // this should come out looking like arctanh
-    var coeffs = Real.newVector(18);
+    var coeffs = Real.newVector(20);
     coeffs.get(0).set("0", 128);
     coeffs.get(1).set("1.57079632679489661923132169164", 128);
     coeffs.get(2).set("0", 128);
@@ -36,9 +40,19 @@ public class JacobiPolynomialExpansionTest extends
     coeffs.get(15).set("0.0302565632558780302891566017182", 128);
     coeffs.get(16).set("0", 128);
     coeffs.get(17).set("0.0251020200671198299517251326431", 128);
+    coeffs.get(18).set("0", 128);
+    coeffs.get(19).set("0.02126119466672988059353758060700755989414", 128);
     RealFunction expansion = new JacobiPolynomialExpansion(coeffs);
-    var          y         = expansion.eval(0.76);
-    System.out.println("y(0.76)=" + y);
+    Real         x         = new Real("0.76",
+                                      128);
+    var          y         = expansion.evaluate(x, 1, 128, new Real());
+
+    assertTrue(y.toString().startsWith("0.804413903516878943668546309744"));
+    if ( System.currentTimeMillis() == 0 )
+    {
+      ShellFunctions.plot(-1, 1, 100, expansion, RealFunction.express("arctanh(x)"));
+      Thread.sleep(Duration.ofMinutes(1));
+    }
   }
 
 }

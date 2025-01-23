@@ -686,6 +686,12 @@ import arb.utensils.Utensils;
     return res;
   }
 
+  public Real arctanh(int prec, Real result)
+  {
+    arblib.arb_atanh(result, this, prec);
+    return result;
+  }
+  
   public RealPolynomial mul(AlgebraicNumber x, int bits, RealPolynomial result)
   {
     return result.set(x).mul(this, bits, result);

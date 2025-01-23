@@ -1,5 +1,8 @@
 package arb.functions.polynomials.orthogonal.real;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import arb.Real;
 import arb.RealConstants;
 import arb.RealPolynomial;
@@ -15,8 +18,9 @@ public class JacobiPolynomialExpansion implements
                                        RealOrthogonalPolynomialExpansion<JacobiPolynomials>
 {
 
-  public final JacobiPolynomials basis;
-  public final Real              projections;
+  public final JacobiPolynomials         basis;
+  public final Real                      projections;
+  public final ArrayList<RealPolynomial> basisElements;
 
   /**
    * Default to α=β=-½ which is the {@link Type1ChebyshevPolynomials}
@@ -37,9 +41,16 @@ public class JacobiPolynomialExpansion implements
 
   public JacobiPolynomialExpansion(Real α, Real β, Real projections)
   {
-    basis            = new JacobiPolynomials(α,
-                                             β);
-    this.projections = projections;
+    basis              = new JacobiPolynomials(α,
+                                               β);
+    this.projections   = projections;
+    this.basisElements = new ArrayList<>(projections.size());
+    JacobiPolynomials        basis         = basis();
+    Iterator<RealPolynomial> basisIterator = basis.iterator();
+    for (int i = 0; i < projections.size(); i++)
+    {
+      basisElements.add(basisIterator.next());
+    }
   }
 
   @Override
@@ -51,13 +62,14 @@ public class JacobiPolynomialExpansion implements
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)
   {
-    JacobiPolynomials basis         = basis();
-    var               basisIterator = basis.iterator();
-    var               measure       = basis.orthogonalityMeasure();
+
+    var measure = basis.orthogonalityMeasure();
 
     res.zero();
     try ( Real blip = new Real(); Real bloop = new Real())
     {
+      Iterator<RealPolynomial> basisIterator = basisElements.iterator();
+
       for (Real projection : projections)
       {
         RealPolynomial basisElement                  = basisIterator.next();
