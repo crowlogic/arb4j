@@ -15,11 +15,8 @@ import arb.logic.Proposition;
  */
 public interface Sentence<W extends Word>
 {
-  public default <C extends Clause<W, Sentence<W>, Proposition<W, Sentence<W>>>>
+  public <C extends Clause<W, Sentence<W>, Proposition<W, Sentence<W>>>>
          Stream<? extends C>
-         structure()
-  {
-    assert false : "parse";
-    return null;
-  }
+         structure();
+
 }

@@ -2,12 +2,18 @@ package arb.equations;
 
 import static arb.utensils.Utensils.throwOrWrap;
 
+import java.util.stream.Stream;
+
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
 import arb.functions.Function;
+import arb.language.Sentence;
+import arb.language.Word;
+import arb.logic.Clause;
+import arb.logic.Proposition;
 import arb.logic.RegularProposition;
 
 /**
@@ -158,6 +164,13 @@ public class Equation<D, C, F extends Function<? extends D, ? extends C>> implem
                          rightSide,
                          lhs,
                          rhs);
+  }
+
+  @Override
+  public <C extends Clause<Word, Sentence<Word>, Proposition<Word, Sentence<Word>>>> Stream<? extends C> structure()
+  {
+    assert false : "TODO";
+    return null;
   }
 
 }

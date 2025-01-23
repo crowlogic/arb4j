@@ -1,7 +1,13 @@
 package arb.documentation.references;
 
+import java.util.stream.Stream;
+
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.language.Sentence;
+import arb.language.Word;
+import arb.logic.Clause;
+import arb.logic.Proposition;
 import arb.theorems.RegularTheorem;
 
 /**
@@ -75,6 +81,13 @@ public class TheoremReference implements
   public String state()
   {
     return String.format("See %s in %s", reference, book);
+  }
+
+  @Override
+  public <C extends Clause<Word, Sentence<Word>, Proposition<Word, Sentence<Word>>>> Stream<? extends C> structure()
+  {
+    assert false : "TODO";
+    return null;
   }
 
 }

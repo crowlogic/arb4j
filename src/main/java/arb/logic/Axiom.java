@@ -10,8 +10,8 @@ package arb.logic;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface Axiom extends
-                       RegularProposition
+public abstract class Axiom implements
+                            RegularProposition
 {
 
 }
