@@ -82,4 +82,10 @@ public class JacobiPolynomialExpansion implements
     }
 
   }
+
+  @Override
+  public String toString()
+  {
+    return String.format("JacobiPolynomialExpansion[%s,%s]", basis.α, basis.β);
+  }
 }

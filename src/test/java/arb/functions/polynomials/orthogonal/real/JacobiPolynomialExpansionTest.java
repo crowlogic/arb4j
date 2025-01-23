@@ -48,9 +48,9 @@ public class JacobiPolynomialExpansionTest extends
     var          y         = expansion.evaluate(x, 1, 128, new Real());
 
     assertTrue(y.toString().startsWith("0.804413903516878943668546309744"));
-    if ( System.currentTimeMillis() == 0 )
+    //if ( System.currentTimeMillis() == 0 )
     {
-      ShellFunctions.plot(-1, 1, 100, expansion, RealFunction.express("arctanh(x)"));
+      ShellFunctions.plot(-1, 1, 1000, expansion, RealFunction.express("arctanh(x)"));
       Thread.sleep(Duration.ofMinutes(1));
     }
   }
