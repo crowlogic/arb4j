@@ -109,10 +109,10 @@ public class Equation<D, C, F extends Function<? extends D, ? extends C>> implem
     parse(equationString);
   }
 
-  F                   leftSide;
-  F                   rightSide;
-  Expression<D, C, F> lhs;
-  Expression<D, C, F> rhs;
+  public F                   leftSide;
+  public F                   rightSide;
+  public Expression<D, C, F> lhs;
+  public Expression<D, C, F> rhs;
 
   private void parse(String string)
   {
@@ -125,7 +125,7 @@ public class Equation<D, C, F extends Function<? extends D, ? extends C>> implem
                          "lhs",
                          null);
     lhs.require('=');
-    string = string.substring(lhs.position-1, string.length());
+    string = string.substring(lhs.position - 1, string.length());
     rhs    = Function.parse("rhs" + Parser.expressionToUniqueClassname(string),
                             string,
                             context,
