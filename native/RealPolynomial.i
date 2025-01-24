@@ -483,6 +483,32 @@ import arb.functions.real.RealFunction;
     return integral;
   }
 
+  public Real integrate(Real lowerLimit, Real upperLimit, int bits, Real result)
+  {
+    try ( var integral = new RealPolynomial();)
+    {
+      integrate(bits, integral);
+      return integral.evaluate(lowerLimit, upperLimit, bits, result);
+    }
+  }
+
+  /**
+   * 
+   * @param lowerLimit
+   * @param upperLimit
+   * @param bits
+   * @param result
+   * @return the value at the upper limit minus the value at the lower limit
+   * 
+   */
+  public Real evaluate(Real lowerLimit, Real upperLimit, int bits, Real result)
+  {
+    try ( var blip = new Real())
+    {
+      return evaluate(upperLimit, bits, blip).sub(evaluate(lowerLimit, bits, result));
+    }
+  }
+  
   /**
    * Calculate the derivative of this polynomial
    * 

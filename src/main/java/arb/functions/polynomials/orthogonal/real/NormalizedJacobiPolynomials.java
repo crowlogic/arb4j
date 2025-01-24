@@ -5,6 +5,7 @@ import arb.Real;
 import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.integer.RealSequence;
 
 /**
  *
@@ -14,18 +15,29 @@ import arb.documentation.TheArb4jLibrary;
 public class NormalizedJacobiPolynomials extends
                                          JacobiPolynomials
 {
+  Real                      blip = new Real();
+
+  public final RealSequence norm;
 
   public NormalizedJacobiPolynomials(Real a, Real b)
   {
     super(a,
           b);
+    norm = RealSequence.express("2^(α + β + 1)*Γ(n + α + 1)*Γ(n + β + 1)/((2*n + α + β + 1)*Γ(n + α + β + 1)*n!)",
+                                context);
   }
 
   @Override
   public RealPolynomial evaluate(Integer t, int order, int bits, RealPolynomial res)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    return super.evaluate(t, order, bits, res).div(norm.evaluate(t, bits, blip), bits, res);
   }
+
+  @Override
+  public void close()
+  {
+    blip.close();
+    blip = null;
+  }   
 
 }
