@@ -505,7 +505,7 @@ import arb.functions.real.RealFunction;
   {
     try ( var blip = new Real())
     {
-      return evaluate(upperLimit, bits, blip).sub(evaluate(lowerLimit, bits, result));
+      return evaluate(upperLimit, bits, result).sub(evaluate(lowerLimit, bits, blip),bits);
     }
   }
   

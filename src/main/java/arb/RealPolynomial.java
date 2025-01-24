@@ -510,7 +510,7 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
     return integral;
   }
 
- public Real integrate(Real lowerLimit, Real upperLimit, int bits, Real result)
+  public Real integrate(Real lowerLimit, Real upperLimit, int bits, Real result)
   {
     try ( var integral = new RealPolynomial();)
     {
@@ -532,7 +532,7 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
   {
     try ( var blip = new Real())
     {
-      return evaluate(upperLimit, bits, blip).sub(evaluate(lowerLimit, bits, result));
+      return evaluate(upperLimit, bits, result).sub(evaluate(lowerLimit, bits, blip),bits);
     }
   }
   
