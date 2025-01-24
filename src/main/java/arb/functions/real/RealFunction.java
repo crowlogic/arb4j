@@ -33,6 +33,118 @@ public interface RealFunction extends
 
   public boolean verbose = false;
 
+  public default RealFunction mul(RealFunction that)
+  {
+    return new RealFunction()
+    {
+      @Override
+      public String typeset()
+      {
+        return String.format("%s \\cdot %s", RealFunction.this.typeset(), that.typeset());
+      }
+
+      @Override
+      public String toString()
+      {
+        return String.format("(%s)*(%s)", RealFunction.this.toString(), that.toString());
+      }
+
+      @Override
+      public Real evaluate(Real t, int order, int bits, Real res)
+      {
+        try ( var blip = new Real())
+        {
+          return RealFunction.this.evaluate(t, order, bits, res).mul(that.evaluate(t, order, bits, blip), bits, res);
+        }
+
+      };
+    };
+  }
+
+  public default RealFunction div(RealFunction that)
+  {
+    return new RealFunction()
+    {
+      @Override
+      public String typeset()
+      {
+        return String.format("\frac{%s}{%s}", RealFunction.this.typeset(), that.typeset());
+      }
+
+      @Override
+      public String toString()
+      {
+        return String.format("(%s)/(%s)", RealFunction.this.toString(), that.toString());
+      }
+
+      @Override
+      public Real evaluate(Real t, int order, int bits, Real res)
+      {
+        try ( var blip = new Real())
+        {
+          return RealFunction.this.evaluate(t, order, bits, res).div(that.evaluate(t, order, bits, blip), bits, res);
+        }
+
+      };
+    };
+  }
+
+  public default RealFunction add(RealFunction that)
+  {
+    return new RealFunction()
+    {
+      @Override
+      public String typeset()
+      {
+        return String.format("(%s) + (%s)", RealFunction.this.typeset(), that.typeset());
+      }
+
+      @Override
+      public String toString()
+      {
+        return String.format("(%s)+(%s)", RealFunction.this.toString(), that.toString());
+      }
+
+      @Override
+      public Real evaluate(Real t, int order, int bits, Real res)
+      {
+        try ( var blip = new Real())
+        {
+          return RealFunction.this.evaluate(t, order, bits, res).add(that.evaluate(t, order, bits, blip), bits, res);
+        }
+
+      };
+    };
+  }
+
+  public default RealFunction sub(RealFunction that)
+  {
+    return new RealFunction()
+    {
+      @Override
+      public String typeset()
+      {
+        return String.format("(%s) - (%s)", RealFunction.this.typeset(), that.typeset());
+      }
+
+      @Override
+      public String toString()
+      {
+        return String.format("(%s)-(%s)", RealFunction.this.toString(), that.toString());
+      }
+
+      @Override
+      public Real evaluate(Real t, int order, int bits, Real res)
+      {
+        try ( var blip = new Real())
+        {
+          return RealFunction.this.evaluate(t, order, bits, res).sub(that.evaluate(t, order, bits, blip), bits, res);
+        }
+
+      };
+    };
+  }
+
   public static Expression<Real, Real, RealFunction> compile(String expression)
   {
     return compile(expression, null);
