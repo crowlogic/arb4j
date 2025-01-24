@@ -330,7 +330,12 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
   {
     return sub(that,prec,this);
   }
-  
+
+  public RealPolynomial mul(int i, int bits)
+  {
+    return mul(i, bits, this);
+  }
+    
   @Override
   public Class<Real> domainType()
   {

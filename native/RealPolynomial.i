@@ -303,7 +303,12 @@ import arb.functions.real.RealFunction;
   {
     return sub(that,prec,this);
   }
-  
+
+  public RealPolynomial mul(int i, int bits)
+  {
+    return mul(i, bits, this);
+  }
+    
   @Override
   public Class<Real> domainType()
   {
