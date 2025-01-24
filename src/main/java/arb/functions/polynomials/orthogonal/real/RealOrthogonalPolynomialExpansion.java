@@ -1,7 +1,5 @@
 package arb.functions.polynomials.orthogonal.real;
 
-import java.util.ArrayList;
-
 import arb.Real;
 import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -20,6 +18,7 @@ public abstract class RealOrthogonalPolynomialExpansion<
                                                        OrthogonalPolynomialExpansion<Real, Real, RealPolynomial, O>
                                                        implements
                                                        RealFunction
+
 {
   public RealOrthogonalPolynomialExpansion(O basis, Real projections)
   {
@@ -27,5 +26,4 @@ public abstract class RealOrthogonalPolynomialExpansion<
           projections);
   }
 
- 
 }

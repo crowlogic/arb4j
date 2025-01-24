@@ -17,7 +17,7 @@ import arb.functions.real.RealFunction;
  * 
  * @param <D> the domain of the function being expanded
  * @param <C> the codomain of the function being expande
- * @param <F> the type of the this{@link #basisElements} that comprise the
+ * @param <V> the type of the this{@link #basisElements} that comprise the
  *            this{@link #basis}
  * @param <O> the type of {@link OrthogonalPolynomialSequence} that will be used
  *            to
@@ -25,12 +25,12 @@ import arb.functions.real.RealFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class OrthogonalPolynomialExpansion<D extends Field<?>, V, C,
-              O extends OrthogonalPolynomialSequence<? extends D, ? extends V, ? extends C>> implements
-                                                   Function<D, V>
+public abstract class OrthogonalPolynomialExpansion<D extends Field<?>, C, V,
+              O extends OrthogonalPolynomialSequence<? extends D, ? extends C, ? extends V>> implements
+                                                   Function<D, C>
 {
   public final D            projections;
-  public final ArrayList<C> basisElements;
+  public final ArrayList<V> basisElements;
 
   public OrthogonalPolynomialExpansion(O basis, D projections)
   {
