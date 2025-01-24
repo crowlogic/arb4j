@@ -20,11 +20,7 @@ public class ShiftedJacobiPolynomials extends
   @Override
   public RealPolynomial evaluate(Integer t, int order, int bits, RealPolynomial res)
   {
-    RealPolynomial wtf = super.evaluate(t, order, bits, res);
-    System.out.println("wtf=" + wtf);
-    var wtf2 = wtf.mul(2, bits,res);
-    System.out.println("wtf2=" + wtf);
-    return wtf.sub(1, bits, res);
+    return super.evaluate(t, order, bits, res).mul(2, bits,res).sub(1, bits, res);
   }
 
   @Override
