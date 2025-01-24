@@ -211,6 +211,7 @@ public class Parser
     expression = stripInvisibleUnicodeFormattingCharacters(expression.replace("->", "➔")
                                                                      .replace("⇒", "➔")
                                                                      .replace("...", "…")
+                                                                     .replace("..", "…")
                                                                      .replaceAll("𝑖", "ⅈ")
                                                                      .replaceAll("I", "ⅈ"));
 

@@ -164,6 +164,11 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                                                new VariableReference<>(dvar = expression.require(',').parseName()),
                                                expression.position,
                                                true);
+      if ( expression.nextCharacterIs('='))
+      {
+        lowerLimit = expression.resolve();
+        upperLimit = expression.require('…').resolve();
+      }
       expression.require(')');
     }
 
