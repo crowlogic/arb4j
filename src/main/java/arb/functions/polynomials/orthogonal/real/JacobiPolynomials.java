@@ -63,6 +63,7 @@ public class JacobiPolynomials extends
 
   }
 
+  
   public static Real                  domain  = new Real("0+/-1",
                                                          128);
 

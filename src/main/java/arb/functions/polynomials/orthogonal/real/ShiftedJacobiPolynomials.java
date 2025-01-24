@@ -14,6 +14,12 @@ public class ShiftedJacobiPolynomials extends
                                       JacobiPolynomials
 {
 
+  @Override
+  public String toString()
+  {
+    return String.format("ShiftedJacobiPolynomials[α=%s, β=%s]", α, β);
+  }
+
   public static Real domain = new Real("0.5+/-0.5",
                                        128);
 
@@ -33,7 +39,7 @@ public class ShiftedJacobiPolynomials extends
   {
     if (orthogonalityMeasure == null)
     {
-      orthogonalityMeasure = RealFunction.express("w", "x➔(2-2*x)^α*(2*x)^β", context);
+      orthogonalityMeasure = RealFunction.express("w", "x➔((1-x)*2)^α*(2*x)^β", context);
     }
     return orthogonalityMeasure;
   }
