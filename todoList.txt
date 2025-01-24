@@ -2,3 +2,4 @@ implement ∂/∂x[∏ᵢ₌₁ᵏfᵢ(x)] = ∑ᵢ₌₁ᵏ[(∂/∂x fᵢ(x))�
 expr compiler:  fractional derivatives
 https://github.com/crowlogic/arb4j/issues/573 functional indep toSTring
 java.lang.NoSuchMethodError: 'arb.Complex arb.Complex.abs(int, arb.Complex)'at √(π)*Γ(¾)*J(¼,|s|)*2^¼÷|s|^¼.evaluate(Unknown
+normaled jacobi polynomials
