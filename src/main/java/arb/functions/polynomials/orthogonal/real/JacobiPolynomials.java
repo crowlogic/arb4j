@@ -16,6 +16,7 @@ import arb.functions.polynomials.RealHypergeometricPolynomialFunction;
 import arb.functions.polynomials.RealOrthogonalPolynomialSequenceIterator;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
+import arb.utensils.ShellFunctions;
 
 /**
  *
@@ -41,7 +42,6 @@ import arb.functions.real.RealNullaryFunction;
  *  P(0,x)=1
  *  P(1,x)=(C(1)x+α-β)/2  
  *  P(n,x)=(A(n,x)*P(n-1,x)-B(n)*P(n-2,x))/E(n)∀n≥2
- * 
  * </pre>
  * 
  * @author Stephen Crowley
@@ -49,6 +49,7 @@ import arb.functions.real.RealNullaryFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
+@SuppressWarnings("resource")
 public class JacobiPolynomials extends
                                RealOrthogonalPolynomialSequence implements
                                AutoCloseable
@@ -67,10 +68,8 @@ public class JacobiPolynomials extends
 
   public int                          bits    = 128;
 
-  @SuppressWarnings("resource")
   public final Real                   α       = new Real().setName("α");
 
-  @SuppressWarnings("resource")
   public final Real                   β       = new Real().setName("β");
 
   final public Context                context = new Context(α,
@@ -143,8 +142,7 @@ public class JacobiPolynomials extends
   @Override
   public List<RealPolynomial> enumerate(int i, int j)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    return ShellFunctions.seq(i, j, this);
   }
 
   @Override
