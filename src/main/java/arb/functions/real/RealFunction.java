@@ -16,13 +16,6 @@ import arb.expressions.Parser;
 import arb.functions.Function;
 
 /**
- * The {@link RealFunction} interface, a part of the arb.functions.real package,
- * models {@link Real}-valued functions. It offers functionality for performing
- * root-related operations, such as root refinement, evaluating convergence
- * factors, and locating roots within intervals. The interface extends
- * {@link Function}<Real, Real> and includes default implementations of various
- * techniques, including Newton's method.
- *
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
