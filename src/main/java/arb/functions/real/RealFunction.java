@@ -342,12 +342,12 @@ public interface RealFunction extends
 
     try ( RealPartition mesh = interval.generateRealPartition(bits, false, sample.getRealXValues()))
     {
-      IntStream coDomain = IntStream.range(0, n);
+      IntStream domain = IntStream.range(0, n);
       if (parallel)
       {
-        coDomain = coDomain.parallel();
+        domain = domain.parallel();
       }
-      coDomain.forEach(i -> evaluate(mesh.get(i), 1, bits, values.get(i)));
+      domain.forEach(i -> evaluate(mesh.get(i), 1, bits, values.get(i)));
       return sample;
     }
   }
