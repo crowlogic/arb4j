@@ -312,7 +312,8 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
 
   public RealPolynomial mul(int multiplicand, int bits, RealPolynomial res)
   {
-    return mul(res.set(multiplicand), bits, res);
+    res.getCoeffs().mul(multiplicand, bits);
+    return res;  
   }
   
   public RealPolynomial mul(Integer multiplicand, int prec, RealPolynomial res)

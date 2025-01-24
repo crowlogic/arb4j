@@ -1,7 +1,5 @@
 package arb.expressions;
 
-import static arb.expressions.Parser.caretNormals;
-
 import arb.Complex;
 import arb.Fraction;
 import arb.Integer;

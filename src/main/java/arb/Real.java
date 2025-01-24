@@ -1850,7 +1850,17 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   @Override
   public Real mul(int i, int prec, Real res)
   {
-    arblib.arb_mul_si(res, this, i, prec);
+    if (dim > 1)
+    {
+      for (var element : this)
+      {
+        element.mul(i, prec);
+      }
+    }
+    else
+    {
+      arblib.arb_mul_si(res, this, i, prec);
+    }
     return res;
   }
  

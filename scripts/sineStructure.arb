@@ -1,5 +1,30 @@
-var f = express("sin(t)");
-var b = π.mul(100,128,new Real()).doubleValue();
-var st = express("2*sin(t/2)^2");
-var y = f.quantize(0,b,10000).structure(1000);
-plot(0,b/10,1000,f,st);
+//\begin{theorem}[Variance Structure of Sine Gaussian Process]
+//Let $X(t) = \sin(t)$ be a Gaussian process. Then the variance
+//structure function $\gamma(h)$ is given by:
+//
+//\[ \gamma(h) = 2\sin^2\left(\frac{h}{2}\right) \]
+//
+//\begin{proof}
+//Consider the covariance function $C(h) = \mathbb{E}[\sin(t)\sin(t+h)]$:
+//
+//1) By trigonometric identity:
+//\[ C(h) = \frac{1}{2}\cos(h) \]
+//
+//2) The variance structure function is defined as:
+//\[ \gamma(h) = \mathbb{E}[(X(t+h) - X(t))^2] = 2[C(0) - C(h)] \]
+//
+//3) Substituting $C(0) = 1$ and $C(h) = \frac{1}{2}\cos(h)$:
+//\[ \gamma(h) = 2\left[1 - \frac{1}{2}\cos(h)\right] \]
+//
+//4) Using half-angle trigonometric identity:
+//\[ \gamma(h) = 2\sin^2\left(\frac{h}{2}\right) \]
+//
+//Thus, the theorem is proved.
+//\end{proof}
+//\end{theorem}
+//*/
+//var f = express("sin(t)");
+//var b = π.mul(100,128,new Real()).doubleValue();
+//var st = express("2*sin(t/2)^2");
+//var y = f.quantize(0,b,10000).structure(1000);
+//plot(0,b/10,1000,f,st);
