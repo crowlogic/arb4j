@@ -236,7 +236,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   {
     assert integralFunction == null ;
     integral = integrand.integrate(integrationVariable.asVariable());
-    var expr = integral.toString();
+    assert false : "TODO: fix this, dont re-parse";
+    var expr = "";
     integralExpression = Function.parse(integralFunctionFieldName,
                                         expr,
                                         expression.context,
