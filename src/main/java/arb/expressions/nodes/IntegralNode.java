@@ -234,6 +234,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   private void computeIndefiniteIntegral(Class<? extends C> resultType)
   {
+    assert integralFunction == null ;
     integral = integrand.integrate(integrationVariable.asVariable());
     var expr = integral.toString();
     integralExpression = Function.parse(integralFunctionFieldName,

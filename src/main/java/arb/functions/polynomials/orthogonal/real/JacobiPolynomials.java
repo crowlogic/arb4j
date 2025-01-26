@@ -57,13 +57,27 @@ public class JacobiPolynomials extends
 {
 
   @Override
+  public RealPolynomialSequence integral()
+  {
+    return new RealPolynomialSequence()
+    {
+
+      @Override
+      public RealPolynomial evaluate(Integer t, int order, int bits, RealPolynomial res)
+      {
+        assert false : "TODO";
+        return null;
+      }
+    };
+  }
+
+  @Override
   public Class<RealPolynomial> coDomainType()
   {
     return RealPolynomial.class;
 
   }
 
-  
   public static Real                  domain  = new Real("0+/-1",
                                                          128);
 

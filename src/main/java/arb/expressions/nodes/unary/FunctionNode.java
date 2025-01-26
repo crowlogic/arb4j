@@ -282,7 +282,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     var                      integral                   = instance.integral();
     FunctionMapping<?, ?, ?> newIntegralFunctionMapping =
-                                                        expression.context.registerFunctionMapping(functionName,
+                                                        expression.context.registerFunctionMapping("int" + functionName,
                                                                                                    integral,
                                                                                                    functionMapping.domain,
                                                                                                    functionMapping.coDomain);

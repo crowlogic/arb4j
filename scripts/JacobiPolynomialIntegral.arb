@@ -4,8 +4,8 @@ var A4 = A.evaluate(4,128);
 A4
 var P4 = P.evaluate(4,128);
 P4
-plot(-1,1,1000,A4);
-plot(-1,1,1000,P4);
+//plot(-1,1,1000,A4);
+//plot(-1,1,1000,P4);
 var context = new Context();
 context.registerSequence("A",A);
 context.registerSequence("P",P);

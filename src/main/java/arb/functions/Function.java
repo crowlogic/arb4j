@@ -12,7 +12,6 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
 import arb.functions.complex.ComplexFunction;
-import arb.functions.real.RealFunction;
 
 /**
  * 
@@ -21,14 +20,13 @@ import arb.functions.real.RealFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-@SuppressWarnings("hiding")
 public interface Function<D, C> extends
                          Closeable,
                          AutoCloseable,
                          Typesettable
 {
 
-  public default <F extends Function<D,C>> F integral()
+  public default Function<D,C> integral()
   {
     assert false : "TODO: " + getClass() + " should implement this";
     return null;

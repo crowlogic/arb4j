@@ -105,7 +105,7 @@ public class Context
       Dependency               depInfo      = new Dependency(functionName);
 
       List<String>             dependencies = depInfo.dependencies;
-      if (function.expression.referencedFunctions != null)
+      if (function.expression != null && function.expression.referencedFunctions != null)
       {
         dependencies.addAll(function.expression.referencedFunctions.keySet()
                                                                    .stream()
