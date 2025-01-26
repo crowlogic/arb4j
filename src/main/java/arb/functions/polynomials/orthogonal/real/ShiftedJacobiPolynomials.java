@@ -2,6 +2,7 @@ package arb.functions.polynomials.orthogonal.real;
 
 import arb.Integer;
 import arb.Real;
+import arb.RealConstants;
 import arb.RealPolynomial;
 import arb.domains.Domain;
 import arb.functions.real.RealFunction;
@@ -13,6 +14,15 @@ import arb.functions.real.RealFunction;
 public class ShiftedJacobiPolynomials extends
                                       JacobiPolynomials
 {
+
+  /**
+   * Default to alpha=beta=-1/2 which coincides with the (shifted) Type-1 Chebyshev Polynomials
+   */
+  public ShiftedJacobiPolynomials()
+  {
+    this(RealConstants.negHalf,
+         RealConstants.negHalf);
+  }
 
   @Override
   public String toString()
