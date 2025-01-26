@@ -79,29 +79,23 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     return this;
   }
 
-  public int                                                   bits = 128;
+  public int            bits = 128;
 
-  Node<D, C, F>                                                integrand;
+  Node<D, C, F>         integrand;
 
-  Node<D, C, F>                                                lowerLimit;
+  Node<D, C, F>         lowerLimit;
 
-  Node<D, C, F>                                                upperLimit;
+  Node<D, C, F>         upperLimit;
 
-  VariableNode<D, C, F>                                        integrationVariable;
+  VariableNode<D, C, F> integrationVariable;
 
-  Function<? extends C, ? extends C>                           integralFunction;
+  String                lowerIntegralValueFieldName;
 
-  String                                                       integralFunctionFieldName;
+  String                dvar;
 
-  String                                                       lowerIntegralValueFieldName;
+  private Node<D, C, F> integral;
 
-  String                                                       dvar;
-
-  private Expression<C, C, Function<? extends C, ? extends C>> integralExpression;
-
-  private Node<D, C, F>                                        integral;
-
-  private String                                               upperIntegralValueFieldName;
+  private String        upperIntegralValueFieldName;
 
   public IntegralNode(Expression<D, C, F> expression)
   {
@@ -164,7 +158,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                                                new VariableReference<>(dvar = expression.require(',').parseName()),
                                                expression.position,
                                                true);
-      if ( expression.nextCharacterIs('='))
+      if (expression.nextCharacterIs('='))
       {
         lowerLimit = expression.resolve();
         upperLimit = expression.require('…').resolve();
@@ -179,17 +173,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   protected void assignFieldNames(Class<?> resultType)
   {
-    integralFunctionFieldName   = expression.getNextIntermediateVariableFieldName("integral", resultType);
     lowerIntegralValueFieldName = expression.newIntermediateVariable("lowerValue", resultType);
     upperIntegralValueFieldName = expression.newIntermediateVariable("upperValue", resultType);
-  }
-
-  void loadIntegral(MethodVisitor mv)
-  {
-    Compiler.getFieldFromThis(mv,
-                              expression.className,
-                              integralFunctionFieldName,
-                              "L" + integralFunctionFieldName + ";");
   }
 
   static String                                             integralEvaluateMethodSignature =
@@ -199,8 +184,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                                                                                                                          Object.class);
 
   FunctionMapping<C, C, Function<? extends C, ? extends C>> integralMapping;
-
-  private String                                            intermediateValueFieldName;
 
   protected void evaluateIntegral(MethodVisitor mv)
   {
@@ -215,47 +198,31 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    generatedType = resultType;
-    ;
-    evaluateIndefiniteIntegralAt(mv, upperLimit, resultType, lowerIntegralValueFieldName);
-    evaluateIndefiniteIntegralAt(mv, lowerLimit, resultType, upperIntegralValueFieldName);
-    loadBitsParameterOntoStack(mv);
-    if (isResult)
+    if (lowerLimit == null && upperLimit == null)
     {
-      Compiler.cast(Compiler.loadResultParameter(mv), resultType);
+      System.err.println("awesome");
+      return integral.generate(mv, resultType);
     }
     else
     {
-      intermediateValueFieldName = expression.allocateIntermediateVariable(mv, "integralDifference", resultType);
+      generatedType = resultType;
+
+      evaluateIndefiniteIntegralAt(mv, upperLimit, resultType, lowerIntegralValueFieldName);
+      evaluateIndefiniteIntegralAt(mv, lowerLimit, resultType, upperIntegralValueFieldName);
+      loadBitsParameterOntoStack(mv);
+      if (isResult)
+      {
+        Compiler.cast(Compiler.loadResultParameter(mv), resultType);
+      }
+
+      Compiler.invokeBinaryOperationMethod(mv, "sub", resultType, resultType, resultType);
+      return mv;
     }
-    Compiler.invokeBinaryOperationMethod(mv, "sub", resultType, resultType, resultType);
-    return mv;
   }
 
   private void computeIndefiniteIntegral(Class<? extends C> resultType)
   {
-    assert integralFunction == null ;
     integral = integrand.integrate(integrationVariable.asVariable());
-    assert false : "TODO: fix this, dont re-parse";
-    var expr = "";
-    integralExpression = Function.parse(integralFunctionFieldName,
-                                        expr,
-                                        expression.context,
-                                        expression.coDomainType,
-                                        expression.coDomainType,
-                                        Function.class,
-                                        integralFunctionFieldName,
-                                        expression);
-    integralFunction   = integralExpression.instantiate();
-    integralMapping    = expression.context.registerFunctionMapping(integralFunctionFieldName,
-                                                                    integralExpression.instantiate(),
-                                                                    expression.coDomainType,
-                                                                    expression.coDomainType,
-                                                                    Function.class,
-                                                                    false,
-                                                                    integralExpression,
-                                                                    expr);
-    expression.referencedFunctions.put(integralFunctionFieldName, integralMapping);
   }
 
   private void evaluateIndefiniteIntegralAt(MethodVisitor mv,
@@ -263,7 +230,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                                             Class<?> resultType,
                                             String integralValueFieldName)
   {
-    loadIntegral(mv);
+    assert false : "todo: loadIntegral(mv)";
     limit.generate(mv, Real.class);
     loadBitsParameterOntoStack(mv);
     loadFieldFromThis(mv, integralValueFieldName, generatedType);
@@ -314,7 +281,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
          spliceInto(Expression<E, S, G> newExpression)
   {
     var integral = new IntegralNode<E, S, G>(newExpression);
-    integral.integralFunctionFieldName   = integralFunctionFieldName;
     integral.lowerIntegralValueFieldName = integral.lowerIntegralValueFieldName;
     integral.upperIntegralValueFieldName = integral.upperIntegralValueFieldName;
     integral.integrand                   = integrand.spliceInto(newExpression);
@@ -357,7 +323,5 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   {
     return integrand.isLiteralConstant() && lowerLimit.isLiteralConstant() && upperLimit.isLiteralConstant();
   }
-
-
 
 }
