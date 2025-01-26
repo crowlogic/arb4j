@@ -137,8 +137,28 @@ import arb.utensils.text.trees.TreeModel;
  *      {@link TheArb4jLibrary}
  */
 public class Expression<D, C, F extends Function<? extends D, ? extends C>> implements
-                       Typesettable
+                       Typesettable,
+                       Cloneable
 {
+
+  @SuppressWarnings("unchecked")
+  public Expression<D, C, F> cloneExpression()
+  {
+    return (Expression<D, C, F>) clone();
+  }
+
+  @Override
+  protected Object clone()
+  {
+    return new Expression<D, C, Function<? extends D, ? extends C>>(className,
+                                                                    domainType,
+                                                                    coDomainType,
+                                                                    functionClass,
+                                                                    expression,
+                                                                    context,
+                                                                    functionName,
+                                                                    ascendentExpression);
+  }
 
   private static final String    JAVA_LANG_ASSERTION_ERROR         = "java/lang/AssertionError";
 
