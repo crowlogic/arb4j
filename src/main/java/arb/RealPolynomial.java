@@ -238,7 +238,7 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
     res.getCoeffs().get(0).sub(a, bits);
     res.bits = bits;
     return res;
-  }  
+  }
   
   public RealPolynomial sub(int i, int bits)
   {
@@ -1032,19 +1032,15 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
    */
   public RealPolynomial set(int c1)
   {
-    try ( Real tmp = new Real();)
-    {
-      zero().set(0, tmp.set(c1));
-    }
+    zero();
+    get(0).set(c1);
     return this;
   }
     
   public RealPolynomial set(Integer c1)
   {
-    try ( Real tmp = new Real();)
-    {
-      zero().set(0, tmp.set(c1));
-    }
+    zero();
+    get(0).set(c1);
     return this;
   }
 
