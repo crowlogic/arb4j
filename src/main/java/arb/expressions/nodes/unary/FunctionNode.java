@@ -66,6 +66,16 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                          UnaryOperationNode<D, R, F>
 {
 
+  public FunctionNode(Expression<D, R, F> expression,
+                      FunctionMapping<?, ?, ?> newIntegralFunctionMapping,
+                      Node<D, R, F> arg)
+  {
+    this(newIntegralFunctionMapping.functionName,
+         arg,
+         expression);
+    this.mapping = newIntegralFunctionMapping;
+  }
+
   @Override
   public int hashCode()
   {
@@ -111,7 +121,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public String                   functionName;
 
-  public FunctionMapping<D, R, F> mapping;
+  public FunctionMapping<?, ?, ?> mapping;
 
   @SuppressWarnings("unchecked")
   public FunctionNode(String functionName, Node<D, R, F> argument, Expression<D, R, F> expression)
@@ -253,7 +263,32 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   private Node<D, R, F> integrateContextualFunction()
   {
-    throw new UnsupportedOperationException("Contextual function integration not yet implemented: " + functionName);
+    FunctionMapping<Object, Object,
+                  Function<? extends Object,
+                                ? extends Object>> functionMapping =
+                                                                   expression.context.getFunctionMapping(functionName);
+
+    if (functionMapping == null)
+    {
+      throw new CompilerException(String.format("function named %s was not found in context.functions", functionName));
+    }
+    var instance = functionMapping.instance;
+    if (instance == null)
+    {
+      throw new CompilerException(String.format("Instance for function %s was not present in %s",
+                                                functionName,
+                                                functionMapping));
+    }
+
+    var                      integral                   = instance.integral();
+    FunctionMapping<?, ?, ?> newIntegralFunctionMapping =
+                                                        expression.context.registerFunctionMapping(functionName,
+                                                                                                   integral,
+                                                                                                   functionMapping.domain,
+                                                                                                   functionMapping.coDomain);
+    return new FunctionNode<D, R, F>(expression,
+                                     newIntegralFunctionMapping,
+                                     arg);
 
   }
 

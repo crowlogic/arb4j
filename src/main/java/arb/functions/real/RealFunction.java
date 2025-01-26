@@ -359,4 +359,10 @@ public interface RealFunction extends
     return arrowIndex == -1 ? str : str.substring(arrowIndex + 1);
   }
 
+  public default RealFunction integral()
+  {
+    assert false : "TODO: " + getClass() + " should implement this";
+    return null;
+  }
+
 }

@@ -108,9 +108,9 @@ public class Context
       if (function.expression.referencedFunctions != null)
       {
         dependencies.addAll(function.expression.referencedFunctions.keySet()
-                                                                          .stream()
-                                                                          .filter(name -> !name.equals(functionName))
-                                                                          .toList());
+                                                                   .stream()
+                                                                   .filter(name -> !name.equals(functionName))
+                                                                   .toList());
       }
 
       functionReferenceGraph.put(functionName, depInfo);
@@ -348,6 +348,13 @@ public class Context
   public void mergeFrom(Context context)
   {
     variables.addAll(context.variables);
+  }
+
+  public <D, R, F extends Function<? extends D, ? extends R>>
+         FunctionMapping<D, R, F>
+         getFunctionMapping(String functionName)
+  {
+    return functions.get(functionName);
   }
 
 }

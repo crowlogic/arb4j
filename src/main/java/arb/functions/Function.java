@@ -12,6 +12,7 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
 import arb.functions.complex.ComplexFunction;
+import arb.functions.real.RealFunction;
 
 /**
  * 
@@ -26,6 +27,12 @@ public interface Function<D, C> extends
                          AutoCloseable,
                          Typesettable
 {
+
+  public default <F extends Function<D,C>> F integral()
+  {
+    assert false : "TODO: " + getClass() + " should implement this";
+    return null;
+  }
 
   public static <D, C, F extends Function<? extends D, ? extends C>>
          Expression<D, C, F>
@@ -291,7 +298,6 @@ public interface Function<D, C> extends
    *         at t
    */
   public C evaluate(D t, int order, int bits, C res);
-
 
   public default D newDomainInstance()
   {
