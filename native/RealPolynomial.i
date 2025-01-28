@@ -89,6 +89,12 @@ import arb.functions.real.RealFunction;
     return name;
   }
   
+  @Override
+  public RealPolynomial integral()
+  {
+    return integrate(getCoeffs().bits(), new RealPolynomial());
+  }
+    
  @Override
   public int
          dim()

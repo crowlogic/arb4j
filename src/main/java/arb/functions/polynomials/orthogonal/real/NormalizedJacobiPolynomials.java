@@ -15,16 +15,17 @@ import arb.functions.integer.RealSequence;
 public class NormalizedJacobiPolynomials extends
                                          JacobiPolynomials
 {
-  Real                      blip = new Real();
+  public static final String NORM = "when(n=0,1,else,2^(α+β+1)*Γ(n+α+1)*Γ(n+β+1)/(2*n+α+β+1)/Γ(n+α+β+1)/n!)";
 
-  public final RealSequence norm;
+  Real                       blip = new Real();
+
+  public final RealSequence  norm;
 
   public NormalizedJacobiPolynomials(Real a, Real b)
   {
     super(a,
           b);
-    norm = RealSequence.express("2^(α + β + 1)*Γ(n + α + 1)*Γ(n + β + 1)/((2*n + α + β + 1)*Γ(n + α + β + 1)*n!)",
-                                context);
+    norm = RealSequence.express(NORM, context);
   }
 
   @Override
@@ -38,6 +39,6 @@ public class NormalizedJacobiPolynomials extends
   {
     blip.close();
     blip = null;
-  }   
+  }
 
 }

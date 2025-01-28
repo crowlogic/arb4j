@@ -116,6 +116,12 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
     return name;
   }
   
+  @Override
+  public RealPolynomial integral()
+  {
+    return integrate(getCoeffs().bits(), new RealPolynomial());
+  }
+    
  @Override
   public int
          dim()
