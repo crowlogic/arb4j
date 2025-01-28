@@ -244,7 +244,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     integralFunction = integralExpression.instantiate();
     integralMapping  = expression.context.registerFunctionMapping(integralFunctionFieldName,
                                                                   integralExpression.instantiate(),
-                                                                  expression.coDomainType,
+                                                                  expression.domainType,
                                                                   expression.coDomainType,
                                                                   Function.class,
                                                                   false,
