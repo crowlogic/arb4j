@@ -81,8 +81,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO: implement integration rule for division, left=" + left + " right=" + right;
-    return null;
+    return left.integrate(variable).div(right.integrate(variable));
   }
 
   @Override

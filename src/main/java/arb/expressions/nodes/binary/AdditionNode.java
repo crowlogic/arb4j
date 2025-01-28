@@ -58,8 +58,7 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    return left.integrate(variable).add(right.integrate(variable));
   }
 
   @Override

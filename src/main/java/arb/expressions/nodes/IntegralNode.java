@@ -216,8 +216,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    generatedType = resultType;
-    ;
+    generatedType = resultType;    
     evaluateIndefiniteIntegralAt(mv, upperLimitNode, resultType, lowerIntegralValueFieldName);
     evaluateIndefiniteIntegralAt(mv, lowerLimitNode, resultType, upperIntegralValueFieldName);
     loadBitsParameterOntoStack(mv);
