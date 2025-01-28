@@ -245,14 +245,17 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     // assert false : "TODO: fix this, dont re-parse, use " + integralExpression;
     var integralInstance = integralExpression.instantiate();
 
-    integralMapping = expression.context.registerFunctionMapping(integralFunctionFieldName,
-                                                                 integralInstance,
-                                                                 expression.domainType,
-                                                                 expression.coDomainType,
-                                                                 Function.class,
-                                                                 false,
-                                                                 integralExpression,
-                                                                 integralExpression.expression);
+    integralMapping =
+                    expression.context.registerFunctionMapping(integralFunctionFieldName,
+                                                               integralInstance,
+                                                               expression.domainType
+                                                                             != Object.class ? expression.domainType
+                                                                                             : expression.coDomainType,
+                                                               expression.coDomainType,
+                                                               Function.class,
+                                                               false,
+                                                               integralExpression,
+                                                               integralExpression.expression);
     expression.referencedFunctions.put(integralFunctionFieldName, integralMapping);
   }
 
