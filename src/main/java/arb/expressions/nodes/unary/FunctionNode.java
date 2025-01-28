@@ -546,23 +546,16 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     Class<?>                retType = null;
 
-    if ("sqrt".equals(functionName))
+    switch (functionName)
     {
-      if (Integer.class.equals(expression.coDomainType))
-      {
-        return Real.class;
-      }
-      return Compiler.scalarType(expression.coDomainType);
-    }
-
-    if ("arg".equals(functionName))
-    {
+    case "sqrt":
+      return Integer.class.equals(expression.coDomainType) ? Real.class : Compiler.scalarType(expression.coDomainType);
+    case "arg":
       return Real.class;
-    }
-
-    if ("ζ".equals(functionName))
-    {
+    case "ζ":
       return Complex.class;
+    case "log":
+      return arg.isPossiblyNegative() ? Complex.class : Real.class;
     }
 
     if (argType == null)

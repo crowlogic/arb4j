@@ -1,0 +1,10 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Complex
+context:
+  input:
+  - arb.Real
+  - 14.200000000000000000000000000000000000 +/- 1.13e-37
+domain: arb.Real
+expression: arg(Γ(1/4+I*t/2))-(log(π)/2)*t
+function: arb.functions.Function
+...

@@ -177,7 +177,12 @@ import arb.utensils.Utensils;
       return res.set(mul(that, prec, blip));
     }
   }
-  
+
+  public Real sub(Real that, int prec, Complex res)
+  {
+    return sub(that, prec, res.zero().re());
+  }
+    
   public Real digamma(int bits)
   {
     return digamma(bits, this);

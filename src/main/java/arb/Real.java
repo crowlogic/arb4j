@@ -204,7 +204,14 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
       return res.set(mul(that, prec, blip));
     }
   }
-  
+
+  public Complex sub(Real that, int prec, Complex res)
+  {
+    res.zero();
+    sub(that, prec, res.im());
+    return res;
+  }
+    
   public Real digamma(int bits)
   {
     return digamma(bits, this);
