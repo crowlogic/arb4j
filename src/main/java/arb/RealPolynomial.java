@@ -1050,8 +1050,18 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
     return this;
   }
 
+ public RealPolynomial pow(int in, int bits, RealPolynomial result)
+  {
+    assert in > 0 : "power must be nonnegative";
+    assert result.swigCPtr != 0;
+    assert bits > 0;  
+    arblib.arb_poly_pow_ui(result,this,in, bits);
+    return result;
+  }
+  
   public RealPolynomial pow(Integer in, int bits, RealPolynomial result)
   {
+    assert in.sign() >= 0 : "power must be nonnegative";    
     assert in.swigCPtr != 0;
     assert result.swigCPtr != 0;
     assert bits > 0;  
