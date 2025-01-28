@@ -111,6 +111,11 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
          false);
   }
 
+  String SYNTAXMSG = "the format is  g(x)=∫x➔f(x)dx∈(a,b) for definite integrals and "
+                     + "g(x)=∫x➔f(x)dx for indefinate integrals, the variable on the left "
+                     + "side of the arrow must match the variable on the right side of the d and "
+                     + "before the ( but the first var was %s and the 2nd was %s\n";
+
   /**
    * The syntax to express a definate integral is<br>
    * <br>
@@ -146,11 +151,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                                                    true);
       integrandNode           = expression.require('➔').resolve();
       dvar                    = expression.require('d').parseName();
-      assert dvar.equals(integrationVariableNode.getName()) : String.format("the format is  g(x)=∫x➔f(x)dx∈(a,b) for definite integrals and g(x)=∫x➔f(x)dx for indefinate integrals, the variable on the left "
-                                                                            + "side of the arrow must match the variable on the right side of the d and "
-                                                                            + "before the ( but the first var was %s and the 2nd was %s\n",
-                                                                            integrationVariableNode,
-                                                                            dvar);
+      assert dvar.equals(integrationVariableNode.getName()) : String.format(SYNTAXMSG, integrationVariableNode, dvar);
 
       if (expression.nextCharacterIs('∈'))
       {
@@ -161,9 +162,10 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
     else
     {
-      integrandNode           = expression.resolve();
+      integrandNode = expression.resolve();
+      VariableReference<D, C, F> reference = new VariableReference<>(dvar = expression.require(',').parseName());
       integrationVariableNode = new VariableNode<>(expression,
-                                                   new VariableReference<>(dvar = expression.require(',').parseName()),
+                                                   reference,
                                                    expression.position,
                                                    true);
       if (expression.nextCharacterIs('='))
@@ -201,8 +203,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   FunctionMapping<D, C, F> integralMapping;
 
-  private String           intermediateValueFieldName;
-
   protected void evaluateIntegral(MethodVisitor mv)
   {
     invokeMethod(mv, Type.getInternalName(Function.class), "evaluate", integralEvaluateMethodSignature, true);
@@ -227,7 +227,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
     else
     {
-      intermediateValueFieldName = expression.allocateIntermediateVariable(mv, "integralDifference", resultType);
+      fieldName = expression.allocateIntermediateVariable(mv, "integralDifference", resultType);
     }
     Compiler.invokeBinaryOperationMethod(mv, "sub", resultType, resultType, resultType);
     return mv;
@@ -242,7 +242,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     integralExpression.rootNode = integralNode.spliceInto(integralExpression);
     integralExpression.updateStringRepresentation();
     integralExpression.className = integralFunctionFieldName;
-    // assert false : "TODO: fix this, dont re-parse, use " + integralExpression;
     var integralInstance = integralExpression.instantiate();
 
     integralMapping =
