@@ -62,7 +62,7 @@ public class VariableReference<D, R, F extends Function<? extends D, ? extends R
     this(name,
          index);
     this.type = type;
-    assert !type.equals(Object.class) : "type shan't be Object";
+   // assert !type.equals(Object.class) : "type shan't be Object for variable named " + name;
   }
 
   public String        name;

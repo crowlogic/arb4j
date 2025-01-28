@@ -15,6 +15,13 @@ public class CompiledExpressionClassLoader extends
                                            ClassLoader
 {
 
+  @Override
+  protected Class<?> findClass(String name) throws ClassNotFoundException
+  {
+    System.err.format("findClass(%s) in %s", name, compiledClasses);
+    return super.findClass(name);
+  }
+
   HashMap<String, Class<?>> compiledClasses = new HashMap<>();
   public Context            context;
 
@@ -35,7 +42,8 @@ public class CompiledExpressionClassLoader extends
                         className,
                         compiledClasses.keySet());
     }
-   // assert !compiledClasses.containsKey(className) : className + " already exists";
+    // assert !compiledClasses.containsKey(className) : className + " already
+    // exists";
     Class<?> definedClass = defineClass(className, bytecodes, 0, bytecodes.length);
     compiledClasses.put(className, definedClass);
     return definedClass;

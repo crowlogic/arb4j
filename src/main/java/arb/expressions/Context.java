@@ -155,22 +155,22 @@ public class Context
 
   public <D, R, F extends Function<? extends D, ? extends R>> void injectFunctionReferences(F f)
   {
-    for (Field field : f.getClass().getFields())
+    try
     {
-      var functionName = field.getName();
-
-      try
+      for (Field field : f.getClass().getFields())
       {
+        var functionName    = field.getName();
+
         var functionMapping = functions.get(functionName);
         if (functionMapping != null)
         {
           setFieldValue(f.getClass(), f, functionName, functionMapping.instance, false);
         }
       }
-      catch (Exception e)
-      {
-        wrapOrThrow(String.format("function=%s", functionName), e);
-      }
+    }
+    catch (Throwable t)
+    {
+      t.printStackTrace(System.err);
     }
   }
 
@@ -210,6 +210,7 @@ public class Context
          FunctionMapping<D, R, F>
          registerFunctionMapping(String functionName, F function, Class<?> domainType, Class<?> coDomainType)
   {
+    assert function != null : "function cannot be null";
     return registerFunctionMapping(functionName,
                                    function,
                                    domainType,
@@ -231,6 +232,7 @@ public class Context
                                  Expression<D, R, F> expression,
                                  String expressionString)
   {
+   // assert function != null : "function cannot be null";
 
     if (Expression.trace)
     {

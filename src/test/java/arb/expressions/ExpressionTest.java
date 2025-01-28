@@ -60,7 +60,7 @@ public class ExpressionTest extends
     assertTrue(y.im().doubleValue() < 10e-15);
   }
 
-  public void testIndefiniteIntegral()
+  public void testIndefiniteIntegralzs()
   {
     var f = RealFunction.parse("int(sin(x),x)");
     f.simplify();
