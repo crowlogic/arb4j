@@ -38,8 +38,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    return left.integrate(variable).mul(right.integrate(variable));
   }
 
   /**
