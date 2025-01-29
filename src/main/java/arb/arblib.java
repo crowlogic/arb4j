@@ -9,6 +9,22 @@
 package arb;
 
 public class arblib {
+  public static void fexpr_set_symbol_str(SymbolicExpression res, String s) {
+    arblibJNI.fexpr_set_symbol_str(SymbolicExpression.getCPtr(res), res, s);
+  }
+
+  public static String fexpr_get_symbol_str(SymbolicExpression expr) {
+    return arblibJNI.fexpr_get_symbol_str(SymbolicExpression.getCPtr(expr), expr);
+  }
+
+  public static void fexpr_set_string(SymbolicExpression res, String s) {
+    arblibJNI.fexpr_set_string(SymbolicExpression.getCPtr(res), res, s);
+  }
+
+  public static String fexpr_get_string(SymbolicExpression expr) {
+    return arblibJNI.fexpr_get_string(SymbolicExpression.getCPtr(expr), expr);
+  }
+
   public static int fmpz_poly_degree(IntegerPolynomial poly) {
     return arblibJNI.fmpz_poly_degree(IntegerPolynomial.getCPtr(poly), poly);
   }

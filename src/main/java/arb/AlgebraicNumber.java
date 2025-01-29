@@ -90,6 +90,13 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     return this;
   }
   
+
+  public AlgebraicNumber root(int n, AlgebraicNumber result)
+  {
+    arblib.qqbar_root_ui(result, this, n);
+    return result;
+  }
+  
   @Override
   public String toString()
   {

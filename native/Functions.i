@@ -17,6 +17,12 @@
 #include <wchar.h>
 
 
+void fexpr_set_symbol_str(fexpr_t res, const char * s);
+char * fexpr_get_symbol_str(const fexpr_t expr);
+
+void fexpr_set_string(fexpr_t res, const char * s);
+char * fexpr_get_string(const fexpr_t expr);
+
 slong fmpz_poly_degree(const fmpz_poly_t poly);
 
 void arb_digamma(arb_t y, const arb_t x, slong prec);

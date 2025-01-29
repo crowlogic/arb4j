@@ -72,6 +72,13 @@ import arb.documentation.TheArb4jLibrary;
     return this;
   }
   
+
+  public AlgebraicNumber root(int n, AlgebraicNumber result)
+  {
+    arblib.qqbar_root_ui(result, this, n);
+    return result;
+  }
+  
   @Override
   public String toString()
   {
