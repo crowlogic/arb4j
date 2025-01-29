@@ -166,7 +166,12 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
     return result.set(this).div(divisor, prec, result);
   }
  
-   public RationalFunction add(RationalFunction element, int prec, RationalFunction result)
+  public Complex neg( Complex result )
+  {
+    return result.set(this).neg();
+  }
+   
+  public RationalFunction add(RationalFunction element, int prec, RationalFunction result)
   {
     return result.set(this).add(element, prec, result);
   }
