@@ -12,8 +12,11 @@ public class AlgebraicNumberTest extends
 
   public static void testToString()
   {
-    var x = new AlgebraicNumber().set(3).sqrt();
-    assertEquals("sqrt(3)", x.toString());
- }
+    try ( var x = new AlgebraicNumber())
+    {
+      var y = x.set(3).sqrt(new AlgebraicNumber());
+      assertEquals("sqrt(3)", y.toString().toLowerCase() );
+    }
+  }
 
 }

@@ -77,7 +77,13 @@ import arb.documentation.TheArb4jLibrary;
   {
     try ( var blip = new SymbolicExpression())
     {
-      return String.format("%s=%s", name, getSymbolicRepresentation(blip));
+      StringBuilder sb = new StringBuilder();
+      if (name != null)
+      {
+        sb.append(name + "=");
+      }
+      sb.append(getSymbolicFormula(blip, FormulaGenerationMethod.All));
+      return sb.toString();
     }
   }
   
