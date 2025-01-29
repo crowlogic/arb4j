@@ -61,6 +61,12 @@ import arb.documentation.TheArb4jLibrary;
 
 %typemap(javacode) qqbar_struct %{
 
+  public AlgebraicNumber swap(AlgebraicNumber reference)
+  {
+    arblib.qqbar_swap(reference, this);
+    return reference;
+  }
+  
   @Override
   public String typeset()
   {
