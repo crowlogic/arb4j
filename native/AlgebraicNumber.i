@@ -61,6 +61,17 @@ import arb.documentation.TheArb4jLibrary;
 
 %typemap(javacode) qqbar_struct %{
 
+  public AlgebraicNumber sqrt()
+  {
+    return sqrt(this);
+  }
+  
+  public AlgebraicNumber set( int val )
+  {
+    arblib.qqbar_set_si(this, val);
+    return this;
+  }
+  
   @Override
   public String toString()
   {
