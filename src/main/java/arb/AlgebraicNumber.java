@@ -55,7 +55,7 @@ import arb.documentation.TheArb4jLibrary;
  * 
  * @author ©2024 Stephen Crowley
  */
-public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber> {
+public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber>,Typesettable {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
@@ -79,6 +79,15 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   }
 
 
+  @Override
+  public String typeset()
+  {
+    try ( var blip = new SymbolicExpression())
+    {
+      return getSymbolicFormula(blip, FormulaGenerationMethod.All).typeset();
+    }
+  }
+  
   public AlgebraicNumber sqrt()
   {
     return sqrt(this);

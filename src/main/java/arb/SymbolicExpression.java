@@ -226,7 +226,7 @@ import arb.documentation.TheArb4jLibrary;
  *      {@link TheArb4jLibrary}
  * 
  */
-public class SymbolicExpression implements AutoCloseable {
+public class SymbolicExpression implements AutoCloseable,Typesettable {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
@@ -250,6 +250,12 @@ public class SymbolicExpression implements AutoCloseable {
   }
 
 
+  @Override
+  public String typeset()
+  {
+    return arblib.fexpr_get_str_latex(this, 0);
+  }
+  
   @Override
   public String toString()
   {

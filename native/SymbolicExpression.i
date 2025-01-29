@@ -1,4 +1,4 @@
-%typemap(javainterfaces) fexpr_struct "AutoCloseable"
+%typemap(javainterfaces) fexpr_struct "AutoCloseable,Typesettable"
 %typemap(javafinalize) fexpr_struct ""
 
 %typemap(javaimports) fexpr_struct %{
@@ -232,6 +232,12 @@ import arb.documentation.TheArb4jLibrary;
 
 %typemap(javacode) fexpr_struct %{
 
+  @Override
+  public String typeset()
+  {
+    return arblib.fexpr_get_str_latex(this, 0);
+  }
+  
   @Override
   public String toString()
   {

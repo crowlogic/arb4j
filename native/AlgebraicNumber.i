@@ -1,4 +1,4 @@
-%typemap(javainterfaces) qqbar_struct "AutoCloseable,NamedField<AlgebraicNumber>"
+%typemap(javainterfaces) qqbar_struct "AutoCloseable,NamedField<AlgebraicNumber>,Typesettable"
 %typemap(javafinalize) qqbar_struct ""
 
 %typemap(javaimports) qqbar_struct %{
@@ -61,6 +61,15 @@ import arb.documentation.TheArb4jLibrary;
 
 %typemap(javacode) qqbar_struct %{
 
+  @Override
+  public String typeset()
+  {
+    try ( var blip = new SymbolicExpression())
+    {
+      return getSymbolicFormula(blip, FormulaGenerationMethod.All).typeset();
+    }
+  }
+  
   public AlgebraicNumber sqrt()
   {
     return sqrt(this);
