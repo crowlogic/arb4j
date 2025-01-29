@@ -16,7 +16,6 @@ public class AlgebraicNumberTest extends
     {
       x.set(3);
       var y = x.sqrt();
-      System.out.println(y);
       assertEquals("sqrt(3)", y.toString().toLowerCase() );
     }
   }
@@ -27,7 +26,6 @@ public class AlgebraicNumberTest extends
     {
       x.set(3);
       var y = x.sqrt().sqrt();
-      System.out.println(y);
       assertEquals("pow(3, div(1, 4))", y.toString().toLowerCase() );
     }
   }
