@@ -219,7 +219,6 @@ import arb.documentation.TheArb4jLibrary;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  * 
- * @author ©2024 Stephen Crowley
  */%}
 
 %typemap(javaconstruct) fexpr_struct %{

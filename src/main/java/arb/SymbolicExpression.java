@@ -225,7 +225,6 @@ import arb.documentation.TheArb4jLibrary;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  * 
- * @author ©2024 Stephen Crowley
  */
 public class SymbolicExpression implements AutoCloseable {
   protected long swigCPtr;
