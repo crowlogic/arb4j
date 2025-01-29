@@ -79,6 +79,15 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   }
 
 
+  @Override
+  public String toString()
+  {
+    try ( var blip = new SymbolicExpression())
+    {
+      return String.format("%s=%s", name, getSymbolicRepresentation(blip));
+    }
+  }
+  
   public Real getReal(int bits, Real result)
   {
     arblib.qqbar_get_arb(result, this, bits);
