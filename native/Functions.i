@@ -17,6 +17,8 @@
 #include <wchar.h>
 
 
+int qqbar_is_integer(const qqbar_t x);
+
 void fexpr_set_symbol_str(fexpr_t res, const char * s);
 char * fexpr_get_symbol_str(const fexpr_t expr);
 

@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static int qqbar_is_integer(AlgebraicNumber x) {
+    return arblibJNI.qqbar_is_integer(AlgebraicNumber.getCPtr(x), x);
+  }
+
   public static void fexpr_set_symbol_str(SymbolicExpression res, String s) {
     arblibJNI.fexpr_set_symbol_str(SymbolicExpression.getCPtr(res), res, s);
   }

@@ -11,7 +11,17 @@ import junit.framework.TestCase;
 public class AlgebraicNumberTest extends
                                  TestCase
 {
-
+ public static void testIsInteger()
+ {
+   try ( var a = new AlgebraicNumber())
+   {
+     a.set(5);
+     assertTrue(a.isInteger());
+     a.sqrt();
+     assertFalse(a.isInteger());
+   }
+   
+ }
   public static void testTypesetFourthRoot()
   {
     try ( var x = new AlgebraicNumber())

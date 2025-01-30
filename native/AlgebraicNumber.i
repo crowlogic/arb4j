@@ -61,6 +61,11 @@ import arb.documentation.TheArb4jLibrary;
 
 %typemap(javacode) qqbar_struct %{
 
+  public boolean isInteger()
+  {
+    return arblib.qqbar_is_integer(this) != 0;
+  }
+  
   public AlgebraicNumber swap(AlgebraicNumber reference)
   {
     arblib.qqbar_swap(reference, this);

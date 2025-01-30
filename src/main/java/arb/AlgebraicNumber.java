@@ -79,6 +79,11 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   }
 
 
+  public boolean isInteger()
+  {
+    return arblib.qqbar_is_integer(this) != 0;
+  }
+  
   public AlgebraicNumber swap(AlgebraicNumber reference)
   {
     arblib.qqbar_swap(reference, this);
