@@ -2,6 +2,7 @@ package arb.functions.real;
 
 import java.util.stream.IntStream;
 
+import arb.Float;
 import arb.FloatInterval;
 import arb.Real;
 import arb.RealPartition;
@@ -332,24 +333,30 @@ public interface RealFunction extends
    */
   public default RealTwoDimensionalDataSet quantize(FloatInterval interval, int bits, int n, boolean parallel)
   {
-    RealTwoDimensionalDataSet sample = new RealTwoDimensionalDataSet(toString()
-                                                                     + " over "
-                                                                     + interval.left().toString(5)
-                                                                     + ".."
-                                                                     + interval.right().toString(5),
-                                                                     n,
-                                                                     interval);
-    Real                      values = sample.getRealYValues();
-
-    try ( RealPartition mesh = interval.generateRealPartition(bits, false, sample.getRealXValues()))
+    try ( var Δ = interval.length(bits, new Float()))
     {
-      IntStream domain = IntStream.range(0, n);
-      if (parallel)
+      Δ.div(n, bits);
+      RealTwoDimensionalDataSet sample = new RealTwoDimensionalDataSet(
+                                                                       String.format("%s over %s..%s (#=%d Δ=%s)",
+                                                                                     toString(),
+                                                                                     interval.left().toString(5),
+                                                                                     interval.right().toString(5),
+                                                                                     n,
+                                                                                     Δ),
+                                                                       n,
+                                                                       interval);
+      Real                      values = sample.getRealYValues();
+
+      try ( RealPartition mesh = interval.generateRealPartition(bits, false, sample.getRealXValues()))
       {
-        domain = domain.parallel();
+        IntStream domain = IntStream.range(0, n);
+        if (parallel)
+        {
+          domain = domain.parallel();
+        }
+        domain.forEach(i -> evaluate(mesh.get(i), 1, bits, values.get(i)));
+        return sample;
       }
-      domain.forEach(i -> evaluate(mesh.get(i), 1, bits, values.get(i)));
-      return sample;
     }
   }
 
