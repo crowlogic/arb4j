@@ -1,0 +1,3 @@
+theta
+var theta = RealFunction.express("arg(Γ(1/4+I*t/2))-(log(π)/2)*t");
+theta.eval(2.3);
