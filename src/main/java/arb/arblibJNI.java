@@ -9,6 +9,10 @@
 package arb;
 
 public class arblibJNI {
+  public final static native int qqbar_sgn_re(long jarg1, AlgebraicNumber jarg1_);
+  public final static native int qqbar_sgn_im(long jarg1, AlgebraicNumber jarg1_);
+  public final static native int qqbar_is_real(long jarg1, AlgebraicNumber jarg1_);
+  public final static native int qqbar_is_rational(long jarg1, AlgebraicNumber jarg1_);
   public final static native int qqbar_is_integer(long jarg1, AlgebraicNumber jarg1_);
   public final static native void fexpr_set_symbol_str(long jarg1, SymbolicExpression jarg1_, String jarg2);
   public final static native String fexpr_get_symbol_str(long jarg1, SymbolicExpression jarg1_);

@@ -61,6 +61,16 @@ import arb.documentation.TheArb4jLibrary;
 
 %typemap(javacode) qqbar_struct %{
 
+  public boolean isReal()
+  {
+    return arblib.qqbar_is_real(this) != 0;
+  }
+  
+  public boolean isRational()
+  {
+    return arblib.qqbar_is_rational(this) != 0;
+  }
+  
   public boolean isInteger()
   {
     return arblib.qqbar_is_integer(this) != 0;
