@@ -58,7 +58,7 @@ public class ComplexFraction implements
                                                                                NullaryFunction.class,
                                                                                null);
 
-    return express.getInstance();
+    return express.instantiate();
   }
 
   @Override

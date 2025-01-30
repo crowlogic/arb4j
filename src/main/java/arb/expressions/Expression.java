@@ -13,6 +13,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -138,7 +139,8 @@ import arb.utensils.text.trees.TreeModel;
  */
 public class Expression<D, C, F extends Function<? extends D, ? extends C>> implements
                        Typesettable,
-                       Cloneable
+                       Cloneable,
+                       Supplier<F>
 {
 
   @SuppressWarnings("unchecked")
@@ -1397,7 +1399,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return indeterminateVariable != null ? indeterminateVariable : independentVariable;
   }
 
-  public F getInstance()
+  private F newInstance()
   {
     Class<F> definition = compiledClass != null ? compiledClass : defineClass();
 
@@ -1513,7 +1515,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       System.err.format("\nInstantiating %s\n", this);
     }
-    instance = getInstance();
+    instance = newInstance();
     if (trace)
     {
       System.err.format("\nInjecting references %s\n", this);
@@ -2283,6 +2285,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     return new LiteralConstantNode<D, C, F>(this,
                                             java.lang.Integer.toString(i));
+  }
+
+  @Override
+  public F get()
+  {
+    return instantiate();
   }
 
 }
