@@ -812,6 +812,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     try
     {
       generateFunctionInterface(this, className, classVisitor);
+      generateDomainTypeMethod(classVisitor);
       generateCoDomainTypeMethod(classVisitor);
       generateEvaluationMethod(classVisitor);
       declareFields(classVisitor);
@@ -886,6 +887,24 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitMethodInsn(INVOKESPECIAL, JAVA_LANG_ASSERTION_ERROR, "<init>", ASSERTION_ERROR_METHOD_DESCRIPTOR, false);
     mv.visitInsn(ATHROW);
     mv.visitLabel(alreadyInitializedLabel);
+  }
+
+  protected ClassVisitor generateDomainTypeMethod(ClassVisitor classVisitor) throws CompilerException
+  {
+
+    MethodVisitor mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                                "domainType",
+                                                Compiler.getMethodDescriptor(Class.class),
+                                                getCoDomainTypeMethodSignature(),
+                                                null);
+
+    Compiler.annotateWithOverride(mv);
+
+    mv.visitCode();
+    mv.visitLdcInsn(Type.getType(domainType));
+    Compiler.generateReturnFromMethod(mv);
+
+    return classVisitor;
   }
 
   protected ClassVisitor generateCoDomainTypeMethod(ClassVisitor classVisitor) throws CompilerException

@@ -217,7 +217,7 @@ public interface Function<D, C> extends
 
   public default Class<D> domainType()
   {
-    assert false : "this should be implemented by extending class";
+    assert false : "this should be implemented by " + getClass();
     return null; // for instance, the RealFunction would return Real.class for both the domain
                  // and coDomain
   }
