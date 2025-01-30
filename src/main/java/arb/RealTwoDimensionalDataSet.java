@@ -20,13 +20,27 @@ public class RealTwoDimensionalDataSet extends
                                        AutoCloseable,
                                        Closeable
 {
+  @Override
+  public String toString()
+  {
+    return String.format("RealTwoDimensionalDataSet[%s]", getName());
+  }
+
   private static final long serialVersionUID = 1L;
 
-  public RealTwoDimensionalDataSet(String name, int length)
+  FloatInterval             domain;
+
+  public Float getResolution(Float result)
+  {
+    return domain.length(128, result).div(getDataCount(), 128);
+  }
+
+  public RealTwoDimensionalDataSet(String name, int length, FloatInterval domain)
   {
     super(name,
           2);
-    data = RealMatrix.newMatrix(2, length);
+    data        = RealMatrix.newMatrix(2, length);
+    this.domain = domain;
   }
 
   public final RealMatrix data;
@@ -78,10 +92,20 @@ public class RealTwoDimensionalDataSet extends
   {
     var                       x    = getRealXValues();
     var                       y    = getRealYValues();
-    RealTwoDimensionalDataSet rds  = new RealTwoDimensionalDataSet("structure[" + y.name + "]",
-                                                                   n);
+    RealTwoDimensionalDataSet rds  = new RealTwoDimensionalDataSet(String.format("varianceStructure(%s)", toString()),
+                                                                   n,
+                                                                   domain);
     var                       outy = rds.getRealYValues();
-    rds.getRealXValues().set(x.slice(0, n));
+    try ( var length = domain.length(128, new Float()); var scale = new Real())
+    {
+      scale.set(length).div(n);
+      Real xval = rds.getRealXValues();
+      for (int i = 0; i < xval.size(); i++)
+      {
+        xval.get(i).set(i);
+      }
+
+    }
     IntStream.range(0, n).parallel().forEach(i -> y.gammaVariance(i, 128, outy.get(i)));
     return rds;
   }

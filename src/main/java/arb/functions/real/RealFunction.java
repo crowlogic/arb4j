@@ -337,7 +337,8 @@ public interface RealFunction extends
                                                                      + interval.left().toString(5)
                                                                      + ".."
                                                                      + interval.right().toString(5),
-                                                                     n);
+                                                                     n,
+                                                                     interval);
     Real                      values = sample.getRealYValues();
 
     try ( RealPartition mesh = interval.generateRealPartition(bits, false, sample.getRealXValues()))

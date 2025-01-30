@@ -151,8 +151,9 @@ public class FunctionPlotter extends
     freeExistingDatasets();
     for (RealFunction function : functions)
     {
-      RealTwoDimensionalDataSet dataset = new RealTwoDimensionalDataSet(function.toString(),
-                                                                        sampleCount);
+      RealTwoDimensionalDataSet dataset = new RealTwoDimensionalDataSet(function.toString() + " over " + domain,
+                                                                        sampleCount,
+                                                                        domain);
       domain.generateRealPartition(precision, false, dataset.getRealXValues());
       chart.getDatasets().add(dataset);
     }
@@ -208,7 +209,7 @@ public class FunctionPlotter extends
   @Override
   public String toString()
   {
-    return String.format("FunctionPlotter[%s]", this.chart);
+    return String.format("FunctionPlotter[%s]", chart.getDatasets());
   }
 
   public void updateLegend()

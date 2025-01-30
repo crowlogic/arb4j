@@ -1863,19 +1863,30 @@ import arb.utensils.Utensils;
   @Override
   public Real div(Real that, int prec, Real res)
   {
-    assert dim == that.dim;
-    if (dim != res.dim)
+    if (dim != that.dim)
     {
-      res.become(Real.newVector(dim));
+      assert that.dim == 1 : String.format("this.dim != that.dim != 1", this.dim, that.dim);
+      for (int i = 0; i < dim; i++)
+      {
+        arblib.arb_div(res.get(i), this.get(i), that, prec);
+      }
+      bits = prec;
     }
-    for (int i = 0; i < dim; i++)
+    else
     {
-      arblib.arb_div(res.get(i), this.get(i), that.get(i), prec);
+      if (dim != res.dim)
+      {
+        res.become(Real.newVector(dim));
+      }
+      for (int i = 0; i < dim; i++)
+      {
+        arblib.arb_div(res.get(i), this.get(i), that.get(i), prec);
+      }
+      bits = prec;
     }
-    bits = prec;
     return res;
   }
-
+  
   /**
    * Calls this{@link #div(int, int)} with bits=this{@link #bits()}
    * 
@@ -2387,18 +2398,30 @@ import arb.utensils.Utensils;
     return this;
   }  
   
+  @Override
   public Real mul(Real that, int prec, Real res)
   {
-    assert dim == that.dim;
-    if (dim != res.dim)
+    if (dim != that.dim)
     {
-      res.become(Real.newVector(dim));
+      assert that.dim == 1 : String.format("this.dim != that.dim != 1", this.dim, that.dim);
+      for (int i = 0; i < dim; i++)
+      {
+        arblib.arb_mul(res.get(i), this.get(i), that, prec);
+      }
+      bits = prec;
     }
-    for (int i = 0; i < dim; i++)
+    else
     {
-      arblib.arb_mul(res.get(i), this.get(i), that.get(i), prec);
+      if (dim != res.dim)
+      {
+        res.become(Real.newVector(dim));
+      }
+      for (int i = 0; i < dim; i++)
+      {
+        arblib.arb_mul(res.get(i), this.get(i), that.get(i), prec);
+      }
+      bits = prec;
     }
-    bits = prec;
     return res;
   }
 
