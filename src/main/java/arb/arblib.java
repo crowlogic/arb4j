@@ -9,6 +9,26 @@
 package arb;
 
 public class arblib {
+  public static int qqbar_sgn_re(AlgebraicNumber x) {
+    return arblibJNI.qqbar_sgn_re(AlgebraicNumber.getCPtr(x), x);
+  }
+
+  public static int qqbar_sgn_im(AlgebraicNumber x) {
+    return arblibJNI.qqbar_sgn_im(AlgebraicNumber.getCPtr(x), x);
+  }
+
+  public static int qqbar_is_real(AlgebraicNumber x) {
+    return arblibJNI.qqbar_is_real(AlgebraicNumber.getCPtr(x), x);
+  }
+
+  public static int qqbar_is_rational(AlgebraicNumber x) {
+    return arblibJNI.qqbar_is_rational(AlgebraicNumber.getCPtr(x), x);
+  }
+
+  public static int qqbar_is_integer(AlgebraicNumber x) {
+    return arblibJNI.qqbar_is_integer(AlgebraicNumber.getCPtr(x), x);
+  }
+
   public static void fexpr_set_symbol_str(SymbolicExpression res, String s) {
     arblibJNI.fexpr_set_symbol_str(SymbolicExpression.getCPtr(res), res, s);
   }
