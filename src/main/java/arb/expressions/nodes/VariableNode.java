@@ -514,16 +514,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     if (!expression.canHaveAnIndeterminantVariable())
     {
-
-      throw new CompilerException("cannot declare "
-                                  + this
-                                  + " to be the indeterminant variable because there is already an independent variable "
-                                  + expression.independentVariable
-                                  + " for "
-                                  + expression.domainType
-                                  + " to "
-                                  + expression.coDomainType);
-
+      throwNewUndefinedReferenceException();
     }
 
     if (expression.indeterminateVariable != null)
