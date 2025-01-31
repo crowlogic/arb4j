@@ -13,10 +13,8 @@ import java.util.function.Consumer;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
-import arb.Complex;
-import arb.Fraction;
+import arb.*;
 import arb.Integer;
-import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
@@ -484,7 +482,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else
     {
-      if (isIndeterminate = !expression.anyAscendentIndependentVariableIsEqualTo(getName()))
+      if (isIndeterminate = (!expression.anyAscendentIndependentVariableIsEqualTo(getName())))
       {
         declareThisToBeTheIndeterminantVariable();
       }
@@ -514,6 +512,20 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   protected void declareThisToBeTheIndeterminantVariable()
   {
+    if (!expression.canHaveAnIndeterminantVariable())
+    {
+
+      throw new CompilerException("cannot declare "
+                                  + this
+                                  + " to be the indeterminant variable because there is already an independent variable "
+                                  + expression.independentVariable
+                                  + " for "
+                                  + expression.domainType
+                                  + " to "
+                                  + expression.coDomainType);
+
+    }
+
     if (expression.indeterminateVariable != null)
     {
       throwNewIndeterminantVariableAlreadyDeclared();

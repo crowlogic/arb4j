@@ -143,6 +143,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Supplier<F>
 {
 
+  public boolean canHaveAnIndeterminantVariable()
+  {
+    var codomain = coDomainType;
+    return codomain.equals(RealPolynomial.class) || codomain.equals(ComplexPolynomial.class)
+                  || codomain.equals(RationalFunction.class) || codomain.equals(ComplexRationalFunction.class)
+                  || Function.class.isAssignableFrom(codomain);
+  }
+
   @SuppressWarnings("unchecked")
   public Expression<D, C, F> cloneExpression()
   {
