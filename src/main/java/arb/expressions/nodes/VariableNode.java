@@ -6,6 +6,8 @@ import static arb.expressions.Compiler.loadResultParameter;
 import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -351,11 +353,18 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return getName().equals(variable);
   }
 
+  public static final HashSet<Class<?>> scalarTypes = new HashSet<>(Arrays.asList(Real.class,
+                                                                                  Complex.class,
+                                                                                  Integer.class,
+                                                                                  Fraction.class,
+                                                                                  ComplexFraction.class,
+                                                                                  AlgebraicNumber.class,
+                                                                                  GaussianInteger.class));
+
   @Override
   public boolean isScalar()
   {
-    return type().equals(Real.class) || type().equals(Complex.class) || type().equals(Integer.class)
-                  || type().equals(Fraction.class);
+    return scalarTypes.contains(type());
   }
 
   @Override
@@ -501,7 +510,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   protected void throwNewUndefinedReferenceException()
   {
     throw new UndefinedReferenceException(format("Undefined reference '%s' at position=%d in expression=%s, "
-                                                 + "independent variable is %s and parentExpression is %s,  remaining='%s'",
+                                                 + "independent variable is %s and parentExpression is %s, remaining='%s'",
                                                  reference.name,
                                                  reference.position,
                                                  expression.expression,
