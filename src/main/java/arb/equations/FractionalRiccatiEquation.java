@@ -1,6 +1,7 @@
 package arb.equations;
 
 import arb.Complex;
+import arb.Initializable;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -78,20 +79,26 @@ import arb.functions.complex.ComplexFunction;
  *      {@link TheArb4jLibrary}
  */
 public class FractionalRiccatiEquation extends
-                                       ComplexEquation
+                                       ComplexEquation implements
+                                       Initializable,
+                                       AutoCloseable
 {
 
-  public FractionalRiccatiEquation(Context context, Real alpha, String p, String q, String r)
+  public static final String FRACTIONAL_RICCATI_EQUATION = "t➔Dᵅy(t)=t➔p(t)+q(t)*y(t)+r(t)*y(t)²";
+  public final Real          α                           = new Real();
+  public String              p;
+  public String              q;
+  public String              r;
+
+  public FractionalRiccatiEquation(Context context, Real α, String p, String q, String r)
   {
     super(context);
-    context.registerVariable(alpha.setName("α"));
-    ComplexFunction.express("p", p, context);
-    ComplexFunction.express("q", q, context);
-    ComplexFunction.express("r", r, context);
-    initialize("t➔Dᵅy(t)=t➔p(t)+q(t)*y(t)+r(t)*y(t)²", context);
+    this.α.set(α);
+    this.p = p;
+    this.q = q;
+    this.r = r;
+    initialize();
   }
-
-  Real c;
 
   public FractionalRiccatiEquation(Real alpha, String p, String q, String r)
   {
@@ -104,7 +111,7 @@ public class FractionalRiccatiEquation extends
 
   public ComplexFunction solve(int order, int bits)
   {
-    c = Real.newVector(order).setName("c");
+    Real c = Real.newVector(order).setName("c");
     assert false : "TODO: form newton step and iterate until the coeffecient vector c converges, when it does"
                    + "it will be the coeffecients by which to expand in shifted Jacobi polynomials which will "
                    + "represent the result";
@@ -114,6 +121,22 @@ public class FractionalRiccatiEquation extends
   public ComplexFunction discriminant()
   {
     return ComplexFunction.express("discriminant", "t➔q(t)²-4*p(t)*r(t)", context);
+  }
+
+  @Override
+  public void initialize()
+  {
+    context.registerVariable(α.setName("α"));
+    ComplexFunction.express("p", p, context);
+    ComplexFunction.express("q", q, context);
+    ComplexFunction.express("r", r, context);
+    initialize(FRACTIONAL_RICCATI_EQUATION, context);
+  }
+
+  @Override
+  public void close()
+  {
+    α.close();
   }
 
 }

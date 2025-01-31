@@ -49,9 +49,9 @@ public class SymbolPalette extends
                            Application
 {
   public static final String[]                  SYMBOLS           =
-  { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "9", "⁄", "/", "+", "-", "*", "π", "Γ", "ᵅ", "ⅈ", "∈", "₋", "₊",
-    "⇒", "➔", "√", "π", "⌊", "⌋", "≀", "₍", "₎", "∫", "Π", "∏", "Σ", "∑", "½", "²", "ⁿ", "∀", "∃", "μ", "ν", "ξ", "⋰",
-    "ℭ", "α", "β", "∂", "🤙" };
+  { "ϱ", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "9", "⁄", "/", "+", "-", "*", "π", "Γ", "ᵅ", "ⅈ", "∈", "₋",
+    "₊", "⇒", "➔", "√", "π", "⌊", "⌋", "≀", "₍", "₎", "∫", "Π", "∏", "Σ", "∑", "½", "²", "ⁿ", "∀", "∃", "μ", "ν", "ξ",
+    "⋰", "ℭ", "α", "β", "∂", "🤙" };
 
   private static final String                   STYLESHEET        = """
                  .highlighted-button
@@ -190,7 +190,6 @@ public class SymbolPalette extends
     addAliases("ϱ", "rho");
     addAliases("𝜏", "tau");
 
-    // Mathematical Symbols
     addAliases("∫", "integral", "int");
     addAliases("∂", "partial", "del");
     addAliases("∀", "forall", "universal");
@@ -280,7 +279,7 @@ public class SymbolPalette extends
     for (String character : chars)
     {
       Set<String> aliasSet = CHARACTER_ALIASES.computeIfAbsent(character, k -> new HashSet<>());
-      aliasSet.add(character.toLowerCase());
+      aliasSet.add(character);
       Collections.addAll(aliasSet, aliases);
     }
   }
@@ -301,7 +300,10 @@ public class SymbolPalette extends
       chars.add(s);
     }
 
-    chars.addAll(Parser.greekAndBlackLetterChars);
+    for (String s : Parser.greekAndBlackLetterChars)
+    {
+      chars.add(s);
+    }
     chars.addAll(Parser.fractions.keySet().stream().map(String::valueOf).toList());
 
     for (int c : Parser.lowercaseSuperscriptAlphabet)
