@@ -439,7 +439,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
-    // Need to handle chain rule for integration
     var functionIntegral = integrateFunction();
     var argDerivative    = arg.differentiate(variable);
     return functionIntegral.div(argDerivative);
@@ -472,7 +471,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return arg.cos().log().neg();
     case "sec":
       return arg.sec().add(arg.tan()).log();
-    // Add more cases for other functions
     default:
       throw new UnsupportedOperationException("Integration not implemented for: " + functionName);
     }
@@ -548,6 +546,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     switch (functionName)
     {
+    case "gamma":
+    case "Γ":
+      return Complex.class;
     case "sqrt":
       return Integer.class.equals(expression.coDomainType) ? Real.class : Compiler.scalarType(expression.coDomainType);
     case "arg":

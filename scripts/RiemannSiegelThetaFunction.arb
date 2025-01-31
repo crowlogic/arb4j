@@ -1,5 +1,6 @@
 
 var Theta = RealFunction.parse("arg(Γ(1/4+I*t/2))-(log(π)/2)*t");
 var theta = Theta.get();
-theta.eval(2.3);
+var t = 2.3;
+System.out.format("θ(%s)=%s\n",t,theta.eval(t));
 System.out.println(Theta.inspect(theta));
