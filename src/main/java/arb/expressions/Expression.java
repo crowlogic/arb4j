@@ -637,6 +637,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       node = (N) new DerivativeNode<D, C, F>(this);
     }
+    else if (nextCharacterIs('Đ'))
+    {
+      node = (N) new FractionalDerivativeNode<D, C, F>(this);
+    }
     else if (nextCharacterIs('∫'))
     {
       node = (N) new IntegralNode<D, C, F>(this);

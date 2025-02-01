@@ -217,7 +217,7 @@ public class Parser
 
     for (int i = 0; i < superscripts.length; i++)
     {
-      expression = expression.replace(superscripts[i], caretNormals[i]);
+      expression = expression.replace(superscripts[i], String.format("^(%s)", normals[i]));
     }
 
     return expression;
@@ -309,9 +309,9 @@ public class Parser
   { "ᵃ", "ᵇ", "ᶜ", "ᵈ", "ᵉ", "ᶠ", "ᵍ", "ʰ", "ⁱ", "ʲ", "ᵏ", "ˡ", "ᵐ", "ⁿ", "ᵒ", "ᵖ", String.format("%c", 0x107A5), "ʳ",
     "ˢ", "ᵗ", "ᵘ", "ᵛ", "ʷ", "ˣ", "ʸ", "ᶻ", "ᵅ", "ᵝ", "ᵞ", "ᵟ", "ᵋ", "ᶿ", "ᵠ", "ᵡ" };
 
-  public static final String[]           caretNormals                 =
-  { "^a", "^b", "^c", "^d", "^e", "^f", "^g", "^h", "^i", "^j", "^k", "^l", "^m", "^n", "^o", "^p", "^q", "^r", "^s",
-    "^t", "^u", "^v", "^w", "^x", "^y", "^z", "^α", "^β", "^γ", "^δ", "^ε", "^θ", "^φ", "^χ" };
+  public static final String[]           normals                      =
+  { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w",
+    "x", "y", "z", "α", "β", "γ", "δ", "ε", "θ", "φ", "χ" };
 
   public static final HashSet<Character> superscriptChars             = new HashSet<
                 Character>(Arrays.asList(superscripts).stream().map(s -> s.charAt(0)).toList());

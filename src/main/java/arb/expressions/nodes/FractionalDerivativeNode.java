@@ -26,8 +26,8 @@ public class FractionalDerivativeNode<D, R, F extends Function<? extends D, ? ex
   public FractionalDerivativeNode(Expression<D, R, F> expression)
   {
     super(expression);
-    power = expression.resolve();
-    assert false : "TODO: power = " + power;
+    //power = expression.resolve();
+    assert false : "TODO: remaining=" + expression.remaining();
     
   }
 
