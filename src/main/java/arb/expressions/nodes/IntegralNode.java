@@ -199,7 +199,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     Compiler.getFieldFromThis(mv,
                               expression.className,
                               integralFunctionFieldName,
-                              "L" + integralFunctionFieldName + ";");
+                              "L" + integralExpression.className + ";");
   }
 
   static String integralEvaluateMethodSignature = Compiler.getMethodDescriptor(Object.class,
@@ -228,7 +228,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
     if (upperLimitNode == null && lowerLimitNode == null)
     {
-      integralNode.generate(mv, resultType);
+     
+     integralNode.generate(mv, resultType);
     }
     else
     {

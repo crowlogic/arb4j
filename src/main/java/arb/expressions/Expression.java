@@ -1167,6 +1167,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if ((mapping.functionName == null || functionName == null || !functionName.equals(mapping.functionName))
                   && mapping.expression != null)
     {
+
       Class<?> type = mapping.type();
       if (type == null)
       {
@@ -1203,6 +1204,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       for (Dependency dependency : dependencies)
       {
+        System.err.println( "Initializing " + dependency + " in  " + System.identityHashCode(this));
         var assignments        = dependency.reverseDependencies.stream()
                                                                .filter(key -> referencedFunctions.containsKey(key)
                                                                              && !key.equals(className))
