@@ -261,12 +261,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     integralExpression.rootNode             = integralNode.spliceInto(integralExpression);
     integralExpression.className            = Parser.transformToJavaAcceptableCharacters(integralFunctionFieldName);
     integralExpression.updateStringRepresentation();
-    System.out.println("className "
-                       + integralExpression.className
-                       + " about to instantiate "
-                       + integralExpression
-                       + " integralNode="
-                       + integralNode);
 
     integralMapping =
                     expression.context.registerFunctionMapping(integralExpression.className,

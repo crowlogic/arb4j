@@ -1192,10 +1192,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor generateInitializationCode(MethodVisitor mv)
   {
-    if (className.contains("integral"))
-    {
-      System.err.println("dammit");
-    }
     generateCodeToThrowErrorIfAlreadyInitialized(mv);
     if (trace)
     {

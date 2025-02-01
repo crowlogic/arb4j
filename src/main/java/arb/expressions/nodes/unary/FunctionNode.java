@@ -273,8 +273,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                                                                      derivative,
                                                                                                      derivative.domainType(),
                                                                                                      derivative.coDomainType());
-    
-    System.err.println( "Damned " + newDerivativeFunctionMapping );
+      
     return new FunctionNode<D, R, F>(expression,
                                      newDerivativeFunctionMapping,
                                      arg);
