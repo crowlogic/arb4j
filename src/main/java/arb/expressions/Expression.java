@@ -1192,6 +1192,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor generateInitializationCode(MethodVisitor mv)
   {
+    if (className.contains("integral"))
+    {
+      System.err.println("dammit");
+    }
     generateCodeToThrowErrorIfAlreadyInitialized(mv);
     if (trace)
     {
@@ -1204,7 +1208,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       for (Dependency dependency : dependencies)
       {
-        System.err.println( "Initializing " + dependency + " in  " + System.identityHashCode(this));
         var assignments        = dependency.reverseDependencies.stream()
                                                                .filter(key -> referencedFunctions.containsKey(key)
                                                                              && !key.equals(className))
@@ -1216,6 +1219,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
         if (mapping != null)
         {
+          if (mapping.instance != null)
+          {
+            functionDescriptor = mapping.instance.getClass().descriptorString();
+          }
           constructReferencedFunctionInstanceIfItIsNull(mv, mapping);
           generateFunctionInitializer(mv, mapping, assignments);
 
