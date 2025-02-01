@@ -18,17 +18,17 @@ public class FractionalDerivativeNode<D, R, F extends Function<? extends D, ? ex
                                      Node<D, R, F>
 {
 
-  
-
   Node<D, R, F> power;
 
-  @SuppressWarnings("preview")
+  Node<D, R, F> operand;
+
   public FractionalDerivativeNode(Expression<D, R, F> expression)
   {
     super(expression);
-    //power = expression.resolve();
-    assert false : "TODO: remaining=" + expression.remaining();
-    
+    expression.require('^').require('(');
+    power = expression.resolve();
+    expression.require(')');
+    operand = expression.resolve();
   }
 
   @Override
