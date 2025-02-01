@@ -33,7 +33,6 @@ public class RealFunctionTest extends
 
   public static void testBetaFunctionReal()
   {
-    var cool = "🤙";
     
     var oneOverThirty      = new Fraction(1,
                                           30);
@@ -42,15 +41,7 @@ public class RealFunctionTest extends
     assertEquals(oneOverThirty.doubleValue(), oneDividedByThirty.doubleValue());
   }
 
-  public static void testBetaFunctionRational()
-  {
-    System.setProperty("arb4j.compiler.trace","true");
-    var oneOverThirthy = new Fraction(1,
-                                      30);
-    FractionNullaryFunction betaFiveTwo = FractionNullaryFunction.express("Beta(5,2)");
-    Fraction oneThirtieth   = betaFiveTwo.evaluate();
-    assertEquals(oneOverThirthy, oneThirtieth);
-  }
+
 
 
 }

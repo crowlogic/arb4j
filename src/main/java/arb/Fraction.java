@@ -153,7 +153,15 @@ public class Fraction implements Becomable<Fraction>,AutoCloseable,NamedField<Fr
     this();
     set(val);
   }
-
+  
+  public Complex sub(Fraction element, int prec, Complex result)
+  {
+    try ( Fraction blip = new Fraction())
+    {      
+      return result.set(sub(element, prec, blip));
+    }
+  }
+  
   @Override
   public Fraction inverse(Fraction res)
   {

@@ -35,7 +35,6 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
   @Override
   public Class<?> type()
   {
-    assert false : "wtf";
     return splicedNode.type();
   }
 

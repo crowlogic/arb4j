@@ -187,7 +187,13 @@ import arb.utensils.Utensils;
   {
     return digamma(bits, this);
   }
-  
+
+  public Complex sub(Integer x, int prec, Complex res)
+  {
+    arblib.arb_sub_fmpz(res.zero().re(), this, x.swigCPtr, prec);
+    return res;    
+  }
+    
   public Real digamma(int bits, Real result)
   {
     arblib.arb_digamma(result, this, bits);

@@ -548,7 +548,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
     case "gamma":
     case "Γ":
-      return Compiler.scalarType(expression.coDomainType);
+      return Compiler.scalarType(arg.type());
     case "sqrt":
       return Integer.class.equals(expression.coDomainType) ? Real.class : Compiler.scalarType(expression.coDomainType);
     case "arg":
