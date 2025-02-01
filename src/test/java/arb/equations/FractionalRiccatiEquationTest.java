@@ -1,12 +1,11 @@
 package arb.equations;
 
 import arb.Complex;
+import arb.Real;
 import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
-import arb.utensils.ShellFunctions;
-import javafx.util.Duration;
 import junit.framework.TestCase;
 
 /**
@@ -38,10 +37,12 @@ public class FractionalRiccatiEquationTest extends
     assertEquals("1", r.toString());
 
     RealFunction solution = RealFunction.express("1+sqrt(2)*tanh(sqrt(2)*x+1/2*log(((sqrt(2)-1)/(sqrt(2)+1))))");
-    var y = solution.eval(1.0);
-    assertEquals( 1.68949839159438298686019048603, y );
-   // ShellFunctions.plot(0, 1, 1000, solution);
-   // Thread.sleep(1000*100000000);
+    var          y        = solution.eval(1.0);
+    assertEquals(1.68949839159438298686019048603, y);
+    var u = solution.evaluate(RealConstants.zero, 128, new Real());
+    assertTrue(u.approximatelyEquals(RealConstants.zero, 128));
+    // ShellFunctions.plot(0, 1, 1000, solution);
+    // Thread.sleep(1000*100000000);
   }
 
 }
