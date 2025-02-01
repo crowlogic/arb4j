@@ -1,6 +1,7 @@
 package arb.functions.real;
 
 import arb.Fraction;
+import arb.functions.FractionNullaryFunction;
 import arb.functions.rational.RationalNullaryFunction;
 import junit.framework.TestCase;
 
@@ -43,11 +44,12 @@ public class RealFunctionTest extends
 
   public static void testBetaFunctionRational()
   {
+    System.setProperty("arb4j.compiler.trace","true");
     var oneOverThirthy = new Fraction(1,
                                       30);
-    var oneThirtieth   = RationalNullaryFunction.express("Beta(5,2)");
-    var val            = oneThirtieth.evaluate(128);
-    assertEquals(oneOverThirthy, val);
+    FractionNullaryFunction betaFiveTwo = FractionNullaryFunction.express("Beta(5,2)");
+    Fraction oneThirtieth   = betaFiveTwo.evaluate();
+    assertEquals(oneOverThirthy, oneThirtieth);
   }
 
 

@@ -9,18 +9,18 @@ import arb.expressions.Expression;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface NullaryFractionFunction extends
+public interface FractionNullaryFunction extends
                                          NullaryFunction<Fraction>
 {
 
-  public static NullaryFractionFunction express(String string)
+  public static FractionNullaryFunction express(String string)
   {
-    return NullaryFunction.express(Fraction.class, NullaryFractionFunction.class, string);
+    return NullaryFunction.express(Fraction.class, FractionNullaryFunction.class, string);
   }
 
-  public static Expression<Object, Fraction, NullaryFractionFunction> parse(String string)
+  public static Expression<Object, Fraction, FractionNullaryFunction> parse(String string)
   {
-    return NullaryFunction.parse(Fraction.class, NullaryFractionFunction.class, string);
+    return NullaryFunction.parse(Fraction.class, FractionNullaryFunction.class, string);
   }
 
 }

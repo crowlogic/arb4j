@@ -27,6 +27,19 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
 {
 
   @Override
+  public String toString()
+  {
+    return String.format("Beta(%s,%s)", x, y);
+  }
+
+  @Override
+  public Class<?> type()
+  {
+    assert false : "wtf";
+    return splicedNode.type();
+  }
+
+  @Override
   public int hashCode()
   {
     final int prime  = 31337;
@@ -84,6 +97,7 @@ public class BetaFunctionNode<D, C, F extends Function<? extends D, ? extends C>
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+    generatedType = resultType;
     splicedNode.generate(mv, resultType);
     return mv;
   }

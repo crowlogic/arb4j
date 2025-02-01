@@ -548,7 +548,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
     case "gamma":
     case "Γ":
-      return Complex.class;
+      return Compiler.scalarType(expression.coDomainType);
     case "sqrt":
       return Integer.class.equals(expression.coDomainType) ? Real.class : Compiler.scalarType(expression.coDomainType);
     case "arg":
@@ -623,14 +623,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     if (isBuiltin())
     {
-      Class<?> resultType = resultTypeFor(functionName);
-      return resultType;
+      return resultTypeFor(functionName);
     }
     assert mapping.coDomain != null : "coDomain of " + mapping + " is null";
-    if (functionName.equals("arg"))
-    {
-      return Real.class;
-    }
 
     return mapping.coDomain;
   }

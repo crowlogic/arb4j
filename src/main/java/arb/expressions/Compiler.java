@@ -585,11 +585,11 @@ public class Compiler
   {
     if (resultType.equals(RationalFunction.class) || resultType.equals(Fraction.class))
     {
-      return Fraction.class;
+      return Real.class;
     }
     else if (resultType.equals(ComplexRationalFunction.class) || resultType.equals(ComplexFraction.class))
     {
-      return ComplexFraction.class;
+      return Complex.class;
     }
     else if (realScalarTypes.contains(resultType) || RealFunction.class.equals(resultType))
     {
