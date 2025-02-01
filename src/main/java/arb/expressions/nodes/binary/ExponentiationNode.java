@@ -65,8 +65,7 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
                                               + variable);
     }
     // https://github.com/crowlogic/arb4j/issues/539
-    Node<D, R, F> rightPlusOne = right.add(one());
-    return left.pow(rightPlusOne).div(rightPlusOne).div(left.differentiate(variable));
+    return left.pow(right.add(one())).div(right.add(one())).div(left.differentiate(variable));
   }
 
   @Override

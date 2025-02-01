@@ -270,8 +270,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                           expression.context.registerFunctionMapping("diff"
                                                                                                      + functionName,
                                                                                                      derivative,
-                                                                                                     functionMapping.coDomain,
-                                                                                                     functionMapping.coDomain);
+                                                                                                     derivative.domainType(),
+                                                                                                     derivative.coDomainType());
     return new FunctionNode<D, R, F>(expression,
                                      newDerivativeFunctionMapping,
                                      arg);
@@ -301,7 +301,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     FunctionMapping<?, ?, ?> newIntegralFunctionMapping =
                                                         expression.context.registerFunctionMapping("int" + functionName,
                                                                                                    integral,
-                                                                                                   functionMapping.coDomain,
+                                                                                                   functionMapping.domain,
                                                                                                    functionMapping.coDomain);
     return new FunctionNode<D, R, F>(expression,
                                      newIntegralFunctionMapping,

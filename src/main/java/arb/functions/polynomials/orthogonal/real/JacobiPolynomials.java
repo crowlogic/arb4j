@@ -59,13 +59,50 @@ public class JacobiPolynomials extends
   @Override
   public RealPolynomialSequence derivative()
   {
-    return (t, order, bits, res) -> JacobiPolynomials.this.evaluate(t, order, bits, res).differentiate(bits, res);
+    return new DerivativeSequence();
   }
 
   @Override
   public RealPolynomialSequence integral()
   {
-    return (t, order, bits, res) -> JacobiPolynomials.this.evaluate(t, order, bits, res).integrate(bits, res);
+    return new IntegralSequence();
+  }
+
+  // Static nested classes
+  public final class DerivativeSequence implements
+                                        RealPolynomialSequence
+  {
+    @Override
+    public Class<RealPolynomial> coDomainType()
+    {
+      return RealPolynomial.class;
+
+    }
+
+
+    @Override
+    public RealPolynomial evaluate(Integer t, int order, int bits, RealPolynomial res)
+    {
+      return JacobiPolynomials.this.evaluate(t, order, bits, res).differentiate(bits, res);
+    }
+  }
+
+  public final class IntegralSequence implements
+                                      RealPolynomialSequence
+  {
+
+    @Override
+    public Class<RealPolynomial> coDomainType()
+    {
+      return RealPolynomial.class;
+
+    }
+
+    @Override
+    public RealPolynomial evaluate(Integer t, int order, int bits, RealPolynomial res)
+    {
+      return JacobiPolynomials.this.evaluate(t, order, bits, res).integrate(bits, res);
+    }
   }
 
   @Override

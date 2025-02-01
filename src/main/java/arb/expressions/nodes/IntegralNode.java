@@ -61,6 +61,10 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   @Override
   public Node<D, C, F> simplify()
   {
+    if (integralNode == null)
+    {
+      computeIndefiniteIntegral();
+    }
     integralNode = integralNode.simplify();
     return this;
   }
@@ -116,6 +120,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                      + "g(x)=∫x➔f(x)dx for indefinate integrals, the variable on the left "
                      + "side of the arrow must match the variable on the right side of the d and "
                      + "before the ( but the first var was %s and the 2nd was %s\n";
+
+  public FunctionMapping<?, ?, ?> integralMapping;
 
   /**
    * The syntax to express a definate integral is<br>
@@ -179,7 +185,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     var type = type();
     assignFieldNames(type);
-    computeIndefiniteIntegral(type);
   }
 
   protected void assignFieldNames(Class<?> resultType)
@@ -197,12 +202,10 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                               "L" + integralFunctionFieldName + ";");
   }
 
-  static String            integralEvaluateMethodSignature = Compiler.getMethodDescriptor(Object.class,
-                                                                                          Object.class,
-                                                                                          int.class,
-                                                                                          Object.class);
-
-  FunctionMapping<D, C, F> integralMapping;
+  static String integralEvaluateMethodSignature = Compiler.getMethodDescriptor(Object.class,
+                                                                               Object.class,
+                                                                               int.class,
+                                                                               Object.class);
 
   protected void evaluateIntegral(MethodVisitor mv)
   {
@@ -216,45 +219,56 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
-  {   
+  {
     generatedType = resultType;
-    if ( upperLimitNode == null && lowerLimitNode == null )
+
+    if (integralNode == null)
     {
-      assert false : "TODO: handle this";
+      computeIndefiniteIntegral();
     }
-    evaluateIndefiniteIntegralAt(mv, upperLimitNode, resultType, lowerIntegralValueFieldName);
-    evaluateIndefiniteIntegralAt(mv, lowerLimitNode, resultType, upperIntegralValueFieldName);
-    loadBitsParameterOntoStack(mv);
-    if (isResult)
+    if (upperLimitNode == null && lowerLimitNode == null)
     {
-      Compiler.cast(Compiler.loadResultParameter(mv), resultType);
+      integralNode.generate(mv, resultType);
     }
     else
     {
-      fieldName = expression.allocateIntermediateVariable(mv, "integralDifference", resultType);
+      evaluateIndefiniteIntegralAt(mv, upperLimitNode, resultType, lowerIntegralValueFieldName);
+      evaluateIndefiniteIntegralAt(mv, lowerLimitNode, resultType, upperIntegralValueFieldName);
+      loadBitsParameterOntoStack(mv);
+      if (isResult)
+      {
+        Compiler.cast(Compiler.loadResultParameter(mv), resultType);
+      }
+      else
+      {
+        fieldName = expression.allocateIntermediateVariable(mv, "integralDifference", resultType);
+      }
+      Compiler.invokeBinaryOperationMethod(mv, "sub", resultType, resultType, resultType);
     }
-    Compiler.invokeBinaryOperationMethod(mv, "sub", resultType, resultType, resultType);
     return mv;
   }
 
-  private void computeIndefiniteIntegral(Class<? extends C> resultType)
+  private void computeIndefiniteIntegral()
   {
     assert integralFunction == null;
-    integralNode                = integrandNode.integrate(integrationVariableNode.asVariable());
+    integralNode                            = integrandNode.integrate(integrationVariableNode.asVariable());
 
-    integralExpression          = integralNode.expression.cloneExpression();
+    integralExpression                      = integralNode.expression.cloneExpression();
     integralExpression.instructionByteCodes = null;
-    integralExpression.compiledClass = null;
-    integralExpression.rootNode = integralNode.spliceInto(integralExpression);
-    integralExpression.className = integralFunctionFieldName;
+    integralExpression.compiledClass        = null;
+    integralExpression.rootNode             = integralNode.spliceInto(integralExpression);
+    integralExpression.className            = Parser.transformToJavaAcceptableCharacters(integralFunctionFieldName);
     integralExpression.updateStringRepresentation();
-    System.out.println( "className " + integralExpression.className + " about to instantiate " + integralExpression );
-    integralExpression.generate();
-    var integralInstance = integralExpression.instantiate();
+    System.out.println("className "
+                       + integralExpression.className
+                       + " about to instantiate "
+                       + integralExpression
+                       + " integralNode="
+                       + integralNode);
 
     integralMapping =
-                    expression.context.registerFunctionMapping(integralFunctionFieldName,
-                                                               integralInstance,
+                    expression.context.registerFunctionMapping(integralExpression.className,
+                                                               integralExpression.instantiate(),
                                                                expression.domainType
                                                                              != Object.class ? expression.domainType
                                                                                              : expression.coDomainType,
@@ -300,13 +314,19 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   @Override
   public String typeset()
   {
-    return String.format("%sint_%s^%s %s %smathd %s",
-                         "\\",
-                         lowerLimitNode.typeset(),
-                         upperLimitNode.typeset(),
-                         integrandNode.typeset(),
-                         "\\",
-                         integrationVariableNode.typeset());
+    return lowerLimitNode == null && upperLimitNode == null
+                                                            ? String.format("%sint %s %smathd %s",
+                                                                            "\\",                                                                            
+                                                                            integrandNode.typeset(),
+                                                                            "\\",
+                                                                            integrationVariableNode.typeset())
+                                                            : String.format("%sint_%s^%s %s %smathd %s",
+                                                                            "\\",
+                                                                            lowerLimitNode.typeset(),
+                                                                            upperLimitNode.typeset(),
+                                                                            integrandNode.typeset(),
+                                                                            "\\",
+                                                                            integrationVariableNode.typeset());
   }
 
   @Override
