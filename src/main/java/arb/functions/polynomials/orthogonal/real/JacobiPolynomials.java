@@ -57,18 +57,15 @@ public class JacobiPolynomials extends
 {
 
   @Override
+  public RealPolynomialSequence derivative()
+  {
+    return (t, order, bits, res) -> JacobiPolynomials.this.evaluate(t, order, bits, res).differentiate(bits, res);
+  }
+
+  @Override
   public RealPolynomialSequence integral()
   {
-    return new RealPolynomialSequence()
-    {
-
-      @Override
-      public RealPolynomial evaluate(Integer t, int order, int bits, RealPolynomial res)
-      {
-        assert false : "TODO";
-        return null;
-      }
-    };
+    return (t, order, bits, res) -> JacobiPolynomials.this.evaluate(t, order, bits, res).integrate(bits, res);
   }
 
   @Override

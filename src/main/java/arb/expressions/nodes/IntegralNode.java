@@ -20,6 +20,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.FunctionMapping;
+import arb.expressions.Parser;
 import arb.expressions.VariableReference;
 import arb.functions.Function;
 
@@ -215,8 +216,12 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
-  {
-    generatedType = resultType;    
+  {   
+    generatedType = resultType;
+    if ( upperLimitNode == null && lowerLimitNode == null )
+    {
+      assert false : "TODO: handle this";
+    }
     evaluateIndefiniteIntegralAt(mv, upperLimitNode, resultType, lowerIntegralValueFieldName);
     evaluateIndefiniteIntegralAt(mv, lowerLimitNode, resultType, upperIntegralValueFieldName);
     loadBitsParameterOntoStack(mv);
@@ -238,9 +243,13 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     integralNode                = integrandNode.integrate(integrationVariableNode.asVariable());
 
     integralExpression          = integralNode.expression.cloneExpression();
+    integralExpression.instructionByteCodes = null;
+    integralExpression.compiledClass = null;
     integralExpression.rootNode = integralNode.spliceInto(integralExpression);
-    integralExpression.updateStringRepresentation();
     integralExpression.className = integralFunctionFieldName;
+    integralExpression.updateStringRepresentation();
+    System.out.println( "className " + integralExpression.className + " about to instantiate " + integralExpression );
+    integralExpression.generate();
     var integralInstance = integralExpression.instantiate();
 
     integralMapping =
@@ -253,7 +262,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                                                                Function.class,
                                                                false,
                                                                integralExpression,
-                                                               integralExpression.expression);
+                                                               null);
     expression.referencedFunctions.put(integralFunctionFieldName, integralMapping);
   }
 

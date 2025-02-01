@@ -1,5 +1,7 @@
 package arb.expressions;
 
+import static arb.utensils.Utensils.wrapOrThrow;
+
 import java.util.HashMap;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -44,8 +46,13 @@ public class CompiledExpressionClassLoader extends
     }
     // assert !compiledClasses.containsKey(className) : className + " already
     // exists";
-    Class<?> definedClass = defineClass(className, bytecodes, 0, bytecodes.length);
+    try { Class<?> definedClass = defineClass(className, bytecodes, 0, bytecodes.length);
     compiledClasses.put(className, definedClass);
     return definedClass;
+    } catch(ClassFormatError e)
+    {
+      wrapOrThrow(className, e);
+      return null;
+    }
   }
 }
