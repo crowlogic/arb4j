@@ -1,3 +1,1 @@
 implement ∂/∂x[∏ᵢ₌₁ᵏfᵢ(x)] = ∑ᵢ₌₁ᵏ[(∂/∂x fᵢ(x))∏ⱼ₌₁,ⱼ≠ᵢᵏfⱼ(x)]
-expr compiler:  fractional derivatives
-https://github.com/crowlogic/arb4j/issues/573 functional indep toSTring

@@ -84,7 +84,7 @@ public class FractionalRiccatiEquation extends
                                        AutoCloseable
 {
 
-  public static final String FRACTIONAL_RICCATI_EQUATION = "t➔Dᵅy(t)=t➔p(t)+q(t)*y(t)+r(t)*y(t)²";
+  public static final String FRACTIONAL_RICCATI_EQUATION = "t➔Đᵅy(t)=t➔p(t)+q(t)*y(t)+r(t)*y(t)²";
   public final Real          α                           = new Real();
   public String              p;
   public String              q;

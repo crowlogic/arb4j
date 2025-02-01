@@ -52,7 +52,6 @@ public class VariableReference<D, R, F extends Function<? extends D, ? extends R
 
   public VariableReference(String name, Node<D, R, F> index)
   {
-    assert !name.isEmpty() : "name is empty";
     this.name  = name == null ? null : Parser.subscriptAndSuperscriptsToRegular(name.trim());
     this.index = index;
   }
