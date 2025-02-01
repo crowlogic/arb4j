@@ -116,10 +116,10 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
          false);
   }
 
-  String SYNTAXMSG = "the format is  g(x)=∫x➔f(x)dx∈(a,b) for definite integrals and "
-                     + "g(x)=∫x➔f(x)dx for indefinate integrals, the variable on the left "
-                     + "side of the arrow must match the variable on the right side of the d and "
-                     + "before the ( but the first var was %s and the 2nd was %s\n";
+  String                          SYNTAXMSG = "the format is  g(x)=∫x➔f(x)dx∈(a,b) for definite integrals and "
+                                              + "g(x)=∫x➔f(x)dx for indefinate integrals, the variable on the left "
+                                              + "side of the arrow must match the variable on the right side of the d and "
+                                              + "before the ( but the first var was %s and the 2nd was %s\n";
 
   public FunctionMapping<?, ?, ?> integralMapping;
 
@@ -228,8 +228,9 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     }
     if (upperLimitNode == null && lowerLimitNode == null)
     {
-     
-     integralNode.generate(mv, resultType);
+      expression.initializers.addAll(integralNode.expression.initializers);
+      expression.context.mergeFrom(integralNode.expression.context);
+      integralNode.generate(mv, resultType);
     }
     else
     {
@@ -317,7 +318,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   {
     return lowerLimitNode == null && upperLimitNode == null
                                                             ? String.format("%sint %s %smathd %s",
-                                                                            "\\",                                                                            
+                                                                            "\\",
                                                                             integrandNode.typeset(),
                                                                             "\\",
                                                                             integrationVariableNode.typeset())

@@ -350,6 +350,7 @@ public class Context
   public void mergeFrom(Context context)
   {
     variables.addAll(context.variables);
+    functions.map.putAll(context.functions.map);
   }
 
   public <D, R, F extends Function<? extends D, ? extends R>>
