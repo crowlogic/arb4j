@@ -29,7 +29,6 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.FunctionMapping;
 import arb.expressions.Parser;
-import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -241,7 +240,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
   }
 
-
   public Node<D, R, F> arcsinDerivative()
   {
     return one().div(one().sub(arg.pow(2)).sqrt());
@@ -249,7 +247,35 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   private Node<D, R, F> differentiateContextualFunction()
   {
-    throw new UnsupportedOperationException("Contextual function differentiation not yet implemented: " + functionName);
+
+    FunctionMapping<Object, Object,
+                  Function<? extends Object,
+                                ? extends Object>> functionMapping =
+                                                                   expression.context.getFunctionMapping(functionName);
+
+    if (functionMapping == null)
+    {
+      throw new CompilerException(String.format("function named %s was not found in context.functions", functionName));
+    }
+    var instance = functionMapping.instance;
+    if (instance == null)
+    {
+      throw new CompilerException(String.format("Instance for function %s was not present in %s",
+                                                functionName,
+                                                functionMapping));
+    }
+
+    var                      derivative                   = instance.derivative();
+    FunctionMapping<?, ?, ?> newDerivativeFunctionMapping =
+                                                          expression.context.registerFunctionMapping("diff"
+                                                                                                     + functionName,
+                                                                                                     derivative,
+                                                                                                     functionMapping.coDomain,
+                                                                                                     functionMapping.coDomain);
+    return new FunctionNode<D, R, F>(expression,
+                                     newDerivativeFunctionMapping,
+                                     arg);
+
   }
 
   private Node<D, R, F> integrateContextualFunction()

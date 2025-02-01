@@ -26,6 +26,12 @@ public interface Function<D, C> extends
                          Typesettable
 {
 
+  public default Function<D,C> derivative()
+  {
+    assert false : "TODO: " + getClass() + " should implement this";
+    return null;
+  }
+  
   public default Function<D,C> integral()
   {
     assert false : "TODO: " + getClass() + " should implement this";
