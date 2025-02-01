@@ -96,7 +96,7 @@ public class RealTwoDimensionalDataSet extends
   {
     var                       x    = getRealXValues();
     var                       y    = getRealYValues();
-    RealTwoDimensionalDataSet rds  = new RealTwoDimensionalDataSet(String.format("varianceStructure(%s)", toString()),
+    RealTwoDimensionalDataSet rds  = new RealTwoDimensionalDataSet(String.format("varianceStructure(%s,n=%s)", toString(),n),
                                                                    n,
                                                                    domain);
     var                       outy = rds.getRealYValues();
