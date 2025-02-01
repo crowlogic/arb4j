@@ -9,6 +9,8 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
+import arb.utensils.ShellFunctions;
+import arb.utensils.Utensils;
 
 /**
  * Represents the binary exponentiation operation: left^right<br>
@@ -58,7 +60,8 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
 
-    assert false : "TODO: Auto-generated method stub";
+    assert false : "TODO: Auto-generated method stub: integrate " + this.toString() + " with respect to " + variable + " where lhs is " + left + " of type " + left.type();
+    
     return null;
   }
 

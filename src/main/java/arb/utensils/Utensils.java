@@ -27,8 +27,8 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.TypeRepresenter;
 import arb.expressions.SerializedExpression;
+import arb.expressions.TypeRepresenter;
 import arb.viz.WindowManager;
 import javafx.application.Platform;
 
@@ -265,6 +265,21 @@ public class Utensils
     return loaded;
   }
 
+  public static String yamlString(Object... information)
+  {
+
+    Yaml                  yaml       = newYaml();
+    ByteArrayOutputStream baos       = new ByteArrayOutputStream();
+    PrintWriter           fileWriter = new PrintWriter(baos);
+    for (Object obj : information)
+    {
+      yaml.dump(obj, fileWriter);
+    }
+    fileWriter.close();
+    return baos.toString();
+
+  }
+
   public static void saveToYamlFormat(File yamlFile, Object... information)
   {
     try
@@ -322,6 +337,5 @@ public class Utensils
     }
     return null;
   }
-
 
 }
