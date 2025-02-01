@@ -6,6 +6,8 @@ import org.objectweb.asm.MethodVisitor;
 
 import arb.Fraction;
 import arb.Integer;
+import arb.Real;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
@@ -31,6 +33,12 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     if (resultType.equals(Integer.class) && type().equals(Fraction.class))
+    {
+      throw new IllegalArgumentException(String.format("type() = %s is not assignable to resultType = %s",
+                                                       type(),
+                                                       resultType));
+    }
+    if (resultType.equals(Real.class) && type().equals(RealPolynomial.class))
     {
       throw new IllegalArgumentException(String.format("type() = %s is not assignable to resultType = %s",
                                                        type(),
