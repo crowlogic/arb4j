@@ -47,7 +47,7 @@ public class FractionalDerivativeNode<D, R, F extends Function<? extends D, ? ex
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    assert false : "TODO";
+    assert false : String.format("TODO: generate %s-th fractional derivative of %s", power, operand);
     return null;
   }
 
