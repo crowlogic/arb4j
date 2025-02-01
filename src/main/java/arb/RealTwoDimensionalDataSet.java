@@ -30,9 +30,11 @@ public class RealTwoDimensionalDataSet extends
 
   FloatInterval             domain;
 
+  Float                     resolution       = new Float();
+
   public Float getResolution(Float result)
   {
-    return domain.length(128, result).div(getDataCount(), 128);
+    return result.set(resolution);
   }
 
   public RealTwoDimensionalDataSet(String name, int length, FloatInterval domain)
@@ -41,6 +43,7 @@ public class RealTwoDimensionalDataSet extends
           2);
     data        = RealMatrix.newMatrix(2, length);
     this.domain = domain;
+    domain.length(128, resolution).div(length, 128);
   }
 
   public final RealMatrix data;
@@ -85,6 +88,7 @@ public class RealTwoDimensionalDataSet extends
       return;
     }
     data.close();
+    resolution.close();
   }
 
   @SuppressWarnings("resource")
@@ -96,13 +100,15 @@ public class RealTwoDimensionalDataSet extends
                                                                    n,
                                                                    domain);
     var                       outy = rds.getRealYValues();
-    try ( var length = domain.length(128, new Float()); var scale = new Real())
+    rds.resolution = resolution;
+    try ( var length = domain.length(128, new Float()); var scale = new Real(); Real blip = new Real())
     {
       scale.set(length).div(n);
+      scale.set(resolution);
       Real xval = rds.getRealXValues();
       for (int i = 0; i < xval.size(); i++)
       {
-        xval.get(i).set(i);
+        xval.get(i).set(scale.mul(i, 128, blip));
       }
 
     }
