@@ -86,17 +86,20 @@ public class FractionalRiccatiEquation extends
 
   public static final String FRACTIONAL_RICCATI_EQUATION = "t➔Đᵅy(t)=t➔p(t)+q(t)*y(t)+r(t)*y(t)²";
   public final Real          α                           = new Real();
-  public String              p;
-  public String              q;
-  public String              r;
+  public String              constantTerm;
+  public String              linearTerm;
+  public String              quadraticTerm;
+  public ComplexFunction     p;
+  public ComplexFunction     q;
+  public ComplexFunction     r;
 
   public FractionalRiccatiEquation(Context context, Real α, String p, String q, String r)
   {
     super(context);
     this.α.set(α);
-    this.p = p;
-    this.q = q;
-    this.r = r;
+    this.constantTerm  = p;
+    this.linearTerm    = q;
+    this.quadraticTerm = r;
     initialize();
   }
 
@@ -127,9 +130,9 @@ public class FractionalRiccatiEquation extends
   public void initialize()
   {
     context.registerVariable(α.setName("α"));
-    ComplexFunction.express("p", p, context);
-    ComplexFunction.express("q", q, context);
-    ComplexFunction.express("r", r, context);
+    p = ComplexFunction.express("p", constantTerm, context);
+    q = ComplexFunction.express("q", linearTerm, context);
+    r = ComplexFunction.express("r", quadraticTerm, context);
     initialize(FRACTIONAL_RICCATI_EQUATION, context);
   }
 

@@ -140,6 +140,11 @@ public class Equation<D, C, F extends Function<? extends D, ? extends C>> implem
                             functionType,
                             "rhs",
                             null);
+
+  }
+
+  public void instantiate()
+  {
     try
     {
       leftSide  = lhs.instantiate();
@@ -149,7 +154,6 @@ public class Equation<D, C, F extends Function<? extends D, ? extends C>> implem
     {
       throwOrWrap(e);
     }
-
   }
 
   @Override

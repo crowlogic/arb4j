@@ -103,7 +103,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
                          domain != null ? domain.getName() : null,
                          coDomain != null ? coDomain.getName() : null,
                          functionClass,
-                         System.identityHashCode(expression));
+                         expression);
   }
 
   public Class<?> type()

@@ -1,8 +1,12 @@
 package arb.equations;
 
-import arb.Real;
+import arb.Complex;
+import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.real.RealFunction;
+import arb.utensils.ShellFunctions;
+import javafx.util.Duration;
 import junit.framework.TestCase;
 
 /**
@@ -14,18 +18,30 @@ public class FractionalRiccatiEquationTest extends
                                            TestCase
 {
 
-  public static void testFractionalRiccati()
+  public static void testFractionalRiccati() throws InterruptedException
   {
-    FractionalRiccatiEquation fractionalRiccatiEquation = new FractionalRiccatiEquation(Real.of("0.8", 128),
+    FractionalRiccatiEquation fractionalRiccatiEquation = new FractionalRiccatiEquation(RealConstants.one,
                                                                                         "0",
-                                                                                        "-1",
+                                                                                        "2",
                                                                                         "1");
-
-    var                       discriminant              = fractionalRiccatiEquation.discriminant();
-
     System.out.println(fractionalRiccatiEquation);
-    System.out.println("discriminant=" + discriminant);
+    var     discriminant = fractionalRiccatiEquation.discriminant();
 
+    Complex p            = fractionalRiccatiEquation.p.eval(0.0, new Complex());
+    System.out.println("p=" + p);
+    Complex q = fractionalRiccatiEquation.q.eval(0.0, new Complex());
+    System.out.println("q=" + q);
+    Complex r = fractionalRiccatiEquation.r.eval(0.0, new Complex());
+    System.out.println("r=" + r);
+    assertEquals("0", p.toString());
+    assertEquals("2", q.toString());
+    assertEquals("1", r.toString());
+
+    RealFunction solution = RealFunction.express("1+sqrt(2)*tanh(sqrt(2)*x+1/2*log(((sqrt(2)-1)/(sqrt(2)+1))))");
+    var y = solution.eval(1.0);
+    assertEquals( 1.68949839159438298686019048603, y );
+   // ShellFunctions.plot(0, 1, 1000, solution);
+   // Thread.sleep(1000*100000000);
   }
 
 }
