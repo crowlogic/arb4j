@@ -108,6 +108,16 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return (BinaryOperationNode<D, R, F>) this;
   }
 
+  public LiteralConstantNode<D, R, F> negativeOne()
+  {
+    return expression.newLiteralConstant(-1);
+  }
+
+  public LiteralConstantNode<D, R, F> one()
+  {
+    return expression.newLiteralConstant(1);
+  }
+
   public FunctionNode<D, R, F> asFunction()
   {
     assert this instanceof FunctionNode : this + " isn't a FunctionNode";

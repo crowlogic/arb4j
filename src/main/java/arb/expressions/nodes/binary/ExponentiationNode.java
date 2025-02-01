@@ -9,8 +9,6 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
-import arb.utensils.ShellFunctions;
-import arb.utensils.Utensils;
 
 /**
  * Represents the binary exponentiation operation: left^right<br>
@@ -59,10 +57,16 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
-
-    assert false : "TODO: Auto-generated method stub: integrate " + this.toString() + " with respect to " + variable + " where lhs is " + left + " of type " + left.type();
-    
-    return null;
+    if (right.dependsOn(variable))
+    {
+      throw new UnsupportedOperationException("TODO: support the special cases where the exponent in "
+                                              + this
+                                              + " depends on "
+                                              + variable);
+    }
+    // https://github.com/crowlogic/arb4j/issues/539
+    Node<D, R, F> rightPlusOne = right.add(one());
+    return left.pow(rightPlusOne).div(rightPlusOne).div(left.differentiate(variable));
   }
 
   @Override
@@ -95,7 +99,7 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     if (Integer.class.equals(left.type())
                   && (Fraction.class.equals(right.type()) || Integer.class.equals(right.type())))
     {
-      type = AlgebraicNumber.class; 
+      type = AlgebraicNumber.class;
       return type;
     }
 

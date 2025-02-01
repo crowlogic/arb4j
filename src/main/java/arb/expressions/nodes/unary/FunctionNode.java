@@ -241,15 +241,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
   }
 
-  public LiteralConstantNode<D, R, F> negativeOne()
-  {
-    return expression.newLiteralConstant(-1);
-  }
-
-  public LiteralConstantNode<D, R, F> one()
-  {
-    return expression.newLiteralConstant(1);
-  }
 
   public Node<D, R, F> arcsinDerivative()
   {
