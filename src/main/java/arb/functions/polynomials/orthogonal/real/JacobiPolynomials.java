@@ -57,13 +57,13 @@ public class JacobiPolynomials extends
 {
 
   @Override
-  public RealPolynomialSequence derivative()
+  public DerivativeSequence derivative()
   {
     return new DerivativeSequence();
   }
 
   @Override
-  public RealPolynomialSequence integral()
+  public IntegralSequence integral()
   {
     return new IntegralSequence();
   }
