@@ -72,7 +72,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   @Override
   public String toString()
   {
-    return integralNode.toString();
+    return integralNode != null ? integralNode.toString() : "null";
   }
 
   @Override
