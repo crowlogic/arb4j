@@ -28,7 +28,7 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
     {
       var y = P.evaluate(4, 128);
       context.registerFunction("y", y);
-      RealFunction.express("yd:xdiff(y(x),x)", context);
+      RealFunction.express("yd:diff(y(x),x)", context);
       var f = RealNullaryFunction.express("yd(0.75)", context);
       var z = f.eval();
       assertEquals(0.41015625, z);
