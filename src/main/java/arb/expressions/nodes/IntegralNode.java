@@ -268,7 +268,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                                                                expression.domainType
                                                                              != Object.class ? expression.domainType
                                                                                              : expression.coDomainType,
-                                                               expression.coDomainType,
+                                                               integralNode.type(),
                                                                Function.class,
                                                                false,
                                                                integralExpression,

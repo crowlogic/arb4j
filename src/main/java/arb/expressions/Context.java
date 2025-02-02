@@ -360,4 +360,9 @@ public class Context
     return functions.get(functionName);
   }
 
+  public FunctionMapping<?, ?, ?> registerFunction(String string, Function<?,?> func)
+  {
+    return registerFunctionMapping(string, func, func.domainType(), func.coDomainType());
+  }
+
 }

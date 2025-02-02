@@ -8,6 +8,9 @@ import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.polynomials.RealPolynomialFunction;
+import arb.functions.polynomials.orthogonal.real.JacobiPolynomials;
+import arb.functions.real.RealFunction;
+import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
 
 /**
@@ -17,8 +20,22 @@ import junit.framework.TestCase;
 public class RealPolynomialFunctionExpressionCompilerTest extends
                                                           TestCase
 {
+  public static void testDerivativeOfPolynomial()
+  {
+    var context = new Context();
+    var P = new JacobiPolynomials(RealConstants.negHalf, RealConstants.negHalf);
+    var y = P.evaluate(4, 128);
+    var ymapping = context.registerFunction("y",y);
+    var yd = RealFunction.express("diff(y(x),x)",context);
+    var f = RealNullaryFunction.express("yd(0.75)",context);
+    var z = f.eval();
+    System.out.format("P4(-1/2,-1/2,0.75)=%s\n", z );
+    
+  }
+  
   public static void testAdd()
   {
+    
     Context context = new Context();
     try ( var x = new RealPolynomial(1); var y = new RealPolynomial(3); var z = new RealPolynomial();
           var correctZ = new RealPolynomial(3))
