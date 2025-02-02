@@ -23,19 +23,22 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
   public static void testDerivativeOfPolynomial()
   {
     var context = new Context();
-    var P = new JacobiPolynomials(RealConstants.negHalf, RealConstants.negHalf);
-    var y = P.evaluate(4, 128);
-    var ymapping = context.registerFunction("y",y);
-    var yd = RealFunction.express("diff(y(x),x)",context);
-    var f = RealNullaryFunction.express("yd(0.75)",context);
-    var z = f.eval();
-    System.out.format("P4(-1/2,-1/2,0.75)=%s\n", z );
-    
+    try ( var P = new JacobiPolynomials(RealConstants.negHalf,
+                                        RealConstants.negHalf))
+    {
+      var y = P.evaluate(4, 128);
+      context.registerFunction("y", y);
+      RealFunction.express("yd:xdiff(y(x),x)", context);
+      var f = RealNullaryFunction.express("yd(0.75)", context);
+      var z = f.eval();
+      assertEquals(0.41015625, z);
+    }
+
   }
-  
+
   public static void testAdd()
   {
-    
+
     Context context = new Context();
     try ( var x = new RealPolynomial(1); var y = new RealPolynomial(3); var z = new RealPolynomial();
           var correctZ = new RealPolynomial(3))
