@@ -65,7 +65,10 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
                                               + variable);
     }
     // https://github.com/crowlogic/arb4j/issues/539
-    return left.pow(right.add(one())).div(right.add(one())).div(left.differentiate(variable));
+    Node<D, R, F> divisor = left.differentiate(variable).simplify();
+    assert !divisor.toString().equals("0") : "wtf " + left + " left.clas=s" + left.getClass() ;
+    System.out.println("divisor=" + divisor);
+    return left.pow(right.add(one())).div(right.add(one())).div(divisor);
   }
 
   @Override

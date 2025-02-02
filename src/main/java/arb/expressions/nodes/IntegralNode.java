@@ -86,29 +86,29 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     return this;
   }
 
-  public int                         bits = 128;
+  public int                                         bits = 128;
 
-  Node<D, C, F>                      integrandNode;
+  Node<D, C, F>                                      integrandNode;
 
-  Node<D, C, F>                      lowerLimitNode;
+  Node<D, C, F>                                      lowerLimitNode;
 
-  Node<D, C, F>                      upperLimitNode;
+  Node<D, C, F>                                      upperLimitNode;
 
-  VariableNode<D, C, F>              integrationVariableNode;
+  VariableNode<D, C, F>                              integrationVariableNode;
 
-  Function<? extends D, ? extends C> integralFunction;
+  Function<? extends D, ? extends C>                 integralFunction;
 
-  String                             integralFunctionFieldName;
+  String                                             integralFunctionFieldName;
 
-  String                             lowerIntegralValueFieldName;
+  String                                             lowerIntegralValueFieldName;
 
-  String                             dvar;
+  String                                             dvar;
 
-  private Expression<D, C, F>        integralExpression;
+  private Expression<Object, Object, Function<?, ?>> integralExpression;
 
-  private Node<D, C, F>              integralNode;
+  private Node<Object, Object, Function<?, ?>>       integralNode;
 
-  private String                     upperIntegralValueFieldName;
+  private String                                     upperIntegralValueFieldName;
 
   public IntegralNode(Expression<D, C, F> expression)
   {
@@ -231,6 +231,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       expression.initializers.addAll(integralNode.expression.initializers);
       expression.context.mergeFrom(integralNode.expression.context);
       integralNode.generate(mv, resultType);
+    //  assert false : "wtf";
+
     }
     else
     {
@@ -253,22 +255,25 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   private void computeIndefiniteIntegral()
   {
     assert integralFunction == null;
-    integralNode                            = integrandNode.integrate(integrationVariableNode.asVariable());
+    integralNode                            =
+                 (Node<Object, Object, Function<?, ?>>) integrandNode.integrate(integrationVariableNode.asVariable());
 
     integralExpression                      = integralNode.expression.cloneExpression();
     integralExpression.instructionByteCodes = null;
     integralExpression.compiledClass        = null;
+    integralExpression.coDomainType         = integralNode.type();
     integralExpression.rootNode             = integralNode.spliceInto(integralExpression);
     integralExpression.className            = Parser.transformToJavaAcceptableCharacters(integralFunctionFieldName);
     integralExpression.updateStringRepresentation();
+    integralExpression.compile();
 
     integralMapping =
                     expression.context.registerFunctionMapping(integralExpression.className,
                                                                integralExpression.instantiate(),
-                                                               expression.domainType
-                                                                             != Object.class ? expression.domainType
-                                                                                             : expression.coDomainType,
-                                                               integralNode.type(),
+                                                               integralExpression.domainType
+                                                                             != Object.class ? integralExpression.domainType
+                                                                                             : integralExpression.coDomainType,
+                                                               integralExpression.coDomainType,
                                                                Function.class,
                                                                false,
                                                                integralExpression,

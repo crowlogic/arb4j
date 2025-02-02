@@ -170,30 +170,29 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                     ascendentExpression);
   }
 
-  private static final String    JAVA_LANG_ASSERTION_ERROR         = "java/lang/AssertionError";
+  private static String    JAVA_LANG_ASSERTION_ERROR         = "java/lang/AssertionError";
 
-  private static final String    ASSERTION_ERROR_METHOD_DESCRIPTOR = Compiler.getMethodDescriptor(Void.class,
-                                                                                                  Object.class);
+  private static String    ASSERTION_ERROR_METHOD_DESCRIPTOR = Compiler.getMethodDescriptor(Void.class, Object.class);
 
-  static File                    compiledClassDir                  = new File("compiled");
+  static File              compiledClassDir                  = new File("compiled");
 
-  public static final String     evaluationMethodDescriptor        =
-                                                            "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
+  public static String     evaluationMethodDescriptor        =
+                                                      "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
 
-  public static final Class<?>[] implementedInterfaces             = new Class[]
+  public static Class<?>[] implementedInterfaces             = new Class[]
   { Typesettable.class, AutoCloseable.class, Initializable.class };
 
-  public static final String     IS_INITIALIZED                    = "isInitialized";
+  public static String     IS_INITIALIZED                    = "isInitialized";
 
-  public static final String     nameOfInitializerFunction         = "initialize";
+  public static String     nameOfInitializerFunction         = "initialize";
 
-  public static boolean          saveClasses                       =
-                                             Boolean.valueOf(System.getProperty("arb4j.compiler.saveClasses", "true"));
+  public static boolean    saveClasses                       =
+                                       Boolean.valueOf(System.getProperty("arb4j.compiler.saveClasses", "true"));
 
-  public static boolean          trace                             =
-                                       Boolean.valueOf(System.getProperty("arb4j.compiler.trace", "false"));
+  public static boolean    trace                             =
+                                 Boolean.valueOf(System.getProperty("arb4j.compiler.trace", "false"));
 
-  public static final String     VOID_METHOD_DESCRIPTOR            = Compiler.getMethodDescriptor(Void.class);
+  public static String     VOID_METHOD_DESCRIPTOR            = Compiler.getMethodDescriptor(Void.class);
 
   static
   {
@@ -214,11 +213,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String                                         className;
 
-  public final String                                   coDomainClassDescriptor;
+  public String                                         coDomainClassDescriptor;
 
-  public final String                                   coDomainClassInternalName;
+  public String                                         coDomainClassInternalName;
 
-  public final Class<? extends C>                       coDomainType;
+  public Class<? extends C>                             coDomainType;
 
   public Class<F>                                       compiledClass;
 
@@ -226,13 +225,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   HashSet<String>                                       declaredIntermediateVariables = new HashSet<>();
 
-  public final String                                   domainClassDescriptor;
+  public String                                         domainClassDescriptor;
 
-  public final String                                   domainClassInternalName;
+  public String                                         domainClassInternalName;
 
-  public final Class<? extends D>                       domainType;
+  public Class<? extends D>                             domainType;
 
-  public final String                                   evaluateMethodSignature;
+  public String                                         evaluateMethodSignature;
 
   public String                                         expression;
 
@@ -242,7 +241,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String                                         functionName;
 
-  public final String                                   genericFunctionClassInternalName;
+  public String                                         genericFunctionClassInternalName;
 
   public boolean                                        inAbsoluteValue               = false;
 
@@ -781,7 +780,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     if (nextCharacterIs('^'))
     {
-      final boolean parenthetical = nextCharacterIs('(', '⁽');
+      boolean parenthetical = nextCharacterIs('(', '⁽');
       node = node.pow(parenthetical ? resolve() : evaluate());
       if (parenthetical)
       {
@@ -1980,8 +1979,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected Node<D, C, F> resolveIdentifier() throws CompilerException
   {
-    final int startPos  = position;
-    final var reference = evaluateName(startPos);
+    int startPos  = position;
+    var reference = evaluateName(startPos);
 
     if (nextCharacterIs('('))
     {
