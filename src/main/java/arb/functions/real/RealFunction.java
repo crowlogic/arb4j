@@ -2,12 +2,8 @@ package arb.functions.real;
 
 import java.util.stream.IntStream;
 
+import arb.*;
 import arb.Float;
-import arb.FloatInterval;
-import arb.Real;
-import arb.RealPartition;
-import arb.RealTwoDimensionalDataSet;
-import arb.RoundingMode;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
@@ -15,6 +11,7 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
 import arb.functions.Function;
+import arb.functions.complex.ComplexFunction;
 
 /**
  * 
@@ -26,6 +23,42 @@ public interface RealFunction extends
 {
 
   public boolean verbose = false;
+
+  public default ComplexFunction mul(ComplexFunction that)
+  {
+    return new ComplexFunction()
+    {
+      @Override
+      public String typeset()
+      {
+        return String.format("%s \\cdot %s", RealFunction.this.typeset(), that.typeset());
+      }
+
+      @Override
+      public String toString()
+      {
+        return String.format("(%s)*(%s)", RealFunction.this.toString(), that.toString());
+      }
+
+      @Override
+      public Complex evaluate(Complex t, int order, int bits, Complex res)
+      {
+        try ( var blip = new Complex())
+        {
+          RealFunction.this.evaluate(t, order, bits, res);
+          return res.mul(that.evaluate(t, order, bits, blip), bits, res);
+        }
+
+      };
+    };
+  }
+
+  public default Complex evaluate(Complex t, int order, int bits, Complex res)
+  {
+    evaluate(t.re(),order,bits,res.re());
+    evaluate(t.im(),order,bits,res.im());
+    return res;
+  }
 
   public default RealFunction mul(RealFunction that)
   {

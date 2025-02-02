@@ -74,6 +74,37 @@ import arb.functions.complex.ComplexFunction;
  * The discriminant isn't a static property - it's a dynamic measure of how
  * close we are to a solution given the parameter values we're working with.
  * </p>
+ * <h1>Functional-Based Renaming of the Riccati Equation</h1>
+ * <p>
+ * The Riccati equation could be more functionally renamed as the
+ * <strong>"Quadratic First-Order Differential Transform"</strong> equation
+ * since it is:
+ * </p>
+ * <ul>
+ * <li>A first-order differential equation that is quadratic in the unknown
+ * function</li>
+ * <li>Can be transformed into other functional forms:
+ * <ul>
+ * <li>Second-order linear ODE through substitution</li>
+ * <li>Bernoulli equation when specific coefficients are zero</li>
+ * <li>Linear differential equation under certain conditions</li>
+ * </ul>
+ * </li>
+ * </ul>
+ * <p>
+ * The name would capture its key functional characteristics:
+ * </p>
+ * <ul>
+ * <li><strong>"Quadratic"</strong> indicates its defining nonlinear nature</li>
+ * <li><strong>"First-Order"</strong> specifies its differential order</li>
+ * <li><strong>"Transform"</strong> reflects its ability to be converted into
+ * other equation types</li>
+ * </ul>
+ * <p>
+ * This functional naming better conveys its mathematical structure and behavior
+ * compared to the eponymous name that requires historical knowledge of Jacopo
+ * Riccati.
+ * </p>
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}

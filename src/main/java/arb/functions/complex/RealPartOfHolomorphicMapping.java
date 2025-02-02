@@ -4,6 +4,7 @@ import arb.Complex;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
 
 /**
@@ -32,6 +33,19 @@ public class RealPartOfHolomorphicMapping implements
     res.im().zero();
     res.re().set(x);
     return f.evaluate(res, order, prec, res);
+  }
+
+  @Override
+  public Function<Real, Complex> integral()
+  {
+    var realInt = realPart().integral();
+    var imagInt = imagPart().integral();
+    return (t, order, bits, val) ->
+    {
+      realInt.evaluate(t, order, bits, val.re());
+      imagInt.evaluate(t, order, bits, val.im());
+      return val;
+    };
   }
 
 }

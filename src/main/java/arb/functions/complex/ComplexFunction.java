@@ -1,7 +1,10 @@
 package arb.functions.complex;
 
+import java.util.List;
+
 import arb.Complex;
 import arb.Real;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.NotIntegrableException;
@@ -11,6 +14,7 @@ import arb.expressions.Expression;
 import arb.expressions.Parser;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
+import arb.functions.real.RealFunction;
 import arb.space.topological.VectorSpace;
 
 /**
@@ -43,6 +47,9 @@ public interface ComplexFunction extends
                                  VectorSpace<Complex>
 
 {
+  
+ 
+  
 
   @Override
   default Class<Complex> coDomainType()
@@ -201,5 +208,7 @@ public interface ComplexFunction extends
       return evaluate(tmp.set(x), order, bits, result);
     }
   }
+
+  
 
 }
