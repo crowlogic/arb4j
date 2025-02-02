@@ -194,10 +194,13 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    assert !variable.type().equals(RealPolynomial.class) : "TODO: differentiate RealPoynomial";
     var argDerivative      = arg.differentiate(variable);
+    
     var functionDerivative = differentiateFunction();
-    return functionDerivative.mul(argDerivative);
+
+    Node<D, R, F> derivative = functionDerivative.mul(argDerivative);
+    
+    return derivative;
   }
 
   /**
