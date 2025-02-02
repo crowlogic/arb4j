@@ -3,10 +3,13 @@ package arb.functions.polynomials.orthogonal;
 import java.util.ArrayList;
 
 import arb.Field;
+import arb.OrthonormalBasis;
 import arb.Polynomial;
 import arb.RationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.Basis;
+import arb.functions.Expansion;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
@@ -25,25 +28,22 @@ import arb.functions.real.RealFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class OrthogonalPolynomialExpansion<D extends Field<?>, C, V,
-              O extends OrthogonalPolynomialSequence<? extends D, ? extends C, ? extends V>> implements
-                                                   Function<D, C>
-{
-  public final D            projections;
-  public final ArrayList<V> basisElements;
+public abstract class OrthogonalPolynomialExpansion<D extends Field<? extends D>, C, V,
+              O extends OrthogonalPolynomialSequence<D, C, V>> extends
+                                                   OrthogonalExpansion<D, C, V, O> implements
+                                                   OrthonormalExpansion<D, C, OrthonormalBasis<D, C>>
 
+{
   public OrthogonalPolynomialExpansion(O basis, D projections)
   {
-    this.basis         = basis;
-    this.projections   = projections;
-    this.basisElements = new ArrayList<>(projections.dim());
+    super(projections,
+          new ArrayList<>(projections.dim()));
+    this.basis = basis;
     var basisIterator = basis.iterator();
     for (int i = 0; i < projections.dim(); i++)
     {
       basisElements.add(basisIterator.next());
     }
   }
-
-  public O basis;
 
 }

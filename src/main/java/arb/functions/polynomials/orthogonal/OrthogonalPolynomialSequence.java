@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.Basis;
 import arb.functions.polynomials.OrthogonalSequence;
 
 /**
@@ -13,7 +14,8 @@ import arb.functions.polynomials.OrthogonalSequence;
  */
 public abstract class OrthogonalPolynomialSequence<D, V, C> implements
                                                   OrthogonalPolynomialBasis<D, C>,
-                                                  OrthogonalSequence<D, C>
+                                                  OrthogonalSequence<D, C>,
+                                                  Basis<D, C>
 
 {
   public C            basis;

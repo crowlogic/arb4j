@@ -7,7 +7,7 @@ import arb.documentation.TheArb4jLibrary;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface Expansion<D, C> extends
+public interface Expansion<D, C, O extends Basis<D,C>> extends
                           Function<D, C>
 {
 
