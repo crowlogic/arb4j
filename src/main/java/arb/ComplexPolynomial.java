@@ -44,6 +44,34 @@ public class ComplexPolynomial implements Polynomial<Complex,ComplexPolynomial>,
   }
 
 
+  public ComplexPolynomial differentiate(int bits, ComplexPolynomial derivative)
+  {
+    derivative.fitLength(getLength() + 1);
+    arblib.acb_poly_derivative(derivative, this, bits);
+    derivative.bits = bits;
+    return derivative;
+  }
+  
+  public ComplexPolynomial integrate(int bits, ComplexPolynomial integral)
+  {
+    integral.fitLength(getLength() + 1);
+    arblib.acb_poly_integral(integral, this, bits);
+    integral.bits = bits;
+    return integral;
+  }
+
+  @Override
+  public ComplexPolynomial integral()
+  {
+    return integrate(get(0).bits(), new ComplexPolynomial());
+  }
+
+  @Override
+  public ComplexPolynomial derivative()
+  {
+    return differentiate(get(0).bits(), new ComplexPolynomial());
+  }
+  
   public ComplexPolynomial(Complex init)
   {
     this();

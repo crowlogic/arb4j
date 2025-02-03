@@ -1,4 +1,4 @@
-<TeXmacs|2.1.4>
+<TeXmacs|2.1.2>
 
 <style|<tuple|generic|framed-theorems>>
 
@@ -35,7 +35,7 @@
   the class of modulating functions <math|\<cal-F\>>, the article proceeds to
   establish theorems on eigenfunction transformation, normalization
   preservation, and a formula for the expected value of the zero-counting
-  function over <math|<around|[|0,T|]>>. These results provide a foundatio
+  function over <math|<around|[|0,T|]>>. These results provide a foundation
   for understanding how stationary Gaussian processes transform when
   modulated by monotonically increasing functions.
 
@@ -52,12 +52,6 @@
 
       <\equation>
         \<theta\><around|(|t|)>\<less\>\<theta\><around|(|s|)>\<forall\>-\<infty\>\<leqslant\>t\<less\>s\<leqslant\>\<infty\>
-      </equation>
-
-      <item>and have a finite limiting derivative at infinity
-
-      <\equation>
-        lim<rsub|t\<to\>\<infty\>> <wide|\<theta\>|\<dot\>><around|(|t|)>\<less\>\<infty\>
       </equation>
     </enumerate>
   </definition>
@@ -312,14 +306,14 @@
 
 <\references>
   <\collection>
-    <associate|a|<tuple|19|5|../../.TeXmacs/texts/scratch/no_name_67.tm>>
-    <associate|auto-1|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_67.tm>>
-    <associate|auto-2|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_67.tm>>
-    <associate|auto-3|<tuple|3|6|../../.TeXmacs/texts/scratch/no_name_67.tm>>
-    <associate|auto-4|<tuple|3|7|../../.TeXmacs/texts/scratch/no_name_67.tm>>
-    <associate|bib-correlationTheoryOfStationaryRandomProcesses|<tuple|2|7|../../.TeXmacs/texts/scratch/no_name_67.tm>>
-    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|7|../../.TeXmacs/texts/scratch/no_name_67.tm>>
-    <associate|scalingFunctions|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_67.tm>>
+    <associate|a|<tuple|18|5>>
+    <associate|auto-1|<tuple|1|2>>
+    <associate|auto-2|<tuple|2|2>>
+    <associate|auto-3|<tuple|3|6>>
+    <associate|auto-4|<tuple|3|7>>
+    <associate|bib-correlationTheoryOfStationaryRandomProcesses|<tuple|2|7>>
+    <associate|bib-stationaryAndRelatedStochasticProcesses|<tuple|1|7>>
+    <associate|scalingFunctions|<tuple|1|2>>
   </collection>
 </references>
 

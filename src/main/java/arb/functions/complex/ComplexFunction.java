@@ -13,7 +13,6 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
 import arb.functions.Function;
-import arb.functions.RealToComplexFunction;
 import arb.functions.real.RealFunction;
 import arb.space.topological.VectorSpace;
 
@@ -122,31 +121,6 @@ public interface ComplexFunction extends
                           null);
   }
 
-  /**
-   * The proper term to describe a function that maps from the set of real numbers
-   * (R) to the set of complex numbers (C) is a "real-valued function" or a
-   * "real-to-complex function." This indicates that the function takes a real
-   * number as input and produces a complex number as output.
-   * 
-   * If you're referring to a specific type of function that maps from the real
-   * part of a complex number to another complex number, you could describe it as
-   * a "real part mapping function" or a "real part to complex mapping function."
-   * This would emphasize that the input is the real component of a complex number
-   * and the output is a complex number.
-   * 
-   * However, it's important to note that the terminology used can vary depending
-   * on the context and the specific field of study. Different disciplines may
-   * have their own conventions and terminology for describing functions with
-   * specific input and output types.
-   * 
-   * @return new instance of {@link RealPartOfHolomorphicMapping} which converts
-   *         the function from C->C to a function from R->C where R is the real
-   *         part of this functionF
-   */
-  public default RealToComplexFunction asRealToComplexFunction()
-  {
-    return new RealPartOfHolomorphicMapping(this);
-  }
 
   /**
    * 

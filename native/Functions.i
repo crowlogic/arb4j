@@ -16,6 +16,8 @@
 #include <unistd.h>
 #include <wchar.h>
 
+void acb_poly_integral(acb_poly_t res, const acb_poly_t poly, slong prec);
+void acb_poly_derivative(acb_poly_t res, const acb_poly_t poly, slong prec);
 
 int qqbar_sgn_re(const qqbar_t x);
 

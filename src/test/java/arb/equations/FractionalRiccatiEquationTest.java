@@ -40,20 +40,19 @@ public class FractionalRiccatiEquationTest extends
     assertEquals("0", p.toString());
     assertEquals("2", q.toString());
     assertEquals("1", r.toString());
-    ShiftedJacobiPolynomials basis    = new ShiftedJacobiPolynomials();
-    FloatInterval            domain   = new FloatInterval(FloatConstants.negOne,
+    ShiftedJacobiPolynomials   basis  = new ShiftedJacobiPolynomials();
+    FloatInterval              domain = new FloatInterval(FloatConstants.negOne,
                                                           FloatConstants.one);
-    var p4 = basis.evaluate(4, 128).mul(freq.p);
-    Function<Real, Complex> p4int = p4.asRealToComplexFunction().integral();
-    var upper = p4int.evaluate(RealConstants.one, 1,128, new Complex());
-    var lower = p4int.evaluate(RealConstants.zero, 1,128, new Complex());
+    var                        p4     = basis.evaluate(4, 128).mul(freq.p);
+    Function<Complex, Complex> p4int  = p4.integral();
+    var                        upper  = p4int.evaluate(new Complex(RealConstants.one), 1, 128, new Complex());
+    var                        lower  = p4int.evaluate(new Complex(RealConstants.zero), 1, 128, new Complex());
     System.out.println("upper=%s\nlower=%s\n");
-    
+
 //    p4.inte
 //    freq.r.project(basis.enumerate(0, 5),128,new Real());
-    RealFunction             solution =
-                                      RealFunction.express("1+sqrt(2)*tanh(sqrt(2)*x+1/2*log(((sqrt(2)-1)/(sqrt(2)+1))))");
-    var                      y        = solution.eval(1.0);
+    RealFunction solution = RealFunction.express("1+sqrt(2)*tanh(sqrt(2)*x+1/2*log(((sqrt(2)-1)/(sqrt(2)+1))))");
+    var          y        = solution.eval(1.0);
     assertEquals(1.68949839159438298686019048603, y);
     var u = solution.evaluate(RealConstants.zero, 128, new Real());
     assertTrue(u.approximatelyEquals(RealConstants.zero, 128));

@@ -9,6 +9,14 @@
 package arb;
 
 public class arblib {
+  public static void acb_poly_integral(ComplexPolynomial res, ComplexPolynomial poly, int prec) {
+    arblibJNI.acb_poly_integral(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(poly), poly, prec);
+  }
+
+  public static void acb_poly_derivative(ComplexPolynomial res, ComplexPolynomial poly, int prec) {
+    arblibJNI.acb_poly_derivative(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(poly), poly, prec);
+  }
+
   public static int qqbar_sgn_re(AlgebraicNumber x) {
     return arblibJNI.qqbar_sgn_re(AlgebraicNumber.getCPtr(x), x);
   }
@@ -2404,14 +2412,6 @@ public class arblib {
 
   public static int arb_sgn_nonzero(Real x) {
     return arblibJNI.arb_sgn_nonzero(Real.getCPtr(x), x);
-  }
-
-  public static void acb_poly_derivative(ComplexPolynomial res, ComplexPolynomial poly, int prec) {
-    arblibJNI.acb_poly_derivative(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(poly), poly, prec);
-  }
-
-  public static void acb_poly_integral(ComplexPolynomial res, ComplexPolynomial poly, int prec) {
-    arblibJNI.acb_poly_integral(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(poly), poly, prec);
   }
 
   public static void acb_poly_product_roots(ComplexPolynomial poly, Complex xs, int n, int prec) {

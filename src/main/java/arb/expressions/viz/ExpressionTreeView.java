@@ -411,7 +411,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     IntegerPolynomialSequence.class, IntegerNullaryFunction.class, IntegerPolynomialNullaryFunction.class,
     RealFunction.class, RealPolynomialFunction.class, ComplexFunction.class, ComplexSequence.class,
     ComplexPolynomialSequence.class, ComplexNullaryFunction.class, RationalFunctionSequence.class,
-    RationalNullaryFunction.class, RealPolynomialSequence.class, RealToComplexFunction.class, RealNullaryFunction.class,
+    RationalNullaryFunction.class, RealPolynomialSequence.class, RealNullaryFunction.class,
     ComplexToRealFunction.class, ComplexRationalFunctionSequence.class, ComplexRationalNullaryFunction.class,
     Sequence.class, RealFunctionSequence.class, RealNullaryFunctional.class, Functional.class,
     ComplexFunctionSequence.class };
@@ -530,11 +530,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     else if (functionType.equals(RealPolynomialFunction.class))
     {
       selectTypes(RealPolynomial.class, RealPolynomial.class);
-    }
-    else if (functionType.equals(RealToComplexFunction.class))
-    {
-      selectTypes(Real.class, Complex.class);
-    }
+    } 
     else if (functionType.equals(ComplexSequence.class))
     {
       selectTypes(Integer.class, Complex.class);
