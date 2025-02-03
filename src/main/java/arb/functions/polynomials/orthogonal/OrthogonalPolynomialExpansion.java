@@ -8,9 +8,6 @@ import arb.Polynomial;
 import arb.RationalFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.Basis;
-import arb.functions.Expansion;
-import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
 /**

@@ -8,10 +8,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 
 /**
- * 
- * The syntax for integration is g(x)=∫x➔f(x)dx∈(a,b) where a is the lower and b
- * is the upper limit of integration of the integrand f(x) over x=(a..b)
- * 
+
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
