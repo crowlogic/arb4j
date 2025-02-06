@@ -982,7 +982,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitCode();
     mv.visitLabel(startLabel);
     Compiler.annotateWithOverride(mv);
-    generateConditionalInitializater(mv);
+    if (needsInitializer())
+    {
+      generateConditionalInitializater(mv);
+    }
 
     rootNode.isResult = true;
     if (coDomainType.isInterface())
@@ -1000,6 +1003,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitMaxs(10, 10);
     mv.visitEnd();
     return classVisitor;
+  }
+
+  public boolean needsInitializer()
+  {
+    // return true;
+    return (context != null && !context.variables.isEmpty()) || !initializers.isEmpty()
+                  || (dependencies != null && !dependencies.isEmpty()) || recursive || !referencedFunctions.isEmpty();
   }
 
   protected MethodVisitor visitMethod(ClassVisitor classVisitor, String methodName)

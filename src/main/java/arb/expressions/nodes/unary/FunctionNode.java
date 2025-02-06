@@ -140,6 +140,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
         expression.referencedFunctions.put(functionName, mapping);
       }
     }
+    if (functionName.equals(expression.functionName))
+    {
+      designateAsRecursiveFunction(type());
+    }
+
   }
 
   @Override
@@ -343,11 +348,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (Expression.trace)
     {
       System.out.format("FunctionCall.generate: this=%s resultType=%s\n\n", this, resultType);
-    }
-
-    if (functionName.equals(expression.functionName))
-    {
-      designateAsRecursiveFunction(resultType);
     }
 
     if (contextual)
