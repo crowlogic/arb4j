@@ -111,8 +111,10 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   public static final String    ⅈ               = "ⅈ";
 
   public static HashSet<String> constantSymbols = new HashSet<String>();
+
   static
   {
+    constantSymbols.add("pi");
     constantSymbols.add(π);
     constantSymbols.add(ⅈ);
     constantSymbols.add(infinity);
@@ -165,6 +167,10 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     }
     isInt = !((isDecimal || constantSymbols.contains(value)) || isFraction);
 
+    if ("pi".equals(constantValueString))
+    {
+      constantValueString = "π";
+    }
     if (isPredefinedConstant(constantValueString) || fractionValue != null)
     {
       fieldName = constantValueString;
