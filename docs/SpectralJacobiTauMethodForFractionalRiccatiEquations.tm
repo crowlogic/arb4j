@@ -94,16 +94,20 @@
     R<rsub|i*j>=<big|sum><rsub|k=0><rsup|N><frac|r<rsub|k>|h<rsub|j><rsup|<around|(|\<alpha\>,\<beta\>|)>>>*<big|int><rsub|0><rsup|1>P<rsub|i><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|t|)>*P<rsub|j><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|t|)>*P<rsub|k><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|t|)>*w<around|(|t|)>*<space|0.17em>d*t.
   </equation>
 
-  The triple product integral has the exact form:
+  The triple product integral is given by
 
   <\equation>
-    <big|int><rsub|0><rsup|1>P<rsub|i><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|t|)>*P<rsub|j><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|t|)>*P<rsub|k><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|t|)>*w<around|(|t|)>*<space|0.17em>d*t=<big|sum><rsub|m=0><rsup|i><big|sum><rsub|n=0><rsup|j><big|sum><rsub|l=0><rsup|k>\<gamma\><rsub|m*n*l><rsup|i*j*k>*<frac|\<Gamma\>*<around|(|m+n+l+\<alpha\>+1|)>*\<Gamma\>*<around|(|\<beta\>+1|)>|\<Gamma\>*<around|(|m+n+l+\<alpha\>+\<beta\>+2|)>>,
+    <with|font-base-size|9|<big|int><rsub|0><rsup|1>P<rsub|i><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|t|)>*P<rsub|j><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|t|)>*P<rsub|k><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|t|)>*w<around|(|t|)>*<space|0.17em>d*t=<big|sum><rsub|m=0><rsup|i><big|sum><rsub|n=0><rsup|j><big|sum><rsub|l=0><rsup|k>\<gamma\><rsub|m*n*l><rsup|i*j*k>*<frac|\<Gamma\>*<around|(|m+n+l+\<alpha\>+1|)>*\<Gamma\>*<around|(|\<beta\>+1|)>|\<Gamma\>*<around|(|m+n+l+\<alpha\>+\<beta\>+2|)>>>
+  </equation>
+
+  <\equation>
+    \;
   </equation>
 
   where
 
   <\equation>
-    \<gamma\><rsub|m*n*l><rsup|i*j*k>=<around|(|-1|)><rsup|i+j+k-m-n-l><binom|i+\<alpha\>|m><binom|i+\<beta\>|i-m><binom|j+\<alpha\>|n><binom|j+\<beta\>|j-n><binom|k+\<alpha\>|l><binom|k+\<beta\>|k-l>.
+    \<gamma\><rsub|m*n*l><rsup|i*j*k>=<around|(|-1|)><rsup|i+j+k-m-n-l><binom|i+\<alpha\>|m><binom|i+\<beta\>|i-m><binom|j+\<alpha\>|n><binom|j+\<beta\>|j-n><binom|k+\<alpha\>|l><binom|k+\<beta\>|k-l>
   </equation>
 
   The nonlinear system to solve is:
@@ -112,40 +116,44 @@
     <math-bf|D><rsup|\<nu\>><math-bf|c><rsub|m>=<math-bf|p>+<math-bf|Qc><rsub|m>+<math-bf|Rc><rsub|m><rsup|2>,
   </equation>
 
-  where <math|<math-bf|c><rsub|m>=<around|[|c<rsub|m,0>,c<rsub|m,1>,\<ldots\>,c<rsub|m,N>|]><rsup|\<top\>>>
-  is the coefficient vector at iteration <math|m>.
-
-  The tau condition for the initial value is:
+  where\ 
 
   <\equation>
-    <big|sum><rsub|i=0><rsup|N>c<rsub|0,i>*P<rsub|i><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|0|)>=y<rsub|0>,<space|1em><text|where><space|1em>P<rsub|i><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|0|)>=<around|(|-1|)><rsup|i><binom|i+\<beta\>|i>.
+    <math-bf|c><rsub|m>=<around|[|c<rsub|m,0>,c<rsub|m,1>,\<ldots\>,c<rsub|m,N>|]><rsup|\<top\>>
+  </equation>
+
+  \ is the <math|m>-th iteration of the coefficient vector. The tau condition
+  for the initial value is:
+
+  <\equation>
+    <big|sum><rsub|i=0><rsup|N>c<rsub|0,i>*P<rsub|i><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|0|)>=y<rsub|0><space|1em><text|where><space|1em>P<rsub|i><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|0|)>=<around|(|-1|)><rsup|i><binom|i+\<beta\>|i>.
   </equation>
 
   The Newton iteration update is:
 
   <\equation>
-    <math-bf|c><rsub|m+1>=<math-bf|c><rsub|m>-<math-bf|J><around|(|<math-bf|c><rsub|m>|)><rsup|-1><math-bf|F><around|(|<math-bf|c><rsub|m>|)>,
+    <math-bf|c><rsub|m+1>=<math-bf|c><rsub|m>-<math-bf|J><around|(|<math-bf|c><rsub|m>|)><rsup|-1><math-bf|F><around|(|<math-bf|c><rsub|m>|)>
   </equation>
 
   where
 
   <\equation>
-    <math-bf|F><around|(|<math-bf|c><rsub|m>|)>=<math-bf|D><rsup|\<nu\>><math-bf|c><rsub|m>-<math-bf|p>-<math-bf|Qc><rsub|m>-<math-bf|Rc><rsub|m><rsup|2>,
+    <math-bf|F><around|(|<math-bf|c><rsub|m>|)>=<math-bf|D><rsup|\<nu\>><math-bf|c><rsub|m>-<math-bf|p>-<math-bf|Qc><rsub|m>-<math-bf|Rc><rsub|m><rsup|2>
   </equation>
 
   and
 
   <\equation>
-    <math-bf|J><around|(|<math-bf|c><rsub|m>|)>=<math-bf|D><rsup|\<nu\>>-<math-bf|Q>-2<math-bf|Rc><rsub|m>.
+    <math-bf|J><around|(|<math-bf|c><rsub|m>|)>=<math-bf|D><rsup|\<nu\>>-<math-bf|Q>-2<math-bf|Rc><rsub|m>
   </equation>
 
-  The reconstructed solution is:
+  The solution is:
 
   <\equation>
     y<around|(|t|)>=<big|sum><rsub|i=0><rsup|N>c<rsub|i><rsup|\<ast\>>*P<rsub|i><rsup|<around|(|\<alpha\>,\<beta\>|)>><around*|(|<frac|t|T>|)>,
   </equation>
 
-  where <math|c<rsub|i><rsup|\<ast\>>> are the converged coefficients.
+  where <math|c<rsub|i><rsup|\<ast\>>> are the converged coefficients
 </body>
 
 <\initial>
@@ -160,8 +168,8 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_68.tm>>
-    <associate|auto-2|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_68.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-2|<tuple|2|1>>
   </collection>
 </references>
 
