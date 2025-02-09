@@ -1,0 +1,133 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm, geometry}
+\geometry{margin=1in}
+
+\begin{document}
+
+\title{Evaluation of an Integral Involving Hypergeometric Functions}
+\author{}
+\date{}
+\maketitle
+
+\section*{Introduction}
+
+We consider the integral:
+\[
+I = \int_{-1}^1 {}_2F_1\left(-m, m+1; 1; \frac{1}{2} - \frac{x}{2}\right) 
+{}_2F_1\left(-n, n+1; 1; \frac{1}{2} - \frac{x}{2}\right) e^{i x y} \, dx,
+\]
+where ${}_2F_1(a, b; c; z)$ is the Gauss hypergeometric function, and $m, n$ are non-negative integers. This document provides a rigorous step-by-step derivation of the result.
+
+\section*{Step 1: Expanding the Hypergeometric Functions}
+
+The hypergeometric function ${}_2F_1(a, b; c; z)$ has the finite series representation:
+\[
+{}_2F_1(-p, b; c; z) = \sum_{k=0}^p \frac{(-p)_k (b)_k}{(c)_k k!} z^k,
+\]
+when $p$ is a non-negative integer. Here, $(a)_k = a(a+1)(a+2)\cdots(a+k-1)$ is the Pochhammer symbol.
+
+For the integral, we expand both hypergeometric functions:
+\[
+{}_2F_1\left(-m, m+1; 1; \frac{1}{2} - \frac{x}{2}\right) = 
+\sum_{k=0}^m \frac{(-m)_k (m+1)_k}{(1)_k k!} \left(\frac{1}{2} - \frac{x}{2}\right)^k,
+\]
+\[
+{}_2F_1\left(-n, n+1; 1; \frac{1}{2} - \frac{x}{2}\right) = 
+\sum_{l=0}^n \frac{(-n)_l (n+1)_l}{(1)_l l!} \left(\frac{1}{2} - \frac{x}{2}\right)^l.
+\]
+
+Substituting these into the integral:
+\[
+I = \int_{-1}^1 \left[ \sum_{k=0}^m \frac{(-m)_k (m+1)_k}{k!} \left(\frac{1}{2} - \frac{x}{2}\right)^k \right]
+\left[ \sum_{l=0}^n \frac{(-n)_l (n+1)_l}{l!} \left(\frac{1}{2} - \frac{x}{2}\right)^l \right] e^{i x y} dx.
+\]
+
+Expanding the double sum:
+\[
+I = \sum_{k=0}^m \sum_{l=0}^n \frac{(-m)_k (m+1)_k}{k!} \frac{(-n)_l (n+1)_l}{l!} 
+\int_{-1}^1 \left(\frac{1}{2} - \frac{x}{2}\right)^{k+l} e^{i x y} \, dx.
+\]
+
+\section*{Step 2: Evaluating the Integral}
+
+Let $s = k + l$. The integral to evaluate is:
+\[
+I_s = \int_{-1}^1 \left(\frac{1}{2} - \frac{x}{2}\right)^s e^{i x y} \, dx.
+\]
+
+Rewriting $\frac{1}{2} - \frac{x}{2}$:
+\[
+\left(\frac{1}{2} - \frac{x}{2}\right)^s = \frac{1}{2^s} (1 - x)^s.
+\]
+
+Thus:
+\[
+I_s = \frac{1}{2^s} \int_{-1}^1 (1 - x)^s e^{i x y} \, dx.
+\]
+
+\subsection*{Substitution: $u = 1 - x$}
+
+Set $u = 1 - x$, so $x = 1 - u$ and $dx = -du$. The limits of integration change:
+\[
+x = -1 \implies u = 2, \quad x = 1 \implies u = 0.
+\]
+
+The integral becomes:
+\[
+I_s = \frac{1}{2^s} \int_2^0 u^s e^{i y (1-u)} (-du) = \frac{1}{2^s} \int_0^2 u^s e^{i y} e^{-i u y} \, du.
+\]
+
+Factoring out $e^{i y}$:
+\[
+I_s = \frac{e^{i y}}{2^s} \int_0^2 u^s e^{-i u y} \, du.
+\]
+
+\subsection*{Known Result for the Integral}
+
+The integral $\int_0^2 u^s e^{-i u y} \, du$ is a standard result:
+\[
+\int_0^2 u^s e^{-i u y} \, du = \frac{\Gamma(s+1)}{(-i y)^{s+1}} 
+\left[ 1 - e^{-2 i y} \sum_{j=0}^s \frac{(2 i y)^j}{j!} \right].
+\]
+
+Substituting this back:
+\[
+I_s = \frac{e^{i y} \Gamma(s+1)}{2^s (-i y)^{s+1}} 
+\left[ 1 - e^{-2 i y} \sum_{j=0}^s \frac{(2 i y)^j}{j!} \right].
+\]
+
+\section*{Step 3: Combining Results}
+
+Returning to the full integral:
+\[
+I = \sum_{k=0}^m \sum_{l=0}^n \frac{(-m)_k (m+1)_k}{k!} \frac{(-n)_l (n+1)_l}{l!} 
+\cdot \frac{e^{i y} \Gamma(k+l+1)}{2^{k+l} (-i y)^{k+l+1}} 
+\left[ 1 - e^{-2 i y} \sum_{j=0}^{k+l} \frac{(2 i y)^j}{j!} \right].
+\]
+
+Let $s = k + l$. For fixed $s$, $k$ ranges from $\max(0, s-n)$ to $\min(s, m)$. Rewriting the double sum:
+\[
+I = e^{i y} \sum_{s=0}^{m+n} \frac{\Gamma(s+1)}{2^s (-i y)^{s+1}} 
+\left[ \sum_{k=\max(0, s-n)}^{\min(s, m)} \frac{(-m)_k (m+1)_k}{k!} \frac{(-n)_{s-k} (n+1)_{s-k}}{(s-k)!} \right] 
+\left[ 1 - e^{-2 i y} \sum_{j=0}^s \frac{(2 i y)^j}{j!} \right].
+\]
+
+The inner sum is recognized as a hypergeometric function:
+\[
+\sum_{k=\max(0, s-n)}^{\min(s, m)} \frac{(-m)_k (m+1)_k}{k!} \frac{(-n)_{s-k} (n+1)_{s-k}}{(s-k)!} = 
+{}_3F_2\left(-m, -n, -s; m+1, n+1; 1\right).
+\]
+
+Thus, the final result is:
+\[
+I = e^{i y} \sum_{s=0}^{m+n} \frac{\Gamma(s+1)}{2^s (-i y)^{s+1}} 
+{}_3F_2\left(-m, -n, -s; m+1, n+1; 1\right) 
+\left[ 1 - e^{-2 i y} \sum_{j=0}^s \frac{(2 i y)^j}{j!} \right].
+\]
+
+\section*{Conclusion}
+
+The integral has been evaluated exactly in terms of hypergeometric functions and exponential terms. All results follow directly from standard mathematical formulas for hypergeometric functions and Fourier-like integrals.
+
+\end{document}
+
