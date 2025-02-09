@@ -26,6 +26,8 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> simplify()
   {
+    right = right.simplify();
+    left = left.simplify();
     return "1".equals(right.toString()) ? left : this;
   }
 
