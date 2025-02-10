@@ -6,165 +6,176 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
 
+\title{The Operational Matrix of the Random Wave Process}
+\author{Your Name \\ Department of Mathematics \\ Your Institution \\ Email: your.email@example.com}
+\date{\today}
+
 \begin{document}
 
-\title{The Operational Matrix of The Random Wave Process}
-\author{}
-\date{}
 \maketitle
 
-\section*{Introduction}
-
-Let $I_{m,n}(y)$ be defined as the integral
-\[
-I_{m,n}(y) = \int_{-1}^1 {}_2F_1\left(-m, m+1; 1; \frac{1}{2} - \frac{x}{2}\right) 
-{}_2F_1\left(-n, n+1; 1; \frac{1}{2} - \frac{x}{2}\right) e^{i x y} \, dx,
-\]
-where ${}_2F_1(a, b; c; z)$ is the Gauss hypergeometric function, and $m, n$ are non-negative integers.
-
-\section*{Hypergeometric Series Expansion}
-
-\begin{lemma}
-For any non-negative integer $p$ and complex numbers $b,c$ with $c \notin \{0,-1,-2,\ldots\}$:
-\[
-{}_2F_1(-p, b; c; z) = \sum_{k=0}^p \frac{(-p)_k (b)_k}{(c)_k k!} z^k
-\]
+\begin{lemma}\label{lem:HyperExpansions}
+For any non-negative integers $m, n$, the Gauss hypergeometric function admits the finite series expansion:
+\begin{equation}\label{eq:HyperSeries}
+{}_2F_1(-p, b; c; z) = \sum_{k=0}^p \frac{(-p)_k (b)_k}{(c)_k k!} z^k,
+\end{equation}
 where $(a)_k = a(a+1)\cdots(a+k-1)$ is the Pochhammer symbol.
 \end{lemma}
 
 \begin{proof}
-By definition, ${}_2F_1(a,b;c;z) = \sum_{k=0}^\infty \frac{(a)_k(b)_k}{(c)_k k!}z^k$. When $a=-p$ for non-negative integer $p$:
+By definition:
 \[
-(-p)_k = (-p)(-p+1)\cdots(-p+k-1) = (-1)^k p(p-1)\cdots(p-k+1)
+{}_2F_1(a, b; c; z) = \sum_{k=0}^\infty \frac{(a)_k (b)_k}{(c)_k k!} z^k.
 \]
-Therefore $(-p)_k = 0$ for all $k > p$ since one of the factors becomes zero. Thus the infinite series terminates at $k=p$.
+When $a = -p$ (with \( p \in \mathbb{Z}_{\geq 0} \)), the term $(-p)_k$ satisfies:
+\[
+(-p)_k = (-p)(-p+1)\cdots(-p+k-1) = (-1)^k p(p-1)\cdots(p-k+1).
+\]
+Thus, $(-p)_k = 0$ for all $k > p$. The infinite series truncates at $k = p$, yielding the finite form \eqref{eq:HyperSeries}.
 \end{proof}
 
-\begin{lemma}
-For the given integral, applying the series expansion:
+\begin{lemma}\label{lem:IntegralGamma}
+For a non-negative integer $j$, the integral
 \[
-I_{m,n}(y) = \sum_{k=0}^m \sum_{l=0}^n \frac{(-m)_k (m+1)_k}{k!} \frac{(-n)_l (n+1)_l}{l!} 
-\int_{-1}^1 \left(\frac{1}{2} - \frac{x}{2}\right)^{k+l} e^{i x y} \, dx
+\int_{-1}^1 \left(\frac{1}{2} - \frac{x}{2}\right)^j e^{i x y} \, dx
 \]
+is evaluated as:
+\begin{equation}\label{eq:IntegralGamma}
+\int_{-1}^1 \left(\frac{1}{2} - \frac{x}{2}\right)^j e^{i x y} \, dx = 
+\frac{e^{iy}}{2^j} \left[\frac{\Gamma(j+1, -2iy)}{(-iy)^{j+1}} - \frac{\Gamma(j+1)}{(-iy)^{j+1}}\right],
+\end{equation}
+where $\Gamma(a, z)$ is the upper incomplete gamma function, and $\Gamma(a)$ is the complete gamma function.
 \end{lemma}
 
 \begin{proof}
-Substituting the series expansions for both hypergeometric functions:
-\begin{align*}
-I_{m,n}(y) &= \int_{-1}^1 \left(\sum_{k=0}^m \frac{(-m)_k (m+1)_k}{k!} \left(\frac{1}{2} - \frac{x}{2}\right)^k\right) \\
-&\quad \times \left(\sum_{l=0}^n \frac{(-n)_l (n+1)_l}{l!} \left(\frac{1}{2} - \frac{x}{2}\right)^l\right) e^{ixy} \, dx
-\end{align*}
-The series are finite, so we can interchange summation and integration by Fubini's theorem.
-\end{proof}
-
-\section*{Integral Evaluation}
-
-\begin{lemma}
-For non-negative integer $j$:
+Rewrite the integral as:
 \[
-\int_{-1}^1 \left(\frac{1}{2} - \frac{x}{2}\right)^j e^{ixy} \, dx = 
-\frac{e^{iy}}{2^j} \left[\frac{\Gamma(j+1,-2iy)}{(-iy)^{j+1}} - \frac{\Gamma(j+1)}{(-iy)^{j+1}}\right]
+\int_{-1}^1 \left(\frac{1}{2} - \frac{x}{2}\right)^j e^{i x y} \, dx = \frac{1}{2^j} \int_{-1}^1 (1-x)^j e^{i x y} \, dx.
 \]
-where $\Gamma(a,z)$ is the upper incomplete gamma function and $\Gamma(a)$ is the complete gamma function.
-\end{lemma}
-
-\begin{proof}
-Make the substitution $u = 1-x$. Then $dx = -du$ and when $x = -1$, $u = 2$; when $x = 1$, $u = 0$. Thus:
-\begin{align*}
-\int_{-1}^1 \left(\frac{1}{2} - \frac{x}{2}\right)^j e^{ixy} \, dx 
-&= \frac{1}{2^j} \int_{-1}^1 (1-x)^j e^{ixy} \, dx \\
-&= \frac{1}{2^j} \int_0^2 u^j e^{iy(1-u)} \, du \\
-&= \frac{e^{iy}}{2^j} \int_0^2 u^j e^{-iuy} \, du
-\end{align*}
-
-Using integration by parts and the relationship between incomplete gamma functions:
+Perform the substitution $u = 1 - x$, so $x = 1 - u$ and $dx = -du$. Changing the limits of integration gives:
 \[
-\Gamma(a,z) = \Gamma(a) - \gamma(a,z)
+\int_{-1}^1 (1-x)^j e^{i x y} \, dx = \int_0^2 u^j e^{-i u y} e^{i y} \, du = e^{i y} \int_0^2 u^j e^{-i u y} \, du.
 \]
-where $\gamma(a,z)$ is the lower incomplete gamma function, we obtain:
-\begin{align*}
-\int_0^2 u^j e^{-iuy} \, du &= \frac{\Gamma(j+1)}{(-iy)^{j+1}} - \frac{\Gamma(j+1,2iy)}{(-iy)^{j+1}}
-\end{align*}
-
-Therefore:
+The remaining integral:
 \[
-\frac{e^{iy}}{2^j} \int_0^2 u^j e^{-iuy} \, du = 
-\frac{e^{iy}}{2^j} \left[\frac{\Gamma(j+1,-2iy)}{(-iy)^{j+1}} - \frac{\Gamma(j+1)}{(-iy)^{j+1}}\right]
+\int_0^2 u^j e^{-i u y} \, du
+\]
+is expressed using the incomplete gamma function:
+\[
+\int_0^a t^j e^{-\beta t} \, dt = \frac{\Gamma(j+1) - \Gamma(j+1, \beta a)}{\beta^{j+1}}.
+\]
+With $a = 2$ and $\beta = -iy$, the result follows as:
+\[
+\int_{-1}^1 \left(\frac{1}{2} - \frac{x}{2}\right)^j e^{i x y} \, dx = \frac{e^{iy}}{2^j} \left[\frac{\Gamma(j+1, -2iy)}{(-iy)^{j+1}} - \frac{\Gamma(j+1)}{(-iy)^{j+1}}\right].
 \]
 \end{proof}
 
-\section*{Double Sum Transformation and Hypergeometric Representation}
-
-\begin{theorem}[Double Sum Transformation]
-The double sum can be rewritten as:
+\begin{theorem}\label{thm:EvaluationOfIntegral}
+Let $m, n \in \mathbb{Z}_{\geq 0}$ be non-negative integers, and let ${}_2F_1(a, b; c; z)$ denote the Gauss hypergeometric function. The integral
 \[
-\sum_{k=0}^m \sum_{l=0}^n \frac{(-m)_k (m+1)_k}{k!} \frac{(-n)_l (n+1)_l}{l!} z^{k+l}
-= \sum_{j=0}^{m+n} \Psi_j(m,n) z^j
+I_{m,n}(y) = \int_{-1}^1 {}_2F_1\left(-m, m+1; 1; \frac{1}{2} - \frac{x}{2}\right) 
+{}_2F_1\left(-n, n+1; 1; \frac{1}{2} - \frac{x}{2}\right) e^{i x y} \, dx
 \]
-where
+is evaluated as:
 \[
-\Psi_j(m,n) = \sum_{k=\max(0,j-n)}^{\min(j,m)} 
+I_{m,n}(y) = e^{iy} \sum_{j=0}^{m+n} \frac{\Psi_j(m,n)}{2^j} 
+\left[\frac{\Gamma(j+1, -2iy) - \Gamma(j+1)}{(-iy)^{j+1}}\right],
+\]
+where $\Psi_j(m, n)$ is given as either a sum or a hypergeometric representation:
+\[
+\Psi_j(m,n) = \sum_{k=\max(0, j-n)}^{\min(j, m)} 
 \frac{(-m)_k (m+1)_k}{k!} 
-\frac{(-n)_{j-k} (n+1)_{j-k}}{(j-k)!}
+\frac{(-n)_{j-k} (n+1)_{j-k}}{(j-k)!},
 \]
-\end{theorem}
-
-\begin{proof}
-Let $j = k + l$. For each power $z^j$, we sum over all valid combinations of $k$ and $l$ that sum to $j$. The limits on $k$ are determined by:
-\begin{itemize}
-\item $k \geq 0$ and $k \leq m$ from the first sum
-\item $j-k \geq 0$ and $j-k \leq n$ from the second sum
-\end{itemize}
-These constraints give us $k \geq \max(0,j-n)$ and $k \leq \min(j,m)$. The result follows by collecting terms with the same power of $z$.
-\end{proof}
-
-\begin{theorem}[Hypergeometric Formulation of $\Psi_j(m,n)$]
+or equivalently:
 \[
 \Psi_j(m,n) = \frac{(-1)^j}{j!} \cdot {}_4F_3\left(
 \begin{matrix}
 - m, \, m+1, \, -n, \, n+1 \\
 1, \, 1, \, j+1
-\end{matrix}; 1 \right)
+\end{matrix}; 1 \right).
 \]
 \end{theorem}
 
 \begin{proof}
-Starting with the sum representation of $\Psi_j(m,n)$:
+We aim to evaluate the integral  
 \[
-\Psi_j(m,n) = \sum_{k=0}^j \frac{(-m)_k (m+1)_k}{k!} \frac{(-n)_{j-k} (n+1)_{j-k}}{(j-k)!}
+I_{m,n}(y) = \int_{-1}^1 {}_2F_1\left(-m, m+1; 1; \frac{1}{2} - \frac{x}{2}\right)
+{}_2F_1\left(-n, n+1; 1; \frac{1}{2} - \frac{x}{2}\right) e^{i x y} \, dx.
+\]  
+
+\textbf{1. Expand the hypergeometric functions}
+
+The Gauss hypergeometric function ${}_2F_1(-p, b; c; z)$ is known to terminate for $p \in \mathbb{Z}_{\geq 0}$:
+\[
+{}_2F_1(-p, b; c; z) = \sum_{k=0}^p \frac{(-p)_k (b)_k}{(c)_k k!} z^k,
+\]
+where $(a)_k = a(a+1)\cdots(a+k-1)$ is the Pochhammer symbol.
+As shown in Lemma \ref{lem:HyperExpansions}, this means we can write
+\[
+{}_2F_1\left(-m, m+1; 1; \frac{1}{2} - \frac{x}{2}\right) = \sum_{k=0}^m \frac{(-m)_k (m+1)_k}{k!} \left(\frac{1}{2} - \frac{x}{2}\right)^k,
+\]
+and similarly,
+\[
+{}_2F_1\left(-n, n+1; 1; \frac{1}{2} - \frac{x}{2}\right) = \sum_{l=0}^n \frac{(-n)_l (n+1)_l}{l!} \left(\frac{1}{2} - \frac{x}{2}\right)^l.
+\]
+Substituting these into $I_{m,n}(y)$, we have:
+\[
+I_{m,n}(y) = \int_{-1}^1 \left( \sum_{k=0}^m \frac{(-m)_k (m+1)_k}{k!} \left(\frac{1}{2} - \frac{x}{2}\right)^k \right) 
+\left( \sum_{l=0}^n \frac{(-n)_l (n+1)_l}{l!} \left(\frac{1}{2} - \frac{x}{2}\right)^l \right) e^{i x y} \, dx.
 \]
 
-The ${}_4F_3$ hypergeometric function has the series representation:
+\textbf{2. Combine the double sum}
+
+Expanding the product of the two sums:
 \[
-{}_4F_3\left(\begin{matrix}
-a_1, a_2, a_3, a_4 \\
-b_1, b_2, b_3
-\end{matrix}; z\right) = \sum_{k=0}^\infty 
-\frac{(a_1)_k(a_2)_k(a_3)_k(a_4)_k}{(b_1)_k(b_2)_k(b_3)_k} \frac{z^k}{k!}
+I_{m,n}(y) = \sum_{k=0}^m \sum_{l=0}^n \frac{(-m)_k (m+1)_k}{k!} \frac{(-n)_l (n+1)_l}{l!} 
+\int_{-1}^1 \left(\frac{1}{2} - \frac{x}{2}\right)^{k+l} e^{i x y} \, dx.
+\]
+Set $j = k + l$ (the combined exponent in the integral) and reorganize the summation based on $j$. Then:
+\[
+I_{m,n}(y) = \sum_{j=0}^{m+n} \Psi_j(m, n) \int_{-1}^1 \left(\frac{1}{2} - \frac{x}{2}\right)^j e^{i x y} \, dx,
+\]
+where the coefficients $\Psi_j(m, n)$ are given by:
+\[
+\Psi_j(m,n) = \sum_{k=\max(0, j-n)}^{\min(j, m)} 
+\frac{(-m)_k (m+1)_k}{k!} 
+\frac{(-n)_{j-k} (n+1)_{j-k}}{(j-k)!}.
 \]
 
-Substituting the parameters and comparing coefficients:
-\begin{align*}
-\frac{(-m)_k(m+1)_k(-n)_{j-k}(n+1)_{j-k}}{k!(j-k)!} &= 
-\frac{(-1)^j}{j!} \cdot \frac{(-m)_k(m+1)_k(-n)_k(n+1)_k}{(1)_k(1)_k(j+1)_k}
-\end{align*}
+\textbf{3. Evaluate the integral for a general $j$}
 
-The equality holds term by term, verifying the hypergeometric representation.
-\end{proof}
-
-\section*{Final Result}
-
-\begin{theorem}
-The integral evaluates to:
+For a fixed $j$, consider the integral
 \[
-I_{m,n}(y) = e^{iy} \sum_{j=0}^{m+n} \frac{\Psi_j(m,n)}{2^j} 
-\left[\frac{\Gamma(j+1,-2iy)-\Gamma(j+1)}{(-iy)^{j+1}}\right]
+\int_{-1}^1 \left(\frac{1}{2} - \frac{x}{2}\right)^j e^{i x y} \, dx.
 \]
-where $\Psi_j(m,n)$ is given equivalently by either sum or hypergeometric representations as shown above.
-\end{theorem}
+As shown in Lemma \ref{lem:IntegralGamma}, this can be evaluated as:
+\[
+\int_{-1}^1 \left(\frac{1}{2} - \frac{x}{2}\right)^j e^{i x y} \, dx 
+= \frac{e^{iy}}{2^j} \left[\frac{\Gamma(j+1, -2iy)}{(-iy)^{j+1}} - \frac{\Gamma(j+1)}{(-iy)^{j+1}}\right].
+\]
 
-\begin{proof}
-The result follows by combining the series expansion from Lemma 2, the integral evaluation from Lemma 3, and both sum transformations from Theorems 1 and 2. The convergence of all sums is guaranteed as they are finite sums over non-negative integers $m$ and $n$.
+\textbf{4. Substitute back into the main sum}
+
+Substituting the integral result back into the main expression for $I_{m,n}(y)$:
+\[
+I_{m,n}(y) = e^{iy} \sum_{j=0}^{m+n} \frac{\Psi_j(m, n)}{2^j} 
+\left[\frac{\Gamma(j+1, -2iy)}{(-iy)^{j+1}} - \frac{\Gamma(j+1)}{(-iy)^{j+1}}\right].
+\]
+This completes the evaluation of the integral.
+
+\textbf{Final Expression:}
+The final result is:
+\[
+I_{m,n}(y) = e^{iy} \sum_{j=0}^{m+n} \frac{\Psi_j(m, n)}{2^j} 
+\left[\frac{\Gamma(j+1, -2iy)}{(-iy)^{j+1}} - \frac{\Gamma(j+1)}{(-iy)^{j+1}}\right],
+\]
+where
+\[
+\Psi_j(m,n) = \sum_{k = \max(0, j-n)}^{\min(j, m)} 
+\frac{(-m)_k (m+1)_k}{k!} 
+\frac{(-n)_{j-k} (n+1)_{j-k}}{(j-k)!}.
+\]
 \end{proof}
 
 \end{document}
