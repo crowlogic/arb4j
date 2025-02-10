@@ -1,0 +1,243 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{enumitem}
+
+\begin{document}
+
+\section*{Initial Question: Is dx the Jacobian?}
+
+No, \textbf{dx} in your integral is not the Jacobian—it represents the differential of the variable of integration $x$. In other words, \textbf{dx} is simply the infinitesimal element of the integration variable $x$.
+
+\subsection*{What is the Jacobian?}
+The \textbf{Jacobian} refers to the determinant of the Jacobian matrix, which arises when performing a \textbf{change of variables} in multivariable calculus or integrals. The Jacobian matrix contains all partial derivatives of the variables being transformed to the new variables. Its determinant represents how volume (or area, or length) is scaled during the transformation.
+
+For example, in a single-variable case, if you make a substitution $u = f(x)$, then $du = f'(x) \, dx$, and the term $f'(x)$ is essentially the Jacobian here. In multivariable settings, the Jacobian is a determinant.
+
+\subsection*{In Your Case}
+Your integral is:
+\[
+\int_{-1}^1 \cdots \, dx.
+\]
+Here, \textbf{dx} does not represent a Jacobian—it just indicates the variable $x$ over which the function is being integrated.
+
+The Jacobian would come into play only if you perform a \textbf{change of variables}, e.g., $u = g(x)$, at which point \textbf{dx} might be replaced by $\text{Jacobian} \cdot du$. For example:
+\[
+\int f(x) \, dx \quad \text{with substitution $u = g(x)$} \quad \implies \quad \int f(x) \, dx = \int f(g^{-1}(u)) \cdot |g'(x)|  du
+\]
+
+\section*{Follow-up Question}
+\textit{I'm talking about when the change of variables is made}
+
+\section*{Response to Follow-up}
+Ah, now I understand you're referring to a situation \textbf{when a change of variables is made}! In that case, \textbf{yes}, the term often referred to as "dx" can include the \textbf{Jacobian} determinant after the change of variables in both single-variable and multi-variable integrals.
+
+Let me clarify with a detailed explanation:
+
+\subsection*{1. Single-Variable Case}
+When a change of variable is made, say $u = g(x)$, the differential $dx$ is transformed via:
+\[
+dx = \frac{dx}{du} \, du = g'(u) \, du,
+\]
+where $g'(u)$ (the derivative of the substitution function $g$) is the Jacobian in this case, representing the scaling factor from the substitution.
+
+\paragraph{Example:}
+Consider:
+\[
+\int f(x) \, dx, \quad \text{with substitution } u = g(x).
+\]
+Then:
+\[
+\int f(x) \, dx = \int f(g^{-1}(u)) \, |g'(u)| \, du.
+\]
+Here, $|g'(u)|$ is the absolute value of the Jacobian.
+
+\subsection*{2. Multi-Variable Case}
+When a change of variables is made in a \textbf{multi-variable integral}, the Jacobian determinant plays a key role in transforming the differential \textbf{volume element}.
+
+If you start with variables $(x_1, x_2, \ldots, x_n)$ and make a substitution to new variables $(u_1, u_2, \ldots, u_n)$, the differential volume element transforms as:
+\[
+dx_1 \, dx_2 \, \cdots \, dx_n = \left| \det \frac{\partial (x_1, x_2, \ldots, x_n)}{\partial (u_1, u_2, \ldots, u_n)} \right| \, du_1 \, du_2 \, \cdots \, du_n,
+\]
+where:
+\begin{itemize}
+\item $\frac{\partial (x_1, x_2, \ldots, x_n)}{\partial (u_1, u_2, \ldots, u_n)}$ is the \textbf{Jacobian matrix} of the transformation,
+\item $\det$ denotes the determinant,
+\item The \textbf{absolute value} ensures the measure is positive.
+\end{itemize}
+
+The Jacobian scales the volume element under the transformation.
+
+\paragraph{Example (Multi-Variable Change of Variables):}
+Imagine a double integral:
+\[
+\int \int f(x, y) \, dx \, dy,
+\]
+and you perform a change of variables:
+\[
+x = g(u, v), \quad y = h(u, v).
+\]
+Then the integral becomes:
+\[
+\int \int f(g(u, v), h(u, v)) \, \left| \det \frac{\partial (x, y)}{\partial (u, v)} \right| \, du \, dv,
+\]
+where:
+\[
+\frac{\partial (x, y)}{\partial (u, v)} =
+\begin{bmatrix}
+\frac{\partial x}{\partial u} & \frac{\partial x}{\partial v} \\
+\frac{\partial y}{\partial u} & \frac{\partial y}{\partial v}
+\end{bmatrix}.
+\]
+
+\section*{Critical Response}
+\textit{what the f*** you talking about That's a terrible example you said substitute u but u didn't even appear on the left hand side}
+
+\section*{Corrected Explanation}
+You're absolutely correct — my earlier explanation was convoluted and the examples were not clear or clean. Let me address this properly, directly, and without any confusion this time.
+
+We're discussing \textbf{whether dx includes the Jacobian determinant during a change of variables.}
+
+\subsection*{1. Change of Variables: The Key Idea}
+When you change variables in an integral, the differential element (e.g., dx, dx dy, etc.) \textbf{transforms under the substitution}, and that's where the \textbf{Jacobian} (or its determinant, in higher dimensions) comes into play.
+
+\subsection*{2. Single Variable Case}
+Suppose you perform a substitution:
+\[ u = g(x). \]
+
+Then:
+\[ du = g'(x) \, dx, \quad \text{so equivalently:} \quad dx = \frac{du}{g'(x)}. \]
+
+When substituting into the integral:
+\[
+\int_a^b f(x) \, dx,
+\]
+this becomes:
+\[
+\int_{g(a)}^{g(b)} f(g^{-1}(u)) \cdot \frac{1}{g'(x)} \, du,
+\]
+where the \textbf{Jacobian is the derivative} $g'(x)$ (or $1/g'(x)$, as it depends which way you look at it).
+
+\paragraph{Example:}
+Consider:
+\[
+\int_1^4 \sqrt{x} \, dx,
+\]
+with substitution:
+\[
+u = \sqrt{x}, \quad x = u^2, \quad dx = 2u \, du.
+\]
+
+The integral becomes:
+\[
+\int_1^2 \sqrt{u^2} \cdot (2u) \, du = \int_1^2 2u^2 \, du.
+\]
+
+Here, the term $2u$ is the \textbf{Jacobian factor} that transforms dx into terms of du.
+
+\subsection*{3. Multi-Variable Case}
+In higher dimensions, if you perform a substitution:
+\[ (x_1, x_2, \dots, x_n) \to (u_1, u_2, \dots, u_n), \]
+then the volume element $dx_1 dx_2 \cdots dx_n$ transforms via the \textbf{Jacobian determinant}:
+\[
+dx_1 dx_2 \cdots dx_n = \left| \det \frac{\partial(x_1, x_2, \dots, x_n)}{\partial(u_1, u_2, \dots, u_n)} \right| \, du_1 du_2 \cdots du_n.
+\]
+
+\paragraph{Example:}
+Consider a 2D integral:
+\[
+\int \int_{R} f(x, y) \, dx dy,
+\]
+and make the substitution:
+\[
+x = u^2 - v^2, \quad y = 2uv.
+\]
+
+The Jacobian matrix is:
+\[
+\frac{\partial(x, y)}{\partial(u, v)} =
+\begin{bmatrix}
+2u & -2v \\
+2v & 2u
+\end{bmatrix}.
+\]
+
+The determinant of this Jacobian matrix is:
+\[
+\det = (2u)(2u) - (-2v)(2v) = 4u^2 + 4v^2.
+\]
+
+So, the integral transforms as:
+\[
+\int \int f(x, y) \, dx \, dy = \int \int f(u^2 - v^2, 2uv) \cdot |4u^2 + 4v^2| \, du \, dv.
+\]
+
+\subsection*{4. Your Specific Case: Substitution in 1D Integral}
+If your substitution is:
+\[ u = 1 - x, \quad \text{then} \quad x = 1 - u, \quad dx = -du, \]
+the Jacobian is simply the derivative of the substitution:
+\[
+\frac{dx}{du} = -1.
+\]
+
+So, the differential $dx$ transforms as:
+\[
+dx = (-1) du.
+\]
+
+When you substitute this into an integral, for example:
+\[
+\int_{-1}^1 f(x) \, dx,
+\]
+it becomes:
+\[
+\int_{-1}^1 f(1-u) \cdot (-1) \, du = \int_1^{-1} f(1-u) \, du = \int_0^2 f(1-u) \, du.
+\]
+
+\subsection*{Final Answer: Is dx the Jacobian?}
+No, \textbf{dx itself is not the Jacobian}, but \textbf{when you change variables}, dx \textbf{includes the effect of the Jacobian determinant}. The Jacobian is the factor that scales the differential element (e.g., $dx$ or $dA$ in higher dimensions) according to the change of variables.
+
+\section*{Connection Between the Lebesgue-Stieltjes Integral and the Jacobian}
+
+\subsection*{1. Riemann-Stieltjes Prelude}
+In the Riemann-Stieltjes integral \( \int f \, dg \), the \textit{integrator} \( g \) determines the weighting of intervals. If \( g \) is differentiable, the differential \( dg \) acts like a \textbf{local scaling factor}:
+\[
+dg(x) = g'(x) \, dx,
+\]
+where \( g'(x) \) plays the role of a \textbf{1D Jacobian} (i.e., the derivative scales the measure \( dx \)).
+
+\subsection*{2. Lebesgue-Stieltjes Generalization}
+The Lebesgue-Stieltjes integral \( \int f \, d\mu_g \) introduces a measure \( \mu_g \) derived from \( g \). When \textit{changing variables} \( y = h(x) \), the measure transforms via the \textit{Radon-Nikodym derivative} (the measure-theoretic analog of the Jacobian).  
+If \( g \) is differentiable, \( \mu_g \) has a \textit{density} \( g'(x) \) with respect to Lebesgue measure:
+\[
+d\mu_g = g'(x) \, dx, \quad \text{so} \quad \int f \, d\mu_g = \int f(x) g'(x) \, dx.
+\]
+This is identical to how Jacobian scaling appears in substitution.
+
+\subsection*{3. Example: Pushforward Measure}
+Let \( \mu_g \) be a measure induced by \( g \), and consider a variable change \( y = h(x) \). The \textbf{pushforward measure} \( h_*\mu_g \) satisfies:
+\[
+\int f(y) \, d(h_*\mu_g)(y) = \int f(h(x)) \, d\mu_g(x).
+\]
+If \( h \) is smooth and invertible, the relationship involves \( |h'(x)|^{-1} \), analogous to how Jacobians appear in substitution.
+
+\subsection*{4. Rigorous Connection}
+\begin{itemize}
+    \item \textbf{In 1D}: If \( d\mu = g'(x) \, dx \), the total derivative \( dy = h'(x) dx \) implies:
+    \[
+    \int f(y) \, d\mu(y) = \int f(h(x)) g'(x) |h'(x)|^{-1} \, dx,
+    \]
+    where \( g'(x) |h'(x)|^{-1} \) acts like a \textbf{compound Jacobian}.
+    \item \textbf{In \(\mathbb{R}^n\)}: The Jacobian determinant \( |\det J_h| \) replaces \( |h'(x)| \), and measures \( \mu_g \) with density \( g \) transform via \( g \circ h^{-1} \cdot |\det J_{h^{-1}}| \).
+\end{itemize}
+
+\subsection*{5. Conclusion}
+The Lebesgue-Stieltjes framework \textit{subsumes} the Jacobian concept within measure theory:
+\begin{itemize}
+    \item \textbf{Change of variables} in integration requires adjusting the measure via Radon-Nikodym derivatives (Jacobians in smooth cases).
+    \item \textbf{Non-Lebesgue measures} (e.g., induced by \( g \)) inherently encode "weighted" integration, where transformations modify the weighting via Jacobian-like factors.
+\end{itemize}
+
+This highlights that \textbf{Jacobians are the bridge between classical substitution and measure-theoretic integration.}
+
+\end{document}
