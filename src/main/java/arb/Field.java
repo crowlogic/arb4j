@@ -182,6 +182,17 @@ public interface Field<X extends Field<X>> extends
     return mul(x, prec, result);
   }
 
+  public default X pow(int i, int bits, X result)
+  {
+    assert false : String.format( "TODO: %s needs to implement this", getClass() );
+    return null;
+  }
+
+  public default X pow(int i, int bits)
+  {
+    return pow(i, bits, (X) this);
+  }
+
   /**
    * Performs multiplication with a (signed) integer
    * 
@@ -234,7 +245,17 @@ public interface Field<X extends Field<X>> extends
     return mul(x, bits(this, x), result);
   }
 
-  public X newFieldElement();
+  public default X newFieldElement()
+  {
+    assert false : String.format( "TODO: %s needs to implement this", getClass() );
+    return null;
+  }
+  
+  public default X newFieldElementVector(int dim)
+  {
+    assert false : String.format( "TODO: %s needs to implement this", getClass() );
+    return null;
+  }
 
   /**
    * Assignment operator
@@ -339,6 +360,11 @@ public interface Field<X extends Field<X>> extends
   {
     assert false : "todo";
     return (X) this;
+  }
+
+  public default boolean isPositive()
+  {
+    return true;
   }
 
 }

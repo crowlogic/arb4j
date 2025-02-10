@@ -91,4 +91,17 @@ public interface Ring<X> extends Magma<X>, CommutativeGroup<X>
   @Override
   public X div(X x, int prec, X result);
   
+  @SuppressWarnings("unchecked")
+  public default X pow(X x, int prec)
+  {
+    return pow(x, prec, (X) this);
+  }
+  
+  @Override
+  public default X pow(X x, int prec, X result)
+  {
+    assert false : String.format( "TODO: %s needs to implement this", getClass() );
+    return null;
+  }
+  
 }

@@ -63,7 +63,7 @@
     When <math|a=-p> for non-negative integer <math|p>:
 
     <\equation>
-      <around|(|-p|)><rsub|k>=<around|(|-p|)>*<around|(|-p+1|)>*\<cdots\>*<around|(|-p+k-1|)>=<around|(|-1|)><rsup|k>*p*<around|(|p-1|)>*\<cdots\>*<around|(|p-k+1|)>
+      <big|prod><rsub|i=0><rsup|k-1><around|(|-p+i|)>
     </equation>
 
     Therefore <math|<around|(|-p|)><rsub|k>=0> for all <math|k\<gtr\>p> since

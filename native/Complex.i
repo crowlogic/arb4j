@@ -23,7 +23,7 @@ import arb.functions.complex.ComplexNullaryFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
-import arb.space.topological.EuclideanVectorSpace;
+import arb.space.topological.EuclideanSpace;
 
 /**
  * The {@link Complex} numbers constitute an algebraically closed {@link Field}, a
@@ -374,6 +374,13 @@ import arb.space.topological.EuclideanVectorSpace;
   {
     return get(value);
   }
+
+  @Override
+  public Complex newFieldElementVector(int dim)
+  {
+    return newVector(dim);
+  }
+
 
   /**
    * 

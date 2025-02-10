@@ -1,5 +1,6 @@
 package arb.space.topological;
 
+import arb.Field;
 import arb.Metric;
 import arb.Real;
 import arb.geometry.Manifold;
@@ -10,11 +11,20 @@ import arb.space.bornological.BornologicalSpace;
  * between elements of the set. This interface eRealtends HausdorffSpace and
  * BornologicalSpace, incorporating concepts of separability and boundedness.
  */
-public interface MetricSpace extends
-                             HausdorffSpace<Real>,
-                             BornologicalSpace<Real>,
-                             Manifold<Real>
+public interface MetricSpace<F extends Field<? extends F>> extends
+                            HausdorffSpace<F>,
+                            BornologicalSpace<F>,
+                            Manifold<F>
 {
+
+  @Override
+  default boolean isSeparable(int bits, F x, F y)
+  {
+    try ( F distance = distance(bits, x, y, y.newFieldElement()))
+    {
+      return distance.isPositive();
+    }
+  }
 
   public int[] signature();
 
@@ -28,14 +38,14 @@ public interface MetricSpace extends
    * 
    * @return The distance as a Real number.
    */
-  Real distance(int bits, Real Real, Real y, Real res);
+  F distance(int bits, F Real, F y, F res);
 
   /**
    * Provides the metric used in this space for distance calculations.
    * 
    * @return Metric object which can compute the distance between two points.
    */
-  Metric<Real> metric();
+  Metric<F> metric();
 
   /**
    * Overrides the separability test from HausdorffSpace using the metric defined.
@@ -45,12 +55,5 @@ public interface MetricSpace extends
    *
    * @return true if the elements are separable, false otherwise.
    */
-  @Override
-  default boolean isSeparable(int bits, Real Real, Real y)
-  {
-    try ( Real distance = distance(bits, Real, y, new Real()))
-    {
-      return distance.isPositive();
-    }
-  }
+
 }

@@ -26,6 +26,10 @@ import arb.expressions.nodes.binary.BinaryOperationNode;
  */
 public interface Magma<X> 
 {
+  
+  
+  public X pow(X x, int prec, X result);
+  
   /**
    * Performs multiplication
    * 

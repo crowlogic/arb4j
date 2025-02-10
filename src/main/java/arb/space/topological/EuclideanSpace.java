@@ -1,6 +1,6 @@
 package arb.space.topological;
 
-import arb.Real;
+import arb.Field;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 
@@ -12,15 +12,16 @@ import arb.documentation.TheArb4jLibrary;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface EuclideanSpace extends
-                                MetricSpace,
-                                LocallyCompactHausdorffSpace<Real>
+public interface EuclideanSpace<F extends Field<F>> extends
+                               MetricSpace<F>,
+                               LocallyCompactHausdorffSpace<F>,
+                               VectorSpace<F>
 {
 
   @Override
-  default Real distance(int bits, Real x, Real y, Real res)
+  default F distance(int bits, F x, F y, F res)
   {
-    try ( Real diff = res.dim >= intrinsicDimension() ? res : Real.newVector(intrinsicDimension()))
+    try ( F diff = res.dim() >= intrinsicDimension() ? res : res.newFieldElementVector(intrinsicDimension()))
     {
       x.sub(y, bits, res).pow(2, bits).sum(bits, res);
     }

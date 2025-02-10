@@ -405,6 +405,12 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     return result;
   }
 
+  @Override
+  public Real newFieldElementVector(int dim)
+  {
+    return newVector(dim);
+  }
+
   public Real one()
   {
     arblib.arb_one(this);

@@ -378,6 +378,12 @@ import arb.utensils.Utensils;
     return result;
   }
 
+  @Override
+  public Real newFieldElementVector(int dim)
+  {
+    return newVector(dim);
+  }
+
   public Real one()
   {
     arblib.arb_one(this);

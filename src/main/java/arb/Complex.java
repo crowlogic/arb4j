@@ -26,12 +26,11 @@ import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import arb.functions.complex.ComplexNullaryFunction;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
-import arb.space.topological.EuclideanVectorSpace;
+import arb.functions.complex.ComplexNullaryFunction;
 
 /**
  * The {@link Complex} numbers constitute an algebraically closed {@link Field}, a
@@ -399,6 +398,13 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
   {
     return get(value);
   }
+
+  @Override
+  public Complex newFieldElementVector(int dim)
+  {
+    return newVector(dim);
+  }
+
 
   /**
    * 

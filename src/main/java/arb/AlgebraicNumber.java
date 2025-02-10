@@ -59,6 +59,7 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
+  
   public AlgebraicNumber(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
@@ -449,6 +450,27 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   {
     this(arblibJNI.new_AlgebraicNumber(), true);
     init();
+  }
+
+  @Override
+  public AlgebraicNumber pow(AlgebraicNumber x, int prec, AlgebraicNumber result)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public AlgebraicNumber pow(int i, int bits, AlgebraicNumber result)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public AlgebraicNumber newFieldElementVector(int dim)
+  {
+    assert false : "TODO";
+    return null;
   }
 
 
