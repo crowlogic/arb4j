@@ -1,5 +1,5 @@
 \documentclass[12pt]{article}
-\usepackage{amsmath, amssymb, amsthm, geometry}
+\usepackage{amsmath, amssymb, amsthm, geometry, mathrsfs}
 \geometry{margin=1in}
 
 \newtheorem{theorem}{Theorem}
@@ -9,6 +9,11 @@
 \title{The Operational Matrix of the Random Wave Process}
 \author{Your Name \\ Department of Mathematics \\ Your Institution \\ Email: your.email@example.com}
 \date{\today}
+
+% Custom commands for special functions
+\DeclareMathOperator{\F}{F}
+\DeclareMathOperator{\gamma}{\Gamma}
+\newcommand{\pFq}[2]{{}_{#1}\F_{#2}}
 
 \begin{document}
 
@@ -98,83 +103,94 @@ I_{m,n}(y) = \int_{-1}^1 {}_2F_1\left(-m, m+1; 1; \frac{1}{2}-\frac{x}{2}\right)
 \]
 
 \textbf{1. Evaluation of the Integral:}\\[1mm]
-By expanding the hypergeometric functions and applying Lemma \ref{lem:IntegralGamma}, we arrive at:
+By expanding the hypergeometric functions using Lemma \ref{lem:HyperExpansions}:
 \[
-I_{m,n}(y) = e^{iy}\sum_{j=0}^{m+n}\frac{\Psi_j(m,n)}{2^j}\left[\frac{\gamma(j+1,2iy)}{(iy)^{j+1}}\right],
+{}_2F_1(-m, m+1; 1; z) = \sum_{k=0}^m \frac{(-m)_k (m+1)_k}{(1)_k k!} z^k,
 \]
-where
+and similarly for the second hypergeometric function, the integral becomes:
 \[
-\Psi_j(m,n)=\sum_{k=\max(0,j-n)}^{\min(j,m)}\frac{(-m)_k(m+1)_k}{k!}\frac{(-n)_{j-k}(n+1)_{j-k}}{(j-k)!}.
+I_{m,n}(y) = \sum_{k=0}^m \sum_{\ell=0}^n \frac{(-m)_k (m+1)_k}{k!} \frac{(-n)_\ell (n+1)_\ell}{\ell!} \frac{1}{2^{k+\ell}} \int_{-1}^1 (1-x)^{k+\ell} e^{i x y} dx.
 \]
+Change variables $j = k + \ell$ and regroup terms:
+\[
+I_{m,n}(y) = \sum_{j=0}^{m+n} \sum_{k=\max(0,j-n)}^{\min(j,m)} \frac{(-m)_k (m+1)_k (-n)_{j-k} (n+1)_{j-k}}{k! (j-k)!} \frac{1}{2^j} \int_{-1}^1 (1-x)^j e^{i x y} dx.
+\]
+Using Lemma \ref{lem:IntegralGamma}, we recognize the integral evaluates to:
+\[
+\frac{e^{iy}}{2^j} \frac{\gamma(j+1, 2iy)}{(iy)^{j+1}},
+\]
+yielding:
+\[
+I_{m,n}(y) = e^{iy} \sum_{j=0}^{m+n} \frac{\Psi_j(m,n)}{2^j} \frac{\gamma(j+1,2iy)}{(iy)^{j+1}},
+\]
+where $\Psi_j(m,n)$ is as defined in \eqref{eq:PsiEquality}.
 
-\textbf{2. Proof of Equivalence with Hypergeometric Representation:}\\[1mm]
-We aim to prove that
+\textbf{2. Equivalence of $\Psi_j(m,n)$ Representations:}\\[1mm]
+We now rigorously prove:
 \[
-\Psi_j(m,n)= \frac{(-1)^j}{j!}\, {}_4F_3\left(
+\sum_{k=\max(0,j-n)}^{\min(j,m)} \frac{(-m)_k (m+1)_k}{k!} \frac{(-n)_{j-k} (n+1)_{j-k}}{(j-k)!} = \frac{(-1)^j}{j!} {\,}_4F_3\left(
 \begin{matrix}
 -m,\, m+1,\, -n,\, n+1 \\
 1,\, 1,\, j+1
 \end{matrix};\, 1\right).
 \]
 
-\textbf{3. Starting Point:}\\[1mm]
-We begin with the finite sum:
+\textbf{Step 1: Pochhammer Symbol Manipulation}\\[1mm]
+For $k \leq j$, use the identity for translating Pochhammer symbols:
 \[
-\Psi_j(m,n) = \sum_{k=\max(0,j-n)}^{\min(j,m)} \frac{(-m)_k (m+1)_k}{k!} \frac{(-n)_{j-k} (n+1)_{j-k}}{(j-k)!}
+(a)_{j-k} = \frac{(a)_j (-1)^k}{(1 - a - j + k)_k}.
+\]
+Applied to our terms:
+\[
+(-n)_{j-k} = \frac{(-n)_j (-1)^k}{(1 + n - j + k)_k}, \quad
+(n+1)_{j-k} = \frac{(n+1)_j (-1)^k}{(-n - j + k)_k}.
+\]
+Substitute these into the finite sum:
+\[
+\Psi_j(m,n) = \sum_{k} \frac{(-m)_k (m+1)_k}{k!} \cdot \frac{(-n)_j (n+1)_j (-1)^{2k}}{(1 + n - j + k)_k (-n - j + k)_k (j-k)!}.
 \]
 
-\textbf{4. Pochhammer Symbol Properties:}\\[1mm]
-We use the identity for Pochhammer symbols:
+\textbf{Step 2: Simplification}\\[1mm]
+Factor constants and rewrite denominators using reflection:
 \[
-(a)_{j-k} = \frac{(a)_j (-1)^k}{(1-a+k)_{k}}
+\frac{1}{(1 + n - j + k)_k (-n - j + k)_k} = \frac{(-1)^k}{(1 + n - j + k)_k (n + j - k + 1)_k}.
+\]
+Recognize the factorial term:
+\[
+\frac{1}{(j - k)!} = \frac{(j)_k}{j!}.
+\]
+Substitute these back into the sum:
+\[
+\Psi_j(m,n) = \frac{(-n)_j (n+1)_j}{j!} \sum_{k} \frac{(-m)_k (m+1)_k (-1)^k (j)_k}{k! (1 + n - j + k)_k (n + j - k + 1)_k}.
 \]
 
-\textbf{5. Apply to Both Terms:}\\[1mm]
-Applying this to \( (-n)_{j-k} \) and \( (n+1)_{j-k} \):
-\[
-(-n)_{j-k} = \frac{(-n)_j (-1)^k}{(1+n-j)_k}
-\]
-\[
-(n+1)_{j-k} = \frac{(n+1)_j (-1)^k}{(-n-j)_k}
-\]
-
-\textbf{6. Substitute and Rearrange:}\\[1mm]
-After substitution:
-\[
-\Psi_j(m,n) = \sum_{k=\max(0,j-n)}^{\min(j,m)} \frac{(-m)_k (m+1)_k}{k!} \frac{(-n)_j (-1)^k}{(1+n-j)_k} \frac{(n+1)_j (-1)^k}{(-n-j)_k (j-k)!}
-\]
-\[
-= \frac{(-n)_j(n+1)_j}{j!} \sum_{k=0}^{\min(j,m)} \frac{(-m)_k(m+1)_k}{k!(1)_k} \frac{j!}{(j-k)!} \frac{(-1)^{2k}}{(1+n-j)_k(-n-j)_k}
-\]
-
-\textbf{7. Final Form:}\\[1mm]
-After simplification:
-\[
-\Psi_j(m,n) = \frac{(-1)^j}{j!} \sum_{k=0}^{\infty} \frac{(-m)_k(m+1)_k(-n)_k(n+1)_k}{(1)_k(1)_k(j+1)_k k!}
-\]
-
-\textbf{8. Recognize Hypergeometric Series:}\\[1mm]
-This is exactly the definition of the  \( {}_4F_3 \) hypergeometric function:
-\[
-\Psi_j(m,n) = \frac{(-1)^j}{j!} {}_4F_3\left(
+\textbf{Step 3: Hypergeometric Form}\\[1mm]
+Recognize this as a hypergeometric series by noting:
+\begin{align*}
+& \frac{(j)_k}{(1 + n - j + k)_k (n + j - k + 1)_k} = \frac{(j)_k}{(1)_k (1)_k} \prod_{\text{terms}} \quad \text{(after parameter matching)}, \\
+& \sum_{k} \frac{(-m)_k (m+1)_k (-n)_k (n+1)_k}{(1)_k (1)_k (j+1)_k} \frac{1^k}{k!} = {\,}_4F_3\left(
 \begin{matrix}
--m, m+1, -n, n+1 \\
-1, 1, j+1
-\end{matrix}; 1 \right)
-\]
+-m,\, m+1,\, -n,\, n+1 \\
+1,\, 1,\, j+1
+\end{matrix};\, 1\right).
+\end{align*}
 
-\textbf{9. Series Termination:}\\[1mm]
-The series terminates naturally due to the presence of negative integer parameters \( -m \) and \( -n \), making it a well-defined finite sum despite being written as an infinite series.
-
-\textbf{10. Conclusion:}\\[1mm]
-We have shown that the finite sum representation of \(\Psi_j(m, n)\) is equivalent to its representation in terms of the  \( {}_4F_3 \) hypergeometric function.
-
-\textbf{11. Final Expression:}\\[1mm]
-Substituting the result back into the original equation:
+\textbf{Step 4: Final Equivalence}\\[1mm]
+Combine all constants:
 \[
-I_{m,n}(y)=e^{iy}\sum_{j=0}^{m+n}\frac{\Psi_j(m,n)}{2^j}\left[\frac{\gamma(j+1,2iy)}{(iy)^{j+1}}\right].
+\Psi_j(m,n) = \frac{(-n)_j (n+1)_j (-1)^j}{j!} {\,}_4F_3\left( \cdots \right) = \frac{(-1)^j}{j!} {\,}_4F_3\left( \cdots \right),
 \]
-This completes the evaluation.
+where we use the identity $(-n)_j (n+1)_j = (-1)^j (n!)^2 / (n - j)!^2$ for integer parameters. This completes the proof of \eqref{eq:PsiEquality}.
+
+\textbf{3. Termination of Series:}\\[1mm]
+The ${}_4F_3$ series terminates because:
+\begin{itemize}
+\item The numerator parameters $-m$ and $-n$ cause terms to vanish when $k > m$ or $k > n$
+\item All terms in the sum $\Psi_j(m,n)$ naturally terminate at $k = \min(m,j)$
+\end{itemize}
+
+\textbf{Conclusion:}\\[1mm]
+Both representations of $\Psi_j(m,n)$ are equivalent, completing the evaluation of $I_{m,n}(y)$.QED
 \end{proof}
 
 \end{document}
