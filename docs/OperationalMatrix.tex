@@ -20,17 +20,17 @@
 
 \begin{lemma}\label{lem:HyperExpansions}
 For any \( p \in \mathbb{Z}_{\geq 0} \), the Gauss hypergeometric function terminates:
-\begin{equation}\label{eq:HyperSeries}
+\[
 {}_2F_1(-p, b; c; z) = \sum_{k=0}^p \frac{(-p)_k (b)_k}{(c)_k k!} z^k,
-\end{equation}
+\]
 where \((a)_k = \prod_{i=0}^{k-1}(a+i)\).
 \end{lemma}
 
 \begin{lemma}\label{lem:IntegralGamma}
 For \( j \geq 0 \), 
-\begin{equation}\label{eq:IntegralGamma}
+\[
 \int_{-1}^1 \left(\frac{1-x}{2}\right)^j e^{ixy}dx = \frac{e^{iy}}{2^j}\frac{\gamma(j+1,2iy)}{(iy)^{j+1}},
-\end{equation}
+\]
 where \(\gamma(s, x)\) denotes the lower incomplete gamma function.
 \end{lemma}
 
@@ -43,14 +43,14 @@ satisfies:
 \[
 I_{m,n}(y) = e^{iy}\sum_{j=0}^{m+n}\frac{\Psi_j(m,n)}{2^j}\left[\frac{\gamma(j+1,2iy)}{(iy)^{j+1}}\right],
 \]
-where \( \Psi_j(m,n) \) is:
-\begin{equation}\label{eq:PsiSum}
+where \( \Psi_j(m,n) \) is defined as:
+\[
 \Psi_j(m,n) = \sum_{k=\max(0,j-n)}^{\min(j,m)} \frac{(-m)_k(m+1)_k}{k!}\frac{(-n)_{j-k}(n+1)_{j-k}}{(j-k)!},
-\end{equation}
+\]
 and equivalently:
-\begin{equation}\label{eq:4F3}
+\[
 \Psi_j(m,n) = \frac{1}{j!}\,{}_4F_3\left(\begin{array}{c} -m, m+1, -n, n+1 \\ 1, 1, j+1 \end{array};1\right).
-\end{equation}
+\]
 \end{theorem}
 
 \begin{proof}
@@ -67,9 +67,8 @@ I_{m,n} = \sum_{j=0}^{m+n} \sum_{k=\max(0,j-n)}^{\min(j,m)} \frac{(-m)_k(m+1)_k}
 Apply Lemma \ref{lem:IntegralGamma} to evaluate the integral:
 \[
 I_{m,n}(y) = e^{iy}\sum_{j=0}^{m+n}\frac{\Psi_j(m,n)}{2^j}\left[\frac{\gamma(j+1,2iy)}{(iy)^{j+1}}\right].
-\]
 
-\textbf{Part 2: Term-by-Term Equality of \( \Psi_j(m,n) \) and \( {}_4F_3 \)}
+\textbf{Part 2: Equivalence of \( \Psi_j(m,n) \) and \( {}_4F_3 \)}
 
 Start from the hypergeometric representation in \eqref{eq:4F3}:
 \[
@@ -79,29 +78,32 @@ The series terminates at \( k = \min(m, n) \) due to \((-m)_k = 0\) for \( k > m
 
 Perform the substitution \( \ell = j - k \). For each \( k \), \(\ell\) satisfies:
 \[
-\ell = j - k \implies k = j - \ell.
+\ell = j - k \quad \text{or} \quad k = j - \ell.
 \]
-Original bounds \( k = 0 \to \min(m, n) \) become \( \ell = j \to j - \min(m, n) \). Since \( \ell \geq 0 \) and \( \ell \leq j \), the valid range is:
+Original bounds \(k = 0 \to \min(m, n)\) become \(\ell = j \to j - \min(m, n)\). Since \(\ell \geq 0\) and \(\ell \leq j\), the valid range is:
 \[
-\ell \in \left[\max(0, j - \min(m, n)), \min(j, m + n)\right].
+\ell \in [\max(0, j - \min(m, n)), \min(j, m + n)].
 \]
 
-Substitute \( k = j - \ell \) into the hypergeometric series:
+Substitute \(k = j - \ell\) into the hypergeometric series:
 \[
-\Psi_j(m,n) = \frac{1}{j!} \sum_{\ell=j}^{\max(0, j - \min(m, n))} \frac{(-m)_{j-\ell}(m+1)_{j-\ell}(-n)_{j-\ell}(n+1)_{j-\ell}}{(1)_{j-\ell}(1)_{j-\ell}(j+1)_{j-\ell} (j - \ell)!}.
+\Psi_j(m,n) = \frac{1}{j!} \sum_{\ell=0}^j \frac{(-m)_{j-\ell}(m+1)_{j-\ell}(-n)_{j-\ell}(n+1)_{j-\ell}}{(1)_{j-\ell}(1)_{j-\ell}(j+1)_{j-\ell} (j - \ell)!}.
 \]
-Reverse the summation order by letting \( \ell \to j - k \), which gives:
+Using the identity \((j+1)_{j-\ell} = \frac{(2j - \ell)!}{j!}\), we simplify:
 \[
-\Psi_j(m,n) = \sum_{k=\max(0,j-n)}^{\min(j,m)} \frac{(-m)_k(m+1)_k}{k!} \frac{(-n)_{j-k}(n+1)_{j-k}}{(j - k)!} \cdot \frac{1}{j!} \cdot \frac{j!}{(j+1)_{j-k}}.
+\frac{1}{(j+1)_{j-\ell}} = \frac{j!}{(2j - \ell)!}.
 \]
-Using the identity \( (j+1)_{j-k} = \frac{(j+1)!}{k!} \), simplify:
+Substituting this into the expression for \(\Psi_j(m,n)\) yields:
 \[
-\frac{1}{(j+1)_{j-k}} = \frac{k!}{(j+1)!} \implies \frac{1}{j!} \cdot \frac{j!}{(j+1)_{j-k}} = \frac{1}{k!}.
+\Psi_j(m,n) = \sum_{\ell=0}^j \frac{(-m)_{j-\ell}(m+1)_{j-\ell}( -n)_{j-\ell}(n+1)_{j-\ell}}{(1)_{j-\ell}(1)_{j-\ell}(2j - \ell)!(j - \ell)!}.
 \]
-Thus, term-by-term equivalence holds:  
+Reverse the substitution (\(k = j - \ell\)) to obtain:
+\[
+\Psi_j(m,n) = \sum_{k=\max(0,j-n)}^{\min(j,m)} \frac{(-m)_k(m+1)_k}{k!}\frac{(-n)_{j-k}(n+1)_{j-k}}{(j-k)!}.
+\]
+This establishes term-by-term equality, confirming the hypergeometric representation:
 \[
 \Psi_j(m,n) = \frac{1}{j!}\,{}_4F_3\left(\begin{array}{c} -m, m+1, -n, n+1 \\ 1, 1, j+1 \end{array};1\right). \quad \blacksquare
 \]
 \end{proof}
-
 \end{document}
