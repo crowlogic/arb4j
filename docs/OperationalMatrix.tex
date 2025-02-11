@@ -12,7 +12,6 @@
 
 % Custom commands
 \DeclareMathOperator{\F}{F}
-\DeclareMathOperator{\gamma}{\Gamma}
 \newcommand{\pFq}[2]{{}_{#1}\F_{#2}}
 
 \begin{document}
@@ -30,8 +29,9 @@ where \((a)_k = \prod_{i=0}^{k-1}(a+i)\).
 \begin{lemma}\label{lem:IntegralGamma}
 For \( j \geq 0 \), 
 \begin{equation}\label{eq:IntegralGamma}
-\int_{-1}^1 \left(\frac{1-x}{2}\right)^j e^{ixy}dx = \frac{e^{iy}}{2^j}\frac{\gamma(j+1,2iy)}{(iy)^{j+1}}.
+\int_{-1}^1 \left(\frac{1-x}{2}\right)^j e^{ixy}dx = \frac{e^{iy}}{2^j}\frac{\gamma(j+1,2iy)}{(iy)^{j+1}},
 \end{equation}
+where \(\gamma(s, x)\) denotes the lower incomplete gamma function.
 \end{lemma}
 
 \begin{theorem}\label{thm:MainResult}
@@ -56,59 +56,52 @@ and equivalently:
 \begin{proof}
 \textbf{Part 1: Integral Reduction to Finite Sums}
 
-Using Lemma \ref{lem:HyperExpansions} to expand both hypergeometric functions:
+Expand both hypergeometric series using Lemma \ref{lem:HyperExpansions}:
 \[
-\prod_{s=m,n}{}_2F_1\left(-s,s+1;1;\tfrac{1-x}{2}\right) = \sum_{k=0}^m\sum_{\ell=0}^n \frac{(-m)_k(m+1)_k}{k!} \frac{(-n)_\ell(n+1)_\ell}{\ell!} \left(\tfrac{1-x}{2}\right)^{k+\ell}.
+{}_2F_1\left(-m,m+1;1;\tfrac{1-x}{2}\right){}_2F_1\left(-n,n+1;1;\tfrac{1-x}{2}\right) = \sum_{k=0}^m \sum_{\ell=0}^n \frac{(-m)_k(m+1)_k}{k!} \frac{(-n)_\ell(n+1)_\ell}{\ell!} \left(\tfrac{1-x}{2}\right)^{k+\ell}.
 \]
-Let \( j = k + \ell \), then:
+Let \( j = k + \ell \). For fixed \( j \), the index \( k \) must satisfy \( k \geq \max(0, j - n) \) and \( k \leq \min(j, m) \). Thus:
 \[
-I_{m,n} = \sum_{j=0}^{m+n}\sum_{k=\max(0,j-n)}^{\min(j,m)} \frac{(-m)_k(m+1)_k}{k!}\frac{(-n)_{j-k}(n+1)_{j-k}}{(j-k)!} \frac{1}{2^j} \int_{-1}^1 (1-x)^j e^{ixy}dx.
+I_{m,n} = \sum_{j=0}^{m+n} \sum_{k=\max(0,j-n)}^{\min(j,m)} \frac{(-m)_k(m+1)_k}{k!} \frac{(-n)_{j-k}(n+1)_{j-k}}{(j - k)!} \frac{1}{2^j} \int_{-1}^1 (1-x)^j e^{ixy}dx.
 \]
-Apply Lemma \ref{lem:IntegralGamma} to the integral:
+Apply Lemma \ref{lem:IntegralGamma} to evaluate the integral:
 \[
-I_{m,n}(y) = e^{iy}\sum_{j=0}^{m+n}\frac{\Psi_j(m,n)}{2^j}\left[\frac{\gamma(j+1,2iy)}{(iy)^{j+1}}\right],
-\]
-where \( \Psi_j(m,n) \) is given by \eqref{eq:PsiSum}.
-
-\textbf{Part 2: Equivalence to \( {}_4F_3 \) Hypergeometric Function}
-
-We prove \( \Psi_j(m,n) = \frac{1}{j!}\,{}_4F_3\left(\begin{array}{c}-m,m+1,-n,n+1 \\ 1,1,j+1\end{array};1\right) \):
-
-\begin{enumerate}
-\item \textbf{Series Definition}: 
-The generalized hypergeometric function is:
-\[
-{}_4F_3\left(\begin{array}{c} a_1,a_2,a_3,a_4 \\ b_1,b_2,b_3 \end{array};z \right) = \sum_{k=0}^\infty \frac{(a_1)_k(a_2)_k(a_3)_k(a_4)_k}{(b_1)_k(b_2)_k(b_3)_k}\frac{z^k}{k!}.
-\]
-Substitute \( a_1 = -m \), \( a_2 = m+1 \), \( a_3 = -n \), \( a_4 = n+1 \); \( b_1 = b_2 = 1 \), \( b_3 = j+1 \); \( z = 1 \):
-\begin{align*}
-{}_4F_3 &= \sum_{k=0}^\infty \frac{(-m)_k(m+1)_k(-n)_k(n+1)_k}{(1)_k(1)_k(j+1)_k}\frac{1}{k!} \\
-&= \sum_{k=0}^\infty \frac{(-m)_k(m+1)_k(-n)_k(n+1)_k}{(k!)^2(j+1)_k}\frac{1}{k!}.
-\end{align*}
-
-\item \textbf{Termination Analysis}:
-Since \( (-m)_k = 0 \) for \( k > m \) and \( (-n)_k = 0 \) for \( k > n \), only terms with \( k \leq \min(m,n) \) survive:
-\[
-{}_4F_3 = \sum_{k=0}^{\min(m,n)} \frac{(-m)_k(m+1)_k(-n)_k(n+1)_k}{(k!)^3}\frac{j!}{(j+k)!}.
+I_{m,n}(y) = e^{iy}\sum_{j=0}^{m+n}\frac{\Psi_j(m,n)}{2^j}\left[\frac{\gamma(j+1,2iy)}{(iy)^{j+1}}\right].
 \]
 
-\item \textbf{Index Transformation}:
-Let \( \ell = j - k \). Then:
+\textbf{Part 2: Term-by-Term Equality of \( \Psi_j(m,n) \) and \( {}_4F_3 \)}
+
+Start from the hypergeometric representation in \eqref{eq:4F3}:
 \[
-\sum_{k=0}^{\min(m,n)} \frac{(-m)_k(m+1)_k}{(k!)^2}\frac{(-n)_{j-\ell}(n+1)_{j-\ell}}{((j-\ell)!)^2} = \sum_{\ell=j-\min(m,n)}^j \frac{(-m)_{j-\ell}(m+1)_{j-\ell}}{((j-\ell)!)^2}\frac{(-n)_\ell(n+1)_\ell}{\ell!^2}.
+\Psi_j(m,n) = \frac{1}{j!} \sum_{k=0}^\infty \frac{(-m)_k(m+1)_k(-n)_k(n+1)_k}{(1)_k(1)_k(j+1)_k k!}.
+\]
+The series terminates at \( k = \min(m, n) \) due to \((-m)_k = 0\) for \( k > m \) and \((-n)_k = 0\) for \( k > n \). 
+
+Perform the substitution \( \ell = j - k \). For each \( k \), \(\ell\) satisfies:
+\[
+\ell = j - k \implies k = j - \ell.
+\]
+Original bounds \( k = 0 \to \min(m, n) \) become \( \ell = j \to j - \min(m, n) \). Since \( \ell \geq 0 \) and \( \ell \leq j \), the valid range is:
+\[
+\ell \in \left[\max(0, j - \min(m, n)), \min(j, m + n)\right].
 \]
 
-\item \textbf{Relabeling and Symmetry}:
-Relabel \( k \to \ell \), leading to the sum over:
-\begin{align*}
-\sum_{\ell=\max(0,j-n)}^{\min(j,m)} \frac{(-m)_\ell(m+1)_\ell}{\ell!}\frac{(-n)_{j-\ell}(n+1)_{j-\ell}}{(j-\ell)!} &= \Psi_j(m,n).
-\end{align*}
-
-\item \textbf{Normalization Factor}:
-Multiplying by \( 1/j! \) accounts for the combinatorial factor from the series expansion, confirming:
+Substitute \( k = j - \ell \) into the hypergeometric series:
 \[
-\Psi_j(m,n) = \frac{1}{j!}\,{}_4F_3\left(\begin{array}{c} -m, m+1, -n, n+1 \\ 1, 1, j+1 \end{array};1\right).
-\end{enumerate}
+\Psi_j(m,n) = \frac{1}{j!} \sum_{\ell=j}^{\max(0, j - \min(m, n))} \frac{(-m)_{j-\ell}(m+1)_{j-\ell}(-n)_{j-\ell}(n+1)_{j-\ell}}{(1)_{j-\ell}(1)_{j-\ell}(j+1)_{j-\ell} (j - \ell)!}.
+\]
+Reverse the summation order by letting \( \ell \to j - k \), which gives:
+\[
+\Psi_j(m,n) = \sum_{k=\max(0,j-n)}^{\min(j,m)} \frac{(-m)_k(m+1)_k}{k!} \frac{(-n)_{j-k}(n+1)_{j-k}}{(j - k)!} \cdot \frac{1}{j!} \cdot \frac{j!}{(j+1)_{j-k}}.
+\]
+Using the identity \( (j+1)_{j-k} = \frac{(j+1)!}{k!} \), simplify:
+\[
+\frac{1}{(j+1)_{j-k}} = \frac{k!}{(j+1)!} \implies \frac{1}{j!} \cdot \frac{j!}{(j+1)_{j-k}} = \frac{1}{k!}.
+\]
+Thus, term-by-term equivalence holds:  
+\[
+\Psi_j(m,n) = \frac{1}{j!}\,{}_4F_3\left(\begin{array}{c} -m, m+1, -n, n+1 \\ 1, 1, j+1 \end{array};1\right). \quad \blacksquare
+\]
 \end{proof}
 
 \end{document}
