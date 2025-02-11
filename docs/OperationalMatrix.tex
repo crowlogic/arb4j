@@ -60,44 +60,38 @@ Expand both hypergeometric series using Lemma \ref{lem:HyperExpansions}:
 \[
 {}_2F_1\left(-m,m+1;1;\tfrac{1-x}{2}\right){}_2F_1\left(-n,n+1;1;\tfrac{1-x}{2}\right) = \sum_{k=0}^m \sum_{\ell=0}^n \frac{(-m)_k(m+1)_k}{k!} \frac{(-n)_\ell(n+1)_\ell}{\ell!} \left(\tfrac{1-x}{2}\right)^{k+\ell}.
 \]
-Let \( j = k + \ell \). For fixed \( j \), the index \( k \) must satisfy \( k \geq \max(0, j - n) \) and \( k \leq \min(j, m) \). Thus:
+Let \( j = k + \ell \). For fixed \( j \), \( k \) must satisfy \( \max(0,j-n) \leq k \leq \min(j,m) \). Thus:
 \[
-I_{m,n} = \sum_{j=0}^{m+n} \sum_{k=\max(0,j-n)}^{\min(j,m)} \frac{(-m)_k(m+1)_k}{k!} \frac{(-n)_{j-k}(n+1)_{j-k}}{(j - k)!} \frac{1}{2^j} \int_{-1}^1 (1-x)^j e^{ixy}dx.
+I_{m,n}(y) = \sum_{j=0}^{m+n} \sum_{k=\max(0,j-n)}^{\min(j,m)} \frac{(-m)_k(m+1)_k}{k!} \frac{(-n)_{j-k}(n+1)_{j-k}}{(j-k)!} \int_{-1}^1 \left(\frac{1-x}{2}\right)^j e^{ixy}dx.
 \]
 Apply Lemma \ref{lem:IntegralGamma} to evaluate the integral:
 \[
 I_{m,n}(y) = e^{iy}\sum_{j=0}^{m+n}\frac{\Psi_j(m,n)}{2^j}\left[\frac{\gamma(j+1,2iy)}{(iy)^{j+1}}\right].
+\]
 
 \textbf{Part 2: Equivalence of \( \Psi_j(m,n) \) and \( {}_4F_3 \)}
 
-Start from the hypergeometric representation in \eqref{eq:4F3}:
+Start from the hypergeometric representation:
 \[
-\Psi_j(m,n) = \frac{1}{j!} \sum_{k=0}^\infty \frac{(-m)_k(m+1)_k(-n)_k(n+1)_k}{(1)_k(1)_k(j+1)_k k!}.
+\Psi_j(m,n) = \frac{1}{j!}\,{}_4F_3\left(\begin{array}{c} -m, m+1, -n, n+1 \\ 1, 1, j+1 \end{array};1\right).
 \]
-The series terminates at \( k = \min(m, n) \) due to \((-m)_k = 0\) for \( k > m \) and \((-n)_k = 0\) for \( k > n \). 
-
-Perform the substitution \( \ell = j - k \). For each \( k \), \(\ell\) satisfies:
+Expand the \( {}_4F_3 \) series:
 \[
-\ell = j - k \quad \text{or} \quad k = j - \ell.
+{}_4F_3\left(\begin{array}{c} -m, m+1, -n, n+1 \\ 1, 1, j+1 \end{array};1\right) = \sum_{k=0}^\infty \frac{(-m)_k(m+1)_k(-n)_k(n+1)_k}{(1)_k(1)_k(j+1)_k k!}.
 \]
-Original bounds \(k = 0 \to \min(m, n)\) become \(\ell = j \to j - \min(m, n)\). Since \(\ell \geq 0\) and \(\ell \leq j\), the valid range is:
+The series terminates at \( k = \min(m,n) \) due to \((-m)_k = 0\) for \( k > m \) and \((-n)_k = 0\) for \( k > n \). Perform the substitution \( \ell = j - k \):
 \[
-\ell \in [\max(0, j - \min(m, n)), \min(j, m + n)].
-\]
-
-Substitute \(k = j - \ell\) into the hypergeometric series:
-\[
-\Psi_j(m,n) = \frac{1}{j!} \sum_{\ell=0}^j \frac{(-m)_{j-\ell}(m+1)_{j-\ell}(-n)_{j-\ell}(n+1)_{j-\ell}}{(1)_{j-\ell}(1)_{j-\ell}(j+1)_{j-\ell} (j - \ell)!}.
+\Psi_j(m,n) = \sum_{k=\max(0,j-n)}^{\min(j,m)} \frac{(-m)_k(m+1)_k}{k!}\frac{(-n)_{j-k}(n+1)_{j-k}}{(j-k)!}.
 \]
 Using the identity \((j+1)_{j-\ell} = \frac{(2j - \ell)!}{j!}\), we simplify:
 \[
 \frac{1}{(j+1)_{j-\ell}} = \frac{j!}{(2j - \ell)!}.
 \]
-Substituting this into the expression for \(\Psi_j(m,n)\) yields:
+Substituting this into the expression for \( \Psi_j(m,n) \) yields:
 \[
-\Psi_j(m,n) = \sum_{\ell=0}^j \frac{(-m)_{j-\ell}(m+1)_{j-\ell}( -n)_{j-\ell}(n+1)_{j-\ell}}{(1)_{j-\ell}(1)_{j-\ell}(2j - \ell)!(j - \ell)!}.
+\Psi_j(m,n) = \sum_{\ell=0}^j \frac{(-m)_{j-\ell}(m+1)_{j-\ell}(-n)_{j-\ell}(n+1)_{j-\ell}}{(1)_{j-\ell}(1)_{j-\ell}(2j - \ell)!(j - \ell)!}.
 \]
-Reverse the substitution (\(k = j - \ell\)) to obtain:
+Reverse the substitution (\( k = j - \ell \)) to obtain:
 \[
 \Psi_j(m,n) = \sum_{k=\max(0,j-n)}^{\min(j,m)} \frac{(-m)_k(m+1)_k}{k!}\frac{(-n)_{j-k}(n+1)_{j-k}}{(j-k)!}.
 \]
