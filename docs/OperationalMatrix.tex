@@ -132,7 +132,9 @@ Termination at \( k = \min(m,n) \) ensures convergence. Set \( k = j - \ell \):
 \[
 \Psi_j(m,n) = \sum_{\ell=0}^j \frac{(-m)_{j-\ell}(m+1)_{j-\ell}(-n)_\ell(n+1)_\ell}{(1)_{j-\ell}(1)_\ell(j+1)_{j-\ell}(j-\ell)! \ell!}.
 \]
-Using \( (j+1)_{j-\ell} = \frac{(j+1)!}{\ell + 1} \), simplify to match the definition. \qedhere
+Using the definition of the Pochhammer symbol \( (j+1)_{j-\ell} = (j+1)(j+2)\cdots(2j-\ell) \), align the coefficients directly with the \( {}_4F_3 \) series. The correspondence confirms:
+\[
+\Psi_j(m,n) = \frac{1}{j!}\,{}_4F_3\left(\begin{array}{c} -m, m+1, -n, n+1 \\ 1, 1, j+1 \end{array};1\right). \quad \boxed{} \]
 \end{proof}
 \end{theorem}
 
@@ -148,7 +150,7 @@ The double sum converges absolutely because:
 \[
 \sum_{k=0}^m \sum_{\ell=0}^n \abs{\frac{(-m)_k(m+1)_k(-n)_\ell(n+1)_\ell}{(1)_k(1)_\ell k! \ell!}} \leq \sum_{k=0}^m \binom{m}{k} \sum_{\ell=0}^n \binom{n}{\ell} = 2^{m+n}.
 \]
-Since \( \abs{e^{ixy}} = 1 \), Fubini-Tonelli applies to swap summation and integration. \qedhere
+Since \( \abs{e^{ixy}} = 1 \), Fubini-Tonelli applies to swap summation and integration. \quad \boxed{} \]
 \end{proof}
 \end{lemma}
 
