@@ -3,136 +3,140 @@
 <style|<tuple|generic|framed-theorems>>
 
 <\body>
-  <doc-data|<doc-title|Evaluation of an Integral Involving Hypergeometric
-  Functions>|<doc-author|<author-data|<author-name|Stephen Crowley>>>>
+  <doc-data|<doc-title|The Operational Matrix of the Random Wave
+  Process>|<doc-author|<author-data|<author-name|Stephen
+  Crowley>>>|<doc-date|<date|>>>
 
-  <\theorem>
-    \;
-
-    <\equation>
-      <tabular|<tformat|<table|<row|<cell|I>|<cell|=<big|int><rsub|-1><rsup|1>*<rsub|2>F<rsub|1><around*|(|-m,m+1;1;<frac|1|2>-<frac|x|2>|)>*<rsub|2>F<rsub|1><around*|(|-n,n+1;1;<frac|1|2>-<frac|x|2>|)>*e<rsup|i*x*y><space|0.17em>d*x>>|<row|<cell|>|<cell|=e<rsup|i*y>*<big|sum><rsub|s=0><rsup|m+n><frac|\<Gamma\>*<around|(|s+1|)>|2<rsup|s>*<around|(|-i*y|)><rsup|s+1>>
-      *<rsub|3>F<rsub|2><around*|(|-m,-n,-s;m+1,n+1;1|)>*<around*|[|1-e<rsup|-2*i*y>*<big|sum><rsub|j=0><rsup|s><frac|<around|(|2*i*y|)><rsup|j>|j!>|]>>>>>>
-    </equation>
-  </theorem>
-
-  <\proof>
-    \;
-
-    The hypergeometric function <math|<rsub|2>F<rsub|1><around|(|a,b;c;z|)>>
-    has the finite series representation:
+  <\lemma>
+    <label|lem:HyperExpansions>For any <math|p\<in\>\<bbb-Z\><rsub|\<geq\>0>>,
+    the Gauss hypergeometric function 'terminates' so that it is equal to a
+    finite sum rather than its usual infinite sum(the non-'terminating'
+    case):
 
     <\equation>
       <rsub|2>F<rsub|1><around|(|-p,b;c;z|)>=<big|sum><rsub|k=0><rsup|p><frac|<around|(|-p|)><rsub|k><around|(|b|)><rsub|k>|<around|(|c|)><rsub|k>*k!>*z<rsup|k>
     </equation>
 
-    when <math|p> is a non-negative integer. Here,
-    <math|<around|(|a|)><rsub|k>=a*<around|(|a+1|)>*<around|(|a+2|)>*\<cdots\>*<around|(|a+k-1|)>>
-    is the Pochhammer symbol. For the integral, expand both hypergeometric
-    functions:
+    where <math|<around|(|a|)><rsub|k>=<big|prod><rsub|i=0><rsup|k-1><around|(|a+i|)>>
+  </lemma>
+
+  <\lemma>
+    <label|lem:IntegralGamma>For <math|j\<geq\>0>,
 
     <\equation>
-      <rsub|2>F<rsub|1><around*|(|-m,m+1;1;<frac|1|2>-<frac|x|2>|)>=<big|sum><rsub|k=0><rsup|m><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>|<around|(|1|)><rsub|k>*k!>*<around*|(|<frac|1|2>-<frac|x|2>|)><rsup|k>
+      <big|int><rsub|-1><rsup|1><around*|(|<frac|1-x|2>|)><rsup|j>*e<rsup|i*x*y>*d*x=<frac|e<rsup|i*y>|2<rsup|j>>*<frac|\<gamma\><around|(|j+1,2*i*y|)>|<around|(|i*y|)><rsup|j+1>>
     </equation>
+
+    where <math|\<gamma\><around|(|s,x|)>> denotes the lower incomplete gamma
+    function.
+  </lemma>
+
+  <\theorem>
+    <label|thm:MainResult>For <math|m,n\<geq\>0>,
 
     <\equation>
-      <rsub|2>F<rsub|1><around*|(|-n,n+1;1;<frac|1|2>-<frac|x|2>|)>=<big|sum><rsub|l=0><rsup|n><frac|<around|(|-n|)><rsub|l>*<around|(|n+1|)><rsub|l>|<around|(|1|)><rsub|l>*l!>*<around*|(|<frac|1|2>-<frac|x|2>|)><rsup|l>
+      I<rsub|m,n><around|(|y|)>=<big|int><rsub|-1><rsup|1><rsub|2>F<rsub|1><around*|(|-m,m+1;1;<tfrac|1-x|2>|)><rsub|2>*F<rsub|1><around*|(|-n,n+1;1;<tfrac|1-x|2>|)>*e<rsup|i*x*y>*d*x
     </equation>
 
-    Substituting these into the integral:
+    satisfies:
 
     <\equation>
-      I=<big|int><rsub|-1><rsup|1><around*|[|<big|sum><rsub|k=0><rsup|m><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>|k!>*<around*|(|<frac|1|2>-<frac|x|2>|)><rsup|k>|]><around*|[|<big|sum><rsub|l=0><rsup|n><frac|<around|(|-n|)><rsub|l>*<around|(|n+1|)><rsub|l>|l!>*<around*|(|<frac|1|2>-<frac|x|2>|)><rsup|l>|]>*e<rsup|i*x*y>*d*x
+      I<rsub|m,n><around|(|y|)>=e<rsup|i*y>*<big|sum><rsub|j=0><rsup|m+n><frac|\<Psi\><rsub|j><around|(|m,n|)>|2<rsup|j>><around*|[|<frac|\<gamma\><around|(|j+1,2*i*y|)>|<around|(|i*y|)><rsup|j+1>>|]>
     </equation>
 
-    Expand the double sum:
+    where <math|\<Psi\><rsub|j><around|(|m,n|)>> is defined as:
 
     <\equation>
-      I=<big|sum><rsub|k=0><rsup|m><big|sum><rsub|l=0><rsup|n><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>|k!>*<frac|<around|(|-n|)><rsub|l>*<around|(|n+1|)><rsub|l>|l!>*<big|int><rsub|-1><rsup|1><around*|(|<frac|1|2>-<frac|x|2>|)><rsup|k+l>*e<rsup|i*x*y>*<space|0.17em>d*x
+      \<Psi\><rsub|j><around|(|m,n|)>=<big|sum><rsub|k=max
+      <around|(|0,j-n|)>><rsup|min <around|(|j,m|)>><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>|k!>*<frac|<around|(|-n|)><rsub|j-k>*<around|(|n+1|)><rsub|j-k>|<around|(|j-k|)>!>
     </equation>
 
-    \;
-
-    Let <math|s=k+l> and evaluate
+    and equivalently:
 
     <\equation>
-      I<rsub|s>=<big|int><rsub|-1><rsup|1><around*|(|<frac|1|2>-<frac|x|2>|)><rsup|s>*e<rsup|i*x*y>*<space|0.17em>d*x
+      \<Psi\><rsub|j><around|(|m,n|)>=<frac|*<space|0.17em><rsub|4>F<rsub|3><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|-m,m+1,-n,n+1>>|<row|<cell|1,1,j+1>>>>>;1|)>|j!>
     </equation>
+  </theorem>
 
-    Rewrite <math|<frac|1|2>-<frac|x|2>>:
+  <\proof>
+    <with|font-series|bold|Part 1: Integral Reduction to Finite Sums>
+
+    Expand both hypergeometric series using Lemma
+    <reference|lem:HyperExpansions>:
 
     <\equation>
-      <around*|(|<frac|1|2>-<frac|x|2>|)><rsup|s>=<frac|1|2<rsup|s>>*<around|(|1-x|)><rsup|s>
+      <with|font-base-size|7|<rsub|2>F<rsub|1><around*|(|-m,m+1;1;<tfrac|1-x|2>|)>
+      <rsub|2>*F<rsub|1><around*|(|-n,n+1;1;<tfrac|1-x|2>|)>=<big|sum><rsub|k=0><rsup|m><big|sum><rsub|\<ell\>=0><rsup|n><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>|k!>*<frac|<around|(|-n|)><rsub|\<ell\>>*<around|(|n+1|)><rsub|\<ell\>>|\<ell\>!><around*|(|<tfrac|1-x|2>|)><rsup|k+\<ell\>>>
     </equation>
 
-    Thus:
+    Let <math|j=k+\<ell\>>. For fixed <math|j>, <math|k> must satisfy
+    <math|max <around|(|0,j-n|)>\<leq\>k\<leq\>min <around|(|j,m|)>>. Thus:
 
     <\equation>
-      I<rsub|s>=<frac|*<big|int><rsub|-1><rsup|1><around|(|1-x|)><rsup|s>*e<rsup|i*x*y>*<space|0.17em>d*x|2<rsup|s>>
+      I<rsub|m,n><around|(|y|)>=<big|sum><rsub|j=0><rsup|m+n><big|sum><rsub|k=max
+      <around|(|0,j-n|)>><rsup|min <around|(|j,m|)>><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>|k!>*<frac|<around|(|-n|)><rsub|j-k>*<around|(|n+1|)><rsub|j-k>|<around|(|j-k|)>!>*<big|int><rsub|-1><rsup|1><around*|(|<frac|1-x|2>|)><rsup|j>*e<rsup|i*x*y>*d*x
     </equation>
 
-    Let <math|u=1-x> so that <math|x=1-u>, <math|d*x=-d*u> and the limits of
-    integration change:
+    Apply Lemma <reference|lem:IntegralGamma> to evaluate the integral:
 
     <\equation>
-      x=-1\<Longrightarrow\>u=2
+      I<rsub|m,n><around|(|y|)>=e<rsup|i*y>*<big|sum><rsub|j=0><rsup|m+n><frac|\<Psi\><rsub|j><around|(|m,n|)>|2<rsup|j>><around*|[|<frac|\<gamma\><around|(|j+1,2*i*y|)>|<around|(|i*y|)><rsup|j+1>>|]>
     </equation>
+
+    <with|font-series|bold|Part 2: Equivalence of
+    <math|\<Psi\><rsub|j><around|(|m,n|)>> and <math|<rsub|4>F<rsub|3>>>
+
+    Start from the hypergeometric representation:
 
     <\equation>
-      x=1\<Longrightarrow\>u=0
+      \<Psi\><rsub|j><around|(|m,n|)>=<frac|<space|0.17em><rsub|4>F<rsub|3><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|-m,m+1,-n,n+1>>|<row|<cell|1,1,j+1>>>>>;1|)>|j!>*
     </equation>
 
-    thus the integral becomes:
+    Expand the <math|<rsub|4>F<rsub|3>> series:
 
     <\equation>
-      I<rsub|s>=<frac|<big|int><rsub|2><rsup|0>u<rsup|s>*e<rsup|i*y*<around|(|1-u|)>>*<around|(|-d*u|)>|2<rsup|s>>*=<frac|<big|int><rsub|0><rsup|2>u<rsup|s>*e<rsup|i*y>*e<rsup|-i*u*y>*<space|0.17em>d*u|2<rsup|s>>*
+      <rsub|4>F<rsub|3><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|-m,m+1,-n,n+1>>|<row|<cell|1,1,j+1>>>>>;1|)>=<big|sum><rsub|k=0><rsup|\<infty\>><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|k>*<around|(|n+1|)><rsub|k>|<around|(|1|)><rsub|k><around|(|1|)><rsub|k>*<around|(|j+1|)><rsub|k>*k!>
     </equation>
 
-    and after factoring out <math|e<rsup|i*y>>:
+    The series terminates at <math|k=min <around|(|m,n|)>> due to
+    <math|<around|(|-m|)><rsub|k>=0> for <math|k\<gtr\>m> and
+    <math|<around|(|-n|)><rsub|k>=0> for <math|k\<gtr\>n>. Perform the
+    substitution <math|\<ell\>=j-k>:
 
     <\equation>
-      I<rsub|s>=<frac|e<rsup|i*y>|2<rsup|s>>*<big|int><rsub|0><rsup|2>u<rsup|s>*e<rsup|-i*u*y>*<space|0.17em>d*u<label|a1>
+      \<Psi\><rsub|j><around|(|m,n|)>=<big|sum><rsub|k=max
+      <around|(|0,j-n|)>><rsup|min <around|(|j,m|)>><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>|k!>*<frac|<around|(|-n|)><rsub|j-k>*<around|(|n+1|)><rsub|j-k>|<around|(|j-k|)>!>
     </equation>
 
-    Substituting the known integral into (<reference|a1>)
+    Simplify by substituting the identity
+    <math|<around|(|j+1|)><rsub|j-\<ell\>>=<frac|<around|(|2*j-\<ell\>|)>!|j!>>
 
     <\equation>
-      <big|int><rsub|0><rsup|2>u<rsup|s>*e<rsup|-i*u*y>*<space|0.17em>d*u=<frac|\<Gamma\>*<around|(|s+1|)>|<around|(|-i*y|)><rsup|s+1>>*<around*|[|1-e<rsup|-2*i*y>*<big|sum><rsub|j=0><rsup|s><frac|<around|(|2*i*y|)><rsup|j>|j!>|]>
+      <frac|1|<around|(|j+1|)><rsub|j-\<ell\>>>=<frac|j!|<around|(|2*j-\<ell\>|)>!>
     </equation>
 
-    gives
+    into the expression for <math|\<Psi\><rsub|j><around|(|m,n|)>> which
+    yields:
 
     <\equation>
-      I<rsub|s>=<frac|e<rsup|i*y>*\<Gamma\>*<around|(|s+1|)>|2<rsup|s>*<around|(|-i*y|)><rsup|s+1>>*<around*|[|1-e<rsup|-2*i*y>*<big|sum><rsub|j=0><rsup|s><frac|<around|(|2*i*y|)><rsup|j>|j!>|]>
+      \<Psi\><rsub|j><around|(|m,n|)>=<big|sum><rsub|\<ell\>=0><rsup|j><frac|<around|(|-m|)><rsub|j-\<ell\>>*<around|(|m+1|)><rsub|j-\<ell\>>*<around|(|-n|)><rsub|j-\<ell\>>*<around|(|n+1|)><rsub|j-\<ell\>>|<around|(|1|)><rsub|j-\<ell\>><around|(|1|)><rsub|j-\<ell\>>*<around|(|2*j-\<ell\>|)>!<around|(|j-\<ell\>|)>!>
     </equation>
 
-    so that returning to the full integral:
+    Reverse the substitution (<math|k=j-\<ell\>>) to obtain:
 
     <\equation>
-      I=<big|sum><rsub|k=0><rsup|m><big|sum><rsub|l=0><rsup|n><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>|k!>*<frac|<around|(|-n|)><rsub|l>*<around|(|n+1|)><rsub|l>|l!>\<cdot\><frac|e<rsup|i*y>*\<Gamma\>*<around|(|k+l+1|)>|2<rsup|k+l>*<around|(|-i*y|)><rsup|k+l+1>>*<around*|[|1-e<rsup|-2*i*y>*<big|sum><rsub|j=0><rsup|k+l><frac|<around|(|2*i*y|)><rsup|j>|j!>|]>
+      \<Psi\><rsub|j><around|(|m,n|)>=<big|sum><rsub|k=max
+      <around|(|0,j-n|)>><rsup|min <around|(|j,m|)>><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>|k!>*<frac|<around|(|-n|)><rsub|j-k>*<around|(|n+1|)><rsub|j-k>|<around|(|j-k|)>!>
     </equation>
 
-    Letting <math|s=k+l> and rewriting the double sum:
+    This establishes term-by-term equality, confirming the hypergeometric
+    representation:
 
     <\equation>
-      <with|font-base-size|7|I=e<rsup|i*y>*<big|sum><rsub|s=0><rsup|m+n><frac|\<Gamma\>*<around|(|s+1|)>|2<rsup|s>*<around|(|-i*y|)><rsup|s+1>><around*|[|<big|sum><rsub|k=max
-      <around|(|0,s-n|)>><rsup|min <around|(|s,m|)>><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>|k!>*<frac|<around|(|-n|)><rsub|s-k>*<around|(|n+1|)><rsub|s-k>|<around|(|s-k|)>!>|]>*<around*|[|1-e<rsup|-2*i*y>*<big|sum><rsub|j=0><rsup|s><frac|<around|(|2*i*y|)><rsup|j>|j!>|]>>
+      \<Psi\><rsub|j><around|(|m,n|)>=<frac|<space|0.17em><rsub|4>F<rsub|3><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|-m,m+1,-n,n+1>>|<row|<cell|1,1,j+1>>>>>;1|)>|j!>*<space|1em>
     </equation>
 
-    and noting that the inner sum is a hypergeometric function:
-
-    <\equation>
-      <big|sum><rsub|k=max <around|(|0,s-n|)>><rsup|min
-      <around|(|s,m|)>><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>|k!>*<frac|<around|(|-n|)><rsub|s-k>*<around|(|n+1|)><rsub|s-k>|<around|(|s-k|)>!>=<rsub|3>F<rsub|2><around*|(|-m,-n,-s;m+1,n+1;1|)>
-    </equation>
-
-    it is seen that the result can be expressed as
-
-    <\equation>
-      <tabular|<tformat|<table|<row|<cell|I>|<cell|=<big|int><rsub|-1><rsup|1>*<rsub|2>F<rsub|1><around*|(|-m,m+1;1;<frac|1|2>-<frac|x|2>|)>*<rsub|2>F<rsub|1><around*|(|-n,n+1;1;<frac|1|2>-<frac|x|2>|)>*e<rsup|i*x*y><space|0.17em>d*x>>|<row|<cell|>|<cell|=e<rsup|i*y>*<big|sum><rsub|s=0><rsup|m+n><frac|\<Gamma\>*<around|(|s+1|)>|2<rsup|s>*<around|(|-i*y|)><rsup|s+1>>
-      *<rsub|3>F<rsub|2><around*|(|-m,-n,-s;m+1,n+1;1|)>*<around*|[|1-e<rsup|-2*i*y>*<big|sum><rsub|j=0><rsup|s><frac|<around|(|2*i*y|)><rsup|j>|j!>|]>>>>>>
-    </equation>
-
-    \;
+    <math|\<blacksquare\>>
   </proof>
 </body>
 
@@ -148,6 +152,8 @@
 
 <\references>
   <\collection>
-    <associate|a1|<tuple|13|2|../../.TeXmacs/texts/scratch/no_name_73.tm>>
+    <associate|lem:HyperExpansions|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_73.tm>>
+    <associate|lem:IntegralGamma|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_73.tm>>
+    <associate|thm:MainResult|<tuple|3|2|../../.TeXmacs/texts/scratch/no_name_73.tm>>
   </collection>
 </references>
