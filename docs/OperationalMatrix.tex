@@ -1,147 +1,195 @@
-\documentclass[12pt]{article}
-\usepackage{amsmath, amssymb, amsthm, geometry, mathrsfs, hyperref}
-\geometry{margin=1in}
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{hyperref}
 
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\tmaffiliation}[1]{#1}
+\newcommand{\tmtextbf}[1]{\textbf{#1}}
 
-\title{The Operational Matrix of the Random Wave Process: Complete Proofs}
-\author{Your Name \\ Department of Mathematics \\ Your Institution \\ \href{mailto:your.email@example.com}{your.email@example.com}}
-\date{\today}
+\title{The Operational Matrix of the Random Wave Process}
 
-% Custom commands
-\DeclareMathOperator{\F}{F}
-\newcommand{\pFq}[2]{{}_{#1}\hspace{-0.2em}\F_{#2}}
-\newcommand{\bracks}[1]{\left[#1\right]}
-\newcommand{\abs}[1]{\left|#1\right|}
-\DeclareMathOperator{\Legendre}{P}
+\author{
+  Stephen Crowley \\
+  \tmaffiliation{Department of Intuition \\
+  The Royal Citadel of Pure Being\href{mailto:your.email@example.com}{}}
+}
+
+\date{February 11, 2025}
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-This paper rigorously proves detailed properties of hypergeometric functions, incomplete gamma functions, and their connections to Legendre polynomials. Key results include the termination of hypergeometric series, integral representations involving incomplete gamma functions, and equivalence between hypergeometric functions and Legendre polynomials. The main theorem provides a Fourier transform of products of Legendre polynomials, expressed using a terminating hypergeometric series. 
+  An expression for the Fourier transform of Legendre polynomial products is derived.
 \end{abstract}
 
-\tableofcontents
+\section{Preliminaries}
 
-% ======================================================================
-%                                LEMMAS
-% ======================================================================
+\subsection{Incomplete Gamma Function}
+\begin{definition}[Incomplete Gamma Function]
+The lower incomplete gamma function is defined as
+\[
+\gamma(s,x) = \int_0^x t^{s-1} e^{-t} \, dt,
+\]
+where $s$ is a complex number with $\Re(s) > 0$, and $x$ is a non-negative real number.
+\end{definition}
 
 \section{Lemmas}
 
-\begin{lemma}[Terminating Hypergeometric Series]\label{lem:HyperExpansions}
-For any \( p \in \mathbb{Z}_{\geq 0} \), the Gauss hypergeometric function terminates:
-\[
-{}_2F_1(-p, b; c; z) = \sum_{k=0}^p \frac{(-p)_k (b)_k}{(c)_k k!} z^k,
-\]
-where \((a)_k = \prod_{i=0}^{k-1}(a+i)\).
-
-\begin{proof}
-By definition, the Gauss hypergeometric series is:
-\[
-{}_2F_1(a, b; c; z) = \sum_{k=0}^\infty \frac{(a)_k (b)_k}{(c)_k k!} z^k.
-\]
-Setting \( a = -p \) with \( p \in \mathbb{Z}_{\geq 0} \), the Pochhammer symbol \( (-p)_k \) becomes zero for all \( k > p \). Explicitly:
-\[
-(-p)_k = \prod_{i=0}^{k-1} (-p + i) = 
-\begin{cases}
-(-p)(-p+1)\cdots(-p + k -1), & k \leq p, \\
-0, & k > p.
-\end{cases}
-\]
-Thus, the series terminates at \( k = p \), yielding:
-\[
-{}_2F_1(-p, b; c; z) = \sum_{k=0}^p \frac{(-p)_k (b)_k}{(c)_k k!} z^k. \qedhere
-\]
-\end{proof}
+\subsection{Terminating Hypergeometric Series}
+\begin{lemma}[Terminating Hypergeometric Series]
+  \label{lem:HyperExpansions}
+  For any $p \in \mathbb{Z}_{\geq 0}$, the Gauss hypergeometric function terminates:
+  \begin{equation*}
+    {}_2 F_1 (- p, b ; c ; z) = \sum_{k = 0}^p \frac{(- p)_k (b)_k}{(c)_k k!}
+    z^k
+  \end{equation*}
+  where $(a)_k = \prod_{i = 0}^{k - 1} (a + i)$.
 \end{lemma}
 
-% ----------------------------------------------------------------------
-
-\begin{lemma}[Integral with Incomplete Gamma Function]\label{lem:IntegralGamma}
-For \( j \geq 0 \),
-\[
-\int_{-1}^1 \left(\frac{1-x}{2}\right)^j e^{ixy}dx = \frac{e^{iy}}{2^j}\frac{\gamma(j+1,2iy)}{(iy)^{j+1}},
-\]
-where \(\gamma(s, x)\) denotes the lower incomplete gamma function.
-
 \begin{proof}
-Substitute \( t = \frac{1 - x}{2} \implies x = 1 - 2t \), \( dx = -2dt \), adjusting limits:
-\[
-\int_{1}^{0} t^j e^{i(1 - 2t)y} (-2dt) = 2e^{iy} \int_{0}^{1} t^j e^{-2iyt} dt.
-\]
-Let \( u = 2iyt \implies t = u/(2iy) \), \( dt = du/(2iy) \):
-\[
-2e^{iy} \cdot \frac{1}{(2iy)^{j+1}} \int_{0}^{2iy} u^j e^{-u} du = \frac{e^{iy}}{2^j}\frac{\gamma(j+1,2iy)}{(iy)^{j+1}}. \qedhere
-\]
+  By definition, the Gauss hypergeometric series is:
+  \begin{equation*}
+    {}_2 F_1 (a, b ; c ; z) = \sum_{k = 0}^{\infty} \frac{(a)_k (b)_k}{(c)_k k!}
+    z^k
+  \end{equation*}
+  Setting $a = - p$ with $p \in \mathbb{Z}_{\geq 0}$, the Pochhammer symbol
+  $(- p)_k$ becomes zero for all $k > p$. Explicitly:
+  \begin{equation*}
+    (- p)_k = \prod_{i = 0}^{k - 1} (- p + i) = \begin{cases}
+      (- p) (- p + 1) \cdots (- p + k - 1), & k \leq p \\
+      0 & k > p
+    \end{cases}
+  \end{equation*}
+  Thus, the series terminates at $k = p$, yielding:
+  \begin{equation*}
+    {}_2 F_1 (- p, b ; c ; z) = \sum_{k = 0}^p \frac{(- p)_k (b)_k}{(c)_k k!}
+    z^k
+  \end{equation*}
 \end{proof}
+
+\subsection{Integral with Incomplete Gamma Function}
+\begin{lemma}[Integral with Incomplete Gamma Function]
+  \label{lem:IntegralGamma}
+  For $j \geq 0$,
+  \begin{equation*}
+    \int_{- 1}^1 \left( \frac{1 - x}{2} \right)^j e^{ixy} dx =
+    \frac{e^{iy}}{2^j}  \frac{\gamma (j + 1, 2 iy)}{(iy)^{j + 1}}
+  \end{equation*}
+  where $\gamma (s, x)$ denotes the lower incomplete gamma function.
 \end{lemma}
 
-% ======================================================================
-%                          LEGENDRE POLYNOMIAL EQUIVALENCE
-% ======================================================================
-
-\begin{lemma}[Legendre Polynomial Representation]\label{lem:Legendre}
-The hypergeometric function \( {}_2F_1(-m, m+1; 1; \tfrac{1-x}{2}) \) equals the Legendre polynomial \( P_m(x) \).
-
 \begin{proof}
-From the Rodrigues formula \( P_m(x) = \frac{1}{2^m m!} \frac{d^m}{dx^m} (x^2 - 1)^m \), expand using the binomial theorem:
-\[
-(x^2 - 1)^m = \sum_{k=0}^m (-1)^{m-k} \binom{m}{k} x^{2k}.
-\]
-Differentiating \( m \) times yields terms proportional to \( x^k \), matching the hypergeometric series:
-\[
-P_m(x) = {}_2F_1\left(-m, m+1; 1; \tfrac{1 - x}{2}\right). \qedhere
-\]
+  Substitute $t = \frac{1 - x}{2} \Longrightarrow x = 1 - 2 t$, $dx = - 2 dt$,
+  adjusting limits:
+  \begin{equation*}
+    \int_1^0 t^j e^{i (1 - 2 t) y}  (- 2 dt) = 2 e^{iy}  \int_0^1 t^j e^{- 2
+    iyt} dt
+  \end{equation*}
+  Let $u = 2 iyt \Longrightarrow t = \frac{u}{2 iy}$, $dt = \frac{d u}{2 i
+  y}$:
+  \begin{equation*}
+     \frac{2 e^{iy}}{(2 iy)^{j + 1}}  \int_0^{2 iy} u^j e^{- u} du =
+     \frac{e^{iy}}{2^j}  \frac{\gamma (j + 1, 2 iy)}{(iy)^{j + 1}} 
+  \end{equation*}
 \end{proof}
+
+\subsection{Legendre Polynomial Representation}
+\begin{lemma}[Legendre Polynomial Representation]
+  \label{lem:Legendre}
+  The Legendre polynomials are hypergeometric functions
+  \begin{equation*}
+    P_m (x) = {}_2 F_1 (- m, m + 1 ; 1 ; \tfrac{1 - x}{2})
+  \end{equation*}
 \end{lemma}
 
-% ======================================================================
-%                                MAIN THEOREM
-% ======================================================================
+\begin{proof}
+  From the Rodrigues formula $P_m (x) = \frac{1}{2^m m!}  \frac{d^m}{dx^m}
+  (x^2 - 1)^m$ expand using the binomial theorem:
+  \begin{equation*}
+    (x^2 - 1)^m = \sum_{k = 0}^m (- 1)^{m - k} \binom{m}{k} x^{2 k}
+  \end{equation*}
+  Differentiating $m$ times yields terms proportional to $x^k$, matching the
+  hypergeometric series:
+  \begin{equation*}
+    P_m (x) = {}_2 F_1 \left( - m, m + 1 ; 1 ; \tfrac{1 - x}{2} \right)
+  \end{equation*}
+\end{proof}
 
 \section{Main Theorem}
 
-\begin{theorem}[Fourier Transform of Product]\label{thm:MainResult}
-Let \( P_m(x) \) and \( P_n(x) \) be Legendre polynomials. Then,
-\[
-I_{m,n}(y) = \int_{-1}^1 P_m(x)P_n(x)e^{ixy}dx
-\]
-satisfies:
-\[
-I_{m,n}(y) = e^{iy}\sum_{j=0}^{m+n}\frac{\Psi_j(m,n)}{2^j}\left[\frac{\gamma(j+1,2iy)}{(iy)^{j+1}}\right],
-\]
-where \( \Psi_j(m,n) \) is defined via:
-\[
-\Psi_j(m,n) = \frac{1}{j!}\,{}_4F_3\left(\begin{array}{c} -m, m+1, -n, n+1 \\ 1, 1, j+1 \end{array};1\right).
-\]
-
-\begin{proof}
-\textbf{Part 1: Integral Reduction}\\
-Expand \( P_m(x)P_n(x) \) using Lemma \ref{lem:HyperExpansions}:
-\[
-P_m(x)P_n(x) = \sum_{k=0}^m \sum_{\ell=0}^n \frac{(-m)_k(m+1)_k(-n)_\ell(n+1)_\ell}{(1)_k(1)_\ell k! \ell!}\left(\tfrac{1-x}{2}\right)^{k+\ell}.
-\]
-Let \( j = k + \ell \), valid for \( 0 \leq k \leq m \), \( 0 \leq \ell \leq n \). Then:
-\[
-I_{m,n}(y) = \sum_{j=0}^{m+n} \underbrace{\sum_{k=\max(0,j-n)}^{\min(j,m)} \frac{(-m)_k(m+1)_k(-n)_{j-k}(n+1)_{j-k}}{(1)_k(1)_{j-k}k!(j-k)!}}_{\Psi_j(m,n)} \int_{-1}^1 \left(\tfrac{1-x}{2}\right)^j e^{ixy}dx.
-\]
-Apply Lemma \ref{lem:IntegralGamma} to obtain the result.
-
-\medskip
-
-\textbf{Part 2: \( \Psi_j(m,n) \) as a \( {}_4F_3 \) Function}\\
-Expand the \( {}_4F_3 \) series:
-\[
-{}_4F_3\left(\begin{array}{c} -m, m+1, -n, n+1 \\ 1, 1, j+1 \end{array};1\right) = \sum_{k=0}^j \frac{(-m)_k(m+1)_k(-n)_k(n+1)_k}{(1)_k(1)_k(j+1)_k k!}.
-\]
-The final result follows. \qedhere
-\end{proof}
+\begin{theorem}[Fourier Transform of Legendre Polynomial Products]
+  \label{thm:MainResult}
+  \begin{equation*}
+    \begin{aligned}
+      I_{m, n} (y) & = \int_{- 1}^1 P_m (x) P_n (x) e^{ixy} dx \\
+      & = e^{iy}  \sum_{j = 0}^{m + n} \frac{\Psi_j (m, n)}{2^j} \left[
+      \frac{\gamma (j + 1, 2 iy)}{(iy)^{j + 1}} \right] \\
+      & = e^{iy}  \sum_{j = 0}^{m + n} \frac{\frac{{}_4 F_3
+      \left( \begin{array}{c}
+        - m, m + 1, - n, n + 1 \\
+        1, 1, j + 1
+      \end{array} ; 1 \right)}{j!}}{2^j} \left[ \frac{\gamma (j + 1, 2
+      iy)}{(iy)^{j + 1}} \right] \\
+      & = e^{iy}  \sum_{j = 0}^{m + n} \frac{{}_4 F_3 \left(
+      \begin{array}{c}
+        - m, m + 1, - n, n + 1 \\
+        1, 1, j + 1
+      \end{array} ; 1 \right)}{j! 2^j} \frac{\gamma (j + 1, 2 iy)}{(iy)^{j +
+      1}} \\
+      & = e^{iy}  \sum_{j = 0}^{m + n} \frac{\gamma (j + 1, 2 iy)}{j! 2^j
+      (iy)^{j + 1}} {}_4 F_3 \left( \begin{array}{c}
+        - m, m + 1, - n, n + 1 \\
+        1, 1, j + 1
+      \end{array} ; 1 \right)
+    \end{aligned}
+  \end{equation*}
+  where
+  \begin{equation*}
+    \Psi_j (m, n) = \frac{{}_4 F_3 \left( \begin{array}{c}
+      - m, m + 1, - n, n + 1 \\
+      1, 1, j + 1
+    \end{array} ; 1 \right)}{j!}
+  \end{equation*}
 \end{theorem}
 
-\end{document}
+\begin{proof}
+  \textbf{Part 1: Integral Reduction}
 
+  Expand $P_m (x) P_n (x)$ using Lemma \ref{lem:HyperExpansions}:
+  \begin{equation*}
+    P_m (x) P_n (x) = \sum_{k = 0}^m \sum_{\ell = 0}^n \frac{(- m)_k (m +
+    1)_k (- n)_{\ell} (n + 1)_{\ell}}{(1)_k (1)_{\ell} k! \ell !} \left(
+    \tfrac{1 - x}{2} \right)^{k + \ell}
+  \end{equation*}
+  Let $j = k + \ell$, valid for $0 \leq k \leq m$, $0 \leq \ell \leq n$. Then:
+  \begin{equation*}
+    I_{m, n} (y) = \sum_{j = 0}^{m + n} \underbrace{\sum_{k = \max (0, j -
+    n)}^{\min (j, m)} \frac{(- m)_k (m + 1)_k (- n)_{j - k} (n + 1)_{j -
+    k}}{(1)_k (1)_{j - k} k! (j - k) !}}_{\Psi_j (m, n)} \int_{- 1}^1 \left(
+    \tfrac{1 - x}{2} \right)^j e^{ixy} dx
+  \end{equation*}
+  Apply Lemma \ref{lem:IntegralGamma} to obtain the result.
+
+  \textbf{Part 2: $\Psi_j (m, n)$ as a $_4 F_3$ Function}
+
+  Expand the $_4 F_3$ series:
+  \begin{equation*}
+    \begin{aligned}
+      {}_4 F_3 \left( \begin{array}{c}
+        - m, m + 1, - n, n + 1 \\
+        1, 1, j + 1
+      \end{array} ; 1 \right) & = \sum_{k = 0}^j \frac{(- m)_k (m + 1)_k (-
+      n)_k (n + 1)_k}{(1)_k (1)_k (j + 1)_k k!} \\
+      & = \sum_{k = 0}^j \frac{(- m)_k (m + 1)_k (- n)_k (n + 1)_k}{k! k!
+      (j + 1)_k k!} \\
+      & = \sum_{k = 0}^j \frac{(0 - m)_k (1 + m)_k (0 - n)_k (1 + n)_k}{(1
+      + j)_k (k!)^3 }
+    \end{aligned}
+  \end{equation*}
+  The main result follows.
+\end{proof}
+
+\end{document}

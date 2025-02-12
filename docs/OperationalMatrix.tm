@@ -82,9 +82,7 @@
 
   <\lemma>
     <dueto|Legendre Polynomial Representation><label|lem:Legendre>The
-    hypergeometric function quals the Legendre polynomial
-    <math|P<rsub|m><around|(|x|)>>. The Legendre polynomials are
-    hypergeometric functions
+    Legendre polynomials are hypergeometric functions
 
     <\equation>
       P<rsub|m><around*|(|x|)>=<rsub|2>F<rsub|1><around|(|-m,m+1;1;<tfrac|1-x|2>|)>
@@ -107,58 +105,84 @@
     </equation*>
   </proof>
 
+  \;
+
   <section|Main Theorem>
 
   <\theorem>
-    <dueto|Fourier Transform of Legendre Polynomial
-    Products><label|thm:MainResult>
+    <dueto|Fourier Transform of Legendre Polynomial Products>The Fourier
+    transform of the product of a pair of Legendre polynomials is the
+    convolution of a pair of spherical Bessel functions of the first kind
+    which can be expressed as
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|I<rsub|m,n><around|(|y|)>>|<cell|=<big|int><rsub|-1><rsup|1>P<rsub|m><around|(|x|)>*P<rsub|n><around|(|x|)>*e<rsup|i*x*y>*d*x>>|<row|<cell|>|<cell|=e<rsup|i*y>*<big|sum><rsub|j=0><rsup|m+n><frac|\<Psi\><rsub|j><around|(|m,n|)>|2<rsup|j>><around*|[|<frac|\<gamma\><around|(|j+1,2*i*y|)>|<around|(|i*y|)><rsup|j+1>>|]>>>|<row|<cell|>|<cell|=e<rsup|i*y>*<big|sum><rsub|j=0><rsup|m+n><frac|<frac|<space|0.17em><rsub|4>F<rsub|3><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|-m,m+1,-n,n+1>>|<row|<cell|1,1,j+1>>>>>;1|)>|j!>|2<rsup|j>><around*|[|<frac|\<gamma\><around|(|j+1,2*i*y|)>|<around|(|i*y|)><rsup|j+1>>|]>>>|<row|<cell|>|<cell|=e<rsup|i*y>*<big|sum><rsub|j=0><rsup|m+n><frac|<space|0.17em><rsub|4>F<rsub|3><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|-m,m+1,-n,n+1>>|<row|<cell|1,1,j+1>>>>>;1|)>|j!
-      2<rsup|j>><frac|\<gamma\><around|(|j+1,2*i*y|)>|<around|(|i*y|)><rsup|j+1>>>>|<row|<cell|>|<cell|=e<rsup|i*y>*<big|sum><rsub|j=0><rsup|m+n><frac|
-      \<gamma\><around|(|j+1,2*i*y|)>|j! 2<rsup|j><around|(|i*y|)><rsup|j+1>><space|0.17em><rsub|4>F<rsub|3><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|-m,m+1,-n,n+1>>|<row|<cell|1,1,j+1>>>>>;1|)>>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|I<rsub|m,n><around|(|y|)>>|<cell|=<big|int><rsub|-1><rsup|1>P<rsub|m><around|(|x|)>*P<rsub|n><around|(|x|)>*e<rsup|i*x*y>*<space|0.17em>d*x>>|<row|<cell|>|<cell|=e<rsup|i*y>*<big|sum><rsub|j=0><rsup|m+n>\<Psi\><rsub|j><around|(|m,n|)><frac|\<gamma\><around|(|j+1,2*i*y|)>|2<rsup|j>*<around|(|i*y|)><rsup|j+1>>>>>>>
     </equation>
 
-    where\ 
+    where
 
     <\equation>
-      \<Psi\><rsub|j><around|(|m,n|)>=<frac|<space|0.17em><rsub|4>F<rsub|3><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|-m,m+1,-n,n+1>>|<row|<cell|1,1,j+1>>>>>;1|)>|j!>*
+      \<Psi\><rsub|j><around|(|m,n|)>=<frac|<rsub|4>F<rsub|3><space|-0.17em><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|-m,<space|0.17em>m+1,<space|0.17em>-n,<space|0.17em>n+1>>|<row|<cell|1,<space|0.17em>1,<space|0.17em>j+1>>>>>;1|)>|j!>
     </equation>
   </theorem>
 
-  <\proof>
-    \;
+  Expand both polynomials using their hypergeometric representations:
 
-    <with|font-series|bold|Part 1: Integral Reduction><next-line>Expand
-    <math|P<rsub|m><around|(|x|)>*P<rsub|n><around|(|x|)>> using Lemma
-    <reference|lem:HyperExpansions>:
+  <\equation>
+    P<rsub|m><around|(|x|)>=<big|sum><rsub|k=0><rsup|m><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>|<around|(|1|)><rsub|k>*k!><around*|(|<frac|1-x|2>|)><rsup|k>
+  </equation>
 
-    <\equation>
-      P<rsub|m><around|(|x|)>*P<rsub|n><around|(|x|)>=<big|sum><rsub|k=0><rsup|m><big|sum><rsub|\<ell\>=0><rsup|n><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|\<ell\>>*<around|(|n+1|)><rsub|\<ell\>>|<around|(|1|)><rsub|k><around|(|1|)><rsub|\<ell\>>*k!\<ell\>!><around*|(|<tfrac|1-x|2>|)><rsup|k+\<ell\>>
-    </equation>
+  <\equation>
+    P<rsub|n><around|(|x|)>=<big|sum><rsub|\<ell\>=0><rsup|n><frac|<around|(|-n|)><rsub|\<ell\>>*<around|(|n+1|)><rsub|\<ell\>>|<around|(|1|)><rsub|\<ell\>>*\<ell\>!><around*|(|<frac|1-x|2>|)><rsup|\<ell\>>
+  </equation>
 
-    Let <math|j=k+\<ell\>>, valid for <math|0\<leq\>k\<leq\>m>,
-    <math|0\<leq\>\<ell\>\<leq\>n>. Then:
+  Their product becomes:
 
-    <\equation>
-      I<rsub|m,n><around|(|y|)>=<big|sum><rsub|j=0><rsup|m+n><wide*|<big|sum><rsub|k=max
-      <around|(|0,j-n|)>><rsup|min <around|(|j,m|)>><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|j-k>*<around|(|n+1|)><rsub|j-k>|<around|(|1|)><rsub|k><around|(|1|)><rsub|j-k>*k!<around|(|j-k|)>!>|\<wide-underbrace\>><rsub|\<Psi\><rsub|j><around|(|m,n|)>><big|int><rsub|-1><rsup|1><around*|(|<tfrac|1-x|2>|)><rsup|j>*e<rsup|i*x*y>*d*x
-    </equation>
+  <\equation>
+    <tabular|<tformat|<table|<row|<cell|P<rsub|m><around|(|x|)>*P<rsub|n><around|(|x|)>>|<cell|=<big|sum><rsub|k=0><rsup|m><big|sum><rsub|\<ell\>=0><rsup|n><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|\<ell\>>*<around|(|n+1|)><rsub|\<ell\>>|<around|(|1|)><rsub|k><around|(|1|)><rsub|\<ell\>>*k!\<ell\>!><around*|(|<frac|1-x|2>|)><rsup|k+\<ell\>>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|m><big|sum><rsub|\<ell\>=0><rsup|n><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|\<ell\>>*<around|(|n+1|)><rsub|\<ell\>>|k!<rsup|2>
+    \<ell\>!<rsup|2>><around*|(|<frac|1-x|2>|)><rsup|k+\<ell\>>>>>>>
+  </equation>
 
-    Apply Lemma <reference|lem:IntegralGamma> to obtain the result.
+  Reorganize using <math|j=k+\<ell\>>, with explicit summation bounds:
 
-    <with|font-series|bold|Part 2: <math|\<Psi\><rsub|j><around|(|m,n|)>> as
-    a <math|<rsub|4>F<rsub|3>> Function><next-line>Expand the
-    <math|<rsub|4>F<rsub|3>> series:
+  <\equation>
+    P<rsub|m><around|(|x|)>*P<rsub|n><around|(|x|)>=<big|sum><rsub|j=0><rsup|m+n><wide*|<big|sum><rsub|k=max
+    <around|(|0,j-n|)>><rsup|min <around|(|j,m|)>><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|j-k>*<around|(|n+1|)><rsub|j-k>|<around|(|1|)><rsub|k><around|(|1|)><rsub|j-k>*k!<around|(|j-k|)>!>|\<wide-underbrace\>><rsub|\<Psi\><rsub|j><around|(|m,n|)>><around*|(|<frac|1-x|2>|)><rsup|j>
+  </equation>
 
-    <\equation>
-      <tabular|<tformat|<table|<row|<cell|<rsub|4>F<rsub|3><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|-m,m+1,-n,n+1>>|<row|<cell|1,1,j+1>>>>>;1|)>>|<cell|=<big|sum><rsub|k=0><rsup|j><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|k>*<around|(|n+1|)><rsub|k>|<around|(|1|)><rsub|k><around|(|1|)><rsub|k>*<around|(|j+1|)><rsub|k>*k!>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|j><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|k>*<around|(|n+1|)><rsub|k>|k!
-      k!*<around|(|j+1|)><rsub|k>*k!>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|j><frac|<around|(|0-m|)><rsub|k>*<around|(|1+m|)><rsub|k>*<around|(|0-n|)><rsub|k>*<around|(|1+n|)><rsub|k>|<around|(|1+j|)><rsub|k>
-      <around*|(|k!|)><rsup|3>*>>>>>>
-    </equation>
+  The inner sum coefficients are:
 
-    The main result follows.
-  </proof>
+  <\equation>
+    \<Psi\><rsub|j><around|(|m,n|)>=<big|sum><rsub|k=max
+    <around|(|0,j-n|)>><rsup|min <around|(|j,m|)>><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|j-k>*<around|(|n+1|)><rsub|j-k>|<around|(|1|)><rsub|k><around|(|1|)><rsub|j-k>*k!<around|(|j-k|)>!>
+  </equation>
+
+  Apply the identities:
+
+  <\align>
+    <tformat|<table|<row|<cell|<around|(|-n|)><rsub|j-k>>|<cell|=<around|(|-1|)><rsup|j-k><frac|\<Gamma\>*<around|(|n+1|)>|\<Gamma\>*<around|(|n-j+k+1|)>><eq-number>>>|<row|<cell|<around|(|n+1|)><rsub|j-k>>|<cell|=<frac|\<Gamma\>*<around|(|n+j-k+1|)>|\<Gamma\>*<around|(|n+1|)>><eq-number>>>|<row|<cell|<around|(|-a|)><rsub|n>*<around|(|a+1|)><rsub|n>>|<cell|=<around|(|-1|)><rsup|n><frac|\<Gamma\>*<around|(|a+1|)>|\<Gamma\>*<around|(|a-n+1|)>><eq-number>>>>>
+  </align>
+
+  so that the substitutions
+
+  <\equation>
+    <around|(|-n|)><rsub|j-k>*<around|(|n+1|)><rsub|j-k>=<frac|<around|(|-1|)><rsup|j-k>*\<Gamma\>*<around|(|n+j-k+1|)>|\<Gamma\>*<around|(|n-j+k+1|)>>
+  </equation>
+
+  and <math|h=j-k> can be made so that <math|\<Psi\><rsub|j><around|(|m,n|)>>
+  can be expressed as
+
+  <\equation>
+    \<Psi\><rsub|j><around|(|m,n|)>=<around|(|-1|)><rsup|j>*<big|sum><rsub|h=0><rsup|min
+    <around|(|n,j|)>-max <around|(|0,j-m|)>><frac|<around|(|-m|)><rsub|j-h>*<around|(|m+1|)><rsub|j-h>*\<Gamma\>*<around|(|n+h+1|)>|<around|(|j-h|)>!<rsup|2>\<Gamma\>*<around|(|n-j+h+1|)>*h!>
+  </equation>
+
+  to reveal the hypergeometric form by reversing the index transformation:
+
+  <\equation>
+    <tabular|<tformat|<table|<row|<cell|\<Psi\><rsub|j><around|(|m,n|)>>|<cell|=<frac|1|j!>*<big|sum><rsub|k=0><rsup|min
+    <around|(|j,m,n|)>><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|k>*<around|(|n+1|)><rsub|k>|<around|(|1|)><rsub|k><around|(|1|)><rsub|k>*<around|(|j+1|)><rsub|k>*k!>>>|<row|<cell|>|<cell|=<frac|<rsub|4>F<rsub|3><space|-0.17em><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|-m,m+1,-n,n+1>>|<row|<cell|1,1,j+1>>>>>;1|)>|j!>>>>>>
+  </equation>
 </body>
 
 <\initial>
@@ -173,8 +197,11 @@
 
 <\references>
   <\collection>
+    <associate|a|<tuple|19|?>>
     <associate|auto-1|<tuple|1|1>>
     <associate|auto-2|<tuple|2|3>>
+    <associate|fi|<tuple|4|?>>
+    <associate|foi|<tuple|4|?>>
     <associate|lem:HyperExpansions|<tuple|1|1>>
     <associate|lem:IntegralGamma|<tuple|2|2>>
     <associate|lem:Legendre|<tuple|3|2>>
