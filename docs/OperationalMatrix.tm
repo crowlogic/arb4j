@@ -125,6 +125,8 @@
   </theorem>
 
   <\proof>
+    \;
+
     <with|font-series|bold|Part 1: Integral Reduction><next-line>Expand
     <math|P<rsub|m><around|(|x|)>*P<rsub|n><around|(|x|)>> using Lemma
     <reference|lem:HyperExpansions>:
