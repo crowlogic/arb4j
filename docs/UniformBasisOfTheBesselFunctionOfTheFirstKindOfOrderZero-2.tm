@@ -46,13 +46,13 @@
     For <math|m\<neq\>n>, by substituting the definition we have
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|<around|\<langle\>|\<psi\><rsub|m>,\<psi\><rsub|n>|\<rangle\>>>|<cell|=<around|(|-1|)><rsup|m+n><sqrt|<frac|<around|(|4*m+1|)>*<around|(|4*n+1|)>|\<pi\><rsup|2>>>*<frac|\<pi\>|2>*<big|int><rsub|0><rsup|\<infty\>><frac|J<rsub|2*m+<frac|1|2>><around|(|y|)>*J<rsub|2*n+<frac|1|2>><around|(|y|)>|y><space|0.17em><dint>y>>|<row|<cell|>|<cell|=<around|(|-1|)><rsup|m+n><sqrt|<frac|<around|(|4*m+1|)>*<around|(|4*n+1|)>|4*\<pi\>>>\<cdot\><frac|2|\<pi\>>*<frac|\<delta\><rsub|m*n>|<around|(|2*m+<frac|1|2>|)>+<around|(|2*n+<frac|1|2>|)>>=0>>>>>
+      <tabular|<tformat|<table|<row|<cell|<around|\<langle\>|\<psi\><rsub|m>,\<psi\><rsub|n>|\<rangle\>>>|<cell|=<around|(|-1|)><rsup|m+n><sqrt|<frac|<around|(|4*m+1|)>*<around|(|4*n+1|)>|\<pi\><rsup|2>>>*<frac|\<pi\>|2>*<big|int><rsub|0><rsup|\<infty\>><frac|J<rsub|2*m+<frac|1|2>><around|(|y|)>*J<rsub|2*n+<frac|1|2>><around|(|y|)>|y><space|0.17em>\<mathd\>y>>|<row|<cell|>|<cell|=<around|(|-1|)><rsup|m+n><sqrt|<frac|<around|(|4*m+1|)>*<around|(|4*n+1|)>|4*\<pi\>>>\<cdot\><frac|2|\<pi\>>*<frac|\<delta\><rsub|m*n>|<around|(|2*m+<frac|1|2>|)>+<around|(|2*n+<frac|1|2>|)>>=0>>>>>
     </equation>
 
     For <math|m=n>, using the orthogonality relation
 
     <\equation>
-      <big|int><rsub|0><rsup|\<infty\>><frac|<around*|[|J<rsub|2*n+<frac|1|2>><around|(|y|)>|]><rsup|2>|y><space|0.17em><dint>y=<frac|1|2*n+<frac|1|2>>
+      <big|int><rsub|0><rsup|\<infty\>><frac|<around*|[|J<rsub|2*n+<frac|1|2>><around|(|y|)>|]><rsup|2>|y><space|0.17em>\<mathd\>y=<frac|1|2*n+<frac|1|2>>
     </equation>
 
     we obtain
@@ -67,7 +67,7 @@
     coefficients in the expansion are given by
 
     <\equation>
-      c<rsub|n>=<big|int><rsub|0><rsup|\<infty\>>J<rsub|0><around|(|y|)>*<space|0.17em>\<psi\><rsub|n><around|(|y|)><space|0.17em><dint>y
+      c<rsub|n>=<big|int><rsub|0><rsup|\<infty\>>J<rsub|0><around|(|y|)>*<space|0.17em>\<psi\><rsub|n><around|(|y|)><space|0.17em>\<mathd\>y
     </equation>
 
     Using Neumann's addition theorem together with Mellin transform
@@ -80,7 +80,7 @@
     which is derived from the evaluation
 
     <\equation>
-      <big|int><rsub|0><rsup|\<infty\>>J<rsub|0><around|(|y|)><frac|J<rsub|2*n+<frac|1|2>><around|(|y|)>|<sqrt|y>><space|0.17em><dint>y=<frac|\<Gamma\>*<around|(|n+<frac|1|2>|)><rsup|2>|<sqrt|2>*\<Gamma\>*<around|(|n+1|)><rsup|2>>
+      <big|int><rsub|0><rsup|\<infty\>>J<rsub|0><around|(|y|)><frac|J<rsub|2*n+<frac|1|2>><around|(|y|)>|<sqrt|y>><space|0.17em>\<mathd\>y=<frac|\<Gamma\>*<around|(|n+<frac|1|2>|)><rsup|2>|<sqrt|2>*\<Gamma\>*<around|(|n+1|)><rsup|2>>
     </equation>
 
     <with|font-series|bold|Uniform Convergence>
