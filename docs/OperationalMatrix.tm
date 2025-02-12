@@ -16,6 +16,16 @@
     is determined.
   </abstract>
 
+  <\table-of-contents|toc>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Lemmas>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-1><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Main
+    Theorem> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-2><vspace|0.5fn>
+  </table-of-contents>
+
   <section|Lemmas>
 
   <\lemma>
@@ -122,67 +132,82 @@
     where
 
     <\equation>
-      \<Psi\><rsub|j><around|(|m,n|)>=<frac|<rsub|4>F<rsub|3><space|-0.17em><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|-m,<space|0.17em>m+1,<space|0.17em>-n,<space|0.17em>n+1>>|<row|<cell|1,<space|0.17em>1,<space|0.17em>j+1>>>>>;1|)>|j!>
+      <tabular|<tformat|<table|<row|<cell|\<Psi\><rsub|j><around|(|m,n|)>>|<cell|=<frac|<rsub|4>F<rsub|3><space|-0.17em><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|-m,<space|0.17em>m+1,<space|0.17em>-n,<space|0.17em>n+1>>|<row|<cell|1,<space|0.17em>1,<space|0.17em>j+1>>>>>;1|)>|j!>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=max
+      <around|(|0,j-n|)>><rsup|min <around|(|j,m|)>><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|j-k>*<around|(|n+1|)><rsub|j-k>|<around|(|1|)><rsub|k><around|(|1|)><rsub|j-k>*k!<around|(|j-k|)>!>>>>>>
     </equation>
   </theorem>
 
-  Expand both polynomials using their hypergeometric representations:
+  <\proof>
+    Expand both polynomials using their hypergeometric representations:
 
-  <\equation>
-    P<rsub|m><around|(|x|)>=<big|sum><rsub|k=0><rsup|m><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>|<around|(|1|)><rsub|k>*k!><around*|(|<frac|1-x|2>|)><rsup|k>
-  </equation>
+    <\equation>
+      P<rsub|m><around|(|x|)>=<big|sum><rsub|k=0><rsup|m><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>|<around|(|1|)><rsub|k>*k!><around*|(|<frac|1-x|2>|)><rsup|k>
+    </equation>
 
-  <\equation>
-    P<rsub|n><around|(|x|)>=<big|sum><rsub|\<ell\>=0><rsup|n><frac|<around|(|-n|)><rsub|\<ell\>>*<around|(|n+1|)><rsub|\<ell\>>|<around|(|1|)><rsub|\<ell\>>*\<ell\>!><around*|(|<frac|1-x|2>|)><rsup|\<ell\>>
-  </equation>
+    <\equation>
+      P<rsub|n><around|(|x|)>=<big|sum><rsub|\<ell\>=0><rsup|n><frac|<around|(|-n|)><rsub|\<ell\>>*<around|(|n+1|)><rsub|\<ell\>>|<around|(|1|)><rsub|\<ell\>>*\<ell\>!><around*|(|<frac|1-x|2>|)><rsup|\<ell\>>
+    </equation>
 
-  Their product becomes:
+    Their product becomes:
 
-  <\equation>
-    <tabular|<tformat|<table|<row|<cell|P<rsub|m><around|(|x|)>*P<rsub|n><around|(|x|)>>|<cell|=<big|sum><rsub|k=0><rsup|m><big|sum><rsub|\<ell\>=0><rsup|n><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|\<ell\>>*<around|(|n+1|)><rsub|\<ell\>>|<around|(|1|)><rsub|k><around|(|1|)><rsub|\<ell\>>*k!\<ell\>!><around*|(|<frac|1-x|2>|)><rsup|k+\<ell\>>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|m><big|sum><rsub|\<ell\>=0><rsup|n><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|\<ell\>>*<around|(|n+1|)><rsub|\<ell\>>|k!<rsup|2>
-    \<ell\>!<rsup|2>><around*|(|<frac|1-x|2>|)><rsup|k+\<ell\>>>>>>>
-  </equation>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|P<rsub|m><around|(|x|)>*P<rsub|n><around|(|x|)>>|<cell|=<big|sum><rsub|k=0><rsup|m><big|sum><rsub|\<ell\>=0><rsup|n><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|\<ell\>>*<around|(|n+1|)><rsub|\<ell\>>|<around|(|1|)><rsub|k><around|(|1|)><rsub|\<ell\>>*k!\<ell\>!><around*|(|<frac|1-x|2>|)><rsup|k+\<ell\>>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|m><big|sum><rsub|\<ell\>=0><rsup|n><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|\<ell\>>*<around|(|n+1|)><rsub|\<ell\>>|k!<rsup|2>
+      \<ell\>!<rsup|2>><around*|(|<frac|1-x|2>|)><rsup|k+\<ell\>>>>>>>
+    </equation>
 
-  Reorganize using <math|j=k+\<ell\>>, with explicit summation bounds:
+    Reorganize using <math|j=k+\<ell\>>, with explicit summation bounds:
 
-  <\equation>
-    P<rsub|m><around|(|x|)>*P<rsub|n><around|(|x|)>=<big|sum><rsub|j=0><rsup|m+n><wide*|<big|sum><rsub|k=max
-    <around|(|0,j-n|)>><rsup|min <around|(|j,m|)>><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|j-k>*<around|(|n+1|)><rsub|j-k>|<around|(|1|)><rsub|k><around|(|1|)><rsub|j-k>*k!<around|(|j-k|)>!>|\<wide-underbrace\>><rsub|\<Psi\><rsub|j><around|(|m,n|)>><around*|(|<frac|1-x|2>|)><rsup|j>
-  </equation>
+    <\equation>
+      P<rsub|m><around|(|x|)>*P<rsub|n><around|(|x|)>=<big|sum><rsub|j=0><rsup|m+n><wide*|<big|sum><rsub|k=max
+      <around|(|0,j-n|)>><rsup|min <around|(|j,m|)>><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|j-k>*<around|(|n+1|)><rsub|j-k>|<around|(|1|)><rsub|k><around|(|1|)><rsub|j-k>*k!<around|(|j-k|)>!>|\<wide-underbrace\>><rsub|\<Psi\><rsub|j><around|(|m,n|)>><around*|(|<frac|1-x|2>|)><rsup|j>
+    </equation>
 
-  The inner sum coefficients are:
+    The inner sum coefficients are:
 
-  <\equation>
-    \<Psi\><rsub|j><around|(|m,n|)>=<big|sum><rsub|k=max
-    <around|(|0,j-n|)>><rsup|min <around|(|j,m|)>><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|j-k>*<around|(|n+1|)><rsub|j-k>|<around|(|1|)><rsub|k><around|(|1|)><rsub|j-k>*k!<around|(|j-k|)>!>
-  </equation>
+    <\equation>
+      \<Psi\><rsub|j><around|(|m,n|)>=<big|sum><rsub|k=max
+      <around|(|0,j-n|)>><rsup|min <around|(|j,m|)>><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|j-k>*<around|(|n+1|)><rsub|j-k>|<around|(|1|)><rsub|k><around|(|1|)><rsub|j-k>*k!<around|(|j-k|)>!>
+    </equation>
 
-  Apply the identities:
+    Apply the identities:
 
-  <\align>
-    <tformat|<table|<row|<cell|<around|(|-n|)><rsub|j-k>>|<cell|=<around|(|-1|)><rsup|j-k><frac|\<Gamma\>*<around|(|n+1|)>|\<Gamma\>*<around|(|n-j+k+1|)>><eq-number>>>|<row|<cell|<around|(|n+1|)><rsub|j-k>>|<cell|=<frac|\<Gamma\>*<around|(|n+j-k+1|)>|\<Gamma\>*<around|(|n+1|)>><eq-number>>>|<row|<cell|<around|(|-a|)><rsub|n>*<around|(|a+1|)><rsub|n>>|<cell|=<around|(|-1|)><rsup|n><frac|\<Gamma\>*<around|(|a+1|)>|\<Gamma\>*<around|(|a-n+1|)>><eq-number>>>>>
-  </align>
+    <\align>
+      <tformat|<table|<row|<cell|<around|(|-n|)><rsub|j-k>>|<cell|=<around|(|-1|)><rsup|j-k><frac|\<Gamma\>*<around|(|n+1|)>|\<Gamma\>*<around|(|n-j+k+1|)>><eq-number>>>|<row|<cell|<around|(|n+1|)><rsub|j-k>>|<cell|=<frac|\<Gamma\>*<around|(|n+j-k+1|)>|\<Gamma\>*<around|(|n+1|)>><eq-number>>>|<row|<cell|<around|(|-a|)><rsub|n>*<around|(|a+1|)><rsub|n>>|<cell|=<around|(|-1|)><rsup|n><frac|\<Gamma\>*<around|(|a+1|)>|\<Gamma\>*<around|(|a-n+1|)>><eq-number>>>>>
+    </align>
 
-  so that the substitutions
+    so that the substitutions
 
-  <\equation>
-    <around|(|-n|)><rsub|j-k>*<around|(|n+1|)><rsub|j-k>=<frac|<around|(|-1|)><rsup|j-k>*\<Gamma\>*<around|(|n+j-k+1|)>|\<Gamma\>*<around|(|n-j+k+1|)>>
-  </equation>
+    <\equation>
+      <around|(|-n|)><rsub|j-k>*<around|(|n+1|)><rsub|j-k>=<frac|<around|(|-1|)><rsup|j-k>*\<Gamma\>*<around|(|n+j-k+1|)>|\<Gamma\>*<around|(|n-j+k+1|)>>
+    </equation>
 
-  and <math|h=j-k> can be made so that <math|\<Psi\><rsub|j><around|(|m,n|)>>
-  can be expressed as
+    and <math|h=j-k> can be made so that <math|\<Psi\><rsub|j><around|(|m,n|)>>
+    can be expressed as
 
-  <\equation>
-    \<Psi\><rsub|j><around|(|m,n|)>=<around|(|-1|)><rsup|j>*<big|sum><rsub|h=0><rsup|min
-    <around|(|n,j|)>-max <around|(|0,j-m|)>><frac|<around|(|-m|)><rsub|j-h>*<around|(|m+1|)><rsub|j-h>*\<Gamma\>*<around|(|n+h+1|)>|<around|(|j-h|)>!<rsup|2>\<Gamma\>*<around|(|n-j+h+1|)>*h!>
-  </equation>
+    <\equation>
+      \<Psi\><rsub|j><around|(|m,n|)>=<around|(|-1|)><rsup|j>*<big|sum><rsub|h=0><rsup|min
+      <around|(|n,j|)>-max <around|(|0,j-m|)>><frac|<around|(|-m|)><rsub|j-h>*<around|(|m+1|)><rsub|j-h>*\<Gamma\>*<around|(|n+h+1|)>|<around|(|j-h|)>!<rsup|2>\<Gamma\>*<around|(|n-j+h+1|)>*h!>
+    </equation>
 
-  to reveal the hypergeometric form by reversing the index transformation:
+    to reveal the hypergeometric form by reversing the index transformation:
 
-  <\equation>
-    <tabular|<tformat|<table|<row|<cell|\<Psi\><rsub|j><around|(|m,n|)>>|<cell|=<frac|1|j!>*<big|sum><rsub|k=0><rsup|min
-    <around|(|j,m,n|)>><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|k>*<around|(|n+1|)><rsub|k>|<around|(|1|)><rsub|k><around|(|1|)><rsub|k>*<around|(|j+1|)><rsub|k>*k!>>>|<row|<cell|>|<cell|=<frac|<rsub|4>F<rsub|3><space|-0.17em><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|-m,m+1,-n,n+1>>|<row|<cell|1,1,j+1>>>>>;1|)>|j!>>>>>>
-  </equation>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|\<Psi\><rsub|j><around|(|m,n|)>>|<cell|=<frac|1|j!>*<big|sum><rsub|k=0><rsup|min
+      <around|(|j,m,n|)>><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|k>*<around|(|n+1|)><rsub|k>|<around|(|1|)><rsub|k><around|(|1|)><rsub|k>*<around|(|j+1|)><rsub|k>*k!>>>|<row|<cell|>|<cell|=<frac|<rsub|4>F<rsub|3><space|-0.17em><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|-m,m+1,-n,n+1>>|<row|<cell|1,1,j+1>>>>>;1|)>|j!>>>>>>
+    </equation>
+
+    To complete the proof, observe that the hypergeometric form has an
+    extended summation range <math|k=0> to <math|min <around|(|j,m,n|)>>
+    compared to the original bounds <math|k=max <around|(|0,j-n|)>> to
+    <math|min <around|(|j,m|)>>. However, terms outside the original bounds
+    vanish identically. For <math|k\<gtr\>min <around|(|j,m|)>>, the
+    Pochhammer symbol <math|<around|(|-m|)><rsub|k>=0> by
+    Lemma<nbsp><reference|lem:HyperExpansions>. For <math|k\<less\>max
+    <around|(|0,j-n|)>>, the term <math|<around|(|-n|)><rsub|j-k>> in the
+    original sum vanishes since <math|j-k\<gtr\>n>. Thus the extended
+    summation yields the same result, establishing the equality of both
+    representations of <math|\<Psi\><rsub|j><around|(|m,n|)>>.
+  </proof>
 </body>
 
 <\initial>
@@ -197,15 +222,11 @@
 
 <\references>
   <\collection>
-    <associate|a|<tuple|19|?>>
     <associate|auto-1|<tuple|1|1>>
     <associate|auto-2|<tuple|2|3>>
-    <associate|fi|<tuple|4|?>>
-    <associate|foi|<tuple|4|?>>
     <associate|lem:HyperExpansions|<tuple|1|1>>
     <associate|lem:IntegralGamma|<tuple|2|2>>
     <associate|lem:Legendre|<tuple|3|2>>
-    <associate|thm:MainResult|<tuple|4|3>>
   </collection>
 </references>
 
