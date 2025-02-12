@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|framed-theorems>>
+<style|<tuple|generic|boring-white|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|The Operational Matrix of the Random Wave
@@ -114,7 +114,10 @@
     Products><label|thm:MainResult>
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|I<rsub|m,n><around|(|y|)>>|<cell|=<big|int><rsub|-1><rsup|1>P<rsub|m><around|(|x|)>*P<rsub|n><around|(|x|)>*e<rsup|i*x*y>*d*x>>|<row|<cell|>|<cell|=e<rsup|i*y>*<big|sum><rsub|j=0><rsup|m+n><frac|\<Psi\><rsub|j><around|(|m,n|)>|2<rsup|j>><around*|[|<frac|\<gamma\><around|(|j+1,2*i*y|)>|<around|(|i*y|)><rsup|j+1>>|]>>>>>>
+      <tabular|<tformat|<table|<row|<cell|I<rsub|m,n><around|(|y|)>>|<cell|=<big|int><rsub|-1><rsup|1>P<rsub|m><around|(|x|)>*P<rsub|n><around|(|x|)>*e<rsup|i*x*y>*d*x>>|<row|<cell|>|<cell|=e<rsup|i*y>*<big|sum><rsub|j=0><rsup|m+n><frac|\<Psi\><rsub|j><around|(|m,n|)>|2<rsup|j>><around*|[|<frac|\<gamma\><around|(|j+1,2*i*y|)>|<around|(|i*y|)><rsup|j+1>>|]>>>|<row|<cell|>|<cell|=e<rsup|i*y>*<big|sum><rsub|j=0><rsup|m+n><frac|<frac|<space|0.17em><rsub|4>F<rsub|3><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|-m,m+1,-n,n+1>>|<row|<cell|1,1,j+1>>>>>;1|)>|j!>|2<rsup|j>><around*|[|<frac|\<gamma\><around|(|j+1,2*i*y|)>|<around|(|i*y|)><rsup|j+1>>|]>>>|<row|<cell|>|<cell|=e<rsup|i*y>*<big|sum><rsub|j=0><rsup|m+n><frac|<space|0.17em><rsub|4>F<rsub|3><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|-m,m+1,-n,n+1>>|<row|<cell|1,1,j+1>>>>>;1|)>|j!
+      2<rsup|j>><frac|\<gamma\><around|(|j+1,2*i*y|)>|<around|(|i*y|)><rsup|j+1>>>>|<row|<cell|>|<cell|=e<rsup|i*y>*<big|sum><rsub|j=0><rsup|m+n><frac|
+      \<gamma\><around|(|j+1,2*i*y|)><space|0.17em><rsub|4>F<rsub|3><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|-m,m+1,-n,n+1>>|<row|<cell|1,1,j+1>>>>>;1|)>|j!
+      2<rsup|j><around|(|i*y|)><rsup|j+1>>>>>>>
     </equation>
 
     where\ 
