@@ -152,7 +152,9 @@
     <math|<rsub|4>F<rsub|3>> series:
 
     <\equation>
-      <rsub|4>F<rsub|3><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|-m,m+1,-n,n+1>>|<row|<cell|1,1,j+1>>>>>;1|)>=<big|sum><rsub|k=0><rsup|j><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|k>*<around|(|n+1|)><rsub|k>|<around|(|1|)><rsub|k><around|(|1|)><rsub|k>*<around|(|j+1|)><rsub|k>*k!>
+      <tabular|<tformat|<table|<row|<cell|<rsub|4>F<rsub|3><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|-m,m+1,-n,n+1>>|<row|<cell|1,1,j+1>>>>>;1|)>>|<cell|=<big|sum><rsub|k=0><rsup|j><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|k>*<around|(|n+1|)><rsub|k>|<around|(|1|)><rsub|k><around|(|1|)><rsub|k>*<around|(|j+1|)><rsub|k>*k!>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|j><frac|<around|(|-m|)><rsub|k>*<around|(|m+1|)><rsub|k>*<around|(|-n|)><rsub|k>*<around|(|n+1|)><rsub|k>|k!
+      k!*<around|(|j+1|)><rsub|k>*k!>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|j><frac|<around|(|0-m|)><rsub|k>*<around|(|1+m|)><rsub|k>*<around|(|0-n|)><rsub|k>*<around|(|1+n|)><rsub|k>|<around|(|1+j|)><rsub|k>
+      <around*|(|k!|)><rsup|3>*>>>>>>
     </equation>
 
     The main result follows.
