@@ -4,38 +4,41 @@
 
 <\body>
   This is not central to what I want to convey and needs some cleaning up so
-  setting it aside here for now.
+  setting it aside here for now
 
-  <section|Appendix>
+  <\theorem>
+    Let <math|\<psi\><rsub|n><around|(|y|)>> be
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|\<psi\><rsub|n><around|(|y|)>>|<cell|=<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*j<rsub|2*n><around|(|y|)>>>|<row|<cell|>|<cell|=<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*<sqrt|<frac|\<pi\>|2*y>>*J<rsub|2*n+<frac|1|2>><around|(|y|)>>>>>>
+    </equation>
+
+    where <math|J> is the Bessel function of the first kind and <math|j> is a
+    spherical Bessel function of the first kind then
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|J<rsub|0><around*|(|x|)>>|<cell|=<big|sum><rsub|k=0><rsup|\<infty\>>\<psi\><rsub|n><around*|(|x|)><big|int><rsub|0><rsup|\<infty\>>J<rsub|0><around*|(|x|)>\<psi\><rsub|n><around*|(|x|)>\<mathd\>x>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|\<infty\>>\<psi\><rsub|n><around*|(|x|)><sqrt|<frac|2n+<frac|1|2>|\<pi\>>><frac|\<Gamma\><around*|(|n+<frac|1|2>|)><rsup|2>|\<Gamma\><around*|(|n+1|)><rsup|2>>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|\<infty\>><around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*j<rsub|2*n><around|(|x|)><sqrt|<frac|2n+<frac|1|2>|\<pi\>>><frac|\<Gamma\><around*|(|n+<frac|1|2>|)><rsup|2>|\<Gamma\><around*|(|n+1|)><rsup|2>>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|\<infty\>><around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*<sqrt|<frac|\<pi\>|2*y>>*J<rsub|2*n+<frac|1|2>><around|(|y|)><sqrt|<frac|2n+<frac|1|2>|\<pi\>>><frac|\<Gamma\><around*|(|n+<frac|1|2>|)><rsup|2>|\<Gamma\><around*|(|n+1|)><rsup|2>>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|\<infty\>><around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*<sqrt|<frac|\<pi\>|2*y>><sqrt|<frac|2n+<frac|1|2>|\<pi\>>><frac|\<Gamma\><around*|(|n+<frac|1|2>|)><rsup|2>|\<Gamma\><around*|(|n+1|)><rsup|2>>*J<rsub|2*n+<frac|1|2>><around|(|y|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|\<infty\>><around|(|-1|)><rsup|n>*<sqrt|<frac|<around*|(|4*n+1|)>
+      \<pi\><around*|(|2n+<frac|1|2>|)>|\<pi\><around*|(|2*y|)>\<pi\>>><frac|\<Gamma\><around*|(|n+<frac|1|2>|)><rsup|2>|\<Gamma\><around*|(|n+1|)><rsup|2>>*J<rsub|2*n+<frac|1|2>><around|(|y|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|\<infty\>><around|(|-1|)><rsup|n>*<sqrt|<frac|<around*|(|4*n+1|)>
+      <around*|(|2n+<frac|1|2>|)>|\<pi\>2*y>><frac|\<Gamma\><around*|(|n+<frac|1|2>|)><rsup|2>|\<Gamma\><around*|(|n+1|)><rsup|2>>*J<rsub|2*n+<frac|1|2>><around|(|y|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|\<infty\>><around|(|-1|)><rsup|n>*<sqrt|<frac|<around*|(|4*n+1|)>
+      <around*|(|4n+1|)>|\<pi\>*y>><frac|\<Gamma\><around*|(|n+<frac|1|2>|)><rsup|2>|\<Gamma\><around*|(|n+1|)><rsup|2>>*J<rsub|2*n+<frac|1|2>><around|(|y|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|\<infty\>><around|(|-1|)><rsup|n>*<sqrt|<frac|<around*|(|4*n+1|)>
+      <rsup|2>|\<pi\>*y>><frac|\<Gamma\><around*|(|n+<frac|1|2>|)><rsup|2>|\<Gamma\><around*|(|n+1|)><rsup|2>>*J<rsub|2*n+<frac|1|2>><around|(|y|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|\<infty\>><around|(|-1|)><rsup|n>*<around*|(|<frac|4*n+1|2*<sqrt|\<pi\>
+      y>>|)><frac|\<Gamma\><around*|(|n+<frac|1|2>|)><rsup|2>|\<Gamma\><around*|(|n+1|)><rsup|2>>*J<rsub|2*n+<frac|1|2>><around|(|y|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|\<infty\>><around|(|-1|)><rsup|n>*<around*|(|<frac|2*n+<frac|1|2>|*<sqrt|\<pi\>
+      y>>|)><frac|\<Gamma\><around*|(|n+<frac|1|2>|)><rsup|2>|\<Gamma\><around*|(|n+1|)><rsup|2>>*J<rsub|2*n+<frac|1|2>><around|(|y|)>>>>>>
+    </equation>
+
+    where the convergence is uniform <math|\<forall\>x\<in\>\<bbb-C\>> and
+    furthermore <math|\<psi\><rsub|n><around*|(|x|)>> are orthnormal over
+    <math|<around*|[|0,\<infty\>|]>> with the <math|L<rsup|2>> inner product
+    relative to the Lebesgue measure
+
+    <\equation>
+      <big|int><rsub|0><rsup|\<infty\>>\<psi\><rsub|m><around*|(|t|)>\<psi\><rsub|n><around*|(|t|)>\<mathd\>t=\<delta\><rsub|m,n>=<choice|<tformat|<table|<row|<cell|1>|<cell|m=n>>|<row|<cell|0>|<cell|m\<neq\>n>>>>>
+    </equation>
+  </theorem>
 
   <subsection|Application of Besel Function Identities>
 
-  <\conjecture>
-    \;
-
-    <\note>
-      TODO: change <math|J<rsub|0><around*|(|x|)>> to
-      <math|J<rsub|0><around*|(|<around*|\||x|\|>|)>> and
-      <math|\<psi\><rsub|n><around*|(|y|)>> to
-      <math|\<psi\><rsub|n><around*|(|<around*|\||y|\|>|)>,>by doing so the
-      range of integration can be extended \ from
-      <math|<around*|(|0,\<infty\>|)>> to
-      <math|<around*|(|-\<infty\>,\<infty\>|)>> without the integral
-      vanishing due to the fact that the odd-idexed Bessel functions are odd
-      and therefore integration over the full interval vanishes unless the
-      absolute value is used. The absolute value is the natural way to
-      utilize the functions sice they are symmetric or anti-symmetric
-      depending upon the parity of the index and thus no information is lost
-      in making this change and indeed doing so will make all the
-      integer-indexed Type-1 Bessel functions representable via this
-      expansion rather than only the even indexed ones as it is now. The
-      primary aim is to conclusively prove that the proposed functions are
-      the eigenfunctions and eigenvalues of
-      <math|<big|int><rsub|0><rsup|\<infty\>>J<rsub|0>*<around|(|x-y|)>*\<psi\><rsub|n><around*|(|x|)>\<mathd\>x>
-      but solving the operator for each <math|<big|int><rsub|0><rsup|\<infty\>>J<rsub|m><around|(|x-y|)>*\<psi\><rsub|n><around*|(|x|)>\<mathd\>x>
-      seems inevitable since the same cofactor appears in\ 
-    </note>
-  </conjecture>
+  \;
 
   <\theorem>
     <\equation>
@@ -89,11 +92,7 @@
       <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|<around|[|T*\<psi\><rsub|n>|]><around|(|x|)>>|<cell|=<big|int><rsub|0><rsup|\<infty\>>J<rsub|0>*<around|(|x-y|)>*\<psi\><rsub|n><around|(|y|)>*<space|0.17em>d*y>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>><big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|x|)>*J<rsub|k><around|(|y|)>*\<psi\><rsub|n><around|(|y|)>*<space|0.17em>d*y>>|<row|<cell|>|<cell|=<big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|x|)>*<big|int><rsub|0><rsup|\<infty\>>J<rsub|k><around|(|y|)>*\<psi\><rsub|n><around|(|y|)>*<space|0.17em>d*y<space|1em>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=-\<infty\>><rsup|\<infty\>>J<rsub|k><around|(|x|)>*<big|int><rsub|0><rsup|\<infty\>>J<rsub|k><around|(|y|)>*<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*j<rsub|2*n><around|(|y|)>*<space|0.17em>d*y>>>>>
     </equation>
 
-    Where <math|\<psi\><rsub|n><around|(|y|)>> is:
-
-    <\equation>
-      \<psi\><rsub|n><around|(|y|)>=<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*j<rsub|2*n><around|(|y|)>=<around|(|-1|)><rsup|n><sqrt|<frac|4*n+1|\<pi\>>>*<sqrt|<frac|\<pi\>|2*y>>*J<rsub|2*n+<frac|1|2>><around|(|y|)>
-    </equation>
+    \;
 
     Substituting
 
@@ -165,34 +164,29 @@
 
 <\references>
   <\collection>
-    <associate|Tadd|<tuple|8|2>>
-    <associate|Taddition|<tuple|5|1>>
+    <associate|Tadd|<tuple|10|2>>
+    <associate|Taddition|<tuple|4|1>>
     <associate|auto-1|<tuple|1|1>>
-    <associate|auto-2|<tuple|1.1|1>>
-    <associate|auto-3|<tuple|9|2>>
-    <associate|bib-finiteFourierTransforms|<tuple|2|2>>
-    <associate|bib-gaussianProcessIntroduction|<tuple|4|2>>
-    <associate|bib-modifiedLommelPolynomials|<tuple|3|2>>
-    <associate|bib-onCompactOperators|<tuple|1|2>>
-    <associate|conv|<tuple|6|1>>
-    <associate|dualBasis|<tuple|7|2>>
+    <associate|auto-2|<tuple|11|3>>
+    <associate|bib-finiteFourierTransforms|<tuple|2|3>>
+    <associate|bib-gaussianProcessIntroduction|<tuple|4|3>>
+    <associate|bib-modifiedLommelPolynomials|<tuple|3|3>>
+    <associate|bib-onCompactOperators|<tuple|1|3>>
+    <associate|conv|<tuple|5|2>>
+    <associate|dualBasis|<tuple|9|2>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
     <\associate|toc>
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Appendix>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-1><vspace|0.5fn>
-
-      <with|par-left|<quote|1tab>|1.1<space|2spc>Application of Besel
-      Function Identities <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-2>>
+      <with|par-left|<quote|1tab>|1<space|2spc>Application of Besel Function
+      Identities <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-1>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-3><vspace|0.5fn>
+      <no-break><pageref|auto-2><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
