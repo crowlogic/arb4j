@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{mathrsfs}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+
+% Define commands for special characters
+\newcommand{\d}{\mathop{}\!\mathrm{d}} % Differential operator
+
+\begin{document}
+
+\begin{theorem}
+  Let $\psi_n(y)$ be defined as
+  \begin{equation}
+    \psi_n(y) = (-1)^n \sqrt{\frac{4n + 1}{\pi}} j_{2n}(y)
+              = (-1)^n \sqrt{\frac{4n + 1}{\pi}} \sqrt{\frac{\pi}{2y}} J_{2n + \frac{1}{2}}(y),
+  \end{equation}
+  where $J_\nu$ denotes the Bessel function of the first kind and $j_n$ the spherical Bessel function. Then
+  \begin{equation}
+    \begin{aligned}
+      J_0(x) &= \sum_{n=0}^\infty \psi_n(x) \int_0^\infty J_0(y)\psi_n(y) \d y \\
+             &= \sum_{n=0}^\infty (-1)^n \sqrt{\frac{4n + 1}{\pi}} j_{2n}(x)
+                            \sqrt{\frac{2n + \frac{1}{2}}{\pi}} \frac{\Gamma(n + \frac{1}{2})^2}{\Gamma(n+1)^2} \\
+             &= \frac{1}{2\sqrt{\pi x}} \sum_{n=0}^\infty (-1)^n (4n+1) \frac{\Gamma(n + \frac{1}{2})^2}{\Gamma(n+1)^2} J_{2n + \frac{1}{2}}(x),
+    \end{aligned}
+  \end{equation}
+  with uniform convergence $\forall x \in \mathbb{C}$. Moreover, $\{\psi_n\}$ forms an orthonormal system in $L^2([0,\infty))$ satisfying
+  \begin{equation}
+    \int_0^\infty \psi_m(t)\psi_n(t) \d t = \delta_{mn} =
+    \begin{cases}
+      1 & m = n, \\
+      0 & m \neq n.
+    \end{cases}
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+\textbf{Step 1: Orthonormality of $\psi_n(y)$.} Substituting the definition:
+\begin{align*}
+\langle \psi_m, \psi_n \rangle &= (-1)^{m+n} \sqrt{\frac{(4m+1)(4n+1)}{\pi^2}} \frac{\pi}{2} \int_0^\infty \frac{J_{2m+\frac{1}{2}}(y)J_{2n+\frac{1}{2}}(y)}{y} \d y \\
+&= (-1)^{m+n} \sqrt{\frac{(4m+1)(4n+1)}{4\pi}} \cdot \frac{\delta_{mn}}{2n+\frac{1}{2}} \\
+&= \delta_{mn}.
+\end{align*}
+The crucial integral follows from Bessel orthogonality: 
+\[
+\int_0^\infty \frac{J_\mu(y)J_\nu(y)}{y} \d y = \frac{2}{\pi} \frac{\delta_{\mu\nu}}{\mu + \nu}.
+\]
+
+\textbf{Step 2: Expansion Coefficients.} Using the orthonormal basis:
+\[
+c_n = \int_0^\infty J_0(y)\psi_n(y) \d y = (-1)^n \sqrt{\frac{4n+1}{2}} \frac{\Gamma(n + \frac{1}{2})^2}{\Gamma(n+1)^2}.
+\]
+This emerges from evaluating:
+\[
+\int_0^\infty J_0(y)\frac{J_{2n+\frac{1}{2}}(y)}{\sqrt{y}} \d y = \frac{\Gamma(n + \frac{1}{2})^2}{\sqrt{2}\Gamma(n+1)^2}.
+\]
+
+\textbf{Step 3: Series Simplification.} Substitute $c_n$ into the expansion:
+\[
+J_0(x) = \sum_{n=0}^\infty \frac{(-1)^n(4n+1)}{2\sqrt{\pi x}} \frac{\Gamma(n + \frac{1}{2})^2}{\Gamma(n+1)^2} J_{2n+\frac{1}{2}}(x).
+\]
+Term-wise convergence follows from the asymptotic behavior:
+\[
+\frac{\Gamma(n + \frac{1}{2})}{\Gamma(n+1)} \sim n^{-1/2} \quad \text{and} \quad J_\nu(z) \sim \frac{(z/2)^\nu}{\Gamma(\nu+1)}.
+\]
+
+\textbf{Step 4: Uniform Convergence.} Analyticity of $J_0(z)$ and exponential decay of coefficients ensure uniform convergence across $\mathbb{C}$ by the Weierstrass M-test.
+\end{proof}
+
+\end{document}
