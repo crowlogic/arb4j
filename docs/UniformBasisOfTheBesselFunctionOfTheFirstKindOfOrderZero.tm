@@ -74,7 +74,7 @@
       J<rsub|0><around|(|x|)>=<big|sum><rsub|n=0><rsup|\<infty\>><frac|<around|(|-1|)><rsup|n>*<around|(|4*n+1|)>|2*<sqrt|\<pi\>*x>>*<frac|\<Gamma\>*<around|(|n+<frac|1|2>|)><rsup|2>|\<Gamma\>*<around|(|n+1|)><rsup|2>>*J<rsub|2*n+<frac|1|2>><around|(|x|)>
     </equation>
 
-    TODO: write correct proof, its not due to Wierstrauss, hint, prove that
+    TODO:  Wierstrauss is not applicable here hint, prove that
     we can always choose an N for a given epsilon such that including that
     many terms in the expansion results in an error less than epsilon and
     recognizing that the contribution from the n-th term can be no greater
