@@ -83,6 +83,7 @@
       <big|int><rsub|0><rsup|\<infty\>>J<rsub|0><around|(|y|)><frac|J<rsub|2*n+<frac|1|2>><around|(|y|)>|<sqrt|y>><space|0.17em>\<mathd\>y=<frac|\<Gamma\>*<around|(|n+<frac|1|2>|)><rsup|2>|<sqrt|2>*\<Gamma\>*<around|(|n+1|)><rsup|2>>
     </equation>
 
+<<<<<<< HEAD
     <with|font-series|bold|Uniform Convergence>
 
     Observe that the series for <math|J<rsub|0><around|(|x|)>> is
@@ -124,6 +125,13 @@
 
     This completes the argument that the expansion converges uniformly
     without needing to form any tail sums.
+=======
+    TODO:  Wierstrauss is not applicable here hint, prove that
+    we can always choose an N for a given epsilon such that including that
+    many terms in the expansion results in an error less than epsilon and
+    recognizing that the contribution from the n-th term can be no greater
+    than <math|<big|int><rsub|0><rsup|\<infty\>>J<rsub|0><around|(|y|)>*\<psi\><rsub|n><around|(|y|)>\<mathd\>y>
+>>>>>>> branch 'master' of git@github.com:crowlogic/arb4j.git
   </proof>
 </body>
 
