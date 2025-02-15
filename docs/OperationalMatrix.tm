@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|boring-white|framed-theorems>>
+<style|<tuple|generic|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|The Operational Matrix of the Random Wave
