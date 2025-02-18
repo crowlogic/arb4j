@@ -1,5 +1,6 @@
 package arb.measure;
 
+import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.space.topological.EuclideanSpace;
@@ -21,7 +22,7 @@ import arb.space.topological.EuclideanSpace;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface LebesgueMeasure<X extends EuclideanSpace, Σ extends σField<? extends X>> extends
+public interface LebesgueMeasure<X extends EuclideanSpace<Real>, Σ extends σField<? extends X>> extends
                                 HaarMeasure<X, Σ>
 {
 
