@@ -26,11 +26,12 @@ import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import arb.functions.complex.ComplexNullaryFunction;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
-import arb.functions.complex.ComplexNullaryFunction;
+import arb.space.topological.EuclideanSpace;
 
 /**
  * The {@link Complex} numbers constitute an algebraically closed {@link Field}, a
