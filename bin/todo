@@ -1,4 +1,12 @@
 #!/bin/sh
 
 BASEDIR=$(dirname $(readlink -f $0))/..
+
+# If first argument is provided and is a directory, use it instead
+if [ ! -z "$1" ] && [ -d "$1" ]; then
+    BASEDIR="$1"
+    # Remove the first argument so remaining args pass correctly
+shift
+fi
+	    
 cd $BASEDIR && run -Dprism.order=sw arb.viz.TODO $@
