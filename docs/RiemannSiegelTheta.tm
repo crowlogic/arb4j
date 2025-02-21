@@ -3,105 +3,83 @@
 <style|<tuple|generic|framed-theorems>>
 
 <\body>
-  \;
+  <doc-data|<doc-title|The Riemann-Siegel Theta
+  Function>|<doc-author|<author-data|<author-name|Stephen
+  Crowley>|<\author-affiliation>
+    <date|>
+  </author-affiliation>>>>
 
   <\theorem>
-    The Riemann-Siegel theta function's exact formula:
+    For all real <math|t>,
 
     <\equation>
-      \<theta\><around|(|t|)>=arg <around*|(|\<Gamma\>*<around*|(|<frac|1|4>+i<frac|t|2>|)>|)>-<frac|log
+      \<theta\><around|(|t|)>=arg \<Gamma\>*<around*|(|<frac|1|4>+i<frac|t|2>|)>-<frac|log
       \<pi\>|2>*t+\<pi\>*<around*|\<lfloor\>|<frac|t|2>+<frac|1|4>|\<rfloor\>>
     </equation>
 
-    contains essential phase corrections from the floor function to maintain
-    continuity.
+    is continuous.
   </theorem>
 
   <\proof>
-    <paragraph|Key Insight from Analytic Structure> The Gamma function
-    <math|\<Gamma\><around|(|z|)>> has:
-
-    <\itemize>
-      <item>Poles at <math|z=0,-1,-2>,...
-
-      <item>Branch cuts along <math|<around|(|-\<infty\>,0|]>> for its
-      argument
-    </itemize>
-
-    For <math|z=<frac|1|4>+i<frac|t|2>>, as the real-valued parameter
-    <math|t> increases, <math|z> moves vertically in the complex plane
-    <math|\<bbb-C\>>. The argument <math|arg
-    <around|(|\<Gamma\><around|(|z|)>|)>> becomes discontinuous when crossing
-    "virtual branch cuts" created by analytic continuation.
-
-    <paragraph|Phase Jumps via Reflection > Using the reflection formula:
+    Let <math|z<around|(|t|)>=<frac|1|4>+i<frac|t|2>>. The reflection formula
+    states:
 
     <\equation>
       \<Gamma\><around|(|z|)>*\<Gamma\>*<around|(|1-z|)>=<frac|\<pi\>|sin
       <around|(|\<pi\>*z|)>>
     </equation>
 
-    Taking arguments reveals:
+    Taking arguments:
 
     <\equation>
-      arg \<Gamma\><around|(|z|)>+arg \<Gamma\>*<around|(|1-z|)>\<equiv\>-arg
-      sin <around|(|\<pi\>*z|)><pmod|2*\<pi\>>
+      arg \<Gamma\><around|(|z|)>+arg \<Gamma\>*<around|(|1-z|)>=-arg sin
+      <around|(|\<pi\>*z|)><pmod|2*\<pi\>>
     </equation>
 
-    <paragraph|Discontinuity Condition> Critical phase jumps occur when:
+    For <math|t<rsub|0>> where <math|<frac|t<rsub|0>|2>+<frac|1|4>=n\<in\>\<bbb-Z\>>:
 
     <\equation>
-      sin <around*|(|\<pi\>*<around*|(|<frac|1|4>+i<frac|t|2>|)>|)>=0\<Longrightarrow\><frac|t|2>+<frac|1|4>\<in\>\<bbb-Z\>
+      z*<around|(|t<rsub|0>\<pm\>\<epsilon\>|)>=n\<pm\>i<frac|\<epsilon\>|2>
     </equation>
 
-    This equation marks transition points where:
-
-    <\enumerate>
-      <item>Left limit: <math|arg \<Gamma\><around|(|z<rsup|->|)>> jumps by
-      <math|+\<pi\>>
-
-      <item>Right limit: <math|arg \<Gamma\><around|(|z<rsup|+>|)>> remains
-      continuous
-    </enumerate>
-
-    <paragraph|Floor Function Compensation > The floor term counts crossings:
+    The argument <math|arg \<Gamma\><around|(|z<around|(|t|)>|)>> jumps by
+    <math|\<pi\>> at each such <math|t<rsub|0>>:
 
     <\equation>
-      <around*|\<lfloor\>|<frac|t|2>+<frac|1|4>|\<rfloor\>>=<text|number of
-      integer crossings>
+      lim<rsub|\<epsilon\>\<to\>0<rsup|+>> arg
+      \<Gamma\>*<around|(|z*<around|(|t<rsub|0>+\<epsilon\>|)>|)>=lim<rsub|\<epsilon\>\<to\>0<rsup|->>
+      arg \<Gamma\>*<around|(|z*<around|(|t<rsub|0>-\<epsilon\>|)>|)>+\<pi\>
     </equation>
 
-    Each crossing adds <math|\<pi\>> to cancel the <math|arg \<Gamma\>> jump:
-
-    <\equation>
-      lim<rsub|\<epsilon\>\<to\>0<rsup|->>
-      \<pi\>*<around*|\<lfloor\>|<frac|t+\<epsilon\>|2>+<frac|1|4>|\<rfloor\>>=\<pi\>*<around|(|n-1|)>
-    </equation>
+    At these same points <math|t<rsub|0>>, the floor function term jumps:
 
     <\equation>
       lim<rsub|\<epsilon\>\<to\>0<rsup|+>>
-      \<pi\>*<around*|\<lfloor\>|<frac|t+\<epsilon\>|2>+<frac|1|4>|\<rfloor\>>=\<pi\>*n
+      \<pi\>*<around*|\<lfloor\>|<frac|t<rsub|0>+\<epsilon\>|2>+<frac|1|4>|\<rfloor\>>=\<pi\>*n
     </equation>
 
-    The <math|\<pi\>> difference exactly offsets the <math|arg \<Gamma\>>
-    discontinuity.
+    <\equation>
+      lim<rsub|\<epsilon\>\<to\>0<rsup|->>
+      \<pi\>*<around*|\<lfloor\>|<frac|t<rsub|0>-\<epsilon\>|2>+<frac|1|4>|\<rfloor\>>=\<pi\>*<around|(|n-1|)>
+    </equation>
 
-    <paragraph|Continuity Verification> For <math|t<rsub|0>> where
-    <math|<frac|t<rsub|0>|2>+<frac|1|4>=n\<in\>\<bbb-Z\>>:
+    Therefore at each <math|t<rsub|0>>:
 
-    <\align*>
-      <tformat|<table|<row|<cell|lim<rsub|\<epsilon\>\<to\>0<rsup|->>
-      \<theta\>*<around|(|t<rsub|0>+\<epsilon\>|)>>|<cell|=arg
-      \<Gamma\><around|(|n<rsup|->|)>-<frac|log
-      \<pi\>|2>*t<rsub|0>+\<pi\>*<around|(|n-1|)>>>|<row|<cell|lim<rsub|\<epsilon\>\<to\>0<rsup|+>>
-      \<theta\>*<around|(|t<rsub|0>+\<epsilon\>|)>>|<cell|=<around|(|arg
-      \<Gamma\><around|(|n<rsup|+>|)>+\<pi\>|)>-<frac|log
-      \<pi\>|2>*t<rsub|0>+\<pi\>*n>>|<row|<cell|>|<cell|=arg
-      \<Gamma\><around|(|n<rsup|+>|)>-<frac|log
-      \<pi\>|2>*t<rsub|0>+\<pi\>*n>>>>
-    </align*>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|lim<rsub|\<epsilon\>\<to\>0<rsup|+>>
+      \<theta\>*<around|(|t<rsub|0>+\<epsilon\>|)>>|<cell|=<around|[|arg
+      \<Gamma\><around|(|z<around|(|t<rsub|0><rsup|+>|)>|)>-<frac|log
+      \<pi\>|2>*t<rsub|0>+\<pi\>*n|]>>>|<row|<cell|>|<cell|=<around|[|arg
+      \<Gamma\><around|(|z<around|(|t<rsub|0><rsup|->|)>|)>+\<pi\>-<frac|log
+      \<pi\>|2>*t<rsub|0>+\<pi\>*n|]>>>|<row|<cell|>|<cell|=<around|[|arg
+      \<Gamma\><around|(|z<around|(|t<rsub|0><rsup|->|)>|)>-<frac|log
+      \<pi\>|2>*t<rsub|0>+\<pi\>*<around|(|n-1|)>|]>>>|<row|<cell|>|<cell|=lim<rsub|\<epsilon\>\<to\>0<rsup|->>
+      \<theta\>*<around|(|t<rsub|0>-\<epsilon\>|)>>>>>>
+    </equation>
 
-    Matching limits confirm smooth transition.
+    Between any two consecutive such points <math|t<rsub|0>>, all terms in
+    <math|\<theta\><around|(|t|)>> are continuous. Thus
+    <math|\<theta\><around|(|t|)>> is continuous for all real <math|t>.
   </proof>
 </body>
 
@@ -114,39 +92,3 @@
     <associate|page-width|auto>
   </collection>
 </initial>
-
-<\references>
-  <\collection>
-    <associate|auto-1|<tuple|1|1>>
-    <associate|auto-2|<tuple|2|1>>
-    <associate|auto-3|<tuple|3|1>>
-    <associate|auto-4|<tuple|4|1>>
-    <associate|auto-5|<tuple|5|2>>
-  </collection>
-</references>
-
-<\auxiliary>
-  <\collection>
-    <\associate|toc>
-      <with|par-left|<quote|3tab>|Key Insight from Analytic Structure (Search
-      Result [1],[8]) <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-1>>
-
-      <with|par-left|<quote|3tab>|Phase Jumps via Reflection
-      \ <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-2>>
-
-      <with|par-left|<quote|3tab>|Discontinuity Condition
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-3>>
-
-      <with|par-left|<quote|3tab>|Floor Function Compensation
-      \ <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-4>>
-
-      <with|par-left|<quote|3tab>|Continuity Verification
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-5>>
-    </associate>
-  </collection>
-</auxiliary>
