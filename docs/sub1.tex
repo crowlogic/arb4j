@@ -271,6 +271,50 @@ transform when modulated by monotonically increasing functions.
   function.
 \end{proof}
 
+\begin{theorem}[Sample Path Transformation]
+Let $X(t)$ be a centered Gaussian process with stationary covariance kernel $K(|t-s|)$ and almost surely continuous sample paths. Let $\theta \in \mathcal{F}$ be a strictly increasing modulating function. Then there exists a Gaussian process $Y(t)$ with:
+
+1. Covariance kernel $K_\theta(t,s) = K(|\theta(t)-\theta(s)|)$
+2. Sample paths related to $X$ through $Y(t) = X(\theta(t))$ almost surely
+3. Expected zero crossings satisfying $\mathbb{E}[N_Y([0,T])] = \sqrt{-\ddot{K}(0)}(\theta(T)-\theta(0))$
+\end{theorem}
+
+\begin{proof}
+\textbf{Step 1: Process Construction} \\
+Define $Y(t) := X(\theta(t))$. Since $\theta$ is strictly increasing and measurable, $Y$ remains adapted to the original filtration. By almost sure continuity of $X$ and continuity of $\theta$, $Y$ inherits almost sure path continuity.
+
+\textbf{Step 2: Covariance Structure} \\
+For any $t,s \geq 0$:
+\begin{equation}
+\begin{aligned}
+\mathbb{E}[Y(t)Y(s)] &= \mathbb{E}[X(\theta(t))X(\theta(s))] \\
+&= K(|\theta(t)-\theta(s)|) \\
+&= K_\theta(t,s)
+\end{aligned}
+\end{equation}
+Thus $Y$ has the modulated covariance kernel.
+
+\textbf{Step 3: Gaussian Preservation} \\
+For any finite collection $\{t_1,...,t_n\}$, the vector $(Y(t_1),...,Y(t_n)) = (X(\theta(t_1)),...,X(\theta(t_n)))$ is Gaussian by stationarity of $X$. Therefore $Y$ is a Gaussian process.
+
+\textbf{Step 4: Zero Crossing Relationship} \\
+From Theorem 3 in the original paper, for any Gaussian process with kernel $K_\theta$:
+\begin{equation}
+\mathbb{E}[N_Y([0,T])] = \sqrt{-\ddot{K}(0)}\int_0^T \dot{\theta}(t)dt = \sqrt{-\ddot{K}(0)}(\theta(T)-\theta(0))
+\end{equation}
+
+\textbf{Step 5: Pathwise Isomorphism} \\
+The mapping $X \mapsto Y$ preserves:
+\begin{itemize}
+\item Gaussian measure structure (via covariance isometry)
+\item Path continuity (by continuity of $\theta$)
+\item Measurability (as $\theta$ is measurable)
+\end{itemize}
+
+This bijective mapping establishes an isomorphism between the original and modulated process path spaces. The inverse transformation is given by $Y \mapsto X(t) = Y(\theta^{-1}(t))$.
+\end{proof}
+
+
 \section{Conclusion}
 
 The analysis presented in this article establishes several fundamental
@@ -290,5 +334,6 @@ values at the boundaries of the interval to which the expectation corresponds.
 %The author would like to thank the referees for their helpful suggestions.
 
 \bibliography{refs}
+
 
 \end{document}
