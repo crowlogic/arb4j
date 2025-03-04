@@ -271,52 +271,6 @@ transform when modulated by monotonically increasing functions.
   function.
 \end{proof}
 
-\begin{theorem}[Sample Path Transformation]
-Let $X(t)$ be a centered Gaussian process with stationary covariance kernel $K(|t-s|)$ and almost surely continuous sample paths. Let $\theta \in \mathcal{F}$ be a strictly increasing modulating function. Then there exists a Gaussian process $Y(t)$ with:
-
-1. Covariance kernel $K_\theta(t,s) = K(|\theta(t)-\theta(s)|)$
-2. Sample paths related to $X$ through $Y(t) = X(\theta(t))$ almost surely
-3. Expected zero crossings satisfying $\mathbb{E}[N_Y([0,T])] = \sqrt{-\ddot{K}(0)}(\theta(T)-\theta(0))$
-\end{theorem}
-
-\begin{proof}
-\textbf{Step 1: Process Construction} \\
-Define $Y(t) := X(\theta(t))$. Since $\theta$ is strictly increasing and measurable, $Y$ remains adapted to the original filtration. By almost sure continuity of $X$ and continuity of $\theta$, $Y$ inherits almost sure path continuity.
-
-\textbf{Step 2: Covariance Structure} \\
-For any $t,s \geq 0$:
-\begin{equation}
-\begin{aligned}
-\mathbb{E}[Y(t)Y(s)] &= \mathbb{E}[X(\theta(t))X(\theta(s))] \\
-&= K(|\theta(t)-\theta(s)|) \\
-&= K_\theta(t,s)
-\end{aligned}
-\end{equation}
-Thus $Y$ has the modulated covariance kernel.
-
-\textbf{Step 3: Gaussian Preservation} \\
-For any finite collection $\{t_1,...,t_n\}$, the vector $(Y(t_1),...,Y(t_n)) = (X(\theta(t_1)),...,X(\theta(t_n)))$ is Gaussian by stationarity of $X$. Therefore $Y$ is a Gaussian process.
-
-\textbf{Step 4: Zero Crossing Relationship} \\
-From Theorem 3 in the original paper, for any Gaussian process with kernel $K_\theta$:
-\begin{equation}
-\mathbb{E}[N_Y([0,T])] = \sqrt{-\ddot{K}(0)}\int_0^T \dot{\theta}(t)dt = \sqrt{-\ddot{K}(0)}(\theta(T)-\theta(0))
-\end{equation}
-
-\textbf{Step 5: Pathwise Isomorphism} \\
-The mapping $X \mapsto Y$ preserves:
-\begin{itemize}
-\item Gaussian measure structure (via covariance isometry)
-\item Path continuity (by continuity of $\theta$)
-\item Measurability (as $\theta$ is measurable)
-\end{itemize}
-
-This bijective mapping establishes an isomorphism between the original and modulated process path spaces. The inverse transformation is given by $Y \mapsto X(t) = Y(\theta^{-1}(t))$.
-\end{proof}
-
-\begin{theorem}[Sample Path Transformation]
-
-
 
 \section{Conclusion}
 
@@ -332,6 +286,62 @@ reproducing kernel Hilbert spaces, and (3) a concise formula for the expected va
 of the zero-counting function of the monotonically transformed process, expressed 
 in terms of the original kernel's second derivative at zero times the modulating function's
 values at the boundaries of the interval to which the expectation corresponds.
+
+\begin{theorem}[Sample Path Transformation]
+Let \(X(t,\omega)\) be a centered Gaussian process defined on a probability space \((\Omega, \mathcal{F}, \mathbb{P})\) with stationary covariance kernel \(K(|t - s|)\). Let \(\theta \in \mathcal{F}\) be a strictly monotonically increasing function with a piecewise continuous first derivative satisfying \(\dot{\theta}(t) > 0\). Define \(Y(t, \omega)\) by
+\[
+Y(t, \omega) := X(\theta(t), \omega).
+\]
+Then:
+\begin{enumerate}
+\item \(Y(t, \omega)\) is a Gaussian process.
+\item The covariance kernel of \(Y(t, \omega)\) is
+\[
+K_{\theta}(t,s) = K(|\theta(t)-\theta(s)|).
+\]
+\item If \(X(t,\omega)\) has almost surely continuous sample paths in \(t\), then \(Y(t,\omega)\) also has almost surely continuous sample paths in \(t\). The mapping \(t \mapsto \theta(t)\) transforms the paths of \(X(t,\omega)\) into the paths of \(Y(t,\omega)\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Let \(t_1, t_2, \dots, t_n \in \mathbb{R}\). The random vector \((Y(t_1, \omega), Y(t_2, \omega), \dots, Y(t_n, \omega))\) is given by \((X(\theta(t_1), \omega), X(\theta(t_2), \omega), \dots, X(\theta(t_n), \omega))\). Since \((X(\theta(t_1), \omega), \dots, X(\theta(t_n), \omega))\) is a re-indexing of \((X(u_1, \omega), X(u_2, \omega), \dots, X(u_n, \omega))\), where \(u_i = \theta(t_i)\), and \((X(u_1, \omega), \dots, X(u_n, \omega))\) are jointly Gaussian random variables for all \(\omega \in \Omega\), \((Y(t_1,\omega), \dots, Y(t_n,\omega))\) is jointly Gaussian. Therefore, \(Y(t, \omega)\) is a Gaussian process.
+
+The covariance kernel of \(Y(t, \omega)\) satisfies
+\[
+\mathrm{Cov}(Y(t, \omega), Y(s, \omega)) = \mathrm{Cov}(X(\theta(t), \omega), X(\theta(s), \omega)) = K(|\theta(t) - \theta(s)|),
+\]
+where the second equality holds because \(K(|t-s|)\) is the covariance kernel of the stationary process \(X(t, \omega)\).
+
+For the continuity of sample paths, suppose \(X(t, \omega)\) has almost surely continuous sample paths in \(t\). By assumption, for almost every \(\omega \in \Omega\), the function \(t \mapsto X(t, \omega)\) is continuous. Since \(t \mapsto \theta(t)\) is continuous and strictly increasing, the composition \(t \mapsto X(\theta(t), \omega)\) is continuous for almost every \(\omega \in \Omega\). Therefore, the sample paths \(t \mapsto Y(t,\omega)\) are continuous for almost every \(\omega\).
+
+This completes the proof.
+\end{proof}
+
+\begin{theorem}[Inverse Sample Path Transformation]
+Let \(Y(t, \omega) = X(\theta(t), \omega)\), where \(X(t, \omega)\) is a centered Gaussian process with covariance kernel \(K(|t - s|)\), and \(\theta(t)\) is strictly increasing and invertible. The original process \(X(t, \omega)\) is recovered from \(Y(t, \omega)\) by
+\[
+X(t, \omega) = Y(\theta^{-1}(t), \omega).
+\]
+The process \(X(t, \omega)\) so obtained:
+\begin{enumerate}
+    \item is a Gaussian process;
+    \item has covariance kernel \(K(|t-s|)\);
+    \item has almost surely continuous sample paths if \(Y(t, \omega)\) does.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By definition of \(Y(t, \omega)\), we have \(Y(\theta^{-1}(t), \omega) = X(t, \omega)\). Since \(Y(t, \omega)\) is Gaussian, \(X(t, \omega)\) is also Gaussian. For any \(t, s \in \mathbb{R}\),
+\[
+\mathrm{Cov}(X(t, \omega), X(s, \omega)) = \mathrm{Cov}(Y(\theta^{-1}(t), \omega), Y(\theta^{-1}(s), \omega)).
+\]
+Substituting \(Y(t, \omega) = X(\theta(t), \omega)\), this becomes
+\[
+\mathrm{Cov}(X(t, \omega), X(s, \omega)) = K(|\theta(\theta^{-1}(t)) - \theta(\theta^{-1}(s))|) = K(|t - s|).
+\]
+If \(Y(t, \omega)\) has continuous paths and \(\theta(t)\) is continuous, \(t \mapsto Y(\theta^{-1}(t), \omega)\) is continuous for almost every \(\omega\), so \(X(t, \omega)\) has continuous paths.
+\end{proof}
+
 
 % \section*{Acknowledgement}
 %The author would like to thank the referees for their helpful suggestions.
