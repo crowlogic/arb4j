@@ -314,6 +314,32 @@ The mapping $X \mapsto Y$ preserves:
 This bijective mapping establishes an isomorphism between the original and modulated process path spaces. The inverse transformation is given by $Y \mapsto X(t) = Y(\theta^{-1}(t))$.
 \end{proof}
 
+\begin{theorem}[Sample Path Transformation]
+Let $X(t)$ be a Gaussian process with stationary covariance kernel $K(|t - s|)$, and let $\theta(t)$ be a strictly increasing, differentiable function with $\dot{\theta}(t) > 0$. Define the modulated Gaussian process $Y(t)$ by
+\[
+Y(t) = X(\theta(t)) \sqrt{\dot{\theta}(t)}.
+\]
+The sample paths of $Y(t)$ are related explicitly to those of $X(t)$ by evaluating the paths of $X$ at the transformed argument $\theta(t)$ and multiplying by a factor of $\sqrt{\dot{\theta}(t)}$. In particular, the zero-crossings of $Y(t)$ occur at precisely those points $t$ for which $X(\theta(t)) = 0$. Consequently, the number of zero-crossings of $Y(t)$ on any interval $[a,b]$ equals the number of zero-crossings of $X(t)$ on the interval $[\theta(a),\theta(b)]$.
+\end{theorem}
+
+\begin{proof}
+The sample paths of $Y(t)$ are given directly by definition as transformations of the sample paths of $X(t)$:
+\[
+Y(t) = X(\theta(t)) \sqrt{\dot{\theta}(t)},
+\]
+thus explicitly relating each realization of $Y(t)$ to a corresponding realization of $X(t)$ via evaluation at $\theta(t)$ and scaling by $\sqrt{\dot{\theta}(t)}$.
+
+For the zero-crossings, we observe that
+\[
+Y(t) = 0 \iff X(\theta(t)) \sqrt{\dot{\theta}(t)} = 0.
+\]
+Since $\dot{\theta}(t) > 0$, this equation holds if and only if
+\[
+X(\theta(t)) = 0.
+\]
+Because $\theta(t)$ is strictly increasing and continuous, it defines a one-to-one correspondence between the intervals $[a, b]$ and $[\theta(a), \theta(b)]$. Thus, zero-crossings of $Y(t)$ directly correspond to zero-crossings of $X(t)$ under the mapping induced by $\theta(t)$, and the number of zero-crossings is preserved exactly.
+\end{proof}
+
 
 \section{Conclusion}
 
