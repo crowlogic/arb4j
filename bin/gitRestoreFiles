@@ -1,0 +1,46 @@
+#!/bin/bash
+# git-restore-files.sh - Restore deleted files within existing directory
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 <directory_path> [--force-push] [--dry-run]"
+    echo "Example: $0 src/components/ --dry-run"
+    exit 1
+fi
+
+TARGET_DIR="${1%/}/"  # Ensure trailing slash for directory specificity
+DELETED_FILES=$(git log --diff-filter=D --pretty=format: --name-only "$TARGET_DIR" | sort -u)
+
+restore_files() {
+    while IFS= read -r file; do
+        if [ -n "$file" ]; then
+            echo "Restoring $file"
+            last_commit=$(git rev-list -n 1 HEAD -- "$file")
+            git restore --source="$last_commit" -- "$file"
+        fi
+    done <<< "$DELETED_FILES"
+}
+
+# Dry run mode
+if [[ "$*" =~ --dry-run ]]; then
+    echo "Would restore these files:"
+    echo "$DELETED_FILES"
+    exit 0
+fi
+
+# Main execution
+if [ -z "$DELETED_FILES" ]; then
+    echo "No deleted files found in directory: $TARGET_DIR"
+    exit 0
+fi
+
+restore_files
+
+# Optional force push
+if [[ "$*" =~ --force-push ]]; then
+    git add "$TARGET_DIR"
+    git commit -m "Automated file restoration in $TARGET_DIR"
+    git push --force-with-lease
+    echo "Restoration committed and pushed"
+else
+    echo "Restoration complete. Commit and push manually when verified"
+fi
