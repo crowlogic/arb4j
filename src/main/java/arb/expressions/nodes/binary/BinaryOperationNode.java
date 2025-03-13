@@ -70,7 +70,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     mapTypes(AlgebraicNumber.class, Real.class, Real.class);
     mapTypes(AlgebraicNumber.class, Complex.class, Complex.class);
     mapTypes(AlgebraicNumber.class, RealPolynomial.class, RealPolynomial.class);
-    mapTypes(AlgebraicNumber.class, ComplexPolynomial.class, ComplexPolynomial.class);    
+    mapTypes(AlgebraicNumber.class, ComplexPolynomial.class, ComplexPolynomial.class);
     mapTypes(Real.class, Complex.class, Complex.class);
     mapTypes(Real.class, ComplexPolynomial.class, ComplexPolynomial.class);
     mapTypes(Real.class, RationalFunction.class, RationalFunction.class);
@@ -389,16 +389,10 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   @Override
   public String toString()
   {
-    boolean needsImprovement = isCommutative() || (left.isLeaf() && right.isLeaf());
-    String  string           = needsImprovement ? String.format("%s%s%s", left, symbol, right)
-                                                : String.format(String.format("%s%s%s",
-                                                                              stringFormat(left),
-                                                                              "%s",
-                                                                              stringFormat(right)),
-                                                                left == null ? "0" : left,
-                                                                symbol,
-                                                                right == null ? "0" : right);
-    return string;
+    return String.format(String.format("%s%s%s", stringFormat(left), "%s", stringFormat(right)),
+                         left == null ? "0" : left,
+                         symbol,
+                         right == null ? "0" : right);
   }
 
   public String toString(int depth)
