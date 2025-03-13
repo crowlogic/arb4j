@@ -9,7 +9,7 @@ import arb.documentation.TheArb4jLibrary;
  *      {@link TheArb4jLibrary}
  */
 public class Quantifier implements
-                        LogicalSymbol
+                        LogicalConnective
 {
   // Implementation for quantifiers
 }

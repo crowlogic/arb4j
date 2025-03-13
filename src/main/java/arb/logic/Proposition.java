@@ -45,5 +45,10 @@ import arb.language.Word;
 public interface Proposition<W extends Word, S extends Sentence<? extends W>> extends
                             Sentence<W>
 {
+  public boolean evaluate();
+
+  public Proposition<W, S> negate();
+
+  public Proposition<W, S> combine(LogicalConnective logicalConnective, Proposition<W, S> proposition);
 
 }

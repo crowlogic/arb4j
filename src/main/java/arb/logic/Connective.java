@@ -9,7 +9,7 @@ import arb.documentation.TheArb4jLibrary;
  *      {@link TheArb4jLibrary}
  */
 public class Connective implements
-                        LogicalSymbol
+                        LogicalConnective
 {
   // Implementation for logical connectives
 }
