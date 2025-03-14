@@ -1,46 +1,108 @@
-#!/bin/bash
-# git-restore-files.sh - Restore deleted files within existing directory
+#!/bin/bash 
 
-if [ -z "$1" ]; then
-    echo "Usage: $0 <directory_path> [--force-push] [--dry-run]"
-    echo "Example: $0 src/components/ --dry-run"
-    exit 1
+# Exit on first error, unset variables, and propagate pipe failures
+set -euo pipefail
+
+if [ $# -lt 1 ]; then
+  echo "Usage: $0 <directory_path> [--dry-run] [--force-push]"
+  exit 1
 fi
 
-TARGET_DIR="${1%/}/"  # Ensure trailing slash for directory specificity
-DELETED_FILES=$(git log --diff-filter=D --pretty=format: --name-only "$TARGET_DIR" | sort -u)
+TARGET_DIR="${1%/}/"
+DRY_RUN=false
+FORCE_PUSH=false
 
-restore_files() {
-    while IFS= read -r file; do
-        if [ -n "$file" ]; then
-            echo "Restoring $file"
-            last_commit=$(git rev-list -n 1 HEAD -- "$file")
-            git restore --source="$last_commit" -- "$file"
-        fi
-    done <<< "$DELETED_FILES"
-}
+for arg in "$@"; do
+  case $arg in
+    --dry-run) DRY_RUN=true ;;
+    --force-push) FORCE_PUSH=true ;;
+  esac
+done
 
-# Dry run mode
-if [[ "$*" =~ --dry-run ]]; then
-    echo "Would restore these files:"
-    echo "$DELETED_FILES"
-    exit 0
-fi
+# Get all commits that deleted files (most recent first)
+echo "Finding deleted files in $TARGET_DIR..."
+COMMITS=$(git log --pretty="%H" --diff-filter=D -- "$TARGET_DIR")
 
-# Main execution
-if [ -z "$DELETED_FILES" ]; then
-    echo "No deleted files found in directory: $TARGET_DIR"
-    exit 0
-fi
+# Use temp files for safety with special characters and large output
+TMPFILE=$(mktemp)
+trap 'rm -f "$TMPFILE"' EXIT
 
-restore_files
+# Find all deleted files with their deleting commit
+for commit in $COMMITS; do
+  git diff-tree --name-status --no-commit-id -r "$commit" -- "$TARGET_DIR" | grep ^D | cut -f2- | 
+  while read -r file; do
+    # Store as "file:commit"
+    echo "$file:$commit" >> "$TMPFILE"
+  done
+done
 
-# Optional force push
-if [[ "$*" =~ --force-push ]]; then
-    git add "$TARGET_DIR"
-    git commit -m "Automated file restoration in $TARGET_DIR"
-    git push --force-with-lease
-    echo "Restoration committed and pushed"
+# Remove duplicates (keep only first occurrence - most recent deletion)
+if [ -s "$TMPFILE" ]; then
+  # Sort the file paths and remove duplicates
+  cat "$TMPFILE" | awk -F: '{if (!seen[$1]++) print $0}' > "${TMPFILE}.sorted"
+  mv "${TMPFILE}.sorted" "$TMPFILE"
 else
-    echo "Restoration complete. Commit and push manually when verified"
+  echo "No deleted files found in $TARGET_DIR"
+  exit 0
 fi
+
+# Get the total count
+COUNT=$(wc -l < "$TMPFILE")
+echo "Found $COUNT deleted files"
+
+# Handle dry run mode
+if [ "$DRY_RUN" = true ]; then
+  echo "Would restore these files:"
+  cat "$TMPFILE" | cut -d: -f1
+  exit 0
+fi
+
+# Create a directory to store restoration results
+RESULTS_FILE=$(mktemp)
+
+# Restore each file from the commit before it was deleted
+RESTORED=0
+while IFS=: read -r file deleted_commit; do
+  # Find the parent commit where the file still exists
+  PARENT=$(git rev-parse "$deleted_commit^" 2>/dev/null || echo "")
+  
+  if [ -z "$PARENT" ]; then
+    echo "🔴 Error: Cannot find parent commit for $deleted_commit"
+    continue
+  fi
+  
+  # Try to restore the file
+  echo "Attempting to restore: $file"
+  if git show "$PARENT:$file" > /dev/null 2>&1; then
+    mkdir -p "$(dirname "$file")"
+    git show "$PARENT:$file" > "$file"
+    echo "✅ Restored $file"
+    RESTORED=$((RESTORED + 1))
+    echo "$file" >> "$RESULTS_FILE"
+  else
+    echo "❌ Could not restore $file (not found in parent commit)"
+  fi
+done < "$TMPFILE"
+
+echo "==========================="
+echo "✅ Restoration complete. Restored $RESTORED of $COUNT files."
+
+# Optionally, commit and force-push the restored files
+if [ "$FORCE_PUSH" = true ] && [ $RESTORED -gt 0 ]; then
+  # Add only the successfully restored files
+  while read -r file; do
+    git add "$file"
+  done < "$RESULTS_FILE"
+  
+  git commit -m "Restored $RESTORED deleted files in $TARGET_DIR"
+  git push --force-with-lease
+  echo "🚀 Changes committed and force-pushed."
+else
+  if [ $RESTORED -gt 0 ]; then
+    echo "📝 Please review and commit the restored files manually."
+  fi
+fi
+
+# Clean up temp files
+rm -f "$TMPFILE" "$RESULTS_FILE"
+
