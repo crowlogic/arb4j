@@ -14,7 +14,6 @@
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_ATTR_USE_ARGFILE" value="false"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_SHOW_CODEDETAILS_IN_EXCEPTION_MESSAGES" value="true"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_CLASSPATH_ONLY_JAR" value="false"/>
-    <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-24/"/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value=""/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="arb4j"/>
     <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea -Djava.library.path=${project_loc:/arb4j} --add-opens javafx.controls/javafx.scene.control.skin=arb4j --add-opens javafx.controls/javafx.scene.control.cell=arb4j --add-opens javafx.graphics/javafx.stage=arb4j -Djavafx.scene.control.skin.TableViewSkin.pannable=true  -Djavafx.scene.control.skin.ListViewSkin.pannable=true --add-opens javafx.graphics/com.sun.javafx.tk.quantum=arb4j --add-modules javafx.graphics"/>
