@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|framed-theorems>>
+<style|<tuple|generic|boring-white|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|The Operational Matrix of The Random Wave
@@ -182,11 +182,11 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|?|1|../../.TeXmacs/texts/scratch/no_name_72.tm>>
-    <associate|auto-2|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_72.tm>>
-    <associate|auto-3|<tuple|5|2|../../.TeXmacs/texts/scratch/no_name_72.tm>>
-    <associate|auto-4|<tuple|8|3|../../.TeXmacs/texts/scratch/no_name_72.tm>>
-    <associate|auto-5|<tuple|11|3|../../.TeXmacs/texts/scratch/no_name_72.tm>>
+    <associate|auto-1|<tuple|?|1>>
+    <associate|auto-2|<tuple|1|1>>
+    <associate|auto-3|<tuple|5|2>>
+    <associate|auto-4|<tuple|8|3>>
+    <associate|auto-5|<tuple|11|3>>
   </collection>
 </references>
 
