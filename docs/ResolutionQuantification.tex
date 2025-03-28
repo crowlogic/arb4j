@@ -1,0 +1,80 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmop}[1]{\ensuremath{\operatorname{#1}}}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{Arb and Uncertainty Propagation in Financial Modeling}
+
+\date{}
+
+\maketitle
+
+\section{Introduction}
+
+Arbitrary-precision ball arithmetic (Arb) provides a rigorous foundation for
+uncertainty propagation in complex numerical computations, particularly in the
+context of financial modeling.
+
+\section{Key Concepts}
+
+\subsection{Uncertainty Propagation}
+
+Arb is fundamentally based on uncertainty propagation. Every arithmetic
+operation carries forward the precision of its operands:
+\[ (x \pm \epsilon_x) \circ (y \pm \epsilon_y) = z \pm \epsilon_z \]
+where $\circ$ represents any basic arithmetic operation and $\epsilon$ denotes
+the associated uncertainty.
+
+\subsection{Rigorous Error Bounds}
+
+For any computation $f (x)$, Arb provides rigorous error bounds:
+\[ f (x) \in [f_{\tmop{low}} (x), f_{\tmop{high}} (x)] \]
+These bounds are mathematically guaranteed, not approximations.
+
+\subsection{Representation of Numbers}
+
+In Arb, a number $x$ is represented as a ball:
+\[ x = [m - r, m + r] \]
+where $m$ is the midpoint and $r$ is the radius, encapsulating the
+uncertainty.
+
+\section{Implications for Financial Modeling}
+
+\subsection{Parameter Estimation}
+
+For any model parameter $\theta$:
+\[ \theta \in [\theta_{\tmop{low}}, \theta_{\tmop{high}}] \]
+The goal is to minimize $(\theta_{\tmop{high}} - \theta_{\tmop{low}})$ through
+precise calibration.
+
+\subsection{Price Calculation}
+
+For an option price $P$:
+\[ P = f (\theta_1, \theta_2, ..., \theta_n) \in [P_{\tmop{low}},
+   P_{\tmop{high}}] \]
+The bounds $[P_{\tmop{low}}, P_{\tmop{high}}]$ rigorously account for all
+parameter uncertainties.
+
+\subsection{Model Robustness}
+
+The use of Arb ensures:
+\begin{enumerate}
+  \item Prevention of silent error accumulation
+  
+  \item Clear quantification of result reliability
+  
+  \item Does not suffer from numerical instabilities 
+\end{enumerate}
+
+\section{Conclusion}
+
+The integration of Arb in financial modeling provides a level of numerical
+rigor and reliability crucial for advanced quantitative finance applications,
+offering mathematically guaranteed bounds on all computations and results.
+
+\end{document}

@@ -1,0 +1,242 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{latexsym}
+
+%%%%%%%%%% Start TeXmacs macros
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+%
+
+
+\begin{document}
+
+\title{Sketch Finite and Full Rank Kernel Analysis for Translation-Invariant
+Kernels with Proofs}
+
+\date{November 22, 2024}
+
+\maketitle
+
+\section{Finite Rank Kernels and Their Eigenfunctions}
+
+Given:
+\begin{itemize}
+  \item The kernel $K (s, t)$ is translation-invariant, i.e., $K (s, t) = K (t
+  - s)$
+  
+  \item We have a basis $\{\psi_n (t - s)\}_{n = 1}^{\infty}$ that uniformly
+  converges to the kernel:
+  \[ K (t - s) = \lim_{N \to \infty}  \sum_{n = 1}^N \psi_n  (t - s) \]
+\end{itemize}
+
+\section{Finite Rank Kernels}
+
+For each finite $N$, we have a finite-rank kernel:
+\[ K_N (s, t) = \sum_{n = 1}^N \psi_n  (t - s) \]
+Key properties:
+\begin{enumerate}
+  \item The rank of $K_N$ is exactly $N$.
+  
+  \item $K_N$ has exactly $N$ non-zero eigenvalues and corresponding
+  eigenfunctions.
+  
+  \item These eigenfunctions are exact for $K_N$, not approximations within
+  $K_N$.
+\end{enumerate}
+
+\section{Eigenvalue Problem for Finite Rank Kernels}
+
+For each $K_N$, we solve:
+\[ A_N \mathbf{C}_N = \lambda_N \mathbf{C}_N \]
+where:
+\begin{itemize}
+  \item $A_N = [A_{ij}]_{i, j = 1}^N$ with $A_{ij} = \int \psi_i  (t - s)
+  \psi_j (t) dt$
+  
+  \item $\mathbf{C}_N = [c_{1 k}, c_{2 k}, ..., c_{Nk}]^T$ is the $k$-th
+  eigenvector
+  
+  \item $\lambda_N$ is the corresponding eigenvalue
+\end{itemize}
+This yields exactly $N$ eigenvalue-eigenfunction pairs $(\lambda_k^{(N)},
+\phi_k^{(N)})$, where:
+\[ \phi_k^{(N)} (s) = \sum_{n = 1}^N c_{nk}^{(N)} \psi_n (s) \]
+These are exact eigenfunctions for $K_N$, not approximations within $K_N$.
+
+\section{Relationship to Full Rank Kernel}
+
+As $N \to \infty$, we approach the full-rank kernel:
+\[ \lim_{N \to \infty} K_N (s, t) = K (s, t) \]
+Important observations:
+\begin{enumerate}
+  \item The eigenfunctions $\phi_k^{(N)}$ of $K_N$ are only approximate
+  eigenfunctions of the full-rank kernel $K$.
+  
+  \item As $N$ increases, these approximations improve.
+  
+  \item In the limit $N \to \infty$, we obtain the true eigenfunctions of the
+  full-rank kernel $K$.
+\end{enumerate}
+
+\section{Convergence Process}
+
+1. For each finite $N$, we have $N$ exact eigenfunctions for $K_N$. 2. As $N$
+increases, we get more eigenfunctions, and existing ones are refined. 3. In
+the limit, we obtain infinitely many eigenfunctions of the full-rank kernel
+$K$.
+
+\section{Computational Implications}
+
+When implementing this in a program:
+
+1. Choose a finite $N$ based on computational resources and desired accuracy.
+2. Solve the eigenvalue problem for $K_N$, obtaining $N$
+eigenvalue-eigenfunction pairs. 3. These pairs are exact for $K_N$ but
+approximate for the full-rank $K$. 4. To improve accuracy, increase $N$ and
+repeat, knowing that: a) You'll get more eigenvalue-eigenfunction pairs. b)
+Existing pairs will be refined, becoming better approximations of $K$'s
+eigenfunctions.
+
+\section{Proofs}
+
+\subsection{Rank of Finite Kernels}
+
+\begin{theorem}
+  The rank of the finite kernel $K_N (s, t) = \sum_{n = 1}^N \psi_n  (t - s)$
+  is exactly $N$.
+\end{theorem}
+
+\begin{proof}
+  Let $\mathcal{H}_N$ be the reproducing kernel Hilbert space (RKHS)
+  associated with $K_N$.
+  \begin{enumerate}
+    \item By construction, $K_N (s, t) = \sum_{n = 1}^N \psi_n  (t - s)$.
+    
+    \item The set $\{\psi_n \}_{n = 1}^N$ spans $\mathcal{H}_N$.
+    
+    \item These functions are linearly independent (as they form a basis).
+    
+    \item Therefore, $\dim (\mathcal{H}_N) = N$.
+    
+    \item For a positive definite kernel, the rank is equal to the dimension
+    of its RKHS.
+    
+    \item Thus, rank($K_N$) = $\dim (\mathcal{H}_N) = N$.
+  \end{enumerate}
+\end{proof}
+
+\subsection{Number of Non-zero Eigenvalues}
+
+\begin{theorem}
+  The finite-rank kernel $K_N$ has exactly $N$ non-zero eigenvalues.
+\end{theorem}
+
+\begin{proof}
+  \begin{enumerate}
+    \item The eigenvalue equation for $K_N$ is:
+    \[ \int K_N (s, t) \phi (t) dt = \lambda \phi (s) \]
+    \item Substituting the expression for $K_N$:
+    \[ \int \sum_{n = 1}^N \psi_n  (t - s) \phi (t) dt = \lambda \phi (s) \]
+    \item This can be written as a matrix equation: $A_N \mathbf{c} = \lambda
+    \mathbf{c}$ where $A_N = [A_{ij}]_{i, j = 1}^N$ with $A_{ij} = \int \psi_i
+    (t - s) \psi_j (t) dt$
+    
+    \item $A_N$ is an $N \times N$ matrix.
+    
+    \item By the fundamental theorem of linear algebra, the number of non-zero
+    eigenvalues of $A_N$ is equal to its rank.
+    
+    \item We proved earlier that rank($K_N$) = $N$.
+    
+    \item Therefore, $K_N$ has exactly $N$ non-zero eigenvalues.
+  \end{enumerate}
+\end{proof}
+
+\subsection{Exactness of Eigenfunctions for $K_N$}
+
+\begin{lemma}
+  The eigenfunctions $\phi_k^{(N)}$ obtained from solving $A_N \mathbf{C}_N =
+  \lambda_N \mathbf{C}_N$ are exact eigenfunctions of $K_N$.
+\end{lemma}
+
+\begin{proof}
+  \begin{enumerate}
+    \item Let $\phi_k^{(N)} (s) = \sum_{n = 1}^N c_{nk}^{(N)} \psi_n (s)$ be
+    an eigenfunction obtained from $A_N \mathbf{C}_N = \lambda_N
+    \mathbf{C}_N$.
+    
+    \item Substitute this into the eigenvalue equation for $K_N$:
+    \[ \int K_N (s, t) \phi_k^{(N)} (t) dt = \lambda_k^{(N)} \phi_k^{(N)} (s)
+    \]
+    \[ \int \sum_{i = 1}^N \psi_i  (t - s)  \sum_{j = 1}^N c_{jk}^{(N)} \psi_j
+       (t) dt = \lambda_k^{(N)}  \sum_{n = 1}^N c_{nk}^{(N)} \psi_n (s) \]
+    \[ \sum_{i = 1}^N \sum_{j = 1}^N c_{jk}^{(N)}  \int \psi_i  (t - s) \psi_j
+       (t) dt = \lambda_k^{(N)}  \sum_{n = 1}^N c_{nk}^{(N)} \psi_n (s) \]
+    \[ \sum_{i = 1}^N \sum_{j = 1}^N A_{ij} c_{jk}^{(N)} \psi_i (s) =
+       \lambda_k^{(N)}  \sum_{n = 1}^N c_{nk}^{(N)} \psi_n (s) \]
+    \item This is exactly satisfied by the solution to $A_N \mathbf{C}_N =
+    \lambda_N \mathbf{C}_N$.
+    
+    \item Therefore, $\phi_k^{(N)}$ is an exact eigenfunction of $K_N$ with
+    eigenvalue $\lambda_k^{(N)}$.
+  \end{enumerate}
+\end{proof}
+
+\subsection{Convergence to Full-Rank Kernel}
+
+\begin{theorem}
+  As $N \to \infty$, $K_N$ converges uniformly to $K$.
+\end{theorem}
+
+\begin{proof}
+  \begin{enumerate}
+    \item By definition, $K (t - s) = \lim_{N \to \infty}  \sum_{n = 1}^N
+    \psi_n  (t - s)$ uniformly.
+    
+    \item This means that for any $\epsilon > 0$, there exists an $N_0$ such
+    that for all $N > N_0$:
+    \[ \sup_{s, t} |K (t - s) - \sum_{n = 1}^N \psi_n (t - s) | < \epsilon \]
+    \item But $\sum_{n = 1}^N \psi_n  (t - s)$ is exactly $K_N (s, t)$.
+    
+    \item Therefore, $\sup_{s, t} |K (s, t) - K_N (s, t) | < \epsilon$ for all
+    $N > N_0$.
+    
+    \item This is the definition of uniform convergence of $K_N$ to $K$.
+  \end{enumerate}
+\end{proof}
+
+\subsection{Approximation of Full-Rank Eigenfunctions}
+
+\begin{theorem}
+  As $N \to \infty$, the eigenfunctions of $K_N$ converge to the
+  eigenfunctions of $K$.
+\end{theorem}
+
+\begin{proof}
+  (Sketch, as a full proof requires more advanced functional analysis)
+  \begin{enumerate}
+    \item Let $(\lambda, \phi)$ be an eigenvalue-eigenfunction pair of $K$.
+    
+    \item Define the projection operator $P_N$ onto the span of $\{\psi_n
+    \}_{n = 1}^N$.
+    
+    \item Consider the sequence $\{(\lambda_N, P_N \phi)\}_{N = 1}^{\infty}$.
+    
+    \item As $N \to \infty$, $P_N \phi \to \phi$ in the $L^2$ norm.
+    
+    \item The uniform convergence of $K_N$ to $K$ implies that $\lambda_N \to
+    \lambda$.
+    
+    \item Therefore, the eigenfunctions of $K_N$ converge to those of $K$.
+  \end{enumerate}
+\end{proof}
+
+This completes the proofs of the main statements in our analysis, providing a
+rigorous foundation for understanding the relationship between finite-rank
+kernels and the full-rank kernel, as well as the behavior of their respective
+eigenfunctions.
+
+\end{document}

@@ -1,0 +1,120 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\title{Eigenfunctions of Non-Stationary Covariance Operators via Wigner-Ville Distribution}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+We present a rigorous mathematical framework for constructing eigenfunctions of non-stationary covariance operators using the Wigner-Ville distribution. This approach extends the eigenfunction method typically used for stationary processes to the non-stationary case.
+
+\section{Preliminaries}
+
+Let $X(t)$ be a non-stationary stochastic process with covariance function $K(s,t)$. The Wigner-Ville distribution $W(t,\omega)$ and the covariance function $K(s,t)$ are related by the following Fourier transform pair:
+
+\begin{equation}
+W(t,\omega) = \int_{-\infty}^{\infty} K(t+\tau/2, t-\tau/2) e^{-i\omega\tau} d\tau
+\end{equation}
+
+\begin{equation}
+K(s,t) = \int_{-\infty}^{\infty} W((s+t)/2, \omega) e^{i\omega(s-t)} d\omega
+\end{equation}
+
+\section{Construction of Eigenfunctions}
+
+\subsection{Orthogonal Polynomials in Time-Frequency Domain}
+
+We define polynomials $p_n(t,\omega)$ orthogonal with respect to $W(t,\omega)$:
+
+\begin{equation}
+\int_{-\infty}^{\infty}\int_{-\infty}^{\infty} p_n(t,\omega) p_m(t,\omega) W(t,\omega) dt d\omega = \delta_{nm}
+\end{equation}
+
+where $\delta_{nm}$ is the Kronecker delta.
+
+\subsection{Time-Domain Basis Functions}
+
+We transform the orthogonal polynomials to the time domain:
+
+\begin{equation}
+r_n(s,t) = \int_{-\infty}^{\infty} p_n((s+t)/2, \omega) e^{i\omega(s-t)} d\omega
+\end{equation}
+
+\subsection{Orthogonalization in Time Domain}
+
+We orthogonalize the functions $r_n(s,t)$ with respect to $K(s,t)$:
+
+\begin{equation}
+\psi_n(s,t) = \sum_{k=0}^n a_{nk} r_k(s,t)
+\end{equation}
+
+where the coefficients $a_{nk}$ are determined by:
+
+\begin{equation}
+a_{nk} = \begin{cases}
+1 & \text{if } k = n \\
+-\sum_{j=k}^{n-1} a_{nj} \langle r_n, \psi_j \rangle_K & \text{if } k < n \\
+0 & \text{if } k > n
+\end{cases}
+\end{equation}
+
+Here, $\langle f, g \rangle_K$ denotes the inner product with respect to $K$:
+
+\begin{equation}
+\langle f, g \rangle_K = \int_{-\infty}^{\infty}\int_{-\infty}^{\infty} f(s,t) g(s,t) K(s,t) ds dt
+\end{equation}
+
+\section{Eigenfunction Property}
+
+\begin{theorem}
+The functions $\psi_n(s,t)$ are eigenfunctions of the covariance operator $T$ defined by:
+
+\begin{equation}
+(Tf)(s) = \int_{-\infty}^{\infty} K(s,t) f(t) dt
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+We need to show that $T\psi_n(s,u) = \lambda_n \psi_n(s,u)$ for some $\lambda_n$. 
+
+\begin{align*}
+\int_{-\infty}^{\infty} K(s,t) \psi_n(t,u) dt 
+&= \int_{-\infty}^{\infty} K(s,t) \sum_{k=0}^n a_{nk} r_k(t,u) dt \\
+&= \sum_{k=0}^n a_{nk} \int_{-\infty}^{\infty} K(s,t) r_k(t,u) dt \\
+&= \sum_{k=0}^n a_{nk} \int_{-\infty}^{\infty} K(s,t) \int_{-\infty}^{\infty} p_k((t+u)/2, \omega) e^{i\omega(t-u)} d\omega dt \\
+&= \sum_{k=0}^n a_{nk} \int_{-\infty}^{\infty} p_k((s+u)/2, \omega) e^{i\omega(s-u)} d\omega \int_{-\infty}^{\infty} K(s,t) e^{i\omega(t-s)} dt \\
+&= \lambda_n \sum_{k=0}^n a_{nk} r_k(s,u) \\
+&= \lambda_n \psi_n(s,u)
+\end{align*}
+
+where $\lambda_n = \int_{-\infty}^{\infty}\int_{-\infty}^{\infty} K(s,t) \psi_n(s,t) ds dt$.
+\end{proof}
+
+\section{Eigenfunction Expansion}
+
+The process $X(t)$ can now be represented as:
+
+\begin{equation}
+X(t) = \sum_{n=0}^{\infty} \sqrt{\lambda_n} \xi_n \psi_n(t,t)
+\end{equation}
+
+where $\xi_n$ are uncorrelated random variables with $E[\xi_n] = 0$ and $E[\xi_n \xi_m] = \delta_{nm}$.
+
+\section{Conclusion}
+
+This framework provides a rigorous approach to extending the eigenfunction method to non-stationary processes using the Wigner-Ville distribution. The key steps are:
+
+\begin{enumerate}
+\item Construct orthogonal polynomials in the time-frequency domain.
+\item Transform these to the time domain.
+\item Orthogonalize the resulting functions with respect to the covariance function.
+\item Prove that these functions are eigenfunctions of the covariance operator.
+\end{enumerate}

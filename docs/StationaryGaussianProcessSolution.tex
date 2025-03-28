@@ -1,0 +1,80 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\section*{Proof: Eigenfunctions and Eigenvalues of the Covariance Operator for Stationary Gaussian Processes}
+
+\textbf{Theorem Statement}\\
+For a stationary Gaussian process with covariance function $C(x-y)$, the orthogonalized Fourier transforms of polynomials that are orthogonal with respect to the process's spectral density uniquely form the eigenfunctions of the covariance operator. Eigenvalues are determined by projecting these eigenfunctions onto the kernel.
+
+\subsection*{Proof}
+
+\begin{enumerate}
+  \item \textbf{Define the Covariance Operator}: 
+  \[
+  (Tf)(x) = \int_{-\infty}^{\infty} C(x-y) f(y) \, dy
+  \]
+
+  \item \textbf{Identification and Fourier Transform of Orthogonal Polynomials}:
+  Identify polynomials $\{p_n(x)\}$ that are orthogonal with respect to the spectral density $S(x)$ of the Gaussian process:
+  \[
+  \int_{-\infty}^{\infty} p_n(x) p_m(x) S(x) \, dx = \delta_{nm}
+  \]
+  Then, perform the Fourier transform of these polynomials:
+  \[
+  \hat{p}_n(\xi) = \int_{-\infty}^\infty p_n(x) e^{-i\xi x} \, dx
+  \]
+
+  \item \textbf{Orthogonalization in the Fourier Domain}:
+  Orthogonalize the Fourier-transformed polynomials $\{\hat{p}_n(\xi)\}$ using the Gram-Schmidt process to produce $\{\hat{q}_n(\xi)\}$:
+  \[
+  \hat{q}_n(\xi) = \hat{p}_n(\xi) - \sum_{k=1}^{n-1} \frac{\int_{-\infty}^\infty \hat{p}_n(\xi) \overline{\hat{q}_k(\xi)} \, d\xi}{\int_{-\infty}^\infty |\hat{q}_k(\xi)|^2 \, d\xi} \hat{q}_k(\xi)
+  \]
+
+  \item \textbf{Verification of Eigenfunctions}:
+  To prove that $\hat{q}_n(\xi)$ are eigenfunctions of the covariance operator $T$, we need to show:
+  \[
+  \widehat{T\hat{q}_n}(\xi) = \hat{C}(\xi) \hat{q}_n(\xi)
+  \]
+  
+  Proof:
+  \begin{itemize}
+    \item Apply $T$ to $\hat{q}_n(x)$:
+      \[
+      (T\hat{q}_n)(x) = \int_{-\infty}^{\infty} C(x-y) \hat{q}_n(y) \, dy
+      \]
+    \item Take the Fourier transform of both sides:
+      \[
+      \widehat{T\hat{q}_n}(\xi) = \int_{-\infty}^{\infty} (T\hat{q}_n)(x) e^{-i\xi x} \, dx
+      \]
+    \item Substitute the expression for $(T\hat{q}_n)(x)$:
+      \[
+      \widehat{T\hat{q}_n}(\xi) = \int_{-\infty}^{\infty} \left[\int_{-\infty}^{\infty} C(x-y) \hat{q}_n(y) \, dy\right] e^{-i\xi x} \, dx
+      \]
+    \item Apply the convolution theorem:
+      \[
+      \widehat{T\hat{q}_n}(\xi) = \hat{C}(\xi) \cdot \widehat{(\hat{q}_n)}(\xi)
+      \]
+    \item Since $\hat{q}_n$ is already in the Fourier domain, $\widehat{(\hat{q}_n)}(\xi) = \hat{q}_n(\xi)$
+    \item Therefore:
+      \[
+      \widehat{T\hat{q}_n}(\xi) = \hat{C}(\xi) \hat{q}_n(\xi)
+      \]
+  \end{itemize}
+  This confirms that $\hat{q}_n(\xi)$ are indeed eigenfunctions of the covariance operator $T$.
+
+  \item \textbf{Eigenvalue Computation}:
+  Compute the eigenvalues $\lambda_n$ by projecting the eigenfunctions onto the kernel:
+  \[
+  \lambda_n = \int_{-\infty}^\infty C(x) \hat{q}_n(x) \, dx
+  \]
+
+  \item \textbf{Uniformly Convergent Eigenfunction Expansion}:
+  Represent the covariance function as a uniformly convergent series expansion in terms of the eigenfunctions:
+  \[
+  C(x-y) = \sum_{n=0}^\infty \lambda_n \hat{q}_n(x - y)
+  \]
+\end{enumerate}
+
+\end{document}

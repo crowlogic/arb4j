@@ -1,0 +1,80 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+
+\title{Proof of Complex Rational Function Evaluation}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Introduction}
+
+Let \( f(z) \) be a complex rational function defined as:
+\[
+f(z) = \frac{P(z)}{Q(z)} + i \frac{R(z)}{S(z)},
+\]
+where \( P(z), Q(z), R(z), S(z) \) are real-valued rational functions, and \( z = x + iy \) is a complex variable with real part \( x \) and imaginary part \( y \).
+
+The goal is to evaluate \( f(z) \) at \( z = x + iy \), ensuring proper complex arithmetic.
+
+\section*{Real and Imaginary Parts of \( f(z) \)}
+
+For a single complex rational function \( \frac{P(z)}{Q(z)} \), we have:
+\[
+\frac{P(z)}{Q(z)} = \frac{P(z)Q^*(z)}{Q(z)Q^*(z)} = \frac{P_r + iP_i}{Q_r + iQ_i} \cdot \frac{Q_r - iQ_i}{Q_r - iQ_i}
+\]
+where \( Q^*(z) \) is the complex conjugate of \( Q(z) \).
+
+This gives us:
+\[
+\frac{P(z)}{Q(z)} = \frac{(P_rQ_r + P_iQ_i) + i(P_iQ_r - P_rQ_i)}{Q_r^2 + Q_i^2}
+\]
+
+Similarly for \( \frac{R(z)}{S(z)} \):
+\[
+\frac{R(z)}{S(z)} = \frac{(R_rS_r + R_iS_i) + i(R_iS_r - R_rS_i)}{S_r^2 + S_i^2}
+\]
+
+\section*{Complete Expression}
+
+Therefore:
+\[
+\text{Re}(f(z)) = \frac{P_rQ_r + P_iQ_i}{Q_r^2 + Q_i^2} - \frac{R_iS_r - R_rS_i}{S_r^2 + S_i^2}
+\]
+
+\[
+\text{Im}(f(z)) = \frac{P_iQ_r - P_rQ_i}{Q_r^2 + Q_i^2} + \frac{R_iS_r - R_rS_i}{S_r^2 + S_i^2}
+\]
+
+where:
+- \( P_r, Q_r, R_r, S_r \) are the real parts of \( P(z), Q(z), R(z), S(z) \)
+- \( P_i, Q_i, R_i, S_i \) are the imaginary parts of \( P(z), Q(z), R(z), S(z) \)
+
+\section*{Proof of Correctness}
+
+1. **Complex Division Property**:
+   The use of complex conjugates in the numerator and denominator preserves equality while eliminating complex division:
+   \[
+   \frac{a + bi}{c + di} = \frac{(a + bi)(c - di)}{(c + di)(c - di)} = \frac{(ac + bd) + i(bc - ad)}{c^2 + d^2}
+   \]
+
+2. **Denominator Non-zero Condition**:
+   The denominators \( Q_r^2 + Q_i^2 \) and \( S_r^2 + S_i^2 \) are sums of squares, which are always positive for non-zero complex numbers, ensuring valid division.
+
+3. **Component Interaction**:
+   Each component of the output (\( \text{Re}(f(z)), \text{Im}(f(z)) \)) properly depends on both real and imaginary parts of the input through the cross-terms in the numerators.
+
+4. **Special Case Verification**:
+   For real inputs (\( y = 0 \)), the imaginary components \( P_i, Q_i, R_i, S_i \) become zero, reducing to the expected real-valued result.
+
+\section*{Conclusion}
+
+This formulation correctly evaluates complex rational functions by:
+- Properly handling complex division using conjugates
+- Maintaining the relationship between input and output components
+- Ensuring well-defined results for all valid inputs
+- Preserving expected behavior for special cases
+
+\end{document}

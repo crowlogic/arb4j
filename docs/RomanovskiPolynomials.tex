@@ -1,0 +1,331 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmop}[1]{\ensuremath{\operatorname{#1}}}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{Romanovski Polynomials}
+
+\date{}
+
+\maketitle
+
+\section*{Short Description}
+
+Mathematics concept.
+
+In mathematics, the Romanovski polynomials are one of three finite subsets of
+real orthogonal polynomials discovered by Vsevolod
+Romanovsky{\cite{Romanovski1929}} (Romanovski in French transcription) within
+the context of probability distribution functions in statistics. They form an
+orthogonal subset of a more general family of little-known Routh polynomials
+introduced by Edward John Routh{\cite{Routh1884}} in 1884. The term Romanovski
+polynomials was put forward by Raposo,{\cite{Raposo2007}} with reference to
+the so-called 'pseudo-Jacobi polynomials in Lesky's classification
+scheme.{\cite{Lesky1996}} It seems more consistent to refer to them as
+Romanovski--Routh polynomials, by analogy with the terms Romanovski--Bessel
+and Romanovski--Jacobi used by Lesky for two other sets of orthogonal
+polynomials.
+
+In some contrast to the standard classical orthogonal polynomials, the
+polynomials under consideration differ, in so far as for arbitrary parameters
+only a finite number of them are orthogonal, as discussed in more detail
+below.
+
+\section*{The Differential Equation for the Romanovski Polynomials}
+
+The Romanovski polynomials solve the following version of the hypergeometric
+differential equation:
+\begin{equation}
+  s (x) {R^{(\alpha, \beta)}_n}'' (x) + t^{(\alpha, \beta)}_1 (x) {R^{(\alpha,
+  \beta)}_n}' (x) + \lambda_n R^{(\alpha, \beta)}_n (x) = 0,
+\end{equation}
+where $x \in (- \infty, + \infty)$, $s (x) = (1 + x^2)$, $t^{(\alpha,
+\beta)}_1 (x) = 2 \beta x + \alpha$, and $\lambda_n = - n (2 \beta + n - 1)$.
+
+Curiously, they have been omitted from the standard textbooks on special
+functions in mathematical physics and in
+mathematics{\cite{Abramowitz1972,Nikiforov1988,Szego1939,Ismail2005}} and have
+only a relatively scarce presence elsewhere in the mathematical
+literature.{\cite{Askey1987,Zarzo1995}}
+
+The weight functions are:
+\begin{equation}
+  w^{(\alpha, \beta)} (x) = (1 + x^2)^{\beta - 1} \exp \left( - \alpha \arccot
+  x \right) ;
+\end{equation}
+they solve Pearson's differential equation:
+\begin{equation}
+  [s (x) w (x)]' = t (x) w (x), \quad s (x) = 1 + x^2,
+\end{equation}
+that assures the self-adjointness of the differential operator of the
+hypergeometric ordinary differential equation.
+
+For $\alpha = 0$ and $\beta < 0$, the weight function of the Romanovski
+polynomials takes the shape of the Cauchy distribution, whence the associated
+polynomials are also denoted as Cauchy polynomials{\cite{Witte2000}} in their
+applications in random matrix theory.{\cite{Forrester2010}}
+
+The Rodrigues formula specifies the polynomial $R^{(\alpha, \beta)}_n (x)$ as:
+\begin{equation}
+  R^{(\alpha, \beta)}_n (x) = N_n  \frac{1}{w^{(\alpha, \beta)} (x)} 
+  \frac{\mathrm{d}^n}{\mathrm{d} x^n}  (w^{(\alpha, \beta)} (x) s (x)^n),
+  \quad 0 \leq n,
+\end{equation}
+where $N_n$ is a normalization constant. This constant is related to the
+coefficient $c_n$ of the term of degree $n$ in the polynomial $R^{(\alpha,
+\beta)}_n (x)$ by the expression:
+\begin{equation}
+  N_n = \frac{(- 1)^n n! \hspace{0.17em} c_n}{\prod_{k = 0}^{n - 1}
+  \lambda_n^{(k)}}, \quad \lambda_n = - n \left( {t^{(\alpha, \beta)}_n}' +
+  \tfrac{1}{2} (n - 1) s'' (x) \right),
+\end{equation}
+which holds for $n \geq 1$.
+
+\section*{Relationship Between the Polynomials of Romanovski and Jacobi}
+
+As shown by Askey, this finite sequence of real orthogonal polynomials can be
+expressed in terms of Jacobi polynomials of imaginary argument and thereby is
+frequently referred to as complexified Jacobi polynomials.{\cite{Cotfas2004}}
+Namely, the Romanovski equation can be formally obtained from the Jacobi
+equation,{\cite{MathWorldJacobiDifferentialEquation}}
+\begin{equation}
+  \begin{aligned}
+    & (1 - x^2) {P_n^{(\gamma, \delta)}}'' (x) + t^{(\gamma, \delta)}_1 (x)
+    {P_n^{(\gamma, \delta)}}' (x) + \lambda_n P^{(\gamma, \delta)}_n (x) =
+    0,\\
+    & \qquad t^{(\gamma, \delta)}_1 (x) = \delta - \gamma - (\gamma + \delta
+    + 2) x, \quad \lambda_n = n (n + \gamma + \delta + 1), \quad x \in [- 1,
+    1],
+  \end{aligned}
+\end{equation}
+via the replacements, for real $x$,
+\begin{equation}
+  x \to ix, \quad \frac{\mathrm{d}}{\mathrm{d} x} \to - i
+  \frac{\mathrm{d}}{\mathrm{d} x}, \quad \gamma = \delta^{\ast} = \beta - 1 +
+  \frac{\alpha i}{2},
+\end{equation}
+in which case one finds:
+\begin{equation}
+  R^{(\alpha, \beta)}_n (x) = i^n P^{\left( \beta - 1 + \frac{i}{2} \alpha,
+  \beta - 1 - \frac{i}{2} \alpha \right)}_n  (ix),
+\end{equation}
+(with suitably chosen normalization constants for the Jacobi polynomials). The
+complex Jacobi polynomials on the right are defined via Kuijlaars et al.
+(2003),{\cite{Kuijlaars2005}} which assures that these are real polynomials in
+$x$.
+
+Since the cited authors discuss the non-hermitian (complex) orthogonality
+conditions only for real Jacobi indexes, the overlap between their analysis
+and definition of Romanovski polynomials exists only if $\alpha = 0$. However,
+examination of this peculiar case requires more scrutiny beyond the limits of
+this article. Notice the invertibility of:
+\begin{equation}
+  P^{(\alpha, \beta)}_n (x) = (- i)^n R^{\left( i (\alpha - \beta),
+  \frac{1}{2} (\alpha + \beta) + 1 \right)}_n  (- ix),
+\end{equation}
+where, now, $P^{(\alpha, \beta)}_n (x)$ is a real Jacobi polynomial and:
+\[ R^{\left. \left( i (\alpha - \beta), \frac{1}{2} (\alpha + \beta) + 1
+   \right) \right)}_n  (- ix) \]
+would be a complex Romanovski polynomial.
+
+\section*{Properties of Romanovski Polynomials}
+
+\subsection*{Explicit Construction}
+
+For real $\alpha, \beta$ and $n = 0, 1, 2$,..., a function $R^{(\alpha,
+\beta)}_n (x)$ can be defined by the Rodrigues formula as:
+\begin{equation}
+  R_n^{(\alpha, \beta)} (x) \equiv \frac{1}{w^{(\alpha, \beta)} (x)} 
+  \frac{\mathrm{d}^n}{\mathrm{d} x^n}  (w^{(\alpha, \beta)} (x) s (x)^n),
+\end{equation}
+where $w^{(\alpha, \beta)} (x)$ is the same weight function as in (2), and $s
+(x) = 1 + x^2$ is the coefficient of the second derivative of the
+hypergeometric differential equation.
+
+Note that we have chosen the normalization constants $N_n = 1$, which is
+equivalent to making a choice of the coefficient of highest degree in the
+polynomial, as given by the equation:
+\begin{equation}
+  c_n = \frac{1}{n!}  \prod_{k = 0}^{n - 1} (2 \beta (n - k) + n (n - 1) - k
+  (k - 1)), \quad n \geq 1.
+\end{equation}
+Also, note that the coefficient $c_n$ does not depend on the parameter
+$\alpha$, but only on $\beta$ and, for particular values of $\beta$, $c_n$
+vanishes (i.e., for all the values:
+\[ \beta = \frac{k (k - 1) - n (n - 1)}{2 (n - k)} \]
+where $k = 0, ..., n - 1$). This observation poses a problem addressed below.
+
+For later reference, we write explicitly the polynomials of degree 0, 1, and
+2,
+
+\begin{align*}
+  R_0^{(\alpha, \beta)} (x) & = 1,\\
+  R^{(\alpha, \beta)}_1 (x) & = \frac{1}{w^{(\alpha, \beta)} (x)}  \left(
+  {w'}^{(\alpha, \beta)} (x) s (x) + s' (x) w^{(\alpha, \beta)} (x) \right)\\
+  & = t^{(\alpha, \beta)} (x) = 2 \beta x + \alpha,\\
+  R^{(\alpha, \beta)}_2 (x) & = \frac{1}{w^{(\alpha, \beta)} (x)} 
+  \frac{\mathrm{d}}{\mathrm{d} x}  \left( s^2 {(x) w'}^{(\alpha, \beta)} (x) +
+  2 s (x) s' (x) w^{(\alpha, \beta)} (x) \right)\\
+  & = \frac{1}{w^{(\alpha, \beta)} (x)}  \frac{\mathrm{d}}{\mathrm{d} x}  (s
+  (x) w^{(\alpha, \beta)} (x) (t^{(\alpha, \beta)} (x) + s' (x)))\\
+  & = (2 x + t^{(\alpha, \beta)} (x)) t^{(\alpha, \beta)} (x) + \left( {2 +
+  t'}^{(\alpha, \beta)} (x) \right) s (x)\\
+  & = (2 \beta + 1)  (2 \beta + 2) x^2 + 2 (2 \beta + 1) \alpha x + (2 \beta
+  + \alpha^2 + 2) .
+\end{align*}
+
+\subsection*{Orthogonality}
+
+The two polynomials, $R_m^{(\alpha, \beta)} (x)$ and $R_n^{(\alpha, \beta)}
+(x)$ with $m \neq n$, are orthogonal,{\cite{Raposo2007}}
+\begin{equation}
+  \int_{- \infty}^{+ \infty} w^{(\alpha, \beta)} (x) R_m^{(\alpha, \beta)} (x)
+  R_n^{(\alpha, \beta)} (x) = 0,
+\end{equation}
+if and only if,
+\begin{equation}
+  m + n < 1 - 2 \beta .
+\end{equation}
+In other words, for arbitrary parameters, only a finite number of Romanovski
+polynomials are orthogonal. This property is referred to as finite
+orthogonality. However, for some special cases in which the parameters depend
+in a particular way on the polynomial degree, infinite orthogonality can be
+achieved.
+
+This is the case of a version of the differential equation that has been
+independently encountered anew within the context of the exact solubility of
+the quantum mechanical problem of the trigonometric Rosen--Morse potential and
+reported in Compean Kirchbach (2006).{\cite{Compean2006}} There, the
+polynomial parameters $\alpha$ and $\beta$ are no longer arbitrary but are
+expressed in terms of the potential parameters, $a$ and $b$, and the degree
+$n$ of the polynomial according to the relations,
+\begin{equation}
+  \alpha \to \alpha_n = \frac{2 b}{n + 1 + a}, \quad \beta \to \beta_n = - (a
+  + n + 1) + 1, \quad n = 0, 1, 2, \ldots, \infty .
+\end{equation}
+Correspondingly, $\lambda_n$ emerges as $\lambda_n = - n (2 a + n - 1)$, while
+the weight function takes the shape:
+\begin{equation}
+  (1 + x^2)^{- (a + n + 1)} \exp \left( - \frac{2 b}{n + a + 1} \tmop{arccot}
+  (x) \right) \text{}
+\end{equation}
+Finally, the one-dimensional variable, $x$, in Compean Kirchbach
+(2006){\cite{Compean2006}} has been taken as
+
+
+\[ x = \cot \left( \frac{r}{d} \right), \]
+where $r$ is the radial distance, while $d$ is an appropriate length
+parameter. In Compean Kirchbach,{\cite{Compean2006}} it has been shown that
+the family of Romanovski polynomials corresponding to the infinite sequence of
+parameter pairs,
+\begin{equation}
+  (\alpha_1, \beta_1), (\alpha_2 \beta_2), \ldots, (\alpha_n \beta_n), \ldots,
+  \quad n \longrightarrow \infty,
+\end{equation}
+is orthogonal.
+
+\subsection*{Generating Function}
+
+In Weber (2007),{\cite{Weber2007}} polynomials $Q_{\nu}^{(\alpha_n, \beta_n +
+n)} (x)$, with $\beta_n + n = - a$, and complementary to $R^{(\alpha_n,
+\beta_n)}_n (x)$ have been studied, generated in the following way:
+\begin{equation}
+  Q_{\nu}^{(\alpha_n, \beta_n + n)} (x) = \frac{1}{w^{(\alpha_n, \beta_n + n -
+  \nu)}}  \frac{\mathrm{d}^{\nu}}{\mathrm{d} x^{\nu}} w^{(\alpha_n, \beta_n)}
+  (x)  (1 + x^2)^n .
+\end{equation}
+In taking into account the relation,
+\begin{equation}
+  w^{(\alpha_n, \beta_n)} (x)  (1 + x^2)^{\delta} = w^{(\alpha_n, \beta_n +
+  \delta)} (x),
+\end{equation}
+Equation becomes equivalent to:
+\begin{equation}
+  Q_{\nu}^{(\alpha_n, \beta_n + n)} (x) = \frac{1}{w^{(\alpha_n, \beta_n + n -
+  \nu)}}  \frac{\mathrm{d}^{\nu}}{\mathrm{d} x^{\nu}} w^{(\alpha_n, \beta_n +
+  n - \nu)} (x)  (1 + x^2)^{\nu} = R_{\nu}^{(\alpha_n, \beta_n + n - \nu)}
+  (x),
+\end{equation}
+and thus links the complementary to the principal Romanovski polynomials.
+
+The main attraction of the complementary polynomials is that their generating
+function can be calculated in closed form.{\cite{Weber2007}} Such a generating
+function, written for the Romanovski polynomials based on Equation with the
+parameters and therefore referring to infinite orthogonality, has been
+introduced as:
+\begin{equation}
+  G^{(\alpha_n, \beta_n)} (x, y) = \sum_{\nu = 0}^{\infty} R_{\nu}^{(\alpha_n,
+  \beta_n + n - \nu)} (x) \frac{y^{\nu}}{\nu !} .
+\end{equation}
+The notational differences between Weber{\cite{Weber2007}} and those used here
+are summarized as follows:
+\begin{itemize}
+  \item $G^{(\alpha_n, \beta_n)} (x, y)$ here versus $Q (x, y ; \alpha, - a)$
+  there, $\alpha$ there in place of $\alpha_n$ here,
+  
+  \item $a = - \beta_n - n$, and
+  
+  \item $Q^{(\alpha, - a)}_{\nu} (x)$ in Equation (15) in
+  Weber{\cite{Weber2007}} corresponding to $R^{(\alpha_n, \beta_n + n -
+  \nu)}_{\nu} (x)$ here.
+\end{itemize}
+The generating function under discussion obtained in Weber{\cite{Weber2007}}
+now reads:
+\begin{equation}
+  G^{(\alpha_n, \beta_n)} (x, y) = (1 + x^2)^{- \beta_n - n + 1} \exp \left(
+  \alpha_n \arccot x \right)  (1 + (x + y (1 + x^2))^2)^{- (- \beta_n - n +
+  1)} \exp \left( - \alpha_n \arccot (x + y (1 + x^2)) \right) .
+\end{equation}
+
+\subsection*{Recurrence Relations}
+
+Recurrence relations between the infinite orthogonal series of Romanovski
+polynomials with the parameters in the above equations follow from the
+generating function,{\cite{Weber2007}}
+\begin{equation}
+  \nu (\nu + 1 - 2 (\beta_n + n)) R_{\nu - 1}^{(\alpha_n, \beta_n + n - \nu +
+  1)} (x) + \frac{\mathrm{d}}{\mathrm{d} x} R_{\nu}^{(\alpha_n, \beta_n + n -
+  \nu)} (x) = 0,
+\end{equation}
+and
+\begin{equation}
+  R^{(\alpha_n, \beta_n + n - \nu - 1)}_{\nu + 1} (x) = (\alpha_n - 2 x (-
+  \beta_n - n + \nu + 1)) R_{\nu}^{(\alpha_n, \beta_n + n - \nu)} - \nu (1 +
+  x^2)  (2 (- \beta_n - n) + \nu + 1) R_{\nu - 1}^{(\alpha_n, \beta_n + n -
+  \nu + 1)},
+\end{equation}
+as Equations (10) and (23) of Weber (2007){\cite{Weber2007}} respectively.
+
+\section*{See Also}
+
+\begin{itemize}
+  \item Associated Legendre functions
+  
+  \item Gaussian quadrature
+  
+  \item Gegenbauer polynomials
+  
+  \item Legendre rational functions
+  
+  \item Tur{\'a}n's inequalities
+  
+  \item Legendre wavelet
+  
+  \item Jacobi polynomials
+  
+  \item Legendre polynomials
+  
+  \item Spherical harmonics
+  
+  \item Trigonometric Rosen--Morse potential
+\end{itemize}
+\begin{thebibliography}{}
+  \ 
+\end{thebibliography}
+
+\end{document}

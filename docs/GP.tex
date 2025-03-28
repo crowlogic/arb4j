@@ -1,0 +1,34 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+
+\begin{document}
+
+\title{Variance Structure and Canonical Metric for\\Real-Valued Gaussian Processes}
+\author{}
+\date{}
+\maketitle
+
+\noindent For a real-valued Gaussian process $\{X_t\}_{t \in \mathbb{R}}$:
+
+\begin{align*}
+R(s,t) &= \mathbb{E}[(X_s - \mathbb{E}[X_s])(X_t - \mathbb{E}[X_t])] \\
+&= \int_{-\infty}^{\infty}\int_{-\infty}^{\infty} (X_u - \mathbb{E}[X_u])(X_v - \mathbb{E}[X_v]) \, dudv \\
+&= \lim_{n \to \infty} \sum_{i=1}^n (X_{t_i} - \mathbb{E}[X_{t_i}])(X_{t_{i+1}} - \mathbb{E}[X_{t_{i+1}}]) \\
+&= \frac{1}{2}(v(s,s) + v(t,t) - v(s,t))
+\end{align*}
+
+\begin{align*}
+v(s,t) &= \mathbb{E}[(X_s - X_t)^2] \\
+&= \int_{-\infty}^{\infty}\int_{-\infty}^{\infty} (X_u - X_v)^2 \, dudv \\
+&= R(s,s) + R(t,t) - 2R(s,t) \\
+&= \lim_{n \to \infty} \sum_{i=1}^n (X_{t_i} - X_{t_{i-1}})^2
+\end{align*}
+where $t_i = s + i(\frac{t-s}{n})$ for $i \in \{1,\ldots,n\}$.
+
+\begin{align*}
+d(s,t) &= \sqrt{v(s,t)} = \sqrt{\mathbb{E}[(X_s - X_t)^2]} = \sqrt{R(s,s) + R(t,t) - 2R(s,t)}
+\end{align*}
+
+\end{document}
