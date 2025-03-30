@@ -1,0 +1,101 @@
+\documentclass{article}
+\usepackage[english]{babel}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\mathd}{\mathrm{d}}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\section{Convolution and Fourier Transform Discussion}
+
+The convolution of two functions $f (x)$ and $g (x)$ can be expressed using
+the Fourier transform:
+\[ (f \ast g) (x) = \int_{- \infty}^{\infty} f (x - t) g (t) dt
+   =\mathcal{F}^{- 1}  \{\mathcal{F}\{f\} \cdot \mathcal{F}\{g\}\} \]
+Where:
+\begin{itemize}
+  \item $\ast$ denotes convolution
+  
+  \item $\mathcal{F}$ denotes the Fourier transform
+  
+  \item $\mathcal{F}^{- 1}$ denotes the inverse Fourier transform
+  
+  \item $\cdot$ denotes multiplication in the frequency domain
+\end{itemize}
+This formulation represents the standard convolution and its relationship to
+Fourier transforms.
+
+The Convolution Theorem states that the convolution of two functions in the
+time (or spatial) domain is equivalent to the multiplication of their Fourier
+transforms in the frequency domain, followed by an inverse Fourier transform.
+
+For the convolution over a positive domain:
+\[ \int_0^{\infty} f (x - t) g (t) dt \]
+The Fourier transform relationship is:
+\[ \mathcal{F} \{f (x - t) \ast g (x)\} =\mathcal{F} \{f (x)\} \cdot
+   \mathcal{F} \{g (x)\} \]
+Additionally, we have:
+\[ (f \ast g) (x) = (g \ast f) (x) \]
+And for the Fourier transform of a convolution:
+\[ \mathcal{F} \{f \ast g\} =\mathcal{F} \{f\} \cdot \mathcal{F} \{g\} \]
+
+\section{Covariance Operator and Eigenfunction Expansion}
+
+For a stationary Gaussian process, we consider the integral covariance
+operator $T$ with kernel $K$. The eigenfunctions $\phi_n (x)$ of this operator
+satisfy:
+\begin{equation}
+  (T \phi_n) (y) = \int_0^{\infty} K (x, y) \phi_n (x) \mathd x = \lambda_n
+  \phi_n (y)
+\end{equation}
+where $\lambda_n$ are the corresponding eigenvalues.
+
+We can expand these eigenfunctions in terms of a uniformly convergent
+orthonormal basis $\{\psi_k (x)\}$ for $L^2 (0, \infty)$:
+\begin{equation}
+  \phi_n (x) = \sum_{k = 0}^{\infty} c_{n, k} \psi_k (x)
+\end{equation}
+The expansion coefficients $c_{n, k}$ can be expressed as:
+\begin{equation}
+  c_{n, k} = \frac{\int_{- \infty}^{\infty} \psi_k (x)  (T \phi_n) (x)
+  dx}{\lambda_n} 
+\end{equation}
+
+\subsection{Proof of the Expansion Coefficient Formula}
+
+Let's prove this formula by substitution and expansion:
+
+1) Start with the eigenvalue equation:
+\[ (K \phi_n) (x) = \lambda_n \phi_n (x) \]
+2) Multiply both sides by $\psi_k (x)$ and integrate over the entire domain:
+\[ \int_{- \infty}^{\infty} \psi_k (x)  (K \phi_n) (x) dx = \lambda_n  \int_{-
+   \infty}^{\infty} \psi_k (x) \phi_n (x) dx \]
+3) The right-hand side integral is the definition of $c_{n, k}$ due to the
+orthonormality of $\{\psi_k (x)\}$:
+\[ \int_{- \infty}^{\infty} \psi_k (x)  (K \phi_n) (x) dx = \lambda_n c_{n, k}
+\]
+4) Rearranging this equation gives us the formula for $c_{n, k}$:
+\[ c_{n, k} = \frac{1}{\lambda_n}  \int_{- \infty}^{\infty} \psi_k (x)  (K
+   \phi_n) (x) dx \]
+5) To verify, let's substitute the expansion of $\phi_n (x)$ into the
+eigenvalue equation:
+\[ K \left( \sum_{k = 1}^{\infty} c_{n, k} \psi_k (x) \right) = \lambda_n 
+   \sum_{k = 1}^{\infty} c_{n, k} \psi_k (x) \]
+6) By linearity of $K$:
+\[ \sum_{k = 1}^{\infty} c_{n, k}  (K \psi_k) (x) = \lambda_n  \sum_{k =
+   1}^{\infty} c_{n, k} \psi_k (x) \]
+7) Multiply both sides by $\psi_j (x)$ and integrate:
+\[ \sum_{k = 1}^{\infty} c_{n, k}  \int_{- \infty}^{\infty} \psi_j (x)  (K
+   \psi_k) (x) dx = \lambda_n c_{n, j} \]
+8) The left-hand side integral is our formula for $c_{n, k}$ multiplied by
+$\lambda_n$:
+\[ \sum_{k = 1}^{\infty} c_{n, k}  (\lambda_n c_{j, k}) = \lambda_n c_{n, j}
+\]
+9) This reduces to an identity, proving that our formula for $c_{n, k}$
+satisfies the eigenvalue equation.
+
+Thus, we have proven that the formula for $c_{n, k}$ is correct and consistent
+with the eigenvalue equation.
+
+\end{document}

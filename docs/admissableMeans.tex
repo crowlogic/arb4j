@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\geometry{letterpaper}
+
+\begin{document}
+
+3. Example. (a) Recall that an O.U. process is a stationary Gaussian process
+with mean zero and covariance given by $r (s, t) = \sigma^2 \exp [- \beta |s -
+t|]$ for $0 \leq s, t \leq a$ where $\beta > 0, \sigma^2 > 0$ are constants.
+If $\beta_i, \sigma^2_i, i = 1, 2$ relate to a pair of O.U. processes, so that
+$r_i = u_i v_i$ with $u_i (t) = \sigma^2_i \exp (\beta_i t), v_i (t) = \exp (-
+\beta_i t)$ then the conditions given in the theorem show that the measures
+$P_0^{r_i}, i = 1, 2$ are equivalent iff $\sigma^2_1 \beta_1 = \sigma^2_2
+\beta_2 = K$ (say). The likelihood ratio is then obtained from (2) as follows
+where $D_1, D_2$ and the integrand, denoted $f$, are found to be:
+\begin{equation}
+  D^2_1 = \frac{\beta_2}{\beta_1}, \quad D_2 = \frac{2}{K}  (\beta_1 -
+  \beta_2)
+\end{equation}
+and
+\begin{equation}
+  f = - \frac{(\beta_2 - \beta_1)}{K} \exp [- (\beta_1 + \beta_2) t]
+\end{equation}
+Substituting these in (2) and using integration by parts one gets
+\[ \frac{dP_0^{r 2}}{dP_0^{r 1}} (X) = \sqrt{\frac{\beta_2}{\beta_1}} \exp \{-
+   \frac{1}{2 K} [(\beta_2 - \beta_1) (X^2 (0) + X^2 (a)) + (\beta^2_2 -
+   \beta^2_1) \int_0^a X^2 (t) \hspace{0.17em} dt]\} \]
+This example is also discussed by Striebel [1]. [There is a small numerical
+discrepancy here.] See also Duttweiler and Kailath [1],[2], Kailath and
+Weinert [1], and Kailath, Geesy and Weinert [1], for related work.
+
+(b) An even simpler example is noted for the equivalence of the BM and the
+Brownian bridge both have means zero and covariances $r_1  (s, t) = \min (s,
+t)$ and $r_2  (s, t) = u (s \wedge t) v (s \vee t)$ for $0 \leq s, t \leq a <
+1$ where $u (s) = s, v (s) = 1 - s$. In this case $D^2_1 = \frac{1}{1 - a},
+D_2 = 0, f (t) = - 1$
+
+\end{document}

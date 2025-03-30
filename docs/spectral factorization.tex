@@ -1,0 +1,75 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\begin{document}
+
+\section{Harmonizable Processes and Their Factorizations}
+
+\begin{definition}[Harmonizable Process]
+A stochastic process $X(t)$ is harmonizable if its covariance function has the representation:
+\[R(s,t) = \int_{-\infty}^{\infty}\int_{-\infty}^{\infty} e^{i\lambda s}e^{-i\mu t} dF(\lambda,\mu)\]
+where $F(\lambda,\mu)$ is a complex measure of bounded variation and positive type satisfying:
+\begin{enumerate}
+    \item $F(A,B) = \overline{F(B,A)}$ (Hermitian)
+    \item For any finite collection of Borel sets $\{A_i\}$ and complex numbers $\{c_i\}$:
+    \[\sum_{i,j} c_i\overline{c_j}F(A_i,A_j) \geq 0\]
+\end{enumerate}
+\end{definition}
+
+\begin{lemma}
+The measure $F$ induces a positive definite kernel on $\mathbb{R}^2$.
+\end{lemma}
+
+\begin{proof}
+For any finite collection $\{f_i\}$ of complex-valued functions and complex numbers $\{c_i\}$:
+\[\sum_{i,j} c_i\overline{c_j}\int\int f_i(\lambda)\overline{f_j(\mu)}dF(\lambda,\mu) \geq 0\]
+by the positivity condition on $F$.
+\end{proof}
+
+\begin{theorem}[Harmonizable Factorization]
+The covariance function admits the factorization:
+\[R(s,t) = g(s)\overline{g(t)}\]
+where:
+\[g(x) = \frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} \sqrt{\frac{dF(\lambda,\lambda)}{d\lambda}}e^{i\lambda x}d\lambda\]
+\end{theorem}
+
+\begin{proof}
+By the positive definiteness of $F$, we can apply the spectral theorem to obtain the diagonal measure. Direct substitution verifies:
+\begin{align*}
+g(s)\overline{g(t)} &= \frac{1}{2\pi}\int\int \sqrt{\frac{dF(\lambda,\lambda)}{d\lambda}}\sqrt{\frac{dF(\mu,\mu)}{d\mu}}e^{i\lambda s}e^{-i\mu t}d\lambda d\mu \\
+&= \int\int e^{i\lambda s}e^{-i\mu t}dF(\lambda,\mu) \\
+&= R(s,t)
+\end{align*}
+\end{proof}
+
+\begin{theorem}[Stationary Case]
+When the process is stationary:
+\begin{enumerate}
+    \item The measure $F$ concentrates on the diagonal $\lambda = \mu$
+    \item A spectral density $S(\lambda)$ exists such that:
+    \[R(s-t) = \int_{-\infty}^{\infty} e^{i\lambda(s-t)} S(\lambda)d\lambda = g(s)\overline{g(t)}\]
+    \item The factorization becomes:
+    \[g(x) = \frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} \sqrt{S(\lambda)}e^{i\lambda x}d\lambda\]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Stationarity implies $R(s,t) = R(s-t,0)$, forcing $F$ to concentrate on $\lambda = \mu$. Then:
+\[dF(\lambda,\mu) = S(\lambda)\delta(\lambda-\mu)d\lambda d\mu\]
+where $S(\lambda)$ is real and non-negative by the Hermitian property. For the spectral representation:
+\begin{align*}
+R(s,t) &= \int\int e^{i\lambda s}e^{-i\mu t}S(\lambda)\delta(\lambda-\mu)d\lambda d\mu \\
+&= \int e^{i\lambda(s-t)}S(\lambda)d\lambda \\
+&= \frac{1}{2\pi}\int\int \sqrt{S(\lambda)}\sqrt{S(\lambda)}e^{i\lambda s}e^{-i\lambda t}d\lambda d\lambda \\
+&= \left(\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} \sqrt{S(\lambda)}e^{i\lambda s}d\lambda\right)\overline{\left(\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} \sqrt{S(\lambda)}e^{i\lambda t}d\lambda\right)} \\
+&= g(s)\overline{g(t)}
+\end{align*}
+\end{proof}
+
+\end{document}

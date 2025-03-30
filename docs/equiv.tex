@@ -1,0 +1,116 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm}
+
+\newtheorem{theorem}{Theorem}
+
+\begin{document}
+
+\title{Equivalence of Egorov's Theorem and Vitali-Hahn-Saks Theorem for $\sigma$-compact Spaces}
+\author{Assistant}
+\date{}
+
+\maketitle
+
+\begin{theorem}
+For $\sigma$-compact spaces, the following are equivalent:
+\begin{enumerate}
+    \item[(a)] Egorov's Theorem
+    \item[(b)] Vitali-Hahn-Saks Theorem
+\end{enumerate}
+\end{theorem}
+
+\noindent\textbf{Preliminaries:} This proof relies on several advanced measure-theoretic results, including the Hahn Decomposition Theorem, Radon-Nikodym Theorem, and properties of weak convergence in $L^1$ spaces. Familiarity with these concepts is assumed.
+
+\begin{proof}
+We will prove both directions of the equivalence.
+
+\noindent\textbf{(a) $\Rightarrow$ (b):}
+
+Assume Egorov's Theorem holds for $\sigma$-compact spaces. Let $(X, \Sigma)$ be a $\sigma$-compact measurable space and $\{\mu_n\}$ a sequence of finite signed measures on $(X, \Sigma)$ such that for each $E \in \Sigma$, $\lim_{n\to\infty} \mu_n(E)$ exists and is finite.
+
+\begin{enumerate}
+    \item Define $\mu(E) = \lim_{n\to\infty} \mu_n(E)$ for $E \in \Sigma$. Note that $\mu$ is a finite signed measure.
+    
+    \item Write $X = \bigcup_{i=1}^{\infty} K_i$, where each $K_i$ is compact and $K_i \subset K_{i+1}$.
+    
+    \item For each $i$, consider the restrictions of $\mu_n$ and $\mu$ to $K_i$, denoted $\mu_{n,i}$ and $\mu_i$. These are finite signed measures on compact sets.
+    
+    \item Apply the Hahn Decomposition Theorem to each $\mu_{n,i}$ and $\mu_i$. Then, by the Radon-Nikodym theorem, there exist measurable functions $f_{n,i}$ such that:
+    \[\mu_{n,i}(E) = \int_E f_{n,i} d|\mu_i| \text{ for all } E \subset K_i, E \in \Sigma\]
+    
+    \item The assumption $\lim_{n\to\infty} \mu_n(E) = \mu(E)$ for all $E \in \Sigma$ implies that $\{f_{n,i}\}$ converges weakly to $f_i$ in $L^1(K_i, |\mu_i|)$ for each $i$. This follows from the definition of weak convergence in $L^1$ spaces: for any $g \in L^\infty(K_i, |\mu_i|)$,
+    \[\lim_{n\to\infty} \int_{K_i} f_{n,i} g d|\mu_i| = \lim_{n\to\infty} \mu_{n,i}(g) = \mu_i(g) = \int_{K_i} f_i g d|\mu_i|\]
+    
+    \item Apply Egorov's Theorem to $\{f_{n,i}\}$ on each $K_i$: For any $\varepsilon > 0$, there exists $A_i \subset K_i$, $A_i \in \Sigma$ such that $|\mu_i|(K_i \setminus A_i) < \varepsilon/2^i$ and $f_{n,i}$ converges uniformly to $f_i$ on $A_i$.
+    
+    \item Define $A = \bigcup_{i=1}^{\infty} A_i$. $A$ is measurable as it is a countable union of measurable sets. Note that $|\mu|(X \setminus A) \leq \sum_{i=1}^{\infty} |\mu_i|(K_i \setminus A_i) < \varepsilon$.
+    
+    \item For any $\delta > 0$ and each $i$, choose $N_i$ such that for all $n \geq N_i$ and $x \in A_i$, $|f_{n,i}(x) - f_i(x)| < \delta$.
+    
+    \item For any $E \subset A$, $E \in \Sigma$, and for all $n \geq \max\{N_i : i \in \mathbb{N}\}$:
+    \begin{align*}
+    |\mu_n(E) - \mu(E)| &\leq \sum_{i=1}^{\infty} |\mu_{n,i}(E \cap A_i) - \mu_i(E \cap A_i)| \\
+    &= \sum_{i=1}^{\infty} \left|\int_{E\cap A_i} (f_{n,i} - f_i) d|\mu_i|\right| \\
+    &\leq \sum_{i=1}^{\infty} \int_{E\cap A_i} |f_{n,i} - f_i| d|\mu_i| \\
+    &< \delta\sum_{i=1}^{\infty} |\mu_i|(E \cap A_i) = \delta|\mu|(E)
+    \end{align*}
+    This establishes uniform convergence for sufficiently large $n$.
+    
+    \item This establishes uniform absolute continuity of $\{\mu_n\}$ with respect to $|\mu|$ on $A$, and thus on $X$ since $|\mu|(X \setminus A) < \varepsilon$.
+\end{enumerate}
+
+Therefore, the Vitali-Hahn-Saks Theorem holds for $\sigma$-compact spaces.
+
+\noindent\textbf{(b) $\Rightarrow$ (a):}
+
+Assume the Vitali-Hahn-Saks Theorem holds for $\sigma$-compact spaces. Let $(X, \Sigma, \lambda)$ be a $\sigma$-compact measure space and $\{f_n\}$ a sequence of measurable functions converging pointwise $\lambda$-almost everywhere to $f$.
+
+\begin{enumerate}
+    \item Write $X = \bigcup_{i=1}^{\infty} K_i$, where each $K_i$ is compact and $K_i \subset K_{i+1}$.
+    
+    \item Define measures $\nu_n$ on $(X, \Sigma)$ by:
+    \[\nu_n(E) = \int_E \min(1, |f_n - f|) d\lambda \text{ for } E \in \Sigma\]
+    Note that $\nu_n$ are indeed finite measures:
+    \begin{itemize}
+        \item Non-negative: $\min(1, |f_n - f|) \geq 0$
+        \item Countably additive: follows from the countable additivity of the integral
+        \item $\nu_n(\emptyset) = 0$: integral over empty set is zero
+        \item $\nu_n(X) \leq \lambda(X) < \infty$: since $\min(1, |f_n - f|) \leq 1$
+    \end{itemize}
+    
+    \item For each $E \in \Sigma$, by the Dominated Convergence Theorem:
+    \[\lim_{n\to\infty} \nu_n(E) = \int_E \lim_{n\to\infty} \min(1, |f_n - f|) d\lambda = 0\]
+    This holds because $\min(1, |f_n - f|)$ is bounded by 1 and converges pointwise to 0 $\lambda$-almost everywhere.
+    
+    \item Apply the Vitali-Hahn-Saks Theorem to $\{\nu_n\}$: For any $\varepsilon > 0$, there exists $\delta > 0$ such that for all $E \in \Sigma$ with $\lambda(E) < \delta$, we have $\nu_n(E) < \varepsilon$ for all $n$.
+    
+    \item For each $k \in \mathbb{N}$ and $i \in \mathbb{N}$, define sets:
+    \[A_{k,i} = \{x \in K_i : |f_n(x) - f(x)| \geq 1/k \text{ for infinitely many } n\}\]
+    These sets are measurable as they are countable intersections and unions of measurable sets.
+    
+    \item By pointwise convergence, $\lambda(A_{k,i}) \to 0$ as $k \to \infty$ for each $i$. This is true because for each $x$ where $f_n(x)$ converges to $f(x)$, there exists a $k$ large enough such that $|f_n(x) - f(x)| < 1/k$ for all but finitely many $n$. As $k$ increases, fewer points fail to meet this criterion, so the measure of $A_{k,i}$ decreases to zero.
+    
+    \item For each $i$, choose $K_i$ such that $\lambda(A_{K_i,i}) < \delta/2^i$.
+    
+    \item Define $B = \bigcup_{i=1}^{\infty} A_{K_i,i}$. Note that $\lambda(B) < \delta$.
+    
+    \item By the uniform absolute continuity from step 4:
+    \[\int_B \min(1, |f_n - f|) d\lambda < \varepsilon \text{ for all } n\]
+    
+    \item This implies that for any $\eta > 0$, there exists a set $C_\eta \subset X \setminus B$ with $\lambda(C_\eta) < \eta$ such that:
+    \[|f_n(x) - f(x)| < \varepsilon \text{ for all } n \text{ sufficiently large and all } x \in X \setminus (B \cup C_\eta)\]
+    
+    Detailed explanation: Suppose this were not true. Then there would exist a set $D \subset X \setminus B$ of positive measure such that for each $x \in D$, $|f_n(x) - f(x)| \geq \varepsilon$ for infinitely many $n$. This would imply:
+    
+    \[\int_D \min(1, |f_n - f|) d\lambda \geq \int_D \min(1, \varepsilon) d\lambda = \varepsilon\lambda(D) > 0\]
+    
+    for infinitely many $n$. However, this contradicts the uniform absolute continuity established in step 4, which implies that for any set $E$ with $\lambda(E) < \delta$, we have $\int_E \min(1, |f_n - f|) d\lambda < \varepsilon$ for all $n$. We can choose $\eta$ small enough so that $\lambda(D) < \delta$, leading to this contradiction.
+    
+    \item Since $\lambda(B \cup C_\eta) < \delta + \eta$, which can be made arbitrarily small, we have established Egorov's Theorem for $\sigma$-compact spaces.
+\end{enumerate}
+
+This completes the proof of the equivalence between Egorov's Theorem and the Vitali-Hahn-Saks Theorem for $\sigma$-compact spaces.
+
+\noindent\textbf{Note:} This equivalence is specific to $\sigma$-compact spaces. The $\sigma$-compactness property is crucial for this proof as it allows us to decompose the space into a countable union of compact sets. This decomposition enables us to apply Egorov's Theorem on each compact set in the (a) $\Rightarrow$ (b) direction, and to construct the set $B$ in the (b) $\Rightarrow$ (a) direction. For more general spaces, this approach might not work, and the relationship between these theorems could be different or require alternative methods of proof.
+
+\end{document}

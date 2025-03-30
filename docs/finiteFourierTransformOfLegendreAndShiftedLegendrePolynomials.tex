@@ -1,0 +1,80 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\title{Relationship Between Two Finite Fourier Transform Integrals}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{The Integral Formulas}
+
+We examine the relationship between two integral formulas that appear as Lemma 1.1 and Lemma 2 in the study of finite Fourier transforms of orthogonal polynomials.
+
+\subsection{Lemma 1.1: Power Function Integral}
+
+For $k \geq 0$ an integer and $\lambda$ an indeterminate:
+\begin{equation}
+\int_0^1 x^k e^{i\lambda x} \, dx = \frac{(-1)^k k!}{(i\lambda)^{k+1}}\left[e^{i\lambda}E_k(-i\lambda) - e^{-i\lambda}E_k(i\lambda)\right]
+\end{equation}
+
+An alternative form is:
+\begin{equation}
+\int_0^1 x^k e^{i\lambda x} \, dx = \frac{(-1)^k k!}{(i\lambda)^{k+1}}\left[e^{i\lambda}E_k(-i\lambda) - 1\right]
+\end{equation}
+
+where $E_n(x) = \sum_{j=0}^{n} \frac{x^j}{j!}$ represents the partial sums of the exponential function.
+
+\subsection{Lemma 2: Shifted Polynomial Integral}
+
+For $j \geq 0$:
+\begin{equation}
+\int_0^1 \left(\frac{1-x}{2}\right)^j e^{ixy} \, dx = \frac{e^{iy} \gamma(j+1,2iy)}{2^j (iy)^{j+1}}
+\end{equation}
+
+where $\gamma(s,x)$ denotes the lower incomplete gamma function.
+
+\section{Relationship Between the Integrals}
+
+The two integrals are related through a substitution transformation. Starting with the second integral, we can derive its formula using the approach similar to the first integral.
+
+\section{Proof of Lemma 2}
+
+Starting with the integral:
+\begin{equation}
+\int_0^1 \left(\frac{1-x}{2}\right)^j e^{ixy} \, dx
+\end{equation}
+
+We apply the substitution $t = \frac{1-x}{2}$, which gives $x = 1-2t$ and $dx = -2dt$. The limits change from $x \in [0,1]$ to $t \in [1/2,0]$, which we adjust:
+
+\begin{align}
+\int_0^1 \left(\frac{1-x}{2}\right)^j e^{ixy} \, dx &= \int_{1/2}^0 t^j e^{iy(1-2t)} (-2dt)\\
+&= 2e^{iy}\int_0^{1/2} t^j e^{-2iyt} \, dt
+\end{align}
+
+Next, we use the substitution $u = 2iyt$, which gives $t = \frac{u}{2iy}$ and $dt = \frac{du}{2iy}$:
+
+\begin{align}
+2e^{iy}\int_0^{1/2} t^j e^{-2iyt} \, dt &= 2e^{iy}\int_0^{iy} \left(\frac{u}{2iy}\right)^j e^{-u} \frac{du}{2iy}\\
+&= \frac{2e^{iy}}{(2iy)^{j+1}}\int_0^{2iy} u^j e^{-u} \, du\\
+&= \frac{e^{iy}\gamma(j+1,2iy)}{2^j(iy)^{j+1}}
+\end{align}
+
+where we've used the definition of the lower incomplete gamma function:
+\begin{equation}
+\gamma(s,x) = \int_0^x t^{s-1}e^{-t} \, dt
+\end{equation}
+
+\section{Connection to the Lower Incomplete Gamma Function}
+
+The relationship between the results can be further understood through the connection between the partial exponential sum $E_k(x)$ and the incomplete gamma function $\gamma(s,x)$:
+
+\begin{equation}
+\gamma(j+1,z) = j!\left(1 - e^{-z}\sum_{k=0}^j \frac{z^k}{k!}\right) = j!\left(1 - e^{-z}E_j(z)\right)
+\end{equation}
+
+This relationship provides the theoretical bridge between the results of both lemmas.
+
+\end{document}

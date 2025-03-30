@@ -1,0 +1,54 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+
+\title{The Historical Development of the Resolvent in Functional Analysis}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+The term "resolvent" was coined by Hilbert for the operator first used by Fredholm in the late 19th century. Fredholm initiated a study of integral equations arising out of the study of partial differential equations. A parameter $\lambda$ was part of the integral equation, and this parameter had originally come out of separation of variables, the technique created by Fourier at the beginning of the 19th century to solve PDEs.
+
+The Fredholm integral equation of the second kind is formulated as
+\begin{equation}
+       g(t) = f(t) + \lambda\int_{a}^{b}K(s,t)f(s)ds,
+\end{equation}
+where $g$ is a given function, $K$ a given kernel function, $\lambda$ a given parameter, and $f$ is a function to be determined. It does not take much to see how this is related to the resolvent of the integral operator. Fredholm studied his equation by discretizing it and dealing with determinants of infinite matrices through limits; and he studied the dependence on the parameter $\lambda$. It was in this context that the "resolvent" arose through looking at the dependence of the determinant on the parameter $\lambda$. These techniques were new in the late 19th century when Fredholm did his work.
+
+It was realized that the solution as a function of $\lambda$ could be extended into the complex plane, and that the singularities of this function gave a lot of information about the problem at hand. For symmetric $K$, the singularities in $\lambda$ were real, were of first order, and the sum of the residues was the Fourier series of $g$ with respect to the eigenfunctions of the problem.
+
+Hilbert incorporated Fredholm's resolvent into early analysis of operators on a Hilbert space. Fredholm was the first to give a general definition of a linear operator, and that was also incorporated into the early work. The use of Complex Analysis in connection with the resolvent also drove people in this direction. That brought linear operators, resolvent analysis, and complex analysis of the resolvent into the early work of Hilbert. Using this, Hilbert was able to give some of the earliest general proofs of $L^2$ convergence of generalized orthogonal function expansions arising out of Fourier Analysis of PDEs. General Operator Algebras and Spectral Theorem were not far behind.
+
+As a simple example, consider the operator $Lf=\frac{1}{i}f'$ on the domain $\mathcal{D}(A)\subset L^2[0,2\pi]$ consisting of all absolutely continuous functions $f$ on $[0,2\pi]$ with $f(0)=f(2\pi)$ and $f'\in L^2$. This is a selfadjoint operator with resolvent $(L-\lambda I)^{-1}g$ obtained by solving for $f$ such that
+\begin{equation}
+        (L-\lambda I)f = g.
+\end{equation}
+The solution of this equation exists for all $\lambda\ne 0,\pm 1,\pm 2,\cdots$, and is given by solving a first order ODE problem for $f$ as a function of $g$:
+\begin{equation}
+     f=R(\lambda)g= \frac{e^{i\lambda x}}{e^{-2\pi i\lambda}-1}\int_{0}^{2\pi}ie^{-i\lambda t}g(t)dt+e^{i\lambda x}\int_{0}^{x}ie^{-i\lambda t}g(t)dt.
+\end{equation}
+The resolvent has first order poles at every eigenvalue, and the residue at an integer $n$ is
+\begin{equation}
+           -\frac{1}{2\pi}e^{inx}\int_{0}^{2\pi}e^{-int}f(t)dt.
+\end{equation}
+The negative of the sum of all residues is the Fourier transform for $f$! You can imagine that such things might pique the imagination of early people in the field. Early proofs of the convergence of generalized Fourier expansions followed this procedure, and showed that the sum of the residues in the finite plane could be traded for a single residue at infinity, which could be shown to be the negative of the identity operator:
+\begin{equation}
+         \lim_{\lambda\rightarrow \pm i\infty}\lambda R(\lambda)f = 
+     \lim_{\lambda\rightarrow\pm i\infty}\frac{\lambda}{(A-\lambda I)}f = -f
+\end{equation}
+\begin{equation}
+       \implies  \sum_{n=-\infty}^{\infty}\frac{1}{2\pi}\int_{0}^{2\pi}f(t)e^{-int}dt e^{inx} = f(x).
+\end{equation}
+This works for generalized Fourier series arising out of general equations. Adaptations can be used to prove pointwise convergence as well as the expected $L^2$ convergence. These are the types of problems that Functional Analysis was originally created to solve.
+
+The set of singularities of the resolvent was named "spectrum" by Hilbert. Wirtinger had earlier used the term "bandespectrum" because he saw a resemblance between the discrete singular values and optical atomic spectral bands. Oddly, the spectrum of operators would be found to be actual atomic spectrum in Quantum. So the name was also a nice fit for its later application to the new Quantum Theory that came a couple of decades later. Hilbert does not reference Wirtinger directly, but he probably saw the term in Wirtinger's work.
+
+\vspace{1em}
+\noindent
+(From J. Dieudonne, "A History of Functional Analysis," p. 150.)
+
+\end{document}

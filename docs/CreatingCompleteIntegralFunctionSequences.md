@@ -1,0 +1,306 @@
+---
+title: Energetic Hilbert Subspaces
+---
+
+# Introduction {#introduction .unnumbered}
+
+In mathematics, more precisely in functional analysis, an energetic
+space is, intuitively, a subspace of a given real Hilbert space equipped
+with a new \"energetic\" inner product. The motivation for the name
+comes from physics, as in many physical problems the energy of a system
+can be expressed in terms of the energetic inner product.
+
+# Energetic Space {#energetic-space .unnumbered}
+
+Formally, consider a real Hilbert space $X$ with the inner product
+$(\cdot |
+\cdot)$ and the norm $\| \cdot\|$. Let $Y$ be a linear subspace of $X$
+and $B : Y \to X$ be a strongly monotone symmetric linear operator, that
+is, a linear operator satisfying:
+
+-   $(Bu|v) = (u|Bv)$ $u, v \in Y$
+
+-   $(Bu|u) \ge c \|u\|^2$ for some constant $c > 0$ and $u \in
+      Y$
+
+The is defined as: $$(u|v)_E = (Bu|v)$$ for all $u, v \in Y$.
+
+The is: $$\|u\|_E = \sqrt{(u|u)_E}$$ for all $u \in Y$.
+
+The set $Y$ together with the energetic inner product is a pre-Hilbert
+space. The $X_E$ is defined as the completion of $Y$ in the energetic
+norm. $X_E$ can be considered a subset of the original Hilbert space
+$X$, since any Cauchy sequence in the energetic norm is also Cauchy in
+the norm of $X$ (this follows from the strong monotonicity property of
+$B$).
+
+The energetic inner product is extended from $Y$ to $X_E$ by:
+$$(u|v)_E = \lim_{n \to \infty} (u_n |v_n)_E$$ where $(u_n)$ and $(v_n)$
+are sequences in $Y$ that converge to points in $X_E$ in the energetic
+norm.
+
+# Energetic Extension {#energetic-extension .unnumbered}
+
+The operator $B$ admits an $B_E$: $$B_E : X_E \to X_E^{\ast}$$ defined
+on $X_E$ with values in the dual space $X_E^{\ast}$ and given by the
+formula: $$\langle B_E u|v \rangle_E = (u|v)_E$$ for all $u, v \in X_E$.
+
+Here, $\langle \cdot | \cdot \rangle_E$ denotes the duality bracket
+between $X_E^{\ast}$ and $X_E$, so $\langle B_E u|v \rangle_E$ actually
+denotes $(B_E
+u) (v)$.
+
+If $u$ and $v$ are elements in the original subspace $Y$, then:
+$$\langle B_E u|v \rangle_E = (u|v)_E = (Bu|v) = \langle u|B|v \rangle$$
+by the definition of the energetic inner product. If one views $Bu$,
+which is an element in $X$, as an element in the dual $X^{\ast}$ via the
+Riesz representation theorem, then $Bu$ will also be in the dual
+$X_E^{\ast}$ (by the strong monotonicity property of $B$). Via these
+identifications, it follows that $B_E u = Bu$. In other words, the
+original operator $B : Y \to X$ can be viewed as an operator
+$B : Y \to X_E^{\ast}$, and then $B_E : X_E \to
+X_E^{\ast}$ is simply the function extension of $B$ from $Y$ to $X_E$.
+
+# An Example from Physics {#an-example-from-physics .unnumbered}
+
+Consider a string whose endpoints are fixed at two points $a < b$ on the
+real line. Let the vertical outer force density at each point $x$
+($a \le x \le b$) on the string be $f (x) \mathbf{e}$, where
+$\mathbf{e}$ is a unit vector pointing vertically and
+$f : [a, b] \to \mathbb{R}$. Let $u (x)$ be the deflection of the string
+at the point $x$ under the influence of the force. Assuming that the
+deflection is small, the elastic energy of the string is:
+$$\frac{1}{2}  \int_a^b u' (x)^2  \hspace{0.17em} dx$$ and the total
+potential energy of the string is:
+$$F (u) = \frac{1}{2}  \int_a^b u' (x)^2  \hspace{0.17em} dx - \int_a^b u (x)
+  f (x)  \hspace{0.17em} dx$$ The deflection $u (x)$ minimizing the
+potential energy will satisfy the differential equation: $$- u'' = f$$
+with boundary conditions: $$u (a) = u (b) = 0$$ To study this equation,
+consider the space $X = L^2 (a, b)$, the $L^2$ space of all
+square-integrable functions $u : [a, b] \to \mathbb{R}$ with respect to
+the Lebesgue measure. This space is Hilbert with the inner product:
+$$(u|v) = \int_a^b u (x) v (x)  \hspace{0.17em} dx$$ and the norm given
+by: $$\|u\| = \sqrt{(u|u)}$$ Let $Y$ be the set of all twice
+continuously differentiable functions $u : [a,
+b] \to \mathbb{R}$ with the boundary conditions $u (a) = u (b) = 0$.
+Then $Y$ is a linear subspace of $X$.
+
+Consider the operator $B : Y \to X$ given by: $$Bu = - u''$$ so the
+deflection satisfies the equation $Bu = f$. Using integration by parts
+and the boundary conditions, one can see that:
+$$(Bu|v) = - \int_a^b u'' (x) v (x)  \hspace{0.17em} dx = \int_a^b u' (x) v'
+  (x)  \hspace{0.17em} dx = (u|Bv)$$ for any $u$ and $v \in Y$.
+Therefore, $B$ is a symmetric linear operator.
+
+$B$ is also strongly monotone, since by Friedrichs's inequality:
+$$\|u\|^2 = \int_a^b u^2 (x)  \hspace{0.17em} dx \le C \int_a^b u' (x)^2 
+  \hspace{0.17em} dx = C (Bu|u)$$ for some $C > 0$.
+
+The energetic space with respect to the operator $B$ is the Sobolev
+space $H^1_0 (a, b)$. The elastic energy of the string which motivated
+this study is:
+$$\frac{1}{2}  \int_a^b u' (x)^2  \hspace{0.17em} dx = \frac{1}{2} (u|u)_E$$
+so it is half of the energetic inner product of $u$ with itself.
+
+To calculate the deflection $u$ minimizing the total potential energy
+$F (u)$ of the string, one writes this problem in the form:
+$$(u|v)_E = (f|v) \forall v \in X_E$$ Next, one usually approximates $u$
+by some $u_h$, a function in a finite-dimensional subspace of the true
+solution space. For example, one might let $u_h$ be a continuous
+piecewise linear function in the energetic space, which gives the finite
+element method. The approximation $u_h$ can be computed by solving a
+system of linear equations.
+
+The energetic norm turns out to be the natural norm in which to measure
+the error between $u$ and $u_h$, see Céa's lemma.
+
+# References {#references .unnumbered}
+
+-   Zeidler, Eberhard. . New York: Springer-Verlag, 1995. ISBN
+    0-387-94442-7.
+
+-   Johnson, Claes. . Cambridge University Press, 1987. ISBN
+    0-521-34514-6.
+
+If $\{\varphi_n \} \subset D (P)$ and the sequence $\{P \varphi_n \}$ is
+complete in an initial Hilbert space $H$, then the sequence
+$\{\varphi_n \}$ is complete in the energetic space $H_P$.
+
+## 2.3. Examples {#examples .unnumbered}
+
+The examples listed below present various ways of determining complete
+sequences with the aid of the theorems proved. Having a given sequence,
+it is sufficient to prove its completeness in the energetic space $H_P$,
+since every sequence complete in $H_P$ is also complete in an initial
+Hilbert space $H$ [@15]. Sometimes, however, in order to prove the
+completeness of a sequence in $H_P$ one should have shown its
+completeness in $H$ from the start. Even when there is no need to do so,
+it is preferable to become acquainted with direct proofs of the
+completeness of the sequences in the initial space $H$ with the aim of
+understanding how the theorems proved above are used.
+
+In all examples, except one, $H$ is assumed to be the space of
+quadratically integrable functions and $P$ is always the operator
+$- \Delta$ with the homogeneous Dirichlet boundary condition. Therefore
+the domain $D (- \Delta)$ consists of those functions of the space $H$
+which are twice continuously differentiable in the considered area and
+vanish on its boundary.
+
+::: example
+Consider on the interval $D = (0, a)$ the sequence
+$\{\varphi_n \} = \{x^n
+  (a - x) : n = 1, 2, \ldots\}$.
+
+Let $\mathcal{F}$ be the family consisting of $\varphi_1$ and
+$\varphi_2$. Raising the difference $a - x$ to $m$th power according to
+the binomial theorem and multiplying by $x^n  (a - x)$ we ascertain that
+$x^n  (a - x)^{m
+  + 1}$ is a linear combination of the terms of the sequence
+$\{\varphi_n \}$. Thus after addition of the constant $\varphi_0 = 1$ to
+the considered sequence, it is obvious that the sequence AS given by the
+formula (10) is a subset of the linear space
+Lin$\{\varphi_n : n = 0, 1, 2, \ldots\}$. Taking two points $x'$ and
+$x''$ from the open interval $(0, a)$ such that
+$\varphi_1 (x') = \varphi_1 (x'')$ and
+$\varphi_2 (x') = \varphi_2 (x'')$, and dividing the second equation by
+the first, we obtain $x' = x''$. Therefore the family $\mathcal{F}$
+separates the points of the interval $(0,
+  a)$ and $R (\mathcal{F})$ is the two-point set $\{0, a\}$ being the
+boundary $\partial D$ of the set $D$. Let AS$_2 = \{\varphi_n \}$ and
+AS$_{\textrm{$1$}}$ will be the one-element sequence $\{\varphi_0 \}$.
+Of course, AS$_{\textrm{$1$}}$ consisting only of a constant function
+fulfills the assumptions of the corollary of Theorem 2 (taking advantage
+of it one should assume $k = 1$ and $S_1 = \partial D$). Thus according
+to this corollary the sequence $\{\varphi_n \}$ is complete in
+$L_2 (D)$.
+:::
+
+To prove the completeness of the sequence $\{\varphi_n \}$ in
+$H_{- \Delta}$, let us observe that $$1 = - \Delta \frac{\varphi}{2}$$
+$$x^{n - 1} = \frac{[n (n - 1) ax^{n - 2} - 2 \Delta \varphi_n]}{(n^2 + n)}
+  \forall n = 2, 3, \ldots$$ , rom which it follows that every element
+of the sequence $\{\psi_n \} = \{x^n
+: n = 0, 1, 2, \ldots\}$
+
+**Proof ** Let $g \in C (D)$. By virtue of condition (a) there exist
+$f_n \in
+  \text{Lin} \{\varphi_n \}$ such that
+$\sup \{|f (u) P_n f (u) - f (u) | : u
+  \in D\} \leq 1 / n$. Because $1 / f \in L_2 (D)$, the inverse image
+$f^{- 1}
+  [0]$ is of measure zero. Therefore $|P_n f - g| \rightarrow 0$ almost
+everywhere and $|P_n f - g|^2 \leq 1 / |f|^2$. Consequently
+$\|P_n f - g\|
+  \rightarrow 0$ by the Lebesgue dominated convergence theorem, which,
+together with the known fact that the set of continuous functions is
+dense in $L_2 (D)$, proves that the sequence $\{P \varphi_n \}$ is
+complete in $L_2 (D)$.
+
+If condition (b) is fulfilled, then for any $g \in L_2 (D)$ there exists
+a $g_n \in \text{Lin} \{\varphi_n \}$ such that $\|fP_n - fg\| \leq 1
+  / n$. The inequality $|f|_{\inf} \cdot \|P_n - g\| \leq \|fP_n - fg\|$
+implies that $\|P_n - g\| \rightarrow 0$ since $|f|_{\inf} \neq 0$, from
+where it follows that the sequence $\{P \varphi_n \}$ is complete in
+$L_2
+  (D)$ also for the case (b). From the two inequalities satisfied by
+every positive definite operator $$\ $$ $$\begin{array}{rl}
+      \|Ph\| & \geq \mu \|h\|\\
+      \|Ph\| \cdot \|h\| & \geq \|h\|^2
+    \end{array} \quad \forall h \in D (P)$$ where $\mu$ is a positive
+real number, and $\|h\|_P$ denotes the norm in $H_P$, we come to a
+conclusion that $\|h_n \|_P \rightarrow 0$ for any sequence
+$\{h_n \} \subset D (P)$ such that $\|Ph_n \| \rightarrow 0$. Thus by
+the completeness of the sequence $\{P \varphi_n \}$ in $L_2 (D)$, the
+sequence $\{\varphi_n \}$ is complete in $H_P$, which completes the
+proof. $\Box$
+
+From the point (a) of the above theorem the following corollary results
+directly:
+
+::: corollary
+**Corollary 1**. *If $\{\varphi_n \}$ is a sequence in $D (P)$, and
+there exists a sequence $\{\psi_n \}$ complete in $C (D)$ and a function
+$f \in C (D)$, $1 / f \in
+  L_2 (D)$, such that each function $\psi_n$ can be uniformly
+approximated by linear combinations of the terms of the sequence
+$\{fP \varphi_n \}$ (in particular when
+$\{\psi_n \} \subset \text{Lin} \{fP \varphi_n \}$, i.e., when each of
+the functions $\psi_n$ is a linear combination of the terms of the
+sequence $\{fP \varphi_n \}$), then the sequence $\{\varphi_n \}$ is
+complete in the energetic space $H_P$.*
+:::
+
+Assuming that $P$ is the identity operator $(Pu = u)$, choosing the
+function $f = 1$ and taking advantage of the part of the proof of
+Theorem 6 concerning case (a) (where, among other things, we replace the
+limit $\|P_n f
+- g\|^2 \rightarrow 0$ by the limit $|f_n - g|^p \rightarrow 0$) we
+obtain a proof of the following corollary:
+
+::: corollary
+**Corollary 2**. *Every sequence complete in $C (D)$ is also complete in
+$L_p (D)$.*
+:::
+
+::: corollary
+**Corollary 3**. *If $\{\varphi_n \} \subset D (P)$ and the sequence
+$\{P \varphi_n \}$ is complete in an initial Hilbert space $H$, then the
+sequence $\{\varphi_n \}$ is complete in the energetic space $H_P$.*
+:::
+
+## 2.3. Examples {#examples-1 .unnumbered}
+
+The examples listed below present various ways of determining complete
+sequences with the aid of the theorems proved. Having a given sequence,
+it is sufficient to prove its completeness in the energetic space $H_P$,
+since every sequence complete in $H_P$ is also complete in an initial
+Hilbert space $H$ [@15]. Sometimes, however, in order to prove the
+completeness of a sequence in $H_P$ one should have shown its
+completeness in $H$ from the start. Even when there is no need to do so,
+it is preferable to become acquainted with direct proofs of the
+completeness of the sequences in the initial space $H$ with the aim of
+understanding how the theorems proved above are used.
+
+In all examples, except one, $H$ is assumed to be the space of
+quadratically integrable functions and $P$ is always the operator
+$- \Delta$ with the homogeneous Dirichlet boundary condition. Therefore
+the domain $D (- \Delta)$ consists of those functions of the space $H$
+which are twice continuously differentiable in the considered area and
+vanish on its boundary.
+
+::: example
+Consider on the interval $D = (0, a)$ the sequence
+$\{\varphi_n \} = \{x^n
+  (a - x) : n = 1, 2, \ldots\}$.
+
+Let $\mathcal{F}$ be the family consisting of $\varphi_1$ and
+$\varphi_2$. Raising the difference $a - x$ to $m$th power according to
+the binomial theorem and multiplying by $x^n  (a - x)$ we ascertain that
+$x^n  (a - x)^{m
+  + 1}$ is a linear combination of the terms of the sequence
+$\{\varphi_n \}$. Thus after addition of the constant $\varphi_0 = 1$ to
+the considered sequence, it is obvious that the sequence AS given by the
+formula (10) is a subset of the linear space
+Lin$\{\varphi_n : n = 0, 1, 2, \ldots\}$. Taking two points $x'$ and
+$x''$ from the open interval $(0, a)$ such that
+$\varphi_1 (x') = \varphi_1 (x'')$ and
+$\varphi_2 (x') = \varphi_2 (x'')$, and dividing the second equation by
+the first, we obtain $x' = x''$. Therefore the family $\mathcal{F}$
+separates the points of the interval $(0,
+  a)$ and $R (\mathcal{F})$ is the two-point set $\{0, a\}$ being the
+boundary $\partial D$ of the set $D$. Let AS$_2 = \{\varphi_n \}$ and
+AS$_{\textrm{$1$}}$ will be the one-element sequence $\{\varphi_0 \}$.
+Of course, AS$_{\textrm{$1$}}$ consisting only of a constant function
+fulfills the assumptions of the corollary of Theorem 2 (taking advantage
+of it one should assume $k = 1$ and $S_1 = \partial D$). Thus according
+to this corollary the sequence $\{\varphi_n \}$ is complete in
+$L_2 (D)$.
+
+To prove the completeness of the sequence $\{\varphi_n \}$ in $H_{-
+  \Delta}$, let us observe that
+$1 = - \Delta \varphi / 2, x^{n - 1} = [n (n -
+  1) ax^{n - 2} - 2 \Delta \varphi_n] / (n^2 + n), n = 2, 3, \ldots$,
+from which it follows that every element of the sequence
+$\{\psi_n \} = \{x^n : n
+  = 0, 1, 2, \ldots\}$
+:::

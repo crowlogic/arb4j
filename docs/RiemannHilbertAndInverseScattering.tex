@@ -1,0 +1,79 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmaffiliation}[1]{\\ #1}
+\newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{Answering The Riemann-Hilbert Question With Methods From The Theory of
+Inverse Scattering}
+
+\author{
+  Stephen Crowley
+  \tmaffiliation{April 15, 2024}
+}
+
+\maketitle
+
+\
+
+\
+
+The connection between the Riemann-Hilbert problem and the
+Gelfand-Levitan-Marchenko (GLM) inverse scattering method is foundational in
+linking analytical and algebraic structures within integrable systems. Here we
+explore this relationship:
+\begin{enumerate}
+  \item \tmtextbf{Inverse Scattering and Integrable Systems:} The GLM inverse
+  scattering method is crucial for solving integrable differential equations
+  such as the Korteweg-de Vries (KdV) equation, which is a significant
+  nonlinear partial differential equation in mathematical physics. This
+  equation is given by:
+  \begin{equation}
+    \frac{\partial u}{\partial t} + 6 u \frac{\partial u}{\partial x} +
+    \frac{\partial^3 u}{\partial x^3} = 0
+  \end{equation}
+  This method reconstructs potentials from the provided scattering data,
+  characterizing the evolution of solitons or wave functions.
+  
+  \item \tmtextbf{Riemann-Hilbert Problem Formulation:} This involves finding
+  a matrix-valued function $Y (z)$ that is analytic off a real line
+  $\mathbb{R}$ and satisfies the boundary condition:
+  \begin{equation}
+    Y_+ (z) = Y_- (z) \cdot v (z) \forall z \in \mathbb{R}
+  \end{equation}
+  where $v (z)$ represents the jump matrix derived from scattering data.
+  
+  \item \tmtextbf{Connection through Jump Conditions:} The GLM method's kernel
+  $K (x, t)$ related to the system's potential, can be derived from the
+  scattering data $S (k)$. The integral equation in GLM form is given by:
+  \begin{equation}
+    K (x, y) + F (x + y) + \int_x^{\infty} K (x, z) F (z + y)  \hspace{0.17em}
+    dz = 0 \forall x, y \geq 0
+  \end{equation}
+  where $F$ is related to the inverse Fourier transform of $S (k)$.
+  
+  \item \tmtextbf{Analytic to Algebraic Translation:} Solving the analytic
+  Riemann-Hilbert problem translates into solving algebraic GLM integral
+  equations, providing a framework for understanding how changes in the
+  contour or boundary conditions impact the solutions.
+  
+  \item \tmtextbf{Applications in Soliton Theory:} The solution to the
+  Riemann-Hilbert problem facilitates the explicit expression of solitons,
+  which are solutions to the KdV and other nonlinear wave equations. The
+  soliton solutions $q (x, t)$ are often expressed as:
+  \begin{equation}
+    q (x, t) = - 2 \frac{d^2}{dx^2} \log \det (I + K)
+  \end{equation}
+  \item \tmtextbf{Theoretical Implications:} Beyond understanding soliton
+  dynamics, solving the Riemann-Hilbert problem has broader implications for
+  the stability analysis of solitons and the asymptotic behavior of solutions
+  in integrable systems.
+\end{enumerate}
+
+\end{document}

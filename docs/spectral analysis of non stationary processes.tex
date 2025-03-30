@@ -1,0 +1,58 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+\title{Normalization and Fourier Analysis of Non-Stationary Processes}
+\author{Technical Report}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Zero-Crossing Rate Normalization}
+Consider a process with zero crossing rates that increase as $|t| \to \infty$. Through normalization:
+
+\begin{itemize}
+\item Original process has increasing crossing rates
+\item Normalize to maintain unit rate across whole domain
+\item This enables Fourier transform analysis
+\end{itemize}
+
+\section{Process Transformation}
+For a process with increasing zero crossing rates as $|t| \to \infty$:
+
+The normalization procedure:
+\begin{enumerate}
+\item Apply normalization for unit zero crossing rate
+\item Results in stationary process (constant crossing rate)
+\item Enables Fourier transform analysis
+\end{enumerate}
+
+Key insights:
+\begin{itemize}
+\item Original: non-stationary (increasing crossings)
+\item Post-normalization: stationary (unit crossing rate)
+\item Makes Fourier transform well-defined
+\item Spectral process exists for normalized version
+\end{itemize}
+
+The Fourier transform of the normalized process:
+\[ \tilde{Y}(\omega) = \int_{-\infty}^{\infty} Y_{normalized}(t)e^{-i\omega t}dt \]
+
+exists because normalization creates a well-behaved stationary process with constant crossing rate properties.
+
+\section{Wigner-Ville Connection}
+The Wigner-Ville distribution:
+\[ W(t,\omega) = \int_{-\infty}^{\infty} x(t + \tau/2)x^*(t - \tau/2)e^{-i\omega\tau}d\tau \]
+
+captures:
+\begin{itemize}
+\item Process that's "almost" stationary
+\item Triangular/bilinear structure
+\item Non-stationarity enters in controlled way
+\item Maintains certain symmetries despite non-stationarity
+\end{itemize}
+
+\end{document}

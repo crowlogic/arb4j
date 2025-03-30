@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:x="https://www.texmacs.org/2002/extensions" xmlns:m="http://www.w3.org/1998/Math/MathML">
+  <head>
+    <title>No title</title>
+    <meta charset="utf-8" content="TeXmacs 2.1.4" name="generator"></meta>
+    <style type="text/css">
+      body { text-align: justify } h5 { display: inline; padding-right: 1em }
+      h6 { display: inline; padding-right: 1em } table { border-collapse:
+      collapse } td { padding: 0.2em; vertical-align: baseline } dt { float:
+      left; min-width: 1.75em; text-align: right; padding-right: 0.75em;
+      font-weight: bold; } dd { margin-left: 2.75em; padding-bottom: 0.25em; }
+      dd p { padding-top: 0em; } .subsup { display: inline; vertical-align:
+      -0.2em } .subsup td { padding: 0px; text-align: left} .fraction {
+      display: inline; vertical-align: -0.8em } .fraction td { padding: 0px;
+      text-align: center } .wide { position: relative; margin-left: -0.4em }
+      .accent { position: relative; margin-left: -0.4em; top: -0.1em }
+      .title-block { width: 100%; text-align: center } .title-block p {
+      margin: 0px } .compact-block p { margin-top: 0px; margin-bottom: 0px }
+      .left-tab { text-align: left } .center-tab { text-align: center }
+      .balloon-anchor { border-bottom: 1px dotted #000000; outline: none;
+      cursor: help; position: relative; } .balloon-anchor [hidden] {
+      margin-left: -999em; position: absolute; display: none; }
+      .balloon-anchor: hover [hidden] { position: absolute; left: 1em; top:
+      2em; z-index: 99; margin-left: 0; width: 500px; display: inline-block; }
+      .balloon-body { } .ornament { border-width: 1px; border-style: solid;
+      border-color: black; display: inline-block; padding: 0.2em; } .right-tab
+      { float: right; position: relative; top: -1em; } .no-breaks {
+      white-space: nowrap; } .underline { text-decoration: underline; }
+      .overline { text-decoration: overline; } .strike-through {
+      text-decoration: line-through; } del { text-decoration: line-through
+      wavy red; } .fill-out { text-decoration: underline dotted; } 
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" language="javascript"></script>
+  </head>
+  <body>
+    <p style="margin-top: 1em">
+      <strong>Definition <class style="font-style: normal">1</class>. </strong><i><class style="font-style: normal"><strong>(Convex
+      Function) </strong></class>A function \(f : \mathbb{R} \to \mathbb{R}\)
+      is convex if for any \(x, y \in \mathbb{R}\) and \(t \in [0, 1]\):</i>
+    </p>
+    <p style="margin-bottom: 1em">
+      <i><center>
+        \(\displaystyle f (tx + (1 - t) y) \leq tf (x) + (1 - t) f (y)\)
+      </center></i>
+    </p>
+    <p style="margin-top: 1em">
+      <strong>Definition <class style="font-style: normal">2</class>. </strong><i><class style="font-style: normal"><strong>(Convex
+      Functional) </strong></class>A functional \(J : X \to \mathbb{R}\) on a
+      function space \(X\) is convex if for any \(f (x), g (x) \in X\) and \(t
+      \in [0, 1]\):</i>
+    </p>
+    <p style="margin-bottom: 1em">
+      <i><center>
+        \(\displaystyle J (t \cdot f (x) + (1 - t) \cdot g (x)) \leq t \cdot J
+        (f (x)) + (1 - t) \cdot
+J (g (x))\)
+      </center></i>
+    </p>
+    <p style="margin-top: 1em">
+      <strong>Definition <class style="font-style: normal">3</class>. </strong><i><class style="font-style: normal"><strong>(Monotonically
+      Increasing Function) </strong></class>A function \(f : \mathbb{R} \to
+      \mathbb{R}\) is monotonically increasing if:</i>
+    </p>
+    <p style="margin-bottom: 1em">
+      <i><center>
+        \(\displaystyle x < y \Longrightarrow f (x) < f (y) \quad \forall x, y
+        \in \mathbb{R}\)
+      </center></i>
+    </p>
+    <p style="margin-top: 1em">
+      <strong>Definition <class style="font-style: normal">4</class>. </strong><i><class style="font-style: normal"><strong>(Monotonically
+      Decreasing Function) </strong></class>A function \(f : \mathbb{R} \to
+      \mathbb{R}\) is monotonically decreasing if:</i>
+    </p>
+    <p style="margin-bottom: 1em">
+      <i><center>
+        \(\displaystyle x < y \Longrightarrow f (x) > f (y) \quad \forall x, y
+        \in \mathbb{R}\)
+      </center></i>
+    </p>
+    <p style="margin-top: 1em">
+      <strong>Definition <class style="font-style: normal">5</class>. </strong><i><class style="font-style: normal"><strong>(Non-decreasing
+      Function) </strong></class>A function \(f : \mathbb{R} \to \mathbb{R}\)
+      is non-decreasing if:</i>
+    </p>
+    <p style="margin-bottom: 1em">
+      <i><center>
+        \(\displaystyle x \leq y \Longrightarrow f (x) \leq f (y) \quad
+        \forall x, y \in \mathbb{R}\)
+      </center></i>
+    </p>
+    <p style="margin-top: 1em">
+      <strong>Definition <class style="font-style: normal">6</class>. </strong><i><class style="font-style: normal"><strong>(Non-increasing
+      Function) </strong></class>A function \(f : \mathbb{R} \to \mathbb{R}\)
+      is non-increasing if:</i>
+    </p>
+    <p style="margin-bottom: 1em">
+      <i><center>
+        \(\displaystyle x \leq y \Longrightarrow f (x) \geq f (y) \quad
+        \forall x, y \in \mathbb{R}\)
+      </center></i>
+    </p>
+    <p style="margin-top: 1em; margin-bottom: 1em">
+      <strong>Theorem <class style="font-style: normal">7</class>. </strong><i><class style="font-style: normal"><strong>(Convexity
+      and Monotonicity) </strong></class>If a function \(f : \mathbb{R} \to
+      \mathbb{R}\) is twice differentiable and \(\frac{d^2 f}{dx^2} (x) > 0\)
+      for all \(x\), then \(f\) is convex and monotonically increasing.</i>
+    </p>
+    <p style="margin-top: 1em; margin-bottom: 1em">
+      <strong>Remark <class style="font-style: normal">8</class>. </strong>A function that is not
+      monotonic may have points where a line cannot be drawn through its graph
+      without intersecting it at more than two points, violating the
+      definition of convexity.
+    </p>
+    <p style="margin-top: 1em">
+      <strong>Theorem <class style="font-style: normal">9</class>. </strong><i><class style="font-style: normal"><strong>(Jensen's
+      Inequality) </strong></class>For a convex function \(f : \mathbb{R} \to
+      \mathbb{R}\), real numbers \(x_1, \ldots, x_n\), and non-negative
+      weights \(\alpha_1, \ldots, \alpha_n\) with \(\sum_{i = 1}^n \alpha_i =
+      1\):</i>
+    </p>
+    <i><table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle f \left( \sum_{i = 1}^n \alpha_i x_i
+        \right) \leq \sum_{i = 1}^n \alpha_i f
+(x_i)\)</td>
+        <td align="right">(1)</td>
+      </tr>
+    </table></i>
+    <p style="margin-bottom: 1em">
+      <i>Equality holds if and only if all \(x_i\) are equal or \(f\) is
+      linear.</i>
+    </p>
+    <p style="margin-top: 1em">
+      <strong>Corollary <class style="font-style: normal">10</class>. </strong><i>For a convex
+      function \(f\) and a random variable \(X\):</i>
+    </p>
+    <div style="margin-bottom: 1em">
+      <i><table width="100%">
+        <tr>
+          <td width="100%" align="center">\(\displaystyle f (\mathbb{E}[X]) \leq \mathbb{E}
+          [f (X)]\)</td>
+          <td align="right">(2)</td>
+        </tr>
+      </table></i>
+    </div>
+    <p style="margin-top: 1em; margin-bottom: 1em">
+      <strong>Theorem <class style="font-style: normal">11</class>. </strong><i><class style="font-style: normal"><strong>(Convexity
+      and Local Minima) </strong></class>If \(f : \mathbb{R}^n \to
+      \mathbb{R}\) is convex, then any local minimum of \(f\) is also a global
+      minimum.</i>
+    </p>
+    <p style="margin-top: 1em">
+      <strong>Theorem <class style="font-style: normal">12</class>. </strong><i><class style="font-style: normal"><strong>(Karush-Kuhn-Tucker
+      (KKT) Conditions) </strong></class>For a convex optimization
+      problem:</i>
+    </p>
+    <i><table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle \min_{x \in \mathbb{R}^n} f (x) 
+        \text{subject to } g_i (x) \leq 0, h_j (x) =
+0\)</td>
+        <td align="right">(3)</td>
+      </tr>
+    </table></i>
+    <p style="margin-bottom: 1em">
+      <i>where \(f\) and \(g_i\) are convex and \(h_j\) are affine, the KKT
+      conditions are necessary and sufficient for optimality.</i>
+    </p>
+    <p style="margin-top: 1em">
+      <strong>Definition <class style="font-style: normal">13</class>. </strong><i><class style="font-style: normal"><strong>(Affine
+      Function) </strong></class>A function \(f : \mathbb{R}^n \to
+      \mathbb{R}^m\) is affine if it can be expressed as:</i>
+    </p>
+    <i><table width="100%">
+      <tr>
+        <td width="100%" align="center">\(\displaystyle f (x) = Ax + b\)</td>
+        <td align="right">(4)</td>
+      </tr>
+    </table></i>
+    <p style="margin-bottom: 1em">
+      <i>where \(A\) is an \(m \times n\) matrix and \(b\) is an
+      \(m\)-dimensional vector.</i>
+    </p>
+    <p style="margin-top: 1em">
+      <strong>Theorem <class style="font-style: normal">14</class>. </strong><i><class style="font-style: normal"><strong>(Properties
+      of Affine Functions) </strong></class></i>
+    </p>
+    <div style="margin-bottom: 1em">
+      <i><ol>
+        <li>
+          <p>
+            Every affine function is both convex and concave.
+          </p>
+        </li>
+        <li>
+          <p>
+            The composition of an affine function with a convex function is
+            convex. 
+          </p>
+        </li>
+        <li>
+          <p>
+            The sum of an affine function and a convex function is convex.
+          </p>
+        </li>
+      </ol></i>
+    </div>
+    <p style="margin-top: 1em">
+      <strong>Theorem <class style="font-style: normal">15</class>. </strong><i><class style="font-style: normal"><strong>(Affine
+      Hull) </strong></class>The affine hull of a set \(S \subset
+      \mathbb{R}^n\) is the smallest affine set containing \(S\):</i>
+    </p>
+    <div style="margin-bottom: 1em">
+      <i><table width="100%">
+        <tr>
+          <td width="100%" align="center">\(\displaystyle \text{aff} (S) = \left\{ \sum_{i =
+          1}^k \alpha_i x_i : x_i \in S, \sum_{i =
+1}^k \alpha_i = 1
+          \right\}\)</td>
+          <td align="right">(5)</td>
+        </tr>
+      </table></i>
+    </div>
+    <p style="margin-top: 1em; margin-bottom: 1em">
+      <strong>Theorem <class style="font-style: normal">16</class>. </strong><i><class style="font-style: normal"><strong>(Affine
+      Independence) </strong></class>Vectors \(\{ v_n \}_{n = 1}^k\) are
+      affinely independent if and only if \({\{ v_n - v_1 \}_{n = 1}^k} \) are
+      linearly independent.</i>
+    </p>
+  </body>
+</html>

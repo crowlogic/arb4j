@@ -1,0 +1,113 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+
+\section{Further Examples}
+
+\begin{equation}
+X(t) = A(t)X_0(t).
+\end{equation}
+
+This class of random processes has been studied by a number of authors.$^{132}$ It is clear that the random process (4.412) is oscillatory if the function $A(t)$ (which can always be so normalized that $A(0) = 1$) has a generalized Fourier transform (i.e., admits the representation similar to (4.408)) and the modulus of this transform has an absolute maximum at zero. (In particular, $A(t)$ may be any nonnegative function whose Fourier transform exists.) Process $X(t)$ can clearly be represented as
+
+\begin{equation}
+X(t) = \int_{-\infty}^{\infty} e^{it\omega}A(t)dZ_0(\omega),
+\end{equation}
+
+where $Z_0(\omega)$ is a random function with uncorrelated increments, which appears in the spectral representation of the stationary process $X_0(t)$. Therefore, if $\langle |dZ_0(\omega)|^2 \rangle = dF_0(\omega)$, then the evolutionary spectral distribution function of the process $X(t)$ is given by
+
+\begin{equation}
+dF(\omega) = A(t)dF_0(\omega).
+\end{equation}
+
+We see that in this case the intensities of different frequency components of $X(t)$ are varying over time in exactly the same way, so that the shape of the frequency distribution of the average power of the process does not change at all. The oscillatory processes $X(t)$ possessing this property are sometimes called uniformly modulated random processes.$^{133}$
+
+The class of oscillatory random processes encompasses many processes dealt with by workers in various applied fields (e.g., by engineers, applied physicists, or economists). A very important advantage of this class is that many widely used results of the theory of stationary random processes (in particular, results relating to the effect of linear transformations, the theory of linear extrapolation and filtering, and spectral analysis, i.e. methods for the determination of spectral densities and distribution functions from experimental data) can readily be generalized to oscillatory processes. We, however, cannot examine all these topics in this book.$^{134}$ Nor shall we consider a number of attempts, differing from the present one, at generalization of the concept of power spectrum (more precisely, spectral density
+
+\newpage
+
+and spectral distribution function) to broad classes of nonstationary random processes$^{135}$ except for one more approach to this problem yet to be discussed at the end of this section.
+
+\section{Harmonizable Random Processes}
+
+In accordance with the commonly accepted terminology, in Chaps. 2 and 3 the spectral representation of a random process $X(t)$ was always interpreted as its representation in the form of superposition of complex exponential functions $\exp(i\omega t)$ (i.e. sine and cosine waves of different frequencies $\omega$). However, in the present chapter, a number of examples of generalized spectral representations were considered which relate to the decomposition of the random process $X(t)$ in terms of some other functions $\varphi(t,a)$ depending on the argument $t$ and an additional parameter $a$. Now we revert to the ordinary interpretation of the spectral representation as a decomposition in terms of complex exponential functions, but abandon the requirement adopted in Chaps. 2 and 3 that the function $Z(\omega)$ in the integrand of (2.61) necessarily has uncorrelated increments. In this case the process $X(t)$ is in general not stationary, and hence now we consider the Fourier-Stieltjes representations of nonstationary random processes.
+
+Thus, assume that the random process $X(t)$ is representable as a Fourier-Stieltjes integral
+
+\begin{equation}
+X(t) = \int_{-\infty}^{\infty} e^{i\omega t}dZ(\omega)
+\end{equation}
+
+where $Z(\omega)$ is a random function of $\omega$. As before, we interpret the integral on the right-hand side of (4.415) as the mean square limit of the corresponding integral sums, i.e. we define this integral by (2.62). It is easy to see that then the correlation function $B(t,s) = \langle X(t)\overline{X(s)} \rangle$ is given by the formula
+
+\begin{equation}
+B(t,s) = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} e^{i(t\omega-s\omega')}d^2F(\omega,\omega')
+\end{equation}
+
+where
+
+\begin{equation}
+F(\omega,\omega') = \langle Z(\omega)\overline{Z(\omega')} \rangle.
+\end{equation}
+
+It is clear that if $F(\omega,\omega')$ is a function of bounded variation
+
+\newpage
+
+in the plane, i.e.$^{136}$
+
+\begin{equation}
+\int_{-\infty}^{\infty}\int_{-\infty}^{\infty} |d^2F(\omega,\omega')| = V_F < \infty,
+\end{equation}
+
+then the integral (4.416) is necessarily convergent. It readily follows from this that the Fourier-Stieltjes integral (4.415) (i.e., the double limit (2.62)) also exists in this case and determines the mean square continuous random process $X(t)$.
+
+The random processes $X(t)$ representable as the Fourier-Stieltjes integral (4.115), where the random function $Z(\omega)$ has the correlation function (4.417) of bounded variation, were introduced by Loève in the mid-1940s.$^{137}$ Such processes are called harmonizable random processes. Clearly, in the special case where the complex measure in the plane
+
+\begin{equation}
+F(\Delta,\Delta') = \iint_{\Delta \Delta'} d^2F(\omega,\omega')
+\end{equation}
+
+corresponding to the function $F(\omega,\omega')$ is concentrated on the diagonal $\omega = \omega'$, formula (4.416) becomes the ordinary formula (2.52) for the correlation function of a stationary process. Therefore, the representation (4.415) coincides in this case with the ordinary spectral representation (2.61). Thus, any mean square continuous stationary process is necessarily harmonizable, so that the concept of a harmonizable random process generalizes the concept of a stationary process. Note also that condition (4.418) imposed on the correlation function $F(\omega,\omega')$ of the random function $Z(\omega)$ can in fact be considerably weakened by using the more sophisticated definition of the integral in the right-hand side of (4.415). In other words, the harmonizability concept may be made more inclusive by introducing a refined definition of the Fourier-Stieltjes integral (4.415).$^{138}$ However, we will not dwell on the possible generalization of the harmonizability concept here, but will, for simplicity, restrict ourselves to the case where condition (4.418) is satisfied.
+
+It has already been noted above that the correlation function $B(t,s)$ of a harmonizable process $X(t)$ is always representable as the double Fourier-Stieltjes integral (4.416), where $F(\omega,\omega')$ is a complex function of bounded variation. It is not hard to show that the converse statement is also true: each random process having a correlation function of the form (4.416), where $F(\omega,\omega')$ is a function of bounded variation, is harmonizable, i.e. such a process is representable as the Fourier-Stieltjes integral (4.415), where
+
+\newpage
+
+$Z(\omega)$ is a random function whose correlation function coincides with $F(\omega,\omega')$. The proof of this last statement is quite similar to the proof of the theorem on the spectral representation of stationary random processes which is based on the use of Khinchin's formula (2.52) for the correlation function $B(\tau) = \langle X(t + \tau)\overline{X(t)} \rangle.$^{139}$
+
+The complex function of bounded variation $F(\omega,\omega')$ is called the (two-dimensional) spectral distribution function of the harmonizable random process $X(t)$, while the complex measure in the plane $F(\Delta,\Delta')$ corresponding to the function $F(\omega,\omega')$ (see (4.419)) is said to be the spectral measure of the process $X(t)$. In the particular case where
+
+\begin{equation}
+F(\omega,\omega') = \int_{-\infty}^{\omega} \int_{-\infty}^{\omega'} f(\lambda,\lambda')d\lambda d\lambda', \quad f(\omega,\omega') = \frac{\partial^2F(\omega,\omega')}{\partial\omega\partial\omega'}
+\end{equation}
+
+(i.e., $F(\omega,\omega')$ is an absolutely continuous function of two variables) the function $f(\omega,\omega')$ is called the (two-dimensional) spectral density of the process $X(t)$. According to (4.416), if the spectral distribution function $F(\omega,\omega')$ is given, the correlation function $B(t,s)$ of the harmonizable random process $X(t)$ can be determined uniquely. It is not hard to show that, conversely, specification of the correlation function $B(t,s)$ of a harmonizable process $X(t)$ determines the corresponding spectral distribution function $F(\omega,\omega')$ to within an arbitrary additive constant and an exact definition of the values of $F(\omega,\omega')$ at the points of discontinuity of this function, which do not affect the value of the integral on the right-hand side of (4.416).$^{140}$ Indeed, it is easy to show that the values of the two-dimensional increments $\Delta\Delta'F(\omega,\omega') = F(\omega+\Delta, \omega'+\Delta') - F(\omega+\Delta, \omega') - F(\omega, \omega'+\Delta') + F(\omega,\omega')$ where the points $(\omega + \Delta, \omega' + \Delta')$, $(\omega + \Delta, \omega')$, $(\omega, \omega' + \Delta')$ and $(\omega,\omega')$ are any four continuity points of the function $F(\omega,\omega')$, can be determined uniquely from $B(t,s)$ with the aid of a simple inversion formula. This inversion formula coincides, of course, with the inversion formula for two-dimensional characteristic functions and for spectral distribution functions of homogeneous random fields in the plane (see p. 332 and Note 8 to the Introduction in Vol. II).$^{141}$ The ordinary formula for inversion of one-dimensional Fourier-Stieltjes integrals (see, e.g., formulae (0.61') and (2.9') in Vol. II) may also be applied to the random process (4.415) themselves. According to this formula
+
+\newpage
+
+\begin{equation}
+Z(\omega_2) - Z(\omega_1) = \lim_{T\to\infty} \frac{1}{2T} \int_{-T}^T \frac{e^{-i\omega_2t} - e^{-i\omega_1t}}{-it} X(t)dt
+\end{equation}
+
+where lim denotes the mean square limit, and if $\omega_2$ and/or $\omega_1$ are discontinuity points of $Z(\omega)$, then $Z(\omega_2)$ and/or $Z(\omega_1)$ must be interpreted as $[Z(\omega_2 + 0) + Z(\omega_2 - 0)]/2$ and/or $[Z(\omega_1 + 0) + Z(\omega_1 - 0)]/2$. Moreover, we can easily show, as in the derivation of formula (2.32') for a stationary random process $X(t)$ (see Note 22 to Chap. 2 in Vol. II), that for any harmonizable process the following relation is valid:
+
+\begin{equation}
+\lim_{T\to\infty} \frac{1}{T} \int_{-T/2}^{T/2} e^{-i\omega t}X(t)dt = Z(\omega + 0) - Z(\omega - 0)
+\end{equation}
+
+which generalizes (2.32'). If $\omega = 0$, then (4.422) coincides with (2.32') and can be interpreted as the law of large numbers (i.e., the law which was called the ergodic theorem in the case of stationary processes $X(t)$; see Sec. 16) for harmonizable random processes $X(t)$. In fact, it is easy to see
+
+that (4.422) for $\omega = 0$ implies that $\lim_{T\to\infty}\int_{-T/2}^{T/2} X(t)dt$ does exist (as a limit in the mean) for any harmonizable process $X(t)$ and that
+
+\begin{equation}
+\lim_{T\to\infty} \frac{1}{T}\int_{-T/2}^{T/2} X(t)dt = \lim_{T\to\infty} \frac{1}{T}\int_{-T/2}^{T/2} m(t)dt
+\end{equation}
+
+where $m(t) = \langle X(t) \rangle$ if, and only if, the point $\omega = 0$, $\omega' = 0$ provides a zero contribution to the spectral measure $F(\Delta,\Delta')$ of the centered process $\dot{X}(t) = X(t) - \langle X(t) \rangle$. (In the particular case of a stationary process $X(t)$ this result coincides with Slutsky's theorem; see p. 220.)$^{142}$
+
+We now proceed to a more detailed study of the class of harmonizable random processes. Since the function $\exp(i(t\omega - s\omega'))$ in the integrand of (4.416) is a continuous function of $t$ and $s$ which does not exceed 1 in absolute value, it follows from (4.418) that the correlation function $B(t,s)$ of a harmonizable random process is a bounded (by the constant $V_F$) continuous function of two variables $t$ and $s$. (Hence any harmonizable process $X(t)$ is mean square continuous.$^{143}$) Thus, the class of correlation functions $B(t,s)$ of harmonizable random processes (these functions are often called harmonizable correlation functions) is a subclass of the class of all bounded and continuous (in both variables) positive definite kernels in the plane.
+
+\end{document}

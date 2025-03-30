@@ -1,0 +1,92 @@
+
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+
+\title{Proof of Triangular System for Eigenfunction Expansion Coefficients}
+\author{}
+\date{}
+
+\maketitle
+
+\begin{proof}
+We begin with the eigenvalue equation for a linear operator $K$ with kernel $K(x,y)$:
+
+\begin{equation}
+    \int_D K(x,y)\phi_n(y)dy = \lambda_n\phi_n(x)
+\end{equation}
+
+We expand the eigenfunction $\phi_n(x)$ in terms of an orthonormal basis $\{h_k(x)\}$:
+
+\begin{equation}
+    \phi_n(x) = \sum_{k=1}^{\infty} c_{n,k} h_k(x)
+\end{equation}
+
+Substituting this expansion into the eigenvalue equation:
+
+\begin{equation}
+    \int_D K(x,y)\sum_{k=1}^{\infty} c_{n,k} h_k(y)dy = \lambda_n\sum_{k=1}^{\infty} c_{n,k} h_k(x)
+\end{equation}
+
+We project both sides onto $h_j(x)$ by multiplying by $h_j(x)$ and integrating over $x$:
+
+\begin{equation}
+    \sum_{k=1}^{\infty} c_{n,k} \int_D\int_D h_j(x)K(x,y)h_k(y)dydx = \lambda_n c_{n,j}
+\end{equation}
+
+Define the matrix elements:
+
+\begin{equation}
+    K_{jk} = \int_D\int_D h_j(x)K(x,y)h_k(y)dydx
+\end{equation}
+
+This gives us the system of equations:
+
+\begin{equation}
+    \sum_{k=1}^{\infty} K_{jk} c_{n,k} = \lambda_n c_{n,j}
+\end{equation}
+
+For $j = 1$, we have:
+
+\begin{equation}
+    K_{11}c_{n,1} + K_{12}c_{n,2} + K_{13}c_{n,3} + \cdots = \lambda_n c_{n,1}
+\end{equation}
+
+This implies $\lambda_n = K_{11}$ (assuming $c_{n,1} \neq 0$).
+
+For $j = 2$:
+
+\begin{equation}
+    K_{21}c_{n,1} + K_{22}c_{n,2} + K_{23}c_{n,3} + \cdots = \lambda_n c_{n,2}
+\end{equation}
+
+Rearranging:
+
+\begin{equation}
+    c_{n,2} = \frac{1}{\lambda_n - K_{22}} K_{21}c_{n,1}
+\end{equation}
+
+For $j = 3$:
+
+\begin{equation}
+    K_{31}c_{n,1} + K_{32}c_{n,2} + K_{33}c_{n,3} + \cdots = \lambda_n c_{n,3}
+\end{equation}
+
+Rearranging:
+
+\begin{equation}
+    c_{n,3} = \frac{1}{\lambda_n - K_{33}} (K_{31}c_{n,1} + K_{32}c_{n,2})
+\end{equation}
+
+By induction, we can show that for any $j > 1$:
+
+\begin{equation}
+    c_{n,j} = \frac{1}{\lambda_n - K_{jj}} \sum_{k=1}^{j-1} K_{jk}c_{n,k}
+\end{equation}
+
+This forms a triangular system that allows us to compute the coefficients $c_{n,j}$ sequentially, with each coefficient depending only on the previous ones.
+\end{proof}
+
+\end{document}
