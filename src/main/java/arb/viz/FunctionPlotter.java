@@ -194,6 +194,12 @@ public class FunctionPlotter extends
     });
   }
 
+  public void hide()
+  {
+    assert stage != null : "stage is null";
+    Platform.runLater(() -> stage.hide());
+  }
+
   public void show()
   {
     assert stage != null : "stage is null";
