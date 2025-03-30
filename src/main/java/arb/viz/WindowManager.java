@@ -40,7 +40,7 @@ import javafx.stage.Window;
  */
 public class WindowManager
 {
- 
+
   static
   {
     Thread.setDefaultUncaughtExceptionHandler(WindowManager::showError);
@@ -133,24 +133,12 @@ public class WindowManager
     xdo = arblib.xdo_new(System.getenv("DISPLAY"));
   }
 
-  public static void bringToFront(Stage stage)
+  protected static void bringToFront(Stage stage)
   {
-    if (stage == null)
-    {
-      return;
-    }
+    assert stage != null && stage.isShowing() : "stage is null or not showing";
     long windowId = getX11WindowId(stage);
-    if (windowId != 0)
-    {
-      bringWindowToTop(windowId);
-    }
-    else
-    {
-      if (stage.isShowing())
-      {
-        System.err.println("Failed to get X11 window ID");
-      }
-    }
+    assert windowId != 0 : "No X11 Window ID Found For " + stage;
+    bringWindowToTop(windowId);
   }
 
   private static Method getRawHandleMethod;
