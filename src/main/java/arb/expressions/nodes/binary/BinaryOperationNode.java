@@ -116,8 +116,8 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
    */
   public static void mapTypes(Class<?> leftType, Class<?> rightType, Class<?> resultantType)
   {
-    typeMap.computeIfAbsent(leftType, k -> new HashMap<>()).put(rightType, resultantType);
-    typeMap.computeIfAbsent(rightType, k -> new HashMap<>()).put(leftType, resultantType);
+    typeMap.computeIfAbsent(leftType, type -> new HashMap<>()).put(rightType, resultantType);
+    typeMap.computeIfAbsent(rightType, type -> new HashMap<>()).put(leftType, resultantType);
   }
 
   public Node<D, C, F> left;
