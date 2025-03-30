@@ -1,153 +1,158 @@
 \documentclass{article}
-\usepackage[english]{babel}
-\usepackage{geometry,amssymb,latexsym,theorem}
-\geometry{letterpaper}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{natbib}
+\usepackage{hyperref}
+\usepackage{cleveref}
 
-%%%%%%%%%% Start TeXmacs macros
-\newcommand{\cdummy}{\cdot}
-\newcommand{\nobracket}{}
-\newcommand{\tmem}[1]{{\em #1\/}}
-\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
-\newtheorem{definition}{Definition}
-{\theorembodyfont{\rmfamily}\newtheorem{remark}{Remark}}
 \newtheorem{theorem}{Theorem}
-%%%%%%%%%% End TeXmacs macros
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+\bibliographystyle{plainnat}
 
 \begin{document}
 
 \title{Uniform Convergence of Orthonormal Basis Projections in RKHS}
-
-\author{Stephen Crowley}
-
-\date{March 28, 2025}
-
+\author{}
+\date{\today}
 \maketitle
 
-\begin{definition}
-  [Reproducing Kernel Hilbert Space] A Hilbert space $H$ of functions on a set
-  $D$ is called a reproducing kernel Hilbert space (RKHS) if there exists a
-  function $k : D \times D \to \mathbb{R}$ such that:
-  \begin{enumerate}
-    \item For every $x \in D$, the function $k_x (\cdummy) = k (\cdummy, x)$
-    belongs to $H$.
-    
-    \item For every $x \in D$ and every $f \in H$, the reproducing property
-    holds: $f (x) = \langle f, k_x \rangle_H$.
-  \end{enumerate}
-  The function $k$ is called the reproducing kernel of $H$.
+\begin{definition}[Reproducing Kernel Hilbert Space]
+A Hilbert space $H$ of functions on a set $D$ is called a reproducing kernel Hilbert space (RKHS) if there exists a function $k: D \times D \to \mathbb{R}$ such that:
+\begin{enumerate}
+    \item For every $x \in D$, the function $k_x(\cdot) = k(\cdot, x)$ belongs to $H$.
+    \item For every $x \in D$ and every $f \in H$, the reproducing property holds: $f(x) = \langle f, k_x \rangle_H$.
+\end{enumerate}
+The function $k$ is called the reproducing kernel of $H$.
 \end{definition}
 
-\begin{definition}
-  [Orthonormal Basis in RKHS]\label{def:orthonormal_basis}A sequence of
-  functions $\{e_n \}_{n = 1}^{\infty} \subset H$ is an orthonormal basis of
-  the RKHS $H$ if:
-  \begin{enumerate}
-    \item Orthonormality: For all indices $n, m$, $\langle e_n, e_m \rangle_H
-    = \delta_{nm}$, where $\delta_{nm}$ is the Kronecker delta.
-    
-    \item Completeness: The span of $\{e_n \}_{n = 1}^{\infty}$ is dense in
-    $H$, which means:
+\begin{definition}[Orthonormal Basis in RKHS]
+\label{def:orthonormal_basis}
+A sequence of functions $\{e_n\}_{n=1}^{\infty} \subset H$ is an orthonormal basis of the RKHS $H$ if:
+\begin{enumerate}
+    \item Orthonormality: For all indices $n, m$, $\langle e_n, e_m \rangle_H = \delta_{nm}$, where $\delta_{nm}$ is the Kronecker delta.
+    \item Completeness: The span of $\{e_n\}_{n=1}^{\infty}$ is dense in $H$, which means:
     \begin{enumerate}
-      \item For any $f \in H$, if $\langle f, e_n \rangle_H = 0$ for all $n$,
-      then $f = 0$.
-      
-      \item Equivalently, every function $f \in H$ can be represented as
-      \[ f = \sum_{n = 1}^{\infty} \langle f, e_n \rangle_H e_n \]
-      with convergence in the $H$-norm:
-      \[ \lim_{N \to \infty} \left| f - \sum_{n = 1}^N \langle f, e_n
-         \rangle_H e_n \right|_H = 0. \]
+        \item For any $f \in H$, if $\langle f, e_n \rangle_H = 0$ for all $n$, then $f = 0$.
+        \item Equivalently, every function $f \in H$ can be represented as
+        \[
+        f = \sum_{n=1}^{\infty} \langle f, e_n \rangle_H e_n
+        \]
+        with convergence in the $H$-norm:
+        \[
+        \lim_{N\to\infty} \left\|f - \sum_{n=1}^{N} \langle f, e_n \rangle_H e_n\right\|_H = 0.
+        \]
     \end{enumerate}
     \item Parseval's Identity: For any $f \in H$,
-    \[ \|f\|_H^2 = \sum_{n = 1}^{\infty} | \langle f, e_n \rangle_H |^2 . \]
-  \end{enumerate}
-  In an RKHS, each basis function satisfies the reproducing property: $e_n (x)
-  = \langle e_n, k (\cdot, x) \rangle_H$ for all $x \in D$.
+    \[
+    \|f\|_H^2 = \sum_{n=1}^{\infty} |\langle f, e_n \rangle_H|^2.
+    \]
+\end{enumerate}
+In an RKHS, each basis function satisfies the reproducing property: $e_n(x) = \langle e_n, k(\cdot,x) \rangle_H$ for all $x \in D$.
 \end{definition}
 
 \begin{theorem}
-  \label{thm:uniform_convergence}Let $H$ be a reproducing kernel Hilbert space
-  (RKHS) on a set $D$ with reproducing kernel $k$. Suppose that:
-  \begin{enumerate}
-    \item $\{e_n \}_{n = 1}^{\infty}$ is an orthonormal basis of $H$ as
-    defined in Definition \ref{def:orthonormal_basis}.
-    
-    \item The kernel is uniformly bounded on $D$; that is, there exists a
-    constant $M > 0$ such that
-    \[ \sup_{x \in D}  \sqrt{k (x, x)} \le M. \]
-  \end{enumerate}
-  Then for any function $f \in H$ with orthonormal expansion
-  \[ f = \sum_{n = 1}^{\infty} c_n e_n, \]
-  where $c_n = \langle f, e_n \rangle_H$, the partial sums
-  \[ S_N f = \sum_{n = 1}^N c_n e_n \]
-  converge uniformly to $f$ on $D$; in other words,
-  \[ \lim_{N \to \infty} \sup_{x \in D} | S_N f (x) - f (x) | = 0. \]
+\label{thm:uniform_convergence}
+Let $H$ be a reproducing kernel Hilbert space (RKHS) on a set $D$ with reproducing kernel $k$. Suppose that:
+\begin{enumerate}
+    \item $\{e_n\}_{n=1}^{\infty}$ is an orthonormal basis of $H$ as defined in Definition \ref{def:orthonormal_basis}.
+    \item The kernel is uniformly bounded on $D$; that is, there exists a constant $M > 0$ such that
+    \[
+    \sup_{x \in D} \|k(\cdot, x)\|_H \le M.
+    \]
+\end{enumerate}
+Then for any function $f \in H$ with orthonormal expansion
+\[
+f = \sum_{n=1}^{\infty} c_n e_n,
+\]
+where $c_n = \langle f, e_n \rangle_H$, the partial sums
+\[
+S_N f = \sum_{n=1}^N c_n e_n
+\]
+converge uniformly to $f$ on $D$; in other words,
+\[
+\lim_{N\to\infty} \sup_{x\in D} \bigl| S_N f(x) - f(x) \bigr| = 0.
+\]
 \end{theorem}
 
 \begin{proof}
-  By the completeness property of the orthonormal basis (Definition
-  \ref{def:orthonormal_basis}), every function $f \in H$ can be represented by
-  its orthonormal expansion that converges in the $H$-norm. Since $H$ is an
-  RKHS, the evaluation functional at any $x \in D$ is bounded by $\sqrt{k (x,
-  x)}$. Specifically, for each fixed $x \in D$:
-  \[ \nobracket | f (x) - S_N f (x) | = | \langle f - S_N f, k (\cdot, x)
-     \rangle_H | \le \|f - S_N f\|_H  \sqrt{k (x, x)} . \]
-  Taking the supremum over $x \in D$ yields
-  \[ \sup_{x \in D} | f (x) - S_N f (x) | \le \|f - S_N f\|_H  \hspace{0.17em}
-     \sup_{x \in D}  \sqrt{k (x, x)} \le M \|f - S_N f\|_H . \]
-  From the convergence property of orthonormal bases, we have:
-  \[ \lim_{N \to \infty} \|f - S_N f\|_H = 0. \]
-  For any $\varepsilon > 0$, choose $N$ such that for all $n \ge N$:
-  \[ \|f - S_n f\|_H < \frac{\varepsilon}{M} . \]
-  Then for all $n \ge N$:
-  \[ \sup_{x \in D} | f (x) - S_n f (x) | < \varepsilon . \]
-  Thus:
-  \[ \lim_{N \to \infty} \sup_{x \in D} |S_N f (x) - f (x) | = 0. \]
+By the completeness property of the orthonormal basis (Definition \ref{def:orthonormal_basis}), every function $f \in H$ can be represented by its orthonormal expansion that converges in the $H$-norm. Since $H$ is an RKHS, the evaluation functional at any $x \in D$ satisfies:
+\[
+\bigl| f(x) - S_N f(x) \bigr| = \Bigl| \langle f - S_N f, k(\cdot, x) \rangle_H \Bigr|.
+\]
+
+Using the Cauchy-Schwarz inequality:
+\[
+\bigl| f(x) - S_N f(x) \bigr| \le \|f - S_N f\|_H \, \|k(\cdot, x)\|_H.
+\]
+
+Taking the supremum over $x \in D$ yields:
+\[
+\sup_{x \in D} \bigl| f(x) - S_N f(x) \bigr| \le \|f - S_N f\|_H \, \sup_{x \in D} \|k(\cdot, x)\|_H.
+\]
+
+By the uniform boundedness assumption:
+\[
+\sup_{x \in D} \bigl| f(x) - S_N f(x) \bigr| \le M \, \|f - S_N f\|_H.
+\]
+
+From the convergence property of orthonormal bases:
+\[
+\lim_{N\to\infty} \|f - S_N f\|_H = 0.
+\]
+
+For any $\varepsilon > 0$, choose $N$ such that for all $n \ge N$:
+\[
+\|f - S_n f\|_H < \frac{\varepsilon}{M}.
+\]
+
+Then for all $n \ge N$:
+\[
+\sup_{x \in D} \bigl| f(x) - S_n f(x) \bigr| < \varepsilon.
+\]
+
+Thus:
+\[
+\lim_{N\to\infty} \sup_{x\in D} |S_N f(x) - f(x)| = 0.
+\]
 \end{proof}
 
 \begin{remark}
-  The uniform boundedness condition on the kernel is essential. Without it,
-  norm convergence in the RKHS would not necessarily imply uniform convergence
-  of the function evaluations on the domain.
+The uniform boundedness condition on $\|k(\cdot, x)\|_H$ is essential. Without it, norm convergence in the RKHS does not guarantee uniform convergence of evaluations on $D$. This condition ensures the kernel's feature maps are uniformly bounded across the entire domain.
 \end{remark}
 
 \begin{remark}
-  It is important to emphasize that the domain $D$ in Theorem
-  \ref{thm:uniform_convergence} is not required to be compact. The result
-  holds for any domain, including unbounded domains such as $D =\mathbb{R}^n$
-  or $D = [0, \infty)$, provided that the kernel is uniformly bounded on that
-  domain.
+The domain $D$ need not be compact. The result holds for arbitrary domains (e.g., $D = \mathbb{R}^n$) as long as $\sup_{x \in D} \|k(\cdot, x)\|_H \le M$.
 \end{remark}
 
-\begin{remark}
-  \label{rem:mercer_uniqueness}The uniform convergence described in Theorem
-  \ref{thm:uniform_convergence} applies to any orthonormal basis when
-  expanding functions in the RKHS $H$, whereas when expanding the reproducing
-  kernel $k (x, y)$ itself, only the Mercer eigenbasis $\{e_n^{\ast} \}$,
-  defined by the equation
-  \[ \int_D k (x, y) e_n^{\ast} (y)  \hspace{0.17em} dy = \lambda_n e_n^{\ast}
-     (x), \]
-  converges uniformly, whereas non-Mercer orthonormal bases converge
-  pointwise.
+\begin{remark} \label{rem:mercer_uniqueness}
+The uniform convergence applies to expansions of functions $f \in H$ in any orthonormal basis. For expansions of the kernel $k(x, y)$ itself, uniform convergence holds only for the Mercer eigenbasis $\{e_n^*\}$ satisfying:
+\[
+\int_D k(x, y)e_n^*(y)\,dy = \lambda_n e_n^*(x).
+\]
+Non-Mercer bases yield pointwise convergence.
 \end{remark}
 
+\bibliographystyle{plainnat}
 \begin{thebibliography}{9}
-  {\bibitemwithkey{Riesz(1907)}{riesz1907}} Riesz, F. (1907). Sur les
-  syst{\`e}mes orthogonaux de fonctions. {\tmem{Comptes rendus de
-  l'Acad{\'e}mie des sciences}}, 144:615--619.
-  
-  {\bibitemwithkey{Fischer(1907)}{fischer1907}} Fischer, E. (1907). Sur la
-  convergence en moyenne. {\tmem{Comptes rendus de l'Acad{\'e}mie des
-  sciences}}, 144:1022--1024.
-  
-  {\bibitemwithkey{Aronszajn(1950)}{aronszajn1950}} Aronszajn, N. (1950).
-  Theory of reproducing kernels. {\tmem{Transactions of the American
-  Mathematical Society}}, 68(3):337--404.
-  
-  {\bibitemwithkey{Berlinet and Thomas-Agnan(2004)}{berlinet2004}} Berlinet,
-  A. and Thomas-Agnan, C. (2004). {\tmem{Reproducing Kernel Hilbert Spaces in
-  Probability and Statistics}}. Springer, Boston, MA.
-\end{thebibliography}
 
-q
+\bibitem[Riesz(1907)]{riesz1907}
+Riesz, F. (1907). Sur les syst{\`e}mes orthogonaux de fonctions. \emph{Comptes rendus de l'Acad{\'e}mie des sciences}, 144:615--619.
+
+\bibitem[Fischer(1907)]{fischer1907}
+Fischer, E. (1907). Sur la convergence en moyenne. \emph{Comptes rendus de l'Acad{\'e}mie des sciences}, 144:1022--1024.
+
+\bibitem[Aronszajn(1950)]{aronszajn1950}
+Aronszajn, N. (1950). Theory of reproducing kernels. \emph{Transactions of the American Mathematical Society}, 68(3):337--404.
+
+\bibitem[Berlinet and Thomas-Agnan(2004)]{berlinet2004}
+Berlinet, A. and Thomas-Agnan, C. (2004). \emph{Reproducing Kernel Hilbert Spaces in Probability and Statistics}. Springer, Boston, MA.
+
+\end{thebibliography}
 
 \end{document}
