@@ -105,7 +105,7 @@ public class WindowManager
 
   private static XDO    xdo;
 
-  private static Method windowGetPeerMethod;
+  private static Method peerGetter;
 
   private static Field  tableViewSkinBaseFlowField;
 
@@ -115,8 +115,8 @@ public class WindowManager
   {
     try
     {
-      windowGetPeerMethod = Window.class.getDeclaredMethod("getPeer");
-      windowGetPeerMethod.setAccessible(true);
+      peerGetter = Window.class.getDeclaredMethod("getPeer");
+      peerGetter.setAccessible(true);
       tableViewSkinBaseFlowField = TableViewSkinBase.class.getDeclaredField("flow");
       tableViewSkinBaseFlowField.setAccessible(true);
       resizeMethod = TableColumnHeader.class.getDeclaredMethod("resizeColumnToFitContent", int.class);
@@ -141,22 +141,22 @@ public class WindowManager
     bringWindowToTop(windowId);
   }
 
-  private static Method getRawHandleMethod;
+  private static Method rawHandleGetter;
 
   public static long getX11WindowId(Stage stage)
   {
     try
     {
-      Object tkStage = windowGetPeerMethod.invoke(stage);
+      Object tkStage = peerGetter.invoke(stage);
       if (tkStage == null)
       {
         return 0;
       }
-      if (getRawHandleMethod == null)
+      if (rawHandleGetter == null)
       {
-        getRawHandleMethod = tkStage.getClass().getMethod("getRawHandle");
+        rawHandleGetter = tkStage.getClass().getMethod("getRawHandle");
       }
-      return (long) getRawHandleMethod.invoke(tkStage);
+      return (long) rawHandleGetter.invoke(tkStage);
     }
     catch (Exception e)
     {
