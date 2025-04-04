@@ -9,3 +9,4 @@ implement orthogonal function sequence expansion api #546
 expression compiler: integration #539
 expr compiler: Implement common subexpression elimination #518
 Create Fractional Riccati Differential Equation Solver using Jacobi Tau Method #261
+Stephen,You have an upcoming appointment on Wednesdsay 04/02/2025 at 4:00 PM with [WiseDental].If unable to keep appointment, plase call us at 940-683-3233 within 24 hours. Thanks!

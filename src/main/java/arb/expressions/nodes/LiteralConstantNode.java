@@ -1,5 +1,6 @@
 package arb.expressions.nodes;
 
+
 import static arb.expressions.Compiler.duplicateTopOfTheStack;
 import static arb.expressions.Compiler.loadThisOntoStack;
 import static org.objectweb.asm.Opcodes.ACC_FINAL;
