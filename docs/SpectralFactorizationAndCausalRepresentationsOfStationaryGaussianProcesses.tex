@@ -1,0 +1,229 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{mathtools}
+
+\title{Gaussian Processes: Cholesky Factorization and Causal Representation}
+\author{Based on Antonio Sela's Lecture}
+\date{April 4, 2025}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This document provides a detailed analysis of the covariance matrix of Gaussian processes, with particular emphasis on the Cholesky decomposition and its interpretation. We explore how the Cholesky factor of a positive definite covariance matrix provides a causal representation of a Gaussian process. This representation leads to an insightful connection between Gaussian processes and linear time-invariant systems, demonstrating how Gaussian processes can be viewed as the output of filtering white noise through a causal system.
+\end{abstract}
+
+\section{Introduction to Gaussian Processes and Covariance Structure}
+
+A Gaussian process is a stochastic process where any finite collection of random variables has a multivariate normal distribution. The process is fully characterized by its mean function and covariance function. In this analysis, we focus on a Gaussian process with:
+\begin{itemize}
+    \item A specified mean and standard deviation defining confidence intervals
+    \item A covariance kernel in the form of an exponential multiplied by a trigonometric function
+    \item Stationarity property (covariance depends only on the difference between points)
+\end{itemize}
+
+The covariance kernel has the form:
+\begin{equation}
+k(x_i, x_j) = \exp(-\alpha|x_i - x_j|) \cdot \cos(\omega|x_i - x_j|)
+\end{equation}
+
+For discrete evaluation points, the covariance matrix $\mathbf{K}$ is constructed by evaluating this kernel at all pairs of points. In our example, the process is discretized at 241 evenly spaced test points, resulting in a $241 \times 241$ covariance matrix.
+
+\section{Factorization of the Covariance Matrix}
+
+\subsection{General Matrix Square Root Approach}
+
+The foundation of variance analysis is the factorization of the covariance matrix $\mathbf{K}$ as:
+\begin{equation}
+\mathbf{K} = \mathbf{Q}\mathbf{Q}^T
+\end{equation}
+
+With this factorization, we can introduce standard normal latent variables $\mathbf{x} \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$ and define:
+\begin{equation}
+\mathbf{y} = \mathbf{Q}\mathbf{x}
+\end{equation}
+
+The covariance matrix of $\mathbf{y}$ is then:
+\begin{align}
+\operatorname{Cov}(\mathbf{y}) &= \mathbb{E}[\mathbf{y}\mathbf{y}^T] \\
+&= \mathbb{E}[\mathbf{Q}\mathbf{x}\mathbf{x}^T\mathbf{Q}^T] \\
+&= \mathbf{Q}\mathbb{E}[\mathbf{x}\mathbf{x}^T]\mathbf{Q}^T \\
+&= \mathbf{Q}\mathbf{I}\mathbf{Q}^T \\
+&= \mathbf{Q}\mathbf{Q}^T = \mathbf{K}
+\end{align}
+
+This demonstrates that the latent variables $\mathbf{x}$ explain the covariance structure observed in $\mathbf{y}$. It's important to note that matrix square roots are not unique (they differ by orthogonal transformations), so multiple explanations of the variance structure are possible.
+
+\subsection{Cholesky Decomposition}
+
+The Cholesky decomposition provides a specific factorization of a symmetric positive definite matrix. For our covariance matrix $\mathbf{K}$, the Cholesky decomposition gives a lower triangular matrix $\mathbf{L}$ such that:
+\begin{equation}
+\mathbf{K} = \mathbf{L}\mathbf{L}^T
+\end{equation}
+
+This can be computed in MATLAB using:
+\begin{verbatim}
+L = chol(K, 'lower');
+\end{verbatim}
+
+We denote this lower triangular matrix as $\mathbf{Q}$ in our subsequent analysis.
+
+\section{Causal Interpretation of the Cholesky Factor}
+
+\subsection{Triangular Structure and Causality}
+
+The lower triangular structure of $\mathbf{Q}$ enables a causal interpretation. When computing $\mathbf{y} = \mathbf{Q}\mathbf{x}$, each output $y_i$ is influenced only by the latent variables $x_1$ through $x_i$:
+
+\begin{equation}
+y_i = \sum_{j=1}^{i} Q_{ij}x_j
+\end{equation}
+
+Expanding this matrix product:
+\begin{align}
+y_1 &= Q_{11}x_1 \\
+y_2 &= Q_{21}x_1 + Q_{22}x_2 \\
+y_3 &= Q_{31}x_1 + Q_{32}x_2 + Q_{33}x_3 \\
+\vdots
+\end{align}
+
+This structure has a causal interpretation:
+\begin{itemize}
+    \item $x_1$ influences all outputs ($y_1$ through $y_n$)
+    \item $x_2$ influences only $y_2$ through $y_n$ (not $y_1$)
+    \item $x_3$ influences only $y_3$ through $y_n$ (not $y_1$ or $y_2$)
+\end{itemize}
+
+This causality means that each latent variable affects only the current and future observations, not past ones—a natural interpretation if we view the indices as time steps.
+
+\section{Analysis of the Cholesky Factor Structure}
+
+\subsection{Column Structure}
+
+Each column of $\mathbf{Q}$ represents the influence of a specific latent variable on all outputs. For stationary Gaussian processes, after the initial few columns (affected by boundary conditions), all subsequent columns exhibit the same pattern but shifted by one position.
+
+For instance:
+\begin{itemize}
+    \item Column 100 contains 99 zeros followed by coefficients $[h_0, h_1, h_2, \ldots]$
+    \item Column 101 contains 100 zeros followed by the same coefficients $[h_0, h_1, h_2, \ldots]$
+    \item Column 102 contains 101 zeros followed by the same coefficients $[h_0, h_1, h_2, \ldots]$
+\end{itemize}
+
+This pattern indicates that the effect of each latent variable converges to a time-invariant structure, resembling the response of a linear time-invariant system.
+
+\subsection{Row Structure}
+
+Examining the rows of $\mathbf{Q}$ provides a complementary perspective. For example, row 102 would have the structure:
+\begin{equation}
+[h_{102}, h_{101}, h_{100}, \ldots, h_1, h_0, 0, 0, \ldots, 0]
+\end{equation}
+
+The zeros on the right reflect the causal property that future latent variables do not influence the current output. The non-zero coefficients show how past latent variables influence the current output, with their effect diminishing as we go further back in time (for stable systems).
+
+\section{Convolution Interpretation}
+
+\subsection{Convolution Formula}
+
+The computation of $y_i$ can be expressed as a convolution:
+\begin{equation}
+y_i = \sum_{s=0}^{i-1} h_s x_{i-s}
+\end{equation}
+
+This is identical to the formula for calculating the output of a discrete-time linear time-invariant system with impulse response $\{h_s\}$ when the input is $\{x_i\}$.
+
+In the context of our analysis, this means the Cholesky factor reveals that our Gaussian process can be represented as the output of a linear filter with impulse response derived from the Cholesky factor, applied to white noise (standard normal random variables).
+
+\subsection{Spectral Factorization Connection}
+
+For stationary processes, once boundary effects have vanished, the structure of the Cholesky factor reveals what is known as the spectral factor or causal square root of the process's spectrum. This establishes a direct connection between the Cholesky decomposition and spectral factorization in signal processing.
+
+Formally, for a theoretically infinite process, the impulse response coefficients $\{h_s\}$ would extend infinitely into the past, but they decay to zero for stable systems, allowing practical approximation with finite memory.
+
+\section{Steady-State Behavior}
+
+In our analysis, after discarding the first handful of columns affected by boundary conditions, the remaining columns of the Cholesky factor exhibit a stationary pattern. This indicates that the system has reached a steady state where:
+
+\begin{itemize}
+    \item All columns beyond a certain index have the same shape (just shifted)
+    \item The impulse response derived from these columns represents the time-invariant filter that generates the Gaussian process from white noise
+    \item This filter's characteristics directly relate to the spectral properties of the Gaussian process
+\end{itemize}
+
+For a stationary Gaussian process, this steady-state behavior is expected, as the covariance structure itself is translation-invariant.
+
+\section{Animation of the Causal Generation Process}
+
+The transcript describes an animation demonstrating the causal generation of a Gaussian process realization. This animation illustrates:
+
+\begin{itemize}
+    \item The scaled rows of the $\mathbf{Q}$ matrix, showing each latent variable's effect
+    \item The properly scaled contribution of each latent variable to the overall process
+    \item The progressive construction of a process realization from left to right
+    \item The completed (fixed) part of the realization to the left of a moving boundary
+    \item The currently evolving part to the right of this boundary
+\end{itemize}
+
+In this animation:
+\begin{itemize}
+    \item Each new component has zero influence on past variables
+    \item Components are added sequentially, building the realization causally
+    \item The total variance is completely modeled to the left of a moving boundary
+    \item Each new latent variable extends the completed portion of the realization
+\end{itemize}
+
+This visual representation reinforces the causal interpretation of the Cholesky factorization.
+
+\section{Practical Implementation in MATLAB}
+
+The analysis can be implemented in MATLAB with the following key steps:
+
+\begin{enumerate}
+    \item Generate a covariance matrix using the specified kernel function:
+    \begin{verbatim}
+    K = zeros(n, n);
+    for i = 1:n
+        for j = 1:n
+            K(i,j) = exp(-alpha*abs(x(i)-x(j))) * cos(omega*abs(x(i)-x(j)));
+        end
+    end
+    \end{verbatim}
+    
+    \item Compute the Cholesky factorization:
+    \begin{verbatim}
+    Q = chol(K, 'lower');
+    \end{verbatim}
+    
+    \item Generate realizations of the Gaussian process:
+    \begin{verbatim}
+    x = randn(n, 1);  % Standard normal latent variables
+    y = Q * x;        % Gaussian process realization
+    \end{verbatim}
+    
+    \item Analyze the columns or rows of Q to extract the impulse response:
+    \begin{verbatim}
+    h = Q(100:end, 100);  % Extract a representative column
+    \end{verbatim}
+\end{enumerate}
+
+\section{Conclusion}
+
+The Cholesky decomposition of a Gaussian process's covariance matrix provides a powerful causal interpretation. It reveals that:
+
+\begin{itemize}
+    \item A Gaussian process can be viewed as the output of a causal linear time-invariant filter applied to white noise
+    \item The filter's impulse response is encoded in the columns of the Cholesky factor
+    \item For stationary processes, this impulse response converges to a fixed pattern
+    \item The process can be generated sequentially, with each new observation depending only on the current and past latent variables
+\end{itemize}
+
+This interpretation establishes a bridge between Gaussian processes and linear systems theory, providing insights into both fields. It demonstrates how the rich covariance structure of a Gaussian process can be decomposed into simple, independent sources of randomness through a causal filtering operation.
+
+This causal perspective is particularly valuable in applications requiring prediction, sequential data generation, or real-time processing of Gaussian process models.
+
+\end{document}
