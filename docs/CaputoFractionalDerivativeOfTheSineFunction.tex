@@ -1,0 +1,102 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathrsfs}
+
+\title{Theorem: Caputo Fractional Derivative of the Sine Function}
+\author{}
+\date{}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+
+\begin{document}
+
+\maketitle
+
+\begin{definition}[Caputo Fractional Derivative]
+For $n-1 < \alpha < n$ where $n \in \mathbb{N}$, the Caputo fractional derivative of order $\alpha$ is defined as:
+\begin{equation}
+\label{eq:caputo_def}
+_0^CD_t^\alpha f(t) = \frac{1}{\Gamma(n-\alpha)} \int_0^t \frac{f^{(n)}(\tau)}{(t-\tau)^{\alpha-n+1}} d\tau
+\end{equation}
+\end{definition}
+
+\begin{definition}[Two-Parameter Mittag-Leffler Function]
+\label{def:mittag_leffler}
+The Mittag-Leffler function is defined as:
+\begin{equation}
+E_{\alpha,\beta}(z) = \sum_{k=0}^{\infty} \frac{z^k}{\Gamma(\alpha k + \beta)}, \quad \alpha, \beta > 0
+\end{equation}
+\end{definition}
+
+\begin{theorem}
+For $0 < \alpha < 1$, the Caputo fractional derivative of $\sin(t)$ is:
+\begin{equation}
+\label{eq:main_result}
+_0^CD_t^\alpha \sin(t) = t^{1-\alpha} E_{2,2-\alpha}(-t^2)
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $f(t) = \sin(t)$. Since $\alpha \in (0,1)$, we have $n=1$ in Definition 1. The first derivative is:
+\begin{equation}
+f^{(1)}(t) = \cos(t)
+\end{equation}
+
+Substitute into the Caputo definition (\ref{eq:caputo_def}):
+\begin{equation}
+_0^CD_t^\alpha \sin(t) = \frac{1}{\Gamma(1-\alpha)} \int_0^t \frac{\cos(\tau)}{(t-\tau)^\alpha} d\tau
+\end{equation}
+
+Express $\cos(\tau)$ as its Taylor series:
+\begin{equation}
+\cos(\tau) = \sum_{k=0}^{\infty} \frac{(-1)^k \tau^{2k}}{(2k)!}
+\end{equation}
+
+Substitute the series into the integral:
+\begin{align}
+_0^CD_t^\alpha \sin(t) &= \frac{1}{\Gamma(1-\alpha)} \sum_{k=0}^{\infty} \frac{(-1)^k}{(2k)!} \int_0^t \frac{\tau^{2k}}{(t-\tau)^\alpha} d\tau \\
+&= \frac{1}{\Gamma(1-\alpha)} \sum_{k=0}^{\infty} \frac{(-1)^k}{(2k)!} t^{2k+1-\alpha} \int_0^1 u^{2k} (1-u)^{-\alpha} du
+\end{align}
+where we substituted $u = \tau/t$.
+
+Recognize the Beta function in the integral:
+\begin{equation}
+\int_0^1 u^{2k} (1-u)^{-\alpha} du = B(2k+1, 1-\alpha) = \frac{\Gamma(2k+1)\Gamma(1-\alpha)}{\Gamma(2k+2-\alpha)}
+\end{equation}
+
+Substitute back and simplify:
+\begin{align}
+_0^CD_t^\alpha \sin(t) &= \frac{1}{\Gamma(1-\alpha)} \sum_{k=0}^{\infty} \frac{(-1)^k}{(2k)!} t^{2k+1-\alpha} \frac{\Gamma(2k+1)\Gamma(1-\alpha)}{\Gamma(2k+2-\alpha)} \\
+&= \sum_{k=0}^{\infty} \frac{(-1)^k t^{2k+1-\alpha}}{\Gamma(2k+2-\alpha)}
+\end{align}
+
+Factor out $t^{1-\alpha}$:
+\begin{equation}
+= t^{1-\alpha} \sum_{k=0}^{\infty} \frac{(-t^2)^k}{\Gamma(2k + 2 - \alpha)}
+\end{equation}
+
+Compare with Definition \ref{def:mittag_leffler}:
+\begin{equation}
+\sum_{k=0}^{\infty} \frac{(-t^2)^k}{\Gamma(2k + 2 - \alpha)} = E_{2,2-\alpha}(-t^2)
+\end{equation}
+
+Thus we obtain the final result:
+\begin{equation}
+_0^CD_t^\alpha \sin(t) = t^{1-\alpha} E_{2,2-\alpha}(-t^2) \quad \blacksquare
+\end{equation}
+\end{proof}
+
+\begin{proof}[Extension for 1 < α < 2]
+For $1 < \alpha < 2$ ($n=2$), repeating the process with $f^{(2)}(t) = -\sin(t)$ yields:
+\begin{equation}
+_0^CD_t^\alpha \sin(t) = \cos(t) - \frac{t^{2-\alpha}}{\Gamma(3-\alpha)} + \sum_{k=1}^{\infty} \frac{(-1)^k t^{2k+2-\alpha}}{\Gamma(2k+3-\alpha)}
+\end{equation}
+which simplifies to:
+\begin{equation}
+_0^CD_t^\alpha \sin(t) = \cos(t) - t^{2-\alpha} E_{2,3-\alpha}(-t^2)
+\end{equation}
+\end{proof}
+
+\end{document}
+
