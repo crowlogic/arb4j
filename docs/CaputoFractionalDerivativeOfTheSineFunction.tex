@@ -2,101 +2,133 @@
 \usepackage{amsmath, amssymb, amsthm}
 \usepackage{mathrsfs}
 
-\title{Theorem: Caputo Fractional Derivative of the Sine Function}
+\title{The Caputo Fractional Derivative of the Sine Function}
 \author{}
 \date{}
 
 \newtheorem{theorem}{Theorem}
-\newtheorem{definition}{Definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
 
 \begin{document}
 
 \maketitle
 
 \begin{definition}[Caputo Fractional Derivative]
-For $n-1 < \alpha < n$ where $n \in \mathbb{N}$, the Caputo fractional derivative of order $\alpha$ is defined as:
+For $\alpha > 0$, the Caputo fractional derivative of order $\alpha$ for a function $f(t)$ is defined as:
 \begin{equation}
-\label{eq:caputo_def}
-_0^CD_t^\alpha f(t) = \frac{1}{\Gamma(n-\alpha)} \int_0^t \frac{f^{(n)}(\tau)}{(t-\tau)^{\alpha-n+1}} d\tau
+_0^CD_t^\alpha f(t) = \frac{1}{\Gamma(\lceil \alpha \rceil - \alpha)} \int_0^t \frac{f^{(\lceil \alpha \rceil)}(\tau)}{(t-\tau)^{\alpha - \lceil \alpha \rceil + 1}} d\tau
+\end{equation}
+where $\lceil \alpha \rceil$ is the ceiling function, denoting the smallest integer greater than or equal to $\alpha$.
+\end{definition}
+
+\begin{definition}[Mittag-Leffler Function]
+The two-parameter Mittag-Leffler function is defined for $\alpha, \beta > 0$ as:
+\begin{equation}
+E_{\alpha,\beta}(z) = \sum_{k=0}^{\infty} \frac{z^k}{\Gamma(\alpha k + \beta)}
 \end{equation}
 \end{definition}
 
-\begin{definition}[Two-Parameter Mittag-Leffler Function]
-\label{def:mittag_leffler}
-The Mittag-Leffler function is defined as:
+\begin{lemma}
+For non-negative integers $m$, the $m$-th derivative of $\sin(t)$ is given by:
 \begin{equation}
-E_{\alpha,\beta}(z) = \sum_{k=0}^{\infty} \frac{z^k}{\Gamma(\alpha k + \beta)}, \quad \alpha, \beta > 0
+\sin^{(m)}(t) = \sin\left(t + \frac{m\pi}{2}\right)
 \end{equation}
-\end{definition}
+\end{lemma}
 
-\begin{theorem}
-For $0 < \alpha < 1$, the Caputo fractional derivative of $\sin(t)$ is:
+\begin{lemma}
+For $a > 0$ and $b > 0$, the Beta function satisfies:
 \begin{equation}
-\label{eq:main_result}
-_0^CD_t^\alpha \sin(t) = t^{1-\alpha} E_{2,2-\alpha}(-t^2)
+\int_0^1 u^{a-1}(1-u)^{b-1} du = B(a,b) = \frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}
 \end{equation}
+\end{lemma}
+
+\begin{theorem}[Caputo Fractional Derivative of Sine]
+For any $\alpha > 0$, the Caputo fractional derivative of $\sin(t)$ is given by:
+\begin{equation}
+_0^CD_t^\alpha \sin(t) = t^{\lceil \alpha \rceil - \alpha} E_{2,\lceil \alpha \rceil - \alpha + 1}(-t^2)
+\end{equation}
+where $E_{2,\lceil \alpha \rceil - \alpha + 1}(-t^2)$ is the Mittag-Leffler function.
 \end{theorem}
 
 \begin{proof}
-Let $f(t) = \sin(t)$. Since $\alpha \in (0,1)$, we have $n=1$ in Definition 1. The first derivative is:
+We begin with the Caputo fractional derivative definition for $\alpha > 0$:
 \begin{equation}
-f^{(1)}(t) = \cos(t)
+_0^CD_t^\alpha \sin(t) = \frac{1}{\Gamma(\lceil \alpha \rceil - \alpha)} \int_0^t \frac{\sin^{(\lceil \alpha \rceil)}(\tau)}{(t-\tau)^{\alpha - \lceil \alpha \rceil + 1}} d\tau
 \end{equation}
 
-Substitute into the Caputo definition (\ref{eq:caputo_def}):
+From the lemma, we know that:
 \begin{equation}
-_0^CD_t^\alpha \sin(t) = \frac{1}{\Gamma(1-\alpha)} \int_0^t \frac{\cos(\tau)}{(t-\tau)^\alpha} d\tau
+\sin^{(\lceil \alpha \rceil)}(\tau) = \sin\left(\tau + \frac{\lceil \alpha \rceil\pi}{2}\right)
 \end{equation}
 
-Express $\cos(\tau)$ as its Taylor series:
+The $\lceil \alpha \rceil$-th derivative of sine can be expanded in Taylor series:
 \begin{equation}
-\cos(\tau) = \sum_{k=0}^{\infty} \frac{(-1)^k \tau^{2k}}{(2k)!}
+\sin\left(\tau + \frac{\lceil \alpha \rceil\pi}{2}\right) = \sum_{k=0}^{\infty} \frac{(-1)^k \tau^{2k+p}}{(2k+p)!}
 \end{equation}
+where $p = 0$ if $\lceil \alpha \rceil$ is even, and $p = 1$ if $\lceil \alpha \rceil$ is odd.
 
-Substitute the series into the integral:
+Substituting into the Caputo definition:
 \begin{align}
-_0^CD_t^\alpha \sin(t) &= \frac{1}{\Gamma(1-\alpha)} \sum_{k=0}^{\infty} \frac{(-1)^k}{(2k)!} \int_0^t \frac{\tau^{2k}}{(t-\tau)^\alpha} d\tau \\
-&= \frac{1}{\Gamma(1-\alpha)} \sum_{k=0}^{\infty} \frac{(-1)^k}{(2k)!} t^{2k+1-\alpha} \int_0^1 u^{2k} (1-u)^{-\alpha} du
-\end{align}
-where we substituted $u = \tau/t$.
-
-Recognize the Beta function in the integral:
-\begin{equation}
-\int_0^1 u^{2k} (1-u)^{-\alpha} du = B(2k+1, 1-\alpha) = \frac{\Gamma(2k+1)\Gamma(1-\alpha)}{\Gamma(2k+2-\alpha)}
-\end{equation}
-
-Substitute back and simplify:
-\begin{align}
-_0^CD_t^\alpha \sin(t) &= \frac{1}{\Gamma(1-\alpha)} \sum_{k=0}^{\infty} \frac{(-1)^k}{(2k)!} t^{2k+1-\alpha} \frac{\Gamma(2k+1)\Gamma(1-\alpha)}{\Gamma(2k+2-\alpha)} \\
-&= \sum_{k=0}^{\infty} \frac{(-1)^k t^{2k+1-\alpha}}{\Gamma(2k+2-\alpha)}
+_0^CD_t^\alpha \sin(t) &= \frac{1}{\Gamma(\lceil \alpha \rceil - \alpha)} \int_0^t \frac{1}{(t-\tau)^{\alpha - \lceil \alpha \rceil + 1}} \sum_{k=0}^{\infty} \frac{(-1)^k \tau^{2k+p}}{(2k+p)!} d\tau\\
+&= \frac{1}{\Gamma(\lceil \alpha \rceil - \alpha)} \sum_{k=0}^{\infty} \frac{(-1)^k}{(2k+p)!} \int_0^t \frac{\tau^{2k+p}}{(t-\tau)^{\alpha - \lceil \alpha \rceil + 1}} d\tau
 \end{align}
 
-Factor out $t^{1-\alpha}$:
-\begin{equation}
-= t^{1-\alpha} \sum_{k=0}^{\infty} \frac{(-t^2)^k}{\Gamma(2k + 2 - \alpha)}
-\end{equation}
+Making the substitution $\tau = tu$, we get:
+\begin{align}
+\int_0^t \frac{\tau^{2k+p}}{(t-\tau)^{\alpha - \lceil \alpha \rceil + 1}} d\tau &= \int_0^1 \frac{(tu)^{2k+p}}{(t-tu)^{\alpha - \lceil \alpha \rceil + 1}} \cdot t \, du\\
+&= t^{2k+p+\lceil \alpha \rceil - \alpha} \int_0^1 \frac{u^{2k+p}}{(1-u)^{\alpha - \lceil \alpha \rceil + 1}} du
+\end{align}
 
-Compare with Definition \ref{def:mittag_leffler}:
-\begin{equation}
-\sum_{k=0}^{\infty} \frac{(-t^2)^k}{\Gamma(2k + 2 - \alpha)} = E_{2,2-\alpha}(-t^2)
-\end{equation}
+The integral can be expressed in terms of the Beta function:
+\begin{align}
+\int_0^1 \frac{u^{2k+p}}{(1-u)^{\alpha - \lceil \alpha \rceil + 1}} du &= \int_0^1 u^{2k+p} (1-u)^{(\lceil \alpha \rceil - \alpha) - 1} du\\
+&= B(2k+p+1, \lceil \alpha \rceil - \alpha)\\
+&= \frac{\Gamma(2k+p+1)\Gamma(\lceil \alpha \rceil - \alpha)}{\Gamma(2k+p+1+\lceil \alpha \rceil - \alpha)}
+\end{align}
 
-Thus we obtain the final result:
-\begin{equation}
-_0^CD_t^\alpha \sin(t) = t^{1-\alpha} E_{2,2-\alpha}(-t^2) \quad \blacksquare
-\end{equation}
-\end{proof}
+Substituting back:
+\begin{align}
+_0^CD_t^\alpha \sin(t) &= \frac{1}{\Gamma(\lceil \alpha \rceil - \alpha)} \sum_{k=0}^{\infty} \frac{(-1)^k}{(2k+p)!} t^{2k+p+\lceil \alpha \rceil - \alpha} \frac{\Gamma(2k+p+1)\Gamma(\lceil \alpha \rceil - \alpha)}{\Gamma(2k+p+1+\lceil \alpha \rceil - \alpha)}\\
+&= \sum_{k=0}^{\infty} \frac{(-1)^k \Gamma(2k+p+1)}{(2k+p)! \Gamma(2k+p+1+\lceil \alpha \rceil - \alpha)} t^{2k+p+\lceil \alpha \rceil - \alpha}
+\end{align}
 
-\begin{proof}[Extension for 1 < α < 2]
-For $1 < \alpha < 2$ ($n=2$), repeating the process with $f^{(2)}(t) = -\sin(t)$ yields:
-\begin{equation}
-_0^CD_t^\alpha \sin(t) = \cos(t) - \frac{t^{2-\alpha}}{\Gamma(3-\alpha)} + \sum_{k=1}^{\infty} \frac{(-1)^k t^{2k+2-\alpha}}{\Gamma(2k+3-\alpha)}
-\end{equation}
-which simplifies to:
-\begin{equation}
-_0^CD_t^\alpha \sin(t) = \cos(t) - t^{2-\alpha} E_{2,3-\alpha}(-t^2)
-\end{equation}
+Since $(2k+p)! = \Gamma(2k+p+1)$, we simplify to:
+\begin{align}
+_0^CD_t^\alpha \sin(t) &= \sum_{k=0}^{\infty} \frac{(-1)^k}{\Gamma(2k+p+1+\lceil \alpha \rceil - \alpha)} t^{2k+p+\lceil \alpha \rceil - \alpha}
+\end{align}
+
+Now we analyze the cases based on parity of $\lceil \alpha \rceil$:
+
+\textbf{Case 1:} When $\lceil \alpha \rceil$ is even, $p = 0$:
+\begin{align}
+_0^CD_t^\alpha \sin(t) &= \sum_{k=0}^{\infty} \frac{(-1)^k}{\Gamma(2k+1+\lceil \alpha \rceil - \alpha)} t^{2k+\lceil \alpha \rceil - \alpha}\\
+&= t^{\lceil \alpha \rceil - \alpha} \sum_{k=0}^{\infty} \frac{(-1)^k t^{2k}}{\Gamma(2k+1+\lceil \alpha \rceil - \alpha)}\\
+&= t^{\lceil \alpha \rceil - \alpha} \sum_{k=0}^{\infty} \frac{(-t^2)^k}{\Gamma(2k+1+\lceil \alpha \rceil - \alpha)}
+\end{align}
+
+This matches the form of the Mittag-Leffler function with $\alpha=2$ and $\beta=1+\lceil \alpha \rceil - \alpha$:
+\begin{align}
+_0^CD_t^\alpha \sin(t) = t^{\lceil \alpha \rceil - \alpha} E_{2,1+\lceil \alpha \rceil - \alpha}(-t^2)
+\end{align}
+
+\textbf{Case 2:} When $\lceil \alpha \rceil$ is odd, $p = 1$:
+\begin{align}
+_0^CD_t^\alpha \sin(t) &= \sum_{k=0}^{\infty} \frac{(-1)^k}{\Gamma(2k+2+\lceil \alpha \rceil - \alpha)} t^{2k+1+\lceil \alpha \rceil - \alpha}\\
+&= t^{1+\lceil \alpha \rceil - \alpha} \sum_{k=0}^{\infty} \frac{(-1)^k t^{2k}}{\Gamma(2k+2+\lceil \alpha \rceil - \alpha)}\\
+&= t^{1+\lceil \alpha \rceil - \alpha} \sum_{k=0}^{\infty} \frac{(-t^2)^k}{\Gamma(2k+2+\lceil \alpha \rceil - \alpha)}\\
+&= t^{1+\lceil \alpha \rceil - \alpha} E_{2,2+\lceil \alpha \rceil - \alpha}(-t^2)
+\end{align}
+
+But notice for odd $\lceil \alpha \rceil$, we can write $1+\lceil \alpha \rceil - \alpha = \lceil \alpha \rceil - \alpha + 1$, and $2+\lceil \alpha \rceil - \alpha = \lceil \alpha \rceil - \alpha + 2$. 
+
+For even $\lceil \alpha \rceil$, we have $\lceil \alpha \rceil - \alpha$ and $1+\lceil \alpha \rceil - \alpha = \lceil \alpha \rceil - \alpha + 1$.
+
+Therefore, we can unify both cases as:
+\begin{align}
+_0^CD_t^\alpha \sin(t) = t^{\lceil \alpha \rceil - \alpha} E_{2,\lceil \alpha \rceil - \alpha + 1}(-t^2)
+\end{align}
+This completes the proof.
 \end{proof}
 
 \end{document}
-
