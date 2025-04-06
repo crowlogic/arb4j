@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void mittag_leffler(Complex res, Complex z, Complex alpha, Complex beta, int prec) {
+    arblibJNI.mittag_leffler(Complex.getCPtr(res), res, Complex.getCPtr(z), z, Complex.getCPtr(alpha), alpha, Complex.getCPtr(beta), beta, prec);
+  }
+
   public static void acb_poly_integral(ComplexPolynomial res, ComplexPolynomial poly, int prec) {
     arblibJNI.acb_poly_integral(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(poly), poly, prec);
   }

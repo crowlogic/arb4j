@@ -9,6 +9,7 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void mittag_leffler(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, long jarg4, Complex jarg4_, int jarg5);
   public final static native void acb_poly_integral(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, int jarg3);
   public final static native void acb_poly_derivative(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, int jarg3);
   public final static native int qqbar_sgn_re(long jarg1, AlgebraicNumber jarg1_);
