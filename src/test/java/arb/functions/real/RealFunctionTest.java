@@ -1,8 +1,8 @@
 package arb.functions.real;
 
+import arb.Complex;
 import arb.Fraction;
-import arb.functions.FractionNullaryFunction;
-import arb.functions.rational.RationalNullaryFunction;
+import arb.arblib;
 import junit.framework.TestCase;
 
 @SuppressWarnings(
@@ -17,6 +17,7 @@ import junit.framework.TestCase;
 public class RealFunctionTest extends
                               TestCase
 {
+
   public static void testJOneQuarter()
   {
     var    f = RealFunction.express("J(1/4, s)");
