@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|generic>
+<style|<tuple|generic|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Universality of Monotonic Modulation for Harmonizable
@@ -635,15 +635,15 @@
     <associate|auto-3|<tuple|3|7|../../.TeXmacs/texts/scratch/no_name_77.tm>>
     <associate|auto-4|<tuple|4|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
     <associate|auto-5|<tuple|48|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|bib-bochner|<tuple|bochner|10|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|bib-crowley|<tuple|crowley|10|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|bib-gelfand|<tuple|gelfand|10|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|bib-grothendieck|<tuple|grothendieck|10|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|bib-hida|<tuple|hida|10|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|bib-karhunen|<tuple|karhunen|10|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|bib-loeve|<tuple|loeve|10|../../.TeXmacs/texts/scratch/no_name_77.tm>>
+    <associate|bib-bochner|<tuple|bochner|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
+    <associate|bib-crowley|<tuple|crowley|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
+    <associate|bib-gelfand|<tuple|gelfand|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
+    <associate|bib-grothendieck|<tuple|grothendieck|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
+    <associate|bib-hida|<tuple|hida|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
+    <associate|bib-karhunen|<tuple|karhunen|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
+    <associate|bib-loeve|<tuple|loeve|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
     <associate|bib-naimark|<tuple|naimark|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|bib-rozanov|<tuple|rozanov|10|../../.TeXmacs/texts/scratch/no_name_77.tm>>
+    <associate|bib-rozanov|<tuple|rozanov|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
   </collection>
 </references>
 
