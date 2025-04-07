@@ -4,7 +4,7 @@ VERSION=$(shell $(BASEDIR)/bin/arb4jVersion)
 INCLUDES=-I/usr/include/x86_64-linux-gnu -I/usr/include/linux -I/usr/include/flint \
  -I/usr/include -I/usr/include/i386-linux-gnu -I/usr/lib/gcc/x86_64-linux-gnu/11/include/
 
-SOURCES=native/arb_wrap.c native/complex.c 
+SOURCES=native/arb_wrap.c native/complex.c native/ml.c
 
 JAVA_HOME=$(shell readlink -f /usr/bin/javac | sed "s:bin/javac::")
 

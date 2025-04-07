@@ -10,11 +10,9 @@ extern int errorNumber();
 
 JNIEnv* env;
 
-void mittag_leffler(acb_t res,
-          const acb_t z,
-          const acb_t alpha,
-          const acb_t beta,
-          slong prec);
+int mittag_leffler(acb_t res, const arb_t alpha, const arb_t beta, const acb_t z,
+                 const slong prec);
+                 
           
 jlong bufferAddress (jobject buffer);
 

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Check if the correct number of arguments is provided
+if [ "$#" -ne 3 ]; then
+  echo "Usage: $0 <input_pdf> <output_directory> <dpi>"
+  exit 1
+fi
+
+# Assign command-line arguments to variables
+INPUT_PDF="$1"
+OUTPUT_DIR="$2"
+DPI="$3"
+
+# Create the output directory if it doesn't exist
+mkdir -p "$OUTPUT_DIR"
+
+# Check if required tools are installed
+if ! command -v pdftoppm &> /dev/null; then
+  echo "Error: pdftoppm is not installed. Please install poppler-utils."
+  exit 1
+fi
+
+# Extract filename without extension
+FILENAME=$(basename "$INPUT_PDF" .pdf)
+
+# Convert PDF to PNG images using pdftoppm
+echo "Converting $INPUT_PDF to PNG images at $DPI DPI..."
+pdftoppm -png -rx "$DPI" -ry "$DPI" "$INPUT_PDF" "$OUTPUT_DIR/$FILENAME"
+
+echo "Conversion complete. PNG images are saved in $OUTPUT_DIR/"

@@ -79,52 +79,6 @@ extern JNIEnv *env;
 #include <flint/arb.h>
 #include <flint/acb.h>
 
-void mittag_leffler(acb_t res,
-					const acb_t z,
-					const acb_t alpha,
-					const acb_t beta,
-					slong prec)
-{
-	slong wp = prec + 2 * FLINT_BIT_COUNT(prec);
-	acb_t sum, term, zpow;
-	acb_t gamma;
-	slong k = 0;  // Explicit counter for series index
-
-	acb_init(sum);
-	acb_init(term);
-	acb_init(zpow);
-	acb_init(gamma);
-
-	acb_zero(sum);
-	acb_one(zpow);
-
-	for (;;)
-	{
-		// Γ(αk + β)
-		acb_mul_si(gamma, alpha, k, wp);  // Use k instead of acb_degree(sum)
-		acb_add(gamma, gamma, beta, wp);
-		acb_gamma(term, gamma, wp);
-
-		// term = z^k / Γ(αk + β)
-		acb_div(term, zpow, term, wp);
-		acb_add(sum, sum, term, wp);
-
-		// Stop when |term| < 2^(-prec-4)
-		if (acb_bits(term) < -prec - 4)
-			break;
-
-		// Update z^k
-		acb_mul(zpow, zpow, z, wp);
-		k++;  // Increment the series index
-	}
-
-	acb_set_round(res, sum, prec);
-
-	acb_clear(sum);
-	acb_clear(term);
-	acb_clear(zpow);
-	acb_clear(gamma);
-}
 
 int xdo_activate_window(const xdo_struct *xdo, Window wid) {
   int ret = 0;
