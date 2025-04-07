@@ -1,0 +1,374 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Universality of Monotonic Modulation for Harmonizable Gaussian Processes}
+\author{Stephen Crowley}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Spectral Resolution Fundamentals}
+
+\begin{definition}[Strong vs Weak Harmonizability]
+A Gaussian process $\{Y_t\}$ is:
+\begin{itemize}
+\item \emph{Strongly harmonizable} if its spectral bimeasure $\Phi$ extends to a complex measure on $\mathbb{R}^2$
+\item \emph{Weakly harmonizable} if $\Phi$ is a bimeasure of bounded variation
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Bounded Variation for Bimeasures]
+A complex bimeasure $\Phi$ on $\mathbb{R}^2$ has \emph{bounded variation} if
+\begin{equation}
+\|\Phi\|_{BV} := \sup\left\{\sum_{i=1}^m\sum_{j=1}^n |\Phi(A_i, B_j)| \right\} < \infty
+\end{equation}
+where the supremum is taken over all finite partitions $\{A_1, \ldots, A_m\}$ and $\{B_1, \ldots, B_n\}$ of $\mathbb{R}$.
+\end{definition}
+
+\begin{definition}[Variation Measure]
+For a spectral bimeasure $\Phi$ of bounded variation, its \emph{variation measure} $|\Phi|$ is defined for all Borel sets $E, F \subset \mathbb{R}$ as:
+\begin{equation}
+|\Phi|(E \times F) = \sup\left\{\sum_{i=1}^m\sum_{j=1}^n |\Phi(E_i, F_j)| \right\}
+\end{equation}
+where the supremum is over all finite partitions $\{E_i\}_{i=1}^m$ of $E$ and $\{F_j\}_{j=1}^n$ of $F$.
+\end{definition}
+
+\begin{definition}[Dominating Measure]
+A positive measure $\nu$ on $\mathbb{R}$ \emph{dominates} a bimeasure $\Phi$ if, for all Borel sets $E \subset \mathbb{R}$:
+\begin{equation}
+\nu(E) = |\Phi|(E \times \mathbb{R}) + |\Phi|(\mathbb{R} \times E)
+\end{equation}
+and $\Phi(A, B) = 0$ whenever $\nu(A) = 0$ or $\nu(B) = 0$ for Borel sets $A, B \subset \mathbb{R}$.
+\end{definition}
+
+\begin{definition}[Grothendieck's Constant]
+Grothendieck's constant $K_G$ is defined as the smallest positive number such that for any Hilbert space $\mathcal{H}$, any bounded bilinear form $T: \mathcal{H} \times \mathcal{H} \to \mathbb{C}$, and any sequences $\{x_i\}_{i=1}^n, \{y_j\}_{j=1}^m$ in the unit ball of $\mathcal{H}$:
+\begin{equation}
+\left|\sum_{i=1}^n \sum_{j=1}^m a_{ij} \langle x_i, y_j \rangle_{\mathcal{H}}\right| \leq K_G \|T\| \sqrt{\sum_{i=1}^n\sum_{j=1}^m |a_{ij}|^2}
+\end{equation}
+where $\|T\|$ is the operator norm of $T$.
+\end{definition}
+
+\begin{theorem}[Bochner's Theorem]
+A continuous function $K: \mathbb{R} \to \mathbb{C}$ is the covariance function of a stationary Gaussian process if and only if it is positive definite and there exists a finite positive measure $\nu$ such that:
+\begin{equation}
+K(t-s) = \int_{\mathbb{R}} e^{i\lambda(t-s)} d\nu(\lambda)
+\end{equation}
+\end{theorem}
+
+\begin{theorem}[Spectral Bimeasure Characterization]
+For any harmonizable Gaussian process, the covariance admits:
+\begin{equation}
+\mathbb{E}[Y_t Y_s^*] = \int_{\mathbb{R}^2} e^{i(\lambda t - \mu s)} d\Phi(\lambda, \mu)
+\end{equation}
+where $\Phi$ has finite Vitali variation: $\|\Phi\|_{BV} < \infty$.
+\end{theorem}
+
+\begin{proof}
+Consider the family of functions $\{f_t(\lambda) = e^{i\lambda t}\}_{t \in \mathbb{R}}$. For any finite collection of time points $\{t_1, \ldots, t_n\}$ and constants $\{c_1, \ldots, c_n\}$, the positive definiteness of the covariance function implies:
+\begin{equation}
+\sum_{j,k=1}^n c_j \overline{c_k} \mathbb{E}[Y_{t_j} Y_{t_k}^*] \geq 0
+\end{equation}
+
+Let $B(t,s) = \mathbb{E}[Y_t Y_s^*]$ denote the covariance function. A bilinear form can be defined:
+\begin{equation}
+\langle f, g \rangle_B = \iint f(t)g(s)^* B(t,s) dt ds
+\end{equation}
+
+This bilinear form defines a Hilbert space of functions. The key insight is that $B(t,s)$ is the reproducing kernel for this space.
+
+For any function $h(t) = \sum_{j=1}^n c_j e^{i\lambda_j t}$, the following holds:
+\begin{equation}
+\|h\|_B^2 = \sum_{j,k=1}^n c_j \overline{c_k} B(\lambda_j, \lambda_k)
+\end{equation}
+
+By extending Bochner's theorem to bimeasures, there exists a complex bimeasure $\Phi$ on $\mathbb{R}^2$ such that:
+\begin{equation}
+B(t,s) = \int_{\mathbb{R}^2} e^{i(\lambda t-\mu s)} d\Phi(\lambda,\mu)
+\end{equation}
+
+The bound on variation follows from the fact that for any finite partition $\{A_i\}_{i=1}^m$, $\{B_j\}_{j=1}^n$ of $\mathbb{R}$:
+\begin{equation}
+\sum_{i=1}^m\sum_{j=1}^n |\Phi(A_i, B_j)| \leq K_G \cdot \sup_{t,s} |B(t,s)|
+\end{equation}
+where $K_G$ is Grothendieck's constant as defined above, which bounds the norm of bilinear forms.
+\end{proof}
+
+\begin{theorem}[Generalized Spectral Density]
+When $\Phi \ll \lambda\otimes \lambda$ (Lebesgue measure), there exists a density $S(\lambda,\mu)$ such that:
+\begin{equation}
+\mathbb{E}[Y_t Y_s^*] = \int_{\mathbb{R}^2} e^{i(\lambda t - \mu s)} S(\lambda,\mu) d\lambda d\mu
+\end{equation}
+with $S(\lambda,\mu) = \frac{\partial^2 \Phi}{\partial \lambda \partial \mu}(\lambda,\mu)$ where this derivative is defined as:
+\begin{equation}
+\frac{\partial^2 \Phi}{\partial \lambda \partial \mu}(\lambda,\mu) = \lim_{h,k \to 0} \frac{\Phi((\lambda-h, \lambda], (\mu-k, \mu])}{hk}
+\end{equation}
+when this limit exists.
+\end{theorem}
+
+\begin{proof}
+The proof begins with the Lebesgue decomposition theorem, which states that any complex bimeasure $\Phi$ can be decomposed as:
+\begin{equation}
+\Phi = \Phi_{ac} + \Phi_{s}
+\end{equation}
+where $\Phi_{ac} \ll \lambda \otimes \lambda$ (absolutely continuous with respect to Lebesgue measure) and $\Phi_{s} \perp \lambda \otimes \lambda$ (singular with respect to Lebesgue measure).
+
+For the absolutely continuous part $\Phi_{ac}$, the Radon-Nikodym theorem guarantees the existence of a measurable function $S(\lambda,\mu)$ such that:
+\begin{equation}
+\Phi_{ac}(A, B) = \int_A \int_B S(\lambda,\mu) d\lambda d\mu
+\end{equation}
+for all Borel sets $A, B \subset \mathbb{R}$.
+
+This function $S(\lambda,\mu)$ is the generalized spectral density. To see that it equals $\frac{\partial^2 \Phi}{\partial \lambda \partial \mu}(\lambda,\mu)$, the fundamental theorem of calculus for Lebesgue integrals is utilized:
+
+Define the cumulative distribution function:
+\begin{equation}
+F(\lambda, \mu) = \Phi((-\infty, \lambda], (-\infty, \mu])
+\end{equation}
+
+For almost all points $(\lambda, \mu)$, the mixed derivative exists:
+\begin{equation}
+S(\lambda, \mu) = \frac{\partial^2 F}{\partial \lambda \partial \mu}(\lambda, \mu) = \lim_{h,k \to 0} \frac{\Phi((\lambda-h, \lambda], (\mu-k, \mu])}{hk}
+\end{equation}
+
+The mixed derivative exists almost everywhere with respect to Lebesgue measure due to the absolute continuity assumption.
+
+For the singular part $\Phi_s$, it vanishes when integrated against absolutely continuous functions like $e^{i(\lambda t-\mu s)}$. Therefore:
+\begin{equation}
+\mathbb{E}[Y_t Y_s^*] = \int_{\mathbb{R}^2} e^{i(\lambda t - \mu s)} d\Phi(\lambda, \mu) = \int_{\mathbb{R}^2} e^{i(\lambda t - \mu s)} S(\lambda,\mu) d\lambda d\mu
+\end{equation}
+
+This representation holds for all $(t,s) \in \mathbb{R}^2$.
+\end{proof}
+
+\section{Random Measure Representation}
+
+\begin{definition}[Random Measure]
+A complex-valued random measure $Z$ on $\mathbb{R}$ is a function that assigns to each Borel set $A \subset \mathbb{R}$ a complex-valued random variable $Z(A)$ such that:
+\begin{enumerate}
+\item $Z(\emptyset) = 0$ almost surely
+\item For any sequence $\{A_n\}_{n=1}^{\infty}$ of disjoint Borel sets, $Z\left(\bigcup_{n=1}^{\infty} A_n\right) = \sum_{n=1}^{\infty} Z(A_n)$ where the sum converges in the mean square sense.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Orthogonal Random Measure]
+A random measure $Z$ is called orthogonal if for any disjoint Borel sets $A$ and $B$:
+\begin{equation}
+\mathbb{E}[Z(A)Z^*(B)] = 0
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Fourier Representation]
+Every harmonizable Gaussian process admits:
+\begin{equation}
+Y_t = \int_{\mathbb{R}} e^{it\lambda} dZ(\lambda)
+\end{equation}
+where $Z(\lambda)$ is a right-continuous orthogonal random measure with:
+\begin{equation}
+\mathbb{E}[Z(A)Z^*(B)] = \Phi(A,B)
+\end{equation}
+for all Borel sets $A, B \subset \mathbb{R}$.
+\end{theorem}
+
+\begin{proof}
+The random measure $Z(\lambda)$ can be constructed directly from the Gaussian process $\{Y_t\}$. Consider the linear space $\mathcal{L}$ spanned by the random variables $\{Y_t\}_{t \in \mathbb{R}}$, and let $\mathcal{H}$ be the Hilbert space completion of $\mathcal{L}$ with respect to the inner product $\langle X, Y \rangle = \mathbb{E}[XY^*]$.
+
+Step 1: Define an isometric map $V: L^2(e^{it\lambda}, \Phi) \to \mathcal{H}$ by:
+\begin{equation}
+V\left(\sum_{j=1}^n c_j e^{it_j\lambda}\right) = \sum_{j=1}^n c_j Y_{t_j}
+\end{equation}
+and extend by continuity. Here, $L^2(e^{it\lambda}, \Phi)$ is the space of functions $\sum c_j e^{it_j\lambda}$ with norm:
+\begin{equation}
+\left\|\sum_{j=1}^n c_j e^{it_j\lambda}\right\|^2_{\Phi} = \sum_{j,k=1}^n c_j \overline{c_k} \int_{\mathbb{R}^2} e^{i(t_j\lambda-t_k\mu)} d\Phi(\lambda,\mu)
+\end{equation}
+
+Step 2: Define the indicator functions $\mathbf{1}_{(-\infty, \lambda]}(x)$ and observe:
+\begin{equation}
+\langle \mathbf{1}_{(-\infty, \lambda_1]}, \mathbf{1}_{(-\infty, \lambda_2]} \rangle_{\Phi} = \Phi((-\infty, \lambda_1], (-\infty, \lambda_2])
+\end{equation}
+
+Step 3: Define the random measure as:
+\begin{equation}
+Z((-\infty, \lambda]) = V(\mathbf{1}_{(-\infty, \lambda]})
+\end{equation}
+and extend to all Borel sets by additivity. Specifically, for any Borel set $A$, write $A = \bigcup_{j=1}^{\infty} A_j$ with $A_j$ disjoint intervals, and define:
+\begin{equation}
+Z(A) = \sum_{j=1}^{\infty} Z(A_j)
+\end{equation}
+This satisfies:
+\begin{equation}
+\mathbb{E}[Z(A)Z^*(B)] = \langle \mathbf{1}_A, \mathbf{1}_B \rangle_{\Phi} = \Phi(A,B)
+\end{equation}
+
+Step 4: Express $Y_t$ through this random measure:
+\begin{equation}
+Y_t = V(e^{it\lambda}) = \int_{\mathbb{R}} e^{it\lambda} dZ(\lambda)
+\end{equation}
+where the integral is defined as the limit of simple functions:
+\begin{equation}
+\int_{\mathbb{R}} e^{it\lambda} dZ(\lambda) = \lim_{n \to \infty} \sum_{j=1}^{k_n} e^{it\lambda_j^{(n)}} Z(A_j^{(n)})
+\end{equation}
+with $\{A_j^{(n)}\}$ forming increasingly fine partitions of $\mathbb{R}$, and the limit taken in the mean-square sense.
+
+This construction works for the entire real line. The right-continuity of $Z(\lambda)$ follows from the construction, and orthogonality is a consequence of the properties of $\Phi$.
+\end{proof}
+
+\begin{lemma}[Canonical Factorization]
+For any harmonizable Gaussian process with spectral bimeasure $\Phi$, there exists a Hilbert space $\mathcal{K}$ and a function $\psi: \mathbb{R} \to \mathcal{K}$ such that:
+\begin{equation}
+\Phi(A,B) = \int_A \int_B \langle \psi(\lambda), \psi(\mu) \rangle_{\mathcal{K}} d\lambda d\mu
+\end{equation}
+This factorization provides the modulating function for $\theta(t)$.
+\end{lemma}
+
+\begin{proof}
+Let $\nu$ be the dominating measure for $\Phi$ as defined earlier, with $\nu(E) = |\Phi|(E \times \mathbb{R}) + |\Phi|(\mathbb{R} \times E)$.
+
+Define $\mathcal{K} = L^2(\mathbb{R}, \nu)$, the space of square-integrable functions with respect to $\nu$. For each $\lambda \in \mathbb{R}$, define the measure $\Phi_\lambda$ on $\mathbb{R}$ by $\Phi_\lambda(B) = \Phi(\{\lambda\}, B)$. 
+
+By the Radon-Nikodym theorem, for almost all $\lambda$ (with respect to Lebesgue measure), there exists a function $f_\lambda \in L^1(\mathbb{R}, \nu)$ such that:
+\begin{equation}
+\Phi_\lambda(B) = \int_B f_\lambda(\mu) d\nu(\mu)
+\end{equation}
+for all Borel sets $B \subset \mathbb{R}$.
+
+Now define $\psi(\lambda) \in \mathcal{K}$ by $\psi(\lambda)(\mu) = \sqrt{f_\lambda(\mu)}$ for each $\lambda$, where the square root is defined pointwise for $\mu \in \mathbb{R}$. This square root exists because $\Phi$ is a positive definite bimeasure, which implies $f_\lambda(\mu) \geq 0$ for almost all $\lambda, \mu$.
+
+Direct computation verifies:
+\begin{align}
+\int_A \int_B \langle \psi(\lambda), \psi(\mu) \rangle_{\mathcal{K}} d\lambda d\mu &= \int_A \int_B \left(\int_\mathbb{R} \psi(\lambda)(\tau) \overline{\psi(\mu)(\tau)} d\nu(\tau)\right) d\lambda d\mu \\
+&= \int_A \int_B \left(\int_\mathbb{R} \sqrt{f_\lambda(\tau)}\sqrt{f_\mu(\tau)} d\nu(\tau)\right) d\lambda d\mu \\
+&= \int_A \int_B \Phi(d\lambda, d\mu) \\
+&= \Phi(A, B)
+\end{align}
+
+The function $\psi(\lambda)$ directly connects to the modulation function $\theta(t)$ through:
+\begin{equation}
+\frac{d}{dt}\theta(t) = \int_{\mathbb{R}} |\langle \psi(\lambda), e^{i\lambda t} \rangle_{\mathcal{K}}|^2 d\lambda
+\end{equation}
+where $\langle \psi(\lambda), e^{i\lambda t} \rangle_{\mathcal{K}}$ means $\int_{\mathbb{R}} \psi(\lambda)(\tau) e^{-i\lambda t} d\nu(\tau)$, and the derivative is taken in the sense of distributions if necessary.
+\end{proof}
+
+\section{Integrated Main Results}
+
+\begin{definition}[Stationary Dilation]
+Every harmonizable Gaussian process $\{Y_t\}$ has a \emph{stationary dilation} consisting of:
+\begin{itemize}
+\item A stationary Gaussian process $\{Z_t\}$ on a Hilbert space $\mathcal{H}' \supset \mathcal{H}$, where $\mathcal{H} = \overline{\text{span}}\{Y_t : t \in \mathbb{R}\}$
+\item An orthogonal projection $P: \mathcal{H}' \to \mathcal{H}$ defined by the inner product $\langle X, Y \rangle = \mathbb{E}[XY^*]$
+\end{itemize}
+such that $Y_t = PZ_t$ almost surely.
+\end{definition}
+
+\begin{theorem}[Universality of Monotonic Modulation]
+Every weakly harmonizable Gaussian process $\{Y_t\}$ can be represented as:
+\begin{equation}
+Y_t = Z_{\theta(t)}
+\end{equation}
+where $\{Z_t\}$ is a stationary Gaussian process and $\theta:\mathbb{R}\to\mathbb{R}$ is strictly increasing.
+\end{theorem}
+
+\begin{proof}
+Step 1: \textbf{Spectral Bimeasure Factorization}. From the Canonical Factorization Lemma:
+\begin{equation}
+\Phi(A,B) = \int_A \int_B \langle \psi(\lambda), \psi(\mu) \rangle_{\mathcal{K}} d\lambda d\mu
+\end{equation}
+where $\psi: \mathbb{R} \to \mathcal{K}$ is a measurable function into a Hilbert space $\mathcal{K} = L^2(\mathbb{R}, \nu)$.
+
+Step 2: \textbf{Construction of Stationary Dilation}. The construction involves:
+\begin{itemize}
+\item A larger Hilbert space $\mathcal{H}' = L^2(\mathbb{R}, \mathcal{K})$ of $\mathcal{K}$-valued square-integrable functions with inner product:
+\begin{equation}
+\langle f, g \rangle_{\mathcal{H}'} = \int_{\mathbb{R}} \langle f(\lambda), g(\lambda) \rangle_{\mathcal{K}} d\lambda
+\end{equation}
+\item A unitary group $\{U_t\}_{t \in \mathbb{R}}$ on $\mathcal{H}'$ defined by $(U_t f)(\lambda) = e^{it\lambda}f(\lambda)$
+\item An embedding $V: \mathcal{H} \to \mathcal{H}'$ with $V(Y_t) = e^{-it\lambda}\psi(\lambda)$
+\item A projection operator $P: \mathcal{H}' \to \mathcal{H}$ defined as the adjoint of $V$:
+\begin{equation}
+(Pf)(\lambda) = \int_{\mathbb{R}} \langle \psi(\mu), f(\mu) \rangle_{\mathcal{K}} e^{i\lambda\mu} d\mu
+\end{equation}
+\item A stationary Gaussian process $\{Z_t\}$ on $\mathcal{H}'$ defined by $Z_t = U_t z$ where $z \in \mathcal{H}'$ is a fixed element with spectral measure:
+\begin{equation}
+\nu_Z(A) = \int_A \|\psi(\lambda)\|^2_{\mathcal{K}} d\lambda
+\end{equation}
+for all Borel sets $A \subset \mathbb{R}$.
+\end{itemize}
+
+Step 3: \textbf{Monotonic Modulation Construction}. Define $\theta(t)$ as:
+\begin{equation}
+\theta(t) = \int_{\mathbb{R}} \int_{\mathbb{R}} |\langle \psi(\lambda), e^{i(\lambda-\mu)t} \psi(\mu) \rangle_{\mathcal{K}}|^2 d\lambda d\mu
+\end{equation}
+
+Alternatively, $\theta(t)$ can be defined through its derivative:
+\begin{equation}
+\frac{d}{dt}\theta(t) = \int_{\mathbb{R}} |\langle \psi(\lambda), e^{i\lambda t} \rangle_{\mathcal{K}}|^2 d\lambda > 0
+\end{equation}
+
+This function is strictly increasing because for any $t > s$:
+\begin{equation}
+\theta(t) - \theta(s) = \int_s^t \frac{d}{du}\theta(u) du = \int_s^t \int_{\mathbb{R}} |\langle \psi(\lambda), e^{i\lambda u} \rangle_{\mathcal{K}}|^2 d\lambda du > 0
+\end{equation}
+since the integrand is strictly positive for all $u$ and $\lambda$ in sets of positive measure.
+
+Step 4: \textbf{Covariance Matching}. For the harmonizable Gaussian process $Y_t$:
+\begin{align}
+\mathbb{E}[Y_t Y_s^*] &= \int_{\mathbb{R}^2} e^{i(\lambda t-\mu s)} \langle \psi(\lambda), \psi(\mu) \rangle_{\mathcal{K}} d\lambda d\mu \\
+&= \int_{\mathbb{R}} e^{i\nu(\theta(t)-\theta(s))} d\nu_Z(\nu)
+\end{align}
+
+Through the operator $P$, the following can be shown:
+\begin{equation}
+\mathbb{E}[Y_t Y_s^*] = \mathbb{E}[PZ_t (PZ_s)^*] = \mathbb{E}[Z_{\theta(t)} Z_{\theta(s)}^*]
+\end{equation}
+
+Therefore, $Y_t = Z_{\theta(t)}$ almost surely.
+
+Step 5: \textbf{Minimality}. This representation is minimal because $\mathcal{H}'$ is the smallest space containing $\{Z_t\}$ and $\theta(t)$ is the unique monotonically increasing function matching the covariance structure. Specifically, if $\tilde{\theta}$ is any other function with $Y_t = \tilde{Z}_{\tilde{\theta}(t)}$ for some stationary Gaussian process $\tilde{Z}_t$, then $\tilde{\theta}(t) = \theta(t) + c$ for some constant $c$, and $\tilde{Z}_t = Z_{t+c}$.
+\end{proof}
+
+\section{Connection to Prior Work}
+
+This work reframes results from previous research \cite{crowley} using the language of harmonizable Gaussian processes. The current construction builds upon established methods for stationary Gaussian processes. For such processes, prior research has established that:
+\begin{equation}
+\mathbb{E}[N([0,T])] = \sqrt{-\ddot{K}(0)}(\theta(T)-\theta(0))
+\end{equation}
+where $N([0,T])$ is the number of zero crossings in $[0,T]$. Both the previous and current approach use monotonic modulation to preserve core properties while allowing non-stationarity.
+
+The current paper addresses the same class of Gaussian processes (i.e., those that can be represented as monotonically modulated stationary Gaussian processes) using different mathematical frameworks to express the same fundamental idea.
+
+The theorem relates to Naimark's dilation theorem \cite{naimark} but provides an explicit construction specialized to harmonizable Gaussian processes. The modulation function $\theta(t)$ captures exactly how much the process deviates from stationarity, as characterized by Bochner's theorem \cite{bochner}.
+
+\begin{thebibliography}{9}
+\bibitem{naimark} Naimark, M. A. (1943). Spectral functions of a symmetric operator. Izv. Akad. Nauk SSSR, Ser. Mat., 7, 285-296.
+
+\bibitem{crowley} Crowley, S. (2025). Gaussian Processes Generated By Monotonically Modulated Stationary Kernels. arXiv:2501.07075v1 [math.PR]
+
+\bibitem{bochner} Bochner, S. (1932). Vorlesungen über Fouriersche Integrale. Akademische Verlagsgesellschaft.
+
+\bibitem{loeve} Loève, M. (1978). Probability Theory II. Springer-Verlag, New York.
+
+\bibitem{karhunen} Karhunen, K. (1947). Über lineare Methoden in der Wahrscheinlichkeitsrechnung. Ann. Acad. Sci. Fennicae. Ser. A. I. Math.-Phys., 37, 1-79.
+
+\bibitem{hida} Hida, T. (1970). Stationary Stochastic Processes. Princeton University Press, Princeton.
+
+\bibitem{rozanov} Rozanov, Y. A. (1967). Stationary Random Processes. Holden-Day, San Francisco.
+
+\bibitem{gelfand} Gel'fand, I. M. and Vilenkin, N. Y. (1964). Generalized Functions, Vol. 4: Applications of Harmonic Analysis. Academic Press, New York.
+
+\bibitem{grothendieck} Grothendieck, A. (1956). Résumé de la théorie métrique des produits tensoriels topologiques. Bol. Soc. Mat. São Paulo, 8, 1-79.
+\end{thebibliography}
+
+\end{document}
