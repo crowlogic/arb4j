@@ -16,6 +16,8 @@
 #include <unistd.h>
 #include <wchar.h>
 
+void arb_hypgeom_gamma_lower(arb_t res, const arb_t s, const arb_t z, int regularized, slong prec);
+
 int mittag_leffler(acb_t res, const arb_t alpha, const arb_t beta, const acb_t z,
                  const slong prec);
           

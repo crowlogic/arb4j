@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void arb_hypgeom_gamma_lower(Real res, Real s, Real z, int regularized, int prec) {
+    arblibJNI.arb_hypgeom_gamma_lower(Real.getCPtr(res), res, Real.getCPtr(s), s, Real.getCPtr(z), z, regularized, prec);
+  }
+
   public static int mittag_leffler(Complex res, Real alpha, Real beta, Complex z, int prec) {
     return arblibJNI.mittag_leffler(Complex.getCPtr(res), res, Real.getCPtr(alpha), alpha, Real.getCPtr(beta), beta, Complex.getCPtr(z), z, prec);
   }
