@@ -13,6 +13,10 @@ public class arblib {
     arblibJNI.arb_hypgeom_gamma_lower(Real.getCPtr(res), res, Real.getCPtr(s), s, Real.getCPtr(z), z, regularized, prec);
   }
 
+  public static void acb_hypgeom_gamma_lower(Complex res, Complex s, Complex z, int modified, int prec) {
+    arblibJNI.acb_hypgeom_gamma_lower(Complex.getCPtr(res), res, Complex.getCPtr(s), s, Complex.getCPtr(z), z, modified, prec);
+  }
+
   public static int mittag_leffler(Complex res, Real alpha, Real beta, Complex z, int prec) {
     return arblibJNI.mittag_leffler(Complex.getCPtr(res), res, Real.getCPtr(alpha), alpha, Real.getCPtr(beta), beta, Complex.getCPtr(z), z, prec);
   }
@@ -1744,10 +1748,6 @@ public class arblib {
 
   public static void acb_hypgeom_gamma_upper(Complex res, Complex s, Complex z, int regularized, int prec) {
     arblibJNI.acb_hypgeom_gamma_upper(Complex.getCPtr(res), res, Complex.getCPtr(s), s, Complex.getCPtr(z), z, regularized, prec);
-  }
-
-  public static void acb_hypgeom_gamma_lower(Complex res, Complex s, Complex z, int regularized, int prec) {
-    arblibJNI.acb_hypgeom_gamma_lower(Complex.getCPtr(res), res, Complex.getCPtr(s), s, Complex.getCPtr(z), z, regularized, prec);
   }
 
   public static int arb_mat_overlaps(RealMatrix mat1, RealMatrix mat2) {
