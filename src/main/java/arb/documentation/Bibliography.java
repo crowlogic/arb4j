@@ -14,8 +14,6 @@ import arb.documentation.references.Miscellaneous;
 /**
  * Bibliography<br>
  * <br>
- *
- * 1 gives rise to 2, gives birth to 3, gives rise to all things. -- The Tao
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -23,6 +21,15 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+
+  public static Article       kuzelArticle                                                    =
+                                           new Article("Remarks on Naimark dilation theorem",
+                                                       "Sergiusz Kuźel",
+                                                       "2024",
+                                                       "Canadian Mathematical Bulletin",
+                                                       "67",
+                                                       "469--477").setNumber("2")
+                                                                  .setPublisher("Cambridge University Press on behalf of The Canadian Mathematical Society");
 
   public static Article       spectralAnalysisOfAbstractFunctions                             =
                                                                   new Article("Spectral Analysis of Abstract Functions",
