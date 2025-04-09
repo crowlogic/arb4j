@@ -1,0 +1,331 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\title{Exact Monotonization of the Riemann-Siegel Theta Function}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We present a precise construction for monotonizing the Riemann-Siegel theta function through reflection about its unique critical point. This transformation preserves all phase relationships essential to zeta function analysis while enforcing strict monotonicity. The construction maintains exact phase information without approximations and preserves the function's critical number-theoretic properties.
+\end{abstract}
+
+\section{The Riemann-Siegel Theta Function}
+
+\begin{definition}[Riemann-Siegel Theta Function]
+The Riemann-Siegel theta function is defined exactly as:
+\begin{equation}
+\theta(t) = \arg\Gamma\left(\frac{1}{4} + \frac{it}{2}\right) - \frac{t}{2}\log\pi
+\end{equation}
+where $\Gamma$ is the gamma function and $\arg$ denotes the principal argument.
+\end{definition}
+
+\begin{proposition}[Derivative Properties]
+The derivative of the Riemann-Siegel theta function is given by:
+\begin{equation}
+\frac{d\theta}{dt}(t) = \frac{1}{2}\text{Im}\left[\psi^{(0)}\left(\frac{1}{4} + \frac{it}{2}\right)\right] - \frac{1}{2}\log\pi
+\end{equation}
+where $\psi^{(0)}$ is the digamma function.
+
+\begin{proof}
+Using the relationship between the derivative of the argument of a complex function and the logarithmic derivative:
+\begin{align}
+\frac{d}{dt}\arg\Gamma\left(\frac{1}{4} + \frac{it}{2}\right) &= \text{Im}\left[\frac{d}{dt}\log\Gamma\left(\frac{1}{4} + \frac{it}{2}\right)\right] \\
+&= \text{Im}\left[\frac{\Gamma'(\frac{1}{4} + \frac{it}{2})}{\Gamma(\frac{1}{4} + \frac{it}{2})} \cdot \frac{i}{2}\right] \\
+&= \text{Im}\left[\psi^{(0)}\left(\frac{1}{4} + \frac{it}{2}\right) \cdot \frac{i}{2}\right] \\
+&= \frac{1}{2}\text{Im}\left[\psi^{(0)}\left(\frac{1}{4} + \frac{it}{2}\right)\right]
+\end{align}
+
+The derivative of the second term is simply $-\frac{1}{2}\log\pi$. Combining these results gives the stated formula.
+\end{proof}
+\end{proposition}
+
+\begin{theorem}[Unique Critical Point]
+There exists a unique positive real value $a \in \mathbb{R}^+$ such that:
+\begin{equation}
+\left.\frac{d\theta}{dt}\right|_{t=a} = 0
+\end{equation}
+
+This critical point satisfies the transcendental equation:
+\begin{equation}
+\text{Im}\left[\psi^{(0)}\left(\frac{1}{4} + \frac{ia}{2}\right)\right] = \log\pi
+\end{equation}
+
+Furthermore, the derivative exhibits the following behavior:
+\begin{itemize}
+    \item $\frac{d\theta}{dt}(t) < 0$ for $t \in (0,a)$
+    \item $\frac{d\theta}{dt}(t) = 0$ at $t = a$
+    \item $\frac{d\theta}{dt}(t) > 0$ for $t > a$
+\end{itemize}
+
+\begin{proof}
+First, note that the transcendental equation follows directly from the derivative formula and setting it equal to zero:
+\begin{align}
+\frac{d\theta}{dt}(a) &= 0 \\
+\frac{1}{2}\text{Im}\left[\psi^{(0)}\left(\frac{1}{4} + \frac{ia}{2}\right)\right] - \frac{1}{2}\log\pi &= 0 \\
+\text{Im}\left[\psi^{(0)}\left(\frac{1}{4} + \frac{ia}{2}\right)\right] &= \log\pi
+\end{align}
+
+For uniqueness, we examine the behavior of $\text{Im}[\psi^{(0)}(1/4 + it/2)]$ as $t$ varies. From the properties of the digamma function:
+
+1. As $t \to 0^+$, $\text{Im}[\psi^{(0)}(1/4 + it/2)] \to 0$, which is less than $\log\pi$.
+
+2. The function $\text{Im}[\psi^{(0)}(1/4 + it/2)]$ is strictly increasing for $t > 0$, which follows from the fact that for fixed $\sigma > 0$, the function $\text{Im}[\psi^{(0)}(\sigma + it)]$ is strictly increasing in $t$ due to the positive curvature of the level curves of $\psi^{(0)}$.
+
+3. As $t \to \infty$, $\text{Im}[\psi^{(0)}(1/4 + it/2)] \sim \log(t/2) \to \infty$, which exceeds $\log\pi$ for sufficiently large $t$.
+
+By the intermediate value theorem and the monotonicity of $\text{Im}[\psi^{(0)}(1/4 + it/2)]$, there exists exactly one value $a > 0$ where $\text{Im}[\psi^{(0)}(1/4 + ia/2)] = \log\pi$.
+
+For the behavior of the derivative:
+\begin{itemize}
+    \item When $t < a$: $\text{Im}[\psi^{(0)}(1/4 + it/2)] < \log\pi$, so $\frac{d\theta}{dt}(t) < 0$
+    \item When $t = a$: $\text{Im}[\psi^{(0)}(1/4 + ia/2)] = \log\pi$, so $\frac{d\theta}{dt}(a) = 0$
+    \item When $t > a$: $\text{Im}[\psi^{(0)}(1/4 + it/2)] > \log\pi$, so $\frac{d\theta}{dt}(t) > 0$
+\end{itemize}
+\end{proof}
+\end{theorem}
+
+\section{Exact Monotonization Construction}
+
+\begin{definition}[Monotonized Theta Function]
+We define the monotonized Riemann-Siegel theta function $\tilde{\theta}(t)$ through the exact transformation:
+\begin{equation}
+\tilde{\theta}(t) = 
+\begin{cases}
+2\theta(a) - \theta(t) & \text{for } t \in [0,a] \\
+\theta(t) & \text{for } t > a
+\end{cases}
+\end{equation}
+where $a$ is the unique critical point where $\frac{d\theta}{dt}(a) = 0$.
+\end{definition}
+
+\begin{theorem}[Monotonicity Properties]
+The function $\tilde{\theta}(t)$ is strictly monotonically increasing except at $t = a$. Specifically:
+\begin{equation}
+\frac{d\tilde{\theta}}{dt}(t) = 
+\begin{cases}
+-\frac{d\theta}{dt}(t) > 0 & \text{for } t \in (0,a) \\
+0 & \text{at } t = a \\
+\frac{d\theta}{dt}(t) > 0 & \text{for } t > a
+\end{cases}
+\end{equation}
+
+\begin{proof}
+For $t \in (0,a)$:
+\begin{align}
+\frac{d\tilde{\theta}}{dt}(t) &= \frac{d}{dt}[2\theta(a) - \theta(t)] \\
+&= -\frac{d\theta}{dt}(t)
+\end{align}
+
+From Theorem 1, we know that $\frac{d\theta}{dt}(t) < 0$ for $t \in (0,a)$. Therefore, $-\frac{d\theta}{dt}(t) > 0$ in this range.
+
+For $t = a$:
+\begin{align}
+\frac{d\tilde{\theta}}{dt}(a) &= -\frac{d\theta}{dt}(a) \\
+&= -0 = 0
+\end{align}
+
+For $t > a$:
+\begin{align}
+\frac{d\tilde{\theta}}{dt}(t) &= \frac{d\theta}{dt}(t)
+\end{align}
+
+From Theorem 1, we know that $\frac{d\theta}{dt}(t) > 0$ for $t > a$. Therefore, $\frac{d\tilde{\theta}}{dt}(t) > 0$ in this range.
+
+Thus, $\frac{d\tilde{\theta}}{dt}(t) \geq 0$ for all $t \geq 0$, with equality only at $t = a$, which confirms that $\tilde{\theta}(t)$ is strictly monotonically increasing except at the single point $t = a$.
+\end{proof}
+\end{theorem}
+
+\begin{proposition}[Continuity and Differentiability]
+The function $\tilde{\theta}(t)$ is:
+\begin{enumerate}
+    \item Continuous at all points $t \geq 0$, including $t = a$
+    \item Differentiable at all points $t \geq 0$, including $t = a$
+    \item $C^1$ continuous everywhere, but not $C^2$ at $t = a$
+\end{enumerate}
+
+\begin{proof}
+1. For continuity at $t = a$:
+\begin{align}
+\lim_{t \to a^-} \tilde{\theta}(t) &= \lim_{t \to a^-} [2\theta(a) - \theta(t)] \\
+&= 2\theta(a) - \theta(a) \\
+&= \theta(a) \\
+\lim_{t \to a^+} \tilde{\theta}(t) &= \lim_{t \to a^+} \theta(t) \\
+&= \theta(a)
+\end{align}
+Since the left and right limits match, $\tilde{\theta}(t)$ is continuous at $t = a$. For $t \neq a$, continuity follows from the continuity of $\theta(t)$.
+
+2. For differentiability at $t = a$:
+\begin{align}
+\lim_{t \to a^-} \frac{d\tilde{\theta}}{dt}(t) &= \lim_{t \to a^-} \left(-\frac{d\theta}{dt}(t)\right) \\
+&= -\frac{d\theta}{dt}(a) \\
+&= 0 \\
+\lim_{t \to a^+} \frac{d\tilde{\theta}}{dt}(t) &= \lim_{t \to a^+} \frac{d\theta}{dt}(t) \\
+&= \frac{d\theta}{dt}(a) \\
+&= 0
+\end{align}
+Since the left and right derivatives match at $t = a$, $\tilde{\theta}(t)$ is differentiable at $t = a$. For $t \neq a$, differentiability follows from the differentiability of $\theta(t)$.
+
+3. For the second derivative at $t = a$:
+\begin{align}
+\lim_{t \to a^-} \frac{d^2\tilde{\theta}}{dt^2}(t) &= \lim_{t \to a^-} \frac{d}{dt}\left(-\frac{d\theta}{dt}(t)\right) \\
+&= -\lim_{t \to a^-} \frac{d^2\theta}{dt^2}(t) \\
+\lim_{t \to a^+} \frac{d^2\tilde{\theta}}{dt^2}(t) &= \lim_{t \to a^+} \frac{d^2\theta}{dt^2}(t)
+\end{align}
+
+Since $\frac{d\theta}{dt}(t)$ changes sign at $t = a$ (from negative to positive), $\frac{d^2\theta}{dt^2}(a)$ must be positive (the derivative is increasing through zero). Therefore:
+\begin{align}
+\lim_{t \to a^-} \frac{d^2\tilde{\theta}}{dt^2}(t) &= -\frac{d^2\theta}{dt^2}(a) < 0 \\
+\lim_{t \to a^+} \frac{d^2\tilde{\theta}}{dt^2}(t) &= \frac{d^2\theta}{dt^2}(a) > 0
+\end{align}
+
+Since the left and right second derivatives differ at $t = a$, $\tilde{\theta}(t)$ is not $C^2$ at $t = a$. However, it is $C^1$ everywhere since the first derivative is continuous at all points.
+\end{proof}
+\end{proposition}
+
+\section{Phase Information Preservation}
+
+\begin{definition}[Phase Representation]
+The Riemann zeta function on the critical line can be expressed as:
+\begin{equation}
+\zeta\left(\frac{1}{2} + it\right) = e^{-i\theta(t)}Z(t)
+\end{equation}
+where $Z(t)$ is a real-valued function.
+\end{definition}
+
+\begin{theorem}[Phase Preservation]
+For the monotonized theta function, we define:
+\begin{equation}
+\tilde{Z}(t) = e^{i\tilde{\theta}(t)}\zeta\left(\frac{1}{2} + it\right)
+\end{equation}
+
+This function satisfies:
+\begin{equation}
+\tilde{Z}(t) = 
+\begin{cases}
+e^{2i\theta(a)}Z(t)^* & \text{for } t \in [0,a] \\
+Z(t) & \text{for } t > a
+\end{cases}
+\end{equation}
+where $Z(t)^*$ represents the complex conjugate of $Z(t)$.
+
+\begin{proof}
+For $t > a$:
+\begin{align}
+\tilde{Z}(t) &= e^{i\tilde{\theta}(t)}\zeta\left(\frac{1}{2} + it\right) \\
+&= e^{i\theta(t)}\zeta\left(\frac{1}{2} + it\right) \\
+&= e^{i\theta(t)} \cdot e^{-i\theta(t)}Z(t) \\
+&= Z(t)
+\end{align}
+
+For $t \in [0,a]$:
+\begin{align}
+\tilde{Z}(t) &= e^{i\tilde{\theta}(t)}\zeta\left(\frac{1}{2} + it\right) \\
+&= e^{i(2\theta(a) - \theta(t))}\zeta\left(\frac{1}{2} + it\right) \\
+&= e^{2i\theta(a)} \cdot e^{-i\theta(t)}\zeta\left(\frac{1}{2} + it\right) \\
+&= e^{2i\theta(a)} \cdot Z(t)
+\end{align}
+
+Since $Z(t)$ is real-valued for the Riemann zeta function on the critical line, $Z(t) = Z(t)^*$, thus:
+\begin{equation}
+\tilde{Z}(t) = e^{2i\theta(a)}Z(t)^*
+\end{equation}
+\end{proof}
+\end{theorem}
+
+\begin{corollary}[Zero Preservation]
+The zeros of $\zeta(s)$ on the critical line $s = \frac{1}{2} + it$ correspond precisely to:
+\begin{enumerate}
+    \item The zeros of $Z(t)$ for $t > 0$
+    \item The zeros of $\tilde{Z}(t)$ for $t > 0$
+\end{enumerate}
+Therefore, the monotonization preserves all information about the zeros of the zeta function.
+
+\begin{proof}
+From the definition of $Z(t)$:
+\begin{equation}
+\zeta\left(\frac{1}{2} + it\right) = e^{-i\theta(t)}Z(t)
+\end{equation}
+
+If $\zeta(\frac{1}{2} + it) = 0$, then $Z(t) = 0$ since $e^{-i\theta(t)} \neq 0$ for all $t$.
+
+From Theorem 4 (Phase Preservation), for $t > a$:
+\begin{equation}
+\tilde{Z}(t) = Z(t)
+\end{equation}
+
+Therefore, for $t > a$, $\tilde{Z}(t) = 0$ if and only if $Z(t) = 0$, which occurs if and only if $\zeta(\frac{1}{2} + it) = 0$.
+
+For $t \in [0,a]$:
+\begin{equation}
+\tilde{Z}(t) = e^{2i\theta(a)}Z(t)^*
+\end{equation}
+
+Since $e^{2i\theta(a)} \neq 0$ and $Z(t)$ is real-valued, $Z(t)^* = Z(t)$. Therefore, $\tilde{Z}(t) = 0$ if and only if $Z(t) = 0$, which occurs if and only if $\zeta(\frac{1}{2} + it) = 0$.
+
+Thus, for all $t > 0$, the zeros of $\zeta(\frac{1}{2} + it)$ correspond exactly to the zeros of both $Z(t)$ and $\tilde{Z}(t)$.
+\end{proof}
+\end{corollary}
+
+\begin{proposition}[Bijectivity]
+The function $\tilde{\theta}(t): [0,\infty) \to [\tilde{\theta}(0),\infty)$ is bijective.
+
+\begin{proof}
+1. Injectivity: For any $t_1, t_2 \geq 0$ with $t_1 \neq t_2$, we need to show $\tilde{\theta}(t_1) \neq \tilde{\theta}(t_2)$.
+
+Case 1: If $t_1, t_2 < a$ or $t_1, t_2 > a$, then injectivity follows from the strict monotonicity of $\tilde{\theta}(t)$ on each of these intervals, as proven in Theorem 2.
+
+Case 2: If $t_1 < a < t_2$, then from monotonicity, $\tilde{\theta}(t_1) < \tilde{\theta}(a) < \tilde{\theta}(t_2)$, which implies $\tilde{\theta}(t_1) \neq \tilde{\theta}(t_2)$.
+
+Case 3: If $t_1 = a$ and $t_2 \neq a$, then from the strict monotonicity of $\tilde{\theta}(t)$ except at $t = a$, we have $\tilde{\theta}(t_1) = \tilde{\theta}(a) \neq \tilde{\theta}(t_2)$.
+
+2. Surjectivity: We need to show that for every $y \in [\tilde{\theta}(0),\infty)$, there exists $t \geq 0$ such that $\tilde{\theta}(t) = y$.
+
+For $y = \tilde{\theta}(0)$, we have $t = 0$.
+
+For $y > \tilde{\theta}(0)$, since $\tilde{\theta}(t)$ is continuous and strictly increasing for $t > 0$ (except at $t = a$ where it's still continuous and non-decreasing), and since $\lim_{t\to\infty}\tilde{\theta}(t) = \infty$ (which follows from the fact that $\theta(t)$ grows without bound as $t \to \infty$), by the intermediate value theorem, there exists a unique $t > 0$ such that $\tilde{\theta}(t) = y$.
+
+Therefore, $\tilde{\theta}(t)$ is both injective and surjective, hence bijective.
+\end{proof}
+\end{proposition}
+
+\begin{theorem}[Modulating Function Criteria]
+The constructed function $\tilde{\theta}(t)$ satisfies all criteria for a modulating function:
+\begin{enumerate}
+    \item Piecewise continuous with piecewise continuous first derivative.
+    \item Monotonically increasing with $\frac{d\tilde{\theta}}{dt}(t) \geq 0$, with equality only on a set of measure zero (the single point $t = a$).
+    \item Bijective with $\lim_{t \to \infty} \tilde{\theta}(t) = \infty$.
+\end{enumerate}
+
+\begin{proof}
+1. Piecewise continuity with piecewise continuous first derivative:
+   From Proposition 2, $\tilde{\theta}(t)$ is continuous everywhere and $C^1$ continuous everywhere. Therefore, it is piecewise continuous with piecewise continuous first derivative.
+
+2. Monotonically increasing with non-negative derivative:
+   From Theorem 2, $\frac{d\tilde{\theta}}{dt}(t) > 0$ for all $t \neq a$ and $\frac{d\tilde{\theta}}{dt}(a) = 0$. Therefore, $\tilde{\theta}(t)$ is monotonically increasing with non-negative derivative, with equality only at the single point $t = a$, which is a set of measure zero.
+
+3. Bijectivity with limit at infinity:
+   From Proposition 3, $\tilde{\theta}(t): [0,\infty) \to [\tilde{\theta}(0),\infty)$ is bijective. Since $\tilde{\theta}(t) = \theta(t)$ for $t > a$, and since $\lim_{t\to\infty}\theta(t) = \infty$ (which follows from the asymptotic behavior of the theta function), we have $\lim_{t\to\infty}\tilde{\theta}(t) = \infty$.
+
+Therefore, $\tilde{\theta}(t)$ satisfies all criteria for a modulating function.
+\end{proof}
+\end{theorem}
+
+\section{Conclusion}
+
+The exact monotonization of the Riemann-Siegel theta function through reflection about its unique critical point provides a mathematically rigorous construction that preserves all essential properties for number-theoretic applications. The resulting function $\tilde{\theta}(t)$ serves as an ideal modulating function while maintaining phase coherence with the original theta function, enabling new approaches to the analysis of the Riemann zeta function and its zeros.
+
+\end{document}
