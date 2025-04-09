@@ -55,6 +55,7 @@
 
 <\initial>
   <\collection>
+    <associate|magnification|1.2>
     <associate|page-height|auto>
     <associate|page-medium|paper>
     <associate|page-type|letter>
