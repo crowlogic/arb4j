@@ -20,7 +20,7 @@
   differential equation:
 
   <\equation>
-    x<rsup|2>*<frac|d<rsup|2>*y|d*x<rsup|2>>+x*<frac|d*y|d*x>+<around|(|x<rsup|2>-\<alpha\><rsup|2>|)>*y=0
+    x<rsup|2>*<frac|d<rsup|2>*|d*x<rsup|2>>y<around*|(|x|)>+x*<frac|d*|d*x>y<around*|(|x|)>+<around|(|x<rsup|2>-\<alpha\><rsup|2>|)>*y<around*|(|x|)>=0
   </equation>
 
   where <math|\<alpha\>> is the order of the Bessel function. For integer or
@@ -42,14 +42,14 @@
   In one dimension:
 
   <\equation>
-    J<rsub|0><around|(|<around|\||t-s|\|>|)>=<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<frac|1|\<pi\><sqrt|1-\<lambda\><rsup|2>>>*d*\<lambda\>
+    J<rsub|0><around|(|<around|\||t-s|\|>|)>=<big|int><rsub|-1><rsup|1>*<frac|e<rsup|i*\<lambda\>*<around|(|t-s|)>>|\<pi\><sqrt|1-\<lambda\><rsup|2>>>*d*\<lambda\>
   </equation>
 
   And in two dimensions:
 
   <\equation>
-    J<rsub|0><around|(|<around|\||\<lambda\>|\|>|)>=<big|int><rsub|0><rsup|2*\<pi\>>e<rsup|i*<around|(|\<lambda\><rsub|1>*cos
-    \<theta\>+\<lambda\><rsub|2>*sin \<theta\>|)>>*<frac|d*\<theta\>|2*\<pi\>>
+    J<rsub|0><around|(|<around|\||\<lambda\>|\|>|)>=<big|int><rsub|0><rsup|2*\<pi\>>e<rsup|2\<pi\>i*<around|(|\<lambda\><rsub|1>*cos
+    \<theta\>+\<lambda\><rsub|2>*sin \<theta\>|)>>d*\<theta\>
   </equation>
 
   where <math|<around|\||\<lambda\>|\|>=<sqrt|\<lambda\><rsub|1><rsup|2>+\<lambda\><rsub|2><rsup|2>>>.
@@ -70,7 +70,7 @@
     \<bbb-E\>*<around|[|X<around|(|t|)>*X<around|(|s|)>|]>=\<bbb-E\>*<around|[|X*<around|(|t+h|)>*X*<around|(|s+h|)>|]>
   </equation>
 
-  and isotropy:
+  and isotropy where <math|h=<around|\||t-s|\|>>:
 
   <\equation>
     \<bbb-E\>*<around|[|X<around|(|t|)>*X<around|(|s|)>|]>=J<rsub|0><around|(|<around|\||t-s|\|>|)>
@@ -79,32 +79,14 @@
   Key properties include:
 
   <\enumerate>
-    <item>Uniform energy distribution
+    <item>Uniform spectral distribution over the unit circle\ 
 
     <item>Scale-invariance
 
     <item>Ergodicity
   </enumerate>
 
-  <section|Spectral Analysis of <math|J<rsub|0>> Kernel>
-
-  The spectral analysis reveals:
-
-  <\itemize>
-    <item>Discrete spectrum over <math|<around|[|0,\<infty\>|)>>
-
-    <item>Unknown eigenfunctions (no closed form, yet anyway)
-
-    <item>Slowly decaying eigenvalues
-
-    <item>Dimensionality dependence
-
-    <item>Orthonormal basis properties
-  </itemize>
-
-  The kernel's properties fundamentally shape the behavior of the random
-  plane wave model and present ongoing challenges in spectral theory and
-  stochastic processes.
+  \;
 </body>
 
 <\initial>
@@ -119,11 +101,11 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_68.tm>>
-    <associate|auto-2|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_68.tm>>
-    <associate|auto-3|<tuple|3|2|../../.TeXmacs/texts/scratch/no_name_68.tm>>
-    <associate|auto-4|<tuple|4|2|../../.TeXmacs/texts/scratch/no_name_68.tm>>
-    <associate|auto-5|<tuple|5|2|../../.TeXmacs/texts/scratch/no_name_68.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-2|<tuple|2|1>>
+    <associate|auto-3|<tuple|3|2>>
+    <associate|auto-4|<tuple|4|2>>
+    <associate|auto-5|<tuple|5|2>>
   </collection>
 </references>
 
