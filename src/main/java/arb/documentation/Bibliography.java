@@ -22,6 +22,14 @@ public class Bibliography extends
                           AbstractBibliography
 {
 
+  public static Article       compactCovarianceOperators                                      =
+                                                         new Article("Compact Covariance Operators",
+                                                                     "Charles R. Baker and Ian W. McKeague",
+                                                                     "1981",
+                                                                     "Proceedings of the American Mathematical Society",
+                                                                     "83",
+                                                                     null).setNumber("3");
+
   public static Article       kuzelArticle                                                    =
                                            new Article("Remarks on Naimark dilation theorem",
                                                        "Sergiusz Kuźel",

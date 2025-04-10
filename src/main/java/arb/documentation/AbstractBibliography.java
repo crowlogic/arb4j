@@ -36,7 +36,6 @@ public abstract class AbstractBibliography
   {
     return getFieldStream().filter(field -> getReference(field) != null)
                            .toList()
-                           .reversed()
                            .stream();
   }
 

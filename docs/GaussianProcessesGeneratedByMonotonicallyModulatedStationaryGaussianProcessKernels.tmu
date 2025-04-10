@@ -35,7 +35,7 @@
     <label|scalingFunctions>Let <math|\<cal-F\>> denote the class of functions <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> which are:
 
     <\enumerate>
-      <item><math|>piecewise continuous with piecewise continuous first derivative,
+      <item>continuous with piecewise continuous first derivative,
 
       <item>strictly monotonically increasing\ 
 
