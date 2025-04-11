@@ -1,6 +1,6 @@
-<TeXmacs|2.1.4>
+<TeXmacs|2.1.2>
 
-<style|<tuple|generic|framed-theorems|alt-colors|boring-white>>
+<style|<tuple|generic|alt-colors|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Special Representations of Weakly Harmonizable
@@ -44,17 +44,9 @@
     Support Sets> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-6><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|7<space|2spc>Spectral
-    Support Sets> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-7><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Acknowledgement>
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-8><vspace|0.5fn>
-
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|References>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-9><vspace|0.5fn>
+    <no-break><pageref|auto-7><vspace|0.5fn>
   </table-of-contents>
 
   <section|Introduction>
@@ -200,10 +192,10 @@
   Substituting <math|r<around|(|s,t|)>=f<around|(|s|)><wide|f<around|(|t|)>|\<bar\>>>
   in (5), this reduces to
 
-  <\equation*>
+  <\equation>
     F<around|(|A,B|)>=M<around|(|A|)><wide|M<around|(|B|)>|\<bar\>><text|for
-    a suitable >M<around|(|\<cdummy\>|)>.
-  </equation*>
+    a suitable >M<around|(|\<cdummy\>|)>
+  </equation>
 
   Since <math|F> is a bimeasure, this shows that
   <math|M<around|(|\<cdummy\>|)>> is <math|\<sigma\>>-additive on the class
@@ -413,14 +405,19 @@
   <math|<around|{|X<rsub|t>,t\<in\>T|}>\<subset\>L<rsub|0><rsup|2><around|(|P|)>>
   be a process with a bounded continuous covariance function <math|r>. [In
   particular, this is automatic if the process is weakly or strongly
-  harmonizable.] If <math|<wide|r|~>:<around|(|s,t|)>\<mapsto\>r<around|(|s,t|)>/<around|[|<around|(|1+s<rsup|2>|)>*<around|(|1+t<rsup|2>|)>|]><rsup|\<nosymbol\><frac|1|2>>>
-  and <math|\<lambda\><rsub|i>(\<geq\>0)> are its eigenvalues and
+  harmonizable.] If\ 
+
+  <\equation>
+    <wide|r|~>:<around|(|s,t|)>\<mapsto\><frac|r<around|(|s,t|)>|<sqrt|<around|(|1+s<rsup|2>|)>*<around|(|1+t<rsup|2>|)>>>
+  </equation>
+
+  \ and <math|\<lambda\><rsub|i>(\<geq\>0)> are its eigenvalues and
   <math|\<varphi\><rsub|i>> are the corresponding normalized eigenfunctions,
   then <math|<around|{|\<xi\><rsub|n>,n\<geq\>1|}>> defined (as a Bochner or
   stochastic integral) by
 
   <\equation>
-    \<xi\><rsub|n>=\<lambda\><rsub|n><rsup|-<frac|1|2>>*<big|int><rsub|\<bbb-R\>>X<rsub|t>*\<varphi\><rsub|n><around|(|t|)>*<around|(|1+t<rsup|2>|)><rsup|-<frac|1|2>>*d*t
+    \<xi\><rsub|n>=*<frac|<big|int><rsub|-\<infty\>><rsup|\<infty\>>X<rsub|t>**<frac|\<varphi\><rsub|n><around|(|t|)>|<sqrt|1+t<rsup|2>>>*d*t|<sqrt|\<lambda\><rsub|n>>>
   </equation>
 
   form a complete orthonormal set in <math|\<cal-H\><around|(|X|)>=<math-up|sp><around|{|X<rsub|t>,t\<in\>T|}>\<subset\>L<rsub|0><rsup|2><around|(|P|)>>,
@@ -520,7 +517,7 @@
   detailed reasons), one has
 
   <\equation>
-    <tabular|<tformat|<table|<row|<cell|X<rsub|t>>|<cell|=<big|int><rsub|\<bbb-R\>><wide|f|^>*<around|(|t-u|)>*Z*<around|(|d*u|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>Z*<around|(|d*u|)><around*|(|<big|int><rsub|\<bbb-R\>>e<rsup|i*<around|(|t-u|)>*\<lambda\>>*f<around|(|\<lambda\>|)>*d*\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>e<rsup|i*t*\<lambda\>>*f<around|(|\<lambda\>|)><around*|(|<big|int><rsub|\<bbb-R\>>e<rsup|-i*u*\<lambda\>>*Z*<around|(|d*u|)>|)>*d*\<lambda\>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>e<rsup|i*t*\<lambda\>>*f<around|(|\<lambda\>|)><wide|Y|~><around|(|\<lambda\>|)>*d*\<lambda\>,>>>>>
+    <tabular|<tformat|<table|<row|<cell|X<rsub|t>>|<cell|=<big|int><rsub|\<bbb-R\>><wide|f|^>*<around|(|t-u|)>*Z*<around|(|d*u|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>Z*<around|(|d*u|)><around*|(|<big|int><rsub|\<bbb-R\>>e<rsup|i*<around|(|t-u|)>*\<lambda\>>*f<around|(|\<lambda\>|)>*d*\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>e<rsup|i*t*\<lambda\>>*f<around|(|\<lambda\>|)><around*|(|<big|int><rsub|\<bbb-R\>>e<rsup|-i*u*\<lambda\>>*Z*<around|(|d*u|)>|)>*d*\<lambda\>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>e<rsup|i*t*\<lambda\>>*f<around|(|\<lambda\>|)><wide|Y|~><around|(|\<lambda\>|)>*d*\<lambda\>>>>>>
   </equation>
 
   \;
@@ -541,9 +538,9 @@
   variation, and (19) can be written, with the properties of the Bochner
   integral, as
 
-  <\equation*>
-    X<rsub|t>=<big|int><rsub|\<bbb-R\>>e<rsup|i*t*\<lambda\>>*<wide|Z|~><around|(|d*\<lambda\>|)>\<forall\><space|1em>t\<in\>\<bbb-R\>.
-  </equation*>
+  <\equation>
+    X<rsub|t>=<big|int><rsub|\<bbb-R\>>e<rsup|i*t*\<lambda\>>*<wide|Z|~><around|(|d*\<lambda\>|)>\<forall\><space|1em>t\<in\>\<bbb-R\>
+  </equation>
 
   Consequently <math|<around|{|X<rsub|t>,t\<in\>\<bbb-R\>|}>> is strongly
   harmonizable.
@@ -713,12 +710,22 @@
 
   Consequently one has
 
-  <\equation*>
-    X<rsub|t>=A<rsub|t>*<around|(|U<rsub|t>*Y<rsub|0>|)>=<big|int><rsub|<wide|T|^>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*E*<around|(|d*\<lambda\>|)>*<big|int><rsub|<wide|T|^>>e<rsup|i*t*v>*E*<around|(|d*v|)>*Y<rsub|0>,=<big|int><rsub|<wide|T|^>>e<rsup|i*t*\<lambda\>>*\<varphi\><rsub|t><around|(|\<lambda\>|)>*E*<around|(|d*\<lambda\>|)>*Y<rsub|0>,<text|by
-    a property of the spectral integral>,=<big|int><rsub|<wide|T|^>>e<rsup|i*t*\<lambda\>>*\<varphi\><rsub|t><around|(|\<lambda\>|)>*Z*<around|(|d*\<lambda\>|)>.
-  </equation*>
+  <\equation>
+    <tabular|<tformat|<table|<row|<cell|X<rsub|t>>|<cell|=A<rsub|t>*<around|(|U<rsub|t>*Y<rsub|0>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|<wide|T|^>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*E*<around|(|d*\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|<wide|T|^>>e<rsup|i*t*v>*E*<around|(|d*v|)>*Y<rsub|0>>>|<row|<cell|>|<cell|=<big|int><rsub|<wide|T|^>>e<rsup|i*t*\<lambda\>>*\<varphi\><rsub|t><around|(|\<lambda\>|)>*E*<around|(|d*\<lambda\>|)>*Y<rsub|0>>>|<row|<cell|>|<cell|=<big|int><rsub|<wide|T|^>>e<rsup|i*t*\<lambda\>>*\<varphi\><rsub|t><around|(|\<lambda\>|)>*Z*<around|(|d*\<lambda\>|)>>>>>><tabular|<tformat|<table|<row|<cell|>>>>>
+  </equation>
 
-  If we set <math|g<rsub|t><rprime|'><around|(|\<lambda\>|)>=e<rsup|i*t*\<lambda\>>*\<varphi\><rsub|t><around|(|\<lambda\>|)>,\<mu\><around|(|B|)>=<around|(|E<around|(|B|)>*Y<rsub|0>,E<around|(|B|)>*Y<rsub|0>|)>>,
+  If we set\ 
+
+  <\equation>
+    g<rsub|t><rprime|'><around|(|\<lambda\>|)>=e<rsup|i*t*\<lambda\>>*\<varphi\><rsub|t><around|(|\<lambda\>|)>
+  </equation>
+
+  and
+
+  <\equation>
+    \<mu\><around|(|B|)>=<around|(|E<around|(|B|)>*Y<rsub|0>,E<around|(|B|)>*Y<rsub|0>|)>
+  </equation>
+
   then the above stated properties imply that
   <math|g<rsub|t><rprime|'>\<in\>L<rsup|2><around|(|<wide|T|^>,B,\<mu\>|)>>,
   so that the process <math|<around|{|X<rsub|t>,t\<in\>T|}>> is of Karhunen
@@ -726,18 +733,27 @@
 
   For the last part since each weakly harmonizable process is of Karhunen
   class, it admits the representation (21), but now with special properties
-  for <math|<around|{|A<rsub|t>,t\<in\>T|}>>. Let
-  <math|Q<rsub|t>=A<rsub|t>*U<rsub|t>>. Then by a known result (cf. [11], p.
-  330), <math|<around|{|Q<rsub|t>,t\<in\>T|}>> must be positive definite,
-  weakly continuous and contractive. Since
-  <math|<around|{|U<rsub|t>,t\<in\>T|}>> is a unitary group which is weakly
-  continuous, it follows that <math|<around|{|A<rsub|t>,t\<in\>T|}>> must
-  also be contractive and weakly continuous. To see that it is also positive
-  definite, let <math|<around|{|h<rsub|1>,\<ldots\>,h<rsub|n>|}>\<subset\>\<cal-H\><around|(|X|)>>
+  for <math|<around|{|A<rsub|t>,t\<in\>T|}>>. Let\ 
+
+  <\equation>
+    Q<rsub|t>=A<rsub|t>*U<rsub|t>
+  </equation>
+
+  Then by a known result (cf. [11], p. 330),
+  <math|<around|{|Q<rsub|t>,t\<in\>T|}>> must be positive definite, weakly
+  continuous and contractive. Since <math|<around|{|U<rsub|t>,t\<in\>T|}>> is
+  a unitary group which is weakly continuous, it follows that
+  <math|<around|{|A<rsub|t>,t\<in\>T|}>> must also be contractive and weakly
+  continuous. To see that it is also positive definite, let
+  <math|<around|{|h<rsub|1>,\<ldots\>,h<rsub|n>|}>\<subset\>\<cal-H\><around|(|X|)>>
   be an arbitrary set and <math|t<rsub|1>,\<ldots\>,t<rsub|n>> be any points
-  of the additive group <math|T,n\<geq\>1>. Then letting
-  <math|v<rsub|i>=U<rsub|t<rsub|i>><rsup|\<ast\>>*h<rsub|i>\<in\>\<cal-H\><around|(|X|)>>,
-  we have
+  of the additive group <math|T,n\<geq\>1>. Then letting\ 
+
+  <\equation>
+    v<rsub|i>=U<rsub|t<rsub|i>><rsup|\<ast\>>*h<rsub|i>\<in\>\<cal-H\><around|(|X|)>
+  </equation>
+
+  , we have
 
   <\equation>
     <tabular|<tformat|<table|<row|<cell|0>|<cell|\<leqslant\><big|sum><rsub|i=1><rsup|n><big|sum><rsub|j=1><rsup|n><around|(|Q<rsub|t<rsub|i>-t<rsub|j>>*v<rsub|i>,v<rsub|j>|)>>|<cell|since
@@ -774,11 +790,21 @@
     <math-up|var>X<rsub|t>=r<around|(|t,t|)>=<big|int><rsub|\<bbb-R\>><around|\||a<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*F*<around|(|d*\<lambda\>|)>=<big|int><rsub|\<bbb-R\>>\<mu\><rsub|t>*<around|(|d*\<lambda\>|)>
   </equation>
 
-  where <math|\<mu\><rsub|t><around|(|A|)>=<big|int><rsub|A><around|\||a<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*F*<around|(|d*\<lambda\>|)>>
-  (taking <math|T=\<bbb-R\>> for simplicity). This function, depending on
+  where\ 
+
+  <\equation>
+    \<mu\><rsub|t><around|(|A|)>=<big|int><rsub|A><around|\||a<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*F*<around|(|d*\<lambda\>|)>
+  </equation>
+
+  \ (taking <math|T=\<bbb-R\>> for simplicity). This function, depending on
   <math|t>, is termed an \Pevolving spectrum\Q in time, by Priestley [10].
-  Since <math|g<rsub|t><around|(|\<lambda\>|)>=e<rsup|i*t*\<lambda\>>*a<rsub|t><around|(|\<lambda\>|)>>
-  can be oscillatory for each <math|t>, the process <math|X<rsub|t>> which
+  Since
+
+  <\equation>
+    g<rsub|t><around|(|\<lambda\>|)>=e<rsup|i*t*\<lambda\>>*a<rsub|t><around|(|\<lambda\>|)>
+  </equation>
+
+  \ can be oscillatory for each <math|t>, the process <math|X<rsub|t>> which
   necessarily has the representation (cf. [2], p. 55):
 
   <\equation>
@@ -817,8 +843,13 @@
   is called the <with|font-shape|italic|support> of a bimeasure
   <math|\<beta\>>, if it consists of points
   <math|<around|(|x,y|)>\<in\>\<bbb-R\>\<times\>\<bbb-R\>> such that for each
-  neighborhood where <math|\<mu\><rsub|t><around|(|A|)>=<big|int><rsub|A><around|\||a<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*F*<around|(|d*\<lambda\>|)>>
-  (taking <math|T=\<bbb-R\>> for simplicity). This function, depending on
+  neighborhood where
+
+  <\equation>
+    \<mu\><rsub|t><around|(|A|)>=<big|int><rsub|A><around|\||a<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*F*<around|(|d*\<lambda\>|)>
+  </equation>
+
+  \ (taking <math|T=\<bbb-R\>> for simplicity). This function, depending on
   <math|t>, is termed an \Pevolving spectrum\Q in time, by Priestley [10].
   Since <math|g<rsub|t><around|(|\<lambda\>|)>=e<rsup|i*t*\<lambda\>>*a<rsub|t><around|(|\<lambda\>|)>>
   can be oscillatory for each <math|t>, the process <math|X<rsub|t>> which
@@ -845,149 +876,6 @@
   3. As Proposition 5 also implies, the representation (21) of a Karhunen
   process is not unique. The preceding sections show that several other
   (series type) representations are possible.
-
-  <section|Spectral Support Sets>
-
-  Finally we consider briefly the support sets of spectral bimeasure
-  functions of the (subclass) periodically correlated weakly harmonizable
-  processes. Also as implied by Proposition 1, a clear distinction emerges
-  between the continuous and discrete parameter cases. This may be
-  anticipated from the work of [3] and [4].
-
-  The result to be given here is a generalization of one for the strongly
-  harmonizable case found in [6]. First we need to state the concept of
-  \Psupport\Q precisely. A set <math|S<rsub|\<beta\>>\<subset\>\<bbb-R\>\<times\>\<bbb-R\>>
-  is called the <with|font-shape|italic|support> of a bimeasure
-  <math|\<beta\>>, if it consists of points
-  <math|<around|(|x,y|)>\<in\>\<bbb-R\>\<times\>\<bbb-R\>> such that for each
-  neighborhood <math|U<rsub|1>\<times\>U<rsub|2>> of <math|<around|(|x,y|)>>,
-  the variation function <math|<around|\||\<beta\>|\|><around|(|U<rsub|1>,U<rsub|2>|)>\<neq\>0>.
-  Thus <math|S<rsub|\<beta\>>> is the smallest closed set off of which
-  <math|\<beta\>> vanishes identically. We can now state the desired
-  extension in the following: <math|U<rsub|1>\<times\>U<rsub|2>> of
-  <math|<around|(|x,y|)>>, the variation function
-  <math|<around|\||\<beta\>|\|><around|(|U<rsub|1>,U<rsub|2>|)>\<neq\>0>.
-  Thus <math|S<rsub|\<beta\>>> is the smallest closed set off of which
-  <math|\<beta\>> vanishes identically. We can now state the desired
-  extension in the following:
-
-  <with|font-series|bold|Proposition 7.> <with|font-shape|italic|Let
-  <math|<around|{|X<rsub|t>,t\<in\>\<bbb-R\>|}>\<subset\>L<rsub|0><rsup|2><around|(|P|)>>
-  be a weakly harmonizable and periodically correlated process with period
-  <math|\<alpha\>\<gtr\>0> so that its covariance function <math|r> satisfies
-  <math|r<around|(|s+\<alpha\>,t+\<alpha\>|)>=r<around|(|s,t|)>> for all
-  <math|<around|(|s,t|)>\<in\>\<bbb-R\>\<times\>\<bbb-R\>>. Then the support
-  of the spectral bimeasure <math|F> of the process is contained in>
-
-  <\with|font-shape|italic>
-    <\equation>
-      S<rsub|F>=<around|{|<around|(|\<lambda\><rsub|1>,\<lambda\><rsub|2>|)>\<in\>\<bbb-R\>\<times\>\<bbb-R\>:\<lambda\><rsub|1>-\<lambda\><rsub|2>=2*\<pi\>*k/\<alpha\>,k\<in\>\<bbb-Z\>|}>
-    </equation>
-
-    Conversely if the support of the bimeasure <math|F> of a weakly
-    harmonizable process lies in <math|S<rsub|F>> of (30), then it is
-    periodically correlated.
-  </with>
-
-  <with|font-series|bold|Proof:> Since a discrete parameter periodically
-  correlated process is always strongly harmonizable (cf. [3]) and the strong
-  case was treated in [6], we only need to consider the continuous parameter
-  weakly harmonizable case. We establish the result using an approximation
-  procedure.
-
-  From the structure theory it is long known that each weakly harmonizable
-  process <math|X<rsub|t>> is a limit in <math|L<rsub|0><rsup|2><around|(|P|)>>
-  of a sequence of strongly harmonizable processes <math|X<rsub|t><rsup|n>>,
-  uniformly for <math|t> in compact subsets (cf. e.g., [11], Thm. 4.4, and
-  reference to related works of others). This implies in particular that, if
-  <math|r<rsub|n>> and <math|r> are the covariance functions of the
-  approximant and the given processes, then
-
-  <\equation>
-    lim<rsub|n\<rightarrow\>\<infty\>> r<rsub|n><around|(|s,t|)>=r<around|(|s,t|)>
-  </equation>
-
-  uniformly for <math|<around|(|s,t|)>\<in\>K\<times\>K> where
-  <math|K\<subset\>\<bbb-R\>> is compact. Now since <math|r> is periodic,
-  with period <math|\<alpha\>>, we assert that <math|r<rsub|n>> is also
-  periodic with period <math|\<alpha\>>, for all large enough <math|n>. To
-  see this, suppose it is not true. Then there is an
-  <math|\<epsilon\>\<gtr\>0>, and a point
-  <math|<around|(|s,t|)>\<in\>\<bbb-R\>\<times\>\<bbb-R\>>, such that
-
-  <\equation>
-    liminf<rsub|n\<rightarrow\>\<infty\>><around|\||r<rsub|n><around|(|s+k*\<alpha\>,t+k*\<alpha\>|)>-r<rsub|n><around|(|s,t|)>|\|>\<gtr\>\<epsilon\>
-  </equation>
-
-  for some <math|k\<in\>\<bbb-Z\>-<around|{|0|}>>. But since
-  <math|r<around|(|s+k*\<alpha\>,t+k*\<alpha\>|)>=r<around|(|s,t|)>> and (31)
-  holds uniformly on the two point (hence compact) set
-  <math|K=<around|{|<around|(|s,t|)>,<around|(|s+k*\<alpha\>,t+k*\<alpha\>|)>|}>>
-  we get from (31)
-
-  <\equation>
-    <tabular|<tformat|<table|<row|<cell|0>|<cell|\<less\>\<epsilon\>>>|<row|<cell|>|<cell|\<less\><around|\||r<rsub|n><around|(|s+k*\<alpha\>,t+k*\<alpha\>|)>-r<rsub|n><around|(|s,t|)>|\|>>>|<row|<cell|>|<cell|\<leq\><around|\||r<rsub|n><around|(|s+k*\<alpha\>,t+k*\<alpha\>|)>-r<around|(|s,t|)>|\|>+<around|\||r<around|(|s+k*\<alpha\>,t+k*\<alpha\>|)>-r<around|(|s,t|)>|\|>+<around|\||r<around|(|s,t|)>-r<rsub|n><around|(|s,t|)>|\|>>>|<row|<cell|>|<cell|\<rightarrow\>0>>>>>
-  </equation>
-
-  for large enough <math|n>, giving a contradiction. Hence we can take
-  <math|X<rsub|t><rsup|n>> to be also periodically correlated in addition.
-
-  Let <math|F<rsub|n>> and <math|F> be the spectral measures of
-  <math|r<rsub|n>> and <math|r>. We assert that
-  <math|F<rsub|n><around|(|A,B|)>\<rightarrow\>F<around|(|A,B|)>> for any
-  Borel sets <math|A,B>. Since there is no Helly-Bray type result, we cannot
-  use the representation (3) directly to obtain this result. The following
-  alternative argument can be given in its place. Indeed, the
-  <math|X<rsub|t><rsup|n>>-processes can be obtained, to satisfy (31), as
-
-  <\equation>
-    X<rsub|t><rsup|n>=<big|sum><rsub|k=1><rsup|n>\<varphi\><rsub|k>*<around|(|X<rsub|t>,\<varphi\><rsub|k>|)>\<forall\>n\<geq\>1
-  </equation>
-
-  where <math|<around|{|\<varphi\><rsub|k>,k\<geq\>1|}>> is a complete
-  orthonormal system of the separable space <math|\<cal-H\><around|(|X|)>> of
-  the <math|X<rsub|t>>-process. Then <math|X<rsub|t><rsup|n>\<in\>\<cal-H\><around|(|X|)>>
-  and <math|X<rsub|t><rsup|n>\<rightarrow\>X<rsub|t>> in
-  <math|L<rsub|0><rsup|2><around|(|P|)>>-mean, uniformly for <math|t> in
-  compact sets of <math|\<bbb-R\>>. Let <math|\<ell\><rsub|k>:Y\<rightarrow\><around|(|Y,\<varphi\><rsub|k>|)>,Y\<in\>\<cal-H\><around|(|X|)>>,
-  be the linear functional on <math|\<cal-H\><around|(|X|)>>. If
-  <math|\<zeta\><rsub|n>> and <math|Z> are the representing stochastic
-  measures of <math|X<rsub|t><rsup|n>>- and <math|X<rsub|t>>-processes, then
-  (cf. [11], p. 319) (33) gives
-
-  <\equation>
-    \<zeta\><rsub|n><around|(|\<cdummy\>|)>=<big|sum><rsub|k=1><rsup|n>\<varphi\><rsub|k>*\<ell\><rsub|k><around|(|Z|(>*\<cdummy\><around|)||)>,<space|1em><text|and
-    >F<rsub|n><around|(|A,B|)>=<around|(|\<zeta\><rsub|n><around|(|A|)>,\<zeta\><rsub|n><around|(|B|)>|)>
-  </equation>
-
-  In particular, since <math|\<ell\><rsub|k><around|(|Z<around|(|A|)>|)>=<around|(|Z<around|(|A|)>,\<varphi\><rsub|k>|)>>,
-  it follows from the Parseval's equation that
-
-  <\equation>
-    Z<around|(|A|)>=lim<rsub|n\<rightarrow\>\<infty\>>
-    \<zeta\><around|(|A|)>,<space|1em><text|in mean>
-  </equation>
-
-  This immediately gives
-
-  <\equation>
-    F<around|(|A,B|)>=<around|(|Z<around|(|A|)>,Z<around|(|B|)>|)>=lim<rsub|n\<rightarrow\>\<infty\>><around|(|\<zeta\><rsub|n><around|(|A|)>,\<zeta\><rsub|n><around|(|B|)>|)>=lim<rsub|n\<rightarrow\>\<infty\>>
-    F<rsub|n><around|(|A,B|)>
-  </equation>
-
-  Conversely, if the support of <math|F> is in <math|S<rsub|F>>, since (35)
-  always holds irrespective of periodicity, then for all large enough
-  <math|n>, the support of <math|F<rsub|n>,S<rsub|F<rsub|n>>>, satisfies
-  <math|S<rsub|F<rsub|n>>\<subset\>S<rsub|F>>. But then by the converse part
-  of the result of [6], <math|X<rsub|t><rsup|n>> is periodically correlated
-  and strongly harmonizable. Since (31) holds, it follows that <math|r> is
-  periodic so that <math|X<rsub|t>>-process is also periodically correlated,
-  as asserted. <math|\<blacksquare\>>
-
-  <section*|Acknowledgement>
-
-  This research was supported, in part, by the ONR contract No.
-  N00014-84-K-0356 (mod P00004).
 
   <section*|References>
 
@@ -1023,7 +911,7 @@
 
 <\initial>
   <\collection>
-    <associate|magnification|1.2>
+    <associate|magnification|1.4>
     <associate|page-height|auto>
     <associate|page-medium|paper>
     <associate|page-type|letter>
@@ -1033,15 +921,13 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-2|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-3|<tuple|3|4|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-4|<tuple|4|7|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-5|<tuple|5|9|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-6|<tuple|6|12|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-7|<tuple|7|13|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-8|<tuple|46|15|../../.TeXmacs/texts/scratch/no_name_35.tm>>
-    <associate|auto-9|<tuple|46|15|../../.TeXmacs/texts/scratch/no_name_35.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-2|<tuple|2|3>>
+    <associate|auto-3|<tuple|3|5>>
+    <associate|auto-4|<tuple|4|9>>
+    <associate|auto-5|<tuple|5|11>>
+    <associate|auto-6|<tuple|6|16>>
+    <associate|auto-7|<tuple|49|17>>
   </collection>
 </references>
 
@@ -1072,17 +958,9 @@
       Support Sets> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-6><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|7<space|2spc>Spectral
-      Support Sets> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-7><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Acknowledgement>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-8><vspace|0.5fn>
-
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|References>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-9><vspace|0.5fn>
+      <no-break><pageref|auto-7><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>

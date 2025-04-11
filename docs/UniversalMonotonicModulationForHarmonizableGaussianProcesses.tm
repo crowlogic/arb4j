@@ -1,6 +1,6 @@
-<TeXmacs|2.1.4>
+<TeXmacs|2.1.2>
 
-<style|<tuple|generic|framed-theorems>>
+<style|<tuple|generic|boring-white|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Universality of Monotonic Modulation for Harmonizable
@@ -28,6 +28,8 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-5><vspace|0.5fn>
   </table-of-contents>
+
+  \;
 
   <section|Spectral Resolution Fundamentals>
 
@@ -134,14 +136,14 @@
     definiteness of the covariance function implies:
 
     <\equation>
-      <big|sum><rsub|j,k=1><rsup|n>c<rsub|j><wide|c<rsub|k>|\<bar\>>\<bbb-E\>*<around|[|Y<rsub|t<rsub|j>>*Y<rsub|t<rsub|k>><rsup|\<ast\>>|]>\<geq\>0
+      <big|sum><rsub|k=1><rsup|m><big|sum><rsub|k=1><rsup|n>c<rsub|j><wide|c<rsub|k>|\<bar\>>\<bbb-E\>*<around|[|Y<rsub|t<rsub|j>>*Y<rsub|t<rsub|k>><rsup|\<ast\>>|]>\<geq\>0
     </equation>
 
     Let <math|B*<around|(|t,s|)>=\<bbb-E\>*<around|[|Y<rsub|t>*Y<rsub|s><rsup|\<ast\>>|]>>
     denote the covariance function. A bilinear form can be defined:
 
     <\equation>
-      <around|\<langle\>|f,g|\<rangle\>><rsub|B>=<iint>f<around|(|t|)>*g<around|(|s|)><rsup|\<ast\>>*B*<around|(|t,s|)>*d*t*d*s
+      <around|\<langle\>|f,g|\<rangle\>><rsub|B>=<big|iint>f<around|(|t|)>*g<around|(|s|)><rsup|\<ast\>>*B*<around|(|t,s|)>*d*t*d*s
     </equation>
 
     This bilinear form defines a Hilbert space of functions. The key insight
@@ -630,20 +632,20 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|auto-2|<tuple|2|4|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|auto-3|<tuple|3|7|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|auto-4|<tuple|4|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|auto-5|<tuple|48|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|bib-bochner|<tuple|bochner|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|bib-crowley|<tuple|crowley|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|bib-gelfand|<tuple|gelfand|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|bib-grothendieck|<tuple|grothendieck|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|bib-hida|<tuple|hida|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|bib-karhunen|<tuple|karhunen|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|bib-loeve|<tuple|loeve|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|bib-naimark|<tuple|naimark|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
-    <associate|bib-rozanov|<tuple|rozanov|9|../../.TeXmacs/texts/scratch/no_name_77.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-2|<tuple|2|5>>
+    <associate|auto-3|<tuple|3|8>>
+    <associate|auto-4|<tuple|4|10>>
+    <associate|auto-5|<tuple|48|10>>
+    <associate|bib-bochner|<tuple|bochner|10>>
+    <associate|bib-crowley|<tuple|crowley|10>>
+    <associate|bib-gelfand|<tuple|gelfand|10>>
+    <associate|bib-grothendieck|<tuple|grothendieck|10>>
+    <associate|bib-hida|<tuple|hida|10>>
+    <associate|bib-karhunen|<tuple|karhunen|10>>
+    <associate|bib-loeve|<tuple|loeve|10>>
+    <associate|bib-naimark|<tuple|naimark|10>>
+    <associate|bib-rozanov|<tuple|rozanov|10>>
   </collection>
 </references>
 
