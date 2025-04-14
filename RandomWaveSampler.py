@@ -4,10 +4,10 @@ from scipy.special import j0
 from numpy.fft import fft, ifft, fftfreq
 
 # CONFIGURATION
-L = 1000           # Interval length
+L = 200           # Interval length
 STEP_SIZE = 0.01  # Time resolution
 N = int(L / STEP_SIZE) # Number of points
-LAGSTO_SHOW = 40  # Max lag to plot (time units)
+LAGSTO_SHOW = 20  # Max lag to plot (time units)
 
 # --------------------------
 # SPECTRAL SYNTHESIS PATH GENERATION
