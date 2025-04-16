@@ -1,5 +1,5 @@
 function randomWaveSampler(L, stepSize, maxDuration)
-    if nargin < 1, L = 200; end
+    if nargin < 1, L = 500; end
     if nargin < 2, stepSize = 0.01; end
     if nargin < 3, maxDuration = 20; end
 
