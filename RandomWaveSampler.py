@@ -4,7 +4,7 @@ from scipy.special import j0
 from numpy.fft import fft, ifft, fftfreq
 
 # CONFIGURATION
-L = 200           # Interval length
+L = 100           # Interval length
 STEP_SIZE = 0.01  # Time resolution
 N = int(L / STEP_SIZE) # Number of points
 LAGSTO_SHOW = 20  # Max lag to plot (time units)
