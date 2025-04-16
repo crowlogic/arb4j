@@ -8,7 +8,7 @@ SOURCES=native/arb_wrap.c native/complex.c native/ml.c
 
 JAVA_HOME=$(shell readlink -f /usr/bin/javac | sed "s:bin/javac::")
 
-C_INCLUDES=-I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux -I/usr/local/include -I/usr/local/include/flint
+C_INCLUDES=-I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux -I/usr/local/include -I/usr/include/flint
 
 CFLAGS=-g -O3 -fPIC -shared -Wno-int-conversion 
 
