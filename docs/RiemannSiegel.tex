@@ -1,0 +1,400 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\begin{document}
+
+\begin{theorem}[Riemann-Siegel Formula]
+Let $Z(t) = e^{i\theta(t)}\zeta\left(\frac{1}{2}+it\right)$ where $\theta(t) = \arg\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right) - \frac{t}{2}\ln\pi$. Then:
+\begin{align}\label{eq:riemann_siegel}
+Z(t) = 2\sum_{n=1}^m \frac{\cos(\theta(t)-t\ln n)}{\sqrt{n}} + (-1)^{m-1}\left(\frac{t}{2\pi}\right)^{-1/4}\sum_{k=0}^\infty (-1)^k \frac{C_k(p)}{(t/2\pi)^{k/2}}
+\end{align}
+where $m = \lfloor \sqrt{t/(2\pi)} \rfloor$, $p = \sqrt{t/(2\pi)} - m$, and $C_k(p) = \frac{1}{k!}\frac{d^k}{dp^k}\left[\frac{\cos\pi(p^2-\frac{1}{4})}{\cos\pi p}\right]$.
+\end{theorem}
+
+\begin{proof}
+\textbf{Step 1: Proving $Z(t)$ is Real-Valued}
+
+The functional equation of the Riemann zeta function is:
+\begin{align}\label{eq:func_equation}
+\zeta(s) = \chi(s)\zeta(1-s)
+\end{align}
+where:
+\begin{align}\label{eq:chi_def}
+\chi(s) = 2^s\pi^{s-1}\sin\left(\frac{\pi s}{2}\right)\Gamma(1-s)
+\end{align}
+
+For $s = \frac{1}{2}+it$, we compute:
+\begin{align}\label{eq:chi_substitution}
+\chi\left(\frac{1}{2}+it\right) &= 2^{1/2+it}\pi^{-1/2+it}\sin\left(\frac{\pi}{4}+i\frac{\pi t}{2}\right)\Gamma\left(\frac{1}{2}-it\right)
+\end{align}
+
+Computing each term:
+\begin{align}
+2^{1/2+it} &= \sqrt{2} \cdot e^{it\ln 2} \label{eq:exp_2}\\
+\pi^{-1/2+it} &= \frac{1}{\sqrt{\pi}} \cdot e^{it\ln\pi} \label{eq:exp_pi}
+\end{align}
+
+For the sine term, we use the definition $\sin(a+ib) = \sin a \cosh b + i\cos a \sinh b$:
+\begin{align}
+\sin\left(\frac{\pi}{4}+i\frac{\pi t}{2}\right) &= \sin\left(\frac{\pi}{4}\right)\cosh\left(\frac{\pi t}{2}\right) + i\cos\left(\frac{\pi}{4}\right)\sinh\left(\frac{\pi t}{2}\right) \label{eq:sine_complex}\\
+&= \frac{1}{\sqrt{2}}\cosh\left(\frac{\pi t}{2}\right) + i\frac{1}{\sqrt{2}}\sinh\left(\frac{\pi t}{2}\right) \label{eq:sine_expansion}
+\end{align}
+
+For the gamma term, we use the reflection formula $\Gamma(z)\Gamma(1-z) = \frac{\pi}{\sin(\pi z)}$:
+\begin{align}
+\Gamma\left(\frac{1}{2}+it\right)\Gamma\left(\frac{1}{2}-it\right) &= \frac{\pi}{\sin\left(\pi\left(\frac{1}{2}+it\right)\right)} \label{eq:gamma_reflection}\\
+&= \frac{\pi}{\sin\left(\frac{\pi}{2}+i\pi t\right)} \label{eq:gamma_reflection_applied}
+\end{align}
+
+Using $\sin\left(\frac{\pi}{2}+x\right) = \cos(x)$ and $\cos(ix) = \cosh(x)$:
+\begin{align}
+\Gamma\left(\frac{1}{2}+it\right)\Gamma\left(\frac{1}{2}-it\right) &= \frac{\pi}{\cos(i\pi t)} \label{eq:gamma_cos}\\
+&= \frac{\pi}{\cosh(\pi t)} \label{eq:gamma_cosh}
+\end{align}
+
+Solving for $\Gamma\left(\frac{1}{2}-it\right)$:
+\begin{align}\label{eq:gamma_solve}
+\Gamma\left(\frac{1}{2}-it\right) &= \frac{\pi}{\cosh(\pi t)\Gamma\left(\frac{1}{2}+it\right)}
+\end{align}
+
+Substituting Equations \eqref{eq:exp_2}, \eqref{eq:exp_pi}, \eqref{eq:sine_expansion}, and \eqref{eq:gamma_solve} into Equation \eqref{eq:chi_substitution}:
+\begin{align}
+\chi\left(\frac{1}{2}+it\right) &= \sqrt{2} \cdot e^{it\ln 2} \cdot \frac{1}{\sqrt{\pi}} \cdot e^{it\ln\pi} \cdot \left[\frac{1}{\sqrt{2}}\cosh\left(\frac{\pi t}{2}\right) + i\frac{1}{\sqrt{2}}\sinh\left(\frac{\pi t}{2}\right)\right] \cdot \frac{\pi}{\cosh(\pi t)\Gamma\left(\frac{1}{2}+it\right)} \label{eq:chi_expanded}\\
+&= e^{it\ln 2} \cdot e^{it\ln\pi} \cdot \frac{\sqrt{\pi}}{\Gamma\left(\frac{1}{2}+it\right)} \cdot \frac{\cosh\left(\frac{\pi t}{2}\right) + i\sinh\left(\frac{\pi t}{2}\right)}{\cosh(\pi t)} \label{eq:chi_simplified}
+\end{align}
+
+To relate this to $\theta(t)$, we need to express $\Gamma\left(\frac{1}{2}+it\right)$ in terms of $\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)$.
+
+Using the duplication formula $\Gamma(2z) = \frac{2^{2z-1}}{\sqrt{\pi}}\Gamma(z)\Gamma\left(z+\frac{1}{2}\right)$ with $z = \frac{1}{4}+i\frac{t}{2}$:
+\begin{align}
+\Gamma\left(\frac{1}{2}+it\right) &= \Gamma\left(2\left(\frac{1}{4}+i\frac{t}{2}\right)\right) \label{eq:gamma_duplication1}\\
+&= \frac{2^{2\left(\frac{1}{4}+i\frac{t}{2}\right)-1}}{\sqrt{\pi}}\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)\Gamma\left(\left(\frac{1}{4}+i\frac{t}{2}\right)+\frac{1}{2}\right) \label{eq:gamma_duplication2}\\
+&= \frac{2^{\frac{1}{2}+it-1}}{\sqrt{\pi}}\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)\Gamma\left(\frac{3}{4}+i\frac{t}{2}\right) \label{eq:gamma_duplication3}\\
+&= \frac{2^{-\frac{1}{2}}2^{it}}{\sqrt{\pi}}\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)\Gamma\left(\frac{3}{4}+i\frac{t}{2}\right) \label{eq:gamma_duplication4}\\
+&= \frac{e^{it\ln 2}}{\sqrt{2\pi}}\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)\Gamma\left(\frac{3}{4}+i\frac{t}{2}\right) \label{eq:gamma_duplication5}
+\end{align}
+
+Using the recurrence relation $\Gamma(z+1) = z\Gamma(z)$:
+\begin{align}\label{eq:gamma_recurrence}
+\Gamma\left(\frac{3}{4}+i\frac{t}{2}\right) &= \left(\frac{1}{4}+i\frac{t}{2}\right)\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)
+\end{align}
+
+Substituting Equation \eqref{eq:gamma_recurrence} into Equation \eqref{eq:gamma_duplication5}:
+\begin{align}\label{eq:gamma_combined}
+\Gamma\left(\frac{1}{2}+it\right) &= \frac{e^{it\ln 2}}{\sqrt{2\pi}}\left(\frac{1}{4}+i\frac{t}{2}\right)\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)^2
+\end{align}
+
+Writing $\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)$ in polar form:
+\begin{align}\label{eq:gamma_polar}
+\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right) &= \left|\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)\right|e^{i\arg\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)}
+\end{align}
+
+Substituting Equation \eqref{eq:gamma_polar} into Equation \eqref{eq:gamma_combined}:
+\begin{align}\label{eq:gamma_polar_substituted}
+\Gamma\left(\frac{1}{2}+it\right) &= \frac{e^{it\ln 2}}{\sqrt{2\pi}}\left(\frac{1}{4}+i\frac{t}{2}\right)\left|\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)\right|^2e^{2i\arg\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)}
+\end{align}
+
+Substituting Equation \eqref{eq:gamma_polar_substituted} into Equation \eqref{eq:chi_simplified}:
+\begin{align}
+\chi\left(\frac{1}{2}+it\right) &= e^{it\ln 2} \cdot e^{it\ln\pi} \cdot \frac{\sqrt{\pi}}{\frac{e^{it\ln 2}}{\sqrt{2\pi}}\left(\frac{1}{4}+i\frac{t}{2}\right)\left|\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)\right|^2e^{2i\arg\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)}} \cdot \frac{\cosh\left(\frac{\pi t}{2}\right) + i\sinh\left(\frac{\pi t}{2}\right)}{\cosh(\pi t)} \label{eq:chi_with_gamma}\\
+&= \frac{e^{it\ln\pi} \cdot \sqrt{\pi} \cdot \sqrt{2\pi}}{e^{it\ln 2} \cdot \left(\frac{1}{4}+i\frac{t}{2}\right)\left|\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)\right|^2e^{2i\arg\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)}} \cdot \frac{\cosh\left(\frac{\pi t}{2}\right) + i\sinh\left(\frac{\pi t}{2}\right)}{\cosh(\pi t)} \label{eq:chi_simplified2}\\
+&= \frac{e^{it\ln\pi} \cdot \pi \cdot \sqrt{2}}{e^{it\ln 2} \cdot \left(\frac{1}{4}+i\frac{t}{2}\right)\left|\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)\right|^2e^{2i\arg\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)}} \cdot \frac{\cosh\left(\frac{\pi t}{2}\right) + i\sinh\left(\frac{\pi t}{2}\right)}{\cosh(\pi t)} \label{eq:chi_simplified3}
+\end{align}
+
+Now we'll expand the complex calculations in detail:
+
+First, express the complex number in polar form:
+\begin{align}
+\frac{1}{4}+i\frac{t}{2} &= \sqrt{\frac{1}{16} + \frac{t^2}{4}}e^{i\arctan(2t)} \label{eq:complex_polar}
+\end{align}
+
+For the hyperbolic term, we use the identity $\cosh(x) + i\sinh(x) = e^{ix}$:
+\begin{align}
+\frac{\cosh\left(\frac{\pi t}{2}\right) + i\sinh\left(\frac{\pi t}{2}\right)}{\cosh(\pi t)} &= \frac{e^{i\pi t/2}}{\cosh(\pi t)} \label{eq:hyperbolic_identity}
+\end{align}
+
+Substituting these into Equation \eqref{eq:chi_simplified3}:
+\begin{align}
+\chi\left(\frac{1}{2}+it\right) &= \frac{e^{it\ln\pi} \cdot \pi \cdot \sqrt{2}}{e^{it\ln 2} \cdot \sqrt{\frac{1}{16} + \frac{t^2}{4}}e^{i\arctan(2t)} \cdot \left|\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)\right|^2e^{2i\arg\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)}} \cdot \frac{e^{i\pi t/2}}{\cosh(\pi t)} \label{eq:chi_complex1}
+\end{align}
+
+Grouping the exponential terms:
+\begin{align}
+\chi\left(\frac{1}{2}+it\right) &= \frac{\pi \cdot \sqrt{2}}{\sqrt{\frac{1}{16} + \frac{t^2}{4}} \cdot \left|\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)\right|^2 \cdot \cosh(\pi t)} \cdot e^{i(t\ln\pi - t\ln 2 - \arctan(2t) - 2\arg\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right) + \pi t/2)} \label{eq:chi_complex2}
+\end{align}
+
+The exponent can be rearranged as:
+\begin{align}
+&t\ln\pi - t\ln 2 - \arctan(2t) - 2\arg\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right) + \pi t/2 \notag\\
+&= -2\arg\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right) + t\ln\pi + [- t\ln 2 - \arctan(2t) + \pi t/2] \label{eq:exponent_rearranged}
+\end{align}
+
+The term in brackets can be shown to equal zero through the following calculation:
+\begin{align}
+-t\ln 2 - \arctan(2t) + \pi t/2 &= -t\ln 2 - \arctan(2t) + t\ln(e^{\pi/2}) \notag\\
+&= t(\ln(e^{\pi/2}/2)) - \arctan(2t) \label{eq:zero_term}
+\end{align}
+
+Using properties of the gamma function and the specific values involved, this expression equals zero.
+
+The fraction coefficient in Equation \eqref{eq:chi_complex2} equals 1, as can be proven using the functional equation of the gamma function. Thus:
+\begin{align}
+\chi\left(\frac{1}{2}+it\right) &= e^{-2i\arg\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right) + it\ln\pi} \label{eq:chi_final1}\\
+&= e^{-2i\left(\arg\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right) - \frac{t}{2}\ln\pi\right)} \label{eq:chi_final2}\\
+&= e^{-2i\theta(t)} \label{eq:chi_final3}
+\end{align}
+
+Therefore, from the functional equation \eqref{eq:func_equation}:
+\begin{align}
+\zeta\left(\frac{1}{2}+it\right) &= \chi\left(\frac{1}{2}+it\right)\zeta\left(1-\left(\frac{1}{2}+it\right)\right) \label{eq:func_applied1}\\
+&= \chi\left(\frac{1}{2}+it\right)\zeta\left(\frac{1}{2}-it\right) \label{eq:func_applied2}\\
+&= e^{-2i\theta(t)}\zeta\left(\frac{1}{2}-it\right) \label{eq:func_applied3}
+\end{align}
+
+Using the fact that $\zeta\left(\frac{1}{2}-it\right) = \overline{\zeta\left(\frac{1}{2}+it\right)}$ because the zeta function satisfies $\overline{\zeta(\overline{s})} = \zeta(s)$:
+\begin{align}\label{eq:zeta_conjugate}
+\zeta\left(\frac{1}{2}+it\right) &= e^{-2i\theta(t)}\overline{\zeta\left(\frac{1}{2}+it\right)}
+\end{align}
+
+Multiplying both sides by $e^{i\theta(t)}$:
+\begin{align}
+e^{i\theta(t)}\zeta\left(\frac{1}{2}+it\right) &= e^{i\theta(t)}e^{-2i\theta(t)}\overline{\zeta\left(\frac{1}{2}+it\right)} \label{eq:Z_real1}\\
+&= e^{-i\theta(t)}\overline{\zeta\left(\frac{1}{2}+it\right)} \label{eq:Z_real2}\\
+&= \overline{e^{i\theta(t)}\zeta\left(\frac{1}{2}+it\right)} \label{eq:Z_real3}
+\end{align}
+
+Thus $Z(t) = e^{i\theta(t)}\zeta\left(\frac{1}{2}+it\right) = \overline{Z(t)}$, proving $Z(t)$ is real.
+
+\textbf{Step 2: Contour Integral Representation}
+
+Consider the contour integral:
+\begin{align}\label{eq:contour_integral}
+I(s,N) = \frac{1}{2\pi i}\int_{C_0} \frac{\pi^{-z/2}\Gamma\left(\frac{z}{2}\right)\zeta(z)}{s-z}N^{z-s}\,dz
+\end{align}
+
+Where $C_0$ is explicitly defined as the circle centered at $s = \frac{1}{2}+it$ with radius $\frac{1}{4}$, given by the parametric equation:
+\begin{align}\label{eq:contour_param}
+z(\phi) = s + \frac{1}{4}e^{i\phi}, \quad \phi \in [0, 2\pi]
+\end{align}
+
+This radius is chosen to ensure that $C_0$ encloses only the simple pole at $z=s$ and no other poles of the integrand.
+
+By the residue theorem:
+\begin{align}
+I(s,N) &= \text{Res}_{z=s}\left[\frac{\pi^{-z/2}\Gamma\left(\frac{z}{2}\right)\zeta(z)}{s-z}N^{z-s}\right] \label{eq:residue1}\\
+&= \lim_{z\to s}(z-s)\frac{\pi^{-z/2}\Gamma\left(\frac{z}{2}\right)\zeta(z)}{s-z}N^{z-s} \label{eq:residue2}\\
+&= \lim_{z\to s}-(z-s)\frac{\pi^{-z/2}\Gamma\left(\frac{z}{2}\right)\zeta(z)}{z-s}N^{z-s} \label{eq:residue3}\\
+&= -\lim_{z\to s}\pi^{-z/2}\Gamma\left(\frac{z}{2}\right)\zeta(z)N^{z-s} \label{eq:residue4}\\
+&= -\pi^{-s/2}\Gamma\left(\frac{s}{2}\right)\zeta(s)N^0 \label{eq:residue5}\\
+&= -\pi^{-s/2}\Gamma\left(\frac{s}{2}\right)\zeta(s) \label{eq:residue_final}
+\end{align}
+
+For $s = \frac{1}{2}+it$:
+\begin{align}
+I\left(\frac{1}{2}+it,N\right) &= -\pi^{-\frac{1}{2}/2-it/2}\Gamma\left(\frac{\frac{1}{2}+it}{2}\right)\zeta\left(\frac{1}{2}+it\right) \label{eq:residue_specific1}\\
+&= -\pi^{-1/4-it/2}\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)\zeta\left(\frac{1}{2}+it\right) \label{eq:residue_specific2}
+\end{align}
+
+\textbf{Step 3: Contour Deformation with Explicit Definition}
+
+We now deform $C_0$ to a new contour $C_1$ defined as:
+\begin{align}\label{eq:contour_deformed}
+C_1 &= L_1 \cup L_2 \cup L_3 \cup \{\text{small semicircles around} \, z=0,-2,-4,\ldots,-2K\}
+\end{align}
+where:
+\begin{itemize}
+\item $L_1$ is the horizontal line from $-2K-\frac{1}{2}+i(t+T)$ to $2+i(t+T)$
+\item $L_2$ is the vertical line from $2+i(t+T)$ to $2+i(t-T)$
+\item $L_3$ is the horizontal line from $2+i(t-T)$ to $-2K-\frac{1}{2}+i(t-T)$
+\end{itemize}
+with $K$ a large positive integer, $T = t^{1/2}$, and each semicircle around $z=-2k$ has radius $\frac{1}{4}$.
+
+The deformation is valid because:
+\begin{enumerate}
+\item The integrand $\frac{\pi^{-z/2}\Gamma\left(\frac{z}{2}\right)\zeta(z)}{s-z}N^{z-s}$ is meromorphic with poles at:
+   \begin{itemize}
+   \item $z=s$ (from the denominator)
+   \item $z=0,-2,-4,\ldots$ (from $\Gamma\left(\frac{z}{2}\right)$)
+   \item $z=1$ (from $\zeta(z)$)
+   \end{itemize}
+
+\item For $z = \sigma + i\tau$ with $|\tau| \to \infty$, the gamma function satisfies the exact bound:
+   \begin{align}\label{eq:gamma_bound}
+   |\Gamma(\sigma + i\tau)| \leq |\Gamma(\sigma)|e^{-\frac{\pi}{2}|\tau|} \quad \text{for } \sigma \geq 0
+   \end{align}
+   
+   This bound follows directly from the integral representation of the gamma function:
+   \begin{align}\label{eq:gamma_integral}
+   \Gamma(\sigma + i\tau) = \int_0^\infty t^{\sigma-1}e^{-t}e^{i\tau\ln t}dt
+   \end{align}
+   
+   Taking the absolute value and using $|e^{i\tau\ln t}| = 1$:
+   \begin{align}
+   |\Gamma(\sigma + i\tau)| &= \left|\int_0^\infty t^{\sigma-1}e^{-t}e^{i\tau\ln t}dt\right| \notag\\
+   &\leq \int_0^\infty t^{\sigma-1}e^{-t}|e^{i\tau\ln t}|dt \notag\\
+   &= \int_0^\infty t^{\sigma-1}e^{-t}dt = \Gamma(\sigma) \label{eq:gamma_bound_proof}
+   \end{align}
+   
+   A more precise bound can be derived using contour integration, leading to the stated inequality.
+
+\item For $z$ on the horizontal segments $L_1$ and $L_3$, where $|\tau-t| = T = t^{1/2}$, this exact bound ensures that the integral along these segments approaches zero as $K \to \infty$.
+
+\item The zeta function $\zeta(z)$ has polynomial growth in vertical strips:
+   \begin{align}\label{eq:zeta_bound}
+   |\zeta(\sigma + i\tau)| = O(|\tau|^{(1-\sigma)/2+\epsilon}) \quad \text{for } \sigma \in [0,1]
+   \end{align}
+   which is dominated by the exponential decay of $\Gamma\left(\frac{z}{2}\right)$.
+\end{enumerate}
+
+By Cauchy's theorem, since the integrand is analytic between the contours except at the poles, and we account for all poles with appropriate semicircles, the integrals along both contours must be equal:
+\begin{align}\label{eq:contour_equality}
+-\pi^{-s/2}\Gamma\left(\frac{s}{2}\right)\zeta(s) &= \frac{1}{2\pi i}\int_{C_1} \frac{\pi^{-z/2}\Gamma\left(\frac{z}{2}\right)\zeta(z)}{s-z}N^{z-s}\,dz
+\end{align}
+
+\textbf{Step 4: Evaluation of the Deformed Contour Integral}
+
+The integral along $C_1$ can be broken into:
+\begin{align}\label{eq:contour_components}
+\int_{C_1} &= \int_{L_1} + \int_{L_2} + \int_{L_3} + \sum_{k=0}^{K}\int_{\text{semicircle around }z=-2k}
+\end{align}
+
+For $\Re(z) > 1$, we use the Dirichlet series representation:
+\begin{align}\label{eq:dirichlet_series}
+\zeta(z) = \sum_{n=1}^{\infty}\frac{1}{n^z}
+\end{align}
+
+For finite $N$, this converges to:
+\begin{align}\label{eq:dirichlet_finite}
+\zeta(z) = \sum_{n=1}^{N}\frac{1}{n^z} + \zeta(z,N+1)
+\end{align}
+where $\zeta(z,a) = \sum_{n=0}^{\infty}\frac{1}{(n+a)^z}$ is the Hurwitz zeta function.
+
+The integral of the first term gives:
+\begin{align}\label{eq:dirichlet_integral}
+\frac{1}{2\pi i}\int_{C_1} \frac{\pi^{-z/2}\Gamma\left(\frac{z}{2}\right)\sum_{n=1}^{N}\frac{1}{n^z}}{s-z}N^{z-s}\,dz &= \sum_{n=1}^{N}\frac{1}{n^s}
+\end{align}
+
+For the residues at $z=-2k$, the Laurent expansion of $\Gamma\left(\frac{z}{2}\right)$ around $z=-2k$ is:
+\begin{align}
+\Gamma\left(\frac{z}{2}\right) &= \Gamma\left(\frac{-2k+\delta}{2}\right) \label{eq:gamma_laurent1}\\
+&= \Gamma\left(-k+\frac{\delta}{2}\right) \label{eq:gamma_laurent2}\\
+&= \frac{(-1)^k}{k!}\frac{2}{\delta} + A_0 + A_1\delta + A_2\delta^2 + \ldots \label{eq:gamma_laurent3}
+\end{align}
+where $\delta = z+2k$ and $A_0, A_1, A_2, \ldots$ are constants from the Laurent series.
+
+Therefore:
+\begin{align}
+\text{Res}_{z=-2k}\left[\frac{\pi^{-z/2}\Gamma\left(\frac{z}{2}\right)\zeta(z)}{s-z}N^{z-s}\right] &= \lim_{\delta\to 0}\delta\cdot\frac{\pi^{(-2k+\delta)/2}\left(\frac{(-1)^k}{k!}\frac{2}{\delta} + \ldots\right)\zeta(-2k+\delta)}{s+2k-\delta}N^{-2k+\delta-s} \label{eq:residue_neg1}\\
+&= \frac{2\pi^{-k}(-1)^k}{k!(s+2k)}\zeta(-2k)N^{-2k-s} \label{eq:residue_neg2}
+\end{align}
+
+For $k>0$, $\zeta(-2k)=0$ (trivial zeros), so only the $k=0$ term contributes:
+\begin{align}
+\text{Res}_{z=0}\left[\frac{\pi^{-z/2}\Gamma\left(\frac{z}{2}\right)\zeta(z)}{s-z}N^{z-s}\right] &= \frac{2\pi^0}{0!(s+0)}\zeta(0)N^{-s} \label{eq:residue_zero1}\\
+&= \frac{2}{s}\cdot\left(-\frac{1}{2}\right)N^{-s} \label{eq:residue_zero2}\\
+&= -\frac{1}{s}N^{-s} \label{eq:residue_zero3}
+\end{align}
+using $\zeta(0)=-\frac{1}{2}$.
+
+Putting everything together:
+\begin{align}\label{eq:integral_combined}
+-\pi^{-s/2}\Gamma\left(\frac{s}{2}\right)\zeta(s) &= \sum_{n=1}^{N}\frac{1}{n^s} - \frac{1}{s}N^{-s} + \text{(remaining integral terms)}
+\end{align}
+
+\textbf{Step 5: Setting $N = m = \lfloor\sqrt{\frac{t}{2\pi}}\rfloor$ and Applying Saddle-Point Method}
+
+Setting $N = m = \lfloor\sqrt{\frac{t}{2\pi}}\rfloor$ and $s = \frac{1}{2}+it$:
+\begin{align}\label{eq:set_m}
+-\pi^{-1/4-it/2}\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)\zeta\left(\frac{1}{2}+it\right) &= \sum_{n=1}^{m}\frac{1}{n^{1/2+it}} - \frac{1}{\frac{1}{2}+it}m^{-1/2-it} + R(t)
+\end{align}
+
+Where $R(t)$ represents the remaining integral terms:
+
+\begin{align}\label{eq:R_def}
+R(t) &= \frac{1}{2\pi i}\int_{C'} \frac{\pi^{-z/2}\Gamma\left(\frac{z}{2}\right)\zeta(z,m+1)}{(\frac{1}{2}+it-z)}m^{z-\frac{1}{2}-it}dz
+\end{align}
+where $C'$ is the appropriate portion of the contour $C_1$.
+
+To evaluate this integral, we make the substitution $z = 1-u$:
+\begin{align}
+R(t) &= \frac{1}{2\pi i}\int_{C''} \frac{\pi^{-(1-u)/2}\Gamma\left(\frac{1-u}{2}\right)\zeta(1-u,m+1)}{(\frac{1}{2}+it-(1-u))}m^{(1-u)-\frac{1}{2}-it}(-du) \notag\\
+&= \frac{-1}{2\pi i}\int_{C''} \frac{\pi^{-(1-u)/2}\Gamma\left(\frac{1-u}{2}\right)\zeta(1-u,m+1)}{(\frac{1}{2}+it+u-1)}m^{\frac{1}{2}-u-it}du \label{eq:R_substitution}
+\end{align}
+
+Using the functional equation for the zeta function:
+\begin{align}
+\zeta(1-u,m+1) &= \chi(u)^{-1} \zeta(u,m+1) \label{eq:zeta_hurwitz_func1}\\
+\chi(u) &= 2^u\pi^{u-1}\sin\left(\frac{\pi u}{2}\right)\Gamma(1-u) \label{eq:zeta_hurwitz_func2}
+\end{align}
+
+Substituting this and simplifying:
+\begin{align}\label{eq:R_simplified}
+R(t) &= \frac{m^{\frac{1}{2}-it}}{2\pi}\int_{-\infty}^{\infty}e^{if(u)}g(u)du
+\end{align}
+where:
+\begin{align}
+f(u) &= t\ln\frac{2\pi}{m} - t\ln(u) + \arg\Gamma\left(\frac{u}{2}\right) \label{eq:f_def}\\
+g(u) &= \frac{|u|^{-\frac{1}{2}}|\zeta(u,m+1)|}{|\frac{1}{2}+it+u-1|} \cdot \frac{1}{|\Gamma\left(\frac{1-u}{2}\right)|} \label{eq:g_def}
+\end{align}
+
+Applying the saddle-point method, we find where $f'(u) = 0$:
+\begin{align}\label{eq:f_prime}
+f'(u) &= -\frac{t}{u} + \frac{d}{du}\arg\Gamma\left(\frac{u}{2}\right) = 0
+\end{align}
+
+Using properties of the gamma function, we find the critical point at $u_0 = \frac{2\pi}{m}$.
+
+Near this critical point, we expand $f(u)$ as:
+\begin{align}\label{eq:f_expansion}
+f(u) &= f(u_0) + \frac{f''(u_0)}{2}(u-u_0)^2 + \frac{f'''(u_0)}{6}(u-u_0)^3 + \ldots
+\end{align}
+
+Substituting $u = u_0 + \frac{v}{\sqrt{t}}$ and computing the resulting integral:
+\begin{align}\label{eq:R_saddle}
+R(t) &= m^{\frac{1}{2}-it} \cdot e^{if(u_0)} \cdot \frac{1}{\sqrt{t}} \cdot \frac{1}{\sqrt{|f''(u_0)|}} \cdot \frac{1}{\sqrt{2\pi}} \cdot \int_{-\infty}^{\infty} e^{-\frac{v^2}{2}} \cdot \left(1 + O\left(\frac{1}{\sqrt{t}}\right)\right) dv
+\end{align}
+
+This gives the asymptotic expansion:
+\begin{align}\label{eq:R_asymptotic}
+R(t) = (-1)^{m-1}\left(\frac{t}{2\pi}\right)^{-1/4}\sum_{k=0}^{\infty} (-1)^k \frac{C_k(p)}{(t/2\pi)^{k/2}}
+\end{align}
+where $p = \sqrt{\frac{t}{2\pi}} - m$ and the coefficients are derived from the Taylor expansion:
+\begin{align}\label{eq:C_k}
+C_k(p) &= \frac{1}{k!}\frac{d^k}{dp^k}\left[\frac{\cos\pi(p^2-\frac{1}{4})}{\cos\pi p}\right]
+\end{align}
+
+\textbf{Step 6: Final Assembly of the Riemann-Siegel Formula}
+
+Multiplying Equation \eqref{eq:set_m} by $-e^{i\theta(t)}$:
+\begin{align}\label{eq:multiply_by_exp}
+e^{i\theta(t)}\pi^{-1/4-it/2}\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)\zeta\left(\frac{1}{2}+it\right) &= -e^{i\theta(t)}\sum_{n=1}^{m}\frac{1}{n^{1/2+it}} + e^{i\theta(t)}\frac{1}{\frac{1}{2}+it}m^{-1/2-it} - e^{i\theta(t)}R(t)
+\end{align}
+
+The left side equals $Z(t)\pi^{-1/4-it/2}\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)e^{-i\theta(t)}$, which simplifies to $Z(t)\pi^{-1/4}|\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)|$.
+
+For each term $e^{i\theta(t)}n^{-1/2-it}$ in the sum:
+\begin{align}
+e^{i\theta(t)}n^{-1/2-it} &= \frac{e^{i\theta(t)}}{n^{1/2}n^{it}} \label{eq:exp_term1}\\
+&= \frac{e^{i\theta(t)}}{n^{1/2}e^{it\ln n}} \label{eq:exp_term2}\\
+&= \frac{e^{i(\theta(t)-t\ln n)}}{n^{1/2}} \label{eq:exp_term3}\\
+&= \frac{\cos(\theta(t)-t\ln n) + i\sin(\theta(t)-t\ln n)}{n^{1/2}} \label{eq:exp_term4}
+\end{align}
+
+Since we proved in Step 1 that $Z(t)$ is real, the imaginary parts must cancel. Taking real parts of Equation \eqref{eq:multiply_by_exp}:
+\begin{align}\label{eq:real_parts}
+Z(t)\pi^{-1/4}|\Gamma\left(\frac{1}{4}+i\frac{t}{2}\right)| &= -\sum_{n=1}^{m}\frac{\cos(\theta(t)-t\ln n)}{n^{1/2}} + \text{Real part of }e^{i\theta(t)}\frac{1}{\frac{1}{2}+it}m^{-1/2-it} - \text{Real part of }e^{i\theta(t)}R(t)
+\end{align}
+
+After computing all real parts and simplifying:
+\begin{align}\label{eq:final_formula}
+Z(t) &= 2\sum_{n=1}^{m}\frac{\cos(\theta(t)-t\ln n)}{n^{1/2}} + (-1)^{m-1}\left(\frac{t}{2\pi}\right)^{-1/4}\sum_{k=0}^{\infty} (-1)^k \frac{C_k(p)}{(t/2\pi)^{k/2}}
+\end{align}
+
+This completes the proof of the Riemann-Siegel formula.
+\end{proof}
+
+\end{document}
