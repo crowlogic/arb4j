@@ -18,6 +18,14 @@ public class RealTest extends
                       TestCase
 {
 
+  public void testLogGamma()
+  {
+    Real x      = new Real("8.7",
+                           128);
+    Real result = x.logΓ(128, new Real());
+    System.out.format("lnGammma(%s)=%s\n", x, result);
+  }
+
   public static void testResize()
   {
     try ( Real x = Real.valueOf("3.4", 128); var origx = x.copy();)
