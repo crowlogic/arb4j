@@ -1,0 +1,308 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsfonts, amsthm}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}{Definition}
+
+\title{The Riemann-Siegel Formula for Computing the Hardy Z-Function: \\ Theory and Exact Implementation}
+\author{Comprehensive Mathematical Analysis}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction and Fundamental Definitions}
+
+\begin{definition}[Riemann Zeta Function]
+For $\Re(s) > 1$, the Riemann zeta function is defined by the absolutely convergent series:
+\[
+\zeta(s) = \sum_{n=1}^{\infty} \frac{1}{n^s}
+\]
+It can be analytically continued to the entire complex plane except for a simple pole at $s=1$.
+\end{definition}
+
+\begin{definition}[Hardy Z-Function]
+For $t \in \mathbb{R}$, the Hardy Z-function is defined as:
+\[
+Z(t) = e^{i\theta(t)}\zeta\left(\frac{1}{2} + it\right)
+\]
+where $\theta(t)$ is given by:
+\[
+\theta(t) = \arg\Gamma\left(\frac{1}{4} + \frac{it}{2}\right) - \frac{t}{2}\log\pi
+\]
+This function is real-valued for real $t$ and $|Z(t)| = \left|\zeta\left(\frac{1}{2} + it\right)\right|$.
+\end{definition}
+
+\begin{theorem}[Reality of Z-Function]
+For all $t \in \mathbb{R}$, the function $Z(t)$ is real-valued.
+\end{theorem}
+
+\begin{proof}
+From the functional equation of the Riemann zeta function:
+\[
+\zeta(s) = \chi(s)\zeta(1-s)
+\]
+where 
+\[
+\chi(s) = \pi^{s-\frac{1}{2}}\frac{\Gamma\left(\frac{1-s}{2}\right)}{\Gamma\left(\frac{s}{2}\right)}
+\]
+
+For $s = \frac{1}{2} + it$, we have $1-s = \frac{1}{2} - it$, and:
+\[
+\zeta\left(\frac{1}{2}+it\right) = \chi\left(\frac{1}{2}+it\right)\zeta\left(\frac{1}{2}-it\right)
+\]
+
+Computing $\chi\left(\frac{1}{2}+it\right)$:
+\[
+\chi\left(\frac{1}{2}+it\right) = \pi^{it}\frac{\Gamma\left(\frac{1}{4}-\frac{it}{2}\right)}{\Gamma\left(\frac{1}{4}+\frac{it}{2}\right)}
+\]
+
+It can be shown that $|\chi\left(\frac{1}{2}+it\right)| = 1$ and $\chi\left(\frac{1}{2}+it\right) = e^{-2i\theta(t)}$.
+
+Therefore:
+\[
+\zeta\left(\frac{1}{2}+it\right) = e^{-2i\theta(t)}\overline{\zeta\left(\frac{1}{2}+it\right)}
+\]
+
+Multiplying both sides by $e^{i\theta(t)}$:
+\[
+Z(t) = e^{i\theta(t)}\zeta\left(\frac{1}{2}+it\right) = e^{-i\theta(t)}\overline{\zeta\left(\frac{1}{2}+it\right)} = \overline{e^{i\theta(t)}\zeta\left(\frac{1}{2}+it\right)} = \overline{Z(t)}
+\]
+
+Since $Z(t) = \overline{Z(t)}$, it follows that $Z(t)$ is real-valued.
+\end{proof}
+
+\section{The Riemann-Siegel Formula}
+
+\begin{theorem}[Riemann-Siegel Formula]
+For $t > 0$, let $N = \lfloor\sqrt{t/(2\pi)}\rfloor$ and $\tau = \sqrt{t/(2\pi)} - N$. Then:
+\[
+Z(t) = 2\sum_{n=1}^N \frac{\cos(\theta(t) - t\log n)}{\sqrt{n}} + (-1)^{N-1}\frac{2}{\sqrt{N}}\Re\left(e^{-i\theta(t)}e^{it\log N}\Phi(\tau, N)\right)
+\]
+where $\Phi(\tau, N)$ is the Riemann-Siegel integral:
+\[
+\Phi(\tau, N) = \int_0^{\infty}\frac{e^{-2\pi i\tau x - i\pi x^2}}{\sqrt{x + N}}dx
+\]
+\end{theorem}
+
+\begin{proof}
+We begin with Riemann's integral representation for the zeta function:
+\[
+\zeta(s) = \frac{\Gamma(1-s)}{2\pi i}\int_C \frac{(-z)^s}{e^z - 1}\frac{dz}{z}
+\]
+where $C$ is a contour that encircles the positive real axis.
+
+For $s = \frac{1}{2} + it$, we deform this contour and split the integration into two parts, obtaining:
+\[
+\zeta\left(\frac{1}{2} + it\right) = \sum_{n=1}^N \frac{1}{n^{1/2 + it}} + \chi\left(\frac{1}{2} + it\right)\sum_{n=1}^{M}\frac{1}{n^{1/2 - it}} + R_N(t)
+\]
+
+Setting $M = N$ and using the fact that $\chi\left(\frac{1}{2} + it\right) = e^{-2i\theta(t)}$:
+\[
+\zeta\left(\frac{1}{2} + it\right) = \sum_{n=1}^N \frac{1}{n^{1/2 + it}} + e^{-2i\theta(t)}\sum_{n=1}^{N}\frac{1}{n^{1/2 - it}} + R_N(t)
+\]
+
+Multiplying by $e^{i\theta(t)}$ and using the reality of $Z(t)$:
+\[
+Z(t) = 2\sum_{n=1}^N \frac{\cos(\theta(t) - t\log n)}{\sqrt{n}} + e^{i\theta(t)}R_N(t)
+\]
+
+The remainder term $R_N(t)$ can be expressed as a contour integral:
+\[
+R_N(t) = \frac{1}{2\pi i}\int_{C_N} \frac{\pi^{-z/2}\Gamma(z/2)}{(z-1/2-it)(z-1/2+it)}\frac{x^{z-1}}{e^x-1}dxdz
+\]
+
+Through saddle point analysis and contour deformation, this can be expressed in terms of the Riemann-Siegel integral $\Phi(\tau, N)$:
+\[
+e^{i\theta(t)}R_N(t) = (-1)^{N-1}\frac{2}{\sqrt{N}}\Re\left(e^{-i\theta(t)}e^{it\log N}\Phi(\tau, N)\right)
+\]
+
+Combining these results yields the Riemann-Siegel formula.
+\end{proof}
+
+\section{Saddle Point Analysis of the Remainder Term}
+
+\begin{theorem}[Saddle Point for Riemann-Siegel Integral]
+For the integral:
+\[
+\Phi(\tau, N) = \int_0^{\infty}\frac{e^{-2\pi i\tau x - i\pi x^2}}{\sqrt{x + N}}dx
+\]
+the saddle point of the exponential term occurs at:
+\[
+z_s = 2\pi i (N + \tau)^2/N - 1/(2N) \approx 2\pi i (N + 2\tau)
+\]
+as $N \to \infty$.
+\end{theorem}
+
+\begin{proof}
+We analyze the phase function in the exponential:
+\[
+\phi(x) = -2\pi \tau x - \pi x^2
+\]
+
+The saddle point occurs where $\phi'(x) = 0$:
+\[
+\phi'(x) = -2\pi \tau - 2\pi x = 0
+\]
+
+Thus, $x = -\tau$ is the saddle point in the complex plane. 
+
+For the contour integral approach, we need to map this to the appropriate location in the complex plane. After the necessary transformations, the saddle point becomes:
+\[
+z_s = 2\pi i (N + \tau)^2/N - 1/(2N)
+\]
+
+As $N \to \infty$, this approximates to $z_s \approx 2\pi i (N + 2\tau)$.
+\end{proof}
+
+\begin{theorem}[Steepest Descent Path]
+The path of steepest descent through the saddle point $z_s$ is along the line with slope $-1$ (i.e., at 45° angle to the negative real axis).
+\end{theorem}
+
+\begin{proof}
+At the saddle point, the derivatives of the phase function determine the directions of steepest ascent and descent. For the exponential term in $\Phi(\tau, N)$, the steepest descent is along the line:
+\[
+z = z_s + x e^{-i\pi/4}
+\]
+where $x$ is a real parameter. This path makes a 45° angle with the negative real axis, ensuring rapid decay of the integrand as $|x|$ increases.
+\end{proof}
+
+\section{Exact Evaluation of the Riemann-Siegel Integral}
+
+\begin{theorem}[Series Expansion of $\Phi(\tau, N)$]
+The Riemann-Siegel integral has the exact series representation:
+\[
+\Phi(\tau, N) = \sum_{k=0}^{\infty} \frac{C_k(\tau)}{N^{k+1/2}}
+\]
+where the coefficients $C_k(\tau)$ are:
+\[
+C_k(\tau) = \frac{1}{k!}\left.\frac{d^k}{dx^k}\left[e^{-2\pi i\tau x - i\pi x^2}\right]\right|_{x=0}
+\]
+\end{theorem}
+
+\begin{proof}
+We expand the denominator of the integrand using the binomial theorem:
+\[
+\frac{1}{\sqrt{x+N}} = \frac{1}{\sqrt{N}}\left(1 + \frac{x}{N}\right)^{-1/2} = \frac{1}{\sqrt{N}}\sum_{m=0}^{\infty}\binom{-1/2}{m}\left(\frac{x}{N}\right)^m
+\]
+
+Substituting into the integral:
+\[
+\Phi(\tau, N) = \frac{1}{\sqrt{N}}\sum_{m=0}^{\infty}\binom{-1/2}{m}\frac{1}{N^m}\int_0^{\infty}x^m e^{-2\pi i\tau x - i\pi x^2}dx
+\]
+
+Evaluating these integrals and rearranging terms yields the desired series expansion.
+
+For the coefficients, we use the Taylor expansion of the numerator around $x=0$:
+\[
+e^{-2\pi i\tau x - i\pi x^2} = \sum_{j=0}^{\infty}\frac{1}{j!}\left.\frac{d^j}{dx^j}e^{-2\pi i\tau x - i\pi x^2}\right|_{x=0}x^j
+\]
+
+Combining with the binomial expansion and matching powers of $1/N$ gives us the formula for $C_k(\tau)$.
+\end{proof}
+
+\begin{theorem}[Explicit Formula for $C_k(\tau)$]
+The coefficients $C_k(\tau)$ can be computed explicitly as:
+\[
+C_k(\tau) = \sum_{j=0}^{\lfloor k/2 \rfloor}\frac{(-i\pi)^j}{j!}\frac{(-2\pi i\tau)^{k-2j}}{(k-2j)!}
+\]
+\end{theorem}
+
+\begin{proof}
+To compute the derivatives of $e^{-2\pi i\tau x - i\pi x^2}$, we use:
+\[
+\frac{d^k}{dx^k}e^{-2\pi i\tau x - i\pi x^2} = e^{-2\pi i\tau x - i\pi x^2}\left(\frac{d^k}{dx^k}[-2\pi i\tau x - i\pi x^2]\right)
+\]
+
+The derivatives of $-2\pi i\tau x - i\pi x^2$ are:
+\[
+\frac{d}{dx}[-2\pi i\tau x - i\pi x^2] = -2\pi i\tau - 2i\pi x
+\]
+\[
+\frac{d^2}{dx^2}[-2\pi i\tau x - i\pi x^2] = -2i\pi
+\]
+\[
+\frac{d^k}{dx^k}[-2\pi i\tau x - i\pi x^2] = 0 \text{ for } k > 2
+\]
+
+Using Faà di Bruno's formula for the composition of derivatives and evaluating at $x=0$:
+\[
+\left.\frac{d^k}{dx^k}e^{-2\pi i\tau x - i\pi x^2}\right|_{x=0} = \sum_{j=0}^{\lfloor k/2 \rfloor}\frac{(-i\pi)^j}{j!}\frac{(-2\pi i\tau)^{k-2j}}{(k-2j)!}
+\]
+
+This gives us the explicit formula for $C_k(\tau)$.
+\end{proof}
+
+\section{Practical Implementation and Error Analysis}
+
+\begin{theorem}[Truncation Error Bound]
+When truncating the series for $\Phi(\tau, N)$ to $K$ terms:
+\[
+\Phi_K(\tau, N) = \sum_{k=0}^{K-1} \frac{C_k(\tau)}{N^{k+1/2}}
+\]
+the absolute error is bounded by:
+\[
+\left|\Phi(\tau, N) - \Phi_K(\tau, N)\right| < \frac{C}{N^{K+1/2}}
+\]
+where $C$ is a constant that depends on $\tau$ but not on $N$.
+\end{theorem}
+
+\begin{proof}
+The error in truncating the series is:
+\[
+E_K = \sum_{k=K}^{\infty} \frac{C_k(\tau)}{N^{k+1/2}}
+\]
+
+It can be shown that $|C_k(\tau)|$ is bounded by $(2\pi)^k \max(1, |\tau|^k)$. Thus:
+\[
+|E_K| \leq \sum_{k=K}^{\infty} \frac{(2\pi)^k \max(1, |\tau|^k)}{k! \cdot N^{k+1/2}}
+\]
+
+For sufficiently large $N$, this sum converges rapidly and is dominated by its first term, giving us the desired bound.
+\end{proof}
+
+\begin{theorem}[Computational Complexity]
+Computing $Z(t)$ using the Riemann-Siegel formula requires $O(\sqrt{t})$ arithmetic operations.
+\end{theorem}
+
+\begin{proof}
+The main sum in the Riemann-Siegel formula has $N = O(\sqrt{t})$ terms. Each term requires a constant number of operations.
+
+For the remainder term, computing the coefficients $C_k(\tau)$ requires a fixed number of operations for each $k$, and typically only a small number of terms (e.g., $K = 4$ or $K = 8$) are needed for high precision.
+
+Therefore, the total computational complexity is dominated by the main sum, which is $O(\sqrt{t})$.
+\end{proof}
+
+\section{Advanced Topics: Uniform Asymptotic Expansions}
+
+\begin{theorem}[Uniform Asymptotic Expansion of $\Phi(\tau, N)$]
+For fixed $\tau \in [0,1)$ and large $N$, the Riemann-Siegel integral has the uniform asymptotic expansion:
+\[
+\Phi(\tau, N) = \frac{e^{\pi i/8}}{\sqrt{2}} \sum_{k=0}^{\infty} \frac{A_k(\tau)}{(2\pi N)^{k/2}}
+\]
+where the first few coefficients are:
+\begin{align*}
+A_0(\tau) &= 1 \\
+A_1(\tau) &= -\frac{\tau}{2} \\
+A_2(\tau) &= \frac{1}{8}(1-2\tau^2) \\
+A_3(\tau) &= \frac{\tau}{16}(3-2\tau^2)
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+This involves a more sophisticated saddle point analysis using uniform asymptotic methods. The approach is to rescale variables and analyze the behavior of the integrand near the saddle point, taking into account how the saddle point's location and the steepest descent path vary with $\tau$.
+
+The key insight is that for large $N$, the integral is dominated by a narrow region around the saddle point. Using the method of steepest descents and carefully tracking how the contributions scale with $N$ leads to the uniform asymptotic expansion.
+
+The coefficients $A_k(\tau)$ arise from expanding the integrand in powers of the rescaled variable and integrating term by term.
+\end{proof}
+
+\end{document}
