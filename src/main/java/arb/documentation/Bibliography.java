@@ -22,6 +22,15 @@ public class Bibliography extends
                           AbstractBibliography
 {
 
+  public static Article       strongHarmonizableProcessLargeNumberLaw     =
+                                                                                          new Article("On the strong law of large numbers for harmonizable stochastic processes",
+                                                                                                      "Akio Arimoto",
+                                                                                                      "1972",
+                                                                                                      "Keio engineering reports",
+                                                                                                      "25",
+                                                                                                      "101-111").setNumber("8")
+                                                                                                                .setPublisher("Keio University Faculty of Engineering");
+
   public static Article       compactCovarianceOperators                                      =
                                                          new Article("Compact Covariance Operators",
                                                                      "Charles R. Baker and Ian W. McKeague",
