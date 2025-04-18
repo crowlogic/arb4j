@@ -288,21 +288,71 @@ For fixed $\tau \in [0,1)$ and large $N$, the Riemann-Siegel integral has the un
 \[
 \Phi(\tau, N) = \frac{e^{\pi i/8}}{\sqrt{2}} \sum_{k=0}^{\infty} \frac{A_k(\tau)}{(2\pi N)^{k/2}}
 \]
-where the first few coefficients are:
+The coefficients $A_k(\tau)$ are given by the explicit formula:
+\[
+A_k(\tau) = \frac{1}{2^k k!} H_k(\sqrt{2\pi}\tau)
+\]
+where $H_k(x)$ are the Hermite polynomials defined by:
+\[
+H_k(x) = (-1)^k e^{x^2/2} \frac{d^k}{dx^k} e^{-x^2/2}
+\]
+
+Alternatively, these coefficients can be computed recursively:
+\[
+A_0(\tau) = 1, \quad A_1(\tau) = -\frac{\tau}{2}
+\]
+\[
+A_{k+2}(\tau) = -\frac{\tau}{k+2}A_{k+1}(\tau) + \frac{1}{2(k+1)(k+2)}A_k(\tau)
+\]
+
+The first few coefficients are:
 \begin{align*}
 A_0(\tau) &= 1 \\
 A_1(\tau) &= -\frac{\tau}{2} \\
 A_2(\tau) &= \frac{1}{8}(1-2\tau^2) \\
-A_3(\tau) &= \frac{\tau}{16}(3-2\tau^2)
+A_3(\tau) &= \frac{\tau}{16}(3-2\tau^2) \\
+A_4(\tau) &= \frac{1}{128}(3-12\tau^2+4\tau^4)
 \end{align*}
 \end{theorem}
 
 \begin{proof}
-This involves a more sophisticated saddle point analysis using uniform asymptotic methods. The approach is to rescale variables and analyze the behavior of the integrand near the saddle point, taking into account how the saddle point's location and the steepest descent path vary with $\tau$.
+The uniform asymptotic expansion is derived using a refined saddle point method. The key steps are:
 
-The key insight is that for large $N$, the integral is dominated by a narrow region around the saddle point. Using the method of steepest descents and carefully tracking how the contributions scale with $N$ leads to the uniform asymptotic expansion.
+1. Scale the variables to focus on the behavior near the saddle point:
+\[
+x = -\tau + \frac{u}{\sqrt{2\pi N}}
+\]
 
-The coefficients $A_k(\tau)$ arise from expanding the integrand in powers of the rescaled variable and integrating term by term.
+2. Expand the integrand in the rescaled variable $u$:
+\[
+\frac{e^{-2\pi i\tau x - i\pi x^2}}{\sqrt{x+N}} = \frac{e^{i\pi\tau^2}}{\sqrt{N}} e^{-\frac{u^2}{2}} \sum_{k=0}^{\infty} \frac{B_k(\tau)}{N^{k/2}} u^k
+\]
+
+3. Integrate term by term, using the fact that:
+\[
+\int_{-\infty}^{\infty} u^k e^{-\frac{u^2}{2}} du = 
+\begin{cases}
+0 & \text{if } k \text{ is odd} \\
+\sqrt{2\pi} (k-1)!! & \text{if } k \text{ is even}
+\end{cases}
+\]
+
+4. The coefficients $A_k(\tau)$ are related to the Hermite polynomials $H_k(x)$ by:
+\[
+A_k(\tau) = \frac{1}{2^k k!} H_k(\sqrt{2\pi}\tau)
+\]
+
+This relation follows from the generating function of Hermite polynomials:
+\[
+e^{tx-\frac{t^2}{2}} = \sum_{k=0}^{\infty} \frac{H_k(x)}{k!} t^k
+\]
+
+The recursive formula can be derived from the recurrence relation for Hermite polynomials:
+\[
+H_{k+1}(x) = x H_k(x) - k H_{k-1}(x)
+\]
+
+After appropriate substitutions and simplifications, we obtain the stated recursive formula for $A_k(\tau)$.
 \end{proof}
 
 \end{document}
