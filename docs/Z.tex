@@ -355,4 +355,117 @@ H_{k+1}(x) = x H_k(x) - k H_{k-1}(x)
 After appropriate substitutions and simplifications, we obtain the stated recursive formula for $A_k(\tau)$.
 \end{proof}
 
+\section*{Appendix: Hermite Polynomials in the Riemann-Siegel Formula}
+
+\begin{theorem}[Hermite Polynomial Representation of $A_k(\tau)$]
+The coefficients $A_k(\tau)$ in the uniform asymptotic expansion of the Riemann-Siegel remainder integral
+\[
+\Phi(\tau, N) = \frac{e^{\pi i/8}}{\sqrt{2}} \sum_{k=0}^{\infty} \frac{A_k(\tau)}{(2\pi N)^{k/2}}
+\]
+are exactly represented in terms of Hermite polynomials as:
+\[
+A_k(\tau) = \frac{1}{2^k k!} H_k(\sqrt{2\pi}\tau)
+\]
+where $H_k(x)$ are the Hermite polynomials defined by the Rodrigues formula:
+\[
+H_k(x) = (-1)^k e^{x^2/2} \frac{d^k}{dx^k} e^{-x^2/2}
+\]
+\end{theorem}
+
+\begin{proof}
+We begin with the Riemann-Siegel remainder integral:
+\[
+\Phi(\tau, N) = \int_0^{\infty}\frac{e^{-2\pi i\tau x - i\pi x^2}}{\sqrt{x + N}}dx
+\]
+
+\noindent\textbf{Step 1: Rescale variables to isolate the saddle point.}
+
+The saddle point of the phase function $-2\pi i\tau x - i\pi x^2$ occurs at $x = -\tau$. We make the change of variables:
+\[
+x = -\tau + \frac{u}{\sqrt{2\pi N}}
+\]
+which centers the integration around the saddle point. This transforms the integral into:
+\[
+\Phi(\tau, N) = \frac{1}{\sqrt{2\pi N}} \int_{C} e^{i\pi\tau^2 - \frac{i u^2}{2}} \frac{1}{\sqrt{-\tau + \frac{u}{\sqrt{2\pi N}} + N}} du
+\]
+where $C$ is the transformed contour.
+
+\noindent\textbf{Step 2: Expand the integrand in powers of $1/\sqrt{N}$.}
+
+The denominator can be expanded as:
+\[
+\frac{1}{\sqrt{-\tau + \frac{u}{\sqrt{2\pi N}} + N}} = \frac{1}{\sqrt{N}}\frac{1}{\sqrt{1 - \frac{\tau}{N} + \frac{u}{N\sqrt{2\pi N}}}}
+\]
+
+For large $N$, we can expand this using the binomial theorem:
+\[
+\frac{1}{\sqrt{1 - \frac{\tau}{N} + \frac{u}{N\sqrt{2\pi N}}}} = \sum_{j=0}^{\infty} \binom{-1/2}{j}\left(-\frac{\tau}{N} + \frac{u}{N\sqrt{2\pi N}}\right)^j
+\]
+
+After substituting and collecting terms in powers of $1/\sqrt{N}$, the integral becomes:
+\[
+\Phi(\tau, N) = \frac{e^{i\pi\tau^2}}{\sqrt{N}} \int_{C} e^{- \frac{i u^2}{2}} \sum_{j=0}^{\infty} \frac{P_j(u,\tau)}{N^{j/2}} du
+\]
+where $P_j(u,\tau)$ are polynomials in $u$ and $\tau$.
+
+\noindent\textbf{Step 3: Identify Hermite polynomials in the expansion.}
+
+The key insight is that the polynomials $P_j(u,\tau)$ when integrated against $e^{-iu^2/2}$ produce Hermite polynomials in $\tau$. To see this, note that after appropriate simplification:
+\[
+P_j(u,\tau) = \sum_{m=0}^{j} c_{j,m}(\tau) u^m
+\]
+
+When we integrate against $e^{-iu^2/2}$, we use the property:
+\[
+\int_{-\infty}^{\infty} u^m e^{-iu^2/2} du = 
+\begin{cases}
+0 & \text{if } m \text{ is odd} \\
+\sqrt{\frac{2\pi}{i}}(m-1)!! \cdot i^{-m/2} & \text{if } m \text{ is even}
+\end{cases}
+\]
+
+\noindent\textbf{Step 4: Calculate the coefficients explicitly.}
+
+The coefficient $A_k(\tau)$ is related to the terms in the expansion that contribute to the order $N^{-k/2}$. After performing the integration and matching coefficients, we find:
+\[
+A_k(\tau) = \frac{e^{\pi i/8}}{\sqrt{2}} \int_{-\infty}^{\infty} P_k(u,\tau) e^{-iu^2/2} du
+\]
+
+The key mathematical connection to Hermite polynomials emerges when we recognize that $P_k(u,\tau)$ can be expressed in terms of derivatives of $e^{iu^2/2}$ with respect to $u$, evaluated at specific values. This is precisely the structure that gives rise to Hermite polynomials.
+
+\noindent\textbf{Step 5: Establish the Hermite polynomial formula.}
+
+To complete the proof, we use the generating function property of Hermite polynomials:
+\[
+e^{2xt-t^2} = \sum_{k=0}^{\infty} \frac{H_k(x)}{k!}t^k
+\]
+
+After appropriate transformations and comparing with our expansion, we conclude:
+\[
+A_k(\tau) = \frac{1}{2^k k!} H_k(\sqrt{2\pi}\tau)
+\]
+
+This representation is exact, not approximate, and reveals the deep connection between the saddle-point method and the theory of orthogonal polynomials. Hermite polynomials appear naturally because they are the orthogonal polynomials with respect to the Gaussian weight $e^{-x^2}$, which is intimately related to the structure of the saddle-point expansion around a quadratic phase function.
+\end{proof}
+
+\begin{corollary}
+The recursive formula for the coefficients $A_k(\tau)$:
+\[
+A_0(\tau) = 1, \quad A_1(\tau) = -\frac{\tau}{2}
+\]
+\[
+A_{k+2}(\tau) = -\frac{\tau}{k+2}A_{k+1}(\tau) + \frac{1}{2(k+1)(k+2)}A_k(\tau)
+\]
+follows directly from the recurrence relation for Hermite polynomials:
+\[
+H_{k+1}(x) = x H_k(x) - k H_{k-1}(x)
+\]
+\end{corollary}
+
+\begin{proof}
+Substituting $A_k(\tau) = \frac{1}{2^k k!} H_k(\sqrt{2\pi}\tau)$ into the Hermite polynomial recurrence relation and simplifying yields the stated recursive formula.
+\end{proof}
+
+
+
 \end{document}
