@@ -39,7 +39,7 @@ public class Bibliography extends
                                                                      "83",
                                                                      null).setNumber("3");
 
-  public static Article       kuzelArticle                                                    =
+  public static Article       naimarkDilationTheoremRemarks                                                    =
                                            new Article("Remarks on Naimark dilation theorem",
                                                        "Sergiusz Kuźel",
                                                        "2024",
