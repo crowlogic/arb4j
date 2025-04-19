@@ -203,8 +203,11 @@ public class FunctionPlotter extends
   public void show()
   {
     assert stage != null : "stage is null";
-    Platform.runLater(() -> stage.show());
-    toFront();
+    Platform.runLater(() ->
+    {
+      stage.show();
+      toFront();
+    });
   }
 
   public void toFront()
