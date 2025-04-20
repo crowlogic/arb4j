@@ -100,7 +100,10 @@ public class WindowManager
 
   public static void setMoreConduciveStyle(Scene scene)
   {
-    scene.getStylesheets().add(convertStylesheetToDataURI(MORE_CONDUCIVE_STYLESHEET));
+    Platform.runLater(() ->
+    {
+      scene.getStylesheets().add(convertStylesheetToDataURI(MORE_CONDUCIVE_STYLESHEET));
+    });
   }
 
   private static XDO    xdo;
