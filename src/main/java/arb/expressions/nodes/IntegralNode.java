@@ -252,8 +252,12 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     return mv;
   }
 
+  /**
+   * 
+   */
   private void computeIndefiniteIntegral()
   {
+    System.out.println("computeIndefiniteIntegral");
     assert integralFunction == null;
     integralNode                            =
                  (Node<Object, Object, Function<?, ?>>) integrandNode.integrate(integrationVariableNode.asVariable());
