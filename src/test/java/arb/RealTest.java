@@ -23,7 +23,7 @@ public class RealTest extends
     Real x      = new Real("8.7",
                            128);
     Real result = x.logΓ(128, new Real());
-    System.out.format("lnGammma(%s)=%s\n", x, result);
+    assertEquals(9.967761685128642593213111179011761191, result.doubleValue());
   }
 
   public static void testResize()

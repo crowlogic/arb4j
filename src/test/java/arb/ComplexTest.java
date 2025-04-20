@@ -23,6 +23,15 @@ public class ComplexTest extends
 
   static final int prec = 256;
 
+
+  public void testLogGamma()
+  {
+    Complex x      = new Complex("8.7",
+                           128);
+    Complex result = x.logΓ(128, new Complex());
+    assertEquals(9.967761685128642593213111179011761191, result.re().doubleValue());
+    assertTrue( result.im().isZero() );
+  }
   
   public static void testNormalize()
   {
