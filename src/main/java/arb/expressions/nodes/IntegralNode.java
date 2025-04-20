@@ -124,7 +124,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   public FunctionMapping<?, ?, ?> integralMapping;
 
   /**
-   * The syntax to express a definate integral is<br>
+   * The syntax to express a definite integral is<br>
    * <br>
    * 
    * <pre>
@@ -133,7 +133,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
    * 
    * </pre>
    * 
-   * The syntax to express an indefinate integral is<br>
+   * The syntax to express an indefinite integral is<br>
    * <br>
    * 
    * <pre>
@@ -231,8 +231,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       expression.initializers.addAll(integralNode.expression.initializers);
       expression.context.mergeFrom(integralNode.expression.context);
       integralNode.generate(mv, resultType);
-    //  assert false : "wtf";
-
     }
     else
     {
@@ -257,10 +255,9 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
    */
   private void computeIndefiniteIntegral()
   {
-    System.out.println("computeIndefiniteIntegral");
     assert integralFunction == null;
-    integralNode                            =
-                 (Node<Object, Object, Function<?, ?>>) integrandNode.integrate(integrationVariableNode.asVariable());
+    integralNode = (Node<Object, Object, Function<?, ?>>) integrandNode.integrate(integrationVariableNode.asVariable());
+    System.out.println("computeIndefiniteIntegral: indefiniteIntegral=" + integralNode);
 
     integralExpression                      = integralNode.expression.cloneExpression();
     integralExpression.instructionByteCodes = null;
