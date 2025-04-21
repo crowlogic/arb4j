@@ -130,7 +130,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
           expression);
     this.functionName = functionName;
     assignFunctionName();
-    generatedType = resultTypeFor(this.functionName);
     if (this.expression.context != null)
     {
       mapping    = (FunctionMapping<D, R, F>) this.expression.context.functions.map.get(functionName);
@@ -138,7 +137,12 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       if (contextual)
       {
         expression.referencedFunctions.put(functionName, mapping);
+        generatedType = mapping.coDomain;
       }
+    }
+    else
+    {
+      generatedType = resultTypeFor(this.functionName);
     }
     if (functionName.equals(expression.functionName))
     {
@@ -187,9 +191,12 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   private void designateAsRecursiveFunction(Class<?> resultType)
   {
-    contextual           = true;
-    mapping              = new FunctionMapping<>();
-    generatedType        = resultType;
+    contextual = true;
+    mapping    = new FunctionMapping<>();
+    if (generatedType == null)
+    {
+      generatedType = resultType;
+    }
     mapping.coDomain     = generatedType;
     mapping.domain       = getDomainType();
     mapping.functionName = functionName;
@@ -199,12 +206,12 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    var argDerivative      = arg.differentiate(variable);
-    
-    var functionDerivative = differentiateFunction();
+    var           argDerivative      = arg.differentiate(variable);
 
-    Node<D, R, F> derivative = functionDerivative.mul(argDerivative);
-    
+    var           functionDerivative = differentiateFunction();
+
+    Node<D, R, F> derivative         = functionDerivative.mul(argDerivative);
+
     return derivative;
   }
 
@@ -257,11 +264,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   private Node<D, R, F> differentiateContextualFunction()
   {
-
-    FunctionMapping<Object, Object,
-                  Function<? extends Object,
-                                ? extends Object>> functionMapping =
-                                                                   expression.context.getFunctionMapping(functionName);
+    var functionMapping = expression.context.getFunctionMapping(functionName);
 
     if (functionMapping == null)
     {
@@ -275,15 +278,13 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                 functionMapping));
     }
 
-    var                      derivative                   = instance.derivative();
-    
-    FunctionMapping<?, ?, ?> newDerivativeFunctionMapping =
-                                                          expression.context.registerFunctionMapping("diff"
-                                                                                                     + functionName,
-                                                                                                     derivative,
-                                                                                                     derivative.domainType(),
-                                                                                                     derivative.coDomainType());
-      
+    var derivative                   = instance.derivative();
+
+    var newDerivativeFunctionMapping = expression.context.registerFunctionMapping("diff" + functionName,
+                                                                                  derivative,
+                                                                                  derivative.domainType(),
+                                                                                  derivative.coDomainType());
+
     return new FunctionNode<D, R, F>(expression,
                                      newDerivativeFunctionMapping,
                                      arg);
@@ -292,10 +293,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   private Node<D, R, F> integrateContextualFunction()
   {
-    FunctionMapping<Object, Object,
-                  Function<? extends Object,
-                                ? extends Object>> functionMapping =
-                                                                   expression.context.getFunctionMapping(functionName);
+    var functionMapping = expression.context.getFunctionMapping(functionName);
 
     if (functionMapping == null)
     {
@@ -309,12 +307,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                 functionMapping));
     }
 
-    var                      integral                   = instance.integral();
-    FunctionMapping<?, ?, ?> newIntegralFunctionMapping =
-                                                        expression.context.registerFunctionMapping("int" + functionName,
-                                                                                                   integral,
-                                                                                                   functionMapping.domain,
-                                                                                                   functionMapping.coDomain);
+    var integral                   = instance.integral();
+    var newIntegralFunctionMapping = expression.context.registerFunctionMapping("int" + functionName,
+                                                                                integral,
+                                                                                functionMapping.domain,
+                                                                                functionMapping.coDomain);
     return new FunctionNode<D, R, F>(expression,
                                      newIntegralFunctionMapping,
                                      arg);
@@ -566,12 +563,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     Class<? extends Object> argType = arg.type();
 
-    Class<?>                retType = null;
-
     switch (functionName)
     {
     case "gamma":
     case "Γ":
+    case "lnΓ":
       return Compiler.scalarType(arg.type());
     case "sqrt":
       return Integer.class.equals(expression.coDomainType) ? Real.class : Compiler.scalarType(expression.coDomainType);
@@ -591,18 +587,20 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                   && integerFunctionsWithRealResults.contains(functionName))
                   || (argType.equals(Complex.class) && complexFunctionsWithRealResults.contains(functionName)))
     {
-      retType = Compiler.scalarType(expression.coDomainType);
+      return Compiler.scalarType(expression.coDomainType);
     }
     else if (Complex.class.equals(expression.domainType) && complexFunctionsWithComplexResults.contains(functionName))
     {
       return Complex.class;
     }
+    else if (mapping != null && mapping.functionName.equals(functionName))
+    {
+      return mapping.coDomain;
+    }
     else
     {
-      retType = expression.coDomainType;
+      return expression.coDomainType;
     }
-
-    return retType;
   }
 
   @Override
