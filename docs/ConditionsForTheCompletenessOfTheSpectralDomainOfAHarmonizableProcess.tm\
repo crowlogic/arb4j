@@ -1,0 +1,111 @@
+Conditions for the completeness of the spectral domain of a harmonizable process
+
+by Roland Averkamp
+
+Institut für Mathematische Stochastik, Albert-Ludwigs Universität Freiburg, Eckerstrasse 1, 79104 Freiburg, Germany
+
+Tel.: 49/761/203 5672; fax: 49/761/203 5661
+
+Email: averkamp@pollux.mathematik.uni-freiburg.de
+
+
+Received 11 September 1995; received in revised form 23 June 1997
+
+
+Abstract 
+We generalize a theorem of Köthe and Toeplitz on unconditional bases in Hilbert spaces to Hilbert space-valued measures. This leads to a necessary and sufficient condition for the completeness of the spectral domain of a weakly harmonizable process whose shift operator exists and is invertible. A process in this class has a complete spectral domain if and only if it is the image of a stationary process under a topological isomorphism. (C) 1997 Elsevier Science B.V.
+Keywords: Weakly harmonizable process; Bimeasure; Completeness of spectral domain; Shift operator
+Table of contents 
+1. Introduction   1
+Theorem (Drewsnowski)   4
+2. A condition for the completeness of the spectral domain   5
+3. The shift operator condition   6
+Acknowledgements   7
+References   7
+1. Introduction 
+Let L_0^2(P) denote the zero mean square integrable functions on some probability space. The stochastic processes in this paper are either discrete time (T=ℤ) or continuous time (T=ℝ) and they are subsets of L_0^2(P). Let T^=Π≔ℝ/2*π*ℤ=(-π,π] if T=ℤ and T^=ℝ if T=ℝ, and let 𝔹 denote the Borel σ-field of either Π or ℝ.
+Recall that a process (X_t)_(t∈T) is weakly stationary if its covariance function admits the representation
+Cov(X_s,X_t)=int_(T^)e^(i*λ*s)(e^(i*λ*t))¯ μ*(d*λ), s,t∈T  (1)
+where μ is a finite positive measure on T^.
+Harmonizable processes are an extension which allow also for these Fourier methods. A stochastic process (X_t)_(t∈T) is called strongly harmonizable if its covariance function admits the representation
+Cov(X_s,X_t)=int_(T^)int_(T^)e^(i*s*λ)(e^(i*t*λ'))¯ β(d*λ,d*λ'), ∀s,t∈T  (2)
+for some measure β on 𝔹⊗𝔹. These processes were introduced by Loève (1948) and Cramér (1951). An important example of strongly harmonizable processes are the periodically correlated discrete time processes (Hurd, 1989, 1991; Dehay, 1994). In this case, the mass of β is concentrated on lines parallel to the diagonal {(λ,λ),λ∈T^} of T^×T^. However, the class of strongly harmonizable processes is still not large enough for some applications. For example, it is not closed under linear transformations. A wider extension of stationary processes are the weakly harmonizable processes. These processes have the same covariance representation as strongly harmonizable processes, but the conditions on β are relaxed. β is not necessarily a measure, but can be a bimeasure (i.e., β is a mapping β:𝔹×𝔹→ℂ and β(⋅,A),β(A,⋅) are measures for all A∈𝔹), which is positive definite (i.e., β(A,B)=(β(B,A))¯ and sum_(i,j)a_i*β(A_i,A_j)(a_j)¯≥0 for all A_i∈𝔹,a_i∈ℂ). β is called the spectral bimeasure of the process. The class of weakly harmonizable processes is closed under linear transformations. Indeed, another characterization of weakly harmonizability is that these processes are coordinatewise images of stationary processes under linear mappings (Niemi, 1975, 1977). In general, bimeasures cannot be extended to measures on T^⊗T^, so the integral above is not a Lebesgue integral, but a strict integral in the sense of Morse and Transue (Chang and Rao, 1986).
+Let f,g:T^→ℂ be measurable and β a bimeasure on 𝔹×𝔹. (f,g) is strictly β-integrable, if
+1.f is β(⋅,A)-integrable, g is β(A,⋅)-integrable for all A∈𝔹. If this holds, then β_1^E:A↦int_Ef(x)*β(d*x,A) and β_2^F:A↦int_Fg(y)*β(A,d*y) are measures for all E,F∈Σ (Houdré, 1987, Lemma 2).
+2.f is β_2^F-integrable and g is β_1^E-integrable for all E,F∈𝔹.
+One defines now
+int_Eint_F^∗(f,g)* d*β≔int_Ef(x)*β_2^F*(d*x)=int_Fg(y)*β_1^E*(d*y)  (3)
+The equality of the integrals holds by Houdré (1987, Theorem 4). If β is a measure on 𝔹⊗𝔹 and f,g are bounded, then this integral is equal to the usual Lebesgue integral, i.e., int_Eint_Ff(x)*g(y)*β(d*x,d*y).
+For a positive-definite bimeasure β define
+L_∗^2(β)≔{f:(f,f¯)*is strict β-integrable}  (4)
+the spectral domain of β. This is a pre-Hilbert space with the inner product
+(f,g)_β≔iint^∗(f,g¯)* d*β  (5)
+(cf. Chang and Rao, 1986).
+Now let (X_t)_(t∈T) be a weakly harmonizable process with spectral bimeasure β. As for a stationary process, (X_t)_(t∈T) has an integral representation
+X_t=int_(T^)e^(i*λ*t)*Z*(d*λ)  (6)
+where Z is a stochastic measure (i.e., L_0^2(P)-valued) and the integral is in the sense of Dunford-Schwartz (1960, IV.10). Z is called the stochastic spectral measure of (X_t)_(t∈T). It is related to the spectral bimeasure by
+β(A,B)=E(Z(A) (Z(B))¯)  (7)
+L_∗^2(β)=L^1(Z)  (8)
+and
+Cov(intf* d*Z,intg* d*Z)=iint^∗(f,g¯)* d*β  (9)
+(Chang and Rao, 1986). We then say that β is induced by Z.
+It is well-known that
+H_Z≔(sp{Z(A),A∈𝔹})¯=(sp{int_(T^)e^(i*t⋅)*d*Z, t∈T})¯  (10)
+Indeed, stochastic measures on T^ are regular (Dunford and Schwartz, 1960, IV.10.5) and hence the set of integrals of continuous functions is dense in H_Z. The assertion now follows from the fact that continuous functions can be approximated uniformly on compact sets by trigonometric polynomials (Naimark, 1959, p. 406, Corollary 4).
+As we have already seen, the mapping
+V:L_∗^2(β)→H_Z, f↦intf* d*Z  (11)
+is an isometry. It is easy to see that V is surjective if and only if L_∗^2(β) is complete. Thus, the spectral domain and the time domain of the process are isometrically isomorphic if and only if the spectral domain is complete.
+One of the reasons to introduce weakly harmonizable processes was to retain the powerful Fourier methods of the stationary processes, so that, for example, extrapolation and interpolation can be carried out in the spectral domain of the process, using again the methods of Fourier analysis. But the transition from the spectral domain to the time domain of a process can only be made in full generality if the spectral domain is complete.
+Cramér, who defined the spectral domain, raised the problem of the completeness of this spectral domain: “the set Λ_2(ρ) will have all the properties of Hilbert space, except possibly the completeness property” (Cramér, 1951).
+The following result due to Rao (Rao, 1989, p. 605, Proposition 3.2) gives a sufficient condition for the completeness of the spectral domain of a weakly harmonizable process (with T=ℝ or ℤ): Let β be a positive-definite bimeasure on 𝔹×𝔹. Then L_∗^2(β) is complete if there is a positive finite measure μ on 𝔹 and a continuous linear mapping W:L^2(μ)→L^2(μ) with closed range such that L^2(μ)⊂L_∗^2(β) and
+iint^∗(f,g¯)* d*β=intW(f)(W(g))¯ d*μ, ∀f,g∈L^2(μ)  (12)
+This is always true for some μ and some W, but the range may not be closed. If L^2(μ)=L_∗^2(β), the closed range condition is necessary. The closed range condition is clearly satisfied if there are constants C,c>0 such that
+C‖f‖_(μ,2)≥‖f‖_β≥c‖f‖_(μ,2), ∀f∈L^2(μ)  (13)
+Theorem 1. 1.‖f‖_Z≔sup_(|g|≤|f|)|intg* d*Z|, f∈L^1(Z), is a norm on L^1(Z). This norm is equivalent to the norm
+‖‖*f‖‖≔sup_(A∈Σ)|int_Af* d*Z|≥1/4‖f‖_Z  (14)
+2.(L^1(Z),‖⋅‖_Z) is a Banach space.
+3.If f_n,f∈L^1(Z) for all n∈ℕ and lim_(n→∞)‖f-f_n‖_Z=0, then (f_n)_(n∈ℕ) converges to f in Z-measure (i.e., for all ε>0, lim_(n→∞)‖Z‖({|f_n-f|>ε})=0). Hence any subsequence of (f_n)_(n∈ℕ) contains a subsequence converging Z-almost everywhere to f.
+2. A condition for the completeness of the spectral domain 
+Theorem 1. Let ‖⋅‖_β=0 be equivalent to ‖⋅‖_Z=0. Then the following statements are equivalent:
+1.L_∗^2(β) is complete.
+2.There exists K>0 such that for all f∈L^1(Z),
+K‖f‖_β≥‖f‖_Z  (15)
+3.There exists a positive finite measure μ and constants c,C>0 such that L^2(μ)=L^1(Z)=L_∗^2(β) and
+C‖⋅‖_(μ,2)≥‖⋅‖_β≥c‖⋅‖_(μ,2)  (16)
+Let |f|_Z≔inf_(|h|=|f|)‖inth* d*Z‖=inf_(|h|=|f|)‖h‖_β. For f,g∈L^1(Z) and f*g=0,
+‖f+g‖_Z^2 =sup_(|f'|≤|f|,|g'|≤|g|) sup_(α∈ℂ,|α|=1)[(α*f',α*f')_β+(g',g')_β+2Re(α*f',g')_β] (17)
+          ≥sup_(|f'|≤|f|,|g'|≤|g|)[(f',f')_β+(g',g')_β] (18)
+          =‖f‖_Z^2+‖g‖_Z^2 (19)
+
+and in a similar way |f+g|_Z^2≤|f|_Z^2+|g|_Z^2.
+Define
+μ(A)≔sup {sum_i|1_(A_i)|_Z^2 ; (A_i)*finite measurable partition of A}  (20)
+For a simple function f,
+|f|_Z^2≤‖f‖_(μ,2)^2≤‖f‖_Z^2  (21)
+If K>0 such that K‖⋅‖_β≥‖⋅‖_Z, then for all f∈L^1(Z),
+K|f|_Z=K*inf_(|g|=|f|)‖g‖_β≥inf_(|g|=|f|)‖g‖_Z=‖f‖_Z  (22)
+Hence, the norms ‖⋅‖_(μ,2) and ‖⋅‖_Z are equivalent for the simple functions and thus for all of L^1(Z)=L^2(μ).
+Let Z^ be the orthogonally scattered Hilbert space valued measure with
+‖Z^(A)‖^2=μ(A), L^1(Z^)=L^2(μ)  (23)
+and
+(intf* d*Z^,intg* d*Z^)=intf*g¯* d*μ, ∀f,g∈L^2(μ)  (24)
+Let (x_i)_(i∈ℕ) be a normed sequence in some Hilbert space, and Z the measure on ℕ with Z({i})=x_i/i^2, i∈ℕ. Then (a_i)_(i∈ℕ)∈L^1(Z) if and only if sum_(i=1)^∞a_i*x_i=int_ℕa* d*Z is unconditionally convergent. Theorem 1 thus generalizes the theorem of Köthe and Toeplitz, which states that if (x_n)_(n∈ℕ) is a normed unconditional base of a Hilbert space, then there exist constants c,C>0 such that
+c*sum_(i=1)^n|a_i|^2≤|sum_(i=1)^na_i*x_i|^2≤C*sum_(i=1)^n|a_i|^2, a_i∈ℂ, i=1,…,n∈ℕ  (25)
+3. The shift operator condition 
+Theorem 2. Let (X_t)_(t∈ℤ) be a weakly harmonizable process with spectral bimeasure β and stochastic spectral measure Z.
+Then the following are equivalent:
+1.‖⋅‖_β=0 is equivalent to ‖⋅‖_Z=0
+2.The shift operator S:L_∗^2(β)→L_∗^2(β), S(f)≔exp (i*⋅)*f is a well-defined invertible linear mapping, i.e., ‖f‖_β=0⇔‖exp (i⋅)f‖_β=0
+Proof. (1) ⇒ (2): This follows immediately from ‖f*e^(i⋅)‖_Z=‖f‖_Z.
+(2) ⇒ (1): Let ‖f‖_β=0. There is A∈𝔹 such that ‖f‖_Z≤5*‖f*1_A‖_β. Since ‖Z‖ is regular, there exist trigonometric polynomials (p_n)_(n∈ℕ) with ‖p_n‖_∞≤2 for all n∈ℕ, such that lim_(n→∞)‖p_n-1_A‖_Z=0. By dominated convergence, lim_(k→∞) intp_(n_k)*f* d*Z=int_Af* d*Z for some subsequence. If p=sum_(j=-m)^ma_j*e^(i*j⋅),
+|intp*f* d*Z|=‖p*f‖_β≤sum_(j=-m)^m|a_j|‖S^j(f)‖_β=0  (26)
+Hence 0=5‖int_Af* d*Z‖≥‖f‖_Z.
+Remark A sufficient condition for the existence of an invertible shift operator S of the spectral domain is the existence of an invertible shift operator S^ of the time domain H_X≔sp{X_t,t∈ℤ}, i.e., a continuous linear and invertible mapping S^:H_X→H_X with S^(X_t)=X_(t+1) for all t. Indeed, it is sufficient to show that
+S^(intf* d*Z)=intS(f)* d*Z, ∀f∈L^1(Z)  (27)
+If (X_t)_(t∈ℤ) is a weakly harmonizable process whose spectral domain is complete and the shift operator S exists and is invertible, then by the last two theorems the operators S^k,k∈ℤ, are uniformly bounded.
+The following theorem, due to Nagy (1948), gives an affirmative answer (see also Truong-Van, 1981).
+Theorem (Nagy) Let (X_t)_(t∈ℤ) be a stochastic process, and let S be the shift operator of the process (i.e., S is a linear continuous mapping on the time domain of (X_t)_(t∈ℤ), S(X_t)=X_(t+1) for all t). If S is invertible and moreover the mappings S^k,k∈ℤ, are uniformly bounded (in the operator norm), then (X_t)_(t∈ℤ) is weakly harmonizable and there exists a finite positive measure μ, such that ‖⋅‖_(μ,2) and ‖⋅‖_β are equivalent, where β is the spectral bimeasure of (X_t)_(t∈ℤ). Hence L_∗^2(β) is complete.
+Acknowledgements 
+The author would like to thank C. Houdré, J. Kallsen and the anonymous referee for their valuable advice on the composition of this paper.
+References 
+Chang, D.K., Rao, M.M., 1986. Bimeasures and nonstationary processes. In: Rao, M.M. (Ed.), Real and Stochastic Analysis. Wiley, New York, pp. 7-118.Cramér, H. 1951. A Contribution to the theory of stochastic processes. In: Proc. 2nd Berkeley Symp. Math. Statist. and Prob., University of California, Berkeley, CA, pp. 329-339.Dehay, D., 1994. Spectral analysis of the covariance of the almost periodically correlated processes. Stochastic Processes Appl. 50 (2), 315-330.Drewsnowski, L., 1974a. On control submeasures and measures. Stud. Math. 50, 203-224.Drewsnowski, L., 1974b. On Subseries Convergence in some function spaces. Bull. Académie Polonaise Sci. Série Sci. Math. Astronom. Phys. 22, 797-803.Dunford, N., Schwartz, J.T., 1960. Linear operators, Part 1: General Theory. Wiley Interscience, New York.Houdré, C., 1987. A vector bimeasure integral with some applications. Technical Report 214, Center for Stochastic Processes, Univ. North Carolina.Houdré, C., 1991. On the linear prediction of multivariate (2, p)-bounded processes. Ann. Probab. 19 (2), 843-867.Hurd, H.L., 1989. Representation of strongly harmonizable periodically correlated processes and their covariances. J. Multivariate Anal. 29 (1), 53-67.Hurd, H.L., 1991. Correlation theory of almost periodically correlated processes. J. Multivariate Anal. 37 (1), 24-25.Kwapien, S., Woycyński, W.A., 1992. Random series and stochastic integrals: single and multiple. Birkhäuser, Boston.Loève, M., 1948. Fonctions aléatoires du second ordre. In: P. Lévy (Ed.), Processus Stochastiques et Mouvement Brownien. Guthier-Villars, Paris.Mehlmann, M., 1991. Structure and moving average representation for multidimensional strongly harmonizable processes. Stochastic Anal. Appl. 9 (3), 323-361.Miamee, A.G., Salehi, H., 1991. An example of a harmonizable process whose spectral domain is not complete. Scandinavian J. Statist. 18, 249-254.Miamee, A.G., Schröder, B.S.W., 1995. On completeness of the spectral domain of harmonizable processes. Probab. Theory Related Fields 101, 303-309.Michálek, J., Rüschendorf, L., 1994. A remark on the spectral domain of nonstationary processes. Stochastic Processes Appl. 53 (1), 55-64.Naimark, M.A., 1959. Normed Rings. P. Noordhof, Ltd. Groningen, Niederlands.Niemi, H., 1975. On stationary dilations and the linear prediction of certain stochastic processes. Soc. Sci. Fenn. Comment. Phys.-Math. 45, 111-130.Niemi, H., 1977. On orthogonally scattered dilations of bounded vector measures. Ann. Acad. Sci. Fenn. Ser. AI Math. 593, 43-52.Nikolskii, N.K., 1986. Treatise on the Shiftoperator. Springer, Berlin.Rao, M.M., 1989a. Bimeasures and harmonizable processes (analysis, classification, and representation). In: Probability Theory on Groups IX, Proc. 9th Conf., Oberwolfach, 1988. Lecture Notes in Math., vol. 1379. Springer, Berlin, pp. 254-298.Rao, M.M., 1989b. A view on harmonizable processes. In: Statistical Data Analysis and Inference, Pap. Int. Conf., Neuchatel, Switzerland, pp. 597-615.Rozanov, Y.A., 1967. Stationary Random Processes. Holden-Day Inc., San Francisco.de Sz. Nagy, B., 1948. On uniformly bounded linear transformations in Hilbert space, Acta Sci. Math. XI. Acta Universitatis Szegediensis, pp. 152-157.Truong-Van, B., 1981. Une généralisation du théorème de Kolmogorov-Aronszajn Processus V-bornés q-dimensionnels: domaine spectral & dilatations stationnaires. Ann. Inst. Henri Poincaré XVII (1), 31-49.
