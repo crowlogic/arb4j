@@ -1,6 +1,6 @@
 <TMU|<tuple|1.0.5|1.2.9.7>>
 
-<style|generic>
+<style|<tuple|generic|framed-theorems>>
 
 <\body>
   \;
@@ -108,6 +108,7 @@
 
 <\initial>
   <\collection>
+    <associate|magnification|1.4>
     <associate|page-medium|paper>
     <associate|page-screen-margin|false>
   </collection>
