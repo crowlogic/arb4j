@@ -104,11 +104,11 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   String                                             dvar;
 
-  private Expression<Object, Object, Function<?, ?>> integralExpression;
+  Expression<Object, Object, Function<?, ?>> integralExpression;
 
-  private Node<Object, Object, Function<?, ?>>       integralNode;
+  Node<Object, Object, Function<?, ?>>       integralNode;
 
-  private String                                     upperIntegralValueFieldName;
+  String                                     upperIntegralValueFieldName;
 
   public IntegralNode(Expression<D, C, F> expression)
   {
