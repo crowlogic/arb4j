@@ -143,7 +143,7 @@
   as follows:
 
   <\equation>
-    <label|eq:q1-p1-def><tabular|<tformat|<table|<row|<cell|D<around*|(|Q<rsub|1>|)>=<around*|{|\<phi\>\<in\><with|math-font|cal*|H><rsub|1>:x*\<phi\><around|(|x|)>\<in\><with|math-font|cal*|H><rsub|1>|}>,<space|1em>>|<cell|Q<rsub|1>*\<phi\><around|(|x|)>=x*\<phi\><around|(|x|)>>>|<row|<cell|D<around*|(|P<rsub|1>|)>=<around*|{|\<phi\>\<in\>H<rsub|1>:\<phi\><around|(|0|)>=\<phi\><around|(|1|)>,\<phi\><rprime|'>\<in\><with|math-font|cal*|F><rsub|1>|}>>|<cell|P<rsub|1>*\<phi\><around|(|x|)>=-i*\<phi\><rprime|'><around|(|x|)>>>>>>
+    <label|eq:q1-p1-def><tabular|<tformat|<table|<row|<cell|D<around*|(|Q<rsub|1>|)>=<around*|{|\<phi\>\<in\><with|math-font|cal*|H><rsub|1>:x*\<phi\><around|(|x|)>\<in\><with|math-font|cal*|H><rsub|1>|}><space|1em>>|<cell|Q<rsub|1>*\<phi\><around|(|x|)>=x*\<phi\><around|(|x|)>>>|<row|<cell|D<around*|(|P<rsub|1>|)>=<around*|{|\<phi\>\<in\>H<rsub|1>:\<phi\><around|(|0|)>=\<phi\><around|(|1|)>,\<phi\><rprime|'>\<in\><with|math-font|cal*|F><rsub|1>|}>>|<cell|P<rsub|1>*\<phi\><around|(|x|)>=-i*\<phi\><rprime|'><around|(|x|)>>>>>>
   </equation>
 
   Then it is easy to see that

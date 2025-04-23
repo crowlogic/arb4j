@@ -12,7 +12,12 @@ import arb.functions.real.RealFunction;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.plugins.*;
+import io.fair_acc.chartfx.plugins.ColormapSelector;
+import io.fair_acc.chartfx.plugins.DataPointTooltip;
+import io.fair_acc.chartfx.plugins.EditAxis;
+import io.fair_acc.chartfx.plugins.Screenshot;
+import io.fair_acc.chartfx.plugins.TableViewer;
+import io.fair_acc.chartfx.plugins.Zoomer;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -45,9 +50,16 @@ public class FunctionPlotter extends
   public final XYChart      chart     = new XYChart(xAxis,
                                                     yAxis);
 
+  boolean                   closed    = false;
+
   @Override
   public void close()
   {
+    if (closed)
+    {
+      return;
+    }
+    closed = true;
     super.close();
     Platform.runLater(stage::close);
   }
