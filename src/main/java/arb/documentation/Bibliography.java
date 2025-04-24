@@ -22,14 +22,22 @@ public class Bibliography extends
                           AbstractBibliography
 {
 
-  public static Article       strongHarmonizableProcessLargeNumberLaw     =
-                                                                                          new Article("On the strong law of large numbers for harmonizable stochastic processes",
-                                                                                                      "Akio Arimoto",
-                                                                                                      "1972",
-                                                                                                      "Keio engineering reports",
-                                                                                                      "25",
-                                                                                                      "101-111").setNumber("8")
-                                                                                                                .setPublisher("Keio University Faculty of Engineering");
+  public static Article       strongLargeNumberLawForSecondOrderStationaryProcesses           =
+                                                                                    new Article("On Conditions for the Strong Law of Large Numbers to be Applicable to Second Order Stationary Processes",
+                                                                                                "I. N. Verbitskaya",
+                                                                                                "1964",
+                                                                                                "Theory of Probability & Its Applications",
+                                                                                                "9",
+                                                                                                "325-331").setNumber("2");
+
+  public static Article       strongHarmonizableProcessLargeNumberLaw                         =
+                                                                      new Article("On the strong law of large numbers for harmonizable stochastic processes",
+                                                                                  "Akio Arimoto",
+                                                                                  "1972",
+                                                                                  "Keio engineering reports",
+                                                                                  "25",
+                                                                                  "101-111").setNumber("8")
+                                                                                            .setPublisher("Keio University Faculty of Engineering");
 
   public static Article       compactCovarianceOperators                                      =
                                                          new Article("Compact Covariance Operators",
@@ -39,14 +47,14 @@ public class Bibliography extends
                                                                      "83",
                                                                      null).setNumber("3");
 
-  public static Article       naimarkDilationTheoremRemarks                                                    =
-                                           new Article("Remarks on Naimark dilation theorem",
-                                                       "Sergiusz Kuźel",
-                                                       "2024",
-                                                       "Canadian Mathematical Bulletin",
-                                                       "67",
-                                                       "469--477").setNumber("2")
-                                                                  .setPublisher("Cambridge University Press on behalf of The Canadian Mathematical Society");
+  public static Article       naimarkDilationTheoremRemarks                                   =
+                                                            new Article("Remarks on Naimark dilation theorem",
+                                                                        "Sergiusz Kuźel",
+                                                                        "2024",
+                                                                        "Canadian Mathematical Bulletin",
+                                                                        "67",
+                                                                        "469--477").setNumber("2")
+                                                                                   .setPublisher("Cambridge University Press on behalf of The Canadian Mathematical Society");
 
   public static Article       spectralAnalysisOfAbstractFunctions                             =
                                                                   new Article("Spectral Analysis of Abstract Functions",
