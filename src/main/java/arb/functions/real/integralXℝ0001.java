@@ -14,6 +14,15 @@ public class integralXℝ0001 implements
                             AutoCloseable,
                             Initializable
 {
+  public static void main(String args[])
+  {
+    integralXℝ0001 f = new integralXℝ0001();
+    f.P = new ShiftedJacobiPolynomials();
+    f.diffP = f.P.derivative();
+    var p = f.evaluate();
+    System.out.println("p=" + p);
+  }
+
   public boolean                  isInitialized;
   public final Integer            cℤ0000  = new Integer("3");
   public final Integer            cℤ0001  = new Integer("2");
@@ -48,19 +57,10 @@ public class integralXℝ0001 implements
       initialize();
     }
 
-    return ((RealPolynomial) P.evaluate(cℤ0000,
-                                        order,
-                                        bits,
-                                        vXℝ0001)).pow(cℤ0001.add(cℤ0002, bits, vℤ0001), bits, vXℝ0002)
-                                                 .div(vℤ0001, bits, vXℝ0003)
-                                                 .div(((RealPolynomial) diffP.evaluate(cℤ0000,
-                                                                                       order,
-                                                                                       bits,
-                                                                                       vXℝ0004)).mul(cℤ0003,
-                                                                                                     bits,
-                                                                                                     vXℝ0005),
-                                                      bits,
-                                                      result);
+    return P.evaluate(cℤ0000, order, bits, vXℝ0001)
+            .pow(cℤ0001.add(cℤ0002, bits, vℤ0001), bits, vXℝ0002)
+            .div(vℤ0001, bits, vXℝ0003)
+            .div(diffP.evaluate(cℤ0000, order, bits, vXℝ0004).mul(cℤ0003, bits, vXℝ0005), bits, result);
   }
 
   @Override
