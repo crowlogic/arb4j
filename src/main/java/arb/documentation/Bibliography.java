@@ -22,6 +22,15 @@ public class Bibliography extends
                           AbstractBibliography
 {
 
+  public static Article       harmonizableStochasticProcesses                                 =
+                                                              new Article("On harmonizable stochastic processes",
+                                                                          "Stamatis Cambanis and Bede Liu",
+                                                                          "1970",
+                                                                          "Information and Control",
+                                                                          "17",
+                                                                          "183--202").setNumber("2")
+                                                                                     .setPublisher("Academic Press");
+
   public static Article       strongLargeNumberLawForSecondOrderStationaryProcesses           =
                                                                                     new Article("On Conditions for the Strong Law of Large Numbers to be Applicable to Second Order Stationary Processes",
                                                                                                 "I. N. Verbitskaya",
