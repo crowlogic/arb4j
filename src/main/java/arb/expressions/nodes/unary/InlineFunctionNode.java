@@ -1,11 +1,15 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.cast;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.loadOrderParameter;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -22,24 +26,35 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class AnonymousFunctionNode<D, C, F extends Function<? extends D, ? extends C>> extends
-                                  UnaryOperationNode<D, C, F>
+public class InlineFunctionNode<D, C, F extends Function<? extends D, ? extends C>> extends
+                               UnaryOperationNode<D, C, F>
 {
 
-  private Node<D, C, F> functionNode; // Node that evaluates to a Function
-
-  public AnonymousFunctionNode(Expression<D, C, F> expression, Node<D, C, F> functionNode, Node<D, C, F> argumentNode)
+  @Override
+  public String toString()
   {
-    super(argumentNode,
-          expression);
+    return String.format("InlineFunctionNode[functionNode=%s, arg=%s]", functionNode, arg);
+  }
+
+  private Node<D, C, F> functionNode;
+
+  public InlineFunctionNode(Expression<D, C, F> expression, Node<D, C, F> functionNode )
+  {
+    super(expression.resolve(),
+          expression.require(')'));
     this.functionNode = functionNode;
+  }
+
+  public InlineFunctionNode(Expression<D, C, F> expression, Node<D, C, F> functionNode , Node<D, C, F> arg)
+  {
+    super(arg,
+          expression);
+    this.functionNode = functionNode;    
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> currentType)
   {
-    // Generate code to evaluate the function expression
-   // functionNode.generate(mv, functionNode.type());
 
     // Generate code to evaluate the argument
     arg.generate(mv, arg.type());
@@ -51,22 +66,19 @@ public class AnonymousFunctionNode<D, C, F extends Function<? extends D, ? exten
     // Load result onto stack
     loadOutputVariableOntoStack(mv, currentType);
 
-    // Determine if we're calling an interface or a class
-    boolean isInterface = Function.class.isInterface() && Function.class.isAssignableFrom(functionNode.type());
-
     // Use the standardized evaluation method descriptor
-    mv.visitMethodInsn(isInterface ? Opcodes.INVOKEINTERFACE : Opcodes.INVOKEVIRTUAL,
-                       Type.getInternalName(functionNode.type()),
+    mv.visitMethodInsn(Opcodes.INVOKEINTERFACE,
+                       Type.getInternalName(currentType),
                        "evaluate",
                        Expression.evaluationMethodDescriptor,
-                       isInterface);
+                       true);
 
     // Cast the result if needed
     if (!currentType.equals(Object.class))
     {
       cast(mv, currentType);
     }
-    
+
     return mv;
   }
 
@@ -79,19 +91,15 @@ public class AnonymousFunctionNode<D, C, F extends Function<? extends D, ? exten
   @Override
   public List<Node<D, C, F>> getBranches()
   {
-    return List.of(functionNode, arg);
+    return List.of(arg);
   }
 
-  @Override
-  public String toString()
-  {
-    return functionNode.toString() + "(" + arg.toString() + ")";
-  }
+ 
 
   @Override
   public String typeset()
   {
-    return functionNode.typeset() + "\\left(" + arg.typeset() + "\\right)";
+    return "\\left(" + arg.typeset() + "\\right)";
   }
 
   @Override
@@ -99,17 +107,15 @@ public class AnonymousFunctionNode<D, C, F extends Function<? extends D, ? exten
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new AnonymousFunctionNode<>(newExpression,
-                                       functionNode.spliceInto(newExpression),
-                                       arg.spliceInto(newExpression));
+    return new InlineFunctionNode<>(newExpression,
+                                    arg.spliceInto(newExpression));
   }
 
   @Override
   public <E, S, G extends Function<? extends E, ? extends S>> Node<D, C, F> substitute(String variable,
                                                                                        Node<E, S, G> transformation)
   {
-    functionNode = functionNode.substitute(variable, transformation);
-    arg          = arg.substitute(variable, transformation);
+    arg = arg.substitute(variable, transformation);
     return this;
   }
 

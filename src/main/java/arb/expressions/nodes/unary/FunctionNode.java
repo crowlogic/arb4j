@@ -21,7 +21,6 @@ import arb.ComplexRationalFunction;
 import arb.Fraction;
 import arb.Integer;
 import arb.Real;
-import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
@@ -206,13 +205,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    var           argDerivative      = arg.differentiate(variable);
-
-    var           functionDerivative = differentiateFunction();
-
-    Node<D, R, F> derivative         = functionDerivative.mul(argDerivative);
-
-    return derivative;
+    var argDerivative      = arg.differentiate(variable);
+    var functionDerivative = differentiateFunction();
+    return functionDerivative.mul(argDerivative);
   }
 
   /**

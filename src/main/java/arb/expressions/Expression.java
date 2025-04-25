@@ -1999,11 +1999,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
+  @SuppressWarnings("unchecked")
   protected <N extends Node<D, C, F>> N resolvePostfixOperators(N node)
   {
     node = resolveFactorials(node);
     node = resolveFloor(node);
     node = resolveAbsoluteValue(node);
+    if (nextCharacterIs('('))
+    {
+      node = (N) new InlineFunctionNode<D,C,F>(this, node );
+      assert false : "TODO: functional eval on " + node;
+
+    }
     return node;
   }
 
