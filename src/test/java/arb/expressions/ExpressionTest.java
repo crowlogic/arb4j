@@ -227,13 +227,15 @@ public class ExpressionTest extends
 
   public void testDerivative()
   {
-    var x = RealNullaryFunction.express("∂x/∂x");
+    var context = new Context(Real.named("x"));
+    var x       = RealNullaryFunction.express("∂x/∂x", context);
     assertEquals("1", x.typeset());
   }
 
   public void testDerivativeToo()
   {
-    Context context = new Context(Real.named("y"));
+    Context context = new Context(Real.named("y"),
+                                  Real.named("x"));
     var     x       = RealNullaryFunction.express("∂y/∂x", context);
     assertEquals("0", x.typeset());
   }

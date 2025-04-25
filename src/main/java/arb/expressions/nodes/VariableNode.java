@@ -15,8 +15,13 @@ import java.util.function.Consumer;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
-import arb.*;
+import arb.AlgebraicNumber;
+import arb.Complex;
+import arb.ComplexFraction;
+import arb.Fraction;
+import arb.GaussianInteger;
 import arb.Integer;
+import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
@@ -338,6 +343,10 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public boolean isIndependent(VariableNode<D, R, F> inputVariable)
   {
+    if (expression.isNullaryFunction())
+    {
+      return false;
+    }
     return equals(inputVariable) || (inputVariable == null && !expression.references(reference)
                   && !expression.hasIndeterminateVariable());
   }
@@ -491,7 +500,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else
     {
-      if (isIndeterminate = (!expression.anyAscendentIndependentVariableIsEqualTo(getName())))
+      if (isIndeterminate = (!expression.anyAscendentIndependentVariableIs(getName())))
       {
         declareThisToBeTheIndeterminantVariable();
       }
