@@ -25,9 +25,25 @@ import arb.expressions.VariableReference;
 import arb.functions.Function;
 
 /**
+ * The syntax to express a definite integral is<br>
+ * <br>
  * 
- * The syntax for integration is g(x)=∫x➔f(x)dx∈(a,b) where a is the lower and b
- * is the upper limit of integration of the integrand f(x) over x=(a..b)
+ * <pre>
+ * 
+ * g(x)=∫x➔f(x)dx∈(a,b)
+ * 
+ * </pre>
+ * 
+ * and the syntax to express an indefinite integral is<br>
+ * <br>
+ * 
+ * <pre>
+ * 
+ * g(x)=∫x➔f(x)dx
+ *
+ * which is just as the definite case but with the limits of the integration interval specification ∈(a,b) is omitted
+ * </pre>
+ * 
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -86,23 +102,23 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     return this;
   }
 
-  public int                                         bits = 128;
+  public int                                 bits = 128;
 
-  Node<D, C, F>                                      integrandNode;
+  Node<D, C, F>                              integrandNode;
 
-  Node<D, C, F>                                      lowerLimitNode;
+  Node<D, C, F>                              lowerLimitNode;
 
-  Node<D, C, F>                                      upperLimitNode;
+  Node<D, C, F>                              upperLimitNode;
 
-  VariableNode<D, C, F>                              integrationVariableNode;
+  VariableNode<D, C, F>                      integrationVariableNode;
 
-  Function<? extends D, ? extends C>                 integralFunction;
+  Function<? extends D, ? extends C>         integralFunction;
 
-  String                                             integralFunctionFieldName;
+  String                                     integralFunctionFieldName;
 
-  String                                             lowerIntegralValueFieldName;
+  String                                     lowerIntegralValueFieldName;
 
-  String                                             dvar;
+  String                                     dvar;
 
   Expression<Object, Object, Function<?, ?>> integralExpression;
 
@@ -123,30 +139,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
   public FunctionMapping<?, ?, ?> integralMapping;
 
-  /**
-   * The syntax to express a definite integral is<br>
-   * <br>
-   * 
-   * <pre>
-   * 
-   * g(x)=∫x➔f(x)dx∈(a,b)
-   * 
-   * </pre>
-   * 
-   * The syntax to express an indefinite integral is<br>
-   * <br>
-   * 
-   * <pre>
-   * 
-   * g(x)=∫x➔f(x)dx
-   *
-   * (just leave off the range specification ∈(a,b)
-   * </pre>
-   * 
-   * 
-   * @param expression
-   * @param functionForm
-   */
   public IntegralNode(Expression<D, C, F> expression, boolean functionForm)
   {
     super(expression);
@@ -170,7 +162,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     else
     {
       integrandNode = expression.resolve();
-      VariableReference<D, C, F> reference = new VariableReference<>(dvar = expression.require(',').parseName());
+      var reference = new VariableReference<D, C, F>(dvar = expression.require(',').parseName());
       integrationVariableNode = new VariableNode<>(expression,
                                                    reference,
                                                    expression.position,
@@ -257,7 +249,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   {
     assert integralFunction == null;
     integralNode = (Node<Object, Object, Function<?, ?>>) integrandNode.integrate(integrationVariableNode.asVariable());
-    System.out.println("computeIndefiniteIntegral: indefiniteIntegral=" + integralNode);
+    System.out.format("computeIndefiniteIntegral: indefiniteIntegral=%s integrationVariableNode=%s", integralNode, integrationVariableNode );
 
     integralExpression                      = integralNode.expression.cloneExpression();
     integralExpression.instructionByteCodes = null;
