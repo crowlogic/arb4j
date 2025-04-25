@@ -48,6 +48,16 @@ public class IntegralNodeTest extends
     assertEquals(0.09486607143, p3norm.eval());
   }
   
+  public void testFunctionOfPolynomialElementOfAContextualSequence()
+  {
+    var context = new Context();
+    var P       = new ShiftedJacobiPolynomials();
+    context.registerSequence("P", P);
+    var p3val = RealNullaryFunction.express("P(3)(0.75)", context);
+    System.out.println("p3norm=" + Real.named("x").set("0.75",128));
+    assertEquals(0.09486607143, p3val.eval());
+  }
+  
   public void testIntegralOfAnElementOfAContextualSequenceAnotherWay()
   {
     var context = new Context();

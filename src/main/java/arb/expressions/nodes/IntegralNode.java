@@ -162,7 +162,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     else
     {
       integrandNode = expression.resolve();
-      var reference = new VariableReference<D, C, F>(dvar = expression.require(',').parseName());
+      dvar = expression.require(',').parseName();
+      var reference = new VariableReference<D, C, F>(dvar);
       integrationVariableNode = new VariableNode<>(expression,
                                                    reference,
                                                    expression.position,
