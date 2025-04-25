@@ -2008,8 +2008,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (nextCharacterIs('('))
     {
       node = (N) new InlineFunctionNode<D,C,F>(this, node );
-      assert false : "TODO: functional eval on " + node;
-
     }
     return node;
   }
