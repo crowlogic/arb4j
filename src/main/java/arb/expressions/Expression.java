@@ -27,9 +27,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.nodes.*;
 import arb.expressions.nodes.binary.*;
-import arb.expressions.nodes.nary.NAryOperationNode;
-import arb.expressions.nodes.nary.ProductNode;
-import arb.expressions.nodes.nary.SumNode;
+import arb.expressions.nodes.nary.*;
 import arb.expressions.nodes.unary.*;
 import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
@@ -977,8 +975,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Label         startLabel = new Label();
     Label         endLabel   = new Label();
 
-    String        methodName = "evaluate";
-    MethodVisitor mv         = visitMethod(classVisitor, methodName);
+    MethodVisitor mv         = visitEvaluationMethod(classVisitor);
     mv.visitCode();
     mv.visitLabel(startLabel);
     Compiler.annotateWithOverride(mv);
@@ -1012,10 +1009,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                   || (dependencies != null && !dependencies.isEmpty()) || recursive || !referencedFunctions.isEmpty();
   }
 
-  protected MethodVisitor visitMethod(ClassVisitor classVisitor, String methodName)
+  protected MethodVisitor visitEvaluationMethod(ClassVisitor classVisitor)
   {
     MethodVisitor mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                methodName,
+                                                "evaluate",
                                                 evaluationMethodDescriptor,
                                                 evaluateMethodSignature,
                                                 null);
