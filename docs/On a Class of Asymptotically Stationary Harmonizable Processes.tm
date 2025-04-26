@@ -91,10 +91,10 @@
     be the diagonal axis of <math|\<bbb-R\><rsup|2>>. Then uniformly with
     respect to <math|h> in <math|\<bbb-R\>>, we have:
 
-    <\equation*>
+    <\equation>
       lim<rsub|t\<rightarrow\>+\<infty\>>
       <frac|1|t>*<big|int><rsub|0><rsup|t>E*<around|(|X*<around|(|s+h|)>\<cdot\><wide|X<around|(|s|)>|\<bar\>>|)>*d*s=<big|iint><rsub|\<Delta\>>e<rsup|i*h*v>*M<around|(|d*u,d*v|)>
-    </equation*>
+    </equation>
   </proposition>
 
   So in the weakly harmonizable case, one of the problems is: How can we
@@ -186,9 +186,9 @@
     the stochastic measure <math|\<mu\>>, [4, Definition IV.10.3]; from [4,
     Theorem IV.10.8] we estimate for every <math|t> :
 
-    <\equation*>
-      <tabular|<tformat|<table|<row|<cell|E<around*|[|<around*|\||X<rsub|n><around|(|t|)>|\|><rsup|2>|]>\<leqslant\><around*|(|<around|\<\|\|\>|\<mu\>|\<\|\|\>><around*|(|B<rsub|n>|)>|)><rsup|2>\<leqslant\><around|(|<around|\<\|\|\>|\<mu\>|\<\|\|\>><around|(|\<bbb-R\>|)>|)><rsup|2><next-line>E<around*|[|<around*|\||X<around|(|t|)>-X<rsub|n><around|(|t|)>|\|><rsup|2>|]>=E<around*|(|<around*|\||<big|int><rsub|B<rsub|n><rprime|'>>e<rsup|i*t*u>*\<mu\>*<around|(|d*u|)>|\|><rsup|2>|)>\<leqslant\><around*|(|<around|\<\|\|\>|\<mu\>|\<\|\|\>><around*|(|B<rsub|n><rprime|'>|)>|)><rsup|2>>>>>>
-    </equation*>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|E<around*|[|<around*|\||X<rsub|n><around|(|t|)>|\|><rsup|2>|]>>|<cell|\<leqslant\><around*|(|<around|\<\|\|\>|\<mu\>|\<\|\|\>><around*|(|B<rsub|n>|)>|)><rsup|2>>>|<row|<cell|>|<cell|\<leqslant\><around|(|<around|\<\|\|\>|\<mu\>|\<\|\|\>><around|(|\<bbb-R\>|)>|)><rsup|2><next-line>E<around*|[|<around*|\||X<around|(|t|)>-X<rsub|n><around|(|t|)>|\|><rsup|2>|]>>>|<row|<cell|>|<cell|=E<around*|(|<around*|\||<big|int><rsub|B<rsub|n><rprime|'>>e<rsup|i*t*u>*\<mu\>*<around|(|d*u|)>|\|><rsup|2>|)>>>|<row|<cell|>|<cell|\<leqslant\><around*|(|<around|\<\|\|\>|\<mu\>|\<\|\|\>><around*|(|B<rsub|n><rprime|'>|)>|)><rsup|2>>>>>>
+    </equation>
 
     Since the sequence ( <math|<around*|\<nobracket\>|B<rsub|n><rprime|'>|)><rsub|n\<in\>\<bbb-N\>>>
     decreases towards the empty set as <math|n> tends to infinity, then
@@ -227,22 +227,36 @@
 
     <\equation*>
       lim<rsub|t\<rightarrow\>+\<infty\>>
-      <frac|1|t>*<big|int><rsub|0><rsup|t>E*<around|(|X*<around|(|s+h|)>\<cdot\><wide|X<around|(|s|)>|\<bar\>>|)>*d*s=<big|int>e<rsup|i*h*u>*m*<around|(|d*u|)>
+      <frac|1|t>*<big|int><rsub|0><rsup|t>E*<around|(|X*<around|(|s+h|)>\<cdot\><wide|X<around|(|s|)>|\<bar\>>|)>*d*s=<big|int>e<rsup|i*h*u>*m*<around|(|d*u|)>,
     </equation*>
 
     where the positive bounded measure <math|m> on
     <math|<with|math-font|cal*|B><around|(|\<bbb-R\>|)>> is defined by:
 
     <\equation*>
-      <text|for every >B<text|in ><with|math-font|cal*|B><around|(|\<bbb-R\>|)>,<space|1em>m<around|(|B|)>=lim<rsub|n\<rightarrow\>+\<infty\>>
-      M<rsub|n>*<around|(|<around|(|B\<times\>B|)>\<cap\>\<Delta\>|)>
+      m<around|(|B|)>=lim<rsub|n\<rightarrow\>+\<infty\>>
+      M<rsub|n>*<around|(|<around|(|B\<times\>B|)>\<cap\>\<Delta\>|)>\<forall\>B<text|\<in\>><with|math-font|cal*|B><around|(|\<bbb-R\>|)>
     </equation*>
   </theorem>
 
   <\proof>
-    With Notations 2.4, let <math|K<around|(|t,s|)>=E*<around|(|X<around|(|t|)>\<cdot\><wide|X<around|(|s|)>|\<bar\>>|)>>
-    and <math|K<rsub|n><around|(|t,s|)>=E*<around*|(|X<rsub|n><around|(|t|)>\<cdot\><wide|X<rsub|n><around|(|s|)>|\<bar\>>|)>>.<next-line>(a)
-    From Proposition 2.5, the sequence <math|K<rsub|n><around|(|t,s|)>>
+    With Notations 2.4, let <math|>
+
+    <\equation>
+      K<around|(|t,s|)>=E*<around|(|X<around|(|t|)>\<cdot\><wide|X<around|(|s|)>|\<bar\>>|)>
+    </equation>
+
+    \ and\ 
+
+    <\equation>
+      K<rsub|n><around|(|t,s|)>=E*<around*|(|X<rsub|n><around|(|t|)>\<cdot\><wide|X<rsub|n><around|(|s|)>|\<bar\>>|)>
+    </equation>
+
+    <\equation*>
+      \;
+    </equation*>
+
+    (a) From Proposition 2.5, the sequence <math|K<rsub|n><around|(|t,s|)>>
     converges towards <math|K<around|(|t,s|)>> uniformly with respect to
     <math|<around|(|t,s|)>> in <math|\<bbb-R\><rsup|2>>. So, given
     <math|\<varepsilon\>\<gtr\>0>, there exists
@@ -269,7 +283,7 @@
     and for every <math|h> we obtain:
 
     <\equation>
-      <label|eq:a3><around*|\||<frac|1|t>*<big|int><rsub|0><rsup|t>K<around|(|s+h,s|)>*d*s-<big|iint><rsub|\<Delta\>>e<rsup|i*u*h>*M<rsub|n><around|(|d*u,d*v|)>|\|>\<less\>2*\<varepsilon\>.
+      <label|eq:a3><around*|\||<frac|1|t>*<big|int><rsub|0><rsup|t>K<around|(|s+h,s|)>*d*s-<big|iint><rsub|\<Delta\>>e<rsup|i*u*h>*M<rsub|n><around|(|d*u,d*v|)>|\|>\<less\>2*\<varepsilon\>
     </equation>
 
     (b) We are going to prove that the sequence
@@ -279,9 +293,9 @@
     First of all, <math|<around*|(|m<rsub|n>|)>> is increasing since for any
     <math|B> in <math|<with|math-font|cal*|B><around|(|\<bbb-R\>|)>>
 
-    <\equation*>
+    <\equation>
       m<rsub|n><around|(|B|)>=M<rsub|n>*<around|(|<around|(|B\<times\>B|)>\<cap\>\<Delta\>|)>=M*<around|(|<around|(|B\<cap\>B<rsub|n>|)>\<times\><around|(|B\<cap\>B<rsub|n>|)>\<cap\>\<Delta\>|)>
-    </equation*>
+    </equation>
 
     Let's re-evaluate the original text's argument:
     <math|m<rsub|n><around|(|B|)>=M<rsub|n>*<around|(|<around|(|B\<times\>B|)>\<cap\>\<Delta\>|)>>
@@ -299,9 +313,9 @@
     <math|m<rsub|d*i*a*g>*<around|(|B\<cap\>B<rsub|n>|)>\<leq\>m<rsub|d*i*a*g>*<around|(|B\<cap\>B<rsub|n+1>|)>>,
     hence <math|m<rsub|n><around|(|B|)>\<leq\>m<rsub|n+1><around|(|B|)>>.
 
-    <\equation*>
+    <\equation>
       m<rsub|n><around|(|B|)>\<leqslant\>m<rsub|n+1><around|(|B|)>
-    </equation*>
+    </equation>
 
     The only difficulty is to show that this sequence is bounded. Now Miamee
     and Salehi [7: Domination lemma] have proved that for every spectral
@@ -310,38 +324,41 @@
     <math|<with|math-font|cal*|B><around|(|\<bbb-R\>|)>> such that for any
     bounded Borel function <math|f:\<bbb-R\>\<rightarrow\>\<bbb-C\>> one has:
 
-    <\equation*>
+    <\equation>
       0\<leqslant\><big|iint>f<around|(|t|)><wide|f<around|(|s|)>|\<bar\>>M<around|(|d*t,d*s|)>\<leqslant\><big|int><around|\||f<around|(|t|)>|\|><rsup|2>*m<rsub|d>*<around|(|d*t|)>
-    </equation*>
+    </equation>
 
     So, for any Borel set <math|B> in <math|\<bbb-R\>> we have:
 
-    <\equation*>
-      0\<leqslant\>M<around|(|B,B|)>\<leqslant\>m<rsub|d><around|(|B|)>.
-    </equation*>
+    <\equation>
+      0\<leqslant\>M<around|(|B,B|)>\<leqslant\>m<rsub|d><around|(|B|)>
+    </equation>
 
-    Let us put <math|I<rsub|q><rsup|r>=<around*|(|r/2<rsup|q>,<around|(|r+1|)>/2<rsup|q>|]>,r=\<cdots\>-1,0,1,\<ldots\>>
-    and <math|q=0,1,\<ldots\>>. Then, for any <math|q>, the sets
+    Let us put <math|,r=\<cdots\>-1,0,1,\<ldots\>>
+
+    <\equation>
+      I<rsub|q><rsup|r>=<around*|(|<frac|r|2<rsup|q>>,<frac|r+1|2<rsup|q>>|]>
+    </equation>
+
+    \ and <math|q=0,1,\<ldots\>>. Then, for any <math|q>, the sets
     <math|I<rsub|q><rsup|r>,r\<in\>\<bbb-Z\>>, form a partition of
     <math|\<bbb-R\>>, and the sequence <math|S<rsub|q>=<big|cup><rsub|r=-\<infty\>><rsup|+\<infty\>>I<rsub|q><rsup|r>\<times\>I<rsub|q><rsup|r>>
     decreases towards the diagonal axis <math|\<Delta\>>, as <math|q> becomes
     infinite.... Given <math|B> in <math|<with|math-font|cal*|B><around|(|\<bbb-R\>|)>,n>,
     and <math|q>, then the measure <math|M<rsub|n>> verifies:
 
-    <\equation*>
-      <\aligned>
-        <tformat|<table|<row|<cell|0>|<cell|\<leqslant\>M<rsub|n><around*|(|<big|cup><rsub|r=-\<infty\>><rsup|+\<infty\>><around*|(|B\<cap\>I<rsub|q><rsup|r>|)>\<times\><around*|(|B\<cap\>I<rsub|q><rsup|r>|)>|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|r=-\<infty\>><rsup|+\<infty\>>M*<around*|(|<around*|(|B\<cap\>I<rsub|q><rsup|r>\<cap\>B<rsub|n>|)>\<times\><around*|(|B\<cap\>I<rsub|q><rsup|r>\<cap\>B<rsub|n>|)>|)>>>|<row|<cell|>|<cell|\<leqslant\><big|sum><rsub|r=-\<infty\>><rsup|+\<infty\>>m<rsub|d>*<around*|(|B\<cap\>I<rsub|q><rsup|r>\<cap\>B<rsub|n>|)>>>|<row|<cell|>|<cell|=m<rsub|d>*<around*|(|B\<cap\>B<rsub|n>|)>>>>>
-      </aligned>
-    </equation*>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|0>|<cell|\<leqslant\>M<rsub|n><around*|(|<big|cup><rsub|r=-\<infty\>><rsup|+\<infty\>><around*|(|B\<cap\>I<rsub|q><rsup|r>|)>\<times\><around*|(|B\<cap\>I<rsub|q><rsup|r>|)>|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|r=-\<infty\>><rsup|+\<infty\>>M*<around*|(|<around*|(|B\<cap\>I<rsub|q><rsup|r>\<cap\>B<rsub|n>|)>\<times\><around*|(|B\<cap\>I<rsub|q><rsup|r>\<cap\>B<rsub|n>|)>|)>>>|<row|<cell|>|<cell|\<leqslant\><big|sum><rsub|r=-\<infty\>><rsup|+\<infty\>>m<rsub|d>*<around*|(|B\<cap\>I<rsub|q><rsup|r>\<cap\>B<rsub|n>|)>>>|<row|<cell|>|<cell|=m<rsub|d>*<around*|(|B\<cap\>B<rsub|n>|)>.>>>>>
+    </equation>
 
     Hence, when <math|q> tends to infinity we obtain (taking the limit inside
     the sum requires justification, perhaps using properties of measures on
     product spaces, or the definition of <math|m<rsub|n>> as the diagonal
     restriction):
 
-    <\equation*>
-      0\<leqslant\>m<rsub|n><around|(|B|)>\<leqslant\>m<rsub|d>*<around*|(|B\<cap\>B<rsub|n>|)>\<leqslant\>m<rsub|d><around|(|\<bbb-R\>|)>.
-    </equation*>
+    <\equation>
+      0\<leqslant\>m<rsub|n><around|(|B|)>\<leqslant\>m<rsub|d>*<around*|(|B\<cap\>B<rsub|n>|)>\<leqslant\>m<rsub|d><around|(|\<bbb-R\>|)>
+    </equation>
 
     So, for every Borel set <math|B>, the increasing sequence
     <math|<around*|(|m<rsub|n><around|(|B|)>|)>> converges towards a positive
@@ -357,12 +374,10 @@
 
     Moreover for any bounded Borel function <math|f> one has:
 
-    <\equation*>
-      <\aligned>
-        <tformat|<table|<row|<cell|<around*|\||<big|int>f<around|(|u|)>*m<rsub|n>*<around|(|d*u|)>-<big|int>f<around|(|u|)>*m*<around|(|d*u|)>|\|>>|<cell|=<around*|\||<big|int>f<around|(|u|)>*m*<around|(|d*u|)>-<big|int>f<around|(|u|)>*m<rsub|n>*<around|(|d*u|)>|\|>>>|<row|<cell|>|<cell|=<around*|\||<big|int><rsub|B>f<around|(|u|)>*m*<around|(|d*u|)>-<big|int><rsub|B\<cap\>B<rsub|n>>f<around|(|u|)>*m*<around|(|d*u|)>|\|>>>|<row|<cell|>|<cell|=<around*|\||<big|int>f<around|(|u|)>*<around|(|m-m<rsub|n>|)>*<around|(|d*u|)>|\|>>>|<row|<cell|>|<cell|=<around*|\||<big|int><rsub|B<rsub|n><rsup|c>>f<around|(|u|)>*m*<around|(|d*u|)>|\|>*<space|1em><around|(|<text|since
-        >m<rsub|n><around|(|A|)>=m*<around|(|A\<cap\>B<rsub|n>|)>|)>>>|<row|<cell|>|<cell|\<leqslant\><big|int><rsub|B<rsub|n><rsup|c>><around|\||f<around|(|u|)>|\|>*m*<around|(|d*u|)>>>|<row|<cell|>|<cell|\<leqslant\>m<around*|(|B<rsub|n><rprime|'>|)>\<cdot\>sup<rsub|u\<in\>\<bbb-R\>><around|(|<around|\||f<around|(|u|)>|\|>|)>.>>>>
-      </aligned>
-    </equation*>
+    <\equation>
+      <text|<math|<tabular|<tformat|<cwith|1|-1|1|-1|font-base-size|9>|<table|<row|<cell|<around*|\||<big|int>f<around|(|u|)>*m<rsub|n>*<around|(|d*u|)>-<big|int>f<around|(|u|)>*m*<around|(|d*u|)>|\|>>|<cell|=<around*|\||<big|int>f<around|(|u|)>*m*<around|(|d*u|)>-<big|int>f<around|(|u|)>*m<rsub|n>*<around|(|d*u|)>|\|>>>|<row|<cell|>|<cell|=<around*|\||<big|int><rsub|B>f<around|(|u|)>*m*<around|(|d*u|)>-<big|int><rsub|B\<cap\>B<rsub|n>>f<around|(|u|)>*m*<around|(|d*u|)>|\|>>>|<row|<cell|>|<cell|=<around*|\||<big|int>f<around|(|u|)>*<around|(|m-m<rsub|n>|)>*<around|(|d*u|)>|\|>>>|<row|<cell|>|<cell|=<around*|\||<big|int><rsub|B<rsub|n><rsup|c>>f<around|(|u|)>*m*<around|(|d*u|)>|\|>*<space|1em><with|font-base-size|6|<around|(|<text|since
+      >m<rsub|n><around|(|A|)>=m*<around|(|A\<cap\>B<rsub|n>|)>|)>>>>|<row|<cell|>|<cell|\<leqslant\><big|int><rsub|B<rsub|n><rsup|c>><around|\||f<around|(|u|)>|\|>*m*<around|(|d*u|)>>>|<row|<cell|>|<cell|\<leqslant\>m<around*|(|B<rsub|n><rprime|'>|)>\<cdot\>sup<rsub|u\<in\>\<bbb-R\>><around|(|<around|\||f<around|(|u|)>|\|>|)>>>>>>>>
+    </equation>
 
     Since <math|m<around|(|B<rsub|n><rprime|'>|)>\<to\>0> as
     <math|n\<to\>\<infty\>> (because <math|m> is a finite measure and
@@ -374,7 +389,7 @@
     <math|h> (taking <math|f<around|(|u|)>=e<rsup|i*u*h>>):
 
     <\equation>
-      <label|eq:b1><around*|\||<big|iint><rsub|\<Delta\>>e<rsup|i*u*h>*M<rsub|n><around|(|d*u,d*v|)>-<big|int>e<rsup|i*u*h>*m*<around|(|d*u|)>|\|>=<around*|\||<big|int>e<rsup|i*u*h>*m<rsub|n>*<around|(|d*u|)>-<big|int>e<rsup|i*u*h>*m*<around|(|d*u|)>|\|>\<less\>\<varepsilon\>.
+      <label|eq:b1><around*|\||<big|iint><rsub|\<Delta\>>e<rsup|i*u*h>*M<rsub|n><around|(|d*u,d*v|)>-<big|int>e<rsup|i*u*h>*m*<around|(|d*u|)>|\|>=<around*|\||<big|int>e<rsup|i*u*h>*m<rsub|n>*<around|(|d*u|)>-<big|int>e<rsup|i*u*h>*m*<around|(|d*u|)>|\|>\<less\>\<varepsilon\>
     </equation>
 
     (c) From the relations (<reference|eq:a3>) and (<reference|eq:b1>) we
@@ -384,11 +399,9 @@
     such that for <math|t\<gtr\>T<around|(|\<varepsilon\>|)>> and for every
     <math|h> we have:
 
-    <\equation*>
-      <\aligned>
-        <tformat|<table|<row|<cell|<around*|\||<frac|1|t>*<big|int><rsub|0><rsup|t>K<around|(|s+h,s|)>*d*s-<big|int>e<rsup|i*u*h>*m*<around|(|d*u|)>|\|>>|<cell|\<le\><around*|\||<frac|1|t>*<big|int><rsub|0><rsup|t>K<around|(|s+h,s|)>*d*s-<big|iint><rsub|\<Delta\>>e<rsup|i*u*h>*M<rsub|N><around|(|d*u,d*v|)>|\|>>>|<row|<cell|>|<cell|+<around*|\||<big|iint><rsub|\<Delta\>>e<rsup|i*u*h>*M<rsub|N><around|(|d*u,d*v|)>-<big|int>e<rsup|i*u*h>*m*<around|(|d*u|)>|\|>>>|<row|<cell|>|<cell|\<less\>2*\<varepsilon\>+\<varepsilon\>=3*\<varepsilon\>>>>>
-      </aligned>
-    </equation*>
+    <\equation>
+      <tabular|<tformat|<cwith|1|-1|1|-1|font-base-size|8>|<table|<row|<cell|<around*|\||<frac|1|t>*<big|int><rsub|0><rsup|t>K<around|(|s+h,s|)>*d*s-<big|int>e<rsup|i*u*h>*m*<around|(|d*u|)>|\|>>|<cell|\<le\><around*|\||<frac|1|t>*<big|int><rsub|0><rsup|t>K<around|(|s+h,s|)>*d*s-<big|iint><rsub|\<Delta\>>e<rsup|i*u*h>*M<rsub|N><around|(|d*u,d*v|)>|\|>>>|<row|<cell|>|<cell|+<around*|\||<big|iint><rsub|\<Delta\>>e<rsup|i*u*h>*M<rsub|N><around|(|d*u,d*v|)>-<big|int>e<rsup|i*u*h>*m*<around|(|d*u|)>|\|>>>|<row|<cell|>|<cell|\<less\>2*\<varepsilon\>+\<varepsilon\>=3*\<varepsilon\>>>>>>
+    </equation>
 
     as was to be shown.
   </proof>
@@ -408,8 +421,7 @@
     process defined by
 
     <\equation>
-      X<around|(|t|)>=<big|int>e<rsup|i*t*x>*\<mu\>*<around|(|d*x|)>
-      \<forall\>t\<in\>\<bbb-R\>
+      X<around|(|t|)>=<big|int>e<rsup|i*t*x>*\<mu\>*<around|(|d*x|)>\<forall\>t\<in\>\<bbb-R\>
     </equation>
 
     is not <math|\<sigma\>>-finite. We do not know if <math|X> is
@@ -426,6 +438,9 @@
       harmonizable>|}>>>|<row|<cell|>|<cell|\<subset\>>|<cell|<around|{|<text|asymptotically
       stationary>|}>>>>>>
     </equation*>
+
+    (Note: The layout in the original PDF is complex; this array attempts to
+    capture the relationships shown.)
   </remark>
 
   <section*|Acknowledgments>
@@ -483,7 +498,7 @@
 
 <\initial>
   <\collection>
-    <associate|magnification|1>
+    <associate|magnification|1.2>
     <associate|page-medium|paper>
   </collection>
 </initial>
@@ -492,14 +507,14 @@
   <\collection>
     <associate|auto-1|<tuple|?|1|../../.TeXmacs/texts/scratch/no_name_3.tm>>
     <associate|auto-2|<tuple|?|1|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-3|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-4|<tuple|4|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-5|<tuple|9|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-6|<tuple|9|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:a1|<tuple|5|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:a2|<tuple|6|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:a3|<tuple|7|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:b1|<tuple|8|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-3|<tuple|1|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-4|<tuple|6|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-5|<tuple|22|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-6|<tuple|22|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:a1|<tuple|9|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:a2|<tuple|10|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:a3|<tuple|11|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|eq:b1|<tuple|20|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
   </collection>
 </references>
 
