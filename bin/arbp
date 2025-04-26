@@ -3,7 +3,7 @@
 
 BASEDIR=$(dirname $(readlink -f $0))/..
 CLASSPATH=`cat $BASEDIR/class.path`:$BASEDIR/build/classes
-javap -v -s -l -constants -c --module-path $CLASSPATH -classpath $CLASSPATH $@ 
+javap  -c --module-path $CLASSPATH -classpath $CLASSPATH $@ 
 
 
 

@@ -57,7 +57,7 @@ public class InlineFunctionNode<D, C, F extends Function<? extends D, ? extends 
   {
     functionNode.generate(mv, functionNode.type());
     // Generate code to evaluate the argument
-    arg.generate(mv, arg.type());
+    arg.generate(mv, currentType);
 
     // Generate order and bits parameters
     loadOrderParameter(mv);

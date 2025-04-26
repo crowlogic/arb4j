@@ -29,41 +29,38 @@ public class P implements
   {
     return Real.class;
   }
-
+  
   @Override
   public Real evaluate(Object in, int order, int bits, Real result)
   {
-    if (!this.isInitialized)
+    if (!isInitialized)
     {
-      this.initialize();
+      initialize();
     }
 
-    return (Real) ((RealPolynomial) this.P.evaluate(this.cℤ0000, order, bits, this.vXℝ0001)).evaluate(this.cℝ0000,
-                                                                                                      order,
-                                                                                                      bits,
-                                                                                                      result);
+    return P.evaluate(cℤ0000, order, bits, vXℝ0001).evaluate(cℝ0000, order, bits, result);
   }
 
   @Override
   public void initialize()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
     else
     {
-      this.isInitialized = true;
+      isInitialized = true;
     }
   }
 
   @Override
   public void close()
   {
-    this.cℝ0000.close();
-    this.cℤ0000.close();
-    this.vXℝ0001.close();
-    this.P.close();
+    cℝ0000.close();
+    cℤ0000.close();
+    vXℝ0001.close();
+    P.close();
   }
 
   @Override
