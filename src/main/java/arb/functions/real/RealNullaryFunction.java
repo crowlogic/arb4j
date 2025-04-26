@@ -2,10 +2,7 @@ package arb.functions.real;
 
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.expressions.Compiler;
-import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.Parser;
+import arb.expressions.*;
 import arb.functions.Function;
 import arb.functions.NullaryFunction;
 
@@ -23,6 +20,15 @@ public interface RealNullaryFunction extends
                                  Parser.expressionToUniqueClassname(expression),
                                  expression,
                                  null);
+  }
+
+  public static Expression<Object, Real, RealNullaryFunction>  parse(String expression, Context context)
+  {
+    return NullaryFunction.parse(Real.class,
+                                 RealNullaryFunction.class,
+                                 Parser.expressionToUniqueClassname(expression),
+                                 expression,
+                                 context);
   }
 
   public static Expression<Object, Real, RealNullaryFunction> compile(String expression, Context context)
@@ -61,4 +67,5 @@ public interface RealNullaryFunction extends
   {
     return evaluate().doubleValue();
   }
+
 }

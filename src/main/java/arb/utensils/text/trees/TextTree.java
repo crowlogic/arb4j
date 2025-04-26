@@ -74,6 +74,7 @@ public class TextTree<N>
   public String toString()
   {
     sb = new StringBuilder("\n");
+
     N root = tree.getRoot();
     printNode(root, "", "", showRoot);
     return sb.toString();
@@ -104,7 +105,7 @@ public class TextTree<N>
         {
           if (tree instanceof ExpressionTree syntax)
           {
-            System.err.println( "fieldName is null for " + node + " " + syntax );
+            System.err.println("fieldName is null for " + node + " " + syntax);
 
           }
 
@@ -120,9 +121,12 @@ public class TextTree<N>
             Field field;
             try
             {
-              field = instance.getClass().getField(intermediateValueFieldName);
-              field.setAccessible(true);
-              sb.append("=" + field.get(instance));
+              if (instance != null)
+              {
+                field = instance.getClass().getField(intermediateValueFieldName);
+                field.setAccessible(true);
+                sb.append("=" + field.get(instance));
+              }
             }
             catch (NoSuchFieldException e)
             {

@@ -38,24 +38,24 @@ public class InlineFunctionNode<D, C, F extends Function<? extends D, ? extends 
 
   private Node<D, C, F> functionNode;
 
-  public InlineFunctionNode(Expression<D, C, F> expression, Node<D, C, F> functionNode )
+  public InlineFunctionNode(Expression<D, C, F> expression, Node<D, C, F> functionNode)
   {
     super(expression.resolve(),
           expression.require(')'));
     this.functionNode = functionNode;
   }
 
-  public InlineFunctionNode(Expression<D, C, F> expression, Node<D, C, F> functionNode , Node<D, C, F> arg)
+  public InlineFunctionNode(Expression<D, C, F> expression, Node<D, C, F> functionNode, Node<D, C, F> arg)
   {
     super(arg,
           expression);
-    this.functionNode = functionNode;    
+    this.functionNode = functionNode;
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> currentType)
   {
-
+    functionNode.generate(mv, functionNode.type());
     // Generate code to evaluate the argument
     arg.generate(mv, arg.type());
 
@@ -93,8 +93,6 @@ public class InlineFunctionNode<D, C, F extends Function<? extends D, ? extends 
   {
     return List.of(arg);
   }
-
- 
 
   @Override
   public String typeset()
