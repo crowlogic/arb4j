@@ -1,4 +1,4 @@
-<TeXmacs|2.1.4>
+<TeXmacs|2.1.2>
 
 <style|<tuple|generic|framed-theorems>>
 
@@ -128,22 +128,41 @@
 
     <\equation>
       <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|c<rsub|j*j>=<frac|\<pi\>|2*j<around|(|log
-      <around|(|j+1|)>|)><rsup|2>>,>|<cell|j\<in\>\<bbb-N\>\<setminus\><around|{|0|}>>>|<row|<cell|c<rsub|j*k>=<frac|sin
+      <around|(|j+1|)>|)><rsup|2>>>|<cell|\<forall\>j\<in\>\<bbb-N\>\<setminus\><around|{|0|}>>>|<row|<cell|c<rsub|j*k>=<frac|sin
       <around|(|\<pi\>*<around|(|j-k|)>/2|)>|<around|(|j-k|)>*j<rsup|1/2>*k<rsup|1/2>*log
-      <around|(|j+1|)>*log <around|(|k+1|)>>,>|<cell|j\<neq\>k;j,k\<in\>\<bbb-N\>\<setminus\><around|{|0|}>>>>>>
+      <around|(|j+1|)>*log <around|(|k+1|)>>>|<cell|\<forall\>j\<neq\>k;j,k\<in\>\<bbb-N\>\<setminus\><around|{|0|}>>>>>>
     </equation>
 
     Then there exist a probability space ( <math|S,<with|math-font|cal*|F>,P>
     ) and a sequence <math|<around*|(|x<rsub|j>|)>> in
     <math|L<rsub|\<bbb-R\>><rsup|2><around|(|S,<with|math-font|cal*|F>,P|)>>
-    such that <math|E*<around*|(|x<rsub|j>\<cdot\>x<rsub|k>|)>=c<rsub|j*k>>.
-    We can use this sequence to define a stochastic measure
-    <math|\<mu\>:<with|math-font|cal*|B><around|(|\<bbb-R\>|)>\<rightarrow\>L<rsub|\<bbb-R\>><rsup|2><around|(|S,<with|math-font|cal*|F>,P|)>>
-    by <math|\<mu\><around|(|B|)>=<big|sum><rsub|j\<in\>B>x<rsub|j>>, for
-    every Borel set <math|B> of <math|\<bbb-R\>>.
+    such that
 
-    Since <math|<big|sum><rsub|j><big|sum><rsub|k><around*|\||c<rsub|j*k>|\|>=+\<infty\>>,
-    the Vitali variation of <math|\<bbb-R\><rsup|2>> of its bimeasure
+    <\equation>
+      E*<around*|(|x<rsub|j>\<cdot\>x<rsub|k>|)>=c<rsub|j*k>
+    </equation>
+
+    We can use this sequence to define a stochastic measure
+
+    <\equation>
+      \<mu\>:<with|math-font|cal*|B><around|(|\<bbb-R\>|)>\<rightarrow\>L<rsub|\<bbb-R\>><rsup|2><around|(|S,<with|math-font|cal*|F>,P|)>
+    </equation>
+
+    \ by\ 
+
+    <\equation>
+      \<mu\><around|(|B|)>=<big|sum><rsub|j\<in\>B>x<rsub|j>
+    </equation>
+
+    \ for every Borel set <math|B> of <math|\<bbb-R\>>.
+
+    Since
+
+    <\equation>
+      <big|sum><rsub|j><big|sum><rsub|k><around*|\||c<rsub|j*k>|\|>=+\<infty\>
+    </equation>
+
+    , the Vitali variation of <math|\<bbb-R\><rsup|2>> of its bimeasure
     <math|M> is infinite. Moreover, since <math|\<mu\>> is discrete, <math|M>
     is obviously <math|\<sigma\>>-finite. Therefore the Fourier transform of
     <math|\<mu\>> has a <math|\<sigma\>>-finite bimeasure but is not strongly
@@ -154,15 +173,18 @@
 
   <paragraph|2.4. Notations.> Throughout the sequel, we consider a weakly
   harmonizable process <math|X> with <math|\<sigma\>>-finite bimeasure
-  <math|M>, and spectral stochastic measure <math|\<mu\>>.
+  <math|M>, and spectral stochastic measure <math|\<mu\>>. Let
+  <math|<around*|(|B<rsub|n>|)><rsub|n\<in\>\<bbb-N\>>> be a sequence in
+  <math|<with|math-font|cal*|B><around|(|\<bbb-R\>|)>>\ 
 
-  Let <math|<around*|(|B<rsub|n>|)><rsub|n\<in\>\<bbb-N\>>> be a sequence in
-  <math|<with|math-font|cal*|B><around|(|\<bbb-R\>|)>> which satisfies (1)
-  and (2) and for any <math|n> let <math|\<mu\><rsub|n>> be the stochastic
-  measure on <math|<with|math-font|cal*|B><around|(|\<bbb-R\>|)>> defined by
-  <math|\<mu\><rsub|n><around|(|B|)>=\<mu\>*<around*|(|B\<cap\>B<rsub|n>|)>>,
-  <math|M<rsub|n>> be its spectral bimeasure which is of finite Vitali
-  variation on <math|\<bbb-R\><rsup|2>>, and <math|X<rsub|n>> be the
+  <\equation>
+    \<mu\><rsub|n><around|(|B|)>=\<mu\>*<around*|(|B\<cap\>B<rsub|n>|)>
+  </equation>
+
+  which satisfies (1) and (2) and for any <math|n> let <math|\<mu\><rsub|n>>
+  be the stochastic measure on <math|<with|math-font|cal*|B><around|(|\<bbb-R\>|)>>
+  defined by <math|M<rsub|n>> be its spectral bimeasure which is of finite
+  Vitali variation on <math|\<bbb-R\><rsup|2>>, and <math|X<rsub|n>> be the
   associated strongly harmonizable process.... Niemi [9, Theorem 3.41] has
   proved that, for any weakly harmonizable process <math|X>, there exists a
   sequence of strongly harmonizable processes which converges in q.m. to
@@ -171,13 +193,11 @@
   process <math|X> is only continuous and bounded. Here we obtain another
   sharpening of Niemi's result.
 
-  <assign|proposition-nr|4>
-
   <\proposition>
-    For every harmonizable process <math|X> with <math|\<sigma\>>-finite
-    bimeasure, there exists a bounded sequence of strongly harmonizable
-    processes which converges in q.m. towards <math|X> uniformly on
-    <math|\<bbb-R\>>.
+    <assign|proposition-nr|4>For every harmonizable process <math|X> with
+    <math|\<sigma\>>-finite bimeasure, there exists a bounded sequence of
+    strongly harmonizable processes which converges in q.m. towards <math|X>
+    uniformly on <math|\<bbb-R\>>.
   </proposition>
 
   <\proof>
@@ -200,8 +220,6 @@
   </proof>
 
   <section*|3. Main Result>
-
-  [section]
 
   <\theorem>
     Every harmonizable process with <math|\<sigma\>>-finite bimeasure is
@@ -252,10 +270,6 @@
       K<rsub|n><around|(|t,s|)>=E*<around*|(|X<rsub|n><around|(|t|)>\<cdot\><wide|X<rsub|n><around|(|s|)>|\<bar\>>|)>
     </equation>
 
-    <\equation*>
-      \;
-    </equation*>
-
     (a) From Proposition 2.5, the sequence <math|K<rsub|n><around|(|t,s|)>>
     converges towards <math|K<around|(|t,s|)>> uniformly with respect to
     <math|<around|(|t,s|)>> in <math|\<bbb-R\><rsup|2>>. So, given
@@ -291,27 +305,71 @@
     the spectral measures ( <math|M<rsub|n>> ) is convergent.
 
     First of all, <math|<around*|(|m<rsub|n>|)>> is increasing since for any
-    <math|B> in <math|<with|math-font|cal*|B><around|(|\<bbb-R\>|)>>
+    <math|B\<in\>><math|<with|math-font|cal*|B><around|(|\<bbb-R\>|)>>
 
     <\equation>
       m<rsub|n><around|(|B|)>=M<rsub|n>*<around|(|<around|(|B\<times\>B|)>\<cap\>\<Delta\>|)>=M*<around|(|<around|(|B\<cap\>B<rsub|n>|)>\<times\><around|(|B\<cap\>B<rsub|n>|)>\<cap\>\<Delta\>|)>
     </equation>
 
-    Let's re-evaluate the original text's argument:
-    <math|m<rsub|n><around|(|B|)>=M<rsub|n>*<around|(|<around|(|B\<times\>B|)>\<cap\>\<Delta\>|)>>
-    and <math|m<rsub|n+1><around|(|B|)>=M<rsub|n+1>*<around|(|<around|(|B\<times\>B|)>\<cap\>\<Delta\>|)>>.
-    Since <math|M<rsub|n><around|(|A,C|)>=M<around|(|<around|(|A\<cap\>B<rsub|n>|)>,<around|(|C\<cap\>B<rsub|n>|)>|)>>
-    and <math|M<rsub|n+1><around|(|A,C|)>=M<around|(|<around|(|A\<cap\>B<rsub|n+1>|)>,<around|(|C\<cap\>B<rsub|n+1>|)>|)>>.
-    Also <math|B<rsub|n>\<subset\>B<rsub|n+1>>. The measure <math|M>
-    restricted to the diagonal is positive. Let <math|m<rsub|d*i*a*g>> be the
-    measure <math|M> restricted to the diagonal <math|\<Delta\>>. Then
-    <math|m<rsub|n><around|(|B|)>=m<rsub|d*i*a*g>*<around|(|B\<cap\>B<rsub|n>|)>>
-    and <math|m<rsub|n+1><around|(|B|)>=m<rsub|d*i*a*g>*<around|(|B\<cap\>B<rsub|n+1>|)>>.
-    Since <math|B<rsub|n>\<subset\>B<rsub|n+1>>,
-    <math|B\<cap\>B<rsub|n>\<subset\>B\<cap\>B<rsub|n+1>>. Since
-    <math|m<rsub|d*i*a*g>> is a positive measure,
-    <math|m<rsub|d*i*a*g>*<around|(|B\<cap\>B<rsub|n>|)>\<leq\>m<rsub|d*i*a*g>*<around|(|B\<cap\>B<rsub|n+1>|)>>,
-    hence <math|m<rsub|n><around|(|B|)>\<leq\>m<rsub|n+1><around|(|B|)>>.
+    \ and
+
+    <\equation>
+      m<rsub|n+1><around|(|B|)>=M<rsub|n+1>*<around|(|<around|(|B\<times\>B|)>\<cap\>\<Delta\>|)>
+    </equation>
+
+    <math|>Since
+
+    <\equation>
+      M<rsub|n><around|(|A,C|)>=M<around|(|<around|(|A\<cap\>B<rsub|n>|)>,<around|(|C\<cap\>B<rsub|n>|)>|)>
+    </equation>
+
+    \ 
+
+    \ and
+
+    <\equation>
+      M<rsub|n+1><around|(|A,C|)>=M<around|(|<around|(|A\<cap\>B<rsub|n+1>|)>,<around|(|C\<cap\>B<rsub|n+1>|)>|)>
+    </equation>
+
+    <math|where>
+
+    <\equation>
+      B<rsub|n>\<subset\>B<rsub|n+1>
+    </equation>
+
+    The measure <math|M> restricted to the diagonal is positive. Let
+    <math|m<rsub|d*i*a*g>> be the measure <math|M> restricted to the diagonal
+    <math|\<Delta\>>. Then
+
+    <\equation>
+      m<rsub|n><around|(|B|)>=m<rsub|d*i*a*g>*<around|(|B\<cap\>B<rsub|n>|)>
+    </equation>
+
+    \ and
+
+    <\equation>
+      m<rsub|n+1><around|(|B|)>=m<rsub|d*i*a*g>*<around|(|B\<cap\>B<rsub|n+1>|)>
+    </equation>
+
+    . Since
+
+    <\equation>
+      B<rsub|n>\<subset\>B<rsub|n+1>
+    </equation>
+
+    <math|> then
+
+    <\equation>
+      B\<cap\>B<rsub|n>\<subset\>B\<cap\>B<rsub|n+1>
+    </equation>
+
+    Since <math|m<rsub|d*i*a*g>> is a positive measure,\ 
+
+    <\equation>
+      m<rsub|d*i*a*g>*<around|(|B\<cap\>B<rsub|n>|)>\<leq\>m<rsub|d*i*a*g>*<around|(|B\<cap\>B<rsub|n+1>|)>
+    </equation>
+
+    , hence
 
     <\equation>
       m<rsub|n><around|(|B|)>\<leqslant\>m<rsub|n+1><around|(|B|)>
@@ -342,19 +400,22 @@
 
     \ and <math|q=0,1,\<ldots\>>. Then, for any <math|q>, the sets
     <math|I<rsub|q><rsup|r>,r\<in\>\<bbb-Z\>>, form a partition of
-    <math|\<bbb-R\>>, and the sequence <math|S<rsub|q>=<big|cup><rsub|r=-\<infty\>><rsup|+\<infty\>>I<rsub|q><rsup|r>\<times\>I<rsub|q><rsup|r>>
-    decreases towards the diagonal axis <math|\<Delta\>>, as <math|q> becomes
-    infinite.... Given <math|B> in <math|<with|math-font|cal*|B><around|(|\<bbb-R\>|)>,n>,
-    and <math|q>, then the measure <math|M<rsub|n>> verifies:
+    <math|\<bbb-R\>>, and the sequence\ 
+
+    <\equation>
+      S<rsub|q>=<big|cup><rsub|r=-\<infty\>><rsup|+\<infty\>>I<rsub|q><rsup|r>\<times\>I<rsub|q><rsup|r>
+    </equation>
+
+    \ decreases towards the diagonal axis <math|\<Delta\>>, as <math|q>
+    becomes infinite.... Given <math|B> in
+    <math|<with|math-font|cal*|B><around|(|\<bbb-R\>|)>,n>, and <math|q>,
+    then the measure <math|M<rsub|n>> verifies:
 
     <\equation>
       <tabular|<tformat|<table|<row|<cell|0>|<cell|\<leqslant\>M<rsub|n><around*|(|<big|cup><rsub|r=-\<infty\>><rsup|+\<infty\>><around*|(|B\<cap\>I<rsub|q><rsup|r>|)>\<times\><around*|(|B\<cap\>I<rsub|q><rsup|r>|)>|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|r=-\<infty\>><rsup|+\<infty\>>M*<around*|(|<around*|(|B\<cap\>I<rsub|q><rsup|r>\<cap\>B<rsub|n>|)>\<times\><around*|(|B\<cap\>I<rsub|q><rsup|r>\<cap\>B<rsub|n>|)>|)>>>|<row|<cell|>|<cell|\<leqslant\><big|sum><rsub|r=-\<infty\>><rsup|+\<infty\>>m<rsub|d>*<around*|(|B\<cap\>I<rsub|q><rsup|r>\<cap\>B<rsub|n>|)>>>|<row|<cell|>|<cell|=m<rsub|d>*<around*|(|B\<cap\>B<rsub|n>|)>.>>>>>
     </equation>
 
-    Hence, when <math|q> tends to infinity we obtain (taking the limit inside
-    the sum requires justification, perhaps using properties of measures on
-    product spaces, or the definition of <math|m<rsub|n>> as the diagonal
-    restriction):
+    Hence, when <math|q> tends to infinity we obtain:
 
     <\equation>
       0\<leqslant\>m<rsub|n><around|(|B|)>\<leqslant\>m<rsub|d>*<around*|(|B\<cap\>B<rsub|n>|)>\<leqslant\>m<rsub|d><around|(|\<bbb-R\>|)>
@@ -367,10 +428,15 @@
     <math|<with|math-font|cal*|B><around|(|\<bbb-R\>|)>>. It is estimated for
     all <math|n> and <math|B> by
 
-    <\equation*>
-      m<rsub|n><around|(|B|)>\<leqslant\>m<around|(|B|)>\<leqslant\>m<rsub|d><around|(|B|)>\<leqslant\>m<rsub|d><around|(|\<bbb-R\>|)>\<less\>+\<infty\>*<space|1em><text|and
-      ><space|1em>m*<around*|(|B\<cap\>B<rsub|n>|)>=m<rsub|n><around|(|B|)>
-    </equation*>
+    <\equation>
+      m<rsub|n><around|(|B|)>\<leqslant\>m<around|(|B|)>\<leqslant\>m<rsub|d><around|(|B|)>\<leqslant\>m<rsub|d><around|(|\<bbb-R\>|)>\<less\>+\<infty\>*<text|>
+    </equation>
+
+    <math|<text|and>>
+
+    <\equation>
+      m*<around*|(|B\<cap\>B<rsub|n>|)>=m<rsub|n><around|(|B|)>
+    </equation>
 
     Moreover for any bounded Borel function <math|f> one has:
 
@@ -379,11 +445,20 @@
       >m<rsub|n><around|(|A|)>=m*<around|(|A\<cap\>B<rsub|n>|)>|)>>>>|<row|<cell|>|<cell|\<leqslant\><big|int><rsub|B<rsub|n><rsup|c>><around|\||f<around|(|u|)>|\|>*m*<around|(|d*u|)>>>|<row|<cell|>|<cell|\<leqslant\>m<around*|(|B<rsub|n><rprime|'>|)>\<cdot\>sup<rsub|u\<in\>\<bbb-R\>><around|(|<around|\||f<around|(|u|)>|\|>|)>>>>>>>>
     </equation>
 
-    Since <math|m<around|(|B<rsub|n><rprime|'>|)>\<to\>0> as
-    <math|n\<to\>\<infty\>> (because <math|m> is a finite measure and
+    Since\ 
+
+    <\equation>
+      m<around|(|B<rsub|n><rprime|'>|)>\<to\>0 as n\<to\>\<infty\>
+    </equation>
+
+    \ (because <math|m> is a finite measure and
     <math|B<rsub|n><rprime|'>*\<downarrow\>*\<emptyset\>>), the convergence
-    <math|<big|int>f*d*m<rsub|n>\<to\><big|int>f*d*m> holds. Consequently,
-    given <math|\<varepsilon\>\<gtr\>0>, there exists
+
+    <\equation>
+      <big|int>f*d*m<rsub|n>\<to\><big|int>f*d*m
+    </equation>
+
+    \ holds. Consequently, given <math|\<varepsilon\>\<gtr\>0>, there exists
     <math|N<rprime|'><around|(|\<varepsilon\>|)>> such that for
     <math|n\<gtr\>N<rprime|'><around|(|\<varepsilon\>|)>> and for every
     <math|h> (taking <math|f<around|(|u|)>=e<rsup|i*u*h>>):
@@ -393,10 +468,19 @@
     </equation>
 
     (c) From the relations (<reference|eq:a3>) and (<reference|eq:b1>) we
-    deduce that for any <math|\<varepsilon\>\<gtr\>0>, there exists
-    <math|N=max <around|(|N<around|(|\<varepsilon\>|)>,N<rprime|'><around|(|\<varepsilon\>|)>|)>>
-    and <math|T<around|(|\<varepsilon\>|)>=T<around|(|N,\<varepsilon\>|)>>
-    such that for <math|t\<gtr\>T<around|(|\<varepsilon\>|)>> and for every
+    deduce that for any <math|\<varepsilon\>\<gtr\>0>, there exists\ 
+
+    <\equation>
+      N=max <around|(|N<around|(|\<varepsilon\>|)>,N<rprime|'><around|(|\<varepsilon\>|)>|)>
+    </equation>
+
+    \ and
+
+    <\equation>
+      T<around|(|\<varepsilon\>|)>=T<around|(|N,\<varepsilon\>|)>
+    </equation>
+
+    \ such that for <math|t\<gtr\>T<around|(|\<varepsilon\>|)>> and for every
     <math|h> we have:
 
     <\equation>
@@ -406,41 +490,38 @@
     as was to be shown.
   </proof>
 
-  [section]
-
   <\remark>
-    (a) There exist weakly harmonizable processes with
-    non-<math|\<sigma\>>-finite spectral bimeasure. Indeed, Niemi gave an
-    example of a discrete time weakly harmonizable process which is not
-    asymptotically stationary (cf. [11, Sect. 6]). As Theorems 3.1 and 3.2
-    still hold in the discrete time case, its spectral bimeasure is not
-    <math|\<sigma\>>-finite. Consequently, <math|\<mu\>> denoting its
-    spectral stochastic measure (defined on
-    <math|<with|math-font|cal*|B><around|(|<around|[|-\<pi\>,\<pi\>|]>|)>> ),
-    the spectral bimeasure of the (continuous time) weakly harmonizable
-    process defined by
+    <\enumerate-alpha>
+      <item>There exist weakly harmonizable processes with
+      non-<math|\<sigma\>>-finite spectral bimeasure. Indeed, Niemi gave an
+      example of a discrete time weakly harmonizable process which is not
+      asymptotically stationary (cf. [11, Sect. 6]). As Theorems 3.1 and 3.2
+      still hold in the discrete time case, its spectral bimeasure is not
+      <math|\<sigma\>>-finite. Consequently, <math|\<mu\>> denoting its
+      spectral stochastic measure (defined on
+      <math|<with|math-font|cal*|B><around|(|<around|[|-\<pi\>,\<pi\>|]>|)>>
+      ), the spectral bimeasure of the (continuous time) weakly harmonizable
+      process defined by
 
-    <\equation>
-      X<around|(|t|)>=<big|int>e<rsup|i*t*x>*\<mu\>*<around|(|d*x|)>\<forall\>t\<in\>\<bbb-R\>
-    </equation>
+      <\equation>
+        X<around|(|t|)>=<big|int>e<rsup|i*t*x>*\<mu\>*<around|(|d*x|)>\<forall\>t\<in\>\<bbb-R\>
+      </equation>
 
-    is not <math|\<sigma\>>-finite. We do not know if <math|X> is
-    asymptotically stationary.
+      is not <math|\<sigma\>>-finite. We do not know if <math|X> is
+      asymptotically stationary. More generally we do not know how to compare
+      more precisely the class of weakly harmonizable processes and the class
+      of asymptotically stationary processes.\ 
 
-    More generally we do not know how to compare more precisely the class of
-    weakly harmonizable processes and the class of asymptotically stationary
-    processes. (b) So we have:
+      <item>So we have:
 
-    <\equation*>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<table|<row|<cell|<around|{|<text|stationary>|}>>|<cell|\<varsubsetneqq\>>|<cell|<around|{|<text|strongly
-      harmonizable>|}>>>|<row|<cell|>|<cell|\<varsubsetneqq\>>|<cell|<around|{|<text|harmonizable
-      with >\<sigma\><text|-finite bimeasure>|}>>>|<row|<cell|>|<cell|\<varsubsetneqq\>>|<cell|<around|{|<text|weakly
-      harmonizable>|}>>>|<row|<cell|>|<cell|\<subset\>>|<cell|<around|{|<text|asymptotically
-      stationary>|}>>>>>>
-    </equation*>
-
-    (Note: The layout in the original PDF is complex; this array attempts to
-    capture the relationships shown.)
+      <\equation*>
+        <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<table|<row|<cell|<around|{|<text|stationary>|}>>|<cell|\<varsubsetneqq\>>|<cell|<around|{|<text|strongly
+        harmonizable>|}>>>|<row|<cell|>|<cell|\<varsubsetneqq\>>|<cell|<around|{|<text|harmonizable
+        with >\<sigma\><text|-finite bimeasure>|}>>>|<row|<cell|>|<cell|\<varsubsetneqq\>>|<cell|<around|{|<text|weakly
+        harmonizable>|}>>>|<row|<cell|>|<cell|\<subset\>>|<cell|<around|{|<text|asymptotically
+        stationary>|}>>>>>>
+      </equation*>
+    </enumerate-alpha>
   </remark>
 
   <section*|Acknowledgments>
@@ -505,16 +586,16 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|?|1|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-2|<tuple|?|1|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-3|<tuple|1|3|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-4|<tuple|6|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-5|<tuple|22|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-6|<tuple|22|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:a1|<tuple|9|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:a2|<tuple|10|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:a3|<tuple|11|5|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:b1|<tuple|20|6|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-1|<tuple|?|1>>
+    <associate|auto-2|<tuple|?|1>>
+    <associate|auto-3|<tuple|1|3>>
+    <associate|auto-4|<tuple|11|4>>
+    <associate|auto-5|<tuple|b|9>>
+    <associate|auto-6|<tuple|b|9>>
+    <associate|eq:a1|<tuple|14|5>>
+    <associate|eq:a2|<tuple|15|5>>
+    <associate|eq:a3|<tuple|16|5>>
+    <associate|eq:b1|<tuple|39|8>>
   </collection>
 </references>
 
