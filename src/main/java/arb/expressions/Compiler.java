@@ -699,14 +699,14 @@ public class Compiler
     return classVisitor;
   }
 
-  public static String getCoDomainTypeMethodSignature(Class<?> coDomainType)
+  public static String getTypeMethodSignature(Class<?> type)
   {
     SignatureWriter sigWriter = new SignatureWriter();
     sigWriter.visitParameterType();
     sigWriter.visitReturnType();
     sigWriter.visitClassType(Type.getInternalName(Class.class));
     sigWriter.visitTypeArgument('=');
-    sigWriter.visitClassType(Type.getInternalName(coDomainType));
+    sigWriter.visitClassType(Type.getInternalName(type));
     sigWriter.visitEnd();
     sigWriter.visitEnd();
     return sigWriter.toString();

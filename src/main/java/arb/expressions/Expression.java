@@ -906,7 +906,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     MethodVisitor mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
                                                 "domainType",
                                                 Compiler.getMethodDescriptor(Class.class),
-                                                getCoDomainTypeMethodSignature(),
+                                                getDomainTypeMethodSignature(),
                                                 null);
 
     Compiler.annotateWithOverride(mv);
@@ -1389,9 +1389,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return Compiler.generateTypesetMethod(classVisitor, typeset());
   }
 
+  protected String getDomainTypeMethodSignature()
+  {
+    return Compiler.getTypeMethodSignature(domainType);
+  }
+  
   protected String getCoDomainTypeMethodSignature()
   {
-    return Compiler.getCoDomainTypeMethodSignature(coDomainType);
+    return Compiler.getTypeMethodSignature(coDomainType);
   }
 
   protected String getFunctionClassTypeSignature(Class<? extends Function<?, ?>> functionClass)
