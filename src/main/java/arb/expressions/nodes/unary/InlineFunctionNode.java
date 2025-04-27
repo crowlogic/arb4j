@@ -55,7 +55,8 @@ public class InlineFunctionNode<D, C, F extends Function<? extends D, ? extends 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> currentType)
   {
-    functionNode.generate(mv, functionNode.type());
+    Class<?> functionType = functionNode.type();
+    functionNode.generate(mv, functionType);
     // Generate code to evaluate the argument
     arg.generate(mv, currentType);
 
@@ -67,11 +68,11 @@ public class InlineFunctionNode<D, C, F extends Function<? extends D, ? extends 
     loadOutputVariableOntoStack(mv, currentType);
 
     // Use the standardized evaluation method descriptor
-    mv.visitMethodInsn(Opcodes.INVOKEINTERFACE,
-                       Type.getInternalName(currentType),
+    mv.visitMethodInsn(functionType.isInterface() ? Opcodes.INVOKEINTERFACE : Opcodes.INVOKEVIRTUAL,
+                       Type.getInternalName(functionType),
                        "evaluate",
                        Expression.evaluationMethodDescriptor,
-                       true);
+                       functionType.isInterface());
 
     // Cast the result if needed
     if (!currentType.equals(Object.class))

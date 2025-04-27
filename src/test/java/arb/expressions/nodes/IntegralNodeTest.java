@@ -1,11 +1,13 @@
 package arb.expressions.nodes;
 
 import arb.Real;
+import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
+import arb.functions.polynomials.orthogonal.real.JacobiPolynomials;
 import arb.functions.polynomials.orthogonal.real.ShiftedJacobiPolynomials;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
@@ -47,22 +49,21 @@ public class IntegralNodeTest extends
     System.out.println("p3norm=" + p3norm);
     assertEquals(0.09486607143, p3norm.eval());
   }
-  
+
   public void testFunctionOfPolynomialElementOfAContextualSequence()
   {
     var context = new Context();
-    var P       = new ShiftedJacobiPolynomials();
+    var P       = new JacobiPolynomials(RealConstants.negHalf,
+                                        RealConstants.negHalf);
     context.registerSequence("P", P);
-    Expression.trace = true;
     var prototype = RealNullaryFunction.parse("P(3)(0.75)", context);
-    System.out.println(prototype.inspect(null));
 
     var p3val = prototype.instantiate();
-    
-    System.out.println("p3val=" + p3val);
-    //assertEquals(0.09486607143, p3val.eval());
+
+    Real val = p3val.evaluate();
+    assertEquals(-0.17578125, val.doubleValue() );
   }
-  
+
   public void testIntegralOfAnElementOfAContextualSequenceAnotherWay()
   {
     var context = new Context();
