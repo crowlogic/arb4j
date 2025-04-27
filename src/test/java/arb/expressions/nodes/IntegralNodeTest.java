@@ -44,7 +44,6 @@ public class IntegralNodeTest extends
     var context = new Context();
     var P       = new ShiftedJacobiPolynomials();
     context.registerSequence("P", P);
-    Expression.trace = true;
     var p3norm = RealNullaryFunction.express("int(P(3)(x)^2,x=-1..1)", context);
     System.out.println("p3norm=" + p3norm);
     assertEquals(0.09486607143, p3norm.eval());
@@ -69,7 +68,6 @@ public class IntegralNodeTest extends
     var context = new Context();
     var P       = new ShiftedJacobiPolynomials();
     context.registerSequence("P", P);
-    Expression.trace = true;
     var p3norm = RealNullaryFunction.express("int(P(3)^2(x),x=-1..1)", context);
     System.out.println("p3norm=" + p3norm);
     assertEquals(0.09486607143, p3norm.eval());

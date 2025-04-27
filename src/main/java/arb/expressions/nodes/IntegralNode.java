@@ -250,7 +250,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   {
     assert integralFunction == null;
     integralNode = (Node<Object, Object, Function<?, ?>>) integrandNode.integrate(integrationVariableNode.asVariable());
-    System.out.format("computeIndefiniteIntegral: indefiniteIntegral=%s integrationVariableNode=%s\n", integralNode, integrationVariableNode );
 
     integralExpression                      = integralNode.expression.cloneExpression();
     integralExpression.instructionByteCodes = null;

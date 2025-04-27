@@ -900,40 +900,34 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     mv.visitLabel(alreadyInitializedLabel);
   }
 
-  protected ClassVisitor generateDomainTypeMethod(ClassVisitor classVisitor) throws CompilerException
+  private ClassVisitor generateTypeMethod(ClassVisitor classVisitor, String which, Type type, String methodSignature)
   {
-
     MethodVisitor mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                "domainType",
+                                                which,
                                                 Compiler.getMethodDescriptor(Class.class),
-                                                getDomainTypeMethodSignature(),
+                                                methodSignature,
                                                 null);
 
     Compiler.annotateWithOverride(mv);
 
     mv.visitCode();
-    mv.visitLdcInsn(Type.getType(domainType));
+    mv.visitLdcInsn(type);
     Compiler.generateReturnFromMethod(mv);
 
     return classVisitor;
   }
 
+  protected ClassVisitor generateDomainTypeMethod(ClassVisitor classVisitor) throws CompilerException
+  {
+    return generateTypeMethod(classVisitor, "domainType", Type.getType(domainType), getDomainTypeMethodSignature());
+  }
+
   protected ClassVisitor generateCoDomainTypeMethod(ClassVisitor classVisitor) throws CompilerException
   {
-
-    MethodVisitor mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                "coDomainType",
-                                                Compiler.getMethodDescriptor(Class.class),
-                                                getCoDomainTypeMethodSignature(),
-                                                null);
-
-    Compiler.annotateWithOverride(mv);
-
-    mv.visitCode();
-    mv.visitLdcInsn(Type.getType(coDomainType));
-    Compiler.generateReturnFromMethod(mv);
-
-    return classVisitor;
+    return generateTypeMethod(classVisitor,
+                              "coDomainType",
+                              Type.getType(coDomainType),
+                              getCoDomainTypeMethodSignature());
   }
 
   protected void generateConditionalInitializater(MethodVisitor mv)
@@ -1393,7 +1387,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     return Compiler.getTypeMethodSignature(domainType);
   }
-  
+
   protected String getCoDomainTypeMethodSignature()
   {
     return Compiler.getTypeMethodSignature(coDomainType);
@@ -2012,7 +2006,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     node = resolveAbsoluteValue(node);
     if (nextCharacterIs('('))
     {
-      node = (N) new InlineFunctionNode<D,C,F>(this, node );
+      node = (N) new InlineFunctionNode<D, C, F>(this,
+                                                 node);
     }
     return node;
   }
