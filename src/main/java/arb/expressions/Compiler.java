@@ -62,6 +62,32 @@ import arb.utensils.Utensils;
 
 public class Compiler
 {
+  
+  public static HashMap<Class<?>, String> typePrefixes = new HashMap<>();
+
+  static
+  {
+    typePrefixes.put(AlgebraicNumber.class, "𝔸");
+    typePrefixes.put(Real.class, "ℝ");
+    typePrefixes.put(Complex.class, "ℂ");
+    typePrefixes.put(Integer.class, "ℤ");
+    typePrefixes.put(RealPolynomial.class, "Xℝ");
+    typePrefixes.put(ComplexPolynomial.class, "Xℂ");
+    typePrefixes.put(RealMatrix.class, "ℝᵐˣⁿ");
+    typePrefixes.put(ComplexMatrix.class, "ℂᵐˣⁿ");
+    typePrefixes.put(RationalFunction.class, "ℚ");
+    typePrefixes.put(ComplexRationalFunction.class, "ℚℂ");
+    typePrefixes.put(Fraction.class, "q");
+    typePrefixes.put(LommelPolynomial.class, "XR");
+    typePrefixes.put(RationalHypergeometricFunction.class, "ℚF");
+    typePrefixes.put(RealHypergeometricPolynomialFunction.class, "XℝF");
+    typePrefixes.put(ComplexHypergeometricPolynomialFunction.class, "XℂF");
+    typePrefixes.put(ComplexRationalHypergeometricFunction.class, "ℚℂF");
+    typePrefixes.put(ComplexFraction.class, "fℂ");
+    typePrefixes.put(SphericalBesselFunction.class, "sph");
+    typePrefixes.put(IntegerPolynomial.class, "Xℤ");
+  }
+  
   public static final String objectDesc = Type.getInternalName(Object.class);
 
   public static void addNullCheckForField(MethodVisitor mv, String className, String fieldName, String fieldDesc)
@@ -291,33 +317,7 @@ public class Compiler
 
   }
 
-  public static HashMap<Class<?>, String> typePrefixes = new HashMap<>();
 
-  static
-  {
-    // note: this could probably be implemented in a more organized way with
-    // annotations so that the prefix could be in the same place the type is
-    // declared rather than centralized here in this static initializer
-    typePrefixes.put(AlgebraicNumber.class, "𝔸");
-    typePrefixes.put(Real.class, "ℝ");
-    typePrefixes.put(Complex.class, "ℂ");
-    typePrefixes.put(Integer.class, "ℤ");
-    typePrefixes.put(RealPolynomial.class, "Xℝ");
-    typePrefixes.put(ComplexPolynomial.class, "Xℂ");
-    typePrefixes.put(RealMatrix.class, "ℝᵐˣⁿ");
-    typePrefixes.put(ComplexMatrix.class, "ℂᵐˣⁿ");
-    typePrefixes.put(RationalFunction.class, "ℚ");
-    typePrefixes.put(ComplexRationalFunction.class, "ℚℂ");
-    typePrefixes.put(Fraction.class, "f");
-    typePrefixes.put(LommelPolynomial.class, "XR");
-    typePrefixes.put(RationalHypergeometricFunction.class, "ℚF");
-    typePrefixes.put(RealHypergeometricPolynomialFunction.class, "XℝF");
-    typePrefixes.put(ComplexHypergeometricPolynomialFunction.class, "XℂF");
-    typePrefixes.put(ComplexRationalHypergeometricFunction.class, "ℚℂF");
-    typePrefixes.put(ComplexFraction.class, "fℂ");
-    typePrefixes.put(SphericalBesselFunction.class, "sph");
-    typePrefixes.put(IntegerPolynomial.class, "Xℤ");
-  }
 
   public static String getVariablePrefix(Class<?> type)
   {
