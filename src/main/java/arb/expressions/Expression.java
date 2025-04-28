@@ -146,7 +146,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var codomain = coDomainType;
     return codomain.equals(RealPolynomial.class) || codomain.equals(ComplexPolynomial.class)
                   || codomain.equals(RationalFunction.class) || codomain.equals(ComplexRationalFunction.class)
-                  || Function.class.isAssignableFrom(codomain);
+                  || Function.class.isAssignableFrom(codomain) || domainType.equals(Object.class);
   }
 
   @SuppressWarnings("unchecked")
@@ -2007,7 +2007,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (nextCharacterIs('('))
     {
       node = (N) new FunctionEvaluationNode<D, C, F>(this,
-                                                 node);
+                                                     node);
     }
     return node;
   }

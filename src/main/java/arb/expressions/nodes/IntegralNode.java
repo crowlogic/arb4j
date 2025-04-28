@@ -155,7 +155,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       if (expression.nextCharacterIs('∈'))
       {
         lowerLimitNode = expression.require('(').resolve();
-        upperLimitNode = expression.require(',').resolve();
+        upperLimitNode = expression.require(',','…').resolve();
         expression.require(')');
       }
     }
