@@ -2006,7 +2006,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     node = resolveAbsoluteValue(node);
     if (nextCharacterIs('('))
     {
-      node = (N) new InlineFunctionNode<D, C, F>(this,
+      node = (N) new FunctionEvaluationNode<D, C, F>(this,
                                                  node);
     }
     return node;

@@ -26,7 +26,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class InlineFunctionNode<D, C, F extends Function<? extends D, ? extends C>> extends
+public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? extends C>> extends
                                UnaryOperationNode<D, C, F>
 {
 
@@ -38,14 +38,14 @@ public class InlineFunctionNode<D, C, F extends Function<? extends D, ? extends 
 
   private Node<D, C, F> functionNode;
 
-  public InlineFunctionNode(Expression<D, C, F> expression, Node<D, C, F> functionNode)
+  public FunctionEvaluationNode(Expression<D, C, F> expression, Node<D, C, F> functionNode)
   {
     super(expression.resolve(),
           expression.require(')'));
     this.functionNode = functionNode;
   }
 
-  public InlineFunctionNode(Expression<D, C, F> expression, Node<D, C, F> functionNode, Node<D, C, F> arg)
+  public FunctionEvaluationNode(Expression<D, C, F> expression, Node<D, C, F> functionNode, Node<D, C, F> arg)
   {
     super(arg,
           expression);
@@ -106,7 +106,7 @@ public class InlineFunctionNode<D, C, F extends Function<? extends D, ? extends 
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new InlineFunctionNode<>(newExpression,
+    return new FunctionEvaluationNode<>(newExpression,
                                     arg.spliceInto(newExpression));
   }
 
