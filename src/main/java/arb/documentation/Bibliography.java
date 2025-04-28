@@ -1,15 +1,9 @@
 package arb.documentation;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 
-import arb.documentation.references.Article;
-import arb.documentation.references.Book;
-import arb.documentation.references.InCollection;
-import arb.documentation.references.MastersThesis;
-import arb.documentation.references.Miscellaneous;
+import arb.documentation.references.*;
 
 /**
  * Bibliography<br>
@@ -21,6 +15,15 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+
+  public static Article       linearPredictionNonStationaryProcesses                          =
+                                                                     new Article("On the linear prediction problem of certain non-stationary stochastic processes",
+                                                                                 "Hannu Niemi",
+                                                                                 "1976",
+                                                                                 "Mathematica Scandinavica",
+                                                                                 "39",
+                                                                                 "146--160").setNumber("1")
+                                                                                            .setPublisher("JSTOR");
 
   public static Article       harmonizableStochasticProcesses                                 =
                                                               new Article("On harmonizable stochastic processes",
