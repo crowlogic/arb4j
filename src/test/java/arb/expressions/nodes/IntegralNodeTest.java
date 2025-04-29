@@ -38,7 +38,6 @@ public class IntegralNodeTest extends
     var f = F.evaluate();
     assertEquals("6.25*x⁶ - 9.375*x⁴ - 5*x³ + 3.515625*x² + 3.75*x + 1", f.toString());
   }
-
   public void testIntegralOfAElementOfAContextualSequence()
   {
     var context = new Context();
