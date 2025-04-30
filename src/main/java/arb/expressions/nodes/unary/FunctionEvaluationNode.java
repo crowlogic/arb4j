@@ -106,19 +106,19 @@ public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? exte
   @Override
   public Node<D, C, F> differentiate(VariableNode<D, C, F> variable)
   {
-    throw new UnsupportedOperationException("Differentiation not implemented for AnonymousFunctionNode");
+    throw new UnsupportedOperationException("Differentiation not implemented for " + getClass() );
   }
 
   @Override
   public Node<D, C, F> integrate(VariableNode<D, C, F> variable)
   {
-    throw new UnsupportedOperationException("Integration not implemented for AnonymousFunctionNode");
+   throw new UnsupportedOperationException("Integration not implemented for " + getClass() );
   }
 
   @Override
   public boolean isLeaf()
   {
-    return false;
+    return functionNode.isLeaf() && arg.isLeaf();
   }
 
   @Override
@@ -130,7 +130,7 @@ public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? exte
   @Override
   public boolean isScalar()
   {
-    return !expression.coDomainType.isArray();
+    return functionNode.isScalar();
   }
 
   @Override
