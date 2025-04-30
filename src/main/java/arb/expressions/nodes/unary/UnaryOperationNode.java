@@ -49,7 +49,7 @@ public abstract class UnaryOperationNode<D, R, F extends Function<? extends D, ?
     this.arg = arg;
   }
 
-  public UnaryOperationNode(Node<D, R, F> arg, Expression<D, R, F> expression)
+  public UnaryOperationNode(Expression<D, R, F> expression, Node<D, R, F> arg)
   {
     super(expression);
     this.arg = arg;

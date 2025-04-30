@@ -70,8 +70,8 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
 
   public WhenNode(Expression<D, R, F> expression)
   {
-    super(null,
-          expression);
+    super(expression,
+          null);
     cases = new TreeMap<>();
 
     do
@@ -92,8 +92,8 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   public <E, S, G extends Function<? extends E, ? extends S>> WhenNode(Expression<D, R, F> expression,
                                                                        TreeMap<Integer, Node<E, S, G>> cases)
   {
-    super(null,
-          expression);
+    super(expression,
+          null);
     this.cases = new TreeMap<>();
 
     for (var entry : cases.entrySet())

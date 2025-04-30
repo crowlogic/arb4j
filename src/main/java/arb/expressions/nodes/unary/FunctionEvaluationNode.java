@@ -36,8 +36,18 @@ public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? exte
 
   public FunctionEvaluationNode(Expression<D, C, F> expression, Node<D, C, F> functionNode)
   {
-    super(expression.resolve(),
-          expression.require(')'));
+    super(expression,
+          expression.resolve());
+    expression.require(')');
+    this.functionNode = functionNode;
+  }
+
+  private FunctionEvaluationNode(Expression<D, C, F> expression,
+                                 FunctionNode<D, C, F> functionNode,
+                                 Node<D, C, F> argNode)
+  {
+    super(expression,
+          argNode);
     this.functionNode = functionNode;
   }
 
@@ -90,8 +100,9 @@ public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? exte
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new FunctionEvaluationNode<>(newExpression,
-                                        arg.spliceInto(newExpression));
+    return new FunctionEvaluationNode<E, S, G>(newExpression,
+                                               functionNode.spliceInto(newExpression).asFunction(),
+                                               arg.spliceInto(newExpression));
   }
 
   @Override
@@ -112,7 +123,7 @@ public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? exte
   @Override
   public Node<D, C, F> integrate(VariableNode<D, C, F> variable)
   {
-    throw new UnsupportedOperationException("Integration not implemented for AnonymousFunctionNode");
+    throw new UnsupportedOperationException(String.format("TODO: integrate(variable=%s)\n", variable));
   }
 
   @Override

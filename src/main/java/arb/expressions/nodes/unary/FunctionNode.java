@@ -125,8 +125,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @SuppressWarnings("unchecked")
   public FunctionNode(String functionName, Node<D, R, F> argument, Expression<D, R, F> expression)
   {
-    super(argument,
-          expression);
+    super(expression,
+          argument);
     this.functionName = functionName;
     assignFunctionName();
     if (this.expression.context != null)
