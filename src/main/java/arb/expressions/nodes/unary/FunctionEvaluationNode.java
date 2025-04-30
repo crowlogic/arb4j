@@ -123,7 +123,11 @@ public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? exte
   @Override
   public Node<D, C, F> integrate(VariableNode<D, C, F> variable)
   {
-    throw new UnsupportedOperationException(String.format("TODO: integrate(variable=%s)\n", variable));
+    throw new UnsupportedOperationException(String.format("TODO: integrate functionNode=%s functionNode.type=%s this=%s with respect to (variable=%s)\n",
+                                                          functionNode,
+                                                          functionNode.type(),
+                                                          this,
+                                                          variable));
   }
 
   @Override
