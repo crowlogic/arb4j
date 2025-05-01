@@ -42,7 +42,7 @@ public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? exte
   }
 
   private FunctionEvaluationNode(Expression<D, C, F> expression,
-                                 FunctionNode<D, C, F> functionNode,
+                                 Node<D, C, F> functionNode,
                                  Node<D, C, F> argNode)
   {
     super(expression,
@@ -100,7 +100,7 @@ public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? exte
          spliceInto(Expression<E, S, G> newExpression)
   {
     return new FunctionEvaluationNode<E, S, G>(newExpression,
-                                               functionNode.spliceInto(newExpression).asFunction(),
+                                               functionNode.spliceInto(newExpression),
                                                arg.spliceInto(newExpression));
   }
 
@@ -123,9 +123,9 @@ public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? exte
   public Node<D, C, F> integrate(VariableNode<D, C, F> variable)
   {
     // Always wrap this node with an IntegralNode for integration.
-    return new IntegralNode<>(expression,
-                              this,
-                              variable);
+    return new IntegralNode<D, C, F>(expression,
+                                     this,
+                                     variable);
   }
 
   @Override

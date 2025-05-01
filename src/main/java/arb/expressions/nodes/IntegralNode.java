@@ -22,6 +22,7 @@ import arb.expressions.Expression;
 import arb.expressions.FunctionMapping;
 import arb.expressions.Parser;
 import arb.expressions.VariableReference;
+import arb.expressions.nodes.unary.FunctionEvaluationNode;
 import arb.functions.Function;
 
 /**
@@ -155,14 +156,14 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       if (expression.nextCharacterIs('∈'))
       {
         lowerLimitNode = expression.require('(').resolve();
-        upperLimitNode = expression.require(',','…').resolve();
+        upperLimitNode = expression.require(',', '…').resolve();
         expression.require(')');
       }
     }
     else
     {
       integrandNode = expression.resolve();
-      dvar = expression.require(',').parseName();
+      dvar          = expression.require(',').parseName();
       var reference = new VariableReference<D, C, F>(dvar);
       integrationVariableNode = new VariableNode<>(expression,
                                                    reference,
@@ -178,6 +179,15 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
 
     var type = type();
     assignFieldNames(type);
+  }
+
+  public IntegralNode(Expression<D, C, F> expression,
+                      Node<D, C, F> functionEvaluationNode,
+                      VariableNode<D, C, F> variable)
+  {
+    super(expression);
+    integrandNode           = functionEvaluationNode;
+    integrationVariableNode = variable;
   }
 
   protected void assignFieldNames(Class<?> resultType)
@@ -249,7 +259,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   private void computeIndefiniteIntegral()
   {
     assert integralFunction == null;
-    integralNode = (Node<Object, Object, Function<?, ?>>) integrandNode.integrate(integrationVariableNode.asVariable());
+    integralNode                            =
+                 (Node<Object, Object, Function<?, ?>>) integrandNode.integrate(integrationVariableNode.asVariable());
 
     integralExpression                      = integralNode.expression.cloneExpression();
     integralExpression.instructionByteCodes = null;
@@ -335,7 +346,9 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    var integral = new IntegralNode<E, S, G>(newExpression);
+    var integral = new IntegralNode<E, S, G>(newExpression,
+                                             integrandNode.spliceInto(newExpression),
+                                             integrationVariableNode.spliceInto(newExpression).asVariable());
     integral.integralFunctionFieldName   = integralFunctionFieldName;
     integral.lowerIntegralValueFieldName = integral.lowerIntegralValueFieldName;
     integral.upperIntegralValueFieldName = integral.upperIntegralValueFieldName;
