@@ -10,8 +10,7 @@ import org.objectweb.asm.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.*;
 import arb.functions.Function;
 
 /**
@@ -123,11 +122,10 @@ public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? exte
   @Override
   public Node<D, C, F> integrate(VariableNode<D, C, F> variable)
   {
-    throw new UnsupportedOperationException(String.format("TODO: integrate functionNode=%s functionNode.type=%s this=%s with respect to (variable=%s)\n",
-                                                          functionNode,
-                                                          functionNode.type(),
-                                                          this,
-                                                          variable));
+    // Always wrap this node with an IntegralNode for integration.
+    return new IntegralNode<>(expression,
+                              this,
+                              variable);
   }
 
   @Override

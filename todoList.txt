@@ -1,5 +1,4 @@
 implement ∂/∂x[∏ᵢ₌₁ᵏfᵢ(x)] = ∑ᵢ₌₁ᵏ[(∂/∂x fᵢ(x))∏ⱼ₌₁,ⱼ≠ᵢᵏfⱼ(x)]
-expr compiler: add constant %=0.01 #601
 SphericalBesselFunction functional bug #581
 expression compiler optimization: move expression evaluation that doesnt depend on input to the evaluate method to the initialization method #567
 expression compiler: implement caching #555
