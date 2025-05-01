@@ -41,9 +41,7 @@ public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? exte
     this.functionNode = functionNode;
   }
 
-  private FunctionEvaluationNode(Expression<D, C, F> expression,
-                                 Node<D, C, F> functionNode,
-                                 Node<D, C, F> argNode)
+  public FunctionEvaluationNode(Expression<D, C, F> expression, Node<D, C, F> functionNode, Node<D, C, F> argNode)
   {
     super(expression,
           argNode);
@@ -122,10 +120,20 @@ public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? exte
   @Override
   public Node<D, C, F> integrate(VariableNode<D, C, F> variable)
   {
-    // Always wrap this node with an IntegralNode for integration.
-    return new IntegralNode<D, C, F>(expression,
-                                     this,
-                                     variable);
+    // If we have a polynomial function application being integrated
+    // with respect to its argument
+    if (functionNode.type().equals(arb.RealPolynomial.class) && arg.equals(variable))
+    {
+      // Create a concrete PolynomialIntegralNode to handle the integration
+      return new PolynomialIntegralNode<>(expression,
+                                          functionNode,
+                                          arg);
+    }
+
+    // For other cases, use regular IntegralNode
+    return new IntegralNode<>(expression,
+                              this,
+                              variable);
   }
 
   @Override
