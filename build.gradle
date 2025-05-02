@@ -11,7 +11,7 @@ plugins {
 group = 'org.arblib'
 version = '0.99.8'
 description = 'arb4j'
-java.sourceCompatibility = JavaVersion.VERSION_23
+java.sourceCompatibility = JavaVersion.VERSION_24
 
 javafx {
     version = "23.0.1" 
@@ -104,7 +104,7 @@ build.finalizedBy createDesktopFile
 build.finalizedBy installDesktopFile
 
 tasks.withType(Javadoc) {
-    options.addStringOption('source', '23') 
+    options.addStringOption('source', '24') 
     options.addBooleanOption('-enable-preview', true)
     options.addBooleanOption('Xdoclint:none', true) 
     options.addBooleanOption('quiet', true)         
