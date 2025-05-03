@@ -64,7 +64,7 @@ public class IntegralNodeTest extends
     assertEquals(-0.17578125, val.doubleValue());
   }
 
-  public void testIntegralOfAnElementOfAContextualSequenceAnotherWay()
+  public void testIntegralOfAnElementOfAContextualSequenceSquared()
   {
     var context = new Context();
     var P       = new JacobiPolynomials(RealConstants.negHalf,RealConstants.negHalf);
