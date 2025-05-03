@@ -26,14 +26,14 @@
   spectral measure <math|F> defined by
 
   <\equation>
-    <label|eq:spectral_measure>F*<around|(|A\<cap\>B|)>=<around|(|\<Phi\><around|(|A|)>,\<Phi\><around|(|B|)>|)>,A*<space|1em><text|and
-    ><space|1em>B<space|1em><text|Borel sets>
+    <label|eq:spectral_measure>F*<around|(|A\<cap\>B|)>=<around|(|\<Phi\><around|(|A|)>,\<Phi\><around|(|B|)>|)>
   </equation>
 
-  is a bounded countably additive nonnegative measure (for the definition of
-  orthogonally scattered measures, see <cite|masani>). In this case the
-  correlation function <math|R<around|(|t,s|)>=<around|(|X<rsub|t>,X<rsub|s>|)>>
-  has the representation
+  is a bounded countably additive nonnegative measure for all <math|Borel
+  sets A> and <math|B> (for the definition of orthogonally scattered
+  measures, see <cite|masani>). In this case the correlation function
+  <math|R<around|(|t,s|)>=<around|(|X<rsub|t>,X<rsub|s>|)>> has the
+  representation
 
   <\equation>
     <label|eq:correlation>R<around|(|t,s|)>=<big|int><rsub|R>e<rsup|-i*<around|(|t-s|)>*u>*d*F<around|(|u|)>
@@ -241,14 +241,14 @@
   <math|L<rsub|2><around|(|A<rsub|n>,m<rsub|n>|)>>, i.e.,
 
   <\equation>
-    <label|eq:operator_inequality><frac|\<pi\>|2>*<around|(|Q<rsub|n><rsup|2>*f,f|)>\<geq\><frac|1|n>*<around|(|P<rsub|n>*f,f|)>,<space|1em><text|for
+    <label|eq:operator_inequality><frac|\<pi\>|2>*<around|(|Q<rsub|n><rsup|2>*f,f|)>\<geq\><frac|1|n>*<around|(|P<rsub|n>*f,f|)><space|1em><text|for
     all >f\<in\>L<rsub|2><around|(|A<rsub|n>,m<rsub|n>|)>
   </equation>
 
   Define the kernel <math|L<around|(|\<cdummy\>,\<cdummy\>|)>> by
 
   <\equation>
-    <label|eq:kernel>L<around|(|r,s|)>=<big|int><rsub|A<rsub|n>><math-up|sign><around|[|<around|(|r,t|)>|]><space|1em><math-up|sign><around|[|<around|(|s,t|)>|]>*d*m<rsub|n><around|(|t|)>
+    <label|eq:kernel>L<around|(|r,s|)>=<big|int><rsub|A<rsub|n>><math-up|sign><around|[|<around|(|r,t|)>|]><math-up|sign><around|[|<around|(|s,t|)>|]>*d*m<rsub|n><around|(|t|)>
   </equation>
 
   Simple computation on <eqref|eq:operator_inequality> shows that for all
@@ -278,7 +278,7 @@
   Now since the matrix\ 
 
   <\equation>
-    <around|[|<frac|\<pi\>|2>*L<around|(|t<rsub|i>,t<rsub|j>|)><around|\<\|\|\>|t<rsub|i>|\<\|\|\>>\<\|\|\>t<rsub|i>\<\|\|\>-<around|(|t<rsub|i>,t<rsub|j>|)>|]><rsub|i,j=1><rsup|n>
+    <around*|[|<frac|\<pi\>|2>*L<around|(|t<rsub|i>,t<rsub|j>|)><around|\<\|\|\>|t<rsub|i>|\<\|\|\>>\<\|\|\>t<rsub|i>\<\|\|\>-<around|(|t<rsub|i>,t<rsub|j>|)>|]><rsub|i,j=1><rsup|n>
   </equation>
 
   \ is symmetric with real entries, <eqref|eq:real_numbers> implies the
@@ -361,7 +361,7 @@
         <big|sum><rsub|i=1><rsup|m><around|\||\<gamma\><rsub|i>|\|><rsup|2>=1
       </equation>
 
-      , we have
+      ,e have
 
       <\equation>
         <label|eq:complex_inequality><around*|\||<big|int><big|int><rsub|R<rsup|2>><around*|(|<big|sum><rsub|i=1><rsup|m>\<gamma\><rsub|i>*\<chi\><rsub|U<rsub|i>><around|(|s|)>|)><around*|(|<big|sum><rsub|j=1><rsup|m>\<gamma\><rsub|j>*\<chi\><rsub|U<rsub|j>><around|(|t|)>|)>*d*F<around|(|s,t|)>|\|>\<leq\>1
@@ -373,7 +373,7 @@
         <around|\<\|\|\>|<big|sum><rsub|i=1><rsup|m>\<gamma\><rsub|i>*\<chi\><rsub|U<rsub|i>>|\<\|\|\>><rsub|\<infty\>>\<leq\>1
       </equation>
 
-      , and <reference|item:bound_a> applies with
+      and <reference|item:bound_a> applies with
 
       <\equation>
         \<varphi\>=\<psi\>=<big|sum><rsub|i=1><rsup|m>\<gamma\><rsub|i>*\<chi\><rsub|U<rsub|i>>
@@ -425,7 +425,7 @@
 
       <\equation>
         <label|eq:final_real><big|sum><rsub|k=1><rsup|n><big|int><big|int><rsub|R<rsup|2>>\<varphi\><rsub|k><around|(|s|)>*\<varphi\><rsub|k><around|(|t|)>*d*F<around|(|s,t|)>\<leq\>\<pi\>*c*sup<rsub|t\<in\>R>
-        <big|sum><rsub|k=1><rsup|n>\<varphi\><rsub|k><around|(|t|)><rsup|2>.
+        <big|sum><rsub|k=1><rsup|n>\<varphi\><rsub|k><around|(|t|)><rsup|2>
       </equation>
 
       This completes the proof of <reference|item:bound_b> for the
@@ -555,7 +555,7 @@
     countably additive nonnegative measure such that
 
     <\equation>
-      <label|eq:T_mu0>T<around|(|\<psi\>|)>=<big|int><rsub|R>\<psi\><around|(|t|)>*d*\<mu\><rsub|0><around|(|t|)>,\<psi\>\<in\>C<rsub|R><around|(|R|)>
+      <label|eq:T_mu0>T<around|(|\<psi\>|)>=<big|int><rsub|R>\<psi\><around|(|t|)>*d*\<mu\><rsub|0><around|(|t|)>\<forall\>\<psi\>\<in\>C<rsub|R><around|(|R|)>
     </equation>
 
     For any bounded continuous complex-valued function <math|\<psi\>> we have
@@ -594,14 +594,18 @@
     or equivalently
 
     <\equation>
-      <label|eq:mu0_bound_2><around*|(|<big|int><rsub|R>\<psi\><around|(|s|)>*d*\<Phi\><around|(|s|)>,<big|int><rsub|R>\<psi\><around|(|s|)>*d*\<Phi\><around|(|s|)>|)>\<leq\>\<rho\>*<big|int><rsub|R><around|\||\<psi\><around|(|t|)>|\|><rsup|2>*d*\<mu\><rsub|0><around|(|t|)>
+      <label|eq:mu0_bound_2><around*|\<langle\>|<big|int><rsub|R>\<psi\><around|(|s|)>*d*\<Phi\><around|(|s|)>,<big|int><rsub|R>\<psi\><around|(|s|)>*d*\<Phi\><around|(|s|)>|\<rangle\>>\<leq\>\<rho\>*<big|int><rsub|R><around|\||\<psi\><around|(|t|)>|\|><rsup|2>*d*\<mu\><rsub|0><around|(|t|)>
     </equation>
 
     Let <math|\<psi\>> be in <math|C<rsub|C><around|(|R|)>>. Take a sequence
     <math|\<psi\><rsub|n>> in <math|C<rsub|C><around|(|R|)>> such that
-    <math|\<psi\><rsub|n>\<to\>\<psi\>> pointwise and
-    <math|<around|\||\<psi\><rsub|n><around|(|s|)>|\|>\<leq\>sup<rsub|t\<in\>R><around|\||\<psi\><around|(|t|)>|\|>>.
-    Since <math|\<mu\><rsub|0>> is bounded by the usual Lebesgue dominated
+    <math|\<psi\><rsub|n>\<to\>\<psi\>> pointwise and\ 
+
+    <\equation>
+      <around|\||\<psi\><rsub|n><around|(|s|)>|\|>\<leq\>sup<rsub|t\<in\>R><around|\||\<psi\><around|(|t|)>|\|>
+    </equation>
+
+    . Since <math|\<mu\><rsub|0>> is bounded by the usual Lebesgue dominated
     convergence theorem <math|<big|int><rsub|R><around|\||\<psi\><rsub|n><around|(|t|)>|\|><rsup|2>*d*\<mu\><rsub|0><around|(|t|)>>
     converges to <math|<big|int><rsub|R><around|\||\<psi\><around|(|t|)>|\|><rsup|2>*d*\<mu\><rsub|0><around|(|t|)>>.
     Also by (<cite|dunford>, p. 328, Theorem 10)
@@ -610,9 +614,9 @@
     Therefore applying <eqref|eq:mu0_bound_1> to the sequence
     <math|\<psi\><rsub|n>> and then taking limits one obtains
 
-    <with|font-base-size|8|<\equation>
-      <label|eq:mu0_bound_final><big|int><big|int><rsub|R<rsup|2>>\<psi\><around|(|s|)>*<wide|\<psi\>|\<bar\>><around|(|t|)>*d*F<around|(|s,t|)>=<around*|(|<big|int><rsub|R>\<psi\><around|(|s|)>*d*\<Phi\><around|(|s|)>,<big|int><rsub|R>\<psi\><around|(|s|)>*d*\<Phi\><around|(|s|)>|)>\<leq\>\<rho\>*<big|int><rsub|R><around|\||\<psi\><around|(|t|)>|\|><rsup|2>*d*\<mu\><rsub|0><around|(|t|)>,\<psi\>\<in\>C<rsub|C><around|(|R|)>
-    </equation>>
+    <\equation>
+      <with|font-base-size|8|<label|eq:mu0_bound_final><big|int><big|int><rsub|R<rsup|2>>\<psi\><around|(|s|)><wide|\<psi\>|\<bar\>><around|(|t|)>*d*F<around|(|s,t|)>=<around*|\<langle\>|<big|int><rsub|R>\<psi\><around|(|s|)>*d*\<Phi\><around|(|s|)>,<big|int><rsub|R>\<psi\><around|(|s|)>*d*\<Phi\><around|(|s|)>|\<rangle\>>\<leq\>\<rho\>*<big|int><rsub|R><around|\||\<psi\><around|(|t|)>|\|><rsup|2>*d*\<mu\><rsub|0><around|(|t|)>,\<psi\>\<in\>C<rsub|C><around|(|R|)>>
+    </equation>
 
     Hence <math|\<mu\>=\<rho\>*\<mu\><rsub|0>> is the desired measure.
   </proof>
@@ -630,7 +634,7 @@
     </equation>
 
     where <math|P> is the projection from <math|<with|math-font|cal*|K>> onto
-    <math|<with|math-font|cal*|H>>.
+    <math|<with|math-font|cal*|H>>
   </theorem>
 
   <\proof>
@@ -661,12 +665,22 @@
     </equation>
 
     Let <math|<with|math-font|cal*|H><rprime|'>> be the Hilbert space
-    obtained from completing <math|C<rsub|C><around|(|R|)>/<around|{|f\<in\>C<rsub|C><around|(|R|)>\|<around|(|f,f|)><rprime|'>=0|}>>
+    obtained from completing <math|>
+
+    <\equation>
+      C<rsub|C><around|(|R|)>/<around|{|f\<in\>C<rsub|C><around|(|R|)>\|<around|(|f,f|)><rprime|'>=0|}>
+    </equation>
+
     with respect to the norm <math|<around|\<\|\|\>|f|\<\|\|\>><rprime|'>=<sqrt|<around|(|f,f|)><rprime|'>>>,
     and <math|Z<rsub|t>> be the image of the functional
     <math|u\<to\>e<rsup|-i*u*t>> under the canonical mapping
     <math|C<rsub|C><around|(|R|)>\<to\><with|math-font|cal*|H><rprime|'>>.
-    Now let <math|<with|math-font|cal*|K>=<with|math-font|cal*|H>\<oplus\><with|math-font|cal*|H><rprime|'>>,
+    Now let
+
+    <\equation>
+      <with|math-font|cal*|K>=<with|math-font|cal*|H>\<oplus\><with|math-font|cal*|H><rprime|'>
+    </equation>
+
     identifying <math|<with|math-font|cal*|H>> with the subspace
     <math|<with|math-font|cal*|H>\<oplus\><around|{|0|}>> of
     <math|<with|math-font|cal*|K>>. Let\ 
@@ -675,7 +689,13 @@
       Y<rsub|t>=X<rsub|t>+Z<rsub|t>\<forall\>t\<in\>R
     </equation>
 
-    Obviously, <math|X<rsub|t>=P*Y<rsub|t>> and
+    Obviously,\ 
+
+    <\equation>
+      X<rsub|t>=P*Y<rsub|t>
+    </equation>
+
+    \ and
 
     <\equation>
       <label|eq:Y_inner_product><around|(|Y<rsub|s>,Y<rsub|t>|)><rsub|<with|math-font|cal*|K>>=<around|(|X<rsub|s>,X<rsub|t>|)><rsub|<with|math-font|cal*|H>>+<around|(|Z<rsub|s>,Z<rsub|t>|)><rprime|'>\<forall\>s,t\<in\>R
@@ -730,32 +750,37 @@
     semi-variation. Then the process <math|X<rsub|t>> defined by
 
     <\equation>
-      <label|eq:X_Phi>X<rsub|t>=<big|int><rsub|R>e<rsup|-i*t*u>*d*\<Phi\><around|(|u|)>,
+      <label|eq:X_Phi>X<rsub|t>=<big|int><rsub|R>e<rsup|-i*t*u>*d*\<Phi\><around|(|u|)>
     </equation>
 
     is harmonizable. Now by Theorem <reference|thm:main_theorem> there exists
     a Hilbert space <math|<with|math-font|cal*|K>> containing
     <math|<with|math-font|cal*|H>> and a stationary process
-    <math|Y<rsub|t>,t\<in\>R>, such that <math|X<rsub|t>=P*Y<rsub|t>,t\<in\>R>.
+    <math|Y<rsub|t>\<forall\>t\<in\>R>, such that
+
+    <\equation>
+      X<rsub|t>=P*Y<rsub|t>\<forall\>t\<in\>R
+    </equation>
+
     Let <math|E> be the well-known corresponding orthogonally scattered
     <math|<with|math-font|cal*|K>>-valued measure. We have
 
     <\equation>
-      <label|eq:X_PY>X<rsub|t>=P*Y<rsub|t>=P<around*|(|<big|int><rsub|R>e<rsup|-i*t*u>*d*E<around|(|u|)>|)>=<big|int><rsub|R>e<rsup|-i*t*u>*P*E<around|(|u|)>.
+      <label|eq:X_PY>X<rsub|t>=P*Y<rsub|t>=P<around*|(|<big|int><rsub|R>e<rsup|-i*t*u>*d*E<around|(|u|)>|)>=<big|int><rsub|R>e<rsup|-i*t*u>*P*E<around|(|u|)>
     </equation>
 
     Thus
 
     <\equation>
-      <label|eq:X_t_equality><big|int><rsub|R>e<rsup|-i*t*u>*d*\<Phi\><around|(|u|)>=<big|int><rsub|R>e<rsup|-i*t*u>*P*E<around|(|u|)>,<text|for
-      all >t\<in\>R.
+      <label|eq:X_t_equality><big|int><rsub|R>e<rsup|-i*t*u>*d*\<Phi\><around|(|u|)>=<big|int><rsub|R>e<rsup|-i*t*u>*P*E<around|(|u|)><text|for
+      all >t\<in\>R
     </equation>
 
     Hence for any <math|h\<in\><with|math-font|cal*|H>> and any real number
     <math|t>, we have
 
     <\equation>
-      <label|eq:Phi_PE_equality><big|int><rsub|R>e<rsup|-i*t*u>*d*<around|(|\<Phi\><around|(|u|)>,h|)><rsub|<with|math-font|cal*|H>>=<around*|(|<big|int><rsub|R>e<rsup|-i*t*u>*d*\<Phi\><around|(|u|)>,h|)><rsub|<with|math-font|cal*|H>>=<around*|(|<big|int><rsub|R>e<rsup|-i*t*u>*P*E<around|(|u|)>,h|)><rsub|<with|math-font|cal*|H>>=<big|int><rsub|R>e<rsup|-i*t*u>*d*<around|(|P*E<around|(|u|)>,h|)><rsub|<with|math-font|cal*|H>>
+      <label|eq:Phi_PE_equality><tabular|<tformat|<table|<row|<cell|<big|int><rsub|R>e<rsup|-i*t*u>*d*<around|(|\<Phi\><around|(|u|)>,h|)><rsub|<with|math-font|cal*|H>>>|<cell|=<around*|(|<big|int><rsub|R>e<rsup|-i*t*u>*d*\<Phi\><around|(|u|)>,h|)><rsub|<with|math-font|cal*|H>>>>|<row|<cell|>|<cell|=<around*|(|<big|int><rsub|R>e<rsup|-i*t*u>*P*E<around|(|u|)>h|)><rsub|<with|math-font|cal*|H>>>>|<row|<cell|>|<cell|=<big|int><rsub|R>e<rsup|-i*t*u>*d*<around|(|P*E<around|(|u|)>,h|)><rsub|<with|math-font|cal*|H>>>>>>>
     </equation>
 
     which implies
@@ -799,7 +824,7 @@
     where <math|\<Phi\>> as in <eqref|eq:def_harmonizable>. Then we have
 
     <\equation>
-      <label|eq:fourier_equality><big|int><rsub|R><wide|f|^><around|(|t|)>*X<rsub|t>*d*t=<big|int><rsub|R>f<around|(|t|)>*d*\<Phi\><around|(|t|)>,\<forall\>f\<in\>L<rsub|1><around|(|R|)>.
+      <label|eq:fourier_equality><big|int><rsub|R><wide|f|^><around|(|t|)>*X<rsub|t>*d*t=<big|int><rsub|R>f<around|(|t|)>*d*\<Phi\><around|(|t|)>\<forall\>f\<in\>L<rsub|1><around|(|R|)>
     </equation>
   </lemma>
 
@@ -833,6 +858,8 @@
       <tformat|<table|<row|<cell|<big|int><big|int><rsub|R<rsup|2>><wide|\<varphi\>|^><around|(|u|)>*<wide|\<psi\>|^><around|(|v|)>*R<around|(|u,v|)>*d*u*d*v>|<cell|=<around*|(|<big|int><rsub|R><wide|\<varphi\>|^><around|(|u|)>*X<rsub|u>*d*u,<big|int><rsub|R><wide|\<psi\>|^><around|(|v|)>*X<rsub|v>*d*v|)><rsub|<with|math-font|cal*|H>><eq-number>>>|<row|<cell|>|<cell|=<around*|(|<big|int><rsub|R>\<varphi\><around|(|u|)>*d*\<Phi\><around|(|u|)>,<big|int><rsub|R>\<psi\><around|(|v|)>*d*\<Phi\><around|(|v|)>|)><rsub|<with|math-font|cal*|H>><eq-number>>>|<row|<cell|>|<cell|\<leq\>C<around|\<\|\|\>|\<varphi\>|\<\|\|\>><rsub|1><around|\<\|\|\>|\<psi\>|\<\|\|\>><rsub|1><eq-number>>>>>
     </align>
 
+    where
+
     <\equation>
       C=<around|\<\|\|\>|F|\<\|\|\>><around|(|R|)>
     </equation>
@@ -860,8 +887,13 @@
 
     <math|K<around|(|\<cdummy\>,\<cdummy\>|)>> is a positive definite kernel.
     Consider the corresponding reproducing kernel Hilbert space
-    <math|<with|math-font|cal*|F>>. We can define the operator
-    <math|T:L<rsub|1><around|(|R|)>\<to\><with|math-font|cal*|F>> by
+    <math|<with|math-font|cal*|F>>. We can define the operator <math|>
+
+    <\equation>
+      T:L<rsub|1><around|(|R|)>\<to\><with|math-font|cal*|F>
+    </equation>
+
+    \ by
 
     <\equation>
       <label|eq:T_operator>T<around|(|\<varphi\>|)>=K<around|(|\<varphi\>,\<cdummy\>|)>
@@ -952,12 +984,25 @@
     <math|<with|math-font|cal*|K>> containing <math|<with|math-font|cal*|H>>,
     a <math|<with|math-font|cal*|K>>-valued stationary process
     <math|Y<rsub|t>> and an orthogonally scattered
-    <math|<with|math-font|cal*|K>>-valued measure <math|E> such that
-    <math|X<rsub|t>=P*Y<rsub|t>>, <math|Y<rsub|t>=<big|int><rsub|R>e<rsup|-i*u*t>*d*E<around|(|u|)>>,
-    and <math|\<Phi\>=P*E>; where <math|P> is the projection of
-    <math|<with|math-font|cal*|K>> onto <math|<with|math-font|cal*|H>>. Now
-    using the corresponding well known ergodic theorem for the stationary
-    process <math|Y<rsub|t>> we get
+    <math|<with|math-font|cal*|K>>-valued measure <math|E> such that <math|>
+
+    <\equation>
+      X<rsub|t>=P*Y<rsub|t>
+    </equation>
+
+    <\equation>
+      Y<rsub|t>=<big|int><rsub|R>e<rsup|-i*u*t>*d*E<around|(|u|)>
+    </equation>
+
+    and\ 
+
+    <\equation>
+      \<Phi\>=P*E
+    </equation>
+
+    where <math|P> is the projection of <math|<with|math-font|cal*|K>> onto
+    <math|<with|math-font|cal*|H>>. Now using the corresponding well known
+    ergodic theorem for the stationary process <math|Y<rsub|t>> we get
 
     <\align>
       <tformat|<table|<row|<cell|lim<rsub|T\<to\>\<infty\>>
@@ -1050,55 +1095,55 @@
     <associate|auto-1|<tuple|11|15>>
     <associate|bib-abreu|<tuple|abreu|15>>
     <associate|bib-bochner|<tuple|bochner|15>>
-    <associate|bib-cramer|<tuple|cramer|16>>
-    <associate|bib-dubinsky|<tuple|dubinsky|16>>
-    <associate|bib-dunford|<tuple|dunford|16>>
-    <associate|bib-grothendieck|<tuple|grothendieck|16>>
-    <associate|bib-kluvanek|<tuple|kluvanek|16>>
-    <associate|bib-loeve|<tuple|loeve|16>>
-    <associate|bib-masani|<tuple|masani|16>>
-    <associate|bib-niemi1|<tuple|niemi1|16>>
-    <associate|bib-niemi2|<tuple|niemi2|16>>
-    <associate|bib-niemi3|<tuple|niemi3|16>>
-    <associate|bib-niemi4|<tuple|niemi4|16>>
-    <associate|bib-pietsch|<tuple|pietsch|16>>
-    <associate|bib-rogge|<tuple|rogge|16>>
-    <associate|bib-rozanov|<tuple|rozanov|16>>
-    <associate|bib-rudin|<tuple|rudin|16>>
-    <associate|cor:ergodic|<tuple|10|15>>
+    <associate|bib-cramer|<tuple|cramer|15>>
+    <associate|bib-dubinsky|<tuple|dubinsky|15>>
+    <associate|bib-dunford|<tuple|dunford|15>>
+    <associate|bib-grothendieck|<tuple|grothendieck|15>>
+    <associate|bib-kluvanek|<tuple|kluvanek|15>>
+    <associate|bib-loeve|<tuple|loeve|15>>
+    <associate|bib-masani|<tuple|masani|15>>
+    <associate|bib-niemi1|<tuple|niemi1|15>>
+    <associate|bib-niemi2|<tuple|niemi2|15>>
+    <associate|bib-niemi3|<tuple|niemi3|15>>
+    <associate|bib-niemi4|<tuple|niemi4|15>>
+    <associate|bib-pietsch|<tuple|pietsch|15>>
+    <associate|bib-rogge|<tuple|rogge|15>>
+    <associate|bib-rozanov|<tuple|rozanov|15>>
+    <associate|bib-rudin|<tuple|rudin|15>>
+    <associate|cor:ergodic|<tuple|10|14>>
     <associate|cor:projection|<tuple|6|11>>
     <associate|def:harmonizability|<tuple|1|2>>
     <associate|def:vbounded|<tuple|7|12>>
-    <associate|eq:F_def_M|<tuple|96|14>>
-    <associate|eq:K_bilinear|<tuple|91|13>>
-    <associate|eq:K_bounded|<tuple|92|14>>
-    <associate|eq:K_property|<tuple|94|14>>
-    <associate|eq:Phi_PE_equality|<tuple|79|12>>
-    <associate|eq:Phi_result|<tuple|80|12>>
-    <associate|eq:R1_def|<tuple|97|14>>
-    <associate|eq:R1_integral|<tuple|98|14>>
-    <associate|eq:R_R1_zero|<tuple|100|14>>
-    <associate|eq:R_equals_R1|<tuple|101|15>>
-    <associate|eq:R_integral|<tuple|99|14>>
-    <associate|eq:Rt_harmonizable_thm|<tuple|85|13>>
+    <associate|eq:F_def_M|<tuple|102|13>>
+    <associate|eq:K_bilinear|<tuple|96|13>>
+    <associate|eq:K_bounded|<tuple|97|13>>
+    <associate|eq:K_property|<tuple|100|13>>
+    <associate|eq:Phi_PE_equality|<tuple|84|11>>
+    <associate|eq:Phi_result|<tuple|85|12>>
+    <associate|eq:R1_def|<tuple|103|13>>
+    <associate|eq:R1_integral|<tuple|104|13>>
+    <associate|eq:R_R1_zero|<tuple|106|14>>
+    <associate|eq:R_equals_R1|<tuple|107|14>>
+    <associate|eq:R_integral|<tuple|105|14>>
+    <associate|eq:Rt_harmonizable_thm|<tuple|90|12>>
     <associate|eq:S_bounds|<tuple|52|8>>
     <associate|eq:S_functional|<tuple|51|8>>
     <associate|eq:S_properties|<tuple|32|6>>
     <associate|eq:S_rho_bound|<tuple|60|9>>
     <associate|eq:S_rho_expanded|<tuple|61|9>>
     <associate|eq:S_rho_simplified|<tuple|62|9>>
-    <associate|eq:T_M_equality|<tuple|95|14>>
+    <associate|eq:T_M_equality|<tuple|101|13>>
     <associate|eq:T_bounds|<tuple|55|8>>
-    <associate|eq:T_extension|<tuple|56|9>>
+    <associate|eq:T_extension|<tuple|56|8>>
     <associate|eq:T_mu0|<tuple|59|9>>
-    <associate|eq:T_operator|<tuple|93|14>>
+    <associate|eq:T_operator|<tuple|99|13>>
     <associate|eq:T_rho_inequality|<tuple|63|9>>
-    <associate|eq:X_PY|<tuple|77|12>>
-    <associate|eq:X_Phi|<tuple|76|12>>
-    <associate|eq:X_t_equality|<tuple|78|12>>
-    <associate|eq:X_t_harmonizable|<tuple|82|13>>
-    <associate|eq:Xt_harmonizable_thm|<tuple|84|13>>
-    <associate|eq:Y_inner_product|<tuple|72|11>>
+    <associate|eq:X_PY|<tuple|82|11>>
+    <associate|eq:X_Phi|<tuple|80|11>>
+    <associate|eq:X_t_equality|<tuple|83|11>>
+    <associate|eq:X_t_harmonizable|<tuple|87|12>>
+    <associate|eq:Xt_harmonizable_thm|<tuple|89|12>>
+    <associate|eq:Y_inner_product|<tuple|76|10>>
     <associate|eq:bound_a|<tuple|22|5>>
     <associate|eq:bound_b|<tuple|23|5>>
     <associate|eq:characterization|<tuple|8|3>>
@@ -1107,35 +1152,35 @@
     <associate|eq:correlation|<tuple|3|1>>
     <associate|eq:def_harmonizable|<tuple|7|2>>
     <associate|eq:dom_measure|<tuple|49|8>>
-    <associate|eq:ergodic|<tuple|102|15>>
+    <associate|eq:ergodic|<tuple|108|14>>
     <associate|eq:final_real|<tuple|43|7>>
-    <associate|eq:fourier_equality|<tuple|83|13>>
+    <associate|eq:fourier_equality|<tuple|88|12>>
     <associate|eq:harmonizable1|<tuple|4|1>>
     <associate|eq:harmonizable2|<tuple|5|1>>
     <associate|eq:harmonizable_rozanov|<tuple|6|2>>
-    <associate|eq:inner_product_def|<tuple|70|10>>
+    <associate|eq:inner_product_def|<tuple|71|10>>
     <associate|eq:integration_results|<tuple|10|4>>
     <associate|eq:kernel|<tuple|16|4>>
     <associate|eq:kernel_inequality|<tuple|17|4>>
     <associate|eq:mu0_bound_1|<tuple|64|9>>
-    <associate|eq:mu0_bound_2|<tuple|65|10>>
-    <associate|eq:mu0_bound_final|<tuple|66|10>>
+    <associate|eq:mu0_bound_2|<tuple|65|9>>
+    <associate|eq:mu0_bound_final|<tuple|67|10>>
     <associate|eq:mu0_def|<tuple|57|9>>
-    <associate|eq:mu1_F_inequality|<tuple|69|10>>
-    <associate|eq:mu1_def|<tuple|68|10>>
+    <associate|eq:mu1_F_inequality|<tuple|70|10>>
+    <associate|eq:mu1_def|<tuple|69|10>>
     <associate|eq:operator_S|<tuple|31|6>>
     <associate|eq:operator_inequality|<tuple|15|4>>
     <associate|eq:operators|<tuple|13|4>>
     <associate|eq:positive_definite|<tuple|9|3>>
-    <associate|eq:projection|<tuple|67|10>>
+    <associate|eq:projection|<tuple|68|10>>
     <associate|eq:proof_real|<tuple|24|6>>
     <associate|eq:real_numbers|<tuple|19|5>>
     <associate|eq:rho_inequality|<tuple|50|8>>
     <associate|eq:simple_functions|<tuple|26|6>>
     <associate|eq:spectral_measure|<tuple|2|1>>
     <associate|eq:stationary|<tuple|1|1>>
-    <associate|eq:vbounded|<tuple|81|12>>
-    <associate|eq:vbounded_assumption|<tuple|90|13>>
+    <associate|eq:vbounded|<tuple|86|12>>
+    <associate|eq:vbounded_assumption|<tuple|95|13>>
     <associate|item:bound_a|<tuple|1|5>>
     <associate|item:bound_b|<tuple|2|5>>
     <associate|item:bounded_semi_var|<tuple|4|3>>
@@ -1144,14 +1189,14 @@
     <associate|item:harmonizable|<tuple|1|2>>
     <associate|item:positive_definite|<tuple|3|3>>
     <associate|item:projection|<tuple|2|2>>
-    <associate|item:vbounded|<tuple|3|3>>
+    <associate|item:vbounded|<tuple|3|2>>
     <associate|lem:dom_measure|<tuple|4|8>>
-    <associate|lem:fourier_equality|<tuple|8|13>>
+    <associate|lem:fourier_equality|<tuple|8|12>>
     <associate|lem:spectral_bound|<tuple|3|5>>
     <associate|rem:discrete|<tuple|11|15>>
     <associate|thm:characterization|<tuple|2|3>>
     <associate|thm:main_theorem|<tuple|5|10>>
-    <associate|thm:vbounded_harmonic|<tuple|9|13>>
+    <associate|thm:vbounded_harmonic|<tuple|9|12>>
   </collection>
 </references>
 
