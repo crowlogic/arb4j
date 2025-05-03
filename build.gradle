@@ -9,12 +9,12 @@ plugins {
 
 
 group = 'org.arblib'
-version = '0.99.8'
+version = '0.99.9'
 description = 'arb4j'
 java.sourceCompatibility = JavaVersion.VERSION_24
 
 javafx {
-    version = "23.0.1" 
+    version = "24.0.1" 
     modules = [ 'javafx.swing', 'javafx.controls', 'javafx.fxml', 'javafx.graphics' ]  
 }
 
