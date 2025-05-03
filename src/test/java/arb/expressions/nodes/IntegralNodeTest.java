@@ -38,15 +38,16 @@ public class IntegralNodeTest extends
     var f = F.evaluate();
     assertEquals("6.25*x⁶ - 9.375*x⁴ - 5*x³ + 3.515625*x² + 3.75*x + 1", f.toString());
   }
+
   public void testIntegralOfAElementOfAContextualSequence()
   {
     var context = new Context();
-    var P       = new ShiftedJacobiPolynomials();
+    var P       = new JacobiPolynomials(RealConstants.negHalf,
+                                        RealConstants.negHalf);
     context.registerSequence("P", P);
-    var p3norm = RealNullaryFunction.express("int(P(3)(x),x=-1...1)", context);
-    System.out.println("p3norm=" + p3norm);
+    var p3norm = RealNullaryFunction.express("int(P(3)(x),x=-1...0)", context);
     double val = p3norm.eval();
-    assertEquals(0.09486607143, val);
+    assertEquals(0.15625, val);
   }
 
   public void testFunctionOfPolynomialElementOfAContextualSequence()
@@ -55,22 +56,21 @@ public class IntegralNodeTest extends
     var P       = new JacobiPolynomials(RealConstants.negHalf,
                                         RealConstants.negHalf);
     context.registerSequence("P", P);
-    var prototype = RealNullaryFunction.parse("P(3)(0.75)", context);
+    var  prototype = RealNullaryFunction.parse("P(3)(0.75)", context);
 
-    var p3val = prototype.instantiate();
+    var  p3val     = prototype.instantiate();
 
-    Real val = p3val.evaluate();
-    assertEquals(-0.17578125, val.doubleValue() );
+    Real val       = p3val.evaluate();
+    assertEquals(-0.17578125, val.doubleValue());
   }
 
   public void testIntegralOfAnElementOfAContextualSequenceAnotherWay()
   {
     var context = new Context();
-    var P       = new ShiftedJacobiPolynomials();
+    var P       = new JacobiPolynomials(RealConstants.negHalf,RealConstants.negHalf);
     context.registerSequence("P", P);
     var p3norm = RealNullaryFunction.express("int((P(3)^2)(x),x=-1..1)", context);
-    System.out.println("p3norm=" + p3norm);
-    assertEquals(0.09486607143, p3norm.eval());
+    assertEquals(0.09486607142857142, p3norm.eval());
   }
 
   public void testIntegralProgrammerSyntax()

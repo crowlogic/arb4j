@@ -211,10 +211,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String                                         className;
 
-  public String                                         coDomainClassDescriptor;
-
-  public String                                         coDomainClassInternalName;
-
   public Class<? extends C>                             coDomainType;
 
   public Class<F>                                       compiledClass;
@@ -223,13 +219,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   HashSet<String>                                       declaredIntermediateVariables = new HashSet<>();
 
-  public String                                         domainClassDescriptor;
-
-  public String                                         domainClassInternalName;
-
   public Class<? extends D>                             domainType;
-
-  public String                                         evaluateMethodSignature;
 
   public String                                         expression;
 
@@ -284,19 +274,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public Expression(Class<? extends D> domain, Class<? extends C> codomain, Class<? extends F> function)
   {
     this.ascendentExpression              = null;
-    this.coDomainClassDescriptor          = codomain.descriptorString();
-    this.domainClassDescriptor            = domain.descriptorString();
     this.domainType                       = domain;
     this.coDomainType                     = codomain;
     this.functionClass                    = function;
-    this.coDomainClassInternalName        = Type.getInternalName(codomain);
-    this.domainClassInternalName          = Type.getInternalName(domain);
     this.genericFunctionClassInternalName = Type.getInternalName(function);
     this.functionClassDescriptor          = function.descriptorString();
-    evaluateMethodSignature               = String.format("(L%s;IIL%s;)L%s;",
-                                                          domainClassInternalName,
-                                                          coDomainClassInternalName,
-                                                          coDomainClassInternalName);
+
     if (context != null && context.saveClasses)
     {
       saveClasses = true;
@@ -331,23 +314,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     assert className != null : "className needs to be specified";
     this.ascendentExpression              = parentExpression;
-    this.coDomainClassDescriptor          = codomain.descriptorString();
-    this.domainClassDescriptor            = domain.descriptorString();
     this.className                        = className;
     this.domainType                       = domain;
     this.coDomainType                     = codomain;
     this.functionClass                    = function;
-    this.coDomainClassInternalName        = Type.getInternalName(codomain);
-    this.domainClassInternalName          = Type.getInternalName(domain);
+
     this.genericFunctionClassInternalName = Type.getInternalName(function);
     this.functionClassDescriptor          = function.descriptorString();
     this.expression                       = Parser.transformToJavaAcceptableCharacters(expression);
     this.context                          = context;
     this.functionName                     = functionName;
-    evaluateMethodSignature               = String.format("(L%s;IIL%s;)L%s;",
-                                                          domainClassInternalName,
-                                                          coDomainClassInternalName,
-                                                          coDomainClassInternalName);
+
     if (expression.contains(":"))
     {
       int colonCharacterIndex = expression.indexOf(':');
@@ -1005,12 +982,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor visitEvaluationMethod(ClassVisitor classVisitor)
   {
-    MethodVisitor mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                "evaluate",
-                                                evaluationMethodDescriptor,
-                                                evaluateMethodSignature,
-                                                null);
-    return mv;
+    return classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                    "evaluate",
+                                    evaluationMethodDescriptor,
+                                    getEvaluationMethodSignature(),
+                                    null);
+  }
+
+  private String getEvaluationMethodSignature()
+  {
+    var evaluateMethodSignature = String.format("(L%s;IIL%s;)L%s;",
+                                                Type.getInternalName(domainType),
+                                                Type.getInternalName(coDomainType),
+                                                Type.getInternalName(coDomainType));
+    return evaluateMethodSignature;
   }
 
   /**

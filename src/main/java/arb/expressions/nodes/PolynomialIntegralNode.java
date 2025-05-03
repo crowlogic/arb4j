@@ -19,8 +19,15 @@ import arb.functions.Function;
 public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? extends C>> extends
                                    Node<D, C, F>
 {
-  private Node<D, C, F> polynomialNode;
-  private Node<D, C, F> argumentNode;
+  @Override
+  public String toString()
+  {
+    return String.format("PolynomialIntegralNode[polynomialNode=%s, argumentNode=%s]", polynomialNode, argumentNode);
+  }
+
+  Node<D, C, F> polynomialNode;
+
+  Node<D, C, F> argumentNode;
 
   public PolynomialIntegralNode(Expression<D, C, F> expression,
                                 Node<D, C, F> polynomialNode,
@@ -35,25 +42,27 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     // Generate code to get the polynomial
-    polynomialNode.generate(mv, polynomialNode.type());
+    var polynomialType = polynomialNode.type();
+    polynomialNode.generate(mv, polynomialType);
 
     // Call integrate() on the polynomial
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                       Type.getInternalName(polynomialNode.type()),
-                       "integrate",
-                       "()L" + Type.getInternalName(polynomialNode.type()) + ";",
+                       Type.getInternalName(polynomialType),
+                       "integral",
+                       String.format("()L%s;", Type.getInternalName(polynomialType)),
                        false);
 
     // Now evaluate the integrated polynomial at the argument
-    argumentNode.generate(mv, argumentNode.type());
+    var argType = argumentNode.type();
+    argumentNode.generate(mv, argType);
 
     Compiler.loadOrderParameter(mv);
     Compiler.loadBitsParameterOntoStack(mv);
     Compiler.loadResultParameter(mv);
-
+    
     // Call evaluate on the integrated polynomial
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                       Type.getInternalName(polynomialNode.type()),
+                       Type.getInternalName(polynomialType),
                        "evaluate",
                        Expression.evaluationMethodDescriptor,
                        false);

@@ -265,23 +265,21 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     integralExpression                      = integralNode.expression.cloneExpression();
     integralExpression.instructionByteCodes = null;
     integralExpression.compiledClass        = null;
+    integralExpression.domainType           = integralNode.type();
     integralExpression.coDomainType         = integralNode.type();
     integralExpression.rootNode             = integralNode.spliceInto(integralExpression);
     integralExpression.className            = Parser.transformToJavaAcceptableCharacters(integralFunctionFieldName);
     integralExpression.updateStringRepresentation();
     integralExpression.compile();
 
-    integralMapping =
-                    expression.context.registerFunctionMapping(integralExpression.className,
-                                                               integralExpression.instantiate(),
-                                                               integralExpression.domainType
-                                                                             != Object.class ? integralExpression.domainType
-                                                                                             : integralExpression.coDomainType,
-                                                               integralExpression.coDomainType,
-                                                               Function.class,
-                                                               false,
-                                                               integralExpression,
-                                                               null);
+    integralMapping = expression.context.registerFunctionMapping(integralExpression.className,
+                                                                 integralExpression.instantiate(),
+                                                                 integralExpression.domainType,
+                                                                 integralExpression.coDomainType,
+                                                                 Function.class,
+                                                                 false,
+                                                                 integralExpression,
+                                                                 null);
     expression.referencedFunctions.put(integralFunctionFieldName, integralMapping);
   }
 
