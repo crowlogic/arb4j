@@ -222,7 +222,11 @@
   <math|L<rsub|2><around|(|A<rsub|n>,m<rsub|n>|)>> as follows:
 
   <\equation>
-    <around|(|P<rsub|n>*f|)><around|(|s|)>=n*<big|int><rsub|A<rsub|n>><around|(|s,t|)>*f<around|(|t|)>*d*m<rsub|n><around|(|t|)><around|(|Q<rsub|n>*f|)><around|(|s|)>=<big|int><rsub|A<rsub|n>><math-up|sign><around|[|<around|(|s,t|)>|]>*f<around|(|t|)>*d*m<rsub|n><around|(|t|)><label|eq:operators>
+    <around|(|P<rsub|n>*f|)><around|(|s|)>=n*<big|int><rsub|A<rsub|n>><around|(|s,t|)>*f<around|(|t|)>*d*m<rsub|n><around|(|t|)>
+  </equation>
+
+  <\equation>
+    <around|(|Q<rsub|n>*f|)><around|(|s|)>=<big|int><rsub|A<rsub|n>><math-up|sign><around|[|<around|(|s,t|)>|]>*f<around|(|t|)>*d*m<rsub|n><around|(|t|)><label|eq:operators>
   </equation>
 
   <math|P<rsub|n>> and <math|Q<rsub|n>> are linear operators. As shown in
@@ -1065,73 +1069,73 @@
     <associate|cor:projection|<tuple|6|11>>
     <associate|def:harmonizability|<tuple|1|2>>
     <associate|def:vbounded|<tuple|7|12>>
-    <associate|eq:F_def_M|<tuple|95|14>>
-    <associate|eq:K_bilinear|<tuple|90|13>>
-    <associate|eq:K_bounded|<tuple|91|14>>
-    <associate|eq:K_property|<tuple|93|14>>
-    <associate|eq:Phi_PE_equality|<tuple|78|12>>
-    <associate|eq:Phi_result|<tuple|79|12>>
-    <associate|eq:R1_def|<tuple|96|14>>
-    <associate|eq:R1_integral|<tuple|97|14>>
-    <associate|eq:R_R1_zero|<tuple|99|14>>
-    <associate|eq:R_equals_R1|<tuple|100|15>>
-    <associate|eq:R_integral|<tuple|98|14>>
-    <associate|eq:Rt_harmonizable_thm|<tuple|84|13>>
-    <associate|eq:S_bounds|<tuple|51|9>>
-    <associate|eq:S_functional|<tuple|50|8>>
-    <associate|eq:S_properties|<tuple|31|7>>
-    <associate|eq:S_rho_bound|<tuple|59|9>>
-    <associate|eq:S_rho_expanded|<tuple|60|9>>
-    <associate|eq:S_rho_simplified|<tuple|61|10>>
-    <associate|eq:T_M_equality|<tuple|94|14>>
-    <associate|eq:T_bounds|<tuple|54|9>>
-    <associate|eq:T_extension|<tuple|55|9>>
-    <associate|eq:T_mu0|<tuple|58|9>>
-    <associate|eq:T_operator|<tuple|92|14>>
-    <associate|eq:T_rho_inequality|<tuple|62|10>>
-    <associate|eq:X_PY|<tuple|76|12>>
-    <associate|eq:X_Phi|<tuple|75|12>>
-    <associate|eq:X_t_equality|<tuple|77|12>>
-    <associate|eq:X_t_harmonizable|<tuple|81|13>>
-    <associate|eq:Xt_harmonizable_thm|<tuple|83|13>>
-    <associate|eq:Y_inner_product|<tuple|71|11>>
-    <associate|eq:bound_a|<tuple|21|5>>
-    <associate|eq:bound_b|<tuple|22|5>>
+    <associate|eq:F_def_M|<tuple|96|14>>
+    <associate|eq:K_bilinear|<tuple|91|13>>
+    <associate|eq:K_bounded|<tuple|92|14>>
+    <associate|eq:K_property|<tuple|94|14>>
+    <associate|eq:Phi_PE_equality|<tuple|79|12>>
+    <associate|eq:Phi_result|<tuple|80|12>>
+    <associate|eq:R1_def|<tuple|97|14>>
+    <associate|eq:R1_integral|<tuple|98|14>>
+    <associate|eq:R_R1_zero|<tuple|100|14>>
+    <associate|eq:R_equals_R1|<tuple|101|15>>
+    <associate|eq:R_integral|<tuple|99|14>>
+    <associate|eq:Rt_harmonizable_thm|<tuple|85|13>>
+    <associate|eq:S_bounds|<tuple|52|8>>
+    <associate|eq:S_functional|<tuple|51|8>>
+    <associate|eq:S_properties|<tuple|32|6>>
+    <associate|eq:S_rho_bound|<tuple|60|9>>
+    <associate|eq:S_rho_expanded|<tuple|61|9>>
+    <associate|eq:S_rho_simplified|<tuple|62|9>>
+    <associate|eq:T_M_equality|<tuple|95|14>>
+    <associate|eq:T_bounds|<tuple|55|8>>
+    <associate|eq:T_extension|<tuple|56|9>>
+    <associate|eq:T_mu0|<tuple|59|9>>
+    <associate|eq:T_operator|<tuple|93|14>>
+    <associate|eq:T_rho_inequality|<tuple|63|9>>
+    <associate|eq:X_PY|<tuple|77|12>>
+    <associate|eq:X_Phi|<tuple|76|12>>
+    <associate|eq:X_t_equality|<tuple|78|12>>
+    <associate|eq:X_t_harmonizable|<tuple|82|13>>
+    <associate|eq:Xt_harmonizable_thm|<tuple|84|13>>
+    <associate|eq:Y_inner_product|<tuple|72|11>>
+    <associate|eq:bound_a|<tuple|22|5>>
+    <associate|eq:bound_b|<tuple|23|5>>
     <associate|eq:characterization|<tuple|8|3>>
-    <associate|eq:complex_inequality|<tuple|27|6>>
-    <associate|eq:complex_numbers|<tuple|20|5>>
+    <associate|eq:complex_inequality|<tuple|28|6>>
+    <associate|eq:complex_numbers|<tuple|21|5>>
     <associate|eq:correlation|<tuple|3|1>>
     <associate|eq:def_harmonizable|<tuple|7|2>>
-    <associate|eq:dom_measure|<tuple|48|8>>
-    <associate|eq:ergodic|<tuple|101|15>>
-    <associate|eq:final_real|<tuple|42|7>>
-    <associate|eq:fourier_equality|<tuple|82|13>>
+    <associate|eq:dom_measure|<tuple|49|8>>
+    <associate|eq:ergodic|<tuple|102|15>>
+    <associate|eq:final_real|<tuple|43|7>>
+    <associate|eq:fourier_equality|<tuple|83|13>>
     <associate|eq:harmonizable1|<tuple|4|1>>
     <associate|eq:harmonizable2|<tuple|5|1>>
     <associate|eq:harmonizable_rozanov|<tuple|6|2>>
-    <associate|eq:inner_product_def|<tuple|69|11>>
+    <associate|eq:inner_product_def|<tuple|70|10>>
     <associate|eq:integration_results|<tuple|10|4>>
-    <associate|eq:kernel|<tuple|15|4>>
-    <associate|eq:kernel_inequality|<tuple|16|4>>
-    <associate|eq:mu0_bound_1|<tuple|63|10>>
-    <associate|eq:mu0_bound_2|<tuple|64|10>>
-    <associate|eq:mu0_bound_final|<tuple|65|10>>
-    <associate|eq:mu0_def|<tuple|56|9>>
-    <associate|eq:mu1_F_inequality|<tuple|68|11>>
-    <associate|eq:mu1_def|<tuple|67|10>>
-    <associate|eq:operator_S|<tuple|30|6>>
-    <associate|eq:operator_inequality|<tuple|14|4>>
-    <associate|eq:operators|<tuple|12|4>>
+    <associate|eq:kernel|<tuple|16|4>>
+    <associate|eq:kernel_inequality|<tuple|17|4>>
+    <associate|eq:mu0_bound_1|<tuple|64|9>>
+    <associate|eq:mu0_bound_2|<tuple|65|10>>
+    <associate|eq:mu0_bound_final|<tuple|66|10>>
+    <associate|eq:mu0_def|<tuple|57|9>>
+    <associate|eq:mu1_F_inequality|<tuple|69|10>>
+    <associate|eq:mu1_def|<tuple|68|10>>
+    <associate|eq:operator_S|<tuple|31|6>>
+    <associate|eq:operator_inequality|<tuple|15|4>>
+    <associate|eq:operators|<tuple|13|4>>
     <associate|eq:positive_definite|<tuple|9|3>>
-    <associate|eq:projection|<tuple|66|10>>
-    <associate|eq:proof_real|<tuple|23|6>>
-    <associate|eq:real_numbers|<tuple|18|5>>
-    <associate|eq:rho_inequality|<tuple|49|8>>
-    <associate|eq:simple_functions|<tuple|25|6>>
+    <associate|eq:projection|<tuple|67|10>>
+    <associate|eq:proof_real|<tuple|24|6>>
+    <associate|eq:real_numbers|<tuple|19|5>>
+    <associate|eq:rho_inequality|<tuple|50|8>>
+    <associate|eq:simple_functions|<tuple|26|6>>
     <associate|eq:spectral_measure|<tuple|2|1>>
     <associate|eq:stationary|<tuple|1|1>>
-    <associate|eq:vbounded|<tuple|80|12>>
-    <associate|eq:vbounded_assumption|<tuple|89|13>>
+    <associate|eq:vbounded|<tuple|81|12>>
+    <associate|eq:vbounded_assumption|<tuple|90|13>>
     <associate|item:bound_a|<tuple|1|5>>
     <associate|item:bound_b|<tuple|2|5>>
     <associate|item:bounded_semi_var|<tuple|4|3>>
