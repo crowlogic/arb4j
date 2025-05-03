@@ -15,6 +15,61 @@
     is a harmonizable process.
   </abstract>
 
+  <\table-of-contents|toc>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Introduction>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-1><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Notation>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-2><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>Representation
+    of Harmonizable Stochastic Processes>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-3><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>Orthogonal
+    Series Representation of a Harmonizable Stochastic Process>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-4><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|5<space|2spc>Orthonormal
+    and Complete Sets in <with|mode|math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-5><vspace|0.5fn>
+
+    <with|par-left|1tab|Examples <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-6>>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|6<space|2spc>Orthogonal
+    Integral Representation of a Harmonizable Stochastic Process>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-7><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|7<space|2spc>Moving
+    Average Representations and Harmonizable Stochastic Processes>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-8><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|8<space|2spc>Linear
+    Time Varying Systems and Harmonizable Stochastic Processes>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-9><vspace|0.5fn>
+
+    <with|par-left|1tab|8.1<space|2spc>Deterministic Linear Time Varying
+    Systems <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-10>>
+
+    <with|par-left|1tab|8.2<space|2spc>Linear Randomly Time Varying Systems
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-11>>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-12><vspace|0.5fn>
+  </table-of-contents>
+
   <section|Introduction><label|sec:intro>
 
   Harmonizable stochastic processes, a generalization of wide sense
@@ -200,7 +255,7 @@
     and
 
     <\equation>
-      a<rsub|n><around|(|t|)>=<iint><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*u>*f<rsub|n><rsup|\<ast\>><around|(|v|)>*r<rsub|X><around|(|d*u,d*v|)><label|eq:an>
+      a<rsub|n><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*u>*f<rsub|n><rsup|\<ast\>><around|(|v|)>*r<rsub|X><around|(|d*u,d*v|)><label|eq:an>
     </equation>
 
     and <math|<around|{|f<rsub|n>|(>\<cdot\><around|)||}>> is an orthonormal
@@ -268,9 +323,8 @@
     all >t,s\<in\>\<bbb-R\><label|eq:autocorr-series>
   </equation>
 
-  where the <math|a<rsub|n>>'s are given by <eqref|eq:an>.
-
-  For all <math|f\<in\>\<Lambda\><rsub|2><around|(|r<rsub|x>|)>> we have
+  where the <math|a<rsub|n>>'s are given by <eqref|eq:an>. For all
+  <math|f\<in\>\<Lambda\><rsub|2><around|(|r<rsub|x>|)>> we have
   <math|e<rsup|i*t*u>*f<around|(|u|)>\<in\>\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>
   for all <math|t\<in\>\<bbb-R\>>, since
 
@@ -358,9 +412,9 @@
   Since
 
   <\equation>
-    \<Lambda\><rsub|2><around|(|r<rsub|X>|)>=\<sigma\><around|{|e<rsup|i*t*u>,t<text|real
-    >|}>=\<sigma\><around|{|e<rsup|i*t*u>,t<text|rational
-    >|}>,<label|eq:span>
+    \<Lambda\><rsub|2><around|(|r<rsub|X>|)>=\<sigma\><around|{|e<rsup|i*t*u>,t
+    <text|real >|}>=\<sigma\><around|{|e<rsup|i*t*u>,t <text|rational
+    >|}><label|eq:span>
   </equation>
 
   an orthonormal and complete set of functions in
@@ -381,9 +435,22 @@
     <label|thm:complete-set>Let <math|\<mu\>> be any finite, nonnegative
     measure on <math|<around|(|\<bbb-R\>,<with|math-font|cal*|B><rsup|1>|)>>,
     absolutely continuous with respect to the Lebesgue measure <math|m> with
-    Radon-Nikodym derivative <math|<around|[|d*\<mu\>/d*m|]><around|(|t|)>=h<around|(|t|)>\<neq\>0>
-    a.e. <math|<around|[|m|]>>, and let <math|<around|{|\<phi\><rsub|n><around|(|t|)>|}>>
-    be any complete set of functions in <math|L<rsub|2><around|(|\<bbb-R\>,<with|math-font|cal*|B><rsup|1>,\<mu\>|)>=L<rsub|2><around|(|\<mu\>|)>>.
+    Radon-Nikodym derivative<math|>
+
+    <\equation>
+      <around*|[|<frac|\<mathd\>\<mu\>|\<mathd\>m>|]><around|(|t|)>=h<around|(|t|)>\<neq\>0<space|1em>a.e.
+      <around*|[|m|]>
+    </equation>
+
+    \ <math|>
+
+    , and let <math|<around|{|\<phi\><rsub|n><around|(|t|)>|}>> be any
+    complete set of functions in
+
+    <\equation>
+      L<rsub|2><around|(|\<bbb-R\>,<with|math-font|cal*|B><rsup|1>,\<mu\>|)>=L<rsub|2><around|(|\<mu\>|)>
+    </equation>
+
     Then the set <math|<around|{|F<rsub|n><around|(|t|)>|}>> given by
 
     <\equation>
@@ -407,7 +474,7 @@
     and
 
     <\equation>
-      <around|\<\|\|\>|F<rsub|n>|\<\|\|\>><rsub|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>><rsup|2>\<leqslant\><around|\<\|\|\>|\<phi\><rsub|n>|\<\|\|\>><rsub|L<rsub|1><around|(|\<mu\>|)>><rsup|2><around|\||r<rsub|X>|\|><around|(|R<rsup|2>|)>,<label|eq:Fn-norm>
+      <around|\<\|\|\>|F<rsub|n>|\<\|\|\>><rsub|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>><rsup|2>\<leqslant\><around|\<\|\|\>|\<phi\><rsub|n>|\<\|\|\>><rsub|L<rsub|1><around|(|\<mu\>|)>><rsup|2><around|\||r<rsub|X>|\|><around|(|R<rsup|2>|)><label|eq:Fn-norm>
     </equation>
 
     where <math|<around|\||r<rsub|X>|\|>> denotes the total variation of
@@ -416,8 +483,12 @@
     The completeness of the set <math|<around|{|F<rsub|n><around|(|t|)>|}>>
     in <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>> is shown as follows.
     Let <math|f\<in\>\<Lambda\><rsub|2><around|(|r<rsub|X>|)>> and
-    <math|<around|(|F<rsub|n>,f|)><rsub|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>=0>
-    for all <math|n>. Then
+
+    <\equation>
+      <around|(|F<rsub|n>,f|)><rsub|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>=0\<forall\>n
+    </equation>
+
+    Then
 
     <\align>
       <tformat|<table|<row|<cell|0>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>F<rsub|n><around|(|u|)>*f<rsup|\<ast\>><around|(|v|)>*r<rsub|X><around|(|d*u,d*v|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|n><rsup|\<ast\>><around|(|t|)>*e<rsup|i*t*u>*f<rsup|\<ast\>><around|(|v|)>*\<mu\>*<around|(|d*t|)>*r<rsub|X><around|(|d*u,d*v|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>F<around|(|t|)>*\<phi\><rsub|n><rsup|\<ast\>><around|(|t|)>*\<mu\>*<around|(|d*t|)><eq-number><label|eq:Fn-complete>>>>>
@@ -516,19 +587,32 @@
   not easily expressed in terms of the elementary and the special functions.
 
   <\enumerate>
-    <item>The density of the normal distribution,
-    <math|h<around|(|u|)>=<around|(|1/<sqrt|2*\<pi\>>|)>*e<rsup|-<frac|1|2>*u<rsup|2>>>,
-    gives
+    <item>The density of the normal distribution
+
+    <\equation>
+      h<around|(|u|)>=<frac|e<rsup|-<frac|1|2>*u<rsup|2>>|<sqrt|2*\<pi\>>>*
+    </equation>
+
+    \ gives
 
     <\equation>
       F<rsub|n><around|(|t|)>=<around|(|-1|)><rsup|n><sqrt|<frac|2|\<pi\>>>*<big|int><rsub|0><rsup|\<infty\>>cos
       <around*|[|t*u-n*\<pi\>*\<Phi\><around*|(|<frac|u|<sqrt|2>>|)>|]>*e<rsup|-<frac|1|2>*u<rsup|2>>*m*<around|(|d*u|)><label|eq:Fn-normal>
     </equation>
 
-    where <math|\<Phi\><around|(|u|)>=<around|(|2/<sqrt|\<pi\>>|)>*<big|int><rsub|0><rsup|u>e<rsup|-v<rsup|2>>*m*<around|(|d*v|)>>.
+    where\ 
 
-    <item>The density of the double exponential distribution,
-    <math|h<around|(|u|)>=<frac|1|2>*e<rsup|-<around|\||u|\|>>>, gives
+    <\equation>
+      \<Phi\><around|(|u|)>=<frac|2|<sqrt|\<pi\>>>*<big|int><rsub|0><rsup|u>e<rsup|-v<rsup|2>>*m*<around|(|d*v|)>
+    </equation>
+
+    <item>The density of the double exponential distribution\ 
+
+    <\equation>
+      h<around|(|u|)>=<frac|e<rsup|-<around|\||u|\|>>|2>*
+    </equation>
+
+    \ gives
 
     <\align>
       <tformat|<table|<row|<cell|F<rsub|n><around|(|t|)>>|<cell|=<big|int><rsub|0><rsup|\<infty\>>e<rsup|-u>*cos
@@ -536,9 +620,13 @@
       <around|[|t*ln v-n*\<pi\>*v|]>*m*<around|(|d*v|)><eq-number><label|eq:Fn-double-exp>>>>>
     </align>
 
-    <item>The density of the Cauchy distribution,
-    <math|h<around|(|u|)>=<around|(|1/\<pi\>*<around|(|1+u<rsup|2>|)>|)>>,
-    gives
+    <item>The density of the Cauchy distribution
+
+    <\equation>
+      h<around|(|u|)>=<frac|1|\<pi\>*<around|(|1+u<rsup|2>|)>>
+    </equation>
+
+    \ gives
 
     <\align>
       <tformat|<table|<row|<cell|F<rsub|n><around|(|t|)>>|<cell|=<around|(|-1|)><rsup|n><frac|2|\<pi\>>*<big|int><rsub|0><rsup|\<infty\>>cos
@@ -550,9 +638,9 @@
 
     <\equation>
       h<around|(|u|)>=<around*|{|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|\<alpha\><rsup|-k>>|<cell|<text|on
-      ><around|(|k-1,k|)>,<space|1em>k\<leqslant\>-1>>|<row|<cell|<frac|1-3*\<alpha\>|2*<around|(|1-\<alpha\>|)>>>|<cell|<text|on
-      ><around|(|-1,+1|)>,>>|<row|<cell|\<alpha\><rsup|k>>|<cell|<text|on
-      ><around|(|k,k+1|)>,<space|1em>k\<geqslant\>1>>>>>|\<nobracket\>><label|eq:h-custom>
+      >u\<in\><around|(|k-1,k|)>,<space|1em>k\<leqslant\>-1>>|<row|<cell|<frac|1-3*\<alpha\>|2*<around|(|1-\<alpha\>|)>>>|<cell|<text|on
+      >u\<in\><around|(|-1,+1|)>,>>|<row|<cell|\<alpha\><rsup|k>>|<cell|<text|on
+      >u\<in\><around|(|k,k+1|)>,<space|1em>k\<geqslant\>1>>>>>|\<nobracket\>><label|eq:h-custom>
     </equation>
 
     where <math|0\<less\>\<alpha\>\<less\><frac|1|3>>, gives
@@ -563,14 +651,22 @@
       <around*|(|<frac|1|2>*t-n*\<pi\>*\<alpha\><rsup|k>|)>|<frac|1|2>*t-n*\<pi\>*\<alpha\><rsup|k>><label|eq:Fn-custom>
     </equation>
 
-    where <math|c<rsub|k>=1-<around|(|1+\<alpha\>/1-\<alpha\>|)>*\<alpha\><rsup|k>>.
+    where
+
+    <\equation>
+      c<rsub|k>=1-<around*|(|<frac|1+\<alpha\>|1-\<alpha\>>|)>*\<alpha\><rsup|k>
+    </equation>
 
     <item>If <math|r<rsub|X>> is supported by
     <math|<around|(|a,b|)>\<times\><around|(|a,b|)>>, then by using the
-    density of the uniform distribution on
-    <math|<around|(|a,b|)>,h<around|(|u|)>=<around|(|1/b-a|)>> on
-    <math|<around|(|a,b|)>> and zero elsewhere, we obtain the complete set of
-    functions
+    density of the uniform distribution on <math|<around|(|a,b|)>>
+
+    <\equation>
+      h<around*|(|u|)>=<frac|1|b-a>
+    </equation>
+
+    \ on <math|<around|(|a,b|)>> and zero elsewhere, we obtain the complete
+    set of functions
 
     <\equation>
       F<rsub|n><around|(|t|)>=<frac|e<rsup|i*b*t>-e<rsup|i*a*t>|i*<around|[|<around|(|b-a|)>*t-n*2*\<pi\>|]>><label|eq:Fn-uniform>
@@ -597,8 +693,17 @@
   </equation>
 
   where the orthogonal random measure <math|Y> is concentrated on the set of
-  integers with <math|Y<around|(|<around|{|n|}>,\<omega\>|)>=\<xi\><rsub|n><around|(|\<omega\>|)>>
-  and <math|f<around|(|t,n|)>=a<rsub|n><around|(|t|)>>.
+  integers with <math|>
+
+  <\equation>
+    Y<around|(|<around|{|n|}>,\<omega\>|)>=\<xi\><rsub|n><around|(|\<omega\>|)>
+  </equation>
+
+  \ and\ 
+
+  <\equation>
+    f<around|(|t,n|)>=a<rsub|n><around|(|t|)>
+  </equation>
 
   The following theorem shows that an explicit (nontrivial) orthogonal
   integral representation of a harmonizable stochastic process can always be
@@ -877,7 +982,7 @@
     We have
 
     <\align>
-      <tformat|<table|<row|<cell|<with|math-font|cal*|E><around|[|<around|\||\<xi\>|\|><rsup|2>|]>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|t|)>*g<rsup|\<ast\>><around|(|s|)>*r<rsub|Y><around|(|d*t,d*s|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|t|)>*g<rsup|\<ast\>><around|(|s|)>*R<rsub|y*y><around|(|t,s|)>*m*<around|(|d*t|)>*m*<around|(|d*s|)><eq-number>>>|<row|<cell|<with|math-font|cal*|E><around|[|<around|\||\<eta\>|\|><rsup|2>|]>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|t|)>*g<rsup|\<ast\>><around|(|s|)>*R<rsub|y*y><around|(|t,s|)>*m*<around|(|d*t|)>*m*<around|(|d*s|)>,<eq-number>>>|<row|<cell|<with|math-font|cal*|E><around|[|\<eta\>*\<xi\><rsup|\<ast\>>|]>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|t|)><with|math-font|cal*|E><around|[|y<around|(|t|)>*\<xi\><rsup|\<ast\>>|]>*m*<around|(|d*t|)><eq-number>>>|<row|<cell|<with|math-font|cal*|E><around|[|y<around|(|t|)>*\<xi\><rsup|\<ast\>>|]>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<rsup|\<ast\>><around|(|s|)>*\<lambda\><rsub|t>*<around|(|d*s|)><eq-number><label|eq:E-terms>>>>>
+      <tformat|<table|<row|<cell|<with|math-font|cal*|E><around|[|<around|\||\<xi\>|\|><rsup|2>|]>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|t|)>*g<rsup|\<ast\>><around|(|s|)>*r<rsub|Y><around|(|d*t,d*s|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|t|)>*g<rsup|\<ast\>><around|(|s|)>*R<rsub|y*y><around|(|t,s|)>*m*<around|(|d*t|)>*m*<around|(|d*s|)><eq-number>>>|<row|<cell|<with|math-font|cal*|E><around|[|<around|\||\<eta\>|\|><rsup|2>|]>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|t|)>*g<rsup|\<ast\>><around|(|s|)>*R<rsub|y*y><around|(|t,s|)>*m*<around|(|d*t|)>*m*<around|(|d*s|)><eq-number>>>|<row|<cell|<with|math-font|cal*|E><around|[|\<eta\>*\<xi\><rsup|\<ast\>>|]>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|t|)><with|math-font|cal*|E><around|[|y<around|(|t|)>*\<xi\><rsup|\<ast\>>|]>*m*<around|(|d*t|)><eq-number>>>|<row|<cell|<with|math-font|cal*|E><around|[|y<around|(|t|)>*\<xi\><rsup|\<ast\>>|]>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<rsup|\<ast\>><around|(|s|)>*\<lambda\><rsub|t>*<around|(|d*s|)><eq-number><label|eq:E-terms>>>>>
     </align>
 
     where the measure <math|\<lambda\><rsub|t>> on
@@ -913,7 +1018,15 @@
   If the second-order stochastic process <math|x*<around|(|t,\<omega\>|)>>
   has a moving average representation and <math|X> has Radon-Nikodym
   derivative with respect to the Lebesgue measure the second-order stochastic
-  process <math|y*<around|(|t,\<omega\>|)>,<around|[|d*Y/d*m|]>=y>, then
+  process
+
+  \;
+
+  <\equation>
+    y*<around|(|t,\<omega\>|)>=<around*|[|<frac|d*Y|d*m>|]><around|(|\<tau\>,\<omega\>|)>
+  </equation>
+
+  then
 
   <\equation>
     x*<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f*<around|(|t-u|)>*y*<around|(|u,\<omega\>|)>*m*<around|(|d*u|)><label|eq:x-conv>
@@ -1001,7 +1114,7 @@
     for all <math|\<tau\>\<in\>\<bbb-R\>> and if <math|g> satisfies
 
     <\equation>
-      <with|font-base-size|9|<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||g<around|(|\<tau\>,u|)>|\|><around|\||g<rsup|\<ast\>><around|(|\<sigma\>,v|)>|\|><around|\||R<rsub|x*x><around|(|u,v|)>|\|>*m*<around|(|d*u|)>*m*<around|(|d*v|)>*m*<around|(|d*\<tau\>|)>*m*<around|(|d*\<sigma\>|)>\<less\>\<infty\><label|eq:g-condition>>
+      <with|font-base-size|8|<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||g<around|(|\<tau\>,u|)>|\|><around|\||g<rsup|\<ast\>><around|(|\<sigma\>,v|)>|\|><around|\||R<rsub|x*x><around|(|u,v|)>|\|>*m*<around|(|d*u|)>*m*<around|(|d*v|)>*m*<around|(|d*\<tau\>|)>*m*<around|(|d*\<sigma\>|)>\<less\>\<infty\><label|eq:g-condition>>
     </equation>
 
     then the output stochastic process is harmonizable.
@@ -1149,7 +1262,7 @@
     for all <math|u\<in\>\<bbb-R\>> and
 
     <\equation>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||R<rsub|H*H><around|(|\<tau\>,\<sigma\>;u,v|)><around|\|||\|>*R<rsub|x*x><around|(|u,v|)>|\|>*m*<around|(|d*\<tau\>|)>*m*<around|(|d*\<sigma\>|)>*m*<around|(|d*u|)>*m*<around|(|d*v|)>\<less\>\<infty\><label|eq:RHH-condition>
+      <with|font-base-size|9|<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||R<rsub|H*H><around|(|\<tau\>,\<sigma\>;u,v|)><around|\|||\|>*R<rsub|x*x><around|(|u,v|)>|\|>*m*<around|(|d*\<tau\>|)>*m*<around|(|d*\<sigma\>|)>*m*<around|(|d*u|)>*m*<around|(|d*v|)>\<less\>\<infty\><label|eq:RHH-condition>>
     </equation>
 
     and if the input <math|x> is independent of <math|h>, then the output
@@ -1159,7 +1272,7 @@
   We have
 
   <\equation>
-    y*<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*\<rho\>>*Y<around|(|d*\<rho\>,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*\<rho\>><around*|[|<frac|d*Y|d*m>|]><around|(|\<rho\>,\<omega\>|)>*m*<around|(|d*\<rho\>|)>,<label|eq:y-harmonize-random>
+    y*<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*\<rho\>>*Y<around|(|d*\<rho\>,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*\<rho\>><around*|[|<frac|d*Y|d*m>|]><around|(|\<rho\>,\<omega\>|)>*m*<around|(|d*\<rho\>|)><label|eq:y-harmonize-random>
   </equation>
 
   where
@@ -1225,142 +1338,142 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1>>
-    <associate|auto-10|<tuple|8.1|15>>
-    <associate|auto-11|<tuple|8.2|17>>
-    <associate|auto-12|<tuple|110|18>>
-    <associate|auto-2|<tuple|2|1>>
+    <associate|auto-1|<tuple|1|2>>
+    <associate|auto-10|<tuple|8.1|16>>
+    <associate|auto-11|<tuple|8.2|18>>
+    <associate|auto-12|<tuple|122|19>>
+    <associate|auto-2|<tuple|2|2>>
     <associate|auto-3|<tuple|3|3>>
-    <associate|auto-4|<tuple|4|3>>
+    <associate|auto-4|<tuple|4|4>>
     <associate|auto-5|<tuple|5|6>>
-    <associate|auto-6|<tuple|38|8>>
-    <associate|auto-7|<tuple|6|9>>
-    <associate|auto-8|<tuple|7|11>>
-    <associate|auto-9|<tuple|8|14>>
-    <associate|bib-campbell1969|<tuple|campbell1969|18>>
-    <associate|bib-cramer1951|<tuple|cramer1951|18>>
-    <associate|bib-cramer1964|<tuple|cramer1964|18>>
-    <associate|bib-doob1953|<tuple|doob1953|18>>
-    <associate|bib-karhunen1947|<tuple|karhunen1947|18>>
-    <associate|bib-loeve1963|<tuple|loeve1963|18>>
-    <associate|bib-masani1968|<tuple|masani1968|18>>
-    <associate|bib-masry1968|<tuple|masry1968|18>>
-    <associate|bib-parzen1967|<tuple|parzen1967|18>>
+    <associate|auto-6|<tuple|41|9>>
+    <associate|auto-7|<tuple|6|10>>
+    <associate|auto-8|<tuple|7|12>>
+    <associate|auto-9|<tuple|8|15>>
+    <associate|bib-campbell1969|<tuple|campbell1969|19>>
+    <associate|bib-cramer1951|<tuple|cramer1951|19>>
+    <associate|bib-cramer1964|<tuple|cramer1964|19>>
+    <associate|bib-doob1953|<tuple|doob1953|19>>
+    <associate|bib-karhunen1947|<tuple|karhunen1947|19>>
+    <associate|bib-loeve1963|<tuple|loeve1963|19>>
+    <associate|bib-masani1968|<tuple|masani1968|19>>
+    <associate|bib-masry1968|<tuple|masry1968|19>>
+    <associate|bib-parzen1967|<tuple|parzen1967|19>>
     <associate|bib-piranashvili1967|<tuple|piranashvili1967|19>>
     <associate|bib-rao1967|<tuple|rao1967|19>>
     <associate|bib-rosanov1959|<tuple|rosanov1959|19>>
-    <associate|eq:E-eta-xi|<tuple|83|14>>
-    <associate|eq:E-terms|<tuple|80|14>>
-    <associate|eq:E-y-xi|<tuple|82|14>>
-    <associate|eq:F|<tuple|31|7>>
-    <associate|eq:F-L2|<tuple|34|7>>
-    <associate|eq:F-Lambda|<tuple|66|12>>
-    <associate|eq:F-bound|<tuple|33|7>>
-    <associate|eq:Fn|<tuple|25|6>>
-    <associate|eq:Fn-bound|<tuple|26|6>>
-    <associate|eq:Fn-cauchy|<tuple|43|9>>
-    <associate|eq:Fn-complete|<tuple|30|7>>
-    <associate|eq:Fn-custom|<tuple|45|9>>
-    <associate|eq:Fn-double-exp|<tuple|41|8>>
-    <associate|eq:Fn-exp|<tuple|37|8>>
-    <associate|eq:Fn-norm|<tuple|27|7>>
-    <associate|eq:Fn-normal|<tuple|39|8>>
-    <associate|eq:Fn-uniform|<tuple|46|9>>
-    <associate|eq:Fn-uniform-symm|<tuple|47|9>>
-    <associate|eq:H|<tuple|38|8>>
-    <associate|eq:IS|<tuple|52|10>>
+    <associate|eq:E-eta-xi|<tuple|94|15>>
+    <associate|eq:E-terms|<tuple|91|15>>
+    <associate|eq:E-y-xi|<tuple|93|15>>
+    <associate|eq:F|<tuple|34|7>>
+    <associate|eq:F-L2|<tuple|37|8>>
+    <associate|eq:F-Lambda|<tuple|77|13>>
+    <associate|eq:F-bound|<tuple|36|8>>
+    <associate|eq:Fn|<tuple|27|7>>
+    <associate|eq:Fn-bound|<tuple|28|7>>
+    <associate|eq:Fn-cauchy|<tuple|50|9>>
+    <associate|eq:Fn-complete|<tuple|33|7>>
+    <associate|eq:Fn-custom|<tuple|52|10>>
+    <associate|eq:Fn-double-exp|<tuple|47|9>>
+    <associate|eq:Fn-exp|<tuple|40|8>>
+    <associate|eq:Fn-norm|<tuple|29|7>>
+    <associate|eq:Fn-normal|<tuple|43|9>>
+    <associate|eq:Fn-uniform|<tuple|55|10>>
+    <associate|eq:Fn-uniform-symm|<tuple|56|10>>
+    <associate|eq:H|<tuple|41|8>>
+    <associate|eq:IS|<tuple|63|11>>
     <associate|eq:QX|<tuple|2|2>>
-    <associate|eq:RHH-condition|<tuple|108|18>>
-    <associate|eq:Rhh-condition|<tuple|105|17>>
-    <associate|eq:Rxx-bounded|<tuple|87|15>>
-    <associate|eq:Rxx-harmonizable|<tuple|90|15>>
-    <associate|eq:Rxx-stationary|<tuple|89|15>>
-    <associate|eq:Ryy-finite|<tuple|71|13>>
+    <associate|eq:RHH-condition|<tuple|120|19>>
+    <associate|eq:Rhh-condition|<tuple|117|18>>
+    <associate|eq:Rxx-bounded|<tuple|99|16>>
+    <associate|eq:Rxx-harmonizable|<tuple|102|16>>
+    <associate|eq:Rxx-stationary|<tuple|101|16>>
+    <associate|eq:Ryy-finite|<tuple|82|14>>
     <associate|eq:Y|<tuple|19|5>>
-    <associate|eq:Y-X|<tuple|62|11>>
-    <associate|eq:Y-define|<tuple|67|12>>
-    <associate|eq:Y-interchange|<tuple|68|12>>
-    <associate|eq:Y-lemma|<tuple|72|13>>
-    <associate|eq:Y-thm|<tuple|51|10>>
+    <associate|eq:Y-X|<tuple|73|12>>
+    <associate|eq:Y-define|<tuple|78|13>>
+    <associate|eq:Y-interchange|<tuple|79|13>>
+    <associate|eq:Y-lemma|<tuple|83|14>>
+    <associate|eq:Y-thm|<tuple|62|11>>
     <associate|eq:an|<tuple|11|4>>
-    <associate|eq:an-expect|<tuple|14|4>>
-    <associate|eq:an-finite|<tuple|58|11>>
-    <associate|eq:an-hn|<tuple|23|5>>
-    <associate|eq:an-inner|<tuple|15|4>>
+    <associate|eq:an-expect|<tuple|14|5>>
+    <associate|eq:an-finite|<tuple|69|12>>
+    <associate|eq:an-hn|<tuple|23|6>>
+    <associate|eq:an-inner|<tuple|15|5>>
     <associate|eq:autocorr|<tuple|8|3>>
     <associate|eq:autocorr-series|<tuple|16|5>>
-    <associate|eq:bn|<tuple|53|10>>
-    <associate|eq:dY-dm|<tuple|69|12>>
-    <associate|eq:dY-dm-H|<tuple|110|18>>
-    <associate|eq:dY-dm-example|<tuple|101|17>>
-    <associate|eq:dY-dm-g|<tuple|93|16>>
+    <associate|eq:bn|<tuple|64|11>>
+    <associate|eq:dY-dm|<tuple|80|13>>
+    <associate|eq:dY-dm-H|<tuple|122|19>>
+    <associate|eq:dY-dm-example|<tuple|113|18>>
+    <associate|eq:dY-dm-g|<tuple|105|17>>
     <associate|eq:expf|<tuple|17|5>>
-    <associate|eq:f-fourier|<tuple|64|12>>
-    <associate|eq:f-integral|<tuple|50|10>>
+    <associate|eq:f-fourier|<tuple|75|13>>
+    <associate|eq:f-integral|<tuple|61|11>>
     <associate|eq:fnFourier|<tuple|21|5>>
-    <associate|eq:g-L1|<tuple|96|16>>
-    <associate|eq:g-condition|<tuple|91|15>>
-    <associate|eq:g-condition-example|<tuple|99|16>>
-    <associate|eq:g-example|<tuple|98|16>>
-    <associate|eq:g-interchange|<tuple|73|13>>
-    <associate|eq:h-H-transform|<tuple|107|18>>
-    <associate|eq:h-L1|<tuple|88|15>>
-    <associate|eq:h-custom|<tuple|44|9>>
-    <associate|eq:h-example|<tuple|97|16>>
-    <associate|eq:h-g-transform|<tuple|92|15>>
-    <associate|eq:impulse-finite|<tuple|85|15>>
-    <associate|eq:integral-proof|<tuple|61|11>>
-    <associate|eq:integral-rep|<tuple|48|9>>
-    <associate|eq:integral-rep-thm|<tuple|49|10>>
-    <associate|eq:lambda|<tuple|81|14>>
-    <associate|eq:lambda2|<tuple|3|2>>
-    <associate|eq:lambda2-ident|<tuple|4|2>>
-    <associate|eq:lambda2-inner|<tuple|5|2>>
-    <associate|eq:moving-avg|<tuple|63|11>>
-    <associate|eq:mu-finite|<tuple|56|10>>
-    <associate|eq:phin|<tuple|35|8>>
+    <associate|eq:g-L1|<tuple|108|17>>
+    <associate|eq:g-condition|<tuple|103|16>>
+    <associate|eq:g-condition-example|<tuple|111|17>>
+    <associate|eq:g-example|<tuple|110|17>>
+    <associate|eq:g-interchange|<tuple|84|14>>
+    <associate|eq:h-H-transform|<tuple|119|19>>
+    <associate|eq:h-L1|<tuple|100|16>>
+    <associate|eq:h-custom|<tuple|51|9>>
+    <associate|eq:h-example|<tuple|109|17>>
+    <associate|eq:h-g-transform|<tuple|104|16>>
+    <associate|eq:impulse-finite|<tuple|97|16>>
+    <associate|eq:integral-proof|<tuple|72|12>>
+    <associate|eq:integral-rep|<tuple|57|10>>
+    <associate|eq:integral-rep-thm|<tuple|60|11>>
+    <associate|eq:lambda|<tuple|92|15>>
+    <associate|eq:lambda2|<tuple|3|3>>
+    <associate|eq:lambda2-ident|<tuple|4|3>>
+    <associate|eq:lambda2-inner|<tuple|5|3>>
+    <associate|eq:moving-avg|<tuple|74|12>>
+    <associate|eq:mu-finite|<tuple|67|11>>
+    <associate|eq:phin|<tuple|38|8>>
     <associate|eq:proc-integral|<tuple|7|3>>
     <associate|eq:rX|<tuple|1|2>>
-    <associate|eq:rY|<tuple|57|10>>
-    <associate|eq:rY-g|<tuple|94|16>>
+    <associate|eq:rY|<tuple|68|11>>
+    <associate|eq:rY-g|<tuple|106|17>>
     <associate|eq:series|<tuple|9|4>>
-    <associate|eq:series-again|<tuple|13|4>>
+    <associate|eq:series-again|<tuple|13|5>>
     <associate|eq:span|<tuple|24|6>>
-    <associate|eq:sum-finite|<tuple|55|10>>
-    <associate|eq:x-conv|<tuple|84|14>>
-    <associate|eq:x-harmonize|<tuple|70|13>>
-    <associate|eq:x-harmonize-example|<tuple|100|16>>
-    <associate|eq:x-interchange|<tuple|65|12>>
-    <associate|eq:xi|<tuple|6|2>>
-    <associate|eq:xi-eta|<tuple|74|13>>
-    <associate|eq:xi-eta-equal|<tuple|75|13>>
+    <associate|eq:sum-finite|<tuple|66|11>>
+    <associate|eq:x-conv|<tuple|96|15>>
+    <associate|eq:x-harmonize|<tuple|81|14>>
+    <associate|eq:x-harmonize-example|<tuple|112|17>>
+    <associate|eq:x-interchange|<tuple|76|13>>
+    <associate|eq:xi|<tuple|6|3>>
+    <associate|eq:xi-eta|<tuple|85|14>>
+    <associate|eq:xi-eta-equal|<tuple|86|14>>
     <associate|eq:xin|<tuple|10|4>>
     <associate|eq:xin-again|<tuple|12|4>>
     <associate|eq:y|<tuple|18|5>>
-    <associate|eq:y-full-example|<tuple|102|17>>
-    <associate|eq:y-harmonize|<tuple|95|16>>
-    <associate|eq:y-harmonize-random|<tuple|109|18>>
-    <associate|eq:y-output|<tuple|86|15>>
-    <associate|eq:y-random|<tuple|106|17>>
-    <associate|eq:y-simple-example|<tuple|104|17>>
+    <associate|eq:y-full-example|<tuple|114|18>>
+    <associate|eq:y-harmonize|<tuple|107|17>>
+    <associate|eq:y-harmonize-random|<tuple|121|19>>
+    <associate|eq:y-output|<tuple|98|16>>
+    <associate|eq:y-random|<tuple|118|18>>
+    <associate|eq:y-simple-example|<tuple|116|18>>
     <associate|eq:yY|<tuple|20|5>>
-    <associate|eq:yn|<tuple|22|5>>
-    <associate|lem:radon-nikodym|<tuple|5|13>>
-    <associate|sec:intro|<tuple|1|1>>
-    <associate|sec:linear-systems|<tuple|8|14>>
-    <associate|sec:moving-avg|<tuple|7|11>>
-    <associate|sec:notation|<tuple|2|1>>
-    <associate|sec:orthogonal-integral|<tuple|6|9>>
-    <associate|sec:orthogonal-series|<tuple|4|3>>
+    <associate|eq:yn|<tuple|22|6>>
+    <associate|lem:radon-nikodym|<tuple|5|14>>
+    <associate|sec:intro|<tuple|1|2>>
+    <associate|sec:linear-systems|<tuple|8|15>>
+    <associate|sec:moving-avg|<tuple|7|12>>
+    <associate|sec:notation|<tuple|2|2>>
+    <associate|sec:orthogonal-integral|<tuple|6|10>>
+    <associate|sec:orthogonal-series|<tuple|4|4>>
     <associate|sec:orthonormal-sets|<tuple|5|6>>
     <associate|sec:representation|<tuple|3|3>>
-    <associate|subsec:deterministic|<tuple|8.1|15>>
-    <associate|subsec:random-systems|<tuple|8.2|17>>
-    <associate|thm:complete-set|<tuple|2|6>>
-    <associate|thm:integral-rep|<tuple|3|10>>
-    <associate|thm:linear-system-harmonizable|<tuple|6|15>>
-    <associate|thm:moving-avg-harmonizable|<tuple|4|12>>
-    <associate|thm:random-system-harmonizable|<tuple|7|18>>
+    <associate|subsec:deterministic|<tuple|8.1|16>>
+    <associate|subsec:random-systems|<tuple|8.2|18>>
+    <associate|thm:complete-set|<tuple|2|7>>
+    <associate|thm:integral-rep|<tuple|3|11>>
+    <associate|thm:linear-system-harmonizable|<tuple|6|16>>
+    <associate|thm:moving-avg-harmonizable|<tuple|4|13>>
+    <associate|thm:random-system-harmonizable|<tuple|7|19>>
     <associate|thm:series-rep|<tuple|1|4>>
   </collection>
 </references>
