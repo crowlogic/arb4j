@@ -1,509 +1,1058 @@
 \documentclass{article}
-\usepackage{amsmath,amssymb,amsthm}
-\usepackage{mathrsfs}
-\usepackage{lineno}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,mathrsfs,latexsym}
 
-% Set up theorem environments
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\cdummy}{\cdot}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{lemma}{Lemma}
 \newtheorem{theorem}{Theorem}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{definition}{Definition}
-\newtheorem{remark}{Remark}
-
-% For equation numbering
-\linenumbers
-
-\title{Harmonizability, V-Boundedness and Stationary Dilation of Stochastic Processes}
-\author{A. G. MIAMEE \& H. SALEHI}
-\date{January-February, 1978}
+%%%%%%%%%% End TeXmacs macros
 
 \begin{document}
 
+\title{Harmonizability, V-Boundedness and Stationary Dilation of Stochastic
+Processes}
+
+\author{A. G. MIAMEE, H. SALEHI}
+
+\date{January-February, 1978}
+
 \maketitle
 
-The main purpose of this paper is to show that a stochastic process $X_{t}, t$ in the real line $R$, with values in a given complex Hilbert space $\mathscr{H}$ is harmonizable if and only if it is the projection of some stationary process taking values in a larger Hilbert space $\mathscr{K}$. Harmonizable processes are natural generalizations of stationary processes where the inner product $(X_{t}, X_{s})$ is continuous and depends only on $t-s$. It is well known that any stationary process $X_{t}, t \in R$, can be represented in the form
+\begin{abstract}
+  This paper presents a new orthogonal series representation and a new
+  orthogonal integral representation for harmonizable stochastic processes. It
+  also demonstrates the importance of harmonizable stochastic processes in
+  systems analysis by showing that the output of a wide class of systems is a
+  harmonizable process.
+\end{abstract}
+
+\section{Introduction}\label{sec:intro}
+
+Harmonizable stochastic processes, a generalization of wide sense stationary
+processes, have been investigated in connection with a variety of subjects.
+Properties related to their integral representation have been studied by
+Lo{\`e}ve~{\cite{loeve1963}} and Rosanov~{\cite{rosanov1959}}, their special
+role in the multiplicity theory of purely nondeterministic stochastic
+processes has been demonstrated by Cramer~{\cite{cramer1964}}, and sampling
+theorems have been derived by Piranashvili~{\cite{piranashvili1967}} and
+Rao~{\cite{rao1967}}.
+
+This paper makes two contributions related to the class of harmonizable
+stochastic processes. First, it is proved under some general conditions that
+the output of a linear system is a harmonizable stochastic process; the system
+may be randomly time-varying and the input process need not be stationary nor
+even harmonizable. Thus, harmonizable processes are the most general processes
+that need be considered in the analysis of a wide class of linear systems. In
+such analyses as well as in many other problems in communications and
+controls, series representation of stochastic processes has been used as a
+powerful tool. The second contribution of this paper is a series
+representation for harmonizable stochastic processes. A constructive procedure
+for obtaining the series representation is given. This representation is valid
+over the entire real line, while the well-known Karhunen-Lo{\`e}ve series
+representation is valid only on compact intervals. An orthogonal integral
+representation for harmonizable stochastic processes is also derived in this
+paper.
+
+\section{Notation}\label{sec:notation}
+
+Some definitions and basic properties are briefly mentioned here. For a more
+detailed discussion the reader is referred to Karhunen~{\cite{karhunen1947}},
+Cramer~{\cite{cramer1951}}, Rosanov~{\cite{rosanov1959}},
+Parzen~{\cite{parzen1967}}, and Masani~{\cite{masani1968}}.
+
+Consider a probability space $(\Omega, \mathscr{M}, P)$ and the Hilbert space
+$L_2 (\Omega, \mathscr{M}, P)$ of all complex valued random variables with
+finite mean square value. A random measure $X$ on a class of subsets
+$\mathscr{N}$ of a set $E$ is a countably additive function on $\mathscr{N}$
+to $L_2 (\Omega, \mathscr{M}, P)$, i.e., $X (S, \omega) = \sum_{n =
+1}^{\infty} X (S_n, \omega)$ in the mean square sense whenever the disjoint
+sets $S_n, n = 1, 2, \ldots$, are in $\mathscr{N}$ and $S = \bigcup_{n =
+1}^{\infty} S_n \in \mathscr{N}$. To each $X$ on $\mathscr{N}$ there
+corresponds a complex measure $r_X$ defined on $\mathscr{N} \times
+\mathscr{N}$ by
 \begin{equation}
-X_{t}=\int_{R} e^{-i t u} d \Phi(u)
+  r_X  (S_1 \times S_2) = \mathscr{E} [X (S_1, \omega) X^{\ast} (S_2,
+  \omega)], \label{eq:rX}
 \end{equation}
-where $\Phi$ is a countably additive orthogonally scattered $\mathscr{H}$-valued measure on $R$ such that the spectral measure $F$ defined by
+where $\mathscr{E}$ is the expectation operator and the star denotes complex
+conjugate. $r_X$ is nonnegative definite on $\mathscr{N} \times \mathscr{N}$.
+$X$ is orthogonal if and only if $r_X  (S_1 \times S_2) = 0$, whenever $S_1$
+and $S_2$ are disjoint. To each orthogonal $X$ on $\mathscr{N}$ there
+corresponds a nonnegative measure $Q_X$ defined on $\mathscr{N}$ by
 \begin{equation}
-F(A \cap B)=(\Phi(A), \Phi(B)), A \quad \text{ and } \quad B \quad \text{ Borel sets}
+  Q_X (S) = \mathscr{E} |X (S, \omega) |^2 . \label{eq:QX}
 \end{equation}
-is a bounded countably additive nonnegative measure (for the definition of orthogonally scattered measures, see \cite{masani}). In this case the correlation function $R(t, s)=(X_{t}, X_{s})$ has the representation
+Usually $X$ is initially defined on a semiring of subsets $\mathscr{N}$. If
+$r_X$ is of bounded variation over $\mathscr{N} \times \mathscr{N}$ then $X$
+can be extended to the restricted $\sigma$-ring $\mathscr{B}_0 = \{S \in
+\sigma (\mathscr{N}) = \mathscr{B} ; |r_X | (S \times S) < \infty\}$. We then
+say that $X$ is a random measure on $(E, \mathscr{B})$.
+
+Let $L_2 (X) = \sigma \{X (S, \omega) ; S \in \mathscr{B}_0 \}$ denote the
+span of $X$ in $L_2 (\Omega, \mathscr{M}, P)$ and let $\Lambda_2 (r_X)$ be the
+set of all complex valued, $\mathscr{B}$-measurable functions $f$ on $E$ such
+that
 \begin{equation}
-R(t, s)=\int_{R} e^{-i(t-s) u} d F(u)
+  \int_{E \times E} f (t) f^{\ast} (s) r_X (dt, ds) < \infty .
+  \label{eq:lambda2}
 \end{equation}
-
-The notion of harmonizable processes was introduced by M. Loève \cite{loeve} as those processes $X_{t}$ for which
+Then, upon considering two functions $f$ and $g$ in $\Lambda_2 (r_x)$ as
+identical if and only if
 \begin{equation}
-X_{t}=\int_{R} e^{-i t u} d \Phi(u)
+  \int_{E \times E} [f (t) - g (t)]  [f^{\ast} (s) - g^{\ast} (s)] r_X (dt,
+  ds) = 0, \label{eq:lambda2-ident}
 \end{equation}
-and
+$\Lambda_2 (r_X)$ becomes a Hilbert space with inner product
 \begin{equation}
-R(t, s)=\iint_{R^{2}} e^{-i(t v-s u)} d F(u, v)
+  (f, g)_{\Lambda_2 (r_X)} = \int_{E \times E} f (t) g^{\ast} (s) r_X (dt, ds)
+  \label{eq:lambda2-inner}
 \end{equation}
-with $\Phi$ being a countably additive $\mathscr{H}$-valued measure (not necessarily orthogonally scattered) and the spectral measure $F$ being a complex-valued measure of
-bounded variation on the plane. We note that for a stationary process the spectral measure $F$ can be realized as a measure on the plane which is concentrated on its diagonal. But for a harmonizable process this is not necessarily the case.
-
-Subsequently H. Cramér \cite{cramer} in his study of non-stationary processes obtained several important results concerning harmonizable sequences. Later J. L. Abreu \cite{abreu} considered these harmonizable processes and showed that they are projections of stationary processes taking values in some larger Hilbert space. With this setting the class of harmonizable processes fails to include projection of all stationary processes, a fact which was observed by Abreu in his work. A weaker definition of harmonizability was introduced by Yu. A. Rozanov in \cite{rozanov}. More precisely, he defined an $\mathscr{H}$-valued process $X_{t}$ to be harmonizable if it can be represented as
+and $\Lambda_2 (r_X) = \sigma \{I_S (t) ; S \in \mathscr{B}_0 \}$, where $I$
+is the indicator function. $L_2 (X)$ and $\Lambda_2 (r_X)$ are isomorphic with
+corresponding elements $X (S, \omega)$ and $I_S (t)$, $S \in \mathscr{B}_0$,
+and integration of functions in $A_2 (r_X)$ with respect to $X$ is defined by
 \begin{equation}
-X_{t}=\int_{R} e^{-i t u} d \Phi(u)
+  \xi (\omega) = \int_E f (t) X (dt, \omega), \label{eq:xi}
 \end{equation}
-where $\Phi$ is a countably additive measure with values in $\mathscr{H}$, which is "strongly continuous" and of bounded semi-variation. The term "strong continuity" used by Rozanov means that the semi-variation $\|\Phi\|(\cdot)$ is continuous from above at zero (for definition of the semi-variation $\|\Phi\|$ see \cite{dunford} and \cite{rozanov}). In view of IV. 10.5 \cite{dunford} the "strong continuity" of $\Phi$ assumed by Rozanov is automatically true. Hence we adopt the following definition for harmonizability:
+where $\xi$ and $f$ are corresponding elements under the isomorphism.
 
-\begin{definition}
-An $\mathscr{H}$-valued process $X_{t}, t \in R$, is said to be harmonizable if $X_{t}$ can be represented as
+\section{Representation of Harmonizable Stochastic
+Processes}\label{sec:representation}
+
+Harmonizable stochastic processes have been introduced by
+Lo{\`e}ve~{\cite{loeve1963}} as a first step generalization of wide sense
+stationary mean square continuous stochastic processes. A second-order
+stochastic process $\{x (t, \omega), t \in \mathbb{R}, \omega \in \Omega\}$ is
+harmonizable if and only if it has the integral representation
 \begin{equation}
-X_{t}=\int_{R} e^{-i t u} d \Phi(u)
+  x (t, \omega) = \int_{- \infty}^{\infty} e^{itu} X (du, \omega)  \quad
+  \text{for all } t \in \mathbb{R} \label{eq:proc-integral}
 \end{equation}
-with $\Phi$ being a countably additive $\mathscr{H}$-valued measure on $R$ which is of bounded semi-variation.
-\end{definition}
+where $X$ is a random measure defined for all Borel sets $\mathscr{B}^1$ of
+the real line $\mathbb{R}$.
 
-It is clear, as Rozanov pointed out in \cite{rozanov}, that the class of harmonizable processes contains projections of stationary processes. The main purpose of this article is to show that in fact these two class of processes are precisely the same (Theorem 5). In other words our aim is to prove that an $\mathscr{H}$-valued process is harmonizable if and only if it has a stationary dilation, i.e., it is the projection of some stationary process taking values in some larger Hilbert space $\mathscr{K}$.
+It is shown by Lo{\`e}ve~{\cite{loeve1963}} and Cram{\`e}r~{\cite{cramer1951}}
+that a second-order stochastic process $x (t, \omega)$ is harmonizable if and
+only if its autocorrelation function $R_{xx} (t, s)$ has the integral
+representation
+\begin{equation}
+  R_{xx} (t, s) = \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} e^{i (tu -
+  sv)} r_X (du, dv)  \quad \text{for all } t, s \in \mathbb{R}
+  \label{eq:autocorr}
+\end{equation}
+where $r_X$ is a measure of bounded variation on the whole plane
+$\mathbb{R}^2$ and nonnegative definite on $\mathscr{B}^1 \times
+\mathscr{B}^1$. $r_X$ can be regarded as the two-dimensional spectral measure
+of the harmonizable process $x (t, \omega)$, with two-dimensional spectral
+distribution $\rho_{xx} (u, v) = r_X  ((- \infty, u] \times (- \infty, v])$.
 
-Recently H. Niemi in a sequence of articles \cite{niemi1}, \cite{niemi2}, \cite{niemi3} studied bounded vector measures and their dilation as projection of orthogonally scattered measures. Using these results he characterized \cite{niemi4} continuous $V$-bounded processes, and showed that they are the same as projections of stationary processes. Combining this and our main result mentioned above, one concludes that the following are equivalent:
-(i) $X_{t}, t \in R$, is a harmonizable process,
-(ii) $X_{t}, t \in R$, is projection of some stationary process,
-(iii) $X_{t}, t \in R$, is a continuous $V$-bounded process.
+It is clear that a mean square continuous wide sense stationary stochastic
+process is harmonizable, with $X$ an orthogonal random measure and $r_X$ a
+nonnegative measure concentrated on the diagonal of the plane.
 
-However, we will obtain a direct proof for the equivalence of (i) and (iii), (see also \cite{kluvanek}), and hence providing a considerably shorter proof for Niemi's result. We should also point out that in Niemi's work a bounded vector measure means a bounded linear operator on $C_{0}(R)$ into a Hilbert space, whereas in our study we work with the usual vector valued measures, which naturally appear in the study of spectral theory of stochastic processes.
+The functions $\{e^{itu}, t \in \mathbb{R}\}$ span the whole $\Lambda_2 (r_X)$
+space and this implies that $L_2 (x) = L_2 (X)$, where $L_2 (x) = \sigma \{x
+(t, \omega), t \in \mathbb{R}\}$ denotes the span of $x$ in $L_2 (\Omega,
+\mathscr{M}, P)$.
 
-In the course of our proof we will make extensive use of the ideas and the techniques occurring in the works of R. Rogge \cite{rogge} and A. Pietsch \cite{pietsch} concerning 2 majorizable operators on a Hilbert space. In this connection see also \cite{dubinsky} and \cite{grothendieck}.
+\section{Orthogonal Series Representation of a Harmonizable Stochastic
+Process}\label{sec:orthogonal-series}
 
-In this paper we use the concept of integration with respect to a finitely additive measure $F$ as introduced by Rozanov in \cite{rozanov}. The reader may find it convenient to be familiar with this paper. We will use the following characterization of harmonizable processes which is a slight modification of Theorem 1.2, \cite{rozanov}.
+An orthogonal series representation for harmonizable stochastic processes is
+provided by the following:
 
 \begin{theorem}
-In order that an $\mathscr{H}$-valued process $X_{t}, t \in R$, be harmonizable, it is necessary and sufficient that the correlation function $R(t, s)$ can be represented in the form
-\begin{equation}
-R(t, s)=\iint_{R^{2}} e^{-i(t v-s u)} d F(u, v)
-\end{equation}
-where $F(A, B)=(\Phi(A), \Phi(B)), A$ and B Borel sets; $\Phi$ as in Definition 1, and the spectral measure $F$ has the following properties:
-\begin{enumerate}
-\item[(a)] $F$ is finitely additive on the algebra of rectangles,
-\item[(b)] $F$ is continuous from above at zero, in the sense that $F(A_{i}, B_{j})$ tends to zero if $A_{i}$ and $B_{j}$ converge monotonically to the empty set.
-\item[(c)] $F$ is positive definite, i.e., for any set of complex numbers $\alpha_{1}, \alpha_{2}, \cdots \alpha_{n}$,
-\begin{equation}
-\sum_{i, j=1}^{n} a_{i} \bar{\alpha}_{j} F(A_{i}, A_{j}) \geq 0
-\end{equation}
-\item[(d)] $F$ is of bounded semi-variation.
-\end{enumerate}
-\end{theorem}
-
-In his paper \cite{rozanov} Rozanov, in addition, assumed that $F$ is "strongly continuous'', i.e., the semi-variation of $F$ is continuous from above at zero. It is not hard to show that properties $(a)-(d)$ imply this "strong continuity."
-
-In order to establish our main theorem we first prove two lemmas. In the proof of these lemmas we have borrowed the techniques contained in \cite{pietsch} and \cite{rogge}, and we are happy to acknowledge it here. For the sake of completeness and the benefit of readers we summarize some preliminary results contained in \cite{rogge}. Let $R^{n}(n \geq 2)$ be the $n$-dimensional real Euclidean space with the usual norm and inner product $\|\cdot\|,(\cdot, \cdot)$; $A_{n}$ the unit sphere of $R^{n}$, and $m_{n}$ the normalized Haar measure on $A_{n}$. By elementary integration one can obtain:
-\begin{equation}
-\left\{\begin{array}{l}
-\int_{A_{n}}(r, t)(s, t) d m_{n}(t)=\frac{1}{n}(r, s) \\
-\|r\| \int_{A_{n}} \operatorname{sign}[(r, t)](s, t) d m_{n}(t)=\rho_{n}(r, s) \\
-\int_{A_{n}}|(r, t)| d m_{n}(t)=\rho_{n}\|r\|
-\end{array}\right.
-\end{equation}
-where $\rho_{n}=\frac{\Gamma\left(\frac{n}{2}\right)}{\sqrt{\pi} \Gamma\left(\frac{n+1}{2}\right)}$. Moreover, one can see that $n \rho_{n}^{2}>\frac{2}{\pi}$.
-
-Let $L_{2}(A_{n}, m_{n})$ be the usual Hilbert space of real-valued square summable functions on $A_{n}$. We define two operators $P_{n}$ and $Q_{n}$ on $L_{2}(A_{n}, m_{n})$ as follows:
-\begin{equation}
-\begin{gathered}
-(P_{n} f)(s)=n \int_{A_{n}}(s, t) f(t) d m_{n}(t) \\
-(Q_{n} f)(s)=\int_{A_{n}} \operatorname{sign}[(s, t)] f(t) d m_{n}(t)
-\end{gathered}
-\end{equation}
-$P_{n}$ and $Q_{n}$ are linear operators. As shown in \cite{rogge}, using relations (3), one can verify that $\frac{\pi}{2} Q_{n}^{2}-\frac{1}{n} P_{n}$ is a non-negative Hermitian operator in $L_{2}(A_{n}, m_{n})$, i.e.,
-\begin{equation}
-\frac{\pi}{2}(Q_{n}^{2} f, f) \geq \frac{1}{n}(P_{n} f, f), \quad \text{ for all } f \in L_{2}(A_{n}, m_{n})
-\end{equation}
-
-Define the kernel $L(\cdot, \cdot)$ by
-\begin{equation}
-L(r, s)=\int_{A_{n}} \operatorname{sign}[(r, t)] \quad \operatorname{sign}[(s, t)] d m_{n}(t)
-\end{equation}
-
-Simple computation on (4) shows that for all $f \in L_{2}(A_{n}, m_{n})$,
-\begin{equation}
-\begin{aligned}
-& \int_{A_{n}} \int_{A_{n}}(r, s) f(r) f(s) d m_{n}(r) d m_{n}(s) \\
-\leq & \frac{\pi}{2} \int_{A_{n}} \int_{A_{n}} L(r, s) f(r) f(s) d m_{n}(r) d m_{n}(s)
-\end{aligned}
-\end{equation}
-
-Let $\lambda_{1}, \lambda_{2} \cdots, \lambda_{n}$ be any set of real numbers and $t_{1}, t_{2}, \cdots, t_{n}$ be any set of vectors in $R^{n}$. Apply (5) to the function $f(r)=\sum_{i=1}^{n} \lambda_{i}(r, t_{i})$. Using relations (3) and the definition of the kernel $L(\cdot, \cdot)$, some routine calculations show that
-\begin{equation}
-\sum_{i=1}^{m} \sum_{j=1}^{m}(t_{i}, t_{j}) \lambda_{i} \lambda_{j} \leq \frac{\pi}{2} \sum_{i=1}^{m} \sum_{j=1}^{m} L(t_{i}, t_{j})\|t_{i}\|\|t_{j}\| \lambda_{i} \lambda_{j}.
-\end{equation}
-
-Now since the matrix $[\frac{\pi}{2} L(t_{i}, t_{j})\|t_{i}\|\|t_{i}\|-(t_{i}, t_{j})]_{i, j=1}^{n}$ is symmetric with real entries, (6) implies the corresponding relation for the complex numbers $\lambda_{1} \lambda_{2}, \cdots, \lambda_{n}$, i.e., we have
-\begin{equation}
-\sum_{i=1}^{m} \sum_{j=1}^{m}(t_{i}, t_{j}) \lambda_{i} \bar{\lambda}_{j} \leq \frac{\pi}{2} \sum_{i=1}^{m} \sum_{j=1}^{m} L(t_{i}, t_{j})\|t_{i}\|\|t_{j}\| \lambda_{i} \bar{\lambda}_{j},
-\end{equation}
-for any set $\lambda_{1}, \lambda_{2}, \cdots, \lambda_{n}$ of complex numbers and any set $t_{1}, t_{2}, \cdots, t_{n}$ of vectors in $R^{n}$.
-
-\begin{lemma}
-Let $X_{t}, t \in R$, be an $\mathscr{H}$-valued harmonizable process with the spectral measure F as in Theorem 2, then there exists a positive number $c$ such that
-\begin{enumerate}
-\item[(a)]
-\begin{equation}
-\left|\iint_{R^{2}} \varphi(s) \psi(t) d F(s, t)\right| \leq c\|\varphi\|_{\infty}\|\psi\|_{\infty},
-\end{equation}
-for any pair $\varphi$ and $\psi$ of bounded measurable complex-valued functions on $R$, and
-\item[(b)]
-\begin{equation}
-\sum_{k=1}^{n} \iint_{R^{2}} \varphi_{k}(s) \bar{\varphi}_{k}(t) d F(s, t) \leq \pi c \sup_{t \in R} \sum_{k=1}^{n} |\varphi_{k}(t)|^2,
-\end{equation}
-for any set $\{\varphi_1, \varphi_2, \cdots, \varphi_n\}$ of bounded measurable complex-valued functions on $R$.
-
-\begin{proof}
-(a) This follows from \cite{rozanov} with $c = \|F\|(R)$. (b) First we assume that the function $\varphi_1, \varphi_2, \cdots, \varphi_n$ are real-valued. Without loss of generality we may assume that $c$ in part (a) is one, and hence assuming $\|\varphi_k\|_{\infty}^2 = 1$, we show that
-\begin{equation}
-\sum_{k=1}^{n} \iint_{R^{2}} \varphi_{k}(s) \varphi_{k}(t) d F(s, t) \leq \pi.
-\end{equation}
-
-It suffices to assume that $\varphi_1, \varphi_2, \cdots, \varphi_n$ are simple functions (the general case then follows from approximating the $\varphi$'s by simple functions). We may write $\varphi_k = \sum_{i=1}^{m} \varphi_k(t_i) \chi_{U_i}$, $k = 1, 2, \ldots, n$; where $U_1, U_2, \cdots, U_m$ is a disjoint covering of $R$ and $t_i \in U_i$ for each $i$. We have
-\begin{equation}
-\sum_{k=1}^{n} \iint_{R^{2}} \varphi_{k}(s) \varphi_{k}(t) d F(s, t) = \sum_{k=1}^{n} \sum_{i=1}^{m} \sum_{j=1}^{m} \varphi_k(t_i) \varphi_k(t_j) F(U_i, U_j).
-\end{equation}
-
-Now for any set of complex numbers $\{\gamma_i\}_{i=1}^{m}$ with $\sum_{i=1}^{m} |\gamma_i|^2 = 1$, we have
-\begin{equation}
-\left| \iint_{R^{2}} \left(\sum_{i=1}^{m} \gamma_i \chi_{U_i}(s)\right) \left(\sum_{j=1}^{m} \gamma_j \chi_{U_j}(t)\right) d F(s, t) \right| \leq 1,
-\end{equation}
-(because $\|\sum_{i=1}^{m} \gamma_i \chi_{U_i}\|_{\infty} \leq 1$, and (a) applies with $\varphi = \psi = \sum_{i=1}^{m} \gamma_i \chi_{U_i}$). Define the operator $S : R \to R^n$ by
-\begin{equation}
-S(t) = (\varphi_1(t), \varphi_2(t), \cdots, \varphi_n(t)).
-\end{equation}
-
-For any $s, t \in R$ we have
-\begin{equation}
-(S(s), S(t)) = \sum_{k=1}^{n} \varphi_k(s) \varphi_k(t) \quad \text{and} \quad \|S(t)\| \leq 1.
-\end{equation}
-
-Now from (9) we can write
-\begin{align}
-\sum_{k=1}^{n} \iint_{R^{2}} \varphi_{k}(s) \varphi_{k}(t) d F(s, t) &= \sum_{i=1}^{m} \sum_{j=1}^{m} (S(t_i), S(t_j)) F(U_i, U_j) \\
-&= \sum_{i=1}^{m} \sum_{j=1}^{m} \sum_{\beta} (\Phi(U_i), e_\beta) (\Phi(U_j), e_\beta) (S(t_i), S(t_j)),
-\end{align}
-where $\{e_\beta\}$ is an orthonormal system for the Hilbert space $\mathscr{H}$, and $\Phi$ is as in Theorem 2. Now bringing the sum over $\beta$ out and using (7) we get
-\begin{align}
-\sum_{k=1}^{n} \iint_{R^{2}} \varphi_{k}(s) \varphi_{k}(t) d F(s, t) &\leq \frac{\pi}{2} \sum_{i=1}^{m} \sum_{j=1}^{m} \sum_{\beta} L(S(t_i), S(t_j)) \|S(t_i)\| \|S(t_j)\| (\Phi(U_i), e_\beta) (\Phi(U_j), e_\beta) \\
-&= \frac{\pi}{2} \sum_{i=1}^{m} \sum_{j=1}^{m} L(S(t_i), S(t_j)) \|S(t_i)\| \|S(t_j)\| (\Phi(U_i), \Phi(U_j)) \\
-&= \frac{\pi}{2} \sum_{i=1}^{m} \sum_{j=1}^{m} L(S(t_i), S(t_j)) \|S(t_i)\| \|S(t_j)\| F(U_i, U_j) \\
-&= \frac{\pi}{2} \int_{A_n} \sum_{i=1}^{m} \sum_{j=1}^{m} F(U_i, U_j) \text{sign}[S(t_i), p] \text{sign}[S(t_j), p] \|S(t_i)\| \|S(t_j)\| dm_n(p).
-\end{align}
-
-Using (10) with $\gamma_i = \text{sign}[S(t_i), p] \|S(t_i)\|$ we get
-\begin{align}
-\sum_{k=1}^{n} \iint_{R^{2}} \varphi_{k}(s) \varphi_{k}(t) d F(s, t) &\leq \frac{\pi}{2} \int_{A_n} \left| \iint_{R^{2}} \left(\sum_{i=1}^{m} \text{sign}[S(t_i), p] \|S(t_i)\| \chi_{U_i}(s)\right) \right. \\
-&\quad \left. \left(\sum_{j=1}^{m} \text{sign}[S(t_j), p] \|S(t_j)\| \chi_{U_j}(t)\right) dF(s, t) \right| dm_n(p) \\
-&\leq \frac{\pi}{2} \int_{A_n} dm_n(p) = \frac{\pi}{2} \cdot 2 = \pi.
-\end{align}
-
-Thus for any arbitrary real-valued bounded measurable functions $\varphi_1, \varphi_2, \cdots, \varphi_n$ we have
-\begin{equation}
-\sum_{k=1}^{n} \iint_{R^{2}} \varphi_{k}(s) \varphi_{k}(t) d F(s, t) \leq \pi c \sup_{t \in R} \sum_{k=1}^{n} \varphi_k(t)^2.
-\end{equation}
-
-This completes the proof of (b) for the real-valued $\varphi$'s. Now let $\varphi_1, \varphi_2, \cdots, \varphi_n$ be complex-valued bounded measurable functions. Writing $\varphi_k(t) = \alpha_k(t) + i\beta_k(t)$, $k = 1, 2, \ldots, n$; we have
-\begin{align}
-0 \leq \sum_{k=1}^{n} \iint_{R^{2}} \varphi_{k}(s) \bar{\varphi}_{k}(t) d F(s, t) &= \sum_{k=1}^{n} \iint_{R^{2}} (\alpha_k(s) + i\beta_k(s)) (\alpha_k(t) - i\beta_k(t)) d F(s, t) \\
-&= \sum_{k=1}^{n} \iint_{R^{2}} \alpha_k(s) \alpha_k(t) d F(s, t) + \sum_{k=1}^{n} \iint_{R^{2}} \beta_k(s) \beta_k(t) d F(s, t) \\
-&\quad + i \sum_{k=1}^{n} \iint_{R^{2}} (\beta_k(s) \alpha_k(t) - \alpha_k(s) \beta_k(t)) d F(s, t).
-\end{align}
-
-Clearly the third term is zero. By (11) each of the first two terms are less than or equal to $\frac{\pi c}{2} \sup_{t \in R} \sum_{k=1}^{n} (|\alpha_k(t)|^2 + |\beta_k(t)|^2) = \frac{\pi c}{2} \sup_{t \in R} \sum_{k=1}^{n} |\varphi_k(t)|^2$. These complete the proof of part (b).
-\end{proof}
-
-\begin{lemma}
-Let $X_t$ be a harmonizable process with the spectral measure $F$, then there exists a bounded regular countably additive nonnegative measure $\mu$ on $R$ such that
-\begin{equation}
-\left| \iint_{R^{2}} \varphi(s) \psi(t) d F(s, t) \right| \leq \left( \int_{R} |\varphi(t)|^2 d\mu(t) \right)^{1/2} \left( \int_{R} |\psi(t)|^2 d\mu(t) \right)^{1/2},
-\end{equation}
-for any bounded measurable complex-valued function $\varphi$ on $R$.
-\end{lemma}
-
-\begin{proof}
-By Lemma 3 there exists a positive number $\rho$ such that
-\begin{equation}
-\sum_{k=1}^{n} \iint_{R^{2}} \varphi_{k}(s) \bar{\varphi}_{k}(t) d F(s, t) \leq \rho \sup_{t \in R} \sum_{k=1}^{n} |\varphi_k(t)|^2,
-\end{equation}
-for any set $\{\varphi_1, \varphi_2, \cdots, \varphi_n\}$ of bounded measurable complex-valued functions. Define a functional $S$ on the class $C_R(R)$ of all bounded continuous real-valued functions by
-\begin{equation}
-S(\psi) = \inf \left\{ \sup_{t \in R} \sum_{k=1}^{n} |\varphi_k(t)|^2 + \rho \sum_{k=1}^{n} |\psi(t) - \varphi_k(t)|^2 - \sum_{k=1}^{n} \iint_{R^{2}} \varphi_{k}(s) \bar{\varphi}_{k}(t) d F(s, t) \right\},
-\end{equation}
-where the infinum is taken over all finite sets $\{\varphi_1, \varphi_2, \cdots, \varphi_n\}$ of bounded measurable complex-valued functions. It is easy to see that $S$ is a homogeneous subadditive real-valued functional for which
-\begin{equation}
-\inf_{t \in R} \psi(t) \leq S(\psi) \leq \sup_{t \in R} \psi(t), \text{ for all } \psi \in C_R(R)
-\end{equation}
-and hence
-\begin{align}
-S(\psi) \geq 0 \text{ if } \psi \geq 0 \\
-S(\psi) \leq 0 \text{ if } \psi \leq 0
-\end{align}
-
-Thus, by the Hahn-Banach theorem there exists a linear functional $T$ on $C_R(R)$ such that (see for example \cite{dunford} pp. 62-63),
-\begin{equation}
-S(-\psi) \leq T(\psi) \leq S(\psi), \psi \in C_R(R).
-\end{equation}
-
-Obviously, $T$ is a bounded nonnegative linear functional on the normed vector space $C_R(R)$. Let $C_C(R)$ be the class of all bounded continuous complex-valued functions on $R$. We extend $T$ to $C_C(R)$ by
-\begin{equation}
-\hat{T}(\varphi + i\psi) = T(\varphi) + iT(\psi); \varphi, \psi \in C_R(R).
-\end{equation}
-
-Clearly $\hat{T}$ is a bounded nonnegative linear functional on $C_C(R)$. Since $C_C(R)$ contains $C_0(R)$, the class of all continuous complex-valued functions vanishing at $\infty$, according to the Riesz representation theorem (\cite{rudin}, p. 131, Theorem 6.19) there exists a complex regular measure $\mu_0$ such that
-\begin{equation}
-T(\psi) = \int_{R} \psi(t) d\mu_0(t), \psi \in C_C(R).
-\end{equation}
-
-Let $E$ be any measurable set. Given any $\epsilon > 0$, one can find a nonnegative function $\psi$ in $C_C(R)$ such that $\int_{E} (1 - \psi(t)) d\mu_0(t) \leq \epsilon$. This implies that $\mu_0(E) = \int_{E} 1 d\mu_0(t)$ is nonnegative. Hence $\mu_0$ is a bounded regular countably additive nonnegative measure such that
-\begin{equation}
-T(\psi) = \int_{R} \psi(t) d\mu_0(t), \psi \in C_R(R).
-\end{equation}
-
-For any bounded continuous complex-valued function $\psi$ we have
-\begin{equation}
-S(-\rho|\psi|^2) \leq T(-\rho|\psi|^2),
-\end{equation}
-or
-\begin{equation}
-S(-\rho|\psi|^2) \leq \sup_{t \in R} \{|\psi(t)|^2 + \rho|\varphi(t) - \psi(t)|^2 - \iint_{R^{2}} \varphi(s) \bar{\varphi}(t) d F(s, t)\},
-\end{equation}
-where the supremum is taken over all bounded continuous complex-valued functions $\varphi$.
-
-Thus for the specific choice $\varphi = \psi$ we get
-\begin{equation}
-S(-\rho|\psi|^2) \leq \sup_{t \in R} |\psi(t)|^2 - \iint_{R^{2}} \psi(s) \bar{\psi}(t) d F(s, t),
-\end{equation}
-or
-\begin{equation}
--\rho T(|\psi|^2) = T(-\rho|\psi|^2) \leq S(-\rho|\psi|^2) \leq \iint_{R^{2}} \psi(s) \bar{\psi}(t) d F(s, t).
-\end{equation}
-
-Thus for any function $\psi$ in $C_C(R)$ we have
-\begin{equation}
-\iint_{R^{2}} \psi(s) \bar{\psi}(t) d F(s, t) \leq \rho T(|\psi|^2) = \rho \int_{R} |\psi(t)|^2 d\mu_0(t),
-\end{equation}
-or equivalently
-\begin{equation}
-\left( \int_{R} \psi(s) d\Phi(s), \int_{R} \psi(s) d\Phi(s) \right) \leq \rho \int_{R} |\psi(t)|^2 d\mu_0(t).
-\end{equation}
-
-Let $\psi$ be in $C_C(R)$. Take a sequence $\psi_n$ in $C_C(R)$ such that $\psi_n \to \psi$ pointwise and $|\psi_n(s)| \leq \sup_{t \in R} |\psi(t)|$. Since $\mu_0$ is bounded by the usual Lebesgue dominated convergence theorem $\int_{R} |\psi_n(t)|^2 d\mu_0(t)$ converges to $\int_{R} |\psi(t)|^2 d\mu_0(t)$. Also by (\cite{dunford}, p. 328, Theorem 10) $\int_{R} \psi_n(t) d\Phi(t)$ converges to $\int_{R} \psi(t) d\Phi(t)$. Therefore applying (12) to the sequence $\psi_n$ and then taking limits one obtains
-\begin{equation}
-\iint_{R^{2}} \psi(s) \bar{\psi}(t) d F(s, t) = \left( \int_{R} \psi(s) d\Phi(s), \int_{R} \psi(s) d\Phi(s) \right) \leq \rho \int_{R} |\psi(t)|^2 d\mu_0(t), \psi \in C_C(R).
-\end{equation}
-
-Hence $\mu = \rho \mu_0$ is the desired measure.
-\end{proof}
-
-\begin{theorem}[Main theorem]
-An $\mathscr{H}$-valued process $X_t, t \in R$, is harmonizable if and only if there exists a Hilbert space $\mathscr{K}$ containing $\mathscr{H}$ and a $\mathscr{K}$-valued stationary process $Y_t$ such that
-\begin{equation}
-X_t = PY_t,
-\end{equation}
-where $P$ is the projection from $\mathscr{K}$ onto $\mathscr{H}$.
+  \label{thm:series-rep}A harmonizable stochastic process $\{x (t, \omega), t
+  \in \mathbb{R}, \omega \in \Omega\}$ is uniformly mean square continuous and
+  has an orthogonal series expansion
+  \begin{equation}
+    x (t, \omega) = \sum_n a_n (t) \xi_n (\omega) \label{eq:series}
+  \end{equation}
+  in the mean square sense for all $t \in \mathbb{R}$, where
+  \begin{equation}
+    \xi_n (\omega) = \int_{- \infty}^{\infty} f_n (u) X (du, \omega), \quad
+    \mathscr{E} [\xi_n \xi_m^{\ast}] = \delta_{nm} \label{eq:xin}
+  \end{equation}
+  and
+  \begin{equation}
+    a_n (t) = \iint_{- \infty}^{\infty} e^{itu} f_n^{\ast} (v) r_X (du, dv)
+    \label{eq:an}
+  \end{equation}
+  and $\{f_n (\cdot)\}$ is an orthonormal and complete set of functions in
+  $\Lambda_2 (r_X)$.
 \end{theorem}
 
 \begin{proof}
-If $X$ is the projection of some stationary process $Y$, it is easy, as was pointed out in \cite{rozanov}, to see that $X_t$ is harmonizable. Now let $X_t, t \in R$, be a harmonizable process with the spectral measure $F$. Let $\mu$ be the dominating measure of Lemma 4. There exists a countably additive Borel measure $\mu_1$ on $R \times R$ which is concentrated on its diagonal and satisfies
-\begin{equation}
-\int_{R^2} f(s, t) d\mu_1(s, t) = \int_{R} f(t, t) d\mu(t),
-\end{equation}
-for every bounded continuous complex-valued function $f$ on $R \times R$. Now since by Lemma 4
-\begin{equation}
-\int_{R^2} \varphi(s) \bar{\psi}(t) d\mu_1(s, t) - \int_{R^2} \varphi(s) \bar{\psi}(t) dF(s, t) \geq 0,
-\end{equation}
-we define an inner product $(\cdot, \cdot)'$ on the class $C_C(R)$ by
-\begin{equation}
-(\varphi, \psi)' = \int_{R^2} \varphi(s) \bar{\psi}(t) d\mu_1(s, t) - \int_{R^2} \varphi(s) \bar{\psi}(t) dF(s, t).
-\end{equation}
-Let $\mathscr{H}'$ be the Hilbert space obtained from completing $C_C(R)/\{f \in C_C(R)|(f, f)' = 0\}$ with respect to the norm $\|f\|' = \sqrt{(f, f)'}$, and $Z_t$ be the image of the functional $u \to e^{-iut}$ under the canonical mapping $C_C(R) \to \mathscr{H}'$. Now let $\mathscr{K} = \mathscr{H} \oplus \mathscr{H}'$, identifying $\mathscr{H}$ with the subspace $\mathscr{H}\oplus \{0\}$ of $\mathscr{K}$. Let $Y_t = X_t + Z_t$, $t\in R$. Obviously, $X_t = PY_t$ and
-\begin{equation}
-(Y_s, Y_t)_{\mathscr{K}} = (X_s, X_t)_{\mathscr{H}} + (Z_s, Z_t)', \text{ for all } s, t \in R.
-\end{equation}
+  The autocorrelation function $R_{xx} (t, s)$ of $x (t, \omega)$ is given by
+  \eqref{eq:autocorr}. Since $e^{i (tu - sv)}$ is continuous in $t, s$
+  uniformly in $u, v$ and is bounded by $1$, which is integrable with respect
+  to $r_X$, it follows by the bounded convergence theorem that $R_{xx} (t, s)$
+  is uniformly continuous in $t, s$. Hence $x (t, \omega)$ is uniformly mean
+  square continuous.
+  
+  Since $x (t, \omega)$ is mean square continuous, $L_2 (x)$ is separable, as
+  shown by Parzen~{\cite{parzen1967}} in Theorem 2C. Hence $L_2 (X) = L_2 (x)$
+  is separable and so is its isomorphic space $\Lambda_2 (r_X)$. Let $\{f_n
+  (\cdot)\}$ be an orthonormal basis in $\Lambda_2 (r_X)$. If for each $n,
+  \xi_n (\omega)$ is the element of $L_2 (x)$ corresponding to $f_n (\cdummy)
+  \in \Lambda_2 (r_X)$ under the isomorphism, then $\{\xi_n (\omega)\}$ is an
+  orthonormal basis in $L_2 (X) = L_2 (x)$, i.e., $\mathscr{E} [\xi_n
+  \xi_m^{\ast}] = \delta_{nm}$, and
+  \begin{equation}
+    \xi_n (\omega) = \int_{- \infty}^{\infty} f_n (u) X (du, \omega)
+    \label{eq:xin-again}
+  \end{equation}
+  Hence, for all $t \in \mathbb{R}$, we have
+  \begin{equation}
+    x (t, \omega) = \sum_n a_n (t) \xi_n (\omega) \label{eq:series-again}
+  \end{equation}
+  in the mean square sense and
+  \begin{equation}
+    a_n (t) = \mathscr{E} [x (t) \xi_n^{\ast}] \label{eq:an-expect}
+  \end{equation}
+  Since $x (t, \omega)$ and $e^{itu}$, as well as $\xi_n (\omega)$ and $f_n
+  (u)$, are corresponding elements of $L_2 (X)$ and $\Lambda_2 (r_X)$ under
+  the isomorphism, we obtain
+  \begin{equation}
+    a_n (t) = (e^{itu}, f_n (u))_{\Lambda_2 (r_X)} = \int_{- \infty}^{\infty}
+    \int_{- \infty}^{\infty} e^{itu} f_n^{\ast} (v) r_X (du, dv)
+    \label{eq:an-inner}
+  \end{equation}
+\end{proof}
 
+It follows from \eqref{eq:series} and \eqref{eq:an} that the autocorrelation
+function of a harmonizable stochastic process $x (t, \omega)$ has a series
+expansion
+\begin{equation}
+  R_{xx} (t, s) = \sum_n a_n (t) a_n^{\ast} (s)  \quad \text{for all } t, s
+  \in \mathbb{R} \label{eq:autocorr-series}
+\end{equation}
+where the $a_n$'s are given by \eqref{eq:an}.
+
+For all $f \in \Lambda_2 (r_x)$ we have $e^{itu} f (u) \in \Lambda_2 (r_X)$
+for all $t \in \mathbb{R}$, since
+\begin{equation}
+  |e^{itu} f (u) | \leqslant |f (u) | \in \Lambda_2 (r_X) \label{eq:expf}
+\end{equation}
 Hence
-\begin{align}
-(Y_t, Y_s)_{\mathscr{K}} &= \iint_{R^2} e^{-i(tv-su)} dF(u, v) + \iint_{R^2} e^{-i(tv-su)} d\mu_1(u, v) - \iint_{R^2} e^{-i(tv-su)} dF(u, v)\\
-\end{align}
-which reduces to
-\begin{align}
-(Y_t, Y_s)_{\mathscr{K}} &= \iint_{R^2} e^{-i(tv-su)} d\mu_1(u, v)\\
-&= \int_R e^{-iu(t-s)} d\mu(u)
-\end{align}
-which in turn means that $Y_t$ is stationary and completes the proof.
-\end{proof}
-
-The idea of constructing the Hilbert space $\mathscr{K}$ and the stationary process $Y$ was originated by Abreu in \cite{abreu}. In his case the measure $F$ was of bounded variation and this fact played an important part in establishing the dominating measure. However, in our case $F$ is a finitely additive measure which is only of bounded semi-variation and his line of proof will not induce the desired dominating measure. Nevertheless, we did achieve our goal in establishing the existence of this crucial measure via our lemmas.
-
-As a consequence of our main theorem we obtain the following result which relates countably additive vector valued measures to projections of orthogonally scattered measures (see also \cite{niemi2}).
-
-\begin{corollary}
-A countably additive $\mathscr{H}$-valued measure $\Phi$ is a projection of an orthogonally scattered $\mathscr{K}$-valued measure $E$ if and only if $\Phi$ is of bounded semi-variation.
-\end{corollary}
-
-\begin{proof}
-It is clear that if $E$ is an orthogonally scattered $\mathscr{K}$-valued measure and $P$ is the projection of the Hilbert space $\mathscr{K}$ onto $\mathscr{H} \subset \mathscr{K}$, then $\Phi = PE$ is a countably additive $\mathscr{H}$-valued measure which is of bounded semi-variation. Now suppose that $\Phi$ is a countably additive $\mathscr{H}$-valued measure which is of bounded semi-variation. Then the process $X_t$ defined by
 \begin{equation}
-X_t = \int_R e^{-itu} d\Phi(u),
+  y (t, \omega) = \int_{- \infty}^{\infty} e^{itu} f (u) X (du, \omega)
+  \label{eq:y}
 \end{equation}
-is harmonizable. Now by Theorem 5 there exists a Hilbert space $\mathscr{K}$ containing $\mathscr{H}$ and a stationary process $Y_t, t \in R$, such that $X_t = PY_t, t \in R$. Let $E$ be the well-known corresponding orthogonally scattered $\mathscr{K}$-valued measure. We have
+is well-defined in $L_2 (X) = L_2 (x)$ and is thus a linear operation on $x
+(t, \omega)$. $y (t, \omega)$ is harmonizable itself, since if a random
+measure $Y$ is defined by
 \begin{equation}
-X_t = PY_t = P\left(\int_R e^{-itu} dE(u)\right) = \int_R e^{-itu} PE(u).
+  Y (S, \omega) = \int_S f (u) X (du, \omega), \quad S \in \mathscr{B}^1
+  \label{eq:Y}
 \end{equation}
+then $Y$ is finite on $\mathbb{R}$ and
+\begin{equation}
+  y (t, \omega) = \int_{- \infty}^{\infty} e^{itu} Y (du, \omega)
+  \label{eq:yY}
+\end{equation}
+Let $y_n  (t, \omega)$ be the linear operation on $x (t, \omega)$ defined by
+\eqref{eq:y} when $f (u) = f_n (u)$. Then $\xi_n (\omega) = y_n  (0, \omega)$.
+If $f_n$ has Fourier transform $h_n$, i.e., if
+\begin{equation}
+  f_n (u) = \int_{- \infty}^{\infty} h_n (v) e^{- iuv} m (dv), \quad h_n \in
+  L_1 (\mathbb{R}, \mathscr{B}^1, m) \label{eq:fnFourier}
+\end{equation}
+then, as it is shown by Rosanov~{\cite{rosanov1959}}, p. 278, the order of
+integration in \eqref{eq:y} can be interchanged to give
+\begin{equation}
+  y_n  (t, \omega) = \int_{- \infty}^{\infty} h_n (v) x (t - v, \omega) m (dv)
+  \label{eq:yn}
+\end{equation}
+Hence $\xi_n (\omega)$ may be regarded as the output at time $t = 0$ of a
+linear time invariant system with impulse response $h_n$ and input $x (t,
+\omega)$. We also obtain from \eqref{eq:an}
+\begin{equation}
+  a_n (t) = \int_{- \infty}^{\infty} h_n^{\ast} (\tau) R_{xx} (t, - \tau) m (d
+  \tau) \label{eq:an-hn}
+\end{equation}
+It should be noted that the series representation of Theorem
+\ref{thm:series-rep} is by no means unique, since for each orthonormal and
+complete set of functions in $\Lambda_2 (r_X)$ a distinct representation
+\eqref{eq:series} is obtained by \eqref{eq:xin} and \eqref{eq:an}. However, in
+the context of a particular problem, one may be able to determine those
+representations, if any, which have some optimal properties. The significance
+of the representation is primarily in the fact that it exists and it is
+orthogonal, which enables one to use it as a model for the harmonizable
+process in problems involving mean square error criteria.
 
-Thus
-\begin{equation}
-\int_R e^{-itu} d\Phi(u) = \int_R e^{-itu} PE(u), \text{ for all } t \in R.
-\end{equation}
-Hence for any $h \in \mathscr{H}$ and any real number $t$, we have
-\begin{equation}
-\int_R e^{-itu} d(\Phi(u), h)_{\mathscr{H}} = \left(\int_R e^{-itu} d\Phi(u), h\right)_{\mathscr{H}} = \left(\int_R e^{-itu} PE(u), h\right)_{\mathscr{H}} = \int_R e^{-itu} d(PE(u), h)_{\mathscr{H}}
-\end{equation}
-which implies
-\begin{equation}
-\Phi = PE.
-\end{equation}
-\end{proof}
+Theorem \ref{thm:series-rep} has been proven for mean square continuous, wide
+sense stationary stochastic processes by Masry et al.~{\cite{masry1968}} and
+also by Campbell~{\cite{campbell1969}}.
 
-Our next theorem relates harmonizable processes with the continuous $V$-bounded processes which were originally studied by S. Bochner in \cite{bochner}. We first state the definition of continuous $V$-bounded processes as given in \cite{niemi4}.
+\section{Orthonormal and Complete Sets in $\Lambda_2
+(r_X)$}\label{sec:orthonormal-sets}
 
-\begin{definition}
-A continuous $\mathscr{H}$-valued process $X_t, t \in R$, is $V$-bounded if it is bounded and if there exists a constant $C$ such that
-\begin{equation}
-\iint_{R^2} R(t,s)\hat{\varphi}(s)\hat{\psi}(t)ds dt \leq C \|\varphi\|_1\|\psi\|_1,
-\end{equation}
-where $\varphi$ and $\psi$ are functions in $L_1(R)$ with the Fourier transforms $\hat{\varphi}$ and $\hat{\psi}$ respectively, and $R(\cdot, \cdot)$ is the correlation of $X_t, t \in R$.
-\end{definition}
+It is clear from Theorem \ref{thm:series-rep} that an explicit series
+expansion of a harmonizable process can be obtained by using \eqref{eq:xin}
+and \eqref{eq:an} provided an orthonormal and complete set of functions in
+$\Lambda_2 (r_X)$ can be constructed.
 
-The proof of the following lemma is clear.
+If the harmonizable process $x$ is stationary then $\Lambda_2 (r_X)$ is
+isomorphic to $L_2 (\mathbb{R}, \mathscr{B}^1, Q_X)$, where $Q_X$ is a finite
+nonnegative measure, and a general procedure to construct an orthonormal basis
+in the latter space is presented by Masry et al.~{\cite{masry1968}}.
 
-\begin{lemma}
-Let $X_t$ be a harmonizable process, i.e., let
+Since
 \begin{equation}
-X_t = \int_R e^{-itu} d\Phi(u),
+  \Lambda_2 (r_X) = \sigma \{e^{itu}, t \text{real } \} = \sigma \{e^{itu}, t
+  \text{rational } \}, \label{eq:span}
 \end{equation}
-where $\Phi$ as in (1). Then we have
-\begin{equation}
-\int_R \hat{f}(t)X_t dt = \int_R f(t)d\Phi(t), \forall f \in L_1(R).
-\end{equation}
-\end{lemma}
+an orthonormal and complete set of functions in $\Lambda_2 (r_X)$ can be
+obtained by orthonormalizing the countable set of functions $\{e^{itu}, t$
+rational $\}$ using the Gram-Schmidt procedure. However, this procedure solves
+the problem of finding an orthonormal basis in $\Lambda_2 (r_X)$ only in
+principle.
+
+The following theorem gives a complete set of functions $\{F_n (t)\}$ in
+$\Lambda_2 (r_X)$. By orthonormalizing the set $\{F_n (t)\}$ using the
+Gram-Schmidt procedure, an orthonormal and complete set $\{f_n (t)\}$ is
+obtained.
 
 \begin{theorem}
-An $\mathscr{H}$-valued process $X_t, t \in R$, is harmonizable if and only if it is a continuous $V$-bounded process.
+  \label{thm:complete-set}Let $\mu$ be any finite, nonnegative measure on
+  $(\mathbb{R}, \mathscr{B}^1)$, absolutely continuous with respect to the
+  Lebesgue measure $m$ with Radon-Nikodym derivative $[d \mu / dm] (t) = h (t)
+  \neq 0$ a.e. $[m]$, and let $\{\phi_n (t)\}$ be any complete set of
+  functions in $L_2 (\mathbb{R}, \mathscr{B}^1, \mu) = L_2 (\mu)$. Then the
+  set $\{F_n (t)\}$ given by
+  \begin{equation}
+    F_n (t) = \int_{- \infty}^{\infty} \phi_n^{\ast} (u) e^{itu} \mu (du)
+    \label{eq:Fn}
+  \end{equation}
+  is complete in $\Lambda_2 (r_X)$.
 \end{theorem}
 
 \begin{proof}
-Suppose that $X_t$ is harmonizable, i.e., suppose that
-\begin{equation}
-X_t = \int_R e^{-itu} d\Phi(u)
-\end{equation}
-and
-\begin{equation}
-R(t, s) = (X_t, X_s)_{\mathscr{H}} = \iint_{R^2} e^{-i(tv-su)} dF(u, v),
-\end{equation}
-where $\Phi$ and $F$ are as in Theorem 2. It is clear by Theorem 5 that $X_t$ is bounded and continuous. Now using Lemma 8 we note that for any two functions $\varphi$ and $\psi$ in $L_1(R)$ we have
-\begin{align}
-\iint_{R^2} \hat{\varphi}(u)\hat{\psi}(v)R(u, v)du dv &= \left(\int_R \hat{\varphi}(u)X_u du, \int_R \hat{\psi}(v)X_v dv\right)_{\mathscr{H}}\\
-&= \left(\int_R \varphi(u)d\Phi(u), \int_R \psi(v)d\Phi(v)\right)_{\mathscr{H}}\\
-&\leq C\|\varphi\|_1\|\psi\|_1, \quad C = \|F\|(R).
-\end{align}
-
-Conversely, suppose that $X_t$ is a continuous $V$-bounded process with the correlation function $R(s, t)$. Then besides being bounded and continuous, we have
-\begin{equation}
-\left|\iint_{R^2} \hat{\varphi}(u)\hat{\psi}(v)R(u, v)du dv\right| \leq C \|\varphi\|_1\|\psi\|_1, \quad \forall \varphi, \psi \in L_1(R).
-\end{equation}
-
-Define the bilinear form $K$ on $L_1(R)$ by
-\begin{equation}
-K(\varphi, \psi) = \iint_{R^2} \hat{\varphi}(u)\hat{\psi}(v)R(u, v)du dv.
-\end{equation}
-
-By (13) we have
-\begin{equation}
-|K(\varphi, \psi)| \leq C \|\varphi\|_1\|\psi\|_1
-\end{equation}
-$K(\cdot,\cdot)$ is a positive definite kernel. Consider the corresponding reproducing kernel Hilbert space $\mathscr{F}$. We can define the operator $T : L_1(R) \to \mathscr{F}$ by
-\begin{equation}
-T(\varphi) = K(\varphi, \cdot).
-\end{equation}
-From the properties of reproducing kernel Hilbert spaces we have
-\begin{equation}
-K(\varphi, \psi) = (K(\varphi, \cdot), K(\psi, \cdot))_{\mathscr{F}} = (T(\varphi), T(\psi))_{\mathscr{F}}
-\end{equation}
-which along with (14) implies that $T$ is a bounded operator on $L_1(R)$. Since $L_1(R)$ is dense in the class $C_0(R)$ (see \cite{rudin}, p. 195) one can extend $T$ to a bounded operator on $C_0(R)$ into $\mathscr{F}$. But by Lemma 2 of \cite{kluvanek} and its corollaries, there exists an $\mathscr{F}$-valued regular measure $M$ on $R$ which is of bounded semi-variation and satisfies
-\begin{equation}
-T(\varphi) = \int_R \varphi(t)dM(t), \text{ for all } \varphi \in C_0(R).
-\end{equation}
-
-Define the set function $F$ for each pair $A$ and $B$ of Borel sets by
-\begin{equation}
-F(A, B) = (M(A), M(B))_{\mathscr{F}}
-\end{equation}
-and then define $R_1$ by
-\begin{equation}
-R_1(t, s) = \iint_{R^2} e^{-i(tv-su)} dF(u, v).
-\end{equation}
-
-Using Lemma 8 and Theorem 2 that for any $\varphi$ and $\psi$ in $L_1(R)$ we have
-\begin{equation}
-\iint_{R^2} \hat{\varphi}(u)\hat{\psi}(v)R_1(u, v)du dv = \iint_{R^2} \varphi(u)\psi(v)dF(u, v).
-\end{equation}
-
-On the other hand, we have
-\begin{equation}
-\iint_{R^2} \hat{\varphi}(u)\hat{\psi}(v)R(u, v)du dv = \iint_{R^2} \varphi(u)\psi(v)dF(u, v),
-\end{equation}
-for all pairs $\varphi$ and $\psi$ of functions in $L_1(R)$. Combining (15) and (16) we get
-\begin{equation}
-\iint_{R^2} \hat{\varphi}(u)\hat{\psi}(v)[R(u, v) - R_1(u, v)]du dv = 0,
-\end{equation}
-for all $\varphi$ and $\psi$ in $L_1(R)$. Thus, we have
-\begin{equation}
-R(t, s) = R_1(t, s) = \iint_{R^2} e^{-i(tv-su)} dF(u, v),
-\end{equation}
-and Theorem 2, now implies that $X_t$ is harmonizable.
+  Since $\mu$ is finite, $\phi_n \in L_2 (\mu)$ implies $\phi_n \in L_1 (\mu)$
+  and hence the functions $F_n (t)$ are well-defined by \eqref{eq:Fn}
+  everywhere and
+  \begin{equation}
+    |F_n (t) | \leqslant \int_{- \infty}^{\infty} | \phi_n^{\ast} (u) | \mu
+    (du) = \| \phi_n \|_{L_1 (\mu)} \label{eq:Fn-bound}
+  \end{equation}
+  This implies that $F_n \in \Lambda_2 (r_X)$ and
+  \begin{equation}
+    \|F_n \|_{\Lambda_2 (r_X)}^2 \leqslant \| \phi_n \|_{L_1 (\mu)}^2 |r_X |
+    (R^2), \label{eq:Fn-norm}
+  \end{equation}
+  where $|r_X |$ denotes the total variation of $r_X$.
+  
+  The completeness of the set $\{F_n (t)\}$ in $\Lambda_2 (r_X)$ is shown as
+  follows. Let $f \in \Lambda_2 (r_X)$ and $(F_n, f)_{\Lambda_2 (r_X)} = 0$
+  for all $n$. Then
+  
+  \begin{align}
+    0 & = \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} F_n (u) f^{\ast}
+    (v) r_X (du, dv) \\
+    & = \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} \int_{-
+    \infty}^{\infty} \phi_n^{\ast} (t) e^{itu} f^{\ast} (v) \mu (dt) r_X (du,
+    dv) \\
+    & = \int_{- \infty}^{\infty} F (t) \phi_n^{\ast} (t) \mu (dt) 
+    \label{eq:Fn-complete}
+  \end{align}
+  
+  where
+  \begin{equation}
+    F (t) = \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} e^{itu} f^{\ast}
+    (v) r_X (du, dv) = (e^{itu}, f (u))_{\Lambda_2 (r_X)} \label{eq:F}
+  \end{equation}
+  It follows by \eqref{eq:Fn-complete} that
+  
+  \begin{align}
+    |F (t) |^2 & \leqslant \|e^{itu} \|_{\Lambda_2 (r_X)}^2 \|f\|_{\Lambda_2
+    (r_X)}^2 = R_{xx} (t, t) \|f\|_{\Lambda_2 (r_X)}^2 \\
+    & \leqslant |r_X | (R^2) \|f\|_{\Lambda_2 (r_X)}^2  \label{eq:F-bound}
+  \end{align}
+  
+  and
+  \begin{equation}
+    \int_{- \infty}^{\infty} |F (t) |^2 \mu (dt) \leqslant |r_X | (R^2)
+    \|f\|_{\Lambda_2 (r_X)}^2 \mu (\mathbb{R}) < \infty \label{eq:F-L2}
+  \end{equation}
+  i.e., $F \in L_2 (\mu)$. The completeness of the set $\{\phi_n (t)\}$ in
+  $L_2 (\mu)$ and \eqref{eq:Fn-complete} imply that $F = 0$ in $L_2 (\mu)$,
+  i.e., $|F (t) |^2 h (t) = 0$ a.e. $[m]$. Since $h (t) \neq 0$ a.e. [m], it
+  follows that $F (t) = 0$ a.e. [m]. But the continuity of $e^{itu}$ in $t$
+  and the bounded convergence theorem imply by \eqref{eq:F} that $F (t)$ is
+  continuous in $t$. Hence $F (t) = 0$ for all $t \in \mathbb{R}$ and by
+  \eqref{eq:F} $f$ is orthogonal to the set $\{e^{itu}, t \in \mathbb{R}\}$,
+  which is dense in $\Lambda_2 (r_X)$. It follows that $f = 0$ in $\Lambda_2
+  (r_X)$ and hence the set $\{F_n (t)\}$ is complete in $\Lambda_2 (r_X)$.
 \end{proof}
 
-As a corollary to our work we obtain the following ergodic theorem:
+It should be pointed out that the set of functions $\{F_n (t)\}$ given by
+\eqref{eq:Fn}, which is shown in Theorem \ref{thm:complete-set} to be complete
+in any $\Lambda_2 (r_X)$ space with $r_X$ of bounded variation on the entire
+plane, is independent of the measure $r_X$ and is completely determined by
+$\mu$ and $\{\phi_n (t)\}$. It is clear, however, that the orthonormal and
+complete set of functions $\{f_n (t)\}$ in $\Lambda_2 (r_X)$, obtained by
+orthonormalizing the complete set $\{F_n (t)\}$, depends on the measure $r_X$.
 
-\begin{corollary}
-If $X$ is an $\mathscr{H}$-valued harmonizable or equivalently continuous $V$-bounded process, then
+Theorem \ref{thm:complete-set} allows considerable freedom in the choice of
+the measure $\mu$ and complete freedom in the choice of the complete set of
+functions $\{\phi_n (t)\}$ in $L_2 (\mu)$. As a complete set of functions in
+$L_2 (\mu)$ one can choose the orthonormal and complete set $\{\phi_n (t)\}$
+given by Masry et al.~{\cite{masry1968}}:
 \begin{equation}
-\lim_{T\to\infty} \frac{1}{T} \int_0^T X_t e^{-iu_0 t} dt = \Phi(\{u_0\}),
+  \phi_n (t) = \frac{1}{\sqrt{\mu (\mathbb{R})}} \exp \left( \frac{in 2
+  \pi}{\mu (\mathbb{R})}  \int_{- \infty}^t h (u) m (du) \right), \quad n = 0,
+  \pm 1, \pm 2, \ldots \label{eq:phin}
 \end{equation}
-where $X_t = \int_R e^{-itu} d\Phi(u)$.
-\end{corollary}
+Upon normalizing $\mu, \mu (\mathbb{R}) = 1$, and using the complete set
+\eqref{eq:phin} in \eqref{eq:Fn} we obtain the complete set of functions
+
+\begin{align}
+  F_n (t) & = \int_{- \infty}^{\infty} \exp [i\{tu - n 2 \pi H (u)\}] h (u) m
+  (du)  \quad n = 0, \pm 1, \pm 2, \ldots \\
+  & = \int_0^1 \exp [i\{tH^{- 1} (v) - n 2 \pi v\}] m (dv)  \label{eq:Fn-exp}
+\end{align}
+
+where $h$ is any probability density with $h (u) \neq 0$ a.e. [$m$], and
+\begin{equation}
+  H (u) = \int_{- \infty}^u h (v) m (dv) \label{eq:H}
+\end{equation}
+It is clear that the functions given by \eqref{eq:Fn} are uniformly continuous
+and uniformly bounded for fixed $n$, and that the family of functions given by
+\eqref{eq:Fn-exp} is equicontinuous and uniformly bounded.
+
+\subsection*{Examples}
+
+By choosing probability densities $h$ of particular form, we obtain by
+\eqref{eq:Fn-exp} various sets of complete functions in $\Lambda_2 (r_X)$.
+However, as it is illustrated by the following examples, the integral in
+\eqref{eq:Fn-exp} is not easily expressed in terms of the elementary and the
+special functions.
+\begin{enumerate}
+  \item The density of the normal distribution, $h (u) = (1 / \sqrt{2 \pi})
+  e^{- \frac{1}{2} u^2}$, gives
+  \begin{equation}
+    F_n (t) = (- 1)^n \sqrt{\frac{2}{\pi}}  \int_0^{\infty} \cos \left[ tu - n
+    \pi \Phi \left( \frac{u}{\sqrt{2}} \right) \right] e^{- \frac{1}{2} u^2} m
+    (du) \label{eq:Fn-normal}
+  \end{equation}
+  where $\Phi (u) = (2 / \sqrt{\pi})  \int_0^u e^{- v^2} m (dv)$.
+  
+  \item The density of the double exponential distribution, $h (u) =
+  \frac{1}{2} e^{- |u|}$, gives
+  
+  \begin{align}
+    F_n (t) & = \int_0^{\infty} e^{- u} \cos [tu + n \pi e^{- u}] m (du) \\
+    & = \int_0^1 \cos [t \ln v - n \pi v] m (dv)  \label{eq:Fn-double-exp}
+  \end{align}
+  
+  \item The density of the Cauchy distribution, $h (u) = (1 / \pi (1 + u^2))$,
+  gives
+  
+  \begin{align}
+    F_n (t) & = (- 1)^n \frac{2}{\pi}  \int_0^{\infty} \cos [tu - 2 n \tan^{-
+    1} u]  \frac{m (du)}{1 + u^2} \\
+    & = (- 1)^n \frac{2}{\pi}  \int_0^{\pi / 2} \cos [t \tan v - 2 nv] m (dv)
+    \label{eq:Fn-cauchy}
+  \end{align}
+  
+  \item The probability density
+  \begin{equation}
+    h (u) = \left\{ \begin{array}{ll}
+      \alpha^{- k} & \text{on } (k - 1, k), \quad k \leqslant - 1\\
+      \frac{1 - 3 \alpha}{2 (1 - \alpha)} & \text{on } (- 1, + 1),\\
+      \alpha^k & \text{on } (k, k + 1), \quad k \geqslant 1
+    \end{array} \right. \label{eq:h-custom}
+  \end{equation}
+  where $0 < \alpha < \frac{1}{3}$, gives
+  \begin{equation}
+    F_n (t) = 2 (- 1)^n  \sum_{k = 0}^{\infty} \alpha^k \cos \left[ \left( k +
+    \frac{1}{2} \right) t - n \pi c_k \right]  \frac{\sin \left( \frac{1}{2} t
+    - n \pi \alpha^k \right)}{\frac{1}{2} t - n \pi \alpha^k}
+    \label{eq:Fn-custom}
+  \end{equation}
+  where $c_k = 1 - (1 + \alpha / 1 - \alpha) \alpha^k$.
+  
+  \item If $r_X$ is supported by $(a, b) \times (a, b)$, then by using the
+  density of the uniform distribution on $(a, b), h (u) = (1 / b - a)$ on $(a,
+  b)$ and zero elsewhere, we obtain the complete set of functions
+  \begin{equation}
+    F_n (t) = \frac{e^{ibt} - e^{iat}}{i [(b - a) t - n 2 \pi]}
+    \label{eq:Fn-uniform}
+  \end{equation}
+  which in the particular case where $a = - T, b = T$ gives
+  \begin{equation}
+    F_n (t) = (- 1)^n \frac{\sin \left[ \pi \left( \frac{T}{\pi} t - n \right)
+    \right]}{\pi \left( \frac{T}{\pi} t - n \right)}
+    \label{eq:Fn-uniform-symm}
+  \end{equation}
+\end{enumerate}
+\section{Orthogonal Integral Representation of a Harmonizable Stochastic
+Process}\label{sec:orthogonal-integral}
+
+Clearly any second order stochastic process $x (t, \omega)$ having an
+orthogonal series expansion of the form \eqref{eq:series} admits a trivial
+orthogonal integral representation of the form
+\begin{equation}
+  x (t, \omega) = \int_{- \infty}^{\infty} f (t, u) Y (du, \omega),
+  \label{eq:integral-rep}
+\end{equation}
+where the orthogonal random measure $Y$ is concentrated on the set of integers
+with $Y (\{n\}, \omega) = \xi_n (\omega)$ and $f (t, n) = a_n (t)$.
+
+The following theorem shows that an explicit (nontrivial) orthogonal integral
+representation of a harmonizable stochastic process can always be obtained and
+that the nonnegative measure associated with the orthogonal random measure can
+be chosen arbitrarily from a wide class of measures.
+
+\begin{theorem}
+  \label{thm:integral-rep}Let $\mu$ be any nonnegative measure on
+  $(\mathbb{R}, \mathscr{B}^1)$, finite on the bounded Borel sets
+  $\mathscr{B}$ and such that $L_2 (\mathbb{R}, \mathscr{B}^1, \mu) = L_2
+  (\mu)$ is infinite dimensional. Let $\{\varphi_n (\cdot)\}$ be an
+  orthonormal and complete set of functions in $L_2 (\mu)$. Then every
+  harmonizable stochastic process $x (t, \omega)$ admits an orthogonal
+  integral representation
+  \begin{equation}
+    x (t, \omega) = \int_{- \infty}^{\infty} f (t, u) Y (du, \omega)
+    \label{eq:integral-rep-thm}
+  \end{equation}
+  The function $f (t, u)$ is given by
+  \begin{equation}
+    f (t, u) = \sum_n a_n (t) \varphi_n (u) \label{eq:f-integral}
+  \end{equation}
+  in $L_2 (\mu)$ for all $t \in \mathbb{R}$. The orthogonal random measure $Y$
+  is defined on $\mathscr{B}$ by
+  \begin{equation}
+    Y (S, \omega) = \sum_n \xi_n (\omega)  \int_S \varphi_n^{\ast} (u) \mu
+    (du) \label{eq:Y-thm}
+  \end{equation}
+  in the mean square sense for all $S \in \mathscr{B}$ and has $Q_Y = \mu$.
+  The $a_n$'s and the $\xi_n$'s are given in Theorem \ref{thm:series-rep}.
+\end{theorem}
 
 \begin{proof}
-By our earlier results there exists a Hilbert space $\mathscr{K}$ containing $\mathscr{H}$, a $\mathscr{K}$-valued stationary process $Y_t$ and an orthogonally scattered $\mathscr{K}$-valued measure $E$ such that $X_t = PY_t$, $Y_t = \int_R e^{-iut} dE(u)$, and $\Phi = PE$; where $P$ is the projection of $\mathscr{K}$ onto $\mathscr{H}$. Now using the corresponding well known ergodic theorem for the stationary process $Y_t$ we get
-\begin{align}
-\lim_{T\to\infty} \frac{1}{T} \int_0^T X_t e^{-iu_0 t} dt &= \lim_{T\to\infty} \frac{1}{T} \int_0^T PY_t e^{-iu_0 t} dt\\
-&= P \lim_{T\to\infty} \frac{1}{T} \int_0^T Y_t e^{-iu_0 t} dt\\
-&= P E(\{u_0\}) = \Phi(\{u_0\}).
-\end{align}
+  We first show that $Y$ is well-defined on $\mathscr{B}$ by \eqref{eq:Y-thm}
+  and that it is orthogonal. Since $\mu$ is finite on $\mathscr{B}, I_S \in
+  L_2 (\mu)$ for all $S \in \mathscr{B}$. Hence
+  \begin{equation}
+    I_S (u) = \sum_n b_n (S) \varphi_n (u) \label{eq:IS}
+  \end{equation}
+  where
+  \begin{equation}
+    b_n (S) = \int_S \varphi_n^{\ast} (u) \mu (du) \label{eq:bn}
+  \end{equation}
+  It follows that
+  
+  \begin{align}
+    & \sum_n \int_{S_1} \varphi_n^{\ast} (u) \mu (du)  \int_{S_2} \varphi_n
+    (u) \mu (du) \\
+    & \quad = (I_{S_1}, I_{S_2})_{L_2 (\mu)} = \mu (S_1 \cap S_2) < \infty
+    \quad \text{for all } \quad S_1, S_2 \in \mathscr{B} 
+    \label{eq:sum-finite}
+  \end{align}
+  
+  and in particular that
+  \begin{equation}
+    \sum_n \left| \int_S \varphi_n^{\ast} (u) \mu (du) \right|^2 = \|I_S
+    \|_{L_2 (\mu)}^2 = \mu (S) < \infty \label{eq:mu-finite}
+  \end{equation}
+  Hence $Y$ is well-defined by \eqref{eq:Y-thm} in $L_2 (\Omega, \mathscr{M},
+  P)$ for all $S \in \mathscr{B}$. It follows by \eqref{eq:Y-thm} and
+  \eqref{eq:bn} that
+  \begin{equation}
+    r_Y  (S_1 \times S_2) = \mu (S_1 \cap S_2) \label{eq:rY}
+  \end{equation}
+  and thus $Y$ is orthogonal with $Q_Y = \mu$.
+  
+  We next show that $f (t, u)$ is well-defined in $L_2 (\mu)$ by
+  \eqref{eq:f-integral} for all $t \in \mathbb{R}$. This is clear since from
+  \eqref{eq:autocorr-series}
+  \begin{equation}
+    \sum_n |a_n (t) |^2 = R_{xx} (t, t) < \infty \quad \text{for all } \quad t
+    \in \mathbb{R} \label{eq:an-finite}
+  \end{equation}
+  Hence the integral in \eqref{eq:integral-rep-thm} is well-defined and from
+  \eqref{eq:f-integral}, \eqref{eq:Y-thm}, and \eqref{eq:series} we have
+  
+  \begin{align}
+    \int_{- \infty}^{\infty} f (t, u) Y (du, \omega) & = \sum_n a_n (t) 
+    \int_{- \infty}^{\infty} \varphi_n (u) Y (du, \omega) \\
+    & = \sum_n a_n (t)  \sum_m \int_{- \infty}^{\infty} \varphi_n (u)
+    \varphi_m^{\ast} (u) \mu (du) \xi_m (\omega) \\
+    & = \sum_n a_n (t) \xi_n (\omega) = x (t, \omega) 
+    \label{eq:integral-proof}
+  \end{align}
+  
+  which proves \eqref{eq:integral-rep-thm}.
 \end{proof}
 
-Such an ergodic theorem for harmonizable processes was obtained in \cite{rozanov}.
+The freedom in choosing the measure $\mu$ enables us to obtain various
+orthogonal integral representations \eqref{eq:integral-rep-thm} of particular
+form. If $\mu$ is chosen to be a finite nonnegative measure on $\mathbb{R}$
+then $Y$ will be finite on the whole real line and the $\varphi_n$'s can be
+chosen as in \eqref{eq:phin} given by Masry et al.~{\cite{masry1968}}. If
+$\mu$ is chosen to be the Lebesgue measure or the Lebesgue measure restricted
+to the half line or to an interval, then the $\varphi_n$'s may be chosen to be
+well-known orthonormal and complete sets of functions such as the
+Tchebysheff-Hermite functions, the Tchebysheff-Laguerre functions, the
+Legendre polynomials or the trigonometric system. In this latter case it is
+clear from \eqref{eq:rY} that the orthogonal random measure $Y$ has stationary
+values.
 
-\begin{remark}
-In this article we only considered the continuous parameter processes, however our main theorem can be established in an analogous way for the discrete parameter case as well.
-\end{remark}
+A harmonizable stochastic process is shown to have the nonorthogonal integral
+representation \eqref{eq:proc-integral}, the orthogonal series expansion
+\eqref{eq:series} and the orthogonal integral representation
+\eqref{eq:integral-rep-thm}. The relationship between the orthogonal random
+measure $Y$ and the random measure $X$ is
+\begin{equation}
+  Y (S, \omega) = \int_{- \infty}^{\infty} \left[ \sum_n f_n (v) \int_S
+  \varphi_n^{\ast} (u) \mu (du) \right] X (dv, \omega) \label{eq:Y-X}
+\end{equation}
+for all $S \in \mathscr{B}$, which can be obtained by \eqref{eq:Y-thm} and
+\eqref{eq:xin}.
+
+\section{Moving Average Representations and Harmonizable Stochastic
+Processes}\label{sec:moving-avg}
+
+A second-order stochastic process $\{x (t, \omega), t \in \mathbb{R}, \omega
+\in \Omega\}$ is said to have a moving average representation if and only if
+\begin{equation}
+  x (t, \omega) = \int_{- \infty}^{\infty} f (t - u) X (du, \omega)  \quad
+  \text{for all } \quad t \in \mathbb{R} \label{eq:moving-avg}
+\end{equation}
+where $X$ is a random measure defined on the bounded Borel sets of
+$\mathbb{R}$ and $f (t - \cdot) \in \Lambda_2 (r_X)$ for all $t \in
+\mathbb{R}$. This is a generalization of the usual definition which assumes
+$X$ to be orthogonal and $Q_X$ to be the Lebesgue measure. A moving average
+representation is orthogonal if and only if $X$ is orthogonal and in this case
+$f (t - \cdot) \in L_2 (Q_X)$ for all $t \in \mathbb{R}$.
+
+It is shown by Karhunen~{\cite{karhunen1947}} and Doob~{\cite{doob1953}} that
+(i) a second-order stochastic process which has an orthogonal moving average
+representation with $Q_X = m$, the Lebesgue measure, and $f \in L_2
+(\mathbb{R}, \mathscr{B}^1, m) = L_2 (m)$ is mean square continuous wide sense
+stationary and has absolutely continuous spectrum; and conversely that (ii) a
+mean square continuous wide sense stationary process with absolutely
+continuous spectrum has a moving average representation with $Q_X = m$ and $f
+\in L_2 (m)$ is the Fourier transform of the square root of its spectral
+density.
+
+Sufficient conditions for the harmonizability of a stochastic process which
+has a moving average representation are given in the following
+
+\begin{theorem}
+  \label{thm:moving-avg-harmonizable}If a second-order stochastic process $x
+  (t, \omega)$ has a moving average representation with $r_X$ a measure of
+  bounded variation on the entire plane $\mathbb{R}^2, f \in L_1 (m)$ and its
+  Fourier transform $F \in L_1 (m)$, then $x (t, \omega)$ is harmonizable.
+\end{theorem}
+
+\begin{proof}
+  We have
+  \begin{equation}
+    f (\tau) = \frac{1}{\sqrt{2 \pi}}  \int_{- \infty}^{\infty} F (\rho) e^{i
+    \tau \rho} m (d \rho) \label{eq:f-fourier}
+  \end{equation}
+  Since $F \in L_1 (m)$ and $r_X$ is finite, by interchanging the order of
+  integration (see Rosanov~{\cite{rosanov1959}}, p. 287), we obtain from
+  \eqref{eq:moving-avg}
+  \begin{equation}
+    x (t, \omega) = \frac{1}{\sqrt{2 \pi}}  \int_{- \infty}^{\infty} \int_{-
+    \infty}^{\infty} F (\rho) e^{- iu \rho} e^{it \rho} X (du, \omega) m (d
+    \rho) \label{eq:x-interchange}
+  \end{equation}
+  Also, $F \in L_1 (m)$ and $r_X$ finite imply that for all $S \in
+  \mathscr{B}^1$
+  \begin{equation}
+    \int_S F (\rho) e^{- iu \rho} m (d \rho) \in \Lambda_2 (r_X)
+    \label{eq:F-Lambda}
+  \end{equation}
+  Hence the random measure $Y$ on $(\mathbb{R}, \mathscr{B}^1)$ is
+  well-defined by
+  \begin{equation}
+    Y (S, \omega) = \frac{1}{\sqrt{2 \pi}}  \int_{- \infty}^{\infty} \left[
+    \int_S F (\rho) e^{- iu \rho} m (d \rho) \right] X (du, \omega)
+    \label{eq:Y-define}
+  \end{equation}
+  for all $S \in \mathscr{B}^1$ and by interchanging the order of integration
+  we obtain
+  \begin{equation}
+    Y (S, \omega) = \frac{1}{\sqrt{2 \pi}}  \int_S F (\rho) \left[ \int_{-
+    \infty}^{\infty} e^{- iu \rho} X (du, \omega) \right] m (d \rho)
+    \label{eq:Y-interchange}
+  \end{equation}
+  i.e.,
+  \begin{equation}
+    \left[ \frac{dY}{dm} \right] (\rho, \omega) = \frac{F (\rho)}{\sqrt{2
+    \pi}}  \int_{- \infty}^{\infty} e^{- iu \rho} X (du, \omega)
+    \label{eq:dY-dm}
+  \end{equation}
+  Since $F \in L_1 (m)$ and $r_X$ is finite, the lemma which follows this
+  proof applies, and \eqref{eq:x-interchange} and \eqref{eq:dY-dm} imply
+  \begin{equation}
+    x (t, \omega) = \int_{- \infty}^{\infty} e^{it \rho} Y (d \rho, \omega)
+    \label{eq:x-harmonize}
+  \end{equation}
+  Therefore, $x (t, \omega)$ is harmonizable.
+\end{proof}
+
+The property used in the last step of the proof of Theorem
+\ref{thm:moving-avg-harmonizable} will be proven now. It corresponds to the
+familiar property of Radon-Nikodym derivative in the scalar case and is used
+in later sections of this paper.
+
+\begin{lemma}
+  \label{lem:radon-nikodym}If the second-order stochastic process $\{y (t,
+  \omega), t \in \mathbb{R}, \omega \in \Omega\}$ is such that
+  \begin{equation}
+    \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} |R_{yy} (t, s) | m (dt)
+    m (ds) < \infty \label{eq:Ryy-finite}
+  \end{equation}
+  then
+  \begin{equation}
+    Y (S, \omega) = \int_S y (t, \omega) m (dt), \quad S \in \mathscr{B}^1
+    \label{eq:Y-lemma}
+  \end{equation}
+  defines a random measure $Y$ on $(\mathbb{R}, \mathscr{B}^1)$ with $r_Y$ of
+  bounded variation on $\mathbb{R}^2$, and for all $g \in \Lambda_2 (r_Y)$
+  \begin{equation}
+    \int_{- \infty}^{\infty} g (t) Y (dt, \omega) = \int_{- \infty}^{\infty} g
+    (t) y (t, \omega) m (dt) \label{eq:g-interchange}
+  \end{equation}
+  all equalities being in the mean square sense.
+\end{lemma}
+
+\begin{proof}
+  It is clear from \eqref{eq:Ryy-finite} that \eqref{eq:Y-lemma} defines a
+  random measure $Y$ on $(\mathbb{R}, \mathscr{B}^1)$ with $r_Y$ of bounded
+  variation on $\mathbb{R}^2$.
+  
+  If we put
+  \begin{equation}
+    \xi (\omega) = \int_{- \infty}^{\infty} g (t) Y (dt, \omega)  \quad
+    \text{and } \quad \eta (\omega) = \int_{- \infty}^{\infty} g (t) y (t,
+    \omega) m (dt) \label{eq:xi-eta}
+  \end{equation}
+  it suffices to show that
+  \begin{equation}
+    \mathscr{E} [| \xi - \eta |^2] = \mathscr{E} [| \xi |^2] + \mathscr{E} [|
+    \eta |^2] - \mathscr{E} [\xi \eta^{\ast}] - \mathscr{E} [\eta \xi^{\ast}]
+    = 0 \label{eq:xi-eta-equal}
+  \end{equation}
+  We have
+  
+  \begin{align}
+    \mathscr{E} [| \xi |^2] & = \int_{- \infty}^{\infty} \int_{-
+    \infty}^{\infty} g (t) g^{\ast} (s) r_Y (dt, ds) \\
+    & = \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} g (t) g^{\ast} (s)
+    R_{yy} (t, s) m (dt) m (ds) \\
+    \mathscr{E} [| \eta |^2] & = \int_{- \infty}^{\infty} \int_{-
+    \infty}^{\infty} g (t) g^{\ast} (s) R_{yy} (t, s) m (dt) m (ds), \\
+    \mathscr{E} [\eta \xi^{\ast}] & = \int_{- \infty}^{\infty} g (t)
+    \mathscr{E} [y (t) \xi^{\ast}] m (dt) \\
+    \mathscr{E} [y (t) \xi^{\ast}] & = \int_{- \infty}^{\infty} g^{\ast} (s)
+    \lambda_t  (ds)  \label{eq:E-terms}
+  \end{align}
+  
+  where the measure $\lambda_t$ on $(\mathbb{R}, \mathscr{B}^1)$ is defined by
+  \begin{equation}
+    \lambda_t (S) = \mathscr{E} [y (t) Y^{\ast} (S)] = \int_S R_{yy} (t, s) m
+    (ds) \label{eq:lambda}
+  \end{equation}
+  for all $S \in \mathscr{B}^1$. It follows by \eqref{eq:E-terms} and
+  \eqref{eq:lambda} that
+  \begin{equation}
+    \mathscr{E} [y (t) \xi^{\ast}] = \int_{- \infty}^{\infty} g^{\ast} (s)
+    R_{yy} (t, s) m (ds) \label{eq:E-y-xi}
+  \end{equation}
+  and by \eqref{eq:E-terms}
+  \begin{equation}
+    \mathscr{E} [\eta \xi^{\ast}] = \int_{- \infty}^{\infty} \int_{-
+    \infty}^{\infty} g (t) g^{\ast} (s) R_{yy} (t, s) m (dt) m (ds) =
+    \mathscr{E} [\xi \eta^{\ast}] \label{eq:E-eta-xi}
+  \end{equation}
+  The validity of \eqref{eq:xi-eta-equal} follows from \eqref{eq:E-terms},
+  \eqref{eq:E-eta-xi} and the proof is complete.
+\end{proof}
+
+If the moving average representation in Theorem
+\ref{thm:moving-avg-harmonizable} is orthogonal, then the condition of bounded
+variation of $r_X$ is equivalent to the finiteness of $Q_X$.
+
+If the second-order stochastic process $x (t, \omega)$ has a moving average
+representation and $X$ has Radon-Nikodym derivative with respect to the
+Lebesgue measure the second-order stochastic process $y (t, \omega), [dY / dm]
+= y$, then
+\begin{equation}
+  x (t, \omega) = \int_{- \infty}^{\infty} f (t - u) y (u, \omega) m (du)
+  \label{eq:x-conv}
+\end{equation}
+In this case $x (t, \omega)$ can be regarded as the output of a linear time
+invariant system with impulse response $f$ and input the stochastic process $y
+(t, \omega)$. Theorem \ref{thm:moving-avg-harmonizable} then implies that if
+$y (t, \omega)$ is integrable over $\mathbb{R}$ in the mean square sense,
+i.e., if $R_{yy} (t, s)$ is integrable over $\mathbb{R}^2$, and $f, F \in L_1
+(m)$ then the output $x (t, \omega)$ is a harmonizable stochastic process. In
+the following section a more general result is proven which includes time
+varying linear systems.
+
+\section{Linear Time Varying Systems and Harmonizable Stochastic
+Processes}\label{sec:linear-systems}
+
+Two kinds of linear time varying systems characterized by their impulse
+response $h (t, \tau)$, i.e., the response at time $t$ to a unit impulse input
+at time $\tau$, are considered in this section. Systems with $h$ a
+deterministic function and systems with $h$ a sample function of a stochastic
+process.
+
+\subsection{Deterministic Linear Time Varying
+Systems}\label{subsec:deterministic}
+
+Consider a linear time varying system with impulse response $h (t, \tau)$. If
+the input process $x$ is such that
+\begin{equation}
+  \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} h (t, u) h^{\ast}  (t, v)
+  R_{xx} (u, v) m (du) m (dv) < \infty \quad \text{for all } \quad t \in
+  \mathbb{R} \label{eq:impulse-finite}
+\end{equation}
+then the output of the system is the second-order stochastic process $y$
+defined by
+\begin{equation}
+  y (t, \omega) = \int_{- \infty}^{\infty} h (t, u) x (u, \omega) m (du) 
+  \quad \text{for all } \quad t \in \mathbb{R} \label{eq:y-output}
+\end{equation}
+It is apparent that a sufficient condition for the output of the system to be
+a stochastic process of second-order for all input processes $x$ which have
+uniformly bounded autocorrelation functions
+\begin{equation}
+  |R_{xx} (u, v) | \leqslant M < \infty \quad \text{for all } u, v \in
+  \mathbb{R} \label{eq:Rxx-bounded}
+\end{equation}
+is
+\begin{equation}
+  h (t, \cdot) \in L_1 (m)  \quad \text{for all } t \in \mathbb{R}
+  \label{eq:h-L1}
+\end{equation}
+The wide sense stationary processes $x$ belong to this class since
+\begin{equation}
+  |R_{xx} (u, v) | = |R_{xx} (u - v) | \leqslant R_{xx} (0) < \infty \quad
+  \text{for all } u, v \in \mathbb{R} \label{eq:Rxx-stationary}
+\end{equation}
+and so do the harmonizable stochastic processes $x$, since
+\begin{equation}
+  |R_{xx} (u, v) | \leqslant |r_X | (\mathbb{R}^2) < \infty \quad \text{for
+  all } u, v \in \mathbb{R} \label{eq:Rxx-harmonizable}
+\end{equation}
+The following theorem provides a set of sufficient conditions which imply the
+harmonizability of the output of a linear time varying system.
+
+\begin{theorem}
+  \label{thm:linear-system-harmonizable}Let $h (t, \tau)$ be the impulse
+  response of a linear time varying system and $x (t, \omega)$ be the input
+  stochastic process. If $h (\cdummy, \tau)$ is the Fourier transform of a
+  function $g (\cdummy, \tau) \in L_1 (m)$ for all $\tau \in \mathbb{R}$ and
+  if $g$ satisfies
+  \begin{equation}
+    \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} \int_{- \infty}^{\infty}
+    \int_{- \infty}^{\infty} |g (\tau, u) | |g^{\ast} (\sigma, v) | |R_{xx}
+    (u, v) | m (du) m (dv) m (d \tau) m (d \sigma) < \infty
+    \label{eq:g-condition}
+  \end{equation}
+  then the output stochastic process is harmonizable.
+\end{theorem}
+
+\begin{proof}
+  For all $\tau \in \mathbb{R}$ we have
+  \begin{equation}
+    h (t, \tau) = \frac{1}{\sqrt{2 \pi}}  \int_{- \infty}^{\infty} g (s, \tau)
+    e^{its} m (ds) \label{eq:h-g-transform}
+  \end{equation}
+  Hence \eqref{eq:impulse-finite} implies \eqref{eq:impulse-finite} and $y (t,
+  \omega)$ is well-defined by \eqref{eq:y-output} in the stochastic mean. It
+  follows by \eqref{eq:g-condition} that the random measure $Y$ defined on
+  $(\mathbb{R}, \mathscr{B}^1)$ by
+  \begin{equation}
+    \left[ \frac{dY}{dm} \right] (\tau, \omega) = \frac{1}{\sqrt{2 \pi}} 
+    \int_{- \infty}^{\infty} g (\tau, u) x (u, \omega) m (du)
+    \label{eq:dY-dm-g}
+  \end{equation}
+  has $r_Y$ of finite variation on the entire plane $\mathbb{R}^2$. For all
+  $S_1, S_2 \in \mathscr{B}^1$
+  \begin{equation}
+    r_Y  (S_1 \times S_2) = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} \int_{-
+    \infty}^{\infty} \int_{S_1} \int_{S_2} g (\tau, u) g^{\ast} (\sigma, v)
+    R_{xx} (u, v) m (d \tau) m (d \sigma) m (du) m (dv) \label{eq:rY-g}
+  \end{equation}
+  It is clear from \eqref{eq:y-output}, \eqref{eq:h-g-transform},
+  \eqref{eq:dY-dm-g} and Lemma \ref{lem:radon-nikodym} that
+  \begin{equation}
+    y (t, \omega) = \int_{- \infty}^{\infty} e^{it \tau} \left[ \frac{dY}{dm}
+    \right] (\tau, \omega) m (d \tau) = \int_{- \infty}^{\infty} e^{it \tau} Y
+    (d \tau, \omega) \label{eq:y-harmonize}
+  \end{equation}
+  in the stochastic mean sense and hence $y$ is harmonizable.
+\end{proof}
+
+A sufficient condition for \eqref{eq:g-condition} to be satisfied for the
+class of input processes with uniformly bounded autocorrelation functions is
+clearly
+\begin{equation}
+  g (s, \tau) \in L_1  (m \times m) \label{eq:g-L1}
+\end{equation}
+As an example, let
+\begin{equation}
+  h (t, \tau) = \frac{\alpha + \gamma | \tau |}{t^2 + (\alpha + \gamma | \tau
+  |)^2} e^{- \beta | \tau |}  \quad \alpha, \beta > 0, \quad \gamma \geqslant
+  0 \label{eq:h-example}
+\end{equation}
+Then $h (t, \tau)$ is the Fourier transform of $g (s, \tau)$ :
+\begin{equation}
+  g (s, \tau) = \sqrt{\frac{\pi}{2}} e^{- \alpha |s | - \beta | \tau | -
+  \gamma |s \tau |} \label{eq:g-example}
+\end{equation}
+and $g$ satisfies \eqref{eq:g-L1}. The condition \eqref{eq:g-condition} can be
+written in the form
+\begin{equation}
+  \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} \frac{e^{- \beta
+  |u|}}{\alpha + \gamma |u|} \cdot \frac{e^{- \beta |v|}}{\alpha + \gamma |v|}
+  |R_{xx} (u, v) | m (du) m (dv) < \infty \label{eq:g-condition-example}
+\end{equation}
+and the output of the system with impulse response $h (t, \tau)$ to all input
+processes which satisfy this condition is a harmonizable stochastic process.
+In particular, if $x$ is harmonizable with
+\begin{equation}
+  x (t, \omega) = \int_{- \infty}^{\infty} e^{it \lambda} X (d \lambda,
+  \omega) \label{eq:x-harmonize-example}
+\end{equation}
+then it follows by \eqref{eq:dY-dm-g} that
+\begin{equation}
+  \left[ \frac{dY}{dm} \right] (\tau, \omega) = (\beta + \gamma | \tau |) e^{-
+  \alpha | \tau |}  \int_{- \infty}^{\infty} \frac{X (d \lambda,
+  \omega)}{\lambda^2 + (\beta + \gamma | \tau |)^2} \label{eq:dY-dm-example}
+\end{equation}
+and the output $y$ has the harmonizable representation \eqref{eq:y-harmonize}
+which can also be written in the form
+\begin{equation}
+  y (t, \omega) = \int_{- \infty}^{\infty} \left[ \int_{- \infty}^{\infty}
+  \frac{\beta + \gamma | \tau |}{\lambda^2 + (\beta + \gamma | \tau |)^2} e^{-
+  \alpha | \tau | + it \tau} m (d \tau) \right] X (d \lambda, \omega)
+  \label{eq:y-full-example}
+\end{equation}
+This representation takes the following simple form in the particular case
+where $\gamma = 0$, i.e.,
+\begin{equation}
+  h (t, \tau) = \frac{\alpha e^{- \beta | \tau |}}{\alpha^2 + t^2}
+\end{equation}
+\begin{equation}
+  y (t, \omega) = \frac{2 \beta}{\alpha^2 + t^2}  \int_{- \infty}^{\infty}
+  \frac{X (d \lambda, \omega)}{\beta^2 + \lambda^2}
+  \label{eq:y-simple-example}
+\end{equation}
+\subsection{Linear Randomly Time Varying Systems}\label{subsec:random-systems}
+
+Let the impulse response of a linear time varying system be a sample function
+of a stochastic process of second order $h (t, \tau, \omega)$ with
+autocorrelation function $R_{hh} (t, s ; \tau, \sigma)$. For all second-order
+input processes $x (t, \omega)$ independent of $h$ and such that
+\begin{equation}
+  \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} R_{hh} (t, t ; u, v)
+  R_{xx} (u, v) m (du) m (dv) < \infty \quad \text{for all } \quad t \in
+  \mathbb{R} \label{eq:Rhh-condition}
+\end{equation}
+the output of the system is the second-order stochastic process $y$ defined by
+\begin{equation}
+  y (t, \omega) = \int_{- \infty}^{\infty} h (t, u, \omega) x (u, \omega) m
+  (du) \label{eq:y-random}
+\end{equation}
+A sufficient condition for \eqref{eq:Rhh-condition} to hold for all input
+processes $x$ with uniformly bounded autocorrelation functions is clearly
+$R_{hh} (t, t ; \cdot, \cdot) \in L_1  (m \times m)$ for all $t \in
+\mathbb{R}$.
+
+A set of sufficient conditions for the harmonizability of the output of a
+linear randomly time varying system is given in the following theorem. Its
+proof is similar to the proof of Theorem \ref{thm:linear-system-harmonizable}
+and as such it is omitted.
+
+\begin{theorem}
+  \label{thm:random-system-harmonizable}If the impulse response $h (t, u,
+  \omega)$ of a linear randomly time varying system is the Fourier transform
+  in the stochastic mean sense of a second-order stochastic process $H (\rho,
+  u, \omega)$, i.e.,
+  \begin{equation}
+    h (t, u, \omega) = \frac{1}{\sqrt{2 \pi}}  \int_{- \infty}^{\infty} H
+    (\rho, u, \omega) e^{it \rho} m (d \rho) \label{eq:h-H-transform}
+  \end{equation}
+  which is such that $R_{HH} (\cdummy, \cdummy ; u, u) \in L_1  (m \times m)$
+  for all $u \in \mathbb{R}$ and
+  \begin{equation}
+    \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} \int_{- \infty}^{\infty}
+    \int_{- \infty}^{\infty} |R_{HH} (\tau, \sigma ; u, v) ||R_{xx} (u, v) | m
+    (d \tau) m (d \sigma) m (du) m (dv) < \infty \label{eq:RHH-condition}
+  \end{equation}
+  and if the input $x$ is independent of $h$, then the output stochastic
+  process $y (t, \omega)$ is harmonizable.
+\end{theorem}
+
+We have
+\begin{equation}
+  y (t, \omega) = \int_{- \infty}^{\infty} e^{it \rho} Y (d \rho, \omega) =
+  \int_{- \infty}^{\infty} e^{it \rho} \left[ \frac{dY}{dm} \right] (\rho,
+  \omega) m (d \rho), \label{eq:y-harmonize-random}
+\end{equation}
+where
+\begin{equation}
+  \left[ \frac{dY}{dm} \right] (\rho, \omega) = \frac{1}{\sqrt{2 \pi}} 
+  \int_{- \infty}^{\infty} H (\rho, u, \omega) x (u, \omega) m (du)
+  \label{eq:dY-dm-H}
+\end{equation}
+A sufficient condition for \eqref{eq:RHH-condition} to hold for all input
+processes $x$ with uniformly bounded autocorrelation functions is clearly
+$R_{HH} \in L_1 (m^4)$.
 
 \begin{thebibliography}{99}
-\bibitem{abreu} J. L. Abreu, A note on harmonizable and stationary sequences, Bol. Soc. Mat. Mexicana 15 (1970), 58-41.
-\bibitem{bochner} S. Bochner, Stationarity, boundedness, almost periodicity of random valued functions, Proc. III Berkeley Sym. Math. Stat. Prob., 2, 7-27, Univ. Calif. Press, 1956.
-\bibitem{cramer} H. Cramér, On some class of non-stationary stochastic processes, Proc. IV Berkeley Sym. Math. Stat. prob., 2, 57-78, Univ. Calif. Press, 1962.
-\bibitem{dubinsky} E. Dubinsky, A. Pełczyński \& H. P. Rosenthal, On Banach spaces X for which $\Pi_2(L_\infty, X) = B(L_\infty, X)$, Studia Math. 44 (1972), 617-648.
-\bibitem{dunford} N. Dunford \& J. T. Schwartz, Linear Operators, I, Wiley, New York, 1953.
-\bibitem{grothendieck} A. Grothendieck, Résumé de la théorie metrique des produits tensoriels topologiques, Bol. Soc. Matem. Sao Paulo 8 (1956), 1-79.
-\bibitem{kluvanek} I. Kluvánek, Characterization of Fourier-Stieltjes transform of vector and operator valued measures, Czechoslovak Math. J. 17 (1967), 261-277.
-\bibitem{loeve} M. Loève, Fonctions aléatoires du second ordre, Revue Sci. 84 (1946), 195-206.
-\bibitem{masani} P. Masani, Quasi-isometric measures and their applications, Bull. Amer. Math. Soc. 76 (1970), 427-528.
-\bibitem{niemi1} H. Niemi, On stationary dilations and the linear prediction of certain stochastic processes, Soc. Sci. Fennica Comment Phys.-Math. 38 (1972), 1-30.
-\bibitem{niemi2} H. Niemi, Stochastic operators on a Hilbert space and stochastically continuous semigroups, J. Functional Analysis 13 (1973), 63-76.
-\bibitem{niemi3} H. Niemi, On orthogonally scattered dilations of bounded vector measures, Ann. Acad. Sci. Fennicae, Ser. A, I Math. 2 (1976), 97-105.
-\bibitem{niemi4} H. Niemi, On the support of a $V$-bounded stochastic measure and the dilation of its covariance measure, Thesis, Turku, 1975.
-\bibitem{pietsch} A. Pietsch, Absolut $p$-summierende Abbildungen in normierten Räumen, Studia Math. 28 (1967), 333-353.
-\bibitem{rogge} R. Rogge, Über $2$-majorisierende Operatoren, Studia Math. 29 (1967), 41-52.
-\bibitem{rozanov} Yu. A. Rozanov, Spectral analysis of abstract functions, Theory Prob. Appl. 4 (1959), 271-287.
-\bibitem{rudin} W. Rudin, Real and Complex Analysis, McGraw-Hill, New York, 1966.
+  {\bibitem{campbell1969}}Campbell, L. L. (1969), Series expansions for random
+  processes, in ``Proceedings of the International Symposium on Probability
+  and Information Theory,'' Lecture Notes in Mathematics, No. 89, pp. 77-95,
+  Springer, New York.
+  
+  {\bibitem{cramer1951}}Cramer, H. (1951), A contribution to the theory of
+  stochastic processes, 2nd Berkeley Symp. Math. Stat. Probability, 329-339.
+  
+  {\bibitem{cramer1964}}Cramer, H. (1964), Stochastic processes as curves in
+  Hilbert space, Theor. Probability Appl. 9, 169-179.
+  
+  {\bibitem{doob1953}}Doob, J. L. (1953), ``Stochastic Processes,'' Wiley, New
+  York.
+  
+  {\bibitem{karhunen1947}}Karhunen, K. (1947), Uber lineare Methoden in der
+  Wahrscheinlichkeitsrechnung, Ann. Acad. Sci. Fenn. Ser. Al No. 37, 1-79.
+  
+  {\bibitem{loeve1963}}Lo{\`e}ve, M. (1963), ``Probability Theory,'' Van
+  Nostrand, Princeton, N. J.
+  
+  {\bibitem{masani1968}}Masani, P. (1968), Orthogonally scattered measures,
+  Advan. Math. 2, 61-117.
+  
+  {\bibitem{masry1968}}Masry, E., Liu, B., And Steiglitz, K. (1968), Series
+  expansion of wide-sense stationary random processes, IEEE Trans. IT-14,
+  792-796.
+  
+  {\bibitem{parzen1967}}Parzen, E. (1967), Statistical inference on time
+  series by Hilbert space methods, in ``Time series Analysis Papers,''
+  Holden-Day, San Francisco, Calif.
+  
+  {\bibitem{piranashvili1967}}Piranashyili, Z. A. (1967), On the problem of
+  interpolation of random processes, Theor. Probability Appl. 12, 647-657.
+  
+  {\bibitem{rao1967}}Rao, M. M. (1967), Inference in stochastic processes-III,
+  Z. Wahrscheinlichkeitstheorie und verw. Gebiete 8, 49-72.
+  
+  {\bibitem{rosanov1959}}Rosanov, Y. A. (1959), Spectral analysis of abstract
+  functions, Theor. Probability Appl. 4, 271-287.
 \end{thebibliography}
+
+\end{document}

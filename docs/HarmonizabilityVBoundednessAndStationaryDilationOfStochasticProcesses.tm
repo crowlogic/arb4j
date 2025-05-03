@@ -7,936 +7,1212 @@
   of Stochastic Processes>|<doc-author|<author-data|<author-name|A. G.
   MIAMEE, H. SALEHI>>>|<doc-date|January-February, 1978>>
 
-  The main purpose of this paper is to show that a stochastic process
-  <math|X<rsub|t>,t> in the real line <math|R>, with values in a given
-  complex Hilbert space <math|<with|math-font|cal*|H>> is harmonizable if and
-  only if it is the projection of some stationary process taking values in a
-  larger Hilbert space <math|<with|math-font|cal*|K>>. Harmonizable processes
-  are natural generalizations of stationary processes where the inner product
-  <math|<around|(|X<rsub|t>,X<rsub|s>|)>> is continuous and depends only on
-  <math|t-s>. It is well known that any stationary process
-  <math|X<rsub|t>,t\<in\>R>, can be represented in the form
+  <\abstract>
+    This paper presents a new orthogonal series representation and a new
+    orthogonal integral representation for harmonizable stochastic processes.
+    It also demonstrates the importance of harmonizable stochastic processes
+    in systems analysis by showing that the output of a wide class of systems
+    is a harmonizable process.
+  </abstract>
+
+  <section|Introduction><label|sec:intro>
+
+  Harmonizable stochastic processes, a generalization of wide sense
+  stationary processes, have been investigated in connection with a variety
+  of subjects. Properties related to their integral representation have been
+  studied by Loève<nbsp><cite|loeve1963> and Rosanov<nbsp><cite|rosanov1959>,
+  their special role in the multiplicity theory of purely nondeterministic
+  stochastic processes has been demonstrated by
+  Cramer<nbsp><cite|cramer1964>, and sampling theorems have been derived by
+  Piranashvili<nbsp><cite|piranashvili1967> and Rao<nbsp><cite|rao1967>.
+
+  This paper makes two contributions related to the class of harmonizable
+  stochastic processes. First, it is proved under some general conditions
+  that the output of a linear system is a harmonizable stochastic process;
+  the system may be randomly time-varying and the input process need not be
+  stationary nor even harmonizable. Thus, harmonizable processes are the most
+  general processes that need be considered in the analysis of a wide class
+  of linear systems. In such analyses as well as in many other problems in
+  communications and controls, series representation of stochastic processes
+  has been used as a powerful tool. The second contribution of this paper is
+  a series representation for harmonizable stochastic processes. A
+  constructive procedure for obtaining the series representation is given.
+  This representation is valid over the entire real line, while the
+  well-known Karhunen-Loève series representation is valid only on compact
+  intervals. An orthogonal integral representation for harmonizable
+  stochastic processes is also derived in this paper.
+
+  <section|Notation><label|sec:notation>
+
+  Some definitions and basic properties are briefly mentioned here. For a
+  more detailed discussion the reader is referred to
+  Karhunen<nbsp><cite|karhunen1947>, Cramer<nbsp><cite|cramer1951>,
+  Rosanov<nbsp><cite|rosanov1959>, Parzen<nbsp><cite|parzen1967>, and
+  Masani<nbsp><cite|masani1968>.
+
+  Consider a probability space <math|<around|(|\<Omega\>,<with|math-font|cal*|M>,P|)>>
+  and the Hilbert space <math|L<rsub|2><around|(|\<Omega\>,<with|math-font|cal*|M>,P|)>>
+  of all complex valued random variables with finite mean square value. A
+  random measure <math|X> on a class of subsets
+  <math|<with|math-font|cal*|N>> of a set <math|E> is a countably additive
+  function on <math|<with|math-font|cal*|N>> to
+  <math|L<rsub|2><around|(|\<Omega\>,<with|math-font|cal*|M>,P|)>>, i.e.,
+  <math|X<around|(|S,\<omega\>|)>=<big|sum><rsub|n=1><rsup|\<infty\>>X<around|(|S<rsub|n>,\<omega\>|)>>
+  in the mean square sense whenever the disjoint sets
+  <math|S<rsub|n>,n=1,2,\<ldots\>>, are in <math|<with|math-font|cal*|N>> and
+  <math|S=<big|cup><rsub|n=1><rsup|\<infty\>>S<rsub|n>\<in\><with|math-font|cal*|N>>.
+  To each <math|X> on <math|<with|math-font|cal*|N>> there corresponds a
+  complex measure <math|r<rsub|X>> defined on
+  <math|<with|math-font|cal*|N>\<times\><with|math-font|cal*|N>> by
 
   <\equation>
-    X<rsub|t>=<big|int><rsub|R>e<rsup|-i*t*u>*d*\<Phi\><around|(|u|)>
+    r<rsub|X>*<around|(|S<rsub|1>\<times\>S<rsub|2>|)>=<with|math-font|cal*|E><around|[|X<around|(|S<rsub|1>,\<omega\>|)>*X<rsup|\<ast\>><around|(|S<rsub|2>,\<omega\>|)>|]>,<label|eq:rX>
   </equation>
 
-  where <math|\<Phi\>> is a countably additive orthogonally scattered
-  <math|<with|math-font|cal*|H>>-valued measure on <math|R> such that the
-  spectral measure <math|F> defined by
+  where <math|<with|math-font|cal*|E>> is the expectation operator and the
+  star denotes complex conjugate. <math|r<rsub|X>> is nonnegative definite on
+  <math|<with|math-font|cal*|N>\<times\><with|math-font|cal*|N>>. <math|X> is
+  orthogonal if and only if <math|r<rsub|X>*<around|(|S<rsub|1>\<times\>S<rsub|2>|)>=0>,
+  whenever <math|S<rsub|1>> and <math|S<rsub|2>> are disjoint. To each
+  orthogonal <math|X> on <math|<with|math-font|cal*|N>> there corresponds a
+  nonnegative measure <math|Q<rsub|X>> defined on
+  <math|<with|math-font|cal*|N>> by
 
   <\equation>
-    F*<around|(|A\<cap\>B|)>=<around|(|\<Phi\><around|(|A|)>,\<Phi\><around|(|B|)>|)>,A*<space|1em><text|and
-    ><space|1em>B<space|1em><text|Borel sets>
+    Q<rsub|X><around|(|S|)>=<with|math-font|cal*|E><around|\||X<around|(|S,\<omega\>|)>|\|><rsup|2>.<label|eq:QX>
   </equation>
 
-  is a bounded countably additive nonnegative measure (for the definition of
-  orthogonally scattered measures, see <cite|masani>). In this case the
-  correlation function <math|R<around|(|t,s|)>=<around|(|X<rsub|t>,X<rsub|s>|)>>
-  has the representation
+  Usually <math|X> is initially defined on a semiring of subsets
+  <math|<with|math-font|cal*|N>>. If <math|r<rsub|X>> is of bounded variation
+  over <math|<with|math-font|cal*|N>\<times\><with|math-font|cal*|N>> then
+  <math|X> can be extended to the restricted <math|\<sigma\>>-ring
+  <math|<with|math-font|cal*|B><rsub|0>=<around|{|S\<in\>\<sigma\><around|(|<with|math-font|cal*|N>|)>=<with|math-font|cal*|B>;<around|\||r<rsub|X>|\|>*<around|(|S\<times\>S|)>\<less\>\<infty\>|}>>.
+  We then say that <math|X> is a random measure on
+  <math|<around|(|E,<with|math-font|cal*|B>|)>>.
+
+  Let <math|L<rsub|2><around|(|X|)>=\<sigma\><around|{|X<around|(|S,\<omega\>|)>;S\<in\><with|math-font|cal*|B><rsub|0>|}>>
+  denote the span of <math|X> in <math|L<rsub|2><around|(|\<Omega\>,<with|math-font|cal*|M>,P|)>>
+  and let <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>> be the set of all
+  complex valued, <math|<with|math-font|cal*|B>>-measurable functions
+  <math|f> on <math|E> such that
 
   <\equation>
-    R<around|(|t,s|)>=<big|int><rsub|R>e<rsup|-i*<around|(|t-s|)>*u>*d*F<around|(|u|)>
+    <big|int><rsub|E\<times\>E>f<around|(|t|)>*f<rsup|\<ast\>><around|(|s|)>*r<rsub|X><around|(|d*t,d*s|)>\<less\>\<infty\>.<label|eq:lambda2>
   </equation>
 
-  The notion of harmonizable processes was introduced by M. Loève
-  <cite|loeve> as those processes <math|X<rsub|t>> for which
+  Then, upon considering two functions <math|f> and <math|g> in
+  <math|\<Lambda\><rsub|2><around|(|r<rsub|x>|)>> as identical if and only if
 
   <\equation>
-    X<rsub|t>=<big|int><rsub|R>e<rsup|-i*t*u>*d*\<Phi\><around|(|u|)>
+    <big|int><rsub|E\<times\>E><around|[|f<around|(|t|)>-g<around|(|t|)>|]>*<around|[|f<rsup|\<ast\>><around|(|s|)>-g<rsup|\<ast\>><around|(|s|)>|]>*r<rsub|X><around|(|d*t,d*s|)>=0,<label|eq:lambda2-ident>
   </equation>
 
-  and
+  <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>> becomes a Hilbert space
+  with inner product
 
   <\equation>
-    R<around|(|t,s|)>=<big|iint><rsub|R<rsup|2>>e<rsup|-i*<around|(|t*v-s*u|)>>*d*F<around|(|u,v|)>
+    <around|(|f,g|)><rsub|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>=<big|int><rsub|E\<times\>E>f<around|(|t|)>*g<rsup|\<ast\>><around|(|s|)>*r<rsub|X><around|(|d*t,d*s|)><label|eq:lambda2-inner>
   </equation>
 
-  with <math|\<Phi\>> being a countably additive
-  <math|<with|math-font|cal*|H>>-valued measure (not necessarily orthogonally
-  scattered) and the spectral measure <math|F> being a complex-valued measure
-  of bounded variation on the plane. We note that for a stationary process
-  the spectral measure <math|F> can be realized as a measure on the plane
-  which is concentrated on its diagonal. But for a harmonizable process this
-  is not necessarily the case.
-
-  Subsequently H. Cramér <cite|cramer> in his study of non-stationary
-  processes obtained several important results concerning harmonizable
-  sequences. Later J. L. Abreu <cite|abreu> considered these harmonizable
-  processes and showed that they are projections of stationary processes
-  taking values in some larger Hilbert space. With this setting the class of
-  harmonizable processes fails to include projection of all stationary
-  processes, a fact which was observed by Abreu in his work. A weaker
-  definition of harmonizability was introduced by Yu. A. Rozanov in
-  <cite|rozanov>. More precisely, he defined an
-  <math|<with|math-font|cal*|H>>-valued process <math|X<rsub|t>> to be
-  harmonizable if it can be represented as
+  and <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>=\<sigma\><around|{|I<rsub|S><around|(|t|)>;S\<in\><with|math-font|cal*|B><rsub|0>|}>>,
+  where <math|I> is the indicator function. <math|L<rsub|2><around|(|X|)>>
+  and <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>> are isomorphic with
+  corresponding elements <math|X<around|(|S,\<omega\>|)>> and
+  <math|I<rsub|S><around|(|t|)>>, <math|S\<in\><with|math-font|cal*|B><rsub|0>>,
+  and integration of functions in <math|A<rsub|2><around|(|r<rsub|X>|)>> with
+  respect to <math|X> is defined by
 
   <\equation>
-    X<rsub|t>=<big|int><rsub|R>e<rsup|-i*t*u>*d*\<Phi\><around|(|u|)>
+    \<xi\><around|(|\<omega\>|)>=<big|int><rsub|E>f<around|(|t|)>*X<around|(|d*t,\<omega\>|)>,<label|eq:xi>
   </equation>
 
-  where <math|\<Phi\>> is a countably additive measure with values in
-  <math|<with|math-font|cal*|H>>, which is "strongly continuous" and of
-  bounded semi-variation. The term "strong continuity" used by Rozanov means
-  that the semi-variation <math|<around|\<\|\|\>|\<Phi\>|\<\|\|\>><around|(|\<cdummy\>|)>>
-  is continuous from above at zero (for definition of the semi-variation
-  <math|<around|\<\|\|\>|\<Phi\>|\<\|\|\>>> see <cite|dunford> and
-  <cite|rozanov>). In view of IV. 10.5 <cite|dunford> the "strong continuity"
-  of <math|\<Phi\>> assumed by Rozanov is automatically true. Hence we adopt
-  the following definition for harmonizability:
+  where <math|\<xi\>> and <math|f> are corresponding elements under the
+  isomorphism.
 
-  <\definition>
-    An <math|<with|math-font|cal*|H>>-valued process
-    <math|X<rsub|t>,t\<in\>R>, is said to be harmonizable if <math|X<rsub|t>>
-    can be represented as
+  <section|Representation of Harmonizable Stochastic
+  Processes><label|sec:representation>
 
-    <\equation>
-      X<rsub|t>=<big|int><rsub|R>e<rsup|-i*t*u>*d*\<Phi\><around|(|u|)>
-    </equation>
+  Harmonizable stochastic processes have been introduced by
+  Loève<nbsp><cite|loeve1963> as a first step generalization of wide sense
+  stationary mean square continuous stochastic processes. A second-order
+  stochastic process <math|<around|{|x*<around|(|t,\<omega\>|)>,t\<in\>\<bbb-R\>,\<omega\>\<in\>\<Omega\>|}>>
+  is harmonizable if and only if it has the integral representation
 
-    with <math|\<Phi\>> being a countably additive
-    <math|<with|math-font|cal*|H>>-valued measure on <math|R> which is of
-    bounded semi-variation.
-  </definition>
+  <\equation>
+    x*<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*u>*X<around|(|d*u,\<omega\>|)>*<space|1em><text|for
+    all >t\<in\>\<bbb-R\><label|eq:proc-integral>
+  </equation>
 
-  It is clear, as Rozanov pointed out in <cite|rozanov>, that the class of
-  harmonizable processes contains projections of stationary processes. The
-  main purpose of this article is to show that in fact these two class of
-  processes are precisely the same (Theorem 5). In other words our aim is to
-  prove that an <math|<with|math-font|cal*|H>>-valued process is harmonizable
-  if and only if it has a stationary dilation, i.e., it is the projection of
-  some stationary process taking values in some larger Hilbert space
-  <math|<with|math-font|cal*|K>>.
+  where <math|X> is a random measure defined for all Borel sets
+  <math|<with|math-font|cal*|B><rsup|1>> of the real line <math|\<bbb-R\>>.
 
-  Recently H. Niemi in a sequence of articles <cite|niemi1>, <cite|niemi2>,
-  <cite|niemi3> studied bounded vector measures and their dilation as
-  projection of orthogonally scattered measures. Using these results he
-  characterized <cite|niemi4> continuous <math|V>-bounded processes, and
-  showed that they are the same as projections of stationary processes.
-  Combining this and our main result mentioned above, one concludes that the
-  following are equivalent: (i) <math|X<rsub|t>,t\<in\>R>, is a harmonizable
-  process, (ii) <math|X<rsub|t>,t\<in\>R>, is projection of some stationary
-  process, (iii) <math|X<rsub|t>,t\<in\>R>, is a continuous <math|V>-bounded
-  process.
+  It is shown by Loève<nbsp><cite|loeve1963> and
+  Cramèr<nbsp><cite|cramer1951> that a second-order stochastic process
+  <math|x*<around|(|t,\<omega\>|)>> is harmonizable if and only if its
+  autocorrelation function <math|R<rsub|x*x><around|(|t,s|)>> has the
+  integral representation
 
-  However, we will obtain a direct proof for the equivalence of (i) and
-  (iii), (see also <cite|kluvanek>), and hence providing a considerably
-  shorter proof for Niemi's result. We should also point out that in Niemi's
-  work a bounded vector measure means a bounded linear operator on
-  <math|C<rsub|0><around|(|R|)>> into a Hilbert space, whereas in our study
-  we work with the usual vector valued measures, which naturally appear in
-  the study of spectral theory of stochastic processes.
+  <\equation>
+    R<rsub|x*x><around|(|t,s|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|t*u-s*v|)>>*r<rsub|X><around|(|d*u,d*v|)>*<space|1em><text|for
+    all >t,s\<in\>\<bbb-R\><label|eq:autocorr>
+  </equation>
 
-  In the course of our proof we will make extensive use of the ideas and the
-  techniques occurring in the works of R. Rogge <cite|rogge> and A. Pietsch
-  <cite|pietsch> concerning 2 majorizable operators on a Hilbert space. In
-  this connection see also <cite|dubinsky> and <cite|grothendieck>.
+  where <math|r<rsub|X>> is a measure of bounded variation on the whole plane
+  <math|\<bbb-R\><rsup|2>> and nonnegative definite on
+  <math|<with|math-font|cal*|B><rsup|1>\<times\><with|math-font|cal*|B><rsup|1>>.
+  <math|r<rsub|X>> can be regarded as the two-dimensional spectral measure of
+  the harmonizable process <math|x*<around|(|t,\<omega\>|)>>, with
+  two-dimensional spectral distribution <math|\<rho\><rsub|x*x><around|(|u,v|)>=r<rsub|X>*<around|(|<around|(|-\<infty\>,u|]>\<times\><around|(|-\<infty\>,v|]>|)>>.
 
-  In this paper we use the concept of integration with respect to a finitely
-  additive measure <math|F> as introduced by Rozanov in <cite|rozanov>. The
-  reader may find it convenient to be familiar with this paper. We will use
-  the following characterization of harmonizable processes which is a slight
-  modification of Theorem 1.2, <cite|rozanov>.
+  It is clear that a mean square continuous wide sense stationary stochastic
+  process is harmonizable, with <math|X> an orthogonal random measure and
+  <math|r<rsub|X>> a nonnegative measure concentrated on the diagonal of the
+  plane.
+
+  The functions <math|<around|{|e<rsup|i*t*u>,t\<in\>\<bbb-R\>|}>> span the
+  whole <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>> space and this
+  implies that <math|L<rsub|2><around|(|x|)>=L<rsub|2><around|(|X|)>>, where
+  <math|L<rsub|2><around|(|x|)>=\<sigma\><around|{|x*<around|(|t,\<omega\>|)>,t\<in\>\<bbb-R\>|}>>
+  denotes the span of <math|x> in <math|L<rsub|2><around|(|\<Omega\>,<with|math-font|cal*|M>,P|)>>.
+
+  <section|Orthogonal Series Representation of a Harmonizable Stochastic
+  Process><label|sec:orthogonal-series>
+
+  An orthogonal series representation for harmonizable stochastic processes
+  is provided by the following:
 
   <\theorem>
-    In order that an <math|<with|math-font|cal*|H>>-valued process
-    <math|X<rsub|t>,t\<in\>R>, be harmonizable, it is necessary and
-    sufficient that the correlation function <math|R<around|(|t,s|)>> can be
-    represented in the form
+    <label|thm:series-rep>A harmonizable stochastic process
+    <math|<around|{|x*<around|(|t,\<omega\>|)>,t\<in\>\<bbb-R\>,\<omega\>\<in\>\<Omega\>|}>>
+    is uniformly mean square continuous and has an orthogonal series
+    expansion
 
     <\equation>
-      R<around|(|t,s|)>=<big|iint><rsub|R<rsup|2>>e<rsup|-i*<around|(|t*v-s*u|)>>*d*F<around|(|u,v|)>
+      x*<around|(|t,\<omega\>|)>=<big|sum><rsub|n>a<rsub|n><around|(|t|)>*\<xi\><rsub|n><around|(|\<omega\>|)><label|eq:series>
     </equation>
 
-    where <math|F<around|(|A,B|)>=<around|(|\<Phi\><around|(|A|)>,\<Phi\><around|(|B|)>|)>,A>
-    and B Borel sets; <math|\<Phi\>> as in Definition 1, and the spectral
-    measure <math|F> has the following properties:
-
-    <\enumerate>
-      <item*|(a)><math|F> is finitely additive on the algebra of rectangles,
-
-      <item*|(b)><math|F> is continuous from above at zero, in the sense that
-      <math|F<around|(|A<rsub|i>,B<rsub|j>|)>> tends to zero if
-      <math|A<rsub|i>> and <math|B<rsub|j>> converge monotonically to the
-      empty set.
-
-      <item*|(c)><math|F> is positive definite, i.e., for any set of complex
-      numbers <math|\<alpha\><rsub|1>,\<alpha\><rsub|2>,\<cdots\>*\<alpha\><rsub|n>>,
-
-      <\equation>
-        <big|sum><rsub|i,j=1><rsup|n>a<rsub|i>*<wide|\<alpha\>|\<bar\>><rsub|j>*F<around|(|A<rsub|i>,A<rsub|j>|)>\<geq\>0
-      </equation>
-
-      <item*|(d)><math|F> is of bounded semi-variation.
-    </enumerate>
-  </theorem>
-
-  In his paper <cite|rozanov> Rozanov, in addition, assumed that <math|F> is
-  "strongly continuous\Q, i.e., the semi-variation of <math|F> is continuous
-  from above at zero. It is not hard to show that properties
-  <math|<around|(|a|)>-<around|(|d|)>> imply this "strong continuity."
-
-  In order to establish our main theorem we first prove two lemmas. In the
-  proof of these lemmas we have borrowed the techniques contained in
-  <cite|pietsch> and <cite|rogge>, and we are happy to acknowledge it here.
-  For the sake of completeness and the benefit of readers we summarize some
-  preliminary results contained in <cite|rogge>. Let
-  <math|R<rsup|n>*<around|(|n\<geq\>2|)>> be the <math|n>-dimensional real
-  Euclidean space with the usual norm and inner product
-  <math|<around|\<\|\|\>|\<cdummy\>|\<\|\|\>>,<around|(|\<cdummy\>,\<cdummy\>|)>>;
-  <math|A<rsub|n>> the unit sphere of <math|R<rsup|n>>, and <math|m<rsub|n>>
-  the normalized Haar measure on <math|A<rsub|n>>. By elementary integration
-  one can obtain:
-
-  <\equation>
-    <around*|{|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|<big|int><rsub|A<rsub|n>><around|(|r,t|)><around|(|s,t|)>*d*m<rsub|n><around|(|t|)>=<frac|1|n>*<around|(|r,s|)>>>|<row|<cell|<around|\<\|\|\>|r|\<\|\|\>>*<big|int><rsub|A<rsub|n>><math-up|sign><around|[|<around|(|r,t|)>|]><around|(|s,t|)>*d*m<rsub|n><around|(|t|)>=\<rho\><rsub|n>*<around|(|r,s|)>>>|<row|<cell|<big|int><rsub|A<rsub|n>><around|\||<around|(|r,t|)>|\|>*d*m<rsub|n><around|(|t|)>=\<rho\><rsub|n><around|\<\|\|\>|r|\<\|\|\>>>>>>>|\<nobracket\>>
-  </equation>
-
-  where\ 
-
-  <\equation>
-    \<rho\><rsub|n>=<frac|\<Gamma\><around*|(|<frac|n|2>|)>|<sqrt|\<pi\>>*\<Gamma\><around*|(|<frac|n+1|2>|)>>
-  </equation>
-
-  \ Moreover, one can see that <math|n*\<rho\><rsub|n><rsup|2>\<gtr\><frac|2|\<pi\>>>.
-
-  Let <math|L<rsub|2><around|(|A<rsub|n>,m<rsub|n>|)>> be the usual Hilbert
-  space of real-valued square summable functions on <math|A<rsub|n>>. We
-  define two operators <math|P<rsub|n>> and <math|Q<rsub|n>> on
-  <math|L<rsub|2><around|(|A<rsub|n>,m<rsub|n>|)>> as follows:
-
-  <\equation>
-    <around|(|P<rsub|n>*f|)><around|(|s|)>=n*<big|int><rsub|A<rsub|n>><around|(|s,t|)>*f<around|(|t|)>*d*m<rsub|n><around|(|t|)>
-  </equation>
-
-  <\equation>
-    \ <around|(|Q<rsub|n>*f|)><around|(|s|)>=<big|int><rsub|A<rsub|n>><math-up|sign><around|[|<around|(|s,t|)>|]>*f<around|(|t|)>*d*m<rsub|n><around|(|t|)>
-  </equation>
-
-  <math|P<rsub|n>> and <math|Q<rsub|n>> are linear operators. As shown in
-  <cite|rogge>, using relations (3), one can verify that
-  <math|<frac|\<pi\>|2>*Q<rsub|n><rsup|2>-<frac|1|n>*P<rsub|n>> is a
-  non-negative Hermitian operator in <math|L<rsub|2><around|(|A<rsub|n>,m<rsub|n>|)>>,
-  i.e.,
-
-  <\equation>
-    <frac|\<pi\>|2>*<around|(|Q<rsub|n><rsup|2>*f,f|)>\<geq\><frac|1|n>*<around|(|P<rsub|n>*f,f|)>,<space|1em><text|for
-    all >f\<in\>L<rsub|2><around|(|A<rsub|n>,m<rsub|n>|)>
-  </equation>
-
-  Define the kernel <math|L<around|(|\<cdummy\>,\<cdummy\>|)>> by
-
-  <\equation>
-    L<around|(|r,s|)>=<big|int><rsub|A<rsub|n>><math-up|sign><around|[|<around|(|r,t|)>|]><space|1em><math-up|sign><around|[|<around|(|s,t|)>|]>*d*m<rsub|n><around|(|t|)>
-  </equation>
-
-  Simple computation on (4) shows that for all
-  <math|f\<in\>L<rsub|2><around|(|A<rsub|n>,m<rsub|n>|)>>,
-
-  <\equation>
-    <\aligned>
-      <tformat|<table|<row|<cell|>|<cell|<big|int><rsub|A<rsub|n>><big|int><rsub|A<rsub|n>><around|(|r,s|)>*f<around|(|r|)>*f<around|(|s|)>*d*m<rsub|n><around|(|r|)>*d*m<rsub|n><around|(|s|)>>>|<row|<cell|\<leq\>>|<cell|<frac|\<pi\>|2>*<big|int><rsub|A<rsub|n>><big|int><rsub|A<rsub|n>>L<around|(|r,s|)>*f<around|(|r|)>*f<around|(|s|)>*d*m<rsub|n><around|(|r|)>*d*m<rsub|n><around|(|s|)>>>>>
-    </aligned>
-  </equation>
-
-  Let <math|\<lambda\><rsub|1>,\<lambda\><rsub|2>*\<cdots\>,\<lambda\><rsub|n>>
-  be any set of real numbers and <math|t<rsub|1>,t<rsub|2>,\<cdots\>,t<rsub|n>>
-  be any set of vectors in <math|R<rsup|n>>. Apply (5) to the function
-  <math|f<around|(|r|)>=<big|sum><rsub|i=1><rsup|n>\<lambda\><rsub|i>*<around|(|r,t<rsub|i>|)>>.
-  Using relations (3) and the definition of the kernel
-  <math|L<around|(|\<cdummy\>,\<cdummy\>|)>>, some routine calculations show
-  that
-
-  <\equation>
-    <big|sum><rsub|i=1><rsup|m><big|sum><rsub|j=1><rsup|m><around|(|t<rsub|i>,t<rsub|j>|)>*\<lambda\><rsub|i>*\<lambda\><rsub|j>\<leq\><frac|\<pi\>|2>*<big|sum><rsub|i=1><rsup|m><big|sum><rsub|j=1><rsup|m>L<around|(|t<rsub|i>,t<rsub|j>|)><around|\<\|\|\>|t<rsub|i>|\<\|\|\>><around|\<\|\|\>|t<rsub|j>|\<\|\|\>>*\<lambda\><rsub|i>*\<lambda\><rsub|j>.
-  </equation>
-
-  Now since the matrix <math|<around|[|<frac|\<pi\>|2>*L<around|(|t<rsub|i>,t<rsub|j>|)><around|\<\|\|\>|t<rsub|i>|\<\|\|\>>\<\|\|\>t<rsub|i>\<\|\|\>-<around|(|t<rsub|i>,t<rsub|j>|)>|]><rsub|i,j=1><rsup|n>>
-  is symmetric with real entries, (6) implies the corresponding relation for
-  the complex numbers <math|\<lambda\><rsub|1>*\<lambda\><rsub|2>,\<cdots\>,\<lambda\><rsub|n>>,
-  i.e., we have
-
-  <\equation>
-    <big|sum><rsub|i=1><rsup|m><big|sum><rsub|j=1><rsup|m><around|(|t<rsub|i>,t<rsub|j>|)>*\<lambda\><rsub|i>*<wide|\<lambda\>|\<bar\>><rsub|j>\<leq\><frac|\<pi\>|2>*<big|sum><rsub|i=1><rsup|m><big|sum><rsub|j=1><rsup|m>L<around|(|t<rsub|i>,t<rsub|j>|)><around|\<\|\|\>|t<rsub|i>|\<\|\|\>><around|\<\|\|\>|t<rsub|j>|\<\|\|\>>*\<lambda\><rsub|i>*<wide|\<lambda\>|\<bar\>><rsub|j>,
-  </equation>
-
-  for any set <math|\<lambda\><rsub|1>,\<lambda\><rsub|2>,\<cdots\>,\<lambda\><rsub|n>>
-  of complex numbers and any set <math|t<rsub|1>,t<rsub|2>,\<cdots\>,t<rsub|n>>
-  of vectors in <math|R<rsup|n>>.
-
-  Let <math|X<rsub|t>,t\<in\>R>, be an <math|<with|math-font|cal*|H>>-valued
-  harmonizable process with the spectral measure F as in Theorem 2, then
-  there exists a positive number <math|c> such that
-
-  <item*|(a)>
-
-  <\equation>
-    <around*|\||<big|iint><rsub|R<rsup|2>>\<varphi\><around|(|s|)>*\<psi\><around|(|t|)>*d*F<around|(|s,t|)>|\|>\<leq\>c<around|\<\|\|\>|\<varphi\>|\<\|\|\>><rsub|\<infty\>><around|\<\|\|\>|\<psi\>|\<\|\|\>><rsub|\<infty\>>,
-  </equation>
-
-  for any pair <math|\<varphi\>> and <math|\<psi\>> of bounded measurable
-  complex-valued functions on <math|R>, and
-
-  <item*|(b)>
-
-  <\equation>
-    <big|sum><rsub|k=1><rsup|n><big|iint><rsub|R<rsup|2>>\<varphi\><rsub|k><around|(|s|)>*<wide|\<varphi\>|\<bar\>><rsub|k><around|(|t|)>*d*F<around|(|s,t|)>\<leq\>\<pi\>*c*sup<rsub|t\<in\>R>
-    <big|sum><rsub|k=1><rsup|n><around|\||\<varphi\><rsub|k><around|(|t|)>|\|><rsup|2>,
-  </equation>
-
-  for any set <math|<around|{|\<varphi\><rsub|1>,\<varphi\><rsub|2>,\<cdots\>,\<varphi\><rsub|n>|}>>
-  of bounded measurable complex-valued functions on <math|R>.
-
-  <\proof>
-    (a) This follows from <cite|rozanov> with
-    <math|c=<around|\<\|\|\>|F|\<\|\|\>><around|(|R|)>>. (b) First we assume
-    that the function <math|\<varphi\><rsub|1>,\<varphi\><rsub|2>,\<cdots\>,\<varphi\><rsub|n>>
-    are real-valued. Without loss of generality we may assume that <math|c>
-    in part (a) is one, and hence assuming
-    <math|<around|\<\|\|\>|\<varphi\><rsub|k>|\<\|\|\>><rsub|\<infty\>><rsup|2>=1>,
-    we show that
+    in the mean square sense for all <math|t\<in\>\<bbb-R\>>, where
 
     <\equation>
-      <big|sum><rsub|k=1><rsup|n><big|iint><rsub|R<rsup|2>>\<varphi\><rsub|k><around|(|s|)>*\<varphi\><rsub|k><around|(|t|)>*d*F<around|(|s,t|)>\<leq\>\<pi\>.
-    </equation>
-
-    It suffices to assume that <math|\<varphi\><rsub|1>,\<varphi\><rsub|2>,\<cdots\>,\<varphi\><rsub|n>>
-    are simple functions (the general case then follows from approximating
-    the <math|\<varphi\>>'s by simple functions). We may write
-    <math|\<varphi\><rsub|k>=<big|sum><rsub|i=1><rsup|m>\<varphi\><rsub|k><around|(|t<rsub|i>|)>*\<chi\><rsub|U<rsub|i>>>,
-    <math|k=1,2,\<ldots\>,n>; where <math|U<rsub|1>,U<rsub|2>,\<cdots\>,U<rsub|m>>
-    is a disjoint covering of <math|R> and <math|t<rsub|i>\<in\>U<rsub|i>>
-    for each <math|i>. We have
-
-    <\equation>
-      <big|sum><rsub|k=1><rsup|n><big|iint><rsub|R<rsup|2>>\<varphi\><rsub|k><around|(|s|)>*\<varphi\><rsub|k><around|(|t|)>*d*F<around|(|s,t|)>=<big|sum><rsub|k=1><rsup|n><big|sum><rsub|i=1><rsup|m><big|sum><rsub|j=1><rsup|m>\<varphi\><rsub|k><around|(|t<rsub|i>|)>*\<varphi\><rsub|k><around|(|t<rsub|j>|)>*F<around|(|U<rsub|i>,U<rsub|j>|)>.
-    </equation>
-
-    Now for any set of complex numbers <math|<around|{|\<gamma\><rsub|i>|}><rsub|i=1><rsup|m>>
-    with <math|<big|sum><rsub|i=1><rsup|m><around|\||\<gamma\><rsub|i>|\|><rsup|2>=1>,
-    we have
-
-    <\equation>
-      <around*|\||<big|iint><rsub|R<rsup|2>><around*|(|<big|sum><rsub|i=1><rsup|m>\<gamma\><rsub|i>*\<chi\><rsub|U<rsub|i>><around|(|s|)>|)><around*|(|<big|sum><rsub|j=1><rsup|m>\<gamma\><rsub|j>*\<chi\><rsub|U<rsub|j>><around|(|t|)>|)>*d*F<around|(|s,t|)>|\|>\<leq\>1,
-    </equation>
-
-    (because <math|<around|\<\|\|\>|<big|sum><rsub|i=1><rsup|m>\<gamma\><rsub|i>*\<chi\><rsub|U<rsub|i>>|\<\|\|\>><rsub|\<infty\>>\<leq\>1>,
-    and (a) applies with <math|\<varphi\>=\<psi\>=<big|sum><rsub|i=1><rsup|m>\<gamma\><rsub|i>*\<chi\><rsub|U<rsub|i>>>).
-    Define the operator <math|S:R\<to\>R<rsup|n>> by
-
-    <\equation>
-      S<around|(|t|)>=<around|(|\<varphi\><rsub|1><around|(|t|)>,\<varphi\><rsub|2><around|(|t|)>,\<cdots\>,\<varphi\><rsub|n><around|(|t|)>|)>.
-    </equation>
-
-    For any <math|s,t\<in\>R> we have
-
-    <\equation>
-      <around|(|S<around|(|s|)>,S<around|(|t|)>|)>=<big|sum><rsub|k=1><rsup|n>\<varphi\><rsub|k><around|(|s|)>*\<varphi\><rsub|k><around|(|t|)><space|1em><text|and><space|1em><around|\<\|\|\>|S<around|(|t|)>|\<\|\|\>>\<leq\>1.
-    </equation>
-
-    Now from (9) we can write
-
-    <align|<tformat|<table|<row|<cell|<big|sum><rsub|k=1><rsup|n><big|iint><rsub|R<rsup|2>>\<varphi\><rsub|k><around|(|s|)>*\<varphi\><rsub|k><around|(|t|)>*d*F<around|(|s,t|)>>|<cell|=<big|sum><rsub|i=1><rsup|m><big|sum><rsub|j=1><rsup|m><around|(|S<around|(|t<rsub|i>|)>,S<around|(|t<rsub|j>|)>|)>*F<around|(|U<rsub|i>,U<rsub|j>|)><eq-number>>>|<row|<cell|>|<cell|=<big|sum><rsub|i=1><rsup|m><big|sum><rsub|j=1><rsup|m><big|sum><rsub|\<beta\>><around|(|\<Phi\><around|(|U<rsub|i>|)>,e<rsub|\<beta\>>|)><around|(|\<Phi\><around|(|U<rsub|j>|)>,e<rsub|\<beta\>>|)><around|(|S<around|(|t<rsub|i>|)>,S<around|(|t<rsub|j>|)>|)>,<eq-number>>>>>>
-
-    where <math|<around|{|e<rsub|\<beta\>>|}>> is an orthonormal system for
-    the Hilbert space <math|<with|math-font|cal*|H>>, and <math|\<Phi\>> is
-    as in Theorem 2. Now bringing the sum over <math|\<beta\>> out and using
-    (7) we get
-
-    <align|<tformat|<cwith|1|-1|1|-1|font-base-size|8>|<table|<row|<cell|<big|sum><rsub|k=1><rsup|n><big|iint><rsub|R<rsup|2>>\<varphi\><rsub|k><around|(|s|)>*\<varphi\><rsub|k><around|(|t|)>*d*F<around|(|s,t|)>>|<cell|<with|font-base-size|6|\<leq\><frac|\<pi\>|2>*<big|sum><rsub|i=1><rsup|m><big|sum><rsub|j=1><rsup|m><big|sum><rsub|\<beta\>>L<around|(|S<around|(|t<rsub|i>|)>,S<around|(|t<rsub|j>|)>|)>*<around|\<\|\|\>|S<around|(|t<rsub|i>|)><around|\<\|\|\>||\<\|\|\>>*S<around|(|t<rsub|j>|)>|\<\|\|\>><around|(|\<Phi\><around|(|U<rsub|i>|)>,e<rsub|\<beta\>>|)><around|(|\<Phi\><around|(|U<rsub|j>|)>,e<rsub|\<beta\>>|)>><eq-number>>>|<row|<cell|>|<cell|=<frac|\<pi\>|2>*<big|sum><rsub|i=1><rsup|m><big|sum><rsub|j=1><rsup|m>L<around|(|S<around|(|t<rsub|i>|)>,S<around|(|t<rsub|j>|)>|)>*<around|\<\|\|\>|S<around|(|t<rsub|i>|)><around|\<\|\|\>||\<\|\|\>>*S<around|(|t<rsub|j>|)>|\<\|\|\>><around|(|\<Phi\><around|(|U<rsub|i>|)>,\<Phi\><around|(|U<rsub|j>|)>|)><eq-number>>>|<row|<cell|>|<cell|=<frac|\<pi\>|2>*<big|sum><rsub|i=1><rsup|m><big|sum><rsub|j=1><rsup|m>L<around|(|S<around|(|t<rsub|i>|)>,S<around|(|t<rsub|j>|)>|)>*<around|\<\|\|\>|S<around|(|t<rsub|i>|)><around|\<\|\|\>||\<\|\|\>>*S<around|(|t<rsub|j>|)>|\<\|\|\>>*F<around|(|U<rsub|i>,U<rsub|j>|)><eq-number>>>|<row|<cell|>|<cell|=<with|font-base-size|8|<frac|\<pi\>|2>*<big|int><rsub|A<rsub|n>><big|sum><rsub|i=1><rsup|m><big|sum><rsub|j=1><rsup|m>F<around|(|U<rsub|i>,U<rsub|j>|)>\<gamma\><rsub|i>\<gamma\><rsub|j>**d*m<rsub|n><around|(|p|)>><eq-number>>>>>>
-
-    where <math|\<gamma\><rsub|i>=<text|sign><around|[|S<around|(|t<rsub|i>|)>,p|]><around|\<\|\|\>|S<around|(|t<rsub|i>|)>|\<\|\|\>>>.
-    Using (10) with <math|> we get
-
-    <align|<tformat|<table|<row|<cell|<big|sum><rsub|k=1><rsup|n><big|iint><rsub|R<rsup|2>>\<varphi\><rsub|k><around|(|s|)>*\<varphi\><rsub|k><around|(|t|)>*d*F<around|(|s,t|)>>|<cell|\<leq\><frac|\<pi\>|2>*<big|int><rsub|A<rsub|n>><around*|\||<big|iint><rsub|R<rsup|2>><around*|(|<big|sum><rsub|i=1><rsup|m>\<gamma\><rsub|i>*\<chi\><rsub|U<rsub|i>><around|(|s|)>|)>|\<nobracket\>><eq-number>>>|<row|<cell|>|<cell|<space|1em><around*|\<nobracket\>|<around*|(|<big|sum><rsub|j=1><rsup|m>\<gamma\><rsub|j>*\<chi\><rsub|U<rsub|j>><around|(|t|)>|)>*d*F<around|(|s,t|)>|\|>*d*m<rsub|n><around|(|p|)><eq-number>>>|<row|<cell|>|<cell|\<leq\><frac|\<pi\>|2>*<big|int><rsub|A<rsub|n>>d*m<rsub|n><around|(|p|)>=<frac|\<pi\>|2>\<cdot\>2=\<pi\>.<eq-number>>>>>>
-
-    Thus for any arbitrary real-valued bounded measurable functions
-    <math|\<varphi\><rsub|1>,\<varphi\><rsub|2>,\<cdots\>,\<varphi\><rsub|n>>
-    we have
-
-    <\equation>
-      <big|sum><rsub|k=1><rsup|n><big|iint><rsub|R<rsup|2>>\<varphi\><rsub|k><around|(|s|)>*\<varphi\><rsub|k><around|(|t|)>*d*F<around|(|s,t|)>\<leq\>\<pi\>*c*sup<rsub|t\<in\>R>
-      <big|sum><rsub|k=1><rsup|n>\<varphi\><rsub|k><around|(|t|)><rsup|2>.
-    </equation>
-
-    This completes the proof of (b) for the real-valued <math|\<varphi\>>'s.
-    Now let <math|\<varphi\><rsub|1>,\<varphi\><rsub|2>,\<cdots\>,\<varphi\><rsub|n>>
-    be complex-valued bounded measurable functions. Writing\ 
-
-    <\equation>
-      \<varphi\><rsub|k><around|(|t|)>=\<alpha\><rsub|k><around|(|t|)>+i*\<beta\><rsub|k><around|(|t|)>\<forall\>k=1,2,\<ldots\>,n
-    </equation>
-
-    we have
-
-    <align|<tformat|<cwith|1|-1|1|-1|font-base-size|7>|<table|<row|<cell|0\<leq\><big|sum><rsub|k=1><rsup|n><big|iint><rsub|R<rsup|2>>\<varphi\><rsub|k><around|(|s|)>*<wide|\<varphi\>|\<bar\>><rsub|k><around|(|t|)>*d*F<around|(|s,t|)>>|<cell|=<big|sum><rsub|k=1><rsup|n><big|iint><rsub|R<rsup|2>><around|(|\<alpha\><rsub|k><around|(|s|)>+i*\<beta\><rsub|k><around|(|s|)>|)>*<around|(|\<alpha\><rsub|k><around|(|t|)>-i*\<beta\><rsub|k><around|(|t|)>|)>*d*F<around|(|s,t|)><eq-number>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=1><rsup|n><big|iint><rsub|R<rsup|2>>\<alpha\><rsub|k><around|(|s|)>*\<alpha\><rsub|k><around|(|t|)>*d*F<around|(|s,t|)>+<big|sum><rsub|k=1><rsup|n><big|iint><rsub|R<rsup|2>>\<beta\><rsub|k><around|(|s|)>*\<beta\><rsub|k><around|(|t|)>*d*F<around|(|s,t|)><eq-number>>>|<row|<cell|>|<cell|<space|1em>+i*<big|sum><rsub|k=1><rsup|n><big|iint><rsub|R<rsup|2>><around|(|\<beta\><rsub|k><around|(|s|)>*\<alpha\><rsub|k><around|(|t|)>-\<alpha\><rsub|k><around|(|s|)>*\<beta\><rsub|k><around|(|t|)>|)>*d*F<around|(|s,t|)>.<eq-number>>>>>>
-
-    Clearly the third term is zero. By (11) each of the first two terms are
-    less than or equal to\ 
-
-    <\equation>
-      <frac|\<pi\>*c|2>*sup<rsub|t\<in\>R>
-      <big|sum><rsub|k=1><rsup|n><around|(|<around|\||\<alpha\><rsub|k><around|(|t|)>|\|><rsup|2>+<around|\||\<beta\><rsub|k><around|(|t|)>|\|><rsup|2>|)>=<frac|\<pi\>*c|2>*sup<rsub|t\<in\>R>
-      <big|sum><rsub|k=1><rsup|n><around|\||\<varphi\><rsub|k><around|(|t|)>|\|><rsup|2>
-    </equation>
-
-    These complete the proof of part (b).
-  </proof>
-
-  <\lemma>
-    Let <math|X<rsub|t>> be a harmonizable process with the spectral measure
-    <math|F>, then there exists a bounded regular countably additive
-    nonnegative measure <math|\<mu\>> on <math|R> such that
-
-    <\equation>
-      <around*|\||<big|iint><rsub|R<rsup|2>>\<varphi\><around|(|s|)>*\<psi\><around|(|t|)>*d*F<around|(|s,t|)>|\|>\<leq\><rsup|><sqrt|<big|int><rsub|R><around|\||\<varphi\><around|(|t|)>|\|><rsup|2>*d*\<mu\><around|(|t|)>><sqrt|<big|int><rsub|R><around|\||\<psi\><around|(|t|)>|\|><rsup|2>*d*\<mu\><around|(|t|)>>
-    </equation>
-
-    for any bounded measurable complex-valued function <math|\<varphi\>> on
-    <math|R>.
-  </lemma>
-
-  <\proof>
-    By Lemma 3 there exists a positive number <math|\<rho\>> such that
-
-    <\equation>
-      <big|sum><rsub|k=1><rsup|n><big|iint><rsub|R<rsup|2>>\<varphi\><rsub|k><around|(|s|)>*<wide|\<varphi\>|\<bar\>><rsub|k><around|(|t|)>*d*F<around|(|s,t|)>\<leq\>\<rho\>*sup<rsub|t\<in\>R>
-      <big|sum><rsub|k=1><rsup|n><around|\||\<varphi\><rsub|k><around|(|t|)>|\|><rsup|2>
-    </equation>
-
-    for any set <math|<around|{|\<varphi\><rsub|1>,\<varphi\><rsub|2>,\<cdots\>,\<varphi\><rsub|n>|}>>
-    of bounded measurable complex-valued functions. Define a functional
-    <math|S> on the class <math|C<rsub|R><around|(|R|)>> of all bounded
-    continuous real-valued functions by
-
-    <\equation>
-      <with|font-base-size|9|S<around|(|\<psi\>|)>=inf
-      <around*|{|sup<rsub|t\<in\>R> <big|sum><rsub|k=1><rsup|n>\|\<varphi\><rsub|k><around|(|t|)>*<around|\||<rsup|2>+\<rho\>*<big|sum><rsub|k=1><rsup|n>|\|>*\<psi\><around|(|t|)>-\<varphi\><rsub|k><around|(|t|)>\|<rsup|2>-<big|sum><rsub|k=1><rsup|n><big|iint><rsub|R<rsup|2>>\<varphi\><rsub|k><around|(|s|)>*<wide|\<varphi\>|\<bar\>><rsub|k><around|(|t|)>*d*F<around|(|s,t|)>|}>>
-    </equation>
-
-    where the infinum is taken over all finite sets
-    <math|<around|{|\<varphi\><rsub|1>,\<varphi\><rsub|2>,\<cdots\>,\<varphi\><rsub|n>|}>>
-    of bounded measurable complex-valued functions. It is easy to see that
-    <math|S> is a homogeneous subadditive real-valued functional for which
-
-    <\equation>
-      inf<rsub|t\<in\>R> \<psi\><around|(|t|)>\<leq\>S<around|(|\<psi\>|)>\<leq\>sup<rsub|t\<in\>R>
-      \<psi\><around|(|t|)>,<text|for all
-      >\<psi\>\<in\>C<rsub|R><around|(|R|)>
-    </equation>
-
-    and hence
-
-    <\equation>
-      S<around|(|\<psi\>|)>\<geq\>0*<text|if >\<psi\>\<geq\>0
-    </equation>
-
-    <\equation>
-      S<around|(|\<psi\>|)>\<leq\>0*<text|if >\<psi\>\<leq\>0
-    </equation>
-
-    Thus, by the Hahn-Banach theorem there exists a linear functional
-    <math|T> on <math|C<rsub|R><around|(|R|)>> such that (see for example
-    <cite|dunford> pp. 62-63),
-
-    <\equation>
-      S*<around|(|-\<psi\>|)>\<leq\>T<around|(|\<psi\>|)>\<leq\>S<around|(|\<psi\>|)>\<forall\>\<psi\>\<in\>C<rsub|R><around|(|R|)>
-    </equation>
-
-    Obviously, <math|T> is a bounded nonnegative linear functional on the
-    normed vector space <math|C<rsub|R><around|(|R|)>>. Let
-    <math|C<rsub|C><around|(|R|)>> be the class of all bounded continuous
-    complex-valued functions on <math|R>. We extend <math|T> to
-    <math|C<rsub|C><around|(|R|)>> by
-
-    <\equation>
-      <wide|T|^>*<around|(|\<varphi\>+i*\<psi\>|)>=T<around|(|\<varphi\>|)>+i*T<around|(|\<psi\>|)>\<forall\>\<varphi\>,\<psi\>\<in\>C<rsub|R><around|(|R|)>
-    </equation>
-
-    Clearly <math|<wide|T|^>> is a bounded nonnegative linear functional on
-    <math|C<rsub|C><around|(|R|)>>. Since <math|C<rsub|C><around|(|R|)>>
-    contains <math|C<rsub|0><around|(|R|)>>, the class of all continuous
-    complex-valued functions vanishing at <math|\<infty\>>, according to the
-    Riesz representation theorem (<cite|rudin>, p. 131, Theorem 6.19) there
-    exists a complex regular measure <math|\<mu\><rsub|0>> such that
-
-    <\equation>
-      T<around|(|\<psi\>|)>=<big|int><rsub|R>\<psi\><around|(|t|)>*d*\<mu\><rsub|0><around|(|t|)>,\<psi\>\<in\>C<rsub|C><around|(|R|)>.
-    </equation>
-
-    Let <math|E> be any measurable set. Given any <math|\<epsilon\>\<gtr\>0>,
-    one can find a nonnegative function <math|\<psi\>> in
-    <math|C<rsub|C><around|(|R|)>> such that
-    <math|<big|int><rsub|E><around|(|1-\<psi\><around|(|t|)>|)>*d*\<mu\><rsub|0><around|(|t|)>\<leq\>\<epsilon\>>.
-    This implies that <math|\<mu\><rsub|0><around|(|E|)>=<big|int><rsub|E>1*d*\<mu\><rsub|0><around|(|t|)>>
-    is nonnegative. Hence <math|\<mu\><rsub|0>> is a bounded regular
-    countably additive nonnegative measure such that
-
-    <\equation>
-      T<around|(|\<psi\>|)>=<big|int><rsub|R>\<psi\><around|(|t|)>*d*\<mu\><rsub|0><around|(|t|)>,\<psi\>\<in\>C<rsub|R><around|(|R|)>
-    </equation>
-
-    For any bounded continuous complex-valued function <math|\<psi\>> we have
-
-    <\equation>
-      S*<around|(|-\<rho\><around|\||\<psi\>|\|><rsup|2>|)>\<leq\>T*<around|(|-\<rho\><around|\||\<psi\>|\|><rsup|2>|)>
-    </equation>
-
-    or
-
-    <\equation>
-      S*<around|(|-\<rho\><around|\||\<psi\>|\|><rsup|2>|)>\<leq\>sup<rsub|t\<in\>R><around|{|<around|\||\<psi\><around|(|t|)>*<around|\||<rsup|2>+\<rho\>|\|>*\<varphi\><around|(|t|)>-\<psi\><around|(|t|)>|\|><rsup|2>-<big|iint><rsub|R<rsup|2>>\<varphi\><around|(|s|)>*<wide|\<varphi\>|\<bar\>><around|(|t|)>*d*F<around|(|s,t|)>|}>
-    </equation>
-
-    where the supremum is taken over all bounded continuous complex-valued
-    functions <math|\<varphi\>>.
-
-    Thus for the specific choice <math|\<varphi\>=\<psi\>> we get
-
-    <\equation>
-      S*<around|(|-\<rho\><around|\||\<psi\>|\|><rsup|2>|)>\<leq\>sup<rsub|t\<in\>R>\|\<psi\><around|(|t|)>\|<rsup|2>-<big|iint><rsub|R<rsup|2>>\<psi\><around|(|s|)>*<wide|\<psi\>|\<bar\>><around|(|t|)>*d*F<around|(|s,t|)>
-    </equation>
-
-    or
-
-    <\equation>
-      <tabular|<tformat|<table|<row|<cell|-\<rho\>*T<around|(|<around|\||\<psi\>|\|><rsup|2>|)>>|<cell|=T*<around|(|-\<rho\><around|\||\<psi\>|\|><rsup|2>|)>>>|<row|<cell|>|<cell|\<leq\>S*<around|(|-\<rho\><around|\||\<psi\>|\|><rsup|2>|)>>>|<row|<cell|>|<cell|\<leq\><big|iint><rsub|R<rsup|2>>\<psi\><around|(|s|)>*<wide|\<psi\>|\<bar\>><around|(|t|)>*d*F<around|(|s,t|)>>>>>>
-    </equation>
-
-    Thus for any function <math|\<psi\>> in <math|C<rsub|C><around|(|R|)>> we
-    have
-
-    <\equation>
-      <tabular|<tformat|<table|<row|<cell|<big|iint><rsub|R<rsup|2>>\<psi\><around|(|s|)>*<wide|\<psi\>|\<bar\>><around|(|t|)>*d*F<around|(|s,t|)>>|<cell|\<leq\>\<rho\>*T<around|(|<around|\||\<psi\>|\|><rsup|2>|)>>>|<row|<cell|>|<cell|=\<rho\>*<big|int><rsub|R><around|\||\<psi\><around|(|t|)>|\|><rsup|2>*d*\<mu\><rsub|0><around|(|t|)>>>>>>
-    </equation>
-
-    or equivalently
-
-    <\equation>
-      <around*|(|<big|int><rsub|R>\<psi\><around|(|s|)>*d*\<Phi\><around|(|s|)>,<big|int><rsub|R>\<psi\><around|(|s|)>*d*\<Phi\><around|(|s|)>|)>\<leq\>\<rho\>*<big|int><rsub|R><around|\||\<psi\><around|(|t|)>|\|><rsup|2>*d*\<mu\><rsub|0><around|(|t|)>
-    </equation>
-
-    Let <math|\<psi\>> be in <math|C<rsub|C><around|(|R|)>>. Take a sequence
-    <math|\<psi\><rsub|n>> in <math|C<rsub|C><around|(|R|)>> such that
-    <math|\<psi\><rsub|n>\<to\>\<psi\>> pointwise and
-    <math|<around|\||\<psi\><rsub|n><around|(|s|)>|\|>\<leq\>sup<rsub|t\<in\>R><around|\||\<psi\><around|(|t|)>|\|>>.
-    Since <math|\<mu\><rsub|0>> is bounded by the usual Lebesgue dominated
-    convergence theorem <math|<big|int><rsub|R><around|\||\<psi\><rsub|n><around|(|t|)>|\|><rsup|2>*d*\<mu\><rsub|0><around|(|t|)>>
-    converges to <math|<big|int><rsub|R><around|\||\<psi\><around|(|t|)>|\|><rsup|2>*d*\<mu\><rsub|0><around|(|t|)>>.
-    Also by (<cite|dunford>, p. 328, Theorem 10)
-    <math|<big|int><rsub|R>\<psi\><rsub|n><around|(|t|)>*d*\<Phi\><around|(|t|)>>
-    converges to <math|<big|int><rsub|R>\<psi\><around|(|t|)>*d*\<Phi\><around|(|t|)>>.
-    Therefore applying (12) to the sequence <math|\<psi\><rsub|n>> and then
-    taking limits one obtains
-
-    <\equation>
-      <with|font-base-size|8|<big|iint><rsub|R<rsup|2>>\<psi\><around|(|s|)>*<wide|\<psi\>|\<bar\>><around|(|t|)>*d*F<around|(|s,t|)>=<around*|(|<big|int><rsub|R>\<psi\><around|(|s|)>*d*\<Phi\><around|(|s|)>,<big|int><rsub|R>\<psi\><around|(|s|)>*d*\<Phi\><around|(|s|)>|)>\<leq\>\<rho\>*<big|int><rsub|R><around|\||\<psi\><around|(|t|)>|\|><rsup|2>*d*\<mu\><rsub|0><around|(|t|)>\<forall\>\<psi\>\<in\>C<rsub|C><around|(|R|)>>
-    </equation>
-
-    Hence <math|\<mu\>=\<rho\>*\<mu\><rsub|0>> is the desired measure.
-  </proof>
-
-  <\theorem>
-    [Main theorem] An <math|<with|math-font|cal*|H>>-valued process
-    <math|X<rsub|t>,t\<in\>R>, is harmonizable if and only if there exists a
-    Hilbert space <math|<with|math-font|cal*|K>> containing
-    <math|<with|math-font|cal*|H>> and a <math|<with|math-font|cal*|K>>-valued
-    stationary process <math|Y<rsub|t>> such that
-
-    <\equation>
-      X<rsub|t>=P*Y<rsub|t>
-    </equation>
-
-    where <math|P> is the projection from <math|<with|math-font|cal*|K>> onto
-    <math|<with|math-font|cal*|H>>.
-  </theorem>
-
-  <\proof>
-    If <math|X> is the projection of some stationary process <math|Y>, it is
-    easy, as was pointed out in <cite|rozanov>, to see that <math|X<rsub|t>>
-    is harmonizable. Now let <math|X<rsub|t>,t\<in\>R>, be a harmonizable
-    process with the spectral measure <math|F>. Let <math|\<mu\>> be the
-    dominating measure of Lemma 4. There exists a countably additive Borel
-    measure <math|\<mu\><rsub|1>> on <math|R\<times\>R> which is concentrated
-    on its diagonal and satisfies
-
-    <\equation>
-      <big|int><rsub|R<rsup|2>>f<around|(|s,t|)>*d*\<mu\><rsub|1><around|(|s,t|)>=<big|int><rsub|R>f<around|(|t,t|)>*d*\<mu\><around|(|t|)>
-    </equation>
-
-    for every bounded continuous complex-valued function <math|f> on
-    <math|R\<times\>R>. Now since by Lemma 4
-
-    <\equation>
-      <big|int><rsub|R<rsup|2>>\<varphi\><around|(|s|)>*<wide|\<psi\>|\<bar\>><around|(|t|)>*d*\<mu\><rsub|1><around|(|s,t|)>-<big|int><rsub|R<rsup|2>>\<varphi\><around|(|s|)>*<wide|\<psi\>|\<bar\>><around|(|t|)>*d*F<around|(|s,t|)>\<geq\>0
-    </equation>
-
-    we define an inner product <math|<around|(|\<cdummy\>,\<cdummy\>|)><rprime|'>>
-    on the class <math|C<rsub|C><around|(|R|)>> by
-
-    <\equation>
-      <around|(|\<varphi\>,\<psi\>|)><rprime|'>=<big|int><rsub|R<rsup|2>>\<varphi\><around|(|s|)>*<wide|\<psi\>|\<bar\>><around|(|t|)>*d*\<mu\><rsub|1><around|(|s,t|)>-<big|int><rsub|R<rsup|2>>\<varphi\><around|(|s|)>*<wide|\<psi\>|\<bar\>><around|(|t|)>*d*F<around|(|s,t|)>
-    </equation>
-
-    Let <math|<with|math-font|cal*|H><rprime|'>> be the Hilbert space
-    obtained from completing <math|C<rsub|C><around|(|R|)>/<around|{|f\<in\>C<rsub|C><around|(|R|)>\|<around|(|f,f|)><rprime|'>=0|}>>
-    with respect to the norm <math|<around|\<\|\|\>|f|\<\|\|\>><rprime|'>=<sqrt|<around|(|f,f|)><rprime|'>>>,
-    and <math|Z<rsub|t>> be the image of the functional
-    <math|u\<to\>e<rsup|-i*u*t>> under the canonical mapping
-    <math|C<rsub|C><around|(|R|)>\<to\><with|math-font|cal*|H><rprime|'>>.
-    Now let <math|<with|math-font|cal*|K>=<with|math-font|cal*|H>\<oplus\><with|math-font|cal*|H><rprime|'>>,
-    identifying <math|<with|math-font|cal*|H>> with the subspace
-    <math|<with|math-font|cal*|H>\<oplus\><around|{|0|}>> of
-    <math|<with|math-font|cal*|K>>. Let <math|Y<rsub|t>=X<rsub|t>+Z<rsub|t>>,
-    <math|t\<in\>R>. Obviously, <math|X<rsub|t>=P*Y<rsub|t>> and
-
-    <\equation>
-      <around|(|Y<rsub|s>,Y<rsub|t>|)><rsub|<with|math-font|cal*|K>>=<around|(|X<rsub|s>,X<rsub|t>|)><rsub|<with|math-font|cal*|H>>+<around|(|Z<rsub|s>,Z<rsub|t>|)><rprime|'>,<text|for
-      all >s,t\<in\>R.
-    </equation>
-
-    Hence
-
-    <align|<tformat|<table|<row|<cell|<around|(|Y<rsub|t>,Y<rsub|s>|)><rsub|<with|math-font|cal*|K>>>|<cell|=<big|iint><rsub|R<rsup|2>>e<rsup|-i*<around|(|t*v-s*u|)>>*d*F<around|(|u,v|)><eq-number>>>|<row|<cell|>|<cell|+<big|iint><rsub|R<rsup|2>>e<rsup|-i*<around|(|t*v-s*u|)>>*d*\<mu\><rsub|1><around|(|u,v|)>>>|<row|<cell|>|<cell|-<big|iint><rsub|R<rsup|2>>e<rsup|-i*<around|(|t*v-s*u|)>>*d*F<around|(|u,v|)><eq-number>>>>>>
-
-    which reduces to
-
-    <align|<tformat|<table|<row|<cell|<around|(|Y<rsub|t>,Y<rsub|s>|)><rsub|<with|math-font|cal*|K>>>|<cell|=<big|iint><rsub|R<rsup|2>>e<rsup|-i*<around|(|t*v-s*u|)>>*d*\<mu\><rsub|1><around|(|u,v|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|R>e<rsup|-i*u*<around|(|t-s|)>>*d*\<mu\><around|(|u|)><eq-number>>>>>>
-
-    which in turn means that <math|Y<rsub|t>> is stationary and completes the
-    proof.
-  </proof>
-
-  The idea of constructing the Hilbert space <math|<with|math-font|cal*|K>>
-  and the stationary process <math|Y> was originated by Abreu in
-  <cite|abreu>. In his case the measure <math|F> was of bounded variation and
-  this fact played an important part in establishing the dominating measure.
-  However, in our case <math|F> is a finitely additive measure which is only
-  of bounded semi-variation and his line of proof will not induce the desired
-  dominating measure. Nevertheless, we did achieve our goal in establishing
-  the existence of this crucial measure via our lemmas.
-
-  As a consequence of our main theorem we obtain the following result which
-  relates countably additive vector valued measures to projections of
-  orthogonally scattered measures (see also <cite|niemi2>).
-
-  <\corollary>
-    A countably additive <math|<with|math-font|cal*|H>>-valued measure
-    <math|\<Phi\>> is a projection of an orthogonally scattered
-    <math|<with|math-font|cal*|K>>-valued measure <math|E> if and only if
-    <math|\<Phi\>> is of bounded semi-variation.
-  </corollary>
-
-  <\proof>
-    It is clear that if <math|E> is an orthogonally scattered
-    <math|<with|math-font|cal*|K>>-valued measure and <math|P> is the
-    projection of the Hilbert space <math|<with|math-font|cal*|K>> onto
-    <math|<with|math-font|cal*|H>\<subset\><with|math-font|cal*|K>>, then
-    <math|\<Phi\>=P*E> is a countably additive
-    <math|<with|math-font|cal*|H>>-valued measure which is of bounded
-    semi-variation. Now suppose that <math|\<Phi\>> is a countably additive
-    <math|<with|math-font|cal*|H>>-valued measure which is of bounded
-    semi-variation. Then the process <math|X<rsub|t>> defined by
-
-    <\equation>
-      X<rsub|t>=<big|int><rsub|R>e<rsup|-i*t*u>*d*\<Phi\><around|(|u|)>
-    </equation>
-
-    is harmonizable. Now by Theorem 5 there exists a Hilbert space
-    <math|<with|math-font|cal*|K>> containing <math|<with|math-font|cal*|H>>
-    and a stationary process <math|Y<rsub|t>,t\<in\>R>, such that
-    <math|X<rsub|t>=P*Y<rsub|t>,t\<in\>R>. Let <math|E> be the well-known
-    corresponding orthogonally scattered <math|<with|math-font|cal*|K>>-valued
-    measure. We have
-
-    <\equation>
-      X<rsub|t>=P*Y<rsub|t>=P<around*|(|<big|int><rsub|R>e<rsup|-i*t*u>*d*E<around|(|u|)>|)>=<big|int><rsub|R>e<rsup|-i*t*u>*P*E<around|(|u|)>.<inactive|<hybrid|>>
-    </equation>
-
-    Thus
-
-    <\equation>
-      <big|int><rsub|R>e<rsup|-i*t*u>*d*\<Phi\><around|(|u|)>=<big|int><rsub|R>e<rsup|-i*t*u>*P*E<around|(|u|)>\<forall\>t\<in\>R.
-    </equation>
-
-    Hence for any <math|h\<in\><with|math-font|cal*|H>> and any real number
-    <math|t>, we have
-
-    <\equation>
-      <tabular|<tformat|<table|<row|<cell|<big|int><rsub|R>e<rsup|-i*t*u>*d*<around|(|\<Phi\><around|(|u|)>,h|)><rsub|<with|math-font|cal*|H>>>|<cell|=<around*|(|<big|int><rsub|R>e<rsup|-i*t*u>*d*\<Phi\><around|(|u|)>,h|)><rsub|<with|math-font|cal*|H>>>>|<row|<cell|>|<cell|=<around*|(|<big|int><rsub|R>e<rsup|-i*t*u>*P*E<around|(|u|)>,h|)><rsub|<with|math-font|cal*|H>>>>|<row|<cell|>|<cell|=<big|int><rsub|R>e<rsup|-i*t*u>*d*<around|(|P*E<around|(|u|)>,h|)><rsub|<with|math-font|cal*|H>>>>>>>
-    </equation>
-
-    which implies
-
-    <\equation>
-      \<Phi\>=P*E
-    </equation>
-  </proof>
-
-  Our next theorem relates harmonizable processes with the continuous
-  <math|V>-bounded processes which were originally studied by S. Bochner in
-  <cite|bochner>. We first state the definition of continuous
-  <math|V>-bounded processes as given in <cite|niemi4>.
-
-  <\definition>
-    A continuous <math|<with|math-font|cal*|H>>-valued process
-    <math|X<rsub|t>,t\<in\>R>, is <math|V>-bounded if it is bounded and if
-    there exists a constant <math|C> such that
-
-    <\equation>
-      <big|iint><rsub|R<rsup|2>>R<around|(|t,s|)>*<wide|\<varphi\>|^><around|(|s|)>*<wide|\<psi\>|^><around|(|t|)>*d*s*d*t\<leq\>C<around|\<\|\|\>|\<varphi\>|\<\|\|\>><rsub|1><around|\<\|\|\>|\<psi\>|\<\|\|\>><rsub|1>
-    </equation>
-
-    where <math|\<varphi\>> and <math|\<psi\>> are functions in
-    <math|L<rsub|1><around|(|R|)>> with the Fourier transforms
-    <math|<wide|\<varphi\>|^>> and <math|<wide|\<psi\>|^>> respectively, and
-    <math|R<around|(|\<cdummy\>,\<cdummy\>|)>> is the correlation of
-    <math|X<rsub|t>,t\<in\>R>.
-  </definition>
-
-  The proof of the following lemma is clear.
-
-  <\lemma>
-    Let <math|X<rsub|t>> be a harmonizable process, i.e., let
-
-    <\equation>
-      X<rsub|t>=<big|int><rsub|R>e<rsup|-i*t*u>*d*\<Phi\><around|(|u|)>,
-    </equation>
-
-    where <math|\<Phi\>> as in (1). Then we have
-
-    <\equation>
-      <big|int><rsub|R><wide|f|^><around|(|t|)>*X<rsub|t>*d*t=<big|int><rsub|R>f<around|(|t|)>*d*\<Phi\><around|(|t|)>\<forall\>f\<in\>L<rsub|1><around|(|R|)>
-    </equation>
-  </lemma>
-
-  <\theorem>
-    An <math|<with|math-font|cal*|H>>-valued process
-    <math|X<rsub|t>,t\<in\>R>, is harmonizable if and only if it is a
-    continuous <math|V>-bounded process.
-  </theorem>
-
-  <\proof>
-    Suppose that <math|X<rsub|t>> is harmonizable, i.e., suppose that
-
-    <\equation>
-      X<rsub|t>=<big|int><rsub|R>e<rsup|-i*t*u>*d*\<Phi\><around|(|u|)>
+      \<xi\><rsub|n><around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<rsub|n><around|(|u|)>*X<around|(|d*u,\<omega\>|)>,<space|1em><with|math-font|cal*|E><around|[|\<xi\><rsub|n>*\<xi\><rsub|m><rsup|\<ast\>>|]>=\<delta\><rsub|n*m><label|eq:xin>
     </equation>
 
     and
 
     <\equation>
-      R<around|(|t,s|)>=<around|(|X<rsub|t>,X<rsub|s>|)><rsub|<with|math-font|cal*|H>>=<big|iint><rsub|R<rsup|2>>e<rsup|-i*<around|(|t*v-s*u|)>>*d*F<around|(|u,v|)>
+      a<rsub|n><around|(|t|)>=<iint><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*u>*f<rsub|n><rsup|\<ast\>><around|(|v|)>*r<rsub|X><around|(|d*u,d*v|)><label|eq:an>
     </equation>
 
-    where <math|\<Phi\>> and <math|F> are as in Theorem 2. It is clear by
-    Theorem 5 that <math|X<rsub|t>> is bounded and continuous. Now using
-    Lemma 8 we note that for any two functions <math|\<varphi\>> and
-    <math|\<psi\>> in <math|L<rsub|1><around|(|R|)>> we have
-
-    <align|<tformat|<table|<row|<cell|<big|iint><rsub|R<rsup|2>><wide|\<varphi\>|^><around|(|u|)>*<wide|\<psi\>|^><around|(|v|)>*R<around|(|u,v|)>*d*u*d*v>|<cell|=<around*|(|<big|int><rsub|R><wide|\<varphi\>|^><around|(|u|)>*X<rsub|u>*d*u,<big|int><rsub|R><wide|\<psi\>|^><around|(|v|)>*X<rsub|v>*d*v|)><rsub|<with|math-font|cal*|H>><eq-number>>>|<row|<cell|>|<cell|=<around*|(|<big|int><rsub|R>\<varphi\><around|(|u|)>*d*\<Phi\><around|(|u|)>,<big|int><rsub|R>\<psi\><around|(|v|)>*d*\<Phi\><around|(|v|)>|)><rsub|<with|math-font|cal*|H>><eq-number>>>|<row|<cell|>|<cell|\<leq\>C<around|\<\|\|\>|\<varphi\>|\<\|\|\>><rsub|1><around|\<\|\|\>|\<psi\>|\<\|\|\>><rsub|1>,<space|1em>C=<around|\<\|\|\>|F|\<\|\|\>><around|(|R|)>.<eq-number>>>>>>
-
-    Conversely, suppose that <math|X<rsub|t>> is a continuous
-    <math|V>-bounded process with the correlation function
-    <math|R<around|(|s,t|)>>. Then besides being bounded and continuous, we
-    have
-
-    <\equation>
-      <around*|\||<big|iint><rsub|R<rsup|2>><wide|\<varphi\>|^><around|(|u|)>*<wide|\<psi\>|^><around|(|v|)>*R<around|(|u,v|)>*d*u*d*v|\|>\<leq\>C<around|\<\|\|\>|\<varphi\>|\<\|\|\>><rsub|1><around|\<\|\|\>|\<psi\>|\<\|\|\>><rsub|1>,<space|1em>\<forall\>\<varphi\>,\<psi\>\<in\>L<rsub|1><around|(|R|)>.
-    </equation>
-
-    Define the bilinear form <math|K> on <math|L<rsub|1><around|(|R|)>> by
-
-    <\equation>
-      K<around|(|\<varphi\>,\<psi\>|)>=<big|iint><rsub|R<rsup|2>><wide|\<varphi\>|^><around|(|u|)>*<wide|\<psi\>|^><around|(|v|)>*R<around|(|u,v|)>*d*u*d*v
-    </equation>
-
-    By (13) we have
-
-    <\equation>
-      <around|\||K<around|(|\<varphi\>,\<psi\>|)>|\|>\<leq\>C<around|\<\|\|\>|\<varphi\>|\<\|\|\>><rsub|1><around|\<\|\|\>|\<psi\>|\<\|\|\>><rsub|1>
-    </equation>
-
-    <math|K<around|(|\<cdummy\>,\<cdummy\>|)>> is a positive definite kernel.
-    Consider the corresponding reproducing kernel Hilbert space
-    <math|<with|math-font|cal*|F>>. We can define the operator
-    <math|T:L<rsub|1><around|(|R|)>\<to\><with|math-font|cal*|F>> by
-
-    <\equation>
-      T<around|(|\<varphi\>|)>=K<around|(|\<varphi\>,\<cdummy\>|)>
-    </equation>
-
-    From the properties of reproducing kernel Hilbert spaces we have
-
-    <\equation>
-      K<around|(|\<varphi\>,\<psi\>|)>=(K<around|(|\<varphi\>,\<cdot\>|)>,K(\<psi\>,\<cdot\><around|)||)><rsub|<with|math-font|cal*|F>>=<around|(|T<around|(|\<varphi\>|)>,T<around|(|\<psi\>|)>|)><rsub|<with|math-font|cal*|F>>
-    </equation>
-
-    which along with (14) implies that <math|T> is a bounded operator on
-    <math|L<rsub|1><around|(|R|)>>. Since <math|L<rsub|1><around|(|R|)>> is
-    dense in the class <math|C<rsub|0><around|(|R|)>> (see <cite|rudin>, p.
-    195) one can extend <math|T> to a bounded operator on
-    <math|C<rsub|0><around|(|R|)>> into <math|<with|math-font|cal*|F>>. But
-    by Lemma 2 of <cite|kluvanek> and its corollaries, there exists an
-    <math|<with|math-font|cal*|F>>-valued regular measure <math|M> on
-    <math|R> which is of bounded semi-variation and satisfies
-
-    <\equation>
-      T<around|(|\<varphi\>|)>=<big|int><rsub|R>\<varphi\><around|(|t|)>*d*M<around|(|t|)>\<forall\>\<varphi\>\<in\>C<rsub|0><around|(|R|)>
-    </equation>
-
-    Define the set function <math|F> for each pair <math|A> and <math|B> of
-    Borel sets by
-
-    <\equation>
-      F<around|(|A,B|)>=<around|(|M<around|(|A|)>,M<around|(|B|)>|)><rsub|<with|math-font|cal*|F>>
-    </equation>
-
-    and then define <math|R<rsub|1>> by
-
-    <\equation>
-      R<rsub|1><around|(|t,s|)>=<big|iint><rsub|R<rsup|2>>e<rsup|-i*<around|(|t*v-s*u|)>>*d*F<around|(|u,v|)>
-    </equation>
-
-    Using Lemma 8 and Theorem 2 that for any <math|\<varphi\>> and
-    <math|\<psi\>> in <math|L<rsub|1><around|(|R|)>> we have
-
-    <\equation>
-      <big|iint><rsub|R<rsup|2>><wide|\<varphi\>|^><around|(|u|)>*<wide|\<psi\>|^><around|(|v|)>*R<rsub|1><around|(|u,v|)>*d*u*d*v=<big|iint><rsub|R<rsup|2>>\<varphi\><around|(|u|)>*\<psi\><around|(|v|)>*d*F<around|(|u,v|)>.
-    </equation>
-
-    On the other hand, we have
-
-    <\equation>
-      <big|iint><rsub|R<rsup|2>><wide|\<varphi\>|^><around|(|u|)>*<wide|\<psi\>|^><around|(|v|)>*R<around|(|u,v|)>*d*u*d*v=<big|iint><rsub|R<rsup|2>>\<varphi\><around|(|u|)>*\<psi\><around|(|v|)>*d*F<around|(|u,v|)>
-    </equation>
-
-    for all pairs <math|\<varphi\>> and <math|\<psi\>> of functions in
-    <math|L<rsub|1><around|(|R|)>>. Combining (15) and (16) we get
-
-    <\equation>
-      <big|iint><rsub|R<rsup|2>><wide|\<varphi\>|^><around|(|u|)>*<wide|\<psi\>|^><around|(|v|)>*<around|[|R<around|(|u,v|)>-R<rsub|1><around|(|u,v|)>|]>*d*u*d*v=0
-    </equation>
-
-    for all <math|\<varphi\>> and <math|\<psi\>> in
-    <math|L<rsub|1><around|(|R|)>>. Thus, we have
-
-    <\equation>
-      R<around|(|t,s|)>=R<rsub|1><around|(|t,s|)>=<big|iint><rsub|R<rsup|2>>e<rsup|-i*<around|(|t*v-s*u|)>>*d*F<around|(|u,v|)>
-    </equation>
-
-    and Theorem 2, now implies that <math|X<rsub|t>> is harmonizable.
-  </proof>
-
-  As a corollary to our work we obtain the following ergodic theorem:
-
-  <\corollary>
-    If <math|X> is an <math|<with|math-font|cal*|H>>-valued harmonizable or
-    equivalently continuous <math|V>-bounded process, then
-
-    <\equation>
-      lim<rsub|T\<to\>\<infty\>> <frac|1|T>*<big|int><rsub|0><rsup|T>X<rsub|t>*e<rsup|-i*u<rsub|0>*t>*d*t=\<Phi\><around|(|<around|{|u<rsub|0>|}>|)>
-    </equation>
-
-    where <math|X<rsub|t>=<big|int><rsub|R>e<rsup|-i*t*u>*d*\<Phi\><around|(|u|)>>.
-  </corollary>
+    and <math|<around|{|f<rsub|n>|(>\<cdot\><around|)||}>> is an orthonormal
+    and complete set of functions in <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>.
+  </theorem>
 
   <\proof>
-    By our earlier results there exists a Hilbert space
-    <math|<with|math-font|cal*|K>> containing <math|<with|math-font|cal*|H>>,
-    a <math|<with|math-font|cal*|K>>-valued stationary process
-    <math|Y<rsub|t>> and an orthogonally scattered
-    <math|<with|math-font|cal*|K>>-valued measure <math|E> such that\ 
+    The autocorrelation function <math|R<rsub|x*x><around|(|t,s|)>> of
+    <math|x*<around|(|t,\<omega\>|)>> is given by <eqref|eq:autocorr>. Since
+    <math|e<rsup|i*<around|(|t*u-s*v|)>>> is continuous in <math|t,s>
+    uniformly in <math|u,v> and is bounded by <math|1>, which is integrable
+    with respect to <math|r<rsub|X>>, it follows by the bounded convergence
+    theorem that <math|R<rsub|x*x><around|(|t,s|)>> is uniformly continuous
+    in <math|t,s>. Hence <math|x*<around|(|t,\<omega\>|)>> is uniformly mean
+    square continuous.
+
+    Since <math|x*<around|(|t,\<omega\>|)>> is mean square continuous,
+    <math|L<rsub|2><around|(|x|)>> is separable, as shown by
+    Parzen<nbsp><cite|parzen1967> in Theorem 2C. Hence
+    <math|L<rsub|2><around|(|X|)>=L<rsub|2><around|(|x|)>> is separable and
+    so is its isomorphic space <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>.
+    Let <math|<around|{|f<rsub|n>|(>\<cdot\><around|)||}>> be an orthonormal
+    basis in <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>. If for each
+    <math|n,\<xi\><rsub|n><around|(|\<omega\>|)>> is the element of
+    <math|L<rsub|2><around|(|x|)>> corresponding to
+    <math|f<rsub|n><around|(|\<cdummy\>|)>\<in\>\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>
+    under the isomorphism, then <math|<around|{|\<xi\><rsub|n><around|(|\<omega\>|)>|}>>
+    is an orthonormal basis in <math|L<rsub|2><around|(|X|)>=L<rsub|2><around|(|x|)>>,
+    i.e., <math|<with|math-font|cal*|E><around|[|\<xi\><rsub|n>*\<xi\><rsub|m><rsup|\<ast\>>|]>=\<delta\><rsub|n*m>>,
+    and
 
     <\equation>
-      X<rsub|t>=P*Y<rsub|t>
+      \<xi\><rsub|n><around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<rsub|n><around|(|u|)>*X<around|(|d*u,\<omega\>|)><label|eq:xin-again>
     </equation>
+
+    Hence, for all <math|t\<in\>\<bbb-R\>>, we have
 
     <\equation>
-      Y<rsub|t>=<big|int><rsub|R>e<rsup|-i*u*t>*d*E<around|(|u|)>
+      x*<around|(|t,\<omega\>|)>=<big|sum><rsub|n>a<rsub|n><around|(|t|)>*\<xi\><rsub|n><around|(|\<omega\>|)><label|eq:series-again>
     </equation>
+
+    in the mean square sense and
 
     <\equation>
-      \<Phi\>=P*E
+      a<rsub|n><around|(|t|)>=<with|math-font|cal*|E><around|[|x<around|(|t|)>*\<xi\><rsub|n><rsup|\<ast\>>|]><label|eq:an-expect>
     </equation>
 
-    where <math|P> is the projection of <math|<with|math-font|cal*|K>> onto
-    <math|<with|math-font|cal*|H>>. Now using the corresponding well known
-    ergodic theorem for the stationary process <math|Y<rsub|t>> we get
+    Since <math|x*<around|(|t,\<omega\>|)>> and <math|e<rsup|i*t*u>>, as well
+    as <math|\<xi\><rsub|n><around|(|\<omega\>|)>> and
+    <math|f<rsub|n><around|(|u|)>>, are corresponding elements of
+    <math|L<rsub|2><around|(|X|)>> and <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>
+    under the isomorphism, we obtain
 
-    <align|<tformat|<table|<row|<cell|lim<rsub|T\<to\>\<infty\>>
-    <frac|1|T>*<big|int><rsub|0><rsup|T>X<rsub|t>*e<rsup|-i*u<rsub|0>*t>*d*t>|<cell|=lim<rsub|T\<to\>\<infty\>>
-    <frac|1|T>*<big|int><rsub|0><rsup|T>P*Y<rsub|t>*e<rsup|-i*u<rsub|0>*t>*d*t<eq-number>>>|<row|<cell|>|<cell|=P*lim<rsub|T\<to\>\<infty\>>
-    <frac|1|T>*<big|int><rsub|0><rsup|T>Y<rsub|t>*e<rsup|-i*u<rsub|0>*t>*d*t<eq-number>>>|<row|<cell|>|<cell|=P*E<around|(|<around|{|u<rsub|0>|}>|)>=\<Phi\><around|(|<around|{|u<rsub|0>|}>|)>.<eq-number>>>>>>
+    <\equation>
+      a<rsub|n><around|(|t|)>=<around|(|e<rsup|i*t*u>,f<rsub|n><around|(|u|)>|)><rsub|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*u>*f<rsub|n><rsup|\<ast\>><around|(|v|)>*r<rsub|X><around|(|d*u,d*v|)><label|eq:an-inner>
+    </equation>
   </proof>
 
-  Such an ergodic theorem for harmonizable processes was obtained in
-  <cite|rozanov>.
+  It follows from <eqref|eq:series> and <eqref|eq:an> that the
+  autocorrelation function of a harmonizable stochastic process
+  <math|x*<around|(|t,\<omega\>|)>> has a series expansion
 
-  <\remark>
-    In this article we only considered the continuous parameter processes,
-    however our main theorem can be established in an analogous way for the
-    discrete parameter case as well.
-  </remark>
+  <\equation>
+    R<rsub|x*x><around|(|t,s|)>=<big|sum><rsub|n>a<rsub|n><around|(|t|)>*a<rsub|n><rsup|\<ast\>><around|(|s|)>*<space|1em><text|for
+    all >t,s\<in\>\<bbb-R\><label|eq:autocorr-series>
+  </equation>
+
+  where the <math|a<rsub|n>>'s are given by <eqref|eq:an>.
+
+  For all <math|f\<in\>\<Lambda\><rsub|2><around|(|r<rsub|x>|)>> we have
+  <math|e<rsup|i*t*u>*f<around|(|u|)>\<in\>\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>
+  for all <math|t\<in\>\<bbb-R\>>, since
+
+  <\equation>
+    <around|\||e<rsup|i*t*u>*f<around|(|u|)>|\|>\<leqslant\><around|\||f<around|(|u|)>|\|>\<in\>\<Lambda\><rsub|2><around|(|r<rsub|X>|)><label|eq:expf>
+  </equation>
+
+  Hence
+
+  <\equation>
+    y*<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*u>*f<around|(|u|)>*X<around|(|d*u,\<omega\>|)><label|eq:y>
+  </equation>
+
+  is well-defined in <math|L<rsub|2><around|(|X|)>=L<rsub|2><around|(|x|)>>
+  and is thus a linear operation on <math|x*<around|(|t,\<omega\>|)>>.
+  <math|y*<around|(|t,\<omega\>|)>> is harmonizable itself, since if a random
+  measure <math|Y> is defined by
+
+  <\equation>
+    Y<around|(|S,\<omega\>|)>=<big|int><rsub|S>f<around|(|u|)>*X<around|(|d*u,\<omega\>|)>,<space|1em>S\<in\><with|math-font|cal*|B><rsup|1><label|eq:Y>
+  </equation>
+
+  then <math|Y> is finite on <math|\<bbb-R\>> and
+
+  <\equation>
+    y*<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*u>*Y<around|(|d*u,\<omega\>|)><label|eq:yY>
+  </equation>
+
+  Let <math|y<rsub|n>*<around|(|t,\<omega\>|)>> be the linear operation on
+  <math|x*<around|(|t,\<omega\>|)>> defined by <eqref|eq:y> when
+  <math|f<around|(|u|)>=f<rsub|n><around|(|u|)>>. Then
+  <math|\<xi\><rsub|n><around|(|\<omega\>|)>=y<rsub|n>*<around|(|0,\<omega\>|)>>.
+  If <math|f<rsub|n>> has Fourier transform <math|h<rsub|n>>, i.e., if
+
+  <\equation>
+    f<rsub|n><around|(|u|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|n><around|(|v|)>*e<rsup|-i*u*v>*m*<around|(|d*v|)>,<space|1em>h<rsub|n>\<in\>L<rsub|1><around|(|\<bbb-R\>,<with|math-font|cal*|B><rsup|1>,m|)><label|eq:fnFourier>
+  </equation>
+
+  then, as it is shown by Rosanov<nbsp><cite|rosanov1959>, p. 278, the order
+  of integration in <eqref|eq:y> can be interchanged to give
+
+  <\equation>
+    y<rsub|n>*<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|n><around|(|v|)>*x*<around|(|t-v,\<omega\>|)>*m*<around|(|d*v|)><label|eq:yn>
+  </equation>
+
+  Hence <math|\<xi\><rsub|n><around|(|\<omega\>|)>> may be regarded as the
+  output at time <math|t=0> of a linear time invariant system with impulse
+  response <math|h<rsub|n>> and input <math|x*<around|(|t,\<omega\>|)>>. We
+  also obtain from <eqref|eq:an>
+
+  <\equation>
+    a<rsub|n><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|n><rsup|\<ast\>><around|(|\<tau\>|)>*R<rsub|x*x><around|(|t,-\<tau\>|)>*m*<around|(|d*\<tau\>|)><label|eq:an-hn>
+  </equation>
+
+  It should be noted that the series representation of Theorem
+  <reference|thm:series-rep> is by no means unique, since for each
+  orthonormal and complete set of functions in
+  <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>> a distinct representation
+  <eqref|eq:series> is obtained by <eqref|eq:xin> and <eqref|eq:an>. However,
+  in the context of a particular problem, one may be able to determine those
+  representations, if any, which have some optimal properties. The
+  significance of the representation is primarily in the fact that it exists
+  and it is orthogonal, which enables one to use it as a model for the
+  harmonizable process in problems involving mean square error criteria.
+
+  Theorem <reference|thm:series-rep> has been proven for mean square
+  continuous, wide sense stationary stochastic processes by Masry et
+  al.<nbsp><cite|masry1968> and also by Campbell<nbsp><cite|campbell1969>.
+
+  <section|Orthonormal and Complete Sets in
+  <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>><label|sec:orthonormal-sets>
+
+  It is clear from Theorem <reference|thm:series-rep> that an explicit series
+  expansion of a harmonizable process can be obtained by using <eqref|eq:xin>
+  and <eqref|eq:an> provided an orthonormal and complete set of functions in
+  <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>> can be constructed.
+
+  If the harmonizable process <math|x> is stationary then
+  <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>> is isomorphic to
+  <math|L<rsub|2><around|(|\<bbb-R\>,<with|math-font|cal*|B><rsup|1>,Q<rsub|X>|)>>,
+  where <math|Q<rsub|X>> is a finite nonnegative measure, and a general
+  procedure to construct an orthonormal basis in the latter space is
+  presented by Masry et al.<nbsp><cite|masry1968>.
+
+  Since
+
+  <\equation>
+    \<Lambda\><rsub|2><around|(|r<rsub|X>|)>=\<sigma\><around|{|e<rsup|i*t*u>,t<text|real
+    >|}>=\<sigma\><around|{|e<rsup|i*t*u>,t<text|rational
+    >|}>,<label|eq:span>
+  </equation>
+
+  an orthonormal and complete set of functions in
+  <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>> can be obtained by
+  orthonormalizing the countable set of functions <math|{e<rsup|i*t*u>,t>
+  rational <math|}> using the Gram-Schmidt procedure. However, this procedure
+  solves the problem of finding an orthonormal basis in
+  <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>> only in principle.
+
+  The following theorem gives a complete set of functions
+  <math|<around|{|F<rsub|n><around|(|t|)>|}>> in
+  <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>. By orthonormalizing the
+  set <math|<around|{|F<rsub|n><around|(|t|)>|}>> using the Gram-Schmidt
+  procedure, an orthonormal and complete set
+  <math|<around|{|f<rsub|n><around|(|t|)>|}>> is obtained.
+
+  <\theorem>
+    <label|thm:complete-set>Let <math|\<mu\>> be any finite, nonnegative
+    measure on <math|<around|(|\<bbb-R\>,<with|math-font|cal*|B><rsup|1>|)>>,
+    absolutely continuous with respect to the Lebesgue measure <math|m> with
+    Radon-Nikodym derivative <math|<around|[|d*\<mu\>/d*m|]><around|(|t|)>=h<around|(|t|)>\<neq\>0>
+    a.e. <math|<around|[|m|]>>, and let <math|<around|{|\<phi\><rsub|n><around|(|t|)>|}>>
+    be any complete set of functions in <math|L<rsub|2><around|(|\<bbb-R\>,<with|math-font|cal*|B><rsup|1>,\<mu\>|)>=L<rsub|2><around|(|\<mu\>|)>>.
+    Then the set <math|<around|{|F<rsub|n><around|(|t|)>|}>> given by
+
+    <\equation>
+      F<rsub|n><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|n><rsup|\<ast\>><around|(|u|)>*e<rsup|i*t*u>*\<mu\>*<around|(|d*u|)><label|eq:Fn>
+    </equation>
+
+    is complete in <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>.
+  </theorem>
+
+  <\proof>
+    Since <math|\<mu\>> is finite, <math|\<phi\><rsub|n>\<in\>L<rsub|2><around|(|\<mu\>|)>>
+    implies <math|\<phi\><rsub|n>\<in\>L<rsub|1><around|(|\<mu\>|)>> and
+    hence the functions <math|F<rsub|n><around|(|t|)>> are well-defined by
+    <eqref|eq:Fn> everywhere and
+
+    <\equation>
+      <around|\||F<rsub|n><around|(|t|)>|\|>\<leqslant\><big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||\<phi\><rsub|n><rsup|\<ast\>><around|(|u|)>|\|>*\<mu\>*<around|(|d*u|)>=<around|\<\|\|\>|\<phi\><rsub|n>|\<\|\|\>><rsub|L<rsub|1><around|(|\<mu\>|)>><label|eq:Fn-bound>
+    </equation>
+
+    This implies that <math|F<rsub|n>\<in\>\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>
+    and
+
+    <\equation>
+      <around|\<\|\|\>|F<rsub|n>|\<\|\|\>><rsub|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>><rsup|2>\<leqslant\><around|\<\|\|\>|\<phi\><rsub|n>|\<\|\|\>><rsub|L<rsub|1><around|(|\<mu\>|)>><rsup|2><around|\||r<rsub|X>|\|><around|(|R<rsup|2>|)>,<label|eq:Fn-norm>
+    </equation>
+
+    where <math|<around|\||r<rsub|X>|\|>> denotes the total variation of
+    <math|r<rsub|X>>.
+
+    The completeness of the set <math|<around|{|F<rsub|n><around|(|t|)>|}>>
+    in <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>> is shown as follows.
+    Let <math|f\<in\>\<Lambda\><rsub|2><around|(|r<rsub|X>|)>> and
+    <math|<around|(|F<rsub|n>,f|)><rsub|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>=0>
+    for all <math|n>. Then
+
+    <\align>
+      <tformat|<table|<row|<cell|0>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>F<rsub|n><around|(|u|)>*f<rsup|\<ast\>><around|(|v|)>*r<rsub|X><around|(|d*u,d*v|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|n><rsup|\<ast\>><around|(|t|)>*e<rsup|i*t*u>*f<rsup|\<ast\>><around|(|v|)>*\<mu\>*<around|(|d*t|)>*r<rsub|X><around|(|d*u,d*v|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>F<around|(|t|)>*\<phi\><rsub|n><rsup|\<ast\>><around|(|t|)>*\<mu\>*<around|(|d*t|)><eq-number><label|eq:Fn-complete>>>>>
+    </align>
+
+    where
+
+    <\equation>
+      F<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*u>*f<rsup|\<ast\>><around|(|v|)>*r<rsub|X><around|(|d*u,d*v|)>=<around|(|e<rsup|i*t*u>,f<around|(|u|)>|)><rsub|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>><label|eq:F>
+    </equation>
+
+    It follows by <eqref|eq:Fn-complete> that
+
+    <\align>
+      <tformat|<table|<row|<cell|<around|\||F<around|(|t|)>|\|><rsup|2>>|<cell|\<leqslant\><around|\<\|\|\>|e<rsup|i*t*u>|\<\|\|\>><rsub|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>><rsup|2><around|\<\|\|\>|f|\<\|\|\>><rsub|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>><rsup|2>=R<rsub|x*x><around|(|t,t|)><around|\<\|\|\>|f|\<\|\|\>><rsub|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>><rsup|2><eq-number>>>|<row|<cell|>|<cell|\<leqslant\><around|\||r<rsub|X>|\|><around|(|R<rsup|2>|)><around|\<\|\|\>|f|\<\|\|\>><rsub|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>><rsup|2><eq-number><label|eq:F-bound>>>>>
+    </align>
+
+    and
+
+    <\equation>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||F<around|(|t|)>|\|><rsup|2>*\<mu\>*<around|(|d*t|)>\<leqslant\><around|\||r<rsub|X>|\|><around|(|R<rsup|2>|)><around|\<\|\|\>|f|\<\|\|\>><rsub|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>><rsup|2>*\<mu\><around|(|\<bbb-R\>|)>\<less\>\<infty\><label|eq:F-L2>
+    </equation>
+
+    i.e., <math|F\<in\>L<rsub|2><around|(|\<mu\>|)>>. The completeness of the
+    set <math|<around|{|\<phi\><rsub|n><around|(|t|)>|}>> in
+    <math|L<rsub|2><around|(|\<mu\>|)>> and <eqref|eq:Fn-complete> imply that
+    <math|F=0> in <math|L<rsub|2><around|(|\<mu\>|)>>, i.e.,
+    <math|<around|\||F<around|(|t|)>|\|><rsup|2>*h<around|(|t|)>=0> a.e.
+    <math|<around|[|m|]>>. Since <math|h<around|(|t|)>\<neq\>0> a.e. [m], it
+    follows that <math|F<around|(|t|)>=0> a.e. [m]. But the continuity of
+    <math|e<rsup|i*t*u>> in <math|t> and the bounded convergence theorem
+    imply by <eqref|eq:F> that <math|F<around|(|t|)>> is continuous in
+    <math|t>. Hence <math|F<around|(|t|)>=0> for all <math|t\<in\>\<bbb-R\>>
+    and by <eqref|eq:F> <math|f> is orthogonal to the set
+    <math|<around|{|e<rsup|i*t*u>,t\<in\>\<bbb-R\>|}>>, which is dense in
+    <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>. It follows that
+    <math|f=0> in <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>> and hence
+    the set <math|<around|{|F<rsub|n><around|(|t|)>|}>> is complete in
+    <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>.
+  </proof>
+
+  It should be pointed out that the set of functions
+  <math|<around|{|F<rsub|n><around|(|t|)>|}>> given by <eqref|eq:Fn>, which
+  is shown in Theorem <reference|thm:complete-set> to be complete in any
+  <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>> space with <math|r<rsub|X>>
+  of bounded variation on the entire plane, is independent of the measure
+  <math|r<rsub|X>> and is completely determined by <math|\<mu\>> and
+  <math|<around|{|\<phi\><rsub|n><around|(|t|)>|}>>. It is clear, however,
+  that the orthonormal and complete set of functions
+  <math|<around|{|f<rsub|n><around|(|t|)>|}>> in
+  <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>, obtained by
+  orthonormalizing the complete set <math|<around|{|F<rsub|n><around|(|t|)>|}>>,
+  depends on the measure <math|r<rsub|X>>.
+
+  Theorem <reference|thm:complete-set> allows considerable freedom in the
+  choice of the measure <math|\<mu\>> and complete freedom in the choice of
+  the complete set of functions <math|<around|{|\<phi\><rsub|n><around|(|t|)>|}>>
+  in <math|L<rsub|2><around|(|\<mu\>|)>>. As a complete set of functions in
+  <math|L<rsub|2><around|(|\<mu\>|)>> one can choose the orthonormal and
+  complete set <math|<around|{|\<phi\><rsub|n><around|(|t|)>|}>> given by
+  Masry et al.<nbsp><cite|masry1968>:
+
+  <\equation>
+    \<phi\><rsub|n><around|(|t|)>=<frac|1|<sqrt|\<mu\><around|(|\<bbb-R\>|)>>>*exp
+    <around*|(|<frac|i*n*2*\<pi\>|\<mu\><around|(|\<bbb-R\>|)>>*<big|int><rsub|-\<infty\>><rsup|t>h<around|(|u|)>*m*<around|(|d*u|)>|)>,<space|1em>n=0,\<pm\>1,\<pm\>2,\<ldots\><label|eq:phin>
+  </equation>
+
+  Upon normalizing <math|\<mu\>,\<mu\><around|(|\<bbb-R\>|)>=1>, and using
+  the complete set <eqref|eq:phin> in <eqref|eq:Fn> we obtain the complete
+  set of functions
+
+  <\align>
+    <tformat|<table|<row|<cell|F<rsub|n><around|(|t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>exp
+    <around|[|i*<around|{|t*u-n*2*\<pi\>*H<around|(|u|)>|}>|]>*h<around|(|u|)>*m*<around|(|d*u|)>*<space|1em>n=0,\<pm\>1,\<pm\>2,\<ldots\><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|1>exp
+    <around|[|i*<around|{|t*H<rsup|-1><around|(|v|)>-n*2*\<pi\>*v|}>|]>*m*<around|(|d*v|)><eq-number><label|eq:Fn-exp>>>>>
+  </align>
+
+  where <math|h> is any probability density with
+  <math|h<around|(|u|)>\<neq\>0> a.e. [<math|m>], and
+
+  <\equation>
+    H<around|(|u|)>=<big|int><rsub|-\<infty\>><rsup|u>h<around|(|v|)>*m*<around|(|d*v|)><label|eq:H>
+  </equation>
+
+  It is clear that the functions given by <eqref|eq:Fn> are uniformly
+  continuous and uniformly bounded for fixed <math|n>, and that the family of
+  functions given by <eqref|eq:Fn-exp> is equicontinuous and uniformly
+  bounded.
+
+  <subsection*|Examples>
+
+  By choosing probability densities <math|h> of particular form, we obtain by
+  <eqref|eq:Fn-exp> various sets of complete functions in
+  <math|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>. However, as it is
+  illustrated by the following examples, the integral in <eqref|eq:Fn-exp> is
+  not easily expressed in terms of the elementary and the special functions.
+
+  <\enumerate>
+    <item>The density of the normal distribution,
+    <math|h<around|(|u|)>=<around|(|1/<sqrt|2*\<pi\>>|)>*e<rsup|-<frac|1|2>*u<rsup|2>>>,
+    gives
+
+    <\equation>
+      F<rsub|n><around|(|t|)>=<around|(|-1|)><rsup|n><sqrt|<frac|2|\<pi\>>>*<big|int><rsub|0><rsup|\<infty\>>cos
+      <around*|[|t*u-n*\<pi\>*\<Phi\><around*|(|<frac|u|<sqrt|2>>|)>|]>*e<rsup|-<frac|1|2>*u<rsup|2>>*m*<around|(|d*u|)><label|eq:Fn-normal>
+    </equation>
+
+    where <math|\<Phi\><around|(|u|)>=<around|(|2/<sqrt|\<pi\>>|)>*<big|int><rsub|0><rsup|u>e<rsup|-v<rsup|2>>*m*<around|(|d*v|)>>.
+
+    <item>The density of the double exponential distribution,
+    <math|h<around|(|u|)>=<frac|1|2>*e<rsup|-<around|\||u|\|>>>, gives
+
+    <\align>
+      <tformat|<table|<row|<cell|F<rsub|n><around|(|t|)>>|<cell|=<big|int><rsub|0><rsup|\<infty\>>e<rsup|-u>*cos
+      <around|[|t*u+n*\<pi\>*e<rsup|-u>|]>*m*<around|(|d*u|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|1>cos
+      <around|[|t*ln v-n*\<pi\>*v|]>*m*<around|(|d*v|)><eq-number><label|eq:Fn-double-exp>>>>>
+    </align>
+
+    <item>The density of the Cauchy distribution,
+    <math|h<around|(|u|)>=<around|(|1/\<pi\>*<around|(|1+u<rsup|2>|)>|)>>,
+    gives
+
+    <\align>
+      <tformat|<table|<row|<cell|F<rsub|n><around|(|t|)>>|<cell|=<around|(|-1|)><rsup|n><frac|2|\<pi\>>*<big|int><rsub|0><rsup|\<infty\>>cos
+      <around|[|t*u-2*n*tan<rsup|-1> u|]>*<frac|m*<around|(|d*u|)>|1+u<rsup|2>><eq-number>>>|<row|<cell|>|<cell|=<around|(|-1|)><rsup|n><frac|2|\<pi\>>*<big|int><rsub|0><rsup|\<pi\>/2>cos
+      <around|[|t*tan v-2*n*v|]>*m*<around|(|d*v|)><eq-number><label|eq:Fn-cauchy>>>>>
+    </align>
+
+    <item>The probability density
+
+    <\equation>
+      h<around|(|u|)>=<around*|{|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|\<alpha\><rsup|-k>>|<cell|<text|on
+      ><around|(|k-1,k|)>,<space|1em>k\<leqslant\>-1>>|<row|<cell|<frac|1-3*\<alpha\>|2*<around|(|1-\<alpha\>|)>>>|<cell|<text|on
+      ><around|(|-1,+1|)>,>>|<row|<cell|\<alpha\><rsup|k>>|<cell|<text|on
+      ><around|(|k,k+1|)>,<space|1em>k\<geqslant\>1>>>>>|\<nobracket\>><label|eq:h-custom>
+    </equation>
+
+    where <math|0\<less\>\<alpha\>\<less\><frac|1|3>>, gives
+
+    <\equation>
+      F<rsub|n><around|(|t|)>=2*<around|(|-1|)><rsup|n>*<big|sum><rsub|k=0><rsup|\<infty\>>\<alpha\><rsup|k>*cos
+      <around*|[|<around*|(|k+<frac|1|2>|)>*t-n*\<pi\>*c<rsub|k>|]>*<frac|sin
+      <around*|(|<frac|1|2>*t-n*\<pi\>*\<alpha\><rsup|k>|)>|<frac|1|2>*t-n*\<pi\>*\<alpha\><rsup|k>><label|eq:Fn-custom>
+    </equation>
+
+    where <math|c<rsub|k>=1-<around|(|1+\<alpha\>/1-\<alpha\>|)>*\<alpha\><rsup|k>>.
+
+    <item>If <math|r<rsub|X>> is supported by
+    <math|<around|(|a,b|)>\<times\><around|(|a,b|)>>, then by using the
+    density of the uniform distribution on
+    <math|<around|(|a,b|)>,h<around|(|u|)>=<around|(|1/b-a|)>> on
+    <math|<around|(|a,b|)>> and zero elsewhere, we obtain the complete set of
+    functions
+
+    <\equation>
+      F<rsub|n><around|(|t|)>=<frac|e<rsup|i*b*t>-e<rsup|i*a*t>|i*<around|[|<around|(|b-a|)>*t-n*2*\<pi\>|]>><label|eq:Fn-uniform>
+    </equation>
+
+    which in the particular case where <math|a=-T,b=T> gives
+
+    <\equation>
+      F<rsub|n><around|(|t|)>=<around|(|-1|)><rsup|n><frac|sin
+      <around*|[|\<pi\>*<around*|(|<frac|T|\<pi\>>*t-n|)>|]>|\<pi\>*<around*|(|<frac|T|\<pi\>>*t-n|)>><label|eq:Fn-uniform-symm>
+    </equation>
+  </enumerate>
+
+  <section|Orthogonal Integral Representation of a Harmonizable Stochastic
+  Process><label|sec:orthogonal-integral>
+
+  Clearly any second order stochastic process
+  <math|x*<around|(|t,\<omega\>|)>> having an orthogonal series expansion of
+  the form <eqref|eq:series> admits a trivial orthogonal integral
+  representation of the form
+
+  <\equation>
+    x*<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|t,u|)>*Y<around|(|d*u,\<omega\>|)>,<label|eq:integral-rep>
+  </equation>
+
+  where the orthogonal random measure <math|Y> is concentrated on the set of
+  integers with <math|Y<around|(|<around|{|n|}>,\<omega\>|)>=\<xi\><rsub|n><around|(|\<omega\>|)>>
+  and <math|f<around|(|t,n|)>=a<rsub|n><around|(|t|)>>.
+
+  The following theorem shows that an explicit (nontrivial) orthogonal
+  integral representation of a harmonizable stochastic process can always be
+  obtained and that the nonnegative measure associated with the orthogonal
+  random measure can be chosen arbitrarily from a wide class of measures.
+
+  <\theorem>
+    <label|thm:integral-rep>Let <math|\<mu\>> be any nonnegative measure on
+    <math|<around|(|\<bbb-R\>,<with|math-font|cal*|B><rsup|1>|)>>, finite on
+    the bounded Borel sets <math|<with|math-font|cal*|B>> and such that
+    <math|L<rsub|2><around|(|\<bbb-R\>,<with|math-font|cal*|B><rsup|1>,\<mu\>|)>=L<rsub|2><around|(|\<mu\>|)>>
+    is infinite dimensional. Let <math|<around|{|\<varphi\><rsub|n>|(>\<cdot\><around|)||}>>
+    be an orthonormal and complete set of functions in
+    <math|L<rsub|2><around|(|\<mu\>|)>>. Then every harmonizable stochastic
+    process <math|x*<around|(|t,\<omega\>|)>> admits an orthogonal integral
+    representation
+
+    <\equation>
+      x*<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|t,u|)>*Y<around|(|d*u,\<omega\>|)><label|eq:integral-rep-thm>
+    </equation>
+
+    The function <math|f<around|(|t,u|)>> is given by
+
+    <\equation>
+      f<around|(|t,u|)>=<big|sum><rsub|n>a<rsub|n><around|(|t|)>*\<varphi\><rsub|n><around|(|u|)><label|eq:f-integral>
+    </equation>
+
+    in <math|L<rsub|2><around|(|\<mu\>|)>> for all <math|t\<in\>\<bbb-R\>>.
+    The orthogonal random measure <math|Y> is defined on
+    <math|<with|math-font|cal*|B>> by
+
+    <\equation>
+      Y<around|(|S,\<omega\>|)>=<big|sum><rsub|n>\<xi\><rsub|n><around|(|\<omega\>|)>*<big|int><rsub|S>\<varphi\><rsub|n><rsup|\<ast\>><around|(|u|)>*\<mu\>*<around|(|d*u|)><label|eq:Y-thm>
+    </equation>
+
+    in the mean square sense for all <math|S\<in\><with|math-font|cal*|B>>
+    and has <math|Q<rsub|Y>=\<mu\>>. The <math|a<rsub|n>>'s and the
+    <math|\<xi\><rsub|n>>'s are given in Theorem <reference|thm:series-rep>.
+  </theorem>
+
+  <\proof>
+    We first show that <math|Y> is well-defined on
+    <math|<with|math-font|cal*|B>> by <eqref|eq:Y-thm> and that it is
+    orthogonal. Since <math|\<mu\>> is finite on
+    <math|<with|math-font|cal*|B>,I<rsub|S>\<in\>L<rsub|2><around|(|\<mu\>|)>>
+    for all <math|S\<in\><with|math-font|cal*|B>>. Hence
+
+    <\equation>
+      I<rsub|S><around|(|u|)>=<big|sum><rsub|n>b<rsub|n><around|(|S|)>*\<varphi\><rsub|n><around|(|u|)><label|eq:IS>
+    </equation>
+
+    where
+
+    <\equation>
+      b<rsub|n><around|(|S|)>=<big|int><rsub|S>\<varphi\><rsub|n><rsup|\<ast\>><around|(|u|)>*\<mu\>*<around|(|d*u|)><label|eq:bn>
+    </equation>
+
+    It follows that
+
+    <\align>
+      <tformat|<table|<row|<cell|>|<cell|<big|sum><rsub|n><big|int><rsub|S<rsub|1>>\<varphi\><rsub|n><rsup|\<ast\>><around|(|u|)>*\<mu\>*<around|(|d*u|)>*<big|int><rsub|S<rsub|2>>\<varphi\><rsub|n><around|(|u|)>*\<mu\>*<around|(|d*u|)><eq-number>>>|<row|<cell|>|<cell|<space|1em>=<around|(|I<rsub|S<rsub|1>>,I<rsub|S<rsub|2>>|)><rsub|L<rsub|2><around|(|\<mu\>|)>>=\<mu\>*<around|(|S<rsub|1>\<cap\>S<rsub|2>|)>\<less\>\<infty\>*<space|1em><text|for
+      all ><space|1em>S<rsub|1>,S<rsub|2>\<in\><with|math-font|cal*|B><eq-number><label|eq:sum-finite>>>>>
+    </align>
+
+    and in particular that
+
+    <\equation>
+      <big|sum><rsub|n><around*|\||<big|int><rsub|S>\<varphi\><rsub|n><rsup|\<ast\>><around|(|u|)>*\<mu\>*<around|(|d*u|)>|\|><rsup|2>=<around|\<\|\|\>|I<rsub|S>|\<\|\|\>><rsub|L<rsub|2><around|(|\<mu\>|)>><rsup|2>=\<mu\><around|(|S|)>\<less\>\<infty\><label|eq:mu-finite>
+    </equation>
+
+    Hence <math|Y> is well-defined by <eqref|eq:Y-thm> in
+    <math|L<rsub|2><around|(|\<Omega\>,<with|math-font|cal*|M>,P|)>> for all
+    <math|S\<in\><with|math-font|cal*|B>>. It follows by <eqref|eq:Y-thm> and
+    <eqref|eq:bn> that
+
+    <\equation>
+      r<rsub|Y>*<around|(|S<rsub|1>\<times\>S<rsub|2>|)>=\<mu\>*<around|(|S<rsub|1>\<cap\>S<rsub|2>|)><label|eq:rY>
+    </equation>
+
+    and thus <math|Y> is orthogonal with <math|Q<rsub|Y>=\<mu\>>.
+
+    We next show that <math|f<around|(|t,u|)>> is well-defined in
+    <math|L<rsub|2><around|(|\<mu\>|)>> by <eqref|eq:f-integral> for all
+    <math|t\<in\>\<bbb-R\>>. This is clear since from
+    <eqref|eq:autocorr-series>
+
+    <\equation>
+      <big|sum><rsub|n><around|\||a<rsub|n><around|(|t|)>|\|><rsup|2>=R<rsub|x*x><around|(|t,t|)>\<less\>\<infty\>*<space|1em><text|for
+      all ><space|1em>t\<in\>\<bbb-R\><label|eq:an-finite>
+    </equation>
+
+    Hence the integral in <eqref|eq:integral-rep-thm> is well-defined and
+    from <eqref|eq:f-integral>, <eqref|eq:Y-thm>, and <eqref|eq:series> we
+    have
+
+    <\align>
+      <tformat|<table|<row|<cell|<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|t,u|)>*Y<around|(|d*u,\<omega\>|)>>|<cell|=<big|sum><rsub|n>a<rsub|n><around|(|t|)>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<varphi\><rsub|n><around|(|u|)>*Y<around|(|d*u,\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|sum><rsub|n>a<rsub|n><around|(|t|)>*<big|sum><rsub|m><big|int><rsub|-\<infty\>><rsup|\<infty\>>\<varphi\><rsub|n><around|(|u|)>*\<varphi\><rsub|m><rsup|\<ast\>><around|(|u|)>*\<mu\>*<around|(|d*u|)>*\<xi\><rsub|m><around|(|\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|sum><rsub|n>a<rsub|n><around|(|t|)>*\<xi\><rsub|n><around|(|\<omega\>|)>=x*<around|(|t,\<omega\>|)><eq-number><label|eq:integral-proof>>>>>
+    </align>
+
+    which proves <eqref|eq:integral-rep-thm>.
+  </proof>
+
+  The freedom in choosing the measure <math|\<mu\>> enables us to obtain
+  various orthogonal integral representations <eqref|eq:integral-rep-thm> of
+  particular form. If <math|\<mu\>> is chosen to be a finite nonnegative
+  measure on <math|\<bbb-R\>> then <math|Y> will be finite on the whole real
+  line and the <math|\<varphi\><rsub|n>>'s can be chosen as in
+  <eqref|eq:phin> given by Masry et al.<nbsp><cite|masry1968>. If
+  <math|\<mu\>> is chosen to be the Lebesgue measure or the Lebesgue measure
+  restricted to the half line or to an interval, then the
+  <math|\<varphi\><rsub|n>>'s may be chosen to be well-known orthonormal and
+  complete sets of functions such as the Tchebysheff-Hermite functions, the
+  Tchebysheff-Laguerre functions, the Legendre polynomials or the
+  trigonometric system. In this latter case it is clear from <eqref|eq:rY>
+  that the orthogonal random measure <math|Y> has stationary values.
+
+  A harmonizable stochastic process is shown to have the nonorthogonal
+  integral representation <eqref|eq:proc-integral>, the orthogonal series
+  expansion <eqref|eq:series> and the orthogonal integral representation
+  <eqref|eq:integral-rep-thm>. The relationship between the orthogonal random
+  measure <math|Y> and the random measure <math|X> is
+
+  <\equation>
+    Y<around|(|S,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|[|<big|sum><rsub|n>f<rsub|n><around|(|v|)>*<big|int><rsub|S>\<varphi\><rsub|n><rsup|\<ast\>><around|(|u|)>*\<mu\>*<around|(|d*u|)>|]>*X<around|(|d*v,\<omega\>|)><label|eq:Y-X>
+  </equation>
+
+  for all <math|S\<in\><with|math-font|cal*|B>>, which can be obtained by
+  <eqref|eq:Y-thm> and <eqref|eq:xin>.
+
+  <section|Moving Average Representations and Harmonizable Stochastic
+  Processes><label|sec:moving-avg>
+
+  A second-order stochastic process <math|<around|{|x*<around|(|t,\<omega\>|)>,t\<in\>\<bbb-R\>,\<omega\>\<in\>\<Omega\>|}>>
+  is said to have a moving average representation if and only if
+
+  <\equation>
+    x*<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f*<around|(|t-u|)>*X<around|(|d*u,\<omega\>|)>*<space|1em><text|for
+    all ><space|1em>t\<in\>\<bbb-R\><label|eq:moving-avg>
+  </equation>
+
+  where <math|X> is a random measure defined on the bounded Borel sets of
+  <math|\<bbb-R\>> and <math|f*<around|(|t-\<cdot\>|)>\<in\>\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>
+  for all <math|t\<in\>\<bbb-R\>>. This is a generalization of the usual
+  definition which assumes <math|X> to be orthogonal and <math|Q<rsub|X>> to
+  be the Lebesgue measure. A moving average representation is orthogonal if
+  and only if <math|X> is orthogonal and in this case
+  <math|f*<around|(|t-\<cdot\>|)>\<in\>L<rsub|2><around|(|Q<rsub|X>|)>> for
+  all <math|t\<in\>\<bbb-R\>>.
+
+  It is shown by Karhunen<nbsp><cite|karhunen1947> and
+  Doob<nbsp><cite|doob1953> that (i) a second-order stochastic process which
+  has an orthogonal moving average representation with <math|Q<rsub|X>=m>,
+  the Lebesgue measure, and <math|f\<in\>L<rsub|2><around|(|\<bbb-R\>,<with|math-font|cal*|B><rsup|1>,m|)>=L<rsub|2><around|(|m|)>>
+  is mean square continuous wide sense stationary and has absolutely
+  continuous spectrum; and conversely that (ii) a mean square continuous wide
+  sense stationary process with absolutely continuous spectrum has a moving
+  average representation with <math|Q<rsub|X>=m> and
+  <math|f\<in\>L<rsub|2><around|(|m|)>> is the Fourier transform of the
+  square root of its spectral density.
+
+  Sufficient conditions for the harmonizability of a stochastic process which
+  has a moving average representation are given in the following
+
+  <\theorem>
+    <label|thm:moving-avg-harmonizable>If a second-order stochastic process
+    <math|x*<around|(|t,\<omega\>|)>> has a moving average representation
+    with <math|r<rsub|X>> a measure of bounded variation on the entire plane
+    <math|\<bbb-R\><rsup|2>,f\<in\>L<rsub|1><around|(|m|)>> and its Fourier
+    transform <math|F\<in\>L<rsub|1><around|(|m|)>>, then
+    <math|x*<around|(|t,\<omega\>|)>> is harmonizable.
+  </theorem>
+
+  <\proof>
+    We have
+
+    <\equation>
+      f<around|(|\<tau\>|)>=<frac|1|<sqrt|2*\<pi\>>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>F<around|(|\<rho\>|)>*e<rsup|i*\<tau\>*\<rho\>>*m*<around|(|d*\<rho\>|)><label|eq:f-fourier>
+    </equation>
+
+    Since <math|F\<in\>L<rsub|1><around|(|m|)>> and <math|r<rsub|X>> is
+    finite, by interchanging the order of integration (see
+    Rosanov<nbsp><cite|rosanov1959>, p. 287), we obtain from
+    <eqref|eq:moving-avg>
+
+    <\equation>
+      x*<around|(|t,\<omega\>|)>=<frac|1|<sqrt|2*\<pi\>>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>F<around|(|\<rho\>|)>*e<rsup|-i*u*\<rho\>>*e<rsup|i*t*\<rho\>>*X<around|(|d*u,\<omega\>|)>*m*<around|(|d*\<rho\>|)><label|eq:x-interchange>
+    </equation>
+
+    Also, <math|F\<in\>L<rsub|1><around|(|m|)>> and <math|r<rsub|X>> finite
+    imply that for all <math|S\<in\><with|math-font|cal*|B><rsup|1>>
+
+    <\equation>
+      <big|int><rsub|S>F<around|(|\<rho\>|)>*e<rsup|-i*u*\<rho\>>*m*<around|(|d*\<rho\>|)>\<in\>\<Lambda\><rsub|2><around|(|r<rsub|X>|)><label|eq:F-Lambda>
+    </equation>
+
+    Hence the random measure <math|Y> on <math|<around|(|\<bbb-R\>,<with|math-font|cal*|B><rsup|1>|)>>
+    is well-defined by
+
+    <\equation>
+      Y<around|(|S,\<omega\>|)>=<frac|1|<sqrt|2*\<pi\>>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|[|<big|int><rsub|S>F<around|(|\<rho\>|)>*e<rsup|-i*u*\<rho\>>*m*<around|(|d*\<rho\>|)>|]>*X<around|(|d*u,\<omega\>|)><label|eq:Y-define>
+    </equation>
+
+    for all <math|S\<in\><with|math-font|cal*|B><rsup|1>> and by
+    interchanging the order of integration we obtain
+
+    <\equation>
+      Y<around|(|S,\<omega\>|)>=<frac|1|<sqrt|2*\<pi\>>>*<big|int><rsub|S>F<around|(|\<rho\>|)><around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*u*\<rho\>>*X<around|(|d*u,\<omega\>|)>|]>*m*<around|(|d*\<rho\>|)><label|eq:Y-interchange>
+    </equation>
+
+    i.e.,
+
+    <\equation>
+      <around*|[|<frac|d*Y|d*m>|]><around|(|\<rho\>,\<omega\>|)>=<frac|F<around|(|\<rho\>|)>|<sqrt|2*\<pi\>>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*u*\<rho\>>*X<around|(|d*u,\<omega\>|)><label|eq:dY-dm>
+    </equation>
+
+    Since <math|F\<in\>L<rsub|1><around|(|m|)>> and <math|r<rsub|X>> is
+    finite, the lemma which follows this proof applies, and
+    <eqref|eq:x-interchange> and <eqref|eq:dY-dm> imply
+
+    <\equation>
+      x*<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*\<rho\>>*Y<around|(|d*\<rho\>,\<omega\>|)><label|eq:x-harmonize>
+    </equation>
+
+    Therefore, <math|x*<around|(|t,\<omega\>|)>> is harmonizable.
+  </proof>
+
+  The property used in the last step of the proof of Theorem
+  <reference|thm:moving-avg-harmonizable> will be proven now. It corresponds
+  to the familiar property of Radon-Nikodym derivative in the scalar case and
+  is used in later sections of this paper.
+
+  <\lemma>
+    <label|lem:radon-nikodym>If the second-order stochastic process
+    <math|<around|{|y*<around|(|t,\<omega\>|)>,t\<in\>\<bbb-R\>,\<omega\>\<in\>\<Omega\>|}>>
+    is such that
+
+    <\equation>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||R<rsub|y*y><around|(|t,s|)>|\|>*m*<around|(|d*t|)>*m*<around|(|d*s|)>\<less\>\<infty\><label|eq:Ryy-finite>
+    </equation>
+
+    then
+
+    <\equation>
+      Y<around|(|S,\<omega\>|)>=<big|int><rsub|S>y*<around|(|t,\<omega\>|)>*m*<around|(|d*t|)>,<space|1em>S\<in\><with|math-font|cal*|B><rsup|1><label|eq:Y-lemma>
+    </equation>
+
+    defines a random measure <math|Y> on <math|<around|(|\<bbb-R\>,<with|math-font|cal*|B><rsup|1>|)>>
+    with <math|r<rsub|Y>> of bounded variation on <math|\<bbb-R\><rsup|2>>,
+    and for all <math|g\<in\>\<Lambda\><rsub|2><around|(|r<rsub|Y>|)>>
+
+    <\equation>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|t|)>*Y<around|(|d*t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|t|)>*y*<around|(|t,\<omega\>|)>*m*<around|(|d*t|)><label|eq:g-interchange>
+    </equation>
+
+    all equalities being in the mean square sense.
+  </lemma>
+
+  <\proof>
+    It is clear from <eqref|eq:Ryy-finite> that <eqref|eq:Y-lemma> defines a
+    random measure <math|Y> on <math|<around|(|\<bbb-R\>,<with|math-font|cal*|B><rsup|1>|)>>
+    with <math|r<rsub|Y>> of bounded variation on <math|\<bbb-R\><rsup|2>>.
+
+    If we put
+
+    <\equation>
+      \<xi\><around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|t|)>*Y<around|(|d*t,\<omega\>|)>*<space|1em><text|and
+      ><space|1em>\<eta\><around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|t|)>*y*<around|(|t,\<omega\>|)>*m*<around|(|d*t|)><label|eq:xi-eta>
+    </equation>
+
+    it suffices to show that
+
+    <\equation>
+      <with|math-font|cal*|E><around|[|<around|\||\<xi\>-\<eta\>|\|><rsup|2>|]>=<with|math-font|cal*|E><around|[|<around|\||\<xi\>|\|><rsup|2>|]>+<with|math-font|cal*|E><around|[|<around|\||\<eta\>|\|><rsup|2>|]>-<with|math-font|cal*|E><around|[|\<xi\>*\<eta\><rsup|\<ast\>>|]>-<with|math-font|cal*|E><around|[|\<eta\>*\<xi\><rsup|\<ast\>>|]>=0<label|eq:xi-eta-equal>
+    </equation>
+
+    We have
+
+    <\align>
+      <tformat|<table|<row|<cell|<with|math-font|cal*|E><around|[|<around|\||\<xi\>|\|><rsup|2>|]>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|t|)>*g<rsup|\<ast\>><around|(|s|)>*r<rsub|Y><around|(|d*t,d*s|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|t|)>*g<rsup|\<ast\>><around|(|s|)>*R<rsub|y*y><around|(|t,s|)>*m*<around|(|d*t|)>*m*<around|(|d*s|)><eq-number>>>|<row|<cell|<with|math-font|cal*|E><around|[|<around|\||\<eta\>|\|><rsup|2>|]>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|t|)>*g<rsup|\<ast\>><around|(|s|)>*R<rsub|y*y><around|(|t,s|)>*m*<around|(|d*t|)>*m*<around|(|d*s|)>,<eq-number>>>|<row|<cell|<with|math-font|cal*|E><around|[|\<eta\>*\<xi\><rsup|\<ast\>>|]>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|t|)><with|math-font|cal*|E><around|[|y<around|(|t|)>*\<xi\><rsup|\<ast\>>|]>*m*<around|(|d*t|)><eq-number>>>|<row|<cell|<with|math-font|cal*|E><around|[|y<around|(|t|)>*\<xi\><rsup|\<ast\>>|]>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<rsup|\<ast\>><around|(|s|)>*\<lambda\><rsub|t>*<around|(|d*s|)><eq-number><label|eq:E-terms>>>>>
+    </align>
+
+    where the measure <math|\<lambda\><rsub|t>> on
+    <math|<around|(|\<bbb-R\>,<with|math-font|cal*|B><rsup|1>|)>> is defined
+    by
+
+    <\equation>
+      \<lambda\><rsub|t><around|(|S|)>=<with|math-font|cal*|E><around|[|y<around|(|t|)>*Y<rsup|\<ast\>><around|(|S|)>|]>=<big|int><rsub|S>R<rsub|y*y><around|(|t,s|)>*m*<around|(|d*s|)><label|eq:lambda>
+    </equation>
+
+    for all <math|S\<in\><with|math-font|cal*|B><rsup|1>>. It follows by
+    <eqref|eq:E-terms> and <eqref|eq:lambda> that
+
+    <\equation>
+      <with|math-font|cal*|E><around|[|y<around|(|t|)>*\<xi\><rsup|\<ast\>>|]>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<rsup|\<ast\>><around|(|s|)>*R<rsub|y*y><around|(|t,s|)>*m*<around|(|d*s|)><label|eq:E-y-xi>
+    </equation>
+
+    and by <eqref|eq:E-terms>
+
+    <\equation>
+      <with|math-font|cal*|E><around|[|\<eta\>*\<xi\><rsup|\<ast\>>|]>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|t|)>*g<rsup|\<ast\>><around|(|s|)>*R<rsub|y*y><around|(|t,s|)>*m*<around|(|d*t|)>*m*<around|(|d*s|)>=<with|math-font|cal*|E><around|[|\<xi\>*\<eta\><rsup|\<ast\>>|]><label|eq:E-eta-xi>
+    </equation>
+
+    The validity of <eqref|eq:xi-eta-equal> follows from <eqref|eq:E-terms>,
+    <eqref|eq:E-eta-xi> and the proof is complete.
+  </proof>
+
+  If the moving average representation in Theorem
+  <reference|thm:moving-avg-harmonizable> is orthogonal, then the condition
+  of bounded variation of <math|r<rsub|X>> is equivalent to the finiteness of
+  <math|Q<rsub|X>>.
+
+  If the second-order stochastic process <math|x*<around|(|t,\<omega\>|)>>
+  has a moving average representation and <math|X> has Radon-Nikodym
+  derivative with respect to the Lebesgue measure the second-order stochastic
+  process <math|y*<around|(|t,\<omega\>|)>,<around|[|d*Y/d*m|]>=y>, then
+
+  <\equation>
+    x*<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f*<around|(|t-u|)>*y*<around|(|u,\<omega\>|)>*m*<around|(|d*u|)><label|eq:x-conv>
+  </equation>
+
+  In this case <math|x*<around|(|t,\<omega\>|)>> can be regarded as the
+  output of a linear time invariant system with impulse response <math|f> and
+  input the stochastic process <math|y*<around|(|t,\<omega\>|)>>. Theorem
+  <reference|thm:moving-avg-harmonizable> then implies that if
+  <math|y*<around|(|t,\<omega\>|)>> is integrable over <math|\<bbb-R\>> in
+  the mean square sense, i.e., if <math|R<rsub|y*y><around|(|t,s|)>> is
+  integrable over <math|\<bbb-R\><rsup|2>>, and
+  <math|f,F\<in\>L<rsub|1><around|(|m|)>> then the output
+  <math|x*<around|(|t,\<omega\>|)>> is a harmonizable stochastic process. In
+  the following section a more general result is proven which includes time
+  varying linear systems.
+
+  <section|Linear Time Varying Systems and Harmonizable Stochastic
+  Processes><label|sec:linear-systems>
+
+  Two kinds of linear time varying systems characterized by their impulse
+  response <math|h*<around|(|t,\<tau\>|)>>, i.e., the response at time
+  <math|t> to a unit impulse input at time <math|\<tau\>>, are considered in
+  this section. Systems with <math|h> a deterministic function and systems
+  with <math|h> a sample function of a stochastic process.
+
+  <subsection|Deterministic Linear Time Varying
+  Systems><label|subsec:deterministic>
+
+  Consider a linear time varying system with impulse response
+  <math|h*<around|(|t,\<tau\>|)>>. If the input process <math|x> is such that
+
+  <\equation>
+    <big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>h*<around|(|t,u|)>*h<rsup|\<ast\>>*<around|(|t,v|)>*R<rsub|x*x><around|(|u,v|)>*m*<around|(|d*u|)>*m*<around|(|d*v|)>\<less\>\<infty\>*<space|1em><text|for
+    all ><space|1em>t\<in\>\<bbb-R\><label|eq:impulse-finite>
+  </equation>
+
+  then the output of the system is the second-order stochastic process
+  <math|y> defined by
+
+  <\equation>
+    y*<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h*<around|(|t,u|)>*x*<around|(|u,\<omega\>|)>*m*<around|(|d*u|)>*<space|1em><text|for
+    all ><space|1em>t\<in\>\<bbb-R\><label|eq:y-output>
+  </equation>
+
+  It is apparent that a sufficient condition for the output of the system to
+  be a stochastic process of second-order for all input processes <math|x>
+  which have uniformly bounded autocorrelation functions
+
+  <\equation>
+    <around|\||R<rsub|x*x><around|(|u,v|)>|\|>\<leqslant\>M\<less\>\<infty\>*<space|1em><text|for
+    all >u,v\<in\>\<bbb-R\><label|eq:Rxx-bounded>
+  </equation>
+
+  is
+
+  <\equation>
+    h*<around|(|t,\<cdot\>|)>\<in\>L<rsub|1><around|(|m|)>*<space|1em><text|for
+    all >t\<in\>\<bbb-R\><label|eq:h-L1>
+  </equation>
+
+  The wide sense stationary processes <math|x> belong to this class since
+
+  <\equation>
+    <around|\||R<rsub|x*x><around|(|u,v|)>|\|>=<around|\||R<rsub|x*x>*<around|(|u-v|)>|\|>\<leqslant\>R<rsub|x*x><around|(|0|)>\<less\>\<infty\>*<space|1em><text|for
+    all >u,v\<in\>\<bbb-R\><label|eq:Rxx-stationary>
+  </equation>
+
+  and so do the harmonizable stochastic processes <math|x>, since
+
+  <\equation>
+    <around|\||R<rsub|x*x><around|(|u,v|)>|\|>\<leqslant\><around|\||r<rsub|X>|\|><around|(|\<bbb-R\><rsup|2>|)>\<less\>\<infty\>*<space|1em><text|for
+    all >u,v\<in\>\<bbb-R\><label|eq:Rxx-harmonizable>
+  </equation>
+
+  The following theorem provides a set of sufficient conditions which imply
+  the harmonizability of the output of a linear time varying system.
+
+  <\theorem>
+    <label|thm:linear-system-harmonizable>Let <math|h*<around|(|t,\<tau\>|)>>
+    be the impulse response of a linear time varying system and
+    <math|x*<around|(|t,\<omega\>|)>> be the input stochastic process. If
+    <math|h*<around|(|\<cdummy\>,\<tau\>|)>> is the Fourier transform of a
+    function <math|g<around|(|\<cdummy\>,\<tau\>|)>\<in\>L<rsub|1><around|(|m|)>>
+    for all <math|\<tau\>\<in\>\<bbb-R\>> and if <math|g> satisfies
+
+    <\equation>
+      <with|font-base-size|9|<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||g<around|(|\<tau\>,u|)>|\|><around|\||g<rsup|\<ast\>><around|(|\<sigma\>,v|)>|\|><around|\||R<rsub|x*x><around|(|u,v|)>|\|>*m*<around|(|d*u|)>*m*<around|(|d*v|)>*m*<around|(|d*\<tau\>|)>*m*<around|(|d*\<sigma\>|)>\<less\>\<infty\><label|eq:g-condition>>
+    </equation>
+
+    then the output stochastic process is harmonizable.
+  </theorem>
+
+  <\proof>
+    For all <math|\<tau\>\<in\>\<bbb-R\>> we have
+
+    <\equation>
+      h*<around|(|t,\<tau\>|)>=<frac|1|<sqrt|2*\<pi\>>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|s,\<tau\>|)>*e<rsup|i*t*s>*m*<around|(|d*s|)><label|eq:h-g-transform>
+    </equation>
+
+    Hence <eqref|eq:impulse-finite> implies <eqref|eq:impulse-finite> and
+    <math|y*<around|(|t,\<omega\>|)>> is well-defined by <eqref|eq:y-output>
+    in the stochastic mean. It follows by <eqref|eq:g-condition> that the
+    random measure <math|Y> defined on <math|<around|(|\<bbb-R\>,<with|math-font|cal*|B><rsup|1>|)>>
+    by
+
+    <\equation>
+      <around*|[|<frac|d*Y|d*m>|]><around|(|\<tau\>,\<omega\>|)>=<frac|1|<sqrt|2*\<pi\>>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|\<tau\>,u|)>*x*<around|(|u,\<omega\>|)>*m*<around|(|d*u|)><label|eq:dY-dm-g>
+    </equation>
+
+    has <math|r<rsub|Y>> of finite variation on the entire plane
+    <math|\<bbb-R\><rsup|2>>. For all <math|S<rsub|1>,S<rsub|2>\<in\><with|math-font|cal*|B><rsup|1>>
+
+    <\equation>
+      <with|font-base-size|8|r<rsub|Y>*<around|(|S<rsub|1>\<times\>S<rsub|2>|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|S<rsub|1>><big|int><rsub|S<rsub|2>>g<around|(|\<tau\>,u|)>*g<rsup|\<ast\>><around|(|\<sigma\>,v|)>*R<rsub|x*x><around|(|u,v|)>*m*<around|(|d*\<tau\>|)>*m*<around|(|d*\<sigma\>|)>*m*<around|(|d*u|)>*m*<around|(|d*v|)><label|eq:rY-g>>
+    </equation>
+
+    It is clear from <eqref|eq:y-output>, <eqref|eq:h-g-transform>,
+    <eqref|eq:dY-dm-g> and Lemma <reference|lem:radon-nikodym> that
+
+    <\equation>
+      y*<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*\<tau\>><around*|[|<frac|d*Y|d*m>|]><around|(|\<tau\>,\<omega\>|)>*m*<around|(|d*\<tau\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*\<tau\>>*Y<around|(|d*\<tau\>,\<omega\>|)><label|eq:y-harmonize>
+    </equation>
+
+    in the stochastic mean sense and hence <math|y> is harmonizable.
+  </proof>
+
+  A sufficient condition for <eqref|eq:g-condition> to be satisfied for the
+  class of input processes with uniformly bounded autocorrelation functions
+  is clearly
+
+  <\equation>
+    g<around|(|s,\<tau\>|)>\<in\>L<rsub|1>*<around|(|m\<times\>m|)><label|eq:g-L1>
+  </equation>
+
+  As an example, let
+
+  <\equation>
+    h*<around|(|t,\<tau\>|)>=<frac|\<alpha\>+\<gamma\><around|\||\<tau\>|\|>|t<rsup|2>+<around|(|\<alpha\>+\<gamma\><around|\||\<tau\>|\|>|)><rsup|2>>*e<rsup|-\<beta\><around|\||\<tau\>|\|>>*<space|1em>\<alpha\>,\<beta\>\<gtr\>0,<space|1em>\<gamma\>\<geqslant\>0<label|eq:h-example>
+  </equation>
+
+  Then <math|h*<around|(|t,\<tau\>|)>> is the Fourier transform of
+  <math|g<around|(|s,\<tau\>|)>> :
+
+  <\equation>
+    g<around|(|s,\<tau\>|)>=<sqrt|<frac|\<pi\>|2>>*e<rsup|-\<alpha\>\|s*<around|\||-\<beta\>|\|>*\<tau\>\|-\<gamma\>*<around|\||s*\<tau\>|\|>><label|eq:g-example>
+  </equation>
+
+  and <math|g> satisfies <eqref|eq:g-L1>. The condition
+  <eqref|eq:g-condition> can be written in the form
+
+  <\equation>
+    <big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|e<rsup|-\<beta\><around|\||u|\|>>|\<alpha\>+\<gamma\><around|\||u|\|>>\<cdot\><frac|e<rsup|-\<beta\><around|\||v|\|>>|\<alpha\>+\<gamma\><around|\||v|\|>><around|\||R<rsub|x*x><around|(|u,v|)>|\|>*m*<around|(|d*u|)>*m*<around|(|d*v|)>\<less\>\<infty\><label|eq:g-condition-example>
+  </equation>
+
+  and the output of the system with impulse response
+  <math|h*<around|(|t,\<tau\>|)>> to all input processes which satisfy this
+  condition is a harmonizable stochastic process. In particular, if <math|x>
+  is harmonizable with
+
+  <\equation>
+    x*<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*\<lambda\>>*X<around|(|d*\<lambda\>,\<omega\>|)><label|eq:x-harmonize-example>
+  </equation>
+
+  then it follows by <eqref|eq:dY-dm-g> that
+
+  <\equation>
+    <around*|[|<frac|d*Y|d*m>|]><around|(|\<tau\>,\<omega\>|)>=<around|(|\<beta\>+\<gamma\><around|\||\<tau\>|\|>|)>*e<rsup|-\<alpha\><around|\||\<tau\>|\|>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|X<around|(|d*\<lambda\>,\<omega\>|)>|\<lambda\><rsup|2>+<around|(|\<beta\>+\<gamma\><around|\||\<tau\>|\|>|)><rsup|2>><label|eq:dY-dm-example>
+  </equation>
+
+  and the output <math|y> has the harmonizable representation
+  <eqref|eq:y-harmonize> which can also be written in the form
+
+  <\equation>
+    y*<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|\<beta\>+\<gamma\><around|\||\<tau\>|\|>|\<lambda\><rsup|2>+<around|(|\<beta\>+\<gamma\><around|\||\<tau\>|\|>|)><rsup|2>>*e<rsup|-\<alpha\>\|\<tau\>\|+i*t*\<tau\>>*m*<around|(|d*\<tau\>|)>|]>*X<around|(|d*\<lambda\>,\<omega\>|)><label|eq:y-full-example>
+  </equation>
+
+  This representation takes the following simple form in the particular case
+  where <math|\<gamma\>=0>, i.e.,\ 
+
+  <\equation>
+    h*<around|(|t,\<tau\>|)>=<frac|\<alpha\>*e<rsup|-\<beta\><around|\||\<tau\>|\|>>|\<alpha\><rsup|2>+t<rsup|2>>
+  </equation>
+
+  <\equation>
+    y*<around|(|t,\<omega\>|)>=<frac|2*\<beta\>|\<alpha\><rsup|2>+t<rsup|2>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|X<around|(|d*\<lambda\>,\<omega\>|)>|\<beta\><rsup|2>+\<lambda\><rsup|2>><label|eq:y-simple-example>
+  </equation>
+
+  <subsection|Linear Randomly Time Varying
+  Systems><label|subsec:random-systems>
+
+  Let the impulse response of a linear time varying system be a sample
+  function of a stochastic process of second order
+  <math|h*<around|(|t,\<tau\>,\<omega\>|)>> with autocorrelation function
+  <math|R<rsub|h*h><around|(|t,s;\<tau\>,\<sigma\>|)>>. For all second-order
+  input processes <math|x*<around|(|t,\<omega\>|)>> independent of <math|h>
+  and such that
+
+  <\equation>
+    <big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>R<rsub|h*h><around|(|t,t;u,v|)>*R<rsub|x*x><around|(|u,v|)>*m*<around|(|d*u|)>*m*<around|(|d*v|)>\<less\>\<infty\>*<space|1em><text|for
+    all ><space|1em>t\<in\>\<bbb-R\><label|eq:Rhh-condition>
+  </equation>
+
+  the output of the system is the second-order stochastic process <math|y>
+  defined by
+
+  <\equation>
+    y*<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h*<around|(|t,u,\<omega\>|)>*x*<around|(|u,\<omega\>|)>*m*<around|(|d*u|)><label|eq:y-random>
+  </equation>
+
+  A sufficient condition for <eqref|eq:Rhh-condition> to hold for all input
+  processes <math|x> with uniformly bounded autocorrelation functions is
+  clearly <math|R<rsub|h*h><around|(|t,t;\<cdot\>,\<cdot\>|)>\<in\>L<rsub|1>*<around|(|m\<times\>m|)>>
+  for all <math|t\<in\>\<bbb-R\>>.
+
+  A set of sufficient conditions for the harmonizability of the output of a
+  linear randomly time varying system is given in the following theorem. Its
+  proof is similar to the proof of Theorem
+  <reference|thm:linear-system-harmonizable> and as such it is omitted.
+
+  <\theorem>
+    <label|thm:random-system-harmonizable>If the impulse response
+    <math|h*<around|(|t,u,\<omega\>|)>> of a linear randomly time varying
+    system is the Fourier transform in the stochastic mean sense of a
+    second-order stochastic process <math|H*<around|(|\<rho\>,u,\<omega\>|)>>,
+    i.e.,
+
+    <\equation>
+      h*<around|(|t,u,\<omega\>|)>=<frac|1|<sqrt|2*\<pi\>>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>H*<around|(|\<rho\>,u,\<omega\>|)>*e<rsup|i*t*\<rho\>>*m*<around|(|d*\<rho\>|)><label|eq:h-H-transform>
+    </equation>
+
+    which is such that <math|R<rsub|H*H><around|(|\<cdummy\>,\<cdummy\>;u,u|)>\<in\>L<rsub|1>*<around|(|m\<times\>m|)>>
+    for all <math|u\<in\>\<bbb-R\>> and
+
+    <\equation>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||R<rsub|H*H><around|(|\<tau\>,\<sigma\>;u,v|)><around|\|||\|>*R<rsub|x*x><around|(|u,v|)>|\|>*m*<around|(|d*\<tau\>|)>*m*<around|(|d*\<sigma\>|)>*m*<around|(|d*u|)>*m*<around|(|d*v|)>\<less\>\<infty\><label|eq:RHH-condition>
+    </equation>
+
+    and if the input <math|x> is independent of <math|h>, then the output
+    stochastic process <math|y*<around|(|t,\<omega\>|)>> is harmonizable.
+  </theorem>
+
+  We have
+
+  <\equation>
+    y*<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*\<rho\>>*Y<around|(|d*\<rho\>,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*\<rho\>><around*|[|<frac|d*Y|d*m>|]><around|(|\<rho\>,\<omega\>|)>*m*<around|(|d*\<rho\>|)>,<label|eq:y-harmonize-random>
+  </equation>
+
+  where
+
+  <\equation>
+    <around*|[|<frac|d*Y|d*m>|]><around|(|\<rho\>,\<omega\>|)>=<frac|1|<sqrt|2*\<pi\>>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>H*<around|(|\<rho\>,u,\<omega\>|)>*x*<around|(|u,\<omega\>|)>*m*<around|(|d*u|)><label|eq:dY-dm-H>
+  </equation>
+
+  A sufficient condition for <eqref|eq:RHH-condition> to hold for all input
+  processes <math|x> with uniformly bounded autocorrelation functions is
+  clearly <math|R<rsub|H*H>\<in\>L<rsub|1><around|(|m<rsup|4>|)>>.
 
   <\thebibliography|99>
-    <bibitem|abreu>J. L. Abreu, A note on harmonizable and stationary
-    sequences, Bol. Soc. Mat. Mexicana 15 (1970), 58-41.
+    <bibitem|campbell1969>Campbell, L. L. (1969), Series expansions for
+    random processes, in \PProceedings of the International Symposium on
+    Probability and Information Theory,\Q Lecture Notes in Mathematics, No.
+    89, pp. 77-95, Springer, New York.
 
-    <bibitem|bochner>S. Bochner, Stationarity, boundedness, almost
-    periodicity of random valued functions, Proc. III Berkeley Sym. Math.
-    Stat. Prob., 2, 7-27, Univ. Calif. Press, 1956.
+    <bibitem|cramer1951>Cramer, H. (1951), A contribution to the theory of
+    stochastic processes, 2nd Berkeley Symp. Math. Stat. Probability,
+    329-339.
 
-    <bibitem|cramer>H. Cramér, On some class of non-stationary stochastic
-    processes, Proc. IV Berkeley Sym. Math. Stat. prob., 2, 57-78, Univ.
-    Calif. Press, 1962.
+    <bibitem|cramer1964>Cramer, H. (1964), Stochastic processes as curves in
+    Hilbert space, Theor. Probability Appl. 9, 169-179.
 
-    <bibitem|dubinsky>E. Dubinsky, A. Peªczy«ski & H. P. Rosenthal, On Banach
-    spaces X for which <math|\<Pi\><rsub|2><around|(|L<rsub|\<infty\>>,X|)>=B<around|(|L<rsub|\<infty\>>,X|)>>,
-    Studia Math. 44 (1972), 617-648.
+    <bibitem|doob1953>Doob, J. L. (1953), \PStochastic Processes,\Q Wiley,
+    New York.
 
-    <bibitem|dunford>N. Dunford & J. T. Schwartz, Linear Operators, I, Wiley,
-    New York, 1953.
+    <bibitem|karhunen1947>Karhunen, K. (1947), Uber lineare Methoden in der
+    Wahrscheinlichkeitsrechnung, Ann. Acad. Sci. Fenn. Ser. Al No. 37, 1-79.
 
-    <bibitem|grothendieck>A. Grothendieck, Résumé de la théorie metrique des
-    produits tensoriels topologiques, Bol. Soc. Matem. Sao Paulo 8 (1956),
-    1-79.
+    <bibitem|loeve1963>Loève, M. (1963), \PProbability Theory,\Q Van
+    Nostrand, Princeton, N. J.
 
-    <bibitem|kluvanek>I. Kluvánek, Characterization of Fourier-Stieltjes
-    transform of vector and operator valued measures, Czechoslovak Math. J.
-    17 (1967), 261-277.
+    <bibitem|masani1968>Masani, P. (1968), Orthogonally scattered measures,
+    Advan. Math. 2, 61-117.
 
-    <bibitem|loeve>M. Loève, Fonctions aléatoires du second ordre, Revue Sci.
-    84 (1946), 195-206.
+    <bibitem|masry1968>Masry, E., Liu, B., And Steiglitz, K. (1968), Series
+    expansion of wide-sense stationary random processes, IEEE Trans. IT-14,
+    792-796.
 
-    <bibitem|masani>P. Masani, Quasi-isometric measures and their
-    applications, Bull. Amer. Math. Soc. 76 (1970), 427-528.
+    <bibitem|parzen1967>Parzen, E. (1967), Statistical inference on time
+    series by Hilbert space methods, in \PTime series Analysis Papers,\Q
+    Holden-Day, San Francisco, Calif.
 
-    <bibitem|niemi1>H. Niemi, On stationary dilations and the linear
-    prediction of certain stochastic processes, Soc. Sci. Fennica Comment
-    Phys.-Math. 38 (1972), 1-30.<bibitem|niemi2>H. Niemi, Stochastic
-    operators on a Hilbert space and stochastically continuous semigroups, J.
-    Functional Analysis 13 (1973), 63-76.
+    <bibitem|piranashvili1967>Piranashyili, Z. A. (1967), On the problem of
+    interpolation of random processes, Theor. Probability Appl. 12, 647-657.
 
-    <bibitem|niemi3>H. Niemi, On orthogonally scattered dilations of bounded
-    vector measures, Ann. Acad. Sci. Fennicae, Ser. A, I Math. 2 (1976),
-    97-105.
+    <bibitem|rao1967>Rao, M. M. (1967), Inference in stochastic
+    processes-III, Z. Wahrscheinlichkeitstheorie und verw. Gebiete 8, 49-72.
 
-    <bibitem|niemi4>H. Niemi, On the support of a <math|V>-bounded stochastic
-    measure and the dilation of its covariance measure, Thesis, Turku, 1975
-
-    .<bibitem|pietsch>A. Pietsch, Absolut <math|p>-summierende Abbildungen in
-    normierten Räumen, Studia Math. 28 (1967), 333-353.
-
-    <bibitem|rogge>R. Rogge, Über <math|2>-majorisierende Operatoren, Studia
-    Math. 29 (1967), 41-52.
-
-    <bibitem|rozanov>Yu. A. Rozanov, Spectral analysis of abstract functions,
-    Theory Prob. Appl. 4 (1959), 271-287.
-
-    <bibitem|rudin>W. Rudin, Real and Complex Analysis, McGraw-Hill, New
-    York, 1966.
+    <bibitem|rosanov1959>Rosanov, Y. A. (1959), Spectral analysis of abstract
+    functions, Theor. Probability Appl. 4, 271-287.
   </thebibliography>
 </body>
 
@@ -949,108 +1225,249 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|10|15>>
-    <associate|bib-abreu|<tuple|abreu|15>>
-    <associate|bib-bochner|<tuple|bochner|15>>
-    <associate|bib-cramer|<tuple|cramer|15>>
-    <associate|bib-dubinsky|<tuple|dubinsky|15>>
-    <associate|bib-dunford|<tuple|dunford|15>>
-    <associate|bib-grothendieck|<tuple|grothendieck|15>>
-    <associate|bib-kluvanek|<tuple|kluvanek|15>>
-    <associate|bib-loeve|<tuple|loeve|15>>
-    <associate|bib-masani|<tuple|masani|15>>
-    <associate|bib-niemi1|<tuple|niemi1|15>>
-    <associate|bib-niemi2|<tuple|niemi2|15>>
-    <associate|bib-niemi3|<tuple|niemi3|15>>
-    <associate|bib-niemi4|<tuple|niemi4|15>>
-    <associate|bib-pietsch|<tuple|pietsch|15>>
-    <associate|bib-rogge|<tuple|rogge|15>>
-    <associate|bib-rozanov|<tuple|rozanov|15>>
-    <associate|bib-rudin|<tuple|rudin|15>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-10|<tuple|8.1|15>>
+    <associate|auto-11|<tuple|8.2|17>>
+    <associate|auto-12|<tuple|110|18>>
+    <associate|auto-2|<tuple|2|1>>
+    <associate|auto-3|<tuple|3|3>>
+    <associate|auto-4|<tuple|4|3>>
+    <associate|auto-5|<tuple|5|6>>
+    <associate|auto-6|<tuple|38|8>>
+    <associate|auto-7|<tuple|6|9>>
+    <associate|auto-8|<tuple|7|11>>
+    <associate|auto-9|<tuple|8|14>>
+    <associate|bib-campbell1969|<tuple|campbell1969|18>>
+    <associate|bib-cramer1951|<tuple|cramer1951|18>>
+    <associate|bib-cramer1964|<tuple|cramer1964|18>>
+    <associate|bib-doob1953|<tuple|doob1953|18>>
+    <associate|bib-karhunen1947|<tuple|karhunen1947|18>>
+    <associate|bib-loeve1963|<tuple|loeve1963|18>>
+    <associate|bib-masani1968|<tuple|masani1968|18>>
+    <associate|bib-masry1968|<tuple|masry1968|18>>
+    <associate|bib-parzen1967|<tuple|parzen1967|18>>
+    <associate|bib-piranashvili1967|<tuple|piranashvili1967|19>>
+    <associate|bib-rao1967|<tuple|rao1967|19>>
+    <associate|bib-rosanov1959|<tuple|rosanov1959|19>>
+    <associate|eq:E-eta-xi|<tuple|83|14>>
+    <associate|eq:E-terms|<tuple|80|14>>
+    <associate|eq:E-y-xi|<tuple|82|14>>
+    <associate|eq:F|<tuple|31|7>>
+    <associate|eq:F-L2|<tuple|34|7>>
+    <associate|eq:F-Lambda|<tuple|66|12>>
+    <associate|eq:F-bound|<tuple|33|7>>
+    <associate|eq:Fn|<tuple|25|6>>
+    <associate|eq:Fn-bound|<tuple|26|6>>
+    <associate|eq:Fn-cauchy|<tuple|43|9>>
+    <associate|eq:Fn-complete|<tuple|30|7>>
+    <associate|eq:Fn-custom|<tuple|45|9>>
+    <associate|eq:Fn-double-exp|<tuple|41|8>>
+    <associate|eq:Fn-exp|<tuple|37|8>>
+    <associate|eq:Fn-norm|<tuple|27|7>>
+    <associate|eq:Fn-normal|<tuple|39|8>>
+    <associate|eq:Fn-uniform|<tuple|46|9>>
+    <associate|eq:Fn-uniform-symm|<tuple|47|9>>
+    <associate|eq:H|<tuple|38|8>>
+    <associate|eq:IS|<tuple|52|10>>
+    <associate|eq:QX|<tuple|2|2>>
+    <associate|eq:RHH-condition|<tuple|108|18>>
+    <associate|eq:Rhh-condition|<tuple|105|17>>
+    <associate|eq:Rxx-bounded|<tuple|87|15>>
+    <associate|eq:Rxx-harmonizable|<tuple|90|15>>
+    <associate|eq:Rxx-stationary|<tuple|89|15>>
+    <associate|eq:Ryy-finite|<tuple|71|13>>
+    <associate|eq:Y|<tuple|19|5>>
+    <associate|eq:Y-X|<tuple|62|11>>
+    <associate|eq:Y-define|<tuple|67|12>>
+    <associate|eq:Y-interchange|<tuple|68|12>>
+    <associate|eq:Y-lemma|<tuple|72|13>>
+    <associate|eq:Y-thm|<tuple|51|10>>
+    <associate|eq:an|<tuple|11|4>>
+    <associate|eq:an-expect|<tuple|14|4>>
+    <associate|eq:an-finite|<tuple|58|11>>
+    <associate|eq:an-hn|<tuple|23|5>>
+    <associate|eq:an-inner|<tuple|15|4>>
+    <associate|eq:autocorr|<tuple|8|3>>
+    <associate|eq:autocorr-series|<tuple|16|5>>
+    <associate|eq:bn|<tuple|53|10>>
+    <associate|eq:dY-dm|<tuple|69|12>>
+    <associate|eq:dY-dm-H|<tuple|110|18>>
+    <associate|eq:dY-dm-example|<tuple|101|17>>
+    <associate|eq:dY-dm-g|<tuple|93|16>>
+    <associate|eq:expf|<tuple|17|5>>
+    <associate|eq:f-fourier|<tuple|64|12>>
+    <associate|eq:f-integral|<tuple|50|10>>
+    <associate|eq:fnFourier|<tuple|21|5>>
+    <associate|eq:g-L1|<tuple|96|16>>
+    <associate|eq:g-condition|<tuple|91|15>>
+    <associate|eq:g-condition-example|<tuple|99|16>>
+    <associate|eq:g-example|<tuple|98|16>>
+    <associate|eq:g-interchange|<tuple|73|13>>
+    <associate|eq:h-H-transform|<tuple|107|18>>
+    <associate|eq:h-L1|<tuple|88|15>>
+    <associate|eq:h-custom|<tuple|44|9>>
+    <associate|eq:h-example|<tuple|97|16>>
+    <associate|eq:h-g-transform|<tuple|92|15>>
+    <associate|eq:impulse-finite|<tuple|85|15>>
+    <associate|eq:integral-proof|<tuple|61|11>>
+    <associate|eq:integral-rep|<tuple|48|9>>
+    <associate|eq:integral-rep-thm|<tuple|49|10>>
+    <associate|eq:lambda|<tuple|81|14>>
+    <associate|eq:lambda2|<tuple|3|2>>
+    <associate|eq:lambda2-ident|<tuple|4|2>>
+    <associate|eq:lambda2-inner|<tuple|5|2>>
+    <associate|eq:moving-avg|<tuple|63|11>>
+    <associate|eq:mu-finite|<tuple|56|10>>
+    <associate|eq:phin|<tuple|35|8>>
+    <associate|eq:proc-integral|<tuple|7|3>>
+    <associate|eq:rX|<tuple|1|2>>
+    <associate|eq:rY|<tuple|57|10>>
+    <associate|eq:rY-g|<tuple|94|16>>
+    <associate|eq:series|<tuple|9|4>>
+    <associate|eq:series-again|<tuple|13|4>>
+    <associate|eq:span|<tuple|24|6>>
+    <associate|eq:sum-finite|<tuple|55|10>>
+    <associate|eq:x-conv|<tuple|84|14>>
+    <associate|eq:x-harmonize|<tuple|70|13>>
+    <associate|eq:x-harmonize-example|<tuple|100|16>>
+    <associate|eq:x-interchange|<tuple|65|12>>
+    <associate|eq:xi|<tuple|6|2>>
+    <associate|eq:xi-eta|<tuple|74|13>>
+    <associate|eq:xi-eta-equal|<tuple|75|13>>
+    <associate|eq:xin|<tuple|10|4>>
+    <associate|eq:xin-again|<tuple|12|4>>
+    <associate|eq:y|<tuple|18|5>>
+    <associate|eq:y-full-example|<tuple|102|17>>
+    <associate|eq:y-harmonize|<tuple|95|16>>
+    <associate|eq:y-harmonize-random|<tuple|109|18>>
+    <associate|eq:y-output|<tuple|86|15>>
+    <associate|eq:y-random|<tuple|106|17>>
+    <associate|eq:y-simple-example|<tuple|104|17>>
+    <associate|eq:yY|<tuple|20|5>>
+    <associate|eq:yn|<tuple|22|5>>
+    <associate|lem:radon-nikodym|<tuple|5|13>>
+    <associate|sec:intro|<tuple|1|1>>
+    <associate|sec:linear-systems|<tuple|8|14>>
+    <associate|sec:moving-avg|<tuple|7|11>>
+    <associate|sec:notation|<tuple|2|1>>
+    <associate|sec:orthogonal-integral|<tuple|6|9>>
+    <associate|sec:orthogonal-series|<tuple|4|3>>
+    <associate|sec:orthonormal-sets|<tuple|5|6>>
+    <associate|sec:representation|<tuple|3|3>>
+    <associate|subsec:deterministic|<tuple|8.1|15>>
+    <associate|subsec:random-systems|<tuple|8.2|17>>
+    <associate|thm:complete-set|<tuple|2|6>>
+    <associate|thm:integral-rep|<tuple|3|10>>
+    <associate|thm:linear-system-harmonizable|<tuple|6|15>>
+    <associate|thm:moving-avg-harmonizable|<tuple|4|12>>
+    <associate|thm:random-system-harmonizable|<tuple|7|18>>
+    <associate|thm:series-rep|<tuple|1|4>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
     <\associate|bib>
-      masani
+      loeve1963
 
-      loeve
+      rosanov1959
 
-      cramer
+      cramer1964
 
-      abreu
+      piranashvili1967
 
-      rozanov
+      rao1967
 
-      dunford
+      karhunen1947
 
-      rozanov
+      cramer1951
 
-      dunford
+      rosanov1959
 
-      rozanov
+      parzen1967
 
-      niemi1
+      masani1968
 
-      niemi2
+      loeve1963
 
-      niemi3
+      loeve1963
 
-      niemi4
+      cramer1951
 
-      kluvanek
+      parzen1967
 
-      rogge
+      rosanov1959
 
-      pietsch
+      masry1968
 
-      dubinsky
+      campbell1969
 
-      grothendieck
+      masry1968
 
-      rozanov
+      masry1968
 
-      rozanov
+      masry1968
 
-      rozanov
+      karhunen1947
 
-      pietsch
+      doob1953
 
-      rogge
-
-      rogge
-
-      rogge
-
-      rozanov
-
-      dunford
-
-      rudin
-
-      dunford
-
-      rozanov
-
-      abreu
-
-      niemi2
-
-      bochner
-
-      niemi4
-
-      rudin
-
-      kluvanek
-
-      rozanov
+      rosanov1959
     </associate>
     <\associate|toc>
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Introduction>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-1><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Notation>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-2><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Representation
+      of Harmonizable Stochastic Processes>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-3><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Orthogonal
+      Series Representation of a Harmonizable Stochastic Process>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-4><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|5<space|2spc>Orthonormal
+      and Complete Sets in <with|mode|<quote|math>|\<Lambda\><rsub|2><around|(|r<rsub|X>|)>>>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-5><vspace|0.5fn>
+
+      <with|par-left|<quote|1tab>|Examples
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-6>>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|6<space|2spc>Orthogonal
+      Integral Representation of a Harmonizable Stochastic Process>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-7><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|7<space|2spc>Moving
+      Average Representations and Harmonizable Stochastic Processes>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-8><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|8<space|2spc>Linear
+      Time Varying Systems and Harmonizable Stochastic Processes>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-9><vspace|0.5fn>
+
+      <with|par-left|<quote|1tab>|8.1<space|2spc>Deterministic Linear Time
+      Varying Systems <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-10>>
+
+      <with|par-left|<quote|1tab>|8.2<space|2spc>Linear Randomly Time Varying
+      Systems <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-11>>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-12><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
