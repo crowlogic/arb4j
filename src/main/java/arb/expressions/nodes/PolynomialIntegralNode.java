@@ -49,7 +49,7 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        Type.getInternalName(polynomialType),
                        "integral",
-                       String.format("()L%s;", Type.getInternalName(polynomialType)),
+                       Compiler.getMethodDescriptor(polynomialType),
                        false);
 
     // Now evaluate the integrated polynomial at the argument
