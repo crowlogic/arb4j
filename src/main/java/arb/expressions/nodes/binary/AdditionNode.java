@@ -23,7 +23,7 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public String typeset()
   {
-    return format("%s + %s", left.typeset(), right.typeset());
+    return format("\\left(%s + %s\\right)", left.typeset(), right.typeset());
   }
 
   public AdditionNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)

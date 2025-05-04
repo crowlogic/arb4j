@@ -113,7 +113,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public String typeset()
   {
-    return format("%s \\cdot %s", left.typeset(), right.typeset());
+    return format("\\left(%s \\cdot %s\\right)", left.typeset(), right.typeset());
   }
 
 }
