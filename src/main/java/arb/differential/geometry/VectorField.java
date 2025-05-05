@@ -30,7 +30,7 @@ import arb.space.topological.EuclideanSpace;
  *      {@link TheArb4jLibrary}
  */
 public interface VectorField<X extends Field<X>, M extends DifferentiableManifold<X>> extends
-                            Function<M, EuclideanSpace>
+                            Function<M, EuclideanSpace<X>>
 {
 
 }
