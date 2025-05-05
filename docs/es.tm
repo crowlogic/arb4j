@@ -5,7 +5,10 @@
 <\body>
   <doc-data|<doc-title|Harmonizable Representation and Evolutionary
   Spectrum<next-line>of Monotonically Modulated Stationary Gaussian
-  Processes>|<doc-date|>>
+  Processes>|<doc-author|<author-data|<author-name|Stephen
+  Crowley>|<\author-affiliation>
+    <date|>
+  </author-affiliation>>>|<doc-date|>>
 
   <\definition>
     [Harmonizable Process] A stochastic process
