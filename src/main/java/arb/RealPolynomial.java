@@ -119,7 +119,7 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
   @Override
   public RealPolynomial integral()
   {
-    return integrate(bits, new RealPolynomial());
+    return integrate(get(0).bits(), new RealPolynomial());
   }
 
   @Override
@@ -516,6 +516,7 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
    */
   public RealPolynomial integrate(int bits, RealPolynomial integral)
   {
+    assert bits > 0 : "bits=" + bits + " is not positive";	
     integral.fitLength(getLength() + 1);
     arblib.arb_poly_integral(integral, this, bits);
     integral.bits = bits;

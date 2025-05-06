@@ -489,6 +489,7 @@ import arb.functions.real.RealFunction;
    */
   public RealPolynomial integrate(int bits, RealPolynomial integral)
   {
+    assert bits > 0 : "bits=" + bits + " is not positive";	
     integral.fitLength(getLength() + 1);
     arblib.arb_poly_integral(integral, this, bits);
     integral.bits = bits;
