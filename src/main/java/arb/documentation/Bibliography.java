@@ -1,9 +1,15 @@
 package arb.documentation;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-import arb.documentation.references.*;
+import arb.documentation.references.Article;
+import arb.documentation.references.Book;
+import arb.documentation.references.InCollection;
+import arb.documentation.references.MastersThesis;
+import arb.documentation.references.Miscellaneous;
 
 /**
  * Bibliography<br>
@@ -15,6 +21,14 @@ import arb.documentation.references.*;
 public class Bibliography extends
                           AbstractBibliography
 {
+
+  public static Article       oscillatoryHarmonizableProcessEnvelope                          =
+                                                                     new Article("The envelope of an oscillatory harmonizable process",
+                                                                                 "Randall J. Swift",
+                                                                                 "2000",
+                                                                                 "Journal of Interdisciplinary Mathematics",
+                                                                                 "3",
+                                                                                 "83 - 91");
 
   public static Article       linearPredictionNonStationaryProcesses                          =
                                                                      new Article("On the linear prediction problem of certain non-stationary stochastic processes",
