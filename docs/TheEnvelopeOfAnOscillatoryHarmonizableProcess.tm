@@ -286,7 +286,7 @@
     Y<around|(|t<rsub|0>,t|)>=<big|int><rsub|\<bbb-R\>>X<around|(|u|)>*h<around|(|t<rsub|0>,t,u|)>*<space|0.17em>d*u<label|eq:y_t0_t>
   </equation>
 
-  is an oscillatory weakly harmonizable process. Now suppose that ,
+  is an oscillatory weakly harmonizable process. Now suppose that
 
   <\equation>
     lim<rsub|t<rsub|0>\<rightarrow\>-\<infty\>>h<around|(|t<rsub|0>,t,u|)>=h*<around|(|t-u|)><label|eq:h_limit>
@@ -295,7 +295,7 @@
   and
 
   <\equation>
-    Y<around|(|t<rsub|0>,t|)>\<to\>Y<around|(|t|)><label|eq:y_limit>
+    lim<rsub|t\<rightarrow\>-\<infty\>>Y<around|(|t<rsub|0>,t|)>=Y<around|(|t|)><label|eq:y_limit>
   </equation>
 
   where <math|Y<around|(|\<cdummy\>|)>> has representation
@@ -609,7 +609,7 @@
 <\auxiliary>
   <\collection>
     <\associate|bib>
-      Swift1997
+      Swift1997a
 
       Priestley1965
 
