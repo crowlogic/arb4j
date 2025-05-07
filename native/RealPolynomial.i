@@ -498,9 +498,8 @@ import arb.functions.real.RealFunction;
 
   public Real integrate(Real lowerLimit, Real upperLimit, int bits, Real result)
   {
-    try ( var integral = new RealPolynomial();)
+    try ( var integral = integral() )
     {
-      integrate(bits, integral);
       return integral.evaluate(lowerLimit, upperLimit, bits, result);
     }
   }
