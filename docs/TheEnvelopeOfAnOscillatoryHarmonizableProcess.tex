@@ -1,0 +1,332 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{definition}{Definition}[section]
+
+% Title and author
+\title{The Envelope of an Oscillatory Harmonizable Process}
+\author{Randall J. Swift\\
+Department of Mathematics\\
+Western Kentucky University\\
+Bowling Green, KY 42101, U.S.A.}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+In 1965, Priestley introduced the class of oscillatory processes and the concept of their evolutionary spectrum as a tool for the frequency analysis of these processes. In 1979, Hasofer showed that the envelope of an oscillatory process does not have a unique representation. Recently, \cite{Swift1997} introduced the class of oscillatory harmonizable processes as an extension of Priestley's oscillatory class. In this paper, a unique representation for the envelope of a subclass of oscillatory harmonizable processes is obtained.
+\end{abstract}
+
+\section{Introduction}
+
+A class of nonstationary stochastic processes encountered in some applications is the class of modulated stationary processes $X(t)$. These processes are obtained when a stationary process $X_0(t)$ is multiplied by some nonrandom modulating function $A(t)$:
+\begin{equation}
+    X(t) = A(t) X_0(t)
+    \label{eq:modulated}
+\end{equation}
+In particular, if $A(t)$ admits a generalized Fourier transform, the class of oscillatory processes, studied by \cite{Priestley1965}, is obtained. In some physical situations, the assumption of stationarity for the process $X_0(t)$ is unrealistic. If this condition is relaxed, and $X_0(t)$ is assumed to be harmonizable and if $A(t)$ admits a generalized Fourier transform, the process $X(t)$ is not oscillatory, but is \emph{oscillatory harmonizable}.
+
+In 1978, \cite{HasoferPetocz1978} described a method for obtaining an envelope process for the class of oscillatory processes. The approach of that paper parallels that of \cite{Arens1957} and \cite{Yang1972} in that similar definitions of envelope processes are given. Hasofer defines the envelope process for the class of oscillatory processes and uses them to obtain some properties of the process' upcrossings. These properties are useful for solving certain nonlinear filtering problems.
+
+In a later paper, \cite{Hasofer1979} constructs an example of an oscillatory process without a unique envelope representation and shows that under certain natural restrictions a representation of a unique envelope process exists.
+
+Recently, \cite{Swift1997a,Swift1997b,SwiftToAppear} extended Priestley's class of oscillatory processes by the introduction and analysis of the class of oscillatory harmonizable processes. In this note, the uniqueness of the envelope of an oscillatory harmonizable process is considered.
+
+\section{The Setting}
+
+In the following work, the probability space $(\Omega, \Sigma, P)$ is always present, whether this is explicitly stated or not. To introduce the desired class of random functions, recall that if a process $X:\mathbb{R} \to L^2(P)$ is stationary then it can be expressed as:
+\begin{equation}
+    X(t) = \int_{\mathbb{R}} e^{it\lambda} \, dZ(\lambda)
+    \label{eq:stationary}
+\end{equation}
+where $Z(\cdot)$ is a $\sigma$-additive stochastic measure on the Borel sets $\mathcal{B}$ of $\mathbb{R}$, with orthogonal values in the complex Hilbert space $L^2(P)$ of centered random variables. The covariance $r(\cdot, \cdot)$ of the process is
+\begin{equation}
+    r(s, t) = \int_{\mathbb{R}} e^{i(s-t)\lambda} \, dF(\lambda)
+    \label{eq:stationary_cov}
+\end{equation}
+where $\mathbb{E}(Z(A)Z(B)) = F(A \cap B)$, $F$ a bounded Borel measure on $\mathbb{R}$.
+
+A generalization of the concept of stationarity which retains the powerful tools of Fourier analysis is given by processes $X:\mathbb{R} \to L^2(P)$ with covariance $r(\cdot, \cdot)$ expressible as
+\begin{equation}
+    r(s, t) = \iint_{\mathbb{R} \times \mathbb{R}} e^{is\lambda - it\lambda'} \, dF(\lambda, \lambda')
+    \label{eq:harmonizable_cov}
+\end{equation}
+where $F(\cdot, \cdot)$ is a complex bimeasure, called the spectral bimeasure of the process, of bounded variation in the Vitali's sense or more inclusively in Fréchet's sense; in which case the integrals are strict Morse-Transue (cf. \cite{Rao1984}). The covariance as well as the process are termed strongly or weakly harmonizable respectively. Every weakly or strongly harmonizable process $X:\mathbb{R} \to L^2(P)$ has an integral representation given by \eqref{eq:stationary}, where $Z:\mathcal{B} \to L^2(P)$ is a stochastic measure (not necessarily with orthogonal values) and is called the spectral measure of the process. Both of these concepts reduce to the stationary case if $F$ concentrates on the diagonal $\lambda = \lambda'$ of $\mathbb{R} \times \mathbb{R}$.
+
+The structure and properties of harmonizable processes have been investigated and developed extensively by M.~M.~Rao and others. A recent account of the development of harmonizable processes and some of their applications may be found in \cite{Swift1997b}. That paper also contains a detailed bibliography of the existing work on harmonizable processes.
+
+An interesting and useful generalization to the class of weakly harmonizable processes was recently given by \cite{Swift1997a}, who gave the following definition.
+
+\begin{definition}[Oscillatory Weakly Harmonizable Process]\label{def:osc_weak_harm}
+A stochastic process $X: \mathbb{R} \to L^2(P)$ is \emph{oscillatory weakly harmonizable} if its covariance has representation
+\begin{equation}
+    r(s, t) = \iint_{\mathbb{R} \times \mathbb{R}} A(s, \lambda)A(t, \lambda') e^{i(s\lambda-t\lambda')} \, dF(\lambda, \lambda')
+    \label{eq:osc_harm_cov}
+\end{equation}
+where $F(\cdot,\cdot)$ is a function of bounded Fréchet variation, and
+\begin{equation}
+    A(t, \lambda) = \int_{\mathbb{R}} e^{it\lambda} \, dH(t, dx)
+    \label{eq:a_representation}
+\end{equation}
+with $H(t, B)$ a Borel function on $\mathbb{R}$, $H(t,\cdot)$ a signed measure and $A(t, \lambda)$ having an absolute maximum at $\lambda = 0$ independent of $t$.
+\end{definition}
+
+Note that if $A(t, \lambda) = 1$, this class coincides with the weakly harmonizable class of processes.
+
+Oscillatory harmonizable processes are also an extension of a class of processes introduced by \cite{Priestley1965}. Priestley introduced and studied a generalization of the class of stationary processes. Priestley defined a process as oscillatory if it has representation
+\begin{equation}
+    X(t) = \int_{\mathbb{R}} A(t, \lambda) e^{it\lambda} \, dZ(\lambda)
+    \label{eq:priestley_rep}
+\end{equation}
+where $Z(\cdot)$ is a stochastic measure with orthogonal increments and $A(t, \lambda)$ satisfies \eqref{eq:a_representation}. Using this representation, the covariance of an oscillatory process is
+\begin{equation}
+    r(s, t) = \int_{\mathbb{R}} A(s, \lambda) A(t, \lambda) e^{i\lambda(s-t)} \, dG(\lambda);
+    \label{eq:osc_cov}
+\end{equation}
+
+so that in the same fashion as Priestley's oscillatory processes extend the class of stationary processes, the oscillatory weakly harmonizable processes extend the weakly harmonizable class.
+
+Observe that the oscillatory harmonizable class extends the oscillatory class. To see this, note that if $F(\cdot,\cdot)$, the spectral bimeasure of a oscillatory weakly harmonizable process concentrates on the diagonal $\lambda = \lambda'$, the oscillatory processes are obtained. To emphasize this distinction, we will refer to Priestley's class as the oscillatory stationary class.
+
+Using the definition of a oscillatory harmonizable process and a version of Karhunen's theorem, \cite{Swift1997a} obtained the spectral representation of an oscillatory harmonizable process as
+\begin{equation}
+    X(t) = \int_{\mathbb{R}} A(t, \lambda) e^{it\lambda} \, dZ(\lambda)
+    \label{eq:osc_harm_rep}
+\end{equation}
+where $Z(\cdot)$ is a stochastic measure satisfying
+\begin{equation}
+    \mathbb{E}(Z(B_1) Z(B_2)) = F(B_1, B_2)
+    \label{eq:z_expectation}
+\end{equation}
+with $F(\cdot,\cdot)$ a function of bounded Fréchet variation.
+
+\section{Envelope Processes}
+
+Consider a weakly harmonizable process $X(\cdot)$ with spectral representation
+\begin{equation}
+    X(t) = \int_{\mathbb{R}} e^{it\lambda} \, dZ(\lambda)
+    \label{eq:weak_harm_rep}
+\end{equation}
+with $Z(\cdot)$ having no jumps a.e. at the origin. Then the Hilbert transform $\tilde{X}(\cdot)$, (cf., \cite{Hasofer1979}), of $X(\cdot)$ is given by
+\begin{equation}
+    \tilde{X}(t) = \text{Im } 2 \int_{\mathbb{R}} e^{it\lambda} \, dZ(\lambda).
+    \label{eq:hilbert_transform}
+\end{equation}
+
+The corresponding oscillatory weakly harmonizable process is given by
+\begin{equation}
+    Y(t) = \int_{\mathbb{R}} A(t, \lambda) e^{it\lambda} \, dZ(\lambda)
+    \label{eq:y_process}
+\end{equation}
+where $A(t, \lambda)$ is given by \eqref{eq:a_representation}. Using this representation, one defines the quadrature process as the Hibert transform of $Y(\cdot)$. More specifically,
+\begin{equation}
+    \tilde{Y}(t) = \text{Im } 2 \int_{\mathbb{R}} A(t, \lambda) e^{it\lambda} \, dZ(\lambda).
+    \label{eq:y_hilbert}
+\end{equation}
+
+Using the representations \eqref{eq:y_process} and \eqref{eq:y_hilbert}, the envelope of an oscillatory harmonizable process is given by the equation
+\begin{equation}
+    R(t) = (Y^2(t) + \tilde{Y}^2(t))^{1/2}
+    \label{eq:envelope}
+\end{equation}
+
+The nonuniqueness of the representation \eqref{eq:y_process} for the oscillatory stationary class was pointed out by \cite{Priestley1965} and again by \cite{SwiftToAppear} in the oscillatory harmonizable case. \cite{Hasofer1979} constructed an example for the oscillatory stationary class which showed the nonuniqueness of the representation \eqref{eq:envelope}. This nonuniqueness can be resolved so that a process has a unique representation \eqref{eq:envelope}, even though the representation \eqref{eq:y_process} is not unique.
+
+Let $h(t_0, t, u)$ be a time-varying filter initiated at time $t_0$ such that for each $t > t_0$,
+\begin{equation}
+    A(t_0, t, \lambda) = \int_{\mathbb{R}} e^{i\lambda u} h(t_0, t, u) \, du
+    \label{eq:filter_a}
+\end{equation}
+where $A(t_0, t, \lambda)$ has an absolute maximum at $\lambda = 0$, independent of $t$. If the weakly harmonizable process $X(\cdot)$ is passed through this filter, then it can be shown (cf., \cite{SwiftToAppear}) that
+\begin{equation}
+    Y(t_0, t) = \int_{\mathbb{R}} X(u) h(t_0, t, u) \, du
+    \label{eq:y_t0_t}
+\end{equation}
+is an oscillatory weakly harmonizable process.
+
+Now suppose that as $t_0 \to -\infty$,
+\begin{equation}
+    h(t_0, t, u) \to h(t - u)
+    \label{eq:h_limit}
+\end{equation}
+and
+\begin{equation}
+    Y(t_0, t) \to Y(t)
+    \label{eq:y_limit}
+\end{equation}
+where $Y(\cdot)$ has representation
+\begin{equation}
+    Y(t) = \int_{\mathbb{R}} h(t - u) X(u) \, du.
+    \label{eq:y_representation}
+\end{equation}
+
+Then since $X(\cdot)$ is weakly harmonizable, it follows that $Y(\cdot)$ is necessarily weakly harmonizable (\cite{ChangRao1986}, p. 87). In fact, processes which satisfy this condition have been termed asymptotically stationary by \cite{Parzen1962}, for which the theory has been well-developed.
+
+If the kernel $h(t - u)$ in \eqref{eq:y_representation} is invertible, then using a compact notation, it follows that
+\begin{equation}
+    Y_{t_0} = K_{t_0} X
+    \label{eq:y_t0_compact}
+\end{equation}
+and
+\begin{equation}
+    Y = KX,
+    \label{eq:y_compact}
+\end{equation}
+so that
+\begin{equation}
+    X = K^{-1}Y.
+    \label{eq:x_compact}
+\end{equation}
+
+Now to show the uniqueness of the process $Y(t_0, t)$, suppose that it also has a representation
+\begin{equation}
+    Y(t_0, t) = \int_{\mathbb{R}} h'(t_0, t, u) X'(u) \, du,
+    \label{eq:y_t0_alt}
+\end{equation}
+where $X'(\cdot)$ is a weakly harmonizable process and $h'(t_0, t, u)$ is a time-varying filter satisfying \eqref{eq:filter_a}. If, in this representation, we also assume that
+\begin{equation}
+    Y(t_0, t) \to Y(t) \text{ as } t_0 \to -\infty
+    \label{eq:y_limit_alt}
+\end{equation}
+where
+\begin{equation}
+    Y(t) = \int_{\mathbb{R}} h'(t - u) X'(u) \, du
+    \label{eq:y_alt}
+\end{equation}
+with $h'(t - u)$ invertible, then
+\begin{equation}
+    Y_{t_0} = K'_{t_0} X'
+    \label{eq:y_t0_compact_alt}
+\end{equation}
+and
+\begin{equation}
+    Y = K'X'.
+    \label{eq:y_compact_alt}
+\end{equation}
+
+Combining equations \eqref{eq:x_compact} and \eqref{eq:y_compact_alt} gives
+\begin{equation}
+    X' = K'^{-1}KX.
+    \label{eq:x_prime}
+\end{equation}
+
+Now noting that $K'^{-1}$ is a time-invariant filter with which Hilbert transforms commute, it follows that
+\begin{equation}
+    \tilde{X}' = K'^{-1}K\tilde{X}.
+    \label{eq:x_prime_tilde}
+\end{equation}
+
+Thus,
+\begin{equation}
+    Y_{t_0} = K'_{t_0} X'
+    = K'_{t_0} K'^{-1}KX
+    \label{eq:y_t0_expanded}
+\end{equation}
+and
+\begin{equation}
+    \tilde{Y} = K'\tilde{X}'.
+    \label{eq:y_tilde_compact}
+\end{equation}
+
+Using the spectral representation of the weakly harmonizable process $X(\cdot)$, the following two representations for $Y(t_0, t)$ are obtained;
+\begin{equation}
+    Y(t_0, t) = \int_{\mathbb{R}} T_1(t_0, t, \lambda) e^{it\lambda} \, dZ(\lambda)
+    \label{eq:y_t0_spectral1}
+\end{equation}
+were $T_1$ corresponds to the operator $K'_{t_0} K'^{-1}K$, and
+\begin{equation}
+    Y(t_0, t) = \int_{\mathbb{R}} T_2(t_0, t, \lambda) e^{it\lambda} \, dZ(\lambda).
+    \label{eq:y_t0_spectral2}
+\end{equation}
+were $T_2$ corresponds to the operator $K$.
+
+Computing the covariance of $Y(t_0, t)$ from each of the representations \eqref{eq:y_t0_spectral1} and \eqref{eq:y_t0_spectral2} gives for each $s$ and $t$ that
+\begin{equation}
+    \iint_{\mathbb{R} \times \mathbb{R}} (T_1(t_0, s, \lambda) T_1(t_0, t, \lambda') - T_2(t_0, s, \lambda) T_2(t_0, t, \lambda'))
+    \cdot e^{i(s\lambda-t\lambda')} \, dF(\lambda, \lambda') = 0,
+    \label{eq:covariance_equality}
+\end{equation}
+where $F(\cdot,\cdot)$ is the spectral bimeasure of the weakly harmonizable process $X(\cdot)$. Further,
+\begin{equation}
+    \tilde{Y}(t) = \text{Im } 2 \int_{\mathbb{R}} T_1(t_0, t, \lambda) e^{it\lambda} \, dZ(\lambda)
+    \label{eq:y_tilde1}
+\end{equation}
+and
+\begin{equation}
+    \tilde{Y}(t) = \text{Im } 2 \int_{\mathbb{R}} T_2(t_0, t, \lambda) e^{it\lambda} \, dZ(\lambda).
+    \label{eq:y_tilde2}
+\end{equation}
+
+Using equation \eqref{eq:covariance_equality} along with \eqref{eq:y_tilde1} and \eqref{eq:y_tilde2} it follows that
+\begin{equation}
+    \tilde{Y}(t_0, t) = \tilde{Y}'(t_0, t),
+    \label{eq:y_tilde_equality}
+\end{equation}
+so that the uniqueness of the process is established for all representations satisfying the above conditions. These observations are summarized in the following theorem.
+
+\begin{theorem}\label{thm:main}
+Let $X: \mathbb{R} \to L^2(P)$ be a weakly harmonizable process with spectral measure $Z(\cdot)$ having no jumps a.e. at the origin. Let $h(t_0, t, u)$ be a time-varying filter initiated at time $t_0$ such that for each $t > t_0$,
+\begin{equation}
+    A(t_0, t, \lambda) = \int_{\mathbb{R}} e^{i\lambda u} h(t_0, t, u) \, du
+    \label{eq:theorem_filter}
+\end{equation}
+where $A(t_0, t, \lambda)$ has an absolute maximum at $\lambda = 0$, independent of $t$. If the oscillatory weakly harmonizable process
+\begin{equation}
+    Y(t_0, t) = \int_{\mathbb{R}} X(u) h(t_0, t, u) \, du
+    \label{eq:theorem_y}
+\end{equation}
+is such that as $t_0 \to -\infty$,
+\begin{equation}
+    h(t_0, t, u) \to h(t - u)
+    \label{eq:theorem_h_limit}
+\end{equation}
+and
+\begin{equation}
+    Y(t_0, t) \to Y(t)
+    \label{eq:theorem_y_limit}
+\end{equation}
+where $Y(\cdot)$ has representation
+\begin{equation}
+    Y(t) = \int_{\mathbb{R}} h(t - u) X(u) \, du,
+    \label{eq:theorem_y_final}
+\end{equation}
+then the quadrature process $\tilde{Y}(\cdot)$ (i.e. the Hilbert transform of $Y(\cdot)$) is unique.
+\end{theorem}
+
+\section*{Acknowledgments}
+The author expresses his thanks to Professor M.~M.~Rao for his continuing advice, encouragement and guidance during the work of this project. The author also expresses his gratitude to Western Kentucky University for a sabbatical leave during the Fall 1998 semester and for release time during the Spring 1999 semester, during which this work was completed.
+
+\begin{thebibliography}{11}
+\bibitem{Arens1957} R. Arens, Complex Processes for Envelopes of Normal Noise, IRE Trans. Inf. Theory, Vol. 3, pp. 204-207, 1957.
+
+\bibitem{ChangRao1986} D. K. Chang and M. M. Rao, Bimeasures and Nonstationary Processes, in Real and Stochastic Analysis, pp. 7-118, John Wiley and Sons, New York, 1986.
+
+\bibitem{HasoferPetocz1978} A. M. Hasofer and P. Petocz, The envelope of an oscillatory process and its upcrossings, J. Appl. Prob., Vol. 110, pp. 711-716, 1978.
+
+\bibitem{Hasofer1979} A. M. Hasofer, A Uniqueness Problem for the Envelope of an Oscillatory Process, J. Appl. Prob., Vol. 16, pp. 822-829, 1979.
+
+\bibitem{Parzen1962} E. Parzen, Spectral Analysis of Asymptotically Stationary Time Series, Bull. Internat. Statist. Inst., Vol. 39, p. 87-103, 1962.
+
+\bibitem{Priestley1965} M. B. Priestley, Evolutionary Spectra and Nonstationary Processes, J. Roy. Statist. Soc., Ser. B, Vol. 27, pp. 204-237, 1965.
+
+\bibitem{Rao1984} M. M. Rao, Harmonizable Processes: Structure Theory, L'Enseign Math., Vol. 28, pp. 295-351, 1984.
+
+\bibitem{Swift1997a} R. J. Swift, An Operator Characterization of Oscillatory Harmonizable Processes, in Stochastic Processes and Functional Analysis, J. Goldstein, N. Gretsky and J. J. Uhl (eds.), Marcel Dekker, New York, pp. 235-243, 1997.
+
+\bibitem{Swift1997b} R. J. Swift, Some Aspects of Harmonizable Processes and Fields, in Real and Stochastic Analysis: Recent Advances, M. M. Rao (ed.), pp. 303-365, CRC Press, Boca Raton, 1997.
+
+\bibitem{SwiftToAppear} R. J. Swift, The Evolutionary Spectra of a Harmonizable Process, J. Appl. Stat. Sci. (to appear).
+
+\bibitem{Yang1972} J. N. Yang, Non-stationary Envelope Process and First-excursion Probability, J. Structural Mech., Vol. 1, pp. 231-248, 1972.
+\end{thebibliography}
+
+\end{document}
