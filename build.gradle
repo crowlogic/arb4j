@@ -42,10 +42,10 @@ dependencies {
     api 'org.openjfx:javafx-base:24.0.1'
     api 'org.openjfx:javafx-swing:24.0.1'
     api 'org.openjfx:javafx-fxml:24.0.1'
-    api 'org.slf4j:slf4j-simple:2.0.11'
+    api 'org.slf4j:slf4j-simple:2.0.17'
     api 'org.scilab.forge:jlatexmath:1.0.7'
     api 'io.fair-acc:chartfx:11.3.1'
-    api 'org.controlsfx:controlsfx:11.2.0'
+    api 'org.controlsfx:controlsfx:11.2.2'
     api 'junit:junit:4.13.2'
     api 'guru.nidi.com.kitfox:svgSalamander:1.1.3'    
 }
