@@ -1,14 +1,12 @@
 BASEDIR=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 VERSION=$(shell $(BASEDIR)/bin/arb4jVersion)
-
-INCLUDES=-I/usr/include/x86_64-linux-gnu -I/usr/include/linux -I/usr/include/flint \
- -I/usr/include -I/usr/include/i386-linux-gnu -I/usr/lib/gcc/x86_64-linux-gnu/11/include/
+ 
 
 SOURCES=native/arb_wrap.c native/complex.c 
 
 JAVA_HOME=$(shell readlink -f /usr/bin/javac | sed "s:bin/javac::")
 
-C_INCLUDES=-I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux -I/usr/local/include -I/usr/include/flint
+C_INCLUDES=-I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux -I/usr/include/flint
 
 CFLAGS=-g -O3 -fPIC -shared -Wno-int-conversion 
 
@@ -22,7 +20,7 @@ build/libs/arb4j-$(VERSION).jar: libarblib.so $(shell find src) $(shell find nat
 	gradle build
 
 native/arb_wrap.c: $(shell find native -name "*.i") 
-	swig $(SWIGFLAGS) $(INCLUDES) native/arb.i
+	swig $(SWIGFLAGS) native/arb.i
 
 libarblib.so: $(SOURCES)
 	clang $(CFLAGS) $(SOURCES) $(C_INCLUDES) -olibarblib.so -lflint -lxdo 
