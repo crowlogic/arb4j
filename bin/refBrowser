@@ -1,4 +1,4 @@
 #!/bin/sh
 
-run arb.documentation.ReferenceBrowser $@
+run -Dglass.gtk.uiScale=1.25 arb.documentation.ReferenceBrowser $@
 
