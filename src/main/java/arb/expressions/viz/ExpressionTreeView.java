@@ -10,8 +10,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import arb.*;
+import arb.AlgebraicNumber;
+import arb.Complex;
+import arb.ComplexFraction;
+import arb.ComplexMatrix;
+import arb.ComplexPolynomial;
+import arb.ComplexRationalFunction;
+import arb.Fraction;
+import arb.GaussianInteger;
 import arb.Integer;
+import arb.IntegerPolynomial;
+import arb.Named;
+import arb.Quaternion;
+import arb.RationalFunction;
+import arb.Real;
+import arb.RealMatrix;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -21,11 +35,24 @@ import arb.expressions.SerializedExpression;
 import arb.expressions.TopologicalSorter;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
-import arb.functions.*;
+import arb.functions.ComplexToRealFunction;
+import arb.functions.Function;
+import arb.functions.IntegerFunction;
+import arb.functions.IntegerNullaryFunction;
+import arb.functions.NullaryFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexNullaryFunction;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
-import arb.functions.integer.*;
+import arb.functions.integer.ComplexFunctionSequence;
+import arb.functions.integer.ComplexPolynomialSequence;
+import arb.functions.integer.ComplexSequence;
+import arb.functions.integer.IntegerPolynomialNullaryFunction;
+import arb.functions.integer.IntegerPolynomialSequence;
+import arb.functions.integer.IntegerSequence;
+import arb.functions.integer.RealFunctionSequence;
+import arb.functions.integer.RealPolynomialSequence;
+import arb.functions.integer.RealSequence;
+import arb.functions.integer.Sequence;
 import arb.functions.polynomials.RealPolynomialFunction;
 import arb.functions.rational.ComplexRationalFunctionSequence;
 import arb.functions.rational.ComplexRationalNullaryFunction;
@@ -44,7 +71,18 @@ import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.scene.control.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.IndexedCell;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTablePosition;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.control.skin.VirtualFlow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
@@ -331,7 +369,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     {
       try
       {
-        var serializedExpression = Utensils.loadFromYamlFormat(file);
+        SerializedExpression serializedExpression = Utensils.loadFromYamlFormat(file);
         context.variables.clear();
 
         var ctx = serializedExpression.context;
@@ -411,10 +449,9 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     IntegerPolynomialSequence.class, IntegerNullaryFunction.class, IntegerPolynomialNullaryFunction.class,
     RealFunction.class, RealPolynomialFunction.class, ComplexFunction.class, ComplexSequence.class,
     ComplexPolynomialSequence.class, ComplexNullaryFunction.class, RationalFunctionSequence.class,
-    RationalNullaryFunction.class, RealPolynomialSequence.class, RealNullaryFunction.class,
-    ComplexToRealFunction.class, ComplexRationalFunctionSequence.class, ComplexRationalNullaryFunction.class,
-    Sequence.class, RealFunctionSequence.class, RealNullaryFunctional.class, Functional.class,
-    ComplexFunctionSequence.class };
+    RationalNullaryFunction.class, RealPolynomialSequence.class, RealNullaryFunction.class, ComplexToRealFunction.class,
+    ComplexRationalFunctionSequence.class, ComplexRationalNullaryFunction.class, Sequence.class,
+    RealFunctionSequence.class, RealNullaryFunctional.class, Functional.class, ComplexFunctionSequence.class };
 
   private HBox setupTypeBoxes()
   {
@@ -530,7 +567,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     else if (functionType.equals(RealPolynomialFunction.class))
     {
       selectTypes(RealPolynomial.class, RealPolynomial.class);
-    } 
+    }
     else if (functionType.equals(ComplexSequence.class))
     {
       selectTypes(Integer.class, Complex.class);

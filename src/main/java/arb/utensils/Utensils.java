@@ -2,7 +2,13 @@ package arb.utensils;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -255,11 +261,11 @@ public class Utensils
     return outputStream.toString();
   }
 
-  public static SerializedExpression loadFromYamlFormat(File file) throws FileNotFoundException
+  public static <T> T loadFromYamlFormat(File file) throws FileNotFoundException
   {
-    Yaml                 yaml   = newYaml();
+    Yaml yaml   = newYaml();
 
-    SerializedExpression loaded = yaml.load(new FileReader(file));
+    T    loaded = yaml.load(new FileReader(file));
 
     System.out.println("Loaded " + loaded);
     return loaded;
