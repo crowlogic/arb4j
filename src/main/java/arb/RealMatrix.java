@@ -71,7 +71,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
   }
   
   @Override
-  public Becomable<RealMatrix> become(RealMatrix that)
+  public RealMatrix become(RealMatrix that)
   {
     close();
     this.rows           = that.rows;
@@ -139,7 +139,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     return rows[i].swigCPtr;
   }      
   
- private void initRows()
+  private void initRows()
   {
     assert rowPointers != null : "rowPointers is null";
     if ( rows == null )
@@ -151,8 +151,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     {
       if ( rows[i] == null )
       {
-        rows[i]          = new Real(rowPointers.get(i),
-                                    false);
+        rows[i]          = new Real(rowPointers.get(i), false);
       }
       else
       {                                   

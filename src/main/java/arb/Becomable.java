@@ -38,5 +38,5 @@ public interface Becomable<B extends Becomable<? extends B>>
    * @param that
    * @return this after becoming that
    */
-  public Becomable<B> become(B that);
+  public B become(B that);
 }
