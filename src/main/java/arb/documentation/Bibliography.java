@@ -21,14 +21,21 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
-
+  public static Article       envelopeOscillatoryProcessUpcrossings                           =
+                                                                    new Article("The Envelope of an Oscillatory Process and Its Upcrossings",
+                                                                                "A. M. Hasofer and P. Petocz",
+                                                                                "1978",
+                                                                                "Advances in Applied Probability",
+                                                                                "10",
+                                                                                "711--716").setNumber("4")
+                                                                                           .setPublisher("Applied Probability Trust");
   public static Article       oscillatoryHarmonizableProcessEnvelope                          =
                                                                      new Article("The envelope of an oscillatory harmonizable process",
                                                                                  "Randall J. Swift",
                                                                                  "2000",
                                                                                  "Journal of Interdisciplinary Mathematics",
                                                                                  "3",
-                                                                                 "83 - 91");
+                                                                                 "83-91");
 
   public static Article       linearPredictionNonStationaryProcesses                          =
                                                                      new Article("On the linear prediction problem of certain non-stationary stochastic processes",
