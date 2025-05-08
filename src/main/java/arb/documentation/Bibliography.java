@@ -21,6 +21,15 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+
+  public static Article       envelopeUniquenessOscillatoryProcess                            =
+                                                                   new Article("A uniqueness problem for the envelope of an oscillatory process",
+                                                                               "A. M. Hasofer",
+                                                                               "1979",
+                                                                               "Journal of Applied Probability",
+                                                                               "16",
+                                                                               "822–829").setNumber("4");
+
   public static Article       envelopeOscillatoryProcessUpcrossings                           =
                                                                     new Article("The Envelope of an Oscillatory Process and Its Upcrossings",
                                                                                 "A. M. Hasofer and P. Petocz",
