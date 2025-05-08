@@ -80,7 +80,6 @@ public class SymbolPalette extends
 
   private static void initializeAliases()
   {
-    addAliases("Χ χ", "chi");
     addAliases("ᵡ", "supchi");
     addAliases("ʰ", "suph");
     addAliases("ʲ", "supj");
@@ -169,6 +168,7 @@ public class SymbolPalette extends
     addAliases("⅞", "seveneighths");
 
     // Greek Letters (uppercase and lowercase together)
+    addAliases("Χ χ", "chi");    
     addAliases("Γ γ", "gamma");
     addAliases("Δ δ", "delta");
     addAliases("η", "eta");
