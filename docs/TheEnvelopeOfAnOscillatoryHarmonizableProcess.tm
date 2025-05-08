@@ -111,15 +111,13 @@
   where
 
   <\equation>
-    F*<around|(|A\<cap\>B=|\<nobracket\>>\<bbb-E\><around|(|Z<around|(|A|)>*Z<around|(|B|)>|)>
+    \<bbb-E\><around|(|Z<around|(|A|)>*Z<around|(|B|)>|)>=F*<around|(|A\<cap\>B|\<nobracket\>>
   </equation>
 
-  is a bounded Borel measure on <math|\<bbb-R\>>.\ 
-
-  A generalization of the concept of stationarity which retains the powerful
-  tools of Fourier analysis is given by processes
-  <math|X:\<bbb-R\>\<to\>L<rsup|2><around|(|P|)>> with covariance
-  <math|r<around|(|\<cdummy\>,\<cdummy\>|)>> expressible as
+  is a bounded Borel measure on <math|\<bbb-R\>>. A generalization of the
+  concept of stationarity which retains the powerful tools of Fourier
+  analysis is given by processes <math|X:\<bbb-R\>\<to\>L<rsup|2><around|(|P|)>>
+  with covariance <math|r<around|(|\<cdummy\>,\<cdummy\>|)>> expressible as
 
   <\equation>
     r<around|(|s,t|)>=<big|iint><rsub|\<bbb-R\>\<times\>\<bbb-R\>>e<rsup|i*s*\<lambda\>-i*t*\<lambda\><rprime|'>>*<space|0.17em>d*F<around|(|\<lambda\>,\<lambda\><rprime|'>|)><label|eq:harmonizable_cov>
@@ -403,10 +401,9 @@
     Y<around|(|t<rsub|0>,t|)>=<big|int><rsub|\<bbb-R\>>T<rsub|2><around|(|t<rsub|0>,t,\<lambda\>|)>*e<rsup|i*t*\<lambda\>>*<space|0.17em>d*Z<around|(|\<lambda\>|)><label|eq:y_t0_spectral2>
   </equation>
 
-  were <math|T<rsub|2>> corresponds to the operator <math|K>.
-
-  Computing the covariance of <math|Y<around|(|t<rsub|0>,t|)>> from each of
-  the representations <eqref|eq:y_t0_spectral1> and <eqref|eq:y_t0_spectral2>
+  where <math|T<rsub|2>> corresponds to the operator <math|K>. Computing the
+  covariance of <math|Y<around|(|t<rsub|0>,t|)>> from each of the
+  representations <eqref|eq:y_t0_spectral1> and <eqref|eq:y_t0_spectral2>
   gives for each <math|s> and <math|t> that
 
   <\equation>
@@ -535,8 +532,14 @@
 
 <\initial>
   <\collection>
+    <associate|global-title|The Envelope of an Oscillatory Harmonizable
+    Process>
+    <associate|info-flag|minimal>
     <associate|magnification|1.2>
+    <associate|page-height|auto>
     <associate|page-medium|paper>
+    <associate|page-type|letter>
+    <associate|page-width|auto>
   </collection>
 </initial>
 
@@ -545,64 +548,64 @@
     <associate|auto-1|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|auto-2|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|auto-3|<tuple|3|4|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|auto-4|<tuple|44|8|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|auto-4|<tuple|44|7|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|auto-5|<tuple|44|8|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|bib-Arens1957|<tuple|Arens1957|8|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|bib-ChangRao1986|<tuple|ChangRao1986|9|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|bib-Hasofer1979|<tuple|Hasofer1979|9|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|bib-HasoferPetocz1978|<tuple|HasoferPetocz1978|9|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|bib-Parzen1962|<tuple|Parzen1962|9|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|bib-Priestley1965|<tuple|Priestley1965|9|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|bib-Rao1984|<tuple|Rao1984|9|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|bib-Swift1997a|<tuple|Swift1997a|9|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|bib-Swift1997b|<tuple|Swift1997b|9|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|bib-SwiftToAppear|<tuple|SwiftToAppear|9|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|bib-Yang1972|<tuple|Yang1972|9|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|bib-ChangRao1986|<tuple|ChangRao1986|8|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|bib-Hasofer1979|<tuple|Hasofer1979|8|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|bib-HasoferPetocz1978|<tuple|HasoferPetocz1978|8|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|bib-Parzen1962|<tuple|Parzen1962|8|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|bib-Priestley1965|<tuple|Priestley1965|8|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|bib-Rao1984|<tuple|Rao1984|8|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|bib-Swift1997a|<tuple|Swift1997a|8|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|bib-Swift1997b|<tuple|Swift1997b|8|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|bib-SwiftToAppear|<tuple|SwiftToAppear|8|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|bib-Yang1972|<tuple|Yang1972|8|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|def:osc_weak_harm|<tuple|1|3|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:a_representation|<tuple|7|3|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:covariance_equality|<tuple|36|7|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:envelope|<tuple|16|5|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:covariance_equality|<tuple|36|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:envelope|<tuple|16|4|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:filter_a|<tuple|17|5|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:h_limit|<tuple|19|5|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:harmonizable_cov|<tuple|5|3|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:harmonizable_cov|<tuple|5|2|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:hilbert_transform|<tuple|13|4|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:modulated|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:osc_cov|<tuple|9|4|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:osc_cov|<tuple|9|3|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:osc_harm_cov|<tuple|6|3|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:osc_harm_rep|<tuple|10|4|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:priestley_rep|<tuple|8|3|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:stationary|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:stationary_cov|<tuple|3|2|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:theorem_filter|<tuple|40|8|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:theorem_h_limit|<tuple|42|8|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:theorem_y|<tuple|41|8|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:theorem_y_final|<tuple|44|8|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:theorem_y_limit|<tuple|43|8|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:theorem_filter|<tuple|40|7|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:theorem_h_limit|<tuple|42|7|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:theorem_y|<tuple|41|7|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:theorem_y_final|<tuple|44|7|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:theorem_y_limit|<tuple|43|7|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:weak_harm_rep|<tuple|12|4|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:x_compact|<tuple|24|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:x_compact|<tuple|24|5|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:x_prime|<tuple|30|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:x_prime_tilde|<tuple|31|7|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:x_prime_tilde|<tuple|31|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:y_alt|<tuple|27|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:y_compact|<tuple|23|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:y_compact|<tuple|23|5|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:y_compact_alt|<tuple|29|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:y_hilbert|<tuple|15|5|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:y_hilbert|<tuple|15|4|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:y_limit|<tuple|20|5|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:y_limit_alt|<tuple|26|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:y_limit_alt|<tuple|26|5|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:y_process|<tuple|14|4|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:y_representation|<tuple|21|5|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:y_t0_alt|<tuple|25|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:y_t0_compact|<tuple|22|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:y_t0_alt|<tuple|25|5|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:y_t0_compact|<tuple|22|5|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:y_t0_compact_alt|<tuple|28|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:y_t0_expanded|<tuple|32|7|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:y_t0_spectral1|<tuple|34|7|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:y_t0_spectral2|<tuple|35|7|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:y_t0_expanded|<tuple|32|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:y_t0_spectral1|<tuple|34|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:y_t0_spectral2|<tuple|35|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:y_t0_t|<tuple|18|5|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:y_tilde1|<tuple|37|7|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:y_tilde1|<tuple|37|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:y_tilde2|<tuple|38|7|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:y_tilde_compact|<tuple|33|7|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|eq:y_tilde_compact|<tuple|33|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:y_tilde_equality|<tuple|39|7|../.TeXmacs/texts/scratch/no_name_2.tm>>
     <associate|eq:z_expectation|<tuple|11|4|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|thm:main|<tuple|2|8|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|thm:main|<tuple|2|7|../.TeXmacs/texts/scratch/no_name_2.tm>>
   </collection>
 </references>
 
