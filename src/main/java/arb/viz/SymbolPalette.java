@@ -49,7 +49,7 @@ public class SymbolPalette extends
                            Application
 {
   public static final String[]                  SYMBOLS           =
-  { "ϱ", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "9", "⁄", "/", "+", "-", "*", "π", "Γ", "ᵅ", "ⅈ", "∈", "₋",
+  { "χ", "ϱ", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "9", "⁄", "/", "+", "-", "*", "π", "Γ", "ᵅ", "ⅈ", "∈", "₋",
     "₊", "⇒", "➔", "√", "π", "⌊", "⌋", "≀", "₍", "₎", "∫", "Π", "∏", "Σ", "∑", "½", "²", "ⁿ", "∀", "∃", "μ", "ν", "ξ",
     "⋰", "ℭ", "α", "β", "∂", "🤙" };
 
@@ -80,6 +80,8 @@ public class SymbolPalette extends
 
   private static void initializeAliases()
   {
+    addAliases("Χ χ", "chi");
+    addAliases("ᵡ", "supchi");
     addAliases("ʰ", "suph");
     addAliases("ʲ", "supj");
     addAliases("ʳ", "supr");
