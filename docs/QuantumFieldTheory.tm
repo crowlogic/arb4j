@@ -1,10 +1,10 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|framed-theorems>>
+<style|<tuple|generic|metal|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Quantum Field Theory>|<doc-author|<author-data|<author-name|Stanley
-  P. Gooder (remixed by Steve)>>>>
+  P. Gooder >>>>
 
   <\table-of-contents|toc>
     <with|par-left|1tab|7.1. Canonical Commutation Relations
@@ -291,22 +291,45 @@
   <math|<with|math-font|cal*|H>>. That is,
 
   <\enumerate-numeric>
-    <item><tabular|<tformat|<table|<row|<\cell>
-      <math|U<around*|(|f<rsub|1>|)>*U<around*|(|f<rsub|2>|)>=U*<around*|(|f<rsub|1>+f<rsub|2>|)>>
+    <item>
 
-      and
+    <\equation>
+      U<around*|(|f<rsub|1>|)>*U<around*|(|f<rsub|2>|)>=U*<around*|(|f<rsub|1>+f<rsub|2>|)>
+    </equation>
 
-      <math|V<around*|(|g<rsub|1>|)>*V<around*|(|g<rsub|2>|)>=V*<around*|(|g<rsub|1>+g<rsub|2>|)>>
-    </cell>>|<row|<\cell>
-      \<forall\><math|f<rsub|1>,f<rsub|2>,g<rsub|1>,g<rsub|2>\<in\><with|math-font|cal*|H>>
-    </cell>>>>>
+    and
 
-    <item><tabular|<tformat|<table|<row|<cell|<math|lim<rsub|n\<rightarrow\>\<infty\>>
-    U<around*|(|f<rsub|n>|)>*\<phi\>=U<around|(|f|)>*\<phi\>>>>|<row|<cell|and>>|<row|<cell|<math|lim<rsub|n\<rightarrow\>\<infty\>>
-    V<around*|(|g<rsub|n>|)>*\<phi\>=V<around|(|g|)>*\<phi\>>>>|<row|<cell|\<forall\><math|\<phi\>\<in\><with|math-font|cal*|K>>
-    whenever <with|font-base-size|8|<math|lim<rsub|n\<rightarrow\>\<infty\>>
-    f<rsub|n>=f> and <math|lim<rsub|n\<rightarrow\>\<infty\>> g<rsub|n>=g> in
-    <math|<with|math-font|cal*|H>>>>>>>>
+    <\equation>
+      V<around*|(|g<rsub|1>|)>*V<around*|(|g<rsub|2>|)>=V*<around*|(|g<rsub|1>+g<rsub|2>|)>
+    </equation>
+
+    \<forall\><math|f<rsub|1>,f<rsub|2>,g<rsub|1>,g<rsub|2>\<in\><with|math-font|cal*|H>>
+
+    <item>
+
+    <\equation>
+      lim<rsub|n\<rightarrow\>\<infty\>> U<around*|(|f<rsub|n>|)>*\<phi\>=U<around|(|f|)>*\<phi\>
+    </equation>
+
+    and
+
+    <\equation>
+      lim<rsub|n\<rightarrow\>\<infty\>> V<around*|(|g<rsub|n>|)>*\<phi\>=V<around|(|g|)>*\<phi\>
+    </equation>
+
+    \<forall\><math|\<phi\>\<in\><with|math-font|cal*|K>> whenever\ 
+
+    <\equation>
+      lim<rsub|n\<rightarrow\>\<infty\>> f<rsub|n>=f
+    </equation>
+
+    and
+
+    <\equation>
+      lim<rsub|n\<rightarrow\>\<infty\>> g<rsub|n>=g
+    </equation>
+
+    in <math|<with|math-font|cal*|H>>.
   </enumerate-numeric>
 
   We now describe three standard examples of quantum fields. For a boson
@@ -339,20 +362,29 @@
   vacuum state, and any vector in <math|<with|math-font|cal*|K>> can be
   approximated arbitrarily closely by (finite) linear combinations of
   multiple applications of the creation operators to the vacuum state. (The
-  creation operators will be defined below.)
-
-  For <math|f\<in\><with|math-font|cal*|H>>, the Segal field operator is
-  defined by
+  creation operators will be defined below.) For
+  <math|f\<in\><with|math-font|cal*|H>>, the Segal field operator is defined
+  by
 
   <\equation>
     <label|eq:field-operator>\<Phi\><around|(|f|)>=<around|(|Q<around|(|f|)>+P<around|(|f|)>|)>/<sqrt|2>
   </equation>
 
-  where <math|Q<around|(|f|)>=a<rsup|\<ast\>><around|(|f|)>+a<around|(|f|)>>
-  (position operator) and <math|P<around|(|f|)>=i*<around*|(|a<rsup|\<ast\>><around|(|f|)>-a<around|(|f|)>|)>>
-  (momentum operator). Here, <math|a<rsup|\<ast\>><around|(|f|)>> is the
-  creation operator and <math|a<around|(|f|)>> is the annihilation operator.
-  For <math|f<rsub|1>,\<ldots\>,f<rsub|n>\<in\>L<rsup|2><around*|(|\<bbb-R\><rsup|3>|)>>,
+  where the position operator is
+
+  <\equation>
+    Q<around|(|f|)>=a<rsup|\<ast\>><around|(|f|)>+a<around|(|f|)>
+  </equation>
+
+  \ and the momentum operator is\ 
+
+  <\equation>
+    P<around|(|f|)>=i*<around*|(|a<rsup|\<ast\>><around|(|f|)>-a<around|(|f|)>|)>
+  </equation>
+
+  Here, <math|a<rsup|\<ast\>><around|(|f|)>> is the creation operator and
+  <math|a<around|(|f|)>> is the annihilation operator. For
+  <math|f<rsub|1>,\<ldots\>,f<rsub|n>\<in\>L<rsup|2><around*|(|\<bbb-R\><rsup|3>|)>>,
   the creation operator <math|a<rsup|\<ast\>><around|(|f|)>> is defined by
 
   <\equation>
@@ -369,20 +401,17 @@
     <label|eq:creation-annihilation-ccr><tabular|<tformat|<table|<row|<cell|<around*|[|a<around|(|f|)>,a<rsup|\<ast\>><around|(|g|)>|]>=<around|\<langle\>|f,g|\<rangle\>>*I>>|<row|<cell|<around*|[|a<around|(|f|)>,a<around|(|g|)>|]>=<around*|[|a<rsup|\<ast\>><around|(|f|)>,a<rsup|\<ast\>><around|(|g|)>|]>=0>>>>>
   </equation>
 
-  for all <math|f,g\<in\>L<rsup|2><around*|(|\<bbb-R\><rsup|3>|)>>.
-
-  Returning to the Segal field operators <math|\<Phi\><around|(|f|)>>, let us
-  define the unitary operators
+  for all <math|f,g\<in\>L<rsup|2><around*|(|\<bbb-R\><rsup|3>|)>>. Returning
+  to the Segal field operators <math|\<Phi\><around|(|f|)>>, let us define
+  the unitary operators
 
   <\equation>
     <label|eq:unitary-ops><tabular|<tformat|<table|<row|<cell|U<around|(|f|)>=e<rsup|-i*P<around|(|f|)>>>>|<row|<cell|V<around|(|f|)>=e<rsup|-i*Q<around|(|f|)>>>>>>>
   </equation>
 
-  for <math|f\<in\>L<rsup|2><around*|(|\<bbb-R\><rsup|3>|)>>.
-
-  It can be shown that <eqref|eq:ccr-weyl-inf> holds for these operators. A
-  fermion field is similar to a boson field with a few changes. The position
-  operator is
+  for <math|f\<in\>L<rsup|2><around*|(|\<bbb-R\><rsup|3>|)>>. It can be shown
+  that <eqref|eq:ccr-weyl-inf> holds for these operators. A fermion field is
+  similar to a boson field with a few changes. The position operator is
 
   <\equation>
     <label|eq:fermion-q>Q<around|(|f|)>=b<rsup|\<ast\>><around|(|f|)>+b<around|(|f|)>
@@ -590,11 +619,7 @@
   For this Hamiltonian we have
 
   <\equation>
-    <label|eq:ham-field-comm>
-
-    <\aligned>
-      <tformat|<table|<row|<cell|>|<cell|<around|[|H,\<phi\><around|(|x|)>|]>=i*\<pi\><around|(|x|)>>>|<row|<cell|>|<cell|<around|[|H,\<pi\><around|(|x|)>|]>=-i*<around*|[|-\<nabla\><rsup|2>+m<rsup|2>|]>*\<phi\><around|(|x|)>>>>>
-    </aligned>
+    <label|eq:ham-field-comm><text|<math|<tabular|<tformat|<table|<row|<cell|<around|[|H,\<phi\><around|(|x|)>|]>=i*\<pi\><around|(|x|)>>>|<row|<cell|<around|[|H,\<pi\><around|(|x|)>|]>=-i*<around*|[|-\<nabla\><rsup|2>+m<rsup|2>|]>*\<phi\><around|(|x|)>>>>>>>>
   </equation>
 
   It follows from the Heisenberg equation <eqref|eq:heisenberg-eqn> that
@@ -657,13 +682,11 @@
     U<around|(|\<phi\>|)>*V<around|(|\<psi\>|)>=e<rsup|i*<around|\<langle\>|\<phi\>,\<psi\>|\<rangle\>>>*V<around|(|\<psi\>|)>*U<around|(|\<phi\>|)><label|eq:vccr>
   </equation>
 
-  for every <math|\<phi\>,\<psi\>\<in\>\<frak-V\>>.
-
-  Of course, this is a straightforward generalization of the finite number of
-  degrees of freedom case. But now the von Neumann uniqueness theorem does
-  not hold and we can have many inequivalent
-  <math|\<frak-V\>>-representations of the CCR. We shall only consider the
-  so-called cyclic representations.
+  for every <math|\<phi\>,\<psi\>\<in\>\<frak-V\>>. Of course, this is a
+  straightforward generalization of the finite number of degrees of freedom
+  case. But now the von Neumann uniqueness theorem does not hold and we can
+  have many inequivalent <math|\<frak-V\>>-representations of the CCR. We
+  shall only consider the so-called cyclic representations.
 
   A <math|\<frak-V\>>-representation of the CCR is cyclic with cyclic vector
   <math|h\<in\>\<cal-H\>> if
@@ -760,7 +783,7 @@
     is a bounded operator from <math|Y> to <math|\<cal-H\>>:
 
     <\align>
-      <tformat|<table|<row|<cell|<around*|\||<wide|T|^><rsub|\<psi\>>\<mid\>Y*<big|sum>\<lambda\><rsub|k>*e<rsup|i*\<Phi\><around|(|\<phi\><rsub|k>|)>>|\|><rsup|2>>|<cell|=<around*|\||<big|sum>\<lambda\><rsub|k>*e<rsup|i*<wide|T|^><rsub|\<psi\>>*\<Phi\><around|(|\<phi\><rsub|k>|)>>|\|><rsup|2><eq-number>>>|<row|<cell|>|<cell|=<big|sum><rsub|j,k>\<lambda\><rsub|j>*\<lambda\><rsub|k><rsup|\<ast\>>*<big|int>e<rsup|i*<wide|T|^><rsub|\<psi\>>*\<Phi\>*<around|(|\<phi\><rsub|j>-\<phi\><rsub|k>|)>>*d*\<mu\>>>|<row|<cell|>|<cell|=<big|sum><rsub|j,k>\<lambda\><rsub|j>*\<lambda\><rsub|k><rsup|\<ast\>>*L<rsub|<wide|T|^><rsub|\<psi\>>*\<Phi\>>*<around|(|\<phi\><rsub|j>-\<phi\><rsub|k>|)>\<leq\>M<rsub|\<psi\>>*<big|sum><rsub|j,k>\<lambda\><rsub|j>*\<lambda\><rsub|k><rsup|\<ast\>>*L<rsub|\<Phi\>>*<around|(|\<phi\><rsub|j>-\<phi\><rsub|k>|)><eq-number>>>|<row|<cell|>|<cell|=M<rsub|\<psi\>><around*|\||<big|sum>\<lambda\><rsub|k>*e<rsup|i*\<Phi\><around|(|\<phi\><rsub|k>|)>>|\|><rsup|2><eq-number>>>>>
+      <tformat|<table|<row|<cell|<around*|\||<wide|T|^><rsub|\<psi\>>\<mid\>Y*<big|sum>\<lambda\><rsub|k>*e<rsup|i*\<Phi\><around|(|\<phi\><rsub|k>|)>>|\|><rsup|2>>|<cell|=<around*|\||<big|sum>\<lambda\><rsub|k>*e<rsup|i*<wide|T|^><rsub|\<psi\>>*\<Phi\><around|(|\<phi\><rsub|k>|)>>|\|><rsup|2><eq-number>>>|<row|<cell|>|<cell|=<big|sum><rsub|j,k>\<lambda\><rsub|j>*\<lambda\><rsub|k><rsup|\<ast\>>*<big|int>e<rsup|i*<wide|T|^><rsub|\<psi\>>*\<Phi\>*<around|(|\<phi\><rsub|j>-\<phi\><rsub|k>|)>>*d*\<mu\>>>|<row|<cell|>|<cell|=<big|sum><rsub|j,k>\<lambda\><rsub|j>*\<lambda\><rsub|k><rsup|\<ast\>>*L<rsub|<wide|T|^><rsub|\<psi\>>*\<Phi\>>*<around|(|\<phi\><rsub|j>-\<phi\><rsub|k>|)><eq-number>>>|<row|<cell|>|<cell|\<leq\>M<rsub|\<psi\>>*<big|sum><rsub|j,k>\<lambda\><rsub|j>*\<lambda\><rsub|k><rsup|\<ast\>>*L<rsub|\<Phi\>>*<around|(|\<phi\><rsub|j>-\<phi\><rsub|k>|)>>>|<row|<cell|>|<cell|=M<rsub|\<psi\>><around*|\||<big|sum>\<lambda\><rsub|k>*e<rsup|i*\<Phi\><around|(|\<phi\><rsub|k>|)>>|\|><rsup|2><eq-number>>>>>
     </align>
 
     Thus <math|<around|\<\|\|\>|<wide|T|^><rsub|\<psi\>>\<mid\>Y|\<\|\|\>>\<leq\>M<rsub|\<psi\>><rsup|1/2>>
@@ -776,9 +799,9 @@
 
     <\align>
       <tformat|<table|<row|<cell|<around|(|S<rsub|\<psi\>>*f|)><around|(|\<omega\>|)>>|<cell|=lim
-      <around|(|S<rsub|\<psi\>>*f<rsub|i>|)><around|(|\<omega\>|)>=lim
-      <around|(|<wide|T|^><rsub|\<psi\>>*f<rsub|i>|)><around|(|\<omega\>|)>=lim
-      f<rsub|i<rprime|'>>*<around|(|T<rsub|\<psi\>><rsup|-1>*\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=f*<around|(|T<rsub|\<psi\>><rsup|-1>*\<omega\>|)>=<around|(|<wide|T|^><rsub|\<psi\>>*f|)><around|(|\<omega\>|)><eq-number>>>>>
+      <around|(|S<rsub|\<psi\>>*f<rsub|i>|)><around|(|\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=lim
+      <around|(|<wide|T|^><rsub|\<psi\>>*f<rsub|i>|)><around|(|\<omega\>|)>>>|<row|<cell|>|<cell|=lim
+      f<rsub|i<rprime|'>>*<around|(|T<rsub|\<psi\>><rsup|-1>*\<omega\>|)>>>|<row|<cell|>|<cell|=f*<around|(|T<rsub|\<psi\>><rsup|-1>*\<omega\>|)>=<around|(|<wide|T|^><rsub|\<psi\>>*f|)><around|(|\<omega\>|)><eq-number>>>>>
     </align>
 
     Hence <reference|thm:quasiinvariant>.2 holds.
@@ -810,7 +833,7 @@
     Letting <math|f=\<chi\><rsub|A>> for <math|A\<in\>\<Sigma\>> we obtain
 
     <\equation>
-      \<mu\><rsub|\<psi\>><around|(|A|)>=\<mu\>*<around|(|T<rsub|\<psi\>>*A|)>=<big|int>\<chi\><rsub|A>*<around|(|T<rsub|\<psi\>><rsup|-1>*\<omega\>|)>*d*\<mu\><around|(|\<omega\>|)>=<big|int><rsub|A>f<rsub|\<psi\>><around|(|\<omega\>|)>*d*\<mu\><around|(|\<omega\>|)>.<label|eq:quasi2>
+      <tabular|<tformat|<table|<row|<cell|\<mu\><rsub|\<psi\>><around|(|A|)>>|<cell|=\<mu\>*<around|(|T<rsub|\<psi\>>*A|)>>>|<row|<cell|>|<cell|=<big|int>\<chi\><rsub|A>*<around|(|T<rsub|\<psi\>><rsup|-1>*\<omega\>|)>*d*\<mu\><around|(|\<omega\>|)>>>>>><label|eq:quasi2>
     </equation>
 
     Hence <math|\<mu\><rsub|\<psi\>>> is absolutely continuous relative to
@@ -822,7 +845,7 @@
     for <math|i\<neq\>j>. Then
 
     <\align>
-      <tformat|<table|<row|<cell|<around*|\||<wide|T|^><rsub|\<psi\>>*<big|sum>\<lambda\><rsub|j>*\<chi\><rsub|A<rsub|j>>|\|><rsup|2>>|<cell|=<big|int><around*|\||<big|sum>\<lambda\><rsub|j>*\<chi\><rsub|A<rsub|j>>*<around|(|T<rsub|\<psi\>><rsup|-1>*\<omega\>|)>|\|><rsup|2>*d*\<mu\>=<big|int><around*|\||<big|sum>\<lambda\><rsub|j>*\<chi\><rsub|A<rsub|j>><around|(|\<omega\>|)>|\|><rsup|2>*d*\<mu\><rsub|\<psi\>><eq-number>>>|<row|<cell|>|<cell|=<big|int><around*|\||<big|sum>\<lambda\><rsub|j>*\<chi\><rsub|A<rsub|j>>|\|><rsup|2>*f<rsub|\<psi\>>*d*\<mu\>=<big|sum><around|\||\<lambda\><rsub|j>|\|><rsup|2>*<big|int>\<chi\><rsub|A<rsub|j>>*f<rsub|\<psi\>>*d*\<mu\><eq-number>>>|<row|<cell|>|<cell|\<leq\><big|sum><around|\||\<lambda\><rsub|j>|\|><rsup|2><around|\<\|\|\>|f<rsub|\<psi\>>|\<\|\|\>><rsup|2>*\<mu\><around|(|A<rsub|j>|)>=<around|\<\|\|\>|f<rsub|\<psi\>>|\<\|\|\>><rsup|2><around*|\||<big|sum>\<lambda\><rsub|j>*\<chi\><rsub|A<rsub|j>>|\|><rsup|2><eq-number>>>>>
+      <tformat|<table|<row|<cell|<around*|\||<wide|T|^><rsub|\<psi\>>*<big|sum>\<lambda\><rsub|j>*\<chi\><rsub|A<rsub|j>>|\|><rsup|2>>|<cell|=<big|int><around*|\||<big|sum>\<lambda\><rsub|j>*\<chi\><rsub|A<rsub|j>>*<around|(|T<rsub|\<psi\>><rsup|-1>*\<omega\>|)>|\|><rsup|2>*d*\<mu\><eq-number>>>|<row|<cell|>|<cell|=<big|int><around*|\||<big|sum>\<lambda\><rsub|j>*\<chi\><rsub|A<rsub|j>><around|(|\<omega\>|)>|\|><rsup|2>*d*\<mu\><rsub|\<psi\>>>>|<row|<cell|>|<cell|=<big|int><around*|\||<big|sum>\<lambda\><rsub|j>*\<chi\><rsub|A<rsub|j>>|\|><rsup|2>*f<rsub|\<psi\>>*d*\<mu\><eq-number>>>|<row|<cell|>|<cell|=<big|sum><around|\||\<lambda\><rsub|j>|\|><rsup|2>*<big|int>\<chi\><rsub|A<rsub|j>>*f<rsub|\<psi\>>*d*\<mu\>>>|<row|<cell|>|<cell|\<leq\><big|sum><around|\||\<lambda\><rsub|j>|\|><rsup|2><around|\<\|\|\>|f<rsub|\<psi\>>|\<\|\|\>><rsup|2>*\<mu\><around|(|A<rsub|j>|)><eq-number>>>|<row|<cell|>|<cell|=<around|\<\|\|\>|f<rsub|\<psi\>>|\<\|\|\>><rsup|2><around*|\||<big|sum>\<lambda\><rsub|j>*\<chi\><rsub|A<rsub|j>>|\|><rsup|2>>>>>
     </align>
 
     Hence, the restriction of <math|<wide|T|^><rsub|\<psi\>>> to the subspace
@@ -869,119 +892,150 @@
   </theorem>
 
   <\proof>
-    (a) It is clear that <math|V<rsub|0>> as defined above is unitary and
-    that <math|V<rsub|0>*<around|(|\<phi\>+\<psi\>|)>=V<rsub|0><around|(|\<phi\>|)>*V<rsub|0><around|(|\<psi\>|)>>
-    for all <math|\<phi\>,\<psi\>\<in\>\<frak-V\>>. Strong continuity follows
-    from the dominated convergence theorem.
+    <\enumerate-alpha>
+      <item>It is clear that <math|V<rsub|0>> as defined above is unitary and
+      that <math|V<rsub|0>*<around|(|\<phi\>+\<psi\>|)>=V<rsub|0><around|(|\<phi\>|)>*V<rsub|0><around|(|\<psi\>|)>>
+      for all <math|\<phi\>,\<psi\>\<in\>\<frak-V\>>. Strong continuity
+      follows from the dominated convergence theorem.
 
-    Since <math|\<mu\><rsub|\<psi\>>> is absolutely continuous relative to
-    <math|\<mu\>>, by the Radon-Nikodym theorem there exist unique
-    nonnegative functions <math|f<rsub|\<psi\>>\<in\>L<rsup|1><around|(|\<Omega\>,\<Sigma\>,\<mu\>|)>>
-    such that <math|\<mu\><rsub|\<psi\>><around|(|A|)>=<big|int><rsub|A>f<rsub|\<psi\>>*d*\<mu\>>
-    for all <math|A\<in\>\<Sigma\>> and <math|\<psi\>\<in\>\<frak-V\>>.
-    Define the random functional <math|\<Psi\><around|(|\<psi\>|)>=f<rsub|\<psi\>><rsup|1/2><around|(|\<omega\>|)>>.
-    Then <math|U<rsub|0><around|(|\<psi\>|)>> is unitary since for all
-    <math|f,g\<in\>\<cal-H\>> we have
+      Since <math|\<mu\><rsub|\<psi\>>> is absolutely continuous relative to
+      <math|\<mu\>>, by the Radon-Nikodym theorem there exist unique
+      nonnegative functions <math|f<rsub|\<psi\>>\<in\>L<rsup|1><around|(|\<Omega\>,\<Sigma\>,\<mu\>|)>>
+      such that <math|\<mu\><rsub|\<psi\>><around|(|A|)>=<big|int><rsub|A>f<rsub|\<psi\>>*d*\<mu\>>
+      for all <math|A\<in\>\<Sigma\>> and <math|\<psi\>\<in\>\<frak-V\>>.
+      Define the random functional <math|\<Psi\><around|(|\<psi\>|)>=f<rsub|\<psi\>><rsup|1/2><around|(|\<omega\>|)>>.
+      Then <math|U<rsub|0><around|(|\<psi\>|)>> is unitary since for all
+      <math|f,g\<in\>\<cal-H\>> we have
 
-    <\align>
-      <tformat|<table|<row|<cell|<around|\<langle\>|U<rsub|0><around|(|\<psi\>|)>*f,U<rsub|0><around|(|\<psi\>|)>*g|\<rangle\>>>|<cell|=<big|int>f<rsub|\<psi\>><around|(|\<omega\>|)>*f*<around|(|T<rsub|\<psi\>><rsup|-1>*\<omega\>|)>*g<rsup|\<ast\>>*<around|(|T<rsub|\<psi\>><rsup|-1>*\<omega\>|)>*d*\<mu\><around|(|\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int>f*<around|(|T<rsub|\<psi\>><rsup|-1>*\<omega\>|)>*g<rsup|\<ast\>>*<around|(|T<rsub|\<psi\>><rsup|-1>*\<omega\>|)>*d*\<mu\>*<around|(|T<rsub|\<psi\>><rsup|-1>*\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int>f<around|(|\<omega\>|)>*g<rsup|\<ast\>><around|(|\<omega\>|)>*d*\<mu\><around|(|\<omega\>|)>=<around|\<langle\>|f,g|\<rangle\>><eq-number>>>>>
-    </align>
+      <\align>
+        <tformat|<table|<row|<cell|<around|\<langle\>|U<rsub|0><around|(|\<psi\>|)>*f,U<rsub|0><around|(|\<psi\>|)>*g|\<rangle\>>>|<cell|=<big|int>f<rsub|\<psi\>><around|(|\<omega\>|)>*f*<around|(|T<rsub|\<psi\>><rsup|-1>*\<omega\>|)>*g<rsup|\<ast\>>*<around|(|T<rsub|\<psi\>><rsup|-1>*\<omega\>|)>*d*\<mu\><around|(|\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int>f*<around|(|T<rsub|\<psi\>><rsup|-1>*\<omega\>|)>*g<rsup|\<ast\>>*<around|(|T<rsub|\<psi\>><rsup|-1>*\<omega\>|)>*d*\<mu\>*<around|(|T<rsub|\<psi\>><rsup|-1>*\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int>f<around|(|\<omega\>|)>*g<rsup|\<ast\>><around|(|\<omega\>|)>*d*\<mu\><around|(|\<omega\>|)>=<around|\<langle\>|f,g|\<rangle\>><eq-number>>>>>
+      </align>
 
-    We now show that <math|f<rsub|\<phi\>+\<psi\>><around|(|\<omega\>|)>=f<rsub|\<phi\>><around|(|\<omega\>|)>*f<rsub|\<psi\>>*<around|(|T<rsub|\<phi\>><rsup|-1>*\<omega\>|)>>.
-    Indeed, for any <math|A\<in\>\<Sigma\>> we have
+      We now show that <math|>
 
-    <\align>
-      <tformat|<table|<row|<cell|<big|int><rsub|A>f<rsub|\<phi\>><around|(|\<omega\>|)>*f<rsub|\<psi\>>*<around|(|T<rsub|\<phi\>><rsup|-1>*\<omega\>|)>*d*\<mu\><around|(|\<omega\>|)>>|<cell|=<big|int><rsub|A>f<rsub|\<psi\>>*<around|(|T<rsub|\<phi\>><rsup|-1>*\<omega\>|)>*d*\<mu\>*<around|(|T<rsub|\<phi\>><rsup|-1>*\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|A>d*\<mu\>*<around|(|T<rsub|\<psi\>><rsup|-1>*T<rsub|\<phi\>><rsup|-1>*\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|A>f<rsub|\<phi\>+\<psi\>><around|(|\<omega\>|)>*d*\<mu\><around|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<mu\>*<around|(|T<rsub|\<phi\>+\<psi\>>*A|)>>>>>
-    </align>
+      <\equation>
+        f<rsub|\<phi\>+\<psi\>><around|(|\<omega\>|)>=f<rsub|\<phi\>><around|(|\<omega\>|)>*f<rsub|\<psi\>>*<around|(|T<rsub|\<phi\>><rsup|-1>*\<omega\>|)>
+      </equation>
 
-    It follows
+      Indeed, for any <math|A\<in\>\<Sigma\>> we have
 
-    <\align>
-      <tformat|<table|<row|<cell|<around|[|U<rsub|0>*<around|(|\<phi\>+\<psi\>|)>*f|]><around|(|\<omega\>|)>>|<cell|=<around|[|\<Psi\>*<around|(|\<phi\>+\<psi\>|)>|]><around|(|\<omega\>|)>*<around|[|<wide|T|^><rsub|\<phi\>+\<psi\>>*f|]><around|(|\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=<around|[|\<Psi\><around|(|\<phi\>|)>|]><around|(|\<omega\>|)><around|[|\<Psi\><around|(|\<psi\>|)>|]>*<around|(|T<rsub|\<phi\>><rsup|-1>*\<omega\>|)>*f*<around|(|T<rsub|\<phi\>+\<psi\>><rsup|-1>*\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=<around|[|\<Psi\><around|(|\<phi\>|)>|]><around|(|\<omega\>|)>*<around*|{|T<rsub|\<phi\>>*<around|[|\<Psi\><around|(|\<psi\>|)><around|(|\<omega\>|)>*f*<around|(|T<rsub|\<psi\>><rsup|-1>*\<omega\>|)>|]>|}><eq-number>>>|<row|<cell|>|<cell|=<around|[|U<rsub|0><around|(|\<phi\>|)>*U<rsub|0><around|(|\<psi\>|)>*f|]><around|(|\<omega\>|)><eq-number>>>>>
-    </align>
+      <\align>
+        <tformat|<table|<row|<cell|<big|int><rsub|A>f<rsub|\<phi\>><around|(|\<omega\>|)>*f<rsub|\<psi\>>*<around|(|T<rsub|\<phi\>><rsup|-1>*\<omega\>|)>*d*\<mu\><around|(|\<omega\>|)>>|<cell|=<big|int><rsub|A>f<rsub|\<psi\>>*<around|(|T<rsub|\<phi\>><rsup|-1>*\<omega\>|)>*d*\<mu\>*<around|(|T<rsub|\<phi\>><rsup|-1>*\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|A>d*\<mu\>*<around|(|T<rsub|\<psi\>><rsup|-1>*T<rsub|\<phi\>><rsup|-1>*\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|A>f<rsub|\<phi\>+\<psi\>><around|(|\<omega\>|)>*d*\<mu\><around|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<mu\>*<around|(|T<rsub|\<phi\>+\<psi\>>*A|)>>>>>
+      </align>
 
-    Hence <math|U<rsub|0>*<around|(|\<phi\>+\<psi\>|)>=U<rsub|0><around|(|\<phi\>|)>*U<rsub|0><around|(|\<psi\>|)>>.
-    The strong continuity of <math|\<phi\>\<mapsto\>U<rsub|0><around|(|\<phi\>|)>>
-    follows as above.
+      It follows
 
-    To show the canonical commutation relations, use the <math|T>-covariance
-    of <math|\<Phi\>>:
+      <\align>
+        <tformat|<table|<row|<cell|<around|[|U<rsub|0>*<around|(|\<phi\>+\<psi\>|)>*f|]><around|(|\<omega\>|)>>|<cell|=<around|[|\<Psi\>*<around|(|\<phi\>+\<psi\>|)>|]><around|(|\<omega\>|)>*<around|[|<wide|T|^><rsub|\<phi\>+\<psi\>>*f|]><around|(|\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=<around|[|\<Psi\><around|(|\<phi\>|)>|]><around|(|\<omega\>|)><around|[|\<Psi\><around|(|\<psi\>|)>|]>*<around|(|T<rsub|\<phi\>><rsup|-1>*\<omega\>|)>*f*<around|(|T<rsub|\<phi\>+\<psi\>><rsup|-1>*\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=<around|[|\<Psi\><around|(|\<phi\>|)>|]><around|(|\<omega\>|)>*<around*|{|T<rsub|\<phi\>>*<around|[|\<Psi\><around|(|\<psi\>|)><around|(|\<omega\>|)>*f*<around|(|T<rsub|\<psi\>><rsup|-1>*\<omega\>|)>|]>|}><eq-number>>>|<row|<cell|>|<cell|=<around|[|U<rsub|0><around|(|\<phi\>|)>*U<rsub|0><around|(|\<psi\>|)>*f|]><around|(|\<omega\>|)><eq-number>>>>>
+      </align>
 
-    <\align>
-      <tformat|<table|<row|<cell|<around|[|U<rsub|0><around|(|\<phi\>|)>*V<rsub|0><around|(|\<psi\>|)>*f|]><around|(|\<omega\>|)>>|<cell|=\<Psi\><around|(|\<phi\>|)>*<around|[|V<rsub|0><around|(|\<psi\>|)>*f|]>*<around|(|T<rsub|\<phi\>><rsup|-1>*\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=\<Psi\><around|(|\<phi\>|)>*exp
-      <around*|{|-i<around|[|\<Phi\><around|(|\<psi\>|)>|]>*<around|(|T<rsub|\<phi\>><rsup|-1>*\<omega\>|)>|}>*f*<around|(|T<rsub|\<phi\>><rsup|-1>*\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=\<Psi\><around|(|\<phi\>|)>*exp
-      <around*|{|-i<around|[|\<Phi\><rsub|\<phi\>><around|(|\<psi\>|)>|]><around|(|\<omega\>|)>|}>*f*<around|(|T<rsub|\<phi\>><rsup|-1>*\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=\<Psi\><around|(|\<phi\>|)>*e<rsup|-i*\<Phi\><around|(|\<psi\>|)><around|(|\<omega\>|)>>*e<rsup|i*<around|\<langle\>|\<phi\>,\<psi\>|\<rangle\>>>*f*<around|(|T<rsub|\<phi\>><rsup|-1>*\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=e<rsup|i*<around|\<langle\>|\<phi\>,\<psi\>|\<rangle\>>>*<around|[|V<rsub|0><around|(|\<psi\>|)>*U<rsub|0><around|(|\<phi\>|)>*f|]><around|(|\<omega\>|)><eq-number>>>>>
-    </align>
+      Hence <math|U<rsub|0>*<around|(|\<phi\>+\<psi\>|)>=U<rsub|0><around|(|\<phi\>|)>*U<rsub|0><around|(|\<psi\>|)>>.
+      The strong continuity of <math|\<phi\>\<mapsto\>U<rsub|0><around|(|\<phi\>|)>>
+      follows as above. To show the canonical commutation relations, use the
+      <math|T>-covariance of <math|\<Phi\>>:
 
-    Thus, the CCR <eqref|eq:vccr> holds. The indicator function
-    <math|<with|math-font-family|bf|1>> is a cyclic vector since
-    <math|<math-up|span><around|{|e<rsup|i*\<Phi\><around|(|\<phi\>|)>>:\<phi\>\<in\>\<frak-V\>|}>>
-    is dense.
+      <\align>
+        <tformat|<table|<row|<cell|<around|[|U<rsub|0><around|(|\<phi\>|)>*V<rsub|0><around|(|\<psi\>|)>*f|]><around|(|\<omega\>|)>>|<cell|=\<Psi\><around|(|\<phi\>|)>*<around|[|V<rsub|0><around|(|\<psi\>|)>*f|]>*<around|(|T<rsub|\<phi\>><rsup|-1>*\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=\<Psi\><around|(|\<phi\>|)>*exp
+        <around*|{|-i<around|[|\<Phi\><around|(|\<psi\>|)>|]>*<around|(|T<rsub|\<phi\>><rsup|-1>*\<omega\>|)>|}>*f*<around|(|T<rsub|\<phi\>><rsup|-1>*\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=\<Psi\><around|(|\<phi\>|)>*exp
+        <around*|{|-i<around|[|\<Phi\><rsub|\<phi\>><around|(|\<psi\>|)>|]><around|(|\<omega\>|)>|}>*f*<around|(|T<rsub|\<phi\>><rsup|-1>*\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=\<Psi\><around|(|\<phi\>|)>*e<rsup|-i*\<Phi\><around|(|\<psi\>|)><around|(|\<omega\>|)>>*e<rsup|i*<around|\<langle\>|\<phi\>,\<psi\>|\<rangle\>>>*f*<around|(|T<rsub|\<phi\>><rsup|-1>*\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=e<rsup|i*<around|\<langle\>|\<phi\>,\<psi\>|\<rangle\>>>*<around|[|V<rsub|0><around|(|\<psi\>|)>*U<rsub|0><around|(|\<phi\>|)>*f|]><around|(|\<omega\>|)><eq-number>>>>>
+      </align>
 
-    (b) We first show that <math|<around|(|U,V|)>> has a unique extension to
-    a cyclic <math|<wide|\<frak-V\>|\<bar\>>>-representation of the CCR on
-    <math|\<cal-H\>>. For <math|\<phi\>\<in\><wide|\<frak-V\>|\<bar\>>>, let
-    <math|\<phi\><rsub|i>> be a sequence in <math|\<frak-V\>> converging to
-    <math|\<phi\>>. Now <math|U<around|(|\<phi\><rsub|i>|)>> is strongly
-    Cauchy in <math|\<cal-H\>> since for every <math|f\<in\>\<cal-H\>>
+      Thus, the CCR <eqref|eq:vccr> holds. The indicator function
+      <math|<with|math-font-family|bf|1>> is a cyclic vector since
+      <math|<math-up|span><around|{|e<rsup|i*\<Phi\><around|(|\<phi\>|)>>:\<phi\>\<in\>\<frak-V\>|}>>
+      is dense.
 
-    <\equation*>
-      lim<rsub|i,j\<to\>\<infty\>><around|\<\|\|\>|U<around|(|\<phi\><rsub|i>|)>*f-U<around|(|\<phi\><rsub|j>|)>*f|\<\|\|\>>=lim<rsub|i,j\<to\>\<infty\>><around|\<\|\|\>|f-U*<around|(|\<phi\><rsub|j>-\<phi\><rsub|i>|)>*f|\<\|\|\>>=0.
-    </equation*>
+      <item>We first show that <math|<around|(|U,V|)>> has a unique extension
+      to a cyclic <math|<wide|\<frak-V\>|\<bar\>>>-representation of the CCR
+      on <math|\<cal-H\>>. For <math|\<phi\>\<in\><wide|\<frak-V\>|\<bar\>>>,
+      let <math|\<phi\><rsub|i>> be a sequence in <math|\<frak-V\>>
+      converging to <math|\<phi\>>. Now <math|U<around|(|\<phi\><rsub|i>|)>>
+      is strongly Cauchy in <math|\<cal-H\>> since for every
+      <math|f\<in\>\<cal-H\>>
 
-    Defining <math|U<around|(|\<phi\>|)>*f=lim
-    U<around|(|\<phi\><rsub|i>|)>*f> gives a well-defined linear operator
-    which is bounded by the uniform boundedness theorem. Extend <math|V> to
-    <math|<wide|\<frak-V\>|\<bar\>>> similarly. By taking limits it is
-    straightforward to show that <math|<around|(|U,V|)>> extended in this way
-    gives a cyclic <math|<wide|\<frak-V\>|\<bar\>>>-representation of the CCR
-    on <math|\<cal-H\>>. Let <math|<around|{|\<psi\><rsub|i>|}>> be an
-    orthonormal basis for <math|<wide|\<frak-V\>|\<bar\>>> where
-    <math|\<psi\><rsub|i>\<in\>\<frak-V\>>, <math|i=1,2,\<ldots\>>. Let
-    <math|<around|{|f<rsub|i>|}>> be an orthonormal basis for
-    <math|L<rsup|2><around|(|\<bbb-R\>,d*x|)>> where <math|f<rsub|i>> are in
-    the Schwartz space, and define the isomorphism
-    <math|J:<wide|\<frak-V\>|\<bar\>>\<to\>L<rsup|2><around|(|\<bbb-R\>,d*x|)>>
-    by <math|J<around|(|\<psi\><rsub|i>|)>=f<rsub|i>>. Then
-    <math|<around|(|U\<circ\>J<rsup|-1>,V\<circ\>J<rsup|-1>|)>> is a cyclic
-    <math|L<rsup|2><around|(|\<bbb-R\>,d*x|)>>-representation of the CCR.
+      <\equation>
+        lim<rsub|i,j\<to\>\<infty\>><around|\<\|\|\>|U<around|(|\<phi\><rsub|i>|)>*f-U<around|(|\<phi\><rsub|j>|)>*f|\<\|\|\>>=lim<rsub|i,j\<to\>\<infty\>><around|\<\|\|\>|f-U*<around|(|\<phi\><rsub|j>-\<phi\><rsub|i>|)>*f|\<\|\|\>>=0
+      </equation>
 
-    Applying a theorem due to Gelfand-Vilenkin <cite|gelfand-vilenkin>, there
-    exist:
+      Defining <math|U<around|(|\<phi\>|)>*f=lim
+      U<around|(|\<phi\><rsub|i>|)>*f> gives a well-defined linear operator
+      which is bounded by the uniform boundedness theorem. Extend <math|V> to
+      <math|<wide|\<frak-V\>|\<bar\>>> similarly. By taking limits it is
+      straightforward to show that <math|<around|(|U,V|)>> extended in this
+      way gives a cyclic <math|<wide|\<frak-V\>|\<bar\>>>-representation of
+      the CCR on <math|\<cal-H\>>. Let <math|<around|{|\<psi\><rsub|i>|}>> be
+      an orthonormal basis for <math|<wide|\<frak-V\>|\<bar\>>> where
+      <math|\<psi\><rsub|i>\<in\>\<frak-V\>>, <math|i=1,2,\<ldots\>>. Let
+      <math|<around|{|f<rsub|i>|}>> be an orthonormal basis for
+      <math|L<rsup|2><around|(|\<bbb-R\>,d*x|)>> where <math|f<rsub|i>> are
+      in the Schwartz space, and define the isomorphism
+      <math|J:<wide|\<frak-V\>|\<bar\>>\<to\>L<rsup|2><around|(|\<bbb-R\>,d*x|)>>
+      by <math|J<around|(|\<psi\><rsub|i>|)>=f<rsub|i>>. Then
+      <math|<around|(|U\<circ\>J<rsup|-1>,V\<circ\>J<rsup|-1>|)>> is a cyclic
+      <math|L<rsup|2><around|(|\<bbb-R\>,d*x|)>>-representation of the CCR.
 
-    <\enumerate>
-      <item>a unique Borel probability measure <math|\<mu\>> on the dual
-      <math|\<cal-S\><rprime|'><around|(|\<bbb-R\>|)>> such that for every
-      Borel set <math|A> and every <math|\<phi\>\<in\>\<cal-S\><around|(|\<bbb-R\>|)>>,
-      <math|\<mu\><around|(|A|)>=0> implies
-      <math|\<mu\>*<around|(|A+f<rsub|\<phi\>>|)>=0>, where
-      <math|f<rsub|\<phi\>><around|(|\<psi\>|)>=<around|\<langle\>|\<psi\>,\<phi\>|\<rangle\>>>
-      for every <math|\<psi\>\<in\>\<cal-S\><around|(|\<bbb-R\>|)>>;
+      Applying a theorem due to Gelfand-Vilenkin <cite|gelfand-vilenkin>,
+      there exist:
 
-      <item>for every <math|\<phi\>\<in\>\<cal-S\><around|(|\<bbb-R\>|)>>
-      there exists a functional <math|F<rsub|\<phi\>>> on
-      <math|\<cal-S\><rprime|'><around|(|\<bbb-R\>|)>> such that
-      <math|<around|(|U<rsub|1>,V<rsub|1>|)>> is a cyclic
-      <math|\<cal-S\><around|(|\<bbb-R\>|)>>-representation of the CCR on
-      <math|L<rsup|2><around|(|\<cal-S\><rprime|'><around|(|\<bbb-R\>|)>,\<mu\>|)>>
-      where <math|<around|[|V<rsub|1><around|(|\<phi\>|)>*F|]><around|(|f|)>=e<rsup|-i*f<around|(|\<phi\>|)>>*F<around|(|f|)>>
-      and <math|<around|[|U<rsub|1><around|(|\<phi\>|)>*F|]><around|(|f|)>=F<rsub|\<phi\>><around|(|f|)>*F*<around|(|f+f<rsub|\<phi\>>|)>>;
+      <\enumerate>
+        <item>a unique Borel probability measure <math|\<mu\>> on the dual
+        <math|\<cal-S\><rprime|'><around|(|\<bbb-R\>|)>> such that for every
+        Borel set <math|A> and every <math|\<phi\>\<in\>\<cal-S\><around|(|\<bbb-R\>|)>>,
+        <math|\<mu\><around|(|A|)>=0> implies
+        <math|\<mu\>*<around|(|A+f<rsub|\<phi\>>|)>=0>, where
+        <math|f<rsub|\<phi\>><around|(|\<psi\>|)>=<around|\<langle\>|\<psi\>,\<phi\>|\<rangle\>>>
+        for every <math|\<psi\>\<in\>\<cal-S\><around|(|\<bbb-R\>|)>>;
 
-      <item>an isomorphism <math|M:\<cal-H\>\<to\>L<rsup|2><around|(|\<cal-S\><rprime|'><around|(|\<bbb-R\>|)>,\<mu\>|)>>
-      with <math|M*U\<circ\>J<rsup|-1>*M<rsup|-1>=U<rsub|1>>, and
-      <math|M*V\<circ\>J<rsup|-1>*M<rsup|-1>=V<rsub|1>>.
-    </enumerate>
+        <item>for every <math|\<phi\>\<in\>\<cal-S\><around|(|\<bbb-R\>|)>>
+        there exists a functional <math|F<rsub|\<phi\>>> on
+        <math|\<cal-S\><rprime|'><around|(|\<bbb-R\>|)>> such that
+        <math|<around|(|U<rsub|1>,V<rsub|1>|)>> is a cyclic
+        <math|\<cal-S\><around|(|\<bbb-R\>|)>>-representation of the CCR on
+        <math|L<rsup|2><around|(|\<cal-S\><rprime|'><around|(|\<bbb-R\>|)>,\<mu\>|)>>
+        where <math|<around|[|V<rsub|1><around|(|\<phi\>|)>*F|]><around|(|f|)>=e<rsup|-i*f<around|(|\<phi\>|)>>*F<around|(|f|)>>
+        and <math|<around|[|U<rsub|1><around|(|\<phi\>|)>*F|]><around|(|f|)>=F<rsub|\<phi\>><around|(|f|)>*F*<around|(|f+f<rsub|\<phi\>>|)>>;
 
-    Define the random field <math|\<Phi\>:\<frak-V\>\<to\><around|(|\<cal-S\><rprime|'><around|(|\<bbb-R\>|)>,\<mu\>|)>>
-    by <math|<around|[|\<Phi\><around|(|\<phi\>|)>|]><around|(|f|)>=f*<around|(|J*\<phi\>|)>>,
-    the random functional <math|\<Psi\><around|(|\<phi\>|)>=F<rsub|J*\<phi\>><around|(|f|)>>,
-    and the action <math|T<rsub|\<phi\>>*f=f+f<rsub|J*\<phi\>>>. Now define
-    <math|U<rsub|0><around|(|\<phi\>|)>=U<rsub|1>*<around|(|J*\<phi\>|)>>,
-    <math|V<rsub|0><around|(|\<phi\>|)>=V<rsub|1>*<around|(|J*\<phi\>|)>>.
-    Then, <math|<around|(|\<Phi\>,T|)>> and
-    <math|<around|(|U<rsub|0>,V<rsub|0>|)>> satisfy the conditions of the
-    theorem. Furthermore, <math|<around|(|U,V|)>> is equivalent to
-    <math|<around|(|U<rsub|0>,V<rsub|0>|)>>.
+        <item>an isomorphism <math|M:\<cal-H\>\<to\>L<rsup|2><around|(|\<cal-S\><rprime|'><around|(|\<bbb-R\>|)>,\<mu\>|)>>
+        with <math|M*U\<circ\>J<rsup|-1>*M<rsup|-1>=U<rsub|1>>, and
+        <math|M*V\<circ\>J<rsup|-1>*M<rsup|-1>=V<rsub|1>>.
+      </enumerate>
+
+      Define the random field <math|\<Phi\>:\<frak-V\>\<to\><around|(|\<cal-S\><rprime|'><around|(|\<bbb-R\>|)>,\<mu\>|)>>
+      by
+
+      <\equation>
+        <around|[|\<Phi\><around|(|\<phi\>|)>|]><around|(|f|)>=f*<around|(|J*\<phi\>|)>
+      </equation>
+
+      the random functional <math|>
+
+      <\equation>
+        \<Psi\><around|(|\<phi\>|)>=F<rsub|J*\<phi\>><around|(|f|)>
+      </equation>
+
+      and the action\ 
+
+      <\equation>
+        T<rsub|\<phi\>>*f=f+f<rsub|J*\<phi\>>
+      </equation>
+
+      Now define
+
+      <\equation>
+        U<rsub|0><around|(|\<phi\>|)>=U<rsub|1>*<around|(|J*\<phi\>|)>
+      </equation>
+
+      <\equation>
+        V<rsub|0><around|(|\<phi\>|)>=V<rsub|1>*<around|(|J*\<phi\>|)>
+      </equation>
+
+      Then, <math|<around|(|\<Phi\>,T|)>> and
+      <math|<around|(|U<rsub|0>,V<rsub|0>|)>> satisfy the conditions of the
+      theorem. Furthermore, <math|<around|(|U,V|)>> is equivalent to
+      <math|<around|(|U<rsub|0>,V<rsub|0>|)>>.
+    </enumerate-alpha>
+
+    \;
   </proof>
 
   There is another approach to representations of the CCR which is frequently
@@ -1202,74 +1256,75 @@
 
 <\references>
   <\collection>
+    <associate|2.1|<tuple|1|?>>
     <associate|auto-1|<tuple|?|1>>
-    <associate|auto-2|<tuple|22|5>>
+    <associate|auto-2|<tuple|22|4>>
     <associate|auto-3|<tuple|1|10>>
-    <associate|eq:A-operator|<tuple|91|17>>
-    <associate|eq:AWA|<tuple|93|17>>
-    <associate|eq:boson-fock|<tuple|24|5>>
-    <associate|eq:canonical-variables|<tuple|47|9>>
+    <associate|eq:A-operator|<tuple|106|17>>
+    <associate|eq:AWA|<tuple|108|17>>
+    <associate|eq:boson-fock|<tuple|30|5>>
+    <associate|eq:canonical-variables|<tuple|55|9>>
     <associate|eq:ccr-heisenberg|<tuple|5|1>>
     <associate|eq:ccr-heisenberg-n|<tuple|21|4>>
     <associate|eq:ccr-schrodinger|<tuple|10|2>>
-    <associate|eq:ccr-weyl|<tuple|13|3>>
-    <associate|eq:ccr-weyl-inf|<tuple|23|5>>
+    <associate|eq:ccr-weyl|<tuple|13|2>>
+    <associate|eq:ccr-weyl-inf|<tuple|23|4>>
     <associate|eq:ccr-weyl-n|<tuple|22|4>>
-    <associate|eq:complex-inner-product|<tuple|87|16>>
-    <associate|eq:complexification|<tuple|86|15>>
-    <associate|eq:creation-annihilation-ccr|<tuple|28|6>>
-    <associate|eq:creation-op|<tuple|27|6>>
-    <associate|eq:cyclic-v|<tuple|56|11>>
+    <associate|eq:complex-inner-product|<tuple|102|15>>
+    <associate|eq:complexification|<tuple|101|15>>
+    <associate|eq:creation-annihilation-ccr|<tuple|36|5>>
+    <associate|eq:creation-op|<tuple|35|5>>
+    <associate|eq:cyclic-v|<tuple|64|10>>
     <associate|eq:domain-q|<tuple|2|1>>
-    <associate|eq:fermion-ccr|<tuple|32|6>>
-    <associate|eq:fermion-p|<tuple|31|6>>
-    <associate|eq:fermion-q|<tuple|30|6>>
-    <associate|eq:field-ccr|<tuple|48|9>>
-    <associate|eq:field-operator|<tuple|26|6>>
-    <associate|eq:fock-inner-product|<tuple|25|5>>
-    <associate|eq:free-hamiltonian|<tuple|49|9>>
-    <associate|eq:ham-field-comm|<tuple|50|10>>
-    <associate|eq:heis-eqn-phi|<tuple|51|10>>
-    <associate|eq:heis-eqn-pi|<tuple|52|10>>
-    <associate|eq:heisenberg-eqn|<tuple|46|9>>
-    <associate|eq:heisenberg-pic|<tuple|43|9>>
-    <associate|eq:kg-energy|<tuple|40|8>>
-    <associate|eq:kg-energy-interact|<tuple|41|8>>
-    <associate|eq:kg-eqn-2|<tuple|38|8>>
-    <associate|eq:kg-final|<tuple|54|10>>
-    <associate|eq:kg-inner-product|<tuple|34|7>>
-    <associate|eq:kg-operatorial|<tuple|53|10>>
-    <associate|eq:kg-soln|<tuple|39|8>>
-    <associate|eq:klein-gordon|<tuple|33|7>>
-    <associate|eq:pic-equiv-proof|<tuple|45|9>>
-    <associate|eq:pic-equivalence|<tuple|44|9>>
-    <associate|eq:positive-definite|<tuple|89|16>>
+    <associate|eq:fermion-ccr|<tuple|40|6>>
+    <associate|eq:fermion-p|<tuple|39|6>>
+    <associate|eq:fermion-q|<tuple|38|6>>
+    <associate|eq:field-ccr|<tuple|56|9>>
+    <associate|eq:field-operator|<tuple|32|5>>
+    <associate|eq:fock-inner-product|<tuple|31|5>>
+    <associate|eq:free-hamiltonian|<tuple|57|9>>
+    <associate|eq:ham-field-comm|<tuple|58|9>>
+    <associate|eq:heis-eqn-phi|<tuple|59|9>>
+    <associate|eq:heis-eqn-pi|<tuple|60|9>>
+    <associate|eq:heisenberg-eqn|<tuple|54|8>>
+    <associate|eq:heisenberg-pic|<tuple|51|8>>
+    <associate|eq:kg-energy|<tuple|48|7>>
+    <associate|eq:kg-energy-interact|<tuple|49|8>>
+    <associate|eq:kg-eqn-2|<tuple|46|7>>
+    <associate|eq:kg-final|<tuple|62|10>>
+    <associate|eq:kg-inner-product|<tuple|42|6>>
+    <associate|eq:kg-operatorial|<tuple|61|9>>
+    <associate|eq:kg-soln|<tuple|47|7>>
+    <associate|eq:klein-gordon|<tuple|41|6>>
+    <associate|eq:pic-equiv-proof|<tuple|53|8>>
+    <associate|eq:pic-equivalence|<tuple|52|8>>
+    <associate|eq:positive-definite|<tuple|104|16>>
     <associate|eq:pq-qp-spectrum|<tuple|19|4>>
     <associate|eq:pq-spectrum|<tuple|18|4>>
     <associate|eq:pq-spectrum-unbounded|<tuple|20|4>>
     <associate|eq:q1-p1-ccr|<tuple|15|3>>
     <associate|eq:q1-p1-def|<tuple|14|3>>
-    <associate|eq:quasi1|<tuple|64|13>>
-    <associate|eq:quasi2|<tuple|65|13>>
-    <associate|eq:scalar-annihil|<tuple|35|7>>
-    <associate|eq:scalar-creation|<tuple|36|7>>
-    <associate|eq:schrodinger|<tuple|42|8>>
+    <associate|eq:quasi1|<tuple|72|12>>
+    <associate|eq:quasi2|<tuple|73|12>>
+    <associate|eq:scalar-annihil|<tuple|43|6>>
+    <associate|eq:scalar-creation|<tuple|44|7>>
+    <associate|eq:schrodinger|<tuple|50|8>>
     <associate|eq:taylor-expansion|<tuple|7|2>>
     <associate|eq:u-action|<tuple|8|2>>
     <associate|eq:u-q-u-inverse|<tuple|9|2>>
-    <associate|eq:u0v0-1|<tuple|69|13>>
-    <associate|eq:u0v0-2|<tuple|70|13>>
-    <associate|eq:unitary-equiv|<tuple|37|7>>
-    <associate|eq:unitary-ops|<tuple|29|6>>
+    <associate|eq:u0v0-1|<tuple|77|13>>
+    <associate|eq:u0v0-2|<tuple|78|13>>
+    <associate|eq:unitary-equiv|<tuple|45|7>>
+    <associate|eq:unitary-ops|<tuple|37|6>>
     <associate|eq:uv-computation|<tuple|12|2>>
     <associate|eq:v-def|<tuple|11|2>>
-    <associate|eq:vccr|<tuple|55|11>>
-    <associate|eq:weyl-cmplx|<tuple|88|16>>
-    <associate|lemma:unbounded|<tuple|1|4>>
-    <associate|lemma:weyl|<tuple|4|16>>
+    <associate|eq:vccr|<tuple|63|10>>
+    <associate|eq:weyl-cmplx|<tuple|103|15>>
+    <associate|lemma:unbounded|<tuple|1|3>>
+    <associate|lemma:weyl|<tuple|4|15>>
     <associate|thm:araki-segal|<tuple|3|13>>
     <associate|thm:gns|<tuple|5|16>>
-    <associate|thm:quasiinvariant|<tuple|2|12>>
+    <associate|thm:quasiinvariant|<tuple|2|11>>
   </collection>
 </references>
 
