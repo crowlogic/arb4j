@@ -397,4 +397,24 @@ public class WindowManager
     }
   }
 
+  public static void makeTableViewPannable(TableView<?> tableView)
+  {
+    tableView.skinProperty().addListener(listener ->
+    {
+      try
+      {
+        VirtualFlow<IndexedCell<? extends Object>> flow = getVirtualFlow(tableView.getSkin());
+        if (flow != null)
+        {
+          flow.setPannable(true);
+        }
+      }
+      catch (Throwable e)
+      {
+        e.printStackTrace();
+      }
+
+    });
+  }
+
 }

@@ -13,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.control.skin.VirtualFlow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -41,14 +40,12 @@ public class ReferenceBrowser extends
 
     createTableView();
     populateFromBibliography();
-//    ArticleForm form = new ArticleForm(articleData,
-//                                       tableView);
 
     root.setCenter(tableView);
 
     Scene scene = new Scene(root,
-                            800,
-                            600);
+                            1600,
+                            800);
     WindowManager.setMoreConduciveStyle(scene);
     scene.addEventFilter(KeyEvent.KEY_PRESSED, event ->
     {
@@ -61,13 +58,6 @@ public class ReferenceBrowser extends
     primaryStage.setScene(scene);
     primaryStage.show();
 
-  }
-
-  public VirtualFlow<?> flow;
-
-  public VirtualFlow<?> getVirtualFlow()
-  {
-    return (flow == null) ? flow = WindowManager.getVirtualFlow(tableView.getSkin()) : flow;
   }
 
   private void createTableView()
@@ -100,26 +90,10 @@ public class ReferenceBrowser extends
     pagesCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getPages()));
     pagesCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
-    TableColumn<Reference, String> idCol = new TableColumn<>("Identifier");
-    pagesCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getPages()));
-    pagesCol.setCellFactory(TextFieldTableCell.forTableColumn());
-
-    tableView.getColumns().addAll(titleCol, authorCol, yearCol, journalCol, volumeCol, pagesCol, idCol);
+    tableView.getColumns().addAll(titleCol, authorCol, yearCol, journalCol, volumeCol, pagesCol);
     tableView.setItems(citations);
 
-    tableView.skinProperty().addListener(listener ->
-    {
-      try
-      {
-        flow = getVirtualFlow();
-        flow.setPannable(true);
-      }
-      catch (Throwable e)
-      {
-        e.printStackTrace();
-      }
-
-    });
+    WindowManager.makeTableViewPannable(tableView);
   }
 
   private void populateFromBibliography()
