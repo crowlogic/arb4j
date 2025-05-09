@@ -21,6 +21,13 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       characterizationOscillatoryProcesses                            =
+                                                                   new Article("A characterization of oscillatory processes and their prediction",
+                                                                               "V. Mandrekar",
+                                                                               "1972",
+                                                                               "Proceedings of the American Mathematical Society",
+                                                                               "32",
+                                                                               "280--284").setNumber("1");
 
   public static Article       predictionNonStationaryProcesses                                =
                                                                new Article("On the prediction of non-stationary processes",
