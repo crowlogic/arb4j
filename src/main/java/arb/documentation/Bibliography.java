@@ -22,6 +22,15 @@ public class Bibliography extends
                           AbstractBibliography
 {
 
+  public static Article       predictionNonStationaryProcesses                                =
+                                                               new Article("On the prediction of non-stationary processes",
+                                                                           "N. A. Abdrabbo and M. B. Priestley",
+                                                                           "1967",
+                                                                           "Journal of the Royal Statistical Society Series B: Statistical Methodology",
+                                                                           "29",
+                                                                           "570--585").setNumber("3")
+                                                                                      .setPublisher("Oxford University Press");
+
   public static Article       envelopeUniquenessOscillatoryProcess                            =
                                                                    new Article("A uniqueness problem for the envelope of an oscillatory process",
                                                                                "A. M. Hasofer",
