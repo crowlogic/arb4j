@@ -190,6 +190,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public static boolean    trace                             =
                                  Boolean.valueOf(System.getProperty("arb4j.compiler.trace", "false"));
 
+  public static boolean    saveGraphs                             =
+                Boolean.valueOf(System.getProperty("arb4j.compiler.saveGraphs", "false"));
+  
   public static String     VOID_METHOD_DESCRIPTOR            = Compiler.getMethodDescriptor(Void.class);
 
   static
@@ -479,7 +482,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     dependencies = TopologicalSorter.findDependencyOrderUsingDepthFirstSearch(context.functionReferenceGraph,
                                                                               referencedFunctions);
 
-    if (trace)
+    if (saveGraphs)
     {
       var graphFile = context.saveDependencyGraph(dependencies);
       if (graphFile != null)
@@ -2159,14 +2162,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean thisOrAnyAscendentExpressionHasIndeterminateVariable()
   {
-    boolean contains = indeterminantTypes.contains(coDomainType);
-    if (contains)
+    if (indeterminantTypes.contains(coDomainType))
     {
       return true;
     }
-    boolean ascendentExpressionContains = ascendentExpression != null
-                  && ascendentExpression.thisOrAnyAscendentExpressionHasIndeterminateVariable();
-    return ascendentExpressionContains;
+    return ascendentExpression != null && ascendentExpression.thisOrAnyAscendentExpressionHasIndeterminateVariable();
   }
 
   protected void throwUnexpectedCharacterException()
