@@ -1,0 +1,242 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{physics}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{xcolor}
+
+\title{Quantum Cosmology and the No-Boundary Wave Function}
+\author{Lecture Notes}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction to Quantum Cosmology}
+
+The laws of quantum mechanics are fundamental to our understanding of the universe. If they apply to the universe as a whole, then the universe itself must have a quantum state. This raises a central question in quantum cosmology: what is the quantum state of the universe?
+
+Without specifying this state, we cannot make predictions, since in quantum mechanics probabilities are calculated as:
+\begin{equation}
+P(\text{outcome}) = \langle \Psi | \hat{P} | \Psi \rangle
+\end{equation}
+where $\hat{P}$ is the projection operator corresponding to the outcome and $|\Psi\rangle$ is the quantum state.
+
+\section{Structure of Comprehensive Theories}
+
+Contemporary theories attempting to describe the entire universe have two essential components:
+\begin{enumerate}
+    \item A dynamical theory (e.g., superstring theory)
+    \item A theory of the quantum state
+\end{enumerate}
+
+Different regularities in the universe can be attributed to these components:
+
+\subsection{Regularities Explained by Hamiltonian}
+The Hamiltonian (dynamical physics) is primarily local and explains:
+\begin{itemize}
+    \item Regularities in time
+    \item Local interactions
+\end{itemize}
+
+\subsection{Regularities Explained by Quantum State}
+The quantum state primarily explains:
+\begin{itemize}
+    \item Regularities in space
+    \item Existence of classical spacetime
+    \item Early homogeneity and isotropy
+    \item Inflation
+    \item Initial fluctuations in their ground state
+    \item Arrows of time (thermodynamic arrow)
+    \item CMB characteristics and large-scale structure
+    \item Existence of isolated systems
+    \item Possibly spacetime topology
+    \item Number of large and small dimensions
+    \item Number of time dimensions
+\end{itemize}
+
+\section{Probabilities in Quantum Cosmology}
+
+\subsection{Third-Person vs. First-Person Probabilities}
+
+A theory combining Hamiltonian and quantum state predicts \textit{third-person probabilities} - probabilities for which of a set of alternative histories occurs in the universe. However, observers make specific observations at particular times and places.
+
+For our observations, we need \textit{first-person probabilities} - conditional probabilities given our observational situation $D$:
+\begin{equation}
+P(\text{observation}|D) 
+\end{equation}
+
+In a large universe, the data $D$ describing our observational situation might be replicated. Our objective is to test the third-person theory by its first-person predictions.
+
+\subsection{Anthropic Reasoning}
+
+Anthropic reasoning emerges naturally in quantum cosmology when predicting observations. By Bayes' theorem:
+\begin{equation}
+P(\text{observation}|D) \propto P(D|\text{observation})P(\text{observation})
+\end{equation}
+
+If $P(D) = 0$, then we cannot observe that situation. This means we only observe situations where we can exist - the essence of anthropic reasoning. This is not a subjective choice but a necessary consequence of treating observers as part of the universe.
+
+\section{Classical Behavior in Quantum Systems}
+
+Most of our observations about the universe concern its classical history. However, classicality in quantum mechanics is probabilistic, not absolute.
+
+Quantum systems behave classically when third-person probabilities are high for histories with time correlations governed by deterministic laws. Examples include:
+\begin{itemize}
+    \item The flight of a tennis ball following a parabolic trajectory
+    \item Earth's Keplerian orbit around the Sun
+\end{itemize}
+
+Similarly, classical spacetime is an approximation of quantum gravity in a given state of the universe.
+
+\subsection{Complexity and Quantum States}
+
+A simple, discoverable theory of the initial condition cannot predict a single classical spacetime with all observed complexity. Rather, a quantum state predicts an ensemble of possible classical spacetimes with probabilities for various quantum accidents.
+
+This allows the state itself to remain simple (the no-boundary wave function requires only about 45 keystrokes to write down) while individual histories can be extremely complex.
+
+\section{Decoherent Histories Quantum Mechanics}
+
+\subsection{Basic Framework}
+
+The most general objective framework for quantum mechanics predicts probabilities for histories. In cosmology, these are histories of spacetime geometry and fields.
+
+However, quantum mechanics faces an obstacle in assigning probabilities to histories due to interference. In the famous double-slit experiment, the probability that an electron went through either slit is:
+\begin{equation}
+P(\text{upper OR lower}) = |\psi_{\text{upper}} + \psi_{\text{lower}}|^2 \neq |\psi_{\text{upper}}|^2 + |\psi_{\text{lower}}|^2
+\end{equation}
+
+Due to interference terms, it's inconsistent to assign probabilities to this set of histories.
+
+\subsection{Decoherence Condition}
+
+In decoherent histories quantum mechanics, probabilities are assigned only to sets of histories with negligible interference between members of the set. This can occur naturally when a system interacts with an environment that carries away phase information.
+
+\section{Coarse-Graining in Quantum Mechanics}
+
+Coarse-graining provides a powerful tool for calculating probabilities without tracking all details. For a particle traversing from an initial region to a final region through some middle region, there are two equivalent methods to calculate probabilities:
+
+\subsection{Method 1: Sum of Probabilities}
+Sum the probabilities over all paths through the middle region:
+\begin{equation}
+P(I \rightarrow F) = \sum_M P(I \rightarrow M \rightarrow F)
+\end{equation}
+
+\subsection{Method 2: Sum of Amplitudes}
+Sum the amplitudes first, then square the result:
+\begin{equation}
+P(I \rightarrow F) = \left|\sum_M A(I \rightarrow M \rightarrow F)\right|^2
+\end{equation}
+
+This enables what Hawking and Hertog called "top-down reasoning" in cosmology - we don't need to calculate the fine-grained evolution from the beginning of the universe to make predictions about what we observe today.
+
+\section{Quantum Nucleation of Bubbles in False Vacuum}
+
+\subsection{Mini-Superspace Models}
+
+In simplified mini-superspace models, we assume:
+\begin{itemize}
+    \item Homogeneous and isotropic geometries
+    \item Closed universes
+    \item One scalar field $\phi(t)$ (function of time only)
+    \item Field moves in potential $V(\phi)$
+\end{itemize}
+
+\subsection{No-Boundary Wave Function}
+
+The no-boundary wave function in the semi-classical approximation is:
+\begin{equation}
+\Psi[a,\chi] = e^{-I_{\text{saddle point}}}
+\end{equation}
+
+The saddle point is defined on a 4-disk with one boundary on which the arguments of the wave function are specified, with radius $b$ and field value $\phi_0$ throughout.
+
+\subsection{Application to False Vacuum Inflation}
+
+Consider a potential with a false vacuum and true vacuum separated by a barrier. Histories starting in the false vacuum expand rapidly due to the cosmological constant, but can escape through tunneling, forming bubbles of true vacuum.
+
+Different histories are labeled by their starting values of $\phi$, leading to different predictions for the CMB and cosmological constants.
+
+\section{Specifying the Wave Function}
+
+The no-boundary wave function is defined by a collection of saddle points that approximate it. These can be specified in various ways:
+
+\begin{itemize}
+    \item Through an Euclidean integral (by analogy with ground states in non-relativistic quantum mechanics)
+    \item Through a Lorentzian integral (as shown by Hertog and colleagues)
+    \item Directly by specifying saddle points
+    \item Via a dual field theory
+\end{itemize}
+
+The choice of saddle points defines the wave function, not necessarily the form of the integral.
+
+\section{Eternal Inflation and Coarse-Graining}
+
+In false vacuum eternal inflation, the theory predicts not one classical spacetime but a multiverse of possibilities with bubbles in different places. While individual histories are complex, the state itself has decent symmetries.
+
+Since we cannot observe anything outside our bubble (which expands at light speed), we can coarse-grain over everything outside. This leaves only two relevant histories:
+\begin{enumerate}
+    \item Our bubble nucleated in false vacuum
+    \item Our bubble nucleated in true vacuum
+\end{enumerate}
+
+The probability ratio is given by the Coleman-De Luccia calculations for bubble nucleation.
+
+\section{Multiverses in Quantum Cosmology}
+
+A multiverse refers to a situation where a theory presents multiple possibilities, only one of which is realized in our experience.
+
+Types of multiverses in quantum cosmology:
+\begin{itemize}
+    \item The quantum multiverse of different possible classical histories
+    \item The multiverse of true/false vacuum bubbles in eternal inflation
+\end{itemize}
+
+\subsection{Advantages of Multiverse Theories}
+
+Multiverse theories are powerful because they enable:
+\begin{itemize}
+    \item Anthropic selection
+    \item Variation of constants across the ensemble (e.g., different cosmological constants in different bubbles)
+\end{itemize}
+
+\subsection{Objections and Responses}
+
+Common objections to multiverse theories include:
+\begin{itemize}
+    \item "We don't observe other universes" - Similarly, we don't observe alternative quantum histories. In biological evolution, we don't see alternative evolutionary paths yet accept their existence.
+    \item "Multiverses aren't falsifiable" - They are falsifiable if the ingredients of their construction (quantum state, dynamics, landscape of vacua) are falsifiable.
+\end{itemize}
+
+\section{Successes of the No-Boundary Wave Function}
+
+The no-boundary wave function successfully predicts:
+\begin{itemize}
+    \item Classical Lorentzian spacetime
+    \item Early homogeneity, isotropy, and inflation
+    \item Fluctuations starting in their ground state
+    \item CMB characteristics
+    \item Anthropic selection
+    \item Classical physics emergence
+    \item Quantum field theory in curved backgrounds
+    \item Evolution from simplicity to complexity and back to simplicity
+\end{itemize}
+
+\section{Future Directions}
+
+Several questions remain open:
+\begin{itemize}
+    \item Predictions for spacetime topology
+    \item Why are there 4 large dimensions and 1 time dimension?
+    \item Unification of dynamics and state
+    \item The emergence of quantum mechanics itself
+\end{itemize}
+
+\section{Conclusion}
+
+Quantum cosmology provides a framework for understanding the universe as a whole quantum mechanically. The no-boundary proposal offers a specific quantum state that successfully explains many observed features. While much has been achieved, significant questions remain about the fundamental nature of quantum mechanics at the cosmological scale and the unification of theoretical components.
+
+\end{document}
