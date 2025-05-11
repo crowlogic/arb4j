@@ -1,1 +1,31 @@
 transcribe this pdf into a latex document format coming as close to as possible as capturing all the content exactly as is, but do use label tags and reference tags instead of hardcoding references,make sure each equation has a line number if it appears as a full-line equation regardless of whether or not it is referenced, also use enumeration tags instead of blindly repeating enumerated things, and also use the theorem and proof tags instead of just repeating the text raw, put the whole thing in a complete latex document start to finisb in a code block. i said dont fucking hard coded referneces, that measns DO NOT EVER WRITE (1) use a fuclking tag instead!. DO NOT HARD CODE REFERENCES TO SHIT IN THE BIBLIOGRAPHJY., FUCKING USE THE APPROPRIATE TAGS, BRING AS MUCH STRUCFTURE AND FUCKING ORDER TO THE DOCUMENT AS POSSIBLE WITHOUT LOSING INFORMATION
+
+The task is to transcribe a scanned academic paper from raw image content into properly formatted LaTeX. Important instructions:
+
+1. INPUT IS RAW SCANNED IMAGES, not pre-formatted text or LaTeX code. You must visually interpret the content in the images.
+
+2. Create a complete LaTeX document (from \documentclass to \end{document}) that faithfully captures ALL content exactly as it appears in the scanned images.
+
+3. For equation referencing:
+   - NEVER hardcode equation references like "(1)" or "(3.4)"
+   - Always use \label{} for equations and \ref{} for references
+   - Give every displayed equation a label, even if not explicitly referenced in the original
+
+4. For structural elements:
+   - Use \begin{theorem}...\end{theorem} for theorems and similar environments
+   - Use \begin{enumerate} for enumerated lists rather than manually numbering
+   - Use proper \cite{} commands for citations, never hardcoded references like "[5]"
+
+5. Reproduce all mathematical notation precisely, paying special attention to:
+   - Subscripts and superscripts
+   - Greek letters and special symbols
+   - Proper mathematical spacing
+
+6. Maintain the original document structure including sections, paragraphs, and formatting.
+
+7. For equations that appear to have line numbers in the original, ensure they are properly numbered in the LaTeX output.
+
+8. Create a complete bibliography section using proper BibTeX/thebibliography structure.
+
+Remember that you are TRANSFORMING VISUAL CONTENT into LaTeX code, not reformatting existing LaTeX.
+
