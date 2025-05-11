@@ -1960,6 +1960,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     case "Beta":
     case "beta":
       return new BetaFunctionNode<D, C, F>(this);
+    case "W":
+      assert false : "TODO: create LambertWFunction node and instantiate it here";
+      return null;
     default:
       return new FunctionNode<>(reference.name,
                                 resolve(),
