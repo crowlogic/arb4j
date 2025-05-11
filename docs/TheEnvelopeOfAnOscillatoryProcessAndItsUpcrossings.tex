@@ -1,0 +1,255 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+
+% Define theorem-like environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}{Definition}
+
+\title{The envelope of an oscillatory process and its upcrossings}
+\author{A. M. HASOFER AND P. PETOCZ\\ University of New South Wales}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+Let $X(t)$ be a real-valued stochastic process with sample functions which are almost surely continuously differentiable. We say that $X(t)$ has an upcrossing at level $u$ at time $t$ if $X(t) = u$, $X'(t)>0$.
+
+Let $p(t; x, y)$ be the joint density function of $X(t)$ and $X'(t)$. It is well known that under fairly weak conditions, the expected rate of upcrossings at level $u$, $q_u(t)$, is given by the formula
+
+\begin{equation}
+\label{eq:expected_rate}
+q_u(t) = \int_0^{\infty} yp(t; u, y) dy.
+\end{equation}
+
+When $X(t)$ is a stationary Gaussian process with zero mean and spectrum $F(x)$, $q_u$ is a constant given by
+
+\begin{equation}
+\label{eq:stationary_gaussian}
+q_u = \frac{1}{2\pi\sqrt{\lambda_0}} \exp \left(-\frac{1}{2} \frac{u^2}{\lambda_0}\right)
+\end{equation}
+
+where
+
+\begin{equation}
+\label{eq:lambda_i}
+\lambda_i = \int_{-\infty}^{\infty} \lambda^i dF(x), (i = 0, 1, 2, \ldots).
+\end{equation}
+
+The rate of upcrossings is useful for obtaining bounds on the distribution of the maximum of $X(t)$ in $(0, T)$. In fact
+
+\begin{equation}
+\label{eq:probability_bound}
+P\left\{ \max_{0\leq t\leq T} X(t)>u|X(0)|<u\right\}\leq \frac{\int_0^T q_u(t) dt}{P[X(0)<u]}
+\end{equation}
+
+This bound is close for high levels when $X(t)$ has a comparatively wide spectrum, but is too large for narrow-band processes. For the latter case, it is known that the sample functions take the form of a modulated wave, and that a better approximation to the distribution of the maximum is obtained by replacing the process $X(t)$ by its envelope.
+
+The envelope of a stationary Gaussian process $X(t)$ with zero mean is defined as follows:
+Let the real form of the spectral representation of $X(t)$ be
+
+\begin{equation}
+\label{eq:real_form_spectral}
+X(t) = \int_0^{\infty} \cos \lambda t \, dU(\lambda) + \sin \lambda t \, dV(\lambda),
+\end{equation}
+
+where $U(\lambda)$ and $V(\lambda)$ are real, uncorrelated processes with orthogonal increments, satisfying
+
+$E[U(\lambda)] = E[V(\lambda)] = 0$
+$E[U^2(x)] = E[V^2(x)] = G(\lambda)$.
+
+The quadrature process $\hat{X}(t)$ is defined by
+
+\begin{equation}
+\label{eq:quadrature_process}
+\hat{X}(t) = \int_0^{\infty} \sin \lambda t \, dU(\lambda) - \cos \lambda t \, dV(\lambda).
+\end{equation}
+
+It is easy to see that $\hat{X}(t)$ is a stationary Gaussian process with the same spectrum as $X(t)$ and that $X(t)$, $\hat{X}(t)$ are uncorrelated. The envelope $R(t)$ is then defined by
+
+\begin{equation}
+\label{eq:envelope}
+R(t) = [X^2(t) + \hat{X}^2(t)]^{1/2}.
+\end{equation}
+
+It can be shown that the marginal distribution of $R(t)$ is Rayleigh, that the derivative $R'(t)$ has a Gaussian marginal distribution, and that it is independent of $R(t)$. Furthermore the rate of upcrossings of $R(t)$ is given by
+
+\begin{equation}
+\label{eq:rayleigh_rate}
+q_u^R = \frac{\Delta}{\sqrt{2\pi}} \frac{u}{\lambda_0} \exp \left(-\frac{1}{2} \frac{u^2}{\lambda_0}\right)
+\end{equation}
+
+where
+
+$\Delta = \frac{\lambda_0\lambda_2-\lambda_1^2}{\lambda_0^2}$.
+
+The above results are proved in \cite{cramer1967}. It is to be noted that, with the exception of equations \ref{eq:expected_rate} and \ref{eq:probability_bound}, the given formulae are only valid for stationary Gaussian processes.
+
+Formula \ref{eq:stationary_gaussian} has been generalized to non-stationary Gaussian processes by Leadbetter \cite{leadbetter1966}. In this paper, we generalize Formula \ref{eq:rayleigh_rate} to a class of non-stationary Gaussian processes, the class of oscillatory processes.
+
+\section{Oscillatory processes}
+Since the concept of envelope is particularly useful for narrow-band processes, we require that the class of non-stationary processes considered be such that some form of concept of spectrum can be defined for them.
+
+The class of oscillatory processes is the class of Gaussian processes with zero mean which are obtained by passing a stationary Gaussian process with zero mean through a linear, but not time-invariant filter.
+
+Oscillatory processes have been introduced by Priestley \cite{priestley1965}.
+
+Let $X(t)$ be a stationary process with zero mean, having spectral representation
+
+\begin{equation}
+\label{eq:spectral_representation}
+X(t) = \int_{-\infty}^{\infty} e^{i\lambda t} d\zeta(\lambda)
+\end{equation}
+
+with $E[d\zeta] = 0$, $E[|d\zeta(\lambda)|^2] = dF(\lambda)$.
+
+Then the oscillatory process $Y(t)$ is given by
+
+\begin{equation}
+\label{eq:oscillatory_process}
+Y(t) = \int_{-\infty}^{\infty} h(t, u)x(u) du.
+\end{equation}
+
+We define a time-dependent gain function $A(t, \lambda)$ by
+
+\begin{equation}
+\label{eq:gain_function}
+A(t, \lambda)e^{i\lambda t} = \int_{-\infty}^{\infty} h(t, u)e^{i\lambda u} du.
+\end{equation}
+
+Then
+
+\begin{equation}
+\label{eq:oscillatory_representation}
+Y(t) = \int_{-\infty}^{\infty} A(t, \lambda)e^{i\lambda t} d\zeta(\lambda).
+\end{equation}
+
+Analogously to stationary processes, we define the 'evolutionary spectrum' of $Y(t)$ by
+
+\begin{equation}
+\label{eq:evolutionary_spectrum}
+dF^*(\lambda) = |A(t, \lambda)|^2 dF(\lambda).
+\end{equation}
+
+\section{The envelope of an oscillatory process}
+Let
+
+\begin{equation}
+\label{eq:complex_a}
+A(t, \lambda) = a(t, \lambda) + i\beta(t, \lambda).
+\end{equation}
+
+Using the real form of the spectral representation for $X(t)$ given by \ref{eq:real_form_spectral}, we obtain
+
+\begin{equation}
+\label{eq:real_form_y}
+Y(t) = \int_0^{\infty} \cos \lambda t \, dU^*(\lambda) + \sin \lambda t \, dV^*(\lambda)
+\end{equation}
+
+where
+
+\begin{equation}
+\label{eq:du_star}
+dU^*(\lambda) = a(t, \lambda) \, dU(\lambda) + \beta(t, \lambda) \, dV(\lambda)
+\end{equation}
+
+and
+
+\begin{equation}
+\label{eq:dv_star}
+dV^*(\lambda) = a(t, \lambda) \, dV(\lambda) - \beta(t, \lambda) \, dU(\lambda).
+\end{equation}
+
+We then define the quadrature process as
+
+\begin{equation}
+\label{eq:quadrature_y}
+\hat{Y}(t) = \int_0^{\infty} \sin \lambda t \, dU^*(\lambda) - \cos \lambda t \, dV^*(\lambda).
+\end{equation}
+
+Finally, we define the envelope, $R(t)$, by
+
+\begin{equation}
+\label{eq:envelope_r}
+R(t) = [Y^2(t) + \hat{Y}^2(t)]^{1/2}.
+\end{equation}
+
+\section{The joint density function of $R(t)$ and its derivative}
+To obtain the joint density function of $R(t)$ and its derivative, $R'(t)$, we first find the covariance matrix of the four Gaussian processes $Y(t)$, $\hat{Y}(t)$, $Y'(t)$, $\hat{Y}'(t)$. This is given by
+
+\begin{equation}
+\label{eq:covariance_matrix}
+\begin{bmatrix} 
+\sigma_0 & 0 & \tau_0 & \tau_1 \\
+0 & \sigma_0 & -\tau_1 & \tau_0 \\
+\tau_0 & -\tau_1 & \sigma_2 & 0 \\
+\tau_1 & \tau_0 & 0 & \sigma_2
+\end{bmatrix}
+\end{equation}
+
+where
+
+$\sigma_0 = \int_0^{\infty} (\alpha^2+ \beta^2) \, dG(\lambda)$
+
+$\tau_0 = \int_0^{\infty} (\alpha\alpha' + \beta\beta') \, dG(\lambda)$
+
+$\tau_1= \int_0^{\infty} [\lambda(\alpha^2+\beta^2)+(\alpha\beta' - \beta\alpha')] \, dG(\lambda)$
+
+$\sigma_2 = \int_0^{\infty} [\lambda^2(\alpha^2 + \beta^2) + 2\lambda (\alpha\beta' - \beta\alpha') + (\alpha'^2 + \beta'^2)] \, dG(\lambda)$.
+
+In the above formulae
+
+$dG(\lambda) = E[\{dU(\lambda)\}^2]$,
+
+$\alpha' = \frac{\partial \alpha(t, \lambda)}{\partial t}$, $\beta' = \frac{\partial \beta(t, \lambda)}{\partial t}$
+
+At this stage, we change the scale of $Y$ and $t$ to make $\sigma_0= \sigma_2 = 1$.
+
+We now make the following transformation of variables:
+
+\begin{equation}
+\begin{aligned}
+Y &= R \cos \theta, \\
+\hat{Y} &= R \sin \theta, \\
+Y' &= R' \cos \theta - Z \sin \theta, \\
+\hat{Y}' &= R' \sin \theta + Z \cos \theta.
+\end{aligned}
+\label{eq:transformation}
+\end{equation}
+
+After some algebra, we obtain the following form for the joint density function of $R$ and $R'$, $g(R, R')$:
+
+\begin{equation}
+\label{eq:joint_density}
+g(R, R') = \frac{R}{\sqrt{2\pi\Delta}} \exp\left\{-\frac{1}{2\Delta}[(1-\tau_1^2)R^2-2\tau_0RR' + R'^2]\right\},
+\end{equation}
+
+where $\Delta = 1 - \tau_0^2 - \tau_1^2$.
+
+\section{The expected rate of upcrossings at level $u$ by the envelope}
+Assuming that suitable regularity conditions are satisfied, we now apply Formula \ref{eq:expected_rate} to the process $R(t)$, and obtain, denoting as before the expected rate of upcrossings at level $u$ by $q_u(t)$:
+
+\begin{equation}
+\label{eq:expected_rate_envelope}
+q_u(t) = \left(\frac{\Delta}{2\pi}\right)^{1/2} u \exp\left[-(u^2/2)(1+\tau_1^2)\right]
++\Phi(\tau_0 u/\sqrt{\Delta}) \tau_1 u^2 \exp[-u^2/2]
+\end{equation}
+
+where $\Phi(\cdot)$ is the standard normal distribution.
+
+It is easy to verify that when $\alpha' = \beta' = 0$, Formula \ref{eq:expected_rate_envelope} reduces, as required, to Formula \ref{eq:rayleigh_rate}.
+
+However, it is interesting to note that when $\tau_0 \neq 0$, Formula \ref{eq:expected_rate_envelope} behaves very differently from Formula \ref{eq:rayleigh_rate} for high levels $u$, thus indicating that the stationarity assumption for Gaussian processes is not robust as far as the distribution of upcrossings and maxima is concerned. This finding can be confirmed by looking at the behaviour of the expected rate of upcrossings of $Y(t)$, as given by the formula of Leadbetter \cite{leadbetter1966}.
+
+\begin{thebibliography}{3}
+\bibitem{cramer1967} Cramér, H. and Leadbetter, M. R. (1967) \textit{Stationary and Related Stochastic Processes}. Wiley, New York.
+
+\bibitem{leadbetter1966} Leadbetter, M. R. (1966) On crossings of levels and curves by a wide class of stochastic processes. \textit{Ann. Math. Statist.} 37, 260-267.
+
+\bibitem{priestley1965} Priestley, M. B. (1965) Evolutionary spectra and non-stationary processes. \textit{J. R. Statist. Soc. B} 27, 204-229.
+\end{thebibliography}
+
+\end{document}
