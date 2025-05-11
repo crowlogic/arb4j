@@ -394,7 +394,7 @@ sections show that several other (series type) representations are possible.
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface HarmonizableRandomProcess extends Concept
+public interface HarmonizableProcess extends StochasticProcess
 {
 
   @Override

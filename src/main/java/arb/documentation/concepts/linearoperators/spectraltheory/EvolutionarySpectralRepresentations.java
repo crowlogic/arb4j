@@ -9,7 +9,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.documentation.concepts.Applicable;
 import arb.documentation.concepts.BesselFunctions;
 import arb.documentation.concepts.Concept;
-import arb.documentation.concepts.stochastic.StochasticProcesses;
+import arb.documentation.concepts.stochastic.StochasticProcess;
 
 /**
  * 
@@ -17,7 +17,7 @@ import arb.documentation.concepts.stochastic.StochasticProcesses;
  *      {@link TheArb4jLibrary}
  */
 public class EvolutionarySpectralRepresentations extends
-                                                 SpectralRepresentations<StochasticProcesses>
+                                                 SpectralRepresentations<StochasticProcess>
                                                  implements
                                                  Applicable
 {

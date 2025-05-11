@@ -12,7 +12,7 @@ import arb.documentation.TheArb4jLibrary;
  *      {@link TheArb4jLibrary}
  */
 public interface SecondOrderStochasticProcesses extends
-                                              StochasticProcesses
+                                              StochasticProcess
 {
 
   @Override

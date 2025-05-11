@@ -84,7 +84,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-@AppliesTo(StochasticProcesses.class)
+@AppliesTo(StochasticProcess.class)
 public interface KarhunenLoeveExpansion<D,C> extends
                                         Concept,Function<D,C>
 {

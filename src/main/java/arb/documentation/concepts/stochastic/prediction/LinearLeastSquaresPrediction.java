@@ -8,13 +8,13 @@ import arb.documentation.Referral;
 import arb.documentation.TheArb4jLibrary;
 import arb.documentation.annotations.AppliesTo;
 import arb.documentation.concepts.Concept;
-import arb.documentation.concepts.stochastic.StochasticProcesses;
+import arb.documentation.concepts.stochastic.StochasticProcess;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-@AppliesTo(StochasticProcesses.class)
+@AppliesTo(StochasticProcess.class)
 public interface LinearLeastSquaresPrediction extends
                                               Concept
 {
