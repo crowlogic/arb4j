@@ -7,3 +7,4 @@ implement orthogonal function sequence expansion api #546
 expr compiler: Implement common subexpression elimination #518
 Create Fractional Riccati Differential Equation Solver using Jacobi Tau Method #261
 assert false : "TODO: create LambertWFunction node and instantiate it here";
+question: Are oscillatory processes, as defined by Priestly, weakly harmonizable? How? I did not think the spectral bimeasure could explicitly depend on time
