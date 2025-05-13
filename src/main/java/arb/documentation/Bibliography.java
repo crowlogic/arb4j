@@ -161,15 +161,6 @@ public class Bibliography extends
                                                                                    "37",
                                                                                    null).setNumber("4");
 
-  public static Article      harmonizableProcessesStructure                         =
-                                                            new Article("Harmonizable Processes: Structure",
-                                                                        "M. M. Rao",
-                                                                        "1980",
-                                                                        "University of California: Department of Mathematics",
-                                                                        "ADA093302",
-                                                                        "96").setNumber("Technical Report No. 1")
-                                                                             .setPublisher("Defense Technical Information Center");
-
   public static Book         rkhsIntro                                              =
                                        new Book("An Introduction to the Theory of Reproducing Kernel Hilbert Spaces",
                                                 "V.I. Paulsen and M. Raghupathi",
