@@ -145,16 +145,6 @@ public class Bibliography extends
                                                                         "",
                                                                         "");
 
-  public static Article      coveringNumbersGaussianRKHS                                     =
-                                                         new Article("Covering Numbers of Gaussian Reproducing Kernel Hilbert Spaces",
-                                                                     "Thomas K\"{u}hn",
-                                                                     "2011",
-                                                                     "J. Complex.",
-                                                                     "27",
-                                                                     "489-499").setNumber("5")
-                                                                               .setPublisher("Academic Press, Inc.")
-                                                                               .setAddress("USA");
-
   public static Article      analyticStationaryRKHS                                          =
                                                     new Article("Reproducing Kernel Hilbert Spaces Associated with Analytic Translation-Invariant Mercer Kernels",
                                                                 "Hong-Wei Sun and Ding-Xuan Zhou",
