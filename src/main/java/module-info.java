@@ -41,6 +41,7 @@ module arb4j
   exports arb.documentation.concepts;
   exports arb.documentation.annotations;
   exports arb.documentation.references;
+  exports arb.utensils.text.latex;
   exports arb.equations;
   exports arb.expressions;
   exports arb.expressions.nodes;
