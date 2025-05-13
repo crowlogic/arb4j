@@ -80,40 +80,6 @@ public class Bibliography extends
                                                                                  "146--160").setNumber("1")
                                                                                             .setPublisher("JSTOR");
 
-  public static Article       harmonizableStochasticProcesses                                 =
-                                                              new Article("On harmonizable stochastic processes",
-                                                                          "Stamatis Cambanis and Bede Liu",
-                                                                          "1970",
-                                                                          "Information and Control",
-                                                                          "17",
-                                                                          "183--202").setNumber("2")
-                                                                                     .setPublisher("Academic Press");
-
-  public static Article       strongLargeNumberLawForSecondOrderStationaryProcesses           =
-                                                                                    new Article("On Conditions for the Strong Law of Large Numbers to be Applicable to Second Order Stationary Processes",
-                                                                                                "I. N. Verbitskaya",
-                                                                                                "1964",
-                                                                                                "Theory of Probability & Its Applications",
-                                                                                                "9",
-                                                                                                "325-331").setNumber("2");
-
-  public static Article       strongHarmonizableProcessLargeNumberLaw                         =
-                                                                      new Article("On the strong law of large numbers for harmonizable stochastic processes",
-                                                                                  "Akio Arimoto",
-                                                                                  "1972",
-                                                                                  "Keio engineering reports",
-                                                                                  "25",
-                                                                                  "101-111").setNumber("8")
-                                                                                            .setPublisher("Keio University Faculty of Engineering");
-
-  public static Article       compactCovarianceOperators                                      =
-                                                         new Article("Compact Covariance Operators",
-                                                                     "Charles R. Baker and Ian W. McKeague",
-                                                                     "1981",
-                                                                     "Proceedings of the American Mathematical Society",
-                                                                     "83",
-                                                                     null).setNumber("3");
-
   public static Article       naimarkDilationTheoremRemarks                                   =
                                                             new Article("Remarks on Naimark dilation theorem",
                                                                         "Sergiusz Kuźel",
@@ -130,32 +96,6 @@ public class Bibliography extends
                                                                               "Theory of Probability & Its Applications",
                                                                               "4",
                                                                               "271-287").setNumber("3");
-
-  public static Article       asymptoticallyStationaryHarmonizableProcesses                   =
-                                                                            new Article("On a class of asymptotically stationary harmonizable processes",
-                                                                                        "Dominique Dehay",
-                                                                                        "1987",
-                                                                                        "Journal of Multivariate Analysis",
-                                                                                        "22",
-                                                                                        "251-257").setNumber("2");
-
-  public static Book          gaussianProcessesForMachineLearning                             =
-                                                                  new Book("Gaussian Processes for Machine Learning",
-                                                                           "Carl Edward Rasmussen and Christopher K. I. Williams",
-                                                                           "2006").setPublisher("The MIT Press");
-
-  /**
-   * Note: weakly harmonizable processes should really be called something else
-   * that doesn't imply frailty, feebleness or lack of vitality
-   */
-  public static Article       strongLawOfLargeNumbersForWeaklyHarmonizableProcesses           =
-                                                                                    new Article("Strong law of large numbers for weakly harmonizable processes",
-                                                                                                "Dominique Dehay",
-                                                                                                "1987",
-                                                                                                "Stochastic processes and their applications",
-                                                                                                "24",
-                                                                                                "259-267").setNumber("2")
-                                                                                                          .setPublisher("Elsevier");
 
   public static Article       stonesTheoremAndCompleteness                                    =
                                                            new Article("Stone's theorem and completeness of orthogonal systems",
