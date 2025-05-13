@@ -1,441 +1,361 @@
 \documentclass{article}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsthm}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{hyperref}
+\usepackage{enumitem}
 
-% Define theorem-like environments
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{definition}{Definition}
-\newtheorem{example}{Example}
-
-\title{A UNIQUENESS PROBLEM FOR THE ENVELOPE\\
-OF AN OSCILLATORY PROCESS}
-\author{A. M. HASOFER\thanks{School of Mathematics, Department of Statistics, The University of New South Wales, P.O.Box 1, Kensington, N.S.W. 2033, Australia.}}
-\date{\textit{J. Appl. Prob.} 16, 822-829 (1979)\\Received 20 September 1978; revision received 21 November 1978.}
+\title{A UNIQUENESS PROBLEM FOR THE ENVELOPE OF AN OSCILLATORY PROCESS}
+\author{A. M. HASOFER\thanks{Postal address: School of Mathematics, Department of Statistics, The University of New South Wales, P.O.Box 1, Kensington, N.S.W. 2033, Australia.}}
+\date{}
 
 \begin{document}
-
 \maketitle
 
 \begin{abstract}
-In a previous paper, the author has described a method for obtaining
-envelope processes for oscillatory stochastic processes. These are processes
-which can be represented as the output of a time-varying linear filter whose
-input is a stationary process.
+In a previous paper, the author has described a method for obtaining envelope processes for oscillatory stochastic processes. These are processes which can be represented as the output of a time-varying linear filter whose input is a stationary process.
 
-It is shown in this paper that the proposed definition of the envelope process
-may not be unique, but may depend on the particular representation of the
-oscillatory process chosen.
+It is shown in this paper that the proposed definition of the envelope process may not be unique, but may depend on the particular representation of the oscillatory process chosen.
 
-It is then shown that for a class of oscillatory processes which is of particular
-interest, the class of transient processes, there is a class of natural representa-
-tions which all lead to a unique envelope process.
+It is then shown that for a class of oscillatory processes which is of particular interest, the class of transient processes, there is a class of natural representations which all lead to a unique envelope process.
+
+NON-STATIONARY STOCHASTIC PROCESSES; TIME-VARYING FILTERS; ENVELOPE PROCESSES
 \end{abstract}
 
-\noindent\textbf{NON-STATIONARY STOCHASTIC PROCESSES; TIME-VARYING FILTERS; ENVELOPE PROCESSES}
-
-\section{Introduction}
-In a previous paper \cite{hasofer1978}, the author described a method for obtaining an
-envelope process for a class of non-stationary stochastic processes. This is the
-class of oscillatory processes introduced by Priestley \cite{priestley1965}. For an oscillatory
-process $Y(t)$, one defines a 'quadrature process' $\hat{Y}(t)$. The envelope process,
-$R(t)$, is then defined by
+\section*{Introduction}
+In a previous paper~\cite{hasoferpetocz}, the author described a method for obtaining an envelope process for a class of non-stationary stochastic processes. This is the class of oscillatory processes introduced by Priestley~\cite{priestley}. For an oscillatory process $Y(t)$, one defines a `quadrature process' $\hat{Y}(t)$. The envelope process, $R(t)$, is then defined by
 \begin{equation}
-\label{eq:envelope}
 R(t) = \sqrt{Y^2(t) + \hat{Y}^2(t)}.
+\label{eq:envelope}
 \end{equation}
 
-It has come to the author's notice that similar definitions for the envelope
-were given by Arens in 1957 \cite{arens1957}, and Yang in 1972 \cite{yang1972}.
+It has come to the author's notice that similar definitions for the envelope were given by Arens in 1957~\cite{arens}, and Yang in 1972~\cite{yang}.
 
-Further analysis has, however, uncovered the fact that the proposed definition
-of the quadrature process may not be unique, but may depend on the particular
-representation chosen for $Y(t)$ in terms of an underlying stationary process. This
-lack of uniqueness is exhibited by a counterexample.
+Further analysis has, however, uncovered the fact that the proposed definition of the quadrature process may not be unique, but may depend on the particular representation chosen for $Y(t)$ in terms of an underlying stationary process. This lack of uniqueness is exhibited by a counterexample.
 
-It is then shown that for a class of oscillatory processes which is of particular
-interest, the class of transient processes, there is a class of natural representa-
-tions which all lead to a unique quadrature process.
+\footnotetext{Received 20 September 1978; revision received 21 November 1978.}
 
-\section{Background and notation}
+It is then shown that for a class of oscillatory processes which is of particular interest, the class of transient processes, there is a class of natural representations which all lead to a unique quadrature process.
 
-Let $X(t)$ be a real-valued stationary stochastic process with zero mean and
-finite variance. Let its spectral representation be
+\section*{Background and notation}
+
+Let $X(t)$ be a real-valued stationary stochastic process with zero mean and finite variance. Let its spectral representation be
 \begin{equation}
+X(t) = \int_0^{\infty} \cos \lambda t\, dU(\lambda) + \sin \lambda t\, dV(\lambda).
 \label{eq:spectral}
-X(t) = \int \cos \lambda t dU(\lambda) + \sin \lambda t dV(\lambda).
 \end{equation}
+(See Hasofer and Petocz~\cite{hasoferpetocz}.)
 
-(See Hasofer and Petocz \cite{hasofer1978}.)
-
-It is well known that $X(t)$ uniquely determines the two uncorrelated processes
-with orthogonal increments $U(\lambda)$ and $V(\lambda)$, e.g. through the formulae (\cite{cramer1967}, p.
-136)
-\begin{equation}
-\label{eq:u_lambda}
-U(\lambda) = \text{l.i.m.}_{T \to \infty} \frac{1}{\pi} \int_{-T}^{T} \frac{\sin \lambda t}{t} X(t)dt,
-\end{equation}
-\begin{equation}
-\label{eq:v_lambda}
-V(\lambda) = \text{l.i.m.}_{T \to \infty} \frac{1}{\pi} \int_{-T}^{T} \frac{1 - \cos \lambda t}{t} X(t)dt.
-\end{equation}
+It is well known that $X(t)$ uniquely determines the two uncorrelated processes with orthogonal increments $U(\lambda)$ and $V(\lambda)$, e.g. through the formulae~\cite[ p. 136]{cramerleadbetter}
+\begin{align}
+U(\lambda) &= \lim_{T \to \infty} \frac{1}{\pi} \int_{-T}^{T} \frac{\sin \lambda t}{t} X(t)\, dt, \label{eq:Ulambda} \\
+V(\lambda) &= \lim_{T \to \infty} \frac{1}{\pi} \int_{-T}^{T} \frac{1 - \cos \lambda t}{t} X(t)\, dt. \label{eq:Vlambda}
+\end{align}
 
 The Hilbert transform of $X(t)$, $\hat{X}(t)$, is defined by the formula
 \begin{equation}
+\hat{X}(t) = \int_0^{\infty} \sin \lambda t\, dU(\lambda) - \cos \lambda t\, dV(\lambda).
 \label{eq:hilbert}
-\hat{X}(t) = \int \sin \lambda t dU(\lambda) - \cos \lambda t dV(\lambda).
 \end{equation}
 
-It is to be noted that $X(t)$ defines $\hat{X}(t)$ uniquely.
-This is easily seen from the fact that the Hilbert transform of $\hat{X}(t)$ is $-X(t)$.
+It is to be noted that $\hat{X}(t)$ defines $X(t)$ uniquely. This is easily seen from the fact that the Hilbert transform of $\hat{X}(t)$ is $-X(t)$.
 
 Next we define the oscillatory process $Y(t)$ by the formula
 \begin{equation}
-\label{eq:oscillatory}
-Y(t) = \int h(t, u)X(u)du,
+Y(t) = \int_{-\infty}^{+\infty} h(t, u) X(u)\, du
+\label{eq:Ydef}
 \end{equation}
-where $h(t, u)$ is the impulse response function of a linear, non-time-invariant
-filter. This may be written in the form
+where $h(t, u)$ is the impulse response function of a linear, non-time-invariant filter. This may be written in the form
 \begin{equation}
-\label{eq:y_spectral}
-Y(t) = \int \cos \lambda t dU^*(t, \lambda) + \sin \lambda t dV^*(t, \lambda)
+Y(t) = \int_0^{\infty} \cos \lambda t\, dU^*(t, \lambda) + \sin \lambda t\, dV^*(t, \lambda)
+\label{eq:Yspectral}
 \end{equation}
-(see \cite{hasofer1978}).
+(see~\cite{hasoferpetocz}).
 
 We then define the quadrature process $\hat{Y}(t)$ by the equation
 \begin{equation}
-\label{eq:quadrature}
-\hat{Y}(t) = \int \sin \lambda t dU^*(t, \lambda) - \cos \lambda t dV^*(t, \lambda).
+\hat{Y}(t) = \int_0^{\infty} \sin \lambda t\, dU^*(t, \lambda) - \cos \lambda t\, dV^*(t, \lambda).
+\label{eq:Yquad}
 \end{equation}
-
 It is easy to see that this definition is equivalent to
 \begin{equation}
-\label{eq:quadrature_alt}
-\hat{Y}(t) = \int h(t, u)\hat{X}(u)du.
+\hat{Y}(t) = \int_{-\infty}^{\infty} h(t, u) \hat{X}(u)\, du.
+\label{eq:Yquadequiv}
 \end{equation}
 
-Finally, it is useful to have a definition of $\hat{X}(t)$, $\hat{Y}(t)$ in terms of the
-complex-valued representation of $X(t)$.
+Finally, it is useful to have a definition of $\hat{X}(t), \hat{Y}(t)$ in terms of the complex-valued representation of $X(t)$.
 
 Let
 \begin{equation}
-\label{eq:complex_rep}
-X(t) = \int e^{it\lambda}d\zeta(\lambda).
+X(t) = \int_{-\infty}^{+\infty} e^{i t \lambda} d\zeta(\lambda).
+\label{eq:Xcomplex}
 \end{equation}
 
-Assuming that $\zeta(\lambda)$ has a.s. no jump at the origin (corresponding to no jump
-for the spectrum $F(\lambda)$ of $X(t)$), we have
+Assuming that $\zeta(\lambda)$ has a.s. no jump at the origin (corresponding to no jump for the spectrum $F(\lambda)$ of $X(t)$), we have
 \begin{equation}
-\label{eq:x_hat_complex}
-\hat{X}(t) = \text{Im } 2 \int e^{it\lambda}d\zeta(\lambda).
+\hat{X}(t) = \operatorname{Im} 2 \int_0^{+\infty} e^{i t \lambda} d\zeta(\lambda).
+\label{eq:Xhatcomplex}
 \end{equation}
 
 Further we can write
 \begin{equation}
-\label{eq:y_complex}
-Y(t) = \int A(t, \lambda)e^{it\lambda}d\zeta(\lambda)
+Y(t) = \int_{-\infty}^{+\infty} A(t, \lambda) e^{i t \lambda} d\zeta(\lambda)
+\label{eq:Ycomplex}
 \end{equation}
 where
 \begin{equation}
-\label{eq:a_t_lambda}
-A(t, \lambda)e^{it\lambda} = \int h(t, u)e^{i\lambda u}du.
+A(t, \lambda) e^{i t \lambda} = \int_{-\infty}^{+\infty} h(t, u) e^{i u \lambda} du.
+\label{eq:Adef}
 \end{equation}
 
 We then easily see that
 \begin{equation}
-\label{eq:y_hat_complex}
-\hat{Y}(t) = \text{Im } 2 \int A(t, \lambda)e^{it\lambda}d\zeta(\lambda).
+\hat{Y}(t) = \operatorname{Im} 2 \int_0^{\infty} A(t, \lambda) e^{i t \lambda} d\zeta(\lambda).
+\label{eq:Yhatcomplex}
 \end{equation}
 
-There is a difficulty about the definition \eqref{eq:quadrature_alt} in the following sense. Suppose
-that there exists another representation of $Y(t)$ of the form
+There is a difficulty about the definition~\eqref{eq:Yquadequiv} in the following sense. Suppose that there exists another representation of $Y(t)$ of the form
 \begin{equation}
-\label{eq:alt_rep}
-Y(t) = \int h'(t, u)X'(u)du,
+Y(t) = \int_{-\infty}^{+\infty} h'(t, u) X'(u)\, du
+\label{eq:Yalt}
 \end{equation}
-where $X'(t)$ is a stationary stochastic process with zero mean and finite variance.
-The existence of an infinity of representations of $Y(t)$ of the form \eqref{eq:alt_rep} has been
-pointed out by Priestley (\cite{priestley1965}, p. 205). The quadrature process of $Y(t)$ derived
-from the representation \eqref{eq:alt_rep} is
+where $X'(t)$ is a stationary stochastic process with zero mean and finite variance. The existence of an infinity of representations of $Y(t)$ of the form~\eqref{eq:Yalt} has been pointed out by Priestley~\cite[ p. 205]{priestley}. The quadrature process of $Y(t)$ derived from the representation~\eqref{eq:Yalt} is
 \begin{equation}
-\label{eq:alt_quadrature}
-\hat{Y}'(t) = \int h'(t, u)\hat{X}'(u)du.
+\hat{Y}'(t) = \int_{-\infty}^{+\infty} h'(t, u) \hat{X}'(u)\, du.
+\label{eq:Yquadprime}
 \end{equation}
 
-The question then arises: is $\hat{Y}'(t)$ equal to $\hat{Y}(t)$, or in other words, is the
-definition of the quadrature process given in \eqref{eq:quadrature_alt} independent of the particular
-representation of $Y(t)$ as the output of a linear, non-time-invariant filter with a
-stationary input process?
+The question then arises: is $\hat{Y}'(t)$ equal to $\hat{Y}(t)$, or in other words, is the definition of the quadrature process given in~\eqref{eq:Yquadequiv} independent of the particular representation of $Y(t)$ as the output of a linear, non-time-invariant filter with a stationary input process?
 
-In this note, we shall answer this question in the negative. In fact we shall exhibit a counterexample, which yields two completely different quadrature
-processes $\hat{Y}(t)$ and $\hat{Y}'(t)$ for two different representations of $Y(t)$.
+In this note, we shall answer this question in the negative. In fact we shall exhibit a counterexample, which yields two completely different quadrature processes $\hat{Y}(t)$ and $\hat{Y}'(t)$ for two different representations of $Y(t)$.
 
-However, the lack of invariance of $\hat{Y}(t)$ does not necessarily invalidate its use.
-In fact we shall show that for a particularly interesting class of oscillatory
-processes, namely the class of 'transient' processes, there is a class of natural
-representations, all of which lead to the same quadrature process, which can
-then be taken as the natural one.
+However, the lack of invariance of $\hat{Y}(t)$ does not necessarily invalidate its use. In fact we shall show that for a particularly interesting class of oscillatory processes, namely the class of 'transient' processes, there is a class of natural representations, all of which lead to the same quadrature process, which can then be taken as the natural one.
 
-\section{The counterexample}
+\section*{The counterexample}
 
-Let $(\xi_1, \xi_2, \xi_3, \xi_4)$ be four independent standard normal random variables. We
-consider the stochastic process $X(t)$ defined by
+Let $(\xi_1, \xi_2, \xi_3, \xi_4)$ be four independent standard normal random variables. We consider the stochastic process $X(t)$ defined by
 \begin{equation}
-\label{eq:x_counter}
 X(t) = \xi_1 \cos t + \xi_2 \cos 2t + \xi_3 \sin t + \xi_4 \sin 2t.
+\label{eq:Xcounter}
 \end{equation}
 
-This process can be easily checked to have zero mean and finite variance and to
-be stationary.
+This process can be easily checked to have zero mean and finite variance and to be stationary.
 
-The Hilbert space spanned by $X(t)$ (see Cramér and Leadbetter \cite{cramer1967}, p. 105) is
-in this case just an ordinary four-dimensional Euclidian space, and all linear operators in this space are four-by-four matrices. In the sequel of this section we
-shall use the Hilbert space operator notation interchangeably with matrix
-notation.
+The Hilbert space spanned by $X(t)$ (see Cramér and Leadbetter~\cite[ p. 105]{cramerleadbetter}) is in this case just an ordinary four-dimensional Euclidian space, and all linear operators in this space are four-by-four matrices. In the sequel of this section we shall use the Hilbert space operator notation interchangeably with matrix notation.
 
 Let $Y(t)$ be defined by
 \begin{equation}
-\label{eq:y_counter}
-Y(t) = \int h(t, u)X(u)du,
+Y(t) = \int_{-\infty}^{+\infty} h(t, u) X(u)\, du
+\label{eq:Ycounter}
 \end{equation}
-where $h(t, u)$ is the impulse response function of a linear, non-time-invariant
-filter.
+where $h(t, u)$ is the impulse response function of a linear, non-time-invariant filter.
 
-To simplify the exposition, we introduce the following notation. Let $\xi =
-(\xi_1, \xi_2, \xi_3, \xi_4)'$ be the column vector of the four random variables $\xi_1, \xi_2, \xi_3, \xi_4$.
-Let $F$ denote the mapping $\xi \to X(t)$. As pointed out above, this mapping is
-invertible. In the present case, this is almost obvious. For instance
+To simplify the exposition, we introduce the following notation. Let $\boldsymbol{\xi} = (\xi_1, \xi_2, \xi_3, \xi_4)'$ be the column vector of the four random variables $\xi_1, \xi_2, \xi_3, \xi_4$.
+
+Let $F$ denote the mapping $\boldsymbol{\xi} \rightarrow X(t)$. As pointed out above, this mapping is invertible. In the present case, this is almost obvious. For instance
 \begin{equation}
-\label{eq:xi_example}
-\xi_2 = \frac{1}{\pi} \int X(t) \cos 2t dt.
+\xi_2 = \frac{1}{\pi} \int_{-\pi}^{+\pi} X(t) \cos 2t\, dt.
+\label{eq:xi2}
 \end{equation}
 
-Let $H$ denote the mapping $X(t) \to \hat{X}(t)$. In our case, we have
+Let $H$ denote the mapping $X(t) \rightarrow \hat{X}(t)$. In our case, we have
 \begin{equation}
-\label{eq:x_hat_counter}
 \hat{X}(t) = \xi_1 \sin t + \xi_2 \sin 2t - \xi_3 \cos t - \xi_4 \cos 2t.
+\label{eq:Xhatcounter}
 \end{equation}
 
-Finally let $K$ denote the operator representing the non-time-invariant filter.
-Thus we can write
+Finally let $K$ denote the operator representing the non-time-invariant filter. Thus we can write
 \begin{align}
-Y &= KF\xi, \label{eq:y_operator} \\
-\hat{Y} &= KHF\xi. \label{eq:y_hat_operator}
+Y &= K F \xi \label{eq:YKFxi} \\
+\hat{Y} &= K H F \xi \label{eq:YKHFXI}
 \end{align}
 
-Now let $T$ denote a four-by-four orthogonal matrix. Then the vector $\xi' = T\xi$
-will still consist of four independent standard normal variables. We now note
-that we can write $Y$ in the form
+Now let $T$ denote a four-by-four orthogonal matrix. Then the vector $\xi' = T \xi$ will still consist of four independent standard normal variables. We now note that we can write $Y$ in the form
 \begin{equation}
-\label{eq:y_alt_form}
-Y = KFT^{-1}T\xi,
+Y = K F T^{-1} F^{-1} F T \xi
+\label{eq:Yaltform1}
 \end{equation}
 or
 \begin{equation}
-\label{eq:y_alt_form2}
-Y = K'F\xi',
+Y = K' F \xi'
+\label{eq:Yaltform2}
 \end{equation}
 where
 \begin{equation}
-\label{eq:k_prime}
-K' = KFT^{-1}F^{-1}
+K' = K F T^{-1} F^{-1}
+\label{eq:Kprime}
 \end{equation}
 and
 \begin{equation}
-\label{eq:xi_prime}
-\xi' = T\xi.
+\xi' = T \xi.
+\label{eq:xiprime}
 \end{equation}
 
-This constitutes an alternative representation to \eqref{eq:y_operator}. Corresponding to it, we
-have
+This constitutes an alternative representation to~\eqref{eq:YKFxi}. Corresponding to it, we have
 \begin{equation}
-\label{eq:y_hat_prime}
-\hat{Y}' = K'HF\xi'.
+\hat{Y}' = K' H F \xi'.
+\label{eq:Yhatprime}
 \end{equation}
 
 We shall take as $T$ the well-known orthogonal matrix
 \begin{equation}
-\label{eq:t_matrix}
-T = \begin{pmatrix} 
+T = \frac{1}{2}
+\begin{bmatrix}
 1 & 1 & 1 & 1 \\
-1 & -1 & 1 & -1 \\
-1 & 1 & -1 & -1 \\
-1 & -1 & -1 & 1 
-\end{pmatrix}
+-1 & -1 & 1 & 1 \\
+1 & -1 & -1 & 1 \\
+-1 & 1 & -1 & 1
+\end{bmatrix}
+\label{eq:Tmatrix}
 \end{equation}
 and carry out the operations described above. We obtain
 \begin{equation}
-\label{eq:y_hat_result}
-\hat{Y}(t) = \int h(t, u) [-\xi_3 \cos u - \xi_4 \cos 2u + \xi_1 \sin u + \xi_2 \sin 2u]du
+\hat{Y}(t) = \int_{-\infty}^{+\infty} h(t, u) \left[-\xi_3 \cos u - \xi_4 \cos 2u + \xi_1 \sin u + \xi_2 \sin 2u\right] du
+\label{eq:Yhatcounter}
 \end{equation}
 while
 \begin{equation}
-\label{eq:y_hat_prime_result}
-\hat{Y}'(t) = \int h(t, u) [\xi_2 \cos u - \xi_4 \cos 2u - \xi_4 \sin u + \xi_3 \sin 2u ]du.
+\hat{Y}'(t) = \int_{-\infty}^{+\infty} h(t, u) \left[\xi_2 \cos u - \xi_1 \cos 2u - \xi_4 \sin u + \xi_3 \sin 2u\right] du
+\label{eq:Yhatprimecounter}
 \end{equation}
 
-From these representations it is easy to calculate the cross-covariances, which
-turn out to be
-\begin{equation}
-\label{eq:cov1}
-E[Y(u)\hat{Y}(v)] = \int \int h(u, t_1) h(v, t_2) [\sin(t_2-t_1) + \sin 2(t_2-t_1)]dt_1dt_2
-\end{equation}
-\begin{equation}
-\label{eq:cov2}
-E[Y(u)\hat{Y}'(v)] = \int \int h(u, t_1) h(v, t_2) [\cos(2t_1 + t_2) - \cos (t_1 + 2t_2)]dt_1dt_2;
-\end{equation}
+From these representations it is easy to calculate the cross-covariances, which turn out to be
+\begin{align}
+E[Y(u)\hat{Y}(v)] &= \int_{-\infty}^{+\infty} \int_{-\infty}^{+\infty} h(u, t_1) h(v, t_2) \left[\sin(t_2 - t_1) + \sin 2(t_2 - t_1)\right] dt_1 dt_2 \label{eq:cov1} \\
+E[Y(u)\hat{Y}'(v)] &= \int_{-\infty}^{+\infty} \int_{-\infty}^{+\infty} h(u, t_1) h(v, t_2) \left[\cos(2 t_1 + t_2) - \cos(t_1 + 2 t_2)\right] dt_1 dt_2 \label{eq:cov2}
+\end{align}
 two utterly dissimilar covariances.
 
-\section{The class of transient processes}
+\section*{The class of transient processes}
 
-We shall now consider a special class of oscillatory processes, which is of great
-practical interest, and for which there exists a class of 'natural' representations.
+We shall now consider a special class of oscillatory processes, which is of great practical interest, and for which there exists a class of 'natural' representations. We refer to the case of 'transient' processes. By this we mean processes which are asymptotically stationary. For example, if the process $Y(t)$ is the solution of a linear differential equation with given initial conditions, and a forcing function which is a stationary process $X(t)$, $Y(t)$ would often be asymptotically stationary, and we would call it a 'transient' process.
 
-We refer to the case of 'transient' processes. By this we mean processes which
-are asymptotically stationary. For example, if the process $Y(t)$ is the solution of
-a linear differential equation with given initial conditions, and a forcing function
-which is a stationary process $X(t)$, $Y(t)$ would often be asymptotically stationary, and we would call it a 'transient' process.
-
-We shall make our definition precise in the following way. We assume that we
-have a family of oscillatory processes
+We shall make our definition precise in the following way. We assume that we have a family of oscillatory processes
 \begin{equation}
-\label{eq:y_t0}
-Y(t_0; t) = \int h(t_0; t, u)X(u)du.
+Y(t_0; t) = \int_{-\infty}^{+\infty} h(t_0; t, u) X(u)\, du
+\label{eq:Yt0t}
 \end{equation}
-
 (We think of $t_0$ as being the point at which the process $Y$ is initiated.)
 
-We further assume that as $t_0$ tend to $-\infty$, $h(t_0; t, u)$ tends to a limit $h(t - u)$,
-and $Y(t_0; t)$ tends to a stationary process
+We further assume that as $t_0$ tend to $-\infty$, $h(t_0; t, u)$ tends to a limit $h(t-u)$, and $Y(t_0; t)$ tends to a stationary process
 \begin{equation}
-\label{eq:y_stationary}
-Y(t) = \int h(t-u)X(u)du.
+Y(t) = \int_{-\infty}^{+\infty} h(t-u) X(u)\, du
+\label{eq:Ystationary}
 \end{equation}
 
-We shall further assume that the kernel $h(t-u)$ is invertible. Writing for
-short
+We shall further assume that the kernel $h(t-u)$ is invertible. Writing for short
 \begin{align}
-Y &= KX, \label{eq:y_short} \\
-\hat{Y} &= K\hat{X}, \label{eq:y_hat_short}
+Y_{t_0} &= K_{t_0} X \label{eq:Yt0K} \\
+Y &= K X \label{eq:YK}
 \end{align}
 we have
 \begin{equation}
-\label{eq:x_from_y}
-X = K^{-1}Y.
+X = K^{-1} Y
+\label{eq:XfromY}
 \end{equation}
 
 Suppose now that there exists a second representation of $Y(t_0; t)$ of the form
 \begin{equation}
-\label{eq:y_t0_alt}
-Y(t_0; t) = \int h'(t_0; t, u)X'(u)du,
+Y(t_0; t) = \int_{-\infty}^{+\infty} h'(t_0; t, u) X'(u)\, du
+\label{eq:Yt0tprime}
 \end{equation}
-which, as $t_0 \to -\infty$, tends to
+which, as $t_0 \rightarrow -\infty$, tends to
 \begin{equation}
-\label{eq:y_stationary_alt}
-Y(t) = \int h'(t-u)X'(u)du.
+Y(t) = \int_{-\infty}^{+\infty} h'(t-u) X'(u)\, du
+\label{eq:Ytprime}
 \end{equation}
 
 We write these relations as
 \begin{align}
-Y &= K'X', \label{eq:y_short_alt} \\
-\hat{Y} &= K'\hat{X}', \label{eq:y_hat_short_alt}
+Y_{t_0} &= K_{t_0}' X' \label{eq:Yt0Kprime} \\
+Y &= K' X' \label{eq:YKprime}
 \end{align}
 
-We have, on account of \eqref{eq:x_from_y},
+We have, on account of~\eqref{eq:XfromY},
 \begin{equation}
-\label{eq:x_rel}
-X = K^{-1}K'X'.
+X = K^{-1} K' X'
+\label{eq:XKprime}
 \end{equation}
 
-We now note that $K^{-1}K'$ is a time-invariant linear filter. It is easily verified
-that on account of this fact we have
+We now note that $K^{-1} K'$ is a time-invariant linear filter. It is easily verified that on account of this fact we have
 \begin{equation}
-\label{eq:x_hat_rel}
-\hat{X} = K^{-1}K'\hat{X}',
+\hat{X} = K^{-1} K' \hat{X}'
+\label{eq:XhatKprime}
 \end{equation}
 for the Hilbert transformation commutes with time-invariant filters.
 
-It follows from \eqref{eq:x_rel} and \eqref{eq:x_hat_rel} that
+It follows from~\eqref{eq:XKprime} and~\eqref{eq:XhatKprime} that
 \begin{equation}
-\label{eq:y_t0_rel}
-Y(t_0) = KK^{-1}K'X' = K'X',
+Y_{t_0} = K_{t_0} K^{-1} K' X' = K_{t_0}' X'
+\label{eq:Yt0KprimeX}
 \end{equation}
 and that
-\begin{equation}
-\label{eq:y_hat_t0_rel}
-\hat{Y}(t_0) = K\hat{X} = KK^{-1}K'\hat{X}',
-\end{equation}
+\begin{align}
+\hat{Y}_{t_0} &= K_{t_0} \hat{X} \notag \\
+&= K_{t_0} K^{-1} K' \hat{X}' \label{eq:YhatKprime}
+\end{align}
 while
 \begin{equation}
-\label{eq:y_hat_prime_t0}
-\hat{Y}'(t_0) = K'\hat{X}'.
+\hat{Y}_{t_0}' = K_{t_0}' \hat{X}'
+\label{eq:YhatprimeK}
 \end{equation}
 
 We use now the spectral representation of $X'$:
 \begin{equation}
-\label{eq:x_prime_spectral}
-X'(t) = \int e^{it\lambda}d\zeta(\lambda),
+X'(t) = \int_{-\infty}^{+\infty} e^{i \lambda} d\zeta(\lambda)
+\label{eq:XprimeSpectral}
 \end{equation}
 and obtain
 \begin{align}
-Y(t_0; t) &= \int A'(t_0; t, \lambda)e^{it\lambda}d\zeta(\lambda), \label{eq:y_t0_spectral1} \\
-&= \int A''(t_0; t, \lambda)e^{it\lambda}d\zeta(\lambda), \label{eq:y_t0_spectral2}
+Y(t_0; t) &= \int_{-\infty}^{+\infty} A'(t_0; t, \lambda) e^{i t \lambda} d\zeta(\lambda) \label{eq:Yt0A} \\
+&= \int_{-\infty}^{+\infty} A''(t_0; t, \lambda) e^{i t \lambda} d\zeta(\lambda) \label{eq:Yt0Aprime}
 \end{align}
-where $A'$ corresponds to the operator $KK^{-1}K'$ and $A''$ corresponds to $K'$.
+where $A'$ corresponds to the operator $K_{t_0} K^{-1} K'$ and $A''$ corresponds to $K_{t_0}'$.
 
 It easily follows that
 \begin{equation}
-\label{eq:a_diff}
-\int |A' - A''|^2 dF'(\lambda) = 0 \text{ for each } t,
+\int_{-\infty}^{+\infty} |A' - A''|^2 dF'(\lambda) = 0 \quad \text{for each } t
+\label{eq:AAdiff}
 \end{equation}
-where $F'(\lambda)$ is the spectral distribution of $X'$. This means that $A'(t_0; t, \lambda) = A''(t_0; t, \lambda)$ for $F'$-almost every $\lambda$, and thus the two representations are essentially the same in the limit as $t_0 \to -\infty$.
+where $F'(\lambda)$ is the spectral distribution of $X'$.
 
-Therefore, the quadrature process $\hat{Y}(t)$ is uniquely determined in the class of representations corresponding to asymptotically stationary (transient) processes with invertible, time-invariant limiting kernels.
+Finally we have
+\begin{align}
+\hat{Y}(t_0; t) &= \operatorname{Im} 2 \int_0^{\infty} A'(t_0; t, \lambda) e^{i t \lambda} d\zeta(\lambda) \label{eq:YhatA} \\
+\hat{Y}'(t_0; t) &= \operatorname{Im} 2 \int_0^{\infty} A''(t_0; t, \lambda) e^{i t \lambda} d\zeta(\lambda) \label{eq:YhatAprime}
+\end{align}
+from which it follows that $\hat{Y}(t_0; t) = \hat{Y}'(t_0, t)$. Thus uniqueness of the quadrature process is established for all representations of $Y(t_0, t)$ satisfying the stated assumptions, and it can be taken as the natural quadrature process.
 
-\begin{theorem}\label{thm:uniqueness}
-Let $Y(t)$ be a transient process, i.e., $Y(t) = \int h(t-u) X(u) du$ with $h$ invertible and $X$ stationary. Then, for any alternative representation $Y(t) = \int h'(t-u) X'(u) du$ with $X'$ stationary and $h'$ invertible, the quadrature process $\hat{Y}(t)$ defined via
-\[
-\hat{Y}(t) = \int h(t-u) \hat{X}(u) du
-\]
-is unique (up to $F'$-null sets), i.e., does not depend on the choice of representation.
-\end{theorem}
+As an example of a transient process, consider the process $Y(t)$ which is the solution of the second-order linear differential equation with constant coefficients
+\begin{equation}
+\frac{d^2 Y}{dt^2} + 2 \zeta \omega_0 \frac{dY}{dt} + \omega_0^2 Y = X(t)
+\label{eq:ODE}
+\end{equation}
+where $X(t)$ is a stationary process with zero mean and finite variance. Initial conditions are
+\begin{equation}
+Y(t_0) = 0, \quad \frac{dY(t_0)}{dt} = 0
+\label{eq:ODEinit}
+\end{equation}
 
-\begin{proof}
-Given two such representations, we have $X = K^{-1} K' X'$, where $K$ and $K'$ are the convolution operators associated with $h$ and $h'$, respectively. Since $K^{-1} K'$ is time-invariant, the Hilbert transform commutes with it:
-\[
-\hat{X} = K^{-1} K' \hat{X}'.
-\]
-Therefore,
-\[
-\hat{Y}(t) = K \hat{X} = K K^{-1} K' \hat{X}' = K' \hat{X}' = \hat{Y}'(t).
-\]
-Thus, the quadrature process is independent of the representation.
-\end{proof}
+The solution can be written as
+\begin{equation}
+Y(t_0, t) = \int_{t_0}^t X(\tau) h(t - \tau) d\tau, \quad (t \geq t_0)
+\label{eq:ODEsol}
+\end{equation}
+where
+\begin{equation}
+h(t) = \frac{1}{\omega_1} e^{-\zeta \omega_0 t} \sin \omega_1 t
+\label{eq:ODEh}
+\end{equation}
+and $\omega_1 = \omega_0 \sqrt{1 - \zeta^2}$.
 
-\section{Conclusion}
+It is easy to verify that all the conditions specified above are fulfilled and thus in this case, a `natural' representation to use for obtaining the quadrature process is~\eqref{eq:Yt0t}.
 
-We have shown that the definition of the quadrature process, and hence the envelope process, for a general oscillatory process may depend on the particular representation chosen for the process as the output of a linear, non-time-invariant filter with stationary input. However, for the important subclass of transient processes, there exists a class of natural representations (those with invertible, time-invariant limiting kernels) which all lead to the same quadrature process. Thus, in this case, the envelope process is uniquely defined.
-
-\section*{Acknowledgements}
-
-The author thanks Professor M. B. Priestley for helpful discussions.
-
-\begin{thebibliography}{9}
-\bibitem{hasofer1978}
-A. M. Hasofer and A. Petocz (1978) ``Envelope processes for oscillatory stochastic processes,'' \textit{J. Appl. Prob.} \textbf{15}, 1--15.
-
-\bibitem{priestley1965}
-M. B. Priestley (1965) ``Evolutionary spectra and non-stationary processes,'' \textit{J. Roy. Statist. Soc. Ser. B} \textbf{27}, 204--237.
-
-\bibitem{arens1957}
-T. Arens (1957) ``Über die Hüllkurve zufälliger Schwingungen,'' \textit{Z. Angew. Math. Mech.} \textbf{37}, 385--398.
-
-\bibitem{yang1972}
-C. T. Yang (1972) ``On the envelope of a nonstationary random process,'' \textit{IEEE Trans. Inform. Theory} \textbf{18}, 603--606.
-
-\bibitem{cramer1967}
-H. Cramér and M. R. Leadbetter (1967) \textit{Stationary and Related Stochastic Processes}, Wiley, New York.
-\end{thebibliography}
+\section*{References}
+\begin{enumerate}[label={[\arabic*]}]
+\item\label{arens} Arens, R. (1957) Complex processes for envelopes of normal noise. IRE Trans. Inf. Theory 3, 204-207.
+\item\label{cramerleadbetter} Cramér, H. and Leadbetter, M. R. (1967) Stationary and Related Stochastic Processes. Wiley, New York.
+\item\label{hasoferpetocz} Hasofer, A. M. and Petocz, P. (1978) The envelope of an oscillatory process and its upcrossings (abstract). Adv. Appl. Prob. 10, 711-716.
+\item\label{priestley} Priestley, M. B. (1965) Evolutionary spectra and non-stationary processes. J. R. Statist. Soc. B 27, 204-229.
+\item\label{yang} Yang, J. N. (1972) Non-stationary envelope process and first-excursion probability. J. Structural Mech. 1, 231-248.
+\end{enumerate}
 
 \end{document}
