@@ -60,31 +60,6 @@ public class Bibliography extends
                                                                           "10",
                                                                           "711--716").setNumber("4")
                                                                                      .setPublisher("Applied Probability Trust");
-  public static Article oscillatoryHarmonizableProcessEnvelope                =
-                                                               new Article("The envelope of an oscillatory harmonizable process",
-                                                                           "Randall J. Swift",
-                                                                           "2000",
-                                                                           "Journal of Interdisciplinary Mathematics",
-                                                                           "3",
-                                                                           "83-91");
-
-  public static Article linearPredictionNonStationaryProcesses                =
-                                                               new Article("On the linear prediction problem of certain non-stationary stochastic processes",
-                                                                           "Hannu Niemi",
-                                                                           "1976",
-                                                                           "Mathematica Scandinavica",
-                                                                           "39",
-                                                                           "146--160").setNumber("1")
-                                                                                      .setPublisher("JSTOR");
-
-  public static Article naimarkDilationTheoremRemarks                         =
-                                                      new Article("Remarks on Naimark dilation theorem",
-                                                                  "Sergiusz Kuźel",
-                                                                  "2024",
-                                                                  "Canadian Mathematical Bulletin",
-                                                                  "67",
-                                                                  "469--477").setNumber("2")
-                                                                             .setPublisher("Cambridge University Press on behalf of The Canadian Mathematical Society");
 
   public static Article spectralAnalysisOfAbstractFunctions                   =
                                                             new Article("Spectral Analysis of Abstract Functions",
@@ -108,15 +83,6 @@ public class Bibliography extends
                                                               "Kevin A. Broughan",
                                                               "2023").setPublisher("Cambridge University Press")
                                                                      .setVolume("3");
-
-  public static Article symmetrisableFunctionsExpansion                       =
-                                                        new Article("Symmetrisable Functions and Their Expansion in Terms of Biorthogonal Functions",
-                                                                    "James Mercer",
-                                                                    "1920",
-                                                                    "Proceedings of the Royal Society of London. Series A, Containing Papers of a Mathematical and Physical Character",
-                                                                    "97",
-                                                                    "401-413").setNumber("686")
-                                                                              .setPublisher("The Royal Society");
 
   public static Article besselFunctionsAndWaveEquation                        =
                                                        new Article("Bessel Functions and the Wave Equation",

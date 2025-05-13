@@ -7,5 +7,8 @@ implement orthogonal function sequence expansion api #546
 expr compiler: Implement common subexpression elimination #518
 Create Fractional Riccati Differential Equation Solver using Jacobi Tau Method #261
 assert false : "TODO: create LambertWFunction node and instantiate it here";
-Both the No Boundary Proposal, related to the Hartle-Hawking wave function of the universe, and Alexey's reformulation of the Yang-Mills mass gap conjecture depend on the identification of the ground state in their respective Hilbert spaces. They both involve finding a measure on an infinite-dimensional space, which serves as a unifying factor between these theoretical frameworks. Both approaches aim to tackle fundamental questions in physics by exploring the properties of the underlying quantum state.
-all weakly harmonizable processes are oscillatory but the converse is only true if the gain function of the oscillatory process does not depend on time
+On various definitions of the envelope of a random process
+On the prediction of non-stationary processes
+A uniqueness problem for the envelope of an oscillatory process
+A characterization of oscillatory processes and their prediction
+add LambertWFunction support to the expression compiler
