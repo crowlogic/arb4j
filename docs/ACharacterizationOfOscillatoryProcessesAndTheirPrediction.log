@@ -1,0 +1,317 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex 2025.5.7)  12 MAY 2025 23:55
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**ACharacterizationOfOscillatoryProcessesAndTheirPrediction.tex
+(./ACharacterizationOfOscillatoryProcessesAndTheirPrediction.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo
+File: size10.clo 2023/05/17 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count187
+\c@section=\count188
+\c@subsection=\count189
+\c@subsubsection=\count190
+\c@paragraph=\count191
+\c@subparagraph=\count192
+\c@figure=\count193
+\c@table=\count194
+\abovecaptionskip=\skip48
+\belowcaptionskip=\skip49
+\bibindent=\dimen140
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2023/05/13 v2.17o AMS math features
+\@mathmargin=\skip50
+
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2021/08/26 v2.01 AMS text
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks17
+\ex@=\dimen141
+))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen142
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2022/04/08 v2.04 operator names
+)
+\inf@bad=\count195
+LaTeX Info: Redefining \frac on input line 234.
+\uproot@=\count196
+\leftroot@=\count197
+LaTeX Info: Redefining \overline on input line 399.
+LaTeX Info: Redefining \colon on input line 410.
+\classnum@=\count198
+\DOTSCASE@=\count199
+LaTeX Info: Redefining \ldots on input line 496.
+LaTeX Info: Redefining \dots on input line 499.
+LaTeX Info: Redefining \cdots on input line 620.
+\Mathstrutbox@=\box51
+\strutbox@=\box52
+LaTeX Info: Redefining \big on input line 722.
+LaTeX Info: Redefining \Big on input line 723.
+LaTeX Info: Redefining \bigg on input line 724.
+LaTeX Info: Redefining \Bigg on input line 725.
+\big@size=\dimen143
+LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
+\macc@depth=\count266
+LaTeX Info: Redefining \bmod on input line 905.
+LaTeX Info: Redefining \pmod on input line 910.
+LaTeX Info: Redefining \smash on input line 940.
+LaTeX Info: Redefining \relbar on input line 970.
+LaTeX Info: Redefining \Relbar on input line 971.
+\c@MaxMatrixCols=\count267
+\dotsspace@=\muskip16
+\c@parentequation=\count268
+\dspbrk@lvl=\count269
+\tag@help=\toks18
+\row@=\count270
+\column@=\count271
+\maxfields@=\count272
+\andhelp@=\toks19
+\eqnshift@=\dimen144
+\alignsep@=\dimen145
+\tagshift@=\dimen146
+\tagwidth@=\dimen147
+\totwidth@=\dimen148
+\lineht@=\dimen149
+\@envbody=\toks20
+\multlinegap=\skip51
+\multlinetaggap=\skip52
+\mathdisplay@stack=\toks21
+LaTeX Info: Redefining \[ on input line 2953.
+LaTeX Info: Redefining \] on input line 2954.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty
+Package: amsthm 2020/05/29 v2.20.6
+\thm@style=\toks22
+\thm@bodyfont=\toks23
+\thm@headfont=\toks24
+\thm@notefont=\toks25
+\thm@headpunct=\toks26
+\thm@preskip=\skip53
+\thm@postskip=\skip54
+\thm@headsep=\skip55
+\dth@everypar=\toks27
+)
+(/usr/share/texlive/texmf-dist/tex/latex/enumitem/enumitem.sty
+Package: enumitem 2019/06/20 v3.9 Customized lists
+\enitkv@toks@=\toks28
+\labelindent=\skip56
+\enit@outerparindent=\dimen150
+\enit@toks=\toks29
+\enit@inbox=\box53
+\enit@count@id=\count273
+\enitdp@description=\count274
+)
+(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/mathrsfs.sty
+Package: mathrsfs 1996/01/01 Math RSFS package v1.0 (jk)
+\symrsfs=\mathgroup6
+)
+\c@theorem=\count275
+\c@definition=\count276
+\c@remark=\count277
+
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-dvips.def
+File: l3backend-dvips.def 2024-01-04 L3 backend support: dvips
+\l__pdf_internal_box=\box54
+\g__pdf_backend_object_int=\count278
+\l__pdf_backend_content_box=\box55
+\l__pdf_backend_model_box=\box56
+\g__pdf_backend_annotation_int=\count279
+\g__pdf_backend_link_int=\count280
+\g__pdf_backend_link_sf_int=\count281
+)
+(./ACharacterizationOfOscillatoryProcessesAndTheirPrediction.aux)
+\openout1 = `ACharacterizationOfOscillatoryProcessesAndTheirPrediction.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 17.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 17.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 17
+.
+
+(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd
+File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
+)
+
+LaTeX Warning: Citation `Kolmogorov' on page 1 undefined on input line 23.
+
+
+LaTeX Warning: Citation `Cramer' on page 1 undefined on input line 23.
+
+
+LaTeX Warning: Citation `Priestley' on page 1 undefined on input line 23.
+
+
+LaTeX Warning: Citation `Abdrabbo' on page 1 undefined on input line 23.
+
+[1
+
+]
+
+LaTeX Warning: Citation `Priestley' on page 2 undefined on input line 51.
+
+
+LaTeX Warning: Reference `eq:oscillatory' on page 2 undefined on input line 58.
+
+
+
+LaTeX Warning: Citation `Doob' on page 2 undefined on input line 58.
+
+
+LaTeX Warning: Citation `Doob' on page 2 undefined on input line 71.
+
+
+LaTeX Warning: Citation `Riesz' on page 2 undefined on input line 71.
+
+
+LaTeX Warning: Reference `eq:y_def' on page 2 undefined on input line 84.
+
+
+LaTeX Warning: Reference `eq:shift_group' on page 2 undefined on input line 88.
+
+
+
+LaTeX Warning: Citation `Riesz' on page 2 undefined on input line 88.
+
+
+LaTeX Warning: Citation `Dunford' on page 2 undefined on input line 93.
+
+[2]
+
+LaTeX Warning: Citation `Masani' on page 3 undefined on input line 100.
+
+
+LaTeX Warning: Citation `Dunford' on page 3 undefined on input line 105.
+
+
+LaTeX Warning: Citation `Priestley' on page 3 undefined on input line 114.
+
+
+LaTeX Warning: Reference `eq:deformed_b' on page 3 undefined on input line 120.
+
+
+
+LaTeX Warning: Reference `eq:deformed_b' on page 3 undefined on input line 124.
+
+
+
+LaTeX Warning: Reference `cor:equivalence' on page 3 undefined on input line 13
+4.
+
+
+LaTeX Warning: Citation `Cramer' on page 3 undefined on input line 134.
+
+[3]
+
+LaTeX Warning: Reference `cor:nondeterministic' on page 4 undefined on input li
+ne 138.
+
+
+LaTeX Warning: Citation `Karhunen' on page 4 undefined on input line 149.
+
+
+LaTeX Warning: Reference `cor:nondeterministic' on page 4 undefined on input li
+ne 157.
+
+
+LaTeX Warning: Reference `cor:moving_avg' on page 4 undefined on input line 157
+.
+
+
+LaTeX Warning: Citation `Abdrabbo' on page 4 undefined on input line 157.
+
+
+LaTeX Warning: Reference `cor:moving_avg' on page 4 undefined on input line 157
+.
+
+
+LaTeX Warning: Citation `Abdrabbo' on page 4 undefined on input line 157.
+
+
+LaTeX Warning: Citation `Masani' on page 4 undefined on input line 160.
+
+
+LaTeX Warning: Citation `Priestley' on page 4 undefined on input line 163.
+
+
+LaTeX Warning: Citation `Priestley' on page 4 undefined on input line 163.
+
+
+LaTeX Warning: Reference `thm:characterization' on page 4 undefined on input li
+ne 163.
+
+
+LaTeX Warning: Citation `Abdrabbo' on page 4 undefined on input line 163.
+
+
+LaTeX Warning: Citation `Priestley' on page 4 undefined on input line 165.
+
+[4] [5] (./ACharacterizationOfOscillatoryProcessesAndTheirPrediction.aux)
+ ***********
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+ ***********
+
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 2251 strings out of 476183
+ 33830 string characters out of 5795622
+ 1936972 words of memory out of 5000000
+ 24263 multiletter control sequences out of 15000+600000
+ 568244 words of font info for 77 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 56i,11n,65p,935b,341s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+Output written on ACharacterizationOfOscillatoryProcessesAndTheirPrediction.dvi
+ (5 pages, 16584 bytes).
