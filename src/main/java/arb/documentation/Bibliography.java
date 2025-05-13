@@ -7,7 +7,6 @@ import java.nio.file.Paths;
 
 import arb.documentation.references.Article;
 import arb.documentation.references.Book;
-import arb.documentation.references.InCollection;
 
 /**
  * Bibliography<br>
@@ -103,14 +102,6 @@ public class Bibliography extends
                                                                  "12",
                                                                  "211-223").setNumber("2")
                                                                            .setPublisher("Cambridge University Press");
-
-  public static Article harmonizableProcessSpectralDomain                      =
-                                                          new Article("Conditions for the completeness of the spectral domain of a harmonizable process",
-                                                                      "Roland Averkamp",
-                                                                      "1997",
-                                                                      "Stochastic processes and their applications",
-                                                                      "72",
-                                                                      "1-9").setNumber("1").setPublisher("Elsevier");
 
   public static Book    riemannHypothesisEquivalents                           =
                                                      new Book("Equivalents of the Riemann Hypothesis",
