@@ -9,5 +9,4 @@ Create Fractional Riccati Differential Equation Solver using Jacobi Tau Method #
 assert false : "TODO: create LambertWFunction node and instantiate it here";
 On various definitions of the envelope of a random process
 On the prediction of non-stationary processes
-A uniqueness problem for the envelope of an oscillatory process
 add LambertWFunction support to the expression compiler

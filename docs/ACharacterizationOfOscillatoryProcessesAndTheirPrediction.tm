@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|generic>
+<style|<tuple|generic|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|A CHARACTERIZATION OF OSCILLATORY PROCESSES AND THEIR
