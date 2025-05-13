@@ -21,6 +21,15 @@ import arb.documentation.references.Miscellaneous;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       variousRandomProcessEnvelopeDefinitions                         =
+                                                                      new Article("On various definitions of the envelope of a random process",
+                                                                                  "R.S. Langley",
+                                                                                  "1986",
+                                                                                  "Journal of Sound and Vibration",
+                                                                                  "105",
+                                                                                  "503-512").setNumber("3")
+                                                                                            .setPublisher("Elsevier");
+
   public static Article       characterizationOscillatoryProcesses                            =
                                                                    new Article("A characterization of oscillatory processes and their prediction",
                                                                                "V. Mandrekar",
