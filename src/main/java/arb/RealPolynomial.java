@@ -119,7 +119,7 @@ public class RealPolynomial implements Becomable<RealPolynomial>,Polynomial<Real
   @Override
   public RealPolynomial integral()
   {
-    return integrate(get(0).bits(), new RealPolynomial());
+    return integrate(bits, new RealPolynomial());
   }
 
   @Override

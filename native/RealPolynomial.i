@@ -92,7 +92,7 @@ import arb.functions.real.RealFunction;
   @Override
   public RealPolynomial integral()
   {
-    return integrate(get(0).bits(), new RealPolynomial());
+    return integrate(bits, new RealPolynomial());
   }
 
   @Override
