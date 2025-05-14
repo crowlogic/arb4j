@@ -1,0 +1,131 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{A Rigorous Operator-Theoretic Formulation of Oscillatory Processes}
+\author{Technical Note}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This note presents a reformulation of the theory of oscillatory processes using explicit operator notation with brackets. The approach resolves ambiguities in previous formulations where operators were notationally indistinguishable from scalar multiplication. Particular emphasis is placed on the proper notation for operators acting on functions in the spectral domain.
+\end{abstract}
+
+\section{Introduction}
+
+The theory of oscillatory processes introduced by Priestley and expanded by Mandrekar provides a powerful framework for analyzing non-stationary stochastic processes. However, the notation used in the original formulations has led to ambiguities, particularly in distinguishing between operator action and scalar multiplication. This note provides a rigorous reformulation using explicit bracket notation for operators to resolve these issues.
+
+\section{Mathematical Framework}
+
+Let $\mathcal{H} = L^2(\mathbb{R}, d\rho)$ denote the Hilbert space of square-integrable functions with respect to spectral measure $\rho$.
+
+\begin{definition}[Spectral Multiplication Operator]
+For a measurable function $a_t: \mathbb{R} \to \mathbb{C}$ satisfying $\int_{\mathbb{R}} |a_t(\lambda)|^2 d\rho(\lambda) < \infty$, the spectral multiplication operator $\mathbf{A}_t: \mathcal{H} \to \mathcal{H}$ is defined by its action on any function $f \in \mathcal{H}$:
+\begin{equation}
+\mathbf{A}_t\big[f\big](\lambda) = a_t(\lambda) \cdot f(\lambda), \quad \forall \lambda \in \mathbb{R}
+\end{equation}
+\end{definition}
+
+\begin{definition}[Stationary Process]
+A zero-mean stationary process $\{Y(t)\}_{t \in \mathbb{R}}$ has the spectral representation:
+\begin{equation}
+Y(t) = \int_{\mathbb{R}} e^{i\lambda t} \, dZ(\lambda)
+\end{equation}
+where $Z(\lambda)$ is an orthogonal increment process with $\mathbb{E}|Z(A)|^2 = \rho(A)$ for Borel sets $A$.
+\end{definition}
+
+\begin{definition}[Oscillatory Process]
+A process $\{X(t)\}_{t \in \mathbb{R}}$ is oscillatory if it admits the representation:
+\begin{equation}
+X(t) = \int_{\mathbb{R}} \mathbf{A}_t\big[e^{i(\cdot)t}\big](\lambda) \, dZ(\lambda)
+\end{equation}
+where $\mathbf{A}_t$ is a spectral multiplication operator defined by a measurable function $a_t(\lambda)$.
+\end{definition}
+
+\section{Main Results}
+
+\begin{theorem}[Characterization of Oscillatory Processes]
+A process $\{X(t)\}_{t \in \mathbb{R}}$ is oscillatory if and only if it can be expressed as:
+\begin{equation}
+X(t) = \mathbf{A}_t\big[Y(t)\big]
+\end{equation}
+where $Y(t)$ is a stationary process and $\mathbf{A}_t$ is a spectral multiplication operator.
+\end{theorem}
+
+\begin{proof}
+First, assume $\{X(t)\}_{t \in \mathbb{R}}$ is oscillatory. By definition:
+\begin{equation}
+X(t) = \int_{\mathbb{R}} \mathbf{A}_t\big[e^{i(\cdot)t}\big](\lambda) \, dZ(\lambda) = \int_{\mathbb{R}} a_t(\lambda)e^{i\lambda t} \, dZ(\lambda)
+\end{equation}
+
+Let $Y(t) = \int_{\mathbb{R}} e^{i\lambda t} \, dZ(\lambda)$. Then:
+\begin{align}
+\mathbf{A}_t\big[Y(t)\big] &= \mathbf{A}_t\bigg[\int_{\mathbb{R}} e^{i\lambda t} \, dZ(\lambda)\bigg] \\
+&= \int_{\mathbb{R}} \mathbf{A}_t\big[e^{i(\cdot)t}\big](\lambda) \, dZ(\lambda) \\
+&= \int_{\mathbb{R}} a_t(\lambda)e^{i\lambda t} \, dZ(\lambda) \\
+&= X(t)
+\end{align}
+
+Conversely, if $X(t) = \mathbf{A}_t\big[Y(t)\big]$ with $Y(t) = \int_{\mathbb{R}} e^{i\lambda t} \, dZ(\lambda)$, then:
+\begin{align}
+X(t) &= \mathbf{A}_t\bigg[\int_{\mathbb{R}} e^{i\lambda t} \, dZ(\lambda)\bigg] \\
+&= \int_{\mathbb{R}} \mathbf{A}_t\big[e^{i(\cdot)t}\big](\lambda) \, dZ(\lambda) \\
+&= \int_{\mathbb{R}} a_t(\lambda)e^{i\lambda t} \, dZ(\lambda)
+\end{align}
+which is the representation of an oscillatory process.
+\end{proof}
+
+\begin{corollary}[Commutation with Shift Operators]
+Let $\mathbf{U}_s$ be the shift operator defined by $\mathbf{U}_s\big[Y(t)\big] = Y(t+s)$. Then the spectral multiplication operator $\mathbf{A}_t$ commutes with $\mathbf{U}_s$:
+\begin{equation}
+\mathbf{A}_t\big[\mathbf{U}_s[Y]\big] = \mathbf{U}_s\big[\mathbf{A}_t[Y]\big]
+\end{equation}
+\end{corollary}
+
+\section{Note on Notation}
+
+The formulation presented here differs from that of Mandrekar and other authors by introducing explicit bracket notation $\mathbf{A}_t\big[f\big]$ for the action of operators on functions. This distinction is crucial for several reasons:
+
+\begin{enumerate}
+\item In previous formulations, expressions such as "$A_t y(t)$" are ambiguous, as they could be interpreted either as operator action or scalar multiplication.
+\item The bracket notation $\mathbf{A}_t\big[f\big](\lambda)$ makes explicit that $\mathbf{A}_t$ acts on functions in the spectral domain, not on process values directly.
+\item This formulation clearly distinguishes between modulation by a deterministic function (where $a_t(\lambda)$ is independent of $\lambda$) and more general spectral operations.
+\item Expressions such as $\mathbf{A}_t\big[Y(t)\big]$ unambiguously represent the application of an operator to a stochastic process, rather than pointwise multiplication.
+\end{enumerate}
+
+The bracket notation resolves the syntactic ambiguities of the original paper, where operator action was denoted in a manner that failed to distinguish it from multiplication by a scalar function of time. This led to confusion when analyzing processes (such as time-warped stationary processes) where the operator action cannot be reduced to scalar multiplication.
+
+\section{Example: Comparison with Previous Notation}
+
+In previous formulations, one might encounter the expression:
+\begin{equation}
+x(t) = A_t y(t) \quad \text{(ambiguous notation)}
+\end{equation}
+
+It is unclear whether $A_t$ is a scalar or an operator. Using the notation introduced here:
+\begin{equation}
+X(t) = \mathbf{A}_t\big[Y(t)\big] \quad \text{(unambiguous operator action)}
+\end{equation}
+
+The brackets explicitly indicate that $\mathbf{A}_t$ is an operator acting on $Y(t)$, not a scalar multiplier.
+
+\section{Conclusion}
+
+This reformulation provides a rigorous operator-theoretic foundation for Priestley's theory of oscillatory processes, resolving notational ambiguities in previous work. The explicit use of bracket notation for operator action ensures clear distinction between operators and scalar multipliers, essential for understanding the spectral structure of non-stationary processes.
+
+\begin{thebibliography}{9}
+\bibitem{priestley} Priestley, M.B. (1965). Evolutionary spectra and non-stationary processes. J. Roy. Statist. Soc. Ser. B, 27, 204–237.
+\bibitem{mandrekar} Mandrekar, V. (1976). On prediction theory for oscillatory processes. Theory Probab. Appl., 21(3), 496–507.
+\end{thebibliography}
+
+\end{document}
