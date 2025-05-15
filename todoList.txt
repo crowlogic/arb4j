@@ -7,5 +7,4 @@ implement orthogonal function sequence expansion api #546
 expr compiler: Implement common subexpression elimination #518
 Create Fractional Riccati Differential Equation Solver using Jacobi Tau Method #261
 On various definitions of the envelope of a random process
-On the prediction of non-stationary processes
 add LambertWFunction support to the expression compiler
