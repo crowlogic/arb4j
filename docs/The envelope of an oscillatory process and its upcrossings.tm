@@ -62,7 +62,7 @@
   where
 
   <\equation>
-    <label|eq:lambda_i>\<lambda\><rsub|i>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<lambda\><rsup|i>*d*F<around|(|x|)><around|(|i=0,1,2,\<ldots\>|)>
+    <label|eq:lambda_i>\<lambda\><rsub|i>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<lambda\><rsup|i>*d*F<around|(|x|)>\<forall\>i=0,1,2,\<ldots\>
   </equation>
 
   The rate of upcrossings is useful for obtaining bounds on the distribution
@@ -261,33 +261,13 @@
   where
 
   <\equation>
-    \<sigma\><rsub|0>=<big|int><rsub|0><rsup|\<infty\>><around|(|\<alpha\><rsup|2>+\<beta\><rsup|2>|)>*<space|0.17em>d*G<around|(|\<lambda\>|)>
-  </equation>
-
-  <\equation>
-    \<tau\><rsub|0>=<big|int><rsub|0><rsup|\<infty\>><around|(|\<alpha\>*\<alpha\><rprime|'>+\<beta\>*\<beta\><rprime|'>|)>*<space|0.17em>d*G<around|(|\<lambda\>|)>
-  </equation>
-
-  <\equation>
-    \<tau\><rsub|1>=<big|int><rsub|0><rsup|\<infty\>><around|[|\<lambda\>*<around|(|\<alpha\><rsup|2>+\<beta\><rsup|2>|)>+<around|(|\<alpha\>*\<beta\><rprime|'>-\<beta\>*\<alpha\><rprime|'>|)>|]>*<space|0.17em>d*G<around|(|\<lambda\>|)>
-  </equation>
-
-  <\equation>
-    \<sigma\><rsub|2>=<big|int><rsub|0><rsup|\<infty\>><around|[|\<lambda\><rsup|2>*<around|(|\<alpha\><rsup|2>+\<beta\><rsup|2>|)>+2*\<lambda\>*<around|(|\<alpha\>*\<beta\><rprime|'>-\<beta\>*\<alpha\><rprime|'>|)>+<around|(|\<alpha\><rprime|'><rsup|2>+\<beta\><rprime|'><rsup|2>|)>|]>*<space|0.17em>d*G<around|(|\<lambda\>|)>
+    <tabular|<tformat|<table|<row|<cell|\<sigma\><rsub|0>>|<cell|=>|<cell|<big|int><rsub|0><rsup|\<infty\>>\<alpha\><around*|(|t,\<lambda\>|)><rsup|2>+\<beta\><around*|(|t,\<lambda\>|)><rsup|2><space|0.17em>d*G<around|(|\<lambda\>|)>>>|<row|<cell|\<tau\><rsub|0>>|<cell|=>|<cell|<big|int><rsub|0><rsup|\<infty\>>\<alpha\><around*|(|t,\<lambda\>|)><wide|\<alpha\>|\<dot\>><around*|(|t,\<lambda\>|)>+\<beta\>*<around*|(|t,\<lambda\>|)><wide|\<beta\>|\<dot\>><around*|(|t,\<lambda\>|)>d*G<around|(|\<lambda\>|)>>>|<row|<cell|\<tau\><rsub|1>>|<cell|=>|<cell|<big|int><rsub|0><rsup|\<infty\>>\<lambda\>*<around*|(|\<alpha\><around*|(|t,\<lambda\>|)><rsup|2>+\<beta\><around*|(|t,\<lambda\>|)><rsup|2>|)>+<around*|(|\<alpha\><around*|(|t,\<lambda\>|)><wide|\<beta\>|\<dot\>><around*|(|t,\<lambda\>|)>-\<beta\><around*|(|t,\<lambda\>|)><wide|\<alpha\>|\<dot\>><around*|(|t,\<lambda\>|)>|)><space|0.17em>d*G<around|(|\<lambda\>|)>>>|<row|<cell|\<sigma\><rsub|2>>|<cell|=>|<cell|<with|font-base-size|6|<big|int><rsub|0><rsup|\<infty\>>\<lambda\><rsup|2>*<around|(|\<alpha\><around*|(|t,\<lambda\>|)><rsup|2>+\<beta\><around*|(|t,\<lambda\>|)><rsup|2>|)>+2\<lambda\>*<around*|(|\<alpha\><around*|(|t,\<lambda\>|)><wide|\<beta\>|\<dot\>><around*|(|t,\<lambda\>|)>-\<beta\><around*|(|t,\<lambda\>|)><wide|\<alpha\>|\<dot\>><around*|(|t,\<lambda\>|)>|)>+<around*|(|<wide|\<alpha\>|\<ddot\>><around|(|t,\<lambda\>|)>+<wide|\<beta\>|\<ddot\>>*<around|(|t,\<lambda\>|)>|)><space|0.17em>d*G<around|(|\<lambda\>|)>>>>>>>
   </equation>
 
   In the above formulae
 
   <\equation>
     d*G<around|(|\<lambda\>|)>=E<around|[|<around|{|d*U<around|(|\<lambda\>|)>|}><rsup|2>|]>
-  </equation>
-
-  <\equation>
-    \<alpha\><rprime|'>=<frac|\<partial\>*\<alpha\>*<around|(|t,\<lambda\>|)>|\<partial\>*t>
-  </equation>
-
-  <\equation>
-    \<beta\><rprime|'>=<frac|\<partial\>*\<beta\>*<around|(|t,\<lambda\>|)>|\<partial\>*t>
   </equation>
 
   At this stage, we change the scale of <math|Y> and <math|t> to make
@@ -311,7 +291,7 @@
   <math|g<around|(|R,R<rprime|'>|)>>:
 
   <\equation>
-    <with|font-base-size|16|<label|eq:joint_density><tabular|<tformat|<table|<row|<cell|<with|font-base-size|12|g<around|(|R,R<rprime|'>|)>>>|<cell|=<with|font-base-size|14|<frac|R
+    <with|font-base-size|16|<label|eq:joint_density><tabular|<tformat|<table|<row|<cell|<with|font-base-size|12|g<around|(|R,R<rprime|'>|)>>>|<cell|=<with|font-base-size|12|<frac|R
     |<sqrt|2*\<pi\>*\<Delta\>>>>e<rsup|-<frac|<around|(|1-\<tau\><rsub|1><rsup|2>|)>*R<rsup|2>-2*\<tau\><rsub|0>*R*R<rprime|'>+R<rprime|'><rsup|2>|2*\<Delta\>>>>>|<row|<cell|>|<cell|=<with|font-base-size|12|<frac|R
     |<sqrt|2*\<pi\>*<around*|(|1-\<tau\><rsub|0><rsup|2>-\<tau\><rsub|1><rsup|2>|)>>>>e<rsup|-<frac|<around|(|1-\<tau\><rsub|1><rsup|2>|)>*R<rsup|2>-2*\<tau\><rsub|0>*R*R<rprime|'>+R<rprime|'><rsup|2>|2**<around*|(|1-\<tau\><rsub|0><rsup|2>-\<tau\><rsub|1><rsup|2>|)>>>>>>>>>
   </equation>
@@ -377,38 +357,38 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|auto-2|<tuple|2|3|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|auto-3|<tuple|3|4|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|auto-4|<tuple|4|4|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|auto-5|<tuple|5|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|auto-6|<tuple|37|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|bib-cramer1967|<tuple|cramer1967|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|bib-leadbetter1966|<tuple|leadbetter1966|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|bib-priestley1965|<tuple|priestley1965|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:complex_a|<tuple|19|4|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:covariance_matrix|<tuple|25|4|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:du_star|<tuple|21|4|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:dv_star|<tuple|22|4|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:envelope|<tuple|9|2|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:envelope_r|<tuple|24|4|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:evolutionary_spectrum|<tuple|18|4|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:expected_rate|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:expected_rate_envelope|<tuple|37|6|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:gain_function|<tuple|16|3|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:joint_density|<tuple|35|5|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:lambda_i|<tuple|3|2|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:oscillatory_process|<tuple|15|3|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:oscillatory_representation|<tuple|17|3|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:probability_bound|<tuple|4|2|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:quadrature_process|<tuple|8|2|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:quadrature_y|<tuple|23|4|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:rayleigh_rate|<tuple|10|2|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:real_form_spectral|<tuple|5|2|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:real_form_y|<tuple|20|4|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:spectral_representation|<tuple|12|3|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:stationary_gaussian|<tuple|2|1|../.TeXmacs/texts/scratch/no_name_2.tm>>
-    <associate|eq:transformation|<tuple|34|5|../.TeXmacs/texts/scratch/no_name_2.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-2|<tuple|2|3>>
+    <associate|auto-3|<tuple|3|4>>
+    <associate|auto-4|<tuple|4|4>>
+    <associate|auto-5|<tuple|5|5>>
+    <associate|auto-6|<tuple|32|6>>
+    <associate|bib-cramer1967|<tuple|cramer1967|6>>
+    <associate|bib-leadbetter1966|<tuple|leadbetter1966|6>>
+    <associate|bib-priestley1965|<tuple|priestley1965|6>>
+    <associate|eq:complex_a|<tuple|19|4>>
+    <associate|eq:covariance_matrix|<tuple|25|4>>
+    <associate|eq:du_star|<tuple|21|4>>
+    <associate|eq:dv_star|<tuple|22|4>>
+    <associate|eq:envelope|<tuple|9|2>>
+    <associate|eq:envelope_r|<tuple|24|4>>
+    <associate|eq:evolutionary_spectrum|<tuple|18|3>>
+    <associate|eq:expected_rate|<tuple|1|1>>
+    <associate|eq:expected_rate_envelope|<tuple|32|5>>
+    <associate|eq:gain_function|<tuple|16|3>>
+    <associate|eq:joint_density|<tuple|30|5>>
+    <associate|eq:lambda_i|<tuple|3|1>>
+    <associate|eq:oscillatory_process|<tuple|15|3>>
+    <associate|eq:oscillatory_representation|<tuple|17|3>>
+    <associate|eq:probability_bound|<tuple|4|2>>
+    <associate|eq:quadrature_process|<tuple|8|2>>
+    <associate|eq:quadrature_y|<tuple|23|4>>
+    <associate|eq:rayleigh_rate|<tuple|10|2>>
+    <associate|eq:real_form_spectral|<tuple|5|2>>
+    <associate|eq:real_form_y|<tuple|20|4>>
+    <associate|eq:spectral_representation|<tuple|12|3>>
+    <associate|eq:stationary_gaussian|<tuple|2|1>>
+    <associate|eq:transformation|<tuple|29|5>>
   </collection>
 </references>
 
