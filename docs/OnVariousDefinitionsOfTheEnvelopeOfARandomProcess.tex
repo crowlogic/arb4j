@@ -1,0 +1,276 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\title{ON VARIOUS DEFINITIONS OF THE ENVELOPE OF A RANDOM PROCESS}
+\author{R. S. Langley \\ College of Aeronautics, Cranfield Institute of Technology, Cranfield, Bedford MK 43 OAL, England}
+\date{(Received 9 January 1985, and in revised form 7 May 1985)}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheorem{corollary}{Corollary}[section]
+\theoremstyle{plain}
+\newtheorem{proposition}{Proposition}[section]
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
+\newtheorem{assumption}{Assumption}[section]
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Statistical properties of the envelope definitions of Rice~\cite{rice1954}, Crandall and Mark~\cite{crandall1963} and Dugundji~\cite{dugundji1958} are derived and compared. It is shown that the definitions of Rice~\cite{rice1954} and Dugundji~\cite{dugundji1958} are equivalent, which implies that the envelope of Rice~\cite{rice1954} is independent of the choice of a central frequency. This contradicts results which have appeared in the literature~\cite{lin1967,lin1976} and the reason for this contradiction is explained. The envelopes of Crandall and Mark~\cite{crandall1963} and Dugundji~\cite{dugundji1958} are found to have the same first order probability density function but different crossing rates and mean frequencies.
+\end{abstract}
+
+\section{Introduction}
+An extremely useful concept in the theory of random vibrations is that of the envelope process $a(t)$ associated with a random process $x(t)$. Physically, if $x(t)$ is reasonably narrow banded, the envelope process is a smooth curve joining the peaks of $x(t)$ as shown in Figure~\ref{fig:envelope}. Associated with the envelope process is a phase process such that $x(t)$ can be represented as a cosine curve having time varying amplitude (governed by the envelope process) and time varying frequency (governed by the phase process).
+
+\begin{figure}[h]
+    \centering
+    % Placeholder for the actual figure
+    \fbox{\parbox{0.6\linewidth}{\centering Figure 1. The envelope of a random process.}}
+    \caption{The envelope of a random process.}
+    \label{fig:envelope}
+\end{figure}
+
+There exist a number of definitions for the envelope process, the three most notable of which are those due to Rice~\cite{rice1954}, Crandall and Mark~\cite{crandall1963} and Dugundji~\cite{dugundji1958} (often attributed to Cramer and Leadbetter~\cite{cramer1967}). The Rice envelope~\cite{rice1954} is based upon the expansion of the process $x(t)$ about some central frequency $\omega_{r}$, and is often considered to be the classical definition of the envelope. The envelope of Crandall and Mark~\cite{crandall1963} is an ``energy envelope'' and is defined in terms of $x(t)$ and its time derivative $\dot{x}(t)$. The envelope of Dugundji~\cite{dugundji1958} is derived from $x(t)$ and its Hilbert transform $\hat{x}(t)$. In what follows, the similarities and differences between these envelope definitions are discussed and various statistical properties are derived for each. It is shown that the envelope definitions of Rice~\cite{rice1954} and Dugundji~\cite{dugundji1958} are equivalent, contrary to some results in the literature~\cite{lin1967,lin1976}.
+
+\section{Envelope Definitions}
+\subsection{Envelopes Formed from a Complex Process}
+A random process $x(t)$ can be written as the real part of a complex process $z(t)$:
+\begin{equation}
+    z(t) = x(t) + i y(t),
+    \label{eq:complex_process}
+\end{equation}
+where $y(t)$ is some arbitrary random process. Using \eqref{eq:complex_process}, $x(t)$ can be expressed as a cosine curve with time-varying amplitude and phase:
+\begin{equation}
+    x(t) = a(t) \cos \phi(t), \qquad a(t) = |z(t)| = \sqrt{x^2 + y^2}, \qquad \phi(t) = \tan^{-1}(y/x).
+    \label{eq:envelope_phase}
+\end{equation}
+$a(t)$ and $\phi(t)$ are known as the random envelope and phase processes associated with $x(t)$. The process $y(t)$ must be chosen so that $a(t)$ is a smooth curve joining the peaks of $x(t)$. For a harmonic $x(t) = A \cos \omega t$, the required envelope is $A$, which implies $y(t) = \pm A \sin \omega t$. This can be related to $x(t)$ either as $y = \dot{x}/\omega$ or as the Hilbert transform $y = \hat{x}(t)$, where
+\begin{equation}
+    \hat{x}(t) = \frac{1}{\pi} \int_{-\infty}^{\infty} \frac{x(\tau)}{t - \tau} d\tau.
+    \label{eq:hilbert}
+\end{equation}
+Based on this, two definitions for the envelope process are possible:
+\begin{align}
+    a_1(t) &= \sqrt{x^2 + \left(\frac{\dot{x}}{\omega_c}\right)^2}, \label{eq:crandall_mark_env} \\
+    a_2(t) &= \sqrt{x^2 + \hat{x}^2}. \label{eq:dugundji_env}
+\end{align}
+Equation~\eqref{eq:crandall_mark_env} is the envelope definition of Crandall and Mark~\cite{crandall1963}, while~\eqref{eq:dugundji_env} is the envelope suggested by Dugundji~\cite{dugundji1958}. The choice of $\omega_c$ is discussed below.
+
+For a stationary Gaussian process, the joint density function $p(\hat{x}, \dot{x})$ and the conditional density $p(\hat{x}|\dot{x})$ can be shown to be Gaussian with mean and variance:
+\begin{align}
+    \mathrm{E}[\hat{x}|\dot{x}] &= -\left(\frac{m_1}{m_2}\right) \dot{x}, \\
+    \operatorname{Var}[\hat{x}|\dot{x}] &= m_0 q^2,
+\end{align}
+where $m_n$ is the $n$th spectral moment of the single-sided spectrum $S_{xx}(\omega)$:
+\begin{equation}
+    m_n = \int_0^\infty \omega^n S_{xx}(\omega) d\omega,
+\end{equation}
+and
+\begin{equation}
+    q^2 = 1 - \frac{m_1^2}{m_0 m_2}.
+    \label{eq:q}
+\end{equation}
+
+For the frequency $\omega_c$ in~\eqref{eq:crandall_mark_env}, two candidates are the mean frequency $\omega_1 = m_1/m_0$ and the mean zero-crossing frequency $\omega_0 = \sqrt{m_2/m_0}$. Using $\omega_c = \omega_0$ yields $\mathrm{E}[a_1^2(t)] = 2 m_0$, matching the harmonic case. Thus, $\omega_c = \omega_0$ is used here.
+
+\subsection{The Envelope of Rice}
+\label{sec:rice}
+\begin{definition}[Rice Envelope]\label{def:rice}
+Rice~\cite{rice1954} defined the envelope of a stationary random process $x(t)$ via its Fourier series expansion:
+\begin{equation}
+    x(t) = \sum_n \left\{ a_n \cos \omega_n t + b_n \sin \omega_n t \right\},
+    \label{eq:fourier}
+\end{equation}
+where $\omega_n = 2\pi n / T$ and $a_n$, $b_n$ are (ensemble) random variables. This can be rewritten as
+\begin{equation}
+    x(t) = I_c(t) \cos \omega_r t - I_s(t) \sin \omega_r t,
+    \label{eq:rice_cos_sin}
+\end{equation}
+where
+\begin{align}
+    I_c(t) &= \sum_n \left\{ a_n \cos (\omega_n - \omega_r)t + b_n \sin (\omega_n - \omega_r)t \right\}, \\
+    I_s(t) &= \sum_n \left\{ a_n \sin (\omega_n - \omega_r)t - b_n \cos (\omega_n - \omega_r)t \right\}.
+\end{align}
+Thus,
+\begin{equation}
+    x(t) = a(t) \cos [\omega_r t + \theta(t)], \qquad a^2(t) = I_c^2(t) + I_s^2(t), \qquad \theta(t) = \tan^{-1}\left(\frac{I_s(t)}{I_c(t)}\right).
+    \label{eq:rice_env}
+\end{equation}
+\end{definition}
+
+Alternatively, $x(t)$ can be written as
+\begin{equation}
+    x(t) = \operatorname{Re}\{z(t)\}, \qquad z(t) = \sum_n (a_n - i b_n) e^{i \omega_n t},
+\end{equation}
+and it follows that
+\begin{equation}
+    z(t) = x(t) + i \hat{x}(t),
+\end{equation}
+so that
+\begin{equation}
+    a^2(t) = x^2(t) + \hat{x}^2(t).
+    \label{eq:rice_dugundji_equiv}
+\end{equation}
+Thus, the Rice and Dugundji envelopes are equivalent.
+
+\section{The Statistics of the Envelope of Rice}
+\label{sec:rice_stats}
+For $x(t)$ Gaussian with zero mean, the joint probability density function (jpdf) $p(a, \dot{a}, \theta, \dot{\theta})$ can be derived by transforming the jpdf of $(I_c, I_s, \dot{I}_c, \dot{I}_s)$, which is a zero-mean Gaussian vector with covariance matrix $S$:
+\begin{equation}
+    S = \begin{pmatrix}
+        m_0 & 0 & 0 & M_2 \\
+        0 & m_0 & -M_2 & 0 \\
+        0 & -M_2 & M_1 & 0 \\
+        M_2 & 0 & 0 & M_1
+    \end{pmatrix},
+\end{equation}
+where $M_2 = m_1 - \omega_r m_0$, $M_1 = m_2 - 2\omega_r m_1 + \omega_r^2 m_0$.
+
+The transformation yields
+\begin{equation}
+    p(a, \dot{a}, \theta, \dot{\theta}) = \frac{a^2}{4\pi^2 m_0 m_2 q^2} \exp\left\{ -\frac{1}{2} \left[ \frac{a^2}{m_0} + \frac{1}{q^2 m_2} \left( \dot{a}^2 + a^2 [\dot{\theta} - \frac{m_1}{m_0} + \omega_r]^2 \right) \right] \right\}.
+    \label{eq:rice_joint}
+\end{equation}
+Integrating over $\theta$ and $\dot{\theta}$ gives
+\begin{equation}
+    p(a, \dot{a}) = \frac{a}{\sqrt{2\pi m_2} q m_0} \exp\left\{ -\frac{1}{2} \left( \frac{a^2}{m_0} + \frac{\dot{a}^2}{q^2 m_2} \right) \right\}.
+    \label{eq:rice_marginal}
+\end{equation}
+This result is independent of $\omega_r$.
+
+\section{The Statistics of the Envelope of Dugundji}
+\label{sec:dugundji_stats}
+If $x(t)$ is Gaussian with zero mean, the vector $(x, \hat{x}, \dot{x}, \hat{\dot{x}})$ is Gaussian with covariance matrix
+\begin{equation}
+    R = \begin{pmatrix}
+        m_0 & 0 & 0 & m_2 \\
+        0 & m_0 & -m_2 & 0 \\
+        0 & -m_2 & m_1 & 0 \\
+        m_2 & 0 & 0 & m_1
+    \end{pmatrix}.
+\end{equation}
+Transforming to $(a, \dot{a}, \phi, \dot{\phi})$ with $a(t)$ and $\phi(t)$ as in~\eqref{eq:envelope_phase} (with $y(t) = \hat{x}(t)$) gives
+\begin{equation}
+    p(a, \dot{a}, \phi, \dot{\phi}) = \frac{a^2}{4\pi^2 m_0 m_2 q^2} \exp\left\{ -\frac{1}{2} \left[ \frac{a^2}{m_0} + \frac{1}{q^2 m_2} \left( \dot{a}^2 + a^2 [\dot{\phi} - \frac{m_1}{m_0}]^2 \right) \right] \right\}.
+    \label{eq:dugundji_joint}
+\end{equation}
+Integrating over $\phi$ and $\dot{\phi}$ gives the same $p(a, \dot{a})$ as in~\eqref{eq:rice_marginal}.
+
+The mean rate at which the envelope crosses a level $a$ with positive slope is
+\begin{equation}
+    \nu_a^+ = \int_0^\infty \dot{a} \, p(a, \dot{a}) \, d\dot{a} = \frac{1}{\sqrt{2\pi}} \sqrt{\frac{m_2}{m_0}} q \left( \frac{a}{\sqrt{m_0}} \right) \exp\left( -\frac{1}{2} \frac{a^2}{m_0} \right).
+    \label{eq:envelope_crossing}
+\end{equation}
+The maximum occurs at $a = \sqrt{m_0}$:
+\begin{equation}
+    (\nu_a^+)_{\max} = \frac{1}{\sqrt{2\pi}} \sqrt{\frac{m_2}{m_0}} q e^{-1/2}.
+    \label{eq:envelope_crossing_max}
+\end{equation}
+The envelope $a(t)$ has a Rayleigh distribution with mean $\sqrt{\pi m_0 / 2}$.
+
+\section{The Statistics of the Envelope of Crandall and Mark}
+\label{sec:crandall_stats}
+For the envelope definition of Crandall and Mark~\cite{crandall1963} ($y = \dot{x}/\omega_0$), the following relations hold:
+\begin{align}
+    x(t) &= a(t) \cos \phi(t), \label{eq:crandall_x} \\
+    \dot{x}(t)/\omega_0 &= a(t) \sin \phi(t). \label{eq:crandall_xdot}
+\end{align}
+Differentiating gives
+\begin{align}
+    \dot{x} &= \dot{a} \cos \phi - a \dot{\phi} \sin \phi, \\
+    \ddot{x}/\omega_0 &= \dot{a} \sin \phi + a \dot{\phi} \cos \phi.
+\end{align}
+From these,
+\begin{equation}
+    \dot{\phi} = -\omega_0 + (\dot{a}/a) \cot \phi.
+    \label{eq:crandall_phidot}
+\end{equation}
+The joint pdf of $(a, \dot{a}, \phi)$ is
+\begin{equation}
+    p(a, \dot{a}, \phi) = \frac{a |\csc \phi|}{(2\pi)^{3/2} m_0 \sigma \varepsilon} \exp\left\{ -\left[ \frac{a^2}{2 m_0} + \frac{\dot{a}^2 \csc^2 \phi}{2 \sigma^2 \varepsilon^2} \right] \right\},
+    \label{eq:crandall_joint}
+\end{equation}
+where $\sigma^2 = (m_4 m_0)/m_2$ and $\varepsilon^2 = 1 - m_2^2/(m_0 m_4)$.
+
+Integrating over $\dot{a}$ gives
+\begin{equation}
+    p(a, \phi) = \frac{a}{2\pi m_0} \exp\left( -\frac{a^2}{2 m_0} \right),
+\end{equation}
+so $a$ has a Rayleigh distribution and $\phi$ is uniform over $[0, 2\pi)$.
+
+The mean rate at which the envelope crosses a level $a$ with positive slope is
+\begin{equation}
+    \nu_a^+ = \frac{4}{(2\pi)^{3/2}} \sqrt{\frac{m_4}{m_2}} \varepsilon \left( \frac{a}{\sqrt{m_0}} \right) \exp\left( -\frac{1}{2} \frac{a^2}{m_0} \right).
+    \label{eq:crandall_crossing}
+\end{equation}
+The ratio of mean crossing rates between Crandall and Mark and Dugundji is
+\begin{equation}
+    \frac{(\nu_a^+)_{C-M}}{(\nu_a^+)_D} = \frac{2}{\pi} \sqrt{\frac{m_4 m_0}{m_2^2}} \frac{\varepsilon}{q} = \frac{2}{\pi} \frac{\varepsilon}{q \sqrt{1 - \varepsilon^2}}.
+    \label{eq:crossing_ratio}
+\end{equation}
+
+The statistics of $\dot{\phi}$ are given by
+\begin{equation}
+    p(a, \dot{\phi}, \phi) = \frac{a^2 |\sec \phi|}{(2\pi)^{3/2} m_0 \sigma \varepsilon} \exp\left\{ -\left[ \frac{a^2}{2 m_0} + \frac{a^2 (\dot{\phi} + \omega_0)^2 \sec^2 \phi}{2 \sigma^2 \varepsilon^2} \right] \right\}.
+\end{equation}
+Integrating over $a$ and $\phi$ gives
+\begin{equation}
+    p(\dot{\phi}) = \frac{1}{4\pi} \sqrt{\frac{m_2}{m_4}} \frac{1}{\varepsilon} \Phi\left[ \frac{\dot{\phi} + \omega_0}{\varepsilon} \sqrt{\frac{m_2}{m_4}} \right],
+\end{equation}
+where
+\begin{equation}
+    \Phi[m] = \int_0^{2\pi} \frac{|\sec \phi| d\phi}{(1 + m^2 \sec^2 \phi)^{3/2}}.
+\end{equation}
+The mean value of $\dot{\phi}$ is $-\omega_0$, so the carrier frequency is $\omega_0 = \sqrt{m_2/m_0}$.
+
+The cumulative distribution function is
+\begin{align}
+    P(\dot{\phi}) &= \int_{-\infty}^{\dot{\phi}} p(\dot{\phi}) d\dot{\phi} = \frac{1}{4\pi} \left\{ \frac{4x}{\sqrt{1 + x^2}} k\left( \frac{1}{\sqrt{1 + x^2}} \right) + 2\pi \right\}, \\
+    x &= \sqrt{\frac{m_2}{m_4}} \frac{\dot{\phi} + \omega_0}{\varepsilon}, \\
+    k(m) &= \int_0^{\pi/2} \frac{d\phi}{\sqrt{1 - m^2 \sin^2 \phi}},
+\end{align}
+where $k(m)$ is the complete elliptic integral of the first kind~\cite{abramowitz1965}.
+
+\section{Conclusions}
+The main conclusions are as follows (assuming $x(t)$ is stationary and Gaussian unless otherwise stated):
+\begin{enumerate}[label=(\arabic*)]
+    \item The definitions of Rice~\cite{rice1954} and Dugundji~\cite{dugundji1958} are equivalent, so the Rice envelope is independent of the choice of central frequency. The proof of equivalence is algebraic and does not depend on $x(t)$ being Gaussian.
+    \item The extent to which the envelope of Dugundji~\cite{dugundji1958} follows the peaks of $x(t)$ can be assessed from equation~\eqref{eq:q}, which gives the mean and variance of $\hat{x}(t)$ when $\dot{x}(t)$ is specified (especially $\dot{x} = 0$).
+    \item The envelope definitions of Dugundji~\cite{dugundji1958} and Crandall and Mark~\cite{crandall1963} lead to the same joint pdf $p(a, \phi)$.
+    \item The mean or carrier frequency of the envelope of Dugundji~\cite{dugundji1958} is $\omega_1 = m_1/m_0$, while for Crandall and Mark~\cite{crandall1963} it is $\omega_0 = \sqrt{m_2/m_0}$.
+    \item The mean crossing rates of the envelopes of Dugundji~\cite{dugundji1958} and Crandall and Mark~\cite{crandall1963} are given by equations~\eqref{eq:envelope_crossing} and~\eqref{eq:crandall_crossing}, respectively. Generally, the mean crossing rate of the latter is greater. The ``slowly varying envelope'' concept can be assessed from equation~\eqref{eq:envelope_crossing_max}.
+\end{enumerate}
+
+\section*{References}
+\begin{thebibliography}{99}
+\bibitem{rice1954} S. O. Rice, ``Mathematical analysis of random noise,'' in \emph{Selected Papers on Noise and Stochastic Processes}, N. Wax, Ed. New York: Dover, 1954.
+\bibitem{crandall1963} S. H. Crandall and W. D. Mark, \emph{Random Vibration in Mechanical Systems}. New York: Academic Press, 1963.
+\bibitem{dugundji1958} J. Dugundji, ``Envelopes and pre-envelopes of real wave forms,'' \emph{IRE Transactions on Information Theory}, vol. IT-4, pp. 53--57, 1958.
+\bibitem{lin1967} Y. K. Lin, \emph{Probabilistic Theory of Structural Dynamics}. London: McGraw-Hill, 1967.
+\bibitem{lin1976} Y. K. Lin, \emph{Probabilistic Theory of Structural Dynamics}, 2nd ed. New York: Krieger, 1976.
+\bibitem{cramer1967} H. Cramer and M. R. Leadbetter, \emph{Stationary and Related Stochastic Processes}. New York: John Wiley, 1967.
+\bibitem{longuet1974} M. S. Longuet-Higgins, ``On the joint distribution of the periods and amplitudes of sea waves,'' \emph{Journal of Geophysical Research}, vol. 80, pp. 2688--2694, 1974.
+\bibitem{langley1984} R. S. Langley, ``The statistics of second order wave forces,'' \emph{Applied Ocean Research}, vol. 6, pp. 182--186, 1984.
+\bibitem{roberts1976} J. B. Roberts, ``First passage probability for non-linear oscillators,'' \emph{Journal of the Engineering Mechanics Division, ASCE}, vol. 102, pp. 851--866, 1976.
+\bibitem{yang1972} J. N. Yang, ``Nonstationary envelope process and first excursion probability,'' \emph{Journal of Structural Mechanics}, vol. 1, pp. 231--248, 1972.
+\bibitem{krenk1983} S. Krenk, H. O. Madsen, and P. H. Madsen, ``Stationary and transient response envelopes,'' \emph{Journal of Engineering Mechanics}, vol. 109, pp. 263--278, 1983.
+\bibitem{papoulis1984} A. Papoulis, \emph{Probability, Random Variables and Stochastic Processes}, 2nd ed. New York: McGraw-Hill, 1984.
+\bibitem{nigam1983} N. C. Nigam, \emph{Introduction to Random Vibrations}. London: MIT Press, 1983.
+\bibitem{tayfun1984} M. A. Tayfun, ``Nonlinear effects of the distribution of amplitudes of sea waves,'' \emph{Ocean Engineering}, vol. 11, pp. 245--264, 1984.
+\bibitem{lyon1961} R. H. Lyon, ``On the vibration statistics of a randomly excited hard spring oscillator II,'' \emph{Journal of the Acoustical Society of America}, vol. 33, pp. 1395--1403, 1961.
+\bibitem{naess1982} A. Naess, ``Extreme value estimates based on the envelope concept,'' \emph{Applied Ocean Research}, vol. 4, pp. 181--187, 1982.
+\bibitem{abramowitz1965} M. Abramowitz and I. A. Stegun, Eds., \emph{Handbook of Mathematical Functions}. New York: Dover, 1965.
+\end{thebibliography}
+
+\end{document}
