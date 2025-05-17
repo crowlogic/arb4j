@@ -2,7 +2,7 @@ transcribe this pdf into a latex document format coming as close to as possible 
 
 When transcribing content from visual or non-LaTeX raw sources (such as images or OCR text files) into LaTeX, follow these instructions to ensure maximum structure, clarity, and cross-referencing integrity:
 
-1. **Start with a Complete LaTeX Document**  
+1. **Always produce a Complete  Document**  
    Always generate the full LaTeX structure, including `\documentclass`, `\begin{document}`, and `\end{document}`.
 
 2. **Sectioning and Headings**  
@@ -56,5 +56,3 @@ When transcribing content from visual or non-LaTeX raw sources (such as images o
     - Likewise, ensure every `\cite{}` key exists in the bibliography.
 
 By adhering to these rules, you will produce a LaTeX document that is both structured, precise, and ready for further academic or technical use.
-
-
