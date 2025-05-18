@@ -27,7 +27,7 @@
   <\remark>
     Note that in some literature, <math|h<rsub|t><around|(|u|)>> may be
     denoted as <math|a<around|(|t,\<tau\>|)>>, where <math|t> is the time
-    parameter and <math|\<tau\>> or <math|u> represents the lag parameter.
+    parameter and <math|\<tau\>=><math|u> represents the lag parameter.
   </remark>
 
   <\theorem>
