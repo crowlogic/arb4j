@@ -3,8 +3,9 @@
 <style|<tuple|generic|framed-theorems>>
 
 <\body>
-  <doc-data|<doc-title|Riemann-Siegel Theta Function via Stirling's
-  Approximation>|<doc-author|<author-data|<author-name|Stephen
+  <doc-data|<doc-title|Approximate Riemann-Siegel Theta Function Via
+  Stirling's Gamma Function Approximation
+  >|<doc-author|<author-data|<author-name|Stephen
   Crowley>|<\author-affiliation>
     <date|>
   </author-affiliation>>>>
@@ -17,7 +18,7 @@
     \<pi\>
   </equation*>
 
-  <\theorem>
+  <\theorem*>
     <dueto|Stirling Approximation of <math|\<theta\><around|(|t|)>>>The
     approximation of the Riemann-Siegel theta function is:
 
@@ -25,16 +26,17 @@
       \<theta\><around|(|t|)>=<frac|t|2>*log
       <around*|(|<frac|t|2*\<pi\>>|)>-<frac|t|2>-<frac|\<pi\>|8>+O<around*|(|<frac|1|t>|)>
     </equation*>
-  </theorem>
+  </theorem*>
 
   <\theorem>
-    <dueto|Inverse Formula>The inverse of the Riemann-Siegel theta function
-    approximation is:
+    <dueto|Inverse Formula>The inverse theta function
+    <math|\<theta\><rsup|-1>> is:
 
-    <\equation>
-      t=2*\<pi\>*exp <around*|(|W<around*|(|<frac|y|\<pi\>*e>|)>|)>+O<around*|(|<frac|log
-      y|y>|)>
-    </equation>
+    <\equation*>
+      \<theta\><rsup|-1><around|(|x|)>=2*\<pi\>*exp
+      <around*|(|W<around*|(|<frac|x|\<pi\>*e>|)>|)>+O<around*|(|<frac|log
+      x|x>|)>
+    </equation*>
 
     where <math|W> is the Lambert W function.
   </theorem>
@@ -52,26 +54,16 @@
     Substituting <math|z=<frac|1|4>+<frac|i*t|2>>:
 
     <\equation*>
-      <with|font-base-size|9|log \<Gamma\>*<around*|(|<frac|1|4>+<frac|i*t|2>|)>=<around*|(|<frac|1|4>+<frac|i*t|2>-<frac|1|2>|)>*log
-      <around*|(|<frac|1|4>+<frac|i*t|2>|)>-<around*|(|<frac|1|4>+<frac|i*t|2>|)>+<frac|1|2>*log
-      <around|(|2*\<pi\>|)>+<frac|1|12*<around*|(|<frac|1|4>+<frac|i*t|2>|)>>+O<around*|(|<frac|1|t<rsup|3>>|)>>
-    </equation*>
-
-    This simplifies to:
-
-    <\equation*>
       log \<Gamma\>*<around*|(|<frac|1|4>+<frac|i*t|2>|)>=<around*|(|-<frac|1|4>+<frac|i*t|2>|)>*log
       <around*|(|<frac|1|4>+<frac|i*t|2>|)>-<frac|1|4>-<frac|i*t|2>+<frac|1|2>*log
       <around|(|2*\<pi\>|)>+<frac|1|12*<around*|(|<frac|1|4>+<frac|i*t|2>|)>>+O<around*|(|<frac|1|t<rsup|3>>|)>
     </equation*>
 
-    For the complex number <math|<frac|1|4>+<frac|i*t|2>>, the modulus is
-    <math|<around*|\||<frac|1|4>+<frac|i*t|2>|\|>=<sqrt|<frac|1|16>+<frac|t<rsup|2>|4>>=<frac|1|2>*<sqrt|<frac|1|4>+t<rsup|2>>>.
+    For the complex number <math|<frac|1|4>+<frac|i*t|2>>, the modulus equals
+    <math|<frac|1|2>*<sqrt|<frac|1|4>+t<rsup|2>>> and the argument equals
+    <math|arctan <around|(|2*t|)>>.
 
-    The argument is <math|arg <around*|(|<frac|1|4>+<frac|i*t|2>|)>=arctan
-    <around*|(|<frac|t/2|1/4>|)>=arctan <around|(|2*t|)>>.
-
-    The logarithm of <math|<frac|1|4>+<frac|i*t|2>> in polar form equals:
+    The logarithm in polar form equals:
 
     <\equation*>
       log <around*|(|<frac|1|4>+<frac|i*t|2>|)>=log
@@ -79,42 +71,52 @@
       <around|(|2*t|)>
     </equation*>
 
-    Taking the imaginary part of the Stirling expression and subtracting
-    <math|<frac|t|2>*log \<pi\>> gives:
+    Taking the imaginary part and subtracting <math|<frac|t|2>*log \<pi\>>
+    gives:
 
     <\equation*>
       \<theta\><around|(|t|)>=<frac|t|2>*log
       <around*|(|<frac|t|2*\<pi\>>|)>-<frac|t|2>-<frac|\<pi\>|8>+O<around*|(|<frac|1|t>|)>
     </equation*>
 
-    For the inverse formula, set <math|y=\<theta\><around|(|t|)>> and solve
-    for <math|t>. The equation:
+    For the inverse theta function, given <math|x=\<theta\><around|(|t|)>>:
 
     <\equation*>
-      y=<frac|t|2>*log <around*|(|<frac|t|2*\<pi\>>|)>-<frac|t|2>-<frac|\<pi\>|8>+O<around*|(|<frac|1|t>|)>
+      x=<frac|t|2>*log <around*|(|<frac|t|2*\<pi\>>|)>-<frac|t|2>-<frac|\<pi\>|8>+O<around*|(|<frac|1|t>|)>
     </equation*>
 
-    With the substitution <math|u=<frac|t|2*\<pi\>>>, this becomes:
+    Rearranging terms:
 
     <\equation*>
-      y+<frac|\<pi\>|8>=\<pi\>*u*log u+O<around*|(|<frac|1|u>|)>
+      x+<frac|\<pi\>|8>=<frac|t|2>*log <around*|(|<frac|t|2*\<pi\>>|)>-<frac|t|2>+O<around*|(|<frac|1|t>|)>
     </equation*>
 
-    The solution utilizes the Lambert W function:
+    Substituting <math|u=<frac|t|2*\<pi\>>>:
 
     <\equation*>
-      u=exp <around*|(|W<around*|(|<frac|y+<frac|\<pi\>|8>|\<pi\>>|)>|)>
+      x+<frac|\<pi\>|8>=\<pi\>*u*log <around|(|u|)>-\<pi\>*u+O<around*|(|<frac|1|u>|)>
     </equation*>
 
-    Converting back to <math|t=2*\<pi\>*u>:
+    This equation has the form <math|\<pi\>*u*log
+    <around|(|u|)>-\<pi\>*u=x+<frac|\<pi\>|8>>. Dividing by <math|\<pi\>>:
 
     <\equation*>
-      t=2*\<pi\>*exp <around*|(|W<around*|(|<frac|y|\<pi\>*e>|)>|)>+O<around*|(|<frac|log
-      y|y>|)>
+      u*log <around|(|u|)>-u=<frac|x+<frac|\<pi\>|8>|\<pi\>>=<frac|x|\<pi\>>+<frac|1|8>
     </equation*>
 
-    The error term follows from the asymptotic behavior of the Lambert W
-    function.
+    The Lambert W function directly gives:
+
+    <\equation*>
+      u=exp <around*|(|W<around*|(|<frac|x|\<pi\>*e>|)>|)>
+    </equation*>
+
+    Therefore, the inverse theta function is:
+
+    <\equation*>
+      \<theta\><rsup|-1><around|(|x|)>=2*\<pi\>*exp
+      <around*|(|W<around*|(|<frac|x|\<pi\>*e>|)>|)>+O<around*|(|<frac|log
+      x|x>|)>
+    </equation*>
   </proof>
 </body>
 
@@ -130,17 +132,6 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-1|<tuple|1|?|../.TeXmacs/texts/scratch/no_name_5.tm>>
   </collection>
 </references>
-
-<\auxiliary>
-  <\collection>
-    <\associate|toc>
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Riemann-Siegel
-      Theta Function via Stirling's Approximation>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-1><vspace|0.5fn>
-    </associate>
-  </collection>
-</auxiliary>
