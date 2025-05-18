@@ -54,34 +54,30 @@
     Semi-stationary Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-7><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|7.
-    Semi-stationary Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-8><vspace|0.5fn>
-
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|8.
     Determination of Evolutionary Spectra>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-9><vspace|0.5fn>
+    <no-break><pageref|auto-8><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|9. Estimation
     of Evolutionary Spectra> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-10><vspace|0.5fn>
+    <no-break><pageref|auto-9><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|10. Discrete
     Parameter Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-11><vspace|0.5fn>
+    <no-break><pageref|auto-10><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|11. Further
     Problems> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-12><vspace|0.5fn>
+    <no-break><pageref|auto-11><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|References>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-13><vspace|0.5fn>
+    <no-break><pageref|auto-12><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-14><vspace|0.5fn>
+    <no-break><pageref|auto-13><vspace|0.5fn>
   </table-of-contents>
 
   <section*|1. Introduction>
@@ -695,232 +691,6 @@
     <label|eq:approximate_transfer>\<Gamma\><rsub|t,\<lambda\>><around|(|\<theta\>|)>\<sim\>\<Gamma\><around|(|\<theta\>|)>,<space|1em><text|all
     >\<theta\>
   </equation>
-
-  so that using <eqref|eq:transformed_rep> we may write
-  <math|<around|{|Y<rsub|t>|}>> in the form
-
-  <\equation>
-    <label|eq:approximate_rep>Y<rsub|t>\<sim\><big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t>*<around|(|\<omega\>+\<omega\><rsub|0>|)>*e<rsup|i*\<omega\>*t>*d*<wide|Z|~><around|(|\<omega\>|)>
-  </equation>
-
-  where
-
-  <\equation>
-    <label|eq:transformed_z>E*<around|\||d*<wide|Z|~><around|(|\<omega\>|)>|\|><rsup|2>=<around|\||\<Gamma\><around|(|\<omega\>|)>|\|><rsup|2>*d*\<mu\>*<around|(|\<omega\>+\<omega\><rsub|0>|)>
-  </equation>
-
-  Thus, we have
-
-  <\equation>
-    <label|eq:transformed_spectrum>d*F<rsub|t><rsup|<around|(|Y|)>><around|(|\<omega\>|)>\<sim\><around|\||\<Gamma\><around|(|\<omega\>|)>|\|><rsup|2>*d*F<rsub|t><rsup|<around|(|X|)>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>
-  </equation>
-
-  where the evolutionary spectra <math|d*F<rsub|t><rsup|<around|(|Y|)>><around|(|\<omega\>|)>>
-  and <math|d*F<rsub|t><rsup|<around|(|X|)>><around|(|\<omega\>|)>> are both
-  defined with respect to the same family of oscillatory functions
-  <math|<with|math-font|cal*|F>\<equiv\><around|{|A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>|}>>.
-
-  In order to define more precisely the notion of a \Pslowly varying\Q
-  function <math|A<rsub|t-u><around|(|\<lambda\>|)>>, and to examine in more
-  detail the approximation <eqref|eq:approximate_transfer>, we now introduce
-  the notion of \Psemi-stationary processes\Q.
-
-  <section*|7. Semi-stationary Processes>
-
-  Let <math|<around|{|X<rsub|t>|}>> be an oscillatory process whose
-  non-stationary characteristics are changing \Pslowly\Q over time. Then we
-  may expect that there will exist a family <math|<with|math-font|cal*|F>> of
-  oscillatory functions <math|\<phi\><rsub|t><around|(|\<omega\>|)>=A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>>
-  in terms of which <math|<around|{|X<rsub|t>|}>> has a representation of the
-  form <eqref|eq:process_rep3>, and which are such that, for each
-  <math|\<omega\>,A<rsub|t><around|(|\<omega\>|)>> is (in some sense) a
-  slowly varying function of <math|t>. Now there are, of course, various ways
-  of defining a slowly varying function, but for our purposes the most
-  convenient characterization is obtained by specifying that its Fourier
-  transform must be \Phighly concentrated\Q in the region of zero frequency.
-
-  For each family <math|<with|math-font|cal*|F>>, define the function
-  <math|B<rsub|<with|math-font|cal*|F>><around|(|\<omega\>|)>> by
-
-  <\equation>
-    <label|eq:width_function>B<rsub|<with|math-font|cal*|F>><around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||\<theta\>|\|>*<around*|\||d*H<rsub|\<omega\>><around|(|\<theta\>|)>|\|>
-  </equation>
-
-  (Note that <math|B<rsub|<with|math-font|cal*|F>><around|(|\<omega\>|)>> is
-  a measure of the \Pwidth\Q of <math|<around|\||d*H<rsub|\<omega\>><around|(|\<theta\>|)>|\|>>.)
-
-  <\definition>
-    <label|def:semi_stationary_family>A family <math|<with|math-font|cal*|F>>
-    of oscillatory functions will be termed semi-stationary if the function
-    <math|B<rsub|<with|math-font|cal*|F>><around|(|\<omega\>|)>> is bounded
-    for all <math|\<omega\>>, and the constant,
-    <math|B<rsub|<with|math-font|cal*|F>>>, defined by
-
-    <\equation>
-      <label|eq:characteristic_width>B<rsub|<with|math-font|cal*|F>>=<around*|[|sup<rsub|\<omega\>><around*|{|B<rsub|<with|math-font|cal*|F>><around|(|\<omega\>|)>|}>|]><rsup|-1>
-    </equation>
-
-    will be termed the characteristic width of the family
-    <math|<with|math-font|cal*|F>>.
-  </definition>
-
-  <\definition>
-    <label|def:semi_stationary_process>A semi-stationary process
-    <math|<around|{|X<rsub|t>|}>> is now defined as one for which there
-    exists a semi-stationary family <math|<with|math-font|cal*|F>> in terms
-    of which <math|<around|{|X<rsub|t>|}>> has a representation of the form
-    <eqref|eq:process_rep3>.
-  </definition>
-
-  For example, the uniformly modulated process, defined in Section 5, is a
-  semistationary process, since the family
-  <math|<with|math-font|cal*|F><rsub|0>\<equiv\><around|{|c<around|(|t|)>*e<rsup|i*\<omega\>*t>|}>>
-  is semi-stationary. (Note that, since <math|c<around|(|t|)>> is independent
-  of <math|\<omega\>,B<rsub|<with|math-font|cal*|F><rsub|0>><around|(|\<omega\>|)>>
-  is independent of <math|\<omega\>>.)
-
-  For a particular semi-stationary process <math|<around|{|X<rsub|t>|}>>
-  consider the class <math|<with|math-font|cal*|C>> of semistationary
-  families <math|<with|math-font|cal*|F>>, in terms of each of which
-  <math|<around|{|X<rsub|t>|}>> admits a spectral representation. We define
-  the characteristic width of the process <math|<around|{|X<rsub|t>|}>>,
-  <math|B<rsub|X>>, by
-
-  <\equation>
-    <label|eq:process_width>B<rsub|X>=sup<rsub|<with|math-font|cal*|F>\<in\><with|math-font|cal*|C>><around|(|B<rsub|<with|math-font|cal*|F>>|)>
-  </equation>
-
-  Roughly speaking, <math|B<rsub|X>> may be interpreted as the maximum
-  interval over which the process may be treated as \Papproximately
-  stationary\Q. Note that for stationary processes the class
-  <math|<with|math-font|cal*|C>> contains the family of complex exponentials,
-  which has infinite characteristic width. Consequently, all stationary
-  processes have infinite characteristic width.
-
-  Now let <math|<with|math-font|cal*|C><rsup|\<ast\>>\<subset\><with|math-font|cal*|C>>
-  denote the sub-class of families whose characteristic widths are each equal
-  to <math|B<rsub|X>>, and let <math|<with|math-font|cal*|F><rsup|\<ast\>>>
-  denote any family <math|\<in\><with|math-font|cal*|C><rsup|\<ast\>>>. For
-  example, if <math|<around|{|X<rsub|t>|}>> is stationary,
-  <math|<with|math-font|cal*|C><rsup|\<ast\>>> contains only one family,
-  namely the complex exponentials, so that
-  <math|<with|math-font|cal*|F><rsup|\<ast\>>> is uniquely determined as this
-  family. (However, as far as the theory of evolutionary spectra is
-  concerned, the uniqueness of <math|<with|math-font|cal*|F><rsup|\<ast\>>>
-  is not required-see Section 8.) If <math|<with|math-font|cal*|C><rsup|\<ast\>>>
-  is empty, let <math|<with|math-font|cal*|F><rsup|\<ast\>>> denote any
-  family whose characteristic width is arbitrarily close to <math|B<rsub|X>>.
-
-  We now consider the spectral representation of
-  <math|<around|{|X<rsub|t>|}>> in terms of the family
-  <math|<with|math-font|cal*|F><rsup|\<ast\>>>. Thus, we write
-
-  <\equation>
-    <label|eq:optimal_representation>X<rsub|t>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><rsup|\<ast\>><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*Z<rsup|\<ast\>><around|(|\<omega\>|)>
-  </equation>
-
-  where <math|E*<around|\||d*Z<rsup|\<ast\>><around|(|\<omega\>|)>|\|><rsup|2>=d*\<mu\><rsup|\<ast\>><around|(|\<omega\>|)>>,
-  say, and the functions <math|\<phi\><rsub|t><around|(|\<omega\>|)>=<around|{|A<rsub|t><rsup|\<ast\>><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>|}>\<in\><with|math-font|cal*|F><rsup|\<ast\>>>.
-  It is now clear that if the evolutionary spectrum of
-  <math|<around|{|X<rsub|t>|}>> is defined with respect to
-  <math|<with|math-font|cal*|F><rsup|\<ast\>>>,
-  <eqref|eq:transformed_spectrum> will be a valid approximation provided that
-  the \Pwidth\Q of <math|g<around|(|u|)>> is much smaller than
-  <math|B<rsub|X>>, i.e. provided that, for each
-  <math|\<omega\>,d*H<rsub|\<omega\>><rsup|\<ast\>><around|(|\<theta\>|)>>
-  (the Fourier transform of <math|A<rsub|t><rsup|\<ast\>><around|(|\<omega\>|)>>)
-  \Pbehaves as a <math|\<delta\>>-function with respect to
-  <math|\<Gamma\><around|(|\<omega\>|)>>\Q. To define this notion more
-  precisely, we introduce the following definition.
-
-  <\definition>
-    <label|def:pseudo_delta>We will say that <math|u<around|(|x|)>> is a
-    pseudo <math|\<delta\>>-function of order <math|\<epsilon\>> with respect
-    to <math|v<around|(|x|)>> if, for any <math|k>, there exists
-    <math|\<epsilon\>(\<ll\>1)> independent of <math|k> such that,
-
-    <\equation>
-      <label|eq:pseudo_delta><around*|\||<big|int><rsub|-\<infty\>><rsup|\<infty\>>u<around|(|x|)>*v*<around|(|x+k|)>*d*x-v<around|(|k|)>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>u<around|(|x|)>*d*x|\|>\<less\>\<epsilon\>
-    </equation>
-  </definition>
-
-  Now suppose that
-
-  <\enumerate>
-    <item>the filter <math|<around|{|g<around|(|u|)>|}>> is square integrable
-    and normalized so that
-
-    <\equation>
-      <label|eq:filter_normalization>2*\<pi\>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||g<around|(|u|)>*<around|\||<rsup|2>d*u=<big|int><rsub|-\<infty\>><rsup|\<infty\>>|\|>*\<Gamma\><around|(|\<omega\>|)>|\|><rsup|2>*d*\<omega\>=1
-    </equation>
-
-    <item>
-
-    <\equation>
-      <label|eq:filter_width><big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||u|\|><around|\||g<around|(|u|)>|\|>*d*u=B<rsub|g><text|(say)>
-    </equation>
-  </enumerate>
-
-  (Note that <math|B<rsub|g>> is a measure of the \Pwidth\Q of
-  <math|<around|{|g<around|(|u|)>|}>>.)
-
-  <\lemma>
-    <label|lemma:pseudo_delta>Let <math|<around|{|<with|math-font|cal*|F>|}>>
-    be a semi-stationary family with characteristic width
-    <math|B<rsub|<with|math-font|cal*|F>>>. Then, for each
-    <math|t,\<omega\>,<around|{|e<rsup|i*t*\<omega\>>*d*H<rsub|\<omega\>><around|(|\<theta\>|)>|}>>
-    is a pseudo <math|\<delta\>>-function of order
-    <math|<around|(|B<rsub|g>/B<rsub|<with|math-font|cal*|F>>|)>> with
-    respect to <math|\<Gamma\><around|(|\<theta\>|)>>.
-  </lemma>
-
-  <\proof>
-    For any <math|k>, write
-
-    <\equation>
-      <label|eq:lemma_proof1><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*\<theta\>>*\<Gamma\>*<around|(|\<theta\>+k|)>*d*H<rsub|\<omega\>><around|(|\<theta\>|)>=\<Gamma\><around|(|k|)>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*\<theta\>>*d*H<rsub|\<omega\>><around|(|\<theta\>|)>+R<around|(|k|)>
-    </equation>
-
-    in which
-
-    <\equation>
-      <label|eq:lemma_proof2>R<around|(|k|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<theta\>*e<rsup|i*t*\<theta\>>*\<Gamma\><rprime|'>*<around|[|k+\<eta\><around|(|\<theta\>|)>*\<theta\>|]>*d*H<rsub|\<omega\>><around|(|\<theta\>|)>
-    </equation>
-
-    where, for each <math|\<theta\>,0\<leqslant\>\<eta\><around|(|\<theta\>|)>\<leqslant\>1>.
-    But
-
-    <\equation>
-      <label|eq:lemma_proof3><around|\||R<around|(|k|)>|\|>\<leqslant\>sup<rsub|\<theta\>><around|\||\<Gamma\><rprime|'><around|(|\<theta\>|)><around|\||<big|int><rsub|-\<infty\>><rsup|\<infty\>>|\|>*\<theta\><around|\|||\|>*d*H<rsub|\<omega\>><around|(|\<theta\>|)>|\|>\<leqslant\>B<rsub|g>/B<rsub|<with|math-font|cal*|F>>
-    </equation>
-
-    in virtue of <eqref|eq:filter_width>-the result follows.
-  </proof>
-
-  We are now in a position to derive a more exact form of the relation
-  <eqref|eq:approximate_transfer>.
-
-  <\theorem>
-    <label|thm:transfer_approx>Let <math|<around|{|g<around|(|u|)>|}>> be a
-    filter satisfying <eqref|eq:filter_normalization>,
-    <eqref|eq:filter_width>, and <math|\<Gamma\><rsub|t,\<lambda\>><around|(|\<theta\>|)>>
-    its generalized transfer function with respect to a semi-stationary
-    family <math|<with|math-font|cal*|F>> of characteristic width
-    <math|B<rsub|<with|math-font|cal*|F>>>. If, for any
-    <math|\<epsilon\>(\<gtr\>0)>, we choose
-    <math|<around|{|g<around|(|u|)>|}>> so that
-    <math|B<rsub|g>\<leqslant\>\<epsilon\>*B<rsub|<with|math-font|cal*|F>>>,
-    then
-
-    <\equation>
-      <label|eq:transfer_approx><around|\||A<rsub|t><around|(|\<lambda\>|)><around|\|||\|>*\<Gamma\><rsub|t,\<lambda\>><around|(|\<theta\>|)>-\<Gamma\><around|(|\<theta\>|)>|\|>\<less\>\<epsilon\>
-    </equation>
-
-    for all <math|t,\<lambda\>,\<theta\>>.
-  </theorem>
-
-  \<Gamma\><rsub|t, \<lambda\>>(\<theta\>) \<sim\>\<Gamma\>(\<theta\>),
-  <space|1em>all \ \<theta\>
 
   so that using <eqref|eq:transformed_rep> we may write
   <math|<around|{|Y<rsub|t>|}>> in the form
@@ -2092,115 +1862,114 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|?|2>>
-    <associate|auto-10|<tuple|98|21>>
-    <associate|auto-11|<tuple|126|27>>
-    <associate|auto-12|<tuple|136|28>>
-    <associate|auto-13|<tuple|139|29>>
-    <associate|auto-14|<tuple|139|29>>
+    <associate|auto-10|<tuple|112|24>>
+    <associate|auto-11|<tuple|122|25>>
+    <associate|auto-12|<tuple|125|26>>
+    <associate|auto-13|<tuple|125|26>>
     <associate|auto-2|<tuple|4|3>>
     <associate|auto-3|<tuple|10|4>>
     <associate|auto-4|<tuple|20|6>>
     <associate|auto-5|<tuple|28|8>>
     <associate|auto-6|<tuple|33|9>>
     <associate|auto-7|<tuple|44|11>>
-    <associate|auto-8|<tuple|58|14>>
-    <associate|auto-9|<tuple|73|17>>
-    <associate|bib-bartlett1955|<tuple|bartlett1955|29>>
-    <associate|bib-cramer1960|<tuple|cramer1960|29>>
-    <associate|bib-grenander1957|<tuple|grenander1957|29>>
-    <associate|bib-herbst1963a|<tuple|herbst1963a|29>>
-    <associate|bib-herbst1963b|<tuple|herbst1963b|29>>
-    <associate|bib-herbst1963c|<tuple|herbst1963c|29>>
-    <associate|bib-jowett1957|<tuple|jowett1957|29>>
-    <associate|bib-lomnicki1957|<tuple|lomnicki1957|29>>
-    <associate|bib-page1952|<tuple|page1952|29>>
-    <associate|bib-priestley1962|<tuple|priestley1962|29>>
+    <associate|auto-8|<tuple|59|14>>
+    <associate|auto-9|<tuple|84|19>>
+    <associate|bib-bartlett1955|<tuple|bartlett1955|26>>
+    <associate|bib-cramer1960|<tuple|cramer1960|26>>
+    <associate|bib-grenander1957|<tuple|grenander1957|26>>
+    <associate|bib-herbst1963a|<tuple|herbst1963a|26>>
+    <associate|bib-herbst1963b|<tuple|herbst1963b|26>>
+    <associate|bib-herbst1963c|<tuple|herbst1963c|26>>
+    <associate|bib-jowett1957|<tuple|jowett1957|27>>
+    <associate|bib-lomnicki1957|<tuple|lomnicki1957|27>>
+    <associate|bib-page1952|<tuple|page1952|27>>
+    <associate|bib-priestley1962|<tuple|priestley1962|27>>
     <associate|def:evol_spectrum|<tuple|3|7>>
     <associate|def:oscillatory_function|<tuple|1|6>>
     <associate|def:oscillatory_process|<tuple|2|6>>
-    <associate|def:pseudo_delta|<tuple|11|15>>
-    <associate|def:semi_stationary_family|<tuple|9|14>>
-    <associate|def:semi_stationary_process|<tuple|10|14>>
+    <associate|def:pseudo_delta|<tuple|6|12>>
+    <associate|def:semi_stationary_family|<tuple|4|11>>
+    <associate|def:semi_stationary_process|<tuple|5|11>>
     <associate|eq:amplitude_modulated|<tuple|16|5>>
-    <associate|eq:approximate_rep|<tuple|56|13>>
+    <associate|eq:approximate_rep|<tuple|42|10>>
     <associate|eq:approximate_transfer|<tuple|41|10>>
     <associate|eq:autocovariance|<tuple|11|4>>
-    <associate|eq:avg_spectrum|<tuple|96|20>>
-    <associate|eq:characteristic_width|<tuple|60|14>>
+    <associate|eq:avg_spectrum|<tuple|82|17>>
+    <associate|eq:characteristic_width|<tuple|46|11>>
     <associate|eq:complex_exp|<tuple|15|5>>
     <associate|eq:covar_representation|<tuple|12|4>>
     <associate|eq:covar_representation2|<tuple|18|6>>
     <associate|eq:covariance|<tuple|1|2>>
-    <associate|eq:delta_filter|<tuple|91|19>>
-    <associate|eq:det_evol_approx1|<tuple|77|17>>
-    <associate|eq:det_evol_approx2|<tuple|78|17>>
-    <associate|eq:det_evol_approx3|<tuple|79|18>>
-    <associate|eq:det_evol_energy|<tuple|76|17>>
-    <associate|eq:det_evol_error_bound1|<tuple|81|18>>
-    <associate|eq:det_evol_error_bound2|<tuple|82|18>>
-    <associate|eq:det_evol_error_terms|<tuple|80|18>>
-    <associate|eq:det_evol_integral_split|<tuple|84|18>>
-    <associate|eq:det_evol_normalized|<tuple|85|18>>
-    <associate|eq:det_evol_rep|<tuple|75|17>>
-    <associate|eq:det_evol_set|<tuple|83|18>>
-    <associate|eq:det_evol_spectrum|<tuple|86|18>>
-    <associate|eq:det_evol_transform|<tuple|74|17>>
-    <associate|eq:discrete_expected_energy|<tuple|131|27>>
-    <associate|eq:discrete_filter_output|<tuple|129|27>>
-    <associate|eq:discrete_rep|<tuple|127|27>>
-    <associate|eq:discrete_smoothed_spectrum|<tuple|132|27>>
-    <associate|eq:discrete_spectrum|<tuple|128|27>>
-    <associate|eq:discrete_transfer|<tuple|133|27>>
-    <associate|eq:discrete_variance|<tuple|134|28>>
-    <associate|eq:discrete_variance_numerator|<tuple|135|28>>
-    <associate|eq:discrete_weight_fourier|<tuple|136|28>>
-    <associate|eq:est_approx|<tuple|101|22>>
-    <associate|eq:est_bartlett_filter|<tuple|117|25>>
-    <associate|eq:est_bartlett_window|<tuple|118|25>>
-    <associate|eq:est_daniell_constant|<tuple|121|26>>
-    <associate|eq:est_daniell_filter|<tuple|119|26>>
-    <associate|eq:est_daniell_window|<tuple|120|26>>
-    <associate|eq:est_energy|<tuple|100|22>>
-    <associate|eq:est_exp_constant|<tuple|124|26>>
-    <associate|eq:est_exp_filter|<tuple|122|26>>
-    <associate|eq:est_exp_window|<tuple|123|26>>
-    <associate|eq:est_filter_output|<tuple|99|22>>
-    <associate|eq:est_normalization|<tuple|102|22>>
-    <associate|eq:est_smoothed|<tuple|110|24>>
-    <associate|eq:est_smoothed_approx|<tuple|113|25>>
-    <associate|eq:est_smoothed_energy|<tuple|111|24>>
-    <associate|eq:est_smoothed_spectrum|<tuple|112|25>>
-    <associate|eq:est_smoothed_variance|<tuple|115|25>>
-    <associate|eq:est_variance|<tuple|103|22>>
-    <associate|eq:est_variance_asymptotic|<tuple|116|25>>
-    <associate|eq:est_variance_bartlett_daniell|<tuple|125|26>>
-    <associate|eq:est_variance_bartlett_exp|<tuple|126|26>>
-    <associate|eq:est_variance_smoothed|<tuple|114|25>>
-    <associate|eq:est_weight_transform|<tuple|109|24>>
+    <associate|eq:delta_filter|<tuple|77|17>>
+    <associate|eq:det_evol_approx1|<tuple|63|14>>
+    <associate|eq:det_evol_approx2|<tuple|64|14>>
+    <associate|eq:det_evol_approx3|<tuple|65|15>>
+    <associate|eq:det_evol_energy|<tuple|62|14>>
+    <associate|eq:det_evol_error_bound1|<tuple|67|15>>
+    <associate|eq:det_evol_error_bound2|<tuple|68|15>>
+    <associate|eq:det_evol_error_terms|<tuple|66|15>>
+    <associate|eq:det_evol_integral_split|<tuple|70|15>>
+    <associate|eq:det_evol_normalized|<tuple|71|15>>
+    <associate|eq:det_evol_rep|<tuple|61|14>>
+    <associate|eq:det_evol_set|<tuple|69|15>>
+    <associate|eq:det_evol_spectrum|<tuple|72|16>>
+    <associate|eq:det_evol_transform|<tuple|60|14>>
+    <associate|eq:discrete_expected_energy|<tuple|117|25>>
+    <associate|eq:discrete_filter_output|<tuple|115|24>>
+    <associate|eq:discrete_rep|<tuple|113|24>>
+    <associate|eq:discrete_smoothed_spectrum|<tuple|118|25>>
+    <associate|eq:discrete_spectrum|<tuple|114|24>>
+    <associate|eq:discrete_transfer|<tuple|119|25>>
+    <associate|eq:discrete_variance|<tuple|120|25>>
+    <associate|eq:discrete_variance_numerator|<tuple|121|25>>
+    <associate|eq:discrete_weight_fourier|<tuple|122|25>>
+    <associate|eq:est_approx|<tuple|87|19>>
+    <associate|eq:est_bartlett_filter|<tuple|103|23>>
+    <associate|eq:est_bartlett_window|<tuple|104|23>>
+    <associate|eq:est_daniell_constant|<tuple|107|23>>
+    <associate|eq:est_daniell_filter|<tuple|105|23>>
+    <associate|eq:est_daniell_window|<tuple|106|23>>
+    <associate|eq:est_energy|<tuple|86|19>>
+    <associate|eq:est_exp_constant|<tuple|110|23>>
+    <associate|eq:est_exp_filter|<tuple|108|23>>
+    <associate|eq:est_exp_window|<tuple|109|23>>
+    <associate|eq:est_filter_output|<tuple|85|19>>
+    <associate|eq:est_normalization|<tuple|88|19>>
+    <associate|eq:est_smoothed|<tuple|96|22>>
+    <associate|eq:est_smoothed_approx|<tuple|99|22>>
+    <associate|eq:est_smoothed_energy|<tuple|97|22>>
+    <associate|eq:est_smoothed_spectrum|<tuple|98|22>>
+    <associate|eq:est_smoothed_variance|<tuple|101|22>>
+    <associate|eq:est_variance|<tuple|89|20>>
+    <associate|eq:est_variance_asymptotic|<tuple|102|22>>
+    <associate|eq:est_variance_bartlett_daniell|<tuple|111|24>>
+    <associate|eq:est_variance_bartlett_exp|<tuple|112|24>>
+    <associate|eq:est_variance_smoothed|<tuple|100|22>>
+    <associate|eq:est_weight_transform|<tuple|95|21>>
     <associate|eq:evol_spectrum|<tuple|22|7>>
-    <associate|eq:exact_energy|<tuple|90|19>>
+    <associate|eq:exact_energy|<tuple|76|16>>
     <associate|eq:filter_fourier|<tuple|26|8>>
-    <associate|eq:filter_normalization|<tuple|64|15>>
+    <associate|eq:filter_normalization|<tuple|50|12>>
     <associate|eq:filter_representation|<tuple|27|8>>
     <associate|eq:filter_spectrum|<tuple|35|9>>
     <associate|eq:filter_transform|<tuple|34|9>>
-    <associate|eq:filter_width|<tuple|65|15>>
+    <associate|eq:filter_width|<tuple|51|12>>
     <associate|eq:generalized_transfer|<tuple|39|10>>
     <associate|eq:generalized_transform|<tuple|37|9>>
-    <associate|eq:inf_width_G|<tuple|95|20>>
-    <associate|eq:inf_width_energy|<tuple|94|20>>
-    <associate|eq:inf_width_filter1|<tuple|92|20>>
-    <associate|eq:inf_width_filter2|<tuple|93|20>>
+    <associate|eq:inf_width_G|<tuple|81|17>>
+    <associate|eq:inf_width_energy|<tuple|80|17>>
+    <associate|eq:inf_width_filter1|<tuple|78|17>>
+    <associate|eq:inf_width_filter2|<tuple|79|17>>
     <associate|eq:integral_spectrum|<tuple|23|7>>
     <associate|eq:integrated_spectrum|<tuple|5|3>>
-    <associate|eq:lemma_proof1|<tuple|66|16>>
-    <associate|eq:lemma_proof2|<tuple|67|16>>
-    <associate|eq:lemma_proof3|<tuple|68|16>>
+    <associate|eq:lemma_proof1|<tuple|52|13>>
+    <associate|eq:lemma_proof2|<tuple|53|13>>
+    <associate|eq:lemma_proof3|<tuple|54|13>>
     <associate|eq:modulated_ratio|<tuple|33|9>>
     <associate|eq:modulated_rep|<tuple|31|8>>
     <associate|eq:modulated_spectrum|<tuple|32|9>>
     <associate|eq:modulating_function|<tuple|17|6>>
-    <associate|eq:optimal_representation|<tuple|62|15>>
+    <associate|eq:optimal_representation|<tuple|48|12>>
     <associate|eq:orthogonal_process|<tuple|14|5>>
     <associate|eq:oscillatory_functions|<tuple|20|6>>
     <associate|eq:page_spectrum1|<tuple|6|3>>
@@ -2212,37 +1981,37 @@
     <associate|eq:process_rep|<tuple|3|2>>
     <associate|eq:process_rep2|<tuple|13|5>>
     <associate|eq:process_rep3|<tuple|19|6>>
-    <associate|eq:process_width|<tuple|61|14>>
-    <associate|eq:pseudo_delta|<tuple|63|15>>
-    <associate|eq:smoothed_spectrum|<tuple|97|21>>
-    <associate|eq:smoothed_spectrum_approx|<tuple|98|21>>
+    <associate|eq:process_width|<tuple|47|11>>
+    <associate|eq:pseudo_delta|<tuple|49|12>>
+    <associate|eq:smoothed_spectrum|<tuple|83|18>>
+    <associate|eq:smoothed_spectrum_approx|<tuple|84|18>>
     <associate|eq:spectral_rep|<tuple|2|2>>
-    <associate|eq:spectrum_density|<tuple|88|19>>
-    <associate|eq:spectrum_density_est|<tuple|89|19>>
-    <associate|eq:spectrum_estimation|<tuple|87|19>>
+    <associate|eq:spectrum_density|<tuple|74|16>>
+    <associate|eq:spectrum_density_est|<tuple|75|16>>
+    <associate|eq:spectrum_estimation|<tuple|73|16>>
     <associate|eq:standardize|<tuple|24|7>>
-    <associate|eq:stationarity_test|<tuple|139|29>>
-    <associate|eq:stationary_estimate|<tuple|137|29>>
+    <associate|eq:stationarity_test|<tuple|125|26>>
+    <associate|eq:stationary_estimate|<tuple|123|26>>
     <associate|eq:stationary_process|<tuple|28|8>>
     <associate|eq:stationary_rep|<tuple|30|8>>
-    <associate|eq:stationary_window|<tuple|138|29>>
-    <associate|eq:theorem_proof1|<tuple|70|16>>
-    <associate|eq:theorem_proof2|<tuple|71|16>>
-    <associate|eq:theorem_proof3|<tuple|72|17>>
-    <associate|eq:theorem_proof4|<tuple|73|17>>
+    <associate|eq:stationary_window|<tuple|124|26>>
+    <associate|eq:theorem_proof1|<tuple|56|13>>
+    <associate|eq:theorem_proof2|<tuple|57|13>>
+    <associate|eq:theorem_proof3|<tuple|58|14>>
+    <associate|eq:theorem_proof4|<tuple|59|14>>
     <associate|eq:total_energy|<tuple|21|7>>
-    <associate|eq:transfer_approx|<tuple|69|16>>
+    <associate|eq:transfer_approx|<tuple|55|13>>
     <associate|eq:transfer_function|<tuple|36|9>>
     <associate|eq:transformed_phi|<tuple|40|10>>
     <associate|eq:transformed_rep|<tuple|38|10>>
-    <associate|eq:transformed_spectrum|<tuple|58|13>>
-    <associate|eq:transformed_z|<tuple|57|13>>
+    <associate|eq:transformed_spectrum|<tuple|44|10>>
+    <associate|eq:transformed_z|<tuple|43|10>>
     <associate|eq:uniform_modulated|<tuple|29|8>>
     <associate|eq:unit_integral|<tuple|25|7>>
-    <associate|eq:width_function|<tuple|59|14>>
-    <associate|lemma:pseudo_delta|<tuple|12|16>>
-    <associate|thm:spectrum_estimation|<tuple|14|19>>
-    <associate|thm:transfer_approx|<tuple|13|16>>
+    <associate|eq:width_function|<tuple|45|11>>
+    <associate|lemma:pseudo_delta|<tuple|7|13>>
+    <associate|thm:spectrum_estimation|<tuple|9|16>>
+    <associate|thm:transfer_approx|<tuple|8|13>>
   </collection>
 </references>
 
@@ -2299,35 +2068,31 @@
       Semi-stationary Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-7><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|7.
-      Semi-stationary Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-8><vspace|0.5fn>
-
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|8.
       Determination of Evolutionary Spectra>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-9><vspace|0.5fn>
+      <no-break><pageref|auto-8><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|9.
       Estimation of Evolutionary Spectra>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-10><vspace|0.5fn>
+      <no-break><pageref|auto-9><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|10.
       Discrete Parameter Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-11><vspace|0.5fn>
+      <no-break><pageref|auto-10><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|11.
       Further Problems> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-12><vspace|0.5fn>
+      <no-break><pageref|auto-11><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|References>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-13><vspace|0.5fn>
+      <no-break><pageref|auto-12><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-14><vspace|0.5fn>
+      <no-break><pageref|auto-13><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>

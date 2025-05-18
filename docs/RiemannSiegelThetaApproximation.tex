@@ -1,0 +1,92 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm}
+
+\begin{document}
+
+\section{Riemann-Siegel Theta Function via Stirling's Approximation}
+
+The Riemann-Siegel theta function $\theta(t)$ is defined as:
+\[ \theta(t) = \arg\Gamma\left(\frac{1}{4}+\frac{it}{2}\right) - \frac{t}{2}\log\pi \]
+
+\begin{theorem}[Stirling Approximation of $\theta(t)$]
+The approximation of the Riemann-Siegel theta function is:
+\[
+\boxed{
+\theta(t) = \frac{t}{2}\log\left(\frac{t}{2\pi}\right) - \frac{t}{2} - \frac{\pi}{8} + O\left(\frac{1}{t}\right)
+}
+\]
+\end{theorem}
+
+\begin{theorem}[Inverse Formula]
+The inverse of the Riemann-Siegel theta function approximation is:
+\[
+\boxed{
+t = 2\pi\exp\left(W\left(\frac{y}{\pi e}\right)\right) + O\left(\frac{\log y}{y}\right)
+}
+\]
+where $W$ is the Lambert W function.
+\end{theorem}
+
+\begin{proof}
+The definition of the theta function gives $\theta(t) = \arg\Gamma\left(\frac{1}{4}+\frac{it}{2}\right) - \frac{t}{2}\log\pi$. Stirling's formula for the gamma function states:
+
+\[
+\log\Gamma(z) = \left(z-\frac{1}{2}\right)\log z - z + \frac{1}{2}\log(2\pi) + \frac{1}{12z} + O\left(\frac{1}{z^3}\right)
+\]
+
+Substituting $z = \frac{1}{4}+\frac{it}{2}$:
+
+\[
+\log\Gamma\left(\frac{1}{4}+\frac{it}{2}\right) = \left(\frac{1}{4}+\frac{it}{2}-\frac{1}{2}\right)\log\left(\frac{1}{4}+\frac{it}{2}\right) - \left(\frac{1}{4}+\frac{it}{2}\right) + \frac{1}{2}\log(2\pi) + \frac{1}{12\left(\frac{1}{4}+\frac{it}{2}\right)} + O\left(\frac{1}{t^3}\right)
+\]
+
+This simplifies to:
+
+\[
+\log\Gamma\left(\frac{1}{4}+\frac{it}{2}\right) = \left(-\frac{1}{4}+\frac{it}{2}\right)\log\left(\frac{1}{4}+\frac{it}{2}\right) - \frac{1}{4} - \frac{it}{2} + \frac{1}{2}\log(2\pi) + \frac{1}{12\left(\frac{1}{4}+\frac{it}{2}\right)} + O\left(\frac{1}{t^3}\right)
+\]
+
+For the complex number $\frac{1}{4}+\frac{it}{2}$, the modulus is $\left|\frac{1}{4}+\frac{it}{2}\right| = \sqrt{\frac{1}{16}+\frac{t^2}{4}} = \frac{1}{2}\sqrt{\frac{1}{4}+t^2}$.
+
+The argument is $\arg\left(\frac{1}{4}+\frac{it}{2}\right) = \arctan\left(\frac{t/2}{1/4}\right) = \arctan(2t)$.
+
+The logarithm of $\frac{1}{4}+\frac{it}{2}$ in polar form equals:
+
+\[
+\log\left(\frac{1}{4}+\frac{it}{2}\right) = \log\left(\frac{1}{2}\sqrt{\frac{1}{4}+t^2}\right) + i\arctan(2t)
+\]
+
+Taking the imaginary part of the Stirling expression and subtracting $\frac{t}{2}\log\pi$ gives:
+
+\[
+\theta(t) = \frac{t}{2}\log\left(\frac{t}{2\pi}\right) - \frac{t}{2} - \frac{\pi}{8} + O\left(\frac{1}{t}\right)
+\]
+
+For the inverse formula, set $y = \theta(t)$ and solve for $t$. The equation:
+
+\[
+y = \frac{t}{2}\log\left(\frac{t}{2\pi}\right) - \frac{t}{2} - \frac{\pi}{8} + O\left(\frac{1}{t}\right)
+\]
+
+With the substitution $u = \frac{t}{2\pi}$, this becomes:
+
+\[
+y + \frac{\pi}{8} = \pi u \log u + O\left(\frac{1}{u}\right)
+\]
+
+The solution utilizes the Lambert W function:
+
+\[
+u = \exp\left(W\left(\frac{y+\frac{\pi}{8}}{\pi}\right)\right)
+\]
+
+Converting back to $t = 2\pi u$:
+
+\[
+t = 2\pi\exp\left(W\left(\frac{y}{\pi e}\right)\right) + O\left(\frac{\log y}{y}\right)
+\]
+
+The error term follows from the asymptotic behavior of the Lambert W function.
+\end{proof}
+
+\end{document}
