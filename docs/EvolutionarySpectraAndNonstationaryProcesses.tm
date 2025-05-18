@@ -753,7 +753,7 @@
     <math|B<rsub|<with|math-font|cal*|F>>>, defined by
 
     <\equation>
-      <label|eq:characteristic_width>B<rsub|<with|math-font|cal*|F>>=<around*|[|sup<rsub|\<omega\>><around*|{|B<rsub|<with|math-font|cal*|F>><around|(|\<omega\>|)>|}>|]><rsup|-1>,
+      <label|eq:characteristic_width>B<rsub|<with|math-font|cal*|F>>=<around*|[|sup<rsub|\<omega\>><around*|{|B<rsub|<with|math-font|cal*|F>><around|(|\<omega\>|)>|}>|]><rsup|-1>
     </equation>
 
     will be termed the characteristic width of the family
@@ -783,7 +783,7 @@
   <math|B<rsub|X>>, by
 
   <\equation>
-    <label|eq:process_width>B<rsub|X>=sup<rsub|<with|math-font|cal*|F>\<in\><with|math-font|cal*|C>><around|(|B<rsub|<with|math-font|cal*|F>>|)>.
+    <label|eq:process_width>B<rsub|X>=sup<rsub|<with|math-font|cal*|F>\<in\><with|math-font|cal*|C>><around|(|B<rsub|<with|math-font|cal*|F>>|)>
   </equation>
 
   Roughly speaking, <math|B<rsub|X>> may be interpreted as the maximum
@@ -853,8 +853,7 @@
     <item>
 
     <\equation>
-      <label|eq:filter_width><big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||u|\|><around|\||g<around|(|u|)>|\|>*d*u=B<rsub|g><text|(say).
-      >
+      <label|eq:filter_width><big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||u|\|><around|\||g<around|(|u|)>|\|>*d*u=B<rsub|g><text|(say)>
     </equation>
   </enumerate>
 
@@ -910,7 +909,7 @@
     then
 
     <\equation>
-      <label|eq:transfer_approx><around|\||A<rsub|t><around|(|\<lambda\>|)><around|\|||\|>*\<Gamma\><rsub|t,\<lambda\>><around|(|\<theta\>|)>-\<Gamma\><around|(|\<theta\>|)>|\|>\<less\>\<epsilon\>,
+      <label|eq:transfer_approx><around|\||A<rsub|t><around|(|\<lambda\>|)><around|\|||\|>*\<Gamma\><rsub|t,\<lambda\>><around|(|\<theta\>|)>-\<Gamma\><around|(|\<theta\>|)>|\|>\<less\>\<epsilon\>
     </equation>
 
     for all <math|t,\<lambda\>,\<theta\>>.
@@ -920,7 +919,7 @@
     We have, from <eqref|eq:generalized_transfer>,
 
     <\equation>
-      <label|eq:theorem_proof1>A<rsub|t><around|(|\<lambda\>|)>*\<Gamma\><rsub|t,\<lambda\>><around|(|\<theta\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|u|)>*A<rsub|t-u><around|(|\<lambda\>|)>*e<rsup|-i*u*\<theta\>>*d*u.
+      <label|eq:theorem_proof1>A<rsub|t><around|(|\<lambda\>|)>*\<Gamma\><rsub|t,\<lambda\>><around|(|\<theta\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|u|)>*A<rsub|t-u><around|(|\<lambda\>|)>*e<rsup|-i*u*\<theta\>>*d*u
     </equation>
 
     Substituting for <math|A<rsub|t-u><around|(|\<lambda\>|)>> in terms of
@@ -928,11 +927,7 @@
     we obtain
 
     <\equation>
-      <label|eq:theorem_proof2>
-
-      <\aligned>
-        <tformat|<table|<row|<cell|A<rsub|t><around|(|\<lambda\>|)>*\<Gamma\><rsub|t,\<lambda\>><around|(|\<theta\>|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|u|)>*e<rsup|-i*u*\<theta\>>*e<rsup|i*<around|(|t-u|)>*\<phi\>>*d*H<rsub|\<lambda\>><around|(|\<phi\>|)>*d*u>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*\<phi\>>*\<Gamma\>*<around|(|\<theta\>+\<phi\>|)>*d*H<rsub|\<lambda\>><around|(|\<phi\>|)>>>>>
-      </aligned>
+      <tabular|<tformat|<table|<row|<cell|A<rsub|t><around|(|\<lambda\>|)>*\<Gamma\><rsub|t,\<lambda\>><around|(|\<theta\>|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|u|)>*e<rsup|-i*u*\<theta\>>*e<rsup|i*<around|(|t-u|)>*\<phi\>>*d*H<rsub|\<lambda\>><around|(|\<phi\>|)>*d*u>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*\<phi\>>*\<Gamma\>*<around|(|\<theta\>+\<phi\>|)>*d*H<rsub|\<lambda\>><around|(|\<phi\>|)>>>>>><label|eq:theorem_proof2>
     </equation>
 
     on interchanging the order of integration. However, according to Lemma
@@ -997,13 +992,13 @@
   arbitrarily close to, <math|B<rsub|X>>), we may write
 
   <\equation>
-    <label|eq:det_evol_approx1>\<Gamma\><rsub|t,\<omega\>+\<omega\><rsub|0>><rsup|\<ast\>><around|(|\<omega\>|)>=\<Gamma\><around|(|\<omega\>|)>+r<around|(|t,\<omega\><rsub|0>,\<omega\>|)>,
+    <label|eq:det_evol_approx1>\<Gamma\><rsub|t,\<omega\>+\<omega\><rsub|0>><rsup|\<ast\>><around|(|\<omega\>|)>=\<Gamma\><around|(|\<omega\>|)>+r<around|(|t,\<omega\><rsub|0>,\<omega\>|)>
   </equation>
 
   where
 
   <\equation>
-    <label|eq:det_evol_approx2><around|\||r<around|(|t,\<omega\><rsub|0>,\<omega\>|)>|\|>\<less\>\<epsilon\>/<around|\||A<rsub|t><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>|\|>.
+    <label|eq:det_evol_approx2><around|\||r<around|(|t,\<omega\><rsub|0>,\<omega\>|)>|\|>\<less\>\<epsilon\>/<around|\||A<rsub|t><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>|\|>
   </equation>
 
   Thus we obtain from <eqref|eq:det_evol_energy>
@@ -1015,11 +1010,7 @@
   say, where
 
   <\equation>
-    <label|eq:det_evol_error_terms>
-
-    <\aligned>
-      <tformat|<table|<row|<cell|I<rsub|1>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<Gamma\><around|(|\<omega\>|)>*r<rsup|\<ast\>>*<around|\||A<rsub|t><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>|\|><rsup|2>*d*\<mu\><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>>>|<row|<cell|I<rsub|2>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<Gamma\><rsup|\<ast\>><around|(|\<omega\>|)>*r*<around|\||A<rsub|t><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>|\|><rsup|2>*d*\<mu\><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>>>|<row|<cell|I<rsub|3>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||r|\|><rsup|2>*<around|\||A<rsub|t><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>|\|><rsup|2>*d*\<mu\><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>>>>>
-    </aligned>
+    <tabular|<tformat|<table|<row|<cell|I<rsub|1>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<Gamma\><around|(|\<omega\>|)>*r<rsup|\<ast\>>*<around|\||A<rsub|t><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>|\|><rsup|2>*d*\<mu\><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>>>|<row|<cell|I<rsub|2>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<Gamma\><rsup|\<ast\>><around|(|\<omega\>|)>*r*<around|\||A<rsub|t><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>|\|><rsup|2>*d*\<mu\><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>>>|<row|<cell|I<rsub|3>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||r|\|><rsup|2>*<around|\||A<rsub|t><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>|\|><rsup|2>*d*\<mu\><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>>>>>><label|eq:det_evol_error_terms>
   </equation>
 
   Now
@@ -1046,7 +1037,7 @@
   Then
 
   <\equation>
-    <label|eq:det_evol_integral_split><gathered|<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||\<Gamma\><around|(|\<omega\>|)><around|\|||\|>*A<rsub|t><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>|\|>*d*\<mu\><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)><next-line>\<leqslant\><big|int><rsub|\<Omega\>>d*\<mu\><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>+<big|int><rsub|<wide|\<Omega\>|\<bar\>>><around|\||\<Gamma\><around|(|\<omega\>|)><around|\||<rsup|2>|\|>*A<rsub|t><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>|\|><rsup|2>*d*\<mu\><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>>
+    <with|font-base-size|9|<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||\<Gamma\><around|(|\<omega\>|)><around|\|||\|>*A<rsub|t><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>|\|>*d*\<mu\><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>\<leqslant\><big|int><rsub|\<Omega\>>d*\<mu\><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>+<big|int><rsub|<wide|\<Omega\>|\<bar\>>><around|\||\<Gamma\><around|(|\<omega\>|)><around|\||<rsup|2>|\|>*A<rsub|t><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>|\|><rsup|2>*d*\<mu\><rsup|\<ast\>>*<around|(|\<omega\>+\<omega\><rsub|0>|)>><label|eq:det_evol_integral_split>
   </equation>
 
   The first term is finite, since <math|d*\<mu\><rsup|\<ast\>><around|(|\<omega\>|)>>
@@ -1197,7 +1188,7 @@
 
   <\equation>
     <label|eq:avg_spectrum>d*\<mu\><around|(|\<omega\><rsub|0>|)><around*|{|lim<rsub|T\<rightarrow\>\<infty\>>
-    <big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||G<rsub|T,\<omega\><rsub|0>><around|(|\<omega\>|)>|\|><rsup|2>*d*\<omega\>|}>,
+    <big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||G<rsub|T,\<omega\><rsub|0>><around|(|\<omega\>|)>|\|><rsup|2>*d*\<omega\>|}>
   </equation>
 
   and this quantity, being completely independent of <math|t>, may be
@@ -1247,7 +1238,7 @@
   Then we have, for each <math|i>,
 
   <\equation>
-    <label|eq:smoothed_spectrum_approx>E<around|(|<around|\||Y<rsub|t>|\|><rsup|2>|)>=<wide|f|^><rsub|t><rsup|<around|(|i|)>\<ast\>><around|(|\<omega\><rsub|0>|)>+O<around|(|B<rsub|g>/B<rsub|X>|)>
+    <label|eq:smoothed_spectrum_approx>E<around|(|<around|\||Y<rsub|t>|\|><rsup|2>|)>=<wide|f|^><rsub|t><rsup|<around|(|i|)>\<ast\>><around|(|\<omega\><rsub|0>|)>+O<around*|(|<frac|B<rsub|g>|B<rsub|X>>|)>
   </equation>
 
   If now we fix the filter width <math|B<rsub|g>>, then to
@@ -1435,7 +1426,7 @@
   <math|t>), then <eqref|eq:est_smoothed_energy> may be written
 
   <\equation>
-    <label|eq:est_smoothed_approx>E<around|(|V<rsub|t>|)>\<sim\><wide|f|\<bar\>><rsub|t><around|(|\<omega\><rsub|0>|)>,
+    <label|eq:est_smoothed_approx>E<around|(|V<rsub|t>|)>\<sim\><wide|f|\<bar\>><rsub|t><around|(|\<omega\><rsub|0>|)>
   </equation>
 
   so that <math|V<rsub|t>> is an (approximately) unbiased estimate of the
@@ -1851,8 +1842,15 @@
 <\initial>
   <\collection>
     <associate|magnification|1.2>
+    <associate|page-even-footer|<htab|5mm><math|>page
+    <page-the-page><htab|5mm>>
+    <associate|page-even-header|<htab|5mm>Evolutionary Spectra and
+    Non-Stationary Processes>
     <associate|page-height|auto>
     <associate|page-medium|paper>
+    <associate|page-odd-footer|<htab|5mm>page <page-the-page><htab|5mm>>
+    <associate|page-odd-header|<htab|5mm>Evolutionary Spectra and
+    Non-Stationary Processes>
     <associate|page-screen-margin|false>
     <associate|page-type|letter>
     <associate|page-width|auto>
@@ -1873,17 +1871,17 @@
     <associate|auto-6|<tuple|33|9>>
     <associate|auto-7|<tuple|44|11>>
     <associate|auto-8|<tuple|59|14>>
-    <associate|auto-9|<tuple|84|19>>
+    <associate|auto-9|<tuple|84|18>>
     <associate|bib-bartlett1955|<tuple|bartlett1955|26>>
     <associate|bib-cramer1960|<tuple|cramer1960|26>>
     <associate|bib-grenander1957|<tuple|grenander1957|26>>
     <associate|bib-herbst1963a|<tuple|herbst1963a|26>>
     <associate|bib-herbst1963b|<tuple|herbst1963b|26>>
     <associate|bib-herbst1963c|<tuple|herbst1963c|26>>
-    <associate|bib-jowett1957|<tuple|jowett1957|27>>
-    <associate|bib-lomnicki1957|<tuple|lomnicki1957|27>>
-    <associate|bib-page1952|<tuple|page1952|27>>
-    <associate|bib-priestley1962|<tuple|priestley1962|27>>
+    <associate|bib-jowett1957|<tuple|jowett1957|26>>
+    <associate|bib-lomnicki1957|<tuple|lomnicki1957|26>>
+    <associate|bib-page1952|<tuple|page1952|26>>
+    <associate|bib-priestley1962|<tuple|priestley1962|26>>
     <associate|def:evol_spectrum|<tuple|3|7>>
     <associate|def:oscillatory_function|<tuple|1|6>>
     <associate|def:oscillatory_process|<tuple|2|6>>
@@ -1900,7 +1898,7 @@
     <associate|eq:covar_representation|<tuple|12|4>>
     <associate|eq:covar_representation2|<tuple|18|6>>
     <associate|eq:covariance|<tuple|1|2>>
-    <associate|eq:delta_filter|<tuple|77|17>>
+    <associate|eq:delta_filter|<tuple|77|16>>
     <associate|eq:det_evol_approx1|<tuple|63|14>>
     <associate|eq:det_evol_approx2|<tuple|64|14>>
     <associate|eq:det_evol_approx3|<tuple|65|15>>
@@ -1912,9 +1910,9 @@
     <associate|eq:det_evol_normalized|<tuple|71|15>>
     <associate|eq:det_evol_rep|<tuple|61|14>>
     <associate|eq:det_evol_set|<tuple|69|15>>
-    <associate|eq:det_evol_spectrum|<tuple|72|16>>
+    <associate|eq:det_evol_spectrum|<tuple|72|15>>
     <associate|eq:det_evol_transform|<tuple|60|14>>
-    <associate|eq:discrete_expected_energy|<tuple|117|25>>
+    <associate|eq:discrete_expected_energy|<tuple|117|24>>
     <associate|eq:discrete_filter_output|<tuple|115|24>>
     <associate|eq:discrete_rep|<tuple|113|24>>
     <associate|eq:discrete_smoothed_spectrum|<tuple|118|25>>
@@ -1924,7 +1922,7 @@
     <associate|eq:discrete_variance_numerator|<tuple|121|25>>
     <associate|eq:discrete_weight_fourier|<tuple|122|25>>
     <associate|eq:est_approx|<tuple|87|19>>
-    <associate|eq:est_bartlett_filter|<tuple|103|23>>
+    <associate|eq:est_bartlett_filter|<tuple|103|22>>
     <associate|eq:est_bartlett_window|<tuple|104|23>>
     <associate|eq:est_daniell_constant|<tuple|107|23>>
     <associate|eq:est_daniell_filter|<tuple|105|23>>
@@ -1935,14 +1933,14 @@
     <associate|eq:est_exp_window|<tuple|109|23>>
     <associate|eq:est_filter_output|<tuple|85|19>>
     <associate|eq:est_normalization|<tuple|88|19>>
-    <associate|eq:est_smoothed|<tuple|96|22>>
-    <associate|eq:est_smoothed_approx|<tuple|99|22>>
-    <associate|eq:est_smoothed_energy|<tuple|97|22>>
+    <associate|eq:est_smoothed|<tuple|96|21>>
+    <associate|eq:est_smoothed_approx|<tuple|94|22>>
+    <associate|eq:est_smoothed_energy|<tuple|97|21>>
     <associate|eq:est_smoothed_spectrum|<tuple|98|22>>
     <associate|eq:est_smoothed_variance|<tuple|101|22>>
-    <associate|eq:est_variance|<tuple|89|20>>
+    <associate|eq:est_variance|<tuple|89|19>>
     <associate|eq:est_variance_asymptotic|<tuple|102|22>>
-    <associate|eq:est_variance_bartlett_daniell|<tuple|111|24>>
+    <associate|eq:est_variance_bartlett_daniell|<tuple|111|23>>
     <associate|eq:est_variance_bartlett_exp|<tuple|112|24>>
     <associate|eq:est_variance_smoothed|<tuple|100|22>>
     <associate|eq:est_weight_transform|<tuple|95|21>>
@@ -1955,7 +1953,7 @@
     <associate|eq:filter_transform|<tuple|34|9>>
     <associate|eq:filter_width|<tuple|51|12>>
     <associate|eq:generalized_transfer|<tuple|39|10>>
-    <associate|eq:generalized_transform|<tuple|37|9>>
+    <associate|eq:generalized_transform|<tuple|37|10>>
     <associate|eq:inf_width_G|<tuple|81|17>>
     <associate|eq:inf_width_energy|<tuple|80|17>>
     <associate|eq:inf_width_filter1|<tuple|78|17>>
@@ -1966,7 +1964,7 @@
     <associate|eq:lemma_proof2|<tuple|53|13>>
     <associate|eq:lemma_proof3|<tuple|54|13>>
     <associate|eq:modulated_ratio|<tuple|33|9>>
-    <associate|eq:modulated_rep|<tuple|31|8>>
+    <associate|eq:modulated_rep|<tuple|31|9>>
     <associate|eq:modulated_spectrum|<tuple|32|9>>
     <associate|eq:modulating_function|<tuple|17|6>>
     <associate|eq:optimal_representation|<tuple|48|12>>
@@ -1981,7 +1979,7 @@
     <associate|eq:process_rep|<tuple|3|2>>
     <associate|eq:process_rep2|<tuple|13|5>>
     <associate|eq:process_rep3|<tuple|19|6>>
-    <associate|eq:process_width|<tuple|47|11>>
+    <associate|eq:process_width|<tuple|47|12>>
     <associate|eq:pseudo_delta|<tuple|49|12>>
     <associate|eq:smoothed_spectrum|<tuple|83|18>>
     <associate|eq:smoothed_spectrum_approx|<tuple|84|18>>
@@ -2004,7 +2002,7 @@
     <associate|eq:transfer_function|<tuple|36|9>>
     <associate|eq:transformed_phi|<tuple|40|10>>
     <associate|eq:transformed_rep|<tuple|38|10>>
-    <associate|eq:transformed_spectrum|<tuple|44|10>>
+    <associate|eq:transformed_spectrum|<tuple|44|11>>
     <associate|eq:transformed_z|<tuple|43|10>>
     <associate|eq:uniform_modulated|<tuple|29|8>>
     <associate|eq:unit_integral|<tuple|25|7>>
