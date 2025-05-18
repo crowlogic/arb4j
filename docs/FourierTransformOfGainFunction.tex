@@ -1,0 +1,150 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm,amsfonts}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Explicit Definition and Properties of $h_t(u)$ in Non-Stationary Processes}
+\author{Technical Report}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+We consider oscillatory processes in the framework of Priestley's evolutionary spectra for non-stationary processes. The oscillatory process $X_t$ is defined by:
+\begin{equation}
+X_t = \int_{-\infty}^{\infty} e^{i\omega t} A_t(\omega) \, dZ(\omega)
+\end{equation}
+where $dZ(\omega)$ is a process with orthogonal increments and spectrum $d\mu(\omega)$, and $A_t(\omega)$ is the \textit{gain function} that modulates the amplitude of each frequency component at time $t$.
+
+\section{Time-Varying Filter Interpretation}
+
+\begin{theorem}[Explicit Definition of $h_t(u)$]
+For a non-stationary oscillatory process with gain function $A_t(\omega)$, the time-varying filter $h_t(u)$ is explicitly defined as:
+\begin{equation}
+h_t(u) = \frac{1}{2\pi}\int_{-\infty}^{\infty} A_t(\omega) e^{-i\omega u} \, d\omega
+\end{equation}
+That is, $h_t(u)$ is the inverse Fourier transform of the gain function $A_t(\omega)$ for each fixed time $t$.
+\end{theorem}
+
+\begin{proof}
+We start with the relationship defining $A_t(\omega)$ as the Fourier transform of $h_t(u)$:
+\begin{equation}
+A_t(\omega) = \int_{-\infty}^{\infty} e^{i\omega u} h_t(u) \, du
+\end{equation}
+
+Apply the inverse Fourier transform to both sides:
+\begin{align}
+\frac{1}{2\pi}\int_{-\infty}^{\infty} A_t(\omega) e^{-i\omega v} \, d\omega &= \frac{1}{2\pi}\int_{-\infty}^{\infty} \left(\int_{-\infty}^{\infty} e^{i\omega u} h_t(u) \, du \right) e^{-i\omega v} \, d\omega \\
+&= \int_{-\infty}^{\infty} h_t(u) \left(\frac{1}{2\pi}\int_{-\infty}^{\infty} e^{i\omega(u-v)} \, d\omega \right) \, du
+\end{align}
+
+The inner integral represents the Dirac delta function:
+\begin{equation}
+\frac{1}{2\pi}\int_{-\infty}^{\infty} e^{i\omega(u-v)} \, d\omega = \delta(u-v)
+\end{equation}
+
+Therefore:
+\begin{equation}
+\frac{1}{2\pi}\int_{-\infty}^{\infty} A_t(\omega) e^{-i\omega v} \, d\omega = \int_{-\infty}^{\infty} h_t(u) \delta(u-v) \, du = h_t(v)
+\end{equation}
+
+Thus, we have proven the explicit definition:
+\begin{equation}
+h_t(u) = \frac{1}{2\pi}\int_{-\infty}^{\infty} A_t(\omega) e^{-i\omega u} \, d\omega
+\end{equation}
+\end{proof}
+
+\begin{theorem}[Representation via Time-Varying Filter]
+A non-stationary oscillatory process $X_t$ can be represented as the convolution of a time-varying filter $h_t(u)$ with a stationary process $S_t$ having spectrum $d\mu(\omega)$:
+\begin{equation}
+X_t = \int_{-\infty}^{\infty} S_{t-u} h_t(u) \, du
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Starting from the oscillatory process definition:
+\begin{equation}
+X_t = \int_{-\infty}^{\infty} e^{i\omega t} A_t(\omega) \, dZ(\omega)
+\end{equation}
+
+Substitute the Fourier representation of $A_t(\omega)$:
+\begin{align}
+X_t &= \int_{-\infty}^{\infty} e^{i\omega t} \left(\int_{-\infty}^{\infty} e^{i\omega u} h_t(u) \, du\right) \, dZ(\omega) \\
+&= \int_{-\infty}^{\infty} h_t(u) \left(\int_{-\infty}^{\infty} e^{i\omega(t+u)} \, dZ(\omega)\right) \, du
+\end{align}
+
+Define $S_t$ as a stationary process with the representation:
+\begin{equation}
+S_t = \int_{-\infty}^{\infty} e^{i\omega t} \, dZ(\omega)
+\end{equation}
+
+Then the inner integral becomes:
+\begin{equation}
+\int_{-\infty}^{\infty} e^{i\omega(t+u)} \, dZ(\omega) = S_{t+u}
+\end{equation}
+
+Substituting back:
+\begin{equation}
+X_t = \int_{-\infty}^{\infty} h_t(u) S_{t+u} \, du
+\end{equation}
+
+With the change of variable $v = -u$:
+\begin{equation}
+X_t = \int_{-\infty}^{\infty} h_t(-v) S_{t-v} \, dv
+\end{equation}
+
+Redefining $h_t(u) \rightarrow h_t(-u)$ for notational simplicity:
+\begin{equation}
+X_t = \int_{-\infty}^{\infty} h_t(u) S_{t-u} \, du
+\end{equation}
+
+Thus, $X_t$ can be represented as the output of passing a stationary process through a time-varying filter $h_t(u)$.
+\end{proof}
+
+\begin{theorem}[Evolutionary Spectrum Relationship]
+The evolutionary spectrum of the process $X_t$ at time $t$ is given by:
+\begin{equation}
+f_t(\omega) = |A_t(\omega)|^2 d\mu(\omega)
+\end{equation}
+where $A_t(\omega)$ is the gain function and $d\mu(\omega)$ is the spectral measure of the underlying stationary process.
+\end{theorem}
+
+\begin{proof}
+From the definition of $A_t(\omega)$ as the Fourier transform of $h_t(u)$:
+\begin{equation}
+A_t(\omega) = \int_{-\infty}^{\infty} e^{i\omega u} h_t(u) \, du
+\end{equation}
+
+The squared magnitude of the gain function is:
+\begin{align}
+|A_t(\omega)|^2 &= A_t(\omega)\overline{A_t(\omega)} \\
+&= \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} e^{i\omega u} e^{-i\omega v} h_t(u) \overline{h_t(v)} \, du \, dv \\
+&= \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} e^{i\omega(u-v)} h_t(u) \overline{h_t(v)} \, du \, dv
+\end{align}
+
+The local power spectrum at time $t$ is defined as $|A_t(\omega)|^2 d\mu(\omega)$. This represents the distribution of power across frequencies at the specific time $t$, taking into account the modulation effect of the time-varying filter on the underlying stationary process.
+
+Therefore, the evolutionary spectrum is:
+\begin{equation}
+f_t(\omega) = |A_t(\omega)|^2 d\mu(\omega)
+\end{equation}
+which completes the proof.
+\end{proof}
+
+\section{Conclusion}
+We have explicitly defined the time-varying filter $h_t(u)$ as the inverse Fourier transform of the gain function $A_t(\omega)$. This relationship provides a useful interpretation of non-stationary oscillatory processes as the output of passing a stationary process through a time-varying filter. The evolutionary spectrum directly relates to the squared magnitude of the gain function, weighted by the spectral measure of the underlying stationary process.
+
+\end{document}
