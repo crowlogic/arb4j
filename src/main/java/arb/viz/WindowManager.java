@@ -7,13 +7,11 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.HashMap;
 
 import arb.XDO;
 import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.nodes.Node;
 import arb.expressions.viz.EmacsKeybindingsEventHandler;
 import arb.utensils.ShellFunctions;
 import arb.utensils.Utensils;
@@ -238,11 +236,6 @@ public class WindowManager
     }
   }
 
-  public static <Y, T extends IndexedCell<? extends Y>> VirtualFlow<T> getVirtualFlow(ListView<?> control)
-  {
-    return getVirtualFlow(control.getSkin());
-  }
-
   public static <Y, T extends IndexedCell<? extends Y>> VirtualFlow<T> getVirtualFlow(TreeTableView<?> control)
   {
     return getVirtualFlow(control.getSkin());
@@ -323,54 +316,6 @@ public class WindowManager
   {
     e.printStackTrace(System.err);
     Platform.runLater(() -> showAlert("Exception in " + t.getName(), e.getClass().toString(), e));
-  }
-
-  public static <N extends Node<?, ?, ?>> boolean anyExpanded(TreeItem<N> rootItem)
-  {
-    if (rootItem.isExpanded())
-    {
-      return true;
-    }
-    for (var item : rootItem.getChildren())
-    {
-      if (anyExpanded(item))
-      {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public static HashMap<String, Boolean> enumerateNodeExpansionStates(HashMap<String, Boolean> states, TreeItem<?> item)
-  {
-    if (item != null && !item.isLeaf())
-    {
-      states.put(item.getValue().toString(), item.isExpanded());
-
-      for (var child : item.getChildren())
-      {
-        enumerateNodeExpansionStates(states, child);
-      }
-    }
-    return states;
-  }
-
-  public static HashMap<String, Boolean> applyNodeExpansionStates(HashMap<String, Boolean> states, TreeItem<?> item)
-  {
-    if (item != null && !item.isLeaf())
-    {
-      Boolean value = states.get(item.getValue().toString());
-      if (value != null)
-      {
-        item.setExpanded(value);
-      }
-
-      for (var child : item.getChildren())
-      {
-        applyNodeExpansionStates(states, child);
-      }
-    }
-    return states;
   }
 
   public static void addEmacsKeybindings(TextField textField)

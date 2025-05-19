@@ -681,7 +681,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     {
       return null;
     }
-    return WindowManager.enumerateNodeExpansionStates(new HashMap<String, Boolean>(), treeTableView.getRoot());
+    return Expressor.enumerateNodeExpansionStates(new HashMap<String, Boolean>(), treeTableView.getRoot());
   }
 
   public void expandAllNodes()
@@ -759,10 +759,10 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
 
         if (nodeExpansionStates != null)
         {
-          WindowManager.applyNodeExpansionStates(nodeExpansionStates, rootItem);
+          Expressor.applyNodeExpansionStates(nodeExpansionStates, rootItem);
         }
 
-        if (!WindowManager.anyExpanded(rootItem))
+        if (!Expressor.anyExpanded(rootItem))
         {
           expandAllNodes();
         }

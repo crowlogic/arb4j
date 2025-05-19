@@ -2,9 +2,7 @@ package arb.expressions.viz;
 
 import java.io.Closeable;
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
 
 import arb.Named;
@@ -12,6 +10,7 @@ import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.expressions.nodes.Node;
 import arb.expressions.viz.context.ContextFieldListCell;
 import arb.expressions.viz.context.ContextMenuListCell;
 import arb.expressions.viz.context.ContextVariableStringConverter;
@@ -494,6 +493,54 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     {
       contextListView.setItems(currentContext.variables);
     }
+  }
+
+  public static <N extends Node<?, ?, ?>> boolean anyExpanded(TreeItem<N> rootItem)
+  {
+    if (rootItem.isExpanded())
+    {
+      return true;
+    }
+    for (var item : rootItem.getChildren())
+    {
+      if (anyExpanded(item))
+      {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static HashMap<String, Boolean> applyNodeExpansionStates(HashMap<String, Boolean> states, TreeItem<?> item)
+  {
+    if (item != null && !item.isLeaf())
+    {
+      Boolean value = states.get(item.getValue().toString());
+      if (value != null)
+      {
+        item.setExpanded(value);
+      }
+  
+      for (var child : item.getChildren())
+      {
+        applyNodeExpansionStates(states, child);
+      }
+    }
+    return states;
+  }
+
+  public static HashMap<String, Boolean> enumerateNodeExpansionStates(HashMap<String, Boolean> states, TreeItem<?> item)
+  {
+    if (item != null && !item.isLeaf())
+    {
+      states.put(item.getValue().toString(), item.isExpanded());
+  
+      for (var child : item.getChildren())
+      {
+        enumerateNodeExpansionStates(states, child);
+      }
+    }
+    return states;
   }
 
 }
