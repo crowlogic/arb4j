@@ -5,22 +5,34 @@ function randomWaveSampler(L, stepSize, maxDuration)
 
     N = round(L / stepSize);
     [path, t] = genPathSpectral(N, stepSize);
+
+    % Get quadrature (Hilbert transform) and envelope (+/-)
+    analytic = hilbert(path);
+    quad = imag(analytic);
+    envelope = abs(analytic);
+
     maxDurationSteps = round(maxDuration/stepSize) + 1;
     empCov = autocorrDirect(path, maxDurationSteps);
 
     figure('Position', [100, 100, 1200, 900]);
+
+    % Upper plot: Process, Hilbert quadrature, envelope, negative envelope
     subplot(2, 1, 1);
-    plot(t, path, 'k', 'LineWidth', 1.5);
-    title('Single Path (Spectral Method)', 'FontSize', 14);
+    plot(t, path, 'k', 'LineWidth', 1.2); hold on;
+    plot(t, quad, 'g', 'LineWidth', 1.2);
+    plot(t, envelope, 'r', 'LineWidth', 2);
+    plot(t, -envelope, 'r--', 'LineWidth', 2);
+    title('Process, Quadrature (Hilbert), and Envelopes', 'FontSize', 14);
     xlabel('Time', 'FontSize', 12);
-    ylabel('X(t)', 'FontSize', 12);
+    ylabel('Value', 'FontSize', 12);
+    legend({'Process', 'Quadrature (Hilbert)', '+Envelope', '-Envelope'});
     grid on;
 
+    % Lower plot: Covariance test
     subplot(2, 1, 2);
     durations = 0:stepSize:maxDuration;
     plotLen = min(length(durations), length(empCov));
-    plot(durations(1:plotLen), empCov(1:plotLen), 'b', 'LineWidth', 1.5);
-    hold on;
+    plot(durations(1:plotLen), empCov(1:plotLen), 'b', 'LineWidth', 1.5); hold on;
     plot(durations(1:plotLen), besselj(0, 2*pi*durations(1:plotLen)), 'r--', 'LineWidth', 2);
     title('Covariance Verification', 'FontSize', 14);
     xlabel('Time Duration', 'FontSize', 12);
