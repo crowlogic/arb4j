@@ -1948,6 +1948,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        true);
     case "J":
       return new BesselFunctionNodeOfTheFirstKind<>(this);
+    case "W":
+      return new LambertWFunctionNode<>(this);
     case "j":
       return new SphericalBesselFunctionNodeOfTheFirstKind<>(this);
     case "R":
@@ -1960,10 +1962,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return new HypergeometricFunctionNode<>(this);
     case "Beta":
     case "beta":
-      return new BetaFunctionNode<D, C, F>(this);
-    case "W":
-      assert false : "TODO: create LambertWFunction node and instantiate it here";
-      return null;
+      return new BetaFunctionNode<D, C, F>(this);    
     default:
       return new FunctionNode<>(reference.name,
                                 resolve(),

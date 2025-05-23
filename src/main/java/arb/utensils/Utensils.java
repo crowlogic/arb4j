@@ -56,9 +56,13 @@ public class Utensils
     yamlConfig.setSplitLines(false);
     yamlConfig.setNonPrintableStyle(NonPrintableStyle.ESCAPE);
     NewCommandMacro.addNewCommand("Z", "\\operatorname{Z} {#1}", 1);
+    NewCommandMacro.addNewCommand("W", "\\operatorname{W}_{#1}", 1);
     NewCommandMacro.addNewCommand("Γ", "\\Gamma", 0);
     NewCommandMacro.addNewCommand("re", "\\operatorname{Re} {#1}", 1);
     NewCommandMacro.addNewCommand("im", "\\operatorname{Im} {#1}", 1);
+
+
+
   }
 
   public static String repeat(final char ch, final int repeat)

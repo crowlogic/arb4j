@@ -948,6 +948,12 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   {
     return BesselJ(zero, bits, result);
   }
+  
+  public Real W0(int bits, Real result)
+  {
+    arblib.arb_lambertw(result, this, 0, bits);
+    return result;
+  }  
     
   public Real gammaVariance(int n, int prec, Real result)
   {
