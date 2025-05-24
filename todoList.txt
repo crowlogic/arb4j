@@ -6,4 +6,3 @@ Expression Compiler: implement switching of order-of-integration via Fubini's or
 implement orthogonal function sequence expansion api #546
 expr compiler: Implement common subexpression elimination #518
 Create Fractional Riccati Differential Equation Solver using Jacobi Tau Method #261
-add LambertWFunction support to the expression compiler
