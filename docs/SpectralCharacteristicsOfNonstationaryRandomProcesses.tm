@@ -1,6 +1,6 @@
-<TeXmacs|2.1.4>
+<TeXmacs|2.1.2>
 
-<style|<tuple|generic|framed-theorems>>
+<style|<tuple|generic|metal|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Spectral characteristics of nonstationary random
@@ -991,9 +991,7 @@
   as<nbsp><cite|Sveshnikov1966>
 
   <\align>
-    <tformat|<table|<row|<cell|p<rsub|V<rsub|S>><around|(|\<nu\>|)>>|<cell|=<frac|\<nu\>|\<sigma\><rsub|X><rsup|2>>*exp
-    <around*|(|-<frac|\<nu\><rsup|2>|2*\<sigma\><rsub|X><rsup|2>>|)>*<space|1em>0\<leqslant\>\<nu\>\<leqslant\>\<infty\><eq-number><label|eq:54>>>|<row|<cell|p<rsub|U<rsub|S>><around|(|u|)>>|<cell|=<frac|1|2*\<pi\>>*<space|1em>0\<leqslant\>u\<leqslant\>2*\<pi\><eq-number><label|eq:55>>>|<row|<cell|p<rsub|<wide|V|\<dot\>><rsub|S>><around|(|<wide|\<nu\>|\<dot\>>|)>>|<cell|=<frac|1|<sqrt|2*\<pi\>>*\<sigma\><rsub|<wide|X|\<dot\>>>*q>*exp
-    <around*|(|-<frac|<wide|\<nu\>|\<dot\>><rsup|2>|2*\<sigma\><rsub|<wide|X|\<dot\>>><rsup|2>*q<rsup|2>>|)><space|1em>-\<infty\>\<leqslant\><wide|\<nu\>|\<dot\>>\<leqslant\>\<infty\><eq-number><label|eq:56>>>|<row|<cell|p<rsub|<wide|U|\<dot\>><rsub|S>><around|(|<wide|u|\<dot\>>|)>>|<cell|=<frac|\<sigma\><rsub|<wide|X|\<dot\>>><rsup|2>*q<rsup|2>|\<sigma\><rsub|X><rsup|2>>*<around*|[|<frac|\<sigma\><rsub|<wide|X|\<dot\>>><rsup|2>*q<rsup|2>|\<sigma\><rsub|X><rsup|2>>+<around*|(|<wide|u|\<dot\>>-\<omega\><rsub|c>|)><rsup|2>|]><rsup|-<frac|3|2>><space|1em>-\<infty\>\<leqslant\><wide|u|\<dot\>>\<leqslant\>\<infty\><eq-number><label|eq:57>>>>>
+    <tformat|<table|<row|<cell|p<rsub|V<rsub|S>><around|(|\<nu\>|)>>|<cell|=<frac|\<nu\>|\<sigma\><rsub|X><rsup|2>>*e<rsup|-<frac|\<nu\><rsup|2>|2*\<sigma\><rsub|X><rsup|2>>>*<space|10em>\<forall\>0\<leqslant\>\<nu\>\<leqslant\>\<infty\><eq-number><label|eq:54>>>|<row|<cell|p<rsub|U<rsub|S>><around|(|u|)>>|<cell|=<frac|1|2*\<pi\>>*<space|13em>\<forall\>0\<leqslant\>u\<leqslant\>2*\<pi\><eq-number><label|eq:55>>>|<row|<cell|p<rsub|<wide|V|\<dot\>><rsub|S>><around|(|<wide|\<nu\>|\<dot\>>|)>>|<cell|=<frac|1|<sqrt|2*\<pi\>>*\<sigma\><rsub|<wide|X|\<dot\>>>*q>*e<rsup|-<frac|<wide|\<nu\>|\<dot\>><rsup|2>|2*\<sigma\><rsub|<wide|X|\<dot\>>><rsup|2>*q<rsup|2>>><space|7em>\<forall\>-\<infty\>\<leqslant\><wide|\<nu\>|\<dot\>>\<leqslant\>\<infty\><eq-number><label|eq:56>>>|<row|<cell|p<rsub|<wide|U|\<dot\>><rsub|S>><around|(|<wide|u|\<dot\>>|)>>|<cell|=<frac|\<sigma\><rsub|<wide|X|\<dot\>>><rsup|2>*q<rsup|2>|\<sigma\><rsub|X><rsup|2>>*<around*|[|<frac|\<sigma\><rsub|<wide|X|\<dot\>>><rsup|2>*q<rsup|2>|\<sigma\><rsub|X><rsup|2>>+<around*|(|<wide|u|\<dot\>>-\<omega\><rsub|c>|)><rsup|2>|]><rsup|-<frac|3|2>><space|2em>\<forall\>-\<infty\>\<leqslant\><wide|u|\<dot\>>\<leqslant\>\<infty\><eq-number><label|eq:57>>>>>
   </align>
 
   In these equations, <math|\<sigma\><rsub|X><rsup|2>,\<sigma\><rsub|<wide|X|\<dot\>>><rsup|2>,\<omega\><rsub|c>>,
@@ -1377,8 +1375,26 @@
     J=<around*|\||<frac|\<partial\><math-bf|x>|\<partial\><math-bf|v>>|\|>=v<rsup|2><label|eq:A4>
   </equation>
 
-  Furthermore, it can be found that, <math|x<rsup|2>+y<rsup|2>=v<rsup|2>,<wide|x|\<dot\>><rsup|2>+<wide|y|\<dot\>><rsup|2>=<wide|v|\<dot\>><rsup|2>+v*<wide|u|\<dot\>><rsup|2>,x<wide|x|\<dot\>>+y<wide|y|\<dot\>>=v*<wide|v|\<dot\>>>,
-  and <math|x<wide|y|\<dot\>>-<wide|x|\<dot\>>y=v<rsup|2>*<wide|u|\<dot\>>>.
+  Furthermore, it can be found that,\ 
+
+  <\equation>
+    x<rsup|2>+y<rsup|2>=v<rsup|2>
+  </equation>
+
+  <\equation>
+    <wide|x|\<dot\>><rsup|2>+<wide|y|\<dot\>><rsup|2>=<wide|v|\<dot\>><rsup|2>+v*<wide|u|\<dot\>><rsup|2>
+  </equation>
+
+  <\equation>
+    x<wide|x|\<dot\>>+y<wide|y|\<dot\>>=v*<wide|v|\<dot\>>
+  </equation>
+
+  , and
+
+  <\equation>
+    x<wide|y|\<dot\>>-<wide|x|\<dot\>>y=v<rsup|2>*<wide|u|\<dot\>>
+  </equation>
+
   Substituting these relationships into Eq.<nbsp><eqref|eq:A3> gives
 
   <\equation>
@@ -1502,111 +1518,111 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|?|2|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|auto-2|<tuple|?|4|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|auto-3|<tuple|12|6|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|auto-4|<tuple|22|9|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|auto-5|<tuple|44|12|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|auto-6|<tuple|47|13|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|auto-7|<tuple|76|20|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|auto-8|<tuple|76|21|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|auto-9|<tuple|86|23|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|bib-Arens1957|<tuple|Arens1957|23|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|bib-BendatPiersol1986|<tuple|BendatPiersol1986|23|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|bib-Corotis1972|<tuple|Corotis1972|23|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|bib-DiPaola1985|<tuple|DiPaola1985|23|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|bib-DiPaolaPetrucci1990|<tuple|DiPaolaPetrucci1990|23|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|bib-Dugundji1958|<tuple|Dugundji1958|23|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|bib-LutesSarkani1997|<tuple|LutesSarkani1997|23|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|bib-Michaelov1997|<tuple|Michaelov1997|23|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|bib-Muscolino1988|<tuple|Muscolino1988|23|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|bib-NigamNarayanan1994|<tuple|NigamNarayanan1994|23|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|bib-Priestley1965|<tuple|Priestley1965|23|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|bib-Priestley1988|<tuple|Priestley1988|23|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|bib-SolomosSpanos1982|<tuple|SolomosSpanos1982|23|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|bib-SoongGrigoriu1993|<tuple|SoongGrigoriu1993|23|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|bib-SpanosLutes1980|<tuple|SpanosLutes1980|23|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|bib-SpanosSolomos1983|<tuple|SpanosSolomos1983|23|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|bib-Sveshnikov1966|<tuple|Sveshnikov1966|23|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|bib-Vanmarke1972|<tuple|Vanmarke1972|23|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|bib-Yang1972|<tuple|Yang1972|23|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:1|<tuple|1|4|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:10|<tuple|10|6|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:11|<tuple|11|6|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:12|<tuple|12|6|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:13|<tuple|13|6|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:14|<tuple|14|6|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:15|<tuple|15|7|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:16|<tuple|16|7|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:17|<tuple|17|7|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:18|<tuple|18|7|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:19|<tuple|19|7|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:2|<tuple|2|4|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:20|<tuple|20|8|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:21|<tuple|21|8|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:22|<tuple|22|8|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:23|<tuple|23|10|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:24|<tuple|24|10|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:25|<tuple|25|10|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:26|<tuple|26|10|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:27|<tuple|27|10|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:28|<tuple|28|10|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:29|<tuple|29|10|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:3|<tuple|3|4|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:30|<tuple|30|11|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:31|<tuple|31|11|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:32|<tuple|32|11|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:33|<tuple|33|11|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:34|<tuple|34|11|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:35|<tuple|35|11|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:36|<tuple|36|11|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:37|<tuple|37|11|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:38|<tuple|38|11|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:39|<tuple|39|12|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:4|<tuple|5|4|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:40|<tuple|40|12|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:41|<tuple|41|12|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:42|<tuple|42|12|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:43|<tuple|43|12|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:44|<tuple|44|12|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:45|<tuple|45|13|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:46|<tuple|46|13|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:47|<tuple|47|13|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:48|<tuple|48|14|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:49|<tuple|49|14|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:5|<tuple|6|5|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:50|<tuple|50|14|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:51|<tuple|52|15|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:52|<tuple|55|15|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:53|<tuple|56|15|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:54|<tuple|57|16|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:55|<tuple|58|16|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:56|<tuple|59|16|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:57|<tuple|60|16|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:58|<tuple|61|16|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:59|<tuple|62|17|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:6|<tuple|7|5|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:60|<tuple|63|17|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:61|<tuple|64|17|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:62|<tuple|65|17|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:63|<tuple|66|17|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:64|<tuple|67|17|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:65|<tuple|68|18|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:66|<tuple|69|18|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:67|<tuple|71|19|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:68|<tuple|72|19|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:69|<tuple|73|19|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:7|<tuple|8|5|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:70|<tuple|74|19|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:71|<tuple|75|20|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:9|<tuple|9|5|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:A1|<tuple|77|21|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:A2|<tuple|78|21|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:A3|<tuple|81|22|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:A4|<tuple|82|22|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:A5|<tuple|83|22|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:A7|<tuple|85|22|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|eq:A8|<tuple|86|22|../.TeXmacs/texts/scratch/no_name_11.tm>>
+    <associate|auto-1|<tuple|?|2>>
+    <associate|auto-2|<tuple|?|4>>
+    <associate|auto-3|<tuple|12|6>>
+    <associate|auto-4|<tuple|22|9>>
+    <associate|auto-5|<tuple|44|12>>
+    <associate|auto-6|<tuple|47|13>>
+    <associate|auto-7|<tuple|76|20>>
+    <associate|auto-8|<tuple|76|21>>
+    <associate|auto-9|<tuple|90|23>>
+    <associate|bib-Arens1957|<tuple|Arens1957|23>>
+    <associate|bib-BendatPiersol1986|<tuple|BendatPiersol1986|23>>
+    <associate|bib-Corotis1972|<tuple|Corotis1972|23>>
+    <associate|bib-DiPaola1985|<tuple|DiPaola1985|23>>
+    <associate|bib-DiPaolaPetrucci1990|<tuple|DiPaolaPetrucci1990|23>>
+    <associate|bib-Dugundji1958|<tuple|Dugundji1958|23>>
+    <associate|bib-LutesSarkani1997|<tuple|LutesSarkani1997|23>>
+    <associate|bib-Michaelov1997|<tuple|Michaelov1997|23>>
+    <associate|bib-Muscolino1988|<tuple|Muscolino1988|23>>
+    <associate|bib-NigamNarayanan1994|<tuple|NigamNarayanan1994|23>>
+    <associate|bib-Priestley1965|<tuple|Priestley1965|23>>
+    <associate|bib-Priestley1988|<tuple|Priestley1988|23>>
+    <associate|bib-SolomosSpanos1982|<tuple|SolomosSpanos1982|24>>
+    <associate|bib-SoongGrigoriu1993|<tuple|SoongGrigoriu1993|23>>
+    <associate|bib-SpanosLutes1980|<tuple|SpanosLutes1980|23>>
+    <associate|bib-SpanosSolomos1983|<tuple|SpanosSolomos1983|24>>
+    <associate|bib-Sveshnikov1966|<tuple|Sveshnikov1966|23>>
+    <associate|bib-Vanmarke1972|<tuple|Vanmarke1972|23>>
+    <associate|bib-Yang1972|<tuple|Yang1972|23>>
+    <associate|eq:1|<tuple|1|4>>
+    <associate|eq:10|<tuple|10|6>>
+    <associate|eq:11|<tuple|11|6>>
+    <associate|eq:12|<tuple|12|6>>
+    <associate|eq:13|<tuple|13|6>>
+    <associate|eq:14|<tuple|14|6>>
+    <associate|eq:15|<tuple|15|7>>
+    <associate|eq:16|<tuple|16|7>>
+    <associate|eq:17|<tuple|17|7>>
+    <associate|eq:18|<tuple|18|7>>
+    <associate|eq:19|<tuple|19|7>>
+    <associate|eq:2|<tuple|2|4>>
+    <associate|eq:20|<tuple|20|8>>
+    <associate|eq:21|<tuple|21|8>>
+    <associate|eq:22|<tuple|22|8>>
+    <associate|eq:23|<tuple|23|10>>
+    <associate|eq:24|<tuple|24|10>>
+    <associate|eq:25|<tuple|25|10>>
+    <associate|eq:26|<tuple|26|10>>
+    <associate|eq:27|<tuple|27|10>>
+    <associate|eq:28|<tuple|28|10>>
+    <associate|eq:29|<tuple|29|10>>
+    <associate|eq:3|<tuple|3|4>>
+    <associate|eq:30|<tuple|30|11>>
+    <associate|eq:31|<tuple|31|11>>
+    <associate|eq:32|<tuple|32|11>>
+    <associate|eq:33|<tuple|33|11>>
+    <associate|eq:34|<tuple|34|11>>
+    <associate|eq:35|<tuple|35|11>>
+    <associate|eq:36|<tuple|36|11>>
+    <associate|eq:37|<tuple|37|11>>
+    <associate|eq:38|<tuple|38|11>>
+    <associate|eq:39|<tuple|39|12>>
+    <associate|eq:4|<tuple|5|4>>
+    <associate|eq:40|<tuple|40|12>>
+    <associate|eq:41|<tuple|41|12>>
+    <associate|eq:42|<tuple|42|12>>
+    <associate|eq:43|<tuple|43|12>>
+    <associate|eq:44|<tuple|44|12>>
+    <associate|eq:45|<tuple|45|13>>
+    <associate|eq:46|<tuple|46|13>>
+    <associate|eq:47|<tuple|47|13>>
+    <associate|eq:48|<tuple|48|14>>
+    <associate|eq:49|<tuple|49|14>>
+    <associate|eq:5|<tuple|6|5>>
+    <associate|eq:50|<tuple|50|14>>
+    <associate|eq:51|<tuple|52|15>>
+    <associate|eq:52|<tuple|55|15>>
+    <associate|eq:53|<tuple|56|15>>
+    <associate|eq:54|<tuple|57|16>>
+    <associate|eq:55|<tuple|58|16>>
+    <associate|eq:56|<tuple|59|16>>
+    <associate|eq:57|<tuple|60|16>>
+    <associate|eq:58|<tuple|61|16>>
+    <associate|eq:59|<tuple|62|17>>
+    <associate|eq:6|<tuple|7|5>>
+    <associate|eq:60|<tuple|63|17>>
+    <associate|eq:61|<tuple|64|17>>
+    <associate|eq:62|<tuple|65|17>>
+    <associate|eq:63|<tuple|66|17>>
+    <associate|eq:64|<tuple|67|17>>
+    <associate|eq:65|<tuple|68|18>>
+    <associate|eq:66|<tuple|69|18>>
+    <associate|eq:67|<tuple|71|19>>
+    <associate|eq:68|<tuple|72|19>>
+    <associate|eq:69|<tuple|73|19>>
+    <associate|eq:7|<tuple|8|5>>
+    <associate|eq:70|<tuple|74|19>>
+    <associate|eq:71|<tuple|75|20>>
+    <associate|eq:9|<tuple|9|5>>
+    <associate|eq:A1|<tuple|77|21>>
+    <associate|eq:A2|<tuple|78|21>>
+    <associate|eq:A3|<tuple|81|22>>
+    <associate|eq:A4|<tuple|82|22>>
+    <associate|eq:A5|<tuple|87|22>>
+    <associate|eq:A7|<tuple|89|23>>
+    <associate|eq:A8|<tuple|90|23>>
   </collection>
 </references>
 
