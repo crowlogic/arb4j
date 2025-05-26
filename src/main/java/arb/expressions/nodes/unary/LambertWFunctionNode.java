@@ -10,6 +10,7 @@ import java.util.Objects;
 import org.objectweb.asm.MethodVisitor;
 
 import arb.*;
+import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
@@ -112,25 +113,21 @@ public class LambertWFunctionNode<D, R, F extends Function<? extends D, ? extend
     var scalarType = scalarType(resultType);
     loadOutputVariableOntoStack(mv, scalarType);
     duplicateTopOfTheStack(mv);
-    order.generate(mv, scalarType);
+    order.generate(mv, order.type() );
 
-    // Add cast if flags's generated type doesn't match result type
-    if (!order.generatedType.equals(resultType))
+    if (!order.generatedType.equals(Integer.class))
     {
-      order.generateCastTo(mv, resultType);
+      order.generateCastTo(mv, Integer.class);
     }
 
-    generateScalar(mv, resultType, scalarType);
-    return mv;
-  }
-
-  public void generateScalar(MethodVisitor mv, Class<?> resultType, Class<?> scalarType)
-  {
     arg.generate(mv, resultType);
     loadBitsParameterOntoStack(mv);
     invokeStaticEvaluationMethod(mv, scalarType);
     generatedType = scalarType;
+      return mv;
   }
+
+
 
   public MethodVisitor invokeStaticEvaluationMethod(MethodVisitor mv, Class<?> scalarType)
   {
