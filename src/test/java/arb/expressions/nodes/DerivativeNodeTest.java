@@ -15,42 +15,48 @@ import junit.framework.TestCase;
 public class DerivativeNodeTest extends
                                 TestCase
 {
-  
+
+  public void testSquareRootDerivative()
+  {
+    var f  = RealFunction.parse("diff(sqrt(x),x)");
+    var df = RealFunction.parse("1/(sqrt(x)*2)");
+    assertEquals(df.rootNode.toString(), f.rootNode.toString());
+  }
+
   public void testCosineDerivativeSimplerSyntax()
   {
     var f  = RealFunction.parse("diff(cos(x),x)");
     var df = RealFunction.parse("-sin(x)");
     assertEquals(df.rootNode.toString(), f.rootNode.toString());
   }
-  
+
   public void testGammaDerivative()
   {
     var f  = RealFunction.parse("∂Γ(x)/∂x");
     var df = RealFunction.parse("Γ(x)*digamma(x)");
     assertEquals(df.rootNode.toString(), f.rootNode.toString());
   }
-  
+
   public void testHyperbolicSineDerivative()
   {
     var f  = RealFunction.parse("∂sinh(x)/∂x");
     var df = RealFunction.parse("cosh(x)");
     assertEquals(df.rootNode.toString(), f.rootNode.toString());
   }
-  
+
   public void testHyperbolicCosineDerivative()
   {
     var f  = RealFunction.parse("∂cosh(x)/∂x");
     var df = RealFunction.parse("sinh(x)");
     assertEquals(df.rootNode.toString(), f.rootNode.toString());
   }
-  
+
   public void testCotangentDerivative()
   {
     var f  = RealFunction.parse("∂cot(x)/∂x");
     var df = RealFunction.parse("-1-cot(x)^2");
     assertEquals(df.rootNode.toString(), f.rootNode.toString());
   }
-  
 
   public void testCosecantDerivative()
   {
@@ -58,7 +64,7 @@ public class DerivativeNodeTest extends
     var df = RealFunction.parse("-csc(x)*cot(x)");
     assertEquals(df.rootNode.toString(), f.rootNode.toString());
   }
-  
+
   public void testSecantDerivative()
   {
     var f  = RealFunction.parse("∂sec(x)/∂x");
