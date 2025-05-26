@@ -11,8 +11,7 @@ import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.*;
 import arb.functions.Function;
 
 /**
@@ -22,6 +21,14 @@ import arb.functions.Function;
 public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          BinaryOperationNode<D, R, F>
 {
+
+  @Override
+  public LiteralConstantNode<D, R, F> asLiteralConstant()
+  {
+    assert false : "TODO";
+    // TODO Auto-generated method stub
+    return super.asLiteralConstant();
+  }
 
   @Override
   public Node<D, R, F> simplify()
