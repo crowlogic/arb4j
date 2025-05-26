@@ -29,8 +29,7 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.FunctionMapping;
 import arb.expressions.Parser;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.*;
 import arb.functions.Function;
 
 /**
@@ -218,6 +217,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     switch (functionName)
     {
+    case "sqrt":
+      return one().div(mul(2));
     case "arcsin":
       return arcsinDerivative();
     case "arccos":
@@ -477,6 +478,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     switch (functionName)
     {
+    case "sqrt":
+      return two().div(three()).mul(arg.pow(three().div(two())));
     case "sin":
       return arg.cos().neg();
     case "cos":
@@ -490,6 +493,16 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     default:
       throw new UnsupportedOperationException("Integration not implemented for: " + functionName);
     }
+  }
+
+  public LiteralConstantNode<D, R, F> three()
+  {
+    return expression.newLiteralConstant(3);
+  }
+
+  public LiteralConstantNode<D, R, F> two()
+  {
+    return expression.newLiteralConstant(2);
   }
 
   public boolean isBitless()

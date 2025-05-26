@@ -274,6 +274,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                                   this);
   }
 
+  public Node<D, R, F> mul(int i)
+  {
+    return mul(expression.newLiteralConstant(i));
+  }
+
   public Node<D, R, F> pow(int i)
   {
     return pow(expression.newLiteralConstant(i));
