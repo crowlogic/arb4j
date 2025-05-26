@@ -8,11 +8,13 @@ import java.util.List;
 import java.util.Objects;
 
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 
 import arb.*;
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
@@ -20,7 +22,26 @@ import arb.functions.Function;
 
 /**
  * Implements the {@link RealLambertWFunction} by generating calls directly to
- * {@link arblib#arb_lambertw(Real, Real, int, int)}
+ * {@link arblib#arb_lambertw(Real, Real, int, int)}.
+ * 
+ * Computes the Lambert W function, which solves the equation
+ * 
+ * .
+ * 
+ * The Lambert W function has infinitely many complex branches , two of which
+ * are real on a part of the real line. The principal branch is selected by
+ * setting flags to 0, and the branch is selected by setting flags to 1. The
+ * principal branch is real-valued for (taking values in ) and the branch is
+ * real-valued for and takes values in
+ * 
+ * . Elsewhere, the Lambert W function is complex and acb_lambertw() should be
+ * used.
+ * 
+ * The implementation first computes a floating-point approximation
+ * heuristically and then computes a rigorously certified enclosure around this
+ * approximation. Some asymptotic cases are handled specially. The algorithm
+ * used to compute the Lambert W function is described in [Joh2017b], which
+ * follows the main ideas in [CGHJK1996].
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -113,21 +134,20 @@ public class LambertWFunctionNode<D, R, F extends Function<? extends D, ? extend
     var scalarType = scalarType(resultType);
     loadOutputVariableOntoStack(mv, scalarType);
     duplicateTopOfTheStack(mv);
-    order.generate(mv, order.type() );
+    arg.generate(mv, scalarType);
 
-    if (!order.generatedType.equals(Integer.class))
+    order.generate(mv, order.type());
+
+    if (!order.generatedType.equals(int.class))
     {
-      order.generateCastTo(mv, Integer.class);
+      Compiler.loadUnsignedInt(mv);
     }
 
-    arg.generate(mv, resultType);
     loadBitsParameterOntoStack(mv);
     invokeStaticEvaluationMethod(mv, scalarType);
     generatedType = scalarType;
-      return mv;
+    return mv;
   }
-
-
 
   public MethodVisitor invokeStaticEvaluationMethod(MethodVisitor mv, Class<?> scalarType)
   {

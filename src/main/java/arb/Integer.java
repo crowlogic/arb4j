@@ -650,6 +650,11 @@ public class Integer implements
     return r;
   }
 
+  public int getUnsignedIntValue()
+  {
+    return (int)getUnsignedValue();
+  }
+  
   /**
    * @return {@link arblib#fmpz_get_ui(long)}
    */

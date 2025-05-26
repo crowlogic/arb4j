@@ -717,4 +717,23 @@ public class Compiler
     return new ClassWriter(ClassWriter.COMPUTE_FRAMES);
   }
 
+
+  public static MethodVisitor loadUnsignedInt(MethodVisitor mv)
+  {
+    invokeVirtualMethod(mv, Integer.class, "getUnsignedIntValue", int.class);
+    return mv;
+  }
+  
+  public static MethodVisitor loadUnsignedLong(MethodVisitor mv)
+  {
+    invokeVirtualMethod(mv, Integer.class, "getUnsignedValue", long.class);
+    return mv;
+  }
+
+  public static MethodVisitor loadPointer(MethodVisitor mv)
+  {
+    getField(mv, Integer.class, "swigCPtr", long.class);
+    return mv;
+  }
+
 }

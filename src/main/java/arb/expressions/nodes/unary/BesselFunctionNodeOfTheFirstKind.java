@@ -126,18 +126,14 @@ public class BesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends
       order.generateCastTo(mv, resultType);
     }
 
-    generateScalar(mv, resultType, scalarType);
-    return mv;
-  }
-
-  public void generateScalar(MethodVisitor mv, Class<?> resultType, Class<?> scalarType)
-  {
     arg.generate(mv, resultType);
     loadBitsParameterOntoStack(mv);
     invokeStaticEvaluationMethod(mv, scalarType);
     generatedType = scalarType;
+    return mv;
   }
 
+ 
   public MethodVisitor invokeStaticEvaluationMethod(MethodVisitor mv, Class<?> scalarType)
   {
     return invokeStaticMethod(mv,

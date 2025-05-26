@@ -35,25 +35,13 @@ public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? ext
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    loadPointer(cast(duplicateTopOfTheStack(loadResultParameter(mv)), Integer.class));
+    Compiler.loadPointer(cast(duplicateTopOfTheStack(loadResultParameter(mv)), Integer.class));
 
-    loadUnsignedValue(combinations.generate(mv, Integer.class));
+    Compiler.loadUnsignedLong(combinations.generate(mv, Integer.class));
 
-    loadUnsignedValue(choices.generate(mv, Integer.class));
+    Compiler.loadUnsignedLong(choices.generate(mv, Integer.class));
 
     return invokeStaticMethod(mv, arblib.class, "fmpz_bin_uiui", Void.class, long.class, long.class, long.class);
-  }
-
-  public static MethodVisitor loadUnsignedValue(MethodVisitor mv)
-  {
-    Compiler.invokeVirtualMethod(mv, Integer.class, "getUnsignedValue", long.class);
-    return mv;
-  }
-
-  public static MethodVisitor loadPointer(MethodVisitor mv)
-  {
-    Compiler.getField(mv, Integer.class, "swigCPtr", long.class);
-    return mv;
   }
 
   @Override
