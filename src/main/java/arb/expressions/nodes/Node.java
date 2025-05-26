@@ -1,8 +1,6 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.*;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -13,13 +11,9 @@ import org.scilab.forge.jlatexmath.LaTeXAtom;
 import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Compiler;
-import arb.expressions.Expression;
-import arb.expressions.ExpressionTree;
+import arb.expressions.*;
 import arb.expressions.nodes.binary.*;
-import arb.expressions.nodes.unary.AbsoluteValueNode;
-import arb.expressions.nodes.unary.FunctionNode;
-import arb.expressions.nodes.unary.NegationNode;
+import arb.expressions.nodes.unary.*;
 import arb.functions.Function;
 import arb.utensils.text.latex.Latex;
 
@@ -126,7 +120,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public LiteralConstantNode<D, R, F> asLiteralConstant()
   {
-    assert this instanceof LiteralConstantNode : this + " isn't a Literal constant";
+    assert this instanceof LiteralConstantNode : this
+                                                 + " isn't a Literal constant, it is a "
+                                                 + this.getClass().getName();
     return (LiteralConstantNode<D, R, F>) this;
   }
 
