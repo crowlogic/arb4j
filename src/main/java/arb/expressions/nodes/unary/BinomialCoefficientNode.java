@@ -37,9 +37,9 @@ public class BinomialCoefficientNode<D, R, F extends Function<? extends D, ? ext
   {
     Compiler.loadPointer(cast(duplicateTopOfTheStack(loadResultParameter(mv)), Integer.class));
 
-    Compiler.loadUnsignedLong(combinations.generate(mv, Integer.class));
+    Compiler.generateCallToLoadUnsignedLong(combinations.generate(mv, Integer.class));
 
-    Compiler.loadUnsignedLong(choices.generate(mv, Integer.class));
+    Compiler.generateCallToLoadUnsignedLong(choices.generate(mv, Integer.class));
 
     return invokeStaticMethod(mv, arblib.class, "fmpz_bin_uiui", Void.class, long.class, long.class, long.class);
   }

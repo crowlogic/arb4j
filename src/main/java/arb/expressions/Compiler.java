@@ -4,9 +4,7 @@ import static arb.expressions.Parser.expressionToUniqueClassname;
 import static org.objectweb.asm.Opcodes.*;
 
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 import org.objectweb.asm.*;
 import org.objectweb.asm.signature.SignatureWriter;
@@ -20,9 +18,7 @@ import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.polynomials.ComplexHypergeometricPolynomialFunction;
 import arb.functions.polynomials.RealHypergeometricPolynomialFunction;
-import arb.functions.rational.ComplexRationalHypergeometricFunction;
-import arb.functions.rational.LommelPolynomial;
-import arb.functions.rational.RationalHypergeometricFunction;
+import arb.functions.rational.*;
 import arb.functions.real.RealFunction;
 import arb.functions.real.SphericalBesselFunction;
 import arb.utensils.Utensils;
@@ -62,7 +58,7 @@ import arb.utensils.Utensils;
 
 public class Compiler
 {
-  
+
   public static HashMap<Class<?>, String> typePrefixes = new HashMap<>();
 
   static
@@ -87,7 +83,7 @@ public class Compiler
     typePrefixes.put(SphericalBesselFunction.class, "sph");
     typePrefixes.put(IntegerPolynomial.class, "Xℤ");
   }
-  
+
   public static final String objectDesc = Type.getInternalName(Object.class);
 
   public static void addNullCheckForField(MethodVisitor mv, String className, String fieldName, String fieldDesc)
@@ -316,8 +312,6 @@ public class Compiler
                .replace("Ljava/lang/Void;", "V");
 
   }
-
-
 
   public static String getVariablePrefix(Class<?> type)
   {
@@ -717,14 +711,13 @@ public class Compiler
     return new ClassWriter(ClassWriter.COMPUTE_FRAMES);
   }
 
-
-  public static MethodVisitor loadUnsignedInt(MethodVisitor mv)
+  public static MethodVisitor generateCallToGetUnsignedIntValue(MethodVisitor mv)
   {
     invokeVirtualMethod(mv, Integer.class, "getUnsignedIntValue", int.class);
     return mv;
   }
-  
-  public static MethodVisitor loadUnsignedLong(MethodVisitor mv)
+
+  public static MethodVisitor generateCallToLoadUnsignedLong(MethodVisitor mv)
   {
     invokeVirtualMethod(mv, Integer.class, "getUnsignedValue", long.class);
     return mv;

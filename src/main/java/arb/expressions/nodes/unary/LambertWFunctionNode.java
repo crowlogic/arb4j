@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Type;
 
 import arb.*;
 import arb.Integer;
@@ -136,12 +135,9 @@ public class LambertWFunctionNode<D, R, F extends Function<? extends D, ? extend
     duplicateTopOfTheStack(mv);
     arg.generate(mv, scalarType);
 
-    order.generate(mv, order.type());
+    order.generate(mv, Integer.class);
 
-    if (!order.generatedType.equals(int.class))
-    {
-      Compiler.loadUnsignedInt(mv);
-    }
+    Compiler.generateCallToGetUnsignedIntValue(mv);
 
     loadBitsParameterOntoStack(mv);
     invokeStaticEvaluationMethod(mv, scalarType);
