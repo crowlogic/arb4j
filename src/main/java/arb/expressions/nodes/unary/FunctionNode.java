@@ -205,6 +205,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
     case "sqrt":
       return one().div(mul(2));
+    case "arctan":
+      return one().div(one().add(arg.pow(2)));
     case "arcsin":
       return arcsinDerivative();
     case "arccos":

@@ -178,6 +178,12 @@ import arb.utensils.Utensils;
     }
   }
 
+  public Real arctan(int prec, Real result )
+  {
+    arblib.arb_atan(result, this, prec );
+    return result;
+  }
+  
   public Real sub(Real that, int prec, Complex res)
   {
     return sub(that, prec, res.zero().re());
