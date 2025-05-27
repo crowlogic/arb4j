@@ -20,6 +20,14 @@ import junit.framework.TestCase;
 public class IntegralNodeTest extends
                               TestCase
 {
+  public void testIntegralOfSquareRoot()
+  {
+    var F = RealFunction.parse("int(1/sqrt(1-x^2),x)");
+    var f = F.instantiate();
+    f.eval(0.75);
+    
+  }
+  
   public void testGetElementOfAsequence()
   {
 

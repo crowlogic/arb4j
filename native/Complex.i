@@ -70,12 +70,26 @@ import arb.space.topological.EuclideanSpace;
   {  
     return operand.getComplex(bits, result).mul(this, bits);    
   }
-    
+
+  public Complex pow( Fraction operand, int prec, Complex r )
+  {
+    assert operand != null && operand.swigCPtr != 0 : "operand is null";
+    pow(r.re().set(operand),prec,r );   
+    return r;
+  }
+      
   public Complex(int i)
   {
    this();
    set(i);
   }
+  
+  public Complex pow( Real operand, int prec, Complex r )
+  {
+    assert operand != null && operand.swigCPtr != 0 : "operand is null";
+    arblib.acb_pow_arb(r, this, operand, prec);
+    return r;
+  }  
 
   public Complex digamma(int bits)
   {
