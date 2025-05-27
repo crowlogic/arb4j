@@ -22,10 +22,14 @@ public class IntegralNodeTest extends
 {
   public void testIntegralOfSquareRoot()
   {
-    Expression.trace = true;
-    var F = RealFunction.parse("int(1/sqrt(1-x^2),x)");
-    var f = F.instantiate();
-    f.eval(0.75);
+    var f = RealFunction.express("1/sqrt(1-x^2)");
+    var y = f.eval(0.75);
+
+    var g = RealFunction.express("diff(arcsin(x),x)");
+    var z = g.eval(0.75);
+    assertEquals(f.toString(), g.toString());
+
+    assertEquals(y, z);
 
   }
 

@@ -16,6 +16,19 @@ public class DerivativeNodeTest extends
                                 TestCase
 {
 
+  public void testIntegralOfSquareRoot()
+  {
+    var f = RealFunction.express("∫y➔1/sqrt(1-y^2)dy=-1..x)");
+    var y = f.eval(0.75);
+
+    var g = RealFunction.express("arcsin(x)+π⁄2");
+    var z = g.eval(0.75);
+   // assertEquals(f.toString(), g.toString());
+
+    assertEquals(y, z);
+
+  }
+  
   public void testSquareRootDerivative()
   {
     var f  = RealFunction.parse("diff(sqrt(x),x)");

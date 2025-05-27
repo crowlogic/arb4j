@@ -49,7 +49,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> extends
+public class  IntegralNode<D, C, F extends Function<? extends D, ? extends C>> extends
                          Node<D, C, F>
 {
 

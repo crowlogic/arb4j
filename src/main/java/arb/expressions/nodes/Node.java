@@ -293,6 +293,16 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                                      exponent);
   }
 
+  public Node<D, R, F> arctan()
+  {
+    return apply("arctan");
+  }
+  
+  public Node<D, R, F> arcsin()
+  {
+    return apply("arcsin");
+  }
+  
   public Node<D, R, F> sec()
   {
     return apply("sec");

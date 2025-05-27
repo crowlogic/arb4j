@@ -310,7 +310,8 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   @Override
   public boolean isLiteralConstant()
   {
-    return left.isLiteralConstant() && right.isLiteralConstant();
+    return false;
+    //return left.isLiteralConstant() && right.isLiteralConstant();
   }
 
   @Override

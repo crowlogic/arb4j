@@ -478,6 +478,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return arg.cos().log().neg();
     case "sec":
       return arg.sec().add(arg.tan()).log();
+    case "arcsin":
+      return arg.mul(arg.arcsin()).sub(one().sub(arg.pow(2)).sqrt());
+    case "arctan":
+      return arg.mul(arg.arctan()).sub(one().div(2).mul(one().add(arg.pow(2)).log()));      
     default:
       throw new UnsupportedOperationException("Integration not implemented for: " + functionName);
     }

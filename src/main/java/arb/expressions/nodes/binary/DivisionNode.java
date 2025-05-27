@@ -22,13 +22,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                          BinaryOperationNode<D, R, F>
 {
 
-  @Override
-  public LiteralConstantNode<D, R, F> asLiteralConstant()
-  {
-    assert false : "TODO";
-    // TODO Auto-generated method stub
-    return super.asLiteralConstant();
-  }
+
 
   @Override
   public Node<D, R, F> simplify()
