@@ -4,31 +4,31 @@ import static java.lang.String.format;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.Fraction;
+import arb.*;
 import arb.Integer;
-import arb.Real;
-import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
-import arb.expressions.nodes.*;
+import arb.expressions.nodes.Node;
+import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.unary.FunctionNode;
 import arb.functions.Function;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
+@SuppressWarnings("unchecked")
+
 public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          BinaryOperationNode<D, R, F>
 {
-
-
 
   @Override
   public Node<D, R, F> simplify()
   {
     right = right.simplify();
-    left = left.simplify();
+    left  = left.simplify();
     return "1".equals(right.toString()) ? left : this;
   }
 
@@ -93,7 +93,85 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
-    return left.integrate(variable).div(right.integrate(variable));
+    // Fundamental pattern: 1/√(1-x²) → arcsin(x)
+    if (isOneOverSqrtOneMinusXSquared(variable))
+    {
+      return variable.arcsin();
+    }
+
+    // Fundamental pattern: 1/(1+x²) → arctan(x)
+    if (isOneOverOnePlusXSquared(variable))
+    {
+      return variable.arctan();
+    }
+
+    // If denominator is constant: ∫f(x)/c dx = (1/c)∫f(x)dx
+    if (right.isIndependentOf(variable))
+    {
+      return left.integrate(variable).div(right);
+    }
+
+    // More complex rational functions would need additional logic
+    throw new UnsupportedOperationException("Integration of "
+                                            + this
+                                            + " with respect to "
+                                            + variable
+                                            + " not implemented");
+  }
+
+  private boolean isOneOverSqrtOneMinusXSquared(VariableNode<D, R, F> variable)
+  {
+    // Check if left is 1 and right is √(1-x²)
+    if (!left.isLiteralConstant() || !"1".equals(left.toString()))
+      return false;
+
+    if (!(right instanceof FunctionNode sqrtNode))
+      return false;
+
+    if (!"sqrt".equals(sqrtNode.functionName))
+      return false;
+
+    // Check if sqrt argument is (1-x²)
+    return isOneMinusXSquaredPattern(sqrtNode.arg, variable);
+  }
+
+  private boolean isOneOverOnePlusXSquared(VariableNode<D, R, F> variable)
+  {
+    // Check if left is 1 and right is (1+x²)
+    if (!left.isLiteralConstant() || !"1".equals(left.toString()))
+      return false;
+
+    return isOnePlusXSquaredPattern(right, variable);
+  }
+
+  private boolean isOneMinusXSquaredPattern(Node<D, R, F> node, VariableNode<D, R, F> variable)
+  {
+    if (!(node instanceof SubtractionNode sub))
+      return false;
+
+    return isConstantOne(sub.left) && isVariableSquared(sub.right, variable);
+  }
+
+  private boolean isOnePlusXSquaredPattern(Node<D, R, F> node, VariableNode<D, R, F> variable)
+  {
+    if (!(node instanceof AdditionNode add))
+      return false;
+
+    return isConstantOne(add.left) && isVariableSquared(add.right, variable);
+  }
+
+  private boolean isConstantOne(Node<D, R, F> node)
+  {
+    return node.isLiteralConstant() && "1".equals(node.toString());
+  }
+
+  private boolean isVariableSquared(Node<D, R, F> node, VariableNode<D, R, F> variable)
+  {
+    if (!(node instanceof ExponentiationNode pow))
+      return false;
+
+    return pow.left.isVariableNamed(variable.getName()) && pow.right.isLiteralConstant()
+                  && "2".equals(pow.right.toString());
   }
 
   @Override
