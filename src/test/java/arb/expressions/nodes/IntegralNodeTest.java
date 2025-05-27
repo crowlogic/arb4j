@@ -22,12 +22,13 @@ public class IntegralNodeTest extends
 {
   public void testIntegralOfSquareRoot()
   {
+    Expression.trace = true;
     var F = RealFunction.parse("int(1/sqrt(1-x^2),x)");
     var f = F.instantiate();
     f.eval(0.75);
-    
+
   }
-  
+
   public void testGetElementOfAsequence()
   {
 
@@ -53,8 +54,8 @@ public class IntegralNodeTest extends
     var P       = new JacobiPolynomials(RealConstants.negHalf,
                                         RealConstants.negHalf);
     context.registerSequence("P", P);
-    var p3norm = RealNullaryFunction.express("int(P(3)(x),x=-1...0)", context);
-    double val = p3norm.eval();
+    var    p3norm = RealNullaryFunction.express("int(P(3)(x),x=-1...0)", context);
+    double val    = p3norm.eval();
     assertEquals(0.15625, val);
   }
 
@@ -75,7 +76,8 @@ public class IntegralNodeTest extends
   public void testIntegralOfAnElementOfAContextualSequenceSquared()
   {
     var context = new Context();
-    var P       = new JacobiPolynomials(RealConstants.negHalf,RealConstants.negHalf);
+    var P       = new JacobiPolynomials(RealConstants.negHalf,
+                                        RealConstants.negHalf);
     context.registerSequence("P", P);
     var p3norm = RealNullaryFunction.express("int((P(3)^2)(x),x=-1..1)", context);
     assertEquals(0.09486607142857142, p3norm.eval());

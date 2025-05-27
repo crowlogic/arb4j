@@ -570,7 +570,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     case "ζ":
       return Complex.class;
     case "log":
-      return arg.isPossiblyNegative() ? Complex.class : Real.class;
+      return Real.class;
     }
 
     if (argType == null)
