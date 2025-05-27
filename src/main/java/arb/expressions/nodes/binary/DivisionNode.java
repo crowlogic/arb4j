@@ -149,7 +149,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (!(node instanceof SubtractionNode sub))
       return false;
 
-    return isConstantOne(sub.left) && isVariableSquared(sub.right, variable);
+    return sub.left.isConstantOne() && isVariableSquared(sub.right, variable);
   }
 
   private boolean isOnePlusXSquaredPattern(Node<D, R, F> node, VariableNode<D, R, F> variable)
@@ -157,12 +157,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (!(node instanceof AdditionNode add))
       return false;
 
-    return isConstantOne(add.left) && isVariableSquared(add.right, variable);
-  }
-
-  private boolean isConstantOne(Node<D, R, F> node)
-  {
-    return node.isLiteralConstant() && "1".equals(node.toString());
+    return add.left.isConstantOne() && isVariableSquared(add.right, variable);
   }
 
   private boolean isVariableSquared(Node<D, R, F> node, VariableNode<D, R, F> variable)

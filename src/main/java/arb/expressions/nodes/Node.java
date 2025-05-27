@@ -297,12 +297,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     return apply("arctan");
   }
-  
+
   public Node<D, R, F> arcsin()
   {
     return apply("arcsin");
   }
-  
+
   public Node<D, R, F> sec()
   {
     return apply("sec");
@@ -371,5 +371,10 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * @return the string that represents this node in {@link Latex} format
    */
   public abstract String typeset();
+
+  public boolean isConstantOne()
+  {
+    return isLiteralConstant() && "1".equals(toString());
+  }
 
 }
