@@ -3,6 +3,9 @@ package arb.documentation;
 import static arb.utensils.Utensils.throwOrWrap;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,9 +37,7 @@ public abstract class AbstractBibliography
 
   protected Stream<Field> getReferences()
   {
-    return getFieldStream().filter(field -> getReference(field) != null)
-                           .toList()
-                           .stream();
+    return getFieldStream().filter(field -> getReference(field) != null).toList().stream();
   }
 
   protected Stream<Field> getFieldStream()
@@ -56,7 +57,50 @@ public abstract class AbstractBibliography
       throwOrWrap(e);
     }
     return reference;
-
   }
 
+  /**
+   * Generate citation using reflection based on field mapping
+   */
+  public static String generateCitation(Reference reference, String key, Map<String, String> fieldMapping)
+  {
+    String        citationType = reference.getCitationType();
+
+    StringBuilder citation     = new StringBuilder("@").append(citationType).append("{").append(key);
+
+    for (Map.Entry<String, String> entry : fieldMapping.entrySet())
+    {
+      try
+      {
+        String value = getFieldValue(reference, entry.getValue());
+        citation.append(Reference.conditionallyInsertField(entry.getKey(), value));
+      }
+      catch (Exception e)
+      {
+        System.err.println("Error accessing field "
+                           + entry.getValue()
+                           + " in "
+                           + reference.getClass().getSimpleName()
+                           + ": "
+                           + e.getMessage());
+      }
+    }
+
+    citation.append("}");
+    return citation.toString().replace(",}", "}");
+  }
+
+  private static String getFieldValue(Object obj, String methodName) throws Exception
+  {
+    Method method = obj.getClass().getMethod(methodName);
+    Object value  = method.invoke(obj);
+
+    // Handle AtomicReference
+    if (value instanceof AtomicReference)
+    {
+      value = ((AtomicReference<?>) value).get();
+    }
+
+    return value != null ? value.toString() : null;
+  }
 }

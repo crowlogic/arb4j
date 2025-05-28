@@ -1,7 +1,10 @@
 package arb.documentation.references;
 
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
+import arb.documentation.AbstractBibliography;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 
@@ -28,7 +31,6 @@ public class MastersThesis implements
     this.year   = year;
   }
 
-  // Implementations for Reference interface methods
   @Override
   public String year()
   {
@@ -50,25 +52,25 @@ public class MastersThesis implements
   @Override
   public String cite(String key)
   {
-    return String.format("@MastersThesis{%s,\n"
-                         + "  author = {%s},\n"
-                         + "  title = {%s},\n"
-                         + "  school = {%s},\n"
-                         + "  year = {%s},\n"
-                         + "  address = {%s},\n"
-                         + "  note = {Department: %s, Degree: %s}\n"
-                         + "}",
-                         key,
-                         author(),
-                         title(),
-                         university.get(),
-                         year(),
-                         address,
-                         department.get(),
-                         degree.get());
+    return AbstractBibliography.generateCitation(this, key, getFieldMapping());
   }
 
-  // Setter methods for mutable fields
+  private static Map<String, String> getFieldMapping() {
+    Map<String, String> fields = new LinkedHashMap<>();
+    fields.put("author", "author");
+    fields.put("title", "title");
+    fields.put("school", "getUniversity");
+    fields.put("year", "year");
+    fields.put("address", "getAddress");
+    fields.put("type", "getDegree");
+    return fields;
+  }
+
+  @Override
+  public String getCitationType() {
+    return "MastersThesis";
+  }
+
   public MastersThesis setUniversity(String university)
   {
     this.university.set(university);
@@ -87,18 +89,15 @@ public class MastersThesis implements
     return this;
   }
 
-  // Implementing abstract methods from Reference interface
   @Override
   public MastersThesis setVolume(String volume)
   {
-    // Not applicable for Thesis, but must be implemented
     return this;
   }
 
   @Override
   public MastersThesis setPublisher(String publisher)
   {
-    // Not applicable for Thesis, but must be implemented
     return this;
   }
 
@@ -107,5 +106,36 @@ public class MastersThesis implements
   {
     this.address = address;
     return this;
+  }
+
+  @Override
+  public String getVolume() {
+    return null;
+  }
+
+  @Override
+  public String getNumber() {
+    return null;
+  }
+
+  @Override
+  public String getPages() {
+    return null;
+  }
+
+  public String getUniversity() {
+    return university.get();
+  }
+
+  public String getDegree() {
+    return degree.get();
+  }
+
+  public String getDepartment() {
+    return department.get();
+  }
+
+  public String getAddress() {
+    return address;
   }
 }

@@ -27,7 +27,6 @@ public class TheoremReference implements
   }
 
   public Book   book;
-
   public String reference;
 
   public TheoremReference(Book book, String reference)
@@ -55,6 +54,11 @@ public class TheoremReference implements
   }
 
   @Override
+  public String getCitationType() {
+    return book.getCitationType(); // Delegates to the underlying book
+  }
+
+  @Override
   public String author()
   {
     return book.author();
@@ -76,6 +80,21 @@ public class TheoremReference implements
   public Reference setAddress(String address)
   {
     return book.setAddress(address);
+  }
+
+  @Override
+  public String getVolume() {
+    return book.getVolume();
+  }
+
+  @Override
+  public String getNumber() {
+    return book.getNumber();
+  }
+
+  @Override
+  public String getPages() {
+    return book.getPages();
   }
 
   @Override
@@ -112,5 +131,4 @@ public class TheoremReference implements
     assert false : "TODO: Auto-generated method stub";
     return null;
   }
-
 }

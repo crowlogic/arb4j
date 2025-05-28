@@ -1,5 +1,10 @@
 package arb.documentation.references;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import arb.documentation.AbstractBibliography;
+
 public record Miscellaneous(String title, String author, String year, String howpublished, String note, String url)
                            implements
                            Reference
@@ -8,16 +13,25 @@ public record Miscellaneous(String title, String author, String year, String how
   @Override
   public String cite(String by)
   {
-    // TODO: do this via reflection like is done for the Bibliography
-    return String.format("@Misc{%s,%s%s%s%s%s%s}",
-                         by,
-                         Reference.conditionallyInsertField("author", author()),
-                         Reference.conditionallyInsertField("title", title()),
-                         Reference.conditionallyInsertField("year", year()),
-                         Reference.conditionallyInsertField("howpublished", howpublished),
-                         Reference.conditionallyInsertField("note", note),
-                         Reference.conditionallyInsertField("url", url))
-                 .replace(",}", "}");
+    return AbstractBibliography.generateCitation(this, by, getFieldMapping());
+  }
+
+  private static Map<String, String> getFieldMapping()
+  {
+    Map<String, String> fields = new LinkedHashMap<>();
+    fields.put("author", "author");
+    fields.put("title", "title");
+    fields.put("year", "year");
+    fields.put("howpublished", "howpublished");
+    fields.put("note", "note");
+    fields.put("url", "url");
+    return fields;
+  }
+
+  @Override
+  public String getCitationType()
+  {
+    return "Misc";
   }
 
   @Override
@@ -41,10 +55,27 @@ public record Miscellaneous(String title, String author, String year, String how
     return this;
   }
 
+  @Override
+  public String getVolume()
+  {
+    return null;
+  }
+
+  @Override
+  public String getNumber()
+  {
+    return null;
+  }
+
+  @Override
+  public String getPages()
+  {
+    return null;
+  }
+
   public Miscellaneous setURL(String string)
   {
     // TODO Auto-generated method stub
     return null;
   }
-
 }

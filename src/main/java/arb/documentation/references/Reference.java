@@ -10,11 +10,20 @@ import arb.documentation.TheArb4jLibrary;
  */
 public interface Reference
 {
+  /**
+   * Returns the BibTeX citation type for this reference. Default implementation
+   * uses the simple class name.
+   */
+  default String getCitationType()
+  {
+    return getClass().getSimpleName();
+  }
+
   public default String citation()
   {
     return null;
   }
-  
+
   public String year();
 
   public String title();
@@ -55,4 +64,3 @@ public interface Reference
   }
 
 }
-

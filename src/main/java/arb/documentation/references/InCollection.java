@@ -1,6 +1,10 @@
 package arb.documentation.references;
 
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import arb.documentation.AbstractBibliography;
 
 public record InCollection(String title,
                            String author,
@@ -22,22 +26,25 @@ public record InCollection(String title,
   @Override
   public String cite(String by)
   {
-    return String.format("@InCollection{%s,%s%s%s%s%s%s%s%s%s%s%s%s%s}",
-                         by,
-                         Reference.conditionallyInsertField("author", author()),
-                         Reference.conditionallyInsertField("title", title()),
-                         Reference.conditionallyInsertField("booktitle", booktitle()),
-                         Reference.conditionallyInsertField("year", year()),
-                         Reference.conditionallyInsertField("editor", editor.get()),
-                         Reference.conditionallyInsertField("publisher", publisher.get()),
-                         Reference.conditionallyInsertField("address", address.get()),
-                         Reference.conditionallyInsertField("pages", pages()),
-                         Reference.conditionallyInsertField("volume", volume.get()),
-                         Reference.conditionallyInsertField("number", number.get()),
-                         Reference.conditionallyInsertField("series", series.get()),
-                         Reference.conditionallyInsertField("isbn", isbn.get()),
-                         Reference.conditionallyInsertField("doi", doi.get()))
-                 .replace(",}", "}");
+    return AbstractBibliography.generateCitation(this, by, getFieldMapping());
+  }
+
+  private static Map<String, String> getFieldMapping() {
+    Map<String, String> fields = new LinkedHashMap<>();
+    fields.put("author", "author");
+    fields.put("title", "title");
+    fields.put("booktitle", "booktitle");
+    fields.put("year", "year");
+    fields.put("editor", "getEditor");
+    fields.put("publisher", "getPublisher");
+    fields.put("address", "getAddress");
+    fields.put("pages", "getPages");
+    fields.put("volume", "getVolume");
+    fields.put("number", "getNumber");
+    fields.put("series", "getSeries");
+    fields.put("isbn", "getIsbn");
+    fields.put("doi", "getDoi");
+    return fields;
   }
 
   public InCollection(String title, String author, String year, String booktitle, String pages)
@@ -124,5 +131,29 @@ public record InCollection(String title,
   public String getPages()
   {
     return pages();
+  }
+
+  public String getEditor() {
+    return editor.get();
+  }
+
+  public String getPublisher() {
+    return publisher.get();
+  }
+
+  public String getAddress() {
+    return address.get();
+  }
+
+  public String getSeries() {
+    return series.get();
+  }
+
+  public String getIsbn() {
+    return isbn.get();
+  }
+
+  public String getDoi() {
+    return doi.get();
   }
 }
