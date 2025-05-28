@@ -20,18 +20,64 @@ public class ComplexRationalFunction implements
                                      Function<Fraction, ComplexFraction>,
                                      Verifiable
 {
-  public Complex evaluate(Complex t, int order, int bits, Complex result)
+  public static final int DEFAULT_BITS = 128;
+
+  @SuppressWarnings("resource")
+  public static ComplexRationalFunction one = new ComplexRationalFunction().set(1);
+
+  public static ComplexFraction imaginaryUnit = new ComplexFraction();
+
+  static
   {
-    assert t.im().isZero() : "TODO: implement evaluation with imaginary component";
-    if (result == null)
-    {
-      result = new Complex();
-    }
-    try ( Complex PoverQ = new Complex(); Complex RoverS = new Complex())
-    {
-      evaluate(t.re(),order,bits,result);
-      return result;
-    }
+    imaginaryUnit.realPart.set(0, 1);
+    imaginaryUnit.imaginaryPart.set(1, 1);
+  }
+
+  public static Expression<Fraction, ComplexFraction, ComplexRationalFunction> compile(String expression)
+  {
+    return compile(expression, null);
+  }
+
+  public static Expression<Fraction, ComplexFraction, ComplexRationalFunction> compile(String expression,
+                                                                                       Context context)
+  {
+    return Compiler.compile(expression,
+                            context,
+                            Fraction.class,
+                            ComplexFraction.class,
+                            ComplexRationalFunction.class,
+                            null);
+  }
+
+  public static ComplexRationalFunction express(String expression)
+  {
+    return express(expression, DEFAULT_BITS);
+  }
+
+  public static ComplexRationalFunction express(String expression, Context context)
+  {
+    return ComplexRationalNullaryFunction.express(expression, context).evaluate(128);
+  }
+
+  public static ComplexRationalFunction express(String expression, int bits)
+  {
+    return ComplexRationalNullaryFunction.express(expression).evaluate(bits, new ComplexRationalFunction());
+  }
+  public static String group(String p, boolean t)
+  {
+    boolean q = p.contains(" ") || (t && (p.contains("+") || p.contains("-")));
+    return q ? "(" + p + ")" : p;
+  }
+  final RationalFunction                realPart;
+
+  final RationalFunction                imaginaryPart;
+
+  public String                         name;
+
+  public ComplexRationalFunction()
+  {
+    realPart      = new RationalFunction();
+    imaginaryPart = new RationalFunction();
   }
 
   public ComplexRationalFunction(Integer val)
@@ -40,105 +86,83 @@ public class ComplexRationalFunction implements
     set(val);
   }
 
-  @Override
-  public ComplexFraction newCoDomainInstance()
-  {
-    return new ComplexFraction();
-  }
-
-  @Override
-  public boolean equals(Object obj)
-  {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    ComplexRationalFunction other    = (ComplexRationalFunction) obj;
-    boolean                 imEquals = Objects.equals(im(), other.im());
-    boolean                 reEquals = Objects.equals(re(), other.re());
-
-    return imEquals && reEquals;
-  }
-
-  @SuppressWarnings("resource")
-  @Override
-  public ComplexRationalFunction set(Real value)
-  {
-    zero().realPart.set(value);
-    return this;
-  }
-
-  public static final int DEFAULT_BITS = 128;
-
-  @Override
-  public ComplexRationalFunction set(Complex val)
-  {
-    realPart.set(val.getReal());
-    imaginaryPart.set(val.getImag());
-    return this;
-  }
-
-  @SuppressWarnings("resource")
-  public static ComplexRationalFunction one = new ComplexRationalFunction().set(1);
-
-  final RationalFunction                realPart;
-  final RationalFunction                imaginaryPart;
-  public String                         name;
-
-  public ComplexRationalFunction identity()
-  {
-    realPart.identity();
-    imaginaryPart.zero();
-    return this;
-  }
-
-  public ComplexRationalFunction()
-  {
-    realPart      = new RationalFunction();
-    imaginaryPart = new RationalFunction();
-  }
-
   public ComplexRationalFunction(String string)
   {
     this();
     set(string);
   }
 
-  public ComplexRationalFunction set(int i)
+  public ComplexRationalFunction add(ComplexRationalFunction x, int prec)
   {
-    realPart.set(i);
+    return add(x, prec, this);
+  }
+
+  @Override
+  public ComplexRationalFunction add(ComplexRationalFunction element, int prec, ComplexRationalFunction result)
+  {
+    assert result.realPart != null : "result.realPart is null";
+    assert result.imaginaryPart != null : "result.imaginaryPart is null";
+
+    realPart.add(element.realPart, prec, result.realPart);
+    imaginaryPart.add(element.imaginaryPart, prec, result.imaginaryPart);
+    return result;
+  }
+
+  public ComplexRationalFunction add(Fraction operand, int prec)
+  {
+    return add(operand, prec, this);
+  }
+
+  public ComplexRationalFunction add(Fraction operand, int prec, ComplexRationalFunction result)
+  {
+    return operand.add(result.set(this), prec, result);
+  }
+
+  public ComplexRationalFunction add(Integer power, int bits, ComplexRationalFunction result)
+  {
+    realPart.add(power, bits, result.realPart);
+    result.imaginaryPart.set(imaginaryPart);
+    return result;
+  }
+
+  public ComplexRationalFunction add(Real real, int bits, ComplexRationalFunction res)
+  {
+    res.set(this);
+    res.realPart.add(real, bits);
+    return res;
+  }
+
+  @Override
+  public ComplexRationalFunction additiveIdentity()
+  {
+    realPart.zero();
     imaginaryPart.zero();
     return this;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
-  public ComplexRationalFunction get(int i)
+  public int bits()
   {
-    if (i != 0)
+    return Math.max(realPart.bits(), imaginaryPart.bits());
+  }
+
+  @Override
+  public void close()
+  {
+    if (realPart != null)
     {
-      throw new IndexOutOfBoundsException("ComplexRationalFunction is a scalar, index must be 0");
+      realPart.close();
     }
-    return this;
+    if (imaginaryPart != null)
+    {
+      imaginaryPart.close();
+    }
   }
 
   @Override
-  public ComplexRationalFunction set(Fraction val)
+  public int dim()
   {
-    realPart.set(val);
-    imaginaryPart.zero();
-    return this;
-  }
-
-  @Override
-  public ComplexRationalFunction set(Fraction... vals)
-  {
-    assert vals.length == 1 : "TODO: implement multidimensional ComplexRationalFunctions";
-    realPart.set(vals);
-    imaginaryPart.zero();
-    return this;
+    return 1;
   }
 
   public ComplexRationalFunction div(Complex x, int prec, ComplexRationalFunction result)
@@ -204,64 +228,6 @@ public class ComplexRationalFunction implements
     }
   }
 
-  public boolean isZero()
-  {
-    return realPart.isZero() && imaginaryPart.isZero();
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <N extends Named> N setName(String name)
-  {
-    this.name = name;
-    return (N) this;
-  }
-
-  @Override
-  public String getName()
-  {
-    return name;
-  }
-
-  @Override
-  public ComplexRationalFunction additiveIdentity()
-  {
-    realPart.zero();
-    imaginaryPart.zero();
-    return this;
-  }
-
-  @Override
-  public ComplexRationalFunction multiplicativeIdentity()
-  {
-    realPart.one();
-    imaginaryPart.zero();
-    return this;
-  }
-
-  @Override
-  public ComplexRationalFunction add(ComplexRationalFunction element, int prec, ComplexRationalFunction result)
-  {
-    assert result.realPart != null : "result.realPart is null";
-    assert result.imaginaryPart != null : "result.imaginaryPart is null";
-
-    realPart.add(element.realPart, prec, result.realPart);
-    imaginaryPart.add(element.imaginaryPart, prec, result.imaginaryPart);
-    return result;
-  }
-
-  @Override
-  public int bits()
-  {
-    return Math.max(realPart.bits(), imaginaryPart.bits());
-  }
-
-  @Override
-  public int dim()
-  {
-    return 1;
-  }
-
   @Override
   public ComplexRationalFunction div(int j, int prec, ComplexRationalFunction result)
   {
@@ -273,29 +239,117 @@ public class ComplexRationalFunction implements
     return result;
   }
 
-  public ComplexRationalFunction mul(Integer x, int prec, ComplexRationalFunction result)
+  public ComplexRationalFunction div(Integer power, int bits, ComplexRationalFunction result)
   {
-    assert result.realPart != null : "result.realPart is null";
-    assert result.imaginaryPart != null : "result.imaginaryPart is null";
-    realPart.mul(x, prec, result.realPart);
-    imaginaryPart.mul(x, prec, result.imaginaryPart);
+    realPart.div(power, bits, result.realPart);
+    imaginaryPart.div(power, bits, result.imaginaryPart);
+    return result;
+  }
+
+  public ComplexRationalFunction div(RationalFunction divisor)
+  {
+    return div(divisor, this);
+  }
+
+  public ComplexRationalFunction div(RationalFunction divisor, ComplexRationalFunction result)
+  {
+    realPart.div(divisor, result.realPart);
+    imaginaryPart.div(divisor, result.imaginaryPart);
     return result;
   }
 
   @Override
-  public ComplexRationalFunction mul(int x, int prec, ComplexRationalFunction result)
+  public boolean equals(Object obj)
   {
-    assert result.realPart != null : "result.realPart is null";
-    assert result.imaginaryPart != null : "result.imaginaryPart is null";
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    ComplexRationalFunction other    = (ComplexRationalFunction) obj;
+    boolean                 imEquals = Objects.equals(im(), other.im());
+    boolean                 reEquals = Objects.equals(re(), other.re());
 
-    realPart.mul(x, prec, result.realPart);
-    imaginaryPart.mul(x, prec, result.imaginaryPart);
+    return imEquals && reEquals;
+  }
+
+  public Complex eval(double d, Complex complex)
+  {
+    return evaluate(Real.valueOf(d), 1, 128, complex);
+  }
+
+  public Complex evaluate(Complex t, int order, int bits, Complex result)
+  {
+    assert t.im().isZero() : "TODO: implement evaluation with imaginary component";
+    if (result == null)
+    {
+      result = new Complex();
+    }
+    try ( Complex PoverQ = new Complex(); Complex RoverS = new Complex())
+    {
+      evaluate(t.re(),order,bits,result);
+      return result;
+    }
+  }
+
+  public ComplexFraction evaluate(Fraction x, ComplexFraction result)
+  {
+    return evaluate(x, 0, result);
+  }
+
+  @Override
+  public ComplexFraction evaluate(Fraction input, int order, int bits, ComplexFraction result)
+  {
+    realPart.evaluate(input, bits, result.realPart);
+    imaginaryPart.evaluate(input, bits, result.imaginaryPart);
     return result;
   }
 
-  public ComplexRationalFunction add(ComplexRationalFunction x, int prec)
+  public Complex evaluate(Real valueOf, int order, int bits, Complex complex)
   {
-    return add(x, prec, this);
+    re().evaluate(valueOf, order, bits, complex.re());
+    im().evaluate(valueOf, order, bits, complex.im());
+    return complex;
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public ComplexRationalFunction get(int i)
+  {
+    if (i != 0)
+    {
+      throw new IndexOutOfBoundsException("ComplexRationalFunction is a scalar, index must be 0");
+    }
+    return this;
+  }
+
+  @Override
+  public String getName()
+  {
+    return name;
+  }
+
+  public ComplexRationalFunction identity()
+  {
+    realPart.identity();
+    imaginaryPart.zero();
+    return this;
+  }
+
+  public RationalFunction im()
+  {
+    return imaginaryPart;
+  }
+
+  public boolean isZero()
+  {
+    return realPart.isZero() && imaginaryPart.isZero();
+  }
+
+  public ComplexRationalFunction mul(Complex real, int prec, ComplexRationalFunction res)
+  {
+    return real.mul(res.set(this), prec, res);
   }
 
   public ComplexRationalFunction mul(ComplexRationalFunction x, int prec)
@@ -338,168 +392,43 @@ public class ComplexRationalFunction implements
   }
 
   @Override
-  public ComplexRationalFunction newFieldElement()
-  {
-    return new ComplexRationalFunction();
-  }
-
-  @Override
-  public ComplexRationalFunction set(ComplexRationalFunction value)
-  {
-    assert value.realPart != null : "value.realPart is null";
-    assert value.imaginaryPart != null : "value.imaginaryPart is null";
-
-    realPart.set(value.realPart);
-    imaginaryPart.set(value.imaginaryPart);
-    return this;
-  }
-
-  public ComplexRationalFunction sub(Integer element, int prec, ComplexRationalFunction result)
-  {
-    return sub(result.set(element), prec, result);
-  }
-
-  @Override
-  public ComplexRationalFunction sub(ComplexRationalFunction element, int prec, ComplexRationalFunction result)
+  public ComplexRationalFunction mul(int x, int prec, ComplexRationalFunction result)
   {
     assert result.realPart != null : "result.realPart is null";
     assert result.imaginaryPart != null : "result.imaginaryPart is null";
 
-    realPart.sub(element.realPart, prec, result.realPart);
-    imaginaryPart.sub(element.imaginaryPart, prec, result.imaginaryPart);
+    realPart.mul(x, prec, result.realPart);
+    imaginaryPart.mul(x, prec, result.imaginaryPart);
     return result;
   }
 
-  @Override
-  public ComplexRationalFunction zero()
+  public ComplexRationalFunction mul(Integer x, int prec, ComplexRationalFunction result)
   {
-    return additiveIdentity();
-  }
-
-  @Override
-  public boolean verify()
-  {
-    return realPart.verify() && imaginaryPart.verify();
-  }
-
-  public static ComplexFraction imaginaryUnit = new ComplexFraction();
-
-  public RationalFunction realPart()
-  {
-    return realPart;
-  }
-
-  public RationalFunction re()
-  {
-    return realPart();
-  }
-
-  public RationalFunction im()
-  {
-    return imaginaryPart;
-  }
-
-  static
-  {
-    imaginaryUnit.realPart.set(0, 1);
-    imaginaryUnit.imaginaryPart.set(1, 1);
-  }
-
-  @Override
-  public ComplexFraction evaluate(Fraction input, int order, int bits, ComplexFraction result)
-  {
-    realPart.evaluate(input, bits, result.realPart);
-    imaginaryPart.evaluate(input, bits, result.imaginaryPart);
+    assert result.realPart != null : "result.realPart is null";
+    assert result.imaginaryPart != null : "result.imaginaryPart is null";
+    realPart.mul(x, prec, result.realPart);
+    imaginaryPart.mul(x, prec, result.imaginaryPart);
     return result;
   }
 
-  @Override
-  public void close()
+  public ComplexRationalFunction mul(Real real, int prec, ComplexRationalFunction res)
   {
-    if (realPart != null)
-    {
-      realPart.close();
-    }
-    if (imaginaryPart != null)
-    {
-      imaginaryPart.close();
-    }
-  }
-
-  public static String group(String p, boolean t)
-  {
-    boolean q = p.contains(" ") || (t && (p.contains("+") || p.contains("-")));
-    return q ? "(" + p + ")" : p;
+    res.set(this);
+    res.realPart.mul(real, prec);
+    return res;
   }
 
   @Override
-  public String toString()
+  public ComplexRationalFunction multiplicativeIdentity()
   {
-    String rstr = realPart.toString();
-    String istr = imaginaryPart.toString();
-    return String.format("%s + %si", group(rstr, false), group(istr, true));
+    realPart.one();
+    imaginaryPart.zero();
+    return this;
   }
 
-  public ComplexRationalFunction set(String string)
+  public ComplexRationalFunction multiplicativeInverse()
   {
-    return ComplexRationalNullaryFunction.express(string).evaluate(bits(), this);
-  }
-
-  public static ComplexRationalFunction express(String expression, int bits)
-  {
-    return ComplexRationalNullaryFunction.express(expression).evaluate(bits, new ComplexRationalFunction());
-  }
-
-  public static ComplexRationalFunction express(String expression)
-  {
-    return express(expression, DEFAULT_BITS);
-  }
-
-  public static ComplexRationalFunction express(String expression, Context context)
-  {
-    return ComplexRationalNullaryFunction.express(expression, context).evaluate(128);
-  }
-
-  public static Expression<Fraction, ComplexFraction, ComplexRationalFunction> compile(String expression)
-  {
-    return compile(expression, null);
-  }
-
-  public static Expression<Fraction, ComplexFraction, ComplexRationalFunction> compile(String expression,
-                                                                                       Context context)
-  {
-    return Compiler.compile(expression,
-                            context,
-                            Fraction.class,
-                            ComplexFraction.class,
-                            ComplexRationalFunction.class,
-                            null);
-  }
-
-  public ComplexRationalFunction neg(int unusedBits, ComplexRationalFunction result)
-  {
-    return neg(result);
-  }
-
-  public ComplexRationalFunction neg(ComplexRationalFunction result)
-  {
-    realPart.neg(result.realPart);
-    imaginaryPart.neg(result.imaginaryPart);
-    return result;
-  }
-
-  public ComplexRationalFunction add(Integer power, int bits, ComplexRationalFunction result)
-  {
-    realPart.add(power, bits, result.realPart);
-    result.imaginaryPart.set(imaginaryPart);
-    return result;
-  }
-
-  public ComplexRationalFunction div(Integer power, int bits, ComplexRationalFunction result)
-  {
-    realPart.div(power, bits, result.realPart);
-    imaginaryPart.div(power, bits, result.imaginaryPart);
-    return result;
+    return multiplicativeInverse(this);
   }
 
   public ComplexRationalFunction multiplicativeInverse(ComplexRationalFunction result)
@@ -530,16 +459,33 @@ public class ComplexRationalFunction implements
     }
   }
 
-  public ComplexRationalFunction div(RationalFunction divisor)
+  public ComplexRationalFunction neg()
   {
-    return div(divisor, this);
+    return neg(this);
   }
 
-  public ComplexRationalFunction div(RationalFunction divisor, ComplexRationalFunction result)
+  public ComplexRationalFunction neg(ComplexRationalFunction result)
   {
-    realPart.div(divisor, result.realPart);
-    imaginaryPart.div(divisor, result.imaginaryPart);
+    realPart.neg(result.realPart);
+    imaginaryPart.neg(result.imaginaryPart);
     return result;
+  }
+
+  public ComplexRationalFunction neg(int unusedBits, ComplexRationalFunction result)
+  {
+    return neg(result);
+  }
+
+  @Override
+  public ComplexFraction newCoDomainInstance()
+  {
+    return new ComplexFraction();
+  }
+
+  @Override
+  public ComplexRationalFunction newFieldElement()
+  {
+    return new ComplexRationalFunction();
   }
 
   /**
@@ -591,6 +537,87 @@ public class ComplexRationalFunction implements
     return result;
   }
 
+  public RationalFunction re()
+  {
+    return realPart();
+  }
+
+  public RationalFunction realPart()
+  {
+    return realPart;
+  }
+
+  @Override
+  public ComplexRationalFunction set(Complex val)
+  {
+    realPart.set(val.getReal());
+    imaginaryPart.set(val.getImag());
+    return this;
+  }
+
+  @Override
+  public ComplexRationalFunction set(ComplexRationalFunction value)
+  {
+    assert value.realPart != null : "value.realPart is null";
+    assert value.imaginaryPart != null : "value.imaginaryPart is null";
+
+    realPart.set(value.realPart);
+    imaginaryPart.set(value.imaginaryPart);
+    return this;
+  }
+
+  @Override
+  public ComplexRationalFunction set(Fraction val)
+  {
+    realPart.set(val);
+    imaginaryPart.zero();
+    return this;
+  }
+
+  @Override
+  public ComplexRationalFunction set(Fraction... vals)
+  {
+    assert vals.length == 1 : "TODO: implement multidimensional ComplexRationalFunctions";
+    realPart.set(vals);
+    imaginaryPart.zero();
+    return this;
+  }
+
+  public ComplexRationalFunction set(int i)
+  {
+    realPart.set(i);
+    imaginaryPart.zero();
+    return this;
+  }
+
+  public ComplexRationalFunction set(Integer integer)
+  {
+    realPart.set(integer);
+    imaginaryPart.zero();
+    return this;
+  }
+
+  @SuppressWarnings("resource")
+  @Override
+  public ComplexRationalFunction set(Real value)
+  {
+    zero().realPart.set(value);
+    return this;
+  }
+
+  public ComplexRationalFunction set(String string)
+  {
+    return ComplexRationalNullaryFunction.express(string).evaluate(bits(), this);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <N extends Named> N setName(String name)
+  {
+    this.name = name;
+    return (N) this;
+  }
+
   /**
    * Let a=this{@link #realPart} and b=this{@link #imaginaryPart} then
    * 
@@ -610,67 +637,40 @@ public class ComplexRationalFunction implements
     return result;
   }
 
-  public ComplexRationalFunction set(Integer integer)
+  @Override
+  public ComplexRationalFunction sub(ComplexRationalFunction element, int prec, ComplexRationalFunction result)
   {
-    realPart.set(integer);
-    imaginaryPart.zero();
-    return this;
+    assert result.realPart != null : "result.realPart is null";
+    assert result.imaginaryPart != null : "result.imaginaryPart is null";
+
+    realPart.sub(element.realPart, prec, result.realPart);
+    imaginaryPart.sub(element.imaginaryPart, prec, result.imaginaryPart);
+    return result;
   }
 
-  public ComplexRationalFunction neg()
+  public ComplexRationalFunction sub(Integer element, int prec, ComplexRationalFunction result)
   {
-    return neg(this);
+    return sub(result.set(element), prec, result);
   }
 
-  public ComplexRationalFunction add(Fraction operand, int prec, ComplexRationalFunction result)
+  @Override
+  public String toString()
   {
-    return operand.add(result.set(this), prec, result);
+    String rstr = realPart.toString();
+    String istr = imaginaryPart.toString();
+    return String.format("%s + %si", group(rstr, false), group(istr, true));
   }
 
-  public ComplexRationalFunction add(Fraction operand, int prec)
+  @Override
+  public boolean verify()
   {
-    return add(operand, prec, this);
+    return realPart.verify() && imaginaryPart.verify();
   }
 
-  public ComplexRationalFunction mul(Complex real, int prec, ComplexRationalFunction res)
+  @Override
+  public ComplexRationalFunction zero()
   {
-    return real.mul(res.set(this), prec, res);
-  }
-
-  public ComplexRationalFunction mul(Real real, int prec, ComplexRationalFunction res)
-  {
-    res.set(this);
-    res.realPart.mul(real, prec);
-    return res;
-  }
-
-  public ComplexFraction evaluate(Fraction x, ComplexFraction result)
-  {
-    return evaluate(x, 0, result);
-  }
-
-  public ComplexRationalFunction multiplicativeInverse()
-  {
-    return multiplicativeInverse(this);
-  }
-
-  public ComplexRationalFunction add(Real real, int bits, ComplexRationalFunction res)
-  {
-    res.set(this);
-    res.realPart.add(real, bits);
-    return res;
-  }
-
-  public Complex eval(double d, Complex complex)
-  {
-    return evaluate(Real.valueOf(d), 1, 128, complex);
-  }
-
-  public Complex evaluate(Real valueOf, int order, int bits, Complex complex)
-  {
-    re().evaluate(valueOf, order, bits, complex.re());
-    im().evaluate(valueOf, order, bits, complex.im());
-    return complex;
+    return additiveIdentity();
   }
 
 }
