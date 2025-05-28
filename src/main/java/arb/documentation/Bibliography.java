@@ -1,9 +1,7 @@
 package arb.documentation;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 
 import arb.documentation.references.Article;
 import arb.documentation.references.Book;
@@ -50,7 +48,7 @@ public class Bibliography extends
                                                                          "1979",
                                                                          "Journal of Applied Probability",
                                                                          "16",
-                                                                         "822–829").setNumber("4");
+                                                                         "822–829").setNumber("4").setMonth("December");
 
   public static Article envelopeOscillatoryProcessUpcrossings                 =
                                                               new Article("The Envelope of an Oscillatory Process and Its Upcrossings",

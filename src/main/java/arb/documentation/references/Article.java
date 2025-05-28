@@ -4,9 +4,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.language.Noun;
-import arb.language.Phrase;
-import arb.language.Word;
+import arb.language.*;
 
 /**
  * In grammar, an article is any member of a class of dedicated {@link Word}s
@@ -26,7 +24,8 @@ public record Article(String title,
                       String pages,
                       AtomicReference<String> publisher,
                       AtomicReference<String> address,
-                      AtomicReference<String> number)
+                      AtomicReference<String> number,
+                      AtomicReference<String> month)
                      implements
                      Reference
 {
@@ -45,7 +44,8 @@ public record Article(String title,
                          Reference.conditionallyInsertField("pages", getPages()),
                          Reference.conditionallyInsertField("publisher", publisher.get()),
                          Reference.conditionallyInsertField("address", address.get()),
-                         Reference.conditionallyInsertField("number", number.get()))
+                         Reference.conditionallyInsertField("number", number.get()),
+                         Reference.conditionallyInsertField("month", month.get()))
                  .replace(",}", "}");
   }
 
@@ -57,6 +57,7 @@ public record Article(String title,
          journal,
          new AtomicReference<>(volume),
          pages,
+         new AtomicReference<>(),
          new AtomicReference<>(),
          new AtomicReference<>(),
          new AtomicReference<>());
@@ -77,6 +78,7 @@ public record Article(String title,
          new AtomicReference<>(volume),
          pages,
          new AtomicReference<>(publisher),
+         new AtomicReference<>(),
          new AtomicReference<>(),
          new AtomicReference<>());
   }
@@ -123,6 +125,17 @@ public record Article(String title,
   public Article setNumber(String string)
   {
     number.set(string);
+    return this;
+  }
+
+  public String getMonth()
+  {
+    return month.get();
+  }
+
+  public Article setMonth(String string)
+  {
+    month.set(string);
     return this;
   }
 
