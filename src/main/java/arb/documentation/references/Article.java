@@ -39,13 +39,13 @@ public record Article(String title,
                          Reference.conditionallyInsertField("author", author()),
                          Reference.conditionallyInsertField("title", title()),
                          Reference.conditionallyInsertField("year", year()),
+                         Reference.conditionallyInsertField("month", month.get()),
                          Reference.conditionallyInsertField("journal", journal()),
                          Reference.conditionallyInsertField("volume", getVolume()),
                          Reference.conditionallyInsertField("pages", getPages()),
                          Reference.conditionallyInsertField("publisher", publisher.get()),
                          Reference.conditionallyInsertField("address", address.get()),
-                         Reference.conditionallyInsertField("number", number.get()),
-                         Reference.conditionallyInsertField("month", month.get()))
+                         Reference.conditionallyInsertField("number", number.get()))
                  .replace(",}", "}");
   }
 
