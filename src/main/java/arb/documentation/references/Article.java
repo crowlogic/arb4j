@@ -1,5 +1,9 @@
 package arb.documentation.references;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -30,23 +34,58 @@ public record Article(String title,
                      Reference
 {
 
+//Add missing getter methods for consistency
+  public String getPublisher()
+  {
+    return publisher.get();
+  }
+
+  public String getAddress()
+  {
+    return address.get();
+  }
+
+  // Define field mappings: BibTeX field name -> method name
+  static Map<String, String> fieldMethods = new LinkedHashMap<>();
+  static
+  {
+    fieldMethods.put("author", "author");
+    fieldMethods.put("title", "title");
+    fieldMethods.put("year", "year");
+    fieldMethods.put("month", "getMonth");
+    fieldMethods.put("journal", "journal");
+    fieldMethods.put("volume", "getVolume");
+    fieldMethods.put("pages", "getPages");
+    fieldMethods.put("publisher", "getPublisher");
+    fieldMethods.put("address", "getAddress");
+    fieldMethods.put("number", "getNumber");
+  }
+
   @Override
   public String cite(String by)
   {
-    // TODO: do this via reflection like is done for the Bibliography
-    return String.format("@Article{%s,%s%s%s%s%s%s%s%s%s%s}",
-                         by,
-                         Reference.conditionallyInsertField("author", author()),
-                         Reference.conditionallyInsertField("title", title()),
-                         Reference.conditionallyInsertField("year", year()),
-                         Reference.conditionallyInsertField("month", month.get()),
-                         Reference.conditionallyInsertField("journal", journal()),
-                         Reference.conditionallyInsertField("volume", getVolume()),
-                         Reference.conditionallyInsertField("pages", getPages()),
-                         Reference.conditionallyInsertField("publisher", publisher.get()),
-                         Reference.conditionallyInsertField("address", address.get()),
-                         Reference.conditionallyInsertField("number", number.get()))
-                 .replace(",}", "}");
+    StringBuilder citation = new StringBuilder(String.format("@Article{%s,",by));
+
+    Class<?>      clazz    = this.getClass();
+
+    for (var entry : fieldMethods.entrySet())
+    {
+      try
+      {
+        Method method      = clazz.getMethod(entry.getValue());
+        Object value       = method.invoke(this);
+        String stringValue = (value != null) ? value.toString() : null;
+        citation.append(Reference.conditionallyInsertField(entry.getKey(), stringValue));
+      }
+      catch (Exception e)
+      {
+        // Log error or handle gracefully - could use a logger here
+        System.err.println("Error accessing method " + entry.getValue() + ": " + e.getMessage());
+      }
+    }
+
+    citation.append("}");
+    return citation.toString().replace(",}", "}");
   }
 
   public Article(String title, String author, String year, String journal, String volume, String pages)
