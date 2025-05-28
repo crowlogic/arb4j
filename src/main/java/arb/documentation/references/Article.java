@@ -34,7 +34,7 @@ public record Article(String title,
   public String cite(String by)
   {
     // TODO: do this via reflection like is done for the Bibliography
-    return String.format("@Article{%s,%s%s%s%s%s%s%s%s%s}",
+    return String.format("@Article{%s,%s%s%s%s%s%s%s%s%s%s}",
                          by,
                          Reference.conditionallyInsertField("author", author()),
                          Reference.conditionallyInsertField("title", title()),

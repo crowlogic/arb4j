@@ -7,9 +7,9 @@
   OSCILLATORY PROCESS>|<doc-author|<author-data|<author-name|A. M.
   HASOFER>|<author-affiliation|Postal address: School of Mathematics,
   Department of Statistics, The University of New South Wales, P.O.Box 1,
-  Kensington, N.S.W. 2033, Australia.>>>|<doc-date|>>
+  Kensington, N.S.W. 2033, Australia.>>>|<doc-date|Dec.1979>>
 
-  <abstract-data|<\abstract>
+  <\abstract>
     In a previous paper, the author has described a method for obtaining
     envelope processes for oscillatory stochastic processes. These are
     processes which can be represented as the output of a time-varying linear
@@ -23,33 +23,33 @@
     particular interest, the class of transient processes, there is a class
     of natural representations which all lead to a unique envelope process.
 
-    NON-STATIONARY STOCHASTIC PROCESSES; TIME-VARYING FILTERS; ENVELOPE
-    PROCESSES
-  </abstract>>
+    <with|font-series|bold|Keywords:> NON-STATIONARY STOCHASTIC PROCESSES;
+    TIME-VARYING FILTERS; ENVELOPE PROCESSES
+  </abstract>
 
   <\table-of-contents|toc>
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Introduction>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Introduction>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-1><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Background and
-    notation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Background
+    and notation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-2><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|The
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>The
     counterexample> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-3><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|The class of
-    transient processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>The
+    class of transient processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-4><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|References>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-5><vspace|0.5fn>
   </table-of-contents>
 
-  <section*|Introduction>
+  <section|Introduction>
 
   In a previous paper<nbsp><cite|hasoferpetocz>, the author described a
   method for obtaining an envelope process for a class of non-stationary
@@ -77,15 +77,15 @@
   particular interest, the class of transient processes, there is a class of
   natural representations which all lead to a unique quadrature process.
 
-  <section*|Background and notation>
+  <section|Background and notation>
 
   Let <math|X<around|(|t|)>> be a real-valued stationary stochastic process
   with zero mean and finite variance. Let its spectral representation be
 
   <\equation>
     X<around|(|t|)>=<big|int><rsub|0><rsup|\<infty\>>cos
-    \<lambda\>*t*<space|0.17em>d*U<around|(|\<lambda\>|)>+sin
-    \<lambda\>*t*<space|0.17em>d*V<around|(|\<lambda\>|)><label|eq:spectral>
+    <around|(|\<lambda\>*t|)>*<space|0.17em>d*U<around|(|\<lambda\>|)>+sin
+    <around|(|\<lambda\>*t|)>*<space|0.17em>d*V<around|(|\<lambda\>|)><label|eq:spectral>
   </equation>
 
   (See Hasofer and Petocz<nbsp><cite|hasoferpetocz>.)
@@ -98,9 +98,9 @@
   <\align>
     <tformat|<table|<row|<cell|U<around|(|\<lambda\>|)>>|<cell|=lim<rsub|T\<to\>\<infty\>>
     <frac|1|\<pi\>>*<big|int><rsub|-T><rsup|T><frac|sin
-    \<lambda\>*t|t>*X<around|(|t|)>*<space|0.17em>d*t<eq-number><label|eq:Ulambda>>>|<row|<cell|V<around|(|\<lambda\>|)>>|<cell|=lim<rsub|T\<to\>\<infty\>>
+    <around|(|\<lambda\>*t|)>|t>*X<around|(|t|)>*<space|0.17em>d*t<eq-number><label|eq:Ulambda>>>|<row|<cell|V<around|(|\<lambda\>|)>>|<cell|=lim<rsub|T\<to\>\<infty\>>
     <frac|1|\<pi\>>*<big|int><rsub|-T><rsup|T><frac|1-cos
-    \<lambda\>*t|t>*X<around|(|t|)>*<space|0.17em>d*t<eq-number><label|eq:Vlambda>>>>>
+    <around|(|\<lambda\>*t|)>|t>*X<around|(|t|)>*<space|0.17em>d*t<eq-number><label|eq:Vlambda>>>>>
   </align>
 
   The Hilbert transform of <math|X<around|(|t|)>>,
@@ -108,8 +108,8 @@
 
   <\equation>
     <wide|X|^><around|(|t|)>=<big|int><rsub|0><rsup|\<infty\>>sin
-    \<lambda\>*t*<space|0.17em>d*U<around|(|\<lambda\>|)>-cos
-    \<lambda\>*t*<space|0.17em>d*V<around|(|\<lambda\>|)><label|eq:hilbert>
+    <around|(|\<lambda\>*t|)>*<space|0.17em>d*U<around|(|\<lambda\>|)>-cos
+    <around|(|\<lambda\>*t|)>*<space|0.17em>d*V<around|(|\<lambda\>|)><label|eq:hilbert>
   </equation>
 
   It is to be noted that <math|<wide|X|^><around|(|t|)>> defines
@@ -129,8 +129,8 @@
 
   <\equation>
     Y<around|(|t|)>=<big|int><rsub|0><rsup|\<infty\>>cos
-    \<lambda\>*t*<space|0.17em>d*U<rsup|\<ast\>><around|(|t,\<lambda\>|)>+sin
-    \<lambda\>*t*<space|0.17em>d*V<rsup|\<ast\>><around|(|t,\<lambda\>|)><label|eq:Yspectral>
+    <around|(|\<lambda\>*t|)>*<space|0.17em>d*U<rsup|\<ast\>><around|(|t,\<lambda\>|)>+sin
+    <around|(|\<lambda\>*t|)>*<space|0.17em>d*V<rsup|\<ast\>><around|(|t,\<lambda\>|)><label|eq:Yspectral>
   </equation>
 
   (see<nbsp><cite|hasoferpetocz>).
@@ -140,8 +140,8 @@
 
   <\equation>
     <wide|Y|^><around|(|t|)>=<big|int><rsub|0><rsup|\<infty\>>sin
-    \<lambda\>*t*<space|0.17em>d*U<rsup|\<ast\>><around|(|t,\<lambda\>|)>-cos
-    \<lambda\>*t*<space|0.17em>d*V<rsup|\<ast\>><around|(|t,\<lambda\>|)>.<label|eq:Yquad>
+    <around|(|\<lambda\>*t|)>*<space|0.17em>d*U<rsup|\<ast\>><around|(|t,\<lambda\>|)>-cos
+    <around|(|\<lambda\>*t|)>*<space|0.17em>d*V<rsup|\<ast\>><around|(|t,\<lambda\>|)><label|eq:Yquad>
   </equation>
 
   It is easy to see that this definition is equivalent to
@@ -151,13 +151,11 @@
   </equation>
 
   Finally, it is useful to have a definition of
-  <math|<wide|X|^><around|(|t|)>,<wide|Y|^><around|(|t|)>> in terms of the
-  complex-valued representation of <math|X<around|(|t|)>>.
-
-  Let
+  <math|<wide|X|^><around|(|t|)>>, <math|<wide|Y|^><around|(|t|)>> in terms
+  of the complex-valued representation of <math|X<around|(|t|)>>. Let
 
   <\equation>
-    X<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>e<rsup|i*t*\<lambda\>>*d*\<zeta\><around|(|\<lambda\>|)><label|eq:Xcomplex>
+    X<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>e<rsup|i*\<lambda\>*t>*<space|0.17em>d*\<zeta\><around|(|\<lambda\>|)><label|eq:Xcomplex>
   </equation>
 
   Assuming that <math|\<zeta\><around|(|\<lambda\>|)>> has a.s. no jump at
@@ -165,25 +163,25 @@
   <math|F<around|(|\<lambda\>|)>> of <math|X<around|(|t|)>>), we have
 
   <\equation>
-    <wide|X|^><around|(|t|)>=<math-up|Im>2*<big|int><rsub|0><rsup|+\<infty\>>e<rsup|i*t*\<lambda\>>*d*\<zeta\><around|(|\<lambda\>|)><label|eq:Xhatcomplex>
+    <wide|X|^><around|(|t|)>=<text|Im><around*|(|2*<big|int><rsub|0><rsup|+\<infty\>>e<rsup|i*\<lambda\>*t>*<space|0.17em>d*\<zeta\><around|(|\<lambda\>|)>|)><label|eq:Xhatcomplex>
   </equation>
 
   Further we can write
 
   <\equation>
-    Y<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>A<around|(|t,\<lambda\>|)>*e<rsup|i*t*\<lambda\>>*d*\<zeta\><around|(|\<lambda\>|)><label|eq:Ycomplex>
+    Y<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>A<around|(|t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>d*\<zeta\><around|(|\<lambda\>|)><label|eq:Ycomplex>
   </equation>
 
   where
 
   <\equation>
-    A<around|(|t,\<lambda\>|)>*e<rsup|i*t*\<lambda\>>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|t,u|)>*e<rsup|i*u*\<lambda\>>*d*u.<label|eq:Adef>
+    A<around|(|t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|t,u|)>*e<rsup|i*\<lambda\>*u>*<space|0.17em>d*u.<label|eq:Adef>
   </equation>
 
   We then easily see that
 
   <\equation>
-    <wide|Y|^><around|(|t|)>=<math-up|Im>2*<big|int><rsub|0><rsup|\<infty\>>A<around|(|t,\<lambda\>|)>*e<rsup|i*t*\<lambda\>>*d*\<zeta\><around|(|\<lambda\>|)>.<label|eq:Yhatcomplex>
+    <wide|Y|^><around|(|t|)>=<text|Im><around*|(|2*<big|int><rsub|0><rsup|\<infty\>>A<around|(|t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>d*\<zeta\><around|(|\<lambda\>|)>|)>.<label|eq:Yhatcomplex>
   </equation>
 
   There is a difficulty about the definition<nbsp><eqref|eq:Yquadequiv> in
@@ -225,7 +223,7 @@
   of which lead to the same quadrature process, which can then be taken as
   the natural one.
 
-  <section*|The counterexample>
+  <section|The counterexample>
 
   Let <math|<around|(|\<xi\><rsub|1>,\<xi\><rsub|2>,\<xi\><rsub|3>,\<xi\><rsub|4>|)>>
   be four independent standard normal random variables. We consider the
@@ -233,7 +231,7 @@
 
   <\equation>
     X<around|(|t|)>=\<xi\><rsub|1>*cos t+\<xi\><rsub|2>*cos
-    2*t+\<xi\><rsub|3>*sin t+\<xi\><rsub|4>*sin 2*t.<label|eq:Xcounter>
+    2*t+\<xi\><rsub|3>*sin t+\<xi\><rsub|4>*sin 2*t<label|eq:Xcounter>
   </equation>
 
   This process can be easily checked to have zero mean and finite variance
@@ -241,7 +239,7 @@
 
   The Hilbert space spanned by <math|X<around|(|t|)>> (see Cramér and
   Leadbetter<nbsp><cite-detail|cramerleadbetter|p. 105>) is in this case just
-  an ordinary four-dimensional Euclidian space, and all linear operators in
+  an ordinary four-dimensional Euclidean space, and all linear operators in
   this space are four-by-four matrices. In the sequel of this section we
   shall use the Hilbert space operator notation interchangeably with matrix
   notation.
@@ -256,66 +254,82 @@
   linear, non-time-invariant filter.
 
   To simplify the exposition, we introduce the following notation. Let
-  <math|\<b-xi\>=<around|(|\<xi\><rsub|1>,\<xi\><rsub|2>,\<xi\><rsub|3>,\<xi\><rsub|4>|)><rprime|'>>
+  <math|\<b-xi\>=<around|(|\<xi\><rsub|1>,\<xi\><rsub|2>,\<xi\><rsub|3>,\<xi\><rsub|4>|)><rsup|T>>
   be the column vector of the four random variables
   <math|\<xi\><rsub|1>,\<xi\><rsub|2>,\<xi\><rsub|3>,\<xi\><rsub|4>>.
 
-  Let <math|F> denote the mapping <math|\<b-xi\>\<rightarrow\>X<around|(|t|)>>.
-  As pointed out above, this mapping is invertible. In the present case, this
-  is almost obvious. For instance
+  We can express <math|X<around|(|t|)>> in terms of <math|\<b-xi\>> as:
+
+  <\equation>
+    X<around|(|t|)>=<around*|[|<tabular*|<tformat|<table|<row|<cell|cos
+    t>|<cell|cos 2*t>|<cell|sin t>|<cell|sin
+    2*t>>>>>|]>*\<b-xi\><label|eq:Xmatrix>
+  </equation>
+
+  This mapping from <math|\<b-xi\>> to <math|X<around|(|t|)>> is invertible.
+  In the present case, this is almost obvious. For instance
 
   <\equation>
     \<xi\><rsub|2>=<frac|1|\<pi\>>*<big|int><rsub|-\<pi\>><rsup|+\<pi\>>X<around|(|t|)>*cos
     2*t*<space|0.17em>d*t<label|eq:xi2>
   </equation>
 
-  Let <math|H> denote the mapping <math|X<around|(|t|)>\<rightarrow\><wide|X|^><around|(|t|)>>.
-  In our case, we have
+  The Hilbert transform <math|<wide|X|^><around|(|t|)>> can be expressed as:
 
   <\equation>
     <wide|X|^><around|(|t|)>=\<xi\><rsub|1>*sin t+\<xi\><rsub|2>*sin
     2*t-\<xi\><rsub|3>*cos t-\<xi\><rsub|4>*cos 2*t<label|eq:Xhatcounter>
   </equation>
 
-  Finally let <math|K> denote the operator representing the
-  non-time-invariant filter. Thus we can write
+  or in matrix form:
 
-  <\align>
-    <tformat|<table|<row|<cell|Y>|<cell|=K*F*\<xi\><eq-number><label|eq:YKFxi>>>|<row|<cell|<wide|Y|^>>|<cell|=K*H*F*\<xi\><eq-number><label|eq:YKHFXI>>>>>
-  </align>
+  <\equation>
+    <wide|X|^><around|(|t|)>=<around*|[|<tabular*|<tformat|<table|<row|<cell|sin
+    t>|<cell|sin 2*t>|<cell|-cos t>|<cell|-cos
+    2*t>>>>>|]>*\<b-xi\><label|eq:Xhatmatrix>
+  </equation>
+
+  The oscillatory process <math|Y<around|(|t|)>> can be written as:
+
+  <\equation>
+    Y<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|t,u|)>*X<around|(|u|)>*<space|0.17em>d*u=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|t,u|)><around*|[|<tabular*|<tformat|<table|<row|<cell|cos
+    u>|<cell|cos 2*u>|<cell|sin u>|<cell|sin
+    2*u>>>>>|]>*<space|0.17em>d*u*<space|0.17em>\<b-xi\><label|eq:YKFxi>
+  </equation>
+
+  Similarly, the quadrature process is:
+
+  <\equation>
+    <wide|Y|^><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|t,u|)>*<wide|X|^><around|(|u|)>*<space|0.17em>d*u=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|t,u|)><around*|[|<tabular*|<tformat|<table|<row|<cell|sin
+    u>|<cell|sin 2*u>|<cell|-cos u>|<cell|-cos
+    2*u>>>>>|]>*<space|0.17em>d*u*<space|0.17em>\<b-xi\><label|eq:YKHFXI>
+  </equation>
 
   Now let <math|T> denote a four-by-four orthogonal matrix. Then the vector
-  <math|\<xi\><rprime|'>=T*\<xi\>> will still consist of four independent
-  standard normal variables. We now note that we can write <math|Y> in the
-  form
+  <math|\<b-xi\><rprime|'>=T*\<b-xi\>> will still consist of four independent
+  standard normal variables. We can write <math|Y<around|(|t|)>> in an
+  alternative form by noting that:
 
   <\equation>
-    Y=K*F*T<rsup|-1>*F<rsup|-1>*F*T*\<xi\><label|eq:Yaltform1>
+    \<b-xi\>=T<rsup|-1>*\<b-xi\><rprime|'>=T<rsup|T>*\<b-xi\><rprime|'>
   </equation>
 
-  or
+  Therefore:
+
+  <\align>
+    <tformat|<table|<row|<cell|Y<around|(|t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|t,u|)><around*|[|<tabular*|<tformat|<table|<row|<cell|cos
+    u>|<cell|cos 2*u>|<cell|sin u>|<cell|sin
+    2*u>>>>>|]>*<space|0.17em>d*u*<space|0.17em>T<rsup|T>*\<b-xi\><rprime|'><eq-number><label|eq:Yaltform1>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|t,u|)><around*|[|<tabular*|<tformat|<table|<row|<cell|cos
+    u>|<cell|cos 2*u>|<cell|sin u>|<cell|sin
+    2*u>>>>>|]>*T<rsup|T>*<space|0.17em>d*u*<space|0.17em>\<b-xi\><rprime|'><eq-number><label|eq:Yaltform2>>>>>
+  </align>
+
+  This gives us a new representation where:
 
   <\equation>
-    Y=K<rprime|'>*F*\<xi\><rprime|'><label|eq:Yaltform2>
-  </equation>
-
-  where
-
-  <\equation>
-    K<rprime|'>=K*F*T<rsup|-1>*F<rsup|-1><label|eq:Kprime>
-  </equation>
-
-  and
-
-  <\equation>
-    \<xi\><rprime|'>=T*\<xi\>.<label|eq:xiprime>
-  </equation>
-
-  This constitutes an alternative representation to<nbsp><eqref|eq:YKFxi>.
-  Corresponding to it, we have
-
-  <\equation>
-    <wide|Y|^><rprime|'>=K<rprime|'>*H*F*\<xi\><rprime|'>.<label|eq:Yhatprime>
+    X<rprime|'><around|(|u|)>=<around*|[|<tabular*|<tformat|<table|<row|<cell|cos
+    u>|<cell|cos 2*u>|<cell|sin u>|<cell|sin
+    2*u>>>>>|]>*T<rsup|T>*\<b-xi\><rprime|'><label|eq:Xprime>
   </equation>
 
   We shall take as <math|T> the well-known orthogonal matrix
@@ -324,35 +338,67 @@
     T=<frac|1|2><around*|[|<tabular*|<tformat|<table|<row|<cell|1>|<cell|1>|<cell|1>|<cell|1>>|<row|<cell|-1>|<cell|-1>|<cell|1>|<cell|1>>|<row|<cell|1>|<cell|-1>|<cell|-1>|<cell|1>>|<row|<cell|-1>|<cell|1>|<cell|-1>|<cell|1>>>>>|]><label|eq:Tmatrix>
   </equation>
 
-  and carry out the operations described above. We obtain
+  This gives us:
+
+  <\align>
+    <tformat|<table|<row|<cell|\<xi\><rprime|'><rsub|1>>|<cell|=<frac|1|2>*<around|(|\<xi\><rsub|1>+\<xi\><rsub|2>+\<xi\><rsub|3>+\<xi\><rsub|4>|)><eq-number><label|eq:xi1prime>>>|<row|<cell|\<xi\><rprime|'><rsub|2>>|<cell|=<frac|1|2>*<around|(|-\<xi\><rsub|1>-\<xi\><rsub|2>+\<xi\><rsub|3>+\<xi\><rsub|4>|)><eq-number><label|eq:xi2prime>>>|<row|<cell|\<xi\><rprime|'><rsub|3>>|<cell|=<frac|1|2>*<around|(|\<xi\><rsub|1>-\<xi\><rsub|2>-\<xi\><rsub|3>+\<xi\><rsub|4>|)><eq-number><label|eq:xi3prime>>>|<row|<cell|\<xi\><rprime|'><rsub|4>>|<cell|=<frac|1|2>*<around|(|-\<xi\><rsub|1>+\<xi\><rsub|2>-\<xi\><rsub|3>+\<xi\><rsub|4>|)><eq-number><label|eq:xi4prime>>>>>
+  </align>
+
+  Computing <math|T<rsup|T>>:
 
   <\equation>
-    <wide|Y|^><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|t,u|)>*<around*|[|-\<xi\><rsub|3>*cos
-    u-\<xi\><rsub|4>*cos 2*u+\<xi\><rsub|1>*sin u+\<xi\><rsub|2>*sin
-    2*u|]>*d*u<label|eq:Yhatcounter>
+    T<rsup|T>=<frac|1|2><around*|[|<tabular*|<tformat|<table|<row|<cell|1>|<cell|-1>|<cell|1>|<cell|-1>>|<row|<cell|1>|<cell|-1>|<cell|-1>|<cell|1>>|<row|<cell|1>|<cell|1>|<cell|-1>|<cell|-1>>|<row|<cell|1>|<cell|1>|<cell|1>|<cell|1>>>>>|]><label|eq:Ttranspose>
   </equation>
 
-  while
+  This transformation gives us a new stationary process:
 
   <\equation>
-    <wide|Y|^><rprime|'><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|t,u|)>*<around*|[|\<xi\><rsub|2>*cos
+    <tabular|<tformat|<table|<row|<cell|X<rprime|'><around|(|u|)>>|<cell|=\<xi\><rprime|'><rsub|1>*<around|(|cos
+    u-cos 2*u+sin u-sin 2*u|)>+>>|<row|<cell|>|<cell|\<xi\><rprime|'><rsub|2>*<around|(|-cos
+    u-cos 2*u-sin u+sin 2*u|)>+>>|<row|<cell|>|<cell|\<xi\><rprime|'><rsub|3>*<around|(|cos
+    u+cos 2*u-sin u-sin 2*u|)>+>>|<row|<cell|>|<cell|\<xi\><rprime|'><rsub|4>*<around|(|-cos
+    u+cos 2*u-sin u+sin 2*u|)>>>>>><label|eq:Xprimeexplicit>
+  </equation>
+
+  The corresponding Hilbert transform is:
+
+  <\equation>
+    <tabular|<tformat|<table|<row|<cell|<wide|X|^><rprime|'><around|(|u|)>>|<cell|=\<xi\><rprime|'><rsub|1>*<around|(|sin
+    u-sin 2*u-cos u+cos 2*u|)>+>>|<row|<cell|>|<cell|\<xi\><rprime|'><rsub|2>*<around|(|-sin
+    u-sin 2*u+cos u+cos 2*u|)>+>>|<row|<cell|>|<cell|\<xi\><rprime|'><rsub|3>*<around|(|sin
+    u+sin 2*u+cos u+cos 2*u|)>+>>|<row|<cell|>|<cell|\<xi\><rprime|'><rsub|4>*<around|(|-sin
+    u+sin 2*u+cos u-cos 2*u|)>>>>>><label|eq:Xhatprimeexplicit>
+  </equation>
+
+  We obtain for the original representation:
+
+  <\equation>
+    <wide|Y|^><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|t,u|)>*<around|[|-\<xi\><rsub|3>*cos
+    u-\<xi\><rsub|4>*cos 2*u+\<xi\><rsub|1>*sin u+\<xi\><rsub|2>*sin
+    2*u|]>*<space|0.17em>d*u<label|eq:Yhatcounter>
+  </equation>
+
+  while for the alternative representation:
+
+  <\equation>
+    <wide|Y|^><rprime|'><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|t,u|)>*<around|[|\<xi\><rsub|2>*cos
     u-\<xi\><rsub|1>*cos 2*u-\<xi\><rsub|4>*sin u+\<xi\><rsub|3>*sin
-    2*u|]>*d*u<label|eq:Yhatprimecounter>
+    2*u|]>*<space|0.17em>d*u<label|eq:Yhatprimecounter>
   </equation>
 
   From these representations it is easy to calculate the cross-covariances,
-  which turn out to be
+  which turn out to be:
 
   <\align>
-    <tformat|<cwith|1|-1|1|-1|font-base-size|9>|<table|<row|<cell|E*<around|[|Y<around|(|u|)>*<wide|Y|^><around|(|v|)>|]>>|<cell|=<big|int><rsub|-\<infty\>><rsup|+\<infty\>><big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|u,t<rsub|1>|)>*h<around|(|v,t<rsub|2>|)>*<around*|[|sin
-    <around|(|t<rsub|2>-t<rsub|1>|)>+sin 2*<around|(|t<rsub|2>-t<rsub|1>|)>|]>*d*t<rsub|1>*d*t<rsub|2><eq-number><label|eq:cov1>>>|<row|<cell|E*<around|[|Y<around|(|u|)>*<wide|Y|^><rprime|'><around|(|v|)>|]>>|<cell|=<big|int><rsub|-\<infty\>><rsup|+\<infty\>><big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|u,t<rsub|1>|)>*h<around|(|v,t<rsub|2>|)>*<around*|[|cos
+    <tformat|<table|<row|<cell|E*<around|[|Y<around|(|u|)>*<wide|Y|^><around|(|v|)>|]>>|<cell|=<big|int><rsub|-\<infty\>><rsup|+\<infty\>><big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|u,t<rsub|1>|)>*h<around|(|v,t<rsub|2>|)>*<around|[|sin
+    <around|(|t<rsub|2>-t<rsub|1>|)>+sin 2*<around|(|t<rsub|2>-t<rsub|1>|)>|]>*<space|0.17em>d*t<rsub|1>*<space|0.17em>d*t<rsub|2><eq-number><label|eq:cov1>>>|<row|<cell|E*<around|[|Y<around|(|u|)>*<wide|Y|^><rprime|'><around|(|v|)>|]>>|<cell|=<big|int><rsub|-\<infty\>><rsup|+\<infty\>><big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|u,t<rsub|1>|)>*h<around|(|v,t<rsub|2>|)>*<around|[|cos
     <around|(|2*t<rsub|1>+t<rsub|2>|)>-cos
-    <around|(|t<rsub|1>+2*t<rsub|2>|)>|]>*d*t<rsub|1>*d*t<rsub|2><eq-number><label|eq:cov2>>>>>
+    <around|(|t<rsub|1>+2*t<rsub|2>|)>|]>*<space|0.17em>d*t<rsub|1>*<space|0.17em>d*t<rsub|2><eq-number><label|eq:cov2>>>>>
   </align>
 
   two utterly dissimilar covariances.
 
-  <section*|The class of transient processes>
+  <section|The class of transient processes>
 
   We shall now consider a special class of oscillatory processes, which is of
   great practical interest, and for which there exists a class of 'natural'
@@ -374,7 +420,7 @@
   (We think of <math|t<rsub|0>> as being the point at which the process
   <math|Y> is initiated.)
 
-  We further assume that as <math|t<rsub|0>> tend to <math|-\<infty\>>,
+  We further assume that as <math|t<rsub|0>> tends to <math|-\<infty\>>,
   <math|h<around|(|t<rsub|0>;t,u|)>> tends to a limit
   <math|h*<around|(|t-u|)>>, and <math|Y<around|(|t<rsub|0>;t|)>> tends to a
   stationary process
@@ -384,16 +430,11 @@
   </equation>
 
   We shall further assume that the kernel <math|h*<around|(|t-u|)>> is
-  invertible. Writing for short
-
-  <\align>
-    <tformat|<table|<row|<cell|Y<rsub|t<rsub|0>>>|<cell|=K<rsub|t<rsub|0>>*X<eq-number><label|eq:Yt0K>>>|<row|<cell|Y>|<cell|=K*X<eq-number><label|eq:YK>>>>>
-  </align>
-
-  we have
+  invertible, meaning there exists a kernel <math|g*<around|(|t-u|)>> such
+  that:
 
   <\equation>
-    X=K<rsup|-1>*Y<label|eq:XfromY>
+    X<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>g*<around|(|t-u|)>*Y<around|(|u|)>*<space|0.17em>d*u<label|eq:XfromY>
   </equation>
 
   Suppose now that there exists a second representation of
@@ -409,23 +450,23 @@
     Y<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<rprime|'>*<around|(|t-u|)>*X<rprime|'><around|(|u|)>*<space|0.17em>d*u<label|eq:Ytprime>
   </equation>
 
-  We write these relations as
-
-  <\align>
-    <tformat|<table|<row|<cell|Y<rsub|t<rsub|0>>>|<cell|=K<rsub|t<rsub|0>><rprime|'>*X<rprime|'><eq-number><label|eq:Yt0Kprime>>>|<row|<cell|Y>|<cell|=K<rprime|'>*X<rprime|'><eq-number><label|eq:YKprime>>>>>
-  </align>
-
   We have, on account of<nbsp><eqref|eq:XfromY>,
 
   <\equation>
-    X=K<rsup|-1>*K<rprime|'>*X<rprime|'><label|eq:XKprime>
+    X<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>g*<around|(|t-v|)>*<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<rprime|'>*<around|(|v-u|)>*X<rprime|'><around|(|u|)>*<space|0.17em>d*u*<space|0.17em>d*v=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>k*<around|(|t-u|)>*X<rprime|'><around|(|u|)>*<space|0.17em>d*u<label|eq:XKprime>
   </equation>
 
-  We now note that <math|K<rsup|-1>*K<rprime|'>> is a time-invariant linear
-  filter. It is easily verified that on account of this fact we have
+  where
 
   <\equation>
-    <wide|X|^>=K<rsup|-1>*K<rprime|'>*<wide|X|^><rprime|'><label|eq:XhatKprime>
+    k*<around|(|t-u|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>g*<around|(|t-v|)>*h<rprime|'>*<around|(|v-u|)>*<space|0.17em>d*v<label|eq:kkernel>
+  </equation>
+
+  We now note that <math|k*<around|(|t-u|)>> represents a time-invariant
+  linear filter. It is easily verified that on account of this fact we have
+
+  <\equation>
+    <wide|X|^><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>k*<around|(|t-u|)>*<wide|X|^><rprime|'><around|(|u|)>*<space|0.17em>d*u<label|eq:XhatKprime>
   </equation>
 
   for the Hilbert transformation commutes with time-invariant filters.
@@ -433,41 +474,41 @@
   It follows from<nbsp><eqref|eq:XKprime> and<nbsp><eqref|eq:XhatKprime> that
 
   <\equation>
-    Y<rsub|t<rsub|0>>=K<rsub|t<rsub|0>>*K<rsup|-1>*K<rprime|'>*X<rprime|'>=K<rsub|t<rsub|0>><rprime|'>*X<rprime|'><label|eq:Yt0KprimeX>
+    Y<around|(|t<rsub|0>;t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|t<rsub|0>;t,v|)>*<big|int><rsub|-\<infty\>><rsup|+\<infty\>>k*<around|(|v-u|)>*X<rprime|'><around|(|u|)>*<space|0.17em>d*u*<space|0.17em>d*v=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<rprime|'><around|(|t<rsub|0>;t,u|)>*X<rprime|'><around|(|u|)>*<space|0.17em>d*u<label|eq:Yt0KprimeX>
   </equation>
 
   and that
 
-  <\align>
-    <tformat|<table|<row|<cell|<wide|Y|^><rsub|t<rsub|0>>>|<cell|=K<rsub|t<rsub|0>>*<wide|X|^><eq-number>>>|<row|<cell|>|<cell|=K<rsub|t<rsub|0>>*K<rsup|-1>*K<rprime|'>*<wide|X|^><rprime|'><eq-number><label|eq:YhatKprime>>>>>
-  </align>
+  <\equation>
+    <wide|Y|^><around|(|t<rsub|0>;t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|t<rsub|0>;t,v|)>*<big|int><rsub|-\<infty\>><rsup|+\<infty\>>k*<around|(|v-u|)>*<wide|X|^><rprime|'><around|(|u|)>*<space|0.17em>d*u*<space|0.17em>d*v<label|eq:YhatKprime>
+  </equation>
 
   while
 
   <\equation>
-    <wide|Y|^><rsub|t<rsub|0>><rprime|'>=K<rsub|t<rsub|0>><rprime|'>*<wide|X|^><rprime|'><label|eq:YhatprimeK>
+    <wide|Y|^><rprime|'><around|(|t<rsub|0>;t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<rprime|'><around|(|t<rsub|0>;t,u|)>*<wide|X|^><rprime|'><around|(|u|)>*<space|0.17em>d*u<label|eq:YhatprimeK>
   </equation>
 
   We use now the spectral representation of <math|X<rprime|'>>:
 
   <\equation>
-    X<rprime|'><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>e<rsup|i*\<lambda\>>*d*\<zeta\><around|(|\<lambda\>|)><label|eq:XprimeSpectral>
+    X<rprime|'><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>e<rsup|i*\<lambda\>*t>*<space|0.17em>d*\<zeta\><around|(|\<lambda\>|)><label|eq:XprimeSpectral>
   </equation>
 
   and obtain
 
   <\align>
-    <tformat|<table|<row|<cell|Y<around|(|t<rsub|0>;t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>A<rprime|'><around|(|t<rsub|0>;t,\<lambda\>|)>*e<rsup|i*t*\<lambda\>>*d*\<zeta\><around|(|\<lambda\>|)><eq-number><label|eq:Yt0A>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>A<rprime|''><around|(|t<rsub|0>;t,\<lambda\>|)>*e<rsup|i*t*\<lambda\>>*d*\<zeta\><around|(|\<lambda\>|)><eq-number><label|eq:Yt0Aprime>>>>>
+    <tformat|<table|<row|<cell|Y<around|(|t<rsub|0>;t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>A<rprime|'><around|(|t<rsub|0>;t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>d*\<zeta\><around|(|\<lambda\>|)><eq-number><label|eq:Yt0A>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>A<rprime|''><around|(|t<rsub|0>;t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>d*\<zeta\><around|(|\<lambda\>|)><eq-number><label|eq:Yt0Aprime>>>>>
   </align>
 
-  where <math|A<rprime|'>> corresponds to the operator
-  <math|K<rsub|t<rsub|0>>*K<rsup|-1>*K<rprime|'>> and <math|A<rprime|''>>
-  corresponds to <math|K<rsub|t<rsub|0>><rprime|'>>.
+  where <math|A<rprime|'><around|(|t<rsub|0>;t,\<lambda\>|)>> corresponds to
+  the compound filter operation and <math|A<rprime|''><around|(|t<rsub|0>;t,\<lambda\>|)>>
+  corresponds to the direct filter <math|h<rprime|'><around|(|t<rsub|0>;t,u|)>>.
 
   It easily follows that
 
   <\equation>
-    <big|int><rsub|-\<infty\>><rsup|+\<infty\>><around|\||A<rprime|'>-A<rprime|''>|\|><rsup|2>*d*F<rprime|'><around|(|\<lambda\>|)>=0*<space|1em><text|for
+    <big|int><rsub|-\<infty\>><rsup|+\<infty\>><around|\||A<rprime|'><around|(|t<rsub|0>;t,\<lambda\>|)>-A<rprime|''><around|(|t<rsub|0>;t,\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<rprime|'><around|(|\<lambda\>|)>=0*<space|1em><text|for
     each >t<label|eq:AAdiff>
   </equation>
 
@@ -477,12 +518,12 @@
   Finally we have
 
   <\align>
-    <tformat|<table|<row|<cell|<wide|Y|^><around|(|t<rsub|0>;t|)>>|<cell|=<math-up|Im>2*<big|int><rsub|0><rsup|\<infty\>>A<rprime|'><around|(|t<rsub|0>;t,\<lambda\>|)>*e<rsup|i*t*\<lambda\>>*d*\<zeta\><around|(|\<lambda\>|)><eq-number><label|eq:YhatA>>>|<row|<cell|<wide|Y|^><rprime|'><around|(|t<rsub|0>;t|)>>|<cell|=<math-up|Im>2*<big|int><rsub|0><rsup|\<infty\>>A<rprime|''><around|(|t<rsub|0>;t,\<lambda\>|)>*e<rsup|i*t*\<lambda\>>*d*\<zeta\><around|(|\<lambda\>|)><eq-number><label|eq:YhatAprime>>>>>
+    <tformat|<table|<row|<cell|<wide|Y|^><around|(|t<rsub|0>;t|)>>|<cell|=<text|Im><around*|(|2*<big|int><rsub|0><rsup|\<infty\>>A<rprime|'><around|(|t<rsub|0>;t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>d*\<zeta\><around|(|\<lambda\>|)>|)><eq-number><label|eq:YhatA>>>|<row|<cell|<wide|Y|^><rprime|'><around|(|t<rsub|0>;t|)>>|<cell|=<text|Im><around*|(|2*<big|int><rsub|0><rsup|\<infty\>>A<rprime|''><around|(|t<rsub|0>;t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>d*\<zeta\><around|(|\<lambda\>|)>|)><eq-number><label|eq:YhatAprime>>>>>
   </align>
 
-  from which it follows that <math|<wide|Y|^><around|(|t<rsub|0>;t|)>=<wide|Y|^><rprime|'><around|(|t<rsub|0>,t|)>>.
+  from which it follows that <math|<wide|Y|^><around|(|t<rsub|0>;t|)>=<wide|Y|^><rprime|'><around|(|t<rsub|0>;t|)>>.
   Thus uniqueness of the quadrature process is established for all
-  representations of <math|Y<around|(|t<rsub|0>,t|)>> satisfying the stated
+  representations of <math|Y<around|(|t<rsub|0>;t|)>> satisfying the stated
   assumptions, and it can be taken as the natural quadrature process.
 
   As an example of a transient process, consider the process
@@ -497,20 +538,26 @@
   finite variance. Initial conditions are
 
   <\equation>
-    Y<around|(|t<rsub|0>|)>=0,<space|1em><frac|d*Y<around|(|t<rsub|0>|)>|d*t>=0<label|eq:ODEinit>
+    Y<around|(|t<rsub|0>|)>=0<label|eq:ODEinit>
+  </equation>
+
+  and
+
+  <\equation>
+    <frac|d*Y<around|(|t<rsub|0>|)>|d*t>=0
   </equation>
 
   The solution can be written as
 
   <\equation>
-    Y<around|(|t<rsub|0>,t|)>=<big|int><rsub|t<rsub|0>><rsup|t>X<around|(|\<tau\>|)>*h*<around|(|t-\<tau\>|)>*d*\<tau\>,<space|1em><around|(|t\<geq\>t<rsub|0>|)><label|eq:ODEsol>
+    Y<around|(|t<rsub|0>;t|)>=<big|int><rsub|t<rsub|0>><rsup|t>X<around|(|\<tau\>|)>*h*<around|(|t-\<tau\>|)>*<space|0.17em>d*\<tau\>\<forall\><around|(|t\<geq\>t<rsub|0>|)><label|eq:ODEsol>
   </equation>
 
   where
 
   <\equation>
     h<around|(|t|)>=<frac|1|\<omega\><rsub|1>>*e<rsup|-\<zeta\>*\<omega\><rsub|0>*t>*sin
-    \<omega\><rsub|1>*t<label|eq:ODEh>
+    <around|(|\<omega\><rsub|1>*t|)><label|eq:ODEh>
   </equation>
 
   and <math|\<omega\><rsub|1>=\<omega\><rsub|0>*<sqrt|1-\<zeta\><rsup|2>>>.
@@ -519,102 +566,114 @@
   and thus in this case, a `natural' representation to use for obtaining the
   quadrature process is<nbsp><eqref|eq:Yt0t>.
 
-  <section*|References>
+  <\thebibliography|9>
+    <bibitem|arens>Arens, R. (1957). <newblock>Complex processes for
+    envelopes of normal noise. <newblock><with|font-shape|italic|IRE
+    Transactions on Information Theory>, 3:204\U207.
 
-  <\enumerate>
-    <item><label|arens> Arens, R. (1957) Complex processes for envelopes of
-    normal noise. IRE Trans. Inf. Theory 3, 204-207.
+    <bibitem|cramerleadbetter>Cramér, H. and Leadbetter, M. R. (1967).
+    <newblock><with|font-shape|italic|Stationary and Related Stochastic
+    Processes>. <newblock>Wiley, New York.
 
-    <item><label|cramerleadbetter> Cramér, H. and Leadbetter, M. R. (1967)
-    Stationary and Related Stochastic Processes. Wiley, New York.
+    <bibitem|hasoferpetocz>Hasofer, A. M. and Petocz, P. (1978).
+    <newblock>The envelope of an oscillatory process and its upcrossings
+    (abstract). <newblock><with|font-shape|italic|Advances in Applied
+    Probability>, 10:711\U716.
 
-    <item><label|hasoferpetocz> Hasofer, A. M. and Petocz, P. (1978) The
-    envelope of an oscillatory process and its upcrossings (abstract). Adv.
-    Appl. Prob. 10, 711-716.
+    <bibitem|priestley>Priestley, M. B. (1965). <newblock>Evolutionary
+    spectra and non-stationary processes.
+    <newblock><with|font-shape|italic|Journal of the Royal Statistical
+    Society, Series B>, 27:204\U229.
 
-    <item><label|priestley> Priestley, M. B. (1965) Evolutionary spectra and
-    non-stationary processes. J. R. Statist. Soc. B 27, 204-229.
-
-    <item><label|yang> Yang, J. N. (1972) Non-stationary envelope process and
-    first-excursion probability. J. Structural Mech. 1, 231-248.
-  </enumerate>
+    <bibitem|yang>Yang, J. N. (1972). <newblock>Non-stationary envelope
+    process and first-excursion probability.
+    <newblock><with|font-shape|italic|Journal of Structural Mechanics>,
+    1:231\U248.
+  </thebibliography>
 </body>
 
 <\initial>
   <\collection>
     <associate|magnification|1.2>
+    <associate|page-height|auto>
     <associate|page-medium|paper>
+    <associate|page-type|letter>
+    <associate|page-width|auto>
   </collection>
 </initial>
 
 <\references>
   <\collection>
-    <associate|arens|<tuple|1|9|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-1|<tuple|?|1|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-2|<tuple|1|2|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-3|<tuple|16|4|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-4|<tuple|32|6|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-5|<tuple|57|9|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|cramerleadbetter|<tuple|2|9|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:AAdiff|<tuple|51|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Adef|<tuple|13|3|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Kprime|<tuple|25|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:ODE|<tuple|54|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:ODEh|<tuple|57|9|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:ODEinit|<tuple|55|9|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:ODEsol|<tuple|56|9|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Tmatrix|<tuple|28|6|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Ulambda|<tuple|3|2|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Vlambda|<tuple|4|2|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:XKprime|<tuple|42|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Xcomplex|<tuple|10|3|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Xcounter|<tuple|17|4|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:XfromY|<tuple|37|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:XhatKprime|<tuple|43|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Xhatcomplex|<tuple|11|3|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Xhatcounter|<tuple|20|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:XprimeSpectral|<tuple|48|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:YK|<tuple|36|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:YKFxi|<tuple|21|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:YKHFXI|<tuple|22|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:YKprime|<tuple|41|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Yalt|<tuple|15|4|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Yaltform1|<tuple|23|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Yaltform2|<tuple|24|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Ycomplex|<tuple|12|3|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Ycounter|<tuple|18|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Ydef|<tuple|6|2|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:YhatA|<tuple|52|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:YhatAprime|<tuple|53|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:YhatKprime|<tuple|46|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Yhatcomplex|<tuple|14|3|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Yhatcounter|<tuple|29|6|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Yhatprime|<tuple|27|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:YhatprimeK|<tuple|47|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Yhatprimecounter|<tuple|30|6|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Yquad|<tuple|8|3|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Yquadequiv|<tuple|9|3|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Yquadprime|<tuple|16|4|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Yspectral|<tuple|7|3|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Ystationary|<tuple|34|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Yt0A|<tuple|49|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Yt0Aprime|<tuple|50|8|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Yt0K|<tuple|35|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Yt0Kprime|<tuple|40|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Yt0KprimeX|<tuple|44|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Yt0t|<tuple|33|6|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Yt0tprime|<tuple|38|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:Ytprime|<tuple|39|7|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:cov1|<tuple|31|6|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:cov2|<tuple|32|6|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:envelope|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:hilbert|<tuple|5|2|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:spectral|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:xi2|<tuple|19|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|eq:xiprime|<tuple|26|5|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|hasoferpetocz|<tuple|3|9|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|priestley|<tuple|4|9|../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|yang|<tuple|5|9|../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-2|<tuple|2|2>>
+    <associate|auto-3|<tuple|3|4>>
+    <associate|auto-4|<tuple|4|7>>
+    <associate|auto-5|<tuple|62|10>>
+    <associate|bib-arens|<tuple|arens|10>>
+    <associate|bib-cramerleadbetter|<tuple|cramerleadbetter|10>>
+    <associate|bib-hasoferpetocz|<tuple|hasoferpetocz|10>>
+    <associate|bib-priestley|<tuple|priestley|10>>
+    <associate|bib-yang|<tuple|yang|10>>
+    <associate|eq:AAdiff|<tuple|55|9>>
+    <associate|eq:Adef|<tuple|13|3>>
+    <associate|eq:ODE|<tuple|58|9>>
+    <associate|eq:ODEh|<tuple|62|10>>
+    <associate|eq:ODEinit|<tuple|59|9>>
+    <associate|eq:ODEsol|<tuple|61|9>>
+    <associate|eq:Tmatrix|<tuple|29|6>>
+    <associate|eq:Ttranspose|<tuple|34|6>>
+    <associate|eq:Ulambda|<tuple|3|2>>
+    <associate|eq:Vlambda|<tuple|4|2>>
+    <associate|eq:XKprime|<tuple|46|8>>
+    <associate|eq:Xcomplex|<tuple|10|3>>
+    <associate|eq:Xcounter|<tuple|17|4>>
+    <associate|eq:XfromY|<tuple|43|7>>
+    <associate|eq:XhatKprime|<tuple|48|8>>
+    <associate|eq:Xhatcomplex|<tuple|11|3>>
+    <associate|eq:Xhatcounter|<tuple|21|5>>
+    <associate|eq:Xhatmatrix|<tuple|22|5>>
+    <associate|eq:Xhatprimeexplicit|<tuple|36|6>>
+    <associate|eq:Xmatrix|<tuple|19|5>>
+    <associate|eq:Xprime|<tuple|28|5>>
+    <associate|eq:XprimeSpectral|<tuple|52|8>>
+    <associate|eq:Xprimeexplicit|<tuple|35|6>>
+    <associate|eq:YKFxi|<tuple|23|5>>
+    <associate|eq:YKHFXI|<tuple|24|5>>
+    <associate|eq:Yalt|<tuple|15|3>>
+    <associate|eq:Yaltform1|<tuple|26|5>>
+    <associate|eq:Yaltform2|<tuple|27|5>>
+    <associate|eq:Ycomplex|<tuple|12|3>>
+    <associate|eq:Ycounter|<tuple|18|4>>
+    <associate|eq:Ydef|<tuple|6|2>>
+    <associate|eq:YhatA|<tuple|56|9>>
+    <associate|eq:YhatAprime|<tuple|57|9>>
+    <associate|eq:YhatKprime|<tuple|50|8>>
+    <associate|eq:Yhatcomplex|<tuple|14|3>>
+    <associate|eq:Yhatcounter|<tuple|37|6>>
+    <associate|eq:YhatprimeK|<tuple|51|8>>
+    <associate|eq:Yhatprimecounter|<tuple|38|7>>
+    <associate|eq:Yquad|<tuple|8|3>>
+    <associate|eq:Yquadequiv|<tuple|9|3>>
+    <associate|eq:Yquadprime|<tuple|16|4>>
+    <associate|eq:Yspectral|<tuple|7|3>>
+    <associate|eq:Ystationary|<tuple|42|7>>
+    <associate|eq:Yt0A|<tuple|53|9>>
+    <associate|eq:Yt0Aprime|<tuple|54|9>>
+    <associate|eq:Yt0KprimeX|<tuple|49|8>>
+    <associate|eq:Yt0t|<tuple|41|7>>
+    <associate|eq:Yt0tprime|<tuple|44|8>>
+    <associate|eq:Ytprime|<tuple|45|8>>
+    <associate|eq:cov1|<tuple|39|7>>
+    <associate|eq:cov2|<tuple|40|7>>
+    <associate|eq:envelope|<tuple|1|1>>
+    <associate|eq:hilbert|<tuple|5|2>>
+    <associate|eq:kkernel|<tuple|47|8>>
+    <associate|eq:spectral|<tuple|2|2>>
+    <associate|eq:xi1prime|<tuple|30|6>>
+    <associate|eq:xi2|<tuple|20|5>>
+    <associate|eq:xi2prime|<tuple|31|6>>
+    <associate|eq:xi3prime|<tuple|32|6>>
+    <associate|eq:xi4prime|<tuple|33|6>>
   </collection>
 </references>
 
@@ -640,23 +699,23 @@
       cramerleadbetter
     </associate>
     <\associate|toc>
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Introduction>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Introduction>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-1><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Background
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Background
       and notation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-2><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|The
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>The
       counterexample> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|The
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>The
       class of transient processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-4><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|References>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-5><vspace|0.5fn>
     </associate>
