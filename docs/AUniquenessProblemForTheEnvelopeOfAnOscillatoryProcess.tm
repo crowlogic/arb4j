@@ -254,11 +254,14 @@
   linear, non-time-invariant filter.
 
   To simplify the exposition, we introduce the following notation. Let
-  <math|\<b-xi\>=<around|(|\<xi\><rsub|1>,\<xi\><rsub|2>,\<xi\><rsub|3>,\<xi\><rsub|4>|)><rsup|T>>
-  be the column vector of the four random variables
-  <math|\<xi\><rsub|1>,\<xi\><rsub|2>,\<xi\><rsub|3>,\<xi\><rsub|4>>.
 
-  We can express <math|X<around|(|t|)>> in terms of <math|\<b-xi\>> as:
+  <\equation>
+    \<b-xi\>=<around|(|\<xi\><rsub|1>,\<xi\><rsub|2>,\<xi\><rsub|3>,\<xi\><rsub|4>|)><rsup|T>=<matrix|<tformat|<table|<row|<cell|\<xi\><rsub|1>>>|<row|<cell|\<xi\><rsub|2>>>|<row|<cell|\<xi\><rsub|3>>>|<row|<cell|\<xi\><rsub|4>>>>>>
+  </equation>
+
+  \ be the column vector of the four random variables
+  <math|\<xi\><rsub|1>,\<xi\><rsub|2>,\<xi\><rsub|3>,\<xi\><rsub|4>>. We can
+  express <math|X<around|(|t|)>> in terms of <math|\<b-xi\>> as:
 
   <\equation>
     X<around|(|t|)>=<around*|[|<tabular*|<tformat|<table|<row|<cell|cos
@@ -311,7 +314,11 @@
   alternative form by noting that:
 
   <\equation>
-    \<b-xi\>=T<rsup|-1>*\<b-xi\><rprime|'>=T<rsup|T>*\<b-xi\><rprime|'>
+    \<b-xi\>=T<rsup|-1>*
+  </equation>
+
+  <\equation>
+    \<b-xi\><rprime|'>=T<rsup|\<perp\>>*\<b-xi\><rprime|'>
   </equation>
 
   Therefore:
@@ -319,9 +326,9 @@
   <\align>
     <tformat|<table|<row|<cell|Y<around|(|t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|t,u|)><around*|[|<tabular*|<tformat|<table|<row|<cell|cos
     u>|<cell|cos 2*u>|<cell|sin u>|<cell|sin
-    2*u>>>>>|]>*<space|0.17em>d*u*<space|0.17em>T<rsup|T>*\<b-xi\><rprime|'><eq-number><label|eq:Yaltform1>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|t,u|)><around*|[|<tabular*|<tformat|<table|<row|<cell|cos
+    2*u>>>>>|]>*<space|0.17em>d*u*<space|0.17em>T<rsup|\<perp\>>*\<b-xi\><rprime|'><eq-number><label|eq:Yaltform1>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|t,u|)><around*|[|<tabular*|<tformat|<table|<row|<cell|cos
     u>|<cell|cos 2*u>|<cell|sin u>|<cell|sin
-    2*u>>>>>|]>*T<rsup|T>*<space|0.17em>d*u*<space|0.17em>\<b-xi\><rprime|'><eq-number><label|eq:Yaltform2>>>>>
+    2*u>>>>>|]>*T<rsup|\<perp\>>d*u*<space|0.17em>\<b-xi\><rprime|'><eq-number><label|eq:Yaltform2>>>>>
   </align>
 
   This gives us a new representation where:
@@ -329,7 +336,7 @@
   <\equation>
     X<rprime|'><around|(|u|)>=<around*|[|<tabular*|<tformat|<table|<row|<cell|cos
     u>|<cell|cos 2*u>|<cell|sin u>|<cell|sin
-    2*u>>>>>|]>*T<rsup|T>*\<b-xi\><rprime|'><label|eq:Xprime>
+    2*u>>>>>|]>*T<rsup|\<perp\>>*\<b-xi\><rprime|'><label|eq:Xprime>
   </equation>
 
   We shall take as <math|T> the well-known orthogonal matrix
@@ -469,9 +476,8 @@
     <wide|X|^><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>k*<around|(|t-u|)>*<wide|X|^><rprime|'><around|(|u|)>*<space|0.17em>d*u<label|eq:XhatKprime>
   </equation>
 
-  for the Hilbert transformation commutes with time-invariant filters.
-
-  It follows from<nbsp><eqref|eq:XKprime> and<nbsp><eqref|eq:XhatKprime> that
+  for the Hilbert transformation commutes with time-invariant filters. It
+  follows from<nbsp><eqref|eq:XKprime> and<nbsp><eqref|eq:XhatKprime> that
 
   <\equation>
     Y<around|(|t<rsub|0>;t|)>=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<around|(|t<rsub|0>;t,v|)>*<big|int><rsub|-\<infty\>><rsup|+\<infty\>>k*<around|(|v-u|)>*X<rprime|'><around|(|u|)>*<space|0.17em>d*u*<space|0.17em>d*v=<big|int><rsub|-\<infty\>><rsup|+\<infty\>>h<rprime|'><around|(|t<rsub|0>;t,u|)>*X<rprime|'><around|(|u|)>*<space|0.17em>d*u<label|eq:Yt0KprimeX>
@@ -504,7 +510,6 @@
   where <math|A<rprime|'><around|(|t<rsub|0>;t,\<lambda\>|)>> corresponds to
   the compound filter operation and <math|A<rprime|''><around|(|t<rsub|0>;t,\<lambda\>|)>>
   corresponds to the direct filter <math|h<rprime|'><around|(|t<rsub|0>;t,u|)>>.
-
   It easily follows that
 
   <\equation>
@@ -513,9 +518,7 @@
   </equation>
 
   where <math|F<rprime|'><around|(|\<lambda\>|)>> is the spectral
-  distribution of <math|X<rprime|'>>.
-
-  Finally we have
+  distribution of <math|X<rprime|'>>. Finally we have
 
   <\align>
     <tformat|<table|<row|<cell|<wide|Y|^><around|(|t<rsub|0>;t|)>>|<cell|=<text|Im><around*|(|2*<big|int><rsub|0><rsup|\<infty\>>A<rprime|'><around|(|t<rsub|0>;t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>d*\<zeta\><around|(|\<lambda\>|)>|)><eq-number><label|eq:YhatA>>>|<row|<cell|<wide|Y|^><rprime|'><around|(|t<rsub|0>;t|)>>|<cell|=<text|Im><around*|(|2*<big|int><rsub|0><rsup|\<infty\>>A<rprime|''><around|(|t<rsub|0>;t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>d*\<zeta\><around|(|\<lambda\>|)>|)><eq-number><label|eq:YhatAprime>>>>>
@@ -608,72 +611,73 @@
     <associate|auto-2|<tuple|2|2>>
     <associate|auto-3|<tuple|3|4>>
     <associate|auto-4|<tuple|4|7>>
-    <associate|auto-5|<tuple|62|10>>
+    <associate|auto-5|<tuple|64|10>>
+    <associate|auto-6|<tuple|64|?>>
     <associate|bib-arens|<tuple|arens|10>>
     <associate|bib-cramerleadbetter|<tuple|cramerleadbetter|10>>
     <associate|bib-hasoferpetocz|<tuple|hasoferpetocz|10>>
     <associate|bib-priestley|<tuple|priestley|10>>
     <associate|bib-yang|<tuple|yang|10>>
-    <associate|eq:AAdiff|<tuple|55|9>>
+    <associate|eq:AAdiff|<tuple|57|9>>
     <associate|eq:Adef|<tuple|13|3>>
-    <associate|eq:ODE|<tuple|58|9>>
-    <associate|eq:ODEh|<tuple|62|10>>
-    <associate|eq:ODEinit|<tuple|59|9>>
-    <associate|eq:ODEsol|<tuple|61|9>>
-    <associate|eq:Tmatrix|<tuple|29|6>>
-    <associate|eq:Ttranspose|<tuple|34|6>>
+    <associate|eq:ODE|<tuple|60|9>>
+    <associate|eq:ODEh|<tuple|64|10>>
+    <associate|eq:ODEinit|<tuple|61|9>>
+    <associate|eq:ODEsol|<tuple|63|9>>
+    <associate|eq:Tmatrix|<tuple|31|6>>
+    <associate|eq:Ttranspose|<tuple|36|6>>
     <associate|eq:Ulambda|<tuple|3|2>>
     <associate|eq:Vlambda|<tuple|4|2>>
-    <associate|eq:XKprime|<tuple|46|8>>
+    <associate|eq:XKprime|<tuple|48|8>>
     <associate|eq:Xcomplex|<tuple|10|3>>
     <associate|eq:Xcounter|<tuple|17|4>>
-    <associate|eq:XfromY|<tuple|43|7>>
-    <associate|eq:XhatKprime|<tuple|48|8>>
+    <associate|eq:XfromY|<tuple|45|7>>
+    <associate|eq:XhatKprime|<tuple|50|8>>
     <associate|eq:Xhatcomplex|<tuple|11|3>>
-    <associate|eq:Xhatcounter|<tuple|21|5>>
-    <associate|eq:Xhatmatrix|<tuple|22|5>>
-    <associate|eq:Xhatprimeexplicit|<tuple|36|6>>
-    <associate|eq:Xmatrix|<tuple|19|5>>
-    <associate|eq:Xprime|<tuple|28|5>>
-    <associate|eq:XprimeSpectral|<tuple|52|8>>
-    <associate|eq:Xprimeexplicit|<tuple|35|6>>
-    <associate|eq:YKFxi|<tuple|23|5>>
-    <associate|eq:YKHFXI|<tuple|24|5>>
+    <associate|eq:Xhatcounter|<tuple|22|5>>
+    <associate|eq:Xhatmatrix|<tuple|23|5>>
+    <associate|eq:Xhatprimeexplicit|<tuple|38|6>>
+    <associate|eq:Xmatrix|<tuple|20|5>>
+    <associate|eq:Xprime|<tuple|30|5>>
+    <associate|eq:XprimeSpectral|<tuple|54|8>>
+    <associate|eq:Xprimeexplicit|<tuple|37|6>>
+    <associate|eq:YKFxi|<tuple|24|5>>
+    <associate|eq:YKHFXI|<tuple|25|5>>
     <associate|eq:Yalt|<tuple|15|3>>
-    <associate|eq:Yaltform1|<tuple|26|5>>
-    <associate|eq:Yaltform2|<tuple|27|5>>
+    <associate|eq:Yaltform1|<tuple|28|5>>
+    <associate|eq:Yaltform2|<tuple|29|5>>
     <associate|eq:Ycomplex|<tuple|12|3>>
     <associate|eq:Ycounter|<tuple|18|4>>
     <associate|eq:Ydef|<tuple|6|2>>
-    <associate|eq:YhatA|<tuple|56|9>>
-    <associate|eq:YhatAprime|<tuple|57|9>>
-    <associate|eq:YhatKprime|<tuple|50|8>>
+    <associate|eq:YhatA|<tuple|58|9>>
+    <associate|eq:YhatAprime|<tuple|59|9>>
+    <associate|eq:YhatKprime|<tuple|52|8>>
     <associate|eq:Yhatcomplex|<tuple|14|3>>
-    <associate|eq:Yhatcounter|<tuple|37|6>>
-    <associate|eq:YhatprimeK|<tuple|51|8>>
-    <associate|eq:Yhatprimecounter|<tuple|38|7>>
+    <associate|eq:Yhatcounter|<tuple|39|6>>
+    <associate|eq:YhatprimeK|<tuple|53|8>>
+    <associate|eq:Yhatprimecounter|<tuple|40|7>>
     <associate|eq:Yquad|<tuple|8|3>>
     <associate|eq:Yquadequiv|<tuple|9|3>>
     <associate|eq:Yquadprime|<tuple|16|4>>
     <associate|eq:Yspectral|<tuple|7|3>>
-    <associate|eq:Ystationary|<tuple|42|7>>
-    <associate|eq:Yt0A|<tuple|53|9>>
-    <associate|eq:Yt0Aprime|<tuple|54|9>>
-    <associate|eq:Yt0KprimeX|<tuple|49|8>>
-    <associate|eq:Yt0t|<tuple|41|7>>
-    <associate|eq:Yt0tprime|<tuple|44|8>>
-    <associate|eq:Ytprime|<tuple|45|8>>
-    <associate|eq:cov1|<tuple|39|7>>
-    <associate|eq:cov2|<tuple|40|7>>
+    <associate|eq:Ystationary|<tuple|44|7>>
+    <associate|eq:Yt0A|<tuple|55|9>>
+    <associate|eq:Yt0Aprime|<tuple|56|9>>
+    <associate|eq:Yt0KprimeX|<tuple|51|8>>
+    <associate|eq:Yt0t|<tuple|43|7>>
+    <associate|eq:Yt0tprime|<tuple|46|8>>
+    <associate|eq:Ytprime|<tuple|47|8>>
+    <associate|eq:cov1|<tuple|41|7>>
+    <associate|eq:cov2|<tuple|42|7>>
     <associate|eq:envelope|<tuple|1|1>>
     <associate|eq:hilbert|<tuple|5|2>>
-    <associate|eq:kkernel|<tuple|47|8>>
+    <associate|eq:kkernel|<tuple|49|8>>
     <associate|eq:spectral|<tuple|2|2>>
-    <associate|eq:xi1prime|<tuple|30|6>>
-    <associate|eq:xi2|<tuple|20|5>>
-    <associate|eq:xi2prime|<tuple|31|6>>
-    <associate|eq:xi3prime|<tuple|32|6>>
-    <associate|eq:xi4prime|<tuple|33|6>>
+    <associate|eq:xi1prime|<tuple|32|6>>
+    <associate|eq:xi2|<tuple|21|5>>
+    <associate|eq:xi2prime|<tuple|33|6>>
+    <associate|eq:xi3prime|<tuple|34|6>>
+    <associate|eq:xi4prime|<tuple|35|6>>
   </collection>
 </references>
 
