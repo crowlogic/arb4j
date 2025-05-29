@@ -2256,6 +2256,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     try
     {
+      if ( !file.getParentFile().exists() )
+      {
+        file.getParentFile().mkdir();
+      }
       Files.write(file.toPath(), instructionByteCodes);
     }
     catch (IOException e)
