@@ -1,6 +1,7 @@
 
-var Theta = RealFunction.parse("arg(Γ(1/4+I*t/2))-(log(π)/2)*t");
-var theta = Theta.get();
+var theta = RealFunction.express("im(lnΓ(1/4+I*t/2))-(log(π)/2)*t");
 var t = 2.3;
 System.out.format("θ(%s)=%s\n",t,theta.eval(t));
-System.out.println(Theta.inspect(theta));
+var f = RealFunction.express("Z(2*pi*exp(W(0,x/(pi*exp(1)))))");
+var g = RealFunction.express("Z(t)");
+plot(0,250,5000,f,g);

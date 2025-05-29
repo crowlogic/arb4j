@@ -655,6 +655,11 @@ public class Integer implements
     return (int)getUnsignedValue();
   }
   
+  public Real exp( int bits, Real res )
+  {
+    return res.set(this).exp(bits);
+  }
+  
   /**
    * @return {@link arblib#fmpz_get_ui(long)}
    */

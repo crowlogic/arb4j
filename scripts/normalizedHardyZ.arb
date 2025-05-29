@@ -1,0 +1,3 @@
+var f = RealFunction.express("Z(2*pi*exp(W(0,x/(pi*exp(1)))))");
+var g = RealFunction.express("Z(t)");
+plot(0,250,5000,f,g);

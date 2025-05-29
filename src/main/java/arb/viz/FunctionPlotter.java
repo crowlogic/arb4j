@@ -36,7 +36,7 @@ public class FunctionPlotter extends
                              FunctionSampler
 {
 
-  public boolean            darkStyle = true;
+  public boolean            darkStyle = false;
 
   public boolean            parallel  = true;
 
