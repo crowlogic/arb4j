@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|framed-theorems>>
+<style|<tuple|generic|metal|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|A UNIQUENESS PROBLEM FOR THE ENVELOPE OF AN
@@ -534,7 +534,7 @@
   differential equation with constant coefficients
 
   <\equation>
-    <frac|d<rsup|2>*Y|d*t<rsup|2>>+2*\<zeta\>*\<omega\><rsub|0>*<frac|d*Y|d*t>+\<omega\><rsub|0><rsup|2>*Y=X<around|(|t|)><label|eq:ODE>
+    <frac|d<rsup|2>*|d*t<rsup|2>><wide|Y|\<ddot\>><around*|(|t|)>+2*\<zeta\>*\<omega\><rsub|0>*<frac|d*Y|d*t>+\<omega\><rsub|0><rsup|2>*Y=X<around|(|t|)><label|eq:ODE>
   </equation>
 
   where <math|X<around|(|t|)>> is a stationary process with zero mean and
@@ -612,7 +612,6 @@
     <associate|auto-3|<tuple|3|4>>
     <associate|auto-4|<tuple|4|7>>
     <associate|auto-5|<tuple|64|10>>
-    <associate|auto-6|<tuple|64|?>>
     <associate|bib-arens|<tuple|arens|10>>
     <associate|bib-cramerleadbetter|<tuple|cramerleadbetter|10>>
     <associate|bib-hasoferpetocz|<tuple|hasoferpetocz|10>>
@@ -620,10 +619,10 @@
     <associate|bib-yang|<tuple|yang|10>>
     <associate|eq:AAdiff|<tuple|57|9>>
     <associate|eq:Adef|<tuple|13|3>>
-    <associate|eq:ODE|<tuple|60|9>>
+    <associate|eq:ODE|<tuple|60|10>>
     <associate|eq:ODEh|<tuple|64|10>>
-    <associate|eq:ODEinit|<tuple|61|9>>
-    <associate|eq:ODEsol|<tuple|63|9>>
+    <associate|eq:ODEinit|<tuple|61|10>>
+    <associate|eq:ODEsol|<tuple|63|10>>
     <associate|eq:Tmatrix|<tuple|31|6>>
     <associate|eq:Ttranspose|<tuple|36|6>>
     <associate|eq:Ulambda|<tuple|3|2>>
@@ -631,40 +630,40 @@
     <associate|eq:XKprime|<tuple|48|8>>
     <associate|eq:Xcomplex|<tuple|10|3>>
     <associate|eq:Xcounter|<tuple|17|4>>
-    <associate|eq:XfromY|<tuple|45|7>>
+    <associate|eq:XfromY|<tuple|45|8>>
     <associate|eq:XhatKprime|<tuple|50|8>>
     <associate|eq:Xhatcomplex|<tuple|11|3>>
     <associate|eq:Xhatcounter|<tuple|22|5>>
     <associate|eq:Xhatmatrix|<tuple|23|5>>
-    <associate|eq:Xhatprimeexplicit|<tuple|38|6>>
+    <associate|eq:Xhatprimeexplicit|<tuple|38|7>>
     <associate|eq:Xmatrix|<tuple|20|5>>
-    <associate|eq:Xprime|<tuple|30|5>>
-    <associate|eq:XprimeSpectral|<tuple|54|8>>
-    <associate|eq:Xprimeexplicit|<tuple|37|6>>
+    <associate|eq:Xprime|<tuple|30|6>>
+    <associate|eq:XprimeSpectral|<tuple|54|9>>
+    <associate|eq:Xprimeexplicit|<tuple|37|7>>
     <associate|eq:YKFxi|<tuple|24|5>>
     <associate|eq:YKHFXI|<tuple|25|5>>
-    <associate|eq:Yalt|<tuple|15|3>>
-    <associate|eq:Yaltform1|<tuple|28|5>>
-    <associate|eq:Yaltform2|<tuple|29|5>>
+    <associate|eq:Yalt|<tuple|15|4>>
+    <associate|eq:Yaltform1|<tuple|28|6>>
+    <associate|eq:Yaltform2|<tuple|29|6>>
     <associate|eq:Ycomplex|<tuple|12|3>>
-    <associate|eq:Ycounter|<tuple|18|4>>
+    <associate|eq:Ycounter|<tuple|18|5>>
     <associate|eq:Ydef|<tuple|6|2>>
     <associate|eq:YhatA|<tuple|58|9>>
     <associate|eq:YhatAprime|<tuple|59|9>>
-    <associate|eq:YhatKprime|<tuple|52|8>>
+    <associate|eq:YhatKprime|<tuple|52|9>>
     <associate|eq:Yhatcomplex|<tuple|14|3>>
-    <associate|eq:Yhatcounter|<tuple|39|6>>
-    <associate|eq:YhatprimeK|<tuple|53|8>>
+    <associate|eq:Yhatcounter|<tuple|39|7>>
+    <associate|eq:YhatprimeK|<tuple|53|9>>
     <associate|eq:Yhatprimecounter|<tuple|40|7>>
     <associate|eq:Yquad|<tuple|8|3>>
     <associate|eq:Yquadequiv|<tuple|9|3>>
     <associate|eq:Yquadprime|<tuple|16|4>>
     <associate|eq:Yspectral|<tuple|7|3>>
-    <associate|eq:Ystationary|<tuple|44|7>>
+    <associate|eq:Ystationary|<tuple|44|8>>
     <associate|eq:Yt0A|<tuple|55|9>>
     <associate|eq:Yt0Aprime|<tuple|56|9>>
-    <associate|eq:Yt0KprimeX|<tuple|51|8>>
-    <associate|eq:Yt0t|<tuple|43|7>>
+    <associate|eq:Yt0KprimeX|<tuple|51|9>>
+    <associate|eq:Yt0t|<tuple|43|8>>
     <associate|eq:Yt0tprime|<tuple|46|8>>
     <associate|eq:Ytprime|<tuple|47|8>>
     <associate|eq:cov1|<tuple|41|7>>

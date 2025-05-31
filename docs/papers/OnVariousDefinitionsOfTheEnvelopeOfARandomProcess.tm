@@ -127,46 +127,88 @@
   a complex process <math|z<around|(|t|)>> having the form
 
   <\equation>
-    z<around|(|t|)>=x<around|(|t|)>+i*y<around|(|t|)>,<label|eq:complex_process>
+    z<around|(|t|)>=x<around|(|t|)>+i*y<around|(|t|)><label|eq:complex_process>
   </equation>
 
   where <math|y<around|(|t|)>> is some arbitrary random process. By
   using<nbsp><eqref|eq:complex_process>, <math|x<around|(|t|)>> can be
-  expressed as a cosine curve having time varying amplitude and phase, as
-  follows:
+  expressed as a cosine curve having time varying amplitude and phase\ 
 
   <\equation>
-    x<around|(|t|)>=a<around|(|t|)>*cos \<phi\><around|(|t|)>,<space|1em>a<around|(|t|)>=<around|\||z<around|(|t|)>|\|>=<sqrt|x<rsup|2>+y<rsup|2>>,<space|1em>\<phi\><around|(|t|)>=tan<rsup|-1><around|(|y/x|)>.<label|eq:amp_phase>
+    x<around|(|t|)>=a<around|(|t|)>*cos \<phi\><around|(|t|)><label|eq:amp_phase>
   </equation>
 
-  Here, <math|a<around|(|t|)>> and <math|\<phi\><around|(|t|)>> are known as
-  the random envelope and phase processes associated with
-  <math|x<around|(|t|)>>. The random process <math|y<around|(|t|)>> must be
-  chosen to give <math|a<around|(|t|)>> the required physical meaning,
-  ideally that <math|a<around|(|t|)>> is a smooth curve joining the peaks of
-  <math|x<around|(|t|)>>, as shown in Figure<nbsp><reference|fig:envelope>.
-  Suitable choices of <math|y<around|(|t|)>> can be determined by considering
-  the case where <math|x<around|(|t|)>> is harmonic, say
-  <math|x<around|(|t|)>=A*cos \<omega\>*t>. In this case the required
-  envelope is <math|A>, which implies that <math|y<around|(|t|)>=\<pm\>A*sin
-  \<omega\>*t>. This result for <math|y<around|(|t|)>> can be related
-  functionally to <math|x<around|(|t|)>> in two ways, either as the time
-  derivative of <math|x<around|(|t|)>>, <math|y=<wide|x|\<dot\>>/\<omega\>>,
-  or as the Hilbert transform of <math|x<around|(|t|)>>, <math|y=<wide|x|^>>.
-  The Hilbert transform <math|<wide|x|^><around|(|t|)>> is defined
-  as<nbsp><cite|papoulis1984>
+  where
 
   <\equation>
-    <wide|x|^><around|(|t|)>=<frac|1|\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|x<around|(|\<tau\>|)>|t-\<tau\>>*<space|0.17em>d*\<tau\>,<label|eq:hilbert>
+    a<around|(|t|)>=<around|\||z<around|(|t|)>|\|>=<sqrt|x<rsup|2>+y<rsup|2>>
   </equation>
 
-  and it has the property of converting <math|cos \<omega\>*t> to <math|sin
-  \<omega\>*t> and <math|sin \<omega\>*t> to <math|-cos \<omega\>*t>. Based
-  on this argument, two definitions for the random envelope process are
+  is the envelope of the envelope of the random process
+  <math|x<around*|(|t|)>> and
+
+  <\equation>
+    \<phi\><around|(|t|)>=tan<rsup|-1><around*|(|<frac|y|x>|)>
+  </equation>
+
+  is the associated phase <math|x<around*|(|t|)>>. The random process
+  <math|y<around|(|t|)>> must be chosen to give <math|a<around|(|t|)>> the
+  required physical meaning, ideally that <math|a<around|(|t|)>> is a smooth
+  curve joining the peaks of <math|x<around|(|t|)>>, as shown in
+  Figure<nbsp><reference|fig:envelope>. Suitable choices of
+  <math|y<around|(|t|)>> can be determined by considering the case where
+  <math|x<around|(|t|)>> is harmonic, say\ 
+
+  <\equation>
+    x<around|(|t|)>=A*cos<around*|(|\<omega\>*t|)>
+  </equation>
+
+  <math|>In this case the required envelope is <math|A>, which implies that
+
+  <\equation>
+    y<around|(|t|)>=\<pm\>A*sin<around*|(|\<omega\>*t|)>
+  </equation>
+
+  This result for <math|y<around|(|t|)>> can be related functionally to
+  <math|x<around|(|t|)>> in two ways, either as the time derivative of
+  <math|x<around|(|t|)>>,
+
+  <\equation>
+    y<around*|(|t|)>=<frac|<wide|x|\<dot\>><around*|(|t|)>|\<omega\>>
+  </equation>
+
+  \ or as the Hilbert transform <cite|papoulis1984> of
+  <math|x<around|(|t|)>>,
+
+  <\equation>
+    y<around*|(|t|)>=<wide|x|^><around*|(|t|)>=<frac|1|\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|x<around|(|\<tau\>|)>|t-\<tau\>>*<space|0.17em>d*\<tau\><label|eq:hilbert>
+  </equation>
+
+  \;
+
+  which has the property that
+
+  <\equation>
+    <wide|cos|^><around*|(|\<omega\>t|)>=<frac|1|\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|cos<around|(|\<tau\>|)>|t-\<tau\>>*<space|0.17em>d*\<tau\>=sin<around*|(|\<omega\>t|)>
+  </equation>
+
+  \;
+
+  \ and
+
+  <\equation>
+    <wide|sin|^><around*|(|\<omega\>t|)>=<frac|1|\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|sin<around|(|\<tau\>|)>|t-\<tau\>>*<space|0.17em>d*\<tau\>=-cos<around*|(|\<omega\>t|)>
+  </equation>
+
+  Based on this argument, two definitions for the random envelope process are
   possible, being
 
   <\equation>
-    a<rsub|1><around|(|t|)>=<sqrt|x<rsup|2>+<around*|(|<frac|<wide|x|\<dot\>>|\<omega\><rsub|c>>|)><rsup|2>>,<space|1em>a<rsub|2><around|(|t|)>=<sqrt|x<rsup|2>+<wide|x|^><rsup|2>>.<label|eq:envelope_defs>
+    a<rsub|1><around|(|t|)>=<sqrt|x<around*|(|t|)><rsup|2>+<around*|(|<frac|<wide|x|\<dot\>><around*|(|t|)>|\<omega\><rsub|c>>|)><rsup|2>><label|eq:envelope_defs>
+  </equation>
+
+  <\equation>
+    a<rsub|2><around|(|t|)>=<sqrt|x<around*|(|t|)><rsup|2>+<wide|x|^><around*|(|t|)><rsup|2>>
   </equation>
 
   Equation<nbsp><eqref|eq:envelope_defs> with <math|a<rsub|1><around|(|t|)>>
@@ -179,52 +221,87 @@
   choice of which is yet to be determined. It can be seen that
   <math|a<rsub|1><around|(|t|)>> is guaranteed to follow the peaks of
   <math|x<around|(|t|)>> since the envelope and the process coincide at a
-  peak (<math|<wide|x|\<dot\>>=0>). The extent to which
+  peak (<math|<wide|x|\<dot\>><around*|(|t|)>=0>). The extent to which
   <math|a<rsub|2><around|(|t|)>> follows the peaks of <math|x<around|(|t|)>>
   will depend upon how closely related <math|<wide|x|^><around|(|t|)>> is to
   <math|<wide|x|\<dot\>><around|(|t|)>>. For a stationary Gaussian process,
   this can be assessed by forming the joint density function
   <math|p<around|(|<wide|x|^>,<wide|x|\<dot\>>|)>> and thus the conditional
-  density function <math|p<around|(|<wide|x|^>\|<wide|x|\<dot\>>|)>=p<around|(|<wide|x|^>,<wide|x|\<dot\>>|)>/p<around|(|<wide|x|\<dot\>>|)>>.
-  It is easily shown that <math|p<around|(|<wide|x|^>\|<wide|x|\<dot\>>|)>>
+  density function
+
+  <\equation>
+    p<around|(|<wide|x|^><around*|(|t|)>\|<wide|x<around*|(|t|)>|\<dot\>>|)>=<frac|p<around|(|<wide|x|^><around*|(|t|)>,<wide|x|\<dot\>><around*|(|t|)>|)>|p<around|(|<wide|x|\<dot\>><around*|(|t|)>|)>>
+  </equation>
+
+  It is easily shown that <math|p<around|(|<wide|x|^><around*|(|t|)>\|<wide|x<around*|(|t|)>|\<dot\>>|)>>
   is Gaussian having a mean and variance given by<nbsp><cite|nigam1983>
 
   <\equation>
-    <math-up|E><around|[|<wide|x|^>\|<wide|x|\<dot\>>|]>=<around*|(|<frac|\<sigma\><rsub|2>|\<sigma\><rsub|1>>|)>*\<rho\>*<wide|x|\<dot\>>,<space|1em><math-up|Var><around|[|<wide|x|^>\|<wide|x|\<dot\>>|]>=\<sigma\><rsub|2><rsup|2>*<around|(|1-\<rho\><rsup|2>|)>,<label|eq:cond_mean_var>
+    <math-up|E><around|[|<wide|x|^>\|<wide|x|\<dot\>>|]>=<around*|(|<frac|\<sigma\><rsub|2>|\<sigma\><rsub|1>>|)>*\<rho\>*<wide|x<around*|(|t|)>|\<dot\>><label|eq:cond_mean_var>
   </equation>
 
-  where <math|\<sigma\><rsub|2><rsup|2>=<math-up|E><around|[|<wide|x|^><rsup|2>|]>>,
-  <math|\<sigma\><rsub|1><rsup|2>=<math-up|E><around|[|<wide|x|\<dot\>><rsup|2>|]>>,
-  and <math|\<rho\>=<math-up|E><around|[|<wide|x|^>*<wide|x|\<dot\>>|]>/<around|(|\<sigma\><rsub|1>*\<sigma\><rsub|2>|)>>.
+  <\equation>
+    <math-up|Var><around|[|<wide|x|^>\|<wide|x|\<dot\>>|]>=\<sigma\><rsub|2><rsup|2>*<around|(|1-\<rho\><rsup|2>|)>
+  </equation>
+
+  where
+
+  <\equation>
+    \<sigma\><rsub|2><rsup|2>=<math-up|E><around|[|<wide|x|^><around*|(|t|)><rsup|2>|]>
+  </equation>
+
+  <\equation>
+    \<sigma\><rsub|1><rsup|2>=<math-up|E><around|[|<wide|x|\<dot\>><around*|(|t|)><rsup|2>|]>
+  </equation>
+
+  <\equation>
+    \<rho\>=<frac|<math-up|E><around|[|<wide|x|^><around*|(|t|)>*<wide|x|\<dot\>><around*|(|t|)>|]>|\<sigma\><rsub|1>*\<sigma\><rsub|2>>=<frac|<math-up|E><around|[|<wide|x|^><around*|(|t|)>*<wide|x|\<dot\>><around*|(|t|)>|]>|<sqrt|<math-up|E><around|[|<wide|x|^><around*|(|t|)><rsup|2>|]>>*<sqrt|<math-up|E><around|[|<wide|x|\<dot\>><around*|(|t|)><rsup|2>|]>>>=<frac|<math-up|E><around|[|<wide|x|^><around*|(|t|)>*<wide|x|\<dot\>><around*|(|t|)>|]>|<sqrt|<math-up|E><around|[|<wide|x|^><around*|(|t|)><rsup|2>|]><math-up|E><around|[|<wide|x|\<dot\>><around*|(|t|)><rsup|2>|]>>>
+  </equation>
+
   It can be shown<nbsp><cite|papoulis1984> that
-  <math|<math-up|E><around|[|<wide|x|^><rsup|2>|]>=m<rsub|0>>,
-  <math|<math-up|E><around|[|<wide|x|\<dot\>><rsup|2>|]>=m<rsub|2>>, and
-  <math|<math-up|E><around|[|<wide|x|^>*<wide|x|\<dot\>>|]>=-m<rsub|1>>,
+
+  <\equation>
+    <math-up|E><around|[|<wide|x|^><around*|(|t|)><rsup|2>|]>=m<rsub|0>
+  </equation>
+
+  <\equation>
+    <math-up|E><around|[|<wide|x|\<dot\>><around*|(|t|)><rsup|2>|]>=m<rsub|2>
+  </equation>
+
+  <\equation>
+    <math-up|E><around|[|<wide|x|^>*<around*|(|t|)><wide|x<around*|(|t|)>|\<dot\>>|]>=-m<rsub|1>
+  </equation>
+
   where <math|m<rsub|n>> is the <math|n>th spectral moment of the
   single-sided spectrum of <math|x<around|(|t|)>>,
   <math|S<rsub|x*x><around|(|\<omega\>|)>>:
 
   <\equation>
-    m<rsub|n>=<big|int><rsub|0><rsup|\<infty\>>\<omega\><rsup|n>*S<rsub|x*x><around|(|\<omega\>|)>*<space|0.17em>d*\<omega\>.<label|eq:spectral_moments>
+    m<rsub|n>=<big|int><rsub|0><rsup|\<infty\>>\<omega\><rsup|n>*S<rsub|x*x><around|(|\<omega\>|)>*<space|0.17em>d*\<omega\><label|eq:spectral_moments>
   </equation>
 
   Equation<nbsp><eqref|eq:cond_mean_var> then yields
 
   <\equation>
-    <math-up|E><around|[|<wide|x|^>\|<wide|x|\<dot\>>|]>=-<around*|(|<frac|m<rsub|1>|m<rsub|2>>|)>*<wide|x|\<dot\>>,<space|1em><math-up|Var><around|[|<wide|x|^>\|<wide|x|\<dot\>>|]>=m<rsub|0>*q<rsup|2>,<label|eq:cond_mean_var2>
+    <math-up|E><around|[|<wide|x|^><around*|(|t|)>\|<wide|x|\<dot\>><around*|(|t|)>|]>=-<around*|(|<frac|m<rsub|1>|m<rsub|2>>|)>*<wide|x<around*|(|t|)>|\<dot\>><label|eq:cond_mean_var2>
+  </equation>
+
+  <\equation>
+    <math-up|Var><around|[|<wide|x|^><around*|(|t|)>\|<wide|x|\<dot\>><around*|(|t|)>|]>=m<rsub|0>*q<rsup|2>
   </equation>
 
   where <math|q> is a parameter which measures the extent to which
   <math|x<around|(|t|)>> is narrow banded:
 
   <\equation>
-    q<rsup|2>=1-<frac|m<rsub|1><rsup|2>|m<rsub|0>*m<rsub|2>>.<label|eq:q_def>
+    q<rsup|2>=1-<frac|m<rsub|1><rsup|2>|m<rsub|0>*m<rsub|2>><label|eq:q_def>
   </equation>
 
-  From<nbsp><eqref|eq:cond_mean_var2>, when <math|<wide|x|\<dot\>>=0> the
-  mean value of <math|<wide|x|^>> is zero and the variance depends upon
-  <math|q>. For a narrow banded process for which <math|q> is small, it can
-  be concluded that <math|<wide|x|^>> will be approximately zero when
+  From<nbsp><eqref|eq:cond_mean_var2>, when
+  <math|<wide|x<around*|(|t|)>|\<dot\>>=0> the mean value of
+  <math|<wide|x|^>> is zero and the variance depends upon <math|q>. For a
+  narrow banded process for which <math|q> is small, it can be concluded that
+  <math|<wide|x|^>> will be approximately zero when
   <math|<wide|x|\<dot\>>=0>, from which<nbsp><eqref|eq:envelope_defs> implies
   that <math|a<rsub|2><around|(|t|)>> will follow the peaks of
   <math|x<around|(|t|)>>. As <math|x<around|(|t|)>> becomes more broad banded
@@ -235,12 +312,25 @@
   in<nbsp><eqref|eq:envelope_defs>, there are two obvious candidates, the
   mean frequency of <math|x<around|(|t|)>> given by
   <math|\<omega\><rsub|1>=m<rsub|1>/m<rsub|0>> and the mean zero crossing
-  frequency given by <math|\<omega\><rsub|0>=<sqrt|m<rsub|2>/m<rsub|0>>>. By
-  referring to<nbsp><eqref|eq:envelope_defs>, it can be seen that
-  <math|<math-up|E><around|[|a<rsub|1><rsup|2><around|(|t|)>|]>=m<rsub|0>+m<rsub|2>/\<omega\><rsub|c><rsup|2>>.
+  frequency given by
+
+  <\equation>
+    \<omega\><rsub|0>=<sqrt|<frac|m<rsub|2>|m<rsub|0>>>
+  </equation>
+
+  By referring to<nbsp><eqref|eq:envelope_defs>, it can be seen that
+
+  <\equation*>
+    <math-up|E><around|[|a<rsub|1><rsup|2><around|(|t|)>|]>=m<rsub|0>+<frac|m<rsub|2>|\<omega\><rsub|c><rsup|2>>
+  </equation*>
+
   For <math|\<omega\><rsub|c>=\<omega\><rsub|0>> this would give
-  <math|<math-up|E><around|[|a<rsub|1><rsup|2><around|(|t|)>|]>=2*m<rsub|0>>,
-  which is in agreement with the case where <math|x<around|(|t|)>> is
+
+  <\equation>
+    <math-up|E><around|[|a<rsub|1><rsup|2><around|(|t|)>|]>=2*m<rsub|0>
+  </equation>
+
+  , which is in agreement with the case where <math|x<around|(|t|)>> is
   harmonic, in that the average value of the envelope squared
   (<math|A<rsup|2>>) is equal to twice the average value of the process
   squared (<math|2\<times\><frac|1|2>*A<rsup|2>>). Another argument for using
@@ -268,20 +358,30 @@
 
   <\equation>
     x<around|(|t|)>=<big|sum><rsub|n><around*|{|a<rsub|n>*cos
-    \<omega\><rsub|n>*t+b<rsub|n>*sin \<omega\><rsub|n>*t|}>,<label|eq:fourier_series>
+    \<omega\><rsub|n>*t+b<rsub|n>*sin \<omega\><rsub|n>*t|}><label|eq:fourier_series>
   </equation>
 
-  where <math|\<omega\><rsub|n>=2*\<pi\>*n/T>. Since <math|x<around|(|t|)>>
-  is a random process, each realization of <math|x<around|(|t|)>> on this
-  time interval must be different. The coefficients <math|a<rsub|n>> and
-  <math|b<rsub|n>> must therefore be random variables when viewed across a
-  large number of realizations of <math|x<around|(|t|)>>, or as more commonly
-  stated, they must be random variables in the ensemble sense. If
-  <math|x<around|(|t|)>> is Gaussian with zero mean then it can be shown that
-  as <math|T\<to\>\<infty\>>, <math|a<rsub|n>> and <math|b<rsub|n>> are
-  independent zero mean Gaussian random variables whose mean squared values
-  are related to the spectrum of <math|x<around|(|t|)>><nbsp><cite|rice1954>.
-  In fact, <math|<math-up|E><around|[|a<rsub|n><rsup|2>|]>=<math-up|E><around|[|b<rsub|n><rsup|2>|]>=2*\<pi\>*S<rsub|x*x><around|(|\<omega\><rsub|n>|)>/T>,
+  where
+
+  <\equation>
+    \<omega\><rsub|n>=<frac|2 \<pi\> n|T>
+  </equation>
+
+  Since <math|x<around|(|t|)>> is a random process, each realization of
+  <math|x<around|(|t|)>> on this time interval must be different. The
+  coefficients <math|a<rsub|n>> and <math|b<rsub|n>> must therefore be random
+  variables when viewed across a large number of realizations of
+  <math|x<around|(|t|)>>, or as more commonly stated, they must be random
+  variables in the ensemble sense. If <math|x<around|(|t|)>> is Gaussian with
+  zero mean then it can be shown that as <math|T\<to\>\<infty\>>,
+  <math|a<rsub|n>> and <math|b<rsub|n>> are independent zero mean Gaussian
+  random variables whose mean squared values are related to the spectrum of
+  <math|x<around|(|t|)>><nbsp><cite|rice1954>. In fact
+
+  <\equation>
+    <math-up|E><around|[|a<rsub|n><rsup|2>|]>=<math-up|E><around|[|b<rsub|n><rsup|2>|]>=<frac|2*\<pi\>*S<rsub|x*x><around|(|\<omega\><rsub|n>|)>|T>
+  </equation>
+
   where <math|S<rsub|x*x><around|(|\<omega\>|)>> is the single-sided spectrum
   of <math|x<around|(|t|)>>. If <math|x<around|(|t|)>> is non-Gaussian then
   the statistical distribution of <math|a<rsub|n>> and <math|b<rsub|n>> is
@@ -292,7 +392,7 @@
   <\equation>
     x<around|(|t|)>=<big|sum><rsub|n><around*|{|a<rsub|n>*cos
     <around*|[|<around|(|\<omega\><rsub|n>-\<omega\><rsub|r>|)>*t+\<omega\><rsub|r>*t|]>+b<rsub|n>*sin
-    <around*|[|<around|(|\<omega\><rsub|n>-\<omega\><rsub|r>|)>*t+\<omega\><rsub|r>*t|]>|}>,<label|eq:shifted_fourier>
+    <around*|[|<around|(|\<omega\><rsub|n>-\<omega\><rsub|r>|)>*t+\<omega\><rsub|r>*t|]>|}><label|eq:shifted_fourier>
   </equation>
 
   where <math|\<omega\><rsub|r>> is any fixed frequency, usually chosen as a
@@ -303,11 +403,11 @@
   <\align>
     <tformat|<table|<row|<cell|x<around|(|t|)>>|<cell|=I<rsub|c><around|(|t|)>*cos
     \<omega\><rsub|r>*t-I<rsub|s><around|(|t|)>*sin
-    \<omega\><rsub|r>*t,<eq-number><label|eq:rice_ic_is_a>>>|<row|<cell|I<rsub|c><around|(|t|)>>|<cell|=<big|sum><rsub|n><around*|{|a<rsub|n>*cos
+    \<omega\><rsub|r>*t<eq-number><label|eq:rice_ic_is_a>>>|<row|<cell|I<rsub|c><around|(|t|)>>|<cell|=<big|sum><rsub|n><around*|{|a<rsub|n>*cos
     <around|[|<around|(|\<omega\><rsub|n>-\<omega\><rsub|r>|)>*t|]>+b<rsub|n>*sin
-    <around|[|<around|(|\<omega\><rsub|n>-\<omega\><rsub|r>|)>*t|]>|}>,<eq-number><label|eq:rice_ic_b>>>|<row|<cell|I<rsub|s><around|(|t|)>>|<cell|=<big|sum><rsub|n><around*|{|a<rsub|n>*sin
+    <around|[|<around|(|\<omega\><rsub|n>-\<omega\><rsub|r>|)>*t|]>|}><eq-number><label|eq:rice_ic_b>>>|<row|<cell|I<rsub|s><around|(|t|)>>|<cell|=<big|sum><rsub|n><around*|{|a<rsub|n>*sin
     <around|[|<around|(|\<omega\><rsub|n>-\<omega\><rsub|r>|)>*t|]>-b<rsub|n>*cos
-    <around|[|<around|(|\<omega\><rsub|n>-\<omega\><rsub|r>|)>*t|]>|}>.<eq-number><label|eq:rice_is_c>>>>>
+    <around|[|<around|(|\<omega\><rsub|n>-\<omega\><rsub|r>|)>*t|]>|}><eq-number><label|eq:rice_is_c>>>>>
   </align>
 
   Equation<nbsp><eqref|eq:rice_ic_is_a> can now be written such that
@@ -315,50 +415,60 @@
   dependent amplitude and frequency:
 
   <\equation>
-    x<around|(|t|)>=a<around|(|t|)>*cos <around|[|\<omega\><rsub|r>*t+\<theta\><around|(|t|)>|]>,<space|1em>a<rsup|2><around|(|t|)>=I<rsub|c><rsup|2><around|(|t|)>+I<rsub|s><rsup|2><around|(|t|)>,<space|1em>\<theta\><around|(|t|)>=tan<rsup|-1><around*|[|<frac|I<rsub|s><around|(|t|)>|I<rsub|c><around|(|t|)>>|]>.<label|eq:rice_envelope>
+    x<around|(|t|)>=a<around|(|t|)>*cos <around|[|\<omega\><rsub|r>*t+\<theta\><around|(|t|)>|]><label|eq:rice_envelope>
+  </equation>
+
+  <\equation>
+    a<rsup|2><around|(|t|)>=I<rsub|c><rsup|2><around|(|t|)>+I<rsub|s><rsup|2><around|(|t|)>
+  </equation>
+
+  <\equation>
+    \<theta\><around|(|t|)>=tan<rsup|-1><around*|[|<frac|I<rsub|s><around|(|t|)>|I<rsub|c><around|(|t|)>>|]>
   </equation>
 
   Here, <math|a<around|(|t|)>> as given by<nbsp><eqref|eq:rice_envelope> is
-  Rice's definition of the envelope of <math|x<around|(|t|)>>.
-
-  Alternatively, equation<nbsp><eqref|eq:fourier_series> can be written in
-  the form
+  Rice's definition of the envelope of <math|x<around|(|t|)>>. Alternatively,
+  equation<nbsp><eqref|eq:fourier_series> can be written in the form
 
   <\equation>
-    x<around|(|t|)>=<math-up|Re><around|{|z<around|(|t|)>|}>,<space|1em>z<around|(|t|)>=<big|sum><rsub|n><around|(|a<rsub|n>-i*b<rsub|n>|)>*e<rsup|i*\<omega\><rsub|n>*t>.<label|eq:z_process>
+    x<around|(|t|)>=<math-up|Re><around|{|z<around|(|t|)>|}><label|eq:z_process>
+  </equation>
+
+  <\equation>
+    z<around|(|t|)>=<big|sum><rsub|n><around|(|a<rsub|n>-i*b<rsub|n>|)>*e<rsup|i*\<omega\><rsub|n>*t>
   </equation>
 
   Now it follows from<nbsp><eqref|eq:z_process> that
 
   <\equation>
     <math-up|Im><around|{|z<around|(|t|)>|}>=<big|sum><rsub|n><around*|{|a<rsub|n>*sin
-    \<omega\><rsub|n>*t-b<rsub|n>*cos \<omega\><rsub|n>*t|}>=<wide|x|^><around|(|t|)>,<label|eq:im_z>
+    \<omega\><rsub|n>*t-b<rsub|n>*cos \<omega\><rsub|n>*t|}>=<wide|x|^><around|(|t|)><label|eq:im_z>
   </equation>
 
   and thus
 
   <\equation>
-    z<around|(|t|)>=x<around|(|t|)>+i*<wide|x|^><around|(|t|)>.<label|eq:z_x_hatx>
+    z<around|(|t|)>=x<around|(|t|)>+i*<wide|x|^><around|(|t|)><label|eq:z_x_hatx>
   </equation>
 
   Also, equations<nbsp><eqref|eq:shifted_fourier>
   and<nbsp><eqref|eq:rice_ic_is_a> can be written as
 
   <\equation>
-    x<around|(|t|)>=<math-up|Re><around*|{|z<around|(|t|)>*e<rsup|-i*\<omega\><rsub|r>*t>|}>=<math-up|Re><around*|{|<around|[|I<rsub|c><around|(|t|)>+i*I<rsub|s><around|(|t|)>|]>*e<rsup|i*\<omega\><rsub|r>*t>|}>,<label|eq:rice_rewrite>
+    x<around|(|t|)>=<math-up|Re><around*|{|z<around|(|t|)>*e<rsup|-i*\<omega\><rsub|r>*t>|}>=<math-up|Re><around*|{|<around|[|I<rsub|c><around|(|t|)>+i*I<rsub|s><around|(|t|)>|]>*e<rsup|i*\<omega\><rsub|r>*t>|}><label|eq:rice_rewrite>
   </equation>
 
   from which it follows that
 
   <\equation>
-    I<rsub|c><around|(|t|)>+i*I<rsub|s><around|(|t|)>=z<around|(|t|)>*e<rsup|-i*\<omega\><rsub|r>*t>.<label|eq:ic_is_z>
+    I<rsub|c><around|(|t|)>+i*I<rsub|s><around|(|t|)>=z<around|(|t|)>*e<rsup|-i*\<omega\><rsub|r>*t><label|eq:ic_is_z>
   </equation>
 
   Combining<nbsp><eqref|eq:rice_envelope>,<nbsp><eqref|eq:ic_is_z>,
   and<nbsp><eqref|eq:z_x_hatx> then gives
 
   <\equation>
-    a<rsup|2><around|(|t|)>=I<rsub|c><rsup|2><around|(|t|)>+I<rsub|s><rsup|2><around|(|t|)>=<around|\||z<around|(|t|)>*e<rsup|-i*\<omega\><rsub|r>*t>|\|><rsup|2>=x<rsup|2><around|(|t|)>+<wide|x|^><rsup|2><around|(|t|)>.<label|eq:rice_dugundji_equiv>
+    a<rsup|2><around|(|t|)>=I<rsub|c><rsup|2><around|(|t|)>+I<rsub|s><rsup|2><around|(|t|)>=<around|\||z<around|(|t|)>*e<rsup|-i*\<omega\><rsub|r>*t>|\|><rsup|2>=x<rsup|2><around|(|t|)>+<wide|x|^><rsup|2><around|(|t|)><label|eq:rice_dugundji_equiv>
   </equation>
 
   Comparing<nbsp><eqref|eq:rice_dugundji_equiv>
@@ -382,8 +492,7 @@
   vector process with jpdf
 
   <\equation>
-    p<around|(|<math-bf|I>|)>=<frac|1|4*\<pi\><rsup|2><around|\||S|\|><rsup|1/2>>*exp
-    <around*|{|-<frac|1|2><math-bf|I><rsup|T>S<rsup|-1><math-bf|I>|}>,<label|eq:jpdf_I>
+    <with|font-base-size|12|p<around|(|<math-bf|I>|)>=<frac|e<rsup|-<frac|<math-bf|I><rsup|T>S<rsup|-1><math-bf|I>|2>>|<sqrt|4*\<pi\><rsup|2><around|\||S|\|>>>>*<label|eq:jpdf_I>
   </equation>
 
   where <math|S> is a <math|4\<times\>4> correlation matrix given by
@@ -394,45 +503,86 @@
   <\align>
     <tformat|<table|<row|<cell|I<rsub|c><around|(|t|)>>|<cell|=x<around|(|t|)>*cos
     \<omega\><rsub|r>*t+<wide|x|^><around|(|t|)>*sin
-    \<omega\><rsub|r>*t,<eq-number><label|eq:ic_x_hatx>>>|<row|<cell|I<rsub|s><around|(|t|)>>|<cell|=-x<around|(|t|)>*sin
+    \<omega\><rsub|r>*t<eq-number><label|eq:ic_x_hatx>>>|<row|<cell|I<rsub|s><around|(|t|)>>|<cell|=-x<around|(|t|)>*sin
     \<omega\><rsub|r>*t+<wide|x|^><around|(|t|)>*cos
-    \<omega\><rsub|r>*t.<eq-number><label|eq:is_x_hatx>>>>>
+    \<omega\><rsub|r>*t<eq-number><label|eq:is_x_hatx>>>>>
   </align>
 
   Further, Papoulis<nbsp><cite|papoulis1984> has shown that
-  <math|<math-up|E><around|[|x<rsup|2>|]>=<math-up|E><around|[|<wide|x|^><rsup|2>|]>=m<rsub|0>>,
-  <math|<math-up|E><around|[|x*<wide|x|^>|]>=0>,
-  <math|<math-up|E><around|[|x*<wide|x|\<dot\>>|]>=-m<rsub|1>>, and
-  <math|<math-up|E><around|[|<wide|x|\<dot\>><rsup|2>|]>=<math-up|E><around|[|<wide|x|^><rsup|2>|]>=m<rsub|2>>.
+
+  <\equation>
+    <math-up|E><around|[|x<rsup|2>|]>=<math-up|E><around|[|<wide|x|^><rsup|2>|]>=m<rsub|0>
+  </equation>
+
+  <\equation>
+    <math-up|E><around|[|x*<wide|x|^>|]>=0
+  </equation>
+
+  <\equation>
+    <math-up|E><around|[|x*<wide|x|\<dot\>>|]>=-m<rsub|1>
+  </equation>
+
+  and
+
+  <\equation>
+    <math-up|E><around|[|<wide|x|\<dot\>><rsup|2>|]>=<math-up|E><around|[|<wide|x|^><rsup|2>|]>=m<rsub|2>
+  </equation>
+
   Using these results in<nbsp><eqref|eq:ic_x_hatx>\U<eqref|eq:is_x_hatx> and
   their time derivatives leads to
 
   <\equation>
-    S=<matrix|<tformat|<table|<row|<cell|m<rsub|0>>|<cell|0>|<cell|0>|<cell|M<rsub|2>>>|<row|<cell|0>|<cell|m<rsub|0>>|<cell|-M<rsub|2>>|<cell|0>>|<row|<cell|0>|<cell|-M<rsub|2>>|<cell|M<rsub|1>>|<cell|0>>|<row|<cell|M<rsub|2>>|<cell|0>|<cell|0>|<cell|M<rsub|1>>>>>>,<label|eq:rice_S_matrix>
+    S=<matrix|<tformat|<table|<row|<cell|m<rsub|0>>|<cell|0>|<cell|0>|<cell|M<rsub|2>>>|<row|<cell|0>|<cell|m<rsub|0>>|<cell|-M<rsub|2>>|<cell|0>>|<row|<cell|0>|<cell|-M<rsub|2>>|<cell|M<rsub|1>>|<cell|0>>|<row|<cell|M<rsub|2>>|<cell|0>|<cell|0>|<cell|M<rsub|1>>>>>><label|eq:rice_S_matrix>
   </equation>
 
-  where <math|M<rsub|2>=m<rsub|1>-\<omega\><rsub|r>*m<rsub|0>> and
-  <math|M<rsub|1>=m<rsub|2>-2*\<omega\><rsub|r>*m<rsub|1>+\<omega\><rsub|r><rsup|2>*m<rsub|0>>.
+  where
+
+  <\equation>
+    M<rsub|2>=m<rsub|1>-\<omega\><rsub|r>*m<rsub|0>
+  </equation>
+
+  \ and
+
+  <\equation>
+    M<rsub|1>=m<rsub|2>-2*\<omega\><rsub|r>*m<rsub|1>+\<omega\><rsub|r><rsup|2>*m<rsub|0>
+  </equation>
 
   The transformation of variables is performed as
   follows<nbsp><cite|nigam1983>:
 
   <\equation>
     p<around|(|a,<wide|a|\<dot\>>,\<theta\>,<wide|\<theta\>|\<dot\>>|)>=<around*|\||det
-    <around*|[|<frac|\<partial\><around|(|I<rsub|c>,I<rsub|s>,<wide|I|\<dot\>><rsub|c>,<wide|I|\<dot\>><rsub|s>|)>|\<partial\><around|(|a,<wide|a|\<dot\>>,\<theta\>,<wide|\<theta\>|\<dot\>>|)>>|]>|\|>*p<around|(|<math-bf|I>|)>=<around|\||J|\|>*p<around|(|<math-bf|I>|)>,<label|eq:jacobian>
+    <around*|[|<frac|\<partial\><around|(|I<rsub|c>,I<rsub|s>,<wide|I|\<dot\>><rsub|c>,<wide|I|\<dot\>><rsub|s>|)>|\<partial\><around|(|a,<wide|a|\<dot\>>,\<theta\>,<wide|\<theta\>|\<dot\>>|)>>|]>|\|><label|eq:jacobian>
+  </equation>
+
+  <\equation>
+    p<around|(|<math-bf|I>|)>=<around|\||J|\|>*p<around|(|<math-bf|I>|)>
   </equation>
 
   where the partial derivatives involved in the above determinant can be
   found by noting from<nbsp><eqref|eq:rice_envelope> that
-  <math|I<rsub|c><around|(|t|)>=a<around|(|t|)>*cos \<theta\><around|(|t|)>>
-  and <math|I<rsub|s><around|(|t|)>=a<around|(|t|)>*sin
-  \<theta\><around|(|t|)>>. After some algebra it is found that
-  <math|<around|\||J|\|>=a<rsup|2>>. The expression for
-  <math|p<around|(|<math-bf|I>|)>> can be simplified by noting
+
+  <\equation>
+    I<rsub|c><around|(|t|)>=a<around|(|t|)>*cos \<theta\><around|(|t|)>
+  </equation>
+
+  \ and
+
+  <\equation>
+    I<rsub|s><around|(|t|)>=a<around|(|t|)>*sin \<theta\><around|(|t|)>
+  </equation>
+
+  After some algebra it is found that <math|<around|\||J|\|>=a<rsup|2>>. The
+  expression for <math|p<around|(|<math-bf|I>|)>> can be simplified by noting
   from<nbsp><eqref|eq:rice_S_matrix> that the variables
   <math|<around|(|I<rsub|c>,<wide|I|\<dot\>><rsub|s>|)>> are uncorrelated
   from <math|<around|(|I<rsub|s>,<wide|I|\<dot\>><rsub|c>|)>> which means
-  that <math|p<around|(|<math-bf|I>|)>=p<around|(|I<rsub|c>,<wide|I|\<dot\>><rsub|s>|)>*p<around|(|I<rsub|s>,<wide|I|\<dot\>><rsub|c>|)>>.
+  that\ 
+
+  <\equation>
+    p<around|(|<math-bf|I>|)>=p<around|(|I<rsub|c>,<wide|I|\<dot\>><rsub|s>|)>*p<around|(|I<rsub|s>,<wide|I|\<dot\>><rsub|c>|)>
+  </equation>
+
   This avoids inverting the matrix <math|S> to evaluate
   <math|p<around|(|<math-bf|I>|)>>. The final result is then given
   by<nbsp><eqref|eq:jacobian> with <math|<math-bf|I>> written in terms of
@@ -440,16 +590,15 @@
   Performing the necessary algebra gives
 
   <\equation>
-    p<around|(|a,<wide|a|\<dot\>>,\<theta\>,<wide|\<theta\>|\<dot\>>|)>=<frac|a<rsup|2>|4*\<pi\><rsup|2>*m<rsub|0>*m<rsub|2>*q<rsup|2>>*exp
-    <around*|{|-<frac|1|2>*<around*|[|<frac|a<rsup|2>|m<rsub|0>>+<frac|1|q<rsup|2>*m<rsub|2>>*<around*|(|<wide|a|\<dot\>><rsup|2>+a<rsup|2>*<around*|(|<wide|\<theta\>|\<dot\>>-<frac|m<rsub|1>|m<rsub|0>>+\<omega\><rsub|r>|)><rsup|2>|)>|]>|}>,<label|eq:rice_joint_pdf>
+    <with|font-base-size|12|p<around|(|a,<wide|a|\<dot\>>,\<theta\>,<wide|\<theta\>|\<dot\>>|)>=<frac|a<around*|(|t|)><rsup|2>
+    e<rsup|-<frac|<frac|a<around*|(|t|)><rsup|2>|m<rsub|0>>+<frac|1|q<rsup|2>*m<rsub|2>>*<around*|(|<wide|a|\<dot\>><around*|(|t|)><rsup|2>+a<around*|(|t|)><rsup|2>*<around*|(|<wide|\<theta\>|\<dot\>><around*|(|t|)>-<frac|m<rsub|1>|m<rsub|0>>+\<omega\><rsub|r>|)><rsup|2>|)>|2>*>|4*\<pi\><rsup|2>*m<rsub|0>*m<rsub|2>*q<rsup|2>>>*<label|eq:rice_joint_pdf>
   </equation>
 
   where <math|q> is the spectral parameter given by<nbsp><eqref|eq:q_def>.
   Integrating over <math|\<theta\>> and <math|<wide|\<theta\>|\<dot\>>> gives
 
   <\equation>
-    p<around|(|a,<wide|a|\<dot\>>|)>=<frac|a|<sqrt|2*\<pi\>*m<rsub|2>>*q*m<rsub|0>>*exp
-    <around*|{|-<frac|1|2>*<around*|[|<frac|a<rsup|2>|m<rsub|0>>+<frac|<wide|a|\<dot\>><rsup|2>|q<rsup|2>*m<rsub|2>>|]>|}>,<label|eq:rice_pa_pda>
+    <with|font-base-size|12|p<around|(|a,<wide|a|\<dot\>>|)>=<frac|a<around*|(|t|)>*e<rsup|-<frac|<frac|a<around*|(|t|)><rsup|2>|m<rsub|0>>+<frac|<wide|a|\<dot\>><around*|(|t|)><rsup|2>|q<rsup|2>*m<rsub|2>>|2>*>|<sqrt|2*\<pi\>*m<rsub|2>>*q*m<rsub|0>>><label|eq:rice_pa_pda>
   </equation>
 
   a result which is independent of <math|\<omega\><rsub|r>>.
@@ -457,32 +606,36 @@
   <math|<wide|a|\<dot\>>> gives
 
   <\equation>
-    p<around|(|\<theta\>,<wide|\<theta\>|\<dot\>>|)>=<frac|1|4*\<pi\>*q*m<rsub|0>*<sqrt|m<rsub|2>>>*<around*|{|<frac|1|m<rsub|0>>+<frac|1|q<rsup|2>*m<rsub|2>>*<around*|[|<wide|\<theta\>|\<dot\>>-<frac|m<rsub|1>|m<rsub|0>>+\<omega\><rsub|r>|]><rsup|2>|}><rsup|-3/2>.<label|eq:rice_ptheta_pdt>
+    <with|font-base-size|12|p<around|(|\<theta\>,<wide|\<theta\>|\<dot\>>|)>=<frac|<around*|(|<frac|1|m<rsub|0>>+<frac|<around*|(|<wide|\<theta\>|\<dot\>><around*|(|t|)>-<frac|m<rsub|1>|m<rsub|0>>+\<omega\><rsub|r>|)><rsup|2>|q<rsup|2>*m<rsub|2>>|)><rsup|-<frac|3|2>>|4*\<pi\>*q*m<rsub|0>*<sqrt|m<rsub|2>>>>*<label|eq:rice_ptheta_pdt>
   </equation>
 
   Integrating over <math|<wide|\<theta\>|\<dot\>>> shows that
   <math|\<theta\>> has a uniform distribution
-  <math|p<around|(|\<theta\>|)>=1/<around|(|2*\<pi\>|)>> valid on a range of
+  <math|p<around|(|\<theta\>|)>=<frac|1|2 \<pi\>>> valid on a range of
   <math|2*\<pi\>>. Integrating<nbsp><eqref|eq:rice_ptheta_pdt> over
   <math|\<theta\>> gives <math|p<around|(|<wide|\<theta\>|\<dot\>>|)>> as
   <math|2*\<pi\>> times the right-hand side of this equation, from which it
   can be shown that <math|<wide|\<theta\>|\<dot\>>> has a mean value of
-  <math|<around|(|m<rsub|1>/m<rsub|0>|)>-\<omega\><rsub|r>>. Thus the phase
-  process <math|\<theta\><around|(|t|)>> introduced
-  in<nbsp><eqref|eq:rice_envelope> is not independent of the central
-  frequency <math|\<omega\><rsub|r>>. However, if <math|x<around|(|t|)>> is
-  written as
+  <math|<frac|m<rsub|1>|m<rsub|0>>-\<omega\><rsub|r>>. Thus the phase process
+  <math|\<theta\><around|(|t|)>> introduced in<nbsp><eqref|eq:rice_envelope>
+  is not independent of the central frequency <math|\<omega\><rsub|r>>.
+  However, if <math|x<around|(|t|)>> is written as
 
   <\equation>
     x<around|(|t|)>=a<around|(|t|)>*cos \<psi\><around|(|t|)><label|eq:psi_def>
   </equation>
 
-  where <math|\<psi\><around|(|t|)>=\<omega\><rsub|r>*t+\<theta\><around|(|t|)>>,
-  then it follows that <math|\<psi\>> has a mean value of
-  <math|m<rsub|1>/m<rsub|0>> and a distribution given by
+  where
 
   <\equation>
-    p<around|(|<wide|\<psi\>|\<dot\>>|)>=<frac|1|2*q*m<rsub|0>*<sqrt|m<rsub|2>>>*<around*|{|<frac|1|m<rsub|0>>+<frac|1|q<rsup|2>*m<rsub|2>>*<around|[|<wide|\<psi\>|\<dot\>>-m<rsub|1>/m<rsub|0>|]><rsup|2>|}><rsup|-3/2>,<label|eq:psi_pdf>
+    \<psi\><around|(|t|)>=\<omega\><rsub|r>*t+\<theta\><around|(|t|)>
+  </equation>
+
+  then it follows that <math|\<psi\>> has a mean value of
+  <math|<frac|m<rsub|1>|m<rsub|0>>> and a distribution given by
+
+  <\equation>
+    <with|font-base-size|12|p<around|(|<wide|\<psi\>|\<dot\>>|)>=<frac|<around*|(|<frac|1|m<rsub|0>>+<frac|<around*|(|<wide|\<psi\>|\<dot\>><around*|(|t|)>-<frac|m<rsub|1>|m<rsub|0>>|)><rsup|2>|q<rsup|2>*m<rsub|2>>*|)><rsup|-<frac|3|2>>|2*q*m<rsub|0>*<sqrt|m<rsub|2>>>>*<label|eq:psi_pdf>
   </equation>
 
   and is thus independent of <math|\<omega\><rsub|r>>.
@@ -495,9 +648,18 @@
   term in<nbsp><eqref|eq:rice_envelope> contains a term
   <math|\<omega\><rsub|r>*t>, this is adjusted for by the fact that
   <math|<wide|\<theta\>|\<dot\>>> has a mean value of
-  <math|<around|(|m<rsub|1>/m<rsub|0>|)>-\<omega\><rsub|r>>. The true
-  \Pcarrier frequency\Q of the Rice envelope is then always
-  <math|\<omega\><rsub|1>=m<rsub|1>/m<rsub|0>>.
+
+  <\equation>
+    <frac|m<rsub|1>|m<rsub|0>>-\<omega\><rsub|r>
+  </equation>
+
+  \;
+
+  The true \Pcarrier frequency\Q of the Rice envelope is then always
+
+  <\equation>
+    \<omega\><rsub|1>=<frac|m<rsub|1>|m<rsub|0>>
+  </equation>
 
   <section|The Statistics of the Envelope of Dugundji><label|sec:dugundji>
 
@@ -507,15 +669,14 @@
   which has a jpdf given by
 
   <\equation>
-    p<around|(|<math-bf|x>|)>=<frac|1|4*\<pi\><rsup|2><around|\||R|\|><rsup|1/2>>*exp
-    <around*|{|-<frac|1|2><math-bf|x><rsup|T>R<rsup|-1><math-bf|x>|}>,<label|eq:dugundji_jpdf>
+    p<around|(|<math-bf|x>|)>=<frac|e<rsup|-<frac|<math-bf|x><rsup|T>R<rsup|-1><math-bf|x>|2>>|<sqrt|4*\<pi\><rsup|2><around|\||R|\|>>><label|eq:dugundji_jpdf>
   </equation>
 
   where the correlation matrix <math|R=<math-up|E><around|[|<math-bf|xx><rsup|T>|]>>
   can be shown from Papoulis<nbsp><cite|papoulis1984> to be
 
   <\equation>
-    R=<matrix|<tformat|<table|<row|<cell|m<rsub|0>>|<cell|0>|<cell|0>|<cell|m<rsub|2>>>|<row|<cell|0>|<cell|m<rsub|0>>|<cell|-m<rsub|2>>|<cell|0>>|<row|<cell|0>|<cell|-m<rsub|2>>|<cell|m<rsub|1>>|<cell|0>>|<row|<cell|m<rsub|2>>|<cell|0>|<cell|0>|<cell|m<rsub|1>>>>>>.<label|eq:dugundji_R>
+    R=<matrix|<tformat|<table|<row|<cell|m<rsub|0>>|<cell|0>|<cell|0>|<cell|m<rsub|2>>>|<row|<cell|0>|<cell|m<rsub|0>>|<cell|-m<rsub|2>>|<cell|0>>|<row|<cell|0>|<cell|-m<rsub|2>>|<cell|m<rsub|1>>|<cell|0>>|<row|<cell|m<rsub|2>>|<cell|0>|<cell|0>|<cell|m<rsub|1>>>>>><label|eq:dugundji_R>
   </equation>
 
   The jpdf <math|p<around|(|a,<wide|a|\<dot\>>,\<phi\>,<wide|\<phi\>|\<dot\>>|)>>,
@@ -537,8 +698,8 @@
   and performing the necessary algebra gives
 
   <\equation>
-    p<around|(|a,<wide|a|\<dot\>>,\<phi\>,<wide|\<phi\>|\<dot\>>|)>=<frac|a<rsup|2>|4*\<pi\><rsup|2>*m<rsub|0>*m<rsub|2>*q<rsup|2>>*exp
-    <around*|{|-<frac|1|2>*<around*|[|<frac|a<rsup|2>|m<rsub|0>>+<frac|1|q<rsup|2>*m<rsub|2>>*<around*|(|<wide|a|\<dot\>><rsup|2>+a<rsup|2>*<around*|[|<wide|\<phi\>|\<dot\>>-<frac|m<rsub|1>|m<rsub|0>>|]><rsup|2>|)>|]>|}>.<label|eq:dugundji_pdf>
+    <with|font-base-size|12|p<around|(|a,<wide|a|\<dot\>>,\<phi\>,<wide|\<phi\>|\<dot\>>|)>=<frac|a<around*|(|t|)><rsup|2>
+    e<rsup|-<frac|<frac|a<around*|(|t|)><rsup|2>|m<rsub|0>>+<frac|1|q<rsup|2>*m<rsub|2>>*<around*|(|<wide|a|\<dot\>><around*|(|t|)><rsup|2>+a<around*|(|t|)><rsup|2>*<around*|(|<wide|\<phi\><around*|(|t|)>|\<dot\>>-<frac|m<rsub|1>|m<rsub|0>>|)><rsup|2>|)>|2>>|4*\<pi\><rsup|2>*m<rsub|0>*m<rsub|2>*q<rsup|2>>>*<label|eq:dugundji_pdf>
   </equation>
 
   Integrating<nbsp><eqref|eq:dugundji_pdf> over <math|\<phi\>> and
@@ -555,43 +716,50 @@
   as<nbsp><cite|lin1967>
 
   <\equation>
-    \<nu\><rsub|a><rsup|+>=<big|int><rsub|0><rsup|\<infty\>><wide|a|\<dot\>>*<space|0.17em>p<around|(|a,<wide|a|\<dot\>>|)>*<space|0.17em>d*<wide|a|\<dot\>>=<frac|1|<sqrt|2*\<pi\>>>*<sqrt|<frac|m<rsub|2>|m<rsub|0>>>*q<around*|(|<frac|a|<sqrt|m<rsub|0>>>|)>*exp
-    <around*|[|-<frac|1|2><around*|(|<frac|a<rsup|2>|m<rsub|0>>|)>|]>.<label|eq:envelope_crossing>
+    \<nu\><rsub|a><rsup|+>=<big|int><rsub|0><rsup|\<infty\>><wide|a|\<dot\>>*<space|0.17em>p<around|(|a,<wide|a|\<dot\>>|)>*<space|0.17em>d*<wide|a|\<dot\>>=<frac|e<rsup|-<frac|1|2><around*|(|<frac|a<around*|(|t|)><rsup|2>|m<rsub|0>>|)>>|<sqrt|2*\<pi\>>>*<sqrt|<frac|m<rsub|2>|m<rsub|0>>>*<frac|q
+    a<around*|(|t|)>|<sqrt|m<rsub|0>>>*<label|eq:envelope_crossing>
   </equation>
 
   which can be shown to have a maximum when <math|a=<sqrt|m<rsub|0>>>, given
   by
 
   <\equation>
-    <around|(|\<nu\><rsub|a><rsup|\<dagger\>>|)><rsub|max>=<frac|1|<sqrt|2*\<pi\>>>*<sqrt|<frac|m<rsub|2>|m<rsub|0>>>*q*e<rsup|-1/2>.<label|eq:nu_a_max>
+    <around|(|\<nu\><rsub|a><rsup|\<dagger\>>|)><rsub|max>=<frac|<sqrt|<frac|m<rsub|2>|m<rsub|0>>>*q*e<rsup|-<frac|1|2>>|<sqrt|2*\<pi\>>>*<label|eq:nu_a_max>
   </equation>
 
   Integrating<nbsp><eqref|eq:rice_pa_pda> over <math|<wide|a|\<dot\>>> shows
   that <math|a<around|(|t|)>> has a Rayleigh distribution with mean value
-  <math|<sqrt|\<pi\>*m<rsub|0>/2>>. From<nbsp><eqref|eq:envelope_crossing> it
-  follows that the envelope crossing rate is a maximum at a level different
-  from the mean, which implies that the envelope process itself is by nature
-  broad banded. This agrees with results given by Rice<nbsp><cite|rice1954>
-  who calculated the peak distribution of the envelope for a special case and
-  found that a significant number of peaks occur below the mean value of the
-  envelope. It can also be noted that<nbsp><eqref|eq:envelope_crossing>
-  agrees with an asymptotic result for large <math|a> given by
-  Rice<nbsp><cite|rice1954> for the mean rate at which peaks occur above the
-  level <math|a>. The rate at which the random process <math|x<around|(|t|)>>
-  crosses a level <math|x> is known to be
+  <math|<sqrt|<frac|\<pi\>*m<rsub|0>|2>>>.
+  From<nbsp><eqref|eq:envelope_crossing> it follows that the envelope
+  crossing rate is a maximum at a level different from the mean, which
+  implies that the envelope process itself is by nature broad banded. This
+  agrees with results given by Rice<nbsp><cite|rice1954> who calculated the
+  peak distribution of the envelope for a special case and found that a
+  significant number of peaks occur below the mean value of the envelope. It
+  can also be noted that<nbsp><eqref|eq:envelope_crossing> agrees with an
+  asymptotic result for large <math|a> given by Rice<nbsp><cite|rice1954> for
+  the mean rate at which peaks occur above the level <math|a>. The rate at
+  which the random process <math|x<around|(|t|)>> crosses a level <math|x> is
+  known to be
 
   <\equation>
-    \<nu\><rsub|x><rsup|+>=<big|int><rsub|0><rsup|\<infty\>><wide|x|\<dot\>>*p<around|(|x,<wide|x|\<dot\>>|)>*d*<wide|x|\<dot\>>=<frac|1|2*\<pi\>>*<sqrt|<frac|m<rsub|2>|m<rsub|0>>>*exp
-    <around*|[|-<frac|1|2><around*|(|<frac|x<rsup|2>|m<rsub|0>>|)>|]>,<label|eq:process_crossing>
+    \<nu\><rsub|x><rsup|+>=<big|int><rsub|0><rsup|\<infty\>><wide|x|\<dot\>>*p<around|(|x,<wide|x|\<dot\>>|)>*d*<wide|x|\<dot\>>=<frac|<sqrt|<frac|m<rsub|2>|m<rsub|0>>>*e<rsup|-<frac|1|2><around*|(|<frac|x<around*|(|t|)><rsup|2>|m<rsub|0>>|)>>|2*\<pi\>><label|eq:process_crossing>
   </equation>
 
   which has a maximum when <math|x=0>, giving
-  <math|<around|(|\<nu\><rsub|x><rsup|+>|)><rsub|max>=<around|(|1/2*\<pi\>|)><sqrt|m<rsub|2>/m<rsub|0>>>.
+
+  \ 
+
+  <\equation>
+    <around|(|\<nu\><rsub|x><rsup|+>|)><rsub|max>=<frac|<sqrt|<frac|m<rsub|2>|m<rsub|0>>>|2
+    \<pi\>>
+  </equation>
+
   A measure of the rate at which the envelope varies as compared to the
   process <math|x<around|(|t|)>> is then
 
   <\equation>
-    <frac|<around|(|\<nu\><rsub|a><rsup|+>|)><rsub|max>|<around|(|\<nu\><rsub|x><rsup|+>|)><rsub|max>>=<sqrt|2*\<pi\>>*q*e<rsup|-1/2>\<simeq\>1.52*q.<label|eq:envelope_vs_process>
+    <frac|<around|(|\<nu\><rsub|a><rsup|+>|)><rsub|max>|<around|(|\<nu\><rsub|x><rsup|+>|)><rsub|max>>=<sqrt|2*\<pi\>>*q*e<rsup|-<frac|1|2>>\<simeq\>1.52*q<label|eq:envelope_vs_process>
   </equation>
 
   It follows that the envelope process will be slowly varying for narrow
@@ -608,8 +776,12 @@
   (<math|y=<wide|x|\<dot\>>/\<omega\><rsub|0>>):
 
   <\equation>
-    x<around|(|t|)>=a<around|(|t|)>*cos \<phi\><around|(|t|)>,<space|1em><frac|<wide|x|\<dot\>><around|(|t|)>|\<omega\><rsub|0>>=a<around|(|t|)>*sin
-    \<phi\><around|(|t|)>.<label|eq:crandall_mark_amp_phase>
+    x<around|(|t|)>=a<around|(|t|)>*cos \<phi\><around|(|t|)><label|eq:crandall_mark_amp_phase>
+  </equation>
+
+  <\equation>
+    <frac|<wide|x|\<dot\>><around|(|t|)>|\<omega\><rsub|0>>=a<around|(|t|)>*sin
+    \<phi\><around|(|t|)>
   </equation>
 
   Differentiating these two equations gives
@@ -630,7 +802,7 @@
 
   <\equation>
     <wide|\<phi\>|\<dot\>>=-\<omega\><rsub|0>+<frac|<wide|a|\<dot\>>|a>*cot
-    \<phi\>.<label|eq:crandall_mark_dphi>
+    \<phi\><label|eq:crandall_mark_dphi>
   </equation>
 
   By using<nbsp><eqref|eq:crandall_mark_dphi>,
@@ -638,23 +810,33 @@
   can now be written as
 
   <\equation>
-    x=a*cos \<phi\>,<space|1em><frac|<wide|x|\<dot\>>|\<omega\><rsub|0>>=a*sin
-    \<phi\>,<space|1em><frac|<wide|x|\<ddot\>>|\<omega\><rsub|0>>=<wide|a|\<dot\>>*<around|(|sin
-    \<phi\>+cot \<phi\>*cos \<phi\>|)>-a*\<omega\><rsub|0>*cos
-    \<phi\>.<label|eq:crandall_mark_reduced>
+    x=a*cos \<phi\><label|eq:crandall_mark_reduced>
+  </equation>
+
+  <\equation>
+    <frac|<wide|x|\<dot\>>|\<omega\><rsub|0>>=a*sin \<phi\>
+  </equation>
+
+  <\equation>
+    <frac|<wide|x|\<ddot\>>|\<omega\><rsub|0>>=<wide|a|\<dot\>>*<around|(|sin
+    \<phi\>+cot \<phi\>*cos \<phi\>|)>-a*\<omega\><rsub|0>*cos \<phi\>
   </equation>
 
   The statistics of the envelope of Crandall and Mark can now be determined
   by using<nbsp><eqref|eq:crandall_mark_reduced> to transform the jpdf of the
-  variables <math|<math-bf|x>=<around|(|x,<wide|x|\<dot\>>/\<omega\><rsub|0>,<wide|x|\<ddot\>>/\<omega\><rsub|0>|)><rsup|T>>
-  to the new variables <math|<around|(|a,<wide|a|\<dot\>>,\<phi\>|)>>. In the
-  case where <math|x<around|(|t|)>> is Gaussian, the variables
+  variables
+
+  <\equation>
+    <math-bf|x>=<around|(|x,<wide|x|\<dot\>>/\<omega\><rsub|0>,<wide|x|\<ddot\>>/\<omega\><rsub|0>|)><rsup|T>
+  </equation>
+
+  \ to the new variables <math|<around|(|a,<wide|a|\<dot\>>,\<phi\>|)>>. In
+  the case where <math|x<around|(|t|)>> is Gaussian, the variables
   <math|<around|(|x,<wide|x|\<dot\>>/\<omega\><rsub|0>,<wide|x|\<ddot\>>/\<omega\><rsub|0>|)>>
   have a joint Gaussian distribution given by
 
   <\equation>
-    p<around|(|<math-bf|x>|)>=<frac|1|<around|(|2*\<pi\>|)><rsup|3/2><around|\||P|\|><rsup|1/2>>*exp
-    <around*|{|-<frac|1|2><math-bf|x><rsup|T>P<rsup|-1><math-bf|x>|}>,<label|eq:crandall_mark_jpdf>
+    p<around|(|<math-bf|x>|)>=<frac|e<rsup|-<frac|<math-bf|x><rsup|T>P<rsup|-1><math-bf|x>|2>>|<around|(|2*\<pi\>|)><rsup|<frac|3|2>><sqrt|<around|\||P|\|>>>*<label|eq:crandall_mark_jpdf>
   </equation>
 
   where the correlation matrix <math|P=<math-up|E><around|[|<math-bf|xx><rsup|T>|]>>
@@ -670,7 +852,11 @@
 
   <\equation>
     p<around|(|a,<wide|a|\<dot\>>,\<phi\>|)>=<around*|\||det
-    <around*|[|<frac|\<partial\><around|(|x,<wide|x|\<dot\>>/\<omega\><rsub|0>,<wide|x|\<ddot\>>/\<omega\><rsub|0>|)>|\<partial\><around|(|a,<wide|a|\<dot\>>,\<phi\>|)>>|]>|\|>*p<around|(|<math-bf|x>|)>=<around|\||J|\|>*p<around|(|<math-bf|x>|)>.<label|eq:crandall_mark_jacobian>
+    <around*|[|<frac|\<partial\><around|(|x,<wide|x|\<dot\>>/\<omega\><rsub|0>,<wide|x|\<ddot\>>/\<omega\><rsub|0>|)>|\<partial\><around|(|a,<wide|a|\<dot\>>,\<phi\>|)>>|]>|\|>*<label|eq:crandall_mark_jacobian>
+  </equation>
+
+  <\equation>
+    p<around|(|<math-bf|x>|)>=<around|\||J|\|>*p<around|(|<math-bf|x>|)>
   </equation>
 
   Upon using<nbsp><eqref|eq:crandall_mark_reduced> to calculate the partial
@@ -683,16 +869,20 @@
 
   <\equation>
     p<around|(|a,<wide|a|\<dot\>>,\<phi\>|)>=<frac|a<around|\||csc
-    \<phi\>|\|>|<around|(|2*\<pi\>|)><rsup|3/2>*m<rsub|0>*\<sigma\>*\<varepsilon\>>*exp
-    <around*|{|-<around*|[|<frac|a<rsup|2>|2*m<rsub|0>>+<frac|<wide|a|\<dot\>><rsup|2>*csc<rsup|2>
-    \<phi\>|2*\<sigma\><rsup|2>*\<varepsilon\><rsup|2>>|]>|}>,<label|eq:crandall_mark_pdf>
+    \<phi\>|\|>|<around|(|2*\<pi\>|)><rsup|3/2>*m<rsub|0>*\<sigma\>*\<varepsilon\>>*e<rsup|-<around*|[|<frac|a<rsup|2>|2*m<rsub|0>>+<frac|<wide|a|\<dot\>><rsup|2>*csc<rsup|2>
+    \<phi\>|2*\<sigma\><rsup|2>*\<varepsilon\><rsup|2>>|]>><label|eq:crandall_mark_pdf>
   </equation>
 
-  where <math|\<sigma\><rsup|2>=<around|(|m<rsub|4>*m<rsub|0>|)>/m<rsub|2>>
-  and <math|\<varepsilon\>> is a second spectral width parameter given by
+  where
 
   <\equation>
-    \<varepsilon\><rsup|2>=1-<frac|m<rsub|2><rsup|2>|m<rsub|0>*m<rsub|4>>.<label|eq:epsilon_def>
+    \<sigma\><rsup|2>=<around|(|m<rsub|4>*m<rsub|0>|)>/m<rsub|2>
+  </equation>
+
+  \ and <math|\<varepsilon\>> is a second spectral width parameter given by
+
+  <\equation>
+    \<varepsilon\><rsup|2>=1-<frac|m<rsub|2><rsup|2>|m<rsub|0>*m<rsub|4>><label|eq:epsilon_def>
   </equation>
 
   Integrating<nbsp><eqref|eq:crandall_mark_pdf> over <math|<wide|a|\<dot\>>>
@@ -700,7 +890,7 @@
 
   <\equation>
     p<around|(|a,\<phi\>|)>=<frac|a|2*\<pi\>*m<rsub|0>>*exp
-    <around*|{|-<frac|a<rsup|2>|2*m<rsub|0>>|}>,<label|eq:crandall_mark_pa_phi>
+    <around*|{|-<frac|a<rsup|2>|2*m<rsub|0>>|}><label|eq:crandall_mark_pa_phi>
   </equation>
 
   from which it can be concluded that <math|a> has a Rayleigh distribution
@@ -710,7 +900,7 @@
   envelope crosses a level <math|a> with positive slope is given by
 
   <\equation>
-    \<nu\><rsub|a><rsup|+>=<big|int><rsub|0><rsup|2*\<pi\>><big|int><rsub|0><rsup|\<infty\>><wide|a|\<dot\>>*p<around|(|a,<wide|a|\<dot\>>,\<phi\>|)>*d*<wide|a|\<dot\>>*d*\<phi\>.<label|eq:crandall_mark_crossing>
+    \<nu\><rsub|a><rsup|+>=<big|int><rsub|0><rsup|2*\<pi\>><big|int><rsub|0><rsup|\<infty\>><wide|a|\<dot\>>*p<around|(|a,<wide|a|\<dot\>>,\<phi\>|)>*d*<wide|a|\<dot\>>*d*\<phi\><label|eq:crandall_mark_crossing>
   </equation>
 
   By using<nbsp><eqref|eq:crandall_mark_pdf> and performing the integration
@@ -719,7 +909,7 @@
 
   <\equation>
     \<nu\><rsub|a><rsup|+>=<frac|4|<around|(|2*\<pi\>|)><rsup|3/2>>*<sqrt|<frac|m<rsub|4>|m<rsub|2>>>*\<varepsilon\><around*|(|<frac|a|<sqrt|m<rsub|0>>>|)>*exp
-    <around*|{|-<frac|1|2><around*|(|<frac|a<rsup|2>|m<rsub|0>>|)>|}>.<label|eq:crandall_mark_nu_a>
+    <around*|{|-<frac|1|2><around*|(|<frac|a<rsup|2>|m<rsub|0>>|)>|}><label|eq:crandall_mark_nu_a>
   </equation>
 
   This equation bears a striking resemblance
@@ -737,14 +927,40 @@
   As an example, consider a narrow band random process having a spectrum of
   width <math|2*\<Delta\>> centred on a frequency <math|\<omega\>>. Correct
   to order <math|<around|(|\<Delta\>/\<omega\>|)><rsup|2>>, the moments of
-  this spectrum are given by <math|m<rsub|0>=2*\<Delta\>>,
-  <math|m<rsub|1>=2*\<Delta\>*\<omega\>>,
-  <math|m<rsub|2>=2*\<Delta\>*\<omega\><rsup|2>*<around|[|1+<frac|1|3>*<around|(|\<Delta\>/\<omega\>|)><rsup|2>|]>>,
-  and <math|m<rsub|4>=2*\<Delta\>*\<omega\><rsup|4>*<around|[|1+2*<around|(|\<Delta\>/\<omega\>|)><rsup|2>|]>>.
-  Inserting these expressions into<nbsp><eqref|eq:q_def>
-  and<nbsp><eqref|eq:epsilon_def> gives <math|\<varepsilon\><rsup|2>=4/3*<around|(|\<Delta\>/\<omega\>|)><rsup|2>>
-  and <math|q<rsup|2>=1/3*<around|(|\<Delta\>/\<omega\>|)><rsup|2>>, from
-  which it follows that <math|\<varepsilon\>=2*q>.
+  this spectrum are given by\ 
+
+  <\equation>
+    m<rsub|0>=2*\<Delta\>
+  </equation>
+
+  <\equation>
+    <text|<math|m<rsub|1>=2*\<Delta\>*\<omega\>>>
+  </equation>
+
+  <\equation>
+    m<rsub|2>=2*\<Delta\>*\<omega\><rsup|2>*<around|[|1+<frac|1|3>*<around|(|\<Delta\>/\<omega\>|)><rsup|2>|]>
+  </equation>
+
+  , and
+
+  <\equation>
+    m<rsub|4>=2*\<Delta\>*\<omega\><rsup|4>*<around|[|1+2*<around|(|\<Delta\>/\<omega\>|)><rsup|2>|]>
+  </equation>
+
+  . Inserting these expressions into<nbsp><eqref|eq:q_def>
+  and<nbsp><eqref|eq:epsilon_def> gives
+
+  <\equation>
+    \<varepsilon\><rsup|2>=4/3*<around|(|\<Delta\>/\<omega\>|)><rsup|2>
+  </equation>
+
+  \ and
+
+  <\equation>
+    q<rsup|2>=1/3*<around|(|\<Delta\>/\<omega\>|)><rsup|2>
+  </equation>
+
+  , from which it follows that <math|\<varepsilon\>=2*q>.
   Equation<nbsp><eqref|eq:crossing_ratio> then predicts that the ratio of the
   two crossing rates is <math|4/\<pi\>\<simeq\>1.27>. Thus for this
   particular type of spectrum the crossing rates of the Crandall and Mark
@@ -768,7 +984,7 @@
   <math|<around|(|a,<wide|\<phi\>|\<dot\>>,\<phi\>|)>>:
 
   <\equation>
-    p<around|(|a,<wide|\<phi\>|\<dot\>>,\<phi\>|)>=<around*|\||<frac|\<partial\>*<wide|a|\<dot\>>|\<partial\>*<wide|\<phi\>|\<dot\>>>|\|>*p<around|(|a,<wide|a|\<dot\>>,\<phi\>|)>.<label|eq:crandall_mark_pdf_dphi>
+    p<around|(|a,<wide|\<phi\>|\<dot\>>,\<phi\>|)>=<around*|\||<frac|\<partial\>*<wide|a|\<dot\>>|\<partial\>*<wide|\<phi\>|\<dot\>>>|\|>*p<around|(|a,<wide|a|\<dot\>>,\<phi\>|)><label|eq:crandall_mark_pdf_dphi>
   </equation>
 
   Using<nbsp><eqref|eq:crandall_mark_dphi> to evaluate the partial derivative
@@ -778,15 +994,19 @@
     p<around|(|a,<wide|\<phi\>|\<dot\>>,\<phi\>|)>=<frac|a<rsup|2><around|\||sec
     \<phi\>|\|>|<around|(|2*\<pi\>|)><rsup|3/2>*m<rsub|0>*\<sigma\>*\<varepsilon\>>*exp
     <around*|{|-<around*|[|<frac|a<rsup|2>|2*m<rsub|0>>+<frac|a<rsup|2>*<around|(|<wide|\<phi\>|\<dot\>>+\<omega\><rsub|0>|)><rsup|2>*sec<rsup|2>
-    \<phi\>|2*\<sigma\><rsup|2>*\<varepsilon\><rsup|2>>|]>|}>.<label|eq:crandall_mark_pdf_dphi2>
+    \<phi\>|2*\<sigma\><rsup|2>*\<varepsilon\><rsup|2>>|]>|}><label|eq:crandall_mark_pdf_dphi2>
   </equation>
 
   Integrating the above equation over <math|a> and <math|\<phi\>> gives
 
   <\equation>
-    p<around|(|<wide|\<phi\>|\<dot\>>|)>=<frac|1|4*\<pi\>>*<sqrt|<frac|m<rsub|2>|m<rsub|4>>>*<frac|1|\<varepsilon\>>*\<Phi\>*<around*|[|<frac|<around|(|<wide|\<phi\>|\<dot\>>+\<omega\><rsub|0>|)>|\<varepsilon\>>*<sqrt|<frac|m<rsub|2>|m<rsub|4>>>|]>,<space|1em>\<Phi\><around|[|m|]>=<big|int><rsub|0><rsup|2*\<pi\>><frac|<around|\||sec
-    \<phi\>|\|>*d*\<phi\>|<around|(|1+m<rsup|2>*sec<rsup|2>
-    \<phi\>|)><rsup|3/2>>.<label|eq:crandall_mark_pdf_dphi3>
+    p<around|(|<wide|\<phi\>|\<dot\>>|)>=<frac|1|4*\<pi\>>*<sqrt|<frac|m<rsub|2>|m<rsub|4>>>*<frac|1|\<varepsilon\>>*\<Phi\>*<around*|[|<frac|<around|(|<wide|\<phi\>|\<dot\>>+\<omega\><rsub|0>|)>|\<varepsilon\>>*<sqrt|<frac|m<rsub|2>|m<rsub|4>>>|]><label|eq:crandall_mark_pdf_dphi3>
+  </equation>
+
+  <\equation>
+    \<Phi\><around|[|m|]>=<big|int><rsub|0><rsup|2*\<pi\>><frac|<around|\||sec
+    \<phi\>|\|>*|<around|(|1+m<rsup|2>*sec<rsup|2>
+    \<phi\>|)><rsup|3/2>>d*\<phi\>
   </equation>
 
   It can be seen from the above that the mean value of
@@ -799,9 +1019,17 @@
   <math|<wide|\<phi\>|\<dot\>>> in the form
 
   <\align>
-    <tformat|<table|<row|<cell|P<around|(|<wide|\<phi\>|\<dot\>>|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|<wide|\<phi\>|\<dot\>>>p<around|(|<wide|\<phi\>|\<dot\>>|)>*d*<wide|\<phi\>|\<dot\>>=<frac|1|4*\<pi\>>*<around*|{|<frac|4*x|<sqrt|1+x<rsup|2>>>*k<around*|(|<frac|1|<sqrt|1+x<rsup|2>>>|)>+2*\<pi\>|}>,<eq-number><label|eq:crandall_mark_cdf>>>|<row|<cell|x>|<cell|=<sqrt|<frac|m<rsub|2>|m<rsub|4>>>*<frac|<around|(|<wide|\<phi\>|\<dot\>>+\<omega\><rsub|0>|)>|\<varepsilon\>>,<space|1em>k<around|(|m|)>=<big|int><rsub|0><rsup|\<pi\>/2><frac|d*\<phi\>|<sqrt|1-m<rsup|2>*sin<rsup|2>
-    \<phi\>>>,<eq-number><label|eq:crandall_mark_elliptic>>>>>
+    <tformat|<table|<row|<cell|>|<cell|P<around|(|<wide|\<phi\>|\<dot\>>|)>=<big|int><rsub|-\<infty\>><rsup|<wide|\<phi\>|\<dot\>>>p<around|(|<wide|\<phi\>|\<dot\>>|)>*d*<wide|\<phi\>|\<dot\>>=<frac|1|4*\<pi\>>*<around*|{|<frac|4*x|<sqrt|1+x<rsup|2>>>*k<around*|(|<frac|1|<sqrt|1+x<rsup|2>>>|)>+2*\<pi\>|}><eq-number><label|eq:crandall_mark_cdf>>>>>
   </align>
+
+  <\equation>
+    x=<sqrt|<frac|m<rsub|2>|m<rsub|4>>>*<frac|<around|(|<wide|\<phi\>|\<dot\>>+\<omega\><rsub|0>|)>|\<varepsilon\>><label|eq:crandall_mark_elliptic>
+  </equation>
+
+  <\equation>
+    k<around|(|m|)>=<big|int><rsub|0><rsup|\<pi\>/2><frac|1|<sqrt|1-m<rsup|2>*sin<rsup|2>
+    \<phi\>>>d*\<phi\>
+  </equation>
 
   where <math|k<around|(|m|)>> is the complete elliptic integral of the first
   kind whose values are tabulated in standard mathematical
@@ -932,94 +1160,94 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-10|<tuple|5|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-2|<tuple|1|2|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-3|<tuple|2|3|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-4|<tuple|2.1|3|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-5|<tuple|2.2|4|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-6|<tuple|3|6|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-7|<tuple|4|8|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-8|<tuple|5|9|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-9|<tuple|6|12|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-abramowitz1965|<tuple|abramowitz1965|14|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-cramer1967|<tuple|cramer1967|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-crandall1963|<tuple|crandall1963|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-dugundji1958|<tuple|dugundji1958|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-krenk1983|<tuple|krenk1983|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-langley1984|<tuple|langley1984|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-lin1967|<tuple|lin1967|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-lin1976|<tuple|lin1976|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-longuet-higgins1974|<tuple|longuet-higgins1974|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-lyon1961|<tuple|lyon1961|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-naess1982|<tuple|naess1982|14|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-nigam1983|<tuple|nigam1983|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-papoulis1984|<tuple|papoulis1984|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-rice1954|<tuple|rice1954|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-roberts1976|<tuple|roberts1976|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-tayfun1984|<tuple|tayfun1984|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-yang1972|<tuple|yang1972|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:amp_phase|<tuple|2|3|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:complex_process|<tuple|1|3|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:cond_mean_var|<tuple|5|3|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:cond_mean_var2|<tuple|7|4|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:crandall_mark_P|<tuple|45|10|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:crandall_mark_amp_phase|<tuple|39|9|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:crandall_mark_cdf|<tuple|56|12|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:crandall_mark_crossing|<tuple|50|11|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:crandall_mark_ddx|<tuple|41|9|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:crandall_mark_dphi|<tuple|42|10|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:crandall_mark_dx|<tuple|40|9|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:crandall_mark_elliptic|<tuple|57|12|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:crandall_mark_jacobian|<tuple|46|10|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:crandall_mark_jpdf|<tuple|44|10|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:crandall_mark_nu_a|<tuple|51|11|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:crandall_mark_pa_phi|<tuple|49|11|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:crandall_mark_pdf|<tuple|47|10|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:crandall_mark_pdf_dphi|<tuple|53|12|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:crandall_mark_pdf_dphi2|<tuple|54|12|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:crandall_mark_pdf_dphi3|<tuple|55|12|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:crandall_mark_reduced|<tuple|43|10|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:crossing_ratio|<tuple|52|11|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:dugundji_R|<tuple|32|8|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:dugundji_jacobian|<tuple|33|8|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:dugundji_jpdf|<tuple|31|8|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:dugundji_pdf|<tuple|34|8|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:envelope_crossing|<tuple|35|8|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:envelope_defs|<tuple|4|3|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:envelope_vs_process|<tuple|38|9|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:epsilon_def|<tuple|48|10|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:fourier_series|<tuple|9|4|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:hilbert|<tuple|3|3|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:ic_is_z|<tuple|19|6|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:ic_x_hatx|<tuple|22|6|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:im_z|<tuple|16|5|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:is_x_hatx|<tuple|23|6|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:jacobian|<tuple|25|7|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:jpdf_I|<tuple|21|6|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:nu_a_max|<tuple|36|9|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:process_crossing|<tuple|37|9|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:psi_def|<tuple|29|7|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:psi_pdf|<tuple|30|7|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:q_def|<tuple|8|4|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:rice_S_matrix|<tuple|24|6|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:rice_dugundji_equiv|<tuple|20|6|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:rice_envelope|<tuple|14|5|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:rice_ic_b|<tuple|12|5|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:rice_ic_is_a|<tuple|11|5|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:rice_is_c|<tuple|13|5|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:rice_joint_pdf|<tuple|26|7|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:rice_pa_pda|<tuple|27|7|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:rice_ptheta_pdt|<tuple|28|7|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:rice_rewrite|<tuple|18|6|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:shifted_fourier|<tuple|10|5|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:spectral_moments|<tuple|6|4|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:z_process|<tuple|15|5|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:z_x_hatx|<tuple|17|5|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|fig:envelope|<tuple|1|2|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|sec:crandall_mark|<tuple|5|9|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|sec:dugundji|<tuple|4|8|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|sec:rice|<tuple|3|6|../.TeXmacs/texts/scratch/no_name_4.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-10|<tuple|5|17>>
+    <associate|auto-2|<tuple|1|2>>
+    <associate|auto-3|<tuple|2|3>>
+    <associate|auto-4|<tuple|2.1|3>>
+    <associate|auto-5|<tuple|2.2|6>>
+    <associate|auto-6|<tuple|3|7>>
+    <associate|auto-7|<tuple|4|10>>
+    <associate|auto-8|<tuple|5|12>>
+    <associate|auto-9|<tuple|6|16>>
+    <associate|bib-abramowitz1965|<tuple|abramowitz1965|17>>
+    <associate|bib-cramer1967|<tuple|cramer1967|17>>
+    <associate|bib-crandall1963|<tuple|crandall1963|17>>
+    <associate|bib-dugundji1958|<tuple|dugundji1958|17>>
+    <associate|bib-krenk1983|<tuple|krenk1983|17>>
+    <associate|bib-langley1984|<tuple|langley1984|17>>
+    <associate|bib-lin1967|<tuple|lin1967|17>>
+    <associate|bib-lin1976|<tuple|lin1976|17>>
+    <associate|bib-longuet-higgins1974|<tuple|longuet-higgins1974|17>>
+    <associate|bib-lyon1961|<tuple|lyon1961|17>>
+    <associate|bib-naess1982|<tuple|naess1982|17>>
+    <associate|bib-nigam1983|<tuple|nigam1983|17>>
+    <associate|bib-papoulis1984|<tuple|papoulis1984|17>>
+    <associate|bib-rice1954|<tuple|rice1954|17>>
+    <associate|bib-roberts1976|<tuple|roberts1976|17>>
+    <associate|bib-tayfun1984|<tuple|tayfun1984|17>>
+    <associate|bib-yang1972|<tuple|yang1972|17>>
+    <associate|eq:amp_phase|<tuple|2|3>>
+    <associate|eq:complex_process|<tuple|1|3>>
+    <associate|eq:cond_mean_var|<tuple|14|4>>
+    <associate|eq:cond_mean_var2|<tuple|23|5>>
+    <associate|eq:crandall_mark_P|<tuple|87|13>>
+    <associate|eq:crandall_mark_amp_phase|<tuple|77|12>>
+    <associate|eq:crandall_mark_cdf|<tuple|107|16>>
+    <associate|eq:crandall_mark_crossing|<tuple|94|14>>
+    <associate|eq:crandall_mark_ddx|<tuple|80|12>>
+    <associate|eq:crandall_mark_dphi|<tuple|81|12>>
+    <associate|eq:crandall_mark_dx|<tuple|79|12>>
+    <associate|eq:crandall_mark_elliptic|<tuple|108|16>>
+    <associate|eq:crandall_mark_jacobian|<tuple|88|13>>
+    <associate|eq:crandall_mark_jpdf|<tuple|86|13>>
+    <associate|eq:crandall_mark_nu_a|<tuple|95|14>>
+    <associate|eq:crandall_mark_pa_phi|<tuple|93|14>>
+    <associate|eq:crandall_mark_pdf|<tuple|90|13>>
+    <associate|eq:crandall_mark_pdf_dphi|<tuple|103|15>>
+    <associate|eq:crandall_mark_pdf_dphi2|<tuple|104|15>>
+    <associate|eq:crandall_mark_pdf_dphi3|<tuple|105|15>>
+    <associate|eq:crandall_mark_reduced|<tuple|82|12>>
+    <associate|eq:crossing_ratio|<tuple|96|14>>
+    <associate|eq:dugundji_R|<tuple|69|10>>
+    <associate|eq:dugundji_jacobian|<tuple|70|10>>
+    <associate|eq:dugundji_jpdf|<tuple|68|10>>
+    <associate|eq:dugundji_pdf|<tuple|71|11>>
+    <associate|eq:envelope_crossing|<tuple|72|11>>
+    <associate|eq:envelope_defs|<tuple|11|4>>
+    <associate|eq:envelope_vs_process|<tuple|76|12>>
+    <associate|eq:epsilon_def|<tuple|92|13>>
+    <associate|eq:fourier_series|<tuple|28|6>>
+    <associate|eq:hilbert|<tuple|8|3>>
+    <associate|eq:ic_is_z|<tuple|43|7>>
+    <associate|eq:ic_x_hatx|<tuple|46|8>>
+    <associate|eq:im_z|<tuple|40|7>>
+    <associate|eq:is_x_hatx|<tuple|47|8>>
+    <associate|eq:jacobian|<tuple|55|8>>
+    <associate|eq:jpdf_I|<tuple|45|7>>
+    <associate|eq:nu_a_max|<tuple|73|11>>
+    <associate|eq:process_crossing|<tuple|74|11>>
+    <associate|eq:psi_def|<tuple|63|9>>
+    <associate|eq:psi_pdf|<tuple|65|10>>
+    <associate|eq:q_def|<tuple|25|5>>
+    <associate|eq:rice_S_matrix|<tuple|52|8>>
+    <associate|eq:rice_dugundji_equiv|<tuple|44|7>>
+    <associate|eq:rice_envelope|<tuple|35|6>>
+    <associate|eq:rice_ic_b|<tuple|33|6>>
+    <associate|eq:rice_ic_is_a|<tuple|32|6>>
+    <associate|eq:rice_is_c|<tuple|34|6>>
+    <associate|eq:rice_joint_pdf|<tuple|60|9>>
+    <associate|eq:rice_pa_pda|<tuple|61|9>>
+    <associate|eq:rice_ptheta_pdt|<tuple|62|9>>
+    <associate|eq:rice_rewrite|<tuple|42|7>>
+    <associate|eq:shifted_fourier|<tuple|31|6>>
+    <associate|eq:spectral_moments|<tuple|22|5>>
+    <associate|eq:z_process|<tuple|38|7>>
+    <associate|eq:z_x_hatx|<tuple|41|7>>
+    <associate|fig:envelope|<tuple|1|2>>
+    <associate|sec:crandall_mark|<tuple|5|12>>
+    <associate|sec:dugundji|<tuple|4|10>>
+    <associate|sec:rice|<tuple|3|7>>
   </collection>
 </references>
 
