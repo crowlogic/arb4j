@@ -91,12 +91,12 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
   public Node<D, R, F> simplify()
   {
     super.simplify();
-    if (left.isLiteralConstant() && left.toString().equals("0"))
+    if (left.isConstant() && left.toString().equals("0"))
     {
       return right.neg();
     }
 
-    if (right.isLiteralConstant() && right.toString().equals("0"))
+    if (right.isConstant() && right.toString().equals("0"))
     {
       return left;
     }

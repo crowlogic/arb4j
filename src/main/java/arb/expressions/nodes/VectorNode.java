@@ -231,9 +231,9 @@ public class VectorNode<D, R, F extends Function<? extends D, ? extends R>> exte
   }
 
   @Override
-  public boolean isLiteralConstant()
+  public boolean isConstant()
   {
-    return elements.stream().allMatch(Node::isLiteralConstant);
+    return elements.stream().allMatch(Node::isConstant);
   }
 
 

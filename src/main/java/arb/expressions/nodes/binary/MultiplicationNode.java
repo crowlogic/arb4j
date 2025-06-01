@@ -55,8 +55,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   {
     super.simplify();
 
-    boolean leftIsConstant  = left.isLiteralConstant();
-    boolean rightIsConstant = right.isLiteralConstant();
+    boolean leftIsConstant  = left.isConstant();
+    boolean rightIsConstant = right.isConstant();
 
     if (leftIsConstant)
     {

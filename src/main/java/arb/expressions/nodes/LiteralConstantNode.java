@@ -396,7 +396,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   }
 
   @Override
-  public boolean isLiteralConstant()
+  public boolean isConstant()
   {
     return true;
   }

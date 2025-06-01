@@ -336,7 +336,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public boolean isLiteralConstant()
+  public boolean isConstant()
   {
     return false;
   }

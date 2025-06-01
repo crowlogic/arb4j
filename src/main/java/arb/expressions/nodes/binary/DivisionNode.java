@@ -122,7 +122,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   private boolean isOneOverSqrtOneMinusXSquared(VariableNode<D, R, F> variable)
   {
     // Check if left is 1 and right is √(1-x²)
-    if (!left.isLiteralConstant() || !"1".equals(left.toString()))
+    if (!left.isConstant() || !"1".equals(left.toString()))
       return false;
 
     if (!(right instanceof FunctionNode sqrtNode))
@@ -138,7 +138,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   private boolean isOneOverOnePlusXSquared(VariableNode<D, R, F> variable)
   {
     // Check if left is 1 and right is (1+x²)
-    if (!left.isLiteralConstant() || !"1".equals(left.toString()))
+    if (!left.isConstant() || !"1".equals(left.toString()))
       return false;
 
     return isOnePlusXSquaredPattern(right, variable);
@@ -165,7 +165,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (!(node instanceof ExponentiationNode pow))
       return false;
 
-    return pow.left.isVariableNamed(variable.getName()) && pow.right.isLiteralConstant()
+    return pow.left.isVariableNamed(variable.getName()) && pow.right.isConstant()
                   && "2".equals(pow.right.toString());
   }
 

@@ -466,11 +466,6 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     loadFieldFromThis(mv, factorValueFieldName, generatedType);
   }
 
-  public MethodVisitor loadFieldFromThis(MethodVisitor mv, String fieldName, Class<?> type)
-  {
-    return Compiler.getFieldFromThis(mv, functionClass, fieldName, type);
-  }
-
   protected void loadIndex(MethodVisitor mv)
   {
     loadFieldFromThis(mv, indexVariableFieldName, Integer.class);
@@ -759,10 +754,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   @Override
-  public boolean isLiteralConstant()
+  public boolean isConstant()
   {
-    return this.endIndex.isLiteralConstant() && startIndex.isLiteralConstant()
-                  && getBranches().stream().allMatch(Node::isLiteralConstant);
+    return this.endIndex.isConstant() && startIndex.isConstant()
+                  && getBranches().stream().allMatch(Node::isConstant);
 
   }
 

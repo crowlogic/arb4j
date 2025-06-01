@@ -177,8 +177,7 @@ public class  IntegralNode<D, C, F extends Function<? extends D, ? extends C>> e
       expression.require(')');
     }
 
-    var type = type();
-    assignFieldNames(type);
+    assignFieldNames(type());
   }
 
   public IntegralNode(Expression<D, C, F> expression,
@@ -215,10 +214,7 @@ public class  IntegralNode<D, C, F extends Function<? extends D, ? extends C>> e
     invokeMethod(mv, Type.getInternalName(Function.class), "evaluate", integralEvaluateMethodSignature, true);
   }
 
-  public MethodVisitor loadFieldFromThis(MethodVisitor mv, String fieldName, Class<?> type)
-  {
-    return getFieldFromThis(mv, expression.className, fieldName, type);
-  }
+
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
@@ -386,10 +382,10 @@ public class  IntegralNode<D, C, F extends Function<? extends D, ? extends C>> e
   }
 
   @Override
-  public boolean isLiteralConstant()
+  public boolean isConstant()
   {
-    return integrandNode.isLiteralConstant() && lowerLimitNode.isLiteralConstant()
-                  && upperLimitNode.isLiteralConstant();
+    return integrandNode.isConstant() && lowerLimitNode.isConstant()
+                  && upperLimitNode.isConstant();
   }
 
 }

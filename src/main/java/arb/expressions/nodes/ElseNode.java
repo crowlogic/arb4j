@@ -116,7 +116,7 @@ public class ElseNode<D, R, F extends Function<? extends D, ? extends R>> extend
   }
 
   @Override
-  public boolean isLiteralConstant()
+  public boolean isConstant()
   {
     assert false : "maybe";
     return true;
