@@ -339,7 +339,7 @@
     and inner product:
 
     <\equation>
-      <inner|f,g|_><Hilbert>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|t|)><wide|g<around|(|t|)>|\<bar\>>d*t=<frac|1|2*\<pi\>>*<big|int><rsub|-\<pi\>><rsup|\<pi\>><wide|f|^><around|(|\<omega\>|)><wide|<wide|g|^><around|(|\<omega\>|)>|\<bar\>>d*\<omega\>
+      <inner|f|g><rsub|<Hilbert>>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|t|)><wide|g<around|(|t|)>|\<bar\>>d*t=<frac|1|2*\<pi\>>*<big|int><rsub|-\<pi\>><rsup|\<pi\>><wide|f|^><around|(|\<omega\>|)><wide|<wide|g|^><around|(|\<omega\>|)>|\<bar\>>d*\<omega\>
     </equation>
   </theorem>
 
@@ -347,7 +347,7 @@
     For any <math|\<pi\>>-bandlimited function <math|f>:
 
     <\align>
-      <tformat|<table|<row|<cell|f<around|(|t|)>>|<cell|=<frac|1|2*\<pi\>>*<big|int><rsub|-\<pi\>><rsup|\<pi\>><wide|f|^><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*\<omega\><eq-number>>>|<row|<cell|>|<cell|=<frac|1|2*\<pi\>>*<big|int><rsub|-\<pi\>><rsup|\<pi\>><around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|s|)>*e<rsup|-i*\<omega\>*s>*d*s|)>*e<rsup|i*\<omega\>*t>*d*\<omega\><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|s|)>*<around*|(|<frac|1|2*\<pi\>>*<big|int><rsub|-\<pi\>><rsup|\<pi\>>e<rsup|i*\<omega\>*<around|(|t-s|)>>*d*\<omega\>|)>*d*s<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|s|)><sinc><around|(|t-s|)>*d*s<eq-number>>>|<row|<cell|>|<cell|=<inner|f,<sinc><around|(|\<cdummy\>-t|)>|_><Hilbert><eq-number>>>>>
+      <tformat|<table|<row|<cell|f<around|(|t|)>>|<cell|=<frac|1|2*\<pi\>>*<big|int><rsub|-\<pi\>><rsup|\<pi\>><wide|f|^><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*\<omega\><eq-number>>>|<row|<cell|>|<cell|=<frac|1|2*\<pi\>>*<big|int><rsub|-\<pi\>><rsup|\<pi\>><around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|s|)>*e<rsup|-i*\<omega\>*s>*d*s|)>*e<rsup|i*\<omega\>*t>*d*\<omega\><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|s|)>*<around*|(|<frac|1|2*\<pi\>>*<big|int><rsub|-\<pi\>><rsup|\<pi\>>e<rsup|i*\<omega\>*<around|(|t-s|)>>*d*\<omega\>|)>*d*s<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|s|)><sinc><around|(|t-s|)>*d*s<eq-number>>>|<row|<cell|>|<cell|=<inner|f|<sinc><around|(|\<cdummy\>-t|)>><rsub|<Hilbert>><eq-number>>>>>
     </align>
 
     Thus the sinc function serves as the reproducing kernel.
@@ -427,7 +427,7 @@
   </theorem>
 
   <\proof>
-    For any <math|f,g\<in\><Hilbert>>:
+    \;
 
     For any <math|f,g\<in\><Hilbert>>:
 
@@ -435,15 +435,25 @@
       <tformat|<table|<row|<cell|<around|\<langle\>|S*f,g|\<rangle\>>>|<cell|=<around|\<langle\>|T<rsup|\<ast\>>*T*f,g|\<rangle\>><eq-number>>>|<row|<cell|>|<cell|=<around|\<langle\>|T*f,T*g|\<rangle\>><eq-number>>>|<row|<cell|>|<cell|=<big|sum><rsub|k\<in\>\<cal-I\>><around|\<langle\>|f,f<rsub|k>|\<rangle\>><wide|<around|\<langle\>|g,f<rsub|k>|\<rangle\>>|\<bar\>><eq-number>>>|<row|<cell|>|<cell|=<big|sum><rsub|k\<in\>\<cal-I\>><around|\<langle\>|f,f<rsub|k>|\<rangle\>><around|\<langle\>|f<rsub|k>,g|\<rangle\>><eq-number>>>|<row|<cell|>|<cell|=<around*|\<langle\>|f,<big|sum><rsub|k\<in\>\<cal-I\>><around|\<langle\>|g,f<rsub|k>|\<rangle\>>*f<rsub|k>|\<rangle\>><eq-number>>>>>
     </align>
 
-    Thus <math|S*f=<big|sum><rsub|k\<in\>\<cal-I\>><around|\<langle\>|f,f<rsub|k>|\<rangle\>>*f<rsub|k>>.
+    Thus\ 
+
+    <\equation>
+      S*f=<big|sum><rsub|k\<in\>\<cal-I\>><around|\<langle\>|f,f<rsub|k>|\<rangle\>>*f<rsub|k>
+    </equation>
+
     The frame condition gives:
 
     <\equation>
-      A<norm|f><rsup|2>\<leq\><inner|S*f,f|\<leq\>>B<norm|f><rsup|2>
+      A<norm|f><rsup|2>\<leq\><inner|S*f|f>\<leqslant\>B<norm|f><rsup|2>
     </equation>
 
-    implying <math|A<math-bf|I>\<leq\>S\<leq\>B<math-bf|I>>, so <math|S> is
-    invertible.
+    implying
+
+    <\equation>
+      A<math-bf|I>\<leq\>S\<leq\>B<math-bf|I>
+    </equation>
+
+    , so <math|S> is invertible.
   </proof>
 
   <\corollary>
@@ -494,7 +504,11 @@
       f<around|(|t|)>=<frac|1|2*\<pi\>>*<big|int><rsub|<R>><wide|f|^><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*\<omega\>
     </equation>
 
-    where <math|<wide|f|^><around|(|\<omega\>|)>=<big|int><rsub|<R>>f<around|(|t|)>*e<rsup|-i*\<omega\>*t>*d*t>.
+    where
+
+    <\equation>
+      <wide|f|^><around|(|\<omega\>|)>=<big|int><rsub|<R>>f<around|(|t|)>*e<rsup|-i*\<omega\>*t>*d*t
+    </equation>
   </example>
 
   <section|Deterministic-Stochastic Duality for Fixed Sample Paths>
@@ -517,11 +531,16 @@
     apply the analysis operator:
 
     <\align>
-      <tformat|<table|<row|<cell|c<around|(|\<omega\>|)>>|<cell|=<inner|X<around|(|\<cdummy\>,\<omega\><rsub|0>|)>,A<rsub|\<cdot\>><around|(|\<omega\>|)>*e<rsup|i*\<omega\>\<cdot\>>|_><Hilbert><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|<R>>X<around|(|t,\<omega\><rsub|0>|)><wide|A<rsub|t><around|(|\<omega\>|)>|\<bar\>>e<rsup|-i*\<omega\>*t>*d*t<eq-number>>>>>
+      <tformat|<table|<row|<cell|c<around|(|\<omega\>|)>>|<cell|=<inner|X<around|(|\<cdummy\>,\<omega\><rsub|0>|)>|A<rsub|\<cdot\>><around|(|\<omega\>|)>*e<rsup|i*\<omega\>\<cdot\>>><rsub|<Hilbert>><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|<R>>X<around|(|t,\<omega\><rsub|0>|)><wide|A<rsub|t><around|(|\<omega\>|)>|\<bar\>>e<rsup|-i*\<omega\>*t>*d*t<eq-number>>>>>
     </align>
 
-    Then <math|d*Z<rsub|\<omega\><rsub|0>><around|(|\<omega\>|)>=c<around|(|\<omega\>|)>*d*\<omega\>>
-    provides the deterministic measure corresponding to this path.
+    Then\ 
+
+    <\equation>
+      d*Z<rsub|\<omega\><rsub|0>><around|(|\<omega\>|)>=c<around|(|\<omega\>|)>*d*\<omega\>
+    </equation>
+
+    \ provides the deterministic measure corresponding to this path.
   </proof>
 
   <\corollary>
