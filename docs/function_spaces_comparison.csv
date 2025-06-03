@@ -1,0 +1,6 @@
+Function Space,Smoothness,Decay at Infinity,Derivatives,Contains Previous,Use in Distribution Theory
+S(ℝ) - Schwartz Class,C∞ (infinitely differentiable),Faster than any polynomial (rapid decay),All derivatives exist and rapidly decreasing,Contains C∞_c(ℝ),Test functions for tempered distributions
+C∞_c(ℝ) - Compact Support,C∞ (infinitely differentiable),Compact support (zero outside bounded set),All derivatives exist with compact support,Contained in S(ℝ),Test functions for distributions
+L¹(ℝ) - Integrable,Not required,Integrable (|f| integrable),No derivative requirement,Contains S(ℝ),General function space
+L²(ℝ) - Square Integrable,Not required,Square integrable (|f|² integrable),No derivative requirement,Contains S(ℝ),Hilbert space structure
+C⁰(ℝ) - Continuous,C⁰ (continuous),No specific requirement,No derivative requirement,Contains S(ℝ),General function space
