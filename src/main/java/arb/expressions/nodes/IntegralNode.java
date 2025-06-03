@@ -249,9 +249,7 @@ public class  IntegralNode<D, C, F extends Function<? extends D, ? extends C>> e
     return mv;
   }
 
-  /**
-   * 
-   */
+  @SuppressWarnings("unchecked")
   private void computeIndefiniteIntegral()
   {
     assert integralFunction == null;
