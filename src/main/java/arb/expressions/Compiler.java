@@ -42,6 +42,7 @@ import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
+import arb.expressions.nodes.LiteralConstantNode;
 import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.polynomials.ComplexHypergeometricPolynomialFunction;
@@ -58,17 +59,20 @@ import arb.utensils.Utensils;
  * The Compiler class in the arb.expressions package is a comprehensive utility for compiling expressions in a 
  * dynamic and flexible manner. This class provides a variety of static methods to generate, manipulate, and 
  * compile expressions, mainly focusing on the functionality surrounding the ASM bytecode manipulation framework. 
- * The class is designed to work with a coDomain of types represented by the generic parameters D, R, and F, 
+ * The class is designed to work with types represented by the generic parameters D, R, and F, 
  * corresponding to different field and function types in the expression's domain and coDomain.
  *
+ * 
+ * 
  * Key functionalities include:
  *  - Compiling expressions into Java bytecodes.
- *  - Handling field functions and registered functions through method invocations.
- *  - Loading and managing various types of arguments and variables, like zero, order, bits, results, 
+ *  - Handling field functions (e.g. member methods such as {@link Real#J0(int, Real)} ) and {@link Function}s 
+ *    that have been registered with the {@link Context#registerFunction(String, Function)} method.
+ *  - Loading and managing various types of arguments and {@link VariableReference}s 
  *    and the 'this' reference.
- *  - Handling literal constants and intermediate variables.
+ *  - Handling {@link LiteralConstantNode}s and {@link IntermediateVariable}s.
  *  - Preparing and managing the stack for different use cases, such as reusing left or right nodes.
- *  - Closing field resources and defining function classes.
+ *  - Closing field resources and defining {@link Function} classes.
  *
  * The class relies on various ASM classes like {@link MethodVisitor} and {@link ClassVisitor} to generate and 
  * manipulate bytecodes to generate implementations of {@link Function}s on-the-fly, chiefly thru the 
