@@ -1,0 +1,1045 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:x="https://www.texmacs.org/2002/extensions" xmlns:m="http://www.w3.org/1998/Math/MathML">
+  <head>
+    <title>Exact Monotonization of the Riemann-Siegel Theta Function</title>
+    <meta charset="utf-8" content="TeXmacs 2.1.4" name="generator"></meta>
+    <style type="text/css">
+      body { text-align: justify } h5 { display: inline; padding-right: 1em }
+      h6 { display: inline; padding-right: 1em } table { border-collapse:
+      collapse } td { padding: 0.2em; vertical-align: baseline } dt { float:
+      left; min-width: 1.75em; text-align: right; padding-right: 0.75em;
+      font-weight: bold; } dd { margin-left: 2.75em; padding-bottom: 0.25em; }
+      dd p { padding-top: 0em; } .subsup { display: inline; vertical-align:
+      -0.2em } .subsup td { padding: 0px; text-align: left} .fraction {
+      display: inline; vertical-align: -0.8em } .fraction td { padding: 0px;
+      text-align: center } .wide { position: relative; margin-left: -0.4em }
+      .accent { position: relative; margin-left: -0.4em; top: -0.1em }
+      .title-block { width: 100%; text-align: center } .title-block p {
+      margin: 0px } .compact-block p { margin-top: 0px; margin-bottom: 0px }
+      .left-tab { text-align: left } .center-tab { text-align: center }
+      .balloon-anchor { border-bottom: 1px dotted #000000; outline: none;
+      cursor: help; position: relative; } .balloon-anchor [hidden] {
+      margin-left: -999em; position: absolute; display: none; }
+      .balloon-anchor: hover [hidden] { position: absolute; left: 1em; top:
+      2em; z-index: 99; margin-left: 0; width: 500px; display: inline-block; }
+      .balloon-body { } .ornament { border-width: 1px; border-style: solid;
+      border-color: black; display: inline-block; padding: 0.2em; } .right-tab
+      { float: right; position: relative; top: -1em; } .no-breaks {
+      white-space: nowrap; } .underline { text-decoration: underline; }
+      .overline { text-decoration: overline; } .strike-through {
+      text-decoration: line-through; } del { text-decoration: line-through
+      wavy red; } .fill-out { text-decoration: underline dotted; } 
+    </style>
+    <link href="https://www.texmacs.org/css/web-article-colored.css" type="text/css" rel="stylesheet"></link>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" language="javascript"></script>
+  </head>
+  <body>
+    <table class="title-block" style="margin-bottom: 2em">
+      <tr>
+        <td><table class="title-block" style="margin-top: 0.5em; margin-bottom: 0.5em">
+          <tr>
+            <td><font style="font-size: 168.2%"><strong>Exact Monotonization of the
+            Riemann-Siegel Theta Function</strong></font></td>
+          </tr>
+        </table><table class="title-block" style="margin-top: 0.5em; margin-bottom: 0.5em">
+          <tr>
+            <td><i></i></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table>
+    <div style="margin-top: 2em; margin-bottom: 0.5em; margin-left: 60px; margin-right: 60px">
+      <p style="margin-bottom: 0.5em">
+        <font style="font-size: 84.1%"><strong>Abstract</strong></font>
+      </p>
+    </div>
+    <div style="margin-bottom: 1em; margin-left: 60px; margin-right: 60px">
+      <p>
+        <font style="font-size: 84.1%">We present a precise construction for monotonizing the
+        Riemann-Siegel theta function through reflection about its unique
+        critical point. This transformation preserves all phase relationships
+        essential to zeta function analysis while enforcing strict
+        monotonicity. The construction maintains exact phase information
+        without approximations and preserves the function's critical
+        number-theoretic properties.</font>
+      </p>
+    </div>
+    <h2>Table of contents<span style="margin-left: 1em"></span></h2>
+    <div class="compact-block" style="text-indent: 0em">
+      <p style="margin-top: 1em; margin-bottom: 0.5em">
+        <b>1<span style="margin-left: 1em"></span>The Riemann-Siegel Theta Function</b> <span
+        style="margin-left: 5mm"></span> <a href="#auto-1">2</a>
+      </p>
+      <p style="margin-top: 1em; margin-bottom: 0.5em">
+        <b>2<span style="margin-left: 1em"></span>Exact Monotonization Construction</b> <span
+        style="margin-left: 5mm"></span> <a href="#auto-2">4</a>
+      </p>
+      <p style="margin-top: 1em; margin-bottom: 0.5em">
+        <b>3<span style="margin-left: 1em"></span>Phase Information Preservation</b> <span
+        style="margin-left: 5mm"></span> <a href="#auto-3">6</a>
+      </p>
+      <p style="margin-top: 1em; margin-bottom: 0.5em">
+        <b>4<span style="margin-left: 1em"></span>Harmonizable Processes</b> <span style="margin-left: 5mm"></span>
+        <a href="#auto-4">10</a>
+      </p>
+      <p style="margin-top: 1em; margin-bottom: 0.5em">
+        <b>5<span style="margin-left: 1em"></span>Construction from Crowley's Framework</b>
+        <span style="margin-left: 5mm"></span> <a href="#auto-5">11</a>
+      </p>
+      <p>
+        5.1<span style="margin-left: 1em"></span>Modulated Process as Harmonizable <span style="margin-left: 5mm"></span>
+        <a href="#auto-6">11</a>
+      </p>
+      <p>
+        5.2<span style="margin-left: 1em"></span>Original Process as Stationary Dilation <span
+        style="margin-left: 5mm"></span> <a href="#auto-7">11</a>
+      </p>
+      <p style="margin-top: 1em; margin-bottom: 0.5em">
+        <b>6<span style="margin-left: 1em"></span>Eigenfunction Correspondence</b> <span style="margin-left: 5mm"></span>
+        <a href="#auto-8">11</a>
+      </p>
+      <p style="margin-top: 1em; margin-bottom: 0.5em">
+        <b>7<span style="margin-left: 1em"></span>Physical Interpretation</b> <span style="margin-left: 5mm"></span>
+        <a href="#auto-9">12</a>
+      </p>
+      <p style="margin-top: 1em; margin-bottom: 0.5em">
+        <b>8<span style="margin-left: 1em"></span>Conclusion</b> <span style="margin-left: 5mm"></span> <a href="#auto-10">12</a>
+      </p>
+      <p style="margin-top: 1em; margin-bottom: 0.5em">
+        <b>Bibliography</b> <span style="margin-left: 5mm"></span> <a href="#auto-11">12</a>
+      </p>
+    </div>
+    <h2 id="auto-1">1<span style="margin-left: 1em"></span>The Riemann-Siegel Theta Function<span style="margin-left: 1em"></span></h2>
+    <div style="margin-top: 1em; margin-bottom: 1em">
+      <font color="black"><div class="ornament" style="background-color:;display:block;">
+        <p style="margin-top: 1em">
+          <strong>Definition <class style="font-style: normal">1</class>.
+          </strong><i>[Riemann-Siegel Theta Function] The Riemann-Siegel theta
+          function is defined exactly as:</i>
+        </p>
+        <i><table width="100%">
+          <tr>
+            <td width="100%" align="center">\(\displaystyle \theta (t) = \arg \Gamma \left(
+            \frac{1}{4} + \frac{it}{2} \right) -
+\frac{t}{2} \log \pi\)</td>
+            <td align="right">(1)</td>
+          </tr>
+        </table></i>
+        <p style="margin-bottom: 1em">
+          <i>where \(\Gamma\) is the gamma function and \(\arg\) denotes the
+          principal argument.</i>
+        </p>
+      </div></font>
+    </div>
+    <div style="margin-top: 1em; margin-bottom: 1em">
+      <font color="black"><div class="ornament" style="background-color:;display:block;">
+        <p style="margin-top: 1em">
+          <strong>Proposition <class style="font-style: normal">2</class>. </strong><i>[Derivative
+          Properties] The derivative of the Riemann-Siegel theta function is
+          given by:</i>
+        </p>
+        <i><table width="100%">
+          <tr>
+            <td width="100%" align="center">\(\displaystyle \frac{d \theta}{dt} (t) =
+            \frac{1}{2}  \text{Im} \left[ \psi^{(0)}  \left(
+\frac{1}{4} +
+            \frac{it}{2} \right) \right] - \frac{1}{2} \log \pi\)</td>
+            <td align="right">(2)</td>
+          </tr>
+        </table></i>
+        <p>
+          <i>where \(\psi^{(0)}\) is the digamma function.</i>
+        </p>
+        <p style="margin-top: 1em">
+          <i><strong>Proof. </strong>Using the relationship between the
+          derivative of the argument of a complex function and the logarithmic
+          derivative:</i>
+        </p>
+        <p>
+          <i><center>
+            \(\displaystyle \begin{array}{rl}
+  \frac{d}{dt} \arg \Gamma
+            \left( \frac{1}{4} + \frac{it}{2} \right) & =
+  \text{Im} \left[
+            \frac{d}{dt} \log \Gamma \left( \frac{1}{4} + \frac{it}{2}
+ 
+            \right) \right] \hspace{3cm}   \text{(3)}\\
+  & = \text{Im} \left[
+            \frac{\Gamma' (\frac{1}{4} + \frac{it}{2})}{\Gamma
+  (\frac{1}{4}
+            + \frac{it}{2})} \cdot \frac{i}{2} \right] \hspace{3cm}  
+ 
+            \text{(4)}\\
+  & = \text{Im} \left[ \psi^{(0)}  \left( \frac{1}{4}
+            + \frac{it}{2} \right)
+  \cdot \frac{i}{2} \right] \hspace{3cm}  
+            \text{(5)}\\
+  & = \frac{1}{2}  \text{Im} \left[ \psi^{(0)} 
+            \left( \frac{1}{4} +
+  \frac{it}{2} \right) \right] \hspace{3cm}  
+            \text{(6)}
+\end{array}\)
+          </center></i>
+        </p>
+        <p style="margin-bottom: 1em">
+          <i>The derivative of the second term is simply \(- \frac{1}{2} \log
+          \pi\). Combining these results gives the stated formula.<span style="margin-left: 1em"></span>\(\Box\)</i>
+        </p>
+      </div></font>
+    </div>
+    <div style="margin-top: 1em; margin-bottom: 1em">
+      <font color="black"><div class="ornament" style="background-color:;display:block;">
+        <p style="margin-top: 1em">
+          <strong>Theorem <class style="font-style: normal">3</class>. </strong><i>[Unique
+          Critical Point] There exists a unique positive real value \(a \in
+          \mathbb{R}^+\) such that:</i>
+        </p>
+        <i><table width="100%">
+          <tr>
+            <td width="100%" align="center">\(\displaystyle \left. \frac{d \theta}{dt}
+            \right|_{t = a} = 0\)</td>
+            <td align="right">(7)</td>
+          </tr>
+        </table></i>
+        <p>
+          <i>This critical point satisfies the transcendental equation:</i>
+        </p>
+        <i><table width="100%">
+          <tr>
+            <td width="100%" align="center">\(\displaystyle \text{Im} \left[ \psi^{(0)} 
+            \left( \frac{1}{4} + \frac{ia}{2} \right) \right]
+= \log
+            \pi\)</td>
+            <td align="right">(8)</td>
+          </tr>
+        </table></i>
+        <p>
+          <i>Furthermore, the derivative exhibits the following behavior:</i>
+        </p>
+        <i><ul>
+          <li>
+            <p>
+              \(\frac{d \theta}{dt} (t) < 0\) for \(t \in (0, a)\)
+            </p>
+          </li>
+          <li>
+            <p>
+              \(\frac{d \theta}{dt} (t) = 0\) at \(t = a\)
+            </p>
+          </li>
+          <li>
+            <p>
+              \(\frac{d \theta}{dt} (t) > 0\) for \(t > a\)
+            </p>
+          </li>
+        </ul></i>
+        <p style="margin-top: 1em">
+          <i><strong>Proof. </strong>First, note that the transcendental
+          equation follows directly from the derivative formula and setting it
+          equal to zero:</i>
+        </p>
+        <p>
+          <i><center>
+            \(\displaystyle \begin{array}{rl}
+  \frac{d \theta}{dt} (a) & = 0
+            \hspace{3cm}   \text{(9)}\\
+  \frac{1}{2}  \text{Im} \left[
+            \psi^{(0)}  \left( \frac{1}{4} + \frac{ia}{2}
+  \right) \right] -
+            \frac{1}{2} \log \pi & = 0 \hspace{3cm}   \text{(10)}\\
+ 
+            \text{Im} \left[ \psi^{(0)}  \left( \frac{1}{4} + \frac{ia}{2}
+            \right)
+  \right] & = \log \pi \hspace{3cm}  
+            \text{(11)}
+\end{array}\)
+          </center></i>
+        </p>
+        <p>
+          <i>For uniqueness, we examine the behavior of Im\([\psi^{(0)} (1 / 4
+          + it / 2)]\) as \(t\) varies. From the properties of the digamma
+          function:</i>
+        </p>
+        <p>
+          <i>1. As \(t \to 0^+\), Im\([\psi^{(0)} (1 / 4 + it / 2)] \to 0\),
+          which is less than \(\log \pi\).</i>
+        </p>
+        <p>
+          <i>2. The function Im\([\psi^{(0)} (1 / 4 + it / 2)]\) is strictly
+          increasing for \(t > 0\), which follows from the fact that for fixed
+          \(\sigma > 0\), the function Im\([\psi^{(0)} (\sigma + it)]\) is
+          strictly increasing in \(t\) due to the positive curvature of the
+          level curves of \(\psi^{(0)}\).</i>
+        </p>
+        <p>
+          <i>3. As \(t \to \infty\), Im\([\psi^{(0)} (1 / 4 + it / 2)] \sim
+          \log (t / 2) \to \infty\), which exceeds \(\log \pi\) for
+          sufficiently large \(t\).</i>
+        </p>
+        <p>
+          <i>By the intermediate value theorem and the monotonicity of
+          Im\([\psi^{(0)} (1 / 4 + it / 2)]\), there exists exactly one value
+          \(a > 0\) where Im\([\psi^{(0)} (1 / 4 + ia / 2)] = \log \pi\).</i>
+        </p>
+        <p>
+          <i>For the behavior of the derivative:</i>
+        </p>
+        <div style="margin-bottom: 1em">
+          <i><ul>
+            <li>
+              <p>
+                When \(t < a\): Im\([\psi^{(0)} (1 / 4 + it / 2)] < \log
+                \pi\), so \(\frac{d \theta}{dt} (t) < 0\)
+              </p>
+            </li>
+            <li>
+              <p>
+                When \(t = a\): Im\([\psi^{(0)} (1 / 4 + ia / 2)] = \log
+                \pi\), so \(\frac{d \theta}{dt} (a) = 0\)
+              </p>
+            </li>
+            <li>
+              <p>
+                When \(t > a\): Im\([\psi^{(0)} (1 / 4 + it / 2)] > \log
+                \pi\), so \(\frac{d \theta}{dt} (t) > 0\)
+              </p>
+            </li>
+          </ul><span style="margin-left: 1em"></span>\(\Box\)</i>
+        </div>
+      </div></font>
+    </div>
+    <h2 id="auto-2">2<span style="margin-left: 1em"></span>Exact Monotonization Construction<span style="margin-left: 1em"></span></h2>
+    <div style="margin-top: 1em; margin-bottom: 1em">
+      <font color="black"><div class="ornament" style="background-color:;display:block;">
+        <p style="margin-top: 1em">
+          <strong>Definition <class style="font-style: normal">4</class>. </strong><i>[Monotonized
+          Theta Function] We define the monotonized Riemann-Siegel theta
+          function \(\tilde{\theta} (t)\) through the exact
+          transformation:</i>
+        </p>
+        <i><table width="100%">
+          <tr>
+            <td width="100%" align="center">\(\displaystyle \tilde{\theta} (t) = \left\{
+            \begin{array}{ll}
+  2 \theta (a) - \theta (t) & \text{for } t \in
+            [0, a]\\
+  \theta (t) & \text{for } t > a
+\end{array}
+            \right.\)</td>
+            <td align="right">(12)</td>
+          </tr>
+        </table></i>
+        <p style="margin-bottom: 1em">
+          <i>where \(a\) is the unique critical point where \(\frac{d
+          \theta}{dt} (a) = 0\).</i>
+        </p>
+      </div></font>
+    </div>
+    <div style="margin-top: 1em; margin-bottom: 1em">
+      <font color="black"><div class="ornament" style="background-color:;display:block;">
+        <p style="margin-top: 1em">
+          <strong>Theorem <class style="font-style: normal">5</class>. </strong><i>[Monotonicity
+          Properties] The function \(\tilde{\theta} (t)\) is strictly
+          monotonically increasing except at \(t = a\). Specifically:</i>
+        </p>
+        <i><table width="100%">
+          <tr>
+            <td width="100%" align="center">\(\displaystyle \frac{d \tilde{\theta}}{dt} (t)
+            = \left\{ \begin{array}{ll}
+  - \frac{d \theta}{dt} (t) > 0 &
+            \text{for } t \in (0, a)\\
+  0 & \text{at } t = a\\
+  \frac{d
+            \theta}{dt} (t) > 0 & \text{for } t > a
+\end{array} \right.\)</td>
+            <td align="right">(13)</td>
+          </tr>
+        </table></i>
+        <p style="margin-top: 1em">
+          <i><strong>Proof. </strong>For \(t \in (0, a)\):</i>
+        </p>
+        <p>
+          <i><center>
+            \(\displaystyle \begin{array}{rl}
+  \frac{d \tilde{\theta}}{dt}
+            (t) & = \frac{d}{dt}  [2 \theta (a) - \theta
+  (t)] \hspace{3cm}  
+            \text{(14)}\\
+  & = - \frac{d \theta}{dt} (t) \hspace{3cm}  
+            \text{(15)}
+\end{array}\)
+          </center></i>
+        </p>
+        <p>
+          <i>From Theorem 1, we know that \(\frac{d \theta}{dt} (t) < 0\) for
+          \(t \in (0, a)\). Therefore, \(- \frac{d \theta}{dt} (t) > 0\) in
+          this range.</i>
+        </p>
+        <p>
+          <i>For \(t = a\):</i>
+        </p>
+        <p>
+          <i><center>
+            \(\displaystyle \begin{array}{rl}
+  \frac{d \tilde{\theta}}{dt}
+            (a) & = - \frac{d \theta}{dt} (a) \hspace{3cm}  
+  \text{(16)}\\
+ 
+            & = - 0 = 0 \hspace{3cm}   \text{(17)}
+\end{array}\)
+          </center></i>
+        </p>
+        <p>
+          <i>For \(t > a\):</i>
+        </p>
+        <p>
+          <i><center>
+            \(\displaystyle \begin{array}{rl}
+  \frac{d \tilde{\theta}}{dt}
+            (t) & = \frac{d \theta}{dt} (t) \hspace{3cm}  
+ 
+            \text{(18)}
+\end{array}\)
+          </center></i>
+        </p>
+        <p>
+          <i>From Theorem 1, we know that \(\frac{d \theta}{dt} (t) > 0\) for
+          \(t > a\). Therefore, \(\frac{d \tilde{\theta}}{dt} (t) > 0\) in
+          this range.</i>
+        </p>
+        <p style="margin-bottom: 1em">
+          <i>Thus, \(\frac{d \tilde{\theta}}{dt} (t) \geq 0\) for all \(t \geq
+          0\), with equality only at \(t = a\), which confirms that
+          \(\tilde{\theta} (t)\) is strictly monotonically increasing except
+          at the single point \(t = a\).<span style="margin-left: 1em"></span>\(\Box\)</i>
+        </p>
+      </div></font>
+    </div>
+    <div style="margin-top: 1em; margin-bottom: 1em">
+      <font color="black"><div class="ornament" style="background-color:;display:block;">
+        <p style="margin-top: 1em">
+          <strong>Proposition <class style="font-style: normal">6</class>. </strong><i>[Continuity
+          and Differentiability] The function \(\tilde{\theta} (t)\) is:</i>
+        </p>
+        <i><ol>
+          <li>
+            <p>
+              Continuous at all points \(t \geq 0\), including \(t = a\)
+            </p>
+          </li>
+          <li>
+            <p>
+              Differentiable at all points \(t \geq 0\), including \(t = a\)
+            </p>
+          </li>
+          <li>
+            <p>
+              \(C^1\) continuous everywhere, but not \(C^2\) at \(t = a\)
+            </p>
+          </li>
+        </ol></i>
+        <p style="margin-top: 1em">
+          <i><strong>Proof. </strong>1. For continuity at \(t = a\):</i>
+        </p>
+        <p>
+          <i><center>
+            \(\displaystyle \begin{array}{rl}
+  \lim_{t \to a^-} 
+            \tilde{\theta} (t) & = \lim_{t \to a^-} [2 \theta (a) -
+  \theta
+            (t)] \hspace{3cm}   \text{(19)}\\
+  & = 2 \theta (a) - \theta (a)
+            \hspace{3cm}   \text{(20)}\\
+  & = \theta (a) \hspace{3cm}  
+            \text{(21)}\\
+  \lim_{t \to a^+}  \tilde{\theta} (t) & = \lim_{t
+            \to a^+} \theta (t)
+  \hspace{3cm}   \text{(22)}\\
+  & = \theta
+            (a) \hspace{3cm}   \text{(23)}
+\end{array}\)
+          </center></i>
+        </p>
+        <p>
+          <i>Since the left and right limits match, \(\tilde{\theta} (t)\) is
+          continuous at \(t = a\). For \(t \neq a\), continuity follows from
+          the continuity of \(\theta (t)\).</i>
+        </p>
+        <p>
+          <i>2. For differentiability at \(t = a\):</i>
+        </p>
+        <p>
+          <i><center>
+            \(\displaystyle \begin{array}{rl}
+  \lim_{t \to a^-}  \frac{d
+            \tilde{\theta}}{dt} (t) & = \lim_{t \to a^-}
+  \left( - \frac{d
+            \theta}{dt} (t) \right) \hspace{3cm}   \text{(24)}\\
+  & = -
+            \frac{d \theta}{dt} (a) \hspace{3cm}   \text{(25)}\\
+  & = 0
+            \hspace{3cm}   \text{(26)}\\
+  \lim_{t \to a^+}  \frac{d
+            \tilde{\theta}}{dt} (t) & = \lim_{t \to a^+} 
+  \frac{d
+            \theta}{dt} (t) \hspace{3cm}   \text{(27)}\\
+  & = \frac{d
+            \theta}{dt} (a) \hspace{3cm}   \text{(28)}\\
+  & = 0 \hspace{3cm} 
+            \text{(29)}
+\end{array}\)
+          </center></i>
+        </p>
+        <p>
+          <i>Since the left and right derivatives match at \(t = a\),
+          \(\tilde{\theta} (t)\) is differentiable at \(t = a\). For \(t \neq
+          a\), differentiability follows from the differentiability of
+          \(\theta (t)\).</i>
+        </p>
+        <p>
+          <i>3. For the second derivative at \(t = a\):</i>
+        </p>
+        <p>
+          <i><center>
+            \(\displaystyle \begin{array}{rl}
+  \lim_{t \to a^-}  \frac{d^2 
+            \tilde{\theta}}{dt^2} (t) & = \lim_{t \to a^-} 
+  \frac{d}{dt} 
+            \left( - \frac{d \theta}{dt} (t) \right) \hspace{3cm}  
+ 
+            \text{(30)}\\
+  & = - \lim_{t \to a^-}  \frac{d^2 \theta}{dt^2}
+            (t) \hspace{3cm}  
+  \text{(31)}\\
+  \lim_{t \to a^+}  \frac{d^2 
+            \tilde{\theta}}{dt^2} (t) & = \lim_{t \to a^+} 
+  \frac{d^2
+            \theta}{dt^2} (t) \hspace{3cm}   \text{(32)}
+\end{array}\)
+          </center></i>
+        </p>
+        <p>
+          <i>Since \(\frac{d \theta}{dt} (t)\) changes sign at \(t = a\) (from
+          negative to positive), \(\frac{d^2 \theta}{dt^2} (a)\) must be
+          positive (the derivative is increasing through zero). Therefore:</i>
+        </p>
+        <p>
+          <i><center>
+            \(\displaystyle \begin{array}{rl}
+  \lim_{t \to a^-}  \frac{d^2 
+            \tilde{\theta}}{dt^2} (t) & = - \frac{d^2
+  \theta}{dt^2} (a) < 0
+            \hspace{3cm}   \text{(33)}\\
+  \lim_{t \to a^+}  \frac{d^2 
+            \tilde{\theta}}{dt^2} (t) & = \frac{d^2
+  \theta}{dt^2} (a) > 0
+            \hspace{3cm}   \text{(34)}
+\end{array}\)
+          </center></i>
+        </p>
+        <p style="margin-bottom: 1em">
+          <i>Since the left and right second derivatives differ at \(t = a\),
+          \(\tilde{\theta} (t)\) is not \(C^2\) at \(t = a\). However, it is
+          \(C^1\) everywhere since the first derivative is continuous at all
+          points.<span style="margin-left: 1em"></span>\(\Box\)</i>
+        </p>
+      </div></font>
+    </div>
+    <h2 id="auto-3">3<span style="margin-left: 1em"></span>Phase Information Preservation<span style="margin-left: 1em"></span></h2>
+    <div style="margin-top: 1em; margin-bottom: 1em">
+      <font color="black"><div class="ornament" style="background-color:;display:block;">
+        <p style="margin-top: 1em">
+          <strong>Definition <class style="font-style: normal">7</class>. </strong><i>[Phase
+          Representation] The Riemann zeta function on the critical line can
+          be expressed as:</i>
+        </p>
+        <i><table width="100%">
+          <tr>
+            <td width="100%" align="center">\(\displaystyle \zeta \left( \frac{1}{2} + it
+            \right) = e^{- i \theta (t)} Z (t)\)</td>
+            <td align="right">(35)</td>
+          </tr>
+        </table></i>
+        <p style="margin-bottom: 1em">
+          <i>where \(Z (t)\) is a real-valued function.</i>
+        </p>
+      </div></font>
+    </div>
+    <div style="margin-top: 1em; margin-bottom: 1em">
+      <font color="black"><div class="ornament" style="background-color:;display:block;">
+        <p style="margin-top: 1em">
+          <strong>Theorem <class style="font-style: normal">8</class>. </strong><i>[Phase
+          Preservation] For the monotonized theta function, we define:</i>
+        </p>
+        <i><table width="100%">
+          <tr>
+            <td width="100%" align="center">\(\displaystyle \tilde{Z} (t) = e^{i
+            \tilde{\theta} (t)} \zeta \left( \frac{1}{2} + it \right)\)</td>
+            <td align="right">(36)</td>
+          </tr>
+        </table></i>
+        <p>
+          <i>This function satisfies:</i>
+        </p>
+        <i><table width="100%">
+          <tr>
+            <td width="100%" align="center">\(\displaystyle \tilde{Z} (t) = \left\{
+            \begin{array}{ll}
+  e^{2 i \theta (a)} Z (t)^{\ast} & \text{for }
+            t \in [0, a]\\
+  Z (t) & \text{for } t > a
+\end{array}
+            \right.\)</td>
+            <td align="right">(37)</td>
+          </tr>
+        </table></i>
+        <p>
+          <i>where \(Z (t)^{\ast}\) represents the complex conjugate of \(Z
+          (t)\).</i>
+        </p>
+        <p style="margin-top: 1em">
+          <i><strong>Proof. </strong>For \(t > a\):</i>
+        </p>
+        <p>
+          <i><center>
+            \(\displaystyle \begin{array}{rl}
+  \tilde{Z} (t) & = e^{i
+            \tilde{\theta} (t)} \zeta \left( \frac{1}{2} + it
+  \right)
+            \hspace{3cm}   \text{(38)}\\
+  & = e^{i \theta (t)} \zeta \left(
+            \frac{1}{2} + it \right) \hspace{3cm}  
+  \text{(39)}\\
+  & = e^{i
+            \theta (t)} \cdot e^{- i \theta (t)} Z (t) \hspace{3cm}  
+ 
+            \text{(40)}\\
+  & = Z (t) \hspace{3cm}   \text{(41)}
+\end{array}\)
+          </center></i>
+        </p>
+        <p>
+          <i>For \(t \in [0, a]\):</i>
+        </p>
+        <p>
+          <i><center>
+            \(\displaystyle \begin{array}{rl}
+  \tilde{Z} (t) & = e^{i
+            \tilde{\theta} (t)} \zeta \left( \frac{1}{2} + it
+  \right)
+            \hspace{3cm}   \text{(42)}\\
+  & = e^{i (2 \theta (a) - \theta
+            (t))} \zeta \left( \frac{1}{2} + it \right)
+  \hspace{3cm}  
+            \text{(43)}\\
+  & = e^{2 i \theta (a)} \cdot e^{- i \theta (t)}
+            \zeta \left( \frac{1}{2} +
+  it \right) \hspace{3cm}  
+            \text{(44)}\\
+  & = e^{2 i \theta (a)} \cdot Z (t) \hspace{3cm}  
+            \text{(45)}
+\end{array}\)
+          </center></i>
+        </p>
+        <p>
+          <i>Since \(Z (t)\) is real-valued for the Riemann zeta function on
+          the critical line, \(Z (t) = Z (t)^{\ast}\), thus:</i>
+        </p>
+        <div style="margin-bottom: 1em">
+          <i><table width="100%">
+            <tr>
+              <td width="100%" align="center">\(\displaystyle \tilde{Z} (t) = e^{2 i \theta
+              (a)} Z (t)^{\ast}\)</td>
+              <td align="right">(46)</td>
+            </tr>
+          </table><span style="margin-left: 1em"></span>\(\Box\)</i>
+        </div>
+      </div></font>
+    </div>
+    <div style="margin-top: 1em; margin-bottom: 1em">
+      <font color="black"><div class="ornament" style="background-color:;display:block;">
+        <p style="margin-top: 1em">
+          <strong>Corollary <class style="font-style: normal">9</class>. </strong><i>[Zero
+          Preservation] The zeros of \(\zeta (s)\) on the critical line \(s =
+          \frac{1}{2} + it\) correspond precisely to:</i>
+        </p>
+        <i><ol>
+          <li>
+            <p>
+              The zeros of \(Z (t)\) for \(t > 0\)
+            </p>
+          </li>
+          <li>
+            <p>
+              The zeros of \(\tilde{Z} (t)\) for \(t > 0\)
+            </p>
+          </li>
+        </ol></i>
+        <p>
+          <i>Therefore, the monotonization preserves all information about the
+          zeros of the zeta function.</i>
+        </p>
+        <p style="margin-top: 1em">
+          <i><strong>Proof. </strong>From the definition of \(Z (t)\):</i>
+        </p>
+        <i><table width="100%">
+          <tr>
+            <td width="100%" align="center">\(\displaystyle \zeta \left( \frac{1}{2} + it
+            \right) = e^{- i \theta (t)} Z (t)\)</td>
+            <td align="right">(47)</td>
+          </tr>
+        </table></i>
+        <p>
+          <i>If \(\zeta (\frac{1}{2} + it) = 0\), then \(Z (t) = 0\) since
+          \(e^{- i \theta (t)} \neq 0\) for all \(t\).</i>
+        </p>
+        <p>
+          <i>From Theorem 4 (Phase Preservation), for \(t > a\):</i>
+        </p>
+        <i><table width="100%">
+          <tr>
+            <td width="100%" align="center">\(\displaystyle \tilde{Z} (t) = Z (t)\)</td>
+            <td align="right">(48)</td>
+          </tr>
+        </table></i>
+        <p>
+          <i>Therefore, for \(t > a\), \(\tilde{Z} (t) = 0\) if and only if
+          \(Z (t) = 0\), which occurs if and only if \(\zeta (\frac{1}{2} +
+          it) = 0\).</i>
+        </p>
+        <p>
+          <i>For \(t \in [0, a]\):</i>
+        </p>
+        <i><table width="100%">
+          <tr>
+            <td width="100%" align="center">\(\displaystyle \tilde{Z} (t) = e^{2 i \theta
+            (a)} Z (t)^{\ast}\)</td>
+            <td align="right">(49)</td>
+          </tr>
+        </table></i>
+        <p>
+          <i>Since \(e^{2 i \theta (a)} \neq 0\) and \(Z (t)\) is real-valued,
+          \(Z (t)^{\ast} = Z (t)\). Therefore, \(\tilde{Z} (t) = 0\) if and
+          only if \(Z (t) = 0\), which occurs if and only if \(\zeta
+          (\frac{1}{2} + it) = 0\).</i>
+        </p>
+        <p style="margin-bottom: 1em">
+          <i>Thus, for all \(t > 0\), the zeros of \(\zeta (\frac{1}{2} +
+          it)\) correspond exactly to the zeros of both \(Z (t)\) and
+          \(\tilde{Z} (t)\).<span style="margin-left: 1em"></span>\(\Box\)</i>
+        </p>
+      </div></font>
+    </div>
+    <div style="margin-top: 1em; margin-bottom: 1em">
+      <font color="black"><div class="ornament" style="background-color:;display:block;">
+        <p style="margin-top: 1em">
+          <strong>Proposition <class style="font-style: normal">10</class>.
+          </strong><i>[Bijectivity] The function \(\tilde{\theta} (t) : [0,
+          \infty) \to [\tilde{\theta} (0), \infty)\) is bijective.</i>
+        </p>
+        <p style="margin-top: 1em">
+          <i><strong>Proof. </strong>1. Injectivity: For any \(t_1, t_2 \geq
+          0\) with \(t_1 \neq t_2\), we need to show \(\tilde{\theta} (t_1)
+          \neq \tilde{\theta} (t_2)\).</i>
+        </p>
+        <p>
+          <i>Case 1: If \(t_1, t_2 < a\) or \(t_1, t_2 > a\), then injectivity
+          follows from the strict monotonicity of \(\tilde{\theta} (t)\) on
+          each of these intervals, as proven in Theorem 2.</i>
+        </p>
+        <p>
+          <i>Case 2: If \(t_1 < a < t_2\), then from monotonicity,
+          \(\tilde{\theta} (t_1) < \tilde{\theta} (a) < \tilde{\theta}
+          (t_2)\), which implies \(\tilde{\theta} (t_1) \neq \tilde{\theta}
+          (t_2)\).</i>
+        </p>
+        <p>
+          <i>Case 3: If \(t_1 = a\) and \(t_2 \neq a\), then from the strict
+          monotonicity of \(\tilde{\theta} (t)\) except at \(t = a\), we have
+          \(\tilde{\theta} (t_1) = \tilde{\theta} (a) \neq \tilde{\theta}
+          (t_2)\).</i>
+        </p>
+        <p>
+          <i>2. Surjectivity: We need to show that for every \(y \in
+          [\tilde{\theta} (0), \infty)\), there exists \(t \geq 0\) such that
+          \(\tilde{\theta} (t) = y\).</i>
+        </p>
+        <p>
+          <i>For \(y = \tilde{\theta} (0)\), we have \(t = 0\).</i>
+        </p>
+        <p>
+          <i>For \(y > \tilde{\theta} (0)\), since \(\tilde{\theta} (t)\) is
+          continuous and strictly increasing for \(t > 0\) (except at \(t =
+          a\) where it's still continuous and non-decreasing), and since
+          \(\lim_{t \to \infty}  \tilde{\theta} (t) = \infty\) (which follows
+          from the fact that \(\theta (t)\) grows without bound as \(t \to
+          \infty\)), by the intermediate value theorem, there exists a unique
+          \(t > 0\) such that \(\tilde{\theta} (t) = y\).</i>
+        </p>
+        <p style="margin-bottom: 1em">
+          <i>Therefore, \(\tilde{\theta} (t)\) is both injective and
+          surjective, hence bijective.<span style="margin-left: 1em"></span>\(\Box\)</i>
+        </p>
+      </div></font>
+    </div>
+    <p>
+      
+    </p>
+    <div style="margin-top: 1em; margin-bottom: 1em">
+      <font color="black"><div class="ornament" style="background-color:;display:block;">
+        <p style="margin-top: 1em">
+          <strong>Theorem <class style="font-style: normal">11</class>. </strong><i>[Modulating
+          Function Criteria] The constructed function \(\tilde{\theta} (t)\)
+          satisfies all criteria for a modulating function:</i>
+        </p>
+        <i><ol>
+          <li>
+            <p>
+              Piecewise continuous with piecewise continuous first derivative.
+            </p>
+          </li>
+          <li>
+            <p>
+              Monotonically increasing with \(\frac{d \tilde{\theta}}{dt} (t)
+              \geq 0\), with equality only on a set of measure zero (the
+              single point \(t = a\)).
+            </p>
+          </li>
+          <li>
+            <p>
+              Bijective with \(\lim_{t \to \infty}  \tilde{\theta} (t) =
+              \infty\).
+            </p>
+          </li>
+        </ol></i>
+        <p style="margin-top: 1em">
+          <i><strong>Proof. </strong>1. Piecewise continuity with piecewise
+          continuous first derivative: From Proposition 2, \(\tilde{\theta}
+          (t)\) is continuous everywhere and \(C^1\) continuous everywhere.
+          Therefore, it is piecewise continuous with piecewise continuous
+          first derivative.</i>
+        </p>
+        <p>
+          <i>2. Monotonically increasing with non-negative derivative: From
+          Theorem 2, \(\frac{d \tilde{\theta}}{dt} (t) > 0\) for all \(t \neq
+          a\) and \(\frac{d \tilde{\theta}}{dt} (a) = 0\). Therefore,
+          \(\tilde{\theta} (t)\) is monotonically increasing with non-negative
+          derivative, with equality only at the single point \(t = a\), which
+          is a set of measure zero.</i>
+        </p>
+        <p>
+          <i>3. Bijectivity with limit at infinity: From Proposition 3,
+          \(\tilde{\theta} (t) : [0, \infty) \to [\tilde{\theta} (0),
+          \infty)\) is bijective. Since \(\tilde{\theta} (t) = \theta (t)\)
+          for \(t > a\), and since \(\lim_{t \to \infty} \theta (t) = \infty\)
+          (which follows from the asymptotic behavior of the theta function),
+          we have \(\lim_{t \to \infty}  \tilde{\theta} (t) = \infty\).</i>
+        </p>
+        <p style="margin-bottom: 1em">
+          <i>Therefore, \(\tilde{\theta} (t)\) satisfies all criteria for a
+          modulating function.<span style="margin-left: 1em"></span>\(\Box\)</i>
+        </p>
+      </div></font>
+    </div>
+    <h2 id="auto-4">4<span style="margin-left: 1em"></span>Harmonizable Processes<span style="margin-left: 1em"></span></h2>
+    <div style="margin-top: 1em; margin-bottom: 1em">
+      <font color="black"><div class="ornament" style="background-color:;display:block;">
+        <p style="margin-top: 1em">
+          <strong>Definition <class style="font-style: normal">12</class>.
+          </strong><i>[Harmonizable Process] A process \(X (t)\) is
+          harmonizable if its covariance admits:</i>
+        </p>
+        <p>
+          <i><center>
+            \(\displaystyle K (t, s) = \int \int e^{i (t \lambda - s \mu)} dF
+            (\lambda, \mu)\)
+          </center></i>
+        </p>
+        <p style="margin-bottom: 1em">
+          <i>where \(F\) is a finite bivariate measure.</i>
+        </p>
+      </div></font>
+    </div>
+    <div style="margin-top: 1em; margin-bottom: 1em">
+      <font color="black"><div class="ornament" style="background-color:;display:block;">
+        <p style="margin-top: 1em">
+          <strong>Definition <class style="font-style: normal">13</class>. </strong><i>[Stationary
+          Dilation] Process \(Y (t)\) on Hilbert space \(\mathcal{H}\) is a
+          stationary dilation of \(X (t)\) if:</i>
+        </p>
+        <p style="margin-bottom: 1em">
+          <i><center>
+            \(\displaystyle X (t) = PY (t)  \text{for some orthogonal
+            projection } P : \mathcal{H} \to
+\mathcal{H}_X\)
+          </center></i>
+        </p>
+      </div></font>
+    </div>
+    <h2 id="auto-5">5<span style="margin-left: 1em"></span>Construction from Crowley's Framework<span
+    style="margin-left: 1em"></span></h2>
+    <h3 id="auto-6">5.1<span style="margin-left: 1em"></span>Modulated Process as Harmonizable<span
+    style="margin-left: 1em"></span></h3>
+    <p>
+      Given original stationary process \(Y (t)\) with:
+    </p>
+    <center>
+      \(\displaystyle K_Y (t, s) = \int e^{i \lambda (t - s)} dF (\lambda)\)
+    </center>
+    <p>
+      Under modulation \(\theta \in \mathcal{F}\), the new process:
+    </p>
+    <center>
+      \(\displaystyle X_{\theta} (t) := Y (\theta (t))\)
+    </center>
+    <p>
+      has covariance:
+    </p>
+    <center>
+      \(\displaystyle K_{\theta} (t, s) = \int e^{i \lambda (\theta (t) -
+      \theta (s))} dF (\lambda)\)
+    </center>
+    <p>
+      This matches the harmonizable condition with spectral measure
+      concentrated on diagonal \(\lambda = \mu\).
+    </p>
+    <h3 id="auto-7">5.2<span style="margin-left: 1em"></span>Original Process as Stationary
+    Dilation<span style="margin-left: 1em"></span></h3>
+    <div style="margin-top: 1em; margin-bottom: 1em">
+      <font color="black"><div class="ornament" style="background-color:;display:block;">
+        <p style="margin-top: 1em">
+          <strong>Theorem <class style="font-style: normal">14</class>.
+          </strong><i>[Operator-Theoretic Dilation] The original process \(Y
+          (t)\) serves as stationary dilation via:</i>
+        </p>
+        <p>
+          <i><center>
+            \(\displaystyle X_{\theta} (t) = M_{\theta} [Y] (t)\)
+          </center></i>
+        </p>
+        <p>
+          <i>where \(M_{\theta}\) is Crowley's isometric operator:</i>
+        </p>
+        <p style="margin-bottom: 1em">
+          <i><center>
+            \(\displaystyle M_{\theta} [\phi] (t) = \sqrt{\dot{\theta} (t)}
+            \phi (\theta (t))\)
+          </center></i>
+        </p>
+      </div></font>
+    </div>
+    <p style="margin-top: 1em">
+      <strong>Proof. </strong>1. <b>Embedding</b>: Theorem 2 shows
+      \(M_{\theta} : \mathcal{H}_Y \hookrightarrow \mathcal{H}_{X_{\theta}}\)
+      is isometric<br />2. <b>Projection</b>: \(M_{\theta}^{\ast} M_{\theta} =
+      I_{\mathcal{H}_Y}\) makes \({M_{}}_{\theta}^{\ast}\) an orthogonal
+      projection<br />3. <b>Covariance Relation</b>:
+    </p>
+    <p style="margin-bottom: 1em">
+      <center>
+        \(\displaystyle K_{\theta} (t, s) = \langle M_{\theta} \delta_t,
+        M_{\theta} \delta_s
+\rangle_{\mathcal{H}_Y} = \langle Y (\theta (t)),
+        Y (\theta (s)) \rangle\)
+      </center>
+      <span style="margin-left: 1em"></span>
+      \(\Box\)
+    </p>
+    <h2 id="auto-8">6<span style="margin-left: 1em"></span>Eigenfunction Correspondence<span style="margin-left: 1em"></span></h2>
+    <p>
+      Crowley's Theorem 1 gives explicit dilation-preserved structure:
+    </p>
+    <center>
+      \(\displaystyle \phi_n (t) = \psi_n (\theta (t)) \sqrt{\dot{\theta}
+      (t)}\)
+    </center>
+    <p>
+      where \(\psi_n\) are stationary eigenfunctions. This demonstrates:
+    </p>
+    <ul>
+      <li>
+        <p>
+          Spectral measure \(F\) preserved under modulation
+        </p>
+      </li>
+      <li>
+        <p>
+          Dilation relationship maintained through operator conjugation
+        </p>
+      </li>
+    </ul>
+    <h2 id="auto-9">7<span style="margin-left: 1em"></span>Physical Interpretation<span style="margin-left: 1em"></span></h2>
+    <ul>
+      <li>
+        <p>
+          <b>Stationary Process</b>: \(Y (t)\) lives in &quot;absolute
+          time&quot; space
+        </p>
+      </li>
+      <li>
+        <p>
+          <b>Harmonizable Process</b>: \(X_{\theta} (t)\) resides in
+          &quot;warped time&quot; space \(\theta (t)\)
+        </p>
+      </li>
+      <li>
+        <p>
+          <b>Dilation</b>: Absolute time space contains warped time space
+          isometrically
+        </p>
+      </li>
+    </ul>
+    <h2 id="auto-10">8<span style="margin-left: 1em"></span>Conclusion<span style="margin-left: 1em"></span></h2>
+    <p>
+      Crowley's modulated processes:
+    </p>
+    <ul>
+      <li>
+        <p>
+          Are harmonizable via diagonal spectral measure concentration
+        </p>
+      </li>
+      <li>
+        <p>
+          Admit original stationary process as dilation through \(M_{\theta}\)
+        </p>
+      </li>
+      <li>
+        <p>
+          Preserve eigenvalues via Theorem 2's operator conjugation
+        </p>
+      </li>
+    </ul>
+    <p>
+      This establishes a new class of harmonizable processes with explicit
+      dilation structure.
+    </p>
+    <h2 id="auto-11">Bibliography<span style="margin-left: 1em"></span></h2>
+    <div class="compact-block" style="text-indent: 0em">
+      <font style="font-size: 84.0%"><dl>
+        <p>
+          <dt>
+            <strong>[crowley]  </strong>
+          </dt>
+          <dd>
+            <p>
+              <a id="bib-crowley"></a>Crowley, S. (202X). Gaussian Processes Generated by
+              Monotonically Modulated Stationary Kernels
+            </p>
+          </dd>
+        </p>
+        <p>
+          <dt>
+            <strong>[loeve]  </strong>
+          </dt>
+          <dd>
+            <p>
+              <a id="bib-loeve"></a>Lo&egrave;ve, M. (1963). Probability Theory
+            </p>
+          </dd>
+        </p>
+      </dl></font>
+    </div>
+  </body>
+</html>

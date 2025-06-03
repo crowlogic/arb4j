@@ -76,13 +76,13 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
     // f=this.right
 
     // First term: g(x) * f'(x)/f(x)
-    Node<D, R, F> term1 = right.mul(left.differentiate(variable)).div(left);
+    var term1 = right.mul(left.differentiate(variable)).div(left);
 
     // Second term: g'(x) * ln(f(x))
-    Node<D, R, F> term2 = right.differentiate(variable).mul(left.log());
+    var term2 = right.differentiate(variable).mul(left.log());
 
     // Combine terms and multiply by original expression
-    return this.mul(term1.add(term2));
+    return mul(term1.add(term2));
   }
 
   @Override
