@@ -11,6 +11,7 @@ import arb.RealConstants;
 import arb.RoundingMode;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.context.Variables;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;

@@ -34,7 +34,6 @@ import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.SerializedExpression;
-import arb.expressions.TypeRepresenter;
 import arb.viz.WindowManager;
 import javafx.application.Platform;
 

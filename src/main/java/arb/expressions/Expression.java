@@ -79,6 +79,8 @@ import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
+import arb.expressions.context.Dependency;
+import arb.expressions.context.TopologicalSorter;
 import arb.expressions.nodes.DerivativeNode;
 import arb.expressions.nodes.ElseNode;
 import arb.expressions.nodes.FractionalDerivativeNode;
@@ -109,11 +111,11 @@ import arb.expressions.nodes.unary.LommelPolynomialNode;
 import arb.expressions.nodes.unary.SphericalBesselFunctionNodeOfTheFirstKind;
 import arb.expressions.nodes.unary.UnaryOperationNode;
 import arb.expressions.nodes.unary.WhenNode;
+import arb.expressions.viz.ExpressionTree;
 import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.Sequence;
 import arb.functions.real.RealFunction;
-import arb.utensils.Dependency;
 import arb.utensils.Utensils;
 import arb.utensils.text.trees.TextTree;
 import arb.utensils.text.trees.TreeModel;
@@ -223,9 +225,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Expression<D, C, F> merge(Node<?, ?, ?> node)
   {
-    Expression<?, ?, ?> nodeExpression = node.expression;
+    var nodeExpression = node.expression;
     initializers.addAll(nodeExpression.initializers);
-    context.mergeFrom(node.expression.context);
+    context.mergeFrom(nodeExpression.context);
     return this;
   }
 

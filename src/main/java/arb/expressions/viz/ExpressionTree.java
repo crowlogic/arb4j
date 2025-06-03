@@ -1,4 +1,4 @@
-package arb.expressions;
+package arb.expressions.viz;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -10,6 +10,7 @@ import java.util.Queue;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
 import arb.utensils.text.trees.TextTree;

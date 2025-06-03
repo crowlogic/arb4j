@@ -14,6 +14,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.*;
 import arb.expressions.nodes.binary.*;
 import arb.expressions.nodes.unary.*;
+import arb.expressions.viz.ExpressionTree;
 import arb.functions.Function;
 import arb.utensils.text.latex.Latex;
 

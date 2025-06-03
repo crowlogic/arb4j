@@ -1,4 +1,4 @@
-package arb.expressions;
+package arb.expressions.context;
 
 import static arb.utensils.Utensils.throwOrWrap;
 import static guru.nidi.graphviz.model.Factory.mutGraph;
@@ -8,11 +8,17 @@ import static guru.nidi.graphviz.model.Factory.to;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.utensils.Dependency;
+import arb.expressions.FunctionMapping;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
 import guru.nidi.graphviz.model.MutableGraph;

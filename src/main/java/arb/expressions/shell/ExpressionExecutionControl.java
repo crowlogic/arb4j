@@ -1,8 +1,11 @@
-package arb.expressions;
+package arb.expressions.shell;
 
 import java.util.Map;
 
 import arb.Real;
+import arb.expressions.Context;
+import arb.expressions.Expression;
+import arb.expressions.FunctionMapping;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;

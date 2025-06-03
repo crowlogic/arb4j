@@ -10,10 +10,10 @@ package arb;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Context;
 import arb.algebra.Ring;
 import arb.functions.Function;
 import arb.functions.integer.IntegerPolynomialNullaryFunction;
-import arb.expressions.Context;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the

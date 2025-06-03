@@ -7,8 +7,8 @@ import java.lang.reflect.Field;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.ExpressionTree;
 import arb.expressions.nodes.Node;
+import arb.expressions.viz.ExpressionTree;
 import arb.utensils.Utensils;
 
 /**

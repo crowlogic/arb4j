@@ -5,7 +5,7 @@ import java.io.Closeable;
 import arb.Named;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Variables;
+import arb.expressions.context.Variables;
 import arb.functions.Function;
 import javafx.event.EventHandler;
 import javafx.scene.control.ListView;

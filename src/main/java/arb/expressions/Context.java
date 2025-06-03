@@ -4,7 +4,6 @@ import static arb.utensils.Utensils.wrapOrThrow;
 import static java.lang.String.format;
 import static java.lang.System.err;
 
-import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -21,11 +20,14 @@ import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
+import arb.expressions.context.Dependency;
+import arb.expressions.context.FunctionMappings;
+import arb.expressions.context.TopologicalSorter;
+import arb.expressions.context.Variables;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.integer.Sequence;
-import arb.utensils.Dependency;
 
 /**
  * The {@link Context} class is an integral part of the {@link Expression}
@@ -58,15 +60,15 @@ import arb.utensils.Dependency;
  */
 public class Context
 {
-  CompiledExpressionClassLoader         classLoader                  = new CompiledExpressionClassLoader(this);
+  public CompiledExpressionClassLoader        classLoader                  = new CompiledExpressionClassLoader(this);
 
-  public final FunctionMappings         functions;
+  public final FunctionMappings               functions;
 
-  public HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
+  public final HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
-  public boolean                        saveClasses                  = false;
+  public boolean                              saveClasses                  = false;
 
-  public Variables                      variables;
+  public final Variables                      variables;
 
   public Context resetClassLoader()
   {
@@ -78,7 +80,7 @@ public class Context
   {
     String                      filename  = null;
     HashMap<String, Dependency> sortedMap = new HashMap<>();
-    for (Dependency dependency : sortedFunctions)
+    for (var dependency : sortedFunctions)
     {
       sortedMap.put(dependency.variableName,
                     functionReferenceGraph.getOrDefault(dependency.variableName,
@@ -86,7 +88,6 @@ public class Context
     }
     if (sortedMap.values().stream().mapToInt(f -> f.dependencies.size()).sum() > 0)
     {
-      // TopologicalSorter.addTransitiveDependencies(sortedMap);
       filename = sortedMap.keySet().stream().collect(Collectors.joining()) + ".dot";
       TopologicalSorter.saveToDotFile(TopologicalSorter.toDotFormatReversedDirect(sortedMap), filename);
     }
@@ -96,7 +97,7 @@ public class Context
   public void populateFunctionReferenceGraph()
   {
     // Build dependency graph directly from referencedFunctions
-    for (Map.Entry<String, FunctionMapping<?, ?, ?>> entry : functions.map.entrySet())
+    for (var entry : functions.map.entrySet())
     {
       String                   functionName = entry.getKey();
       FunctionMapping<?, ?, ?> function     = entry.getValue();
@@ -157,7 +158,7 @@ public class Context
   {
     try
     {
-      for (Field field : f.getClass().getFields())
+      for (var field : f.getClass().getFields())
       {
         var functionName    = field.getName();
 
@@ -232,7 +233,7 @@ public class Context
                                  Expression<D, R, F> expression,
                                  String expressionString)
   {
-   // assert function != null : "function cannot be null";
+    // assert function != null : "function cannot be null";
 
     if (Expression.trace)
     {
@@ -254,7 +255,7 @@ public class Context
                                                 function));
     }
 
-    FunctionMapping<D, R, F> mapping = new FunctionMapping<D, R, F>();
+    var mapping = new FunctionMapping<D, R, F>();
     mapping.expression       = expression;
     mapping.expressionString = expressionString;
     mapping.functionName     = functionName;
@@ -360,7 +361,7 @@ public class Context
     return functions.get(functionName);
   }
 
-  public FunctionMapping<?, ?, ?> registerFunction(String string, Function<?,?> func)
+  public FunctionMapping<?, ?, ?> registerFunction(String string, Function<?, ?> func)
   {
     return registerFunctionMapping(string, func, func.domainType(), func.coDomainType());
   }
