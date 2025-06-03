@@ -227,8 +227,7 @@ public class  IntegralNode<D, C, F extends Function<? extends D, ? extends C>> e
     }
     if (upperLimitNode == null && lowerLimitNode == null)
     {
-      expression.initializers.addAll(integralNode.expression.initializers);
-      expression.context.mergeFrom(integralNode.expression.context);
+      expression.merge(integralNode);
       integralNode.generate(mv, resultType);
     }
     else
@@ -248,6 +247,8 @@ public class  IntegralNode<D, C, F extends Function<? extends D, ? extends C>> e
     }
     return mv;
   }
+
+ 
 
   @SuppressWarnings("unchecked")
   private void computeIndefiniteIntegral()

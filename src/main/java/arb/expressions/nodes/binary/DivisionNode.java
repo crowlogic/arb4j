@@ -4,8 +4,10 @@ import static java.lang.String.format;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.*;
+import arb.Fraction;
 import arb.Integer;
+import arb.Real;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
@@ -33,7 +35,19 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> requestedResultType)
+  {
+    throwExceptionIfRequestedTypeDoesNotContainTheCoDomain(requestedResultType);
+    return super.generate(mv, requestedResultType);
+  }
+
+  /**
+   * Make an API that will definitively evaluate what types can be transformed to
+   * what without information loss
+   * 
+   * @param resultType
+   */
+  private void throwExceptionIfRequestedTypeDoesNotContainTheCoDomain(Class<?> resultType)
   {
     if (resultType.equals(Integer.class) && type().equals(Fraction.class))
     {
@@ -48,7 +62,6 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                        resultType,
                                                        this));
     }
-    return super.generate(mv, resultType);
   }
 
   static
@@ -96,6 +109,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     // Fundamental pattern: 1/√(1-x²) → arcsin(x)
     if (isOneOverSqrtOneMinusXSquared(variable))
     {
+      assert false : "TODO: how the caller should turn this into the additive constant for the integral range?";
       return variable.arcsin();
     }
 
@@ -165,8 +179,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (!(node instanceof ExponentiationNode pow))
       return false;
 
-    return pow.left.isVariableNamed(variable.getName()) && pow.right.isConstant()
-                  && "2".equals(pow.right.toString());
+    return pow.left.isVariableNamed(variable.getName()) && pow.right.isConstant() && "2".equals(pow.right.toString());
   }
 
   @Override
