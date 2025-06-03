@@ -8,7 +8,7 @@
   Product>|<doc-author|<author-data|<author-name|Stephen
   Crowley>|<\author-affiliation>
     <date|>
-  </author-affiliation>>>|<doc-date|>>
+  </author-affiliation>>>>
 
   <abstract-data|<\abstract>
     The Riemann-Siegel theta function <math|\<vartheta\><around|(|t|)>> plays
@@ -19,48 +19,108 @@
     to the equation:
 
     <\equation*>
-      \<zeta\>*<around*|(|<frac|1|2>+i*t|)>*\<zeta\><rprime|'>*<around*|(|<frac|1|2>-i*t|)>+\<zeta\>*<around*|(|<frac|1|2>-i*t|)>*\<zeta\><rprime|'>*<around*|(|<frac|1|2>+i*t|)>=0.
+      \<zeta\>*<around*|(|<frac|1|2>+i*t|)>*\<zeta\><rprime|'>*<around*|(|<frac|1|2>-i*t|)>+\<zeta\>*<around*|(|<frac|1|2>-i*t|)>*\<zeta\><rprime|'>*<around*|(|<frac|1|2>+i*t|)>=0
     </equation*>
   </abstract>>
 
   <section|The Riemann-Siegel Theta Function and Its Derivatives>
 
-  <\definition>
-    [Hardy Z-function and Riemann-Siegel Theta
-    Function]<label|def:hardy-theta> The Hardy <math|Z>-function is defined
+  <\definition*>
+    <dueto|Hardy Z-function and Riemann-Siegel Theta
+    Function><label|def:hardy-theta>The Hardy <math|Z>-function is defined
     by:
 
-    <\equation*>
-      Z<around|(|t|)>=e<rsup|i*\<vartheta\><around|(|t|)>>*\<zeta\>*<around*|(|<frac|1|2>+i*t|)>,
-    </equation*>
+    <\equation>
+      Z<around|(|t|)>=e<rsup|i*\<vartheta\><around|(|t|)>>*\<zeta\>*<around*|(|<frac|1|2>+i*t|)>
+    </equation>
 
     where <math|Z<around|(|t|)>> is real-valued for real <math|t>, and
     <math|\<vartheta\><around|(|t|)>> is the Riemann-Siegel theta function
     given explicitly by:
 
-    <\equation*>
+    <\equation>
       \<vartheta\><around|(|t|)>=\<Im\>*<around*|[|log
       <space|0.17em>\<Gamma\>*<around*|(|<frac|1|4>+<frac|i*t|2>|)>|]>-<frac|t|2>*log
-      \<pi\>.
-    </equation*>
-  </definition>
+      \<pi\>
+    </equation>
+  </definition*>
 
   <\lemma>
-    [Reality of Hardy Z-function]<label|lem:z-real> The Hardy
+    <dueto|Reality of Hardy Z-function><label|lem:z-real>The Hardy
     <math|Z>-function <math|Z<around|(|t|)>> as defined in
     Definition<nbsp><reference|def:hardy-theta> is real-valued for all real
     <math|t>.
   </lemma>
 
   <\proof>
-    The phase factor <math|\<vartheta\><around|(|t|)>> is constructed
-    precisely to compensate for the oscillatory behavior of
-    <math|\<zeta\>*<around*|(|<frac|1|2>+i*t|)>>. From the functional
-    equation of the zeta function and Stirling's approximation applied to the
-    gamma function, the imaginary part of <math|log
-    <space|0.17em>\<Gamma\>*<around*|(|<frac|1|4>+<frac|i*t|2>|)>> cancels
-    the argument of <math|\<zeta\>*<around*|(|<frac|1|2>+i*t|)>>, ensuring
-    <math|Z<around|(|t|)>\<in\>\<bbb-R\>> for <math|t\<in\>\<bbb-R\>>.
+    The functional equation of the Riemann zeta function states:
+
+    <\equation>
+      \<zeta\><around|(|s|)>=2<rsup|s>*\<pi\><rsup|s-1>*sin
+      <around*|(|<frac|\<pi\>*s|2>|)>*\<Gamma\>*<around|(|1-s|)>*\<zeta\>*<around|(|1-s|)>
+    </equation>
+
+    For <math|s=<frac|1|2>+i*t> with real <math|t>, we have
+    <math|1-s=<frac|1|2>-i*t>, yielding:
+
+    <\equation>
+      \<zeta\>*<around*|(|<frac|1|2>+i*t|)>=2<rsup|<frac|1|2>+i*t>*\<pi\><rsup|i*t-<frac|1|2>>*sin
+      <around*|(|<frac|\<pi\>|4>+<frac|\<pi\>*i*t|2>|)>*\<Gamma\>*<around*|(|<frac|1|2>-i*t|)>*\<zeta\>*<around*|(|<frac|1|2>-i*t|)>
+    </equation>
+
+    Taking the argument of both sides and using the reflection formula
+
+    <\equation>
+      \<Gamma\><around|(|z|)>*\<Gamma\>*<around|(|1-z|)>=<frac|\<pi\>|sin
+      <around|(|\<pi\>*z|)>>
+    </equation>
+
+    we have
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|arg
+      <around*|[|\<zeta\>*<around*|(|<frac|1|2>+i*t|)>|]>>|<cell|=t*log
+      2+<around|(|i*t-<frac|1|2>|)>*log \<pi\>+arg <around|[|sin
+      <around*|(|<frac|\<pi\>|4>+<frac|\<pi\>*i*t|2>|)>|]>>>|<row|<cell|>|<cell|+arg
+      <around*|[|\<Gamma\>*<around*|(|<frac|1|2>-i*t|)>|]>+arg
+      <around*|[|\<zeta\>*<around*|(|<frac|1|2>-i*t|)>|]>>>>>>
+    </equation>
+
+    Since\ 
+
+    <\equation>
+      \<zeta\>*<around*|(|<frac|1|2>-i*t|)>=<wide|\<zeta\>*<around*|(|<frac|1|2>+i*t|)>|\<bar\>>
+    </equation>
+
+    \ and
+
+    <\equation>
+      \<Gamma\>*<around*|(|<frac|1|2>-i*t|)>=<wide|\<Gamma\>*<around*|(|<frac|1|2>+i*t|)>|\<bar\>>
+    </equation>
+
+    \ for real <math|t>, the construction of
+    <math|\<vartheta\><around|(|t|)>> through:
+
+    <\equation>
+      \<vartheta\><around|(|t|)>=\<Im\>*<around*|[|log
+      \<Gamma\>*<around*|(|<frac|1|4>+<frac|i*t|2>|)>|]>-<frac|t|2>*log
+      \<pi\>
+    </equation>
+
+    ensures that
+
+    <\equation>
+      arg <around|[|e<rsup|i*\<vartheta\><around|(|t|)>>*\<zeta\>*<around|(|<frac|1|2>+i*t|)>|]>=0
+      <text|modulo> \<pi\>
+    </equation>
+
+    \ making
+
+    <\equation>
+      Z<around|(|t|)>=e<rsup|i*\<vartheta\><around|(|t|)>>*\<zeta\>*<around|(|<frac|1|2>+i*t|)>
+    </equation>
+
+    \ real-valued.
   </proof>
 
   <\theorem>
@@ -68,9 +128,9 @@
     Function]<label|thm:theta-prime> For <math|s=<frac|1|2>+i*t>, the first
     derivative of the Riemann-Siegel theta function satisfies:
 
-    <\equation*>
-      \<vartheta\><rprime|'><around|(|t|)>=-\<Re\><around*|[|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|]>.
-    </equation*>
+    <\equation>
+      \<vartheta\><rprime|'><around|(|t|)>=-\<Re\><around*|[|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|]>
+    </equation>
   </theorem>
 
   <\proof>
@@ -78,61 +138,61 @@
     <math|Z<around|(|t|)>=e<rsup|i*\<vartheta\><around|(|t|)>>*\<zeta\><around|(|s|)>>
     where <math|s=<frac|1|2>+i*t>. Differentiating with respect to <math|t>:
 
-    <\equation*>
-      Z<rprime|'><around|(|t|)>=<frac|d|d*t>*<around*|[|e<rsup|i*\<vartheta\><around|(|t|)>>*\<zeta\><around|(|s|)>|]>=e<rsup|i*\<vartheta\><around|(|t|)>>*<around*|[|i*\<vartheta\><rprime|'><around|(|t|)>*\<zeta\><around|(|s|)>+i*\<zeta\><rprime|'><around|(|s|)>|]>.
-    </equation*>
+    <\equation>
+      Z<rprime|'><around|(|t|)>=<frac|d|d*t>*<around*|[|e<rsup|i*\<vartheta\><around|(|t|)>>*\<zeta\><around|(|s|)>|]>=e<rsup|i*\<vartheta\><around|(|t|)>>*<around*|[|i*\<vartheta\><rprime|'><around|(|t|)>*\<zeta\><around|(|s|)>+i*\<zeta\><rprime|'><around|(|s|)>|]>
+    </equation>
 
     Since <math|Z<around|(|t|)>> is real by
     Lemma<nbsp><reference|lem:z-real>, <math|Z<rprime|'><around|(|t|)>> must
     also be real. Therefore, the imaginary part of the expression in brackets
     must vanish:
 
-    <\equation*>
-      \<Im\>*<around*|[|i*\<vartheta\><rprime|'><around|(|t|)>*\<zeta\><around|(|s|)>+i*\<zeta\><rprime|'><around|(|s|)>|]>=0.
-    </equation*>
+    <\equation>
+      \<Im\>*<around*|[|i*\<vartheta\><rprime|'><around|(|t|)>*\<zeta\><around|(|s|)>+i*\<zeta\><rprime|'><around|(|s|)>|]>=0
+    </equation>
 
     Expanding this condition:
 
-    <\equation*>
-      \<vartheta\><rprime|'><around|(|t|)>*\<Re\><around|[|\<zeta\><around|(|s|)>|]>+\<Re\><around|[|\<zeta\><rprime|'><around|(|s|)>|]>=0.
-    </equation*>
+    <\equation>
+      \<vartheta\><rprime|'><around|(|t|)>*\<Re\><around|[|\<zeta\><around|(|s|)>|]>+\<Re\><around|[|\<zeta\><rprime|'><around|(|s|)>|]>=0
+    </equation>
 
     Writing <math|\<zeta\><around|(|s|)>=\<Re\><around|[|\<zeta\><around|(|s|)>|]>+i*\<Im\><around|[|\<zeta\><around|(|s|)>|]>>
     and <math|\<zeta\><rprime|'><around|(|s|)>=\<Re\><around|[|\<zeta\><rprime|'><around|(|s|)>|]>+i*\<Im\><around|[|\<zeta\><rprime|'><around|(|s|)>|]>>,
     we obtain:
 
-    <\equation*>
-      \<vartheta\><rprime|'><around|(|t|)>=-<frac|\<Re\><around|[|\<zeta\><rprime|'><around|(|s|)>|]>|\<Re\><around|[|\<zeta\><around|(|s|)>|]>>.
-    </equation*>
+    <\equation>
+      \<vartheta\><rprime|'><around|(|t|)>=-<frac|\<Re\><around|[|\<zeta\><rprime|'><around|(|s|)>|]>|\<Re\><around|[|\<zeta\><around|(|s|)>|]>>
+    </equation>
 
     To express this in terms of the logarithmic derivative, note that:
 
-    <\equation*>
-      <frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>=<frac|\<Re\><around|[|\<zeta\><rprime|'><around|(|s|)>|]>+i*\<Im\><around|[|\<zeta\><rprime|'><around|(|s|)>|]>|\<Re\><around|[|\<zeta\><around|(|s|)>|]>+i*\<Im\><around|[|\<zeta\><around|(|s|)>|]>>.
-    </equation*>
+    <\equation>
+      <frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>=<frac|\<Re\><around|[|\<zeta\><rprime|'><around|(|s|)>|]>+i*\<Im\><around|[|\<zeta\><rprime|'><around|(|s|)>|]>|\<Re\><around|[|\<zeta\><around|(|s|)>|]>+i*\<Im\><around|[|\<zeta\><around|(|s|)>|]>>
+    </equation>
 
     Taking the real part:
 
-    <\equation*>
-      \<Re\><around*|[|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|]>=<frac|\<Re\><around|[|\<zeta\><rprime|'><around|(|s|)>|]>*\<Re\><around|[|\<zeta\><around|(|s|)>|]>+\<Im\><around|[|\<zeta\><rprime|'><around|(|s|)>|]>*\<Im\><around|[|\<zeta\><around|(|s|)>|]>|<around|\||\<zeta\><around|(|s|)>|\|><rsup|2>>.
-    </equation*>
+    <\equation>
+      \<Re\><around*|[|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|]>=<frac|\<Re\><around|[|\<zeta\><rprime|'><around|(|s|)>|]>*\<Re\><around|[|\<zeta\><around|(|s|)>|]>+\<Im\><around|[|\<zeta\><rprime|'><around|(|s|)>|]>*\<Im\><around|[|\<zeta\><around|(|s|)>|]>|<around|\||\<zeta\><around|(|s|)>|\|><rsup|2>>
+    </equation>
 
     When <math|\<zeta\><around|(|s|)>\<neq\>0>, multiplying numerator and
     denominator by <math|\<Re\><around|[|\<zeta\><around|(|s|)>|]>> and using
     the critical line property gives:
 
-    <\equation*>
-      \<vartheta\><rprime|'><around|(|t|)>=-\<Re\><around*|[|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|]>.
-    </equation*>
+    <\equation>
+      \<vartheta\><rprime|'><around|(|t|)>=-\<Re\><around*|[|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|]>
+    </equation>
   </proof>
 
   <\corollary>
     [Critical Points of Theta Function]<label|cor:critical-points> Critical
     points of <math|\<vartheta\><around|(|t|)>> occur precisely when:
 
-    <\equation*>
-      \<Re\><around*|[|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|]>=0,
-    </equation*>
+    <\equation>
+      \<Re\><around*|[|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|]>=0
+    </equation>
 
     where <math|s=<frac|1|2>+i*t>.
   </corollary>
@@ -151,28 +211,36 @@
     <math|s=<frac|1|2>+i*t> and <math|s<rprime|'>=<frac|1|2>-i*t>, the
     following relations hold:
 
-    <\equation*>
-      \<zeta\><around|(|s<rprime|'>|)>=<wide|\<zeta\><around|(|s|)>|\<bar\>>,<space|1em>\<zeta\><rprime|'><around|(|s<rprime|'>|)>=<wide|\<zeta\><rprime|'><around|(|s|)>|\<bar\>>.
-    </equation*>
+    <\equation>
+      \<zeta\><around|(|s<rprime|'>|)>=<wide|\<zeta\><around|(|s|)>|\<bar\>>
+    </equation>
+
+    <\equation>
+      \<zeta\><rprime|'><around|(|s<rprime|'>|)>=<wide|\<zeta\><rprime|'><around|(|s|)>|\<bar\>>
+    </equation>
   </lemma>
 
   <\proof>
     The functional equation of the Riemann zeta function states:
 
-    <\equation*>
-      \<zeta\><around|(|s|)>=\<chi\><around|(|s|)>*\<zeta\>*<around|(|1-s|)>,
-    </equation*>
+    <\equation>
+      \<zeta\><around|(|s|)>=\<chi\><around|(|s|)>*\<zeta\>*<around|(|1-s|)>
+    </equation>
 
-    where <math|\<chi\><around|(|s|)>=2<rsup|s>*\<pi\><rsup|s-1>*sin
-    <around*|(|<frac|\<pi\>*s|2>|)>*\<Gamma\>*<around|(|1-s|)>>.
+    where
+
+    <\equation>
+      \<chi\><around|(|s|)>=2<rsup|s>*\<pi\><rsup|s-1>*sin
+      <around*|(|<frac|\<pi\>*s|2>|)>*\<Gamma\>*<around|(|1-s|)>
+    </equation>
 
     For <math|s=<frac|1|2>+i*t>, we have <math|1-s=<frac|1|2>-i*t=s<rprime|'>>.
     The reflection property of analytic functions on the critical line,
     combined with the functional equation, yields:
 
-    <\equation*>
-      \<zeta\><around|(|<wide|s|\<bar\>>|)>=<wide|\<zeta\><around|(|s|)>|\<bar\>>.
-    </equation*>
+    <\equation>
+      \<zeta\><around|(|<wide|s|\<bar\>>|)>=<wide|\<zeta\><around|(|s|)>|\<bar\>>
+    </equation>
 
     Since <math|<wide|s|\<bar\>>=<wide|<frac|1|2>+i*t|\<bar\>>=<frac|1|2>-i*t=s<rprime|'>>,
     we obtain <math|\<zeta\><around|(|s<rprime|'>|)>=<wide|\<zeta\><around|(|s|)>|\<bar\>>>.
@@ -181,9 +249,9 @@
     <math|\<zeta\><around|(|<wide|w|\<bar\>>|)>=<wide|\<zeta\><around|(|w|)>|\<bar\>>>
     with respect to <math|w> and setting <math|w=s>:
 
-    <\equation*>
-      \<zeta\><rprime|'><around|(|<wide|s|\<bar\>>|)>\<cdot\><wide|1|\<bar\>>=<wide|\<zeta\><rprime|'><around|(|s|)>|\<bar\>>,
-    </equation*>
+    <\equation>
+      \<zeta\><rprime|'><around|(|<wide|s|\<bar\>>|)>\<cdot\><wide|1|\<bar\>>=<wide|\<zeta\><rprime|'><around|(|s|)>|\<bar\>>
+    </equation>
 
     which gives <math|\<zeta\><rprime|'><around|(|s<rprime|'>|)>=<wide|\<zeta\><rprime|'><around|(|s|)>|\<bar\>>>.
   </proof>
@@ -194,9 +262,9 @@
     <math|\<Re\><around*|[|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|]>=0>
     for <math|s=<frac|1|2>+i*t> is equivalent to:
 
-    <\equation*>
-      \<zeta\><around|(|s|)>*\<zeta\><rprime|'><around|(|s<rprime|'>|)>+\<zeta\><around|(|s<rprime|'>|)>*\<zeta\><rprime|'><around|(|s|)>=0,
-    </equation*>
+    <\equation>
+      \<zeta\><around|(|s|)>*\<zeta\><rprime|'><around|(|s<rprime|'>|)>+\<zeta\><around|(|s<rprime|'>|)>*\<zeta\><rprime|'><around|(|s|)>=0
+    </equation>
 
     where <math|s<rprime|'>=<frac|1|2>-i*t>.
   </theorem>
@@ -205,21 +273,21 @@
     Starting with the critical condition from
     Corollary<nbsp><reference|cor:critical-points>:
 
-    <\equation*>
-      \<Re\><around*|[|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|]>=0.
-    </equation*>
+    <\equation>
+      \<Re\><around*|[|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|]>=0
+    </equation>
 
     This is equivalent to:
 
-    <\equation*>
-      <frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>+<wide|<around*|(|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|)>|\<bar\>>=0.
-    </equation*>
+    <\equation>
+      <frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>+<wide|<around*|(|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|)>|\<bar\>>=0
+    </equation>
 
     Taking the complex conjugate of the logarithmic derivative:
 
-    <\equation*>
-      <wide|<around*|(|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|)>|\<bar\>>=<frac|<wide|\<zeta\><rprime|'><around|(|s|)>|\<bar\>>|<wide|\<zeta\><around|(|s|)>|\<bar\>>>.
-    </equation*>
+    <\equation>
+      <wide|<around*|(|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|)>|\<bar\>>=<frac|<wide|\<zeta\><rprime|'><around|(|s|)>|\<bar\>>|<wide|\<zeta\><around|(|s|)>|\<bar\>>>
+    </equation>
 
     By Lemma<nbsp><reference|lem:conjugate-symmetry>,
     <math|<wide|\<zeta\><around|(|s|)>|\<bar\>>=\<zeta\><around|(|s<rprime|'>|)>>
@@ -232,15 +300,15 @@
 
     Multiplying through by <math|\<zeta\><around|(|s|)>*\<zeta\><around|(|s<rprime|'>|)>>:
 
-    <\equation*>
-      \<zeta\><rprime|'><around|(|s|)>*\<zeta\><around|(|s<rprime|'>|)>+\<zeta\><rprime|'><around|(|s<rprime|'>|)>*\<zeta\><around|(|s|)>=0.
-    </equation*>
+    <\equation>
+      \<zeta\><rprime|'><around|(|s|)>*\<zeta\><around|(|s<rprime|'>|)>+\<zeta\><rprime|'><around|(|s<rprime|'>|)>*\<zeta\><around|(|s|)>=0
+    </equation>
 
     Rearranging terms:
 
-    <\equation*>
-      \<zeta\><around|(|s|)>*\<zeta\><rprime|'><around|(|s<rprime|'>|)>+\<zeta\><around|(|s<rprime|'>|)>*\<zeta\><rprime|'><around|(|s|)>=0.
-    </equation*>
+    <\equation>
+      \<zeta\><around|(|s|)>*\<zeta\><rprime|'><around|(|s<rprime|'>|)>+\<zeta\><around|(|s<rprime|'>|)>*\<zeta\><rprime|'><around|(|s|)>=0
+    </equation>
   </proof>
 
   <\corollary>
@@ -248,9 +316,9 @@
     Critical points of <math|\<vartheta\><around|(|t|)>> correspond precisely
     to solutions of the symmetrized derivative equation:
 
-    <\equation*>
-      \<zeta\>*<around*|(|<frac|1|2>+i*t|)>*\<zeta\><rprime|'>*<around*|(|<frac|1|2>-i*t|)>+\<zeta\>*<around*|(|<frac|1|2>-i*t|)>*\<zeta\><rprime|'>*<around*|(|<frac|1|2>+i*t|)>=0.
-    </equation*>
+    <\equation>
+      \<zeta\>*<around*|(|<frac|1|2>+i*t|)>*\<zeta\><rprime|'>*<around*|(|<frac|1|2>-i*t|)>+\<zeta\>*<around*|(|<frac|1|2>-i*t|)>*\<zeta\><rprime|'>*<around*|(|<frac|1|2>+i*t|)>=0
+    </equation>
   </corollary>
 
   <\proof>
@@ -264,9 +332,9 @@
     [Second Derivative Formula]<label|thm:second-derivative> The second
     derivative of the Riemann-Siegel theta function is given by:
 
-    <\equation*>
-      \<vartheta\><rprime|''><around|(|t|)>=-\<Re\>*<around*|[|<frac|\<zeta\><rprime|''><around|(|s|)>*\<zeta\><around|(|s|)>-<around|(|\<zeta\><rprime|'><around|(|s|)>|)><rsup|2>|\<zeta\><around|(|s|)><rsup|2>>\<cdot\>i|]>,
-    </equation*>
+    <\equation>
+      \<vartheta\><rprime|''><around|(|t|)>=-\<Re\>*<around*|[|<frac|\<zeta\><rprime|''><around|(|s|)>*\<zeta\><around|(|s|)>-<around|(|\<zeta\><rprime|'><around|(|s|)>|)><rsup|2>|\<zeta\><around|(|s|)><rsup|2>>\<cdot\>i|]>
+    </equation>
 
     where <math|s=<frac|1|2>+i*t>.
   </theorem>
@@ -274,28 +342,28 @@
   <\proof>
     From Theorem<nbsp><reference|thm:theta-prime>, we have:
 
-    <\equation*>
-      \<vartheta\><rprime|'><around|(|t|)>=-\<Re\><around*|[|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|]>.
-    </equation*>
+    <\equation>
+      \<vartheta\><rprime|'><around|(|t|)>=-\<Re\><around*|[|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|]>
+    </equation>
 
     Differentiating with respect to <math|t>:
 
-    <\equation*>
-      \<vartheta\><rprime|''><around|(|t|)>=-\<Re\><around*|[|<frac|d|d*t><around*|(|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|)>|]>.
-    </equation*>
+    <\equation>
+      \<vartheta\><rprime|''><around|(|t|)>=-\<Re\><around*|[|<frac|d|d*t><around*|(|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|)>|]>
+    </equation>
 
     Since <math|s=<frac|1|2>+i*t>, we have <math|<frac|d*s|d*t>=i>. Using the
     quotient rule:
 
-    <\equation*>
-      <frac|d|d*t><around*|(|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|)>=<frac|d*s|d*t>\<cdot\><frac|d|d*s><around*|(|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|)>=i\<cdot\><frac|\<zeta\><rprime|''><around|(|s|)>*\<zeta\><around|(|s|)>-<around|(|\<zeta\><rprime|'><around|(|s|)>|)><rsup|2>|\<zeta\><around|(|s|)><rsup|2>>.
-    </equation*>
+    <\equation>
+      <frac|d|d*t><around*|(|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|)>=<frac|d*s|d*t>\<cdot\><frac|d|d*s><around*|(|<frac|\<zeta\><rprime|'><around|(|s|)>|\<zeta\><around|(|s|)>>|)>=i\<cdot\><frac|\<zeta\><rprime|''><around|(|s|)>*\<zeta\><around|(|s|)>-<around|(|\<zeta\><rprime|'><around|(|s|)>|)><rsup|2>|\<zeta\><around|(|s|)><rsup|2>>
+    </equation>
 
     Therefore:
 
-    <\equation*>
-      \<vartheta\><rprime|''><around|(|t|)>=-\<Re\>*<around*|[|<frac|\<zeta\><rprime|''><around|(|s|)>*\<zeta\><around|(|s|)>-<around|(|\<zeta\><rprime|'><around|(|s|)>|)><rsup|2>|\<zeta\><around|(|s|)><rsup|2>>\<cdot\>i|]>.
-    </equation*>
+    <\equation>
+      \<vartheta\><rprime|''><around|(|t|)>=-\<Re\>*<around*|[|<frac|\<zeta\><rprime|''><around|(|s|)>*\<zeta\><around|(|s|)>-<around|(|\<zeta\><rprime|'><around|(|s|)>|)><rsup|2>|\<zeta\><around|(|s|)><rsup|2>>\<cdot\>i|]>
+    </equation>
   </proof>
 
   <\lemma>
@@ -350,9 +418,9 @@
     Riemann-Siegel theta function at <math|t\<approx\>6.28983598> is the
     first positive solution to:
 
-    <\equation*>
-      \<zeta\>*<around*|(|<frac|1|2>+i*t|)>*\<zeta\><rprime|'>*<around*|(|<frac|1|2>-i*t|)>+\<zeta\>*<around*|(|<frac|1|2>-i*t|)>*\<zeta\><rprime|'>*<around*|(|<frac|1|2>+i*t|)>=0.
-    </equation*>
+    <\equation>
+      \<zeta\>*<around*|(|<frac|1|2>+i*t|)>*\<zeta\><rprime|'>*<around*|(|<frac|1|2>-i*t|)>+\<zeta\>*<around*|(|<frac|1|2>-i*t|)>*\<zeta\><rprime|'>*<around*|(|<frac|1|2>+i*t|)>=0
+    </equation>
   </theorem>
 
   <\proof>
@@ -374,9 +442,9 @@
   analytic properties of <math|\<zeta\><around|(|s|)>> and the critical
   points of <math|\<vartheta\><around|(|t|)>>. The first local minimum of
   <math|\<vartheta\><around|(|t|)>> at <math|t\<approx\>6.28983598> is
-  rigorously identified through Theorem<nbsp><reference|thm:first-minimum> as
-  the first positive solution to the symmetrized derivative equation,
-  unifying geometric and analytic perspectives in zeta function theory.
+  identified through Theorem<nbsp><reference|thm:first-minimum> as the first
+  positive solution to the symmetrized derivative equation, unifying
+  geometric and analytic perspectives in zeta function theory.
 </body>
 
 <\initial>
@@ -388,21 +456,21 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-2|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-3|<tuple|3|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-4|<tuple|4|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|cor:critical-points|<tuple|4|2|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|cor:symmetrized-zeros|<tuple|7|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|def:hardy-theta|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|lem:conjugate-symmetry|<tuple|5|3|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|lem:minimum-criterion|<tuple|9|5|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|lem:z-real|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|thm:equivalence|<tuple|6|3|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|thm:first-minimum|<tuple|10|5|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|thm:main-result|<tuple|11|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|thm:second-derivative|<tuple|8|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|thm:theta-prime|<tuple|3|2|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-2|<tuple|2|4>>
+    <associate|auto-3|<tuple|3|6>>
+    <associate|auto-4|<tuple|4|7>>
+    <associate|cor:critical-points|<tuple|3|4>>
+    <associate|cor:symmetrized-zeros|<tuple|6|5>>
+    <associate|def:hardy-theta|<tuple|1|1>>
+    <associate|lem:conjugate-symmetry|<tuple|4|4>>
+    <associate|lem:minimum-criterion|<tuple|8|6>>
+    <associate|lem:z-real|<tuple|1|1>>
+    <associate|thm:equivalence|<tuple|5|5>>
+    <associate|thm:first-minimum|<tuple|9|6>>
+    <associate|thm:main-result|<tuple|10|7>>
+    <associate|thm:second-derivative|<tuple|7|6>>
+    <associate|thm:theta-prime|<tuple|2|3>>
   </collection>
 </references>
 
