@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import org.objectweb.asm.*;
 
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
@@ -15,8 +16,8 @@ import arb.functions.Function;
 
 /**
  * Represents application of arguments to an expression that evaluates to a
- * Function. Used for cases like P(3)(0.75) where P(3) returns a callable
- * object.
+ * {@link Function}. Used for cases like P(3)(0.75) where P(3) returns a type
+ * that implements the {@link Function} interface such as {@link RealPolynomial}
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}

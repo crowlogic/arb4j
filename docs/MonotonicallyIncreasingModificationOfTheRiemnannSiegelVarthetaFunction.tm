@@ -14,10 +14,11 @@
     A monotonically increasing version <math|\<vartheta\><rsup|+><around*|(|t|)>>
     of the Riemann-Siegel theta <math|\<vartheta\><rsup|><around*|(|t|)>>
     function is constructed by modifying through reflection about its unique
-    critical point. This transformation preserves all phase relationships
-    essential to zeta function analysis while enforcing strict monotonicity.
-    The construction maintains exact phase information without approximations
-    and preserves the function's critical number-theoretic properties.
+    non-zero critical point. This transformation preserves all phase
+    relationships essential to zeta function analysis while enforcing strict
+    monotonicity. The construction maintains exact phase information without
+    approximations and preserves the function's critical number-theoretic
+    properties.
   </abstract>>
 
   <\table-of-contents|toc>
