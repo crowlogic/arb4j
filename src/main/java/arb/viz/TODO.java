@@ -1,6 +1,7 @@
 package arb.viz;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -35,7 +36,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * 
+ * TODO: make it so u can right-click to edit the selected line as well instead of just using the button
+ *  
  * @author ©2024 Stephen Crowley
  * @see BusinessSourceLicenseVersionOnePointOne for © terms
  */
@@ -97,6 +99,7 @@ public class TODO extends
     java.io.File selectedFile = fileChooser.showSaveDialog(stage);
     if (selectedFile != null)
     {
+      setCurrentFile(selectedFile);
       try ( PrintWriter out = new PrintWriter(selectedFile))
       {
         items.forEach(out::println);
@@ -109,11 +112,20 @@ public class TODO extends
     }
   }
 
-  private String lastLoadedFilePath = null;
+  private void setCurrentFile(java.io.File selectedFile)
+  {
+    currentTODOListPath = selectedFile.getAbsolutePath();
+    stage.setTitle("TODO: " + selectedFile.getAbsolutePath());
+  }
+
+  private String currentTODOListPath = null;
+
+  private Stage  stage;
 
   @Override
   public void start(Stage primaryStage)
   {
+    this.stage = primaryStage;
     // Create context menu for right-click
     ContextMenu contextMenu  = new ContextMenu();
     MenuItem    loadMenuItem = new MenuItem("Load");
@@ -242,9 +254,9 @@ public class TODO extends
 
   private void saveItems()
   {
-    if (lastLoadedFilePath != null)
+    if (currentTODOListPath != null)
     {
-      try ( PrintWriter out = new PrintWriter(lastLoadedFilePath))
+      try ( PrintWriter out = new PrintWriter(currentTODOListPath))
       {
         items.forEach(out::println);
         changed = false;
@@ -263,12 +275,13 @@ public class TODO extends
 
   private void loadItemsFromFile(String filePath)
   {
+    File file = new File(filePath);
     try ( BufferedReader reader = new BufferedReader(new FileReader(filePath)))
     {
       List<String> lines = reader.lines().collect(Collectors.toList());
       items.setAll(lines);
-      changed            = false;
-      lastLoadedFilePath = filePath; // Track last loaded file
+      changed  = false;
+      setCurrentFile(file);
     }
     catch (IOException e)
     {
