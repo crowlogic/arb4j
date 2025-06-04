@@ -33,7 +33,7 @@ module arb4j
   
   exports arb;
   exports arb.expressions.context;
-  exports arb.expressions.shell;
+  exports arb.shell;
   exports arb.expressions.viz;
   exports arb.theorems;
   exports arb.annotations;

@@ -1,17 +1,24 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.cast;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.loadOrderParameter;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
-import arb.expressions.nodes.*;
+import arb.expressions.nodes.IntegralNode;
+import arb.expressions.nodes.Node;
+import arb.expressions.nodes.PolynomialIntegralNode;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**

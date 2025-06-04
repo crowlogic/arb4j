@@ -15,8 +15,16 @@ import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.*;
+import arb.AlgebraicNumber;
+import arb.Complex;
+import arb.ComplexPolynomial;
+import arb.ComplexRationalFunction;
+import arb.Fraction;
 import arb.Integer;
+import arb.IntegerPolynomial;
+import arb.RationalFunction;
+import arb.Real;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;

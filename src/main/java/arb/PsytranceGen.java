@@ -1,7 +1,10 @@
 package arb;
 
-import javax.sound.sampled.*;
 import java.util.concurrent.atomic.AtomicLong;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.SourceDataLine;
 
 public class PsytranceGen
 {

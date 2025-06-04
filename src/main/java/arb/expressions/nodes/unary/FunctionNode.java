@@ -1,20 +1,37 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.loadOrderParameter;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.String.format;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexRationalFunction;
+import arb.Fraction;
 import arb.Integer;
+import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
-import arb.expressions.*;
-import arb.expressions.nodes.*;
+import arb.expressions.Compiler;
+import arb.expressions.Context;
+import arb.expressions.Expression;
+import arb.expressions.FunctionMapping;
+import arb.expressions.Parser;
+import arb.expressions.nodes.LiteralConstantNode;
+import arb.expressions.nodes.Node;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**

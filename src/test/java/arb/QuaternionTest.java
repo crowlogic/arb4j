@@ -1,6 +1,13 @@
 package arb;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.half;
+import static arb.RealConstants.one;
+import static arb.RealConstants.oneQuarter;
+import static arb.RealConstants.sqrt2;
+import static arb.RealConstants.threeQuarters;
+import static arb.RealConstants.two;
+import static arb.RealConstants.π;
+import static arb.RealConstants.πsquared;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;

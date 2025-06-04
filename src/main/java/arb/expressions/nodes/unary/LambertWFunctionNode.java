@@ -1,6 +1,9 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.duplicateTopOfTheStack;
+import static arb.expressions.Compiler.invokeStaticMethod;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.scalarType;
 import static java.lang.String.format;
 import static java.lang.System.err;
 
@@ -9,8 +12,10 @@ import java.util.Objects;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.*;
+import arb.Complex;
 import arb.Integer;
+import arb.Real;
+import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;

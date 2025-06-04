@@ -1,13 +1,25 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.cast;
+import static arb.expressions.Compiler.invokeStaticMethod;
+import static arb.expressions.Compiler.invokeVirtualMethod;
+import static arb.expressions.Compiler.loadInputParameter;
+import static arb.expressions.Compiler.loadOrderParameter;
+import static arb.expressions.Compiler.loadResultParameter;
 import static java.lang.System.err;
 import static org.objectweb.asm.Opcodes.ACONST_NULL;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexFraction;
+import arb.ComplexRationalFunction;
+import arb.Fraction;
+import arb.Initializable;
 import arb.Integer;
+import arb.RationalFunction;
+import arb.Real;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
@@ -345,7 +357,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   protected MethodVisitor initializeHypergeometricFunction(MethodVisitor mv)
   {
-    if (expression.trace)
+    if (Expression.trace)
     {
       System.err.format("initializeHypergeometricFunction(alpha=%s, beta=%s, arg=%s)\n", α, β, arg);
     }

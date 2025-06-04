@@ -19,8 +19,13 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexConstants;
+import arb.Fraction;
+import arb.FractionConstants;
 import arb.Integer;
+import arb.Real;
+import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;

@@ -1,6 +1,9 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.cast;
+import static arb.expressions.Compiler.getFieldFromThis;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -11,9 +14,17 @@ import org.scilab.forge.jlatexmath.LaTeXAtom;
 import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.*;
-import arb.expressions.nodes.binary.*;
-import arb.expressions.nodes.unary.*;
+import arb.expressions.Compiler;
+import arb.expressions.Expression;
+import arb.expressions.nodes.binary.AdditionNode;
+import arb.expressions.nodes.binary.BinaryOperationNode;
+import arb.expressions.nodes.binary.DivisionNode;
+import arb.expressions.nodes.binary.ExponentiationNode;
+import arb.expressions.nodes.binary.MultiplicationNode;
+import arb.expressions.nodes.binary.SubtractionNode;
+import arb.expressions.nodes.unary.AbsoluteValueNode;
+import arb.expressions.nodes.unary.FunctionNode;
+import arb.expressions.nodes.unary.NegationNode;
 import arb.expressions.viz.ExpressionTree;
 import arb.functions.Function;
 import arb.utensils.text.latex.Latex;

@@ -5,7 +5,9 @@ import static arb.expressions.Compiler.cast;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import arb.expressions.Compiler;
 import arb.expressions.Expression;

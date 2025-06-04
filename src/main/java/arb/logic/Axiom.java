@@ -1,5 +1,8 @@
 package arb.logic;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+
 /**
  * (Logic & Math.) A self-evident and necessary truth, or a proposition whose
  * truth is so evident as first sight that no reasoning or demonstration can

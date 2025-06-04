@@ -1,4 +1,4 @@
-package arb.expressions.shell;
+package arb.shell;
 
 import java.util.Map;
 

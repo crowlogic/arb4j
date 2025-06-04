@@ -15,10 +15,7 @@ import javafx.collections.ObservableList;
 public final class ContextVariableChange extends
                                          ListChangeListener.Change<Named>
 {
-  /**
-   * 
-   */
-  private final Variables vars;
+  public final Variables vars;
   private final int       index;
   private boolean         invalid = true;
 

@@ -1,9 +1,9 @@
 package arb.functions.real;
 
 import arb.Real;
-import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.arblib;
 
 /**
  * todo: add some sort of root enumeration interface that this implements

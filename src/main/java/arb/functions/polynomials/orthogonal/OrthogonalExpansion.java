@@ -1,16 +1,16 @@
 package arb.functions.polynomials.orthogonal;
 
+
+import java.util.ArrayList;
+
+import arb.Field;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-import java.util.ArrayList;
-
-import arb.Field;
-import arb.functions.Basis;
-import arb.functions.Expansion;
-import arb.functions.Function;
-
 public class OrthogonalExpansion<D extends Field<? extends D>, C, V, O extends OrthogonalPolynomialSequence<D, C, V>>
 {
 

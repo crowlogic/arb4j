@@ -2,7 +2,6 @@ package arb.space.topological;
 
 import arb.Field;
 import arb.Metric;
-import arb.Real;
 import arb.geometry.Manifold;
 import arb.space.bornological.BornologicalSpace;
 

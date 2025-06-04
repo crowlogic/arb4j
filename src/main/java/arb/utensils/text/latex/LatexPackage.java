@@ -2,8 +2,16 @@ package arb.utensils.text.latex;
 
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.function.BinaryOperator;
 
 /**

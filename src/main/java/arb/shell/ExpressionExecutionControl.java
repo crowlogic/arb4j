@@ -1,11 +1,9 @@
-package arb.expressions.shell;
+package arb.shell;
 
 import java.util.Map;
 
 import arb.Real;
 import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.FunctionMapping;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;
@@ -16,7 +14,7 @@ import jdk.jshell.spi.ExecutionEnv;
  * A JShell ExecutionControl for a REPL-style interface
  */
 class ExpressionExecutionControl implements
-                           ExecutionControl
+                                 ExecutionControl
 {
   private final ExecutionEnv env;
   private final Context      context;
@@ -61,38 +59,41 @@ class ExpressionExecutionControl implements
         String funcName = className.split("[\\(\\s]")[0];
         var    mapping  = context.functions.get(funcName);
 
-        if (mapping != null)
+        try ( Real arg = new Real())
         {
-          // Parse argument
-          String argStr = className.substring(className.indexOf('(') + 1, className.indexOf(')'));
+          if (mapping != null)
+          {
+            // Parse argument
+            String argStr = className.substring(className.indexOf('(') + 1, className.indexOf(')'));
 
-          var    result = ((RealFunction) mapping.instance).evaluate(new Real().set(argStr, 128), 1, 128, new Real());
-          System.err.println("Evaluated " + funcName + "(" + argStr + ") = " + result);
-          return result.toString();
-        }
-        else
-        {
-          // Treat as direct expression
-          var expression = Function.parse(null,
-                                          className,
-                                          context,
-                                          Real.class,
-                                          Real.class,
-                                          RealFunction.class,
-                                          null,
-                                          null);
-          System.err.println("Parsed direct expression: " + expression);
+            var    result = ((RealFunction) mapping.instance).evaluate(arg.set(argStr, 128), 1, 128, arg);
+            System.err.println("Evaluated " + funcName + "(" + argStr + ") = " + result);
+            return result.toString();
+          }
+          else
+          {
+            // Treat as direct expression
+            var expression = Function.parse(null,
+                                            className,
+                                            context,
+                                            Real.class,
+                                            Real.class,
+                                            RealFunction.class,
+                                            null,
+                                            null);
+            System.err.println("Parsed direct expression: " + expression);
 
-          var instance = expression.compile().instantiate();
-          var result   = instance.evaluate(new Real().set(1), 1, 128, new Real());
-          System.err.println("Result: " + result);
-          return result.toString();
+            var instance = expression.instantiate();
+            var result   = instance.evaluate(arg.set(1), 1, 128, arg);
+            System.err.println("Result: " + result);
+            return result.toString();
+          }
         }
       }
     }
     catch (Exception e)
     {
-      System.err.println("Failed: " + e.getMessage());
+      e.printStackTrace(System.err);
       Utensils.throwOrWrap(e);
       return null;
     }

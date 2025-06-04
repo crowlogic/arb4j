@@ -3,10 +3,10 @@ package arb.functions.complex.numbertheoretic;
 import static java.lang.Math.max;
 
 import arb.Complex;
-import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.complex.ComplexFunction;
+import arb.arblib;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the

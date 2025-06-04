@@ -2,6 +2,9 @@ package arb.space.topological;
 
 import java.util.Set;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+
 /**
  * A Topology is a set of subsets (usually referred to as "open sets") of a
  * given Set, satisfying certain properties that formalize the intuitive notion

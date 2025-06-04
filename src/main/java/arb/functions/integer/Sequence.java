@@ -9,7 +9,6 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
-import arb.functions.polynomials.OrthogonalSequence;
 import arb.utensils.ShellFunctions;
 
 /**

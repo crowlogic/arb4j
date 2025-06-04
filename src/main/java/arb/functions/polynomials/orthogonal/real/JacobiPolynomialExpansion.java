@@ -1,6 +1,5 @@
 package arb.functions.polynomials.orthogonal.real;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import arb.Real;

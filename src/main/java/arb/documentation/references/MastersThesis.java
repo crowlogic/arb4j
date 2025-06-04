@@ -1,8 +1,8 @@
 package arb.documentation.references;
 
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import arb.documentation.AbstractBibliography;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;

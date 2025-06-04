@@ -1,7 +1,6 @@
 package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.getFieldFromThis;
 import static arb.expressions.Compiler.invokeMethod;
 import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 
@@ -22,7 +21,6 @@ import arb.expressions.Expression;
 import arb.expressions.FunctionMapping;
 import arb.expressions.Parser;
 import arb.expressions.VariableReference;
-import arb.expressions.nodes.unary.FunctionEvaluationNode;
 import arb.functions.Function;
 
 /**

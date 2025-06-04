@@ -3,8 +3,13 @@ package arb.utensils.text.latex;
 import java.io.File;
 import java.lang.System.Logger.Level;
 import java.lang.reflect.Array;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import arb.utensils.Strings;

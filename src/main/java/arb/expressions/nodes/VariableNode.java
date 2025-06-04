@@ -439,7 +439,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                                              + this;
     if (!equals(inputVariable))
     {
-      if (expression.trace)
+      if (Expression.trace)
       {
         System.err.format("Variable(#%s).resolveIndependentVariable: declaring "
                           + reference

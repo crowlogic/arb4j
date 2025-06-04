@@ -9,7 +9,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 import arb.XDO;
-import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.viz.EmacsKeybindingsEventHandler;
@@ -17,8 +16,15 @@ import arb.utensils.ShellFunctions;
 import arb.utensils.Utensils;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.IndexedCell;
+import javafx.scene.control.Skin;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.control.skin.TableColumnHeader;
 import javafx.scene.control.skin.TableViewSkinBase;
 import javafx.scene.control.skin.VirtualFlow;
@@ -28,6 +34,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import arb.arblib;
 
 /**
  * Restore the completely broken toFront() functionality in Javafx that was put

@@ -1,10 +1,7 @@
 package arb.functions.complex;
 
-import java.util.List;
-
 import arb.Complex;
 import arb.Real;
-import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.NotIntegrableException;
@@ -13,7 +10,6 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
 import arb.functions.Function;
-import arb.functions.real.RealFunction;
 import arb.space.topological.VectorSpace;
 
 /**

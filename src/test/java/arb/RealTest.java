@@ -14,6 +14,8 @@ import junit.framework.TestCase;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
+@SuppressWarnings(
+{ "unused", "resource" })
 public class RealTest extends
                       TestCase
 {

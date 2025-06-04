@@ -172,7 +172,7 @@ public class Equation<D, C, F extends Function<? extends D, ? extends C>> implem
   }
 
   @Override
-  public <C extends Clause<Word, Sentence<Word>, Proposition<Word, Sentence<Word>>>> Stream<? extends C> structure()
+  public <G extends Clause<Word, Sentence<Word>, Proposition<Word, Sentence<Word>>>> Stream<? extends G> structure()
   {
     assert false : "TODO";
     return null;

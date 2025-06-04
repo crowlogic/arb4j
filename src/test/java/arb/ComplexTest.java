@@ -15,7 +15,7 @@ import junit.framework.TestCase;
  *      {@link TheArb4jLibrary}
  */
 @SuppressWarnings(
-{ "unused" })
+{ "unused", "resource" })
 public class ComplexTest extends
                          TestCase
 {

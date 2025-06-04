@@ -1,6 +1,14 @@
 package arb.expressions.nodes.nary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.cast;
+import static arb.expressions.Compiler.getFieldFromThis;
+import static arb.expressions.Compiler.getMethodDescriptor;
+import static arb.expressions.Compiler.invokeMethod;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.invokeVirtualMethod;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.loadInputParameter;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static arb.utensils.Utensils.indent;
 import static java.lang.System.err;
 import static java.lang.System.out;
