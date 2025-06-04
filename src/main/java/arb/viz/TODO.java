@@ -21,18 +21,20 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * basic todo list
  * 
  * @author ©2024 Stephen Crowley
  * @see BusinessSourceLicenseVersionOnePointOne for © terms
@@ -82,9 +84,51 @@ public class TODO extends
     }
   }
 
+  private void saveItemsWithDialog(Stage stage)
+  {
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Save To-Do List File");
+    fileChooser.getExtensionFilters()
+               .addAll(new FileChooser.ExtensionFilter("Text Files",
+                                                       "*.txt"),
+                       new FileChooser.ExtensionFilter("All Files",
+                                                       "*.*"));
+
+    java.io.File selectedFile = fileChooser.showSaveDialog(stage);
+    if (selectedFile != null)
+    {
+      try ( PrintWriter out = new PrintWriter(selectedFile))
+      {
+        items.forEach(out::println);
+        changed = false;
+      }
+      catch (FileNotFoundException e)
+      {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  private String lastLoadedFilePath = null;
+
   @Override
   public void start(Stage primaryStage)
   {
+    // Create context menu for right-click
+    ContextMenu contextMenu  = new ContextMenu();
+    MenuItem    loadMenuItem = new MenuItem("Load");
+    loadMenuItem.setOnAction(e -> loadItemsWithDialog(primaryStage));
+    MenuItem saveMenuItem = new MenuItem("Save");
+    saveMenuItem.setOnAction(e -> saveItems());
+    MenuItem saveAsMenuItem = new MenuItem("Save As");
+    saveAsMenuItem.setOnAction(e -> saveItemsWithDialog(primaryStage));
+    MenuItem clearMenuItem = new MenuItem("Clear TODO List");
+    clearMenuItem.setOnAction(e -> clearAllItems());
+
+    contextMenu.getItems().addAll(loadMenuItem, saveMenuItem, saveAsMenuItem, clearMenuItem);
+
+    listView.setContextMenu(contextMenu);
+
     Button addButton = new Button("Add");
     addButton.setOnAction(e -> addItem());
 
@@ -97,10 +141,13 @@ public class TODO extends
     Button saveButton = new Button("Save");
     saveButton.setOnAction(e -> saveItems());
 
-    Button loadButton = new Button("Load");
-    loadButton.setOnAction(e -> loadItems());
+    Button saveAsButton = new Button("Save As");
+    saveAsButton.setOnAction(e -> saveItemsWithDialog(primaryStage));
 
-    Button clearButton = new Button("Clear");
+    Button loadButton = new Button("Load");
+    loadButton.setOnAction(e -> loadItemsWithDialog(primaryStage));
+
+    Button clearButton = new Button("Clear Input");
     clearButton.setOnAction(e -> inputField.setText(""));
     WindowManager.addEmacsKeybindings(inputField);
 
@@ -109,8 +156,10 @@ public class TODO extends
                             editButton,
                             deleteButton,
                             saveButton,
+                            saveAsButton,
                             loadButton,
                             clearButton);
+
     VBox layout  = new VBox(10,
                             inputField,
                             buttons,
@@ -149,7 +198,7 @@ public class TODO extends
       }
     });
 
-    Platform.runLater(this::loadItems);
+    Platform.runLater(this::loadDefaultItems);
 
     setStageIcon(primaryStage);
 
@@ -185,29 +234,67 @@ public class TODO extends
     }
   }
 
+  private void clearAllItems()
+  {
+    items.clear();
+    changed = true;
+  }
+
   private void saveItems()
   {
-    try ( PrintWriter out = new PrintWriter("todoList.txt"))
+    if (lastLoadedFilePath != null)
     {
-      items.forEach(out::println);
-      changed = false;
+      try ( PrintWriter out = new PrintWriter(lastLoadedFilePath))
+      {
+        items.forEach(out::println);
+        changed = false;
+      }
+      catch (FileNotFoundException e)
+      {
+        e.printStackTrace();
+      }
     }
-    catch (FileNotFoundException e)
+    else
+    {
+      // No file loaded yet, open save dialog
+      saveItemsWithDialog((Stage) listView.getScene().getWindow());
+    }
+  }
+
+  private void loadItemsFromFile(String filePath)
+  {
+    try ( BufferedReader reader = new BufferedReader(new FileReader(filePath)))
+    {
+      List<String> lines = reader.lines().collect(Collectors.toList());
+      items.setAll(lines);
+      changed            = false;
+      lastLoadedFilePath = filePath; // Track last loaded file
+    }
+    catch (IOException e)
     {
       e.printStackTrace();
     }
   }
 
-  private void loadItems()
+  private void loadDefaultItems()
   {
-    try ( BufferedReader reader = new BufferedReader(new FileReader("todoList.txt")))
+    loadItemsFromFile("todoList.txt");
+  }
+
+  private void loadItemsWithDialog(Stage stage)
+  {
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Open To-Do List File");
+    fileChooser.getExtensionFilters()
+               .addAll(new FileChooser.ExtensionFilter("Text Files",
+                                                       "*.txt"),
+                       new FileChooser.ExtensionFilter("All Files",
+                                                       "*.*"));
+
+    java.io.File selectedFile = fileChooser.showOpenDialog(stage);
+    if (selectedFile != null)
     {
-      List<String> lines = reader.lines().collect(Collectors.toList());
-      items.setAll(lines);
-    }
-    catch (IOException e)
-    {
-      e.printStackTrace();
+      loadItemsFromFile(selectedFile.getAbsolutePath());
     }
   }
 
