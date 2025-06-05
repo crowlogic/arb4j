@@ -71,46 +71,7 @@ public class RandomWaveSampler extends
     return freq;
   }
 
-  private double[] hilbertTransform(double[] signal)
-  {
-    int      n             = signal.length;
-    Real     fft           = Real.newVector(n);
-
-    // Prepare complex array for FFT (real, imag, real, imag, ...)
-    double[] complexSignal = new double[2 * n];
-    for (int i = 0; i < n; i++)
-    {
-      complexSignal[2 * i]     = signal[i]; // Real part
-      complexSignal[2 * i + 1] = 0.0;       // Imaginary part
-    }
-
-    // Forward FFT
-    fft.complexForward(complexSignal);
-
-    // Apply Hilbert filter: zero negative frequencies, double positive frequencies
-    for (int i = 1; i < n / 2; i++)
-    {
-      complexSignal[2 * i]     *= 2.0; // Double positive frequencies
-      complexSignal[2 * i + 1] *= 2.0;
-    }
-    for (int i = n / 2 + 1; i < n; i++)
-    {
-      complexSignal[2 * i]     = 0.0; // Zero negative frequencies
-      complexSignal[2 * i + 1] = 0.0;
-    }
-
-    // Inverse FFT
-    fft.complexInverse(complexSignal, true);
-
-    // Extract imaginary part (Hilbert transform)
-    double[] hilbert = new double[n];
-    for (int i = 0; i < n; i++)
-    {
-      hilbert[i] = complexSignal[2 * i + 1];
-    }
-
-    return hilbert;
-  }
+  static final int bits = 128;
 
   private SpectralResult generatePathSpectral()
   {
@@ -132,12 +93,11 @@ public class RandomWaveSampler extends
     }
 
     // Generate complex frequency domain signal
-    double[] complexSignal  = new double[2 * N];
+    Complex  complexSignal  = Complex.newVector(N);
     double[] whiteNoiseReal = new double[N];
     double[] whiteNoiseImag = new double[N];
 
-    complexSignal[0] = 0.0; // Zero mean
-    complexSignal[1] = 0.0;
+    complexSignal.get(0).zero(); // Zero mean
 
     int nyquistIdx = N / 2;
 
@@ -150,46 +110,53 @@ public class RandomWaveSampler extends
       whiteNoiseReal[k] = noiseReal;
       whiteNoiseImag[k] = noiseImag;
 
-      double scaledReal = mag * noiseReal / Math.sqrt(2.0);
-      double scaledImag = mag * noiseImag / Math.sqrt(2.0);
+      double  scaledReal = mag * noiseReal / Math.sqrt(2.0);
+      double  scaledImag = mag * noiseImag / Math.sqrt(2.0);
 
-      complexSignal[2 * k]           = scaledReal;
-      complexSignal[2 * k + 1]       = scaledImag;
+      Complex scaled     = complexSignal.get(k);
+      scaled.getReal().set(scaledReal);
+      scaled.getImag().set(scaledImag);
 
       // Hermitian symmetry
-      complexSignal[2 * (N - k)]     = scaledReal;
-      complexSignal[2 * (N - k) + 1] = -scaledImag;
+      Complex scaledConjugate = complexSignal.get(N - k);
+      scaledConjugate.getReal().set(scaledReal);
+      scaledConjugate.getImag().set(scaledImag).neg();
+
     }
 
     if (N % 2 == 0)
     {
-      double noiseNyquist = random.nextGaussian();
-      whiteNoiseReal[nyquistIdx]        = noiseNyquist;
-      complexSignal[2 * nyquistIdx]     = Math.sqrt(psd[nyquistIdx] * df) * noiseNyquist;
-      complexSignal[2 * nyquistIdx + 1] = 0.0;
+      double dW = random.nextGaussian();
+      whiteNoiseReal[nyquistIdx] = dW;
+      Complex scaled = complexSignal.get(nyquistIdx);
+      scaled.getReal().set(Math.sqrt(psd[nyquistIdx] * df) * dW);
+      scaled.getImag().zero();
     }
 
     // Inverse FFT to get time domain signal
-    Real ifft = Real.newVector(N);
-    ifft.complexInverse(complexSignal, true);
+    Complex ifft = Complex.newVector(N);
+    arblib.acb_dft_inverse(ifft, complexSignal, N, bits);
 
     // Extract real part as the path
     double[] path = new double[N];
     for (int i = 0; i < N; i++)
     {
-      path[i] = complexSignal[2 * i] * N; // Scale by N
+      path[i] = complexSignal.get(i).re().doubleValue() * N; // Scale by N
     }
 
-    // Compute Hilbert transform for quadrature
-    double[] pathQuad = hilbertTransform(path);
+    // the hilbert transform is the imaginary part of the inverse fourier transform,
+    // we dont recompute it like a dumbass
+    Real     pathQuad = ifft.getImag();
 
     // Compute envelope
     double[] envelope = new double[N];
-    for (int i = 0; i < N; i++)
+    try ( var tmp = new Real())
     {
-      envelope[i] = Math.sqrt(path[i] * path[i] + pathQuad[i] * pathQuad[i]);
+      for (int i = 0; i < N; i++)
+      {
+        envelope[i] = Math.sqrt(path[i] * path[i] + pathQuad.get(i).pow(2, 128, tmp).doubleValue());
+      }
     }
-
     // Generate time array
     double[] t = new double[N];
     for (int i = 0; i < N; i++)
@@ -198,7 +165,7 @@ public class RandomWaveSampler extends
     }
 
     return new SpectralResult(path,
-                              pathQuad,
+                              pathQuad.stream().mapToDouble(a -> a.doubleValue()).toArray(),
                               envelope,
                               t,
                               freq,
