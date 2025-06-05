@@ -2674,6 +2674,16 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
   {
     return name;
   }  
+  
+  public void complexForward(double[] complexSignal)
+  {
+    assert false : "TODO: temporarily emulate the crappy jtransform api";    
+  }
+
+  public void complexInverse(double[] complexSignal, boolean b)
+  {
+    assert false : "TODO: temporarily emulate the crappy jtransform api";        
+  }  
 
 
   public void setMid(Float value) {

@@ -2647,6 +2647,16 @@ import arb.utensils.Utensils;
   {
     return name;
   }  
+  
+  public void complexForward(double[] complexSignal)
+  {
+    assert false : "TODO: temporarily emulate the crappy jtransform api";    
+  }
+
+  public void complexInverse(double[] complexSignal, boolean b)
+  {
+    assert false : "TODO: temporarily emulate the crappy jtransform api";        
+  }  
 
 %};
 

@@ -74,6 +74,7 @@ module arb4j
   exports arb.space.bornological;
   exports arb.space.topological;
   exports arb.measure;
+  exports arb.stochastic.processes;
   exports arb.stochastic.processes.correlationfunctions;
   exports arb.utensils;
   exports arb.viz;
