@@ -2,6 +2,7 @@ package arb;
 
 import java.util.Random;
 
+import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
@@ -32,7 +33,8 @@ public class RandomWaveSampler extends
 
   public static class SpectralResult
   {
-    public final double[] path, pathQuad, envelope, t, freq, psd, whiteNoiseReal, whiteNoiseImag;
+    public final double[] path, pathQuad, envelope, t, freq, psd;
+    public Complex        whiteNoise;
 
     public SpectralResult(double[] path,
                           double[] pathQuad,
@@ -40,17 +42,15 @@ public class RandomWaveSampler extends
                           double[] t,
                           double[] freq,
                           double[] psd,
-                          double[] whiteNoiseReal,
-                          double[] whiteNoiseImag)
+                          Complex whiteNoise)
     {
-      this.path           = path;
-      this.pathQuad       = pathQuad;
-      this.envelope       = envelope;
-      this.t              = t;
-      this.freq           = freq;
-      this.psd            = psd;
-      this.whiteNoiseReal = whiteNoiseReal;
-      this.whiteNoiseImag = whiteNoiseImag;
+      this.path       = path;
+      this.pathQuad   = pathQuad;
+      this.envelope   = envelope;
+      this.t          = t;
+      this.freq       = freq;
+      this.psd        = psd;
+      this.whiteNoise = whiteNoise;
     }
   }
 
@@ -76,8 +76,10 @@ public class RandomWaveSampler extends
       psd[i] = Math.abs(freq[i]) < 1.0 ? 1.0 / (Math.PI * Math.sqrt(1.0 - freq[i] * freq[i])) : 0.0;
     }
 
-    Complex  complexSignal  = Complex.newVector(N);
-    double[] whiteNoiseReal = new double[N], whiteNoiseImag = new double[N];
+    Complex complexSignal = Complex.newVector(N);
+    Complex whiteNoise    = Complex.newVector(N);
+
+    // double[] whiteNoiseReal = new double[N], whiteNoiseImag = new double[N];
     complexSignal.get(0).zero();
 
     int nyquistIdx = N / 2;
@@ -86,9 +88,9 @@ public class RandomWaveSampler extends
       double mag       = Math.sqrt(psd[k] * df);
       double noiseReal = random.nextGaussian();
       double noiseImag = random.nextGaussian();
-
-      whiteNoiseReal[k] = noiseReal;
-      whiteNoiseImag[k] = noiseImag;
+      var    element   = whiteNoise.get(k);
+      element.re().set(noiseReal);
+      element.im().set(noiseImag);
 
       Complex scaled = complexSignal.get(k);
       scaled.getReal().set(mag * noiseReal / Math.sqrt(2.0));
@@ -101,8 +103,11 @@ public class RandomWaveSampler extends
 
     if (N % 2 == 0)
     {
-      double dW = random.nextGaussian();
-      whiteNoiseReal[nyquistIdx] = dW;
+      double dW      = random.nextGaussian();
+      var    element = whiteNoise.get(nyquistIdx);
+      element.re().set(dW);
+      element.im().zero();
+
       Complex scaled = complexSignal.get(nyquistIdx);
       scaled.getReal().set(Math.sqrt(psd[nyquistIdx] * df) * dW);
       scaled.getImag().zero();
@@ -138,8 +143,7 @@ public class RandomWaveSampler extends
                               t,
                               freq,
                               psd,
-                              whiteNoiseReal,
-                              whiteNoiseImag);
+                              whiteNoise);
   }
 
   private double[] autocorrDirect(double[] x, int maxLagSteps)
@@ -241,8 +245,10 @@ public class RandomWaveSampler extends
     for (int i = 0; i < nShow; i++)
       indices[i] = i;
     chart2.getDatasets()
-          .addAll(new DoubleDataSet("Real").set(indices, java.util.Arrays.copyOf(result.whiteNoiseReal, nShow)),
-                  new DoubleDataSet("Imag").set(indices, java.util.Arrays.copyOf(result.whiteNoiseImag, nShow)));
+          .addAll(new DoubleDataSet("Real").set(indices,
+                                                java.util.Arrays.copyOf(result.whiteNoise.re().doubleValues(), nShow)),
+                  new DoubleDataSet("Imag").set(indices,
+                                                java.util.Arrays.copyOf(result.whiteNoise.im().doubleValues(), nShow)));
 
     // Chart 3: Autocorrelation
     XYChart chart3 = new XYChart(new DefaultNumericAxis("Lag",
@@ -310,6 +316,9 @@ public class RandomWaveSampler extends
                                     1600,
                                     1200));
     primaryStage.show();
+
+    WindowManager.setMoreConduciveStyle(primaryStage.getScene());
+
   }
 
   public static void main(String[] args)

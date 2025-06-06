@@ -141,6 +141,11 @@ import arb.utensils.Utensils;
 
   static { System.loadLibrary( "arblib" ); }
 
+  public double[] doubleValues()
+  {
+    return stream().mapToDouble(Real::doubleValue).toArray();
+  }
+  
   public Fraction mul(Fraction that, int prec, Fraction res)
   {
     try ( Real blip = new Real())

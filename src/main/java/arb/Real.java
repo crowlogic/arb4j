@@ -2708,4 +2708,9 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     this(arblibJNI.new_Real(), true);
   }
 
+  public double[] doubleValues()
+  {
+    return stream().mapToDouble( s-> s.doubleValue() ).toArray();
+  }
+
 }
