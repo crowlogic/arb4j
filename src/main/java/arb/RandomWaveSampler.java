@@ -3,13 +3,23 @@ package arb;
 import java.util.Random;
 
 import io.fair_acc.chartfx.XYChart;
+import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
+import io.fair_acc.chartfx.plugins.ColormapSelector;
+import io.fair_acc.chartfx.plugins.DataPointTooltip;
+import io.fair_acc.chartfx.plugins.EditAxis;
+import io.fair_acc.chartfx.plugins.Screenshot;
+import io.fair_acc.chartfx.plugins.TableViewer;
+import io.fair_acc.chartfx.plugins.Zoomer;
 import io.fair_acc.dataset.spi.DoubleDataSet;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+/**
+ * FIXME: empirical PSD is far too large
+ */
 public class RandomWaveSampler extends
                                Application
 {
@@ -190,7 +200,7 @@ public class RandomWaveSampler extends
     {
       double real = fft.get(i).getReal().doubleValue();
       double imag = fft.get(i).getImag().doubleValue();
-      periodogram[i] = (real * real + imag * imag) / (N * STEP_SIZE);
+      periodogram[i] = (real * real + imag * imag) / (STEP_SIZE);
     }
     return periodogram;
   }
@@ -208,6 +218,7 @@ public class RandomWaveSampler extends
                                                         ""),
                                  new DefaultNumericAxis("Value",
                                                         ""));
+
     chart1.setTitle("In-Phase, Quadrature, and Envelope (±) via Hilbert Transform");
 
     DoubleDataSet inPhase = new DoubleDataSet("In-phase").set(result.t, result.path);
@@ -275,15 +286,20 @@ public class RandomWaveSampler extends
     for (int i = 0; i < posFreqCount; i++)
     {
       freqPos[i]   = result.freq[i];
-      theoryPSD[i] = result.psd[i] * df;
+      theoryPSD[i] = result.psd[i];
     }
 
     chart4.getDatasets()
           .addAll(new DoubleDataSet("Empirical").set(freqPos, java.util.Arrays.copyOf(empPSD, posFreqCount)),
                   new DoubleDataSet("Theory").set(freqPos, theoryPSD));
     chart4.getXAxis().setAutoRanging(false);
-    chart4.getXAxis().setMin(0);
+    chart4.getXAxis().setMin(-1.0);
     chart4.getXAxis().setMax(1.0);
+
+    configureChart(chart1);
+    configureChart(chart2);
+    configureChart(chart3);
+    configureChart(chart4);
 
     gridPane.add(chart1, 0, 0);
     gridPane.add(chart2, 1, 0);
@@ -299,5 +315,17 @@ public class RandomWaveSampler extends
   public static void main(String[] args)
   {
     launch(args);
+  }
+
+  private void configureChart(XYChart chart)
+  {
+    chart.getPlugins()
+         .addAll(new EditAxis(AxisMode.XY),
+                 new DataPointTooltip(),
+                 new Zoomer(),
+                 new TableViewer(),
+                 new ColormapSelector(),
+                 new Screenshot());
+
   }
 }

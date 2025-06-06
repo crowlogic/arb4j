@@ -9,14 +9,9 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.FunctionSampler;
 import arb.functions.real.RealFunction;
+import arb.utensils.ShellFunctions;
 import io.fair_acc.chartfx.XYChart;
-import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.plugins.ColormapSelector;
-import io.fair_acc.chartfx.plugins.DataPointTooltip;
-import io.fair_acc.chartfx.plugins.EditAxis;
-import io.fair_acc.chartfx.plugins.Screenshot;
-import io.fair_acc.chartfx.plugins.TableViewer;
 import io.fair_acc.chartfx.plugins.Zoomer;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import javafx.application.Platform;
@@ -35,6 +30,10 @@ import javafx.stage.WindowEvent;
 public class FunctionPlotter extends
                              FunctionSampler
 {
+  public static void main(String args[])
+  {
+    ShellFunctions.plot(1, 3, 400, RealFunction.express("x^2"));
+  }
 
   public boolean            darkStyle = false;
 
@@ -67,12 +66,9 @@ public class FunctionPlotter extends
   public void configureChartPlugins()
   {
     chart.getPlugins()
-         .addAll(new EditAxis(AxisMode.XY),
-                 new DataPointTooltip(),
-                 new Zoomer(),
-                 new TableViewer(),
-                 new ColormapSelector(),
-                 new Screenshot());
+         .addAll(
+
+                 new Zoomer());
 
   }
 
