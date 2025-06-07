@@ -1140,11 +1140,23 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
     return array;
   }
     
- public Complex mul( int i, int prec, Complex r )
- {
-   arblib.acb_mul_si( r, this, i, prec );
-   return r;
- }
+  public Complex mul(int v, int prec, Complex r)
+  {
+    if (dim > 1)
+    {
+      for (int i = 0; i < dim; i++)
+      {
+        get(i).mul(v, prec);
+      }
+    }
+    else
+    {
+      arblib.acb_mul_si(this, this, v, prec);
+    }
+    bits = prec;
+    return r;
+  }
+
 
   @Override
   public Complex add( Complex q, int prec, Complex s )

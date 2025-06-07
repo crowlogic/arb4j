@@ -79,7 +79,6 @@ public class RandomWaveSampler extends
     Complex complexSignal = Complex.newVector(N);
     Complex whiteNoise    = Complex.newVector(N);
 
-    // double[] whiteNoiseReal = new double[N], whiteNoiseImag = new double[N];
     complexSignal.get(0).zero();
 
     int nyquistIdx = N / 2;
@@ -96,21 +95,17 @@ public class RandomWaveSampler extends
       scaled.getReal().set(mag * noiseReal / Math.sqrt(2.0));
       scaled.getImag().set(mag * noiseImag / Math.sqrt(2.0));
 
-      Complex scaledConjugate = complexSignal.get(N - k);
-      scaledConjugate.getReal().set(scaled.getReal().doubleValue());
-      scaledConjugate.getImag().set(-scaled.getImag().doubleValue());
+      complexSignal.get(N - k).set(scaled).conj();
     }
 
     if (N % 2 == 0)
     {
       double dW      = random.nextGaussian();
       var    element = whiteNoise.get(nyquistIdx);
-      element.re().set(dW);
-      element.im().zero();
+      element.set(dW);
 
       Complex scaled = complexSignal.get(nyquistIdx);
-      scaled.getReal().set(Math.sqrt(psd[nyquistIdx] * df) * dW);
-      scaled.getImag().zero();
+      scaled.set(Math.sqrt(psd[nyquistIdx] * df) * dW);
     }
 
     Complex ifft = Complex.newVector(N);
@@ -119,7 +114,7 @@ public class RandomWaveSampler extends
     // Apply scaling using proper Complex multiplication
     try ( Real scaleFactor = Real.valueOf(N))
     {
-      ifft.mul(scaleFactor, bits);    
+      ifft.mul(N, bits);
     }
 
     double[] path = new double[N], pathQuad = new double[N], envelope = new double[N];
