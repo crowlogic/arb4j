@@ -4,7 +4,6 @@ import java.io.Closeable;
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -44,8 +43,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
@@ -70,10 +67,6 @@ import javafx.util.StringConverter;
 public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
                       Application
 {
-
-  public record NewVariable(String name, Class<?> type)
-  {
-  }
 
   static
   {
@@ -181,7 +174,10 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
   private void executeTabAction(Consumer<ExpressionTreeView<D, C, F>> action)
   {
     var expressionTab = getCurrentExpressionTree();
-    action.accept(expressionTab);
+    if (expressionTab != null)
+    {
+      action.accept(expressionTab);
+    }
   }
 
   @SuppressWarnings("unchecked")
@@ -235,20 +231,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     saveButton.setOnAction(e -> executeTabAction(ExpressionTreeView::save));
 
     var loadButton = new Button("Load");
-    loadButton.setOnAction(e ->
-    {
-      FileChooser fileChooser = new FileChooser();
-      fileChooser.getExtensionFilters()
-                 .add(new ExtensionFilter("Expressions serialized in YAML Format",
-                                          List.of("*.yaml")));
-      File file = fileChooser.showOpenDialog(null);
-      if (file != null)
-      {
-        addNewExpressionTab();
-
-        getCurrentExpressionTree().load(file);
-      }
-    });
+    loadButton.setOnAction(e -> executeTabAction(ExpressionTreeView::load));
 
     var graphButton = new Button("Graph");
     graphButton.setOnAction(e -> executeTabAction(ExpressionTreeView::graph));
@@ -303,7 +286,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     var insertNewRealVariable = new MenuItem("New Variable");
     insertNewRealVariable.setOnAction(e ->
     {
-      var newVar = showNewVariableDialogs(false);
+      NewVariable newVar = showNewVariableDialogs(false);
       if (newVar != null)
       {
         var currentContext = getCurrentContext();
@@ -312,16 +295,17 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
           Named newInstance;
           try
           {
-            newInstance = (Named) newVar.type.getConstructor().newInstance();
-            newInstance.setName(newVar.name);
-            if (!currentContext.variables.map.containsKey(newVar.name))
+            newInstance = (Named) newVar.getType().getConstructor().newInstance();
+            newInstance.setName(newVar.getName());
+            if (!currentContext.variables.map.containsKey(newVar.getName()))
             {
               currentContext.variables.add(newInstance);
               updateContextListView();
             }
             else
             {
-              WindowManager.showAlert("Variable Name Conflict", "A variable named " + newVar.name + " already exists");
+              WindowManager.showAlert("Variable Name Conflict",
+                                      "A variable named " + newVar.getName() + " already exists");
             }
           }
           catch (Throwable t)
@@ -536,7 +520,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
       {
         item.setExpanded(value);
       }
-  
+
       for (var child : item.getChildren())
       {
         applyNodeExpansionStates(states, child);
@@ -550,7 +534,7 @@ public class Expressor<D, C extends Closeable, F extends Function<D, C>> extends
     if (item != null && !item.isLeaf())
     {
       states.put(item.getValue().toString(), item.isExpanded());
-  
+
       for (var child : item.getChildren())
       {
         enumerateNodeExpansionStates(states, child);

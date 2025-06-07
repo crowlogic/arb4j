@@ -70,6 +70,7 @@ import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
@@ -360,6 +361,21 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
                                                graphImage);
     view.setVisible(true);
     return view;
+  }
+
+  public void load()
+  {
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.getExtensionFilters()
+               .add(new ExtensionFilter("Expressions serialized in YAML Format",
+                                        List.of("*.yaml")));
+    File file = fileChooser.showOpenDialog(null);
+    if (file != null)
+    {
+      expressor.addNewExpressionTab();
+
+      expressor.getCurrentExpressionTree().load(file);
+    }
   }
 
   public Context load(File file)
