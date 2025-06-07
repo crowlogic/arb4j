@@ -117,12 +117,9 @@ public class RandomWaveSampler extends
     arblib.acb_dft_inverse(ifft, complexSignal, N, bits);
 
     // Apply scaling using proper Complex multiplication
-    try ( Real scaleFactor = new Real().set(N))
+    try ( Real scaleFactor = Real.valueOf(N))
     {
-      for (int i = 0; i < N; i++)
-      {
-        ifft.get(i).mul(scaleFactor, bits, ifft.get(i));
-      }
+      ifft.mul(scaleFactor, bits);    
     }
 
     double[] path = new double[N], pathQuad = new double[N], envelope = new double[N];

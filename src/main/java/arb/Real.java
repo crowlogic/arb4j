@@ -168,6 +168,11 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
 
   static { System.loadLibrary( "arblib" ); }
 
+  public double[] doubleValues()
+  {
+    return stream().mapToDouble(Real::doubleValue).toArray();
+  }
+  
   public Fraction mul(Fraction that, int prec, Fraction res)
   {
     try ( Real blip = new Real())
@@ -2706,11 +2711,6 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
 
   public Real() {
     this(arblibJNI.new_Real(), true);
-  }
-
-  public double[] doubleValues()
-  {
-    return stream().mapToDouble( s-> s.doubleValue() ).toArray();
   }
 
 }

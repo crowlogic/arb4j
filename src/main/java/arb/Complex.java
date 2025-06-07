@@ -1420,10 +1420,30 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
     return res;
   }
 
-  public Complex mul( Real a, int prec, Complex r )
+  public Complex mul( Real that, int prec, Complex res )
   {
-    arblib.acb_mul_arb( r, this, a, prec );
-    return r;
+    if (dim != that.dim)
+    {
+      assert that.dim == 1 : String.format("this.dim != that.dim != 1", this.dim, that.dim);
+      for (int i = 0; i < dim; i++)
+      {
+        arblib.acb_mul_arb(res.get(i), this.get(i), that, prec);
+      }
+      bits = prec;
+    }
+    else
+    {
+      if (dim != res.dim)
+      {
+        res.become(Complex.newVector(dim));
+      }
+      for (int i = 0; i < dim; i++)
+      {
+        arblib.acb_mul_arb(res.get(i), this.get(i), that.get(i), prec);
+      }
+      bits = prec;
+    }
+    return res;
   }
   
   public boolean overlaps( Complex x )
