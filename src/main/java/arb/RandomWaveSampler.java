@@ -1,6 +1,8 @@
 package arb;
 
-import java.util.Arrays;
+import static java.lang.Math.PI;
+import static java.lang.Math.sqrt;
+import static java.lang.Math.pow;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -29,148 +31,16 @@ public class RandomWaveSampler extends
                                GaussianProcessSampler
 {
 
-  private double[] generateFrequencies(int nPoints, double dt)
+  @Override
+  public double[] getPowerSpectralDensity(double[] freq)
   {
-    double[] freq = new double[nPoints];
-    double   df   = 1.0 / (nPoints * dt);
-    for (int i = 0; i < nPoints; i++)
-    {
-      freq[i] = i <= nPoints / 2 ? i * df : (i - nPoints) * df;
-    }
-    return freq;
-  }
-
-  public Spectra generatePathSpectral()
-  {
-    double[] freq = generateFrequencies(N, STEP_SIZE);
-    double   df   = 1.0 / (N * STEP_SIZE);
-    double[] psd  = new double[N];
+    double[] psd = new double[N];
 
     for (int i = 0; i < N; i++)
     {
-      psd[i] = Math.abs(freq[i]) < 1.0 ? 1.0 / (Math.PI * Math.sqrt(1.0 - freq[i] * freq[i])) : 0.0;
+      psd[i] = Math.abs(freq[i]) < 1.0 ? 1.0 / (PI * sqrt(1 - pow(freq[i], 2))) : 0;
     }
-
-    try ( Complex complexSignal = Complex.newVector(N); Complex whiteNoise = Complex.newVector(N);
-          Real mag = new Real(); Complex ifft = Complex.newVector(N); Real env = new Real())
-    {
-      complexSignal.get(0).zero();
-
-      int nyquistIdx = N / 2;
-
-      for (int k = 1; k < nyquistIdx; k++)
-      {
-        mag.set(psd[k] * df).sqrt(bits);
-        var element = whiteNoise.get(k);
-        element.re().set(random.nextGaussian());
-        element.im().set(random.nextGaussian());
-        complexSignal.get(k).set(element).mul(mag, bits);
-      }
-
-      if (N % 2 == 0)
-      {
-        double dW = random.nextGaussian();
-        whiteNoise.get(nyquistIdx).set(dW);
-        complexSignal.get(nyquistIdx).set(Math.sqrt(psd[nyquistIdx] * df) * dW);
-      }
-
-      arblib.acb_dft_inverse(ifft, complexSignal, N, bits);
-
-      ifft.mul(N, bits);
-
-      double[] path = new double[N], pathQuad = new double[N], envelope = new double[N];
-
-      for (int i = 0; i < N; i++)
-      {
-        Complex element = ifft.get(i);
-        path[i]     = element.re().doubleValue();
-        pathQuad[i] = element.im().doubleValue();
-        envelope[i] = element.norm(bits, env).doubleValue();
-      }
-
-      double[] t = new double[N];
-      for (int i = 0; i < N; i++)
-      {
-        t[i] = i * STEP_SIZE;
-      }
-
-      return new Spectra(path,
-                         pathQuad,
-                         envelope,
-                         t,
-                         freq,
-                         psd,
-                         whiteNoise);
-
-    }
-  }
-
-  protected double[] autocorr(double[] x, int maxLagSteps)
-  {
-    int      n         = x.length;
-    double   mean      = Arrays.stream(x).average().getAsDouble();
-
-    double[] xCentered = new double[n];
-    for (int i = 0; i < n; i++)
-    {
-      xCentered[i] = x[i] - mean;
-    }
-
-    double var = 0.0;
-    for (double val : xCentered)
-    {
-      var += val * val;
-    }
-    var /= n;
-
-    if (var < 1e-10)
-    {
-      return new double[maxLagSteps];
-    }
-
-    double[] acorr = new double[maxLagSteps];
-    for (int k = 0; k < maxLagSteps; k++)
-    {
-      if (k == 0)
-      {
-        acorr[k] = 1.0;
-      }
-      else if (n - k > 0)
-      {
-        double cov = 0.0;
-        for (int i = 0; i < n - k; i++)
-        {
-          cov += xCentered[i] * xCentered[i + k];
-        }
-        acorr[k] = (cov / (n - k)) / var;
-      }
-    }
-    return acorr;
-  }
-
-  protected double[] computeEmpiricalPSD(double[] path)
-  {
-    double mean = Arrays.stream(path).average().getAsDouble();
-
-    try ( Complex complexPath = Complex.newVector(N); Complex fft = Complex.newVector(N); Real mag = new Real();
-          Real scalingFactor = Real.valueOf(STEP_SIZE).div(N, bits);)
-    {
-      // complexPath.sub(mean,bits);
-      for (int i = 0; i < N; i++)
-      {
-        complexPath.get(i).set(path[i] - mean);
-      }
-
-      arblib.acb_dft(fft, complexPath, N, bits);
-
-      double[] periodogram = new double[N];
-
-      for (int i = 0; i < N; i++)
-      {
-        periodogram[i] = fft.get(i).norm(bits, mag).pow(2, bits).mul(scalingFactor, bits).doubleValue();
-      }
-      return periodogram;
-    }
+    return psd;
   }
 
   public static void main(String[] args)

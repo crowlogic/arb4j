@@ -56,13 +56,105 @@ public abstract class GaussianProcessSampler extends
 
   static final double         LAGS_TO_SHOW = 20.0;
 
+  static final int            bits         = 128;
+
+  public static double[] autocorr(double[] x, int maxLagSteps)
+  {
+    int    n   = x.length;
+
+    double var = variance(x, n);
+
+    if (var < 1e-10)
+    {
+      return new double[maxLagSteps];
+    }
+
+    double[] acorr = new double[maxLagSteps];
+    for (int k = 0; k < maxLagSteps; k++)
+    {
+      if (k == 0)
+      {
+        acorr[k] = 1.0;
+      }
+      else if (n - k > 0)
+      {
+        double cov = 0.0;
+        for (int i = 0; i < n - k; i++)
+        {
+          cov += x[i] * x[i + k];
+        }
+        acorr[k] = (cov / (n - k)) / var;
+      }
+    }
+    return acorr;
+  }
+
+  public static double[] computePowerSpectralDensity(double[] path)
+  {
+    // double mean = Arrays.stream(path).average().getAsDouble();
+
+    try ( Complex complexPath = Complex.newVector(N); Complex fft = Complex.newVector(N); Real mag = new Real();
+          Real scalingFactor = Real.valueOf(STEP_SIZE).div(N / 2, bits);)
+    {
+      // complexPath.sub(mean,bits);
+      for (int i = 0; i < N; i++)
+      {
+        complexPath.get(i).set(path[i]);
+      }
+
+      arblib.acb_dft(fft, complexPath, N, bits);
+
+      double[] periodogram = new double[N];
+
+      for (int i = 0; i < N; i++)
+      {
+        periodogram[i] = fft.get(i).norm(bits, mag).pow(2, bits).mul(scalingFactor, bits).doubleValue();
+      }
+      return periodogram;
+    }
+  }
+
+  public static double[] generateFrequencies(int nPoints, double dt)
+  {
+    double[] freq = new double[nPoints];
+    double   df   = 1.0 / (nPoints * dt);
+    for (int i = 0; i < nPoints; i++)
+    {
+      freq[i] = i <= nPoints / 2 ? i * df : (i - nPoints) * df;
+    }
+    return freq;
+  }
+
+  public static double variance(double[] x, int n)
+  {
+    double var = 0.0;
+    for (double val : x)
+    {
+      var += val * val;
+    }
+    var /= n;
+    return var;
+  }
+
   protected final Random      random       = new Random();
 
-  static final int            bits         = 128;
+  private boolean separateWindows = false;
 
   public GaussianProcessSampler()
   {
     super();
+  }
+
+  protected void configureChart(XYChart chart)
+  {
+    chart.getPlugins()
+         .addAll(new EditAxis(AxisMode.XY),
+                 new DataPointTooltip(),
+                 new Zoomer(),
+                 new TableViewer(),
+                 new ColormapSelector(),
+                 new Screenshot());
+
   }
 
   protected GridPane createGridPane(XYChart[] charts)
@@ -101,35 +193,67 @@ public abstract class GaussianProcessSampler extends
     return gridPane;
   }
 
-  protected XYChart newPowerSpectralDensityChart(Spectra result)
+  public Spectra generate()
   {
-    // Chart 4: PSD
-    XYChart chart4 = new XYChart(new DefaultNumericAxis("Frequency",
-                                                        ""),
-                                 new DefaultNumericAxis("PSD",
-                                                        ""));
-    chart4.setTitle("PSD Comparison");
-    int      posFreqCount = N / 2 + 1;
-    double[] freqPos      = new double[posFreqCount];
-    double[] empPSD       = computeEmpiricalPSD(result.path);
-    double[] theoryPSD    = new double[posFreqCount];
+    double[] freq = generateFrequencies(N, STEP_SIZE);
+    double[] psd  = getPowerSpectralDensity(freq);
 
-    for (int i = 0; i < posFreqCount; i++)
+    try ( Complex complexSignal = Complex.newVector(N); Complex whiteNoise = Complex.newVector(N);
+          Real mag = new Real(); Complex ifft = Complex.newVector(N); Real env = new Real())
     {
-      freqPos[i]   = result.freq[i];
-      theoryPSD[i] = result.psd[i];
-    }
+      complexSignal.get(0).zero();
 
-    chart4.getDatasets()
-          .addAll(new DoubleDataSet("Empirical").set(freqPos, java.util.Arrays.copyOf(empPSD, posFreqCount)),
-                  new DoubleDataSet("Theory").set(freqPos, theoryPSD));
-    chart4.getXAxis().setAutoRanging(false);
-    chart4.getXAxis().setMin(0);
-    chart4.getXAxis().setMax(1.0);
-    return chart4;
+      int    nyquistIndex = N / 2;
+      double df           = 1.0 / (N * STEP_SIZE);
+
+      for (int k = 1; k < nyquistIndex; k++)
+      {
+        mag.set(psd[k] * df).sqrt(bits);
+        var element = whiteNoise.get(k);
+        element.re().set(random.nextGaussian());
+        element.im().set(random.nextGaussian());
+        complexSignal.get(k).set(element).mul(mag, bits);
+      }
+
+      if (N % 2 == 0)
+      {
+        double dW = random.nextGaussian();
+        whiteNoise.get(nyquistIndex).set(dW);
+        complexSignal.get(nyquistIndex).set(Math.sqrt(psd[nyquistIndex] * df) * dW);
+      }
+
+      arblib.acb_dft_inverse(ifft, complexSignal, N, bits);
+
+      ifft.mul(N, bits);
+
+      double[] path = new double[N], pathQuad = new double[N], envelope = new double[N];
+
+      for (int i = 0; i < N; i++)
+      {
+        Complex element = ifft.get(i);
+        path[i]     = element.re().doubleValue();
+        pathQuad[i] = element.im().doubleValue();
+        envelope[i] = element.norm(bits, env).doubleValue();
+      }
+
+      double[] t = new double[N];
+      for (int i = 0; i < N; i++)
+      {
+        t[i] = i * STEP_SIZE;
+      }
+
+      return new Spectra(path,
+                         pathQuad,
+                         envelope,
+                         t,
+                         freq,
+                         psd,
+                         whiteNoise);
+
+    }
   }
 
-  protected abstract double[] computeEmpiricalPSD(double[] path);
+  public abstract double[] getPowerSpectralDensity(double[] freq);
 
   protected XYChart newAutocorrelationChart(Spectra result)
   {
@@ -162,8 +286,6 @@ public abstract class GaussianProcessSampler extends
     return chart3;
   }
 
-  protected abstract double[] autocorr(double[] path, int maxLag);
-
   protected XYChart newNoiseChart(Spectra result)
   {
     // Chart 2: Noise components
@@ -182,6 +304,34 @@ public abstract class GaussianProcessSampler extends
                   new DoubleDataSet("Imag").set(indices,
                                                 java.util.Arrays.copyOf(result.whiteNoise.im().doubleValues(), nShow)));
     return chart2;
+  }
+
+  protected XYChart newPowerSpectralDensityChart(Spectra result)
+  {
+    // Chart 4: PSD
+    XYChart chart4 = new XYChart(new DefaultNumericAxis("Frequency",
+                                                        ""),
+                                 new DefaultNumericAxis("PSD",
+                                                        ""));
+    chart4.setTitle("PSD Comparison");
+    int      posFreqCount = N / 2 + 1;
+    double[] freqPos      = new double[posFreqCount];
+    double[] empPSD       = computePowerSpectralDensity(result.path);
+    double[] theoryPSD    = new double[posFreqCount];
+
+    for (int i = 0; i < posFreqCount; i++)
+    {
+      freqPos[i]   = result.freq[i];
+      theoryPSD[i] = result.psd[i];
+    }
+
+    chart4.getDatasets()
+          .addAll(new DoubleDataSet("Empirical").set(freqPos, java.util.Arrays.copyOf(empPSD, posFreqCount)),
+                  new DoubleDataSet("Theory").set(freqPos, theoryPSD));
+    chart4.getXAxis().setAutoRanging(false);
+    chart4.getXAxis().setMin(0);
+    chart4.getXAxis().setMax(1.0);
+    return chart4;
   }
 
   protected XYChart newTimeDomainChart(Spectra result)
@@ -205,24 +355,10 @@ public abstract class GaussianProcessSampler extends
     return chart1;
   }
 
-  protected void configureChart(XYChart chart)
-  {
-    chart.getPlugins()
-         .addAll(new EditAxis(AxisMode.XY),
-                 new DataPointTooltip(),
-                 new Zoomer(),
-                 new TableViewer(),
-                 new ColormapSelector(),
-                 new Screenshot());
-
-  }
-
-  private boolean separateWindows = false;
-
   @Override
   public void start(Stage primaryStage)
   {
-    Spectra   result = generatePathSpectral();
+    Spectra   result = generate();
     XYChart[] charts =
     { newTimeDomainChart(result), newNoiseChart(result), newAutocorrelationChart(result),
       newPowerSpectralDensityChart(result) };
@@ -261,7 +397,5 @@ public abstract class GaussianProcessSampler extends
       // WindowManager.setMoreConduciveStyle(scene);
     }
   }
-
-  protected abstract Spectra generatePathSpectral();
 
 }
