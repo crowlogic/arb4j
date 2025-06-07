@@ -1,7 +1,11 @@
 package arb;
 
+import java.util.Arrays;
 import java.util.Random;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+import arb.functions.polynomials.orthogonal.real.Type1ChebyshevPolynomials;
 import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
@@ -22,7 +26,22 @@ import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
 /**
- * FIXME: empirical PSD is far too large
+ * Generates and plots a pseudo-randomly generated path from the Gaussian
+ * process whose kernel is K(t-s)=J_0(t-s) (the random Wave model) whose
+ * spectral density is the orthogonality measure of the, then calculates its
+ * empirical autocorrelation spectrum and compares it with the theoretical then
+ * does the same for the power-spectral density. Also plots the white noise that
+ * was convolved with the square root of the spectral factor to generate the
+ * sample path.
+ * 
+ * TOOD: find a better plot type for the white noise coeffecients
+ * 
+ * {@link Type1ChebyshevPolynomials}
+ * 
+ * @author Stephen Crowley
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class RandomWaveSampler extends
                                Application
@@ -79,91 +98,98 @@ public class RandomWaveSampler extends
       psd[i] = Math.abs(freq[i]) < 1.0 ? 1.0 / (Math.PI * Math.sqrt(1.0 - freq[i] * freq[i])) : 0.0;
     }
 
-    Complex complexSignal = Complex.newVector(N);
-    Complex whiteNoise    = Complex.newVector(N);
-
-    complexSignal.get(0).zero();
-
-    int nyquistIdx = N / 2;
-    for (int k = 1; k < nyquistIdx; k++)
+    try ( Complex complexSignal = Complex.newVector(N); Complex whiteNoise = Complex.newVector(N);)
     {
-      double mag       = Math.sqrt(psd[k] * df);
-      double noiseReal = random.nextGaussian();
-      double noiseImag = random.nextGaussian();
-      var    element   = whiteNoise.get(k);
-      element.re().set(noiseReal);
-      element.im().set(noiseImag);
 
-      Complex scaled = complexSignal.get(k);
-      scaled.getReal().set(mag * noiseReal);
-      scaled.getImag().set(mag * noiseImag);
+      complexSignal.get(0).zero();
 
+      int nyquistIdx = N / 2;
+      try ( Real mag = new Real())
+      {
+        for (int k = 1; k < nyquistIdx; k++)
+        {
+          mag.set(psd[k] * df).sqrt(bits);
+          var element = whiteNoise.get(k);
+          element.re().set(random.nextGaussian());
+          element.im().set(random.nextGaussian());
+          complexSignal.get(k).set(element).mul(mag, bits);
+        }
+      }
+
+      if (N % 2 == 0)
+      {
+        double dW = random.nextGaussian();
+        whiteNoise.get(nyquistIdx).set(dW);
+        complexSignal.get(nyquistIdx).set(Math.sqrt(psd[nyquistIdx] * df) * dW);
+      }
+
+      try ( Complex ifft = Complex.newVector(N); Real env = new Real())
+      {
+        arblib.acb_dft_inverse(ifft, complexSignal, N, bits);
+
+        ifft.mul(N, bits);
+
+        double[] path = new double[N], pathQuad = new double[N], envelope = new double[N];
+
+        for (int i = 0; i < N; i++)
+        {
+          path[i]     = ifft.get(i).re().doubleValue();
+          pathQuad[i] = ifft.get(i).im().doubleValue();
+          envelope[i] = ifft.get(i).norm(bits, env).doubleValue();
+        }
+
+        double[] t = new double[N];
+        for (int i = 0; i < N; i++)
+          t[i] = i * STEP_SIZE;
+
+        return new Spectra(path,
+                           pathQuad,
+                           envelope,
+                           t,
+                           freq,
+                           psd,
+                           whiteNoise);
+      }
     }
-
-    if (N % 2 == 0)
-    {
-      double dW      = random.nextGaussian();
-      var    element = whiteNoise.get(nyquistIdx);
-      element.set(dW);
-      complexSignal.get(nyquistIdx).set(Math.sqrt(psd[nyquistIdx] * df) * dW);
-    }
-
-    Complex ifft = Complex.newVector(N);
-    arblib.acb_dft_inverse(ifft, complexSignal, N, bits);
-
-    ifft.mul(N, bits);
-
-    double[] path = new double[N], pathQuad = new double[N], envelope = new double[N];
-    for (int i = 0; i < N; i++)
-    {
-      path[i]     = ifft.get(i).getReal().doubleValue();
-      pathQuad[i] = ifft.get(i).getImag().doubleValue();
-      envelope[i] = Math.sqrt(path[i] * path[i] + pathQuad[i] * pathQuad[i]);
-    }
-
-    double[] t = new double[N];
-    for (int i = 0; i < N; i++)
-      t[i] = i * STEP_SIZE;
-
-    return new Spectra(path,
-                       pathQuad,
-                       envelope,
-                       t,
-                       freq,
-                       psd,
-                       whiteNoise);
   }
 
   private double[] autocorrDirect(double[] x, int maxLagSteps)
   {
-    int    n    = x.length;
-    double mean = 0.0;
-    for (double val : x)
-      mean += val;
-    mean /= n;
+    int      n         = x.length;
+    double   mean      = Arrays.stream(x).average().getAsDouble();
 
     double[] xCentered = new double[n];
     for (int i = 0; i < n; i++)
+    {
       xCentered[i] = x[i] - mean;
+    }
 
     double var = 0.0;
     for (double val : xCentered)
+    {
       var += val * val;
+    }
     var /= n;
 
     if (var < 1e-10)
+    {
       return new double[maxLagSteps];
+    }
 
     double[] acorr = new double[maxLagSteps];
     for (int k = 0; k < maxLagSteps; k++)
     {
       if (k == 0)
+      {
         acorr[k] = 1.0;
+      }
       else if (n - k > 0)
       {
         double cov = 0.0;
         for (int i = 0; i < n - k; i++)
+        {
           cov += xCentered[i] * xCentered[i + k];
+        }
         acorr[k] = (cov / (n - k)) / var;
       }
     }
@@ -172,30 +198,29 @@ public class RandomWaveSampler extends
 
   private double[] computeEmpiricalPSD(double[] path)
   {
-    double mean = 0.0;
-    for (double val : path)
-      mean += val;
-    mean /= path.length;
+    double mean = Arrays.stream(path).average().getAsDouble();
 
-    Complex complexPath = Complex.newVector(N);
-    for (int i = 0; i < N; i++)
+    try ( Complex complexPath = Complex.newVector(N); Complex fft = Complex.newVector(N);)
     {
-      complexPath.get(i).set(path[i] - mean);
-    }
+      // complexPath.sub(mean,bits);
+      for (int i = 0; i < N; i++)
+      {
+        complexPath.get(i).set(path[i] - mean);
+      }
 
-    Complex fft = Complex.newVector(N);
-    arblib.acb_dft(fft, complexPath, N, bits);
+      arblib.acb_dft(fft, complexPath, N, bits);
 
-    double[] periodogram = new double[N];
-    double scalingFactor = STEP_SIZE / (N ); // Critical correction
-    for (int i = 0; i < N; i++)
-    {
-      Complex element = fft.get(i);
-      double  real    = element.re().doubleValue();
-      double  imag    = element.im().doubleValue();
-      periodogram[i] = (real * real + imag * imag) * scalingFactor;
+      double[] periodogram   = new double[N];
+      double   scalingFactor = STEP_SIZE / N;
+      for (int i = 0; i < N; i++)
+      {
+        Complex element = fft.get(i);
+        double  real    = element.re().doubleValue();
+        double  imag    = element.im().doubleValue();
+        periodogram[i] = (real * real + imag * imag) * scalingFactor;
+      }
+      return periodogram;
     }
-    return periodogram;
   }
 
   private boolean separateWindows = false;
@@ -279,7 +304,6 @@ public class RandomWaveSampler extends
 
   public static void main(String[] args)
   {
-    System.setProperty("prism.maxvram", "2g");
     launch(args);
   }
 
