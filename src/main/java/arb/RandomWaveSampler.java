@@ -1,25 +1,20 @@
 package arb;
 
 import java.util.Arrays;
-import java.util.Random;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.polynomials.orthogonal.real.Type1ChebyshevPolynomials;
-import arb.viz.WindowManager;
-import io.fair_acc.chartfx.XYChart;
-import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 
 /**
  * Generates and plots a pseudo-randomly generated path from the Gaussian
  * process whose kernel is K(t-s)=J_0(t-s) (the random Wave model) whose
- * spectral density is the orthogonality measure of the, then calculates its
- * empirical autocorrelation spectrum and compares it with the theoretical then
- * does the same for the power-spectral density. Also plots the white noise that
- * was convolved with the square root of the spectral factor to generate the
- * sample path.
+ * spectral density is the orthogonality measure of the
+ * {@link Type1ChebyshevPolynomials}, then calculates its empirical
+ * autocorrelation spectrum and compares it with the theoretical then does the
+ * same for the power-spectral density. Also plots the white noise that was
+ * convolved with the square root of the spectral factor to generate the sample
+ * path.
  * 
  * TOOD: find a better plot type for the white noise coeffecients
  * 
@@ -34,29 +29,6 @@ public class RandomWaveSampler extends
                                GaussianProcessSampler
 {
 
-  public static class Spectra
-  {
-    public final double[] path, pathQuad, envelope, t, freq, psd;
-    public Complex        whiteNoise;
-
-    public Spectra(double[] path,
-                   double[] pathQuad,
-                   double[] envelope,
-                   double[] t,
-                   double[] freq,
-                   double[] psd,
-                   Complex whiteNoise)
-    {
-      this.path       = path;
-      this.pathQuad   = pathQuad;
-      this.envelope   = envelope;
-      this.t          = t;
-      this.freq       = freq;
-      this.psd        = psd;
-      this.whiteNoise = whiteNoise;
-    }
-  }
-
   private double[] generateFrequencies(int nPoints, double dt)
   {
     double[] freq = new double[nPoints];
@@ -68,7 +40,7 @@ public class RandomWaveSampler extends
     return freq;
   }
 
-  private Spectra generatePathSpectral()
+  public Spectra generatePathSpectral()
   {
     double[] freq = generateFrequencies(N, STEP_SIZE);
     double   df   = 1.0 / (N * STEP_SIZE);
@@ -110,9 +82,10 @@ public class RandomWaveSampler extends
 
       for (int i = 0; i < N; i++)
       {
-        path[i]     = ifft.get(i).re().doubleValue();
-        pathQuad[i] = ifft.get(i).im().doubleValue();
-        envelope[i] = ifft.get(i).norm(bits, env).doubleValue();
+        Complex element = ifft.get(i);
+        path[i]     = element.re().doubleValue();
+        pathQuad[i] = element.im().doubleValue();
+        envelope[i] = element.norm(bits, env).doubleValue();
       }
 
       double[] t = new double[N];
@@ -179,7 +152,8 @@ public class RandomWaveSampler extends
   {
     double mean = Arrays.stream(path).average().getAsDouble();
 
-    try ( Complex complexPath = Complex.newVector(N); Complex fft = Complex.newVector(N);)
+    try ( Complex complexPath = Complex.newVector(N); Complex fft = Complex.newVector(N); Real mag = new Real();
+          Real scalingFactor = Real.valueOf(STEP_SIZE).div(N, bits);)
     {
       // complexPath.sub(mean,bits);
       for (int i = 0; i < N; i++)
@@ -189,61 +163,13 @@ public class RandomWaveSampler extends
 
       arblib.acb_dft(fft, complexPath, N, bits);
 
-      double[] periodogram   = new double[N];
-      double   scalingFactor = STEP_SIZE / N;
+      double[] periodogram = new double[N];
+
       for (int i = 0; i < N; i++)
       {
-        Complex element = fft.get(i);
-        double  real    = element.re().doubleValue();
-        double  imag    = element.im().doubleValue();
-        periodogram[i] = (real * real + imag * imag) * scalingFactor;
+        periodogram[i] = fft.get(i).norm(bits, mag).pow(2, bits).mul(scalingFactor, bits).doubleValue();
       }
       return periodogram;
-    }
-  }
-
-  private boolean separateWindows = false;
-
-  @Override
-  public void start(Stage primaryStage)
-  {
-    Spectra   result = generatePathSpectral();
-    XYChart[] charts =
-    { newTimeDomainChart(result), newNoiseChart(result), newAutocorrelationChart(result),
-      newPowerSpectralDensityChart(result) };
-
-    separateWindows = getParameters().getUnnamed().contains("--separate-windows");
-
-    if (separateWindows)
-    {
-      Stage[]  stages =
-      { primaryStage, new Stage(), new Stage(), new Stage() };
-      String[] titles =
-      { "Time Domain Analysis", "Noise Components", "Autocorrelation", "Power Spectral Density" };
-
-      for (int i = 0; i < charts.length; i++)
-      {
-        configureChart(charts[i]);
-        Scene scene = new Scene(charts[i]);
-        stages[i].setScene(scene);
-        stages[i].setTitle(titles[i]);
-        stages[i].setMaximized(true);
-        WindowManager.setMoreConduciveStyle(scene);
-        if (i > 0)
-        {
-          stages[i].show();
-        }
-      }
-      primaryStage.show();
-    }
-    else
-    {
-      GridPane gridPane = createGridPane(charts);
-      Scene    scene    = new Scene(gridPane);
-      primaryStage.setScene(scene);
-      primaryStage.setMaximized(true);
-      primaryStage.show();
-      // WindowManager.setMoreConduciveStyle(scene);
     }
   }
 

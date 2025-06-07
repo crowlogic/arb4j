@@ -2,7 +2,7 @@ package arb;
 
 import java.util.Random;
 
-import arb.RandomWaveSampler.Spectra;
+import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
@@ -14,14 +14,39 @@ import io.fair_acc.chartfx.plugins.TableViewer;
 import io.fair_acc.chartfx.plugins.Zoomer;
 import io.fair_acc.dataset.spi.DoubleDataSet;
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
+import javafx.stage.Stage;
 
 public abstract class GaussianProcessSampler extends
                                              Application
 {
+
+  public static class Spectra
+  {
+    public final double[] path, pathQuad, envelope, t, freq, psd;
+    public Complex        whiteNoise;
+
+    public Spectra(double[] path,
+                   double[] pathQuad,
+                   double[] envelope,
+                   double[] t,
+                   double[] freq,
+                   double[] psd,
+                   Complex whiteNoise)
+    {
+      this.path       = path;
+      this.pathQuad   = pathQuad;
+      this.envelope   = envelope;
+      this.t          = t;
+      this.freq       = freq;
+      this.psd        = psd;
+      this.whiteNoise = whiteNoise;
+    }
+  }
 
   private static final double L            = 500.0;
 
@@ -31,7 +56,7 @@ public abstract class GaussianProcessSampler extends
 
   static final double         LAGS_TO_SHOW = 20.0;
 
-  protected final Random        random       = new Random();
+  protected final Random      random       = new Random();
 
   static final int            bits         = 128;
 
@@ -88,7 +113,6 @@ public abstract class GaussianProcessSampler extends
     double[] freqPos      = new double[posFreqCount];
     double[] empPSD       = computeEmpiricalPSD(result.path);
     double[] theoryPSD    = new double[posFreqCount];
-    double   df           = 1.0 / (N * STEP_SIZE);
 
     for (int i = 0; i < posFreqCount; i++)
     {
@@ -192,5 +216,52 @@ public abstract class GaussianProcessSampler extends
                  new Screenshot());
 
   }
+
+  private boolean separateWindows = false;
+
+  @Override
+  public void start(Stage primaryStage)
+  {
+    Spectra   result = generatePathSpectral();
+    XYChart[] charts =
+    { newTimeDomainChart(result), newNoiseChart(result), newAutocorrelationChart(result),
+      newPowerSpectralDensityChart(result) };
+
+    separateWindows = getParameters().getUnnamed().contains("--separate-windows");
+
+    if (separateWindows)
+    {
+      Stage[]  stages =
+      { primaryStage, new Stage(), new Stage(), new Stage() };
+      String[] titles =
+      { "Time Domain Analysis", "Noise Components", "Autocorrelation", "Power Spectral Density" };
+
+      for (int i = 0; i < charts.length; i++)
+      {
+        configureChart(charts[i]);
+        Scene scene = new Scene(charts[i]);
+        stages[i].setScene(scene);
+        stages[i].setTitle(titles[i]);
+        stages[i].setMaximized(true);
+        WindowManager.setMoreConduciveStyle(scene);
+        if (i > 0)
+        {
+          stages[i].show();
+        }
+      }
+      primaryStage.show();
+    }
+    else
+    {
+      GridPane gridPane = createGridPane(charts);
+      Scene    scene    = new Scene(gridPane);
+      primaryStage.setScene(scene);
+      primaryStage.setMaximized(true);
+      primaryStage.show();
+      // WindowManager.setMoreConduciveStyle(scene);
+    }
+  }
+
+  protected abstract Spectra generatePathSpectral();
 
 }
