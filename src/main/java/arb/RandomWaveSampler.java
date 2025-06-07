@@ -34,7 +34,6 @@ public class RandomWaveSampler extends
                                GaussianProcessSampler
 {
 
-
   public static class Spectra
   {
     public final double[] path, pathQuad, envelope, t, freq, psd;
@@ -80,22 +79,20 @@ public class RandomWaveSampler extends
       psd[i] = Math.abs(freq[i]) < 1.0 ? 1.0 / (Math.PI * Math.sqrt(1.0 - freq[i] * freq[i])) : 0.0;
     }
 
-    try ( Complex complexSignal = Complex.newVector(N); Complex whiteNoise = Complex.newVector(N);)
+    try ( Complex complexSignal = Complex.newVector(N); Complex whiteNoise = Complex.newVector(N);
+          Real mag = new Real(); Complex ifft = Complex.newVector(N); Real env = new Real())
     {
-
       complexSignal.get(0).zero();
 
       int nyquistIdx = N / 2;
-      try ( Real mag = new Real())
+
+      for (int k = 1; k < nyquistIdx; k++)
       {
-        for (int k = 1; k < nyquistIdx; k++)
-        {
-          mag.set(psd[k] * df).sqrt(bits);
-          var element = whiteNoise.get(k);
-          element.re().set(random.nextGaussian());
-          element.im().set(random.nextGaussian());
-          complexSignal.get(k).set(element).mul(mag, bits);
-        }
+        mag.set(psd[k] * df).sqrt(bits);
+        var element = whiteNoise.get(k);
+        element.re().set(random.nextGaussian());
+        element.im().set(random.nextGaussian());
+        complexSignal.get(k).set(element).mul(mag, bits);
       }
 
       if (N % 2 == 0)
@@ -105,33 +102,33 @@ public class RandomWaveSampler extends
         complexSignal.get(nyquistIdx).set(Math.sqrt(psd[nyquistIdx] * df) * dW);
       }
 
-      try ( Complex ifft = Complex.newVector(N); Real env = new Real())
+      arblib.acb_dft_inverse(ifft, complexSignal, N, bits);
+
+      ifft.mul(N, bits);
+
+      double[] path = new double[N], pathQuad = new double[N], envelope = new double[N];
+
+      for (int i = 0; i < N; i++)
       {
-        arblib.acb_dft_inverse(ifft, complexSignal, N, bits);
-
-        ifft.mul(N, bits);
-
-        double[] path = new double[N], pathQuad = new double[N], envelope = new double[N];
-
-        for (int i = 0; i < N; i++)
-        {
-          path[i]     = ifft.get(i).re().doubleValue();
-          pathQuad[i] = ifft.get(i).im().doubleValue();
-          envelope[i] = ifft.get(i).norm(bits, env).doubleValue();
-        }
-
-        double[] t = new double[N];
-        for (int i = 0; i < N; i++)
-          t[i] = i * STEP_SIZE;
-
-        return new Spectra(path,
-                           pathQuad,
-                           envelope,
-                           t,
-                           freq,
-                           psd,
-                           whiteNoise);
+        path[i]     = ifft.get(i).re().doubleValue();
+        pathQuad[i] = ifft.get(i).im().doubleValue();
+        envelope[i] = ifft.get(i).norm(bits, env).doubleValue();
       }
+
+      double[] t = new double[N];
+      for (int i = 0; i < N; i++)
+      {
+        t[i] = i * STEP_SIZE;
+      }
+
+      return new Spectra(path,
+                         pathQuad,
+                         envelope,
+                         t,
+                         freq,
+                         psd,
+                         whiteNoise);
+
     }
   }
 
@@ -233,7 +230,9 @@ public class RandomWaveSampler extends
         stages[i].setMaximized(true);
         WindowManager.setMoreConduciveStyle(scene);
         if (i > 0)
+        {
           stages[i].show();
+        }
       }
       primaryStage.show();
     }

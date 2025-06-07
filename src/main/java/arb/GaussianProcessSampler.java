@@ -100,7 +100,7 @@ public abstract class GaussianProcessSampler extends
           .addAll(new DoubleDataSet("Empirical").set(freqPos, java.util.Arrays.copyOf(empPSD, posFreqCount)),
                   new DoubleDataSet("Theory").set(freqPos, theoryPSD));
     chart4.getXAxis().setAutoRanging(false);
-    chart4.getXAxis().setMin(-1.0);
+    chart4.getXAxis().setMin(0);
     chart4.getXAxis().setMax(1.0);
     return chart4;
   }

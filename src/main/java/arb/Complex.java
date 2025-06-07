@@ -691,7 +691,7 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
     return mul(h,prec,this);
   }
 
-  
+
   /**
    * Self-assigned this{@link #exp(int, Complex)} 
    * @param prec
@@ -1749,8 +1749,5 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
   public Complex() {
     this(arblibJNI.new_Complex(), true);
   }
-
-
- 
 
 }
