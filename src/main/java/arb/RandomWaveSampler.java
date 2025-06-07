@@ -15,7 +15,10 @@ import io.fair_acc.chartfx.plugins.Zoomer;
 import io.fair_acc.dataset.spi.DoubleDataSet;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
 /**
@@ -37,12 +40,12 @@ public class RandomWaveSampler extends
     public Complex        whiteNoise;
 
     public Spectra(double[] path,
-                          double[] pathQuad,
-                          double[] envelope,
-                          double[] t,
-                          double[] freq,
-                          double[] psd,
-                          Complex whiteNoise)
+                   double[] pathQuad,
+                   double[] envelope,
+                   double[] t,
+                   double[] freq,
+                   double[] psd,
+                   Complex whiteNoise)
     {
       this.path       = path;
       this.pathQuad   = pathQuad;
@@ -95,7 +98,6 @@ public class RandomWaveSampler extends
       scaled.getReal().set(mag * noiseReal / Math.sqrt(2.0));
       scaled.getImag().set(mag * noiseImag / Math.sqrt(2.0));
 
-      complexSignal.get(N - k).set(scaled).conj();
     }
 
     if (N % 2 == 0)
@@ -124,12 +126,12 @@ public class RandomWaveSampler extends
       t[i] = i * STEP_SIZE;
 
     return new Spectra(path,
-                              pathQuad,
-                              envelope,
-                              t,
-                              freq,
-                              psd,
-                              whiteNoise);
+                       pathQuad,
+                       envelope,
+                       t,
+                       freq,
+                       psd,
+                       whiteNoise);
   }
 
   private double[] autocorrDirect(double[] x, int maxLagSteps)
@@ -188,46 +190,96 @@ public class RandomWaveSampler extends
     for (int i = 0; i < N; i++)
     {
       Complex element = fft.get(i);
-      double real = element.re().doubleValue();
-      double imag = element.im().doubleValue();
+      double  real    = element.re().doubleValue();
+      double  imag    = element.im().doubleValue();
       periodogram[i] = (real * real + imag * imag) / (STEP_SIZE);
     }
     return periodogram;
   }
 
+  private boolean separateWindows = false;
+
   @Override
   public void start(Stage primaryStage)
   {
-    Spectra result   = generatePathSpectral();
-    GridPane       gridPane = new GridPane();
+    Spectra   result = generatePathSpectral();
+    XYChart[] charts =
+    { newTimeDomainChart(result), newNoiseChart(result), newAutocorrelationChart(result),
+      newPowerSpectralDensityChart(result) };
+
+    separateWindows = getParameters().getUnnamed().contains("--separate-windows");
+
+    if (separateWindows)
+    {
+      Stage[]  stages =
+      { primaryStage, new Stage(), new Stage(), new Stage() };
+      String[] titles =
+      { "Time Domain Analysis", "Noise Components", "Autocorrelation", "Power Spectral Density" };
+
+      for (int i = 0; i < charts.length; i++)
+      {
+        configureChart(charts[i]);
+        Scene scene = new Scene(charts[i]);
+        stages[i].setScene(scene);
+        stages[i].setTitle(titles[i]);
+        stages[i].setMaximized(true);
+        WindowManager.setMoreConduciveStyle(scene);
+        if (i > 0)
+          stages[i].show();
+      }
+      primaryStage.show();
+    }
+    else
+    {
+      GridPane gridPane = createGridPane(charts);
+      Scene    scene    = new Scene(gridPane);
+      primaryStage.setScene(scene);
+      primaryStage.setMaximized(true);
+      primaryStage.show();
+      WindowManager.setMoreConduciveStyle(scene);
+    }
+  }
+
+  private GridPane createGridPane(XYChart[] charts)
+  {
+    GridPane gridPane = new GridPane();
     gridPane.setHgap(10);
     gridPane.setVgap(10);
 
-    XYChart chart1 = newTimeDomainChart(result);
+    // Fixed column constraints
+    ColumnConstraints col1 = new ColumnConstraints();
+    col1.setPercentWidth(50);
+    ColumnConstraints col2 = new ColumnConstraints();
+    col2.setPercentWidth(50);
+    gridPane.getColumnConstraints().addAll(col1, col2);
 
-    XYChart chart2 = newNoiseChart(result);
+    // Fixed row constraints
+    RowConstraints row1 = new RowConstraints();
+    row1.setPercentHeight(50);
+    RowConstraints row2 = new RowConstraints();
+    row2.setPercentHeight(50);
+    gridPane.getRowConstraints().addAll(row1, row2);
 
-    XYChart chart3 = newAutocorrelationChart(result);
+    for (XYChart chart : charts)
+    {
+      configureChart(chart);
+      chart.setPrefSize(10000, 10000);
+      GridPane.setHgrow(chart, Priority.ALWAYS); // Add horizontal grow
+      GridPane.setVgrow(chart, Priority.ALWAYS); // Add vertical grow
+    }
 
-    XYChart chart4 = newPowerSpectralDensityChart(result);
+    gridPane.add(charts[0], 0, 0);
+    gridPane.add(charts[1], 1, 0);
+    gridPane.add(charts[2], 0, 1);
+    gridPane.add(charts[3], 1, 1);
 
-    configureChart(chart1);
-    configureChart(chart2);
-    configureChart(chart3);
-    configureChart(chart4);
+    return gridPane;
+  }
 
-    gridPane.add(chart1, 0, 0);
-    gridPane.add(chart2, 1, 0);
-    gridPane.add(chart3, 0, 1);
-    gridPane.add(chart4, 1, 1);
-
-    primaryStage.setScene(new Scene(gridPane,
-                                    1600,
-                                    1200));
-    primaryStage.show();
-
-    WindowManager.setMoreConduciveStyle(primaryStage.getScene());
-
+  public static void main(String[] args)
+  {
+    System.setProperty("prism.maxvram", "2g");
+    launch(args);
   }
 
   private XYChart newPowerSpectralDensityChart(Spectra result)
@@ -329,11 +381,6 @@ public class RandomWaveSampler extends
     DoubleDataSet envNeg = new DoubleDataSet("Envelope (–)").set(result.t, negEnv);
     chart1.getDatasets().addAll(inPhase, quad, envPos, envNeg);
     return chart1;
-  }
-
-  public static void main(String[] args)
-  {
-    launch(args);
   }
 
   private void configureChart(XYChart chart)

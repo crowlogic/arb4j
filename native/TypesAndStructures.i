@@ -36,6 +36,16 @@
 #include <wchar.h>
 
 
+typedef struct
+{
+    gmp_randstate_t gmp_state;
+    int gmp_init;
+    mp_limb_t __randval;
+    mp_limb_t __randval2;
+} flint_rand_struct;
+
+typedef flint_rand_struct flint_rand[1];
+
 typedef unsigned long Window;
 
 typedef struct charcodemap {

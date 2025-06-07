@@ -103,8 +103,7 @@ typedef unsigned long int mp_limb_t;
 %rename (ComplexPolynomial) acb_poly_struct;
 %rename (ComplexMatrix) acb_mat_struct;
 %rename (RealMatrix) arb_mat_struct;
-%rename (FoundRoots) root_struct;
-
+%rename (RandomState) flint_rand;
 %typemap(javafinalize) dirichlet_prime_group_struct ""
 %typemap(javafinalize) dirichlet_char_struct ""
 %typemap(javafinalize) dirichlet_group_struct ""
