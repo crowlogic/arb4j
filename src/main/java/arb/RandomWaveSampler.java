@@ -6,6 +6,7 @@ import static java.lang.Math.pow;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.polynomials.orthogonal.OrthogonalPolynomialSequence;
 import arb.functions.polynomials.orthogonal.real.Type1ChebyshevPolynomials;
 
 /**
@@ -31,6 +32,12 @@ public class RandomWaveSampler extends
                                GaussianProcessSampler
 {
 
+  /**
+   * The Fourier transform of J_0(x) over -inf to inf is 1/sqrt(1-lambda^2) when
+   * |lambda|<1 and 0 when |lambda|>=1 which happens to be the
+   * {@link OrthogonalPolynomialSequence#orthogonalityMeasure()} of the
+   * {@link Type1ChebyshevPolynomials}
+   */
   @Override
   public double[] getPowerSpectralDensity(double[] freq)
   {
