@@ -33,12 +33,7 @@ import javafx.stage.Stage;
 public class RandomWaveSampler extends
                                GaussianProcessSampler
 {
-  private static final double L            = 500.0;
-  static final double         STEP_SIZE    = 0.01;
-  static final int            N            = (int) (L / STEP_SIZE);
-  static final double         LAGS_TO_SHOW = 20.0;
-  private final Random        random       = new Random();
-  static final int            bits         = 128;
+
 
   public static class Spectra
   {
@@ -140,7 +135,7 @@ public class RandomWaveSampler extends
     }
   }
 
-  double[] autocorrDirect(double[] x, int maxLagSteps)
+  protected double[] autocorr(double[] x, int maxLagSteps)
   {
     int      n         = x.length;
     double   mean      = Arrays.stream(x).average().getAsDouble();
@@ -183,7 +178,7 @@ public class RandomWaveSampler extends
     return acorr;
   }
 
-  double[] computeEmpiricalPSD(double[] path)
+  protected double[] computeEmpiricalPSD(double[] path)
   {
     double mean = Arrays.stream(path).average().getAsDouble();
 

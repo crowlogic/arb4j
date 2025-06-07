@@ -1,5 +1,7 @@
 package arb;
 
+import java.util.Random;
+
 import arb.RandomWaveSampler.Spectra;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
@@ -21,6 +23,18 @@ public abstract class GaussianProcessSampler extends
                                              Application
 {
 
+  private static final double L            = 500.0;
+
+  static final double         STEP_SIZE    = 0.01;
+
+  static final int            N            = (int) (L / STEP_SIZE);
+
+  static final double         LAGS_TO_SHOW = 20.0;
+
+  protected final Random        random       = new Random();
+
+  static final int            bits         = 128;
+
   public GaussianProcessSampler()
   {
     super();
@@ -31,21 +45,21 @@ public abstract class GaussianProcessSampler extends
     GridPane gridPane = new GridPane();
     gridPane.setHgap(10);
     gridPane.setVgap(10);
-  
+
     // Fixed column constraints
     ColumnConstraints col1 = new ColumnConstraints();
     col1.setPercentWidth(50);
     ColumnConstraints col2 = new ColumnConstraints();
     col2.setPercentWidth(50);
     gridPane.getColumnConstraints().addAll(col1, col2);
-  
+
     // Fixed row constraints
     RowConstraints row1 = new RowConstraints();
     row1.setPercentHeight(50);
     RowConstraints row2 = new RowConstraints();
     row2.setPercentHeight(50);
     gridPane.getRowConstraints().addAll(row1, row2);
-  
+
     for (XYChart chart : charts)
     {
       configureChart(chart);
@@ -53,12 +67,12 @@ public abstract class GaussianProcessSampler extends
       GridPane.setHgrow(chart, Priority.ALWAYS); // Add horizontal grow
       GridPane.setVgrow(chart, Priority.ALWAYS); // Add vertical grow
     }
-  
+
     gridPane.add(charts[0], 0, 0);
     gridPane.add(charts[1], 1, 0);
     gridPane.add(charts[2], 0, 1);
     gridPane.add(charts[3], 1, 1);
-  
+
     return gridPane;
   }
 
@@ -75,13 +89,13 @@ public abstract class GaussianProcessSampler extends
     double[] empPSD       = computeEmpiricalPSD(result.path);
     double[] theoryPSD    = new double[posFreqCount];
     double   df           = 1.0 / (N * STEP_SIZE);
-  
+
     for (int i = 0; i < posFreqCount; i++)
     {
       freqPos[i]   = result.freq[i];
       theoryPSD[i] = result.psd[i];
     }
-  
+
     chart4.getDatasets()
           .addAll(new DoubleDataSet("Empirical").set(freqPos, java.util.Arrays.copyOf(empPSD, posFreqCount)),
                   new DoubleDataSet("Theory").set(freqPos, theoryPSD));
@@ -90,6 +104,8 @@ public abstract class GaussianProcessSampler extends
     chart4.getXAxis().setMax(1.0);
     return chart4;
   }
+
+  protected abstract double[] computeEmpiricalPSD(double[] path);
 
   protected XYChart newAutocorrelationChart(Spectra result)
   {
@@ -111,7 +127,7 @@ public abstract class GaussianProcessSampler extends
       }
     }
     chart3.getDatasets()
-          .addAll(new DoubleDataSet("Empirical").set(lags, autocorrDirect(result.path, maxLag)),
+          .addAll(new DoubleDataSet("Empirical").set(lags, autocorr(result.path, maxLag)),
                   new DoubleDataSet("Theory").set(lags, theory));
     chart3.getYAxis().setAutoRanging(false);
     chart3.getYAxis().setMin(-0.5);
@@ -121,6 +137,8 @@ public abstract class GaussianProcessSampler extends
     chart3.getXAxis().setMax(LAGS_TO_SHOW);
     return chart3;
   }
+
+  protected abstract double[] autocorr(double[] path, int maxLag);
 
   protected XYChart newNoiseChart(Spectra result)
   {
@@ -149,9 +167,9 @@ public abstract class GaussianProcessSampler extends
                                                         ""),
                                  new DefaultNumericAxis("Value",
                                                         ""));
-  
+
     chart1.setTitle("In-Phase, Quadrature, and Envelope (±) via Hilbert Transform");
-  
+
     DoubleDataSet inPhase = new DoubleDataSet("In-phase").set(result.t, result.path);
     DoubleDataSet quad    = new DoubleDataSet("Quadrature").set(result.t, result.pathQuad);
     DoubleDataSet envPos  = new DoubleDataSet("Envelope (+)").set(result.t, result.envelope);
@@ -172,7 +190,7 @@ public abstract class GaussianProcessSampler extends
                  new TableViewer(),
                  new ColormapSelector(),
                  new Screenshot());
-  
+
   }
 
 }
