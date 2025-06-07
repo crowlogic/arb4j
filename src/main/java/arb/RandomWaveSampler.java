@@ -95,8 +95,8 @@ public class RandomWaveSampler extends
       element.im().set(noiseImag);
 
       Complex scaled = complexSignal.get(k);
-      scaled.getReal().set(mag * noiseReal / Math.sqrt(2.0));
-      scaled.getImag().set(mag * noiseImag / Math.sqrt(2.0));
+      scaled.getReal().set(mag * noiseReal);
+      scaled.getImag().set(mag * noiseImag);
 
     }
 
@@ -187,12 +187,13 @@ public class RandomWaveSampler extends
     arblib.acb_dft(fft, complexPath, N, bits);
 
     double[] periodogram = new double[N];
+    double scalingFactor = STEP_SIZE / (N ); // Critical correction
     for (int i = 0; i < N; i++)
     {
       Complex element = fft.get(i);
       double  real    = element.re().doubleValue();
       double  imag    = element.im().doubleValue();
-      periodogram[i] = (real * real + imag * imag) / (STEP_SIZE);
+      periodogram[i] = (real * real + imag * imag) * scalingFactor;
     }
     return periodogram;
   }
