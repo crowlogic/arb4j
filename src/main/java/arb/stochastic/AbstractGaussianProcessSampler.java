@@ -1,7 +1,8 @@
-package arb;
+package arb.stochastic;
 
-import java.util.Random;
-
+import arb.Complex;
+import arb.Real;
+import arb.arblib;
 import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
@@ -21,42 +22,25 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
-public abstract class GaussianProcessSampler extends
-                                             Application
+/**
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ **/
+public abstract class AbstractGaussianProcessSampler extends
+                                                     Application
 {
 
-  public static class Spectra
+  public static double variance(double[] x, int n)
   {
-    public final double[] path, pathQuad, envelope, t, freq, psd;
-    public Complex        whiteNoise;
-
-    public Spectra(double[] path,
-                   double[] pathQuad,
-                   double[] envelope,
-                   double[] t,
-                   double[] freq,
-                   double[] psd,
-                   Complex whiteNoise)
+    double var = 0.0;
+    for (double val : x)
     {
-      this.path       = path;
-      this.pathQuad   = pathQuad;
-      this.envelope   = envelope;
-      this.t          = t;
-      this.freq       = freq;
-      this.psd        = psd;
-      this.whiteNoise = whiteNoise;
+      var += val * val;
     }
+    var /= n;
+    return var;
   }
-
-  private static final double L            = 500.0;
-
-  static final double         STEP_SIZE    = 0.01;
-
-  static final int            N            = (int) (L / STEP_SIZE);
-
-  static final double         LAGS_TO_SHOW = 20.0;
-
-  static final int            bits         = 128;
 
   public static double[] autocorr(double[] x, int maxLagSteps)
   {
@@ -125,22 +109,42 @@ public abstract class GaussianProcessSampler extends
     return freq;
   }
 
-  public static double variance(double[] x, int n)
-  {
-    double var = 0.0;
-    for (double val : x)
-    {
-      var += val * val;
-    }
-    var /= n;
-    return var;
-  }
+  private static final double L            = 500.0;
 
-  protected final Random      random       = new Random();
+  static final double         STEP_SIZE    = 0.01;
+
+  static final int            N            = (int) (L / STEP_SIZE);
+
+  static final double         LAGS_TO_SHOW = 20.0;
+
+  static final int            bits         = 128;
+
+  public static class Spectra
+  {
+    public final double[] path, pathQuad, envelope, t, freq, psd;
+    public Complex        whiteNoise;
+
+    public Spectra(double[] path,
+                   double[] pathQuad,
+                   double[] envelope,
+                   double[] t,
+                   double[] freq,
+                   double[] psd,
+                   Complex whiteNoise)
+    {
+      this.path       = path;
+      this.pathQuad   = pathQuad;
+      this.envelope   = envelope;
+      this.t          = t;
+      this.freq       = freq;
+      this.psd        = psd;
+      this.whiteNoise = whiteNoise;
+    }
+  }
 
   private boolean separateWindows = false;
 
-  public GaussianProcessSampler()
+  public AbstractGaussianProcessSampler()
   {
     super();
   }
@@ -192,68 +196,6 @@ public abstract class GaussianProcessSampler extends
 
     return gridPane;
   }
-
-  public Spectra generate()
-  {
-    double[] freq = generateFrequencies(N, STEP_SIZE);
-    double[] psd  = getPowerSpectralDensity(freq);
-
-    try ( Complex complexSignal = Complex.newVector(N); Complex whiteNoise = Complex.newVector(N);
-          Real mag = new Real(); Complex ifft = Complex.newVector(N); Real env = new Real())
-    {
-      complexSignal.get(0).zero();
-
-      int    nyquistIndex = N / 2;
-      double df           = 1.0 / (N * STEP_SIZE);
-
-      for (int k = 1; k < nyquistIndex; k++)
-      {
-        mag.set(psd[k] * df).sqrt(bits);
-        var element = whiteNoise.get(k);
-        element.re().set(random.nextGaussian());
-        element.im().set(random.nextGaussian());
-        complexSignal.get(k).set(element).mul(mag, bits);
-      }
-
-      if (N % 2 == 0)
-      {
-        double dW = random.nextGaussian();
-        whiteNoise.get(nyquistIndex).set(dW);
-        complexSignal.get(nyquistIndex).set(Math.sqrt(psd[nyquistIndex] * df) * dW);
-      }
-
-      arblib.acb_dft_inverse(ifft, complexSignal, N, bits);
-
-      ifft.mul(N, bits);
-
-      double[] path = new double[N], pathQuad = new double[N], envelope = new double[N];
-
-      for (int i = 0; i < N; i++)
-      {
-        Complex element = ifft.get(i);
-        path[i]     = element.re().doubleValue();
-        pathQuad[i] = element.im().doubleValue();
-        envelope[i] = element.norm(bits, env).doubleValue();
-      }
-
-      double[] t = new double[N];
-      for (int i = 0; i < N; i++)
-      {
-        t[i] = i * STEP_SIZE;
-      }
-
-      return new Spectra(path,
-                         pathQuad,
-                         envelope,
-                         t,
-                         freq,
-                         psd,
-                         whiteNoise);
-
-    }
-  }
-
-  public abstract double[] getPowerSpectralDensity(double[] freq);
 
   protected XYChart newAutocorrelationChart(Spectra result)
   {
@@ -397,5 +339,7 @@ public abstract class GaussianProcessSampler extends
       // WindowManager.setMoreConduciveStyle(scene);
     }
   }
+
+  protected abstract Spectra generate();
 
 }

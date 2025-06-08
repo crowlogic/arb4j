@@ -31,6 +31,7 @@ module arb4j
   requires transitive guru.nidi.graphviz;
 
   
+  exports arb.stochastic;
   exports arb;
   exports arb.expressions.context;
   exports arb.shell;

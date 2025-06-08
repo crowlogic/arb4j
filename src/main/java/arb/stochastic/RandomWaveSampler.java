@@ -1,4 +1,4 @@
-package arb;
+package arb.stochastic;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.sqrt;
