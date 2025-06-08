@@ -144,6 +144,8 @@ public abstract class AbstractGaussianProcessSampler extends
 
   private boolean separateWindows = false;
 
+  private boolean dark = false;
+
   public AbstractGaussianProcessSampler()
   {
     super();
@@ -321,7 +323,10 @@ public abstract class AbstractGaussianProcessSampler extends
         stages[i].setScene(scene);
         stages[i].setTitle(titles[i]);
         stages[i].setMaximized(true);
-        WindowManager.setMoreConduciveStyle(scene);
+        if (dark)
+        {
+          WindowManager.setMoreConduciveStyle(scene);
+        }
         if (i > 0)
         {
           stages[i].show();
@@ -336,7 +341,10 @@ public abstract class AbstractGaussianProcessSampler extends
       primaryStage.setScene(scene);
       primaryStage.setMaximized(true);
       primaryStage.show();
-      // WindowManager.setMoreConduciveStyle(scene);
+      if (dark)
+      {
+        WindowManager.setMoreConduciveStyle(scene);
+      }
     }
   }
 
