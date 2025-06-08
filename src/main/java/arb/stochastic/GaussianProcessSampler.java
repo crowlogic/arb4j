@@ -2,10 +2,17 @@ package arb.stochastic;
 
 import java.util.Random;
 
-import arb.arblib;
 import arb.Complex;
 import arb.Real;
+import arb.arblib;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 
+/**
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public abstract class GaussianProcessSampler extends
                                              AbstractGaussianProcessSampler
 {
