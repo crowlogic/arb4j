@@ -36,15 +36,6 @@
 #include <wchar.h>
 
 
-typedef struct
-{
-    gmp_randstate_t gmp_state;
-    int gmp_init;
-    mp_limb_t __randval;
-    mp_limb_t __randval2;
-} flint_rand_struct;
-
-typedef flint_rand_struct flint_rand[1];
 
 typedef unsigned long Window;
 
@@ -125,6 +116,8 @@ typedef long int		mp_size_t;
 
 %}
 
+
+
 typedef struct
 {
     fmpz_poly_struct poly;
@@ -172,7 +165,36 @@ fmpq;
 
 typedef fmpq fmpq_t[1];
 
+typedef enum
+{
+  GMP_RAND_ALG_DEFAULT = 0,
+  GMP_RAND_ALG_LC = GMP_RAND_ALG_DEFAULT /* Linear congruential.  */
+} gmp_randalg_t;
 
+
+
+/* Random state struct.  */
+typedef struct
+{
+  mpz_t _mp_seed;	    
+  gmp_randalg_t _mp_alg;  
+  union 
+  {
+    void *_mp_lc;         
+  } _mp_algdata;
+} __gmp_randstate_struct;
+
+typedef __gmp_randstate_struct gmp_randstate_t[1];
+
+typedef struct
+{
+    gmp_randstate_t gmp_state;
+    int gmp_init;
+    mp_limb_t __randval;
+    mp_limb_t __randval2;
+} flint_rand_s;
+
+typedef flint_rand_s flint_rand_t[1];
  
 typedef struct
 {
