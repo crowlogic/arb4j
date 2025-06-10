@@ -5,7 +5,7 @@ BASEDIR=$(dirname $(readlink -f $0))/..
 CLASSPATH=`cat $BASEDIR/class.path`:$BASEDIR/bin/main:$BASEDIR/build/classes/java/main:.
 OPENS="--add-opens javafx.controls/javafx.scene.control.skin=arb4j --add-opens javafx.controls/javafx.scene.control.cell=arb4j --add-opens javafx.graphics/com.sun.javafx.tk.quantum=arb4j --add-opens javafx.graphics/javafx.stage=arb4j"
 DEFINITIONS="-Djavafx.scene.control.skin.ListViewSkin.pannable=true -Djavafx.scene.control.skin.TableViewSkin.pannable=true"
-NATIVEACCESS="--enable-native-access=javafx.graphics --enable-native-access=arb4j"
+NATIVEACCESS="--illegal-native-access=allow --sun-misc-unsafe-memory-access=allow"
 java -ea $NATIVEACCESS --enable-preview -Djava.library.path=$BASEDIR $DEFINITIONS -cp $CLASSPATH --module-path $CLASSPATH --add-modules arb4j --add-modules javafx.controls $OPENS -classpath $CLASSPATH $@
 
 
