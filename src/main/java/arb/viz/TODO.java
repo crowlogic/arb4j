@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.expressions.viz.EmacsKeybindingsEventHandler;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -36,8 +37,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * TODO: make it so u can right-click to edit the selected line as well instead of just using the button
- *  
+ * TODO: make it so u can right-click to edit the selected line as well instead
+ * of just using the button
+ * 
  * @author ©2024 Stephen Crowley
  * @see BusinessSourceLicenseVersionOnePointOne for © terms
  */
@@ -160,8 +162,16 @@ public class TODO extends
     loadButton.setOnAction(e -> loadItemsWithDialog(primaryStage));
 
     Button clearButton = new Button("Clear Input");
-    clearButton.setOnAction(e -> inputField.setText(""));
+    clearButton.setOnAction(e -> clearInput());
     WindowManager.addEmacsKeybindings(inputField);
+    inputField.addEventFilter(KeyEvent.KEY_PRESSED, key ->
+    {
+      if (key.getCode().equals(KeyCode.ENTER))
+      {
+        addItem();
+        clearInput();
+      }
+    });
 
     HBox buttons = new HBox(10,
                             addButton,
@@ -217,6 +227,11 @@ public class TODO extends
     primaryStage.setTitle("To-Do List");
     primaryStage.setScene(scene);
     primaryStage.show();
+  }
+
+  public void clearInput()
+  {
+    inputField.setText("");
   }
 
   private void addItem()
@@ -280,7 +295,7 @@ public class TODO extends
     {
       List<String> lines = reader.lines().collect(Collectors.toList());
       items.setAll(lines);
-      changed  = false;
+      changed = false;
       setCurrentFile(file);
     }
     catch (IOException e)
