@@ -11,7 +11,7 @@ all: libarblib.so jar
 jar: build/libs/arb4j-$(VERSION).jar libarblib.so
 
 build/libs/arb4j-$(VERSION).jar: libarblib.so $(shell find src) $(shell find native)
-	mvn install
+	mvn install -Dmaven.test.skip=true
 
 native/arb_wrap.c: $(shell find native -name "*.i") 
 	swig $(SWIGFLAGS) native/arb.i
@@ -23,18 +23,17 @@ clean:
 	rm -rf libarblib.so *.o native/arb_wrap.c build/*
 
 test:
-	gradle test
+	mvn test
 
 documentation:
-	gradle javadoc
+	mvn javadoc:javadoc
 
 docs: documentation
 
 doc: docs
 
 install:
-	gradle build -x test
-	gradle publishToMavenLocal -x test
+	mvn install -Dmaven.test.skip=true
 
 desktop:
 	gradle installDesktop

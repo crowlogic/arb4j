@@ -15,7 +15,7 @@
         <maven.compiler.target>24</maven.compiler.target>
         <maven.compiler.release>24</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <javafx.version>22.0.2</javafx.version>
+        <javafx.version>24.0.1</javafx.version>
     </properties>
 
     <repositories>
@@ -153,23 +153,24 @@
     </dependencies>
 
     <build>
-        <directory>bin</directory>
-        <outputDirectory>bin/main</outputDirectory>
-        <testOutputDirectory>bin/test</testOutputDirectory>
+     <directory>build</directory>
+     <outputDirectory>build/classes</outputDirectory>
+     <testOutputDirectory>build/test-classes</testOutputDirectory>
+    
         
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <version>3.14.0</version>
                 <configuration>
                     <release>24</release>
+                    <aamodulePath>
+                     
+                    </aamodulePath>
                     <compilerArgs>
                         <arg>--enable-preview</arg>
                     </compilerArgs>
-                    <fork>true</fork>
-                    <meminitial>128m</meminitial>
-                    <maxmem>512m</maxmem>
                 </configuration>
             </plugin>
 
@@ -223,7 +224,7 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>3.3.1</version>
                 <configuration>
-                    <outputDirectory>bin/main</outputDirectory>
+                    <outputDirectory>build/classes</outputDirectory>
                 </configuration>
             </plugin>
 
