@@ -27,7 +27,10 @@
 	</classpathentry>
 	<classpathentry excluding="**" kind="src" output="build/test-classes" path="src/test/resources">
 		<attributes>
+<<<<<<< HEAD
 			<attribute name="test" value="true"/>
+=======
+>>>>>>> branch 'master' of git@github.com:crowlogic/arb4j.git
 			<attribute name="maven.pomderived" value="true"/>
 			<attribute name="optional" value="true"/>
 		</attributes>
