@@ -28,8 +28,6 @@
 	</classpathentry>
 	<classpathentry excluding="**" kind="src" output="build/classes" path="src/main/resources">
 		<attributes>
-			<attribute name="gradle_scope" value="main"/>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
 			<attribute name="maven.pomderived" value="true"/>
 			<attribute name="optional" value="true"/>
 		</attributes>
