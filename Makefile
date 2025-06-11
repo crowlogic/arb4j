@@ -11,7 +11,7 @@ all: libarblib.so jar
 jar: build/libs/arb4j-$(VERSION).jar libarblib.so
 
 build/libs/arb4j-$(VERSION).jar: libarblib.so $(shell find src) $(shell find native)
-	gradle build
+	mvn install
 
 native/arb_wrap.c: $(shell find native -name "*.i") 
 	swig $(SWIGFLAGS) native/arb.i
