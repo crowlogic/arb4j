@@ -1,7 +1,7 @@
 arguments=
-auto.sync=false
+auto.sync=true
 build.scans.enabled=false
-connection.gradle.distribution=GRADLE_DISTRIBUTION(VERSION(8.14))
+connection.gradle.distribution=GRADLE_DISTRIBUTION(VERSION(8.14.2))
 connection.project.dir=
 eclipse.preferences.version=1
 gradle.user.home=
@@ -9,5 +9,5 @@ java.home=
 jvm.arguments=
 offline.mode=false
 override.workspace.settings=true
-show.console.view=false
-show.executions.view=false
+show.console.view=true
+show.executions.view=true

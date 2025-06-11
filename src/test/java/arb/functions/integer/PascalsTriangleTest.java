@@ -11,7 +11,11 @@ import junit.framework.TestCase;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
+<<<<<<< HEAD
 public class PascalsTriangleTest extends 
+=======
+public class PascalsTriangleTest extends
+>>>>>>> branch 'master' of git@github.com:crowlogic/arb4j.git
                                  TestCase
 {
 
