@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 
 import arb.algebra.Ring;
-import arb.annotations.Commutative;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.nodes.binary.AdditionNode;
@@ -31,13 +30,11 @@ public interface Field<X extends Field<X>> extends
 
   public X multiplicativeIdentity();
 
-  @Commutative
   public default X add(X x)
   {
     return add(x, bits(this, x));
   }
 
-  @Commutative
   public default X add(X x, X result)
   {
     return add(x, bits(this, x), result);
@@ -51,7 +48,6 @@ public interface Field<X extends Field<X>> extends
    * @return this after it has been assigned the result
    */
   @SuppressWarnings("unchecked")
-  @Commutative
   public default X add(X element, int prec)
   {
     return add(element, prec, (X) this);
@@ -65,7 +61,7 @@ public interface Field<X extends Field<X>> extends
    * @param result
    * @return result
    */
-  @Commutative
+
   public X add(X element, int prec, X result);
 
   /**
@@ -175,7 +171,7 @@ public interface Field<X extends Field<X>> extends
    * @return this after it has been populated with the result
    */
   @SuppressWarnings("unchecked")
-  @Commutative
+
   public default X mul(int x, int prec)
   {
     X result = (X) this;
@@ -184,7 +180,7 @@ public interface Field<X extends Field<X>> extends
 
   public default X pow(int i, int bits, X result)
   {
-    assert false : String.format( "TODO: %s needs to implement this", getClass() );
+    assert false : String.format("TODO: %s needs to implement this", getClass());
     return null;
   }
 
@@ -203,10 +199,9 @@ public interface Field<X extends Field<X>> extends
    * @return result after it has been populated with the the product of the field
    *         element with the integer
    */
-  @Commutative
+
   public X mul(int x, int prec, X result);
 
-  @Commutative
   public default X mul(X x)
   {
     return mul(x, bits(this, x));
@@ -220,7 +215,7 @@ public interface Field<X extends Field<X>> extends
    * @return this after it has been populated with the result
    */
   @SuppressWarnings("unchecked")
-  @Commutative
+
   public default X mul(X x, int prec)
   {
     X result = (X) this;
@@ -236,10 +231,9 @@ public interface Field<X extends Field<X>> extends
    * @return the result after it has been populated with the the product of this
    *         and x
    */
-  @Commutative
+
   public X mul(X x, int prec, X result);
 
-  @Commutative
   public default X mul(X x, X result)
   {
     return mul(x, bits(this, x), result);
@@ -247,13 +241,13 @@ public interface Field<X extends Field<X>> extends
 
   public default X newFieldElement()
   {
-    assert false : String.format( "TODO: %s needs to implement this", getClass() );
+    assert false : String.format("TODO: %s needs to implement this", getClass());
     return null;
   }
-  
+
   public default X newFieldElementVector(int dim)
   {
-    assert false : String.format( "TODO: %s needs to implement this", getClass() );
+    assert false : String.format("TODO: %s needs to implement this", getClass());
     return null;
   }
 

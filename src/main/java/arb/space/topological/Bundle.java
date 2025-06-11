@@ -1,6 +1,5 @@
 package arb.space.topological;
 
-import arb.annotations.Isomorphic;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;

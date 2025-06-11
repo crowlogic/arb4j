@@ -7,7 +7,6 @@ import java.util.List;
 import arb.AutoCloseableAssignable;
 import arb.Initializable;
 import arb.Integer;
-import arb.annotations.Nonnegative;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
@@ -79,12 +78,10 @@ public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R, V,
 
   private boolean                 initialized;
 
-  @Nonnegative
   private Sequence<R>             A;
 
   private Sequence<R>             B;
 
-  @Nonnegative
   private Sequence<R>             C;
 
   public PolynomialSequence<R, E> P;
@@ -112,12 +109,10 @@ public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R, V,
     }
   }
 
-  @Nonnegative
   protected abstract Sequence<R> A();
 
   protected abstract Sequence<R> B();
 
-  @Nonnegative
   protected abstract Sequence<R> C();
 
   @Override
