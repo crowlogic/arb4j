@@ -3,7 +3,6 @@ package arb.functions.integer;
 import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.integer.PascalsTriangle;
 import junit.framework.TestCase;
 
 /**
@@ -11,11 +10,7 @@ import junit.framework.TestCase;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-<<<<<<< HEAD
-public class PascalsTriangleTest extends 
-=======
 public class PascalsTriangleTest extends
->>>>>>> branch 'master' of git@github.com:crowlogic/arb4j.git
                                  TestCase
 {
 

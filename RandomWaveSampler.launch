@@ -12,8 +12,10 @@
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_SHOW_CODEDETAILS_IN_EXCEPTION_MESSAGES" value="true"/>
     <stringAttribute key="org.eclipse.jdt.launching.ATTR_SPECIAL_ADD_MODULES" value="ALL-MODULE-PATH"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_CLASSPATH_ONLY_JAR" value="false"/>
+    <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.m2e.launchconfig.classpathProvider"/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="arb.stochastic.RandomWaveSampler"/>
     <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="arb4j"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="arb4j"/>
+    <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
     <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.library.path=${project_loc:/arb4j} --add-opens javafx.controls/javafx.scene.control.skin=arb4j --add-opens javafx.controls/javafx.scene.control.cell=arb4j --add-opens javafx.graphics/javafx.stage=arb4j  -Djavafx.scene.control.skin.TableViewSkin.pannable=true  -Djavafx.scene.control.skin.ListViewSkin.pannable=true"/>
 </launchConfiguration>
