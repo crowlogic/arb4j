@@ -37,7 +37,6 @@ module arb4j
   exports arb.shell;
   exports arb.expressions.viz;
   exports arb.theorems;
-  exports arb.annotations;
   exports arb.language;
   exports arb.logic;
   exports arb.documentation;
