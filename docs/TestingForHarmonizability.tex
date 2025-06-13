@@ -1,0 +1,267 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\title{Testing for Harmonizability}
+\author{H. L. Hurd}
+\date{IEEE Transactions on Information Theory, Vol. IT-19, No. 3, May 1973}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Let $R(s,t)$ be a covariance function having the representation
+\begin{equation}
+R(s,t) = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \exp(isx - ity) \, d^2G(x,y)
+\label{eq:covariance-harmonizable}
+\end{equation}
+where $G(x,y)$ is continuous to the right in both variables and is of bounded variation in the plane; then $R(s,t)$ is harmonizable in that $G(x,y)$ is also a covariance. Examples are given in which this result is used to determine the harmonizability of new processes and covariances that are formed by operations on old processes and covariances. Specifically, if $X(t)$ is a real Gaussian harmonizable process, then $X^n(t)$ is harmonizable. If $X(t)$ is harmonizable, $G(x,y)$ has bounded support and $g(t)$ is a Fourier-Stieltjes transform, then $X(g(t))$ and $X(t + g(t))$ are harmonizable. If
+\begin{equation}
+X(t) = \int_{-\infty}^{\infty} f(t,u) \, dZ(u)
+\label{eq:moving-average}
+\end{equation}
+where $f(t,u) = f(t-u)$ is a Fourier-Stieltjes transform and $G(u,v) = \mathbb{E}\{Z(u)Z^*(v)\}$ has finite total variation, then $X(t)$ is harmonizable. A sufficient condition for Priestley's oscillatory processes to be harmonizable is also obtained. The Bochner-Eberlein characterization of Fourier-Stieltjes transforms is particularly convenient for determining harmonizability in these cases.
+\end{abstract}
+
+\section{Introduction}
+
+Let $\{X(t,\omega), -\infty < t < \infty, \omega \in \Omega\}$ be a second-order continuous-parameter stochastic process defined on some probability space $(\Omega, \mathcal{F}, \mathbb{P})$. The process $X(t,\omega)$ is said to be harmonizable~\cite[p.~474]{loeve1955probability} if it has the quadratic mean representation
+\begin{equation}
+X(t,\omega) = \int_{-\infty}^{\infty} \exp(itx) \, dZ(x,\omega)
+\label{eq:process-harmonizable}
+\end{equation}
+where $\{Z(x,\omega), -\infty < x < \infty\}$ is a process whose covariance is of bounded variation (BV) in the plane. Harmonizable processes are of engineering interest because decomposition relative to $\exp(itx)$ admits the usual frequency interpretation of linear filtering. If $H(x)$ is the frequency response of a stable, linear time-invariant system, then the system output process $Y(t,\omega)$ is given by the quadratic mean integral
+\begin{equation}
+Y(t,\omega) = \int_{-\infty}^{\infty} \exp(itx) H(x) \, dZ(x,\omega)
+\label{eq:lti-filter}
+\end{equation}
+A detailed account may be found in~\cite[Ch.~8]{blanc-lapierre1968random}. For recent results on harmonizable processes in engineering, see~\cite{cambanis1970harmonizable,donati1971spectra,ogura1971spectral}.
+
+The covariance functions for $X(t)$ and $Y(t)$ are
+\begin{align}
+R(s,t) &= \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \exp(isx - ity)\, d^2G(x,y) \label{eq:cov-fn-harm} \\
+R_Y(s,t) &= \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \exp(isx - ity) H(x)H^*(y)\, d^2G(x,y) \label{eq:cov-fn-filtered}
+\end{align}
+where $d^2G(x,y) = \mathbb{E}\{dZ(x) dZ^*(y)\}$. Any covariance with representation~\eqref{eq:cov-fn-harm}, with $G(x,y)$ a covariance of bounded variation, is called harmonizable; harmonizable processes have harmonizable covariances. Conversely, processes with harmonizable covariances are themselves harmonizable~\cite[p.~476]{loeve1955probability}. For brevity, we call those corresponding to $G$ with finite total variation simply ``harmonizable.''
+
+This paper addresses the determination of harmonizability for new processes or covariances constructed from old ones. The main results are as follows:
+\begin{itemize}
+    \item If $X(t)$ is a real Gaussian harmonizable process, then $X^n(t)$ is harmonizable.
+    \item If $X(t)$ is harmonizable with spectral decomposition of bounded support and $g(t)$ is a Fourier-Stieltjes transform, then $X(t+g(t))$ and $X(g(t))$ are harmonizable.
+    \item If $R_1$ and $R_2$ are harmonizable covariances, then for $T$ of finite Lebesgue measure,
+    \begin{equation}
+    R_3(s,t) = \int_{T} R_1(s,u)R_2(u,t) \, du
+    \label{eq:integral-composed}
+    \end{equation}
+    is harmonizable.
+    \item If $X(t)$ is a moving average as in~\eqref{eq:moving-average} with $f(t,u) = f(t-u)$ a Fourier-Stieltjes transform and $G(u,v)$ of bounded variation, then $X(t)$ is harmonizable.
+    \item If $X(t)$ is as above, $Z(u)$ has orthogonal increments with $dF(u) = \mathbb{E}|dZ(u)|^2$ and
+    \begin{equation}
+    f(t,u) = \exp(iut) \int_{-\infty}^{\infty} \exp(itx) \, dH_u(x)
+    \label{eq:oscillatory-fn}
+    \end{equation}
+    with $H_u(x)$ of bounded variation for every $u$, the resulting processes include Priestley's oscillatory processes~\cite{priestley1965evolutionary}, which are harmonizable under suitable conditions.
+\end{itemize}
+
+The method is to use the following result.
+
+\begin{theorem}
+\label{thm:covariance-fs}
+If $R(s,t)$ is simultaneously a covariance and a Fourier-Stieltjes (FS) transform with respect to some $G(x,y)$ of bounded variation, then $R(s,t)$ is harmonizable in that $G$ is necessarily a covariance.
+\end{theorem}
+
+\begin{proof}
+Sufficiency is immediate: one can find a process $Z(x,\omega)$ whose covariance is $G$ and whose FS transform $X(t,\omega)$ as in~\eqref{eq:process-harmonizable} has covariance $R(s,t)$. Conversely, suppose $R$ is both a covariance and an FS transform with respect to some $G$ that is BV. Define
+\begin{equation}
+G_a(x,y) = G(x,y) - G(a,y) - G(x,a) + G(a, a)
+\label{eq:nnd-Ga}
+\end{equation}
+For any $n$ and sequence $\{x_j \ge a,\, j=1,\ldots,n\}$ and complex $\{c_j\}$,
+\[
+\sum_{j,k=1}^n c_j c_k^* G_a(x_j, x_k) \ge 0
+\]
+This follows by constructing $g_a(s) = \sum_{j=1}^n c_j [1 - \exp(-isx_j)] \exp(-isa)$ and applying the inversion theorem~\cite[p.~475]{loeve1955probability}. Letting $a \to -\infty$, $G_a(x,y) \to G(x,y)$. Thus $G(x,y)$ is non-negative definite.
+\end{proof}
+
+Thus, any characterization of FS transforms, such as the Bochner-Eberlein theorem, also provides a characterization for harmonizable covariances~\cite{bochner1934fst,eberlein1955fst,rudin1962groups}. Cramér~\cite{cramer1939representation} and Dominguez~\cite{dominguez1940fst} provide alternative characterizations.
+
+\section{Mathematical Preliminaries}
+
+Assume $G(x,y)$ is normalized, e.g.,
+\begin{equation}
+G(x,y) = \frac{1}{4}\left[G(x+0, y+0) + G(x+0, y-0) + G(x-0, y+0) + G(x-0, y-0)\right]
+\label{eq:G-normalization}
+\end{equation}
+and satisfies 
+\[
+\lim_{x\to -\infty} G(x, y) = \lim_{y\to -\infty} G(x, y) = 0.
+\]
+We now state the key characterizations.
+
+\begin{theorem}[Bochner]
+\label{thm:bochner}
+A necessary and sufficient condition that $f(t)$, $-\infty < t < \infty$, has the representation
+\begin{equation}
+f(t) = \int_{-\infty}^{\infty} \exp(ixt) \, dG(x)
+\label{eq:bochner}
+\end{equation}
+for a complex measure $G$ of bounded variation is that, for any $n$, any sequence $\{t_j\}_{j=1}^n$ and any complex $\{c_j\}_{j=1}^n$,
+\begin{equation}
+\left|\sum_{j=1}^n c_j f(t_j)\right| \leq M \left[\sum_{j=1}^n \sum_{k=1}^n c_j c_k^* \exp(ix(t_j-t_k))\right]^{1/2}
+\label{eq:bochner-nnd}
+\end{equation}
+for some $M>0$.
+\end{theorem}
+
+\begin{theorem}[Bochner-Eberlein]
+\label{thm:bochner-eberlein}
+A necessary and sufficient condition for a function $R(s,t)$ to have representation~\eqref{eq:covariance-harmonizable} with
+\begin{equation}
+\int_{-\infty}^\infty \int_{-\infty}^\infty |d^2G(x,y)| \leq M
+\label{eq:bounded-var-G}
+\end{equation}
+is that for any $n$, any sequence of pairs $\{(s_j,t_j)\}_{j=1}^n$ and any complex $\{c_j\}_{j=1}^n$,
+\begin{equation}
+\left|\sum_{j=1}^n c_j R(s_j, t_j)\right| \leq M \left[\sum_{j=1}^n \sum_{k=1}^n c_j c_k^* \exp(i(x s_j - y t_j - x s_k + y t_k))\right]^{1/2}
+\label{eq:BE-nnd}
+\end{equation}
+for some $M > 0$.
+\end{theorem}
+
+\section{Examples and Application}
+
+\begin{example}
+Let $X(t)$ be a zero-mean real Gaussian harmonizable process with covariance $R(s,t)$. Then, for any $n \geq 1$, $X^n(t)$ is harmonizable.
+\end{example}
+
+\begin{proof}
+An exercise with characteristic functions shows that
+\begin{equation}
+\mathbb{E}[X^n(s)X^n(t)] = \sum_{p, q, r \geq 0} c_z(p, q, r, n) R^p(s, s) R^q(s, t) R^r(t, s) R^p(t, t)
+\label{eq:gaussian-moments}
+\end{equation}
+where the sum is over all $p, q, r \geq 0$ with $n = 2p + q + r$ and $c_z(p, q, r, n)$ are combinatorial coefficients.
+
+Since both FS transforms~\cite[p.151]{bochner1934fst} and covariances~\cite[p.468]{loeve1955probability} are closed under products, $R^q(s,t) R^r(t,s) = R^{q+r}(s,t)$ is an FS transform and a covariance. The product $R^p(s,s) R^p(t,t)$ is also an FS transform, as for $f(s) = R(s,s)$
+\[
+f^p(s) f^p(t)
+\]
+is NND and an FS transform by Theorem~\ref{thm:bochner}. The sum in~\eqref{eq:gaussian-moments} is harmonizable since FS transforms and covariances are closed under positive sums.
+\end{proof}
+
+\begin{example}
+\label{ex:composition}
+Suppose $X(t)$ is harmonizable with spectral decomposition supported by a bounded set $A$ and $g(t)$ is the FS transform of some $G(x)$ of finite variation. Then $X(t+g(t))$ and $X(g(t))$ are harmonizable.
+\end{example}
+
+\begin{proof}
+Set $Y(t) = X(t + g(t))$, so
+\[
+R_Y(s, t) = R_X(s + g(s), t + g(t)) = \iint_A \exp\left(ix(s+g(s)) - iy(t+g(t))\right) d^2G(x, y).
+\]
+Let $M_A$ denote the variation over $A \times A$ of $G(x, y)$. For any complex $\{c_j\}$ and parameter pairs,
+\[
+Q = \left|\sum_{j=1}^n c_j R_Y(s_j, t_j)\right| \leq M_A \left|\sum_{j=1}^n c_j \exp\left(ix's_j + ix' g(s_j) - iy' t_j - iy' g(t_j)\right)\right|
+\]
+where $x',y'$ in closure of $A$. The mappings $t \mapsto \exp[ix' g(t)]$ and $t \mapsto \exp[-iy' g(t)]$ are FS transforms, so by repeated application of Bochner's condition this is bounded, and $R_Y(s, t)$ is an FS transform.
+\end{proof}
+
+\begin{example}
+\label{ex:integral-composed}
+Suppose $R_1$ and $R_2$ are harmonizable covariances, and for $T$ of finite Lebesgue measure define $R_3(s,t)$ as in~\eqref{eq:integral-composed}. Then $R_3$ is harmonizable.
+\end{example}
+
+\begin{proof}
+By the Bochner-Eberlein condition, for any $\{c_j\}$,
+\[
+Q = \left|\sum_{j=1}^n c_j \int_T R_1(s_j, u) R_2(u, t_j)\, du \right| \leq M_1 \sup_{x, y} \left|\sum_{j=1}^n c_j \int_T R_2(u, t_j) \exp(is_j x - iuy) du \right|.
+\]
+With $M_2$ the variation bound for $R_2$,
+\[
+Q \leq M_1 M_2 m(T) \sup_{x, y} \left|\sum_{j=1}^n c_j \exp(is_j x - i t_j y)\right|
+\]
+where $m(T)$ is Lebesgue measure. Thus $R_3$ is an FS transform.
+\end{proof}
+
+\begin{example}
+Suppose $X(t)$ is a moving average as in~\eqref{eq:moving-average} with $f(t,u) = f(t-u)$ a Fourier-Stieltjes transform and $G(u,v)$ of bounded variation. Then $X(t)$ is harmonizable.
+\end{example}
+
+\begin{proof}
+From~\eqref{eq:moving-average} and the bounded variation of $H(x)$ and $G(u,v)$,
+\[
+R(s,t) = \iiiint \exp[ix(s-u) - iy(t-v)] \, d^2G(u,v) \, dH(x) \, dH^*(y).
+\]
+This is an FS transform with variation bound $M_G M_H^2$, where $M_G$ bounds $G(u,v)$ and $M_H$ bounds $H(x)$.
+\end{proof}
+
+\begin{example}
+Suppose $X(t)$ is as above, $Z(u)$ has orthogonal increments with $dF(u) = \mathbb{E}[|dZ(u)|^2]$ and $f(t,u)$ as in~\eqref{eq:oscillatory-fn}. Then $X(t)$ is a Priestley oscillatory process, and is harmonizable provided
+\begin{equation}
+\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} |dH_u(x)|\,|dH_u^*(y)|\, dF(u) < \infty.
+\label{eq:osc-harmonizable}
+\end{equation}
+\end{example}
+
+\begin{proof}
+The covariance is
+\[
+R(s,t) = \int_{-\infty}^\infty \exp[iu(s-t)] f(u, s) f^*(u, t) dF(u).
+\]
+By repeated application of Bochner's and Fubini's theorems, provided~\eqref{eq:osc-harmonizable} holds, $R(s,t)$ is an FS transform and thus harmonizable.
+\end{proof}
+
+\section*{Acknowledgment}
+
+The author is indebted to H. J. Landau for remarks on an early version of this paper and to a referee for several helpful suggestions.
+
+\begin{thebibliography}{12}
+\bibitem{loeve1955probability}
+M.~Loève, \emph{Probability Theory}. New York: Van Nostrand, 1955.
+
+\bibitem{blanc-lapierre1968random}
+A.~Blanc-Lapierre and R.~Fortet, \emph{Theory of Random Functions}. New York: Gordon and Breach, 1968.
+
+\bibitem{cambanis1970harmonizable}
+S.~Cambanis and B.~Liu, ``On harmonizable stochastic processes,'' \emph{Inform. Contr.}, vol.~17, pp.~183--202, 1970.
+
+\bibitem{donati1971spectra}
+F.~Donati, ``Finite-time averaged power spectra'', \emph{IEEE Trans. Inform. Theory}, vol. IT-17, pp. 7--16, Jan. 1971.
+
+\bibitem{ogura1971spectral}
+H.~Ogura, ``Spectral representation of a periodic nonstationary random process,'' \emph{IEEE Trans. Inform. Theory}, vol. IT-17, pp. 143--149, Mar. 1971.
+
+\bibitem{gladyshev1963almost}
+E.~G.~Gladyshev, ``Periodically and almost-periodically correlated random processes with continuous time parameter,'' \emph{Theory Prob. Appl.}, vol.~8, pp.~173--177, 1963.
+
+\bibitem{priestley1965evolutionary}
+M.~B.~Priestley, ``Evolutionary spectra and nonstationary processes,'' \emph{J. Roy. Statist. Soc. B}, vol.~27, pp.~204--237, 1965.
+
+\bibitem{bochner1934fst}
+S.~Bochner, ``A theorem on Fourier-Stieltjes integrals,'' \emph{Bull. Amer. Math. Soc.}, vol.~40, pp.~271--276, 1934.
+
+\bibitem{eberlein1955fst}
+W.~F.~Eberlein, ``Characterization of Fourier-Stieltjes transforms,'' \emph{Duke Math. J.}, vol.~22, pp.~465--468, 1955.
+
+\bibitem{rudin1962groups}
+W.~Rudin, \emph{Fourier Analysis on Groups}. New York: Interscience, 1962.
+
+\bibitem{cramer1939representation}
+H.~Cramér, ``On the representation of a function by certain Fourier integrals,'' \emph{Trans. Amer. Math. Soc.}, vol.~46, pp.~191--201, 1939.
+
+\bibitem{dominguez1940fst}
+A.~G.~Dominguez, ``The representation of functions by Fourier integrals,'' \emph{Duke Math. J.}, vol.~6, pp.~246--255, 1940.
+\end{thebibliography}
+
+\end{document}
