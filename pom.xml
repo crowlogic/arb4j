@@ -165,9 +165,6 @@
                 <version>3.14.0</version>
                 <configuration>
                     <release>24</release>
-                    <aamodulePath>
-                     
-                    </aamodulePath>
                     <compilerArgs>
                         <arg>--enable-preview</arg>
                     </compilerArgs>

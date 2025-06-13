@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.expressions.viz.EmacsKeybindingsEventHandler;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -319,7 +318,7 @@ public class TODO extends
                        new FileChooser.ExtensionFilter("All Files",
                                                        "*.*"));
 
-    java.io.File selectedFile = fileChooser.showOpenDialog(stage);
+    File selectedFile = fileChooser.showOpenDialog(stage);
     if (selectedFile != null)
     {
       loadItemsFromFile(selectedFile.getAbsolutePath());
