@@ -164,11 +164,21 @@
       <big|sum><rsub|j,k=1><rsup|n>c<rsub|j>*c<rsub|k><rsup|\<ast\>>*G<rsub|a><around|(|x<rsub|j>,x<rsub|k>|)>\<ge\>0
     </equation>
 
-    This follows by constructing <math|g<rsub|a><around|(|s|)>=<big|sum><rsub|j=1><rsup|n>c<rsub|j>*<around|[|1-exp
-    <around|(|-i*s*x<rsub|j>|)>|]>*exp <around|(|-i*s*a|)>> and applying the
-    inversion theorem<nbsp><cite-detail|loeve1955probability|p.<nbsp>475>.
-    Letting <math|a\<to\>-\<infty\>>, <math|G<rsub|a><around|(|x,y|)>\<to\>G<around|(|x,y|)>>.
-    Thus <math|G<around|(|x,y|)>> is non-negative definite.
+    This follows by constructing\ 
+
+    <\equation>
+      g<rsub|a><around|(|s|)>=<big|sum><rsub|j=1><rsup|n>c<rsub|j>*<around|[|1-exp
+      <around|(|-i*s*x<rsub|j>|)>|]>*exp <around|(|-i*s*a|)>
+    </equation>
+
+    \ and applying the inversion theorem<nbsp><cite-detail|loeve1955probability|p.<nbsp>475>
+    then letting <math|a\<to\>-\<infty\>> to see that
+
+    <\equation>
+      lim<rsub|a\<to\>-\<infty\>>G<rsub|a><around|(|x,y|)>=G<around|(|x,y|)>
+    </equation>
+
+    \ <math|>Thus <math|G<around|(|x,y|)>> is non-negative definite.
   </proof>
 
   Thus, any characterization of FS transforms, such as the Bochner-Eberlein
@@ -463,10 +473,10 @@
     <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|auto-2|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|auto-3|<tuple|3|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-4|<tuple|28|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-5|<tuple|28|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|auto-4|<tuple|30|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|auto-5|<tuple|30|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|bib-blanc-lapierre1968random|<tuple|blanc-lapierre1968random|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-bochner1934fst|<tuple|bochner1934fst|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|bib-bochner1934fst|<tuple|bochner1934fst|7|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|bib-cambanis1970harmonizable|<tuple|cambanis1970harmonizable|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|bib-cramer1939representation|<tuple|cramer1939representation|7|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|bib-dominguez1940fst|<tuple|dominguez1940fst|7|../../.TeXmacs/texts/scratch/no_name_5.tm>>
@@ -477,27 +487,27 @@
     <associate|bib-ogura1971spectral|<tuple|ogura1971spectral|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|bib-priestley1965evolutionary|<tuple|priestley1965evolutionary|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|bib-rudin1962groups|<tuple|rudin1962groups|7|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:BE-nnd|<tuple|16|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:G-normalization|<tuple|11|3|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:bochner|<tuple|13|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:bochner-nnd|<tuple|14|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:bounded-var-G|<tuple|15|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:BE-nnd|<tuple|18|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:G-normalization|<tuple|13|3|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:bochner|<tuple|15|3|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:bochner-nnd|<tuple|16|3|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:bounded-var-G|<tuple|17|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|eq:cov-fn-filtered|<tuple|6|2|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|eq:cov-fn-harm|<tuple|5|2|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|eq:covariance-harmonizable|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:gaussian-moments|<tuple|17|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:gaussian-moments|<tuple|19|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|eq:integral-composed|<tuple|7|2|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|eq:lti-filter|<tuple|4|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|eq:moving-average|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|eq:nnd-Ga|<tuple|9|3|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:osc-harmonizable|<tuple|27|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:osc-harmonizable|<tuple|29|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|eq:oscillatory-fn|<tuple|8|2|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|eq:process-harmonizable|<tuple|3|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|ex:composition|<tuple|5|5|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|ex:composition|<tuple|5|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|ex:integral-composed|<tuple|6|5|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|thm:bochner|<tuple|2|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|thm:bochner|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|thm:bochner-eberlein|<tuple|3|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|thm:covariance-fs|<tuple|1|3|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|thm:covariance-fs|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_5.tm>>
   </collection>
 </references>
 
