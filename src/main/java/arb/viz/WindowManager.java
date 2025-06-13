@@ -216,7 +216,7 @@ public class WindowManager
     {
       e.printStackTrace(System.err);
     }
-    System.err.format("Could not find resource: %s\n", filename );
+    System.err.format("Could not find resource: %s\n");
     System.out.println("Classpath: " + System.getProperty("java.class.path"));
     System.out.println("Module path: " + System.getProperty("jdk.module.path"));
   }
