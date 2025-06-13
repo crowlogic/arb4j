@@ -12,8 +12,7 @@
     representation
 
     <\equation>
-      R<around|(|s,t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>exp
-      <around|(|i*s*x-i*t*y|)>*<space|0.17em>d<rsup|2>*G<around|(|x,y|)><label|eq:covariance-harmonizable>
+      R<around|(|s,t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|<around*|(|i*s*x-i*t*y|)>>*<space|0.17em>d<rsup|2>*G<around|(|x,y|)><label|eq:covariance-harmonizable>
     </equation>
 
     where <math|G<around|(|x,y|)>> is continuous to the right in both
@@ -34,12 +33,17 @@
     </equation>
 
     where <math|f<around|(|t,u|)>=f*<around|(|t-u|)>> is a Fourier-Stieltjes
-    transform and <math|G<around|(|u,v|)>=\<bbb-E\>*<around|{|Z<around|(|u|)>*Z<rsup|\<ast\>><around|(|v|)>|}>>
-    has finite total variation, then <math|X<around|(|t|)>> is harmonizable.
-    A sufficient condition for Priestley's oscillatory processes to be
-    harmonizable is also obtained. The Bochner-Eberlein characterization of
-    Fourier-Stieltjes transforms is particularly convenient for determining
-    harmonizability in these cases.
+    transform and
+
+    <\equation>
+      G<around|(|u,v|)>=\<bbb-E\>*<around|{|Z<around|(|u|)>*Z<rsup|\<ast\>><around|(|v|)>|}>
+    </equation>
+
+    \ has finite total variation, then <math|X<around|(|t|)>> is
+    harmonizable. A sufficient condition for Priestley's oscillatory
+    processes to be harmonizable is also obtained. The Bochner-Eberlein
+    characterization of Fourier-Stieltjes transforms is particularly
+    convenient for determining harmonizability in these cases.
   </abstract>>
 
   <section|Introduction>
@@ -52,8 +56,8 @@
   the quadratic mean representation
 
   <\equation>
-    X<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>exp
-    <around|(|i*t*x|)>*<space|0.17em>d*Z<around|(|x,\<omega\>|)><label|eq:process-harmonizable>
+    X<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i
+    t x>d*Z<around|(|x,\<omega\>|)><label|eq:process-harmonizable>
   </equation>
 
   where <math|<around|{|Z<around|(|x,\<omega\>|)>,-\<infty\>\<less\>x\<less\>\<infty\>|}>>
@@ -66,8 +70,8 @@
   quadratic mean integral
 
   <\equation>
-    Y<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>exp
-    <around|(|i*t*x|)>*H<around|(|x|)>*<space|0.17em>d*Z<around|(|x,\<omega\>|)><label|eq:lti-filter>
+    Y<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i
+    t x>*H<around|(|x|)>*<space|0.17em>d*Z<around|(|x,\<omega\>|)><label|eq:lti-filter>
   </equation>
 
   A detailed account may be found in<nbsp><cite-detail|blanc-lapierre1968random|Ch.<nbsp>8>.
@@ -78,12 +82,15 @@
   <math|Y<around|(|t|)>> are
 
   <\align>
-    <tformat|<table|<row|<cell|R<around|(|s,t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>exp
-    <around|(|i*s*x-i*t*y|)>*<space|0.17em>d<rsup|2>*G<around|(|x,y|)><eq-number><label|eq:cov-fn-harm>>>|<row|<cell|R<rsub|Y><around|(|s,t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>exp
-    <around|(|i*s*x-i*t*y|)>*H<around|(|x|)>*H<rsup|\<ast\>><around|(|y|)>*<space|0.17em>d<rsup|2>*G<around|(|x,y|)><eq-number><label|eq:cov-fn-filtered>>>>>
+    <tformat|<table|<row|<cell|R<around|(|s,t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|<around|(|i*s*x-i*t*y|)>>*<space|0.17em>d<rsup|2>*G<around|(|x,y|)><eq-number><label|eq:cov-fn-harm>>>|<row|<cell|R<rsub|Y><around|(|s,t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|<around|(|i*s*x-i*t*y|)>>*H<around|(|x|)>*H<rsup|\<ast\>><around|(|y|)>*<space|0.17em>d<rsup|2>*G<around|(|x,y|)><eq-number><label|eq:cov-fn-filtered>>>>>
   </align>
 
-  where <math|d<rsup|2>*G<around|(|x,y|)>=\<bbb-E\>*<around|{|d*Z<around|(|x|)>*d*Z<rsup|\<ast\>><around|(|y|)>|}>>.
+  where <math|>
+
+  <\equation>
+    d<rsup|2>*G<around|(|x,y|)>=\<bbb-E\>*<around|{|d*Z<around|(|x|)>*d*Z<rsup|\<ast\>><around|(|y|)>|}>
+  </equation>
+
   Any covariance with representation<nbsp><eqref|eq:cov-fn-harm>, with
   <math|G<around|(|x,y|)>> a covariance of bounded variation, is called
   harmonizable; harmonizable processes have harmonizable covariances.
@@ -115,17 +122,20 @@
 
     <item>If <math|X<around|(|t|)>> is a moving average as
     in<nbsp><eqref|eq:moving-average> with
-    <math|f<around|(|t,u|)>=f*<around|(|t-u|)>> a Fourier-Stieltjes transform
-    and <math|G<around|(|u,v|)>> of bounded variation, then
-    <math|X<around|(|t|)>> is harmonizable.
+
+    <\equation>
+      f<around|(|t,u|)>=f*<around|(|t-u|)>
+    </equation>
+
+    \ a Fourier-Stieltjes transform and <math|G<around|(|u,v|)>> of bounded
+    variation, then <math|X<around|(|t|)>> is harmonizable.
 
     <item>If <math|X<around|(|t|)>> is as above, <math|Z<around|(|u|)>> has
     orthogonal increments with <math|d*F<around|(|u|)>=\<bbb-E\>*<around|\||d*Z<around|(|u|)>|\|><rsup|2>>
     and
 
     <\equation>
-      f<around|(|t,u|)>=exp <around|(|i*u*t|)>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>exp
-      <around|(|i*t*x|)>*<space|0.17em>d*H<rsub|u><around|(|x|)><label|eq:oscillatory-fn>
+      f<around|(|t,u|)>=e<rsup|<around|(|i*u*t|)>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|<around|(|i*t*x|)>>*<space|0.17em>d*H<rsub|u><around|(|x|)><label|eq:oscillatory-fn>
     </equation>
 
     with <math|H<rsub|u><around|(|x|)>> of bounded variation for every
@@ -158,7 +168,7 @@
     </equation>
 
     For any <math|n> and sequence <math|<around|{|x<rsub|j>\<ge\>a,<space|0.17em>j=1,\<ldots\>,n|}>>
-    and complex <math|<around|{|c<rsub|j>|}>>,
+    and complex <math|<around|{|c<rsub|j>|}>>
 
     <\equation>
       <big|sum><rsub|j,k=1><rsup|n>c<rsub|j>*c<rsub|k><rsup|\<ast\>>*G<rsub|a><around|(|x<rsub|j>,x<rsub|k>|)>\<ge\>0
@@ -211,8 +221,8 @@
     the representation
 
     <\equation>
-      f<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>exp
-      <around|(|i*x*t|)>*<space|0.17em>d*G<around|(|x|)><label|eq:bochner>
+      f<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i x
+      t>*<space|0.17em>d*G<around|(|x|)><label|eq:bochner>
     </equation>
 
     for a complex measure <math|G> of bounded variation is that, for any
@@ -220,8 +230,8 @@
     and any complex <math|<around|{|c<rsub|j>|}><rsub|j=1><rsup|n>>,
 
     <\equation>
-      <around*|\||<big|sum><rsub|j=1><rsup|n>c<rsub|j>*f<around|(|t<rsub|j>|)>|\|>\<leq\>M<around*|[|<big|sum><rsub|j=1><rsup|n><big|sum><rsub|k=1><rsup|n>c<rsub|j>*c<rsub|k><rsup|\<ast\>>*exp
-      <around|(|i*x*<around|(|t<rsub|j>-t<rsub|k>|)>|)>|]><rsup|1/2><label|eq:bochner-nnd>
+      <around*|\||<big|sum><rsub|j=1><rsup|n>c<rsub|j>*f<around|(|t<rsub|j>|)>|\|>\<leq\>M<sqrt|<big|sum><rsub|j=1><rsup|n><big|sum><rsub|k=1><rsup|n>c<rsub|j>*c<rsub|k><rsup|\<ast\>>*exp
+      <around|(|i*x*<around|(|t<rsub|j>-t<rsub|k>|)>|)>><label|eq:bochner-nnd>
     </equation>
 
     for some <math|M\<gtr\>0>.
@@ -241,8 +251,8 @@
     and any complex <math|<around|{|c<rsub|j>|}><rsub|j=1><rsup|n>>,
 
     <\equation>
-      <around*|\||<big|sum><rsub|j=1><rsup|n>c<rsub|j>*R<around|(|s<rsub|j>,t<rsub|j>|)>|\|>\<leq\>M<around*|[|<big|sum><rsub|j=1><rsup|n><big|sum><rsub|k=1><rsup|n>c<rsub|j>*c<rsub|k><rsup|\<ast\>>*exp
-      <around|(|i*<around|(|x*s<rsub|j>-y*t<rsub|j>-x*s<rsub|k>+y*t<rsub|k>|)>|)>|]><rsup|1/2><label|eq:BE-nnd>
+      <around*|\||<big|sum><rsub|j=1><rsup|n>c<rsub|j>*R<around|(|s<rsub|j>,t<rsub|j>|)>|\|>\<leq\>M<sqrt|<big|sum><rsub|j=1><rsup|n><big|sum><rsub|k=1><rsup|n>c<rsub|j>*c<rsub|k><rsup|\<ast\>>*exp
+      <around|(|i*<around|(|x*s<rsub|j>-y*t<rsub|j>-x*s<rsub|k>+y*t<rsub|k>|)>|)>><label|eq:BE-nnd>
     </equation>
 
     for some <math|M\<gtr\>0>.
@@ -300,8 +310,7 @@
     so
 
     <\equation>
-      R<rsub|Y><around|(|s,t|)>=R<rsub|X><around|(|s+g<around|(|s|)>,t+g<around|(|t|)>|)>=<big|iint><rsub|A>exp
-      <around*|(|i*x*<around|(|s+g<around|(|s|)>|)>-i*y*<around|(|t+g<around|(|t|)>|)>|)>*d<rsup|2>*G<around|(|x,y|)>
+      <tabular|<tformat|<table|<row|<cell|R<rsub|Y><around|(|s,t|)>>|<cell|=R<rsub|X><around|(|s+g<around|(|s|)>,t+g<around|(|t|)>|)>>>|<row|<cell|>|<cell|=<big|iint><rsub|A>e<rsup|<around*|(|i*x*<around|(|s+g<around|(|s|)>|)>-i*y*<around|(|t+g<around|(|t|)>|)>|)>>*d<rsup|2>*G<around|(|x,y|)>>>>>>
     </equation>
 
     Let <math|M<rsub|A>> denote the variation over <math|A\<times\>A> of
@@ -309,20 +318,19 @@
     and parameter pairs,
 
     <\equation>
-      Q=<around*|\||<big|sum><rsub|j=1><rsup|n>c<rsub|j>*R<rsub|Y><around|(|s<rsub|j>,t<rsub|j>|)>|\|>\<leq\>M<rsub|A><around*|\||<big|sum><rsub|j=1><rsup|n>c<rsub|j>*exp
-      <around*|(|i*x<rprime|'>*s<rsub|j>+i*x<rprime|'>*g<around|(|s<rsub|j>|)>-i*y<rprime|'>*t<rsub|j>-i*y<rprime|'>*g<around|(|t<rsub|j>|)>|)>|\|>
+      Q=<around*|\||<big|sum><rsub|j=1><rsup|n>c<rsub|j>*R<rsub|Y><around|(|s<rsub|j>,t<rsub|j>|)>|\|>\<leq\>M<rsub|A><around*|\||<big|sum><rsub|j=1><rsup|n>c<rsub|j>*e<rsup|<around*|(|i*x<rprime|'>*s<rsub|j>+i*x<rprime|'>*g<around|(|s<rsub|j>|)>-i*y<rprime|'>*t<rsub|j>-i*y<rprime|'>*g<around|(|t<rsub|j>|)>|)>>|\|>
     </equation>
 
     where <math|x<rprime|'>,y<rprime|'>> in closure of <math|A>. The mappings
 
     <\equation>
-      t\<mapsto\>exp <around|[|i*x<rprime|'>*g<around|(|t|)>|]>
+      t\<mapsto\>e<rsup|i*x<rprime|'>*g<around|(|t|)>>
     </equation>
 
     \ and
 
     <\equation>
-      t\<mapsto\>exp <around|[|-i*y<rprime|'>*g<around|(|t|)>|]>
+      t\<mapsto\>e<rsup|-i*y<rprime|'>*g<around|(|t|)>>
     </equation>
 
     \ are FS transforms, so by repeated application of Bochner's condition
@@ -348,8 +356,7 @@
     With <math|M<rsub|2>> the variation bound for <math|R<rsub|2>>,
 
     <\equation>
-      Q\<leq\>M<rsub|1>*M<rsub|2>*m<around|(|T|)>*sup<rsub|x,y><around*|\||<big|sum><rsub|j=1><rsup|n>c<rsub|j>*exp
-      <around|(|i*s<rsub|j>*x-i*t<rsub|j>*y|)>|\|>
+      Q\<leq\>M<rsub|1>*M<rsub|2>*m<around|(|T|)>*sup<rsub|x,y><around*|\||<big|sum><rsub|j=1><rsup|n>c<rsub|j>*e<rsup|<around|(|i*s<rsub|j>*x-i*t<rsub|j>*y|)>>|\|>
     </equation>
 
     where <math|m<around|(|T|)>> is Lebesgue measure. Thus <math|R<rsub|3>>
@@ -359,9 +366,13 @@
   <\example>
     Suppose <math|X<around|(|t|)>> is a moving average as
     in<nbsp><eqref|eq:moving-average> with
-    <math|f<around|(|t,u|)>=f*<around|(|t-u|)>> a Fourier-Stieltjes transform
-    and <math|G<around|(|u,v|)>> of bounded variation. Then
-    <math|X<around|(|t|)>> is harmonizable.
+
+    <\equation>
+      f<around|(|t,u|)>=f*<around|(|t-u|)>
+    </equation>
+
+    \ a Fourier-Stieltjes transform and <math|G<around|(|u,v|)>> of bounded
+    variation. Then <math|X<around|(|t|)>> is harmonizable.
   </example>
 
   <\proof>
@@ -369,7 +380,7 @@
     <math|H<around|(|x|)>> and <math|G<around|(|u,v|)>>,
 
     <\equation>
-      R<around|(|s,t|)>=<big|iint>exp <around|[|i*x*<around|(|s-u|)>-i*y*<around|(|t-v|)>|]>*<space|0.17em>d<rsup|2>*G<around|(|u,v|)>*<space|0.17em>d*H<around|(|x|)>*<space|0.17em>d*H<rsup|\<ast\>><around|(|y|)>
+      R<around|(|s,t|)>=<big|iint>e<rsup|i*<around*|(|x*<around|(|s-u|)>-*y*<around|(|t-v|)>|)>>*<space|0.17em>d<rsup|2>*G<around|(|u,v|)>*<space|0.17em>d*H<around|(|x|)>*<space|0.17em>d*H<rsup|\<ast\>><around|(|y|)>
     </equation>
 
     This is an FS transform with variation bound
@@ -380,8 +391,13 @@
 
   <\example>
     Suppose <math|X<around|(|t|)>> is as above, <math|Z<around|(|u|)>> has
-    orthogonal increments with <math|d*F<around|(|u|)>=\<bbb-E\><around|[|<around|\||d*Z<around|(|u|)>|\|><rsup|2>|]>>
-    and <math|f<around|(|t,u|)>> as in<nbsp><eqref|eq:oscillatory-fn>. Then
+    orthogonal increments with <math|>
+
+    <\equation>
+      d*F<around|(|u|)>=\<bbb-E\><around|[|<around|\||d*Z<around|(|u|)>|\|><rsup|2>|]>
+    </equation>
+
+    \ and <math|f<around|(|t,u|)>> as in<nbsp><eqref|eq:oscillatory-fn>. Then
     <math|X<around|(|t|)>> is a Priestley oscillatory process, and is
     harmonizable provided
 
@@ -394,8 +410,7 @@
     The covariance is
 
     <\equation>
-      R<around|(|s,t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>exp
-      <around|[|i*u*<around|(|s-t|)>|]>*f<around|(|u,s|)>*f<rsup|\<ast\>><around|(|u,t|)>*d*F<around|(|u|)>
+      R<around|(|s,t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*u*<around|(|s-t|)>>*f<around|(|u,s|)>*f<rsup|\<ast\>><around|(|u,t|)>*d*F<around|(|u|)>
     </equation>
 
     By repeated application of Bochner's and Fubini's theorems,
@@ -473,41 +488,41 @@
     <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|auto-2|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|auto-3|<tuple|3|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-4|<tuple|30|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-5|<tuple|30|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-blanc-lapierre1968random|<tuple|blanc-lapierre1968random|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|auto-4|<tuple|35|7|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|auto-5|<tuple|35|7|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|bib-blanc-lapierre1968random|<tuple|blanc-lapierre1968random|7|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|bib-bochner1934fst|<tuple|bochner1934fst|7|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-cambanis1970harmonizable|<tuple|cambanis1970harmonizable|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|bib-cambanis1970harmonizable|<tuple|cambanis1970harmonizable|7|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|bib-cramer1939representation|<tuple|cramer1939representation|7|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|bib-dominguez1940fst|<tuple|dominguez1940fst|7|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-donati1971spectra|<tuple|donati1971spectra|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|bib-donati1971spectra|<tuple|donati1971spectra|7|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|bib-eberlein1955fst|<tuple|eberlein1955fst|7|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-gladyshev1963almost|<tuple|gladyshev1963almost|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-loeve1955probability|<tuple|loeve1955probability|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-ogura1971spectral|<tuple|ogura1971spectral|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-priestley1965evolutionary|<tuple|priestley1965evolutionary|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|bib-gladyshev1963almost|<tuple|gladyshev1963almost|7|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|bib-loeve1955probability|<tuple|loeve1955probability|7|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|bib-ogura1971spectral|<tuple|ogura1971spectral|7|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|bib-priestley1965evolutionary|<tuple|priestley1965evolutionary|7|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|bib-rudin1962groups|<tuple|rudin1962groups|7|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:BE-nnd|<tuple|18|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:G-normalization|<tuple|13|3|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:bochner|<tuple|15|3|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:bochner-nnd|<tuple|16|3|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:bounded-var-G|<tuple|17|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:cov-fn-filtered|<tuple|6|2|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:cov-fn-harm|<tuple|5|2|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:BE-nnd|<tuple|21|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:G-normalization|<tuple|16|3|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:bochner|<tuple|18|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:bochner-nnd|<tuple|19|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:bounded-var-G|<tuple|20|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:cov-fn-filtered|<tuple|7|2|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:cov-fn-harm|<tuple|6|2|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|eq:covariance-harmonizable|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:gaussian-moments|<tuple|19|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:integral-composed|<tuple|7|2|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:lti-filter|<tuple|4|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:gaussian-moments|<tuple|22|5|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:integral-composed|<tuple|9|2|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:lti-filter|<tuple|5|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|eq:moving-average|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:nnd-Ga|<tuple|9|3|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:osc-harmonizable|<tuple|29|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:oscillatory-fn|<tuple|8|2|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:process-harmonizable|<tuple|3|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|ex:composition|<tuple|5|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|ex:integral-composed|<tuple|6|5|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|thm:bochner|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:nnd-Ga|<tuple|12|3|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:osc-harmonizable|<tuple|34|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:oscillatory-fn|<tuple|11|2|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|eq:process-harmonizable|<tuple|4|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|ex:composition|<tuple|5|5|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|ex:integral-composed|<tuple|6|6|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|thm:bochner|<tuple|2|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|thm:bochner-eberlein|<tuple|3|4|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|thm:covariance-fs|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|thm:covariance-fs|<tuple|1|3|../../.TeXmacs/texts/scratch/no_name_5.tm>>
   </collection>
 </references>
 
