@@ -166,9 +166,6 @@
                 <version>3.14.0</version>
                 <configuration>
                     <release>24</release>
-                    <aamodulePath>
-                     
-                    </aamodulePath>
                     <compilerArgs>
                         <arg>--enable-preview</arg>
                     </compilerArgs>
@@ -180,7 +177,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <argLine>-ea --enable-preview --enable-native-access=ALL-UNNAMED -Djava.library.path=.</argLine>
+                    <argLine>-ea --enable-preview --illegal-native-access=allow --sun-misc-unsafe-memory-access=allow -Djava.library.path=${project.basedir}</argLine>
                 </configuration>
             </plugin>
 

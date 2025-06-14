@@ -1,0 +1,204 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+
+\title{On the Number of Prime Numbers less than a Given Quantity\\
+{\normalsize (Ueber die Anzahl der Primzahlen unter einer gegebenen Gr\"osse)}}
+\author{Bernhard Riemann\\
+{\small Translated by David R. Wilkins}}
+\date{Monatsberichte der Berliner Akademie, November 1859\\
+{\small Preliminary Version: December 1998}}
+
+\begin{document}
+
+\maketitle
+
+\noindent Translation \copyright D. R. Wilkins 1998.
+
+I believe that I can best convey my thanks for the honour which the Academy has to some degree conferred on me, through my admission as one of its correspondents, if I speedily make use of the permission thereby received to communicate an investigation into the accumulation of the prime numbers; a topic which perhaps seems not wholly unworthy of such a communication, given the interest which Gauss and Dirichlet have themselves shown in it over a lengthy period.
+
+\section{The Zeta Function and Euler's Product}
+
+For this investigation my point of departure is provided by the observation of Euler that the product
+\begin{equation}
+\prod_p \frac{1}{1-p^{-s}} = \sum_{n=1}^{\infty} \frac{1}{n^s},
+\label{eq:euler_product}
+\end{equation}
+if one substitutes for $p$ all prime numbers, and for $n$ all whole numbers.
+
+The function of the complex variable $s$ which is represented by these two expressions, wherever they converge, I denote by $\zeta(s)$. Both expressions converge only when the real part of $s$ is greater than 1; at the same time an expression for the function can easily be found which always remains valid.
+
+On making use of the equation
+\begin{equation}
+\int_0^{\infty} e^{-nx} x^{s-1} dx = \frac{\Gamma(s)}{n^s}
+\label{eq:gamma_integral}
+\end{equation}
+one first sees that
+\begin{equation}
+\Gamma(s)\zeta(s) = \int_0^{\infty} \frac{x^{s-1}}{e^x - 1} dx.
+\label{eq:zeta_integral}
+\end{equation}
+
+If one now considers the integral
+\begin{equation}
+\int \frac{(-x)^{s-1}}{e^x - 1} dx
+\label{eq:contour_integral}
+\end{equation}
+from $+\infty$ to $+\infty$ taken in a positive sense around a domain which includes the value 0 but no other point of discontinuity of the integrand in its interior, then this is easily seen to be equal to
+\begin{equation}
+(e^{-\pi si} - e^{\pi si}) \int_0^{\infty} \frac{x^{s-1}}{e^x - 1} dx,
+\label{eq:contour_result}
+\end{equation}
+provided that, in the many-valued function $(-x)^{s-1} = e^{(s-1)\log(-x)}$, the logarithm of $-x$ is determined so as to be real when $x$ is negative. Hence
+\begin{equation}
+2\sin(\pi s) \Gamma(s)\zeta(s) = i \int_{-\infty}^{\infty} \frac{(-x)^{s-1}}{e^x - 1} dx,
+\label{eq:functional_relation_step}
+\end{equation}
+where the integral has the meaning just specified.
+
+\section{Functional Equation}
+
+This equation now gives the value of the function $\zeta(s)$ for all complex numbers $s$ and shows that this function is one-valued and finite for all finite values of $s$ with the exception of 1, and also that it is zero if $s$ is equal to a negative even integer.
+
+Through further analysis of the contour integral, one obtains the functional equation:
+\begin{equation}
+\Gamma\left(\frac{s}{2}\right) \pi^{-s/2} \zeta(s) = \Gamma\left(\frac{1-s}{2}\right) \pi^{-(1-s)/2} \zeta(1-s).
+\label{eq:functional_equation}
+\end{equation}
+
+This property of the function induced me to introduce, in place of $\Gamma(s)$, the integral $\Gamma\left(\frac{s}{2}\right)$ into the general term of the series $\sum \frac{1}{n^s}$, whereby one obtains a very convenient expression for the function $\zeta(s)$. In fact
+\begin{equation}
+\frac{1}{n^s} \Gamma\left(\frac{s}{2}\right) \pi^{-s/2} = \int_0^{\infty} e^{-n^2\pi x} x^{s/2-1} dx,
+\label{eq:mellin_transform}
+\end{equation}
+thus, if one sets
+\begin{equation}
+\psi(x) = \sum_{n=1}^{\infty} e^{-n^2\pi x}
+\label{eq:psi_definition}
+\end{equation}
+then
+\begin{equation}
+\Gamma\left(\frac{s}{2}\right) \pi^{-s/2} \zeta(s) = \int_0^{\infty} \psi(x) x^{s/2-1} dx.
+\label{eq:zeta_psi_integral}
+\end{equation}
+
+\section{The Xi Function}
+
+Using the Jacobi identity
+\begin{equation}
+2\psi(x) + 1 = x^{-1/2} \left(2\psi\left(\frac{1}{x}\right) + 1\right),
+\label{eq:jacobi_identity}
+\end{equation}
+we can derive
+\begin{equation}
+\Gamma\left(\frac{s}{2}\right) \pi^{-s/2} \zeta(s) = \frac{1}{s(s-1)} + \int_1^{\infty} \psi(x) \left(x^{s/2-1} + x^{-s/2-1/2}\right) dx.
+\label{eq:zeta_symmetric_integral}
+\end{equation}
+
+I now set $s = \frac{1}{2} + ti$ and
+\begin{equation}
+\xi(t) = \frac{1}{2} s(s-1) \Gamma\left(\frac{s}{2}\right) \pi^{-s/2} \zeta(s),
+\label{eq:xi_definition}
+\end{equation}
+so that
+\begin{equation}
+\xi(t) = \frac{1}{2} - \left(t^2 + \frac{1}{4}\right) \int_1^{\infty} \psi(x) x^{-3/4} \cos\left(\frac{1}{2}t \log x\right) dx
+\label{eq:xi_integral}
+\end{equation}
+or, in addition,
+\begin{equation}
+\xi(t) = 4 \int_1^{\infty} \frac{d(x^{3/2}\psi'(x))}{dx} x^{-1/4} \cos\left(\frac{1}{2}t \log x\right) dx.
+\label{eq:xi_derivative_form}
+\end{equation}
+
+\section{Zeros of the Xi Function}
+
+This function is finite for all finite values of $t$, and allows itself to be developed in powers of $t^2$ as a very rapidly converging series.
+
+Since, for a value of $s$ whose real part is greater than 1, $\log \zeta(s) = -\sum \log(1-p^{-s})$ remains finite, and since the same holds for the logarithms of the other factors of $\xi(t)$, it follows that the function $\xi(t)$ can only vanish if the imaginary part of $t$ lies between $\frac{1}{2}i$ and $-\frac{1}{2}i$.
+
+\begin{theorem}[Riemann's Estimate for Zero Density]
+The number of roots of $\xi(t) = 0$, whose real parts lie between 0 and $T$ is approximately
+\begin{equation}
+\frac{T}{2\pi} \log \frac{T}{2\pi} - \frac{T}{2\pi}.
+\label{eq:zero_density}
+\end{equation}
+\end{theorem}
+
+One now finds indeed approximately this number of real roots within these limits, and it is very probable that all roots are real. Certainly one would wish for a stricter proof here; I have meanwhile temporarily put aside the search for this after some fleeting futile attempts, as it appears unnecessary for the next objective of my investigation.
+
+If one denotes by $\alpha$ all the roots of the equation $\xi(\alpha) = 0$, one can express $\log \xi(t)$ as
+\begin{equation}
+\log \xi(t) = \sum_{\alpha} \log\left(1 - \frac{t^2}{\alpha^2}\right) + \log \xi(0).
+\label{eq:xi_product_form}
+\end{equation}
+
+\section{The Prime Counting Function}
+
+With the assistance of these methods, the number of prime numbers that are smaller than $x$ can now be determined. Let $F(x)$ be equal to this number when $x$ is not exactly equal to a prime number; but let it be greater by $\frac{1}{2}$ when $x$ is a prime number, so that, for any $x$ at which there is a jump in the value in $F(x)$,
+\begin{equation}
+F(x) = \frac{F(x+0) + F(x-0)}{2}.
+\label{eq:prime_counting_definition}
+\end{equation}
+
+If in the identity
+\begin{equation}
+\log \zeta(s) = -\sum_p \log(1-p^{-s}) = \sum_p p^{-s} + \frac{1}{2}\sum_p p^{-2s} + \frac{1}{3}\sum_p p^{-3s} + \cdots
+\label{eq:zeta_prime_expansion}
+\end{equation}
+one now replaces $p^{-s}$ by $s \int_p^{\infty} x^{-s-1} dx$, $p^{-2s}$ by $s \int_{p^2}^{\infty} x^{-s-1} dx$, etc., one obtains
+\begin{equation}
+\frac{\log \zeta(s)}{s} = \int_1^{\infty} f(x) x^{-s-1} dx,
+\label{eq:mellin_inversion_setup}
+\end{equation}
+if one denotes
+\begin{equation}
+f(x) = F(x) + \frac{1}{2}F(x^{1/2}) + \frac{1}{3}F(x^{1/3}) + \cdots
+\label{eq:f_definition}
+\end{equation}
+
+Using Mellin inversion, we obtain
+\begin{equation}
+f(y) = \frac{1}{2\pi i} \int_{a-\infty i}^{a+\infty i} \frac{\log \zeta(s)}{s} y^s ds,
+\label{eq:mellin_inversion}
+\end{equation}
+where the integration is carried out so that the real part of $s$ remains constant.
+
+Substituting the expression for $\log \zeta(s)$ in terms of the zeros of $\xi(t)$, one obtains
+\begin{equation}
+f(x) = \text{Li}(x) - \sum_{\alpha} \left(\text{Li}(x^{1/2+\alpha i}) + \text{Li}(x^{1/2-\alpha i})\right) + \int_x^{\infty} \frac{dt}{t(t^2-1)\log t} + \log \xi(0),
+\label{eq:explicit_formula}
+\end{equation}
+if in $\sum_{\alpha}$ one substitutes for $\alpha$ all positive roots (or roots having a positive real part) of the equation $\xi(\alpha) = 0$, ordered by their magnitude.
+
+From $f(x)$ one obtains $F(x)$ by inversion of the relation in equation~\eqref{eq:f_definition}, to obtain the equation
+\begin{equation}
+F(x) = \sum_{m} \frac{(-1)^{\mu(m)}}{m} f(x^{1/m}),
+\label{eq:mobius_inversion}
+\end{equation}
+in which one substitutes for $m$ the series consisting of those natural numbers that are not divisible by any square other than 1, and in which $\mu(m)$ denotes the number of prime factors of $m$.
+
+\section{Approximation and Periodic Terms}
+
+If one restricts $\sum_{\alpha}$ to a finite number of terms, then the derivative of the expression for $f(x)$ or, up to a part diminishing very rapidly with growing $x$,
+\begin{equation}
+\frac{1}{\log x} - \frac{2\sum_{\alpha} \cos(\alpha \log x) x^{-1/2}}{\log x}
+\label{eq:prime_density_approximation}
+\end{equation}
+gives an approximating expression for the density of the prime number + half the density of the squares of the prime numbers + a third of the density of the cubes of the prime numbers etc. at the magnitude $x$.
+
+The known approximating expression $F(x) = \text{Li}(x)$ is therefore valid up to quantities of the order $x^{1/2}$ and gives somewhat too large a value; because the non-periodic terms in the expression for $F(x)$ are, apart from quantities that do not grow infinite with $x$:
+\begin{equation}
+\text{Li}(x) - \frac{1}{2}\text{Li}(x^{1/2}) - \frac{1}{3}\text{Li}(x^{1/3}) - \frac{1}{5}\text{Li}(x^{1/5}) + \frac{1}{6}\text{Li}(x^{1/6}) - \frac{1}{7}\text{Li}(x^{1/7}) + \cdots
+\label{eq:nonperiodic_terms}
+\end{equation}
+
+Indeed, in the comparison of $\text{Li}(x)$ with the number of prime numbers less than $x$, undertaken by Gauss and Goldschmidt and carried through up to $x =$ three million, this number has shown itself out to be, in the first hundred thousand, always less than $\text{Li}(x)$; in fact the difference grows, with many fluctuations, gradually with $x$. But also the increase and decrease in the density of the primes from place to place that is dependent on the periodic terms has already excited attention, without however any law governing this behaviour having been observed. In any future count it would be interesting to keep track of the influence of the individual periodic terms in the expression for the density of the prime numbers. A more regular behaviour than that of $F(x)$ would be exhibited by the function $f(x)$, which already in the first hundred is seen very distinctly to agree on average with $\text{Li}(x) + \log \xi(0)$.
+
+\end{document}
