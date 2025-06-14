@@ -1,5 +1,6 @@
 package arb.stochastic;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import arb.Complex;
@@ -183,42 +184,19 @@ public abstract class GaussianProcessSampler extends
     return freq;
   }
 
-  private static final double L            = 500.0;
+  private static final double L               = 500.0;
 
-  static final double         STEP_SIZE    = 0.01;
+  static final double         STEP_SIZE       = 0.01;
 
-  static final int            N            = (int) (L / STEP_SIZE);
+  static final int            N               = (int) (L / STEP_SIZE);
 
-  static final double         LAGS_TO_SHOW = 20.0;
+  static final double         LAGS_TO_SHOW    = 20.0;
 
-  static final int            bits         = 128;
+  static final int            bits            = 128;
 
-  public static class Spectra
-  {
-    public final double[] path, pathQuad, envelope, t, freq, psd;
-    public Complex        whiteNoise;
+  private boolean             separateWindows = false;
 
-    public Spectra(double[] path,
-                   double[] pathQuad,
-                   double[] envelope,
-                   double[] t,
-                   double[] freq,
-                   double[] psd,
-                   Complex whiteNoise)
-    {
-      this.path       = path;
-      this.pathQuad   = pathQuad;
-      this.envelope   = envelope;
-      this.t          = t;
-      this.freq       = freq;
-      this.psd        = psd;
-      this.whiteNoise = whiteNoise;
-    }
-  }
-
-  private boolean separateWindows = false;
-
-  private boolean dark            = true;
+  private boolean             dark            = true;
 
   public GaussianProcessSampler()
   {
@@ -234,7 +212,7 @@ public abstract class GaussianProcessSampler extends
                  new TableViewer(),
                  new ColormapSelector(),
                  new Screenshot());
-
+    chart.getRenderers().forEach(renderer -> renderer.getAxes().addAll(chart.getAxes()));
   }
 
   protected GridPane createGridPane(XYChart[] charts)
@@ -259,7 +237,6 @@ public abstract class GaussianProcessSampler extends
 
     for (XYChart chart : charts)
     {
-      configureChart(chart);
       chart.setPrefSize(10000, 10000);
       GridPane.setHgrow(chart, Priority.ALWAYS); // Add horizontal grow
       GridPane.setVgrow(chart, Priority.ALWAYS); // Add vertical grow
@@ -407,6 +384,8 @@ public abstract class GaussianProcessSampler extends
     { newTimeDomainChart(result), newNoiseChart(result), newAutocorrelationChart(result),
       newPowerSpectralDensityChart(result) };
 
+    Arrays.stream(charts).forEach(this::configureChart);
+
     separateWindows = getParameters().getUnnamed().contains("--separate-windows");
 
     if (separateWindows)
@@ -416,10 +395,11 @@ public abstract class GaussianProcessSampler extends
 
       for (int i = 0; i < charts.length; i++)
       {
-        configureChart(charts[i]);
-        Scene scene = new Scene(charts[i]);
+        XYChart chart = charts[i];
+
+        Scene   scene = new Scene(chart);
         stages[i].setScene(scene);
-        stages[i].setTitle(charts[i].getTitle());
+        stages[i].setTitle(chart.getTitle());
         stages[i].setMaximized(true);
         if (dark)
         {
