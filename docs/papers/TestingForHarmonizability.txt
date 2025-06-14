@@ -1,0 +1,149 @@
+Testing for Harmonizability
+H. L. Hurd
+IEEE Transactions on Information Theory, Vol. IT-19, No. 3, May 1973
+
+ABSTRACT
+Let R(s, t) be a covariance function having the representation
+    R(s, t) = ∫_{-∞}^{∞} ∫_{-∞}^{∞} e^{isx - ity} d²G(x, y)
+where G(x, y) is continuous to the right in both variables and is of bounded variation in the plane; then R(s, t) is harmonizable in that G(x, y) is also a covariance. Examples are given in which this result is used to determine the harmonizability of new processes and covariances that are formed by operations on old processes and covariances. Specifically, if X(t) is a real Gaussian harmonizable process, then Xⁿ(t) is harmonizable. If X(t) is harmonizable, G(x, y) has bounded support and g(t) is a Fourier-Stieltjes transform, then X(g(t)) and X(t + g(t)) are harmonizable. If
+    X(t) = ∫_{-∞}^{∞} f(t, u) dZ(u)
+where f(t, u) = f(t - u) is a Fourier-Stieltjes transform and
+    G(u, v) = E{Z(u) Z*(v)}
+has finite total variation, then X(t) is harmonizable. A sufficient condition for Priestley's oscillatory processes to be harmonizable is also obtained. The Bochner-Eberlein characterization of Fourier-Stieltjes transforms is particularly convenient for determining harmonizability in these cases.
+
+1. INTRODUCTION
+
+Let {X(t, ω), -∞ < t < ∞, ω ∈ Ω} be a second-order continuous-parameter stochastic process defined on some probability space (Ω, F, P). The process X(t, ω) is said to be harmonizable [Loeve, 1955, p. 474] if it has the quadratic mean representation
+    X(t, ω) = ∫_{-∞}^{∞} e^{itx} dZ(x, ω)
+where {Z(x, ω), -∞ < x < ∞} is a process whose covariance is of bounded variation (BV) in the plane. Harmonizable processes are of engineering interest because decomposition relative to exp(itx) admits the usual frequency interpretation of linear filtering. If H(x) is the frequency response of a stable, linear time-invariant system, then the system output process Y(t, ω) is given by the quadratic mean integral
+    Y(t, ω) = ∫_{-∞}^{∞} e^{itx} H(x) dZ(x, ω)
+A detailed account may be found in [Blanc-Lapierre & Fortet, 1968, Ch. 8]. For recent results on harmonizable processes in engineering, see [Cambanis & Liu, 1970; Donati, 1971; Ogura, 1971].
+
+The covariance functions for X(t) and Y(t) are
+    R(s, t)   = ∫_{-∞}^{∞} ∫_{-∞}^{∞} e^{isx - ity} d²G(x, y)
+    R_Y(s, t) = ∫_{-∞}^{∞} ∫_{-∞}^{∞} e^{isx - ity} H(x) H*(y) d²G(x, y)
+where
+    d²G(x, y) = E{dZ(x) dZ*(y)}
+Any covariance with this representation, with G(x, y) a covariance of bounded variation, is called harmonizable; harmonizable processes have harmonizable covariances. Conversely, processes with harmonizable covariances are themselves harmonizable [Loeve, 1955, p. 476]. For brevity, we call those corresponding to G with finite total variation simply "harmonizable."
+
+This paper addresses the determination of harmonizability for new processes or covariances constructed from old ones. The main results are as follows:
+- If X(t) is a real Gaussian harmonizable process, then Xⁿ(t) is harmonizable.
+- If X(t) is harmonizable with spectral decomposition of bounded support and g(t) is a Fourier-Stieltjes transform, then X(t + g(t)) and X(g(t)) are harmonizable.
+- If R₁ and R₂ are harmonizable covariances, then for T of finite Lebesgue measure,
+    R₃(s, t) = ∫_T R₁(s, u) R₂(u, t) du
+  is harmonizable.
+- If X(t) is a moving average as above with f(t, u) = f(t - u) a Fourier-Stieltjes transform and G(u, v) of bounded variation, then X(t) is harmonizable.
+- If X(t) is as above, Z(u) has orthogonal increments with dF(u) = E|dZ(u)|² and
+    f(t, u) = e^{iut} ∫_{-∞}^{∞} e^{itx} dH_u(x)
+  with H_u(x) of bounded variation for every u, the resulting processes include Priestley's oscillatory processes [Priestley, 1965], which are harmonizable under suitable conditions.
+
+The method is to use the following result.
+
+THEOREM
+If R(s, t) is simultaneously a covariance and a Fourier-Stieltjes (FS) transform with respect to some G(x, y) of bounded variation, then R(s, t) is harmonizable in that G is necessarily a covariance.
+
+Proof.
+Sufficiency is immediate: one can find a process Z(x, ω) whose covariance is G and whose FS transform X(t, ω) as above has covariance R(s, t). Conversely, suppose R is both a covariance and an FS transform with respect to some G that is BV. Define
+    G_a(x, y) = G(x, y) - G(a, y) - G(x, a) + G(a, a)
+For any n and sequence {x_j ≥ a, j=1,...,n} and complex {c_j}
+    ∑_{j,k=1}^n c_j c_k* G_a(x_j, x_k) ≥ 0
+This follows by constructing
+    g_a(s) = ∑_{j=1}^n c_j [1 - exp(-isx_j)] exp(-isa)
+and applying the inversion theorem [Loeve, 1955, p. 475] then letting a → -∞ to see that
+    lim_{a→-∞} G_a(x, y) = G(x, y)
+Thus G(x, y) is non-negative definite.
+
+Thus, any characterization of FS transforms, such as the Bochner-Eberlein theorem, also provides a characterization for harmonizable covariances [Bochner, 1934; Eberlein, 1955; Rudin, 1962]. Cramér [1939] and Dominguez [1940] provide alternative characterizations.
+
+2. MATHEMATICAL PRELIMINARIES
+
+Assume G(x, y) is normalized, e.g.,
+    G(x, y) = ¼ [G(x+0, y+0) + G(x+0, y-0) + G(x-0, y+0) + G(x-0, y-0)]
+and satisfies
+    lim_{x→-∞} G(x, y) = lim_{y→-∞} G(x, y) = 0
+We now state the key characterizations.
+
+THEOREM [Bochner]
+A necessary and sufficient condition that f(t), -∞ < t < ∞, has the representation
+    f(t) = ∫_{-∞}^{∞} e^{ixt} dG(x)
+for a complex measure G of bounded variation is that, for any n, any sequence {t_j}_{j=1}^n and any complex {c_j}_{j=1}^n,
+    |∑_{j=1}^n c_j f(t_j)| ≤ M √(∑_{j=1}^n ∑_{k=1}^n c_j c_k* exp(ix(t_j - t_k)))
+for some M > 0.
+
+THEOREM [Bochner-Eberlein]
+A necessary and sufficient condition for a function R(s, t) to have the representation above with
+    ∫_{-∞}^{∞} ∫_{-∞}^{∞} |d²G(x, y)| ≤ M
+is that for any n, any sequence of pairs {(s_j, t_j)}_{j=1}^n and any complex {c_j}_{j=1}^n,
+    |∑_{j=1}^n c_j R(s_j, t_j)| ≤ M √(∑_{j=1}^n ∑_{k=1}^n c_j c_k* exp(i(xs_j - yt_j - xs_k + yt_k)))
+for some M > 0.
+
+3. EXAMPLES AND APPLICATION
+
+Example 1.
+Let X(t) be a zero-mean real Gaussian harmonizable process with covariance R(s, t). Then, for any n ≥ 1, Xⁿ(t) is harmonizable.
+
+Proof.
+An exercise with characteristic functions shows that
+    E[Xⁿ(s) Xⁿ(t)] = ∑_{p,q,r≥0} c_z(p, q, r, n) R^p(s, s) R^q(s, t) R^r(t, s) R^p(t, t)
+where the sum is over all p, q, r ≥ 0 with n = 2p + q + r and c_z(p, q, r, n) are combinatorial coefficients.
+
+Since both FS transforms [Bochner, 1934, p.151] and covariances [Loeve, 1955, p.468] are closed under products, R^q(s, t) R^r(t, s) = R^{q+r}(s, t) is an FS transform and a covariance. The product R^p(s, s) R^p(t, t) is also an FS transform, as for f(s) = R(s, s),
+    f^p(s) f^p(t)
+is NND and an FS transform by Bochner's theorem. The sum above is harmonizable since FS transforms and covariances are closed under positive sums.
+
+Example 2.
+Suppose X(t) is harmonizable with spectral decomposition supported by a bounded set A and g(t) is the FS transform of some G(x) of finite variation. Then X(t + g(t)) and X(g(t)) are harmonizable.
+
+Proof.
+Set Y(t) = X(t + g(t)), so
+    R_Y(s, t) = R_X(s + g(s), t + g(t))
+              = ∬_A e^{ix(s + g(s)) - iy(t + g(t))} d²G(x, y)
+Let M_A denote the variation over A×A of G(x, y). For any complex {c_j} and parameter pairs,
+    Q = |∑_{j=1}^n c_j R_Y(s_j, t_j)| ≤ M_A |∑_{j=1}^n c_j e^{ix's_j + ix'g(s_j) - iy't_j - iy'g(t_j)}|
+where x', y' in closure of A. The mappings t ↦ e^{ix'g(t)} and t ↦ e^{-iy'g(t)} are FS transforms, so by repeated application of Bochner's condition this is bounded, and R_Y(s, t) is an FS transform.
+
+Example 3.
+Suppose R₁ and R₂ are harmonizable covariances, and for T of finite Lebesgue measure define R₃(s, t) as above. Then R₃ is harmonizable.
+
+Proof.
+By the Bochner-Eberlein condition, for any {c_j},
+    Q = |∑_{j=1}^n c_j ∫_T R₁(s_j, u) R₂(u, t_j) du| ≤ M₁ sup_{x, y} |∑_{j=1}^n c_j ∫_T R₂(u, t_j) exp(is_jx - iuy) du|
+With M₂ the variation bound for R₂,
+    Q ≤ M₁ M₂ m(T) sup_{x, y} |∑_{j=1}^n c_j e^{is_jx - it_jy}|
+where m(T) is Lebesgue measure. Thus R₃ is an FS transform.
+
+Example 4.
+Suppose X(t) is a moving average as above with f(t, u) = f(t - u) a Fourier-Stieltjes transform and G(u, v) of bounded variation. Then X(t) is harmonizable.
+
+Proof.
+From above and the bounded variation of H(x) and G(u, v),
+    R(s, t) = ∬ e^{i(x(s-u) - y(t-v))} d²G(u, v) dH(x) dH*(y)
+This is an FS transform with variation bound M_G M_H², where M_G bounds G(u, v) and M_H bounds H(x).
+
+Example 5.
+Suppose X(t) is as above, Z(u) has orthogonal increments with
+    dF(u) = E[|dZ(u)|²]
+and f(t, u) as above. Then X(t) is a Priestley oscillatory process, and is harmonizable provided
+    ∫_{-∞}^{∞} ∫_{-∞}^{∞} |dH_u(x)| |dH_u*(y)| dF(u) < ∞
+
+Proof.
+The covariance is
+    R(s, t) = ∫_{-∞}^{∞} e^{iu(s-t)} f(u, s) f*(u, t) dF(u)
+By repeated application of Bochner's and Fubini's theorems, provided the above holds, R(s, t) is an FS transform and thus harmonizable.
+
+ACKNOWLEDGMENT
+The author is indebted to H. J. Landau for remarks on an early version of this paper and to a referee for several helpful suggestions.
+
+REFERENCES
+[1] M. Loève, Probability Theory. New York: Van Nostrand, 1955.
+[2] A. Blanc-Lapierre and R. Fortet, Theory of Random Functions. New York: Gordon and Breach, 1968.
+[3] S. Cambanis and B. Liu, "On harmonizable stochastic processes," Inform. Contr., vol. 17, pp. 183–202, 1970.
+[4] F. Donati, "Finite-time averaged power spectra," IEEE Trans. Inform. Theory, vol. IT-17, pp. 7–16, Jan. 1971.
+[5] H. Ogura, "Spectral representation of a periodic nonstationary random process," IEEE Trans. Inform. Theory, vol. IT-17, pp. 143–149, Mar. 1971.
+[6] E. G. Gladyshev, "Periodically and almost-periodically correlated random processes with continuous time parameter," Theory Prob. Appl., vol. 8, pp. 173–177, 1963.
+[7] M. B. Priestley, "Evolutionary spectra and nonstationary processes," J. Roy. Statist. Soc. B, vol. 27, pp. 204–237, 1965.
+[8] S. Bochner, "A theorem on Fourier-Stieltjes integrals," Bull. Amer. Math. Soc., vol. 40, pp. 271–276, 1934.
+[9] W. F. Eberlein, "Characterization of Fourier-Stieltjes transforms," Duke Math. J., vol. 22, pp. 465–468, 1955.
+[10] W. Rudin, Fourier Analysis on Groups. New York: Interscience, 1962.
+[11] H. Cramér, "On the representation of a function by certain Fourier integrals," Trans. Amer. Math. Soc., vol. 46, pp. 191–201, 1939.
+[12] A. G. Dominguez, "The representation of functions by Fourier integrals," Duke Math. J., vol. 6, pp. 246–255, 1940.
