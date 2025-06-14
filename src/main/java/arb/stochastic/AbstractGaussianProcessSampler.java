@@ -144,7 +144,7 @@ public abstract class AbstractGaussianProcessSampler extends
 
   private boolean separateWindows = false;
 
-  private boolean dark = false;
+  private boolean dark = true;
 
   public AbstractGaussianProcessSampler()
   {
