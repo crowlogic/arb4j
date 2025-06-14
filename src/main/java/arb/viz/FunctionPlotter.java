@@ -4,7 +4,7 @@ import java.util.stream.IntStream;
 
 import arb.Float;
 import arb.Real;
-import arb.RealTwoDimensionalDataSet;
+import arb.RealDataSet;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.FunctionSampler;
@@ -134,7 +134,7 @@ public class FunctionPlotter extends
 
   private void freeExistingDatasets()
   {
-    chart.getDatasets().forEach(ds -> ((RealTwoDimensionalDataSet) ds).close());
+    chart.getDatasets().forEach(ds -> ((RealDataSet) ds).close());
     chart.getDatasets().clear();
   }
 
@@ -144,12 +144,12 @@ public class FunctionPlotter extends
     refreshFunctionDatasets();
   }
 
-  public RealTwoDimensionalDataSet getDataset(int index)
+  public RealDataSet getDataset(int index)
   {
     assert index < chart.getDatasets().size() && 0 <= index : String.format("0 <= index = %d < %d out of bounds",
                                                                             index,
                                                                             chart.getDatasets().size());
-    return (RealTwoDimensionalDataSet) chart.getDatasets().get(index);
+    return (RealDataSet) chart.getDatasets().get(index);
   }
 
   /**
@@ -167,7 +167,7 @@ public class FunctionPlotter extends
     freeExistingDatasets();
     for (RealFunction function : functions)
     {
-      RealTwoDimensionalDataSet dataset = new RealTwoDimensionalDataSet(function.toString() + " over " + domain,
+      RealDataSet dataset = new RealDataSet(function.toString() + " over " + domain,
                                                                         sampleCount,
                                                                         domain);
       domain.generateRealPartition(precision, false, dataset.getRealXValues());
@@ -196,7 +196,7 @@ public class FunctionPlotter extends
     functionStream.forEach(i ->
     {
       RealFunction              function = functions.get(i);
-      RealTwoDimensionalDataSet dataset  = (RealTwoDimensionalDataSet) chart.getDatasets().get(i);
+      RealDataSet dataset  = (RealDataSet) chart.getDatasets().get(i);
       Real                      mesh     = dataset.getRealXValues();
       Real                      values   = dataset.getRealYValues();
 

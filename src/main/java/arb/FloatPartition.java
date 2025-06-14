@@ -35,15 +35,6 @@ public class FloatPartition implements
   private long    swigCPtr;
   private Float   dtfloat;
 
-  /**
-   * Construct a {@link FloatPartition} of a {@link FloatInterval} TODO: should
-   * the mesh be a Real instead of a Float?
-   * 
-   * 
-   * @param precision
-   * @param interval
-   * @param n
-   */
   public FloatPartition(int precision, FloatInterval interval, int n)
   {
     segment           = arena.allocate(Float.BYTES * (n + 1));
@@ -57,10 +48,11 @@ public class FloatPartition implements
     elements          = new Float[n];
     for (int i = 0; i < n; i++)
     {
-      Float τi = elements[i] = new Float(swigCPtr + Float.BYTES * i,
-                                         false);
-      dtfloat.mul(i, prec, τi);
-      τi.add(interval.getA(), precision);
+      dtfloat.mul(i,
+                  prec,
+                  elements[i] = new Float(swigCPtr + Float.BYTES * i,
+                                          false))
+             .add(interval.getA(), precision);
     }
   }
 

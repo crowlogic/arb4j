@@ -14,11 +14,11 @@ import io.fair_acc.dataset.spi.AbstractDataSet;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealTwoDimensionalDataSet extends
-                                       AbstractDataSet<RealTwoDimensionalDataSet> implements
-                                       DataSet2D,
-                                       AutoCloseable,
-                                       Closeable
+public class RealDataSet extends
+                         AbstractDataSet<RealDataSet> implements
+                         DataSet2D,
+                         AutoCloseable,
+                         Closeable
 {
   @Override
   public String toString()
@@ -37,7 +37,7 @@ public class RealTwoDimensionalDataSet extends
     return result.set(resolution);
   }
 
-  public RealTwoDimensionalDataSet(String name, int length, FloatInterval domain)
+  public RealDataSet(String name, int length, FloatInterval domain)
   {
     super(name,
           2);
@@ -92,14 +92,14 @@ public class RealTwoDimensionalDataSet extends
   }
 
   @SuppressWarnings("resource")
-  public RealTwoDimensionalDataSet structure(int n)
+  public RealDataSet structure(int n)
   {
-    var                       x    = getRealXValues();
-    var                       y    = getRealYValues();
-    RealTwoDimensionalDataSet rds  = new RealTwoDimensionalDataSet(String.format("varianceStructure(%s,n=%s)", toString(),n),
-                                                                   n,
-                                                                   domain);
-    var                       outy = rds.getRealYValues();
+    var         x    = getRealXValues();
+    var         y    = getRealYValues();
+    RealDataSet rds  = new RealDataSet(String.format("varianceStructure(%s,n=%s)", toString(), n),
+                                       n,
+                                       domain);
+    var         outy = rds.getRealYValues();
     rds.resolution = resolution;
     try ( var length = domain.length(128, new Float()); var scale = new Real(); Real blip = new Real())
     {

@@ -7,7 +7,7 @@ import arb.Float;
 import arb.FloatInterval;
 import arb.Real;
 import arb.RealPartition;
-import arb.RealTwoDimensionalDataSet;
+import arb.RealDataSet;
 import arb.RoundingMode;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -297,7 +297,7 @@ public interface RealFunction extends
    * @param n
    * @return
    */
-  public default RealTwoDimensionalDataSet quantize(double left, double right, int n)
+  public default RealDataSet quantize(double left, double right, int n)
   {
     return quantize(left, right, n, false, Double.SIZE);
   }
@@ -312,7 +312,7 @@ public interface RealFunction extends
    * @param parallel
    * @return
    */
-  public default RealTwoDimensionalDataSet quantize(double left, double right, int n, boolean parallel)
+  public default RealDataSet quantize(double left, double right, int n, boolean parallel)
   {
     try ( FloatInterval I = new FloatInterval(left,
                                               right);)
@@ -332,7 +332,7 @@ public interface RealFunction extends
    * @param bits
    * @return
    */
-  public default RealTwoDimensionalDataSet quantize(double left, double right, int n, boolean parallel, int bits)
+  public default RealDataSet quantize(double left, double right, int n, boolean parallel, int bits)
   {
     try ( FloatInterval I = new FloatInterval(left,
                                               right);)
@@ -351,7 +351,7 @@ public interface RealFunction extends
    * @param bits
    * @return
    */
-  public default RealTwoDimensionalDataSet quantize(double left, double right, int n, int bits)
+  public default RealDataSet quantize(double left, double right, int n, int bits)
   {
     return quantize(left, right, n, false, bits);
   }
@@ -369,12 +369,12 @@ public interface RealFunction extends
    * @param parallel TODO
    * @return values
    */
-  public default RealTwoDimensionalDataSet quantize(FloatInterval interval, int bits, int n, boolean parallel)
+  public default RealDataSet quantize(FloatInterval interval, int bits, int n, boolean parallel)
   {
     try ( var Δ = interval.length(bits, new Float()))
     {
       Δ.div(n, bits);
-      RealTwoDimensionalDataSet sample = new RealTwoDimensionalDataSet(
+      RealDataSet sample = new RealDataSet(
                                                                        String.format("%s over %s..%s (#=%d Δ=%s)",
                                                                                      toString(),
                                                                                      interval.left().toString(5),

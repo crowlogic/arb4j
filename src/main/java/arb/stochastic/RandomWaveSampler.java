@@ -1,13 +1,17 @@
 package arb.stochastic;
 
 import static java.lang.Math.PI;
-import static java.lang.Math.sqrt;
 import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
 
+import arb.FloatInterval;
+import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.nodes.unary.BesselFunctionNodeOfTheFirstKind;
 import arb.functions.polynomials.orthogonal.OrthogonalPolynomialSequence;
 import arb.functions.polynomials.orthogonal.real.Type1ChebyshevPolynomials;
+import arb.functions.real.RealFunction;
 
 /**
  * Generates and plots a pseudo-randomly generated path from the Gaussian
@@ -31,6 +35,29 @@ import arb.functions.polynomials.orthogonal.real.Type1ChebyshevPolynomials;
 public class RandomWaveSampler extends
                                GaussianProcessSampler
 {
+
+  /**
+   * Sample the {@link BesselFunctionNodeOfTheFirstKind} of order 0, here used as
+   * {@link Real#J0(int, Real)}
+   * 
+   * FIXME: Use {@link FloatInterval} and
+   * {@link RealFunction#quantize(FloatInterval, int, int, boolean)}
+   * 
+   * @param maxLag
+   * @param lags
+   * @param theory
+   */
+  public void getKernel(int maxLag, double[] lags, double[] theory)
+  {
+    try ( Real val = new Real())
+    {
+      for (int i = 0; i < maxLag; i++)
+      {
+        lags[i]   = i * STEP_SIZE;
+        theory[i] = val.set(2 * Math.PI * lags[i]).J0(128, val).doubleValue();
+      }
+    }
+  }
 
   /**
    * The Fourier transform of J_0(x) over -inf to inf is 1/sqrt(1-lambda^2) when

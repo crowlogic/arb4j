@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 
 import arb.Real;
 import arb.RealPolynomial;
-import arb.RealTwoDimensionalDataSet;
+import arb.RealDataSet;
 import arb.SequenceDataSet;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -62,7 +62,7 @@ public class ShellFunctions
     return array( funcs, RealFunction.class);
   }
 
-  public  static FunctionPlotter plot(RealTwoDimensionalDataSet sequence)
+  public  static FunctionPlotter plot(RealDataSet sequence)
   {
     WindowManager.initializeJavaFxIfNecessary();
     AtomicReference<FunctionPlotter> ref = new AtomicReference<>();
@@ -70,7 +70,7 @@ public class ShellFunctions
 
     Platform.runLater(() ->
     {
-      RealTwoDimensionalDataSet dataSet = sequence;
+      RealDataSet dataSet = sequence;
 
       try
       {
