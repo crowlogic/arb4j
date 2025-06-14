@@ -41,7 +41,7 @@ public class FunctionPlotter extends
     ShellFunctions.plot(1, 3, 400, RealFunction.express("x^2"));
   }
 
-  public boolean            darkStyle = false;
+  public boolean            darkStyle = true;
 
   public boolean            parallel  = true;
 

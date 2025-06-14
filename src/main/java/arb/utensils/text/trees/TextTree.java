@@ -142,7 +142,7 @@ public class TextTree<N>
       }
       else
       {
-        throw new RuntimeException(node + " is not a Node");
+        sb.append(node);
       }
       sb.append("\n");
     }
