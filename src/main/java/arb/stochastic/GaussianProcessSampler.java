@@ -280,7 +280,7 @@ public abstract class GaussianProcessSampler extends
     int      maxLag = (int) (LAGS_TO_SHOW / STEP_SIZE) + 1;
     double[] lags   = new double[maxLag];
     double[] theory = new double[maxLag];
-    getKernel(maxLag, lags, theory);
+    getKernel(lags, theory);
     chart3.getDatasets()
           .addAll(new DoubleDataSet("Empirical").set(lags, autocorr(result.path, maxLag)),
                   new DoubleDataSet("Theory").set(lags, theory));
@@ -296,12 +296,10 @@ public abstract class GaussianProcessSampler extends
   /**
    * FIXME: Use {@link FloatInterval} and
    * {@link RealFunction#quantize(FloatInterval, int, int, boolean)}
-   * 
-   * @param maxLag
    * @param lags
    * @param theory
    */
-  public abstract void getKernel(int maxLag, double[] lags, double[] theory);
+  public abstract void getKernel(double[] lags, double[] theory);
 
   protected XYChart newNoiseChart(Spectra result)
   {

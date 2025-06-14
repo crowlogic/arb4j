@@ -43,18 +43,20 @@ public class RandomWaveSampler extends
    * FIXME: Use {@link FloatInterval} and
    * {@link RealFunction#quantize(FloatInterval, int, int, boolean)}
    * 
-   * @param maxLag
-   * @param lags
-   * @param theory
+   * @param values
+   * @param times
    */
-  public void getKernel(int maxLag, double[] lags, double[] theory)
+  public void getKernel(double[] times, double[] values)
   {
+    assert times.length == values.length;
+    int numPoints = times.length;
+
     try ( Real val = new Real())
     {
-      for (int i = 0; i < maxLag; i++)
+      for (int i = 0; i < numPoints; i++)
       {
-        lags[i]   = i * STEP_SIZE;
-        theory[i] = val.set(2 * Math.PI * lags[i]).J0(128, val).doubleValue();
+        times[i]  = i * STEP_SIZE;
+        values[i] = val.set(2 * Math.PI * times[i]).J0(128, val).doubleValue();
       }
     }
   }
