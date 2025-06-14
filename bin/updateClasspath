@@ -2,4 +2,4 @@
 
 FMDIR=$(dirname $(readlink -f $0))/..
 cd $FMDIR
-gradle createClassPathManifest
+mvn dependency:build-classpath

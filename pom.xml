@@ -16,6 +16,7 @@
         <maven.compiler.release>24</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javafx.version>24.0.1</javafx.version>
+        <mdep.outputFile>class.path</mdep.outputFile>        
     </properties>
 
     <repositories>
@@ -227,6 +228,25 @@
                     <outputDirectory>build/classes</outputDirectory>
                 </configuration>
             </plugin>
+
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-dependency-plugin</artifactId>
+    <version>3.6.1</version>
+    <executions>
+        <execution>
+            <id>build-classpath</id>
+            <phase>generate-sources</phase>
+            <goals>
+                <goal>build-classpath</goal>
+            </goals>
+            <configuration>
+                <outputFile>${project.basedir}/class.path</outputFile>
+                <includeScope>runtime</includeScope>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
 
         </plugins>
     </build>
