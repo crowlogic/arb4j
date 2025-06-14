@@ -184,7 +184,7 @@ public abstract class GaussianProcessSampler extends
     return freq;
   }
 
-  private static final double L               = 500.0;
+  private static final double L               = 1000.0;
 
   static final double         STEP_SIZE       = 0.01;
 
