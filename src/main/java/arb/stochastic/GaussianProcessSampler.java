@@ -19,7 +19,11 @@ import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.Screenshot;
 import io.fair_acc.chartfx.plugins.TableViewer;
 import io.fair_acc.chartfx.plugins.Zoomer;
+import io.fair_acc.chartfx.renderer.ErrorStyle;
+import io.fair_acc.chartfx.renderer.LineStyle;
+import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import io.fair_acc.dataset.spi.DoubleDataSet;
+import io.fair_acc.dataset.utils.DataSetStyleBuilder;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.ColumnConstraints;
@@ -276,7 +280,7 @@ public abstract class GaussianProcessSampler extends
                                                         ""),
                                  new DefaultNumericAxis("Correlation",
                                                         ""));
-    chart3.setTitle("Covariance Verification");
+    chart3.setTitle("Covariance");
     int      maxLag = (int) (LAGS_TO_SHOW / STEP_SIZE) + 1;
     double[] lags   = new double[maxLag];
     double[] theory = new double[maxLag];
@@ -296,6 +300,7 @@ public abstract class GaussianProcessSampler extends
   /**
    * FIXME: Use {@link FloatInterval} and
    * {@link RealFunction#quantize(FloatInterval, int, int, boolean)}
+   * 
    * @param lags
    * @param theory
    */
@@ -303,21 +308,45 @@ public abstract class GaussianProcessSampler extends
 
   protected XYChart newNoiseChart(Spectra result)
   {
-    // Chart 2: Noise components
-    XYChart chart2 = new XYChart(new DefaultNumericAxis("Index",
+    XYChart chart2 = new XYChart(new DefaultNumericAxis("Frequency",
                                                         ""),
-                                 new DefaultNumericAxis("Value",
+                                 new DefaultNumericAxis("Amplitude",
                                                         ""));
-    chart2.setTitle("White Noise Components");
-    int      nShow   = Math.min(200, N);
-    double[] indices = new double[nShow];
-    for (int i = 0; i < nShow; i++)
-      indices[i] = i;
-    chart2.getDatasets()
-          .addAll(new DoubleDataSet("Real").set(indices,
-                                                java.util.Arrays.copyOf(result.whiteNoise.re().doubleValues(), nShow)),
-                  new DoubleDataSet("Imag").set(indices,
-                                                java.util.Arrays.copyOf(result.whiteNoise.im().doubleValues(), nShow)));
+    chart2.setTitle("Random White Noise Measure");
+
+    final ErrorDataSetRenderer errorRenderer2 = new ErrorDataSetRenderer();
+    errorRenderer2.setPolyLineStyle(LineStyle.NONE);
+    errorRenderer2.setErrorStyle(ErrorStyle.NONE);
+    errorRenderer2.setDrawMarker(true);
+    errorRenderer2.setDrawBubbles(false);
+    errorRenderer2.setAssumeSortedData(false);
+
+    int      posFreqCount = result.freq.length;
+    double[] realNoise    = new double[posFreqCount];
+    double[] imagNoise    = new double[posFreqCount];
+
+    for (int i = 0; i < posFreqCount; i++)
+    {
+      Complex element = result.whiteNoise.get(i);
+      realNoise[i] = element.re().doubleValue();
+      imagNoise[i] = element.im().doubleValue();
+    }
+
+    DoubleDataSet realDataSet = new DoubleDataSet("Real").set(result.freq, realNoise);
+    DoubleDataSet imagDataSet = new DoubleDataSet("Imag").set(result.freq, imagNoise);
+
+    // Method from ScatterAndBubbleRendererSample - use DataSetStyleBuilder
+    realDataSet.setStyle(DataSetStyleBuilder.instance().setMarkerType("circle").setMarkerSize(2).build());
+    imagDataSet.setStyle(DataSetStyleBuilder.instance().setMarkerType("circle").setMarkerSize(2).build());
+
+    chart2.getRenderers().clear();
+    chart2.getRenderers().add(errorRenderer2);
+    errorRenderer2.getDatasets().addAll(realDataSet, imagDataSet);
+
+    chart2.getXAxis().setAutoRanging(false);
+    chart2.getXAxis().setMin(0);
+    chart2.getXAxis().setMax(1.0);
+
     return chart2;
   }
 
@@ -328,7 +357,7 @@ public abstract class GaussianProcessSampler extends
                                                         ""),
                                  new DefaultNumericAxis("PSD",
                                                         ""));
-    chart4.setTitle("PSD Comparison");
+    chart4.setTitle("Power Spectral Density");
     int      posFreqCount = N / 2 + 1;
     double[] freqPos      = new double[posFreqCount];
     double[] empPSD       = computePowerSpectralDensity(result.path);
@@ -382,17 +411,15 @@ public abstract class GaussianProcessSampler extends
 
     if (separateWindows)
     {
-      Stage[]  stages =
+      Stage[] stages =
       { primaryStage, new Stage(), new Stage(), new Stage() };
-      String[] titles =
-      { "Time Domain Analysis", "Noise Components", "Autocorrelation", "Power Spectral Density" };
 
       for (int i = 0; i < charts.length; i++)
       {
         configureChart(charts[i]);
         Scene scene = new Scene(charts[i]);
         stages[i].setScene(scene);
-        stages[i].setTitle(titles[i]);
+        stages[i].setTitle(charts[i].getTitle());
         stages[i].setMaximized(true);
         if (dark)
         {
