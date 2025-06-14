@@ -3,10 +3,7 @@ package arb.stochastic;
 import java.util.Arrays;
 import java.util.Random;
 
-import arb.Complex;
-import arb.FloatInterval;
-import arb.Real;
-import arb.arblib;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
@@ -14,12 +11,7 @@ import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.plugins.ColormapSelector;
-import io.fair_acc.chartfx.plugins.DataPointTooltip;
-import io.fair_acc.chartfx.plugins.EditAxis;
-import io.fair_acc.chartfx.plugins.Screenshot;
-import io.fair_acc.chartfx.plugins.TableViewer;
-import io.fair_acc.chartfx.plugins.Zoomer;
+import io.fair_acc.chartfx.plugins.*;
 import io.fair_acc.chartfx.renderer.ErrorStyle;
 import io.fair_acc.chartfx.renderer.LineStyle;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
@@ -27,10 +19,7 @@ import io.fair_acc.dataset.spi.DoubleDataSet;
 import io.fair_acc.dataset.utils.DataSetStyleBuilder;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 /**
@@ -72,7 +61,7 @@ public abstract class GaussianProcessSampler extends
       {
         double dW = random.nextGaussian();
         whiteNoise.get(nyquistIndex).set(dW);
-        complexSignal.get(nyquistIndex).set(Math.sqrt(psd[nyquistIndex] * df) * dW);
+        complexSignal.get(nyquistIndex).set(psd[nyquistIndex] * df).sqrt(bits).mul(mag.set(dW), bits);
       }
 
       arblib.acb_dft_inverse(ifft, complexSignal, N, bits);
@@ -205,13 +194,7 @@ public abstract class GaussianProcessSampler extends
 
   protected void configureChart(XYChart chart)
   {
-    chart.getPlugins()
-         .addAll(new EditAxis(AxisMode.XY),
-                 new DataPointTooltip(),
-                 new Zoomer(),
-                 new TableViewer(),
-                 new ColormapSelector(),
-                 new Screenshot());
+    chart.getPlugins().addAll(new EditAxis(AxisMode.XY), new DataPointTooltip(), new Zoomer(), new TableViewer());
     chart.getRenderers().forEach(renderer -> renderer.getAxes().addAll(chart.getAxes()));
   }
 
@@ -221,25 +204,23 @@ public abstract class GaussianProcessSampler extends
     gridPane.setHgap(10);
     gridPane.setVgap(10);
 
-    // Fixed column constraints
-    ColumnConstraints col1 = new ColumnConstraints();
+    var col1 = new ColumnConstraints();
     col1.setPercentWidth(50);
-    ColumnConstraints col2 = new ColumnConstraints();
+    var col2 = new ColumnConstraints();
     col2.setPercentWidth(50);
     gridPane.getColumnConstraints().addAll(col1, col2);
 
-    // Fixed row constraints
-    RowConstraints row1 = new RowConstraints();
+    var row1 = new RowConstraints();
     row1.setPercentHeight(50);
-    RowConstraints row2 = new RowConstraints();
+    var row2 = new RowConstraints();
     row2.setPercentHeight(50);
     gridPane.getRowConstraints().addAll(row1, row2);
 
     for (XYChart chart : charts)
     {
       chart.setPrefSize(10000, 10000);
-      GridPane.setHgrow(chart, Priority.ALWAYS); // Add horizontal grow
-      GridPane.setVgrow(chart, Priority.ALWAYS); // Add vertical grow
+      GridPane.setHgrow(chart, Priority.ALWAYS);
+      GridPane.setVgrow(chart, Priority.ALWAYS);
     }
 
     gridPane.add(charts[0], 0, 0);
@@ -252,7 +233,6 @@ public abstract class GaussianProcessSampler extends
 
   protected XYChart newAutocorrelationChart(Spectra result)
   {
-    // Chart 3: Autocorrelation
     XYChart chart3 = new XYChart(new DefaultNumericAxis("Δt",
                                                         ""),
                                  new DefaultNumericAxis("Correlation",
@@ -283,7 +263,7 @@ public abstract class GaussianProcessSampler extends
    */
   public abstract void getKernel(double[] lags, double[] theory);
 
-  protected XYChart newNoiseChart(Spectra result)
+  protected XYChart newRandomMeasureChart(Spectra result)
   {
     XYChart chart2 = new XYChart(new DefaultNumericAxis("Frequency",
                                                         ""),
@@ -417,7 +397,7 @@ public abstract class GaussianProcessSampler extends
   {
     Spectra   result = generate();
     XYChart[] charts =
-    { newTimeDomainChart(result), newNoiseChart(result), newAutocorrelationChart(result),
+    { newTimeDomainChart(result), newRandomMeasureChart(result), newAutocorrelationChart(result),
       newPowerSpectralDensityChart(result) };
 
     Arrays.stream(charts).forEach(this::configureChart);

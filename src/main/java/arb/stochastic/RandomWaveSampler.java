@@ -23,7 +23,6 @@ import arb.functions.real.RealFunction;
  * convolved with the square root of the spectral factor to generate the sample
  * path.
  * 
- * TOOD: find a better plot type for the white noise coeffecients
  * 
  * {@link Type1ChebyshevPolynomials}
  * 

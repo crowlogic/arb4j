@@ -1,0 +1,158 @@
+Spectral Representation of Stationary Processes via Stone’s Theorem
+===================================================================
+
+Fundamental Results
+-------------------
+
+Definition (Resolution of the Identity)
+---------------------------------------
+Let A(·): D(A) → H be a self-adjoint operator on Hilbert space H. The **resolution of the identity** (projection-valued spectral measure) is 
+the family of orthogonal projections constructed as follows:
+
+Step 1: For λ ∉ σ_{A(·)} and any ψ ∈ H, define the resolvent operation
+    R_{A(·)}(λ, ψ) = φ  where  A(φ) − λφ = ψ.
+
+Step 2: For an interval (a, b] and any ψ ∈ H, define
+    E_{A(·)}((a, b], ψ) = s-lim_{ε→0⁺} (1/2πi) ∫ₐᵇ [R_{A(·)}(λ + iε, ψ) − R_{A(·)}(λ − iε, ψ)] dλ,
+where s-lim denotes strong operator limit.
+
+Step 3: For general Borel sets B ⊆ ℝ and any ψ ∈ H, with disjoint partitions {(a_k, b_k]} of B,
+    E_{A(·)}(B, ψ) = s-lim_{n→∞} ∑_{k=1}^n E_{A(·)}((a_k, b_k], ψ).
+
+Properties: For all ψ ∈ H and Borel sets B, B₁, B₂,
+  1. E_{A(·)}(B, E_{A(·)}(B, ψ)) = E_{A(·)}(B, ψ) and ⟨E_{A(·)}(B, ψ), φ⟩ = ⟨ψ, E_{A(·)}(B, φ)⟩
+  2. E_{A(·)}(B₁ ∩ B₂, ψ) = E_{A(·)}(B₁, E_{A(·)}(B₂, ψ))
+  3. E_{A(·)}(⋃ᵢ Bᵢ, ψ) = ∑ᵢ E_{A(·)}(Bᵢ, ψ) for disjoint Bᵢ
+  4. Spectral localization: σ_{A(·),B} ⊆ closure(B)
+  5. A(ψ) = ∫_ℝ λ dE_{A(·)}(λ, ψ)
+
+Theorem (Nelson’s Theorem)
+--------------------------
+Let A(·) be a symmetric operator on a Hilbert space H with domain D(A) dense in H. If there exists a core 𝔇 ⊆ D(A) for A(·) such that:
+  1. 𝔇 is dense in H
+  2. A(𝔇) ⊆ 𝔇 (invariance)
+  3. For some λ with Im(λ) ≠ 0, the range of (A(φ) − λφ) |_{φ ∈ 𝔇} is dense in H
+Then A(·) is essentially self-adjoint on 𝔇.
+
+Corollary: If {U_t(ψ) : t ∈ ℝ, ψ ∈ H} is a strongly continuous one-parameter unitary group and A(·) is its infinitesimal generator, then A(·) 
+is essentially self-adjoint.
+
+Theorem (Stone’s Theorem)
+-------------------------
+Let H be a Hilbert space. There is a bijective correspondence between:
+  1. Self-adjoint operators A(·): D(A) → H
+  2. Strongly continuous one-parameter unitary groups with U_t(ψ): H → H for each t ∈ ℝ, ψ ∈ H
+The correspondence is given by U_t^{A(·)}(ψ) = exp(it A(ψ)) and A(ψ) = −i (d/dt) U_t^{A(·)}(ψ) |_{t=0}.
+
+Proof Sketch:
+-------------
+Given a strongly continuous unitary group {U_t(ψ)}, define the generator
+    A(ψ) = −i lim_{t→0} (U_t(ψ) − ψ)/t
+on domain D(A) = {ψ ∈ H : lim_{t→0} (U_t(ψ) − ψ)/t exists}.
+
+Symmetry: For ψ, φ ∈ D(A),
+    ⟨A(ψ), φ⟩ = −i lim_{t→0} (⟨U_t(ψ), φ⟩ − ⟨ψ, φ⟩)/t
+              = −i lim_{t→0} (⟨ψ, U_{−t}(φ)⟩ − ⟨ψ, φ⟩)/t
+              = −i ⟨ψ, lim_{t→0} (U_{−t}(φ) − φ)/t⟩
+              = ⟨ψ, A(φ)⟩
+
+By Nelson’s theorem, A(·) is essentially self-adjoint.
+
+Conversely, for self-adjoint A(·), define
+    U_t^{A(·)}(ψ) := ∫_ℝ exp(itλ) dE_{A(·)}(λ, ψ)
+using the spectral resolution.
+
+Definition (Stationary Process)
+-------------------------------
+A stochastic process {X_t : t ∈ ℝ} is weakly stationary if:
+  1. E[X_t] is constant
+  2. Cov(X_t, X_s) = γ(t − s) depends only on t − s
+  3. E[|X_t|²] < ∞ for all t
+
+Definition (Orthogonal Random Measure)
+--------------------------------------
+A complex-valued orthogonal random measure Z(B) on ℝ satisfies:
+  1. E[Z(A) · conj(Z(B))] = 0 for disjoint Borel sets A, B
+  2. E[|Z(A)|²] = F(A) where F(·) is a finite measure
+  3. Z(⋃ᵢ Aᵢ) = ∑ᵢ Z(Aᵢ) in L² for disjoint Aᵢ
+  4. E[Z(A)²] = 0 for all Borel sets A
+
+Spectral Representation of Stationary Processes
+----------------------------------------------
+
+Theorem (Complex Spectral Representation)
+-----------------------------------------
+Let {X_t} be a zero-mean weakly stationary process as above. There exists a unique orthogonal random measure Z(B) as above such that:
+    X_t = ∫_ℝ exp(iλt) dZ(λ)
+where the integral converges in L².
+
+Proof Sketch:
+-------------
+Let H = closure(span{X_t : t ∈ ℝ}) with inner product ⟨X_s, X_t⟩ = γ(t − s).
+Define translation operations T_h(ψ) for each h ∈ ℝ and ψ ∈ H by T_h(X_t) = X_{t+h}.
+Stationarity ensures {T_h(ψ)} forms a strongly continuous unitary group.
+
+By Stone’s theorem, there exists a unique self-adjoint generator A_T(·): D(A_T) → H such that
+    T_h(ψ) = U_h^{A_T(·)}(ψ) = exp(ih A_T(ψ))
+
+The spectral theorem provides E_{A_T(·)}(λ, ψ) such that
+    A_T(ψ) = ∫_ℝ λ dE_{A_T(·)}(λ, ψ)
+
+Define Z(B) = E_{A_T(·)}(B, X₀) for Borel sets B. Then
+    X_t = T_t(X₀) = U_t^{A_T(·)}(X₀)
+        = exp(it A_T(X₀))
+        = ∫_ℝ exp(iλt) dE_{A_T(·)}(λ, X₀)
+        = ∫_ℝ exp(iλt) dZ(λ)
+
+Lemma (Real Process Symmetry)
+-----------------------------
+If {X_t} is real-valued and satisfies the above, then Z(−B) = conj(Z(B)) for any Borel set B.
+
+Proof:
+------
+Since X_t is real, X_t = conj(X_t). From the spectral representation:
+    X_t = ∫_ℝ exp(iλt) dZ(λ) = conj(∫_ℝ exp(iλt) dZ(λ)) = ∫_ℝ exp(−iλt) dconj(Z(λ))
+Let μ = −λ:
+    X_t = ∫_ℝ exp(iμt) dconj(Z(−μ))
+By uniqueness, dZ(μ) = dconj(Z(−μ)), so Z(B) = conj(Z(−B)).
+
+Real Orthogonal Process Construction
+------------------------------------
+
+Definition (Real Orthogonal Random Measures)
+-------------------------------------------
+Given a complex orthogonal random measure Z(B) on [0, ∞) associated with a real-valued stationary process as above, define for any Borel set B ⊆ [0, ∞):
+    U(B) = Z(B) + conj(Z(B)) = 2·Re(Z(B))
+    V(B) = i·(conj(Z(B)) − Z(B)) = 2·Im(Z(B))
+
+Theorem (Real Spectral Representation)
+--------------------------------------
+For a real-valued weakly stationary process {X_t} as above, there exist real-valued orthogonal random measures U(B) and V(B) as above such that:
+    X_t = ∫₀^∞ cos(λt) dU(λ) + ∫₀^∞ sin(λt) dV(λ)
+
+Proof:
+------
+From the complex spectral representation and Z(−λ) = conj(Z(λ)):
+    X_t = ∫_{−∞}^∞ exp(iλt) dZ(λ)
+        = ∫₀^∞ exp(iλt) dZ(λ) + ∫₀^∞ exp(−iλt) dZ(−λ)
+        = ∫₀^∞ exp(iλt) dZ(λ) + ∫₀^∞ exp(−iλt) dconj(Z(λ))
+Using Euler’s formula exp(iλt) = cos(λt) + i·sin(λt):
+    X_t = ∫₀^∞ [cos(λt) + i·sin(λt)] dZ(λ) + ∫₀^∞ [cos(λt) − i·sin(λt)] dconj(Z(λ))
+        = ∫₀^∞ cos(λt) [dZ(λ) + dconj(Z(λ))] + i ∫₀^∞ sin(λt) [dZ(λ) − dconj(Z(λ))]
+Since X_t is real, imaginary part must vanish, and using the above definitions:
+    X_t = ∫₀^∞ cos(λt) dU(λ) + ∫₀^∞ sin(λt) dV(λ)
+
+Corollary (Orthogonality Properties)
+------------------------------------
+The real random measures U(B) and V(B) above satisfy:
+  1. E[U(B₁)U(B₂)] = 0 for disjoint Borel sets B₁, B₂ ⊆ [0, ∞)
+  2. E[V(B₁)V(B₂)] = 0 for disjoint Borel sets B₁, B₂ ⊆ [0, ∞)
+  3. E[U(B₁)V(B₂)] = 0 for any Borel sets B₁, B₂ ⊆ [0, ∞)
+  4. E[U(B)²] = E[V(B)²] = 2·F(B) where F(·) is the spectral measure
+
+Proof Sketch:
+-------------
+From U(B) = Z(B) + conj(Z(B)), V(B) = i·(conj(Z(B)) − Z(B)), and the properties of Z(B):
+- For disjoint B₁, B₂, all cross terms vanish due to orthogonality.
+- E[U(B)²] = E[(Z(B) + conj(Z(B)))²] = 2·E[|Z(B)|²] = 2·F(B)
+- Similarly for V(B).
