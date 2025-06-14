@@ -57,7 +57,7 @@ a given expression and the intermediate values that combine to produce a given r
 
 
 ##### Error Messages Produced By Expression Parser 
-###### Example: unmatched paranthesis
+###### Example: unmatched parenthesis
 ```java
 arb.exceptions.CompilerException: unexpected ')'(0x29) character at position=11 in expression '(1/2)-(z/2))^n' of length 14, remaining=)^n
 
