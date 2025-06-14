@@ -14,7 +14,6 @@ import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.legend.spi.DefaultLegend;
 import io.fair_acc.chartfx.plugins.ColormapSelector;
 import io.fair_acc.chartfx.plugins.DataPointTooltip;
 import io.fair_acc.chartfx.plugins.EditAxis;
@@ -374,10 +373,8 @@ public abstract class GaussianProcessSampler extends
                                                                              .setStyle(DataSetStyleBuilder.instance()
                                                                                                           .setLineWidth(2)
                                                                                                           .build());
-    // Add empirical data to scatter renderer
     scatterPlotRenderer.getDatasets().add(empiricalDataSet);
 
-    // Add theoretical data to line renderer
     lineRenderer.getDatasets().add(theoryDataSet);
 
     chart.getRenderers().setAll(scatterPlotRenderer, lineRenderer);
@@ -395,7 +392,6 @@ public abstract class GaussianProcessSampler extends
 
   protected XYChart newTimeDomainChart(Spectra result)
   {
-    // Chart 1: Time domain
     XYChart chart1 = new XYChart(new DefaultNumericAxis("Time",
                                                         ""),
                                  new DefaultNumericAxis("Value",
@@ -408,7 +404,9 @@ public abstract class GaussianProcessSampler extends
     DoubleDataSet envPos  = new DoubleDataSet("Envelope (+)").set(result.t, result.envelope);
     double[]      negEnv  = new double[N];
     for (int i = 0; i < N; i++)
+    {
       negEnv[i] = -result.envelope[i];
+    }
     DoubleDataSet envNeg = new DoubleDataSet("Envelope (–)").set(result.t, negEnv);
     chart1.getDatasets().addAll(inPhase, quad, envPos, envNeg);
     return chart1;
