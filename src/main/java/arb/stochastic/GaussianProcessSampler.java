@@ -14,6 +14,7 @@ import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
+import io.fair_acc.chartfx.legend.spi.DefaultLegend;
 import io.fair_acc.chartfx.plugins.ColormapSelector;
 import io.fair_acc.chartfx.plugins.DataPointTooltip;
 import io.fair_acc.chartfx.plugins.EditAxis;
@@ -253,7 +254,7 @@ public abstract class GaussianProcessSampler extends
   protected XYChart newAutocorrelationChart(Spectra result)
   {
     // Chart 3: Autocorrelation
-    XYChart chart3 = new XYChart(new DefaultNumericAxis("Lag",
+    XYChart chart3 = new XYChart(new DefaultNumericAxis("Δt",
                                                         ""),
                                  new DefaultNumericAxis("Correlation",
                                                         ""));
@@ -264,7 +265,7 @@ public abstract class GaussianProcessSampler extends
     getKernel(lags, theory);
     chart3.getDatasets()
           .addAll(new DoubleDataSet("Empirical").set(lags, autocorr(result.path, maxLag)),
-                  new DoubleDataSet("Theory").set(lags, theory));
+                  new DoubleDataSet("Theoretical").set(lags, theory));
     chart3.getYAxis().setAutoRanging(false);
     chart3.getYAxis().setMin(-0.5);
     chart3.getYAxis().setMax(1.05);
@@ -291,16 +292,11 @@ public abstract class GaussianProcessSampler extends
                                                         ""));
     chart2.setTitle("Random White Noise Measure");
 
-    final ErrorDataSetRenderer errorRenderer2 = new ErrorDataSetRenderer();
-    errorRenderer2.setPolyLineStyle(LineStyle.NONE);
-    errorRenderer2.setErrorStyle(ErrorStyle.NONE);
-    errorRenderer2.setDrawMarker(true);
-    errorRenderer2.setDrawBubbles(false);
-    errorRenderer2.setAssumeSortedData(false);
+    final ErrorDataSetRenderer scatterPlotRenderer = newScatterChartRenderer();
 
-    int      posFreqCount = result.freq.length;
-    double[] realNoise    = new double[posFreqCount];
-    double[] imagNoise    = new double[posFreqCount];
+    int                        posFreqCount        = result.freq.length;
+    double[]                   realNoise           = new double[posFreqCount];
+    double[]                   imagNoise           = new double[posFreqCount];
 
     for (int i = 0; i < posFreqCount; i++)
     {
@@ -312,13 +308,12 @@ public abstract class GaussianProcessSampler extends
     DoubleDataSet realDataSet = new DoubleDataSet("Real").set(result.freq, realNoise);
     DoubleDataSet imagDataSet = new DoubleDataSet("Imag").set(result.freq, imagNoise);
 
-    // Method from ScatterAndBubbleRendererSample - use DataSetStyleBuilder
-    realDataSet.setStyle(DataSetStyleBuilder.instance().setMarkerType("circle").setMarkerSize(2).build());
-    imagDataSet.setStyle(DataSetStyleBuilder.instance().setMarkerType("circle").setMarkerSize(2).build());
+    String        style       = DataSetStyleBuilder.instance().setMarkerType("circle").setMarkerSize(2).build();
+    realDataSet.setStyle(style);
+    imagDataSet.setStyle(style);
 
-    chart2.getRenderers().clear();
-    chart2.getRenderers().add(errorRenderer2);
-    errorRenderer2.getDatasets().addAll(realDataSet, imagDataSet);
+    chart2.getRenderers().setAll(scatterPlotRenderer);
+    scatterPlotRenderer.getDatasets().addAll(realDataSet, imagDataSet);
 
     chart2.getXAxis().setAutoRanging(false);
     chart2.getXAxis().setMin(0);
@@ -327,14 +322,25 @@ public abstract class GaussianProcessSampler extends
     return chart2;
   }
 
+  protected ErrorDataSetRenderer newScatterChartRenderer()
+  {
+    final ErrorDataSetRenderer errorRenderer2 = new ErrorDataSetRenderer();
+    errorRenderer2.setPolyLineStyle(LineStyle.NONE);
+    errorRenderer2.setErrorStyle(ErrorStyle.NONE);
+    errorRenderer2.setDrawMarker(true);
+    errorRenderer2.setDrawBubbles(false);
+    errorRenderer2.setAssumeSortedData(false);
+    return errorRenderer2;
+  }
+
   protected XYChart newPowerSpectralDensityChart(Spectra result)
   {
     // Chart 4: PSD
-    XYChart chart4 = new XYChart(new DefaultNumericAxis("Frequency",
-                                                        ""),
-                                 new DefaultNumericAxis("PSD",
-                                                        ""));
-    chart4.setTitle("Power Spectral Density");
+    XYChart chart = new XYChart(new DefaultNumericAxis("Frequency",
+                                                       ""),
+                                new DefaultNumericAxis("PSD",
+                                                       ""));
+    chart.setTitle("Power Spectral Density");
     int      posFreqCount = N / 2 + 1;
     double[] freqPos      = new double[posFreqCount];
     double[] empPSD       = computePowerSpectralDensity(result.path);
@@ -346,13 +352,45 @@ public abstract class GaussianProcessSampler extends
       theoryPSD[i] = result.psd[i];
     }
 
-    chart4.getDatasets()
-          .addAll(new DoubleDataSet("Empirical").set(freqPos, java.util.Arrays.copyOf(empPSD, posFreqCount)),
-                  new DoubleDataSet("Theory").set(freqPos, theoryPSD));
-    chart4.getXAxis().setAutoRanging(false);
-    chart4.getXAxis().setMin(0);
-    chart4.getXAxis().setMax(1.0);
-    return chart4;
+    final ErrorDataSetRenderer scatterPlotRenderer = newScatterChartRenderer();
+    final ErrorDataSetRenderer lineRenderer        = new ErrorDataSetRenderer();
+
+    /**
+     * Needs to set both because the chartfx developers can't design APIs worth a
+     * damn for whatever reason. The drawLegendSymbol method uses
+     * style.getLineColor() for the legend stroke color, which comes from the stroke
+     * color setting in the dataset style.
+     */
+    DoubleDataSet              empiricalDataSet    =
+                                                new DoubleDataSet("Empirical").set(freqPos,
+                                                                                   Arrays.copyOf(empPSD, posFreqCount))
+                                                                              .setStyle(DataSetStyleBuilder.instance()
+                                                                                                           .setMarkerColor("darkgoldenrod")
+                                                                                                           .setLineColor("darkgoldenrod")
+                                                                                                           .build());
+
+    DoubleDataSet              theoryDataSet       =
+                                             new DoubleDataSet("Theoretical").set(freqPos, theoryPSD)
+                                                                             .setStyle(DataSetStyleBuilder.instance()
+                                                                                                          .setLineWidth(2)
+                                                                                                          .build());
+    // Add empirical data to scatter renderer
+    scatterPlotRenderer.getDatasets().add(empiricalDataSet);
+
+    // Add theoretical data to line renderer
+    lineRenderer.getDatasets().add(theoryDataSet);
+
+    chart.getRenderers().setAll(scatterPlotRenderer, lineRenderer);
+
+    chart.getXAxis().setAutoRanging(false);
+    chart.getXAxis().setMin(0);
+    chart.getXAxis().setMax(1.0);
+
+    chart.getYAxis().setAutoRanging(false);
+    chart.getYAxis().setMin(0);
+    chart.getYAxis().setMax(5.0);
+
+    return chart;
   }
 
   protected XYChart newTimeDomainChart(Spectra result)
