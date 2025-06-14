@@ -57,7 +57,7 @@ a given expression and the intermediate values that combine to produce a given r
 
 
 ##### Error Messages Produced By Expression Parser 
-###### Example: unmatched paranthesis
+###### Example: unmatched parenthesis
 ```java
 arb.exceptions.CompilerException: unexpected ')'(0x29) character at position=11 in expression '(1/2)-(z/2))^n' of length 14, remaining=)^n
 
@@ -184,6 +184,6 @@ See [this](https://github.com/crowlogic/jlatexmath) for a version of jlatexmath 
 arb4j is made available under the terms of the Business Source License™ v1.1
 which can be found in the root directory of this project in a file
 named License.pdf, License.txt, or License.tm which are the pdf, text, and
-TeXmacs format of the same document respectively.
+TeXmacs formats of the same document respectively.
 
 
