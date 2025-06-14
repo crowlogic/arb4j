@@ -184,6 +184,6 @@ See [this](https://github.com/crowlogic/jlatexmath) for a version of jlatexmath 
 arb4j is made available under the terms of the Business Source License™ v1.1
 which can be found in the root directory of this project in a file
 named License.pdf, License.txt, or License.tm which are the pdf, text, and
-TeXmacs format of the same document respectively.
+TeXmacs formats of the same document respectively.
 
 
