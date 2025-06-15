@@ -14,7 +14,7 @@ import arb.space.topological.VectorSpace;
 
 /**
  * <pre>
- * A {@link ComplexFunction} is a {@link Complex}-valued {@link Function}.
+ * A {@link ComplexFunction} is a {@link Complex}-valued {@link Function} of a {@link Complex} variable
  * 
  * The Cauchy-Riemann equations are a set of necessary conditions for a function
  * to be analytic in a region of the complex plane and thus be a {@link HolomorphicFunction}. 
@@ -42,9 +42,6 @@ public interface ComplexFunction extends
                                  VectorSpace<Complex>
 
 {
-  
- 
-  
 
   @Override
   default Class<Complex> coDomainType()
@@ -107,16 +104,8 @@ public interface ComplexFunction extends
 
   public static Expression<Complex, Complex, ComplexFunction> parse(String name, String expression, Context context)
   {
-    return Function.parse(name,
-                          expression,
-                          context,
-                          Complex.class,
-                          Complex.class,
-                          ComplexFunction.class,
-                          name,
-                          null);
+    return Function.parse(name, expression, context, Complex.class, Complex.class, ComplexFunction.class, name, null);
   }
-
 
   /**
    * 
@@ -178,7 +167,5 @@ public interface ComplexFunction extends
       return evaluate(tmp.set(x), order, bits, result);
     }
   }
-
-  
 
 }

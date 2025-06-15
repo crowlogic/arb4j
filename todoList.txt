@@ -8,3 +8,4 @@ expr compiler: Implement common subexpression elimination #518
 Create Fractional Riccati Differential Equation Solver using Jacobi Tau Method #261
 RandomWaveSampler: add U&V to charts
 GaussianProcessSampler: replace remaining double usage with Reals
+add temporary-variable pooking support to Real & Complex #684
