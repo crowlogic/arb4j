@@ -8,4 +8,5 @@ expr compiler: Implement common subexpression elimination #518
 Create Fractional Riccati Differential Equation Solver using Jacobi Tau Method #261
 RandomWaveSampler: add U&V to charts
 GaussianProcessSampler: replace remaining double usage with Reals
-add temporary-variable pooking support to Real & Complex #684
+add temporary-variable pooling support to Real & Complex #684
+GaussianProcessSampler: add ability to edit the random white noise measure and see the results of it in real time by resampling (involves the availability of hooks or making a plugni for ChartFX most likely)
