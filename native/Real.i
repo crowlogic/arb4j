@@ -10,11 +10,7 @@ import static arb.arblib.*;
 import java.io.Serializable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Spliterator;
-import java.util.Spliterators;
+import java.util.*;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
@@ -140,6 +136,85 @@ import arb.utensils.Utensils;
   private static final long serialVersionUID = 1L;
 
   static { System.loadLibrary( "arblib" ); }
+
+// Object pool implementation
+  private final Queue<Real> pool      = new ArrayDeque<>();
+
+  // Reference to the pool owner for temp instances
+  private Real              poolOwner = null;
+
+  /**
+   * Return this field to the cycloid of non-existence from which it came by
+   * calling this{@link #clear()}
+   * 
+   */
+  @Override
+  public void close()
+  {
+    // Always clean up our own pool first, regardless of poolOwner status
+    emptyVariablePool();
+
+    if (poolOwner != null)
+    {
+      // This is a temp instance, return to owner's pool after cleanup
+      poolOwner.returnVariable(this);
+    }
+    else
+    {
+
+      if (locked)
+      {
+        unlock();
+      }
+
+      clear();
+    }
+  }
+
+  public Real borrowVariable()
+  {
+    synchronized (pool)
+    {
+      Real object = pool.poll();
+      if (object != null)
+      {
+        object.poolOwner = this;
+        return object;
+      }
+      else
+      {
+        Real newObj = new Real();
+        newObj.poolOwner = this;
+        return newObj;
+      }
+    }
+  }
+
+  protected void emptyVariablePool()
+  {
+    synchronized (pool)
+    {
+      while (!pool.isEmpty())
+      {
+        Real obj = pool.poll();
+        obj.close(); // Recursively clean up pooled objects
+      }
+    }
+  }
+
+  /**
+   * Return a temporary Real instance to the pool for reuse
+   * 
+   * @param object the Real instance to return to pool
+   */
+  public void returnVariable(Real object)
+  {
+    synchronized (pool)
+    {
+      assert object.poolOwner == this : String.format("%s is owned by %s not %s", object, object.poolOwner, this);
+      pool.add(object);
+    }
+  }
 
   public double[] doubleValues()
   {
@@ -1970,20 +2045,7 @@ import arb.utensils.Utensils;
     return this;
   }
   
-  /**
-   * Return this field to the cycloid of non-existence from which it came by calling this{@link #clear()}
-   */
-  @Override
-  public void close() 
-  { 
-    if ( locked )
-    {
-      unlock();
-    }
-    clear();
-  }
-
- public Real add(Real that, int prec, Real res)
+  public Real add(Real that, int prec, Real res)
   {
     assert dim == that.dim;
     if (dim != res.dim)
