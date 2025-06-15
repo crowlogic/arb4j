@@ -35,9 +35,9 @@ public class PascalsTriangle implements
   }
 
   @Override
-  public RealPolynomial evaluate(Integer _n, int order, int bits, RealPolynomial res)
+  public RealPolynomial evaluate(Integer row, int order, int bits, RealPolynomial res)
   {
-    final int n = _n.getSignedValue();
+    final int n = row.getSignedValue();
     try ( var rowIndex = new Real(); )
     {
       rowIndex.set(n);

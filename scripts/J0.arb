@@ -1,8 +1,0 @@
-var T = new J0IntegralCovarianceOperator();
-var y = new Real();
-for(int i=0; i < 10000; i++) 
-{ 
-  var z = T.λₖ.evaluate(i,128); 
-  y.add(z,128); 
-  out.format("λ[%s]=%s y=%s\n",i,z,y);
-}

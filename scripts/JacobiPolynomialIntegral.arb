@@ -10,4 +10,4 @@ var context = new Context();
 context.registerSequence("A",A);
 context.registerSequence("P",P);
 context
-RealFunction.express("int(P(2),x=-1..1)",context);
+var x = RealPolynomialNullaryFunction.express("int(P(3),x=-1..1)",context);

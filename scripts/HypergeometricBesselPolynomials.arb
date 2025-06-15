@@ -1,4 +1,4 @@
 err.println( "Behold: the Bessel polynomiaks\n");
-var B = RealPolynomialSequence.express("pFq([-n,1+n],[],-x/2)");
-seq(1,10,k->System.out.format("B[%s]=%s\n",k,B.apply(k)));
+var B = RationalFunctionSequence.express("pFq([-n,1+n],[],-x/2)");
+seq(2,10,k->System.out.format("B[%s]=%s\n",k,B.apply(k)));
 

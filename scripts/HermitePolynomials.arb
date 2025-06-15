@@ -1,7 +1,5 @@
 var H = new HermitePolynomials(128);
 var h = seq(4,6,H);
-var ha = array(h,RealPolynomial.class);
 var gaussian = H.orthogonalityMeasure();
-var g = h.stream().map(f->f.mul(gaussian)).toList();
-var ga = array(g,RealFunction.class);
-plot(-10,10,1000,ga);
+var ga = h.stream().map(f->f.mul(gaussian)).toList();
+plot(-3,3,1000,ga);
