@@ -137,82 +137,85 @@ import arb.utensils.Utensils;
 
   static { System.loadLibrary( "arblib" ); }
 
-// Object pool implementation
-  private final Queue<Real> pool      = new ArrayDeque<>();
+  // Two-list pooling implementation
+  private final Queue<Real> available = new ArrayDeque<>();
+  private final Set<Real>   allocated = new HashSet<>();
 
   // Reference to the pool owner for temp instances
-  private Real              poolOwner = null;
-
-  /**
-   * Return this field to the cycloid of non-existence from which it came by
-   * calling this{@link #clear()}
-   * 
-   */
-  @Override
-  public void close()
-  {
-    // Always clean up our own pool first, regardless of poolOwner status
-    emptyVariablePool();
-
-    if (poolOwner != null)
-    {
-      // This is a temp instance, return to owner's pool after cleanup
-      poolOwner.returnVariable(this);
-    }
-    else
-    {
-
-      if (locked)
-      {
-        unlock();
-      }
-
-      clear();
-    }
-  }
+  Real                      poolOwner = null;
 
   public Real borrowVariable()
   {
-    synchronized (pool)
+    synchronized (this)
     {
-      Real object = pool.poll();
+      Real object = available.poll();
       if (object != null)
       {
         object.poolOwner = this;
+        allocated.add(object); // Track as allocated
         return object;
       }
       else
       {
         Real newObj = new Real();
         newObj.poolOwner = this;
+        allocated.add(newObj); // Track as allocated
         return newObj;
       }
     }
   }
 
+  public void returnVariable(Real object)
+  {
+    synchronized (this)
+    {
+      assert object.poolOwner == this : String.format("%s is owned by %s not %s",
+                                                      object,
+                                                      object.poolOwner,
+                                                      this);
+      allocated.remove(object); // Remove from allocated
+      available.add(object); // Add to available
+    }
+  }
+
   protected void emptyVariablePool()
   {
-    synchronized (pool)
+    synchronized (this)
     {
-      while (!pool.isEmpty())
+      // Clear allocated objects first
+      for (Real obj : allocated)
       {
-        Real obj = pool.poll();
-        obj.close(); // Recursively clean up pooled objects
+        obj.poolOwner = null;
+        obj.close();
+      }
+      allocated.clear();
+
+      // Clear available objects
+      while (!available.isEmpty())
+      {
+        Real obj = available.poll();
+        obj.poolOwner = null;
+        obj.close();
       }
     }
   }
 
-  /**
-   * Return a temporary Real instance to the pool for reuse
-   * 
-   * @param object the Real instance to return to pool
-   */
-  public void returnVariable(Real object)
+  @Override
+  public void close()
   {
-    synchronized (pool)
+    emptyVariablePool();
+
+    if (poolOwner != null)
     {
-      assert object.poolOwner == this : String.format("%s is owned by %s not %s", object, object.poolOwner, this);
-      pool.add(object);
+      poolOwner.returnVariable(this);
+    }
+    else
+    {
+      if (locked)
+      {
+        unlock();
+      }
+      clear();
     }
   }
 
