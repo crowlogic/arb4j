@@ -306,7 +306,7 @@ public class RealTest extends
       }
 
       // as per calculation, 1*4 + 2*5 + 3*6 = 32
-      try ( Real expectedDotProduct = new Real(); Real result = new Real();)
+      try ( Real expectedDotProduct = real1.borrowVariable(); Real result = real1.borrowVariable();)
       {
         expectedDotProduct.set(32);
         real1.dotProduct(real2, prec, result);
