@@ -13,7 +13,6 @@ module arb4j
   requires transitive java.instrument;
   requires transitive java.logging;
   requires transitive javafx.base;
-  requires transitive javafx.fxml;
   requires transitive javafx.graphics;
   requires transitive javafx.controls;
   requires transitive javafx.swing;
@@ -27,7 +26,6 @@ module arb4j
   requires transitive org.objectweb.asm.util;
   requires transitive org.objectweb.asm.commons;
   requires transitive org.yaml.snakeyaml;
-  requires transitive org.fxyz3d.core;
   requires transitive guru.nidi.graphviz;
 
   
