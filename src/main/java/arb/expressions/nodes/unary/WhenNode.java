@@ -254,11 +254,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     return false;
   }
 
-  @Override
-  public boolean isLiteralConstant()
-  {
-    return arg.isLiteralConstant() && cases.values().stream().allMatch(Node::isLiteralConstant);
-  }
+ 
 
   @Override
   public boolean isScalar()

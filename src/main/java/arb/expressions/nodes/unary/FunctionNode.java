@@ -1,37 +1,21 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-import static arb.expressions.Compiler.loadOrderParameter;
-import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 
-import arb.Complex;
-import arb.ComplexRationalFunction;
-import arb.Fraction;
+import arb.*;
 import arb.Integer;
-import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
-import arb.expressions.Compiler;
+import arb.expressions.*;
 import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.FunctionMapping;
-import arb.expressions.Parser;
-import arb.expressions.nodes.LiteralConstantNode;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.*;
 import arb.functions.Function;
 
 /**
@@ -65,6 +49,19 @@ import arb.functions.Function;
 public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          UnaryOperationNode<D, R, F>
 {
+
+  @Override
+  public Node<D, R, F> simplify()
+  {
+    if ("sqrt".equals(functionName))
+    {
+      return arg.pow(expression.newLiteralConstant("½"));
+    }
+    else
+    {
+      return this;
+    }
+  }
 
   public FunctionNode(Expression<D, R, F> expression,
                       FunctionMapping<?, ?, ?> newIntegralFunctionMapping,
@@ -100,16 +97,22 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   static final HashSet<String>  bitlessFunctions                   = new HashSet<>();
 
-  public static HashSet<String> complexFunctionsWithComplexResults = new HashSet<>(Arrays.asList("log", "logΓ", "ζ"));
+  public static HashSet<String> complexFunctionsWithComplexResults =
+                                                                   new HashSet<>(Arrays.asList("log",
+                                                                                               "logΓ",
+                                                                                               "ζ"));
 
-  public static HashSet<String> complexFunctionsWithRealResults    = new HashSet<>(Arrays.asList("arg",
-                                                                                                 "re",
-                                                                                                 "im",
-                                                                                                 "real",
-                                                                                                 "imag"));
+  public static HashSet<String> complexFunctionsWithRealResults    =
+                                                                new HashSet<>(Arrays.asList("arg",
+                                                                                            "re",
+                                                                                            "im",
+                                                                                            "real",
+                                                                                            "imag"));
 
   public static HashSet<String> integerFunctionsWithRealResults    =
-                                                                new HashSet<>(Arrays.asList("sqrt", "tanh", "log"));
+                                                                new HashSet<>(Arrays.asList("sqrt",
+                                                                                            "tanh",
+                                                                                            "log"));
 
   static
   {
@@ -132,7 +135,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     assignFunctionName();
     if (this.expression.context != null)
     {
-      mapping    = (FunctionMapping<D, R, F>) this.expression.context.functions.map.get(functionName);
+      mapping    =
+              (FunctionMapping<D, R, F>) this.expression.context.functions.map.get(functionName);
       contextual = mapping != null;
       if (contextual)
       {
@@ -176,16 +180,19 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     };
   }
 
-  public boolean checkForArgumentConversionNeed(FunctionMapping<D, R, F> functionMapping, boolean isNullaryFunction)
+  public boolean checkForArgumentConversionNeed(FunctionMapping<D, R, F> functionMapping,
+                                                boolean isNullaryFunction)
   {
-    return arg != null && !arg.getGeneratedType().equals(functionMapping.domain) && !isNullaryFunction;
+    return arg != null && !arg.getGeneratedType().equals(functionMapping.domain)
+                  && !isNullaryFunction;
   }
 
   private void checkForUndefinedReferenced(FunctionMapping<D, R, F> mapping)
   {
     if (mapping.instance == null && mapping.functionClass == null)
     {
-      throw new IllegalArgumentException(String.format("Undefined reference to function %s", mapping));
+      throw new IllegalArgumentException(String.format("Undefined reference to function %s",
+                                                       mapping));
     }
   }
 
@@ -253,7 +260,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     case "gamma":
       return mul(arg.digamma());
     default:
-      throw new UnsupportedOperationException("Derivative not implemented for function: " + functionName);
+      throw new UnsupportedOperationException("Derivative not implemented for function: "
+                                              + functionName);
     }
   }
 
@@ -268,7 +276,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (functionMapping == null)
     {
-      throw new CompilerException(String.format("function named %s was not found in context.functions", functionName));
+      throw new CompilerException(String.format("function named %s was not found in context.functions",
+                                                functionName));
     }
     var instance = functionMapping.instance;
     if (instance == null)
@@ -280,10 +289,12 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     var derivative                   = instance.derivative();
 
-    var newDerivativeFunctionMapping = expression.context.registerFunctionMapping("diff" + functionName,
-                                                                                  derivative,
-                                                                                  derivative.domainType(),
-                                                                                  derivative.coDomainType());
+    var newDerivativeFunctionMapping =
+                                     expression.context.registerFunctionMapping("diff"
+                                                                                + functionName,
+                                                                                derivative,
+                                                                                derivative.domainType(),
+                                                                                derivative.coDomainType());
 
     return new FunctionNode<D, R, F>(expression,
                                      newDerivativeFunctionMapping,
@@ -297,7 +308,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     if (functionMapping == null)
     {
-      throw new CompilerException(String.format("function named %s was not found in context.functions", functionName));
+      throw new CompilerException(String.format("function named %s was not found in context.functions",
+                                                functionName));
     }
     var instance = functionMapping.instance;
     if (instance == null)
@@ -308,10 +320,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
 
     var integral                   = instance.integral();
-    var newIntegralFunctionMapping = expression.context.registerFunctionMapping("int" + functionName,
-                                                                                integral,
-                                                                                functionMapping.domain,
-                                                                                functionMapping.coDomain);
+    var newIntegralFunctionMapping =
+                                   expression.context.registerFunctionMapping("int" + functionName,
+                                                                              integral,
+                                                                              functionMapping.domain,
+                                                                              functionMapping.coDomain);
     return new FunctionNode<D, R, F>(expression,
                                      newIntegralFunctionMapping,
                                      arg);
@@ -377,8 +390,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
   }
 
-  public MethodVisitor
-         generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> requisiteResultType, boolean bitless)
+  public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor,
+                                                   Class<?> requisiteResultType,
+                                                   boolean bitless)
   {
     Class<?> argType = getArgType();
     arg.generate(methodVisitor, argType);
@@ -392,7 +406,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     var    coDomainType       = requisiteResultType;
 
     String functionDescriptor = bitless ? Compiler.getMethodDescriptor(coDomainType, coDomainType)
-                                        : Compiler.getMethodDescriptor(coDomainType, int.class, coDomainType);
+                                        : Compiler.getMethodDescriptor(coDomainType,
+                                                                       int.class,
+                                                                       coDomainType);
 
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   Type.getInternalName(domainType),
@@ -417,7 +433,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return functionMapping.call(mv, generatedType);
   }
 
-  private void generateParameter(MethodVisitor mv, Class<? extends R> argType, boolean isNullaryFunction)
+  private void
+          generateParameter(MethodVisitor mv, Class<? extends R> argType, boolean isNullaryFunction)
   {
     if (isNullaryFunction)
     {
@@ -497,7 +514,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     case "arcsin":
       return arg.mul(arg.arcsin()).sub(one().sub(arg.pow(2)).sqrt());
     case "arctan":
-      return arg.mul(arg.arctan()).sub(one().div(2).mul(one().add(arg.pow(2)).log()));      
+      return arg.mul(arg.arctan()).sub(one().div(2).mul(one().add(arg.pow(2)).log()));
     default:
       throw new UnsupportedOperationException("Integration not implemented for: " + functionName);
     }
@@ -530,12 +547,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public boolean isLiteralConstant()
-  {
-    return arg.isLiteralConstant();
-  }
-
-  @Override
   public boolean isScalar()
   {
     return arg.isScalar();
@@ -548,7 +559,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   private void loadFunctionReferenceOntoStack(MethodVisitor mv, FunctionMapping<D, R, F> mapping)
   {
-    expression.loadFieldOntoStack(loadThisOntoStack(mv), functionName, mapping.functionFieldDescriptor());
+    expression.loadFieldOntoStack(loadThisOntoStack(mv),
+                                  functionName,
+                                  mapping.functionFieldDescriptor());
   }
 
   public FunctionMapping<D, R, F> registerSelfReferrentialFunctionMapping()
@@ -586,7 +599,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     case "lnΓ":
       return Compiler.scalarType(arg.type());
     case "sqrt":
-      return Integer.class.equals(expression.coDomainType) ? Real.class : Compiler.scalarType(expression.coDomainType);
+      return Integer.class.equals(expression.coDomainType) ? Real.class
+                                                           : Compiler.scalarType(expression.coDomainType);
     case "arg":
       return Real.class;
     case "ζ":
@@ -601,11 +615,13 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else if (((argType.equals(Integer.class) || argType.equals(Fraction.class))
                   && integerFunctionsWithRealResults.contains(functionName))
-                  || (argType.equals(Complex.class) && complexFunctionsWithRealResults.contains(functionName)))
+                  || (argType.equals(Complex.class)
+                                && complexFunctionsWithRealResults.contains(functionName)))
     {
       return Compiler.scalarType(expression.coDomainType);
     }
-    else if (Complex.class.equals(expression.domainType) && complexFunctionsWithComplexResults.contains(functionName))
+    else if (Complex.class.equals(expression.domainType)
+                  && complexFunctionsWithComplexResults.contains(functionName))
     {
       return Complex.class;
     }
@@ -630,8 +646,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
-                                                                                       Node<E, S, G> transformation)
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<D, R, F>
+         substitute(String variable, Node<E, S, G> transformation)
   {
     arg = arg.substitute(variable, transformation);
     return this;
@@ -676,8 +693,12 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return String.format("|%s|", arg.typeset());
     }
 
-    String name = functionName.replaceAll("√", "sqrt").replaceAll("J0", "J_0").replaceAll("ζ", "zeta");
-    return format(name.equals("sqrt") ? "\\%s{%s}" : "\\%s(%s)", name, arg == null ? "" : arg.typeset());
+    String name = functionName.replaceAll("√", "sqrt")
+                              .replaceAll("J0", "J_0")
+                              .replaceAll("ζ", "zeta");
+    return format(name.equals("sqrt") ? "\\%s{%s}" : "\\%s(%s)",
+                  name,
+                  arg == null ? "" : arg.typeset());
   }
 
 }

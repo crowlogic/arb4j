@@ -73,6 +73,16 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
     return new Complex().set(i);
   }
   
+  public Complex pow(int bits)
+  {
+    return pow(this,bits);
+  }
+  
+  public Complex pow(Fraction operand, int bits)
+  {
+    return pow(operand,bits,this);
+  }
+  
   public Complex set(int integer)
   {
     re().set(integer);

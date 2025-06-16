@@ -41,7 +41,17 @@ import arb.algebra.Ring;
     }
     return set(0, 0, integer);
   }
-  
+
+  public RealMatrix set(RealMatrix that)
+  {
+    if (getNumRows() != that.getNumRows() || getNumCols() != that.getNumCols())
+    {
+      become(RealMatrix.newMatrix(that.getNumRows(), that.getNumCols()));
+    }
+    arblib.arb_mat_set(this, that);
+    return this;
+  }
+    
   @Override
   public RealMatrix become(RealMatrix that)
   {

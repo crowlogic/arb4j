@@ -198,7 +198,8 @@ public class Integer implements
     return result.set(this).add(addend, bits, result);
   }
 
-  public ComplexRationalFunction add(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
+  public ComplexRationalFunction
+         add(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
   {
     return result.set(this).add(addend, bits, result);
   }
@@ -448,7 +449,8 @@ public class Integer implements
     return res.set(this).div(dividend, prec);
   }
 
-  public ComplexRationalFunction div(ComplexRationalFunction dividend, int prec, ComplexRationalFunction res)
+  public ComplexRationalFunction
+         div(ComplexRationalFunction dividend, int prec, ComplexRationalFunction res)
   {
     return res.set(this).div(dividend, prec);
   }
@@ -652,14 +654,14 @@ public class Integer implements
 
   public int getUnsignedIntValue()
   {
-    return (int)getUnsignedValue();
+    return (int) getUnsignedValue();
   }
-  
-  public Real exp( int bits, Real res )
+
+  public Real exp(int bits, Real res)
   {
     return res.set(this).exp(bits);
   }
-  
+
   /**
    * @return {@link arblib#fmpz_get_ui(long)}
    */
@@ -771,7 +773,8 @@ public class Integer implements
     return res.set(this).mul(x, bits);
   }
 
-  public ComplexRationalFunction mul(ComplexRationalFunction x, int bits, ComplexRationalFunction res)
+  public ComplexRationalFunction
+         mul(ComplexRationalFunction x, int bits, ComplexRationalFunction res)
   {
     return res.set(this).mul(x, bits);
   }
@@ -786,7 +789,6 @@ public class Integer implements
     return result.set(this).mul(multiplicand, prec, result);
   }
 
-  
   @Override
   public Integer mul(Integer operand, int prec)
   {
@@ -918,6 +920,14 @@ public class Integer implements
     }
   }
 
+  public Complex pow(Fraction operand, int bits, Complex result)
+  {
+    try ( Complex tmp = new Complex())
+    {
+      return tmp.set(this).pow(operand, bits, result);
+    }
+  }
+
   public ComplexRationalFunction pow(Integer operand, int bits, ComplexRationalFunction result)
   {
     try ( Integer intres = new Integer())
@@ -943,7 +953,8 @@ public class Integer implements
   {
     if (!operand.isPositive())
     {
-      throw new IllegalArgumentException(operand + " must be positive if an Integer result is required");
+      throw new IllegalArgumentException(operand
+                                         + " must be positive if an Integer result is required");
     }
     arblib.fmpz_pow_fmpz(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
@@ -1057,7 +1068,8 @@ public class Integer implements
     return result.set(this).sub(operand, prec);
   }
 
-  public ComplexRationalFunction sub(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
+  public ComplexRationalFunction
+         sub(ComplexRationalFunction addend, int bits, ComplexRationalFunction result)
   {
     return result.set(this).sub(addend, bits, result);
   }

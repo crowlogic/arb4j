@@ -115,11 +115,5 @@ public class ElseNode<D, R, F extends Function<? extends D, ? extends R>> extend
    return '↮';
   }
 
-  @Override
-  public boolean isLiteralConstant()
-  {
-    assert false : "maybe";
-    return true;
-  }
 
 }

@@ -378,11 +378,4 @@ public class  IntegralNode<D, C, F extends Function<? extends D, ? extends C>> e
     return '∫';
   }
 
-  @Override
-  public boolean isLiteralConstant()
-  {
-    return integrandNode.isLiteralConstant() && lowerLimitNode.isLiteralConstant()
-                  && upperLimitNode.isLiteralConstant();
-  }
-
 }

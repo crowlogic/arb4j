@@ -761,12 +761,5 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     return '∨';
   }
 
-  @Override
-  public boolean isLiteralConstant()
-  {
-    return this.endIndex.isLiteralConstant() && startIndex.isLiteralConstant()
-                  && getBranches().stream().allMatch(Node::isLiteralConstant);
-
-  }
 
 }

@@ -150,11 +150,7 @@ public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? exte
     return false;
   }
 
-  @Override
-  public boolean isLiteralConstant()
-  {
-    return false;
-  }
+
 
   @Override
   public boolean isScalar()

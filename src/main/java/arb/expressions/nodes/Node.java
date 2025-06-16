@@ -92,7 +92,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     return getFieldFromThis(mv, expression.className, fieldName, type);
   }
-  
+
   public <N extends Node<D, R, F>> N abs()
   {
     return (N) new AbsoluteValueNode<>(expression,
@@ -238,7 +238,10 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    */
   public abstract boolean isLeaf();
 
-  public abstract boolean isLiteralConstant();
+  public final boolean isLiteralConstant()
+  {
+    return this instanceof LiteralConstantNode;
+  }
 
   public boolean isPossiblyNegative()
   {
@@ -361,8 +364,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                                      subtrahend);
   }
 
-  public abstract <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
-                                                                                                Node<E, S, G> arg);
+  public abstract <E, S, G extends Function<? extends E, ? extends S>>
+         Node<D, R, F>
+         substitute(String variable, Node<E, S, G> arg);
 
   public abstract char symbol();
 

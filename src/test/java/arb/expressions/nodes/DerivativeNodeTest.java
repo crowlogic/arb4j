@@ -94,8 +94,8 @@ public class DerivativeNodeTest extends
 
   public void testArcSinDerivative()
   {
-    var f  = RealFunction.parse("∂arcsin(x)/∂x");
-    var df = RealFunction.parse("1/√(1-x^2)");
+    var f  = RealFunction.parse("∂arcsin(x)/∂x").simplify();
+    var df = RealFunction.parse("1/√(1-x^2)").simplify();
     assertEquals(df.rootNode.toString(), f.rootNode.toString());
   }
 

@@ -335,11 +335,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
   }
 
-  @Override
-  public boolean isLiteralConstant()
-  {
-    return false;
-  }
 
   public boolean isIndependent(VariableNode<D, R, F> inputVariable)
   {

@@ -160,10 +160,5 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
     return '∂';
   }
 
-  @Override
-  public boolean isLiteralConstant()
-  {
-    return false;
-  }
 
 }

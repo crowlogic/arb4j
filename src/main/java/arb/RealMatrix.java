@@ -8,44 +8,54 @@
 
 package arb;
 
-
 import static arb.arblib.*;
 import static java.lang.String.format;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.foreign.MemorySegment;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.LongBuffer;
+import java.nio.*;
 import java.util.Iterator;
 import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import arb.utensils.text.tables.TextTable;
+
 import arb.algebra.Ring;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+import arb.utensils.text.tables.TextTable;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
 
-public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>,Becomable<RealMatrix> {
-  protected long swigCPtr;
+public class RealMatrix implements
+                        AutoCloseable,
+                        Iterable<Real>,
+                        Ring<RealMatrix>,
+                        Becomable<RealMatrix>
+{
+  protected long    swigCPtr;
   protected boolean swigCMemOwn;
 
-  public RealMatrix(long cPtr, boolean cMemoryOwn) {
+  public RealMatrix(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(RealMatrix obj) {
+  public static long getCPtr(RealMatrix obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arblibJNI.delete_RealMatrix(swigCPtr);
       }
@@ -53,11 +63,24 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     }
   }
 
-  static { System.loadLibrary( "arblib" ); }
+  static
+  {
+    System.loadLibrary("arblib");
+  }
 
   public RealMatrix set(int i, int j, Integer l)
   {
     get(i, j).set(l);
+    return this;
+  }
+
+  public RealMatrix set(RealMatrix that)
+  {
+    if (getNumRows() != that.getNumRows() || getNumCols() != that.getNumCols())
+    {
+      become(RealMatrix.newMatrix(that.getNumRows(), that.getNumCols()));
+    }
+    arblib.arb_mat_set(this, that);
     return this;
   }
 
@@ -69,7 +92,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     }
     return set(0, 0, integer);
   }
-  
+
   @Override
   public RealMatrix become(RealMatrix that)
   {
@@ -87,13 +110,13 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
 
   public RealMatrix add(Integer operand, int prec, RealMatrix result)
   {
-    for ( Real row : rows )
+    for (Real row : rows)
     {
-      row.add(operand,prec);
+      row.add(operand, prec);
     }
     return this;
   }
-  
+
   /**
    * Solve this*result=that, in other words this=A, result=X and that=B
    * 
@@ -109,14 +132,14 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     arblib.arb_mat_solve(result, this, that, bits);
     return result;
   }
-  
+
   @Override
   public RealMatrix div(RealMatrix j, int prec, RealMatrix result)
   {
     assert false : "todo: division";
     return null;
   }
-  
+
   @SuppressWarnings("unchecked")
   public RealMatrix setName(String string)
   {
@@ -126,45 +149,46 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
 
   public Real getRow(int i)
   {
-    if ( rows == null )
+    if (rows == null)
     {
       initRows();
     }
-  
+
     return rows[i];
-  }  
+  }
 
   public long getRowPointer(int i)
   {
     return rows[i].swigCPtr;
-  }      
-  
+  }
+
   private void initRows()
   {
     assert rowPointers != null : "rowPointers is null";
-    if ( rows == null )
+    if (rows == null)
     {
-      rows        = new Real[getNumRows()];
+      rows = new Real[getNumRows()];
     }
-    
+
     for (int i = 0; i < getNumRows(); i++)
     {
-      if ( rows[i] == null )
+      if (rows[i] == null)
       {
-        rows[i]          = new Real(rowPointers.get(i), false);
+        rows[i] = new Real(rowPointers.get(i),
+                           false);
       }
       else
-      {                                   
+      {
         rows[i].swigCPtr = rowPointers.get(i);
       }
       rows[i].elements = new Real[rows[i].dim = getNumCols()];
     }
-    
+
   }
 
-  
   /**
-   * Apply this{@link #swapRows(LongBuffer, int, int)} to each element of a permutation array
+   * Apply this{@link #swapRows(LongBuffer, int, int)} to each element of a
+   * permutation array
    * 
    * @param permutation
    * @return this after being permuted
@@ -172,16 +196,20 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
   public RealMatrix permute(LongBuffer permutation)
   {
     final int n = permutation.capacity();
-    assert n == getNumRows() : String.format("length of permutation array = %d != numRows = %d\n", n, getNumRows() );
+    assert n == getNumRows() : String.format("length of permutation array = %d != numRows = %d\n",
+                                             n,
+                                             getNumRows());
     for (int i = 0; i < n; i++)
     {
       int j = (int) permutation.get(i);
-      assert j >= 0 && j < n : String.format("permutation[%d]=%d out of range, this.numRows=%d", j, n );
+      assert j >= 0 && j < n : String.format("permutation[%d]=%d out of range, this.numRows=%d",
+                                             j,
+                                             n);
       swapRows(permutation, i, j);
     }
     return this;
   }
-    
+
   LongBuffer rowPointers;
 
   /**
@@ -194,12 +222,14 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
    */
   public RealMatrix mul(Real scalar, int bits, RealMatrix result)
   {
-    assert getNumRows() == result.getNumRows() : String.format("this.numRows=%d != that.numRows = %d\n",
-                                                               getNumRows(),
-                                                               result.getNumRows());
-    assert getNumCols() == result.getNumCols() : String.format("this.numCols=%d != that.numCols = %d\n",
-                                                               getNumCols(),
-                                                               result.getNumCols());
+    assert getNumRows()
+                  == result.getNumRows() : String.format("this.numRows=%d != that.numRows = %d\n",
+                                                         getNumRows(),
+                                                         result.getNumRows());
+    assert getNumCols()
+                  == result.getNumCols() : String.format("this.numCols=%d != that.numCols = %d\n",
+                                                         getNumCols(),
+                                                         result.getNumCols());
 
     arblib.arb_mat_scalar_mul_arb(result, this, scalar, bits);
     return result;
@@ -212,21 +242,23 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
    * @param that
    * @param bits
    * @param result
-   * @return result 
+   * @return result
    */
   public RealMatrix add(RealMatrix that, int bits, RealMatrix result)
   {
-    assert getNumRows() == that.getNumRows() : String.format("this.numRows=%d != that.numRows = %d\n",
-                                                             getNumRows(),
-                                                             that.getNumRows());
-    assert getNumCols() == that.getNumCols() : String.format("this.numCols=%d != that.numCols = %d\n",
-                                                             getNumCols(),
-                                                             that.getNumCols());
+    assert getNumRows()
+                  == that.getNumRows() : String.format("this.numRows=%d != that.numRows = %d\n",
+                                                       getNumRows(),
+                                                       that.getNumRows());
+    assert getNumCols()
+                  == that.getNumCols() : String.format("this.numCols=%d != that.numCols = %d\n",
+                                                       getNumCols(),
+                                                       that.getNumCols());
 
     arblib.arb_mat_add(result, this, that, bits);
     return result;
   }
-  
+
   /**
    * Sets res to the difference of this and that. The operands must have the same
    * dimensions.
@@ -234,31 +266,33 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
    * @param that
    * @param bits
    * @param result
-   * @return result 
+   * @return result
    */
   public RealMatrix sub(RealMatrix that, int bits, RealMatrix result)
   {
-    assert getNumRows() == that.getNumRows() : String.format("this.numRows=%d != that.numRows = %d\n",
-                                                             getNumRows(),
-                                                             that.getNumRows());
-    assert getNumCols() == that.getNumCols() : String.format("this.numCols=%d != that.numCols = %d\n",
-                                                             getNumCols(),
-                                                             that.getNumCols());
+    assert getNumRows()
+                  == that.getNumRows() : String.format("this.numRows=%d != that.numRows = %d\n",
+                                                       getNumRows(),
+                                                       that.getNumRows());
+    assert getNumCols()
+                  == that.getNumCols() : String.format("this.numCols=%d != that.numCols = %d\n",
+                                                       getNumCols(),
+                                                       that.getNumCols());
 
     arblib.arb_mat_sub(result, this, that, bits);
     return result;
   }
-  
-  public Real copyCol(int j, Real result )
+
+  public Real copyCol(int j, Real result)
   {
     assert result.dim == getNumRows();
-    for ( int i = 0; i < getNumRows(); i++ )
+    for (int i = 0; i < getNumRows(); i++)
     {
       result.get(i).set(get(i, j));
     }
-   return result;   
+    return result;
   }
-    
+
   @Override
   public Iterator<Real> iterator()
   {
@@ -266,7 +300,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
 
     return new Iterator<Real>()
     {
-      int       i        = 0;
+      int i = 0;
 
       @Override
       public boolean hasNext()
@@ -281,7 +315,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
       }
     };
   }
-  
+
   /**
    * Calculates the determinant of this matrix A
    * 
@@ -312,7 +346,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     arb_mat_det(result, this, bits);
     return result;
   }
-  
+
   /**
    * @see arb#arb_mat_zero(RealMatrix)
    * 
@@ -357,7 +391,6 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     return arb_mat_contains(this, other) != 0;
   }
 
-
   @Override
   public boolean equals(Object obj)
   {
@@ -365,14 +398,14 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     {
       return false;
     }
-    RealMatrix other = (RealMatrix)obj;
-    return arb_mat_eq(this, other) != 0;    
+    RealMatrix other = (RealMatrix) obj;
+    return arb_mat_eq(this, other) != 0;
   }
 
   public RealMatrix set(int i, int j, Real real)
   {
-   get(i,j).set(real);
-   return this;    
+    get(i, j).set(real);
+    return this;
   }
 
   public RealMatrix set(int i, int j, long l)
@@ -380,8 +413,8 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     get(i, j).set(l);
     return this;
   }
-  
- /**
+
+  /**
    * Accessor for the i,j-th element
    * 
    * @param i
@@ -394,14 +427,14 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
   }
 
   public String name;
-  
-  boolean printPrecision = false;
-  
+
+  boolean       printPrecision = false;
+
   @Override
   public String toString()
   {
-    int rowCount = Math.min(100, getNumRows());
-    int colCount = Math.min(100, getNumCols());
+    int        rowCount   = Math.min(100, getNumRows());
+    int        colCount   = Math.min(100, getNumCols());
     Object[][] strings    = new String[rowCount][colCount];
     int        maxLength  = 0;
     int        maxDecimal = 0;
@@ -409,7 +442,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     {
       for (int j = 0; j < getNumCols(); ++j)
       {
-        Real x = get(i, j);
+        Real   x       = get(i, j);
         String string  = printPrecision ? x.toString() : x.toFixedString();
         int    decimal = string.indexOf(46);
         if (decimal > maxDecimal)
@@ -425,7 +458,8 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     }
     maxLength += 2;
     IntFunction<String>   func  = k -> "" + k;
-    TextTable             table = new TextTable(IntStream.rangeClosed(1, getNumCols())
+    TextTable             table = new TextTable(
+                                                IntStream.rangeClosed(1, getNumCols())
                                                          .mapToObj(func)
                                                          .collect(Collectors.toList())
                                                          .stream()
@@ -439,10 +473,10 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     ps.flush();
     String string = (name != null ? name + "=\n" : "") + os.toString();
     return string;
-  }  
-    
+  }
+
   Real[] rows;
-  
+
   public static RealMatrix newMatrix(int rows, int cols)
   {
     RealMatrix m = new RealMatrix();
@@ -455,13 +489,15 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
 
   public RealMatrix initRowPointers()
   {
-    MemorySegment ms = MemorySegment.ofAddress(getRowPointers()).reinterpret(Long.BYTES * rows.length);
+    MemorySegment ms = MemorySegment.ofAddress(getRowPointers())
+                                    .reinterpret(Long.BYTES * rows.length);
     rowPointers = ms.asByteBuffer().order(ByteOrder.nativeOrder()).asLongBuffer();
     return this;
   }
-  
+
   /**
-   * Sets the result to the inverse of this (square) matrix, computed by solving the system
+   * Sets the result to the inverse of this (square) matrix, computed by solving
+   * the system
    * 
    * X = A^(-1)
    * 
@@ -488,7 +524,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
       return result;
     }
   }
-  
+
   /**
    * @see arb#arb_mat_transpose(RealMatrix, RealMatrix)
    * 
@@ -497,17 +533,19 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
    */
   public RealMatrix transpose(RealMatrix transposed)
   {
-    assert getNumRows() == transposed.getNumCols() : String.format("this.numRows = %d != transposed.numCols = %d\n",
-                                                                   this.getNumRows(),
-                                                                   transposed.getNumCols());
-    assert getNumCols() == transposed.getNumRows() : String.format("this.numCols = %d != transposed.numRows = %d\n",
-                                                                   this.getNumCols(),
-                                                                   transposed.getNumRows());
+    assert getNumRows()
+                  == transposed.getNumCols() : String.format("this.numRows = %d != transposed.numCols = %d\n",
+                                                             this.getNumRows(),
+                                                             transposed.getNumCols());
+    assert getNumCols()
+                  == transposed.getNumRows() : String.format("this.numCols = %d != transposed.numRows = %d\n",
+                                                             this.getNumCols(),
+                                                             transposed.getNumRows());
 
     arb_mat_transpose(transposed, this);
     return transposed;
   }
-  
+
   /**
    * Swaps two rows of this matrix.
    *
@@ -537,28 +575,38 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
   public RealMatrix swapRows(LongBuffer permutations, int r, int s)
   {
     int numRows = getNumRows();
-    assert r >= 0 && r < numRows : "Row index r (" + r + ") is out of bounds. Valid range: [0, " + (numRows - 1)
-                  + "].";
-    assert s >= 0 && s < numRows : "Row index s (" + s + ") is out of bounds. Valid range: [0, " + (numRows - 1)
-                  + "].";
-    assert permutations == null || permutations.capacity() >= numRows : "Permutations buffer size ("
-                  + (permutations != null ? permutations.capacity() : "null")
-                  + ") is smaller than the number of rows (" + numRows + ").";
+    assert r >= 0 && r < numRows : "Row index r ("
+                                   + r
+                                   + ") is out of bounds. Valid range: [0, "
+                                   + (numRows - 1)
+                                   + "].";
+    assert s >= 0 && s < numRows : "Row index s ("
+                                   + s
+                                   + ") is out of bounds. Valid range: [0, "
+                                   + (numRows - 1)
+                                   + "].";
+    assert permutations == null || permutations.capacity()
+                  >= numRows : "Permutations buffer size ("
+                               + (permutations != null ? permutations.capacity() : "null")
+                               + ") is smaller than the number of rows ("
+                               + numRows
+                               + ").";
     Real rPtr = rows[r];
     rows[r] = rows[s];
     rows[s] = rPtr;
     arblib.arb_mat_swap_rows(this, permutations, r, s);
     return this;
   }
-   
+
   /**
    * Calls {@link arb#arb_mat_clear(RealMatrix)}
+   * 
    * @return this
    */
   public RealMatrix clear()
   {
-    if ( swigCMemOwn )
-    {      
+    if (swigCMemOwn)
+    {
       arb_mat_clear(this);
     }
     return this;
@@ -590,15 +638,18 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
    */
   public RealMatrix mul(RealMatrix that, int bits, RealMatrix result)
   {
-    assert getNumCols() == that.getNumRows() : String.format("this matrix col count does %d not match right matrix row count %d",
-                                                             getNumCols(),
-                                                             that.getNumRows());
-    assert getNumRows() == result.getNumRows() : String.format("Result matrix row count does %d not match left matrix row count %d",
-                                                               getNumRows(),
-                                                               result.getNumRows());
-    assert that.getNumCols() == result.getNumCols() : String.format("this matrix col count does %d not match right matrix row count %d",
-                                                                    that.getNumCols(),
-                                                                    result.getNumCols());
+    assert getNumCols()
+                  == that.getNumRows() : String.format("this matrix col count does %d not match right matrix row count %d",
+                                                       getNumCols(),
+                                                       that.getNumRows());
+    assert getNumRows()
+                  == result.getNumRows() : String.format("Result matrix row count does %d not match left matrix row count %d",
+                                                         getNumRows(),
+                                                         result.getNumRows());
+    assert that.getNumCols()
+                  == result.getNumCols() : String.format("this matrix col count does %d not match right matrix row count %d",
+                                                         that.getNumCols(),
+                                                         result.getNumCols());
 
     arb_mat_mul(result, this, that, bits);
     return result;
@@ -606,38 +657,43 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
 
   @Override
   public void close()
-  { 
-      clear();
+  {
+    clear();
   }
-  
-  
+
   public RealMatrix init(int rows, int cols)
   {
     arb_mat_init(this, rows, cols);
     return this;
-  } 
+  }
 
   /**
    * Computes the LU factorization of this {@link RealMatrix} using Gaussian
-   * elimination with partial pivoting. <br><br>
+   * elimination with partial pivoting. <br>
+   * <br>
    * The input and result output matrices can be the same, thus providing for
-   * in-place factorization.<br><br>
+   * in-place factorization.<br>
+   * <br>
    * 
    * LU decomposition, n. (of a square matrix A) a factorization A = LU where L
-   * and U are respectively lower- and upper-triangular. <br><br>
+   * and U are respectively lower- and upper-triangular. <br>
+   * <br>
    * 
    * Although not every square matrix has an LU decomposition, one may always
    * write A = PLU, where P is a permutation matrix, L is nonsingular and
-   * lower-triangular, and U is upper-triangular. <br><br>
+   * lower-triangular, and U is upper-triangular. <br>
+   * <br>
    * 
    * A non-singular square matrix has an LU decomposition if and only if all its
-   * leading principal minors are nonzero. <br><br>
+   * leading principal minors are nonzero. <br>
+   * <br>
    * 
    * If A is nonsingular and has an LU decomposition, then A = L'DU', where all of
    * the main diagonal entries of the lower triangular matrix L' are equal to 1,
    * U' is upper triangular, and each of the main diagonal entries of the diagonal
    * matrix D is equal to the corresponding leading principal minor of A; the
-   * factors L', D, and U' are unique. <br><br>
+   * factors L', D, and U' are unique. <br>
+   * <br>
    * 
    * If the return value is null then one of 3 things could be the reason:<br>
    * 
@@ -662,7 +718,8 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
    * 
    * @return result if this matrix is invertible otherwise null
    */
-  public RealMatrix computeLowerUpperFactorization(LongBuffer permutation, int bits, RealMatrix result)
+  public RealMatrix
+         computeLowerUpperFactorization(LongBuffer permutation, int bits, RealMatrix result)
   {
     if (arblib.arb_mat_lu(permutation, result, this, bits) != 0)
     {
@@ -675,8 +732,8 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
       return null;
     }
   }
-  
- /**
+
+  /**
    * Calls
    * this{@link #computeLowerUpperFactorization(int, RealMatrix, RealMatrix)} but
    * applies a sequence of this{@link #swapRows(LongBuffer, int, int)} operations
@@ -688,14 +745,17 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
    * @param upperFactor the {@link RealMatrix} to be set to the upper factor
    * @return this
    */
-  public RealMatrix computeLowerUpperFactorization(int bits, RealMatrix lowerFactor, RealMatrix upperFactor)
+  public RealMatrix
+         computeLowerUpperFactorization(int bits, RealMatrix lowerFactor, RealMatrix upperFactor)
   {
-    assert lowerFactor.getNumRows() == upperFactor.getNumRows() : format("lowerFactor.numRows = %d != upperFactor.numRows = %d\n",
-                                                                         lowerFactor.getNumRows(),
-                                                                         upperFactor.getNumCols());
-    assert lowerFactor.getNumCols() == upperFactor.getNumCols() : format("lowerFactor.numRows = %d != upperFactor.numRows = %d\n",
-                                                                         lowerFactor.getNumRows(),
-                                                                         upperFactor.getNumCols());
+    assert lowerFactor.getNumRows()
+                  == upperFactor.getNumRows() : format("lowerFactor.numRows = %d != upperFactor.numRows = %d\n",
+                                                       lowerFactor.getNumRows(),
+                                                       upperFactor.getNumCols());
+    assert lowerFactor.getNumCols()
+                  == upperFactor.getNumCols() : format("lowerFactor.numRows = %d != upperFactor.numRows = %d\n",
+                                                       lowerFactor.getNumRows(),
+                                                       upperFactor.getNumCols());
     final int  n             = lowerFactor.getNumRows();
 
     LongBuffer permutation   = ByteBuffer.allocateDirect(n * Long.BYTES)
@@ -710,7 +770,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     upperFactor.permute(permutation);
 
     return this;
-  }  
+  }
 
   /**
    * Computes the Cholesky decomposition of A. Returning the factor matrix iff the
@@ -733,11 +793,11 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     }
     else
     {
-      result.name = "√" + ( name != null ? name : "");
+      result.name = "√" + (name != null ? name : "");
       return result;
     }
-  }  
-  
+  }
+
   /**
    * 
    * @return numRows == numCols
@@ -759,7 +819,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
         diagonal.close();
       }
       diagonal = Real.newVector(getNumRows());
-      IntStream.range(0, getNumCols()).forEach(i -> diagonal.set(i,get(i, i)));
+      IntStream.range(0, getNumCols()).forEach(i -> diagonal.set(i, get(i, i)));
     }
     return diagonal;
   }
@@ -767,24 +827,27 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
   /**
    * Extracts the upper and lower triangular matrices from this square matrix.
    * <p>
-   * This method fills the provided matrices L (lower triangular) and U (upper triangular)
-   * with the corresponding elements from this matrix. The diagonal elements of L are set to 1,
-   * and the rest of the elements in L and U are filled based on their position relative to the diagonal.
-   * The method asserts that this matrix is square.
+   * This method fills the provided matrices L (lower triangular) and U (upper
+   * triangular) with the corresponding elements from this matrix. The diagonal
+   * elements of L are set to 1, and the rest of the elements in L and U are
+   * filled based on their position relative to the diagonal. The method asserts
+   * that this matrix is square.
    * </p>
    *
-   * @param L The matrix to be filled with the lower triangular part of this matrix.
-   * @param U The matrix to be filled with the upper triangular part of this matrix.
+   * @param L The matrix to be filled with the lower triangular part of this
+   *          matrix.
+   * @param U The matrix to be filled with the upper triangular part of this
+   *          matrix.
    * @return this
    * @throws AssertionError If this matrix is not square.
-   */    
-  public RealMatrix extractUpperAndLowerTriangularMatrices(  RealMatrix L, RealMatrix U )
+   */
+  public RealMatrix extractUpperAndLowerTriangularMatrices(RealMatrix L, RealMatrix U)
   {
     assert isSquare() : "matrix must be square";
     int n = getNumRows();
 
-    L.setName("L_" + name );
-    U.setName("U_" + name );  
+    L.setName("L_" + name);
+    U.setName("U_" + name);
 
     for (int i = 0; i < n; i++)
     {
@@ -807,10 +870,10 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
         }
       }
     }
-    
+
     return this;
-  }        
-  
+  }
+
   /**
    * Sets result to the Frobenius norm (i.e. the square root of the sum of squares
    * of entries) of A. See
@@ -825,41 +888,48 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
   {
     arblib.arb_mat_frobenius_norm(normResult, this, bits);
     return normResult;
-  }  
-  
+  }
+
   @Override
-  public int
-         dim()
+  public int dim()
   {
     return 1;
-  }  
+  }
 
-  public void setNumRows(int value) {
+  public void setNumRows(int value)
+  {
     arblibJNI.RealMatrix_numRows_set(swigCPtr, this, value);
   }
 
-  public int getNumRows() {
+  public int getNumRows()
+  {
     return arblibJNI.RealMatrix_numRows_get(swigCPtr, this);
   }
 
-  public void setNumCols(int value) {
+  public void setNumCols(int value)
+  {
     arblibJNI.RealMatrix_numCols_set(swigCPtr, this, value);
   }
 
-  public int getNumCols() {
+  public int getNumCols()
+  {
     return arblibJNI.RealMatrix_numCols_get(swigCPtr, this);
   }
 
-  public void setRowPointers(long value) {
+  public void setRowPointers(long value)
+  {
     arblibJNI.RealMatrix_rowPointers_set(swigCPtr, this, value);
   }
 
-  public long getRowPointers() {
+  public long getRowPointers()
+  {
     return arblibJNI.RealMatrix_rowPointers_get(swigCPtr, this);
   }
 
-  public RealMatrix() {
-    this(arblibJNI.new_RealMatrix(), true);
+  public RealMatrix()
+  {
+    this(arblibJNI.new_RealMatrix(),
+         true);
   }
 
 }

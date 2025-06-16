@@ -22,6 +22,7 @@ public class ComplexFunctionTest extends
     var f       = ComplexNullaryFunction.express("sqrt(-1)", context);
     var x       = f.evaluate(128);
 
+    System.out.println( "x="+x);
     assertTrue(x.im().isOne());
     assertTrue(x.re().isZero());
 

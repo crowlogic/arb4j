@@ -157,8 +157,6 @@ public class ExpressionTest extends
   public static void testConstantIntegerTimesAConstantInteger()
   {
     var f = RealNullaryFunction.parse("5*3");
-    assertEquals("5*3", f.toString());
-    f.simplify();
     assertEquals("15", f.toString());
     assertEquals(15.0, f.instantiate().evaluate(128).doubleValue());
   }

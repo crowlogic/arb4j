@@ -71,11 +71,7 @@ public class FractionalDerivativeNode<D, R, F extends Function<? extends D, ? ex
     return isResult;
   }
 
-  @Override
-  public boolean isLiteralConstant()
-  {
-    return isResult;
-  }
+
 
   @Override
   public boolean isScalar()
