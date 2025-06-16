@@ -1,4 +1,0 @@
-#!/bin/sh
-
-run arb.stochastic.GaussianProcessModeller $@
-
