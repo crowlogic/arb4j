@@ -449,6 +449,7 @@ public abstract class GaussianProcessSampler extends
 
     separateWindows = getParameters().getUnnamed().contains("--separate-windows");
 
+
     if (separateWindows)
     {
       Stage[] stages =
@@ -469,7 +470,10 @@ public abstract class GaussianProcessSampler extends
         if (i > 0)
         {
           stages[i].show();
+
         }
+        WindowManager.installEscapeKeyCloseHandler(stages[i]);
+
       }
       stage.show();
     }
@@ -481,6 +485,8 @@ public abstract class GaussianProcessSampler extends
       stage.setMaximized(true);
       stage.setTitle(getClass().getSimpleName());
       stage.show();
+      WindowManager.installEscapeKeyCloseHandler(stage);
+
       if (dark)
       {
         WindowManager.setMoreConduciveStyle(scene);

@@ -29,11 +29,11 @@ import javafx.scene.control.skin.TableColumnHeader;
 import javafx.scene.control.skin.TableViewSkinBase;
 import javafx.scene.control.skin.VirtualFlow;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import javafx.stage.Stage;
-import javafx.stage.Window;
+import javafx.stage.*;
 import arb.arblib;
 
 /**
@@ -366,6 +366,18 @@ public class WindowManager
         e.printStackTrace();
       }
 
+    });
+  }
+
+  public static void installEscapeKeyCloseHandler(Stage stage)
+  {
+    stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, event ->
+    {
+      if (event.getCode() == KeyCode.ESCAPE)
+      {
+        stage.fireEvent(new WindowEvent(stage,
+                                        WindowEvent.WINDOW_CLOSE_REQUEST));
+      }
     });
   }
 

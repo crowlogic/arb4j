@@ -13,21 +13,13 @@ import arb.utensils.ShellFunctions;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.plugins.ColormapSelector;
-import io.fair_acc.chartfx.plugins.DataPointTooltip;
-import io.fair_acc.chartfx.plugins.EditAxis;
-import io.fair_acc.chartfx.plugins.Screenshot;
-import io.fair_acc.chartfx.plugins.TableViewer;
-import io.fair_acc.chartfx.plugins.Zoomer;
+import io.fair_acc.chartfx.plugins.*;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -88,12 +80,15 @@ public class FunctionPlotter extends
     configureChartPlugins();
     root.getChildren().add(chart);
     stage.initModality(Modality.WINDOW_MODAL);
-    chart.getRenderers().stream().filter(renderer -> renderer instanceof ErrorDataSetRenderer).forEach(renderer ->
-    {
-      ErrorDataSetRenderer ballDataRenderer = (ErrorDataSetRenderer) renderer;
-      ballDataRenderer.addAxes(xAxis, yAxis);
-      ballDataRenderer.setDrawMarker(false);
-    });
+    chart.getRenderers()
+         .stream()
+         .filter(renderer -> renderer instanceof ErrorDataSetRenderer)
+         .forEach(renderer ->
+         {
+           ErrorDataSetRenderer ballDataRenderer = (ErrorDataSetRenderer) renderer;
+           ballDataRenderer.addAxes(xAxis, yAxis);
+           ballDataRenderer.setDrawMarker(false);
+         });
 
     scene = new Scene(root,
                       1500,
@@ -111,14 +106,7 @@ public class FunctionPlotter extends
       stage.hide();
     });
 
-    scene.addEventFilter(KeyEvent.KEY_PRESSED, event ->
-    {
-      if (event.getCode() == KeyCode.ESCAPE)
-      {
-        stage.fireEvent(new WindowEvent(stage,
-                                        WindowEvent.WINDOW_CLOSE_REQUEST));
-      }
-    });
+    WindowManager.installEscapeKeyCloseHandler(stage);
 
     stage.showingProperty().addListener((obs, old, newthing) ->
     {
@@ -146,9 +134,10 @@ public class FunctionPlotter extends
 
   public RealDataSet getDataset(int index)
   {
-    assert index < chart.getDatasets().size() && 0 <= index : String.format("0 <= index = %d < %d out of bounds",
-                                                                            index,
-                                                                            chart.getDatasets().size());
+    assert index < chart.getDatasets().size()
+                  && 0 <= index : String.format("0 <= index = %d < %d out of bounds",
+                                                index,
+                                                chart.getDatasets().size());
     return (RealDataSet) chart.getDatasets().get(index);
   }
 
@@ -162,14 +151,17 @@ public class FunctionPlotter extends
   {
     if (sampleCount <= 0)
     {
-      sampleCount = Math.min(10000, 1 + (int) domain.length(128, new Float()).mul(resolution, 128).doubleValue());
+      sampleCount = Math.min(10000,
+                             1 + (int) domain.length(128, new Float())
+                                             .mul(resolution, 128)
+                                             .doubleValue());
     }
     freeExistingDatasets();
     for (RealFunction function : functions)
     {
       RealDataSet dataset = new RealDataSet(function.toString() + " over " + domain,
-                                                                        sampleCount,
-                                                                        domain);
+                                            sampleCount,
+                                            domain);
       domain.generateRealPartition(precision, false, dataset.getRealXValues());
       chart.getDatasets().add(dataset);
     }
@@ -195,12 +187,12 @@ public class FunctionPlotter extends
     }
     functionStream.forEach(i ->
     {
-      RealFunction              function = functions.get(i);
-      RealDataSet dataset  = (RealDataSet) chart.getDatasets().get(i);
-      Real                      mesh     = dataset.getRealXValues();
-      Real                      values   = dataset.getRealYValues();
+      RealFunction function = functions.get(i);
+      RealDataSet  dataset  = (RealDataSet) chart.getDatasets().get(i);
+      Real         mesh     = dataset.getRealXValues();
+      Real         values   = dataset.getRealYValues();
 
-      IntStream                 sequence = IntStream.range(0, sampleCount);
+      IntStream    sequence = IntStream.range(0, sampleCount);
       if (parallel)
       {
         sequence = sequence.parallel();
