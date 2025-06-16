@@ -475,49 +475,12 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                   || (leftType.equals(b) && rightType.equals(a));
   }
 
-  boolean areIntegerDivisions(DivisionNode<D, C, F> leftDiv, DivisionNode<D, C, F> rightDiv)
-  {
-    return leftDiv.left.type().equals(Integer.class) && leftDiv.right.type().equals(Integer.class)
-                  && rightDiv.left.type().equals(Integer.class)
-                  && rightDiv.right.type().equals(Integer.class);
-  }
-
-  Node<D, C, F> combineFractions(DivisionNode<D, C, F> leftDiv, DivisionNode<D, C, F> rightDiv)
-  {
-    // Extract components: leftDiv = a/b, rightDiv = c/d
-    Node<D, C, F> a           = leftDiv.left;   // numerator 1
-    Node<D, C, F> b           = leftDiv.right;  // denominator 1
-    Node<D, C, F> c           = rightDiv.left;  // numerator 2
-    Node<D, C, F> d           = rightDiv.right; // denominator 2
-
-    // Calculate (ad + bc)/(bd)
-    Node<D, C, F> ad          = a.mul(d);
-    Node<D, C, F> bc          = b.mul(c);
-    Node<D, C, F> numerator   = ad.add(bc);
-    Node<D, C, F> denominator = b.mul(d);
-
-    return numerator.div(denominator);
-  }
 
   @Override
   public Node<D, C, F> simplify()
   {
     left  = left.simplify();
     right = right.simplify();
-
-    if (left instanceof DivisionNode<D, C, F> leftDiv
-                  && right instanceof DivisionNode<D, C, F> rightDiv)
-    {
-      System.out.println("wtf");
-      if (areIntegerDivisions(leftDiv, rightDiv))
-      {
-        System.out.println("WOO");
-
-        Node<D, C, F> combined = combineFractions(leftDiv, rightDiv).simplify();
-        System.out.println("combined=" + combined);
-        return combined;
-      }
-    }
 
     return this;
   }

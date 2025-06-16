@@ -24,6 +24,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                          BinaryOperationNode<D, R, F>
 {
 
+ 
   @Override
   public Node<D, R, F> simplify()
   {
@@ -37,7 +38,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return expression.newLiteralConstant(1);
     }
-
+   
     return this;
   }
 

@@ -8,8 +8,7 @@ public class ExponentiationNodeTest extends
 {
   public static void testExponentiatedFormOfSquareRootSimplification()
   {
-    var f = RealFunction.parse("(x^(1/2))*(x^(1/2))");
-    f.simplify();
+    var f = RealFunction.parse("x^(1/2)*x^(1/2)");
     f.simplify();
     assertEquals( "x➔x", f.toString() );
   }

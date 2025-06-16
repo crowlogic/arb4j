@@ -7,9 +7,7 @@ import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
-import arb.expressions.nodes.LiteralConstantNode;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.*;
 import arb.functions.Function;
 
 /**
@@ -61,6 +59,30 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return left.integrate(variable).add(right.integrate(variable));
   }
 
+  boolean areIntegerDivisions(DivisionNode<D, R, F> leftDiv, DivisionNode<D, R, F> rightDiv)
+  {
+    return leftDiv.left.type().equals(Integer.class) && leftDiv.right.type().equals(Integer.class)
+                  && rightDiv.left.type().equals(Integer.class)
+                  && rightDiv.right.type().equals(Integer.class);
+  }
+
+  Node<D, R, F> combineFractions(DivisionNode<D, R, F> leftDiv, DivisionNode<D, R, F> rightDiv)
+  {
+    // Extract components: leftDiv = a/b, rightDiv = c/d
+    var a           = leftDiv.left;   // numerator 1
+    var b           = leftDiv.right;  // denominator 1
+    var c           = rightDiv.left;  // numerator 2
+    var d           = rightDiv.right; // denominator 2
+
+    // Calculate (ad + bc)/(bd)
+    var ad          = a.mul(d);
+    var bc          = b.mul(c);
+    var numerator   = ad.add(bc);
+    var denominator = b.mul(d);
+
+    return numerator.div(denominator);
+  }
+
   @Override
   public Node<D, R, F> simplify()
   {
@@ -75,7 +97,8 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return left;
     }
-    if (left instanceof LiteralConstantNode lconst && right instanceof LiteralConstantNode rconst)
+    if (left instanceof LiteralConstantNode<D, R, F> lconst
+                  && right instanceof LiteralConstantNode<D, R, F> rconst)
     {
       if (lconst.isInt && rconst.isInt)
       {
@@ -94,25 +117,23 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
         {
           var numerator   = expression.newLiteralConstant(sum.getNumerator().toString());
           var denominator = expression.newLiteralConstant(sum.getDenominator().toString());
-          return numerator.div(denominator).simplify();
+          return numerator.div(denominator);
         }
       }
 
       return this;
     }
-    else if (left instanceof DivisionNode leftDiv && right instanceof DivisionNode rightDiv)
+    else if (left instanceof DivisionNode<D, R, F> leftDiv
+                  && right instanceof DivisionNode<D, R, F> rightDiv)
     {
-      if  (leftDiv.isLiteralConstant() && rightDiv.isLiteralConstant() )
+      if (areIntegerDivisions(leftDiv, rightDiv))
       {
-        System.out.format( "%s + %s = %s\n", leftDiv, rightDiv, leftDiv.add(rightDiv).simplify() );
+        return combineFractions(leftDiv, rightDiv).simplify();
       }
-      
-      return this;
     }
-    else
-    {
-      return this;
-    }
+
+    return this;
+
   }
 
 }
