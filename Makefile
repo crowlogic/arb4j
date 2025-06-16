@@ -34,6 +34,3 @@ doc: docs
 
 install:
 	mvn install -Dmaven.test.skip=true
-
-desktop:
-	gradle installDesktop
