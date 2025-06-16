@@ -35,6 +35,14 @@ public abstract class GaussianProcessSampler extends
 
   public abstract double[] getPowerSpectralDensity(double[] freq);
 
+  /**
+   * TODO: Modify this to get normally distributed unit variables from the
+   * {@link RandomState} and use {@link FloatInterval} to call
+   * {@link RealFunction#quantize(FloatInterval, int, int, boolean)} and then
+   * calculates its variance {@link Real#structure(int, int, Real)} function..
+   * 
+   * @return
+   */
   public Spectra generate()
   {
     double[] freq = generateFrequencies(N, STEP_SIZE);
@@ -61,7 +69,10 @@ public abstract class GaussianProcessSampler extends
       {
         double dW = random.nextGaussian();
         whiteNoise.get(nyquistIndex).set(dW);
-        complexSignal.get(nyquistIndex).set(psd[nyquistIndex] * df).sqrt(bits).mul(mag.set(dW), bits);
+        complexSignal.get(nyquistIndex)
+                     .set(psd[nyquistIndex] * df)
+                     .sqrt(bits)
+                     .mul(mag.set(dW), bits);
       }
 
       arblib.acb_dft_inverse(ifft, complexSignal, N, bits);
@@ -95,6 +106,13 @@ public abstract class GaussianProcessSampler extends
     }
   }
 
+  /**
+   * TODO: Replace with {@link Real#variance(int, Real)}
+   * 
+   * @param x
+   * @param n
+   * @return
+   */
   public static double variance(double[] x, int n)
   {
     double var = 0.0;
@@ -106,6 +124,20 @@ public abstract class GaussianProcessSampler extends
     return var;
   }
 
+  /**
+   * TODO: replace with {@link Real#structure(int, int, Real)} which is a
+   * collection of {@link Real#gammaVariance(int, int, Real)}s evaluatedat the
+   * given times (evenly spaced).
+   * 
+   * 
+   * Need to add varianceStructureFunction function to {@link RealFunction} which
+   * will accept an interval of which to quantize before calculating the
+   * associated {@link Real#structure(int, int)} of it
+   * 
+   * @param x
+   * @param maxLagSteps
+   * @return
+   */
   public static double[] autocorr(double[] x, int maxLagSteps)
   {
     int    n   = x.length;
@@ -139,12 +171,10 @@ public abstract class GaussianProcessSampler extends
 
   public static double[] computePowerSpectralDensity(double[] path)
   {
-    // double mean = Arrays.stream(path).average().getAsDouble();
 
-    try ( Complex complexPath = Complex.newVector(N); Complex fft = Complex.newVector(N); Real mag = new Real();
-          Real scalingFactor = Real.valueOf(STEP_SIZE).div(N / 2, bits);)
+    try ( Complex complexPath = Complex.newVector(N); Complex fft = Complex.newVector(N);
+          Real mag = new Real(); Real scalingFactor = Real.valueOf(STEP_SIZE).div(N / 2, bits);)
     {
-      // complexPath.sub(mean,bits);
       for (int i = 0; i < N; i++)
       {
         complexPath.get(i).set(path[i]);
@@ -156,7 +186,11 @@ public abstract class GaussianProcessSampler extends
 
       for (int i = 0; i < N; i++)
       {
-        periodogram[i] = fft.get(i).norm(bits, mag).pow(2, bits).mul(scalingFactor, bits).doubleValue();
+        periodogram[i] = fft.get(i)
+                            .norm(bits, mag)
+                            .pow(2, bits)
+                            .mul(scalingFactor, bits)
+                            .doubleValue();
       }
       return periodogram;
     }
@@ -194,7 +228,11 @@ public abstract class GaussianProcessSampler extends
 
   protected void configureChart(XYChart chart)
   {
-    chart.getPlugins().addAll(new EditAxis(AxisMode.XY), new DataPointTooltip(), new Zoomer(), new TableViewer());
+    chart.getPlugins()
+         .addAll(new EditAxis(AxisMode.XY),
+                 new DataPointTooltip(),
+                 new Zoomer(),
+                 new TableViewer());
     chart.getRenderers().forEach(renderer -> renderer.getAxes().addAll(chart.getAxes()));
   }
 
@@ -258,10 +296,10 @@ public abstract class GaussianProcessSampler extends
    * FIXME: Use {@link FloatInterval} and
    * {@link RealFunction#quantize(FloatInterval, int, int, boolean)}
    * 
-   * @param lags
-   * @param theory
+   * @param times
+   * @param values
    */
-  public abstract void getKernel(double[] lags, double[] theory);
+  public abstract void getKernel(double[] times, double[] values);
 
   protected XYChart newRandomMeasureChart(Spectra result)
   {
@@ -287,7 +325,10 @@ public abstract class GaussianProcessSampler extends
     DoubleDataSet realDataSet = new DoubleDataSet("Real").set(result.freq, realNoise);
     DoubleDataSet imagDataSet = new DoubleDataSet("Imag").set(result.freq, imagNoise);
 
-    String        style       = DataSetStyleBuilder.instance().setMarkerType("circle").setMarkerSize(2).build();
+    String        style       = DataSetStyleBuilder.instance()
+                                                   .setMarkerType("circle")
+                                                   .setMarkerSize(2)
+                                                   .build();
     realDataSet.setStyle(style);
     imagDataSet.setStyle(style);
 
@@ -342,14 +383,16 @@ public abstract class GaussianProcessSampler extends
      */
     DoubleDataSet              empiricalDataSet    =
                                                 new DoubleDataSet("Empirical").set(freqPos,
-                                                                                   Arrays.copyOf(empPSD, posFreqCount))
+                                                                                   Arrays.copyOf(empPSD,
+                                                                                                 posFreqCount))
                                                                               .setStyle(DataSetStyleBuilder.instance()
                                                                                                            .setMarkerColor("darkgoldenrod")
                                                                                                            .setLineColor("darkgoldenrod")
                                                                                                            .build());
 
     DoubleDataSet              theoryDataSet       =
-                                             new DoubleDataSet("Theoretical").set(freqPos, theoryPSD)
+                                             new DoubleDataSet("Theoretical").set(freqPos,
+                                                                                  theoryPSD)
                                                                              .setStyle(DataSetStyleBuilder.instance()
                                                                                                           .setLineWidth(2)
                                                                                                           .build());
@@ -393,11 +436,13 @@ public abstract class GaussianProcessSampler extends
   }
 
   @Override
-  public void start(Stage primaryStage)
+  public void start(Stage stage)
   {
     Spectra   result = generate();
     XYChart[] charts =
-    { newTimeDomainChart(result), newRandomMeasureChart(result), newAutocorrelationChart(result),
+    { newTimeDomainChart(result),
+      newRandomMeasureChart(result),
+      newAutocorrelationChart(result),
       newPowerSpectralDensityChart(result) };
 
     Arrays.stream(charts).forEach(this::configureChart);
@@ -407,7 +452,7 @@ public abstract class GaussianProcessSampler extends
     if (separateWindows)
     {
       Stage[] stages =
-      { primaryStage, new Stage(), new Stage(), new Stage() };
+      { stage, new Stage(), new Stage(), new Stage() };
 
       for (int i = 0; i < charts.length; i++)
       {
@@ -426,15 +471,16 @@ public abstract class GaussianProcessSampler extends
           stages[i].show();
         }
       }
-      primaryStage.show();
+      stage.show();
     }
     else
     {
       GridPane gridPane = createGridPane(charts);
       Scene    scene    = new Scene(gridPane);
-      primaryStage.setScene(scene);
-      primaryStage.setMaximized(true);
-      primaryStage.show();
+      stage.setScene(scene);
+      stage.setMaximized(true);
+      stage.setTitle(getClass().getSimpleName());
+      stage.show();
       if (dark)
       {
         WindowManager.setMoreConduciveStyle(scene);
