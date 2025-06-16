@@ -90,7 +90,7 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
   }
 
   @Override
-  public boolean isConstant()
+  public boolean isLiteralConstant()
   {
     return false;
   }

@@ -238,7 +238,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    */
   public abstract boolean isLeaf();
 
-  public abstract boolean isConstant();
+  public abstract boolean isLiteralConstant();
 
   public boolean isPossiblyNegative()
   {
@@ -391,7 +391,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public boolean isConstantOne()
   {
-    return isConstant() && "1".equals(toString());
+    return isLiteralConstant() && "1".equals(toString());
   }
 
 }

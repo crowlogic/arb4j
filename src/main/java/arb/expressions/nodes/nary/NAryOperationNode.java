@@ -762,10 +762,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   @Override
-  public boolean isConstant()
+  public boolean isLiteralConstant()
   {
-    return this.endIndex.isConstant() && startIndex.isConstant()
-                  && getBranches().stream().allMatch(Node::isConstant);
+    return this.endIndex.isLiteralConstant() && startIndex.isLiteralConstant()
+                  && getBranches().stream().allMatch(Node::isLiteralConstant);
 
   }
 

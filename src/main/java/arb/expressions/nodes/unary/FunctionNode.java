@@ -530,9 +530,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   }
 
   @Override
-  public boolean isConstant()
+  public boolean isLiteralConstant()
   {
-    return arg.isConstant();
+    return arg.isLiteralConstant();
   }
 
   @Override

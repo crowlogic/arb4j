@@ -161,7 +161,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
   }
 
   @Override
-  public boolean isConstant()
+  public boolean isLiteralConstant()
   {
     return false;
   }

@@ -10,6 +10,7 @@ public class ExponentiationNodeTest extends
   {
     var f = RealFunction.parse("(x^(1/2))*(x^(1/2))");
     f.simplify();
+    f.simplify();
     assertEquals( "x➔x", f.toString() );
   }
 }

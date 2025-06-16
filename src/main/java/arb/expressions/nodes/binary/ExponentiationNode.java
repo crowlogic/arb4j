@@ -20,6 +20,24 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
                                BinaryOperationNode<D, R, F>
 {
 
+  @Override
+  public int hashCode()
+  {
+    return super.hashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj)
+      return true;
+    if (!super.equals(obj))
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    return true;
+  }
+
   public String format(Node<D, R, F> side)
   {
     return side.isLeaf() ? "%s" : "(%s)";
@@ -125,15 +143,15 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   public Node<D, R, F> simplify()
   {
     super.simplify();
-    if (right.isConstant() && right.asLiteralConstant().value.equals("1"))
+    if (right.isLiteralConstant() && right.asLiteralConstant().value.equals("1"))
     {
       return left;
     }
-    if (right.isConstant() && right.asLiteralConstant().value.equals("0"))
+    if (right.isLiteralConstant() && right.asLiteralConstant().value.equals("0"))
     {
       return expression.newLiteralConstant(1);
     }
-    if (left.isConstant() && right.isConstant())
+    if (left.isLiteralConstant() && right.isLiteralConstant())
     {
 
       var lconst = left.asLiteralConstant();

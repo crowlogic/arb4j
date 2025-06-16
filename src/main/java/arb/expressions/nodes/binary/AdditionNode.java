@@ -65,12 +65,13 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public Node<D, R, F> simplify()
   {
     super.simplify();
-    if (left.isConstant() && left.toString().equals("0"))
+
+    if (left.isLiteralConstant() && left.toString().equals("0"))
     {
       return right;
     }
 
-    if (right.isConstant() && right.toString().equals("0"))
+    if (right.isLiteralConstant() && right.toString().equals("0"))
     {
       return left;
     }
@@ -93,10 +94,19 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
         {
           var numerator   = expression.newLiteralConstant(sum.getNumerator().toString());
           var denominator = expression.newLiteralConstant(sum.getDenominator().toString());
-          return numerator.div(denominator);
+          return numerator.div(denominator).simplify();
         }
       }
 
+      return this;
+    }
+    else if (left instanceof DivisionNode leftDiv && right instanceof DivisionNode rightDiv)
+    {
+      if  (leftDiv.isLiteralConstant() && rightDiv.isLiteralConstant() )
+      {
+        System.out.format( "%s + %s = %s\n", leftDiv, rightDiv, leftDiv.add(rightDiv).simplify() );
+      }
+      
       return this;
     }
     else

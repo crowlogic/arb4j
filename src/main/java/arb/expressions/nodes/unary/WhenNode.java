@@ -169,7 +169,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   public LiteralConstantNode<D, R, F> evaluateCondition()
   {
     Node<D, R, F> condition = expression.evaluate();
-    if (!condition.isConstant())
+    if (!condition.isLiteralConstant())
     {
       throw new CompilerException("condition of when statement must be the equality of the input variable to an "
                                   + "Integer LiteralConstant type, but got "
@@ -255,9 +255,9 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   }
 
   @Override
-  public boolean isConstant()
+  public boolean isLiteralConstant()
   {
-    return arg.isConstant() && cases.values().stream().allMatch(Node::isConstant);
+    return arg.isLiteralConstant() && cases.values().stream().allMatch(Node::isLiteralConstant);
   }
 
   @Override

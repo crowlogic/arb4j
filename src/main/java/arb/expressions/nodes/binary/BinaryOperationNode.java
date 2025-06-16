@@ -1,30 +1,15 @@
 package arb.expressions.nodes.binary;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.invokeBinaryOperationMethod;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.*;
 import static arb.utensils.Utensils.indent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.AlgebraicNumber;
-import arb.Complex;
-import arb.ComplexPolynomial;
-import arb.ComplexRationalFunction;
-import arb.Fraction;
+import arb.*;
 import arb.Integer;
-import arb.IntegerPolynomial;
-import arb.RationalFunction;
-import arb.Real;
-import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
@@ -46,7 +31,8 @@ import arb.functions.real.RealFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, ? extends C>> extends
+public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, ? extends C>>
+                                         extends
                                          Node<D, C, F>
 {
 
@@ -169,7 +155,8 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   @Override
   public boolean dependsOn(VariableNode<D, C, F> variable)
   {
-    return (left != null && left.dependsOn(variable)) || (right != null && right.dependsOn(variable));
+    return (left != null && left.dependsOn(variable))
+                  || (right != null && right.dependsOn(variable));
   }
 
   @Override
@@ -192,10 +179,12 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
     if (isCommutative())
     {
-      return type().equals(other.type()) && ((Objects.equals(left, other.left) && Objects.equals(right, other.right))
+      return type().equals(other.type()) && ((Objects.equals(left, other.left)
+                    && Objects.equals(right, other.right))
                     || (Objects.equals(left, other.right) && Objects.equals(right, other.left)));
     }
-    return type().equals(other.generatedType) && Objects.equals(left, other.left) && Objects.equals(right, other.right);
+    return type().equals(other.generatedType) && Objects.equals(left, other.left)
+                  && Objects.equals(right, other.right);
   }
 
   @Override
@@ -316,10 +305,9 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   public abstract boolean isCommutative();
 
   @Override
-  public boolean isConstant()
+  public boolean isLiteralConstant()
   {
     return false;
-    //return left.isLiteralConstant() && right.isLiteralConstant();
   }
 
   @Override
@@ -353,9 +341,9 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     return false;
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>> void logSubstitution(String name,
-                                                                                   Node<E, S, G> transformation,
-                                                                                   String tense)
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         void
+         logSubstitution(String name, Node<E, S, G> transformation, String tense)
   {
     System.err.format("BinaryOperation %s(Expression[#%s]).substitute(name=%s, transformation=%s)) into this=%s of type %s\n",
                       tense,
@@ -371,8 +359,9 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     return side.isLeaf() ? "%s" : "(%s)";
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, C, F> substitute(String name,
-                                                                                       Node<E, S, G> transformation)
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<D, C, F>
+         substitute(String name, Node<E, S, G> transformation)
   {
     if (Expression.trace)
     {
@@ -482,7 +471,32 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     assert leftType != null : "lhs type is  null where lhs is " + left + " and a=" + a + " b=" + b;
     assert rightType != null : "rhs type is null where rhs is " + right + " and a=" + a + " b=" + b;
 
-    return (leftType.equals(a) && rightType.equals(b)) || (leftType.equals(b) && rightType.equals(a));
+    return (leftType.equals(a) && rightType.equals(b))
+                  || (leftType.equals(b) && rightType.equals(a));
+  }
+
+  boolean areIntegerDivisions(DivisionNode<D, C, F> leftDiv, DivisionNode<D, C, F> rightDiv)
+  {
+    return leftDiv.left.type().equals(Integer.class) && leftDiv.right.type().equals(Integer.class)
+                  && rightDiv.left.type().equals(Integer.class)
+                  && rightDiv.right.type().equals(Integer.class);
+  }
+
+  Node<D, C, F> combineFractions(DivisionNode<D, C, F> leftDiv, DivisionNode<D, C, F> rightDiv)
+  {
+    // Extract components: leftDiv = a/b, rightDiv = c/d
+    Node<D, C, F> a           = leftDiv.left;   // numerator 1
+    Node<D, C, F> b           = leftDiv.right;  // denominator 1
+    Node<D, C, F> c           = rightDiv.left;  // numerator 2
+    Node<D, C, F> d           = rightDiv.right; // denominator 2
+
+    // Calculate (ad + bc)/(bd)
+    Node<D, C, F> ad          = a.mul(d);
+    Node<D, C, F> bc          = b.mul(c);
+    Node<D, C, F> numerator   = ad.add(bc);
+    Node<D, C, F> denominator = b.mul(d);
+
+    return numerator.div(denominator);
   }
 
   @Override
@@ -490,6 +504,21 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   {
     left  = left.simplify();
     right = right.simplify();
+
+    if (left instanceof DivisionNode<D, C, F> leftDiv
+                  && right instanceof DivisionNode<D, C, F> rightDiv)
+    {
+      System.out.println("wtf");
+      if (areIntegerDivisions(leftDiv, rightDiv))
+      {
+        System.out.println("WOO");
+
+        Node<D, C, F> combined = combineFractions(leftDiv, rightDiv).simplify();
+        System.out.println("combined=" + combined);
+        return combined;
+      }
+    }
+
     return this;
   }
 }

@@ -55,8 +55,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   {
     super.simplify();
 
-    boolean leftIsConstant  = left.isConstant();
-    boolean rightIsConstant = right.isConstant();
+    boolean leftIsConstant  = left.isLiteralConstant();
+    boolean rightIsConstant = right.isLiteralConstant();
 
     if (leftIsConstant)
     {
@@ -96,6 +96,19 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
           var product = lint.mul(rint, 0, rint);
           return expression.newLiteralConstant(product.toString());
         }
+      }
+    }
+
+    if (left instanceof ExponentiationNode<D, R, F> leftExp
+                  && right instanceof ExponentiationNode<D, R, F> rightExp)
+    {
+      // check if the bases of the exponents are equals
+      var leftBase  = leftExp.left;
+      var rightBase = rightExp.left;
+      if (leftBase.equals(rightBase))
+      {
+        var exponentSum = leftExp.right.add(rightExp.right);
+        return leftBase.pow(exponentSum);
       }
     }
 
