@@ -21,7 +21,7 @@ public class Bibliography extends
   public static Article envelopesAndPreEnvelopesOfRealWaveforms               =
                                                                 new Article("Envelopes and pre-envelopes of real waveforms",
                                                                             "James Dugundji",
-                                                                            "2003",
+                                                                            "1958",
                                                                             "IRE Transactions on Information Theory",
                                                                             "4",
                                                                             "53--57").setNumber("1")
