@@ -18,6 +18,15 @@ import arb.documentation.references.Book;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article envelopesAndPreEnvelopesOfRealWaveforms               =
+                                                                new Article("Envelopes and pre-envelopes of real waveforms",
+                                                                            "James Dugundji",
+                                                                            "2003",
+                                                                            "IRE Transactions on Information Theory",
+                                                                            "4",
+                                                                            "53--57").setNumber("1")
+                                                                                     .setPublisher("IEEE");
+
   public static Article variousRandomProcessEnvelopeDefinitions               =
                                                                 new Article("On various definitions of the envelope of a random process",
                                                                             "R.S. Langley",
@@ -50,7 +59,8 @@ public class Bibliography extends
                                                                          "1979",
                                                                          "Journal of Applied Probability",
                                                                          "16",
-                                                                         "822–829").setNumber("4").setMonth("December");
+                                                                         "822–829").setNumber("4")
+                                                                                   .setMonth("December");
 
   public static Article envelopeOscillatoryProcessUpcrossings                 =
                                                               new Article("The Envelope of an Oscillatory Process and Its Upcrossings",
@@ -305,17 +315,19 @@ public class Bibliography extends
                                                             "98",
                                                             "145--160").setPublisher("Cambridge University Press");
 
-  public static Book    functionalAnalysisRieszNagy                           = new Book("Functional Analysis",
-                                                                                         "Frigyes Riesz and Béla Sz.-Nagy",
-                                                                                         "2012").setPublisher("Dover Publications")
-                                                                                                .setSeries("Dover Books on Mathematics")
-                                                                                                .setEdition("unabridged republication of 1955");
+  public static Book    functionalAnalysisRieszNagy                           =
+                                                    new Book("Functional Analysis",
+                                                             "Frigyes Riesz and Béla Sz.-Nagy",
+                                                             "2012").setPublisher("Dover Publications")
+                                                                    .setSeries("Dover Books on Mathematics")
+                                                                    .setEdition("unabridged republication of 1955");
 
-  public static Book    functionalAnalysisYosida                              = new Book("Functional Analysis",
-                                                                                         "吉田 耕作(Kōsaku Yosida)",
-                                                                                         "1995").setPublisher("Springer Berlin Heidelberg")
-                                                                                                .setSeries("Classics in Mathematics")
-                                                                                                .setEdition("Reprint of the 1980 Edition");
+  public static Book    functionalAnalysisYosida                              =
+                                                 new Book("Functional Analysis",
+                                                          "吉田 耕作(Kōsaku Yosida)",
+                                                          "1995").setPublisher("Springer Berlin Heidelberg")
+                                                                 .setSeries("Classics in Mathematics")
+                                                                 .setEdition("Reprint of the 1980 Edition");
 
   public static Article isotropyPrevalenceInSpatialStatistics                 =
                                                               new Article("Why is isotropy so prevalent in spatial statistics?",
@@ -351,11 +363,12 @@ public class Bibliography extends
                                                                "5",
                                                                "946-956");
 
-  public static Book    oneParameterSemigroups                                = new Book("One-Parameter Semigroups",
-                                                                                         "E.B. Davies",
-                                                                                         "1980").setPublisher("Academic Press")
-                                                                                                .setAddress("111 Fifth Avenue New York, New York 10003")
-                                                                                                .setSeries("L.M.S. Monographs");
+  public static Book    oneParameterSemigroups                                =
+                                               new Book("One-Parameter Semigroups",
+                                                        "E.B. Davies",
+                                                        "1980").setPublisher("Academic Press")
+                                                               .setAddress("111 Fifth Avenue New York, New York 10003")
+                                                               .setSeries("L.M.S. Monographs");
 
   public static Article randomProcessWithStationaryIncrements                 =
                                                               new Article("A note on processes with random stationary increments",
@@ -424,9 +437,10 @@ public class Bibliography extends
                                                               "28",
                                                               "2965-2975").setNumber("12");
 
-  public static Book    whittakerAndWatsonCourseOfModernAnalysis              = new Book("A course of modern analysis",
-                                                                                         "Edmund Taylor Whittaker, George Neville Watson",
-                                                                                         "1920").setPublisher("University Press");
+  public static Book    whittakerAndWatsonCourseOfModernAnalysis              =
+                                                                 new Book("A course of modern analysis",
+                                                                          "Edmund Taylor Whittaker, George Neville Watson",
+                                                                          "1920").setPublisher("University Press");
 
   public static void main(String args[]) throws IOException
   {
