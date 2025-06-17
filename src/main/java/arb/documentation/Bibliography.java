@@ -1,9 +1,7 @@
 package arb.documentation;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 
 import arb.documentation.references.Article;
 import arb.documentation.references.Book;
@@ -237,15 +235,6 @@ public class Bibliography extends
                                                                          "21",
                                                                          "337-349");
 
-  public static Article groupsSpecialFunctionsAndRiggedHilbertSpaces          =
-                                                                     new Article("Groups, Special Functions, and Rigged Hilbert Spaces",
-                                                                                 "Celeghini, Enrico and Gadella, Manuel and del Olmo, Mariano A",
-                                                                                 "2019",
-                                                                                 "Axioms",
-                                                                                 "3",
-                                                                                 "89",
-                                                                                 "MDPI");
-
   public static Article shiftedJacobiPolynomialIntegralOperationalMatrix      =
                                                                          new Article("The shifted Jacobi polynomial integral operational matrix for solving Riccati differential equation of fractional order",
                                                                                      "A. Neamaty and B. Agheli and R. Darzi",
@@ -337,14 +326,6 @@ public class Bibliography extends
                                                                           "135",
                                                                           "865–871").setNumber("3")
                                                                                     .setPublisher("American Mathematical Society");
-
-  public static Book    lecturesOnDifferentialAndIntegralEquations            =
-                                                                   new Book("Lectures on Differential and Integral Equations",
-                                                                            "吉田 耕作(Kōsaku Yosida)",
-                                                                            "1960").setPublisher("Interscience Publishers/John Wiley & Sons Inc.")
-                                                                                   .setAddress("New York/London/Sydney")
-                                                                                   .setSeries("Pure and Applied Mathematics")
-                                                                                   .setVolume("X");
 
   public static Book    linearHilbertSpaceTransforms                          =
                                                      new Book("Linear Transformations in Hilbert Space",
