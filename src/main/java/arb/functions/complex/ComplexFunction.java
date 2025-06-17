@@ -10,6 +10,7 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
 import arb.functions.Function;
+import arb.functions.RealToComplexFunction;
 import arb.space.topological.VectorSpace;
 
 /**
@@ -42,6 +43,21 @@ public interface ComplexFunction extends
                                  VectorSpace<Complex>
 
 {
+  
+  public default RealToComplexFunction asRealToComplexFunction()
+  {
+    return new RealToComplexFunction()
+    {
+      
+      @Override
+      public Complex evaluate(Real t, int order, int bits, Complex res)
+      {
+        assert false : "TODO";
+        return null;
+      }
+    };
+  }
+
 
   @Override
   default Class<Complex> coDomainType()
