@@ -1,0 +1,1 @@
+var f = RealFunctionSequence.express("Ψ:k➔√((2*k+½)/π)*((k+1)⋰-½)^2*√((8*k+2)/π)*-1^k*j(2*k,x)");
