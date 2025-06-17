@@ -20,7 +20,7 @@ public class CompiledExpressionClassLoader extends
   @Override
   protected Class<?> findClass(String name) throws ClassNotFoundException
   {
-    System.err.format("findClass(%s) in %s", name, compiledClasses);
+    //System.err.format("findClass(%s) in %s", name, compiledClasses);
     return super.findClass(name);
   }
 

@@ -304,7 +304,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
   public abstract boolean isCommutative();
 
-
   @Override
   public boolean isLeaf()
   {
@@ -351,7 +350,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
   public String stringFormat(Node<?, ?, ?> side)
   {
-    return side.isLeaf() ? "%s" : "(%s)";
+    return side != null && side.isLeaf() ? "%s" : "(%s)";
   }
 
   public <E, S, G extends Function<? extends E, ? extends S>>
@@ -470,12 +469,17 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                   || (leftType.equals(b) && rightType.equals(a));
   }
 
-
   @Override
   public Node<D, C, F> simplify()
   {
-    left  = left.simplify();
-    right = right.simplify();
+    if (left != null)
+    {
+      left = left.simplify();
+    }
+    if (right != null)
+    {
+      right = right.simplify();
+    }
 
     return this;
   }

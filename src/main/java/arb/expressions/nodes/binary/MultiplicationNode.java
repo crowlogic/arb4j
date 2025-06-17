@@ -55,8 +55,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   {
     super.simplify();
 
-    boolean leftIsConstant  = left.isLiteralConstant();
-    boolean rightIsConstant = right.isLiteralConstant();
+    boolean leftIsConstant  = left != null && left.isLiteralConstant();
+    boolean rightIsConstant = right != null && right.isLiteralConstant();
 
     if (leftIsConstant)
     {
@@ -120,6 +120,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
+    assert left != null : this + ".left is null";
+    assert right != null : this + ".right is null";
     return left.spliceInto(newExpression).mul(right.spliceInto(newExpression));
   }
 
