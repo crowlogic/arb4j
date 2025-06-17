@@ -18,17 +18,30 @@ public class DerivativeNodeTest extends
 
   public void testIntegralOfSquareRoot()
   {
-    var f = RealFunction.express("∫y➔1/sqrt(1-y^2)dy=-1..x)");
+    var f = RealFunction.express("∫y➔1/sqrt(1-y^2)dy");
     var y = f.eval(0.75);
 
-    var g = RealFunction.express("arcsin(x)+π⁄2");
+    var g = RealFunction.express("arcsin(y)");
     var z = g.eval(0.75);
-   // assertEquals(f.toString(), g.toString());
+    assertEquals(f.toString(), g.toString());
 
     assertEquals(y, z);
 
   }
-  
+
+  public void testDefiniteIntegralOfSquareRoot()
+  {
+    var f = RealFunction.express("x➔∫y➔1/sqrt(1-y^2)dy∈(-1,x)");
+    var y = f.eval(0.75);
+
+    var g = RealFunction.express("arcsin(x)+π⁄2");
+    var z = g.eval(0.75);
+    // assertEquals(f.toString(), g.toString());
+
+    assertEquals(y, z);
+
+  }
+
   public void testSquareRootDerivative()
   {
     var f  = RealFunction.parse("diff(sqrt(x),x)");
@@ -105,7 +118,7 @@ public class DerivativeNodeTest extends
                                  Real.named("b").set(4),
                                  Real.named("c").set(6));
     var f          = RealFunction.parse("x->a*x+b*x²+c*x³", context);
-    var derivative = f.rootNode.differentiate(f.independentVariable).simplify();
+    var derivative = f.rootNode.differentiate().simplify();
     f.rootNode   = derivative;
     f.expression = derivative.toString();
     var    func = f.instantiate();

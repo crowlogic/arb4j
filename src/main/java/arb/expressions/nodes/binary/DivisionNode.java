@@ -117,7 +117,6 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     // Fundamental pattern: 1/√(1-x²) → arcsin(x)
     if (isOneOverSqrtOneMinusXSquared(variable))
     {
-      assert false : "TODO: how the caller should turn this into the additive constant for the integral range?";
       return variable.arcsin();
     }
 

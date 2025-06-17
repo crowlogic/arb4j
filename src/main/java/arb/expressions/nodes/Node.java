@@ -1,11 +1,9 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.getFieldFromThis;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
@@ -16,15 +14,8 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
-import arb.expressions.nodes.binary.AdditionNode;
-import arb.expressions.nodes.binary.BinaryOperationNode;
-import arb.expressions.nodes.binary.DivisionNode;
-import arb.expressions.nodes.binary.ExponentiationNode;
-import arb.expressions.nodes.binary.MultiplicationNode;
-import arb.expressions.nodes.binary.SubtractionNode;
-import arb.expressions.nodes.unary.AbsoluteValueNode;
-import arb.expressions.nodes.unary.FunctionNode;
-import arb.expressions.nodes.unary.NegationNode;
+import arb.expressions.nodes.binary.*;
+import arb.expressions.nodes.unary.*;
 import arb.expressions.viz.ExpressionTree;
 import arb.functions.Function;
 import arb.utensils.text.latex.Latex;
@@ -71,6 +62,25 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Typesettable,
                           Consumer<Consumer<Node<D, R, F>>>
 {
+
+  @Override
+  public int hashCode()
+  {
+    return Objects.hash(generatedType, isResult);
+  }
+
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Node other = (Node) obj;
+    return Objects.equals(generatedType, other.generatedType) && isResult == other.isResult;
+  }
 
   public int                 bits     = 128;
 
@@ -226,6 +236,12 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return isResult ? "result" : fieldName;
   }
 
+  /**
+   * Compute the indefinite integral of this node
+   * 
+   * @param variable
+   * @return
+   */
   public abstract Node<D, R, F> integrate(VariableNode<D, R, F> variable);
 
   public boolean isIndependentOf(VariableNode<D, R, F> variable)
@@ -396,6 +412,17 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public boolean isConstantOne()
   {
     return isLiteralConstant() && "1".equals(toString());
+  }
+
+  /**
+   * 
+   * @return this{@link #differentiate(VariableNode)} with
+   *         {@link Expression#independentVariable} passed as the variable to be
+   *         differentiated with respect to
+   */
+  public Node<D, R, F> differentiate()
+  {
+    return differentiate(expression.independentVariable);
   }
 
 }
