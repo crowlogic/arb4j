@@ -2,9 +2,6 @@
 %typemap(javafinalize) qqbar_struct ""
 
 %typemap(javaimports) qqbar_struct %{
-import arb.Integer;
-
-
 import arb.documentation.TheArb4jLibrary;
 
 /**

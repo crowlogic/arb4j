@@ -23,7 +23,6 @@ import arb.functions.complex.ComplexNullaryFunction;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
-import arb.space.topological.EuclideanSpace;
 
 /**
  * The {@link Complex} numbers constitute an algebraically closed {@link Field}, a

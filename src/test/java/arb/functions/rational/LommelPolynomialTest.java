@@ -1,16 +1,10 @@
 package arb.functions.rational;
 
-import arb.Fraction;
+import arb.*;
 import arb.Integer;
-import arb.RationalFunction;
-import arb.Real;
-import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
-import arb.functions.rational.LommelPolynomial;
-import arb.functions.rational.RationalFunctionSequence;
-import arb.functions.rational.RationalNullaryFunction;
 import junit.framework.TestCase;
 
 /**

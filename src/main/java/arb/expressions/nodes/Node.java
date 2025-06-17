@@ -78,7 +78,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
       return false;
     if (getClass() != obj.getClass())
       return false;
-    Node other = (Node) obj;
+    Node<?, ?, ?> other = (Node<?, ?, ?>) obj;
     return Objects.equals(generatedType, other.generatedType) && isResult == other.isResult;
   }
 

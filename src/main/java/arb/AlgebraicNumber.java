@@ -8,9 +8,6 @@
 
 package arb;
 
-import arb.Integer;
-
-
 import arb.documentation.TheArb4jLibrary;
 
 /**
