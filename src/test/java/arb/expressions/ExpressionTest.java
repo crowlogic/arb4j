@@ -81,7 +81,7 @@ public class ExpressionTest extends
   {
     var x = RealFunction.parse("int(sec(x),x)");
     x.simplify();
-    assertEquals("log(sec(x)+tan(x))", x.rootNode.toString());
+    assertEquals("log((sec(x))+(tan(x)))", x.rootNode.toString());
   }
 
   public void testIntegralOfTangent()
@@ -389,7 +389,7 @@ public class ExpressionTest extends
     var    transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
     String str                   = transformedExpression.toString();
     // got F:Σn➔((2*z^n)*Πk➔α[k]⋰n{k=1…p})/n!*Πk➔β[k]⋰n{k=1…q}{n=0…N}
-    String ideal                 = "F:Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/(n!*Πk➔β[k]⋰n{k=1…q}){n=0…N}";
+    String ideal                 = "F:Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}";
 
     assertEquals(ideal, str);
   }
@@ -403,7 +403,7 @@ public class ExpressionTest extends
     var    F                     =
              RealPolynomialNullaryFunction.parse("F", "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}", context);
     var    transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
-    String ideal                 = "F:Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/(n!*Πk➔β[k]⋰n{k=1…q}){n=0…N}";
+    String ideal                 = "F:Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}";
     String str                   = transformedExpression.toString();
     // System.out.format("ideal=%s\n str=%s\n", ideal, str );
     assertEquals(ideal, str);

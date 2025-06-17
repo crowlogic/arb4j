@@ -1,37 +1,20 @@
 package arb.expressions.nodes;
 
-
 import static arb.expressions.Compiler.duplicateTopOfTheStack;
 import static arb.expressions.Compiler.loadThisOntoStack;
-import static org.objectweb.asm.Opcodes.ACC_FINAL;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.NEW;
-import static org.objectweb.asm.Opcodes.SIPUSH;
+import static org.objectweb.asm.Opcodes.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 
-import arb.Complex;
-import arb.ComplexConstants;
-import arb.Fraction;
-import arb.FractionConstants;
+import arb.*;
 import arb.Integer;
-import arb.Real;
-import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
-import arb.expressions.Compiler;
-import arb.expressions.Expression;
-import arb.expressions.Parser;
+import arb.expressions.*;
 import arb.functions.Function;
 
 /**
@@ -99,10 +82,12 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return value.contains("-");
   }
 
-  static final String METHOD_DESCRIPTOR_WITHOUT_BITS = Compiler.getMethodDescriptor(Void.class, String.class);
+  static final String METHOD_DESCRIPTOR_WITHOUT_BITS = Compiler.getMethodDescriptor(Void.class,
+                                                                                    String.class);
 
-  static final String METHOD_DESCRIPTOR_WITH_BITS    =
-                                                  Compiler.getMethodDescriptor(Void.class, String.class, int.class);
+  static final String METHOD_DESCRIPTOR_WITH_BITS    = Compiler.getMethodDescriptor(Void.class,
+                                                                                    String.class,
+                                                                                    int.class);
 
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
@@ -151,7 +136,9 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 
   }
 
-  public LiteralConstantNode(Expression<D, R, F> expression, String constantValueString, String name)
+  public LiteralConstantNode(Expression<D, R, F> expression,
+                             String constantValueString,
+                             String name)
   {
     super(expression);
     assert Integer.class.equals(arb.Integer.class) : "an import statement for arb.Integer is probably missing";
@@ -209,7 +196,8 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 
   public ClassVisitor declareField(ClassVisitor classVisitor)
   {
-    classVisitor.visitField(ACC_PUBLIC | ACC_FINAL, fieldName, type().descriptorString(), null, null);
+    classVisitor.visitField(ACC_PUBLIC
+                  | ACC_FINAL, fieldName, type().descriptorString(), null, null);
     return classVisitor;
   }
 
@@ -235,14 +223,18 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     }
     else
     {
-      expression.loadFieldOntoStack(loadThisOntoStack(mv), fieldName, generatedType.descriptorString());
+      expression.loadFieldOntoStack(loadThisOntoStack(mv),
+                                    fieldName,
+                                    generatedType.descriptorString());
     }
 
     if (!resultType.equals(generatedType))
     {
       if (Expression.trace)
       {
-        System.err.format("generateCastTo(resultType=%s) from generatedType=%s\n", resultType, generatedType);
+        System.err.format("generateCastTo(resultType=%s) from generatedType=%s\n",
+                          resultType,
+                          generatedType);
       }
       generateCastTo(mv, resultType);
     }
@@ -266,7 +258,11 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     {
       methodVisitor.visitLdcInsn(fractionValue.getNumerator());
       methodVisitor.visitLdcInsn(fractionValue.getDenominator());
-      methodVisitor.visitMethodInsn(INVOKESPECIAL, Type.getInternalName(Fraction.class), "<init>", "(JJ)V", false);
+      methodVisitor.visitMethodInsn(INVOKESPECIAL,
+                                    Type.getInternalName(Fraction.class),
+                                    "<init>",
+                                    "(JJ)V",
+                                    false);
     }
     else
     {
@@ -276,9 +272,14 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
       {
         methodVisitor.visitIntInsn(SIPUSH, bits);
       }
-      String constructorDescriptor = needsBitsPassedToStringConstructor ? METHOD_DESCRIPTOR_WITH_BITS
-                                                                        : METHOD_DESCRIPTOR_WITHOUT_BITS;
-      methodVisitor.visitMethodInsn(INVOKESPECIAL, Type.getInternalName(type), "<init>", constructorDescriptor, false);
+      String constructorDescriptor =
+                                   needsBitsPassedToStringConstructor ? METHOD_DESCRIPTOR_WITH_BITS
+                                                                      : METHOD_DESCRIPTOR_WITHOUT_BITS;
+      methodVisitor.visitMethodInsn(INVOKESPECIAL,
+                                    Type.getInternalName(type),
+                                    "<init>",
+                                    constructorDescriptor,
+                                    false);
     }
 
     expression.putField(methodVisitor, fieldName, type);
@@ -295,8 +296,10 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     loadConstantOntoStack(mv, fn, Complex.class, ComplexConstants.class);
   }
 
-  public void
-         loadConstantOntoStack(MethodVisitor mv, String fieldName, Class<?> typeClass, Class<?> staticConstantsClass)
+  public void loadConstantOntoStack(MethodVisitor mv,
+                                    String fieldName,
+                                    Class<?> typeClass,
+                                    Class<?> staticConstantsClass)
   {
     mv.visitFieldInsn(Opcodes.GETSTATIC,
                       Type.getInternalName(staticConstantsClass),
@@ -307,12 +310,16 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   @Override
   public String toString()
   {
-    return value;
+    return value.startsWith("-") ? "(" + value + ")" : value;
   }
 
   public String toString(int depth)
   {
-    return String.format("%s[fieldName=%s, value=%s, depth=%s]", getClass().getSimpleName(), fieldName, value, depth);
+    return String.format("%s[fieldName=%s, value=%s, depth=%s]",
+                         getClass().getSimpleName(),
+                         fieldName,
+                         value,
+                         depth);
   }
 
   @Override
@@ -334,7 +341,9 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     }
     else if (fractionValue != null)
     {
-      return String.format("\\frac{%s}{%s}", fractionValue.getNumerator(), fractionValue.getDenominator());
+      return String.format("\\frac{%s}{%s}",
+                           fractionValue.getNumerator(),
+                           fractionValue.getDenominator());
     }
     else
     {
@@ -360,8 +369,9 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return mul(variable);
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
-                                                                                       Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<D, R, F>
+         substitute(String variable, Node<E, S, G> arg)
   {
     return this;
   }
@@ -399,8 +409,6 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   {
     return '#';
   }
-
-
 
   public boolean isZero()
   {

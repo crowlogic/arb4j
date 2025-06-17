@@ -67,14 +67,14 @@ public class DerivativeNodeTest extends
   public void testCotangentDerivative()
   {
     var f  = RealFunction.parse("∂cot(x)/∂x");
-    var df = RealFunction.parse("-1-cot(x)^2");
-    assertEquals(df.rootNode.toString(), f.rootNode.toString());
+    var df = RealFunction.parse("(-1)-cot(x)^2");
+    assertEquals(df.toString(), f.toString());
   }
 
   public void testCosecantDerivative()
   {
     var f  = RealFunction.parse("∂csc(x)/∂x");
-    var df = RealFunction.parse("-csc(x)*cot(x)");
+    var df = RealFunction.parse("(-csc(x))*cot(x)");
     assertEquals(df.rootNode.toString(), f.rootNode.toString());
   }
 
