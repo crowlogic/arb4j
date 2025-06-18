@@ -1,9 +1,11 @@
 package arb.expressions.nodes;
 
+
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
@@ -31,7 +33,8 @@ public class DerivativeNodeTest extends
 
   public void testDefiniteIntegralOfSquareRoot()
   {
-    var f = RealFunction.express("x➔∫y➔1/sqrt(1-y^2)dy∈(-1,x)");
+    Expression.trace = true;
+    var f = RealFunction.express("∫y➔1/sqrt(1-y^2)dy∈(-1,x)");
     var y = f.eval(0.75);
 
     var g = RealFunction.express("arcsin(x)+π⁄2");

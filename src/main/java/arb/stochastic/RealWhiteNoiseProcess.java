@@ -1,21 +1,64 @@
 package arb.stochastic;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-import arb.*;
+import arb.RandomState;
+import arb.Real;
+import arb.arblib;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 
 /**
  * Standard normal (unit Gaussian) sampler using Arb/FLINT arb_urandom and
- * Box-Muller. Caches the second deviate in a structure, no Java RNG is used.
+ * the Box-Muller method. 
+ *
+ * @author ©2024 Stephen Crowley
+ *
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
-public final class RealRandomStandardNormalStream implements
-                                                  AutoCloseable
+public final class RealWhiteNoiseProcess implements
+                                         AutoCloseable
 {
   private final Real        cached;
   private boolean           hasCached;
   private final RandomState state;
 
-  public RealRandomStandardNormalStream()
+  public Stream<Real> stream(int bits, int limit)
+  {
+    return StreamSupport.stream(Spliterators.spliterator(iterator(bits, limit),
+                                                         limit,
+                                                         Spliterator.SIZED | Spliterator.ORDERED),
+                                false);
+  }
+
+  public Iterator<Real> iterator(int bits, int limit)
+  {
+    return new Iterator<Real>()
+    {
+      int n = 0;
+
+      @Override
+      public boolean hasNext()
+      {
+        return n < limit;
+      }
+
+      @Override
+      public Real next()
+      {
+        n++;
+        return sample(bits, new Real());
+      }
+    };
+  }
+
+  public RealWhiteNoiseProcess()
   {
     this.state     = new RandomState();
     this.cached    = new Real();
@@ -30,7 +73,7 @@ public final class RealRandomStandardNormalStream implements
   Real theta = new Real();
   Real pi    = new Real();
 
-  public RealRandomStandardNormalStream initializeWithSeed(long seed)
+  public RealWhiteNoiseProcess initializeWithSeed(long seed)
   {
     arblib.gmp_randseed_ui(state.getGmpRandomState(), seed);
     return this;
