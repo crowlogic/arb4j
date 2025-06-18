@@ -8,8 +8,7 @@ public class FunctionNodeTest extends
 {
   public static void testSquareRootSimplification()
   {
-    var f = RealFunction.parse("sqrt(x)*sqrt(x)");
-    f.simplify();
-    assertEquals( "x➔x", f.toString() );
+    var f = RealFunction.express("sqrt(x)*sqrt(x)");
+    assertEquals("x➔x", f.toString());
   }
 }

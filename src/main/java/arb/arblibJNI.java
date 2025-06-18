@@ -9,6 +9,9 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void gmp_randseed_ui(long jarg1, GMPRandomState jarg1_, long jarg2);
+  public final static native void gmp_randinit_default(long jarg1, GMPRandomState jarg1_);
+  public final static native void arb_urandom(long jarg1, Real jarg1_, long jarg2, RandomState jarg2_, int jarg3);
   public final static native int fmpq_is_one(long jarg1, Fraction jarg1_);
   public final static native void arb_hypgeom_gamma_lower(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4, int jarg5);
   public final static native void acb_hypgeom_gamma_lower(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4, int jarg5);
@@ -811,8 +814,8 @@ public class arblibJNI {
   public final static native void delete_RandomAlgorithmData(long jarg1);
   public final static native void RandomState_gmpRandomState_set(long jarg1, RandomState jarg1_, long jarg2, GMPRandomState jarg2_);
   public final static native long RandomState_gmpRandomState_get(long jarg1, RandomState jarg1_);
-  public final static native void RandomState_initialValue_set(long jarg1, RandomState jarg1_, int jarg2);
-  public final static native int RandomState_initialValue_get(long jarg1, RandomState jarg1_);
+  public final static native void RandomState_initialized_set(long jarg1, RandomState jarg1_, int jarg2);
+  public final static native int RandomState_initialized_get(long jarg1, RandomState jarg1_);
   public final static native void RandomState_randomValue_set(long jarg1, RandomState jarg1_, long jarg2);
   public final static native long RandomState_randomValue_get(long jarg1, RandomState jarg1_);
   public final static native void RandomState_randomValue2_set(long jarg1, RandomState jarg1_, long jarg2);

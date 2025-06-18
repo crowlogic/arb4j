@@ -72,7 +72,7 @@ typedef unsigned long int mp_limb_t;
 %rename (numeratorAddress) num;
 %rename (Fraction) fmpq;
 %rename (rowPointers) rows;
-%rename (initialValue) gmp_init;
+%rename (initialized) gmp_init;
 %rename (gmpRandomState) gmp_state;
 %rename (algorithmData) _mp_algdata;
 %rename (randomValue) __randval;
@@ -182,6 +182,8 @@ typedef unsigned long int mp_limb_t;
 %include "AlgebraicNumber.i"
 
 %include "SymbolicExpression.i"
+
+%include "RandomState.i"
 
 %include "TypesAndStructures.i"
 

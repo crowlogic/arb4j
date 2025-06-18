@@ -8,7 +8,7 @@
 
 package arb;
 
-public class RandomState {
+public class RandomState implements AutoCloseable {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
@@ -21,11 +21,6 @@ public class RandomState {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  @SuppressWarnings({"deprecation", "removal"})
-  protected void finalize() {
-    delete();
-  }
-
   public synchronized void delete() {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
@@ -36,6 +31,19 @@ public class RandomState {
     }
   }
 
+
+ static
+ {
+   System.loadLibrary( "arblib" );
+ }
+
+  @Override
+  public void close() throws Exception
+  {
+    delete();
+  }
+   
+
   public void setGmpRandomState(GMPRandomState value) {
     arblibJNI.RandomState_gmpRandomState_set(swigCPtr, this, GMPRandomState.getCPtr(value), value);
   }
@@ -45,12 +53,12 @@ public class RandomState {
     return (cPtr == 0) ? null : new GMPRandomState(cPtr, false);
   }
 
-  public void setInitialValue(int value) {
-    arblibJNI.RandomState_initialValue_set(swigCPtr, this, value);
+  public void setInitialized(int value) {
+    arblibJNI.RandomState_initialized_set(swigCPtr, this, value);
   }
 
-  public int getInitialValue() {
-    return arblibJNI.RandomState_initialValue_get(swigCPtr, this);
+  public int getInitialized() {
+    return arblibJNI.RandomState_initialized_get(swigCPtr, this);
   }
 
   public void setRandomValue(long value) {

@@ -16,6 +16,12 @@
 #include <unistd.h>
 #include <wchar.h>
 
+void gmp_randseed_ui (gmp_randstate_t, unsigned long int);
+
+void gmp_randinit_default (gmp_randstate_t);
+
+void arb_urandom(arb_t x, flint_rand_t state, slong prec);
+
 int fmpq_is_one(const fmpq_t x);
 
 void arb_hypgeom_gamma_lower(arb_t res, const arb_t s, const arb_t z, int regularized, slong prec);

@@ -9,6 +9,18 @@
 package arb;
 
 public class arblib {
+  public static void gmp_randseed_ui(GMPRandomState arg0, long arg1) {
+    arblibJNI.gmp_randseed_ui(GMPRandomState.getCPtr(arg0), arg0, arg1);
+  }
+
+  public static void gmp_randinit_default(GMPRandomState arg0) {
+    arblibJNI.gmp_randinit_default(GMPRandomState.getCPtr(arg0), arg0);
+  }
+
+  public static void arb_urandom(Real x, RandomState state, int prec) {
+    arblibJNI.arb_urandom(Real.getCPtr(x), x, RandomState.getCPtr(state), state, prec);
+  }
+
   public static int fmpq_is_one(Fraction x) {
     return arblibJNI.fmpq_is_one(Fraction.getCPtr(x), x);
   }
