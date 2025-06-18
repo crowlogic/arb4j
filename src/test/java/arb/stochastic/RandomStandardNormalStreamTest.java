@@ -9,7 +9,7 @@ public class RandomStandardNormalStreamTest extends
   public void testIt()
   {
     int bits = 128;
-    try ( RandomStandardNormalStream stream = new RandomStandardNormalStream())
+    try ( RealRandomStandardNormalStream stream = new RealRandomStandardNormalStream())
     {
       stream.initializeWithSeed(777);
 

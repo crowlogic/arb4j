@@ -37,7 +37,7 @@ public abstract class GaussianProcessSampler extends
 
   /**
    * TODO: Modify this to get normally distributed unit variables from the
-   * {@link RandomStandardNormalStream} and use {@link FloatInterval} to call
+   * {@link RealRandomStandardNormalStream} and use {@link FloatInterval} to call
    * {@link RealFunction#quantize(FloatInterval, int, int, boolean)} and then
    * calculates its variance {@link Real#structure(int, int, Real)} function..
    * 

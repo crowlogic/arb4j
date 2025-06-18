@@ -8,14 +8,14 @@ import arb.*;
  * Standard normal (unit Gaussian) sampler using Arb/FLINT arb_urandom and
  * Box-Muller. Caches the second deviate in a structure, no Java RNG is used.
  */
-public final class RandomStandardNormalStream implements
-                                              AutoCloseable
+public final class RealRandomStandardNormalStream implements
+                                                  AutoCloseable
 {
   private final Real        cached;
   private boolean           hasCached;
   private final RandomState state;
 
-  public RandomStandardNormalStream()
+  public RealRandomStandardNormalStream()
   {
     this.state     = new RandomState();
     this.cached    = new Real();
@@ -30,7 +30,7 @@ public final class RandomStandardNormalStream implements
   Real theta = new Real();
   Real pi    = new Real();
 
-  public RandomStandardNormalStream initializeWithSeed(long seed)
+  public RealRandomStandardNormalStream initializeWithSeed(long seed)
   {
     arblib.gmp_randseed_ui(state.getGmpRandomState(), seed);
     return this;
