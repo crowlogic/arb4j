@@ -1,7 +1,6 @@
 package arb.stochastic;
 
 import java.util.Arrays;
-import java.util.stream.Stream;
 
 import arb.*;
 
@@ -41,50 +40,42 @@ public final class RandomStandardNormalStream implements
    * Generate a standard normal sample using Arb's arb_urandom.
    * 
    * @param prec Precision in bits
-   * @param out  Output Real (may be this.cached)
+   * @param out  Output Real
    * @return out, containing the sample
    */
   public Real sample(int prec, Real out)
   {
     if (hasCached)
     {
-      out.set(cached);
       hasCached = false;
-      return out;
+      return out.set(cached);
     }
     else
     {
-      // u1 in (0,1), must be > 0
+      hasCached = true;
+
       do
       {
         arblib.arb_urandom(u1, state, prec);
       }
       while (u1.isZero());
 
-      // u2 in [0,1)
       arblib.arb_urandom(u2, state, prec);
-
-      // r = sqrt(-2 * log(u1))
-      u1.log(prec, r).mul(-2, prec).sqrt(prec, r);
-
-      // theta = 2 * pi * u2
+      u1.log(prec, r).mul(-2, prec).sqrt(prec);
       theta.set(pi.π(prec)).mul(2, prec).mul(u2, prec);
-
-      // out = r * cos(theta)
-      theta.cos(prec, out).mul(r, prec, out);
-
-      // cached = r * sin(theta)
-      theta.sin(prec, cached).mul(r, prec, cached);
-
-      hasCached = true;
-      return out;
+      theta.sin(prec, cached).mul(r, prec);
+      return theta.cos(prec, out).mul(r, prec);
     }
   }
 
   @Override
   public void close()
   {
-    Arrays.asList(cached, u1, u2, r, theta, pi).forEach(Real::close);
+    if (hasCached)
+    {
+      cached.close();
+    }
+    Arrays.asList(u1, u2, r, theta, pi).forEach(Real::close);
   }
 
 }

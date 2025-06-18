@@ -23,6 +23,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 /**
+ * TODO: use {@link RandomStandardNormalStream}
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -448,7 +449,6 @@ public abstract class GaussianProcessSampler extends
     Arrays.stream(charts).forEach(this::configureChart);
 
     separateWindows = getParameters().getUnnamed().contains("--separate-windows");
-
 
     if (separateWindows)
     {
