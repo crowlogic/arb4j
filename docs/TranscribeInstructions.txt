@@ -51,8 +51,11 @@ When transcribing content from visual or non-LaTeX raw sources (such as images o
     - Do not assume input is already in LaTeX (do not repeat or reference the type of input).
     - Never omit content or paraphrase-transcribe faithfully as it appears.
 
-13. **Extra: Error-Free References**
+13. **Error-Free References**
     - Double check that every label used in a `\ref` or `\eqref` command is actually assigned to an environment.
     - Likewise, ensure every `\cite{}` key exists in the bibliography.
 
+14. **Footnotes**
+    - Make sure all footnotes are represented using the appropriate footnote tags
+    
 By adhering to these rules, you will produce a LaTeX document that is both structured, precise, and ready for further academic or technical use.
