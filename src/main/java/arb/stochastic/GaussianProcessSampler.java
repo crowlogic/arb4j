@@ -23,7 +23,6 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 /**
- * TODO: use {@link RandomStandardNormalStream}
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -38,7 +37,7 @@ public abstract class GaussianProcessSampler extends
 
   /**
    * TODO: Modify this to get normally distributed unit variables from the
-   * {@link RandomState} and use {@link FloatInterval} to call
+   * {@link RandomStandardNormalStream} and use {@link FloatInterval} to call
    * {@link RealFunction#quantize(FloatInterval, int, int, boolean)} and then
    * calculates its variance {@link Real#structure(int, int, Real)} function..
    * 
