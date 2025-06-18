@@ -1,5 +1,8 @@
 package arb.stochastic;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 import arb.*;
 
 /**
@@ -22,6 +25,12 @@ public final class RandomStandardNormalStream implements
     state.setInitialized(1);
   }
 
+  Real u1    = new Real();
+  Real u2    = new Real();
+  Real r     = new Real();
+  Real theta = new Real();
+  Real pi    = new Real();
+
   public RandomStandardNormalStream initializeWithSeed(long seed)
   {
     arblib.gmp_randseed_ui(state.getGmpRandomState(), seed);
@@ -43,34 +52,30 @@ public final class RandomStandardNormalStream implements
       hasCached = false;
       return out;
     }
-    try ( Real u1 = new Real(); Real u2 = new Real(); Real r = new Real(); Real theta = new Real();
-          Real z0 = new Real(); Real z1 = new Real(); Real pi = new Real();)
+    else
     {
       // u1 in (0,1), must be > 0
       do
       {
-        arblib.arb_urandom(u1, getState(), prec);
+        arblib.arb_urandom(u1, state, prec);
       }
       while (u1.isZero());
 
       // u2 in [0,1)
-      arblib.arb_urandom(u2, getState(), prec);
+      arblib.arb_urandom(u2, state, prec);
 
       // r = sqrt(-2 * log(u1))
       u1.log(prec, r).mul(-2, prec).sqrt(prec, r);
 
       // theta = 2 * pi * u2
-      theta.set(pi.π(prec)).mul(2, prec, theta).mul(u2, prec, theta);
+      theta.set(pi.π(prec)).mul(2, prec).mul(u2, prec);
 
-      // z0 = r * cos(theta)
-      theta.cos(prec, z0).mul(r, prec, z0);
+      // out = r * cos(theta)
+      theta.cos(prec, out).mul(r, prec, out);
 
-      // z1 = r * sin(theta)
-      theta.sin(prec, z1).mul(r, prec, z1);
+      // cached = r * sin(theta)
+      theta.sin(prec, cached).mul(r, prec, cached);
 
-      // Output z0, cache z1
-      out.set(z0);
-      cached.set(z1);
       hasCached = true;
       return out;
     }
@@ -79,12 +84,7 @@ public final class RandomStandardNormalStream implements
   @Override
   public void close()
   {
-    cached.close();
-  }
-
-  public RandomState getState()
-  {
-    return state;
+    Arrays.asList(cached, u1, u2, r, theta, pi).forEach(Real::close);
   }
 
 }

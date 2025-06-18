@@ -1,12 +1,13 @@
-compiler: implement ∂/∂x[∏ᵢ₌₁ᵏfᵢ(x)] = ∑ᵢ₌₁ᵏ[(∂/∂x fᵢ(x))∏ⱼ₌₁,ⱼ≠ᵢᵏfⱼ(x)]
-compiler: SphericalBesselFunction functional bug #581
-compiler: move expression evaluation that doesnt depend on input to the evaluate method to the initialization method #567
-compiler: implement caching #555
-compiler: implement switching of order-of-integration via Fubini's or Tonelli's theorem #549
-api: implement orthogonal function sequence expansion api #546
-compiler: Implement common subexpression elimination #518
-api: Create Fractional Riccati Differential Equation Solver using Jacobi Tau Method #261
-GaussianProcessSampler: add U&V to charts
+implement ∂/∂x[∏ᵢ₌₁ᵏfᵢ(x)] = ∑ᵢ₌₁ᵏ[(∂/∂x fᵢ(x))∏ⱼ₌₁,ⱼ≠ᵢᵏfⱼ(x)]
+SphericalBesselFunction functional bug #581
+expression compiler optimization: move expression evaluation that doesnt depend on input to the evaluate method to the initialization method #567
+expression compiler: implement caching #555
+Expression Compiler: implement switching of order-of-integration via Fubini's or Tonelli's theorem #549
+implement orthogonal function sequence expansion api #546
+expr compiler: Implement common subexpression elimination #518
+Create Fractional Riccati Differential Equation Solver using Jacobi Tau Method #261
+RandomWaveSampler: add U&V to charts
 GaussianProcessSampler: replace remaining double usage with Reals
 GaussianProcessSampler: add ability to edit the random white noise measure and see the results of it in real time by resampling (involves the availability of hooks or making a plugni for ChartFX most likely)
-GaussianProcessSampler: add ComplexDataSet and modify the GaussianProcessSampler to use it instead of two separate RealDataSets as it presently does
+plotting: add ComplexDataSet and modify the GaussianProcessSampler to use it instead of two separate RealDataSets as it presently does
+let RandomStandardNormalStream implement Stream<Real>

@@ -8,17 +8,18 @@ public class RandomStandardNormalStreamTest extends
 {
   public void testIt()
   {
-    int                        bits   = 128;
-    RandomStandardNormalStream stream = new RandomStandardNormalStream();
-    stream.initializeWithSeed(808);
-
-    System.out.format("initialSeed=%s\n", stream.getState().getGmpRandomState());
-    for (int i = 0; i < 45; i++)
+    int bits = 128;
+    try ( RandomStandardNormalStream stream = new RandomStandardNormalStream())
     {
-      try ( var sample = new Real())
+      stream.initializeWithSeed(777);
+
+      for (int i = 0; i < 45; i++)
       {
-        stream.sample(bits, sample);
-        System.out.println(sample);
+        try ( var sample = new Real())
+        {
+          stream.sample(bits, sample);
+          System.out.println(sample);
+        }
       }
     }
   }
