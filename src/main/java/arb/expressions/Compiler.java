@@ -204,14 +204,16 @@ public class Compiler
     return express(className, expression, context, domainClass, coDomainClass, functionClass, verbose);
   }
 
-  public static void constructNewObject(MethodVisitor mv, String functionFieldType)
+  public static MethodVisitor generateNewObjectInstruction(MethodVisitor mv, String functionFieldType)
   {
     mv.visitTypeInsn(Opcodes.NEW, functionFieldType);
+    return mv;
   }
 
-  public static void constructNewObject(MethodVisitor mv, Class<?> functionFieldType)
+  public static MethodVisitor generateNewObjectInstruction(MethodVisitor mv, Class<?> functionFieldType)
   {
     mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(functionFieldType));
+    return mv;
   }
 
   public static MethodVisitor defineMethod(ClassVisitor classVisitor, String methodName, String methodSignature)
@@ -731,6 +733,28 @@ public class Compiler
   {
     getField(mv, Integer.class, "swigCPtr", long.class);
     return mv;
+  }
+
+  public static void generateInstructionToLoadConstantOntoStack(MethodVisitor mv,
+                                                                String fieldName,
+                                                                Class<?> typeClass,
+                                                                Class<?> staticConstantsClass)
+  {
+    mv.visitFieldInsn(Opcodes.GETSTATIC,
+                      Type.getInternalName(staticConstantsClass),
+                      fieldName,
+                      typeClass.descriptorString());
+  }
+
+  public static void generateInstructionToLoadImaginaryUnitConstantOntoStack(MethodVisitor mv,
+                                                                             String fn)
+  {
+    generateInstructionToLoadConstantOntoStack(mv, fn, Complex.class, ComplexConstants.class);
+  }
+
+  public static void generateInstructionToLoadRealConstantOntoStack(MethodVisitor mv, String fn)
+  {
+    generateInstructionToLoadConstantOntoStack(mv, fn, Real.class, RealConstants.class);
   }
 
 }

@@ -108,7 +108,12 @@ import arb.utensils.Utensils;
       return blip.set(this).floor(bits, result);
     }
   }
-      
+
+  public boolean isOne()
+  {
+    return arblib.fmpq_is_one(this) != 0;
+  }
+        
   public RealPolynomial add(RealPolynomial that, int bits, RealPolynomial result)
   {
     result.set(this);

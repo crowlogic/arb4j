@@ -1,7 +1,6 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.duplicateTopOfTheStack;
-import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.*;
 import static org.objectweb.asm.Opcodes.*;
 
 import java.util.*;
@@ -82,12 +81,12 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return value.contains("-");
   }
 
-  static final String METHOD_DESCRIPTOR_WITHOUT_BITS = Compiler.getMethodDescriptor(Void.class,
-                                                                                    String.class);
+  static final String BITLESS_METHOD_DESCRIPTOR = Compiler.getMethodDescriptor(Void.class,
+                                                                               String.class);
 
-  static final String METHOD_DESCRIPTOR_WITH_BITS    = Compiler.getMethodDescriptor(Void.class,
-                                                                                    String.class,
-                                                                                    int.class);
+  static final String METHOD_DESCRIPTOR         = Compiler.getMethodDescriptor(Void.class,
+                                                                               String.class,
+                                                                               int.class);
 
   @Override
   public boolean dependsOn(VariableNode<D, R, F> variable)
@@ -116,17 +115,17 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return constantSymbols.contains(var);
   }
 
-  public boolean       isInt       = false;
+  public final boolean  isInt;
 
-  public final String  value;
+  public final String   value;
 
-  public boolean       isImaginary = false;
+  public final boolean  isImaginary;
 
-  public Fraction      fractionValue;
+  public final Fraction fractionValue;
 
-  public final boolean isDecimal;
+  public final boolean  isDecimal;
 
-  public final boolean isFraction;
+  public final boolean  isFraction;
 
   public LiteralConstantNode(Expression<D, R, F> expression, String constantValueString)
   {
@@ -152,6 +151,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     {
       fieldName  = Parser.fractionFieldNames.get(firstCharOfValue);
       isFraction = true;
+      isInt      = false;
       return;
     }
     else
@@ -205,27 +205,31 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     generatedType = type();
-    if (fractionValue != null)
+    switch (fieldName)
     {
-      loadConstantOntoStack(mv, fieldName, Fraction.class, FractionConstants.class);
-    }
-    else if (π.equals(fieldName))
-    {
-      loadRealConstantOntoStack(mv, π);
-    }
-    else if (infinity.equals(fieldName))
-    {
-      loadRealConstantOntoStack(mv, "infinity");
-    }
-    else if (ⅈ.equals(fieldName))
-    {
-      loadImaginaryUnitConstantOntoStack(mv, ⅈ);
-    }
-    else
-    {
-      expression.loadFieldOntoStack(loadThisOntoStack(mv),
-                                    fieldName,
-                                    generatedType.descriptorString());
+    case π:
+      generateInstructionToLoadRealConstantOntoStack(mv, π);
+      break;
+    case infinity:
+      generateInstructionToLoadRealConstantOntoStack(mv, "infinity");
+      break;
+    case ⅈ:
+      generateInstructionToLoadImaginaryUnitConstantOntoStack(mv, ⅈ);
+      break;
+    default:
+      if (fractionValue != null)
+      {
+        generateInstructionToLoadConstantOntoStack(mv,
+                                                   fieldName,
+                                                   Fraction.class,
+                                                   FractionConstants.class);
+      }
+      else
+      {
+        expression.loadFieldOntoStack(loadThisOntoStack(mv),
+                                      fieldName,
+                                      generatedType.descriptorString());
+      }
     }
 
     if (!resultType.equals(generatedType))
@@ -247,64 +251,51 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return mv;
   }
 
-  public MethodVisitor generateLiteralConstantInitializerWithString(MethodVisitor methodVisitor)
+  public MethodVisitor generateLiteralConstantInitializer(MethodVisitor methodVisitor)
   {
     Class<?> type = type();
-    loadThisOntoStack(methodVisitor);
-    methodVisitor.visitTypeInsn(NEW, Type.getInternalName(type));
-    duplicateTopOfTheStack(methodVisitor);
+
+    duplicateTopOfTheStack(generateNewObjectInstruction(loadThisOntoStack(methodVisitor), type));
 
     if (fractionValue != null)
     {
-      methodVisitor.visitLdcInsn(fractionValue.getNumerator());
-      methodVisitor.visitLdcInsn(fractionValue.getDenominator());
-      methodVisitor.visitMethodInsn(INVOKESPECIAL,
-                                    Type.getInternalName(Fraction.class),
-                                    "<init>",
-                                    "(JJ)V",
-                                    false);
+      generateFractionConstructor(methodVisitor);
     }
     else
     {
-      methodVisitor.visitLdcInsn(value);
-      boolean needsBitsPassedToStringConstructor = type.equals(Real.class);
-      if (needsBitsPassedToStringConstructor)
-      {
-        methodVisitor.visitIntInsn(SIPUSH, bits);
-      }
-      String constructorDescriptor =
-                                   needsBitsPassedToStringConstructor ? METHOD_DESCRIPTOR_WITH_BITS
-                                                                      : METHOD_DESCRIPTOR_WITHOUT_BITS;
-      methodVisitor.visitMethodInsn(INVOKESPECIAL,
-                                    Type.getInternalName(type),
-                                    "<init>",
-                                    constructorDescriptor,
-                                    false);
+      generateConstructor(methodVisitor, type);
     }
 
     expression.putField(methodVisitor, fieldName, type);
     return methodVisitor;
   }
 
-  public void loadRealConstantOntoStack(MethodVisitor mv, String fn)
+  protected void generateConstructor(MethodVisitor methodVisitor, Class<?> type)
   {
-    loadConstantOntoStack(mv, fn, Real.class, RealConstants.class);
+    methodVisitor.visitLdcInsn(value);
+    boolean needsBitsPassedToStringConstructor = type.equals(Real.class);
+    if (needsBitsPassedToStringConstructor)
+    {
+      methodVisitor.visitIntInsn(SIPUSH, bits);
+    }
+    String constructorDescriptor = needsBitsPassedToStringConstructor ? METHOD_DESCRIPTOR
+                                                                      : BITLESS_METHOD_DESCRIPTOR;
+    methodVisitor.visitMethodInsn(INVOKESPECIAL,
+                                  Type.getInternalName(type),
+                                  "<init>",
+                                  constructorDescriptor,
+                                  false);
   }
 
-  public void loadImaginaryUnitConstantOntoStack(MethodVisitor mv, String fn)
+  protected void generateFractionConstructor(MethodVisitor methodVisitor)
   {
-    loadConstantOntoStack(mv, fn, Complex.class, ComplexConstants.class);
-  }
-
-  public void loadConstantOntoStack(MethodVisitor mv,
-                                    String fieldName,
-                                    Class<?> typeClass,
-                                    Class<?> staticConstantsClass)
-  {
-    mv.visitFieldInsn(Opcodes.GETSTATIC,
-                      Type.getInternalName(staticConstantsClass),
-                      fieldName,
-                      typeClass.descriptorString());
+    methodVisitor.visitLdcInsn(fractionValue.getNumerator());
+    methodVisitor.visitLdcInsn(fractionValue.getDenominator());
+    methodVisitor.visitMethodInsn(INVOKESPECIAL,
+                                  Type.getInternalName(Fraction.class),
+                                  "<init>",
+                                  "(JJ)V",
+                                  false);
   }
 
   @Override
@@ -325,11 +316,8 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
   @Override
   public Class<?> type()
   {
-    if (fractionValue != null)
-    {
-      return Fraction.class;
-    }
-    return isInt ? Integer.class : isImaginary ? Complex.class : Real.class;
+    return fractionValue != null ? Fraction.class : isInt ? Integer.class
+                         : isImaginary ? Complex.class : Real.class;
   }
 
   @Override
@@ -412,12 +400,12 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 
   public boolean isZero()
   {
-    return "0".equals(value);
+    return "0".equals(value) || (fractionValue != null && fractionValue.isZero());
   }
 
   public boolean isOne()
   {
-    return "1".equals(value);
+    return "1".equals(value) || (fractionValue != null && fractionValue.isOne());
   }
 
 }

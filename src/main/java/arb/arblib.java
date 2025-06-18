@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static int fmpq_is_one(Fraction x) {
+    return arblibJNI.fmpq_is_one(Fraction.getCPtr(x), x);
+  }
+
   public static void arb_hypgeom_gamma_lower(Real res, Real s, Real z, int regularized, int prec) {
     arblibJNI.arb_hypgeom_gamma_lower(Real.getCPtr(res), res, Real.getCPtr(s), s, Real.getCPtr(z), z, regularized, prec);
   }

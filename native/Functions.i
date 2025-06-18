@@ -16,6 +16,8 @@
 #include <unistd.h>
 #include <wchar.h>
 
+int fmpq_is_one(const fmpq_t x);
+
 void arb_hypgeom_gamma_lower(arb_t res, const arb_t s, const arb_t z, int regularized, slong prec);
 void acb_hypgeom_gamma_lower(acb_t res, const acb_t s, const acb_t z, int modified, slong prec);
 

@@ -2,7 +2,7 @@ package arb.expressions;
 
 import static arb.expressions.Compiler.addNullCheckForField;
 import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.constructNewObject;
+import static arb.expressions.Compiler.generateNewObjectInstruction;
 import static arb.expressions.Compiler.defineMethod;
 import static arb.expressions.Compiler.duplicateTopOfTheStack;
 import static arb.expressions.Compiler.generateFunctionInterface;
@@ -1176,7 +1176,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     function.generate();
 
-    constructNewObject(mv, function.className);
+    generateNewObjectInstruction(mv, function.className);
     duplicateTopOfTheStack(mv);
     invokeDefaultConstructor(mv, function.className);
 
@@ -1333,7 +1333,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                            mapping.functionFieldDescriptor());
       mv.visitJumpInsn(Opcodes.IFNONNULL, alreadyInitialized);
       loadThisOntoStack(mv);
-      constructNewObject(mv, type);
+      generateNewObjectInstruction(mv, type);
       duplicateTopOfTheStack(mv);
       invokeDefaultConstructor(mv, type);
       Compiler.putField(mv, className, mapping.functionName, type);
@@ -1460,7 +1460,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     for (var literal : getSortedLiteralConstantNodes())
     {
-      literal.generateLiteralConstantInitializerWithString(methodVisitor);
+      literal.generateLiteralConstantInitializer(methodVisitor);
     }
     return methodVisitor;
   }
@@ -1479,7 +1479,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected MethodVisitor generateSelfReference(MethodVisitor mv)
   {
     loadThisOntoStack(mv);
-    constructNewObject(mv, functionName);
+    generateNewObjectInstruction(mv, functionName);
     duplicateTopOfTheStack(mv);
     invokeDefaultConstructor(mv, functionName);
     Compiler.putField(mv, className, functionName, String.format("L%s;", functionName));

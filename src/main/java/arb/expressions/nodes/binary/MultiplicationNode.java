@@ -107,7 +107,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
       var rightBase = rightExp.left;
       if (leftBase.equals(rightBase))
       {
-        var exponentSum = leftExp.right.add(rightExp.right);
+        var exponentSum = leftExp.right.add(rightExp.right).simplify();
         return leftBase.pow(exponentSum).simplify();
       }
     }
