@@ -406,7 +406,7 @@ public abstract class GaussianProcessSampler extends
     }
 
     DoubleDataSet realDataSet = new DoubleDataSet("Real").set(normalizedFreq, realNoise);
-    DoubleDataSet imagDataSet = new DoubleDataSet("Imag").set(normalizedFreq, imagNoise);
+    DoubleDataSet imagDataSet = new DoubleDataSet("Imaginary").set(normalizedFreq, imagNoise);
 
     String        style       = DataSetStyleBuilder.instance()
                                                    .setMarkerType("circle")
