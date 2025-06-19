@@ -113,7 +113,7 @@ public class ExpressionTest extends
     assertEquals(-0.3487301717761157622856908029915, y);
   }
 
-  public static void testSimplificationAConstantIntegerRaisedToAConstnatInteger()
+  public static void testSimplificationAConstantIntegerRaisedToAConstantInteger()
   {
     var f = RealNullaryFunction.parse("5^3");
     f.simplify();

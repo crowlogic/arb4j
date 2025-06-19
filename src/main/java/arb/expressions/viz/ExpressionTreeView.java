@@ -56,7 +56,8 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     x.function   = functionTypeBox.getValue().getName();
     x.expression = this.expressionInput.getText();
     x.context    = new HashMap<>();
-    context.variables.forEach(variable -> x.context.put(variable.getName(), new SerializedContextVariable(variable)));
+    context.variables.forEach(variable -> x.context.put(variable.getName(),
+                                                        new SerializedContextVariable(variable)));
     System.out.println("Saving " + yamlFile);
     Utensils.saveToYamlFormat(yamlFile, x);
     tab.setText(yamlFile.getName().split("\\.")[0]);
@@ -179,7 +180,8 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
 
     copyMenuItem.setOnAction(event ->
     {
-      ObservableList<TreeTablePosition<Node<D, C, F>, ?>> item   = treeTableView.getSelectionModel().getSelectedCells();
+      ObservableList<TreeTablePosition<Node<D, C, F>, ?>> item   = treeTableView.getSelectionModel()
+                                                                                .getSelectedCells();
       MenuItem                                            source = (MenuItem) event.getSource();
       System.err.println("onAction "
                          + source.getText()
@@ -192,7 +194,8 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     treeTableView.setContextMenu(new ContextMenu(copyMenuItem));
     treeTableView.setTableMenuButtonVisible(true);
     treeTableView.skinProperty().addListener(this::virtualFlowListener);
-    treeTableView.getColumns().addAll(typesetCol, valueCol, nodeTypeCol, nodeTypeResultCol, nodeCol, fieldCol);
+    treeTableView.getColumns()
+                 .addAll(typesetCol, valueCol, nodeTypeCol, nodeTypeResultCol, nodeCol, fieldCol);
   }
 
   @SuppressWarnings("unchecked")
@@ -209,7 +212,11 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
       Class<C> codomainType = (Class<C>) this.codomainTypeBox.getValue();
       Class<F> functionType = (Class<F>) this.functionTypeBox.getValue();
 
-      expr     = Function.compile(domainType, codomainType, functionType, expressionString, context.resetClassLoader());
+      expr     = Function.compile(domainType,
+                                  codomainType,
+                                  functionType,
+                                  expressionString,
+                                  context.resetClassLoader());
 
       instance = expr.instantiate();
       updateTreeTableView();
@@ -238,7 +245,8 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
   @SuppressWarnings("unchecked")
   private void updateContextView()
   {
-    ListView<Named> contextListView = (ListView<Named>) this.expressor.contextBox.getChildren().get(1);
+    ListView<Named> contextListView = (ListView<Named>) this.expressor.contextBox.getChildren()
+                                                                                 .get(1);
     contextListView.refresh();
   }
 
@@ -250,7 +258,9 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
   protected TreeTableColumn<Node<D, C, F>, String> newNodeCol()
   {
     TreeTableColumn<Node<D, C, F>, String> nodeColumn = new TreeTableColumn<>("Node");
-    nodeColumn.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().toString()));
+    nodeColumn.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
+                                                                           .getValue()
+                                                                           .toString()));
     return nodeColumn;
   }
 
@@ -266,11 +276,13 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
 
   protected TreeTableColumn<Node<D, C, F>, String> newNodeTypeResultCol()
   {
-    TreeTableColumn<Node<D, C, F>, String> nodeTypeResultColumn = new TreeTableColumn<>("Result Type");
+    TreeTableColumn<Node<D, C, F>,
+                  String> nodeTypeResultColumn = new TreeTableColumn<>("Result Type");
     nodeTypeResultColumn.setCellValueFactory(param ->
     {
       Class<?> generatedType = param.getValue().getValue().getGeneratedType();
-      return new ReadOnlyStringWrapper(generatedType == null ? "null" : generatedType.getSimpleName());
+      return new ReadOnlyStringWrapper(generatedType == null ? "null"
+                                                             : generatedType.getSimpleName());
     });
     return nodeTypeResultColumn;
   }
@@ -278,7 +290,9 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
   protected TreeTableColumn<Node<D, C, F>, String> newTypesetCol()
   {
     TreeTableColumn<Node<D, C, F>, String> typesetColumn = new TreeTableColumn<>("Expression");
-    typesetColumn.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().typeset()));
+    typesetColumn.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
+                                                                              .getValue()
+                                                                              .typeset()));
     typesetColumn.setCellFactory(new TypeSettingCellFactory<>());
     return typesetColumn;
   }
@@ -286,7 +300,9 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
   protected TreeTableColumn<Node<D, C, F>, String> newFieldColumn()
   {
     TreeTableColumn<Node<D, C, F>, String> fieldCol = new TreeTableColumn<>("Field");
-    fieldCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().getFieldName()));
+    fieldCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()
+                                                                         .getValue()
+                                                                         .getFieldName()));
 
     return fieldCol;
   }
@@ -294,14 +310,16 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
   protected TreeTableColumn<Node<D, C, F>, String> newValueColumn()
   {
     TreeTableColumn<Node<D, C, F>, String> valueCol = new TreeTableColumn<>("Value");
-    valueCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(evaluateNode(param.getValue().getValue())));
+    valueCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(evaluateNode(param.getValue()
+                                                                                      .getValue())));
     return valueCol;
   }
 
   public ImageViewer graph()
   {
     // this needs to create the graph of the AST, not the functions within a Context
-    BufferedImage graphImage = TopologicalSorter.createDependencyGraphImage(expr.context.functionReferenceGraph);
+    BufferedImage graphImage =
+                             TopologicalSorter.createDependencyGraphImage(expr.context.functionReferenceGraph);
     ImageViewer   view       = new ImageViewer(expr.className,
                                                graphImage);
     view.setVisible(true);
@@ -345,10 +363,12 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
           var typeClass                 = Class.forName(type);
           var isInteger                 = typeClass.equals(Integer.class);
           var needsBits                 = !isInteger;
-          var constructor               = !needsBits ? typeClass.getConstructor(String.class)
-                                                     : typeClass.getConstructor(String.class, int.class);
-          var variable                  = !needsBits ? (Named) constructor.newInstance(serializedValueString)
-                                                     : (Named) constructor.newInstance(serializedValueString, bits);
+          var constructor               =
+                          !needsBits ? typeClass.getConstructor(String.class)
+                                     : typeClass.getConstructor(String.class, int.class);
+          var variable                  =
+                       !needsBits ? (Named) constructor.newInstance(serializedValueString)
+                                  : (Named) constructor.newInstance(serializedValueString, bits);
           variable.setName(name);
 
           if (!context.variables.map.containsKey(variable.getName()))
@@ -400,19 +420,52 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
   private ClassStringConverter<D, C, F> classStringConverter = new ClassStringConverter<D, C, F>();
 
   public static Class<?>[]              TYPES                = new Class[]
-  { AlgebraicNumber.class, Object.class, Integer.class, GaussianInteger.class, Real.class, Complex.class,
-    IntegerPolynomial.class, RealPolynomial.class, ComplexPolynomial.class, RationalFunction.class,
-    ComplexRationalFunction.class, Fraction.class, ComplexFraction.class, RealMatrix.class, ComplexMatrix.class,
-    RealFunction.class, ComplexFunction.class, Quaternion.class };
+  { AlgebraicNumber.class,
+    Object.class,
+    Integer.class,
+    GaussianInteger.class,
+    Real.class,
+    Complex.class,
+    IntegerPolynomial.class,
+    RealPolynomial.class,
+    ComplexPolynomial.class,
+    RationalFunction.class,
+    ComplexRationalFunction.class,
+    Fraction.class,
+    ComplexFraction.class,
+    RealMatrix.class,
+    ComplexMatrix.class,
+    RealFunction.class,
+    ComplexFunction.class,
+    Quaternion.class };
 
   public static Class<?>[]              INTERFACES           = new Class<?>[]
-  { IntegerSequence.class, RealSequence.class, Function.class, NullaryFunction.class, IntegerFunction.class,
-    IntegerPolynomialSequence.class, IntegerNullaryFunction.class, IntegerPolynomialNullaryFunction.class,
-    RealFunction.class, RealPolynomialFunction.class, ComplexFunction.class, ComplexSequence.class,
-    ComplexPolynomialSequence.class, ComplexNullaryFunction.class, RationalFunctionSequence.class,
-    RationalNullaryFunction.class, RealPolynomialSequence.class, RealNullaryFunction.class, ComplexToRealFunction.class,
-    ComplexRationalFunctionSequence.class, ComplexRationalNullaryFunction.class, Sequence.class,
-    RealFunctionSequence.class, RealNullaryFunctional.class, Functional.class, ComplexFunctionSequence.class };
+  { IntegerSequence.class,
+    RealSequence.class,
+    Function.class,
+    NullaryFunction.class,
+    IntegerFunction.class,
+    IntegerPolynomialSequence.class,
+    IntegerNullaryFunction.class,
+    IntegerPolynomialNullaryFunction.class,
+    RealFunction.class,
+    RealPolynomialFunction.class,
+    ComplexFunction.class,
+    ComplexSequence.class,
+    ComplexPolynomialSequence.class,
+    ComplexNullaryFunction.class,
+    RationalFunctionSequence.class,
+    RealPolynomialSequence.class,
+    RealNullaryFunction.class,
+    ComplexToRealFunction.class,
+    ComplexRationalFunctionSequence.class,
+    RationalNullaryFunction.class,
+    ComplexRationalNullaryFunction.class,
+    Sequence.class,
+    RealFunctionSequence.class,
+    RealNullaryFunctional.class,
+    Functional.class,
+    ComplexFunctionSequence.class };
 
   private HBox setupTypeBoxes()
   {
@@ -620,7 +673,9 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
       try
       {
         Field field = instance.getClass().getField(intermediateValueFieldName);
-        return field == null ? String.format("missing %s in %s", intermediateValueFieldName, instance.getClass())
+        return field == null ? String.format("missing %s in %s",
+                                             intermediateValueFieldName,
+                                             instance.getClass())
                              : field.get(instance).toString();
       }
       catch (NoSuchFieldException nsfe)
@@ -642,7 +697,8 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     {
       return null;
     }
-    return Expressor.enumerateNodeExpansionStates(new HashMap<String, Boolean>(), treeTableView.getRoot());
+    return Expressor.enumerateNodeExpansionStates(new HashMap<String, Boolean>(),
+                                                  treeTableView.getRoot());
   }
 
   public void expandAllNodes()
@@ -682,7 +738,8 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
       D input = getContext().getVariable("input");
       if (input == null && !expr.domainType.equals(Object.class))
       {
-        WindowManager.showAlert("Input Required", "variable named input must be defined in the context");
+        WindowManager.showAlert("Input Required",
+                                "variable named input must be defined in the context");
       }
       else
       {
