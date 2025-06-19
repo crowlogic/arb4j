@@ -21,6 +21,12 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
 {
 
   @Override
+  public boolean isVariableSquared(VariableNode<D, R, F> variable)
+  {
+    return left.equals(variable) && right.isLiteralConstant() && "2".equals(right.toString());
+  }
+
+  @Override
   public int hashCode()
   {
     return super.hashCode();
@@ -46,10 +52,14 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public String typeset()
   {
-    return String.format(String.format("{%s}^{%s}", format(left), format(right)), left.typeset(), right.typeset());
+    return String.format(String.format("{%s}^{%s}", format(left), format(right)),
+                         left.typeset(),
+                         right.typeset());
   }
 
-  public ExponentiationNode(Expression<D, R, F> expression, Node<D, R, F> base, Node<D, R, F> exponent)
+  public ExponentiationNode(Expression<D, R, F> expression,
+                            Node<D, R, F> base,
+                            Node<D, R, F> exponent)
   {
     super(expression,
           base,

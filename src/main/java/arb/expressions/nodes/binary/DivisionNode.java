@@ -24,7 +24,6 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                          BinaryOperationNode<D, R, F>
 {
 
- 
   @Override
   public Node<D, R, F> simplify()
   {
@@ -38,7 +37,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return expression.newLiteralConstant(1);
     }
-   
+
     return this;
   }
 
@@ -170,7 +169,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (!(node instanceof SubtractionNode sub))
       return false;
 
-    return sub.left.isConstantOne() && isVariableSquared(sub.right, variable);
+    return sub.left.isConstantOne() && sub.right.isVariableSquared(variable);
   }
 
   private boolean isOnePlusXSquaredPattern(Node<D, R, F> node, VariableNode<D, R, F> variable)
@@ -178,16 +177,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (!(node instanceof AdditionNode add))
       return false;
 
-    return add.left.isConstantOne() && isVariableSquared(add.right, variable);
-  }
-
-  private boolean isVariableSquared(Node<D, R, F> node, VariableNode<D, R, F> variable)
-  {
-    if (!(node instanceof ExponentiationNode pow))
-      return false;
-
-    return pow.left.isVariableNamed(variable.getName()) && pow.right.isLiteralConstant()
-                  && "2".equals(pow.right.toString());
+    return add.left.isConstantOne() && add.right.isVariableSquared(variable);
   }
 
   @Override
