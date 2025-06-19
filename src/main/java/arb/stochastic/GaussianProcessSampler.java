@@ -223,6 +223,8 @@ public abstract class GaussianProcessSampler extends
                  new TableViewer(),
                  new CrosshairIndicator());
     chart.getRenderers().forEach(renderer -> renderer.getAxes().addAll(chart.getAxes()));
+    chart.getStylesheets().add("data:text/css,.chart-crosshair-path { -fx-stroke: white; -fx-stroke-width: 2; }");
+    chart.getStylesheets().add("data:text/css,.chart-crosshair-label { -fx-fill:yellow; -fx-font-size: 16px; }");    
   }
 
   protected GridPane createGridPane(XYChart[] charts)
@@ -292,11 +294,11 @@ public abstract class GaussianProcessSampler extends
 
   protected XYChart newRandomWhiteNoiseMeasureChart()
   {
-    XYChart chart2 = new XYChart(new DefaultNumericAxis("Frequency",
+    XYChart chart = new XYChart(new DefaultNumericAxis("Frequency",
                                                         ""),
                                  new DefaultNumericAxis("Measure",
                                                         ""));
-    chart2.setTitle("Random White Noise Measure");
+    chart.setTitle("Random White Noise Measure");
 
     final ErrorDataSetRenderer scatterPlotRenderer = newScatterChartRenderer();
 
@@ -324,14 +326,15 @@ public abstract class GaussianProcessSampler extends
     realDataSet.setStyle(style);
     imagDataSet.setStyle(style);
 
-    chart2.getRenderers().setAll(scatterPlotRenderer);
+    chart.getRenderers().setAll(scatterPlotRenderer);
     scatterPlotRenderer.getDatasets().addAll(realDataSet, imagDataSet);
 
-    chart2.getXAxis().setAutoRanging(false);
-    chart2.getXAxis().setMin(0.0);
-    chart2.getXAxis().setMax(1.0);
+    chart.getXAxis().setAutoRanging(false);
+    chart.getXAxis().setMin(0.0);
+    chart.getXAxis().setMax(1.0);
 
-    return chart2;
+
+    return chart;
   }
 
   protected ErrorDataSetRenderer newScatterChartRenderer()
