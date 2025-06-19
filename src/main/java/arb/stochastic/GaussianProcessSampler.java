@@ -292,9 +292,9 @@ public abstract class GaussianProcessSampler extends
 
   protected XYChart newRandomWhiteNoiseMeasureChart()
   {
-    XYChart chart2 = new XYChart(new DefaultNumericAxis("Normalized Frequency",
+    XYChart chart2 = new XYChart(new DefaultNumericAxis("Frequency",
                                                         ""),
-                                 new DefaultNumericAxis("Amplitude",
+                                 new DefaultNumericAxis("Measure",
                                                         ""));
     chart2.setTitle("Random White Noise Measure");
 
