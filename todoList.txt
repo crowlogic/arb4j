@@ -11,4 +11,3 @@ GaussianProcessSampler: replace remaining double usage with Reals
 GaussianProcessSampler: add ability to edit the random white noise measure and see the results of it in real time by resampling (involves the availability of hooks or making a plugni for ChartFX most likely)
 plotting: add ComplexDataSet and modify the GaussianProcessSampler to use it instead of two separate RealDataSets as it presently does
 Complex version of RealRandomStandardNormalStream to be used in GaussianProcessSampler
-GaussianProcessSampler: fix range of random (white noise) measure
