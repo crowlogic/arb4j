@@ -110,18 +110,11 @@ public abstract class GaussianProcessSampler extends
    * TODO: Replace with {@link Real#variance(int, Real)}
    * 
    * @param x
-   * @param n
    * @return
    */
-  public static double variance(double[] x, int n)
+  public static double variance(double[] x)
   {
-    double var = 0.0;
-    for (double val : x)
-    {
-      var += val * val;
-    }
-    var /= n;
-    return var;
+    return Arrays.stream(x).map(y -> y * y).average().getAsDouble();
   }
 
   /**
@@ -142,7 +135,7 @@ public abstract class GaussianProcessSampler extends
   {
     int    n   = x.length;
 
-    double var = variance(x, n);
+    double var = variance(x);
 
     if (var < 1e-10)
     {
