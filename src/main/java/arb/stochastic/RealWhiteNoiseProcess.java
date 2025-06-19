@@ -1,21 +1,16 @@
 package arb.stochastic;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Spliterator;
-import java.util.Spliterators;
+import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import arb.RandomState;
-import arb.Real;
-import arb.arblib;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 
 /**
- * Standard normal (unit Gaussian) sampler using Arb/FLINT arb_urandom and
- * the Box-Muller method. 
+ * Standard {@link Real}-valued (unit Gaussian) sampler using Arb/FLINT
+ * arb_urandom and the Box-Muller method.
  *
  * @author ©2024 Stephen Crowley
  *
