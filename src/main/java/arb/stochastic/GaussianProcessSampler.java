@@ -1,11 +1,8 @@
 package arb.stochastic;
 
 import java.util.Arrays;
-import java.util.Random;
 
 import arb.*;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
 import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
@@ -24,6 +21,79 @@ import javafx.stage.Stage;
 
 /**
  * 
+ * <h3>FFT Nyquist Frequency Handling</h3>
+ * 
+ * <p>
+ * The special handling of the Nyquist frequency in FFT operations stems from
+ * fundamental mathematical properties of the discrete Fourier transform,
+ * particularly for real-valued input signals.
+ * </p>
+ * 
+ * <h4>Hermitian Symmetry and Mathematical Constraints</h4>
+ * 
+ * <p>
+ * For real-valued input signals, the DFT exhibits Hermitian symmetry:
+ * <code>X(-ν) = X(ν)*</code>, where <code>*</code> denotes complex conjugation.
+ * At the Nyquist frequency (<code>ν = 1/2</code>), this symmetry condition
+ * becomes:
+ * </p>
+ * 
+ * <p>
+ * <code>X(1/2) = X(-1/2) = X(1/2)*</code>
+ * </p>
+ * 
+ * <p>
+ * This mathematical constraint forces the imaginary component to zero:
+ * <code>Im{X(1/2)} = (X(1/2) - X(1/2)*)/2i = 0</code>.
+ * </p>
+ * 
+ * <h4>Basis Function Properties</h4>
+ * 
+ * <p>
+ * The complex exponential basis function at the Nyquist frequency is purely
+ * real. For an N-point FFT, the Nyquist frequency corresponds to the sequence
+ * <code>[1, -1, 1, -1, ...]</code>, which alternates between +1 and -1. Unlike
+ * other frequency bins that involve complex exponentials with both real and
+ * imaginary components, the Nyquist frequency basis function cannot represent
+ * phase information—it can only be scaled or sign-flipped, never phase-shifted.
+ * </p>
+ * 
+ * <h4>Even vs. Odd Length FFTs</h4>
+ * 
+ * <p>
+ * The treatment differs significantly based on whether N is even or odd:
+ * </p>
+ * 
+ * <p>
+ * <strong>Even N</strong>: Contains exactly one bin at the Nyquist frequency
+ * (<code>k = N/2</code>). This bin represents both <code>+f_Nyquist</code> and
+ * <code>-f_Nyquist</code> since
+ * <code>exp(-j2π(0.5)n) = exp(-j2π(-0.5)n)</code>.
+ * </p>
+ * 
+ * <p>
+ * <strong>Odd N</strong>: No bin exists exactly at the Nyquist frequency since
+ * <code>k/N</code> can never equal 0.5 when N is odd. The frequency bins are
+ * distributed symmetrically around DC without a central Nyquist bin.
+ * </p>
+ * 
+ * <h4>Spectral Conversion Implications</h4>
+ * 
+ * <p>
+ * When converting from two-sided to single-sided amplitude spectra, the Nyquist
+ * frequency (along with DC) is not multiplied by 2 like other positive
+ * frequencies. This occurs because the Nyquist frequency lacks a complex
+ * conjugate pair in the negative frequency domain—it represents a unique,
+ * purely real frequency component.
+ * </p>
+ * 
+ * <p>
+ * The special handling ensures mathematical consistency with the underlying
+ * continuous Fourier transform properties and prevents spectral artifacts that
+ * would arise from treating the Nyquist frequency identically to other
+ * frequency bins.
+ * </p>
+ * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  **/
@@ -31,26 +101,28 @@ public abstract class GaussianProcessSampler extends
                                              Application
 {
 
-  public double[]        inPhaseSamplePath, quadratureSamplePath, envelope, samplingTimes, freq,
-                psd;
-  public Complex         whiteNoise;
+  public double[] inPhaseSamplePath;
 
-  protected final Random random = new Random();
+  public double[] quadratureSamplePath;
+
+  public double[] envelope;
+
+  public double[] samplingTimes;
+
+  public double[] frequencies;
+
+  public double[] powerSpectralDensity;
+
+  public Complex  whiteNoise;
 
   public abstract double[] getPowerSpectralDensity(double[] freq);
 
-  /**
-   * TODO: Modify this to get normally distributed unit variables from the
-   * {@link RealWhiteNoiseProcess} and use {@link FloatInterval} to call
-   * {@link RealFunction#quantize(FloatInterval, int, int, boolean)} and then
-   * calculates its variance {@link Real#structure(int, int, Real)} function..
-   * 
-   * @return
-   */
+  long seed = 777;
+
   public GaussianProcessSampler generate()
   {
-    freq                 = generateFrequencies(N, STEP_SIZE);
-    psd                  = getPowerSpectralDensity(freq);
+    frequencies          = generateFrequencies(N, STEP_SIZE);
+    powerSpectralDensity = getPowerSpectralDensity(frequencies);
     whiteNoise           = Complex.newVector(N);
     inPhaseSamplePath    = new double[N];
     quadratureSamplePath = new double[N];
@@ -58,8 +130,11 @@ public abstract class GaussianProcessSampler extends
     samplingTimes        = new double[N];
 
     try ( Complex randomMeasure = Complex.newVector(N); Real mag = new Real();
-          Complex ifft = Complex.newVector(N); Real env = new Real())
+          Complex ifft = Complex.newVector(N); Real env = new Real(); Real rnd = new Real();
+          RealWhiteNoiseProcess whiteNoiseProcess = new RealWhiteNoiseProcess())
     {
+      whiteNoiseProcess.initializeWithSeed(seed);
+
       randomMeasure.get(0).zero();
 
       int    nyquistIndex = N / 2;
@@ -67,21 +142,12 @@ public abstract class GaussianProcessSampler extends
 
       for (int k = 1; k < nyquistIndex; k++)
       {
-        mag.set(psd[k] * df).sqrt(bits);
-        var element = whiteNoise.get(k);
-        element.re().set(random.nextGaussian());
-        element.im().set(random.nextGaussian());
-        randomMeasure.get(k).set(element).mul(mag, bits);
+        samplePoint(randomMeasure, mag, whiteNoiseProcess, df, k, false);
       }
 
       if (N % 2 == 0)
       {
-        double dW = random.nextGaussian();
-        whiteNoise.get(nyquistIndex).set(dW);
-        randomMeasure.get(nyquistIndex)
-                     .set(psd[nyquistIndex] * df)
-                     .sqrt(bits)
-                     .mul(mag.set(dW), bits);
+        samplePoint(randomMeasure, mag, whiteNoiseProcess, df, nyquistIndex, true);
       }
 
       arblib.acb_dft_inverse(ifft, randomMeasure, N, bits);
@@ -100,6 +166,27 @@ public abstract class GaussianProcessSampler extends
       return this;
 
     }
+  }
+
+  protected void samplePoint(Complex randomMeasure,
+                             Real mag,
+                             RealWhiteNoiseProcess whiteNoiseProcess,
+                             double df,
+                             int k,
+                             boolean realOnly)
+  {
+    var sample = whiteNoise.get(k);
+    whiteNoiseProcess.sample(bits, sample.re());
+    if (realOnly)
+    {
+      sample.im().zero();
+    }
+    else
+    {
+      whiteNoiseProcess.sample(bits, sample.im());
+    }
+
+    randomMeasure.get(k).set(sample).mul(mag.set(powerSpectralDensity[k] * df).sqrt(bits), bits);
   }
 
   /**
@@ -223,8 +310,10 @@ public abstract class GaussianProcessSampler extends
                  new TableViewer(),
                  new CrosshairIndicator());
     chart.getRenderers().forEach(renderer -> renderer.getAxes().addAll(chart.getAxes()));
-    chart.getStylesheets().add("data:text/css,.chart-crosshair-path { -fx-stroke: white; -fx-stroke-width: 2; }");
-    chart.getStylesheets().add("data:text/css,.chart-crosshair-label { -fx-fill:yellow; -fx-font-size: 16px; }");    
+    chart.getStylesheets()
+         .add("data:text/css,.chart-crosshair-path { -fx-stroke: white; -fx-stroke-width: 2; }");
+    chart.getStylesheets()
+         .add("data:text/css,.chart-crosshair-label { -fx-fill:yellow; -fx-font-size: 16px; }");
   }
 
   protected GridPane createGridPane(XYChart[] charts)
@@ -295,14 +384,14 @@ public abstract class GaussianProcessSampler extends
   protected XYChart newRandomWhiteNoiseMeasureChart()
   {
     XYChart chart = new XYChart(new DefaultNumericAxis("Frequency",
-                                                        ""),
-                                 new DefaultNumericAxis("Measure",
-                                                        ""));
+                                                       ""),
+                                new DefaultNumericAxis("Measure",
+                                                       ""));
     chart.setTitle("Random White Noise Measure");
 
     final ErrorDataSetRenderer scatterPlotRenderer = newScatterChartRenderer();
 
-    int                        posFreqCount        = freq.length;
+    int                        posFreqCount        = frequencies.length;
     double[]                   realNoise           = new double[posFreqCount];
     double[]                   imagNoise           = new double[posFreqCount];
     double[]                   normalizedFreq      = new double[posFreqCount];
@@ -313,7 +402,7 @@ public abstract class GaussianProcessSampler extends
       Complex element = whiteNoise.get(i);
       realNoise[i]      = element.re().doubleValue();
       imagNoise[i]      = element.im().doubleValue();
-      normalizedFreq[i] = freq[i] / nyquistFreq;     // Normalize to [0, 1]
+      normalizedFreq[i] = frequencies[i] / nyquistFreq; // Normalize to [0, 1]
     }
 
     DoubleDataSet realDataSet = new DoubleDataSet("Real").set(normalizedFreq, realNoise);
@@ -332,7 +421,6 @@ public abstract class GaussianProcessSampler extends
     chart.getXAxis().setAutoRanging(false);
     chart.getXAxis().setMin(0.0);
     chart.getXAxis().setMax(1.0);
-
 
     return chart;
   }
@@ -363,8 +451,8 @@ public abstract class GaussianProcessSampler extends
 
     for (int i = 0; i < posFreqCount; i++)
     {
-      freqPos[i]   = freq[i];
-      theoryPSD[i] = psd[i];
+      freqPos[i]   = frequencies[i];
+      theoryPSD[i] = powerSpectralDensity[i];
     }
 
     final ErrorDataSetRenderer scatterPlotRenderer = newScatterChartRenderer();
