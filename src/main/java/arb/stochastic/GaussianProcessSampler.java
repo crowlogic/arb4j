@@ -219,7 +219,6 @@ public abstract class GaussianProcessSampler extends
   {
     chart.getPlugins()
          .addAll(new EditAxis(AxisMode.XY),
-                 new DataPointTooltip(),
                  new Zoomer(),
                  new TableViewer(),
                  new CrosshairIndicator());
