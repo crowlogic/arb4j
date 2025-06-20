@@ -299,6 +299,10 @@ public abstract class StationaryGaussianProcessSampler extends
 
   private boolean             dark            = true;
 
+  private XYChart[]           charts;
+
+  private Stage[]             stages;
+
   public StationaryGaussianProcessSampler()
   {
     super();
@@ -446,38 +450,37 @@ public abstract class StationaryGaussianProcessSampler extends
                                 new DefaultNumericAxis("PSD",
                                                        ""));
     chart.setTitle("Power Spectral Density");
-    int      posFreqCount = N / 2 + 1;
-    double[] freqPos      = new double[posFreqCount];
-    double[] empPSD       = computePowerSpectralDensity(inPhaseSamplePath);
-    double[] theoryPSD    = new double[posFreqCount];
+    int      positiveFrequencyCount        = N / 2 + 1;
+    double[] positiveFrequencies                       = new double[positiveFrequencyCount];
+    double[] empiricalPowerSpectralDensity = computePowerSpectralDensity(inPhaseSamplePath);
+    double[] theoreticalPowerSpectralDensity                     = new double[positiveFrequencyCount];
 
-    for (int i = 0; i < posFreqCount; i++)
+    for (int i = 0; i < positiveFrequencyCount; i++)
     {
-      freqPos[i]   = frequencies[i];
-      theoryPSD[i] = powerSpectralDensity[i];
+      positiveFrequencies[i]   = frequencies[i];
+      theoreticalPowerSpectralDensity[i] = powerSpectralDensity[i];
     }
 
     final ErrorDataSetRenderer scatterPlotRenderer = newScatterChartRenderer();
     final ErrorDataSetRenderer lineRenderer        = new ErrorDataSetRenderer();
 
     /**
-     * Needs to set both because the chartfx developers can't design APIs worth a
-     * damn for whatever reason. The drawLegendSymbol method uses
+     * Needs to set both because the drawLegendSymbol method uses
      * style.getLineColor() for the legend stroke color, which comes from the stroke
      * color setting in the dataset style.
      */
     DoubleDataSet              empiricalDataSet    =
-                                                new DoubleDataSet("Empirical").set(freqPos,
-                                                                                   Arrays.copyOf(empPSD,
-                                                                                                 posFreqCount))
+                                                new DoubleDataSet("Empirical").set(positiveFrequencies,
+                                                                                   Arrays.copyOf(empiricalPowerSpectralDensity,
+                                                                                                 positiveFrequencyCount))
                                                                               .setStyle(DataSetStyleBuilder.instance()
                                                                                                            .setMarkerColor("darkgoldenrod")
                                                                                                            .setLineColor("darkgoldenrod")
                                                                                                            .build());
 
     DoubleDataSet              theoryDataSet       =
-                                             new DoubleDataSet("Theoretical").set(freqPos,
-                                                                                  theoryPSD)
+                                             new DoubleDataSet("Theoretical").set(positiveFrequencies,
+                                                                                  theoreticalPowerSpectralDensity)
                                                                              .setStyle(DataSetStyleBuilder.instance()
                                                                                                           .setLineWidth(2)
                                                                                                           .build());
@@ -524,20 +527,14 @@ public abstract class StationaryGaussianProcessSampler extends
   @Override
   public void start(Stage stage)
   {
-    generate();
-    XYChart[] charts =
-    { newTimeDomainChart(),
-      newRandomWhiteNoiseMeasureChart(),
-      newAutoCorrelationChart(),
-      newPowerSpectralDensityChart() };
+    processParameters();
 
-    Arrays.stream(charts).forEach(this::configureChart);
+    charts          = generateAndConfigureCharts();
 
-    separateWindows = getParameters().getUnnamed().contains("--separate-windows");
 
     if (separateWindows)
     {
-      Stage[] stages =
+      stages = new Stage[]
       { stage, new Stage(), new Stage(), new Stage() };
 
       for (int i = 0; i < charts.length; i++)
@@ -578,6 +575,26 @@ public abstract class StationaryGaussianProcessSampler extends
         WindowManager.setMoreConduciveStyle(scene);
       }
     }
+  }
+
+  protected void processParameters()
+  {
+    separateWindows = getParameters().getUnnamed().contains("--separate-windows");
+
+    seed            = Long.valueOf(getParameters().getNamed().getOrDefault("seed", "777"));
+  }
+
+  protected XYChart[] generateAndConfigureCharts()
+  {
+    generate();
+
+    Arrays.stream(charts = new XYChart[]
+    { newTimeDomainChart(),
+      newRandomWhiteNoiseMeasureChart(),
+      newAutoCorrelationChart(),
+      newPowerSpectralDensityChart() }).forEach(this::configureChart);
+
+    return charts;
   }
 
 }
