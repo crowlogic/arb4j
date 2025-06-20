@@ -2,10 +2,7 @@ package arb.stochastic;
 
 import java.util.Arrays;
 
-import arb.Complex;
-import arb.FloatInterval;
-import arb.Real;
-import arb.arblib;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
@@ -13,10 +10,7 @@ import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.plugins.CrosshairIndicator;
-import io.fair_acc.chartfx.plugins.EditAxis;
-import io.fair_acc.chartfx.plugins.TableViewer;
-import io.fair_acc.chartfx.plugins.Zoomer;
+import io.fair_acc.chartfx.plugins.*;
 import io.fair_acc.chartfx.renderer.ErrorStyle;
 import io.fair_acc.chartfx.renderer.LineStyle;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
@@ -24,10 +18,7 @@ import io.fair_acc.dataset.spi.DoubleDataSet;
 import io.fair_acc.dataset.utils.DataSetStyleBuilder;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 /**
@@ -138,7 +129,7 @@ public abstract class StationaryGaussianProcessSampler extends
    */
   public StationaryGaussianProcessSampler generate()
   {
-    frequencies          = generateFrequencies(N, STEP_SIZE);
+    frequencies          = generateFrequencies();
     powerSpectralDensity = getPowerSpectralDensity(frequencies);
     whiteNoise           = Complex.newVector(N);
     inPhaseSamplePath    = new double[N];
@@ -147,15 +138,13 @@ public abstract class StationaryGaussianProcessSampler extends
     samplingTimes        = new double[N];
 
     try ( Complex randomMeasure = Complex.newVector(N); Real mag = new Real();
-          Complex ifft = Complex.newVector(N); Real env = new Real(); Real rnd = new Real();
-          RealWhiteNoiseProcess whiteNoiseProcess = new RealWhiteNoiseProcess())
+          Complex inverseDiscreteFourierTransform = Complex.newVector(N); Real env = new Real();
+          Real rnd = new Real();
+          ComplexWhiteNoiseProcess whiteNoiseProcess = new ComplexWhiteNoiseProcess())
     {
       whiteNoiseProcess.initializeWithSeed(seed);
 
       randomMeasure.get(0).zero();
-
-      int    nyquistIndex = N / 2;
-      double df           = 1.0 / (N * STEP_SIZE);
 
       for (int k = 1; k < nyquistIndex; k++)
       {
@@ -167,14 +156,14 @@ public abstract class StationaryGaussianProcessSampler extends
         samplePoint(randomMeasure, mag, whiteNoiseProcess, df, nyquistIndex, true);
       }
 
-      arblib.acb_dft_inverse(ifft, randomMeasure, N, bits);
+      arblib.acb_dft_inverse(inverseDiscreteFourierTransform, randomMeasure, N, bits);
 
-      ifft.mul(N, bits);
+      inverseDiscreteFourierTransform.mul(N, bits);
 
       for (int i = 0; i < N; i++)
       {
-        Complex element = ifft.get(i);
-        samplingTimes[i]        = i * STEP_SIZE;
+        Complex element = inverseDiscreteFourierTransform.get(i);
+        samplingTimes[i]        = i * dt;
         inPhaseSamplePath[i]    = element.re().doubleValue();
         quadratureSamplePath[i] = element.im().doubleValue();
         envelope[i]             = element.norm(bits, env).doubleValue();
@@ -187,20 +176,16 @@ public abstract class StationaryGaussianProcessSampler extends
 
   protected void samplePoint(Complex randomMeasure,
                              Real mag,
-                             RealWhiteNoiseProcess whiteNoiseProcess,
+                             ComplexWhiteNoiseProcess whiteNoiseProcess,
                              double df,
                              int k,
                              boolean realOnly)
   {
     var sample = whiteNoise.get(k);
-    whiteNoiseProcess.sample(bits, sample.re());
+    whiteNoiseProcess.sample(bits, sample);
     if (realOnly)
     {
       sample.im().zero();
-    }
-    else
-    {
-      whiteNoiseProcess.sample(bits, sample.im());
     }
 
     randomMeasure.get(k).set(sample).mul(mag.set(powerSpectralDensity[k] * df).sqrt(bits), bits);
@@ -266,7 +251,7 @@ public abstract class StationaryGaussianProcessSampler extends
   {
 
     try ( Complex complexPath = Complex.newVector(N); Complex fft = Complex.newVector(N);
-          Real mag = new Real(); Real scalingFactor = Real.valueOf(STEP_SIZE).div(N / 2, bits);)
+          Real mag = new Real(); Real scalingFactor = Real.valueOf(dt).div(N / 2, bits);)
     {
       for (int i = 0; i < N; i++)
       {
@@ -289,35 +274,41 @@ public abstract class StationaryGaussianProcessSampler extends
     }
   }
 
-  public static double[] generateFrequencies(int nPoints, double dt)
-  {
-    double[] freq = new double[nPoints];
-    double   df   = 1.0 / (nPoints * dt);
-    for (int i = 0; i < nPoints; i++)
-    {
-      freq[i] = i <= nPoints / 2 ? i * df : (i - nPoints) * df;
-    }
-    return freq;
-  }
+  private static final double L                      = 1000.0;
 
-  private static final double L               = 1000.0;
+  static final double         dt              = 0.01;
 
-  static final double         STEP_SIZE       = 0.01;
+  static final int            N                      = (int) (L / dt);
 
-  static final int            N               = (int) (L / STEP_SIZE);
+  static final double         MAX_AUTOCORRELATION = 20.0;
 
-  static final double         LAGS_TO_SHOW    = 20.0;
+  static final int            bits                   = 128;
 
-  static final int            bits            = 128;
+  private boolean             separateWindows        = false;
 
-  private boolean             separateWindows = false;
-
-  private boolean             dark            = true;
+  private boolean             dark                   = true;
 
   private XYChart[]           charts;
 
   private Stage[]             stages;
+  
   private boolean             light;
+
+  public static final double  nyquistFreq            = 1.0 / (2 * dt);
+
+  public static final int     nyquistIndex           = N / 2;
+
+  public static final double  df                     = 1.0 / L;
+
+  public static double[] generateFrequencies()
+  {
+    double[] freq = new double[N];
+    for (int i = 0; i < N; i++)
+    {
+      freq[i] = (i <= nyquistIndex ? i : (i - N)) * df;
+    }
+    return freq;
+  }
 
   public StationaryGaussianProcessSampler()
   {
@@ -378,7 +369,7 @@ public abstract class StationaryGaussianProcessSampler extends
                                  new DefaultNumericAxis("Correlation",
                                                         ""));
     chart3.setTitle("Covariance");
-    int      maxLag = (int) (LAGS_TO_SHOW / STEP_SIZE) + 1;
+    int      maxLag = (int) (MAX_AUTOCORRELATION / dt) + 1;
     double[] lags   = new double[maxLag];
     double[] theory = new double[maxLag];
     getKernel(lags, theory);
@@ -390,7 +381,7 @@ public abstract class StationaryGaussianProcessSampler extends
     chart3.getYAxis().setMax(1.05);
     chart3.getXAxis().setAutoRanging(false);
     chart3.getXAxis().setMin(0);
-    chart3.getXAxis().setMax(LAGS_TO_SHOW);
+    chart3.getXAxis().setMax(MAX_AUTOCORRELATION);
     return chart3;
   }
 
@@ -417,7 +408,6 @@ public abstract class StationaryGaussianProcessSampler extends
     double[]                   realNoise           = new double[posFreqCount];
     double[]                   imagNoise           = new double[posFreqCount];
     double[]                   normalizedFreq      = new double[posFreqCount];
-    double                     nyquistFreq         = 1.0 / (2 * STEP_SIZE);    // 50 Hz
 
     for (int i = 0; i < posFreqCount; i++)
     {

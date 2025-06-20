@@ -54,7 +54,7 @@ public class RandomWaveSampler extends
     {
       for (int i = 0; i < numPoints; i++)
       {
-        times[i]  = i * STEP_SIZE;
+        times[i]  = i * dt;
         values[i] = val.set(2 * Math.PI * times[i]).J0(128, val).doubleValue();
       }
     }
