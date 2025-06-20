@@ -334,18 +334,38 @@ import arb.documentation.TheArb4jLibrary;
     }
   }
   
-  public ComplexMatrix computeLowerUpperFactorization(int bits, ComplexMatrix lowerFactor, ComplexMatrix upperFactor) {
-    assert lowerFactor.getNumRows() == upperFactor.getNumRows() : format("lowerFactor.numRows = %d != upperFactor.numRows = %d\n", lowerFactor.getNumRows(), upperFactor.getNumCols());
-    assert lowerFactor.getNumCols() == upperFactor.getNumCols() : format("lowerFactor.numRows = %d != upperFactor.numRows = %d\n", lowerFactor.getNumRows(), upperFactor.getNumCols());
-    final int n = lowerFactor.getNumRows();
+  public ComplexMatrix extractUpperAndLowerTriangularMatrices(ComplexMatrix L, ComplexMatrix U)
+  {
+    assert isSquare() : "matrix must be square";
+    int n = getNumRows();
 
-    LongBuffer permutation = ByteBuffer.allocateDirect(n * Long.BYTES).order(ByteOrder.nativeOrder()).asLongBuffer();
-    ComplexMatrix factorization = computeLowerUpperFactorization(permutation, bits, upperFactor);
-    factorization.extractUpperAndLowerTriangularMatrices(lowerFactor, upperFactor);
-    lowerFactor.permute(permutation);
-    upperFactor.permute(permutation);
+    L.setName("L_" + name);
+    U.setName("U_" + name);
+
+    for (int i = 0; i < n; i++)
+    {
+      for (int j = 0; j < n; j++)
+      {
+        if (i > j)
+        {
+          L.set(i, j, get(i, j));
+          U.set(i, j, 0);
+        }
+        else if (i == j)
+        {
+          L.set(i, j, 1);
+          U.set(i, j, get(i, j));
+        }
+        else
+        {
+          L.set(i, j, 0);
+          U.set(i, j, get(i, j));
+        }
+      }
+    }
+
     return this;
-  }  
+  } 
 
   public boolean isSquare() {
     return getNumRows() == getNumCols();
