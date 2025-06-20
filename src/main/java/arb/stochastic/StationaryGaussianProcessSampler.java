@@ -130,6 +130,12 @@ public abstract class StationaryGaussianProcessSampler extends
 
   long seed = 777;
 
+  /**
+   * TODO: use the {@link ComplexWhiteNoiseProcess} instead of the
+   * {@link RealWhiteNoiseProcess}
+   * 
+   * @return
+   */
   public StationaryGaussianProcessSampler generate()
   {
     frequencies          = generateFrequencies(N, STEP_SIZE);
