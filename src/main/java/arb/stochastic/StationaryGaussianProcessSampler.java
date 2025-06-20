@@ -2,7 +2,10 @@ package arb.stochastic;
 
 import java.util.Arrays;
 
-import arb.*;
+import arb.Complex;
+import arb.FloatInterval;
+import arb.Real;
+import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
@@ -10,7 +13,10 @@ import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.plugins.*;
+import io.fair_acc.chartfx.plugins.CrosshairIndicator;
+import io.fair_acc.chartfx.plugins.EditAxis;
+import io.fair_acc.chartfx.plugins.TableViewer;
+import io.fair_acc.chartfx.plugins.Zoomer;
 import io.fair_acc.chartfx.renderer.ErrorStyle;
 import io.fair_acc.chartfx.renderer.LineStyle;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
@@ -18,7 +24,10 @@ import io.fair_acc.dataset.spi.DoubleDataSet;
 import io.fair_acc.dataset.utils.DataSetStyleBuilder;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
 /**
@@ -299,9 +308,11 @@ public abstract class StationaryGaussianProcessSampler extends
 
   private boolean             dark            = true;
 
+  <<<<<<<HEAD
   private XYChart[]           charts;
 
-  private Stage[]             stages;
+  private Stage[]             stages;=======
+  private boolean             light;>>>>>>>branch'master'of git@github.com:crowlogic/arb4j.git
 
   public StationaryGaussianProcessSampler()
   {
@@ -450,14 +461,14 @@ public abstract class StationaryGaussianProcessSampler extends
                                 new DefaultNumericAxis("PSD",
                                                        ""));
     chart.setTitle("Power Spectral Density");
-    int      positiveFrequencyCount        = N / 2 + 1;
-    double[] positiveFrequencies                       = new double[positiveFrequencyCount];
-    double[] empiricalPowerSpectralDensity = computePowerSpectralDensity(inPhaseSamplePath);
-    double[] theoreticalPowerSpectralDensity                     = new double[positiveFrequencyCount];
+    int      positiveFrequencyCount          = N / 2 + 1;
+    double[] positiveFrequencies             = new double[positiveFrequencyCount];
+    double[] empiricalPowerSpectralDensity   = computePowerSpectralDensity(inPhaseSamplePath);
+    double[] theoreticalPowerSpectralDensity = new double[positiveFrequencyCount];
 
     for (int i = 0; i < positiveFrequencyCount; i++)
     {
-      positiveFrequencies[i]   = frequencies[i];
+      positiveFrequencies[i]             = frequencies[i];
       theoreticalPowerSpectralDensity[i] = powerSpectralDensity[i];
     }
 
@@ -529,8 +540,7 @@ public abstract class StationaryGaussianProcessSampler extends
   {
     processParameters();
 
-    charts          = generateAndConfigureCharts();
-
+    charts = generateAndConfigureCharts();
 
     if (separateWindows)
     {
@@ -582,6 +592,17 @@ public abstract class StationaryGaussianProcessSampler extends
     separateWindows = getParameters().getUnnamed().contains("--separate-windows");
 
     seed            = Long.valueOf(getParameters().getNamed().getOrDefault("seed", "777"));
+
+    dark            = getParameters().getUnnamed().contains("--dark");
+    light           = getParameters().getUnnamed().contains("--light");
+    if (dark && light)
+    {
+      throw new IllegalArgumentException("cannot have both dark and light themes active at once");
+    }
+    if (!(dark || light))
+    {
+      dark = true;
+    }
   }
 
   protected XYChart[] generateAndConfigureCharts()
