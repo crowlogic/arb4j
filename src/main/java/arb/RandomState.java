@@ -42,7 +42,20 @@ public class RandomState implements AutoCloseable {
   {
     delete();
   }
-   
+
+  public RandomState initialize()
+  {
+    arblib.gmp_randinit_default(getGmpRandomState());
+    setInitialized(1);
+    return this;
+  }
+  
+  public RandomState seed(long seed)
+  {
+    arblib.gmp_randseed_ui(getGmpRandomState(), seed);
+    return this;
+  }  
+     
 
   public void setGmpRandomState(GMPRandomState value) {
     arblibJNI.RandomState_gmpRandomState_set(swigCPtr, this, GMPRandomState.getCPtr(value), value);

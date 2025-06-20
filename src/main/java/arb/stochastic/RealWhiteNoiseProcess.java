@@ -20,9 +20,11 @@ import arb.documentation.TheArb4jLibrary;
 public final class RealWhiteNoiseProcess implements
                                          AutoCloseable
 {
-  private final Real        cached;
-  private boolean           hasCached;
-  private final RandomState state;
+  private final Real        cache = Real.named("cache");
+
+  private boolean           hasCached = false;
+  
+  private final RandomState state = new RandomState();
 
   public Stream<Real> stream(int bits, int limit)
   {
@@ -55,11 +57,9 @@ public final class RealWhiteNoiseProcess implements
 
   public RealWhiteNoiseProcess()
   {
-    this.state     = new RandomState();
-    this.cached    = new Real();
     this.hasCached = false;
-    arblib.gmp_randinit_default(state.getGmpRandomState());
-    state.setInitialized(1);
+    state.initialize();
+
   }
 
   Real u1    = new Real();
@@ -70,7 +70,8 @@ public final class RealWhiteNoiseProcess implements
 
   public RealWhiteNoiseProcess initializeWithSeed(long seed)
   {
-    arblib.gmp_randseed_ui(state.getGmpRandomState(), seed);
+    hasCached = false;
+    state.seed(seed);
     return this;
   }
 
@@ -86,7 +87,7 @@ public final class RealWhiteNoiseProcess implements
     if (hasCached)
     {
       hasCached = false;
-      return out.set(cached);
+      return out.set(cache);
     }
     else
     {
@@ -101,7 +102,7 @@ public final class RealWhiteNoiseProcess implements
       arblib.arb_urandom(u2, state, prec);
       u1.log(prec, r).mul(-2, prec).sqrt(prec);
       theta.set(pi.π(prec)).mul(2, prec).mul(u2, prec);
-      theta.sin(prec, cached).mul(r, prec);
+      theta.sin(prec, cache).mul(r, prec);
       return theta.cos(prec, out).mul(r, prec);
     }
   }
@@ -109,11 +110,7 @@ public final class RealWhiteNoiseProcess implements
   @Override
   public void close()
   {
-    if (hasCached)
-    {
-      cached.close();
-    }
-    Arrays.asList(u1, u2, r, theta, pi).forEach(Real::close);
+    Arrays.asList(cache, u1, u2, r, theta, pi).forEach(Real::close);
   }
 
 }
