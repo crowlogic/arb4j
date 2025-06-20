@@ -308,11 +308,10 @@ public abstract class StationaryGaussianProcessSampler extends
 
   private boolean             dark            = true;
 
-  <<<<<<<HEAD
   private XYChart[]           charts;
 
-  private Stage[]             stages;=======
-  private boolean             light;>>>>>>>branch'master'of git@github.com:crowlogic/arb4j.git
+  private Stage[]             stages;
+  private boolean             light;
 
   public StationaryGaussianProcessSampler()
   {
