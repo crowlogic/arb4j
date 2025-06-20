@@ -351,7 +351,7 @@ public abstract class StationaryGaussianProcessSampler extends
     return gridPane;
   }
 
-  protected XYChart newAutocorrelationChart()
+  protected XYChart newAutoCorrelationChart()
   {
     XYChart chart3 = new XYChart(new DefaultNumericAxis("Δt",
                                                         ""),
@@ -528,7 +528,7 @@ public abstract class StationaryGaussianProcessSampler extends
     XYChart[] charts =
     { newTimeDomainChart(),
       newRandomWhiteNoiseMeasureChart(),
-      newAutocorrelationChart(),
+      newAutoCorrelationChart(),
       newPowerSpectralDensityChart() };
 
     Arrays.stream(charts).forEach(this::configureChart);
