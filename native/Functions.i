@@ -16,6 +16,80 @@
 #include <unistd.h>
 #include <wchar.h>
 
+void acb_mat_bound_inf_norm(mag_t b, const acb_mat_t A);
+
+void acb_mat_frobenius_norm(arb_t res, const acb_mat_t A, slong prec);
+
+void acb_mat_bound_frobenius_norm(mag_t b, const acb_mat_t A);
+
+int acb_mat_lu(slong * P, acb_mat_t LU, const acb_mat_t A, slong prec);
+
+void acb_mat_swap_rows(acb_mat_t mat, slong * perm, slong r, slong s);
+
+int acb_mat_eq(const acb_mat_t mat1, const acb_mat_t mat2);
+
+int acb_mat_ne(const acb_mat_t mat1, const acb_mat_t mat2);
+
+int acb_mat_equal(const acb_mat_t mat1, const acb_mat_t mat2);
+
+int acb_mat_overlaps(const acb_mat_t mat1, const acb_mat_t mat2);
+
+int acb_mat_contains(const acb_mat_t mat1, const acb_mat_t mat2);
+
+
+int acb_mat_is_real(const acb_mat_t mat);
+
+void acb_mat_zero(acb_mat_t mat);
+
+void acb_mat_one(acb_mat_t mat);
+
+void acb_mat_ones(acb_mat_t mat);
+
+void acb_mat_onei(acb_mat_t mat);
+
+void acb_mat_indeterminate(acb_mat_t mat);
+
+void acb_mat_dft(acb_mat_t res, int kind, slong prec);
+
+void acb_mat_transpose(acb_mat_t mat1, const acb_mat_t mat2);
+
+void acb_mat_conjugate(acb_mat_t mat1, const acb_mat_t mat2);
+
+int acb_mat_inv(acb_mat_t X, const acb_mat_t A, slong prec);
+
+void acb_mat_det(acb_t det, const acb_mat_t A, slong prec);
+
+void acb_mat_set(acb_mat_t dest, const acb_mat_t src);
+
+void acb_mat_neg(acb_mat_t dest, const acb_mat_t src);
+
+void acb_mat_add(acb_mat_t res, const acb_mat_t mat1, const acb_mat_t mat2, slong prec);
+
+void acb_mat_sub(acb_mat_t res, const acb_mat_t mat1, const acb_mat_t mat2, slong prec);
+
+
+void acb_mat_mul(acb_mat_t res, const acb_mat_t mat1, const acb_mat_t mat2, slong prec);
+
+
+void acb_mat_sqr(acb_mat_t res, const acb_mat_t mat, slong prec);
+
+void acb_mat_pow_ui(acb_mat_t B, const acb_mat_t A, ulong exp, slong prec);
+
+void
+acb_mat_scalar_mul_acb(acb_mat_t B, const acb_mat_t A, const acb_t c, slong prec);
+
+int acb_mat_solve(acb_mat_t X, const acb_mat_t A, const acb_mat_t B, slong prec);
+
+void acb_mat_set_arb_mat(acb_mat_t dest, const arb_mat_t src);
+
+void acb_mat_set_round_arb_mat(acb_mat_t dest, const arb_mat_t src, slong prec);
+
+void acb_mat_get_real(arb_mat_t re, const acb_mat_t mat);
+
+void acb_mat_get_imag(arb_mat_t im, const acb_mat_t mat);
+
+void acb_mat_set_real_imag(acb_mat_t mat, const arb_mat_t re, const arb_mat_t im);
+
 void gmp_randseed_ui (gmp_randstate_t, unsigned long int);
 
 void gmp_randinit_default (gmp_randstate_t);

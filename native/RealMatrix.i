@@ -590,8 +590,9 @@ import arb.algebra.Ring;
   public void close()
   { 
       clear();
+      swigCMemOwn = false;
+      swigCPtr = 0;
   }
-  
   
   public RealMatrix init(int rows, int cols)
   {

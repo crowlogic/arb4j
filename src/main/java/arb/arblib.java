@@ -9,6 +9,146 @@
 package arb;
 
 public class arblib {
+  public static void acb_mat_bound_inf_norm(Magnitude b, ComplexMatrix A) {
+    arblibJNI.acb_mat_bound_inf_norm(Magnitude.getCPtr(b), b, ComplexMatrix.getCPtr(A), A);
+  }
+
+  public static void acb_mat_frobenius_norm(Real res, ComplexMatrix A, int prec) {
+    arblibJNI.acb_mat_frobenius_norm(Real.getCPtr(res), res, ComplexMatrix.getCPtr(A), A, prec);
+  }
+
+  public static void acb_mat_bound_frobenius_norm(Magnitude b, ComplexMatrix A) {
+    arblibJNI.acb_mat_bound_frobenius_norm(Magnitude.getCPtr(b), b, ComplexMatrix.getCPtr(A), A);
+  }
+
+  public static int acb_mat_lu(java.nio.LongBuffer P, ComplexMatrix LU, ComplexMatrix A, int prec) {
+    return arblibJNI.acb_mat_lu(P, ComplexMatrix.getCPtr(LU), LU, ComplexMatrix.getCPtr(A), A, prec);
+  }
+
+  public static void acb_mat_swap_rows(ComplexMatrix mat, java.nio.LongBuffer perm, int numRows, int s) {
+    arblibJNI.acb_mat_swap_rows(ComplexMatrix.getCPtr(mat), mat, perm, numRows, s);
+  }
+
+  public static int acb_mat_eq(ComplexMatrix mat1, ComplexMatrix mat2) {
+    return arblibJNI.acb_mat_eq(ComplexMatrix.getCPtr(mat1), mat1, ComplexMatrix.getCPtr(mat2), mat2);
+  }
+
+  public static int acb_mat_ne(ComplexMatrix mat1, ComplexMatrix mat2) {
+    return arblibJNI.acb_mat_ne(ComplexMatrix.getCPtr(mat1), mat1, ComplexMatrix.getCPtr(mat2), mat2);
+  }
+
+  public static int acb_mat_equal(ComplexMatrix mat1, ComplexMatrix mat2) {
+    return arblibJNI.acb_mat_equal(ComplexMatrix.getCPtr(mat1), mat1, ComplexMatrix.getCPtr(mat2), mat2);
+  }
+
+  public static int acb_mat_overlaps(ComplexMatrix mat1, ComplexMatrix mat2) {
+    return arblibJNI.acb_mat_overlaps(ComplexMatrix.getCPtr(mat1), mat1, ComplexMatrix.getCPtr(mat2), mat2);
+  }
+
+  public static int acb_mat_contains(ComplexMatrix mat1, ComplexMatrix mat2) {
+    return arblibJNI.acb_mat_contains(ComplexMatrix.getCPtr(mat1), mat1, ComplexMatrix.getCPtr(mat2), mat2);
+  }
+
+  public static int acb_mat_is_real(ComplexMatrix mat) {
+    return arblibJNI.acb_mat_is_real(ComplexMatrix.getCPtr(mat), mat);
+  }
+
+  public static void acb_mat_zero(ComplexMatrix mat) {
+    arblibJNI.acb_mat_zero(ComplexMatrix.getCPtr(mat), mat);
+  }
+
+  public static void acb_mat_one(ComplexMatrix mat) {
+    arblibJNI.acb_mat_one(ComplexMatrix.getCPtr(mat), mat);
+  }
+
+  public static void acb_mat_ones(ComplexMatrix mat) {
+    arblibJNI.acb_mat_ones(ComplexMatrix.getCPtr(mat), mat);
+  }
+
+  public static void acb_mat_onei(ComplexMatrix mat) {
+    arblibJNI.acb_mat_onei(ComplexMatrix.getCPtr(mat), mat);
+  }
+
+  public static void acb_mat_indeterminate(ComplexMatrix mat) {
+    arblibJNI.acb_mat_indeterminate(ComplexMatrix.getCPtr(mat), mat);
+  }
+
+  public static void acb_mat_dft(ComplexMatrix res, int kind, int prec) {
+    arblibJNI.acb_mat_dft(ComplexMatrix.getCPtr(res), res, kind, prec);
+  }
+
+  public static void acb_mat_transpose(ComplexMatrix mat1, ComplexMatrix mat2) {
+    arblibJNI.acb_mat_transpose(ComplexMatrix.getCPtr(mat1), mat1, ComplexMatrix.getCPtr(mat2), mat2);
+  }
+
+  public static void acb_mat_conjugate(ComplexMatrix mat1, ComplexMatrix mat2) {
+    arblibJNI.acb_mat_conjugate(ComplexMatrix.getCPtr(mat1), mat1, ComplexMatrix.getCPtr(mat2), mat2);
+  }
+
+  public static int acb_mat_inv(ComplexMatrix X, ComplexMatrix A, int prec) {
+    return arblibJNI.acb_mat_inv(ComplexMatrix.getCPtr(X), X, ComplexMatrix.getCPtr(A), A, prec);
+  }
+
+  public static void acb_mat_det(Complex det, ComplexMatrix A, int prec) {
+    arblibJNI.acb_mat_det(Complex.getCPtr(det), det, ComplexMatrix.getCPtr(A), A, prec);
+  }
+
+  public static void acb_mat_set(ComplexMatrix dest, ComplexMatrix src) {
+    arblibJNI.acb_mat_set(ComplexMatrix.getCPtr(dest), dest, ComplexMatrix.getCPtr(src), src);
+  }
+
+  public static void acb_mat_neg(ComplexMatrix dest, ComplexMatrix src) {
+    arblibJNI.acb_mat_neg(ComplexMatrix.getCPtr(dest), dest, ComplexMatrix.getCPtr(src), src);
+  }
+
+  public static void acb_mat_add(ComplexMatrix res, ComplexMatrix mat1, ComplexMatrix mat2, int prec) {
+    arblibJNI.acb_mat_add(ComplexMatrix.getCPtr(res), res, ComplexMatrix.getCPtr(mat1), mat1, ComplexMatrix.getCPtr(mat2), mat2, prec);
+  }
+
+  public static void acb_mat_sub(ComplexMatrix res, ComplexMatrix mat1, ComplexMatrix mat2, int prec) {
+    arblibJNI.acb_mat_sub(ComplexMatrix.getCPtr(res), res, ComplexMatrix.getCPtr(mat1), mat1, ComplexMatrix.getCPtr(mat2), mat2, prec);
+  }
+
+  public static void acb_mat_mul(ComplexMatrix res, ComplexMatrix mat1, ComplexMatrix mat2, int prec) {
+    arblibJNI.acb_mat_mul(ComplexMatrix.getCPtr(res), res, ComplexMatrix.getCPtr(mat1), mat1, ComplexMatrix.getCPtr(mat2), mat2, prec);
+  }
+
+  public static void acb_mat_sqr(ComplexMatrix res, ComplexMatrix mat, int prec) {
+    arblibJNI.acb_mat_sqr(ComplexMatrix.getCPtr(res), res, ComplexMatrix.getCPtr(mat), mat, prec);
+  }
+
+  public static void acb_mat_pow_ui(ComplexMatrix B, ComplexMatrix A, long exp, int prec) {
+    arblibJNI.acb_mat_pow_ui(ComplexMatrix.getCPtr(B), B, ComplexMatrix.getCPtr(A), A, exp, prec);
+  }
+
+  public static void acb_mat_scalar_mul_acb(ComplexMatrix B, ComplexMatrix A, Complex numCols, int prec) {
+    arblibJNI.acb_mat_scalar_mul_acb(ComplexMatrix.getCPtr(B), B, ComplexMatrix.getCPtr(A), A, Complex.getCPtr(numCols), numCols, prec);
+  }
+
+  public static int acb_mat_solve(ComplexMatrix X, ComplexMatrix A, ComplexMatrix B, int prec) {
+    return arblibJNI.acb_mat_solve(ComplexMatrix.getCPtr(X), X, ComplexMatrix.getCPtr(A), A, ComplexMatrix.getCPtr(B), B, prec);
+  }
+
+  public static void acb_mat_set_arb_mat(ComplexMatrix dest, RealMatrix src) {
+    arblibJNI.acb_mat_set_arb_mat(ComplexMatrix.getCPtr(dest), dest, RealMatrix.getCPtr(src), src);
+  }
+
+  public static void acb_mat_set_round_arb_mat(ComplexMatrix dest, RealMatrix src, int prec) {
+    arblibJNI.acb_mat_set_round_arb_mat(ComplexMatrix.getCPtr(dest), dest, RealMatrix.getCPtr(src), src, prec);
+  }
+
+  public static void acb_mat_get_real(RealMatrix re, ComplexMatrix mat) {
+    arblibJNI.acb_mat_get_real(RealMatrix.getCPtr(re), re, ComplexMatrix.getCPtr(mat), mat);
+  }
+
+  public static void acb_mat_get_imag(RealMatrix im, ComplexMatrix mat) {
+    arblibJNI.acb_mat_get_imag(RealMatrix.getCPtr(im), im, ComplexMatrix.getCPtr(mat), mat);
+  }
+
+  public static void acb_mat_set_real_imag(ComplexMatrix mat, RealMatrix re, RealMatrix im) {
+    arblibJNI.acb_mat_set_real_imag(ComplexMatrix.getCPtr(mat), mat, RealMatrix.getCPtr(re), re, RealMatrix.getCPtr(im), im);
+  }
+
   public static void gmp_randseed_ui(GMPRandomState arg0, long arg1) {
     arblibJNI.gmp_randseed_ui(GMPRandomState.getCPtr(arg0), arg0, arg1);
   }
@@ -2070,10 +2210,6 @@ public class arblib {
 
   public static void arb_mat_inv_ldl_precomp(RealMatrix X, RealMatrix L, int prec) {
     arblibJNI.arb_mat_inv_ldl_precomp(RealMatrix.getCPtr(X), X, RealMatrix.getCPtr(L), L, prec);
-  }
-
-  public static void acb_mat_dft(ComplexMatrix mat, int type, int prec) {
-    arblibJNI.acb_mat_dft(ComplexMatrix.getCPtr(mat), mat, type, prec);
   }
 
   public static int acb_mat_eig_multiple(Complex E, ComplexMatrix A, Complex E_approx, ComplexMatrix R_approx, int prec) {

@@ -41,6 +41,20 @@ import arb.domains.Domain;
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  /**
+   * Directly sets the i-th element of the elements, that is, replaces the references
+   * rather than setting the value to the Complex currently referenced at the specified index
+   */
+  public Complex set(int index, Complex element )
+  {
+    assert index < dim : String.format("index = %d >= dim = %d", index, dim);
+    if (index == 0 && dim == 1)
+    {
+      return set(element);
+    }
+    return elements[index] = element;
+  } 
+  
   @SuppressWarnings("resource")
   public static Complex valueOf(int i)
   {

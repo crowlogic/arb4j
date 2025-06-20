@@ -46,7 +46,7 @@ public class RealDataSet extends
     domain.length(128, resolution).div(length, 128);
   }
 
-  public final RealMatrix data;
+  public RealMatrix data;
 
   public Real getRealXValues()
   {
@@ -88,6 +88,7 @@ public class RealDataSet extends
       return;
     }
     data.close();
+    data = null;
     resolution.close();
   }
 

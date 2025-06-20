@@ -618,8 +618,9 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
   public void close()
   { 
       clear();
+      swigCMemOwn = false;
+      swigCPtr = 0;
   }
-  
   
   public RealMatrix init(int rows, int cols)
   {
