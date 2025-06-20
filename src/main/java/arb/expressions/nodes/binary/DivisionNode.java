@@ -38,6 +38,22 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return expression.newLiteralConstant(1);
     }
 
+    boolean leftIsConstant  = left != null && left.isLiteralConstant();
+    boolean rightIsConstant = right != null && right.isLiteralConstant();
+
+    if (left instanceof ExponentiationNode<D, R, F> leftExp
+                  && right instanceof ExponentiationNode<D, R, F> rightExp)
+    {
+      // check if the bases of the exponents are equals
+      var leftBase  = leftExp.left;
+      var rightBase = rightExp.left;
+      if (leftBase.equals(rightBase))
+      {
+        var exponentDifference = leftExp.right.sub(rightExp.right).simplify();
+        return leftBase.pow(exponentDifference).simplify();
+      }
+    }
+
     return this;
   }
 
