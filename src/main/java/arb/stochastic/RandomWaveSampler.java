@@ -32,7 +32,7 @@ import arb.functions.real.RealFunction;
  *      {@link TheArb4jLibrary}
  */
 public class RandomWaveSampler extends
-                               GaussianProcessSampler
+                               StationaryGaussianProcessSampler
 {
 
   /**

@@ -3,6 +3,8 @@ package arb.stochastic;
 import java.util.Arrays;
 
 import arb.*;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
 import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
@@ -97,8 +99,8 @@ import javafx.stage.Stage;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  **/
-public abstract class GaussianProcessSampler extends
-                                             Application
+public abstract class StationaryGaussianProcessSampler extends
+                                                       Application
 {
 
   public double[] inPhaseSamplePath;
@@ -119,7 +121,7 @@ public abstract class GaussianProcessSampler extends
 
   long seed = 777;
 
-  public GaussianProcessSampler generate()
+  public StationaryGaussianProcessSampler generate()
   {
     frequencies          = generateFrequencies(N, STEP_SIZE);
     powerSpectralDensity = getPowerSpectralDensity(frequencies);
@@ -297,7 +299,7 @@ public abstract class GaussianProcessSampler extends
 
   private boolean             dark            = true;
 
-  public GaussianProcessSampler()
+  public StationaryGaussianProcessSampler()
   {
     super();
   }
@@ -544,7 +546,7 @@ public abstract class GaussianProcessSampler extends
 
         Scene   scene = new Scene(chart);
         stages[i].setScene(scene);
-        stages[i].setTitle(chart.getTitle());
+        stages[i].setTitle(String.format("%s[seed=%s]", chart.getTitle(), seed));
         stages[i].setMaximized(true);
         if (dark)
         {
@@ -566,7 +568,8 @@ public abstract class GaussianProcessSampler extends
       Scene    scene    = new Scene(gridPane);
       stage.setScene(scene);
       stage.setMaximized(true);
-      stage.setTitle(getClass().getSimpleName());
+      stage.setTitle(String.format("%s[seed=%s]", getClass().getSimpleName(), seed));
+
       stage.show();
       WindowManager.installEscapeKeyCloseHandler(stage);
 
