@@ -383,32 +383,7 @@ import arb.documentation.TheArb4jLibrary;
       IntStream.range(0, getNumCols()).forEach(i -> diagonal.set(i, get(i, i)));
     }
     return diagonal;
-  }
-
-  public ComplexMatrix extractUpperAndLowerTriangularMatrices(ComplexMatrix L, ComplexMatrix U) {
-    assert isSquare() : "matrix must be square";
-    int n = getNumRows();
-
-    L.setName("L_" + name);
-    U.setName("U_" + name);  
-
-    for (int i = 0; i < n; i++) {
-      for (int j = 0; j < n; j++) {
-        if (i > j) {
-          L.set(i, j, get(i, j));
-          U.set(i, j, 0);
-        } else if (i == j) {
-          L.set(i, j, 1);
-          U.set(i, j, get(i, j));
-        } else {
-          L.set(i, j, 0);
-          U.set(i, j, get(i, j));
-        }
-      }
-    }
-    
-    return this;
-  }        
+  }     
   
   public Real frobeniusNorm(int bits, Real normResult) {
     arblib.acb_mat_frobenius_norm(normResult, this, bits);
