@@ -315,6 +315,11 @@ public abstract class StationaryGaussianProcessSampler extends
     super();
   }
 
+  /**
+   * TODO: see if there is a way to make the crosshair path and label render with an XOR mask instead of a fixed color so it would work on all backgrounds
+   * 
+   * @param chart
+   */
   protected void configureChart(XYChart chart)
   {
     chart.getPlugins()
@@ -324,9 +329,9 @@ public abstract class StationaryGaussianProcessSampler extends
                  new CrosshairIndicator());
     chart.getRenderers().forEach(renderer -> renderer.getAxes().addAll(chart.getAxes()));
     chart.getStylesheets()
-         .add("data:text/css,.chart-crosshair-path { -fx-stroke: white; -fx-stroke-width: 2; }");
+         .add(String.format("data:text/css,.chart-crosshair-path { -fx-stroke: %s; -fx-stroke-width: 2; }", light ? "black" : "white"));
     chart.getStylesheets()
-         .add("data:text/css,.chart-crosshair-label { -fx-fill:yellow; -fx-font-size: 16px; }");
+         .add(String.format("data:text/css,.chart-crosshair-label { -fx-fill: %s; -fx-font-size: 16px; }", light ? "orange" : "yellow"));
   }
 
   protected GridPane createGridPane(XYChart[] charts)
