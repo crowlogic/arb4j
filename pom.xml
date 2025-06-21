@@ -26,24 +26,8 @@
             <url>https://repo1.maven.org/maven2</url>
         </repository>
         <repository>
-            <id>jitpack</id>
-            <url>https://jitpack.io</url>
-        </repository>
-        <repository>
             <id>sonatype-releases</id>
             <url>https://oss.sonatype.org/content/repositories/releases</url>
-        </repository>
-        <repository>
-            <id>spinyowl</id>
-            <url>https://raw.github.com/SpinyOwl/repo/releases</url>
-        </repository>
-        <repository>
-            <id>jzy3d</id>
-            <url>https://maven.jzy3d.org/releases/</url>
-        </repository>
-        <repository>
-            <id>amelentev</id>
-            <url>https://amelentev.github.io/mvnrepo/</url>
         </repository>
         <repository>
             <id>oracle</id>
@@ -57,11 +41,7 @@
             <artifactId>graphviz-java</artifactId>
             <version>0.18.1</version>
         </dependency>
-        <dependency>
-            <groupId>com.github.beosign</groupId>
-            <artifactId>snakeyaml-anno</artifactId>
-            <version>1.3.0</version>
-        </dependency>
+
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
