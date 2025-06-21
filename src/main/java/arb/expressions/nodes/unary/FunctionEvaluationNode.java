@@ -1,24 +1,17 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
-import static arb.expressions.Compiler.loadOrderParameter;
+import static arb.expressions.Compiler.*;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 
 import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
-import arb.expressions.nodes.IntegralNode;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.PolynomialIntegralNode;
-import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.*;
 import arb.functions.Function;
 
 /**
@@ -49,7 +42,9 @@ public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? exte
     this.functionNode = functionNode;
   }
 
-  public FunctionEvaluationNode(Expression<D, C, F> expression, Node<D, C, F> functionNode, Node<D, C, F> argNode)
+  public FunctionEvaluationNode(Expression<D, C, F> expression,
+                                Node<D, C, F> functionNode,
+                                Node<D, C, F> argNode)
   {
     super(expression,
           argNode);
@@ -111,8 +106,9 @@ public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? exte
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, C, F> substitute(String variable,
-                                                                                       Node<E, S, G> transformation)
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<D, C, F>
+         substitute(String variable, Node<E, S, G> transformation)
   {
     functionNode = functionNode.substitute(variable, transformation);
     arg          = arg.substitute(variable, transformation);
@@ -139,9 +135,12 @@ public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? exte
     }
 
     // For other cases, use regular IntegralNode
-    return new IntegralNode<>(expression,
-                              this,
-                              variable);
+    return Expression.useNewIntegralNode ? new NewIntegralNode<>(expression,
+                                                                 this,
+                                                                 variable)
+                                         : new IntegralNode<>(expression,
+                                                              this,
+                                                              variable);
   }
 
   @Override
@@ -149,8 +148,6 @@ public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? exte
   {
     return false;
   }
-
-
 
   @Override
   public boolean isScalar()
