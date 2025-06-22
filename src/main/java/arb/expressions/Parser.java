@@ -23,23 +23,8 @@ public class Parser
   { '¼', '½', '¾', '⅐', '⅑', '⅒', '⅓', '⅔', '⅕', '⅖', '⅗', '⅘', '⅙', '⅚', '⅛', '⅜', '⅝', '⅞' };
 
   public static String[]                     fractionConstantFieldNames =
-  { "oneQuarter",
-    "oneHalf",
-    "threeQuarters",
-    "oneSeventh",
-    "oneNineth",
-    "oneTenth",
-    "oneThird",
-    "twoThird",
-    "oneFifth",
-    "twoFifths",
-    "threeFifths",
-    "fourFifths",
-    "oneSixth",
-    "fiveSixths",
-    "oneEight",
-    "threeEights",
-    "fiveEights",
+  { "oneQuarter", "oneHalf", "threeQuarters", "oneSeventh", "oneNineth", "oneTenth", "oneThird", "twoThird", "oneFifth",
+    "twoFifths", "threeFifths", "fourFifths", "oneSixth", "fiveSixths", "oneEight", "threeEights", "fiveEights",
     "sevenEights" };
 
   public static HashMap<Character, Fraction> fractions                  = new HashMap<>();
@@ -154,7 +139,7 @@ public class Parser
     ch = subscriptedDigitToRegular(ch);
 
     boolean isDigit = ch >= '0' && ch <= '9';
-    return isDigit || ch == '.' || ch == '∞' ||Parser.fractions.containsKey(ch);
+    return isDigit || ch == '.' || ch == '∞' || Parser.fractions.containsKey(ch);
   }
 
   /**
@@ -275,9 +260,29 @@ public class Parser
     return str;
   }
 
-  public static final HashSet<
-                Character>               SUBSCRIPT_CHARACTERS         = new HashSet<
-                              Character>(Arrays.asList('₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉', 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ', 'ₜ'));
+  public static final HashSet<Character> SUBSCRIPT_CHARACTERS         = new HashSet<Character>(Arrays.asList('₀',
+                                                                                                             '₁',
+                                                                                                             '₂',
+                                                                                                             '₃',
+                                                                                                             '₄',
+                                                                                                             '₅',
+                                                                                                             '₆',
+                                                                                                             '₇',
+                                                                                                             '₈',
+                                                                                                             '₉',
+                                                                                                             'ₐ',
+                                                                                                             'ₑ',
+                                                                                                             'ₒ',
+                                                                                                             'ₓ',
+                                                                                                             'ₔ',
+                                                                                                             'ₕ',
+                                                                                                             'ₖ',
+                                                                                                             'ₗ',
+                                                                                                             'ₘ',
+                                                                                                             'ₙ',
+                                                                                                             'ₚ',
+                                                                                                             'ₛ',
+                                                                                                             'ₜ'));
 
   public static final char[]             SUPERSCRIPT_DIGITS_ARRAY     = new char[]
   { '⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹' };
@@ -289,36 +294,11 @@ public class Parser
   { 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ', 'ₜ' };
 
   public static int[]                    lowercaseSuperscriptAlphabet =
-  { 'ᵃ',
-    'ᵇ',
-    'ᶜ',
-    'ᵈ',
-    'ᵉ',
-    'ᶠ',
-    'ᵍ',
-    'ʰ',
-    'ⁱ',
-    'ʲ',
-    'ᵏ',
-    'ˡ',
-    'ᵐ',
-    'ⁿ',
-    'ᵒ',
-    'ᵖ',
-    0x107A5,
-    'ʳ',
-    'ˢ',
-    'ᵗ',
-    'ᵘ',
-    'ᵛ',
-    'ʷ',
-    'ˣ',
-    'ʸ',
-    'ᶻ' };
+  { 'ᵃ', 'ᵇ', 'ᶜ', 'ᵈ', 'ᵉ', 'ᶠ', 'ᵍ', 'ʰ', 'ⁱ', 'ʲ', 'ᵏ', 'ˡ', 'ᵐ', 'ⁿ', 'ᵒ', 'ᵖ', 0x107A5, 'ʳ', 'ˢ', 'ᵗ', 'ᵘ', 'ᵛ',
+    'ʷ', 'ˣ', 'ʸ', 'ᶻ' };
 
-  public static final HashSet<
-                Character>               lowercaseSubscriptAlphabet   = new HashSet<
-                              Character>(Arrays.asList('ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ', 'ₜ'));
+  public static final HashSet<Character> lowercaseSubscriptAlphabet   = new HashSet<
+                Character>(Arrays.asList('ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ', 'ₜ'));
   /**
    * Not all uppercase letters have UTF superscript representations
    */
@@ -326,76 +306,12 @@ public class Parser
   { 'ᴬ', 'ᴮ', 'ᴰ', 'ᴱ', 'ᴳ', 'ᴴ', 'ᴵ', 'ᴶ', 'ᴷ', 'ᴸ', 'ᴹ', 'ᴺ', 'ᴼ', 'ᴾ', 'ᴿ', 'ᵀ', 'ᵁ', 'ⱽ', 'ᵂ' };
 
   public static final String[]           superscripts                 =
-  { "ᵃ",
-    "ᵇ",
-    "ᶜ",
-    "ᵈ",
-    "ᵉ",
-    "ᶠ",
-    "ᵍ",
-    "ʰ",
-    "ⁱ",
-    "ʲ",
-    "ᵏ",
-    "ˡ",
-    "ᵐ",
-    "ⁿ",
-    "ᵒ",
-    "ᵖ",
-    String.format("%c", 0x107A5),
-    "ʳ",
-    "ˢ",
-    "ᵗ",
-    "ᵘ",
-    "ᵛ",
-    "ʷ",
-    "ˣ",
-    "ʸ",
-    "ᶻ",
-    "ᵅ",
-    "ᵝ",
-    "ᵞ",
-    "ᵟ",
-    "ᵋ",
-    "ᶿ",
-    "ᵠ",
-    "ᵡ" };
+  { "ᵃ", "ᵇ", "ᶜ", "ᵈ", "ᵉ", "ᶠ", "ᵍ", "ʰ", "ⁱ", "ʲ", "ᵏ", "ˡ", "ᵐ", "ⁿ", "ᵒ", "ᵖ", String.format("%c", 0x107A5), "ʳ",
+    "ˢ", "ᵗ", "ᵘ", "ᵛ", "ʷ", "ˣ", "ʸ", "ᶻ", "ᵅ", "ᵝ", "ᵞ", "ᵟ", "ᵋ", "ᶿ", "ᵠ", "ᵡ" };
 
   public static final String[]           normals                      =
-  { "a",
-    "b",
-    "c",
-    "d",
-    "e",
-    "f",
-    "g",
-    "h",
-    "i",
-    "j",
-    "k",
-    "l",
-    "m",
-    "n",
-    "o",
-    "p",
-    "q",
-    "r",
-    "s",
-    "t",
-    "u",
-    "v",
-    "w",
-    "x",
-    "y",
-    "z",
-    "α",
-    "β",
-    "γ",
-    "δ",
-    "ε",
-    "θ",
-    "φ",
-    "χ" };
+  { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w",
+    "x", "y", "z", "α", "β", "γ", "δ", "ε", "θ", "φ", "χ" };
 
   public static final HashSet<Character> superscriptChars             = new HashSet<
                 Character>(Arrays.asList(superscripts).stream().map(s -> s.charAt(0)).toList());

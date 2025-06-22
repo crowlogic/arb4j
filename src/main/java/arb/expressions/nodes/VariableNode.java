@@ -504,8 +504,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else
     {
-      if (isIndeterminate = (expression.canHaveAnIndeterminantVariable()
-                    && !expression.anyAscendentIndependentVariableIs(getName())))
+      if (isIndeterminate = (!expression.anyAscendentIndependentVariableIs(getName())))
       {
         declareThisToBeTheIndeterminantVariable();
       }

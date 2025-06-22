@@ -673,10 +673,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       node = (N) new SumNode<D, C, F>(this);
     }
-    else if ( nextCharacterIs('-'))
-    {
-      node = resolve().neg();
-    }
     else if (isNumeric(character))
     {
       node = (N) evaluateNumber();
