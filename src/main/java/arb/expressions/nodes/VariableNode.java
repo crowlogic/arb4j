@@ -101,7 +101,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                       boolean resolve)
   {
     super(expression);
-    assert !reference.toString().contains("-") : reference + " has invalid characters";
     var variables = expression.context != null ? expression.context.variables : null;
     this.expression         = expression;
     this.reference          = reference;
@@ -120,14 +119,12 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else
     {
-      if ((variables == null || !variables.map.containsKey(reference.name)
-                    || reference.type == null) && resolve)
+      if ((variables == null || !variables.map.containsKey(reference.name) || reference.type == null) && resolve)
       {
         resolveReference();
       }
 
-      if (expression.independentVariable != null
-                    && reference.equals(expression.independentVariable.reference))
+      if (expression.independentVariable != null && reference.equals(expression.independentVariable.reference))
       {
         isIndependent = true;
       }
@@ -338,6 +335,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
   }
 
+
   public boolean isIndependent(VariableNode<D, R, F> inputVariable)
   {
     if (expression.isNullaryFunction())
@@ -359,14 +357,13 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return getName().equals(variable);
   }
 
-  public static final HashSet<
-                Class<?>> scalarTypes = new HashSet<>(Arrays.asList(Real.class,
-                                                                    Complex.class,
-                                                                    Integer.class,
-                                                                    Fraction.class,
-                                                                    ComplexFraction.class,
-                                                                    AlgebraicNumber.class,
-                                                                    GaussianInteger.class));
+  public static final HashSet<Class<?>> scalarTypes = new HashSet<>(Arrays.asList(Real.class,
+                                                                                  Complex.class,
+                                                                                  Integer.class,
+                                                                                  Fraction.class,
+                                                                                  ComplexFraction.class,
+                                                                                  AlgebraicNumber.class,
+                                                                                  GaussianInteger.class));
 
   @Override
   public boolean isScalar()
@@ -386,8 +383,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return this;
   }
 
-  public VariableNode<?, ?, ?> resolve(VariableReference<D, R, F> reference,
-                                       Expression<?, ?, ?> ascendentExpression)
+  public VariableNode<?, ?, ?> resolve(VariableReference<D, R, F> reference, Expression<?, ?, ?> ascendentExpression)
   {
     var ascendentInputNode = ascendentExpression.independentVariable;
 
@@ -395,9 +391,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       if (Expression.trace)
       {
-        System.err.format("Assigning this %s as ascendent input node=%s\n",
-                          this,
-                          ascendentInputNode);
+        System.err.format("Assigning this %s as ascendent input node=%s\n", this, ascendentInputNode);
       }
       ascendentInput = true;
       reference.type = ascendentExpression.domainType;
@@ -420,10 +414,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         reference.type = instanceVariable.getClass();
         if (Expression.trace)
         {
-          System.err.println("Declaring "
-                             + reference
-                             + " as a contextual variable of type "
-                             + reference.type());
+          System.err.println("Declaring " + reference + " as a contextual variable of type " + reference.type());
 
         }
 
@@ -513,8 +504,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
         resolveInheritedVariableReference(inputVariable);
       }
     }
-    if (expression.independentVariable != null && !isIndeterminate && !isIndependent
-                  && !ascendentInput)
+    if (expression.independentVariable != null && !isIndeterminate && !isIndependent && !ascendentInput)
     {
       throwNewUndefinedReferenceException();
     }
@@ -577,9 +567,8 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                      true);
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<D, R, F>
-         substitute(String variable, Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
+                                                                                       Node<E, S, G> arg)
   {
     return variable.equals(getName()) ? arg.spliceInto(expression) : this;
   }
