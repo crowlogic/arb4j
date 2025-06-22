@@ -36,7 +36,7 @@ public class arcsinIntegral implements
       this.initialize();
     }
 
-    return in.arcsin(bits, super.vℝ0004);
+    return null;//in.arcsin(bits, super.vℝ0004);
   }
 
   @Override
