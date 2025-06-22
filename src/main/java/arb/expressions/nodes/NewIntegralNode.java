@@ -21,155 +21,110 @@ import arb.Quaternion;
 import arb.Real;
 import arb.expressions.Expression;
 import arb.expressions.FunctionMapping;
+import arb.expressions.VariableReference;
 import arb.functions.Function;
 
-/**
- * The syntax to express a definite integral is<br>
- * <br>
- * 
- * <pre>
- * g(x)=∫x➔f(x)dx∈(a,b)
- * </pre>
- * 
- * and the syntax to express an indefinite integral is<br>
- * <br>
- * 
- * <pre>
- * g(x)=∫x➔f(x)dx
- * </pre>
- * 
- * which is just as the definite case but with the limits of the integration
- * interval specification ∈(a,b) is omitted. Also supports function forms:
- * int(f(x),x), int(f(x),x,a,b), and int(f(x),x=a..b)
- */
-public class NewIntegralNode<D, C, F extends Function<? extends D, ? extends C>> extends
-                            Node<D, C, F>
+public class NewIntegralNode<D, C, F extends Function<? extends D, ? extends C>> extends Node<D, C, F>
 {
-  public int                                 bits      = 128;
+  public int bits = 128;
 
-  Node<D, C, F>                              integrandNode;
-  Node<D, C, F>                              lowerLimitNode;
-  Node<D, C, F>                              upperLimitNode;
-  Node<D, C, F>                              integrationVariableNode;
-  Function<? extends D, ? extends C>         integralFunction;
-  String                                     integralFunctionFieldName;
-  String                                     lowerIntegralValueFieldName;
-  String                                     upperIntegralValueFieldName;
-  String                                     dvar;
+  // NAryOperationNode-style fields - extract integrand as STRING, create Expression later
+  String integrandExpressionString;
+  String integrationVariableName;
+  Expression<D, C, F> integrand;
+  String integrandFunctionFieldName;
+  FunctionMapping<D, C, F> integrandMapping;
+
+  // Limit nodes parsed inline like NAryOperationNode
+  Node<D, C, F> lowerLimitNode;
+  Node<D, C, F> upperLimitNode;
+  VariableNode<D, C, F> integrationVariableNode;
+
+  // Integral computation fields
+  String integralFunctionFieldName;
+  String lowerIntegralValueFieldName;
+  String upperIntegralValueFieldName;
   Expression<Object, Object, Function<?, ?>> integralExpression;
-  Node<Object, Object, Function<?, ?>>       integralNode;
-  public FunctionMapping<?, ?, ?>            integralMapping;
+  Node<Object, Object, Function<?, ?>> integralNode;
+  FunctionMapping<?, ?, ?> integralMapping;
 
-  String                                     integrandExpressionString;
-  String                                     integrationVariableName;
+  // For FunctionEvaluationNode integration path
+  Node<D, C, F> integrandNode;
 
-  Expression<D, C, F>                        integrand;
-  String                                     integrandFunctionFieldName;
-  FunctionMapping<D, C, F>                   integrandMapping;
-
-  String                                     SYNTAXMSG =
-                                                       "the format is g(x)=∫x➔f(x)dx∈(a,b) for definite integrals and "
-                                                         + "g(x)=∫x➔f(x)dx for indefinite integrals, int(f(x),x) or int(f(x),x,a,b) for function form, "
-                                                         + "or int(f(x),x=a..b) for interval form";
+  String SYNTAXMSG = "the format is g(x)=∫x➔f(x)dx∈(a,b) for definite integrals and " +
+                     "g(x)=∫x➔f(x)dx for indefinite integrals, int(f(x),x) or int(f(x),x,a,b) for function form, " +
+                     "or int(f(x),x=a..b) for interval form";
 
   public NewIntegralNode(Expression<D, C, F> expression)
   {
-    this(expression,
-         false);
+    this(expression, false);
   }
 
   public NewIntegralNode(Expression<D, C, F> expression, boolean functionForm)
   {
     super(expression);
-
+    
     if (!functionForm)
     {
-      this.integrandExpressionString = parseStandardForm();
+      integrandExpressionString = parseStandardForm();
     }
     else
     {
-      this.integrandExpressionString = parseFunctionForm();
+      integrandExpressionString = parseFunctionForm();
     }
+    
     assignFieldNames(type());
   }
 
-  public NewIntegralNode(Expression<D, C, F> expression,
-                         Node<D, C, F> functionEvaluationNode,
-                         Node<D, C, F> variable)
+  public NewIntegralNode(Expression<D, C, F> expression, Node<D, C, F> functionEvaluationNode, VariableNode<D, C, F> variable)
   {
     super(expression);
-    integrandNode           = functionEvaluationNode;
+    integrandNode = functionEvaluationNode;
     integrationVariableNode = variable;
     assignFieldNames(type());
   }
 
+  // NAryOperationNode-style parsing - extract integrand STRING like parseFactorExpression()
   protected String parseStandardForm()
   {
     String stringExpression = expression.expression;
-    int    startPos         = expression.position;
-
-    if (startPos < stringExpression.length() && stringExpression.charAt(startPos) == '∫')
-    {
-      startPos++;
-    }
-
+    int startPos = expression.position;
     int arrowIndex = stringExpression.indexOf('➔', startPos);
-
+    
     if (arrowIndex != -1)
     {
       integrationVariableName = stringExpression.substring(startPos, arrowIndex).trim();
     }
     else
     {
-      if (expression.independentVariable != null)
-      {
-        integrationVariableName = expression.independentVariable.getName();
-      }
-      else
-      {
-        throw new RuntimeException("No integration variable specified");
-      }
-      arrowIndex = startPos - 1;
+      throw new RuntimeException("No integration variable specified");
     }
 
     String lookingFor = "d" + integrationVariableName;
-    int    dPosition  = stringExpression.indexOf(lookingFor, arrowIndex);
+    int dPosition = stringExpression.indexOf(lookingFor, arrowIndex);
     if (dPosition == -1)
     {
-      expression.throwUnexpectedCharacterException("didn't find '"
-                                                   + lookingFor
-                                                   + "' remaining="
-                                                   + expression.remaining());
+      expression.throwUnexpectedCharacterException("didn't find '" + lookingFor + "' remaining=" + expression.remaining());
     }
 
     String integrandExpression = stringExpression.substring(arrowIndex + 1, dPosition).trim();
-    int    afterDVar           = dPosition + lookingFor.length();
-    expression.position = afterDVar;
+    
+    // Advance position like NAryOperationNode does - VERIFIED advancement
+    expression.character = expression.expression.charAt(expression.position += integrandExpression.length() + integrationVariableName.length() + 1);
+    
+    // NOW verify and consume 'd' and variable name
+    expression.require('d');
+    String consumedVar = expression.parseName();
+    assert consumedVar.equals(integrationVariableName) : "Variable mismatch: expected " + integrationVariableName + " but got " + consumedVar;
 
-    if (expression.position < stringExpression.length()
-                  && stringExpression.charAt(expression.position) == '∈')
+    // Check for limits specification
+    if (expression.nextCharacterIs('∈'))
     {
-      int openParen  = stringExpression.indexOf('(', expression.position);
-      int comma      = stringExpression.indexOf(',', openParen);
-      int ellipsis   = stringExpression.indexOf('…', openParen);
-      int separator  = (comma != -1 && (ellipsis == -1 || comma < ellipsis)) ? comma : ellipsis;
-      int closeParen = stringExpression.indexOf(')', Math.max(comma, ellipsis));
-
-      if (openParen != -1 && separator != -1 && closeParen != -1)
-      {
-        expression.position = openParen + 1;
-        lowerLimitNode      = expression.resolve();
-
-        expression.require(',', '…');
-
-        upperLimitNode = expression.resolve();
-        expression.require(')');
-      }
-    }
-
-    if (expression.position < stringExpression.length())
-    {
-      expression.character = stringExpression.charAt(expression.position);
+      expression.require('(');
+      lowerLimitNode = expression.evaluate(); // Use evaluate() like NAryOperationNode
+      expression.require(',', '…');
+      upperLimitNode = expression.evaluate(); // Use evaluate() like NAryOperationNode  
+      expression.require(')');
     }
 
     return integrandExpression;
@@ -178,98 +133,74 @@ public class NewIntegralNode<D, C, F extends Function<? extends D, ? extends C>>
   protected String parseFunctionForm()
   {
     String stringExpression = expression.expression;
-    int    startPos         = expression.position;
-
-    int    firstComma       = stringExpression.indexOf(',', startPos);
+    int startPos = expression.position;
+    
+    // Find first comma like NAryOperationNode looks for specific delimiters - NO bracket matching
+    int firstComma = stringExpression.indexOf(',', startPos);
     if (firstComma == -1)
     {
       expression.throwUnexpectedCharacterException("Expected comma after integrand");
     }
 
     String integrandExpression = stringExpression.substring(startPos, firstComma).trim();
-    int    varStart            = firstComma + 1;
-    int    secondComma         = stringExpression.indexOf(',', varStart);
-    int    closeParen          = stringExpression.indexOf(')', varStart);
-
-    int    equalsSign          = stringExpression.indexOf('=', varStart);
-    if (equalsSign != -1 && equalsSign < closeParen
-                  && (secondComma == -1 || equalsSign < secondComma))
+    
+    // Advance position like NAryOperationNode - VERIFIED advancement
+    expression.character = expression.expression.charAt(expression.position += integrandExpression.length());
+    
+    // NOW verify and consume comma and variable name
+    integrationVariableName = expression.require(',').parseName();
+    
+    // Parse limits using verified methods
+    if (expression.nextCharacterIs('='))
     {
-      integrationVariableName = stringExpression.substring(varStart, equalsSign).trim();
-      int rangeStart = equalsSign + 1;
-      int dotDot     = stringExpression.indexOf("..", rangeStart);
-      if (dotDot != -1 && dotDot < closeParen)
+      lowerLimitNode = expression.evaluate(); // Use evaluate() like NAryOperationNode
+      expression.require(',', '…');
+      upperLimitNode = expression.evaluate(); // Use evaluate() like NAryOperationNode
+    }
+    else if (expression.nextCharacterIs(','))
+    {
+      lowerLimitNode = expression.evaluate(); // Use evaluate() like NAryOperationNode
+      if (expression.nextCharacterIs(','))
       {
-        expression.position = rangeStart;
-        lowerLimitNode      = expression.resolve();
-        expression.require('.');
-        expression.require('.');
-        upperLimitNode = expression.resolve();
+        upperLimitNode = expression.evaluate(); // Use evaluate() like NAryOperationNode
       }
-      expression.position = closeParen + 1;
     }
-    else
-    {
-      int varEnd = (secondComma != -1 && secondComma < closeParen) ? secondComma : closeParen;
-      integrationVariableName = stringExpression.substring(varStart, varEnd).trim();
-
-      if (secondComma != -1 && secondComma < closeParen)
-      {
-        int lowerStart = secondComma + 1;
-        int thirdComma = stringExpression.indexOf(',', lowerStart);
-        if (thirdComma != -1 && thirdComma < closeParen)
-        {
-          expression.position = lowerStart;
-          lowerLimitNode      = expression.resolve();
-          expression.require(',');
-          upperLimitNode = expression.resolve();
-        }
-        else
-        {
-          expression.position = lowerStart;
-          upperLimitNode      = expression.resolve();
-        }
-      }
-      expression.position = closeParen + 1;
-    }
-
-    if (expression.position < stringExpression.length())
-    {
-      expression.character = stringExpression.charAt(expression.position);
-    }
+    expression.require(')');
 
     return integrandExpression;
   }
 
   protected void assignFieldNames(Class<?> resultType)
   {
-    integralFunctionFieldName   = expression.getNextIntermediateVariableFieldName("integral",
-                                                                                  resultType);
+    integralFunctionFieldName = expression.getNextIntermediateVariableFieldName("integral", resultType);
     lowerIntegralValueFieldName = expression.newIntermediateVariable("lowerValue", resultType);
     upperIntegralValueFieldName = expression.newIntermediateVariable("upperValue", resultType);
-
+    
     if (integrandExpressionString != null)
     {
-      integrandFunctionFieldName = expression.getNextIntermediateVariableFieldName("integrand",
-                                                                                   resultType);
+      integrandFunctionFieldName = expression.getNextIntermediateVariableFieldName("integrand", resultType);
     }
   }
 
+  // Create integrand Expression like NAryOperationNode.parseFactorExpression(Class<?>)
   @SuppressWarnings("unchecked")
   protected void parseIntegrandExpression(Class<?> resultType)
   {
     if (integrand == null && integrandExpressionString != null)
     {
       String expr = integrandExpressionString;
+      
+      // Create NEW Expression like NAryOperationNode does for factors
       integrand = Function.parse(integrandFunctionFieldName,
-                                 expr,
-                                 expression.context,
-                                 expression.domainType,
-                                 expression.coDomainType,
-                                 expression.functionClass,
-                                 integrandFunctionFieldName,
-                                 expression);
+                               expr,
+                               expression.context,
+                               expression.domainType,
+                               expression.coDomainType,
+                               expression.functionClass,
+                               integrandFunctionFieldName,
+                               expression);
 
+      // Register like NAryOperationNode.registerFactor()
       registerIntegrand(expr, integrand);
     }
   }
@@ -277,13 +208,13 @@ public class NewIntegralNode<D, C, F extends Function<? extends D, ? extends C>>
   void registerIntegrand(String expr, Expression<D, C, F> integrandExpression)
   {
     integrandMapping = expression.context.registerFunctionMapping(integrandFunctionFieldName,
-                                                                  null,
-                                                                  expression.domainType,
-                                                                  integrandExpression.coDomainType,
-                                                                  null,
-                                                                  true,
-                                                                  integrandExpression,
-                                                                  expr);
+                                                                 null,
+                                                                 expression.domainType,
+                                                                 integrandExpression.coDomainType,
+                                                                 null,
+                                                                 true,
+                                                                 integrandExpression,
+                                                                 expr);
     expression.referencedFunctions.put(integrandFunctionFieldName, integrandMapping);
   }
 
@@ -333,7 +264,7 @@ public class NewIntegralNode<D, C, F extends Function<? extends D, ? extends C>>
     {
       evaluateIndefiniteIntegralAt(mv, upperLimitNode, resultType, upperIntegralValueFieldName);
       evaluateIndefiniteIntegralAt(mv, lowerLimitNode, resultType, lowerIntegralValueFieldName);
-
+      
       if (isResult)
       {
         cast(loadResultParameter(mv), resultType);
@@ -350,47 +281,40 @@ public class NewIntegralNode<D, C, F extends Function<? extends D, ? extends C>>
   @SuppressWarnings("unchecked")
   private void computeIndefiniteIntegral()
   {
-    assert integralFunction == null;
-
-    if (integrandNode == null && integrand != null)
+    if (integrandNode != null)
     {
-      integralNode = (Node<Object, Object, Function<?, ?>>) integrand.rootNode;
+      // FunctionEvaluationNode path - use nodes directly
+      assert integrationVariableNode != null : "integrationVariableNode is null";
+      integralNode = (Node<Object, Object, Function<?, ?>>) integrandNode.integrate(integrationVariableNode);
     }
     else
     {
-      if (integrand == null)
-      {
-        System.err.println("Compiling " + integrandExpressionString);
-        integrand     = Function.compile(expression.domainType,
-                                         expression.domainType,
-                                         Function.class,
-                                         integrandExpressionString,
-                                         expression.context);
-        integrandNode = integrand.rootNode;
-      }
-      assert integrand.independentVariable != null : "indepVar is null for integrand=" + integrand;
-      integralNode = (Node<Object,
-                    Object,
-                    Function<?, ?>>) integrandNode.integrate(integrand.independentVariable);
+      // String parsing path - use Expression like NAryOperationNode
+      assert integrand != null : "integrand is null integrandExpressionString=" + integrandExpressionString;
+      // Create integration variable node for the integrand expression
+      integrationVariableNode = new VariableNode<>(expression,
+                                                   new VariableReference<>(integrationVariableName),
+                                                   expression.position,
+                                                   true);
+      integralNode = (Node<Object, Object, Function<?, ?>>) integrand.rootNode.integrate(integrationVariableNode);
     }
 
-    integralExpression           = Function.compile(Object.class,
-                                                    Object.class,
-                                                    Function.class,
-                                                    integralNode.toString(),
-                                                    expression.context);
-
+    integralExpression = Function.compile(Object.class,
+                                        Object.class,
+                                        Function.class,
+                                        integralNode.toString(),
+                                        expression.context);
+    
     integralExpression.className = transformToJavaAcceptableCharacters(integralFunctionFieldName);
 
-    integralMapping              =
-                    expression.context.registerFunctionMapping(integralExpression.className,
-                                                               integralExpression.instantiate(),
-                                                               integralExpression.domainType,
-                                                               integralExpression.coDomainType,
-                                                               Function.class,
-                                                               false,
-                                                               integralExpression,
-                                                               null);
+    integralMapping = expression.context.registerFunctionMapping(integralExpression.className,
+                                                                 integralExpression.instantiate(),
+                                                                 integralExpression.domainType,
+                                                                 integralExpression.coDomainType,
+                                                                 Function.class,
+                                                                 false,
+                                                                 integralExpression,
+                                                                 null);
     expression.referencedFunctions.put(integralFunctionFieldName, integralMapping);
   }
 
@@ -402,10 +326,7 @@ public class NewIntegralNode<D, C, F extends Function<? extends D, ? extends C>>
     loadIntegral(mv);
     limit.generate(mv, Real.class);
     loadBitsParameterOntoStack(mv);
-    getFieldFromThis(mv,
-                     expression.className,
-                     integralValueFieldName,
-                     Type.getDescriptor(generatedType));
+    getFieldFromThis(mv, expression.className, integralValueFieldName, Type.getDescriptor(generatedType));
     evaluateIntegral(mv);
     cast(mv, resultType);
   }
@@ -413,7 +334,18 @@ public class NewIntegralNode<D, C, F extends Function<? extends D, ? extends C>>
   @Override
   public List<Node<D, C, F>> getBranches()
   {
-    return List.of(integrandNode != null ? integrandNode : integrand.rootNode);
+    if (integrandNode != null)
+    {
+      return List.of(integrandNode);
+    }
+    else if (integrand != null)
+    {
+      return List.of(integrand.rootNode);
+    }
+    else
+    {
+      return List.of();
+    }
   }
 
   @Override
@@ -431,25 +363,18 @@ public class NewIntegralNode<D, C, F extends Function<? extends D, ? extends C>>
   @Override
   public String typeset()
   {
-    return lowerLimitNode == null && upperLimitNode
-                  == null ? String.format("\\int %s \\,d%s",
-                                          integrandNode != null ? integrandNode.typeset()
-                                                                : integrandExpressionString,
-                                          integrationVariableName)
-                          : String.format("\\int_{%s}^{%s} %s \\,d%s",
-                                          lowerLimitNode != null ? lowerLimitNode.typeset() : "a",
-                                          upperLimitNode != null ? upperLimitNode.typeset() : "b",
-                                          integrandNode != null ? integrandNode.typeset()
-                                                                : integrandExpressionString,
-                                          integrationVariableName);
+    String integrandStr = integrandNode != null ? integrandNode.typeset() : integrandExpressionString;
+    return lowerLimitNode == null && upperLimitNode == null 
+      ? String.format("\\int %s \\,d%s", integrandStr, integrationVariableName)
+      : String.format("\\int_{%s}^{%s} %s \\,d%s",
+                      lowerLimitNode.typeset(), upperLimitNode.typeset(), 
+                      integrandStr, integrationVariableName);
   }
 
   @Override
   public Node<D, C, F> integrate(VariableNode<D, C, F> variable)
   {
-    return new NewIntegralNode<>(expression,
-                                 this,
-                                 variable);
+    return new NewIntegralNode<>(expression, this, variable);
   }
 
   @Override
@@ -457,22 +382,20 @@ public class NewIntegralNode<D, C, F extends Function<? extends D, ? extends C>>
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    var integral = new NewIntegralNode<E, S, G>(newExpression,
-                                                integrandNode.spliceInto(newExpression),
-                                                integrationVariableNode.spliceInto(newExpression)
-                                                                       .asVariable());
-    integral.integralFunctionFieldName   = integralFunctionFieldName;
-    integral.lowerIntegralValueFieldName = lowerIntegralValueFieldName;
-    integral.upperIntegralValueFieldName = upperIntegralValueFieldName;
-    integral.integrandNode               = integrandNode.spliceInto(newExpression);
-    integral.upperLimitNode              =
-                            upperLimitNode != null ? upperLimitNode.spliceInto(newExpression)
-                                                   : null;
-    integral.lowerLimitNode              =
-                            lowerLimitNode != null ? lowerLimitNode.spliceInto(newExpression)
-                                                   : null;
-    integral.integrationVariableNode     = integrationVariableNode.spliceInto(newExpression);
-    return integral;
+    if (integrandNode != null)
+    {
+      return new NewIntegralNode<E, S, G>(newExpression,
+                                          integrandNode.spliceInto(newExpression),
+                                          integrationVariableNode.spliceInto(newExpression).asVariable());
+    }
+    else
+    {
+      var integral = new NewIntegralNode<E, S, G>(newExpression, false);
+      integral.integrandExpressionString = integrandExpressionString;
+      integral.integrationVariableName = integrationVariableName;
+      integral.assignFieldNames(newExpression.coDomainType);
+      return integral;
+    }
   }
 
   @Override
@@ -480,27 +403,10 @@ public class NewIntegralNode<D, C, F extends Function<? extends D, ? extends C>>
          Node<D, C, F>
          substitute(String variable, Node<E, S, G> substitution)
   {
-    if (substitution.toString().equals(variable))
+    if (integrand != null)
     {
-      return this;
+      integrand = integrand.substitute(variable, substitution.expression);
     }
-
-    if (integrandFunctionFieldName != null)
-    {
-      expression.context.functions.map.remove(this.integrandFunctionFieldName);
-    }
-
-    integrandFunctionFieldName = null;
-    integrand                  = null;
-
-    assignFieldNames(expression.coDomainType);
-    if (integrandExpressionString != null)
-    {
-      parseIntegrandExpression(expression.coDomainType);
-      integrand                 = integrand.substitute(variable, substitution.expression);
-      integrandExpressionString = integrand.toString();
-    }
-
     if (integrandNode != null)
     {
       integrandNode = integrandNode.substitute(variable, substitution);
@@ -515,9 +421,8 @@ public class NewIntegralNode<D, C, F extends Function<? extends D, ? extends C>>
     }
     if (integrationVariableNode != null)
     {
-      integrationVariableNode = integrationVariableNode.substitute(variable, substitution);
+      integrationVariableNode = integrationVariableNode.substitute(variable, substitution).asVariable();
     }
-
     return this;
   }
 
@@ -530,8 +435,7 @@ public class NewIntegralNode<D, C, F extends Function<? extends D, ? extends C>>
   @Override
   public boolean isScalar()
   {
-    return type().equals(Real.class) || type().equals(Complex.class)
-                  || type().equals(Quaternion.class);
+    return type().equals(Real.class) || type().equals(Complex.class) || type().equals(Quaternion.class);
   }
 
   @Override
@@ -543,64 +447,40 @@ public class NewIntegralNode<D, C, F extends Function<? extends D, ? extends C>>
   @Override
   public void accept(Consumer<Node<D, C, F>> t)
   {
-    if (integrationVariableNode != null)
-      integrationVariableNode.accept(t);
-    if (integrandNode != null)
-      integrandNode.accept(t);
-    if (lowerLimitNode != null)
-      lowerLimitNode.accept(t);
-    if (upperLimitNode != null)
-      upperLimitNode.accept(t);
+    if (integrationVariableNode != null) integrationVariableNode.accept(t);
+    if (integrandNode != null) integrandNode.accept(t);
+    if (integrand != null) integrand.rootNode.accept(t);
+    if (lowerLimitNode != null) lowerLimitNode.accept(t);
+    if (upperLimitNode != null) upperLimitNode.accept(t);
     t.accept(this);
   }
 
   @Override
   public int hashCode()
   {
-    return Objects.hash(integrandNode,
-                        integrationVariableNode,
-                        lowerLimitNode,
-                        upperLimitNode,
-                        integrandExpressionString);
+    return Objects.hash(integrandNode, integrandExpressionString, integrationVariableName, lowerLimitNode, upperLimitNode);
   }
 
   @Override
   public boolean equals(Object obj)
   {
-    if (this == obj)
-      return true;
-    if (obj == null || getClass() != obj.getClass())
-      return false;
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
     NewIntegralNode<?, ?, ?> other = (NewIntegralNode<?, ?, ?>) obj;
     return Objects.equals(integrandNode, other.integrandNode)
-                  && Objects.equals(integrationVariableNode, other.integrationVariableNode)
-                  && Objects.equals(lowerLimitNode, other.lowerLimitNode)
-                  && Objects.equals(upperLimitNode, other.upperLimitNode)
-                  && Objects.equals(integrandExpressionString, other.integrandExpressionString);
+           && Objects.equals(integrandExpressionString, other.integrandExpressionString)
+           && Objects.equals(integrationVariableName, other.integrationVariableName)
+           && Objects.equals(lowerLimitNode, other.lowerLimitNode)
+           && Objects.equals(upperLimitNode, other.upperLimitNode);
   }
 
   @Override
   public String toString()
   {
-    if (integrandExpressionString != null)
-    {
-      return "∫"
-             + integrationVariableName
-             + "➔"
-             + integrandExpressionString
-             + "d"
-             + integrationVariableName
-             + (lowerLimitNode != null && upperLimitNode != null ? "∈("
-                                                                   + lowerLimitNode.toString()
-                                                                   + ","
-                                                                   + upperLimitNode.toString()
-                                                                   + ")"
-                                                                 : "");
-    }
-    else
-    {
-      return integralNode != null ? integralNode.toString() : "null";
-    }
+    String integrandStr = integrandNode != null ? integrandNode.toString() : integrandExpressionString;
+    return "∫" + integrationVariableName + "➔" + integrandStr + "d" + integrationVariableName +
+           (lowerLimitNode != null && upperLimitNode != null ? 
+            "∈(" + lowerLimitNode.toString() + "," + upperLimitNode.toString() + ")" : "");
   }
 
   @Override
