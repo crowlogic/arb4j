@@ -35,7 +35,7 @@ public class DerivativeNodeTest extends
     
     Expression.trace         = Expression.saveClasses    = true;
     Expression.useNewIntegralNode = true;
-    var f = RealFunction.express("∫y➔1/sqrt(1-y^2)dy∈(-1..x)");
+    var f = RealFunction.express("∫y➔1/sqrt(1-y^2)dy∈(-1,x)");
     var y = f.eval(0.75);
 
     var g = RealFunction.express("arcsin(x)+π⁄2");
