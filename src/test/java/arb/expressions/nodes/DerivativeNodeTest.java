@@ -33,8 +33,7 @@ public class DerivativeNodeTest extends
   public void testDefiniteIntegralOfSquareRoot()
   {
     
-    Expression.trace              = true;
-    Expression.saveClasses        = true;
+    Expression.trace         = Expression.saveClasses    = true;
     //Expression.useNewIntegralNode = true;
     var f = RealFunction.express("∫y➔1/sqrt(1-y^2)dy∈(-1,x)");
     var y = f.eval(0.75);
@@ -44,6 +43,7 @@ public class DerivativeNodeTest extends
     // assertEquals(f.toString(), g.toString());
 
     assertEquals(y, z);
+    Expression.trace         = Expression.saveClasses    = true;
 
   }
 
