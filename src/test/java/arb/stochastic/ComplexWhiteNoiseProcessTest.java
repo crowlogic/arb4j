@@ -1,5 +1,6 @@
 package arb.stochastic;
 
+import arb.Complex;
 import junit.framework.TestCase;
 
 public class ComplexWhiteNoiseProcessTest extends
@@ -23,7 +24,8 @@ public class ComplexWhiteNoiseProcessTest extends
                                .getAsDouble();
       assertEquals(mean, mean2);
       whiteNoise.initializeWithSeed(777);
-      double variance = whiteNoise.stream(128, limit)
+      double variance = whiteNoise.sample(128, Complex.newVector(limit))
+                                  .stream()
                                   .mapToDouble(x -> x.re().pow(2, bits).doubleValue())
                                   .average()
                                   .getAsDouble();

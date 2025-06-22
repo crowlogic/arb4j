@@ -1,6 +1,8 @@
 package arb.stochastic;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -66,13 +68,24 @@ public final class ComplexWhiteNoiseProcess implements
    * Generate a standard normal sample using Arb's arb_urandom.
    * 
    * @param prec Precision in bits
-   * @param out  Output Real
+   * @param out  Output Real, if dim>1 then each element is populated as well
    * @return out, containing the sample
    */
   public Complex sample(int prec, Complex out)
   {
-    realWhiteNoiseProcess.sample(prec, out.re());
-    realWhiteNoiseProcess.sample(prec, out.im());
+    if (out.dim > 1)
+    {
+      for (var element : out)
+      {
+        realWhiteNoiseProcess.sample(prec, element.re());
+        realWhiteNoiseProcess.sample(prec, element.im());
+      }
+    }
+    else
+    {
+      realWhiteNoiseProcess.sample(prec, out.re());
+      realWhiteNoiseProcess.sample(prec, out.im());
+    }
     return out;
   }
 
