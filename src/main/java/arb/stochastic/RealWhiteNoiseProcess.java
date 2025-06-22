@@ -20,11 +20,11 @@ import arb.documentation.TheArb4jLibrary;
 public final class RealWhiteNoiseProcess implements
                                          AutoCloseable
 {
-  private final Real        cache = Real.named("cache");
+  private final Real        cache     = Real.named("cache");
 
   private boolean           hasCached = false;
-  
-  private final RandomState state = new RandomState();
+
+  private final RandomState state     = new RandomState();
 
   public Stream<Real> stream(int bits, int limit)
   {
@@ -83,6 +83,22 @@ public final class RealWhiteNoiseProcess implements
    * @return out, containing the sample
    */
   public Real sample(int prec, Real out)
+  {
+    if (out.dim > 1)
+    {
+      for (var x : out)
+      {
+        sampleOne(prec, x);
+      }
+      return out;
+    }
+    else
+    {
+      return sampleOne(prec, out);
+    }
+  }
+
+  protected Real sampleOne(int prec, Real out)
   {
     if (hasCached)
     {

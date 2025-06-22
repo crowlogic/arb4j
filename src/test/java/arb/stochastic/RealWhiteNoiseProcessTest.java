@@ -25,7 +25,8 @@ public class RealWhiteNoiseProcessTest extends
                                .average()
                                .getAsDouble();
       whiteNoise.initializeWithSeed(777);
-      double mean2 = whiteNoise.stream(128, limit)
+      double mean2 = whiteNoise.sample(128, Real.newVector(limit))
+                               .stream()
                                .mapToDouble(Real::doubleValue)
                                .average()
                                .getAsDouble();
