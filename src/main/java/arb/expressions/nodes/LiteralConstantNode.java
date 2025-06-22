@@ -57,6 +57,12 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
 {
 
   @Override
+  public boolean isHalf()
+  {
+    return toString().equals("½");
+  }
+
+  @Override
   public int hashCode()
   {
     return Objects.hash(value);

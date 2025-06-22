@@ -11,7 +11,6 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
-import arb.expressions.nodes.unary.FunctionNode;
 import arb.functions.Function;
 
 /**
@@ -23,6 +22,12 @@ import arb.functions.Function;
 public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          BinaryOperationNode<D, R, F>
 {
+
+  @Override
+  public boolean isHalf()
+  {
+    return left.isConstantOne() && right.isLiteralConstant() && right.toString().equals("2");
+  }
 
   @Override
   public Node<D, R, F> simplify()
@@ -161,14 +166,15 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (!left.isLiteralConstant() || !"1".equals(left.toString()))
       return false;
 
-    if (!(right instanceof FunctionNode sqrtNode))
-      return false;
+    if (right.isSquareRoot())
+    {
 
-    if (!"sqrt".equals(sqrtNode.functionName))
-      return false;
+      // Check if sqrt argument is (1-x²)
+      Node<D, R, F> squareRootArg = right.getSquareRootArg();
+      return isOneMinusXSquared(squareRootArg, variable);
+    }
 
-    // Check if sqrt argument is (1-x²)
-    return isOneMinusXSquared(sqrtNode.arg, variable);
+    return false;
   }
 
   private boolean isOneOverOnePlusXSquared(VariableNode<D, R, F> variable)

@@ -21,6 +21,19 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
 {
 
   @Override
+  public boolean isSquareRoot()
+  {
+    return right.isHalf();
+  }
+
+  @Override
+  public Node<D, R, F> getSquareRootArg()
+  {
+    assert isSquareRoot() : this + " is not a square root";
+    return left;
+  }
+
+  @Override
   public boolean isVariableSquared(VariableNode<D, R, F> variable)
   {
     return left.equals(variable) && right.isLiteralConstant() && "2".equals(right.toString());

@@ -361,13 +361,23 @@ public class NewIntegralNode<D, C, F extends Function<? extends D, ? extends C>>
 
     if (integrandNode == null && integrand != null)
     {
+
       // Use the parsed integrand expression
       integralNode = (Node<Object, Object, Function<?, ?>>) integrand.rootNode;
     }
     else
     {
-      assert integrand != null : "integrand is null and integrandExpressionString="
-                                 + integrandExpressionString;
+    
+      if (integrand == null)
+      {
+        System.err.println( "Compiling " + integrandExpressionString ); 
+        integrand = Function.compile(expression.domainType,
+                                     expression.domainType,
+                                     Function.class,
+                                     integrandExpressionString,
+                                     expression.context);
+        integrandNode = integrand.rootNode;
+      }
       assert integrand.independentVariable != null : "indepVar is null for integrand=" + integrand;
       integralNode = (Node<Object,
                     Object,

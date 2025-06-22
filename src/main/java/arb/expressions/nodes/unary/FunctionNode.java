@@ -51,6 +51,19 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 {
 
   @Override
+  public boolean isSquareRoot()
+  {
+    return "sqrt".equals(functionName);
+  }
+
+  @Override
+  public Node<D, R, F> getSquareRootArg()
+  {
+    assert isSquareRoot() : this + " is not a square root";
+    return arg;    
+  }
+
+  @Override
   public Node<D, R, F> simplify()
   {
     if ("sqrt".equals(functionName))
