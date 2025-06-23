@@ -88,9 +88,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                                                                          Type.getType(int.class),
                                                                                                          Type.getType(Object.class));
 
-  public Label                                    beginningOfTheLoop            = new Label();
+  public Label                                    beginLoop            = new Label();
 
-  public Label                                    endOfTheLoop                  = new Label();
+  public Label                                    endLoop                  = new Label();
 
   public Node<D, R, F>                            upperLimit;
 
@@ -335,12 +335,12 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     setIndexToTheLowerLimit(mv);
     loadIndexVariable(mv);
     generateUpperLimit(mv);
-    designateLabel(mv, beginningOfTheLoop);
+    designateLabel(mv, beginLoop);
     compareIndexToUpperLimit(mv);
-    jumpToIfGreaterThan(mv, endOfTheLoop);
+    jumpToIfGreaterThan(mv, endLoop);
     generateInnerLoop(mv);
-    jumpTo(mv, beginningOfTheLoop);
-    designateLabel(mv, endOfTheLoop);
+    jumpTo(mv, beginLoop);
+    designateLabel(mv, endLoop);
     assignResult(mv, resultType);
     return mv;
   }
