@@ -350,6 +350,10 @@ public class Context
 
   public void mergeFrom(Context context)
   {
+ if ( context == null )
+ {
+   return;
+ }
     variables.addAll(context.variables);
     functions.map.putAll(context.functions.map);
   }

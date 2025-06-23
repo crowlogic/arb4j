@@ -169,7 +169,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   @Override
   protected Object clone()
   {
-    return new Expression<D, C, Function<? extends D, ? extends C>>(className,
+    Expression<D,
+                  C,
+                  Function<? extends D, ? extends C>> expr = new Expression<D,
+                                C,
+                                Function<? extends D, ? extends C>>(className,
                                                                     domainType,
                                                                     coDomainType,
                                                                     functionClass,
@@ -177,6 +181,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                     context,
                                                                     functionName,
                                                                     ascendentExpression);
+    expr.position          = position;
+    expr.character         = character;
+    expr.previousCharacter = previousCharacter;
+    return expr;
   }
 
   private static String    JAVA_LANG_ASSERTION_ERROR         = "java/lang/AssertionError";
@@ -636,8 +644,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return compiledClass = loadFunctionClass(className, instructionByteCodes, context);
   }
 
-  public static boolean useNewIntegralNode = false;
-
   @SuppressWarnings("unchecked")
   public <N extends Node<D, C, F>> N evaluate() throws CompilerException
   {
@@ -662,8 +668,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else if (nextCharacterIs('∫'))
     {
-      node = useNewIntegralNode ? (N) new NewIntegralNode<D, C, F>(this)
-                                : (N) new IntegralNode<D, C, F>(this);
+      node = (N) new IntegralNode<D, C, F>(this);
     }
     else if (nextCharacterIs('Π', '∏'))
     {
@@ -1866,7 +1871,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       if (character != '=')
       {
-        throwUnexpectedCharacterException();
+        // throwUnexpectedCharacterException();
       }
     }
     return (E) this;
@@ -2077,10 +2082,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return new DerivativeNode<D, C, F>(this,
                                          true);
     case "int":
-      return useNewIntegralNode ? new NewIntegralNode<D, C, F>(this,
-                                                               true)
-                                : new IntegralNode<D, C, F>(this,
-                                                            true);
+      return new IntegralNode<D, C, F>(this,
+                                       true);
     case "J":
       return new BesselFunctionNodeOfTheFirstKind<>(this);
     case "W":

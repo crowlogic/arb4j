@@ -92,9 +92,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public Label                                    endOfTheLoop                  = new Label();
 
-  public Node<D, R, F>                            endIndex;
+  public Node<D, R, F>                            upperLimit;
 
-  public String                                   endIndexFieldName;
+  public String                                   upperLimitFieldName;
 
   public Expression<Integer, R, Sequence<R>>      factor;
 
@@ -118,11 +118,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public final String                             prefix;
 
-  public Node<D, R, F>                            startIndex;
+  public Node<D, R, F>                            lowerLimit;
 
   public final String                             symbol;
 
-  public List<Node<D, R, F>>                      spliced;
+  public List<Node<D, R, F>>                      cachedFactorBranches;
 
   public NAryOperationNode(Expression<D, R, F> expression,
                            String identity,
@@ -144,13 +144,13 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     assert functionClass != null : "functionClass=expression.className shan't be null";
     generatedType = expression.coDomainType;
 
-    evaluateIntegralRangeSpecification();
+    parseOperatorLimitSpecifications();
   }
 
   @Override
   public int hashCode()
   {
-    return Objects.hash(endIndex, operation, startIndex);
+    return Objects.hash(upperLimit, operation, lowerLimit);
   }
 
   @Override
@@ -163,8 +163,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     if (getClass() != obj.getClass())
       return false;
     NAryOperationNode<?, ?, ?> other = (NAryOperationNode<?, ?, ?>) obj;
-    return Objects.equals(endIndex, other.endIndex) && Objects.equals(operation, other.operation)
-                  && Objects.equals(startIndex, other.startIndex);
+    return Objects.equals(upperLimit, other.upperLimit)
+                  && Objects.equals(operation, other.operation)
+                  && Objects.equals(lowerLimit, other.lowerLimit);
   }
 
   public NAryOperationNode(Expression<D, R, F> expression,
@@ -173,8 +174,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                            String operation,
                            String symbol,
                            String factorExpression,
-                           Node<D, R, F> startIndex,
-                           Node<D, R, F> endIndex)
+                           Node<D, R, F> lowerLimit,
+                           Node<D, R, F> upperLimit)
   {
     super(expression);
     this.identity  = identity;
@@ -188,15 +189,15 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     this.factorExpressionString = factorExpression;
     assert functionClass != null : "functionClass=expression.className shan't be null";
     generatedType   = expression.coDomainType;
-    this.startIndex = startIndex;
-    this.endIndex   = endIndex;
+    this.lowerLimit = lowerLimit;
+    this.upperLimit = upperLimit;
   }
 
   @Override
   public void accept(Consumer<Node<D, R, F>> t)
   {
-    startIndex.accept(t);
-    endIndex.accept(t);
+    lowerLimit.accept(t);
+    upperLimit.accept(t);
     t.accept(this);
   }
 
@@ -204,7 +205,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     if (factorFunctionFieldName == null && factorValueFieldName == null)
     {
-      factorFunctionFieldName = expression.getNextIntermediateVariableFieldName("factor", resultType);
+      factorFunctionFieldName =
+                              expression.getNextIntermediateVariableFieldName("factor", resultType);
       factorValueFieldName    = expression.newIntermediateVariable("value", resultType);
       if (Expression.trace)
       {
@@ -251,17 +253,24 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                         false);
   }
 
-  protected void compareIndexToEndIndex(MethodVisitor mv)
+  protected void compareIndexToUpperLimit(MethodVisitor mv)
   {
-    loadFieldFromThis(mv, endIndexFieldName, Integer.class);
-    invokeMethod(mv, Integer.class, "compareTo", Compiler.getMethodDescriptor(int.class, Integer.class), false);
+    loadFieldFromThis(mv, upperLimitFieldName, Integer.class);
+    invokeMethod(mv,
+                 Integer.class,
+                 "compareTo",
+                 Compiler.getMethodDescriptor(int.class, Integer.class),
+                 false);
   }
 
   protected void designateLabel(MethodVisitor mv, Label label)
   {
     if (Expression.trace)
     {
-      System.out.format("%s.designateLabel( label=%s)\n\n", getClass().getSimpleName(), label, Utensils.indent(35));
+      System.out.format("%s.designateLabel( label=%s)\n\n",
+                        getClass().getSimpleName(),
+                        label,
+                        Utensils.indent(35));
     }
     mv.visitLabel(label);
 
@@ -269,10 +278,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void evaluateFactor(MethodVisitor mv)
   {
-    invokeMethod(mv, Type.getInternalName(Function.class), "evaluate", factorEvaluateMethodSignature, true);
+    invokeMethod(mv,
+                 Type.getInternalName(Function.class),
+                 "evaluate",
+                 factorEvaluateMethodSignature,
+                 true);
   }
 
-  public Node<D, R, F> evaluateIntegralRangeSpecification()
+  public Node<D, R, F> parseOperatorLimitSpecifications()
   {
     expression.require('{');
     if (indexVariableFieldName != null)
@@ -291,8 +304,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
     expression.context.variables.map.put(indexVariableFieldName, null);
     expression.require('=');
-    parseStartIndex();
-    parseEndIndex();
+    parseLowerLimit();
+    parseUpperLimit();
     return this;
   }
 
@@ -319,11 +332,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     }
     propagateInputToFactorClass(mv);
     initializeResultVariable(mv, resultType);
-    setIndexToTheStartIndex(mv);
-    loadIndex(mv);
-    generateEndingIndex(mv);
+    setIndexToTheLowerLimit(mv);
+    loadIndexVariable(mv);
+    generateUpperLimit(mv);
     designateLabel(mv, beginningOfTheLoop);
-    compareIndexToEndIndex(mv);
+    compareIndexToUpperLimit(mv);
     jumpToIfGreaterThan(mv, endOfTheLoop);
     generateInnerLoop(mv);
     jumpTo(mv, beginningOfTheLoop);
@@ -346,11 +359,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   }
 
   @SuppressWarnings("unchecked")
-  protected void generateEndingIndex(MethodVisitor mv)
+  protected void generateUpperLimit(MethodVisitor mv)
   {
-    endIndexFieldName = expression.newIntermediateVariable("endIndex", Integer.class);
-    loadFieldFromThis(mv, endIndexFieldName, Integer.class);
-    endIndex.generate(mv, (Class<? extends R>) Integer.class);
+    upperLimitFieldName = expression.newIntermediateVariable("upperLimit", Integer.class);
+    loadFieldFromThis(mv, upperLimitFieldName, Integer.class);
+    upperLimit.generate(mv, (Class<? extends R>) Integer.class);
     invokeSetMethod(mv, Integer.class, Integer.class);
     pop(mv);
   }
@@ -377,22 +390,18 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     {
       return List.of();
     }
-    if (spliced == null)
+    if (cachedFactorBranches == null)
     {
       var ast  = factor.syntaxTree();
       var list = ast.indexedBranches.get(ast.getRoot());
-      spliced = list.stream().map(element -> element.spliceInto(expression)).toList();
+      cachedFactorBranches = list.stream().map(element -> element.spliceInto(expression)).toList();
     }
-    return spliced;
+    return cachedFactorBranches;
   }
 
   IntermediateVariable<D, R, F> getExistingIndexVariable()
   {
-    String indexFieldName        = getIndexVariableFieldName();
-
-    var    existingIndexVariable = expression.intermediateVariables.get(indexFieldName);
-
-    return existingIndexVariable;
+    return expression.intermediateVariables.get(getIndexVariableFieldName());
   }
 
   void getField(MethodVisitor methodVisitor, String fieldName, String fieldTypeSignature)
@@ -426,7 +435,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     invokeVirtualMethod(mv, Integer.class, "increment", Integer.class);
   }
 
-  public void initializeResult(MethodVisitor mv, Class<?> resultType, String identityFunction, String prefix)
+  public void initializeResult(MethodVisitor mv,
+                               Class<?> resultType,
+                               String identityFunction,
+                               String prefix)
   {
     fieldName = expression.allocateIntermediateVariable(mv, prefix, resultType);
     pop(invokeVirtualMethod(mv, resultType, identityFunction, resultType));
@@ -458,7 +470,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void loadFactor(MethodVisitor mv)
   {
-    getFieldFromThis(mv, functionClass, factorFunctionFieldName, String.format("L%s;", factorFunctionFieldName));
+    getFieldFromThis(mv,
+                     functionClass,
+                     factorFunctionFieldName,
+                     String.format("L%s;", factorFunctionFieldName));
   }
 
   protected void loadFactorValue(MethodVisitor mv)
@@ -498,14 +513,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     Compiler.getFieldFromThis(methodVisitor, expression.className, fieldName, generatedType);
   }
 
-  void loadVariableThatHoldsTheEvaluatedFactor(MethodVisitor methodVisitor)
-  {
-    loadFieldFromThis(methodVisitor, factorValueFieldName, type());
-  }
 
-  private void parseEndIndex()
+  private void parseUpperLimit()
   {
-    endIndex = expression.evaluate();
+    upperLimit = expression.evaluate();
     expression.require('}');
   }
 
@@ -525,7 +536,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
       indexVariableFieldName = stringExpression.substring(startPos, arrowIndex);
     }
     String lookingFor                 =
-                      indexVariableFieldName != null ? String.format("{%s=", indexVariableFieldName) : "{";
+                      indexVariableFieldName != null ? String.format("{%s=", indexVariableFieldName)
+                                                     : "{";
     int    rangeSpecificationPosition = stringExpression.indexOf(lookingFor, expression.position);
     if (rangeSpecificationPosition == -1)
     {
@@ -535,8 +547,11 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                    + expression.remaining());
 
     }
-    String factorExpression = stringExpression.substring(startPos, rangeSpecificationPosition).trim();
-    expression.character = expression.expression.charAt(expression.position += factorExpression.length());
+    String factorExpression =
+                            stringExpression.substring(startPos, rangeSpecificationPosition).trim();
+    expression.character =
+                         expression.expression.charAt(expression.position +=
+                                                                          factorExpression.length());
     return factorExpression;
 
   }
@@ -544,7 +559,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   @SuppressWarnings("unchecked")
   protected void parseFactorExpression(Class<?> resultType)
   {
-    assert factor == null : "factorExpression is already set and factorExpressionString is " + factorExpressionString;
+    assert factor == null : "factorExpression is already set and factorExpressionString is "
+                            + factorExpressionString;
 
     String expr = factorExpressionString.toString();
 
@@ -568,9 +584,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     registerFactor(expr, factor);
   }
 
-  private void parseStartIndex()
+  private void parseLowerLimit()
   {
-    startIndex = expression.resolve();
+    lowerLimit = expression.resolve();
     expression.require('…');
   }
 
@@ -603,7 +619,9 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     if (independentVariableNode != null && !independentVariableNode.type().equals(Object.class))
     {
       loadThisOntoStack(mv);
-      expression.loadFieldOntoStack(mv, factorFunctionFieldName, "L" + factorFunctionFieldName + ";");
+      expression.loadFieldOntoStack(mv,
+                                    factorFunctionFieldName,
+                                    "L" + factorFunctionFieldName + ";");
       loadInputParameter(mv);
       cast(mv, independentVariableNode.type());
       if (Expression.trace)
@@ -637,14 +655,16 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     factorMapping = registerFunctionMapping(factorExpression, expr);
     if (Expression.trace)
     {
-      System.err.format("\nregisterFactor(factor=%s,\nfactorMapping=%s\n)\n\n", factorExpression, factorMapping);
+      System.err.format("\nregisterFactor(factor=%s,\nfactorMapping=%s\n)\n\n",
+                        factorExpression,
+                        factorMapping);
     }
 
     expression.referencedFunctions.put(factorFunctionFieldName, factorMapping);
   }
 
-  public FunctionMapping<Integer, R, Sequence<R>> registerFunctionMapping(Expression<Integer, R, Sequence<R>> factor,
-                                                                          String expr)
+  public FunctionMapping<Integer, R, Sequence<R>>
+         registerFunctionMapping(Expression<Integer, R, Sequence<R>> factor, String expr)
   {
     if (Expression.trace)
     {
@@ -662,13 +682,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   public Class<?> scalarType(Class<?> resultType)
   {
-    return resultType = generatedType = (RealPolynomial.class.equals(resultType) ? Real.class : resultType);
+    return resultType = generatedType = (RealPolynomial.class.equals(resultType) ? Real.class
+                                                                                 : resultType);
   }
 
-  protected void setIndexToTheStartIndex(MethodVisitor methodVisitor)
+  protected void setIndexToTheLowerLimit(MethodVisitor methodVisitor)
   {
     loadIndexVariable(methodVisitor);
-    startIndex.generate(methodVisitor, Integer.class);
+    lowerLimit.generate(methodVisitor, Integer.class);
     invokeSetMethod(methodVisitor, Integer.class, Integer.class);
     pop(methodVisitor);
   }
@@ -684,13 +705,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                           operation,
                                           symbol,
                                           factorExpressionString,
-                                          startIndex.spliceInto(newExpression),
-                                          endIndex.spliceInto(newExpression));
+                                          lowerLimit.spliceInto(newExpression),
+                                          upperLimit.spliceInto(newExpression));
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
-                                                                                       Node<E, S, G> substitution)
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<D, R, F>
+         substitute(String variable, Node<E, S, G> substitution)
   {
     if (substitution.toString().equals(variable))
     {
@@ -706,8 +728,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     parseFactorExpression(expression.coDomainType);
 
     factor                 = factor.substitute(variable, substitution.expression);
-    startIndex             = startIndex.substitute(variable, substitution);
-    endIndex               = endIndex.substitute(variable, substitution);
+    lowerLimit             = lowerLimit.substitute(variable, substitution);
+    upperLimit             = upperLimit.substitute(variable, substitution);
     factorExpressionString = factor.toString();
     return this;
   }
@@ -720,8 +742,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                          symbol,
                          factor != null ? factor.toString() : factorExpressionString,
                          indexVariableFieldName,
-                         startIndex,
-                         endIndex);
+                         lowerLimit,
+                         upperLimit);
 
   }
 
@@ -737,8 +759,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     return String.format("\\%s_{%s = %s}^{%s}{%s}",
                          operation.replace("mul", "prod").replace("add", "sum"),
                          indexVariableFieldName,
-                         startIndex.typeset(),
-                         endIndex.typeset(),
+                         lowerLimit.typeset(),
+                         upperLimit.typeset(),
                          factor.typeset());
   }
 
@@ -760,6 +782,5 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
   {
     return '∨';
   }
-
 
 }
