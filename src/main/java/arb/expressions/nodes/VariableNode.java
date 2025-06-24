@@ -610,7 +610,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     else
     {
       returnType = reference.type();
-    }
+    }   
     assert returnType != null : "returnType is null for " + this;
     return returnType;
   }

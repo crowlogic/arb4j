@@ -1,8 +1,6 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.invokeMethod;
-import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -11,16 +9,10 @@ import java.util.function.Consumer;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
-import arb.Complex;
-import arb.Quaternion;
-import arb.Real;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Compiler;
-import arb.expressions.Expression;
-import arb.expressions.FunctionMapping;
-import arb.expressions.Parser;
-import arb.expressions.VariableReference;
+import arb.expressions.*;
 import arb.functions.Function;
 
 /**
@@ -47,7 +39,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class  IntegralNode<D, C, F extends Function<? extends D, ? extends C>> extends
+public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> extends
                          Node<D, C, F>
 {
 
@@ -91,8 +83,9 @@ public class  IntegralNode<D, C, F extends Function<? extends D, ? extends C>> e
   }
 
   @Override
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, C, F> substitute(String variable,
-                                                                                       Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<D, C, F>
+         substitute(String variable, Node<E, S, G> arg)
   {
     integrandNode           = integrandNode.substitute(variable, arg);
     lowerLimitNode          = lowerLimitNode.substitute(variable, arg);
@@ -131,7 +124,8 @@ public class  IntegralNode<D, C, F extends Function<? extends D, ? extends C>> e
          false);
   }
 
-  String                          SYNTAXMSG = "the format is  g(x)=∫x➔f(x)dx∈(a,b) for definite integrals and "
+  String                          SYNTAXMSG =
+                                            "the format is  g(x)=∫x➔f(x)dx∈(a,b) for definite integrals and "
                                               + "g(x)=∫x➔f(x)dx for indefinate integrals, the variable on the left "
                                               + "side of the arrow must match the variable on the right side of the d and "
                                               + "before the ( but the first var was %s and the 2nd was %s\n";
@@ -143,13 +137,16 @@ public class  IntegralNode<D, C, F extends Function<? extends D, ? extends C>> e
     super(expression);
     if (!functionForm)
     {
+
       integrationVariableNode = new VariableNode<>(expression,
                                                    new VariableReference<>(expression.parseName()),
                                                    expression.position,
                                                    true);
       integrandNode           = expression.require('➔').resolve();
       dvar                    = expression.require('d').parseName();
-      assert dvar.equals(integrationVariableNode.getName()) : String.format(SYNTAXMSG, integrationVariableNode, dvar);
+      assert dvar.equals(integrationVariableNode.getName()) : String.format(SYNTAXMSG,
+                                                                            integrationVariableNode,
+                                                                            dvar);
 
       if (expression.nextCharacterIs('∈'))
       {
@@ -189,7 +186,8 @@ public class  IntegralNode<D, C, F extends Function<? extends D, ? extends C>> e
 
   protected void assignFieldNames(Class<?> resultType)
   {
-    integralFunctionFieldName   = expression.getNextIntermediateVariableFieldName("integral", resultType);
+    integralFunctionFieldName   = expression.getNextIntermediateVariableFieldName("integral",
+                                                                                  resultType);
     lowerIntegralValueFieldName = expression.newIntermediateVariable("lowerValue", resultType);
     upperIntegralValueFieldName = expression.newIntermediateVariable("upperValue", resultType);
   }
@@ -209,10 +207,12 @@ public class  IntegralNode<D, C, F extends Function<? extends D, ? extends C>> e
 
   protected void evaluateIntegral(MethodVisitor mv)
   {
-    invokeMethod(mv, Type.getInternalName(Function.class), "evaluate", integralEvaluateMethodSignature, true);
+    invokeMethod(mv,
+                 Type.getInternalName(Function.class),
+                 "evaluate",
+                 integralEvaluateMethodSignature,
+                 true);
   }
-
-
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
@@ -246,14 +246,13 @@ public class  IntegralNode<D, C, F extends Function<? extends D, ? extends C>> e
     return mv;
   }
 
- 
-
   @SuppressWarnings("unchecked")
   private void computeIndefiniteIntegral()
   {
     assert integralFunction == null;
-    integralNode                            =
-                 (Node<Object, Object, Function<?, ?>>) integrandNode.integrate(integrationVariableNode.asVariable());
+    integralNode                            = (Node<Object,
+                  Object,
+                  Function<?, ?>>) integrandNode.integrate(integrationVariableNode.asVariable());
 
     integralExpression                      = integralNode.expression.cloneExpression();
     integralExpression.instructionByteCodes = null;
@@ -261,7 +260,8 @@ public class  IntegralNode<D, C, F extends Function<? extends D, ? extends C>> e
     integralExpression.domainType           = integralNode.type();
     integralExpression.coDomainType         = integralNode.type();
     integralExpression.rootNode             = integralNode.spliceInto(integralExpression);
-    integralExpression.className            = Parser.transformToJavaAcceptableCharacters(integralFunctionFieldName);
+    integralExpression.className            =
+                                 Parser.transformToJavaAcceptableCharacters(integralFunctionFieldName);
     integralExpression.updateStringRepresentation();
     integralExpression.compile();
 
@@ -310,19 +310,20 @@ public class  IntegralNode<D, C, F extends Function<? extends D, ? extends C>> e
   @Override
   public String typeset()
   {
-    return lowerLimitNode == null && upperLimitNode == null
-                                                            ? String.format("%sint %s %smathd %s",
-                                                                            "\\",
-                                                                            integrandNode.typeset(),
-                                                                            "\\",
-                                                                            integrationVariableNode.typeset())
-                                                            : String.format("%sint_%s^%s %s %smathd %s",
-                                                                            "\\",
-                                                                            lowerLimitNode.typeset(),
-                                                                            upperLimitNode.typeset(),
-                                                                            integrandNode.typeset(),
-                                                                            "\\",
-                                                                            integrationVariableNode.typeset());
+    return lowerLimitNode == null
+                  && upperLimitNode == null
+                                            ? String.format("%sint %s %smathd %s",
+                                                            "\\",
+                                                            integrandNode.typeset(),
+                                                            "\\",
+                                                            integrationVariableNode.typeset())
+                                            : String.format("%sint_%s^%s %s %smathd %s",
+                                                            "\\",
+                                                            lowerLimitNode.typeset(),
+                                                            upperLimitNode.typeset(),
+                                                            integrandNode.typeset(),
+                                                            "\\",
+                                                            integrationVariableNode.typeset());
   }
 
   @Override
@@ -339,14 +340,14 @@ public class  IntegralNode<D, C, F extends Function<? extends D, ? extends C>> e
   {
     var integral = new IntegralNode<E, S, G>(newExpression,
                                              integrandNode.spliceInto(newExpression),
-                                             integrationVariableNode.spliceInto(newExpression).asVariable());
+                                             integrationVariableNode.spliceInto(newExpression)
+                                                                    .asVariable());
     integral.integralFunctionFieldName   = integralFunctionFieldName;
-    integral.lowerIntegralValueFieldName = integral.lowerIntegralValueFieldName;
-    integral.upperIntegralValueFieldName = integral.upperIntegralValueFieldName;
-    integral.integrandNode               = integrandNode.spliceInto(newExpression);
-    integral.upperLimitNode              = integral.upperLimitNode;
-    integral.lowerLimitNode              = integral.lowerLimitNode;
-    integral.integrationVariableNode     = integral.integrationVariableNode;
+    integral.lowerIntegralValueFieldName = lowerIntegralValueFieldName;
+    integral.upperIntegralValueFieldName = upperIntegralValueFieldName;
+    integral.integrandNode               = spliceInto(newExpression);
+    integral.upperLimitNode              = upperLimitNode.spliceInto(newExpression);
+    integral.lowerLimitNode              = lowerLimitNode.spliceInto(newExpression);
     return integral;
   }
 
@@ -369,7 +370,8 @@ public class  IntegralNode<D, C, F extends Function<? extends D, ? extends C>> e
   @Override
   public boolean isScalar()
   {
-    return type().equals(Real.class) || type().equals(Complex.class) || type().equals(Quaternion.class);
+    return type().equals(Real.class) || type().equals(Complex.class)
+                  || type().equals(Quaternion.class);
   }
 
   @Override
