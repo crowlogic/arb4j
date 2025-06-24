@@ -552,19 +552,22 @@ public abstract class StationaryGaussianProcessSampler extends
         XYChart chart = charts[i];
 
         Scene   scene = new Scene(chart);
-        stages[i].setScene(scene);
-        stages[i].setTitle(String.format("%s[seed=%s]", chart.getTitle(), seed));
-        stages[i].setMaximized(true);
+        Stage   ithStage = stages[i];
+        ithStage.setScene(scene);
+        ithStage.setTitle(String.format("%s[seed=%s]", chart.getTitle(), seed));
+        ithStage.setMaximized(true);
+        WindowManager.setStageIcon(ithStage, "GaussianProcessModeller.png");
+
         if (dark)
         {
           WindowManager.setMoreConduciveStyle(scene);
         }
         if (i > 0)
         {
-          stages[i].show();
+          ithStage.show();
 
         }
-        WindowManager.installEscapeKeyCloseHandler(stages[i]);
+        WindowManager.installEscapeKeyCloseHandler(ithStage);
 
       }
       stage.show();
@@ -576,6 +579,7 @@ public abstract class StationaryGaussianProcessSampler extends
       stage.setScene(scene);
       stage.setMaximized(true);
       stage.setTitle(String.format("%s[seed=%s]", getClass().getSimpleName(), seed));
+      WindowManager.setStageIcon(stage, "GaussianProcessModeller.png");
 
       stage.show();
       WindowManager.installEscapeKeyCloseHandler(stage);
