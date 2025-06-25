@@ -1,6 +1,6 @@
 package arb.stochastic;
 
-import java.util.Arrays;
+import java.util.*;
 
 import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -274,31 +274,31 @@ public abstract class StationaryGaussianProcessSampler extends
     }
   }
 
-  private static final double L                      = 1000.0;
+  private static final double L                   = 1000.0;
 
-  static final double         dt              = 0.01;
+  static final double         dt                  = 0.01;
 
-  static final int            N                      = (int) (L / dt);
+  static final int            N                   = (int) (L / dt);
 
   static final double         MAX_AUTOCORRELATION = 20.0;
 
-  static final int            bits                   = 128;
+  static final int            bits                = 128;
 
-  private boolean             separateWindows        = false;
+  private boolean             separateWindows     = false;
 
-  private boolean             dark                   = true;
+  private boolean             dark                = true;
 
   private XYChart[]           charts;
 
   private Stage[]             stages;
-  
+
   private boolean             light;
 
-  public static final double  nyquistFreq            = 1.0 / (2 * dt);
+  public static final double  nyquistFreq         = 1.0 / (2 * dt);
 
-  public static final int     nyquistIndex           = N / 2;
+  public static final int     nyquistIndex        = N / 2;
 
-  public static final double  df                     = 1.0 / L;
+  public static final double  df                  = 1.0 / L;
 
   public static double[] generateFrequencies()
   {
@@ -316,7 +316,8 @@ public abstract class StationaryGaussianProcessSampler extends
   }
 
   /**
-   * TODO: see if there is a way to make the crosshair path and label render with an XOR mask instead of a fixed color so it would work on all backgrounds
+   * TODO: see if there is a way to make the crosshair path and label render with
+   * an XOR mask instead of a fixed color so it would work on all backgrounds
    * 
    * @param chart
    */
@@ -329,9 +330,11 @@ public abstract class StationaryGaussianProcessSampler extends
                  new CrosshairIndicator());
     chart.getRenderers().forEach(renderer -> renderer.getAxes().addAll(chart.getAxes()));
     chart.getStylesheets()
-         .add(String.format("data:text/css,.chart-crosshair-path { -fx-stroke: %s; -fx-stroke-width: 2; }", light ? "black" : "white"));
+         .add(String.format("data:text/css,.chart-crosshair-path { -fx-stroke: %s; -fx-stroke-width: 2; }",
+                            light ? "black" : "white"));
     chart.getStylesheets()
-         .add(String.format("data:text/css,.chart-crosshair-label { -fx-fill: %s; -fx-font-size: 16px; }", light ? "orange" : "yellow"));
+         .add(String.format("data:text/css,.chart-crosshair-label { -fx-fill: %s; -fx-font-size: 16px; }",
+                            light ? "orange" : "yellow"));
   }
 
   protected GridPane createGridPane(XYChart[] charts)
@@ -444,13 +447,13 @@ public abstract class StationaryGaussianProcessSampler extends
 
   protected ErrorDataSetRenderer newScatterChartRenderer()
   {
-    final ErrorDataSetRenderer errorRenderer2 = new ErrorDataSetRenderer();
-    errorRenderer2.setPolyLineStyle(LineStyle.NONE);
-    errorRenderer2.setErrorStyle(ErrorStyle.NONE);
-    errorRenderer2.setDrawMarker(true);
-    errorRenderer2.setDrawBubbles(false);
-    errorRenderer2.setAssumeSortedData(false);
-    return errorRenderer2;
+    final ErrorDataSetRenderer renderer = new ErrorDataSetRenderer();
+    renderer.setPolyLineStyle(LineStyle.NONE);
+    renderer.setErrorStyle(ErrorStyle.NONE);
+    renderer.setDrawMarker(true);
+    renderer.setDrawBubbles(false);
+    renderer.setAssumeSortedData(false);
+    return renderer;
   }
 
   protected XYChart newPowerSpectralDensityChart()
@@ -480,7 +483,7 @@ public abstract class StationaryGaussianProcessSampler extends
      * style.getLineColor() for the legend stroke color, which comes from the stroke
      * color setting in the dataset style.
      */
-    DoubleDataSet              empiricalDataSet    =
+    var                        empiricalDataSet    =
                                                 new DoubleDataSet("Empirical").set(positiveFrequencies,
                                                                                    Arrays.copyOf(empiricalPowerSpectralDensity,
                                                                                                  positiveFrequencyCount))
@@ -489,7 +492,7 @@ public abstract class StationaryGaussianProcessSampler extends
                                                                                                            .setLineColor("darkgoldenrod")
                                                                                                            .build());
 
-    DoubleDataSet              theoryDataSet       =
+    var                        theoryDataSet       =
                                              new DoubleDataSet("Theoretical").set(positiveFrequencies,
                                                                                   theoreticalPowerSpectralDensity)
                                                                              .setStyle(DataSetStyleBuilder.instance()
@@ -549,9 +552,9 @@ public abstract class StationaryGaussianProcessSampler extends
 
       for (int i = 0; i < charts.length; i++)
       {
-        XYChart chart = charts[i];
+        XYChart chart    = charts[i];
 
-        Scene   scene = new Scene(chart);
+        Scene   scene    = new Scene(chart);
         Stage   ithStage = stages[i];
         ithStage.setScene(scene);
         ithStage.setTitle(String.format("%s[seed=%s]", chart.getTitle(), seed));
@@ -593,12 +596,13 @@ public abstract class StationaryGaussianProcessSampler extends
 
   protected void processParameters()
   {
-    separateWindows = getParameters().getUnnamed().contains("--separate-windows");
+    List<String>        params = getParameters().getUnnamed();
+    Map<String, String> named  = getParameters().getNamed();
+    separateWindows = params.contains("--separate-windows");
+    seed            = Long.valueOf(named.getOrDefault("seed", "777"));
 
-    seed            = Long.valueOf(getParameters().getNamed().getOrDefault("seed", "777"));
-
-    dark            = getParameters().getUnnamed().contains("--dark");
-    light           = getParameters().getUnnamed().contains("--light");
+    dark            = params.contains("--dark");
+    light           = params.contains("--light");
     if (dark && light)
     {
       throw new IllegalArgumentException("cannot have both dark and light themes active at once");
