@@ -188,8 +188,8 @@ public abstract class StationaryGaussianProcessSampler extends
       sample.im().zero();
     }
 
-    mag.set(powerSpectralDensity[k] * df);
-    sample.mul(mag.sqrt(bits), bits, randomMeasure.get(k));
+    mag.set(powerSpectralDensity[k] * df).sqrt(bits);
+    sample.mul(mag, bits, randomMeasure.get(k));
   }
 
   /**
