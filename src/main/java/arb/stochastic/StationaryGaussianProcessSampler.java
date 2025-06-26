@@ -188,7 +188,8 @@ public abstract class StationaryGaussianProcessSampler extends
       sample.im().zero();
     }
 
-    randomMeasure.get(k).set(sample).mul(mag.set(powerSpectralDensity[k] * df).sqrt(bits), bits);
+    mag.set(powerSpectralDensity[k] * df);
+    sample.mul(mag.sqrt(bits), bits, randomMeasure.get(k));
   }
 
   /**
@@ -278,7 +279,7 @@ public abstract class StationaryGaussianProcessSampler extends
 
   static final double         dt                  = 0.01;
 
-  static final int            N                   = (int) (L / dt);
+  static private final int    N                   = (int) (L / dt);
 
   static final double         MAX_AUTOCORRELATION = 20.0;
 
@@ -294,7 +295,7 @@ public abstract class StationaryGaussianProcessSampler extends
 
   private boolean             light;
 
-  public static final double  nyquistFreq         = 1.0 / (2 * dt);
+  public static final double  nyquistFrequency    = 1.0 / (2 * dt);
 
   public static final int     nyquistIndex        = N / 2;
 
@@ -372,25 +373,25 @@ public abstract class StationaryGaussianProcessSampler extends
 
   protected XYChart newAutoCorrelationChart()
   {
-    XYChart chart3 = new XYChart(new DefaultNumericAxis("Δt",
-                                                        ""),
-                                 new DefaultNumericAxis("Correlation",
-                                                        ""));
-    chart3.setTitle("Covariance");
+    XYChart chart = new XYChart(new DefaultNumericAxis("Δt",
+                                                       ""),
+                                new DefaultNumericAxis("Correlation",
+                                                       ""));
+    chart.setTitle("Covariance");
     int      maxLag = (int) (MAX_AUTOCORRELATION / dt) + 1;
-    double[] lags   = new double[maxLag];
+    double[] times  = new double[maxLag];
     double[] theory = new double[maxLag];
-    getKernel(lags, theory);
-    chart3.getDatasets()
-          .addAll(new DoubleDataSet("Empirical").set(lags, autocorr(inPhaseSamplePath, maxLag)),
-                  new DoubleDataSet("Theoretical").set(lags, theory));
-    chart3.getYAxis().setAutoRanging(false);
-    chart3.getYAxis().setMin(-0.5);
-    chart3.getYAxis().setMax(1.05);
-    chart3.getXAxis().setAutoRanging(false);
-    chart3.getXAxis().setMin(0);
-    chart3.getXAxis().setMax(MAX_AUTOCORRELATION);
-    return chart3;
+    getKernel(times, theory);
+    chart.getDatasets()
+         .addAll(new DoubleDataSet("Empirical").set(times, autocorr(inPhaseSamplePath, maxLag)),
+                 new DoubleDataSet("Theoretical").set(times, theory));
+    chart.getYAxis().setAutoRanging(false);
+    chart.getYAxis().setMin(-0.5);
+    chart.getYAxis().setMax(1.05);
+    chart.getXAxis().setAutoRanging(false);
+    chart.getXAxis().setMin(0);
+    chart.getXAxis().setMax(MAX_AUTOCORRELATION);
+    return chart;
   }
 
   /**
@@ -410,23 +411,24 @@ public abstract class StationaryGaussianProcessSampler extends
                                                        ""));
     chart.setTitle("Random White Noise Measure");
 
-    final ErrorDataSetRenderer scatterPlotRenderer = newScatterChartRenderer();
+    final ErrorDataSetRenderer scatterPlotRenderer    = newScatterChartRenderer();
 
-    int                        posFreqCount        = frequencies.length;
-    double[]                   realNoise           = new double[posFreqCount];
-    double[]                   imagNoise           = new double[posFreqCount];
-    double[]                   normalizedFreq      = new double[posFreqCount];
+    int                        positiveFrequencyCount = frequencies.length;
+    double[]                   realNoise              = new double[positiveFrequencyCount];
+    double[]                   imagNoise              = new double[positiveFrequencyCount];
+    double[]                   normalizedFrequencies  = new double[positiveFrequencyCount];
 
-    for (int i = 0; i < posFreqCount; i++)
+    for (int i = 0; i < positiveFrequencyCount; i++)
     {
       Complex element = whiteNoise.get(i);
-      realNoise[i]      = element.re().doubleValue();
-      imagNoise[i]      = element.im().doubleValue();
-      normalizedFreq[i] = frequencies[i] / nyquistFreq; // Normalize to [0, 1]
+      realNoise[i]             = element.re().doubleValue();
+      imagNoise[i]             = element.im().doubleValue();
+      normalizedFrequencies[i] = frequencies[i] / nyquistFrequency; // Normalize to [0, 1]
     }
 
-    DoubleDataSet realDataSet = new DoubleDataSet("Real").set(normalizedFreq, realNoise);
-    DoubleDataSet imagDataSet = new DoubleDataSet("Imaginary").set(normalizedFreq, imagNoise);
+    DoubleDataSet realDataSet = new DoubleDataSet("Real").set(normalizedFrequencies, realNoise);
+    DoubleDataSet imagDataSet =
+                              new DoubleDataSet("Imaginary").set(normalizedFrequencies, imagNoise);
 
     String        style       = DataSetStyleBuilder.instance()
                                                    .setMarkerType("circle")
@@ -475,29 +477,29 @@ public abstract class StationaryGaussianProcessSampler extends
       theoreticalPowerSpectralDensity[i] = powerSpectralDensity[i];
     }
 
-    final ErrorDataSetRenderer scatterPlotRenderer = newScatterChartRenderer();
-    final ErrorDataSetRenderer lineRenderer        = new ErrorDataSetRenderer();
+    var scatterPlotRenderer = newScatterChartRenderer();
+    var lineRenderer        = new ErrorDataSetRenderer();
 
     /**
      * Needs to set both because the drawLegendSymbol method uses
      * style.getLineColor() for the legend stroke color, which comes from the stroke
      * color setting in the dataset style.
      */
-    var                        empiricalDataSet    =
-                                                new DoubleDataSet("Empirical").set(positiveFrequencies,
-                                                                                   Arrays.copyOf(empiricalPowerSpectralDensity,
-                                                                                                 positiveFrequencyCount))
-                                                                              .setStyle(DataSetStyleBuilder.instance()
-                                                                                                           .setMarkerColor("darkgoldenrod")
-                                                                                                           .setLineColor("darkgoldenrod")
-                                                                                                           .build());
+    var empiricalDataSet    =
+                         new DoubleDataSet("Empirical").set(positiveFrequencies,
+                                                            Arrays.copyOf(empiricalPowerSpectralDensity,
+                                                                          positiveFrequencyCount))
+                                                       .setStyle(DataSetStyleBuilder.instance()
+                                                                                    .setMarkerColor("darkgoldenrod")
+                                                                                    .setLineColor("darkgoldenrod")
+                                                                                    .build());
 
-    var                        theoryDataSet       =
-                                             new DoubleDataSet("Theoretical").set(positiveFrequencies,
-                                                                                  theoreticalPowerSpectralDensity)
-                                                                             .setStyle(DataSetStyleBuilder.instance()
-                                                                                                          .setLineWidth(2)
-                                                                                                          .build());
+    var theoryDataSet       =
+                      new DoubleDataSet("Theoretical").set(positiveFrequencies,
+                                                           theoreticalPowerSpectralDensity)
+                                                      .setStyle(DataSetStyleBuilder.instance()
+                                                                                   .setLineWidth(2)
+                                                                                   .build());
     scatterPlotRenderer.getDatasets().add(empiricalDataSet);
 
     lineRenderer.getDatasets().add(theoryDataSet);
@@ -517,12 +519,12 @@ public abstract class StationaryGaussianProcessSampler extends
 
   protected XYChart newTimeDomainChart()
   {
-    XYChart chart1 = new XYChart(new DefaultNumericAxis("Time",
-                                                        ""),
-                                 new DefaultNumericAxis("Value",
-                                                        ""));
+    XYChart chart = new XYChart(new DefaultNumericAxis("Time",
+                                                       ""),
+                                new DefaultNumericAxis("Value",
+                                                       ""));
 
-    chart1.setTitle("In-Phase, Quadrature, and Envelope (±) via Hilbert Transform");
+    chart.setTitle("In-Phase, Quadrature, and Envelope (±) via Hilbert Transform");
 
     DoubleDataSet inPhase = new DoubleDataSet("In-phase").set(samplingTimes, inPhaseSamplePath);
     DoubleDataSet quad    =
@@ -534,8 +536,8 @@ public abstract class StationaryGaussianProcessSampler extends
       negEnv[i] = -envelope[i];
     }
     DoubleDataSet envNeg = new DoubleDataSet("Envelope (–)").set(samplingTimes, negEnv);
-    chart1.getDatasets().addAll(inPhase, quad, envPos, envNeg);
-    return chart1;
+    chart.getDatasets().addAll(inPhase, quad, envPos, envNeg);
+    return chart;
   }
 
   @Override

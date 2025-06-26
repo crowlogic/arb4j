@@ -69,9 +69,9 @@ public class RandomWaveSampler extends
   @Override
   public double[] getPowerSpectralDensity(double[] freq)
   {
-    double[] psd = new double[N];
+    double[] psd = new double[freq.length];
 
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < freq.length; i++)
     {
       psd[i] = Math.abs(freq[i]) < 1.0 ? 1.0 / (PI * sqrt(1 - pow(freq[i], 2))) : 0;
     }
