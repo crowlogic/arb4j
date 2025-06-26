@@ -1,0 +1,238 @@
+Stationary Processes: Spectral Representation
+Cramer & Leadbetter
+
+------------------------------------------------------------
+
+In particular, this gives for t = 0
+    ∫_{-∞}^{∞} g(λ, A) dλ = r(0)
+Thus, if one thinks of the nonnegative function g(λ, A) / r(0) as a
+probability density, the corresponding characteristic function will be
+u(tA) r(t) / r(0). Now as A → ∞, this tends for every t to r(t) / r(0),
+which is a continuous function of t. It then follows from the continuity
+theorem for characteristic functions (see Section 2.7) that r(t) / r(0)
+is a characteristic function, so that r(t) is a characteristic function
+multiplied with the constant r(0). This immediately gives the spectral
+representation, and so Bochner's theorem is proved.
+
+Thus, every covariance function of a stationary process ξ(t) can be
+represented in the spectral form, which may be regarded as a spectral
+representation of r(t) (see Section 6.4). The never-decreasing function
+F(λ) is called the spectral distribution function of the ξ(t) process.
+Clearly, F(λ) is only defined up to an additive constant, and one can
+always assume
+    F(-∞) = 0,   F(+∞) = r(0)
+For the spectral representation, it does not matter how one determines
+the value of F(λ) at a discontinuity point, as long as the relation
+    F(λ - 0) ≤ F(λ) ≤ F(λ + 0)
+is satisfied for all λ. Usually, F(λ) = F(λ + 0), so that F(λ) is
+everywhere continuous to the right.
+
+If F(λ) is absolutely continuous, the derivative f(λ) = F'(λ) will be
+called the spectral density of the process.
+
+In the following section an analogous spectral representation for the
+stationary process ξ(t) itself is obtained. The spectral representations
+for r(t) and ξ(t) are then compared and used for various applications.
+
+------------------------------------------------------------
+
+The Spectral Representation
+
+Consider a stationary process ξ(t) with zero mean, continuous in quadratic
+mean. Let F(λ) be the spectral distribution function defined in the
+preceding section, continuous to the right, and satisfying the boundary
+conditions above. The following theorem is fundamental for the theory of
+stationary processes.
+
+Spectral Representation Theorem:
+To every stationary ξ(t) there can be assigned a process ζ(λ) with
+orthogonal increments, such that for each fixed t,
+    ξ(t) = ∫_{-∞}^{∞} exp(i t λ) dζ(λ)
+the stochastic integral being defined as a quadratic mean integral.
+ζ(λ) is defined up to an additive random variable. If this is fixed by
+taking ζ(-∞) = 0, then
+    E ζ(λ) = 0
+    E |ζ(λ)|^2 = F(λ)
+    E |dζ(λ)|^2 = dF(λ)
+
+As already pointed out in Section 6.4, the spectral representation shows
+how the ξ(t) process is additively built up by elementary and mutually
+orthogonal harmonic oscillations
+    exp(i t λ) dζ(λ)
+each of which has angular frequency λ, while the random amplitude and
+random phase are determined by the elementary increment dζ(λ). The ζ(λ)
+process is called the spectral process associated with ξ(t).
+
+An equality between random variables such as the spectral representation
+should always be understood in the sense that the two members are
+equivalent random variables.
+
+Proof (sketch):
+The spectral representation theorem may be proved by various methods.
+First, a complete proof using Hilbert space theory is given, then another
+proof by means of trigonometric integrals is briefly indicated. From an
+abstract point of view, the theorem is equivalent to a theorem on groups
+of unitary transformations in Hilbert space due to Stone, while the
+probabilistic version was given by Cramér and independently by Loève.
+The proof here is framed in terms of random variables, and rests only on
+the elements of Hilbert space theory as developed in Sections 5.6 and 5.7.
+
+Let H(ξ) be the Hilbert space of the ξ(t) process as defined in Section
+5.7. This is the space spanned by the random variables ξ(t) for all real
+t. The elements of H(ξ) are random variables, namely, all finite linear
+combinations
+    α₁ ξ(t₁) + ... + αₙ ξ(tₙ)
+and all limits in quadratic mean of sequences of such combinations. The
+inner product of any two elements η₁ and η₂ of H(ξ) is
+    (η₁, η₂) = E[η₁ * conj(η₂)]
+Two elements are regarded as identical if their distance, as defined by
+this inner product, is zero.
+
+On the other hand, let L₂(F) be the set of all non-random complex-valued
+functions g(λ) such that the Lebesgue-Stieltjes integral
+    ∫_{-∞}^{∞} |g(λ)|² dF(λ)
+exists and is finite. The set L₂(F) forms a Hilbert space, say H(F), with
+addition and scalar multiplication defined in the ordinary way, and inner
+product
+    (g₁, g₂) = ∫_{-∞}^{∞} g₁(λ) * conj(g₂(λ)) dF(λ)
+Two elements g₁ and g₂ are regarded as identical if their distance, as
+defined by this inner product, is zero, i.e.,
+    ∫_{-∞}^{∞} |g₁(λ) - g₂(λ)|² dF(λ) = 0
+
+A correspondence is established between H(ξ) and H(F) as follows:
+For every real t, let ξ(t) ∈ H(ξ) and exp(i t λ) ∈ H(F) be corresponding
+elements. By Bochner's theorem,
+    E[ξ(t) * conj(ξ(u))] = ∫_{-∞}^{∞} exp(i t λ) exp(-i u λ) dF(λ)
+so that inner products are preserved.
+
+This correspondence is extended to finite linear combinations:
+    η = Σ_{k=1}^{n} α_k ξ(t_k)
+    g(λ) = Σ_{k=1}^{n} α_k exp(i t_k λ)
+Again, inner products are preserved, so for any corresponding pairs η₁, η₂
+and g₁, g₂,
+    (η₁, η₂) = (g₁, g₂)
+and also for the corresponding squares of distances
+    E|η₁ - η₂|² = ∫_{-∞}^{∞} |g₁(λ) - g₂(λ)|² dF(λ)
+The correspondence is one-to-one.
+
+If η₁, η₂, ... is a sequence of random variables of the above form
+converging in quadratic mean to η, then the corresponding g₁, g₂, ...
+converge in quadratic mean relative to F(λ). If g(λ) is their limit, η
+and g(λ) are corresponding elements.
+
+Thus, the correspondence extends to the whole spaces H(ξ) and H(F), and
+inner products and distances are preserved.
+
+For every λ₀, the function
+    g(λ - λ₀), where
+        g(λ) = 1 for λ ≤ 0, 0 otherwise
+is an element of H(F). If the corresponding element of H(ξ) is denoted by
+ζ(λ₀), the increment ζ(λ₁) - ζ(λ₀) corresponds to the function taking
+value 1 for λ₀ < λ ≤ λ₁ and zero otherwise. For disjoint intervals,
+orthogonality of increments follows:
+    E{ [ζ(λ₁) - ζ(λ₀)] * conj([ζ(λ₃) - ζ(λ₂)]) } = 0
+
+Taking λ₁ = λ₀, λ₂ = λ₀, and using right continuity of F(λ),
+    E|ζ(λ₁) - ζ(λ₀)|² = F(λ₁) - F(λ₀)
+    E|ζ(λ₀)|² = F(λ₀)
+This process satisfies the earlier properties, and E ζ(λ) = 0.
+
+At a discontinuity point λ of F, the limits ζ(λ ± 0) both exist, and
+ζ(λ) = ζ(λ + 0), while Δζ(λ) = ζ(λ) - ζ(λ - 0) is a random variable with
+    E|Δζ(λ)|² = ΔF(λ)
+Let -A = λ₁ < λ₂ < ... < λ_{n+1} = A be a partition of (-A, A). The
+random variable
+    η = Σ_{j=1}^{n} exp(i t λ_j) [ζ(λ_{j+1}) - ζ(λ_j)]
+corresponds to the function
+    g(λ) = exp(i t λ_j) for λ_j < λ ≤ λ_{j+1}, 0 otherwise
+As A → ∞ and the maximum distance between consecutive λ_j → 0,
+g(λ) → exp(i t λ) in quadratic mean, and η → the integral
+    ∫_{-∞}^{∞} exp(i t λ) dζ(λ)
+Since exp(i t λ) corresponds to ξ(t), and the correspondence is one-to-one,
+    ξ(t) = ∫_{-∞}^{∞} exp(i t λ) dζ(λ)
+and the proof is complete.
+
+------------------------------------------------------------
+
+Incidentally, for any η as above and corresponding g(λ),
+    η = ∫_{-∞}^{∞} g(λ) dζ(λ)
+This holds whenever the integral exists as a Riemann-Stieltjes integral.
+If not, this equation is taken as the definition of the integral. The set
+of all random variables η representable in this form with g(λ) ∈ L₂(F) is
+identical with the Hilbert space H(ξ) spanned by ξ(t) for all t.
+
+Comparing the spectral representations of r(t) and ξ(t):
+
+    r(t)   = ∫_{-∞}^{∞} exp(i t λ) dF(λ)
+    ξ(t)   = ∫_{-∞}^{∞} exp(i t λ) dζ(λ)
+
+the elementary harmonic oscillations are respectively
+    exp(i t λ) dF(λ)   and   exp(i t λ) dζ(λ)
+In both cases the angular frequency is λ. The squared random amplitude in
+the latter case has mean equal to the nonrandom amplitude in the former:
+    E|dζ(λ)|² = dF(λ)
+The random phases from
+    dζ(λ) = |dζ(λ)| exp(i arg dζ(λ))
+are absent in the nonrandom oscillations.
+
+If ξ(t) represents the temporal development of a physical system (e.g.,
+fluctuating voltage), the spectral representation gives the decomposition
+into elementary harmonic components. The relation above shows dF(λ) is
+the average power dissipated by the component with frequency in (λ, λ + dλ).
+Thus, F(λ) determines the power spectrum of the ξ(t) process.
+The average power assigned to the interval λ₁ < λ < λ₂ is F(λ₂) - F(λ₁),
+and for the whole λ range,
+    E|ξ(t)|² = r(0) = F(+∞) - F(-∞)
+Thus, F(λ) determines the power spectrum. A point λ belongs to the power
+spectrum if every interval (λ - h, λ + h) carries positive mass for all h>0.
+
+The spectral moments
+    μ_{2k} = ∫_{-∞}^{∞} λ^{2k} dF(λ)
+may or may not be finite. μ_{2k} is finite iff r(t) has a derivative of
+order 2k at t=0, and then r(t) has a Taylor expansion up to t^{2k}.
+
+Since F(λ) only differs by a multiplicative constant from an ordinary
+distribution function, there is a unique representation F = F₁ + F₂ + F₃,
+where each F_i is real, never-decreasing, and bounded. F₁ is a step
+function containing all jumps, F₂ is absolutely continuous, F₃ is singular.
+In applications, the singular component F₃ usually does not occur.
+
+The discontinuity points of F, all in F₁, form the point spectrum of ξ(t).
+If F has a jump ΔF at λ, this introduces a discrete harmonic term into
+the spectral representations for r(t) and ξ(t):
+    ΔF exp(i t λ)   and   Δζ exp(i t λ)
+where Δζ is a random variable with zero mean and variance E|Δζ|² = ΔF.
+If F = F₁ is a pure step function,
+    r(t)   = Σ ΔF exp(i t λ)
+    ξ(t)   = Σ Δζ exp(i t λ)
+Both sums are over all jumps of F = F₁; the first sum is absolutely
+convergent, the second converges in quadratic mean.
+
+For many applications, the most important case is F = F₂, i.e., an
+absolutely continuous spectrum with spectral density f(λ) = F'(λ). Then,
+    r(t) = ∫_{-∞}^{∞} exp(i t λ) f(λ) dλ
+The spectral representations are formally identical with those defining a
+characteristic function, and there are reciprocal relations expressing
+F(λ) and ζ(λ) in terms of r(t) and ξ(t). For any two continuity points
+λ₁, λ₂ of F(λ),
+    F(λ₂) - F(λ₁) = (1 / 2π) lim_{T→∞} ∫_{-T}^{T} [exp(-i t λ₁) - exp(-i t λ₂)] / (-i t) r(t) dt
+    ζ(λ₂) - ζ(λ₁) = lim_{T→∞} (1 / 2π) ∫_{-T}^{T} [exp(-i t λ₁) - exp(-i t λ₂)] / (-i t) ξ(t) dt
+
+The first differs only by a multiplicative constant from the corresponding
+relation for a characteristic function. The second contains a quadratic
+mean integral, which converges as T → ∞. The ζ(λ) process defined by the
+second expression is a process with orthogonal increments, satisfying the
+spectral relation for ξ(t).
+
+The inversion formulae above hold even for discontinuity points λ₁, λ₂ if
+F(λ₁) is replaced by ½ [F(λ₁) + F(λ₁ - 0)] and ζ(λ₁) by ½ [ζ(λ₁) + ζ(λ₁ - 0)],
+and similarly for λ₂.
+
+------------------------------------------------------------
+
+References
+
+Stone, M.H. Linear transformations in Hilbert space and their applications to analysis.
+Cramér, H. On the theory of stationary random processes. Annals of Mathematics.
+Cramér, H. Mathematical methods of statistics. Princeton University Press.
+Loève, M. Probability theory. D. Van Nostrand Company.
