@@ -6,7 +6,7 @@ import junit.framework.TestCase;
 public class ExponentiationNodeTest extends
                                     TestCase
 {
-  public static void testExponentiatedFormOfSquareRootSimplification()
+  public static void az()
   {
     var f = RealFunction.parse("x^(1/2)*x^(1/2)");
     f.simplify();

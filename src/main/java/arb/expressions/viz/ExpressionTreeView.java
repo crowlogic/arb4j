@@ -6,23 +6,63 @@ import java.awt.image.BufferedImage;
 import java.io.Closeable;
 import java.io.File;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
-import arb.*;
+import arb.AlgebraicNumber;
+import arb.Complex;
+import arb.ComplexFraction;
+import arb.ComplexMatrix;
+import arb.ComplexPolynomial;
+import arb.ComplexRationalFunction;
+import arb.Fraction;
+import arb.GaussianInteger;
 import arb.Integer;
+import arb.IntegerPolynomial;
+import arb.Named;
+import arb.Quaternion;
+import arb.RationalFunction;
+import arb.Real;
+import arb.RealMatrix;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.*;
+import arb.expressions.Context;
+import arb.expressions.Expression;
+import arb.expressions.SerializedExpression;
 import arb.expressions.context.SerializedContextVariable;
 import arb.expressions.context.TopologicalSorter;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
-import arb.functions.*;
-import arb.functions.complex.*;
-import arb.functions.integer.*;
+import arb.functions.ComplexToRealFunction;
+import arb.functions.Function;
+import arb.functions.IntegerFunction;
+import arb.functions.IntegerNullaryFunction;
+import arb.functions.NullaryFunction;
+import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.ComplexNullaryFunction;
+import arb.functions.complex.ComplexPolynomialNullaryFunction;
+import arb.functions.integer.ComplexFunctionSequence;
+import arb.functions.integer.ComplexPolynomialSequence;
+import arb.functions.integer.ComplexSequence;
+import arb.functions.integer.IntegerPolynomialNullaryFunction;
+import arb.functions.integer.IntegerPolynomialSequence;
+import arb.functions.integer.IntegerSequence;
+import arb.functions.integer.RealFunctionSequence;
+import arb.functions.integer.RealPolynomialSequence;
+import arb.functions.integer.RealSequence;
+import arb.functions.integer.Sequence;
 import arb.functions.polynomials.RealPolynomialFunction;
-import arb.functions.rational.*;
-import arb.functions.real.*;
+import arb.functions.rational.ComplexRationalFunctionSequence;
+import arb.functions.rational.ComplexRationalNullaryFunction;
+import arb.functions.rational.RationalFunctionSequence;
+import arb.functions.rational.RationalNullaryFunction;
+import arb.functions.real.Functional;
+import arb.functions.real.NullaryFunctional;
+import arb.functions.real.RealFunction;
+import arb.functions.real.RealNullaryFunction;
+import arb.functions.real.RealNullaryFunctional;
 import arb.utensils.ImageViewer;
 import arb.utensils.Utensils;
 import arb.viz.WindowManager;
@@ -31,10 +71,24 @@ import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.scene.control.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.IndexedCell;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTablePosition;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.control.skin.VirtualFlow;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
@@ -772,7 +826,11 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
         {
           result = instance.evaluate(input, 128);
         }
-
+        if (result instanceof Named namedResult)
+        {
+          namedResult.setName("result");
+        }
+        
         var rootItem = updateTreeTableView();
 
         if (nodeExpansionStates != null)

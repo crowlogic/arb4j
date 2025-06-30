@@ -103,13 +103,13 @@
   definite binary quadratic form
 
   <\equation>
-    <label|eq:binary_quadratic_form>a*x<rsup|2>+2*h*x*y+b*y<rsup|2>,
+    <label|eq:binary_quadratic_form>a*x<rsup|2>+2*h*x*y+b*y<rsup|2>
   </equation>
 
   where <math|a,h,b> are integers, so that the determinant of the form is
 
   <\equation>
-    <label|eq:determinant>h<rsup|2>-a*b=-D\<less\>0.
+    <label|eq:determinant>h<rsup|2>-a*b=-D\<less\>0
   </equation>
 
   Let <math|F<around|(|D|)>> be the number of uneven classes of forms of
@@ -121,7 +121,7 @@
   respectively, and also that
 
   <\equation>
-    <label|eq:F0_G0>F<around|(|0|)>=0,<space|1em>G<around|(|0|)>=-<frac|1|12>.
+    <label|eq:F0_G0>F<around|(|0|)>=0,<space|1em>G<around|(|0|)>=-<frac|1|12>
   </equation>
 
   The formulae for the class number are nearly a century old. It is well
@@ -136,7 +136,7 @@
   states that for all <math|-D\<less\>0>,
 
   <\equation>
-    <label|eq:mordell_formula>F<around|(|D|)>=<frac|<sqrt|D>|\<pi\>>*<around*|(|<frac|N<around|(|1|)>|1>-<frac|N<around|(|3|)>|3>+<frac|N<around|(|5|)>|5>-\<cdots\>|)>,
+    <label|eq:mordell_formula>F<around|(|D|)>=<frac|<sqrt|D>|\<pi\>>*<around*|(|<frac|N<around|(|1|)>|1>-<frac|N<around|(|3|)>|3>+<frac|N<around|(|5|)>|5>-\<cdots\>|)>
   </equation>
 
   where <math|N<around|(|n|)>> is the number of solutions mod <math|n> of the
@@ -1030,7 +1030,7 @@
   or<nbsp><eqref|eq:reduced_form2> and the integral is reduced to the form
 
   <\equation>
-    <label|eq:real_omega_case><big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|e<rsup|\<pi\>*i*\<omega\>*v<rsup|2>-2*\<pi\>*i*a*v>|e<rsup|2*\<pi\>*v>+d>*d*v,
+    <label|eq:real_omega_case><big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|e<rsup|\<pi\>*i*\<omega\>*v<rsup|2>-2*\<pi\>*i*a*v>|e<rsup|2*\<pi\>*v>+d>*d*v
   </equation>
 
   where <math|\<omega\>> is real. The value of this integral is included in
@@ -1822,6 +1822,7 @@
 
 <\initial>
   <\collection>
+    <associate|magnification|1.2>
     <associate|page-medium|paper>
   </collection>
 </initial>
@@ -1829,225 +1830,225 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|auto-10|<tuple|10|20|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|auto-11|<tuple|184|21|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|auto-2|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|auto-3|<tuple|3|6|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|auto-4|<tuple|4|8|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|auto-5|<tuple|5|9|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|auto-6|<tuple|6|11|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|auto-7|<tuple|7|13|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|auto-8|<tuple|8|15|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|auto-9|<tuple|9|17|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|bib-HardyLittlewood1914|<tuple|HardyLittlewood1914|21|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|bib-HardyLittlewood1921|<tuple|HardyLittlewood1921|21|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|bib-HardyLittlewood1923|<tuple|HardyLittlewood1923|21|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|bib-HardyLittlewood1925|<tuple|HardyLittlewood1925|21|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|bib-Hecke1926a|<tuple|Hecke1926a|21|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|bib-Hecke1926b|<tuple|Hecke1926b|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|bib-Kronecker1889|<tuple|Kronecker1889|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|bib-Lerch1892|<tuple|Lerch1892|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|bib-Mordell1916|<tuple|Mordell1916|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|bib-Mordell1918|<tuple|Mordell1918|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|bib-Mordell1920|<tuple|Mordell1920|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|bib-Mordell1926|<tuple|Mordell1926|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|bib-Ramanujan1915a|<tuple|Ramanujan1915a|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|bib-Ramanujan1915b|<tuple|Ramanujan1915b|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|bib-Ramanujan1919|<tuple|Ramanujan1919|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|bib-Siegel1932|<tuple|Siegel1932|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|bib-UspenskyVenkoff1924|<tuple|UspenskyVenkoff1924|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|bib-Wilton1927|<tuple|Wilton1927|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|bib-vanderCorput1922|<tuple|vanderCorput1922|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|bib-vanderCorput1923|<tuple|vanderCorput1923|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:B_minus_n_definition|<tuple|177|20|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:B_minus_n_new|<tuple|182|21|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:B_n_definition|<tuple|176|20|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:B_n_new|<tuple|181|21|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|auto-10|<tuple|10|25|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|auto-11|<tuple|184|27|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|auto-2|<tuple|2|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|auto-3|<tuple|3|8|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|auto-4|<tuple|4|11|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|auto-5|<tuple|5|12|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|auto-6|<tuple|6|14|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|auto-7|<tuple|7|17|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|auto-8|<tuple|8|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|auto-9|<tuple|9|21|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|bib-HardyLittlewood1914|<tuple|HardyLittlewood1914|27|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|bib-HardyLittlewood1921|<tuple|HardyLittlewood1921|27|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|bib-HardyLittlewood1923|<tuple|HardyLittlewood1923|27|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|bib-HardyLittlewood1925|<tuple|HardyLittlewood1925|27|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|bib-Hecke1926a|<tuple|Hecke1926a|27|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|bib-Hecke1926b|<tuple|Hecke1926b|27|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|bib-Kronecker1889|<tuple|Kronecker1889|27|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|bib-Lerch1892|<tuple|Lerch1892|27|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|bib-Mordell1916|<tuple|Mordell1916|27|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|bib-Mordell1918|<tuple|Mordell1918|27|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|bib-Mordell1920|<tuple|Mordell1920|28|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|bib-Mordell1926|<tuple|Mordell1926|28|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|bib-Ramanujan1915a|<tuple|Ramanujan1915a|28|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|bib-Ramanujan1915b|<tuple|Ramanujan1915b|28|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|bib-Ramanujan1919|<tuple|Ramanujan1919|28|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|bib-Siegel1932|<tuple|Siegel1932|28|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|bib-UspenskyVenkoff1924|<tuple|UspenskyVenkoff1924|28|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|bib-Wilton1927|<tuple|Wilton1927|28|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|bib-vanderCorput1922|<tuple|vanderCorput1922|28|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|bib-vanderCorput1923|<tuple|vanderCorput1923|28|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:B_minus_n_definition|<tuple|177|26|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:B_minus_n_new|<tuple|182|26|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:B_n_definition|<tuple|176|26|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:B_n_new|<tuple|181|26|../../.TeXmacs/texts/scratch/no_name_6.tm>>
     <associate|eq:F0_G0|<tuple|5|2|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:F_S_bound|<tuple|170|20|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:F_definition|<tuple|137|17|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:F_zero_bound|<tuple|171|20|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:I1_bound|<tuple|153|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:R_functional1|<tuple|119|15|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:R_functional2|<tuple|120|15|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:S_final_bound|<tuple|172|20|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:S_mn_definition|<tuple|138|17|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:T1_decomposition|<tuple|150|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:T1_definition|<tuple|149|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:T1_final_bound|<tuple|159|19|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:T2_bound|<tuple|147|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:T2_definition|<tuple|146|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:T2_final_bound|<tuple|148|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:T4_decomposition|<tuple|160|19|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:T5_bound|<tuple|162|19|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:T5_definition|<tuple|161|19|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:T_decomposition|<tuple|145|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:alternative_form1|<tuple|108|13|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:alternative_form2|<tuple|109|14|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:angle_constraint|<tuple|98|12|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:approximate_bound|<tuple|140|17|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:approximate_bound2|<tuple|141|17|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:F_S_bound|<tuple|170|25|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:F_definition|<tuple|137|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:F_zero_bound|<tuple|171|25|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:I1_bound|<tuple|153|23|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:R_functional1|<tuple|119|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:R_functional2|<tuple|120|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:S_final_bound|<tuple|172|25|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:S_mn_definition|<tuple|138|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:T1_decomposition|<tuple|150|23|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:T1_definition|<tuple|149|23|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:T1_final_bound|<tuple|159|24|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:T2_bound|<tuple|147|23|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:T2_definition|<tuple|146|23|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:T2_final_bound|<tuple|148|23|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:T4_decomposition|<tuple|160|24|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:T5_bound|<tuple|162|24|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:T5_definition|<tuple|161|24|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:T_decomposition|<tuple|145|23|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:alternative_form1|<tuple|108|17|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:alternative_form2|<tuple|109|17|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:angle_constraint|<tuple|98|15|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:approximate_bound|<tuple|140|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:approximate_bound2|<tuple|141|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
     <associate|eq:binary_quadratic_form|<tuple|3|2|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:bound1|<tuple|79|10|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:cauchy_result|<tuple|65|8|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:chi_bound|<tuple|85|10|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:class_number_sum|<tuple|41|6|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:class_number_sum2|<tuple|42|6|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:class_relation|<tuple|9|2|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:class_relation_example1|<tuple|175|20|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:class_relation_example2|<tuple|180|21|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:class_relation_general|<tuple|37|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:class_relation_result1|<tuple|178|21|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:class_relation_result2|<tuple|183|21|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:combined_T_bounds|<tuple|167|20|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:combined_bound|<tuple|155|19|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:combined_iteration|<tuple|142|17|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:combined_result|<tuple|112|14|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:congruence|<tuple|8|2|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:constraint1|<tuple|179|21|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:constraint2|<tuple|184|21|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:contour_deformation|<tuple|99|12|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:contour_integral|<tuple|62|7|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:contour_integral_sides|<tuple|133|16|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:contour_result|<tuple|100|12|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:convergence1|<tuple|78|9|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:convergence_bound|<tuple|80|10|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:convergence_condition|<tuple|104|13|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:d_functional1|<tuple|56|7|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:d_functional2|<tuple|57|7|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:d_residue|<tuple|58|7|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:derivative_condition|<tuple|156|19|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:derivative_x|<tuple|163|19|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:bound1|<tuple|79|12|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:cauchy_result|<tuple|65|10|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:chi_bound|<tuple|85|13|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:class_number_sum|<tuple|41|7|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:class_number_sum2|<tuple|42|7|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:class_relation|<tuple|9|3|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:class_relation_example1|<tuple|175|26|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:class_relation_example2|<tuple|180|26|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:class_relation_general|<tuple|37|7|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:class_relation_result1|<tuple|178|26|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:class_relation_result2|<tuple|183|27|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:combined_T_bounds|<tuple|167|25|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:combined_bound|<tuple|155|24|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:combined_iteration|<tuple|142|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:combined_result|<tuple|112|17|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:congruence|<tuple|8|3|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:constraint1|<tuple|179|26|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:constraint2|<tuple|184|27|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:contour_deformation|<tuple|99|15|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:contour_integral|<tuple|62|10|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:contour_integral_sides|<tuple|133|21|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:contour_result|<tuple|100|15|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:convergence1|<tuple|78|12|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:convergence_bound|<tuple|80|12|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:convergence_condition|<tuple|104|16|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:d_functional1|<tuple|56|9|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:d_functional2|<tuple|57|9|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:d_residue|<tuple|58|9|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:derivative_condition|<tuple|156|24|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:derivative_x|<tuple|163|25|../../.TeXmacs/texts/scratch/no_name_6.tm>>
     <associate|eq:determinant|<tuple|4|2|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:diff_eq1|<tuple|25|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:diff_eq2|<tuple|26|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:diff_eq1|<tuple|25|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:diff_eq2|<tuple|26|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
     <associate|eq:dirichlet_formula|<tuple|6|2|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:expanded_derivative|<tuple|164|19|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:expansion_problem|<tuple|174|20|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:exponential_limit|<tuple|91|11|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:f01_def|<tuple|34|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:f01_series|<tuple|35|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:f_expansion|<tuple|32|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:f_prop1|<tuple|28|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:f_prop2|<tuple|29|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:f_prop3|<tuple|30|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:f_zero|<tuple|31|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:f_zero_expanded|<tuple|33|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:final_approximation|<tuple|168|20|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:final_condition|<tuple|165|19|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:final_limit|<tuple|92|11|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:functional_eq_1|<tuple|23|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:functional_eq_2|<tuple|24|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:gauss_formula1|<tuple|121|15|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:gauss_formula2|<tuple|122|15|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:gauss_sum_difference|<tuple|131|16|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:gauss_sum_final|<tuple|134|16|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:gauss_sum_function|<tuple|130|16|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:gauss_sum_integral|<tuple|132|16|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:gauss_sum_normalization|<tuple|136|17|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:gauss_sum_reciprocity|<tuple|129|16|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:gauss_sum_scaling|<tuple|135|17|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:gaussian_integral|<tuple|59|7|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:general_constant|<tuple|66|8|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:general_integral|<tuple|95|11|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:integral_bound|<tuple|154|19|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:integral_function|<tuple|22|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:integrand_bound|<tuple|63|8|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:irrational_formula|<tuple|93|11|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:iteration1|<tuple|82|10|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:iteration2|<tuple|83|10|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:iteration_combined|<tuple|84|10|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:iteration_rewrite|<tuple|144|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:kronecker_integral|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:lerch_function|<tuple|116|14|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:lerch_integral|<tuple|117|14|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:lerch_result|<tuple|118|14|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:limit1|<tuple|89|11|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:limit2|<tuple|90|11|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:main_theorem|<tuple|44|6|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:mordell_formula|<tuple|7|2|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:negative_omega_formula|<tuple|94|11|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:omega_expansion|<tuple|38|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:omega_relation|<tuple|103|12|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:omega_relation1|<tuple|39|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:omega_relation2|<tuple|40|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:phi_def|<tuple|70|8|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:phi_functional1|<tuple|48|6|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:phi_functional2|<tuple|49|6|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:phi_integral_form|<tuple|60|7|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:phi_solution|<tuple|61|7|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:psi_definition|<tuple|123|15|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:psi_difference_bound|<tuple|169|20|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:psi_functional1|<tuple|124|15|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:psi_functional2|<tuple|125|15|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:psi_iteration1|<tuple|126|16|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:psi_iteration2|<tuple|128|16|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:psi_transformation|<tuple|127|16|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:psi_zero|<tuple|143|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:ramanujan_property|<tuple|43|6|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:ratio_function|<tuple|36|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:rational_sum1|<tuple|86|10|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:rational_sum2|<tuple|87|10|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:rational_sum3|<tuple|88|11|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:real_axis_integral|<tuple|101|12|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:real_omega_case|<tuple|105|13|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:reciprocal_eq1|<tuple|114|14|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:reciprocal_eq2|<tuple|115|14|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:reciprocal_relation|<tuple|113|14|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:reduced_form1|<tuple|97|12|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:reduced_form2|<tuple|102|12|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:residue_integral|<tuple|27|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:residue_series|<tuple|106|13|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:expanded_derivative|<tuple|164|25|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:expansion_problem|<tuple|174|26|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:exponential_limit|<tuple|91|14|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:f01_def|<tuple|34|6|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:f01_series|<tuple|35|6|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:f_expansion|<tuple|32|6|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:f_prop1|<tuple|28|6|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:f_prop2|<tuple|29|6|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:f_prop3|<tuple|30|6|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:f_zero|<tuple|31|6|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:f_zero_expanded|<tuple|33|6|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:final_approximation|<tuple|168|25|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:final_condition|<tuple|165|25|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:final_limit|<tuple|92|14|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:functional_eq_1|<tuple|23|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:functional_eq_2|<tuple|24|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:gauss_formula1|<tuple|121|19|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:gauss_formula2|<tuple|122|19|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:gauss_sum_difference|<tuple|131|20|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:gauss_sum_final|<tuple|134|21|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:gauss_sum_function|<tuple|130|20|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:gauss_sum_integral|<tuple|132|20|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:gauss_sum_normalization|<tuple|136|21|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:gauss_sum_reciprocity|<tuple|129|20|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:gauss_sum_scaling|<tuple|135|21|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:gaussian_integral|<tuple|59|9|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:general_constant|<tuple|66|10|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:general_integral|<tuple|95|14|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:integral_bound|<tuple|154|24|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:integral_function|<tuple|22|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:integrand_bound|<tuple|63|10|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:irrational_formula|<tuple|93|14|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:iteration1|<tuple|82|13|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:iteration2|<tuple|83|13|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:iteration_combined|<tuple|84|13|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:iteration_rewrite|<tuple|144|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:kronecker_integral|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:lerch_function|<tuple|116|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:lerch_integral|<tuple|117|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:lerch_result|<tuple|118|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:limit1|<tuple|89|14|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:limit2|<tuple|90|14|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:main_theorem|<tuple|44|8|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:mordell_formula|<tuple|7|3|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:negative_omega_formula|<tuple|94|14|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:omega_expansion|<tuple|38|7|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:omega_relation|<tuple|103|16|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:omega_relation1|<tuple|39|7|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:omega_relation2|<tuple|40|7|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:phi_def|<tuple|70|11|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:phi_functional1|<tuple|48|8|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:phi_functional2|<tuple|49|8|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:phi_integral_form|<tuple|60|9|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:phi_solution|<tuple|61|9|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:psi_definition|<tuple|123|19|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:psi_difference_bound|<tuple|169|25|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:psi_functional1|<tuple|124|19|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:psi_functional2|<tuple|125|19|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:psi_iteration1|<tuple|126|19|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:psi_iteration2|<tuple|128|20|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:psi_transformation|<tuple|127|20|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:psi_zero|<tuple|143|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:ramanujan_property|<tuple|43|8|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:ratio_function|<tuple|36|7|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:rational_sum1|<tuple|86|13|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:rational_sum2|<tuple|87|13|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:rational_sum3|<tuple|88|13|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:real_axis_integral|<tuple|101|15|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:real_omega_case|<tuple|105|16|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:reciprocal_eq1|<tuple|114|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:reciprocal_eq2|<tuple|115|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:reciprocal_relation|<tuple|113|17|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:reduced_form1|<tuple|97|15|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:reduced_form2|<tuple|102|16|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:residue_integral|<tuple|27|6|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:residue_series|<tuple|106|16|../../.TeXmacs/texts/scratch/no_name_6.tm>>
     <associate|eq:riemann_integral|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:second_form_case1|<tuple|72|9|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:second_form_case1_alt|<tuple|73|9|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:second_form_case2|<tuple|74|9|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:second_form_case2_alt|<tuple|75|9|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:second_form_case3|<tuple|76|9|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:second_mean_value|<tuple|151|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:second_standard|<tuple|68|8|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:shift_identity|<tuple|64|8|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:shifted_integral|<tuple|67|8|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:simplified_condition|<tuple|157|19|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:simplified_final|<tuple|166|19|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:simplified_form|<tuple|111|14|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:splitting|<tuple|77|9|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:substitution1|<tuple|96|12|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:theta00_def|<tuple|10|3|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:theta00_short|<tuple|14|3|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:theta01_def|<tuple|12|3|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:theta10_def|<tuple|11|3|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:theta11_def|<tuple|13|3|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:theta_def|<tuple|69|8|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:theta_identity|<tuple|107|13|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:theta_phi_sum|<tuple|71|9|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:theta_product1|<tuple|19|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:theta_product2|<tuple|20|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:theta_product3|<tuple|21|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:theta_prop1|<tuple|15|3|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:theta_prop2|<tuple|16|3|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:theta_transform1|<tuple|17|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:theta_transform2|<tuple|18|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:transformation_problem|<tuple|173|20|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:transformed_integral|<tuple|110|14|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:vanishing_bound|<tuple|81|10|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:wilton_bound|<tuple|152|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:xi_definition|<tuple|139|17|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|eq:y_condition|<tuple|158|19|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|footnote-1|<tuple|1|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|footnr-1|<tuple|1|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|sec:approximate_functional_equation|<tuple|9|17|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|sec:coalesce_case|<tuple|5|9|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|sec:first_standard_form|<tuple|3|6|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|sec:gauss_sums|<tuple|8|15|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|sec:integral_function|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|sec:miscellaneous_results|<tuple|7|13|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|sec:problems|<tuple|10|20|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|sec:second_standard_form|<tuple|4|8|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|sec:standard_forms|<tuple|6|11|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|thm:approximate_functional|<tuple|3|17|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|thm:gauss_sums|<tuple|2|15|../../.TeXmacs/texts/scratch/no_name_6.tm>>
-    <associate|thm:main_theorem|<tuple|1|6|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:second_form_case1|<tuple|72|11|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:second_form_case1_alt|<tuple|73|11|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:second_form_case2|<tuple|74|11|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:second_form_case2_alt|<tuple|75|11|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:second_form_case3|<tuple|76|12|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:second_mean_value|<tuple|151|23|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:second_standard|<tuple|68|11|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:shift_identity|<tuple|64|10|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:shifted_integral|<tuple|67|10|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:simplified_condition|<tuple|157|24|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:simplified_final|<tuple|166|25|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:simplified_form|<tuple|111|17|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:splitting|<tuple|77|12|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:substitution1|<tuple|96|15|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:theta00_def|<tuple|10|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:theta00_short|<tuple|14|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:theta01_def|<tuple|12|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:theta10_def|<tuple|11|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:theta11_def|<tuple|13|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:theta_def|<tuple|69|11|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:theta_identity|<tuple|107|17|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:theta_phi_sum|<tuple|71|11|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:theta_product1|<tuple|19|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:theta_product2|<tuple|20|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:theta_product3|<tuple|21|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:theta_prop1|<tuple|15|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:theta_prop2|<tuple|16|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:theta_transform1|<tuple|17|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:theta_transform2|<tuple|18|5|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:transformation_problem|<tuple|173|25|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:transformed_integral|<tuple|110|17|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:vanishing_bound|<tuple|81|13|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:wilton_bound|<tuple|152|23|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:xi_definition|<tuple|139|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|eq:y_condition|<tuple|158|24|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|footnote-1|<tuple|1|23|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|footnr-1|<tuple|1|23|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|sec:approximate_functional_equation|<tuple|9|21|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|sec:coalesce_case|<tuple|5|12|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|sec:first_standard_form|<tuple|3|8|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|sec:gauss_sums|<tuple|8|18|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|sec:integral_function|<tuple|2|4|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|sec:miscellaneous_results|<tuple|7|17|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|sec:problems|<tuple|10|25|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|sec:second_standard_form|<tuple|4|11|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|sec:standard_forms|<tuple|6|14|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|thm:approximate_functional|<tuple|3|22|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|thm:gauss_sums|<tuple|2|19|../../.TeXmacs/texts/scratch/no_name_6.tm>>
+    <associate|thm:main_theorem|<tuple|1|8|../../.TeXmacs/texts/scratch/no_name_6.tm>>
   </collection>
 </references>
 
