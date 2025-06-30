@@ -44,6 +44,14 @@ import arb.utensils.Utensils;
 
 %typemap(javacode) fmpq %{
 
+  public AlgebraicNumber pow(Fraction exponent, int prec, AlgebraicNumber result)
+  {
+    try ( AlgebraicNumber base = new AlgebraicNumber(); AlgebraicNumber exp = new AlgebraicNumber())
+    {
+      return base.set(this).pow(exp.set(exponent), prec, result);
+    }
+  }
+  
   public Complex Γ(int bits, Complex result)
   {
     result.set(this);
