@@ -30,7 +30,6 @@ import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
-import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.SerializedExpression;
@@ -59,8 +58,6 @@ public class Utensils
     NewCommandMacro.addNewCommand("Γ", "\\Gamma", 0);
     NewCommandMacro.addNewCommand("re", "\\operatorname{Re} {#1}", 1);
     NewCommandMacro.addNewCommand("im", "\\operatorname{Im} {#1}", 1);
-
-
 
   }
 
@@ -143,26 +140,11 @@ public class Utensils
     return image;
   }
 
-  public static ImageViewer showFormula(Typesettable formula)
+  public static void saveFormula(String formula, String path, int size) throws IOException
   {
-
-    var imageViewer = new ImageViewer(formula.toString(),
-                                      renderFormula(formula.typeset()));
-    imageViewer.setVisible(true);
-    return imageViewer;
-
-  }
-
-  public static void saveFormula(String formula, String path) throws IOException
-  {
-    var bimg = renderFormula(formula);
+    var bimg = renderFormula(formula, size);
     var out  = new File(path);
     ImageIO.write(bimg, "png", out);
-  }
-
-  public static BufferedImage renderFormula(String formula)
-  {
-    return renderFormula(formula, 20);
   }
 
   public static BufferedImage renderFormula(String formula, int size)

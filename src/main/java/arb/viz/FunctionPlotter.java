@@ -69,7 +69,8 @@ public class FunctionPlotter extends
                  new Zoomer(),
                  new TableViewer(),
                  new ColormapSelector(),
-                 new Screenshot());
+                 new Screenshot(),
+                 new CrosshairIndicator());
   }
 
   public Stage createScene()

@@ -20,7 +20,8 @@ import javafx.util.Callback;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public final class TypeSettingCellFactory<D, C, F extends Function<? extends D, ? extends C>> implements
+public final class TypeSettingCellFactory<D, C, F extends Function<? extends D, ? extends C>>
+                                         implements
                                          Callback<TreeTableColumn<Node<D, C, F>, String>,
                                                        TreeTableCell<Node<D, C, F>, String>>
 {
@@ -47,10 +48,10 @@ public final class TypeSettingCellFactory<D, C, F extends Function<? extends D, 
           Image image = cache.get(item);
           if (image == null)
           {
-            BufferedImage bufferedImage = Utensils.renderFormula(item);
+            BufferedImage bufferedImage = Utensils.renderFormula(item, 16);
             cache.put(item, image = SwingFXUtils.toFXImage(bufferedImage, null));
           }
-         
+
           imageView.setImage(image);
           setGraphic(imageView);
           setText(null);

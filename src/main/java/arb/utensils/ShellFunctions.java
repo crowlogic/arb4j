@@ -14,9 +14,10 @@ import java.util.function.IntFunction;
 import java.util.stream.IntStream;
 
 import arb.Real;
-import arb.RealPolynomial;
 import arb.RealDataSet;
+import arb.RealPolynomial;
 import arb.SequenceDataSet;
+import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
@@ -31,38 +32,47 @@ import javafx.application.Platform;
 public class ShellFunctions
 {
 
-  public static <A> List<A>  seq(int m, int n,IntFunction<A> f) { return IntStream.rangeClosed(m,n).mapToObj(f).toList();};
+  public static <A> List<A> seq(int m, int n, IntFunction<A> f)
+  {
+    return IntStream.rangeClosed(m, n).mapToObj(f).toList();
+  };
 
   @SuppressWarnings("unchecked")
-  public static <A> A[] array( List<A> list, Class<A> type ) { return (A[])list.toArray((A[])Array.newInstance(type,list.size()));}
-
-  public static List<Real> coeffs( List<RealPolynomial> s) { return s.stream().map(p->p.getCoeffs()).toList();};
-
-  public static void matrix( List<RealPolynomial> s)
+  public static <A> A[] array(List<A> list, Class<A> type)
   {
-    s.forEach( h->
+    return (A[]) list.toArray((A[]) Array.newInstance(type, list.size()));
+  }
+
+  public static List<Real> coeffs(List<RealPolynomial> s)
+  {
+    return s.stream().map(p -> p.getCoeffs()).toList();
+  };
+
+  public static void matrix(List<RealPolynomial> s)
+  {
+    s.forEach(h ->
     {
-      h.getCoeffs().forEach( g -> g.printPrecision = false );
-      System.out.format("#%s=%s\n\n",h.getLength(),h.coeffs);
+      h.getCoeffs().forEach(g -> g.printPrecision = false);
+      System.out.format("#%s=%s\n\n", h.getLength(), h.coeffs);
     });
   }
 
-  public static RealPolynomial[] rarray( List<RealPolynomial> list )
+  public static RealPolynomial[] rarray(List<RealPolynomial> list)
   {
-    return array( list, RealPolynomial.class);
+    return array(list, RealPolynomial.class);
   }
 
-  public static Integer[] iarray( List<Integer> list )
+  public static Integer[] iarray(List<Integer> list)
   {
-    return array( list, Integer.class);
+    return array(list, Integer.class);
   }
 
-  public static RealFunction[] rfarray( List<RealFunction> funcs )
+  public static RealFunction[] rfarray(List<RealFunction> funcs)
   {
-    return array( funcs, RealFunction.class);
+    return array(funcs, RealFunction.class);
   }
 
-  public  static FunctionPlotter plot(RealDataSet sequence)
+  public static FunctionPlotter plot(RealDataSet sequence)
   {
     WindowManager.initializeJavaFxIfNecessary();
     AtomicReference<FunctionPlotter> ref = new AtomicReference<>();
@@ -122,7 +132,9 @@ public class ShellFunctions
   public static boolean javaFxInitialized = false;
 
   @SafeVarargs
-  public static <R extends RealFunction> FunctionPlotter plot(double left, double right, int n, R... functions)
+  public static <R extends RealFunction>
+         FunctionPlotter
+         plot(double left, double right, int n, R... functions)
   {
     return plot(left, right, n, Arrays.asList(functions));
   }
@@ -166,8 +178,8 @@ public class ShellFunctions
     return waitForFunctionPlotterToBeReleased(ref, sem);
   }
 
-  protected static FunctionPlotter waitForFunctionPlotterToBeReleased(AtomicReference<FunctionPlotter> ref,
-                                                                      Semaphore sem)
+  protected static FunctionPlotter
+            waitForFunctionPlotterToBeReleased(AtomicReference<FunctionPlotter> ref, Semaphore sem)
   {
     try
     {
@@ -187,6 +199,20 @@ public class ShellFunctions
     var yaml = Utensils.newYaml();
     var pw   = new PrintWriter(System.out);
     yaml.dump(obj, pw);
+  }
+
+  public static ImageViewer showFormula(Typesettable formula)
+  {
+    return showFormula(formula, 24);
+  }
+
+  public static ImageViewer showFormula(Typesettable formula, int size)
+  {
+
+    var imageViewer = new ImageViewer(formula.toString(),
+                                      Utensils.renderFormula(formula.typeset(), size));
+    imageViewer.setVisible(true);
+    return imageViewer;
   }
 
 }
