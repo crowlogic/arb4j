@@ -437,6 +437,14 @@ public class Integer implements
     return dim;
   }
 
+  public Real div(AlgebraicNumber operand, int bits, Real result)
+  {
+    try ( var tmp = new AlgebraicNumber())
+    {
+      return tmp.set(this).div(operand, bits).getReal(bits, result);
+    }
+  }
+
   public Complex div(Complex dividend, int prec, Complex res)
   {
     res.bits = prec;
