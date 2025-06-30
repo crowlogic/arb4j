@@ -157,10 +157,10 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     return result;
   }
   
-  public AlgebraicNumber pow(AlgebraicNumber operand, AlgebraicNumber res)
+  @Override
+  public AlgebraicNumber pow(AlgebraicNumber operand, int bits, AlgebraicNumber res)
   {
-    arblib.qqbar_pow(res, this, operand);
-    return res;
+    return pow(operand, res);
   }
   
   public AlgebraicNumber pow(Fraction operand, AlgebraicNumber res)
@@ -275,13 +275,13 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   }
 
   @Override
-  public NamedRing<AlgebraicNumber> set(Fraction val)
+  public AlgebraicNumber set(Fraction val)
   {
-	assert val != null && val.swigCPtr != 0 : "val is null or has null swigCPtr";
+    assert val != null && val.swigCPtr != 0 : "val is null or has null swigCPtr";
     arblib.qqbar_set_fmpq(this, val);
     return this;
   }
-
+  
   String name;
   
   public RealPolynomial div(RealPolynomial x, int prec, RealPolynomial result)

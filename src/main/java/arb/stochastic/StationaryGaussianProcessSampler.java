@@ -262,7 +262,7 @@ public abstract class StationaryGaussianProcessSampler extends
       arblib.acb_dft(fft, complexPath, N, bits);
 
       double[] periodogram = new double[N];
-
+      
       for (int i = 0; i < N; i++)
       {
         periodogram[i] = fft.get(i)

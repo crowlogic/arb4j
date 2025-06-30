@@ -16,6 +16,8 @@
 #include <unistd.h>
 #include <wchar.h>
 
+void fmpz_poly_pow(fmpz_poly_t res, const fmpz_poly_t poly, ulong e);
+
 void acb_mat_bound_inf_norm(mag_t b, const acb_mat_t A);
 
 void acb_mat_frobenius_norm(arb_t res, const acb_mat_t A, slong prec);
@@ -346,7 +348,6 @@ void arb_hypgeom_pfq(arb_t res, arb_srcptr a, slong p, arb_srcptr b, slong q,
     const arb_t z, int regularized, slong prec);
 
 
-void fmpz_poly_pow(fmpz_poly_t res, const fmpz_poly_t poly, ulong e);
 
 void fmpz_poly_zero(fmpz_poly_t poly);
 

@@ -60,12 +60,16 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public Node<D, R, F> getSquareRootArg()
   {
     assert isSquareRoot() : this + " is not a square root";
-    return arg;    
+    return arg;
   }
 
   @Override
   public Node<D, R, F> simplify()
   {
+    if (arg != null)
+    {
+      arg = arg.simplify();
+    }
     if ("sqrt".equals(functionName))
     {
       return arg.pow(expression.newLiteralConstant("½"));
@@ -603,14 +607,15 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       return Object.class;
     }
-    Class<? extends Object> argType = arg.type();
+    Class<? extends Object> argType       = arg.type();
 
+    Class<?>                scalarArgType = Compiler.scalarType(arg.type());
     switch (functionName)
     {
     case "gamma":
     case "Γ":
     case "lnΓ":
-      return Compiler.scalarType(arg.type());
+      return scalarArgType;
     case "sqrt":
       return Integer.class.equals(expression.coDomainType) ? Real.class
                                                            : Compiler.scalarType(expression.coDomainType);
@@ -620,6 +625,15 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return Complex.class;
     case "log":
       return Real.class;
+    case "exp":
+      return scalarArgType;
+//      System.err.println( "exp scalarArgType=" + scalarArgType );
+//      if ( scalarArgType.equals( Complex.class ))
+//      {
+//        Class<?> scalarCodomainType = Compiler.scalarType(expression.coDomainType);
+//        System.err.println( "  scalarCodomainType=" + scalarCodomainType );
+//        return scalarCodomainType;
+//      }
     }
 
     if (argType == null)
@@ -682,20 +696,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Class<?> type()
   {
-    if (expression.coDomainType.equals(ComplexRationalFunction.class) && "exp".equals(functionName))
-    {
-      throw new CompilerException("The exponential of a "
-                                  + expression.coDomainType
-                                  + " cannot be represented as a "
-                                  + expression.coDomainType);
-    }
-    if (isBuiltin())
-    {
-      return resultTypeFor(functionName);
-    }
-    assert mapping.coDomain != null : "coDomain of " + mapping + " is null";
-
-    return mapping.coDomain;
+    return isBuiltin() ? resultTypeFor(functionName) : mapping.coDomain;
   }
 
   @Override

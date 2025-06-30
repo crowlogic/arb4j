@@ -3,6 +3,7 @@ package arb.expressions.nodes;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.exceptions.CompilerException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.real.RealFunction;
@@ -16,6 +17,24 @@ import junit.framework.TestCase;
 public class DerivativeNodeTest extends
                                 TestCase
 {
+
+  public static void testDerivativeOfComplexExponential()
+  {
+    boolean caught = false;
+    try
+    {
+      var context = new Context();
+      var a       = context.registerVariable(Real.named("a").one());
+      var f       = RealFunction.express("diff(exp(I*a*t),t)", context);
+      var x       = f.eval(2.3);
+      assertEquals(26, x);
+    }
+    catch (CompilerException ce)
+    {
+      caught = ce.toString().contains("cannot be represented as");
+    }
+    assertTrue(caught);
+  }
 
   public void testIntegralOfSquareRoot()
   {
@@ -32,9 +51,9 @@ public class DerivativeNodeTest extends
 
   public void testDefiniteIntegralOfSquareRoot()
   {
-    
-    Expression.trace         = Expression.saveClasses    = true;
-    //Expression.useNewIntegralNode = true;
+
+    // Expression.trace = Expression.saveClasses = true;
+    // Expression.useNewIntegralNode = true;
     var f = RealFunction.express("x➔∫y➔1/sqrt(1-y^2)dy∈(-1,x)");
     var y = f.eval(0.75);
 
@@ -43,7 +62,7 @@ public class DerivativeNodeTest extends
     // assertEquals(f.toString(), g.toString());
 
     assertEquals(y, z);
-    Expression.trace         = Expression.saveClasses    = true;
+    Expression.trace = Expression.saveClasses = true;
 
   }
 

@@ -13,6 +13,7 @@ import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
+import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
@@ -53,6 +54,7 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     mapTypes(Integer.class, RationalFunction.class, RationalFunction.class);
     mapTypes(Integer.class, ComplexRationalFunction.class, ComplexRationalFunction.class);
     mapTypes(Integer.class, IntegerPolynomial.class, IntegerPolynomial.class);
+    mapTypes(Fraction.class, Fraction.class, AlgebraicNumber.class);
     mapTypes(Fraction.class, Integer.class, Fraction.class);
     mapTypes(Fraction.class, Real.class, Real.class);
     mapTypes(Fraction.class, RationalFunction.class, RationalFunction.class);
@@ -234,6 +236,15 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     assert right != null : "rhs is null";
 
     generatedType = resultType;
+    var scalarType = Compiler.scalarType(type());
+
+    if (!Compiler.canBeAssignedTo(type(), resultType))
+    {
+      throw new CompilerException(String.format("node type %s of '%s' cannot be represented as a %s",
+                                                type(),
+                                                this,
+                                                resultType));
+    }
 
     String existingVar = expression.generatedNodes.get(this);
     if (existingVar != null)
@@ -245,7 +256,26 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     {
       left.generate(mv, left.type());
       right.generate(mv, right.type());
-      invokeMethod(mv, operation, resultType);
+
+      if (expression.insideInitializer)
+      {
+        mv.visitLdcInsn(initializerBits);
+      }
+      else
+      {
+        loadBitsParameterOntoStack(mv);
+      }
+      loadOutput(mv, resultType);
+
+      var leftType = left.getGeneratedType();
+      leftType = leftType != null ? leftType : left.type();
+      var rightType = right.type();
+      if (Object.class.equals(leftType))
+      {
+        leftType = expression.coDomainType;
+      }
+
+      invokeBinaryOperationMethod(mv, operation, leftType, rightType, resultType);
     }
 
     if (Expression.trace)
@@ -276,30 +306,6 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   public Class<?> getGeneratedType()
   {
     return generatedType;
-  }
-
-  public MethodVisitor invokeMethod(MethodVisitor mv, String operator, Class<?> resultType)
-  {
-    if (expression.insideInitializer)
-    {
-      mv.visitLdcInsn(initializerBits);
-    }
-    else
-    {
-      loadBitsParameterOntoStack(mv);
-    }
-    loadOutput(mv, resultType);
-
-    var leftType = left.getGeneratedType();
-    leftType = leftType != null ? leftType : left.type();
-    var rightType = right.type();
-    if (Object.class.equals(leftType))
-    {
-      leftType = expression.coDomainType;
-    }
-
-    invokeBinaryOperationMethod(mv, operator, leftType, rightType, resultType);
-    return mv;
   }
 
   public abstract boolean isCommutative();

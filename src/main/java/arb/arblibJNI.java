@@ -9,6 +9,7 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void fmpz_poly_pow(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_, long jarg3);
   public final static native void acb_mat_bound_inf_norm(long jarg1, Magnitude jarg1_, long jarg2, ComplexMatrix jarg2_);
   public final static native void acb_mat_frobenius_norm(long jarg1, Real jarg1_, long jarg2, ComplexMatrix jarg2_, int jarg3);
   public final static native void acb_mat_bound_frobenius_norm(long jarg1, Magnitude jarg1_, long jarg2, ComplexMatrix jarg2_);
@@ -190,7 +191,6 @@ public class arblibJNI {
   public final static native int fmpq_is_canonical(long jarg1, Fraction jarg1_);
   public final static native double fmpq_get_d(long jarg1, Fraction jarg1_);
   public final static native void arb_hypgeom_pfq(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, long jarg4, Real jarg4_, int jarg5, long jarg6, Real jarg6_, int jarg7, int jarg8);
-  public final static native void fmpz_poly_pow(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_, long jarg3);
   public final static native void fmpz_poly_zero(long jarg1, IntegerPolynomial jarg1_);
   public final static native void fmpz_poly_evaluate_fmpz(long jarg1, long jarg2, IntegerPolynomial jarg2_, long jarg3);
   public final static native int fmpq_pow_fmpz(long jarg1, Fraction jarg1_, long jarg2, Fraction jarg2_, long jarg3);
