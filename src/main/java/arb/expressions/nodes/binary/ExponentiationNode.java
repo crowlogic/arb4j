@@ -143,23 +143,10 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
       return type = AlgebraicNumber.class;
     }
 
-    if (right.isPossiblyNegative())
-    {
-      var superType = super.type();
-      if (Integer.class.equals(superType))
-      {
-        type = Fraction.class;
-      }
-      else
-      {
-        type = superType;
-      }
-    }
-    else
-    {
-      type = super.type();
-    }
-    return type;
+    var     superType                    = super.type();
+    boolean rhsIsPossiblyNegativeInteger = right.isPossiblyNegative()
+                  && Integer.class.equals(superType);
+    return type = rhsIsPossiblyNegativeInteger ? Fraction.class : superType;
   }
 
   @Override
