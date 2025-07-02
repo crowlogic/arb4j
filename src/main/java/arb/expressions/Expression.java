@@ -1010,10 +1010,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       parseRoot();
     }
 
-    Label         startLabel = new Label();
-    Label         endLabel   = new Label();
+    Label startLabel = new Label();
+    Label endLabel   = new Label();
 
-    var mv         = visitEvaluationMethod(classVisitor);
+    var   mv         = visitEvaluationMethod(classVisitor);
     mv.visitCode();
     mv.visitLabel(startLabel);
     Compiler.annotateWithOverride(mv);
@@ -1444,7 +1444,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     updateStringRepresentation();
     String arrow = expression.contains("➔")
                   || independentVariable == null ? "" : (independentVariable.getName() + "➔");
-    // TODO: need to generate instructions so that the toString() uses String.format to include the value (only if it was part of the independent variable because thats the only timneits fixed for the whole class, if its just a Context variable then it can  change between invocations
+    // TODO: need to generate instructions so that the toString() uses String.format
+    // to include the value (only if it was part of the independent variable because
+    // thats the only timneits fixed for the whole class, if its just a Context
+    // variable then it can change between invocations
 //    assert !functionalDependsOnIndependentVariable : "TODO: handle functionalDependsOnIndependentVariable "
 //                                                     + functionalIndependentVariable + "  " + context.getVariable(functionalIndependentVariable));
 //                                                                  
@@ -1826,8 +1829,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
         entirelySubscripted = false;
       }
     }
-    var substring = expression.substring(startPos, position);
-    return Parser.subscriptAndSuperscriptsToRegular(substring.trim());
+    var substring = expression.substring(startPos, position).trim();
+    return Parser.subscriptAndSuperscriptsToRegular(substring);
   }
 
   /**
@@ -1862,7 +1865,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       if (character != '=')
       {
-        // throwUnexpectedCharacterException();
+        throwUnexpectedCharacterException();
       }
     }
     return (E) this;
