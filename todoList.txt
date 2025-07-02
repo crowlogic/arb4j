@@ -11,3 +11,4 @@ GaussianProcessSampler: add ability to edit the random white noise measure and s
 plotting: add ComplexDataSet and modify the GaussianProcessSampler to use it instead of two separate RealDataSets as it presently does
 compiler: move input-independent parts of the expression sub-tree into the initialize() method to avoid throwing away results of repeated calculations #567
 compiler: make Expression constructor which loads from the same .yaml format used by Expressor
+// TODO: need to generate instructions so that the toString() uses String.format to include the value (only if it was part of the independent variable because thats the only timneits fixed for the whole class, if its just a Context variable then it can  change between invocations

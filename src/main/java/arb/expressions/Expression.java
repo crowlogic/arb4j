@@ -533,9 +533,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     // Declare functions in dependency order
     for (Dependency dependency : dependencies)
     {
-      String                   dependencyVariableName = dependency.variableName;
-      FunctionMapping<?, ?, ?> function               =
-                                        referencedFunctions.get(dependencyVariableName);
+      String dependencyVariableName = dependency.variableName;
+      var    function               = referencedFunctions.get(dependencyVariableName);
 
       if (function != null)
       {
@@ -937,11 +936,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                           Type type,
                                           String methodSignature)
   {
-    MethodVisitor mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                which,
-                                                Compiler.getMethodDescriptor(Class.class),
-                                                methodSignature,
-                                                null);
+    var mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                      which,
+                                      Compiler.getMethodDescriptor(Class.class),
+                                      methodSignature,
+                                      null);
 
     Compiler.annotateWithOverride(mv);
 
@@ -1014,7 +1013,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     Label         startLabel = new Label();
     Label         endLabel   = new Label();
 
-    MethodVisitor mv         = visitEvaluationMethod(classVisitor);
+    var mv         = visitEvaluationMethod(classVisitor);
     mv.visitCode();
     mv.visitLabel(startLabel);
     Compiler.annotateWithOverride(mv);
@@ -1445,11 +1444,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     updateStringRepresentation();
     String arrow = expression.contains("➔")
                   || independentVariable == null ? "" : (independentVariable.getName() + "➔");
-    // TODO: need to generate instructions so that the toString() uses String.format
-    // to include the value (only if it was part of the independent variable because
-    // thats the only timne
-    // its fixed for the whole class, if its just a Context variable then it can
-    // change between invocations
+    // TODO: need to generate instructions so that the toString() uses String.format to include the value (only if it was part of the independent variable because thats the only timneits fixed for the whole class, if its just a Context variable then it can  change between invocations
 //    assert !functionalDependsOnIndependentVariable : "TODO: handle functionalDependsOnIndependentVariable "
 //                                                     + functionalIndependentVariable + "  " + context.getVariable(functionalIndependentVariable));
 //                                                                  
