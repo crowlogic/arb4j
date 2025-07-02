@@ -169,18 +169,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   @Override
   protected Object clone()
   {
-    Expression<D,
-                  C,
-                  Function<? extends D, ? extends C>> expr = new Expression<D,
-                                C,
-                                Function<? extends D, ? extends C>>(className,
-                                                                    domainType,
-                                                                    coDomainType,
-                                                                    functionClass,
-                                                                    expression,
-                                                                    context,
-                                                                    functionName,
-                                                                    ascendentExpression);
+    var expr = new Expression<D, C, F>(className,
+                                       domainType,
+                                       coDomainType,
+                                       functionClass,
+                                       expression,
+                                       context,
+                                       functionName,
+                                       ascendentExpression);
     expr.position          = position;
     expr.character         = character;
     expr.previousCharacter = previousCharacter;
