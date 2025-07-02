@@ -1901,10 +1901,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
-  public Expression<D, C, F> putField(MethodVisitor mv, String fieldName, Class<?> fieldType)
+  public MethodVisitor putField(MethodVisitor mv, String fieldName, Class<?> fieldType)
   {
     Compiler.putField(mv, className, fieldName, fieldType);
-    return this;
+    return mv;
   }
 
   /**
