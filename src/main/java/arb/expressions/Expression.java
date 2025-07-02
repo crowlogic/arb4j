@@ -1968,23 +1968,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                  from,
                  to);
     }
-    renameIfNamed(independentVariable, from, to);
-    renameIfNamed(indeterminateVariable, from, to);
-
-  }
-
-  protected boolean renameIfNamed(VariableNode<D, C, F> thevar, String from, String to)
-  {
-    if (thevar != null && thevar.isVariableNamed(from))
+    if (independentVariable != null)
     {
-      thevar.renameTo(to);
-      return true;
+      independentVariable.renameIfNamed(from, to);
     }
-    else
+    if (indeterminateVariable != null)
     {
-      return false;
+      indeterminateVariable.renameIfNamed(from, to);
     }
-
   }
 
   public Expression<D, C, F> require(char... which)

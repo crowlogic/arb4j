@@ -1,35 +1,22 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.loadInputParameter;
-import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
-import arb.AlgebraicNumber;
-import arb.Complex;
-import arb.ComplexFraction;
-import arb.Fraction;
-import arb.GaussianInteger;
+import arb.*;
 import arb.Integer;
-import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.exceptions.UndefinedReferenceException;
-import arb.expressions.Compiler;
-import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.VariableReference;
+import arb.expressions.*;
 import arb.expressions.nodes.nary.ProductNode;
 import arb.functions.Function;
 
@@ -315,7 +302,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   @Override
   public Class<?> getGeneratedType()
-  { 
+  {
     return generatedType;
   }
 
@@ -377,6 +364,27 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   public boolean isVariable()
   {
     return true;
+  }
+
+  /**
+   * Conditionally rename this {@link VariableNode}
+   * 
+   * @param from
+   * @param to
+   * @return true if it was renamed
+   */
+  public boolean renameIfNamed(String from, String to)
+  {
+    if (isVariableNamed(from))
+    {
+      renameTo(to);
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+
   }
 
   public VariableNode<D, R, F> renameTo(String to)
@@ -610,7 +618,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     else
     {
       returnType = reference.type();
-    }   
+    }
     assert returnType != null : "returnType is null for " + this;
     return returnType;
   }
