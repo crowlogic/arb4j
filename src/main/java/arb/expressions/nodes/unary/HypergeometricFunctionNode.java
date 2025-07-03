@@ -9,6 +9,8 @@ import static arb.expressions.Compiler.loadResultParameter;
 import static java.lang.System.err;
 import static org.objectweb.asm.Opcodes.ACONST_NULL;
 
+import java.util.List;
+
 import org.objectweb.asm.MethodVisitor;
 
 import arb.Complex;
@@ -64,6 +66,12 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
                                        Initializable
 {
 
+  @Override
+  public List<Node<D, R, F>> getBranches()
+  {
+    return List.of(α, β, arg);
+  }
+
   public String debugString()
   {
     return String.format("HypergeometricFunctionNode[α=%s, β=%s, hypergeometricFunctionClass=%s, dependsOnInput=%s, hypergeometricFunctionFieldName=%s, elementFieldName=%s, isFunctional=%s, isRational=%s, isReal=%s, isComplex=%s, scalarType=%s, nullaryFunctionClass=%s, isNullaryFunctionOrHasScalarCodomain=%s, hasScalarCodomain=%s, elementType=%s, expression.coDomainType=%s]",
@@ -96,8 +104,10 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    HypergeometricFunctionNode<E, S, G> newNode = new HypergeometricFunctionNode<E, S, G>(newExpression,
-                                                                                          false);
+    HypergeometricFunctionNode<E,
+                  S,
+                  G> newNode = new HypergeometricFunctionNode<E, S, G>(newExpression,
+                                                                       false);
     newNode.arg = arg.spliceInto(newExpression);
     newNode.α   = α.spliceInto(newExpression);
     newNode.β   = β.spliceInto(newExpression);
@@ -184,17 +194,20 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
   public void initialize()
   {
     scalarType                           = Compiler.scalarType(expression.coDomainType);
-    isFunctional                         =
-                 Function.class.isAssignableFrom(expression.coDomainType) && expression.coDomainType.isInterface();
-    isRational                           = RationalFunction.class.isAssignableFrom(expression.coDomainType)
-                  || ComplexRationalFunction.class.isAssignableFrom(expression.coDomainType);
+    isFunctional                         = Function.class.isAssignableFrom(expression.coDomainType)
+                  && expression.coDomainType.isInterface();
+    isRational                           =
+               RationalFunction.class.isAssignableFrom(expression.coDomainType)
+                             || ComplexRationalFunction.class.isAssignableFrom(expression.coDomainType);
 
-    isReal                               =
-           Real.class.equals(scalarType) || Fraction.class.equals(scalarType) || Integer.class.equals(scalarType);
+    isReal                               = Real.class.equals(scalarType)
+                  || Fraction.class.equals(scalarType) || Integer.class.equals(scalarType);
 
-    isComplex                            = Complex.class.equals(scalarType) || ComplexFraction.class.equals(scalarType);
+    isComplex                            =
+              Complex.class.equals(scalarType) || ComplexFraction.class.equals(scalarType);
 
-    hasScalarCodomain                    = expression.hasScalarCodomain() || (expression.isFunctional());
+    hasScalarCodomain                    =
+                      expression.hasScalarCodomain() || (expression.isFunctional());
 
     isNullaryFunctionOrHasScalarCodomain = expression.isNullaryFunction() || hasScalarCodomain;
 
@@ -203,15 +216,18 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
     hypergeometricFunctionClass = rationalClass;
 
-    var rationalNullaryClass = isReal ? RationalNullaryFunction.class : isComplex ? ComplexRationalNullaryFunction.class
-                                      : null;
+    var rationalNullaryClass = isReal ? RationalNullaryFunction.class
+                                      : isComplex ? ComplexRationalNullaryFunction.class : null;
 
     nullaryFunctionClass = rationalNullaryClass;
 
-    fieldName            = expression.newIntermediateVariable("hyp", hypergeometricFunctionClass, true);
+    fieldName            =
+              expression.newIntermediateVariable("hyp", hypergeometricFunctionClass, true);
 
-    dependsOnInput       = α.dependsOn(expression.independentVariable) || α.dependsOn(expression.indeterminateVariable)
-                  || β.dependsOn(expression.independentVariable) || β.dependsOn(expression.indeterminateVariable);
+    dependsOnInput       = α.dependsOn(expression.independentVariable)
+                  || α.dependsOn(expression.indeterminateVariable)
+                  || β.dependsOn(expression.independentVariable)
+                  || β.dependsOn(expression.indeterminateVariable);
 
     if (isNullaryFunctionOrHasScalarCodomain)
     {
@@ -362,9 +378,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       System.err.format("initializeHypergeometricFunction(alpha=%s, beta=%s, arg=%s)\n", α, β, arg);
     }
     α.generate(mv, scalarType);
-    // assert scalarType.equals(α.getGeneratedType());
     β.generate(mv, scalarType);
-    // assert scalarType.equals(β.getGeneratedType());
     mv.visitLdcInsn(arg.toString());
     invokeArgumentParsingMethod(mv);
     invokeHypergeometricFunctionInitializationMethod(mv);
@@ -394,6 +408,7 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 
   protected void loadOutputOntoStack(MethodVisitor mv, Class<?> resultType)
   {
+    generatedType = resultType;
     if (isResult)
     {
 
@@ -406,6 +421,5 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
       expression.allocateIntermediateVariable(mv, resultType);
     }
   }
-
 
 }
