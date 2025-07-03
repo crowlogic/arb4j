@@ -16,6 +16,15 @@ import arb.documentation.references.Book;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article evolutionarySpectraAndNonStationaryProcesses          =
+                                                                     new Article("Evolutionary spectra and non-stationary processes",
+                                                                                 "Priestley, Maurice B",
+                                                                                 "1965",
+                                                                                 "Journal of the Royal Statistical Society: Series B (Methodological)",
+                                                                                 "27",
+                                                                                 "204--229").setNumber("2")
+                                                                                            .setPublisher("Wiley Online Library");
+
   public static Article powerSpectralAnalysisOfNonStationaryRandomProcesses   =
                                                                             new Article("Power spectral analysis of non-stationary random processes",
                                                                                         "Priestley, MB",
