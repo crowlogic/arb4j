@@ -67,6 +67,12 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
 {
 
   @Override
+  public String getFieldName()
+  {
+    return elementFieldName;
+  }
+
+  @Override
   public List<Node<D, R, F>> getBranches()
   {
     return List.of(α, β, arg);

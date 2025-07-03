@@ -231,7 +231,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public String fieldName;
 
-  public final String getFieldName()
+  public String getFieldName()
   {
     return isResult ? "result" : fieldName;
   }
