@@ -16,6 +16,15 @@ import arb.documentation.references.Book;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article powerSpectralAnalysisOfNonStationaryRandomProcesses   =
+                                                                            new Article("Power spectral analysis of non-stationary random processes",
+                                                                                        "Priestley, MB",
+                                                                                        "1967",
+                                                                                        "Journal of Sound and Vibration",
+                                                                                        "6",
+                                                                                        "86--97").setNumber("1")
+                                                                                                 .setPublisher("Elsevier");
+
   public static Article envelopesAndPreEnvelopesOfRealWaveforms               =
                                                                 new Article("Envelopes and pre-envelopes of real waveforms",
                                                                             "James Dugundji",
