@@ -110,10 +110,8 @@ public class HypergeometricFunctionNode<D, R, F extends Function<? extends D, ? 
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    HypergeometricFunctionNode<E,
-                  S,
-                  G> newNode = new HypergeometricFunctionNode<E, S, G>(newExpression,
-                                                                       false);
+    var newNode = new HypergeometricFunctionNode<E, S, G>(newExpression,
+                                                          false);
     newNode.arg = arg.spliceInto(newExpression);
     newNode.α   = α.spliceInto(newExpression);
     newNode.β   = β.spliceInto(newExpression);
