@@ -1,0 +1,11 @@
+var s = ComplexFunctionSequence.express("m->-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(π*m+y))-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*π*m-y)))*(4*m^2-1)*(-1)^(-m)/((4*m^2-2)*y*π)");
+s
+var s3 = s.evaluate(3,128);
+s3
+s3.eval(2.3,new Complex())
+Arrays.asList(s3.getClass().getFields())
+var f3 = s3.re();
+f3
+f3.eval(2.3,new Complex());
+var f3im = s3.im();
+f3im.eval(2.3,new Complex());
