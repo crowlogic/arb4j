@@ -46,37 +46,14 @@ public interface ComplexFunction extends
 
   public default RealToComplexFunction re()
   {
-    return new RealToComplexFunction()
-    {
-
-      @Override
-      public Complex evaluate(Real t, int order, int bits, Complex res)
-      {
-        try ( var tmp = new Complex())
-        {
-          return ComplexFunction.this.evaluate(tmp.set(t), order, bits, res);
-        }
-      }
-    };
+    return new RealComplexPart(this);
   }
 
   public default RealToComplexFunction im()
   {
-    return new RealToComplexFunction()
-    {
-
-      @Override
-      public Complex evaluate(Real t, int order, int bits, Complex res)
-      {
-        try ( var tmp = new Complex())
-        {
-          tmp.getImag().set(t);
-          return ComplexFunction.this.evaluate(tmp, order, bits, res);
-        }
-      }
-    };
+    return new ImaginaryComplexPart(this);
   }
-  
+
   @Override
   default Class<Complex> coDomainType()
   {
