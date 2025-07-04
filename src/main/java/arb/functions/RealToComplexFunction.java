@@ -14,6 +14,15 @@ import arb.functions.real.RealFunction;
 public interface RealToComplexFunction extends
                                        Function<Real, Complex>
 {
+
+  public default Complex eval(double t, Complex res)
+  {
+    try ( var tmp = Real.valueOf(t))
+    {
+      return evaluate(tmp, 1, Double.PRECISION + 5, res);
+    }
+  }
+
   public default RealFunction realPart()
   {
     return new RealPart(this);

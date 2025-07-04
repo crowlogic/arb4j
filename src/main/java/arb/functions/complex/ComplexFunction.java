@@ -43,22 +43,40 @@ public interface ComplexFunction extends
                                  VectorSpace<Complex>
 
 {
-  
-  public default RealToComplexFunction asRealToComplexFunction()
+
+  public default RealToComplexFunction re()
   {
     return new RealToComplexFunction()
     {
-      
+
       @Override
       public Complex evaluate(Real t, int order, int bits, Complex res)
       {
-        assert false : "TODO";
-        return null;
+        try ( var tmp = new Complex())
+        {
+          return ComplexFunction.this.evaluate(tmp.set(t), order, bits, res);
+        }
       }
     };
   }
 
+  public default RealToComplexFunction im()
+  {
+    return new RealToComplexFunction()
+    {
 
+      @Override
+      public Complex evaluate(Real t, int order, int bits, Complex res)
+      {
+        try ( var tmp = new Complex())
+        {
+          tmp.getImag().set(t);
+          return ComplexFunction.this.evaluate(tmp, order, bits, res);
+        }
+      }
+    };
+  }
+  
   @Override
   default Class<Complex> coDomainType()
   {
@@ -70,9 +88,15 @@ public interface ComplexFunction extends
     return compile(expression, null);
   }
 
-  public static Expression<Complex, Complex, ComplexFunction> compile(String expression, Context context)
+  public static Expression<Complex, Complex, ComplexFunction> compile(String expression,
+                                                                      Context context)
   {
-    return Compiler.compile(expression, context, Complex.class, Complex.class, ComplexFunction.class, null);
+    return Compiler.compile(expression,
+                            context,
+                            Complex.class,
+                            Complex.class,
+                            ComplexFunction.class,
+                            null);
 
   }
 
@@ -83,12 +107,22 @@ public interface ComplexFunction extends
 
   public static ComplexFunction express(String expression, Context context)
   {
-    return Function.instantiate(expression, context, Complex.class, Complex.class, ComplexFunction.class, null);
+    return Function.instantiate(expression,
+                                context,
+                                Complex.class,
+                                Complex.class,
+                                ComplexFunction.class,
+                                null);
   }
 
   public static ComplexFunction express(String expression, Context context, boolean verbose)
   {
-    return Function.instantiate(expression, context, Complex.class, Complex.class, ComplexFunction.class, null);
+    return Function.instantiate(expression,
+                                context,
+                                Complex.class,
+                                Complex.class,
+                                ComplexFunction.class,
+                                null);
   }
 
   public static ComplexFunction express(String expression, String string)
@@ -101,9 +135,15 @@ public interface ComplexFunction extends
     return express(functionName, expression, context, false);
   }
 
-  public static ComplexFunction express(String functionName, String expression, Context context, boolean verbose)
+  public static ComplexFunction
+         express(String functionName, String expression, Context context, boolean verbose)
   {
-    return Function.instantiate(expression, context, Complex.class, Complex.class, ComplexFunction.class, functionName);
+    return Function.instantiate(expression,
+                                context,
+                                Complex.class,
+                                Complex.class,
+                                ComplexFunction.class,
+                                functionName);
   }
 
   public static Expression<Complex, Complex, ComplexFunction> parse(String expression)
@@ -118,9 +158,17 @@ public interface ComplexFunction extends
                           null);
   }
 
-  public static Expression<Complex, Complex, ComplexFunction> parse(String name, String expression, Context context)
+  public static Expression<Complex, Complex, ComplexFunction>
+         parse(String name, String expression, Context context)
   {
-    return Function.parse(name, expression, context, Complex.class, Complex.class, ComplexFunction.class, name, null);
+    return Function.parse(name,
+                          expression,
+                          context,
+                          Complex.class,
+                          Complex.class,
+                          ComplexFunction.class,
+                          name,
+                          null);
   }
 
   /**
