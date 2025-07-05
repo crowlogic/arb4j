@@ -18,6 +18,13 @@ import junit.framework.TestCase;
 public class ComplexFunctionTest extends
                                  TestCase
 {
+  public static void testRiemannZeroCountingFunction()
+  {
+    var N =
+          ComplexFunction.express("1+(-((lnΓ(¼+t*I/2) - lnΓ(¼-t*I/2))*I)/2 -ln(π)*t/2)/π + 1 - I*((ln(ζ(½+I*t)) - ln(ζ(½-I*t))))/(2*π)");
+    var n = N.re().realPart();
+    assertEquals(0.0, n.eval(2.3));
+  }
 
   public static void testSequence2()
   {
