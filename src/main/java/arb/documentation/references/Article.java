@@ -41,8 +41,9 @@ public record Article(String title,
     return AbstractBibliography.generateCitation(this, by, getFieldMapping());
   }
 
-  private static Map<String, String> getFieldMapping() {
-    Map<String, String> fields = new LinkedHashMap<>();
+  private static Map<String, String> getFieldMapping()
+  {
+    var fields = new LinkedHashMap<String, String>();
     fields.put("author", "author");
     fields.put("title", "title");
     fields.put("year", "year");
@@ -56,7 +57,12 @@ public record Article(String title,
     return fields;
   }
 
-  public Article(String title, String author, String year, String journal, String volume, String pages)
+  public Article(String title,
+                 String author,
+                 String year,
+                 String journal,
+                 String volume,
+                 String pages)
   {
     this(title,
          author,
@@ -146,11 +152,13 @@ public record Article(String title,
     return this;
   }
 
-  public String getPublisher() {
+  public String getPublisher()
+  {
     return publisher.get();
   }
 
-  public String getAddress() {
+  public String getAddress()
+  {
     return address.get();
   }
 }
