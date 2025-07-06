@@ -22,7 +22,7 @@ public class ComplexDataSet extends
   @Override
   public String toString()
   {
-    return String.format("RealTwoDimensionalDataSet[%s]", getName());
+    return String.format("ComplexDataSet[%s]", getName());
   }
 
   private static final long serialVersionUID = 1L;
