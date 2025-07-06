@@ -623,8 +623,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return Real.class;
     case "ζ":
       return Complex.class;
-    case "log":
-      return Real.class;
+//    case "log":
+//      return Real.class;
     case "exp":
       return scalarArgType;
 //      System.err.println( "exp scalarArgType=" + scalarArgType );

@@ -24,7 +24,10 @@ public class ComplexFunctionTest extends
     var N =
           ComplexFunction.express("1+(-((lnΓ(¼+t*I/2) - lnΓ(¼-t*I/2))*I)/2 -ln(π)*t/2)/π + 1 - I*((ln(ζ(½+I*t)) - ln(ζ(½-I*t))))/(2*π)");
     var n = N.re().realPart();
-    assertEquals(0.0, n.eval(2.3));
+    assertEquals(0.0, n.eval(2.3), 10e-9);
+    assertEquals(1.0, n.eval(14.4), 10e-9);
+    assertEquals(2.0, n.eval(21.5), 10e-9);
+
   }
 
   public static void testSequence2()
