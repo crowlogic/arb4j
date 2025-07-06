@@ -432,7 +432,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return intermediateVariableName;
   }
 
-  public boolean anyAscendentIndependentVariableIs(String name)
+  public boolean anyAscendentIndependentVariableIsNamed(String name)
   {
     if (independentVariable != null && independentVariable.getName().equals(name))
     {
@@ -440,7 +440,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     if (ascendentExpression != null)
     {
-      if (ascendentExpression.anyAscendentIndependentVariableIs(name))
+      if (ascendentExpression.anyAscendentIndependentVariableIsNamed(name))
       {
         return true;
       }

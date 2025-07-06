@@ -490,13 +490,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public VariableNode<D, R, F> resolveReference()
   {
-    if (Expression.trace)
-    {
-      System.err.format("\nVariable(#%s).resolveReference(reference=%s) expression=%s\n\n",
-                        System.identityHashCode(this),
-                        reference,
-                        expression);
-    }
+
 
     var inputVariable = expression.independentVariable;
 
@@ -511,7 +505,7 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
     else
     {
-      if (isIndeterminate = (!expression.anyAscendentIndependentVariableIs(getName())))
+      if (isIndeterminate = (!expression.anyAscendentIndependentVariableIsNamed(getName())))
       {
         declareThisToBeTheIndeterminantVariable();
       }
