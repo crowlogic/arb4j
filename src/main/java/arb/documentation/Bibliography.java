@@ -1,7 +1,9 @@
 package arb.documentation;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import arb.documentation.references.Article;
 import arb.documentation.references.Book;
@@ -16,6 +18,16 @@ import arb.documentation.references.Book;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article spectralMomentsAndPreEnvelopeCovariances              =
+                                                                 new Article("Spectral Moments and Pre-Envelope Covariances of Nonseparable Processes",
+                                                                             "Mario Di Paola, Giovanni Petrucci",
+                                                                             "1990",
+                                                                             "Journal of Applied Mechanics",
+                                                                             "57",
+                                                                             "218-224").setNumber("1")
+                                                                                       .setMonth("03")
+                                                                                       .setPublisher("ASME Digital Collection");
+
   public static Article evolutionarySpectraAndNonStationaryProcesses          =
                                                                      new Article("Evolutionary spectra and non-stationary processes",
                                                                                  "Priestley, Maurice B",
