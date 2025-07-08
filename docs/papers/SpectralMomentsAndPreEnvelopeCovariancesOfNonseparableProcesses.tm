@@ -60,17 +60,13 @@
     Output-Nonstationary Case <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-8>>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|7<space|2spc>Numerical
-    Example> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-9><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|8<space|2spc>Conclusions
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|7<space|2spc>Conclusions
     and Discussion> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-10><vspace|0.5fn>
+    <no-break><pageref|auto-9><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-11><vspace|0.5fn>
+    <no-break><pageref|auto-10><vspace|0.5fn>
   </table-of-contents>
 
   <section|Introduction>
@@ -772,108 +768,6 @@
   various block matrices of <math|\<b-Sigma\><rsub|<wide|<math-bf|U>|~><wide|<math-bf|U>|~>><around|(|t|)>>
   can be computed.
 
-  <section|Numerical Example>
-
-  As an application, a two-degree-of-freedom, classically damped system
-  depicted in Fig.<nbsp>1 has been analyzed. In this case the vector solution
-  <math|<math-bf|X>> can be evaluated by means of the mode superposition as
-  follows:
-
-  <\equation>
-    <label|eq:modesuper><math-bf|X>=\<b-Phi\><math-bf|Y>
-  </equation>
-
-  where <math|\<b-Phi\>> is the modal matrix normalized with respect to
-  <math|<math-bf|M>>, and <math|<math-bf|Y>> is the vector solution of the
-  decoupled modal differential equations. The examinated system is
-  characterized by the following data
-
-  <\align*>
-    <tformat|<table|<row|<cell|M<rsub|1>>|<cell|=M<rsub|2>=1<space|0.17em><text|kg>;>>|<row|<cell|K<rsub|1>>|<cell|=50<space|0.17em><text|New/cm>;>>|<row|<cell|K<rsub|2>>|<cell|=33<space|0.17em><text|New/cm>.>>>>
-  </align*>
-
-  The modal analysis provided the following results:
-
-  <\itemize>
-    <item>Natural radian frequencies: <math|\<omega\><rsub|1>=3.76<space|0.17em>>rad/s;
-    <math|\<omega\><rsub|2>=10.93<space|0.17em>>rad/s
-
-    <item>Modal Matrix:
-
-    <\equation*>
-      \<b-Phi\>=<around*|[|<tabular*|<tformat|<table|<row|<cell|0.811>|<cell|0.585>>|<row|<cell|0.585>|<cell|-0.811>>>>>|]>
-    </equation*>
-
-    <item>the damping ratio, here assumed equal for both modes, is
-    <math|\<zeta\>=0.05>.
-  </itemize>
-
-  The input process is defined as in equation<nbsp><eqref|eq:ftildenonstat>,
-  in which <math|<math-bf|A><around|(|\<omega\>,t|)>> is given in the form
-  (<cite|spanos1983>):
-
-  <\equation>
-    <label|eq:aomega>A<around|(|\<omega\>,t|)>=<sqrt|8>*exp
-    <around*|(|-<frac|1|2>*b*t|)>*t*exp <around*|(|-<frac|1|2>*\<beta\><around|(|\<omega\>|)>*t|)>,<space|1em>0\<leq\>\<omega\>\<less\>\<infty\>.
-  </equation>
-
-  The process <math|d*Z<around|(|\<omega\>|)>> is such that
-
-  <\equation>
-    <label|eq:dzspec>E*<around|[|d*Z<around|(|\<omega\><rsub|1>|)>*d*Z<rsup|\<ast\>><around|(|\<omega\><rsub|2>|)>|]>=a<around|(|\<omega\><rsub|1>|)>*\<delta\>*<around|(|\<omega\><rsub|2>-\<omega\><rsub|1>|)>*d*\<omega\><rsub|1>*<space|1em><around|(|\<omega\>\<gtr\>0|)>.
-  </equation>
-
-  The parameters chosen for the analysis are
-
-  <\equation>
-    <tabular|<tformat|<table|<row|<cell|b>|<cell|=0.15<space|0.17em><text|s><rsup|-1>>>|<row|<cell|\<beta\><around|(|\<omega\>|)>>|<cell|=a<around|(|\<omega\>|)>=<around*|(|<frac|\<omega\>|5*\<pi\>>|)><rsup|2><space|0.17em><text|s><rsup|-1>>>>>>
-  </equation>
-
-  The spectrum of the input is characterized by a dominant frequency
-  decreasing with time from about <math|5*\<pi\><space|0.17em>>rad/s to
-  <math|2*\<pi\><space|0.17em>>rad/s, and by the fact that its total power
-  initially increases with time and then gradually decreases.
-
-  In Fig.<nbsp>2 the modal covariances of pre-envelope complex processes
-  <math|<wide|Y|~><rsub|j>> (<math|j=1,2>) are plotted. In these figures it
-  can be seen that the peaks of the curves of the different modes are located
-  at different instants, according to the behavior of the input process. It
-  is to be emphasized that if the function <math|A<around|(|\<omega\>,t|)>>
-  and the power spectral density function had been chosen as real functions,
-  all the moments of the evolutionary power would be real functions, while in
-  the new representation, <math|E*<around|[|<wide|Y|~><rsub|j>*<wide|Y|~><rsub|j><rsup|\<ast\>>|]>>,
-  <math|j=1,2> are complex functions.
-
-  In Fig.<nbsp>3 the various modal cross-covariances are plotted, while in
-  Fig.<nbsp>4 the (nodal) covariances of the pre-envelope complex process
-  <math|X<rsub|2><around|(|t|)>> (displacements of the second mass) are
-  plotted.
-
-  From a practical point of view, the numerical evaluation of the
-  nonstationary PEC needs to be conducted in the following way: First of all,
-  in a suitable time interval, depending on the behavior of the input
-  process, an adequate number of instants must be selected. For each instant,
-  the <math|<math-bf|R><rsub|0><around|(|\<omega\>,t|)>>,
-  <math|<math-bf|R><rsub|1><around|(|\<omega\>,t|)>> complex coefficients
-  given in equation<nbsp><eqref|eq:r0>, <eqref|eq:r1> have to be evaluated,
-  and an integration over the instantaneous frequency range of the input
-  process for every covariance must be effected according to
-  equations<nbsp><eqref|eq:lambda0nonstat>\U<eqref|eq:lambda2nonstat>.
-
-  These integrals are difficult to solve analytically, but are not affected
-  by particular computational problems, so that the most delicate aspect of
-  the numerical problem is the evaluation of the
-  <math|<math-bf|R><rsub|0><around|(|\<omega\>,t|)>> and
-  <math|<math-bf|R><rsub|1><around|(|\<omega\>,t|)>> coefficients. If no
-  analytical solution of such integrals can be found, for each instant
-  considered and for each coefficient, a different numerical integration from
-  <math|0> to the current instant must be effected. Such integrals depend
-  essentially on the form of the <math|A<around|(|\<omega\>,t|)>> input
-  function.
-
-  In the present application a closed-form solution was easily found, but it
-  is not reported for brevity's sake.
-
   <section|Conclusions and Discussion>
 
   The probabilistic structures of a real Gaussian process is fully determined
@@ -1016,109 +910,105 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|auto-10|<tuple|8|14|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|auto-11|<tuple|8|15|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|auto-2|<tuple|2|2|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|auto-3|<tuple|3|4|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|auto-1|<tuple|1|2|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|auto-10|<tuple|7|14|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|auto-2|<tuple|2|3|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|auto-3|<tuple|3|5|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|auto-4|<tuple|4|6|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|auto-5|<tuple|5|7|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|auto-6|<tuple|6|9|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|auto-7|<tuple|6.1|10|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|auto-5|<tuple|5|8|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|auto-6|<tuple|6|10|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|auto-7|<tuple|6.1|11|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|auto-8|<tuple|6.2|11|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|auto-9|<tuple|7|12|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|bib-arens1957|<tuple|arens1957|15|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|bib-borino1988|<tuple|borino1988|15|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|bib-corotis1972|<tuple|corotis1972|15|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|bib-dipaola1985|<tuple|dipaola1985|15|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|bib-dipaola1987|<tuple|dipaola1987|15|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|bib-dugundji1958|<tuple|dugundji1958|15|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|bib-hammond1968|<tuple|hammond1968|15|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|bib-kameda1975|<tuple|kameda1975|15|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|bib-krenk1983|<tuple|krenk1983|15|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|bib-muscolino1988|<tuple|muscolino1988|15|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|bib-nigam1982|<tuple|nigam1982|15|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|bib-papoulis1965|<tuple|papoulis1965|15|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|bib-priestley1965|<tuple|priestley1965|15|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|bib-shinozuka1970|<tuple|shinozuka1970|15|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|bib-spanos1983|<tuple|spanos1983|15|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|bib-to1986|<tuple|to1986|15|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|bib-vanmarcke1972|<tuple|vanmarcke1972|15|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|bib-yang1972|<tuple|yang1972|15|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:a1|<tuple|38|8|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:aomega|<tuple|73|13|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:block1|<tuple|27|6|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:block2|<tuple|28|6|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:block3|<tuple|29|6|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|auto-9|<tuple|7|13|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|bib-arens1957|<tuple|arens1957|14|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|bib-borino1988|<tuple|borino1988|14|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|bib-corotis1972|<tuple|corotis1972|14|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|bib-dipaola1985|<tuple|dipaola1985|14|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|bib-dipaola1987|<tuple|dipaola1987|14|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|bib-dugundji1958|<tuple|dugundji1958|14|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|bib-hammond1968|<tuple|hammond1968|14|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|bib-kameda1975|<tuple|kameda1975|14|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|bib-krenk1983|<tuple|krenk1983|14|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|bib-muscolino1988|<tuple|muscolino1988|14|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|bib-nigam1982|<tuple|nigam1982|14|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|bib-papoulis1965|<tuple|papoulis1965|14|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|bib-priestley1965|<tuple|priestley1965|14|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|bib-shinozuka1970|<tuple|shinozuka1970|14|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|bib-spanos1983|<tuple|spanos1983|14|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|bib-to1986|<tuple|to1986|14|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|bib-vanmarcke1972|<tuple|vanmarcke1972|14|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|bib-yang1972|<tuple|yang1972|14|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:a1|<tuple|38|9|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:block1|<tuple|27|7|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:block2|<tuple|28|7|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:block3|<tuple|29|7|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:blocknonstat1|<tuple|35|8|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:blocknonstat2|<tuple|36|8|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:blocknonstat3|<tuple|39|8|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:blocknonstat4|<tuple|40|8|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:blocknonstat5|<tuple|41|8|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:blocknonstat6|<tuple|42|8|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:blocknonstat3|<tuple|39|9|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:blocknonstat4|<tuple|40|9|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:blocknonstat5|<tuple|41|9|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:blocknonstat6|<tuple|42|9|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:corrparts|<tuple|12|4|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:corrpartsnonstat|<tuple|22|5|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:corrpartsnonstat|<tuple|22|6|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:crosscorr|<tuple|11|4|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:crosscorrnonstat|<tuple|19|5|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:dotftildenonstat|<tuple|37|8|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:crosscorrnonstat|<tuple|19|6|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:dotftildenonstat|<tuple|37|9|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:dpsi|<tuple|3|3|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:dzspec|<tuple|74|13|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:dztilde|<tuple|5|3|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:dztildeorth|<tuple|6|3|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:evospec|<tuple|31|7|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:extendedpec|<tuple|26|6|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:ftilde|<tuple|7|3|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:dztildeorth|<tuple|6|4|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:evospec|<tuple|31|8|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:extendedpec|<tuple|26|7|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:ftilde|<tuple|7|4|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:ftildeint|<tuple|10|4|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:ftildenonstat|<tuple|16|5|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:g|<tuple|50|9|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:g|<tuple|50|10|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:hilbert|<tuple|9|4|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:hilbertnonstat|<tuple|18|5|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:hilbertout|<tuple|56|10|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:lambda0|<tuple|58|10|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:hilbertout|<tuple|56|11|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:lambda0|<tuple|58|11|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:lambda0nonstat|<tuple|67|12|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:lambda1|<tuple|59|10|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:lambda1|<tuple|59|11|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:lambda1nonstat|<tuple|68|12|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:lambda2|<tuple|60|10|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:lambda2|<tuple|60|11|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:lambda2nonstat|<tuple|69|12|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:modesuper|<tuple|72|12|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:motion|<tuple|48|9|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:n|<tuple|62|11|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:nonstat|<tuple|15|4|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:motion|<tuple|48|10|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:n|<tuple|62|12|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:nonstat|<tuple|15|5|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:nonstatout|<tuple|61|11|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:onesided|<tuple|4|3|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:orthogonal|<tuple|2|3|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:pecfreq|<tuple|30|7|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:pecmatrix|<tuple|24|6|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:pecnonstat|<tuple|34|7|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:pecnonstat|<tuple|34|8|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:pecnonstatdef|<tuple|45|9|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:pecnonstatdef1|<tuple|46|9|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:pecnonstatdef2|<tuple|47|9|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:pecnonstatout|<tuple|64|11|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:pecnonstatoutsimple|<tuple|66|11|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:pecout|<tuple|57|10|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:phi|<tuple|53|9|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:prealvector|<tuple|25|6|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:preenvelope|<tuple|8|3|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:pecnonstatout|<tuple|64|12|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:pecnonstatoutsimple|<tuple|66|12|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:pecout|<tuple|57|11|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:phi|<tuple|53|10|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:prealvector|<tuple|25|7|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:preenvelope|<tuple|8|4|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:preenvnonstat|<tuple|17|5|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:priestley|<tuple|1|2|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:priestley|<tuple|1|3|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:pvector|<tuple|23|6|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:q|<tuple|65|11|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:q|<tuple|65|12|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:r0|<tuple|70|12|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
     <associate|eq:r1|<tuple|71|12|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:rff|<tuple|13|4|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:rffnonstat|<tuple|20|5|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:rfhf|<tuple|14|4|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:rfhfnonstat|<tuple|21|5|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:s1|<tuple|43|8|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:s2|<tuple|44|8|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:sm0|<tuple|33|7|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:smnonstat|<tuple|32|7|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:solution|<tuple|49|9|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:statesolution|<tuple|52|9|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:statevector|<tuple|51|9|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:statout|<tuple|54|10|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:statout2|<tuple|55|10|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
-    <associate|eq:u0|<tuple|63|11|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:rff|<tuple|13|5|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:rffnonstat|<tuple|20|6|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:rfhf|<tuple|14|5|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:rfhfnonstat|<tuple|21|6|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:s1|<tuple|43|9|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:s2|<tuple|44|9|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:sm0|<tuple|33|8|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:smnonstat|<tuple|32|8|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:solution|<tuple|49|10|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:statesolution|<tuple|52|10|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:statevector|<tuple|51|10|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:statout|<tuple|54|11|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:statout2|<tuple|55|11|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
+    <associate|eq:u0|<tuple|63|12|../../../.TeXmacs/texts/scratch/no_name_9.tm>>
   </collection>
 </references>
 
@@ -1185,8 +1075,6 @@
 
       muscolino1988
 
-      spanos1983
-
       dugundji1958
 
       yang1972
@@ -1228,17 +1116,13 @@
       Output-Nonstationary Case <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-8>>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|7<space|2spc>Numerical
-      Example> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-9><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|8<space|2spc>Conclusions
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|7<space|2spc>Conclusions
       and Discussion> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-10><vspace|0.5fn>
+      <no-break><pageref|auto-9><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-11><vspace|0.5fn>
+      <no-break><pageref|auto-10><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
