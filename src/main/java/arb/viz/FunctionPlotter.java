@@ -33,7 +33,7 @@ public class FunctionPlotter extends
     ShellFunctions.plot(1, 3, 400, RealFunction.express("x^2"));
   }
 
-  public boolean            darkStyle = true;
+  public static boolean     darkStyle = true;
 
   public boolean            parallel  = true;
 
@@ -65,11 +65,8 @@ public class FunctionPlotter extends
   {
     chart.getPlugins()
          .addAll(new EditAxis(AxisMode.XY),
-                 new DataPointTooltip(),
                  new Zoomer(),
                  new TableViewer(),
-                 new ColormapSelector(),
-                 new Screenshot(),
                  new CrosshairIndicator());
   }
 
@@ -81,15 +78,7 @@ public class FunctionPlotter extends
     configureChartPlugins();
     root.getChildren().add(chart);
     stage.initModality(Modality.WINDOW_MODAL);
-    chart.getRenderers()
-         .stream()
-         .filter(renderer -> renderer instanceof ErrorDataSetRenderer)
-         .forEach(renderer ->
-         {
-           ErrorDataSetRenderer ballDataRenderer = (ErrorDataSetRenderer) renderer;
-           ballDataRenderer.addAxes(xAxis, yAxis);
-           ballDataRenderer.setDrawMarker(false);
-         });
+    configureChartRenderers();
 
     scene = new Scene(root,
                       1500,
@@ -119,6 +108,18 @@ public class FunctionPlotter extends
     stage.show();
 
     return stage;
+  }
+
+  protected void configureChartRenderers()
+  {
+    chart.getRenderers().stream().forEach(renderer ->
+    {
+      if (renderer instanceof ErrorDataSetRenderer ballDataRenderer)
+      {
+        ballDataRenderer.addAxes(xAxis, yAxis);
+        ballDataRenderer.setDrawMarker(false);
+      }
+    });
   }
 
   private void freeExistingDatasets()

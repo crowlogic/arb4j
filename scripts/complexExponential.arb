@@ -1,0 +1,5 @@
+var ce = ComplexFunction.express("exp(I*t)");
+var cer = ce.re();
+FunctionPlotter.darkStyle = false;
+plot(0,50,5000,cer.realPart(),cer.imagPart());
+

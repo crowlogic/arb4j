@@ -1,0 +1,12 @@
+//Expression.saveClasses = true;
+//Expression.trace = true;
+var context = new Context();
+var theta = RealFunction.express("theta","im(lnΓ(1/4+I*t/2))-(log(π)/2)*t",context);
+var t = 2.3;
+System.out.format("θ(%s)=%s\n",t,theta.eval(t));
+var f = RealFunction.express("Z(2*pi*exp(W(0,x/(pi*exp(1)))))");
+var g = RealFunction.express("Z(t)");
+FunctionPlotter.darkStyle=false
+var thetaPlot = plot(0,50,1000,theta);
+var phase = RealToComplexFunction.express("exp(I*theta(t))",context);
+plot(0,50,1000,phase.realPart(),phase.imagPart())
