@@ -26,6 +26,7 @@ public class Bibliography extends
                                                                              "114",
                                                                              "1396-1413").setNumber("8")
                                                                                          .setPublisher("ASCE");
+  
   public static Article spectralMomentsAndPreEnvelopeCovariances              =
                                                                  new Article("Spectral Moments and Pre-Envelope Covariances of Nonseparable Processes",
                                                                              "Mario Di Paola, Giovanni Petrucci",
