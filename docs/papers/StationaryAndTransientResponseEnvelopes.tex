@@ -1,0 +1,385 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{graphicx}
+\usepackage{authblk}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{footnote}
+\usepackage{booktabs}
+\usepackage{caption}
+\captionsetup[table]{skip=10pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{remark}{Remark}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{proposition}{Proposition}[section]
+
+\title{Stationary and Transient Response Envelopes}
+\author[1]{Steen Krenk}
+\author[2]{Henrik O. Madsen}
+\author[1]{Peter H. Madsen}
+\affil[1]{Risø National Laboratory, Roskilde, Denmark}
+\affil[2]{Danish Engineering Academy, Lyngby, Denmark}
+
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+An envelope is introduced by using the Hilbert transform to define a complex conjugate to the excitation and response processes of a linear structure. Time-limited stationary excitation is treated in detail, and the complex correlation function is shown to follow from its stationary equivalent by use of a suitable differential operator. Simple expressions are derived for the case of rational spectral density, and a parametric study of the influence of the frequency content is carried out. It is found that envelope crossings can be predicted by use of stationary measures for the mean crossing frequency and the bandwidth of the response combined with the non-stationary intensity. This is computationally important as these parameters are often available in closed form. Finally, the envelope is used to study the first-passage probability.
+\end{abstract}
+
+\section{Introduction}
+
+In a number of situations where structures are subjected to random loads of short duration, it is important to be able to account for the transient properties of the response. However, often only limited information about the exciting forces is available. This makes it important to identify the essential features and to concentrate the computational efforts on them.
+
+In stationary response analysis it is often convenient to use spectrum representation of the covariance functions of the exciting force and the response. The reason is partly computational convenience and partly the physical interpretation associated with the spectrum. The concept of a stochastic process as a linear combination of independent frequency components can be generalized to nonstationary stochastic processes by introduction of an evolutionary power spectrum~\cite{priestley1965,priestley1967}. The evolutionary power spectrum is a time dependent generalization of the classic power spectrum in the sense that it is a non-negative function, and its integral over the full frequency range gives the variance of the process.
+
+However, a complete integral representation of the covariance function requires factorization of the evolutionary power spectrum and, thus, the simple relation between the derivatives of the covariance function and the spectral moment known from the stationary case is lost.
+
+A description of nonstationary stochastic response by a direct analogy, where the stationary spectral moments are replaced with similar moments of the evolutionary power spectrum, was proposed by Corotis et al.~\cite{corotis1972}. However, this approach is inconsistent as is clearly demonstrated by comparison with the rigorous analysis of the same problem by Yang~\cite{yang1972}. One of the differences is that the evolutionary power spectrum does not possess the same number of moments as its stationary counterpart; indeed, moments necessary for the analogy may be divergent. From an analytical point of view this is not a serious problem because the expressions for the derivatives of the covariance function include time derivatives securing convergence. But, the fact that only the variance can be expressed directly in terms of the evolutionary power spectrum of a specific point in time severely limits the analogy with the classic power spectrum.
+
+In a number of problems of practical interest, the nonstationary stochastic process may be considered as the output of a linear system with stationary input. Often the exciting force is modeled as a modulated stationary process. It is then possible to express the correlation function(s) of the response directly in terms of the correlation function(s) of the corresponding stationary response. In that case, the power spectrum of the stationary process can be used directly thereby avoiding the need for formalism for evolutionary power spectra. For a step function variation of the modulation, this problem was treated by Madsen and Krenk~\cite{madsen1982} for multi-degree of freedom structures.
+
+The present work concentrates on a different aspect of the same problem, i.e., definition and characterization of an envelope of the transient response in terms of an envelope for the corresponding stationary response. The envelope is particularly important in characterizing the response of lightly damped structures to wide-band excitation, and has found specific application in evaluation of first passage probabilities.
+
+First an envelope is defined for the stationary response by use of complex variables. Then the definition is extended to the case of zero initial conditions and stationary excitation of arbitrary frequency content in which closed form results are derived when the frequency content is in the form of a rational function. A parametric study is conducted to demonstrate the influence of the frequency content and the damping ratio on the parameters describing the up-crossing frequencies of the response. Finally, the results are used to give a comparison of two methods for approximate evaluation of the first-passage probability of the transient response.
+
+\section{Stationary Pre-Envelope}
+
+Let the stationary stochastic process $X(t)$ be the solution of the differential equation of a linear oscillator:
+\begin{equation}
+    \ddot{X}(t) + 2\zeta \omega_0 \dot{X}(t) + \omega_0^2 X(t) = F(t)
+    \label{eq:oscillator}
+\end{equation}
+where the stationary stochastic process $F(t)$ is a forcing function; $\omega_0$ is the natural undamped angular frequency; and $\zeta$ is the relative damping of the oscillator. (Dots denote differentiation with respect to time.)
+
+The forcing process $F(t)$ is real with zero mean, and its correlation function $r_{FF}(t_1, t_2)$ can be expressed in terms of the real, non-negative spectral density function $S_{FF}(\omega)$:
+\begin{equation}
+    r_{FF}(t_1, t_2) = \mathbb{E}[F(t_1)F(t_2)] = \int_{-\infty}^{\infty} S_{FF}(\omega) e^{i\omega(t_1-t_2)} d\omega
+    \label{eq:correlation}
+\end{equation}
+where $\mathbb{E}[\cdot]$ denotes the expected value.
+
+The idea of the pre-envelope, introduced by Dugundji~\cite{dugundji1958} and Arens~\cite{arens1957}, is to define suitable complex processes, $Z(t)$ and $L(t)$, such that $X(t)$ and $F(t)$ are the corresponding real parts. A useful way of doing this is to define the imaginary parts as the Hilbert transforms $\tilde{X}(t)$ and $\tilde{F}(t)$:
+\begin{equation}
+    \tilde{X}(t) = \mathcal{H}[X](t)
+    \label{eq:hilbert}
+\end{equation}
+A similar formula defines $\tilde{F}(t)$. The reason behind this choice is that the Hilbert transformation replaces $\cos(\omega t + \phi)$ with $\sin(\omega t + \phi)$, and thus increases the phase angle in all trigonometric components of a function by $\pi/2$.
+
+In many problems of practical interest, the damping will be small and $X(t)$ is a process with narrow bandwidth. Then the Hilbert transform, $\tilde{X}(t)$, is approximately proportional with the time derivative, $\dot{X}(t)$, while being a smoother function.
+
+When considering the complex response
+\begin{equation}
+    Z(t) = X(t) + i \tilde{X}(t)
+    \label{eq:complex_response}
+\end{equation}
+to the complex force
+\begin{equation}
+    L(t) = F(t) + i \tilde{F}(t)
+    \label{eq:complex_force}
+\end{equation}
+it is convenient to use complex correlation functions. From the symmetry relations~\cite{papoulis1965}:
+\begin{align}
+    r_{FF}(t_1, t_2) &= r_{FF}(t_2, t_1) \label{eq:sym1} \\
+    r_{FF}(t_1, t_2) &= -r_{FF}(t_1, t_2) \label{eq:sym2}
+\end{align}
+it follows that the complex correlation function, $r_{LL}(t_1, t_2)$, can be written as
+\begin{equation}
+    r_{LL}(t_1, t_2) = \mathbb{E}[L(t_1) \overline{L(t_2)}] = 2 \left[ r_{FF}(t_1, t_2) + i \tilde{r}_{FF}(t_1, t_2) \right]
+    \label{eq:complex_corr}
+\end{equation}
+where $\overline{L(t_2)}$ is the complex conjugate of $L(t_2)$. The correlation functions only depend on the difference $\tau = t_1 - t_2$.
+
+Furthermore, it can be shown that the cross-correlation function, $\tilde{r}_{FF}(t_1, t_2)$, can be written in terms of the spectral density function, $S_{FF}(\omega)$, by introducing the filter $-i\,\text{sign}(\omega)$ under the integral sign in equation~\eqref{eq:correlation}:
+\begin{equation}
+    \tilde{r}_{FF}(t_1, t_2) = \int_{-\infty}^{\infty} [-i\,\text{sign}(\omega)] S_{FF}(\omega) e^{i\omega(t_1 - t_2)} d\omega
+    \label{eq:hilbert_corr}
+\end{equation}
+Use of equation~\eqref{eq:complex_corr} then yields the following formula for the complex correlation function $r_{LL}(t_1, t_2)$ in terms of the spectral density function $S_{FF}(\omega)$ for the real forcing function $F(t)$:
+\begin{equation}
+    r_{LL}(t_1, t_2) = 4 \int_0^{\infty} S_{FF}(\omega) e^{i\omega(t_1 - t_2)} d\omega
+    \label{eq:complex_corr_sff}
+\end{equation}
+
+The solution to differential equation~\eqref{eq:oscillator} is given as a convolution integral of the forcing function and the impulse response function $h(t)$:
+\begin{equation}
+    h(t) = \frac{1}{\omega_d} e^{-\zeta \omega_0 t} \sin(\omega_d t), \quad t \geq 0
+    \label{eq:impulse_response}
+\end{equation}
+where $\omega_d = \omega_0 \sqrt{1 - \zeta^2}$ is the damped natural angular frequency.
+
+The complex correlation function $r_{ZZ}(t_1, t_2)$ follows by taking the expected value:
+\begin{equation}
+    r_{ZZ}(t_1, t_2) = \iint r_{LL}(\tau_1, \tau_2) h(t_1 - \tau_1) h(t_2 - \tau_2) d\tau_1 d\tau_2
+    \label{eq:complex_corr_response}
+\end{equation}
+Upon substitution of equation~\eqref{eq:complex_corr_sff}, and change of the order of integration, equation~\eqref{eq:complex_corr_response} takes the form
+\begin{equation}
+    r_{ZZ}(t_1, t_2) = 4 \int_0^{\infty} S_{FF}(\omega) S_H(\omega) e^{i\omega(t_1 - t_2)} d\omega
+    \label{eq:rzz_sh}
+\end{equation}
+where $S_H(\omega)$ is given in terms of the transfer function
+\begin{equation}
+    H(\omega) = \int_0^\infty h(\tau) e^{-i\omega \tau} d\tau = \frac{1}{\omega_0^2 - \omega^2 + 2i\zeta\omega_0\omega}
+    \label{eq:transfer_function}
+\end{equation}
+and $S_H(\omega) = H(\omega) \overline{H(\omega)}$.
+
+The stochastic process defined by
+\begin{equation}
+    R(t) = |Z(t)| = \sqrt{X(t)^2 + \tilde{X}(t)^2}
+    \label{eq:envelope}
+\end{equation}
+is the envelope of Cramér and Leadbetter~\cite{cramer1967}. The advantage in terms of a complex forcing function is the simplicity with which it is generalized to transient response.
+
+\section{Zero Start Conditions}
+
+The response to an excitation of the form $U(t)L(t)$, in which $U(t)$ is the Heaviside step function, and $L(t)$ is the stationary complex function of equation~\eqref{eq:complex_force}, can be treated by a simple extension of equation~\eqref{eq:rzz_sh}. Let $Z(t)$ satisfy the differential equation
+\begin{equation}
+    \ddot{Z}(t) + 2\zeta\omega_0 \dot{Z}(t) + \omega_0^2 Z(t) = U(t) L(t)
+    \label{eq:zero_start}
+\end{equation}
+with the initial conditions $Z(0) = \dot{Z}(0) = 0$.
+
+The correlation function for $Z(t)$ is now
+\begin{equation}
+    R_{ZZ}(t_1, t_2) = \iint r_{LL}(\tau_1, \tau_2) h(t_1 - \tau_1) h(t_2 - \tau_2) d\tau_1 d\tau_2
+    \label{eq:RZZ}
+\end{equation}
+where the notation $R_{ZZ}(t_1, t_2)$ is used to distinguish from the stationary case. Substitution of equation~\eqref{eq:complex_corr_sff} and change of the order of integration leads to the expression
+\begin{equation}
+    R_{ZZ}(t_1, t_2) = 4 \int_0^{\infty} S_{FF}(\omega) H(\omega, t_1) H(\omega, t_2) e^{i\omega(t_1 - t_2)} d\omega
+    \label{eq:RZZ_H}
+\end{equation}
+where $H(\omega, t)$ is the time-dependent transfer function as defined by Lin~\cite{lin1976}. It is conveniently expressed in terms of the impulse response function $h(t)$ of equation~\eqref{eq:impulse_response} and the function $g(t)$:
+\begin{equation}
+    g(t) =
+    \begin{cases}
+        e^{-\zeta\omega_0 t} \left[ \cos(\omega_d t) + \frac{\zeta}{\sqrt{1 - \zeta^2}} \sin(\omega_d t) \right], & t \geq 0 \\
+        0, & t < 0
+    \end{cases}
+    \label{eq:g_function}
+\end{equation}
+in which $h(t)$ is the response of the unloaded system with initial conditions $x(0) = 0$, $\dot{x}(0) = 1$; the function $g(t)$ describes the response for the initial conditions $x(0) = 1$, $\dot{x}(0) = 0$. In terms of $g(t)$ and $h(t)$,
+\begin{equation}
+    H(\omega, t) = H(\omega) \left\{ 1 - [g(t) + i\omega h(t)] e^{-i\omega t} \right\}
+    \label{eq:H_time}
+\end{equation}
+Substitution of equation~\eqref{eq:H_time} into equation~\eqref{eq:RZZ_H} yields
+\begin{align}
+    R_{ZZ}(t_1, t_2) = 4 \int_0^{\infty} S_{FF}(\omega) H(\omega) \overline{H(\omega)} \{ 1 - [g(t_1) + i\omega h(t_1)] e^{-i\omega t_1} \} \nonumber \\
+    \times \{ 1 - [g(t_2) - i\omega h(t_2)] e^{i\omega t_2} \} e^{i\omega(t_1 - t_2)} d\omega
+    \label{eq:RZZ_full}
+\end{align}
+
+As neither $g(\cdot)$ nor $h(\cdot)$ contains the integration variable, it follows from equation~\eqref{eq:rzz_sh} that $R_{ZZ}(t_1, t_2)$ can be obtained from $r_{ZZ}(t_1, t_2)$ by differentiation. Written in operator form:
+\begin{equation}
+    R_{ZZ}(t_1, t_2) = \left\{ 1 - [g(t_1) + h(t_1) \frac{d}{dt_1}] \right\} \left\{ 1 - [g(t_2) + h(t_2) \frac{d}{dt_2}] \right\} r_{ZZ}(t_1, t_2)
+    \label{eq:RZZ_operator}
+\end{equation}
+
+The equations~\eqref{eq:sym1}-\eqref{eq:sym2} also hold for $R_{ZZ}(t_1, t_2)$, and the real correlation functions $R_{XX}(t_1, t_2)$ and $R_{\tilde{X}\tilde{X}}(t_1, t_2)$ therefore follow directly from equation~\eqref{eq:RZZ_operator}. After a slight reduction by use of equations~\eqref{eq:sym1}-\eqref{eq:sym2} the following expressions are obtained:
+\begin{align}
+    R_{XX}(t_1, t_2) &= r_{XX}(t_1, t_2) - g(t_1) r_{XX}(0, t_2) - g(t_2) r_{XX}(t_1, 0) \nonumber \\
+    &\quad - h(t_1) \left. \frac{\partial r_{XX}(\tau, t_2)}{\partial \tau} \right|_{\tau=0} - h(t_2) \left. \frac{\partial r_{XX}(t_1, \tau)}{\partial \tau} \right|_{\tau=0} \nonumber \\
+    &\quad + g(t_1) g(t_2) r_{XX}(0, 0) + h(t_1) h(t_2) \left. \frac{\partial^2 r_{XX}(\tau_1, \tau_2)}{\partial \tau_1 \partial \tau_2} \right|_{\tau_1=\tau_2=0}
+    \label{eq:RXX}
+\end{align}
+
+It follows from equation~\eqref{eq:RXX} (or directly from equation~\eqref{eq:RZZ_H}) that
+\begin{equation}
+    R_{X\tilde{X}}(t, t) = 0
+    \label{eq:uncorrelated}
+\end{equation}
+implying that $X(t)$ and $\tilde{X}(t)$ are uncorrelated.
+
+\section{Evaluation of Correlation Functions}
+
+The usefulness of equations~\eqref{eq:RZZ_operator}-\eqref{eq:RXX} expressing $R_{ZZ}(t_1, t_2)$ in terms of $r_{ZZ}(t_1, t_2)$ and its derivatives is greatly increased if the correlation function $r_{ZZ}(t_1, t_2)$ for the stationary response can be expressed in closed form. This is the case where $S_{FF}(\omega)$ is a rational function. In the following, the case of higher order poles is excluded. On the real axis, $S_{FF}(\omega)$ is an even, real function and it can, therefore, be represented in the form
+\begin{equation}
+    S_{FF}(\omega) = C_0 + \sum_{k=1}^N \left( \frac{C_k}{\omega - \Omega_k} + \frac{\overline{C_k}}{\omega + \overline{\Omega_k}} \right)
+    \label{eq:SFF_rational}
+\end{equation}
+where $\Omega_k$ are the poles; and $C_k$ are the residues in the first quadrant.
+
+In the same notation the transfer function is
+\begin{equation}
+    H(\omega) = \frac{1}{\omega_0^2 - \omega^2 + 2i\zeta\omega_0\omega}
+    \label{eq:H_rational}
+\end{equation}
+
+For $t_1 \neq t_2$, the integral in equation~\eqref{eq:rzz_sh} can now be evaluated by closing the line of integration by a quarter circle and the positive imaginary axis:
+\begin{equation}
+    r_{XX}(t_1, t_2) = 4\pi \sum_{k=1}^N C_k S_H(\Omega_k) e^{i\Omega_k (t_1 - t_2)} + 4i \int_0^{\infty} S_{FF}(ip) S_H(ip) e^{-p(t_1 - t_2)} dp
+    \label{eq:rxx_closed}
+\end{equation}
+The integral in equation~\eqref{eq:rxx_closed} is real and does not contribute to the correlation function $r_{XX}(t_1, t_2)$.
+
+A number of important properties of the stationary process $X(t)$ are given in terms of the even moments:
+\begin{equation}
+    \lambda_0 = \frac{1}{\pi} \int_0^{\infty} S_{FF}(\omega) S_H(\omega) d\omega
+    \label{eq:lambda0}
+\end{equation}
+
+Characterization of the envelope also requires the odd moment, $\lambda_1$:
+\begin{equation}
+    \lambda_1 = \frac{1}{\pi} \int_0^{\infty} \omega S_{FF}(\omega) S_H(\omega) d\omega
+    \label{eq:lambda1}
+\end{equation}
+
+\section{Crossing Frequencies}
+
+It is convenient to analyze crossing frequencies of the response process $X(t)$ and its envelope process $R(t)$ in terms of the normalized complex response process
+\begin{equation}
+    W(t) = Y(t) + i \tilde{Y}(t) = \frac{Z(t)}{\sigma_X(t)}
+    \label{eq:normalized_complex}
+\end{equation}
+where $\sigma_X(t)$ is the standard deviation of $X(t)$. From equations~\eqref{eq:RXX} and~\eqref{eq:lambda0}:
+\begin{equation}
+    \sigma_X^2(t) = \lambda_0 + \lambda_0 g^2(t) + \lambda_2 h^2(t) - 2g(t) r_{XX}(t, 0) - 2h(t) \left. \frac{\partial r_{XX}(t, \tau)}{\partial \tau} \right|_{\tau=0}
+    \label{eq:sigmaX}
+\end{equation}
+
+By differentiation and use of equations~\eqref{eq:impulse_response} and~\eqref{eq:g_function}:
+\begin{align}
+    \sigma_X^2(t) \dot{X}(t) &= h(t) 2g(t) - \omega h(t) [\dot{g}(t) - r_{XX}(t, 0)] - 2\zeta\omega_0 h(t) \left. \frac{\partial r_{XX}(t, \tau)}{\partial \tau} \right|_{\tau=0}
+    \label{eq:sigmaX_dot}
+\end{align}
+
+The expected number of up-crossings of the level $s(t)$ by $X(t)$ is equal to the expected number of up-crossings of the normalized level $\eta(t) = s(t)/\sigma_X(t)$ by $Y(t)$. Due to the normalization, $Y(t)$ and $\tilde{Y}(t)$ are uncorrelated and thus for normal processes the up-crossing rate~\cite{rice1955} is
+\begin{equation}
+    \nu(t) = \omega(t) \varphi(\eta)
+    \label{eq:upcrossing}
+\end{equation}
+where $\omega(t)$ is the standard deviation of $\dot{Y}(t)$, and $\varphi(\eta)$ is the standard normal density.
+
+When $X(t)$ is a normal process, an equally simple expression is found for the up-crossing rate of the normalized envelope:
+\begin{equation}
+    Q(t) = \sqrt{Y^2(t) + \tilde{Y}^2(t)}
+    \label{eq:Q_envelope}
+\end{equation}
+
+The covariance matrix of the stochastic variables $Y(t)$, $\tilde{Y}(t)$, $\dot{Y}(t)$, and $\dot{\tilde{Y}}(t)$ is
+\begin{equation}
+    \begin{pmatrix}
+        1 & 0 & 0 & -\xi \\
+        0 & 1 & \xi & 0 \\
+        0 & \xi & \omega^2 & 0 \\
+        -\xi & 0 & 0 & \omega^2
+    \end{pmatrix}
+    \label{eq:cov_matrix}
+\end{equation}
+in which the function $\xi(t)$ is given by
+\begin{equation}
+    \xi(t) = \frac{1}{\sigma_X^2(t)} \left. \frac{\partial R_{XX}(t_1, t_2)}{\partial t_1 \partial t_2} \right|_{t_1 = t_2 = t}
+    \label{eq:xi}
+\end{equation}
+
+For a normal process, the substitution $W(t) = Q(t) e^{i\theta(t)}$ leads to the probability density functions
+\begin{align}
+    f_Q(q) &= q \exp\left( -\frac{q^2}{2(\omega^2 - \xi^2)} \right) \label{eq:fQ} \\
+    f_\theta(\theta) &= \frac{1}{\sqrt{2\pi(\omega^2 - \xi^2)}} \exp\left( -\frac{\theta^2}{2(\omega^2 - \xi^2)} \right) \label{eq:ftheta}
+\end{align}
+showing that $Q(t)$ and $\theta(t)$ are mutually independent with Rayleigh and normal distributions, respectively.
+
+The up-crossing rate for the envelope then is
+\begin{equation}
+    \nu_e(t) = \frac{\omega(t)}{\sqrt{\omega^2(t) - \xi^2(t)}} \exp\left( -\frac{\eta^2}{2(\omega^2(t) - \xi^2(t))} \right)
+    \label{eq:nu_e}
+\end{equation}
+
+\section{First Passage Probability}
+
+The main purpose of the previous derivations is to obtain estimates of the probability that the response variable $X(\tau)$ remains inside specified boundaries in the time interval $0 \leq \tau < t$. In the following, the analysis is limited to the symmetric barriers $-\xi(\tau) < X(\tau) - \mu(\tau) < \xi(\tau)$.
+
+In the case of a narrow-band process, the outcrossings tend to occur in clumps and a useful concept in the analysis of the problem is the clump size introduced by Lyon~\cite{lyon1961} as the ratio of the outcrossing frequency of the process $X(\tau)$ to the outcrossing frequency of the envelope $R(\tau)$, i.e., $2\nu(\tau)/\nu_e(\tau)$.
+
+From equations~\eqref{eq:upcrossing} and~\eqref{eq:nu_e} it is seen that the clump size contains the factor $\eta$ and, therefore, is less than one for large values of $\eta$. An approximate solution to this problem was given by Vanmarcke~\cite{vanmarcke1975} who introduced the concept of qualified envelope crossings, i.e., envelope crossings followed by crossings of the process $X(\tau)$. The corresponding crossing frequency is determined as
+\begin{equation}
+    \nu_q(t) = 2\nu(t) \left[ 1 - \exp\left( -\frac{\nu_e(t)}{2\nu(t)} \right) \right]
+    \label{eq:nu_q}
+\end{equation}
+
+When the outcrossings are assumed to be events in a Poisson process with intensity $\nu(t)$, the resulting first passage probability density is
+\begin{equation}
+    p(t) = \nu(t) \exp\left( -\int_0^t \nu(s) ds \right)
+    \label{eq:first_passage}
+\end{equation}
+
+\section{Summary and Conclusions}
+
+An envelope is introduced by using the Hilbert transform to define complex stochastic excitation and response processes for a linear structure. In principle, the use of the Hilbert transform assumes stationary input, but the concept is easily extended to modulated stationary input. The special case of time-limited stationary excitation is treated in considerable detail and the complex correlation function in the nonstationary case is related to its stationary equivalent by a simple differential operator in equation~\eqref{eq:RZZ_operator}. In the important case of input with spectral density in the form of a rational function, the complex correlation function of the nonstationary response is reduced to a closed form expression apart from a purely imaginary integral term.
+
+Normalization of the response process and its envelope leads to simple expressions for expected crossing frequencies and, by use of the previously derived formulas, a parametric study of the influence of damping and frequency on the governing parameters is carried out. The most convenient choice of parameters is the standard deviation, $\sigma_X(t)$, an angular frequency parameter, $\omega(t)$, and a bandwidth parameter, $\xi(t)$. All three parameters depend on the damping ratio, while $\xi(t)$ also depends significantly on the frequency content. It is important for applications that $\omega(t)$ and $\xi(t)$ approach their stationary values after a few periods.
+
+The concept of qualified envelope crossings is used to obtain an approximate formula for the first passage probability density, and a parameter study is carried out. The influence of the damping ratio is larger than that of the frequency content, and it seems justified to use the stationary bandwidth parameter also for the nonstationary response. This is computationally important because the stationary bandwidth parameter will often be available in closed form, e.g., from equations~\eqref{eq:lambda0}-\eqref{eq:lambda1} for input with rational spectral density.
+
+Finally, a comparison is made with the first passage probability density estimated by the point process approach. The agreement is good, but slightly higher values are obtained by the point process method.
+
+\newpage
+
+\section*{References}
+\begin{thebibliography}{99}
+\bibitem{arens1957}
+Arens, R., ``Complex Processes for Envelopes of Normal Noise,'' \emph{IRE Transactions on Information Theory}, Vol. 3, 1957, pp. 204--207.
+
+\bibitem{corotis1972}
+Corotis, R. B., Vanmarcke, E. H., and Cornell, C. A., ``First Passage of Nonstationary Random Processes,'' \emph{Journal of the Engineering Mechanics Division, ASCE}, Vol. 98, No. EM2, 1972, pp. 401--414.
+
+\bibitem{cramer1967}
+Cramér, H., and Leadbetter, M. R., \emph{Stationary and Related Stochastic Processes}, John Wiley and Sons, Inc., New York, 1967.
+
+\bibitem{dugundji1958}
+Dugundji, J., ``Envelopes and Pre-Envelopes of Real Waveforms,'' \emph{IRE Transactions on Information Theory}, Vol. 4, 1958, pp. 53--57.
+
+\bibitem{krenk1979}
+Krenk, S., ``Nonstationary Narrow-Band Response and First-Passage Probability,'' \emph{Journal of Applied Mechanics}, Vol. 46, 1979, pp. 919--924.
+
+\bibitem{lin1976}
+Lin, Y. K., \emph{Probabilistic Theory of Structural Dynamics}, Krieger Publishing Co., Huntington, N.Y., 1976.
+
+\bibitem{lyon1961}
+Lyon, R. H., ``On the Vibration Statistics of a Randomly Excited Hard-Spring Oscillator II,'' \emph{Journal of the Acoustical Society of America}, Vol. 33, 1961, pp. 1395--1403.
+
+\bibitem{madsen1982}
+Madsen, P. H., and Krenk, S., ``Stationary and Transient Response Statistics,'' \emph{Journal of the Engineering Mechanics Division, ASCE}, Vol. 8, No. EM4, Aug. 1982, pp. 622--635.
+
+\bibitem{papoulis1965}
+Papoulis, A., \emph{Probability, Random Variables and Stochastic Processes}, McGraw-Hill, Kogakusha, Tokyo, 1965.
+
+\bibitem{priestley1965}
+Priestley, M. B., ``Evolutionary Spectra and Nonstationary Processes,'' \emph{Journal of the Royal Statistical Society}, Vol. B27, 1965, pp. 204--237.
+
+\bibitem{priestley1967}
+Priestley, M. B., ``Power Spectral Analysis of Nonstationary Random Processes,'' \emph{Journal of Sound and Vibration}, Vol. 6, 1967, pp. 86--97.
+
+\bibitem{rice1955}
+Rice, S. O., ``Mathematical Analysis of Random Noise,'' in \emph{Selected Papers on Noise and Stochastic Processes}, N. Wax, ed., Dover Publications, Inc., New York, 1955.
+
+\bibitem{vanmarcke1975}
+Vanmarcke, E. H., ``On the Distribution of the First-Passage Time for Normal Stationary Random Processes,'' \emph{Journal of Applied Mechanics}, Vol. 42, 1975, pp. 215--220.
+
+\bibitem{yang1972}
+Yang, J.-N., ``Nonstationary Envelope Process and First Excursion Probability,'' \emph{Journal of Structural Mechanics}, Vol. 1, 1972, pp. 231--248.
+
+\bibitem{yang1973}
+Yang, J.-N., ``First-Excursion Probability in Non-Stationary Random Vibration,'' \emph{Journal of Sound and Vibration}, Vol. 27, 1973, pp. 165--182.
+
+\bibitem{yangshinozuka1971}
+Yang, J.-N., and Shinozuka, M., ``On the First Excursions Probability in Stationary Narrow-Band Random Vibration,'' \emph{Journal of Applied Mechanics}, Vol. 38, 1971, pp. 1017--1022.
+\end{thebibliography}
+
+\end{document}
