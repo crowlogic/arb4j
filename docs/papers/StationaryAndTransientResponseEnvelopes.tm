@@ -54,13 +54,9 @@
     and Conclusions> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-7><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|References>
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-8><vspace|0.5fn>
-
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-9><vspace|0.5fn>
+    <no-break><pageref|auto-8><vspace|0.5fn>
   </table-of-contents>
 
   <section|Introduction>
@@ -247,7 +243,7 @@
   follows by taking the expected value:
 
   <\equation>
-    r<rsub|Z*Z><around|(|t<rsub|1>,t<rsub|2>|)>=<iint>r<rsub|L*L><around|(|\<tau\><rsub|1>,\<tau\><rsub|2>|)>*h*<around|(|t<rsub|1>-\<tau\><rsub|1>|)>*h*<around|(|t<rsub|2>-\<tau\><rsub|2>|)>*d*\<tau\><rsub|1>*d*\<tau\><rsub|2><label|eq:complex_corr_response>
+    r<rsub|Z*Z><around|(|t<rsub|1>,t<rsub|2>|)>=<big|iint>r<rsub|L*L><around|(|\<tau\><rsub|1>,\<tau\><rsub|2>|)>*h*<around|(|t<rsub|1>-\<tau\><rsub|1>|)>*h*<around|(|t<rsub|2>-\<tau\><rsub|2>|)>*d*\<tau\><rsub|1>*d*\<tau\><rsub|2><label|eq:complex_corr_response>
   </equation>
 
   Upon substitution of equation<nbsp><eqref|eq:complex_corr_sff>, and change
@@ -333,9 +329,10 @@
   Substitution of equation<nbsp><eqref|eq:H_time> into
   equation<nbsp><eqref|eq:RZZ_H> yields
 
-  <\align>
-    <tformat|<table|<row|<cell|R<rsub|Z*Z><around|(|t<rsub|1>,t<rsub|2>|)>=4*<big|int><rsub|0><rsup|\<infty\>>S<rsub|F*F><around|(|\<omega\>|)>*H<around|(|\<omega\>|)><wide|H<around|(|\<omega\>|)>|\<bar\>><around|{|1-<around|[|g<around|(|t<rsub|1>|)>+i*\<omega\>*h<around|(|t<rsub|1>|)>|]>*e<rsup|-i*\<omega\>*t<rsub|1>>|}>>>|<row|<cell|\<times\><around|{|1-<around|[|g<around|(|t<rsub|2>|)>-i*\<omega\>*h<around|(|t<rsub|2>|)>|]>*e<rsup|i*\<omega\>*t<rsub|2>>|}>*e<rsup|i*\<omega\>*<around|(|t<rsub|1>-t<rsub|2>|)>>*d*\<omega\><eq-number><label|eq:RZZ_full>>>>>
-  </align>
+  <with|font-base-size|10|<\equation>
+    <with|font-base-size|10|R<rsub|Z*Z><around*|(|t<rsub|1>,t<rsub|2>|)>=4<big|int><rsub|0><rsup|\<infty\>><around*|(|<tabular|<tformat|<table|<row|<cell|S<rsub|F*F><around|(|\<omega\>|)>*H<around|(|\<omega\>|)><wide|H<around|(|\<omega\>|)>|\<bar\>>>>|<row|<cell|\<times\><around*|(|1-<around|[|g<around|(|t<rsub|1>|)>+i*\<omega\>*h<around|(|t<rsub|1>|)>|]>*e<rsup|-i*\<omega\>*t<rsub|1>>|)>>>|<row|<cell|\<times\><around*|(|1-<around|[|g<around|(|t<rsub|2>|)>+i*\<omega\>*h<around|(|t<rsub|2>|)>|]>*e<rsup|-i*\<omega\>*t<rsub|2>>|)>>>|<row|<cell|\<times\>e<rsup|i
+    \<omega\><around*|(|t<rsub|1>-t<rsub|2>|)>>>>>>>|)>\<mathd\>\<omega\><label|eq:RZZ_full>>
+  </equation>>
 
   As neither <math|g<around|(|\<cdummy\>|)>> nor
   <math|h<around|(|\<cdummy\>|)>> contains the integration variable, it
@@ -580,10 +577,6 @@
   estimated by the point process approach. The agreement is good, but
   slightly higher values are obtained by the point process method.
 
-  <new-page>
-
-  <section*|References>
-
   <\thebibliography|99>
     <bibitem|arens1957>Arens, R., \PComplex Processes for Envelopes of Normal
     Noise,\Q <em|IRE Transactions on Information Theory>, Vol. 3, 1957, pp.
@@ -658,33 +651,32 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_10.tm>>
     <associate|auto-2|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_10.tm>>
     <associate|auto-3|<tuple|3|5|../../.TeXmacs/texts/scratch/no_name_10.tm>>
     <associate|auto-4|<tuple|4|6|../../.TeXmacs/texts/scratch/no_name_10.tm>>
     <associate|auto-5|<tuple|5|7|../../.TeXmacs/texts/scratch/no_name_10.tm>>
     <associate|auto-6|<tuple|6|8|../../.TeXmacs/texts/scratch/no_name_10.tm>>
     <associate|auto-7|<tuple|7|9|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|auto-8|<tuple|7|11|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|auto-9|<tuple|7|11|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|bib-arens1957|<tuple|arens1957|11|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|bib-corotis1972|<tuple|corotis1972|11|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|bib-cramer1967|<tuple|cramer1967|11|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|bib-dugundji1958|<tuple|dugundji1958|11|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|bib-krenk1979|<tuple|krenk1979|11|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|bib-lin1976|<tuple|lin1976|11|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|bib-lyon1961|<tuple|lyon1961|11|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|bib-madsen1982|<tuple|madsen1982|11|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|bib-papoulis1965|<tuple|papoulis1965|11|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|bib-priestley1965|<tuple|priestley1965|11|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|bib-priestley1967|<tuple|priestley1967|11|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|bib-rice1955|<tuple|rice1955|11|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|bib-vanmarcke1975|<tuple|vanmarcke1975|11|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|bib-yang1972|<tuple|yang1972|11|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|bib-yang1973|<tuple|yang1973|11|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|bib-yangshinozuka1971|<tuple|yangshinozuka1971|11|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|auto-8|<tuple|7|10|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|bib-arens1957|<tuple|arens1957|10|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|bib-corotis1972|<tuple|corotis1972|10|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|bib-cramer1967|<tuple|cramer1967|10|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|bib-dugundji1958|<tuple|dugundji1958|10|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|bib-krenk1979|<tuple|krenk1979|10|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|bib-lin1976|<tuple|lin1976|10|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|bib-lyon1961|<tuple|lyon1961|10|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|bib-madsen1982|<tuple|madsen1982|10|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|bib-papoulis1965|<tuple|papoulis1965|10|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|bib-priestley1965|<tuple|priestley1965|10|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|bib-priestley1967|<tuple|priestley1967|10|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|bib-rice1955|<tuple|rice1955|10|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|bib-vanmarcke1975|<tuple|vanmarcke1975|10|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|bib-yang1972|<tuple|yang1972|10|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|bib-yang1973|<tuple|yang1973|10|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|bib-yangshinozuka1971|<tuple|yangshinozuka1971|10|../../.TeXmacs/texts/scratch/no_name_10.tm>>
     <associate|eq:H_rational|<tuple|26|7|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|eq:H_time|<tuple|20|6|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|eq:H_time|<tuple|20|5|../../.TeXmacs/texts/scratch/no_name_10.tm>>
     <associate|eq:Q_envelope|<tuple|34|8|../../.TeXmacs/texts/scratch/no_name_10.tm>>
     <associate|eq:RXX|<tuple|23|6|../../.TeXmacs/texts/scratch/no_name_10.tm>>
     <associate|eq:RZZ|<tuple|17|5|../../.TeXmacs/texts/scratch/no_name_10.tm>>
@@ -695,8 +687,8 @@
     <associate|eq:complex_corr|<tuple|8|4|../../.TeXmacs/texts/scratch/no_name_10.tm>>
     <associate|eq:complex_corr_response|<tuple|12|4|../../.TeXmacs/texts/scratch/no_name_10.tm>>
     <associate|eq:complex_corr_sff|<tuple|10|4|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|eq:complex_force|<tuple|5|4|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|eq:complex_response|<tuple|4|4|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|eq:complex_force|<tuple|5|3|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|eq:complex_response|<tuple|4|3|../../.TeXmacs/texts/scratch/no_name_10.tm>>
     <associate|eq:correlation|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_10.tm>>
     <associate|eq:cov_matrix|<tuple|35|8|../../.TeXmacs/texts/scratch/no_name_10.tm>>
     <associate|eq:envelope|<tuple|15|5|../../.TeXmacs/texts/scratch/no_name_10.tm>>
@@ -719,7 +711,7 @@
     <associate|eq:sigmaX_dot|<tuple|32|7|../../.TeXmacs/texts/scratch/no_name_10.tm>>
     <associate|eq:sym1|<tuple|6|4|../../.TeXmacs/texts/scratch/no_name_10.tm>>
     <associate|eq:sym2|<tuple|7|4|../../.TeXmacs/texts/scratch/no_name_10.tm>>
-    <associate|eq:transfer_function|<tuple|14|5|../../.TeXmacs/texts/scratch/no_name_10.tm>>
+    <associate|eq:transfer_function|<tuple|14|4|../../.TeXmacs/texts/scratch/no_name_10.tm>>
     <associate|eq:uncorrelated|<tuple|24|6|../../.TeXmacs/texts/scratch/no_name_10.tm>>
     <associate|eq:upcrossing|<tuple|33|7|../../.TeXmacs/texts/scratch/no_name_10.tm>>
     <associate|eq:xi|<tuple|36|8|../../.TeXmacs/texts/scratch/no_name_10.tm>>
@@ -785,13 +777,9 @@
       and Conclusions> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-7><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|References>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-8><vspace|0.5fn>
-
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-9><vspace|0.5fn>
+      <no-break><pageref|auto-8><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
