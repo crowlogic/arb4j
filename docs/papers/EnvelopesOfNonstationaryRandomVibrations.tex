@@ -1,0 +1,356 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm, enumitem, hyperref, geometry, graphicx, bm}
+\geometry{margin=1in}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{remark}{Remark}[section]
+
+\begin{document}
+
+\title{Nonstationary Envelope in Random Vibration Theory}
+\author{Giuseppe Muscolino\thanks{Researcher, Dipartimento di Ingegneria Strutturale e Geotecnica, Università degli Studi di Palermo, Viale delle Scienze, 1-90128 Palermo, Italy.}}
+\date{}
+\maketitle
+
+\begin{abstract}
+In this paper, it is shown that the input process in the nonstationary case must be defined as a complex process, i.e., as the product of an analytic random stationary process by a deterministic shaping function. Defining the input in this manner, the complex nonstationary cross-correlation matrix is evaluated, and the nonstationary spectral moments take on a self-evident physical meaning as variances of the complex response and of its time derivatives. Using the complex process, the nonstationary envelope, too, becomes a natural consequence of the previous definition, i.e., the modulus of the complex response of linear systems subjected to such input. In the framework of complex processes, the mean rate threshold crossing for circular barriers and the first-passage probability are evaluated using the one-step memory Markov process.
+\end{abstract}
+
+\section{Introduction}
+The problem of predicting the safety of structural systems subjected to random loading arises in many engineering applications. It is well-known that such loadings as aircraft impact during landing are nonstationary random processes. It follows that the response of quiescent systems is also nonstationary and that the prediction of their structural safety is an important topic in structural engineering.
+
+In the framework of the prediction of structural safety, the envelope process~\cite{langley1986} plays an important role. For example, in the problem of first excursion failure and that of fatigue failure, evaluating the statistical properties of the envelope process becomes an important task in both stationary~\cite{yang1971} and nonstationary~\cite{yang1972} response processes. In the stationary case, the envelope process is usually defined following Dugundji~\cite{dugundji1958} and Cramer and Leadbetter~\cite{cramer1967}, and it can be seen as the modulus of the response of a linear system subjected to a complex process called pre-envelope~\cite{arens1957, dugundji1958}, which is a complex process in which the imaginary part is the Hilbert transform of the companion real part.
+
+In previous papers~\cite{borino1988, dipaola1985}, it has been demonstrated that the complex processes must be introduced not only for the definition of the envelope process, but also to give a clearer definition of stationary and nonstationary spectral moments, which are simply variances of the complex response and its time derivatives in structural systems subjected to such input~\cite{dipaola1985}.
+
+In this paper, which defines the nonstationary pre-envelope process as the product of a deterministic shaping function by the pre-envelope of a stationary random process, a critical review and extensions of the well-known stationary concept are made in the nonstationary case. The complex cross-correlation matrix of the response of a single-degree-of-freedom (SDOF) linear system subjected to such input are obtained, as well as the time derivatives of the response.
+
+In the last sections, the nonstationary cross-correlation function and the nonstationary spectral moments are used in the evaluation of the mean rate threshold crossing for circular barriers and in the first-passage probability problem for the Poisson and Markov assumption of level crossing.
+
+\section{Preliminary Concepts and Definitions}
+
+\subsection{Stationary Case}
+The equation of motion of an SDOF system may be written in the canonical form as follows:
+\begin{equation}
+    \ddot{x} + 2\zeta\omega_0 \dot{x} + \omega_0^2 x = f(t)
+    \label{eq:sdof_motion}
+\end{equation}
+where $\zeta$ and $\omega_0$ are the damping ratio and the natural radian frequency, respectively; the displacement $x(t)$ is the solution of equation~\eqref{eq:sdof_motion}; the upper dot indicates time differentiation; and $f(t)$ is a stochastic zero-mean process.
+
+It is well-known that for the stationary analysis of linear systems, the function that characterizes both the input and output processes is the power spectral density function (PSD). Though from a mathematical viewpoint the PSD is defined in the frequency range $-\infty$ to $\infty$, from the physical viewpoint the power is defined only in the positive frequency range. In the last few years, it has been shown that the one-sided PSD (defined as $0$ to $\infty$) is required in order to obtain some significant quantities in the evaluation of the statistics of the stochastic response~\cite{vanmarcke1972, vanmarcke1975}. It is defined as the product of the Heaviside function $U(\omega)$ by twice the PSD (defined as $-\infty$ to $\infty$), i.e.
+\begin{equation}
+    G_f(\omega) = 2 U(\omega) \bar{G}_f(\omega)
+    \label{eq:one_sided_psd}
+\end{equation}
+where the overbar indicates the usual PSD (defined as $-\infty$ to $\infty$).
+
+In order to obtain a process that defines the one-sided PSD in equation~\eqref{eq:one_sided_psd}, the corresponding process $f(t)$ in the time domain must be a complex one, in which the imaginary part is the Hilbert transform of the corresponding real part, i.e., an analytic process~\cite{dipaola1985}. This process is the so-called pre-envelope~\cite{arens1957, dugundji1958} and is given as
+\begin{equation}
+    f(t) = n(t) + i h(t)
+    \label{eq:pre_envelope}
+\end{equation}
+where $n(t)$ is the stationary process having the usual PSD, $G_n(\omega)$; $i = \sqrt{-1}$; and $h(t)$ is the Hilbert transform:
+\begin{equation}
+    h(t) = H[n(t)] = \frac{1}{\pi} \text{p.v.} \int_{-\infty}^{\infty} \frac{n(\tau)}{t - \tau} d\tau
+    \label{eq:hilbert_transform}
+\end{equation}
+
+Due to the fact that input is analytic, the corresponding output is analytic as well~\cite{krenk1981}, i.e.,
+\begin{equation}
+    x(t) = y(t) + i \tilde{y}(t)
+    \label{eq:analytic_output}
+\end{equation}
+where $y(t)$ is the response of the oscillator subjected to the real process $n(t)$. The process $x(t)$ can be considered as a point in the rectangular coordinates of the plane $y(t)/\tilde{y}(t)$, while in polar coordinates the process $x(t)$ can be written in the form:
+\begin{equation}
+    x(t) = a(t) \exp\left[i\theta(t)\right]
+    \label{eq:polar_output}
+\end{equation}
+where $a(t)$ and $\theta(t)$ are a pair of random processes called the amplitude and the phase, respectively.
+
+It is to be noted that $y(t)$ and $\tilde{y}(t)$ are given in polar coordinates in the form
+\begin{align}
+    y(t) &= a(t) \cos[\theta(t)] \label{eq:polar_y} \\
+    \tilde{y}(t) &= a(t) \sin[\theta(t)] \label{eq:polar_ytilde}
+\end{align}
+
+Following the primary definition of Dugundji~\cite{dugundji1958} and Cramer and Leadbetter~\cite{cramer1967}, $a(t)$ is the so-called envelope function of the process $x(t)$ and is the modulus of the complex process $x(t)$ defined in equation~\eqref{eq:analytic_output}, i.e.,
+\begin{equation}
+    a(t) = \sqrt{y^2(t) + \tilde{y}^2(t)}
+    \label{eq:envelope_def}
+\end{equation}
+Notice that the process $a(t)$ is defined in the range $[0, \infty)$, while $\theta(t)$ is defined in the range $[0, 2\pi)$ and is given as
+\begin{equation}
+    \theta(t) = \tan^{-1} \left( \frac{\tilde{y}(t)}{y(t)} \right)
+    \label{eq:phase_def}
+\end{equation}
+
+\subsection{Nonstationary Case}
+In the nonstationary case, a quite different situation is observed. If we construct a complex input process in which the imaginary part is the Hilbert transform of the corresponding real part, it follows that the imaginary part of the output is different from zero for $-\infty < t < 0$, and the corresponding envelope exists in the negative time region, in contrast with its own physical meaning. Thus in the nonstationary case, the complex input process of equation~\eqref{eq:sdof_motion} must be defined as the product of a deterministic real shaping function $F(t)$ by the pre-envelope of a stationary process, i.e.,
+\begin{equation}
+    f(t) = F(t) [n(t) + i h(t)]
+    \label{eq:nonstationary_input}
+\end{equation}
+Assuming the latter as input, the corresponding output will be given in the form:
+\begin{equation}
+    x(t) = y(t) + i \tilde{y}(t)
+    \label{eq:nonstationary_output}
+\end{equation}
+where $y(t)$ is the response of equation~\eqref{eq:sdof_motion} when the input is $F(t) n(t)$. Equations~\eqref{eq:nonstationary_input} and~\eqref{eq:nonstationary_output} are the extensions of the pre-envelope of the input and output processes, respectively, in the nonstationary case. It is also evident that $\tilde{y}(t)$ coincides with $\tilde{y}(t)$ only when $F(t) = 1$ for all $t$ (stationary case).
+
+Due to the fact that the envelope $a(t)$ is defined as the amplitude of the complex output process, as in the stationary case, we can write
+\begin{equation}
+    a(t) = \sqrt{y^2(t) + \tilde{y}^2(t)}
+    \label{eq:nonstationary_envelope}
+\end{equation}
+and the corresponding nonstationary phase is given as
+\begin{equation}
+    \theta(t) = \tan^{-1} \left( \frac{\tilde{y}(t)}{y(t)} \right)
+    \label{eq:nonstationary_phase}
+\end{equation}
+Notice that equation~\eqref{eq:nonstationary_input} is the only correct definition of complex input for separable processes. Moreover, it can easily be shown that the previously defined nonstationary envelope coincides with the definition of envelope given by Yang~\cite{yang1972}, using the Priestley~\cite{priestley1967} spectral representation of stochastic processes.
+
+\section{Cross-Correlation Matrix of Complex Processes}
+To obtain the statistics of the envelope process, the cross-correlation matrix of the process $x(t)$ and its time differentiations must be evaluated. To this purpose, a vector $\mathbf{X}_m(t)$ is introduced in the form
+\begin{equation}
+    \mathbf{X}_m(t) = \begin{bmatrix} x(t) & \frac{d x(t)}{dt} & \cdots & \frac{d^{m-1} x(t)}{dt^{m-1}} \end{bmatrix}^T
+    \label{eq:Xm_def}
+\end{equation}
+where the superscript $T$ denotes transpose; and $x(t)$ is the complex process defined in equation~\eqref{eq:analytic_output} for the stationary case and in equation~\eqref{eq:nonstationary_output} for the nonstationary case.
+
+It follows that the cross-correlation matrix of the vector $\mathbf{X}_m(t)$ can be obtained as
+\begin{equation}
+    \mathbf{R}_{m,x}(t_1, t_2) = \mathbb{E} \left[ \mathbf{X}_m(t_1) \mathbf{X}_m^*(t_2)^T \right]
+    \label{eq:cross_corr_matrix}
+\end{equation}
+where $^*$ denotes complex conjugate; and $\mathbb{E}[\cdot]$ denotes stochastic average.
+
+In order to evaluate the various entries of the matrix $\mathbf{R}_{m,x}(t_1, t_2)$, all stochastic averages of the product of the various time derivatives of $x(t_1)$ and $x(t_2)$ must be computed~\cite{borino1988, dipaola1985, dipaola_muscolino1985}, i.e.,
+\begin{equation}
+    P_{s,v,x}(t_1, t_2) = \mathbb{E} \left[ \frac{d^s x(t_1)}{dt_1^s} \frac{d^v x^*(t_2)}{dt_2^v} \right]
+    \label{eq:Ps_v_x}
+\end{equation}
+
+The general case involving time derivatives up to the $(m-1)$th order is treated. To obtain the cross-correlation function given in equation~\eqref{eq:Ps_v_x}, the various time differentiations of the process $x(t)$ must be evaluated. For this purpose, using the Duhamel integral representation of the quiescent system subjected to the process defined in equation~\eqref{eq:nonstationary_input} and also using the Leibnitz rule applied to this case, we write
+\begin{equation}
+    \frac{d^r x(t)}{dt^r} = \int_0^t \frac{d^r h(\tau)}{d\tau^r} f(t - \tau) d\tau
+    \label{eq:drx_dt}
+\end{equation}
+where $h(\tau)$ is the impulse response function:
+\begin{equation}
+    h(\tau) = \frac{1}{\omega_d} \exp(-\zeta \omega_0 \tau) \sin(\omega_d \tau), \quad \tau \geq 0; \quad h(\tau) = 0, \quad \tau < 0
+    \label{eq:impulse_response}
+\end{equation}
+and $\omega_d = \omega_0 \sqrt{1 - \zeta^2}$.
+
+It is worth noting that the impulse response function defined in equation~\eqref{eq:impulse_response} exhibits a slope discontinuity at $\tau = 0$. It follows that the second derivatives of $h(\tau)$ exhibit a Dirac delta at $\tau = 0$, while the higher derivatives exhibit discontinuity of a higher order.
+
+For our purposes, a more suitable expression of the cross-correlation function given in equation~\eqref{eq:Ps_v_x} can be obtained by using the representation of $p_n(\tau)$ and $p_h(\tau)$ as the inverse of the Fourier transform of the PSD~\cite{papoulis1984}, i.e.,
+\begin{align}
+    p_n(\tau) &= \mathbb{E}[n(t) n(t+\tau)] = \int_{-\infty}^{\infty} G_n(\omega) e^{i\omega\tau} d\omega \label{eq:pn_tau} \\
+    p_h(\tau) &= \mathbb{E}[n(t) h(t+\tau)] = -i \int_{-\infty}^{\infty} \text{sgn}(\omega) G_n(\omega) e^{i\omega\tau} d\omega \label{eq:ph_tau}
+\end{align}
+where $\text{sgn}(\omega)$ is the signum function.
+
+\section{Cross-Covariance Spectral Matrix}
+
+\subsection{Stationary Case}
+In the stationary case, setting $\tau = 0$ in the cross-correlation, we obtain
+\begin{equation}
+    P_{s,v,x}(0) = 4(-i)^{s-v} \int_0^{\infty} U(\omega) G_n(\omega) H(\omega) H^*(\omega) \omega^{s+v} d\omega
+    \label{eq:Ps_v_x_stationary}
+\end{equation}
+The integral in equation~\eqref{eq:Ps_v_x_stationary} represents the moments of the one-sided PSD with respect to the frequency origin, i.e., the so-called spectral moments~\cite{vanmarcke1972}:
+\begin{equation}
+    \mu_{s,v} = 4 \int_0^{\infty} \omega^{s+v} U(\omega) G_n(\omega) H^*(\omega) H(\omega) d\omega
+    \label{eq:spectral_moments}
+\end{equation}
+The correlation matrix evaluated for $t_1 - t_2$ in the stationary case becomes a Hermitian time-independent matrix, namely the so-called cross-covariance spectral (CCS) matrix~\cite{borino1988}.
+
+\subsection{Nonstationary Case}
+In the nonstationary case, the spectral moments of the evolutionary PSD are given as
+\begin{equation}
+    \mu_j^*(t) = \int_0^{\infty} \omega^j G_v(\omega, t) d\omega
+    \label{eq:nonstationary_spec_moments}
+\end{equation}
+where $G_v(\omega, t)$ is the so-called one-sided evolutionary PSD.
+
+Strictly speaking, the spectral moments as defined by Vanmarcke~\cite{vanmarcke1972, vanmarcke1975} should be evaluated by means of equation~\eqref{eq:nonstationary_spec_moments}. However, since the spectral moments so evaluated do not provide the physical meaning of the variances, it seems more appropriate, in the nonstationary case, to calculate them using the time-domain cross-correlation.
+
+\section{Mean-Rate Threshold Crossing for Circular Barriers}
+To obtain the statistics of the envelope process, a new vector $\mathbf{Z}_m(t)$ is introduced, whose various entries are equal to the effective values of the vector $\mathbf{X}_m(t)$, i.e.,
+\begin{equation}
+    \mathbf{Z}_m(t) = \left[ z_1(t), z_2(t), \ldots, z_m(t) \right]^T
+    \label{eq:Zm_def}
+\end{equation}
+It follows that the correlation matrix of the vector $\mathbf{Z}_m(t)$ is related to the correlation matrix of the vectors $\mathbf{X}_m(t)$ through
+\begin{equation}
+    \mathbf{K}_{m,z}(t_1, t_2) = \mathbb{E} \left[ \mathbf{Z}_m(t_1) \mathbf{Z}_m^*(t_2)^T \right] = \mathbf{R}_{m,x}(t_1, t_2)
+    \label{eq:K_mz}
+\end{equation}
+
+If $f(t)$ is a zero-mean Gaussian process, the joint probability density function (JPDF) of the vector $\mathbf{Z}_m(t)$ is also Gaussian and can be expressed as follows:
+\begin{equation}
+    p_{\mathbf{Z}_m}(\mathbf{Z}_m; t) = (2\pi)^{-m} |\mathbf{A}_{m,z}(t)|^{-1} \exp\left[ -\mathbf{Z}_m^T(t) \mathbf{A}_{m,z}^{-1}(t) \mathbf{Z}_m(t) \right]
+    \label{eq:jpdf_Zm}
+\end{equation}
+where $|\cdot|$ denotes determinant.
+
+The mean numbers of upcrossings per unit time $\nu_+(\eta, t)$ of the circular barrier $\eta$ of the envelope process $a(t)$ defined in equation~\eqref{eq:envelope_def}, following the main definitions of Rice~\cite{rice1955} and Middleton~\cite{middleton1960}, can be written in the form
+\begin{equation}
+    \nu_+(\eta, t) = \int_0^{\infty} p_{a,\dot{a}}(\eta, \dot{a}; t) \dot{a} d\dot{a}
+    \label{eq:mean_upcrossings}
+\end{equation}
+where $p_{a,\dot{a}}(\eta, \dot{a}; t)$ is the JPDF of the envelope and its time differentiation.
+
+\section{First-Passage Probability}
+As an application of complex processes, the first-passage probability following the Poisson and the Markov assumptions is evaluated.
+
+Let us consider the nonstationary zero-mean narrow-band Gaussian response process $z(t) = x(t)/\sqrt{2}$, where $x(t)$ is defined in equation~\eqref{eq:nonstationary_output} as an output process of a lightly damped oscillator excited by the process $f(t)/\sqrt{2}$, which is defined in equation~\eqref{eq:nonstationary_input}. The PSD of $n(t)$ is fairly broad. Let its mean circular frequency $\omega_a(t)$ be in the form
+\begin{equation}
+    \omega_a(t) = \sqrt{\frac{\mu_2^*(t)}{\mu_0^*(t)}}
+    \label{eq:mean_circ_freq}
+\end{equation}
+It follows from the narrow-band character of the process that the peak and trough of the real part of the process $z(t)$ are almost uniformly spaced at intervals $T(t) = \pi/\omega_a(t)$. To simplify matters, we will suppose that $T(t)$ is almost constant, i.e.,
+\begin{equation}
+    T(t) = \Delta t, \quad \forall t
+    \label{eq:interval_const}
+\end{equation}
+
+Let $\eta$ be the threshold level of the real part of $z(t)$ and $Y(t_n)$ be the discrete point process ($t_n = n\Delta t$) of the peaks and troughs of the real part of $z(t)$. Then the failure rate $b(t_n)$---namely, the probability that the absolute value of $Y(t_n)$ will exit from the safe domain in the $n$th half cycle, conditioned by the fact that no threshold crossing has occurred before---is given as
+\begin{equation}
+    b(t_n) = \mathbb{P} \left( \max_{j=1,\ldots,n} |Y(t_j)| < \eta \,\Big|\, |Y(t_k)| < \eta, \forall k < n \right)
+    \label{eq:failure_rate}
+\end{equation}
+
+Once $b(t_n)$ is evaluated, the probability that the first excursion of $a(t_n)$, $L(t_n, \eta)$, will occur in the first $n$ half cycles is given in the well-known form~\cite{krenk1979, naess1983, naess1984, preumont1985, yang1971}
+\begin{equation}
+    L(t_n, \eta) = 1 - \prod_{j=1}^n [1 - b(t_j)]
+    \label{eq:first_excursion_prob}
+\end{equation}
+For $b(t_j) \ll 1$ and for large values of $n$, equation~\eqref{eq:first_excursion_prob} can be approximated as~\cite{yang1971}
+\begin{equation}
+    L(t_n, \eta) \approx 1 - \exp \left( -\sum_{j=1}^n b(t_j) \right)
+    \label{eq:first_excursion_approx}
+\end{equation}
+
+\section{Conclusions}
+By introducing the input process, i.e., the so-called pre-envelope, as the product of an analytical random stationary process by a deterministic shaping function, the nonstationary envelope can be defined as the modulus of the complex response process of structural systems subjected to such a pre-envelope. The introduction of the complex input process, instead of the more familiar real one, is essential, not only for the definition of the envelope process, but also for the correct definition of the spectral moments in both stationary and nonstationary cases.
+
+Starting from the previous assumption, the cross-correlation function matrix of nonstationary processes is obtained as the average of the complex output and its time derivatives in linear systems subjected to nonstationary pre-envelope. By similar considerations, the spectral moments of the output are defined as the cross-covariances of complex processes. The latter definition is essential for evaluating the nonstationary spectral moments, as, in fact, the moments of the so-called evolutionary PSD are not able to evaluate these quantities.
+
+In the two last sections, the previous definition of the envelope function for nonstationary processes is applied in the evaluation of the mean-rate threshold crossing for circular barriers and in the first-passage probability problem within the framework of complex processes. A more satisfactory representation and a clearer vision of the two problems are obtained. Moreover, using this procedure, a closed-form solution in the nonstationary case is given for the evaluation of the mean-rate threshold crossing of circular barriers.
+
+\section*{Acknowledgments}
+The author is indebted to Mario Di Paola for his helpful comments and valuable suggestions in the theoretical formulation of this paper.
+
+\appendix
+
+\section{PSD of Analytic Process}
+In this appendix, it is shown that the analytic process defined in equation~\eqref{eq:pre_envelope} has a one-sided PSD. The correlation function $P_f(\tau)$ of this analytic process is given as
+\begin{equation}
+    P_f(\tau) = \mathbb{E}[f(t) f^*(t+\tau)] = 2 [p_n(\tau) + i p_h(\tau)]
+    \label{eq:analytic_corr}
+\end{equation}
+Making the Fourier transform of equation~\eqref{eq:analytic_corr}, we obtain the PSD of $f(t)$, according to the Wiener-Khinchin theorem:
+\begin{equation}
+    G_f(\omega) = \int_{-\infty}^{\infty} P_f(\tau) e^{-i\omega \tau} d\tau = 2 \int_{-\infty}^{\infty} p_n(\tau) e^{-i\omega \tau} d\tau + 2i \int_{-\infty}^{\infty} p_h(\tau) e^{-i\omega \tau} d\tau
+    \label{eq:analytic_psd}
+\end{equation}
+Using the property of the Fourier transform of the Hilbert transform~\cite{papoulis1984}:
+\begin{equation}
+    \int_{-\infty}^{\infty} p_h(\tau) e^{-i\omega \tau} d\tau = -i\, \text{sgn}(\omega) G_n(\omega)
+    \label{eq:hilbert_fourier}
+\end{equation}
+where $\text{sgn}(\omega)$ is the signum function. Substituting this equation into equation~\eqref{eq:analytic_psd} we obtain
+\begin{equation}
+    G_f(\omega) = 4 U(\omega) G_n(\omega) = 2 U(\omega) \bar{G}_f(\omega)
+    \label{eq:analytic_psd_final}
+\end{equation}
+Thus the analytic process defined in equation~\eqref{eq:pre_envelope} exhibits power only in the positive frequency range.
+
+\section{Notation}
+\begin{description}[align=left, labelwidth=2cm]
+    \item[$a(t)$] stationary and nonstationary envelope process
+    \item[$\dot{a}(t)$] time differentiation of envelope process
+    \item[$b(t_n)$] failure rate
+    \item[$\mathbb{E}[\cdot]$] stochastic average of
+    \item[$F(t)$] deterministic shaping function
+    \item[$f(t)$] stochastic complex zero mean input process
+    \item[$G_f(\omega)$] one-sided PSD of complex input process $f(t)$
+    \item[$G_n(\omega)$] two-sided PSD of real input process $n(t)$
+    \item[$G_x(\omega)$] one-sided PSD of complex output process $x(t)$
+    \item[$G_v(\omega, t)$] so-called one-sided evolutionary PSD
+    \item[$g(\tau)$] deterministic function defined in the text
+    \item[$H(\omega)$] transfer function in terms of displacements
+    \item[$H[\cdot]$] Hilbert transform of
+    \item[$h(\tau)$] impulse response function
+    \item[$I_0(\cdot)$] modified Bessel function of order zero
+    \item[$\mathrm{Im}[\cdot]$] imaginary part of
+    \item[$|\cdot|$] Jacobian of transformation or determinant
+    \item[$K_r(\omega, t)$] truncated Fourier transform of product defined in the text
+    \item[$K_r(\omega, \infty)$] transfer function in terms of the $r$th derivative of displacements
+    \item[$L(t_n, \eta)$] first excursion probability of the envelope process
+    \item[$n(t)$] stationary real zero mean input process
+    \item[$h(t)$] Hilbert transform of $n(t)$
+    \item[$p_{\mathbf{Z}_m}(z, t)$] joint probability function
+    \item[$\mathbf{R}_{m,x}(t_1, t_2)$] cross-correlation matrix of vector $\mathbf{X}_m(t)$
+    \item[$\mathbf{X}_m(t)$] complex vector of order $m$, whose elements are $x(t)$ and its time differentiation
+    \item[$x(t)$] complex zero mean output process
+    \item[$Y(t_n)$] process of peaks and troughs of real part of $z(t)$
+    \item[$y(t), \tilde{y}(t)$] different real zero mean output process
+    \item[$\mathbf{Z}_m(t)$] effective value of complex output vector $\mathbf{X}_m(t)$
+    \item[$z(t)$] effective value of complex zero mean output process $x(t)$
+    \item[$a_r, b_r$] recursive coefficients given in the text
+    \item[$\delta(\tau)$] Dirac's delta
+    \item[$\zeta$] damping ratio
+    \item[$\eta$] cylindrical barrier
+    \item[$\theta(t)$] phase process
+    \item[$\mu_j^*(t)$] stationary and nonstationary $j$th spectral moment
+    \item[$\mu_{j,x}(t)$] $j$th moment of evolutionary PSD
+    \item[$\mathbf{A}_{m,x}(t)$] cross-covariance spectral matrix
+    \item[$\nu_+(\eta, t)$] mean number of upcrossings per unit time of circular barrier $\eta$
+    \item[$P_f(\tau)$] correlation function of analytic process $f(t)$
+    \item[$P_{s,v,x}(t_1, t_2)$] $s,v$th entry of cross-correlation matrix $\mathbf{R}_{m,x}(t_1, t_2)$
+    \item[$\mathbf{K}_{m,z}(t_1, t_2)$] Hermitian correlation function matrix defined in the text
+    \item[$\Phi(\cdot)$] error function
+    \item[$\omega_a(t)$] central frequency of nonstationary process
+    \item[$\omega_d$] natural damped radian frequency
+    \item[$\omega_0$] natural radian frequency
+\end{description}
+
+\begin{thebibliography}{99}
+\bibitem{arens1957} Arens, R. (1957). ``Complex processes for envelopes of normal noise.'' \emph{IRE Trans. on Information Theory}, 3, 204--207.
+\bibitem{borino1988} Borino, G., Di Paola, M., and Muscolino, G. (1988). ``Non-stationary spectral moments of base excited MDOF systems.'' (in press).
+\bibitem{corotis1977} Corotis, R. B., and Marshall, A. (1977). ``Oscillator response to modulated random excitation.'' \emph{J. Engrg. Mech. Div., ASCE}, 103(4), 501--513.
+\bibitem{corotis1972} Corotis, R. B., Vanmarcke, E. H., and Cornell, C. A. (1972). ``First passage of non-stationary random processes.'' \emph{J. Engrg. Mech. Div., ASCE}, 98(2), 401--414.
+\bibitem{cramer1967} Cramer, H., and Leadbetter, M. R. (1967). \emph{Stationary and related stochastic processes}. John Wiley and Sons, Inc., New York, N.Y.
+\bibitem{dipaola1985} Di Paola, M. (1985). ``Transient spectral moments of linear systems.'' \emph{SM Archives}, 10, 225--243.
+\bibitem{dipaola_muscolino1985} Di Paola, M., and Muscolino, G. (1985). ``Response maxima of a SDOF system under seismic action.'' \emph{J. Struct. Engrg., ASCE}, 111(9), 2033--2045.
+\bibitem{dipaola_muscolino1986} Di Paola, M., and Muscolino, G. (1986). ``On the convergent part of high spectral moments for stationary structural response.'' \emph{J. Sound Vib.}, 110(2), 233--245.
+\bibitem{dugundji1958} Dugundji, J. (1958). ``Envelope and pre-envelopes of real waveforms.'' \emph{IRE Trans. on Information Theory}, 4, 53--57.
+\bibitem{grossmayer1977} Grossmayer, R. (1977). ``A seismic reliability and first passage failure.'' \emph{Random excitation of structures by earthquake and atmospheric turbulence, CISM Courses and Lectures 225}, H. Parkus, ed., Springer-Verlag, Wien-New York, 110--200.
+\bibitem{krenk1979} Krenk, S. (1979). ``Non-stationary narrow-band response and first passage probability.'' \emph{J. Appl. Mech., ASME}, 46, 919--924.
+\bibitem{krenk1981} Krenk, S., Madsen, H. O., and Madsen, P. H. (1981). ``Stationary and transient response envelopes.'' \emph{J. Engrg. Mech. Div., ASCE}, 109(1), 263--277.
+\bibitem{langley1986} Langley, R. S. (1986). ``On various definitions of the envelope of a random process.'' \emph{J. Sound Vib.}, 105(3), 503--512.
+\bibitem{lutes1978} Lutes, L. D., Chen, Y.-T. T., and Tzuang, S.-H. (1978). ``First-passage approximations for simple oscillators.'' \emph{J. Engrg. Mech. Div., ASCE}, 106(6), 1111--1124.
+\bibitem{middleton1960} Middleton, D. (1960). \emph{An introduction to statistical communication theory}. McGraw-Hill, Inc., New York, N.Y.
+\bibitem{naess1983} Naess, A. (1983). ``Extreme values of a stochastic process whose peak values are subjected to the Markov chain condition.'' \emph{Norwegian Maritime Res.}, 11, 29--37.
+\bibitem{naess1984} Naess, A. (1984). ``The effect of the Markov chain condition on the prediction of extreme values.'' \emph{J. Sound Vib.}, 94(1), 87--103.
+\bibitem{nigam1982} Nigam, N. C. (1982). ``Phase properties of a class of random processes.'' \emph{Earthquake Engrg. Struct. Dyn.}, 10, 711--717.
+\bibitem{papoulis1984} Papoulis, A. (1984). \emph{Signal Analysis}. McGraw-Hill, Inc., New York, N.Y.
+\bibitem{preumont1985} Preumont, A. (1985). ``On the peak factor of stationary Gaussian process.'' \emph{J. Sound Vib.}, 100(1), 15--34.
+\bibitem{priestley1967} Priestley, M. B. (1967). ``Power spectral analysis of non-stationary random processes.'' \emph{J. Sound Vib.}, 6, 86--87.
+\bibitem{rice1955} Rice, S. O. (1955). ``Mathematical analysis of random noise.'' \emph{Selected papers on noise and stochastic processes}, N. Wax, ed., Dover Publications, Inc., New York, N.Y.
+\bibitem{spanos1983} Spanos, P. T. D., and Solomos, G. P. (1983). ``Markov approximation to transient vibration.'' \emph{J. Engrg. Mech. Div., ASCE}, 109(4), 1134--1150.
+\bibitem{vanmarcke1972} Vanmarcke, E. H. (1972). ``Properties of spectral moments with applications to random vibration.'' \emph{J. Engrg. Mech. Div., ASCE}, 98(2), 425--446.
+\bibitem{vanmarcke1975} Vanmarcke, E. H. (1975). ``On the distribution of the first-passage time for normal stationary random processes.'' \emph{J. Appl. Mech., ASME}, 42, 215--220.
+\bibitem{yang1972} Yang, J.-N. (1972). ``Non-Stationary envelope process and first excursion probability.'' \emph{J. Struct. Mech.}, 1, 231--248.
+\bibitem{yang1971} Yang, J.-N., and Shinozuka, M. (1971). ``On the first excursion probability in stationary narrow-band random vibration.'' \emph{J. Appl. Mech., ASME}, 38, 1017--1022.
+\end{thebibliography}
+
+\end{document}
+

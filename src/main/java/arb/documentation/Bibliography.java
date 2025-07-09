@@ -18,6 +18,14 @@ import arb.documentation.references.Book;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article envelopesOfNonstationaryRandomVibrations              =
+                                                                 new Article("Nonstationary Envelope in Random Vibration Theory",
+                                                                             "G. Muscolino",
+                                                                             "1988",
+                                                                             "Journal of Engineering Mechanics",
+                                                                             "114",
+                                                                             "1396-1413").setNumber("8")
+                                                                                         .setPublisher("ASCE");
   public static Article spectralMomentsAndPreEnvelopeCovariances              =
                                                                  new Article("Spectral Moments and Pre-Envelope Covariances of Nonseparable Processes",
                                                                              "Mario Di Paola, Giovanni Petrucci",
