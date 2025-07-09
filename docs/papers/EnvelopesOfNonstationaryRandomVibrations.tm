@@ -142,7 +142,7 @@
   form as follows:
 
   <\equation>
-    <wide|x|\<ddot\>>+2*\<zeta\>*\<omega\><rsub|0>*<wide|x|\<dot\>>+\<omega\><rsub|0><rsup|2>*x=f<around|(|t|)><label|eq:motion>
+    <wide|x|\<ddot\>><around*|(|t|)>+2*\<zeta\>*\<omega\><rsub|0>*<wide|x|\<dot\>><around*|(|t|)>+\<omega\><rsub|0><rsup|2>*x<around*|(|t|)>=f<around|(|t|)><label|eq:motion>
   </equation>
 
   where <math|\<zeta\>> and <math|\<omega\><rsub|0>> are the damping ratio
@@ -235,6 +235,7 @@
 
   <\equation>
     \<vartheta\><around|(|t|)>=tan<rsup|-1><around*|(|<frac|<wide|y|^><around|(|t|)>|y<around|(|t|)>>|)><label|eq:phase>
+    where tan<rsup|-1><around*|(|x|)>=arctan<around*|(|x|)>
   </equation>
 
   <subsection|Nonstationary Case><label|sec:nonstationary>
@@ -405,7 +406,7 @@
   function can be written in the form:
 
   <\equation>
-    p<rsub|s,v,x><around|(|t<rsub|1>,t<rsub|2>|)>=<big|int><rsub|0><rsup|t<rsub|1>><big|int><rsub|0><rsup|t<rsub|2>><frac|d<rsup|s>*h<around|(|\<tau\><rsub|1>|)>|d*t<rsub|1><rsup|s>>*<frac|d<rsup|v>*h<around|(|\<tau\><rsub|2>|)>|d*t<rsub|2><rsup|v>>*F*<around|(|t<rsub|1>-\<tau\><rsub|1>|)>*F*<around|(|t<rsub|2>-\<tau\><rsub|2>|)>*<around|[|p<rsub|n><around|(|\<gamma\>|)>+i*p<rsub|<wide|n|^>><around|(|\<gamma\>|)>|]>*d*\<tau\><rsub|1>*d*\<tau\><rsub|2><label|eq:cross_correlation_general>
+    <with|font-base-size|9|p<rsub|s,v,x><around|(|t<rsub|1>,t<rsub|2>|)>=<big|int><rsub|0><rsup|t<rsub|1>><big|int><rsub|0><rsup|t<rsub|2>><frac|d<rsup|s>*h<around|(|\<tau\><rsub|1>|)>|d*t<rsub|1><rsup|s>>*<frac|d<rsup|v>*h<around|(|\<tau\><rsub|2>|)>|d*t<rsub|2><rsup|v>>*F*<around|(|t<rsub|1>-\<tau\><rsub|1>|)>*F*<around|(|t<rsub|2>-\<tau\><rsub|2>|)>*<around|[|p<rsub|n><around|(|\<gamma\>|)>+i*p<rsub|<wide|n|^>><around|(|\<gamma\>|)>|]>*d*\<tau\><rsub|1>*d*\<tau\><rsub|2>><label|eq:cross_correlation_general>
   </equation>
 
   where
@@ -447,9 +448,10 @@
   where
 
   <\equation>
-    K<rsub|r><around|(|\<omega\>,t|)>=<big|int><rsub|0><rsup|t><frac|d<rsup|r>*h<around|(|\<tau\>|)>|d*t<rsup|r>>*F*<around|(|t-\<tau\>|)>*e<rsup|i*\<omega\>*\<tau\>>*d*\<tau\>,<space|1em>r=s,v;<space|1em>t=t<rsub|1>,t<rsub|2><label|eq:k_function>
+    K<rsub|r><around|(|\<omega\>,t|)>=<big|int><rsub|0><rsup|t><frac|d<rsup|r>*h<around|(|\<tau\>|)>|d*t<rsup|r>>*F*<around|(|t-\<tau\>|)>*e<rsup|i*\<omega\>*\<tau\>>*d*\<tau\>
   </equation>
 
+  with <math|<space|1em>r=s,v;<space|1em>t=t<rsub|1>,t<rsub|2><label|eq:k_function>>
   For <math|s=v=0> and <math|t<rsub|1>=t<rsub|2>=t>, the integrand in
   equation<nbsp><eqref|eq:cross_correlation_frequency> is the so-called
   evolutionary PSD <cite|corotis1977|corotis1972|grossmayer1977>, namely:

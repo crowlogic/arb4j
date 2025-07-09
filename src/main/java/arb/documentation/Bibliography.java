@@ -18,6 +18,15 @@ import arb.documentation.references.Book;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article preEnvelopesOfNonstationaryBandpassProcesses          =
+                                                                     new Article("Pre-envelopes of nonstationary bandpass processes",
+                                                                                 "Harry Urkowitz",
+                                                                                 "1964",
+                                                                                 "Journal of the Franklin Institute",
+                                                                                 "277",
+                                                                                 "31-36").setNumber("1")
+                                                                                         .setPublisher("Elsevier");
+
   public static Article stationaryAndTransientResponseEnvelopes               =
                                                                 new Article("Stationary and Transient Response Envelopes",
                                                                             "Steen Krenk, Henrik O. Madsen, Peter H. Madsen",
@@ -26,7 +35,7 @@ public class Bibliography extends
                                                                             "109",
                                                                             "263-277").setNumber("1")
                                                                                       .setPublisher("ASCE");
-  
+
   public static Article envelopesOfNonstationaryRandomVibrations              =
                                                                  new Article("Nonstationary Envelope in Random Vibration Theory",
                                                                              "G. Muscolino",
