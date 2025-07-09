@@ -410,15 +410,18 @@
   The complete inversion chain for recovering the underlying white noise from
   an oscillatory sample path is:
 
-  <\align>
-    <tformat|<table|<row|<cell|<text|Oscillatory Process
-    >X<around|(|t|)>>|<cell|<long-arrow|\<rubber-rightarrow\>|<text|Inverse
-    Time Change>><text|Stationary Process
-    >Y<around|(|u|)><eq-number>>>|<row|<cell|Y<around|(|u|)>>|<cell|<long-arrow|\<rubber-rightarrow\>|<text|Spectral
-    Inversion>><text|Random Measure >d*\<Phi\><around|(|\<lambda\>|)><eq-number>>>|<row|<cell|d*\<Phi\><around|(|\<lambda\>|)>>|<cell|<long-arrow|\<rubber-rightarrow\>|<text|Spectral
-    Density Normalization>><text|White Noise
-    >d*W<around|(|\<lambda\>|)><eq-number>>>>>
-  </align>
+  <\equation*>
+    <tabular*|<tformat|<cwith|1|3|2|2|cell-halign|c>|<table|<row|<cell|<text|Oscillatory
+    Process >X<around|(|t|)>>|<cell|<long-arrow|\<rubber-rightarrow\>|<text|Inverse
+    Time Change>>>|<cell|<text|Stationary Process
+    >Y<around|(|u|)>>>|<row|<cell|<text|Stationary Process
+    >Y<around|(|u|)>>|<cell|<long-arrow|\<rubber-rightarrow\>|<text|Spectral
+    Inversion>>>|<cell|<text|Random Measure
+    >d*\<Phi\><around|(|\<lambda\>|)>>>|<row|<cell|<text|Random Measure
+    >d*\<Phi\><around|(|\<lambda\>|)>>|<cell|<long-arrow|\<rubber-rightarrow\>|<text|Spectral
+    Density Normalization>>>|<cell|<text|White Noise
+    >d*W<around|(|\<lambda\>|)>>>>>>
+  </equation*>
 
   Each step is mathematically rigorous and involves well-defined limiting
   procedures. The existence of the spectral representation guarantees
