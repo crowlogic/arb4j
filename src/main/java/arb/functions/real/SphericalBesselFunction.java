@@ -7,6 +7,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.utensils.Utensils;
 
 /**
  *
@@ -18,7 +19,8 @@ public class SphericalBesselFunction implements
                                      AutoCloseable
 {
 
-  private static Context                              prototypeContext = new Context(Integer.named("n"));
+  private static Context                              prototypeContext =
+                                                                       new Context(Integer.named("n"));
 
   private static Expression<Real, Real, RealFunction> prototype        =
                                                                 RealFunction.compile("(R(n,½;x)*sin(x) - R(n-1,3⁄2;x)*cos(x))/x",
@@ -38,12 +40,24 @@ public class SphericalBesselFunction implements
 
   public void initialize()
   {
-
+    var n = context.getVariable("n");
+    if (n == null || !n.getClass().equals(Integer.class))
+    {
+      throw new IllegalArgumentException("n is null or not an arb.Integer in " + context);
+    }
     isInitialized = true;
 
     element       = prototype.instantiate();
     context.injectReferences(element);
-
+    try
+    {
+      var nval = element.getClass().getField("n").get(element);
+      System.out.println( "nval=" + nval );
+    }
+    catch (Exception e)
+    {
+      Utensils.throwOrWrap(e);
+    }
   }
 
   @Override
