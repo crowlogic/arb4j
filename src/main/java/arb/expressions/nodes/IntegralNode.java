@@ -142,6 +142,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                                                    new VariableReference<>(expression.parseName()),
                                                    expression.position,
                                                    true);
+
       integrandNode           = expression.require('➔').resolve();
       dvar                    = expression.require('d').parseName();
       assert dvar.equals(integrationVariableNode.getName()) : String.format(SYNTAXMSG,

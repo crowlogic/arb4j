@@ -1,0 +1,113 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{amsmath,latexsym}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmtextit}[1]{\text{{\itshape{#1}}}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+%
+
+
+\begin{document}
+
+\title{Comments on ``A Note on the Predictability of Band-Limited Processes''}
+
+\author{Farokh Marvasti}
+
+\date{}
+
+\maketitle
+
+\begin{abstract}
+  A simpler proof is provided for the problem presented by Papoulis regarding
+  past uniform sampling of random signals, extending the result to
+  deterministic signals and nonuniform sampling.
+\end{abstract}
+
+\section{Introduction}
+
+The problem of past uniform sampling of random signals, as presented by
+Papoulis{\cite{papoulis1985}}, is shown to have been previously solved by
+others using different methods. This note provides a simpler proof that covers
+both random and deterministic signals with uniform or nonuniform sampling.
+
+\section{Proof of Uniqueness for Band-Limited Signals}
+
+\begin{theorem}
+  \label{thm:uniqueness}If the past samples have a rate slightly greater than
+  the Nyquist rate, then no band-limited signal (having a bandwidth equal to
+  or smaller than half the Nyquist rate) can be found to have zero crossings
+  at the past instances.
+\end{theorem}
+
+\begin{proof}
+  The average zero crossings per interval of a band-limited signal is equal to
+  the Nyquist rate. Therefore, the past samples represent uniquely the
+  band-limited signal {\cite{requicha1980}}. This argument is valid for
+  deterministic and random signals with uniform or nonuniform samples.
+\end{proof}
+
+\section{Discussion}
+
+The proof presented here is implied in {\cite{requicha1980}}. Previous
+solutions for this problem include:
+\begin{itemize}
+  \item Wainstein and Zubakov {\cite{wainstein1962}} at three times the
+  Nyquist rate,
+  
+  \item Brown {\cite{brown1972}} at two times the Nyquist rate,
+  
+  \item Beutler {\cite{beutler1966}} for deterministic and random signals with
+  general nonuniform samples,
+  
+  \item Fjallbrandt {\cite{fjallbrandt1975}} for past uniform samples.
+\end{itemize}
+
+\section{Conclusion}
+
+The proof by Papoulis, while different, can be simplified and generalized to
+cover both deterministic and random signals with uniform or nonuniform
+sampling, as shown above.
+
+\section*{Acknowledgments}
+
+The author was with the University of California at Davis, on leave from
+Sharif University of Technology, Tehran, Iran, and is now at AT\&T Bell
+Laboratories, Naperville, IL.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+  {\bibitem{papoulis1985}}A. Papoulis, ``A note on the predictability of
+  band-limited processes,'' \tmtextit{Proc. IEEE}, vol. 73, no. 8, pp.
+  1332--1333, Aug. 1985.
+  
+  {\bibitem{wainstein1962}}L. A. Wainstein and V. D. Zubakov,
+  \tmtextit{Extraction of Signals from Noise}. Englewood Cliffs, NJ:
+  Prentice-Hall, 1962.
+  
+  {\bibitem{brown1972}}J. L. Brown, Jr., ``Uniform linear prediction of
+  bandlimited processes from samples,'' \tmtextit{IEEE Trans. Inform. Theory},
+  vol. IT-18, pp. 662--664, Sept. 1972.
+  
+  {\bibitem{beutler1966}}F. Beutler, ``Error free recovery of signals from
+  irregular samples,'' \tmtextit{SIAM Rev.}, vol. 8, pp. 322--335, July 1966.
+  
+  {\bibitem{fjallbrandt1975}}T. T. Fjallbrandt, ``Interpolation and
+  extrapolation in non-uniform sampling sequences with average sampling rate
+  below the Nyquist rate,'' \tmtextit{Electron. Lett.}, vol. 11, no. 12, pp.
+  264--266, 12th June 1975.
+  
+  {\bibitem{requicha1980}}A. Requicha, ``The zeros of entire functions: Theory
+  and engineering applications,'' \tmtextit{Proc. IEEE}, vol. 68, no. 3, pp.
+  308--328, Mar. 1980.
+  
+  {\bibitem{knab1981}}J. J. Knab, ``Noncentral interpolation of band-limited
+  signals,'' \tmtextit{IEEE Trans. Aerosp. Electron. Syst.}, vol. AES-17, no.
+  4, pp. 586--590, July 1981.
+\end{thebibliography}
+
+\end{document}
