@@ -39,16 +39,29 @@
 
   Let <math|X<around|(|t|)>> be a real-valued stochastic process with sample
   functions which are almost surely continuously differentiable. We say that
-  <math|X<around|(|t|)>> has an upcrossing at level <math|u> at time <math|t>
-  if <math|X<around|(|t|)>=u>, <math|X<rprime|'><around|(|t|)>\<gtr\>0>.
+  <math|X<around|(|t|)>> has an <with|font-shape|italic|upcrossing at level
+  <math|u>> at time <math|t> if <math|X<around|(|t|)>=u>,
+  <math|<wide|X|\<dot\>><around|(|t|)>\<gtr\>0>.
 
-  Let <math|p<around|(|t;x,y|)>> be the joint density function of
-  <math|X<around|(|t|)>> and <math|X<rprime|'><around|(|t|)>>. It is well
-  known that under fairly weak conditions, the expected rate of upcrossings
-  at level <math|u>, <math|q<rsub|u><around|(|t|)>>, is given by the formula
+  Let
 
   <\equation>
-    <label|eq:expected_rate>q<rsub|u><around|(|t|)>=<big|int><rsub|0><rsup|\<infty\>>y*p<around|(|t;u,y|)>*d*y
+    p<around|(|t;x,y|)>=<frac|\<partial\><rsup|2>|\<partial\>*x*<space|0.17em>\<partial\>*y>*\<bbb-P\><around*|(|X<around|(|t|)>\<leq\>x,<space|0.17em><wide|X|\<dot\>><around|(|t|)>\<leq\>y|)>
+  </equation>
+
+  be the joint density function of <math|X<around|(|t|)>> and
+  <math|X<rprime|'><around|(|t|)>>. It is well known that under fairly weak
+  conditions, the expected rate of upcrossings at level <math|u>,
+  <math|q<rsub|u><around|(|t|)>>, is given by the formula
+
+  <\equation>
+    <label|eq:expected_rate><tabular|<tformat|<table|<row|<cell|q<rsub|u><around|(|t|)>>|<cell|=<big|int><rsub|0><rsup|\<infty\>>y*p<around|(|t;u,y|)>*d*y>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>y*<frac|\<partial\><rsup|2>|\<partial\>*u*<space|0.17em>\<partial\>*y>*\<bbb-P\><around*|(|X<around|(|t|)>\<leq\>u,<space|0.17em>X<rprime|'><around|(|t|)>\<leq\>y|)>*d*y>>>>>
+  </equation>
+
+  Let\ 
+
+  <\equation>
+    <label|eq:lambda_i>\<lambda\><rsub|i>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<lambda\><rsup|i>*d*F<around|(|x|)>\<forall\>i=0,1,2,\<ldots\>
   </equation>
 
   When <math|X<around|(|t|)>> is a stationary Gaussian process with zero mean
@@ -61,9 +74,7 @@
 
   where
 
-  <\equation>
-    <label|eq:lambda_i>\<lambda\><rsub|i>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<lambda\><rsup|i>*d*F<around|(|x|)>\<forall\>i=0,1,2,\<ldots\>
-  </equation>
+  \;
 
   The rate of upcrossings is useful for obtaining bounds on the distribution
   of the maximum of <math|X<around|(|t|)>> in <math|<around|(|0,T|)>>. In
@@ -362,33 +373,33 @@
     <associate|auto-3|<tuple|3|4>>
     <associate|auto-4|<tuple|4|4>>
     <associate|auto-5|<tuple|5|5>>
-    <associate|auto-6|<tuple|32|6>>
+    <associate|auto-6|<tuple|33|6>>
     <associate|bib-cramer1967|<tuple|cramer1967|6>>
     <associate|bib-leadbetter1966|<tuple|leadbetter1966|6>>
     <associate|bib-priestley1965|<tuple|priestley1965|6>>
-    <associate|eq:complex_a|<tuple|19|4>>
-    <associate|eq:covariance_matrix|<tuple|25|4>>
-    <associate|eq:du_star|<tuple|21|4>>
-    <associate|eq:dv_star|<tuple|22|4>>
-    <associate|eq:envelope|<tuple|9|2>>
-    <associate|eq:envelope_r|<tuple|24|4>>
-    <associate|eq:evolutionary_spectrum|<tuple|18|3>>
-    <associate|eq:expected_rate|<tuple|1|1>>
-    <associate|eq:expected_rate_envelope|<tuple|32|5>>
-    <associate|eq:gain_function|<tuple|16|3>>
-    <associate|eq:joint_density|<tuple|30|5>>
+    <associate|eq:complex_a|<tuple|20|4>>
+    <associate|eq:covariance_matrix|<tuple|26|4>>
+    <associate|eq:du_star|<tuple|22|4>>
+    <associate|eq:dv_star|<tuple|23|4>>
+    <associate|eq:envelope|<tuple|10|2>>
+    <associate|eq:envelope_r|<tuple|25|4>>
+    <associate|eq:evolutionary_spectrum|<tuple|19|3>>
+    <associate|eq:expected_rate|<tuple|2|1>>
+    <associate|eq:expected_rate_envelope|<tuple|33|5>>
+    <associate|eq:gain_function|<tuple|17|3>>
+    <associate|eq:joint_density|<tuple|31|5>>
     <associate|eq:lambda_i|<tuple|3|1>>
-    <associate|eq:oscillatory_process|<tuple|15|3>>
-    <associate|eq:oscillatory_representation|<tuple|17|3>>
-    <associate|eq:probability_bound|<tuple|4|2>>
-    <associate|eq:quadrature_process|<tuple|8|2>>
-    <associate|eq:quadrature_y|<tuple|23|4>>
-    <associate|eq:rayleigh_rate|<tuple|10|2>>
-    <associate|eq:real_form_spectral|<tuple|5|2>>
-    <associate|eq:real_form_y|<tuple|20|4>>
-    <associate|eq:spectral_representation|<tuple|12|3>>
-    <associate|eq:stationary_gaussian|<tuple|2|1>>
-    <associate|eq:transformation|<tuple|29|5>>
+    <associate|eq:oscillatory_process|<tuple|16|3>>
+    <associate|eq:oscillatory_representation|<tuple|18|3>>
+    <associate|eq:probability_bound|<tuple|5|2>>
+    <associate|eq:quadrature_process|<tuple|9|2>>
+    <associate|eq:quadrature_y|<tuple|24|4>>
+    <associate|eq:rayleigh_rate|<tuple|11|2>>
+    <associate|eq:real_form_spectral|<tuple|6|2>>
+    <associate|eq:real_form_y|<tuple|21|4>>
+    <associate|eq:spectral_representation|<tuple|13|3>>
+    <associate|eq:stationary_gaussian|<tuple|4|1>>
+    <associate|eq:transformation|<tuple|30|5>>
   </collection>
 </references>
 
