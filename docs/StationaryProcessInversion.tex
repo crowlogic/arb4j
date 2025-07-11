@@ -1,0 +1,262 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+
+\title{Spectral Recovery and Pre-Envelope Theory: Formal Theorems}
+\author{Mathematical Analysis}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Spectral Recovery Theory}
+
+\begin{theorem}[Spectral Recovery for Real Stationary Processes]
+\label{thm:spectral_recovery}
+Let $X(t)$ be a real-valued, zero-mean, stationary Gaussian process with spectral representation:
+\begin{equation}
+\label{eq:spectral_rep_real}
+X(t) = \int_0^{\infty} \cos(\lambda t) \, dU(\lambda) + \sin(\lambda t) \, dV(\lambda)
+\end{equation}
+
+Then the orthogonal random measures $U(\lambda)$ and $V(\lambda)$ are recovered from the sample path by:
+\begin{equation}
+\label{eq:u_recovery}
+U(\lambda) = \frac{2}{\pi} \int_0^{\infty} X(t) \cos(\lambda t) dt
+\end{equation}
+\begin{equation}
+\label{eq:v_recovery}
+V(\lambda) = \frac{2}{\pi} \int_0^{\infty} X(t) \sin(\lambda t) dt
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply the orthogonality relations of the trigonometric system. For $U(\lambda)$:
+\begin{equation}
+\label{eq:u_proof_step1}
+\int_0^{\infty} X(t) \cos(\mu t) dt = \int_0^{\infty} \left[\int_0^{\infty} \cos(\lambda t) \, dU(\lambda) + \sin(\lambda t) \, dV(\lambda)\right] \cos(\mu t) dt
+\end{equation}
+
+Interchanging integration order:
+\begin{equation}
+\label{eq:u_proof_step2}
+= \int_0^{\infty} dU(\lambda) \int_0^{\infty} \cos(\lambda t) \cos(\mu t) dt + \int_0^{\infty} dV(\lambda) \int_0^{\infty} \sin(\lambda t) \cos(\mu t) dt
+\end{equation}
+
+Using orthogonality:
+\begin{equation}
+\label{eq:orthogonality_cos}
+\int_0^{\infty} \cos(\lambda t) \cos(\mu t) dt = \frac{\pi}{2} \delta(\lambda - \mu)
+\end{equation}
+\begin{equation}
+\label{eq:orthogonality_sin_cos}
+\int_0^{\infty} \sin(\lambda t) \cos(\mu t) dt = 0
+\end{equation}
+
+Therefore:
+\begin{equation}
+\label{eq:u_proof_final}
+\int_0^{\infty} X(t) \cos(\mu t) dt = \frac{\pi}{2} U(\mu)
+\end{equation}
+
+Hence: $U(\mu) = \frac{2}{\pi} \int_0^{\infty} X(t) \cos(\mu t) dt$. The proof for $V(\lambda)$ is analogous.
+\end{proof}
+
+\begin{theorem}[Analytic Signal Representation]
+\label{thm:analytic_signal}
+For any real-valued stationary process $X(t)$, the analytic signal $Z(t)$ is defined as:
+\begin{equation}
+\label{eq:analytic_signal_def}
+Z(t) = X(t) + i\hat{X}(t)
+\end{equation}
+
+where the quadrature process is:
+\begin{equation}
+\label{eq:quadrature_process}
+\hat{X}(t) = \int_0^{\infty} \sin(\lambda t) \, dU(\lambda) - \cos(\lambda t) \, dV(\lambda)
+\end{equation}
+
+Then $Z(t)$ admits the complex exponential representation:
+\begin{equation}
+\label{eq:complex_exponential_rep}
+Z(t) = \int_0^{\infty} e^{i\lambda t} d\zeta(\lambda)
+\end{equation}
+
+where $d\zeta(\lambda) = dU(\lambda) - i \, dV(\lambda)$ is the pre-envelope spectral measure.
+\end{theorem}
+
+\begin{proof}
+\begin{equation}
+\label{eq:analytic_proof_step1}
+Z(t) = X(t) + i\hat{X}(t)
+\end{equation}
+\begin{align}
+\label{eq:analytic_proof_step2}
+&= \int_0^{\infty} [\cos(\lambda t) \, dU(\lambda) + \sin(\lambda t) \, dV(\lambda)] \nonumber \\
+&\quad + i\int_0^{\infty} [\sin(\lambda t) \, dU(\lambda) - \cos(\lambda t) \, dV(\lambda)]
+\end{align}
+
+Collecting terms:
+\begin{align}
+\label{eq:analytic_proof_step3}
+&= \int_0^{\infty} [(\cos(\lambda t) + i\sin(\lambda t)) \, dU(\lambda) + (\sin(\lambda t) - i\cos(\lambda t)) \, dV(\lambda)] \nonumber \\
+&= \int_0^{\infty} [e^{i\lambda t} \, dU(\lambda) - ie^{i\lambda t} \, dV(\lambda)] \nonumber \\
+&= \int_0^{\infty} e^{i\lambda t} [dU(\lambda) - i \, dV(\lambda)]
+\end{align}
+
+Setting $d\zeta(\lambda) = dU(\lambda) - i \, dV(\lambda)$ completes the proof.
+\end{proof}
+
+\begin{theorem}[Pre-Envelope Spectral Measure Properties]
+\label{thm:pre_envelope_properties}
+The pre-envelope spectral measure $\zeta(\lambda)$ satisfies:
+\begin{enumerate}
+\item $E[d\zeta(\lambda)] = 0$
+\item $E[|d\zeta(\lambda)|^2] = dG(\lambda)$ where $G(\lambda)$ is the spectral distribution function
+\item $E[d\zeta(\lambda_1) \overline{d\zeta(\lambda_2)}] = 0$ for $\lambda_1 \neq \lambda_2$
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\begin{enumerate}
+\item 
+\begin{equation}
+\label{eq:pre_envelope_mean}
+E[d\zeta(\lambda)] = E[dU(\lambda) - i \, dV(\lambda)] = 0 - i \cdot 0 = 0
+\end{equation}
+
+\item 
+\begin{align}
+\label{eq:pre_envelope_variance}
+E[|d\zeta(\lambda)|^2] &= E[(dU(\lambda) - i \, dV(\lambda))(\overline{dU(\lambda) - i \, dV(\lambda)})] \nonumber \\
+&= E[(dU(\lambda) - i \, dV(\lambda))(dU(\lambda) + i \, dV(\lambda))] \nonumber \\
+&= E[|dU(\lambda)|^2] + E[|dV(\lambda)|^2] = dG(\lambda)
+\end{align}
+
+Since $E[|dU(\lambda)|^2] = E[|dV(\lambda)|^2] = \frac{1}{2}dG(\lambda)$ by symmetry.
+
+\item Orthogonality follows from the orthogonality of $U$ and $V$ increments.
+\end{enumerate}
+\end{proof}
+
+\section{Envelope Theory}
+
+\begin{theorem}[Envelope as Absolute Value of Analytic Signal]
+\label{thm:envelope_absolute_value}
+The envelope $R(t)$ of the real process $X(t)$ is given by:
+\begin{equation}
+\label{eq:envelope_def}
+R(t) = |Z(t)| = \sqrt{X^2(t) + \hat{X}^2(t)}
+\end{equation}
+
+where $Z(t)$ is the analytic signal.
+\end{theorem}
+
+\begin{proof}
+By definition:
+\begin{equation}
+\label{eq:envelope_proof}
+R(t) = |Z(t)| = |X(t) + i\hat{X}(t)| = \sqrt{X^2(t) + \hat{X}^2(t)}
+\end{equation}
+
+This establishes that the envelope is the modulus of the pre-envelope process $Z(t)$.
+\end{proof}
+
+\begin{theorem}[Polar Representation of Complex Process]
+\label{thm:polar_representation}
+The analytic signal $Z(t)$ admits the polar representation:
+\begin{equation}
+\label{eq:polar_rep}
+Z(t) = R(t) e^{i\Theta(t)}
+\end{equation}
+
+where:
+\begin{enumerate}
+\item $R(t) = |Z(t)| = \sqrt{X^2(t) + \hat{X}^2(t)}$ is the envelope
+\item $\Theta(t) = \arctan\left(\frac{\hat{X}(t)}{X(t)}\right)$ is the instantaneous phase
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+For any complex number $z = a + ib$, the polar form is $z = |z|e^{i\arg(z)}$ where:
+\begin{equation}
+\label{eq:complex_modulus}
+|z| = \sqrt{a^2 + b^2}
+\end{equation}
+\begin{equation}
+\label{eq:complex_argument}
+\arg(z) = \arctan(b/a)
+\end{equation}
+
+Applying this to $Z(t) = X(t) + i\hat{X}(t)$:
+\begin{equation}
+\label{eq:envelope_polar}
+R(t) = |Z(t)| = \sqrt{X^2(t) + \hat{X}^2(t)}
+\end{equation}
+\begin{equation}
+\label{eq:phase_polar}
+\Theta(t) = \arg(Z(t)) = \arctan\left(\frac{\hat{X}(t)}{X(t)}\right)
+\end{equation}
+
+Therefore: $Z(t) = R(t) e^{i\Theta(t)}$.
+\end{proof}
+
+\begin{theorem}[Instantaneous Frequency]
+\label{thm:instantaneous_frequency}
+The instantaneous frequency $\omega(t)$ of the process $X(t)$ is defined as:
+\begin{equation}
+\label{eq:instantaneous_frequency_def}
+\omega(t) = \frac{d\Theta(t)}{dt}
+\end{equation}
+
+where $\Theta(t)$ is the instantaneous phase from Theorem~\ref{thm:polar_representation}.
+\end{theorem}
+
+\begin{proof}
+By definition of instantaneous frequency as the time derivative of phase:
+\begin{equation}
+\label{eq:freq_derivative}
+\omega(t) = \frac{d}{dt}\left[\arctan\left(\frac{\hat{X}(t)}{X(t)}\right)\right]
+\end{equation}
+
+Using the chain rule:
+\begin{equation}
+\label{eq:freq_chain_rule}
+\omega(t) = \frac{1}{1 + \left(\frac{\hat{X}(t)}{X(t)}\right)^2} \cdot \frac{d}{dt}\left(\frac{\hat{X}(t)}{X(t)}\right)
+\end{equation}
+\begin{equation}
+\label{eq:freq_quotient_rule}
+= \frac{X^2(t)}{X^2(t) + \hat{X}^2(t)} \cdot \frac{\hat{X}'(t)X(t) - \hat{X}(t)X'(t)}{X^2(t)}
+\end{equation}
+\begin{equation}
+\label{eq:freq_final}
+= \frac{\hat{X}'(t)X(t) - \hat{X}(t)X'(t)}{X^2(t) + \hat{X}^2(t)} = \frac{\hat{X}'(t)X(t) - \hat{X}(t)X'(t)}{R^2(t)}
+\end{equation}
+
+This expresses the instantaneous frequency in terms of the original process and its quadrature.
+\end{proof}
+
+\section{Spectral Inversion}
+
+\begin{corollary}[Spectral Recovery from Analytic Signal]
+\label{cor:spectral_recovery_analytic}
+The pre-envelope spectral measure can be recovered from the analytic signal by:
+\begin{equation}
+\label{eq:spectral_recovery_analytic}
+\zeta(\lambda) = \frac{1}{2\pi} \int_{-\infty}^{\infty} Z(t) e^{-i\lambda t} dt
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+This follows directly from the inverse Fourier transform applied to the complex exponential representation in Theorem~\ref{thm:analytic_signal}.
+\end{proof}
+
+\end{document}
