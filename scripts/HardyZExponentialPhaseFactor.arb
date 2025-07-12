@@ -7,6 +7,6 @@ System.out.format("θ(%s)=%s\n",t,theta.eval(t));
 var f = RealFunction.express("Z(2*pi*exp(W(0,x/(pi*exp(1)))))");
 var g = RealFunction.express("Z(t)");
 FunctionPlotter.darkStyle=false
-var thetaPlot = plot(0,50,1000,theta);
-var phase = RealToComplexFunction.express("exp(I*theta(t))",context);
-plot(0,50,1000,phase.realPart(),phase.imagPart())
+var phased = RealFunction.express("theta(t)-t",context);
+var phaseu = RealFunction.express("theta(t)+t",context);
+plot(0,150,4000,theta,phased,phaseu)
