@@ -18,6 +18,15 @@ import arb.documentation.references.Book;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article spectralCharacteristicsOfNonstationaryRandomProcesses =
+                                                                              new Article("Spectral characteristics of nonstationary random processes — a critical review",
+                                                                                          "G. Michaelov, S. Sarkani, L.D. Lutes",
+                                                                                          "1999",
+                                                                                          "Structural Safety",
+                                                                                          "21",
+                                                                                          "223-244").setNumber("3")
+                                                                                                    .setPublisher("Elsevier");
+  
   public static Article integralRepresentationsOfPositiveDefiniteFunctions    =
                                                                            new Article("Integral representations of positive definite functions",
                                                                                        "Devinatz, A",
