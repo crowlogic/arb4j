@@ -18,6 +18,15 @@ import arb.documentation.references.Book;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article integralRepresentationsOfPositiveDefiniteFunctions    =
+                                                                           new Article("Integral representations of positive definite functions",
+                                                                                       "Devinatz, A",
+                                                                                       "1953",
+                                                                                       "Transactions of the American Mathematical Society",
+                                                                                       "74",
+                                                                                       "56--77").setNumber("1")
+                                                                                                .setPublisher("JSTOR");
+
   public static Article preEnvelopesOfNonstationaryBandpassProcesses          =
                                                                      new Article("Pre-envelopes of nonstationary bandpass processes",
                                                                                  "Harry Urkowitz",
