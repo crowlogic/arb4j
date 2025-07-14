@@ -1,0 +1,2 @@
+verify each statement here, assigning a green check mark if the statement is true and a red x if it is not
+

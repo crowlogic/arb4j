@@ -172,21 +172,6 @@ public interface ComplexFunction extends
     throw new UnsupportedOperationException(getClass() + " needs to implement this method");
   }
 
-  /**
-   * 
-   * @param z
-   * @return the multiplicity of the root at the point z, or 0 if there is no root
-   *         there
-   */
-  public default int multiplicityOfRoot(Complex z)
-  {
-    return 1;
-    // throw new UnsupportedOperationException(getClass() + "TODO: return the
-    // multiplicity of the root at the point " + z + " here, or throw an exception
-    // or something if there isn't a root at the requested point within whatever
-    // uncertainty radius is there");
-  }
-
   public default Complex eval(double t, Complex result)
   {
     if (result == null)
