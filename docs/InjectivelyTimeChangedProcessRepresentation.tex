@@ -1,0 +1,160 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{corollary}{Corollary}
+
+\title{Injectively Time-Changed Stationary Processes:\\ A Spectral Analysis}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+We develop the theory of injectively time-changed stationary processes, which arise from spectral representations of the form
+\begin{equation}
+X(t) = \int_{-1}^1 f(\lambda) e^{i\lambda(\theta(t)-t)} \, d\lambda
+\end{equation}
+where $\theta: \mathbb{R} \to \mathbb{R}$ is strictly increasing and $f \in L^2([-1,1])$.
+
+\begin{definition}
+An \emph{injectively time-changed stationary process} is a stochastic process $\{X(t)\}_{t \in \mathbb{R}}$ admitting the spectral representation
+\begin{equation}
+X(t) = \int_{-1}^1 e^{i\lambda(\theta(t)-t)} \, dZ(\lambda)
+\end{equation}
+where $\theta: \mathbb{R} \to \mathbb{R}$ is strictly increasing, $\theta \in C^1(\mathbb{R})$, and $\{Z(\lambda)\}_{\lambda \in [-1,1]}$ is an orthogonal increment process with $E[|dZ(\lambda)|^2] = F(d\lambda)$ for some finite measure $F$ on $[-1,1]$.
+\end{definition}
+
+\section{Fundamental Properties}
+
+\begin{theorem}[Spectral Representation]
+Let $X(t)$ be an injectively time-changed stationary process. Then:
+\begin{enumerate}
+\item $X(t)$ is well-defined for all $t \in \mathbb{R}$
+\item $E[|X(t)|^2] = \int_{-1}^1 F(d\lambda) < \infty$
+\item The covariance function satisfies
+\begin{equation}
+\text{Cov}(X(s),X(t)) = \int_{-1}^1 e^{i\lambda((\theta(t)-t)-(\theta(s)-s))} F(d\lambda)
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) Since $\theta$ is strictly increasing and continuous, $\theta(t)-t$ is well-defined for all $t$. The integral converges by the Cauchy-Schwarz inequality:
+\begin{align}
+E[|X(t)|^2] &= E\left[\left|\int_{-1}^1 e^{i\lambda(\theta(t)-t)} dZ(\lambda)\right|^2\right]\\
+&= \int_{-1}^1 F(d\lambda) < \infty
+\end{align}
+
+(2) Follows immediately from (1).
+
+(3) By orthogonality of increments:
+\begin{align}
+\text{Cov}(X(s),X(t)) &= E\left[\int_{-1}^1 e^{i\lambda(\theta(s)-s)} dZ(\lambda) \cdot \overline{\int_{-1}^1 e^{i\mu(\theta(t)-t)} dZ(\mu)}\right]\\
+&= \int_{-1}^1 e^{i\lambda((\theta(s)-s)-(\theta(t)-t))} F(d\lambda)
+\end{align}
+\end{proof}
+
+\begin{theorem}[Non-Stationarity]
+An injectively time-changed stationary process $X(t)$ is stationary if and only if $\theta(t) = t + c$ for some constant $c \in \mathbb{R}$.
+\end{theorem}
+
+\begin{proof}
+($\Leftarrow$) If $\theta(t) = t + c$, then $\theta(t) - t = c$ and
+\begin{equation}
+\text{Cov}(X(s),X(t)) = \int_{-1}^1 F(d\lambda) = \text{Var}(X(0))
+\end{equation}
+which depends only on $|t-s| = 0$, so $X(t)$ is stationary.
+
+($\Rightarrow$) Suppose $X(t)$ is stationary. Then $\text{Cov}(X(s),X(t))$ depends only on $t-s$. From Theorem 1, this requires
+\begin{equation}
+(\theta(t)-t) - (\theta(s)-s) = g(t-s)
+\end{equation}
+for some function $g$. Setting $u = t-s$ and differentiating with respect to $t$:
+\begin{equation}
+\theta'(t) - 1 = g'(u) \cdot 1 = g'(t-s)
+\end{equation}
+Since the left side depends only on $t$ and the right side on $t-s$, both must be constant. Thus $\theta'(t) = 1 + k$ for some constant $k$, implying $\theta(t) = t + kt + c$. For stationarity, we need $g(u) = ku$, which requires $k = 0$. Therefore $\theta(t) = t + c$.
+\end{proof}
+
+\section{Warping Deviation Analysis}
+
+\begin{definition}
+The \emph{warping deviation function} is $\Delta(t) := \theta(t) - t$.
+\end{definition}
+
+\begin{proposition}[Deviation Properties]
+Let $\Delta(t) = \theta(t) - t$ where $\theta$ is strictly increasing. Then:
+\begin{enumerate}
+\item $\Delta'(t) = \theta'(t) - 1$
+\item $X(t)$ is non-stationary unless $\Delta(t)$ is constant
+\item The instantaneous frequency modulation is $\lambda \Delta'(t)$
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(1) and (2) are immediate. For (3), the phase of the spectral component at frequency $\lambda$ is $\lambda(\theta(t)-t) = \lambda\Delta(t)$. The instantaneous frequency is
+\begin{equation}
+\frac{d}{dt}[\lambda\Delta(t)] = \lambda\Delta'(t) = \lambda(\theta'(t)-1)
+\end{equation}
+\end{proof}
+
+\section{Inversion and Reconstruction}
+
+\begin{theorem}[Inversion Formula]
+Let $X(t)$ be an injectively time-changed stationary process with spectral measure $F$. If $\theta$ is invertible, then
+\begin{equation}
+F(\{\lambda\}) = \lim_{T \to \infty} \frac{1}{2T} \int_{-T}^T X(t) e^{-i\lambda(\theta(t)-t)} \, dt
+\end{equation}
+when $F$ has point masses.
+\end{theorem}
+
+\begin{proof}
+For a point mass at $\lambda_0$, $X(t) = A e^{i\lambda_0(\theta(t)-t)}$ for some constant $A$. Then:
+\begin{align}
+&\frac{1}{2T} \int_{-T}^T X(t) e^{-i\lambda(\theta(t)-t)} \, dt\\
+&= \frac{A}{2T} \int_{-T}^T e^{i(\lambda_0-\lambda)(\theta(t)-t)} \, dt
+\end{align}
+As $T \to \infty$, this converges to $A\delta_{\lambda_0}(\lambda)$ by the Riemann-Lebesgue lemma when $\lambda \neq \lambda_0$, and to $A$ when $\lambda = \lambda_0$.
+\end{proof}
+
+\section{Band-Limited Structure}
+
+\begin{theorem}[Band-Limited Representation]
+Every injectively time-changed stationary process with support in $[-1,1]$ can be written as
+\begin{equation}
+X(t) = \int_{-1}^1 \hat{f}(\lambda) e^{i\lambda(\theta(t)-t)} \, d\lambda
+\end{equation}
+where $\hat{f}$ is the Fourier transform of some $f \in L^2(\mathbb{R})$.
+\end{theorem}
+
+\begin{proof}
+Since the spectral measure $F$ has support in $[-1,1]$, we can write $F(d\lambda) = |\hat{f}(\lambda)|^2 d\lambda$ for some $\hat{f} \in L^2([-1,1])$ by the Radon-Nikodym theorem. The band-limited nature ensures $\hat{f}$ extends to an $L^2(\mathbb{R})$ function that is the Fourier transform of some $f \in L^2(\mathbb{R})$.
+\end{proof}
+
+\section{Oscillatory Properties}
+
+\begin{theorem}[Priestley Oscillatory Characterization]
+An injectively time-changed stationary process $X(t)$ with band-limited spectrum in $[-1,1]$ is oscillatory in Priestley's sense if and only if the spectral measure $F$ is concentrated away from $\lambda = 0$.
+\end{theorem}
+
+\begin{proof}
+Priestley defines oscillatory processes as those whose spectral density is concentrated around non-zero frequencies. Since our process has the form
+\begin{equation}
+X(t) = \int_{-1}^1 e^{i\lambda(\theta(t)-t)} dZ(\lambda)
+\end{equation}
+the oscillatory nature depends on whether $F$ assigns significant mass near $\lambda = 0$. If $F(\{0\}) = 0$ and $F$ is concentrated away from zero, then $X(t)$ exhibits sustained oscillations modulated by the time-change $\theta(t)-t$.
+\end{proof}
+
+\section{Conclusion}
+
+Injectively time-changed stationary processes provide a natural generalization of stationary processes that preserves spectral structure while allowing for non-trivial temporal evolution. The warping deviation $\theta(t)-t$ serves as the fundamental mechanism for introducing non-stationarity while maintaining the interpretability of frequency-domain analysis.
+
+\end{document}
