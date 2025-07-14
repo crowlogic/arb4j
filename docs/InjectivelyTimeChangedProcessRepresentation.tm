@@ -4,7 +4,10 @@
 
 <\body>
   <doc-data|<doc-title|Injectively Time-Changed Stationary
-  Processes:<next-line>A Spectral Analysis>|<doc-date|>>
+  Processes:<next-line>A Spectral Analysis>|<doc-author|<author-data|<author-name|Stephen
+  Crowley>|<\author-affiliation>
+    <date|>
+  </author-affiliation>>>|<doc-date|>>
 
   <\table-of-contents|toc>
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Introduction>
@@ -12,15 +15,15 @@
     <no-break><pageref|auto-1><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Gain
-    Function Decomposition> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    Function Representation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-2><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>Fundamental
     Properties> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-3><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>Time-Warping
-    Analysis> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>Warping
+    Function Analysis> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-4><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|5<space|2spc>Inversion
@@ -31,8 +34,8 @@
     Structure> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-6><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|7<space|2spc>Reconstruction
-    and Synthesis> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|7<space|2spc>Asymptotic
+    Analysis> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-7><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|8<space|2spc>Conclusion>
@@ -42,15 +45,9 @@
 
   <section|Introduction>
 
-  We develop the theory of injectively time-changed stationary processes,
-  which arise from spectral representations of the form
-
-  <\equation>
-    X<around|(|t|)>=<big|int><rsub|-1><rsup|1>f<around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*<space|0.17em>d*\<lambda\>
-  </equation>
-
-  where <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> is strictly increasing and
-  <math|f\<in\>L<rsup|2><around|(|<around|[|-1,1|]>|)>>.
+  This analysis concerns injectively time-changed stationary processes, which
+  arise from spectral representations involving a warping function
+  <math|\<theta\><around|(|t|)>> applied to the oscillatory kernel.
 
   <\definition>
     An <em|injectively time-changed stationary process> is a stochastic
@@ -69,11 +66,11 @@
     for some finite measure <math|F> on <math|<around|[|-1,1|]>>.
   </definition>
 
-  <section|Gain Function Decomposition>
+  <section|Gain Function Representation>
 
   <\proposition>
-    [Evolutionary Spectral Representation] The process <math|X<around|(|t|)>>
-    can be written in evolutionary form as
+    [Evolutionary Spectral Form] The process <math|X<around|(|t|)>> admits
+    the evolutionary spectral representation
 
     <\equation>
       X<around|(|t|)>=<big|int><rsub|-1><rsup|1>A<around|(|t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>d*Z<around|(|\<lambda\>|)>
@@ -87,17 +84,17 @@
   </proposition>
 
   <\proof>
-    Direct substitution gives
+    Direct substitution yields:
 
     <\align>
-      <tformat|<table|<row|<cell|A<around|(|t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>>|<cell|=e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>*e<rsup|i*\<lambda\>*t><eq-number>>>|<row|<cell|>|<cell|=e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t+t|)>><eq-number>>>|<row|<cell|>|<cell|=e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>><eq-number>>>>>
+      <tformat|<table|<row|<cell|X<around|(|t|)>>|<cell|=<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*<space|0.17em>d*Z<around|(|\<lambda\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>*e<rsup|i*\<lambda\>*t>*<space|0.17em>d*Z<around|(|\<lambda\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-1><rsup|1>A<around|(|t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>d*Z<around|(|\<lambda\>|)><eq-number>>>>>
     </align>
   </proof>
 
   <section|Fundamental Properties>
 
   <\theorem>
-    [Spectral Representation] Let <math|X<around|(|t|)>> be an injectively
+    [Spectral Characteristics] Let <math|X<around|(|t|)>> be an injectively
     time-changed stationary process. Then:
 
     <\enumerate>
@@ -109,7 +106,7 @@
       <item>The covariance function satisfies
 
       <\equation>
-        <text|Cov><around|(|X<around|(|s|)>,X<around|(|t|)>|)>=<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|)>>*F*<around|(|d*\<lambda\>|)>
+        <text|Cov><around|(|X<around|(|s|)>,X<around|(|t|)>|)>=<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|s|)>-\<theta\><around|(|t|)>|)>>*F*<around|(|d*\<lambda\>|)>
       </equation>
     </enumerate>
   </theorem>
@@ -117,24 +114,25 @@
   <\proof>
     (1) Since <math|\<theta\>> is strictly increasing and continuous,
     <math|\<theta\><around|(|t|)>> is well-defined for all <math|t>. The
-    integral converges by the Cauchy-Schwarz inequality.
-
-    (2) By orthogonality:
+    stochastic integral converges in <math|L<rsup|2>> by the isometry
+    property:
 
     <\align>
-      <tformat|<table|<row|<cell|E<around|[|<around|\||X<around|(|t|)>|\|><rsup|2>|]>>|<cell|=E<around*|[|<around*|\||<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*d*Z<around|(|\<lambda\>|)>|\|><rsup|2>|]><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-1><rsup|1>F*<around|(|d*\<lambda\>|)>\<less\>\<infty\><eq-number>>>>>
+      <tformat|<table|<row|<cell|E<around|[|<around|\||X<around|(|t|)>|\|><rsup|2>|]>>|<cell|=E<around*|[|<around*|\||<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*d*Z<around|(|\<lambda\>|)>|\|><rsup|2>|]><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-1><rsup|1><around|\||e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>|\|><rsup|2>*F*<around|(|d*\<lambda\>|)>=<big|int><rsub|-1><rsup|1>F*<around|(|d*\<lambda\>|)>\<less\>\<infty\><eq-number>>>>>
     </align>
 
-    (3) By orthogonality of increments:
+    (2) Follows immediately from (1).
+
+    (3) By orthogonality of the random measure increments:
 
     <\align>
-      <tformat|<table|<row|<cell|<text|Cov><around|(|X<around|(|s|)>,X<around|(|t|)>|)>>|<cell|=E<around*|[|<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*\<theta\><around|(|s|)>>*d*Z<around|(|\<lambda\>|)>\<cdot\><wide|<big|int><rsub|-1><rsup|1>e<rsup|i*\<mu\>*\<theta\><around|(|t|)>>*d*Z<around|(|\<mu\>|)>|\<bar\>>|]><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|s|)>-\<theta\><around|(|t|)>|)>>*F*<around|(|d*\<lambda\>|)><eq-number>>>>>
+      <tformat|<table|<row|<cell|<text|Cov><around|(|X<around|(|s|)>,X<around|(|t|)>|)>>|<cell|=E<around*|[|<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*\<theta\><around|(|s|)>>*d*Z<around|(|\<lambda\>|)>\<cdot\><wide|<big|int><rsub|-1><rsup|1>e<rsup|i*\<mu\>*\<theta\><around|(|t|)>>*d*Z<around|(|\<mu\>|)>|\<bar\>>|]><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*\<theta\><around|(|s|)>><wide|e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>|\<bar\>>F*<around|(|d*\<lambda\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|s|)>-\<theta\><around|(|t|)>|)>>*F*<around|(|d*\<lambda\>|)><eq-number>>>>>
     </align>
   </proof>
 
   <\theorem>
-    [Non-Stationarity Characterization] An injectively time-changed
-    stationary process <math|X<around|(|t|)>> is stationary if and only if
+    [Non-Stationarity Condition] An injectively time-changed stationary
+    process <math|X<around|(|t|)>> is stationary if and only if
     <math|\<theta\><around|(|t|)>=t+c> for some constant
     <math|c\<in\>\<bbb-R\>>.
   </theorem>
@@ -143,150 +141,172 @@
     (<math|\<Leftarrow\>>) If <math|\<theta\><around|(|t|)>=t+c>, then
 
     <\equation>
-      <text|Cov><around|(|X<around|(|s|)>,X<around|(|t|)>|)>=<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*<around|(|s+c-t-c|)>>*F*<around|(|d*\<lambda\>|)>=<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*<around|(|s-t|)>>*F*<around|(|d*\<lambda\>|)>
+      <text|Cov><around|(|X<around|(|s|)>,X<around|(|t|)>|)>=<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*c>*e<rsup|-i*\<lambda\>*c>*F*<around|(|d*\<lambda\>|)>=<big|int><rsub|-1><rsup|1>F*<around|(|d*\<lambda\>|)>
     </equation>
 
-    which depends only on <math|s-t>, so <math|X<around|(|t|)>> is
-    stationary.
+    which is independent of <math|s> and <math|t>, establishing stationarity.
 
     (<math|\<Rightarrow\>>) Suppose <math|X<around|(|t|)>> is stationary.
     Then Cov<math|<around|(|X<around|(|s|)>,X<around|(|t|)>|)>> depends only
-    on <math|t-s>. This requires <math|\<theta\><around|(|t|)>-\<theta\><around|(|s|)>=g*<around|(|t-s|)>>
-    for some function <math|g>. Differentiating with respect to <math|t>:
-    <math|\<theta\><rprime|'><around|(|t|)>=g<rprime|'>*<around|(|t-s|)>>.
-    Since the left side depends only on <math|t>,
-    <math|\<theta\><rprime|'><around|(|t|)>> must be constant, so
-    <math|\<theta\><around|(|t|)>=a*t+b>. For stationarity, we need
-    <math|a=1>.
-  </proof>
-
-  <section|Time-Warping Analysis>
-
-  <\definition>
-    The <em|instantaneous frequency modulation> at time <math|t> and
-    frequency <math|\<lambda\>> is
+    on <math|t-s>. From the covariance formula, this requires
 
     <\equation>
-      \<omega\><around|(|t,\<lambda\>|)>=\<lambda\>*\<theta\><rprime|'><around|(|t|)>
+      \<theta\><around|(|s|)>-\<theta\><around|(|t|)>=g*<around|(|s-t|)>
     </equation>
+
+    for some function <math|g>. Differentiating with respect to <math|s>:
+
+    <\equation>
+      \<theta\><rprime|'><around|(|s|)>=g<rprime|'>*<around|(|s-t|)>
+    </equation>
+
+    Since the left side depends only on <math|s> and the right side on
+    <math|s-t>, both must be constant. Thus
+    <math|\<theta\><rprime|'><around|(|t|)>=k> for some constant <math|k>,
+    implying <math|\<theta\><around|(|t|)>=k*t+c>. For the covariance to
+    depend only on the difference <math|s-t>, one requires <math|k=1>,
+    yielding <math|\<theta\><around|(|t|)>=t+c>.
+  </proof>
+
+  <section|Warping Function Analysis>
+
+  <\definition>
+    The <em|warping deviation function> is
+    <math|\<Delta\><around|(|t|)>\<assign\>\<theta\><around|(|t|)>-t>.
   </definition>
 
   <\proposition>
-    [Frequency Modulation Properties] Let <math|X<around|(|t|)>> be an
-    injectively time-changed stationary process. Then:
+    [Deviation Dynamics] Let <math|\<Delta\><around|(|t|)>=\<theta\><around|(|t|)>-t>
+    where <math|\<theta\>> is strictly increasing. Then:
 
     <\enumerate>
-      <item>The phase function is <math|\<Phi\><around|(|t,\<lambda\>|)>=\<lambda\>*\<theta\><around|(|t|)>>
+      <item><math|\<Delta\><rprime|'><around|(|t|)>=\<theta\><rprime|'><around|(|t|)>-1>
 
-      <item>The instantaneous frequency is
-      <math|<frac|\<partial\>*\<Phi\>|\<partial\>*t>=\<lambda\>*\<theta\><rprime|'><around|(|t|)>>
+      <item>The gain function becomes <math|A<around|(|t,\<lambda\>|)>=e<rsup|i*\<lambda\>*\<Delta\><around|(|t|)>>>
 
-      <item>When <math|\<theta\><rprime|'><around|(|t|)>\<gtr\>1>,
-      frequencies are compressed; when <math|\<theta\><rprime|'><around|(|t|)>\<less\>1>,
-      frequencies are stretched
+      <item>The instantaneous frequency modulation is
+      <math|\<lambda\>*\<Delta\><rprime|'><around|(|t|)>>
     </enumerate>
   </proposition>
 
   <\proof>
-    (1) and (2) are immediate from the definition. For (3), the rate of phase
-    evolution <math|\<lambda\>*\<theta\><rprime|'><around|(|t|)>> compared to
-    the baseline rate <math|\<lambda\>> determines frequency scaling.
+    (1) and (2) are immediate. For (3), the phase of the spectral component
+    at frequency <math|\<lambda\>> is <math|\<lambda\>*\<theta\><around|(|t|)>>.
+    The instantaneous frequency is
+
+    <\equation>
+      <frac|d|d*t>*<around|[|\<lambda\>*\<theta\><around|(|t|)>|]>=\<lambda\>*\<theta\><rprime|'><around|(|t|)>=\<lambda\>*<around|(|1+\<Delta\><rprime|'><around|(|t|)>|)>=\<lambda\>+\<lambda\>*\<Delta\><rprime|'><around|(|t|)>
+    </equation>
+
+    The modulation relative to the base frequency <math|\<lambda\>> is
+    <math|\<lambda\>*\<Delta\><rprime|'><around|(|t|)>>.
   </proof>
 
   <section|Inversion Theory>
 
   <\theorem>
-    [Warping Inversion] Let <math|X<around|(|t|)>> be an injectively
-    time-changed stationary process with <math|\<theta\>> strictly
-    increasing. Define the inverse process
+    [Spectral Inversion] Let <math|X<around|(|t|)>> be an injectively
+    time-changed stationary process with absolutely continuous spectral
+    measure <math|F*<around|(|d*\<lambda\>|)>=f<around|(|\<lambda\>|)>*d*\<lambda\>>.
+    If <math|\<theta\>> is invertible with inverse <math|\<psi\>>, then
 
     <\equation>
-      Y<around|(|s|)>=X<around|(|\<theta\><rsup|-1><around|(|s|)>|)>
+      f<around|(|\<lambda\>|)>=lim<rsub|T\<to\>\<infty\>>
+      <frac|1|2*T>*<big|int><rsub|-T><rsup|T>X<around|(|\<psi\><around|(|u|)>|)>*e<rsup|-i*\<lambda\>*u>*<frac|d*u|\<psi\><rprime|'><around|(|u|)>>
     </equation>
-
-    Then <math|Y<around|(|s|)>> has the spectral representation
-
-    <\equation>
-      Y<around|(|s|)>=<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*s>*<space|0.17em>d*Z<around|(|\<lambda\>|)>
-    </equation>
-
-    and is stationary.
   </theorem>
 
   <\proof>
-    Since <math|\<theta\>> is strictly increasing, <math|\<theta\><rsup|-1>>
-    exists. Substituting <math|t=\<theta\><rsup|-1><around|(|s|)>>:
+    Making the substitution <math|u=\<theta\><around|(|t|)>>, so
+    <math|t=\<psi\><around|(|u|)>> and <math|d*t=\<psi\><rprime|'><around|(|u|)>*d*u>:
 
     <\align>
-      <tformat|<table|<row|<cell|Y<around|(|s|)>>|<cell|=X<around|(|\<theta\><rsup|-1><around|(|s|)>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*\<theta\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>*d*Z<around|(|\<lambda\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*s>*d*Z<around|(|\<lambda\>|)><eq-number>>>>>
+      <tformat|<table|<row|<cell|X<around|(|\<psi\><around|(|u|)>|)>>|<cell|=<big|int><rsub|-1><rsup|1>e<rsup|i*\<mu\>*u>*d*Z<around|(|\<mu\>|)><eq-number>>>>>
     </align>
 
-    This is the standard stationary representation with covariance
+    This is the spectral representation of a stationary process in the
+    <math|u>-domain. The standard inversion formula for stationary processes
+    gives:
 
     <\equation>
-      <text|Cov><around|(|Y<around|(|s<rsub|1>|)>,Y<around|(|s<rsub|2>|)>|)>=<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*<around|(|s<rsub|1>-s<rsub|2>|)>>*F*<around|(|d*\<lambda\>|)>
+      f<around|(|\<lambda\>|)>=lim<rsub|T\<to\>\<infty\>>
+      <frac|1|2*T>*<big|int><rsub|-T><rsup|T>X<around|(|\<psi\><around|(|u|)>|)>*e<rsup|-i*\<lambda\>*u>*<frac|d*u|\<psi\><rprime|'><around|(|u|)>>
     </equation>
 
-    depending only on <math|s<rsub|1>-s<rsub|2>>.
+    where the factor <math|<frac|1|\<psi\><rprime|'><around|(|u|)>>> accounts
+    for the change of measure.
   </proof>
 
   <section|Band-Limited Structure>
 
   <\theorem>
-    [Oscillatory Character] An injectively time-changed stationary process
-    <math|X<around|(|t|)>> with spectral support in <math|<around|[|-1,1|]>>
-    exhibits oscillatory behavior with time-varying instantaneous frequency
-
-    <\equation>
-      \<omega\><rsub|inst><around|(|t|)>=<big|int><rsub|-1><rsup|1>\<lambda\>*\<theta\><rprime|'><around|(|t|)><frac|<around|\||d*Z<around|(|\<lambda\>|)>|\|><rsup|2>|<big|int><rsub|-1><rsup|1><around|\||d*Z<around|(|\<mu\>|)>|\|><rsup|2>>
-    </equation>
+    [Oscillatory Characterization] An injectively time-changed stationary
+    process <math|X<around|(|t|)>> with spectral support in
+    <math|<around|[|-1,1|]>> exhibits oscillatory behavior in the sense of
+    Priestley if and only if the spectral measure <math|F> concentrates mass
+    away from <math|\<lambda\>=0>.
   </theorem>
 
   <\proof>
-    The instantaneous frequency is the weighted average of component
-    frequencies <math|\<lambda\>*\<theta\><rprime|'><around|(|t|)>>, weighted
-    by spectral power <math|<around|\||d*Z<around|(|\<lambda\>|)>|\|><rsup|2>>.
+    The process has the representation
+
+    <\equation>
+      X<around|(|t|)>=<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*d*Z<around|(|\<lambda\>|)>
+    </equation>
+
+    Oscillatory behavior requires sustained periodic components. If <math|F>
+    has significant mass at <math|\<lambda\>=0>, the corresponding component
+    <math|e<rsup|i\<cdot\>0\<cdot\>\<theta\><around|(|t|)>>=1> contributes a
+    non-oscillatory constant term. Conversely, if <math|F> concentrates away
+    from zero, all spectral components <math|e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>>
+    with <math|\<lambda\>\<neq\>0> exhibit oscillatory behavior modulated by
+    the time-change <math|\<theta\><around|(|t|)>>.
   </proof>
 
   <\corollary>
-    [Priestley Oscillatory Process] When the spectral measure <math|F> is
-    concentrated away from <math|\<lambda\>=0> and
-    <math|\<theta\><rprime|'><around|(|t|)>\<gtr\>0>, the process
-    <math|X<around|(|t|)>> is oscillatory in Priestley's sense with
-    time-varying carrier frequency.
+    [Band-Limited Narrow-Band Property] If <math|F> is concentrated in an
+    interval <math|<around|[|\<lambda\><rsub|0>-\<epsilon\>,\<lambda\><rsub|0>+\<epsilon\>|]>>
+    with <math|\<lambda\><rsub|0>\<neq\>0> and small
+    <math|\<epsilon\>\<gtr\>0>, then <math|X<around|(|t|)>> exhibits
+    narrow-band oscillatory behavior around the carrier frequency
+    <math|\<lambda\><rsub|0>>.
   </corollary>
 
-  <section|Reconstruction and Synthesis>
+  <section|Asymptotic Analysis>
 
   <\theorem>
-    [Spectral Synthesis] Given a strictly increasing warping function
-    <math|\<theta\><around|(|t|)>> and spectral density
-    <math|f<around|(|\<lambda\>|)>> supported on <math|<around|[|-1,1|]>>,
-    the process
+    [Large Deviation Asymptotics] If <math|\<Delta\><around|(|t|)>=\<theta\><around|(|t|)>-t>
+    grows without bound as <math|<around|\||t|\|>\<to\>\<infty\>>, then the
+    process <math|X<around|(|t|)>> exhibits asymptotic phase decorrelation:
 
     <\equation>
-      X<around|(|t|)>=<big|int><rsub|-1><rsup|1>f<around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>*d*\<lambda\>
+      lim<rsub|<around|\||t-s|\|>\<to\>\<infty\>><text|Cov><around|(|X<around|(|s|)>,X<around|(|t|)>|)>=0
     </equation>
 
-    uniquely determines an injectively time-changed stationary process.
+    provided <math|F> has no point masses.
   </theorem>
 
   <\proof>
-    The integral converges since <math|f\<in\>L<rsup|2><around|(|<around|[|-1,1|]>|)>>
-    and <math|<around|\||e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>|\|>=1>.
-    The covariance structure follows from Theorem 1, and injectivity of
-    <math|\<theta\>> ensures the process is well-defined and non-degenerate.
+    The covariance is
+
+    <\equation>
+      <text|Cov><around|(|X<around|(|s|)>,X<around|(|t|)>|)>=<big|int><rsub|-1><rsup|1>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|s|)>-\<theta\><around|(|t|)>|)>>*F*<around|(|d*\<lambda\>|)>
+    </equation>
+
+    If <math|<around|\||\<theta\><around|(|s|)>-\<theta\><around|(|t|)>|\|>\<to\>\<infty\>>
+    as <math|<around|\||t-s|\|>\<to\>\<infty\>>, then by the Riemann-Lebesgue
+    lemma, the oscillatory integral converges to zero when <math|F> is
+    absolutely continuous with respect to Lebesgue measure.
   </proof>
 
   <section|Conclusion>
 
-  Injectively time-changed stationary processes provide a natural framework
-  for analyzing non-stationary oscillatory phenomena while preserving
-  spectral interpretability. The warping function
-  <math|\<theta\><around|(|t|)>> serves as the fundamental mechanism for
-  temporal modulation, with the gain function
-  <math|A<around|(|t,\<lambda\>|)>=e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>>
-  encoding the deviation from stationary evolution.
+  Injectively time-changed stationary processes provide a mathematically
+  rigorous framework for analyzing non-stationary oscillatory phenomena
+  through spectral methods. The warping function
+  <math|\<theta\><around|(|t|)>> induces a time-dependent modulation while
+  preserving the fundamental spectral structure inherited from the underlying
+  orthogonal increment process.
 </body>
 
 <\initial>
@@ -317,15 +337,15 @@
       <no-break><pageref|auto-1><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Gain
-      Function Decomposition> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      Function Representation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-2><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Fundamental
       Properties> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Time-Warping
-      Analysis> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Warping
+      Function Analysis> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-4><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|5<space|2spc>Inversion
@@ -336,8 +356,8 @@
       Structure> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-6><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|7<space|2spc>Reconstruction
-      and Synthesis> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|7<space|2spc>Asymptotic
+      Analysis> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-7><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|8<space|2spc>Conclusion>
