@@ -67,7 +67,8 @@ public class FunctionPlotter extends
          .addAll(new EditAxis(AxisMode.XY),
                  new Zoomer(),
                  new TableViewer(),
-                 new CrosshairIndicator());
+                 new CrosshairIndicator(),
+                 new Screenshot());
   }
 
   public Stage createScene()
