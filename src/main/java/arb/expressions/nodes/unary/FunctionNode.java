@@ -193,14 +193,14 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     case "gamma":
       yield "Γ";
     case "zeta":
-      yield "ζ";      
+      yield "ζ";
     default:
       yield functionName;
     };
   }
 
-  public boolean checkForArgumentConversionNeed(FunctionMapping<D, R, F> functionMapping,
-                                                boolean isNullaryFunction)
+  public boolean isArgumentTypeConversionNeed(FunctionMapping<D, R, F> functionMapping,
+                                              boolean isNullaryFunction)
   {
     return arg != null && !arg.getGeneratedType().equals(functionMapping.domain)
                   && !isNullaryFunction;
@@ -403,7 +403,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     generateParameter(mv, (Class<? extends R>) functionMapping.domain, isNullaryFunction);
 
-    if (checkForArgumentConversionNeed(functionMapping, isNullaryFunction))
+    if (isArgumentTypeConversionNeed(functionMapping, isNullaryFunction))
     {
       arg.generateCastTo(mv, functionMapping.domain);
     }

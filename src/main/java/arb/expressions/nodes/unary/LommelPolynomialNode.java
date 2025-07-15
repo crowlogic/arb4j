@@ -36,6 +36,8 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
                                  FunctionNode<D, C, F>
 {
 
+  private static final String SYNTAX = "R(n,v;z)";
+
   @Override
   public int hashCode()
   {
@@ -72,8 +74,8 @@ public class LommelPolynomialNode<D, C, F extends Function<? extends D, ? extend
           null,
           expression);
     index = expression.resolve();
-    order = expression.require("R(n,v;z)", ',').resolve();
-    arg   = expression.require("R(n,v;z)", ';').resolve();
+    order = expression.require(SYNTAX, ',').resolve();
+    arg   = expression.require(SYNTAX, ';').resolve();
     expression.require(')');
     scalarType                           = Compiler.scalarType(expression.coDomainType);
     hasScalarCodomain                    = expression.hasScalarCodomain();
