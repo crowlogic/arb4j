@@ -32,7 +32,8 @@ public abstract class AbstractBibliography
   @Override
   public String toString()
   {
-    return getReferences().map(field -> getReference(field).cite(field.getName())).collect(Collectors.joining("\n\n"));
+    return getReferences().map(field -> getReference(field).cite(field.getName()))
+                          .collect(Collectors.joining("\n\n"));
   }
 
   protected Stream<Field> getReferences()
@@ -62,11 +63,14 @@ public abstract class AbstractBibliography
   /**
    * Generate citation using reflection based on field mapping
    */
-  public static String generateCitation(Reference reference, String key, Map<String, String> fieldMapping)
+  public static String
+         generateCitation(Reference reference, String key, Map<String, String> fieldMapping)
   {
     String        citationType = reference.getCitationType();
 
-    StringBuilder citation     = new StringBuilder("@").append(citationType).append("{").append(key);
+    StringBuilder citation     = new StringBuilder("@").append(citationType)
+                                                       .append("{")
+                                                       .append(key + ",");
 
     for (Map.Entry<String, String> entry : fieldMapping.entrySet())
     {
