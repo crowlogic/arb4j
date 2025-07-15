@@ -192,6 +192,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       yield "sqrt";
     case "gamma":
       yield "Γ";
+    case "zeta":
+      yield "ζ";      
     default:
       yield functionName;
     };
