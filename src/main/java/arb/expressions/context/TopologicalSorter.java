@@ -23,9 +23,6 @@ import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
 import guru.nidi.graphviz.model.MutableGraph;
 import guru.nidi.graphviz.model.MutableNode;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -33,19 +30,6 @@ import javafx.scene.image.WritableImage;
  */
 public class TopologicalSorter
 {
-
-//Convert AWT BufferedImage to JavaFX Image
-  public static Image awtToFX(java.awt.image.BufferedImage awtImage)
-  {
-    WritableImage fxImage = null;
-    if (awtImage != null)
-    {
-      fxImage = new WritableImage(awtImage.getWidth(),
-                                  awtImage.getHeight());
-      SwingFXUtils.toFXImage(awtImage, fxImage);
-    }
-    return fxImage;
-  }
 
   public static BufferedImage createDependencyGraphImage(Map<String, Dependency> dependencies)
   {
@@ -70,9 +54,8 @@ public class TopologicalSorter
     return image;
   }
 
-  public static List<Dependency>
-         findDependencyOrderUsingDepthFirstSearch(Map<String, Dependency> dependencies,
-                                                  HashMap<String, FunctionMapping<?, ?, ?>> mappings)
+  public static List<Dependency> findDependencyOrderUsingDepthFirstSearch(Map<String,
+                Dependency> dependencies, HashMap<String, FunctionMapping<?, ?, ?>> mappings)
   {
     List<Dependency> initializationOrder = new ArrayList<>();
     Set<String>      processedVariables  = new HashSet<>();
@@ -114,47 +97,7 @@ public class TopologicalSorter
     initializationOrder.add(info);
   }
 
-  public static String toDotFormat(Map<String, List<String>> graph)
-  {
-    StringBuilder dot = new StringBuilder();
-    dot.append("digraph DependencyGraph {\n");
-    dot.append(" rankdir=LR;\n");
-    dot.append(" node [shape=box];\n\n");
-
-    for (Map.Entry<String, List<String>> entry : graph.entrySet())
-    {
-      String node = entry.getKey();
-      for (String dependency : entry.getValue())
-      {
-        dot.append(String.format(" \"%s\" -> \"%s\";\n", node, dependency));
-      }
-    }
-
-    dot.append("}\n");
-    return dot.toString();
-  }
-
-  public static String toDotFormatReversed(Map<String, List<String>> graph)
-  {
-    StringBuilder dot = new StringBuilder();
-    dot.append("digraph DependencyGraph {\n");
-    dot.append(" rankdir=LR;\n");
-    dot.append(" node [shape=box];\n\n");
-
-    for (Map.Entry<String, List<String>> entry : graph.entrySet())
-    {
-      String node = entry.getKey();
-      for (String dependency : entry.getValue())
-      {
-        dot.append(String.format(" \"%s\" -> \"%s\";\n", dependency, node));
-      }
-    }
-
-    dot.append("}\n");
-    return dot.toString();
-  }
-
-  public static String toDotFormatReversedDirect(Map<String, Dependency> graph)
+  public static String toDotFormatReversed(Map<String, Dependency> graph)
   {
     StringBuilder dot = new StringBuilder();
     dot.append("digraph DependencyGraph {\n");

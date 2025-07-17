@@ -52,7 +52,6 @@ public class SphericalBesselFunction implements
     try
     {
       var nval = element.getClass().getField("n").get(element);
-      System.out.println( "nval=" + nval );
     }
     catch (Exception e)
     {

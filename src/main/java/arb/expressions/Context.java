@@ -28,6 +28,7 @@ import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.integer.Sequence;
+import arb.utensils.Utensils;
 
 /**
  * The {@link Context} class is an integral part of the {@link Expression}
@@ -60,7 +61,8 @@ import arb.functions.integer.Sequence;
  */
 public class Context
 {
-  public CompiledExpressionClassLoader        classLoader                  = new CompiledExpressionClassLoader(this);
+  public CompiledExpressionClassLoader        classLoader                  =
+                                                          new CompiledExpressionClassLoader(this);
 
   public final FunctionMappings               functions;
 
@@ -89,7 +91,8 @@ public class Context
     if (sortedMap.values().stream().mapToInt(f -> f.dependencies.size()).sum() > 0)
     {
       filename = sortedMap.keySet().stream().collect(Collectors.joining()) + ".dot";
-      TopologicalSorter.saveToDotFile(TopologicalSorter.toDotFormatReversedDirect(sortedMap), filename);
+      TopologicalSorter.saveToDotFile(TopologicalSorter.toDotFormatReversed(sortedMap),
+                                      filename);
     }
     return filename;
   }
@@ -99,13 +102,13 @@ public class Context
     // Build dependency graph directly from referencedFunctions
     for (var entry : functions.map.entrySet())
     {
-      String                   functionName = entry.getKey();
-      FunctionMapping<?, ?, ?> function     = entry.getValue();
+      var          functionName = entry.getKey();
+      var          function     = entry.getValue();
 
       // Get referenced functions from the function mapping
-      Dependency               depInfo      = new Dependency(functionName);
+      Dependency   depInfo      = new Dependency(functionName);
 
-      List<String>             dependencies = depInfo.dependencies;
+      List<String> dependencies = depInfo.dependencies;
       if (function.expression != null && function.expression.referencedFunctions != null)
       {
         dependencies.addAll(function.expression.referencedFunctions.keySet()
@@ -171,7 +174,7 @@ public class Context
     }
     catch (Throwable t)
     {
-      t.printStackTrace(System.err);
+      Utensils.throwOrWrap(t);
     }
   }
 
@@ -198,18 +201,17 @@ public class Context
       }
       catch (Exception e)
       {
-        if (!variableName.equals("input"))
-        {
-          // e.printStackTrace(System.err);
-          wrapOrThrow(String.format("variable=%s", variableName), e);
-        }
+        wrapOrThrow(String.format("variable=%s", variableName), e);
       }
     });
   }
 
   public <D, R, F extends Function<? extends D, ? extends R>>
          FunctionMapping<D, R, F>
-         registerFunctionMapping(String functionName, F function, Class<?> domainType, Class<?> coDomainType)
+         registerFunctionMapping(String functionName,
+                                 F function,
+                                 Class<?> domainType,
+                                 Class<?> coDomainType)
   {
     assert function != null : "function cannot be null";
     return registerFunctionMapping(functionName,
@@ -301,7 +303,11 @@ public class Context
 
   public <D, R, F extends Function<? extends D, ? extends R>>
          void
-         setFieldValue(Class<?> compiledClass, F f, String variableName, Object value, boolean overwrite)
+         setFieldValue(Class<?> compiledClass,
+                       F f,
+                       String variableName,
+                       Object value,
+                       boolean overwrite)
   {
 
     java.lang.reflect.Field field;
@@ -312,7 +318,13 @@ public class Context
     }
     catch (Throwable e)
     {
-      wrapOrThrow("threw " + e.toString() + " setting field '" + variableName + "' in " + compiledClass, e);
+      wrapOrThrow("threw "
+                  + e.toString()
+                  + " setting field '"
+                  + variableName
+                  + "' in "
+                  + compiledClass,
+                  e);
     }
   }
 
@@ -350,10 +362,10 @@ public class Context
 
   public void mergeFrom(Context context)
   {
- if ( context == null )
- {
-   return;
- }
+    if (context == null)
+    {
+      return;
+    }
     variables.addAll(context.variables);
     functions.map.putAll(context.functions.map);
   }

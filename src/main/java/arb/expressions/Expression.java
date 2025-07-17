@@ -33,6 +33,7 @@ import arb.expressions.nodes.nary.*;
 import arb.expressions.nodes.unary.*;
 import arb.expressions.viz.ExpressionTree;
 import arb.functions.Function;
+import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.integer.Sequence;
 import arb.functions.real.RealFunction;
@@ -153,11 +154,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean canHaveAnIndeterminantVariable()
   {
-    var codomain = coDomainType;
-    return codomain.equals(RealPolynomial.class) || codomain.equals(ComplexPolynomial.class)
-                  || codomain.equals(RationalFunction.class)
-                  || codomain.equals(ComplexRationalFunction.class)
-                  || Function.class.isAssignableFrom(codomain) || domainType.equals(Object.class);
+    var coDomain = coDomainType;
+    return coDomain.equals(RealPolynomial.class) || coDomain.equals(ComplexPolynomial.class)
+                  || coDomain.equals(RationalFunction.class)
+                  || coDomain.equals(ComplexRationalFunction.class)
+                  || Function.class.isAssignableFrom(coDomain) || domainType.equals(Object.class);
   }
 
   @SuppressWarnings("unchecked")
@@ -675,7 +676,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else if (isNumeric(character))
     {
-      node = (N) evaluateNumber();
+      node = (N) evaluateNumericLiteralConstant();
     }
     else if (isIdentifierCharacter())
     {
@@ -696,7 +697,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return index == null ? index = evaluateSubscriptedIndex() : index;
   }
 
-  protected VariableReference<D, C, F> evaluateName(int startPos)
+  protected VariableReference<D, C, F> evaluateVariableReference(int startPos)
   {
     String identifier = parseName(startPos);
     var    index      = evaluateIndex();
@@ -704,7 +705,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                           index);
   }
 
-  protected Node<D, C, F> evaluateNumber()
+  protected Node<D, C, F> evaluateNumericLiteralConstant()
   {
     int startingPosition = position;
     while (isNumeric(character))
@@ -1042,7 +1043,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public boolean needsInitializer()
   {
-    // return true;
     return (context != null && !context.variables.isEmpty()) || !initializers.isEmpty()
                   || (dependencies != null && !dependencies.isEmpty()) || recursive
                   || !referencedFunctions.isEmpty();
@@ -1059,22 +1059,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private String getEvaluationMethodSignature()
   {
-    var evaluateMethodSignature = String.format("(L%s;IIL%s;)L%s;",
-                                                Type.getInternalName(domainType),
-                                                Type.getInternalName(coDomainType),
-                                                Type.getInternalName(coDomainType));
-    return evaluateMethodSignature;
+    return String.format("(L%s;IIL%s;)L%s;",
+                         Type.getInternalName(domainType),
+                         Type.getInternalName(coDomainType),
+                         Type.getInternalName(coDomainType));
   }
 
   /**
    * Generate the code when the {@link #coDomainType} {@link Class#isInterface()}
    * so that the return value is itself a {@link Function}, in this case the
    * result argument is ignored since there is no possible way to use the
-   * {@link Function} reference as a changeable object, since it is not in general
+   * {@link Function} reference as a changeable object, since it is not
    * {@link Becomable}
    * 
    * @param mv
-   * @return
+   * @return initialized this{@link #newFunctionalExpression()}
    */
   protected Expression<Object, Object, Function<?, ?>> generateFunctionalElement(MethodVisitor mv)
   {
@@ -1105,38 +1104,33 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (functionalDependsOnIndependentVariable)
     {
-      generateCodeToPropagateIndependentVariableToFunctionalElement(mv,
-                                                                    function,
-                                                                    functionalIndependentVariable);
+      propagateIndependentVariableToFunctionalElement(mv, function, functionalIndependentVariable);
     }
 
     if (context != null && context.variables != null)
     {
-      generateCodeToPropagateContextVariablesToFunctionalElement(mv, function);
+      propagateContextVariablesToFunctionalElement(mv, function);
     }
 
-    generateCodeToInvokeTheInitializationMethod(mv, function);
+    invokeInitializationMethod(mv, function);
 
     function.defineClass();
 
     return function;
   }
 
-  protected void generateCodeToInvokeTheInitializationMethod(MethodVisitor mv,
-                                                             Expression<Object,
-                                                                           Object,
-                                                                           Function<?, ?>> function)
+  protected void invokeInitializationMethod(MethodVisitor mv,
+                                            Expression<Object, Object, Function<?, ?>> function)
   {
     duplicateTopOfTheStack(mv);
     Compiler.invokeMethod(mv, function.className, "initialize", "()V", false);
   }
 
   protected void
-            generateCodeToPropagateContextVariablesToFunctionalElement(MethodVisitor mv,
-                                                                       Expression<Object,
-                                                                                     Object,
-                                                                                     Function<?,
-                                                                                                   ?>> function)
+            propagateContextVariablesToFunctionalElement(MethodVisitor mv,
+                                                         Expression<Object,
+                                                                       Object,
+                                                                       Function<?, ?>> function)
   {
     for (var entry : context.variables.map.entrySet())
     {
@@ -1149,15 +1143,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   protected void
-            generateCodeToPropagateIndependentVariableToFunctionalElement(MethodVisitor mv,
-                                                                          Expression<?,
-                                                                                        ?,
-                                                                                        Function<?,
-                                                                                                      ?>> function,
-                                                                          VariableNode<?,
-                                                                                        ?,
-                                                                                        Function<?,
-                                                                                                      ?>> independentVariableMappedToFunctional)
+            propagateIndependentVariableToFunctionalElement(MethodVisitor mv,
+                                                            Expression<?,
+                                                                          ?,
+                                                                          Function<?, ?>> function,
+                                                            VariableNode<?,
+                                                                          ?,
+                                                                          Function<?,
+                                                                                        ?>> independentVariableMappedToFunctional)
   {
     var fieldName = independentVariableMappedToFunctional.getName();
     duplicateTopOfTheStack(mv);
@@ -1286,7 +1279,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
         var functionName       = dependency.variableName;
         var mapping            = referencedFunctions.get(functionName);
-        var functionDescriptor = "L" + functionName + ";";
+        var functionDescriptor = String.format("L%s;", functionName);
 
         if (mapping != null)
         {
@@ -1299,10 +1292,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
           for (String assignment : assignments)
           {
-            loadThisOntoStack(mv);
-            mv.visitFieldInsn(GETFIELD, className, assignment, String.format("L%s;", assignment));
-            loadThisOntoStack(mv);
-            mv.visitFieldInsn(GETFIELD, className, functionName, functionDescriptor);
+            loadThisOntoStack(mv).visitFieldInsn(GETFIELD,
+                                                 className,
+                                                 assignment,
+                                                 String.format("L%s;", assignment));
+            loadThisOntoStack(mv).visitFieldInsn(GETFIELD,
+                                                 className,
+                                                 functionName,
+                                                 functionDescriptor);
             mv.visitFieldInsn(PUTFIELD, assignment, functionName, functionDescriptor);
           }
         }
@@ -1428,9 +1425,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       System.err.format("generateToStringMethod(expression=%s)\n", expression);
     }
-
-    // assert !functionalDependsOnIndeterminantVariable : "TODO: handle
-    // functionalDependsOnIndeterminantVariable";
 
     var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
                                                  "toString",
@@ -1944,6 +1938,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else
     {
+//      System.err.format("hmm %s type=%s initial=%s\n", implementedInterfaces, type, initialize);
       // if the coDomain is a functon, then it will be an interface and thus
       // no intermediate variables will be declare in this class, but only declared in
       // the class that will be returned
@@ -2097,7 +2092,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   protected Node<D, C, F> resolveIdentifier() throws CompilerException
   {
     int startPos  = position;
-    var reference = evaluateName(startPos);
+    var reference = evaluateVariableReference(startPos);
 
     if (nextCharacterIs('('))
     {
@@ -2274,6 +2269,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   static
   {
     indeterminantTypes.addAll(Arrays.asList(RealFunction.class,
+                                            RealToComplexFunction.class,
+                                            Function.class,
                                             ComplexFunction.class,
                                             RationalFunction.class,
                                             ComplexRationalFunction.class,
