@@ -6,18 +6,27 @@ July 17, 2025
 
 Let 
 
-Z(t)=∫ψₜ(λ)dΨ(λ) 
+Z(t)=∫ϕₜ(λ)dΦ(λ) 
 
 be a realization of an oscillatory process(as defined by Priestly) where
+Φ(λ) is a complex orthogonal random measure and 
 
-ψₜ(λ) is the so-called oscillatory function defined by
+ϕₜ(λ)=exp(i*t*λ)*Aₜ(λ)
 
-ψₜ(λ)=exp(i*t*λ)*Aₜ(λ)
+is the oscillatory function where Aₜ(λ) is an invertible complex-valued 
+gain-function which determines the time-varying spectral characteristics 
+of the process by modulating both the magnitude and phase of the underlying 
+stationary process which gives rise to the oscillatory kernel
 
-where Aₜ(λ) is the gain-function which determines the how the spectrum
-of the process evolves over time; hence oscillatory processes are said
-to have an evolutionary spectrum.
+K(t,s)=∫ϕₜ(λ)ϕₛ(λ)dμ(λ)
+      =∫exp(i*t*λ)*Aₜ(λ)conj(exp(i*s*λ)*Aₛ(λ))dμ(λ)
+      =∫exp(i*t*λ)*Aₜ(λ)exp(-i*s*λ)*conj(Aₛ(λ))dμ(λ)
+      =∫exp(i*(t-s)*λ)*Aₜ(λ)*conj(Aₛ(λ))dμ(λ)
+      =∫exp(i*(t-s)*λ)*Aₜ(λ)*conj(Aₛ(λ))S(λ)dλ
+      
+resulting in an evolutionary spectrum where μ(λ) is the spectral measure of 
+the complex orthogonal random measure Φ(λ) which will be taken to be absolutely
+continuous so that the spectral density S(λ) is given by the its derivative
 
-
-
+S(λ)=d/dλ(μ(λ)) 
 
