@@ -30,3 +30,70 @@ continuous so that the spectral density S(λ) is given by the its derivative
 
 S(λ)=d/dλ(μ(λ)) 
 
+2. Theorem: Injective Time Changes of Stationary Gaussian Processes Yield Oscillatory Processes with Explicit Zero-Crossing Count
+
+Let X(t) be a real, zero-mean, stationary Gaussian process with spectral density S(λ).
+Let θ(t) be a strictly monotonically increasing, differentiable function (injective time-change).
+Define the time-changed process
+
+    Z(t) = X(θ(t)).
+
+Then:
+
+(a) Z(t) is an oscillatory process in Priestley's sense, with oscillatory functions
+
+        φₜ(λ) = exp(i λ θ(t))
+
+    and gain function
+
+        Aₜ(λ) = exp(i λ (θ(t) - t)).
+
+(b) The covariance kernel of Z(t) is
+
+        K(t, s) = ∫ exp(i (θ(t) - θ(s)) λ) S(λ) dλ.
+
+(c) The expected number of zero crossings in (0, t) for Z(t) is
+
+        E[N(0, t)] = ν * (θ(t) - θ(0))
+
+    where ν = (1/π) * sqrt(λ₂/λ₀) is the zero-crossing rate of X.
+
+Proof
+
+(1) Oscillatory Representation
+
+Start with the spectral representation of X(t):
+
+    X(t) = ∫ exp(i λ t) dΦ(λ).
+
+Apply the time-change t ↦ θ(t):
+
+    Z(t) = X(θ(t)) = ∫ exp(i λ θ(t)) dΦ(λ)
+         = ∫ φₜ(λ) dΦ(λ)
+
+with
+
+    φₜ(λ) = exp(i λ θ(t)) = exp(i λ t) exp(i λ (θ(t) - t))
+          = exp(i λ t) Aₜ(λ),
+
+where
+
+    Aₜ(λ) := exp(i λ (θ(t) - t)).
+
+(2) Covariance Kernel
+
+    E[Z(t) Z(s)] = E[X(θ(t)) X(θ(s))]
+                 = K_X(θ(t) - θ(s))
+                 = ∫ exp(i (θ(t) - θ(s)) λ) S(λ) dλ.
+
+(3) Expected Zero-Crossing Count
+
+Zero crossings of Z(u) for u ∈ (0, t) correspond to zero crossings of X(v) for v ∈ (θ(0), θ(t)), since θ is strictly monotonically increasing.
+
+The expected number of zero crossings of X in (θ(0), θ(t)) is ν * (θ(t) - θ(0)).
+
+Therefore:
+
+    E[N(0, t)] = ν * (θ(t) - θ(0)).
+
+Q.E.D.
