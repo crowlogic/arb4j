@@ -421,9 +421,9 @@ import arb.utensils.Utensils;
     return res.set(this).sqrt(prec);
   }
     
-  public Real sub(Fraction a, int bits, Real res)
+  public Fraction sub(Fraction subtrahend, int bits, Fraction res)
   {
-    return sub(res.set(this),bits,res);
+    return sub(res.set(subtrahend),bits,res);
   }
 
   /**
@@ -447,7 +447,7 @@ import arb.utensils.Utensils;
   
   public Real sub(Fraction a, int bits, Real res)
   {
-    return res.set(this).sub(a,bits,res);
+    return sub(res.set(a),bits,res);
   }
       
   /**

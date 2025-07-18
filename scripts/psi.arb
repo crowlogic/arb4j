@@ -1,5 +1,2 @@
-psi
-plot(-10,10,1000,psi);
-1
 var psi = RealFunction.express("cos(2*pi*(p^2-p-1/16))/cos(2*pi*p)");
 psi.eval(1.2)
