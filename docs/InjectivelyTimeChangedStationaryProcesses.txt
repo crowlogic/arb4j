@@ -1,0 +1,23 @@
+Injectively Time-Changed Stationary Processes are Oscillatory Processes
+By Stephen Crowley
+July 17, 2025
+
+1. Introduction
+
+Let 
+
+Z(t)=∫ψₜ(λ)dΨ(λ) 
+
+be a realization of an oscillatory process(as defined by Priestly) where
+
+ψₜ(λ) is the so-called oscillatory function defined by
+
+ψₜ(λ)=exp(i*t*λ)*Aₜ(λ)
+
+where Aₜ(λ) is the gain-function which determines the how the spectrum
+of the process evolves over time; hence oscillatory processes are said
+to have an evolutionary spectrum.
+
+
+
+
