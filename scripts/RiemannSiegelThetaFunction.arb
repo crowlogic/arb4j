@@ -1,4 +1,4 @@
-
+FunctionPlotter.darkStyle=false;
 var theta = RealFunction.express("im(lnΓ(1/4+I*t/2))-(log(π)/2)*t");
 var t = 2.3;
 System.out.format("θ(%s)=%s\n",t,theta.eval(t));
