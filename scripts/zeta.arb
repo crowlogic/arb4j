@@ -1,10 +1,10 @@
-FunctionPlotter.darkStyle=false;
+//FunctionPlotter.darkStyle=false;
 var context = new Context();
-var theta = RealFunction.express("θ","im(lnΓ(1/4+I*t/2))-(log(π)/2)*t",context);
-var R = RealToComplexFunction.express("z","ζ(1/2+I*t)",context);
-var f = RealToComplexFunction.express("f","exp(I*θ(t))",context);
-plot( -25, 75, 100*100, R.realPart(), R.imagPart(), f.realPart(), f.imagPart() );
-out.format("add Z\n");
+var λ = context.registerVariable(Real.named("λ").one());
+var theta = RealFunction.express("θ:im(lnΓ(1/4+I*t/2))-(log(π)/2)*t",context);
+var z = RealToComplexFunction.express("z:ζ(1/2+I*t)",context);
+var f = RealToComplexFunction.express("f:exp(I*θ(t))",context);
 var Z = RealFunction.express("Z(t)");
 var Ztoo = RealToComplexFunction.express("z(t)*f(t)",context);
-plot( -25, 75, 100*100, R.realPart(), R.imagPart(), f.realPart(), f.imagPart(), Z, Ztoo.realPart(), Ztoo.imagPart() );
+var g = 
+plot( -25, 75, 100*100, z.realPart(), z.imagPart(), f.realPart(), f.imagPart(), Z, Ztoo.realPart(), Ztoo.imagPart() );

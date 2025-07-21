@@ -5,9 +5,19 @@ context.registerVariable(λ);
 RealFunction.express("θ","t➔im(lnΓ(1/4+I*t/2))-(log(π)/2)*t",context);
 var z = RealToComplexFunction.express("z","t➔ζ(1/2+I*t)",context);
 var f = RealToComplexFunction.express("f:t➔exp(I*λ*θ(t))",context);
+var g = RealToComplexFunction.express("g:t➔exp(I*(1-λ)*θ(t))",context);
 var Z = RealFunction.express("Z(t)");
-var Ztoo = RealToComplexFunction.express("Ztoo","t➔z(t)*f(t)",context);
-plot( -25, 75, 100*100, z.realPart(), z.imagPart(), f.realPart(), f.imagPart(), Z, Ztoo.realPart(), Ztoo.imagPart() );
+var Ztoo = RealToComplexFunction.express("Ztoo:t➔z(t)*f(t)",context);
+var R = RealToComplexFunction.express("R:t➔z(t)*g(t)",context);
+plot( -25, 75, 
+      100*100, 
+      z.realPart(), z.imagPart(), 
+      f.realPart(), f.imagPart(), 
+      Z, 
+      Ztoo.realPart(), Ztoo.imagPart(), 
+      R.realPart(), R.imagPart() 
+);
+
 System.out.println(context);
 System.out.println(context.functions);
     
