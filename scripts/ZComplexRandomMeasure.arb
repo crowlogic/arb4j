@@ -9,12 +9,12 @@ var g = RealToComplexFunction.express("g:t➔exp(I*(1-λ)*θ(t))",context);
 var Z = RealFunction.express("Z(t)");
 var Ztoo = RealToComplexFunction.express("Ztoo:t➔z(t)*f(t)",context);
 var R = RealToComplexFunction.express("R:t➔z(t)*g(t)",context);
-plot( -25, 75, 
-      100*100, 
-      z.realPart(), z.imagPart(), 
-      f.realPart(), f.imagPart(), 
+plot( -5,195, 
+      100*200, 
+//      z.realPart(), z.imagPart(), 
+//      f.realPart(), f.imagPart(), 
       Z, 
-      Ztoo.realPart(), Ztoo.imagPart(), 
+//      Ztoo.realPart(), Ztoo.imagPart(), 
       R.realPart(), R.imagPart() 
 );
 

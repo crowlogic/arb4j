@@ -131,7 +131,7 @@ public class FunctionPlotter extends
 
   public void initializeFuctions()
   {
-    resampleFunctions(parallel);
+    resampleFunctions();
     refreshFunctionDatasets();
   }
 
@@ -180,7 +180,7 @@ public class FunctionPlotter extends
    *                 parallelized.
    */
   @SuppressWarnings("resource")
-  public final void resampleFunctions(boolean parallel)
+  public final void resampleFunctions()
   {
     assert functions.size() == chart.getDatasets().size();
     IntStream functionStream = IntStream.range(0, functions.size());
