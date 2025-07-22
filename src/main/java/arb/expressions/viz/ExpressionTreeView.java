@@ -40,6 +40,7 @@ import arb.functions.Function;
 import arb.functions.IntegerFunction;
 import arb.functions.IntegerNullaryFunction;
 import arb.functions.NullaryFunction;
+import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexNullaryFunction;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
@@ -510,6 +511,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     ComplexNullaryFunction.class,
     RationalFunctionSequence.class,
     RealPolynomialSequence.class,
+    RealToComplexFunction.class,
     RealNullaryFunction.class,
     ComplexToRealFunction.class,
     ComplexRationalFunctionSequence.class,
@@ -627,6 +629,10 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     else if (functionType.equals(RealNullaryFunction.class))
     {
       selectTypes(Object.class, Real.class);
+    }
+    else if (functionType.equals(RealToComplexFunction.class))
+    {
+      selectTypes(Real.class, Complex.class);
     }
     else if (functionType.equals(ComplexPolynomialNullaryFunction.class))
     {
@@ -830,7 +836,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
         {
           namedResult.setName("result");
         }
-        
+
         var rootItem = updateTreeTableView();
 
         if (nodeExpansionStates != null)

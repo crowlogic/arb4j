@@ -226,7 +226,7 @@ import arb.utensils.Utensils;
   
   public Fraction mul(Fraction that, int prec, Fraction res)
   {
-    try ( Real blip = new Real())
+    try ( Real blip = borrowVariable())
     {
       return res.set(mul(res.set(that), prec, blip));
     }
@@ -255,7 +255,7 @@ import arb.utensils.Utensils;
   
   public Fraction mul(Real that, int prec, Fraction res)
   {
-    try ( Real blip = new Real())
+    try ( Real blip = borrowVariable())
     {
       return res.set(mul(that, prec, blip));
     }
@@ -669,7 +669,7 @@ import arb.utensils.Utensils;
    */
   public RationalFunction ascendingFactorial(Integer power, int bits, RationalFunction result)
   {
-    try ( Real tmp = new Real())
+    try ( Real tmp = borrowVariable())
     {
       ascendingFactorial(power, bits, tmp);
       return result.set(tmp);
@@ -1422,7 +1422,7 @@ import arb.utensils.Utensils;
   
   public Real variance(int prec, Real result)
   {
-    try ( Real mean = new Real())
+    try ( Real mean = borrowVariable())
     {
       return variance(prec, mean(prec, mean), result);
     }
@@ -1431,7 +1431,7 @@ import arb.utensils.Utensils;
   public Real variance(int prec, Real mean, Real result)
   {
     result.zero();
-    try ( Real x = new Real(); )
+    try ( Real x = borrowVariable(); )
     {
       // TODO: use the vectorized arb fuctions if the elements are contiguous in memory
       for (Real element : this)
@@ -1444,7 +1444,7 @@ import arb.utensils.Utensils;
   
   public Real standardDeviation(int prec, Real result)
   {
-    try ( Real mean = new Real())
+    try ( Real mean = borrowVariable())
     {
       return standardDeviation(prec, mean(prec, mean), result);
     }  
@@ -1794,7 +1794,7 @@ import arb.utensils.Utensils;
 
   public Integer floor(int prec, Integer res)
   {
-    try ( Real tmp = new Real();)
+    try ( Real tmp = borrowVariable();)
     {
       arblib.arb_floor(tmp, this, prec);
       assert tmp.isInteger() : "floor " + tmp + " isnt an integer?!";
@@ -1828,7 +1828,7 @@ import arb.utensils.Utensils;
  
   public Real frac(int prec, Real res)
   {
-    try (Real f = new Real() )
+    try (Real f = borrowVariable() )
     {
       return sub(floor(prec, f), prec, res);
     }
@@ -2525,7 +2525,7 @@ import arb.utensils.Utensils;
   
     assert dim == other.dim;
     res.zero();
-    try ( Real x = new Real();)
+    try ( Real x = borrowVariable();)
     {
       for (int i = 0; i < dim; i++)
       {
@@ -2608,7 +2608,7 @@ import arb.utensils.Utensils;
    */
   public boolean approximatelyEquals(Real that, int prec)
   {
-    try ( Real residual = new Real())
+    try ( Real residual = borrowVariable())
     {
       return approximatelyEquals(that,prec,residual);
     }
@@ -2667,9 +2667,9 @@ import arb.utensils.Utensils;
     Real      slope     = result.get(1);
     Real      intercept = result.get(0);
 
-    try ( Real sumX = x.sum(bits, new Real()); Real sumY = y.sum(bits, new Real());
-          Real sumXY = x.dotProduct(y, bits, new Real()); Real sumXX = x.dotProduct(x, bits, new Real());
-          Real pivot = new Real();)
+    try ( Real sumX = x.sum(bits, borrowVariable()); Real sumY = y.sum(bits, borrowVariable());
+          Real sumXY = x.dotProduct(y, bits, borrowVariable()); Real sumXX = x.dotProduct(x, bits, borrowVariable());
+          Real pivot = borrowVariable();)
     {
       // m = (N*Σ(xy) - Σx*Σy) / (N*Σ(x^2) - (Σx)^2)
       sumXY.mul(n, bits); // N*Σ(xy)
