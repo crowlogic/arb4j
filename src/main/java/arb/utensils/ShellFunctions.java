@@ -2,28 +2,26 @@ package arb.utensils;
 
 import static arb.utensils.Utensils.wrapOrThrow;
 
-import java.io.PrintWriter;
+import java.io.*;
+import java.lang.Integer;
 import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.IntFunction;
 import java.util.stream.IntStream;
 
-import arb.Real;
-import arb.RealDataSet;
-import arb.RealPolynomial;
-import arb.SequenceDataSet;
-import arb.Typesettable;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
 import arb.viz.FunctionPlotter;
 import arb.viz.WindowManager;
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.utils.WriteFxImage;
 import javafx.application.Platform;
+import javafx.scene.image.WritableImage;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -99,6 +97,29 @@ public class ShellFunctions
     });
 
     return waitForFunctionPlotterToBeReleased(ref, sem);
+  }
+
+  public static void saveImage(FunctionPlotter plotter, String filename)
+  {
+    saveImage(plotter.chart, filename);
+  }
+
+  public static void saveImage(Chart chart, String filename)
+  {
+    Platform.runLater(() ->
+    {
+
+      WritableImage image = chart.snapshot(null, null);
+      try
+      {
+        WriteFxImage.savePng(image, new File(filename));
+      }
+      catch (IOException e)
+      {
+        Utensils.wrapOrThrow(e);
+      }
+    });
+
   }
 
   public static FunctionPlotter plot(Real sequence)
