@@ -10,19 +10,23 @@ import static arb.arblib.acb_swap;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.foreign.MemorySegment;
+import java.util.ArrayDeque;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Queue;
+import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import arb.functions.complex.ComplexNullaryFunction;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
+import arb.functions.complex.ComplexNullaryFunction;
 
 /**
  * The {@link Complex} numbers constitute an algebraically closed {@link Field}, a
@@ -937,7 +941,7 @@ import arb.domains.Domain;
   public ComplexRationalFunction
          ascendingFactorial(Integer n, int bits, ComplexRationalFunction result)
   {
-    try ( Complex intermediateVariable = new Complex())
+    try ( Complex intermediateVariable = borrowVariable())
     {
       ascendingFactorial(n, bits, intermediateVariable);
       result.set(intermediateVariable);
@@ -1552,12 +1556,87 @@ import arb.domains.Domain;
     return array;
  }
    
-     
+     // Two-list pooling implementation
+  private final Queue<Complex> available = new ArrayDeque<>();
+  private final Set<Complex>   allocated = new HashSet<>();
+  // Reference to the pool owner for temp instances
+  Complex                      poolOwner = null;
+
+  public Complex borrowVariable()
+  {
+    synchronized (this)
+    {
+      Complex object = available.poll();
+      if (object != null)
+      {
+        object.poolOwner = this;
+        allocated.add(object); // Track as allocated
+        return object;
+      }
+      else
+      {
+        Complex newObj = new Complex();
+        newObj.poolOwner = this;
+        allocated.add(newObj); // Track as allocated
+        return newObj;
+      }
+    }
+  }
+
+  public void returnVariable(Complex object)
+  {
+    synchronized (this)
+    {
+      assert object.poolOwner == this : String.format("%s is owned by %s not %s",
+                                                      object,
+                                                      object.poolOwner,
+                                                      this);
+      allocated.remove(object); // Remove from allocated
+      available.add(object); // Add to available
+    }
+  }
+
+  protected void emptyVariablePool()
+  {
+    synchronized (this)
+    {
+      // Clear allocated objects first
+      for (Complex obj : allocated)
+      {
+        obj.poolOwner = null;
+        obj.close();
+      }
+      allocated.clear();
+
+      // Clear available objects
+      while (!available.isEmpty())
+      {
+        Complex obj = available.poll();
+        obj.poolOwner = null;
+        obj.close();
+      }
+    }
+  }
+       
   @Override
   public void close()
   {
-   clear();
+    emptyVariablePool();
+
+    if (poolOwner != null)
+    {
+      poolOwner.returnVariable(this);
+    }
+    else
+    {
+      if (locked)
+      {
+        unlock();
+      }
+      clear();
+    }
   }
+  
   
   Real real;
   
