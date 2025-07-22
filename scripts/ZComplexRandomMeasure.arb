@@ -9,15 +9,16 @@ var g = RealToComplexFunction.express("g:t➔exp(I*(1-λ)*θ(t))",context);
 var Z = RealFunction.express("Z(t)");
 var Ztoo = RealToComplexFunction.express("Ztoo:t➔z(t)*f(t)",context);
 var R = RealToComplexFunction.express("R:t➔z(t)*g(t)",context);
-plot( -5,195, 
-      100*200, 
-//      z.realPart(), z.imagPart(), 
-//      f.realPart(), f.imagPart(), 
-      Z, 
-//      Ztoo.realPart(), Ztoo.imagPart(), 
-      R.realPart(), R.imagPart() 
-);
+var p = plot( -5,120, 100*125, Z, R.realPart(), R.imagPart()  );
 
+// TODO: use p.chart.snapshot to cycle saving charts rendered as lambda varies from -1 to 1
+ 
+ λ.neg();
+ 
+var pneg = plot( -5,120, 100*125, Z, R.realPart(), R.imagPart()  );
+ 
+// use  p.chart.snapshot to cycle thru values of lambda to generate animated chart
+  
 System.out.println(context);
 System.out.println(context.functions);
     
