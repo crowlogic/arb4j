@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -25,9 +24,11 @@ public class LineCounter
 
   protected static long countLines(String sourceDir) throws IOException
   {
-    try ( Stream<Path> sourceFiles = Files.walk(Paths.get(sourceDir)))
+    try ( var sourceFiles = Files.walk(Paths.get(sourceDir)))
     {
-      return sourceFiles.filter(p -> shouldBeCounted(p)).mapToLong(p -> countLines(p)).sum();
+      return sourceFiles.filter(LineCounter::shouldBeCounted)
+                        .mapToLong(LineCounter::countLines)
+                        .sum();
     }
   }
 
@@ -39,8 +40,8 @@ public class LineCounter
     }
     catch (IOException e)
     {
-      e.printStackTrace(System.err);
-      return 0;
+      Utensils.throwOrWrap(e);
+      return -1;
     }
   }
 
@@ -54,6 +55,7 @@ public class LineCounter
     }
     catch (IOException e)
     {
+      Utensils.throwOrWrap(e);
       return false;
     }
   }
