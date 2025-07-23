@@ -8,8 +8,7 @@ public class AdditionNodeTest extends
 {
   public static void testAddFractions()
   {
-    var f = RealFunction.parse("(1/2)+(1/2)");
-    var g = f.simplify();
+    var f = RealFunction.express("(1/2)+(1/2)");
     assertEquals( "1", f.toString() );
     
   }

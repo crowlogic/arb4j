@@ -12,6 +12,7 @@ import arb.expressions.Expression;
 import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.unary.NegationNode;
 import arb.functions.Function;
 
 /**
@@ -124,9 +125,13 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
       }
       return this;
     }
-    else
+   
+    if (right instanceof NegationNode<D, R, F> rightNegation)
     {
-      return this;
+      return left.add(rightNegation.arg).simplify();
     }
+    
+      return this;
+    
   }
 }
