@@ -86,10 +86,7 @@ public final class RealWhiteNoiseProcess implements
   {
     if (out.dim > 1)
     {
-      for (var x : out)
-      {
-        sampleOne(prec, x);
-      }
+      out.forEach(x -> sampleOne(prec, x));
       return out;
     }
     else
@@ -116,9 +113,11 @@ public final class RealWhiteNoiseProcess implements
       while (u1.isZero());
 
       arblib.arb_urandom(u2, state, prec);
-      u1.log(prec, r).mul(-2, prec).sqrt(prec);
-      theta.set(pi.π(prec)).mul(2, prec).mul(u2, prec);
-      theta.sin(prec, cache).mul(r, prec);
+      theta.set(pi.π(prec))
+           .mul(2, prec)
+           .mul(u2, prec)
+           .sin(prec, cache)
+           .mul(u1.log(prec, r).mul(-2, prec).sqrt(prec), prec);
       return theta.cos(prec, out).mul(r, prec);
     }
   }
@@ -126,7 +125,7 @@ public final class RealWhiteNoiseProcess implements
   @Override
   public void close()
   {
-    Arrays.asList(cache, u1, u2, r, theta, pi).forEach(Real::close);
+    Stream.of(cache, u1, u2, r, theta, pi).forEach(Real::close);
   }
 
 }
