@@ -242,6 +242,12 @@ import arb.utensils.Utensils;
     return result.set(this).add(element, prec, result);
   }
 
+  public Complex exp(int prec, Complex res)
+  {
+    arblib.arb_exp(res.zero().re(), this, prec);
+    return res;
+  }
+  
   public Real set(AlgebraicNumber x)
   {
    return set(x,bits());

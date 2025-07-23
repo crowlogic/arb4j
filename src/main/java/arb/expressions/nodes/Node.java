@@ -116,7 +116,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                                   addend);
   }
 
-  public Node<D, R, F> apply(String functionName)
+  public FunctionNode<D, R, F> apply(String functionName)
   {
     return new FunctionNode<>(functionName,
                               this,
@@ -349,6 +349,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return this;
   }
 
+  public FunctionNode<D, R, F> exp()
+  {
+    return apply("exp");
+  }
+
   public Node<D, R, F> sin()
   {
     return apply("sin");
@@ -430,13 +435,13 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return false;
   }
 
-  public  boolean isSquareRoot()
+  public boolean isSquareRoot()
   {
     return false;
   }
 
   public Node<D, R, F> getSquareRootArg()
-  {   
+  {
     return null;
   }
 

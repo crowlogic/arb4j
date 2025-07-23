@@ -7,7 +7,10 @@ import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
-import arb.expressions.nodes.*;
+import arb.expressions.nodes.LiteralConstantNode;
+import arb.expressions.nodes.Node;
+import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.unary.NegationNode;
 import arb.functions.Function;
 
 /**
@@ -130,6 +133,11 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       {
         return combineFractions(leftDiv, rightDiv).simplify();
       }
+    }
+
+    if (right instanceof NegationNode<D, R, F> rightNegation)
+    {
+      return left.sub(rightNegation.arg).simplify();
     }
 
     return this;

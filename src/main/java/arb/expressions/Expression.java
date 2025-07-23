@@ -258,9 +258,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                        context,
                                        functionName,
                                        ascendentExpression);
-    expr.position          = position;
-    expr.character         = character;
-    expr.previousCharacter = previousCharacter;
+    expr.functionNameSpecified = functionNameSpecified;
+    expr.position              = position;
+    expr.character             = character;
+    expr.previousCharacter     = previousCharacter;
     return expr;
   }
 
@@ -441,8 +442,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (expression.contains(":"))
     {
       int colonCharacterIndex = expression.indexOf(':');
-      className  = expression.substring(0, colonCharacterIndex);
-      expression = expression.substring(colonCharacterIndex + 1);
+      className             = expression.substring(0, colonCharacterIndex);
+      expression            = expression.substring(colonCharacterIndex + 1);
+      functionNameSpecified = false;
     }
     if (context != null && context.saveClasses)
     {
@@ -1499,7 +1501,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return invokeSetMethod(mv, inputType, coDomainType);
   }
 
-  boolean functionNameWasAutomaticallyGenerated = false;
+  boolean functionNameSpecified = false;
 
   protected ClassVisitor generateToStringMethod(ClassVisitor classVisitor)
   {
@@ -1516,8 +1518,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     methodVisitor.visitCode();
 
-    String name = (functionName != null && !functionName.equals(className)) ? (functionName + ":")
-                                                                            : "";
+    String name = (functionName != null && functionNameSpecified) ? (functionName + ":") : "";
     updateStringRepresentation();
     String arrow = expression.contains("➔")
                   || independentVariable == null ? "" : (independentVariable.getName() + "➔");
@@ -2429,8 +2430,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       str = expression;
     }
-    if (functionName != null && !functionName.startsWith("_") && !functionName.startsWith("factor")
-                  && !functionName.equals(className))
+    if (functionName != null && !functionName.startsWith("_") && !functionName.startsWith("factor"))
     {
       str = String.format("%s:%s", functionName, expression);
     }

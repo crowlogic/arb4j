@@ -127,7 +127,8 @@ public class Compiler
                  String functionName)
   {
 
-    int punctuationMarkIndex = expression.indexOf(":");
+    int     punctuationMarkIndex = expression.indexOf(":");
+    boolean autonamed            = true;
     if (punctuationMarkIndex != -1)
     {
       String inlineFunctionName = expression.substring(0, punctuationMarkIndex);
@@ -139,6 +140,7 @@ public class Compiler
       }
       functionName = inlineFunctionName;
       expression   = expression.substring(punctuationMarkIndex + 1, expression.length());
+      autonamed    = false;
     }
     expression = expression.replace(" ", "");
 
@@ -164,7 +166,10 @@ public class Compiler
                                                   coDomainClass,
                                                   functionClass,
                                                   functionName);
-    compiledExpression.mapping = mapping;
+
+    compiledExpression.functionNameSpecified = autonamed;
+
+    compiledExpression.mapping                               = mapping;
     if (mapping != null)
     {
       mapping.expression = compiledExpression;
@@ -188,18 +193,15 @@ public class Compiler
                  String functionName,
                  Expression<PD, PR, PF> containingExpression)
   {
-    Expression<D,
-                  R,
-                  F> expression = Function.parse(className,
-                                                 expressionString,
-                                                 context,
-                                                 domainClass,
-                                                 coDomainClass,
-                                                 functionClass,
-                                                 functionName,
-                                                 containingExpression);
+    return Function.parse(className,
+                          expressionString,
+                          context,
+                          domainClass,
+                          coDomainClass,
+                          functionClass,
+                          functionName,
+                          containingExpression);
 
-    return expression;
   }
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
@@ -840,7 +842,8 @@ public class Compiler
   }
 
   /**
-   * TODO: make this more robust and complete it, maybe using hashmaps of hashmaps or something
+   * TODO: make this more robust and complete it, maybe using hashmaps of hashmaps
+   * or something
    * 
    * @param from
    * @param to

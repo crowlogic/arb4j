@@ -269,6 +269,12 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     return result.set(this).add(element, prec, result);
   }
 
+  public Complex exp(int prec, Complex res)
+  {
+    arblib.arb_exp(res.zero().re(), this, prec);
+    return res;
+  }
+  
   public Real set(AlgebraicNumber x)
   {
    return set(x,bits());
