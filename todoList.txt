@@ -12,4 +12,3 @@ compiler: move input-independent parts of the expression sub-tree into the initi
 compiler: make Expression constructor which loads from the same .yaml format used by Expressor
 // TODO: need to generate instructions so that the toString() uses String.format to include the value (only if it was part of the independent variable because thats the only timneits fixed for the whole class, if its just a Context variable then it can  change between invocations
 LiteralConstantNode: replace linear search with hashmap     for (var existingConstant : expression.literalConstants.values())
-answer question: what is a core of a self-adjoint operator?
