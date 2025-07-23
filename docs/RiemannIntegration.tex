@@ -1,0 +1,32 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm}
+
+\begin{document}
+
+\begin{theorem}[Riemann Integral, Midpoint Definition]
+Let $f$ be continuous on $[a,b]$. Then
+\[
+\int_a^b f(x)\, dx = \lim_{h \to 0} h \sum_{i=0}^{N-1} f\left(a + \left(i + \tfrac{1}{2}\right) \cdot h\right)
+\]
+where $N = \frac{b-a}{h}$.
+\end{theorem}
+
+\begin{proof}
+Since $f$ is continuous on the compact set $[a,b]$, $f$ is uniformly continuous on $[a,b]$. 
+
+By a standard theorem in real analysis, every uniformly continuous function is Riemann integrable. Therefore, $f$ is Riemann integrable on $[a,b]$.
+
+Let $P_h$ be the uniform partition of $[a,b]$ into $N = \frac{b-a}{h}$ subintervals of width $h$, with mesh $|P_h| = h$. Consider the Riemann sum using midpoint tags:
+\[
+S_h = h \sum_{i=0}^{N-1} f\left(a + \left(i + \tfrac{1}{2}\right)\cdot h\right).
+\]
+
+Since $f$ is Riemann integrable, for every $\epsilon > 0$, there exists $\delta > 0$ such that for any partition $P$ with mesh $|P| < \delta$ and any choice of tags, the corresponding Riemann sum differs from $\int_a^b f(x)\,dx$ by less than $\epsilon$.
+
+Since $h \to 0$ implies $|P_h| = h \to 0$, we have
+\[
+\lim_{h \to 0} S_h = \int_a^b f(x)\,dx.
+\]
+\end{proof}
+
+\end{document}
