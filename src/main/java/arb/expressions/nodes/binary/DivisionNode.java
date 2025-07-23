@@ -11,6 +11,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
+import arb.expressions.nodes.unary.FunctionNode;
 import arb.functions.Function;
 
 /**
@@ -56,6 +57,20 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       {
         var exponentDifference = leftExp.right.sub(rightExp.right).simplify();
         return leftBase.pow(exponentDifference).simplify();
+      }
+    }
+    
+    if (left instanceof FunctionNode<D, R, F> leftFunction
+                  && right instanceof FunctionNode<D, R, F> rightFunction)
+    {
+      // check if the bases of the exponents are equals
+      var leftIsExponentialFunction  = leftFunction.functionName.equals("exp");
+      var rightIsExponentialFunction  = rightFunction.functionName.equals("exp");
+
+      if (leftIsExponentialFunction && rightIsExponentialFunction )
+      {
+        var exponentSum = leftFunction.arg.sub(rightFunction.arg).simplify();
+        return exponentSum.exp();
       }
     }
 
