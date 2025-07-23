@@ -1,0 +1,16 @@
+var context = new Context();
+context.registerVariable( Real.named("λ").one() );
+context.registerVariable(Real.named("t").set(2));
+context.registerVariable(Real.named("s").set(3));
+var expr = ComplexNullaryFunction.parse("exp(I*λ*t)*exp(-I*λ*s)",context);
+var inst = expr.instantiate();
+println(expr.inspect(inst));
+println(context.variables);
+println(inst+"="+inst.evaluate());
+
+var sameexpr = ComplexNullaryFunction.parse("exp(I*λ*(t-s))",context);
+var sameinst = sameexpr.instantiate();
+println(sameexpr.inspect(sameinst));
+println(context.variables);
+println(sameinst+"="+sameinst.evaluate());
+
