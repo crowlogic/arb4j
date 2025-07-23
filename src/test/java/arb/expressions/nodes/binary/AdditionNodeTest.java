@@ -10,8 +10,14 @@ public class AdditionNodeTest extends
   {
     var f = RealFunction.parse("(1/2)+(1/2)");
     var g = f.simplify();
-    System.out.println( "g=" + g );
     assertEquals( "1", f.toString() );
+    
+  }
+  
+  public static void testNegationNodeAdditionIsSubstraction()
+  {
+    var f = RealFunction.express("t+(-1)");
+    assertEquals( "t➔t-1", f.toString() );
     
   }
 }
