@@ -128,7 +128,7 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
    
     if (right instanceof NegationNode<D, R, F> rightNegation)
     {
-      return left.add(rightNegation.arg).simplify();
+      return left.add(rightNegation.arg.simplify()).simplify();
     }
     
       return this;
