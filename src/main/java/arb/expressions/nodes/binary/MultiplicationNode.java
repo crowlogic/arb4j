@@ -7,7 +7,6 @@ import arb.Quaternion;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
-import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.expressions.nodes.unary.FunctionNode;
@@ -57,15 +56,13 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   {
     super.simplify();
 
-    boolean                      leftIsConstant  = left != null && left.isLiteralConstant();
-    boolean                      rightIsConstant = right != null && right.isLiteralConstant();
-    LiteralConstantNode<D, R, F> rightConstant   = null;
-    LiteralConstantNode<D, R, F> leftConstant    = null;
+    boolean leftIsConstant  = left != null && left.isLiteralConstant();
+    boolean rightIsConstant = right != null && right.isLiteralConstant();
+    var     rightConstant   = rightIsConstant ? right.asLiteralConstant() : null;
+    var     leftConstant    = leftIsConstant ? left.asLiteralConstant() : null;
 
     if (leftIsConstant)
     {
-      leftConstant = left.asLiteralConstant();
-
       if (leftConstant.isZero())
       {
         return left;
@@ -78,8 +75,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
 
     if (rightIsConstant)
     {
-      rightConstant = right.asLiteralConstant();
-
       if (rightConstant.isZero())
       {
         return right;
