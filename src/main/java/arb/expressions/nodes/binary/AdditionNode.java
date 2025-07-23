@@ -21,12 +21,6 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                          BinaryOperationNode<D, R, F>
 {
 
-  @Override
-  public String typeset()
-  {
-    return format("\\left(%s + %s\\right)", left.typeset(), right.typeset());
-  }
-
   public AdditionNode(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
     super(expression,
@@ -36,18 +30,24 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
           "+");
   }
 
-  @Override
-  public boolean isCommutative()
+  boolean areIntegerDivisions(DivisionNode<D, R, F> leftDiv, DivisionNode<D, R, F> rightDiv)
   {
-    return true;
+    return leftDiv.left.type().equals(Integer.class) && leftDiv.right.type().equals(Integer.class)
+                  && rightDiv.left.type().equals(Integer.class)
+                  && rightDiv.right.type().equals(Integer.class);
   }
 
-  @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
+  Node<D, R, F> combineFractions(DivisionNode<D, R, F> leftDiv, DivisionNode<D, R, F> rightDiv)
   {
-    return left.spliceInto(newExpression).add(right.spliceInto(newExpression));
+    var a           = leftDiv.left;
+    var b           = leftDiv.right;
+    var c           = rightDiv.left;
+    var d           = rightDiv.right;
+    var ad          = a.mul(d);
+    var bc          = b.mul(c);
+    var numerator   = ad.add(bc);
+    var denominator = b.mul(d);
+    return numerator.div(denominator);
   }
 
   @Override
@@ -62,28 +62,10 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     return left.integrate(variable).add(right.integrate(variable));
   }
 
-  boolean areIntegerDivisions(DivisionNode<D, R, F> leftDiv, DivisionNode<D, R, F> rightDiv)
+  @Override
+  public boolean isCommutative()
   {
-    return leftDiv.left.type().equals(Integer.class) && leftDiv.right.type().equals(Integer.class)
-                  && rightDiv.left.type().equals(Integer.class)
-                  && rightDiv.right.type().equals(Integer.class);
-  }
-
-  Node<D, R, F> combineFractions(DivisionNode<D, R, F> leftDiv, DivisionNode<D, R, F> rightDiv)
-  {
-    // Extract components: leftDiv = a/b, rightDiv = c/d
-    var a           = leftDiv.left;   // numerator 1
-    var b           = leftDiv.right;  // denominator 1
-    var c           = rightDiv.left;  // numerator 2
-    var d           = rightDiv.right; // denominator 2
-
-    // Calculate (ad + bc)/(bd)
-    var ad          = a.mul(d);
-    var bc          = b.mul(c);
-    var numerator   = ad.add(bc);
-    var denominator = b.mul(d);
-
-    return numerator.div(denominator);
+    return true;
   }
 
   @Override
@@ -91,12 +73,12 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     super.simplify();
 
-    if (left.isLiteralConstant() && left.toString().equals("0"))
+    if (left.isLiteralConstant() && left.asLiteralConstant().isZero())
     {
       return right;
     }
 
-    if (right.isLiteralConstant() && right.toString().equals("0"))
+    if (right.isLiteralConstant() && right.asLiteralConstant().isZero())
     {
       return left;
     }
@@ -142,6 +124,20 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     return this;
 
+  }
+
+  @Override
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<E, S, G>
+         spliceInto(Expression<E, S, G> newExpression)
+  {
+    return left.spliceInto(newExpression).add(right.spliceInto(newExpression));
+  }
+
+  @Override
+  public String typeset()
+  {
+    return format("\\left(%s + %s\\right)", left.typeset(), right.typeset());
   }
 
 }

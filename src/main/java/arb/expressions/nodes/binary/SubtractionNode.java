@@ -92,12 +92,12 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
   public Node<D, R, F> simplify()
   {
     super.simplify();
-    if (left.isLiteralConstant() && left.toString().equals("0"))
+    if (left.isLiteralConstant() && left.asLiteralConstant().isZero())
     {
       return right.neg();
     }
 
-    if (right.isLiteralConstant() && right.toString().equals("0"))
+    if (right.isLiteralConstant() && right.asLiteralConstant().isZero())
     {
       return left;
     }
@@ -125,13 +125,13 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
       }
       return this;
     }
-   
+
     if (right instanceof NegationNode<D, R, F> rightNegation)
     {
       return left.add(rightNegation.arg.simplify()).simplify();
     }
-    
-      return this;
-    
+
+    return this;
+
   }
 }

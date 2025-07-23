@@ -7,6 +7,7 @@ import arb.Quaternion;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
+import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.expressions.nodes.unary.FunctionNode;
@@ -56,17 +57,20 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   {
     super.simplify();
 
-    boolean leftIsConstant  = left != null && left.isLiteralConstant();
-    boolean rightIsConstant = right != null && right.isLiteralConstant();
+    boolean                      leftIsConstant  = left != null && left.isLiteralConstant();
+    boolean                      rightIsConstant = right != null && right.isLiteralConstant();
+    LiteralConstantNode<D, R, F> rightConstant   = null;
+    LiteralConstantNode<D, R, F> leftConstant    = null;
 
     if (leftIsConstant)
     {
-      var leftString = left.toString();
-      if (leftString.equals("0"))
+      leftConstant = left.asLiteralConstant();
+
+      if (leftConstant.isZero())
       {
         return left;
       }
-      if (leftString.equals("1"))
+      if (leftConstant.isOne())
       {
         return right;
       }
@@ -74,12 +78,13 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
 
     if (rightIsConstant)
     {
-      var rightString = right.toString();
-      if (rightString.equals("0"))
+      rightConstant = right.asLiteralConstant();
+
+      if (rightConstant.isZero())
       {
         return right;
       }
-      if (rightString.equals("1"))
+      if (rightConstant.isOne())
       {
         return left;
       }
@@ -87,7 +92,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
 
     if (leftIsConstant && rightIsConstant)
     {
-      var lconst = left.asLiteralConstant();
+      var lconst = leftConstant;
       var rconst = right.asLiteralConstant();
 
       if (lconst.isInt && rconst.isInt)
@@ -103,7 +108,6 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
     if (left instanceof ExponentiationNode<D, R, F> leftExp
                   && right instanceof ExponentiationNode<D, R, F> rightExp)
     {
-      // check if the bases of the exponents are equals
       var leftBase  = leftExp.left;
       var rightBase = rightExp.left;
       if (leftBase.equals(rightBase))
@@ -112,15 +116,14 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
         return leftBase.pow(exponentSum).simplify();
       }
     }
-    
+
     if (left instanceof FunctionNode<D, R, F> leftFunction
                   && right instanceof FunctionNode<D, R, F> rightFunction)
     {
-      // check if the bases of the exponents are equals
       var leftIsExponentialFunction  = leftFunction.functionName.equals("exp");
-      var rightIsExponentialFunction  = rightFunction.functionName.equals("exp");
+      var rightIsExponentialFunction = rightFunction.functionName.equals("exp");
 
-      if (leftIsExponentialFunction && rightIsExponentialFunction )
+      if (leftIsExponentialFunction && rightIsExponentialFunction)
       {
         var exponentSum = leftFunction.arg.add(rightFunction.arg).simplify();
         return exponentSum.exp();

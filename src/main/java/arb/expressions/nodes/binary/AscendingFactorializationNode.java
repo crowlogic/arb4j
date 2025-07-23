@@ -71,35 +71,6 @@ public class AscendingFactorializationNode<D, R, F extends Function<? extends D,
   }
 
   @Override
-  public String typeset()
-  {
-    return String.format("(%s)_{%s}", left.typeset(), right.typeset());
-  }
-
-  @Override
-  public boolean isCommutative()
-  {
-    return false;
-  }
-
-  @Override
-  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
-  {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
-  }
-
-  @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
-  {
-    return new AscendingFactorializationNode<E, S, G>(left.spliceInto(newExpression),
-                                                      right.spliceInto(newExpression),
-                                                      newExpression);
-  }
-
-  @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
     // Case 1: Diff(pochhammer(f(x),y),x)
@@ -129,6 +100,29 @@ public class AscendingFactorializationNode<D, R, F extends Function<? extends D,
   }
 
   @Override
+  public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
+
+  @Override
+  public boolean isCommutative()
+  {
+    return false;
+  }
+
+  @Override
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<E, S, G>
+         spliceInto(Expression<E, S, G> newExpression)
+  {
+    return new AscendingFactorializationNode<E, S, G>(left.spliceInto(newExpression),
+                                                      right.spliceInto(newExpression),
+                                                      newExpression);
+  }
+
+  @Override
   public Class<?> type()
   {
     var thisType = super.type();
@@ -137,6 +131,12 @@ public class AscendingFactorializationNode<D, R, F extends Function<? extends D,
       thisType = Real.class;
     }
     return thisType;
+  }
+
+  @Override
+  public String typeset()
+  {
+    return String.format("(%s)_{%s}", left.typeset(), right.typeset());
   }
 
 }

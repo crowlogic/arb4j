@@ -20,29 +20,24 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
                                BinaryOperationNode<D, R, F>
 {
 
-  @Override
-  public boolean isSquareRoot()
+  public ExponentiationNode(Expression<D, R, F> expression,
+                            Node<D, R, F> base,
+                            Node<D, R, F> exponent)
   {
-    return right.isHalf();
+    super(expression,
+          base,
+          "pow",
+          exponent,
+          "^");
   }
 
   @Override
-  public Node<D, R, F> getSquareRootArg()
+  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    assert isSquareRoot() : this + " is not a square root";
-    return left;
-  }
+    var term1 = right.mul(left.differentiate(variable)).div(left);
+    var term2 = right.differentiate(variable).mul(left.log());
 
-  @Override
-  public boolean isVariableSquared(VariableNode<D, R, F> variable)
-  {
-    return left.equals(variable) && right.isLiteralConstant() && "2".equals(right.toString());
-  }
-
-  @Override
-  public int hashCode()
-  {
-    return super.hashCode();
+    return mul(term1.add(term2));
   }
 
   @Override
@@ -63,36 +58,16 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   }
 
   @Override
-  public String typeset()
+  public Node<D, R, F> getSquareRootArg()
   {
-    return String.format(String.format("{%s}^{%s}", format(left), format(right)),
-                         left.typeset(),
-                         right.typeset());
-  }
-
-  public ExponentiationNode(Expression<D, R, F> expression,
-                            Node<D, R, F> base,
-                            Node<D, R, F> exponent)
-  {
-    super(expression,
-          base,
-          "pow",
-          exponent,
-          "^");
+    assert isSquareRoot() : this + " is not a square root";
+    return left;
   }
 
   @Override
-  public boolean isCommutative()
+  public int hashCode()
   {
-    return false;
-  }
-
-  @Override
-  public <E, S, G extends Function<? extends E, ? extends S>>
-         Node<E, S, G>
-         spliceInto(Expression<E, S, G> newExpression)
-  {
-    return left.spliceInto(newExpression).pow(right.spliceInto(newExpression));
+    return super.hashCode();
   }
 
   @Override
@@ -110,20 +85,58 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   }
 
   @Override
-  public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
+  public boolean isCommutative()
   {
-    // diff( f(x)^g(x), x) = f(x)^g(x) * (g(x) * f'(x)/f(x) + g'(x) * ln(f(x)))
-    // f=this.left
-    // f=this.right
+    return false;
+  }
 
-    // First term: g(x) * f'(x)/f(x)
-    var term1 = right.mul(left.differentiate(variable)).div(left);
+  @Override
+  public boolean isSquareRoot()
+  {
+    return right.isHalf();
+  }
 
-    // Second term: g'(x) * ln(f(x))
-    var term2 = right.differentiate(variable).mul(left.log());
+  @Override
+  public boolean isVariableSquared(VariableNode<D, R, F> variable)
+  {
+    return left.equals(variable) && right.isLiteralConstant() && "2".equals(right.toString());
+  }
 
-    // Combine terms and multiply by original expression
-    return mul(term1.add(term2));
+  @Override
+  public Node<D, R, F> simplify()
+  {
+    super.simplify();
+    if (right.isLiteralConstant() && right.asLiteralConstant().isOne())
+    {
+      return left;
+    }
+    if (right.isLiteralConstant() && right.asLiteralConstant().isZero())
+    {
+      return expression.newLiteralConstant(1);
+    }
+    if (left.isLiteralConstant() && right.isLiteralConstant())
+    {
+
+      var lconst = left.asLiteralConstant();
+      var rconst = right.asLiteralConstant();
+      if (lconst.isInt && rconst.isInt)
+      {
+        try ( var lint = new Integer(lconst.value); var rint = new Integer(rconst.value);)
+        {
+          var power = lint.pow(rint, 0, rint);
+          return expression.newLiteralConstant(power.toString());
+        }
+      }
+    }
+    return this;
+  }
+
+  @Override
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<E, S, G>
+         spliceInto(Expression<E, S, G> newExpression)
+  {
+    return left.spliceInto(newExpression).pow(right.spliceInto(newExpression));
   }
 
   @Override
@@ -150,31 +163,10 @@ public class ExponentiationNode<D, R, F extends Function<? extends D, ? extends 
   }
 
   @Override
-  public Node<D, R, F> simplify()
+  public String typeset()
   {
-    super.simplify();
-    if (right.isLiteralConstant() && right.asLiteralConstant().value.equals("1"))
-    {
-      return left;
-    }
-    if (right.isLiteralConstant() && right.asLiteralConstant().value.equals("0"))
-    {
-      return expression.newLiteralConstant(1);
-    }
-    if (left.isLiteralConstant() && right.isLiteralConstant())
-    {
-
-      var lconst = left.asLiteralConstant();
-      var rconst = right.asLiteralConstant();
-      if (lconst.isInt && rconst.isInt)
-      {
-        try ( var lint = new Integer(lconst.value); var rint = new Integer(rconst.value);)
-        {
-          var power = lint.pow(rint, 0, rint);
-          return expression.newLiteralConstant(power.toString());
-        }
-      }
-    }
-    return this;
+    return String.format(String.format("{%s}^{%s}", format(left), format(right)),
+                         left.typeset(),
+                         right.typeset());
   }
 }
