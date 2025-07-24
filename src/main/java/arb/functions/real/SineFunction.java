@@ -8,8 +8,8 @@ import arb.documentation.TheArb4jLibrary;
  * @see BusinessSourceLicenseVersionOnePointOne copyright terms governing the
  *      {@link TheArb4jLibrary}
  */
-public class RealSineFunction implements
-                              RealFunction
+public class SineFunction implements
+                          RealFunction
 {
 
   @Override

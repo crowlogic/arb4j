@@ -43,7 +43,8 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
                      UnaryOperationNode<D, R, F>
 {
 
-  private static final String INT_METHOD_DESCRIPTOR       = Type.getMethodDescriptor(Type.getType(int.class));
+  private static final String INT_METHOD_DESCRIPTOR       =
+                                                    Type.getMethodDescriptor(Type.getType(int.class));
   private static final String INTEGER_CLASS_INTERNAL_NAME = Type.getInternalName(Integer.class);
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
@@ -89,8 +90,11 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     }
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>> WhenNode(Expression<D, R, F> expression,
-                                                                       TreeMap<Integer, Node<E, S, G>> cases)
+  public <E,
+                S,
+                G extends Function<? extends E,
+                              ? extends S>> WhenNode(Expression<D, R, F> expression,
+                                                     TreeMap<Integer, Node<E, S, G>> cases)
   {
     super(expression,
           null);
@@ -207,6 +211,10 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
       for (int i = 0; i < labels.length; i++)
       {
         mv.visitLabel(labels[i]);
+        if (!Integer.class.equals(resultType))
+        {
+          throw new UnsupportedOperationException("TODO: add support for more than testing for equality with Integers");
+        }
         branches.get(i).generate(mv, resultType);
         mv.visitJumpInsn(GOTO, endSwitch);
       }
@@ -254,8 +262,6 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     return false;
   }
 
- 
-
   @Override
   public boolean isScalar()
   {
@@ -271,8 +277,9 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
                                  cases);
   }
 
-  public <E, S, G extends Function<? extends E, ? extends S>> Node<D, R, F> substitute(String variable,
-                                                                                       Node<E, S, G> arg)
+  public <E, S, G extends Function<? extends E, ? extends S>>
+         Node<D, R, F>
+         substitute(String variable, Node<E, S, G> arg)
   {
     cases.entrySet()
          .stream()
@@ -297,7 +304,11 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
     return String.format("when(%s,else,%s)",
                          cases.entrySet()
                               .stream()
-                              .map(node -> expression.independentVariable + "=" + node.getKey() + "," + node.getValue())
+                              .map(node -> expression.independentVariable
+                                           + "="
+                                           + node.getKey()
+                                           + ","
+                                           + node.getValue())
                               .collect(Collectors.joining(",")),
                          arg);
   }
@@ -310,6 +321,7 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
 
   /**
    * TODO: make it generate this
+   * 
    * <pre>
      $\left\{\begin{array}{ll}
       \text{val1} & \text{case1}\\
@@ -321,7 +333,10 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   @Override
   public String typeset()
   {
-    return cases.entrySet().stream().map(entry -> entry.getValue().typeset()).collect(Collectors.joining(", "))
+    return cases.entrySet()
+                .stream()
+                .map(entry -> entry.getValue().typeset())
+                .collect(Collectors.joining(", "))
            + " \text{otherwise} "
            + arg.typeset();
   }

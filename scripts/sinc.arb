@@ -1,0 +1,2 @@
+Expression.saveClasses=true;
+var sinc = RealFunction.express("sinc:t➔when(t=0,1,else,sin(t)/t)");
