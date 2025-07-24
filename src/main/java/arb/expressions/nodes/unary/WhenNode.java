@@ -73,6 +73,12 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
   {
     super(expression,
           null);
+
+    if (!expression.domainType.equals(Integer.class))
+    {
+      throw new CompilerException("TODO: support when statements for types other than Integer such as "
+                                  + expression.domainType);
+    }
     cases = new TreeMap<>();
 
     do
@@ -211,11 +217,10 @@ public class WhenNode<D, R, F extends Function<? extends D, ? extends R>> extend
       for (int i = 0; i < labels.length; i++)
       {
         mv.visitLabel(labels[i]);
-        if (!Integer.class.equals(resultType))
-        {
-          throw new UnsupportedOperationException("TODO: add support for more than testing for equality with Integers");
-        }
-        branches.get(i).generate(mv, resultType);
+        var                     ithBranch     = branches.get(i);
+        Class<? extends Object> ithBranchType = ithBranch.type();
+
+        ithBranch.generate(mv, resultType);
         mv.visitJumpInsn(GOTO, endSwitch);
       }
 

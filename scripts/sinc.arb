@@ -1,2 +1,4 @@
 Expression.saveClasses=true;
-var sinc = RealFunction.express("sinc:t➔when(t=0,1,else,sin(t)/t)");
+FunctionPlotter.darkStyle=false;
+var sinc = RealFunction.express("sinc:t➔sin(t)/t");
+plot(-50,50,1000,sinc);
