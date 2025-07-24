@@ -519,7 +519,7 @@ import arb.utensils.Utensils;
    * that{@link #swigCMemOwn} to false since this {@link Real}s {@link #close()}
    * method now frees the memory instead of the {@link #close()} method of that
    * 
-   * The `become` method fuctions metaphorically like the Terminator T-1000 as it
+   * The `become` method functions metaphorically like the Terminator T-1000 as it
    * took on the form of a person in the classic movie scene. In this case, the
    * `Real` object `this` absorbs all the properties and state of another `Real`
    * object `that`, effectively transforming into it.
@@ -1566,7 +1566,21 @@ import arb.utensils.Utensils;
     bits = prec;
     return w;
   }
-  
+
+  public Real cumulativeSum(int bits, Real result)
+  {
+    result.become(Real.newVector(size()));
+    try ( Real accumulator = new Real())
+    {
+      for (int i = 0; i < size(); i++)
+      {
+        result.get(i).set(accumulator.add(get(i), bits));
+      }
+    }
+    result.setName("∫" + getName() );
+    return result;
+  }
+    
   /**
    * Computes the (Normal Gaussian) error function using an automatic algorithm
    * choice. If z is too small to use the asymptotic expansion, a working
