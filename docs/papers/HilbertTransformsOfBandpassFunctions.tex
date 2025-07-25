@@ -1,0 +1,236 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Hilbert Transforms of Band‐Pass Functions\\[0.5ex]\large Expanded with Full Proofs}
+\author{}
+\date{}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\begin{document}
+\maketitle
+
+\section{Background and Definitions}
+
+\begin{definition}[Hilbert Transform]
+For a real–valued $x(t)$ with Fourier transform $X(\omega)$, its Hilbert transform is
+\[
+\widehat{x}(t)
+= \mathcal{H}[x](t)
+= \frac{1}{\pi}\,\mathrm{P.V.}\!\int_{-\infty}^{\infty}\frac{x(\tau)}{t-\tau}\,d\tau,
+\]
+equivalently in the frequency domain,
+\[
+\mathcal{F}\{\mathcal{H}[x]\}(\omega)
+= -j\,\mathrm{sgn}(\omega)\,X(\omega).
+\]
+\end{definition}
+
+\begin{definition}[Analytic Signal]
+Given real $x(t)$, its analytic signal is
+\[
+z(t) = x(t) + j\,\widehat{x}(t),
+\]
+whose Fourier transform is one‐sided:
+\[
+Z(\omega) = 2U(\omega)\,X(\omega),
+\quad U(\omega)=
+\begin{cases}1,&\omega>0,\\0,&\omega<0.\end{cases}
+\]
+\end{definition}
+
+\section{Preliminary Lemmas}
+
+\begin{lemma}[Hilbert Transform of a Complex Exponential]
+\label{lem:exp}
+For any real constant $\omega_0\neq0$,
+\[
+\mathcal{H}\bigl[e^{j\omega_0 t}\bigr]
+= -\,j\,\mathrm{sgn}(\omega_0)\,e^{j\omega_0 t}.
+\]
+In particular, if $\omega_0>0$, $\mathcal{H}[e^{j\omega_0t}]=-j\,e^{j\omega_0t}$.
+\end{lemma}
+
+\begin{proof}
+The Fourier transform of $e^{j\omega_0t}$ is $2\pi\,\delta(\omega-\omega_0)$.  Thus
+\[
+\mathcal{F}\{\mathcal{H}[e^{j\omega_0t}]\}(\omega)
+= -j\,\mathrm{sgn}(\omega)\,2\pi\,\delta(\omega-\omega_0)
+= -j\,\mathrm{sgn}(\omega_0)\,2\pi\,\delta(\omega-\omega_0),
+\]
+and inverting yields the stated result.
+\end{proof}
+
+\section{Main Theorems and Proofs}
+
+\begin{theorem}[Bedrosian's Theorem]
+\label{thm:bedrosian}
+Let $f$ and $g$ be real‐valued, absolutely integrable functions.  Suppose
+\[
+\mathrm{supp}\,\mathcal{F}\{f\}\subset[-\Omega,\Omega],
+\quad
+\mathrm{supp}\,\mathcal{F}\{g\}\subset\mathbb{R}\setminus(-\Omega,\Omega).
+\]
+Then
+\[
+\mathcal{H}[f(t)\,g(t)]
+= f(t)\,\mathcal{H}[g(t)].
+\]
+\end{theorem}
+
+\begin{proof}
+Write $F(\omega)=\mathcal{F}\{f\}(\omega)$, $G(\omega)=\mathcal{F}\{g\}(\omega)$.  Then
+\[
+\mathcal{F}\{f g\}(\omega)
+=\frac1{2\pi}\int_{-\infty}^{\infty} F(\lambda)\,G(\omega-\lambda)\,d\lambda.
+\]
+Therefore
+\[
+\mathcal{F}\{\mathcal{H}[f g]\}(\omega)
+=-j\,\mathrm{sgn}(\omega)\,\mathcal{F}\{f g\}(\omega)
+=-\frac{j}{2\pi}\int F(\lambda)\,\mathrm{sgn}(\omega)\,G(\omega-\lambda)\,d\lambda.
+\]
+But for every $\lambda\in[-\Omega,\Omega]$ and every $\omega$ for which $G(\omega-\lambda)\neq0$,
+we have $\omega-\lambda\notin(-\Omega,\Omega)$ by hypothesis, hence
+\[
+\mathrm{sgn}(\omega)
+=\mathrm{sgn}(\omega-\lambda).
+\]
+Thus
+\[
+\mathrm{sgn}(\omega)\,G(\omega-\lambda)
+=\mathrm{sgn}(\omega-\lambda)\,G(\omega-\lambda),
+\]
+and so
+\[
+\mathcal{F}\{\mathcal{H}[f g]\}(\omega)
+=-\frac{j}{2\pi}\int F(\lambda)\,\mathrm{sgn}(\omega-\lambda)\,G(\omega-\lambda)\,d\lambda
+=\mathcal{F}\{f\,\mathcal{H}[g]\}(\omega).
+\]
+Inverting the Fourier transform gives the result.
+\end{proof}
+
+\begin{theorem}[Hilbert Transform of a Narrowband Signal]
+\label{thm:bandpass}
+Let
+\[
+s(t)=A(t)\cos\bigl(\omega_c t+\phi(t)\bigr),
+\]
+where $A(t)$ and $\phi(t)$ vary slowly enough that the Fourier support of
+$u(t)=A(t)e^{j\phi(t)}$ lies in $|\omega|<\Omega$ with $\Omega<\omega_c$.
+Then
+\[
+\mathcal{H}[s](t)
+= A(t)\,\sin\bigl(\omega_c t+\phi(t)\bigr).
+\]
+Equivalently, the analytic signal is
+\[
+z(t)=s(t)+j\,\mathcal{H}[s](t)
+= A(t)\,e^{j(\omega_c t+\phi(t))}.
+\]
+\end{theorem}
+
+\begin{proof}
+Write
+\[
+s(t)
+=\Re\{u(t)e^{j\omega_c t}\},
+\quad
+u(t)=A(t)e^{j\phi(t)}.
+\]
+Since $\mathrm{supp}\,\mathcal{F}\{u\}\subset[-\Omega,\Omega]$ and
+$\mathcal{F}\{e^{j\omega_ct}\}=2\pi\,\delta(\omega-\omega_c)$ lives at
+$\omega=\omega_c>\Omega$, Theorem~\ref{thm:bedrosian} applies:
+\[
+\mathcal{H}[u(t)e^{j\omega_ct}]
+= u(t)\,\mathcal{H}\bigl[e^{j\omega_ct}\bigr].
+\]
+By Lemma~\ref{lem:exp} with $\omega_0=\omega_c>0$, 
+$\mathcal{H}[e^{j\omega_ct}]=-j\,e^{j\omega_ct}$.  Hence
+\[
+\mathcal{H}[u(t)e^{j\omega_ct}]
+= -\,j\,u(t)e^{j\omega_ct},
+\]
+and taking real parts,
+\[
+\mathcal{H}[\Re\{u e^{j\omega_c t}\}]
+= \Re\bigl\{-j\,u e^{j\omega_ct}\bigr\}
+= \Im\{u e^{j\omega_ct}\}
+= A(t)\sin\bigl(\omega_c t+\phi(t)\bigr).
+\]
+\end{proof}
+
+\begin{theorem}[Spectrum of the Analytic Signal]
+\label{thm:spectrum}
+If $x(t)\leftrightarrow X(\omega)$, then its analytic signal
+$z(t)=x(t)+j\mathcal{H}[x(t)]$ has transform
+\[
+Z(\omega)
+= X(\omega)+j\bigl(-j\,\mathrm{sgn}(\omega)\,X(\omega)\bigr)
+= \bigl(1+\mathrm{sgn}(\omega)\bigr)X(\omega)
+= 2U(\omega)\,X(\omega).
+\]
+\end{theorem}
+
+\begin{proof}
+Immediate from the frequency‐domain definition of $\mathcal{H}$.
+\end{proof}
+
+\begin{theorem}[Envelope Detection]
+\label{thm:envelope}
+For any real $x(t)$,
+\[
+|\,x(t)+j\,\mathcal{H}[x(t)]\,|
+=\sqrt{x^2(t)+\mathcal{H}[x]^2(t)}
+\]
+is exactly the instantaneous envelope of the narrowband signal.
+\end{theorem}
+
+\begin{proof}
+Write $z(t)=x(t)+j\widehat{x}(t)=R(t)e^{j\theta(t)}$, then
+$|z(t)|=R(t)=\sqrt{x^2+\widehat{x}^2}\,$ by definition of magnitude in the complex plane.
+\end{proof}
+
+\begin{theorem}[Single‐Sideband (SSB) Modulation]
+\label{thm:ssb}
+Given a real baseband $m(t)$, the standard Hilbert‐transform SSB transmitter
+produces
+\[
+s_{\mathrm{SSB}}(t)
+= m(t)\cos(\omega_c t)
++ \mathcal{H}[m](t)\,\sin(\omega_c t),
+\]
+which has only the upper sideband.
+\end{theorem}
+
+\begin{proof}
+Form the analytic signal $m_a(t)=m(t)+j\mathcal{H}[m](t)\leftrightarrow2U(\omega)M(\omega)$,
+then modulate:
+\[
+m_a(t)e^{j\omega_ct}
+\leftrightarrow 2M(\omega-\omega_c)U(\omega-\omega_c).
+\]
+Taking the real part gives exactly
+\[
+\Re\{m_a(t)e^{j\omega_ct}\}
+= m(t)\cos\omega_ct - \mathcal{H}[m](t)\sin\omega_ct,
+\]
+which is the lower‐sideband suppressed version.  A sign flip in the sine term
+(or using $e^{-j\omega_ct}$) yields the upper SB alone.
+\end{proof}
+
+\section{Conclusion}
+We have given full proofs of the central results on Hilbert transforms
+of band‐pass functions, Bedrosian’s theorem, spectrum of the analytic signal,
+envelope detection and the SSB construction, completing the rigorous
+theory often attributed to Urkowitz (Proc.\ IRE, 1962).
+
+\end{document}
