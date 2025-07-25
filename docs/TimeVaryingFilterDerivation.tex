@@ -8,67 +8,137 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}{Corollary}
 
-\begin{document}
+\title{Injective Measure-Preserving Time-Changes of Stationary Processes are Oscillatory}
+\author{Stephen Crowley}
+\date{July 24, 2025}
 
-\section*{Oscillatory Processes with Monotonic Phase Functions}
+\begin{document}
+\maketitle
+
+\section*{Oscillatory Processes and Normalized Injective Time-Changes}
 
 \begin{definition}[Oscillatory Process]
-Let $\{X_t\}_{t\in\mathbb{R}}$ be a complex second-order process. $\{X_t\}$ is called oscillatory if
+A complex-valued second-order stochastic process $\{X_t\}_{t\in I}$ is said to be oscillatory if there exists a family of functions $\phi_t(\omega)$ and a complex orthogonal increment process $Z(\omega)$ with $E|dZ(\omega)|^2 = d\mu(\omega)$ such that
 \[
-X_t = \int_{-\infty}^\infty \phi_t(\omega)\,dZ(\omega),
+X_t = \int_{-\infty}^\infty \phi_t(\omega) \, dZ(\omega)\,,
 \]
-where $Z(\omega)$ has orthogonal increments and $E|dZ(\omega)|^2 = d\mu(\omega)$, and $\phi_t(\omega) = A_t(\omega) e^{i\omega t}$.
+where $\phi_t(\omega) = A_t(\omega) e^{i\omega t}$ and $A_t(\omega)$ is quadratically integrable with respect to $d\mu$.
 \end{definition}
 
-\begin{theorem}
-Let $\theta:\mathbb{R}\to\mathbb{R}$ be smooth and strictly monotonically increasing. Define
+\begin{definition}[Stationary Process]
+A second-order process $\{S_t\}_{t\in J}$ is stationary if it admits the spectral representation
 \[
-\phi_t(\omega) = e^{i\omega\theta(t)} .
+S_t = \int_{-\infty}^\infty e^{i\omega t}\,dZ(\omega)
 \]
-Set
+for some orthogonal increment process $Z(\omega)$ with $E|dZ(\omega)|^2 = d\mu(\omega)$.
+\end{definition}
+
+\begin{theorem}[Time-Varying Filter for Injective Time-Change]
+Let $S_t$ be a stationary process and $\theta: \mathbb{R} \to \mathbb{R}$ be smooth and strictly increasing with $\theta'(t) > 0$. To achieve the transformation
 \[
-A_t(\omega) = e^{i\omega(\theta(t)-t)} .
+X_t = \sqrt{\theta'(t)} S_{\theta(t)}
 \]
-Then the time-varying impulse response $h_t(u)$ defined by
+via convolution $X_t = \int_{-\infty}^\infty S_{t-u} h_t(u) du$, the time-varying impulse response must be
 \[
-A_t(\omega) = \int_{-\infty}^\infty e^{i\omega u} h_t(u)\,du
-\]
-is
-\[
-h_t(u) = \delta(u - [\theta(t) - t]) .
+h_t(u) = \sqrt{\theta'(t)} \delta(u - (t - \theta(t))).
 \]
 \end{theorem}
 
 \begin{proof}
-The inverse Fourier transform yields
-\begin{align*}
-h_t(u) &= \frac{1}{2\pi}\int_{-\infty}^\infty e^{-i\omega u}A_t(\omega)\,d\omega \\
-       &= \frac{1}{2\pi}\int_{-\infty}^\infty e^{-i\omega u} e^{i\omega(\theta(t)-t)} d\omega \\
-       &= \frac{1}{2\pi}\int_{-\infty}^\infty e^{i\omega(\theta(t)-t-u)}d\omega \\
-       &= \delta(\theta(t)-t-u) \\
-       &= \delta(u - [\theta(t)-t]) .
-\end{align*}
+For the convolution to yield $X_t = \sqrt{\theta'(t)} S_{\theta(t)}$, the argument of $S$ in the integrand must equal $\theta(t)$ when the delta function is activated. This requires:
+\[
+t - u = \theta(t)
+\]
+Solving for $u$:
+\[
+u = t - \theta(t)
+\]
+Therefore:
+\[
+h_t(u) = \sqrt{\theta'(t)} \delta(u - (t - \theta(t)))
+\]
+Verification by direct computation:
+\begin{align}
+X_t &= \int_{-\infty}^\infty S_{t-u} h_t(u) du \\
+&= \int_{-\infty}^\infty S_{t-u} \sqrt{\theta'(t)} \delta(u - (t - \theta(t))) du \\
+&= \sqrt{\theta'(t)} S_{t - (t - \theta(t))} \quad \text{(by sifting property)} \\
+&= \sqrt{\theta'(t)} S_{\theta(t)}
+\end{align}
 \end{proof}
 
-\begin{corollary}
-Let $S_t = \int_{-\infty}^{\infty} e^{i\omega t} dZ(\omega)$. Then
+\begin{theorem}[Spectral Envelope for Injective Time-Change]
+For the time-varying filter $h_t(u) = \sqrt{\theta'(t)} \delta(u - (t - \theta(t)))$, the spectral envelope is
 \[
-X_t = \int_{-\infty}^\infty S_{t-u}\,h_t(u)\,du = S_{2t - \theta(t)}
+A_t(\omega) = \sqrt{\theta'(t)} e^{i\omega(t - \theta(t))}.
 \]
-and
+\end{theorem}
+
+\begin{proof}
+The spectral envelope is the Fourier transform of $h_t(u)$:
+\begin{align}
+A_t(\omega) &= \int_{-\infty}^\infty e^{i\omega u} h_t(u) du \\
+&= \int_{-\infty}^\infty e^{i\omega u} \sqrt{\theta'(t)} \delta(u - (t - \theta(t))) du \\
+&= \sqrt{\theta'(t)} e^{i\omega(t - \theta(t))} \quad \text{(by sifting property)}
+\end{align}
+\end{proof}
+
+\begin{theorem}[Oscillatory Representation of Injective Time-Change]
+The process $X_t = \sqrt{\theta'(t)} S_{\theta(t)}$ admits the oscillatory representation
 \[
-X_t = \int_{-\infty}^\infty e^{i\omega\theta(t)}\,dZ(\omega) .
+X_t = \int_{-\infty}^\infty \phi_t(\omega) dZ(\omega)
+\]
+where
+\[
+\phi_t(\omega) = \sqrt{\theta'(t)} e^{i\omega\theta(t)}.
+\]
+\end{theorem}
+
+\begin{proof}
+Starting from the spectral representation of $S_t$:
+\begin{align}
+X_t &= \sqrt{\theta'(t)} S_{\theta(t)} \\
+&= \sqrt{\theta'(t)} \int_{-\infty}^\infty e^{i\omega\theta(t)} dZ(\omega) \\
+&= \int_{-\infty}^\infty \sqrt{\theta'(t)} e^{i\omega\theta(t)} dZ(\omega)
+\end{align}
+Thus $\phi_t(\omega) = \sqrt{\theta'(t)} e^{i\omega\theta(t)}$.
+\end{proof}
+
+\begin{corollary}[Envelope in Standard Form]
+The oscillatory functions can be written in the standard form $\phi_t(\omega) = A_t(\omega) e^{i\omega t}$ where
+\[
+A_t(\omega) = \sqrt{\theta'(t)} e^{i\omega(\theta(t) - t)}.
 \]
 \end{corollary}
 
 \begin{proof}
-By the sifting property of the Dirac delta,
-\begin{align*}
-X_t &= \int_{-\infty}^\infty S_{t-u} \delta(u - [\theta(t)-t])\,du \\
-    &= S_{t - [\theta(t)-t]} \\
-    &= S_{2t - \theta(t)} .
-\end{align*}
-By direct substitution, the oscillatory representation holds by definition.
+Factor the exponential:
+\begin{align}
+\phi_t(\omega) &= \sqrt{\theta'(t)} e^{i\omega\theta(t)} \\
+&= \sqrt{\theta'(t)} e^{i\omega(\theta(t) - t)} e^{i\omega t} \\
+&= A_t(\omega) e^{i\omega t}
+\end{align}
+where $A_t(\omega) = \sqrt{\theta'(t)} e^{i\omega(\theta(t) - t)}$.
+\end{proof}
+
+\begin{theorem}[Verification of Filter-Envelope Consistency]
+The spectral envelope $A_t(\omega) = \sqrt{\theta'(t)} e^{i\omega(\theta(t) - t)}$ is the Fourier transform of the time-varying impulse response $h_t(u) = \sqrt{\theta'(t)} \delta(u - (t - \theta(t)))$.
+\end{theorem}
+
+\begin{proof}
+Compute the Fourier transform:
+\begin{align}
+\mathcal{F}[h_t](ω) &= \int_{-\infty}^\infty e^{i\omega u} \sqrt{\theta'(t)} \delta(u - (t - \theta(t))) du \\
+&= \sqrt{\theta'(t)} e^{i\omega(t - \theta(t))} \\
+&= A_t(\omega)
+\end{align}
+Compute the inverse Fourier transform:
+\begin{align}
+\mathcal{F}^{-1}[A_t](u) &= \frac{1}{2\pi} \int_{-\infty}^\infty e^{-i\omega u} \sqrt{\theta'(t)} e^{i\omega(\theta(t) - t)} d\omega \\
+&= \frac{\sqrt{\theta'(t)}}{2\pi} \int_{-\infty}^\infty e^{i\omega(\theta(t) - t - u)} d\omega \\
+&= \sqrt{\theta'(t)} \delta(\theta(t) - t - u) \\
+&= \sqrt{\theta'(t)} \delta(u - (t - \theta(t))) \\
+&= h_t(u)
+\end{align}
 \end{proof}
 
 \end{document}
