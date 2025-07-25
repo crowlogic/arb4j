@@ -1268,7 +1268,7 @@ import arb.functions.complex.ComplexNullaryFunction;
     {
       for (int i = 0; i < dim; i++)
       {
-        arblib.acb_set(get(i), complex.get(i));
+        get(i).set(complex.get(i));
       }
     }
     return this;
