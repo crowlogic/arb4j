@@ -7,7 +7,8 @@
   Stationary Processes are Oscillatory>|<doc-author|<author-data|<author-name|Stephen
   Crowley>>>|<doc-date|July 24, 2025>>
 
-  <section*|Oscillatory Processes and Normalized Injective Time-Changes>
+  <section|<section*|Oscillatory Processes and Normalized Injective
+  Time-Changes>>
 
   <\definition>
     [Oscillatory Process] A complex-valued second-order stochastic process
@@ -17,9 +18,9 @@
     with <math|E*<around|\||d*Z<around|(|\<omega\>|)>|\|><rsup|2>=d*\<mu\><around|(|\<omega\>|)>>
     such that
 
-    <\equation>
-      X<rsub|t>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|t><around|(|\<omega\>|)>*<space|0.17em>d*Z<around|(|\<omega\>|)><space|0.17em>
-    </equation>
+    <\equation*>
+      X<rsub|t>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|t><around|(|\<omega\>|)>*<space|0.17em>d*Z<around|(|\<omega\>|)><space|0.17em>,
+    </equation*>
 
     where <math|\<phi\><rsub|t><around|(|\<omega\>|)>=A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>>
     and <math|A<rsub|t><around|(|\<omega\>|)>> is quadratically integrable
@@ -31,9 +32,9 @@
     <math|<around|{|S<rsub|t>|}><rsub|t\<in\>J>> is stationary if it admits
     the spectral representation
 
-    <\equation>
+    <\equation*>
       S<rsub|t>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*t>*<space|0.17em>d*Z<around|(|\<omega\>|)>
-    </equation>
+    </equation*>
 
     for some orthogonal increment process <math|Z<around|(|\<omega\>|)>> with
     <math|E*<around|\||d*Z<around|(|\<omega\>|)>|\|><rsup|2>=d*\<mu\><around|(|\<omega\>|)>>.
@@ -45,16 +46,16 @@
     smooth and strictly increasing with <math|\<theta\><rprime|'><around|(|t|)>\<gtr\>0>.
     To achieve the transformation
 
-    <\equation>
+    <\equation*>
       X<rsub|t>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>>
-    </equation>
+    </equation*>
 
     via convolution <math|X<rsub|t>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<rsub|t-u>*h<rsub|t><around|(|u|)>*d*u>,
     the time-varying impulse response must be
 
-    <\equation>
-      h<rsub|t><around|(|u|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*\<delta\>*<around|(|u-<around|(|t-\<theta\><around|(|t|)>|)>|)>
-    </equation>
+    <\equation*>
+      h<rsub|t><around|(|u|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*\<delta\>*<around|(|u-<around|(|t-\<theta\><around|(|t|)>|)>|)>.
+    </equation*>
   </theorem>
 
   <\proof>
@@ -69,41 +70,20 @@
 
     Solving for <math|u>:
 
-    <\equation>
+    <\equation*>
       u=t-\<theta\><around|(|t|)>
-    </equation>
+    </equation*>
 
     Therefore:
 
-    <\equation>
+    <\equation*>
       h<rsub|t><around|(|u|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*\<delta\>*<around|(|u-<around|(|t-\<theta\><around|(|t|)>|)>|)>
-    </equation>
+    </equation*>
 
     Verification by direct computation:
 
     <\align>
-      <tformat|<table|<row|<cell|X<rsub|t>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<rsub|t-u>*h<rsub|t><around|(|u|)>*d*u<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<rsub|t-u>*<sqrt|\<theta\><rprime|'><around|(|t|)>>*\<delta\>*<around|(|u-<around|(|t-\<theta\><around|(|t|)>|)>|)>*d*u<eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|t-<around|(|t-\<theta\><around|(|t|)>|)>><space|1em><text|(by
-      sifting property)><eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>><eq-number>>>>>
-    </align>
-  </proof>
-
-  <\theorem>
-    [Spectral Envelope for Injective Time-Change] For the time-varying filter
-    <math|h<rsub|t><around|(|u|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*\<delta\>*<around|(|u-<around|(|t-\<theta\><around|(|t|)>|)>|)>>,
-    the spectral envelope is
-
-    <\equation*>
-      A<rsub|t><around|(|\<omega\>|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|t-\<theta\><around|(|t|)>|)>>
-    </equation*>
-  </theorem>
-
-  <\proof>
-    The spectral envelope is the Fourier transform of
-    <math|h<rsub|t><around|(|u|)>>:
-
-    <\align>
-      <tformat|<table|<row|<cell|A<rsub|t><around|(|\<omega\>|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*u>*h<rsub|t><around|(|u|)>*d*u<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*u>*<sqrt|\<theta\><rprime|'><around|(|t|)>>*\<delta\>*<around|(|u-<around|(|t-\<theta\><around|(|t|)>|)>|)>*d*u<eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|t-\<theta\><around|(|t|)>|)>><space|1em><text|(by
-      sifting property)><eq-number>>>>>
+      <tformat|<table|<row|<cell|X<rsub|t>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<rsub|t-u>*h<rsub|t><around|(|u|)>*d*u<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<rsub|t-u>*<sqrt|\<theta\><rprime|'><around|(|t|)>>*\<delta\>*<around|(|u-<around|(|t-\<theta\><around|(|t|)>|)>|)>*d*u<eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|t-<around|(|t-\<theta\><around|(|t|)>|)>><eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>><eq-number>>>>>
     </align>
   </proof>
 
@@ -119,7 +99,7 @@
     where
 
     <\equation*>
-      \<phi\><rsub|t><around|(|\<omega\>|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*\<theta\><around|(|t|)>>
+      \<phi\><rsub|t><around|(|\<omega\>|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*\<theta\><around|(|t|)>>.
     </equation*>
   </theorem>
 
@@ -139,7 +119,7 @@
     where
 
     <\equation*>
-      A<rsub|t><around|(|\<omega\>|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t|)>>
+      A<rsub|t><around|(|\<omega\>|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t|)>>.
     </equation*>
   </corollary>
 
@@ -154,30 +134,47 @@
   </proof>
 
   <\theorem>
-    [Verification of Filter-Envelope Consistency] The spectral envelope
+    [Evolutionary Power Spectrum] For the oscillatory process
+    <math|X<rsub|t>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>>>
+    with envelope <math|A<rsub|t><around|(|\<omega\>|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t|)>>>,
+    the evolutionary power spectrum at time <math|t> is
 
-    <\equation>
-      A<rsub|t><around|(|\<omega\>|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t|)>>
-    </equation>
-
-    \ is the Fourier transform of the time-varying impulse response
-
-    <\equation>
-      h<rsub|t><around|(|u|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*\<delta\>*<around|(|u-<around|(|t-\<theta\><around|(|t|)>|)>|)>
-    </equation>
+    <\equation*>
+      d*F<rsub|t><around|(|\<omega\>|)>=<around|\||A<rsub|t><around|(|\<omega\>|)>|\|><rsup|2>*d*\<mu\><around|(|\<omega\>|)>=\<theta\><rprime|'><around|(|t|)>*d*\<mu\><around|(|\<omega\>|)>.
+    </equation*>
   </theorem>
 
   <\proof>
-    Compute the Fourier transform:
+    The evolutionary power spectrum is defined as
+    <math|d*F<rsub|t><around|(|\<omega\>|)>=<around|\||A<rsub|t><around|(|\<omega\>|)>|\|><rsup|2>*d*\<mu\><around|(|\<omega\>|)>>.
+    Computing the magnitude squared:
 
     <\align>
-      <tformat|<table|<row|<cell|\<cal-F\><around|[|h<rsub|t>|]><around|(|\<omega\>|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*u>*<sqrt|\<theta\><rprime|'><around|(|t|)>>*\<delta\>*<around|(|u-<around|(|t-\<theta\><around|(|t|)>|)>|)>*d*u<eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|t-\<theta\><around|(|t|)>|)>><eq-number>>>|<row|<cell|>|<cell|=A<rsub|t><around|(|\<omega\>|)><eq-number>>>>>
+      <tformat|<table|<row|<cell|<around|\||A<rsub|t><around|(|\<omega\>|)>|\|><rsup|2>>|<cell|=<around*|\||<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2><eq-number>>>|<row|<cell|>|<cell|=\<theta\><rprime|'><around|(|t|)><around*|\||e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2><eq-number>>>|<row|<cell|>|<cell|=\<theta\><rprime|'><around|(|t|)>\<cdot\>1<eq-number>>>|<row|<cell|>|<cell|=\<theta\><rprime|'><around|(|t|)><eq-number>>>>>
     </align>
 
-    Compute the inverse Fourier transform:
+    Therefore <math|d*F<rsub|t><around|(|\<omega\>|)>=\<theta\><rprime|'><around|(|t|)>*d*\<mu\><around|(|\<omega\>|)>>.
+  </proof>
+
+  <\theorem>
+    [L\<twosuperior\>-Norm Preservation] The transformation
+    <math|S<rsub|t>\<mapsto\><sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>>>
+    preserves the L\<twosuperior\>-norm in the sense that
+
+    <\equation*>
+      <big|int><rsub|I>E<around|\||X<rsub|t>|\|><rsup|2>*d*t=<big|int><rsub|J>E<around|\||S<rsub|s>|\|><rsup|2>*d*s
+    </equation*>
+
+    where <math|I> is the domain of <math|t> and
+    <math|J=\<theta\><around|(|I|)>>.
+  </theorem>
+
+  <\proof>
+    Using the change of variables <math|s=\<theta\><around|(|t|)>>, so
+    <math|d*s=\<theta\><rprime|'><around|(|t|)>*d*t>:
 
     <\align>
-      <tformat|<table|<row|<cell|\<cal-F\><rsup|-1><around|[|A<rsub|t>|]><around|(|u|)>>|<cell|=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*\<omega\>*u>*<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t|)>>*d*\<omega\><eq-number>>>|<row|<cell|>|<cell|=<frac|<sqrt|\<theta\><rprime|'><around|(|t|)>>|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t-u|)>>*d*\<omega\><eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*\<delta\>*<around|(|\<theta\><around|(|t|)>-t-u|)><eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*\<delta\>*<around|(|u-<around|(|t-\<theta\><around|(|t|)>|)>|)><eq-number>>>|<row|<cell|>|<cell|=h<rsub|t><around|(|u|)><eq-number>>>>>
+      <tformat|<table|<row|<cell|<big|int><rsub|I>E<around|\||X<rsub|t>|\|><rsup|2>*d*t>|<cell|=<big|int><rsub|I>E*<around*|\||<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>>|\|><rsup|2>*d*t<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|I>\<theta\><rprime|'><around|(|t|)>*E<around|\||S<rsub|\<theta\><around|(|t|)>>|\|><rsup|2>*d*t<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|J>E<around|\||S<rsub|s>|\|><rsup|2>*d*s<eq-number>>>>>
     </align>
   </proof>
 </body>
@@ -191,7 +188,8 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|?|1|../.TeXmacs/texts/scratch/no_name_11.tm>>
+    <associate|auto-1|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_11.tm>>
+    <associate|auto-4|<tuple|1|?|../.TeXmacs/texts/scratch/no_name_11.tm>>
   </collection>
 </references>
 
