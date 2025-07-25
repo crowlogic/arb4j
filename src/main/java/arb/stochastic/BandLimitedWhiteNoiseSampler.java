@@ -36,8 +36,9 @@ public class BandLimitedWhiteNoiseSampler extends
     {
       for (int i = 0; i < numPoints; i++)
       {
-        times[i]  = i * dt;
-        values[i] = times[i] == 0 ? Double.POSITIVE_INFINITY : 0;
+        var t = times[i] = i * dt;
+        var tau = t*(2*Math.PI);
+        values[i] = t == 0 ? 1 : Math.sin(tau) / tau;
       }
     }
   }
