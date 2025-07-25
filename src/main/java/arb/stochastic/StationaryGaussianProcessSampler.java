@@ -148,34 +148,33 @@ public abstract class StationaryGaussianProcessSampler extends
     samplingTimes        = new double[N];
 
     try ( Complex randomMeasure = Complex.newVector(N); Real mag = new Real();
-          Complex inverseDiscreteFourierTransform = Complex.newVector(N); Real env = new Real();
-          Real rnd = new Real();
-          ComplexWhiteNoiseProcess whiteNoiseProcess = new ComplexWhiteNoiseProcess())
+          Complex ift = Complex.newVector(N);
+          ComplexWhiteNoiseProcess whiteNoise = new ComplexWhiteNoiseProcess())
     {
-      whiteNoiseProcess.initializeWithSeed(seed);
+      whiteNoise.initializeWithSeed(seed);
 
       randomMeasure.get(0).zero();
 
-      for (int k = 1; k < nyquistIndex; k++)
+      for (int k = 0; k < nyquistIndex; k++)
       {
-        samplePoint(randomMeasure, mag, whiteNoiseProcess, df, k, false);
+        samplePoint(randomMeasure, mag, whiteNoise, df, k, false);
       }
 
       if (N % 2 == 0)
       {
-        samplePoint(randomMeasure, mag, whiteNoiseProcess, df, nyquistIndex, true);
+        samplePoint(randomMeasure, mag, whiteNoise, df, nyquistIndex, true);
       }
 
-      arblib.acb_dft_inverse(inverseDiscreteFourierTransform, randomMeasure, N, bits);
+      arblib.acb_dft_inverse(ift, randomMeasure, N, bits);
 
-      inverseDiscreteFourierTransform.mul(N, bits);
+      ift.mul(N, bits);
 
       for (int i = 0; i < N; i++)
       {
-        Complex element = inverseDiscreteFourierTransform.get(i);
+        Complex element = ift.get(i);
         samplingTimes[i] = i * dt;
         samplePath.get(i).set(element);
-        envelope[i] = element.norm(bits, env).doubleValue();
+        envelope[i] = element.norm(bits, mag).doubleValue();
       }
 
       return this;
@@ -190,15 +189,14 @@ public abstract class StationaryGaussianProcessSampler extends
                              int k,
                              boolean realOnly)
   {
-    var sample = whiteNoise.get(k);
-    whiteNoiseProcess.sample(bits, sample);
+    var sample = whiteNoiseProcess.sample(bits, whiteNoise.get(k));
+
     if (realOnly)
     {
       sample.im().zero();
     }
 
-    mag.set(powerSpectralDensity[k] * df).sqrt(bits);
-    sample.mul(mag, bits, randomMeasure.get(k));
+    sample.mul(mag.set(powerSpectralDensity[k] * df).sqrt(bits), bits, randomMeasure.get(k));
   }
 
   /**
