@@ -1,0 +1,341 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{remark}{Remark}[section]
+
+\title{Pre-envelopes of Nonstationary Bandpass Processes}
+\author{Harry Urkowitz\\
+Philco Scientific Laboratory, Blue Bell, Pa.}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Many significant properties of pre-envelopes of real waveforms are shown to extend when the notion of pre-envelope is applied to random processes that are not wide-sense stationary. Specifically, if $x(t)$ denotes a real random process which is not wide-sense stationary and $y(t)$ is its Hilbert transform, then $x(t)$ and $y(t)$ possess the same autocovariance function and have zero crosscovariance at the same instant. The autocovariance function of the pre-envelope $z(t)$, given by $z(t) = x(t) + jy(t)$, is twice the pre-envelope of the autocovariance function of $x(t)$.
+
+The introduction of a time-dependent power density spectrum enables a convenient interpretation of a bandpass random process not assumed to be wide-sense stationary. The classical form of the autocovariance function for a wide-sense stationary bandpass process generalizes, with minor modifications, to nonstationary processes.
+\end{abstract}
+
+\section{Introduction}
+As defined by Arens~\cite{arens1957} and Dugundji~\cite{dugundji1958}, the \emph{pre-envelope} of a real waveform $x(t)$ is the complex-valued function $z(t)$ whose real part is $x(t)$ and whose imaginary part is $y(t)$, the Hilbert transform of $x(t)$; i.e.,
+\begin{equation}
+y(t) = \frac{1}{\pi} \mathrm{P.V.} \int_{-\infty}^{\infty} \frac{x(s)}{t-s} ds,
+\label{eq:hilbert_transform}
+\end{equation}
+where the integral is evaluated in the Cauchy principal value sense.
+
+The envelope of $x(t)$ is defined as $|z(t)|$. Dugundji derived a number of properties of time auto- and cross-correlations for real waveforms; these properties also apply to auto- and crosscovariances of wide-sense stationary random processes when time averages are replaced by ensemble averages. The present work demonstrates that analogous properties hold for nonstationary random processes as well, with particular emphasis on bandpass processes.
+
+\section{Covariances}
+The following alternative forms of~\eqref{eq:hilbert_transform} are also instrumental for subsequent analysis:
+\begin{equation}
+y(t) = \frac{1}{\pi} \int_{-\infty}^{\infty} \frac{x(t+s)}{s} ds = \frac{1}{\pi} \int_{-\infty}^{\infty} \frac{x(t-s)}{s} ds.
+\label{eq:hilbert_transform_alt}
+\end{equation}
+
+\begin{definition}
+\label{def:autocovariance}
+The \emph{autocovariance function} of a complex-valued random process $z(t)$ is defined as
+\begin{equation}
+R_z(t,\tau) = \mathbb{E}[z(t)z^*(t-\tau)],
+\label{eq:autocovariance}
+\end{equation}
+where $z^*(t-\tau)$ denotes the complex conjugate and $\mathbb{E}[\cdot]$ denotes the statistical expectation over the ensemble of sample functions.
+\end{definition}
+
+In the special case that the process is wide-sense stationary, $R_z(t,\tau)$ depends only on the time difference $\tau$~\cite{doob1953}.
+
+\begin{definition}
+\label{def:crosscovariance}
+The \emph{crosscovariance function} of two complex-valued random processes $z(t)$ and $w(t)$ is given by
+\begin{equation}
+R_{zw}(t, \tau) = \mathbb{E}[z(t)w^*(t-\tau)].
+\label{eq:crosscovariance}
+\end{equation}
+\end{definition}
+
+\begin{definition}
+\label{def:hilbert_covariance}
+The $\tau$-Hilbert transform $\hat{R}(t,\tau)$ of a covariance function $R(t,\tau)$ is defined as the Hilbert transform with integration carried out over the variable $\tau$:
+\begin{equation}
+\hat{R}(t,\tau) = \frac{1}{\pi} \mathrm{P.V.} \int_{-\infty}^{\infty} \frac{R(t,s)}{\tau-s} ds = \frac{1}{\pi} \mathrm{P.V.} \int_{-\infty}^{\infty} \frac{R(t,\tau+s)}{s} ds.
+\label{eq:hilbert_covariance}
+\end{equation}
+\end{definition}
+
+\begin{theorem}
+\label{thm:crosscov_hilbert}
+The crosscovariance function of $x(t)$ and its Hilbert transform $y(t)$ is the negative of the $\tau$-Hilbert transform of the autocovariance function of $x(t)$:
+\begin{equation}
+R_{xy}(t, \tau) = -\hat{R}_x(t, \tau).
+\label{eq:crosscov_hilbert}
+\end{equation}
+\end{theorem}
+\begin{proof}
+By the definition of covariance and linearity of the Hilbert transform, one has
+\[
+R_{xy}(t,\tau) = \mathbb{E}[x(t)y(t-\tau)] = \mathbb{E}\left[ x(t) \cdot \frac{1}{\pi} \mathrm{P.V.} \int_{-\infty}^\infty \frac{x(s)}{t-\tau-s} ds \right] .
+\]
+By Fubini's theorem, the order of expectation and integration can be interchanged (assuming regularity conditions hold), yielding
+\[
+R_{xy}(t,\tau) = \frac{1}{\pi} \mathrm{P.V.} \int_{-\infty}^\infty \frac{\mathbb{E}[x(t)x(s)]}{t-\tau-s} ds = \frac{1}{\pi} \mathrm{P.V.} \int_{-\infty}^\infty \frac{R_x(t, t-s)}{t-\tau-s} ds.
+\]
+Let $u = t-s$, then $s = t-u$, $ds = -du$:
+\[
+R_{xy}(t,\tau) = -\frac{1}{\pi} \mathrm{P.V.} \int_{-\infty}^\infty \frac{R_x(t, u)}{\tau - u} du,
+\]
+which is $- \hat{R}_x(t, \tau)$ by~\eqref{eq:hilbert_covariance}.
+\end{proof}
+
+\begin{theorem}
+\label{thm:hilbert_cross}
+The $\tau$-Hilbert transform of the crosscovariance $R_{xy}(t,\tau)$ yields the negative of the reversed crosscovariance function:
+\begin{equation}
+\hat{R}_{xy}(t, \tau) = -R_{yx}(t, \tau).
+\label{eq:hilbert_cross}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Via the definition of the Hilbert transform and the antisymmetry property:
+\[
+\hat{R}_{xy}(t,\tau) = \frac{1}{\pi} \mathrm{P.V.} \int_{-\infty}^\infty \frac{R_{xy}(t,s)}{\tau-s} ds .
+\]
+Now, $R_{xy}(t,s) = -\hat{R}_x(t,s)$ (by Theorem~\ref{thm:crosscov_hilbert}), so
+\[
+\hat{R}_{xy}(t,\tau) = - \frac{1}{\pi} \mathrm{P.V.} \int_{-\infty}^{\infty} \frac{\hat{R}_x(t,s)}{\tau-s} \, ds.
+\]
+But the Hilbert transform is an anti-involution, i.e., $\hat{\hat{R}}_x(t,\tau) = -R_x(t,\tau)$. Likewise, switching the roles of $x$ and $y$ and considering the anti-symmetry yields $-R_{yx}(t,\tau)$ as the result.
+\end{proof}
+
+\begin{theorem}
+\label{thm:hilbert_of_hilbert}
+The Hilbert transform of the Hilbert transform of a function equals the negative of the original function:
+\begin{equation}
+\hat{\hat{R}}_x(t, \tau) = -R_x(t, \tau).
+\label{eq:hilbert_of_hilbert}
+\end{equation}
+\end{theorem}
+\begin{proof}
+This result follows from the well-known property of the Hilbert transform:
+\[
+\mathcal{H}^2\{f\}(t) = -f(t),
+\]
+where $\mathcal{H}$ is the Hilbert transform, provided $f$ satisfies appropriate regularity and integrability conditions~\cite{davenport1958}.
+Applying the Hilbert transform in $\tau$ twice to $R_x(t, \tau)$ yields $-R_x(t, \tau)$.
+\end{proof}
+
+From the definition of $z(t)$ as the pre-envelope,
+\begin{equation}
+z(t) = x(t) + jy(t),
+\label{eq:preenvelope}
+\end{equation}
+one can expand the autocovariance as
+\begin{align*}
+R_z(t,\tau) &= \mathbb{E}[z(t) z^*(t-\tau)] \\
+&= \mathbb{E}[(x(t) + j y(t))(x(t-\tau) - j y(t-\tau))] \\
+&= \mathbb{E}[x(t)x(t-\tau)] + \mathbb{E}[y(t)y(t-\tau)] \\
+&\qquad + j\left( \mathbb{E}[y(t)x(t-\tau)] - \mathbb{E}[x(t)y(t-\tau)] \right).
+\end{align*}
+Since the Hilbert transform is a linear phase shifter in the frequency domain,
+the autocovariance of $y$ equals that of $x$, while
+the cross terms are related to the Hilbert transform, as previous theorems state.
+
+Thus one concludes the following result:
+\begin{theorem}
+\label{thm:preenvelope_covariance}
+The autocovariance function of the pre-envelope $z(t)$ is
+\begin{equation}
+R_z(t, \tau) = 2 \left[ R_x(t, \tau) + j \hat{R}_x(t, \tau) \right],
+\label{eq:preenvelope_autocov}
+\end{equation}
+where $R_x(t, \tau)$ is the autocovariance of $x(\cdot)$ and $\hat{R}_x(t, \tau)$ its $\tau$-Hilbert transform.
+\end{theorem}
+\begin{proof}
+As above, by noting that $\mathbb{E}[x(t)x(t-\tau)] = R_x(t,\tau)$,
+$\mathbb{E}[y(t)y(t-\tau)] = R_y(t,\tau) = R_x(t,\tau)$,
+$\mathbb{E}[x(t)y(t-\tau)] = R_{xy}(t,\tau) = -\hat{R}_x(t,\tau)$,
+$\mathbb{E}[y(t)x(t-\tau)] = R_{yx}(t,\tau) = \hat{R}_x(t,\tau)$,
+and thus
+\begin{align*}
+R_z(t,\tau) &=  R_x(t,\tau) + R_x(t,\tau) + j \big(\hat{R}_x(t,\tau) - (-\hat{R}_x(t,\tau))\big) \\
+&= 2 R_x(t,\tau) + 2j \hat{R}_x(t,\tau).
+\end{align*}
+\end{proof}
+
+\section{Time-Dependent Spectral Densities}
+Following Lampard~\cite{lampard1954}, the time-dependent power density spectrum $S_x(\omega, t)$ of the random process $x(t)$ is defined via the Fourier transform (over $\tau$) of the autocovariance function:
+\begin{equation}
+S_x(\omega, t) = \int_{-\infty}^{\infty} R_x(t, \tau) e^{-j\omega\tau} d\tau.
+\label{eq:tdspectrum}
+\end{equation}
+
+Similarly, the spectrum of the pre-envelope $z(t)$ is obtained from its autocovariance. Employing the properties of the Hilbert transform under Fourier transformation, one obtains:
+\begin{equation}
+\mathcal{F}_\tau[R_z(t, \tau)] =
+\begin{cases}
+4 S_x(\omega, t), & \omega > 0, \\
+2 S_x(0, t), & \omega = 0, \\
+0, & \omega < 0,
+\end{cases}
+\label{eq:preenvelope_spectrum}
+\end{equation}
+where $\mathcal{F}_\tau$ denotes the Fourier transform in the variable $\tau$.
+
+\begin{proof}[Derivation]
+Note from~\eqref{eq:preenvelope_autocov}:
+\[
+R_z(t, \tau) = 2 \big[ R_x(t, \tau) + j \hat{R}_x(t, \tau) \big].
+\]
+Taking the Fourier transform in $\tau$, the Hilbert transform in $\tau$ corresponds to multiplying the spectrum by $-j \operatorname{sgn}(\omega)$, where $\operatorname{sgn}(\omega)$ denotes the sign function:
+\[
+\mathcal{F}_\tau [ \hat{R}_x(t, \tau) ] = -j \operatorname{sgn}(\omega) S_x(\omega, t).
+\]
+Thus the spectrum becomes:
+\begin{align*}
+S_z(\omega, t) &= 2 \left[ S_x(\omega, t) + j (-j \operatorname{sgn}(\omega) S_x(\omega, t)) \right] \\
+&= 2 \left[ S_x(\omega, t) + \operatorname{sgn}(\omega) S_x(\omega, t) \right] \\
+&= 2 S_x(\omega, t) \left[1 + \operatorname{sgn}(\omega) \right].
+\end{align*}
+For $\omega > 0$, $\operatorname{sgn}(\omega) = 1$, giving $S_z(\omega, t) = 4 S_x(\omega, t)$. For $\omega < 0$, $\operatorname{sgn}(\omega) = -1$, giving $S_z(\omega, t) = 0$. For $\omega = 0$ the value is $2 S_x(0, t)$.
+\end{proof}
+
+The instantaneous spectrum concept developed by Page~\cite{page1952} and Kharkevich~\cite{kharkevich1960}
+provides a physical interpretation: for an individual sample function, the energy density in time and frequency can be described by an instantaneous energy spectrum $p(t, f)$, such that the energy in the time interval $(t_1, t_2)$ and frequency interval $(f_1, f_2)$ is given by
+\begin{equation}
+\int_{t_1}^{t_2} \int_{f_1}^{f_2} p(t, f) \, df \, dt.
+\end{equation}
+Taking the ensemble average yields the time-dependent power spectrum:
+\begin{equation}
+\mathbb{E}[p(t, \omega)] = S_x(\omega, t), \qquad \omega = 2\pi f.
+\end{equation}
+
+\noindent
+This provides a natural way to characterize bandpass random processes even in the absence of stationarity: a process is bandpass if $S_x(\omega, t)$ exhibits the bandpass property for all $t$. A reference frequency $f_0$ (or $\omega_c = 2\pi f_0$) may be chosen near the band centre, so as to allow the decomposition:
+\begin{equation}
+S_x(\omega, t) = S_c(\omega - \omega_c, t) + S_c(-\omega - \omega_c, t),
+\label{eq:bandpass_spectrum}
+\end{equation}
+where the function $S_c(\omega, t)$ is concentrated near $\omega = 0$. Although $S_x(\omega, t)$ need not be an even function of $\omega$, this decomposition is always possible for a bandpass process; $\omega_c$ need not lie strictly within the band.
+
+Applying the Fourier inversion to $S_x(\omega, t)$ gives the autocovariance function:
+\begin{align}
+R_x(t, \tau) &= \frac{1}{2\pi} \int_{-\infty}^{\infty} S_x(\omega, t) e^{j\omega \tau} d\omega \nonumber\\
+&= R_c(t, \tau) \cos(\omega_c \tau) + R_{ac}(t, \tau) \sin(\omega_c \tau),
+\label{eq:autocov_bandpass}
+\end{align}
+where
+\begin{align}
+R_c(t, \tau) &= \frac{1}{2\pi} \int_{-\infty}^{\infty} S_c(\omega, t) \cos(\omega \tau) d\omega, \label{eq:Rc}\\
+R_{ac}(t, \tau) &= \frac{1}{2\pi} \int_{-\infty}^{\infty} S_c(\omega, t) \sin(\omega \tau) d\omega. \label{eq:Rac}
+\end{align}
+
+\section{Additional Covariance Properties}
+
+The real bandpass process $x(t)$ can be represented as:
+\begin{equation}
+x(t) = x_c(t) \cos(\omega_c t) + x_s(t) \sin(\omega_c t),
+\label{eq:bandpass_decomp}
+\end{equation}
+where $x_c(t)$ is the in-phase (cosine) component and $x_s(t)$ is the quadrature (sine) component, each a real random process with (generally) time-dependent covariance.
+
+The autocovariance function is:
+\begin{equation}
+R_x(t, \tau) = \mathbb{E}[x(t)x(t-\tau)].
+\end{equation}
+Substituting \eqref{eq:bandpass_decomp} and using properties of covariances, it is found that:
+\begin{align}
+2 R_x(t, \tau) =&\ \mathbb{E}[x_c(t)x_c(t-\tau)] \left[\cos\left(\omega_c \tau\right) + \cos\left(\omega_c (2t-\tau)\right)\right] \notag\\
+&+ \mathbb{E}[x_s(t)x_s(t-\tau)] \left[\cos\left(\omega_c \tau\right) - \cos\left(\omega_c (2t-\tau)\right)\right] \notag\\
+&+ \mathbb{E}[x_c(t)x_s(t-\tau)] \left[\sin\left(\omega_c \tau\right) + \sin\left(\omega_c (2t-\tau)\right)\right] \notag\\
+&- \mathbb{E}[x_s(t)x_c(t-\tau)] \left[\sin\left(\omega_c \tau\right) - \sin\left(\omega_c (2t-\tau)\right)\right].
+\label{eq:covariance_expanded}
+\end{align}
+
+By comparison with \eqref{eq:autocov_bandpass}, the following identities must hold:
+\begin{align}
+R_c(t,\tau) &= \mathbb{E}[x_c(t)x_c(t-\tau)] = \mathbb{E}[x_s(t)x_s(t-\tau)], \label{eq:Rc_xc_xs} \\
+R_{ac}(t,\tau) &= \mathbb{E}[x_c(t)x_s(t-\tau)] = -\mathbb{E}[x_s(t)x_c(t-\tau)]. \label{eq:Rac_xc_xs}
+\end{align}
+This reflects the symmetry properties of the covariance functions for $x_c$ and $x_s$ in the decomposition.
+
+\begin{remark}
+For $R_c(t, \tau)$ and $R_{ac}(t, \tau)$ to represent the in-phase and quadrature covariance functions of a bandpass process, it suffices that the bandwidth of $x(t)$ is much less than the carrier frequency $\omega_c$, so that $x_c(t)$ and $x_s(t)$ vary slowly compared to $\omega_c$.
+\end{remark}
+
+An alternative expression for the autocovariance of the pre-envelope $z(t)$, using these real and quadrature components, is given by
+\begin{equation}
+R_z(t, \tau) = 2 \left[ R_c(t, \tau) + j R_{ac}(t, \tau) \right] e^{j\omega_c \tau}.
+\label{eq:final_autocov}
+\end{equation}
+\begin{proof}
+By substituting $z(t) = [x_c(t) + j x_s(t)]e^{j\omega_c t}$ from the decomposition into the definition of the autocovariance, and using the properties in~\eqref{eq:Rc_xc_xs} and~\eqref{eq:Rac_xc_xs}, as well as the orthogonality between $x_c$ and $x_s$, this result follows after simplification of trigonometric identities.
+\end{proof}
+
+The Hilbert transform of $R_z(t, \tau)$ can be directly obtained as
+\begin{equation}
+\hat{R}_z(t, \tau) = R_c(t, \tau) \sin(\omega_c \tau) + R_{ac}(t, \tau) \cos(\omega_c \tau),
+\label{eq:hilbert_autocov_bandpass}
+\end{equation}
+provided the bandwidth condition stated earlier is satisfied (cf.~\cite{urkowitz1962}).
+
+\begin{theorem}
+\label{thm:zero_crosscov}
+The real process $x(t)$ and its Hilbert transform $y(t)$ have zero cross-covariance at the same time instant:
+\begin{equation}
+R_{xy}(t, 0) = 0.
+\label{eq:zero_crosscov}
+\end{equation}
+\end{theorem}
+\begin{proof}
+From Theorem~\ref{thm:crosscov_hilbert}, $R_{xy}(t, 0) = -\hat{R}_x(t, 0)$. Now, $\hat{R}_x(t, 0)$ vanishes for any function whose spectrum is entirely positive or negative, and in particular for band-limited signals centered away from zero, since the Hilbert transform of an even function at zero argument is zero. More directly, using equations~\eqref{eq:Rac} and~\eqref{eq:Rac_xc_xs} at $\tau = 0$,
+\[
+R_{ac}(t, 0) = \mathbb{E}[x_c(t)x_s(t)],
+\]
+but $x_c$ and $x_s$ are uncorrelated for all $t$ (since the original process is real and bandpass).
+Therefore,
+\[
+R_{xy}(t, 0) = -R_{ac}(t, 0) = 0. \qedhere
+\]
+\end{proof}
+
+\section{Conclusions}
+The properties of real bandpass random processes may be compactly described by the properties of the pre-envelope, a complex process whose modulus is the envelope of the real process. For non-wide-sense stationary processes, the autocovariance depends on both time origin and displacement. Defining the $\tau$-Hilbert transform of the autocovariance function yields relationships between the real and imaginary components of the pre-envelope analogous to those in the stationary case.
+
+By establishing the time-dependent spectral density as the Fourier transform (in the time difference variable) of the autocovariance, a bandpass process—regardless of stationarity—can be characterized as one whose time-dependent spectrum exhibits bandpass characteristics for all $t$. The autocovariance function of the real non-wide-sense stationary process can thus be cast in the same form as in the stationary case: a sum of direct and quadrature components, manifesting the covariance functions of the underlying random envelope modulation.
+
+\section*{References}
+\begin{thebibliography}{8}
+\bibitem{arens1957}
+R. Arens, ``Complex Processes for Envelopes of Normal Noise,'' \emph{IRE Trans. Info. Theory}, Vol. IT-3, No. 3, Sept. 1957, pp. 204--207.
+
+\bibitem{dugundji1958}
+J. Dugundji, ``Envelopes and Pre-envelopes of Real Waveforms,'' \emph{IRE Trans. Info. Theory}, Vol. IT-4, No. 1, March 1958, pp. 53--57.
+
+\bibitem{doob1953}
+J. L. Doob, \emph{Stochastic Processes}, New York, John Wiley and Sons, 1953, pp. 94--95.
+
+\bibitem{lampard1954}
+D. G. Lampard, ``Generalization of the Wiener-Kintchine Theorem to Non-stationary Processes,'' \emph{J. Appl. Phys.}, Vol. 25, June 1954, pp. 802--803.
+
+\bibitem{page1952}
+C. H. Page, ``Instantaneous Power Spectra,'' \emph{J. Appl. Physics}, Vol. 23, Jan. 1952, pp. 103--106.
+
+\bibitem{kharkevich1960}
+A. A. Kharkevich, \emph{Spectra and Analysis}, (Translated from the Russian), New York, Consultants Bureau (Publishers), 1960; p. 21 et seq., p. 165 et seq.
+
+\bibitem{davenport1958}
+W. B. Davenport, Jr., W. L. Root, \emph{An Introduction to the Theory of Random Signals and Noise}, New York, McGraw-Hill Co., 1958, pp. 158--160, and Problem 10, p. 169.
+
+\bibitem{urkowitz1962}
+H. Urkowitz, ``Hilbert Transforms of Band-pass Functions,'' \emph{Proc. IRE}, Vol. 50, 1962, p. 2143.
+\end{thebibliography}
+
+\end{document}
