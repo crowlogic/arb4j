@@ -1,8 +1,14 @@
 package arb.stochastic;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
-import arb.*;
+import arb.Complex;
+import arb.FloatInterval;
+import arb.Real;
+import arb.RealDataSet;
+import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
@@ -10,7 +16,10 @@ import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.plugins.*;
+import io.fair_acc.chartfx.plugins.CrosshairIndicator;
+import io.fair_acc.chartfx.plugins.EditAxis;
+import io.fair_acc.chartfx.plugins.TableViewer;
+import io.fair_acc.chartfx.plugins.Zoomer;
 import io.fair_acc.chartfx.renderer.ErrorStyle;
 import io.fair_acc.chartfx.renderer.LineStyle;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
@@ -18,7 +27,10 @@ import io.fair_acc.dataset.spi.DoubleDataSet;
 import io.fair_acc.dataset.utils.DataSetStyleBuilder;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
 /**
@@ -103,9 +115,7 @@ public abstract class StationaryGaussianProcessSampler extends
                                                        Application
 {
 
-  public double[] inPhaseSamplePath;
-
-  public double[] quadratureSamplePath;
+  public Complex  samplePath;
 
   public double[] envelope;
 
@@ -132,8 +142,7 @@ public abstract class StationaryGaussianProcessSampler extends
     frequencies          = generateFrequencies();
     powerSpectralDensity = getPowerSpectralDensity(frequencies);
     whiteNoise           = Complex.newVector(N);
-    inPhaseSamplePath    = new double[N];
-    quadratureSamplePath = new double[N];
+    samplePath           = Complex.newVector(N);
     envelope             = new double[N];
     samplingTimes        = new double[N];
 
@@ -163,10 +172,9 @@ public abstract class StationaryGaussianProcessSampler extends
       for (int i = 0; i < N; i++)
       {
         Complex element = inverseDiscreteFourierTransform.get(i);
-        samplingTimes[i]        = i * dt;
-        inPhaseSamplePath[i]    = element.re().doubleValue();
-        quadratureSamplePath[i] = element.im().doubleValue();
-        envelope[i]             = element.norm(bits, env).doubleValue();
+        samplingTimes[i] = i * dt;
+        samplePath.get(i).set(element);
+        envelope[i] = element.norm(bits, env).doubleValue();
       }
 
       return this;
@@ -262,7 +270,7 @@ public abstract class StationaryGaussianProcessSampler extends
       arblib.acb_dft(fft, complexPath, N, bits);
 
       double[] periodogram = new double[N];
-      
+
       for (int i = 0; i < N; i++)
       {
         periodogram[i] = fft.get(i)
@@ -383,7 +391,9 @@ public abstract class StationaryGaussianProcessSampler extends
     double[] theory = new double[maxLag];
     getKernel(times, theory);
     chart.getDatasets()
-         .addAll(new DoubleDataSet("Empirical").set(times, autocorr(inPhaseSamplePath, maxLag)),
+         .addAll(new DoubleDataSet("Empirical").set(times,
+                                                    autocorr(samplePath.re().doubleValues(),
+                                                             maxLag)),
                  new DoubleDataSet("Theoretical").set(times, theory));
     chart.getYAxis().setAutoRanging(false);
     chart.getYAxis().setMin(-0.5);
@@ -468,7 +478,9 @@ public abstract class StationaryGaussianProcessSampler extends
     chart.setTitle("Power Spectral Density");
     int      positiveFrequencyCount          = N / 2 + 1;
     double[] positiveFrequencies             = new double[positiveFrequencyCount];
-    double[] empiricalPowerSpectralDensity   = computePowerSpectralDensity(inPhaseSamplePath);
+    double[] empiricalPowerSpectralDensity   =
+                                           computePowerSpectralDensity(samplePath.im()
+                                                                                 .doubleValues());
     double[] theoreticalPowerSpectralDensity = new double[positiveFrequencyCount];
 
     for (int i = 0; i < positiveFrequencyCount; i++)
@@ -517,6 +529,9 @@ public abstract class StationaryGaussianProcessSampler extends
     return chart;
   }
 
+  FloatInterval domain = new FloatInterval(-1,
+                                           1);
+
   protected XYChart newTimeDomainChart()
   {
     XYChart chart = new XYChart(new DefaultNumericAxis("Time",
@@ -526,11 +541,27 @@ public abstract class StationaryGaussianProcessSampler extends
 
     chart.setTitle("In-Phase, Quadrature, and Envelope (±) via Hilbert Transform");
 
-    DoubleDataSet inPhase = new DoubleDataSet("In-phase").set(samplingTimes, inPhaseSamplePath);
-    DoubleDataSet quad    =
-                       new DoubleDataSet("Quadrature").set(samplingTimes, quadratureSamplePath);
-    DoubleDataSet envPos  = new DoubleDataSet("Envelope (+)").set(samplingTimes, envelope);
-    double[]      negEnv  = new double[N];
+    // DoubleDataSet inPhase = new DoubleDataSet("In-phase").set(samplingTimes,
+    // inPhaseSamplePath);
+    RealDataSet inPhase = new RealDataSet("In-phase",
+                                          N,
+                                          domain);
+    inPhase.getTimes().set(samplingTimes);
+    Real inPhaseVals = inPhase.getValues();
+    long ptr1        = Real.getCPtr(inPhaseVals.elements[0]);
+    long ptr2        = Real.getCPtr(inPhaseVals);
+
+    inPhaseVals.set(samplePath.re());
+
+//    DoubleDataSet quad   = new DoubleDataSet("Quadrature").set(samplingTimes, quadratureSamplePath);
+    RealDataSet quad = new RealDataSet("Quadrature",
+                                       N,
+                                       domain);
+    quad.getTimes().set(samplingTimes);
+    quad.getValues().set(samplePath.im());
+
+    DoubleDataSet envPos = new DoubleDataSet("Envelope (+)").set(samplingTimes, envelope);
+    double[]      negEnv = new double[N];
     for (int i = 0; i < N; i++)
     {
       negEnv[i] = -envelope[i];

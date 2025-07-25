@@ -2280,7 +2280,10 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     }
     else
     {
-      arblib._arb_vec_set(this, real, dim);
+      for ( int i = 0; i < dim; i ++ )
+      {
+        get(i).set(real.get(i));
+      }
     }
     bits = real.bits;
     return this;

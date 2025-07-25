@@ -17,6 +17,29 @@ import junit.framework.TestCase;
 public class RealMatrixTest extends
                             TestCase
 {
+  public void testAssignRow()
+  {
+
+    int n = 4;
+
+    try ( RealMatrix A = RealMatrix.newMatrix(n, n).setName("A"); Real C = Real.newVector(n);
+          RealMatrix B = RealMatrix.newMatrix(n, n).setName("B"))
+    {
+
+      A.getRow(0).set(1, 2, 4, 7);
+      A.getRow(1).set(2, 19, 33, 54);
+      A.getRow(2).set(3, 24, 90, 141);
+      A.getRow(3).set(4, 29, 105, 265);
+
+      B.getRow(0).set(1, 2, 4, 7);
+      B.getRow(1).set(2, 19, 33, 54);
+      B.getRow(2).set(3, 24, 90, 141);
+      Real b4 = Real.newVector(n).set(4, 29, 105, 265);
+      B.getRow(3).set(b4);
+
+      assertEquals(B, A);
+    }
+  }
 
   public void testGetRowAndGet()
   {

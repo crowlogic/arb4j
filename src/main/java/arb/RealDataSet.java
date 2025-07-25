@@ -102,7 +102,8 @@ public class RealDataSet extends
                                        domain);
     var         outy = rds.getRealYValues();
     rds.resolution = resolution;
-    try ( var length = domain.length(128, new Float()); var scale = new Real(); Real blip = new Real())
+    try ( var length = domain.length(128, new Float()); var scale = new Real();
+          Real blip = new Real())
     {
       scale.set(length).div(n);
       scale.set(resolution);
@@ -116,4 +117,15 @@ public class RealDataSet extends
     IntStream.range(0, n).parallel().forEach(i -> y.gammaVariance(i, 128, outy.get(i)));
     return rds;
   }
+
+  public Real getTimes()
+  {
+    return data.getRow(0);
+  }
+  
+  public Real getValues()
+  {
+    return data.getRow(1);
+  }
+  
 }
