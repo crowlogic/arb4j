@@ -98,7 +98,7 @@
 
 <\initial>
   <\collection>
-    <associate|magnification|1.2>
+    <associate|magnification|1.4>
     <associate|page-medium|paper>
   </collection>
 </initial>
