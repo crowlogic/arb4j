@@ -1,0 +1,74 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+
+\begin{document}
+
+\section*{Oscillatory Processes with Monotonic Phase Functions}
+
+\begin{definition}[Oscillatory Process]
+Let $\{X_t\}_{t\in\mathbb{R}}$ be a complex second-order process. $\{X_t\}$ is called oscillatory if
+\[
+X_t = \int_{-\infty}^\infty \phi_t(\omega)\,dZ(\omega),
+\]
+where $Z(\omega)$ has orthogonal increments and $E|dZ(\omega)|^2 = d\mu(\omega)$, and $\phi_t(\omega) = A_t(\omega) e^{i\omega t}$.
+\end{definition}
+
+\begin{theorem}
+Let $\theta:\mathbb{R}\to\mathbb{R}$ be smooth and strictly monotonically increasing. Define
+\[
+\phi_t(\omega) = e^{i\omega\theta(t)} .
+\]
+Set
+\[
+A_t(\omega) = e^{i\omega(\theta(t)-t)} .
+\]
+Then the time-varying impulse response $h_t(u)$ defined by
+\[
+A_t(\omega) = \int_{-\infty}^\infty e^{i\omega u} h_t(u)\,du
+\]
+is
+\[
+h_t(u) = \delta(u - [\theta(t) - t]) .
+\]
+\end{theorem}
+
+\begin{proof}
+The inverse Fourier transform yields
+\begin{align*}
+h_t(u) &= \frac{1}{2\pi}\int_{-\infty}^\infty e^{-i\omega u}A_t(\omega)\,d\omega \\
+       &= \frac{1}{2\pi}\int_{-\infty}^\infty e^{-i\omega u} e^{i\omega(\theta(t)-t)} d\omega \\
+       &= \frac{1}{2\pi}\int_{-\infty}^\infty e^{i\omega(\theta(t)-t-u)}d\omega \\
+       &= \delta(\theta(t)-t-u) \\
+       &= \delta(u - [\theta(t)-t]) .
+\end{align*}
+\end{proof}
+
+\begin{corollary}
+Let $S_t = \int_{-\infty}^{\infty} e^{i\omega t} dZ(\omega)$. Then
+\[
+X_t = \int_{-\infty}^\infty S_{t-u}\,h_t(u)\,du = S_{2t - \theta(t)}
+\]
+and
+\[
+X_t = \int_{-\infty}^\infty e^{i\omega\theta(t)}\,dZ(\omega) .
+\]
+\end{corollary}
+
+\begin{proof}
+By the sifting property of the Dirac delta,
+\begin{align*}
+X_t &= \int_{-\infty}^\infty S_{t-u} \delta(u - [\theta(t)-t])\,du \\
+    &= S_{t - [\theta(t)-t]} \\
+    &= S_{2t - \theta(t)} .
+\end{align*}
+By direct substitution, the oscillatory representation holds by definition.
+\end{proof}
+
+\end{document}

@@ -1,0 +1,105 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{amssymb,latexsym}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmaffiliation}[1]{\\ #1}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{Oscillatory Processes with Monotonic Phase Functions}
+
+\author{
+  Stephen Crowley
+  \tmaffiliation{July 24, 2025}
+}
+
+\maketitle
+
+\begin{definition}
+  [Oscillatory Process] Let $\{X_t \}_{t \in \mathbb{R}}$ be a complex
+  second-order process. $\{X_t \}$ is called oscillatory if
+  \begin{equation}
+    X_t = \int_{- \infty}^{\infty} \phi_t (\omega)  \hspace{0.17em} dZ
+    (\omega)
+  \end{equation}
+  where $Z (\omega)$ has orthogonal increments where
+  \begin{equation}
+    E |dZ (\omega) |^2 = d \mu (\omega)
+  \end{equation}
+  and
+  \begin{equation}
+    \phi_t (\omega) = A_t (\omega) e^{i \omega t}
+  \end{equation}
+\end{definition}
+
+\begin{theorem}
+  Let $\theta : \mathbb{R} \to \mathbb{R}$ be smooth and strictly
+  monotonically increasing. Define
+  \begin{equation}
+    \phi_t (\omega) = e^{i \omega \theta (t)}
+  \end{equation}
+  Set
+  \begin{equation}
+    A_t (\omega) = e^{i \omega (\theta (t) - t)}
+  \end{equation}
+  Then the time-varying impulse response $h_t (u)$ defined by
+  \begin{equation}
+    A_t (\omega) = \int_{- \infty}^{\infty} e^{i \omega u} h_t (u) 
+    \hspace{0.17em} du
+  \end{equation}
+  is
+  \begin{equation}
+    h_t (u) = \delta (u - [\theta (t) - t])
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  The inverse Fourier transform yields
+  \begin{equation}
+    \begin{array}{ll}
+      h_t (u) & = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} e^{- i \omega u}
+      A_t (\omega)  \hspace{0.17em} d \omega\\
+      & = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} e^{- i \omega u} e^{i
+      \omega (\theta (t) - t)} d \omega\\
+      & = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} e^{i \omega (\theta (t) -
+      t - u)} d \omega\\
+      & = \delta (\theta (t) - t - u)\\
+      & = \delta (u - [\theta (t) - t])
+    \end{array}
+  \end{equation}
+  
+\end{proof}
+
+\begin{corollary}
+  Let $S_t = \int_{- \infty}^{\infty} e^{i \omega t} dZ (\omega)$. Then
+  \begin{equation}
+    X_t = \int_{- \infty}^{\infty} S_{t - u}  \hspace{0.17em} h_t (u) 
+    \hspace{0.17em} du = S_{2 t - \theta (t)}
+  \end{equation}
+  and
+  \begin{equation}
+    X_t = \int_{- \infty}^{\infty} e^{i \omega \theta (t)}  \hspace{0.17em} dZ
+    (\omega)
+  \end{equation}
+\end{corollary}
+
+\begin{proof}
+  By the sifting property of the Dirac delta,
+  \begin{equation}
+    \begin{array}{ll}
+      X_t & = \int_{- \infty}^{\infty} S_{t - u} \delta (u - [\theta (t) - t])
+      \hspace{0.17em} du\\
+      & = S_{t - [\theta (t) - t]}\\
+      & = S_{2 t - \theta (t)}
+    \end{array}
+  \end{equation}
+  By direct substitution, the oscillatory representation holds by definition.
+\end{proof}
+
+\end{document}

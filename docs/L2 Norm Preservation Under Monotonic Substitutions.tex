@@ -1,0 +1,166 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,latexsym}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmaffiliation}[1]{\\ #1}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{L2 Norm Preservation Under Monotonic Substitutions}
+
+\author{
+  Stephen Crowley
+  \tmaffiliation{July 24, 2025}
+}
+
+\date{}
+
+\maketitle
+
+\begin{theorem}
+  [L2 Norm Preservation via Square Root Jacobian Factor] Let $g : I \to J$ be
+  a strictly monotonic and differentiable function between intervals $I, J
+  \subseteq \mathbb{R}$ (possibly unbounded), with $g' (y) \neq 0$ for all $y
+  \in I$. For any $f \in L^2 (J, dx)$, define the transformed function
+  $\tilde{f} : I \to \mathbb{C}$ by
+  \begin{equation}
+    \tilde{f} (y) = f (g (y)) \sqrt{|g' (y) |}
+  \end{equation}
+  Then $\tilde{f} \in L^2 (I, dy)$ and
+  \begin{equation}
+    \| \tilde{f} \|_{L^2 (I, dy)} = \|f\|_{L^2 (J, dx)}
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  Without loss of generality, assume $g$ is strictly increasing (the
+  decreasing case follows by considering $- g$).
+  
+  First, establish the change of variables formula. For any measurable set $E
+  \subseteq J$:
+  \begin{equation}
+    \int_E |f (x) |^2 \hspace{0.17em} dx = \int_{g^{- 1} (E)} |f (g (y)) |^2
+    |g' (y) |  \hspace{0.17em} dy
+  \end{equation}
+  This follows from the standard change of variables theorem, since $g$ is
+  strictly monotonic and differentiable with $g' (y) \neq 0$.
+  
+  To handle potentially unbounded intervals, consider the norm computation:
+  
+  \begin{align}
+    \| \tilde{f} \|_{L^2 (I, dy)}^2 & = \int_I | \tilde{f} (y) |^2 
+    \hspace{0.17em} dy \\
+    & = \int_I |f (g (y)) \sqrt{|g' (y) |} |^2  \hspace{0.17em} dy \\
+    & = \int_I |f (g (y)) |^2 |g' (y) |  \hspace{0.17em} dy. 
+  \end{align}
+  
+  By the change of variables formula applied to $J = g (I)$:
+  \begin{equation}
+    \int_I |f (g (y)) |^2 |g' (y) | \hspace{0.17em} dy = \int_J |f (x) |^2 
+    \hspace{0.17em} dx = \|f\|_{L^2 (J, dx)}^2
+  \end{equation}
+  For unbounded intervals, this equality holds by the monotone convergence
+  theorem: approximate $I$ by an increasing sequence of bounded intervals $I_n
+  \uparrow I$, apply the result to each $I_n$, and take the limit.
+  
+  Therefore:
+  \begin{equation}
+    \| \tilde{f} \|_{L^2 (I, dy)} = \|f\|_{L^2 (J, dx)}
+  \end{equation}
+  The integrability of $\tilde{f}$ follows immediately from the norm equality
+  and the assumption that $f \in L^2 (J, dx)$.
+\end{proof}
+
+\begin{lemma}
+  [Density of Transformed Functions] Under the conditions of Theorem 1, the
+  set $\{f (g (\cdot)) : f \in L^2 (J, dx)\}$ is dense in $L^2 (I, |g' (y) |
+  \hspace{0.17em} dy)$, where $L^2 (I, |g' (y) | \hspace{0.17em} dy)$ denotes
+  the space of square-integrable functions with respect to the measure $|g'
+  (y) |  \hspace{0.17em} dy$.
+\end{lemma}
+
+\begin{proof}
+  The map $f \mapsto f \circ g$ is an isometric isomorphism from $L^2 (J, dx)$
+  to $L^2 (I, |g' (y) | \hspace{0.17em} dy)$ by the change of variables
+  formula. Since $L^2 (J, dx)$ is complete, its image under an isometry is
+  also complete, hence dense in itself.
+\end{proof}
+
+\begin{theorem}
+  [Necessity of Square Root Factor] Under the same conditions as Theorem 1,
+  the factor $\sqrt{|g' (y) |}$ is necessary for L2 norm preservation. That
+  is, if $h (y) = f (g (y)) \cdot \phi (y)$ for some measurable function $\phi
+  : I \to \mathbb{R}^+$ satisfies $\|h\|_{L^2 (I, dy)} = \|f\|_{L^2 (J, dx)}$
+  for all $f \in L^2 (J, dx)$, then $\phi (y) = \sqrt{|g' (y) |}$ almost
+  everywhere.
+\end{theorem}
+
+\begin{proof}
+  Suppose $\|f (g (\cdot)) \cdot \phi (\cdot)\|_{L^2 (I, dy)} = \|f\|_{L^2 (J,
+  dx)}$ for all $f \in L^2 (J, dx)$.
+  
+  Then for any $f \in L^2 (J, dx)$:
+  \begin{equation}
+    \int_I |f (g (y)) |^2 | \phi (y) |^2 \hspace{0.17em} dy =\|f\|_{L^2 (J,
+    dx)}^2 = \int_I |f (g (y)) |^2 |g' (y) |  \hspace{0.17em} dy
+  \end{equation}
+  where the second equality follows from the change of variables formula.
+  
+  Therefore:
+  \begin{equation}
+    \int_I |f (g (y)) |^2  (| \phi (y) |^2 - |g' (y) |)  \hspace{0.17em} dy =
+    0
+  \end{equation}
+  for all $f \in L^2 (J, dx)$.
+  
+  By Lemma 1, functions of the form $f (g (y))$ are dense in $L^2 (I, |g' (y)
+  | \hspace{0.17em} dy)$. For any $u \in L^2 (I, |g' (y) | \hspace{0.17em}
+  dy)$, there exists a sequence $f_n \in L^2 (J, dx)$ such that $f_n (g (y))
+  \to u (y)$ in $L^2 (I, |g' (y) | \hspace{0.17em} dy)$.
+  
+  Since $| \phi (y) |^2 - |g' (y) |$ is integrable with respect to $|g' (y) | 
+  \hspace{0.17em} dy$ (by the boundedness of the norm-preserving property), we
+  have:
+  \begin{equation}
+    \int_I |u (y) |^2  (| \phi (y) |^2 - |g' (y) |)  \hspace{0.17em} dy = 0
+  \end{equation}
+  for all $u \in L^2 (I, |g' (y) | \hspace{0.17em} dy)$.
+  
+  In particular, taking $u (y) = \text{sgn} (| \phi (y) |^2 - |g' (y) |) \cdot
+  \textbf{1}_{\{| \phi (y) |^2 \neq |g' (y) |\}} (y)$, we obtain:
+  \begin{equation}
+    \int_I || \phi (y)  |^2 - |g' (y) || \hspace{0.17em} |g' (y) | 
+    \hspace{0.17em} dy = 0
+  \end{equation}
+  Since $|g' (y) | > 0$ almost everywhere, this implies $| \phi (y) |^2 = |g'
+  (y) |$ almost everywhere.
+  
+  Taking $\phi (y) > 0$, we conclude $\phi (y) = \sqrt{|g' (y) |}$ almost
+  everywhere.
+\end{proof}
+
+\begin{theorem}
+  [Extension to General Measures] Let $\mu$ and $\nu$ be $\sigma$-finite
+  measures on $I$ and $J$ respectively, and let $g : I \to J$ be a measurable
+  bijection. If $\nu = \mu \circ g^{- 1}$ (i.e., $\nu (E) = \mu (g^{- 1} (E))$
+  for all measurable $E \subseteq J$), then for $f \in L^2 (J, d \nu)$:
+  \begin{equation}
+    \tilde{f} (y) = f (g (y)) \sqrt{\frac{d (\mu \circ g^{- 1})}{d \mu} (y)}
+  \end{equation}
+  satisfies $\| \tilde{f} \|_{L^2 (I, d \mu)} = \|f\|_{L^2 (J, d \nu)}$, where
+  $\frac{d (\mu \circ g^{- 1})}{d \mu}$ is the Radon-Nikodym derivative.
+\end{theorem}
+
+\begin{proof}
+  When $\mu$ and $\nu$ are both Lebesgue measure and $g$ is differentiable,
+  the Radon-Nikodym derivative is $|g' (y) |$, reducing to Theorem 1. The
+  general case follows by the same change of variables argument using the
+  definition of the pushforward measure.
+\end{proof}
+
+\end{document}

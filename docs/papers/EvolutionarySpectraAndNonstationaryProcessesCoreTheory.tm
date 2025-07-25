@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|framed-theorems>>
+<style|<tuple|generic|metal|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Evolutionary Spectra and Non-Stationary
@@ -348,7 +348,11 @@
       <label|eq:process_rep3>X<rsub|t>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*Z<around|(|\<omega\>|)>
     </equation>
 
-    where <math|E*<around|\||d*Z<around|(|\<omega\>|)>|\|><rsup|2>=d*\<mu\><around|(|\<omega\>|)>>.
+    where\ 
+
+    <\equation>
+      E*<around|\||d*Z<around|(|\<omega\>|)>|\|><rsup|2>=d*\<mu\><around|(|\<omega\>|)>
+    </equation>
   </definition>
 
   <\definition>
@@ -451,7 +455,7 @@
   <math|A<rsub|t><around|(|\<omega\>|)>> so that, for all <math|\<omega\>>,
 
   <\equation>
-    <label|eq:standardize>A<rsub|0><around|(|\<omega\>|)>=1;
+    <label|eq:standardize>A<rsub|0><around|(|\<omega\>|)>=1
   </equation>
 
   i.e. we incorporate <math|<around|\||A<rsub|0><around|(|\<omega\>|)>|\|>>
@@ -552,52 +556,52 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|?|1|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-2|<tuple|4|3|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-3|<tuple|10|4|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-4|<tuple|20|6|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-5|<tuple|28|8|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-bartlett1955|<tuple|bartlett1955|8|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-cramer1960|<tuple|cramer1960|8|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-grenander1957|<tuple|grenander1957|8|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-herbst1963a|<tuple|herbst1963a|8|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-herbst1963b|<tuple|herbst1963b|8|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-herbst1963c|<tuple|herbst1963c|8|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-jowett1957|<tuple|jowett1957|8|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-lomnicki1957|<tuple|lomnicki1957|8|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-page1952|<tuple|page1952|8|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-priestley1962|<tuple|priestley1962|8|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|def:evol_spectrum|<tuple|3|7|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|def:oscillatory_function|<tuple|1|6|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|def:oscillatory_process|<tuple|2|6|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:amplitude_modulated|<tuple|16|5|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:autocovariance|<tuple|11|4|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:complex_exp|<tuple|15|5|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:covar_representation|<tuple|12|4|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:covar_representation2|<tuple|18|6|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:covariance|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:evol_spectrum|<tuple|22|7|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:filter_fourier|<tuple|26|8|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:filter_representation|<tuple|27|8|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:integral_spectrum|<tuple|23|7|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:integrated_spectrum|<tuple|5|3|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:modulating_function|<tuple|17|6|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:orthogonal_process|<tuple|14|5|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:oscillatory_functions|<tuple|20|6|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:page_spectrum1|<tuple|6|3|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:page_spectrum2|<tuple|7|3|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:page_spectrum3|<tuple|8|3|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:page_spectrum4|<tuple|9|3|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:page_spectrum5|<tuple|10|4|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:piecewise_stat|<tuple|4|2|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:process_rep|<tuple|3|2|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:process_rep2|<tuple|13|5|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:process_rep3|<tuple|19|6|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:spectral_rep|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:standardize|<tuple|24|7|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:stationary_process|<tuple|28|8|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:total_energy|<tuple|21|7|../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|eq:unit_integral|<tuple|25|7|../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|auto-1|<tuple|?|1>>
+    <associate|auto-2|<tuple|4|3>>
+    <associate|auto-3|<tuple|10|4>>
+    <associate|auto-4|<tuple|21|7>>
+    <associate|auto-5|<tuple|29|8>>
+    <associate|bib-bartlett1955|<tuple|bartlett1955|8>>
+    <associate|bib-cramer1960|<tuple|cramer1960|8>>
+    <associate|bib-grenander1957|<tuple|grenander1957|8>>
+    <associate|bib-herbst1963a|<tuple|herbst1963a|8>>
+    <associate|bib-herbst1963b|<tuple|herbst1963b|9>>
+    <associate|bib-herbst1963c|<tuple|herbst1963c|9>>
+    <associate|bib-jowett1957|<tuple|jowett1957|9>>
+    <associate|bib-lomnicki1957|<tuple|lomnicki1957|9>>
+    <associate|bib-page1952|<tuple|page1952|9>>
+    <associate|bib-priestley1962|<tuple|priestley1962|9>>
+    <associate|def:evol_spectrum|<tuple|3|7>>
+    <associate|def:oscillatory_function|<tuple|1|6>>
+    <associate|def:oscillatory_process|<tuple|2|6>>
+    <associate|eq:amplitude_modulated|<tuple|16|5>>
+    <associate|eq:autocovariance|<tuple|11|4>>
+    <associate|eq:complex_exp|<tuple|15|5>>
+    <associate|eq:covar_representation|<tuple|12|4>>
+    <associate|eq:covar_representation2|<tuple|18|6>>
+    <associate|eq:covariance|<tuple|1|1>>
+    <associate|eq:evol_spectrum|<tuple|23|7>>
+    <associate|eq:filter_fourier|<tuple|27|8>>
+    <associate|eq:filter_representation|<tuple|28|8>>
+    <associate|eq:integral_spectrum|<tuple|24|7>>
+    <associate|eq:integrated_spectrum|<tuple|5|3>>
+    <associate|eq:modulating_function|<tuple|17|6>>
+    <associate|eq:orthogonal_process|<tuple|14|5>>
+    <associate|eq:oscillatory_functions|<tuple|21|6>>
+    <associate|eq:page_spectrum1|<tuple|6|3>>
+    <associate|eq:page_spectrum2|<tuple|7|3>>
+    <associate|eq:page_spectrum3|<tuple|8|3>>
+    <associate|eq:page_spectrum4|<tuple|9|3>>
+    <associate|eq:page_spectrum5|<tuple|10|4>>
+    <associate|eq:piecewise_stat|<tuple|4|2>>
+    <associate|eq:process_rep|<tuple|3|2>>
+    <associate|eq:process_rep2|<tuple|13|5>>
+    <associate|eq:process_rep3|<tuple|19|6>>
+    <associate|eq:spectral_rep|<tuple|2|2>>
+    <associate|eq:standardize|<tuple|25|8>>
+    <associate|eq:stationary_process|<tuple|29|8>>
+    <associate|eq:total_energy|<tuple|22|7>>
+    <associate|eq:unit_integral|<tuple|26|8>>
   </collection>
 </references>
 

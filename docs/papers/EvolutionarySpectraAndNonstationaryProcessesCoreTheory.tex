@@ -1,0 +1,450 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{amssymb,mathrsfs}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmaffiliation}[1]{\\ #1}
+\newtheorem{definition}{Definition}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{Evolutionary Spectra and Non-Stationary Processes}
+
+\author{
+  M.B. Priestley
+  \tmaffiliation{February 3rd, 1965}
+}
+
+\maketitle
+
+\begin{abstract}
+  We develop an approach to the spectral analysis of non-stationary processes
+  which is based on the concept of ``evolutionary spectra''; that is, spectral
+  functions which are time dependent, and have a physical interpretation as
+  local energy distributions over frequency. It is shown that the notion of
+  evolutionary spectra generalizes the usual definition of spectra for
+  stationary processes, and that, under certain conditions, the evolutionary
+  spectrum at each instant of time may be estimated from a single realization
+  of a process. By such means it is possible to study processes with
+  continuously changing ``spectral patterns''.
+\end{abstract}
+
+\
+
+\
+
+{\tableofcontents}
+
+\section*{1. Introduction}
+
+In the classical approach to statistical spectral analysis it is always
+assumed that the process under study, $X_t$, is stationary, at least up to the
+second order. That is, we assume that $E (X_t) = \mu$, a constant (independent
+of $t$) which we may take to be zero, and that, for each $s$ and $t$, the
+covariance
+\begin{equation}
+  \label{eq:covariance} R_{s, t} = E \{ (X_s - \mu)  (X_t - \mu)^{\ast} \}
+\end{equation}
+(* denoting the complex conjugate) is a function of $|s - t|$ only. In this
+case it is well known that $R_{s, t}$ has a spectral representation of the
+form
+\begin{equation}
+  \label{eq:spectral_rep} R_{s, t} = \int e^{i \omega (s - t)} dF (\omega)
+\end{equation}
+where $F (\omega)$ is some function having the properties of a distribution
+function, and the range of integration is $(- \infty, \infty)$ for a
+continuous parameter process, and $(- \pi, \pi)$ in the discrete case.
+
+Corresponding to \eqref{eq:spectral_rep}, $\{X_t \}$ has a spectral
+representation of the form
+\begin{equation}
+  \label{eq:process_rep} X_t = \int e^{i \omega t} dZ (\omega)
+\end{equation}
+where $Z (\omega)$ is an orthogonal process with $E \{|dZ (\omega) |^2 \} = dF
+(\omega)$. When $\{X_t \}$ represents some physical process, the spectral
+density function $f (\omega) = F' (\omega)$ (when it exists) describes the
+distribution (over the frequency range) of the energy (per unit time)
+dissipated by the process, and given a sample record of $\{X_t \}$, there are
+several methods of estimating $f (\omega)$ (see, e.g.,
+{\cite{grenander1957}}).
+
+In practice, however, it often happens that the assumption of stationarity is
+a very doubtful one. For example, records of atmospheric turbulence exhibit
+marked changes over periods of time, and in such cases classical spectral
+analysis based on a stationary model can hardly be carried through with
+conviction. The question arises, therefore, as to whether it might be possible
+to formulate a spectral theory for non-stationary processes within the
+framework of classical concepts such as ``energy'' and ``frequency'', so that
+a spectral function (however defined) would still possess a meaningful and
+useful physical interpretation. Intuitively it seems obvious that if no
+restrictions (other than finite first and second moments) are placed on the
+class of non-stationary processes considered, no useful inferences may be
+drawn from a single sample record. On the other hand, if one considers a
+non-stationary process of the form
+\begin{equation}
+  \label{eq:piecewise_stat} X_t = \left\{\begin{array}{ll}
+    X_t^{(1)} & (t \leqslant t_0)\\
+    X_t^{(2)} & (t > t_0)
+  \end{array}\right.
+\end{equation}
+where both $\{X_t^{(1)} \}$ and $\{X_t^{(2)} \}$ are stationary but with
+different autocovariance functions, then it is clear that given a sample
+record, say from $t = t_0 - T$ to $t = t_0 + T$, it is certainly possible to
+infer ``something'' about the spectral content of $X_t$. If, in the above
+example, $t_0$ were known, one would presumably estimate two spectral density
+functions, one for $\{X_t^{(1)} \}$ and one for $\{X_t^{(2)} \}$. If now we
+try to generalize this approach, we are led to the notion of a continuously
+changing spectrum, or more precisely, a time-dependent spectrum. Clearly, in
+such a case, we could never hope to estimate the spectrum at a particular
+instant of time, but if we assume that the spectrum is changing slowly over
+time, then by using estimates which involve only local functions of $\{X_t
+\}$, we may attempt to estimate some form of ``average'' spectrum of $X_t$ in
+the neighbourhood of any particular time-instant. We therefore consider a
+class of processes whose non-stationary characteristics are changing slowly
+over time, and in this respect our approach is conceived in the same spirit as
+Jowett's study of ``smoothly heteromorphic'' processes {\cite{jowett1957}}.
+
+\section*{2. Non-stationary Processes}
+
+There have been several attempts to define a spectrum for a non-stationary
+process, but in each case the object was to obtain a single function whose
+properties depended on the behaviour of the process over the whole parameter
+space. Cram{\'e}r {\cite{cramer1960}} considered the class of processes which
+are harmonizable (in the Lo{\`e}ve sense), that is, have a representation of
+the form \eqref{eq:process_rep} but without the restriction that $Z (\omega)$
+must be orthogonal, and he defined the integrated spectrum (now a function of
+two variables) by
+\begin{equation}
+  \label{eq:integrated_spectrum} dF (\omega, \nu) = E \{|dZ (\omega) dZ^{\ast}
+  (\nu) |\}
+\end{equation}
+On the other hand, Hatanaka and Suzuki (unpublished) define the spectrum (or
+more precisely, spectral density function) of any non-stationary process as
+the limit of the expected value of the periodogram as the sample size tends to
+infinity. In our approach, however, we define a spectral quantity whose
+physical interpretation is similar to that of the spectrum of a stationary
+process. A somewhat related idea was developed by Page {\cite{page1952}} who
+introduced the idea of ``instantaneous power spectra''. In effect Page defines
+the spectrum in the same way as Hatanaka and Suzuki, i.e. as
+\begin{equation}
+  \label{eq:page_spectrum1} f^{\ast} (\omega) = \lim_{T \rightarrow \infty}
+  f_T^{\ast} (\omega),
+\end{equation}
+where
+\begin{equation}
+  \label{eq:page_spectrum2} f_T^{\ast} (\omega) = E \left| \int_0^T X_t e^{- i
+  \omega t} dt \right|^2
+\end{equation}
+and then defines the instantaneous power spectrum $\rho_t (\omega)$ by
+writing, for each $\omega$,
+\begin{equation}
+  \label{eq:page_spectrum3} f_T^{\ast} (\omega) = \int_0^T \rho_t (\omega) dt
+\end{equation}
+so that
+\begin{equation}
+  \label{eq:page_spectrum4} \rho_t (\omega) = \frac{d}{dt} \{f_t^{\ast}
+  (\omega)\}
+\end{equation}
+and
+\begin{equation}
+  \label{eq:page_spectrum5} f^{\ast} (\omega) = \int_0^{\infty} \rho_t
+  (\omega) dt
+\end{equation}
+Thus, the instantaneous power spectrum, $\rho_t (\omega)$, represents the
+difference between the spectral content of the process over the interval $(0,
+t + \delta t)$ and the interval $(0, t)$. This is in contrast with the
+approach developed below, whose object (roughly speaking) is to study the
+spectral content of the process within the interval $(t, t + \delta t)$. We
+feel that this latter quantity is the more relevant one as far as physical
+interpretation is concerned.
+
+\section*{3. Spectral Theory for a Class of Non-stationary Processes:
+Oscillatory Processes}
+
+Consider a continuous parameter (complex-valued) stochastic process $\{X_t
+\}$, $- \infty < t < \infty$. (Most of the following discussion will, with the
+usual modifications, apply equally well to discrete parameter processes.) We
+assume that the process is ``trend free'', that is, we may write $E (X_t) =
+0$, all $t$, and define the autocovariance function by
+\begin{equation}
+  \label{eq:autocovariance} R_{s, t} = E (X_s X_t^{\ast})
+\end{equation}
+(there seems little point in discussing processes for which $R_{s, t}$ is a
+function of $|t - s|$ only, but $E (X_t)$ varies with $t$, i.e. the
+non-stationary character is confined to the mean, since in this case the
+process may be studied by a combination of regression analysis and classical
+spectral analysis (cf. {\cite{grenander1957}}, Ch. 7).
+
+We now restrict attention to the class of process for which there exists a
+family $\mathscr{F}$ of functions $\{\phi_t (\omega)\}$ defined on the real
+line, and indexed by the suffix $t$, and a measure $\mu (\omega)$ on the real
+line, such that for each $s, t$, the covariance function $R_{s, t}$ admits a
+representation of the form
+\begin{equation}
+  \label{eq:covar_representation} R_{s, t} = \int_{- \infty}^{\infty} \phi_s
+  (\omega) \phi_t^{\ast} (\omega) d \mu (\omega)
+\end{equation}
+When the parameter space is limited to a finite interval, say $0 \leqslant t
+\leqslant T$, it is always possible to obtain a representation of the form
+\eqref{eq:covar_representation} in terms of the eigenfunctions of the
+covariance kernel $\{R_{s, t} \}$ (Parzen, unpublished). It should be noted
+that although we have described $\mathscr{F}$ as a family of functions, each
+defined on the $\omega$-axis and indexed by the parameter $t$, we may also
+think of $\mathscr{F}$ as a family of functions $\{\phi_{\omega} (t)\}$, say,
+each defined on the $t$-axis and indexed by the parameter $\omega$. In fact,
+when we study the properties of various families (Section 7), it is convenient
+to adopt the latter description.
+
+In order for $\mathrm{var} (X_t)$ to be finite for each $t$, $\phi_t (\omega)$
+must be quadratically integrable with respect to the measure $\mu$, for each
+$t$. It may then be shown (see, e.g., {\cite{bartlett1955}}, p. 143;
+{\cite{grenander1957}}, p. 27) that whenever $R_{s, t}$ has the representation
+\eqref{eq:covar_representation}, the process $\{X_t \}$ admits a
+representation of the form
+\begin{equation}
+  \label{eq:process_rep2} X_t = \int_{- \infty}^{\infty} \phi_t (\omega) dZ
+  (\omega)
+\end{equation}
+where $Z (\omega)$ is an orthogonal process, with
+\begin{equation}
+  \label{eq:orthogonal_process} E |dZ (\omega) |^2 = d \mu (\omega)
+\end{equation}
+The measure $\mu (\omega)$ here plays the same role as the integrated spectrum
+$F (\omega)$ does in the case of stationary processes, so that the analogous
+situation to the case of an absolutely continuous spectrum is obtained by
+assuming that the measure $\mu (\omega)$ is absolutely continuous with respect
+to Lebesgue measure.
+
+Parzen (unpublished) has pointed out that if there exists a representation of
+$\{X_t \}$ of the form \eqref{eq:process_rep2}, then there is a multitude of
+different representations of the process, each representation based on a
+different family of functions. (The situation is in some ways similar to the
+selection of a basis for a vector space.) When the process is stationary, one
+valid choice of functions is the complex exponential family given by
+\begin{equation}
+  \label{eq:complex_exp} \phi_t (\omega) = e^{i \omega t}
+\end{equation}
+This family provides the well-known spectral decomposition (cf.
+\eqref{eq:process_rep}) in terms of sine and cosine ``waves'', and forms the
+basis of the physical interpretation of spectral analysis as an ``energy
+distribution over frequency''. However, if the process is nonstationary this
+choice of family of functions is no longer valid (since the representation
+\eqref{eq:process_rep} implies that $\{X_t \}$ is stationary), and the
+physical concept of ``frequency'' would appear to be no longer directly
+relevant. This is hardly surprising, since the sine and cosine waves are
+themselves ``stationary'' and it is natural that they should form the ``basic
+elements'' used in building up models of stationary processes. If we wish to
+introduce the notion of frequency in the analysis of non-stationary processes,
+we are led to seeking new ``basic elements'' which, although
+``non-stationary'', have an oscillatory form, and in which the notion of
+``frequency'' is still dominant. One class of basic elements (or more
+precisely, family of functions) which possess the required structure may be
+obtained as follows. Suppose that, for each fixed $\omega$, $\phi_t (\omega)$
+(considered as a function of $t$) possesses a (generalized) Fourier transform
+whose modulus has an absolute maximum at frequency $\theta (\omega)$, say.
+Then we may regard $\phi_t (\omega)$ as an amplitude modulated sine wave with
+frequency $\theta (\omega)$, and write $\phi_t (\omega)$ in the form
+\begin{equation}
+  \label{eq:amplitude_modulated} \phi_t (\omega) = A_t (\omega) e^{i \theta
+  (\omega) t}
+\end{equation}
+where the modulating function $A_t (\omega)$ is such that the modulus of its
+(generalized) Fourier transform has an absolute maximum at the origin (i.e.
+zero frequency). We now formalize this approach in the following definition.
+
+\begin{definition}
+  \label{def:oscillatory_function}The function of $t$, $\phi_t (\omega)$, will
+  be said to be an oscillatory function if, for some (necessarily unique)
+  $\theta (\omega)$ it may be written in the form
+  \eqref{eq:amplitude_modulated}, where $A_t (\omega)$ is of the form
+  \begin{equation}
+    \label{eq:modulating_function} A_t (\omega) = \int_{- \infty}^{\infty}
+    e^{it \theta} dH_{\omega} (\theta)
+  \end{equation}
+  with $|dH_{\omega} (\theta) |$ having an absolute maximum at $\theta = 0$.
+  (The function $A_t (\omega)$ may be regarded as the ``envelope'' of $\phi_t
+  (\omega)$.) If, further, the family $\{\phi_t (\omega)\}$ is such that
+  $\theta (\omega)$ is a single-valued function of $\omega$ (i.e. if no two
+  distinct members of the family have Fourier transforms whose maxima occur at
+  the same point), then we may transform the variable in the integral in
+  \eqref{eq:covar_representation} from $\omega$ to $\theta (\omega)$, and by
+  suitably redefining $A_t (\omega)$ and the measure $\mu (\omega)$, write
+  \begin{equation}
+    \label{eq:covar_representation2} R_{s, t} = \int_{- \infty}^{\infty} A_s
+    (\omega) A_t^{\ast} (\omega) e^{i \omega (s - t)} d \mu (\omega)
+  \end{equation}
+  and correspondingly
+  \begin{equation}
+    \label{eq:process_rep3} X_t = \int_{- \infty}^{\infty} A_t (\omega) e^{i
+    \omega t} dZ (\omega)
+  \end{equation}
+  where
+  \begin{equation}
+    E |dZ (\omega) |^2 = d \mu (\omega)
+  \end{equation}
+\end{definition}
+
+\begin{definition}
+  \label{def:oscillatory_process}If there exists a family of oscillatory
+  functions $\{\phi_t (\omega)\}$, in terms of which the process $\{X_t \}$
+  has a representation of the form \eqref{eq:covar_representation}, $\{X_t \}$
+  will be termed an ``oscillatory process''.
+\end{definition}
+
+It follows that any oscillatory process also has a representation of the form
+\eqref{eq:process_rep3}, where the family $A_t (\omega)$ satisfies the
+condition of definition \eqref{def:oscillatory_function}, and that, without
+loss of generality, we may write any family of oscillatory functions in the
+form
+\begin{equation}
+  \label{eq:oscillatory_functions} \phi_t (\omega) = A_t (\omega) e^{i \omega
+  t}
+\end{equation}
+We may note that, since \eqref{eq:complex_exp} is a particular case of
+\eqref{eq:amplitude_modulated} (with $A_t (\omega) \equiv 1$, all $t, \omega$,
+and $\theta (\omega) \equiv \omega$), the class of oscillatory processes
+certainly includes all second-order stationary processes.
+
+\section*{4. Evolutionary (Power) Spectra}
+
+Consider an oscillatory process of the form \eqref{eq:process_rep3}, with
+autocovariance function, $R_{s, t}$, of the form
+\eqref{eq:covar_representation2}. For any particular process $\{X_t \}$ there
+will, in general, be a large number of different families of oscillatory
+functions in terms of each of which $\{X_t \}$ has a representation of the
+form \eqref{eq:process_rep3}, with each family inducing a different measure
+$\mu (\omega)$. For a particular family, $\mathscr{F}$, of spectral functions
+$\{\phi_t (\omega)\}$, it is tempting to define the spectrum of $\{X_t \}$
+(with respect to $\mathscr{F}$) simply as the measure $\mu (\omega)$. However,
+such a definition would not have the interpretation of an ``energy
+distribution over frequency''. For, from \eqref{eq:covar_representation2}, we
+may write
+\begin{equation}
+  \label{eq:total_energy} \mathrm{var} X_t \equiv R_{t, t} = \int_{-
+  \infty}^{\infty} |A_t (\omega) |^2 d \mu (\omega)
+\end{equation}
+Since var $X_t$ may be interpreted as a measure of the ``total energy'' of the
+process at time $t$, \eqref{eq:total_energy} gives a decomposition of total
+energy in which the contribution from ``frequency'' $\omega$ is $\{|A_t
+(\omega) |^2 d \mu (\omega)\}$. This result is consistent with the
+interpretation of equation \eqref{eq:process_rep3} as an expression for $X_t$
+as the limiting form of a ``sum'' of sine waves with different frequencies and
+time-varying random amplitudes $\{A_t (\omega) dZ (\omega)\}$. We are thus led
+to the following definition.
+
+\begin{definition}
+  \label{def:evol_spectrum}Let $\mathscr{F}$ denote a particular family of
+  oscillatory functions, $\{\phi_t (\omega)\} \equiv \{A_t (\omega) e^{i
+  \omega t} \}$, and let $\{X_t \}$ be an oscillatory process having a
+  representation of the form \eqref{eq:process_rep3} in terms of the family
+  $\mathscr{F}$. We define the evolutionary power spectrum at time $t$ with
+  respect to the family $\mathscr{F}$, $dF_t (\omega)$, by
+  \begin{equation}
+    \label{eq:evol_spectrum} dF_t (\omega) = |A_t (\omega) |^2 d \mu (\omega)
+  \end{equation}
+\end{definition}
+
+Note that when $\{X_t \}$ is stationary, and $\mathscr{F}$ is chosen to be the
+family of complex exponentials, $dF_t (\omega)$ reduces to the standard
+definition of the (integrated) spectrum. The evolutionary spectrum has the
+same physical interpretation as the spectrum of a stationary process, namely,
+that it describes a distribution of energy over frequency, but whereas the
+latter is determined by the behaviour of the process over all time, the former
+represents specifically the spectral content of the process in the
+neighbourhood of the time instant $t$.
+
+Although, according to definition \eqref{def:evol_spectrum}, the evolutionary
+spectrum, $dF_t (\omega)$, depends on the choice of family $\mathscr{F}$, it
+follows from equation \eqref{eq:total_energy} that
+\begin{equation}
+  \label{eq:integral_spectrum} \mathrm{var} (X_t) = \int_{- \infty}^{\infty}
+  dF_t (\omega)
+\end{equation}
+so that the value of the integral of $dF_t (\omega)$ is independent of the
+particular family $\mathscr{F}$, and, for all families, represents the total
+energy of the process at time $t$.
+
+It is now convenient to ``standardize'' the functions $A_t (\omega)$ so that,
+for all $\omega$,
+\begin{equation}
+  \label{eq:standardize} A_0 (\omega) = 1
+\end{equation}
+i.e. we incorporate $|A_0 (\omega) |$ in the measure $\mu (\omega)$. With this
+convention, $d \mu (\omega)$ represents the evolutionary spectrum at $t = 0$,
+and $|A_t (\omega) |^2$ represents the change in the spectrum, relative to
+zero time. We now have, for each $\omega$,
+\begin{equation}
+  \label{eq:unit_integral} \int_{- \infty}^{\infty} dH_{\omega} (\theta) = 1
+\end{equation}
+so that the Fourier transforms of the $\{A_t (\omega)\}$ are normalized to
+have unit integrals.
+
+There is an interesting alternative interpretation of oscillatory processes in
+terms of time-varying filters. Let $\{X_t \}$ be of the form
+\eqref{eq:process_rep3} and suppose that for each fixed $t$ we may write
+(formally)
+\begin{equation}
+  \label{eq:filter_fourier} A_t (\omega) = \int_{- \infty}^{\infty} e^{i
+  \omega u} h_t (u) du
+\end{equation}
+Then from \eqref{eq:process_rep3}
+\begin{equation}
+  \label{eq:filter_representation} X_t = \int_{- \infty}^{\infty} S_{t - u}
+  h_t (u) du
+\end{equation}
+where
+\begin{equation}
+  \label{eq:stationary_process} S_t = \int_{- \infty}^{\infty} e^{i \omega t}
+  dZ (\omega)
+\end{equation}
+is a stationary process with spectrum $d \mu (\omega)$. Thus $X_t$ may be
+interpreted as the result of passing a stationary process through a
+time-varying filter $\{h_t (u)\}$. Conversely, any process of the form
+\eqref{eq:filter_representation} (with $h_t (u)$ chosen so that $A_t (\omega)$
+is of the required form) may be written in the form \eqref{eq:process_rep3}.
+Thus the evolutionary spectrum at time $t$, $|A_t (\omega) |^2 d \mu
+(\omega)$, may be interpreted as the spectrum (in the classical sense) of the
+stationary process which we would have obtained if the filter $\{h_t (u)\}$
+was held fixed in the state which it attained at the time instant $t$.
+
+\
+
+\begin{thebibliography}{99}
+  {\bibitem{bartlett1955}}Bartlett, M. S. (1955), An Introduction to
+  Stochastic Processes with Special Reference to Methods and Applications.
+  Cambridge University Press.
+  
+  {\bibitem{cramer1960}}Cram{\'e}r, H. (1960), ``On some classes of
+  non-stationary processes'', Proc. Fourth Berkeley Symposium Math. Statist.
+  and Prob., 2, 57-78. University of California Press.
+  
+  {\bibitem{grenander1957}}Grenander, U. and Rosenblatt, M. (1957),
+  Statistical Analysis of Stationary Time Series. New York: Wiley.
+  
+  {\bibitem{herbst1963a}}Herbst, L. J. (1963a), ``Periodogram analysis and
+  variance fluctuations'', J. R. statist. Soc. B, 25, 442-450.
+  
+  {\bibitem{herbst1963b}}Herbst, L. J. (1963b), ``A test for variance
+  heterogeneity in the residuals of a Gaussian moving average'', J. R.
+  statist. Soc. B, 25, 451-454.
+  
+  {\bibitem{herbst1963c}}Herbst, L. J. (1963c), ``Almost periodic variances'',
+  Ann. math. Statist., 34, 1549-1557.
+  
+  {\bibitem{jowett1957}}Jowett, G. H. (1957), ``Statistical analysis using
+  local properties of smoothly heteromorphic stochastic series'', Biometrika,
+  44, 454-463.
+  
+  {\bibitem{lomnicki1957}}Lomnicki, Z. A. and Zaremba, S. K. (1957), ``On
+  estimating the spectral density function of a stochastic process'', J. R.
+  statist. Soc. B, 19, 13-37.
+  
+  {\bibitem{page1952}}Page, C. H. (1952), ``Instantaneous power spectra'', J.
+  appl. Phys., 23, 103-106.
+  
+  {\bibitem{priestley1962}}Priestley, M. B. (1962), ``Basic consideration in
+  the estimation of spectra'', Technometrics, 4, 551-563.
+\end{thebibliography}
+
+\end{document}
