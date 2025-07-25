@@ -3,6 +3,7 @@ package arb.stochastic;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import arb.Complex;
 import arb.FloatInterval;
@@ -541,8 +542,6 @@ public abstract class StationaryGaussianProcessSampler extends
 
     chart.setTitle("In-Phase, Quadrature, and Envelope (±) via Hilbert Transform");
 
-    // DoubleDataSet inPhase = new DoubleDataSet("In-phase").set(samplingTimes,
-    // inPhaseSamplePath);
     RealDataSet inPhase = new RealDataSet("In-phase",
                                           N,
                                           domain);
@@ -553,7 +552,6 @@ public abstract class StationaryGaussianProcessSampler extends
 
     inPhaseVals.set(samplePath.re());
 
-//    DoubleDataSet quad   = new DoubleDataSet("Quadrature").set(samplingTimes, quadratureSamplePath);
     RealDataSet quad = new RealDataSet("Quadrature",
                                        N,
                                        domain);
@@ -586,27 +584,11 @@ public abstract class StationaryGaussianProcessSampler extends
       for (int i = 0; i < charts.length; i++)
       {
         XYChart chart    = charts[i];
-
-        Scene   scene    = new Scene(chart);
         Stage   ithStage = stages[i];
-        ithStage.setScene(scene);
-        ithStage.setTitle(String.format("%s[seed=%s]", chart.getTitle(), seed));
-        ithStage.setMaximized(true);
-        WindowManager.setStageIcon(ithStage, "GaussianProcessModeller.png");
-
-        if (dark)
-        {
-          WindowManager.setMoreConduciveStyle(scene);
-        }
-        if (i > 0)
-        {
-          ithStage.show();
-
-        }
-        WindowManager.installEscapeKeyCloseHandler(ithStage);
-
+        initializeChartWithItsOwnWindow(chart, ithStage);
       }
-      stage.show();
+
+      Stream.of(stages).forEach(Stage::show);
     }
     else
     {
@@ -616,22 +598,39 @@ public abstract class StationaryGaussianProcessSampler extends
       stage.setMaximized(true);
       stage.setTitle(String.format("%s[seed=%s]", getClass().getSimpleName(), seed));
       WindowManager.setStageIcon(stage, "GaussianProcessModeller.png");
-
-      stage.show();
       WindowManager.installEscapeKeyCloseHandler(stage);
-
       if (dark)
       {
         WindowManager.setMoreConduciveStyle(scene);
       }
+      stage.show();
+
     }
+  }
+
+  protected void initializeChartWithItsOwnWindow(XYChart chart, Stage ithStage)
+  {
+    Scene scene = new Scene(chart);
+    ithStage.setScene(scene);
+    ithStage.setMaximized(true);
+    ithStage.setTitle(String.format("%s[seed=%s]", chart.getTitle(), seed));
+    WindowManager.setStageIcon(ithStage, "GaussianProcessModeller.png");
+
+    if (dark)
+    {
+      WindowManager.setMoreConduciveStyle(scene);
+    }
+
+    WindowManager.installEscapeKeyCloseHandler(ithStage);
   }
 
   protected void processParameters()
   {
     List<String>        params = getParameters().getUnnamed();
     Map<String, String> named  = getParameters().getNamed();
-    separateWindows = params.contains("--separate-windows");
+    separateWindows = params.stream()
+                            .anyMatch(param -> param.contains("separate")
+                                          || param.contains("individual"));
     seed            = Long.valueOf(named.getOrDefault("seed", "777"));
 
     dark            = params.contains("--dark");
@@ -650,7 +649,7 @@ public abstract class StationaryGaussianProcessSampler extends
   {
     generate();
 
-    Arrays.stream(charts = new XYChart[]
+    Stream.of(charts = new XYChart[]
     { newTimeDomainChart(),
       newRandomWhiteNoiseMeasureChart(),
       newAutoCorrelationChart(),
