@@ -126,7 +126,7 @@
   Alternative forms of the Hilbert transform that will prove useful are:
 
   <\equation>
-    y<around|(|t|)>=<frac|1|\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|x*<around|(|t+s|)>|s>*d*s=<frac|1|\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|x*<around|(|t-s|)>|s>*d*s<label|eq:hilbert_transform_alt>
+    y<around|(|t|)>=<frac|1|\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|x*<around|(|t+s|)>|-s>*d*s=<frac|1|\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|x*<around|(|t-s|)>|s>*d*s<label|eq:hilbert_transform_alt>
   </equation>
 
   <\definition>
