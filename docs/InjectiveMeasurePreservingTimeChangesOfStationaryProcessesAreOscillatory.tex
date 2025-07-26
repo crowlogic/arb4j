@@ -6,6 +6,9 @@
 \newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
 \newtheorem{corollary}{Corollary}
 \newtheorem{definition}{Definition}
+\newcounter{nndefinition}
+\def\thenndefinition{\unskip}
+\newtheorem{definition*}[nndefinition]{Definition}
 \newtheorem{theorem}{Theorem}
 %%%%%%%%%% End TeXmacs macros
 
@@ -27,41 +30,70 @@ Time-Changes}}
   [Oscillatory Process] A complex-valued second-order stochastic process
   $\{X_t \}_{t \in I}$ is said to be oscillatory if there exists a family of
   functions $\phi_t (\omega)$ and a complex orthogonal increment process $Z
-  (\omega)$ with $E |dZ (\omega) |^2 = d \mu (\omega)$ such that
-  \[ X_t = \int_{- \infty}^{\infty} \phi_t (\omega)  \hspace{0.17em} dZ
-     (\omega) \hspace{0.17em}, \]
-  where $\phi_t (\omega) = A_t (\omega) e^{i \omega t}$ and $A_t (\omega)$ is
-  quadratically integrable with respect to $d \mu$.
+  (\omega)$ with
+  \begin{equation}
+    E |dZ (\omega) |^2 = d \mu (\omega)
+  \end{equation}
+  such that
+  \begin{equation}
+    X_t = \int_{- \infty}^{\infty} \phi_t (\omega)  \hspace{0.17em} dZ
+    (\omega) \hspace{0.17em}
+  \end{equation}
+  where
+  \begin{equation}
+    \phi_t (\omega) = A_t (\omega) e^{i \omega t}
+  \end{equation}
+  and $A_t (\omega)$ is a quadratically integrable gain function with respect
+  to $d \mu$.
 \end{definition}
 
-\begin{definition}
+\begin{definition*}
   [Stationary Process] A second-order process $\{S_t \}_{t \in J}$ is
   stationary if it admits the spectral representation
-  \[ S_t = \int_{- \infty}^{\infty} e^{i \omega t}  \hspace{0.17em} dZ
-     (\omega) \]
-  for some orthogonal increment process $Z (\omega)$ with $E |dZ (\omega) |^2
-  = d \mu (\omega)$.
-\end{definition}
+  \begin{equation}
+    S_t = \int_{- \infty}^{\infty} e^{i \omega t}  \hspace{0.17em} dZ (\omega)
+  \end{equation}
+  for some orthogonal increment process $Z (\omega)$ with
+  \begin{equation}
+    E |dZ (\omega) |^2 = d \mu (\omega)
+  \end{equation}
+\end{definition*}
 
 \begin{theorem}
   [Time-Varying Filter for Injective Time-Change] Let $S_t$ be a stationary
   process and $\theta : \mathbb{R} \to \mathbb{R}$ be smooth and strictly
   increasing with $\theta' (t) > 0$. To achieve the transformation
-  \[ X_t = \sqrt{\theta' (t)} S_{\theta (t)} \]
-  via convolution $X_t = \int_{- \infty}^{\infty} S_{t - u} h_t (u) du$, the
-  time-varying impulse response must be
-  \[ h_t (u) = \sqrt{\theta' (t)} \delta (u - (t - \theta (t))) . \]
+  \begin{equation}
+    X_t = \sqrt{\theta' (t)} S_{\theta (t)}
+  \end{equation}
+  via convolution
+  \begin{equation}
+    X_t = \int_{- \infty}^{\infty} S_{t - u} h_t (u) du
+  \end{equation}
+  the time-varying impulse response must be
+  \begin{equation}
+    h_t (u) = \sqrt{\theta' (t)} \delta (u - (t - \theta (t)))
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-  For the convolution to yield $X_t = \sqrt{\theta' (t)} S_{\theta (t)}$, the
-  argument of $S$ in the integrand must equal $\theta (t)$ when the delta
+  For the convolution to yield
+  \begin{equation}
+    X_t = \sqrt{\theta' (t)} S_{\theta (t)}
+  \end{equation}
+  the argument of $S$ in the integrand must equal $\theta (t)$ when the delta
   function is activated. This requires:
-  \[ t - u = \theta (t) \]
+  \begin{equation}
+    t - u = \theta (t)
+  \end{equation}
   Solving for $u$:
-  \[ u = t - \theta (t) \]
+  \begin{equation}
+    u = t - \theta (t)
+  \end{equation}
   Therefore:
-  \[ h_t (u) = \sqrt{\theta' (t)} \delta (u - (t - \theta (t))) \]
+  \begin{equation}
+    h_t (u) = \sqrt{\theta' (t)} \delta (u - (t - \theta (t)))
+  \end{equation}
   Verification by direct computation:
   
   \begin{align}
@@ -74,11 +106,22 @@ Time-Changes}}
 \end{proof}
 
 \begin{theorem}
-  [Oscillatory Representation of Injective Time-Change] The process $X_t =
-  \sqrt{\theta' (t)} S_{\theta (t)}$ admits the oscillatory representation
-  \[ X_t = \int_{- \infty}^{\infty} \phi_t (\omega) dZ (\omega) \]
+  [Oscillatory Representation of Injective Time-Change] The process
+  \begin{equation}
+    X_t = \sqrt{\theta' (t)} S_{\theta (t)}
+  \end{equation}
+  has the oscillatory representation
+  \begin{equation}
+    \begin{array}{ll}
+      X_t & = \int_{- \infty}^{\infty} \phi_t (\omega) dZ (\omega)\\
+      & = \int_{- \infty}^{\infty}  \sqrt{\theta' (t)} e^{i \omega \theta
+      (t)} dZ (\omega)
+    \end{array}
+  \end{equation}
   where
-  \[ \phi_t (\omega) = \sqrt{\theta' (t)} e^{i \omega \theta (t)} . \]
+  \begin{equation}
+    \phi_t (\omega) = \sqrt{\theta' (t)} e^{i \omega \theta (t)}
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
@@ -86,45 +129,68 @@ Time-Changes}}
   
   \begin{align}
     X_t & = \sqrt{\theta' (t)} S_{\theta (t)} \\
-    & = \sqrt{\theta' (t)}  \int_{- \infty}^{\infty} e^{i \omega \theta (t)}
-    dZ (\omega) \\
     & = \int_{- \infty}^{\infty} \sqrt{\theta' (t)} e^{i \omega \theta (t)}
+    dZ (\omega) \\
+    & = \sqrt{\theta' (t)}  \int_{- \infty}^{\infty} e^{i \omega \theta (t)}
     dZ (\omega) 
   \end{align}
   
-  Thus $\phi_t (\omega) = \sqrt{\theta' (t)} e^{i \omega \theta (t)}$.
+  Thus
+  \begin{equation}
+    \phi_t (\omega) = \sqrt{\theta' (t)} e^{i \omega \theta (t)}
+  \end{equation}
 \end{proof}
 
 \begin{corollary}
   [Envelope in Standard Form] The oscillatory functions can be written in the
-  standard form $\phi_t (\omega) = A_t (\omega) e^{i \omega t}$ where
-  \[ A_t (\omega) = \sqrt{\theta' (t)} e^{i \omega (\theta (t) - t)} . \]
+  standard for
+  \begin{equation}
+    \phi_t (\omega) = A_t (\omega) e^{i \omega t}
+  \end{equation}
+  where
+  \begin{equation}
+    A_t (\omega) = \sqrt{\theta' (t)} e^{i \omega (\theta (t) - t)}
+  \end{equation}
 \end{corollary}
 
 \begin{proof}
-  Factor the exponential:
+  Substitute and combine the exponentials
   
   \begin{align}
-    \phi_t (\omega) & = \sqrt{\theta' (t)} e^{i \omega \theta (t)} \\
+    \phi_t (\omega) & = A_t (\omega) e^{i \omega t} \\
     & = \sqrt{\theta' (t)} e^{i \omega (\theta (t) - t)} e^{i \omega t} \\
-    & = A_t (\omega) e^{i \omega t} 
+    & = \sqrt{\theta' (t)} e^{i \omega (\theta (t) - t + t)} \\
+    & = \sqrt{\theta' (t)} e^{i \omega \theta (t)} \nonumber
   \end{align}
   
-  where $A_t (\omega) = \sqrt{\theta' (t)} e^{i \omega (\theta (t) - t)}$.
+  where
+  \begin{equation}
+    A_t (\omega) = \sqrt{\theta' (t)} e^{i \omega (\theta (t) - t)}
+  \end{equation}
 \end{proof}
 
 \begin{theorem}
-  [Evolutionary Power Spectrum] For the oscillatory process $X_t =
-  \sqrt{\theta' (t)} S_{\theta (t)}$ with envelope $A_t (\omega) =
-  \sqrt{\theta' (t)} e^{i \omega (\theta (t) - t)}$, the evolutionary power
-  spectrum at time $t$ is
-  \[ dF_t (\omega) = |A_t (\omega) |^2 d \mu (\omega) = \theta' (t) d \mu
-     (\omega) . \]
+  [Evolutionary Power Spectrum] For the oscillatory process
+  \begin{equation}
+    X_t = \sqrt{\theta' (t)} S_{\theta (t)}
+  \end{equation}
+  with envelope
+  \begin{equation}
+    A_t (\omega) = \sqrt{\theta' (t)} e^{i \omega (\theta (t) - t)}
+  \end{equation}
+  the evolutionary power spectrum at time $t$ is
+  \begin{equation}
+    dF_t (\omega) = |A_t (\omega) |^2 d \mu (\omega) = \theta' (t) d \mu
+    (\omega)
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-  The evolutionary power spectrum is defined as $dF_t (\omega) = |A_t (\omega)
-  |^2 d \mu (\omega)$. Computing the magnitude squared:
+  The evolutionary power spectrum is defined as
+  \begin{equation}
+    dF_t (\omega) = |A_t (\omega) |^2 d \mu (\omega)
+  \end{equation}
+  Computing the magnitude squared:
   
   \begin{align}
     |A_t (\omega) |^2 & = \left| \sqrt{\theta' (t)} e^{i \omega (\theta (t) -
@@ -134,14 +200,21 @@ Time-Changes}}
     & = \theta' (t) 
   \end{align}
   
-  Therefore $dF_t (\omega) = \theta' (t) d \mu (\omega)$.
+  Therefore
+  \begin{equation}
+    dF_t (\omega) = \theta' (t) d \mu (\omega)
+  \end{equation}
 \end{proof}
 
 \begin{theorem}
-  [L{\texttwosuperior}-Norm Preservation] The transformation $S_t \mapsto
-  \sqrt{\theta' (t)} S_{\theta (t)}$ preserves the L{\texttwosuperior}-norm in
-  the sense that
-  \[ \int_I E |X_t |^2 dt = \int_J E |S_s |^2 ds \]
+  [L{\texttwosuperior}-Norm Preservation] The transformation\textbar
+  \begin{equation}
+    S_t \mapsto \sqrt{\theta' (t)} S_{\theta (t)}
+  \end{equation}
+  preserves the L{\texttwosuperior}-norm in the sense that
+  \begin{equation}
+    \int_I E |X_t |^2 dt = \int_J E |S_s |^2 ds
+  \end{equation}
   where $I$ is the domain of $t$ and $J = \theta (I)$.
 \end{theorem}
 

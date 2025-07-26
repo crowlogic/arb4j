@@ -15,30 +15,43 @@
     <math|<around|{|X<rsub|t>|}><rsub|t\<in\>I>> is said to be oscillatory if
     there exists a family of functions <math|\<phi\><rsub|t><around|(|\<omega\>|)>>
     and a complex orthogonal increment process <math|Z<around|(|\<omega\>|)>>
-    with <math|E*<around|\||d*Z<around|(|\<omega\>|)>|\|><rsup|2>=d*\<mu\><around|(|\<omega\>|)>>
-    such that
+    with
 
-    <\equation*>
-      X<rsub|t>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|t><around|(|\<omega\>|)>*<space|0.17em>d*Z<around|(|\<omega\>|)><space|0.17em>,
-    </equation*>
+    <\equation>
+      E*<around|\||d*Z<around|(|\<omega\>|)>|\|><rsup|2>=d*\<mu\><around|(|\<omega\>|)>
+    </equation>
 
-    where <math|\<phi\><rsub|t><around|(|\<omega\>|)>=A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>>
-    and <math|A<rsub|t><around|(|\<omega\>|)>> is quadratically integrable
-    with respect to <math|d*\<mu\>>.
+    \ such that
+
+    <\equation>
+      X<rsub|t>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|t><around|(|\<omega\>|)>*<space|0.17em>d*Z<around|(|\<omega\>|)><space|0.17em>
+    </equation>
+
+    where
+
+    <\equation>
+      \<phi\><rsub|t><around|(|\<omega\>|)>=A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>
+    </equation>
+
+    and <math|A<rsub|t><around|(|\<omega\>|)>> is a quadratically integrable
+    gain function with respect to <math|d*\<mu\>>.
   </definition>
 
-  <\definition>
+  <\definition*>
     [Stationary Process] A second-order process
     <math|<around|{|S<rsub|t>|}><rsub|t\<in\>J>> is stationary if it admits
     the spectral representation
 
-    <\equation*>
+    <\equation>
       S<rsub|t>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*t>*<space|0.17em>d*Z<around|(|\<omega\>|)>
-    </equation*>
+    </equation>
 
     for some orthogonal increment process <math|Z<around|(|\<omega\>|)>> with
-    <math|E*<around|\||d*Z<around|(|\<omega\>|)>|\|><rsup|2>=d*\<mu\><around|(|\<omega\>|)>>.
-  </definition>
+
+    <\equation>
+      E*<around|\||d*Z<around|(|\<omega\>|)>|\|><rsup|2>=d*\<mu\><around|(|\<omega\>|)>
+    </equation>
+  </definition*>
 
   <\theorem>
     [Time-Varying Filter for Injective Time-Change] Let <math|S<rsub|t>> be a
@@ -46,39 +59,49 @@
     smooth and strictly increasing with <math|\<theta\><rprime|'><around|(|t|)>\<gtr\>0>.
     To achieve the transformation
 
-    <\equation*>
+    <\equation>
       X<rsub|t>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>>
-    </equation*>
+    </equation>
 
-    via convolution <math|X<rsub|t>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<rsub|t-u>*h<rsub|t><around|(|u|)>*d*u>,
+    via convolution
+
+    <\equation>
+      X<rsub|t>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<rsub|t-u>*h<rsub|t><around|(|u|)>*d*u
+    </equation>
+
     the time-varying impulse response must be
 
-    <\equation*>
-      h<rsub|t><around|(|u|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*\<delta\>*<around|(|u-<around|(|t-\<theta\><around|(|t|)>|)>|)>.
-    </equation*>
+    <\equation>
+      h<rsub|t><around|(|u|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*\<delta\>*<around|(|u-<around|(|t-\<theta\><around|(|t|)>|)>|)>
+    </equation>
   </theorem>
 
   <\proof>
-    For the convolution to yield <math|X<rsub|t>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>>>,
+    For the convolution to yield
+
+    <\equation>
+      X<rsub|t>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>>
+    </equation>
+
     the argument of <math|S> in the integrand must equal
     <math|\<theta\><around|(|t|)>> when the delta function is activated. This
     requires:
 
-    <\equation*>
+    <\equation>
       t-u=\<theta\><around|(|t|)>
-    </equation*>
+    </equation>
 
     Solving for <math|u>:
 
-    <\equation*>
+    <\equation>
       u=t-\<theta\><around|(|t|)>
-    </equation*>
+    </equation>
 
     Therefore:
 
-    <\equation*>
+    <\equation>
       h<rsub|t><around|(|u|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*\<delta\>*<around|(|u-<around|(|t-\<theta\><around|(|t|)>|)>|)>
-    </equation*>
+    </equation>
 
     Verification by direct computation:
 
@@ -89,81 +112,119 @@
 
   <\theorem>
     [Oscillatory Representation of Injective Time-Change] The process
-    <math|X<rsub|t>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>>>
-    admits the oscillatory representation
 
-    <\equation*>
-      X<rsub|t>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|t><around|(|\<omega\>|)>*d*Z<around|(|\<omega\>|)>
-    </equation*>
+    <\equation>
+      X<rsub|t>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>>
+    </equation>
+
+    has the oscillatory representation
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|X<rsub|t>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><rsub|t><around|(|\<omega\>|)>*d*Z<around|(|\<omega\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>*<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*\<theta\><around|(|t|)>>d*Z<around|(|\<omega\>|)>>>>>>
+    </equation>
 
     where
 
-    <\equation*>
-      \<phi\><rsub|t><around|(|\<omega\>|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*\<theta\><around|(|t|)>>.
-    </equation*>
+    <\equation>
+      \<phi\><rsub|t><around|(|\<omega\>|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*\<theta\><around|(|t|)>>
+    </equation>
   </theorem>
 
   <\proof>
     Starting from the spectral representation of <math|S<rsub|t>>:
 
     <\align>
-      <tformat|<table|<row|<cell|X<rsub|t>>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>><eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*\<theta\><around|(|t|)>>*d*Z<around|(|\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*\<theta\><around|(|t|)>>*d*Z<around|(|\<omega\>|)><eq-number>>>>>
+      <tformat|<table|<row|<cell|X<rsub|t>>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*\<theta\><around|(|t|)>>*d*Z<around|(|\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*\<theta\><around|(|t|)>>*d*Z<around|(|\<omega\>|)><eq-number>>>>>
     </align>
 
-    Thus <math|\<phi\><rsub|t><around|(|\<omega\>|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*\<theta\><around|(|t|)>>>.
+    Thus
+
+    <\equation>
+      \<phi\><rsub|t><around|(|\<omega\>|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*\<theta\><around|(|t|)>>
+    </equation>
   </proof>
 
   <\corollary>
     [Envelope in Standard Form] The oscillatory functions can be written in
-    the standard form <math|\<phi\><rsub|t><around|(|\<omega\>|)>=A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>>
-    where
+    the standard for
 
-    <\equation*>
-      A<rsub|t><around|(|\<omega\>|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t|)>>.
-    </equation*>
+    <\equation>
+      \<phi\><rsub|t><around|(|\<omega\>|)>=A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>
+    </equation>
+
+    \ where
+
+    <\equation>
+      A<rsub|t><around|(|\<omega\>|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t|)>>
+    </equation>
   </corollary>
 
   <\proof>
-    Factor the exponential:
+    Substitute and combine the exponentials
 
     <\align>
-      <tformat|<table|<row|<cell|\<phi\><rsub|t><around|(|\<omega\>|)>>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*\<theta\><around|(|t|)>><eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t|)>>*e<rsup|i*\<omega\>*t><eq-number>>>|<row|<cell|>|<cell|=A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t><eq-number>>>>>
+      <tformat|<table|<row|<cell|\<phi\><rsub|t><around|(|\<omega\>|)>>|<cell|=A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t><eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t|)>>*e<rsup|i*\<omega\>*t><eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t+t|)>><eq-number>>>|<row|<cell|>|<cell|=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*\<theta\><around|(|t|)>>>>>>
     </align>
 
-    where <math|A<rsub|t><around|(|\<omega\>|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t|)>>>.
+    where
+
+    <\equation>
+      A<rsub|t><around|(|\<omega\>|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t|)>>
+    </equation>
   </proof>
 
   <\theorem>
-    [Evolutionary Power Spectrum] For the oscillatory process
-    <math|X<rsub|t>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>>>
-    with envelope <math|A<rsub|t><around|(|\<omega\>|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t|)>>>,
+    [Evolutionary Power Spectrum] For the oscillatory process\ 
+
+    <\equation>
+      X<rsub|t>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>>
+    </equation>
+
+    \ with envelope\ 
+
+    <\equation>
+      A<rsub|t><around|(|\<omega\>|)>=<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t|)>>
+    </equation>
+
     the evolutionary power spectrum at time <math|t> is
 
-    <\equation*>
-      d*F<rsub|t><around|(|\<omega\>|)>=<around|\||A<rsub|t><around|(|\<omega\>|)>|\|><rsup|2>*d*\<mu\><around|(|\<omega\>|)>=\<theta\><rprime|'><around|(|t|)>*d*\<mu\><around|(|\<omega\>|)>.
-    </equation*>
+    <\equation>
+      d*F<rsub|t><around|(|\<omega\>|)>=<around|\||A<rsub|t><around|(|\<omega\>|)>|\|><rsup|2>*d*\<mu\><around|(|\<omega\>|)>=\<theta\><rprime|'><around|(|t|)>*d*\<mu\><around|(|\<omega\>|)>
+    </equation>
   </theorem>
 
   <\proof>
     The evolutionary power spectrum is defined as
-    <math|d*F<rsub|t><around|(|\<omega\>|)>=<around|\||A<rsub|t><around|(|\<omega\>|)>|\|><rsup|2>*d*\<mu\><around|(|\<omega\>|)>>.
+
+    <\equation>
+      d*F<rsub|t><around|(|\<omega\>|)>=<around|\||A<rsub|t><around|(|\<omega\>|)>|\|><rsup|2>*d*\<mu\><around|(|\<omega\>|)>
+    </equation>
+
     Computing the magnitude squared:
 
     <\align>
       <tformat|<table|<row|<cell|<around|\||A<rsub|t><around|(|\<omega\>|)>|\|><rsup|2>>|<cell|=<around*|\||<sqrt|\<theta\><rprime|'><around|(|t|)>>*e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2><eq-number>>>|<row|<cell|>|<cell|=\<theta\><rprime|'><around|(|t|)><around*|\||e<rsup|i*\<omega\>*<around|(|\<theta\><around|(|t|)>-t|)>>|\|><rsup|2><eq-number>>>|<row|<cell|>|<cell|=\<theta\><rprime|'><around|(|t|)>\<cdot\>1<eq-number>>>|<row|<cell|>|<cell|=\<theta\><rprime|'><around|(|t|)><eq-number>>>>>
     </align>
 
-    Therefore <math|d*F<rsub|t><around|(|\<omega\>|)>=\<theta\><rprime|'><around|(|t|)>*d*\<mu\><around|(|\<omega\>|)>>.
+    Therefore
+
+    <\equation>
+      d*F<rsub|t><around|(|\<omega\>|)>=\<theta\><rprime|'><around|(|t|)>*d*\<mu\><around|(|\<omega\>|)>
+    </equation>
   </proof>
 
   <\theorem>
-    [L\<twosuperior\>-Norm Preservation] The transformation
-    <math|S<rsub|t>\<mapsto\><sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>>>
-    preserves the L\<twosuperior\>-norm in the sense that
+    [L\<twosuperior\>-Norm Preservation] The transformation\|
 
-    <\equation*>
+    <\equation>
+      S<rsub|t>\<mapsto\><sqrt|\<theta\><rprime|'><around|(|t|)>>*S<rsub|\<theta\><around|(|t|)>>
+    </equation>
+
+    \ preserves the L\<twosuperior\>-norm in the sense that
+
+    <\equation>
       <big|int><rsub|I>E<around|\||X<rsub|t>|\|><rsup|2>*d*t=<big|int><rsub|J>E<around|\||S<rsub|s>|\|><rsup|2>*d*s
-    </equation*>
+    </equation>
 
     where <math|I> is the domain of <math|t> and
     <math|J=\<theta\><around|(|I|)>>.
@@ -189,17 +250,27 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_11.tm>>
-    <associate|auto-4|<tuple|1|?|../.TeXmacs/texts/scratch/no_name_11.tm>>
+    <associate|auto-4|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_11.tm>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
     <\associate|toc>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc><assign|section-numbered|false><assign|section-prefix|<macro|>><assign|subsection-nr|0><assign|subsubsection-nr|0><assign|paragraph-nr|0><assign|subparagraph-nr|0><flag|table
+      of contents|dark green|what><assign|auto-nr|2><write|toc|<vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Oscillatory
+      Processes and Normalized Injective Time-Changes>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-2><vspace|0.5fn>><toc-notify|toc-strong-2|Oscillatory
+      Processes and Normalized Injective Time-Changes><surround|<no-indent>|<specific|texmacs|<htab|0fn|first>>|<with|font-series|<quote|bold>|math-font-series|<quote|bold>|<vspace*|1.5fn><with|font-size|<quote|1.414>|Oscillatory
+      Processes and Normalized Injective Time-Changes<space|2spc>><vspace|0.5fn>><no-page-break><no-indent*>>>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-2><vspace|0.5fn>
+
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Oscillatory
       Processes and Normalized Injective Time-Changes>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-1><vspace|0.5fn>
+      <no-break><pageref|auto-4><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
