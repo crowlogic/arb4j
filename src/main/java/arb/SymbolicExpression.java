@@ -250,6 +250,12 @@ public class SymbolicExpression implements AutoCloseable,Typesettable {
   }
 
 
+ public SymbolicExpression set( String atomicString )
+ {
+   arblib.fexpr_set_string(this, atomicString);
+   return this;
+ }
+ 
   @Override
   public String typeset()
   {

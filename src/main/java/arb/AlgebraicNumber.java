@@ -76,6 +76,12 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   }
 
 
+  @SuppressWarnings("resource")
+  public static AlgebraicNumber named(String string)
+  {
+    return new AlgebraicNumber().setName(string);
+  }
+  
   public boolean isReal()
   {
     return arblib.qqbar_is_real(this) != 0;
@@ -185,6 +191,16 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     return pow(exp,this);
   }
   
+  public Named set(String value)
+  {
+    try ( SymbolicExpression expr = new SymbolicExpression())
+    {
+      expr.set(value);
+      arblib.qqbar_set_fexpr(this, expr);
+      return this;
+    }
+  }
+    
   public SymbolicExpression getSymbolicRepresentation(SymbolicExpression result)
   {
     arblib.qqbar_get_fexpr_repr(result, this);

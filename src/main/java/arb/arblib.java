@@ -9,6 +9,14 @@
 package arb;
 
 public class arblib {
+  public static void fexpr_set_symbol_str(SymbolicExpression res, String s) {
+    arblibJNI.fexpr_set_symbol_str(SymbolicExpression.getCPtr(res), res, s);
+  }
+
+  public static int qqbar_set_fexpr(AlgebraicNumber res, SymbolicExpression expr) {
+    return arblibJNI.qqbar_set_fexpr(AlgebraicNumber.getCPtr(res), res, SymbolicExpression.getCPtr(expr), expr);
+  }
+
   public static void fmpz_poly_pow(IntegerPolynomial res, IntegerPolynomial poly, long e) {
     arblibJNI.fmpz_poly_pow(IntegerPolynomial.getCPtr(res), res, IntegerPolynomial.getCPtr(poly), poly, e);
   }
@@ -207,10 +215,6 @@ public class arblib {
 
   public static int qqbar_is_integer(AlgebraicNumber x) {
     return arblibJNI.qqbar_is_integer(AlgebraicNumber.getCPtr(x), x);
-  }
-
-  public static void fexpr_set_symbol_str(SymbolicExpression res, String s) {
-    arblibJNI.fexpr_set_symbol_str(SymbolicExpression.getCPtr(res), res, s);
   }
 
   public static String fexpr_get_symbol_str(SymbolicExpression expr) {

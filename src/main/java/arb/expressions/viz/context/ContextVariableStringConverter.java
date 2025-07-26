@@ -2,6 +2,7 @@ package arb.expressions.viz.context;
 
 import java.io.Closeable;
 
+import arb.AlgebraicNumber;
 import arb.Complex;
 import arb.Fraction;
 import arb.Integer;
@@ -18,7 +19,8 @@ import javafx.util.StringConverter;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public final class ContextVariableStringConverter<D, C extends Closeable, F extends Function<D, C>> extends
+public final class ContextVariableStringConverter<D, C extends Closeable, F extends Function<D, C>>
+                                                 extends
                                                  StringConverter<Named>
 {
 
@@ -61,8 +63,13 @@ public final class ContextVariableStringConverter<D, C extends Closeable, F exte
         return Integer.named(name).set(value);
       case "Fraction":
         return Fraction.named(name).set(value);
+      case "AlgebraicNumber":
+        return AlgebraicNumber.named(name).set(value);
       default:
-        String msg = String.format("TODO: handle type='%s'\nname='%s'\nvalue='%s'\n", type, name, value);
+        String msg = String.format("TODO: handle type='%s'\nname='%s'\nvalue='%s'\n",
+                                   type,
+                                   name,
+                                   value);
         WindowManager.showAlert("TODO", msg);
         assert false : msg;
         return null;

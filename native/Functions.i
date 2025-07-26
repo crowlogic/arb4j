@@ -16,6 +16,10 @@
 #include <unistd.h>
 #include <wchar.h>
 
+void fexpr_set_symbol_str(fexpr_t res, const char * s);
+
+int qqbar_set_fexpr(qqbar_t res, const fexpr_t expr);
+
 void fmpz_poly_pow(fmpz_poly_t res, const fmpz_poly_t poly, ulong e);
 
 void acb_mat_bound_inf_norm(mag_t b, const acb_mat_t A);

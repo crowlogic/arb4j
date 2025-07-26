@@ -41,6 +41,7 @@ import arb.functions.IntegerFunction;
 import arb.functions.IntegerNullaryFunction;
 import arb.functions.NullaryFunction;
 import arb.functions.RealToComplexFunction;
+import arb.functions.algebraic.AlgebraicFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexNullaryFunction;
 import arb.functions.complex.ComplexPolynomialNullaryFunction;
@@ -68,7 +69,6 @@ import arb.utensils.ImageViewer;
 import arb.utensils.Utensils;
 import arb.viz.WindowManager;
 import javafx.application.Platform;
-import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -119,29 +119,29 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
   }
 
   final Expressor<D, C, F>     expressor;
-  
+
   TreeTableView<Node<D, C, F>> treeTableView;
-  
+
   public TextField             expressionInput;
-  
+
   public Expression<D, C, F>   expr;
-  
+
   F                            instance;
-  
+
   C                            result;
-  
+
   Context                      context;
-  
+
   HashMap<String, Boolean>     nodeExpansionStates;
-  
+
   MiniSymbolPalette            symbolPalette;
-  
+
   private StackPane            stackPane;
-  
+
   VirtualFlow<?>               tableVirtualFlow;
 
   IndexedCell<?>               pointer;
-  
+
   private Tab                  tab;
 
   public Context getContext()
@@ -209,8 +209,6 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     });
     symbolPalette = new MiniSymbolPalette(expressionInput);
   }
-
-
 
   @SuppressWarnings("unchecked")
   private void setupTreeTableView()
@@ -487,7 +485,8 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     Quaternion.class };
 
   public static Class<?>[]              INTERFACES           = new Class<?>[]
-  { IntegerSequence.class,
+  { AlgebraicFunction.class,
+    IntegerSequence.class,
     RealSequence.class,
     Function.class,
     NullaryFunction.class,
@@ -661,6 +660,10 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     else if (functionType.equals(RealSequence.class))
     {
       selectTypes(Integer.class, Real.class);
+    }
+    else if (functionType.equals(AlgebraicFunction.class))
+    {
+      selectTypes(AlgebraicNumber.class, AlgebraicNumber.class);
     }
     else if (functionType.equals(Sequence.class))
     {

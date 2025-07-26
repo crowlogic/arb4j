@@ -49,6 +49,7 @@ module arb4j
   exports arb.exceptions;
 
   exports arb.functions;
+  exports arb.functions.algebraic;  
   exports arb.utensils.text.tables;
   exports arb.utensils.text.trees;
   exports arb.functions.polynomials;

@@ -9,6 +9,8 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void fexpr_set_symbol_str(long jarg1, SymbolicExpression jarg1_, String jarg2);
+  public final static native int qqbar_set_fexpr(long jarg1, AlgebraicNumber jarg1_, long jarg2, SymbolicExpression jarg2_);
   public final static native void fmpz_poly_pow(long jarg1, IntegerPolynomial jarg1_, long jarg2, IntegerPolynomial jarg2_, long jarg3);
   public final static native void acb_mat_bound_inf_norm(long jarg1, Magnitude jarg1_, long jarg2, ComplexMatrix jarg2_);
   public final static native void acb_mat_frobenius_norm(long jarg1, Real jarg1_, long jarg2, ComplexMatrix jarg2_, int jarg3);
@@ -59,7 +61,6 @@ public class arblibJNI {
   public final static native int qqbar_is_real(long jarg1, AlgebraicNumber jarg1_);
   public final static native int qqbar_is_rational(long jarg1, AlgebraicNumber jarg1_);
   public final static native int qqbar_is_integer(long jarg1, AlgebraicNumber jarg1_);
-  public final static native void fexpr_set_symbol_str(long jarg1, SymbolicExpression jarg1_, String jarg2);
   public final static native String fexpr_get_symbol_str(long jarg1, SymbolicExpression jarg1_);
   public final static native void fexpr_set_string(long jarg1, SymbolicExpression jarg1_, String jarg2);
   public final static native String fexpr_get_string(long jarg1, SymbolicExpression jarg1_);
