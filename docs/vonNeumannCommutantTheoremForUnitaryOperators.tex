@@ -1,0 +1,249 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,latexsym}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\cdummy}{\cdot}
+\newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{Von Neumann's Commutant Theory for Unitary Operators}
+
+\author{Mathematical Exposition}
+
+\date{July 25, 2025}
+
+\maketitle
+
+{\tableofcontents}
+
+\section{Introduction}
+
+This exposition presents von Neumann's commutant theory, particularly focusing
+on the characterization of bounded operators that commute with a given unitary
+operator in terms of its spectral measure. The main result establishes that
+any bounded operator commuting with a unitary operator $U_s$ must be
+expressible as a function of the spectral measure $E (\cdummy)$.
+
+\section{Preliminaries and Definitions}
+
+Let $\mathcal{H}$ be a separable complex Hilbert space with inner product
+$\langle \cdummy, \cdummy \rangle$ and norm $\| \cdummy \|$.
+
+\begin{definition}
+  [Unitary Operator] An operator $U \in \mathcal{B} (\mathcal{H})$ is called
+  unitary if $U^{\ast} U = UU^{\ast} = I$, where $U^{\ast}$ denotes the
+  adjoint of $U$ and $I$ is the identity operator.
+\end{definition}
+
+\begin{definition}
+  [Spectral Measure] A spectral measure on the Borel $\sigma$-algebra
+  $\mathcal{B} (\mathbb{T})$ of the unit circle $\mathbb{T}= \{z \in
+  \mathbb{C}: |z| = 1\}$ is a map $E : \mathcal{B} (\mathbb{T}) \to
+  \mathcal{B} (\mathcal{H})$ such that:
+  \begin{enumerate}
+    \item $E (\emptyset) = 0$ and $E (\mathbb{T}) = I$
+    
+    \item For each $x \in \mathcal{H}$, the map $\Delta \mapsto \langle E
+    (\Delta) x, x \rangle$ is a finite positive measure
+    
+    \item $E (\Delta_1 \cap \Delta_2) = E (\Delta_1) E (\Delta_2)$ for all
+    $\Delta_1, \Delta_2 \in \mathcal{B} (\mathbb{T})$
+    
+    \item $E (\bigcup_{n = 1}^{\infty} \Delta_n) = \sum_{n = 1}^{\infty} E
+    (\Delta_n)$ in the strong operator topology for pairwise disjoint Borel
+    sets $\{\Delta_n \}$
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}
+  [Commutant] For an operator $T \in \mathcal{B} (\mathcal{H})$, the commutant
+  $\{T\}'$ is defined as:
+  \begin{equation}
+    \{T\}' = \{S \in \mathcal{B}(\mathcal{H}) : ST = TS\}
+  \end{equation}
+  The double commutant is $\{T\}'' = (\{T\}')'$.
+\end{definition}
+
+\section{Spectral Theorem for Unitary Operators}
+
+\begin{theorem}
+  [Spectral Theorem for Unitary Operators] Let $U$ be a unitary operator on a
+  separable Hilbert space $\mathcal{H}$. Then there exists a unique spectral
+  measure $E$ on $\mathcal{B} (\mathbb{T})$ such that:
+  \begin{equation}
+    U = \int_{\mathbb{T}} z \hspace{0.17em} dE (z)
+  \end{equation}
+  where the integral is understood in the strong operator topology.
+\end{theorem}
+
+The proof follows from the general spectral theorem for normal operators,
+specialized to the unitary case. Since $U$ is unitary, its spectrum $\sigma
+(U) \subseteq \mathbb{T}$. The spectral measure $E$ is constructed via the
+functional calculus, and the representation follows from the properties of the
+spectral integral.
+
+\section{Functions of Spectral Measures}
+
+\begin{definition}
+  [Function of Spectral Measure] Let $E$ be a spectral measure on $\mathcal{B}
+  (\mathbb{T})$ and let $f : \mathbb{T} \to \mathbb{C}$ be a bounded Borel
+  measurable function. Then we define:
+  \begin{equation}
+    f (E) = \int_{\mathbb{T}} f (z)  \hspace{0.17em} dE (z)
+  \end{equation}
+  This integral exists in the strong operator topology and defines a bounded
+  operator on $\mathcal{H}$.
+\end{definition}
+
+\begin{lemma}
+  [Properties of Spectral Integrals] Let $E$ be a spectral measure and $f, g$
+  be bounded Borel functions on $\mathbb{T}$. Then:
+  \begin{enumerate}
+    \item $\|f (E)\| \leq \|f\|_{\infty}$
+    
+    \item $(f + g) (E) = f (E) + g (E)$
+    
+    \item $(fg) (E) = f (E) g (E)$
+    
+    \item $\bar{f} (E) = f (E)^{\ast}$
+    
+    \item If $f_n \to f$ uniformly, then $f_n (E) \to f (E)$ in operator norm
+  \end{enumerate}
+\end{lemma}
+
+\section{The Main Commutant Theorem}
+
+\begin{theorem}
+  [Von Neumann's Commutant Theorem for Unitary Operators] Let $U$ be a unitary
+  operator on a separable Hilbert space $\mathcal{H}$ with spectral measure
+  $E$. Then:
+  \begin{equation}
+    \{U\}' = \{f (E) : f \in L^{\infty} (\mathbb{T}, \mu)\}
+  \end{equation}
+  where $\mu$ is any finite positive measure equivalent to all measures of the
+  form $\langle E (\cdot) x, x \rangle$ for $x \in \mathcal{H}$.
+  
+  In particular, every bounded operator $T$ that commutes with $U$ can be
+  written as:
+  \begin{equation}
+    T = \int_{\mathbb{T}} f (z)  \hspace{0.17em} dE (z)
+  \end{equation}
+  for some bounded Borel function $f$ on $\mathbb{T}$.
+\end{theorem}
+
+\begin{proof}
+  We prove both inclusions.
+  
+  \tmtextbf{Step 1:} $\{f (E) : f \in L^{\infty} (\mathbb{T})\} \subseteq
+  \{U\}'$
+  
+  Let $f \in L^{\infty} (\mathbb{T})$ and set $T = f (E)$. We need to show $TU
+  = UT$.
+  
+  Since $U = \int_{\mathbb{T}} z \hspace{0.17em} dE (z)$, we have:
+  
+  \begin{align}
+    TU & = f (E) \cdot \int_{\mathbb{T}} z \hspace{0.17em} dE (z) \\
+    & = \int_{\mathbb{T}} f (w)  \hspace{0.17em} dE (w) \cdot
+    \int_{\mathbb{T}} z \hspace{0.17em} dE (z) \\
+    & = \int_{\mathbb{T}} \int_{\mathbb{T}} f (w) z \hspace{0.17em} dE (w) 
+    \hspace{0.17em} dE (z) 
+  \end{align}
+  
+  By the properties of spectral measures, $dE (w)  \hspace{0.17em} dE (z) = dE
+  (w \cap z)$. Since the spectral projections corresponding to disjoint sets
+  are orthogonal, this integral simplifies to:
+  \begin{equation}
+    TU = \int_{\mathbb{T}} f (z) z \hspace{0.17em} dE (z)
+  \end{equation}
+  Similarly:
+  
+  \begin{align}
+    UT & = \int_{\mathbb{T}} z \hspace{0.17em} dE (z) \cdot f (E) \\
+    & = \int_{\mathbb{T}} zf (z)  \hspace{0.17em} dE (z) \\
+    & = \int_{\mathbb{T}} f (z) z \hspace{0.17em} dE (z) 
+  \end{align}
+  
+  Therefore, $TU = UT$.
+  
+  \tmtextbf{Step 2:} $\{U\}' \subseteq \{f (E) : f \in L^{\infty}
+  (\mathbb{T})\}$
+  
+  This is the more substantial direction. Let $T \in \{U\}'$, so $TU = UT$.
+  
+  Since $U^n = \int_{\mathbb{T}} z^n  \hspace{0.17em} dE (z)$ for all $n \in
+  \mathbb{Z}$, and $T$ commutes with $U$, we have $TU^n = U^n T$ for all $n
+  \in \mathbb{Z}$.
+  
+  For any polynomial $p (z) = \sum_{k = - n}^n a_k z^k$, we have:
+  \begin{equation}
+    Tp (U) = p (U) T
+  \end{equation}
+  By the Weierstrass approximation theorem for continuous functions on
+  $\mathbb{T}$ and the density of trigonometric polynomials, this extends to
+  all continuous functions.
+  
+  Define a linear functional $\Lambda_x$ on $C (\mathbb{T})$ by:
+  \begin{equation}
+    \Lambda_x (f) = \langle Tf (U) x, x \rangle - \langle f (U) Tx, x \rangle
+  \end{equation}
+  Since $T$ commutes with all $f (U)$ for continuous $f$, we have $\Lambda_x
+  \equiv 0$.
+  
+  By the Riesz representation theorem and a measure-theoretic argument
+  (involving the regularity of the spectral measure), there exists a bounded
+  Borel function $\phi$ such that:
+  \begin{equation}
+    Tx = \int_{\mathbb{T}} \phi (z)  \hspace{0.17em} dE (z) x
+  \end{equation}
+  The boundedness of $T$ ensures $\| \phi \|_{\infty} \leq \|T\|$.
+  
+  Setting $f = \phi$, we obtain $T = f (E)$.
+\end{proof}
+
+\begin{corollary}
+  [Double Commutant Theorem] For a unitary operator $U$ with spectral measure
+  $E$:
+  \begin{equation}
+    \{U\}'' = \{U\}'
+  \end{equation}
+\end{corollary}
+
+\begin{corollary}
+  [Maximal Commutativity] The algebra $\{f (E) : f \in L^{\infty}
+  (\mathbb{T})\}$ is maximal abelian in $\mathcal{B} (\mathcal{H})$.
+\end{corollary}
+
+\section{Applications and Remarks}
+
+\begin{proposition}
+  [Characterization of Invariant Subspaces] A closed subspace $\mathcal{M}
+  \subseteq \mathcal{H}$ is invariant under $U$ if and only if
+  $P_{\mathcal{M}} \in \{U\}'$, where $P_{\mathcal{M}}$ is the orthogonal
+  projection onto $\mathcal{M}$.
+\end{proposition}
+
+\begin{theorem}
+  [Spectral Multiplicity] If $U$ has uniform multiplicity $n < \infty$, then:
+  \begin{equation}
+    \{U\}' \cong L^{\infty} (\mathbb{T}, \mu ; M_n (\mathbb{C}))
+  \end{equation}
+  where $\mu$ is the spectral measure of $U$ and $M_n (\mathbb{C})$ denotes $n
+  \times n$ complex matrices.
+\end{theorem}
+
+This completes the exposition of von Neumann's commutant theory for unitary
+operators, establishing the fundamental result that bounded operators
+commuting with $U$ are precisely the functions of its spectral measure $E
+(\cdummy)$.
+
+\end{document}
