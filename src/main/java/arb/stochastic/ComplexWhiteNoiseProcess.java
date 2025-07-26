@@ -22,6 +22,33 @@ import arb.documentation.TheArb4jLibrary;
 public final class ComplexWhiteNoiseProcess implements
                                             AutoCloseable
 {
+  private final class NoiseIterator implements
+                                    Iterator<Complex>
+  {
+    private final int limit;
+    private final int bits;
+    int               n = 0;
+
+    private NoiseIterator(int limit, int bits)
+    {
+      this.limit = limit;
+      this.bits  = bits;
+    }
+
+    @Override
+    public boolean hasNext()
+    {
+      return n < limit;
+    }
+
+    @Override
+    public Complex next()
+    {
+      n++;
+      return sample(bits, new Complex());
+    }
+  }
+
   private final RealWhiteNoiseProcess realWhiteNoiseProcess = new RealWhiteNoiseProcess();
 
   public Stream<Complex> stream(int bits, int limit)
@@ -34,23 +61,8 @@ public final class ComplexWhiteNoiseProcess implements
 
   public Iterator<Complex> iterator(int bits, int limit)
   {
-    return new Iterator<Complex>()
-    {
-      int n = 0;
-
-      @Override
-      public boolean hasNext()
-      {
-        return n < limit;
-      }
-
-      @Override
-      public Complex next()
-      {
-        n++;
-        return sample(bits, new Complex());
-      }
-    };
+    return new NoiseIterator(limit,
+                             bits);
   }
 
   public ComplexWhiteNoiseProcess()

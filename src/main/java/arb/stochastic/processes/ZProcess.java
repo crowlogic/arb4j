@@ -1,15 +1,15 @@
 package arb.stochastic.processes;
 
-import arb.functions.complex.ComplexFunction;
+import arb.Real;
+import arb.functions.Function;
 
 public class ZProcess implements
                       RealOscillatoryProcess
 {
 
   @Override
-  public ComplexFunction gainFuction()
+  public Function<Real, Real> gainFuction()
   {
-    assert false : "TODO";
     // TODO Auto-generated method stub
     return null;
   }
