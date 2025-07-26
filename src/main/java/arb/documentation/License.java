@@ -1,6 +1,5 @@
 package arb.documentation;
 
-import arb.language.Terms;
 
 /**
  * A {@link License} is a {@link Legal} {@link Document} that specifies the

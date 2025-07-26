@@ -28,18 +28,13 @@ module arb4j
   requires transitive org.yaml.snakeyaml;
   requires transitive guru.nidi.graphviz;
 
-  
   exports arb.stochastic;
   exports arb;
   exports arb.expressions.context;
-  exports arb.shell;
   exports arb.expressions.viz;
-  exports arb.theorems;
-  exports arb.language;
-  exports arb.logic;
+
   exports arb.documentation;
-  exports arb.documentation.concepts;
-  exports arb.documentation.annotations;
+
   exports arb.documentation.references;
   exports arb.utensils.text.latex;
   exports arb.equations;
@@ -53,8 +48,7 @@ module arb4j
   exports arb.differential.geometry;
   exports arb.domains;
   exports arb.exceptions;
-  exports arb.physics;
-  exports arb.physics.particles;
+
   exports arb.functions;
   exports arb.utensils.text.tables;
   exports arb.utensils.text.trees;
@@ -76,8 +70,5 @@ module arb4j
   exports arb.stochastic.processes.correlationfunctions;
   exports arb.utensils;
   exports arb.viz;
-  exports arb.documentation.concepts.linearoperators.spectraltheory;
-  exports arb.documentation.concepts.stochastic;
-  exports arb.documentation.concepts.stochastic.randomfields.isotropy;
 
 }

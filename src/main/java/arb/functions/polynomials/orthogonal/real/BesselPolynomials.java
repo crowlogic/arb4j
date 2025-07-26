@@ -1,13 +1,9 @@
 package arb.functions.polynomials.orthogonal.real;
 
-import java.util.stream.Stream;
-
 import arb.Real;
 import arb.documentation.Bibliography;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.documentation.concepts.Concept;
-import arb.documentation.references.Reference;
 import arb.domains.Domain;
 import arb.functions.real.RealFunction;
 
@@ -32,8 +28,7 @@ import arb.functions.real.RealFunction;
  *      {@link TheArb4jLibrary}
  */
 public class BesselPolynomials extends
-                               RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence implements
-                               Concept
+                               RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence
 {
   public BesselPolynomials(int bits)
   {
@@ -59,12 +54,6 @@ public class BesselPolynomials extends
   {
     assert false : "TODO: orthogonality measures on the real line are quite complicated";
     return null;
-  }
-
-  @Override
-  public Stream<? extends Reference> getReferences()
-  {
-    return Stream.of(Bibliography.lommelAndBesselPolynomials);
   }
 
 }

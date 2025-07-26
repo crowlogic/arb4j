@@ -2,7 +2,6 @@ package arb.space.topological;
 
 import arb.Field;
 import arb.OrthogonalBasis;
-import arb.documentation.concepts.Concept;
 
 /**
  * A Hilbert space is a special kind of {@link VectorSpace} equipped with an
@@ -22,10 +21,10 @@ import arb.documentation.concepts.Concept;
  * @param <VE> The type of the elements in the vector space.
  * @param <S>  The type of the Hilbert space itself.
  */
-public interface HilbertSpace<F extends Field<? extends F>, O extends OrthogonalBasis<? extends F, ?>> extends
+public interface HilbertSpace<F extends Field<? extends F>,
+              O extends OrthogonalBasis<? extends F, ?>> extends
                              BanachSpace<F>,
-                             InnerProductSpace<F>,
-                             Concept
+                             InnerProductSpace<F>
 {
   /**
    * Returns an orthonormal basis for this space.

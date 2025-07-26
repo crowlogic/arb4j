@@ -7,9 +7,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import arb.documentation.AbstractBibliography;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.language.Noun;
-import arb.language.Phrase;
-import arb.language.Word;
 
 /**
  * In grammar, an article is any member of a class of dedicated {@link Word}s

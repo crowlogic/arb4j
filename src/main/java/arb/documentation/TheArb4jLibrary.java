@@ -44,7 +44,6 @@ public class TheArb4jLibrary extends
                              LicensedWork
 {
 
-  @Override
   public String getDefinition()
   {
     return "The Licensed Work is the complete set of files, including source code, that come along with and are associated with the arb4j distribution \n"

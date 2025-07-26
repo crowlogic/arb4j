@@ -1,1 +1,0 @@
-package arb.documentation.concepts.linearoperators.spectraltheory;

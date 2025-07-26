@@ -8,14 +8,37 @@
 
 package arb;
 
-import static arb.IntegerConstants.*;
+import static arb.IntegerConstants.ARB_RND;
+import static arb.IntegerConstants.ARF_RND_UP;
+import static arb.IntegerConstants.MAG_BITS;
+import static arb.IntegerConstants.PAGESIZE;
 import static arb.RealConstants.zero;
-import static arb.arblib.*;
+import static arb.arblib.arb_get_mag;
+import static arb.arblib.arb_indeterminate;
+import static arb.arblib.arb_is_one;
+import static arb.arblib.arb_is_zero;
+import static arb.arblib.arb_mul_2exp_si;
+import static arb.arblib.arf_add;
+import static arb.arblib.arf_get_mag;
+import static arb.arblib.arf_is_neg_inf;
+import static arb.arblib.arf_is_pos_inf;
+import static arb.arblib.arf_mag_add_ulp;
+import static arb.arblib.arf_sgn;
+import static arb.arblib.arf_sub;
+import static arb.arblib.arf_zero;
+import static arb.arblib.mag_inf;
 
 import java.io.Serializable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Queue;
+import java.util.Set;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;

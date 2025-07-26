@@ -8,12 +8,12 @@
 
 package arb;
 
+import arb.algebra.Ring;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.algebra.Ring;
+import arb.expressions.Context;
 import arb.functions.Function;
 import arb.functions.integer.IntegerPolynomialNullaryFunction;
-import arb.expressions.Context;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the

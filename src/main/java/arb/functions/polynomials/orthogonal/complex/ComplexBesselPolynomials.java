@@ -1,12 +1,7 @@
 package arb.functions.polynomials.orthogonal.complex;
 
-import java.util.stream.Stream;
-
-import arb.documentation.Bibliography;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.documentation.concepts.Concept;
-import arb.documentation.references.Reference;
 import arb.functions.integer.ComplexSequence;
 import arb.functions.real.RealBesselFunctionOfTheFirstKind;
 import arb.functions.real.RealFunction;
@@ -32,14 +27,9 @@ import arb.functions.real.RealFunction;
  *      {@link TheArb4jLibrary}
  */
 public class ComplexBesselPolynomials extends
-                                      ComplexRecurrentlyGeneratedOrthogonalPolynomialSequence implements
-                                      Concept
+                                      ComplexRecurrentlyGeneratedOrthogonalPolynomialSequence
+
 {
-  @Override
-  public Stream<Reference> getReferences()
-  {
-    return Stream.of(Bibliography.theBesselPolynomials);
-  }
 
   public ComplexBesselPolynomials(int bits)
   {

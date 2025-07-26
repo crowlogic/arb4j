@@ -1,9 +1,7 @@
 package arb.differential.geometry;
 
 import arb.Field;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
-import arb.documentation.annotations.AlsoKnownAs;
+
 import arb.geometry.Manifold;
 import arb.space.topological.TopologicalSpace;
 
@@ -23,7 +21,6 @@ import arb.space.topological.TopologicalSpace;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-@AlsoKnownAs("the covariant derivative")
 public interface LeviCivitaConnection<X extends Field<X>, B extends TopologicalSpace<X>, M extends RiemannianManifold<X>>
                                      extends
                                      AffineConnection<X, B, M>

@@ -2,20 +2,30 @@ package arb.utensils;
 
 import static arb.utensils.Utensils.wrapOrThrow;
 
-import java.io.*;
-import java.lang.Integer;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Array;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.IntFunction;
 import java.util.stream.IntStream;
 
-import arb.*;
+import arb.Real;
+import arb.RealDataSet;
+import arb.RealPolynomial;
+import arb.SequenceDataSet;
+import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
+import arb.utensils.text.trees.FileNode;
+import arb.utensils.text.trees.FileTreeModel;
+import arb.utensils.text.trees.TextTree;
 import arb.viz.FunctionPlotter;
 import arb.viz.WindowManager;
 import io.fair_acc.chartfx.Chart;
@@ -29,6 +39,17 @@ import javafx.scene.image.WritableImage;
  */
 public class ShellFunctions
 {
+
+  public static void ls(String path)
+  {
+    if (path.contains("~"))
+    {
+      path = path.replaceAll("~", System.getProperty("user.home"));
+    }
+    var fs = new FileTreeModel(new File(path));
+    var tt = new TextTree<FileNode>(fs);
+    System.out.println(tt);
+  }
 
   public static <A> List<A> seq(int m, int n, IntFunction<A> f)
   {

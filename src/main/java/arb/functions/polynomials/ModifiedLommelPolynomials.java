@@ -9,7 +9,6 @@ import arb.RealConstants;
 import arb.documentation.Bibliography;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.documentation.concepts.Concept;
 import arb.documentation.references.Reference;
 import arb.domains.Domain;
 import arb.domains.ExtendedRealLine;
@@ -33,8 +32,8 @@ import arb.functions.real.RealFunction;
  *      {@link TheArb4jLibrary}
  */
 public class ModifiedLommelPolynomials extends
-                                       RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence implements
-                                       Concept,
+                                       RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence
+                                       implements
                                        Initializable
 {
 
@@ -67,12 +66,6 @@ public class ModifiedLommelPolynomials extends
     return ExtendedRealLine.instance;
   }
 
-  @Override
-  public Stream<? extends Reference> getReferences()
-  {
-    return Stream.of(Bibliography.besselFunctionTreatise.referToChapters("9.60 p.294"),
-                     Bibliography.specialFunctionsOfMathematicalPhysics.referToChapters("3.11.1 p.120"));
-  }
 
   /**
    * <pre>

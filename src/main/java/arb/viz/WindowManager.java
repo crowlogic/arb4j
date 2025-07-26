@@ -18,6 +18,7 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Control;
 import javafx.scene.control.IndexedCell;
 import javafx.scene.control.Skin;
 import javafx.scene.control.TableView;
@@ -358,7 +359,7 @@ public class WindowManager
     }
   }
 
-  public static void makeTableViewPannable(TableView<?> tableView)
+  public static void makeTableViewPannable(Control tableView)
   {
     tableView.skinProperty().addListener(listener ->
     {

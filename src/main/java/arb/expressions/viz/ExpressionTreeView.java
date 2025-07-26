@@ -119,18 +119,29 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
   }
 
   final Expressor<D, C, F>     expressor;
+  
   TreeTableView<Node<D, C, F>> treeTableView;
+  
   public TextField             expressionInput;
+  
   public Expression<D, C, F>   expr;
+  
   F                            instance;
+  
   C                            result;
+  
   Context                      context;
+  
   HashMap<String, Boolean>     nodeExpansionStates;
+  
   MiniSymbolPalette            symbolPalette;
+  
   private StackPane            stackPane;
+  
   VirtualFlow<?>               tableVirtualFlow;
 
   IndexedCell<?>               pointer;
+  
   private Tab                  tab;
 
   public Context getContext()
@@ -199,26 +210,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     symbolPalette = new MiniSymbolPalette(expressionInput);
   }
 
-  void virtualFlowListener(Observable skinEvent)
-  {
-    try
-    {
-      flow = getVirtualFlow();
-      flow.setPannable(true);
-    }
-    catch (Throwable e)
-    {
-      e.printStackTrace();
-    }
 
-  };
-
-  public VirtualFlow<?> flow;
-
-  public VirtualFlow<?> getVirtualFlow()
-  {
-    return (flow == null) ? flow = WindowManager.getVirtualFlow(treeTableView) : flow;
-  }
 
   @SuppressWarnings("unchecked")
   private void setupTreeTableView()
@@ -248,9 +240,9 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     });
     treeTableView.setContextMenu(new ContextMenu(copyMenuItem));
     treeTableView.setTableMenuButtonVisible(true);
-    treeTableView.skinProperty().addListener(this::virtualFlowListener);
     treeTableView.getColumns()
                  .addAll(typesetCol, valueCol, nodeTypeCol, nodeTypeResultCol, nodeCol, fieldCol);
+    WindowManager.makeTableViewPannable(treeTableView);
   }
 
   @SuppressWarnings("unchecked")
