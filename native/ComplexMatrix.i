@@ -16,20 +16,17 @@ import arb.utensils.text.tables.TextTable;
 import arb.algebra.Ring;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 %}
 
 %typemap(javafinalize) acb_mat_struct ""
 %typemap(javainterfaces) acb_mat_struct "AutoCloseable, Iterable<Complex>, Ring<ComplexMatrix>, Becomable<ComplexMatrix>"
 
-/**
- * <pre>
- * Copyright ©2023 Stephen Crowley
- *  
- * This Source Code Form is subject to the terms of the Mozilla Public License,
- * v. 2.0. If a copy of the MPL was not distributed with this file, You can
- * obtain one at https://mozilla.org/MPL/2.0/.
- * </pre>
- */
+
 %typemap(javacode) acb_mat_struct %{
 
   static { System.loadLibrary("arblib"); }

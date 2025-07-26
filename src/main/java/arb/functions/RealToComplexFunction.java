@@ -6,7 +6,6 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.NotDifferentiableException;
 import arb.expressions.Context;
-import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
 
 /**
@@ -63,7 +62,7 @@ public interface RealToComplexFunction extends
                                 RealToComplexFunction.class,
                                 null);
   }
-  
+
   public default Complex eval(double t, Complex res)
   {
     try ( var tmp = Real.valueOf(t))

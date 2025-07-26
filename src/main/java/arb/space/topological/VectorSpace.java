@@ -19,7 +19,7 @@ import arb.Field;
  * @see <a href="https://en.wikipedia.org/wiki/Vector_space">VectorSpace
  *      (Mathematics)@Wikipedia</a>
  */
-public interface VectorSpace<F> extends
+public interface VectorSpace<F extends Field<? extends F>> extends
                             Space<F>
 {
 

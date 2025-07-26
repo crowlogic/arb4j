@@ -1,7 +1,5 @@
 package arb.functions.polynomials;
 
-import java.util.stream.Stream;
-
 import arb.Fraction;
 import arb.Initializable;
 import arb.Real;
@@ -9,7 +7,6 @@ import arb.RealConstants;
 import arb.documentation.Bibliography;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.documentation.references.Reference;
 import arb.domains.Domain;
 import arb.domains.ExtendedRealLine;
 import arb.functions.polynomials.orthogonal.real.RegularRealRecurrentlyGeneratedOrthogonalPolynomialSequence;
@@ -65,7 +62,6 @@ public class ModifiedLommelPolynomials extends
   {
     return ExtendedRealLine.instance;
   }
-
 
   /**
    * <pre>

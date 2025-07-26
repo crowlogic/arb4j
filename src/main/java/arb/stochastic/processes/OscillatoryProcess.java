@@ -5,7 +5,7 @@ import arb.Real;
 import arb.functions.Function;
 import arb.functions.RealSquareIntegrableFunctions;
 
-public interface OscillatoryProcess<R extends Field<?>> extends
+public interface OscillatoryProcess<R extends Field<? extends R>> extends
                                    GaussianProcess<Real,
                                                  R,
                                                  Function<Real, R>,
