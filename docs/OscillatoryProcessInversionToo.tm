@@ -131,6 +131,27 @@
     Only <math|1/<sqrt|2*T>> produces the correct second moment
     <math|d*\<mu\><around|(|\<omega\>|)>>.
   </proof>
+
+  Yes, that's exactly right. The explicit form of the limit, as written,
+  already uniquely and precisely specifies the convergence, making it
+  redundant to add ``in mean-square sense"; the mathematics is fully
+  determined by the way the limit is presented. However, including ``in
+  mean-square sense'' can be helpful for readers unfamiliar with the standard
+  interpretation, so while not strictly necessary, its use is optional and
+  intended as a courtesy for added clarity.
+
+  <next-line>
+
+  Here is the combined response, strictly refined as requested:
+
+  <next-line>
+
+  When a mathematical formula is written with its limits and integrals fully
+  specified, its meaning is exact and determined by the notation
+  itself\Vthere is no room for interpretation or ambiguity. Therefore, adding
+  ``in mean-square sense'' is redundant, though it may be included as a
+  courtesy for readers who might not immediately recognize this from the
+  explicit notation.
 </body>
 
 <\initial>
