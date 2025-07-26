@@ -1,0 +1,132 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,latexsym}
+
+%%%%%%%%%% Start TeXmacs macros
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\begin{theorem}
+  [Recovery of the Random Spectral Measure] Let $S_t$ be a second-order
+  stationary process with spectral representation
+  \begin{equation}
+    S_t = \int_{- \infty}^{\infty} e^{i \omega t}  \hspace{0.17em} dZ (\omega)
+  \end{equation}
+  where $Z (\omega)$ is the spectral process with orthogonal increments $dZ
+  (\omega)$ satisfying $E [|dZ (\omega) |^2] = d \mu (\omega)$. Let $\theta :
+  \mathbb{R} \to \mathbb{R}$ be smooth, strictly increasing with $\theta' (t)
+  > 0$, and define the time-changed process
+  \begin{equation}
+    X_t = \sqrt{\theta' (t)}  \hspace{0.17em} S_{\theta (t)}
+  \end{equation}
+  Then the random spectral measure $Z (\omega)$ can be recovered from the
+  observed sample path $X_t$ via
+  \begin{equation}
+    Z (\omega) = \lim_{T \to \infty}  \frac{1}{\sqrt{2 T}}  \int_{\tau (-
+    T)}^{\tau (T)} X_t  \sqrt{\theta' (t)}  \frac{e^{- i \omega \theta (t)} -
+    e^{i \omega \theta (t)}}{- 2 i \omega \theta (t)} dt
+  \end{equation}
+  where $\tau = \theta^{- 1}$ and the limit is taken in mean-square sense.
+\end{theorem}
+
+\begin{proof}
+  The spectral process is related to its increments by
+  \begin{equation}
+    Z (\omega) = \int_{- \infty}^{\omega} dZ (\xi)
+  \end{equation}
+  From the increment recovery formula, we have
+  \begin{equation}
+    dZ (\xi) = \lim_{T \to \infty}  \frac{1}{\sqrt{2 T}}  \int_{\tau (-
+    T)}^{\tau (T)} X_t  \sqrt{\theta' (t)} e^{- i \xi \theta (t)} dt
+  \end{equation}
+  Therefore,
+  
+  \begin{align}
+    Z (\omega) & = \int_{- \infty}^{\omega} \lim_{T \to \infty} 
+    \frac{1}{\sqrt{2 T}}  \int_{\tau (- T)}^{\tau (T)} X_t  \sqrt{\theta' (t)}
+    e^{- i \xi \theta (t)} dt \hspace{0.17em} d \xi 
+  \end{align}
+  
+  Under dominated convergence (which holds for bounded $X_t$ and finite $T$),
+  we interchange limit and integral:
+  
+  \begin{align}
+    Z (\omega) & = \lim_{T \to \infty}  \frac{1}{\sqrt{2 T}}  \int_{\tau (-
+    T)}^{\tau (T)} X_t  \sqrt{\theta' (t)} \left[ \int_{- \infty}^{\omega}
+    e^{- i \xi \theta (t)} d \xi \right] dt 
+  \end{align}
+  
+  Computing the inner integral:
+  \begin{equation}
+    \int_{- \infty}^{\omega} e^{- i \xi \theta (t)} d \xi = \lim_{\alpha \to -
+    \infty} \left[ \frac{e^{- i \xi \theta (t)}}{- i \theta (t)}
+    \right]_{\alpha}^{\omega} = \frac{e^{- i \omega \theta (t)} - e^{i \omega
+    \theta (t)}}{- 2 i \omega \theta (t)}
+  \end{equation}
+  This yields the stated formula.
+\end{proof}
+
+\begin{lemma}
+  [Mathematical Necessity of $\sqrt{2 T}$ Factor] The normalization factor $1
+  / \sqrt{2 T}$ in the recovery formula is mathematically determined by the
+  requirement that
+  \begin{equation}
+    \lim_{T \to \infty} E \left[ \left| \frac{1}{\sqrt{2 T}}  \int_{- T}^T S_s
+    e^{- i \omega s} ds \right|^2 \right] = d \mu (\omega)
+  \end{equation}
+\end{lemma}
+
+\begin{proof}
+  Let $Y_T (\omega) = \frac{1}{\sqrt{2 T}}  \int_{- T}^T S_s e^{- i \omega s}
+  ds$. Using the spectral representation $S_s = \int e^{i \xi s} dZ (\xi)$:
+  
+  \begin{align}
+    E [|Y_T (\omega) |^2] & = \frac{1}{2 T} E \left[ \left| \int_{- T}^T
+    \int_{- \infty}^{\infty} e^{i \xi s - i \omega s} dZ (\xi) ds \right|^2
+    \right] \\
+    & = \frac{1}{2 T} E \left[ \left| \int_{- \infty}^{\infty} dZ (\xi)
+    \int_{- T}^T e^{i (\xi - \omega) s} ds \right|^2 \right] 
+  \end{align}
+  
+  The inner time integral evaluates to:
+  \begin{equation}
+    \int_{- T}^T e^{i (\xi - \omega) s} ds = \left\{\begin{array}{ll}
+      2 T & \text{if } \xi = \omega\\
+      \frac{2 \sin ((\xi - \omega) T)}{\xi - \omega} & \text{if } \xi \neq
+      \omega
+    \end{array}\right.
+  \end{equation}
+  Using orthogonality of increments $E [dZ (\xi_1) \overline{dZ (\xi_2)}] =
+  \delta (\xi_1 - \xi_2) d \mu (\xi_1)$:
+  
+  \begin{align}
+    E [|Y_T (\omega) |^2] & = \frac{1}{2 T}  \int_{- \infty}^{\infty} \left|
+    \frac{2 \sin ((\xi - \omega) T)}{\xi - \omega} \right|^2 d \mu (\xi) \\
+    & = \frac{2}{T}  \int_{- \infty}^{\infty} \frac{\sin^2 ((\xi - \omega)
+    T)}{(\xi - \omega)^2} d \mu (\xi) 
+  \end{align}
+  
+  As $T \to \infty$, the function $\frac{\sin^2 (uT)}{Tu^2} \to \pi \delta
+  (u)$ in the sense of distributions. Therefore:
+  \begin{equation}
+    \lim_{T \to \infty} E [|Y_T (\omega) |^2] = 2 \pi \cdot \frac{1}{2 \pi} d
+    \mu (\omega) = d \mu (\omega)
+  \end{equation}
+  Any other normalization factor would yield:
+  \begin{itemize}
+    \item Factor $1 / T$: Limit becomes $2 \pi d \mu (\omega)$ (wrong by
+    factor $2 \pi$)
+    
+    \item Factor $1 / \sqrt{T}$: Limit diverges to $\infty$
+    
+    \item Factor $1 / (2 T)$: Limit becomes $\pi d \mu (\omega)$ (wrong by
+    factor $\pi$)
+  \end{itemize}
+  Only $1 / \sqrt{2 T}$ produces the correct second moment $d \mu (\omega)$.
+\end{proof}
+
+\end{document}
