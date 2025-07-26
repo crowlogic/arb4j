@@ -8,19 +8,12 @@
 
 package arb;
 
-import static arb.arblib.acb_poly_clear;
-import static arb.arblib.acb_poly_evaluate;
-import static arb.arblib.acb_poly_evaluate2;
-import static arb.arblib.acb_poly_product_roots;
-
-import java.io.Closeable;
-import java.util.Objects;
-
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
-import arb.exceptions.DivisionByZeroException;
+import static arb.arblib.*;
 import arb.expressions.Parser;
 import arb.functions.complex.ComplexFunction;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.exceptions.DivisionByZeroException;
+import java.util.Objects;
 
 /**
  * 

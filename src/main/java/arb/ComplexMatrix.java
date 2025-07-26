@@ -8,30 +8,23 @@
 
 package arb;
 
-import static arb.arblib.acb_mat_clear;
-import static arb.arblib.acb_mat_contains;
-import static arb.arblib.acb_mat_det;
-import static arb.arblib.acb_mat_eq;
-import static arb.arblib.acb_mat_init;
-import static arb.arblib.acb_mat_inv;
-import static arb.arblib.acb_mat_mul;
-import static arb.arblib.acb_mat_one;
-import static arb.arblib.acb_mat_overlaps;
-import static arb.arblib.acb_mat_transpose;
-import static arb.arblib.acb_mat_zero;
+import static arb.arblib.*;
+import static java.lang.String.format;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.foreign.MemorySegment;
+import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.LongBuffer;
 import java.util.Iterator;
 import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import arb.algebra.Ring;
 import arb.utensils.text.tables.TextTable;
+import arb.algebra.Ring;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 
 public class ComplexMatrix implements AutoCloseable, Iterable<Complex>, Ring<ComplexMatrix>, Becomable<ComplexMatrix> {
   protected long swigCPtr;

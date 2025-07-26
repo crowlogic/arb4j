@@ -8,8 +8,7 @@ package arb.documentation;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface License extends
-                         Document
+public interface License
 {
   String getText();
 }

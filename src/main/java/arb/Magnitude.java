@@ -8,28 +8,7 @@
 
 package arb;
 
-import static arb.arblib._mag_vec_init;
-import static arb.arblib.arf_set_mag;
-import static arb.arblib.mag_add;
-import static arb.arblib.mag_clear;
-import static arb.arblib.mag_cmp;
-import static arb.arblib.mag_div;
-import static arb.arblib.mag_get_d;
-import static arb.arblib.mag_hypot;
-import static arb.arblib.mag_inf;
-import static arb.arblib.mag_init;
-import static arb.arblib.mag_inv;
-import static arb.arblib.mag_log;
-import static arb.arblib.mag_max;
-import static arb.arblib.mag_mul;
-import static arb.arblib.mag_one;
-import static arb.arblib.mag_pow_ui;
-import static arb.arblib.mag_set;
-import static arb.arblib.mag_set_d;
-import static arb.arblib.mag_sqrt;
-import static arb.arblib.mag_sub;
-import static arb.arblib.mag_swap;
-import static arb.arblib.mag_zero;
+import static arb.arblib.*;
 
 public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
   protected long swigCPtr;

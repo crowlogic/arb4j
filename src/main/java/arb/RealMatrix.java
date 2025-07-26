@@ -9,18 +9,7 @@
 package arb;
 
 
-import static arb.arblib.arb_mat_cho;
-import static arb.arblib.arb_mat_clear;
-import static arb.arblib.arb_mat_contains;
-import static arb.arblib.arb_mat_det;
-import static arb.arblib.arb_mat_eq;
-import static arb.arblib.arb_mat_init;
-import static arb.arblib.arb_mat_inv;
-import static arb.arblib.arb_mat_mul;
-import static arb.arblib.arb_mat_one;
-import static arb.arblib.arb_mat_overlaps;
-import static arb.arblib.arb_mat_transpose;
-import static arb.arblib.arb_mat_zero;
+import static arb.arblib.*;
 import static java.lang.String.format;
 
 import java.io.ByteArrayOutputStream;
@@ -33,11 +22,8 @@ import java.util.Iterator;
 import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import arb.algebra.Ring;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.documentation.TheArb4jLibrary;
 import arb.utensils.text.tables.TextTable;
+import arb.algebra.Ring;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the

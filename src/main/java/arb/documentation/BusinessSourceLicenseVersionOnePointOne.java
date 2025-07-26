@@ -1,10 +1,5 @@
 package arb.documentation;
 
-import java.util.List;
-
-import arb.utensils.text.latex.LatexPackage;
-import arb.utensils.text.latex.LatexPreambleEntry;
-
 /**
  * {@link BusinessSourceLicenseVersionOnePointOne#getText()} returns the text of
  * the copyright terms that {@link TheArb4jLibrary} is made available under
@@ -74,27 +69,6 @@ public class BusinessSourceLicenseVersionOnePointOne implements
            + "on the use of the Business Source License generally, please visit the Adopting and Developing Business Source License FAQ.\n"
            + "\n"
            + "";
-  }
-
-  @Override
-  public List<LatexPackage> neededPackages()
-  {
-    assert false : "TODO";
-    return null;
-  }
-
-  @Override
-  public List<LatexPreambleEntry> preambleExtras()
-  {
-    assert false : "TODO";
-    return null;
-  }
-
-  @Override
-  public List<String> latexCode()
-  {
-    assert false : "TODO";
-    return null;
   }
 
 }

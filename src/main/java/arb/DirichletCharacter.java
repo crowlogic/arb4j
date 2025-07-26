@@ -8,8 +8,7 @@
 
 package arb;
 
-import static arb.arblib.dirichlet_char_clear;
-import static arb.arblib.dirichlet_char_init;
+import static arb.arblib.*;
 
 public class DirichletCharacter implements AutoCloseable {
   protected long swigCPtr;

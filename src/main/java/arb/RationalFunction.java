@@ -8,15 +8,14 @@
 
 package arb;
 
-import java.util.stream.Stream;
-
 import arb.exceptions.ArbException;
 import arb.expressions.Compiler;
-import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.expressions.Context;
 import arb.functions.Function;
 import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
+import java.util.stream.Stream;
 import arb.utensils.Utensils;
 
 public class RationalFunction implements NamedField<RationalFunction>,Function<Fraction,Fraction>,Verifiable,AutoCloseableAssignable<RationalFunction> {

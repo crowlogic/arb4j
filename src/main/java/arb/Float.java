@@ -8,28 +8,7 @@
 
 package arb;
 
-import static arb.arblib.arf_abs;
-import static arb.arblib.arf_add;
-import static arb.arblib.arf_clear;
-import static arb.arblib.arf_cmp;
-import static arb.arblib.arf_div;
-import static arb.arblib.arf_div_ui;
-import static arb.arblib.arf_equal;
-import static arb.arblib.arf_get_d;
-import static arb.arblib.arf_get_mag;
-import static arb.arblib.arf_get_str;
-import static arb.arblib.arf_init;
-import static arb.arblib.arf_is_inf;
-import static arb.arblib.arf_is_nan;
-import static arb.arblib.arf_is_zero;
-import static arb.arblib.arf_mul_2exp_si;
-import static arb.arblib.arf_mul_rnd_down;
-import static arb.arblib.arf_mul_ui;
-import static arb.arblib.arf_neg;
-import static arb.arblib.arf_set;
-import static arb.arblib.arf_set_d;
-import static arb.arblib.arf_sub;
-import static arb.arblib.arf_zero;
+import static arb.arblib.*;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
