@@ -1,1 +1,115 @@
-w
+Injectively Time-Changed Stationary Processes are Oscillatory Processes
+By Stephen Crowley
+July 17, 2025
+
+1. Introduction
+
+Let 
+
+    Z(t) = ∫ φₜ(λ) dΦ(λ)
+
+be a realization of an oscillatory process (as defined by Priestly), where
+Φ(λ) is a complex orthogonal random measure and 
+
+    φₜ(λ) = exp(i t λ) * Aₜ(λ)
+
+is the oscillatory function where 
+
+    Aₜ(λ) = ∫ h(t, u) * exp(-i λ u) du
+
+is the gain function that determines the time-varying spectral characteristics
+of the process. This is the Fourier transform of the time-dependent filter function
+
+    h(t, u) = ∫ Aₜ(λ) * exp(i λ u) dλ
+
+which gives rise to the oscillatory kernel
+
+    K(t, s) = ∫ φₜ(λ) * conj(φₛ(λ)) dμ(λ)
+            = ∫ exp(i t λ) * Aₜ(λ) * exp(-i s λ) * conj(Aₛ(λ)) dμ(λ)
+            = ∫ exp(i (t - s) λ) * Aₜ(λ) * conj(Aₛ(λ)) dμ(λ)
+            = ∫ exp(i (t - s) λ) * Aₜ(λ) * conj(Aₛ(λ)) * S(λ) dλ
+
+where μ(λ) is the spectral measure of the complex orthogonal random measure Φ(λ), which we take to be absolutely continuous so that the spectral density S(λ) is given by
+
+    S(λ) = dμ(λ) / dλ
+
+2. Statement and Proofs
+
+Statement 1: Any process of the form Z(t) defined above is an oscillatory process in the sense of Priestly.
+
+Proof: 
+By definition (see Priestly’s work), an oscillatory process can be written as
+
+    Z(t) = ∫ φₜ(λ) dΦ(λ)
+
+with φₜ(λ) = exp(i t λ) * Aₜ(λ) for some family {Aₜ(λ)}. Our process is exactly of this form. Since Φ(λ) is orthogonal in λ (for non-overlapping intervals, Φ(λ₂) - Φ(λ₁) is independent of Φ(λ₃) - Φ(λ₂), etc.), the process inherits the key properties of oscillatory integrals, and its kernel (see Statement 2) shows time-varying amplitude modulation. Therefore, Z(t) is an oscillatory process.
+
+Statement 2: The covariance kernel of Z(t) is
+
+    K(t, s) = ∫ exp(i (t - s) λ) * Aₜ(λ) * conj(Aₛ(λ)) * S(λ) dλ
+
+Proof: 
+We compute
+
+    K(t, s) = E[Z(t) * conj(Z(s))]
+            = E[∫ φₜ(λ) dΦ(λ) * conj(∫ φₛ(μ) dΦ(μ))]
+            = ∫∫ E[dΦ(λ) conj(dΦ(μ))] φₜ(λ) conj(φₛ(μ))
+
+Because Φ(λ) is a complex orthogonal random measure with spectral measure μ(λ), by the properties of such measures,
+
+    E[dΦ(λ) conj(dΦ(μ))] = δ(λ - μ) dμ(λ)
+
+where δ is the Dirac delta. Thus,
+
+    K(t, s) = ∫ φₜ(λ) conj(φₛ(λ)) dμ(λ)
+            = ∫ exp(i t λ) * Aₜ(λ) * exp(-i s λ) * conj(Aₛ(λ)) dμ(λ)
+            = ∫ exp(i (t - s) λ) * Aₜ(λ) * conj(Aₛ(λ)) dμ(λ)
+
+Since μ(λ) is absolutely continuous with density S(λ), dμ(λ) = S(λ) dλ, so
+
+    K(t, s) = ∫ exp(i (t - s) λ) * Aₜ(λ) * conj(Aₛ(λ)) * S(λ) dλ
+
+Statement 3: If X(t) is a stationary process with spectral representation
+
+    X(t) = ∫ exp(i t λ) dΦ(λ)
+
+and τ : ℝ → ℝ is any injective (strictly monotone, invertible) function, then
+
+    Z(t) = X(τ(t)) = ∫ exp(i τ(t) λ) dΦ(λ)
+
+is an oscillatory process.
+
+Proof: 
+Z(t) is obtained from X(t) by an injective time-change τ(t). Then
+
+    Z(t) = ∫ exp(i τ(t) λ) dΦ(λ)
+         = ∫ exp(i t λ) * exp(i (τ(t) - t) λ) dΦ(λ)
+
+Define
+
+    Aₜ(λ) = exp(i (τ(t) - t) λ)
+
+Then
+
+    Z(t) = ∫ exp(i t λ) * Aₜ(λ) dΦ(λ)
+
+which matches the oscillatory form established earlier, with gain function Aₜ(λ) depending on t and λ. Therefore, Z(t) is an oscillatory process.
+
+Statement 4: The covariance kernel of Z(t) as above is
+
+    K(t, s) = ∫ exp(i (τ(t) - τ(s)) λ) * S(λ) dλ
+
+Proof: 
+From the general covariance formula of oscillatory processes, plugging in Aₜ(λ) = exp(i (τ(t) - t) λ), we have
+
+    K(t, s) = ∫ exp(i (t - s) λ) * exp(i (τ(t) - t) λ) * exp(-i (τ(s) - s) λ) * S(λ) dλ
+            = ∫ exp(i (t - s + τ(t) - t - τ(s) + s) λ) * S(λ) dλ
+            = ∫ exp(i (τ(t) - τ(s)) λ) * S(λ) dλ
+
+This shows that the covariance is no longer stationary unless τ(t) - τ(s) = t - s, i.e., unless τ is affine.
+
+3. Conclusion
+
+Any injectively time-changed stationary process is an oscillatory process in the sense of Priestly. Its covariance kernel is given by an evolutionary spectrum, and its local time-varying spectral characteristics are controlled by the choice of the time-change τ(t).
+
+This framework places time-changed stationary processes squarely within the class of oscillatory processes and highlights the unified structure of non-stationary covariance kernels as evolutionary spectra.
