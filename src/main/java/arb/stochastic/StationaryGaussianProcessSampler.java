@@ -444,9 +444,9 @@ public abstract class StationaryGaussianProcessSampler extends
   protected XYChart newTimeDomainChart()
   {
     XYChart chart = new XYChart(new DefaultNumericAxis("Time",
-                                                       ""),
-                                new DefaultNumericAxis("Value",
-                                                       ""));
+                                                       "?"),
+                                new DefaultNumericAxis("Level",
+                                                       "?"));
 
     chart.setTitle("In-Phase, Quadrature, and Envelope (±) via Hilbert Transform");
 
