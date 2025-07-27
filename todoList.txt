@@ -1,3 +1,4 @@
+implement derivative for function: lnΓ
 implement ∂/∂x[∏ᵢ₌₁ᵏfᵢ(x)] = ∑ᵢ₌₁ᵏ[(∂/∂x fᵢ(x))∏ⱼ₌₁,ⱼ≠ᵢᵏfⱼ(x)]
 SphericalBesselFunction functional bug #581
 expression compiler: implement caching #555

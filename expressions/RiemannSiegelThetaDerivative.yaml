@@ -1,0 +1,8 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Complex
+context: {
+  }
+domain: arb.Complex
+expression: diff((im(lnΓ((1/4)+((ⅈ*t)/2))))-((log(π))/2)*t,t)
+function: arb.functions.complex.ComplexFunction
+...
