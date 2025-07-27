@@ -118,7 +118,7 @@ public abstract class StationaryGaussianProcessSampler extends
 
   public Complex  samplePath;
 
-  public double[] envelope;
+  public Real     envelope;
 
   public double[] samplingTimes;
 
@@ -130,25 +130,18 @@ public abstract class StationaryGaussianProcessSampler extends
 
   public abstract double[] getPowerSpectralDensity(double[] freq);
 
-  long seed = 777;
+  long seed = 922;
 
-  /**
-   * TODO: use the {@link ComplexWhiteNoiseProcess} instead of the
-   * {@link RealWhiteNoiseProcess}
-   * 
-   * @return
-   */
   public StationaryGaussianProcessSampler generate()
   {
     frequencies          = generateFrequencies();
     powerSpectralDensity = getPowerSpectralDensity(frequencies);
     whiteNoise           = Complex.newVector(N);
     samplePath           = Complex.newVector(N);
-    envelope             = new double[N];
+    envelope             = Real.newVector(N);
     samplingTimes        = new double[N];
 
     try ( Complex randomMeasure = Complex.newVector(N); Real mag = new Real();
-          Complex ift = Complex.newVector(N);
           ComplexWhiteNoiseProcess whiteNoise = new ComplexWhiteNoiseProcess())
     {
       whiteNoise.initializeWithSeed(seed);
@@ -165,16 +158,14 @@ public abstract class StationaryGaussianProcessSampler extends
         samplePoint(randomMeasure, mag, whiteNoise, df, nyquistIndex, true);
       }
 
-      arblib.acb_dft_inverse(ift, randomMeasure, N, bits);
+      arblib.acb_dft_inverse(samplePath, randomMeasure, N, bits);
 
-      ift.mul(N, bits);
+      samplePath.mul(N, bits);
 
       for (int i = 0; i < N; i++)
       {
-        Complex element = ift.get(i);
         samplingTimes[i] = i * dt;
-        samplePath.get(i).set(element);
-        envelope[i] = element.norm(bits, mag).doubleValue();
+        samplePath.get(i).norm(bits, envelope.get(i));
       }
 
       return this;
@@ -553,14 +544,16 @@ public abstract class StationaryGaussianProcessSampler extends
     RealDataSet quad = new RealDataSet("Quadrature",
                                        N,
                                        domain);
-    quad.getTimes().set(samplingTimes);
+    double[] times = samplingTimes;
+    quad.getTimes().set(times);
     quad.getValues().set(samplePath.im());
 
-    DoubleDataSet envPos = new DoubleDataSet("Envelope (+)").set(samplingTimes, envelope);
+    DoubleDataSet envPos = new DoubleDataSet("Envelope (+)").set(samplingTimes,
+                                                                 envelope.doubleValues());
     double[]      negEnv = new double[N];
     for (int i = 0; i < N; i++)
     {
-      negEnv[i] = -envelope[i];
+      negEnv[i] = -envelope.get(i).doubleValue();
     }
     DoubleDataSet envNeg = new DoubleDataSet("Envelope (–)").set(samplingTimes, negEnv);
     chart.getDatasets().addAll(inPhase, quad, envPos, envNeg);
