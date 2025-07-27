@@ -25,9 +25,5 @@ public interface Interval<F extends Comparable<F>> extends
 
   public F right();
 
-  default Duration length()
-  {
-    assert false : "TODO: implement";
-    return null;
-  }
+  
 }

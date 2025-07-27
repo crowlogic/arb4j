@@ -58,15 +58,6 @@ public class FloatInterval implements AutoCloseable, Interval<Float> {
     }
   }
 
-
-  public static enum RootStatus
-  {
-   NoRoot,
-   RootLocated,
-   RootUnknown
-  }
-
- 
   public FloatInterval clear()
   {
     if ( swigCMemOwn )
@@ -219,6 +210,14 @@ public class FloatInterval implements AutoCloseable, Interval<Float> {
 
   public FloatInterval() {
     this(arblibJNI.new_FloatInterval(), true);
+  }
+
+  public double length()
+  {
+   try ( var len = new Float() )
+   {
+     return length(128, len).doubleValue();
+   }
   }
 
 }

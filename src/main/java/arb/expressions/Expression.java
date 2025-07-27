@@ -1998,9 +1998,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     evaluateOptionalIndependentVariableSpecification();
     nextCharacter();
     log.debug("parseRoot expression='{}' of Expression(#%s)\n",
-                        expression,
-                        System.identityHashCode(this));
-    
+              expression,
+              System.identityHashCode(this));
+
     rootNode = resolve().simplify();
     assert rootNode != null : "evaluateRootNode: determine() returned null, expression='"
                               + expression
@@ -2539,8 +2539,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     catch (IOException e)
     {
-      throw new RuntimeException(e.getMessage(),
-                                 e);
+      Utensils.throwOrWrap(e);
     }
     return this;
   }
@@ -2569,14 +2568,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public LiteralConstantNode<D, C, F> newLiteralConstant(String i)
   {
-    return new LiteralConstantNode<D, C, F>(this,
-                                            i);
+    return new LiteralConstantNode<>(this,
+                                     i);
   }
 
   public LiteralConstantNode<D, C, F> newLiteralConstant(int i)
   {
-    return new LiteralConstantNode<D, C, F>(this,
-                                            java.lang.Integer.toString(i));
+    return new LiteralConstantNode<>(this,
+                                     java.lang.Integer.toString(i));
   }
 
   @Override

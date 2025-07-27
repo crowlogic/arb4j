@@ -51,15 +51,15 @@ public class RealPartition implements
 
     try ( Real t0 = new Real())
     {
-      t0.set(this.interval.getA()).add(this.halfdt, prec);
+      t0.set(interval.getA()).add(halfdt, prec);
       for (int i = 0; i < n; i++)
       {
-        Real ti = this.T.get(i);
+        Real ti = T.get(i);
         ti.printPrecision = true;
-        this.dt.mul(i, prec, ti).add(t0, prec);
+        dt.mul(i, prec, ti).add(t0, prec);
         if (includeError)
         {
-          this.halfdt.getMid().getMagnitude(ti.getRad());
+          halfdt.getMid().getMagnitude(ti.getRad());
         }
       }
     }

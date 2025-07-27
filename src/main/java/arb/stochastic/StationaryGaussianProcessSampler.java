@@ -35,83 +35,79 @@ import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
 /**
- * 
- * <h3>FFT Nyquist Frequency Handling</h3>
- * 
+ * <h3>Stationary Gaussian Process Sampler (FFT-based)</h3>
+ *
  * <p>
- * The special handling of the Nyquist frequency in FFT operations stems from
- * fundamental mathematical properties of the discrete Fourier transform,
- * particularly for real-valued input signals.
+ * Abstract class for generating stationary Gaussian random process sample paths
+ * using the fast Fourier transform (FFT). Sample paths are synthesized from
+ * statistical white noise, the target power spectral density (PSD), and the
+ * inverse FFT, producing time-domain signals and auxiliary quantities.
  * </p>
- * 
- * <h4>Hermitian Symmetry and Mathematical Constraints</h4>
- * 
- * <p>
- * For real-valued input signals, the DFT exhibits Hermitian symmetry:
- * <code>X(-ν) = X(ν)*</code>, where <code>*</code> denotes complex conjugation.
- * At the Nyquist frequency (<code>ν = 1/2</code>), this symmetry condition
- * becomes:
- * </p>
- * 
- * <p>
- * <code>X(1/2) = X(-1/2) = X(1/2)*</code>
- * </p>
- * 
- * <p>
- * This mathematical constraint forces the imaginary component to zero:
- * <code>Im{X(1/2)} = (X(1/2) - X(1/2)*)/2i = 0</code>.
- * </p>
- * 
- * <h4>Basis Function Properties</h4>
- * 
- * <p>
- * The complex exponential basis function at the Nyquist frequency is purely
- * real. For an N-point FFT, the Nyquist frequency corresponds to the sequence
- * <code>[1, -1, 1, -1, ...]</code>, which alternates between +1 and -1. Unlike
- * other frequency bins that involve complex exponentials with both real and
- * imaginary components, the Nyquist frequency basis function cannot represent
- * phase information—it can only be scaled or sign-flipped, never phase-shifted.
- * </p>
- * 
- * <h4>Even vs. Odd Length FFTs</h4>
- * 
- * <p>
- * The treatment differs significantly based on whether N is even or odd:
- * </p>
- * 
- * <p>
- * <strong>Even N</strong>: Contains exactly one bin at the Nyquist frequency
- * (<code>k = N/2</code>). This bin represents both <code>+f_Nyquist</code> and
- * <code>-f_Nyquist</code> since
- * <code>exp(-j2π(0.5)n) = exp(-j2π(-0.5)n)</code>.
- * </p>
- * 
- * <p>
- * <strong>Odd N</strong>: No bin exists exactly at the Nyquist frequency since
- * <code>k/N</code> can never equal 0.5 when N is odd. The frequency bins are
- * distributed symmetrically around DC without a central Nyquist bin.
- * </p>
- * 
- * <h4>Spectral Conversion Implications</h4>
- * 
- * <p>
- * When converting from two-sided to single-sided amplitude spectra, the Nyquist
- * frequency (along with DC) is not multiplied by 2 like other positive
- * frequencies. This occurs because the Nyquist frequency lacks a complex
- * conjugate pair in the negative frequency domain—it represents a unique,
- * purely real frequency component.
- * </p>
- * 
- * <p>
- * The special handling ensures mathematical consistency with the underlying
- * continuous Fourier transform properties and prevents spectral artifacts that
- * would arise from treating the Nyquist frequency identically to other
- * frequency bins.
- * </p>
+ *
+ * <h4>Frequency Components: DC and Nyquist in FFTs</h4>
+ *
+ * <ul>
+ * <li><strong>DC Component (Zero Frequency):</strong> The DC component (0 Hz,
+ * mean of the process) is located at index <code>nyquistIndex</code> in the
+ * frequency array, where <code>nyquistIndex = N/2</code> for even
+ * <code>N</code> and <code>(N-1)/2</code> for odd <code>N</code>.
+ * <code>frequencies[nyquistIndex] == 0</code> for both cases.</li>
+ * <li><strong>Nyquist Frequency:</strong> For even <code>N</code>, the Nyquist
+ * frequency bin is at index 0 (<code>frequencies[0] == +1/(2dt)</code>) and is
+ * unique and real-valued. For odd <code>N</code>, there is no index
+ * corresponding to the Nyquist frequency.</li>
+ * </ul>
+ *
+ * <h4>Special Doubling for Odd N</h4>
+ * <ul>
+ * <li>For odd <code>N</code>, there is an unpaired central frequency index at
+ * <code>nyquistIndex = (N-1)/2</code>. This bin sits at the center of the
+ * frequency array and corresponds to the highest positive frequency less than
+ * the Nyquist frequency. Because there is no opposite-frequency partner (no
+ * negative counterpart), in spectral synthesis and when constructing the
+ * one-sided spectrum, this special bin's amplitude is doubled to properly
+ * account for both positive and "would-be" negative frequency contributions in
+ * the time-domain signal. This ensures that total signal energy and variance
+ * are correct.</li>
+ * </ul>
+ *
+ * <h4>Indexing and Frequency Range</h4>
+ * <ul>
+ * <li>The frequency array is organized so that positive frequencies occupy
+ * indices less than <code>nyquistIndex</code>, zero frequency (DC) is at
+ * <code>nyquistIndex</code>, and the remainder of the positive frequency range
+ * fills the upper part of the array.</li>
+ * <li>Specifically:
+ * <ul>
+ * <li>For even <code>N</code>: <code>frequencies[0] = +1/(2dt)</code>,
+ * <code>frequencies[nyquistIndex] = 0</code>.</li>
+ * <li>For odd <code>N</code>: <code>frequencies[nyquistIndex] = 0</code>; the
+ * maximum positive frequency is less than the Nyquist frequency, and this
+ * central index is doubled as described above.</li>
+ * </ul>
+ * </li>
+ * </ul>
+ *
+ * <h4>Mathematical Properties</h4>
+ * <ul>
+ * <li>The FFT of real-valued signals exhibits Hermitian symmetry:
+ * <code>X(-ν) = X(ν)*</code>. The DC and Nyquist bins (when present) are
+ * strictly real-valued. The unpaired central bin for odd <code>N</code> is also
+ * real-valued.</li>
+ * <li>When mapping to a one-sided spectrum, the DC and Nyquist bins for even
+ * <code>N</code>, and the unpaired central bin for odd <code>N</code>, are
+ * unique and not paired. Both the DC and (for odd <code>N</code>) the unpaired
+ * central bin must NOT be doubled in energy, except that for spectral
+ * synthesis, the central bin's amplitude is multiplied by two to account for
+ * the lack of a conjugate partner.</li>
+ * </ul>
+ *
+ *
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
- **/
+ */
+
 public abstract class StationaryGaussianProcessSampler extends
                                                        Application
 {
@@ -142,20 +138,20 @@ public abstract class StationaryGaussianProcessSampler extends
     samplingTimes        = Real.newVector(N);
 
     try ( Complex randomMeasure = Complex.newVector(N); Real mag = new Real();
-          ComplexWhiteNoiseProcess whiteNoise = new ComplexWhiteNoiseProcess())
+          ComplexWhiteNoiseProcess whiteNoiseProcess = new ComplexWhiteNoiseProcess())
     {
-      whiteNoise.initializeWithSeed(seed);
+      whiteNoiseProcess.initializeWithSeed(seed);
 
       randomMeasure.get(0).zero();
 
       for (int k = 0; k < nyquistIndex; k++)
       {
-        samplePoint(randomMeasure, mag, whiteNoise, df, k, false);
+        sampleWhiteNoise(randomMeasure, mag, whiteNoiseProcess, df, k, false);
       }
 
       if (N % 2 == 0)
       {
-        samplePoint(randomMeasure, mag, whiteNoise, df, nyquistIndex, true);
+        sampleWhiteNoise(randomMeasure, mag, whiteNoiseProcess, df, nyquistIndex, true);
       }
 
       arblib.acb_dft_inverse(samplePath, randomMeasure, N, bits);
@@ -173,12 +169,12 @@ public abstract class StationaryGaussianProcessSampler extends
     }
   }
 
-  protected void samplePoint(Complex randomMeasure,
-                             Real mag,
-                             ComplexWhiteNoiseProcess whiteNoiseProcess,
-                             double df,
-                             int k,
-                             boolean realOnly)
+  protected void sampleWhiteNoise(Complex randomMeasure,
+                                  Real mag,
+                                  ComplexWhiteNoiseProcess whiteNoiseProcess,
+                                  double df,
+                                  int k,
+                                  boolean realOnly)
   {
     var sample = whiteNoiseProcess.sample(bits, whiteNoise.get(k));
 
@@ -190,33 +186,36 @@ public abstract class StationaryGaussianProcessSampler extends
     sample.mul(mag.set(powerSpectralDensity[k] * df).sqrt(bits), bits, randomMeasure.get(k));
   }
 
-  private static final double L                   = 1000.0;
+  final FloatInterval        spectralSupport;
 
-  final FloatInterval         spectralSupport;
+  static final FloatInterval timeSpan              = new FloatInterval(0,
+                                                                       1000);
 
-  static final double         dt                  = 0.01;
+  static final double        dt                    = 0.01;
 
-  static final int            N                   = (int) (L / dt);
+  static final double        L                     = timeSpan.length();
 
-  static final double         MAX_AUTOCORRELATION = 20.0;
+  static final int           N                     = (int) (L / dt);
 
-  static final int            bits                = 128;
+  static final double        autocorrelationLength = 20.0;
 
-  private boolean             separateWindows     = false;
+  static final int           bits                  = 128;
 
-  private boolean             dark                = true;
+  private boolean            separateWindows       = false;
 
-  private XYChart[]           charts;
+  private boolean            dark                  = true;
 
-  private Stage[]             stages;
+  private XYChart[]          charts;
 
-  private boolean             light;
+  private Stage[]            stages;
 
-  public static final double  nyquistFrequency    = 1.0 / (2 * dt);
+  private boolean            light;
 
-  public static final int     nyquistIndex        = N / 2;
+  public static final double nyquistFrequency      = 1.0 / (2 * dt);
 
-  public static final double  df                  = 1.0 / L;
+  public static final int    nyquistIndex          = N / 2;
+
+  public static final double df                    = 1.0 / L;
 
   public static double[] generateFrequencies()
   {
@@ -297,7 +296,7 @@ public abstract class StationaryGaussianProcessSampler extends
                                 new DefaultNumericAxis("Correlation",
                                                        ""));
     chart.setTitle("Covariance");
-    int      maxLag = (int) (MAX_AUTOCORRELATION / dt) + 1;
+    int      maxLag = (int) (autocorrelationLength / dt) + 1;
     double[] times  = new double[maxLag];
     double[] theory = new double[maxLag];
     getKernel(times, theory);
@@ -312,7 +311,7 @@ public abstract class StationaryGaussianProcessSampler extends
     chart.getYAxis().setMax(1.05);
     chart.getXAxis().setAutoRanging(false);
     chart.getXAxis().setMin(0);
-    chart.getXAxis().setMax(MAX_AUTOCORRELATION);
+    chart.getXAxis().setMax(autocorrelationLength);
     return chart;
   }
 
@@ -454,11 +453,7 @@ public abstract class StationaryGaussianProcessSampler extends
                                           N,
                                           spectralSupport);
     inPhase.getTimes().set(samplingTimes);
-    Real inPhaseVals = inPhase.getValues();
-    long ptr1        = Real.getCPtr(inPhaseVals.elements[0]);
-    long ptr2        = Real.getCPtr(inPhaseVals);
-
-    inPhaseVals.set(samplePath.re());
+    inPhase.getValues().set(samplePath.re());
 
     RealDataSet quad = new RealDataSet("Quadrature",
                                        N,
