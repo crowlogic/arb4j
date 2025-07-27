@@ -807,32 +807,44 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
   {
-    log.debug("evaluateOptionalIndependentVariableSpecification: before applying transformToJavaAcceptableCharacters expression={}",
-              expression);
+    if (log.isDebugEnabled())
+    {
+      log.debug("evaluateOptionalIndependentVariableSpecification: before applying transformToJavaAcceptableCharacters expression={}",
+                expression);
+    }
     expression = transformToJavaAcceptableCharacters(expression);
 
     int rightArrowIndex = expression.indexOf('➔');
 
-    log.debug("evaluateOptionalIndependentVariableSpecification: after applying transformToJavaAcceptableCharacters expression={}\nrightArrowIndex={}",
-              expression,
-              rightArrowIndex);
+    if (log.isDebugEnabled())
+    {
+      log.debug("evaluateOptionalIndependentVariableSpecification: after applying transformToJavaAcceptableCharacters expression={}\nrightArrowIndex={}",
+                expression,
+                rightArrowIndex);
+    }
 
     if (rightArrowIndex != -1)
     {
       String  inputVariableName        = expression.substring(0, rightArrowIndex);
       boolean isInputVariableSpecified = true;
 
-      log.debug("evaluateOptionalIndependentVariableSpecification: before assureNoNumbersInTheInputVariable inputVariableName={} isInputVariableSpecified={}\n",
-                inputVariableName,
-                isInputVariableSpecified);
+      if (log.isDebugEnabled())
+      {
+        log.debug("evaluateOptionalIndependentVariableSpecification: before assureNoNumbersInTheInputVariable inputVariableName={} isInputVariableSpecified={}\n",
+                  inputVariableName,
+                  isInputVariableSpecified);
+      }
 
       isInputVariableSpecified = assureNoNumbersInTheInputVariable(inputVariableName,
                                                                    isInputVariableSpecified);
 
-      log.debug("evaluateOptionalIndependentVariableSpecification: after assureNoNumbersInTheInputVariable inputVariableName={} isInputVariableSpecified={}\n",
-                inputVariableName,
-                isInputVariableSpecified);
-
+      if (log.isDebugEnabled())
+      {
+        log.debug("evaluateOptionalIndependentVariableSpecification: after assureNoNumbersInTheInputVariable inputVariableName={} isInputVariableSpecified={}\n",
+                  inputVariableName,
+                  isInputVariableSpecified);
+      }
+      
       if (isInputVariableSpecified)
       {
         assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(inputVariableName);
@@ -988,10 +1000,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public Expression<D, C, F> generate() throws CompilerException
   {
     assert instructionByteCodes == null;
-    log.debug("Expression(#{}).generate() className={} expression='{}'\n\n",
-              System.identityHashCode(this),
-              className,
-              expression);
+    if (log.isDebugEnabled())
+    {
+      log.debug("Expression(#{}).generate() className={} expression='{}'\n\n",
+                System.identityHashCode(this),
+                className,
+                expression);
+    }
 
     ClassVisitor classVisitor = Compiler.constructClassVisitor();
 
@@ -1997,9 +2012,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                             + rootNode;
     evaluateOptionalIndependentVariableSpecification();
     nextCharacter();
-    log.debug("parseRoot expression='{}' of Expression(#%s)\n",
-              expression,
-              System.identityHashCode(this));
+    if (log.isDebugEnabled())
+    {
+      log.debug("parseRoot expression='{}' of Expression(#%s)\n",
+                expression,
+                System.identityHashCode(this));
+    }
 
     rootNode = resolve().simplify();
     assert rootNode != null : "evaluateRootNode: determine() returned null, expression='"
