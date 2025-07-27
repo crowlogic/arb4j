@@ -1,21 +1,36 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.loadOrderParameter;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.String.format;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
-import arb.*;
+import arb.Complex;
+import arb.Fraction;
 import arb.Integer;
+import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
-import arb.expressions.*;
+import arb.expressions.Compiler;
 import arb.expressions.Context;
-import arb.expressions.nodes.*;
+import arb.expressions.Expression;
+import arb.expressions.FunctionMapping;
+import arb.expressions.Parser;
+import arb.expressions.nodes.LiteralConstantNode;
+import arb.expressions.nodes.Node;
+import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
@@ -483,7 +498,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public FunctionMapping<D, R, F> getFunctionMapping()
   {
-    FunctionMapping<D, R, F> mapping = expression.context.functions.get(functionName);
+    FunctionMapping<D, R, F> mapping = expression.context.getFunctionMapping(functionName);
     if (isSelfReferential(mapping))
     {
       mapping = registerSelfReferrentialFunctionMapping();
@@ -496,9 +511,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
-    var functionIntegral = integrateFunction();
-    var argDerivative    = arg.differentiate(variable);
-    return functionIntegral.div(argDerivative);
+    return integrateFunction().div(arg.differentiate(variable));
   }
 
   public Node<D, R, F> integrateFunction()
@@ -539,15 +552,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
   }
 
-  public LiteralConstantNode<D, R, F> three()
-  {
-    return expression.newLiteralConstant(3);
-  }
 
-  public LiteralConstantNode<D, R, F> two()
-  {
-    return expression.newLiteralConstant(2);
-  }
 
   public boolean isBitless()
   {

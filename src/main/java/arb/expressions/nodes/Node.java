@@ -1,6 +1,9 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.cast;
+import static arb.expressions.Compiler.getFieldFromThis;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 
 import java.util.List;
 import java.util.Objects;
@@ -14,8 +17,15 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
-import arb.expressions.nodes.binary.*;
-import arb.expressions.nodes.unary.*;
+import arb.expressions.nodes.binary.AdditionNode;
+import arb.expressions.nodes.binary.BinaryOperationNode;
+import arb.expressions.nodes.binary.DivisionNode;
+import arb.expressions.nodes.binary.ExponentiationNode;
+import arb.expressions.nodes.binary.MultiplicationNode;
+import arb.expressions.nodes.binary.SubtractionNode;
+import arb.expressions.nodes.unary.AbsoluteValueNode;
+import arb.expressions.nodes.unary.FunctionNode;
+import arb.expressions.nodes.unary.NegationNode;
 import arb.expressions.viz.ExpressionTree;
 import arb.functions.Function;
 
@@ -62,28 +72,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                           Consumer<Consumer<Node<D, R, F>>>
 {
 
-  @Override
-  public int hashCode()
-  {
-    return Objects.hash(generatedType, isResult);
-  }
-
-  @Override
-  public boolean equals(Object obj)
-  {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    Node<?, ?, ?> other = (Node<?, ?, ?>) obj;
-    return Objects.equals(generatedType, other.generatedType) && isResult == other.isResult;
-  }
-
   public int                 bits     = 128;
 
   public Expression<D, R, F> expression;
+
+  public String fieldName;
 
   public Class<?>            generatedType;
 
@@ -95,11 +88,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   {
     this.expression = expression;
     this.position   = expression.position;
-  }
-
-  public MethodVisitor loadFieldFromThis(MethodVisitor mv, String fieldName, Class<?> type)
-  {
-    return getFieldFromThis(mv, expression.className, fieldName, type);
   }
 
   public <N extends Node<D, R, F>> N abs()
@@ -122,20 +110,20 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                               expression);
   }
 
+  public Node<D, R, F> arcsin()
+  {
+    return apply("arcsin");
+  }
+
+  public Node<D, R, F> arctan()
+  {
+    return apply("arctan");
+  }
+
   public BinaryOperationNode<D, R, F> asBinaryOperationNode()
   {
     assert this instanceof BinaryOperationNode : this + " isn't a BinaryOperationNode";
     return (BinaryOperationNode<D, R, F>) this;
-  }
-
-  public LiteralConstantNode<D, R, F> negativeOne()
-  {
-    return expression.newLiteralConstant(-1);
-  }
-
-  public LiteralConstantNode<D, R, F> one()
-  {
-    return expression.newLiteralConstant(1);
   }
 
   public FunctionNode<D, R, F> asFunction()
@@ -186,6 +174,17 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return false;
   }
 
+  /**
+   * 
+   * @return this{@link #differentiate(VariableNode)} with
+   *         {@link Expression#independentVariable} passed as the variable to be
+   *         differentiated with respect to
+   */
+  public Node<D, R, F> differentiate()
+  {
+    return differentiate(expression.independentVariable);
+  }
+
   public abstract Node<D, R, F> differentiate(VariableNode<D, R, F> variable);
 
   public <N extends Node<D, R, F>> N digamma()
@@ -210,6 +209,24 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                                   divisor);
   }
 
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Node<?, ?, ?> other = (Node<?, ?, ?>) obj;
+    return Objects.equals(generatedType, other.generatedType) && isResult == other.isResult;
+  }
+
+  public FunctionNode<D, R, F> exp()
+  {
+    return apply("exp");
+  }
+
   public abstract MethodVisitor generate(MethodVisitor mv, Class<?> resultType);
 
   public Class<?> generateCastTo(MethodVisitor methodVisitor, Class<?> type)
@@ -223,16 +240,25 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public abstract List<? extends Node<D, R, F>> getBranches();
 
+  public String getFieldName()
+  {
+    return isResult ? "result" : fieldName;
+  }
+
   public Class<?> getGeneratedType()
   {
     return generatedType;
   }
 
-  public String fieldName;
-
-  public String getFieldName()
+  public Node<D, R, F> getSquareRootArg()
   {
-    return isResult ? "result" : fieldName;
+    return null;
+  }
+
+  @Override
+  public int hashCode()
+  {
+    return Objects.hash(generatedType, isResult);
   }
 
   /**
@@ -242,6 +268,16 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * @return
    */
   public abstract Node<D, R, F> integrate(VariableNode<D, R, F> variable);
+
+  public boolean isConstantOne()
+  {
+    return isLiteralConstant() && "1".equals(toString());
+  }
+
+  public boolean isHalf()
+  {
+    return false;
+  }
 
   public boolean isIndependentOf(VariableNode<D, R, F> variable)
   {
@@ -265,6 +301,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public abstract boolean isScalar();
 
+  public boolean isSquareRoot()
+  {
+    return false;
+  }
+
   public boolean isVariable()
   {
     return false;
@@ -273,6 +314,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public boolean isVariableNamed(String variable)
   {
     return isVariable() && asVariable().isNamed(variable);
+  }
+
+  public boolean isVariableSquared(VariableNode<D, R, F> variable)
+  {
+    return false;
   }
 
   protected void loadBitsOntoStack(MethodVisitor mv)
@@ -287,9 +333,19 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     }
   }
 
+  public MethodVisitor loadFieldFromThis(MethodVisitor mv, String fieldName, Class<?> type)
+  {
+    return getFieldFromThis(mv, expression.className, fieldName, type);
+  }
+
   public Node<D, R, F> log()
   {
     return apply("log");
+  }
+
+  public Node<D, R, F> mul(int i)
+  {
+    return mul(expression.newLiteralConstant(i));
   }
 
   public <N extends Node<D, R, F>> N mul(Node<D, R, F> multiplicand)
@@ -305,9 +361,14 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                                   this);
   }
 
-  public Node<D, R, F> mul(int i)
+  public LiteralConstantNode<D, R, F> negativeOne()
   {
-    return mul(expression.newLiteralConstant(i));
+    return expression.newLiteralConstant(-1);
+  }
+
+  public LiteralConstantNode<D, R, F> one()
+  {
+    return expression.newLiteralConstant(1);
   }
 
   public Node<D, R, F> pow(int i)
@@ -328,16 +389,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
                                      exponent);
   }
 
-  public Node<D, R, F> arctan()
-  {
-    return apply("arctan");
-  }
-
-  public Node<D, R, F> arcsin()
-  {
-    return apply("arcsin");
-  }
-
   public Node<D, R, F> sec()
   {
     return apply("sec");
@@ -346,11 +397,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
   public Node<D, R, F> simplify()
   {
     return this;
-  }
-
-  public FunctionNode<D, R, F> exp()
-  {
-    return apply("exp");
   }
 
   public Node<D, R, F> sin()
@@ -400,6 +446,16 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return apply("tanh");
   }
 
+  public LiteralConstantNode<D, R, F> three()
+  {
+    return expression.newLiteralConstant(3);
+  }
+
+  public LiteralConstantNode<D, R, F> two()
+  {
+    return expression.newLiteralConstant(2);
+  }
+
   /**
    * 
    * @return the type that this node leaves on the stack when
@@ -412,41 +468,5 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * @return the string that represents this node in {@link Latex} format
    */
   public abstract String typeset();
-
-  public boolean isConstantOne()
-  {
-    return isLiteralConstant() && "1".equals(toString());
-  }
-
-  /**
-   * 
-   * @return this{@link #differentiate(VariableNode)} with
-   *         {@link Expression#independentVariable} passed as the variable to be
-   *         differentiated with respect to
-   */
-  public Node<D, R, F> differentiate()
-  {
-    return differentiate(expression.independentVariable);
-  }
-
-  public boolean isVariableSquared(VariableNode<D, R, F> variable)
-  {
-    return false;
-  }
-
-  public boolean isSquareRoot()
-  {
-    return false;
-  }
-
-  public Node<D, R, F> getSquareRootArg()
-  {
-    return null;
-  }
-
-  public boolean isHalf()
-  {
-    return false;
-  }
 
 }
