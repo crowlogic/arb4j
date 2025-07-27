@@ -384,7 +384,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<Object, Object, Function<?, ?>>   functionalIndeterminantVariable;
 
-  private final Logger                                  log;
+  private final Logger                                  log                           =
+                                                            LoggerFactory.getLogger(Expression.class);
 
   public Expression(Class<? extends D> domain,
                     Class<? extends C> codomain,
@@ -401,7 +402,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       saveClasses = true;
     }
-    this.log = LoggerFactory.getLogger("Expression:" + className + "func");
   }
 
   public Expression(String className,
@@ -454,7 +454,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       saveClasses = true;
     }
-    this.log = LoggerFactory.getLogger("Expression:" + className);
 
   }
 
@@ -613,7 +612,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (saveGraphs)
     {
-      var graphFile = context.saveDependencyGraph(dependencies);     
+      var graphFile = context.saveDependencyGraph(dependencies);
     }
     // Declare functions in dependency order
     for (Dependency dependency : dependencies)
