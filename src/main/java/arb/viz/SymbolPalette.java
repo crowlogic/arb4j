@@ -55,9 +55,60 @@ public class SymbolPalette extends
                            Application
 {
   public static final String[]                  SYMBOLS           =
-  { "χ", "ϱ", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "9", "⁄", "/", "+", "-", "*", "π", "Γ", "ᵅ", "ⅈ", "∈", "₋",
-    "₊", "⇒", "➔", "√", "π", "⌊", "⌋", "≀", "₍", "₎", "∫", "Π", "∏", "Σ", "∑", "½", "²", "ⁿ", "∀", "∃", "μ", "ν", "ξ",
-    "⋰", "ℭ", "α", "β", "∂", "🤙", "σ" };
+  { "χ",
+    "ϱ",
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "9",
+    "⁄",
+    "/",
+    "+",
+    "-",
+    "*",
+    "π",
+    "Γ",
+    "ᵅ",
+    "ⅈ",
+    "∈",
+    "₋",
+    "₊",
+    "⇒",
+    "➔",
+    "√",
+    "π",
+    "⌊",
+    "⌋",
+    "≀",
+    "₍",
+    "₎",
+    "∫",
+    "Π",
+    "∏",
+    "Σ",
+    "∑",
+    "½",
+    "²",
+    "ⁿ",
+    "∀",
+    "∃",
+    "μ",
+    "ν",
+    "ξ",
+    "⋰",
+    "ℭ",
+    "α",
+    "β",
+    "∂",
+    "🤙",
+    "σ" };
 
   private static final String                   STYLESHEET        = """
                  .highlighted-button
@@ -175,7 +226,7 @@ public class SymbolPalette extends
     addAliases("⅞", "seveneighths");
 
     // Greek Letters (uppercase and lowercase together)
-    addAliases("Χ χ", "chi");    
+    addAliases("Χ χ", "chi");
     addAliases("Γ γ", "gamma");
     addAliases("Δ δ", "delta");
     addAliases("η", "eta");
@@ -309,9 +360,9 @@ public class SymbolPalette extends
       chars.add(s);
     }
 
-    for (String s : Parser.greekAndBlackLetterChars)
+    for (Character s : Parser.greekAndBlackLetterChars)
     {
-      chars.add(s);
+      chars.add(String.format("%c", s));
     }
     chars.addAll(Parser.fractions.keySet().stream().map(String::valueOf).toList());
 
@@ -349,7 +400,8 @@ public class SymbolPalette extends
     // Create search field
     searchField = new TextField();
     searchField.setPromptText("Search characters...");
-    searchField.textProperty().addListener((observable, oldValue, newValue) -> highlightMatches(newValue));
+    searchField.textProperty()
+               .addListener((observable, oldValue, newValue) -> highlightMatches(newValue));
 
     textField = new TextField();
     textField.setEditable(true);
@@ -402,8 +454,9 @@ public class SymbolPalette extends
       buttonPane.setPrefWidth(viewportBounds.getWidth());
     });
 
-    ObjectBinding<Font> fontSizeBinding = Bindings.createObjectBinding(() -> Font.font(scene.getHeight() * 0.04),
-                                                                       scene.heightProperty());
+    ObjectBinding<Font> fontSizeBinding =
+                                        Bindings.createObjectBinding(() -> Font.font(scene.getHeight()
+                                                      * 0.04), scene.heightProperty());
     textField.fontProperty().bind(fontSizeBinding);
     searchField.fontProperty().bind(fontSizeBinding);
     copyButton.fontProperty().bind(fontSizeBinding);

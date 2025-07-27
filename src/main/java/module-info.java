@@ -27,6 +27,7 @@ module arb4j
   requires transitive org.objectweb.asm.commons;
   requires transitive org.yaml.snakeyaml;
   requires transitive guru.nidi.graphviz;
+  requires transitive org.slf4j;
 
   exports arb.stochastic;
   exports arb;
@@ -49,7 +50,7 @@ module arb4j
   exports arb.exceptions;
 
   exports arb.functions;
-  exports arb.functions.algebraic;  
+  exports arb.functions.algebraic;
   exports arb.utensils.text.tables;
   exports arb.utensils.text.trees;
   exports arb.functions.polynomials;
@@ -67,7 +68,6 @@ module arb4j
   exports arb.space.topological;
   exports arb.measure;
   exports arb.stochastic.processes;
-  exports arb.stochastic.processes.correlationfunctions;
   exports arb.utensils;
   exports arb.viz;
 

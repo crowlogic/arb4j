@@ -16,10 +16,9 @@ import static arb.expressions.Compiler.loadFunctionClass;
 import static arb.expressions.Compiler.loadResultParameter;
 import static arb.expressions.Compiler.loadThisOntoStack;
 import static arb.expressions.Compiler.swap;
-import static arb.expressions.Parser.isAlphabetical;
+import static arb.expressions.Parser.isAlphabeticalGreekSpecialOrBlackLetter;
 import static arb.expressions.Parser.isAlphabeticalOrNumericSubscript;
 import static arb.expressions.Parser.isAlphabeticalSuperscript;
-import static arb.expressions.Parser.isLatinGreekSpecialOrBlackLetter;
 import static arb.expressions.Parser.isNumeric;
 import static arb.expressions.Parser.transformToJavaAcceptableCharacters;
 import static java.lang.String.format;
@@ -59,6 +58,8 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.util.TraceClassVisitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import arb.Becomable;
 import arb.Complex;
@@ -383,6 +384,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public VariableNode<Object, Object, Function<?, ?>>   functionalIndeterminantVariable;
 
+  private final Logger                                  log;
+
   public Expression(Class<? extends D> domain,
                     Class<? extends C> codomain,
                     Class<? extends F> function)
@@ -398,6 +401,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       saveClasses = true;
     }
+    this.log = LoggerFactory.getLogger("Expression:" + className + "func");
   }
 
   public Expression(String className,
@@ -450,6 +454,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       saveClasses = true;
     }
+    this.log = LoggerFactory.getLogger("Expression:" + className);
+
   }
 
   protected <N extends Node<D, C, F>> N addAndSubtract(N node)
@@ -801,52 +807,116 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected Expression<D, C, F> evaluateOptionalIndependentVariableSpecification()
   {
-    int rightArrowIndex =
-                        (expression = transformToJavaAcceptableCharacters(expression)).indexOf('➔');
+    log.debug("evaluateOptionalIndependentVariableSpecification: before applying transformToJavaAcceptableCharacters expression={}",
+              expression);
+    expression = transformToJavaAcceptableCharacters(expression);
+
+    int rightArrowIndex = expression.indexOf('➔');
+
+    log.debug("evaluateOptionalIndependentVariableSpecification: after applying transformToJavaAcceptableCharacters expression={}\nrightArrowIndex={}",
+              expression,
+              rightArrowIndex);
+
     if (rightArrowIndex != -1)
     {
       String  inputVariableName        = expression.substring(0, rightArrowIndex);
       boolean isInputVariableSpecified = true;
-      for (int i = 0; i < inputVariableName.length(); i++)
-      {
-        if (!isAlphabetical(inputVariableName.charAt(i)))
-        {
-          isInputVariableSpecified = false;
-        }
-      }
+
+      log.debug("evaluateOptionalIndependentVariableSpecification: before assureNoNumbersInTheInputVariable inputVariableName={} isInputVariableSpecified={}\n",
+                inputVariableName,
+                isInputVariableSpecified);
+
+      isInputVariableSpecified = assureNoNumbersInTheInputVariable(inputVariableName,
+                                                                   isInputVariableSpecified);
+
+      log.debug("evaluateOptionalIndependentVariableSpecification: after assureNoNumbersInTheInputVariable inputVariableName={} isInputVariableSpecified={}\n",
+                inputVariableName,
+                isInputVariableSpecified);
+
       if (isInputVariableSpecified)
       {
-        if (context != null)
-        {
-          if (context.getVariable(inputVariableName) != null)
-          {
-            throw new CompilerException(inputVariableName
-                                        + " cannot be declared as the input since it is already registered as a context variable in "
-                                        + context);
-          }
-        }
-        var variable = new VariableNode<>(this,
-                                          new VariableReference<>(inputVariableName,
-                                                                  null,
-                                                                  coDomainType),
-                                          position,
-                                          false);
-
-        if (hasIndeterminateVariable())
-        {
-          indeterminateVariable                 = variable;
-          indeterminateVariable.isIndeterminate = true;
-        }
-        else
-        {
-          independentVariable               = variable;
-          independentVariable.isIndependent = true;
-        }
-
+        assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(inputVariableName);
+        assignVariable(createNewVariableReference(inputVariableName), hasIndeterminateVariable());
         position = rightArrowIndex;
       }
     }
     return this;
+  }
+
+  /**
+   * Assigns a variable to either this{@link #indeterminateVariable} or
+   * this{@link #independentVariable}
+   * 
+   * @param variable
+   * @param indeterminant if true then this variable represents a placeholder
+   *                      variable for a polynomial or a rational function or a
+   *                      functional. if false then it is an independent variable
+   *                      defined on the domain of the expression
+   */
+  private void assignVariable(VariableNode<D, C, F> variable, boolean indeterminant)
+  {
+    if (indeterminant)
+    {
+      assignIndeterminantVariable(variable);
+
+    }
+    else
+    {
+      assignIndependentVariable(variable);
+
+    }
+  }
+
+  protected void assignIndependentVariable(VariableNode<D, C, F> variable)
+  {
+    independentVariable               = variable;
+    independentVariable.isIndependent = true;
+  }
+
+  protected void assignIndeterminantVariable(VariableNode<D, C, F> variable)
+  {
+    indeterminateVariable                 = variable;
+    indeterminateVariable.isIndeterminate = true;
+  }
+
+  protected VariableNode<D, C, F> createNewVariableReference(String inputVariableName)
+  {
+    var variable = new VariableNode<>(this,
+                                      new VariableReference<>(inputVariableName,
+                                                              null,
+                                                              coDomainType),
+                                      position,
+                                      false);
+    return variable;
+  }
+
+  protected void
+            assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(String inputVariableName)
+  {
+    if (context != null)
+    {
+      if (context.getVariable(inputVariableName) != null)
+      {
+        throw new CompilerException(inputVariableName
+                                    + " cannot be declared as the input since it is already registered as a context variable in "
+                                    + context);
+      }
+    }
+  }
+
+  protected boolean assureNoNumbersInTheInputVariable(String inputVariableName,
+                                                      boolean isInputVariableSpecified)
+  {
+    for (int i = 0; i < inputVariableName.length(); i++)
+    {
+      if (!Parser.isAlphabetical(inputVariableName.charAt(i)))
+      // if (!isAlphabeticalGreekSpecialOrBlackLetter(inputVariableName.charAt(i),
+      // false))
+      {
+        isInputVariableSpecified = false;
+      }
+    }
+    return isInputVariableSpecified;
   }
 
   protected Node<D, C, F> evaluateSquareBracketedIndex()
@@ -918,13 +988,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   public Expression<D, C, F> generate() throws CompilerException
   {
     assert instructionByteCodes == null;
-    if (trace)
-    {
-      System.err.format("Expression(#%s).generate() className=%s expression='%s'\n\n",
-                        System.identityHashCode(this),
-                        className,
-                        expression);
-    }
+    log.debug("Expression(#{}).generate() className={} expression='{}'\n\n",
+              System.identityHashCode(this),
+              className,
+              expression);
+
     ClassVisitor classVisitor = Compiler.constructClassVisitor();
 
     try
@@ -951,7 +1019,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       classVisitor.visitEnd();
     }
 
-    return storeInstructions(classVisitor);
+    return
+
+    storeInstructions(classVisitor);
   }
 
   protected MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor,
@@ -1726,7 +1796,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected boolean isIdentifierCharacter()
   {
-    return isLatinGreekSpecialOrBlackLetter(character, false)
+    return isAlphabeticalGreekSpecialOrBlackLetter(character, false)
                   || isAlphabeticalOrNumericSubscript(character)
                   || isAlphabeticalSuperscript(character);
   }
@@ -1895,7 +1965,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     boolean entirelySubscripted   = true;
     boolean entirelySuperscripted = true;
     boolean isLatinOrGreek;
-    while ((isLatinOrGreek = isLatinGreekSpecialOrBlackLetter(character, true))
+    while ((isLatinOrGreek = isAlphabeticalGreekSpecialOrBlackLetter(character, true))
                   || (entirelySubscripted && !isLatinOrGreek
                                 && Parser.isAlphabeticalOrNumericSubscript(character))
                   || (entirelySuperscripted && !isLatinOrGreek
@@ -1927,12 +1997,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                             + rootNode;
     evaluateOptionalIndependentVariableSpecification();
     nextCharacter();
-    if (trace)
-    {
-      System.out.format("parseRoot %s of Expression(#%s)\n",
+    log.debug("parseRoot expression='{}' of Expression(#%s)\n",
                         expression,
                         System.identityHashCode(this));
-    }
+    
     rootNode = resolve().simplify();
     assert rootNode != null : "evaluateRootNode: determine() returned null, expression='"
                               + expression

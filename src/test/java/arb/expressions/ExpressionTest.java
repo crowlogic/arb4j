@@ -313,7 +313,7 @@ public class ExpressionTest extends
 
   public void testBinomialCoefficient()
   {
-    IntegerFunction f            = IntegerFunction.express("ℭ(5,n)");
+    IntegerFunction f            = IntegerFunction.express("binom(5,n)");
     Integer         permutations = f.eval(3);
     assertEquals(10, permutations.getSignedValue());
   }
