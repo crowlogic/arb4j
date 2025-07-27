@@ -1,7 +1,8 @@
 package arb.stochastic;
 
+import arb.FloatConstants;
+import arb.FloatInterval;
 import arb.Real;
-import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.polynomials.orthogonal.real.Type1ChebyshevPolynomials;
@@ -25,8 +26,15 @@ import arb.functions.real.RealFunction;
  *      {@link TheArb4jLibrary}
  */
 public class BandLimitedWhiteNoiseSampler extends
-                                          StationaryGaussianProcessSampler 
+                                          StationaryGaussianProcessSampler
 {
+
+  @Override
+  protected FloatInterval getSpectralSupport()
+  {
+    return new FloatInterval(FloatConstants.negOne,
+                             FloatConstants.one);
+  }
 
   public RealFunction kernel = RealFunction.express("sin(t*2*π)/(t*2*π)");
 
@@ -35,7 +43,7 @@ public class BandLimitedWhiteNoiseSampler extends
   {
     return kernel;
   }
-  
+
   public void getKernel(double[] times, double[] values)
   {
     assert times.length == values.length;

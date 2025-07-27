@@ -4,6 +4,7 @@ import static java.lang.Math.PI;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
+import arb.FloatConstants;
 import arb.FloatInterval;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -41,6 +42,7 @@ public class RandomWaveSampler extends
   {
     return kernel;
   }
+
   /**
    * Sample the {@link BesselFunctionNodeOfTheFirstKind} of order 0, here used as
    * {@link Real#J0(int, Real)}
@@ -87,5 +89,12 @@ public class RandomWaveSampler extends
   public static void main(String[] args)
   {
     launch(args);
+  }
+
+  @Override
+  protected FloatInterval getSpectralSupport()
+  {
+    return new FloatInterval(FloatConstants.negOne,
+                             FloatConstants.one);
   }
 }

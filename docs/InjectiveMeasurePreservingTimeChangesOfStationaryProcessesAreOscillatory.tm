@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|framed-theorems>>
+<style|<tuple|generic|metal|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Injective Measure-Preserving Time-Changes of

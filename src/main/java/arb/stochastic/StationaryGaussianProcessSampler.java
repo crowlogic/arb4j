@@ -120,7 +120,7 @@ public abstract class StationaryGaussianProcessSampler extends
 
   public Real     envelope;
 
-  public double[] samplingTimes;
+  public Real     samplingTimes;
 
   public double[] frequencies;
 
@@ -139,7 +139,7 @@ public abstract class StationaryGaussianProcessSampler extends
     whiteNoise           = Complex.newVector(N);
     samplePath           = Complex.newVector(N);
     envelope             = Real.newVector(N);
-    samplingTimes        = new double[N];
+    samplingTimes        = Real.newVector(N);
 
     try ( Complex randomMeasure = Complex.newVector(N); Real mag = new Real();
           ComplexWhiteNoiseProcess whiteNoise = new ComplexWhiteNoiseProcess())
@@ -164,7 +164,7 @@ public abstract class StationaryGaussianProcessSampler extends
 
       for (int i = 0; i < N; i++)
       {
-        samplingTimes[i] = i * dt;
+        samplingTimes.get(i).set(i * dt);
         samplePath.get(i).norm(bits, envelope.get(i));
       }
 
@@ -190,94 +190,13 @@ public abstract class StationaryGaussianProcessSampler extends
     sample.mul(mag.set(powerSpectralDensity[k] * df).sqrt(bits), bits, randomMeasure.get(k));
   }
 
-  /**
-   * TODO: Replace with {@link Real#variance(int, Real)}
-   * 
-   * @param x
-   * @return
-   */
-  public static double variance(double[] x)
-  {
-    return Arrays.stream(x).map(y -> y * y).average().getAsDouble();
-  }
-
-  /**
-   * TODO: replace with {@link Real#structure(int, int, Real)} which is a
-   * collection of {@link Real#gammaVariance(int, int, Real)}s evaluatedat the
-   * given times (evenly spaced).
-   * 
-   * 
-   * Need to add varianceStructureFunction function to {@link RealFunction} which
-   * will accept an interval of which to quantize before calculating the
-   * associated {@link Real#structure(int, int)} of it
-   * 
-   * @param x
-   * @param maxLagSteps
-   * @return
-   */
-  public static double[] autocorr(double[] x, int maxLagSteps)
-  {
-    int    n   = x.length;
-
-    double var = variance(x);
-
-    if (var < 1e-10)
-    {
-      return new double[maxLagSteps];
-    }
-
-    double[] acorr = new double[maxLagSteps];
-    for (int k = 0; k < maxLagSteps; k++)
-    {
-      if (k == 0)
-      {
-        acorr[k] = 1.0;
-      }
-      else if (n - k > 0)
-      {
-        double cov = 0.0;
-        for (int i = 0; i < n - k; i++)
-        {
-          cov += x[i] * x[i + k];
-        }
-        acorr[k] = (cov / (n - k)) / var;
-      }
-    }
-    return acorr;
-  }
-
-  public static double[] computePowerSpectralDensity(double[] path)
-  {
-
-    try ( Complex complexPath = Complex.newVector(N); Complex fft = Complex.newVector(N);
-          Real mag = new Real(); Real scalingFactor = Real.valueOf(dt).div(N / 2, bits);)
-    {
-      for (int i = 0; i < N; i++)
-      {
-        complexPath.get(i).set(path[i]);
-      }
-
-      arblib.acb_dft(fft, complexPath, N, bits);
-
-      double[] periodogram = new double[N];
-
-      for (int i = 0; i < N; i++)
-      {
-        periodogram[i] = fft.get(i)
-                            .norm(bits, mag)
-                            .pow(2, bits)
-                            .mul(scalingFactor, bits)
-                            .doubleValue();
-      }
-      return periodogram;
-    }
-  }
-
   private static final double L                   = 1000.0;
+
+  final FloatInterval         spectralSupport;
 
   static final double         dt                  = 0.01;
 
-  static private final int    N                   = (int) (L / dt);
+  static final int            N                   = (int) (L / dt);
 
   static final double         MAX_AUTOCORRELATION = 20.0;
 
@@ -311,8 +230,10 @@ public abstract class StationaryGaussianProcessSampler extends
 
   public StationaryGaussianProcessSampler()
   {
-    super();
+    spectralSupport = getSpectralSupport();
   }
+
+  protected abstract FloatInterval getSpectralSupport();
 
   /**
    * TODO: see if there is a way to make the crosshair path and label render with
@@ -382,8 +303,9 @@ public abstract class StationaryGaussianProcessSampler extends
     getKernel(times, theory);
     chart.getDatasets()
          .addAll(new DoubleDataSet("Empirical").set(times,
-                                                    autocorr(samplePath.re().doubleValues(),
-                                                             maxLag)),
+                                                    Statistics.autocorr(samplePath.re()
+                                                                                  .doubleValues(),
+                                                                        maxLag)),
                  new DoubleDataSet("Theoretical Covariance " + getKernel()).set(times, theory));
     chart.getYAxis().setAutoRanging(false);
     chart.getYAxis().setMin(-0.5);
@@ -469,8 +391,8 @@ public abstract class StationaryGaussianProcessSampler extends
     int      positiveFrequencyCount          = N / 2 + 1;
     double[] positiveFrequencies             = new double[positiveFrequencyCount];
     double[] empiricalPowerSpectralDensity   =
-                                           computePowerSpectralDensity(samplePath.im()
-                                                                                 .doubleValues());
+                                           Statistics.computePowerSpectralDensity(samplePath.im()
+                                                                                            .doubleValues());
     double[] theoreticalPowerSpectralDensity = new double[positiveFrequencyCount];
 
     for (int i = 0; i < positiveFrequencyCount; i++)
@@ -519,9 +441,6 @@ public abstract class StationaryGaussianProcessSampler extends
     return chart;
   }
 
-  FloatInterval domain = new FloatInterval(-1,
-                                           1);
-
   protected XYChart newTimeDomainChart()
   {
     XYChart chart = new XYChart(new DefaultNumericAxis("Time",
@@ -533,7 +452,7 @@ public abstract class StationaryGaussianProcessSampler extends
 
     RealDataSet inPhase = new RealDataSet("In-phase",
                                           N,
-                                          domain);
+                                          spectralSupport);
     inPhase.getTimes().set(samplingTimes);
     Real inPhaseVals = inPhase.getValues();
     long ptr1        = Real.getCPtr(inPhaseVals.elements[0]);
@@ -543,19 +462,20 @@ public abstract class StationaryGaussianProcessSampler extends
 
     RealDataSet quad = new RealDataSet("Quadrature",
                                        N,
-                                       domain);
-    double[] times = samplingTimes;
-    quad.getTimes().set(times);
+                                       spectralSupport);
+
+    quad.getTimes().set(samplingTimes);
     quad.getValues().set(samplePath.im());
 
-    DoubleDataSet envPos = new DoubleDataSet("Envelope (+)").set(samplingTimes,
+    DoubleDataSet envPos = new DoubleDataSet("Envelope (+)").set(samplingTimes.doubleValues(),
                                                                  envelope.doubleValues());
     double[]      negEnv = new double[N];
     for (int i = 0; i < N; i++)
     {
       negEnv[i] = -envelope.get(i).doubleValue();
     }
-    DoubleDataSet envNeg = new DoubleDataSet("Envelope (–)").set(samplingTimes, negEnv);
+    DoubleDataSet envNeg = new DoubleDataSet("Envelope (–)").set(samplingTimes.doubleValues(),
+                                                                 negEnv);
     chart.getDatasets().addAll(inPhase, quad, envPos, envNeg);
     return chart;
   }
