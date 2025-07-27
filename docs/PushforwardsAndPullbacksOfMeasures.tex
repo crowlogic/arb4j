@@ -1,261 +1,221 @@
-\documentclass[12pt]{article}
-\usepackage{amsmath, amssymb, amsthm, amsfonts}
-\usepackage{mathrsfs}
-\usepackage{geometry}
-\geometry{margin=1in}
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{amssymb,latexsym,theorem}
 
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}[section]
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{remark}[theorem]{Remark}
-\newtheorem{example}[theorem]{Example}
-
-\title{Pushforward and Pullback Operations in Measure Theory}
-\author{}
-\date{}
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\assign}{:=}
+\newcommand{\tmem}[1]{{\em #1\/}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+{\theorembodyfont{\rmfamily}\newtheorem{remark}{Remark}}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
 
 \begin{document}
+
+\title{Pushforward and Pullback Operations in Measure Theory}
+
+\date{}
 
 \maketitle
 
 \section{Introduction}
 
-The pushforward and pullback operations constitute fundamental mechanisms in measure theory for transforming measures and $\sigma$-algebras through measurable mappings. These operations preserve the essential structure of measurable spaces while enabling the study of measures on different spaces through their relationships via measurable functions.
+Pushforward and pullback operations constitute essential techniques in measure
+theory, enabling the transfer of measures and functions between measurable
+spaces via measurable transformations. These constructs are fundamentally
+connected to the behavior of $\sigma$-algebras and the preservation of
+measurability under mapping, providing indispensable tools for analysis,
+probability theory, and related fields.
 
-\section{Preliminaries and Fundamental Definitions}
+\section{Preliminaries}
 
-\begin{definition}[Measurable Space and Function]
-Let $(X, \mathscr{A})$ and $(Y, \mathscr{B})$ denote measurable spaces. A function $f: X \to Y$ is $(\mathscr{A}, \mathscr{B})$-measurable if for every $B \in \mathscr{B}$, $f^{-1}(B)$ belongs to $\mathscr{A}$.
+\begin{definition}
+  Let $(X, \mathcal{A})$ and $(Y, \mathcal{B})$ be measurable spaces, meaning
+  $X$ and $Y$ are sets, and $\mathcal{A}, \mathcal{B}$ are $\sigma$-algebras
+  of subsets of $X$ and $Y$, respectively. A map $f : X \to Y$ is said to be
+  {\tmem{measurable}} if for all $B \in \mathcal{B}$, the preimage $f^{- 1}
+  (B) \in \mathcal{A}$.
 \end{definition}
 
-\begin{definition}[Measure Space]
-A measure space is a triple $(X, \mathscr{A}, \mu)$, where $(X, \mathscr{A})$ is a measurable space and $\mu: \mathscr{A} \to [0, \infty]$ is a measure.
-\end{definition}
+Let $\mu$ be a measure on $(X, \mathcal{A})$ and $\nu$ a measure on $(Y,
+\mathcal{B})$.
 
-\section{Pushforward Measures}
+\section{The Pushforward (Image) Measure}
 
-\begin{definition}[Pushforward Measure]
-Given a measure space $(X, \mathscr{A}, \mu)$, a measurable space $(Y, \mathscr{B})$, and a $(\mathscr{A}, \mathscr{B})$-measurable function $f: X \to Y$, the pushforward measure $f_{*}\mu$ is the measure on $(Y, \mathscr{B})$ defined by
-\[
-f_{*}\mu(B) = \mu\left( f^{-1}(B) \right), \qquad \forall B \in \mathscr{B}.
-\]
-\end{definition}
-
-\begin{theorem}[Well-definedness of the Pushforward Measure]
-For any $(\mathscr{A}, \mathscr{B})$-measurable $f: X \to Y$, the pushforward $f_{*}\mu$ defines a measure on $(Y, \mathscr{B})$.
-\end{theorem}
-
-\begin{proof}
-The following conditions are verified:
-\begin{enumerate}
-    \item \textit{Non-negativity:} For every $B \in \mathscr{B}$, 
-    \[
-    f_{*}\mu(B) = \mu\left( f^{-1}(B) \right) \geq 0
-    \]
-    since $\mu$ is a measure.
-    \item \textit{Null empty set:} 
-    \[
-    f_{*}\mu(\emptyset) = \mu(f^{-1}(\emptyset)) = \mu(\emptyset) = 0
-    \]
-    because $f^{-1}(\emptyset) = \emptyset$.
-    \item \textit{Countable additivity:} Let $\{B_n\}_{n=1}^\infty \subset \mathscr{B}$ be pairwise disjoint. Observe
-    \[
-    f_{*}\mu\left( \bigcup_{n=1}^\infty B_n \right) = \mu \left( f^{-1}\left( \bigcup_{n=1}^\infty B_n \right) \right ) = \mu \left( \bigcup_{n=1}^\infty f^{-1}(B_n) \right )
-    \]
-    and since the $B_n$ are pairwise disjoint, the $f^{-1}(B_n)$ are also pairwise disjoint, so 
-    \[
-    \mu \left( \bigcup_{n=1}^\infty f^{-1}(B_n) \right ) = \sum_{n=1}^\infty \mu(f^{-1}(B_n)) = \sum_{n=1}^\infty f_{*}\mu (B_n).
-    \]
-\end{enumerate}
-\end{proof}
-
-\begin{theorem}[Change of Variables Formula]
-Let $f: X \to Y$ be $(\mathscr{A}, \mathscr{B})$-measurable and $g: Y \to [0, \infty]$ be $\mathscr{B}$-measurable. Then 
-\[
-\int_Y g \, d(f_{*}\mu) = \int_X (g \circ f) \, d\mu.
-\]
-\end{theorem}
-
-\begin{proof}
-Proceed by the standard construction of the Lebesgue integral using simple functions.
-\begin{enumerate}
-    \item Let $g = \chi_B$ for $B \in \mathscr{B}$. Then
-    \begin{align*}
-        \int_Y \chi_B \, d(f_{*}\mu) &= f_{*}\mu(B) = \mu( f^{-1}(B) ) = \int_X \chi_{f^{-1}(B)} \, d\mu\\
-        &= \int_X \chi_B(f(x)) \, d\mu(x) = \int_X (\chi_B \circ f) \, d\mu.
-    \end{align*}
-    \item Given $g = \sum_{i=1}^n a_i \chi_{B_i}$ with $a_i \geq 0$, $B_i \in \mathscr{B}$, pairwise disjoint,
-    \begin{align*}
-        \int_Y g \, d(f_{*}\mu) &= \sum_{i=1}^n a_i f_{*}\mu(B_i) = \sum_{i=1}^n a_i \mu(f^{-1}(B_i)) \\
-        &= \sum_{i=1}^n a_i \int_X \chi_{f^{-1}(B_i)} \, d\mu = \int_X \sum_{i=1}^n a_i \chi_{f^{-1}(B_i)} \, d\mu \\
-        &= \int_X (g \circ f) \, d\mu.
-    \end{align*}
-    \item For a general non-negative measurable $g$, there exists an increasing sequence $(g_n)$ of simple functions $g_n \uparrow g$ pointwise. The Monotone Convergence Theorem gives
-    \[
-    \int_Y g \, d(f_{*}\mu) = \lim_{n \to \infty} \int_Y g_n \, d(f_{*}\mu) = \lim_{n \to \infty} \int_X (g_n \circ f) \, d\mu = \int_X (g \circ f) \, d\mu.
-    \]
-\end{enumerate}
-The formula thus holds for all non-negative measurable $g$. For general real-valued $g$, split into positive and negative parts.
-\end{proof}
-
-\section{Pullback Operations}
-
-\begin{definition}[Pullback of a $\sigma$-Algebra]
-Given measurable spaces $(X, \mathscr{A})$ and $(Y, \mathscr{B})$, and any function $f: X \to Y$, define
-\[
-f^{*}\mathscr{B} := \{ f^{-1}(B) : B \in \mathscr{B} \}.
-\]
-The collection $f^*\mathscr{B}$ is a $\sigma$-algebra on $X$.
+\begin{definition}
+  [Pushforward Measure] Let $f : X \to Y$ be a measurable function and $(X,
+  \mathcal{A}, \mu)$ a measure space. The {\tmem{pushforward}} (or image)
+  measure $f_{\ast} \mu$ on $(Y, \mathcal{B})$ is defined by
+  \begin{equation}
+    (f_{\ast} \mu) (B) = \mu (f^{- 1} (B)) \forall B \in \mathcal{B}
+  \end{equation}
 \end{definition}
 
 \begin{theorem}
-Let $f: X \to Y$ be arbitrary and $\mathscr{B}$ a $\sigma$-algebra on $Y$. Then $f^*\mathscr{B}$ is a $\sigma$-algebra on $X$.
+  Let $(X, \mathcal{A}, \mu)$ be a measure space, $f : X \to Y$ a measurable
+  function, and $(Y, \mathcal{B})$ a measurable space. Then $f_{\ast} \mu$ is
+  a measure on $(Y, \mathcal{B})$.
 \end{theorem}
 
 \begin{proof}
-The properties are checked as follows:
-\begin{enumerate}
-    \item $X \in f^{*}\mathscr{B}$ since $Y \in \mathscr{B}$ and $f^{-1}(Y) = X$.
-    \item $f^{*}\mathscr{B}$ is closed under complementation. If $A = f^{-1}(B) \in f^{*}\mathscr{B}$ for $B \in \mathscr{B}$, then $A^{c} = (f^{-1}(B))^{c} = f^{-1}(B^{c})$, and $B^{c} \in \mathscr{B}$ as $\mathscr{B}$ is a $\sigma$-algebra.
-    \item $f^{*}\mathscr{B}$ is closed under countable unions. If $A_n = f^{-1}(B_n)$ with $B_n \in \mathscr{B}$, then
-    \[
-    \bigcup_{n=1}^{\infty} A_n = \bigcup_{n=1}^{\infty} f^{-1}(B_n) = f^{-1}\left( \bigcup_{n=1}^{\infty} B_n \right), 
-    \]
-    and $\bigcup_{n=1}^\infty B_n \in \mathscr{B}$.
-\end{enumerate}
+  It suffices to verify the properties of a measure:
+  \begin{enumerate}
+    \item {\tmem{Non-negativity}}:
+    \begin{equation}
+      (f_{\ast} \mu) (B) = \mu (f^{- 1} (B)) \geq 0 \forall B \in \mathcal{B}
+    \end{equation}
+    since $\mu$ is a measure.
+    
+    \item {\tmem{Null empty set}}:
+    \begin{equation}
+      (f_{\ast} \mu) (\emptyset) = \mu (f^{- 1} (\emptyset)) = \mu (\emptyset)
+      = 0
+    \end{equation}
+    \item {\tmem{Countable additivity}}: Let $(B_n)_{n \in \mathbb{N}} \subset
+    \mathcal{B}$ be pairwise disjoint. Then
+    \begin{equation}
+      \begin{array}{cl}
+        (f_{\ast} \mu) \left( \bigcup_{n = 1}^{\infty} B_n \right) & = \mu
+        \left( f^{- 1} \left( \bigcup_{n = 1}^{\infty} B_n \right) \right)\\
+        & = \mu \left( \bigcup_{n = 1}^{\infty} f^{- 1} (B_n) \right)\\
+        & = \sum_{n = 1}^{\infty} \mu (f^{- 1} (B_n))\\
+        & = \sum_{n = 1}^{\infty} (f_{\ast} \mu) (B_n)
+      \end{array}
+    \end{equation}
+    where the third equality uses measurability of $f$ and the fact that
+    preimages preserve unions and disjointness.
+  \end{enumerate}
+  Thus, $f_{\ast} \mu$ is a measure.
 \end{proof}
 
-\begin{definition}[Pullback Measure]
-Let $(Y, \mathscr{B}, \nu)$ be a measure space, and $f: X \to Y$ a measurable function. The \textit{pullback measure} $f^{*}\nu$ is a measure defined on $f^{*}\mathscr{B}$ by
-\[
-f^{*}\nu(A) = \nu(B), \qquad \text{for }A = f^{-1}(B),\ B \in \mathscr{B},
-\]
-provided this is well-defined, i.e., if $A = f^{-1}(B_1) = f^{-1}(B_2)$ implies $\nu(B_1) = \nu(B_2)$.
+\begin{remark}
+  If $\mu$ is a probability measure, then so is $f_{\ast} \mu$. In this
+  context, $f_{\ast} \mu$ describes the distribution of the random variable
+  $f$ induced by $\mu$.
+\end{remark}
+
+\section{The Pullback Operation for Measurable Functions}
+
+The pullback operation allows the transfer of functions and, in more elaborate
+contexts, measures across measurable spaces.
+
+\begin{definition}
+  [Pullback of a Function] Let $f : X \to Y$ be a measurable function and $g :
+  Y \to \mathbb{R}$ a $\mathcal{B}$-measurable function. The {\tmem{pullback}}
+  of $g$ along $f$, denoted $f^{\ast} g$, is defined by
+  \begin{equation}
+    f^{\ast} g \assign g \circ f, \quad x \mapsto g (f (x))
+  \end{equation}
+  for $x \in X$.
 \end{definition}
 
-\begin{theorem}[Well-definedness and Properties of Pullback Measure]
-If $A = f^{-1}(B_1) = f^{-1}(B_2)$ with $B_1,B_2 \in \mathscr{B}$, then $B_1, B_2$ may differ outside $f(X)$. The pullback $f^{*}\nu$ is well-defined if and only if $\nu$ is supported on $f(X)$. In general, for each $A = f^{-1}(B)$, set
-\[
-f^{*}\nu(A) = \nu\big( B \cap f(X) \big).
-\]
-This restores well-definedness and $f^{*}\nu$ is then a measure on $f^{*}\mathscr{B}$.
+\begin{theorem}
+  If $g : Y \to \mathbb{R}$ is $\mathcal{B}$-measurable and $f : X \to Y$ is
+  $\mathcal{A}$-$\mathcal{B}$-measurable, then $f^{\ast} g = g \circ f$ is
+  $\mathcal{A}$-measurable.
 \end{theorem}
 
 \begin{proof}
-Let $A = f^{-1}(B_1) = f^{-1}(B_2)$ for $B_1, B_2 \in \mathscr{B}$. Then $f^{-1}(B_1 \Delta B_2) = \emptyset$, so $(B_1 \Delta B_2) \cap f(X) = \emptyset$, i.e.\ $B_1 \cap f(X) = B_2 \cap f(X)$. If $\nu$ is supported on $f(X)$, then $\nu(B_1) = \nu(B_2)$. More generally, replacing $B$ with $B \cap f(X)$ ensures uniqueness.
+  Let $B \in \mathcal{B} (\mathbb{R})$, the Borel $\sigma$-algebra on
+  $\mathbb{R}$. Then
+  \begin{equation}
+    (f^{\ast} g)^{- 1} (B) = \{x \in X : g (f (x)) \in B\} = f^{- 1} (g^{- 1}
+    (B))
+  \end{equation}
+  Since $g$ is $\mathcal{B}$-measurable, $g^{- 1} (B) \in \mathcal{B}$. Since
+  $f$ is $\mathcal{A}$-$\mathcal{B}$-measurable, $f^{- 1} (g^{- 1} (B)) \in
+  \mathcal{A}$. Thus, $f^{\ast} g$ is $\mathcal{A}$-measurable.
 \end{proof}
 
-\section{Fundamental Relationships}
+\section{Pullback of a Measure: Theoretical Caveat}
 
-\begin{theorem}[Composition of Pushforwards]
-Let $f: X \to Y$ and $g: Y \to Z$ be $(\mathscr{A}, \mathscr{B})$- and $(\mathscr{B}, \mathscr{C})$-measurable respectively. Then, for any measure $\mu$ on $(X, \mathscr{A})$,
-\[
-(g \circ f)_{*}\mu = g_{*}(f_{*}\mu).
-\]
+Generally, the pullback of a measure via a function is not always well
+defined. In particular, given a measure $\nu$ on $(Y, \mathcal{B})$ and a
+measurable $f : X \to Y$, the set function
+\begin{equation}
+  \mu (A) \assign \nu (f (A)) \forall A \in \mathcal{A}
+\end{equation}
+is not, in general, a measure. Issues arise due to the failure of countable
+additivity unless $f$ is injective or further structure is present.
+
+\begin{remark}
+  A legitimate pullback of measures (under the name {\tmem{inverse image
+  measure}}) exists in the context of differentiable manifolds, or via the
+  theory of signed measures and distributions, but not in general for
+  arbitrary measure spaces.
+\end{remark}
+
+\section{The Push-Pull Formula (Change of Variables)}
+
+\begin{theorem}
+  [Pushforward and Integration (Change of Variables)] Let $(X, \mathcal{A},
+  \mu)$ be a measure space, $(Y, \mathcal{B})$ a measurable space, and $f : X
+  \to Y$ a measurable map. Let $g : Y \to [0, + \infty]$ be
+  $\mathcal{B}$-measurable. Then
+  \begin{equation}
+    \int_Y g \hspace{0.17em} d (f_{\ast} \mu) = \int_X g \circ f
+    \hspace{0.17em} d \mu
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-For any $C \in \mathscr{C}$,
-\begin{align*}
-(g \circ f)_{*}\mu(C) &= \mu( (g \circ f)^{-1}(C) ) = \mu( f^{-1}( g^{-1}(C) ) ) \\
-&= f_{*}\mu( g^{-1}(C) ) = g_{*}( f_{*}\mu )(C).
-\end{align*}
+  Consider first $g = \textbf{1}_B$ for $B \in \mathcal{B}$. Then
+  \begin{equation}
+    \int_Y \textbf{1}_B  \hspace{0.17em} d (f_{\ast} \mu) = (f_{\ast} \mu) (B)
+    = \mu (f^{- 1} (B)) = \int_X \textbf{1}_{f^{- 1} (B)}  \hspace{0.17em} d
+    \mu = \int_X (\textbf{1}_B \circ f)  \hspace{0.17em} d \mu
+  \end{equation}
+  By linearity and monotone convergence, the result extends to all
+  non-negative $\mathcal{B}$-measurable functions $g$.
 \end{proof}
 
-\begin{theorem}[Adjunction Property]
-Let $(X, \mathscr{A}, \mu)$ be a measure space, $(Y, \mathscr{B})$ a measurable space, $f: X \to Y$ measurable, and $h: X \to [0,\infty]$ an $\mathscr{A}$-measurable function. Then the following are equivalent:
-\begin{enumerate}
-    \item There exists a $\mathscr{B}$-measurable function $g: Y \to [0,\infty]$ such that $h = g \circ f$ $\mu$-almost everywhere,
-    \item For every $B \in \mathscr{B}$,
-    \[
-    \int_{f^{-1}(B)} h \, d\mu = \int_{B} g \, d(f_{*}\mu).
-    \]
-\end{enumerate}
-\end{theorem}
+\section{Interrelationships and Further Properties}
+
+\begin{proposition}
+  The assignments $f \mapsto f_{\ast}$ and $g \mapsto f^{\ast} g$ are
+  functorial in the sense that
+  \begin{enumerate}
+    \item For measurable maps $f : X \to Y$ and $g : Y \to Z$, $(g \circ
+    f)_{\ast} = g_{\ast} \circ f_{\ast}$ as assignments on measures.
+    
+    \item For measurable maps $f : X \to Y$ and $g : Y \to Z$, $(g \circ
+    f)^{\ast} = f^{\ast} \circ g^{\ast}$ as assignments on functions.
+  \end{enumerate}
+\end{proposition}
 
 \begin{proof}
-Assume (1). Then
-\[
-\int_{f^{-1}(B)} h \, d\mu = \int_{f^{-1}(B)} g \circ f \, d\mu = \int_{B} g \, d(f_{*}\mu)
-\]
-by the change of variables formula.
-
-Assume (2). Define the measure $\nu(E) := \int_{f^{-1}(E)} h \, d\mu$ on $\mathscr{B}$. Since this measure is absolutely continuous with respect to $f_{*}\mu$, the Radon-Nikodym theorem applies and yields a $\mathscr{B}$-measurable $g$ with $d\nu/d(f_{*}\mu) = g$.
-It holds that for $B \in \mathscr{B}$,
-\[
-\int_{B} g \, d(f_{*}\mu) = \nu(B) = \int_{f^{-1}(B)} h \, d\mu.
-\]
-For any $A \in \mathscr{A}$, set $B = f(A)$ and the analogous relation expresses $h = g \circ f$ almost everywhere where $g$ is the Radon-Nikodym derivative of $\nu$ with respect to $f_{*}\mu$. 
-
-More explicitly, for $E \in \mathscr{A}$, using $\mu(E)$ and integrating $h$ over $E$, the set $f(E)$ is $\mathscr{B}$-measurable and, by the disintegration theorem (for probability measures), $h(x)$ is the pullback under $f$ of $g$, $\mu$-a.e.
-\end{proof}
-
-\section{Advanced Properties and Applications}
-
-\begin{theorem}[Pushforward of Absolutely Continuous Measures]
-Let $\mu, \lambda$ be $\sigma$-finite measures on $(X, \mathscr{A})$ with $\mu \ll \lambda$, and let $f: X \to Y$ be $(\mathscr{A}, \mathscr{B})$-measurable. Then $f_{*}\mu \ll f_{*}\lambda$ on $(Y, \mathscr{B})$.
-\end{theorem}
-
-\begin{proof}
-Let $B \in \mathscr{B}$ with $f_{*}\lambda (B) = 0$. Then $\lambda( f^{-1}(B) ) = 0$. As $\mu \ll \lambda$, $\mu( f^{-1}(B) ) = 0$, i.e., $f_{*}\mu (B) = 0$. Thus, $f_{*}\mu \ll f_{*}\lambda$.
-\end{proof}
-
-\begin{theorem}[Radon-Nikodym Theorem under Pushforward]
-Let $(X, \mathscr{A}, \lambda)$ be a $\sigma$-finite measure space, and $f: X \to Y$ be $(\mathscr{A}, \mathscr{B})$-measurable. Suppose $\mu \ll \lambda$, so that there exists a Radon-Nikodym derivative $h = \frac{d\mu}{d\lambda}$. Then 
-\[
-f_{*}\mu \ll f_{*}\lambda,
-\]
-and the Radon-Nikodym derivative $\frac{d(f_{*}\mu)}{d(f_{*}\lambda)}$ is given (in the case $f$ is countable-to-one or $f_{*}\lambda$ is $\sigma$-finite) by
-\[
-\frac{d(f_{*}\mu)}{d(f_{*}\lambda)}(y) = \int_{f^{-1}(y)} h(x)\, d\lambda_y(x),
-\]
-where $\lambda_y$ is the disintegration of $\lambda$ over $f$ at $y$, or, more generally,
-\[
-\frac{d(f_{*}\mu)}{d(f_{*}\lambda)}(y) = \mathbb{E}_{\lambda}[ h \, | \, f = y ].
-\]
-\end{theorem}
-
-\begin{proof}
-Let $B \in \mathscr{B}$. Then
-\[
-f_{*}\mu(B) = \mu( f^{-1}(B) ) = \int_{f^{-1}(B)} h \, d\lambda = \int_{B} \left( \int_{f^{-1}(\{y\})} h(x)\, d\lambda_y(x) \right ) d(f_{*}\lambda)(y).
-\]
-Thus, by the Radon-Nikodym theorem,
-\[
-\frac{d(f_{*}\mu)}{d(f_{*}\lambda)}(y) = \int_{f^{-1}(y)} h(x)\, d\lambda_y(x).
-\]
-Here, $\lambda_y$ is a regular conditional probability measure induced by $f$ and $\lambda$. This formula is justified by the disintegration theorem for $\sigma$-finite measures.
-
-If $f$ is countable-to-one and $\lambda$ is counting measure, then
-\[
-\frac{d(f_{*}\mu)}{d(f_{*}\lambda)}(y) = \sum_{x \in f^{-1}(y)} h(x).
-\]
-In the more general setting, the conditional expectation interpretation holds:
-\[
-\frac{d(f_{*}\mu)}{d(f_{*}\lambda)} (y) = \mathbb{E}_\lambda[ h \mid f = y ]
-\]
-where the right side is understood as the conditional expectation of $h$ given $f(x) = y$.
-\end{proof}
-
-\begin{corollary}[Radon-Nikodym Derivative under Pushforward for Probability Measures]
-If $(X, \mathscr{A}, \lambda)$ is a probability space and $f: X \to Y$ is measurable, then for any probability measure $\mu \ll \lambda$, with $h = \frac{d\mu}{d\lambda}$, the pushforward satisfies 
-\[
-\frac{d(f_{*}\mu)}{d(f_{*}\lambda)}(y) = \mathbb{E}_\lambda [ h \mid f = y ],
-\]
-i.e.\ the conditional expectation of $h$ given $f = y$.
-\end{corollary}
-
-\begin{proof}
-This is a restatement of the result in the theorem above for probability measures, using the definition of conditional expectation.
+  
+  \begin{enumerate}
+    \item Let $\mu$ be a measure on $X$. For $C \in \mathcal{C}$ (where
+    $\mathcal{C}$ is a $\sigma$-algebra on $Z$):
+    \begin{equation}
+      \begin{array}{ll}
+        ((g \circ f)_{\ast} \mu) (C) & = \mu ((g \circ f)^{- 1} (C))\\
+        & = \mu (f^{- 1} (g^{- 1} (C)))\\
+        & = (f_{\ast} \mu) (g^{- 1} (C))\\
+        & = (g_{\ast} f_{\ast} \mu) (C)
+      \end{array}
+    \end{equation}
+    \item Let $h : Z \to \mathbb{R}$. Then for $x \in X$,
+    \begin{equation}
+      \begin{array}{ll}
+        (g \circ f)^{\ast} h (x) & = h (g (f (x)))\\
+        & = (g^{\ast} h) (f (x))\\
+        & = f^{\ast}  (g^{\ast} h) (x)
+      \end{array}
+    \end{equation}
+  \end{enumerate}
 \end{proof}
 
 \section{Conclusion}
 
-The pushforward and pullback operations provide a systematic framework for relating measures and $\sigma$-algebras across different measurable spaces via measurable mappings. The pushforward measure $f_*\mu$ transports a measure from the domain to the codomain, preserving foundational properties, and enables the study of distributions and transformation of integrals via the change of variables formula. The pullback operation $f^*\mathscr{B}$ provides the minimal $\sigma$-algebra structure required for the measurability of $f$, and the pullback of measures formalizes which subsets of the domain are ``visible'' through $f$ in terms of the measure on $Y$.
-
-These constructions are intrinsic to probability theory, analysis, and differential geometry, notably for describing the distributions of random variables and the measures induced by geometric transformations. The detailed interrelations, such as the adjunction property and Radon-Nikodym transformations under pushforward, furnish powerful tools for explicit computations and a deeper understanding of the structure of measure-theoretic transformations.
+Pushforward and pullback operations are pivotal in connecting the structures
+of different measurable spaces via measurable functions. The pushforward
+provides a mechanism to transfer measures in a functorial and natural way,
+while the pullback appropriately lifts functions, preserving measurability.
+The integration change-of-variables formula encapsulates the deep relationship
+between these operations, forming a cornerstone of modern analysis.
 
 \end{document}
