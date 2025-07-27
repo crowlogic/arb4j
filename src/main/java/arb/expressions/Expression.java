@@ -613,11 +613,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (saveGraphs)
     {
-      var graphFile = context.saveDependencyGraph(dependencies);
-      if (graphFile != null)
-      {
-        System.err.println("Function Graph written to " + graphFile);
-      }
+      var graphFile = context.saveDependencyGraph(dependencies);     
     }
     // Declare functions in dependency order
     for (Dependency dependency : dependencies)
@@ -636,7 +632,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void declareIntermediateVariables(ClassVisitor classVisitor)
   {
-
     for (var variable : getSortedIntermediateVariables())
     {
       if (!declaredIntermediateVariables.contains(variable.name))
@@ -844,7 +839,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                   inputVariableName,
                   isInputVariableSpecified);
       }
-      
+
       if (isInputVariableSpecified)
       {
         assureInputNameHasNotAlreadyBeenAssociatedWithAContextVariable(inputVariableName);
@@ -870,12 +865,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     if (indeterminant)
     {
       assignIndeterminantVariable(variable);
-
     }
     else
     {
       assignIndependentVariable(variable);
-
     }
   }
 
@@ -893,13 +886,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected VariableNode<D, C, F> createNewVariableReference(String inputVariableName)
   {
-    var variable = new VariableNode<>(this,
-                                      new VariableReference<>(inputVariableName,
-                                                              null,
-                                                              coDomainType),
-                                      position,
-                                      false);
-    return variable;
+    return new VariableNode<>(this,
+                              new VariableReference<>(inputVariableName,
+                                                      null,
+                                                      coDomainType),
+                              position,
+                              false);
   }
 
   protected void
@@ -1303,8 +1295,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       var fieldName = entry.getKey();
       var fieldType = entry.getValue().getClass();
-      duplicateTopOfTheStack(mv);
-      loadThisFieldOntoStack(mv, fieldName, fieldType);
+      loadThisFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
       Compiler.putField(mv, function.className, fieldName, fieldType);
     }
   }
@@ -2247,6 +2238,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     case "binomial":
       return new BinomialCoefficientNode<>(this);
     case "pFq":
+    case "pfq":
       return new HypergeometricFunctionNode<>(this);
     case "Beta":
     case "beta":
