@@ -1,6 +1,12 @@
-transcribe this pdf into a latex document format coming as close to as possible as capturing all the content exactly as is, but do use label tags and reference tags instead of hardcoding references,make sure each equation has a line number if it appears as a full-line equation regardless of whether or not it is referenced, also use enumeration tags instead of blindly repeating enumerated things, and also use the theorem and proof tags instead of just repeating the text raw, put the whole thing in a complete latex document start to finisb in a code block. i said dont fucking hard coded referneces, that measns DO NOT EVER WRITE (1) use a fuclking tag instead!. DO NOT HARD CODE REFERENCES TO SHIT IN THE BIBLIOGRAPHJY., FUCKING USE THE APPROPRIATE TAGS, BRING AS MUCH STRUCFTURE AND FUCKING ORDER TO THE DOCUMENT AS POSSIBLE WITHOUT LOSING INFORMATION
+transcribe this pdf into a latex document format coming as close to as possible as capturing all the content exactly as is, 
+but do use label tags and reference tags instead of hardcoding references,make sure each equation has a line number if it 
+appears as a full-line equation regardless of whether or not it is referenced, also use enumeration tags instead of blindly 
+repeating enumerated things, and also use the theorem and proof tags instead of just repeating the text raw, put the whole
+thing in a complete latex document start to finisb in a code block. i said dont fucking hard coded referneces, that measns
+DO NOT EVER WRITE (1) use a fuclking tag instead!. DO NOT HARD CODE REFERENCES TO SHIT IN THE BIBLIOGRAPHJY., FUCKING USE
+THE APPROPRIATE TAGS, BRING AS MUCH STRUCTURE AND FUCKING ORDER TO THE DOCUMENT AS POSSIBLE WITHOUT LOSING INFORMATION
 
-When transcribing content from visual or non-LaTeX raw sources (such as images or OCR text files) into LaTeX, follow these instructions to ensure maximum structure, clarity, and cross-referencing integrity:
+follow these instructions precisely to ensure maximum structure, clarity, and cross-referencing integrity:
 
 1. **Always produce a Complete  Document**  
    Always generate the full LaTeX structure, including `\documentclass`, `\begin{document}`, and `\end{document}`.
