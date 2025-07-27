@@ -34,7 +34,13 @@ import arb.functions.real.RealFunction;
 public class RandomWaveSampler extends
                                StationaryGaussianProcessSampler
 {
+  public RealFunction kernel = RealFunction.express("J₀(t*2*π)");
 
+  @Override
+  public RealFunction getKernel()
+  {
+    return kernel;
+  }
   /**
    * Sample the {@link BesselFunctionNodeOfTheFirstKind} of order 0, here used as
    * {@link Real#J0(int, Real)}

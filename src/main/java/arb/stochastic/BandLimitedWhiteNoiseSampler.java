@@ -1,9 +1,11 @@
 package arb.stochastic;
 
 import arb.Real;
+import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.polynomials.orthogonal.real.Type1ChebyshevPolynomials;
+import arb.functions.real.RealFunction;
 
 /**
  * Generates and plots a pseudo-randomly generated path from the Gaussian
@@ -16,7 +18,6 @@ import arb.functions.polynomials.orthogonal.real.Type1ChebyshevPolynomials;
  * path.
  * 
  * 
- * {@link Type1ChebyshevPolynomials}
  * 
  * @author Stephen Crowley
  * 
@@ -24,9 +25,17 @@ import arb.functions.polynomials.orthogonal.real.Type1ChebyshevPolynomials;
  *      {@link TheArb4jLibrary}
  */
 public class BandLimitedWhiteNoiseSampler extends
-                                          StationaryGaussianProcessSampler
+                                          StationaryGaussianProcessSampler 
 {
 
+  public RealFunction kernel = RealFunction.express("sin(t*2*π)/(t*2*π)");
+
+  @Override
+  public RealFunction getKernel()
+  {
+    return kernel;
+  }
+  
   public void getKernel(double[] times, double[] values)
   {
     assert times.length == values.length;
@@ -37,8 +46,7 @@ public class BandLimitedWhiteNoiseSampler extends
       for (int i = 0; i < numPoints; i++)
       {
         var t = times[i] = i * dt;
-        var tau = t*(2*Math.PI);
-        values[i] = t == 0 ? 1 : Math.sin(tau) / tau;
+        values[i] = t == 0 ? 1 : kernel.eval(t);
       }
     }
   }
@@ -50,7 +58,7 @@ public class BandLimitedWhiteNoiseSampler extends
 
     for (int i = 0; i < freq.length; i++)
     {
-      psd[i] = Math.abs(freq[i]) < 1.0 ? 1.0 : 0;
+      psd[i] = Math.abs(freq[i]) <= 1.0 ? 1.0 : 0;
     }
     return psd;
   }
@@ -59,4 +67,5 @@ public class BandLimitedWhiteNoiseSampler extends
   {
     launch(args);
   }
+
 }

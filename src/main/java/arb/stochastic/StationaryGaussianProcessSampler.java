@@ -393,7 +393,7 @@ public abstract class StationaryGaussianProcessSampler extends
          .addAll(new DoubleDataSet("Empirical").set(times,
                                                     autocorr(samplePath.re().doubleValues(),
                                                              maxLag)),
-                 new DoubleDataSet("Theoretical").set(times, theory));
+                 new DoubleDataSet("Theoretical Covariance " + getKernel()).set(times, theory));
     chart.getYAxis().setAutoRanging(false);
     chart.getYAxis().setMin(-0.5);
     chart.getYAxis().setMax(1.05);
@@ -655,5 +655,7 @@ public abstract class StationaryGaussianProcessSampler extends
 
     return charts;
   }
+
+  public abstract RealFunction getKernel();
 
 }

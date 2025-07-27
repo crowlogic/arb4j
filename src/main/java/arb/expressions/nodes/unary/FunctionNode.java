@@ -692,7 +692,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public String toString()
   {
-    return String.format("%s(%s)", functionName, arg == null ? "" : arg).replace("sqrt", "√");
+    return String.format("%s(%s)", functionName, arg == null ? "" : arg)
+                 .replaceAll("sqrt", "√")
+                 .replaceAll("J0", "J₀");
   }
 
   @Override
