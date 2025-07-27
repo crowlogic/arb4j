@@ -32,7 +32,7 @@ When transcribing content from visual or non-LaTeX raw sources (such as images o
    - Carefully render mathematical expressions as they appear in the source.
 
 8. **Equation Numbering**
-   - All displayed equations receive a number via the LaTeX environment unless they are specifically unnumbered in the original (use `\begin{equation*}` only if clearly appropriate).
+   - All displayed equations receive a number via the LaTeX environment 
    - Never number equations manually in the output.
 
 9. **Labels and Cross-references**
@@ -49,7 +49,7 @@ When transcribing content from visual or non-LaTeX raw sources (such as images o
 
 12. **No Assumptions**
     - Do not assume input is already in LaTeX (do not repeat or reference the type of input).
-    - Never omit content or paraphrase-transcribe faithfully as it appears.
+    - Never omit content or paraphrase. Transcribe faithfully as it appears.
 
 13. **Error-Free References**
     - Double check that every label used in a `\ref` or `\eqref` command is actually assigned to an environment.
@@ -58,4 +58,4 @@ When transcribing content from visual or non-LaTeX raw sources (such as images o
 14. **Footnotes**
     - Make sure all footnotes are represented using the appropriate footnote tags
     
-By adhering to these rules, you will produce a LaTeX document that is both structured, precise, and ready for further academic or technical use.
+By adhere to these rules and produce a LaTeX document that is structured, precise, and production ready 
