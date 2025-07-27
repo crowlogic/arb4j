@@ -72,12 +72,15 @@
 
   <\definition>
     [Bandlimited Process] A stationary Gaussian process is called bandlimited
-    if its spectral support is bounded, i.e., if there exist constants
-    <math|a,b\<in\>\<bbb-R\>> with <math|a\<less\>b> such that
+    if its spectral support is a compact subset of <math|\<bbb-R\>>, i.e., if
+    there exist constants <math|a,b\<in\>\<bbb-R\>> with <math|a\<less\>b>
+    such that
 
     <\equation>
       <math-up|supp><around|(|S|)>\<subseteq\><around|[|a,b|]>
     </equation>
+
+    and <math|<math-up|supp><around|(|S|)>> is closed and bounded.
   </definition>
 
   <section|Main Results>
@@ -108,10 +111,18 @@
       <around|(|2*\<pi\>*\<tau\>|)>|2*\<pi\>*\<tau\>>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\><eq-number>>>|<row|<cell|>|<cell|=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|e<rsup|i*2*\<pi\>*\<tau\>>-e<rsup|-i*2*\<pi\>*\<tau\>>|2*i*\<tau\>>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\><eq-number>>>|<row|<cell|>|<cell|=<frac|1|4*\<pi\>*i>*<around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|e<rsup|-i*<around|(|\<omega\>-2*\<pi\>|)>*\<tau\>>|\<tau\>>*d*\<tau\>-<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|e<rsup|-i*<around|(|\<omega\>+2*\<pi\>|)>*\<tau\>>|\<tau\>>*d*\<tau\>|]><eq-number>>>>>
     </align>
 
-    By the well-known result that the Fourier transform of <math|<frac|sin
-    <around|(|a*\<tau\>|)>|\<pi\>*\<tau\>>> is
-    <math|<math-up|rect><rsub|<around|[|-a,a|]>><around|(|\<omega\>|)>>, it
-    follows that
+    Computing the Fourier transform of <math|<frac|sin
+    <around|(|a*\<tau\>|)>|\<pi\>*\<tau\>>> directly: for <math|a\<gtr\>0>,
+
+    <\align>
+      <tformat|<table|<row|<cell|<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|sin
+      <around|(|a*\<tau\>|)>|\<pi\>*\<tau\>>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\>>|<cell|=<frac|1|\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|e<rsup|i*a*\<tau\>>-e<rsup|-i*a*\<tau\>>|2*i*\<tau\>>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\><eq-number>>>|<row|<cell|>|<cell|=<frac|1|2*\<pi\>*i>*<around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|e<rsup|-i*<around|(|\<omega\>-a|)>*\<tau\>>|\<tau\>>*d*\<tau\>-<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|e<rsup|-i*<around|(|\<omega\>+a|)>*\<tau\>>|\<tau\>>*d*\<tau\>|]><eq-number>>>>>
+    </align>
+
+    Using the fact that <math|<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|e<rsup|-i*\<alpha\>*\<tau\>>|\<tau\>>*d*\<tau\>=-i*\<pi\><text|sgn><around|(|\<alpha\>|)>>
+    where sgn is the sign function, this evaluates to
+    <math|<math-up|rect><rsub|<around|[|-a,a|]>><around|(|\<omega\>|)>>.
+    Therefore,
 
     <\equation>
       S<around|(|\<omega\>|)>=<frac|1|2><math-up|rect><rsub|<around|[|-1,1|]>><around|(|\<omega\>|)>=<frac|1|2>*<around|[|H*<around|(|\<omega\>+1|)>-H*<around|(|\<omega\>-1|)>|]>
@@ -157,27 +168,6 @@
     for some appropriate function <math|f>.
   </example>
 
-  <\theorem>
-    [Wiener-Khintchine Relation for Bandlimited Processes] If a Gaussian
-    process has spectral density <math|S<around|(|\<omega\>|)>=g<around|(|\<omega\>|)>\<cdot\><math-up|rect><rsub|<around|[|a,b|]>><around|(|\<omega\>|)>>,
-    then its covariance function is given by
-
-    <\equation>
-      K<around|(|\<tau\>|)>=<frac|1|2*\<pi\>>*<big|int><rsub|a><rsup|b>g<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*\<tau\>>*d*\<omega\>
-    </equation>
-  </theorem>
-
-  <\proof>
-    By the inverse Fourier transform relation,
-
-    <\align>
-      <tformat|<table|<row|<cell|K<around|(|\<tau\>|)>>|<cell|=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>S<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*\<tau\>>*d*\<omega\><eq-number>>>|<row|<cell|>|<cell|=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|\<omega\>|)>\<cdot\><math-up|rect><rsub|<around|[|a,b|]>><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*\<tau\>>*d*\<omega\><eq-number>>>|<row|<cell|>|<cell|=<frac|1|2*\<pi\>>*<big|int><rsub|a><rsup|b>g<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*\<tau\>>*d*\<omega\><eq-number>>>>>
-    </align>
-
-    since <math|<math-up|rect><rsub|<around|[|a,b|]>><around|(|\<omega\>|)>=0>
-    outside <math|<around|[|a,b|]>>.
-  </proof>
-
   <section|Conclusion>
 
   The spectral support serves as the fundamental concept for characterizing
@@ -196,9 +186,9 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1>>
-    <associate|auto-2|<tuple|2|2>>
-    <associate|auto-3|<tuple|3|3>>
+    <associate|auto-1|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_11.tm>>
+    <associate|auto-2|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_11.tm>>
+    <associate|auto-3|<tuple|3|3|../.TeXmacs/texts/scratch/no_name_11.tm>>
   </collection>
 </references>
 

@@ -65,11 +65,12 @@
 
 \begin{definition}
   [Bandlimited Process] A stationary Gaussian process is called bandlimited if
-  its spectral support is bounded, i.e., if there exist constants $a, b \in
-  \mathbb{R}$ with $a < b$ such that
+  its spectral support is a compact subset of $\mathbb{R}$, i.e., if there
+  exist constants $a, b \in \mathbb{R}$ with $a < b$ such that
   \begin{equation}
     \mathrm{supp} (S) \subseteq [a, b]
   \end{equation}
+  and $\mathrm{supp} (S)$ is closed and bounded.
 \end{definition}
 
 \section{Main Results}
@@ -101,8 +102,21 @@
     i (\omega + 2 \pi) \tau}}{\tau} d \tau \right] 
   \end{align}
   
-  By the well-known result that the Fourier transform of $\frac{\sin (a
-  \tau)}{\pi \tau}$ is $\mathrm{rect}_{[- a, a]} (\omega)$, it follows that
+  Computing the Fourier transform of $\frac{\sin (a \tau)}{\pi \tau}$
+  directly: for $a > 0$,
+  
+  \begin{align}
+    \int_{- \infty}^{\infty} \frac{\sin (a \tau)}{\pi \tau} e^{- i \omega
+    \tau} d \tau & = \frac{1}{\pi}  \int_{- \infty}^{\infty} \frac{e^{ia \tau}
+    - e^{- ia \tau}}{2 i \tau} e^{- i \omega \tau} d \tau \\
+    & = \frac{1}{2 \pi i}  \left[ \int_{- \infty}^{\infty} \frac{e^{- i
+    (\omega - a) \tau}}{\tau} d \tau - \int_{- \infty}^{\infty} \frac{e^{- i
+    (\omega + a) \tau}}{\tau} d \tau \right] 
+  \end{align}
+  
+  Using the fact that $\int_{- \infty}^{\infty} \frac{e^{- i \alpha
+  \tau}}{\tau} d \tau = - i \pi \text{sgn} (\alpha)$ where sgn is the sign
+  function, this evaluates to $\mathrm{rect}_{[- a, a]} (\omega)$. Therefore,
   \begin{equation}
     S (\omega) = \frac{1}{2} \mathrm{rect}_{[- 1, 1]} (\omega) = \frac{1}{2} 
     [H (\omega + 1) - H (\omega - 1)]
@@ -145,29 +159,6 @@
   
   for some appropriate function $f$.
 \end{example}
-
-\begin{theorem}
-  [Wiener-Khintchine Relation for Bandlimited Processes] If a Gaussian process
-  has spectral density $S (\omega) = g (\omega) \cdot \mathrm{rect}_{[a, b]}
-  (\omega)$, then its covariance function is given by
-  \begin{equation}
-    K (\tau) = \frac{1}{2 \pi}  \int_a^b g (\omega) e^{i \omega \tau} d \omega
-  \end{equation}
-\end{theorem}
-
-\begin{proof}
-  By the inverse Fourier transform relation,
-  
-  \begin{align}
-    K (\tau) & = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} S (\omega) e^{i
-    \omega \tau} d \omega \\
-    & = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} g (\omega) \cdot
-    \mathrm{rect}_{[a, b]} (\omega) e^{i \omega \tau} d \omega \\
-    & = \frac{1}{2 \pi}  \int_a^b g (\omega) e^{i \omega \tau} d \omega 
-  \end{align}
-  
-  since $\mathrm{rect}_{[a, b]} (\omega) = 0$ outside $[a, b]$.
-\end{proof}
 
 \section{Conclusion}
 
