@@ -1,6 +1,7 @@
 package arb.stochastic;
 
 import arb.Complex;
+import arb.stochastic.processes.ComplexWhiteNoiseProcess;
 import junit.framework.TestCase;
 
 public class ComplexWhiteNoiseProcessTest extends

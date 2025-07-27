@@ -3,6 +3,7 @@ package arb.stochastic;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.stochastic.processes.RealWhiteNoiseProcess;
 import junit.framework.TestCase;
 
 /**

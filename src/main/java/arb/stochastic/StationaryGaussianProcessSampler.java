@@ -13,6 +13,7 @@ import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
+import arb.stochastic.processes.ComplexWhiteNoiseProcess;
 import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;

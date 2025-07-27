@@ -1,4 +1,4 @@
-package arb.stochastic;
+package arb.stochastic.processes;
 
 import java.util.Iterator;
 import java.util.Spliterator;

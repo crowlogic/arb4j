@@ -1,4 +1,4 @@
-package arb.stochastic;
+package arb.stochastic.processes;
 
 import java.util.*;
 import java.util.stream.Stream;
