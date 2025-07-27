@@ -1,0 +1,54 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{latexsym}
+
+%%%%%%%%%% Start TeXmacs macros
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\
+
+\begin{theorem}
+  [Theoretical Limitations of Large Language Models] Let $\mathcal{M}$ be any
+  large language model trained on a finite corpus with finite computational
+  resources, producing outputs $Y$ in response to inputs $X$ according to a
+  conditional probability distribution $P_{\mathcal{M}} (Y|X)$. Then the
+  following limitations hold:
+  \begin{enumerate}
+    \item $\mathcal{M}$ cannot guarantee the generation of factually correct
+    or logically valid statements for arbitrary input $X$.
+    
+    \item $\mathcal{M}$ cannot exceed the information or concepts present in
+    its training data, nor can it create fundamentally new knowledge without
+    external input.
+    
+    \item $\mathcal{M}$ may produce outputs exhibiting bias or error if such
+    patterns are present in its data or training procedure.
+    
+    \item $\mathcal{M}$ lacks self-awareness, consciousness, or genuine
+    understanding, and does not possess intent.
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  These statements follow from the design of $\mathcal{M}$ as a statistical
+  pattern-matching system, which:
+  \begin{itemize}
+    \item Relies on approximating $P (Y|X)$ as learned from finite samples, so
+    cannot generalize perfectly or reason infallibly.
+    
+    \item Is limited to correlations learnable from its dataset and the
+    knowledge distribution within that data.
+    
+    \item Is subject to inheriting limitations, errors, and biases found in
+    the training data and the algorithms used.
+    
+    \item Is not designed with the faculties of sentient beings, so cannot
+    have attributes such as understanding or intent.
+  \end{itemize}
+\end{proof}
+
+\end{document}
