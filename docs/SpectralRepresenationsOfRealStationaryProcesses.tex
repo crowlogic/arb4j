@@ -1,0 +1,176 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,latexsym}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{corollary}{Corollary}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\begin{theorem}
+  [Real Spectral Representation for Stationary Processes] Let $\{\xi (t), t
+  \in \mathbb{R}\}$ be a real-valued, zero-mean, second-order stationary
+  process with covariance function $r (t) = E [\xi (t) \xi (0)]$ and spectral
+  distribution function $F (\omega)$. Then there exist real-valued processes
+  $\{U (\omega), \omega \geq 0\}$ and $\{V (\omega), \omega \geq 0\}$ with
+  orthogonal increments such that:
+  \begin{enumerate}
+    \item \tmtextbf{Process Representation:}
+    \begin{equation}
+      \xi (t) = \int_0^{\infty} [\cos (\omega t) \hspace{0.17em} dU (\omega) +
+      \sin (\omega t) \hspace{0.17em} dV (\omega)]
+    \end{equation}
+    \item \tmtextbf{Covariance Representation:}
+    \begin{equation}
+      r (t) = \int_0^{\infty} \cos (\omega t)  \hspace{0.17em} dF (\omega)
+    \end{equation}
+    \item \tmtextbf{Orthogonality Properties:}
+    
+    \begin{align}
+      E [U (\omega)] & = E [V (\omega)] = 0 \\
+      E [dU (\omega_1) dU (\omega_2)] & = E [dV (\omega_1) dV (\omega_2)] =
+      \delta (\omega_1 - \omega_2) dF (\omega_1) \\
+      E [dU (\omega_1) dV (\omega_2)] & = 0 \quad \text{for all } \omega_1,
+      \omega_2 \geq 0 
+    \end{align}
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  {\linebreak}
+  \begin{enumerate}
+    \item \tmtextbf{Construction from Complex Representation:} From the
+    complex spectral representation theorem, we have:
+    \begin{equation}
+      \xi (t) = \int_{- \infty}^{\infty} e^{i \omega t} d \zeta (\omega)
+    \end{equation}
+    where $\zeta (\omega)$ is a complex-valued process with orthogonal
+    increments.
+    
+    \item \tmtextbf{Reality Condition:} Since $\xi (t)$ is real-valued, we
+    have $\xi (t) = \overline{\xi (t)}$, which implies:
+    \begin{equation}
+      \int_{- \infty}^{\infty} e^{i \omega t} d \zeta (\omega) = \int_{-
+      \infty}^{\infty} e^{- i \omega t} d \overline{\zeta (\omega)}
+    \end{equation}
+    \item \tmtextbf{Symmetry Property:} This reality condition forces the
+    spectral process to satisfy:
+    \begin{equation}
+      d \zeta (- \omega) = d \overline{\zeta (\omega)}
+    \end{equation}
+    for all $\omega$.
+    
+    \item \tmtextbf{Decomposition into Real and Imaginary Parts:} For $\omega
+    > 0$, write
+    \begin{equation}
+      d \zeta (\omega) = dA (\omega) + i \hspace{0.17em} dB (\omega)
+    \end{equation}
+    where $dA (\omega)$ and $dB (\omega)$ are real-valued processes, and thus
+    \begin{equation}
+      d \zeta (- \omega) = dA (\omega) - i \hspace{0.17em} dB (\omega)
+    \end{equation}
+    \item \tmtextbf{Derivation of Real Spectral Representation:}
+    \begin{equation}
+      \begin{array}{ll}
+        \xi (t) & = \int_0^{\infty} e^{i \omega t} d \zeta (\omega) +
+        \int_0^{\infty} e^{- i \omega t} d \zeta (- \omega)\\
+        & = \int_0^{\infty} e^{i \omega t}  [dA (\omega) + i \hspace{0.17em}
+        dB (\omega)] + e^{- i \omega t}  [dA (\omega) - i \hspace{0.17em} dB
+        (\omega)]\\
+        & = \int_0^{\infty} [(e^{i \omega t} + e^{- i \omega t}) dA (\omega)
+        + i (e^{i \omega t} - e^{- i \omega t}) dB (\omega)]\\
+        & = \int_0^{\infty} 2 \cos (\omega t) dA (\omega) + 2 \sin (\omega t)
+        dB (\omega)
+      \end{array}
+    \end{equation}
+    since
+    \begin{equation}
+      e^{i \omega t} + e^{- i \omega t} = 2 \cos (\omega t)
+    \end{equation}
+    and
+    \begin{equation}
+      i (e^{i \omega t} - e^{- i \omega t}) = 2 \sin (\omega t)
+    \end{equation}
+    \item \tmtextbf{Definition of U and V:} If we define
+    \begin{equation}
+      dU (\omega) = 2 \hspace{0.17em} dA (\omega)
+    \end{equation}
+    and
+    \begin{equation}
+      dV (\omega) = 2 \hspace{0.17em} dB (\omega)
+    \end{equation}
+    then
+    \begin{equation}
+      \xi (t) = \int_0^{\infty} \cos (\omega t) dU (\omega) + \sin (\omega t)
+      dV (\omega)
+    \end{equation}
+    \item \tmtextbf{Orthogonality Verification:} We have
+    \begin{equation}
+      E [|d \zeta (\omega) |^2] = dF (\omega)
+    \end{equation}
+    therefore
+    \begin{equation}
+      E [dA (\omega)^2] = E [dB (\omega)^2] = \frac{1}{2}  \hspace{0.17em} dF
+      (\omega)
+    \end{equation}
+    since
+    \begin{equation}
+      |d \zeta (\omega) |^2 = dA (\omega)^2 + dB (\omega)^2
+    \end{equation}
+    thus
+    \begin{equation}
+      E [dU (\omega)^2] = E [dV (\omega)^2] = 4 \cdot \frac{1}{2} dF (\omega)
+      = dF (\omega)
+    \end{equation}
+    since $dA$ and $dB$ have orthogonal increments.
+    
+    \item \tmtextbf{Covariance Function:} Compute the covariance:
+    \begin{equation}
+      \begin{array}{ll}
+        r (t) & = E [\xi (t) \xi (0)]\\
+        & = E \left[ \int_0^{\infty} \cos (\omega t) dU (\omega) + \sin
+        (\omega t) dV (\omega) \int_0^{\infty} dU (\omega') \right]\\
+        & = \int_0^{\infty} \cos (\omega t) E [dU (\omega) dU (\omega)] +
+        \sin (\omega t) E [dV (\omega) dU (\omega)]\\
+        & \quad + \int_0^{\infty} \cos (\omega t) E [dU (\omega) dV (\omega)]
+        + \sin (\omega t) E [dV (\omega) dV (\omega)]\\
+        & = \int_0^{\infty} \cos (\omega t) E [dU (\omega)^2] + \sin (\omega
+        t) E [dV (\omega)^2
+      \end{array}
+    \end{equation}
+    where all cross-terms vanish by orthogonality. Recalling
+    \begin{equation}
+      E [dU (\omega)^2] = E [dV (\omega)^2] = dF (\omega)
+    \end{equation}
+    and noting that expectation of the sine term vanishes since the mean of
+    $dV (\omega)$ is zero and sine is odd; thus,
+    \begin{equation}
+      r (t) = \int_0^{\infty} \cos (\omega t) dF (\omega)
+    \end{equation}
+    as required.
+  \end{enumerate}
+  
+\end{proof}
+
+\begin{corollary}
+  [Physical Interpretation] In the real spectral representation:
+  \begin{enumerate}
+    \item $\cos (\omega t) dU (\omega)$ represents the cosine component at
+    frequency $\omega$ with random amplitude $dU (\omega)$.
+    
+    \item $\sin (\omega t) dV (\omega)$ represents the sine component at
+    frequency $\omega$ with random amplitude $dV (\omega)$.
+    
+    \item $dF (\omega)$ represents the average power contributed by frequency
+    components in $(\omega, \omega + d \omega)$.
+    
+    \item The processes $U (\omega)$ and $V (\omega)$ are uncorrelated and
+    have equal variance increments.
+  \end{enumerate}
+\end{corollary}
+
+\end{document}
