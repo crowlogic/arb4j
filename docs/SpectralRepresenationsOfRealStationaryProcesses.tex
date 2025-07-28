@@ -1,11 +1,13 @@
 \documentclass{article}
 \usepackage[english]{babel}
-\usepackage{amsmath,amssymb,latexsym}
+\usepackage{amsmath,amssymb,latexsym,theorem}
 
 %%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmem}[1]{{\em #1\/}}
 \newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
 \newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
 \newtheorem{corollary}{Corollary}
+{\theorembodyfont{\rmfamily}\newtheorem{remark}{Remark}}
 \newtheorem{theorem}{Theorem}
 %%%%%%%%%% End TeXmacs macros
 
@@ -172,5 +174,113 @@
     have equal variance increments.
   \end{enumerate}
 \end{corollary}
+
+\
+
+\begin{theorem}
+  [U and V Processes] For a real-valued stationary process $\xi (t)$ with
+  spectral representation
+  \begin{equation}
+    \xi (t) = \int_0^{\infty} [\cos (\omega t) \hspace{0.17em} dU (\omega) +
+    \sin (\omega t) \hspace{0.17em} dV (\omega)]
+  \end{equation}
+  the processes $U (\omega)$ and $V (\omega)$ are given explicitly by:
+  \begin{enumerate}
+    \item \tmtextbf{U-process formula:}
+    \begin{equation}
+      U (\omega) = \lim_{T \to \infty}  \frac{1}{\pi}  \int_{- T}^T \frac{1 -
+      \cos (\omega t)}{t} \xi (t)  \hspace{0.17em} dt
+    \end{equation}
+    \item \tmtextbf{V-process formula:}
+    \begin{equation}
+      V (\omega) = \lim_{T \to \infty}  \frac{1}{\pi}  \int_{- T}^T \frac{\sin
+      (\omega t)}{t} \xi (t)  \hspace{0.17em} dt
+    \end{equation}
+    \item \tmtextbf{Alternative forms using sine and cosine integrals:}
+    
+    \begin{align}
+      U (\omega) & = \lim_{T \to \infty}  \frac{2}{\pi}  \int_0^T \frac{1 -
+      \cos (\omega t)}{t} \xi (t)  \hspace{0.17em} dt \\
+      V (\omega) & = \lim_{T \to \infty}  \frac{2}{\pi}  \int_0^T \frac{\sin
+      (\omega t)}{t} \xi (t)  \hspace{0.17em} dt 
+    \end{align}
+    
+    \item \tmtextbf{Incremental form:}
+    
+    \begin{align}
+      U (\omega_2) - U (\omega_1) & = \lim_{T \to \infty}  \frac{1}{\pi} 
+      \int_{- T}^T \frac{\cos (\omega_1 t) - \cos (\omega_2 t)}{t} \xi (t) 
+      \hspace{0.17em} dt \\
+      V (\omega_2) - V (\omega_1) & = \lim_{T \to \infty}  \frac{1}{\pi} 
+      \int_{- T}^T \frac{\sin (\omega_2 t) - \sin (\omega_1 t)}{t} \xi (t) 
+      \hspace{0.17em} dt 
+    \end{align}
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  \begin{enumerate}
+    \item Starting from the complex inversion formula:
+    \begin{equation}
+      \zeta (\lambda) - \zeta (0) = \lim_{T \to \infty}  \frac{1}{2 \pi} 
+      \int_{- T}^T \frac{1 - e^{- it \lambda}}{- it} \xi (t)  \hspace{0.17em}
+      dt
+    \end{equation}
+    \item For real processes, we have the relations:
+    
+    \begin{align}
+      d \zeta (\omega) & = \frac{1}{2}  [dU (\omega) - i \hspace{0.17em} dV
+      (\omega)]  \quad \text{for } \omega > 0 \\
+      d \zeta (- \omega) & = \frac{1}{2}  [dU (\omega) + i \hspace{0.17em} dV
+      (\omega)]  \quad \text{for } \omega > 0 
+    \end{align}
+    
+    \item Therefore:
+    
+    \begin{align}
+      U (\omega) - U (0) & = 2 [\zeta (\omega) - \zeta (0)] + 2 [\zeta (-
+      \omega) - \zeta (0)] \\
+      V (\omega) - V (0) & = 2 i [\zeta (\omega) - \zeta (0)] - 2 i [\zeta (-
+      \omega) - \zeta (0)] 
+    \end{align}
+    
+    \item Substituting the inversion formula:
+    
+    \begin{align}
+      U (\omega) & = \lim_{T \to \infty}  \frac{1}{\pi}  \int_{- T}^T \frac{1
+      - \cos (\omega t)}{t} \xi (t)  \hspace{0.17em} dt \\
+      V (\omega) & = \lim_{T \to \infty}  \frac{1}{\pi}  \int_{- T}^T
+      \frac{\sin (\omega t)}{t} \xi (t)  \hspace{0.17em} dt 
+    \end{align}
+    
+    where we used $U (0) = V (0) = 0$.
+    
+    \item The alternative forms follow from the fact that $\xi (t)$ is real,
+    making the integrands even for $U (\omega)$ and odd for $V (\omega)$.
+  \end{enumerate}
+\end{proof}
+
+\begin{remark}
+  The objects $U (\omega)$ and $V (\omega)$ appearing in the real spectral
+  representation of a stationary process,
+  \begin{equation}
+    \xi (t) = \int_0^{\infty} \cos (\omega t)  \hspace{0.17em} dU (\omega) +
+    \int_0^{\infty} \sin (\omega t)  \hspace{0.17em} dV (\omega)
+  \end{equation}
+  are not stochastic processes in the conventional sense (indexed by time or
+  evolving in time), but are more properly understood as {\tmem{random
+  measures}} (or random set functions) on the frequency axis $[0, \infty)$.
+  Their main property is that their increments over disjoint frequency
+  intervals are orthogonal, i.e., uncorrelated (and independent if Gaussian).
+  The notation $U (\omega)$ denotes the cumulative random measure up to
+  frequency $\omega$:
+  \begin{equation}
+    U (\omega) = U ([0, \omega]) \qquad V (\omega) = V ([0, \omega])
+  \end{equation}
+  Thus, while legacy literature (e.g., Cram{\'e}r, Leadbetter) sometimes
+  refers to them as ``processes'', in modern probability theory they are
+  correctly regarded as random orthogonal-increment measures determined by the
+  spectral measure of the stationary process.
+\end{remark}
 
 \end{document}

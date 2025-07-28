@@ -211,6 +211,135 @@
       increments.
     </enumerate>
   </corollary>
+
+  <new-theorem|theorem|Theorem>
+
+  <\theorem>
+    [U and V Processes] For a real-valued stationary process
+    <math|\<xi\><around|(|t|)>> with spectral representation
+
+    <\equation>
+      \<xi\><around|(|t|)>=<big|int><rsub|0><rsup|\<infty\>><around|[|cos
+      <around|(|\<omega\>*t|)>*<space|0.17em>d*U<around|(|\<omega\>|)>+sin
+      <around|(|\<omega\>*t|)>*<space|0.17em>d*V<around|(|\<omega\>|)>|]>
+    </equation>
+
+    the processes <math|U<around|(|\<omega\>|)>> and
+    <math|V<around|(|\<omega\>|)>> are given explicitly by:
+
+    <\enumerate>
+      <item><with|font-series|bold|U-process formula:>
+
+      <\equation>
+        U<around|(|\<omega\>|)>=lim<rsub|T\<to\>\<infty\>>
+        <frac|1|\<pi\>>*<big|int><rsub|-T><rsup|T><frac|1-cos
+        <around|(|\<omega\>*t|)>|t>*\<xi\><around|(|t|)>*<space|0.17em>d*t
+      </equation>
+
+      <item><with|font-series|bold|V-process formula:>
+
+      <\equation>
+        V<around|(|\<omega\>|)>=lim<rsub|T\<to\>\<infty\>>
+        <frac|1|\<pi\>>*<big|int><rsub|-T><rsup|T><frac|sin
+        <around|(|\<omega\>*t|)>|t>*\<xi\><around|(|t|)>*<space|0.17em>d*t
+      </equation>
+
+      <item><with|font-series|bold|Alternative forms using sine and cosine
+      integrals:>
+
+      <\align>
+        <tformat|<table|<row|<cell|U<around|(|\<omega\>|)>>|<cell|=lim<rsub|T\<to\>\<infty\>>
+        <frac|2|\<pi\>>*<big|int><rsub|0><rsup|T><frac|1-cos
+        <around|(|\<omega\>*t|)>|t>*\<xi\><around|(|t|)>*<space|0.17em>d*t<eq-number>>>|<row|<cell|V<around|(|\<omega\>|)>>|<cell|=lim<rsub|T\<to\>\<infty\>>
+        <frac|2|\<pi\>>*<big|int><rsub|0><rsup|T><frac|sin
+        <around|(|\<omega\>*t|)>|t>*\<xi\><around|(|t|)>*<space|0.17em>d*t<eq-number>>>>>
+      </align>
+
+      <item><with|font-series|bold|Incremental form:>
+
+      <\align>
+        <tformat|<table|<row|<cell|U<around|(|\<omega\><rsub|2>|)>-U<around|(|\<omega\><rsub|1>|)>>|<cell|=lim<rsub|T\<to\>\<infty\>>
+        <frac|1|\<pi\>>*<big|int><rsub|-T><rsup|T><frac|cos
+        <around|(|\<omega\><rsub|1>*t|)>-cos
+        <around|(|\<omega\><rsub|2>*t|)>|t>*\<xi\><around|(|t|)>*<space|0.17em>d*t<eq-number>>>|<row|<cell|V<around|(|\<omega\><rsub|2>|)>-V<around|(|\<omega\><rsub|1>|)>>|<cell|=lim<rsub|T\<to\>\<infty\>>
+        <frac|1|\<pi\>>*<big|int><rsub|-T><rsup|T><frac|sin
+        <around|(|\<omega\><rsub|2>*t|)>-sin
+        <around|(|\<omega\><rsub|1>*t|)>|t>*\<xi\><around|(|t|)>*<space|0.17em>d*t<eq-number>>>>>
+      </align>
+    </enumerate>
+  </theorem>
+
+  <\proof>
+    <\enumerate>
+      <item>Starting from the complex inversion formula:
+
+      <\equation>
+        \<zeta\><around|(|\<lambda\>|)>-\<zeta\><around|(|0|)>=lim<rsub|T\<to\>\<infty\>>
+        <frac|1|2*\<pi\>>*<big|int><rsub|-T><rsup|T><frac|1-e<rsup|-i*t*\<lambda\>>|-i*t>*\<xi\><around|(|t|)>*<space|0.17em>d*t
+      </equation>
+
+      <item>For real processes, we have the relations:
+
+      <\align>
+        <tformat|<table|<row|<cell|d*\<zeta\><around|(|\<omega\>|)>>|<cell|=<frac|1|2>*<around|[|d*U<around|(|\<omega\>|)>-i*<space|0.17em>d*V<around|(|\<omega\>|)>|]>*<space|1em><text|for
+        >\<omega\>\<gtr\>0<eq-number>>>|<row|<cell|d*\<zeta\>*<around|(|-\<omega\>|)>>|<cell|=<frac|1|2>*<around|[|d*U<around|(|\<omega\>|)>+i*<space|0.17em>d*V<around|(|\<omega\>|)>|]>*<space|1em><text|for
+        >\<omega\>\<gtr\>0<eq-number>>>>>
+      </align>
+
+      <item>Therefore:
+
+      <\align>
+        <tformat|<table|<row|<cell|U<around|(|\<omega\>|)>-U<around|(|0|)>>|<cell|=2*<around|[|\<zeta\><around|(|\<omega\>|)>-\<zeta\><around|(|0|)>|]>+2*<around|[|\<zeta\>*<around|(|-\<omega\>|)>-\<zeta\><around|(|0|)>|]><eq-number>>>|<row|<cell|V<around|(|\<omega\>|)>-V<around|(|0|)>>|<cell|=2*i*<around|[|\<zeta\><around|(|\<omega\>|)>-\<zeta\><around|(|0|)>|]>-2*i*<around|[|\<zeta\>*<around|(|-\<omega\>|)>-\<zeta\><around|(|0|)>|]><eq-number>>>>>
+      </align>
+
+      <item>Substituting the inversion formula:
+
+      <\align>
+        <tformat|<table|<row|<cell|U<around|(|\<omega\>|)>>|<cell|=lim<rsub|T\<to\>\<infty\>>
+        <frac|1|\<pi\>>*<big|int><rsub|-T><rsup|T><frac|1-cos
+        <around|(|\<omega\>*t|)>|t>*\<xi\><around|(|t|)>*<space|0.17em>d*t<eq-number>>>|<row|<cell|V<around|(|\<omega\>|)>>|<cell|=lim<rsub|T\<to\>\<infty\>>
+        <frac|1|\<pi\>>*<big|int><rsub|-T><rsup|T><frac|sin
+        <around|(|\<omega\>*t|)>|t>*\<xi\><around|(|t|)>*<space|0.17em>d*t<eq-number>>>>>
+      </align>
+
+      where we used <math|U<around|(|0|)>=V<around|(|0|)>=0>.
+
+      <item>The alternative forms follow from the fact that
+      <math|\<xi\><around|(|t|)>> is real, making the integrands even for
+      <math|U<around|(|\<omega\>|)>> and odd for
+      <math|V<around|(|\<omega\>|)>>.
+    </enumerate>
+  </proof>
+
+  <\remark>
+    The objects <math|U<around|(|\<omega\>|)>> and
+    <math|V<around|(|\<omega\>|)>> appearing in the real spectral
+    representation of a stationary process,
+
+    <\equation>
+      \<xi\><around|(|t|)>=<big|int><rsub|0><rsup|\<infty\>>cos
+      <around|(|\<omega\>*t|)>*<space|0.17em>d*U<around|(|\<omega\>|)>+<big|int><rsub|0><rsup|\<infty\>>sin
+      <around|(|\<omega\>*t|)>*<space|0.17em>d*V<around|(|\<omega\>|)>
+    </equation>
+
+    are not stochastic processes in the conventional sense (indexed by time
+    or evolving in time), but are more properly understood as <em|random
+    measures> (or random set functions) on the frequency axis
+    <math|<around|[|0,\<infty\>|)>>. Their main property is that their
+    increments over disjoint frequency intervals are orthogonal, i.e.,
+    uncorrelated (and independent if Gaussian). The notation
+    <math|U<around|(|\<omega\>|)>> denotes the cumulative random measure up
+    to frequency <math|\<omega\>>:
+
+    <\equation>
+      U<around|(|\<omega\>|)>=U<around|(|<around|[|0,\<omega\>|]>|)><space|2em>V<around|(|\<omega\>|)>=V<around|(|<around|[|0,\<omega\>|]>|)>
+    </equation>
+
+    Thus, while legacy literature (e.g., Cramér, Leadbetter) sometimes refers
+    to them as \Pprocesses\Q, in modern probability theory they are correctly
+    regarded as random orthogonal-increment measures determined by the
+    spectral measure of the stationary process.
+  </remark>
 </body>
 
 <\initial>
