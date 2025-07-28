@@ -1,10 +1,11 @@
 \documentclass{article}
 \usepackage[english]{babel}
-\usepackage{amsmath,amssymb,latexsym,theorem}
+\usepackage{geometry,amsmath,amssymb,latexsym,theorem}
+\geometry{letterpaper}
 
 %%%%%%%%%% Start TeXmacs macros
-\newcommand{\tmem}[1]{{\em #1\/}}
 \newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+\newcommand{\tmtextit}[1]{\text{{\itshape{#1}}}}
 \newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
 \newtheorem{corollary}{Corollary}
 {\theorembodyfont{\rmfamily}\newtheorem{remark}{Remark}}
@@ -15,10 +16,10 @@
 
 \begin{theorem}[Real Spectral Representation for Stationary Processes]
   Let $\{\xi (t), t \in \mathbb{R}\}$ be a real-valued, zero-mean,
-  second-order stationary process with covariance function $r (t) = E [\xi (t)
-  \xi (0)]$ and spectral distribution function $F (\omega)$. Then there exist
-  real-valued random measures $\{U (\omega), \omega \geq 0\}$ and $\{V
-  (\omega), \omega \geq 0\}$ with orthogonal increments such that:
+  second-order stationary process with covariance function $r (t) =\mathbb{E}
+  [\xi (t) \xi (0)]$ and spectral distribution function $F (\omega)$. Then
+  there exist real-valued random measures $\{U (\omega), \omega \geq 0\}$ and
+  $\{V (\omega), \omega \geq 0\}$ with orthogonal increments such that:
   \begin{enumerate}
     \item \tmtextbf{Process Representation:}
     \begin{equation}
@@ -32,34 +33,36 @@
     \item \tmtextbf{Orthogonality Properties:}
     
     \begin{align}
-      E [U (\omega)] & = E [V (\omega)] = 0 \\
-      E [dU (\omega_1) dU (\omega_2)] & = E [dV (\omega_1) dV (\omega_2)] =
-      \delta (\omega_1 - \omega_2) dF (\omega_1) \\
-      E [dU (\omega_1) dV (\omega_2)] & = 0 \quad \text{for all } \omega_1,
-      \omega_2 \geq 0 
+      \mathbb{E} [U (\omega)] & =\mathbb{E} [V (\omega)] = 0 \\
+      \mathbb{E} [dU (\omega_1) \hspace{0.17em} dU (\omega_2)] & =\mathbb{E}
+      [dV (\omega_1) \hspace{0.17em} dV (\omega_2)] = \delta (\omega_1 -
+      \omega_2) dF (\omega_1) \\
+      \mathbb{E} [dU (\omega_1) \hspace{0.17em} dV (\omega_2)] & = 0 \quad
+      \text{for all } \omega_1, \omega_2 \geq 0 
     \end{align}
   \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-  {\linebreak}
+  \\
+  
   \begin{enumerate}
     \item \tmtextbf{Construction from Complex Representation:} From the
-    complex spectral representation theorem, we have:
+    complex spectral representation theorem, there holds
     \begin{equation}
       \xi (t) = \int_{- \infty}^{\infty} e^{i \omega t} d \zeta (\omega)
     \end{equation}
     where $\zeta (\omega)$ is a complex-valued random measure with orthogonal
-    increments.
+    increments and $\mathbb{E} [|d \zeta (\omega) |^2] = \frac{1}{2} dF
+    (\omega)$ for the two-sided representation.
     
-    \item \tmtextbf{Reality Condition:} Since $\xi (t)$ is real-valued, we
-    have $\xi (t) = \overline{\xi (t)}$, which implies:
+    \item \tmtextbf{Reality Condition:} As $\xi (t)$ is real-valued,
     \begin{equation}
-      \int_{- \infty}^{\infty} e^{i \omega t} d \zeta (\omega) = \int_{-
-      \infty}^{\infty} e^{- i \omega t} d \overline{\zeta (\omega)}
+      \xi (t) = \overline{\xi (t)} = \int_{- \infty}^{\infty} e^{- i \omega t}
+      d \overline{\zeta (\omega)}
     \end{equation}
     \item \tmtextbf{Symmetry Property:} This reality condition requires the
-    spectral random measure to satisfy:
+    spectral random measure to satisfy
     \begin{equation}
       d \zeta (- \omega) = d \overline{\zeta (\omega)}
     \end{equation}
@@ -69,11 +72,11 @@
     0$, define
     
     \begin{align}
-      dU (\omega) & = 2 \Re [d \zeta (\omega)] \\
-      dV (\omega) & = 2 \Im [d \zeta (\omega)] 
+      dU (\omega) & = 2 \hspace{0.17em} \Re [d \zeta (\omega)] \\
+      dV (\omega) & = 2 \hspace{0.17em} \Im [d \zeta (\omega)] 
     \end{align}
     
-    where $\Re$ and $\Im$ denote real and imaginary parts respectively.
+    where $\Re$ and $\Im$ denote the real and imaginary parts.
     
     \item \tmtextbf{Derivation of Real Spectral Representation:}
     \begin{equation}
@@ -83,7 +86,7 @@
         & = \int_0^{\infty} e^{i \omega t} d \zeta (\omega) + \int_0^{\infty}
         e^{- i \omega t} d \overline{\zeta (\omega)}\\
         & = \int_0^{\infty} [e^{i \omega t} + e^{- i \omega t}] \Re [d \zeta
-        (\omega)] + i \int_0^{\infty} [e^{i \omega t} - e^{- i \omega t}] \Im
+        (\omega)] + \int_0^{\infty} i [e^{i \omega t} - e^{- i \omega t}] \Im
         [d \zeta (\omega)]\\
         & = \int_0^{\infty} 2 \cos (\omega t) \Re [d \zeta (\omega)] + 2 \sin
         (\omega t) \Im [d \zeta (\omega)]\\
@@ -91,32 +94,36 @@
         (\omega)
       \end{array}
     \end{equation}
-    \item \tmtextbf{Orthogonality Verification:} We have
+    \item \tmtextbf{Orthogonality Verification:} For the two-sided complex
+    representation,
     \begin{equation}
-      E [|d \zeta (\omega) |^2] = dF (\omega)
+      \mathbb{E} [|d \zeta (\omega) |^2] = \frac{1}{2} dF (\omega)
     \end{equation}
     Since $|d \zeta (\omega) |^2 = [\Re [d \zeta (\omega)]]^2 + [\Im [d \zeta
-    (\omega)]]^2$ and the real and imaginary parts are orthogonal, we get
+    (\omega)]]^2$ and the real and imaginary parts are orthogonal with equal
+    variances,
     \begin{equation}
-      E [[\Re [d \zeta (\omega)]]^2] = E [[\Im [d \zeta (\omega)]]^2] =
-      \frac{1}{2}  \hspace{0.17em} dF (\omega)
+      \mathbb{E} [[\Re [d \zeta (\omega)]]^2] =\mathbb{E} [[\Im [d \zeta
+      (\omega)]]^2] = \frac{1}{4} dF (\omega)
     \end{equation}
-    Therefore:
+    Therefore,
     \begin{equation}
-      E [dU (\omega)^2] = E [dV (\omega)^2] = 4 \cdot \frac{1}{2} dF (\omega)
-      = dF (\omega)
+      \mathbb{E} [dU (\omega)^2] =\mathbb{E} [dV (\omega)^2] = 4 \cdot
+      \frac{1}{4} dF (\omega) = dF (\omega)
     \end{equation}
-    \item \tmtextbf{Covariance Function:} Computing the covariance:
+    \item \tmtextbf{Covariance Function:} The covariance is given by
     \begin{equation}
       \begin{array}{ll}
-        r (t) & = E [\xi (t) \xi (0)]\\
-        & = E \left[ \int_0^{\infty} \cos (\omega t) dU (\omega) + \sin
-        (\omega t) dV (\omega) \int_0^{\infty} dU (\omega') \right]\\
-        & = \int_0^{\infty} \cos (\omega t) E [dU (\omega)^2]
+        r (t) & =\mathbb{E} [\xi (t) \xi (0)]\\
+        & =\mathbb{E} \left[ \left( \int_0^{\infty} \cos (\omega t) dU
+        (\omega) + \sin (\omega t) dV (\omega) \right)  \int_0^{\infty} dU
+        (\omega') \right]\\
+        & = \int_0^{\infty} \cos (\omega t) \mathbb{E} [dU (\omega)^2]
       \end{array}
     \end{equation}
     where cross-terms vanish by orthogonality and the sine term vanishes since
-    $E [dV (\omega)] = 0$. Using $E [dU (\omega)^2] = dF (\omega)$:
+    $\mathbb{E} [dV (\omega)] = 0$. Using $\mathbb{E} [dU (\omega)^2] = dF
+    (\omega)$:
     \begin{equation}
       r (t) = \int_0^{\infty} \cos (\omega t) dF (\omega)
     \end{equation}
@@ -183,13 +190,15 @@
 
 \begin{proof}
   \begin{enumerate}
+    \\
     \item Starting from the complex inversion formula:
     \begin{equation}
       \zeta (\lambda) - \zeta (0) = \lim_{T \to \infty}  \frac{1}{2 \pi} 
       \int_{- T}^T \frac{1 - e^{- it \lambda}}{- it} \xi (t)  \hspace{0.17em}
       dt
     \end{equation}
-    \item For real processes, we have the relations:
+    \item For real processes, the following relations hold from our
+    definitions:
     
     \begin{align}
       d \zeta (\omega) & = \frac{1}{2}  [dU (\omega) - i \hspace{0.17em} dV
@@ -198,16 +207,17 @@
       (\omega)]  \quad \text{for } \omega > 0 
     \end{align}
     
-    \item Therefore:
+    \item Therefore,
     
     \begin{align}
-      U (\omega) - U (0) & = 2 [\zeta (\omega) - \zeta (0)] + 2 [\zeta (-
-      \omega) - \zeta (0)] \\
-      V (\omega) - V (0) & = 2 i [\zeta (\omega) - \zeta (0)] - 2 i [\zeta (-
-      \omega) - \zeta (0)] 
+      U (\omega) - U (0) & = 2 ([\zeta (\omega) - \zeta (0)] + [\zeta (-
+      \omega) - \zeta (0)]) \\
+      V (\omega) - V (0) & = 2 i ([\zeta (\omega) - \zeta (0)] - [\zeta (-
+      \omega) - \zeta (0)]) 
     \end{align}
     
-    \item Substituting the inversion formula:
+    \item Substituting the inversion formula and using $1 - e^{- it \lambda} =
+    1 - \cos (\lambda t) + i \sin (\lambda t)$:
     
     \begin{align}
       U (\omega) & = \lim_{T \to \infty}  \frac{1}{\pi}  \int_{- T}^T \frac{1
@@ -216,7 +226,7 @@
       \frac{\sin (\omega t)}{t} \xi (t)  \hspace{0.17em} dt 
     \end{align}
     
-    where we used $U (0) = V (0) = 0$.
+    where $U (0) = V (0) = 0$ is used.
     
     \item The alternative forms follow from the fact that $\xi (t)$ is real,
     making the integrands even for $U (\omega)$ and odd for $V (\omega)$.
@@ -230,11 +240,11 @@
     \xi (t) = \int_0^{\infty} \cos (\omega t)  \hspace{0.17em} dU (\omega) +
     \int_0^{\infty} \sin (\omega t)  \hspace{0.17em} dV (\omega)
   \end{equation}
-  are {\tmem{random measures}} (or random set functions) on the frequency axis
-  $[0, \infty)$. Their main property is that their increments over disjoint
-  frequency intervals are orthogonal, i.e., uncorrelated (and independent if
-  Gaussian). The notation $U (\omega)$ denotes the cumulative random measure
-  up to frequency $\omega$:
+  are \tmtextit{random measures} (or random set functions) on the frequency
+  axis $[0, \infty)$. Their main property is that their increments over
+  disjoint frequency intervals are orthogonal, i.e., uncorrelated (and
+  independent if Gaussian). The notation $U (\omega)$ denotes the cumulative
+  random measure up to frequency $\omega$:
   \begin{equation}
     U (\omega) = U ([0, \omega])  \qquad V (\omega) = V ([0, \omega])
   \end{equation}
