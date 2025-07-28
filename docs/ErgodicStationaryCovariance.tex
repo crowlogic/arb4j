@@ -1,0 +1,169 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,latexsym,theorem}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmaffiliation}[1]{\\ #1}
+\newcommand{\tmem}[1]{{\em #1\/}}
+\newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+\newcommand{\tmtextit}[1]{\text{{\itshape{#1}}}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{definition}{Definition}
+{\theorembodyfont{\rmfamily}\newtheorem{remark}{Remark}}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{The Covariance of Ergodic Stationary Processes}
+
+\author{
+  Stephen Crowley
+  \tmaffiliation{July 27, 2025}
+}
+
+\maketitle
+
+\begin{abstract}
+  This short note presents a fundamental result concerning the covariance of
+  real-valued, zero-mean, strictly stationary, and ergodic stochastic
+  processes with finite second moments. It is shown that, for such processes,
+  the ensemble covariance function can be consistently recovered from a
+  single, sufficiently long sample path. Specifically, the temporal average of
+  products of observations at time-lagged points converges almost surely to
+  the ensemble covariance as the observation window extends to infinity. This
+  result relies upon the application of the Birkhoff--Khinchin ergodic theorem
+  to sample paths of the process, ensuring that, for almost every realization,
+  the empirical and ensemble covariances coincide in the limit. 
+\end{abstract}
+
+\begin{definition}
+  A stochastic process $\xi (t)$, $t \in \mathbb{R}$, is called
+  {\tmem{strictly stationary}} if for all $t_1, t_2, \ldots, t_n$ and all
+  $\tau \in \mathbb{R}$,
+  \begin{equation}
+    (\xi (t_1 + \tau), \ldots, \xi (t_n + \tau)) \overset{d}{=} (\xi (t_1),
+    \ldots, \xi (t_n))
+  \end{equation}
+  A strictly stationary process is called {\tmem{ergodic}} if every invariant
+  event under the temporal shift transformation has probability zero or one.
+\end{definition}
+
+\begin{theorem}[Exact Covariance Function from a Single Sample Path]
+  \label{thm:covariance}Let $\xi (t)$ be a real-valued, zero-mean, strictly
+  stationary, and ergodic process with $\mathbb{E} [\xi^2 (0)] < \infty$. Let
+  $x (t)$ be a realization of $\xi (t)$. Then for every fixed $\tau \in
+  \mathbb{R}$,
+  \begin{equation}
+    r (\tau) = \lim_{T \to \infty}  \frac{1}{2 T}  \int_{- T}^T x (t) x (t +
+    \tau)  \hspace{0.17em} dt
+  \end{equation}
+  almost surely, where $r (\tau) =\mathbb{E} [\xi (0) \xi (\tau)]$ is the
+  covariance function.
+\end{theorem}
+
+\begin{proof}
+  \tmtextbf{Step 1: Establish integrability conditions.}\\
+  Since $\xi (t)$ is strictly stationary, $\mathbb{E} [\xi^2 (t)] =\mathbb{E}
+  [\xi^2 (0)] < \infty$ for all $t \in \mathbb{R}$. For any fixed $\tau \in
+  \mathbb{R}$, the Cauchy-Schwarz inequality yields
+  \begin{equation}
+    \begin{array}{ll}
+      \mathbb{E} [| \xi (0) \xi (\tau) |] & \leq \sqrt{\mathbb{E} [\xi^2 (0)]
+      \cdot \mathbb{E} [\xi^2 (\tau)]}\\
+      & = \sqrt{\mathbb{E} [\xi^2 (0)] \cdot \mathbb{E} [\xi^2 (0)]}\\
+      & =\mathbb{E} [\xi^2 (0)] < \infty
+    \end{array}
+  \end{equation}
+  Therefore, the random variable $\xi (0) \xi (\tau)$ is integrable.
+  
+  \tmtextbf{Step 2: Define the measurable function and shift operator.}\\
+  Consider the function $f : \mathbb{R} \to \mathbb{R}$ defined by
+  \begin{equation}
+    f (s) = \xi (s) \xi (s + \tau)
+  \end{equation}
+  for fixed $\tau$. Let $T_h$ denote the shift operator defined by
+  \begin{equation}
+    (T_h \xi) (t) = \xi (t + h)
+  \end{equation}
+  for $h \in \mathbb{R}$. The strict stationarity condition implies that the
+  measure induced by $\xi$ is invariant under $T_h$ for all $h$.
+  
+  \tmtextbf{Step 3: Verify ergodicity conditions.}\\
+  Since $\xi (t)$ is ergodic, the shift-invariant $\sigma$-algebra has trivial
+  tail structure: every shift-invariant event has probability 0 or 1. This
+  ensures that the conditions of the Birkhoff-Khinchin ergodic theorem are
+  satisfied for the dynamical system $(\Omega, \mathcal{F}, P, T_h)$ where
+  $\Omega$ is the sample space of the process.
+  
+  \tmtextbf{Step 4: Apply the Birkhoff-Khinchin ergodic theorem.}\\
+  For the integrable function
+  \begin{equation}
+    f (s) = \xi (s) \xi (s + \tau)
+  \end{equation}
+  the ergodic theorem states that
+  \begin{equation}
+    \lim_{T \to \infty}  \frac{1}{2 T}  \int_{- T}^T f (s)  \hspace{0.17em} ds
+    =\mathbb{E} [f (0)]
+  \end{equation}
+  almost surely with respect to the probability measure of the process.
+  Substituting our function:
+  \begin{equation}
+    \lim_{T \to \infty}  \frac{\int_{- T}^T \xi (s) \xi (s + \tau) 
+    \hspace{0.17em} ds}{2 T} =\mathbb{E} [\xi (0) \xi (\tau)]
+  \end{equation}
+  almost surely.
+  
+  \tmtextbf{Step 5: Connect to sample path realization.}\\
+  For any particular realization $x (t) = \xi (t, \omega)$ where $\omega$
+  belongs to the set of full measure on which the ergodic theorem holds, we
+  have
+  \begin{equation}
+    \lim_{T \to \infty}  \frac{\int_{- T}^T x (s) x (s + \tau) 
+    \hspace{0.17em} ds}{2 T} =\mathbb{E} [\xi (0) \xi (\tau)]
+  \end{equation}
+  \tmtextbf{Step 6: Establish covariance function equality.}\\
+  By definition of the covariance function for a zero-mean process:
+  \begin{equation}
+    \begin{array}{ll}
+      r (\tau) & = \text{Cov} (\xi (0), \xi (\tau))\\
+      & =\mathbb{E} [\xi (0) \xi (\tau)] -\mathbb{E} [\xi (0)] \mathbb{E}
+      [\xi (\tau)]\\
+      & =\mathbb{E} [\xi (0) \xi (\tau)] - 0 \cdot 0\\
+      & =\mathbb{E} [\xi (0) \xi (\tau)]
+    \end{array}
+  \end{equation}
+  \tmtextbf{Step 7: Conclude the main result.}\\
+  Combining Steps 5 and 6:
+  \begin{equation}
+    r (\tau) =\mathbb{E} [\xi (0) \xi (\tau)] = \lim_{T \to \infty} 
+    \frac{\int_{- T}^T x (t) x (t + \tau)  \hspace{0.17em} dt}{2 T} 
+  \end{equation}
+  almost surely. The exceptional set (where this equality fails) has
+  probability zero by the ergodic theorem.
+\end{proof}
+
+\begin{remark}
+  The almost sure convergence implies that for any specific realization drawn
+  from the process, the temporal average will equal the ensemble covariance
+  function.
+\end{remark}
+
+\begin{thebibliography}{9}
+  {\bibitem{doob}}Joseph L. Doob, \tmtextit{Stochastic Processes}, Wiley,
+  1953.
+  
+  {\bibitem{cornfeld}}Ilya P. Cornfeld, Sergei V. Fomin, Yakov G. Sinai,
+  \tmtextit{Ergodic Theory}, Springer, 1982.
+  
+  {\bibitem{krengel}}Ulrich Krengel, \tmtextit{Ergodic Theorems}, de Gruyter,
+  1985.
+  
+  {\bibitem{yosida}}K{\^o}saku Yosida, \tmtextit{Ergodic Theorems}, Springer,
+  1965.
+  
+  {\bibitem{cohn}}Donald L. Cohn, \tmtextit{Measure Theory}, Birkh{\"a}user,
+  2013. [See Chapter 9 for ergodic theorems in continuous time]
+\end{thebibliography}
+
+\end{document}
