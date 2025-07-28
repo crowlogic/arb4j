@@ -1,19 +1,23 @@
 package arb.viz;
 
+import java.util.ArrayList;
 import java.util.stream.IntStream;
 
 import arb.Float;
+import arb.FloatInterval;
 import arb.Real;
 import arb.RealDataSet;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.real.FunctionSampler;
 import arb.functions.real.RealFunction;
-import arb.utensils.ShellFunctions;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.plugins.*;
+import io.fair_acc.chartfx.plugins.CrosshairIndicator;
+import io.fair_acc.chartfx.plugins.EditAxis;
+import io.fair_acc.chartfx.plugins.Screenshot;
+import io.fair_acc.chartfx.plugins.TableViewer;
+import io.fair_acc.chartfx.plugins.Zoomer;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -22,16 +26,15 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
+ * 
+ * @author Stephen "Στεvε" Crowley
+ * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class FunctionPlotter extends
-                             FunctionSampler
+public class FunctionPlotter implements
+                             AutoCloseable
 {
-  public static void main(String args[])
-  {
-    ShellFunctions.plot(1, 3, 400, RealFunction.express("x^2"));
-  }
 
   public static boolean     darkStyle = true;
 
@@ -57,7 +60,7 @@ public class FunctionPlotter extends
       return;
     }
     closed = true;
-    super.close();
+    functions.forEach(RealFunction::close);
     Platform.runLater(stage::close);
   }
 
@@ -236,6 +239,40 @@ public class FunctionPlotter extends
   {
     chart.getLegend().updateLegend(chart.getRenderers(), true);
 
+  }
+
+  public static final int              precision   = 128;
+
+  public final ArrayList<RealFunction> functions   = new ArrayList<>();
+
+  public FloatInterval                 domain;
+
+  public int                           sampleCount = 0;
+
+  public int                           resolution  = 100;
+
+  public FunctionPlotter(FloatInterval domain)
+  {
+    this.domain = domain;
+  }
+
+  public FunctionPlotter(FloatInterval domain, Float dt)
+  {
+    this.domain = domain;
+    try ( Float length = domain.length(128, new Float()))
+    {
+      Float samplesPerUnit = length.div(dt, 128);
+      this.resolution = (int) samplesPerUnit.doubleValue();
+    }
+  }
+
+  /**
+   * Default construct with a domain of -10..10
+   */
+  public FunctionPlotter()
+  {
+    this(new FloatInterval(-10,
+                           10));
   }
 
 }
