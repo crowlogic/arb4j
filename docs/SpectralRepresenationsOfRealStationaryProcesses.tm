@@ -40,8 +40,6 @@
   </theorem>
 
   <\proof>
-    <next-line>
-
     <\enumerate>
       <item><with|font-series|bold|Construction from Complex Representation:>
       From the complex spectral representation theorem, there holds
@@ -52,8 +50,9 @@
 
       where <math|\<zeta\><around|(|\<omega\>|)>> is a complex-valued random
       measure with orthogonal increments and
-      <math|\<bbb-E\><around|[|<around|\||d*\<zeta\><around|(|\<omega\>|)>|\|><rsup|2>|]>=<frac|1|2>*d*F<around|(|\<omega\>|)>>
-      for the two-sided representation.
+      <math|\<bbb-E\>*<around|[|d*\<zeta\><around|(|\<omega\><rsub|1>|)>*d<wide|\<zeta\><around|(|\<omega\><rsub|2>|)>|\<bar\>>|]>=\<delta\>*<around|(|\<omega\><rsub|1>-\<omega\><rsub|2>|)>*d*F<rsub|t*w*o><around|(|\<omega\>|)>>
+      for the two-sided spectral distribution function
+      <math|F<rsub|t*w*o><around|(|\<omega\>|)>>.
 
       <item><with|font-series|bold|Reality Condition:> As
       <math|\<xi\><around|(|t|)>> is real-valued,
@@ -75,7 +74,7 @@
       For <math|\<omega\>\<gtr\>0>, define
 
       <\align>
-        <tformat|<table|<row|<cell|d*U<around|(|\<omega\>|)>>|<cell|=2*<space|0.17em>\<Re\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]><eq-number>>>|<row|<cell|d*V<around|(|\<omega\>|)>>|<cell|=2*<space|0.17em>\<Im\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]><eq-number>>>>>
+        <tformat|<table|<row|<cell|d*U<around|(|\<omega\>|)>>|<cell|=d*\<zeta\><around|(|\<omega\>|)>+d*\<zeta\>*<around|(|-\<omega\>|)>=2*<space|0.17em>\<Re\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]><eq-number>>>|<row|<cell|d*V<around|(|\<omega\>|)>>|<cell|=i*<around|[|d*\<zeta\><around|(|\<omega\>|)>-d*\<zeta\>*<around|(|-\<omega\>|)>|]>=-2*<space|0.17em>\<Im\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]><eq-number>>>>>
       </align>
 
       where <math|\<Re\>> and <math|\<Im\>> denote the real and imaginary
@@ -86,24 +85,22 @@
 
       <\equation>
         <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|\<xi\><around|(|t|)>>|<cell|=<big|int><rsub|0><rsup|\<infty\>>e<rsup|i*\<omega\>*t>*d*\<zeta\><around|(|\<omega\>|)>+<big|int><rsub|0><rsup|\<infty\>>e<rsup|-i*\<omega\>*t>*d*\<zeta\>*<around|(|-\<omega\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>e<rsup|i*\<omega\>*t>*d*\<zeta\><around|(|\<omega\>|)>+<big|int><rsub|0><rsup|\<infty\>>e<rsup|-i*\<omega\>*t>*d<wide|\<zeta\><around|(|\<omega\>|)>|\<bar\>>>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>><around|[|e<rsup|i*\<omega\>*t>+e<rsup|-i*\<omega\>*t>|]>*\<Re\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>+<big|int><rsub|0><rsup|\<infty\>>i*<around|[|e<rsup|i*\<omega\>*t>-e<rsup|-i*\<omega\>*t>|]>*\<Im\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>2*cos
-        <around|(|\<omega\>*t|)>*\<Re\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>+2*sin
+        <around|(|\<omega\>*t|)>*\<Re\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>-<big|int><rsub|0><rsup|\<infty\>>2*sin
         <around|(|\<omega\>*t|)>*\<Im\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>cos
-        <around|(|\<omega\>*t|)>*d*U<around|(|\<omega\>|)>+sin
+        <around|(|\<omega\>*t|)>*d*U<around|(|\<omega\>|)>+<big|int><rsub|0><rsup|\<infty\>>sin
         <around|(|\<omega\>*t|)>*d*V<around|(|\<omega\>|)>>>>>>
       </equation>
 
       <item><with|font-series|bold|Orthogonality Verification:> For the
-      two-sided complex representation,
+      real-valued process with one-sided representation, the spectral
+      distribution function <math|F<around|(|\<omega\>|)>> is related to the
+      two-sided function by <math|d*F<around|(|\<omega\>|)>=2*d*F<rsub|t*w*o><around|(|\<omega\>|)>>
+      for <math|\<omega\>\<gtr\>0>. Since the real and imaginary parts of
+      <math|d*\<zeta\><around|(|\<omega\>|)>> are orthogonal with equal
+      variances:
 
       <\equation>
-        \<bbb-E\><around|[|<around|\||d*\<zeta\><around|(|\<omega\>|)>|\|><rsup|2>|]>=<frac|1|2>*d*F<around|(|\<omega\>|)>
-      </equation>
-
-      Since <math|<around|\||d*\<zeta\><around|(|\<omega\>|)>|\|><rsup|2>=<around|[|\<Re\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>|]><rsup|2>+<around|[|\<Im\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>|]><rsup|2>>
-      and the real and imaginary parts are orthogonal with equal variances,
-
-      <\equation>
-        \<bbb-E\><around|[|<around|[|\<Re\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>|]><rsup|2>|]>=\<bbb-E\><around|[|<around|[|\<Im\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>|]><rsup|2>|]>=<frac|1|4>*d*F<around|(|\<omega\>|)>
+        \<bbb-E\><around|[|<around|[|\<Re\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>|]><rsup|2>|]>=\<bbb-E\><around|[|<around|[|\<Im\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>|]><rsup|2>|]>=<frac|1|2>*d*F<rsub|t*w*o><around|(|\<omega\>|)>=<frac|1|4>*d*F<around|(|\<omega\>|)>
       </equation>
 
       Therefore,
@@ -123,7 +120,7 @@
       </equation>
 
       where cross-terms vanish by orthogonality and the sine term vanishes
-      since <math|\<bbb-E\>*<around|[|d*V<around|(|\<omega\>|)>|]>=0>. Using
+      since <math|sin <around|(|\<omega\>\<cdot\>0|)>=0>. Using
       <math|\<bbb-E\>*<around|[|d*U<around|(|\<omega\>|)><rsup|2>|]>=d*F<around|(|\<omega\>|)>>:
 
       <\equation>
@@ -174,86 +171,55 @@
 
       <\equation>
         U<around|(|\<omega\>|)>=lim<rsub|T\<to\>\<infty\>>
-        <frac|1|\<pi\>>*<big|int><rsub|-T><rsup|T><frac|1-cos
+        <frac|1|\<pi\>>*<big|int><rsub|-T><rsup|T><frac|sin
         <around|(|\<omega\>*t|)>|t>*\<xi\><around|(|t|)>*<space|0.17em>d*t
       </equation>
 
       <item><with|font-series|bold|V-process formula:>
 
       <\equation>
-        V<around|(|\<omega\>|)>=lim<rsub|T\<to\>\<infty\>>
-        <frac|1|\<pi\>>*<big|int><rsub|-T><rsup|T><frac|sin
+        V<around|(|\<omega\>|)>=-lim<rsub|T\<to\>\<infty\>>
+        <frac|1|\<pi\>>*<big|int><rsub|-T><rsup|T><frac|1-cos
         <around|(|\<omega\>*t|)>|t>*\<xi\><around|(|t|)>*<space|0.17em>d*t
       </equation>
-
-      <item><with|font-series|bold|Alternative forms using sine and cosine
-      integrals:>
-
-      <\align>
-        <tformat|<table|<row|<cell|U<around|(|\<omega\>|)>>|<cell|=lim<rsub|T\<to\>\<infty\>>
-        <frac|2|\<pi\>>*<big|int><rsub|0><rsup|T><frac|1-cos
-        <around|(|\<omega\>*t|)>|t>*\<xi\><around|(|t|)>*<space|0.17em>d*t<eq-number>>>|<row|<cell|V<around|(|\<omega\>|)>>|<cell|=lim<rsub|T\<to\>\<infty\>>
-        <frac|2|\<pi\>>*<big|int><rsub|0><rsup|T><frac|sin
-        <around|(|\<omega\>*t|)>|t>*\<xi\><around|(|t|)>*<space|0.17em>d*t<eq-number>>>>>
-      </align>
 
       <item><with|font-series|bold|Incremental form:>
 
       <\align>
         <tformat|<table|<row|<cell|U<around|(|\<omega\><rsub|2>|)>-U<around|(|\<omega\><rsub|1>|)>>|<cell|=lim<rsub|T\<to\>\<infty\>>
-        <frac|1|\<pi\>>*<big|int><rsub|-T><rsup|T><frac|cos
-        <around|(|\<omega\><rsub|1>*t|)>-cos
-        <around|(|\<omega\><rsub|2>*t|)>|t>*\<xi\><around|(|t|)>*<space|0.17em>d*t<eq-number>>>|<row|<cell|V<around|(|\<omega\><rsub|2>|)>-V<around|(|\<omega\><rsub|1>|)>>|<cell|=lim<rsub|T\<to\>\<infty\>>
         <frac|1|\<pi\>>*<big|int><rsub|-T><rsup|T><frac|sin
         <around|(|\<omega\><rsub|2>*t|)>-sin
-        <around|(|\<omega\><rsub|1>*t|)>|t>*\<xi\><around|(|t|)>*<space|0.17em>d*t<eq-number>>>>>
+        <around|(|\<omega\><rsub|1>*t|)>|t>*\<xi\><around|(|t|)>*<space|0.17em>d*t<eq-number>>>|<row|<cell|V<around|(|\<omega\><rsub|2>|)>-V<around|(|\<omega\><rsub|1>|)>>|<cell|=-lim<rsub|T\<to\>\<infty\>>
+        <frac|1|\<pi\>>*<big|int><rsub|-T><rsup|T><frac|cos
+        <around|(|\<omega\><rsub|1>*t|)>-cos
+        <around|(|\<omega\><rsub|2>*t|)>|t>*\<xi\><around|(|t|)>*<space|0.17em>d*t<eq-number>>>>>
       </align>
     </enumerate>
   </theorem>
 
   <\proof>
-    <\enumerate>
-      <next-line><item>Starting from the complex inversion formula:
+    The formulas follow from the Fourier inversion theorem applied to the
+    complex spectral measure. Starting from the complex inversion formula:
 
-      <\equation>
-        \<zeta\><around|(|\<lambda\>|)>-\<zeta\><around|(|0|)>=lim<rsub|T\<to\>\<infty\>>
-        <frac|1|2*\<pi\>>*<big|int><rsub|-T><rsup|T><frac|1-e<rsup|-i*t*\<lambda\>>|-i*t>*\<xi\><around|(|t|)>*<space|0.17em>d*t
-      </equation>
+    <\equation>
+      \<zeta\><around|(|\<omega\>|)>=lim<rsub|T\<to\>\<infty\>>
+      <frac|1|2*\<pi\>>*<big|int><rsub|-T><rsup|T><frac|1-e<rsup|-i*\<omega\>*t>|-i*t>*\<xi\><around|(|t|)>*d*t
+    </equation>
 
-      <item>For real processes, the following relations hold from our
-      definitions:
+    Using the definitions <math|d*U<around|(|\<omega\>|)>=2*\<Re\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>>
+    and <math|d*V<around|(|\<omega\>|)>=-2*\<Im\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>>,
+    and the identity <math|1-e<rsup|-i*\<omega\>*t>=<around|(|1-cos
+    <around|(|\<omega\>*t|)>|)>+i*sin <around|(|\<omega\>*t|)>>, we obtain:
 
-      <\align>
-        <tformat|<table|<row|<cell|d*\<zeta\><around|(|\<omega\>|)>>|<cell|=<frac|1|2>*<around|[|d*U<around|(|\<omega\>|)>-i*<space|0.17em>d*V<around|(|\<omega\>|)>|]>*<space|1em><text|for
-        >\<omega\>\<gtr\>0<eq-number>>>|<row|<cell|d*\<zeta\>*<around|(|-\<omega\>|)>>|<cell|=<frac|1|2>*<around|[|d*U<around|(|\<omega\>|)>+i*<space|0.17em>d*V<around|(|\<omega\>|)>|]>*<space|1em><text|for
-        >\<omega\>\<gtr\>0<eq-number>>>>>
-      </align>
-
-      <item>Therefore,
-
-      <\align>
-        <tformat|<table|<row|<cell|U<around|(|\<omega\>|)>-U<around|(|0|)>>|<cell|=2*<around*|(|<around|[|\<zeta\><around|(|\<omega\>|)>-\<zeta\><around|(|0|)>|]>+<around|[|\<zeta\>*<around|(|-\<omega\>|)>-\<zeta\><around|(|0|)>|]>|)><eq-number>>>|<row|<cell|V<around|(|\<omega\>|)>-V<around|(|0|)>>|<cell|=2*i*<around*|(|<around|[|\<zeta\><around|(|\<omega\>|)>-\<zeta\><around|(|0|)>|]>-<around|[|\<zeta\>*<around|(|-\<omega\>|)>-\<zeta\><around|(|0|)>|]>|)><eq-number>>>>>
-      </align>
-
-      <item>Substituting the inversion formula and using
-      <math|1-e<rsup|-i*t*\<lambda\>>=1-cos <around|(|\<lambda\>*t|)>+i*sin
-      <around|(|\<lambda\>*t|)>>:
-
-      <\align>
-        <tformat|<table|<row|<cell|U<around|(|\<omega\>|)>>|<cell|=lim<rsub|T\<to\>\<infty\>>
-        <frac|1|\<pi\>>*<big|int><rsub|-T><rsup|T><frac|1-cos
-        <around|(|\<omega\>*t|)>|t>*\<xi\><around|(|t|)>*<space|0.17em>d*t<eq-number>>>|<row|<cell|V<around|(|\<omega\>|)>>|<cell|=lim<rsub|T\<to\>\<infty\>>
-        <frac|1|\<pi\>>*<big|int><rsub|-T><rsup|T><frac|sin
-        <around|(|\<omega\>*t|)>|t>*\<xi\><around|(|t|)>*<space|0.17em>d*t<eq-number>>>>>
-      </align>
-
-      where <math|U<around|(|0|)>=V<around|(|0|)>=0> is used.
-
-      <item>The alternative forms follow from the fact that
-      <math|\<xi\><around|(|t|)>> is real, making the integrands even for
-      <math|U<around|(|\<omega\>|)>> and odd for
-      <math|V<around|(|\<omega\>|)>>.
-    </enumerate>
+    <\align>
+      <tformat|<table|<row|<cell|U<around|(|\<omega\>|)>>|<cell|=2*\<Re\>*<around*|[|lim<rsub|T\<to\>\<infty\>>
+      <frac|1|2*\<pi\>>*<big|int><rsub|-T><rsup|T><frac|1-e<rsup|-i*\<omega\>*t>|-i*t>*\<xi\><around|(|t|)>*d*t|]>=lim<rsub|T\<to\>\<infty\>>
+      <frac|1|\<pi\>>*<big|int><rsub|-T><rsup|T><frac|sin
+      <around|(|\<omega\>*t|)>|t>*\<xi\><around|(|t|)>*d*t<eq-number>>>|<row|<cell|V<around|(|\<omega\>|)>>|<cell|=-2*\<Im\>*<around*|[|lim<rsub|T\<to\>\<infty\>>
+      <frac|1|2*\<pi\>>*<big|int><rsub|-T><rsup|T><frac|1-e<rsup|-i*\<omega\>*t>|-i*t>*\<xi\><around|(|t|)>*d*t|]>=-lim<rsub|T\<to\>\<infty\>>
+      <frac|1|\<pi\>>*<big|int><rsub|-T><rsup|T><frac|1-cos
+      <around|(|\<omega\>*t|)>|t>*\<xi\><around|(|t|)>*d*t<eq-number>>>>>
+    </align>
   </proof>
 
   <\remark>
