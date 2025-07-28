@@ -16,6 +16,7 @@ import java.io.Serializable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
@@ -1236,6 +1237,20 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     {
       set(i,list.get(i));
     }
+  }
+  
+  public Real(Stream<Real> elements, int N)
+  {
+    become(Real.newVector(N));
+    assert dim == N;
+    var idx = new AtomicInteger();
+    elements.forEachOrdered(element -> get(idx.getAndIncrement()).set(element));
+  }
+  
+  public Real(Iterable<Real> elements, int N)
+  {
+    this(StreamSupport.stream(Spliterators.spliterator(elements.iterator(), N, 0), false),
+         N);
   }
     
   public Real(Real _z)
