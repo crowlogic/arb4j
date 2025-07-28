@@ -207,7 +207,7 @@ public class Parser
   public static boolean isGreekOrBlackLetter(int ch)
   {
     return (ch >= 0x0391 && ch <= 0x03A9) || (ch >= 0x03B1 && ch <= 0x03C9)
-                  || greekAndBlackLetterChars.contains(String.valueOf((char) ch));
+                  || greekAndBlackLetterChars.contains(Character.valueOf((char) ch));
   }
 
   /**

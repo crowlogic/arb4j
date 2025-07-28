@@ -4,7 +4,6 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.Context;
-import arb.functions.integer.ComplexFunctionSequence;
 import arb.functions.rational.ComplexRationalFunctionSequence;
 import arb.functions.rational.ComplexRationalNullaryFunction;
 import arb.utensils.Utensils;

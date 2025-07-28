@@ -1,7 +1,5 @@
 package arb.domains;
 
-import java.time.Duration;
-
 import arb.OpenSet;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -25,5 +23,4 @@ public interface Interval<F extends Comparable<F>> extends
 
   public F right();
 
-  
 }

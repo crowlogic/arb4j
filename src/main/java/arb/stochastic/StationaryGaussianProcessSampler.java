@@ -17,12 +17,7 @@ import arb.functions.real.RealFunction;
 import arb.stochastic.processes.ComplexWhiteNoiseProcess;
 import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
-import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.plugins.CrosshairIndicator;
-import io.fair_acc.chartfx.plugins.EditAxis;
-import io.fair_acc.chartfx.plugins.TableViewer;
-import io.fair_acc.chartfx.plugins.Zoomer;
 import io.fair_acc.chartfx.renderer.ErrorStyle;
 import io.fair_acc.chartfx.renderer.LineStyle;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
@@ -170,28 +165,6 @@ public abstract class StationaryGaussianProcessSampler extends
     randomMeasure   = Complex.newVector(N);
   }
 
-  /**
-   * TODO: see if there is a way to make the crosshair path and label render with
-   * an XOR mask instead of a fixed color so it would work on all backgrounds
-   * 
-   * @param chart
-   */
-  protected void configureChart(XYChart chart)
-  {
-    chart.getPlugins()
-         .addAll(new EditAxis(AxisMode.XY),
-                 new Zoomer(),
-                 new TableViewer(),
-                 new CrosshairIndicator());
-    chart.getRenderers().forEach(renderer -> renderer.getAxes().addAll(chart.getAxes()));
-    chart.getStylesheets()
-         .add(String.format("data:text/css,.chart-crosshair-path { -fx-stroke: %s; -fx-stroke-width: 2; }",
-                            light ? "black" : "white"));
-    chart.getStylesheets()
-         .add(String.format("data:text/css,.chart-crosshair-label { -fx-fill: %s; -fx-font-size: 16px; }",
-                            light ? "orange" : "yellow"));
-  }
-
   protected GridPane createGridPane(XYChart[] charts)
   {
     GridPane gridPane = new GridPane();
@@ -277,7 +250,8 @@ public abstract class StationaryGaussianProcessSampler extends
     { newTimeDomainChart(),
       newRandomWhiteNoiseMeasureChart(),
       newAutoCorrelationChart(),
-      newPowerSpectralDensityChart() }).forEach(this::configureChart);
+      newPowerSpectralDensityChart() })
+          .forEach(chart -> WindowManager.configureChart(chart, light));
 
     return charts;
   }
@@ -410,14 +384,14 @@ public abstract class StationaryGaussianProcessSampler extends
     return chart;
   }
 
-  protected void configureYAxisOfPowerSpectralDensityChart(XYChart chart)
+  protected static void configureYAxisOfPowerSpectralDensityChart(XYChart chart)
   {
     chart.getYAxis().setAutoRanging(false);
     chart.getYAxis().setMin(0);
     chart.getYAxis().setMax(5.0);
   }
 
-  protected void configureXAxisOfPowerSpectralDensityChart(XYChart chart)
+  protected static void configureXAxisOfPowerSpectralDensityChart(XYChart chart)
   {
     chart.getXAxis().setAutoRanging(false);
     chart.getXAxis().setMin(0);

@@ -431,7 +431,7 @@ public class WindowManager
     gridPane.add(charts[3], 1, 1);
   
     return gridPane;
-  }
+  }  
 
   /**
    * TODO: see if there is a way to make the crosshair path and label render with
