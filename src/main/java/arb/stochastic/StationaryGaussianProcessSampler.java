@@ -110,8 +110,20 @@ import javafx.stage.Stage;
  */
 
 public abstract class StationaryGaussianProcessSampler extends
-                                                       Application
+                                                       Application implements
+                                                       AutoCloseable
 {
+
+  @Override
+  public void close() throws Exception
+  {
+    spectralSupport.close();
+    whiteNoise.close();
+    samplePath.close();
+    envelope.close();
+    samplingTimes.close();
+    randomMeasure.close();
+  }
 
   static final double          autocorrelationLength            = 20.0;
 
@@ -193,6 +205,8 @@ public abstract class StationaryGaussianProcessSampler extends
 
   public Complex         whiteNoise;
 
+  private Complex        randomMeasure;
+
   public StationaryGaussianProcessSampler()
   {
     spectralSupport = getSpectralSupport();
@@ -261,8 +275,9 @@ public abstract class StationaryGaussianProcessSampler extends
     samplePath           = Complex.newVector(N);
     envelope             = Real.newVector(N);
     samplingTimes        = Real.newVector(N);
+    randomMeasure        = Complex.newVector(N);
 
-    try ( Complex randomMeasure = Complex.newVector(N); Real mag = new Real();
+    try ( Real mag = new Real();
           ComplexWhiteNoiseProcess whiteNoiseProcess = new ComplexWhiteNoiseProcess())
     {
       whiteNoiseProcess.initializeWithSeed(seed);
