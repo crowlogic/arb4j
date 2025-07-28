@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|framed-theorems>>
+<style|<tuple|generic|metal|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Pre-envelopes of Nonstationary Bandpass
@@ -88,7 +88,7 @@
   equation<nbsp><eqref|eq:hilbert_transform> will be useful:
 
   <\equation>
-    y<around|(|t|)>=<frac|1|\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|x*<around|(|t+s|)>|s>*d*s=<frac|1|\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|x*<around|(|t-s|)>|s>*d*s<label|eq:hilbert_transform_alt>
+    y<around|(|t|)>=<frac|1|\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|x*<around|(|t+s|)>|-s>*d*s=<frac|1|\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|x*<around|(|t-s|)>|s>*d*s<label|eq:hilbert_transform_alt>
   </equation>
 
   <\definition>
@@ -216,7 +216,7 @@
   is:
 
   <\equation>
-    \<cal-F\><around|[|R<rsub|z><around|(|t,\<tau\>|)>|]>=<choice|<tformat|<table|<row|<cell|-j*S<rsub|x><around|(|\<omega\>,t|)>,>|<cell|\<omega\>\<gtr\>0>>|<row|<cell|0,>|<cell|\<omega\>=0>>|<row|<cell|j*S<rsub|x><around|(|\<omega\>,t|)>,>|<cell|\<omega\>\<less\>0>>>>><label|eq:hilbert_fourier>
+    \<cal-F\><around|[|R<rsub|z><around|(|t,\<tau\>|)>|]>=<choice|<tformat|<table|<row|<cell|-j*S<rsub|x><around|(|\<omega\>,t|)>>|<cell|\<omega\>\<gtr\>0>>|<row|<cell|0,>|<cell|\<omega\>=0>>|<row|<cell|j*S<rsub|x><around|(|\<omega\>,t|)>>|<cell|\<omega\>\<less\>0>>>>><label|eq:hilbert_fourier>
   </equation>
 
   It follows, then, that the time-dependent power density spectrum
@@ -224,7 +224,7 @@
   by
 
   <\equation>
-    S<rsub|z><around|(|\<omega\>,t|)>=<choice|<tformat|<table|<row|<cell|4*S<rsub|x><around|(|\<omega\>,t|)>,>|<cell|\<omega\>\<gtr\>0>>|<row|<cell|2*S<rsub|x><around|(|\<omega\>,t|)>,>|<cell|\<omega\>=0>>|<row|<cell|0,>|<cell|\<omega\>\<less\>0>>>>><label|eq:preenvelope_spectrum>
+    S<rsub|z><around|(|\<omega\>,t|)>=<choice|<tformat|<table|<row|<cell|4*S<rsub|x><around|(|\<omega\>,t|)>>|<cell|\<omega\>\<gtr\>0>>|<row|<cell|2*S<rsub|x><around|(|\<omega\>,t|)>>|<cell|\<omega\>=0>>|<row|<cell|0,>|<cell|\<omega\>\<less\>0>>>>><label|eq:preenvelope_spectrum>
   </equation>
 
   Page's<nbsp><cite|page1952|kharkevich1960> concept of the instantaneous
@@ -457,11 +457,10 @@
   <\collection>
     <associate|auto-1|<tuple|1|1>>
     <associate|auto-2|<tuple|2|2>>
-    <associate|auto-3|<tuple|3|3>>
+    <associate|auto-3|<tuple|3|4>>
     <associate|auto-4|<tuple|4|5>>
     <associate|auto-5|<tuple|5|6>>
     <associate|auto-6|<tuple|5|7>>
-    <associate|auto-7|<tuple|5|7>>
     <associate|bib-arens1957|<tuple|arens1957|7>>
     <associate|bib-davenport1958|<tuple|davenport1958|7>>
     <associate|bib-doob1953|<tuple|doob1953|7>>
@@ -481,15 +480,15 @@
     <associate|eq:autocov_bandpass|<tuple|18|5>>
     <associate|eq:autocovariance|<tuple|3|2>>
     <associate|eq:bandpass_decomp|<tuple|21|5>>
-    <associate|eq:bandpass_spectrum|<tuple|17|4>>
+    <associate|eq:bandpass_spectrum|<tuple|17|5>>
     <associate|eq:covariance_expanded|<tuple|26|5>>
     <associate|eq:covariance_identity|<tuple|9|3>>
-    <associate|eq:crosscov_hilbert|<tuple|6|2>>
+    <associate|eq:crosscov_hilbert|<tuple|6|3>>
     <associate|eq:crosscovariance|<tuple|4|2>>
     <associate|eq:energy_density|<tuple|15|4>>
     <associate|eq:ensemble_energy|<tuple|16|4>>
     <associate|eq:final_autocov|<tuple|30|6>>
-    <associate|eq:hilbert_autocov_bandpass|<tuple|29|5>>
+    <associate|eq:hilbert_autocov_bandpass|<tuple|29|6>>
     <associate|eq:hilbert_covariance|<tuple|5|2>>
     <associate|eq:hilbert_cross|<tuple|7|3>>
     <associate|eq:hilbert_fourier|<tuple|13|4>>
@@ -499,12 +498,12 @@
     <associate|eq:preenvelope|<tuple|10|3>>
     <associate|eq:preenvelope_autocov|<tuple|11|3>>
     <associate|eq:preenvelope_spectrum|<tuple|14|4>>
-    <associate|eq:tdspectrum|<tuple|12|3>>
+    <associate|eq:tdspectrum|<tuple|12|4>>
     <associate|eq:y_bandpass|<tuple|31|6>>
     <associate|eq:z_bandpass|<tuple|32|6>>
     <associate|eq:zero_crosscov|<tuple|33|6>>
     <associate|thm:covariance_identity|<tuple|7|3>>
-    <associate|thm:crosscov_hilbert|<tuple|4|2>>
+    <associate|thm:crosscov_hilbert|<tuple|4|3>>
     <associate|thm:hilbert_cross|<tuple|5|3>>
     <associate|thm:hilbert_of_hilbert|<tuple|6|3>>
     <associate|thm:zero_crosscov|<tuple|8|6>>
@@ -549,13 +548,9 @@
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-5><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|References>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-6><vspace|0.5fn>
-
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-7><vspace|0.5fn>
+      <no-break><pageref|auto-6><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
