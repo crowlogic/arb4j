@@ -3,6 +3,12 @@
 <style|<tuple|generic|framed-theorems>>
 
 <\body>
+  <doc-data|<doc-title|The Spectral Representation for Real-Valued Stationary
+  Processes>|<doc-author|<author-data|<author-name|Stephen
+  Crowley>|<\author-affiliation>
+    <date|>
+  </author-affiliation>>>>
+
   <\theorem>
     <dueto|Real Spectral Representation for Stationary Processes>Let
     <math|<around|{|\<xi\><around|(|t|)>,t\<in\>\<bbb-R\>|}>> be a
