@@ -1,15 +1,9 @@
 package arb.stochastic;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
-import arb.Complex;
-import arb.FloatInterval;
-import arb.Real;
-import arb.RealDataSet;
-import arb.arblib;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
@@ -18,10 +12,7 @@ import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.plugins.CrosshairIndicator;
-import io.fair_acc.chartfx.plugins.EditAxis;
-import io.fair_acc.chartfx.plugins.TableViewer;
-import io.fair_acc.chartfx.plugins.Zoomer;
+import io.fair_acc.chartfx.plugins.*;
 import io.fair_acc.chartfx.renderer.ErrorStyle;
 import io.fair_acc.chartfx.renderer.LineStyle;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
@@ -29,10 +20,7 @@ import io.fair_acc.dataset.spi.DoubleDataSet;
 import io.fair_acc.dataset.utils.DataSetStyleBuilder;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 /**
@@ -215,6 +203,11 @@ public abstract class StationaryGaussianProcessSampler extends
   public StationaryGaussianProcessSampler()
   {
     spectralSupport = getSpectralSupport();
+    whiteNoise      = Complex.newVector(N);
+    samplePath      = Complex.newVector(N);
+    envelope        = Real.newVector(N);
+    samplingTimes   = Real.newVector(N);
+    randomMeasure   = Complex.newVector(N);
   }
 
   /**
@@ -276,11 +269,6 @@ public abstract class StationaryGaussianProcessSampler extends
   {
     frequencies          = generateFrequencies();
     powerSpectralDensity = getPowerSpectralDensity(frequencies);
-    whiteNoise           = Complex.newVector(N);
-    samplePath           = Complex.newVector(N);
-    envelope             = Real.newVector(N);
-    samplingTimes        = Real.newVector(N);
-    randomMeasure        = Complex.newVector(N);
 
     try ( Real mag = new Real();
           ComplexWhiteNoiseProcess whiteNoiseProcess = new ComplexWhiteNoiseProcess())
