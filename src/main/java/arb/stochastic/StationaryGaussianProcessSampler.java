@@ -113,17 +113,27 @@ public abstract class StationaryGaussianProcessSampler extends
                                                        Application
 {
 
-  public Complex  samplePath;
+  private static final String theoreticalFrequencyDatasetStyle = DataSetStyleBuilder.instance()
+                                                                                    .setLineWidth(2)
+                                                                                    .build();
 
-  public Real     envelope;
+  private static final String empiricialFrequencyDatasetStyle  =
+                                                              DataSetStyleBuilder.instance()
+                                                                                 .setMarkerColor("darkgoldenrod")
+                                                                                 .setLineColor("darkgoldenrod")
+                                                                                 .build();
 
-  public Real     samplingTimes;
+  public Complex              samplePath;
 
-  public double[] frequencies;
+  public Real                 envelope;
 
-  public double[] powerSpectralDensity;
+  public Real                 samplingTimes;
 
-  public Complex  whiteNoise;
+  public double[]             frequencies;
+
+  public double[]             powerSpectralDensity;
+
+  public Complex              whiteNoise;
 
   public abstract double[] getPowerSpectralDensity(double[] freq);
 
@@ -172,24 +182,24 @@ public abstract class StationaryGaussianProcessSampler extends
 
   final FloatInterval          spectralSupport;
 
-  static final FloatInterval   timeSpan              = new FloatInterval(0,
-                                                                         1000);
+  static final FloatInterval   timeSpan                          = new FloatInterval(0,
+                                                                                     1000);
 
-  static final double          dt                    = 0.01;
+  static final double          dt                                = 0.01;
 
-  static final double          L                     = timeSpan.length();
+  static final double          L                                 = timeSpan.length();
 
-  static final int             N                     = (int) (L / dt);
+  static final int             N                                 = (int) (L / dt);
 
-  private static final boolean N_IS_EVEN             = N % 2 == 0;
+  private static final boolean N_IS_EVEN                         = N % 2 == 0;
 
-  static final double          autocorrelationLength = 20.0;
+  static final double          autocorrelationLength             = 20.0;
 
-  static final int             bits                  = 128;
+  static final int             bits                              = 128;
 
-  private boolean              separateWindows       = false;
+  private boolean              separateWindows                   = false;
 
-  private boolean              dark                  = true;
+  private boolean              dark                              = true;
 
   private XYChart[]            charts;
 
@@ -197,11 +207,25 @@ public abstract class StationaryGaussianProcessSampler extends
 
   private boolean              light;
 
-  public static final double   nyquistFrequency      = 1.0 / (2 * dt);
+  public static final double   nyquistFrequency                  = 1.0 / (2 * dt);
 
-  public static final int      nyquistIndex          = N / 2;
+  public static final int      nyquistIndex                      = N / 2;
 
-  public static final double   df                    = 1.0 / L;
+  public static final double   df                                = 1.0 / L;
+
+  private static final String  randomMeasureDatasetStyle         =
+                                                         DataSetStyleBuilder.instance()
+                                                                            .setMarkerType("circle")
+                                                                            .setMarkerSize(2)
+                                                                            .build();
+
+  private static final int     positiveFrequencyCount            = N / 2 + 1;
+
+  private final double[]       positiveFrequencies               =
+                                                   new double[positiveFrequencyCount];
+
+  private final double[]       theoreticalPowerSpectralDensities =
+                                                                 new double[positiveFrequencyCount];
 
   public static double[] generateFrequencies()
   {
@@ -337,12 +361,8 @@ public abstract class StationaryGaussianProcessSampler extends
     DoubleDataSet imagDataSet =
                               new DoubleDataSet("Imaginary").set(normalizedFrequencies, imagNoise);
 
-    String        style       = DataSetStyleBuilder.instance()
-                                                   .setMarkerType("circle")
-                                                   .setMarkerSize(2)
-                                                   .build();
-    realDataSet.setStyle(style);
-    imagDataSet.setStyle(style);
+    realDataSet.setStyle(randomMeasureDatasetStyle);
+    imagDataSet.setStyle(randomMeasureDatasetStyle);
 
     chart.getRenderers().setAll(scatterPlotRenderer);
     scatterPlotRenderer.getDatasets().addAll(realDataSet, imagDataSet);
@@ -373,17 +393,13 @@ public abstract class StationaryGaussianProcessSampler extends
                                 new DefaultNumericAxis("PSD",
                                                        ""));
     chart.setTitle("Power Spectral Density");
-    int      positiveFrequencyCount          = N / 2 + 1;
-    double[] positiveFrequencies             = new double[positiveFrequencyCount];
-    double[] empiricalPowerSpectralDensity   =
+    double[] empiricalPowerSpectralDensity =
                                            Statistics.computePowerSpectralDensity(samplePath.im()
                                                                                             .doubleValues());
-    double[] theoreticalPowerSpectralDensity = new double[positiveFrequencyCount];
-
     for (int i = 0; i < positiveFrequencyCount; i++)
     {
-      positiveFrequencies[i]             = frequencies[i];
-      theoreticalPowerSpectralDensity[i] = powerSpectralDensity[i];
+      positiveFrequencies[i]               = frequencies[i];
+      theoreticalPowerSpectralDensities[i] = powerSpectralDensity[i];
     }
 
     var scatterPlotRenderer = newScatterChartRenderer();
@@ -398,17 +414,12 @@ public abstract class StationaryGaussianProcessSampler extends
                          new DoubleDataSet("Empirical").set(positiveFrequencies,
                                                             Arrays.copyOf(empiricalPowerSpectralDensity,
                                                                           positiveFrequencyCount))
-                                                       .setStyle(DataSetStyleBuilder.instance()
-                                                                                    .setMarkerColor("darkgoldenrod")
-                                                                                    .setLineColor("darkgoldenrod")
-                                                                                    .build());
+                                                       .setStyle(empiricialFrequencyDatasetStyle);
 
     var theoryDataSet       =
                       new DoubleDataSet("Theoretical").set(positiveFrequencies,
-                                                           theoreticalPowerSpectralDensity)
-                                                      .setStyle(DataSetStyleBuilder.instance()
-                                                                                   .setLineWidth(2)
-                                                                                   .build());
+                                                           theoreticalPowerSpectralDensities)
+                                                      .setStyle(theoreticalFrequencyDatasetStyle);
     scatterPlotRenderer.getDatasets().add(empiricalDataSet);
 
     lineRenderer.getDatasets().add(theoryDataSet);
@@ -470,33 +481,42 @@ public abstract class StationaryGaussianProcessSampler extends
 
     if (separateWindows)
     {
-      stages = new Stage[]
-      { stage, new Stage(), new Stage(), new Stage() };
-
-      for (int i = 0; i < charts.length; i++)
-      {
-        XYChart chart    = charts[i];
-        Stage   ithStage = stages[i];
-        initializeChartWithItsOwnWindow(chart, ithStage);
-      }
-
+      initializeChartsInTheirOwnWindows(stage);
       Stream.of(stages).forEach(Stage::show);
     }
     else
     {
-      GridPane gridPane = createGridPane(charts);
-      Scene    scene    = new Scene(gridPane);
-      stage.setScene(scene);
-      stage.setMaximized(true);
-      stage.setTitle(String.format("%s[seed=%s]", getClass().getSimpleName(), seed));
-      WindowManager.setStageIcon(stage, "GaussianProcessModeller.png");
-      WindowManager.installEscapeKeyCloseHandler(stage);
-      if (dark)
-      {
-        WindowManager.setMoreConduciveStyle(scene);
-      }
+      initializeWindowContainingAllCharts(stage);
       stage.show();
 
+    }
+  }
+
+  protected void initializeChartsInTheirOwnWindows(Stage stage)
+  {
+    stages = new Stage[]
+    { stage, new Stage(), new Stage(), new Stage() };
+
+    for (int i = 0; i < charts.length; i++)
+    {
+      XYChart chart    = charts[i];
+      Stage   ithStage = stages[i];
+      initializeChartWithItsOwnWindow(chart, ithStage);
+    }
+  }
+
+  protected void initializeWindowContainingAllCharts(Stage stage)
+  {
+    GridPane gridPane = createGridPane(charts);
+    Scene    scene    = new Scene(gridPane);
+    stage.setScene(scene);
+    stage.setMaximized(true);
+    stage.setTitle(String.format("%s[seed=%s]", getClass().getSimpleName(), seed));
+    WindowManager.setStageIcon(stage, "GaussianProcessModeller.png");
+    WindowManager.installEscapeKeyCloseHandler(stage);
+    if (dark)
+    {
+      WindowManager.setMoreConduciveStyle(scene);
     }
   }
 
