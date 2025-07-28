@@ -1,9 +1,16 @@
 package arb.stochastic;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
-import arb.*;
+import arb.Complex;
+import arb.Float;
+import arb.FloatInterval;
+import arb.Real;
+import arb.RealDataSet;
+import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
@@ -12,7 +19,10 @@ import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.plugins.*;
+import io.fair_acc.chartfx.plugins.CrosshairIndicator;
+import io.fair_acc.chartfx.plugins.EditAxis;
+import io.fair_acc.chartfx.plugins.TableViewer;
+import io.fair_acc.chartfx.plugins.Zoomer;
 import io.fair_acc.chartfx.renderer.ErrorStyle;
 import io.fair_acc.chartfx.renderer.LineStyle;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
@@ -20,7 +30,10 @@ import io.fair_acc.dataset.spi.DoubleDataSet;
 import io.fair_acc.dataset.utils.DataSetStyleBuilder;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
 /**
@@ -133,7 +146,8 @@ public abstract class StationaryGaussianProcessSampler extends
   static final FloatInterval   timeSpan                         = new FloatInterval(0,
                                                                                     1000);
 
-  static final double          L                                = timeSpan.length();
+  static final double          L                                =
+                                 timeSpan.length(128, new Float()).doubleValue();
 
   public static final double   df                               = 1.0 / L;
 
