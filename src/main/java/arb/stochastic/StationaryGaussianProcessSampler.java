@@ -44,67 +44,13 @@ import javafx.stage.Stage;
  * using the fast Fourier transform (FFT). Sample paths are synthesized from
  * statistical white noise, the target power spectral density (PSD), and the
  * inverse FFT, producing time-domain signals and auxiliary quantities.
- * </p>
  *
- * <h4>Frequency Components: DC and Nyquist in FFTs</h4>
- *
- * <ul>
- * <li><strong>DC Component (Zero Frequency):</strong> The DC component (0 Hz,
- * mean of the process) is located at index <code>nyquistIndex</code> in the
- * frequency array, where <code>nyquistIndex = N/2</code> for even
- * <code>N</code> and <code>(N-1)/2</code> for odd <code>N</code>.
- * <code>frequencies[nyquistIndex] == 0</code> for both cases.</li>
- * <li><strong>Nyquist Frequency:</strong> For even <code>N</code>, the Nyquist
- * frequency bin is at index 0 (<code>frequencies[0] == +1/(2dt)</code>) and is
- * unique and real-valued. For odd <code>N</code>, there is no index
- * corresponding to the Nyquist frequency.</li>
- * </ul>
- *
- * <h4>Special Doubling for Odd N</h4>
- * <ul>
- * <li>For odd <code>N</code>, there is an unpaired central frequency index at
- * <code>nyquistIndex = (N-1)/2</code>. This bin sits at the center of the
- * frequency array and corresponds to the highest positive frequency less than
- * the Nyquist frequency. Because there is no opposite-frequency partner (no
- * negative counterpart), in spectral synthesis and when constructing the
- * one-sided spectrum, this special bin's amplitude is doubled to properly
- * account for both positive and "would-be" negative frequency contributions in
- * the time-domain signal. This ensures that total signal energy and variance
- * are correct.</li>
- * </ul>
- *
- * <h4>Indexing and Frequency Range</h4>
- * <ul>
- * <li>The frequency array is organized so that positive frequencies occupy
- * indices less than <code>nyquistIndex</code>, zero frequency (DC) is at
- * <code>nyquistIndex</code>, and the remainder of the positive frequency range
- * fills the upper part of the array.</li>
- * <li>Specifically:
- * <ul>
- * <li>For even <code>N</code>: <code>frequencies[0] = +1/(2dt)</code>,
- * <code>frequencies[nyquistIndex] = 0</code>.</li>
- * <li>For odd <code>N</code>: <code>frequencies[nyquistIndex] = 0</code>; the
- * maximum positive frequency is less than the Nyquist frequency, and this
- * central index is doubled as described above.</li>
- * </ul>
- * </li>
- * </ul>
- *
- * <h4>Mathematical Properties</h4>
- * <ul>
- * <li>The FFT of real-valued signals exhibits Hermitian symmetry:
- * <code>X(-ν) = X(ν)*</code>. The DC and Nyquist bins (when present) are
- * strictly real-valued. The unpaired central bin for odd <code>N</code> is also
- * real-valued.</li>
- * <li>When mapping to a one-sided spectrum, the DC and Nyquist bins for even
- * <code>N</code>, and the unpaired central bin for odd <code>N</code>, are
- * unique and not paired. Both the DC and (for odd <code>N</code>) the unpaired
- * central bin must NOT be doubled in energy, except that for spectral
- * synthesis, the central bin's amplitude is multiplied by two to account for
- * the lack of a conjugate partner.</li>
- * </ul>
- *
- *
+ * Dumbassed contradictory AI generated bullshit removed until I get the
+ * wherewithal to fucking write the shit myself. Fuck you bill gates and balmer
+ * you fucking fat old nerd!! AI will never do shit and if your code is being
+ * written by AI now then that shit is truly fucked and its no surprise given
+ * your bullshit nearly crippled the fucking united states of america in the
+ * crowdstrike incident of July 19th 2024
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
