@@ -269,14 +269,10 @@ public abstract class StationaryGaussianProcessSampler extends
 
       for (int k = 0; k <= nyquistIndex; k++)
       {
-        var sample = whiteNoiseProcess.sample(bits, whiteNoise.get(k));
-
-        if (k == nyquistIndex && N_IS_EVEN)
-        {
-          sample.im().zero();
-        }
-
-        sample.mul(mag.set(powerSpectralDensity[k] * df).sqrt(bits), bits, randomMeasure.get(k));
+        drawWhiteNoiseSample(whiteNoiseProcess, k).mul(mag.set(powerSpectralDensity[k] * df)
+                                                          .sqrt(bits),
+                                                       bits,
+                                                       randomMeasure.get(k));
       }
 
       arblib.acb_dft_inverse(samplePath, randomMeasure, N, bits);
@@ -292,6 +288,17 @@ public abstract class StationaryGaussianProcessSampler extends
       return this;
 
     }
+  }
+
+  protected Complex drawWhiteNoiseSample(ComplexWhiteNoiseProcess whiteNoiseProcess, int k)
+  {
+    var sample = whiteNoiseProcess.sample(bits, whiteNoise.get(k));
+
+    if (k == nyquistIndex && N_IS_EVEN)
+    {
+      sample.im().zero();
+    }
+    return sample;
   }
 
   protected XYChart[] generateAndConfigureCharts()
