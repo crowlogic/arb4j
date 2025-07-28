@@ -287,22 +287,7 @@ public class Bibliography extends
                                                                                       "117-120").setNumber("1")
                                                                                                 .setVolume("5");
 
-  public static Article towardsStandardModelWithoutTheHiggsBoson                         =
-                                                                 new Article("Towards Standard Model without the Higgs boson",
-                                                                             "A. Sevostyanov",
-                                                                             "2008",
-                                                                             "arXiv:hep-th/0702149v1",
-                                                                             "",
-                                                                             "",
-                                                                             "");
 
-  public static Article mercerTheoremForRKHSOnNonCompactSets                             =
-                                                             new Article("Mercer theorem for RKHS on noncompact sets",
-                                                                         "Hongwei Sun",
-                                                                         "2005",
-                                                                         "Journal of Complexity",
-                                                                         "21",
-                                                                         "337-349");
 
   public static Article shiftedJacobiPolynomialIntegralOperationalMatrix                 =
                                                                          new Article("The shifted Jacobi polynomial integral operational matrix for solving Riccati differential equation of fractional order",
