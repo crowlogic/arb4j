@@ -13,13 +13,12 @@
 
 \begin{document}
 
-\begin{theorem}
-  [Real Spectral Representation for Stationary Processes] Let $\{\xi (t), t
-  \in \mathbb{R}\}$ be a real-valued, zero-mean, second-order stationary
-  process with covariance function $r (t) = E [\xi (t) \xi (0)]$ and spectral
-  distribution function $F (\omega)$. Then there exist real-valued processes
-  $\{U (\omega), \omega \geq 0\}$ and $\{V (\omega), \omega \geq 0\}$ with
-  orthogonal increments such that:
+\begin{theorem}[Real Spectral Representation for Stationary Processes]
+  Let $\{\xi (t), t \in \mathbb{R}\}$ be a real-valued, zero-mean,
+  second-order stationary process with covariance function $r (t) = E [\xi (t)
+  \xi (0)]$ and spectral distribution function $F (\omega)$. Then there exist
+  real-valued random measures $\{U (\omega), \omega \geq 0\}$ and $\{V
+  (\omega), \omega \geq 0\}$ with orthogonal increments such that:
   \begin{enumerate}
     \item \tmtextbf{Process Representation:}
     \begin{equation}
@@ -50,7 +49,7 @@
     \begin{equation}
       \xi (t) = \int_{- \infty}^{\infty} e^{i \omega t} d \zeta (\omega)
     \end{equation}
-    where $\zeta (\omega)$ is a complex-valued process with orthogonal
+    where $\zeta (\omega)$ is a complex-valued random measure with orthogonal
     increments.
     
     \item \tmtextbf{Reality Condition:} Since $\xi (t)$ is real-valued, we
@@ -59,107 +58,73 @@
       \int_{- \infty}^{\infty} e^{i \omega t} d \zeta (\omega) = \int_{-
       \infty}^{\infty} e^{- i \omega t} d \overline{\zeta (\omega)}
     \end{equation}
-    \item \tmtextbf{Symmetry Property:} This reality condition forces the
-    spectral process to satisfy:
+    \item \tmtextbf{Symmetry Property:} This reality condition requires the
+    spectral random measure to satisfy:
     \begin{equation}
       d \zeta (- \omega) = d \overline{\zeta (\omega)}
     \end{equation}
     for all $\omega$.
     
-    \item \tmtextbf{Decomposition into Real and Imaginary Parts:} For $\omega
-    > 0$, write
-    \begin{equation}
-      d \zeta (\omega) = dA (\omega) + i \hspace{0.17em} dB (\omega)
-    \end{equation}
-    where $dA (\omega)$ and $dB (\omega)$ are real-valued processes, and thus
-    \begin{equation}
-      d \zeta (- \omega) = dA (\omega) - i \hspace{0.17em} dB (\omega)
-    \end{equation}
+    \item \tmtextbf{Factorization into Real Random Measures:} For $\omega >
+    0$, define
+    
+    \begin{align}
+      dU (\omega) & = 2 \Re [d \zeta (\omega)] \\
+      dV (\omega) & = 2 \Im [d \zeta (\omega)] 
+    \end{align}
+    
+    where $\Re$ and $\Im$ denote real and imaginary parts respectively.
+    
     \item \tmtextbf{Derivation of Real Spectral Representation:}
     \begin{equation}
       \begin{array}{ll}
         \xi (t) & = \int_0^{\infty} e^{i \omega t} d \zeta (\omega) +
         \int_0^{\infty} e^{- i \omega t} d \zeta (- \omega)\\
-        & = \int_0^{\infty} e^{i \omega t}  [dA (\omega) + i \hspace{0.17em}
-        dB (\omega)] + e^{- i \omega t}  [dA (\omega) - i \hspace{0.17em} dB
-        (\omega)]\\
-        & = \int_0^{\infty} [(e^{i \omega t} + e^{- i \omega t}) dA (\omega)
-        + i (e^{i \omega t} - e^{- i \omega t}) dB (\omega)]\\
-        & = \int_0^{\infty} 2 \cos (\omega t) dA (\omega) + 2 \sin (\omega t)
-        dB (\omega)
+        & = \int_0^{\infty} e^{i \omega t} d \zeta (\omega) + \int_0^{\infty}
+        e^{- i \omega t} d \overline{\zeta (\omega)}\\
+        & = \int_0^{\infty} [e^{i \omega t} + e^{- i \omega t}] \Re [d \zeta
+        (\omega)] + i \int_0^{\infty} [e^{i \omega t} - e^{- i \omega t}] \Im
+        [d \zeta (\omega)]\\
+        & = \int_0^{\infty} 2 \cos (\omega t) \Re [d \zeta (\omega)] + 2 \sin
+        (\omega t) \Im [d \zeta (\omega)]\\
+        & = \int_0^{\infty} \cos (\omega t) dU (\omega) + \sin (\omega t) dV
+        (\omega)
       \end{array}
-    \end{equation}
-    since
-    \begin{equation}
-      e^{i \omega t} + e^{- i \omega t} = 2 \cos (\omega t)
-    \end{equation}
-    and
-    \begin{equation}
-      i (e^{i \omega t} - e^{- i \omega t}) = 2 \sin (\omega t)
-    \end{equation}
-    \item \tmtextbf{Definition of U and V:} If we define
-    \begin{equation}
-      dU (\omega) = 2 \hspace{0.17em} dA (\omega)
-    \end{equation}
-    and
-    \begin{equation}
-      dV (\omega) = 2 \hspace{0.17em} dB (\omega)
-    \end{equation}
-    then
-    \begin{equation}
-      \xi (t) = \int_0^{\infty} \cos (\omega t) dU (\omega) + \sin (\omega t)
-      dV (\omega)
     \end{equation}
     \item \tmtextbf{Orthogonality Verification:} We have
     \begin{equation}
       E [|d \zeta (\omega) |^2] = dF (\omega)
     \end{equation}
-    therefore
+    Since $|d \zeta (\omega) |^2 = [\Re [d \zeta (\omega)]]^2 + [\Im [d \zeta
+    (\omega)]]^2$ and the real and imaginary parts are orthogonal, we get
     \begin{equation}
-      E [dA (\omega)^2] = E [dB (\omega)^2] = \frac{1}{2}  \hspace{0.17em} dF
-      (\omega)
+      E [[\Re [d \zeta (\omega)]]^2] = E [[\Im [d \zeta (\omega)]]^2] =
+      \frac{1}{2}  \hspace{0.17em} dF (\omega)
     \end{equation}
-    since
-    \begin{equation}
-      |d \zeta (\omega) |^2 = dA (\omega)^2 + dB (\omega)^2
-    \end{equation}
-    thus
+    Therefore:
     \begin{equation}
       E [dU (\omega)^2] = E [dV (\omega)^2] = 4 \cdot \frac{1}{2} dF (\omega)
       = dF (\omega)
     \end{equation}
-    since $dA$ and $dB$ have orthogonal increments.
-    
-    \item \tmtextbf{Covariance Function:} Compute the covariance:
+    \item \tmtextbf{Covariance Function:} Computing the covariance:
     \begin{equation}
       \begin{array}{ll}
         r (t) & = E [\xi (t) \xi (0)]\\
         & = E \left[ \int_0^{\infty} \cos (\omega t) dU (\omega) + \sin
         (\omega t) dV (\omega) \int_0^{\infty} dU (\omega') \right]\\
-        & = \int_0^{\infty} \cos (\omega t) E [dU (\omega) dU (\omega)] +
-        \sin (\omega t) E [dV (\omega) dU (\omega)]\\
-        & \quad + \int_0^{\infty} \cos (\omega t) E [dU (\omega) dV (\omega)]
-        + \sin (\omega t) E [dV (\omega) dV (\omega)]\\
-        & = \int_0^{\infty} \cos (\omega t) E [dU (\omega)^2] + \sin (\omega
-        t) E [dV (\omega)^2
+        & = \int_0^{\infty} \cos (\omega t) E [dU (\omega)^2]
       \end{array}
     \end{equation}
-    where all cross-terms vanish by orthogonality. Recalling
-    \begin{equation}
-      E [dU (\omega)^2] = E [dV (\omega)^2] = dF (\omega)
-    \end{equation}
-    and noting that expectation of the sine term vanishes since the mean of
-    $dV (\omega)$ is zero and sine is odd; thus,
+    where cross-terms vanish by orthogonality and the sine term vanishes since
+    $E [dV (\omega)] = 0$. Using $E [dU (\omega)^2] = dF (\omega)$:
     \begin{equation}
       r (t) = \int_0^{\infty} \cos (\omega t) dF (\omega)
     \end{equation}
-    as required.
   \end{enumerate}
-  
 \end{proof}
 
-\begin{corollary}
-  [Physical Interpretation] In the real spectral representation:
+\begin{corollary}[Physical Interpretation]
+  In the real spectral representation:
   \begin{enumerate}
     \item $\cos (\omega t) dU (\omega)$ represents the cosine component at
     frequency $\omega$ with random amplitude $dU (\omega)$.
@@ -170,21 +135,19 @@
     \item $dF (\omega)$ represents the average power contributed by frequency
     components in $(\omega, \omega + d \omega)$.
     
-    \item The processes $U (\omega)$ and $V (\omega)$ are uncorrelated and
-    have equal variance increments.
+    \item The random measures $U (\omega)$ and $V (\omega)$ are uncorrelated
+    and have equal variance increments.
   \end{enumerate}
 \end{corollary}
 
-\
-
-\begin{theorem}
-  [U and V Processes] For a real-valued stationary process $\xi (t)$ with
-  spectral representation
+\begin{theorem}[U and V Random Measures]
+  For a real-valued stationary process $\xi (t)$ with mean-square continuous
+  sample paths and spectral representation
   \begin{equation}
     \xi (t) = \int_0^{\infty} [\cos (\omega t) \hspace{0.17em} dU (\omega) +
     \sin (\omega t) \hspace{0.17em} dV (\omega)]
   \end{equation}
-  the processes $U (\omega)$ and $V (\omega)$ are given explicitly by:
+  the random measures $U (\omega)$ and $V (\omega)$ are given explicitly by:
   \begin{enumerate}
     \item \tmtextbf{U-process formula:}
     \begin{equation}
@@ -267,20 +230,17 @@
     \xi (t) = \int_0^{\infty} \cos (\omega t)  \hspace{0.17em} dU (\omega) +
     \int_0^{\infty} \sin (\omega t)  \hspace{0.17em} dV (\omega)
   \end{equation}
-  are not stochastic processes in the conventional sense (indexed by time or
-  evolving in time), but are more properly understood as {\tmem{random
-  measures}} (or random set functions) on the frequency axis $[0, \infty)$.
-  Their main property is that their increments over disjoint frequency
-  intervals are orthogonal, i.e., uncorrelated (and independent if Gaussian).
-  The notation $U (\omega)$ denotes the cumulative random measure up to
-  frequency $\omega$:
+  are {\tmem{random measures}} (or random set functions) on the frequency axis
+  $[0, \infty)$. Their main property is that their increments over disjoint
+  frequency intervals are orthogonal, i.e., uncorrelated (and independent if
+  Gaussian). The notation $U (\omega)$ denotes the cumulative random measure
+  up to frequency $\omega$:
   \begin{equation}
-    U (\omega) = U ([0, \omega]) \qquad V (\omega) = V ([0, \omega])
+    U (\omega) = U ([0, \omega])  \qquad V (\omega) = V ([0, \omega])
   \end{equation}
-  Thus, while legacy literature (e.g., Cram{\'e}r, Leadbetter) sometimes
-  refers to them as ``processes'', in modern probability theory they are
-  correctly regarded as random orthogonal-increment measures determined by the
-  spectral measure of the stationary process.
+  For a stationary process with mean-square continuous sample paths, each
+  sample path uniquely determines the corresponding random measures through
+  the inversion formulas given above.
 \end{remark}
 
 \end{document}

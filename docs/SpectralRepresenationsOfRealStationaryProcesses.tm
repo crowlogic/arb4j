@@ -4,13 +4,14 @@
 
 <\body>
   <\theorem>
-    [Real Spectral Representation for Stationary Processes] Let
+    <dueto|Real Spectral Representation for Stationary Processes>Let
     <math|<around|{|\<xi\><around|(|t|)>,t\<in\>\<bbb-R\>|}>> be a
     real-valued, zero-mean, second-order stationary process with covariance
     function <math|r<around|(|t|)>=E*<around|[|\<xi\><around|(|t|)>*\<xi\><around|(|0|)>|]>>
     and spectral distribution function <math|F<around|(|\<omega\>|)>>. Then
-    there exist real-valued processes <math|<around|{|U<around|(|\<omega\>|)>,\<omega\>\<geq\>0|}>>
-    and <math|<around|{|V<around|(|\<omega\>|)>,\<omega\>\<geq\>0|}>> with
+    there exist real-valued random measures
+    <math|<around|{|U<around|(|\<omega\>|)>,\<omega\>\<geq\>0|}>> and
+    <math|<around|{|V<around|(|\<omega\>|)>,\<omega\>\<geq\>0|}>> with
     orthogonal increments such that:
 
     <\enumerate>
@@ -49,8 +50,8 @@
         \<xi\><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*t>*d*\<zeta\><around|(|\<omega\>|)>
       </equation>
 
-      where <math|\<zeta\><around|(|\<omega\>|)>> is a complex-valued process
-      with orthogonal increments.
+      where <math|\<zeta\><around|(|\<omega\>|)>> is a complex-valued random
+      measure with orthogonal increments.
 
       <item><with|font-series|bold|Reality Condition:> Since
       <math|\<xi\><around|(|t|)>> is real-valued, we have
@@ -62,7 +63,7 @@
       </equation>
 
       <item><with|font-series|bold|Symmetry Property:> This reality condition
-      forces the spectral process to satisfy:
+      requires the spectral random measure to satisfy:
 
       <\equation>
         d*\<zeta\>*<around|(|-\<omega\>|)>=d<wide|\<zeta\><around|(|\<omega\>|)>|\<bar\>>
@@ -70,63 +71,25 @@
 
       for all <math|\<omega\>>.
 
-      <item><with|font-series|bold|Decomposition into Real and Imaginary
-      Parts:> For <math|\<omega\>\<gtr\>0>, write\ 
+      <item><with|font-series|bold|Factorization into Real Random Measures:>
+      For <math|\<omega\>\<gtr\>0>, define
 
-      <\equation>
-        d*\<zeta\><around|(|\<omega\>|)>=d*A<around|(|\<omega\>|)>+i*<space|0.17em>d*B<around|(|\<omega\>|)>
-      </equation>
+      <\align>
+        <tformat|<table|<row|<cell|d*U<around|(|\<omega\>|)>>|<cell|=2*\<Re\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]><eq-number>>>|<row|<cell|d*V<around|(|\<omega\>|)>>|<cell|=2*\<Im\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]><eq-number>>>>>
+      </align>
 
-      \ where <math|d*A<around|(|\<omega\>|)>> and
-      <math|d*B<around|(|\<omega\>|)>> are real-valued processes, and thus
-      <math|>
-
-      <\equation>
-        d*\<zeta\>*<around|(|-\<omega\>|)>=d*A<around|(|\<omega\>|)>-i*<space|0.17em>d*B<around|(|\<omega\>|)>
-      </equation>
+      where <math|\<Re\>> and <math|\<Im\>> denote real and imaginary parts
+      respectively.
 
       <item><with|font-series|bold|Derivation of Real Spectral
       Representation:>
 
       <\equation>
-        <tabular|<tformat|<table|<row|<cell|\<xi\><around|(|t|)>>|<cell|=<big|int><rsub|0><rsup|\<infty\>>e<rsup|i*\<omega\>*t>*d*\<zeta\><around|(|\<omega\>|)>+<big|int><rsub|0><rsup|\<infty\>>e<rsup|-i*\<omega\>*t>*d*\<zeta\>*<around|(|-\<omega\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>e<rsup|i*\<omega\>*t>*<around|[|d*A<around|(|\<omega\>|)>+i*<space|0.17em>d*B<around|(|\<omega\>|)>|]>+e<rsup|-i*\<omega\>*t>*<around|[|d*A<around|(|\<omega\>|)>-i*<space|0.17em>d*B<around|(|\<omega\>|)>|]>>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>><around|[|<around|(|e<rsup|i*\<omega\>*t>+e<rsup|-i*\<omega\>*t>|)>*d*A<around|(|\<omega\>|)>+i*<around|(|e<rsup|i*\<omega\>*t>-e<rsup|-i*\<omega\>*t>|)>*d*B<around|(|\<omega\>|)>|]>>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>2*cos
-        <around|(|\<omega\>*t|)>*d*A<around|(|\<omega\>|)>+2*sin
-        <around|(|\<omega\>*t|)>*d*B<around|(|\<omega\>|)>>>>>>
-      </equation>
-
-      since
-
-      <\equation>
-        e<rsup|i*\<omega\>*t>+e<rsup|-i*\<omega\>*t>=2*cos
-        <around|(|\<omega\>*t|)>
-      </equation>
-
-      and
-
-      <\equation>
-        i*<around|(|e<rsup|i*\<omega\>*t>-e<rsup|-i*\<omega\>*t>|)>=2*sin
-        <around|(|\<omega\>*t|)>
-      </equation>
-
-      <item><with|font-series|bold|Definition of U and V:> If we define
-      <math|>
-
-      <\equation>
-        d*U<around|(|\<omega\>|)>=2*<space|0.17em>d*A<around|(|\<omega\>|)>
-      </equation>
-
-      \ and
-
-      <\equation>
-        d*V<around|(|\<omega\>|)>=2*<space|0.17em>d*B<around|(|\<omega\>|)>
-      </equation>
-
-      then
-
-      <\equation>
-        \<xi\><around|(|t|)>=<big|int><rsub|0><rsup|\<infty\>>cos
+        <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|\<xi\><around|(|t|)>>|<cell|=<big|int><rsub|0><rsup|\<infty\>>e<rsup|i*\<omega\>*t>*d*\<zeta\><around|(|\<omega\>|)>+<big|int><rsub|0><rsup|\<infty\>>e<rsup|-i*\<omega\>*t>*d*\<zeta\>*<around|(|-\<omega\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>e<rsup|i*\<omega\>*t>*d*\<zeta\><around|(|\<omega\>|)>+<big|int><rsub|0><rsup|\<infty\>>e<rsup|-i*\<omega\>*t>*d<wide|\<zeta\><around|(|\<omega\>|)>|\<bar\>>>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>><around|[|e<rsup|i*\<omega\>*t>+e<rsup|-i*\<omega\>*t>|]>*\<Re\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>+i*<big|int><rsub|0><rsup|\<infty\>><around|[|e<rsup|i*\<omega\>*t>-e<rsup|-i*\<omega\>*t>|]>*\<Im\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>2*cos
+        <around|(|\<omega\>*t|)>*\<Re\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>+2*sin
+        <around|(|\<omega\>*t|)>*\<Im\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>cos
         <around|(|\<omega\>*t|)>*d*U<around|(|\<omega\>|)>+sin
-        <around|(|\<omega\>*t|)>*d*V<around|(|\<omega\>|)>
+        <around|(|\<omega\>*t|)>*d*V<around|(|\<omega\>|)>>>>>>
       </equation>
 
       <item><with|font-series|bold|Orthogonality Verification:> We have
@@ -135,63 +98,42 @@
         E<around|[|<around|\||d*\<zeta\><around|(|\<omega\>|)>|\|><rsup|2>|]>=d*F<around|(|\<omega\>|)>
       </equation>
 
-      therefore
+      Since <math|<around|\||d*\<zeta\><around|(|\<omega\>|)>|\|><rsup|2>=<around|[|\<Re\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>|]><rsup|2>+<around|[|\<Im\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>|]><rsup|2>>
+      and the real and imaginary parts are orthogonal, we get
 
       <\equation>
-        E*<around|[|d*A<around|(|\<omega\>|)><rsup|2>|]>=E*<around|[|d*B<around|(|\<omega\>|)><rsup|2>|]>=<frac|1|2>*<space|0.17em>d*F<around|(|\<omega\>|)>
+        E<around|[|<around|[|\<Re\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>|]><rsup|2>|]>=E<around|[|<around|[|\<Im\>*<around|[|d*\<zeta\><around|(|\<omega\>|)>|]>|]><rsup|2>|]>=<frac|1|2>*<space|0.17em>d*F<around|(|\<omega\>|)>
       </equation>
 
-      since
-
-      <\equation>
-        \ <around|\||d*\<zeta\><around|(|\<omega\>|)>|\|><rsup|2>=d*A<around|(|\<omega\>|)><rsup|2>+d*B<around|(|\<omega\>|)><rsup|2>
-      </equation>
-
-      thus
+      Therefore:
 
       <\equation>
         E*<around|[|d*U<around|(|\<omega\>|)><rsup|2>|]>=E*<around|[|d*V<around|(|\<omega\>|)><rsup|2>|]>=4\<cdot\><frac|1|2>*d*F<around|(|\<omega\>|)>=d*F<around|(|\<omega\>|)>
       </equation>
 
-      since <math|d*A> and <math|d*B> have orthogonal increments.
-
-      <item><with|font-series|bold|Covariance Function:> Compute the
+      <item><with|font-series|bold|Covariance Function:> Computing the
       covariance:
 
       <\equation>
-        <tabular|<tformat|<cwith|1|-1|1|-1|font-base-size|9>|<table|<row|<cell|r<around|(|t|)>>|<cell|=E*<around|[|\<xi\><around|(|t|)>*\<xi\><around|(|0|)>|]>>>|<row|<cell|>|<cell|=E*<around*|[|<big|int><rsub|0><rsup|\<infty\>>cos
+        <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|r<around|(|t|)>>|<cell|=E*<around|[|\<xi\><around|(|t|)>*\<xi\><around|(|0|)>|]>>>|<row|<cell|>|<cell|=E*<around*|[|<big|int><rsub|0><rsup|\<infty\>>cos
         <around|(|\<omega\>*t|)>*d*U<around|(|\<omega\>|)>+sin
         <around|(|\<omega\>*t|)>*d*V<around|(|\<omega\>|)>*<big|int><rsub|0><rsup|\<infty\>>d*U<around|(|\<omega\><rprime|'>|)>|]>>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>cos
-        <around|(|\<omega\>*t|)>*E*<around|[|d*U<around|(|\<omega\>|)>*d*U<around|(|\<omega\>|)>|]>+sin
-        <around|(|\<omega\>*t|)>*E*<around|[|d*V<around|(|\<omega\>|)>*d*U<around|(|\<omega\>|)>|]>>>|<row|<cell|>|<cell|<space|1em>+<big|int><rsub|0><rsup|\<infty\>>cos
-        <around|(|\<omega\>*t|)>*E*<around|[|d*U<around|(|\<omega\>|)>*d*V<around|(|\<omega\>|)>|]>+sin
-        <around|(|\<omega\>*t|)>*E*<around|[|d*V<around|(|\<omega\>|)>*d*V<around|(|\<omega\>|)>|]>>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>cos
-        <around|(|\<omega\>*t|)>*E*<around|[|d*U<around|(|\<omega\>|)><rsup|2>|]>+sin
-        <around|(|\<omega\>*t|)>*E*<around|[|d*V<around|(|\<omega\>|)><rsup|2>|\<nobracket\>>>>>>>
+        <around|(|\<omega\>*t|)>*E*<around|[|d*U<around|(|\<omega\>|)><rsup|2>|]>>>>>>
       </equation>
 
-      where all cross-terms vanish by orthogonality. Recalling\ 
-
-      <\equation>
-        E*<around|[|d*U<around|(|\<omega\>|)><rsup|2>|]>=E*<around|[|d*V<around|(|\<omega\>|)><rsup|2>|]>=d*F<around|(|\<omega\>|)>
-      </equation>
-
-      and noting that expectation of the sine term vanishes since the mean of
-      <math|d*V<around|(|\<omega\>|)>> is zero and sine is odd; thus,
+      where cross-terms vanish by orthogonality and the sine term vanishes
+      since <math|E*<around|[|d*V<around|(|\<omega\>|)>|]>=0>. Using
+      <math|E*<around|[|d*U<around|(|\<omega\>|)><rsup|2>|]>=d*F<around|(|\<omega\>|)>>:
 
       <\equation>
         r<around|(|t|)>=<big|int><rsub|0><rsup|\<infty\>>cos
         <around|(|\<omega\>*t|)>*d*F<around|(|\<omega\>|)>
       </equation>
-
-      as required.
     </enumerate>
-
-    \;
   </proof>
 
   <\corollary>
-    [Physical Interpretation] In the real spectral representation:
+    <dueto|Physical Interpretation>In the real spectral representation:
 
     <\enumerate>
       <item><math|cos <around|(|\<omega\>*t|)>*d*U<around|(|\<omega\>|)>>
@@ -206,17 +148,16 @@
       contributed by frequency components in
       <math|<around|(|\<omega\>,\<omega\>+d*\<omega\>|)>>.
 
-      <item>The processes <math|U<around|(|\<omega\>|)>> and
+      <item>The random measures <math|U<around|(|\<omega\>|)>> and
       <math|V<around|(|\<omega\>|)>> are uncorrelated and have equal variance
       increments.
     </enumerate>
   </corollary>
 
-  <new-theorem|theorem|Theorem>
-
   <\theorem>
-    [U and V Processes] For a real-valued stationary process
-    <math|\<xi\><around|(|t|)>> with spectral representation
+    <dueto|U and V Random Measures>For a real-valued stationary process
+    <math|\<xi\><around|(|t|)>> with mean-square continuous sample paths and
+    spectral representation
 
     <\equation>
       \<xi\><around|(|t|)>=<big|int><rsub|0><rsup|\<infty\>><around|[|cos
@@ -224,7 +165,7 @@
       <around|(|\<omega\>*t|)>*<space|0.17em>d*V<around|(|\<omega\>|)>|]>
     </equation>
 
-    the processes <math|U<around|(|\<omega\>|)>> and
+    the random measures <math|U<around|(|\<omega\>|)>> and
     <math|V<around|(|\<omega\>|)>> are given explicitly by:
 
     <\enumerate>
@@ -322,9 +263,7 @@
       <around|(|\<omega\>*t|)>*<space|0.17em>d*V<around|(|\<omega\>|)>
     </equation>
 
-    are not stochastic processes in the conventional sense (indexed by time
-    or evolving in time), but are more properly understood as <em|random
-    measures> (or random set functions) on the frequency axis
+    are <em|random measures> (or random set functions) on the frequency axis
     <math|<around|[|0,\<infty\>|)>>. Their main property is that their
     increments over disjoint frequency intervals are orthogonal, i.e.,
     uncorrelated (and independent if Gaussian). The notation
@@ -332,13 +271,12 @@
     to frequency <math|\<omega\>>:
 
     <\equation>
-      U<around|(|\<omega\>|)>=U<around|(|<around|[|0,\<omega\>|]>|)><space|2em>V<around|(|\<omega\>|)>=V<around|(|<around|[|0,\<omega\>|]>|)>
+      U<around|(|\<omega\>|)>=U<around|(|<around|[|0,\<omega\>|]>|)>*<space|2em>V<around|(|\<omega\>|)>=V<around|(|<around|[|0,\<omega\>|]>|)>
     </equation>
 
-    Thus, while legacy literature (e.g., Cramér, Leadbetter) sometimes refers
-    to them as \Pprocesses\Q, in modern probability theory they are correctly
-    regarded as random orthogonal-increment measures determined by the
-    spectral measure of the stationary process.
+    For a stationary process with mean-square continuous sample paths, each
+    sample path uniquely determines the corresponding random measures through
+    the inversion formulas given above.
   </remark>
 </body>
 
