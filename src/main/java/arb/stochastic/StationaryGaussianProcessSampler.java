@@ -143,16 +143,16 @@ public abstract class StationaryGaussianProcessSampler extends
     {
       whiteNoiseProcess.initializeWithSeed(seed);
 
-      randomMeasure.get(0).zero();
-
-      for (int k = 0; k < nyquistIndex; k++)
+      for (int k = 0; k <= nyquistIndex; k++)
       {
-        sampleWhiteNoise(randomMeasure, mag, whiteNoiseProcess, df, k, false);
-      }
+        var sample = whiteNoiseProcess.sample(bits, whiteNoise.get(k));
 
-      if (N % 2 == 0)
-      {
-        sampleWhiteNoise(randomMeasure, mag, whiteNoiseProcess, df, nyquistIndex, true);
+        if (k == nyquistIndex && N_IS_EVEN)
+        {
+          sample.im().zero();
+        }
+
+        sample.mul(mag.set(powerSpectralDensity[k] * df).sqrt(bits), bits, randomMeasure.get(k));
       }
 
       arblib.acb_dft_inverse(samplePath, randomMeasure, N, bits);
@@ -170,53 +170,38 @@ public abstract class StationaryGaussianProcessSampler extends
     }
   }
 
-  protected void sampleWhiteNoise(Complex randomMeasure,
-                                  Real mag,
-                                  ComplexWhiteNoiseProcess whiteNoiseProcess,
-                                  double df,
-                                  int k,
-                                  boolean realOnly)
-  {
-    var sample = whiteNoiseProcess.sample(bits, whiteNoise.get(k));
+  final FloatInterval          spectralSupport;
 
-    if (realOnly)
-    {
-      sample.im().zero();
-    }
+  static final FloatInterval   timeSpan              = new FloatInterval(0,
+                                                                         1000);
 
-    sample.mul(mag.set(powerSpectralDensity[k] * df).sqrt(bits), bits, randomMeasure.get(k));
-  }
+  static final double          dt                    = 0.01;
 
-  final FloatInterval        spectralSupport;
+  static final double          L                     = timeSpan.length();
 
-  static final FloatInterval timeSpan              = new FloatInterval(0,
-                                                                       1000);
+  static final int             N                     = (int) (L / dt);
 
-  static final double        dt                    = 0.01;
+  private static final boolean N_IS_EVEN             = N % 2 == 0;
 
-  static final double        L                     = timeSpan.length();
+  static final double          autocorrelationLength = 20.0;
 
-  static final int           N                     = (int) (L / dt);
+  static final int             bits                  = 128;
 
-  static final double        autocorrelationLength = 20.0;
+  private boolean              separateWindows       = false;
 
-  static final int           bits                  = 128;
+  private boolean              dark                  = true;
 
-  private boolean            separateWindows       = false;
+  private XYChart[]            charts;
 
-  private boolean            dark                  = true;
+  private Stage[]              stages;
 
-  private XYChart[]          charts;
+  private boolean              light;
 
-  private Stage[]            stages;
+  public static final double   nyquistFrequency      = 1.0 / (2 * dt);
 
-  private boolean            light;
+  public static final int      nyquistIndex          = N / 2;
 
-  public static final double nyquistFrequency      = 1.0 / (2 * dt);
-
-  public static final int    nyquistIndex          = N / 2;
-
-  public static final double df                    = 1.0 / L;
+  public static final double   df                    = 1.0 / L;
 
   public static double[] generateFrequencies()
   {
