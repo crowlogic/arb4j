@@ -73,7 +73,10 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> getSquareRootArg()
   {
-    assert isSquareRoot() : this + " is not a square root";
+    if (!isSquareRoot())
+    {
+      throw new IllegalArgumentException(this + " is not a square root");
+    }
     return arg;
   }
 
@@ -550,8 +553,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       throw new UnsupportedOperationException("Integration not implemented for: " + functionName);
     }
   }
-
-
 
   public boolean isBitless()
   {
