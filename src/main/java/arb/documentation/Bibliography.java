@@ -1,7 +1,9 @@
 package arb.documentation;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import arb.documentation.references.Article;
 import arb.documentation.references.Book;
@@ -24,7 +26,7 @@ public class Bibliography extends
                                                                                                      "71",
                                                                                                      "546-550");
 
-  public static Article spectralCharacteristicsOfNonstationaryRandomProcesses =
+  public static Article spectralCharacteristicsOfNonstationaryRandomProcesses            =
                                                                               new Article("Spectral characteristics of nonstationary random processes — a critical review",
                                                                                           "G. Michaelov, S. Sarkani, L.D. Lutes",
                                                                                           "1999",
@@ -32,8 +34,8 @@ public class Bibliography extends
                                                                                           "21",
                                                                                           "223-244").setNumber("3")
                                                                                                     .setPublisher("Elsevier");
-  
-  public static Article integralRepresentationsOfPositiveDefiniteFunctions    =
+
+  public static Article integralRepresentationsOfPositiveDefiniteFunctions               =
                                                                            new Article("Integral representations of positive definite functions",
                                                                                        "Devinatz, A",
                                                                                        "1953",
@@ -181,14 +183,6 @@ public class Bibliography extends
                                                                    "",
                                                                    "");
 
-  public static Article analyticStationaryRKHS                                           =
-                                               new Article("Reproducing Kernel Hilbert Spaces Associated with Analytic Translation-Invariant Mercer Kernels",
-                                                           "Hong-Wei Sun and Ding-Xuan Zhou",
-                                                           "2008",
-                                                           "Journal of Fourier Analysis and Applications",
-                                                           "14",
-                                                           "89-101").setNumber("1");
-
   public static Article newOperationalMatrixFractionalIntegration                        =
                                                                   new Article("A New Operational Matrix of Fractional Integration for Shifted Jacobi Polynomials.",
                                                                               "Ali H. Bhrawy, Mohamed Mahmoud Tharwat, Mohammad A. Alghamdi",
@@ -231,13 +225,7 @@ public class Bibliography extends
                                                                       "261-263").setNumber("1")
                                                                                 .setPublisher("Institute of Mathematical Statistics");
 
-  public static Article stochasticProcessesFourierTransforms                             =
-                                                             new Article("Stochastic processes as Fourier transforms of stochastic measures",
-                                                                         "Hannu Niemi",
-                                                                         "1975",
-                                                                         "Annales Fennici Mathematici",
-                                                                         null,
-                                                                         null).setNumber("591");
+
 
   public static Article harmonicProbabilisticApproachesToTheRiemannHypothesis            =
                                                                               new Article("Harmonic and Probabilistic Approaches to Zeros of Riemann's Zeta Function",
