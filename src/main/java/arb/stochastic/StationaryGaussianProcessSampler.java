@@ -131,6 +131,11 @@ public abstract class StationaryGaussianProcessSampler extends
 
   static final double          dt                               = 0.01;
 
+  /**
+   * Needs to set both because the drawLegendSymbol method in chartfx uses
+   * {@link DataSetStyleBuilder#setMarkerColor(String)} as well as
+   * {@link DataSetStyleBuilder#setLineColor(String)}
+   */
   private static final String  empiricialFrequencyDatasetStyle  =
                                                                DataSetStyleBuilder.instance()
                                                                                   .setMarkerColor("darkgoldenrod")
@@ -434,11 +439,6 @@ public abstract class StationaryGaussianProcessSampler extends
     var scatterPlotRenderer = newScatterChartRenderer();
     var lineRenderer        = new ErrorDataSetRenderer();
 
-    /**
-     * Needs to set both because the drawLegendSymbol method uses
-     * style.getLineColor() for the legend stroke color, which comes from the stroke
-     * color setting in the dataset style.
-     */
     var empiricalDataSet    =
                          new DoubleDataSet("Empirical").set(positiveFrequencies,
                                                             Arrays.copyOf(empiricalPowerSpectralDensity,
@@ -455,15 +455,25 @@ public abstract class StationaryGaussianProcessSampler extends
 
     chart.getRenderers().setAll(scatterPlotRenderer, lineRenderer);
 
-    chart.getXAxis().setAutoRanging(false);
-    chart.getXAxis().setMin(0);
-    chart.getXAxis().setMax(1.0);
+    configureXAxisOfPowerSpectralDensityChart(chart);
 
+    configureYAxisOfPowerSpectralDensityChart(chart);
+
+    return chart;
+  }
+
+  protected void configureYAxisOfPowerSpectralDensityChart(XYChart chart)
+  {
     chart.getYAxis().setAutoRanging(false);
     chart.getYAxis().setMin(0);
     chart.getYAxis().setMax(5.0);
+  }
 
-    return chart;
+  protected void configureXAxisOfPowerSpectralDensityChart(XYChart chart)
+  {
+    chart.getXAxis().setAutoRanging(false);
+    chart.getXAxis().setMin(0);
+    chart.getXAxis().setMax(1.0);
   }
 
   protected XYChart newRandomWhiteNoiseMeasureChart()
