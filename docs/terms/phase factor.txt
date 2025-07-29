@@ -1,0 +1,16 @@
+A phase factor is the complex exponential e^{iθ} of a phase θ. Phase factors 
+are unit complex numbers, and are special cases of phasors. Unlike general 
+phasors, which may have arbitrary magnitude, phase factors are specifically 
+constrained to lie on the unit circle in the complex plane; thus, they always 
+have unit magnitude.
+
+The term "phase factor" specifically refers to this unit complex exponential 
+form, distinguishing it from more general complex exponential expressions 
+that might include amplitude terms.
+
+It is not required that the underlying phase θ(t) be periodic for e^{iθ(t)} 
+to be a phase factor. The mathematical definition of a phase factor is simply
+ a complex exponential with unit modulus, where "phase" refers to any 
+(generally real) function θ(t). If the phase is time-dependent, the phase 
+factor becomes e^{iθ(t)}, representing a time-dependent phase factor—without 
+any inherent requirement for θ(t) to be periodic or linear in time.
