@@ -1,2 +1,0 @@
-var f = RealFunction.express("im(lnΓ(1/4+I*t/2))-(log(π)/2)*t");
-plot(-40,40,3000,f);
