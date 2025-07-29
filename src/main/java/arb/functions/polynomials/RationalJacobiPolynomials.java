@@ -62,7 +62,7 @@ public class RationalJacobiPolynomials implements
 
   }
 
-  public static Real                     domain  = new Real("0+/-1",
+  public static Real                     domain  = new Real("0±1",
                                                             128);
 
   public int                             bits    = 128;

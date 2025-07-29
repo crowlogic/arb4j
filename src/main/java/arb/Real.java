@@ -2336,7 +2336,7 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
          
   public Real set(String string, int prec)
   {
-    arblib.arb_set_str(this, string, prec);
+    arblib.arb_set_str(this, string.replaceAll("±", "+/-"), prec);
     bits = prec;
     return this;
   }
