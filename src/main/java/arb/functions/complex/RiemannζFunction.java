@@ -1,4 +1,4 @@
-package arb.functions.complex.numbertheoretic;
+package arb.functions.complex;
 
 import static arb.arblib.acb_dirichlet_zeta_jet;
 
@@ -7,7 +7,6 @@ import arb.Real;
 import arb.documentation.Bibliography;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.complex.ComplexFunction;
 
 /**
  * The Riemann zeta function plays a pivotal role in analytic number theory, and

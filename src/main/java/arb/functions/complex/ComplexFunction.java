@@ -44,6 +44,12 @@ public interface ComplexFunction extends
 
 {
 
+  @Override
+  default Class<Complex> domainType()
+  {
+    return Complex.class;
+  }
+
   public default RealToComplexFunction re()
   {
     return new RealComplexPart(this);

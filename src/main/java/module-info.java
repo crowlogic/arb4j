@@ -60,7 +60,6 @@ module arb4j
   exports arb.functions.rational;
   exports arb.functions.real;
   exports arb.functions.complex;
-  exports arb.functions.complex.numbertheoretic;
   exports arb.functions.complex.hyperbolic;
   exports arb.functions.integer;
   exports arb.groups;

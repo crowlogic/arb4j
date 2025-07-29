@@ -108,7 +108,11 @@ public class SymbolPalette extends
     "β",
     "∂",
     "🤙",
-    "σ" };
+    "σ",
+    "*",
+    "×",
+    "ₓ",
+    "⋅" };
 
   private static final String                   STYLESHEET        = """
                  .highlighted-button

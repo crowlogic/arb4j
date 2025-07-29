@@ -9,6 +9,7 @@ import arb.Complex;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.complex.HardyZFunction;
 import junit.framework.TestCase;
 
 /**
@@ -23,7 +24,7 @@ public class ZFunctionTest extends
   public static void testZ()
   {
     Complex   res = Complex.newVector(2);
-    ZFunction Z   = new ZFunction();
+    HardyZFunction Z   = new HardyZFunction();
     try ( Complex z = new Complex();)
     {
       z.set(6, 0.4);

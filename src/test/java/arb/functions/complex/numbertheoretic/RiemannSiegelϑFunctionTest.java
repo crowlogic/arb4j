@@ -5,8 +5,11 @@ import static arb.ComplexConstants.ⅈ;
 
 import arb.Complex;
 import arb.ComplexConstants;
+import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.complex.RealRiemannSiegelϑFunction;
+import arb.functions.complex.RiemannSiegelϑFunction;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
@@ -35,7 +38,7 @@ public class RiemannSiegelϑFunctionTest extends
 
   public static void testRealRSThetaFunction()
   {
-    try ( var theta = RealFunction.express("arg(Γ(1/4+(ⅈ*t)/2))-(log(π)/2*t)") )
+    try ( var theta = RealFunction.express("arg(Γ(1/4+(ⅈ*t)/2))-(log(π)/2*t)"))
     {
       assertEquals(-1.7675479528122903883, theta.eval(1));
     }
@@ -43,10 +46,14 @@ public class RiemannSiegelϑFunctionTest extends
 
   public void testRiemannSiegelThetaAtOne()
   {
-    try ( RiemannSiegelϑFunction ϑ = new RiemannSiegelϑFunction())
+    try ( RiemannSiegelϑFunction ϑ = new RiemannSiegelϑFunction();
+          RealRiemannSiegelϑFunction ϑreal = new RealRiemannSiegelϑFunction())
     {
-      var ϑone = ϑ.evaluate(ComplexConstants.one, 128);
+      var ϑone     = ϑ.evaluate(ComplexConstants.one, 128);
+      var ϑonereal = ϑreal.evaluate(RealConstants.one,  128);
+
       assertEquals(-1.7675479528122903883, ϑone.re().doubleValue());
+      assertEquals(-1.7675479528122903883, ϑonereal.doubleValue());
       assertEquals(0.0, ϑone.im().doubleValue());
     }
   }

@@ -1,16 +1,16 @@
-package arb.functions.complex.numbertheoretic;
+package arb.functions.complex;
 
-import arb.Complex;
+import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.RealLine;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.real.RealFunction;
 
 /**
  * <pre>
  * The Riemann-Siegel ϑ function  defined by 
  * 
- * ϑ(t) = arg(Γ(¼+it/2))-t*log(π)/2
+ * ϑ(t) = arg(Γ(¼ + it/2)) - t*log(π)/2
  * 
  * plays a crucial role in the study of the {@link RiemannζFunction}. The almost-periodic 
  * behavior after t~=20 and the crossing near the first Riemann zero  are noteworthy. The 
@@ -28,21 +28,22 @@ import arb.functions.complex.ComplexFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RiemannSiegelϑFunction implements
-                                    ComplexFunction
+public class RealRiemannSiegelϑFunction implements
+                                    RealFunction
 {
-  public static final ComplexFunction ϑ = ComplexFunction.express("ϑ:t->(-ⅈ*(ln⁡Γ(¼+ⅈ*t/2)-lnΓ(¼−ⅈ*t/2))−ln⁡(π)*t)/2");
+   
+  public static final RealFunction ϑ = RealFunction.express("ϑ:t->im(lnΓ(1/4+I*t/2))-(log(π)/2)*t");
 
-  public RiemannSiegelϑFunction()
+  public RealRiemannSiegelϑFunction()
   {
   }
 
   @Override
-  public Complex
-         evaluate(Complex t,
+  public Real
+         evaluate(Real t,
                   int order,
                   int bits,
-                  Complex res)
+                  Real res)
   {
     return ϑ.evaluate(t, order, bits, res);
   }

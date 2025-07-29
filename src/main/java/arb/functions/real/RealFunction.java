@@ -6,8 +6,8 @@ import arb.Complex;
 import arb.Float;
 import arb.FloatInterval;
 import arb.Real;
-import arb.RealPartition;
 import arb.RealDataSet;
+import arb.RealPartition;
 import arb.RoundingMode;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -26,6 +26,18 @@ import arb.functions.complex.ComplexFunction;
 public interface RealFunction extends
                               Function<Real, Real>
 {
+
+  @Override
+  default Class<Real> coDomainType()
+  {
+   return Real.class;
+  }
+
+  @Override
+  default Class<Real> domainType()
+  {
+    return Real.class;
+  }
 
   public boolean verbose = false;
 
@@ -60,8 +72,8 @@ public interface RealFunction extends
 
   public default Complex evaluate(Complex t, int order, int bits, Complex res)
   {
-    evaluate(t.re(),order,bits,res.re());
-    evaluate(t.im(),order,bits,res.im());
+    evaluate(t.re(), order, bits, res.re());
+    evaluate(t.im(), order, bits, res.im());
     return res;
   }
 
@@ -86,7 +98,8 @@ public interface RealFunction extends
       {
         try ( var blip = new Real())
         {
-          return RealFunction.this.evaluate(t, order, bits, res).mul(that.evaluate(t, order, bits, blip), bits, res);
+          return RealFunction.this.evaluate(t, order, bits, res)
+                                  .mul(that.evaluate(t, order, bits, blip), bits, res);
         }
 
       };
@@ -114,7 +127,8 @@ public interface RealFunction extends
       {
         try ( var blip = new Real())
         {
-          return RealFunction.this.evaluate(t, order, bits, res).div(that.evaluate(t, order, bits, blip), bits, res);
+          return RealFunction.this.evaluate(t, order, bits, res)
+                                  .div(that.evaluate(t, order, bits, blip), bits, res);
         }
 
       };
@@ -142,7 +156,8 @@ public interface RealFunction extends
       {
         try ( var blip = new Real())
         {
-          return RealFunction.this.evaluate(t, order, bits, res).add(that.evaluate(t, order, bits, blip), bits, res);
+          return RealFunction.this.evaluate(t, order, bits, res)
+                                  .add(that.evaluate(t, order, bits, blip), bits, res);
         }
 
       };
@@ -170,7 +185,8 @@ public interface RealFunction extends
       {
         try ( var blip = new Real())
         {
-          return RealFunction.this.evaluate(t, order, bits, res).sub(that.evaluate(t, order, bits, blip), bits, res);
+          return RealFunction.this.evaluate(t, order, bits, res)
+                                  .sub(that.evaluate(t, order, bits, blip), bits, res);
         }
 
       };
@@ -194,12 +210,22 @@ public interface RealFunction extends
 
   public static RealFunction express(String expression, Context context)
   {
-    return Function.instantiate(expression, context, Real.class, Real.class, RealFunction.class, null);
+    return Function.instantiate(expression,
+                                context,
+                                Real.class,
+                                Real.class,
+                                RealFunction.class,
+                                null);
   }
 
   public static RealFunction express(String expression, Context context, boolean verbose)
   {
-    return Function.instantiate(expression, context, Real.class, Real.class, RealFunction.class, null);
+    return Function.instantiate(expression,
+                                context,
+                                Real.class,
+                                Real.class,
+                                RealFunction.class,
+                                null);
   }
 
   public static RealFunction express(String expression, String string)
@@ -212,9 +238,15 @@ public interface RealFunction extends
     return express(functionName, expression, context, false);
   }
 
-  public static RealFunction express(String functionName, String expression, Context context, boolean verbose)
+  public static RealFunction
+         express(String functionName, String expression, Context context, boolean verbose)
   {
-    return Function.instantiate(expression, context, Real.class, Real.class, RealFunction.class, functionName);
+    return Function.instantiate(expression,
+                                context,
+                                Real.class,
+                                Real.class,
+                                RealFunction.class,
+                                functionName);
   }
 
   public static Expression<Real, Real, RealFunction> parse(String expression)
@@ -275,12 +307,6 @@ public interface RealFunction extends
     {
       return evaluate(x.get(0).set(t), 1, Double.PRECISION + 5, x.get(1)).doubleValue(roundingMode);
     }
-  }
-
-  public default Real evaluate(Real x, int order, int bits)
-  {
-    return evaluate(x, order, bits, x);
-
   }
 
   public default Real evaluate(Real x, int bits, Real result)
@@ -375,17 +401,18 @@ public interface RealFunction extends
     {
       Δ.div(n, bits);
       RealDataSet sample = new RealDataSet(
-                                                                       String.format("%s over %s..%s (#=%d Δ=%s)",
-                                                                                     toString(),
-                                                                                     interval.left().toString(5),
-                                                                                     interval.right().toString(5),
-                                                                                     n,
-                                                                                     Δ),
-                                                                       n,
-                                                                       interval);
-      Real                      values = sample.getRealYValues();
+                                           String.format("%s over %s..%s (#=%d Δ=%s)",
+                                                         toString(),
+                                                         interval.left().toString(5),
+                                                         interval.right().toString(5),
+                                                         n,
+                                                         Δ),
+                                           n,
+                                           interval);
+      Real        values = sample.getRealYValues();
 
-      try ( RealPartition mesh = interval.generateRealPartition(bits, false, sample.getRealXValues()))
+      try ( RealPartition mesh =
+                               interval.generateRealPartition(bits, false, sample.getRealXValues()))
       {
         IntStream domain = IntStream.range(0, n);
         if (parallel)

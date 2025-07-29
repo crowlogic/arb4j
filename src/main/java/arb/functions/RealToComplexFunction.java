@@ -16,6 +16,18 @@ public interface RealToComplexFunction extends
                                        Function<Real, Complex>
 {
 
+  @Override
+  default Class<Complex> coDomainType()
+  {
+    return Complex.class;
+  }
+
+  @Override
+  default Class<Real> domainType()
+  {
+    return Real.class;
+  }
+
   public static RealToComplexFunction express(String expression, String string)
   {
     return express(expression, string, null);

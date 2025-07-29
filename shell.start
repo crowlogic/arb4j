@@ -32,7 +32,6 @@ import static arb.functions.real.RealFunction.*;
 import static arb.RoundingMode.*;
 import static arb.RealConstants.*;
 import arb.documentation.*;
-import arb.functions.complex.numbertheoretic.*;
 import arb.functions.polynomials.*;
 import arb.functions.polynomials.orthogonal.*;
 import arb.functions.polynomials.orthogonal.real.*;

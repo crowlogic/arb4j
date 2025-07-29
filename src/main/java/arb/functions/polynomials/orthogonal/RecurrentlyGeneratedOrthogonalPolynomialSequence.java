@@ -100,7 +100,7 @@ public abstract class RecurrentlyGeneratedOrthogonalPolynomialSequence<R, V,
   {
     try
     {
-      return this.elementType.getConstructor().newInstance();
+      return elementType.getConstructor().newInstance();
     }
     catch (Throwable e)
     {
