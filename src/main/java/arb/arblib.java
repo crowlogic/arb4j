@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void acb_elliptic_e(Complex res, Complex m, int prec) {
+    arblibJNI.acb_elliptic_e(Complex.getCPtr(res), res, Complex.getCPtr(m), m, prec);
+  }
+
   public static void fexpr_set_symbol_str(SymbolicExpression res, String s) {
     arblibJNI.fexpr_set_symbol_str(SymbolicExpression.getCPtr(res), res, s);
   }

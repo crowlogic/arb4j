@@ -16,6 +16,8 @@
 #include <unistd.h>
 #include <wchar.h>
 
+ void acb_elliptic_e(acb_t res, const acb_t m, slong prec);
+ 
 void fexpr_set_symbol_str(fexpr_t res, const char * s);
 
 int qqbar_set_fexpr(qqbar_t res, const fexpr_t expr);

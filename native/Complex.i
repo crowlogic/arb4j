@@ -1178,6 +1178,12 @@ import arb.functions.complex.ComplexNullaryFunction;
     return r;
   }
     
+  public Complex ellipticE(int prec, Complex res)
+  {
+    arblib.acb_elliptic_e(res, this, prec);
+    return res;
+  }
+      
   public Complex ellipticK(int prec, Complex res)
   {
     arblib.acb_elliptic_k(res, this, prec);

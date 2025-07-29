@@ -1,0 +1,108 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{amsmath,latexsym}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\mathd}{\mathrm{d}}
+\newcommand{\tmaffiliation}[1]{\\ #1}
+\newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{The Integral $\int_{- 1}^{\omega} \frac{1}{^4 \sqrt{1 - \lambda^2}}
+\mathd \lambda$}
+
+\author{
+  Stephen Crowley
+  \tmaffiliation{July 28, 2025}
+}
+
+\maketitle
+
+\
+
+\begin{theorem}
+  [Integral of $(1 - y^2)^{- 1 / 4}$] For $\lambda \in [- 1, 1]$, the definite
+  integral
+  \begin{equation}
+    \int_{- 1}^{\lambda} \sqrt{\frac{1}{\sqrt{1 - y^2}}}  \hspace{0.17em} dy
+  \end{equation}
+  can be expressed in terms of incomplete elliptic integrals of the second
+  kind as:
+  \begin{equation}
+    \int_{- 1}^{\lambda} \sqrt{\frac{1}{\sqrt{1 - y^2}}}  \hspace{0.17em} dy =
+    2 \left[ \mathrm{EllipticE} \left( \frac{\arcsin \lambda}{2} | 2 \right) -
+    \mathrm{EllipticE} \left( - \frac{\pi}{4} | 2 \right) \right]
+  \end{equation}
+  where $\mathrm{EllipticE} (\phi |m)$ denotes the incomplete elliptic
+  integral of the second kind.
+\end{theorem}
+
+\begin{proof}
+  We proceed in several steps.
+  
+  \tmtextbf{Step 1:} Simplify the integrand.
+  \begin{equation}
+    \sqrt{\frac{1}{\sqrt{1 - y^2}}} = \left( \frac{1}{\sqrt{1 - y^2}}
+    \right)^{1 / 2} = (1 - y^2)^{- 1 / 4}
+  \end{equation}
+  Therefore, our integral becomes:
+  \begin{equation}
+    I = \int_{- 1}^{\lambda} (1 - y^2)^{- 1 / 4}  \hspace{0.17em} dy
+  \end{equation}
+  \tmtextbf{Step 2:} Apply the trigonometric substitution $y = \sin \theta$.
+  
+  Under this substitution:
+  
+  \begin{align}
+    dy & = \cos \theta \hspace{0.17em} d \theta \\
+    1 - y^2 & = 1 - \sin^2 \theta = \cos^2 \theta \\
+    (1 - y^2)^{- 1 / 4} & = (\cos^2 \theta)^{- 1 / 4} = | \cos \theta |^{- 1 /
+    2} 
+  \end{align}
+  
+  For $\theta \in [- \pi / 2, \pi / 2]$, we have $\cos \theta \geq 0$, so $|
+  \cos \theta | = \cos \theta$.
+  
+  The limits of integration transform as:
+  
+  \begin{align}
+    y = - 1 & \Rightarrow \theta = \arcsin (- 1) = - \frac{\pi}{2} \\
+    y = \lambda & \Rightarrow \theta = \arcsin (\lambda) 
+  \end{align}
+  
+  \tmtextbf{Step 3:} Transform the integral.
+  \begin{equation}
+    I = \int_{- \pi / 2}^{\arcsin \lambda} (\cos \theta)^{- 1 / 2} \cos \theta
+    \hspace{0.17em} d \theta = \int_{- \pi / 2}^{\arcsin \lambda} (\cos
+    \theta)^{1 / 2}  \hspace{0.17em} d \theta
+  \end{equation}
+  \tmtextbf{Step 4:} Express in terms of elliptic integrals.
+  
+  It is a known result that:
+  \begin{equation}
+    \int \sqrt{\cos \theta}  \hspace{0.17em} d \theta = 2 \hspace{0.17em}
+    \mathrm{EllipticE} \left( \frac{\theta}{2} | 2 \right) + C
+  \end{equation}
+  where $\mathrm{EllipticE} (\phi |m)$ is the incomplete elliptic integral of
+  the second kind.
+  
+  \tmtextbf{Step 5:} Evaluate the definite integral.
+  
+  \begin{align}
+    I & = \left[ 2 \hspace{0.17em} \mathrm{EllipticE} \left( \frac{\theta}{2}
+    | 2 \right) \right]_{- \pi / 2}^{\arcsin \lambda} \\
+    & = 2 \hspace{0.17em} \mathrm{EllipticE} \left( \frac{\arcsin \lambda}{2}
+    | 2 \right) - 2 \hspace{0.17em} \mathrm{EllipticE} \left( \frac{- \pi /
+    2}{2} | 2 \right) \\
+    & = 2 \left[ \mathrm{EllipticE} \left( \frac{\arcsin \lambda}{2} | 2
+    \right) - \mathrm{EllipticE} \left( - \frac{\pi}{4} | 2 \right) \right] 
+  \end{align}
+  
+  This completes the proof.
+\end{proof}
+
+\end{document}
