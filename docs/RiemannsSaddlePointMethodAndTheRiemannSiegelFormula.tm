@@ -4,7 +4,9 @@
 
 <\body>
   <doc-data|<doc-title|Riemann's Saddle-point Method and the Riemann-Siegel
-  Formula>>
+  Formula>|<doc-author|<author-data|<author-name|Sir \PI've seen hundreds of
+  Graphs Like This Before, Don't Touch it, Its a Graveyard of Dreams\Q
+  Berry>>>>
 
   \;
 
@@ -115,9 +117,9 @@
   this is is necessary to start by analytically continuing the Dirichlet
   series
 
-  <\equation*>
-    \<zeta\><around|(|s|)>=<big|sum><rsub|n=1><rsup|\<infty\>><frac|1|n<rsup|s>>,
-  </equation*>
+  <\equation>
+    \<zeta\><around|(|s|)>=<big|sum><rsub|n=1><rsup|\<infty\>><frac|1|n<rsup|s>>
+  </equation>
 
   which converges only for <math|<math-up|Re>s\<gtr\>1>. On the critical
   line, it is convenient to approximate not the complex function
@@ -125,15 +127,16 @@
   <math|Z<around|(|t|)>>, which the functional equation for
   <math|\<zeta\><around|(|s|)>> guarantees is real for real <math|t> :
 
-  <\equation*>
-    Z<around|(|t|)>=exp <around|(|<math-up|i>\<theta\><around|(|t|)>|)>*\<zeta\>*<around*|(|<frac|1|2>+<math-up|i>t|)>,<text|where
-    >\<theta\><around|(|t|)>=arg <around*|(|\<Gamma\>*<around*|(|<frac|1|4>+<frac|1|2><math-up|i>t|)>|)>-<frac|1|2>*t*log
-    \<pi\>.
-  </equation*>
+  <\equation>
+    Z<around|(|t|)>=exp <around|(|<math-up|i>\<theta\><around|(|t|)>|)>*\<zeta\>*<around*|(|<frac|1|2>+<math-up|i>t|)>
+  </equation>
 
-  <\padded-center>
-    <image|https://cdn.mathpix.com/cropped/2025_04_18_d8f5075a239815e0df73g-03.jpg|0.4par|||>
-  </padded-center>
+  where
+
+  <\equation>
+    \<theta\><around|(|t|)>=arg <around*|(|\<Gamma\>*<around*|(|<frac|1|4>+<frac|<math-up|i>
+    t|2>|)>|)>-<frac|t*log \<pi\>|2>*
+  </equation>
 
   <with|font-series|bold|Figure 1:> Complex plane <math|z> of the integrand,
   and integration contours, in the Riemann-Siegel integrals. Dots indicate
@@ -144,55 +147,51 @@
   the continuation is accomplished modifying the terms <math|n\<gtr\>N> using
   the following form of the Hankel integral [12] for the gamma function:
 
-  <\equation*>
+  <\equation>
     1=-<frac|\<Gamma\><around|(|s|)>|2*\<pi\><math-up|i>>*<big|int><rsub|C><with|math-font-family|rm|<nbsp>d>z<frac|exp
-    <around|(|-z|)>|<around|(|-z|)><rsup|s>>*<around|(|s\<neq\>0,-1,-2*\<cdots\>|)>.
-  </equation*>
+    <around|(|-z|)>|<around|(|-z|)><rsup|s>>*<around|(|s\<neq\>0,-1,-2*\<cdots\>|)>
+  </equation>
 
   Here the <math|z> plane is cut along the positive real axis and the contour
   is shown in figure 1. Elementary manipulations now give a representation of
   <math|Z<around|(|t|)>> in which the tail of the Dirichlet series is
   resummed:
 
-  <\equation*>
-    <\aligned>
-      <tformat|<table|<row|<cell|Z<around|(|t|)>=>|<cell|<big|sum><rsub|n=1><rsup|N><frac|exp
-      <around|(|<math-up|i><around|(|\<theta\><around|(|t|)>-t*log
-      n|)>|)>|<sqrt|n>>>>|<row|<cell|>|<cell|-<frac|exp
-      <around|(|<math-up|i>\<theta\><around|(|t|)>|)>*\<Gamma\>*<around*|(|<frac|1|2>-<math-up|i>t|)>|2*\<pi\><math-up|i>>*<big|int><rsub|C><with|math-font-family|rm|<nbsp>d>z<frac|<around|(|-z|)><rsup|-<frac|1|2>+<math-up|i>t>*exp
-      <around|(|-N*z|)>|exp <around|(|z|)>-1>.>>>>
-    </aligned>
-  </equation*>
+  <\equation>
+    <tabular|<tformat|<table|<row|<cell|Z<around|(|t|)>=>|<cell|<big|sum><rsub|n=1><rsup|N><frac|exp
+    <around|(|<math-up|i><around|(|\<theta\><around|(|t|)>-t*log
+    n|)>|)>|<sqrt|n>>>>|<row|<cell|>|<cell|-<frac|exp
+    <around|(|<math-up|i>\<theta\><around|(|t|)>|)>*\<Gamma\>*<around*|(|<frac|1|2>-<math-up|i>t|)>|2*\<pi\><math-up|i>>*<big|int><rsub|C><with|math-font-family|rm|<nbsp>d>z<frac|<around|(|-z|)><rsup|-<frac|1|2>+<math-up|i>t>*exp
+    <around|(|-N*z|)>|exp <around|(|z|)>-1>>>>>>
+  </equation>
 
   This is the required analytic continuation. The next step is to expand the
   contour to <math|<math-up|C><rsub|N>> (figure 1), to capture the first
   <math|N\<gtr\>0> poles on both the positive imaginary and the negative
   imaginary axes. This leads to
 
-  <\equation*>
-    <\aligned>
-      <tformat|<table|<row|<cell|Z<around|(|t|)>=>|<cell|<big|sum><rsub|n=1><rsup|N><frac|exp
-      <around|(|<math-up|i><around|(|\<theta\><around|(|t|)>-t*log
-      n|)>|)>|<sqrt|n>>>>|<row|<cell|>|<cell|+f<around|(|t|)>*<big|sum><rsub|n=1><rsup|N><frac|exp
-      <around|(|<math-up|i><around|(|-\<theta\><around|(|t|)>+t*log
-      n|)>|)>|<sqrt|n>>+R<rsub|N><around|(|t|)>>>>>
-    </aligned>
-  </equation*>
+  <\equation>
+    <tabular|<tformat|<table|<row|<cell|Z<around|(|t|)>=>|<cell|<big|sum><rsub|n=1><rsup|N><frac|exp
+    <around|(|<math-up|i><around|(|\<theta\><around|(|t|)>-t*log
+    n|)>|)>|<sqrt|n>>>>|<row|<cell|>|<cell|+f<around|(|t|)>*<big|sum><rsub|n=1><rsup|N><frac|exp
+    <around|(|<math-up|i><around|(|-\<theta\><around|(|t|)>+t*log
+    n|)>|)>|<sqrt|n>>+R<rsub|N><around|(|t|)>>>>>>
+  </equation>
 
   with the remainder now given by
 
-  <\equation*>
+  <\equation>
     R<rsub|N><around|(|t|)>=-<frac|exp <around|(|<math-up|i>\<theta\><around|(|t|)>|)>*\<Gamma\>*<around*|(|<frac|1|2>-<math-up|i>t|)>|2*\<pi\><math-up|i>>*<big|int><rsub|C<rsub|N>><with|math-font-family|rm|<nbsp>d>z<frac|<around|(|-z|)><rsup|-<frac|1|2>+<math-up|i>t>*exp
     <around|(|-N*z|)>|exp <around|(|z|)>-1>
-  </equation*>
+  </equation>
 
   Gamma function manipulations (reflection and duplication formulas [12])
   give the prefactor of the second sum as
 
-  <\equation*>
+  <\equation>
     f<around|(|t|)>=2*exp <around|(|2<math-up|i>\<theta\><around|(|t|)>|)>*\<Gamma\>*<around*|(|<frac|1|2>-<math-up|i>t|)>*<around|(|2*\<pi\>|)><rsup|-<frac|1|2>+<math-up|i>t>*cos
     <around*|(|<frac|1|2>*\<pi\>*<around*|(|<frac|1|2>-<math-up|i>t|)>|)>=1
-  </equation*>
+  </equation>
 
   Therefore the <math|N> terms of the second series in (2.5) are the complex
   conjugates of their counterparts in the first series, and
@@ -223,43 +222,43 @@
   The exponent in the numerator of the integrand in (2.6) possesses a saddle,
   at <math|z<rsub|s>>, given by
 
-  <\equation*>
+  <\equation>
     <frac|<math-up|d>|<with|math-font-family|rm|<nbsp>d>z>*<around*|(|<around*|(|-<frac|1|2>+<math-up|i>t|)>*log
     z-N*z|)>=0<space|1em>\<Rightarrow\>z=z<rsub|s>=<frac|<math-up|i>t|N>-<frac|1|2*N>
-  </equation*>
+  </equation>
 
   We want this saddle to lie close to the contour <math|<math-up|C><rsub|N>>,
   so that it dominates the integral for <math|R<rsub|N>>. This can be
   achieved by choosing
 
-  <\equation*>
-    N=<around*|[|<sqrt|<frac|t|2*\<pi\>>>|]>,
-  </equation*>
+  <\equation>
+    N=<around*|[|<sqrt|<frac|t|2*\<pi\>>>|]>
+  </equation>
 
   in which [...] denotes the integer part (floor function). Denoting the
   fractional part of <math|<sqrt|>*<around|(|t/2*\<pi\>|)>> by <math|p>, i.e.
 
-  <\equation*>
+  <\equation>
     <sqrt|<frac|t|2*\<pi\>>>=N+p*<space|1em><around|(|0\<leq\>p\<less\>1|)>
-  </equation*>
+  </equation>
 
   the location of the saddle can be written as
 
-  <\equation*>
+  <\equation>
     z<rsub|s>=<frac|2*\<pi\><math-up|i><around|(|N+p|)><rsup|2>|N>-<frac|1|2*N>\<rightarrow\>2*\<pi\><math-up|i><around|(|N+2*p|)>*<text|as
-    >N\<rightarrow\>\<infty\>.
-  </equation*>
+    >N\<rightarrow\>\<infty\>
+  </equation>
 
   As <math|N> increases, <math|z<rsub|s>> approaches the imaginary axis.
   Figures 2(a,b) show the normalized modulus of the numerator of the
   integrand in (2.6) along the straight line through the saddle in the
   direction of steepest descent there, namely
 
-  <\equation*>
+  <\equation>
     M<around|(|x|)>=<around*|\||<around*|(|<frac|z|z<rsub|0>>|)><rsup|-<frac|1|2>+<math-up|i>t>*exp
     <around*|(|-N*<around*|(|z-z<rsub|0>|)>|)>|\|>*<text|, for
-    >z=z<rsub|0>+x*exp <around*|(|<frac|1|4><math-up|i>\<pi\>|)>,
-  </equation*>
+    >z=z<rsub|0>+x*exp <around*|(|<frac|1|4><math-up|i>\<pi\>|)>
+  </equation>
 
   where <math|z<rsub|0>=z<rsub|s>>, compared with the Gaussian approximation
   (quadratic expansion about <math|z<rsub|0>> ). The Gaussian fit is almost
@@ -275,10 +274,10 @@
   is convenient to expand the integral not through <math|z<rsub|s>> but
   through the location <math|z<rsub|c>> of the pole <math|N> :
 
-  <\equation*>
+  <\equation>
     z<rsub|c>=2*\<pi\><math-up|i>N=z<rsub|s>-4*\<pi\><math-up|i>p*<text|for
-    >N\<gg\>1.
-  </equation*>
+    >N\<gg\>1
+  </equation>
 
   As figures 2(c,d) illustrate, the modulus <math|M> of the integrand (i.e.
   (3.5) with <math|z<rsub|0>=z<rsub|c>>), is still close to Gaussian. The
@@ -291,21 +290,17 @@
   after more manipulations and using the large <math|t> (Stirling)
   approximation for the gamma function [1],
 
-  <\equation*>
+  <\equation>
     R<rsub|N>*<around*|(|2*\<pi\>*<around|(|N+p|)><rsup|2>|)><below|\<longrightarrow\>|N\<gg\>1><around*|(|<frac|2*\<pi\>|t>|)><rsup|1/4>*<around|(|-1|)><rsup|N+1>*\<Psi\><around|(|p|)>
-  </equation*>
+  </equation>
 
   in which
 
-  <\equation*>
+  <\equation>
     \<Psi\><around|(|p|)>=<frac|exp <around*|(|<math-up|i><around*|(|<frac|1|8>*\<pi\>-2*\<pi\>*p<rsup|2>|)>|)>|2*\<pi\><math-up|i>>*<big|int><rsub|L><with|math-font-family|rm|<nbsp>d>u<frac|exp
     <around*|(|<frac|<math-up|i>u<rsup|2>|4*\<pi\>>+2*p*u|)>|exp
     <around|(|u|)>-1>
-  </equation*>
-
-  <\padded-center>
-    <image|https://cdn.mathpix.com/cropped/2025_04_18_d8f5075a239815e0df73g-06.jpg|0.8par|||>
-  </padded-center>
+  </equation>
 
   <with|font-series|bold|Figure 2:> Full curves: (a,b) modulus <math|M>
   (equation (3.5)) of the Riemann-Siegel integral (2.6) along straight
@@ -326,10 +321,10 @@
   and whose denominator is a string of poles. As explained elsewhere [1, 2],
   he was able to evaluate this integral exactly. The result is
 
-  <\equation*>
+  <\equation>
     \<Psi\><around|(|p|)>=<frac|cos 2*\<pi\>*<around*|(|p<rsup|2>-p-<frac|1|16>|)>|cos
     2*\<pi\>*p>
-  </equation*>
+  </equation>
 
   (the derivation involves two relations between <math|\<Psi\><around|(|p|)>>
   and <math|\<Psi\>*<around|(|p+1/2|)>>). Despite appearances, this is an
@@ -339,15 +334,13 @@
   ours, Riemann established the leading-order correction to the main sum in
   (2.8), so that
 
-  <\equation*>
-    <\aligned>
-      <tformat|<table|<row|<cell|Z<around|(|t|)>=>|<cell|2*<big|sum><rsub|n=1><rsup|N><frac|cos
-      <around|(|\<theta\><around|(|t|)>-t*log
-      n|)>|<sqrt|n>>>>|<row|<cell|>|<cell|+<around*|(|<frac|2*\<pi\>|t>|)><rsup|1/4>*<around|(|-1|)><rsup|N+1><frac|cos
-      2*\<pi\>*<around*|(|p<rsup|2>-p-<frac|1|16>|)>|cos
-      2*\<pi\>*p>+O<around*|(|<frac|1|t<rsup|1/2>>|)>.>>>>
-    </aligned>
-  </equation*>
+  <\equation>
+    <tabular|<tformat|<table|<row|<cell|Z<around|(|t|)>=>|<cell|2*<big|sum><rsub|n=1><rsup|N><frac|cos
+    <around|(|\<theta\><around|(|t|)>-t*log
+    n|)>|<sqrt|n>>>>|<row|<cell|>|<cell|+<around*|(|<frac|2*\<pi\>|t>|)><rsup|1/4>*<around|(|-1|)><rsup|N+1><frac|cos
+    2*\<pi\>*<around*|(|p<rsup|2>-p-<frac|1|16>|)>|cos
+    2*\<pi\>*p>+O<around*|(|<frac|1|t<rsup|1/2>>|)>>>>>>
+  </equation>
 
   Note that this expression is real, indicating that the saddle-point
   approximation preserves the essence of the functional equation.
@@ -363,10 +356,10 @@
   Dirichlet series (2.1), from which the remainder, correcting the main sum,
   is given formally by
 
-  <\equation*>
+  <\equation>
     R<rsub|N><around|(|t|)>=exp <around|(|<math-up|i>\<theta\><around|(|t|)>|)>*<big|sum><rsub|N+1><rsup|\<infty\>><frac|1|n<rsup|<frac|1|2>+<math-up|i>t>>-exp
-    <around|(|-<math-up|i>\<theta\><around|(|t|)>|)>*<big|sum><rsub|1><rsup|N><frac|1|n<rsup|<frac|1|2>-<math-up|i>t>>.
-  </equation*>
+    <around|(|-<math-up|i>\<theta\><around|(|t|)>|)>*<big|sum><rsub|1><rsup|N><frac|1|n<rsup|<frac|1|2>-<math-up|i>t>>
+  </equation>
 
   The procedure consists of expanding each sum about its limit <math|N>, and
   also <math|\<theta\><around|(|t|)>>, for <math|t\<gg\>1>. The resulting
@@ -501,11 +494,11 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|?|1|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-2|<tuple|?|2|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-3|<tuple|?|4|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-4|<tuple|?|7|../../.TeXmacs/texts/scratch/no_name_3.tm>>
-    <associate|auto-5|<tuple|?|8|../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-1|<tuple|?|1>>
+    <associate|auto-2|<tuple|?|2>>
+    <associate|auto-3|<tuple|8|4>>
+    <associate|auto-4|<tuple|18|6>>
+    <associate|auto-5|<tuple|19|7>>
   </collection>
 </references>
 
