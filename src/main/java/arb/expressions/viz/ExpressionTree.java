@@ -54,7 +54,9 @@ public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> 
       var current = queue.poll();
 
       // Add node definition
-      dot.append(String.format("  \"%s\" [label=\"%s\"];\n", current.toString(), current.toString()));
+      dot.append(String.format("  \"%s\" [label=\"%s\"];\n",
+                               current.toString(),
+                               current.toString()));
 
       // Process all branches
       List<Node<D, R, F>> branches = indexedBranches.get(current);
@@ -110,9 +112,11 @@ public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> 
       return;
 
     var branches = new ArrayList<Node<D, R, F>>(stem.getBranches());
+    var existing = indexedBranches.get(stem);
+    assert existing != null : stem + " already indexed";
     indexedBranches.put(stem, branches);
 
-    for (var branch : stem.getBranches())
+    for (var branch : branches)
     {
       assert branch != null;
       indexBranches(branch);

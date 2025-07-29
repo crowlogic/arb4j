@@ -270,8 +270,11 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
                   String> nodeTypeResultColumn = new TreeTableColumn<>("Result Type");
     nodeTypeResultColumn.setCellValueFactory(param ->
     {
-      Class<?> generatedType = param.getValue().getValue().getGeneratedType();
-      return new ReadOnlyStringWrapper(generatedType == null ? "null"
+
+      TreeItem<Node<D, C, F>> treeItem      = param.getValue();
+      Node<D, C, F>           node          = treeItem.getValue();
+      Class<?>                generatedType = node.getGeneratedType();
+      return new ReadOnlyStringWrapper(generatedType == null ? String.format("null for %s", node)
                                                              : generatedType.getSimpleName());
     });
     return nodeTypeResultColumn;

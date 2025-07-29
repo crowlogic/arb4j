@@ -1,0 +1,5 @@
+var context = new Context();
+context.registerVariable(arb.Integer.named("m"));
+var e = ComplexFunction.parse("e","y->-I*(pFq([1,m,-m],[1/2],-((1/2)*I)/y)*exp(I*(π*m+y))-pFq([1,m,-m],[1/2],((1/2)*I)/y)*exp(I*(2*π*m-y)))*(4*m^2-1)*(-1)^(-m)/((4*m^2-2)*y*π)",context);
+var inst = e.instantiate();
+e.inspect(inst);

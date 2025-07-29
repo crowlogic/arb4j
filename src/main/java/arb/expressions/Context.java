@@ -16,7 +16,6 @@ import java.util.stream.Stream;
 import arb.Integer;
 import arb.Named;
 import arb.OrderedPair;
-import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
@@ -91,8 +90,7 @@ public class Context
     if (sortedMap.values().stream().mapToInt(f -> f.dependencies.size()).sum() > 0)
     {
       filename = sortedMap.keySet().stream().collect(Collectors.joining()) + ".dot";
-      TopologicalSorter.saveToDotFile(TopologicalSorter.toDotFormatReversed(sortedMap),
-                                      filename);
+      TopologicalSorter.saveToDotFile(TopologicalSorter.toDotFormatReversed(sortedMap), filename);
     }
     return filename;
   }
@@ -274,7 +272,7 @@ public class Context
     return registerFunctionMapping(name, seq, seq.domainType(), seq.coDomainType());
   }
 
-  public Real registerVariable(Real var)
+  public <R extends Named> R registerVariable(R var)
   {
     return registerVariable(var.getName(), var);
   }
