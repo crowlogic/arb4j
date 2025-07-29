@@ -18,8 +18,6 @@ import arb.stochastic.processes.ComplexWhiteNoiseProcess;
 import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.renderer.ErrorStyle;
-import io.fair_acc.chartfx.renderer.LineStyle;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import io.fair_acc.dataset.spi.DoubleDataSet;
 import io.fair_acc.dataset.utils.DataSetStyleBuilder;
@@ -358,7 +356,7 @@ public abstract class StationaryGaussianProcessSampler extends
       theoreticalPowerSpectralDensities[i] = powerSpectralDensity[i];
     }
 
-    var scatterPlotRenderer = newScatterChartRenderer();
+    var scatterPlotRenderer = WindowManager.newScatterChartRenderer();
     var lineRenderer        = new ErrorDataSetRenderer();
 
     var empiricalDataSet    =
@@ -377,25 +375,11 @@ public abstract class StationaryGaussianProcessSampler extends
 
     chart.getRenderers().setAll(scatterPlotRenderer, lineRenderer);
 
-    configureXAxisOfPowerSpectralDensityChart(chart);
+    WindowManager.configureXAxisOfPowerSpectralDensityChart(chart);
 
-    configureYAxisOfPowerSpectralDensityChart(chart);
+    WindowManager.configureYAxisOfPowerSpectralDensityChart(chart);
 
     return chart;
-  }
-
-  protected static void configureYAxisOfPowerSpectralDensityChart(XYChart chart)
-  {
-    chart.getYAxis().setAutoRanging(false);
-    chart.getYAxis().setMin(0);
-    chart.getYAxis().setMax(5.0);
-  }
-
-  protected static void configureXAxisOfPowerSpectralDensityChart(XYChart chart)
-  {
-    chart.getXAxis().setAutoRanging(false);
-    chart.getXAxis().setMin(0);
-    chart.getXAxis().setMax(1.0);
   }
 
   protected XYChart newRandomWhiteNoiseMeasureChart()
@@ -406,7 +390,7 @@ public abstract class StationaryGaussianProcessSampler extends
                                                        ""));
     chart.setTitle("Random White Noise Measure");
 
-    final ErrorDataSetRenderer scatterPlotRenderer    = newScatterChartRenderer();
+    final ErrorDataSetRenderer scatterPlotRenderer    = WindowManager.newScatterChartRenderer();
 
     int                        positiveFrequencyCount = frequencies.length;
     double[]                   realNoise              = new double[positiveFrequencyCount];
@@ -436,17 +420,6 @@ public abstract class StationaryGaussianProcessSampler extends
     chart.getXAxis().setMax(1.0);
 
     return chart;
-  }
-
-  protected ErrorDataSetRenderer newScatterChartRenderer()
-  {
-    final ErrorDataSetRenderer renderer = new ErrorDataSetRenderer();
-    renderer.setPolyLineStyle(LineStyle.NONE);
-    renderer.setErrorStyle(ErrorStyle.NONE);
-    renderer.setDrawMarker(true);
-    renderer.setDrawBubbles(false);
-    renderer.setAssumeSortedData(false);
-    return renderer;
   }
 
   protected XYChart newTimeDomainChart()

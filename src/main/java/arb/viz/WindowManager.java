@@ -21,6 +21,9 @@ import io.fair_acc.chartfx.plugins.CrosshairIndicator;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.TableViewer;
 import io.fair_acc.chartfx.plugins.Zoomer;
+import io.fair_acc.chartfx.renderer.ErrorStyle;
+import io.fair_acc.chartfx.renderer.LineStyle;
+import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -453,6 +456,31 @@ public class WindowManager
     chart.getStylesheets()
          .add(String.format("data:text/css,.chart-crosshair-label { -fx-fill: %s; -fx-font-size: 16px; }",
                             light ? "orange" : "yellow"));
+  }
+
+  public static ErrorDataSetRenderer newScatterChartRenderer()
+  {
+    final ErrorDataSetRenderer renderer = new ErrorDataSetRenderer();
+    renderer.setPolyLineStyle(LineStyle.NONE);
+    renderer.setErrorStyle(ErrorStyle.NONE);
+    renderer.setDrawMarker(true);
+    renderer.setDrawBubbles(false);
+    renderer.setAssumeSortedData(false);
+    return renderer;
+  }
+
+  public static void configureYAxisOfPowerSpectralDensityChart(XYChart chart)
+  {
+    chart.getYAxis().setAutoRanging(false);
+    chart.getYAxis().setMin(0);
+    chart.getYAxis().setMax(5.0);
+  }
+
+  public static void configureXAxisOfPowerSpectralDensityChart(XYChart chart)
+  {
+    chart.getXAxis().setAutoRanging(false);
+    chart.getXAxis().setMin(0);
+    chart.getXAxis().setMax(1.0);
   }
 
 }
