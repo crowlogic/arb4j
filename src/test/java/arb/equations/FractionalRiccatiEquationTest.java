@@ -29,15 +29,11 @@ public class FractionalRiccatiEquationTest extends
                                                                    "0",
                                                                    "2",
                                                                    "1");
-    System.out.println(freq);
     var     discriminant = freq.discriminant();
 
     Complex p            = freq.p.eval(0.0, new Complex());
-    System.out.println("p=" + p);
     Complex q = freq.q.eval(0.0, new Complex());
-    System.out.println("q=" + q);
     Complex r = freq.r.eval(0.0, new Complex());
-    System.out.println("r=" + r);
     assertEquals("0", p.toString());
     assertEquals("2", q.toString());
     assertEquals("1", r.toString());
@@ -48,7 +44,6 @@ public class FractionalRiccatiEquationTest extends
     Function<Complex, Complex> p4int  = p4.integral();
     var                        upper  = p4int.evaluate(new Complex(RealConstants.one), 1, 128, new Complex());
     var                        lower  = p4int.evaluate(new Complex(RealConstants.zero), 1, 128, new Complex());
-    System.out.println("upper=%s\nlower=%s\n");
 
 //    p4.inte
 //    freq.r.project(basis.enumerate(0, 5),128,new Real());
