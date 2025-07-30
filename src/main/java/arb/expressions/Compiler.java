@@ -118,6 +118,12 @@ public class Compiler
     typePrefixes.put(ComplexFraction.class, "fℂ");
     typePrefixes.put(SphericalBesselFunction.class, "sph");
     typePrefixes.put(IntegerPolynomial.class, "Xℤ");
+    typePrefixes.put(RealFunction.class, "wtf"); // the answer is that the result variable is
+                                                 // ignored, it shoul be set to null, the generated
+                                                 // code will return the function that it constructs
+                                                 // regadless of whatever is passed int he trailing
+                                                 // result parameter which is usually assed back as
+                                                 // the return value in the fluent programming style
   }
 
   public static final String objectDesc = Type.getInternalName(Object.class);
