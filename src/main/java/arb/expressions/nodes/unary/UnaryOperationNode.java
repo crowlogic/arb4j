@@ -15,6 +15,8 @@ import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 
 /**
+ * @author Στεvε
+ * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
