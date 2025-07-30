@@ -251,7 +251,7 @@ public class RealFunctionExpressionCompilerTest extends
 
   public void testIdentityInput()
   {
-    RealFunction identity = express("t", context, true);
+    RealFunction identity = express("t", context);
     Real         won      = identity.evaluate(one, 1, 256, new Real());
     {
       assertEquals(1.0, won.doubleValue());
@@ -422,7 +422,7 @@ public class RealFunctionExpressionCompilerTest extends
   public void testSFunctionWithGreekInputSplitIntoTwoFunctions()
   {
     Context context = new Context();
-    express("yay", "1+ρ^2", context);
+    express("yay:1+ρ^2", context);
     RealFunction expression = express("x->tanh(ln(yay(x)))", context);
 
     Real         result     = new Real();

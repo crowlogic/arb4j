@@ -8,7 +8,6 @@ import arb.Real;
 import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.exceptions.CompilerException;
 import arb.functions.IntegerFunction;
 import arb.functions.IntegerNullaryFunction;
 import arb.functions.complex.ComplexFunction;
@@ -35,7 +34,8 @@ public class ExpressionTest extends
 
   public static void testSequenceOfRealValuyedHypergeometricFunctionAsComplexValuedFunctions()
   {
-    var             f      = ComplexFunctionSequence.express("Vplus:m->pFq([1,m,-m],[1/2],(1/2)/y)");
+    var             f      =
+                      ComplexFunctionSequence.express("Vplus:m->pFq([1,m,-m],[1/2],(1/2)/y)");
     ComplexFunction Vplus3 = f.evaluate(3, 128);
     Complex         y      = Vplus3.evaluate(new Real("2.3",
                                                       128),
@@ -50,8 +50,10 @@ public class ExpressionTest extends
   {
     var context = new Context(Integer.named("m").set(4));
 
-    var A       = ComplexFunction.express("A:pFq([1, m, -m], [1/2], I/2/y)*exp(2*I*π*m - y*I)", context);
-    var B       = ComplexFunction.express("B:pFq([1, m, -m], [1/2], -I/2/y)*exp(m*π*I + y*I)", context);
+    var A       =
+          ComplexFunction.express("A:pFq([1, m, -m], [1/2], I/2/y)*exp(2*I*π*m - y*I)", context);
+    var B       =
+          ComplexFunction.express("B:pFq([1, m, -m], [1/2], -I/2/y)*exp(m*π*I + y*I)", context);
     var f       = ComplexFunction.express("F", "y->I*(A(y)-B(y))/y", context);
 
     var y       = f.eval(2.3, new Complex());
@@ -385,11 +387,14 @@ public class ExpressionTest extends
     context.registerVariable("p", new Integer(3));
     context.registerVariable("q", new Integer(2));
     var    F                     =
-             RealPolynomialNullaryFunction.parse("F", "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}", context);
+             RealPolynomialNullaryFunction.parse("F",
+                                                 "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
+                                                 context);
     var    transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
     String str                   = transformedExpression.toString();
     // got F:Σn➔((2*z^n)*Πk➔α[k]⋰n{k=1…p})/n!*Πk➔β[k]⋰n{k=1…q}{n=0…N}
-    String ideal                 = "F:Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}";
+    String ideal                 =
+                 "F:Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}";
 
     assertEquals(ideal, str);
   }
@@ -401,9 +406,12 @@ public class ExpressionTest extends
     context.registerVariable("q", new Integer(2));
     context.registerVariable("N", new Integer(3));
     var    F                     =
-             RealPolynomialNullaryFunction.parse("F", "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}", context);
+             RealPolynomialNullaryFunction.parse("F",
+                                                 "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
+                                                 context);
     var    transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
-    String ideal                 = "F:Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}";
+    String ideal                 =
+                 "F:Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}";
     String str                   = transformedExpression.toString();
     // System.out.format("ideal=%s\n str=%s\n", ideal, str );
     assertEquals(ideal, str);
@@ -436,31 +444,6 @@ public class ExpressionTest extends
   public void testSuperscriptLowercaseQ()
   {
     assertEquals("𐞥", String.format("%c", Parser.lowercaseSuperscriptAlphabet[16]));
-  }
-
-  public void testConflictingFunctionNameDefinitionThrowsException()
-  {
-    boolean caughtException = false;
-    try
-    {
-      RealFunction func = RealFunction.express("G", "F: x₍₃₎", null);
-      try ( @SuppressWarnings("unused")
-      Real result = func.evaluate(new Real("5",
-                                           128),
-                                  0,
-                                  128,
-                                  new Real()))
-      {
-      }
-    }
-    catch (CompilerException e)
-    {
-      String message = e.getMessage();
-      assertTrue(message.contains("'F'"));
-      assertTrue(message.contains("'G"));
-      caughtException = true;
-    }
-    assertTrue(caughtException);
   }
 
   public void testRatioOfRisingFactorials()

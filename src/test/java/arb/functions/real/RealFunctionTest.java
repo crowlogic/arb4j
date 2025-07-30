@@ -1,6 +1,7 @@
 package arb.functions.real;
 
 import arb.Fraction;
+import arb.expressions.Context;
 import junit.framework.TestCase;
 
 @SuppressWarnings(
@@ -15,6 +16,19 @@ import junit.framework.TestCase;
 public class RealFunctionTest extends
                               TestCase
 {
+  public static void testParse()
+  {
+    var context   = new Context();
+     var f = RealFunction.express("θ:im(lnΓ(¼+I*t/2))-(log(π)/2)*t", context);
+    //var f         = RealFunction.parse("θ:im(lnΓ(¼+I*t/2))-(log(π)/2)*t", context).instantiate();
+
+    var e         = RealFunction.parse("e:theta(t)-t", context);
+    var einstance = e.instantiate();
+
+    assertEquals("e:t➔(theta(t))-t", einstance.toString());
+    assertEquals("θ:t➔(im(lnΓ(¼+((ⅈ*t)/2))))-(((log(π))/2)*t)", f.toString());
+
+  }
 
   public static void testJOneQuarter()
   {
@@ -32,15 +46,12 @@ public class RealFunctionTest extends
 
   public static void testBetaFunctionReal()
   {
-    
+
     var oneOverThirty      = new Fraction(1,
                                           30);
     var oneThirtieth       = RealNullaryFunction.express("Beta(5,2)");
     var oneDividedByThirty = oneThirtieth.evaluate(128);
     assertEquals(oneOverThirty.doubleValue(), oneDividedByThirty.doubleValue());
   }
-
-
-
 
 }

@@ -443,13 +443,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     this.context                          = context;
     this.functionName                     = functionName;
 
-    if (expression.contains(":"))
-    {
-      int colonCharacterIndex = expression.indexOf(':');
-      className             = expression.substring(0, colonCharacterIndex);
-      expression            = expression.substring(colonCharacterIndex + 1);
-      functionNameSpecified = false;
-    }
     if (context != null && context.saveClasses)
     {
       saveClasses = true;
@@ -546,12 +539,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     updateStringRepresentation();
     instructionByteCodes = null;
     compiledClass        = null;
-    return compile();
-  }
-
-  public Expression<D, C, F> compile()
-  {
-    defineClass();
+    compile();
     return this;
   }
 
@@ -701,11 +689,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     variablesDeclared = true;
   }
 
-  protected Class<F> defineClass()
+  public Expression<D, C, F> compile()
   {
     if (compiledClass != null)
     {
-      return compiledClass;
+      return this;
     }
     if (trace)
     {
@@ -719,7 +707,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       generate();
     }
-    return compiledClass = loadFunctionClass(className, instructionByteCodes, context);
+    compiledClass = loadFunctionClass(className, instructionByteCodes, context);
+    return this;
   }
 
   @SuppressWarnings("unchecked")
@@ -1272,7 +1261,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     invokeInitializationMethod(mv, function);
 
-    function.defineClass();
+    function.compile();
 
     return function;
   }
@@ -1576,13 +1565,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return invokeSetMethod(mv, inputType, coDomainType);
   }
 
-  boolean functionNameSpecified = false;
+  public boolean functionNameSpecified = true;
 
   protected ClassVisitor generateToStringMethod(ClassVisitor classVisitor)
   {
-    if (Expression.trace)
+    if (log.isDebugEnabled())
     {
-      System.err.format("generateToStringMethod(expression=%s)\n", expression);
+      log.debug("generateToStringMethod(expression={}\nfunctionName={},functionNameSpecified={},independentVariable={})",
+                expression,
+                functionName,
+                functionNameSpecified,
+                independentVariable);
     }
 
     var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
@@ -1665,11 +1658,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   private F newInstance()
   {
-    Class<F> definition = compiledClass != null ? compiledClass : defineClass();
-
+    if (compiledClass == null)
+    {
+      compile();
+    }
     try
     {
-      return instance = definition.getDeclaredConstructor().newInstance();
+      return instance = compiledClass.getDeclaredConstructor().newInstance();
     }
     catch (Exception e)
     {
@@ -1796,6 +1791,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     injectReferences(instance);
 
+    
     return instance;
   }
 

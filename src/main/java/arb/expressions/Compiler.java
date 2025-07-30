@@ -174,7 +174,7 @@ public class Compiler
       expression   = expression.substring(punctuationMarkIndex + 1, expression.length());
       autonamed    = false;
     }
-    expression = expression.replace(" ", "");
+    expression = expression.replaceAll(" ", "");
 
     FunctionMapping<D, R, F> mapping = null;
     if (functionName != null && context != null)

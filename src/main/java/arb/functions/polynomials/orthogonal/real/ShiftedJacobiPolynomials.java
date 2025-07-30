@@ -51,7 +51,7 @@ public class ShiftedJacobiPolynomials extends
   {
     if (orthogonalityMeasure == null)
     {
-      orthogonalityMeasure = RealFunction.express("w", "x➔((1-x)*2)^α*(2*x)^β", context);
+      orthogonalityMeasure = RealFunction.express("w:x➔((1-x)*2)^α*(2*x)^β", context);
     }
     return orthogonalityMeasure;
   }

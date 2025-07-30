@@ -77,7 +77,7 @@ public final class FunctionMapping<D, R, F extends Function<? extends D, ? exten
   {
     if (Function.class.equals(expression.functionClass))
     {
-      expression.defineClass();
+      expression.compile();
     }
     return instance = expression.instantiate();
   }

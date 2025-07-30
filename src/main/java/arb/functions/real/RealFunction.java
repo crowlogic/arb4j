@@ -30,7 +30,7 @@ public interface RealFunction extends
   @Override
   default Class<Real> coDomainType()
   {
-   return Real.class;
+    return Real.class;
   }
 
   @Override
@@ -210,12 +210,19 @@ public interface RealFunction extends
 
   public static RealFunction express(String expression, Context context)
   {
-    return Function.instantiate(expression,
-                                context,
-                                Real.class,
-                                Real.class,
-                                RealFunction.class,
-                                null);
+    Expression<Real, Real, RealFunction> parsedExpression = parse(expression, context);
+    Expression<Real, Real, RealFunction> compiledExpression = parsedExpression.compile();
+    var                                  func               = compiledExpression.instantiate();
+    
+    if (compiledExpression.mapping != null)
+    {
+      compiledExpression.mapping.instance = func;
+    }
+    if ( context != null && compiledExpression.functionName != null )
+    {
+      context.registerFunction(compiledExpression.functionName, func);
+    }
+    return func;
   }
 
   public static RealFunction express(String expression, Context context, boolean verbose)
@@ -263,7 +270,8 @@ public interface RealFunction extends
 
   public static Expression<Real, Real, RealFunction> parse(String expression, Context context)
   {
-    return Function.parse(Parser.expressionToUniqueClassname(expression),
+    String className = Parser.expressionToUniqueClassname(expression);
+    return Function.parse(className,
                           expression,
                           context,
                           Real.class,

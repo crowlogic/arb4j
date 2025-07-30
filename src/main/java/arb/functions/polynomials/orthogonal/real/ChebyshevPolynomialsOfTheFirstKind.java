@@ -72,7 +72,7 @@ public class ChebyshevPolynomialsOfTheFirstKind extends
   {
     if (orthogonalityMeasure == null)
     {
-      orthogonalityMeasure = RealFunction.express("w", "x➔1/√((1-x)²)");
+      orthogonalityMeasure = RealFunction.express("w:x➔1/√((1-x)²)");
     }
     return orthogonalityMeasure;
   }

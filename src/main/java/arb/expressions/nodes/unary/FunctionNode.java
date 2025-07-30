@@ -500,6 +500,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public FunctionMapping<D, R, F> getFunctionMapping()
   {
+    assert expression.context
+                  != null : expression
+                            + " has no context by which to retrieve the functionMapping named "
+                            + functionName
+                            + " from";
     FunctionMapping<D, R, F> mapping = expression.context.getFunctionMapping(functionName);
     if (isSelfReferential(mapping))
     {

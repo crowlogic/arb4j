@@ -149,7 +149,7 @@ public class RationalJacobiPolynomials implements
   {
     if (orthogonalityMeasure == null)
     {
-      orthogonalityMeasure = RealFunction.express("w", "x➔(1-x)^α*(1+x)^β", context);
+      orthogonalityMeasure = RealFunction.express("w:x➔(1-x)^α*(1+x)^β", context);
     }
     return orthogonalityMeasure;
   }
