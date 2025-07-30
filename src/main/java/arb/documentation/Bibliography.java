@@ -18,6 +18,12 @@ import arb.documentation.references.Book;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Book    theoryOfHardysZFunction                                          =
+                                                new Book("The Theory of Hardy's Z-function",
+                                                         "Aleksandar Ivić",
+                                                         "2012").setPublisher("Cambridge University Press")
+                                                                .setVolume("196");
+
   public static Article theNormalityOfTimeInvariantSubordinativeOperatorsInAHilbertSpace =
                                                                                          new Article("The normality of time-invariant, subordinative operators in a Hilbert space",
                                                                                                      "P. Masani",
@@ -225,7 +231,6 @@ public class Bibliography extends
                                                                       "261-263").setNumber("1")
                                                                                 .setPublisher("Institute of Mathematical Statistics");
 
-
   public static Article harmonicProbabilisticApproachesToTheRiemannHypothesis            =
                                                                               new Article("Harmonic and Probabilistic Approaches to Zeros of Riemann's Zeta Function",
                                                                                           "M. M. Rao",
@@ -285,8 +290,6 @@ public class Bibliography extends
                                                                                       "5",
                                                                                       "117-120").setNumber("1")
                                                                                                 .setVolume("5");
-
-
 
   public static Article shiftedJacobiPolynomialIntegralOperationalMatrix                 =
                                                                          new Article("The shifted Jacobi polynomial integral operational matrix for solving Riccati differential equation of fractional order",
