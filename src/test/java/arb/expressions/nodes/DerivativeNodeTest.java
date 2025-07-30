@@ -53,7 +53,7 @@ public class DerivativeNodeTest extends
   {
     var ψ = RealFunction.express("diff(lnΓ(x),x)");
     var f = ψ.eval(2.3);
-    assertEquals(2.14, f);
+    assertEquals(0.6000398803639695, f);
   }
 
   public void testDefiniteIntegralOfSquareRoot()
