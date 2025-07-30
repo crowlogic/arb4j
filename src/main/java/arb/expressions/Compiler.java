@@ -851,10 +851,10 @@ public class Compiler
     return mv;
   }
 
-  public static void generateInstructionToLoadConstantOntoStack(MethodVisitor mv,
-                                                                String fieldName,
-                                                                Class<?> typeClass,
-                                                                Class<?> staticConstantsClass)
+  public static void loadConstantOntoStack(MethodVisitor mv,
+                                           String fieldName,
+                                           Class<?> typeClass,
+                                           Class<?> staticConstantsClass)
   {
     mv.visitFieldInsn(Opcodes.GETSTATIC,
                       Type.getInternalName(staticConstantsClass),
@@ -864,12 +864,12 @@ public class Compiler
 
   public static void loadComplexConstantOntoStack(MethodVisitor mv, String fn)
   {
-    generateInstructionToLoadConstantOntoStack(mv, fn, Complex.class, ComplexConstants.class);
+    loadConstantOntoStack(mv, fn, Complex.class, ComplexConstants.class);
   }
 
   public static void loadRealConstantOntoStack(MethodVisitor mv, String fn)
   {
-    generateInstructionToLoadConstantOntoStack(mv, fn, Real.class, RealConstants.class);
+    loadConstantOntoStack(mv, fn, Real.class, RealConstants.class);
   }
 
   /**

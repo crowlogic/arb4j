@@ -1,19 +1,36 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.*;
-import static org.objectweb.asm.Opcodes.*;
+import static arb.expressions.Compiler.duplicateTopOfTheStack;
+import static arb.expressions.Compiler.generateNewObjectInstruction;
+import static arb.expressions.Compiler.loadComplexConstantOntoStack;
+import static arb.expressions.Compiler.loadConstantOntoStack;
+import static arb.expressions.Compiler.loadRealConstantOntoStack;
+import static arb.expressions.Compiler.loadThisOntoStack;
+import static org.objectweb.asm.Opcodes.ACC_FINAL;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.SIPUSH;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 
-import arb.*;
+import arb.Complex;
+import arb.Fraction;
+import arb.FractionConstants;
 import arb.Integer;
+import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
-import arb.expressions.*;
+import arb.expressions.Compiler;
+import arb.expressions.Expression;
+import arb.expressions.Parser;
 import arb.functions.Function;
 
 /**
@@ -228,16 +245,11 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     default:
       if (fractionValue != null)
       {
-        generateInstructionToLoadConstantOntoStack(mv,
-                                                   fieldName,
-                                                   Fraction.class,
-                                                   FractionConstants.class);
+        loadLiteralFractionConstantOntoStack(mv);
       }
       else
       {
-        expression.loadFieldOntoStack(loadThisOntoStack(mv),
-                                      fieldName,
-                                      generatedType.descriptorString());
+        loadLiteralConstantOntoStack(mv);
       }
     }
 
@@ -260,6 +272,20 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return mv;
   }
 
+  public MethodVisitor loadLiteralConstantOntoStack(MethodVisitor mv)
+  {
+    expression.loadFieldOntoStack(loadThisOntoStack(mv),
+                                  fieldName,
+                                  generatedType.descriptorString());
+    return mv;
+  }
+
+  public MethodVisitor loadLiteralFractionConstantOntoStack(MethodVisitor mv)
+  {
+    loadConstantOntoStack(mv, fieldName, Fraction.class, FractionConstants.class);
+    return mv;
+  }
+
   public MethodVisitor generateLiteralConstantInitializer(MethodVisitor methodVisitor)
   {
     Class<?> type = type();
@@ -278,7 +304,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return expression.putField(methodVisitor, fieldName, type);
   }
 
-  protected void generateConstructor(MethodVisitor methodVisitor, Class<?> type)
+  protected MethodVisitor generateConstructor(MethodVisitor methodVisitor, Class<?> type)
   {
     methodVisitor.visitLdcInsn(value);
     boolean needsBitsPassedToStringConstructor = type.equals(Real.class);
@@ -293,9 +319,10 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
                                   "<init>",
                                   constructorDescriptor,
                                   false);
+    return methodVisitor;
   }
 
-  protected void generateFractionConstructor(MethodVisitor methodVisitor)
+  protected MethodVisitor generateFractionConstructor(MethodVisitor methodVisitor)
   {
     methodVisitor.visitLdcInsn(fractionValue.getNumerator());
     methodVisitor.visitLdcInsn(fractionValue.getDenominator());
@@ -304,6 +331,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
                                   "<init>",
                                   "(JJ)V",
                                   false);
+    return methodVisitor; 
   }
 
   @Override
