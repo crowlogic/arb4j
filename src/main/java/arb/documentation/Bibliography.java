@@ -226,7 +226,6 @@ public class Bibliography extends
                                                                                 .setPublisher("Institute of Mathematical Statistics");
 
 
-
   public static Article harmonicProbabilisticApproachesToTheRiemannHypothesis            =
                                                                               new Article("Harmonic and Probabilistic Approaches to Zeros of Riemann's Zeta Function",
                                                                                           "M. M. Rao",
