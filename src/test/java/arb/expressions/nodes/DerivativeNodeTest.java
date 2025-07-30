@@ -49,6 +49,13 @@ public class DerivativeNodeTest extends
 
   }
 
+  public void testDerivativeOfTheLogarithmicGammaFunction()
+  {
+    var ψ = RealFunction.express("diff(lnΓ(x),x)");
+    var f = ψ.eval(2.3);
+    assertEquals(2.14, f);
+  }
+
   public void testDefiniteIntegralOfSquareRoot()
   {
 
