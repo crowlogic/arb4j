@@ -114,6 +114,8 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     constantSymbols.add(π);
     constantSymbols.add(ⅈ);
     constantSymbols.add(infinity);
+    constantSymbols.add("infinity");
+
   }
 
   public static boolean isPredefinedConstant(String var)
@@ -217,6 +219,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
       generateInstructionToLoadRealConstantOntoStack(mv, π);
       break;
     case infinity:
+    case "infinity":
       generateInstructionToLoadRealConstantOntoStack(mv, "infinity");
       break;
     case ⅈ:
