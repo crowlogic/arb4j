@@ -1,16 +1,46 @@
 package arb.expressions;
 
 import static arb.expressions.Parser.expressionToUniqueClassname;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ACC_SUPER;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.V24;
+import static org.objectweb.asm.Opcodes.V_PREVIEW;
 
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureWriter;
 
-import arb.*;
+import arb.AlgebraicNumber;
+import arb.Complex;
+import arb.ComplexConstants;
+import arb.ComplexFraction;
+import arb.ComplexMatrix;
+import arb.ComplexPolynomial;
+import arb.ComplexRationalFunction;
+import arb.Fraction;
 import arb.Integer;
+import arb.IntegerPolynomial;
+import arb.Quaternion;
+import arb.RationalFunction;
+import arb.Real;
+import arb.RealConstants;
+import arb.RealMatrix;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
@@ -19,7 +49,9 @@ import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.polynomials.ComplexHypergeometricPolynomialFunction;
 import arb.functions.polynomials.RealHypergeometricPolynomialFunction;
-import arb.functions.rational.*;
+import arb.functions.rational.ComplexRationalHypergeometricFunction;
+import arb.functions.rational.LommelPolynomial;
+import arb.functions.rational.RationalHypergeometricFunction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.SphericalBesselFunction;
 import arb.utensils.Utensils;
@@ -169,7 +201,7 @@ public class Compiler
 
     compiledExpression.functionNameSpecified = autonamed;
 
-    compiledExpression.mapping                               = mapping;
+    compiledExpression.mapping               = mapping;
     if (mapping != null)
     {
       mapping.expression = compiledExpression;
@@ -830,13 +862,12 @@ public class Compiler
                       typeClass.descriptorString());
   }
 
-  public static void generateInstructionToLoadImaginaryUnitConstantOntoStack(MethodVisitor mv,
-                                                                             String fn)
+  public static void loadComplexConstantOntoStack(MethodVisitor mv, String fn)
   {
     generateInstructionToLoadConstantOntoStack(mv, fn, Complex.class, ComplexConstants.class);
   }
 
-  public static void generateInstructionToLoadRealConstantOntoStack(MethodVisitor mv, String fn)
+  public static void loadRealConstantOntoStack(MethodVisitor mv, String fn)
   {
     generateInstructionToLoadConstantOntoStack(mv, fn, Real.class, RealConstants.class);
   }

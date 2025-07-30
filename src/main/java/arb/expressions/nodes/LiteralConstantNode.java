@@ -216,14 +216,14 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     switch (fieldName)
     {
     case π:
-      generateInstructionToLoadRealConstantOntoStack(mv, π);
+      loadRealConstantOntoStack(mv, π);
       break;
     case infinity:
     case "infinity":
-      generateInstructionToLoadRealConstantOntoStack(mv, "infinity");
+      loadRealConstantOntoStack(mv, "infinity");
       break;
     case ⅈ:
-      generateInstructionToLoadImaginaryUnitConstantOntoStack(mv, ⅈ);
+      loadComplexConstantOntoStack(mv, ⅈ);
       break;
     default:
       if (fractionValue != null)
