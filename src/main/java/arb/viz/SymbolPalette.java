@@ -56,6 +56,7 @@ public class SymbolPalette extends
 {
   public static final String[]                  SYMBOLS           =
   { "✅",
+    "❌",
     "±",
     "χ",
     "ϱ",
@@ -149,6 +150,7 @@ public class SymbolPalette extends
 
   private static void initializeAliases()
   {
+    addAliases("❌", "x");
     addAliases("✅", "check");
     addAliases("ᵡ", "supchi");
     addAliases("ʰ", "suph");
