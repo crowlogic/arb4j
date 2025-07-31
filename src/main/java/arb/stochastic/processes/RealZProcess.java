@@ -2,6 +2,7 @@ package arb.stochastic.processes;
 
 import arb.Real;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.RealBivariateFunction;
 import arb.functions.real.RealFunction;
 import arb.utensils.ShellFunctions;
@@ -11,6 +12,7 @@ public class RealZProcess implements
 {
   public static void main(String args[])
   {
+    Expression.trace = true;
     RealZProcess Zprocess = new RealZProcess();
     RealFunction gain     = Zprocess.A.evaluate(Real.named("λ").one(), 128);
     ShellFunctions.plot(0, 200, 2000, gain);
