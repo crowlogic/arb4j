@@ -44,6 +44,35 @@ public interface ComplexFunction extends
 
 {
 
+  public default ComplexFunction mul(ComplexFunction that)
+  {
+    return new ComplexFunction()
+    {
+      @Override
+      public String typeset()
+      {
+        return String.format("%s \\cdot %s", ComplexFunction.this.typeset(), that.typeset());
+      }
+
+      @Override
+      public String toString()
+      {
+        return String.format("(%s)*(%s)", ComplexFunction.this.toString(), that.toString());
+      }
+
+      @Override
+      public Complex evaluate(Complex t, int order, int bits, Complex res)
+      {
+        try ( var blip = t.borrowVariable())
+        {
+          ComplexFunction.this.evaluate(t, order, bits, res);
+          return res.mul(that.evaluate(t, order, bits, blip), bits, res);
+        }
+
+      };
+    };
+  }
+
   @Override
   default Class<Complex> domainType()
   {

@@ -8,6 +8,7 @@ public class RealZProcessTest extends
   public static void testZProcess()
   {
     RealZProcess Z = new RealZProcess();
-    assertEquals("A:t➔exp((ⅈ*λ)*((θ(t))-t))", Z.toString());
+    assertEquals("t➔exp((ⅈ*λ)*((θ(t))-t))", Z.gainFuction().toString() );
+    assertEquals("t➔exp((ⅈ*λ)*(θ(t)))", Z.oscillatoryFunction().toString() );
   }
 }

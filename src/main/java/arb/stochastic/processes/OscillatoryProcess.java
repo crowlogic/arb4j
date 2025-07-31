@@ -1,16 +1,18 @@
 package arb.stochastic.processes;
 
 import arb.Field;
-import arb.Real;
+import arb.functions.BivariateFunction;
 import arb.functions.Function;
-import arb.functions.RealSquareIntegrableFunctions;
+import arb.functions.SquareInterableFunctions;
 
-public interface OscillatoryProcess<R extends Field<? extends R>> extends
-                                   GaussianProcess<Real,
+public interface OscillatoryProcess<D extends Field<? extends D>, R extends Field<? extends R>>
+                                   extends
+                                   GaussianProcess<D,
                                                  R,
-                                                 Function<Real, R>,
-                                                 RealSquareIntegrableFunctions>
+                                                 Function<D, R>,
+                                                 SquareInterableFunctions<D>>
 {
-  public Function<Real, R> gainFuction();
+  public <B extends BivariateFunction<R, Function<R, R>>> B gainFuction();
 
+  public <B extends BivariateFunction<R, Function<R, R>>> B oscillatoryFunction();
 }
