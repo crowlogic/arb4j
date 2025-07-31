@@ -18,13 +18,14 @@ public class RealBivariateFunctionTest
 {
 
   @Test
-  public void testEvaluateDInt()
+  public void testEvaluateRealBivariateFunction()
   {
     RealBivariateFunction func          = RealBivariateFunction.express("x-y");
-    RealFunction  innerFunction = func.evaluate(RealConstants.half, 128);
-    Real                  result        = innerFunction.evaluate(RealConstants.sqrt2, 128, new Real());
+    RealFunction          innerFunction = func.evaluate(RealConstants.half, 128);
+    Real                  result        =
+                                 innerFunction.evaluate(RealConstants.sqrt2, 128, new Real());
     result.printPrecision = false;
-    assertEquals("-0.91421356237309504880168872420969807857", result.toString());
+    assertEquals("-0.91421356237309504880168872420969807857", result.toString()); // ½-√2
   }
 
 }
