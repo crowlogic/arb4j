@@ -38,7 +38,7 @@ where μ(λ) is the spectral measure of the complex orthogonal random measure Φ
 Statement 1: Any process of the form Z(t) defined above is an oscillatory process in the sense of Priestly.
 
 Proof: 
-By definition (see Priestly’s work), an oscillatory process can be written as
+By definition (see Priestly's work), an oscillatory process can be written as
 
     Z(t) = ∫ φₜ(λ) dΦ(λ)
 
@@ -111,5 +111,3 @@ This shows that the covariance is no longer stationary unless τ(t) - τ(s) = t 
 3. Conclusion
 
 Any injectively time-changed stationary process is an oscillatory process in the sense of Priestly. Its covariance kernel is given by an evolutionary spectrum, and its local time-varying spectral characteristics are controlled by the choice of the time-change τ(t).
-
-This framework places time-changed stationary processes squarely within the class of oscillatory processes and highlights the unified structure of non-stationary covariance kernels as evolutionary spectra.
