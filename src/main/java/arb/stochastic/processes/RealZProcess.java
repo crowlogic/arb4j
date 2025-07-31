@@ -22,7 +22,7 @@ public class RealZProcess implements
   final RealFunction          ϑ       = RealFunction.express("ϑ:t->im(lnΓ(1/4+I*t/2))-(log(π)/2)*t",
                                                              context);
 
-  final RealBivariateFunction A       =
+  public final RealBivariateFunction A       =
                                 RealBivariateFunction.express("A:exp(I*λ*(θ(t)-t))", context);
 
   final RealBivariateFunction ϕ       =
