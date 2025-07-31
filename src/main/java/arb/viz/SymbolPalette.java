@@ -1,10 +1,18 @@
 package arb.viz;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.*;
+import arb.expressions.Compiler;
+import arb.expressions.Expression;
+import arb.expressions.Parser;
 import arb.expressions.viz.Stylesheet;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
@@ -12,10 +20,18 @@ import javafx.beans.binding.ObjectBinding;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.input.*;
-import javafx.scene.layout.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -39,7 +55,8 @@ public class SymbolPalette extends
                            Application
 {
   public static final String[]                  SYMBOLS           =
-  { "±",
+  { "✅",
+    "±",
     "χ",
     "ϱ",
     "0",
@@ -132,6 +149,7 @@ public class SymbolPalette extends
 
   private static void initializeAliases()
   {
+    addAliases("✅", "check");
     addAliases("ᵡ", "supchi");
     addAliases("ʰ", "suph");
     addAliases("ʲ", "supj");
