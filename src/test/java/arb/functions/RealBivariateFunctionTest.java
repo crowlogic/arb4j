@@ -23,8 +23,8 @@ public class RealBivariateFunctionTest extends
     RealFunction          innerFunction = func.evaluate(RealConstants.half, 128);
     Real                  result        =
                                  innerFunction.evaluate(RealConstants.sqrt2, 128, new Real());
-    result.printPrecision = false;
-    assertEquals("-0.91421356237309504880168872420969807857", result.toString()); // ½-√2
+
+    assertEquals(-0.91421356237309504880168872420969807857, result.doubleValue()); // ½-√2
   }
 
   public void testEvalRealBivariateFunctionWithContextVariable()
