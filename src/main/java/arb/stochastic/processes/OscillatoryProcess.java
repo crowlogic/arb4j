@@ -19,7 +19,7 @@ public interface OscillatoryProcess<D extends Field<? extends D>, R extends Fiel
                                                  Function<D, R>,
                                                  SquareInterableFunctions<D>>
 {
-  public RealBivariateToComplexFunction gainFuction();
+  public RealBivariateToComplexFunction gainFunction();
 
   public RealBivariateToComplexFunction oscillatoryFunction();
 }

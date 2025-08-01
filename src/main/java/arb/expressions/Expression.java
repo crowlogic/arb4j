@@ -1289,17 +1289,22 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                          Object,
                                                                          Function<?, ?>> function)
   {
-    for (var entry : context.functions.map.entrySet())
-    {
-      var                      fieldName       = entry.getKey();
-      FunctionMapping<?, ?, ?> functionMapping = entry.getValue();
-      var                      fieldType       = functionMapping.functionClass;
-      if (!fieldName.equals(functionName))
-      {
-        loadThisFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
-        Compiler.putField(mv, function.className, fieldName, fieldType);
-      }
-    }
+    context.functions.map.entrySet()
+                         .stream()
+                         .filter(entry -> function.referencedFunctions.containsKey(entry.getKey()))
+                         .forEach(entry ->
+                         {
+                           var fieldName       = entry.getKey();
+                           FunctionMapping<?, ?, ?> functionMapping = entry.getValue();
+                           var fieldType       = functionMapping.functionClass;
+                           if (!fieldName.equals(functionName))
+                           {
+                             loadThisFieldOntoStack(duplicateTopOfTheStack(mv),
+                                                    fieldName,
+                                                    fieldType);
+                             Compiler.putField(mv, function.className, fieldName, fieldType);
+                           }
+                         });
   }
 
   public void propagateContexVariablesToFunctionalElement(MethodVisitor mv,

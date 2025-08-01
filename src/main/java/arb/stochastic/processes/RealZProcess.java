@@ -4,11 +4,11 @@ import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
-import arb.expressions.Expression;
 import arb.functions.RealBivariateToComplexFunction;
 import arb.functions.RealToComplexFunction;
 import arb.functions.real.RealFunction;
 import arb.utensils.ShellFunctions;
+import arb.viz.FunctionPlotter;
 
 /**
  * @author Stephen Crowley
@@ -22,8 +22,11 @@ public class RealZProcess implements
   public static void main(String args[])
   {
     RealZProcess          Zprocess = new RealZProcess();
-    RealToComplexFunction gain     = Zprocess.A.evaluate(Real.named("λ").one(), 128);
-    ShellFunctions.plot(0, 200, 2000, gain.realPart(), gain.imagPart());
+    RealToComplexFunction gain     = Zprocess.gainFunction().evaluate(Real.named("λ").one(), 128);
+    RealToComplexFunction ϕ        =
+                            Zprocess.oscillatoryFunction().evaluate(Real.named("λ").one(), 128);
+
+    ShellFunctions.plot(-25, 200, 20000, gain.realPart(), gain.imagPart());
 
   }
 
@@ -42,7 +45,7 @@ public class RealZProcess implements
                                                                                 context);
 
   @Override
-  public RealBivariateToComplexFunction gainFuction()
+  public RealBivariateToComplexFunction gainFunction()
   {
     return A;
   }

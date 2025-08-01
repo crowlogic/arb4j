@@ -30,7 +30,7 @@ public class RealBivariateFunctionTest extends
   public void testEvalRealBivariateFunctionWithContextVariable()
   {
     RealZProcess                   Zprocess        = new RealZProcess();
-    RealBivariateToComplexFunction gain            = Zprocess.gainFuction();
+    RealBivariateToComplexFunction gain            = Zprocess.gainFunction();
 
     RealToComplexFunction          gainAtFrequency = gain.evaluate(Real.named("λ").one(), 128);
     assertEquals(-0.9308570971323369, gainAtFrequency.eval(1.0, new Complex()).re().doubleValue());
