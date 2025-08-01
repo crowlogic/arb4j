@@ -1,8 +1,8 @@
 package arb.stochastic.processes;
 
 import arb.Field;
-import arb.functions.BivariateFunction;
 import arb.functions.Function;
+import arb.functions.RealBivariateToComplexFunction;
 import arb.functions.SquareInterableFunctions;
 
 public interface OscillatoryProcess<D extends Field<? extends D>, R extends Field<? extends R>>
@@ -12,7 +12,7 @@ public interface OscillatoryProcess<D extends Field<? extends D>, R extends Fiel
                                                  Function<D, R>,
                                                  SquareInterableFunctions<D>>
 {
-  public <B extends BivariateFunction<R, Function<R, R>>> B gainFuction();
+  public RealBivariateToComplexFunction gainFuction();
 
-  public <B extends BivariateFunction<R, Function<R, R>>> B oscillatoryFunction();
+  public RealBivariateToComplexFunction oscillatoryFunction();
 }

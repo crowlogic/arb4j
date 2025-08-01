@@ -1350,6 +1350,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       funcCoDomain = Complex.class;
       funcClass    = ComplexFunction.class;
     }
+    else if (RealToComplexFunction.class.equals(coDomainType))
+    {
+      funcDomain   = Real.class;
+      funcCoDomain = Complex.class;
+      funcClass    = RealToComplexFunction.class;
+    }
     else
     {
       throw new UnsupportedOperationException("TODO: implement "

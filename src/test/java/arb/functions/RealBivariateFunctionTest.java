@@ -1,5 +1,6 @@
 package arb.functions;
 
+import arb.Complex;
 import arb.Real;
 import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -28,11 +29,11 @@ public class RealBivariateFunctionTest extends
 
   public void testEvalRealBivariateFunctionWithContextVariable()
   {
-    RealZProcess Zprocess = new RealZProcess();
-    RealBivariateFunction gain = Zprocess.gainFuction();
-    
-    RealFunction gainAtFrequency     = gain.evaluate(Real.named("λ").one(), 128);
-    assertEquals(2.14, gainAtFrequency.eval(2.3));
+    RealZProcess                   Zprocess        = new RealZProcess();
+    RealBivariateToComplexFunction gain            = Zprocess.gainFuction();
+
+    RealToComplexFunction          gainAtFrequency = gain.evaluate(Real.named("λ").one(), 128);
+    assertEquals(2.14, gainAtFrequency.eval(1.0, new Complex()).re().doubleValue());
   }
 
 }

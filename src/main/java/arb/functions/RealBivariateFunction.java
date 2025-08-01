@@ -11,7 +11,7 @@ import arb.functions.real.RealFunction;
  *      {@link TheArb4jLibrary}
  */
 public interface RealBivariateFunction extends
-                                       BivariateFunction<Real, RealFunction>
+                                       BivariateFunction<Real, Real, RealFunction>
 {
 
   public static RealBivariateFunction express(String expression)
