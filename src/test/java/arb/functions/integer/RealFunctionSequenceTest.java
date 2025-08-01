@@ -1,9 +1,16 @@
 package arb.functions.integer;
 
 import arb.Real;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import junit.framework.TestCase;
 
+/**
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class RealFunctionSequenceTest extends
                                       TestCase
 {
