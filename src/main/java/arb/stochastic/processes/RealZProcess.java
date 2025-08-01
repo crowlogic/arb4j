@@ -1,13 +1,20 @@
 package arb.stochastic.processes;
 
 import arb.Real;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.functions.RealBivariateFunction;
 import arb.functions.RealBivariateToComplexFunction;
 import arb.functions.RealToComplexFunction;
 import arb.functions.real.RealFunction;
 import arb.utensils.ShellFunctions;
+
+/**
+ * @author Stephen Crowley
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 
 public class RealZProcess implements
                           RealOscillatoryProcess

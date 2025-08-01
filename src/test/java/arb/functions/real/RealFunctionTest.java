@@ -19,15 +19,11 @@ public class RealFunctionTest extends
   public static void testParse()
   {
     var context   = new Context();
-     var f = RealFunction.express("θ:im(lnΓ(¼+I*t/2))-(log(π)/2)*t", context);
-    //var f         = RealFunction.parse("θ:im(lnΓ(¼+I*t/2))-(log(π)/2)*t", context).instantiate();
-
+    var f         = RealFunction.express("θ:im(lnΓ(¼+I*t/2))-(log(π)/2)*t", context);
     var e         = RealFunction.parse("e:θ(t)-t", context);
     var einstance = e.instantiate();
-
     assertEquals("e:t➔(θ(t))-t", einstance.toString());
     assertEquals("θ:t➔(im(lnΓ(¼+((ⅈ*t)/2))))-(((log(π))/2)*t)", f.toString());
-
   }
 
   public static void testJOneQuarter()
@@ -46,7 +42,6 @@ public class RealFunctionTest extends
 
   public static void testBetaFunctionReal()
   {
-
     var oneOverThirty      = new Fraction(1,
                                           30);
     var oneThirtieth       = RealNullaryFunction.express("Beta(5,2)");
