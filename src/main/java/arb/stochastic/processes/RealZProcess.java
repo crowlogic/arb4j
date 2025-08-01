@@ -21,7 +21,7 @@ public class RealZProcess implements
 
   final Context               context = new Context();
 
-  final RealFunction          ϑ       = RealFunction.express("ϑ:t->im(lnΓ(1/4+I*t/2))-(log(π)/2)*t",
+  final RealFunction          θ       = RealFunction.express("θ:t->im(lnΓ(1/4+I*t/2))-(log(π)/2)*t",
                                                              context);
 
   public final RealBivariateFunction A       =
