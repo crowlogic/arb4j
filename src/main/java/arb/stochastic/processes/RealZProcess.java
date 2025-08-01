@@ -21,7 +21,6 @@ public class RealZProcess implements
 {
   public static void main(String args[])
   {
-    Expression.trace = Expression.saveClasses = true;
     RealZProcess          Zprocess = new RealZProcess();
     RealToComplexFunction gain     = Zprocess.A.evaluate(Real.named("λ").one(), 128);
     ShellFunctions.plot(0, 200, 2000, gain.realPart(), gain.imagPart());
