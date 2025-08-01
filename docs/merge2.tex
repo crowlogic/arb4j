@@ -1,0 +1,174 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\title{Measure-Preserving Bijective Time Changes of Stationary Gaussian Processes Generate Oscillatory Processes With Evolving Spectra}
+
+\author{Stephen Crowley\thanks{Email: \texttt{stephencrowley214@gmail.com}}}
+
+\date{August 1, 2025}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This article establishes that Gaussian processes obtained through measure-preserving bijective unitary time transformations of stationary processes constitute a subclass of oscillatory processes in the sense of Priestley. The transformation $X_t = \sqrt{\theta'(t)} S_{\theta(t)}$, where $S_t$ is a stationary Gaussian process and $\theta$ is a strictly monotonic function, yields an oscillatory process with evolutionary power spectrum $dF_t(\omega) = \theta'(t) d\mu(\omega)$. An explicit unitary transformation between the original stationary process and the transformed oscillatory process is established, preserving the $L^2$-norm and providing a complete spectral characterization.
+\end{abstract}
+
+\section{Scaling Functions}\label{sec:scaling}
+
+\begin{definition}[Scaling Functions]\label{def:scaling}
+Let $\mathcal{F}$ denote the set of functions $\theta\colon\mathbb{R}\to\mathbb{R}$ satisfying
+\begin{enumerate}[label=(\alph*)]
+    \item $\theta$ is continuously differentiable and $\theta'(t)>0$ for all $t\in\mathbb{R}$,
+    \item $\theta$ is strictly increasing and bijective.
+\end{enumerate}
+\end{definition}
+
+\begin{remark}
+The conditions in Definition~\ref{def:scaling} ensure that $\theta^{-1}$ exists and is differentiable, enabling measure-preserving transformations.
+\end{remark}
+
+\section{Oscillatory Processes}\label{sec:oscillatory}
+
+\begin{definition}[Oscillatory Process]\label{def:oscillatory}
+A complex-valued, second-order process $\{X_t\}_{t\in\mathbb{R}}$ is called \emph{oscillatory} if there exist
+\begin{enumerate}[label=(\roman*)]
+    \item a family of functions $\{\phi_t(\omega)\}_{t\in\mathbb{R}}$ with $\phi_t(\omega)=A_t(\omega)e^{i\omega t}$ and $A_t(\cdot)\in L^2(\mu)$,
+    \item a complex orthogonal-increment process $Z(\omega)$ with $E\lvert dZ(\omega)\rvert^2=d\mu(\omega)$,
+\end{enumerate}
+such that
+\begin{equation}\label{eq:oscillatory_rep}
+    X_t=\int_{-\infty}^{\infty}\phi_t(\omega)\,dZ(\omega).
+\end{equation}
+\end{definition}
+
+\section{Stationary Reference Process}\label{sec:stationary}
+
+Let $\{S_t\}_{t\in\mathbb{R}}$ be a stationary Gaussian process with continuous spectral representation
+\begin{equation}\label{eq:stationary_rep}
+    S_t=\int_{-\infty}^{\infty}e^{i\omega t}\,dZ(\omega),
+\end{equation}
+where $Z(\omega)$ is an orthogonal-increment process with $E\lvert dZ(\omega)\rvert^2=d\mu(\omega)$ and $\mu$ is a finite measure on $\mathbb{R}$.
+
+\section{Time-Changed Process}\label{sec:time_change}
+
+\subsection{Definition and Unitary Operator}
+
+\begin{definition}[Time-Changed Process]\label{def:time_changed_proc}
+For $\theta\in\mathcal{F}$, define the time-changed process
+\begin{equation}\label{eq:time_change}
+    X_t \coloneqq \sqrt{\theta'(t)}\,S_{\theta(t)}, \qquad t\in\mathbb{R}.
+\end{equation}
+\end{definition}
+
+\begin{lemma}[Unitary Transformation]\label{lem:unitary}
+Define the operator $M_\theta\colon L^2(\mathbb{R})\to L^2(\mathbb{R})$ by
+\begin{equation}\label{eq:unitary_op}
+    (M_\theta f)(t) = \sqrt{\theta'(t)}\,f\bigl(\theta(t)\bigr).
+\end{equation}
+Then $M_\theta$ is unitary, i.e.,
+\begin{equation}\label{eq:L2_preserve}
+    \int_{\mathbb{R}}\lvert (M_\theta f)(t)\rvert^2\,dt
+    =\int_{\mathbb{R}}\lvert f(s)\rvert^2\,ds.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Apply the change of variables $s=\theta(t)$; then $ds=\theta'(t)\,dt$, and equation~\eqref{eq:L2_preserve} follows immediately.
+\end{proof}
+
+\subsection{Oscillatory Representation}
+
+\begin{theorem}[Oscillatory Form]\label{thm:osc_rep}
+The process $\{X_t\}$ defined in equation~\eqref{eq:time_change} is oscillatory with
+\begin{equation}\label{eq:phi_def}
+    \phi_t(\omega)=\sqrt{\theta'(t)}\,e^{i\omega\theta(t)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Substitute equation~\eqref{eq:stationary_rep} into equation~\eqref{eq:time_change}:
+\[
+    X_t=\sqrt{\theta'(t)}\int_{-\infty}^{\infty}e^{i\omega\theta(t)}\,dZ(\omega)
+        =\int_{-\infty}^{\infty}\phi_t(\omega)\,dZ(\omega),
+\]
+which is of the form~\eqref{eq:oscillatory_rep} with $\phi_t$ given by equation~\eqref{eq:phi_def}.
+\end{proof}
+
+\subsection{Envelope and Evolutionary Spectrum}
+
+\begin{corollary}[Envelope]\label{cor:envelope}
+Equation~\eqref{eq:phi_def} admits the decomposition
+\begin{equation}\label{eq:envelope}
+    \phi_t(\omega)=A_t(\omega)e^{i\omega t},
+    \quad\text{where}\quad
+    A_t(\omega)=\sqrt{\theta'(t)}\,e^{i\omega(\theta(t)-t)}.
+\end{equation}
+\end{corollary}
+
+\begin{corollary}[Evolutionary Spectrum]\label{cor:evolving_spec}
+The evolutionary power spectrum is
+\begin{equation}\label{eq:evolutionary_spec}
+    dF_t(\omega)=\lvert A_t(\omega)\rvert^2\,d\mu(\omega)=\theta'(t)\,d\mu(\omega).
+\end{equation}
+\end{corollary}
+
+\section{$L^2$-Norm Preservation}\label{sec:norm_preservation}
+
+\begin{theorem}[Measure Preservation]\label{thm:measure_preserve}
+The transformation defined in equation~\eqref{eq:time_change} preserves the $L^2$-norm in the sense that
+\begin{equation}\label{eq:measure_preserve}
+    \int_I \operatorname{var}(X_t)\,dt = \int_{\theta(I)} \operatorname{var}(S_s)\,ds
+\end{equation}
+for any measurable set $I\subseteq\mathbb{R}$.
+\end{theorem}
+
+\begin{proof}
+Using the change of variables $s=\theta(t)$ with $ds=\theta'(t)\,dt$:
+\begin{align}
+    \int_I \operatorname{var}(X_t)\,dt &= \int_I \operatorname{var}\bigl(\sqrt{\theta'(t)}\,S_{\theta(t)}\bigr)\,dt\\
+    &= \int_I \theta'(t)\,\operatorname{var}(S_{\theta(t)})\,dt\\
+    &= \int_{\theta(I)} \operatorname{var}(S_s)\,ds.
+\end{align}
+\end{proof}
+
+\section{Expected Zero Count}\label{sec:zero_count}
+
+\begin{theorem}[Expected Zero-Counting Function]\label{thm:zero_count}
+Let $\theta\in\mathcal{F}$ and let $K(\tau)$ be the covariance function of the stationary process $S_t$, twice differentiable at $\tau=0$. The expected number of zeros of the process $X_t$ in the interval $[a,b]$ is
+\begin{equation}\label{eq:zero_count}
+    \mathbb{E}[N_{[a,b]}] = \sqrt{-\ddot{K}(0)}\,(\theta(b)-\theta(a)).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By the Kac-Rice formula, the expected zero count is
+\begin{equation}\label{eq:kac_rice}
+    \mathbb{E}[N_{[a,b]}] = \int_a^b \sqrt{-\lim_{s\to t}\frac{\partial^2}{\partial t\partial s}K_\theta(s,t)}\,dt,
+\end{equation}
+where $K_\theta(s,t)=K(|\theta(t)-\theta(s)|)$. Computing the mixed partial derivative:
+\begin{equation}\label{eq:mixed_partial}
+    \lim_{s\to t}\frac{\partial^2}{\partial t\partial s}K_\theta(s,t) = -\ddot{K}(0)\,\theta'(t)^2.
+\end{equation}
+Therefore:
+\begin{equation}\label{eq:zero_count_integral}
+    \mathbb{E}[N_{[a,b]}] = \sqrt{-\ddot{K}(0)}\int_a^b \theta'(t)\,dt = \sqrt{-\ddot{K}(0)}\,(\theta(b)-\theta(a)).
+\end{equation}
+\end{proof}
+
+\begin{thebibliography}{99}
+\bibitem{priestley1965} M.B. Priestley. Evolutionary spectra and non-stationary processes. \emph{Journal of the Royal Statistical Society, Series B}, 27(2):204--237, 1965.
+
+\bibitem{cramer1967} H. Cramér and M.R. Leadbetter. \emph{Stationary and Related Stochastic Processes}. Wiley, 1967.
+\end{thebibliography}
+
+\end{document}
