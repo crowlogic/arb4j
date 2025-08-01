@@ -12,7 +12,7 @@ public class RealFunctionSequenceTest extends
     Expression.trace = Expression.saveClasses = true;
     
     var    f  =
-             RealFunctionSequence.express("k➔√((2*k+½)/π)*((k+1)⋰-½)^2*√((8*k+2)/π)*(-1)^k*j(2*k,x)");
+             RealFunctionSequence.express("f:k➔√((2*k+½)/π)*((k+1)⋰-½)^2*√((8*k+2)/π)*(-1)^k*j(2*k,x)");
     var    f3 = f.evaluate(3, 128);
     double x  = f3.eval(2.3, new Real()).doubleValue();
     assertEquals(44.25, x, 6e-9);
