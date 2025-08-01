@@ -29,8 +29,10 @@ public class RealBivariateFunctionTest extends
   public void testEvalRealBivariateFunctionWithContextVariable()
   {
     RealZProcess Zprocess = new RealZProcess();
-    RealFunction gain     = Zprocess.A.evaluate(Real.named("λ").one(), 128);
-    assertEquals(2.14, gain.eval(2.3));
+    RealBivariateFunction gain = Zprocess.gainFuction();
+    
+    RealFunction gainAtFrequency     = gain.evaluate(Real.named("λ").one(), 128);
+    assertEquals(2.14, gainAtFrequency.eval(2.3));
   }
 
 }

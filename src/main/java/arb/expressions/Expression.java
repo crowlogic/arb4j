@@ -497,7 +497,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String allocateIntermediateVariable(MethodVisitor methodVisitor, Class<?> type)
   {
-    //assert !type.isInterface() : "cannot instantiate interface " + type;
+    // assert !type.isInterface() : "cannot instantiate interface " + type;
     String intermediateVariableName = newIntermediateVariable(type);
     loadThisFieldOntoStack(methodVisitor, intermediateVariableName, type);
     return intermediateVariableName;
@@ -1256,7 +1256,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (context != null && context.variables != null)
     {
-      propagateContextVariablesToFunctionalElement(mv, function);
+      propagateContextVariablesAndFunctionsToFunctionalElement(mv, function);
     }
 
     invokeInitializationMethod(mv, function);
@@ -1274,10 +1274,38 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   protected void
-            propagateContextVariablesToFunctionalElement(MethodVisitor mv,
-                                                         Expression<Object,
-                                                                       Object,
-                                                                       Function<?, ?>> function)
+            propagateContextVariablesAndFunctionsToFunctionalElement(MethodVisitor mv,
+                                                                     Expression<Object,
+                                                                                   Object,
+                                                                                   Function<?,
+                                                                                                 ?>> function)
+  {
+    propagateContexVariablesToFunctionalElement(mv, function);
+    propagateContextFunctionsToFunctionalElement(mv, function);
+  }
+
+  public void propagateContextFunctionsToFunctionalElement(MethodVisitor mv,
+                                                           Expression<Object,
+                                                                         Object,
+                                                                         Function<?, ?>> function)
+  {
+    for (var entry : context.functions.map.entrySet())
+    {
+      var                      fieldName       = entry.getKey();
+      FunctionMapping<?, ?, ?> functionMapping = entry.getValue();
+      var                      fieldType       = functionMapping.functionClass;
+      if (!fieldName.equals(functionName))
+      {
+        loadThisFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
+        Compiler.putField(mv, function.className, fieldName, fieldType);
+      }
+    }
+  }
+
+  public void propagateContexVariablesToFunctionalElement(MethodVisitor mv,
+                                                          Expression<Object,
+                                                                        Object,
+                                                                        Function<?, ?>> function)
   {
     for (var entry : context.variables.map.entrySet())
     {
@@ -1791,7 +1819,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     injectReferences(instance);
 
-    
     return instance;
   }
 

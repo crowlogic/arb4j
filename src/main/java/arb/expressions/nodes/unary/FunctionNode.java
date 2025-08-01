@@ -1,20 +1,34 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.loadOrderParameter;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.String.format;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
-import arb.*;
+import arb.Complex;
+import arb.Fraction;
 import arb.Integer;
+import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
-import arb.expressions.*;
+import arb.expressions.Compiler;
 import arb.expressions.Context;
+import arb.expressions.Expression;
+import arb.expressions.FunctionMapping;
+import arb.expressions.Parser;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -416,6 +430,13 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     }
   }
 
+  public static boolean methodExists(Class<?> clazz, String methodName, Class<?>... parameterTypes)
+  {
+    return Stream.of(clazz.getMethods())
+                 .anyMatch(method -> method.getName().equals(methodName)
+                               && Arrays.equals(method.getParameterTypes(), parameterTypes));
+  }
+
   public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor,
                                                    Class<?> requisiteResultType,
                                                    boolean bitless)
@@ -436,6 +457,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                                        int.class,
                                                                        coDomainType);
 
+    throwCompilerExceptionIfBuiltinFunctionDoesNotExist(functionName,
+                                                        bitless,
+                                                        domainType,
+                                                        coDomainType);
+
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   Type.getInternalName(domainType),
                                   functionName,
@@ -444,6 +470,35 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     generatedType = requisiteResultType;
     return methodVisitor;
+  }
+
+  public static void throwCompilerExceptionIfBuiltinFunctionDoesNotExist(String functionName,
+                                                                         boolean bitless,
+                                                                         Class<?> domainType,
+                                                                         Class<?> coDomainType)
+  {
+    if (bitless)
+    {
+      if (!methodExists(domainType, functionName, coDomainType))
+      {
+        throw new CompilerException(String.format("%s does not have a bitless function named %s whose arg and return value are %s",
+                                                  domainType,
+                                                  functionName,
+                                                  coDomainType,
+                                                  coDomainType));
+      }
+    }
+    else
+    {
+      if (!methodExists(domainType, functionName, int.class, coDomainType))
+      {
+        throw new CompilerException(String.format("%s does not have a function named %s whose arg and return value are %s",
+                                                  domainType,
+                                                  functionName,
+                                                  coDomainType,
+                                                  coDomainType));
+      }
+    }
   }
 
   public MethodVisitor generateContextualFunctionCall(MethodVisitor mv, Class<?> resultType)

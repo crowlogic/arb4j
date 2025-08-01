@@ -12,23 +12,24 @@ public class RealZProcess implements
 {
   public static void main(String args[])
   {
-    Expression.trace = true;
+    Expression.trace = Expression.saveClasses = true;
     RealZProcess Zprocess = new RealZProcess();
     RealFunction gain     = Zprocess.A.evaluate(Real.named("λ").one(), 128);
     ShellFunctions.plot(0, 200, 2000, gain);
 
   }
 
-  final Context               context = new Context();
+  final Context                      context = new Context();
 
-  final RealFunction          θ       = RealFunction.express("θ:t->im(lnΓ(1/4+I*t/2))-(log(π)/2)*t",
-                                                             context);
+  final RealFunction                 θ       =
+                                       RealFunction.express("θ:im(lnΓ(1/4+I*t/2))-(log(π)/2)*t",
+                                                            context);
 
-  public final RealBivariateFunction A       =
-                                RealBivariateFunction.express("A:exp(I*λ*(θ(t)-t))", context);
+  final RealBivariateFunction A       = RealBivariateFunction.express("A:exp(I*λ*(θ(t)-t))",
+                                                                             context);
 
-  final RealBivariateFunction ϕ       =
-                                RealBivariateFunction.express("ϕ:exp(I*λ*θ(t))", context);
+  final RealBivariateFunction        ϕ       =
+                                       RealBivariateFunction.express("ϕ:exp(I*λ*θ(t))", context);
 
   @Override
   public RealBivariateFunction gainFuction()
