@@ -1,0 +1,232 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{remark}{Remark}[section]
+
+\title{Measure-Preserving Bijective Time Changes of Stationary Gaussian Processes Generate Oscillatory Processes With Evolving Spectra}
+\author{Stephen Crowley\\
+\texttt{stephencrowley214@gmail.com}}
+\date{August 1, 2025}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This article examines the precise structure and spectral properties of Gaussian processes obtained by measure-preserving, bijective, and strictly increasing time changes applied to stationary Gaussian processes. It is demonstrated that such transformations yield oscillatory processes in the sense of Priestley, with evolutionary spectra depending explicitly on the time-change function. Explicit oscillatory representations, preservation of $L^2$-norms under transformation, and structure of evolutionary power spectra are established. The expected number of zeros in finite intervals is also analyzed in terms of the time-change and the original stationary kernel.
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction}\label{sec:intro}
+
+The classical theory of stationary processes is built upon the spectral representation theorem, which gives rise to powerful analytical techniques for understanding the frequency content of such processes. However, applying a strictly increasing, bijective, and differentiable time change---combined with a measure-preserving Jacobian normalization---transforms a stationary process into a new process that retains strong structure: it falls into the class of \emph{oscillatory processes} as defined by Priestley (see \cite{priestley1965}). This article presents a systematic study of the properties, structure, and consequences of such transformations.
+
+\section{Oscillatory Processes and Their Representations}
+
+\subsection{Spectral Representation of Stationary Processes}
+
+\begin{definition}[Stationary Process]\label{def:stationary_process}
+A (complex-valued, mean zero) second-order process $\{S_t\}_{t \in \mathbb{R}}$ is said to be \emph{stationary} if it admits the spectral representation
+\begin{equation}
+    S_t = \int_{-\infty}^{\infty} e^{i\omega t} \, dZ(\omega),
+    \label{eq:spectral_stationary}
+\end{equation}
+where $Z(\omega)$ is a complex-valued orthogonal increment process satisfying
+\begin{equation}
+    \mathbb{E}|dZ(\omega)|^2 = d\mu(\omega).
+    \label{eq:incr_variance}
+\end{equation}
+\end{definition}
+
+\subsection{Oscillatory Processes (Priestley)} 
+
+\begin{definition}[Oscillatory Process]\label{def:oscillatory}
+A complex-valued second-order stochastic process $\{X_t\}_{t \in I}$ is called \emph{oscillatory} if there exist:
+\begin{enumerate}[label=(\arabic*)]
+    \item a family of functions $\{\phi_t(\omega)\}_{t \in I}$, each quadratically integrable with respect to a finite measure $\mu$ on $\mathbb{R}$, and 
+    \item a complex-valued orthogonal increment process $Z(\omega)$ with $\mathbb{E}|dZ(\omega)|^2 = d\mu(\omega)$,
+\end{enumerate}
+such that
+\begin{equation}
+    X_t = \int_{-\infty}^{\infty} \phi_t(\omega)\, dZ(\omega),
+    \label{eq:oscillatory_proc}
+\end{equation}
+and for each $\omega$,
+\begin{equation}
+   \phi_t(\omega) = A_t(\omega) e^{i\omega t}, 
+   \label{eq:oscillatory_func}
+\end{equation}
+with $A_t(\omega)$ the envelope (gain) function.
+\end{definition}
+
+\begin{remark}
+Every stationary process is oscillatory, with $A_t(\omega)\equiv 1$.
+\end{remark}
+
+\section{Measure-Preserving Bijective Time Changes of Stationary Processes}\label{sec:timechange}
+
+\subsection{Scaling Function Class}
+
+\begin{definition}[Scaling Functions]\label{def:scaling_functions}
+Let $\mathcal{F}$ denote the class of functions $\theta: \mathbb{R}\to\mathbb{R}$ satisfying:
+\begin{enumerate}[label=(\arabic*)]
+    \item $\theta$ is strictly monotonically increasing,
+    \item $\theta$ is continuously differentiable with $\theta'(t) > 0$ everywhere,
+    \item $\theta$ is a bijection from $\mathbb{R}$ to $\mathbb{R}$.
+\end{enumerate}
+\end{definition}
+
+\subsection{Transformation and Oscillatory Structure}
+
+\begin{theorem}[Oscillatory Representation of Time-Changed Stationary Processes]\label{thm:oscillatory_representation}
+Let $S_t$ be a stationary Gaussian process with spectral representation as in \eqref{eq:spectral_stationary}, and let $\theta \in \mathcal{F}$. Then the process
+\begin{equation}
+    X_t := \sqrt{\theta'(t)} S_{\theta(t)},
+    \label{eq:timechange_def}
+\end{equation}
+is oscillatory with oscillatory functions
+\begin{equation}
+    \phi_t(\omega) = \sqrt{\theta'(t)} e^{i\omega\theta(t)}.
+    \label{eq:oscillatory_basis}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+From \eqref{eq:spectral_stationary}, for any $t$,
+\begin{align}
+    X_t &= \sqrt{\theta'(t)} S_{\theta(t)} \\ 
+        &= \sqrt{\theta'(t)} \int_{-\infty}^{\infty} e^{i\omega\theta(t)}\, dZ(\omega) \nonumber \\
+        &= \int_{-\infty}^{\infty} \sqrt{\theta'(t)}  e^{i\omega\theta(t)}\, dZ(\omega) \nonumber
+\end{align}
+So setting $\phi_t(\omega)$ as in \eqref{eq:oscillatory_basis} gives the oscillatory representation according to Definition~\ref{def:oscillatory}.
+\end{proof}
+
+\begin{corollary}[Envelope in Standard Form]\label{cor:envelope_standard}
+The oscillatory functions from Theorem~\ref{thm:oscillatory_representation} can be written as
+\begin{equation}
+    \phi_t(\omega) = A_t(\omega) e^{i\omega t},\label{eq:oscillatory_standard}
+\end{equation}
+where
+\begin{equation}
+    A_t(\omega) = \sqrt{\theta'(t)} e^{i\omega(\theta(t) - t)}.
+    \label{eq:oscillatory_envelope}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Substituting $e^{i\omega t} e^{i\omega (\theta(t)-t)} = e^{i\omega \theta(t)}$ yields the result.
+\end{proof}
+
+\subsection{Evolutionary Power Spectrum}
+
+\begin{definition}[Evolutionary Power Spectrum]\label{def:evol_spectrum}
+Given an oscillatory process with representation as in \eqref{eq:oscillatory_proc}-\eqref{eq:oscillatory_func}, the evolutionary power spectrum at time $t$ is defined as 
+\begin{equation}
+    dF_t(\omega) = |A_t(\omega)|^2 d\mu(\omega).
+    \label{eq:evol_spectrum}
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Evolutionary Spectrum of Time-Changed Stationary Processes]\label{thm:evol_spectrum_timechange}
+Let $X_t$ be as in Theorem~\ref{thm:oscillatory_representation}. Then the evolutionary power spectrum is 
+\begin{equation}
+    dF_t(\omega) = \theta'(t) d\mu(\omega). \label{eq:evolspec_timechange}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By Corollary~\ref{cor:envelope_standard}, $|A_t(\omega)|^2 = \theta'(t)$, since $|e^{i\omega(\theta(t) - t)}|=1$. So, by Definition~\ref{def:evol_spectrum}, equation~\eqref{eq:evolspec_timechange} holds.
+\end{proof}
+
+\section{Operator Isometry and $L^2$-Preservation}\label{sec:isometry}
+
+\begin{theorem}[Operator Isometry and $L^2$-Norm Preservation]\label{thm:L2_isometry}
+The mapping
+\begin{equation}
+    S_t \mapsto X_t = \sqrt{\theta'(t)} S_{\theta(t)}
+    \label{eq:M_theta}
+\end{equation}
+preserves the $L^2$-norm, i.e.,
+\begin{equation}
+    \int_{I} \mathbb{E}|X_t|^2 dt = \int_{\theta(I)} \mathbb{E}|S_s|^2 ds,
+    \label{eq:L2_preserving}
+\end{equation}
+where $I$ is a measurable interval of $\mathbb{R}$.
+\end{theorem}
+
+\begin{proof}
+Use the change of variables $s = \theta(t)$, so $ds = \theta'(t) dt$:
+\begin{align}
+    \int_{I} \mathbb{E}|X_t|^2 dt 
+    &= \int_{I} \mathbb{E}|\sqrt{\theta'(t)} S_{\theta(t)}|^2 dt \\
+    &= \int_{I} \theta'(t) \mathbb{E}|S_{\theta(t)}|^2 dt \nonumber \\
+    &= \int_{\theta(I)} \mathbb{E}|S_s|^2 ds,\nonumber
+\end{align}
+as claimed.
+\end{proof}
+
+\section{Zero Crossings for Time-Changed Stationary Processes}\label{sec:zero_crossings}
+
+\begin{theorem}[Expected Number of Zeros]\label{thm:zero_count}
+Let $K(\cdot)$ be a translation-invariant, stationary, and twice differentiable covariance kernel, and let $X_t$ be the process with covariance $K_{\theta}(t,s) = K(|\theta(t)-\theta(s)|)$. Then for finite interval $[a,b]$,
+\begin{equation}
+    \mathbb{E}[N([a,b])] = \sqrt{-K''(0)}\, (\theta(b) - \theta(a)),
+    \label{eq:zero_count}
+\end{equation}
+where $N([a,b])$ denotes the number of zeros in $[a,b]$.
+\end{theorem}
+
+\begin{proof}
+The Kac--Rice formula (see \cite{cramer1967}, Section~10.3.1) for the expected number of zeros gives
+\begin{equation}
+    \mathbb{E}[N([a,b])] = \int_{a}^{b} \sqrt{ - \lim_{s \to t} \frac{\partial^2}{\partial t \partial s} K_{\theta}(t,s) }\, dt. \label{eq:kac_rice}
+\end{equation}
+Since $K_{\theta}(t,s) = K(|\theta(t)-\theta(s)|)$, it follows that
+\begin{align}
+    \frac{\partial}{\partial t} K(|\theta(t)-\theta(s)|) = K'(|\theta(t)-\theta(s)|) \cdot \text{sign}(\theta(t) - \theta(s)) \cdot \theta'(t).
+\end{align}
+So, for $s\to t$,
+\begin{equation}
+    \lim_{s \to t} \frac{\partial^2}{\partial t \partial s} K(|\theta(t)-\theta(s)|) = - K''(0) \theta'(t)^2.
+\end{equation}
+Therefore,
+\begin{align}
+    \mathbb{E}[N([a, b])] &= \int_a^b \sqrt{ - K''(0) \theta'(t)^2 }\, dt \\
+    &= \sqrt{ - K''(0) } \int_a^b \theta'(t) dt  \nonumber \\
+    &= \sqrt{ - K''(0) } (\theta(b) - \theta(a)), \nonumber
+\end{align}
+which proves the result.
+\end{proof}
+
+
+\section{Discussion and Consequences}\label{sec:discussion}
+
+The results established in Sections~\ref{sec:timechange}--\ref{sec:zero_crossings} demonstrate:
+\begin{itemize}
+    \item The process generated by a measure-preserving bijective time change $\theta$ of a stationary process, with correct Jacobian normalization, is always oscillatory and admits an explicit oscillatory representation.
+    \item The evolutionary power spectrum is simply the original spectrum scaled by the local derivative $\theta'(t)$.
+    \item The $L^2$-norm is preserved under the mapping, indicating a unitary equivalence between the original stationary process and its time-changed oscillatory version.
+    \item The expected number of zeros is given exactly by equation~\eqref{eq:zero_count}, a direct generalization of the stationary case.
+\end{itemize}
+
+These relationships identify time-changed processes of the above form as a distinguished, analytically tractable subclass of oscillatory processes.
+
+\section{References}\label{sec:references}
+
+\begin{thebibliography}{99}
+    \bibitem{priestley1965}
+      M.~B. Priestley. \textit{Evolutionary Spectra and Non-Stationary Processes}, J. Roy. Statist. Soc. B, 27(2), 204--237, 1965.
+
+    \bibitem{cramer1967}
+      H.~Cramér and M.~R. Leadbetter, \textit{Stationary and Related Stochastic Processes: Sample Function Properties and Their Applications}, Wiley, 1967.
+\end{thebibliography}
+
+\end{document}

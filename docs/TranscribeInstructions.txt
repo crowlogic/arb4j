@@ -63,5 +63,11 @@ follow these instructions precisely to ensure maximum structure, clarity, and cr
 
 14. **Footnotes**
     - Make sure all footnotes are represented using the appropriate footnote tags
-    
-By adhere to these rules and produce a LaTeX document that is structured, precise, and production ready 
+ 
+15. **Perspective**
+   -   *ALWAYS* use third person impersonal perspective. Never use the word 'we'
+
+16. **Langauge**
+  - Never use the word formal unless it is alread present. It is a useless adjective which makes the result seem unnecessarily stiff and soulless.
+  
+adhere to these rules and produce a LaTeX document that is structured, precise, and production ready 
