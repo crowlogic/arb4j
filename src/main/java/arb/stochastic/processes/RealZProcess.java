@@ -1,6 +1,7 @@
 package arb.stochastic.processes;
 
 import arb.Real;
+import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -9,6 +10,7 @@ import arb.functions.RealToComplexFunction;
 import arb.functions.real.RealFunction;
 import arb.utensils.ShellFunctions;
 import arb.viz.FunctionPlotter;
+import javafx.application.Platform;
 
 /**
  * @author Stephen Crowley
@@ -22,11 +24,21 @@ public class RealZProcess implements
   public static void main(String args[])
   {
     RealZProcess          Zprocess = new RealZProcess();
-    RealToComplexFunction gain     = Zprocess.gainFunction().evaluate(Real.named("λ").one(), 128);
+    RealToComplexFunction gain     =
+                               Zprocess.gainFunction()
+                                       .evaluate(Real.named("λ").set(RealConstants.half), 128);
     RealToComplexFunction ϕ        =
                             Zprocess.oscillatoryFunction().evaluate(Real.named("λ").one(), 128);
 
-    ShellFunctions.plot(-25, 200, 20000, gain.realPart(), gain.imagPart());
+    FunctionPlotter       frame    = ShellFunctions.plot(-25,
+                                                         200,
+                                                         20000,
+                                                         gain.realPart(),
+                                                         gain.imagPart());
+
+    Platform.setImplicitExit(true);
+
+    Platform.runLater(() -> ShellFunctions.saveImage(frame.chart, "gain.png"));
 
   }
 
