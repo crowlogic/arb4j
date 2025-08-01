@@ -307,7 +307,16 @@ public class Context
                        Object value,
                        boolean overwrite)
   {
-
+    if (Expression.trace)
+    {
+      System.err.format("Context(#%s).setFieldValue(compiledClass=%s, f=%s, variableName=%s, value=%s, overwrite=%s)\n\n",
+                        System.identityHashCode(this),
+                        compiledClass,
+                        f,
+                        variableName,
+                        value,
+                        f.getClass().getName());
+    }
     java.lang.reflect.Field field;
     try
     {
