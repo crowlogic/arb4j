@@ -315,7 +315,7 @@ public class Context
                         f,
                         variableName,
                         value,
-                        f.getClass().getName());
+                        overwrite);
     }
     java.lang.reflect.Field field;
     try

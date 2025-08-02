@@ -252,15 +252,15 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>, C extends N
   @Override
   public boolean verify()
   {
-    assert paramType.equals(this.α.getClass()) : String.format("paramType=%s != alpha.class=%s\n",
+    assert paramType.equals(α.getClass()) : String.format("paramType=%s != alpha.class=%s\n",
                                                                paramType,
-                                                               this.α.getClass());
+                                                               α.getClass());
     int p = this.p.getSignedValue();
     if (Real.class.equals(paramType))
     {
       for (int i = 0; i < p; i++)
       {
-        if (Real.isNegativeInteger.test(this.α.get(i)))
+        if (Real.isNegativeInteger.test(α.get(i)))
         {
           return true;
         }
@@ -270,7 +270,7 @@ public abstract class HypergeometricFunction<P extends NamedRing<P>, C extends N
     {
       for (int i = 0; i < p; i++)
       {
-        if (Complex.isNegativeInteger.test(this.α.get(i)))
+        if (Complex.isNegativeInteger.test(α.get(i)))
         {
           return true;
         }

@@ -1,4 +1,3 @@
-implement ∂/∂x[∏ᵢ₌₁ᵏfᵢ(x)] = ∑ᵢ₌₁ᵏ[(∂/∂x fᵢ(x))∏ⱼ₌₁,ⱼ≠ᵢᵏfⱼ(x)]
 SphericalBesselFunction functional bug #581
 expression compiler: implement caching #555
 Expression Compiler: implement switching of order-of-integration via Fubini's or Tonelli's theorem #549
@@ -9,3 +8,4 @@ RandomWaveSampler: add U&V to charts
 GaussianProcessSampler: replace remaining double usage with Reals
 compiler: move input-independent parts of the expression sub-tree into the initialize() method to avoid throwing away results of repeated calculations #567
 LiteralConstantNode: replace linear search with hashmap     for (var existingConstant : expression.literalConstants.values())
+implement ∂/∂x[∏ᵢ₌₁ᵏfᵢ(x)] = ∑ᵢ₌₁ᵏ[(∂/∂x fᵢ(x))∏ⱼ₌₁,ⱼ≠ᵢᵏfⱼ(x)]
