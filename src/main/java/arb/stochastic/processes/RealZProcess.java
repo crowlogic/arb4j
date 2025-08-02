@@ -30,11 +30,12 @@ public class RealZProcess implements
     RealToComplexFunction ϕ        =
                             Zprocess.oscillatoryFunction().evaluate(Real.named("λ").one(), 128);
 
-    FunctionPlotter       frame    = ShellFunctions.plot(-25,
+    FunctionPlotter       frame    = ShellFunctions.plot(0,
                                                          200,
                                                          20000,
                                                          gain.realPart(),
-                                                         gain.imagPart());
+                                                         gain.imagPart(),
+                                                         gain.realPart().sub(gain.imagPart()));
 
     Platform.setImplicitExit(true);
 
