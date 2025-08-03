@@ -1,0 +1,137 @@
+\documentclass{article}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage[margin=1in]{geometry}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\title{The Shift Group and Fourier Transform of Complex Exponentials}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{definition}[Shift Operator]
+For $t_0 \in \mathbb{R}$, the shift operator $S_{t_0}$ is defined by
+\[(S_{t_0}f)(t) = f(t - t_0)\]
+for any function $f$ in the appropriate function space.
+\end{definition}
+
+\begin{definition}[Fourier Transform]
+For $f \in L^1(\mathbb{R})$, the Fourier transform is defined by
+\[\hat{f}(\omega) = \mathcal{F}[f](\omega) = \int_{-\infty}^{\infty} f(t)e^{-i\omega t} dt\]
+\end{definition}
+
+\begin{theorem}[Complex Exponentials as Eigenfunctions of Shift Operators]
+Let $\omega \in \mathbb{R}$ and consider the complex exponential function $e_\omega(t) = e^{i\omega t}$. Then for any $t_0 \in \mathbb{R}$,
+\[S_{t_0}[e_\omega] = e^{-i\omega t_0} \cdot e_\omega\]
+That is, $e_\omega$ is an eigenfunction of $S_{t_0}$ with eigenvalue $e^{-i\omega t_0}$.
+\end{theorem}
+
+\begin{proof}
+By definition of the shift operator:
+\begin{align}
+(S_{t_0}e_\omega)(t) &= e_\omega(t - t_0) \\
+&= e^{i\omega(t - t_0)} \\
+&= e^{i\omega t - i\omega t_0} \\
+&= e^{-i\omega t_0} \cdot e^{i\omega t} \\
+&= e^{-i\omega t_0} \cdot e_\omega(t)
+\end{align}
+Therefore, $S_{t_0}[e_\omega] = e^{-i\omega t_0} \cdot e_\omega$.
+\end{proof}
+
+\begin{theorem}[Time Shift Property of Fourier Transform]
+Let $f \in L^1(\mathbb{R})$ and $t_0 \in \mathbb{R}$. Then
+\[\mathcal{F}[S_{t_0}f](\omega) = e^{-i\omega t_0} \hat{f}(\omega)\]
+\end{theorem}
+
+\begin{proof}
+Let $g(t) = f(t - t_0) = (S_{t_0}f)(t)$. Then:
+\begin{align}
+\mathcal{F}[g](\omega) &= \int_{-\infty}^{\infty} g(t)e^{-i\omega t} dt \\
+&= \int_{-\infty}^{\infty} f(t - t_0)e^{-i\omega t} dt
+\end{align}
+Substituting $u = t - t_0$, so $t = u + t_0$ and $dt = du$:
+\begin{align}
+\mathcal{F}[g](\omega) &= \int_{-\infty}^{\infty} f(u)e^{-i\omega(u + t_0)} du \\
+&= e^{-i\omega t_0} \int_{-\infty}^{\infty} f(u)e^{-i\omega u} du \\
+&= e^{-i\omega t_0} \hat{f}(\omega)
+\end{align}
+\end{proof}
+
+\begin{theorem}[Frequency Shift Property of Fourier Transform]
+Let $f \in L^1(\mathbb{R})$ and $\omega_0 \in \mathbb{R}$. Then
+\[\mathcal{F}[e^{i\omega_0 t}f(t)](\omega) = \hat{f}(\omega - \omega_0)\]
+\end{theorem}
+
+\begin{proof}
+\begin{align}
+\mathcal{F}[e^{i\omega_0 t}f(t)](\omega) &= \int_{-\infty}^{\infty} e^{i\omega_0 t}f(t)e^{-i\omega t} dt \\
+&= \int_{-\infty}^{\infty} f(t)e^{-i(\omega - \omega_0)t} dt \\
+&= \hat{f}(\omega - \omega_0)
+\end{align}
+\end{proof}
+
+\begin{theorem}[Fourier Transform of Complex Exponential]
+Let $\omega_0 \in \mathbb{R}$. In the distributional sense,
+\[\mathcal{F}[e^{i\omega_0 t}](\omega) = 2\pi\delta(\omega - \omega_0)\]
+where $\delta$ is the Dirac delta distribution.
+\end{theorem}
+
+\begin{proof}
+We prove this by showing that for any test function $\phi \in \mathcal{S}(\mathbb{R})$ (Schwartz space):
+\[\langle \mathcal{F}[e^{i\omega_0 t}], \phi \rangle = 2\pi\phi(\omega_0)\]
+
+By definition of the Fourier transform of distributions:
+\begin{align}
+\langle \mathcal{F}[e^{i\omega_0 t}], \phi \rangle &= \langle e^{i\omega_0 t}, \mathcal{F}[\phi] \rangle \\
+&= \int_{-\infty}^{\infty} e^{i\omega_0 t} \hat{\phi}(t) dt \\
+&= \int_{-\infty}^{\infty} e^{i\omega_0 t} \int_{-\infty}^{\infty} \phi(\omega)e^{-i\omega t} d\omega dt
+\end{align}
+
+By Fubini's theorem (valid for $\phi \in \mathcal{S}(\mathbb{R})$):
+\begin{align}
+&= \int_{-\infty}^{\infty} \phi(\omega) \int_{-\infty}^{\infty} e^{i(\omega_0 - \omega)t} dt d\omega \\
+&= \int_{-\infty}^{\infty} \phi(\omega) \cdot 2\pi\delta(\omega_0 - \omega) d\omega \\
+&= 2\pi\phi(\omega_0) \\
+&= \langle 2\pi\delta(\omega - \omega_0), \phi \rangle
+\end{align}
+
+Therefore, $\mathcal{F}[e^{i\omega_0 t}] = 2\pi\delta(\omega - \omega_0)$.
+\end{proof}
+
+\begin{theorem}[Diagonalization Property]
+Let $T$ be a bounded linear operator on $L^2(\mathbb{R})$ that commutes with all shift operators, i.e., $TS_{t_0} = S_{t_0}T$ for all $t_0 \in \mathbb{R}$. Then $T$ is diagonalized by the Fourier transform in the sense that there exists a function $m(\omega)$ such that
+\[\mathcal{F}[Tf] = m \cdot \mathcal{F}[f]\]
+for all $f$ in the domain of $T$.
+\end{theorem}
+
+\begin{proof}
+Since $T$ commutes with all shift operators, by Theorem 1, the complex exponentials $e^{i\omega t}$ are eigenfunctions of $T$. Let $Te^{i\omega t} = m(\omega)e^{i\omega t}$ for some function $m(\omega)$.
+
+For any $f \in L^2(\mathbb{R})$ with $\hat{f} \in L^2(\mathbb{R})$, we can write (by the inverse Fourier transform):
+\[f(t) = \frac{1}{2\pi} \int_{-\infty}^{\infty} \hat{f}(\omega)e^{i\omega t} d\omega\]
+
+Applying $T$ and using linearity:
+\begin{align}
+Tf(t) &= T\left[\frac{1}{2\pi} \int_{-\infty}^{\infty} \hat{f}(\omega)e^{i\omega t} d\omega\right] \\
+&= \frac{1}{2\pi} \int_{-\infty}^{\infty} \hat{f}(\omega)T[e^{i\omega t}] d\omega \\
+&= \frac{1}{2\pi} \int_{-\infty}^{\infty} \hat{f}(\omega)m(\omega)e^{i\omega t} d\omega
+\end{align}
+
+Taking the Fourier transform:
+\[\mathcal{F}[Tf](\omega) = m(\omega)\hat{f}(\omega) = m(\omega) \cdot \mathcal{F}[f](\omega)\]
+\end{proof}
+
+\begin{corollary}
+The shift operators and multiplication by complex exponentials are the fundamental operations that generate all translation-invariant linear systems, and the Fourier transform provides the natural basis that simultaneously diagonalizes all such systems.
+\end{corollary}
+
+\end{document}
