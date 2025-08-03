@@ -3,6 +3,9 @@ package arb.viz;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import arb.Float;
 import arb.FloatInterval;
 import arb.Real;
@@ -18,7 +21,6 @@ import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.Screenshot;
 import io.fair_acc.chartfx.plugins.TableViewer;
 import io.fair_acc.chartfx.plugins.Zoomer;
-import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -82,7 +84,6 @@ public class FunctionPlotter implements
     configureChartPlugins();
     root.getChildren().add(chart);
     stage.initModality(Modality.WINDOW_MODAL);
-    configureChartRenderers();
 
     scene = new Scene(root,
                       1500,
@@ -114,17 +115,7 @@ public class FunctionPlotter implements
     return stage;
   }
 
-  protected void configureChartRenderers()
-  {
-    chart.getRenderers().stream().forEach(renderer ->
-    {
-      if (renderer instanceof ErrorDataSetRenderer ballDataRenderer)
-      {
-        ballDataRenderer.addAxes(xAxis, yAxis);
-        ballDataRenderer.setDrawMarker(false);
-      }
-    });
-  }
+  private static final Logger log = LoggerFactory.getLogger(FunctionPlotter.class);
 
   private void freeExistingDatasets()
   {
