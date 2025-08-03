@@ -231,15 +231,6 @@ public class Bibliography extends
                                                                       "261-263").setNumber("1")
                                                                                 .setPublisher("Institute of Mathematical Statistics");
 
-  public static Article harmonicProbabilisticApproachesToTheRiemannHypothesis            =
-                                                                              new Article("Harmonic and Probabilistic Approaches to Zeros of Riemann's Zeta Function",
-                                                                                          "M. M. Rao",
-                                                                                          "2012",
-                                                                                          "Stochastic Analysis and Applications",
-                                                                                          "30",
-                                                                                          "906-915").setNumber("5")
-                                                                                                    .setPublisher("Taylor & Francis");
-
   public static Article levelAndCurveCrossings                                           =
                                                new Article("On Crossings of Levels and Curves by a Wide Class of Stochastic Processes",
                                                            "M. R. Leadbetter",

@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|framed-theorems>>
+<style|<tuple|generic|boring-white|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|On the Prediction of Non-Stationary
@@ -833,107 +833,110 @@
 <\initial>
   <\collection>
     <associate|magnification|1.2>
+    <associate|page-height|auto>
     <associate|page-medium|paper>
+    <associate|page-type|letter>
+    <associate|page-width|auto>
   </collection>
 </initial>
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|2|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-10|<tuple|6|12|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-11|<tuple|6|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-12|<tuple|6|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-2|<tuple|2|3|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-3|<tuple|3|4|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-4|<tuple|3.1|4|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-5|<tuple|3.2|6|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-6|<tuple|4|7|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-7|<tuple|4.1|7|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-8|<tuple|4.2|9|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|auto-9|<tuple|5|9|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-Bartlett1955|<tuple|Bartlett1955|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-Bendat1956|<tuple|Bendat1956|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-Bendat1957|<tuple|Bendat1957|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-Bendat1959|<tuple|Bendat1959|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-Booton1952|<tuple|Booton1952|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-Cramer1961a|<tuple|Cramer1961a|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-Cramer1961b|<tuple|Cramer1961b|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-Davis1952|<tuple|Davis1952|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-Doob1953|<tuple|Doob1953|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-GrangerHatanaka1964|<tuple|GrangerHatanaka1964|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-GrenanderRosenblatt1957|<tuple|GrenanderRosenblatt1957|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-Kalman1960|<tuple|Kalman1960|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-Parzen1961|<tuple|Parzen1961|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-Priestley1965|<tuple|Priestley1965|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-Priestley1966|<tuple|Priestley1966|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-Tricomi1957|<tuple|Tricomi1957|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-Whittle1963|<tuple|Whittle1963|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-Whittle1965|<tuple|Whittle1965|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-Yaglom1962|<tuple|Yaglom1962|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|bib-Zadeh1953|<tuple|Zadeh1953|13|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:At|<tuple|11|5|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:Atcont|<tuple|19|6|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:Bt|<tuple|45|10|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:Btopt|<tuple|50|10|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:C1|<tuple|7|4|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:C1star|<tuple|18|6|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:C3|<tuple|12|5|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:C3star|<tuple|20|6|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:C4|<tuple|16|5|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:C4star|<tuple|23|7|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:Csplit|<tuple|48|10|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:Kt|<tuple|52|10|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:XtMA|<tuple|26|7|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:Xtalpha|<tuple|13|5|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:XtalphaCont|<tuple|21|6|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:Xtplusm|<tuple|27|7|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:Xtplusmspec|<tuple|46|10|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:alphaft|<tuple|14|5|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:alphah|<tuple|15|5|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:alphahCont|<tuple|22|7|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:au|<tuple|31|8|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:btfinal|<tuple|56|11|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:contMA|<tuple|24|7|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:contpredX|<tuple|36|9|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:contpredsol|<tuple|38|9|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:contpredxi|<tuple|37|9|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:conttriangular|<tuple|40|9|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:conttriangular2|<tuple|41|9|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:contxitok|<tuple|39|9|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:covariance-integral|<tuple|62|12|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:discMA|<tuple|17|6|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:discfreqtriangular|<tuple|61|11|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:discpred|<tuple|60|11|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:evspec|<tuple|3|3|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:evspec-cont|<tuple|1|3|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:evspec-disc|<tuple|4|3|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:evspec-disc2|<tuple|5|4|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:firstkernel|<tuple|59|11|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:freqM|<tuple|47|10|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:freqMmin|<tuple|51|10|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:freqMsplit|<tuple|49|10|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:freqpred|<tuple|42|9|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:freqpred2|<tuple|43|10|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:freqpredspec|<tuple|44|10|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:freqtriangular|<tuple|53|11|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:freqtriangular2|<tuple|54|11|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:freqtriangular3|<tuple|55|11|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:ftA|<tuple|6|4|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:iteratedkernels|<tuple|58|11|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:phiA|<tuple|2|3|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:predX|<tuple|28|8|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:predsol|<tuple|30|8|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:predvar|<tuple|25|7|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:predvar2|<tuple|32|8|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:predxi|<tuple|29|8|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:psi|<tuple|8|4|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:psiFT|<tuple|9|4|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:resolvent|<tuple|57|11|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:triangular|<tuple|34|8|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:triangular2|<tuple|35|8|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|eq:xitok|<tuple|33|8|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|sec:discussion|<tuple|6|12|../.TeXmacs/texts/scratch/no_name_4.tm>>
-    <associate|thm:discMA|<tuple|1|6|../.TeXmacs/texts/scratch/no_name_4.tm>>
+    <associate|auto-1|<tuple|1|2>>
+    <associate|auto-10|<tuple|6|12>>
+    <associate|auto-11|<tuple|6|12>>
+    <associate|auto-12|<tuple|6|12>>
+    <associate|auto-2|<tuple|2|3>>
+    <associate|auto-3|<tuple|3|4>>
+    <associate|auto-4|<tuple|3.1|4>>
+    <associate|auto-5|<tuple|3.2|6>>
+    <associate|auto-6|<tuple|4|7>>
+    <associate|auto-7|<tuple|4.1|7>>
+    <associate|auto-8|<tuple|4.2|9>>
+    <associate|auto-9|<tuple|5|9>>
+    <associate|bib-Bartlett1955|<tuple|Bartlett1955|12>>
+    <associate|bib-Bendat1956|<tuple|Bendat1956|13>>
+    <associate|bib-Bendat1957|<tuple|Bendat1957|13>>
+    <associate|bib-Bendat1959|<tuple|Bendat1959|13>>
+    <associate|bib-Booton1952|<tuple|Booton1952|13>>
+    <associate|bib-Cramer1961a|<tuple|Cramer1961a|13>>
+    <associate|bib-Cramer1961b|<tuple|Cramer1961b|13>>
+    <associate|bib-Davis1952|<tuple|Davis1952|13>>
+    <associate|bib-Doob1953|<tuple|Doob1953|13>>
+    <associate|bib-GrangerHatanaka1964|<tuple|GrangerHatanaka1964|13>>
+    <associate|bib-GrenanderRosenblatt1957|<tuple|GrenanderRosenblatt1957|13>>
+    <associate|bib-Kalman1960|<tuple|Kalman1960|13>>
+    <associate|bib-Parzen1961|<tuple|Parzen1961|13>>
+    <associate|bib-Priestley1965|<tuple|Priestley1965|13>>
+    <associate|bib-Priestley1966|<tuple|Priestley1966|13>>
+    <associate|bib-Tricomi1957|<tuple|Tricomi1957|13>>
+    <associate|bib-Whittle1963|<tuple|Whittle1963|13>>
+    <associate|bib-Whittle1965|<tuple|Whittle1965|13>>
+    <associate|bib-Yaglom1962|<tuple|Yaglom1962|13>>
+    <associate|bib-Zadeh1953|<tuple|Zadeh1953|13>>
+    <associate|eq:At|<tuple|11|5>>
+    <associate|eq:Atcont|<tuple|19|6>>
+    <associate|eq:Bt|<tuple|45|10>>
+    <associate|eq:Btopt|<tuple|50|10>>
+    <associate|eq:C1|<tuple|7|4>>
+    <associate|eq:C1star|<tuple|18|6>>
+    <associate|eq:C3|<tuple|12|5>>
+    <associate|eq:C3star|<tuple|20|6>>
+    <associate|eq:C4|<tuple|16|5>>
+    <associate|eq:C4star|<tuple|23|7>>
+    <associate|eq:Csplit|<tuple|48|10>>
+    <associate|eq:Kt|<tuple|52|10>>
+    <associate|eq:XtMA|<tuple|26|7>>
+    <associate|eq:Xtalpha|<tuple|13|5>>
+    <associate|eq:XtalphaCont|<tuple|21|6>>
+    <associate|eq:Xtplusm|<tuple|27|7>>
+    <associate|eq:Xtplusmspec|<tuple|46|10>>
+    <associate|eq:alphaft|<tuple|14|5>>
+    <associate|eq:alphah|<tuple|15|5>>
+    <associate|eq:alphahCont|<tuple|22|7>>
+    <associate|eq:au|<tuple|31|8>>
+    <associate|eq:btfinal|<tuple|56|11>>
+    <associate|eq:contMA|<tuple|24|7>>
+    <associate|eq:contpredX|<tuple|36|9>>
+    <associate|eq:contpredsol|<tuple|38|9>>
+    <associate|eq:contpredxi|<tuple|37|9>>
+    <associate|eq:conttriangular|<tuple|40|9>>
+    <associate|eq:conttriangular2|<tuple|41|9>>
+    <associate|eq:contxitok|<tuple|39|9>>
+    <associate|eq:covariance-integral|<tuple|62|12>>
+    <associate|eq:discMA|<tuple|17|6>>
+    <associate|eq:discfreqtriangular|<tuple|61|11>>
+    <associate|eq:discpred|<tuple|60|11>>
+    <associate|eq:evspec|<tuple|3|3>>
+    <associate|eq:evspec-cont|<tuple|1|3>>
+    <associate|eq:evspec-disc|<tuple|4|3>>
+    <associate|eq:evspec-disc2|<tuple|5|4>>
+    <associate|eq:firstkernel|<tuple|59|11>>
+    <associate|eq:freqM|<tuple|47|10>>
+    <associate|eq:freqMmin|<tuple|51|10>>
+    <associate|eq:freqMsplit|<tuple|49|10>>
+    <associate|eq:freqpred|<tuple|42|9>>
+    <associate|eq:freqpred2|<tuple|43|10>>
+    <associate|eq:freqpredspec|<tuple|44|10>>
+    <associate|eq:freqtriangular|<tuple|53|11>>
+    <associate|eq:freqtriangular2|<tuple|54|11>>
+    <associate|eq:freqtriangular3|<tuple|55|11>>
+    <associate|eq:ftA|<tuple|6|4>>
+    <associate|eq:iteratedkernels|<tuple|58|11>>
+    <associate|eq:phiA|<tuple|2|3>>
+    <associate|eq:predX|<tuple|28|8>>
+    <associate|eq:predsol|<tuple|30|8>>
+    <associate|eq:predvar|<tuple|25|7>>
+    <associate|eq:predvar2|<tuple|32|8>>
+    <associate|eq:predxi|<tuple|29|8>>
+    <associate|eq:psi|<tuple|8|4>>
+    <associate|eq:psiFT|<tuple|9|4>>
+    <associate|eq:resolvent|<tuple|57|11>>
+    <associate|eq:triangular|<tuple|34|8>>
+    <associate|eq:triangular2|<tuple|35|8>>
+    <associate|eq:xitok|<tuple|33|8>>
+    <associate|sec:discussion|<tuple|6|12>>
+    <associate|thm:discMA|<tuple|1|6>>
   </collection>
 </references>
 

@@ -8,6 +8,7 @@ import arb.expressions.Context;
 import arb.functions.RealBivariateToComplexFunction;
 import arb.functions.RealToComplexFunction;
 import arb.functions.real.RealFunction;
+import arb.functions.real.RealIdentityFunction;
 import arb.utensils.ShellFunctions;
 import arb.viz.FunctionPlotter;
 import javafx.application.Platform;
@@ -24,18 +25,23 @@ public class RealZProcess implements
   public static void main(String args[])
   {
     RealZProcess          Zprocess = new RealZProcess();
-    RealToComplexFunction gain     =
-                               Zprocess.gainFunction()
-                                       .evaluate(Real.named("λ").set(RealConstants.half), 128);
+    RealToComplexFunction A        =
+                            Zprocess.gainFunction()
+                                    .evaluate(Real.named("λ").set(RealConstants.half), 128);
     RealToComplexFunction ϕ        =
                             Zprocess.oscillatoryFunction().evaluate(Real.named("λ").one(), 128);
 
     FunctionPlotter       frame    = ShellFunctions.plot(0,
                                                          200,
                                                          20000,
-                                                         gain.realPart(),
-                                                         gain.imagPart(),
-                                                         gain.realPart().sub(gain.imagPart()));
+                                                         A.realPart(),
+                                                         A.imagPart(),
+                                                         ϕ.realPart(),
+                                                         ϕ.imagPart(),
+                                                         Zprocess.z.realPart(),
+                                                         Zprocess.z.imagPart(),
+                                                         Zprocess.θ,
+                                                         Zprocess.θ.sub(identity));
 
     Platform.setImplicitExit(true);
 
@@ -43,19 +49,24 @@ public class RealZProcess implements
 
   }
 
-  final Context                        context = new Context();
+  final Context                        context  = new Context();
 
-  final RealFunction                   θ       =
+  final RealFunction                   θ        =
                                          RealFunction.express("θ:im(lnΓ(1/4+I*t/2))-(log(π)/2)*t",
                                                               context);
 
-  final RealBivariateToComplexFunction A       =
+  final RealBivariateToComplexFunction A        =
                                          RealBivariateToComplexFunction.express("A:exp(I*λ*(θ(t)-t))",
                                                                                 context);
 
-  final RealBivariateToComplexFunction ϕ       =
+  final RealBivariateToComplexFunction ϕ        =
                                          RealBivariateToComplexFunction.express("ϕ:exp(I*λ*θ(t))",
                                                                                 context);
+
+  public final RealToComplexFunction   z        =
+                                         RealToComplexFunction.express("z:ζ(1/2+I*t)", context);
+
+  private static final RealFunction    identity = new RealIdentityFunction();
 
   @Override
   public RealBivariateToComplexFunction gainFunction()
