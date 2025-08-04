@@ -23,10 +23,30 @@ import junit.framework.TestCase;
 public class RealFunctionExpressionCompilerTest extends
                                                 TestCase
 {
+
+ 
+
+  public void testExpressionCommonSubtreeElimination()
+  {
+    Expression<Real, Real, RealFunction> parsed = RealFunction.parse("tanh(log(1+x^2))/(1+x^2)");
+    var F = parsed.generate();
+    var f = F.instantiate();
+    var y = f.eval(2.3);
+    assertEquals(0.151143929930069, y);
+    
+    Expression<Real, Real, RealFunction> parsedCSE = RealFunction.parse("tanh(log(1+x^2))/(1+x^2)");
+    parsedCSE.generate().optimize();
+    var Fcse = parsedCSE.generate();
+    var fcse = Fcse.instantiate();
+    var ycse = fcse.eval(2.3);
+    assertEquals(0.151143929930069, ycse);
+
+  }
+
   
   public static void testRealRandomWavePropagator()
   {
-    var    f = RealFunction.express("(√(π)*Γ(3/4)*J(1/4, |s|)*2^(0.25))/|s|^(0.25)");
+    var    f = RealFunction.express("(√(π)*Γ(3/4)*J(1/4, |s|)*2^(1/4))/|s|^(1/4)");
     var y = f.eval(2.3);
     assertEquals( 0.5125173326531876, y );
   }

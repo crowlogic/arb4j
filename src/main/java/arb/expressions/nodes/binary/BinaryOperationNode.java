@@ -1,15 +1,32 @@
 package arb.expressions.nodes.binary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.cast;
+import static arb.expressions.Compiler.invokeBinaryOperationMethod;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
+import static arb.expressions.Compiler.loadResultParameter;
 import static arb.utensils.Utensils.indent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.MethodVisitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import arb.*;
+import arb.AlgebraicNumber;
+import arb.Complex;
+import arb.ComplexPolynomial;
+import arb.ComplexRationalFunction;
+import arb.Fraction;
 import arb.Integer;
+import arb.IntegerPolynomial;
+import arb.RationalFunction;
+import arb.Real;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
@@ -229,6 +246,8 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
                          fieldName);
   }
 
+  Logger log = LoggerFactory.getLogger(BinaryOperationNode.class);
+
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
@@ -250,6 +269,11 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
     if (existingVar != null)
     {
       fieldName = existingVar;
+      if (log.isDebugEnabled())
+
+      {
+        log.debug("{}: reused {} for {}", expression, fieldName, this);
+      }
       expression.loadThisFieldOntoStack(mv, existingVar, resultType);
     }
     else

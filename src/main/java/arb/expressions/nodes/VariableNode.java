@@ -1,22 +1,35 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.cast;
+import static arb.expressions.Compiler.loadInputParameter;
+import static arb.expressions.Compiler.loadResultParameter;
 import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
-import arb.*;
+import arb.AlgebraicNumber;
+import arb.Complex;
+import arb.ComplexFraction;
+import arb.Fraction;
+import arb.GaussianInteger;
 import arb.Integer;
+import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.exceptions.UndefinedReferenceException;
-import arb.expressions.*;
+import arb.expressions.Compiler;
+import arb.expressions.Context;
+import arb.expressions.Expression;
+import arb.expressions.VariableReference;
 import arb.expressions.nodes.nary.ProductNode;
 import arb.functions.Function;
 
@@ -24,29 +37,48 @@ import arb.functions.Function;
  * This class represents a {@link VariableNode} node within an
  * {@link Expression} by extending the {@link Node} class to provide additional
  * functionality for managing {@link VariableReference}s, those registered in
- * the {@link Context}, and/or those which are inputs to the expression, or any
- * upstream expression (in the case of nested-expressions such as for
- * {@link ProductNode}s
+ * the {@link Context}, and/or those which are inputs to the {@link Expression},
+ * or any upstream expression (in the case of nested-expressions such as for
+ * {@link ProductNode}s).
  *
+ * <h3>Variable Types</h3>
  * <p>
  * A variable can be one of three types:
  * <ul>
- * <li>The independent (input) variable to the containing expression or any
- * containing-expressions input</li>
- * <li>An indeterminate variable used in symbolic computations, including
- * polynomial expressions, rational functions, and functionals (functions whose
- * codomain is itself a function)</li>
- * <li>A variable defined in the {@link Context} associated with this
- * {@link #expression}</li>
+ * <li><strong>Independent variable:</strong> The input variable to the
+ * containing expression or any containing-expression's input. This variable
+ * will receive concrete values during function evaluation.</li>
+ * <li><strong>Indeterminate variable:</strong> A symbolic placeholder used in
+ * algebraic computations, including polynomial expressions, rational functions,
+ * and functionals (functions whose codomain is itself a function). These
+ * variables remain symbolic for algebraic manipulation before evaluation.</li>
+ * <li><strong>Context variable:</strong> A variable defined in the
+ * {@link Context} associated with this {@link #expression}, representing named
+ * constants or parameters from the evaluation environment.</li>
  * </ul>
+ * </p>
  * 
- * For context-defined variables, the reference is stored and subsequently acts
- * as a mutable variable reference but remains a constant if not modified. If
- * one really wants the constant to be immutable then calling
- * {@link Real#lock()} will do the trick, but for that to work the Real (scalar
- * or vector) should have been constructed with the alignment option specified
- * as true so that its address is aligned on a page boundary, where it must be
- * for locking to occur. (At least on x86-64 machines)
+ * <h3>Terminology Distinction</h3>
+ * <p>
+ * While "independent" and "indeterminate" may appear synonymous, they serve
+ * distinct roles: independent variables are function inputs that receive values
+ * at evaluation time, while indeterminate variables remain symbolic for
+ * algebraic operations. In functionals like
+ * {@code Function<Real, Function<Real, Complex>>}, inner variables are
+ * independent from their local function's perspective but indeterminate from
+ * the outer functional's perspective.
+ * </p>
+ * 
+ * <h3>{@link Context} Variables</h3>
+ * <p>
+ * For {@link Context}-defined variables, the reference is stored and
+ * subsequently acts as a mutable {@link VariableReference} but remains a
+ * constant if not modified. If one really wants the constant to be immutable
+ * then calling {@link Real#lock()} will mark the underlying memory area in the
+ * hardware as read-only, but for that to work the Real (scalar or vector)
+ * should have been constructed with the alignment option specified as true so
+ * that its address is aligned on a page boundary, where it must be for locking
+ * to occur. (At least on x86-64 machines)
  * </p>
  *
  * <p>
@@ -55,15 +87,16 @@ import arb.functions.Function;
  * </p>
  *
  * @param <D> Type of domain field
- * @param <R> Type of coDomain field
- * @param <F> Type of function that maps domain to coDomain, must implement
+ * @param <R> Type of codomain field
+ * @param <F> Type of function that maps domain to codomain, must implement
  *            {@link Function}.
  *
- * @author ©2024 Stephen Crowley
+ * @author ©2024-2025 Stephen Crowley
  *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
+
 public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> extends
                          Node<D, R, F>
 {
@@ -265,13 +298,13 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
       resolveReference();
     }
     Class<?> referenceType = reference.type();
-
     expression.loadThisFieldOntoStack(mv, reference.name, referenceType);
 
   }
 
   public void generateReferenceToIndeterminantVariable(MethodVisitor mv)
   {
+    assert isIndeterminate : this + " is not an indeterminant variable";
     if (reference.type == null)
     {
       resolveReference();
@@ -478,7 +511,8 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
     else
     {
       throw new UndefinedReferenceException(format("Undefined reference to variable "
-                                                   + " '%s' at position=%d in expression=%s, independent variable is %s and ascendentExpression is %s,  remaining='%s'",
+                                                   + " '%s' at position=%d in expression=%s, independent "
+                                                   + "variable is %s and ascendentExpression is %s,  remaining='%s'",
                                                    reference.name,
                                                    reference.position,
                                                    expression.expression,
@@ -490,7 +524,6 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   public VariableNode<D, R, F> resolveReference()
   {
-
 
     var inputVariable = expression.independentVariable;
 
@@ -524,10 +557,11 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   protected void throwNewUndefinedReferenceException()
   {
-    throw new UndefinedReferenceException(format("Undefined reference '%s' at position=%d in expression=%s, "
+    throw new UndefinedReferenceException(format("Undefined reference '%s' at position=%d in Expression(=%s)=%s, "
                                                  + "independent variable is %s and parentExpression is %s, remaining='%s'",
                                                  reference.name,
                                                  reference.position,
+                                                 System.identityHashCode(expression),
                                                  expression.expression,
                                                  expression.independentVariable,
                                                  expression.ascendentExpression,
