@@ -1,0 +1,688 @@
+\documentclass[11pt]{book}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{url}
+
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\begin{document}
+
+\chapter{Covariance Functions}
+\label{ch:covariance}
+
+It has been seen that a covariance function is the crucial ingredient in a Gaussian process predictor, as it encodes the assumptions about the function which is to be learned. From a slightly different viewpoint it is clear that in supervised learning the notion of similarity between data points is crucial; it is a basic assumption that points with inputs $x$ which are close are likely to have similar target values $y$, and thus training points that are near to a test point should be informative about the prediction at that point. Under the Gaussian process view it is the covariance function that defines nearness or similarity.
+
+An arbitrary function of input pairs $x$ and $x'$ will not, in general, be a valid covariance function.\footnote{To be a valid covariance function it must be positive semidefinite, see equation~\eqref{eq:psd_kernel}.} The purpose of this chapter is to give examples of some commonly-used covariance functions and to examine their properties. Section~\ref{sec:preliminaries} defines a number of basic terms relating to covariance functions. Section~\ref{sec:examples} gives examples of stationary, dot-product, and other non-stationary covariance functions, and also gives some ways to make new ones from old. Section~\ref{sec:eigenfunction} introduces the important topic of eigenfunction analysis of covariance functions, and states Mercer's theorem which allows the expression of the covariance function (under certain conditions) in terms of its eigenfunctions and eigenvalues. The covariance functions given in section~\ref{sec:examples} are valid when the input domain $\mathcal{X}$ is a subset of $\mathbb{R}^D$. In section~\ref{sec:nonvectorial} methods are described to define covariance functions when the input domain is over structured objects such as strings and trees.
+
+\section{Preliminaries}
+\label{sec:preliminaries}
+
+A stationary covariance function is a function of $x - x'$. Thus it is invariant to translations in the input space.\footnote{In stochastic process theory a process which has constant mean and whose covariance function is invariant to translations is called weakly stationary. A process is strictly stationary if all of its finite dimensional distributions are invariant to translations \cite{papoulis1991}.} For example the squared exponential covariance function given in equation~\eqref{eq:se_original} is stationary. If further the covariance function is a function only of $|x - x'|$ then it is called isotropic; it is thus invariant to all rigid motions. For example the squared exponential covariance function given in equation~\eqref{eq:se_original} is isotropic. As $k$ is now only a function of $r = |x - x'|$ these are also known as radial basis functions (RBFs).
+
+If a covariance function depends only on $x$ and $x'$ through $x \cdot x'$ it is called a dot product covariance function. A simple example is the covariance function $k(x, x') = \sigma_0^2 + x \cdot x'$ which can be obtained from linear regression by putting $\mathcal{N}(0, 1)$ priors on the coefficients of $x_d$ ($d = 1, \ldots, D$) and a prior of $\mathcal{N}(0, \sigma_0^2)$ on the bias (or constant function) $1$, see equation~\eqref{eq:linear_prior}. Another important example is the inhomogeneous polynomial kernel $k(x, x') = (\sigma_0^2 + x \cdot x')^p$ where $p$ is a positive integer. Dot product covariance functions are invariant to a rotation of the coordinates about the origin, but not translations.
+
+A general name for a function $k$ of two arguments mapping a pair of inputs $x \in \mathcal{X}, x' \in \mathcal{X}$ into $\mathbb{R}$ is a kernel. This term arises in the theory of integral operators, where the operator $T_k$ is defined as
+\begin{equation}
+\label{eq:integral_operator}
+(T_k f)(x) = \int_{\mathcal{X}} k(x, x') f(x') d\mu(x'),
+\end{equation}
+where $\mu$ denotes a measure; see section A.7 for further explanation of this point.\footnote{Informally speaking, readers will usually be able to substitute $dx$ or $p(x)dx$ for $d\mu(x)$.}
+
+A real kernel is said to be symmetric if $k(x, x') = k(x', x)$; clearly covariance functions must be symmetric from the definition.
+
+Given a set of input points $\{x_i | i = 1, \ldots, n\}$ the Gram matrix $K$ can be computed whose entries are $K_{ij} = k(x_i, x_j)$. If $k$ is a covariance function the matrix $K$ is called the covariance matrix.
+
+A real $n \times n$ matrix $K$ which satisfies $Q(v) = v^T K v \geq 0$ for all vectors $v \in \mathbb{R}^n$ is called positive semidefinite (PSD). If $Q(v) = 0$ only when $v = 0$ the matrix is positive definite. $Q(v)$ is called a quadratic form. A symmetric matrix is PSD if and only if all of its eigenvalues are non-negative. A Gram matrix corresponding to a general kernel function need not be PSD, but the Gram matrix corresponding to a covariance function is PSD.
+
+A kernel is said to be positive semidefinite if
+\begin{equation}
+\label{eq:psd_kernel}
+\int k(x, x') f(x) f(x') d\mu(x) d\mu(x') \geq 0,
+\end{equation}
+for all $f \in L^2(\mathcal{X}, \mu)$. Equivalently a kernel function which gives rise to PSD Gram matrices for any choice of $n \in \mathbb{N}$ and $\mathcal{D}$ is positive semidefinite. To see this let $f$ be the weighted sum of delta functions at each $x_i$. Since such functions are limits of functions in $L^2(\mathcal{X}, \mu)$ equation~\eqref{eq:psd_kernel} implies that the Gram matrix corresponding to any $\mathcal{D}$ is PSD.
+
+For a one-dimensional Gaussian process one way to understand the characteristic length-scale of the process (if this exists) is in terms of the number of upcrossings of a level $u$. Adler \cite{adler1981} states that the expected number of upcrossings $E[N_u]$ of the level $u$ on the unit interval by a zero-mean, stationary, almost surely continuous Gaussian process is given by
+\begin{equation}
+\label{eq:upcrossings}
+E[N_u] = \frac{1}{2\pi} \sqrt{\frac{-k''(0)}{k(0)}} \exp\left(-\frac{u^2}{2k(0)}\right).
+\end{equation}
+If $k''(0)$ does not exist (so that the process is not mean square differentiable) then if such a process has a zero at $x_0$ then it will almost surely have an infinite number of zeros in the arbitrarily small interval $(x_0, x_0 + \delta)$ \cite{blake1973}.
+
+\subsection{Mean Square Continuity and Differentiability}
+\label{sec:ms_continuity}
+
+Mean square continuity and differentiability of stochastic processes is now described, following Adler \cite{adler1981}. Let $x_1, x_2, \ldots$ be a sequence of points and $x^*$ be a fixed point in $\mathbb{R}^D$ such that $|x_k - x^*| \to 0$ as $k \to \infty$. Then a process $f(x)$ is continuous in mean square at $x^*$ if $E[|f(x_k) - f(x^*)|^2] \to 0$ as $k \to \infty$. If this holds for all $x^* \in A$ where $A$ is a subset of $\mathbb{R}^D$ then $f(x)$ is said to be continuous in mean square (MS) over $A$. A random field is continuous in mean square at $x^*$ if and only if its covariance function $k(x, x')$ is continuous at the point $x = x' = x^*$. For stationary covariance functions this reduces to checking continuity at $k(0)$. Note that MS continuity does not necessarily imply sample function continuity; for a discussion of sample function continuity and differentiability see Adler \cite{adler1981}.
+
+The mean square derivative of $f(x)$ in the $i$th direction is defined as
+\begin{equation}
+\label{eq:ms_derivative}
+\frac{\partial f(x)}{\partial x_i} = \text{l.i.m}_{h \to 0} \frac{f(x + h e_i) - f(x)}{h},
+\end{equation}
+when the limit exists, where l.i.m denotes the limit in mean square and $e_i$ is the unit vector in the $i$th direction. The covariance function of $\partial f(x)/\partial x_i$ is given by $\partial^2 k(x, x')/\partial x_i \partial x'_i$. These definitions can be extended to higher order derivatives. For stationary processes, if the $2k$th-order partial derivative $\partial^{2k} k(x)/\partial^2 x_{i_1} \ldots \partial^2 x_{i_k}$ exists and is finite at $x = 0$ then the $k$th order partial derivative $\partial^k f(x)/\partial x_{i_1} \ldots x_{i_k}$ exists for all $x \in \mathbb{R}^D$ as a mean square limit. Notice that it is the properties of the kernel $k$ around $0$ that determine the smoothness properties (MS differentiability) of a stationary process.
+
+\section{Examples of Covariance Functions}
+\label{sec:examples}
+
+In this section covariance functions are considered where the input domain $\mathcal{X}$ is a subset of the vector space $\mathbb{R}^D$. More general input spaces are considered in section~\ref{sec:nonvectorial}. The section starts in section~\ref{sec:stationary} with stationary covariance functions, then considers dot-product covariance functions in section~\ref{sec:dotproduct} and other varieties of non-stationary covariance functions in section~\ref{sec:nonstationary}. An overview of some commonly used covariance functions is given in Table~\ref{tab:covariance_summary} and in section~\ref{sec:new_kernels} general methods for constructing new kernels from old are described. There exist several other good overviews of covariance functions, see e.g. Abrahamsen \cite{abrahamsen1997}.
+
+\subsection{Stationary Covariance Functions}
+\label{sec:stationary}
+
+In this section (and section~\ref{sec:eigenfunction}) it will be convenient to allow kernels to be a map from $x \in \mathcal{X}, x' \in \mathcal{X}$ into $\mathbb{C}$ (rather than $\mathbb{R}$). If a zero-mean process $f$ is complex-valued, then the covariance function is defined as $k(x, x') = E[f(x) f^*(x')]$, where $*$ denotes complex conjugation.
+
+A stationary covariance function is a function of $\tau = x - x'$. Sometimes in this case $k$ will be written as a function of a single argument, i.e. $k(\tau)$.
+
+The covariance function of a stationary process can be represented as the Fourier transform of a positive finite measure.
+
+\begin{theorem}[Bochner's theorem]
+\label{thm:bochner}
+A complex-valued function $k$ on $\mathbb{R}^D$ is the covariance function of a weakly stationary mean square continuous complex-valued random process on $\mathbb{R}^D$ if and only if it can be represented as
+\begin{equation}
+\label{eq:bochner}
+k(\tau) = \int_{\mathbb{R}^D} e^{2\pi i s \cdot \tau} d\mu(s)
+\end{equation}
+where $\mu$ is a positive finite measure.
+\end{theorem}
+
+The statement of Bochner's theorem is quoted from Stein \cite{stein1999}; a proof can be found in Gihman and Skorohod \cite{gihman1974}. If $\mu$ has a density $S(s)$ then $S$ is known as the spectral density or power spectrum corresponding to $k$.
+
+The construction given by equation~\eqref{eq:bochner} puts non-negative power into each frequency $s$; this is analogous to the requirement that the prior covariance matrix $\Sigma_p$ on the weights in equation~\eqref{eq:weight_prior} be non-negative definite.
+
+In the case that the spectral density $S(s)$ exists, the covariance function and the spectral density are Fourier duals of each other as shown in equation~\eqref{eq:wiener_khintchine};\footnote{See Appendix A.8 for details of Fourier transforms.} this is known as the Wiener-Khintchine theorem, see, e.g. Chatfield \cite{chatfield1989}
+\begin{align}
+\label{eq:wiener_khintchine}
+k(\tau) &= \int S(s) e^{2\pi i s \cdot \tau} ds, \\
+S(s) &= \int k(\tau) e^{-2\pi i s \cdot \tau} d\tau. \nonumber
+\end{align}
+Notice that the variance of the process is $k(0) = \int S(s) ds$ so the power spectrum must be integrable to define a valid Gaussian process.
+
+To gain some intuition for the definition of the power spectrum given in equation~\eqref{eq:wiener_khintchine} it is important to realize that the complex exponentials $e^{2\pi i s \cdot x}$ are eigenfunctions of a stationary kernel with respect to Lebesgue measure (see section~\ref{sec:eigenfunction} for further details). Thus $S(s)$ is, loosely speaking, the amount of power allocated on average to the eigenfunction $e^{2\pi i s \cdot x}$ with frequency $s$. $S(s)$ must eventually decay sufficiently fast as $|s| \to \infty$ so that it is integrable; the rate of this decay of the power spectrum gives important information about the smoothness of the associated stochastic process. For example it can determine the mean-square differentiability of the process (see section~\ref{sec:eigenfunction} for further details).
+
+If the covariance function is isotropic (so that it is a function of $r$, where $r = |\tau|$) then it can be shown that $S(s)$ is a function of $s \triangleq |s|$ only \cite{adler1981}. In this case the integrals in equation~\eqref{eq:wiener_khintchine} can be simplified by changing to spherical polar coordinates and integrating out the angular variables (see e.g. Bracewell \cite{bracewell1986}) to obtain
+\begin{align}
+\label{eq:hankel_transform}
+k(r) &= \frac{2\pi}{r^{D/2-1}} \int_0^\infty S(s) J_{D/2-1}(2\pi rs) s^{D/2} ds, \\
+S(s) &= \frac{2\pi}{s^{D/2-1}} \int_0^\infty k(r) J_{D/2-1}(2\pi rs) r^{D/2} dr, \nonumber
+\end{align}
+where $J_{D/2-1}$ is a Bessel function of order $D/2-1$. Note that the dependence on the dimensionality $D$ in equation~\eqref{eq:hankel_transform} means that the same isotropic functional form of the spectral density can give rise to different isotropic covariance functions in different dimensions. Similarly, if starting with a particular isotropic covariance function $k(r)$ the form of spectral density will in general depend on $D$ (see, e.g. the Matérn class spectral density given in equation~\eqref{eq:matern_spectral}) and in fact $k(r)$ may not be valid for all $D$. A necessary condition for the spectral density to exist is that $\int r^{D-1} |k(r)| dr < \infty$; see Stein \cite{stein1999} for more details.
+
+Some examples of commonly-used isotropic covariance functions are now given. The covariance functions are given in a normalized form where $k(0) = 1$; these can be multiplied by a (positive) constant $\sigma_f^2$ to get any desired process variance.
+
+\subsubsection{Squared Exponential Covariance Function}
+
+The squared exponential (SE) covariance function has already been introduced in chapter~\ref{ch:regression}, equation~\eqref{eq:se_original} and has the form
+\begin{equation}
+\label{eq:se_covariance}
+k_{\text{SE}}(r) = \exp\left(-\frac{r^2}{2\ell^2}\right),
+\end{equation}
+with parameter $\ell$ defining the characteristic length-scale. Using equation~\eqref{eq:upcrossings} it can be seen that the mean number of level-zero upcrossings for a SE process in 1-d is $(2\pi\ell)^{-1}$, which confirms the rôle of $\ell$ as a length-scale. This covariance function is infinitely differentiable, which means that the GP with this covariance function has mean square derivatives of all orders, and is thus very smooth. The spectral density of the SE covariance function is $S(s) = (2\pi\ell^2)^{D/2} \exp(-2\pi^2\ell^2 s^2)$. Stein \cite{stein1999} argues that such strong smoothness assumptions are unrealistic for modelling many physical processes, and recommends the Matérn class (see below). However, the squared exponential is probably the most widely-used kernel within the kernel machines field.
+
+The SE kernel is infinitely divisible in that $(k(r))^t$ is a valid kernel for all $t > 0$; the effect of raising $k$ to the power of $t$ is simply to rescale $\ell$.
+
+A brief digression is now made, to show that the squared exponential covariance function can also be obtained by expanding the input $x$ into a feature space defined by Gaussian-shaped basis functions centered densely in $x$-space. For simplicity of exposition scalar inputs are considered with basis functions
+\begin{equation}
+\label{eq:gaussian_basis}
+\phi_c(x) = \exp\left(-\frac{(x-c)^2}{2\ell^2}\right),
+\end{equation}
+where $c$ denotes the centre of the basis function. From sections~\ref{sec:function_space} and~\ref{sec:weight_space} it is recalled that with a Gaussian prior on the weights $w \sim \mathcal{N}(0, \sigma_p^2 I)$, this gives rise to a GP with covariance function
+\begin{equation}
+\label{eq:finite_basis_cov}
+k(x_p, x_q) = \frac{\sigma_p^2}{N} \sum_{c=1}^N \phi_c(x_p) \phi_c(x_q).
+\end{equation}
+Now, allowing an infinite number of basis functions centered everywhere on an interval (and scaling down the variance of the prior on the weights with the number of basis functions) the limit is obtained
+\begin{equation}
+\label{eq:infinite_basis_limit}
+\lim_{N \to \infty} \frac{\sigma_p^2}{N} \sum_{c=1}^N \phi_c(x_p) \phi_c(x_q) = \sigma_p^2 \int_{c_{\min}}^{c_{\max}} \phi_c(x_p) \phi_c(x_q) dc.
+\end{equation}
+Plugging in the Gaussian-shaped basis functions equation~\eqref{eq:gaussian_basis} and letting the integration limits go to infinity the result is obtained
+\begin{align}
+\label{eq:se_derivation}
+k(x_p, x_q) &= \sigma_p^2 \int_{-\infty}^\infty \exp\left(-\frac{(x_p-c)^2}{2\ell^2}\right) \exp\left(-\frac{(x_q-c)^2}{2\ell^2}\right) dc \\
+&= \sqrt{\pi}\ell\sigma_p^2 \exp\left(-\frac{(x_p-x_q)^2}{2(\sqrt{2}\ell)^2}\right), \nonumber
+\end{align}
+which is recognized as a squared exponential covariance function with a $\sqrt{2}$ times longer length-scale. The derivation is adapted from MacKay \cite{mackay1998}. It is straightforward to generalize this construction to multivariate $x$. See also equation~\eqref{eq:modulated_se} for a similar construction where the centres of the basis functions are sampled from a Gaussian distribution; the constructions are equivalent when the variance of this Gaussian tends to infinity.
+
+\subsubsection{The Matérn Class of Covariance Functions}
+
+The Matérn class of covariance functions is given by
+\begin{equation}
+\label{eq:matern}
+k_{\text{Matérn}}(r) = \frac{2^{1-\nu}}{\Gamma(\nu)} \left(\frac{\sqrt{2\nu}r}{\ell}\right)^\nu K_\nu\left(\frac{\sqrt{2\nu}r}{\ell}\right),
+\end{equation}
+with positive parameters $\nu$ and $\ell$, where $K_\nu$ is a modified Bessel function \cite{abramowitz1965}. This covariance function has a spectral density
+\begin{equation}
+\label{eq:matern_spectral}
+S(s) = \frac{2^D \pi^{D/2} \Gamma(\nu + D/2) (2\nu)^\nu}{\Gamma(\nu) \ell^{2\nu}} \left(\frac{2\nu}{\ell^2} + 4\pi^2 s^2\right)^{-(\nu+D/2)}
+\end{equation}
+in $D$ dimensions. Note that the scaling is chosen so that for $\nu \to \infty$ the SE covariance function $e^{-r^2/2\ell^2}$ is obtained, see equation~\eqref{eq:limit_formula}. Stein \cite{stein1999} named this the Matérn class after the work of Matérn \cite{matern1960}. For the Matérn class the process $f(x)$ is $k$-times MS differentiable if and only if $\nu > k$. The Matérn covariance functions become especially simple when $\nu$ is half-integer: $\nu = p + 1/2$, where $p$ is a non-negative integer. In this case the covariance function is a product of an exponential and a polynomial of order $p$, the general expression can be derived from Abramowitz and Stegun \cite{abramowitz1965}, giving
+\begin{equation}
+\label{eq:matern_half_integer}
+k_{\nu=p+1/2}(r) = \exp\left(-\frac{\sqrt{2\nu}r}{\ell}\right) \frac{\Gamma(p+1)}{\Gamma(2p+1)} \sum_{i=0}^p \frac{(p+i)!}{i!(p-i)!} \left(\frac{\sqrt{8\nu}r}{\ell}\right)^{p-i}.
+\end{equation}
+It is possible that the most interesting cases for machine learning are $\nu = 3/2$ and $\nu = 5/2$, for which
+\begin{align}
+\label{eq:matern_special_cases}
+k_{\nu=3/2}(r) &= \left(1 + \frac{\sqrt{3}r}{\ell}\right) \exp\left(-\frac{\sqrt{3}r}{\ell}\right), \\
+k_{\nu=5/2}(r) &= \left(1 + \frac{\sqrt{5}r}{\ell} + \frac{5r^2}{3\ell^2}\right) \exp\left(-\frac{\sqrt{5}r}{\ell}\right), \nonumber
+\end{align}
+since for $\nu = 1/2$ the process becomes very rough (see below), and for $\nu \geq 7/2$, in the absence of explicit prior knowledge about the existence of higher order derivatives, it is probably very hard from finite noisy training examples to distinguish between values of $\nu \geq 7/2$ (or even to distinguish between finite values of $\nu$ and $\nu \to \infty$, the smooth squared exponential, in this case). For example a value of $\nu = 5/2$ was used in Cornford et al. \cite{cornford2002}.
+
+\subsubsection{Ornstein-Uhlenbeck Process and Exponential Covariance Function}
+
+The special case obtained by setting $\nu = 1/2$ in the Matérn class gives the exponential covariance function $k(r) = \exp(-r/\ell)$. The corresponding process is MS continuous but not MS differentiable. In $D = 1$ this is the covariance function of the Ornstein-Uhlenbeck (OU) process. The OU process \cite{uhlenbeck1930} was introduced as a mathematical model of the velocity of a particle undergoing Brownian motion. More generally in $D = 1$ setting $\nu + 1/2 = p$ for integer $p$ gives rise to a particular form of a continuous-time AR($p$) Gaussian process; for further details see section B.2.1. The form of the Matérn covariance function and samples drawn from it for $\nu = 1/2$, $\nu = 2$ and $\nu \to \infty$ are illustrated in Figure~\ref{fig:matern_samples}.
+
+\subsubsection{The $\gamma$-exponential Covariance Function}
+
+The $\gamma$-exponential family of covariance functions, which includes both the exponential and squared exponential, is given by
+\begin{equation}
+\label{eq:gamma_exponential}
+k(r) = \exp\left(-(r/\ell)^\gamma\right) \quad \text{for } 0 < \gamma \leq 2.
+\end{equation}
+Although this function has a similar number of parameters to the Matérn class, it is (as Stein \cite{stein1999} notes) in a sense less flexible. This is because the corresponding process is not MS differentiable except when $\gamma = 2$ (when it is infinitely MS differentiable). The covariance function and random samples from the process are shown in Figure~\ref{fig:gamma_exponential_samples}. A proof of the positive definiteness of this covariance function can be found in Schoenberg \cite{schoenberg1938}.
+
+\subsubsection{Rational Quadratic Covariance Function}
+
+The rational quadratic (RQ) covariance function
+\begin{equation}
+\label{eq:rq_basic}
+k_{\text{RQ}}(r) = \left(1 + \frac{r^2}{2\alpha\ell^2}\right)^{-\alpha}
+\end{equation}
+with $\alpha, \ell > 0$ can be seen as a scale mixture (an infinite sum) of squared exponential (SE) covariance functions with different characteristic length-scales (sums of covariance functions are also a valid covariance, see section~\ref{sec:new_kernels}). Parameterizing now in terms of inverse squared length scales, $\tau = \ell^{-2}$, and putting a gamma distribution on $p(\tau|\alpha, \beta) \propto \tau^{\alpha-1} \exp(-\alpha\tau/\beta)$,\footnote{Note that there are several common ways to parameterize the Gamma distribution—this choice is convenient here: $\alpha$ is the "shape" and $\beta$ is the mean.} the contributions can be added up through the following integral
+\begin{align}
+\label{eq:rq_derivation}
+k_{\text{RQ}}(r) &= \int p(\tau|\alpha, \beta) k_{\text{SE}}(r|\tau) d\tau \\
+&\propto \int \tau^{\alpha-1} \exp\left(-\frac{\alpha\tau}{\beta}\right) \exp\left(-\frac{\tau r^2}{2}\right) d\tau \propto \left(1 + \frac{r^2}{2\alpha\ell^2}\right)^{-\alpha}, \nonumber
+\end{align}
+where $\beta^{-1} = \ell^2$ has been set. The rational quadratic is also discussed by Matérn \cite{matern1960} using a slightly different parameterization; in this notation the limit of the RQ covariance for $\alpha \to \infty$ (see equation~\eqref{eq:limit_formula}) is the SE covariance function with characteristic length-scale $\ell$, equation~\eqref{eq:se_covariance}. Figure~\ref{fig:rq_samples} illustrates the behaviour for different values of $\alpha$; note that the process is infinitely MS differentiable for every $\alpha$ in contrast to the Matérn covariance function in Figure~\ref{fig:matern_samples}.
+
+The previous example is a special case of kernels which can be written as superpositions of SE kernels with a distribution $p(\ell)$ of length-scales $\ell$, $k(r) = \int \exp(-r^2/2\ell^2) p(\ell) d\ell$. This is in fact the most general representation for an isotropic kernel which defines a valid covariance function in any dimension $D$, see Stein \cite{stein1999}.
+
+\subsubsection{Piecewise Polynomial Covariance Functions with Compact Support}
+
+A family of piecewise polynomial functions with compact support provide another interesting class of covariance functions. Compact support means that the covariance between points become exactly zero when their distance exceeds a certain threshold. This means that the covariance matrix will become sparse by construction, leading to the possibility of computational advantages.\footnote{If the product of the inverse covariance matrix with a vector (needed e.g. for prediction) is computed using a conjugate gradient algorithm, then products of the covariance matrix with vectors are the basic computational unit, and these can obviously be carried out much faster if the matrix is sparse.} The challenge in designing these functions is how to guarantee positive definiteness. Multiple algorithms for deriving such covariance functions are discussed by Wendland \cite{wendland2005}. These functions are usually not positive definite for all input dimensions, but their validity is restricted up to some maximum dimension $D$. Below examples of covariance functions $k_{pp}^{D,q}(r)$ are given which are positive definite in $\mathbb{R}^D$
+\begin{align}
+\label{eq:piecewise_polynomial}
+k_{pp}^{D,0}(r) &= (1-r)_+^j, \quad \text{where } j = \lfloor D/2 \rfloor + q + 1, \\
+k_{pp}^{D,1}(r) &= (1-r)_+^{j+1} \left((j+1)r + 1\right), \nonumber \\
+k_{pp}^{D,2}(r) &= (1-r)_+^{j+2} \left((j^2 + 4j + 3)r^2 + (3j + 6)r + 3\right)/3, \nonumber \\
+k_{pp}^{D,3}(r) &= (1-r)_+^{j+3} \left((j^3 + 9j^2 + 23j + 15)r^3 + \right. \nonumber \\
+&\quad \left. (6j^2 + 36j + 45)r^2 + (15j + 45)r + 15\right)/15. \nonumber
+\end{align}
+The properties of three of these covariance functions are illustrated in Figure~\ref{fig:piecewise_polynomial}. These covariance functions are $2q$-times continuously differentiable, and thus the corresponding processes are $q$-times mean-square differentiable, see section~\ref{sec:ms_continuity}.
+
+It is interesting to ask to what extent one could use the compactly-supported covariance functions described above in place of the other covariance functions mentioned in this section, while obtaining inferences that are similar. One advantage of the compact support is that it gives rise to sparsity of the Gram matrix which could be exploited, for example, when using iterative solutions to GPR problem, see section~\ref{sec:sparse_methods}.
+
+\subsubsection{Further Properties of Stationary Covariance Functions}
+
+The covariance functions given above decay monotonically with $r$ and are always positive. However, this is not a necessary condition for a covariance function. For example Yaglom \cite{yaglom1987} shows that $k(r) = c(\alpha r)^{-\nu} J_\nu(\alpha r)$ is a valid covariance function for $\nu \geq (D-2)/2$ and $\alpha > 0$; this function has the form of a damped oscillation.
+
+Anisotropic versions of these isotropic covariance functions can be created by setting $r^2(x, x') = (x - x')^T M (x - x')$ for some positive semidefinite $M$. If $M$ is diagonal this implements the use of different length-scales on different dimensions—for further discussion of automatic relevance determination see section~\ref{sec:ard}. General $M$'s have been considered by Matérn \cite{matern1960}, Poggio and Girosi \cite{poggio1990} and also in Vivarelli and Williams \cite{vivarelli1999}; in the latter work a low-rank $M$ was used to implement a linear dimensionality reduction step from the input space to lower-dimensional feature space. More generally, one could assume the form
+\begin{equation}
+\label{eq:factor_analysis_M}
+M = \Lambda \Lambda^T + \Psi
+\end{equation}
+where $\Lambda$ is a $D \times k$ matrix whose columns define $k$ directions of high relevance, and $\Psi$ is a diagonal matrix (with positive entries), capturing the (usual) axis-aligned relevances, see also Figure~\ref{fig:factor_analysis} on page~\pageref{fig:factor_analysis}. Thus $M$ has a factor analysis form. For appropriate choices of $k$ this may represent a good trade-off between flexibility and required number of parameters.
+
+Stationary kernels can also be defined on a periodic domain, and can be readily constructed from stationary kernels on $\mathbb{R}$. Given a stationary kernel $k(x)$, the kernel $k_T(x) = \sum_{m \in \mathbb{Z}} k(x + ml)$ is periodic with period $l$, as shown in section B.2.2 and Schölkopf and Smola \cite{scholkopf2002}.
+
+\subsection{Dot Product Covariance Functions}
+\label{sec:dotproduct}
+
+As already mentioned above the kernel $k(x, x') = \sigma_0^2 + x \cdot x'$ can be obtained from linear regression. If $\sigma_0^2 = 0$ this is called the homogeneous linear kernel, otherwise it is inhomogeneous. Of course this can be generalized to $k(x, x') = \sigma_0^2 + x^T \Sigma_p x'$ by using a general covariance matrix $\Sigma_p$ on the components of $x$, as described in equation~\eqref{eq:general_linear}.\footnote{Indeed the bias term could also be included in the general expression.} It is also the case that $k(x, x') = (\sigma_0^2 + x^T \Sigma_p x')^p$ is a valid covariance function for positive integer $p$, because of the general result that a positive-integer power of a given covariance function is also a valid covariance function, as described in section~\ref{sec:new_kernels}. However, it is also interesting to show an explicit feature space construction for the polynomial covariance function.
+
+The homogeneous polynomial case is considered as the inhomogeneous case can simply be obtained by considering $x$ to be extended by concatenating a constant. Writing
+\begin{align}
+\label{eq:polynomial_expansion}
+k(x, x') &= (x \cdot x')^p = \left(\sum_{d=1}^D x_d x'_d\right)^p \\
+&= \left(\sum_{d_1=1}^D x_{d_1} x'_{d_1}\right) \cdots \left(\sum_{d_p=1}^D x_{d_p} x'_{d_p}\right) \nonumber \\
+&= \sum_{d_1=1}^D \cdots \sum_{d_p=1}^D (x_{d_1} \cdots x_{d_p})(x'_{d_1} \cdots x'_{d_p}) \triangleq \phi(x) \cdot \phi(x'). \nonumber
+\end{align}
+Notice that this sum apparently contains $D^p$ terms but in fact it is less than this as the order of the indices in the monomial $x_{d_1} \cdots x_{d_p}$ is unimportant, e.g. for $p = 2$, $x_1 x_2$ and $x_2 x_1$ are the same monomial. The redundancy can be removed by defining a vector $m$ whose entry $m_d$ specifies the number of times index $d$ appears in the monomial, under the constraint that $\sum_{i=1}^D m_i = p$. Thus $\phi_m(x)$, the feature corresponding to vector $m$ is proportional to the monomial $x_1^{m_1} \ldots x_D^{m_D}$. The degeneracy of $\phi_m(x)$ is $\frac{p!}{m_1! \ldots m_D!}$ (where as usual $0! = 1$ is defined), giving the feature map
+\begin{equation}
+\label{eq:polynomial_feature_map}
+\phi_m(x) = \sqrt{\frac{p!}{m_1! \cdots m_D!}} x_1^{m_1} \cdots x_D^{m_D}.
+\end{equation}
+For example, for $p = 2$ in $D = 2$, $\phi(x) = (x_1^2, x_2^2, \sqrt{2}x_1 x_2)^T$ is obtained. Dot-product kernels are sometimes used in a normalized form given by equation~\eqref{eq:normalized_kernel}.
+
+For regression problems the polynomial kernel is a rather strange choice as the prior variance grows rapidly with $|x|$ for $|x| > 1$. However, such kernels have proved effective in high-dimensional classification problems (e.g. take $x$ to be a vectorized binary image) where the input data are binary or greyscale normalized to $[-1, 1]$ on each dimension \cite{scholkopf2002}.
+
+\subsection{Other Non-stationary Covariance Functions}
+\label{sec:nonstationary}
+
+Above examples of non-stationary dot product kernels have been seen. However, there are also other interesting kernels which are not of this form. In this section the covariance function belonging to a particular type of neural network is first described; this construction is due to Neal \cite{neal1996}.
+
+Consider a network which takes an input $x$, has one hidden layer with $N_H$ units and then linearly combines the outputs of the hidden units with a bias $b$ to obtain $f(x)$. The mapping can be written
+\begin{equation}
+\label{eq:neural_network}
+f(x) = b + \sum_{j=1}^{N_H} v_j h(x; u_j),
+\end{equation}
+where the $v_j$'s are the hidden-to-output weights and $h(x; u)$ is the hidden unit transfer function (which is assumed to be bounded) which depends on the input-to-hidden weights $u$. For example, $h(x; u) = \tanh(x \cdot u)$ could be chosen. This architecture is important because it has been shown by Hornik \cite{hornik1993} that networks with one hidden layer are universal approximators as the number of hidden units tends to infinity, for a wide class of transfer functions (but excluding polynomials). Let $b$ and the $v$'s have independent zero-mean distributions of variance $\sigma_b^2$ and $\sigma_v^2$, respectively, and let the weights $u_j$ for each hidden unit be independently and identically distributed. Denoting all weights by $w$, the result is obtained (following Neal \cite{neal1996})
+\begin{align}
+\label{eq:nn_expectation}
+E_w[f(x)] &= 0 \\
+E_w[f(x)f(x')] &= \sigma_b^2 + \sum_j \sigma_v^2 E_u[h(x; u_j) h(x'; u_j)] \nonumber \\
+&= \sigma_b^2 + N_H \sigma_v^2 E_u[h(x; u) h(x'; u)], \nonumber
+\end{align}
+where equation~\eqref{eq:nn_expectation} follows because all of the hidden units are identically distributed. The final term in equation~\eqref{eq:nn_expectation} becomes $\omega^2 E_u[h(x; u) h(x'; u)]$ by letting $\sigma_v^2$ scale as $\omega^2/N_H$.
+
+The sum in equation~\eqref{eq:nn_expectation} is over $N_H$ identically and independently distributed random variables. As the transfer function is bounded, all moments of the distribution will be bounded and hence the central limit theorem can be applied, showing that the stochastic process will converge to a Gaussian process in the limit as $N_H \to \infty$.
+
+By evaluating $E_u[h(x; u) h(x'; u)]$ the covariance function of the neural network can be obtained. For example if the error function $h(z) = \text{erf}(z) = \frac{2}{\sqrt{\pi}} \int_0^z e^{-t^2} dt$ is chosen as the transfer function, let $h(x; u) = \text{erf}(u_0 + \sum_{j=1}^D u_j x_j)$ and choose $u \sim \mathcal{N}(0, \Sigma)$ then the result is obtained \cite{williams1998}
+\begin{equation}
+\label{eq:nn_covariance}
+k_{\text{NN}}(x, x') = \frac{2}{\pi} \sin^{-1}\left(\frac{2\tilde{x}^T \Sigma \tilde{x}'}{\sqrt{(1 + 2\tilde{x}^T \Sigma \tilde{x})(1 + 2\tilde{x}'^T \Sigma \tilde{x}')}}\right),
+\end{equation}
+where $\tilde{x} = (1, x_1, \ldots, x_d)^T$ is an augmented input vector. This is a true "neural network" covariance function. The "sigmoid" kernel $k(x, x') = \tanh(a + b x \cdot x')$ has sometimes been proposed, but in fact this kernel is never positive definite and is thus not a valid covariance function, see, e.g. Schölkopf and Smola \cite{scholkopf2002}. Figure~\ref{fig:nn_covariance} shows a plot of the neural network covariance function and samples from the prior. $\Sigma = \text{diag}(\sigma_0^2, \sigma^2)$ has been set. Samples from a GP with this covariance function can be viewed as superpositions of the functions $\text{erf}(u_0 + ux)$, where $\sigma_0^2$ controls the variance of $u_0$ (and thus the amount of offset of these functions from the origin), and $\sigma^2$ controls $u$ and thus the scaling on the $x$-axis. In Figure~\ref{fig:nn_covariance}(b) it is observed that the sample functions with larger $\sigma$ vary more quickly. Notice that the samples display the non-stationarity of the covariance function in that for large values of $+x$ or $-x$ they should tend to a constant value, consistent with the construction as a superposition of sigmoid functions.
+
+Another interesting construction is to set $h(x; u) = \exp(-|x - u|^2/2\sigma_g^2)$, where $\sigma_g$ sets the scale of this Gaussian basis function. With $u \sim \mathcal{N}(0, \sigma_u^2 I)$ the result is obtained
+\begin{equation}
+\label{eq:modulated_se}
+k_G(x, x') = \left(\frac{\sigma_e}{\sigma_u}\right)^d \exp\left(-\frac{x^T x}{2\sigma_m^2}\right) \exp\left(-\frac{|x - x'|^2}{2\sigma_s^2}\right) \exp\left(-\frac{x'^T x'}{2\sigma_m^2}\right),
+\end{equation}
+where $1/\sigma_e^2 = 2/\sigma_g^2 + 1/\sigma_u^2$, $\sigma_s^2 = 2\sigma_g^2 + \sigma_g^4/\sigma_u^2$ and $\sigma_m^2 = 2\sigma_u^2 + \sigma_g^2$. This is in general a non-stationary covariance function, but if $\sigma_u^2 \to \infty$ (while scaling $\omega^2$ appropriately) the squared exponential $k_G(x, x') \propto \exp(-|x - x'|^2/4\sigma_g^2)$ is recovered. For a finite value of $\sigma_u^2$, $k_G(x, x')$ comprises a squared exponential covariance function modulated by the Gaussian decay envelope function $\exp(-x^T x/2\sigma_m^2) \exp(-x'^T x'/2\sigma_m^2)$, cf. the vertical rescaling construction described in section~\ref{sec:new_kernels}.
+
+One way to introduce non-stationarity is to introduce an arbitrary non-linear mapping (or warping) $u(x)$ of the input $x$ and then use a stationary covariance function in $u$-space. Note that $x$ and $u$ need not have the same dimensionality as each other. This approach was used by Sampson and Guttorp \cite{sampson1992} to model patterns of solar radiation in southwestern British Columbia using Gaussian processes.
+
+Another interesting example of this warping construction is given in MacKay \cite{mackay1998} where the one-dimensional input variable $x$ is mapped to the two-dimensional $u(x) = (\cos(x), \sin(x))$ to give rise to a periodic random function of $x$. If the squared exponential kernel is used in $u$-space, then
+\begin{equation}
+\label{eq:periodic_kernel}
+k(x, x') = \exp\left(-\frac{2\sin^2\left(\frac{x-x'}{2}\right)}{\ell^2}\right),
+\end{equation}
+as $(\cos(x) - \cos(x'))^2 + (\sin(x) - \sin(x'))^2 = 4\sin^2\left(\frac{x-x'}{2}\right)$.
+
+It has been described above how to make an anisotropic covariance function by scaling different dimensions differently. However, these length-scales $\ell_d$ cannot be made to be functions of $x$, as this will not in general produce a valid covariance function. Gibbs \cite{gibbs1997} derived the covariance function
+\begin{equation}
+\label{eq:gibbs_kernel}
+k(x, x') = \prod_{d=1}^D \left(\frac{2\ell_d(x)\ell_d(x')}{\ell_d^2(x) + \ell_d^2(x')}\right)^{1/2} \exp\left(-\sum_{d=1}^D \frac{(x_d - x'_d)^2}{\ell_d^2(x) + \ell_d^2(x')}\right),
+\end{equation}
+where each $\ell_i(x)$ is an arbitrary positive function of $x$. Note that $k(x, x) = 1$ for all $x$. This covariance function is obtained by considering a grid of $N$ Gaussian basis functions with centres $c_j$ and a corresponding length-scale on input dimension $d$ which varies as a positive function $\ell_d(c_j)$. Taking the limit as $N \to \infty$ the sum turns into an integral and after some algebra equation~\eqref{eq:gibbs_kernel} is obtained.
+
+An example of a variable length-scale function and samples from the prior corresponding to equation~\eqref{eq:gibbs_kernel} are shown in Figure~\ref{fig:gibbs_samples}. Notice that as the length-scale gets shorter the sample functions vary more rapidly as would be expected. The large length-scale regions on either side of the short length-scale region can be quite strongly correlated. If one tries the converse experiment by creating a length-scale function $\ell(x)$ which has a longer length-scale region between two shorter ones then the behaviour may not be quite what is expected; on initially transitioning into the long length-scale region the covariance drops off quite sharply due to the prefactor in equation~\eqref{eq:gibbs_kernel}, before stabilizing to a slower variation. See Gibbs \cite{gibbs1997} for further details. Exercises~\ref{ex:gibbs_derive} and~\ref{ex:gibbs_compute} invite investigation of this further.
+
+Paciorek and Schervish \cite{paciorek2004} have generalized Gibbs' construction to obtain non-stationary versions of arbitrary isotropic covariance functions. Let $k_S$ be a covariance function that is stationary, isotropic and valid in every Euclidean space $\mathbb{R}^D$ for $D = 1, 2, \ldots$. Let $\Sigma(x)$ be a $D \times D$ matrix-valued function which is positive definite for all $x$, and let $\Sigma_i \triangleq \Sigma(x_i)$. (The set of Gibbs' $\ell_i(x)$ functions define a diagonal $\Sigma(x)$.) Then the quadratic form is defined
+\begin{equation}
+\label{eq:paciorek_quadratic}
+Q_{ij} = (x_i - x_j)^T \left(\frac{\Sigma_i + \Sigma_j}{2}\right)^{-1} (x_i - x_j).
+\end{equation}
+Paciorek and Schervish \cite{paciorek2004} show that
+\begin{equation}
+\label{eq:paciorek_kernel}
+k_{NS}(x_i, x_j) = 2^{D/2} |\Sigma_i|^{1/4} |\Sigma_j|^{1/4} |\Sigma_i + \Sigma_j|^{-1/2} k_S(\sqrt{Q_{ij}}),
+\end{equation}
+is a valid non-stationary covariance function.
+
+In chapter~\ref{ch:regression} the linear regression model in feature space $f(x) = \phi(x)^T w$ was described. O'Hagan \cite{ohagan1978} suggested making $w$ a function of $x$ to allow for different values of $w$ to be appropriate in different regions. Thus he put a Gaussian process prior on $w$ of the form $\text{cov}(w(x), w(x')) = W_0 k_w(x, x')$ for some positive definite matrix $W_0$, giving rise to a prior on $f(x)$ with covariance $k_f(x, x') = \phi(x)^T W_0 \phi(x') k_w(x, x')$.
+
+Finally it is noted that the Wiener process with covariance function $k(x, x') = \min(x, x')$ is a fundamental non-stationary process. See section B.2.1 and texts such as Grimmett and Stirzaker \cite{grimmett1992} for further details.
+
+\subsection{Making New Kernels from Old}
+\label{sec:new_kernels}
+
+In the previous sections many covariance functions have been developed some of which are summarized in Table~\ref{tab:covariance_summary}. In this section it is shown how to combine or modify existing covariance functions to make new ones.
+
+The sum of two kernels is a kernel. \textbf{Proof:} consider the random process $f(x) = f_1(x) + f_2(x)$, where $f_1(x)$ and $f_2(x)$ are independent. Then $k(x, x') = k_1(x, x') + k_2(x, x')$. This construction can be used e.g. to add together kernels with different characteristic length-scales.
+
+The product of two kernels is a kernel. \textbf{Proof:} consider the random process $f(x) = f_1(x) f_2(x)$, where $f_1(x)$ and $f_2(x)$ are independent. Then $k(x, x') = k_1(x, x') k_2(x, x')$.\footnote{If $f_1$ and $f_2$ are Gaussian processes then the product $f$ will not in general be a Gaussian process, but there exists a GP with this covariance function.} A simple extension of this argument means that $k^p(x, x')$ is a valid covariance function for $p \in \mathbb{N}$.
+
+Let $a(x)$ be a given deterministic function and consider $g(x) = a(x) f(x)$ where $f(x)$ is a random process. Then $\text{cov}(g(x), g(x')) = a(x) k(x, x') a(x')$. Such a construction can be used to normalize kernels by choosing $a(x) = k^{-1/2}(x, x)$ (assuming $k(x, x) > 0$ $\forall x$), so that
+\begin{equation}
+\label{eq:normalized_kernel}
+\tilde{k}(x, x') = \frac{k(x, x')}{\sqrt{k(x, x)} \sqrt{k(x', x')}}.
+\end{equation}
+This ensures that $\tilde{k}(x, x) = 1$ for all $x$.
+
+A new process can also be obtained by convolution (or blurring). Consider an arbitrary fixed kernel $h(x, z)$ and the map $g(x) = \int h(x, z) f(z) dz$. Then clearly $\text{cov}(g(x), g(x')) = \int h(x, z) k(z, z') h(x', z') dz dz'$.
+
+If $k(x_1, x'_1)$ and $k(x_2, x'_2)$ are covariance functions over different spaces $\mathcal{X}_1$ and $\mathcal{X}_2$, then the direct sum $k(x, x') = k_1(x_1, x'_1) + k_2(x_2, x'_2)$ and the tensor product $k(x, x') = k_1(x_1, x'_1) k_2(x_2, x'_2)$ are also covariance functions (defined on the product space $\mathcal{X}_1 \times \mathcal{X}_2$), by virtue of the sum and product constructions.
+
+The direct sum construction can be further generalized. Consider a function $f(x)$, where $x$ is $D$-dimensional. An additive model \cite{hastie1990} has the form $f(x) = c + \sum_{i=1}^D f_i(x_i)$, i.e. a linear combination of functions of one variable. If the individual $f_i$'s are taken to be independent stochastic processes, then the covariance function of $f$ will have the form of a direct sum. If interactions of two variables are now admitted, so that $f(x) = c + \sum_{i=1}^D f_i(x_i) + \sum_{i,j, j<i} f_{ij}(x_i, x_j)$ and the various $f_i$'s and $f_{ij}$'s are independent stochastic processes, then the covariance function will have the form $k(x, x') = \sum_{i=1}^D k_i(x_i, x'_i) + \sum_{i=2}^D \sum_{j=1}^{i-1} k_{ij}(x_i, x_j; x'_i, x'_j)$. Indeed this process can be extended further to provide a functional ANOVA\footnote{ANOVA stands for analysis of variance, a statistical technique that analyzes the interactions between various attributes.} decomposition, ranging from a simple additive model up to full interaction of all $D$ input variables. (The sum can also be truncated at some stage.) Wahba \cite{wahba1990} and Stitson et al. \cite{stitson1999} suggest using tensor products for kernels with interactions so that in the example above $k_{ij}(x_i, x_j; x'_i, x'_j)$ would have the form $k_i(x_i; x'_i) k_j(x_j; x'_j)$. Note that if $D$ is large then the large number of pairwise (or higher-order) terms may be problematic; Plate \cite{plate1999} has investigated using a combination of additive GP models plus a general covariance function that permits full interactions.
+
+\begin{table}
+\caption{Summary of several commonly-used covariance functions. The covariances are written either as a function of $x$ and $x'$, or as a function of $r = |x - x'|$. Two columns marked 'S' and 'ND' indicate whether the covariance functions are stationary and nondegenerate respectively. Degenerate covariance functions have finite rank, see section~\ref{sec:eigenfunction} for more discussion of this issue.}
+\label{tab:covariance_summary}
+\begin{center}
+\begin{tabular}{lccc}
+\hline
+covariance function & expression & S & ND \\
+\hline
+constant & $\sigma_0^2$ & $\checkmark$ & \\
+linear & $\sum_{d=1}^D \sigma_d^2 x_d x'_d$ & & \\
+polynomial & $(x \cdot x' + \sigma_0^2)^p$ & & \\
+squared exponential & $\exp(-r^2/2\ell^2)$ & $\checkmark$ & $\checkmark$ \\
+Matérn & $\frac{1}{2^{\nu-1}\Gamma(\nu)} \left(\frac{\sqrt{2\nu}}{\ell}r\right)^\nu K_\nu\left(\frac{\sqrt{2\nu}}{\ell}r\right)$ & $\checkmark$ & $\checkmark$ \\
+exponential & $\exp(-r/\ell)$ & $\checkmark$ & $\checkmark$ \\
+$\gamma$-exponential & $\exp(-(r/\ell)^\gamma)$ & $\checkmark$ & $\checkmark$ \\
+rational quadratic & $(1 + r^2/(2\alpha\ell^2))^{-\alpha}$ & $\checkmark$ & $\checkmark$ \\
+neural network & $\sin^{-1}\left(\frac{2\tilde{x}^T\Sigma\tilde{x}'}{\sqrt{(1+2\tilde{x}^T\Sigma\tilde{x})(1+2\tilde{x}'^T\Sigma\tilde{x}')}}\right)$ & & $\checkmark$ \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\section{Eigenfunction Analysis of Kernels}
+\label{sec:eigenfunction}
+
+Eigenvalues and eigenfunctions are first defined and Mercer's theorem is discussed which allows the expression of the kernel (under certain conditions) in terms of these quantities. Section~\ref{sec:analytic_example} gives the analytical solution of the eigenproblem for the SE kernel under a Gaussian measure. Section
+~\ref{sec:numerical_eigen} discusses how to compute approximate eigenfunctions numerically for cases where the exact solution is not known.
+
+It turns out that Gaussian process regression can be viewed as Bayesian linear regression with a possibly infinite number of basis functions, as discussed in chapter~\ref{ch:regression}. One possible basis set is the eigenfunctions of the covariance function. A function $\phi(\cdot)$ that obeys the integral equation
+\begin{equation}
+\label{eq:eigenfunction_equation}
+\int k(x, x') \phi(x) d\mu(x) = \lambda \phi(x'),
+\end{equation}
+is called an eigenfunction of kernel $k$ with eigenvalue $\lambda$ with respect to measure\footnote{For further explanation of measure see Appendix A.7.} $\mu$. The two measures of particular interest are (i) Lebesgue measure over a compact subset $C$ of $\mathbb{R}^D$, or (ii) when there is a density $p(x)$ so that $d\mu(x)$ can be written $p(x)dx$.
+
+In general there are an infinite number of eigenfunctions, which are labeled $\phi_1(x), \phi_2(x), \ldots$ The ordering is assumed to be chosen such that $\lambda_1 \geq \lambda_2 \geq \ldots$. The eigenfunctions are orthogonal with respect to $\mu$ and can be chosen to be normalized so that $\int \phi_i(x) \phi_j(x) d\mu(x) = \delta_{ij}$ where $\delta_{ij}$ is the Kronecker delta.
+
+Mercer's theorem (see, e.g. König \cite{konig1986}) allows the expression of the kernel $k$ in terms of the eigenvalues and eigenfunctions.
+
+\begin{theorem}[Mercer's theorem]
+\label{thm:mercer}
+Let $(\mathcal{X}, \mu)$ be a finite measure space and $k \in L^\infty(\mathcal{X}^2, \mu^2)$ be a kernel such that $T_k : L^2(\mathcal{X}, \mu) \to L^2(\mathcal{X}, \mu)$ is positive definite (see equation~\eqref{eq:psd_kernel}). Let $\phi_i \in L^2(\mathcal{X}, \mu)$ be the normalized eigenfunctions of $T_k$ associated with the eigenvalues $\lambda_i > 0$. Then:
+\begin{enumerate}
+\item the eigenvalues $\{\lambda_i\}_{i=1}^\infty$ are absolutely summable
+\item 
+\begin{equation}
+\label{eq:mercer_expansion}
+k(x, x') = \sum_{i=1}^\infty \lambda_i \phi_i(x) \phi_i^*(x'),
+\end{equation}
+holds $\mu^2$ almost everywhere, where the series converges absolutely and uniformly $\mu^2$ almost everywhere.
+\end{enumerate}
+\end{theorem}
+
+This decomposition is just the infinite-dimensional analogue of the diagonalization of a Hermitian matrix. Note that the sum may terminate at some value $N \in \mathbb{N}$ (i.e. the eigenvalues beyond $N$ are zero), or the sum may be infinite.
+
+The following definition is given \cite{press1992}
+
+\begin{definition}
+\label{def:degenerate}
+A degenerate kernel has only a finite number of non-zero eigenvalues.
+\end{definition}
+
+A degenerate kernel is also said to have finite rank. If a kernel is not degenerate it is said to be nondegenerate. As an example a $N$-dimensional linear regression model in feature space (see equation~\eqref{eq:feature_regression}) gives rise to a degenerate kernel with at most $N$ non-zero eigenvalues. (Of course if the measure only puts weight on a finite number of points $n$ in $x$-space then the eigendecomposition is simply that of a $n \times n$ matrix, even if the kernel is nondegenerate.)
+
+The statement of Mercer's theorem above referred to a finite measure $\mu$. If this is replaced with Lebesgue measure and a stationary covariance function is considered, then directly from Bochner's theorem equation~\eqref{eq:bochner} the result is obtained
+\begin{equation}
+\label{eq:stationary_eigenfunction}
+k(x - x') = \int_{\mathbb{R}^D} e^{2\pi i s \cdot (x-x')} d\mu(s) = \int_{\mathbb{R}^D} e^{2\pi i s \cdot x} \left(e^{2\pi i s \cdot x'}\right)^* d\mu(s).
+\end{equation}
+The complex exponentials $e^{2\pi i s \cdot x}$ are the eigenfunctions of a stationary kernel w.r.t. Lebesgue measure. Note the similarity to equation~\eqref{eq:mercer_expansion} except that the summation has been replaced by an integral.
+
+The rate of decay of the eigenvalues gives important information about the smoothness of the kernel. For example Ritter et al. \cite{ritter1995} showed that in 1-d with $\mu$ uniform on $[0, 1]$, processes which are $r$-times mean-square differentiable have $\lambda_i \propto i^{-(2r+2)}$ asymptotically. This makes sense as "rougher" processes have more power at high frequencies, and so their eigenvalue spectrum decays more slowly. The same phenomenon can be read off from the power spectrum of the Matérn class as given in equation~\eqref{eq:matern_spectral}.
+
+Hawkins \cite{hawkins1989} gives the exact eigenvalue spectrum for the OU process on $[0, 1]$. Widom \cite{widom1963,widom1964} gives an asymptotic analysis of the eigenvalues of stationary kernels taking into account the effect of the density $d\mu(x) = p(x)dx$; Bach and Jordan \cite{bach2002} use these results to show the effect of varying $p(x)$ for the SE kernel. An exact eigenanalysis of the SE kernel under the Gaussian density is given in the next section.
+
+\subsection{An Analytic Example}
+\label{sec:analytic_example}
+
+For the case that $p(x)$ is a Gaussian and for the squared-exponential kernel $k(x, x') = \exp(-(x-x')^2/2\ell^2)$, there are analytic results for the eigenvalues and eigenfunctions, as given by Zhu et al. \cite{zhu1998}. Putting $p(x) = \mathcal{N}(x|0, \sigma^2)$ it is found that the eigenvalues $\lambda_k$ and eigenfunctions $\phi_k$ (for convenience let $k = 0, 1, \ldots$) are given by
+\begin{align}
+\label{eq:se_eigenvalues}
+\lambda_k &= \sqrt{\frac{2a}{A}} B^k, \\
+\phi_k(x) &= \exp\left(-(c-a)x^2\right) H_k\left(\sqrt{2c}x\right), \label{eq:se_eigenfunctions}
+\end{align}
+where $H_k(x) = (-1)^k \exp(x^2) \frac{d^k}{dx^k} \exp(-x^2)$ is the $k$th order Hermite polynomial (see Gradshteyn and Ryzhik \cite{gradshteyn1980}), $a^{-1} = 4\sigma^2$, $b^{-1} = 2\ell^2$ and
+\begin{align}
+\label{eq:se_eigen_constants}
+c &= \sqrt{a^2 + 2ab}, \\
+A &= a + b + c, \nonumber \\
+B &= b/A. \nonumber
+\end{align}
+Hints on the proof of this result are given in exercise~\ref{ex:se_eigenfunction_proof}. A plot of the first three eigenfunctions for $a = 1$ and $b = 3$ is shown in Figure~\ref{fig:se_eigenfunctions}.
+
+The result for the eigenvalues and eigenfunctions is readily generalized to the multivariate case when the kernel and Gaussian density are products of the univariate expressions, as the eigenfunctions and eigenvalues will simply be products too. For the case that $a$ and $b$ are equal on all $D$ dimensions, the degeneracy of the eigenvalue $\left(\frac{2a}{A}\right)^{D/2} B^k$ is $\binom{k+D-1}{D-1}$ which is $O(k^{D-1})$. As $\sum_{j=0}^k \binom{j+D-1}{D-1} = \binom{k+D}{D}$ it is seen that the $\binom{k+D}{D}$'th eigenvalue has a value given by $\left(\frac{2a}{A}\right)^{D/2} B^k$, and this can be used to determine the rate of decay of the spectrum.
+
+\subsection{Numerical Approximation of Eigenfunctions}
+\label{sec:numerical_eigen}
+
+The standard numerical method for approximating the eigenfunctions and eigenvalues of equation~\eqref{eq:eigenfunction_equation} is to use a numerical routine to approximate the integral (see, e.g. Baker \cite{baker1977}). For example letting $d\mu(x) = p(x)dx$ in equation~\eqref{eq:eigenfunction_equation} one could use the approximation
+\begin{equation}
+\label{eq:numerical_approximation}
+\lambda_i \phi_i(x') = \int k(x, x') p(x) \phi_i(x) dx \simeq \frac{1}{n} \sum_{l=1}^n k(x_l, x') \phi_i(x_l),
+\end{equation}
+where the $x_l$'s are sampled from $p(x)$. Plugging in $x' = x_l$ for $l = 1, \ldots, n$ into equation~\eqref{eq:numerical_approximation} the matrix eigenproblem is obtained
+\begin{equation}
+\label{eq:matrix_eigenproblem}
+K u_i = \lambda_i^{\text{mat}} u_i,
+\end{equation}
+where $K$ is the $n \times n$ Gram matrix with entries $K_{ij} = k(x_i, x_j)$, $\lambda_i^{\text{mat}}$ is the $i$th matrix eigenvalue and $u_i$ is the corresponding eigenvector (normalized so that $u_i^T u_i = 1$). The relationship $\phi_i(x_j) \sim \sqrt{n}(u_i)_j$ holds where the $\sqrt{n}$ factor arises from the differing normalizations of the eigenvector and eigenfunction. Thus $\frac{1}{n}\lambda_i^{\text{mat}}$ is an obvious estimator for $\lambda_i$ for $i = 1, \ldots, n$. For fixed $n$ it would be expected that the larger eigenvalues would be better estimated than the smaller ones. The theory of the numerical solution of eigenvalue problems shows that for a fixed $i$, $\frac{1}{n}\lambda_i^{\text{mat}}$ will converge to $\lambda_i$ in the limit that $n \to \infty$ \cite{baker1977}.
+
+It is also possible to study the convergence further; for example it is quite easy using the properties of principal components analysis (PCA) in feature space to show that for any $l$, $1 \leq l \leq n$, $E_n\left[\frac{1}{n}\sum_{i=1}^l \lambda_i^{\text{mat}}\right] \geq \sum_{i=1}^l \lambda_i$ and $E_n\left[\frac{1}{n}\sum_{i=l+1}^n \lambda_i^{\text{mat}}\right] \leq \sum_{i=l+1}^N \lambda_i$, where $E_n$ denotes expectation with respect to samples of size $n$ drawn from $p(x)$. For further details see Shawe-Taylor and Williams \cite{shawe2003}.
+
+The Nyström method for approximating the $i$th eigenfunction (see Baker \cite{baker1977} and Press et al. \cite{press1992}) is given by
+\begin{equation}
+\label{eq:nystrom}
+\phi_i(x') \simeq \frac{\sqrt{n}}{\lambda_i^{\text{mat}}} k(x')^T u_i,
+\end{equation}
+where $k(x')^T = (k(x_1, x'), \ldots, k(x_n, x'))$, which is obtained from equation~\eqref{eq:numerical_approximation} by dividing both sides by $\lambda_i$. Equation~\eqref{eq:nystrom} extends the approximation $\phi_i(x_j) \simeq \sqrt{n}(u_i)_j$ from the sample points $x_1, \ldots, x_n$ to all $x$.
+
+There is an interesting relationship between the kernel PCA method of Schölkopf et al. \cite{scholkopf1998} and the eigenfunction expansion discussed above. The eigenfunction expansion has (at least potentially) an infinite number of non-zero eigenvalues. In contrast, the kernel PCA algorithm operates on the $n \times n$ matrix $K$ and yields $n$ eigenvalues and eigenvectors. Equation~\eqref{eq:numerical_approximation} clarifies the relationship between the two. However, note that equation~\eqref{eq:nystrom} is identical (up to scaling factors) to Schölkopf et al. \cite{scholkopf1998} which describes the projection of a new point $x'$ onto the $i$th eigenvector in the kernel PCA feature space.
+
+\section{Kernels for Non-vectorial Inputs}
+\label{sec:nonvectorial}
+
+So far in this chapter it has been assumed that the input $x$ is a vector, measuring the values of a number of attributes (or features). However, for some learning problems the inputs are not vectors, but structured objects such as strings, trees or general graphs. For example, there may be a biological problem where the goal is to classify proteins (represented as strings of amino acid symbols).\footnote{Proteins are initially made up of 20 different amino acids, of which a few may later be modified bringing the total number up to 26 or 30.} Or the input may be parse-trees derived from a linguistic analysis. Or there may be a wish to represent chemical compounds as labelled graphs, with vertices denoting atoms and edges denoting bonds.
+
+To follow the discriminative approach some features need to be extracted from the input objects and a predictor built using these features. (For a classification problem, the alternative generative approach would construct class-conditional models over the objects themselves.) Below two approaches to this feature extraction problem and the efficient computation of kernels from them are described: in section~\ref{sec:string_kernels} string kernels are covered, and in section~\ref{sec:fisher_kernels} Fisher kernels are described. There exist other proposals for constructing kernels for strings, for example Watkins \cite{watkins2000} describes the use of pair hidden Markov models (HMMs that generate output symbols for two strings conditional on the hidden state) for this purpose.
+
+\subsection{String Kernels}
+\label{sec:string_kernels}
+
+Some notation for strings is first defined. Let $\mathcal{A}$ be a finite alphabet of characters. The concatenation of strings $x$ and $y$ is written $xy$ and $|x|$ denotes the length of string $x$. The string $s$ is a substring of $x$ if it can be written $x = usv$ for some (possibly empty) $u$, $s$ and $v$.
+
+Let $\phi_s(x)$ denote the number of times that substring $s$ appears in string $x$. Then the kernel between two strings $x$ and $x'$ is defined as
+\begin{equation}
+\label{eq:string_kernel}
+k(x, x') = \sum_{s \in \mathcal{A}^*} w_s \phi_s(x) \phi_s(x'),
+\end{equation}
+where $w_s$ is a non-negative weight for substring $s$. For example, $w_s = \lambda^{|s|}$ could be set, where $0 < \lambda < 1$, so that shorter substrings get more weight than longer ones.
+
+A number of interesting special cases are contained in the definition~\eqref{eq:string_kernel}:
+\begin{itemize}
+\item Setting $w_s = 0$ for $|s| > 1$ gives the bag-of-characters kernel. This takes the feature vector for a string $x$ to be the number of times that each character in $\mathcal{A}$ appears in $x$.
+\item In text analysis there may be a wish to consider the frequencies of word occurrence. If $s$ is required to be bordered by whitespace then a "bag-of-words" representation is obtained. Although this is a very simple model of text (which ignores word order) it can be surprisingly effective for document classification and retrieval tasks, see e.g. Hand et al. \cite{hand2001}. The weights can be set differently for different words, e.g. using the "term frequency inverse document frequency" (TF-IDF) weighting scheme developed in the information retrieval area \cite{salton1988}.
+\item If only substrings of length $k$ are considered, then the $k$-spectrum kernel \cite{leslie2003} is obtained.
+\end{itemize}
+
+Importantly, there are efficient methods using suffix trees that can compute a string kernel $k(x, x')$ in time linear in $|x| + |x'|$ (with some restrictions on the weights $\{w_s\}$) \cite{leslie2003,vishwanathan2003}.
+
+Work on string kernels was started by Watkins \cite{watkins1999} and Haussler \cite{haussler1999}. There are many further developments of the methods described above; for example Lodhi et al. \cite{lodhi2001} go beyond substrings to consider subsequences of $x$ which are not necessarily contiguous, and Leslie et al. \cite{leslie2003} describe mismatch string kernels which allow substrings $s$ and $s'$ of $x$ and $x'$ respectively to match if there are at most $m$ mismatches between them. Further developments in this area are expected, tailoring (or engineering) the string kernels to have properties that make sense in a particular domain.
+
+The idea of string kernels, where matches of substrings are considered, can easily be extended to trees, e.g. by looking at matches of subtrees \cite{collins2002}.
+
+Leslie et al. \cite{leslie2003} have applied string kernels to the classification of protein domains into SCOP\footnote{Structural classification of proteins database, http://scop.mrc-lmb.cam.ac.uk/scop/.} superfamilies. The results obtained were significantly better than methods based on either PSI-BLAST\footnote{Position-Specific Iterative Basic Local Alignment Search Tool, see http://www.ncbi.nlm.nih.gov/Education/BLASTinfo/psi1.html.} searches or a generative hidden Markov model classifier. Similar results were obtained by Jaakkola et al. \cite{jaakkola2000} using a Fisher kernel (described in the next section). Saunders et al. \cite{saunders2003} have also described the use of string kernels on the problem of classifying natural language newswire stories from the Reuters-21578\footnote{http://www.daviddlewis.com/resources/testcollections/reuters21578/.} database into ten classes.
+
+\subsection{Fisher Kernels}
+\label{sec:fisher_kernels}
+
+As explained above, the problem is that the input $x$ is a structured object of arbitrary size e.g. a string, and features are wished to be extracted from it. The Fisher kernel (introduced by Jaakkola et al. \cite{jaakkola2000}) does this by taking a generative model $p(x|\theta)$, where $\theta$ is a vector of parameters, and computing the feature vector $\phi_\theta(x) = \nabla_\theta \log p(x|\theta)$. $\phi_\theta(x)$ is sometimes called the score vector.
+
+Take, for example, a Markov model for strings. Let $x_k$ be the $k$th symbol in string $x$. Then a Markov model gives $p(x|\theta) = p(x_1|\pi) \prod_{i=1}^{|x|-1} p(x_{i+1}|x_i, A)$, where $\theta = (\pi, A)$. Here $(\pi)_j$ gives the probability that $x_1$ will be the $j$th symbol in the alphabet $\mathcal{A}$, and $A$ is a $|\mathcal{A}| \times |\mathcal{A}|$ stochastic matrix, with $a_{jk}$ giving the probability that $p(x_{i+1} = k|x_i = j)$. Given such a model it is straightforward to compute the score vector for a given $x$.
+
+It is also possible to consider other generative models $p(x|\theta)$. For example a $k$th-order Markov model might be tried where $x_i$ is predicted by the preceding $k$ symbols. See Leslie et al. \cite{leslie2003} and Saunders et al. \cite{saunders2003} for an interesting discussion of the similarities of the features used in the $k$-spectrum kernel and the score vector derived from an order $k-1$ Markov model; see also exercise~\ref{ex:markov_fisher}. Another interesting choice is to use a hidden Markov model (HMM) as the generative model, as discussed by Jaakkola et al. \cite{jaakkola2000}. See also exercise~\ref{ex:gaussian_fisher} for a linear kernel derived from an isotropic Gaussian model for $x \in \mathbb{R}^D$.
+
+A kernel $k(x, x')$ is defined based on the score vectors for $x$ and $x'$. One simple choice is to set
+\begin{equation}
+\label{eq:basic_fisher_kernel}
+k(x, x') = \phi_\theta(x)^T M^{-1} \phi_\theta(x'),
+\end{equation}
+where $M$ is a strictly positive definite matrix. Alternatively the squared exponential kernel $k(x, x') = \exp(-\alpha|\phi_\theta(x) - \phi_\theta(x')|^2)$ might be used for some $\alpha > 0$.
+
+The structure of $p(x|\theta)$ as $\theta$ varies has been studied extensively in information geometry (see, e.g. Amari \cite{amari1985}). It can be shown that the manifold of $\log p(x|\theta)$ is Riemannian with a metric tensor which is the inverse of the Fisher information matrix $F$, where
+\begin{equation}
+\label{eq:fisher_information}
+F = E_x[\phi_\theta(x) \phi_\theta(x)^T].
+\end{equation}
+Setting $M = F$ in equation~\eqref{eq:basic_fisher_kernel} gives the Fisher kernel. If $F$ is difficult to compute then one might resort to setting $M = I$. The advantage of using the Fisher information matrix is that it makes arc length on the manifold invariant to reparameterizations of $\theta$.
+
+The Fisher kernel uses a class-independent model $p(x|\theta)$. Tsuda et al. \cite{tsuda2002} have developed the tangent of posterior odds (TOP) kernel based on $\nabla_\theta(\log p(y = +1|x, \theta) - \log p(y = -1|x, \theta))$, which makes use of class-conditional distributions for the $C^+$ and $C^-$ classes.
+
+\section{Exercises}
+\label{sec:exercises}
+
+\begin{enumerate}
+\item The OU process with covariance function $k(x - x') = \exp(-|x - x'|/\ell)$ is the unique stationary first-order Markovian Gaussian process (see Appendix B for further details). Consider training inputs $x_1 < x_2 \ldots < x_{n-1} < x_n$ on $\mathbb{R}$ with corresponding function values $f = (f(x_1), \ldots, f(x_n))^T$. Let $x_l$ denote the nearest training input to the left of a test point $x_*$, and similarly let $x_u$ denote the nearest training input to the right of $x_*$. Then the Markovian property means that $p(f(x_*)|f) = p(f(x_*)|f(x_l), f(x_u))$. Demonstrate this by choosing some $x$-points on the line and computing the predictive distribution $p(f(x_*)|f)$ using equation~\eqref{eq:gp_posterior}, and observing that non-zero contributions only arise from $x_l$ and $x_u$. Note that this only occurs in the noise-free case; if the training points are allowed to be corrupted by noise (equations~\eqref{eq:noisy_posterior} and~\eqref{eq:noisy_variance}) then all points will contribute in general.
+
+\item Computer exercise: write code to draw samples from the neural network covariance function, equation~\eqref{eq:nn_covariance} in 1-d and 2-d. Consider the cases when $\text{var}(u_0)$ is either 0 or non-zero. Explain the form of the plots obtained when $\text{var}(u_0) = 0$.
+
+\item Consider the random process $f(x) = \text{erf}(u_0 + \sum_{i=1}^D u_j x_j)$, where $u \sim \mathcal{N}(0, \Sigma)$. Show that this non-linear transform of a process with an inhomogeneous linear covariance function has the same covariance function as the erf neural network. However, note that this process is not a Gaussian process. Draw samples from the given process and compare them to the results from exercise~\ref{ex:nn_samples}.
+
+\item \label{ex:gibbs_derive} Derive Gibbs' non-stationary covariance function, equation~\eqref{eq:gibbs_kernel}.
+
+\item \label{ex:gibbs_compute} Computer exercise: write code to draw samples from Gibbs' non-stationary covariance function equation~\eqref{eq:gibbs_kernel} in 1-d and 2-d. Investigate various forms of length-scale function $\ell(x)$.
+
+\item Show that the SE process is infinitely MS differentiable and that the OU process is not MS differentiable.
+
+\item Prove that the eigenfunctions of a symmetric kernel are orthogonal w.r.t. the measure $\mu$.
+
+\item Let $\tilde{k}(x, x') = p^{1/2}(x) k(x, x') p^{1/2}(x')$, and assume $p(x) > 0$ for all $x$. Show that the eigenproblem $\int \tilde{k}(x, x') \tilde{\phi}_i(x) dx = \tilde{\lambda}_i \tilde{\phi}_i(x')$ has the same eigenvalues as $\int k(x, x') p(x) \phi_i(x) dx = \lambda_i \phi_i(x')$, and that the eigenfunctions are related by $\tilde{\phi}_i(x) = p^{1/2}(x) \phi_i(x)$. Also give the matrix version of this problem (Hint: introduce a diagonal matrix $P$ to take the rôle of $p(x)$). The significance of this connection is that it can be easier to find eigenvalues of symmetric matrices than general matrices.
+
+\item \label{ex:se_eigenfunction_proof} Apply the construction in the previous exercise to the eigenproblem for the SE kernel and Gaussian density given in section~\ref{sec:analytic_example}, with $p(x) = \sqrt{2a/\pi} \exp(-2ax^2)$. Thus consider the modified kernel given by $\tilde{k}(x, x') = \exp(-ax^2) \exp(-b(x-x')^2) \exp(-a(x')^2)$. Using equation 7.374.8 in Gradshteyn and Ryzhik \cite{gradshteyn1980}:
+\begin{equation}
+\label{eq:hermite_integral}
+\int_{-\infty}^\infty \exp(-(x-y)^2) H_n(\alpha x) dx = \sqrt{\pi}(1-\alpha^2)^{n/2} H_n\left(\frac{\alpha y}{(1-\alpha^2)^{1/2}}\right),
+\end{equation}
+verify that $\tilde{\phi}_k(x) = \exp(-cx^2) H_k(\sqrt{2c}x)$, and thus confirm equations~\eqref{eq:se_eigenvalues} and~\eqref{eq:se_eigenfunctions}.
+
+\item Computer exercise: The analytic form of the eigenvalues and eigenfunctions for the SE kernel and Gaussian density are given in section~\ref{sec:analytic_example}. Compare these exact results to those obtained by the Nyström approximation for various values of $n$ and choice of samples.
+
+\item \label{ex:gaussian_fisher} Let $x \sim \mathcal{N}(\mu, \sigma^2 I)$. Consider the Fisher kernel derived from this model with respect to variation of $\mu$ (i.e. regard $\sigma^2$ as a constant). Show that:
+\begin{equation}
+\label{eq:gaussian_fisher_score}
+\frac{\partial \log p(x|\mu)}{\partial \mu}\bigg|_{\mu=0} = \frac{x}{\sigma^2}
+\end{equation}
+and that $F = \sigma^{-2} I$. Thus the Fisher kernel for this model with $\mu = 0$ is the linear kernel $k(x, x') = \frac{1}{\sigma^2} x \cdot x'$.
+
+\item \label{ex:markov_fisher} Consider a $k-1$ order Markov model for strings on a finite alphabet. Let this model have parameters $\theta_{t|s_1,\ldots,s_{k-1}}$ denoting the probability $p(x_i = t|x_{i-1} = s_1, \ldots, x_{i-k+1} = s_{k-1})$. Of course as these are probabilities they obey the constraint that $\sum_{t'} \theta_{t'|s_1,\ldots,s_{k-1}} = 1$. Enforcing this constraint can be achieved automatically by setting
+\begin{equation}
+\label{eq:markov_normalization}
+\theta_{t|s_1,\ldots,s_{k-1}} = \frac{\theta_{t,s_1,\ldots,s_{k-1}}}{\sum_{t'} \theta_{t',s_1,\ldots,s_{k-1}}},
+\end{equation}
+where the $\theta_{t,s_1,\ldots,s_{k-1}}$ parameters are now independent, as suggested in Jaakkola et al. \cite{jaakkola2000}. The current parameter values are denoted $\theta^0$. Let the current values of $\theta^0_{t,s_1,\ldots,s_{k-1}}$ be set so that $\sum_{t'} \theta^0_{t',s_1,\ldots,s_{k-1}} = 1$, i.e. that $\theta^0_{t,s_1,\ldots,s_{k-1}} = \theta^0_{t|s_1,\ldots,s_{k-1}}$. Show that $\log p(x|\theta) = \sum n_{t,s_1,\ldots,s_{k-1}} \log \theta_{t|s_1,\ldots,s_{k-1}}$ where $n_{t,s_1,\ldots,s_{k-1}}$ is the number of instances of the substring $s_{k-1} \ldots s_1 t$ in $x$. Thus, following Leslie et al. \cite{leslie2003}, show that
+\begin{equation}
+\label{eq:markov_fisher_score}
+\frac{\partial \log p(x|\theta)}{\partial \theta_{t,s_1,\ldots,s_{k-1}}}\bigg|_{\theta=\theta^0} = \frac{n_{t,s_1,\ldots,s_{k-1}}}{\theta^0_{t|s_1,\ldots,s_{k-1}}} - n_{s_1,\ldots,s_{k-1}},
+\end{equation}
+where $n_{s_1,\ldots,s_{k-1}}$ is the number of instances of the substring $s_{k-1} \ldots s_1$ in $x$. As $n_{s_1,\ldots,s_{k-1}} \theta^0_{t|s_1,\ldots,s_{k-1}}$ is the expected number of occurrences of the string $s_{k-1} \ldots s_1 t$ given the count $n_{s_1,\ldots,s_{k-1}}$, the Fisher score captures the degree to which this string is over- or under-represented relative to the model. For the $k$-spectrum kernel the relevant feature is $\phi_{s_{k-1},\ldots,s_1,t}(x) = n_{t,s_1,\ldots,s_{k-1}}$.
+\end{enumerate}
+
+\begin{thebibliography}{99}
+\bibitem{abrahamsen1997} P. Abrahamsen. A review of Gaussian random fields and correlation functions. Technical Report 917, Norwegian Computing Center, Oslo, 1997.
+
+\bibitem{abramowitz1965} M. Abramowitz and I. A. Stegun. Handbook of Mathematical Functions. Dover, New York, 1965.
+
+\bibitem{adler1981} R. J. Adler. The Geometry of Random Fields. John Wiley \& Sons, New York, 1981.
+
+\bibitem{amari1985} S. Amari. Differential-Geometrical Methods in Statistics, volume 28 of Lecture Notes in Statistics. Springer-Verlag, New York, 1985.
+
+\bibitem{bach2002} F. R. Bach and M. I. Jordan. Kernel independent component analysis. Journal of Machine Learning Research, 3:1--48, 2002.
+
+\bibitem{baker1977} C. T. H. Baker. The Numerical Treatment of Integral Equations. Oxford University Press, Oxford, 1977.
+
+\bibitem{blake1973} I. F. Blake and W. C. Lindsey. Level-crossing problems for random processes. IEEE Transactions on Information Theory, 19(3):295--315, 1973.
+
+\bibitem{bracewell1986} R. N. Bracewell. The Fourier Transform and its Applications. McGraw-Hill, second edition, 1986.
+
+\bibitem{chatfield1989} C. Chatfield. The Analysis of Time Series: An Introduction. Chapman and Hall, London, fourth edition, 1989.
+
+\bibitem{collins2002} M. Collins and N. Duffy. New ranking algorithms for parsing and tagging: Kernels over discrete structures, and the voted perceptron. In Proceedings of the 40th Annual Meeting of the Association for Computational Linguistics, pages 263--270, 2002.
+
+\bibitem{cornford2002} D. Cornford, I. T. Nabney, and C. K. I. Williams. Adding constrained discontinuities to Gaussian process models of wind fields. In T. G. Dietterich, S. Becker, and Z. Ghahramani, editors, Advances in Neural Information Processing Systems 14, pages 861--867. MIT Press, Cambridge, MA, 2002.
+
+\bibitem{gibbs1997} M. N. Gibbs. Bayesian Gaussian Processes for Regression and Classification. PhD thesis, University of Cambridge, 1997.
+
+\bibitem{gihman1974} I. I. Gihman and A. V. Skorohod. The Theory of Stochastic Processes I. Springer-Verlag, New York, 1974.
+
+\bibitem{gradshteyn1980} I. S. Gradshteyn and I. M. Ryzhik. Table of Integrals, Series, and Products. Academic Press, New York, 1980.
+
+\bibitem{grimmett1992} G. R. Grimmett and D. R. Stirzaker. Probability and Random Processes. Oxford University Press, Oxford, second edition, 1992.
+
+\bibitem{hand2001} D. Hand, H. Mannila, and P. Smyth. Principles of Data Mining. MIT Press, Cambridge, MA, 2001.
+
+\bibitem{hastie1990} T. J. Hastie and R. J. Tibshirani. Generalized Additive Models. Chapman and Hall, London, 1990.
+
+\bibitem{haussler1999} D. Haussler. Convolution kernels on discrete structures. Technical Report UCSC-CRL-99-10, University of California at Santa Cruz, 1999.
+
+\bibitem{hawkins1989} D. M. Hawkins. Using U statistics to derive the asymptotic distribution of Fisher's Z statistic. The American Statistician, 43(4):235--237, 1989.
+
+\bibitem{hornik1993} K. Hornik. Some new results on neural network approximation. Neural Networks, 6:1069--1072, 1993.
+
+\bibitem{jaakkola2000} T. Jaakkola, M. Diekhans, and D. Haussler. A discriminative framework for detecting remote protein homologies. Journal of Computational Biology, 7(1/2):95--114, 2000.
+
+\bibitem{konig1986} H. König. Eigenvalue Distribution of Compact Operators. Birkhäuser Verlag, Basel, 1986.
+
+\bibitem{leslie2003} C. Leslie, E. Eskin, A. Cohen, J. Weston, and W. S. Noble. Mismatch string kernels for discriminative protein classification. Bioinformatics, 20(4):467--476, 2004.
+
+\bibitem{lodhi2001} H. Lodhi, C. Saunders, J. Shawe-Taylor, N. Cristianini, and C. Watkins. Text classification using string kernels. Journal of Machine Learning Research, 2:419--444, 2002.
+
+\bibitem{mackay1998} D. J. C. MacKay. Introduction to Gaussian processes. In C. M. Bishop, editor, Neural Networks and Machine Learning, pages 133--165. Springer-Verlag, Berlin, 1998.
+
+\bibitem{matern1960} B. Matérn. Spatial Variation. Meddelanden från Statens Skogsforskningsinstitut, volume 49, number 5. Springer-Verlag, New York, second edition, 1986. [First edition published in 1960 by Statens Skogsforskningsinstitut].
+
+\bibitem{neal1996} R. M. Neal. Bayesian Learning for Neural Networks. Springer-Verlag, New York, 1996.
+
+\bibitem{ohagan1978} A. O'Hagan. Curve fitting and optimal design for prediction. Journal of the Royal Statistical Society B, 40:1--42, 1978.
+
+\bibitem{paciorek2004} C. J. Paciorek and M. J. Schervish. Nonstationary covariance functions for Gaussian process regression. In S. Thrun, L. K. Saul, and B. Schölkopf, editors, Advances in Neural Information Processing Systems 16. MIT Press, Cambridge, MA, 2004.
+
+\bibitem{papoulis1991} A. Papoulis. Probability, Random Variables, and Stochastic Processes. McGraw-Hill, New York, third edition, 1991.
+
+\bibitem{plate1999} T. A. Plate. Accuracy versus interpretability in flexible modeling: Implementing a tradeoff using Gaussian process models. Behaviormetrika, 26(1):29--50, 1999.
+
+\bibitem{poggio1990} T. Poggio and F. Girosi. Networks for approximation and learning. Proceedings of the IEEE, 78(9):1481--1497, 1990.
+
+\bibitem{press1992} W. H. Press, S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery. Numerical Recipes in C: The Art of Scientific Computing. Cambridge University Press, Cambridge, second edition, 1992.
+
+\bibitem{ritter1995} K. Ritter, G. W. Wasilkowski, and H. Woźniakowski. Multivariate integration and approximation for random fields satisfying Sacks-Ylvisaker conditions. The Annals of Applied Probability, 5(2):518--540, 1995.
+
+\bibitem{salton1988} G. Salton and C. Buckley. Term-weighting approaches in automatic text retrieval. Information Processing and Management, 24(5):513--523, 1988.
+
+\bibitem{sampson1992} P. D. Sampson and P. Guttorp. Nonparametric estimation of nonstationary spatial covariance structure. Journal of the American Statistical Association, 87(417):108--119, 1992.
+
+\bibitem{saunders2003} C. Saunders, H. Tschach, and J. Shawe-Taylor. Syllables and other string kernel extensions. In Proceedings of the Nineteenth International Conference on Machine Learning, pages 530--537. Morgan Kaufmann, 2002.
+
+\bibitem{schoenberg1938} I. J. Schoenberg. Metric spaces and completely monotone functions. Annals of Mathematics, 39(4):811--841, 1938.
+
+\bibitem{scholkopf1998} B. Schölkopf, A. Smola, and K.-R. Müller. Nonlinear component analysis as a kernel eigenvalue problem. Neural Computation, 10(5):1299--1319, 1998.
+
+\bibitem{scholkopf2002} B. Schölkopf and A. J. Smola. Learning with Kernels. MIT Press, Cambridge, MA, 2002.
+
+\bibitem{shawe2003} J. Shawe-Taylor and C. K. I. Williams. The stability of kernel principal components analysis and its relation to the process eigenspectrum. In S. Becker, S. Thrun, and K. Obermayer, editors, Advances in Neural Information Processing Systems 15, pages 383--390. MIT Press, Cambridge, MA, 2003.
+
+\bibitem{stein1999} M. L. Stein. Interpolation of Spatial Data: Some Theory for Kriging. Springer-Verlag, New York, 1999.
+
+\bibitem{stitson1999} M. O. Stitson, J. A. E. Weston, A. Gammerman, V. Vovk, and V. Vapnik. Theory of support vector machines. Technical Report CSD-TR-96-17, Department of Computer Science, Royal Holloway, University of London, Egham, UK, 1996.
+
+\bibitem{tsuda2002} K. Tsuda, M. Kawanabe, G. Rätsch, S. Sonnenburg, and K.-R. Müller. A new discriminative kernel from probabilistic models. Neural Computation, 14(10):2397--2414, 2002.
+
+\bibitem{uhlenbeck1930} G. E. Uhlenbeck and L. S. Ornstein. On the theory of the Brownian motion. Physical Review, 36(5):823--841, 1930.
+
+\bibitem{vishwanathan2003} S. V. N. Vishwanathan and A. J. Smola. Fast kernels for string and tree matching. In S. Becker, S. Thrun, and K. Obermayer, editors, Advances in Neural Information Processing Systems 15, pages 585--592. MIT Press, Cambridge, MA, 2003.
+
+\bibitem{vivarelli1999} F. Vivarelli and C. K. I. Williams. Discovering hidden features with Gaussian processes regression. In M. S. Kearns, S. A. Solla, and D. A. Cohn, editors, Advances in Neural Information Processing Systems 11, pages 613--619. MIT Press, Cambridge, MA, 1999.
+
+\bibitem{wahba1990} G. Wahba. Spline Models for Observational Data. SIAM, Philadelphia, 1990.
+
+\bibitem{watkins1999} C. Watkins. Dynamic alignment kernels. In A. J. Smola, P. L. Bartlett, B. Schölkopf, and D. Schuurmans, editors, Advances in Large Margin Classifiers, pages 39--50. MIT Press, Cambridge, MA, 2000.
+
+\bibitem{watkins2000} C. Watkins. Dynamic alignment kernels. Technical Report CSD-TR-98-11, Department of Computer Science, Royal Holloway, University of London, 1999.
+
+\bibitem{wendland2005} H. Wendland. Scattered Data Approximation. Cambridge University Press, Cambridge, 2005.
+
+\bibitem{widom1963} H. Widom. Asymptotic behavior of the eigenvalues of certain integral equations. Transactions of the American Mathematical Society, 109(2):278--295, 1963.
+
+\bibitem{widom1964} H. Widom. Asymptotic behavior of the eigenvalues of certain integral equations II. Archive for Rational Mechanics and Analysis, 17(3):215--229, 1964.
+
+\bibitem{williams1998} C. K. I. Williams. Computation with infinite neural networks. Neural Computation, 10(5):1203--1216, 1998.
+
+\bibitem{yaglom1987} A. M. Yaglom. Correlation Theory of Stationary and Related Random Functions. Springer-Verlag, New York, 1987.
+
+\bibitem{zhu1998} H. Zhu, C. K. I. Williams, R. J. Rohwer, and M. Morciniec. Gaussian regression and optimal finite dimensional linear models. In C. M. Bishop, editor, Neural Networks and Machine Learning, pages 167--184. Springer-Verlag, Berlin, 1998.
+\end{thebibliography}
+
+\end{document}
+
