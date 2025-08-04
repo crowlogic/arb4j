@@ -35,7 +35,7 @@ public class RealFunctionExpressionCompilerTest extends
     assertEquals(0.151143929930069, y);
     
     Expression<Real, Real, RealFunction> parsedCSE = RealFunction.parse("tanh(log(1+x^2))/(1+x^2)");
-    parsedCSE.generate().optimize();
+    parsedCSE.optimize();
     var Fcse = parsedCSE.generate();
     var fcse = Fcse.instantiate();
     var ycse = fcse.eval(2.3);
