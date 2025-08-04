@@ -2017,7 +2017,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
     }
     var substring = expression.substring(startPos, position).trim();
-    return Parser.subscriptAndSuperscriptsToRegular(substring);
+    String name = Parser.subscriptAndSuperscriptsToRegular(substring);
+    if ( log.isDebugEnabled() )
+    {
+      log.debug("parseName returning '{}' from '{}'", name, expression );
+    }
+    return name;
   }
 
   /**

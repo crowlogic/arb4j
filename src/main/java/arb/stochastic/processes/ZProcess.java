@@ -5,6 +5,7 @@ import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.RealBivariateToComplexFunction;
 import arb.functions.RealToComplexFunction;
 import arb.functions.real.RealFunction;
@@ -19,12 +20,16 @@ import javafx.application.Platform;
  *      {@link TheArb4jLibrary}
  */
 
-public class RealZProcess implements
-                          RealOscillatoryProcess
+public class ZProcess implements
+                      RealOscillatoryProcess
 {
   public static void main(String args[])
   {
-    RealZProcess          Zprocess = new RealZProcess();
+    Expression.trace = true;
+    Expression.saveClasses = true;
+   
+                  
+    ZProcess              Zprocess = new ZProcess();
     RealToComplexFunction A        =
                             Zprocess.gainFunction()
                                     .evaluate(Real.named("λ").set(RealConstants.half), 128);
@@ -56,11 +61,11 @@ public class RealZProcess implements
                                                               context);
 
   final RealBivariateToComplexFunction A        =
-                                         RealBivariateToComplexFunction.express("A:exp(I*λ*(θ(t)-t))",
+                                         RealBivariateToComplexFunction.express("A:exp(I*λ*(θ(t)-t))*√(θ̇(t))",
                                                                                 context);
 
   final RealBivariateToComplexFunction ϕ        =
-                                         RealBivariateToComplexFunction.express("ϕ:exp(I*λ*θ(t))",
+                                         RealBivariateToComplexFunction.express("ϕ:exp(I*λ*θ(t))*√(θ̇(t))",
                                                                                 context);
 
   public final RealToComplexFunction   z        =

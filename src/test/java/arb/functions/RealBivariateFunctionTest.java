@@ -6,7 +6,7 @@ import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
-import arb.stochastic.processes.RealZProcess;
+import arb.stochastic.processes.ZProcess;
 import junit.framework.TestCase;
 
 /**
@@ -29,7 +29,7 @@ public class RealBivariateFunctionTest extends
 
   public void testEvalRealBivariateFunctionWithContextVariable()
   {
-    RealZProcess                   Zprocess        = new RealZProcess();
+    ZProcess                   Zprocess        = new ZProcess();
     RealBivariateToComplexFunction gain            = Zprocess.gainFunction();
 
     RealToComplexFunction          gainAtFrequency = gain.evaluate(Real.named("λ").one(), 128);

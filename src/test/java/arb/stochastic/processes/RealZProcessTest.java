@@ -16,7 +16,7 @@ public class RealZProcessTest extends
 {
   public static void testZProcess()
   {
-    RealZProcess Zprocess = new RealZProcess();
+    ZProcess Zprocess = new ZProcess();
     assertEquals("λ➔exp((ⅈ*λ)*((θ(t))-t))", Zprocess.gainFunction().toString());
     assertEquals("λ➔exp((ⅈ*λ)*(θ(t)))", Zprocess.oscillatoryFunction().toString());
   }
