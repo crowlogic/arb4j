@@ -3,178 +3,215 @@
 <style|<tuple|generic|framed-theorems>>
 
 <\body>
-  <doc-data|<doc-title|The Shift Group and Fourier Transform of Complex
-  Exponentials>|<doc-date|>>
+  <doc-data|<doc-title|Stone's Theorem, Shift Group, and Fourier Transform>>
 
-  <\definition>
-    [Shift Operator] For <math|t<rsub|0>\<in\>\<bbb-R\>>, the shift operator
-    <math|S<rsub|t<rsub|0>>> is defined by
+  <section*|Definitions>
 
-    <\equation*>
-      <around|(|S<rsub|t<rsub|0>>*f|)><around|(|t|)>=f*<around|(|t-t<rsub|0>|)>
-    </equation*>
+  <with|font-series|bold|Shift Group:> For
+  <math|f\<in\>L<rsup|2><around|(|\<bbb-R\>|)>>, define the family of unitary
+  operators <math|<around|(|S<rsub|t>|)><rsub|t\<in\>\<bbb-R\>>> by
 
-    for any function <math|f> in the appropriate function space.
-  </definition>
+  <\equation*>
+    <around|(|S<rsub|t>*f|)><around|(|x|)>=f*<around|(|x+t|)>.
+  </equation*>
 
-  <\definition>
-    [Fourier Transform] For <math|f\<in\>L<rsup|1><around|(|\<bbb-R\>|)>>,
-    the Fourier transform is defined by
+  <with|font-series|bold|Generator of Shift Group:> Define
+  <math|A=<frac|d|d*x>> on the domain
 
-    <\equation*>
-      <wide|f|^><around|(|\<omega\>|)>=\<cal-F\><around|[|f|]><around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|t|)>*e<rsup|-i*\<omega\>*t>*d*t
-    </equation*>
-  </definition>
+  <\equation*>
+    D<around|(|A|)>=<around|{|f\<in\>L<rsup|2><around|(|\<bbb-R\>|)><space|0.27em>:<space|0.27em>f<rprime|'>\<in\>L<rsup|2><around|(|\<bbb-R\>|)>|}>,
+  </equation*>
+
+  where <math|f<rprime|'>> is in the distributional sense.
+
+  <with|font-series|bold|Momentum Operator:> Define
+  <math|P=-i*A=-i*<frac|d|d*x>> on the same domain
+  <math|D<around|(|P|)>=D<around|(|A|)>>.
+
+  <with|font-series|bold|Fourier Transform:>
+
+  <\equation*>
+    \<cal-F\><around|[|f|]><around|(|\<omega\>|)>=<wide|f|^><around|(|\<omega\>|)>\<assign\><big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|x|)>*e<rsup|-i*\<omega\>*x>*d*x.
+  </equation*>
+
+  <section*|Theorems and Proofs>
 
   <\theorem>
-    [Complex Exponentials as Eigenfunctions of Shift Operators] Let
-    <math|\<omega\>\<in\>\<bbb-R\>> and consider the complex exponential
-    function <math|e<rsub|\<omega\>><around|(|t|)>=e<rsup|i*\<omega\>*t>>.
-    Then for any <math|t<rsub|0>\<in\>\<bbb-R\>>,
+    [Stone's Theorem Applied to Shift Group] The strongly continuous unitary
+    group <math|<around|(|S<rsub|t>|)>> on
+    <math|L<rsup|2><around|(|\<bbb-R\>|)>> has a densely defined skew-adjoint
+    generator <math|A=<frac|d|d*x>> such that <math|S<rsub|t>=e<rsup|t*A>>.
+    The generator satisfies
 
     <\equation*>
-      S<rsub|t<rsub|0>><around|[|e<rsub|\<omega\>>|]>=e<rsup|-i*\<omega\>*t<rsub|0>>\<cdot\>e<rsub|\<omega\>>
+      A*f=lim<rsub|h\<to\>0> <frac|S<rsub|h>*f-f|h>
     </equation*>
 
-    That is, <math|e<rsub|\<omega\>>> is an eigenfunction of
-    <math|S<rsub|t<rsub|0>>> with eigenvalue
-    <math|e<rsup|-i*\<omega\>*t<rsub|0>>>.
+    in the <math|L<rsup|2>> topology on the domain <math|D<around|(|A|)>>.
   </theorem>
 
   <\proof>
-    By definition of the shift operator:
+    Let <math|f\<in\>D<around|(|A|)>>. Then
+
+    <\equation*>
+      <frac|S<rsub|h>*f<around|(|x|)>-f<around|(|x|)>|h>=<frac|f*<around|(|x+h|)>-f<around|(|x|)>|h>\<to\>f<rprime|'><around|(|x|)>
+    </equation*>
+
+    as <math|h\<to\>0> in <math|L<rsup|2>> norm. Thus, the infinitesimal
+    generator of <math|S<rsub|t>> is <math|A=<frac|d|d*x>>.
+
+    To verify <math|A> is skew-adjoint, for <math|f,g\<in\>D<around|(|A|)>>:
 
     <\align>
-      <tformat|<table|<row|<cell|<around|(|S<rsub|t<rsub|0>>*e<rsub|\<omega\>>|)><around|(|t|)>>|<cell|=e<rsub|\<omega\>>*<around|(|t-t<rsub|0>|)><eq-number>>>|<row|<cell|>|<cell|=e<rsup|i*\<omega\>*<around|(|t-t<rsub|0>|)>><eq-number>>>|<row|<cell|>|<cell|=e<rsup|i*\<omega\>*t-i*\<omega\>*t<rsub|0>><eq-number>>>|<row|<cell|>|<cell|=e<rsup|-i*\<omega\>*t<rsub|0>>\<cdot\>e<rsup|i*\<omega\>*t><eq-number>>>|<row|<cell|>|<cell|=e<rsup|-i*\<omega\>*t<rsub|0>>\<cdot\>e<rsub|\<omega\>><around|(|t|)><eq-number>>>>>
+      <tformat|<table|<row|<cell|<around|\<langle\>|A*f,g|\<rangle\>>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<rprime|'><around|(|x|)><wide|g<around|(|x|)>|\<bar\>>d*x<eq-number>>>|<row|<cell|>|<cell|=f<around|(|x|)><wide|g<around|(|x|)>|\<bar\>><mid|\|><rsub|-\<infty\>><rsup|\<infty\>>-<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|x|)><wide|g<rprime|'><around|(|x|)>|\<bar\>>d*x<eq-number>>>|<row|<cell|>|<cell|=0-<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|x|)><wide|g<rprime|'><around|(|x|)>|\<bar\>>d*x<eq-number>>>|<row|<cell|>|<cell|=-<around|\<langle\>|f,A*g|\<rangle\>><eq-number>>>>>
     </align>
 
-    Therefore, <math|S<rsub|t<rsub|0>><around|[|e<rsub|\<omega\>>|]>=e<rsup|-i*\<omega\>*t<rsub|0>>\<cdot\>e<rsub|\<omega\>>>.
+    Therefore <math|A<rsup|\<ast\>>=-A>, confirming <math|A> is skew-adjoint.
   </proof>
 
   <\theorem>
-    [Time Shift Property of Fourier Transform] Let
-    <math|f\<in\>L<rsup|1><around|(|\<bbb-R\>|)>> and
-    <math|t<rsub|0>\<in\>\<bbb-R\>>. Then
+    [Relation Between Generators] The shift group is generated by both the
+    skew-adjoint operator <math|A=<frac|d|d*x>> and the self-adjoint momentum
+    operator <math|P=-i*A>:
 
     <\equation*>
-      \<cal-F\>*<around|[|S<rsub|t<rsub|0>>*f|]><around|(|\<omega\>|)>=e<rsup|-i*\<omega\>*t<rsub|0>>*<wide|f|^><around|(|\<omega\>|)>
+      S<rsub|t>=e<rsup|t*A>=e<rsup|-i*t*P>
     </equation*>
   </theorem>
 
   <\proof>
-    Let <math|g<around|(|t|)>=f*<around|(|t-t<rsub|0>|)>=<around|(|S<rsub|t<rsub|0>>*f|)><around|(|t|)>>.
-    Then:
+    Since <math|P=-i*A>, we have <math|-i*t*P=-i*t*<around|(|-i*A|)>=-i<rsup|2>*t*A=t*A>.
+    Therefore:
+
+    <\equation*>
+      e<rsup|-i*t*P>=e<rsup|t*A>
+    </equation*>
+
+    For <math|f\<in\>D<around|(|A|)>>, using the Taylor expansion:
+
+    <\equation*>
+      e<rsup|t*A>*f<around|(|x|)>=<big|sum><rsub|n=0><rsup|\<infty\>><frac|t<rsup|n>|n!>*A<rsup|n>*f<around|(|x|)>=<big|sum><rsub|n=0><rsup|\<infty\>><frac|t<rsup|n>|n!>*f<rsup|<around|(|n|)>><around|(|x|)>=f*<around|(|x+t|)>=S<rsub|t>*f<around|(|x|)>
+    </equation*>
+  </proof>
+
+  <\theorem>
+    [Complex Exponentials Are Eigenfunctions] For any
+    <math|\<omega\>\<in\>\<bbb-R\>>:
+
+    <\enumerate>
+      <item><math|A*e<rsup|i*\<omega\>*x>=i*\<omega\>*e<rsup|i*\<omega\>*x>>
+      (eigenvalue <math|i*\<omega\>> for skew-adjoint <math|A>)
+
+      <item><math|P*e<rsup|i*\<omega\>*x>=\<omega\>*e<rsup|i*\<omega\>*x>>
+      (eigenvalue <math|\<omega\>> for self-adjoint <math|P>)
+    </enumerate>
+  </theorem>
+
+  <\proof>
+    Direct calculations:
+
+    <\enumerate>
+      <item><math|A*e<rsup|i*\<omega\>*x>=<frac|d|d*x>*e<rsup|i*\<omega\>*x>=i*\<omega\>*e<rsup|i*\<omega\>*x>>
+
+      <item><math|P*e<rsup|i*\<omega\>*x>=-i*<frac|d|d*x>*e<rsup|i*\<omega\>*x>=-i*<around|(|i*\<omega\>|)>*e<rsup|i*\<omega\>*x>=\<omega\>*e<rsup|i*\<omega\>*x>>
+    </enumerate>
+  </proof>
+
+  <\theorem>
+    [Spectral Decomposition via Fourier Transform] Under the Fourier
+    transform <math|\<cal-F\>>:
+
+    <\enumerate>
+      <item>The self-adjoint momentum operator becomes multiplication by
+      <math|\<omega\>>: <math|\<cal-F\>*<around|[|P*f|]><around|(|\<omega\>|)>=\<omega\>*<wide|f|^><around|(|\<omega\>|)>>
+
+      <item>The shift group becomes multiplication by a phase:
+      <math|\<cal-F\>*<around|[|S<rsub|t>*f|]><around|(|\<omega\>|)>=e<rsup|i*\<omega\>*t>*<wide|f|^><around|(|\<omega\>|)>>
+    </enumerate>
+  </theorem>
+
+  <\proof>
+    For part 1, if <math|f\<in\>D<around|(|P|)>>:
 
     <\align>
-      <tformat|<table|<row|<cell|\<cal-F\><around|[|g|]><around|(|\<omega\>|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|t|)>*e<rsup|-i*\<omega\>*t>*d*t<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f*<around|(|t-t<rsub|0>|)>*e<rsup|-i*\<omega\>*t>*d*t<eq-number>>>>>
+      <tformat|<table|<row|<cell|\<cal-F\>*<around|[|P*f|]><around|(|\<omega\>|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|(|-i*f<rprime|'><around|(|x|)>|)>*e<rsup|-i*\<omega\>*x>*<space|0.17em>d*x<eq-number>>>|<row|<cell|>|<cell|=-i*<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<rprime|'><around|(|x|)>*e<rsup|-i*\<omega\>*x>*<space|0.17em>d*x<eq-number>>>>>
     </align>
 
-    Substituting <math|u=t-t<rsub|0>>, so <math|t=u+t<rsub|0>> and
-    <math|d*t=d*u>:
+    Integration by parts (boundary terms vanish):
 
     <\align>
-      <tformat|<table|<row|<cell|\<cal-F\><around|[|g|]><around|(|\<omega\>|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|u|)>*e<rsup|-i*\<omega\>*<around|(|u+t<rsub|0>|)>>*d*u<eq-number>>>|<row|<cell|>|<cell|=e<rsup|-i*\<omega\>*t<rsub|0>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|u|)>*e<rsup|-i*\<omega\>*u>*d*u<eq-number>>>|<row|<cell|>|<cell|=e<rsup|-i*\<omega\>*t<rsub|0>>*<wide|f|^><around|(|\<omega\>|)><eq-number>>>>>
+      <tformat|<table|<row|<cell|>|<cell|=-i*<around|[|0+i*\<omega\>*<wide|f|^><around|(|\<omega\>|)>|]>=\<omega\>*<wide|f|^><around|(|\<omega\>|)><eq-number>>>>>
+    </align>
+
+    For part 2:
+
+    <\align>
+      <tformat|<table|<row|<cell|\<cal-F\>*<around|[|S<rsub|t>*f|]><around|(|\<omega\>|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f*<around|(|x+t|)>*e<rsup|-i*\<omega\>*x>*d*x<eq-number>>>>>
+    </align>
+
+    Let <math|u=x+t>, so <math|x=u-t>, <math|d*x=d*u>:
+
+    <\align>
+      <tformat|<table|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|u|)>*e<rsup|-i*\<omega\>*<around|(|u-t|)>>*d*u<eq-number>>>|<row|<cell|>|<cell|=e<rsup|i*\<omega\>*t>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|u|)>*e<rsup|-i*\<omega\>*u>*d*u=e<rsup|i*\<omega\>*t>*<wide|f|^><around|(|\<omega\>|)><eq-number>>>>>
     </align>
   </proof>
 
   <\theorem>
-    [Frequency Shift Property of Fourier Transform] Let
-    <math|f\<in\>L<rsup|1><around|(|\<bbb-R\>|)>> and
-    <math|\<omega\><rsub|0>\<in\>\<bbb-R\>>. Then
+    [Eigenfunction Property of Shift Group] Complex exponentials are
+    eigenfunctions of the shift group:
 
     <\equation*>
-      \<cal-F\>*<around|[|e<rsup|i*\<omega\><rsub|0>*t>*f<around|(|t|)>|]><around|(|\<omega\>|)>=<wide|f|^>*<around|(|\<omega\>-\<omega\><rsub|0>|)>
+      S<rsub|t>*e<rsup|i*\<omega\>*x>=e<rsup|i*\<omega\>*t>*e<rsup|i*\<omega\>*x>
     </equation*>
+
+    with eigenvalue <math|e<rsup|i*\<omega\>*t>>.
   </theorem>
 
   <\proof>
-    <\align>
-      <tformat|<table|<row|<cell|\<cal-F\>*<around|[|e<rsup|i*\<omega\><rsub|0>*t>*f<around|(|t|)>|]><around|(|\<omega\>|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\><rsub|0>*t>*f<around|(|t|)>*e<rsup|-i*\<omega\>*t>*d*t<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|t|)>*e<rsup|-i*<around|(|\<omega\>-\<omega\><rsub|0>|)>*t>*d*t<eq-number>>>|<row|<cell|>|<cell|=<wide|f|^>*<around|(|\<omega\>-\<omega\><rsub|0>|)><eq-number>>>>>
-    </align>
-  </proof>
-
-  <\theorem>
-    [Fourier Transform of Complex Exponential] Let
-    <math|\<omega\><rsub|0>\<in\>\<bbb-R\>>. In the distributional sense,
-
     <\equation*>
-      \<cal-F\><around|[|e<rsup|i*\<omega\><rsub|0>*t>|]><around|(|\<omega\>|)>=2*\<pi\>*\<delta\>*<around|(|\<omega\>-\<omega\><rsub|0>|)>
-    </equation*>
-
-    where <math|\<delta\>> is the Dirac delta distribution.
-  </theorem>
-
-  <\proof>
-    We prove this by showing that for any test function
-    <math|\<phi\>\<in\>\<cal-S\><around|(|\<bbb-R\>|)>> (Schwartz space):
-
-    <\equation*>
-      <around|\<langle\>|\<cal-F\><around|[|e<rsup|i*\<omega\><rsub|0>*t>|]>,\<phi\>|\<rangle\>>=2*\<pi\>*\<phi\><around|(|\<omega\><rsub|0>|)>
-    </equation*>
-
-    By definition of the Fourier transform of distributions:
-
-    <\align>
-      <tformat|<table|<row|<cell|<around|\<langle\>|\<cal-F\><around|[|e<rsup|i*\<omega\><rsub|0>*t>|]>,\<phi\>|\<rangle\>>>|<cell|=<around|\<langle\>|e<rsup|i*\<omega\><rsub|0>*t>,\<cal-F\><around|[|\<phi\>|]>|\<rangle\>><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\><rsub|0>*t>*<wide|\<phi\>|^><around|(|t|)>*d*t<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\><rsub|0>*t>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><around|(|\<omega\>|)>*e<rsup|-i*\<omega\>*t>*d*\<omega\>*d*t<eq-number>>>>>
-    </align>
-
-    By Fubini's theorem (valid for <math|\<phi\>\<in\>\<cal-S\><around|(|\<bbb-R\>|)>>):
-
-    <\align>
-      <tformat|<table|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><around|(|\<omega\>|)>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<omega\><rsub|0>-\<omega\>|)>*t>*d*t*d*\<omega\><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><around|(|\<omega\>|)>\<cdot\>2*\<pi\>*\<delta\>*<around|(|\<omega\><rsub|0>-\<omega\>|)>*d*\<omega\><eq-number>>>|<row|<cell|>|<cell|=2*\<pi\>*\<phi\><around|(|\<omega\><rsub|0>|)><eq-number>>>|<row|<cell|>|<cell|=<around|\<langle\>|2*\<pi\>*\<delta\>*<around|(|\<omega\>-\<omega\><rsub|0>|)>,\<phi\>|\<rangle\>><eq-number>>>>>
-    </align>
-
-    Therefore, <math|\<cal-F\><around|[|e<rsup|i*\<omega\><rsub|0>*t>|]>=2*\<pi\>*\<delta\>*<around|(|\<omega\>-\<omega\><rsub|0>|)>>.
-  </proof>
-
-  <\theorem>
-    [Diagonalization Property] Let <math|T> be a bounded linear operator on
-    <math|L<rsup|2><around|(|\<bbb-R\>|)>> that commutes with all shift
-    operators, i.e., <math|T*S<rsub|t<rsub|0>>=S<rsub|t<rsub|0>>*T> for all
-    <math|t<rsub|0>\<in\>\<bbb-R\>>. Then <math|T> is diagonalized by the
-    Fourier transform in the sense that there exists a function
-    <math|m<around|(|\<omega\>|)>> such that
-
-    <\equation*>
-      \<cal-F\>*<around|[|T*f|]>=m\<cdot\>\<cal-F\><around|[|f|]>
-    </equation*>
-
-    for all <math|f> in the domain of <math|T>.
-  </theorem>
-
-  <\proof>
-    Since <math|T> commutes with all shift operators, by Theorem 1, the
-    complex exponentials <math|e<rsup|i*\<omega\>*t>> are eigenfunctions of
-    <math|T>. Let <math|T*e<rsup|i*\<omega\>*t>=m<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>>
-    for some function <math|m<around|(|\<omega\>|)>>.
-
-    For any <math|f\<in\>L<rsup|2><around|(|\<bbb-R\>|)>> with
-    <math|<wide|f|^>\<in\>L<rsup|2><around|(|\<bbb-R\>|)>>, we can write (by
-    the inverse Fourier transform):
-
-    <\equation*>
-      f<around|(|t|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|f|^><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*\<omega\>
-    </equation*>
-
-    Applying <math|T> and using linearity:
-
-    <\align>
-      <tformat|<table|<row|<cell|T*f<around|(|t|)>>|<cell|=T*<around*|[|<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|f|^><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*\<omega\>|]><eq-number>>>|<row|<cell|>|<cell|=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|f|^><around|(|\<omega\>|)>*T<around|[|e<rsup|i*\<omega\>*t>|]>*d*\<omega\><eq-number>>>|<row|<cell|>|<cell|=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|f|^><around|(|\<omega\>|)>*m<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*\<omega\><eq-number>>>>>
-    </align>
-
-    Taking the Fourier transform:
-
-    <\equation*>
-      \<cal-F\>*<around|[|T*f|]><around|(|\<omega\>|)>=m<around|(|\<omega\>|)>*<wide|f|^><around|(|\<omega\>|)>=m<around|(|\<omega\>|)>\<cdot\>\<cal-F\><around|[|f|]><around|(|\<omega\>|)>
+      S<rsub|t>*e<rsup|i*\<omega\>*x>=e<rsup|i*\<omega\>*<around|(|x+t|)>>=e<rsup|i*\<omega\>*x>*e<rsup|i*\<omega\>*t>=e<rsup|i*\<omega\>*t>*e<rsup|i*\<omega\>*x>
     </equation*>
   </proof>
 
   <\corollary>
-    The shift operators and multiplication by complex exponentials are the
-    fundamental operations that generate all translation-invariant linear
-    systems, and the Fourier transform provides the natural basis that
-    simultaneously diagonalizes all such systems.
+    [Consistency Check] The eigenvalue relationships are consistent:
+
+    <\equation*>
+      S<rsub|t>*e<rsup|i*\<omega\>*x>=e<rsup|t*A>*e<rsup|i*\<omega\>*x>=e<rsup|t*<around|(|i*\<omega\>|)>>*e<rsup|i*\<omega\>*x>=e<rsup|i*\<omega\>*t>*e<rsup|i*\<omega\>*x>
+    </equation*>
+
+    since <math|A> has eigenvalue <math|i*\<omega\>> on
+    <math|e<rsup|i*\<omega\>*x>>.
   </corollary>
+
+  <section*|Conclusion>
+
+  Stone's theorem ensures that the shift group <math|<around|(|S<rsub|t>|)>>
+  has a **skew-adjoint generator** <math|A=<frac|d|d*x>>, whose
+  eigenfunctions are the complex exponentials <math|e<rsup|i*\<omega\>*x>>
+  with purely imaginary eigenvalues <math|i*\<omega\>>. The related
+  **self-adjoint momentum operator** <math|P=-i*A> has the same
+  eigenfunctions but with real eigenvalues <math|\<omega\>>.
+
+  The Fourier transform provides the spectral decomposition that diagonalizes
+  both operators:
+
+  <\itemize>
+    <item><math|P> becomes multiplication by <math|\<omega\>> (real
+    eigenvalues)
+
+    <item><math|S<rsub|t>> becomes multiplication by
+    <math|e<rsup|i*\<omega\>*t>> (unitary eigenvalues on the unit circle)
+  </itemize>
+
+  This mathematical structure underlies all of Fourier analysis: complex
+  exponentials are the fundamental building blocks because they are precisely
+  the functions that transform simply under shifts, making them the natural
+  basis for analyzing translation-invariant systems. The distinction between
+  the skew-adjoint generator <math|A> (with imaginary eigenvalues) and the
+  self-adjoint momentum operator <math|P> (with real eigenvalues) is crucial
+  for understanding why unitary groups arise from self-adjoint operators via
+  Stone's theorem.
 </body>
 
 <\initial>
@@ -183,3 +220,29 @@
     <associate|page-medium|paper>
   </collection>
 </initial>
+
+<\references>
+  <\collection>
+    <associate|auto-1|<tuple|?|1>>
+    <associate|auto-2|<tuple|?|1>>
+    <associate|auto-3|<tuple|6|4>>
+  </collection>
+</references>
+
+<\auxiliary>
+  <\collection>
+    <\associate|toc>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Definitions>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-1><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Theorems
+      and Proofs> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-2><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Conclusion>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-3><vspace|0.5fn>
+    </associate>
+  </collection>
+</auxiliary>
