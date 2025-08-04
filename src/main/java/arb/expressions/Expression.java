@@ -2628,4 +2628,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return instantiate();
   }
 
+  public Expression<D, C, F> optimize()
+  {
+    rootNode.accept(node -> System.out.println("node=" + node + " "  + node.getFieldName() ));
+    return this;
+
+  }
+
 }
