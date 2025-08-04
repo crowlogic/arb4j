@@ -3,7 +3,22 @@
 <style|<tuple|generic|framed-theorems>>
 
 <\body>
-  <doc-data|<doc-title|Stone's Theorem, Shift Group, and Fourier Transform>>
+  <doc-data|<doc-title|Stone's Theorem, The Shift Group, and The Fourier
+  Transform>>
+
+  <\table-of-contents|toc>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Definitions>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-1><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Theorems and
+    Proofs> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-2><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Conclusion>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-3><vspace|0.5fn>
+  </table-of-contents>
 
   <section*|Definitions>
 
@@ -118,6 +133,63 @@
   </proof>
 
   <\theorem>
+    [Fourier Transform of Complex Exponential] Let
+    <math|\<omega\><rsub|0>\<in\>\<bbb-R\>>. In the distributional sense,
+
+    <\equation*>
+      \<cal-F\><around|[|e<rsup|i*\<omega\><rsub|0>*x>|]><around|(|\<omega\>|)>=2*\<pi\>*\<delta\>*<around|(|\<omega\>-\<omega\><rsub|0>|)>
+    </equation*>
+
+    where <math|\<delta\>> is the Dirac delta distribution.
+  </theorem>
+
+  <\proof>
+    We prove this by showing that for any test function
+    <math|\<phi\>\<in\>\<cal-S\><around|(|\<bbb-R\>|)>> (Schwartz space):
+
+    <\equation*>
+      <around|\<langle\>|\<cal-F\><around|[|e<rsup|i*\<omega\><rsub|0>*x>|]>,\<phi\>|\<rangle\>>=2*\<pi\>*\<phi\><around|(|\<omega\><rsub|0>|)>
+    </equation*>
+
+    By definition of the Fourier transform of distributions:
+
+    <\align>
+      <tformat|<table|<row|<cell|<around|\<langle\>|\<cal-F\><around|[|e<rsup|i*\<omega\><rsub|0>*x>|]>,\<phi\>|\<rangle\>>>|<cell|=<around|\<langle\>|e<rsup|i*\<omega\><rsub|0>*x>,\<cal-F\><around|[|\<phi\>|]>|\<rangle\>><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\><rsub|0>*x>*<wide|\<phi\>|^><around|(|x|)>*d*x<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\><rsub|0>*x>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><around|(|\<omega\>|)>*e<rsup|-i*\<omega\>*x>*d*\<omega\>*d*x<eq-number>>>>>
+    </align>
+
+    By Fubini's theorem (valid for <math|\<phi\>\<in\>\<cal-S\><around|(|\<bbb-R\>|)>>):
+
+    <\align>
+      <tformat|<table|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><around|(|\<omega\>|)>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<omega\><rsub|0>-\<omega\>|)>*x>*d*x*d*\<omega\><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><around|(|\<omega\>|)>\<cdot\>2*\<pi\>*\<delta\>*<around|(|\<omega\><rsub|0>-\<omega\>|)>*d*\<omega\><eq-number>>>|<row|<cell|>|<cell|=2*\<pi\>*\<phi\><around|(|\<omega\><rsub|0>|)><eq-number>>>|<row|<cell|>|<cell|=<around|\<langle\>|2*\<pi\>*\<delta\>*<around|(|\<omega\>-\<omega\><rsub|0>|)>,\<phi\>|\<rangle\>><eq-number>>>>>
+    </align>
+
+    Therefore, <math|\<cal-F\><around|[|e<rsup|i*\<omega\><rsub|0>*x>|]>=2*\<pi\>*\<delta\>*<around|(|\<omega\>-\<omega\><rsub|0>|)>>.
+  </proof>
+
+  <\theorem>
+    [Inverse Fourier Transform of Dirac Delta] In the distributional sense,
+
+    <\equation*>
+      \<cal-F\><rsup|-1>*<around|[|\<delta\>*<around|(|\<omega\>-\<omega\><rsub|0>|)>|]><around|(|x|)>=<frac|1|2*\<pi\>>*e<rsup|i*\<omega\><rsub|0>*x>
+    </equation*>
+  </theorem>
+
+  <\proof>
+    From the previous theorem, we have <math|\<cal-F\><around|[|e<rsup|i*\<omega\><rsub|0>*x>|]>=2*\<pi\>*\<delta\>*<around|(|\<omega\>-\<omega\><rsub|0>|)>>.
+    Applying <math|\<cal-F\><rsup|-1>> to both sides:
+
+    <\equation*>
+      e<rsup|i*\<omega\><rsub|0>*x>=\<cal-F\><rsup|-1>*<around|[|2*\<pi\>*\<delta\>*<around|(|\<omega\>-\<omega\><rsub|0>|)>|]>
+    </equation*>
+
+    Therefore:
+
+    <\equation*>
+      \<cal-F\><rsup|-1>*<around|[|\<delta\>*<around|(|\<omega\>-\<omega\><rsub|0>|)>|]>=<frac|1|2*\<pi\>>*e<rsup|i*\<omega\><rsub|0>*x>
+    </equation*>
+  </proof>
+
+  <\theorem>
     [Spectral Decomposition via Fourier Transform] Under the Fourier
     transform <math|\<cal-F\>>:
 
@@ -173,6 +245,32 @@
     </equation*>
   </proof>
 
+  <\theorem>
+    [Spectral Representation of Identity] The identity operator can be
+    represented using the Dirac delta:
+
+    <\equation*>
+      I=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||e<rsup|i*\<omega\>\<cdot\>>|\<rangle\>>\<langle\>e<rsup|i*\<omega\>\<cdot\>>\|d*\<omega\>
+    </equation*>
+
+    where in distributional form:
+
+    <\equation*>
+      \<delta\>*<around|(|x-y|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*<around|(|x-y|)>>*d*\<omega\>
+    </equation*>
+  </theorem>
+
+  <\proof>
+    For any test function <math|f>:
+
+    <\align>
+      <tformat|<table|<row|<cell|<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|y|)>*e<rsup|i*\<omega\>*<around|(|x-y|)>>*d*y*d*\<omega\>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|y|)>*<around*|[|<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*<around|(|x-y|)>>*d*\<omega\>|]>*d*y<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|y|)>*\<delta\>*<around|(|x-y|)>*d*y<eq-number>>>|<row|<cell|>|<cell|=f<around|(|x|)><eq-number>>>>>
+    </align>
+
+    This shows the spectral representation of the identity using the
+    continuous spectrum of the momentum operator.
+  </proof>
+
   <\corollary>
     [Consistency Check] The eigenvalue relationships are consistent:
 
@@ -187,31 +285,36 @@
   <section*|Conclusion>
 
   Stone's theorem ensures that the shift group <math|<around|(|S<rsub|t>|)>>
-  has a **skew-adjoint generator** <math|A=<frac|d|d*x>>, whose
-  eigenfunctions are the complex exponentials <math|e<rsup|i*\<omega\>*x>>
-  with purely imaginary eigenvalues <math|i*\<omega\>>. The related
-  **self-adjoint momentum operator** <math|P=-i*A> has the same
-  eigenfunctions but with real eigenvalues <math|\<omega\>>.
+  has a skew-adjoint generator <math|A=<frac|d|d*x>>, whose eigenfunctions
+  are the complex exponentials <math|e<rsup|i*\<omega\>*x>> with purely
+  imaginary eigenvalues <math|i*\<omega\>>. The related **self-adjoint
+  momentum operator** <math|P=-i*A> has the same eigenfunctions but with real
+  eigenvalues <math|\<omega\>>.
 
-  The Fourier transform provides the spectral decomposition that diagonalizes
-  both operators:
+  The Dirac delta function emerges naturally as the Fourier transform of
+  complex exponentials, providing the spectral measure for the continuous
+  spectrum of the momentum operator. This gives us the fundamental
+  relationships:
 
   <\itemize>
-    <item><math|P> becomes multiplication by <math|\<omega\>> (real
-    eigenvalues)
+    <item>Complex exponentials <math|e<rsup|i*\<omega\><rsub|0>*x>\<leftrightarrow\>2*\<pi\>*\<delta\>*<around|(|\<omega\>-\<omega\><rsub|0>|)>>
+    under Fourier transform
 
-    <item><math|S<rsub|t>> becomes multiplication by
-    <math|e<rsup|i*\<omega\>*t>> (unitary eigenvalues on the unit circle)
+    <item>The identity operator has the spectral representation
+    <math|I=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||e<rsup|i*\<omega\>\<cdot\>>|\<rangle\>>\<langle\>e<rsup|i*\<omega\>\<cdot\>>\|d*\<omega\>>
+
+    <item>The delta function provides the orthogonality relation for the
+    continuous eigenfunction basis
   </itemize>
 
-  This mathematical structure underlies all of Fourier analysis: complex
-  exponentials are the fundamental building blocks because they are precisely
-  the functions that transform simply under shifts, making them the natural
-  basis for analyzing translation-invariant systems. The distinction between
-  the skew-adjoint generator <math|A> (with imaginary eigenvalues) and the
-  self-adjoint momentum operator <math|P> (with real eigenvalues) is crucial
-  for understanding why unitary groups arise from self-adjoint operators via
-  Stone's theorem.
+  The Fourier transform provides the spectral decomposition that diagonalizes
+  both operators, with the Dirac delta serving as the key distributional tool
+  that makes the continuous spectrum rigorous. This mathematical structure
+  underlies all of Fourier analysis and quantum mechanics, where complex
+  exponentials are the fundamental building blocks precisely because they
+  diagonalize translation-invariant systems.
+
+  \;
 </body>
 
 <\initial>
@@ -225,7 +328,7 @@
   <\collection>
     <associate|auto-1|<tuple|?|1>>
     <associate|auto-2|<tuple|?|1>>
-    <associate|auto-3|<tuple|6|4>>
+    <associate|auto-3|<tuple|9|5>>
   </collection>
 </references>
 
