@@ -1,44 +1,99 @@
 package arb.documentation;
 
-import arb.Complex;
-import arb.Real;
+import arb.AlgebraicNumber;
+import arb.Fraction;
+import arb.Integer;
+import arb.Polynomial;
+import arb.functions.real.Functional;
 
 /**
- * <pre>
- * The library arb4j is a Java adaptation of the ARB library, a powerful tool
- * designed for rigorous high-performance mathematical computation with arbitrary 
- * (unlimited) precision. This library is particularly tailored to support high-precision 
- * calculations in all fields of science. arb4j leverages the capabilities of ARB to 
- * provide the ability to perform complex mathematical operations in Java, 
- * including but not limited to, high-precision arithmetic, transcendental functions, 
- * and special functions, orthogonal polynomials, spectral solvers for fractional Ricatti
- * differential equations with guaranteed bounds on the error of the computed
- * results and more.
+ * arb4j is a Java interface to the ARB and FLINT libraries, providing
+ * high-precision and rigorously certified numerical computation capabilities.
+ * By leveraging JNI and SWIG bindings to the underlying C libraries (ARB for
+ * arbitrary-precision ball arithmetic and transcendental functions, FLINT for
+ * number theory and polynomial arithmetic), arb4j brings established,
+ * production-quality mathematical routines to the Java platform.
  * 
- * At its core, arb4j offers an interface that merges the precision of the ARB
- * library with the versatility and platform-independence of Java, making it an
- * indispensable tool for computational tasks where accuracy and reliability are
- * paramount. The library encapsulates functionalities to handle {@link Real} and
- * {@link Complex} numbers with arbitrary precision, facilitating operations that go
- * above and beyond the scope of standard double-precision arithmetic. This includes
- * the computation of functions to an arbitrary number of significant digits,
- * with a clear and straightforward approach to managing the precision and error
- * bounds of calculations.
+ * <h3>Core Mathematical Capabilities</h3>
+ * <ul>
+ * <li>Arbitrary-precision calculations with automatic, guaranteed error
+ * propagation using {@link arb.Real} and {@link arb.Complex}, directly
+ * reflecting the ball arithmetic of ARB
+ * <li>Access to a wide range of mathematical functions: transcendental, special
+ * functions, and orthogonal polynomials, matching the ARB C API and accuracy
+ * guarantees
+ * <li>Robust polynomial, series, and matrix arithmetic, benefiting from FLINT's
+ * speed and advanced algorithms
+ * <li>Exact {@link Integer}, rational-number ({@link Fraction}), and
+ * {@link AlgebraicNumber} support provided via FLINT's number-theoretic
+ * foundations
+ * </ul>
  * 
- * arb4j is designed with usability in mind, providing a straightforward API
- * that allows users to easily integrate high-precision computations into their
- * Java applications. The library serves as a bridge, extending the ARB
- * library's capabilities to Java, thus enabling development of applications not
- * limited by C.
+ * <h3>Expression Compilation System</h3> Beyond direct library bindings, arb4j
+ * features a sophisticated expression compiler that transforms mathematical
+ * expressions into optimized JVM bytecode:
+ * <ul>
+ * <li>Multi-stage parsing and compilation via {@link arb.expressions.Compiler}
+ * for high-performance evaluation
+ * <li>Three-tier variable system through
+ * {@link arb.expressions.nodes.VariableNode}: independent variables,
+ * indeterminate variables, and context variables
+ * <li>Support for {@link Polynomial} expressions, rational functions, and
+ * {@link Functional} compositions
+ * <li>Automatic symbolic differentiation and integration via
+ * {@link arb.expressions.nodes.Node#differentiate} and
+ * {@link arb.expressions.nodes.Node#integrate}
+ * <li>Runtime context management through {@link arb.expressions.Context} for
+ * parameter binding
+ * <li>Nested expression support enabling complex functional programming
+ * patterns
+ * <li>Dynamic bytecode generation for performance comparable to hand-written
+ * Java code
+ * </ul>
  * 
- * In essence, arb4j has turned out to be valuable resource for scientific computing with
- * Java, offering precision, flexibility, and error
- * control that are crucial for technical computing tasks demanding the utmost
- * accuracy, performance, and very importantly, maintainability.
- * </pre>
+ * <h3>Development Efficiency and Reliability</h3>
+ * <ul>
+ * <li>Reduced code complexity - high-level abstractions and automatic
+ * compilation of mathematical expressions into efficient JVM code allow
+ * developers to accomplish more with less code
+ * <li>Mathematical correctness - faithful exposure of proven ARB/FLINT
+ * algorithms ensures results are as robust and reliable as established C
+ * implementations, reducing implementation bugs
+ * <li>Maintainable architecture - reusable expression model simplifies complex
+ * workflows, enabling rapid prototyping and easy adaptation as requirements
+ * evolve
+ * <li>Accelerated development cycles - abstraction from manual implementation
+ * details and automatic error management significantly reduces development time
+ * for precision-critical applications
+ * </ul>
  * 
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary}
+ * <h3>Symbolic and Algorithmic Tools</h3>
+ * <ul>
+ * <li>Expression manipulation: differentiation, integration, and composition at
+ * arbitrary precision
+ * <li>Polynomial algebra with exact coefficients and symbolic operations
+ * <li>Support for higher-order functions and mathematical functionals
+ * <li>Variable substitution and expression simplification
+ * </ul>
+ * 
+ * <p>
+ * arb4j gives Java programs access to computational methods proven in
+ * scientific research and production, while adding a high-level expression
+ * compilation system for efficient development. This enables scientific and
+ * engineering applications requiring reliable accuracy, rapid development, and
+ * high-performance evaluation of complex mathematical expressions.
+ * 
+ * @see arb.Arb
+ * @see arb.Real
+ * @see arb.Complex
+ * @see arb.Integer
+ * @see arb.Fraction
+ * @see arb.AlgebraicNumber
+ * @see arb.expressions.Compiler
+ * @see arb.expressions.nodes.VariableNode
+ * @see arb.expressions.Context
+ * @see arb.documentation.BusinessSourceLicenseVersionOnePointOne
+ * @see arb.documentation.TheArb4jLibrary
  */
 public class TheArb4jLibrary extends
                              LicensedWork
@@ -47,8 +102,8 @@ public class TheArb4jLibrary extends
   public String getDefinition()
   {
     return "The Licensed Work is the complete set of files, including source code, that come along with and are associated with the arb4j distribution \n"
-                  + "that this license accompanies; including transformations of the source-code (such as but not limited to the compiled.class files or the dynamically \n"
-                  + "generated .class files generated by the expression compilation capabilities of arb4j)\n";
+           + "that this license accompanies; including transformations of the source-code (such as but not limited to the compiled.class files or the dynamically \n"
+           + "generated .class files generated by the expression compilation capabilities of arb4j)\n";
   }
 
 }
