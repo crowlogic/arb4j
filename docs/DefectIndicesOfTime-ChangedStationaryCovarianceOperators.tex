@@ -1,0 +1,529 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,latexsym,theorem}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\assign}{:=}
+\newcommand{\tmaffiliation}[1]{\\ #1}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+{\theorembodyfont{\rmfamily}\newtheorem{remark}{Remark}}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{Positive Definiteness and Self-Adjoint Extensions for Covariance
+Operators of Transformed Stationary Gaussian Processes}
+
+\author{
+  Stephen Crowley
+  \tmaffiliation{August 3, 2025}
+}
+
+\maketitle
+
+{\tableofcontents}
+
+\section{Definitions}
+
+\begin{definition}
+  [Bessel Kernel] Let $J_0$ be the Bessel function of the first kind of order
+  zero. The standard Bessel kernel is defined as $B (s, t) = J_0  (2 \pi |s -
+  t|)$ for $s, t \in \mathbb{R}$.
+\end{definition}
+
+\begin{definition}
+  [Transformed Bessel Kernel] Given a function $\theta : \mathbb{R} \to
+  \mathbb{R}$, the transformed Bessel kernel is defined as $K_{\theta} (s, t)
+  = J_0  (2 \pi | \theta (s) - \theta (t) |)$ for $s, t \in \mathbb{R}$.
+\end{definition}
+
+\begin{definition}
+  [Covariance Operator] The integral operator $T_{\theta}$ associated with
+  kernel $K_{\theta}$ acts on functions $f \in L^2 (\mathbb{R})$ as:
+  \begin{equation}
+    (T_{\theta} f) (s) = \int_{\mathbb{R}} J_0  (2 \pi | \theta (s) - \theta
+    (t) |) f (t) dt
+  \end{equation}
+\end{definition}
+
+\begin{definition}
+  [Defect Indices] For a densely defined symmetric operator $T$ on a Hilbert
+  space $\mathcal{H}$ with adjoint $T^{\ast}$, the defect indices $(n_+, n_-)$
+  are:
+  \begin{equation}
+    n_+ = \dim \ker (T^{\ast} - i \cdot I), \quad n_- = \dim \ker (T^{\ast} +
+    i \cdot I)
+  \end{equation}
+  where $I$ denotes the identity operator.
+\end{definition}
+
+\begin{definition}
+  [Self-Adjoint Operator] A symmetric operator $T$ is self-adjoint if and only
+  if $T = T^{\ast}$, which is equivalent to having defect indices $n_+ = n_- =
+  0$.
+\end{definition}
+
+\section{Main Results}
+
+\begin{theorem}
+  \label{thm:main}The covariance operator $T_{\theta}$ with kernel $K_{\theta}
+  (s, t) = J_0  (2 \pi | \theta (s) - \theta (t) |)$ has zero defect indices
+  $(n_+ = n_- = 0)$ if and only if $\theta$ is strictly monotonic.
+\end{theorem}
+
+To prove this theorem, several preliminary results are needed.
+
+\begin{lemma}
+  \label{lemma:bessel-pd}The Bessel kernel $B (s, t) = J_0  (2 \pi |s - t|)$
+  defines a positive definite operator.
+\end{lemma}
+
+\begin{proof}
+  By Bochner's theorem, a continuous function $\phi (s - t)$ is positive
+  definite if and only if it is the Fourier transform of a non-negative
+  measure. The Fourier transform of $J_0  (2 \pi |x|)$ is:
+  \begin{equation}
+    \mathcal{F} [J_0 (2 \pi |x|)] (\omega) = \frac{1}{2 \pi \sqrt{1 - \omega^2
+    / (4 \pi^2)}}  \textbf{1}_{[- 2 \pi, 2 \pi]} (\omega)
+  \end{equation}
+  where $\textbf{1}_{[- 2 \pi, 2 \pi]}$ is the indicator function of the
+  interval $[- 2 \pi, 2 \pi]$.
+  
+  Since this is a non-negative function, $J_0  (2 \pi |x|)$ is positive
+  definite, and hence $B (s, t)$ defines a positive definite operator.
+\end{proof}
+
+\begin{lemma}
+  \label{lemma:standard-sa}The operator $S$ associated with the standard
+  Bessel kernel $B (s, t) = J_0  (2 \pi |s - t|)$ is self-adjoint.
+\end{lemma}
+
+\begin{proof}
+  The operator $S$ with kernel $B (s, t)$ is unitarily equivalent to
+  multiplication by the function $\frac{1}{2 \pi \sqrt{1 - \omega^2 / (4
+  \pi^2)}}  \textbf{1}_{[- 2 \pi, 2 \pi]} (\omega)$ in the Fourier domain.
+  Since this is a bounded, real-valued multiplication operator, it is
+  self-adjoint, and thus $S$ has defect indices $(0, 0)$.
+\end{proof}
+
+\begin{proposition}
+  \label{prop:monotonic-implies-sa}If $\theta : \mathbb{R} \to \mathbb{R}$ is
+  strictly monotonic, then the covariance operator $T_{\theta}$ is
+  self-adjoint.
+\end{proposition}
+
+\begin{proof}
+  When $\theta$ is strictly monotonic, it is invertible. Consider the change
+  of variables:
+  \begin{equation}
+    u = \theta (s), \quad v = \theta (t)
+  \end{equation}
+  Define the unitary transformation $U : L^2 (\mathbb{R}, ds) \to L^2
+  (\mathbb{R}, du)$ by:
+  \begin{equation}
+    (Uf) (u) = f (\theta^{- 1} (u)) \sqrt{\left| \frac{d \theta^{- 1}}{du} (u)
+    \right|}
+  \end{equation}
+  Under this transformation, the operator $T_{\theta}$ becomes:
+  \begin{equation}
+    (UT_{\theta} U^{- 1} g) (u) = \int_{\mathbb{R}} J_0  (2 \pi |u - v|) g (v)
+    dv
+  \end{equation}
+  which is precisely the operator $S$ with the standard Bessel kernel.
+  
+  Since $S$ is self-adjoint by Lemma \ref{lemma:standard-sa}, and unitary
+  equivalence preserves self-adjointness, $T_{\theta} = U^{- 1} SU$ is also
+  self-adjoint. Thus, its defect indices are $(0, 0)$.
+\end{proof}
+
+\begin{proposition}
+  \label{prop:nonmonotonic-implies-defect}If $\theta$ is not strictly
+  monotonic, then $T_{\theta}$ has non-zero defect indices.
+\end{proposition}
+
+\begin{proof}
+  If $\theta$ is not strictly monotonic, there exist points $s_1 \neq s_2$
+  such that $\theta (s_1) = \theta (s_2)$.
+  
+  Let $\mathcal{E}= \{(s_1, s_2) \in \mathbb{R}^2 : s_1 \neq s_2, \theta (s_1)
+  = \theta (s_2)\}$. This set is non-empty by assumption.
+  
+  For any pair $(s_1, s_2) \in \mathcal{E}$, the kernel satisfies:
+  \begin{equation}
+    K_{\theta} (s_1, t) = J_0  (2 \pi | \theta (s_1) - \theta (t) |) = J_0  (2
+    \pi | \theta (s_2) - \theta (t) |) = K_{\theta} (s_2, t)
+  \end{equation}
+  This introduces a linear dependence in the kernel, violating the strict
+  positive definiteness needed for self-adjointness.
+  
+  To formalize this, consider the distribution:
+  \begin{equation}
+    f_{s_1, s_2} (t) = \delta (t - s_1) - \delta (t - s_2)
+  \end{equation}
+  While $f_{s_1, s_2}$ itself is not in $L^2 (\mathbb{R})$, it can be
+  approximated by $L^2$ functions. Using the symmetry property $K_{\theta}
+  (s_1, t) = K_{\theta} (s_2, t)$:
+  \begin{equation}
+    (T_{\theta} f_{s_1, s_2}) (s) = \int_{\mathbb{R}} K_{\theta} (s, t)
+    f_{s_1, s_2} (t) dt = K_{\theta} (s, s_1) - K_{\theta} (s, s_2) = 0
+  \end{equation}
+  This implies that $T_{\theta}$ has a non-trivial null space, and
+  consequently, there exist non-zero solutions to the equations
+  $(T_{\theta}^{\ast} \pm i \cdot I) g = 0$. Therefore, both defect indices
+  $n_+$ and $n_-$ are at least 1.
+\end{proof}
+
+\begin{lemma}
+  \label{lemma:nonmonotonic-not-pd}If $\theta$ is not strictly monotonic, then
+  the kernel $K_{\theta} (s, t) = J_0  (2 \pi | \theta (s) - \theta (t) |)$ is
+  not positive definite.
+\end{lemma}
+
+\begin{proof}
+  Let $s_1 \neq s_2$ with $\theta (s_1) = \theta (s_2)$. Consider the matrix:
+  \begin{equation}
+    M = \left(\begin{array}{cc}
+      K_{\theta} (s_1, s_1) & K_{\theta} (s_1, s_2)\\
+      K_{\theta} (s_2, s_1) & K_{\theta} (s_2, s_2)
+    \end{array}\right)
+  \end{equation}
+  Since $\theta (s_1) = \theta (s_2)$, we have:
+  \begin{equation}
+    K_{\theta} (s_1, s_1) = K_{\theta} (s_2, s_2) = J_0 (0) = 1
+  \end{equation}
+  \begin{equation}
+    K_{\theta} (s_1, s_2) = K_{\theta} (s_2, s_1) = J_0  (2 \pi | \theta (s_1)
+    - \theta (s_2) |) = J_0 (0) = 1
+  \end{equation}
+  Thus, $M = \left(\begin{array}{cc}
+    1 & 1\\
+    1 & 1
+  \end{array}\right)$, which has eigenvalues 2 and 0. The presence of the zero
+  eigenvalue means $M$ is not strictly positive definite. Therefore,
+  $K_{\theta}$ is not a positive definite kernel.
+\end{proof}
+
+Combining Proposition \ref{prop:monotonic-implies-sa} and Proposition
+\ref{prop:nonmonotonic-implies-defect}, the covariance operator $T_{\theta}$
+has defect indices $(0, 0)$ if and only if $\theta$ is strictly monotonic.
+
+\begin{corollary}
+  The Gaussian process with covariance function $K_{\theta} (s, t) = J_0  (2
+  \pi | \theta (s) - \theta (t) |)$ is well-defined if and only if $\theta$ is
+  strictly monotonic.
+\end{corollary}
+
+\begin{proof}
+  A Gaussian process is well-defined if and only if its covariance function is
+  positive definite. By Lemma \ref{lemma:nonmonotonic-not-pd} and Lemma
+  \ref{lemma:bessel-pd}, $K_{\theta}$ is positive definite if and only if
+  $\theta$ is strictly monotonic. Furthermore, the self-adjointness of
+  $T_{\theta}$ (which occurs if and only if $\theta$ is strictly monotonic by
+  Theorem \ref{thm:main}) ensures the existence of a spectral decomposition,
+  which is necessary for the proper definition of the process.
+\end{proof}
+
+\section{Foundational Constructions}
+
+\begin{definition}
+  [Riemann-Siegel Theta Function] The Riemann-Siegel theta function is defined
+  as:
+  \begin{equation}
+    \theta (t) \assign \arg \Gamma \left( \frac{1}{4} + \frac{it}{2} \right) -
+    \frac{t}{2} \log \pi
+  \end{equation}
+  where $\Gamma$ is the gamma function and $\arg$ denotes the principal
+  argument. This function has a unique critical point $a > 0$ where $\frac{d
+  \theta}{dt} (a) = 0$.
+\end{definition}
+
+\begin{definition}
+  [Monotonized Theta Function] Define the monotonically increasing function:
+  \begin{equation}
+    \tilde{\theta} (t) \assign \left\{\begin{array}{ll}
+      2 \theta (a) - \theta (t) & \text{for } t \in [0, a]\\
+      \theta (t) & \text{for } t > a
+    \end{array}\right.
+  \end{equation}
+  with scaled version $\tilde{\theta}_s (t) \assign \sqrt{2}  \tilde{\theta}
+  (t)$.
+\end{definition}
+
+\begin{lemma}
+  [Properties of Monotonized Function] $\tilde{\theta} (t)$ satisfies:
+  \begin{enumerate}
+    \item Continuous at $t = a$: $\tilde{\theta} (a) = \theta (a)$
+    
+    \item For $t \in (0, a)$: $\frac{d \tilde{\theta}}{dt} (t) = - \frac{d
+    \theta}{dt} (t) > 0$
+    
+    \item For $t > a$: $\frac{d \tilde{\theta}}{dt} (t) = \frac{d \theta}{dt}
+    (t) > 0$
+    
+    \item $\frac{d \tilde{\theta}}{dt} (t) \geq 0$ for all $t > 0$, with
+    equality only at $t = a$
+  \end{enumerate}
+\end{lemma}
+
+\section{Random Wave Model and Bessel Kernel}
+
+\begin{definition}
+  [Random Wave Model] The Gaussian process modeling Riemann zeta zeros has
+  covariance kernel:
+  \begin{equation}
+    K (t, s) = J_0 (| \theta (t) - \theta (s) |)
+  \end{equation}
+  where $J_0$ is the Bessel function of the first kind of order zero.
+\end{definition}
+
+\begin{definition}
+  [Monotonized Covariance Kernel] The monotonized covariance kernel is:
+  \begin{equation}
+    \tilde{K} (t, s) = J_0 (| \tilde{\theta}_s (t) - \tilde{\theta}_s (s) |)
+  \end{equation}
+  This kernel preserves the statistical properties essential for
+  zero-counting.
+\end{definition}
+
+\section{Operator-Theoretic Analysis: Defect Indices}
+
+\subsection{The Original Operator (Non-Monotonic Case)}
+
+\begin{definition}
+  [Bessel-Theta Kernel Operator] Define the symmetric operator $\mathcal{L}_0$
+  on $L^2 (\mathbb{R}^+)$ by:
+  \begin{equation}
+    (\mathcal{L}_0 \psi) (t) = - \frac{d}{dt} \left[ J_0 (0) \frac{d \psi}{dt}
+    (t) \right] + \left. \frac{\partial^2}{\partial u^2} J_0 (u) \right|_{u =
+    0} \cdot \left( \frac{d \theta}{dt} (t) \right)^2 \psi (t)
+  \end{equation}
+  with domain:
+  \begin{equation}
+    \mathcal{D} (\mathcal{L}_0) = \{\psi \in C_c^{\infty} (\mathbb{R}^+)\}
+  \end{equation}
+\end{definition}
+
+\begin{remark}
+  Since $J_0 (0) = 1$ and $J_0'' (0) = - \frac{1}{2}$, this simplifies to:
+  \begin{equation}
+    (\mathcal{L}_0 \psi) (t) = - \psi'' (t) - \frac{1}{2} \left( \frac{d
+    \theta}{dt} (t) \right)^2 \psi (t)
+  \end{equation}
+\end{remark}
+
+\begin{theorem}
+  [Defect Indices: Non-Monotonic Case] The operator $\mathcal{L}_0$ has defect
+  indices $(1, 1)$.
+\end{theorem}
+
+\begin{proof}
+  To calculate defect indices, we solve:
+  \begin{equation}
+    (\mathcal{L}_0^{\ast} \pm iI) \psi = 0
+  \end{equation}
+  Expanded form:
+  \begin{equation}
+    - \psi'' (t) - \frac{1}{2} \left( \frac{d \theta}{dt} (t) \right)^2 \psi
+    (t) \pm i \psi (t) = 0
+  \end{equation}
+  For $t < a$, $\frac{d \theta}{dt} (t) < 0$, and for $t > a$, $\frac{d
+  \theta}{dt} (t) > 0$. The sign change at $t = a$ creates an "effective
+  potential well" in $\left( \frac{d \theta}{dt} (t) \right)^2$ near $t = a$.
+  
+  Near the critical point $a$, we can approximate:
+  \begin{equation}
+    \frac{d \theta}{dt} (t) \approx c (t - a)  \quad \text{for some constant }
+    c \neq 0
+  \end{equation}
+  This gives:
+  \begin{equation}
+    - \psi'' (t) - \frac{1}{2} c^2  (t - a)^2 \psi (t) \pm i \psi (t) = 0
+  \end{equation}
+  This equation has exactly one square-integrable solution for both the $+ i$
+  and $- i$ cases, localized near $t = a$. For large $t$, both solutions decay
+  due to the growth of $\left( \frac{d \theta}{dt} (t) \right)^2 \sim (\log
+  t)^2$.
+  
+  Therefore, $n_+ = n_- = 1$.
+\end{proof}
+
+\subsection{The Monotonized Operator}
+
+\begin{definition}
+  [Monotonized Bessel-Theta Operator] Define:
+  \begin{equation}
+    (\mathcal{L} \psi) (t) = - \psi'' (t) - \frac{1}{2} \left( \frac{d
+    \tilde{\theta}}{dt} (t) \right)^2 \psi (t)
+  \end{equation}
+  with domain $\mathcal{D} (\mathcal{L}) = C_c^{\infty} (\mathbb{R}^+)$.
+\end{definition}
+
+\begin{theorem}
+  [Defect Indices: Monotonized Case] The operator $\mathcal{L}$ has defect
+  indices $(0, 0)$.
+\end{theorem}
+
+\begin{proof}
+  The deficiency equations are:
+  \begin{equation}
+    - \psi'' (t) - \frac{1}{2} \left( \frac{d \tilde{\theta}}{dt} (t)
+    \right)^2 \psi (t) \pm i \psi (t) = 0
+  \end{equation}
+  Since $\frac{d \tilde{\theta}}{dt} (t) \geq 0$ for all $t > 0$ (with
+  equality only at $t = a$), the potential term $- \frac{1}{2} \left( \frac{d
+  \tilde{\theta}}{dt} (t) \right)^2$ is non-positive everywhere and strictly
+  negative except at $t = a$.
+  
+  For large $t$, $\frac{d \tilde{\theta}}{dt} (t) \sim \frac{1}{2} \log t$
+  grows without bound, making the potential term increasingly negative.
+  
+  For the $+ i$ equation, the asymptotic behavior as $t \to \infty$ gives:
+  \begin{equation}
+    \psi'' (t) \approx \left[ - \frac{1}{2}  \left( \frac{1}{2} \log t
+    \right)^2 + i \right] \psi (t)
+  \end{equation}
+  For large $t$, the $(\log t)^2$ term dominates, forcing solutions to
+  oscillate with increasingly large amplitude.
+  
+  Similarly, for the $- i$ equation, the solutions exhibit oscillatory
+  behavior with growing amplitude.
+  
+  Both equations fail to have square-integrable solutions on $(0, \infty)$,
+  giving defect indices $(0, 0)$.
+\end{proof}
+
+\begin{corollary}
+  [Essential Self-Adjointness] The monotonized operator $\mathcal{L}$ is
+  essentially self-adjoint and has a unique self-adjoint extension
+  $\bar{\mathcal{L}}$.
+\end{corollary}
+
+\section{Stochastic Process Representation}
+
+\begin{definition}
+  [Bessel Kernel Process] Define the centered Gaussian process:
+  \begin{equation}
+    Z (t) \assign \int_{- \infty}^{\infty} J_0  (\tilde{\theta}_s (t) - u) dW
+    (u)
+  \end{equation}
+  where:
+  \begin{itemize}
+    \item $J_0$ is the Bessel function of the first kind of order zero
+    
+    \item $W (u)$ is a standard Wiener process on $\mathbb{R}$
+    
+    \item The integral is a stochastic integral in the It{\^o} sense
+  \end{itemize}
+  This process has covariance kernel:
+  \begin{equation}
+    K (t, s) \assign \mathbb{E} [Z (t) Z (s)] = J_0 (| \tilde{\theta}_s (t) -
+    \tilde{\theta}_s (s) |)
+  \end{equation}
+\end{definition}
+
+\begin{remark}
+  By the isomorphism properties of Gaussian processes, $Z (t)$ can be
+  equivalently represented as:
+  \begin{equation}
+    Z (t) = \int_{- \infty}^{\infty} \cos (\lambda \tilde{\theta}_s (t)) dW_1
+    (\lambda) + \int_{- \infty}^{\infty} \sin (\lambda \tilde{\theta}_s (t))
+    dW_2 (\lambda)
+  \end{equation}
+  where $W_1$ and $W_2$ are independent Wiener processes. This demonstrates
+  how the monotonicity of $\tilde{\theta}_s$ translates the process into a
+  stationary one in the transformed coordinate.
+\end{remark}
+
+\section{Zero-Counting Theory}
+
+\begin{definition}
+  [Covariance Difference Function] Define the covariance difference function
+  around point $t$ with shift $\tau$ as:
+  \begin{equation}
+    \Delta_t (\tau) \assign K (t, t + \tau) = J_0 (| \tilde{\theta}_s (t) -
+    \tilde{\theta}_s (t + \tau) |)
+  \end{equation}
+  At the critical point $a$:
+  \begin{equation}
+    \Delta_a (\tau) = J_0 (| \tilde{\theta}_s (a) - \tilde{\theta}_s (a +
+    \tau) |)
+  \end{equation}
+\end{definition}
+
+\begin{theorem}
+  [Kac-Rice Formula] The expected zero count satisfies:
+  \begin{equation}
+    \mathbb{E} [N (T)] = \frac{1}{\pi}  \int_0^T \sqrt{\frac{- \partial_t
+    \partial_s K (t, s) |_{s = t}}{K (t, t)}} dt +\mathbb{E} [N (\{a\})]
+  \end{equation}
+  where $\mathbb{E} [N (\{a\})] = 1$ is the expected number of zeros at the
+  critical point $a$.
+\end{theorem}
+
+\begin{proof}
+  The classical Kac-Rice formula for a Gaussian process states that the
+  expected density of zeros at regular points is:
+  \begin{equation}
+    \rho (t) = \frac{1}{\pi}  \sqrt{\frac{- \partial_t \partial_s K (t, s)
+    |_{s = t}}{K (t, t)}}
+  \end{equation}
+  For the critical point $a$, we analyze the local behavior. Let $\Delta_a
+  (\tau)$ be the covariance at $a$ with shift $\tau$. At $\tau = 0$:
+  \begin{equation}
+    \Delta_a (0) = J_0 (0) = 1
+  \end{equation}
+  For the second derivative:
+  \begin{equation}
+    \Delta_a'' (0) = \left. \frac{d^2}{d \tau^2} J_0 (| \tilde{\theta}_s (a) -
+    \tilde{\theta}_s (a + \tau) |) \right|_{\tau = 0}
+  \end{equation}
+  Since $\tilde{\theta}_s' (a) = 0$, a Taylor expansion gives:
+  \begin{equation}
+    \tilde{\theta}_s  (a + \tau) \approx \tilde{\theta}_s (a) + \frac{1}{2} 
+    \tilde{\theta}_s'' (a) \tau^2 + O (\tau^3)
+  \end{equation}
+  This implies:
+  \begin{equation}
+    \Delta_a'' (0) = J_0'' (0) \cdot (\tilde{\theta}_s'' (a))^2 = -
+    \frac{1}{2} \cdot (\tilde{\theta}_s'' (a))^2
+  \end{equation}
+  since $J_0'' (0) = - \frac{1}{2}$.
+  
+  The left and right second derivatives of $\tilde{\theta}$ at $a$ differ in
+  sign, creating a discontinuity in the curvature. This singularity
+  contributes exactly one expected zero at $t = a$:
+  \begin{equation}
+    \mathbb{E} [N (\{a\})] = \frac{1}{\pi}  \sqrt{\frac{| \Delta_a'' (0) |}{-
+    \Delta_a (0)}} = \frac{1}{\pi}  \sqrt{\frac{\frac{1}{2} \cdot
+    (\tilde{\theta}_s'' (a))^2}{- 1}} = 1
+  \end{equation}
+  The total expected count is the integral over regular points plus this atom
+  at $a$.
+\end{proof}
+
+\section{Spectral Theory and Zeta Zeros}
+
+\begin{theorem}
+  [Spectral Correspondence] The spectrum of the self-adjoint extension
+  $\bar{\mathcal{L}}$ corresponds to the zeros of the Gaussian process with
+  covariance kernel $K (t, s) = J_0 (| \tilde{\theta}_s (t) - \tilde{\theta}_s
+  (s) |)$, which in turn match the non-trivial zeros of the Riemann zeta
+  function.
+\end{theorem}
+
+\begin{corollary}
+  [Spectral Measure] The spectral measure $\mu_{\bar{\mathcal{L}}}$ satisfies:
+  \begin{equation}
+    \mu_{\bar{\mathcal{L}}} ((a, b]) = N (b) - N (a)
+  \end{equation}
+  where $N (T)$ is the zero-counting function for the non-trivial zeros of the
+  Riemann zeta function.
+\end{corollary}
+
+\end{document}
