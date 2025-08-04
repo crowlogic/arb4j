@@ -2542,7 +2542,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     {
       str = expression;
     }
-    if (functionName != null && !functionName.startsWith("_") && !functionName.startsWith("factor"))
+    if (functionName != null && !functionName.startsWith("_") && !functionName.startsWith("operand"))
     {
       str = String.format("%s:%s", functionName, expression);
     }

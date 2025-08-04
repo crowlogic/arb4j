@@ -1,46 +1,16 @@
 package arb.expressions;
 
 import static arb.expressions.Parser.expressionToUniqueClassname;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ACC_SUPER;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.INVOKESTATIC;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.V24;
-import static org.objectweb.asm.Opcodes.V_PREVIEW;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 import org.objectweb.asm.signature.SignatureWriter;
 
-import arb.AlgebraicNumber;
-import arb.Complex;
-import arb.ComplexConstants;
-import arb.ComplexFraction;
-import arb.ComplexMatrix;
-import arb.ComplexPolynomial;
-import arb.ComplexRationalFunction;
-import arb.Fraction;
+import arb.*;
 import arb.Integer;
-import arb.IntegerPolynomial;
-import arb.Quaternion;
-import arb.RationalFunction;
-import arb.Real;
-import arb.RealConstants;
-import arb.RealMatrix;
-import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
@@ -49,9 +19,7 @@ import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.polynomials.ComplexHypergeometricPolynomialFunction;
 import arb.functions.polynomials.RealHypergeometricPolynomialFunction;
-import arb.functions.rational.ComplexRationalHypergeometricFunction;
-import arb.functions.rational.LommelPolynomial;
-import arb.functions.rational.RationalHypergeometricFunction;
+import arb.functions.rational.*;
 import arb.functions.real.RealFunction;
 import arb.functions.real.SphericalBesselFunction;
 import arb.utensils.Utensils;
@@ -95,6 +63,20 @@ import arb.utensils.Utensils;
 public class Compiler
 {
 
+  public static HashSet<Class<?>> complexScalarTypes =
+                                                     new HashSet<>(Arrays.asList(Complex.class,
+                                                                                 ComplexPolynomial.class,
+                                                                                 ComplexMatrix.class));
+
+  public static final String objectDesc = Type.getInternalName(Object.class);
+
+  public static HashSet<Class<?>> realScalarTypes    =
+                                                  new HashSet<>(Arrays.asList(AlgebraicNumber.class,
+                                                                              Integer.class,
+                                                                              Real.class,
+                                                                              RealPolynomial.class,
+                                                                              RealMatrix.class));
+
   public static HashMap<Class<?>, String> typePrefixes = new HashMap<>();
 
   static
@@ -118,15 +100,8 @@ public class Compiler
     typePrefixes.put(ComplexFraction.class, "fℂ");
     typePrefixes.put(SphericalBesselFunction.class, "sph");
     typePrefixes.put(IntegerPolynomial.class, "Xℤ");
-    typePrefixes.put(RealFunction.class, "wtf"); // the answer is that the result variable is
-                                                 // ignored, it shoul be set to null, the generated
-                                                 // code will return the function that it constructs
-                                                 // regadless of whatever is passed int he trailing
-                                                 // result parameter which is usually assed back as
-                                                 // the return value in the fluent programming style
-  }
 
-  public static final String objectDesc = Type.getInternalName(Object.class);
+  }
 
   public static void addNullCheckForField(MethodVisitor mv,
                                           String className,
@@ -147,6 +122,76 @@ public class Compiler
                        false);
     mv.visitInsn(Opcodes.ATHROW);
     mv.visitLabel(notNullLabel);
+  }
+
+  protected static MethodVisitor annotateWith(MethodVisitor methodVisitor,
+                                              Class<? extends Annotation> annotation)
+  {
+    methodVisitor.visitAnnotation(annotation.descriptorString(), true).visitEnd();
+    return methodVisitor;
+  }
+
+  protected static MethodVisitor annotateWithOverride(MethodVisitor methodVisitor)
+  {
+    return annotateWith(methodVisitor, Override.class);
+  }
+
+  /**
+   * TODO: make this more robust and complete it, maybe using hashmaps of hashmaps
+   * or something
+   * 
+   * @param from
+   * @param to
+   * @return true if the from type can be converted to the to type without losing
+   *         information
+   */
+  public static boolean canBeAssignedTo(Class<?> from, Class<?> to)
+  {
+    if (from.equals(to))
+    {
+      return true;
+    }
+
+    if (from.equals(Real.class))
+    {
+      if (to.equals(Complex.class) || to.equals(RealPolynomial.class)
+                    || to.equals(RationalFunction.class) || to.equals(Fraction.class))
+      {
+        return true;
+      }
+    }
+    else if (from.equals(Complex.class))
+    {
+      if (to.equals(ComplexFraction.class) || to.equals(ComplexRationalFunction.class))
+      {
+        return true;
+      }
+    }
+    else if (from.equals(Fraction.class))
+    {
+      if (to.equals(Real.class) || to.equals(ComplexFraction.class) || to.equals(Complex.class)
+                    || to.equals(RationalFunction.class)
+                    || to.equals(ComplexRationalFunction.class))
+      {
+        return true;
+      }
+    }
+    else if (from.equals(Integer.class))
+    {
+      if (to.equals(Real.class) || to.equals(Complex.class) || to.equals(Fraction.class))
+      {
+        return true;
+      }
+    }
+    else if (from.equals(AlgebraicNumber.class))
+    {
+      if (to.equals(Real.class) || to.equals(Complex.class))
+      {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   public static MethodVisitor cast(MethodVisitor methodVisitor, Class<?> type)
@@ -261,18 +306,9 @@ public class Compiler
                    verbose);
   }
 
-  public static MethodVisitor generateNewObjectInstruction(MethodVisitor mv,
-                                                           String functionFieldType)
+  public static ClassVisitor constructClassVisitor()
   {
-    mv.visitTypeInsn(Opcodes.NEW, functionFieldType);
-    return mv;
-  }
-
-  public static MethodVisitor generateNewObjectInstruction(MethodVisitor mv,
-                                                           Class<?> functionFieldType)
-  {
-    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(functionFieldType));
-    return mv;
+    return new ClassWriter(ClassWriter.COMPUTE_FRAMES);
   }
 
   public static MethodVisitor
@@ -284,6 +320,14 @@ public class Compiler
                                                            null,
                                                            null);
     return methodVisitor;
+  }
+
+  public static void designateLabel(org.objectweb.asm.MethodVisitor mv,
+                                    org.objectweb.asm.Label label)
+  {
+
+    mv.visitLabel(label);
+
   }
 
   public static MethodVisitor duplicateTopOfTheStack(MethodVisitor mv)
@@ -351,6 +395,18 @@ public class Compiler
                    null);
   }
 
+  public static MethodVisitor generateCallToGetUnsignedIntValue(MethodVisitor mv)
+  {
+    invokeVirtualMethod(mv, Integer.class, "getUnsignedIntValue", int.class);
+    return mv;
+  }
+
+  public static MethodVisitor generateCallToLoadUnsignedLong(MethodVisitor mv)
+  {
+    invokeVirtualMethod(mv, Integer.class, "getUnsignedValue", long.class);
+    return mv;
+  }
+
   public static <D, R, F extends Function<? extends D, ? extends R>>
          ClassVisitor
          generateFunctionInterface(Expression<D, R, F> expression,
@@ -371,18 +427,64 @@ public class Compiler
     return classVisitor;
   }
 
-  public static MethodVisitor getFieldFromThis(MethodVisitor mv,
-                                               String thisClassInternalName,
-                                               String fieldName,
-                                               Class<?> type)
+  public static void generateFunctionTypeParameterSignature(Class<?> fclass,
+                                                            Class<?> domainClass,
+                                                            Class<?> codomainClass,
+                                                            SignatureWriter sw)
   {
-    return getFieldFromThis(mv, thisClassInternalName, fieldName, type.descriptorString());
+    switch (fclass.getTypeParameters().length)
+    {
+    case 0:
+      break;
+    case 1:
+      sw.visitTypeArgument('=').visitClassType(Type.getInternalName(codomainClass));
+      sw.visitEnd();
+      break;
+    case 2:
+      sw.visitTypeArgument('=').visitClassType(Type.getInternalName(domainClass));
+      sw.visitEnd();
+      sw.visitTypeArgument('=').visitClassType(Type.getInternalName(codomainClass));
+      sw.visitEnd();
+      break;
+    default:
+      assert false : "this can't happen";
+    }
   }
 
-  public static void
-         getField(MethodVisitor mv, String classType, String functionFieldName, String typeDesc)
+  public static MethodVisitor generateNewObjectInstruction(MethodVisitor mv,
+                                                           Class<?> functionFieldType)
   {
-    mv.visitFieldInsn(Opcodes.GETFIELD, classType, functionFieldName, typeDesc);
+    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(functionFieldType));
+    return mv;
+  }
+
+  public static MethodVisitor generateNewObjectInstruction(MethodVisitor mv,
+                                                           String functionFieldType)
+  {
+    mv.visitTypeInsn(Opcodes.NEW, functionFieldType);
+    return mv;
+  }
+
+  public static void generateReturnFromMethod(MethodVisitor methodVisitor)
+  {
+    methodVisitor.visitInsn(Opcodes.ARETURN);
+    methodVisitor.visitMaxs(10, 10);
+    methodVisitor.visitEnd();
+  }
+
+  public static ClassVisitor generateTypesetMethod(ClassVisitor classVisitor, String typeset)
+  {
+    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                                 "typeset",
+                                                 getMethodDescriptor(String.class),
+                                                 null,
+                                                 null);
+
+    annotateWithOverride(methodVisitor);
+    methodVisitor.visitCode();
+    methodVisitor.visitLdcInsn(typeset);
+    generateReturnFromMethod(methodVisitor);
+    return classVisitor;
   }
 
   public static void getField(MethodVisitor mv,
@@ -394,6 +496,20 @@ public class Compiler
              Type.getInternalName(classGettingFieldFrom),
              functionFieldName,
              fieldType.descriptorString());
+  }
+
+  public static void
+         getField(MethodVisitor mv, String classType, String functionFieldName, String typeDesc)
+  {
+    mv.visitFieldInsn(Opcodes.GETFIELD, classType, functionFieldName, typeDesc);
+  }
+
+  public static MethodVisitor getFieldFromThis(MethodVisitor mv,
+                                               String thisClassInternalName,
+                                               String fieldName,
+                                               Class<?> type)
+  {
+    return getFieldFromThis(mv, thisClassInternalName, fieldName, type.descriptorString());
   }
 
   public static MethodVisitor getFieldFromThis(MethodVisitor methodVisitor,
@@ -409,12 +525,48 @@ public class Compiler
     return methodVisitor;
   }
 
+  public static String getFunctionClassTypeSignature(Class<? extends Function<?, ?>> functionClass,
+                                                     Class<?> domainClass,
+                                                     Class<?> coDomainClass,
+                                                     Class<?>[] implementedInterfaces)
+  {
+    var sw = new SignatureWriter();
+
+    sw.visitSuperclass().visitClassType(Type.getInternalName(Object.class));
+    sw.visitEnd();
+
+    sw.visitInterface().visitClassType(Type.getInternalName(functionClass));
+    generateFunctionTypeParameterSignature(functionClass, domainClass, coDomainClass, sw);
+    sw.visitEnd();
+
+    for (var interfaceClass : implementedInterfaces)
+    {
+      sw.visitInterface();
+      sw.visitClassType(Type.getInternalName(interfaceClass));
+      sw.visitEnd();
+    }
+    return sw.toString();
+  }
+
   public static String getMethodDescriptor(Class<?> ret, Class<?>... args)
   {
     return Type.getMethodDescriptor(Type.getType(ret),
                                     Utensils.classTypes(args).toArray(new Type[args.length]))
                .replace("Ljava/lang/Void;", "V");
 
+  }
+
+  public static String getTypeMethodSignature(Class<?> type)
+  {
+    SignatureWriter sigWriter = new SignatureWriter();
+    sigWriter.visitParameterType();
+    sigWriter.visitReturnType();
+    sigWriter.visitClassType(Type.getInternalName(Class.class));
+    sigWriter.visitTypeArgument('=');
+    sigWriter.visitClassType(Type.getInternalName(type));
+    sigWriter.visitEnd();
+    sigWriter.visitEnd();
+    return sigWriter.toString();
   }
 
   public static String getVariablePrefix(Class<?> type)
@@ -445,6 +597,12 @@ public class Compiler
                        false);
   }
 
+  public static MethodVisitor invokeCloseMethod(MethodVisitor methodVisitor, Class<?> type)
+  {
+    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(type), "close", "()V", false);
+    return methodVisitor;
+  }
+
   public static void invokeConstructor(MethodVisitor mv, Class<?> returnType, Class<?>... argTypes)
   {
     invokeMethod(mv, INVOKESPECIAL, returnType, "<init>", Void.class, argTypes);
@@ -462,6 +620,29 @@ public class Compiler
   public static void invokeDefaultConstructor(MethodVisitor mv, String functionFieldType)
   {
     mv.visitMethodInsn(Opcodes.INVOKESPECIAL, functionFieldType, "<init>", "()V", false);
+  }
+
+  public static MethodVisitor invokeInterfaceMethod(MethodVisitor methodVisitor,
+                                                    Class<?> thisClass,
+                                                    String methodName,
+                                                    Class<?> retType,
+                                                    Class<?>... argTypes)
+  {
+    return invokeMethod(methodVisitor, thisClass, methodName, retType, true, argTypes);
+  }
+
+  public static MethodVisitor invokeMethod(MethodVisitor methodVisitor,
+                                           Class<?> thisClass,
+                                           String methodName,
+                                           Class<?> retType,
+                                           boolean isInterface,
+                                           Class<?>... argTypes)
+  {
+    return invokeMethod(methodVisitor,
+                        Type.getInternalName(thisClass),
+                        methodName,
+                        getMethodDescriptor(retType, argTypes),
+                        isInterface);
   }
 
   public static MethodVisitor invokeMethod(MethodVisitor methodVisitor,
@@ -490,38 +671,6 @@ public class Compiler
                        Compiler.getMethodDescriptor(returnType, argTypes),
                        whichClass.isInterface());
     return mv;
-  }
-
-  public static MethodVisitor invokeInterfaceMethod(MethodVisitor methodVisitor,
-                                                    Class<?> thisClass,
-                                                    String methodName,
-                                                    Class<?> retType,
-                                                    Class<?>... argTypes)
-  {
-    return invokeMethod(methodVisitor, thisClass, methodName, retType, true, argTypes);
-  }
-
-  public static MethodVisitor invokeVirtualMethod(MethodVisitor methodVisitor,
-                                                  Class<?> thisClass,
-                                                  String methodName,
-                                                  Class<?> retType,
-                                                  Class<?>... argTypes)
-  {
-    return invokeMethod(methodVisitor, thisClass, methodName, retType, false, argTypes);
-  }
-
-  public static MethodVisitor invokeMethod(MethodVisitor methodVisitor,
-                                           Class<?> thisClass,
-                                           String methodName,
-                                           Class<?> retType,
-                                           boolean isInterface,
-                                           Class<?>... argTypes)
-  {
-    return invokeMethod(methodVisitor,
-                        Type.getInternalName(thisClass),
-                        methodName,
-                        getMethodDescriptor(retType, argTypes),
-                        isInterface);
   }
 
   public static MethodVisitor invokeMethod(MethodVisitor methodVisitor,
@@ -568,9 +717,32 @@ public class Compiler
     return invokeMethod(mv, INVOKESTATIC, whichClass, methodName, returnType, argTypes);
   }
 
-  public static MethodVisitor invokeCloseMethod(MethodVisitor methodVisitor, Class<?> type)
+  public static MethodVisitor invokeVirtualMethod(MethodVisitor methodVisitor,
+                                                  Class<?> thisClass,
+                                                  String methodName,
+                                                  Class<?> retType,
+                                                  Class<?>... argTypes)
   {
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(type), "close", "()V", false);
+    return invokeMethod(methodVisitor, thisClass, methodName, retType, false, argTypes);
+  }
+
+  public static void jumpTo(org.objectweb.asm.MethodVisitor methodVisitor,
+                            org.objectweb.asm.Label label)
+  {
+    methodVisitor.visitJumpInsn(GOTO, label);
+  }
+
+  public static void jumpToIfGreaterThan(org.objectweb.asm.MethodVisitor methodVisitor,
+                                         org.objectweb.asm.Label label)
+  {
+    methodVisitor.visitJumpInsn(IFGT, label);
+  }
+
+  public static org.objectweb.asm.MethodVisitor
+         jumpToIfLessThanOrEquals(org.objectweb.asm.MethodVisitor methodVisitor,
+                                  org.objectweb.asm.Label label)
+  {
+    methodVisitor.visitJumpInsn(IFLE, label);
     return methodVisitor;
   }
 
@@ -587,6 +759,22 @@ public class Compiler
   {
     methodVisitor.visitVarInsn(Opcodes.ILOAD, 3);
     return methodVisitor;
+  }
+
+  public static void loadComplexConstantOntoStack(MethodVisitor mv, String fn)
+  {
+    loadConstantOntoStack(mv, fn, Complex.class, ComplexConstants.class);
+  }
+
+  public static void loadConstantOntoStack(MethodVisitor mv,
+                                           String fieldName,
+                                           Class<?> typeClass,
+                                           Class<?> staticConstantsClass)
+  {
+    mv.visitFieldInsn(Opcodes.GETSTATIC,
+                      Type.getInternalName(staticConstantsClass),
+                      fieldName,
+                      typeClass.descriptorString());
   }
 
   @SuppressWarnings("unchecked")
@@ -647,6 +835,17 @@ public class Compiler
     return methodVisitor;
   }
 
+  public static MethodVisitor loadPointer(MethodVisitor mv)
+  {
+    getField(mv, Integer.class, "swigCPtr", long.class);
+    return mv;
+  }
+
+  public static void loadRealConstantOntoStack(MethodVisitor mv, String fn)
+  {
+    loadConstantOntoStack(mv, fn, Real.class, RealConstants.class);
+  }
+
   /**
    * Loads the 4th (last) argument onto the stack, and since this follows the
    * fluent pattern, it is also the return variable
@@ -670,6 +869,11 @@ public class Compiler
     return methodVisitor;
   }
 
+  public static void pop(org.objectweb.asm.MethodVisitor methodVisitor)
+  {
+    methodVisitor.visitInsn(POP);
+  }
+
   public static void putField(MethodVisitor mv,
                               String fieldType,
                               String variableFieldName,
@@ -688,18 +892,6 @@ public class Compiler
   {
     mv.visitFieldInsn(Opcodes.PUTFIELD, fieldType, variableFieldName, variableFieldType);
   }
-
-  public static HashSet<Class<?>> realScalarTypes    =
-                                                  new HashSet<>(Arrays.asList(AlgebraicNumber.class,
-                                                                              Integer.class,
-                                                                              Real.class,
-                                                                              RealPolynomial.class,
-                                                                              RealMatrix.class));
-
-  public static HashSet<Class<?>> complexScalarTypes =
-                                                     new HashSet<>(Arrays.asList(Complex.class,
-                                                                                 ComplexPolynomial.class,
-                                                                                 ComplexMatrix.class));
 
   public static Class<?> scalarType(Class<?> resultType)
   {
@@ -738,202 +930,6 @@ public class Compiler
   {
     mv.visitInsn(Opcodes.SWAP);
     return mv;
-  }
-
-  public static void generateReturnFromMethod(MethodVisitor methodVisitor)
-  {
-    methodVisitor.visitInsn(Opcodes.ARETURN);
-    methodVisitor.visitMaxs(10, 10);
-    methodVisitor.visitEnd();
-  }
-
-  public static String getFunctionClassTypeSignature(Class<? extends Function<?, ?>> functionClass,
-                                                     Class<?> domainClass,
-                                                     Class<?> coDomainClass,
-                                                     Class<?>[] implementedInterfaces)
-  {
-    var sw = new SignatureWriter();
-
-    sw.visitSuperclass().visitClassType(Type.getInternalName(Object.class));
-    sw.visitEnd();
-
-    sw.visitInterface().visitClassType(Type.getInternalName(functionClass));
-    generateFunctionTypeParameterSignature(functionClass, domainClass, coDomainClass, sw);
-    sw.visitEnd();
-
-    for (var interfaceClass : implementedInterfaces)
-    {
-      sw.visitInterface();
-      sw.visitClassType(Type.getInternalName(interfaceClass));
-      sw.visitEnd();
-    }
-    return sw.toString();
-  }
-
-  public static void generateFunctionTypeParameterSignature(Class<?> fclass,
-                                                            Class<?> domainClass,
-                                                            Class<?> codomainClass,
-                                                            SignatureWriter sw)
-  {
-    switch (fclass.getTypeParameters().length)
-    {
-    case 0:
-      break;
-    case 1:
-      sw.visitTypeArgument('=').visitClassType(Type.getInternalName(codomainClass));
-      sw.visitEnd();
-      break;
-    case 2:
-      sw.visitTypeArgument('=').visitClassType(Type.getInternalName(domainClass));
-      sw.visitEnd();
-      sw.visitTypeArgument('=').visitClassType(Type.getInternalName(codomainClass));
-      sw.visitEnd();
-      break;
-    default:
-      assert false : "this can't happen";
-    }
-  }
-
-  protected static MethodVisitor annotateWith(MethodVisitor methodVisitor,
-                                              Class<? extends Annotation> annotation)
-  {
-    methodVisitor.visitAnnotation(annotation.descriptorString(), true).visitEnd();
-    return methodVisitor;
-  }
-
-  protected static MethodVisitor annotateWithOverride(MethodVisitor methodVisitor)
-  {
-    return annotateWith(methodVisitor, Override.class);
-  }
-
-  public static ClassVisitor generateTypesetMethod(ClassVisitor classVisitor, String typeset)
-  {
-    var methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                 "typeset",
-                                                 getMethodDescriptor(String.class),
-                                                 null,
-                                                 null);
-
-    annotateWithOverride(methodVisitor);
-    methodVisitor.visitCode();
-    methodVisitor.visitLdcInsn(typeset);
-    generateReturnFromMethod(methodVisitor);
-    return classVisitor;
-  }
-
-  public static String getTypeMethodSignature(Class<?> type)
-  {
-    SignatureWriter sigWriter = new SignatureWriter();
-    sigWriter.visitParameterType();
-    sigWriter.visitReturnType();
-    sigWriter.visitClassType(Type.getInternalName(Class.class));
-    sigWriter.visitTypeArgument('=');
-    sigWriter.visitClassType(Type.getInternalName(type));
-    sigWriter.visitEnd();
-    sigWriter.visitEnd();
-    return sigWriter.toString();
-  }
-
-  public static ClassVisitor constructClassVisitor()
-  {
-    return new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-  }
-
-  public static MethodVisitor generateCallToGetUnsignedIntValue(MethodVisitor mv)
-  {
-    invokeVirtualMethod(mv, Integer.class, "getUnsignedIntValue", int.class);
-    return mv;
-  }
-
-  public static MethodVisitor generateCallToLoadUnsignedLong(MethodVisitor mv)
-  {
-    invokeVirtualMethod(mv, Integer.class, "getUnsignedValue", long.class);
-    return mv;
-  }
-
-  public static MethodVisitor loadPointer(MethodVisitor mv)
-  {
-    getField(mv, Integer.class, "swigCPtr", long.class);
-    return mv;
-  }
-
-  public static void loadConstantOntoStack(MethodVisitor mv,
-                                           String fieldName,
-                                           Class<?> typeClass,
-                                           Class<?> staticConstantsClass)
-  {
-    mv.visitFieldInsn(Opcodes.GETSTATIC,
-                      Type.getInternalName(staticConstantsClass),
-                      fieldName,
-                      typeClass.descriptorString());
-  }
-
-  public static void loadComplexConstantOntoStack(MethodVisitor mv, String fn)
-  {
-    loadConstantOntoStack(mv, fn, Complex.class, ComplexConstants.class);
-  }
-
-  public static void loadRealConstantOntoStack(MethodVisitor mv, String fn)
-  {
-    loadConstantOntoStack(mv, fn, Real.class, RealConstants.class);
-  }
-
-  /**
-   * TODO: make this more robust and complete it, maybe using hashmaps of hashmaps
-   * or something
-   * 
-   * @param from
-   * @param to
-   * @return true if the from type can be converted to the to type without losing
-   *         information
-   */
-  public static boolean canBeAssignedTo(Class<?> from, Class<?> to)
-  {
-    if (from.equals(to))
-    {
-      return true;
-    }
-
-    if (from.equals(Real.class))
-    {
-      if (to.equals(Complex.class) || to.equals(RealPolynomial.class)
-                    || to.equals(RationalFunction.class) || to.equals(Fraction.class))
-      {
-        return true;
-      }
-    }
-    else if (from.equals(Complex.class))
-    {
-      if (to.equals(ComplexFraction.class) || to.equals(ComplexRationalFunction.class))
-      {
-        return true;
-      }
-    }
-    else if (from.equals(Fraction.class))
-    {
-      if (to.equals(Real.class) || to.equals(ComplexFraction.class) || to.equals(Complex.class)
-                    || to.equals(RationalFunction.class)
-                    || to.equals(ComplexRationalFunction.class))
-      {
-        return true;
-      }
-    }
-    else if (from.equals(Integer.class))
-    {
-      if (to.equals(Real.class) || to.equals(Complex.class) || to.equals(Fraction.class))
-      {
-        return true;
-      }
-    }
-    else if (from.equals(AlgebraicNumber.class))
-    {
-      if (to.equals(Real.class) || to.equals(Complex.class))
-      {
-        return true;
-      }
-    }
-
-    return false;
   }
 
 }
