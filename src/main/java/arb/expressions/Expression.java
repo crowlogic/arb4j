@@ -2008,7 +2008,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                   || (entirelySubscripted && !isLatinOrGreek
                                 && Parser.isAlphabeticalOrNumericSubscript(character))
                   || (entirelySuperscripted && !isLatinOrGreek
-                                && Parser.isAlphabeticalSuperscript(character)))
+                                && Parser.isAlphabeticalSuperscript(character))
+                  || Parser.isCombiningDiacritic(character)) // Add this line
     {
       nextCharacter();
       if (isLatinOrGreek)
@@ -2017,12 +2018,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
     }
     var substring = expression.substring(startPos, position).trim();
-    String name = Parser.subscriptAndSuperscriptsToRegular(substring);
-    if ( log.isDebugEnabled() )
-    {
-      log.debug("parseName returning '{}' from '{}'", name, expression );
-    }
-    return name;
+    return Parser.subscriptAndSuperscriptsToRegular(substring);
   }
 
   /**
