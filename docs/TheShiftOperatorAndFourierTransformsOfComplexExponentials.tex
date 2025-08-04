@@ -12,9 +12,11 @@
 
 \begin{document}
 
-\title{Stone's Theorem, Shift Group, and Fourier Transform}
+\title{Stone's Theorem, The Shift Group, and The Fourier Transform}
 
 \maketitle
+
+{\tableofcontents}
 
 \section*{Definitions}
 
@@ -102,6 +104,60 @@ domain $D (P) = D (A)$.
 \end{proof}
 
 \begin{theorem}
+  [Fourier Transform of Complex Exponential] Let $\omega_0 \in \mathbb{R}$. In
+  the distributional sense,
+  \[ \mathcal{F} [e^{i \omega_0 x}] (\omega) = 2 \pi \delta (\omega -
+     \omega_0) \]
+  where $\delta$ is the Dirac delta distribution.
+\end{theorem}
+
+\begin{proof}
+  We prove this by showing that for any test function $\phi \in \mathcal{S}
+  (\mathbb{R})$ (Schwartz space):
+  \[ \langle \mathcal{F}[e^{i \omega_0 x}], \phi \rangle = 2 \pi \phi
+     (\omega_0) \]
+  By definition of the Fourier transform of distributions:
+  
+  \begin{align}
+    \langle \mathcal{F}[e^{i \omega_0 x}], \phi \rangle & = \langle e^{i
+    \omega_0 x}, \mathcal{F}[\phi] \rangle \\
+    & = \int_{- \infty}^{\infty} e^{i \omega_0 x}  \hat{\phi} (x) dx \\
+    & = \int_{- \infty}^{\infty} e^{i \omega_0 x}  \int_{- \infty}^{\infty}
+    \phi (\omega) e^{- i \omega x} d \omega dx 
+  \end{align}
+  
+  By Fubini's theorem (valid for $\phi \in \mathcal{S} (\mathbb{R})$):
+  
+  \begin{align}
+    & = \int_{- \infty}^{\infty} \phi (\omega)  \int_{- \infty}^{\infty} e^{i
+    (\omega_0 - \omega) x} dxd \omega \\
+    & = \int_{- \infty}^{\infty} \phi (\omega) \cdot 2 \pi \delta (\omega_0 -
+    \omega) d \omega \\
+    & = 2 \pi \phi (\omega_0) \\
+    & = \langle 2 \pi \delta (\omega - \omega_0), \phi \rangle 
+  \end{align}
+  
+  Therefore, $\mathcal{F} [e^{i \omega_0 x}] = 2 \pi \delta (\omega -
+  \omega_0)$.
+\end{proof}
+
+\begin{theorem}
+  [Inverse Fourier Transform of Dirac Delta] In the distributional sense,
+  \[ \mathcal{F}^{- 1}  [\delta (\omega - \omega_0)] (x) = \frac{1}{2 \pi}
+     e^{i \omega_0 x} \]
+\end{theorem}
+
+\begin{proof}
+  From the previous theorem, we have $\mathcal{F} [e^{i \omega_0 x}] = 2 \pi
+  \delta (\omega - \omega_0)$. Applying $\mathcal{F}^{- 1}$ to both sides:
+  \[ e^{i \omega_0 x} =\mathcal{F}^{- 1}  [2 \pi \delta (\omega - \omega_0)]
+  \]
+  Therefore:
+  \[ \mathcal{F}^{- 1}  [\delta (\omega - \omega_0)] = \frac{1}{2 \pi} e^{i
+     \omega_0 x} \]
+\end{proof}
+
+\begin{theorem}
   [Spectral Decomposition via Fourier Transform] Under the Fourier transform
   $\mathcal{F}$:
   \begin{enumerate}
@@ -157,6 +213,32 @@ domain $D (P) = D (A)$.
      = e^{i \omega t} e^{i \omega x} \]
 \end{proof}
 
+\begin{theorem}
+  [Spectral Representation of Identity] The identity operator can be
+  represented using the Dirac delta:
+  \[ I = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} |e^{i \omega \cdot} \rangle
+     \langle e^{i \omega \cdot} |d \omega \]
+  where in distributional form:
+  \[ \delta (x - y) = \frac{1}{2 \pi}  \int_{- \infty}^{\infty} e^{i \omega (x
+     - y)} d \omega \]
+\end{theorem}
+
+\begin{proof}
+  For any test function $f$:
+  
+  \begin{align}
+    \frac{1}{2 \pi}  \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} f (y)
+    e^{i \omega (x - y)} dyd \omega & = \int_{- \infty}^{\infty} f (y)  \left[
+    \frac{1}{2 \pi}  \int_{- \infty}^{\infty} e^{i \omega (x - y)} d \omega
+    \right] dy \\
+    & = \int_{- \infty}^{\infty} f (y) \delta (x - y) dy \\
+    & = f (x) 
+  \end{align}
+  
+  This shows the spectral representation of the identity using the continuous
+  spectrum of the momentum operator.
+\end{proof}
+
 \begin{corollary}
   [Consistency Check] The eigenvalue relationships are consistent:
   \[ S_t e^{i \omega x} = e^{tA} e^{i \omega x} = e^{t (i \omega)} e^{i \omega
@@ -166,26 +248,33 @@ domain $D (P) = D (A)$.
 
 \section*{Conclusion}
 
-Stone's theorem ensures that the shift group $(S_t)$ has a **skew-adjoint
-generator** $A = \frac{d}{dx}$, whose eigenfunctions are the complex
+Stone's theorem ensures that the shift group $(S_t)$ has a skew-adjoint
+generator $A = \frac{d}{dx}$, whose eigenfunctions are the complex
 exponentials $e^{i \omega x}$ with purely imaginary eigenvalues $i \omega$.
 The related **self-adjoint momentum operator** $P = - iA$ has the same
 eigenfunctions but with real eigenvalues $\omega$.
 
-The Fourier transform provides the spectral decomposition that diagonalizes
-both operators:
+The Dirac delta function emerges naturally as the Fourier transform of complex
+exponentials, providing the spectral measure for the continuous spectrum of
+the momentum operator. This gives us the fundamental relationships:
 \begin{itemize}
-  \item $P$ becomes multiplication by $\omega$ (real eigenvalues)
+  \item Complex exponentials $e^{i \omega_0 x} \leftrightarrow 2 \pi \delta
+  (\omega - \omega_0)$ under Fourier transform
   
-  \item $S_t$ becomes multiplication by $e^{i \omega t}$ (unitary eigenvalues
-  on the unit circle)
+  \item The identity operator has the spectral representation $I = \frac{1}{2
+  \pi}  \int_{- \infty}^{\infty} |e^{i \omega \cdot} \rangle \langle e^{i
+  \omega \cdot} |d \omega$
+  
+  \item The delta function provides the orthogonality relation for the
+  continuous eigenfunction basis
 \end{itemize}
-This mathematical structure underlies all of Fourier analysis: complex
-exponentials are the fundamental building blocks because they are precisely
-the functions that transform simply under shifts, making them the natural
-basis for analyzing translation-invariant systems. The distinction between the
-skew-adjoint generator $A$ (with imaginary eigenvalues) and the self-adjoint
-momentum operator $P$ (with real eigenvalues) is crucial for understanding why
-unitary groups arise from self-adjoint operators via Stone's theorem.
+The Fourier transform provides the spectral decomposition that diagonalizes
+both operators, with the Dirac delta serving as the key distributional tool
+that makes the continuous spectrum rigorous. This mathematical structure
+underlies all of Fourier analysis and quantum mechanics, where complex
+exponentials are the fundamental building blocks precisely because they
+diagonalize translation-invariant systems.
+
+\
 
 \end{document}
