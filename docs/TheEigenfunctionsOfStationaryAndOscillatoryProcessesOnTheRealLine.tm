@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|framed-theorems>>
+<style|<tuple|generic|framed-theorems|alt-colors>>
 
 <\body>
   <doc-data|<doc-title|The Eigenfunctions of Stationary and Oscillatory
@@ -153,7 +153,7 @@
     The orthogonality of <math|d*Z<around|(|\<omega\>|)>> requires
 
     <\equation*>
-      <E><around|[|d*Z<around|(|\<lambda\>|)>*d*Z<rsup|\<ast\>><around|(|\<omega\>|)>|]>=\<delta\>*<around|(|\<lambda\>-\<omega\>|)>*d*F<around|(|\<lambda\>|)>
+      \<bbb-E\><around|[|d*Z<around|(|\<lambda\>|)>*d*Z<rsup|\<ast\>><around|(|\<omega\>|)>|]>=\<delta\>*<around|(|\<lambda\>-\<omega\>|)>*d*F<around|(|\<lambda\>|)>
     </equation*>
 
     This condition, with the evolutionary spectral representation, directly
@@ -161,74 +161,78 @@
   </proof>
 
   <\theorem>
-    <dueto|Real-Valued Oscillatory Processes>Let <math|X<around|(|t|)>> be an
-    oscillatory process with evolutionary spectral representation
+    <dueto|Real-Valued Oscillatory Processes>Let <math|Z<around|(|t|)>> be a
+    sample path realization of an oscillatory process (with evolutionary
+    spectral representation)
 
-    <\equation*>
-      X<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*Z<around|(|\<omega\>|)>
-    </equation*>
+    <\equation>
+      X<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|\<lambda\>><around|(|t|)>*e<rsup|i*\<lambda\>*t>*d*\<Phi\><around|(|\<lambda\>|)>
+    </equation>
 
-    where <math|A<around|(|t,\<omega\>|)>> is the evolutionary amplitude
-    function and <math|Z<around|(|\<omega\>|)>> is an orthogonal increment
-    process. Then <math|X<around|(|t|)>> is real-valued if and only if the
-    following conditions hold:
+    where <math|A<rsub|t><around|(|\<omega\>|)>> is the gain function and
+    <math|\<Phi\><around|(|\<omega\>|)>> is an orthogonal increment process.
+    Then <math|X<around|(|t|)>> is real-valued if and only if the following
+    conditions hold:
 
-    <\equation*>
-      A<around|(|t,\<omega\>|)>=A<rsup|\<ast\>><around|(|t,-\<omega\>|)><space|2em><text|(Amplitude
+    <\equation>
+      A<around|(|t,\<omega\>|)>=A<rsup|\<ast\>><around|(|t,-\<omega\>|)><space|2em><text|(Gain
       Conjugate Symmetry)>
-    </equation*>
+    </equation>
 
-    <\equation*>
+    <\equation>
       d*Z*<around|(|-\<omega\>|)>=d*Z<rsup|\<ast\>><around|(|\<omega\>|)><space|2em><text|(Increment
       Conjugate Symmetry)>
-    </equation*>
+    </equation>
   </theorem>
 
   <\proof>
     <with|font-series|bold|Necessity:> Assume <math|X<around|(|t|)>> is
-    real-valued, so <math|X<around|(|t|)>=X<rsup|\<ast\>><around|(|t|)>> for
-    all <math|t\<in\>\<bbb-R\>>.
+    real-valued, so
+
+    <\equation>
+      X<around|(|t|)>=X<rsup|\<ast\>><around|(|t|)>\<forall\>t\<in\>\<bbb-R\>
+    </equation>
 
     Taking the complex conjugate of the evolutionary spectral representation:
 
-    <\equation*>
+    <\equation>
       X<rsup|\<ast\>><around|(|t|)>=<around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*Z<around|(|\<omega\>|)>|]><rsup|\<ast\>>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsup|\<ast\>><around|(|t,\<omega\>|)>*e<rsup|-i*\<omega\>*t>*d*Z<rsup|\<ast\>><around|(|\<omega\>|)>
-    </equation*>
+    </equation>
 
     Making the substitution <math|\<omega\>\<mapsto\>-\<omega\>> in this
     integral:
 
-    <\equation*>
+    <\equation>
       X<rsup|\<ast\>><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsup|\<ast\>><around|(|t,-\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*Z<rsup|\<ast\>>*<around|(|-\<omega\>|)>
-    </equation*>
+    </equation>
 
     Since <math|X<around|(|t|)>=X<rsup|\<ast\>><around|(|t|)>>, we have:
 
-    <\equation*>
+    <\equation>
       <big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*Z<around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsup|\<ast\>><around|(|t,-\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*Z<rsup|\<ast\>>*<around|(|-\<omega\>|)>
-    </equation*>
+    </equation>
 
     By the uniqueness of the evolutionary spectral representation, this
     equality holds for all <math|t> if and only if:
 
-    <\equation*>
+    <\equation>
       A<around|(|t,\<omega\>|)>=A<rsup|\<ast\>><around|(|t,-\<omega\>|)>
-    </equation*>
+    </equation>
 
-    <\equation*>
+    <\equation>
       d*Z<around|(|\<omega\>|)>=d*Z<rsup|\<ast\>>*<around|(|-\<omega\>|)>
-    </equation*>
+    </equation>
 
     <with|font-series|bold|Sufficiency:> Assume the two conjugate symmetry
     conditions hold. Then:
 
-    <\equation*>
+    <\equation>
       X<rsup|\<ast\>><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsup|\<ast\>><around|(|t,\<omega\>|)>*e<rsup|-i*\<omega\>*t>*d*Z<rsup|\<ast\>><around|(|\<omega\>|)>
-    </equation*>
+    </equation>
 
-    <\equation*>
+    <\equation>
       =<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,-\<omega\>|)>*e<rsup|-i*\<omega\>*t>*d*Z*<around|(|-\<omega\>|)>
-    </equation*>
+    </equation>
 
     Substituting <math|\<omega\>\<mapsto\>-\<omega\>>:
 
@@ -245,19 +249,107 @@
     <math|\<phi\><around|(|t,\<omega\>|)>=A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>>
     satisfy the conjugate symmetry relation
 
-    <\equation*>
+    <\equation>
       \<phi\><rsup|\<ast\>><around|(|t,\<omega\>|)>=\<phi\><around|(|t,-\<omega\>|)>
-    </equation*>
+    </equation>
   </theorem>
 
   <\proof>
     Given that <math|A<around|(|t,\<omega\>|)>=A<rsup|\<ast\>><around|(|t,-\<omega\>|)>>,
     we compute:
 
-    <\align*>
-      <tformat|<table|<row|<cell|\<phi\><rsup|\<ast\>><around|(|t,\<omega\>|)>>|<cell|=<around|[|A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>|]><rsup|\<ast\>>>>|<row|<cell|>|<cell|=A<rsup|\<ast\>><around|(|t,\<omega\>|)>*e<rsup|-i*\<omega\>*t>>>|<row|<cell|>|<cell|=A<around|(|t,-\<omega\>|)>*e<rsup|-i*\<omega\>*t><space|1em><text|(by
-      amplitude symmetry)>>>|<row|<cell|>|<cell|=\<phi\><around|(|t,-\<omega\>|)>>>>>
-    </align*>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|\<phi\><rsup|\<ast\>><around|(|t,\<omega\>|)>>|<cell|=<around|[|A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>|]><rsup|\<ast\>>>>|<row|<cell|>|<cell|=A<rsup|\<ast\>><around|(|t,\<omega\>|)>*e<rsup|-i*\<omega\>*t>>>|<row|<cell|>|<cell|=A<around|(|t,-\<omega\>|)>*e<rsup|-i*\<omega\>*t><space|1em><text|(by
+      amplitude symmetry)>>>|<row|<cell|>|<cell|=\<phi\><around|(|t,-\<omega\>|)>>>>>>
+    </equation>
+
+    \;
+  </proof>
+
+  <\theorem>
+    <dueto|Equivalence of Evolutionary Spectral and Filter
+    Representations>Let <math|X<around|(|t|)>> be a stochastic process. The
+    evolutionary spectral representation
+
+    <\equation>
+      X<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*Z<around|(|\<omega\>|)>
+    </equation>
+
+    where <math|A<around|(|t,\<omega\>|)>> is the gain function and
+    <math|d*Z<around|(|\<omega\>|)>> is an orthogonal increment process, is
+    equivalent to the time-domain filter representation
+
+    <\equation>
+      X<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|t>*<around|(|t-s|)>*d*W<around|(|s|)>
+    </equation>
+
+    where <math|h<rsub|t>*<around|(|t-s|)>> is a time-dependent filter kernel
+    and <math|d*W<around|(|s|)>> is an orthogonal increment process.
+  </theorem>
+
+  <\proof>
+    The filter kernel <math|h<rsub|t>*<around|(|t-s|)>> is related to the
+    gain function and oscillatory function by the Fourier transform
+    relationships:
+
+    <align|<tformat|<table|<row|<cell|h<rsub|t>*<around|(|t-s|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><around|(|t,\<omega\>|)>*e<rsup|-i*\<omega\>*<around|(|t-s|)>>*d*\<omega\><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>*e<rsup|-i*\<omega\>*<around|(|t-s|)>>*d*\<omega\><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*s>*d*\<omega\><eq-number>>>>>>
+
+    where <math|\<phi\><around|(|t,\<omega\>|)>=A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>>
+    is the oscillatory function.
+
+    The inverse relationships are:
+
+    <\equation>
+      A<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|t>*<around|(|t-s|)>*e<rsup|-i*\<omega\>*s>*d*s
+    </equation>
+
+    <\equation>
+      \<phi\><around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|t><around|(|u|)>*e<rsup|-i*\<omega\>*<around|(|t-u|)>>*d*u
+    </equation>
+
+    To establish the equivalence of the two representations, substitute the
+    orthogonal increment relationship <math|d*Z<around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*\<omega\>*s>*d*W<around|(|s|)>>
+    into the evolutionary spectral representation:
+
+    <align|<tformat|<table|<row|<cell|X<around|(|t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*Z<around|(|\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t><around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*\<omega\>*s>*d*W<around|(|s|)>|]>*d*\<omega\><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>*e<rsup|-i*\<omega\>*s>*d*\<omega\>|]>*d*W<around|(|s|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*<around|(|t-s|)>>*d*\<omega\>|]>*d*W<around|(|s|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|t>*<around|(|t-s|)>*d*W<around|(|s|)><eq-number>>>>>>
+
+    where the last equality follows from the definition of
+    <math|h<rsub|t>*<around|(|t-s|)>> with <math|u=t-s>.
+  </proof>
+
+  <\theorem>
+    <dueto|Fourier Transform Relationships>The gain function
+    <math|A<around|(|t,\<omega\>|)>>, oscillatory function
+    <math|\<phi\><around|(|t,\<omega\>|)>>, and filter kernel
+    <math|h<rsub|t><around|(|u|)>> satisfy the following Fourier transform
+    relationships:
+
+    <align|<tformat|<table|<row|<cell|A<around|(|t,\<omega\>|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|t>*<around|(|t-s|)>*e<rsup|-i*\<omega\>*s>*d*s<eq-number>>>|<row|<cell|\<phi\><around|(|t,\<omega\>|)>>|<cell|=A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|t><around|(|u|)>*e<rsup|-i*\<omega\>*<around|(|t-u|)>>*d*u<eq-number>>>|<row|<cell|h<rsub|t>*<around|(|t-s|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*s>*d*\<omega\>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><around|(|t,\<omega\>|)>*e<rsup|-i*\<omega\>*<around|(|t-s|)>>*d*\<omega\><eq-number>>>>>>
+  </theorem>
+
+  <\proof>
+    The proof establishes each transform relationship directly.
+
+    For the first relationship, apply the inverse Fourier transform to
+    <math|h<rsub|t>*<around|(|t-s|)>>:
+
+    <align|<tformat|<table|<row|<cell|A<around|(|t,\<omega\>|)>>|<cell|=\<cal-F\><rsub|s><rsup|-1>*<around|[|h<rsub|t>*<around|(|t-s|)>|]><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|t>*<around|(|t-s|)>*e<rsup|-i*\<omega\>*s>*d*s<eq-number>>>>>>
+
+    For the oscillatory function relationship, substitute the definition
+    <math|\<phi\><around|(|t,\<omega\>|)>=A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>>:
+
+    <align|<tformat|<table|<row|<cell|\<phi\><around|(|t,\<omega\>|)>>|<cell|=A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t><eq-number>>>|<row|<cell|>|<cell|=<around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|t>*<around|(|t-s|)>*e<rsup|-i*\<omega\>*s>*d*s|]>*e<rsup|i*\<omega\>*t><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|t>*<around|(|t-s|)>*e<rsup|-i*\<omega\>*s>*e<rsup|i*\<omega\>*t>*d*s<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|t>*<around|(|t-s|)>*e<rsup|-i*\<omega\>*<around|(|s-t|)>>*d*s<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<rsub|t><around|(|u|)>*e<rsup|-i*\<omega\>*<around|(|t-u|)>>*d*u<eq-number>>>>>>
+
+    where <math|u=t-s> in the last step.
+
+    For the inverse relationships, apply the Fourier transform to recover
+    <math|h<rsub|t>*<around|(|t-s|)>>:
+
+    <align|<tformat|<table|<row|<cell|h<rsub|t>*<around|(|t-s|)>>|<cell|=\<cal-F\><rsub|\<omega\>><rsup|-1>*<around|[|A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*s>|]><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*s>*d*\<omega\><eq-number>>>>>>
+
+    Similarly:
+
+    <align|<tformat|<table|<row|<cell|h<rsub|t>*<around|(|t-s|)>>|<cell|=\<cal-F\><rsub|\<omega\>><rsup|-1>*<around|[|\<phi\><around|(|t,\<omega\>|)>*e<rsup|-i*\<omega\>*t>|]><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><around|(|t,\<omega\>|)>*e<rsup|-i*\<omega\>*t>*e<rsup|i*\<omega\>*<around|(|t-s|)>>*d*\<omega\><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><around|(|t,\<omega\>|)>*e<rsup|-i*\<omega\>*<around|(|t-s|)>>*d*\<omega\><eq-number>>>>>>
   </proof>
 </body>
 
