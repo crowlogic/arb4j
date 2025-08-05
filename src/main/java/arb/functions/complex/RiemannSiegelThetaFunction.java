@@ -4,6 +4,7 @@ import arb.Complex;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.utensils.ShellFunctions;
 
 /**
  * <pre>
@@ -28,20 +29,21 @@ import arb.documentation.TheArb4jLibrary;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RiemannSiegelϑFunction implements
-                                    ComplexFunction
+public class RiemannSiegelThetaFunction implements
+                                        ComplexFunction
 {
-  public static final ComplexFunction ϑ =
-                                        ComplexFunction.express("ϑ:t->(-ⅈ*(ln⁡Γ(¼+ⅈ*t/2)-lnΓ(¼−ⅈ*t/2))−ln⁡(π)*t)/2");
+  
+  public static final ComplexFunction θ =
+                                        ComplexFunction.express("θ:t->(-ⅈ*(ln⁡Γ(¼+ⅈ*t/2)-lnΓ(¼−ⅈ*t/2))−ln⁡(π)*t)/2");
 
-  public RiemannSiegelϑFunction()
+  public RiemannSiegelThetaFunction()
   {
   }
 
   @Override
   public Complex evaluate(Complex t, int order, int bits, Complex res)
   {
-    return ϑ.evaluate(t, order, bits, res);
+    return θ.evaluate(t, order, bits, res);
   }
 
 }

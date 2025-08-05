@@ -8,8 +8,8 @@ import arb.ComplexConstants;
 import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.complex.RealRiemannSiegelϑFunction;
-import arb.functions.complex.RiemannSiegelϑFunction;
+import arb.functions.complex.RealRiemannSiegelThetaFunction;
+import arb.functions.complex.RiemannSiegelThetaFunction;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
@@ -46,8 +46,8 @@ public class RiemannSiegelϑFunctionTest extends
 
   public void testRiemannSiegelThetaAtOne()
   {
-    try ( RiemannSiegelϑFunction ϑ = new RiemannSiegelϑFunction();
-          RealRiemannSiegelϑFunction ϑreal = new RealRiemannSiegelϑFunction())
+    try ( RiemannSiegelThetaFunction ϑ = new RiemannSiegelThetaFunction();
+          RealRiemannSiegelThetaFunction ϑreal = new RealRiemannSiegelThetaFunction())
     {
       var ϑone     = ϑ.evaluate(ComplexConstants.one, 128);
       var ϑonereal = ϑreal.evaluate(RealConstants.one,  128);
@@ -60,7 +60,7 @@ public class RiemannSiegelϑFunctionTest extends
 
   public void testRiemannSiegelThetaAtOnePlusi()
   {
-    try ( RiemannSiegelϑFunction ϑ = new RiemannSiegelϑFunction())
+    try ( RiemannSiegelThetaFunction ϑ = new RiemannSiegelThetaFunction())
     {
       var onePlusⅈ  = one.add(ⅈ, 128, new Complex());
       var ϑonePlusⅈ = ϑ.evaluate(onePlusⅈ, 128);
