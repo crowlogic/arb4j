@@ -5,9 +5,9 @@
         </encoder>
     </appender>
 
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="console" />
     </root>
 
-    <logger name="arb.expressions.Expression" level="DEBUG" />
+    <logger name="arb.expressions.Expression" level="INFO" />
 </configuration>

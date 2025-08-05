@@ -227,6 +227,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Supplier<F>
 {
 
+  private static final char COMBINING_DOT_ABOVE = '\u0307';
+
   public Expression<D, C, F> merge(Node<?, ?, ?> node)
   {
     var nodeExpression = node.expression;
@@ -746,11 +748,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     else if (nextCharacterIs('∑', 'Σ'))
     {
       node = (N) new SumNode<D, C, F>(this);
-    }
-    // ADD THIS CHECK HERE:
-    else if (nextCharacterIs('\u0307')) // combining dot above
-    {
-      node = (N) new DerivativeNode<D, C, F>(this);
     }
     else if (isNumeric(character))
     {
@@ -2306,23 +2303,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
 
     // Check for combining diacritic (derivative) - MUST be followed by '('
-    if (nextCharacterIs('\u0307')) // combining dot above
+    if (nextCharacterIs(COMBINING_DOT_ABOVE)) // combining dot above
     {
-      skipSpaces();
-      require("Combining dot above must be followed by '('", '(');
-
-      // Create the base function node first
-      Node<D, C, F> baseFunction = resolveFunction(startPos, reference);
-
-      // Then call derivative() on it
-      return baseFunction.differentiate();
+      return require('(').resolveFunction(startPos, reference).differentiate();
     }
-
-//     
-//      if (context != null && context.functions.map.containsKey(reference.name))
-//      {
-//          return resolveFunction(startPos, reference);
-//      }
 
     // Otherwise treat as variable/literal
     return resolveSymbolicLiteralConstantKeywordOrVariable(startPos, reference);
