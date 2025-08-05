@@ -1,4 +1,4 @@
-Expression.trace=true;
-var N = ComplexFunction.express("1+(-((lnΓ(¼ + t*I/2) - lnΓ(¼ - t*I/2))*I)/2 -ln(π)*t/2)/π + 1 - I*((ln(ζ(½ + I*t)) - ln(ζ(½ - I*t))))/(2*π)");
+Expression.saveClasses=true;
+var N = ComplexFunction.express("N:1+(-((lnΓ(¼ + t*I/2) - lnΓ(¼ - t*I/2))*I)/2 -ln(π)*t/2)/π + 1 - I*((ln(ζ(½ + I*t)) - ln(ζ(½ - I*t))))/(2*π)");
 var n = N.re().realPart();
-plot(0,100,1000,n);
+plot(0,100,4000,n);
