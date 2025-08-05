@@ -387,8 +387,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
 
   protected void incrementIndex(MethodVisitor mv)
   {
-    loadIndexVariable(mv);
-    invokeVirtualMethod(mv, Integer.class, "increment", Integer.class);
+    ;
+    invokeVirtualMethod(loadIndexVariable(mv), Integer.class, "increment", Integer.class);
   }
 
   public void initializeResult(MethodVisitor mv,
@@ -439,9 +439,10 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
     loadFieldFromThis(mv, operandValueFieldName, generatedType);
   }
 
-  void loadIndexVariable(MethodVisitor methodVisitor)
+  MethodVisitor loadIndexVariable(MethodVisitor methodVisitor)
   {
     getField(methodVisitor, getIndexVariableFieldName(), Integer.class.descriptorString());
+    return methodVisitor;
   }
 
   public void loadResultVariable(MethodVisitor methodVisitor)
@@ -491,8 +492,8 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                                                    + expression.remaining());
 
     }
-    String operandExpression =
-                            stringExpression.substring(startPos, rangeSpecificationPosition).trim();
+    String operandExpression = stringExpression.substring(startPos, rangeSpecificationPosition)
+                                               .trim();
     expression.character =
                          expression.expression.charAt(expression.position +=
                                                                           operandExpression.length());
@@ -507,14 +508,14 @@ public class NAryOperationNode<D, R, F extends Function<? extends D, ? extends R
                              + operandExpressionString;
 
     registerOperand(operandExpressionString,
-                   operand = Function.parse(operandFunctionFieldName,
-                                            operandExpressionString,
-                                            expression.context,
-                                            Integer.class,
-                                            resultType,
-                                            Function.class,
-                                            operandFunctionFieldName,
-                                            expression));
+                    operand = Function.parse(operandFunctionFieldName,
+                                             operandExpressionString,
+                                             expression.context,
+                                             Integer.class,
+                                             resultType,
+                                             Function.class,
+                                             operandFunctionFieldName,
+                                             expression));
   }
 
   private void parseLowerLimit()

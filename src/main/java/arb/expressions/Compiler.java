@@ -57,27 +57,34 @@ import arb.utensils.Utensils;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  * 
- * @author ©2024 Stephen Crowley
+ * @author ©2024-2025 Stephen Crowley
  */
 
 public class Compiler
 {
 
-  public static HashSet<Class<?>> complexScalarTypes =
-                                                     new HashSet<>(Arrays.asList(Complex.class,
-                                                                                 ComplexPolynomial.class,
-                                                                                 ComplexMatrix.class));
+  public static HashSet<Class<?>>         complexScalarTypes =
+                                                             new HashSet<>(Arrays.asList(Complex.class,
+                                                                                         ComplexPolynomial.class,
+                                                                                         ComplexMatrix.class,
+                                                                                         Complex.class,
+                                                                                         ComplexRationalFunction.class,
+                                                                                         ComplexFunction.class,
+                                                                                         ComplexFraction.class));
 
-  public static final String objectDesc = Type.getInternalName(Object.class);
+  public static final String              objectDesc         = Type.getInternalName(Object.class);
 
-  public static HashSet<Class<?>> realScalarTypes    =
-                                                  new HashSet<>(Arrays.asList(AlgebraicNumber.class,
-                                                                              Integer.class,
-                                                                              Real.class,
-                                                                              RealPolynomial.class,
-                                                                              RealMatrix.class));
+  public static HashSet<Class<?>>         realScalarTypes    =
+                                                          new HashSet<>(Arrays.asList(AlgebraicNumber.class,
+                                                                                      Integer.class,
+                                                                                      Real.class,
+                                                                                      RealPolynomial.class,
+                                                                                      RealMatrix.class,
+                                                                                      Fraction.class,
+                                                                                      RationalFunction.class,
+                                                                                      RealFunction.class));
 
-  public static HashMap<Class<?>, String> typePrefixes = new HashMap<>();
+  public static HashMap<Class<?>, String> typePrefixes       = new HashMap<>();
 
   static
   {
@@ -322,12 +329,11 @@ public class Compiler
     return methodVisitor;
   }
 
-  public static void designateLabel(org.objectweb.asm.MethodVisitor mv,
-                                    org.objectweb.asm.Label label)
+  public static MethodVisitor designateLabel(org.objectweb.asm.MethodVisitor mv,
+                                             org.objectweb.asm.Label label)
   {
-
     mv.visitLabel(label);
-
+    return mv;
   }
 
   public static MethodVisitor duplicateTopOfTheStack(MethodVisitor mv)
@@ -470,6 +476,12 @@ public class Compiler
     methodVisitor.visitInsn(Opcodes.ARETURN);
     methodVisitor.visitMaxs(10, 10);
     methodVisitor.visitEnd();
+  }
+
+  public static MethodVisitor generateReturnFromVoidMethod(MethodVisitor mv)
+  {
+    mv.visitInsn(RETURN);
+    return mv;
   }
 
   public static ClassVisitor generateTypesetMethod(ClassVisitor classVisitor, String typeset)
@@ -746,6 +758,12 @@ public class Compiler
     return methodVisitor;
   }
 
+  public static MethodVisitor jumpToIfNotEqual(MethodVisitor mv, Label alreadyInitialized)
+  {
+    mv.visitJumpInsn(Opcodes.IFNE, alreadyInitialized);
+    return mv;
+  }
+
   /**
    * Loads the 3rd argument (bits) onto the stack
    * 
@@ -895,20 +913,11 @@ public class Compiler
 
   public static Class<?> scalarType(Class<?> resultType)
   {
-    if (resultType.equals(RationalFunction.class) || resultType.equals(Fraction.class))
+    if (realScalarTypes.contains(resultType))
     {
       return Real.class;
     }
-    else if (resultType.equals(ComplexRationalFunction.class)
-                  || resultType.equals(ComplexFraction.class))
-    {
-      return Complex.class;
-    }
-    else if (realScalarTypes.contains(resultType) || RealFunction.class.equals(resultType))
-    {
-      return Real.class;
-    }
-    else if (complexScalarTypes.contains(resultType) || ComplexFunction.class.equals(resultType))
+    else if (complexScalarTypes.contains(resultType))
     {
       return Complex.class;
     }
