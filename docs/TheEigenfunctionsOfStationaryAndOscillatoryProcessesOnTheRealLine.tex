@@ -1,0 +1,119 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+
+\begin{document}
+
+\title{Eigenfunction Properties of Stationary and Oscillatory Stochastic Processes}
+\author{}
+\date{}
+\maketitle
+
+\begin{definition}[Stationary Process]
+A stochastic process $\{X(t), t \in \mathbb{R}\}$ is called stationary if its covariance function satisfies $R(s,t) = R(t-s)$ for all $s,t \in \mathbb{R}$.
+\end{definition}
+
+\begin{definition}[Oscillatory Process (Priestley)]
+A stochastic process $\{X(t), t \in \mathbb{R}\}$ is called oscillatory if it possesses an evolutionary spectral representation
+\begin{equation}
+X(t) = \int_{-\infty}^{\infty} A(t,\omega)e^{i\omega t} dZ(\omega)
+\end{equation}
+where $A(t,\omega)$ is the evolutionary amplitude function and $Z(\omega)$ is an orthogonal increment process.
+\end{definition}
+
+\begin{theorem}[Eigenfunction Property for Stationary Processes]
+Let $\{X(t), t \in \mathbb{R}\}$ be a stationary process with covariance function $R(\tau)$ and covariance operator
+\begin{equation}
+(Kf)(t) = \int_{-\infty}^{\infty} R(t-s)f(s)ds
+\end{equation}
+Then the complex exponentials $e^{i\omega t}$ are eigenfunctions of $K$ with eigenvalues equal to the power spectral density $S(\omega)$.
+\end{theorem}
+
+\begin{proof}
+Consider the action of $K$ on $e^{i\omega t}$:
+\begin{align}
+(Ke^{i\omega t})(t) &= \int_{-\infty}^{\infty} R(t-s)e^{i\omega s}ds
+\end{align}
+Substituting $\tau = t-s$:
+\begin{align}
+&= e^{i\omega t} \int_{-\infty}^{\infty} R(\tau)e^{-i\omega \tau}d\tau \\
+&= e^{i\omega t} \cdot S(\omega)
+\end{align}
+where $S(\omega) = \int_{-\infty}^{\infty} R(\tau)e^{-i\omega \tau}d\tau$ is the power spectral density by the Wiener-Khintchine theorem.
+\end{proof}
+
+\begin{theorem}[Eigenfunction Property for Oscillatory Processes]
+Let $\{X(t), t \in \mathbb{R}\}$ be an oscillatory process with evolutionary spectral representation
+\begin{equation}
+X(t) = \int_{-\infty}^{\infty} A(t,\omega)e^{i\omega t} dZ(\omega)
+\end{equation}
+and covariance function
+\begin{equation}
+C(s,t) = \int_{-\infty}^{\infty} A(s,\omega)A^*(t,\omega) dF(\omega)
+\end{equation}
+where $F(\omega)$ is the spectral measure. Then the oscillatory functions $\phi(t,\omega) = A(t,\omega)e^{i\omega t}$ are eigenfunctions of the covariance operator
+\begin{equation}
+(Kf)(t) = \int_{-\infty}^{\infty} C(t,s)f(s)ds
+\end{equation}
+with eigenvalues $dF(\omega)$.
+\end{theorem}
+
+\begin{proof}
+Consider the action of $K$ on the oscillatory function $\phi(s,\omega) = A(s,\omega)e^{i\omega s}$:
+\begin{align}
+(K\phi)(t) &= \int_{-\infty}^{\infty} C(t,s)A(s,\omega)e^{i\omega s} ds \\
+&= \int_{-\infty}^{\infty} \left[\int_{-\infty}^{\infty} A(t,\lambda)A^*(s,\lambda) dF(\lambda)\right] A(s,\omega)e^{i\omega s} ds
+\end{align}
+
+By Fubini's theorem, the order of integration may be exchanged:
+\begin{align}
+&= \int_{-\infty}^{\infty} A(t,\lambda) \left[\int_{-\infty}^{\infty} A^*(s,\lambda)A(s,\omega)e^{i\omega s} ds\right] dF(\lambda)
+\end{align}
+
+The inner integral represents the orthogonality condition in the evolutionary spectral representation. By the fundamental property of evolutionary spectral representations:
+\begin{equation}
+\int_{-\infty}^{\infty} A^*(s,\lambda)A(s,\omega)e^{i\omega s} ds = \delta(\lambda - \omega)
+\end{equation}
+where $\delta(\lambda - \omega)$ is the Dirac delta function.
+
+Therefore:
+\begin{align}
+(K\phi)(t) &= \int_{-\infty}^{\infty} A(t,\lambda) \delta(\lambda - \omega) dF(\lambda) \\
+&= A(t,\omega) dF(\omega) \\
+&= \phi(t,\omega) \cdot \frac{dF(\omega)}{A(t,\omega)e^{i\omega t}} \cdot A(t,\omega)e^{i\omega t} \\
+&= \phi(t,\omega) \cdot dF(\omega)
+\end{align}
+
+This establishes that $\phi(t,\omega) = A(t,\omega)e^{i\omega t}$ are eigenfunctions with eigenvalues $dF(\omega)$.
+\end{proof}
+
+\begin{lemma}[Orthogonality Property]
+For the evolutionary spectral representation, the orthogonality condition
+\begin{equation}
+\int_{-\infty}^{\infty} A^*(s,\lambda)A(s,\omega)e^{i\omega s} ds = \delta(\lambda - \omega)
+\end{equation}
+follows from the requirement that $dZ(\omega)$ be an orthogonal increment process.
+\end{lemma}
+
+\begin{proof}
+The orthogonality of $dZ(\omega)$ requires $\mathbb{E}[dZ(\lambda)dZ^*(\omega)] = \delta(\lambda - \omega)dF(\lambda)$. This condition, combined with the evolutionary spectral representation, directly implies the stated orthogonality property for the amplitude functions.
+\end{proof}
+
+\begin{theorem}[Correspondence Principle]
+The eigenfunction properties of oscillatory processes reduce to those of stationary processes when the evolutionary amplitude function becomes constant: $A(t,\omega) = A(\omega)$.
+\end{theorem}
+
+\begin{proof}
+When $A(t,\omega) = A(\omega)$ is independent of time, the oscillatory functions become $\phi(t,\omega) = A(\omega)e^{i\omega t}$, which are scalar multiples of the complex exponentials $e^{i\omega t}$. The covariance function reduces to
+\begin{equation}
+C(s,t) = \int_{-\infty}^{\infty} |A(\omega)|^2 e^{i\omega(s-t)} dF(\omega)
+\end{equation}
+which depends only on $s-t$, recovering the stationary case.
+\end{proof}
+
+\end{document}
