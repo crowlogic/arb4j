@@ -206,7 +206,7 @@ public class ShellFunctions
         {
           datasets.add(func.quantize(left, right, n));
         }
-        plotter.configureChartPlugins();
+
         plotter.stage.show();
         functions.forEach(plotter.functions::add);
       }

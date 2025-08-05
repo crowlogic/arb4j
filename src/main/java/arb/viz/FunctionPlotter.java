@@ -21,7 +21,6 @@ import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.Screenshot;
 import io.fair_acc.chartfx.plugins.TableViewer;
 import io.fair_acc.chartfx.plugins.Zoomer;
-import io.fair_acc.chartfx.renderer.spi.GridRenderer;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -69,41 +68,12 @@ public class FunctionPlotter implements
 
   public void configureChartPlugins()
   {
-    Zoomer zoomer = new Zoomer();
     chart.getPlugins()
          .addAll(new EditAxis(AxisMode.XY),
-                 zoomer,
+                 new Zoomer(),
                  new TableViewer(),
                  new CrosshairIndicator(),
                  new Screenshot());
-
-    zoomer.setSliderVisible(false);
-    zoomer.setUpdateTickUnit(true);
-    xAxis.setTickUnit(1.0);  // Grid line every 1 unit on X axis
-    yAxis.setTickUnit(1.0);  // Grid line every 1 unit on Y axis
-    
-    // For finer control, also set minor ticks
-    xAxis.setMinorTickCount(4);  // 4 minor divisions between major ticks
-    yAxis.setMinorTickCount(4);  // 4 minor divisions between major ticks
-    
-    GridRenderer gridRenderer = new GridRenderer(chart);
-    gridRenderer.getHorizontalMajorGrid().setVisible(true);
-    gridRenderer.getVerticalMajorGrid().setVisible(true);
-
-    // Turn off minor grid lines to reduce density
-    gridRenderer.getHorizontalMinorGrid().setVisible(true);
-    gridRenderer.getVerticalMinorGrid().setVisible(true);
-
-    chart.getRenderers().add(new ZeroLineRenderer());
-    
-    
-    // Make major grid lines thinner and more transparent
-//    gridRenderer.getHorizontalMajorGrid().setStrokeWidth(0.5);
-//    gridRenderer.getVerticalMajorGrid().setStrokeWidth(0.5);
-//    gridRenderer.getHorizontalMajorGrid().setOpacity(0.3);
-//    gridRenderer.getVerticalMajorGrid().setOpacity(0.3);
-
-    chart.getRenderers().add(gridRenderer);
   }
 
   public Stage createScene()
@@ -238,7 +208,6 @@ public class FunctionPlotter implements
   public void show()
   {
     assert stage != null : "stage is null";
-
     Platform.runLater(() ->
     {
       stage.show();
@@ -272,11 +241,6 @@ public class FunctionPlotter implements
   public int                           sampleCount = 0;
 
   public int                           resolution  = 100;
-
-  static
-  {
-    Platform.setImplicitExit(true);
-  }
 
   public FunctionPlotter(FloatInterval domain)
   {

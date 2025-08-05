@@ -4,9 +4,7 @@ import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.RealLine;
-import arb.expressions.Context;
 import arb.functions.real.RealFunction;
-import arb.utensils.ShellFunctions;
 
 /**
  * <pre>
@@ -30,34 +28,24 @@ import arb.utensils.ShellFunctions;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RealRiemannSiegelThetaFunction implements
-                                            RealFunction
+public class RealRiemannSiegelϑFunction implements
+                                    RealFunction
 {
-  @Override
-  public String toString()
-  {
-    return θ.toString();
-  }
+   
+  public static final RealFunction ϑ = RealFunction.express("ϑ:t->im(lnΓ(1/4+I*t/2))-(log(π)/2)*t");
 
-  public static void main(String args[])
-  {
-    var context = new Context();
-    var θ       = new RealRiemannSiegelThetaFunction();
-    context.registerFunction("θ", θ);
-    var θshift = RealFunction.express("θ(t)-t", context);
-    ShellFunctions.plot(0, 200, 5000, θ, θshift);
-  }
-
-  public static final RealFunction θ = RealFunction.express("θ:t->im(lnΓ(1/4+I*t/2))-(log(π)/2)*t");
-
-  public RealRiemannSiegelThetaFunction()
+  public RealRiemannSiegelϑFunction()
   {
   }
 
   @Override
-  public Real evaluate(Real t, int order, int bits, Real res)
+  public Real
+         evaluate(Real t,
+                  int order,
+                  int bits,
+                  Real res)
   {
-    return θ.evaluate(t, order, bits, res);
+    return ϑ.evaluate(t, order, bits, res);
   }
 
 }

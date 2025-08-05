@@ -16,5 +16,5 @@
     <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="arb4j"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="arb4j"/>
     <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.library.path=${project_loc:/arb4j} --add-opens javafx.controls/javafx.scene.control.skin=arb4j --add-opens javafx.controls/javafx.scene.control.cell=arb4j --add-opens javafx.graphics/javafx.stage=arb4j  -Djavafx.scene.control.skin.TableViewSkin.pannable=true  -Djavafx.scene.control.skin.ListViewSkin.pannable=true --illegal-native-access=allow --sun-misc-unsafe-memory-access=allow --add-opens javafx.graphics/com.sun.javafx.tk.quantum=arb4j"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.library.path=${project_loc:/arb4j} --add-opens javafx.controls/javafx.scene.control.skin=arb4j --add-opens javafx.controls/javafx.scene.control.cell=arb4j --add-opens javafx.graphics/javafx.stage=arb4j  -Djavafx.scene.control.skin.TableViewSkin.pannable=true  -Djavafx.scene.control.skin.ListViewSkin.pannable=true --illegal-native-access=allow --sun-misc-unsafe-memory-access=allow"/>
 </launchConfiguration>
