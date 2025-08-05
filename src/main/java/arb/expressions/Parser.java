@@ -1,5 +1,6 @@
 package arb.expressions;
 
+import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -235,7 +236,7 @@ public class Parser
       expression = expression.replace(superscripts[i], String.format("^(%s)", normals[i]));
     }
 
-    return expression;
+    return Normalizer.normalize(expression, Normalizer.Form.NFD);
   }
 
   public static String expressionToUniqueClassname(String expression)
@@ -405,18 +406,6 @@ public class Parser
     return superscriptChars.contains(character);
   }
 
-  public static boolean isCombiningDiacritic(char ch)
-  {
-    // Unicode combining diacritics range: U+0300-U+036F
-    return ch == '\u0307'  // combining dot above (most common for your use case)
-        || ch == '\u0308'  // combining diaeresis  
-        || ch == '\u030A'  // combining ring above
-        || ch == '\u0302'  // combining circumflex
-        || ch == '\u0304'  // combining macron
-        || (ch >= '\u0300' && ch <= '\u036F'); // full combining diacritics range
-  }
-
-  
   public static String subscriptAndSuperscriptsToRegular(String input)
   {
     return input.replace("₀", "0")
