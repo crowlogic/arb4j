@@ -2296,19 +2296,16 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     int startPos  = position;
     var reference = evaluateVariableReference(startPos);
 
-    // Check if followed by '('
     if (nextCharacterIs('('))
     {
       return resolveFunction(startPos, reference);
     }
 
-    // Check for combining diacritic (derivative) - MUST be followed by '('
-    if (nextCharacterIs(COMBINING_DOT_ABOVE)) // combining dot above
+    if (nextCharacterIs(COMBINING_DOT_ABOVE))
     {
       return require('(').resolveFunction(startPos, reference).differentiate();
     }
 
-    // Otherwise treat as variable/literal
     return resolveSymbolicLiteralConstantKeywordOrVariable(startPos, reference);
   }
 
