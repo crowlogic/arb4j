@@ -454,7 +454,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   }
 
-  protected <N extends Node<D, C, F>> N addAndSubtract(N node)
+  protected Node<D, C, F> addAndSubtract(Node<D, C, F> node)
   {
     while (true)
     {
@@ -464,7 +464,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       }
       else if (nextCharacterIs('-', '₋', '−'))
       {
-        N rhs = exponentiateMultiplyAndDivide();
+        var rhs = exponentiateMultiplyAndDivide();
         node = node == null ? rhs.neg() : node.sub(rhs);
       }
       else
@@ -716,13 +716,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   @SuppressWarnings("unchecked")
-  public <N extends Node<D, C, F>> N evaluate() throws CompilerException
+  public Node<D, C, F> evaluate() throws CompilerException
   {
-    N node = null;
+    Node<D, C, F> node = null;
 
     if (nextCharacterIs('['))
     {
-      node = (N) new VectorNode<D, C, F>(this);
+      node = new VectorNode<D, C, F>(this);
     }
     else if (nextCharacterIs('(', '⁽'))
     {
@@ -731,31 +731,31 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     else if (nextCharacterIs('∂'))
     {
-      node = (N) new DerivativeNode<D, C, F>(this);
+      node = new DerivativeNode<D, C, F>(this);
     }
     else if (nextCharacterIs('Đ'))
     {
-      node = (N) new FractionalDerivativeNode<D, C, F>(this);
+      node = new FractionalDerivativeNode<D, C, F>(this);
     }
     else if (nextCharacterIs('∫'))
     {
-      node = (N) new IntegralNode<D, C, F>(this);
+      node = new IntegralNode<D, C, F>(this);
     }
     else if (nextCharacterIs('Π', '∏'))
     {
-      node = (N) new ProductNode<D, C, F>(this);
+      node = new ProductNode<D, C, F>(this);
     }
     else if (nextCharacterIs('∑', 'Σ'))
     {
-      node = (N) new SumNode<D, C, F>(this);
+      node = new SumNode<D, C, F>(this);
     }
     else if (isNumeric(character))
     {
-      node = (N) evaluateNumericLiteralConstant();
+      node = evaluateNumericLiteralConstant();
     }
     else if (isIdentifierCharacter())
     {
-      node = (N) resolveIdentifier();
+      node = resolveIdentifier();
     }
 
     return resolvePostfixOperators(node);
@@ -942,7 +942,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return null;
   }
 
-  protected <N extends Node<D, C, F>> N exponentiate() throws CompilerException
+  protected Node<D, C, F> exponentiate() throws CompilerException
   {
     return exponentiate(evaluate());
   }
@@ -969,7 +969,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @return the result of passing this{@link #exponentiate()} to
    *         this{@link #multiplyAndDivide(Node)}
    */
-  protected <N extends Node<D, C, F>> N exponentiateMultiplyAndDivide()
+  protected Node<D, C, F> exponentiateMultiplyAndDivide()
   {
     return multiplyAndDivide(exponentiate());
   }
@@ -2310,15 +2310,15 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   @SuppressWarnings("unchecked")
-  protected <N extends Node<D, C, F>> N resolvePostfixOperators(N node)
+  protected Node<D, C, F> resolvePostfixOperators(Node<D, C, F> node)
   {
     node = resolveFactorials(node);
     node = resolveFloor(node);
     node = resolveAbsoluteValue(node);
     if (nextCharacterIs('('))
     {
-      node = (N) new FunctionEvaluationNode<D, C, F>(this,
-                                                     node);
+      node = new FunctionEvaluationNode<D, C, F>(this,
+                                                 node);
     }
     return node;
   }

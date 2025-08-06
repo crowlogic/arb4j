@@ -10,8 +10,6 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.IntegerFunction;
 import arb.functions.IntegerNullaryFunction;
-import arb.functions.RealBivariateToComplexFunction;
-import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ComplexNullaryFunction;
 import arb.functions.integer.ComplexFunctionSequence;
@@ -22,7 +20,6 @@ import arb.functions.rational.RationalNullaryFunction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
 import arb.functions.real.RealNullaryFunctional;
-import arb.stochastic.processes.ZProcess;
 import junit.framework.TestCase;
 
 /**
@@ -34,7 +31,7 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
-  
+
   public static void testSequenceOfRealValuedHypergeometricFunctionAsComplexValuedFunctions()
   {
     var             f      =
