@@ -623,14 +623,13 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected void declareIntermediateVariables(ClassVisitor classVisitor)
   {
-    for (var variable : getSortedIntermediateVariables())
-    {
-      if (!declaredIntermediateVariables.contains(variable.name))
-      {
-        variable.declareField(classVisitor);
-        declaredIntermediateVariables.add(variable.name);
-      }
-    }
+    getSortedIntermediateVariables().stream()
+                                    .filter(variable -> !declaredIntermediateVariables.contains(variable.name))
+                                    .forEach(variable ->
+                                    {
+                                      variable.declareField(classVisitor);
+                                      declaredIntermediateVariables.add(variable.name);
+                                    });
   }
 
   protected void declareVariableEntry(ClassVisitor classVisitor, Entry<String, Named> variable)
