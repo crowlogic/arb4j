@@ -374,13 +374,16 @@
 <\initial>
   <\collection>
     <associate|magnification|1.2>
+    <associate|page-height|auto>
     <associate|page-medium|paper>
+    <associate|page-type|letter>
+    <associate|page-width|auto>
   </collection>
 </initial>
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|?|1>>
+    <associate|auto-1|<tuple|?|1|../.TeXmacs/texts/scratch/no_name_29.tm>>
   </collection>
 </references>
 
