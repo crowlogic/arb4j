@@ -54,9 +54,6 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
     swigCPtr = cPtr;
   }
 
-
-
-  
   public static long getCPtr(Complex obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
