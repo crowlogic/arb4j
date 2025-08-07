@@ -1,337 +1,262 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|framed-theorems|alt-colors>>
+<style|<tuple|generic|framed-theorems>>
 
 <\body>
-  <doc-data|<doc-title|The Eigenfunctions of Stationary and Oscillatory
-  Processes on the Real Line>|<doc-author|<author-data|<author-name|Stephen
+  <doc-data|<doc-title|Oscillatory Processes>|<doc-author|<author-data|<author-name|Stephen
   Crowley>|<\author-affiliation>
     <date|>
-  </author-affiliation>>>|<doc-date|>>
-
-  <\table-of-contents|toc>
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Definitions>
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-1><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Eigenfunctions
-    for Stationary Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-2><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Eigenfunctions
-    for Oscillatory Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-3><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Symmetry and
-    Real-Valued Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-4><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Dual Fourier
-    Structure of the Filter Kernel> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-5><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Time Domain
-    Filter Representation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-6><vspace|0.5fn>
-  </table-of-contents>
-
-  <section*|Definitions>
+  </author-affiliation>>>>
 
   <\definition>
     <dueto|Stationary Process>A stochastic process
-    <math|<around|{|X<around|(|t|)>,t\<in\>\<bbb-R\>|}>> is stationary if its
-    covariance function satisfies <math|R<around|(|s,t|)>=R*<around|(|t-s|)>>
-    for all <math|s,t\<in\>\<bbb-R\>>.
+    <math|<around|{|X<around|(|t|)>,t\<in\>\<bbb-R\>|}>> is stationary when
+    <math|R<around|(|s,t|)>=R*<around|(|t-s|)>> for all
+    <math|s,t\<in\>\<bbb-R\>>.
   </definition>
 
-  <\definition>
-    <dueto|Oscillatory Process (Priestley)>A process
-    <math|<around|{|Y<around|(|t|)>,t\<in\>\<bbb-R\>|}>> is called
-    <em|oscillatory> if it possesses an evolutionary spectral representation
+  <\theorem>
+    <dueto|Filter Representation of Nonstationary Process>Oscillatory
+    processes <math|Z<around*|(|t|)>> satisfy\ 
 
-    <\equation*>
-      Y<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*Z<around|(|\<omega\>|)>,
-    </equation*>
+    <\equation>
+      Z<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*\<Phi\><around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*X<around|(|u|)>*d*u
+    </equation>
 
-    where <math|A<around|(|t,\<omega\>|)>> is the gain function and
-    <math|Z<around|(|\<omega\>|)>> is an orthogonal increment process with
-    spectral measure <math|F<around|(|\<omega\>|)>>.
-  </definition>
+    where <math|A<rsub|t><around|(|\<omega\>|)>> is a gain function
+    satisfying\ 
 
-  <section*|Eigenfunctions for Stationary Processes>
+    <\equation>
+      A<rsub|t><around|(|\<omega\>|)>=A<rsub|t><rsup|\<ast\>>*<around|(|-\<omega\>|)>
+    </equation>
+
+    and <math|\<Phi\><around|(|\<omega\>|)>> is an orthogonal increment
+    process.
+
+    <\equation>
+      X<around|(|u|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*u>*d*\<Phi\><around|(|\<omega\>|)>
+    </equation>
+  </theorem>
+
+  <\proof>
+    \;
+
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|Z<around*|(|t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*X<around|(|u|)>*d*u>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*u>*d*\<Phi\><around|(|\<omega\>|)>d*u>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*e<rsup|i*\<omega\>*u>*d*u*d*\<Phi\><around|(|\<omega\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*<around|(|t-u|)>>*d*\<lambda\>*<space|0.27em>e<rsup|i*\<omega\>*u>*d*u*d*\<Phi\><around|(|\<omega\>|)>>>|<row|<cell|>|<cell|=*<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<lambda\>|)><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<lambda\>*<around|(|t-u|)>>*e<rsup|i*\<omega\>*u>*d*u
+      d*\<lambda\>*d*\<Phi\><around|(|\<omega\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<omega\>-\<lambda\>|)>*u>*d*u*d*\<lambda\>*d*\<Phi\><around|(|\<omega\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*2*\<pi\>*\<delta\>*<around|(|\<omega\>-\<lambda\>|)>*d*\<lambda\>**d*\<Phi\><around|(|\<omega\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*\<Phi\><around|(|\<omega\>|)>>>>>>
+    </equation>
+
+    where the interchanges are justified by quadratic integrability of the
+    time-dependent gain functions <math|A<rsub|t><around*|(|\<lambda\>|)>>
+    with respect to the spectral measure <math|S<around*|(|\<lambda\>|)>=d
+    F<around*|(|\<lambda\>|)>\<forall\>t\<in\>\<bbb-R\>>
+  </proof>
 
   <\theorem>
     <dueto|Eigenfunction Property for Stationary Processes>Let
-    <math|<around|{|X<around|(|t|)>|}>> be stationary with covariance kernel
-    <math|R<around|(|\<tau\>|)>> and covariance operator
+    <math|R<around|(|\<tau\>|)>> be a stationary covariance function. Let the
+    corresponding integral coariance operator be defined
 
-    <\equation*>
-      <around|(|K*f|)><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>R*<around|(|t-s|)>*f<around|(|s|)>*d*s.
-    </equation*>
+    <\equation>
+      <around|(|K*f|)><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>R*<around|(|t-s|)>*f<around|(|s|)>*d*s
+    </equation>
 
-    Then the complex exponentials <math|e<rsup|i*\<omega\>*t>> are
-    eigenfunctions of <math|K> with eigenvalue
+    then
 
-    <\equation*>
-      S<around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>R<around|(|\<tau\>|)>*e<rsup|-i*\<omega\>*\<tau\>>*<space|0.17em>d*\<tau\>,
-    </equation*>
+    <\equation>
+      K*e<rsup|i*\<omega\>*t>=S<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>
+    </equation>
 
-    the power spectral density.
+    where the eigenvalue is the correponding element of the spectral density
+
+    <\equation>
+      S<around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>R<around|(|\<tau\>|)>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\>
+    </equation>
   </theorem>
 
   <\proof>
-    Set <math|f<around|(|t|)>=e<rsup|i*\<omega\>*t>>. Then
+    \;
 
-    <\equation*>
-      <around|(|K*f|)><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>R*<around|(|t-s|)>*e<rsup|i*\<omega\>*s>*d*s.
-    </equation*>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|<around|(|K*f|)><around|(|t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>R*<around|(|t-s|)>*e<rsup|i*\<omega\>*s>*d*s>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>R<around|(|\<tau\>|)>*e<rsup|i*\<omega\>*<around|(|t-\<tau\>|)>>*d*\<tau\>>>|<row|<cell|>|<cell|=e<rsup|i*\<omega\>*t>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>R<around|(|\<tau\>|)>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\>>>|<row|<cell|>|<cell|=S<around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>>>>>>
+    </equation>
 
-    Make the change of variable <math|\<tau\>=t-s>, so <math|s=t-\<tau\>>,
-    <math|d*s=-d*\<tau\>>:
-
-    <\equation*>
-      <around|(|K*f|)><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>R<around|(|\<tau\>|)>*e<rsup|i*\<omega\>*<around|(|t-\<tau\>|)>>*<around|(|-d*\<tau\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>R<around|(|\<tau\>|)>*e<rsup|i*\<omega\>*t>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\>=e<rsup|i*\<omega\>*t>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>R<around|(|\<tau\>|)>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\>.
-    </equation*>
-
-    Thus <math|e<rsup|i*\<omega\>*t>> is an eigenfunction with eigenvalue
-    <math|S<around|(|\<omega\>|)>>.
+    \;
   </proof>
-
-  <section*|Eigenfunctions for Oscillatory Processes>
 
   <\theorem>
     <dueto|Eigenfunction Property for Oscillatory Processes>Let
-    <math|Y<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*Z<around|(|\<omega\>|)>>
-    with covariance function
 
-    <\equation*>
-      C<around|(|s,t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|s,\<omega\>|)>*A<rsup|\<ast\>><around|(|t,\<omega\>|)>*d*F<around|(|\<omega\>|)>,
-    </equation*>
+    <\equation>
+      C<around|(|s,t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|s><around|(|\<omega\>|)>*A<rsub|t><rsup|\<ast\>><around|(|\<omega\>|)>*d*F<around|(|\<omega\>|)>
+    </equation>
 
-    and covariance operator
+    and
 
-    <\equation*>
-      <around|(|K*f|)><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>C<around|(|t,s|)>*f<around|(|s|)>*d*s.
-    </equation*>
+    <\equation>
+      <around|(|K*f|)><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>C<around|(|t,s|)>*f<around|(|s|)>*d*s
+    </equation>
 
-    Define <math|\<phi\><around|(|t,\<omega\>|)>=A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>>.
-    Then
+    then the oscillatory functions
 
-    <\equation*>
-      K*\<phi\><around|(|\<cdummy\>,\<omega\>|)>=\<phi\><around|(|\<cdummy\>,\<omega\>|)>*<space|0.17em>d*F<around|(|\<omega\>|)>,
-    </equation*>
+    <\equation>
+      \<phi\><around|(|t,\<omega\>|)>=A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>
+    </equation>
 
-    that is, <math|\<phi\><around|(|t,\<omega\>|)>> are eigenfunctions of
-    <math|K> with eigenvalue element <math|d*F<around|(|\<omega\>|)>>.
+    are eigenfunction of <math|K> with eigenvalues
+    <math|S<around*|(|\<lambda\>|)>=d*F<around|(|\<omega\>|)>\<forall\>\<omega\>>
+
+    <\equation>
+      <around*|(|K*\<phi\><around|(|\<cdummy\>,\<omega\>|)>|)><around|(|t|)>=\<phi\><rsub|t><around*|(|\<lambda\>|)>S<around*|(|\<lambda\>|)>
+    </equation>
   </theorem>
 
   <\proof>
-    Compute <math|<around|(|K*\<phi\>|(>\<cdot\>,\<omega\>))<around|(|t|)>>:
+    \;
 
-    <\equation*>
-      <around|(|K*\<phi\>|(>\<cdot\>,\<omega\>))<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>C<around|(|t,s|)>*A<around|(|s,\<omega\>|)>*e<rsup|i*\<omega\>*s>*d*s.
-    </equation*>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|K*\<phi\><around|(|\<cdummy\>,\<omega\>|)><around|(|t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>C<around|(|t,s|)>*\<phi\><around|(|s,\<omega\>|)>*d*s>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<lambda\>|)>*A<rsub|s><rsup|\<ast\>><around|(|\<lambda\>|)>*d*F<around|(|\<lambda\>|)>|)>*A<rsub|s><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*s>*d*s>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<lambda\>|)><around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|s><rsup|\<ast\>><around|(|\<lambda\>|)>*A<rsub|s><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*s>*d*s|]>*d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<lambda\>|)>*\<delta\>*<around|(|\<lambda\>-\<omega\>|)>*d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=A<rsub|t><around|(|\<omega\>|)>*d*F<around|(|\<omega\>|)>>>|<row|<cell|>|<cell|=\<phi\><around|(|t,\<omega\>|)>*d*F<around|(|\<omega\>|)>>>>>>
+    </equation>
 
-    Substitute the definition of <math|C<around|(|t,s|)>>:
-
-    <\equation*>
-      =<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<lambda\>|)>*A<rsup|\<ast\>><around|(|s,\<lambda\>|)>*d*F<around|(|\<lambda\>|)>|)>*A<around|(|s,\<omega\>|)>*e<rsup|i*\<omega\>*s>*d*s.
-    </equation*>
-
-    Interchange the order of integration:
-
-    <\equation*>
-      =<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<lambda\>|)><around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsup|\<ast\>><around|(|s,\<lambda\>|)>*A<around|(|s,\<omega\>|)>*e<rsup|i*\<omega\>*s>*d*s|)>*d*F<around|(|\<lambda\>|)>.
-    </equation*>
-
-    Now consider the inner integral:
-
-    <\equation*>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsup|\<ast\>><around|(|s,\<lambda\>|)>*A<around|(|s,\<omega\>|)>*e<rsup|i*\<omega\>*s>*d*s.
-    </equation*>
-
-    By the orthogonality property for evolutionary spectra, this is
-    <math|\<delta\>*<around|(|\<lambda\>-\<omega\>|)>>. Thus,
-
-    <\equation*>
-      <around|(|K*\<phi\>|(>\<cdot\>,\<omega\>))<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<lambda\>|)>*\<delta\>*<around|(|\<lambda\>-\<omega\>|)>*d*F<around|(|\<lambda\>|)>=A<around|(|t,\<omega\>|)>*d*F<around|(|\<omega\>|)>=\<phi\><around|(|t,\<omega\>|)>*d*F<around|(|\<omega\>|)>.
-    </equation*>
+    \;
   </proof>
 
   <\lemma>
-    <dueto|Orthogonality Property for Evolutionary Amplitudes>
+    <dueto|Orthogonality Property>
 
     <\equation*>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsup|\<ast\>><around|(|s,\<lambda\>|)>*A<around|(|s,\<omega\>|)>*e<rsup|i*\<omega\>*s>*d*s=\<delta\>*<around|(|\<lambda\>-\<omega\>|)>.
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|s><rsup|\<ast\>><around|(|\<lambda\>|)>*A<rsub|s><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*s>*d*s=\<delta\>*<around|(|\<lambda\>-\<omega\>|)>
     </equation*>
-
-    <\proof>
-      The orthogonality of the increments <math|d*Z<around|(|\<omega\>|)>>,
-      together with the spectral representation, guarantees this inner
-      product relation between gain functions indexed by different
-      frequencies. The delta function expresses the continuous orthogonality
-      for the integral operator.
-    </proof>
   </lemma>
 
-  <section*|Symmetry and Real-Valued Processes>
-
-  <\theorem>
-    <dueto|Reality and Conjugate Symmetry><math|X<around|(|t|)>> is
-    real-valued if and only if <math|A<around|(|t,\<omega\>|)>=A<rsup|\<ast\>><around|(|t,-\<omega\>|)>>
-    and <math|d*Z*<around|(|-\<omega\>|)>=d*Z<rsup|\<ast\>><around|(|\<omega\>|)>>
-    for all <math|t,\<omega\>>. The eigenfunctions then satisfy
-    <math|\<phi\><rsup|\<ast\>><around|(|t,\<omega\>|)>=\<phi\><around|(|t,-\<omega\>|)>>.
-  </theorem>
-
   <\proof>
-    Write the conjugate of <math|X<around|(|t|)>>:
+    The orthogonality of <math|\<Phi\><around|(|\<omega\>|)>> is
 
     <\equation*>
-      X<rsup|\<ast\>><around|(|t|)>=<around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*Z<around|(|\<omega\>|)>|)><rsup|\<ast\>>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsup|\<ast\>><around|(|t,\<omega\>|)>*e<rsup|-i*\<omega\>*t>*d*Z<rsup|\<ast\>><around|(|\<omega\>|)>.
+      \<bbb-E\>*<around|[|d*\<Phi\><around|(|\<lambda\>|)>*d*\<Phi\><rsup|\<ast\>><around|(|\<omega\>|)>|]>=\<delta\>*<around|(|\<lambda\>-\<omega\>|)>*d*F<around|(|\<lambda\>|)>.
     </equation*>
 
-    Set <math|\<nu\>=-\<omega\>>, <math|d*\<omega\>=-d*\<nu\>>, so
+    The representation
 
     <\equation*>
-      X<rsup|\<ast\>><around|(|t|)>=<big|int><rsub|+\<infty\>><rsup|-\<infty\>>A<rsup|\<ast\>><around|(|t,-\<nu\>|)>*e<rsup|i*\<nu\>*t>*d*Z<rsup|\<ast\>>*<around|(|-\<nu\>|)>*<around|(|-d*\<nu\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsup|\<ast\>><around|(|t,-\<nu\>|)>*e<rsup|i*\<nu\>*t>*d*Z<rsup|\<ast\>>*<around|(|-\<nu\>|)>*d*\<nu\>.
+      Z<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*\<Phi\><around|(|\<omega\>|)>
     </equation*>
 
-    Relabel <math|\<nu\>\<mapsto\>\<omega\>>:
-
-    <\equation*>
-      X<rsup|\<ast\>><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsup|\<ast\>><around|(|t,-\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*Z<rsup|\<ast\>>*<around|(|-\<omega\>|)>*d*\<omega\>.
-    </equation*>
-
-    For real-valued <math|X<around|(|t|)>>,
-    <math|X<rsup|\<ast\>><around|(|t|)>=X<around|(|t|)>> requires
-
-    <\equation*>
-      A<around|(|t,\<omega\>|)>=A<rsup|\<ast\>><around|(|t,-\<omega\>|)>,<space|2em>d*Z*<around|(|-\<omega\>|)>=d*Z<rsup|\<ast\>><around|(|\<omega\>|)>,
-    </equation*>
-
-    by the uniqueness of the stochastic integral representation. For the
-    eigenfunctions,
-
-    <\equation*>
-      \<phi\><rsup|\<ast\>><around|(|t,\<omega\>|)>=<around|[|A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>|]><rsup|\<ast\>>=A<rsup|\<ast\>><around|(|t,\<omega\>|)>*e<rsup|-i*\<omega\>*t>=A<around|(|t,-\<omega\>|)>*e<rsup|i*<around|(|-\<omega\>|)>*t>=\<phi\><around|(|t,-\<omega\>|)>.
-    </equation*>
-  </proof>
-
-  <section*|Dual Fourier Structure of the Filter Kernel>
-
-  <\theorem>
-    <dueto|Explicit Fourier Structure of the Filter Kernel>Let
-    <math|A<around|(|t,\<omega\>|)>> be the gain function and
-    <math|\<phi\><around|(|t,\<omega\>|)>=A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>>
-    the oscillatory function. Then for any <math|t,u\<in\>\<bbb-R\>>,
-
-    <\equation*>
-      h<around|(|t,u|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*<around|(|t-u|)>>*d*\<omega\>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><around|(|t,\<omega\>|)>*e<rsup|-i*\<omega\>*u>*d*\<omega\>.
-    </equation*>
-  </theorem>
-
-  <\proof>
-    Substitute <math|\<phi\><around|(|t,\<omega\>|)>=A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>>
-    in the second integral:
-
-    <\equation*>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><around|(|t,\<omega\>|)>*e<rsup|-i*\<omega\>*u>*d*\<omega\>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>*e<rsup|-i*\<omega\>*u>*d*\<omega\>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*<around|(|t-u|)>>*d*\<omega\>.
-    </equation*>
-
-    The two forms are equal.
+    with this covariance property, forces the stated orthogonality among the
+    time-varying modulating amplitudes.
   </proof>
 
   <\theorem>
-    <dueto|Inverse Formulae for Gain and Oscillatory Functions>For fixed
-    <math|t>,
+    <dueto|Real-Valued Oscillatory Processes>The process
+    <math|Z<around|(|t|)>> is real-valued if and only if
 
-    <\equation*>
-      A<around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*e<rsup|-i*\<omega\>*<around|(|t-u|)>>*d*u,<space|2em>\<phi\><around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*e<rsup|-i*\<omega\>*u>*d*u.
-    </equation*>
+    <\equation>
+      A<rsub|t><around|(|\<omega\>|)>=A<rsub|t><rsup|\<ast\>>*<around|(|-\<omega\>|)>
+    </equation>
+
+    and
+
+    <\equation>
+      d*\<Phi\>*<around|(|-\<omega\>|)>=d*\<Phi\><rsup|\<ast\>><around|(|\<omega\>|)>
+    </equation>
   </theorem>
 
   <\proof>
-    Start from
+    Compute
 
     <\equation*>
-      h<around|(|t,u|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<lambda\>|)>*e<rsup|i*\<lambda\>*<around|(|t-u|)>>*d*\<lambda\>.
+      Z<rsup|\<ast\>><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><rsup|\<ast\>><around|(|\<omega\>|)>*e<rsup|-i*\<omega\>*t>*d*\<Phi\><rsup|\<ast\>><around|(|\<omega\>|)>.
     </equation*>
 
-    Multiply both sides by <math|e<rsup|-i*\<omega\>*<around|(|t-u|)>>> and
-    integrate over <math|u>:
+    Set <math|\<omega\>=-\<nu\>>, so <math|d*\<omega\>=-d*\<nu\>>,
 
     <\equation*>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*e<rsup|-i*\<omega\>*<around|(|t-u|)>>*d*u=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<lambda\>|)>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<lambda\>*<around|(|t-u|)>>*e<rsup|-i*\<omega\>*<around|(|t-u|)>>*d*u*d*\<lambda\>.
+      Z<rsup|\<ast\>><around|(|t|)>=<big|int><rsub|+\<infty\>><rsup|-\<infty\>>A<rsub|t><rsup|\<ast\>>*<around|(|-\<nu\>|)>*e<rsup|i*\<nu\>*t>*d*\<Phi\><rsup|\<ast\>>*<around|(|-\<nu\>|)>*<around|(|-d*\<nu\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><rsup|\<ast\>>*<around|(|-\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*\<Phi\><rsup|\<ast\>>*<around|(|-\<omega\>|)>.
     </equation*>
 
-    Collapsing the exponentials:
+    For <math|Z<around|(|t|)>> to be real-valued,
 
     <\equation*>
-      e<rsup|i*\<lambda\>*<around|(|t-u|)>>*e<rsup|-i*\<omega\>*<around|(|t-u|)>>=e<rsup|i*<around|(|\<lambda\>-\<omega\>|)>*<around|(|t-u|)>>.
+      Z<around|(|t|)>=Z<rsup|\<ast\>><around|(|t|)>
     </equation*>
 
-    Interchange integrals and use the identity
-    <math|<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<lambda\>-\<omega\>|)>*<around|(|t-u|)>>*d*u=2*\<pi\>*\<delta\>*<around|(|\<lambda\>-\<omega\>|)>>:
+    for all <math|t>, so it is necessary that for all <math|\<omega\>>,
 
     <\equation*>
-      =<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<lambda\>|)>*<space|0.17em>2*\<pi\>*\<delta\>*<around|(|\<lambda\>-\<omega\>|)>*d*\<lambda\>=A<around|(|t,\<omega\>|)>.
+      A<rsub|t><around|(|\<omega\>|)>=A<rsub|t><rsup|\<ast\>>*<around|(|-\<omega\>|)>,<space|2em>d*\<Phi\><around|(|\<omega\>|)>=d*\<Phi\><rsup|\<ast\>>*<around|(|-\<omega\>|)>.
     </equation*>
 
-    Similarly,
+    If these hold, then
 
     <\equation*>
-      \<phi\><around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*e<rsup|-i*\<omega\>*u>*d*u.
+      Z<rsup|\<ast\>><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><rsup|\<ast\>>*<around|(|-\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*\<Phi\><rsup|\<ast\>>*<around|(|-\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*\<Phi\><around|(|\<omega\>|)>=Z<around|(|t|)>.
     </equation*>
   </proof>
-
-  <section*|Time Domain Filter Representation>
 
   <\theorem>
-    <dueto|Time Domain Filter Representation of Oscillatory Processes>If
-    <math|X<around|(|u|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*u>*d*Z<around|(|\<omega\>|)>>
-    is a stationary process, then the oscillatory process
-
-    <\equation*>
-      Y<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*Z<around|(|\<omega\>|)>
-    </equation*>
-
-    can be written as
-
-    <\equation*>
-      Y<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*X<around|(|u|)>*d*u
-    </equation*>
-
-    where <math|h<around|(|t,u|)>> is as above.
+    <dueto|Eigenfunction Conjugate Pairs><math|\<phi\><rsup|\<ast\>><around|(|t,\<omega\>|)>=\<phi\><around|(|t,-\<omega\>|)>>.
   </theorem>
 
   <\proof>
-    Insert the spectral representation for <math|X<around|(|u|)>>:
-
     <\equation*>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*X<around|(|u|)>*d*u=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)><around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*u>*d*Z<around|(|\<omega\>|)>|)>*d*u=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|(|<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*e<rsup|i*\<omega\>*u>*d*u|)>*d*Z<around|(|\<omega\>|)>.
+      \<phi\><rsup|\<ast\>><around|(|t,\<omega\>|)>=<around|[|A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>|]><rsup|\<ast\>>=A<rsub|t><rsup|\<ast\>><around|(|\<omega\>|)>*e<rsup|-i*\<omega\>*t>
     </equation*>
 
-    Substitute the expression for <math|h<around|(|t,u|)>>:
+    By the conjugate symmetry property,
 
     <\equation*>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*e<rsup|i*\<omega\>*u>*d*u=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<lambda\>|)>*e<rsup|i*\<lambda\>*<around|(|t-u|)>>*e<rsup|i*\<omega\>*u>*d*\<lambda\>*d*u
-    </equation*>
-
-    <\equation*>
-      =<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<omega\>-\<lambda\>|)>*u>*d*u*<space|0.17em>d*\<lambda\>
-    </equation*>
-
-    <\equation*>
-      =<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>2*\<pi\>*\<delta\>*<around|(|\<omega\>-\<lambda\>|)>*d*\<lambda\>=A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>.
-    </equation*>
-
-    Therefore,
-
-    <\equation*>
-      Y<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*Z<around|(|\<omega\>|)>.
+      A<rsub|t><rsup|\<ast\>><around|(|\<omega\>|)>*e<rsup|-i*\<omega\>*t>=A<rsub|t>*<around|(|-\<omega\>|)>*e<rsup|-i*\<omega\>*t>=A<rsub|t>*<around|(|-\<omega\>|)>*e<rsup|i*<around|(|-\<omega\>|)>*t>=\<phi\><around|(|t,-\<omega\>|)>
     </equation*>
   </proof>
+
+  <\theorem>
+    <dueto|Filter Kernel: Dual Fourier Formula>
+
+    <\equation*>
+      h<around|(|t,u|)>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*<around|(|t-u|)>>*d*\<omega\>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><around|(|t,\<omega\>|)>*e<rsup|-i*\<omega\>*u>*d*\<omega\>
+    </equation*>
+  </theorem>
+
+  <\proof>
+    <\equation*>
+      <frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<phi\><around|(|t,\<omega\>|)>*e<rsup|-i*\<omega\>*u>*d*\<omega\>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|[|A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>|]>*e<rsup|-i*\<omega\>*u>*d*\<omega\>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*<around|(|t-u|)>>*d*\<omega\>
+    </equation*>
+  </proof>
+
+  <\theorem>
+    <dueto|Inverse Relations>
+
+    <\equation>
+      A<rsub|t><around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*e<rsup|-i*\<omega\>*<around|(|t-u|)>>*d*u
+    </equation>
+
+    <\equation>
+      \<phi\><around|(|t,\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*e<rsup|-i*\<omega\>*u>*d*u
+    </equation>
+  </theorem>
+
+  <\proof>
+    <\equation*>
+      <big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|t,u|)>*e<rsup|-i*\<omega\>*<around|(|t-u|)>>*d*u=<big|int><rsub|-\<infty\>><rsup|\<infty\>><frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*<around|(|t-u|)>>*d*\<lambda\>*<space|0.27em>e<rsup|-i*\<omega\>*<around|(|t-u|)>>*d*u
+    </equation*>
+
+    <\equation*>
+      =<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<lambda\>|)><around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<lambda\>*<around|(|t-u|)>>*e<rsup|-i*\<omega\>*<around|(|t-u|)>>*d*u|]>*d*\<lambda\>
+    </equation*>
+
+    <\equation*>
+      =<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*e<rsup|-i*\<omega\>*t><around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*<around|(|\<lambda\>-\<omega\>|)>*u>*d*u|]>*d*\<lambda\>=<frac|1|2*\<pi\>>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*e<rsup|-i*\<omega\>*t>*2*\<pi\>*\<delta\>*<around|(|\<lambda\>-\<omega\>|)>*d*\<lambda\>
+    </equation*>
+
+    <\equation*>
+      =<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*e<rsup|-i*\<omega\>*t>*\<delta\>*<around|(|\<lambda\>-\<omega\>|)>*d*\<lambda\>=A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>*e<rsup|-i*\<omega\>*t>=A<rsub|t><around|(|\<omega\>|)>
+    </equation*>
+
+    The formula for <math|\<phi\><around|(|t,\<omega\>|)>> is found
+    similarly.
+  </proof>
+
+  \;
 </body>
 
 <\initial>
@@ -346,42 +271,6 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|?|1>>
-    <associate|auto-2|<tuple|2|2>>
-    <associate|auto-3|<tuple|3|2>>
-    <associate|auto-4|<tuple|5|3>>
-    <associate|auto-5|<tuple|6|4>>
-    <associate|auto-6|<tuple|8|5>>
+    <associate|auto-1|<tuple|1|?|../.TeXmacs/texts/scratch/no_name_29.tm>>
   </collection>
 </references>
-
-<\auxiliary>
-  <\collection>
-    <\associate|toc>
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Definitions>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-1><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Eigenfunctions
-      for Stationary Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-2><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Eigenfunctions
-      for Oscillatory Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-3><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Symmetry
-      and Real-Valued Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-4><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Dual
-      Fourier Structure of the Filter Kernel>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-5><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Time
-      Domain Filter Representation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-6><vspace|0.5fn>
-    </associate>
-  </collection>
-</auxiliary>
