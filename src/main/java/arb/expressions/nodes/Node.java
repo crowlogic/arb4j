@@ -76,7 +76,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public Expression<D, R, F> expression;
 
-  public String fieldName;
+  public String              fieldName;
 
   public Class<?>            generatedType;
 
@@ -187,9 +187,9 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
 
   public abstract Node<D, R, F> differentiate(VariableNode<D, R, F> variable);
 
-  public <N extends Node<D, R, F>> N digamma()
+  public Node<D, R, F> digamma()
   {
-    return (N) apply("digamma");
+    return apply("digamma");
   }
 
   public int dim()
@@ -202,11 +202,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return div(expression.newLiteralConstant(i));
   }
 
-  public <N extends Node<D, R, F>> N div(Node<D, R, F> divisor)
+  public Node<D, R, F> div(Node<D, R, F> divisor)
   {
-    return (N) new DivisionNode<>(expression,
-                                  this,
-                                  divisor);
+    return new DivisionNode<>(expression,
+                              this,
+                              divisor);
   }
 
   @Override

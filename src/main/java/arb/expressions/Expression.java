@@ -1893,7 +1893,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return loadFieldOntoStack(loadThisOntoStack(mv), name, referenceType);
   }
 
-  protected <N extends Node<D, C, F>> N multiplyAndDivide(N node)
+  protected Node<D, C, F> multiplyAndDivide(Node<D, C, F> node)
   {
     while (true)
     {

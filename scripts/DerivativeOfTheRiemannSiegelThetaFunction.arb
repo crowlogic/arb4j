@@ -1,0 +1,1 @@
+var td = RealFunction.parse("t➔im((lnΓ(¼+((ⅈ*t)/2)))-(((log(π))/2)*t))");

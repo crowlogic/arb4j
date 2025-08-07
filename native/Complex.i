@@ -105,6 +105,13 @@ import arb.functions.complex.ComplexNullaryFunction;
     return r;
   }
       
+  public Complex sub( Real s, int prec, Complex r )
+  {
+    arblib.acb_sub_arb(r, this, s, prec);
+    return r;
+  }
+
+      
   public Complex(int i)
   {
    this();

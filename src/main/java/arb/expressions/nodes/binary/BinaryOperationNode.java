@@ -259,7 +259,8 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
 
     if (!Compiler.canBeAssignedTo(type(), resultType))
     {
-      throw new CompilerException(String.format("node type %s of '%s' cannot be represented as a %s",
+      throw new CompilerException(String.format("%s of type %s whose expression is '%s' cannot be represented as a %s",
+                                                getClass(),
                                                 type(),
                                                 this,
                                                 resultType));

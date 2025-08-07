@@ -1,0 +1,10 @@
+--- !!arb.expressions.SerializedExpression
+coDomain: arb.Real
+context:
+  input:
+  - arb.Complex
+  - '0'
+domain: arb.Real
+expression: im(((digamma(¼+((ⅈ*t)/2)))*((ⅈ*2)/4))-((((-0)/4)*t)+((log(π))/2))*(((digamma(¼+((ⅈ*t)/2)))*((ⅈ*2)/4))-((((-0)/4)*t)+((log(π))/2))))
+function: arb.functions.real.RealFunction
+...

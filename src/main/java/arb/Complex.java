@@ -54,6 +54,9 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
     swigCPtr = cPtr;
   }
 
+
+
+  
   public static long getCPtr(Complex obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
@@ -129,6 +132,13 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
     pow(r.re().set(operand),prec,r );   
     return r;
   }
+      
+  public Complex sub( Real s, int prec, Complex r )
+  {
+    arblib.acb_sub_arb(r, this, s, prec);
+    return r;
+  }
+
       
   public Complex(int i)
   {

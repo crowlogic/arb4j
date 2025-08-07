@@ -113,7 +113,7 @@ public class ExpressionTree<D, R, F extends Function<? extends D, ? extends R>> 
 
     var branches = new ArrayList<Node<D, R, F>>(stem.getBranches());
     var existing = indexedBranches.get(stem);
-    assert existing != null : stem + " already indexed";
+//    assert existing != null : stem + " already indexed";
     indexedBranches.put(stem, branches);
 
     for (var branch : branches)

@@ -263,6 +263,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     switch (functionName)
     {
+    case "re":
+      // d/dt[re(f(t))] = re(f'(t))
+    case "im":
+      // d/dt[im(f(t))] = im(f'(t))
+      return arg.differentiate().apply(functionName);
     case "sqrt":
       return one().div(mul(2));
     case "arctan":
@@ -669,7 +674,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     Class<?>                scalarArgType = Compiler.scalarType(arg.type());
     switch (functionName)
     {
+    case "re":
+    case "im":
+      return Real.class;
     case "gamma":
+    case "digamma":
     case "Γ":
     case "lnΓ":
       return scalarArgType;
@@ -680,17 +689,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       return Real.class;
     case "ζ":
       return Complex.class;
-//    case "log":
-//      return Real.class;
     case "exp":
       return scalarArgType;
-//      System.err.println( "exp scalarArgType=" + scalarArgType );
-//      if ( scalarArgType.equals( Complex.class ))
-//      {
-//        Class<?> scalarCodomainType = Compiler.scalarType(expression.coDomainType);
-//        System.err.println( "  scalarCodomainType=" + scalarCodomainType );
-//        return scalarCodomainType;
-//      }
     }
 
     if (argType == null)
