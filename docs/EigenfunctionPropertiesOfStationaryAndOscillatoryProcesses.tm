@@ -100,8 +100,13 @@
       <tformat|<table|<row|<cell|>|<cell|=e<rsup|i*\<omega\>*t>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>R<around|(|\<tau\>|)>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\><eq-number>>>|<row|<cell|>|<cell|=e<rsup|i*\<omega\>*t>\<cdot\>S<around|(|\<omega\>|)><eq-number>>>>>
     </align>
 
-    where <math|S<around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>R<around|(|\<tau\>|)>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\>>
-    is the power spectral density by the Wiener-Khintchine theorem.
+    where
+
+    <\equation>
+      S<around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>R<around|(|\<tau\>|)>*e<rsup|-i*\<omega\>*\<tau\>>*d*\<tau\>
+    </equation>
+
+    \ is the power spectral density by the Wiener-Khintchine theorem.
   </proof>
 
   <\theorem>
@@ -110,18 +115,23 @@
     process with evolutionary spectral representation
 
     <\equation>
-      X<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*Z<around|(|\<omega\>|)>
+      X<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|t><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*t>*d*Z<around|(|\<omega\>|)>
     </equation>
 
     and covariance function
 
     <\equation>
-      C<around|(|s,t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|s,\<omega\>|)>*A<rsup|\<ast\>><around|(|t,\<omega\>|)>*f<around|(|\<omega\>|)>*d*\<omega\>
+      C<around|(|s,t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<rsub|s><around|(|\<omega\>|)>*A<rsup|\<ast\>><rsub|t><around|(|\<omega\>|)>*f<around|(|\<omega\>|)>*d*\<omega\>
     </equation>
 
     where <math|f<around|(|\<omega\>|)>> is the underlying spectral density.
-    Then the oscillatory functions <math|\<phi\><around|(|t,\<omega\>|)>=A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>>
-    are eigenfunctions of the covariance operator
+    Then the oscillatory functions <math|>
+
+    <\equation>
+      \<phi\><around|(|t,\<omega\>|)>=A<around|(|t,\<omega\>|)>*e<rsup|i*\<omega\>*t>
+    </equation>
+
+    \ are eigenfunctions of the covariance operator
 
     <\equation>
       <around|(|K*f|)><around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>C<around|(|t,s|)>*f<around|(|s|)>*d*s
@@ -132,7 +142,7 @@
 
   <\proof>
     Consider the action of <math|K> on the oscillatory function
-    <math|\<phi\><around|(|s,\<omega\>|)>=A<around|(|s,\<omega\>|)>*e<rsup|i*\<omega\>*s>>:
+    <math|\<phi\><around|(|s,\<omega\>|)>=A<rsub|s><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*s>>:
 
     <\align>
       <tformat|<table|<row|<cell|<around|(|K*\<phi\>|)><around|(|t|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>C<around|(|t,s|)>*A<around|(|s,\<omega\>|)>*e<rsup|i*\<omega\>*s>*d*s<eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<lambda\>|)>*A<rsup|\<ast\>><around|(|s,\<lambda\>|)>*f<around|(|\<lambda\>|)>*d*\<lambda\>|]>*A<around|(|s,\<omega\>|)>*e<rsup|i*\<omega\>*s>*d*s<eq-number>>>>>
