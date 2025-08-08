@@ -8,7 +8,7 @@
   Kernels>|<doc-author|<author-data|<author-name|Stephen
   Crowley>|<\author-affiliation>
     <date|>
-  </author-affiliation>>>|<doc-date|>>
+  </author-affiliation>>>>
 
   <\table-of-contents|toc>
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Introduction>
@@ -94,7 +94,7 @@
   and
 
   <\equation>
-    f<around|(|x|)>=<frac|1|2*\<pi\>>*<big|int><rsub|\<bbb-R\>><wide|f|^><around|(|\<omega\>|)>*<space|0.17em>e<rsup|i*\<omega\>*x>*<space|0.17em>d*\<omega\>.
+    f<around|(|x|)>=<frac|1|2*\<pi\>>*<big|int><rsub|\<bbb-R\>><wide|f|^><around|(|\<omega\>|)>*<space|0.17em>e<rsup|i*\<omega\>*x>*<space|0.17em>d*\<omega\>
   </equation>
 
   For a finite nonnegative Borel measure <math|\<mu\>> on <math|\<bbb-R\>>,
@@ -107,7 +107,7 @@
   <subsection|Spectral characterization in the frequency domain>
 
   <\theorem>
-    [Wiener\UKhintchine characterization] A continuous function
+    <dueto|Bochner-Wiener-Khintchine characterization>A continuous function
     <math|\<phi\>:\<bbb-R\>\<to\>\<bbb-C\>> is positive definite if and only
     if there exists a finite nonnegative Borel measure <math|\<mu\>> on
     <math|\<bbb-R\>> such that
@@ -136,39 +136,29 @@
   </theorem>
 
   <\proof>
-    Define <math|\<phi\><around|(|x|)>=<big|int>e<rsup|i*\<omega\>*x>*<space|0.17em>d*\<mu\><around|(|\<omega\>|)>>
-    for a finite nonnegative Borel measure <math|\<mu\>>. The integral is
-    well-defined for each <math|x> because
-    <math|<around|\||e<rsup|i*\<omega\>*x>|\|>\<le\>1> and <math|\<mu\>> is
-    finite. For continuity, fix <math|x\<in\>\<bbb-R\>> and let
-    <math|x<rsub|n>\<to\>x>. Since <math|e<rsup|i*\<omega\>*x<rsub|n>>\<to\>e<rsup|i*\<omega\>*x>>
-    pointwise in <math|\<omega\>> and <math|<around|\||e<rsup|i*\<omega\>*x<rsub|n>>|\|>\<le\>1>
-    for all <math|n>, dominated convergence gives
-    <math|\<phi\><around|(|x<rsub|n>|)>\<to\>\<phi\><around|(|x|)>>.
+    First, suppose <math|\<phi\><around|(|x|)>=<big|int>e<rsup|i*\<omega\>*x>*<space|0.17em>d*\<mu\><around|(|\<omega\>|)>>
+    for a finite nonnegative Borel measure <math|\<mu\>>. For any finite set
+    of points <math|x<rsub|1>,\<ldots\>,x<rsub|n>\<in\>\<bbb-R\>> and complex
+    numbers <math|c<rsub|1>,\<ldots\>,c<rsub|n>>, we have
 
-    Assume <math|\<mu\>> is absolutely continuous with
-    <math|d*\<mu\><around|(|\<omega\>|)>=S<around|(|\<omega\>|)>*d*\<omega\>>
-    and <math|S<around|(|\<omega\>|)>\<ge\>0>. Then
+    <\align>
+      <tformat|<table|<row|<cell|<big|sum><rsub|j,k=1><rsup|n>c<rsub|j><wide|c<rsub|k>|\<bar\>>\<phi\>*<around|(|x<rsub|j>-x<rsub|k>|)>>|<cell|=<big|sum><rsub|j,k=1><rsup|n>c<rsub|j><wide|c<rsub|k>|\<bar\>><big|int>e<rsup|i*\<omega\>*<around|(|x<rsub|j>-x<rsub|k>|)>>*d*\<mu\><around|(|\<omega\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><around*|\||<big|sum><rsub|j=1><rsup|n>c<rsub|j>*e<rsup|i*\<omega\>*x<rsub|j>>|\|><rsup|2>*d*\<mu\><around|(|\<omega\>|)>\<geq\>0<eq-number>>>>>
+    </align>
 
-    <\equation>
-      \<phi\><around|(|x|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<omega\>*x>*<space|0.17em>S<around|(|\<omega\>|)>*<space|0.17em>d*\<omega\>
-    </equation>
+    since <math|\<mu\>> is nonnegative. Thus <math|\<phi\>> is positive
+    definite.
 
-    which is the frequency-domain representation of <math|\<phi\>>.
+    Conversely, if <math|\<phi\>> is continuous and positive definite, then
+    by Bochner's theorem there exists a unique finite nonnegative Borel
+    measure <math|\<mu\>> such that <math|\<phi\><around|(|x|)>=<big|int>e<rsup|i*\<omega\>*x>*d*\<mu\><around|(|\<omega\>|)>>.
 
-    Conversely, assume <math|\<phi\>\<in\>L<rsup|1><around|(|\<bbb-R\>|)>>.
-    The Fourier inversion formula yields
-
-    <\equation>
-      \<phi\><around|(|x|)>=<frac|1|2*\<pi\>>*<big|int><rsub|\<bbb-R\>><wide|\<phi\>|^><around|(|\<omega\>|)>*<space|0.17em>e<rsup|i*\<omega\>*x>*<space|0.17em>d*\<omega\>
-    </equation>
-
-    Set <math|S<around|(|\<omega\>|)>=<frac|1|2*\<pi\>>*<wide|\<phi\>|^><around|(|\<omega\>|)>>,
-    so that <math|d*\<mu\><around|(|\<omega\>|)>=S<around|(|\<omega\>|)>*<space|0.17em>d*\<omega\>>
-    is an absolutely continuous finite measure precisely when
-    <math|<wide|\<phi\>|^>\<in\>L<rsup|1><around|(|\<bbb-R\>|)>>. The
-    equality above identifies <math|\<phi\>> as the frequency-domain
-    representation with spectral density <math|S<around|(|\<omega\>|)>>.
+    The remaining statements follow from standard Fourier analysis: if
+    <math|\<mu\>> has density <math|S<around|(|\<omega\>|)>> then
+    <math|\<phi\><around|(|x|)>=<big|int>e<rsup|i*\<omega\>*x>*S<around|(|\<omega\>|)>*d*\<omega\>>,
+    and if <math|\<phi\>\<in\>L<rsup|1><around|(|\<bbb-R\>|)>> then by
+    Fourier inversion <math|\<phi\><around|(|x|)>=<frac|1|2*\<pi\>>*<big|int><wide|\<phi\>|^><around|(|\<omega\>|)>*e<rsup|i*\<omega\>*x>*d*\<omega\>>,
+    giving <math|S<around|(|\<omega\>|)>=<frac|1|2*\<pi\>>*<wide|\<phi\>|^><around|(|\<omega\>|)>\<geq\>0>
+    almost everywhere by the positive definiteness of <math|\<phi\>>.
   </proof>
 
   <section|Time-changed stationary kernels in the frequency domain>
@@ -218,7 +208,8 @@
   <math|<around|(|\<theta\><rsup|-1>|)><rprime|'><around|(|u|)>=1/\<theta\><rprime|'><around|(|\<theta\><rsup|-1><around|(|u|)>|)>>.
 
   <\lemma>
-    [Unitary change of variables] Define <math|U:L<rsup|2><around|(|\<bbb-R\>,d*s|)>\<to\>L<rsup|2><around|(|\<bbb-R\>,d*u|)>>
+    <dueto|Unitary change of variables>Define
+    <math|U:L<rsup|2><around|(|\<bbb-R\>,d*s|)>\<to\>L<rsup|2><around|(|\<bbb-R\>,d*u|)>>
     by
 
     <\equation>
@@ -248,8 +239,8 @@
   </proof>
 
   <\theorem>
-    [Unitary equivalence to a stationary convolution] Let <math|\<phi\>> be
-    continuous and positive definite with spectral density
+    <dueto|Unitary equivalence to a weighted stationary convolution>Let
+    <math|\<phi\>> be continuous and positive definite with spectral density
     <math|S<around|(|\<omega\>|)>> when absolutely continuous. Define
     <math|S:L<rsup|2><around|(|\<bbb-R\>|)>\<to\>L<rsup|2><around|(|\<bbb-R\>|)>>
     by
@@ -258,11 +249,13 @@
       <around|(|S*g|)><around|(|u|)>=<big|int><rsub|\<bbb-R\>>\<phi\>*<around|(|u-v|)>*<space|0.17em>g<around|(|v|)>*<space|0.17em>d*v
     </equation>
 
+    and let <math|M<rsub|w>> be multiplication by
+    <math|w<around|(|u|)>=<sqrt|<around|(|\<theta\><rsup|-1>|)><rprime|'><around|(|u|)>>>.
     If <math|\<theta\>> is strictly monotone and absolutely continuous with
     <math|\<theta\><rprime|'><around|(|s|)>\<gtr\>0> almost everywhere, then
 
     <\equation>
-      U*T<rsub|\<theta\>>*U<rsup|-1>=S
+      U*T<rsub|\<theta\>>*U<rsup|-1>=M<rsub|w>*S*M<rsub|w>
     </equation>
   </theorem>
 
@@ -271,30 +264,31 @@
     <math|U<rsup|-1>*g<around|(|s|)>=g<around|(|\<theta\><around|(|s|)>|)><space|0.17em><sqrt|\<theta\><rprime|'><around|(|s|)>>>.
     Compute
 
-    <\equation>
-      <text|<math|<tabular|<tformat|<table|<row|<cell|<around|(|U*T<rsub|\<theta\>>*U<rsup|-1>*g|)><around|(|u|)>>|<cell|=<sqrt|<around|(|\<theta\><rsup|-1>|)><rprime|'><around|(|u|)>>*<big|int><rsub|\<bbb-R\>>\<phi\>*<around|(|\<theta\><around|(|\<theta\><rsup|-1><around|(|u|)>|)>-\<theta\><around|(|t|)>|)>*<space|0.17em>g<around|(|\<theta\><around|(|t|)>|)><space|0.17em><sqrt|\<theta\><rprime|'><around|(|t|)>>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<sqrt|<around|(|\<theta\><rsup|-1>|)><rprime|'><around|(|u|)>>*<big|int><rsub|\<bbb-R\>>\<phi\>*<around|(|u-\<theta\><around|(|t|)>|)>*<space|0.17em>g<around|(|\<theta\><around|(|t|)>|)><space|0.17em><sqrt|\<theta\><rprime|'><around|(|t|)>>*<space|0.17em>d*t>>>>>>>
-    </equation>
+    <\align>
+      <tformat|<table|<row|<cell|<around|(|U*T<rsub|\<theta\>>*U<rsup|-1>*g|)><around|(|u|)>>|<cell|=<sqrt|<around|(|\<theta\><rsup|-1>|)><rprime|'><around|(|u|)>>*<big|int><rsub|\<bbb-R\>>\<phi\>*<around|(|\<theta\><around|(|\<theta\><rsup|-1><around|(|u|)>|)>-\<theta\><around|(|t|)>|)>*<space|0.17em>g<around|(|\<theta\><around|(|t|)>|)><space|0.17em><sqrt|\<theta\><rprime|'><around|(|t|)>>*<space|0.17em>d*t<eq-number>>>|<row|<cell|>|<cell|=<sqrt|<around|(|\<theta\><rsup|-1>|)><rprime|'><around|(|u|)>>*<big|int><rsub|\<bbb-R\>>\<phi\>*<around|(|u-\<theta\><around|(|t|)>|)>*<space|0.17em>g<around|(|\<theta\><around|(|t|)>|)><space|0.17em><sqrt|\<theta\><rprime|'><around|(|t|)>>*<space|0.17em>d*t<eq-number>>>>>
+    </align>
 
     Set <math|v=\<theta\><around|(|t|)>> so that
-    <math|d*v=\<theta\><rprime|'><around|(|t|)>*<space|0.17em>d*t> and\ 
-
-    <\equation>
-      <sqrt|\<theta\><rprime|'><around|(|t|)>>*<space|0.17em>d*t=<sqrt|<around|(|\<theta\><rsup|-1>|)><rprime|'><around|(|v|)>>*<space|0.17em>d*v
-    </equation>
-
+    <math|d*v=\<theta\><rprime|'><around|(|t|)>*<space|0.17em>d*t> and
+    <math|<sqrt|\<theta\><rprime|'><around|(|t|)>>*<space|0.17em>d*t=<sqrt|<around|(|\<theta\><rsup|-1>|)><rprime|'><around|(|v|)>>*<space|0.17em>d*v>.
     Then
 
     <\equation>
       <around|(|U*T<rsub|\<theta\>>*U<rsup|-1>*g|)><around|(|u|)>=<sqrt|<around|(|\<theta\><rsup|-1>|)><rprime|'><around|(|u|)>>*<big|int><rsub|\<bbb-R\>>\<phi\>*<around|(|u-v|)>*<space|0.17em>g<around|(|v|)><space|0.17em><sqrt|<around|(|\<theta\><rsup|-1>|)><rprime|'><around|(|v|)>>*<space|0.17em>d*v
     </equation>
 
-    Multiplying the integrand by <math|<sqrt|<around|(|\<theta\><rsup|-1>|)><rprime|'><around|(|u|)>>>
-    and dividing it by the same outside factor balances the Jacobian
-    symmetrically, yielding
+    This can be written as
 
-    <\equation*>
-      <around|(|U*T<rsub|\<theta\>>*U<rsup|-1>*g|)><around|(|u|)>=<big|int><rsub|\<bbb-R\>>\<phi\>*<around|(|u-v|)>*<space|0.17em>g<around|(|v|)>*<space|0.17em>d*v=<around|(|S*g|)><around|(|u|)>
-    </equation*>
+    <\equation>
+      <around|(|U*T<rsub|\<theta\>>*U<rsup|-1>*g|)><around|(|u|)>=<sqrt|<around|(|\<theta\><rsup|-1>|)><rprime|'><around|(|u|)>>*<big|int><rsub|\<bbb-R\>>\<phi\>*<around|(|u-v|)><around|[|g<around|(|v|)><sqrt|<around|(|\<theta\><rsup|-1>|)><rprime|'><around|(|v|)>>|]>*d*v
+    </equation>
+
+    Setting <math|h<around|(|v|)>=g<around|(|v|)><sqrt|<around|(|\<theta\><rsup|-1>|)><rprime|'><around|(|v|)>>=<around|(|M<rsub|w>*g|)><around|(|v|)>>,
+    we have
+
+    <\equation>
+      <around|(|U*T<rsub|\<theta\>>*U<rsup|-1>*g|)><around|(|u|)>=<sqrt|<around|(|\<theta\><rsup|-1>|)><rprime|'><around|(|u|)>>*<around|(|S*h|)><around|(|u|)>=<around|(|M<rsub|w>*S*M<rsub|w>*g|)><around|(|u|)>
+    </equation>
   </proof>
 
   <subsection|Frequency-domain diagonalization of the stationary operator>
@@ -322,9 +316,9 @@
   i.e., <math|S=\<cal-F\><rsup|-1>*M<rsub|2*\<pi\>*S<around|(|\<cdummy\>|)>>*\<cal-F\>>.
 
   <\theorem>
-    [Bounded self-adjointness in the monotone case] Assume <math|\<phi\>> is
-    continuous and positive definite with absolutely continuous spectral
-    density <math|S<around|(|\<omega\>|)>\<in\>L<rsup|\<infty\>><around|(|\<bbb-R\>|)>>.
+    <dueto|Bounded self-adjointness in the monotone case>Assume
+    <math|\<phi\>> is continuous and positive definite with absolutely
+    continuous spectral density <math|S<around|(|\<omega\>|)>\<in\>L<rsup|\<infty\>><around|(|\<bbb-R\>|)>>.
     If <math|\<theta\>> is strictly monotone and absolutely continuous with
     <math|\<theta\><rprime|'><around|(|s|)>\<gtr\>0> almost everywhere, then
     <math|T<rsub|\<theta\>>> is bounded and self-adjoint on
@@ -336,15 +330,18 @@
   </theorem>
 
   <\proof>
-    The unitary equivalence <math|U*T<rsub|\<theta\>>*U<rsup|-1>=S> holds by
-    the previous theorem. The operator <math|S> equals
-    <math|\<cal-F\><rsup|-1>*M<rsub|2*\<pi\>*S<around|(|\<cdummy\>|)>>*\<cal-F\>>,
-    where <math|M<rsub|2*\<pi\>*S<around|(|\<cdummy\>|)>>> is multiplication
-    by the essentially bounded real-valued function
-    <math|2*\<pi\>*S<around|(|\<omega\>|)>>. Therefore <math|S> is bounded
-    and self-adjoint with <math|<around|\<\|\|\>|S|\<\|\|\>>=<around|\<\|\|\>|2*\<pi\>*S|\<\|\|\>><rsub|L<rsup|\<infty\>>>>.
-    These properties and the operator norm pass to <math|T<rsub|\<theta\>>>
-    by unitary equivalence.
+    From the previous theorem, <math|U*T<rsub|\<theta\>>*U<rsup|-1>=M<rsub|w>*S*M<rsub|w>>
+    where <math|w<around|(|u|)>=<sqrt|<around|(|\<theta\><rsup|-1>|)><rprime|'><around|(|u|)>>>
+    and <math|S=\<cal-F\><rsup|-1>*M<rsub|2*\<pi\>*S<around|(|\<cdummy\>|)>>*\<cal-F\>>.
+    Since <math|M<rsub|w>> is multiplication by a positive real-valued
+    function, <math|M<rsub|w>*S*M<rsub|w>> is unitarily equivalent to
+    <math|S> and therefore to the multiplication operator
+    <math|M<rsub|2*\<pi\>*S<around|(|\<cdummy\>|)>>> in Fourier space. Since
+    <math|2*\<pi\>*S<around|(|\<omega\>|)>\<geq\>0> is real-valued and
+    essentially bounded, this operator is bounded and self-adjoint with norm
+    <math|<around|\<\|\|\>|2*\<pi\>*S|\<\|\|\>><rsub|L<rsup|\<infty\>>>>.
+    These properties transfer to <math|T<rsub|\<theta\>>> by unitary
+    equivalence.
   </proof>
 
   <section|Random wave model on the line>
@@ -360,19 +357,19 @@
   Its Fourier transform under the stated convention equals
 
   <\equation>
-    <wide|\<phi\>|^><around|(|\<omega\>|)>=<big|int><rsub|\<bbb-R\>>J<rsub|0><around|(|<around|\||x|\|>|)>*<space|0.17em>e<rsup|-i*\<omega\>*x>*<space|0.17em>d*x=<frac|2|<sqrt|1-\<omega\><rsup|2>>>*<space|0.17em><with|math-font-family|bf|1><rsub|<around|{|<around|\||\<omega\>|\|>\<le\>1|}>>
+    <wide|\<phi\>|^><around|(|\<omega\>|)>=<big|int><rsub|\<bbb-R\>>J<rsub|0><around|(|<around|\||x|\|>|)>*<space|0.17em>e<rsup|-i*\<omega\>*x>*<space|0.17em>d*x=<frac|2|<sqrt|1-\<omega\><rsup|2>>><space|0.17em><text|<with|font-series|bold|1>><rsub|<around|{|<around|\||\<omega\>|\|>\<le\>1|}>>
   </equation>
 
   Therefore the spectral density is
 
   <\equation>
-    S<around|(|\<omega\>|)>=<frac|1|2*\<pi\>>*<wide|\<phi\>|^><around|(|\<omega\>|)>=<frac|1|\<pi\>*<sqrt|1-\<omega\><rsup|2>>>*<space|0.17em><with|math-font-family|bf|1><rsub|<around|{|<around|\||\<omega\>|\|>\<le\>1|}>>
+    S<around|(|\<omega\>|)>=<frac|1|2*\<pi\>>*<wide|\<phi\>|^><around|(|\<omega\>|)>=<frac|1|\<pi\>*<sqrt|1-\<omega\><rsup|2>>><space|0.17em><text|<with|font-series|bold|1>><rsub|<around|{|<around|\||\<omega\>|\|>\<le\>1|}>>
   </equation>
 
   Equivalently,
 
   <\equation>
-    \<phi\><around|(|x|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<omega\>*x>*<space|0.17em><frac|1|\<pi\>*<sqrt|1-\<omega\><rsup|2>>>*<space|0.17em><with|math-font-family|bf|1><rsub|<around|{|<around|\||\<omega\>|\|>\<le\>1|}>>*<space|0.17em>d*\<omega\>
+    \<phi\><around|(|x|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<omega\>*x>*<space|0.17em><frac|1|\<pi\>*<sqrt|1-\<omega\><rsup|2>>>*<space|0.17em><text|<with|font-series|bold|1>><rsub|<around|{|<around|\||\<omega\>|\|>\<le\>1|}>><space|0.17em>d*\<omega\>
   </equation>
 
   where the integrable endpoint singularities at <math|\<omega\>=\<pm\>1> are
@@ -390,13 +387,13 @@
   Then
 
   <\equation>
-    <wide|S*f|^><around|(|\<omega\>|)>=<wide|\<phi\>|^><around|(|\<omega\>|)>*<space|0.17em><wide|f|^><around|(|\<omega\>|)>=<frac|2|<sqrt|1-\<omega\><rsup|2>>>*<space|0.17em><with|math-font-family|bf|1><rsub|<around|{|<around|\||\<omega\>|\|>\<le\>1|}>>*<space|0.17em><wide|f|^><around|(|\<omega\>|)>
+    <wide|S*f|^><around|(|\<omega\>|)>=<wide|\<phi\>|^><around|(|\<omega\>|)>*<space|0.17em><wide|f|^><around|(|\<omega\>|)>=<frac|2|<sqrt|1-\<omega\><rsup|2>>>*<space|0.17em><text|<with|font-series|bold|1>><rsub|<around|{|<around|\||\<omega\>|\|>\<le\>1|}>><space|0.17em><wide|f|^><around|(|\<omega\>|)>
   </equation>
 
   Hence <math|S> is the frequency multiplier by
 
   <\equation>
-    m<around|(|\<omega\>|)>=<frac|2|<sqrt|1-\<omega\><rsup|2>>>*<space|0.17em><with|math-font-family|bf|1><rsub|<around|{|<around|\||\<omega\>|\|>\<le\>1|}>>
+    m<around|(|\<omega\>|)>=<frac|2|<sqrt|1-\<omega\><rsup|2>>><space|0.17em><text|<with|font-series|bold|1>><rsub|<around|{|<around|\||\<omega\>|\|>\<le\>1|}>>
   </equation>
 
   <subsection|Time-changed random wave operator>
@@ -406,23 +403,29 @@
   <math|\<theta\><rprime|'><around|(|s|)>\<gtr\>0> almost everywhere, define
 
   <\equation>
-    <around|(|T<rsub|\<theta\>>*f|)><around|(|s|)>=<big|int><rsub|\<bbb-R\>>J<rsub|0><around*|(|<around|\||\<theta\><around|(|s|)>-\<theta\><around|(|t|)>|\|>|)>*<space|0.17em>f<around|(|t|)>*<space|0.17em>d*t
+    <around|(|T<rsub|\<theta\>>*f|)><around|(|s|)>=<big|int><rsub|\<bbb-R\>>J<rsub|0><around|(|<around|\||\<theta\><around|(|s|)>-\<theta\><around|(|t|)>|\|>|)>*<space|0.17em>f<around|(|t|)>*<space|0.17em>d*t
   </equation>
 
   Then
 
   <\equation>
-    U*T<rsub|\<theta\>>*U<rsup|-1>=\<cal-F\><rsup|-1>*M<rsub|m<around|(|\<cdummy\>|)>>*\<cal-F\>
+    U*T<rsub|\<theta\>>*U<rsup|-1>=M<rsub|w>*\<cal-F\><rsup|-1>*M<rsub|m<around|(|\<cdummy\>|)>>*\<cal-F\>*M<rsub|w>
   </equation>
 
-  and
+  where\ 
 
   <\equation>
-    m<around|(|\<omega\>|)>=<frac|2|<sqrt|1-\<omega\><rsup|2>>>*<space|0.17em><with|math-font-family|bf|1><rsub|<around|{|<around|\||\<omega\>|\|>\<le\>1|}>>
+    w<around|(|u|)>=<sqrt|<around|(|\<theta\><rsup|-1>|)><rprime|'><around|(|u|)>>
+  </equation>
+
+  \ and
+
+  <\equation>
+    m<around|(|\<omega\>|)>=<frac|2|<sqrt|1-\<omega\><rsup|2>>><space|0.17em><text|<with|font-series|bold|1>><rsub|<around|{|<around|\||\<omega\>|\|>\<le\>1|}>>
   </equation>
 
   <\theorem>
-    [Self-adjointness for the time-changed random wave operator] Let
+    <dueto|Self-adjointness for the time-changed random wave operator>Let
     <math|\<theta\>> be strictly monotone and absolutely continuous with
     <math|\<theta\><rprime|'><around|(|s|)>\<gtr\>0> almost everywhere. Then
     <math|T<rsub|\<theta\>>> is self-adjoint on
@@ -432,17 +435,19 @@
   </theorem>
 
   <\proof>
-    By construction,\ 
+    By construction,
 
     <\equation>
-      U*T<rsub|\<theta\>>*U<rsup|-1>=\<cal-F\><rsup|-1>*M<rsub|m<around|(|\<cdummy\>|)>>*\<cal-F\>
+      U*T<rsub|\<theta\>>*U<rsup|-1>=M<rsub|w>*\<cal-F\><rsup|-1>*M<rsub|m<around|(|\<cdummy\>|)>>*\<cal-F\>*M<rsub|w>
     </equation>
 
-    \ with a real-valued symbol <math|m<around|(|\<omega\>|)>>. The operator
-    <math|M<rsub|m<around|(|\<cdummy\>|)>>> is self-adjoint on its natural
-    domain in <math|L<rsup|2><around|(|\<bbb-R\>|)>>. Unitary equivalence
-    transfers self-adjointness from <math|M<rsub|m<around|(|\<cdummy\>|)>>>
-    to <math|T<rsub|\<theta\>>>.
+    with a real-valued symbol <math|m<around|(|\<omega\>|)>\<geq\>0>. The
+    operator <math|M<rsub|m<around|(|\<cdummy\>|)>>> is self-adjoint on its
+    natural domain in <math|L<rsup|2><around|(|\<bbb-R\>|)>>. Since
+    <math|M<rsub|w>> commutes with real multiplication operators after
+    Fourier transform, the composition is self-adjoint. Unitary equivalence
+    transfers self-adjointness from this composition to
+    <math|T<rsub|\<theta\>>>.
   </proof>
 
   <section|Non-monotone time changes>
@@ -476,7 +481,7 @@
     <math|s\<in\>\<bbb-R\>>,
 
     <\equation>
-      <around|(|T<rsub|\<theta\>>*f<rsub|\<varepsilon\>>|)><around|(|s|)>=<big|int><rsub|\<bbb-R\>>\<phi\>*<around|(|\<theta\><around|(|s|)>-\<theta\><around|(|t|)>|)>*<around*|(|h<rsub|\<varepsilon\>>*<around|(|t-s<rsub|1>|)>-h<rsub|\<varepsilon\>>*<around|(|t-s<rsub|2>|)>|)>*<space|0.17em>d*t
+      <around|(|T<rsub|\<theta\>>*f<rsub|\<varepsilon\>>|)><around|(|s|)>=<big|int><rsub|\<bbb-R\>>\<phi\>*<around|(|\<theta\><around|(|s|)>-\<theta\><around|(|t|)>|)>*<around|(|h<rsub|\<varepsilon\>>*<around|(|t-s<rsub|1>|)>-h<rsub|\<varepsilon\>>*<around|(|t-s<rsub|2>|)>|)>*<space|0.17em>d*t
     </equation>
 
     Change variables <math|u=t-s<rsub|1>> in the first term and
@@ -512,7 +517,7 @@
   <section|Main characterization>
 
   <\theorem>
-    [Characterization via monotonicity] Let
+    <dueto|Characterization via monotonicity>Let
     <math|K<around|(|x,y|)>=\<phi\>*<around|(|x-y|)>> be a
     translation-invariant positive definite kernel with absolutely continuous
     spectral density <math|S<around|(|\<omega\>|)>\<in\>L<rsup|\<infty\>><around|(|\<bbb-R\>|)>>.
@@ -522,9 +527,10 @@
     <math|L<rsup|2><around|(|\<bbb-R\>|)>>, and
 
     <\equation>
-      U*T<rsub|\<theta\>>*U<rsup|-1>=\<cal-F\><rsup|-1>*M<rsub|2*\<pi\>*S<around|(|\<cdummy\>|)>>*\<cal-F\>
+      U*T<rsub|\<theta\>>*U<rsup|-1>=M<rsub|w>*\<cal-F\><rsup|-1>*M<rsub|2*\<pi\>*S<around|(|\<cdummy\>|)>>*\<cal-F\>*M<rsub|w>
     </equation>
 
+    where <math|w<around|(|u|)>=<sqrt|<around|(|\<theta\><rsup|-1>|)><rprime|'><around|(|u|)>>>.
     If <math|\<theta\>> is not strictly monotone, there exist nontrivial
     <math|L<rsup|2>> functions with null image under
     <math|T<rsub|\<theta\>>>.
@@ -532,24 +538,24 @@
 
   <\proof>
     The first assertion is the bounded self-adjointness theorem proved above,
-    together with the explicit Fourier multiplier identification for the
-    stationary operator. The second assertion follows from the construction
-    in the non-monotone time change theorem using localized bump differences
-    supported near level-set collisions of <math|\<theta\>>.
+    together with the explicit weighted Fourier multiplier identification for
+    the stationary operator. The second assertion follows from the
+    construction in the non-monotone time change theorem using localized bump
+    differences supported near level-set collisions of <math|\<theta\>>.
   </proof>
 
   <\example>
-    [Random wave model on the line] Let <math|\<phi\><around|(|x|)>=J<rsub|0><around|(|<around|\||x|\|>|)>>.
-    Then
+    <dueto|Random wave model on the line>Let
+    <math|\<phi\><around|(|x|)>=J<rsub|0><around|(|<around|\||x|\|>|)>>. Then
 
     <\equation>
-      <wide|\<phi\>|^><around|(|\<omega\>|)>=<frac|2|<sqrt|1-\<omega\><rsup|2>>>*<space|0.17em><with|math-font-family|bf|1><rsub|<around|{|<around|\||\<omega\>|\|>\<le\>1|}>>
+      <wide|\<phi\>|^><around|(|\<omega\>|)>=<frac|2|<sqrt|1-\<omega\><rsup|2>>><space|0.17em><text|<with|font-series|bold|1>><rsub|<around|{|<around|\||\<omega\>|\|>\<le\>1|}>>
     </equation>
 
     and
 
     <\equation>
-      S<around|(|\<omega\>|)>=<frac|1|\<pi\>*<sqrt|1-\<omega\><rsup|2>>>*<space|0.17em><with|math-font-family|bf|1><rsub|<around|{|<around|\||\<omega\>|\|>\<le\>1|}>>
+      S<around|(|\<omega\>|)>=<frac|1|\<pi\>*<sqrt|1-\<omega\><rsup|2>>><space|0.17em><text|<with|font-series|bold|1>><rsub|<around|{|<around|\||\<omega\>|\|>\<le\>1|}>>
     </equation>
 
     The stationary operator <math|S> acts in the Fourier domain as
@@ -560,19 +566,20 @@
     time-changed operator
 
     <\equation>
-      <around|(|T<rsub|\<theta\>>*f|)><around|(|s|)>=<big|int><rsub|\<bbb-R\>>J<rsub|0><around*|(|<around|\||\<theta\><around|(|s|)>-\<theta\><around|(|t|)>|\|>|)>*<space|0.17em>f<around|(|t|)>*<space|0.17em>d*t
+      <around|(|T<rsub|\<theta\>>*f|)><around|(|s|)>=<big|int><rsub|\<bbb-R\>>J<rsub|0><around|(|<around|\||\<theta\><around|(|s|)>-\<theta\><around|(|t|)>|\|>|)>*<space|0.17em>f<around|(|t|)>*<space|0.17em>d*t
     </equation>
 
     satisfies
 
     <\equation>
-      U*T<rsub|\<theta\>>*U<rsup|-1>=\<cal-F\><rsup|-1>*M<rsub|m<around|(|\<cdummy\>|)>>*\<cal-F\><text|>
+      U*T<rsub|\<theta\>>*U<rsup|-1>=M<rsub|w>*\<cal-F\><rsup|-1>*M<rsub|m<around|(|\<cdummy\>|)>>*\<cal-F\>*M<rsub|w>
     </equation>
 
+    where <math|w<around|(|u|)>=<sqrt|<around|(|\<theta\><rsup|-1>|)><rprime|'><around|(|u|)>>>
     and
 
     <\equation>
-      m<around|(|\<omega\>|)>=<frac|2|<sqrt|1-\<omega\><rsup|2>>>*<space|0.17em><with|math-font-family|bf|1><rsub|<around|{|<around|\||\<omega\>|\|>\<le\>1|}>>
+      m<around|(|\<omega\>|)>=<frac|2|<sqrt|1-\<omega\><rsup|2>>><space|0.17em><text|<with|font-series|bold|1>><rsub|<around|{|<around|\||\<omega\>|\|>\<le\>1|}>>
     </equation>
   </example>
 </body>
@@ -589,20 +596,20 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|auto-10|<tuple|4.1|5|../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|auto-11|<tuple|4.2|6|../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|auto-12|<tuple|4.3|6|../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|auto-13|<tuple|5|7|../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|auto-14|<tuple|6|8|../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|auto-2|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|auto-3|<tuple|2.1|2|../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|auto-4|<tuple|2.2|2|../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|auto-5|<tuple|3|3|../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|auto-6|<tuple|3.1|3|../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|auto-7|<tuple|3.2|3|../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|auto-8|<tuple|3.3|5|../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|auto-9|<tuple|4|5|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-10|<tuple|4.1|5>>
+    <associate|auto-11|<tuple|4.2|6>>
+    <associate|auto-12|<tuple|4.3|6>>
+    <associate|auto-13|<tuple|5|7>>
+    <associate|auto-14|<tuple|6|8>>
+    <associate|auto-2|<tuple|2|2>>
+    <associate|auto-3|<tuple|2.1|2>>
+    <associate|auto-4|<tuple|2.2|2>>
+    <associate|auto-5|<tuple|3|3>>
+    <associate|auto-6|<tuple|3.1|3>>
+    <associate|auto-7|<tuple|3.2|3>>
+    <associate|auto-8|<tuple|3.3|5>>
+    <associate|auto-9|<tuple|4|5>>
   </collection>
 </references>
 

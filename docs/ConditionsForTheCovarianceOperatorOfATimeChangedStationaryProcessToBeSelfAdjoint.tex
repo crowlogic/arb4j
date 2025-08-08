@@ -6,6 +6,7 @@
 %%%%%%%%%% Start TeXmacs macros
 \newcommand{\cdummy}{\cdot}
 \newcommand{\tmaffiliation}[1]{\\ #1}
+\newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
 \newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
 {\theorembodyfont{\rmfamily}\newtheorem{example}{Example}}
 \newtheorem{lemma}{Lemma}
@@ -21,8 +22,6 @@ Time-Changed Stationary Kernels}
   Stephen Crowley
   \tmaffiliation{August 8, 2025}
 }
-
-\date{}
 
 \maketitle
 
@@ -51,7 +50,7 @@ For $f \in L^1 (\mathbb{R})$, define
 and
 \begin{equation}
   f (x) = \frac{1}{2 \pi}  \int_{\mathbb{R}} \hat{f} (\omega)  \hspace{0.17em}
-  e^{i \omega x}  \hspace{0.17em} d \omega .
+  e^{i \omega x}  \hspace{0.17em} d \omega
 \end{equation}
 For a finite nonnegative Borel measure $\mu$ on $\mathbb{R}$, define its
 Fourier--Stieltjes transform by
@@ -62,10 +61,10 @@ Fourier--Stieltjes transform by
 
 \subsection{Spectral characterization in the frequency domain}
 
-\begin{theorem}
-  [Wiener--Khintchine characterization] A continuous function $\phi :
-  \mathbb{R} \to \mathbb{C}$ is positive definite if and only if there exists
-  a finite nonnegative Borel measure $\mu$ on $\mathbb{R}$ such that
+\begin{theorem}[Bochner-Wiener-Khintchine characterization]
+  A continuous function $\phi : \mathbb{R} \to \mathbb{C}$ is positive
+  definite if and only if there exists a finite nonnegative Borel measure
+  $\mu$ on $\mathbb{R}$ such that
   \begin{equation}
     \phi (x) = \int_{\mathbb{R}} e^{i \omega x}  \hspace{0.17em} d \mu
     (\omega) \forall x \in \mathbb{R}
@@ -87,32 +86,30 @@ Fourier--Stieltjes transform by
 \end{theorem}
 
 \begin{proof}
-  Define $\phi (x) = \int e^{i \omega x}  \hspace{0.17em} d \mu (\omega)$ for
-  a finite nonnegative Borel measure $\mu$. The integral is well-defined for
-  each $x$ because $|e^{i \omega x} | \le 1$ and $\mu$ is finite. For
-  continuity, fix $x \in \mathbb{R}$ and let $x_n \to x$. Since $e^{i \omega
-  x_n} \to e^{i \omega x}$ pointwise in $\omega$ and $|e^{i \omega x_n} | \le
-  1$ for all $n$, dominated convergence gives $\phi (x_n) \to \phi (x)$.
+  First, suppose $\phi (x) = \int e^{i \omega x}  \hspace{0.17em} d \mu
+  (\omega)$ for a finite nonnegative Borel measure $\mu$. For any finite set
+  of points $x_1, \ldots, x_n \in \mathbb{R}$ and complex numbers $c_1,
+  \ldots, c_n$, we have
   
-  Assume $\mu$ is absolutely continuous with $d \mu (\omega) = S (\omega) d
-  \omega$ and $S (\omega) \ge 0$. Then
-  \begin{equation}
-    \phi (x) = \int_{\mathbb{R}} e^{i \omega x}  \hspace{0.17em} S (\omega) 
-    \hspace{0.17em} d \omega
-  \end{equation}
-  which is the frequency-domain representation of $\phi$.
+  \begin{align}
+    \sum_{j, k = 1}^n c_j \overline{c_k} \phi (x_j - x_k) & = \sum_{j, k =
+    1}^n c_j \overline{c_k} \int e^{i \omega (x_j - x_k)} d \mu (\omega) \\
+    & = \int \left| \sum_{j = 1}^n c_j e^{i \omega x_j} \right|^2 d \mu
+    (\omega) \geq 0 
+  \end{align}
   
-  Conversely, assume $\phi \in L^1 (\mathbb{R})$. The Fourier inversion
-  formula yields
-  \begin{equation}
-    \phi (x) = \frac{1}{2 \pi}  \int_{\mathbb{R}} \hat{\phi} (\omega) 
-    \hspace{0.17em} e^{i \omega x}  \hspace{0.17em} d \omega
-  \end{equation}
-  Set $S (\omega) = \frac{1}{2 \pi}  \hat{\phi} (\omega)$, so that $d \mu
-  (\omega) = S (\omega)  \hspace{0.17em} d \omega$ is an absolutely continuous
-  finite measure precisely when $\hat{\phi} \in L^1 (\mathbb{R})$. The
-  equality above identifies $\phi$ as the frequency-domain representation with
-  spectral density $S (\omega)$.
+  since $\mu$ is nonnegative. Thus $\phi$ is positive definite.
+  
+  Conversely, if $\phi$ is continuous and positive definite, then by Bochner's
+  theorem there exists a unique finite nonnegative Borel measure $\mu$ such
+  that $\phi (x) = \int e^{i \omega x} d \mu (\omega)$.
+  
+  The remaining statements follow from standard Fourier analysis: if $\mu$ has
+  density $S (\omega)$ then $\phi (x) = \int e^{i \omega x} S (\omega) d
+  \omega$, and if $\phi \in L^1 (\mathbb{R})$ then by Fourier inversion $\phi
+  (x) = \frac{1}{2 \pi}  \int \hat{\phi} (\omega) e^{i \omega x} d \omega$,
+  giving $S (\omega) = \frac{1}{2 \pi}  \hat{\phi} (\omega) \geq 0$ almost
+  everywhere by the positive definiteness of $\phi$.
 \end{proof}
 
 \section{Time-changed stationary kernels in the frequency domain}
@@ -151,9 +148,8 @@ derivative $\theta' (s) > 0$ almost everywhere, so that $\theta$ is invertible
 with absolutely continuous inverse $\theta^{- 1}$ and $(\theta^{- 1})' (u) = 1
 / \theta' (\theta^{- 1} (u))$.
 
-\begin{lemma}
-  [Unitary change of variables] Define $U : L^2 (\mathbb{R}, ds) \to L^2
-  (\mathbb{R}, du)$ by
+\begin{lemma}[Unitary change of variables]
+  Define $U : L^2 (\mathbb{R}, ds) \to L^2 (\mathbb{R}, du)$ by
   \begin{equation}
     (Uf) (u) = f (\theta^{- 1} (u)) \hspace{0.17em} \sqrt{(\theta^{- 1})' (u)}
     = \frac{f (\theta^{- 1} (u))}{\sqrt{\theta' (\theta^{- 1} (u))}}
@@ -176,50 +172,54 @@ with absolutely continuous inverse $\theta^{- 1}$ and $(\theta^{- 1})' (u) = 1
   Thus $U$ is an isometry onto $L^2 (\mathbb{R}, du)$ and therefore unitary.
 \end{proof}
 
-\begin{theorem}
-  [Unitary equivalence to a stationary convolution] Let $\phi$ be continuous
-  and positive definite with spectral density $S (\omega)$ when absolutely
-  continuous. Define $S : L^2 (\mathbb{R}) \to L^2 (\mathbb{R})$ by
+\begin{theorem}[Unitary equivalence to a weighted stationary convolution]
+  Let $\phi$ be continuous and positive definite with spectral density $S
+  (\omega)$ when absolutely continuous. Define $S : L^2 (\mathbb{R}) \to L^2
+  (\mathbb{R})$ by
   \begin{equation}
     (Sg) (u) = \int_{\mathbb{R}} \phi (u - v)  \hspace{0.17em} g (v) 
     \hspace{0.17em} dv
   \end{equation}
-  If $\theta$ is strictly monotone and absolutely continuous with $\theta' (s)
-  > 0$ almost everywhere, then
+  and let $M_w$ be multiplication by $w (u) = \sqrt{(\theta^{- 1})' (u)}$. If
+  $\theta$ is strictly monotone and absolutely continuous with $\theta' (s) >
+  0$ almost everywhere, then
   \begin{equation}
-    UT_{\theta} U^{- 1} = S
+    UT_{\theta} U^{- 1} = M_w SM_w
   \end{equation}
 \end{theorem}
 
 \begin{proof}
   Let $g \in L^2 (\mathbb{R}, du)$. Then $U^{- 1} g (s) = g (\theta (s))
   \hspace{0.17em} \sqrt{\theta' (s)}$. Compute
-  \begin{equation}
-    \text{$\begin{array}{ll}
-      (UT_{\theta} U^{- 1} g) (u) & = \sqrt{(\theta^{- 1})' (u)} 
-      \int_{\mathbb{R}} \phi (\theta (\theta^{- 1} (u)) - \theta (t)) 
-      \hspace{0.17em} g (\theta (t)) \hspace{0.17em} \sqrt{\theta' (t)} 
-      \hspace{0.17em} dt\\
-      & = \sqrt{(\theta^{- 1})' (u)}  \int_{\mathbb{R}} \phi (u - \theta (t))
-      \hspace{0.17em} g (\theta (t)) \hspace{0.17em} \sqrt{\theta' (t)} 
-      \hspace{0.17em} dt
-    \end{array}$}
-  \end{equation}
+  
+  \begin{align}
+    (UT_{\theta} U^{- 1} g) (u) & = \sqrt{(\theta^{- 1})' (u)} 
+    \int_{\mathbb{R}} \phi (\theta (\theta^{- 1} (u)) - \theta (t)) 
+    \hspace{0.17em} g (\theta (t)) \hspace{0.17em} \sqrt{\theta' (t)} 
+    \hspace{0.17em} dt \\
+    & = \sqrt{(\theta^{- 1})' (u)}  \int_{\mathbb{R}} \phi (u - \theta (t)) 
+    \hspace{0.17em} g (\theta (t)) \hspace{0.17em} \sqrt{\theta' (t)} 
+    \hspace{0.17em} dt 
+  \end{align}
+  
   Set $v = \theta (t)$ so that $dv = \theta' (t)  \hspace{0.17em} dt$ and
-  \begin{equation}
-    \sqrt{\theta' (t)}  \hspace{0.17em} dt = \sqrt{(\theta^{- 1})' (v)} 
-    \hspace{0.17em} dv
-  \end{equation}
-  Then
+  $\sqrt{\theta' (t)}  \hspace{0.17em} dt = \sqrt{(\theta^{- 1})' (v)} 
+  \hspace{0.17em} dv$. Then
   \begin{equation}
     (UT_{\theta} U^{- 1} g) (u) = \sqrt{(\theta^{- 1})' (u)} 
     \int_{\mathbb{R}} \phi (u - v)  \hspace{0.17em} g (v) \hspace{0.17em}
     \sqrt{(\theta^{- 1})' (v)}  \hspace{0.17em} dv
   \end{equation}
-  Multiplying the integrand by $\sqrt{(\theta^{- 1})' (u)}$ and dividing it by
-  the same outside factor balances the Jacobian symmetrically, yielding
-  \[ (UT_{\theta} U^{- 1} g) (u) = \int_{\mathbb{R}} \phi (u - v) 
-     \hspace{0.17em} g (v)  \hspace{0.17em} dv = (Sg) (u) \]
+  This can be written as
+  \begin{equation}
+    (UT_{\theta} U^{- 1} g) (u) = \sqrt{(\theta^{- 1})' (u)} 
+    \int_{\mathbb{R}} \phi (u - v) [g (v) \sqrt{(\theta^{- 1})' (v)}] dv
+  \end{equation}
+  Setting $h (v) = g (v) \sqrt{(\theta^{- 1})' (v)} = (M_w g) (v)$, we have
+  \begin{equation}
+    (UT_{\theta} U^{- 1} g) (u) = \sqrt{(\theta^{- 1})' (u)}  (Sh) (u) = (M_w
+    SM_w g) (u)
+  \end{equation}
 \end{proof}
 
 \subsection{Frequency-domain diagonalization of the stationary operator}
@@ -240,12 +240,12 @@ one has $\hat{\phi} (\omega) = 2 \pi S (\omega)$ almost everywhere, so
 \end{equation}
 i.e., $S =\mathcal{F}^{- 1} M_{2 \pi S (\cdummy)} \mathcal{F}$.
 
-\begin{theorem}
-  [Bounded self-adjointness in the monotone case] Assume $\phi$ is continuous
-  and positive definite with absolutely continuous spectral density $S
-  (\omega) \in L^{\infty} (\mathbb{R})$. If $\theta$ is strictly monotone and
-  absolutely continuous with $\theta' (s) > 0$ almost everywhere, then
-  $T_{\theta}$ is bounded and self-adjoint on $L^2 (\mathbb{R})$, with
+\begin{theorem}[Bounded self-adjointness in the monotone case]
+  Assume $\phi$ is continuous and positive definite with absolutely continuous
+  spectral density $S (\omega) \in L^{\infty} (\mathbb{R})$. If $\theta$ is
+  strictly monotone and absolutely continuous with $\theta' (s) > 0$ almost
+  everywhere, then $T_{\theta}$ is bounded and self-adjoint on $L^2
+  (\mathbb{R})$, with
   \begin{equation}
     \|T_{\theta} \| = \| \hspace{0.17em} 2 \pi S \hspace{0.17em}
     \|_{L^{\infty} (\mathbb{R})}
@@ -253,13 +253,14 @@ i.e., $S =\mathcal{F}^{- 1} M_{2 \pi S (\cdummy)} \mathcal{F}$.
 \end{theorem}
 
 \begin{proof}
-  The unitary equivalence $UT_{\theta} U^{- 1} = S$ holds by the previous
-  theorem. The operator $S$ equals $\mathcal{F}^{- 1} M_{2 \pi S (\cdummy)}
-  \mathcal{F}$, where $M_{2 \pi S (\cdummy)}$ is multiplication by the
-  essentially bounded real-valued function $2 \pi S (\omega)$. Therefore $S$
-  is bounded and self-adjoint with $\|S\| = \|2 \pi S\|_{L^{\infty}}$. These
-  properties and the operator norm pass to $T_{\theta}$ by unitary
-  equivalence.
+  From the previous theorem, $UT_{\theta} U^{- 1} = M_w SM_w$ where $w (u) =
+  \sqrt{(\theta^{- 1})' (u)}$ and $S =\mathcal{F}^{- 1} M_{2 \pi S (\cdummy)}
+  \mathcal{F}$. Since $M_w$ is multiplication by a positive real-valued
+  function, $M_w SM_w$ is unitarily equivalent to $S$ and therefore to the
+  multiplication operator $M_{2 \pi S (\cdummy)}$ in Fourier space. Since $2
+  \pi S (\omega) \geq 0$ is real-valued and essentially bounded, this operator
+  is bounded and self-adjoint with norm $\|2 \pi S\|_{L^{\infty}}$. These
+  properties transfer to $T_{\theta}$ by unitary equivalence.
 \end{proof}
 
 \section{Random wave model on the line}
@@ -273,19 +274,19 @@ Define
 Its Fourier transform under the stated convention equals
 \begin{equation}
   \hat{\phi} (\omega) = \int_{\mathbb{R}} J_0 (|x|)  \hspace{0.17em} e^{- i
-  \omega x}  \hspace{0.17em} dx = \frac{2}{\sqrt{1 - \omega^2}} 
-  \hspace{0.17em} \textbf{1}_{\{| \omega | \le 1\}}
+  \omega x}  \hspace{0.17em} dx = \frac{2}{\sqrt{1 - \omega^2}}
+  \hspace{0.17em} \text{\tmtextbf{1}}_{\{| \omega | \le 1\}}
 \end{equation}
 Therefore the spectral density is
 \begin{equation}
   S (\omega) = \frac{1}{2 \pi}  \hat{\phi} (\omega) = \frac{1}{\pi \sqrt{1 -
-  \omega^2}}  \hspace{0.17em} \textbf{1}_{\{| \omega | \le 1\}}
+  \omega^2}} \hspace{0.17em} \text{\tmtextbf{1}}_{\{| \omega | \le 1\}}
 \end{equation}
 Equivalently,
 \begin{equation}
   \phi (x) = \int_{\mathbb{R}} e^{i \omega x}  \hspace{0.17em} \frac{1}{\pi
-  \sqrt{1 - \omega^2}}  \hspace{0.17em} \textbf{1}_{\{| \omega | \le 1\}} 
-  \hspace{0.17em} d \omega
+  \sqrt{1 - \omega^2}}  \hspace{0.17em} \text{\tmtextbf{1}}_{\{| \omega | \le
+  1\}} \hspace{0.17em} d \omega
 \end{equation}
 where the integrable endpoint singularities at $\omega = \pm 1$ are handled by
 Lebesgue integration.
@@ -300,13 +301,13 @@ Define $S : L^2 (\mathbb{R}) \to L^2 (\mathbb{R})$ by
 Then
 \begin{equation}
   \widehat{Sf} (\omega) = \hat{\phi} (\omega)  \hspace{0.17em} \hat{f}
-  (\omega) = \frac{2}{\sqrt{1 - \omega^2}}  \hspace{0.17em} \textbf{1}_{\{|
-  \omega | \le 1\}}  \hspace{0.17em} \hat{f} (\omega)
+  (\omega) = \frac{2}{\sqrt{1 - \omega^2}}  \hspace{0.17em}
+  \text{\tmtextbf{1}}_{\{| \omega | \le 1\}} \hspace{0.17em} \hat{f} (\omega)
 \end{equation}
 Hence $S$ is the frequency multiplier by
 \begin{equation}
-  m (\omega) = \frac{2}{\sqrt{1 - \omega^2}}  \hspace{0.17em} \textbf{1}_{\{|
-  \omega | \le 1\}}
+  m (\omega) = \frac{2}{\sqrt{1 - \omega^2}} \hspace{0.17em}
+  \text{\tmtextbf{1}}_{\{| \omega | \le 1\}}
 \end{equation}
 
 \subsection{Time-changed random wave operator}
@@ -319,30 +320,34 @@ For a strictly monotone absolutely continuous $\theta : \mathbb{R} \to
 \end{equation}
 Then
 \begin{equation}
-  UT_{\theta} U^{- 1} =\mathcal{F}^{- 1} M_{m (\cdummy)} \mathcal{F}
+  UT_{\theta} U^{- 1} = M_w \mathcal{F}^{- 1} M_{m (\cdummy)} \mathcal{F}M_w
+\end{equation}
+where
+\begin{equation}
+  w (u) = \sqrt{(\theta^{- 1})' (u)}
 \end{equation}
 and
 \begin{equation}
-  m (\omega) = \frac{2}{\sqrt{1 - \omega^2}}  \hspace{0.17em} \textbf{1}_{\{|
-  \omega | \le 1\}}
+  m (\omega) = \frac{2}{\sqrt{1 - \omega^2}} \hspace{0.17em}
+  \text{\tmtextbf{1}}_{\{| \omega | \le 1\}}
 \end{equation}
-\begin{theorem}
-  [Self-adjointness for the time-changed random wave operator] Let $\theta$ be
-  strictly monotone and absolutely continuous with $\theta' (s) > 0$ almost
-  everywhere. Then $T_{\theta}$ is self-adjoint on $L^2 (\mathbb{R})$ and
-  shares the spectral representation by unitary equivalence with the
-  multiplication operator $M_{m (\cdummy)}$ on the Fourier side.
+\begin{theorem}[Self-adjointness for the time-changed random wave operator]
+  Let $\theta$ be strictly monotone and absolutely continuous with $\theta'
+  (s) > 0$ almost everywhere. Then $T_{\theta}$ is self-adjoint on $L^2
+  (\mathbb{R})$ and shares the spectral representation by unitary equivalence
+  with the multiplication operator $M_{m (\cdummy)}$ on the Fourier side.
 \end{theorem}
 
 \begin{proof}
   By construction,
   \begin{equation}
-    UT_{\theta} U^{- 1} =\mathcal{F}^{- 1} M_{m (\cdummy)} \mathcal{F}
+    UT_{\theta} U^{- 1} = M_w \mathcal{F}^{- 1} M_{m (\cdummy)} \mathcal{F}M_w
   \end{equation}
-  with a real-valued symbol $m (\omega)$. The operator $M_{m (\cdummy)}$ is
-  self-adjoint on its natural domain in $L^2 (\mathbb{R})$. Unitary
-  equivalence transfers self-adjointness from $M_{m (\cdummy)}$ to
-  $T_{\theta}$.
+  with a real-valued symbol $m (\omega) \geq 0$. The operator $M_{m
+  (\cdummy)}$ is self-adjoint on its natural domain in $L^2 (\mathbb{R})$.
+  Since $M_w$ commutes with real multiplication operators after Fourier
+  transform, the composition is self-adjoint. Unitary equivalence transfers
+  self-adjointness from this composition to $T_{\theta}$.
 \end{proof}
 
 \section{Non-monotone time changes}
@@ -400,38 +405,39 @@ and
 
 \section{Main characterization}
 
-\begin{theorem}
-  [Characterization via monotonicity] Let $K (x, y) = \phi (x - y)$ be a
-  translation-invariant positive definite kernel with absolutely continuous
-  spectral density $S (\omega) \in L^{\infty} (\mathbb{R})$. For $\theta$
-  strictly monotone and absolutely continuous with $\theta' (s) > 0$ almost
-  everywhere, the operator $T_{\theta}$ is bounded and self-adjoint on $L^2
-  (\mathbb{R})$, and
+\begin{theorem}[Characterization via monotonicity]
+  Let $K (x, y) = \phi (x - y)$ be a translation-invariant positive definite
+  kernel with absolutely continuous spectral density $S (\omega) \in
+  L^{\infty} (\mathbb{R})$. For $\theta$ strictly monotone and absolutely
+  continuous with $\theta' (s) > 0$ almost everywhere, the operator
+  $T_{\theta}$ is bounded and self-adjoint on $L^2 (\mathbb{R})$, and
   \begin{equation}
-    UT_{\theta} U^{- 1} =\mathcal{F}^{- 1} M_{2 \pi S (\cdummy)} \mathcal{F}
+    UT_{\theta} U^{- 1} = M_w \mathcal{F}^{- 1} M_{2 \pi S (\cdummy)}
+    \mathcal{F}M_w
   \end{equation}
-  If $\theta$ is not strictly monotone, there exist nontrivial $L^2$ functions
-  with null image under $T_{\theta}$.
+  where $w (u) = \sqrt{(\theta^{- 1})' (u)}$. If $\theta$ is not strictly
+  monotone, there exist nontrivial $L^2$ functions with null image under
+  $T_{\theta}$.
 \end{theorem}
 
 \begin{proof}
   The first assertion is the bounded self-adjointness theorem proved above,
-  together with the explicit Fourier multiplier identification for the
-  stationary operator. The second assertion follows from the construction in
-  the non-monotone time change theorem using localized bump differences
+  together with the explicit weighted Fourier multiplier identification for
+  the stationary operator. The second assertion follows from the construction
+  in the non-monotone time change theorem using localized bump differences
   supported near level-set collisions of $\theta$.
 \end{proof}
 
-\begin{example}
-  [Random wave model on the line] Let $\phi (x) = J_0 (|x|)$. Then
+\begin{example}[Random wave model on the line]
+  Let $\phi (x) = J_0 (|x|)$. Then
   \begin{equation}
-    \hat{\phi} (\omega) = \frac{2}{\sqrt{1 - \omega^2}}  \hspace{0.17em}
-    \textbf{1}_{\{| \omega | \le 1\}}
+    \hat{\phi} (\omega) = \frac{2}{\sqrt{1 - \omega^2}} \hspace{0.17em}
+    \text{\tmtextbf{1}}_{\{| \omega | \le 1\}}
   \end{equation}
   and
   \begin{equation}
-    S (\omega) = \frac{1}{\pi \sqrt{1 - \omega^2}}  \hspace{0.17em}
-    \textbf{1}_{\{| \omega | \le 1\}}
+    S (\omega) = \frac{1}{\pi \sqrt{1 - \omega^2}} \hspace{0.17em}
+    \text{\tmtextbf{1}}_{\{| \omega | \le 1\}}
   \end{equation}
   The stationary operator $S$ acts in the Fourier domain as multiplication by
   $m (\omega) = 2 / \sqrt{1 - \omega^2}$ on $[- 1, 1]$ and $0$ outside. For
@@ -443,12 +449,12 @@ and
   \end{equation}
   satisfies
   \begin{equation}
-    UT_{\theta} U^{- 1} =\mathcal{F}^{- 1} M_{m (\cdummy)} \mathcal{F} \text{}
+    UT_{\theta} U^{- 1} = M_w \mathcal{F}^{- 1} M_{m (\cdummy)} \mathcal{F}M_w
   \end{equation}
-  and
+  where $w (u) = \sqrt{(\theta^{- 1})' (u)}$ and
   \begin{equation}
-    m (\omega) = \frac{2}{\sqrt{1 - \omega^2}}  \hspace{0.17em}
-    \textbf{1}_{\{| \omega | \le 1\}}
+    m (\omega) = \frac{2}{\sqrt{1 - \omega^2}} \hspace{0.17em}
+    \text{\tmtextbf{1}}_{\{| \omega | \le 1\}}
   \end{equation}
 \end{example}
 
