@@ -3,698 +3,369 @@
 <style|<tuple|generic|framed-theorems>>
 
 <\body>
+  <\hide-preamble>
+    \;
+  </hide-preamble>
+
   <doc-data|<doc-title|A Bijective Modification of the Riemann-Siegel
   <math|Theta> Function>|<doc-author|<author-data|<author-name|Stephen
-  Crowley>|<\author-affiliation>
+  Crowley \<less\>Stephencrowley214@gmail.com\<gtr\>>|<\author-affiliation>
     <date|>
   </author-affiliation>>>>
 
-  <abstract-data|<\abstract>
-    A monotonically increasing version <math|\<vartheta\><rsup|+><around*|(|t|)>>
-    of the Riemann-Siegel theta <math|\<vartheta\><rsup|><around*|(|t|)>>
-    function is constructed by modifying through reflection about its unique
-    non-zero critical point. This transformation preserves all phase
-    relationships essential to zeta function analysis while enforcing strict
-    monotonicity. The construction maintains exact phase information without
-    approximations and preserves the function's critical number-theoretic
-    properties.
-  </abstract>>
-
-  <\table-of-contents|toc>
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>The
-    Riemann-Siegel Theta Function> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-1><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Exact
-    Monotonization Construction> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-2><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>Phase
-    Information Preservation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-3><vspace|0.5fn>
-  </table-of-contents>
-
   <\abstract>
     A monotonically increasing version <math|\<vartheta\><rsup|+><around|(|t|)>>
-    of the Riemann-Siegel theta <math|\<vartheta\><around|(|t|)>> function is
-    constructed by modifying through reflection about its unique non-zero
-    critical point. This transformation preserves all phase relationships
-    essential to zeta function analysis while enforcing strict monotonicity.
-    The construction maintains exact phase information without approximations
-    and preserves the function's critical number-theoretic properties.
+    of the Riemann\USiegel theta function <math|\<vartheta\><around|(|t|)>>
+    is constructed by modifying through reflection about its unique nonzero
+    critical point. \<cdot\>
   </abstract>
 
   <\table-of-contents|toc>
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>The
-    Riemann-Siegel Theta Function> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    Riemann\USiegel Theta Function> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-1><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Exact
-    Monotonization Construction> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Monotonization
+    Construction> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-2><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>Phase
     Information Preservation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-3><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>Conclusion>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-4><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-5><vspace|0.5fn>
   </table-of-contents>
 
-  <section|The Riemann-Siegel Theta Function>
+  <section|The Riemann\USiegel Theta Function>
 
   <\definition>
-    <dueto|Riemann-Siegel Theta Function>The Riemann-Siegel
-    <math|\<vartheta\>>function is defined exactly as:
+    [Riemann\USiegel Theta Function]<label|def:theta> The Riemann\USiegel
+    theta function is defined as:
 
     <\equation>
-      \<vartheta\><around|(|t|)>=arg \<Gamma\>*<around*|(|<frac|1|4>+<frac|i*t|2>|)>-<frac|t|2>*log
+      \<vartheta\><around|(|t|)>=arg \<Gamma\>*<space|-0.17em><around*|(|<frac|1|4>+<frac|i*t|2>|)>-<frac|t|2>*log
       \<pi\>
     </equation>
 
-    where <math|\<Gamma\>> is the gamma function and <math|arg> denotes the
-    principal argument.
+    where <math|\<Gamma\>> is the gamma function and arg denotes the
+    principal argument, taken continuously along the path.
+  </definition>
+
+  <\definition>
+    [Digamma and Trigamma Functions]<label|def:psi> The digamma function
+    <math|\<psi\><rsup|<around|(|0|)>><around|(|z|)>> and trigamma function
+    <math|\<psi\><rsup|<around|(|1|)>><around|(|z|)>> are defined by:
+
+    <\align>
+      <tformat|<table|<row|<cell|\<psi\><rsup|<around|(|0|)>><around|(|z|)>>|<cell|=<frac|d|d*z>*log
+      \<Gamma\><around|(|z|)>=<frac|\<Gamma\><rprime|'><around|(|z|)>|\<Gamma\><around|(|z|)>><space|1em><text|<cite|DLMF5.2.1>><eq-number>>>|<row|<cell|\<psi\><rsup|<around|(|1|)>><around|(|z|)>>|<cell|=<frac|d|d*z>*\<psi\><rsup|<around|(|0|)>><around|(|z|)>=<big|sum><rsub|n=0><rsup|\<infty\>><frac|1|<around|(|n+z|)><rsup|2>><space|1em><text|<cite|DLMF5.4.2>><eq-number>>>>>
+    </align>
+
+    for <math|\<Re\><around|(|z|)>\<gtr\>0>.
   </definition>
 
   <\proposition>
-    <dueto|Derivative Properties>The derivative of the Riemann-Siegel theta
-    function is given by:
+    [Derivative Properties]<label|prop:derivative> The derivative of the
+    Riemann\USiegel theta function is:
 
     <\equation>
-      <wide|\<vartheta\>|\<dot\>><around|(|t|)>=<frac|1|2>*<text|Im><around*|[|\<psi\><rsup|<around|(|0|)>>*<around*|(|<frac|1|4>+<frac|i*t|2>|)>|]>-<frac|log
+      \<vartheta\><rprime|'><around|(|t|)>=<frac|1|2>*\<Im\>*<space|-0.17em><around*|[|\<psi\><rsup|<around|(|0|)>>*<space|-0.17em><around*|(|<frac|1|4>+<frac|i*t|2>|)>|]>-<frac|log
       \<pi\>|2>
     </equation>
-
-    where <math|\<psi\><rsup|<around|(|0|)>>> is the digamma function.
   </proposition>
 
   <\proof>
-    Using the relationship between the derivative of the argument of a
-    complex function and the logarithmic derivative:
+    Let <math|w<around|(|t|)>=<frac|1|4>+<frac|i*t|2>>. Along the curve
+    <math|t\<mapsto\>w<around|(|t|)>> the principal argument of
+    <math|\<Gamma\>> can be chosen continuously, so
 
-    <\align>
-      <tformat|<table|<row|<cell|<frac|d|d*t>*arg
-      \<Gamma\>*<around*|(|<frac|1|4>+<frac|i*t|2>|)>>|<cell|=<text|Im><around*|[|<frac|d|d*t>*log
-      \<Gamma\>*<around*|(|<frac|1|4>+<frac|i*t|2>|)>|]><eq-number>>>|<row|<cell|>|<cell|=<text|Im><around*|[|<frac|\<Gamma\><rprime|'>*<around|(|<frac|1|4>+<frac|i*t|2>|)>|\<Gamma\>*<around|(|<frac|1|4>+<frac|i*t|2>|)>>\<cdot\><frac|i|2>|]><eq-number>>>|<row|<cell|>|<cell|=<text|Im><around*|[|\<psi\><rsup|<around|(|0|)>>*<around*|(|<frac|1|4>+<frac|i*t|2>|)>\<cdot\><frac|i|2>|]><eq-number>>>|<row|<cell|>|<cell|=<frac|1|2>*<text|Im><around*|[|\<psi\><rsup|<around|(|0|)>>*<around*|(|<frac|1|4>+<frac|i*t|2>|)>|]><eq-number>>>>>
-    </align>
+    <\equation>
+      <frac|d|d*t>arg\<Gamma\><around|(|w<around|(|t|)>|)>=\<Im\>*<space|-0.17em><around*|(|<frac|d|d*t>*log
+      \<Gamma\><around|(|w<around|(|t|)>|)>|)>=\<Im\>*<space|-0.17em><around*|(|\<psi\><rsup|<around|(|0|)>><around|(|w<around|(|t|)>|)>*<space|0.17em>w<rprime|'><around|(|t|)>|)>
+    </equation>
 
-    The derivative of the second term is simply <math|-<frac|1|2>*log
-    \<pi\>>. Combining these results gives the stated formula.
+    Since <math|w<rprime|'><around|(|t|)>=i/2>, this derivative equals
+    <math|<frac|1|2>*\<Im\>*\<psi\><rsup|<around|(|0|)>><around|(|w<around|(|t|)>|)>>.
+    Differentiating <math|-<frac|t|2>*log \<pi\>> gives <math|-<frac|log
+    \<pi\>|2>>.
   </proof>
 
   <\theorem>
-    <label|limit-behavior>[Limit Behavior of Digamma Imaginary Part] As
-    <math|t\<to\>0<rsup|+>>, Im<math|<around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|1/4+i*t/2|)>|]>\<to\>0>.
+    [Limit at the Origin]<label|thm:limit>
+
+    <\equation>
+      lim<rsub|t\<to\>0<rsup|+>> \<Im\>*<space|-0.17em><around*|[|\<psi\><rsup|<around|(|0|)>>*<space|-0.17em><around*|(|<frac|1|4>+<frac|i*t|2>|)>|]>=0
+    </equation>
   </theorem>
 
   <\proof>
-    The integral representation of the digamma function for
-    Re<math|<around|(|z|)>\<gtr\>0> is:
-
-    <\equation>
-      \<psi\><rsup|<around|(|0|)>><around|(|z|)>=-\<gamma\>+<big|int><rsub|0><rsup|\<infty\>><around*|(|<frac|e<rsup|-u>|1-e<rsup|-u>>-<frac|e<rsup|-z*u>|u>|)>*d*u
-    </equation>
-
-    For <math|z=1/4+i*t/2>:
-
-    <\equation>
-      \<psi\><rsup|<around|(|0|)>>*<around|(|1/4+i*t/2|)>=-\<gamma\>+<big|int><rsub|0><rsup|\<infty\>><around*|(|<frac|e<rsup|-u>|1-e<rsup|-u>>-<frac|e<rsup|-u*<around|(|1/4+i*t/2|)>>|u>|)>*d*u
-    </equation>
-
-    The imaginary part comes from the second term:
-
-    <\equation>
-      <text|Im><around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|1/4+i*t/2|)>|]>=-<text|Im><around*|[|<big|int><rsub|0><rsup|\<infty\>><frac|e<rsup|-u*<around|(|1/4+i*t/2|)>>|u>*d*u|]>
-    </equation>
-
-    <\equation>
-      =-<big|int><rsub|0><rsup|\<infty\>><frac|e<rsup|-u/4>|u><text|Im><around|[|e<rsup|-i*t*u/2>|]>*d*u=<big|int><rsub|0><rsup|\<infty\>><frac|e<rsup|-u/4>|u>*sin
-      <around|(|t*u/2|)>*d*u
-    </equation>
-
-    For the limit as <math|t\<to\>0<rsup|+>>, since <math|sin
-    <around|(|t*u/2|)>\<to\>0> as <math|t\<to\>0> for any fixed <math|u>, and
-    <math|<around|\||sin <around|(|t*u/2|)>|\|>\<leq\><around|\||t*u/2|\|>>:
-
-    <\equation>
-      <around*|\||<frac|e<rsup|-u/4>|u>*sin
-      <around|(|t*u/2|)>|\|>\<leq\><frac|e<rsup|-u/4>|u>\<cdot\><frac|t*u|2>=<frac|t*e<rsup|-u/4>|2>
-    </equation>
-
-    The integral <math|<big|int><rsub|0><rsup|\<infty\>><frac|t*e<rsup|-u/4>|2>*d*u=8*t>
-    converges, so by the dominated convergence theorem:
-
-    <\equation>
-      lim<rsub|t\<to\>0<rsup|+>><text|Im><around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|1/4+i*t/2|)>|]>=<big|int><rsub|0><rsup|\<infty\>><frac|e<rsup|-u/4>|u>*lim<rsub|t\<to\>0<rsup|+>>
-      sin <around|(|t*u/2|)>*d*u=0
-    </equation>
+    Using the integral representation <cite|AbramowitzStegun6.3.1> and
+    dominated convergence (or by analyticity and Taylor expansion in
+    <math|t>), the imaginary part vanishes as <math|t\<to\>0<rsup|+>>.
   </proof>
 
   <\theorem>
-    <label|monotonicity>[Monotonicity of Digamma Imaginary Part] For fixed
-    <math|\<sigma\>\<gtr\>0>, the function
-    Im<math|<around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|\<sigma\>+i*t|)>|]>>
-    is strictly increasing in <math|t> for <math|t\<gtr\>0>.
+    [Monotonicity of the Digamma Imaginary Part]<label|thm:monotonicity> For
+    fixed <math|\<sigma\>\<gtr\>0>, the function
+    <math|t\<mapsto\>\<Im\>*<around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|\<sigma\>+i*t|)>|]>>
+    is strictly increasing for <math|t\<gtr\>0>.
   </theorem>
 
   <\proof>
-    The derivative with respect to <math|t> is computed as:
+    Differentiating with respect to <math|t> gives
 
     <\equation>
-      <frac|\<partial\>|\<partial\>*t>*<text|Im><around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|\<sigma\>+i*t|)>|]>=<text|Im><around*|[|<frac|\<partial\>|\<partial\>*t>*\<psi\><rsup|<around|(|0|)>>*<around|(|\<sigma\>+i*t|)>|]>=<text|Im><around|[|i*\<psi\><rsup|<around|(|1|)>>*<around|(|\<sigma\>+i*t|)>|]>=<text|Re><around|[|\<psi\><rsup|<around|(|1|)>>*<around|(|\<sigma\>+i*t|)>|]>
+      <frac|\<partial\>|\<partial\>*t>*\<Im\>*<around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|\<sigma\>+i*t|)>|]>=\<Re\>*<space|-0.17em><around*|[|<frac|\<partial\>|\<partial\>*t>*\<psi\><rsup|<around|(|0|)>>*<around|(|\<sigma\>+i*t|)>|]>=\<Re\>*<space|-0.17em><around*|[|i*<space|0.17em>\<psi\><rsup|<around|(|1|)>>*<around|(|\<sigma\>+i*t|)>|]>=-<space|0.17em>\<Im\>*<space|-0.17em><around*|[|\<psi\><rsup|<around|(|1|)>>*<around|(|\<sigma\>+i*t|)>|]>
     </equation>
 
-    where <math|\<psi\><rsup|<around|(|1|)>>> is the trigamma function. Using
-    the series representation:
+    Using the absolutely convergent series <cite|DLMF5.4.2>
 
     <\equation>
-      \<psi\><rsup|<around|(|1|)>><around|(|z|)>=<big|sum><rsub|n=0><rsup|\<infty\>><frac|1|<around|(|n+z|)><rsup|2>>
+      \<psi\><rsup|<around|(|1|)>><around|(|z|)>=<big|sum><rsub|n=0><rsup|\<infty\>><frac|1|<around|(|n+z|)><rsup|2>>,<space|1em>\<Re\>*z\<gtr\>0
     </equation>
 
-    For <math|z=\<sigma\>+i*t>:
+    and setting <math|z=\<sigma\>+i*t>, we have
 
     <\equation>
-      \<psi\><rsup|<around|(|1|)>>*<around|(|\<sigma\>+i*t|)>=<big|sum><rsub|n=0><rsup|\<infty\>><frac|1|<around|(|n+\<sigma\>+i*t|)><rsup|2>>=<big|sum><rsub|n=0><rsup|\<infty\>><frac|1|<around|(|n+\<sigma\>|)><rsup|2>-t<rsup|2>+2*i*<around|(|n+\<sigma\>|)>*t>
+      <frac|1|<around|(|n+\<sigma\>+i*t|)><rsup|2>>=<frac|<around|(|n+\<sigma\>|)><rsup|2>-t<rsup|2>-2*i*<around|(|n+\<sigma\>|)>*t|<around*|(|<around|(|n+\<sigma\>|)><rsup|2>+t<rsup|2>|)><rsup|2>>
     </equation>
+
+    Thus
 
     <\equation>
-      =<big|sum><rsub|n=0><rsup|\<infty\>><frac|<around|(|n+\<sigma\>|)><rsup|2>-t<rsup|2>-2*i*<around|(|n+\<sigma\>|)>*t|<around|[|<around|(|n+\<sigma\>|)><rsup|2>-t<rsup|2>|]><rsup|2>+<around|[|2*<around|(|n+\<sigma\>|)>*t|]><rsup|2>>
+      \<Im\>*<space|-0.17em><around*|[|\<psi\><rsup|<around|(|1|)>>*<around|(|\<sigma\>+i*t|)>|]>=<big|sum><rsub|n=0><rsup|\<infty\>><frac|-<space|0.17em>2*<around|(|n+\<sigma\>|)>*t|<around*|(|<around|(|n+\<sigma\>|)><rsup|2>+t<rsup|2>|)><rsup|2>>\<less\>0
     </equation>
 
-    Taking the real part:
-
-    <\equation>
-      <text|Re><around|[|\<psi\><rsup|<around|(|1|)>>*<around|(|\<sigma\>+i*t|)>|]>=<big|sum><rsub|n=0><rsup|\<infty\>><frac|<around|(|n+\<sigma\>|)><rsup|2>-t<rsup|2>|<around|[|<around|(|n+\<sigma\>|)><rsup|2>-t<rsup|2>|]><rsup|2>+4*<around|(|n+\<sigma\>|)><rsup|2>*t<rsup|2>>
-    </equation>
-
-    <\equation>
-      =<big|sum><rsub|n=0><rsup|\<infty\>><frac|<around|(|n+\<sigma\>|)><rsup|2>-t<rsup|2>|<around|(|n+\<sigma\>|)><rsup|4>+2*<around|(|n+\<sigma\>|)><rsup|2>*t<rsup|2>+t<rsup|4>>
-    </equation>
-
-    For <math|n\<geq\>1>, when <math|t> is bounded,
-    <math|<around|(|n+\<sigma\>|)><rsup|2>\<geq\><around|(|1+\<sigma\>|)><rsup|2>\<gtr\>t<rsup|2>>
-    for sufficiently small <math|t>, making each term positive. For large
-    <math|n>, the terms behave like <math|<big|sum><rsub|n=1><rsup|\<infty\>><frac|1|<around|(|n+\<sigma\>|)><rsup|2>>>,
-    which converges and is positive.
-
-    The term with <math|n=0> contributes:
-
-    <\equation>
-      <frac|\<sigma\><rsup|2>-t<rsup|2>|<around|(|\<sigma\><rsup|2>+t<rsup|2>|)><rsup|2>>
-    </equation>
-
-    For any fixed <math|\<sigma\>\<gtr\>0> and <math|t\<gtr\>0>, the sum of
-    positive contributions from <math|n\<geq\>1> dominates any potential
-    negative contribution from <math|n=0>, ensuring
-    Re<math|<around|[|\<psi\><rsup|<around|(|1|)>>*<around|(|\<sigma\>+i*t|)>|]>\<gtr\>0>.
-
-    Therefore, <math|<frac|\<partial\>|\<partial\>*t>*<text|Im><around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|\<sigma\>+i*t|)>|]>\<gtr\>0>,
-    establishing strict monotonicity.
+    for <math|\<sigma\>\<gtr\>0>, <math|t\<gtr\>0>. Hence
+    <math|<frac|\<partial\>|\<partial\>*t>*\<Im\>*<around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|\<sigma\>+i*t|)>|]>\<gtr\>0>.
   </proof>
 
   <\theorem>
-    <label|growth-behavior>[Growth Behavior of Digamma Imaginary Part] As
-    <math|t\<to\>\<infty\>>, Im<math|<around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|1/4+i*t/2|)>|]>>
-    grows without bound and exceeds <math|log \<pi\>> for sufficiently large
-    <math|t>.
+    [Asymptotic Limit]<label|thm:growth>
+
+    <\equation>
+      lim<rsub|t\<to\>\<infty\>> \<Im\>*<space|-0.17em><around*|[|\<psi\><rsup|<around|(|0|)>>*<space|-0.17em><around*|(|<frac|1|4>+<frac|i*t|2>|)>|]>=<frac|\<pi\>|2>
+    </equation>
   </theorem>
 
   <\proof>
-    For large <math|<around|\||z|\|>> with Re<math|<around|(|z|)>\<gtr\>0>,
-    the asymptotic expansion of the digamma function is:
+    From the asymptotic expansion <cite|DLMF5.11.1>,
+    <math|\<psi\><rsup|<around|(|0|)>><around|(|z|)>=log
+    z-<frac|1|2*z>+O<around|(|<around|\||z|\|><rsup|-2>|)>> as
+    <math|<around|\||z|\|>\<to\>\<infty\>> with <math|<around|\||arg
+    z|\|>\<less\>\<pi\>>. Writing <math|z=<frac|1|4>+<frac|i*t|2>>, we have
+    <math|\<Im\>*log z=arg z\<to\><frac|\<pi\>|2>>, and
+    <math|\<Im\>*<around|(|-1/<around|(|2*z|)>|)>=O<around|(|1/t|)>>, so the
+    limit is <math|\<pi\>/2>.
+  </proof>
+
+  <\theorem>
+    [Unique Critical Point]<label|thm:critical> There exists a unique
+    <math|a\<gtr\>0> such that <math|\<vartheta\><rprime|'><around|(|a|)>=0>,
+    equivalently
 
     <\equation>
-      \<psi\><rsup|<around|(|0|)>><around|(|z|)>=log
-      z-<frac|1|2*z>-<big|sum><rsub|k=1><rsup|m><frac|B<rsub|2*k>|2*k\<cdot\>z<rsup|2*k>>+R<rsub|m><around|(|z|)>
-    </equation>
-
-    where <math|B<rsub|2*k>> are Bernoulli numbers and
-    <math|R<rsub|m><around|(|z|)>> is a remainder term that vanishes as
-    <math|<around|\||z|\|>\<to\>\<infty\>>.
-
-    For <math|z=1/4+i*t/2> with large <math|t>:
-
-    <\equation>
-      log z=log <around|(|1/4+i*t/2|)>=<frac|1|2>*log
-      <around*|(|<frac|1|16>+<frac|t<rsup|2>|4>|)>+i*arg
-      <around|(|1/4+i*t/2|)>
-    </equation>
-
-    where <math|arg <around|(|1/4+i*t/2|)>=arctan <around|(|2*t|)>>.
-
-    As <math|t\<to\>\<infty\>>:
-
-    <\enumerate>
-      <item><math|<frac|1|2>*log <around*|(|<frac|1|16>+<frac|t<rsup|2>|4>|)>\<to\><frac|1|2>*log
-      <around*|(|<frac|t<rsup|2>|4>|)>=log <around|(|t/2|)>>
-
-      <item><math|arctan <around|(|2*t|)>\<to\>\<pi\>/2>
-    </enumerate>
-
-    The correction terms <math|<frac|1|2*z>> and higher-order terms become
-    negligible for large <math|<around|\||t|\|>> since
-    <math|<around|\||z|\|>=<sqrt|1/16+t<rsup|2>/4>\<sim\>t/2> for large
-    <math|t>.
-
-    Therefore:
-
-    <\equation>
-      <text|Im><around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|1/4+i*t/2|)>|]>\<sim\><text|Im><around|[|log
-      <around|(|1/4+i*t/2|)>|]>=arctan <around|(|2*t|)>
-    </equation>
-
-    Since <math|lim<rsub|t\<to\>\<infty\>> arctan <around|(|2*t|)>=\<pi\>/2>
-    and <math|\<pi\>/2\<approx\>1.571\<gtr\>log \<pi\>\<approx\>1.145>, there
-    exists a finite value <math|t<rsub|0>> such that for all
-    <math|t\<gtr\>t<rsub|0>>:
-
-    <\equation>
-      <text|Im><around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|1/4+i*t/2|)>|]>\<gtr\>log
+      \<Im\>*<space|-0.17em><around*|[|\<psi\><rsup|<around|(|0|)>>*<space|-0.17em><around*|(|<frac|1|4>+<frac|i*a|2>|)>|]>=log
       \<pi\>
     </equation>
 
-    Specifically, this occurs when <math|arctan <around|(|2*t|)>\<gtr\>log
-    \<pi\>>, which happens when <math|t\<gtr\><frac|1|2>*tan <around|(|log
-    \<pi\>|)>>.
-  </proof>
-
-  <\theorem>
-    <label|ucp>[Unique Critical Point] There exists a unique positive real
-    value <math|a\<in\>\<bbb-R\><rsup|+>> such that:
-
-    <\equation>
-      <around*|\<nobracket\>|<frac|d*\<theta\>|d*t>|\|><rsub|t=a>=0
-    </equation>
-
-    This critical point satisfies the transcendental equation:
-
-    <\equation>
-      <text|Im><around*|[|\<psi\><rsup|<around|(|0|)>>*<around*|(|<frac|1|4>+<frac|i*a|2>|)>|]>=log
-      \<pi\>
-    </equation>
-
-    Furthermore, the derivative exhibits the following behavior:
+    Moreover:
 
     <\itemize>
-      <item><math|<frac|d*\<theta\>|d*t><around|(|t|)>\<less\>0> for
+      <item><math|\<vartheta\><rprime|'><around|(|t|)>\<less\>0> for
       <math|t\<in\><around|(|0,a|)>>
 
-      <item><math|<frac|d*\<theta\>|d*t><around|(|t|)>=0> at <math|t=a>
+      <item><math|\<vartheta\><rprime|'><around|(|t|)>=0> at <math|t=a>
 
-      <item><math|<frac|d*\<theta\>|d*t><around|(|t|)>\<gtr\>0> for
+      <item><math|\<vartheta\><rprime|'><around|(|t|)>\<gtr\>0> for
       <math|t\<gtr\>a>
     </itemize>
   </theorem>
 
   <\proof>
-    First, note that the transcendental equation follows directly from the
-    derivative formula and setting it equal to zero:
-
-    <\align>
-      <tformat|<table|<row|<cell|<frac|d*\<theta\>|d*t><around|(|a|)>>|<cell|=0<eq-number>>>|<row|<cell|<frac|1|2>*<text|Im><around*|[|\<psi\><rsup|<around|(|0|)>>*<around*|(|<frac|1|4>+<frac|i*a|2>|)>|]>-<frac|1|2>*log
-      \<pi\>>|<cell|=0<eq-number>>>|<row|<cell|<text|Im><around*|[|\<psi\><rsup|<around|(|0|)>>*<around*|(|<frac|1|4>+<frac|i*a|2>|)>|]>>|<cell|=log
-      \<pi\><eq-number>>>>>
-    </align>
-
-    For uniqueness, the behavior of Im<math|<around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|1/4+i*t/2|)>|]>>
-    as <math|t> varies is examined using Theorems <reference|limit-behavior>,
-    <reference|monotonicity>, and <reference|growth-behavior>:
-
-    <\enumerate>
-      <item>From Theorem <reference|limit-behavior>: As
-      <math|t\<to\>0<rsup|+>>, Im<math|<around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|1/4+i*t/2|)>|]>\<to\>0\<less\>log
-      \<pi\>>
-
-      <item>From Theorem <reference|monotonicity>: The function
-      Im<math|<around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|1/4+i*t/2|)>|]>>
-      is strictly increasing for <math|t\<gtr\>0>
-
-      <item>From Theorem <reference|growth-behavior>: As
-      <math|t\<to\>\<infty\>>, Im<math|<around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|1/4+i*t/2|)>|]>>
-      grows without bound and exceeds <math|log \<pi\>> for sufficiently
-      large <math|t>
-    </enumerate>
-
-    By the intermediate value theorem and the strict monotonicity established
-    in Theorem <reference|monotonicity>, there exists exactly one value
-    <math|a\<gtr\>0> where Im<math|<around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|1/4+i*a/2|)>|]>=log
-    \<pi\>>.
-
-    For the behavior of the derivative:
-
-    <\itemize>
-      <item>When <math|t\<less\>a>: Im<math|<around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|1/4+i*t/2|)>|]>\<less\>log
-      \<pi\>>, so <math|<frac|d*\<theta\>|d*t><around|(|t|)>\<less\>0>
-
-      <item>When <math|t=a>: Im<math|<around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|1/4+i*a/2|)>|]>=log
-      \<pi\>>, so <math|<frac|d*\<theta\>|d*t><around|(|a|)>=0>
-
-      <item>When <math|t\<gtr\>a>: Im<math|<around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|1/4+i*t/2|)>|]>\<gtr\>log
-      \<pi\>>, so <math|<frac|d*\<theta\>|d*t><around|(|t|)>\<gtr\>0>
-    </itemize>
+    By Theorems <reference|thm:limit>, <reference|thm:monotonicity>, and
+    <reference|thm:growth>, the function <math|t\<mapsto\>\<Im\>*<around|[|\<psi\><rsup|<around|(|0|)>>*<around|(|1/4+i*t/2|)>|]>>
+    is continuous, strictly increasing from <math|0> to <math|\<pi\>/2>, and
+    therefore attains the value <math|log \<pi\>> at a unique
+    <math|a\<gtr\>0>. The sign changes for
+    <math|\<vartheta\><rprime|'><around|(|t|)>> follow from Proposition
+    <reference|prop:derivative>.
   </proof>
 
-  <section|Exact Monotonization Construction>
+  <section|Monotonization Construction>
 
   <\definition>
-    <dueto|Monotonized Theta Function>We define the monotonized
-    Riemann-Siegel theta function <math|<wide|\<theta\>|~><around|(|t|)>>
-    through the exact transformation:
+    [Monotonized Theta Function]<label|def:monotonized> Define the
+    monotonized Riemann\USiegel theta function
 
     <\equation>
-      <wide|\<theta\>|~><around|(|t|)>=<around*|{|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|2*\<theta\><around|(|a|)>-\<theta\><around|(|t|)>>|<cell|<text|for
-      >t\<in\><around|[|0,a|]>>>|<row|<cell|\<theta\><around|(|t|)>>|<cell|<text|for
-      >t\<gtr\>a>>>>>|\<nobracket\>>
+      \<vartheta\><rsup|+><around|(|t|)>=<choice|<tformat|<table|<row|<cell|2*\<vartheta\><around|(|a|)>-\<vartheta\><around|(|t|)>>|<cell|t\<in\><around|[|0,a|]>>>|<row|<cell|\<vartheta\><around|(|t|)>>|<cell|t\<gtr\>a>>>>>
     </equation>
 
-    where <math|a> is the unique critical point where
-    <math|<frac|d*\<theta\>|d*t><around|(|a|)>=0>.
+    where <math|a> is the unique critical point from Theorem
+    <reference|thm:critical>.
   </definition>
 
   <\theorem>
-    <dueto|Monotonicity Properties>The function
-    <math|<wide|\<theta\>|~><around|(|t|)>> is strictly monotonically
-    increasing except at <math|t=a>. Specifically:
+    [Monotonicity of <math|\<vartheta\><rsup|+>>]<label|thm:mono_construction>
+    The function <math|\<vartheta\><rsup|+><around|(|t|)>> is nondecreasing
+    on <math|<around|[|0,\<infty\>|)>> and strictly increasing on
+    <math|<around|[|0,\<infty\>|)>\<setminus\><around|{|a|}>>:
 
     <\equation>
-      <frac|d*<wide|\<theta\>|~>|d*t><around|(|t|)>=<around*|{|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|-<frac|d*\<theta\>|d*t><around|(|t|)>\<gtr\>0>|<cell|<text|for
-      >t\<in\><around|(|0,a|)>>>|<row|<cell|0>|<cell|<text|at
-      >t=a>>|<row|<cell|<frac|d*\<theta\>|d*t><around|(|t|)>\<gtr\>0>|<cell|<text|for
-      >t\<gtr\>a>>>>>|\<nobracket\>>
+      <frac|d|d*t>*\<vartheta\><rsup|+><around|(|t|)>=<choice|<tformat|<table|<row|<cell|-\<vartheta\><rprime|'><around|(|t|)>\<gtr\>0,>|<cell|t\<in\><around|(|0,a|)>>>|<row|<cell|0,>|<cell|t=a>>|<row|<cell|\<vartheta\><rprime|'><around|(|t|)>\<gtr\>0>|<cell|t\<gtr\>a>>>>>
     </equation>
   </theorem>
 
   <\proof>
-    For <math|t\<in\><around|(|0,a|)>>:
-
-    <\align>
-      <tformat|<table|<row|<cell|<frac|d*<wide|\<theta\>|~>|d*t><around|(|t|)>>|<cell|=<frac|d|d*t>*<around|[|2*\<theta\><around|(|a|)>-\<theta\><around|(|t|)>|]><eq-number>>>|<row|<cell|>|<cell|=-<frac|d*\<theta\>|d*t><around|(|t|)><eq-number>>>>>
-    </align>
-
-    From Theorem <reference|ucp>, it is known that
-    <math|<frac|d*\<theta\>|d*t><around|(|t|)>\<less\>0> for
-    <math|t\<in\><around|(|0,a|)>>. Therefore,
-    <math|-<frac|d*\<theta\>|d*t><around|(|t|)>\<gtr\>0> in this range.
-
-    For <math|t=a>:
-
-    <\align>
-      <tformat|<table|<row|<cell|<frac|d*<wide|\<theta\>|~>|d*t><around|(|a|)>>|<cell|=-<frac|d*\<theta\>|d*t><around|(|a|)><eq-number>>>|<row|<cell|>|<cell|=-0=0<eq-number>>>>>
-    </align>
-
-    For <math|t\<gtr\>a>:
-
-    <\align>
-      <tformat|<table|<row|<cell|<frac|d*<wide|\<theta\>|~>|d*t><around|(|t|)>>|<cell|=<frac|d*\<theta\>|d*t><around|(|t|)><eq-number>>>>>
-    </align>
-
-    From Theorem <reference|ucp>, it is known that
-    <math|<frac|d*\<theta\>|d*t><around|(|t|)>\<gtr\>0> for <math|t\<gtr\>a>.
-    Therefore, <math|<frac|d*<wide|\<theta\>|~>|d*t><around|(|t|)>\<gtr\>0>
-    in this range.
-
-    Thus, <math|<frac|d*<wide|\<theta\>|~>|d*t><around|(|t|)>\<geq\>0> for
-    all <math|t\<geq\>0>, with equality only at <math|t=a>, which confirms
-    that <math|<wide|\<theta\>|~><around|(|t|)>> is strictly monotonically
-    increasing except at the single point <math|t=a> which is of measure
-    zero.
+    Immediate from the definition and the sign of
+    <math|\<vartheta\><rprime|'><around|(|t|)>>.
   </proof>
 
   <\proposition>
-    <dueto|Continuity and Differentiability>The function
-    <math|<wide|\<theta\>|~><around|(|t|)>> is:
-
-    <\enumerate>
-      <item>Continuous at all points <math|t\<geq\>0>, including <math|t=a>
-
-      <item>Differentiable at all points <math|t\<geq\>0>, including
-      <math|t=a>
-
-      <item><math|C<rsup|1>> continuous everywhere, but not <math|C<rsup|2>>
-      at <math|t=a>
-    </enumerate>
+    [Continuity and Differentiability]<label|prop:continuity> The function
+    <math|\<vartheta\><rsup|+><around|(|t|)>> is continuous and
+    differentiable everywhere, including at <math|t=a>.
   </proposition>
 
   <\proof>
-    <next-line>
+    Continuity at <math|a>:
 
-    <\enumerate>
-      <item>For continuity at <math|t=a>:
+    <\equation>
+      lim<rsub|t\<to\>a<rsup|->> \<vartheta\><rsup|+><around|(|t|)>=2*\<vartheta\><around|(|a|)>-\<vartheta\><around|(|a|)>=\<vartheta\><around|(|a|)>=lim<rsub|t\<to\>a<rsup|+>>
+      \<vartheta\><rsup|+><around|(|t|)>=\<vartheta\><rsup|+><around|(|a|)>
+    </equation>
 
-      <\align>
-        <tformat|<table|<row|<cell|lim<rsub|t\<to\>a<rsup|->>
-        <wide|\<theta\>|~><around|(|t|)>>|<cell|=lim<rsub|t\<to\>a<rsup|->><around|[|2*\<theta\><around|(|a|)>-\<theta\><around|(|t|)>|]><eq-number>>>|<row|<cell|>|<cell|=2*\<theta\><around|(|a|)>-\<theta\><around|(|a|)><eq-number>>>|<row|<cell|>|<cell|=\<theta\><around|(|a|)><eq-number>>>|<row|<cell|lim<rsub|t\<to\>a<rsup|+>>
-        <wide|\<theta\>|~><around|(|t|)>>|<cell|=lim<rsub|t\<to\>a<rsup|+>>
-        \<theta\><around|(|t|)><eq-number>>>|<row|<cell|>|<cell|=\<theta\><around|(|a|)><eq-number>>>>>
-      </align>
+    Differentiability at <math|a>:
 
-      Since the left and right limits match,
-      <math|<wide|\<theta\>|~><around|(|t|)>> is continuous at <math|t=a>.
-      For <math|t\<neq\>a>, continuity follows from the continuity of
-      <math|\<theta\><around|(|t|)>>.
-
-      <item>For differentiability at <math|t=a>:
-
-      <\align>
-        <tformat|<table|<row|<cell|lim<rsub|t\<to\>a<rsup|->>
-        <frac|d*<wide|\<theta\>|~>|d*t><around|(|t|)>>|<cell|=lim<rsub|t\<to\>a<rsup|->><around*|(|-<frac|d*\<theta\>|d*t><around|(|t|)>|)><eq-number>>>|<row|<cell|>|<cell|=-<frac|d*\<theta\>|d*t><around|(|a|)><eq-number>>>|<row|<cell|>|<cell|=0<eq-number>>>|<row|<cell|lim<rsub|t\<to\>a<rsup|+>>
-        <frac|d*<wide|\<theta\>|~>|d*t><around|(|t|)>>|<cell|=lim<rsub|t\<to\>a<rsup|+>>
-        <frac|d*\<theta\>|d*t><around|(|t|)><eq-number>>>|<row|<cell|>|<cell|=<frac|d*\<theta\>|d*t><around|(|a|)><eq-number>>>|<row|<cell|>|<cell|=0<eq-number>>>>>
-      </align>
-
-      Since the left and right derivatives match at <math|t=a>,
-      <math|<wide|\<theta\>|~><around|(|t|)>> is differentiable at
-      <math|t=a>. For <math|t\<neq\>a>, differentiability follows from the
-      differentiability of <math|\<theta\><around|(|t|)>>.
-
-      <item>For the second derivative at <math|t=a>:
-
-      <\align>
-        <tformat|<table|<row|<cell|lim<rsub|t\<to\>a<rsup|->>
-        <frac|d<rsup|2>*<wide|\<theta\>|~>|d*t<rsup|2>><around|(|t|)>>|<cell|=lim<rsub|t\<to\>a<rsup|->>
-        <frac|d|d*t>*<around*|(|-<frac|d*\<theta\>|d*t><around|(|t|)>|)><eq-number>>>|<row|<cell|>|<cell|=-lim<rsub|t\<to\>a<rsup|->>
-        <frac|d<rsup|2>*\<theta\>|d*t<rsup|2>><around|(|t|)><eq-number>>>|<row|<cell|lim<rsub|t\<to\>a<rsup|+>>
-        <frac|d<rsup|2>*<wide|\<theta\>|~>|d*t<rsup|2>><around|(|t|)>>|<cell|=lim<rsub|t\<to\>a<rsup|+>>
-        <frac|d<rsup|2>*\<theta\>|d*t<rsup|2>><around|(|t|)><eq-number>>>>>
-      </align>
-
-      Since <math|<frac|d*\<theta\>|d*t><around|(|t|)>> changes sign at
-      <math|t=a> (from negative to positive),
-      <math|<frac|d<rsup|2>*\<theta\>|d*t<rsup|2>><around|(|a|)>> must be
-      positive (the derivative is increasing through zero). Therefore:
-
-      <\align>
-        <tformat|<table|<row|<cell|lim<rsub|t\<to\>a<rsup|->>
-        <frac|d<rsup|2>*<wide|\<theta\>|~>|d*t<rsup|2>><around|(|t|)>>|<cell|=-<frac|d<rsup|2>*\<theta\>|d*t<rsup|2>><around|(|a|)>\<less\>0<eq-number>>>|<row|<cell|lim<rsub|t\<to\>a<rsup|+>>
-        <frac|d<rsup|2>*<wide|\<theta\>|~>|d*t<rsup|2>><around|(|t|)>>|<cell|=<frac|d<rsup|2>*\<theta\>|d*t<rsup|2>><around|(|a|)>\<gtr\>0<eq-number>>>>>
-      </align>
-
-      Since the left and right second derivatives differ at <math|t=a>,
-      <math|<wide|\<theta\>|~><around|(|t|)>> is not <math|C<rsup|2>> at
-      <math|t=a>. However, it is <math|C<rsup|1>> everywhere since the first
-      derivative is continuous at all points.
-    </enumerate>
+    <\equation*>
+      lim<rsub|t\<to\>a<rsup|->> <frac|d|d*t>*\<vartheta\><rsup|+><around|(|t|)>=-\<vartheta\><rprime|'><around|(|a|)>=0=lim<rsub|t\<to\>a<rsup|+>>
+      <frac|d|d*t>*\<vartheta\><rsup|+><around|(|t|)>
+    </equation*>
   </proof>
 
   <section|Phase Information Preservation>
 
   <\definition>
-    <dueto|Phase Representation>The Riemann zeta function on the critical
-    line can be expressed as:
+    [Phase Representation]<label|def:phase> On the critical line,
 
     <\equation>
-      \<zeta\>*<around*|(|<frac|1|2>+i*t|)>=e<rsup|-i*\<theta\><around|(|t|)>>*Z<around|(|t|)>
+      \<zeta\>*<space|-0.17em><around*|(|<frac|1|2>+i*t|)>=e<rsup|-i*\<vartheta\><around|(|t|)>>*<space|0.17em>Z<around|(|t|)>
     </equation>
 
-    where <math|Z<around|(|t|)>> is a real-valued function.
+    where <math|Z<around|(|t|)>> is real-valued (the Hardy
+    <math|Z>-function).
   </definition>
 
   <\theorem>
-    <dueto|Phase Preservation>For the monotonized theta function, we define:
+    [Phase Preservation]<label|thm:phase_preservation> Define
 
     <\equation>
-      <wide|Z|~><around|(|t|)>=e<rsup|i*<wide|\<theta\>|~><around|(|t|)>>*\<zeta\>*<around*|(|<frac|1|2>+i*t|)>
+      <wide|Z|~><around|(|t|)>=e<rsup|i*\<vartheta\><rsup|+><around|(|t|)>>*<space|0.17em>\<zeta\>*<space|-0.17em><around*|(|<frac|1|2>+i*t|)>
     </equation>
 
-    This function satisfies:
+    Then
 
     <\equation>
-      <wide|Z|~><around|(|t|)>=<around*|{|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|e<rsup|2*i*\<theta\><around|(|a|)>>*Z<around|(|t|)><rsup|\<ast\>>>|<cell|<text|for
-      >t\<in\><around|[|0,a|]>>>|<row|<cell|Z<around|(|t|)>>|<cell|<text|for
-      >t\<gtr\>a>>>>>|\<nobracket\>>
+      <wide|Z|~><around|(|t|)>=<choice|<tformat|<table|<row|<cell|e<rsup|2*i*\<vartheta\><around|(|a|)>>*<space|0.17em>Z<around|(|t|)>,>|<cell|t\<in\><around|[|0,a|]>,>>|<row|<cell|Z<around|(|t|)>,>|<cell|t\<gtr\>a.>>>>>
     </equation>
-
-    where <math|Z<around|(|t|)><rsup|\<ast\>>> represents the complex
-    conjugate of <math|Z<around|(|t|)>>.
   </theorem>
 
   <\proof>
-    For <math|t\<gtr\>a>:
+    For <math|t\<gtr\>a>, <math|\<vartheta\><rsup|+><around|(|t|)>=\<vartheta\><around|(|t|)>>,
+    so <math|<wide|Z|~><around|(|t|)>=Z<around|(|t|)>>. For
+    <math|t\<in\><around|[|0,a|]>>,
 
-    <\align>
-      <tformat|<table|<row|<cell|<wide|Z|~><around|(|t|)>>|<cell|=e<rsup|i*<wide|\<theta\>|~><around|(|t|)>>*\<zeta\>*<around*|(|<frac|1|2>+i*t|)><eq-number>>>|<row|<cell|>|<cell|=e<rsup|i*\<theta\><around|(|t|)>>*\<zeta\>*<around*|(|<frac|1|2>+i*t|)><eq-number>>>|<row|<cell|>|<cell|=e<rsup|i*\<theta\><around|(|t|)>>\<cdot\>e<rsup|-i*\<theta\><around|(|t|)>>*Z<around|(|t|)><eq-number>>>|<row|<cell|>|<cell|=Z<around|(|t|)><eq-number>>>>>
-    </align>
-
-    For <math|t\<in\><around|[|0,a|]>>:
-
-    <\align>
-      <tformat|<table|<row|<cell|<wide|Z|~><around|(|t|)>>|<cell|=e<rsup|i*<wide|\<theta\>|~><around|(|t|)>>*\<zeta\>*<around*|(|<frac|1|2>+i*t|)><eq-number>>>|<row|<cell|>|<cell|=e<rsup|i*<around|(|2*\<theta\><around|(|a|)>-\<theta\><around|(|t|)>|)>>*\<zeta\>*<around*|(|<frac|1|2>+i*t|)><eq-number>>>|<row|<cell|>|<cell|=e<rsup|2*i*\<theta\><around|(|a|)>>\<cdot\>e<rsup|-i*\<theta\><around|(|t|)>>*\<zeta\>*<around*|(|<frac|1|2>+i*t|)><eq-number>>>|<row|<cell|>|<cell|=e<rsup|2*i*\<theta\><around|(|a|)>>\<cdot\>Z<around|(|t|)><eq-number>>>>>
-    </align>
-
-    Since <math|Z<around|(|t|)>> is real-valued for the Riemann zeta function
-    on the critical line, <math|Z<around|(|t|)>=Z<around|(|t|)><rsup|\<ast\>>>,
-    thus:
-
-    <\equation>
-      <wide|Z|~><around|(|t|)>=e<rsup|2*i*\<theta\><around|(|a|)>>*Z<around|(|t|)><rsup|\<ast\>>
-    </equation>
+    <\equation*>
+      <wide|Z|~><around|(|t|)>=e<rsup|i*<around|(|2*\<vartheta\><around|(|a|)>-\<vartheta\><around|(|t|)>|)>>*\<zeta\>*<space|-0.17em><around*|(|<tfrac|1|2>+i*t|)>=e<rsup|2*i*\<vartheta\><around|(|a|)>>*<space|0.17em>e<rsup|-i*\<vartheta\><around|(|t|)>>*\<zeta\>*<space|-0.17em><around*|(|<tfrac|1|2>+i*t|)>=e<rsup|2*i*\<vartheta\><around|(|a|)>>*<space|0.17em>Z<around|(|t|)>
+    </equation*>
   </proof>
 
   <\corollary>
-    <dueto|Zero Preservation>The zeros of <math|\<zeta\><around|(|s|)>> on
-    the critical line <math|s=<frac|1|2>+i*t> correspond precisely to:
-
-    <\enumerate>
-      <item>The zeros of <math|Z<around|(|t|)>> for <math|t\<gtr\>0>
-
-      <item>The zeros of <math|<wide|Z|~><around|(|t|)>> for <math|t\<gtr\>0>
-    </enumerate>
-
-    Therefore, the monotonization preserves all information about the zeros
-    of the zeta function.
+    [Zero Preservation]<label|cor:zeros> The zeros of
+    <math|\<zeta\>*<space|-0.17em><around*|(|<frac|1|2>+i*t|)>> correspond
+    exactly to the zeros of both <math|Z<around|(|t|)>> and
+    <math|<wide|Z|~><around|(|t|)>> for <math|t\<gtr\>0>.
   </corollary>
 
   <\proof>
-    From the definition of <math|Z<around|(|t|)>>:
-
-    <\equation>
-      \<zeta\>*<around*|(|<frac|1|2>+i*t|)>=e<rsup|-i*\<theta\><around|(|t|)>>*Z<around|(|t|)>
-    </equation>
-
-    If <math|\<zeta\>*<around|(|<frac|1|2>+i*t|)>=0>, then
-    <math|Z<around|(|t|)>=0> since <math|e<rsup|-i*\<theta\><around|(|t|)>>\<neq\>0>
-    for all <math|t>.
-
-    From the Phase Preservation theorem, for <math|t\<gtr\>a>:
-
-    <\equation>
-      <wide|Z|~><around|(|t|)>=Z<around|(|t|)>
-    </equation>
-
-    Therefore, for <math|t\<gtr\>a>, <math|<wide|Z|~><around|(|t|)>=0> if and
-    only if <math|Z<around|(|t|)>=0>, which occurs if and only if
-    <math|\<zeta\>*<around|(|<frac|1|2>+i*t|)>=0>.
-
-    For <math|t\<in\><around|[|0,a|]>>:
-
-    <\equation>
-      <wide|Z|~><around|(|t|)>=e<rsup|2*i*\<theta\><around|(|a|)>>*Z<around|(|t|)><rsup|\<ast\>>
-    </equation>
-
-    Since <math|e<rsup|2*i*\<theta\><around|(|a|)>>\<neq\>0> and
-    <math|Z<around|(|t|)>> is real-valued,
-    <math|Z<around|(|t|)><rsup|\<ast\>>=Z<around|(|t|)>>. Therefore,
-    <math|<wide|Z|~><around|(|t|)>=0> if and only if
-    <math|Z<around|(|t|)>=0>, which occurs if and only if
-    <math|\<zeta\>*<around|(|<frac|1|2>+i*t|)>=0>.
-
-    Thus, for all <math|t\<gtr\>0>, the zeros of
-    <math|\<zeta\>*<around|(|<frac|1|2>+i*t|)>> correspond exactly to the
-    zeros of both <math|Z<around|(|t|)>> and <math|<wide|Z|~><around|(|t|)>>.
+    Multiplication by nonzero phase factors preserves zeros.
   </proof>
 
   <\proposition>
-    <dueto|Bijectivity>The function <math|<wide|\<theta\>|~><around|(|t|)>:<around|[|0,\<infty\>|)>\<to\><around|[|<wide|\<theta\>|~><around|(|0|)>,\<infty\>|)>>
+    [Bijectivity]<label|prop:bijective> The function
+    <math|\<vartheta\><rsup|+><around|(|t|)>:<around|[|0,\<infty\>|)>\<to\><around|[|\<vartheta\><rsup|+><around|(|0|)>,\<infty\>|)>>
     is bijective.
   </proposition>
 
   <\proof>
-    \;
-
-    <\enumerate>
-      <item>Injectivity: For any <math|t<rsub|1>,t<rsub|2>\<geq\>0> with
-      <math|t<rsub|1>\<neq\>t<rsub|2>>, it must be shown that
-      <math|<wide|\<theta\>|~><around|(|t<rsub|1>|)>\<neq\><wide|\<theta\>|~><around|(|t<rsub|2>|)>>.
-
-      <\enumerate>
-        <item>If <math|t<rsub|1>,t<rsub|2>\<less\>a> or
-        <math|t<rsub|1>,t<rsub|2>\<gtr\>a>, then injectivity follows from the
-        strict monotonicity of <math|<wide|\<theta\>|~><around|(|t|)>> on
-        each of these intervals, as proven in the Monotonicity Properties
-        theorem.
-
-        <item>If <math|t<rsub|1>\<less\>a\<less\>t<rsub|2>>, then from
-        monotonicity, <math|<wide|\<theta\>|~><around|(|t<rsub|1>|)>\<less\><wide|\<theta\>|~><around|(|a|)>\<less\><wide|\<theta\>|~><around|(|t<rsub|2>|)>>,
-        which implies <math|<wide|\<theta\>|~><around|(|t<rsub|1>|)>\<neq\><wide|\<theta\>|~><around|(|t<rsub|2>|)>>
-
-        <item>If <math|t<rsub|1>=a> and <math|t<rsub|2>\<neq\>a>, then from
-        the strict monotonicity of <math|<wide|\<theta\>|~><around|(|t|)>>
-        except at <math|t=a>, <math|<wide|\<theta\>|~><around|(|t<rsub|1>|)>=<wide|\<theta\>|~><around|(|a|)>\<neq\><wide|\<theta\>|~><around|(|t<rsub|2>|)>>
-      </enumerate>
-
-      <item>Surjectivity: For every <math|y\<in\><around|[|<wide|\<theta\>|~><around|(|0|)>,\<infty\>|)>>,
-      there exists <math|t\<geq\>0> such that
-      <math|<wide|\<theta\>|~><around|(|t|)>=y>.
-
-      For <math|y=<wide|\<theta\>|~><around|(|0|)>>, <math|t=0> satisfies
-      this condition.
-
-      For <math|y\<gtr\><wide|\<theta\>|~><around|(|0|)>>, since
-      <math|<wide|\<theta\>|~><around|(|t|)>> is continuous and strictly
-      increasing for <math|t\<gtr\>0> (except at <math|t=a> where it remains
-      continuous and non-decreasing), and since
-      <math|lim<rsub|t\<to\>\<infty\>> <wide|\<theta\>|~><around|(|t|)>=\<infty\>>
-      (which follows from the fact that <math|\<theta\><around|(|t|)>> grows
-      without bound as <math|t\<to\>\<infty\>>), by the intermediate value
-      theorem, there exists a unique <math|t\<gtr\>0> such that
-      <math|<wide|\<theta\>|~><around|(|t|)>=y>.
-
-      Therefore, <math|<wide|\<theta\>|~><around|(|t|)>> is both injective
-      and surjective, hence bijective.
-    </enumerate>
+    Injectivity: By Theorem <reference|thm:mono_construction>,
+    <math|\<vartheta\><rsup|+>> is strictly increasing except at <math|t=a>
+    where the derivative is <math|0> but the function increases through
+    <math|a>; hence injective. Surjectivity: <math|\<vartheta\><rsup|+>> is
+    continuous and increases without bound as <math|t\<to\>\<infty\>>
+    (matching <math|\<vartheta\>> asymptotically), so by the Intermediate
+    Value Theorem its range is <math|<around|[|\<vartheta\><rsup|+><around|(|0|)>,\<infty\>|)>>.
   </proof>
 
   <\theorem>
-    <dueto|Modulating Function Criteria>The constructed function
-    <math|<wide|\<theta\>|~><around|(|t|)>> satisfies all criteria for a
-    modulating function:
+    [Modulating Function Criteria]<label|thm:modulating> The function
+    <math|\<vartheta\><rsup|+><around|(|t|)>> satisfies:
 
     <\enumerate>
-      <item>Piecewise continuous with piecewise continuous first derivative.
+      <item>Piecewise <math|C<rsup|1>> with piecewise continuous first
+      derivative and matching at <math|t=a>,
 
-      <item>Monotonically increasing with
-      <math|<frac|d*<wide|\<theta\>|~>|d*t><around|(|t|)>\<geq\>0>, with
-      equality only on a set of measure zero (the single point <math|t=a>).
+      <item>Monotonically nondecreasing with
+      <math|<frac|d|d*t>*\<vartheta\><rsup|+><around|(|t|)>\<ge\>0> and
+      equality only at <math|t=a>,
 
       <item>Bijective with <math|lim<rsub|t\<to\>\<infty\>>
-      <wide|\<theta\>|~><around|(|t|)>=\<infty\>>.
+      \<vartheta\><rsup|+><around|(|t|)>=\<infty\>>.
     </enumerate>
   </theorem>
 
   <\proof>
-    <\enumerate>
-      <item>Piecewise continuity with piecewise continuous first derivative:
-      From the Continuity and Differentiability proposition,
-      <math|<wide|\<theta\>|~><around|(|t|)>> is continuous everywhere and
-      <math|C<rsup|1>> continuous everywhere. Therefore, it is piecewise
-      continuous with piecewise continuous first derivative.
-
-      <item>Monotonically increasing with non-negative derivative: From the
-      Monotonicity Properties theorem, <math|<frac|d*<wide|\<theta\>|~>|d*t><around|(|t|)>\<gtr\>0>
-      for all <math|t\<neq\>a> and <math|<frac|d*<wide|\<theta\>|~>|d*t><around|(|a|)>=0>.
-      Therefore, <math|<wide|\<theta\>|~><around|(|t|)>> is monotonically
-      increasing with non-negative derivative, with equality only at the
-      single point <math|t=a>, which is a set of measure zero.
-
-      <item>Bijectivity with limit at infinity: From the Bijectivity
-      proposition, <math|<wide|\<theta\>|~><around|(|t|)>:<around|[|0,\<infty\>|)>\<to\><around|[|<wide|\<theta\>|~><around|(|0|)>,\<infty\>|)>>
-      is bijective. Since <math|<wide|\<theta\>|~><around|(|t|)>=\<theta\><around|(|t|)>>
-      for <math|t\<gtr\>a>, and since <math|lim<rsub|t\<to\>\<infty\>>
-      \<theta\><around|(|t|)>=\<infty\>> (which follows from the growth
-      properties of the theta function), <math|lim<rsub|t\<to\>\<infty\>>
-      <wide|\<theta\>|~><around|(|t|)>=\<infty\>>
-    </enumerate>
-
-    Therefore, <math|<wide|\<theta\>|~><around|(|t|)>> satisfies all criteria
-    for a modulating function.
+    Immediate from Propositions <reference|prop:continuity>,
+    <reference|prop:bijective> and Theorem <reference|thm:mono_construction>.
   </proof>
+
+  <section|Conclusion>
+
+  The monotonized Riemann\USiegel theta function
+  <math|\<vartheta\><rsup|+><around|(|t|)>> constructed through geometric
+  reflection about its unique critical point provides a bijective,
+  monotonically increasing transformation that preserves all essential phase
+  information of the original theta function. This construction maintains
+  exact correspondence with zeros of the Riemann zeta function while enabling
+  applications requiring monotonic phase functions.
+
+  <\thebibliography|99>
+    <bibitem|DLMF5.2.1>NIST Digital Library of Mathematical Functions.
+    Section 5.2.1: Definitions.
+
+    <bibitem|DLMF5.4.2>NIST Digital Library of Mathematical Functions.
+    Section 5.4.2: Series Representations.
+
+    <bibitem|DLMF5.11.1>NIST Digital Library of Mathematical Functions.
+    Section 5.11.1: Asymptotic Expansions.
+
+    <bibitem|AbramowitzStegun6.3.1>Abramowitz, M. and Stegun, I. A. (1964).
+    Handbook of Mathematical Functions. National Bureau of Standards. Chapter
+    6, Equation 6.3.1.
+
+    <bibitem|Elezovic1999>Elezovi¢, N., Giordano, C., and Pe£ari¢, J. (1999).
+    The best bounds in Gautschi's inequality. Mathematical Inequalities &
+    Applications, 2(2), 239\U252.
+  </thebibliography>
+
+  \;
 </body>
 
 <\initial>
@@ -709,30 +380,67 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|2>>
-    <associate|auto-2|<tuple|2|6>>
-    <associate|auto-3|<tuple|3|9>>
-    <associate|growth-behavior|<tuple|5|4>>
-    <associate|limit-behavior|<tuple|3|2>>
-    <associate|monotonicity|<tuple|4|3>>
-    <associate|ucp|<tuple|6|5>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-2|<tuple|2|3>>
+    <associate|auto-3|<tuple|3|4>>
+    <associate|auto-4|<tuple|4|5>>
+    <associate|auto-5|<tuple|4|5>>
+    <associate|bib-AbramowitzStegun6.3.1|<tuple|AbramowitzStegun6.3.1|5>>
+    <associate|bib-DLMF5.11.1|<tuple|DLMF5.11.1|5>>
+    <associate|bib-DLMF5.2.1|<tuple|DLMF5.2.1|5>>
+    <associate|bib-DLMF5.4.2|<tuple|DLMF5.4.2|5>>
+    <associate|bib-Elezovic1999|<tuple|Elezovic1999|5>>
+    <associate|cor:zeros|<tuple|13|5>>
+    <associate|def:monotonized|<tuple|8|3>>
+    <associate|def:phase|<tuple|11|4>>
+    <associate|def:psi|<tuple|2|1>>
+    <associate|def:theta|<tuple|1|1>>
+    <associate|prop:bijective|<tuple|14|5>>
+    <associate|prop:continuity|<tuple|10|4>>
+    <associate|prop:derivative|<tuple|3|2>>
+    <associate|thm:critical|<tuple|7|3>>
+    <associate|thm:growth|<tuple|6|3>>
+    <associate|thm:limit|<tuple|4|2>>
+    <associate|thm:modulating|<tuple|15|5>>
+    <associate|thm:mono_construction|<tuple|9|4>>
+    <associate|thm:monotonicity|<tuple|5|2>>
+    <associate|thm:phase_preservation|<tuple|12|4>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
+    <\associate|bib>
+      DLMF5.2.1
+
+      DLMF5.4.2
+
+      AbramowitzStegun6.3.1
+
+      DLMF5.4.2
+
+      DLMF5.11.1
+    </associate>
     <\associate|toc>
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>The
-      Riemann-Siegel Theta Function> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      Riemann\USiegel Theta Function> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-1><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Exact
-      Monotonization Construction> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Monotonization
+      Construction> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-2><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Phase
       Information Preservation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Conclusion>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-4><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-5><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
