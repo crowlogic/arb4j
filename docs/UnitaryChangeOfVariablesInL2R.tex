@@ -1,0 +1,165 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,latexsym}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmem}[1]{{\em #1\/}}
+\newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{Unitary Change-of-Variables Operators on $L^2 (\mathbb{R})$}
+
+\date{}
+
+\maketitle
+
+\begin{definition}
+  \label{def:cov-operator}A {\tmem{change-of-variables operator}} on $L^2
+  (\mathbb{R}, \mu)$ where $\mu$ is Lebesgue measure is a bounded linear
+  operator $U : L^2 (\mathbb{R}) \to L^2 (\mathbb{R})$ of the form
+  \begin{equation}
+    (Uf) (x) = f (T (x)) \cdot w (x)
+  \end{equation}
+  for some measurable map $T : \mathbb{R} \to \mathbb{R}$ and measurable
+  weight function $w : \mathbb{R} \to \mathbb{C}$ with $|w (x) | > 0$ almost
+  everywhere.
+\end{definition}
+
+\begin{theorem}
+  \label{thm:main}Let $U$ be a change-of-variables operator as in
+  Definition~\ref{def:cov-operator}. Then $U$ is unitary if and only if the
+  following conditions hold:
+  \begin{enumerate}
+    \item $T : \mathbb{R} \to \mathbb{R}$ is a measurable bijection modulo
+    null sets;
+    
+    \item $\mu \circ T^{- 1} \ll \mu$ and $\mu \ll \mu \circ T^{- 1}$ (mutual
+    absolute continuity);
+    
+    \item $|w (x) |^2 = \frac{d (\mu \circ T)}{d \mu} (x)$ almost everywhere;
+    
+    \item $w (x) = \sqrt{\frac{d (\mu \circ T)}{d \mu} (x)} \cdot e^{i \theta
+    (x)}$ for some measurable phase function $\theta : \mathbb{R} \to
+    \mathbb{R}$.
+  \end{enumerate}
+  Furthermore, if $T$ is differentiable almost everywhere with $T' (x) \neq 0$
+  a.e., then condition (3) becomes
+  \begin{equation}
+    |w (x) |^2 = |T' (x) |
+  \end{equation}
+  {\cdot}
+\end{theorem}
+
+\begin{proof}
+  The proof proceeds by establishing necessity and sufficiency separately.
+  
+  \tmtextbf{Necessity:} Assume $U$ is unitary. Since $U$ is an isometry, for
+  any $f \in L^2 (\mathbb{R})$,
+  \begin{equation}
+    \label{eq:isometry} \|Uf\|_2^2 = \|f\|_2^2
+  \end{equation}
+  Computing the left side:
+  \begin{equation}
+    \|Uf\|_2^2 = \int_{\mathbb{R}} |f (T (x)) |^2 |w (x) |^2  \hspace{0.17em}
+    d \mu (x)
+  \end{equation}
+  Define the measure $\nu$ by $d \nu = |w|^2 d \mu$. By the
+  change-of-variables formula for the pushforward measure,
+  \begin{equation}
+    \int_{\mathbb{R}} |f (T (x)) |^2 |w (x) |^2 \hspace{0.17em} d \mu (x) =
+    \int_{\mathbb{R}} |f (y) |^2  \hspace{0.17em} d (T_{\ast} \nu) (y)
+  \end{equation}
+  where $(T_{\ast} \nu) (A) = \nu (T^{- 1} (A))$ for measurable sets $A$.
+  
+  From equation~\eqref{eq:isometry}, we require
+  \begin{equation}
+    \label{eq:measure-condition} \int_{\mathbb{R}} |f (y) |^2  \hspace{0.17em}
+    d (T_{\ast} \nu) (y) = \int_{\mathbb{R}} |f (y) |^2  \hspace{0.17em} d \mu
+    (y)
+  \end{equation}
+  for all $f \in L^2 (\mathbb{R})$.
+  
+  This implies $T_{\ast} \nu = \mu$ as measures. Therefore, for any measurable
+  set $A$,
+  \begin{equation}
+    \mu (A) = \nu (T^{- 1} (A)) = \int_{T^{- 1} (A)} |w (x) |^2 
+    \hspace{0.17em} d \mu (x)
+  \end{equation}
+  For $U$ to be surjective (hence unitary rather than merely isometric), $T$
+  must be invertible modulo null sets. This requires both directions of
+  absolute continuity in condition (2).
+  
+  By the Radon-Nikodym theorem, since $\mu \circ T^{- 1} \ll \mu$, there
+  exists $\rho \geq 0$ such that
+  \begin{equation}
+    \rho (y) = \frac{d (\mu \circ T^{- 1})}{d \mu} (y)
+  \end{equation}
+  The standard change-of-variables identity gives, for nonnegative measurable
+  $g$,
+  \begin{equation}
+    \int_{\mathbb{R}} g (T (x))  \hspace{0.17em} d \mu (x) = \int_{\mathbb{R}}
+    g (y) \rho (y)  \hspace{0.17em} d \mu (y)
+  \end{equation}
+  Comparing with the isometry requirement from
+  equation~\eqref{eq:measure-condition}, we obtain
+  \begin{equation}
+    \int_{\mathbb{R}} g (T (x)) |w (x) |^2  \hspace{0.17em} d \mu (x) =
+    \int_{\mathbb{R}} g (y)  \hspace{0.17em} d \mu (y)
+  \end{equation}
+  This requires
+  \begin{equation}
+    |w (x) |^2 = \rho (T (x))^{- 1}
+  \end{equation}
+  almost everywhere. By the chain rule for Radon-Nikodym derivatives,
+  \begin{equation}
+    |w (x) |^2 = \frac{d (\mu \circ T)}{d \mu} (x)
+  \end{equation}
+  The phase freedom in condition (4) follows from the fact that only $|w|^2$
+  is determined by the isometry condition.
+  
+  \tmtextbf{Sufficiency:} Conversely, assume conditions (1)-(4) hold. Define
+  $U$ as in Definition~\ref{def:cov-operator} with the specified $T$ and $w$.
+  The computation above shows that $U$ is isometric. Since $T$ is bijective
+  modulo null sets with mutual absolute continuity, the operator $U^{\ast}$
+  exists and is given by
+  \begin{equation}
+    (U^{\ast} g) (x) = g (T^{- 1} (x)) \cdot \overline{w (T^{- 1} (x))} \cdot
+    \sqrt{\frac{d (\mu \circ T^{- 1})}{d \mu} (x)} \cdot e^{- i \theta (T^{-
+    1} (x))}
+  \end{equation}
+  Direct computation verifies $UU^{\ast} = U^{\ast} U = I$, establishing
+  unitarity.
+  
+  The final statement regarding differentiable $T$ follows from the fact that
+  for such maps,
+  \begin{equation}
+    \frac{d (\mu \circ T)}{d \mu} (x) = |T' (x) |
+  \end{equation}
+  by the classical change-of-variables theorem.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:monotone}If $T : \mathbb{R} \to \mathbb{R}$ is a measurable
+  bijection that is differentiable almost everywhere, then $T$ is either
+  almost everywhere monotone increasing or almost everywhere monotone
+  decreasing.
+\end{lemma}
+
+\begin{proof}
+  Since $T$ is a bijection of $\mathbb{R}$, the intermediate value theorem and
+  injectivity require that $T$ cannot change monotonicity on any interval
+  where it is continuous. As $T$ is differentiable almost everywhere, it is
+  continuous almost everywhere, and the set where $T'$ exists has full
+  measure. On this set, $T'$ cannot change sign without violating the
+  bijection property, hence $T' (x) \geq 0$ almost everywhere or $T' (x) \leq
+  0$ almost everywhere.
+\end{proof}
+
+\end{document}
