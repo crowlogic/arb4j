@@ -258,6 +258,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     integralExpression                      = integralNode.expression.cloneExpression();
     integralExpression.instructionByteCodes = null;
     integralExpression.compiledClass        = null;
+    integralExpression.independentVariable  = integralExpression.indeterminateVariable = null;
     integralExpression.domainType           = integralNode.type();
     integralExpression.coDomainType         = integralNode.type();
     integralExpression.rootNode             = integralNode.spliceInto(integralExpression);
