@@ -19,6 +19,59 @@ import junit.framework.TestCase;
 public class IntegralNodeTest extends
                               TestCase
 {
+
+  public void testDefiniteIntegralOfSquareRoot()
+  {
+
+    // Expression.trace = Expression.saveClasses = true;
+    var e = RealFunction.express("ω➔∫λ➔1/√(1-λ²)dλ∈(-1,ω)");
+    var f = RealFunction.express("x➔∫y➔1/sqrt(1-y^2)dy∈(-1,x)");
+    var y = f.eval(0.75);
+
+    var g = RealFunction.express("arcsin(x)+π⁄2");
+    var z = g.eval(0.75);
+
+    assertEquals(y, z);
+
+  }
+
+  public void testDefiniteIntegralOfSquareRootStringRepresentation()
+  {
+
+    // Expression.trace = Expression.saveClasses = true;
+    var e = RealFunction.express("ω➔∫λ➔1/√(1-λ²)dλ∈(-1,ω)");
+    var f = RealFunction.express("x➔∫y➔1/sqrt(1-y^2)dy∈(-1,x)");
+    var y = f.eval(0.75);
+
+    var g = RealFunction.express("arcsin(x)+π⁄2");
+    var z = g.eval(0.75);
+    assertEquals(g.toString(), f.toString());
+
+  }
+
+  public void testIntegralOfSquareRootToo()
+  {
+    var f = RealFunction.express("∫y➔1/sqrt(1-y^2)dy");
+    var y = f.eval(0.75);
+
+    var g = RealFunction.express("arcsin(y)");
+    var z = g.eval(0.75);
+
+    assertEquals(y, z);
+
+  }
+
+  public void testStringRepresentationOfIntegralOfSquareRoot()
+  {
+    var f = RealFunction.express("∫y➔1/sqrt(1-y^2)dy");
+    var y = f.eval(0.75);
+
+    var g = RealFunction.express("arcsin(y)");
+    var z = g.eval(0.75);
+    assertEquals(f.toString(), g.toString());
+
+  }
+
   public void testIntegralOfSquareRoot()
   {
     var f = RealFunction.express("1/sqrt(1-x^2)");

@@ -181,9 +181,10 @@ public class Parser
    */
   static public boolean isAlphabeticalGreekSpecialOrBlackLetter(char ch, boolean digit)
   {
-    return (isAlphabetical(ch) || isGreekOrBlackLetter(ch) || ch == ⅈ || ch == '√' || ch == '₀'
-                  || superscriptChars.contains(ch) || (digit && (ch >= '0' && ch <= '9')))
-                  && ch != 'Σ';
+    boolean positiveCheck = isAlphabetical(ch) || isGreekOrBlackLetter(ch) || ch == ⅈ || ch == '√'
+                  || ch == '₀' || isSuperscript(ch) || (digit && isDigit(ch));
+    boolean negativeCheck = ch != 'Σ';
+    return positiveCheck && negativeCheck;
   }
 
   public static boolean isAlphabetical(int ch)

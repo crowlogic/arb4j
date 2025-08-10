@@ -36,18 +36,6 @@ public class DerivativeNodeTest extends
     assertTrue(caught);
   }
 
-  public void testIntegralOfSquareRoot()
-  {
-    var f = RealFunction.express("∫y➔1/sqrt(1-y^2)dy");
-    var y = f.eval(0.75);
-
-    var g = RealFunction.express("arcsin(y)");
-    var z = g.eval(0.75);
-    assertEquals(f.toString(), g.toString());
-
-    assertEquals(y, z);
-
-  }
 
   public void testDerivativeOfTheLogarithmicGammaFunction()
   {
@@ -56,23 +44,7 @@ public class DerivativeNodeTest extends
     assertEquals(0.6000398803639695, f);
   }
 
-  public void testDefiniteIntegralOfSquareRoot()
-  {
-
-    // Expression.trace = Expression.saveClasses = true;
-    // Expression.useNewIntegralNode = true;
-    var e = RealFunction.express("ω➔∫λ➔1/√(1-λ²)dλ∈(-1,ω)");
-    var f = RealFunction.express("x➔∫y➔1/sqrt(1-y^2)dy∈(-1,x)");
-    var y = f.eval(0.75);
-
-    var g = RealFunction.express("arcsin(x)+π⁄2");
-    var z = g.eval(0.75);
-    // assertEquals(f.toString(), g.toString());
-
-    assertEquals(y, z);
-    Expression.trace = Expression.saveClasses = true;
-
-  }
+ 
 
   public void testSquareRootDerivative()
   {

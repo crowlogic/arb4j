@@ -558,22 +558,19 @@ public class VariableNode<D, R, F extends Function<? extends D, ? extends R>> ex
   protected void throwNewUndefinedReferenceException()
   {
     throw new UndefinedReferenceException(format("Undefined reference '%s' at position=%d in Expression(=%s)=%s, "
-                                                 + "independent variable is %s and parentExpression is %s, remaining='%s'",
+                                                 + "independent variable is %s, indeterminant variable is %s, and parentExpression is %s, remaining='%s'",
                                                  reference.name,
                                                  reference.position,
                                                  System.identityHashCode(expression),
                                                  expression.expression,
                                                  expression.independentVariable,
+                                                 expression.indeterminateVariable,
                                                  expression.ascendentExpression,
                                                  expression.remaining()));
   }
 
   protected void declareThisToBeTheIndeterminantVariable()
   {
-    if (!expression.canHaveAnIndeterminantVariable())
-    {
-      throwNewUndefinedReferenceException();
-    }
 
     if (expression.indeterminateVariable != null)
     {

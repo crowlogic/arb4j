@@ -172,7 +172,7 @@ import arb.utensils.text.trees.TreeModel;
  * <li>{@code arb4j.compiler.traceGeneration=true|false}: Print detail
  * information related to the generation process. Default is {@code false}.</li>
  * 
- * <li>{@code arb4j.compiler.saveClasses=true|false}: Specifies whether the
+ * <li>{@code arb4j.compiler.saveclasses=true|false}: Specifies whether the
  * compiled classes should be saved to disk (the current directory). Default is
  * {@code true}.</li>
  * </ul>
@@ -237,15 +237,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     initializers.addAll(nodeExpression.initializers);
     context.mergeFrom(nodeExpression.context);
     return this;
-  }
-
-  public boolean canHaveAnIndeterminantVariable()
-  {
-    var coDomain = coDomainType;
-    return coDomain.equals(RealPolynomial.class) || coDomain.equals(ComplexPolynomial.class)
-                  || coDomain.equals(RationalFunction.class)
-                  || coDomain.equals(ComplexRationalFunction.class)
-                  || Function.class.isAssignableFrom(coDomain) || domainType.equals(Object.class);
   }
 
   @SuppressWarnings("unchecked")
@@ -906,7 +897,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     for (int i = 0; i < inputVariableName.length(); i++)
     {
-      if (!Parser.isAlphabeticalGreekSpecialOrBlackLetter(inputVariableName.charAt(i),false))
+      if (!Parser.isAlphabeticalGreekSpecialOrBlackLetter(inputVariableName.charAt(i), false))
       // if (!isAlphabeticalGreekSpecialOrBlackLetter(inputVariableName.charAt(i),
       // false))
       {
