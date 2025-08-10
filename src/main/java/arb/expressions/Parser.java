@@ -181,8 +181,9 @@ public class Parser
    */
   static public boolean isAlphabeticalGreekSpecialOrBlackLetter(char ch, boolean digit)
   {
-    return isAlphabetical(ch) || isGreekOrBlackLetter(ch) || ch == ⅈ || ch == '√' || ch == '₀'
-                  || superscriptChars.contains(ch) || (digit && (ch >= '0' && ch <= '9'));
+    return (isAlphabetical(ch) || isGreekOrBlackLetter(ch) || ch == ⅈ || ch == '√' || ch == '₀'
+                  || superscriptChars.contains(ch) || (digit && (ch >= '0' && ch <= '9')))
+                  && ch != 'Σ';
   }
 
   public static boolean isAlphabetical(int ch)
@@ -195,7 +196,7 @@ public class Parser
     return isAlphabetical((int) ch);
   }
 
-  public static boolean isAlphabeticalOrNumericSubscript(char ch)
+  public static boolean isSubscript(char ch)
   {
     return SUBSCRIPT_CHARACTERS.contains(ch);
   }
@@ -401,7 +402,7 @@ public class Parser
   public static final HashSet<Character> superscriptChars             = new HashSet<
                 Character>(Arrays.asList(superscripts).stream().map(s -> s.charAt(0)).toList());
 
-  public static boolean isAlphabeticalSuperscript(char character)
+  public static boolean isSuperscript(char character)
   {
     return superscriptChars.contains(character);
   }

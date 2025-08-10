@@ -4,6 +4,9 @@ import static arb.utensils.Utensils.throwOrWrap;
 
 import java.io.Closeable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -253,6 +256,8 @@ public interface Function<D, C> extends
                  null);
   }
 
+  
+  
   public static <D,
                 C,
                 F extends Function<? extends D, ? extends C>,

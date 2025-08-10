@@ -20,9 +20,9 @@ import static arb.expressions.Compiler.loadResultParameter;
 import static arb.expressions.Compiler.loadThisOntoStack;
 import static arb.expressions.Compiler.swap;
 import static arb.expressions.Parser.isAlphabeticalGreekSpecialOrBlackLetter;
-import static arb.expressions.Parser.isAlphabeticalOrNumericSubscript;
-import static arb.expressions.Parser.isAlphabeticalSuperscript;
 import static arb.expressions.Parser.isNumeric;
+import static arb.expressions.Parser.isSubscript;
+import static arb.expressions.Parser.isSuperscript;
 import static arb.expressions.Parser.transformToJavaAcceptableCharacters;
 import static java.lang.String.format;
 import static java.lang.System.err;
@@ -227,7 +227,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Supplier<F>
 {
 
-  private static final char COMBINING_DOT_ABOVE = '\u0307';
+  private static final char COMBINING_DOT_ABOVE      = '\u0307';
+
+  private static final char COMBINING_TWO_DOTS_ABOVE = '\u0308';
 
   public Expression<D, C, F> merge(Node<?, ?, ?> node)
   {
@@ -904,7 +906,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     for (int i = 0; i < inputVariableName.length(); i++)
     {
-      if (!Parser.isAlphabetical(inputVariableName.charAt(i)))
+      if (!Parser.isAlphabeticalGreekSpecialOrBlackLetter(inputVariableName.charAt(i),false))
       // if (!isAlphabeticalGreekSpecialOrBlackLetter(inputVariableName.charAt(i),
       // false))
       {
@@ -1838,9 +1840,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected boolean isIdentifierCharacter()
   {
-    return isAlphabeticalGreekSpecialOrBlackLetter(character, false)
-                  || isAlphabeticalOrNumericSubscript(character)
-                  || isAlphabeticalSuperscript(character);
+    return isAlphabeticalGreekSpecialOrBlackLetter(character, false) || isSubscript(character)
+                  || isSuperscript(character);
   }
 
   public boolean isNullaryFunction()
@@ -2010,10 +2011,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     boolean entirelySuperscripted = true;
     boolean isLatinOrGreek;
     while ((isLatinOrGreek = isAlphabeticalGreekSpecialOrBlackLetter(character, true))
-                  || (entirelySubscripted && !isLatinOrGreek
-                                && Parser.isAlphabeticalOrNumericSubscript(character))
-                  || (entirelySuperscripted && !isLatinOrGreek
-                                && Parser.isAlphabeticalSuperscript(character))) // Add this line
+                  || (entirelySubscripted && !isLatinOrGreek && Parser.isSubscript(character))
+                  || (entirelySuperscripted && !isLatinOrGreek && Parser.isSuperscript(character))) // Add
+                                                                                                    // this
+                                                                                                    // line
     {
       nextCharacter();
       if (isLatinOrGreek)
