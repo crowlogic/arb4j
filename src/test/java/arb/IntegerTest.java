@@ -182,15 +182,6 @@ public class IntegerTest extends
     assertTrue(factorialOfFour.doubleValue() == 24.0);
   }
 
-  public static void testFactorial()
-  {
-    try ( Integer four = new Integer(4); Integer factorialOfFour = four.factorial())
-    {
-      assertTrue(factorialOfFour.getSignedValue() == 24);
-      assertTrue(factorialOfFour.getUnsignedValue() == 24);
-    }
-  }
-
   public static void testFactorialReal()
   {
     try ( Integer four = new Integer(4); Real factorialOfFour = four.factorial(128, new Real()))

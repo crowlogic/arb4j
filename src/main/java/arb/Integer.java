@@ -63,18 +63,6 @@ public class Integer implements
     return express(expression, null, bits);
   }
 
-  public static Real factorial(Integer n, int bits, Real result)
-  {
-    arblib.arb_fac_ui(result, n.getUnsignedValue(), bits);
-    return result;
-  }
-
-  public static Integer factorial(Integer n, Integer result)
-  {
-    arblib.fmpz_fac_ui(result.swigCPtr, n.getUnsignedValue());
-    return result;
-  }
-
   public static Real factorial(long n, int bits, Real result)
   {
     arblib.arb_fac_ui(result, n, bits);
@@ -597,9 +585,9 @@ public class Integer implements
     return arblib.fmpz_equal(swigCPtr, other.swigCPtr) != 0;
   }
 
-  public Integer factorial()
+  public Real arcsin(int bits, Real result)
   {
-    return factorial(this, this);
+    return result.set(this).arcsin(bits, result);
   }
 
   public Integer factorial(int bits, Integer result)

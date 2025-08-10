@@ -2627,4 +2627,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   }
 
+  public boolean defaultToIntegerConstantsWhenPossible()
+  {
+    return coDomainType.equals(Integer.class);
+  }
+
 }

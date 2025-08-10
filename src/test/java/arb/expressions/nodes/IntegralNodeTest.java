@@ -46,8 +46,8 @@ public class IntegralNodeTest extends
 
     var g = RealFunction.express("arcsin(x)-arcsin(-1)");
     var z = g.eval(0.75);
-    assertEquals(g.toString(), f.toString());
 
+    assertEquals(g.toString(), f.toString());
   }
 
   public void testIntegralOfSquareRootToo()

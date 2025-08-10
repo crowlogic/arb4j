@@ -331,7 +331,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
                                   "<init>",
                                   "(JJ)V",
                                   false);
-    return methodVisitor; 
+    return methodVisitor;
   }
 
   @Override

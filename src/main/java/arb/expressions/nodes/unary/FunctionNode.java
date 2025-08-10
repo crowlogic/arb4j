@@ -462,47 +462,55 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                                        int.class,
                                                                        coDomainType);
 
-    throwCompilerExceptionIfBuiltinFunctionDoesNotExist(functionName,
-                                                        bitless,
-                                                        domainType,
-                                                        coDomainType);
-
-    methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                                  Type.getInternalName(domainType),
-                                  functionName,
-                                  functionDescriptor,
-                                  false);
-
-    generatedType = requisiteResultType;
-    return methodVisitor;
-  }
-
-  public static void throwCompilerExceptionIfBuiltinFunctionDoesNotExist(String functionName,
-                                                                         boolean bitless,
-                                                                         Class<?> domainType,
-                                                                         Class<?> coDomainType)
-  {
-    if (bitless)
+    if (doesBuiltinFunctionExist(functionName, bitless, domainType, coDomainType))
     {
-      if (!methodExists(domainType, functionName, coDomainType))
-      {
-        throw new CompilerException(String.format("%s does not have a bitless function named %s whose arg and return value are %s",
-                                                  domainType,
-                                                  functionName,
-                                                  coDomainType,
-                                                  coDomainType));
-      }
+
+      methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                                    Type.getInternalName(domainType),
+                                    functionName,
+                                    functionDescriptor,
+                                    false);
+
+      generatedType = requisiteResultType;
     }
     else
     {
-      if (!methodExists(domainType, functionName, int.class, coDomainType))
+      functionDescriptor = bitless ? Compiler.getMethodDescriptor(domainType, coDomainType)
+                                   : Compiler.getMethodDescriptor(domainType,
+                                                                  int.class,
+                                                                  coDomainType);
+
+      if (doesBuiltinFunctionExist(functionName, bitless, domainType, coDomainType))
       {
-        throw new CompilerException(String.format("%s does not have a function named %s whose arg and return value are %s",
-                                                  domainType,
-                                                  functionName,
-                                                  coDomainType,
-                                                  coDomainType));
+
+        methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                                      Type.getInternalName(domainType),
+                                      functionName,
+                                      functionDescriptor,
+                                      false);
+
+        generatedType = requisiteResultType;
       }
+      else
+      {
+        assert false : String.format("%s: %s -> %s", functionName, domainType, coDomainType);
+      }
+    }
+    return methodVisitor;
+  }
+
+  public static boolean doesBuiltinFunctionExist(String functionName,
+                                                 boolean bitless,
+                                                 Class<?> domainType,
+                                                 Class<?> coDomainType)
+  {
+    if (bitless)
+    {
+      return methodExists(domainType, functionName, coDomainType);
+    }
+    else
+    {
+      return methodExists(domainType, functionName, int.class, coDomainType);
     }
   }
 

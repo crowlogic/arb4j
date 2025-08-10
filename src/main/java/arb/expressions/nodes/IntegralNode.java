@@ -92,18 +92,16 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
       return "null";
     }
 
-    // For definite integrals, show g(upper) - g(lower) using substitute
     if (lowerLimitNode != null && upperLimitNode != null)
     {
-      // Create copies of the integral node for upper and lower evaluations
-      var upperEval   = integralNode.spliceInto(expression);
-      var lowerEval   = integralNode.spliceInto(expression);
+      var    upperEval           = integralNode.spliceInto(expression);
+      var    lowerEval           = integralNode.spliceInto(expression);
 
-      // Substitute the integration variable with the limit nodes
-      var upperResult = upperEval.substitute(integrationVariableNode.getName(), upperLimitNode);
-      var lowerResult = lowerEval.substitute(integrationVariableNode.getName(), lowerLimitNode);
+      String integrationVariable = integrationVariableNode.getName();
+      var    upperResult         = upperEval.substitute(integrationVariable, upperLimitNode);
+      var    lowerResult         = lowerEval.substitute(integrationVariable, lowerLimitNode);
 
-      return String.format("((%s)-(%s))", upperResult.toString(), lowerResult.toString());
+      return String.format("(%s)-(%s)", upperResult, lowerResult);
     }
 
     // For indefinite integrals, just return the integralNode
