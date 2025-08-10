@@ -387,19 +387,9 @@ public abstract class BinaryOperationNode<D, C, F extends Function<? extends D, 
   public <E, S, G extends Function<? extends E, ? extends S>>
          Node<D, C, F>
          substitute(String name, Node<E, S, G> transformation)
-  {
-    if (Expression.trace)
-    {
-      logSubstitution(name, transformation, "BEFORE");
-    }
+  { 
     left  = left.substitute(name, transformation);
-    right = right.substitute(name, transformation);
-    expression.updateStringRepresentation();
-    if (Expression.trace)
-    {
-      logSubstitution(name, transformation, "AFTER");
-
-    }
+    right = right.substitute(name, transformation); 
     return this;
   }
 

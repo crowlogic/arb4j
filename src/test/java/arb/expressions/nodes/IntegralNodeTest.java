@@ -5,6 +5,7 @@ import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.polynomials.RealPolynomialNullaryFunction;
 import arb.functions.polynomials.orthogonal.real.JacobiPolynomials;
 import arb.functions.polynomials.orthogonal.real.ShiftedJacobiPolynomials;
@@ -38,12 +39,12 @@ public class IntegralNodeTest extends
   public void testDefiniteIntegralOfSquareRootStringRepresentation()
   {
 
-    // Expression.trace = Expression.saveClasses = true;
+     //Expression.trace = Expression.saveClasses = true;
     var e = RealFunction.express("ω➔∫λ➔1/√(1-λ²)dλ∈(-1,ω)");
     var f = RealFunction.express("x➔∫y➔1/sqrt(1-y^2)dy∈(-1,x)");
     var y = f.eval(0.75);
 
-    var g = RealFunction.express("arcsin(x)+π⁄2");
+    var g = RealFunction.express("arcsin(x)-arcsin(-1)");
     var z = g.eval(0.75);
     assertEquals(g.toString(), f.toString());
 

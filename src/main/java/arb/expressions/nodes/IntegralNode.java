@@ -1,6 +1,8 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.cast;
+import static arb.expressions.Compiler.invokeMethod;
+import static arb.expressions.Compiler.loadBitsParameterOntoStack;
 
 import java.util.List;
 import java.util.Objects;
@@ -9,10 +11,16 @@ import java.util.function.Consumer;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
-import arb.*;
+import arb.Complex;
+import arb.Quaternion;
+import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.*;
+import arb.expressions.Compiler;
+import arb.expressions.Expression;
+import arb.expressions.FunctionMapping;
+import arb.expressions.Parser;
+import arb.expressions.VariableReference;
 import arb.functions.Function;
 
 /**
@@ -79,7 +87,27 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   @Override
   public String toString()
   {
-    return integralNode != null ? integralNode.toString() : "null";
+    if (integralNode == null)
+    {
+      return "null";
+    }
+
+    // For definite integrals, show g(upper) - g(lower) using substitute
+    if (lowerLimitNode != null && upperLimitNode != null)
+    {
+      // Create copies of the integral node for upper and lower evaluations
+      var upperEval   = integralNode.spliceInto(expression);
+      var lowerEval   = integralNode.spliceInto(expression);
+
+      // Substitute the integration variable with the limit nodes
+      var upperResult = upperEval.substitute(integrationVariableNode.getName(), upperLimitNode);
+      var lowerResult = lowerEval.substitute(integrationVariableNode.getName(), lowerLimitNode);
+
+      return String.format("((%s)-(%s))", upperResult.toString(), lowerResult.toString());
+    }
+
+    // For indefinite integrals, just return the integralNode
+    return integralNode.toString();
   }
 
   @Override

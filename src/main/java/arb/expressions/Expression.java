@@ -531,15 +531,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return position + 1 < expression.length() && expression.charAt(position + 1) == ch;
   }
 
-  public Expression<D, C, F> recompile()
-  {
-    updateStringRepresentation();
-    instructionByteCodes = null;
-    compiledClass        = null;
-    compile();
-    return this;
-  }
-
   protected ClassVisitor declareLiteralConstants(ClassVisitor classVisitor)
   {
     for (var constant : getSortedLiteralConstantNodes())
