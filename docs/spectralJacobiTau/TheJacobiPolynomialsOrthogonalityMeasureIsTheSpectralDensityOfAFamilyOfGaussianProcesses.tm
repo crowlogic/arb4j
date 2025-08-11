@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|boring-white|framed-theorems>>
+<style|<tuple|generic|metal|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Fourier Transform of the Jacobi Weight
@@ -9,24 +9,24 @@
     <date|>
   </author-affiliation>>>|<doc-date|>>
 
-  <\theorem>
+  <\theorem*>
     For <math|\<alpha\>,\<beta\>\<gtr\>-1>, the Fourier transform of the
     Jacobi weight function
 
-    <\equation*>
+    <\equation>
       w<around|(|x|)>=<around|(|1-x|)><rsup|\<alpha\>>*<around|(|1+x|)><rsup|\<beta\>>*<space|1em><text|on
       ><around|[|-1,1|]>
-    </equation*>
+    </equation>
 
     is given by
 
-    <\equation*>
+    <\equation>
       <wide|w|^><around|(|t|)>=2<rsup|\<alpha\>+\<beta\>+1>*\<Gamma\>*<around|(|\<alpha\>+1|)>*\<Gamma\>*<around|(|\<beta\>+1|)>*<frac|J<rsub|\<alpha\>+\<beta\>+1>*<around|(|2*t|)>|<around|(|2*t|)><rsup|\<alpha\>+\<beta\>+1>>*e<rsup|i*t>
-    </equation*>
+    </equation>
 
     where <math|J<rsub|\<nu\>>> denotes the Bessel function of the first kind
     of order <math|\<nu\>>.
-  </theorem>
+  </theorem*>
 
   <\proof>
     <with|font-series|bold|1. Initial Setup and Conditions:><next-line>The
@@ -106,7 +106,7 @@
     Finally, through Hankel's contour integral representation:
 
     <\equation>
-      J<rsub|\<nu\>><around|(|z|)>=<frac|z<rsup|\<nu\>>|2<rsup|\<nu\>>*\<Gamma\>*<around|(|\<nu\>+1|)>><rsub|0>*F<rsub|1><around*|(|;\<nu\>+1;-<frac|z<rsup|2>|4>|)>
+      J<rsub|\<nu\>><around|(|z|)>=<frac|z<rsup|\<nu\>>|2<rsup|\<nu\>>*\<Gamma\>*<around|(|\<nu\>+1|)>><rsub|>*<rsub|0>F<rsub|1><around*|(|;\<nu\>+1;-<frac|z<rsup|2>|4>|)>
     </equation>
 
     These transformations yield:
