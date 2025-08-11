@@ -1,3 +1,2 @@
 Expression.saveClasses = true;
-var context = new Context(Real.named("ω"));
-var f = RealNullaryFunction.express("int(1/sqrt(1-λ^2),λ=-1..ω)", context);
+var f = RealFunction.express("int(1/sqrt(1-λ^2),λ=-1..ω)");

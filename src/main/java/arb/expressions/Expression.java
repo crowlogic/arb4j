@@ -179,6 +179,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     expr.position              = position;
     expr.character             = character;
     expr.previousCharacter     = previousCharacter;
+    
     return expr;
   }
 
