@@ -23,6 +23,28 @@ Real Line}
 
 \maketitle
 
+\begin{abstract}
+  This paper establishes the fundamental connection between unitary bijections
+  in $L^2$ spaces and measure-preserving transformations through weighted
+  composition operators on unbounded domains. The investigation demonstrates
+  that for $C^1$ bijective transformations $g : I \to J$ between unbounded
+  intervals with positive derivative almost everywhere, $L^2$ norm
+  preservation is achieved through the unitary change of variables operator
+  $T_g f = f (g (y)) \sqrt{g' (y)}$. The analysis proves that strictly
+  increasing functions on unbounded domains yield bijective mappings onto
+  unbounded ranges, providing the foundation for well-defined changes of
+  variables in Lebesgue integration. The central result shows that the
+  operator $T_g : L^2 (J, dx) \to L^2 (I, dy)$ constitutes an isometric
+  isomorphism, with the square root of the Jacobian $\sqrt{g' (y)}$ serving as
+  the unique scaling factor necessary for norm preservation. The necessity of
+  this specific scaling is rigorously established through variational
+  arguments, demonstrating that any alternative weighting function achieving
+  the same isometric property must equal $\sqrt{g' (y)}$ almost everywhere.
+  These findings bridge the change-of-variables formula in real analysis with
+  the unitary structure of $L^2$ spaces, providing theoretical foundations for
+  applications in ergodic theory and functional analysis on unbounded domains.
+\end{abstract}
+
 {\tableofcontents}
 
 \section{Introduction}
@@ -31,8 +53,8 @@ This short note establishes the fundamental relationship between unitary
 bijections in $L^2$ spaces and measure-preserving transformations in ergodic
 theory. Under bijective $C^1$ changes of variables on unbounded domains, $L^2$
 norm preservation is achieved by a weighted composition operator whose weight
-is the square root of the Jacobian $g'$. This scaling is both necessary and
-sufficient.
+is the square root of the Jacobian $g'$. This unitary transformation is both
+necessary and sufficient.
 
 \section{Bijective Transformations on Unbounded Domains}
 
@@ -93,18 +115,18 @@ Domains]
 
 \section{$L^2$ Norm Preservation}
 
-\begin{definition}[Scaled Transformation Operator]
-  \label{def:scaled_transform}Let $g : I \to J$ be a $C^1$ bijection between
+\begin{definition}[Unitary Change of Variables Operator]
+  \label{def:unitary_transform}Let $g : I \to J$ be a $C^1$ bijection between
   unbounded intervals with $g' (y) > 0$ almost everywhere. For $f \in L^2 (J,
-  dx)$, define the scaled transformation operator $T_g$ by:
+  dx)$, define the unitary change of variables operator $T_g$ by:
   \begin{equation}
-    \label{eq:scaled_transform} (T_g f) (y) = f (g (y)) \sqrt{g' (y)}
+    \label{eq:unitary_transform} (T_g f) (y) = f (g (y)) \sqrt{g' (y)}
   \end{equation}
 \end{definition}
 
 \begin{theorem}[$L^2$ Norm Preservation for Unbounded Domains]
   \label{thm:l2_preservation}Under the conditions of
-  Definition~\ref{def:scaled_transform}, the operator $T_g : L^2 (J, dx) \to
+  Definition~\ref{def:unitary_transform}, the operator $T_g : L^2 (J, dx) \to
   L^2 (I, dy)$ is an isometric isomorphism. Specifically:
   \begin{equation}
     \label{eq:norm_equality} \|T_g f\|_{L^2 (I, dy)} = \|f\|_{L^2 (J, dx)}
@@ -139,7 +161,7 @@ Domains]
   equation~\eqref{eq:final_norm} and the assumption $f \in L^2 (J, dx)$.
 \end{proof}
 
-\begin{theorem}[Necessity of Square Root Scaling]
+\begin{theorem}[Necessity of Square Root Unitary Transformation]
   \label{thm:necessity}Let $g : I \to J$ be as in
   Theorem~\ref{thm:l2_preservation}. If $\phi : I \to \mathbb{R}^+$ is any
   measurable function such that $f (g (y)) \phi (y) \in L^2 (I, dy)$ and

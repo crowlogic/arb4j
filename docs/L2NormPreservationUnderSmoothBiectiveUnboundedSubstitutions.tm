@@ -7,31 +7,7 @@
   Unbounded Substitutions>|<doc-author|<author-data|<author-name|Stephen
   Crowley>|<author-misc|July 30, 2025>>>|<doc-date|>>
 
-  <\abstract>
-    This paper establishes the fundamental connection between unitary
-    bijections in <math|L<rsup|2>> spaces and measure-preserving
-    transformations through weighted composition operators on unbounded
-    domains. The investigation demonstrates that for <math|C<rsup|1>>
-    bijective transformations <math|g:I\<to\>J> between unbounded intervals
-    with positive derivative almost everywhere, <math|L<rsup|2>> norm
-    preservation is achieved through the unitary change of variables operator
-    <math|T<rsub|g>*f=f<around|(|g<around|(|y|)>|)><sqrt|g<rprime|'><around|(|y|)>>>.
-    The analysis proves that strictly increasing functions on unbounded
-    domains yield bijective mappings onto unbounded ranges, providing the
-    foundation for well-defined changes of variables in Lebesgue integration.
-    The central result shows that the operator
-    <math|T<rsub|g>:L<rsup|2><around|(|J,d*x|)>\<to\>L<rsup|2><around|(|I,d*y|)>>
-    constitutes an isometric isomorphism, with the square root of the
-    Jacobian <math|<sqrt|g<rprime|'><around|(|y|)>>> serving as the unique
-    scaling factor necessary for norm preservation. The necessity of this
-    specific scaling is rigorously established through variational arguments,
-    demonstrating that any alternative weighting function achieving the same
-    isometric property must equal <math|<sqrt|g<rprime|'><around|(|y|)>>>
-    almost everywhere. These findings bridge the change-of-variables formula
-    in real analysis with the unitary structure of <math|L<rsup|2>> spaces,
-    providing theoretical foundations for applications in ergodic theory and
-    functional analysis on unbounded domains.
-  </abstract>
+  \;
 
   <\table-of-contents|toc>
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Introduction>

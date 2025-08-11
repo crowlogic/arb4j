@@ -9,6 +9,29 @@
     <date|>
   </author-affiliation>>>>
 
+  <abstract-data|<abstract|This paper establishes the fundamental connection
+  between unitary bijections in <math|L<rsup|2>> spaces and
+  measure-preserving transformations through weighted composition operators
+  on unbounded domains. The investigation demonstrates that for
+  <math|C<rsup|1>> bijective transformations <math|g:I\<to\>J> between
+  unbounded intervals with positive derivative almost everywhere,
+  <math|L<rsup|2>> norm preservation is achieved through the unitary change
+  of variables operator <math|T<rsub|g>*f=f<around|(|g<around|(|y|)>|)><sqrt|g<rprime|'><around|(|y|)>>>.
+  The analysis proves that strictly increasing functions on unbounded domains
+  yield bijective mappings onto unbounded ranges, providing the foundation
+  for well-defined changes of variables in Lebesgue integration. The central
+  result shows that the operator <math|T<rsub|g>:L<rsup|2><around|(|J,d*x|)>\<to\>L<rsup|2><around|(|I,d*y|)>>
+  constitutes an isometric isomorphism, with the square root of the Jacobian
+  <math|<sqrt|g<rprime|'><around|(|y|)>>> serving as the unique scaling
+  factor necessary for norm preservation. The necessity of this specific
+  scaling is rigorously established through variational arguments,
+  demonstrating that any alternative weighting function achieving the same
+  isometric property must equal <math|<sqrt|g<rprime|'><around|(|y|)>>>
+  almost everywhere. These findings bridge the change-of-variables formula in
+  real analysis with the unitary structure of <math|L<rsup|2>> spaces,
+  providing theoretical foundations for applications in ergodic theory and
+  functional analysis on unbounded domains.>>
+
   <\table-of-contents|toc>
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Introduction>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
@@ -255,30 +278,30 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|auto-2|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|auto-3|<tuple|3|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|auto-2|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|auto-3|<tuple|3|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|auto-4|<tuple|4|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|auto-5|<tuple|4|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|bib-halmos1956lectures|<tuple|halmos1956lectures|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|bib-petersen1989ergodic|<tuple|petersen1989ergodic|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|bib-reed1980functional|<tuple|reed1980functional|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|bib-walters1982introduction|<tuple|walters1982introduction|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|def:unitary_transform|<tuple|3|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|def:unitary_transform|<tuple|3|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|eq:change_vars|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|eq:change_vars_apply|<tuple|6|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|eq:final_norm|<tuple|7|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|eq:general_norm|<tuple|8|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|eq:norm_calc1|<tuple|4|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|eq:norm_calc2|<tuple|5|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|eq:norm_equality|<tuple|3|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|eq:norm_equality|<tuple|3|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|eq:phi_ae_equal|<tuple|12|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|eq:phi_comparison|<tuple|10|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|eq:phi_condition|<tuple|9|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|eq:phi_difference|<tuple|11|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|eq:unitary_transform|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|thm:bijective_unbounded|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|eq:phi_comparison|<tuple|10|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|eq:phi_condition|<tuple|9|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|eq:phi_difference|<tuple|11|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|eq:unitary_transform|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|thm:bijective_unbounded|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|thm:diff_bijective|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|thm:l2_preservation|<tuple|4|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|thm:l2_preservation|<tuple|4|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|thm:necessity|<tuple|5|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
   </collection>
 </references>
