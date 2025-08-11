@@ -3,11 +3,11 @@
 <style|<tuple|generic|framed-theorems>>
 
 <\body>
-  <doc-data|<doc-title|Unitary Bijections From Strictly Increasing Functions
-  On The Real Line >|<doc-author|<author-data|<author-name|Stephen
+  \<cdot\><doc-data|<doc-title|Unitary Bijections From Strictly Increasing
+  Functions On The Real Line>|<doc-author|<author-data|<author-name|Stephen
   Crowley>|<\author-affiliation>
     <date|>
-  </author-affiliation>>>|<doc-date|July 30, 2025>>
+  </author-affiliation>>>>
 
   <\table-of-contents|toc>
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Introduction>
@@ -23,39 +23,30 @@
     Norm Preservation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-3><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>Unitary
-    Operators and Measure Preservation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-4><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|5<space|2spc>Invariant
-    Measures> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-5><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|6<space|2spc>Conclusion>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>Conclusion>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-6><vspace|0.5fn>
+    <no-break><pageref|auto-4><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-7><vspace|0.5fn>
+    <no-break><pageref|auto-5><vspace|0.5fn>
   </table-of-contents>
 
-  <\section>
-    Introduction
-  </section>
+  <section|Introduction>
 
-  This document establishes the fundamental relationship between unitary
+  This short note establishes the fundamental relationship between unitary
   bijections in <math|L<rsup|2>> spaces and measure-preserving
-  transformations in ergodic theory. The central result demonstrates that
-  <math|L<rsup|2>> norm preservation under bijective transformations of
-  unbounded domains necessarily involves specific scaling factors derived
-  from the transformation's differential structure.
+  transformations in ergodic theory. Under bijective <math|C<rsup|1>> changes
+  of variables on unbounded domains, <math|L<rsup|2>> norm preservation is
+  achieved by a weighted composition operator whose weight is the square root
+  of the Jacobian <math|g<rprime|'>>. This scaling is both necessary and
+  sufficient.
 
   <section|Bijective Transformations on Unbounded Domains>
 
   <\theorem>
-    [Bijectivity of Strictly Increasing Functions on Unbounded
-    Domains]<label|thm:bijective_unbounded>Let <math|g:I\<to\>\<bbb-R\>> be a
+    <dueto|Bijectivity of Strictly Increasing Functions on Unbounded
+    Domains><label|thm:bijective_unbounded>Let <math|g:I\<to\>\<bbb-R\>> be a
     strictly increasing function where <math|I\<subseteq\>\<bbb-R\>> is an
     unbounded interval. Then <math|g> is bijective onto its range
     <math|J=g<around|(|I|)>>, and <math|J> is also an unbounded interval.
@@ -96,8 +87,8 @@
   </proof>
 
   <\theorem>
-    [Differentiable Bijections with Positive
-    Derivative]<label|thm:diff_bijective>Let <math|g:I\<to\>J> be a
+    <dueto|Differentiable Bijections with Positive
+    Derivative><label|thm:diff_bijective>Let <math|g:I\<to\>J> be a
     <math|C<rsup|1>> bijection between unbounded intervals
     <math|I,J\<subseteq\>\<bbb-R\>> such that
     <math|g<rprime|'><around|(|y|)>\<gtr\>0> for all <math|y\<in\>I> except
@@ -123,7 +114,7 @@
   <section|<math|L<rsup|2>> Norm Preservation>
 
   <\definition>
-    [Scaled Transformation Operator]<label|def:scaled_transform>Let
+    <dueto|Scaled Transformation Operator><label|def:scaled_transform>Let
     <math|g:I\<to\>J> be a <math|C<rsup|1>> bijection between unbounded
     intervals with <math|g<rprime|'><around|(|y|)>\<gtr\>0> almost
     everywhere. For <math|f\<in\>L<rsup|2><around|(|J,d*x|)>>, define the
@@ -135,8 +126,8 @@
   </definition>
 
   <\theorem>
-    [<math|L<rsup|2>> Norm Preservation for Unbounded
-    Domains]<label|thm:l2_preservation>Under the conditions of
+    <dueto|<math|L<rsup|2>> Norm Preservation for Unbounded
+    Domains><label|thm:l2_preservation>Under the conditions of
     Definition<nbsp><reference|def:scaled_transform>, the operator
     <math|T<rsub|g>:L<rsup|2><around|(|J,d*x|)>\<to\>L<rsup|2><around|(|I,d*y|)>>
     is an isometric isomorphism. Specifically:
@@ -177,7 +168,7 @@
   </proof>
 
   <\theorem>
-    [Necessity of Square Root Scaling]<label|thm:necessity>Let
+    <dueto|Necessity of Square Root Scaling><label|thm:necessity>Let
     <math|g:I\<to\>J> be as in Theorem<nbsp><reference|thm:l2_preservation>.
     If <math|\<phi\>:I\<to\>\<bbb-R\><rsup|+>> is any measurable function
     such that <math|f<around|(|g<around|(|y|)>|)>*\<phi\><around|(|y|)>\<in\>L<rsup|2><around|(|I,d*y|)>>
@@ -226,87 +217,14 @@
     everywhere.
   </proof>
 
-  <section|Unitary Operators and Measure Preservation>
-
-  <\definition>
-    [Koopman Operator]<label|def:koopman>Let
-    <math|<around|(|X,\<cal-B\>,\<mu\>|)>> be a probability space and
-    <math|T:X\<to\>X> be a measure-preserving bijection. The Koopman operator
-    <math|U<rsub|T>:L<rsup|2><around|(|X,\<mu\>|)>\<to\>L<rsup|2><around|(|X,\<mu\>|)>>
-    is defined by:
-
-    <\equation>
-      <label|eq:koopman><around|(|U<rsub|T>*f|)><around|(|x|)>=f<around|(|T<around|(|x|)>|)>
-    </equation>
-  </definition>
-
-  <\theorem>
-    [Unitarity of Koopman Operator]<label|thm:koopman_unitary>The Koopman
-    operator <math|U<rsub|T>> defined in Definition<nbsp><reference|def:koopman>
-    is unitary on <math|L<rsup|2><around|(|X,\<mu\>|)>>.
-  </theorem>
-
-  <\proof>
-    For <math|f,h\<in\>L<rsup|2><around|(|X,\<mu\>|)>>:
-
-    <\align>
-      <tformat|<table|<row|<cell|<around|\<langle\>|U<rsub|T>*f,U<rsub|T>*h|\<rangle\>>>|<cell|=<big|int><rsub|X>f<around|(|T<around|(|x|)>|)><wide|h<around|(|T<around|(|x|)>|)>|\<bar\>><space|0.17em>d*\<mu\><around|(|x|)><eq-number><label|eq:inner_product1>>>|<row|<cell|>|<cell|=<big|int><rsub|X>f<around|(|y|)><wide|h<around|(|y|)>|\<bar\>><space|0.17em>d*\<mu\><around|(|T<rsup|-1><around|(|y|)>|)><eq-number><label|eq:inner_product2>>>|<row|<cell|>|<cell|=<big|int><rsub|X>f<around|(|y|)><wide|h<around|(|y|)>|\<bar\>><space|0.17em>d*\<mu\><around|(|y|)><eq-number><label|eq:inner_product3>>>|<row|<cell|>|<cell|=<around|\<langle\>|f,h|\<rangle\>><eq-number><label|eq:inner_product4>>>>>
-    </align>
-
-    where equation<nbsp><eqref|eq:inner_product2> uses the change of
-    variables <math|y=T<around|(|x|)>>, and
-    equation<nbsp><eqref|eq:inner_product3> follows from the
-    measure-preserving property of <math|T>.
-
-    Since <math|T> is bijective and measure-preserving, <math|U<rsub|T>> is
-    surjective, completing the proof of unitarity.
-  </proof>
-
-  <\corollary>
-    [Equivalence of Unitary Bijection and Measure
-    Preservation]<label|cor:unitary_equiv>A bijective transformation <math|T>
-    on a probability space induces a unitary operator on <math|L<rsup|2>> if
-    and only if <math|T> is measure-preserving.
-  </corollary>
-
-  <\proof>
-    This follows directly from Theorem<nbsp><reference|thm:koopman_unitary>
-    and the fact that the Koopman operator construction is reversible.
-  </proof>
-
-  <section|Invariant Measures>
-
-  <\definition>
-    [Invariant Measure]<label|def:invariant>A measure <math|\<mu\>> on a
-    measurable space <math|<around|(|X,\<cal-B\>|)>> is invariant under a
-    transformation <math|T:X\<to\>X> if <math|\<mu\><around|(|T<rsup|-1><around|(|A|)>|)>=\<mu\><around|(|A|)>>
-    for all <math|A\<in\>\<cal-B\>>.
-  </definition>
-
-  <\theorem>
-    [Uniqueness of Finite Invariant Measures for Ergodic
-    Systems]<label|thm:invariant_unique>Let <math|T:X\<to\>X> be an ergodic
-    transformation on a measurable space. If finite invariant measures
-    <math|\<mu\><rsub|1>> and <math|\<mu\><rsub|2>> exist for <math|T>, then
-    <math|\<mu\><rsub|1>=c*\<mu\><rsub|2>> for some constant
-    <math|c\<gtr\>0>.
-  </theorem>
-
-  <\proof>
-    The proof follows from the ergodic theorem and the fact that ergodic
-    systems admit at most one invariant probability measure up to
-    scaling<nbsp><cite|petersen1989ergodic>.
-  </proof>
-
   <section|Conclusion>
 
-  The results establish that unitary bijections in <math|L<rsup|2>> spaces
-  correspond precisely to measure-preserving transformations. The scaling
-  factor <math|<sqrt|g<rprime|'><around|(|y|)>>> in
-  Theorem<nbsp><reference|thm:l2_preservation> is both necessary and
-  sufficient for norm preservation, providing the connection between
-  differential geometry and functional analysis in the context of ergodic
-  theory.
+  The results show that <math|L<rsup|2>> norm preservation under
+  <math|C<rsup|1>> bijections is realized by the weighted composition
+  operator <math|T<rsub|g>*f=f<around|(|g<around|(|y|)>|)><sqrt|g<rprime|'><around|(|y|)>>>.
+  The factor <math|<sqrt|g<rprime|'>>> is both necessary and sufficient for
+  isometry, linking the change-of-variables formula to unitary structure on
+  <math|L<rsup|2>>.
 
   <\thebibliography|9>
     <bibitem|petersen1989ergodic>K. Petersen, <em|Ergodic Theory>, Cambridge
@@ -339,26 +257,16 @@
     <associate|auto-2|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|auto-3|<tuple|3|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|auto-4|<tuple|4|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|auto-5|<tuple|5|5|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|auto-6|<tuple|6|5|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|auto-7|<tuple|6|5|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|bib-halmos1956lectures|<tuple|halmos1956lectures|5|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|bib-petersen1989ergodic|<tuple|petersen1989ergodic|5|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|bib-reed1980functional|<tuple|reed1980functional|5|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|bib-walters1982introduction|<tuple|walters1982introduction|5|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|cor:unitary_equiv|<tuple|8|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|def:invariant|<tuple|9|5|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|def:koopman|<tuple|6|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|auto-5|<tuple|4|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|bib-halmos1956lectures|<tuple|halmos1956lectures|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|bib-petersen1989ergodic|<tuple|petersen1989ergodic|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|bib-reed1980functional|<tuple|reed1980functional|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|bib-walters1982introduction|<tuple|walters1982introduction|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|def:scaled_transform|<tuple|3|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|eq:change_vars|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|eq:change_vars_apply|<tuple|6|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|eq:final_norm|<tuple|7|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|eq:general_norm|<tuple|8|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|eq:inner_product1|<tuple|14|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|eq:inner_product2|<tuple|15|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|eq:inner_product3|<tuple|16|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|eq:inner_product4|<tuple|17|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|eq:koopman|<tuple|13|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|eq:norm_calc1|<tuple|4|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|eq:norm_calc2|<tuple|5|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|eq:norm_equality|<tuple|3|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
@@ -369,8 +277,6 @@
     <associate|eq:scaled_transform|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|thm:bijective_unbounded|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|thm:diff_bijective|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|thm:invariant_unique|<tuple|10|5|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|thm:koopman_unitary|<tuple|7|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|thm:l2_preservation|<tuple|4|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|thm:necessity|<tuple|5|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
   </collection>
@@ -378,9 +284,6 @@
 
 <\auxiliary>
   <\collection>
-    <\associate|bib>
-      petersen1989ergodic
-    </associate>
     <\associate|toc>
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Introduction>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
@@ -395,22 +298,13 @@
       Norm Preservation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Unitary
-      Operators and Measure Preservation>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Conclusion>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-4><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|5<space|2spc>Invariant
-      Measures> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-5><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|6<space|2spc>Conclusion>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-6><vspace|0.5fn>
-
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-7><vspace|0.5fn>
+      <no-break><pageref|auto-5><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
