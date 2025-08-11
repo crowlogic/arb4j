@@ -11,7 +11,7 @@ import org.objectweb.asm.Type;
 
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
-import arb.expressions.nodes.unary.FunctionEvaluationNode;
+import arb.expressions.nodes.unary.FunctionalEvaluationNode;
 import arb.functions.Function;
 
 /**
@@ -145,7 +145,7 @@ public class PolynomialIntegralNode<D, C, F extends Function<? extends D, ? exte
     // The derivative of the integral is the original function
     if (var.equals(argumentNode))
     {
-      return new FunctionEvaluationNode<D, C, F>(expression,
+      return new FunctionalEvaluationNode<D, C, F>(expression,
                                                  polynomialNode,
                                                  argumentNode);
     }

@@ -29,7 +29,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? extends C>> extends
+public class FunctionalEvaluationNode<D, C, F extends Function<? extends D, ? extends C>> extends
                                    UnaryOperationNode<D, C, F>
 {
 
@@ -41,7 +41,7 @@ public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? exte
 
   private Node<D, C, F> functionNode;
 
-  public FunctionEvaluationNode(Expression<D, C, F> expression, Node<D, C, F> functionNode)
+  public FunctionalEvaluationNode(Expression<D, C, F> expression, Node<D, C, F> functionNode)
   {
     super(expression,
           expression.resolve());
@@ -49,7 +49,7 @@ public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? exte
     this.functionNode = functionNode;
   }
 
-  public FunctionEvaluationNode(Expression<D, C, F> expression,
+  public FunctionalEvaluationNode(Expression<D, C, F> expression,
                                 Node<D, C, F> functionNode,
                                 Node<D, C, F> argNode)
   {
@@ -107,7 +107,7 @@ public class FunctionEvaluationNode<D, C, F extends Function<? extends D, ? exte
          Node<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
   {
-    return new FunctionEvaluationNode<E, S, G>(newExpression,
+    return new FunctionalEvaluationNode<E, S, G>(newExpression,
                                                functionNode.spliceInto(newExpression),
                                                arg.spliceInto(newExpression));
   }
