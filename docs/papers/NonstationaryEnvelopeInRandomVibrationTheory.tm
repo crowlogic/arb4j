@@ -180,7 +180,7 @@
     The correlation of <math|f<around|(|t|)>> is
 
     <\equation>
-      p<rsub|f><around|(|\<tau\>|)>=\<bbb-E\>*<around|{|f<around|(|t|)>*f<rsup|\<ast\>>*<around|(|t+\<tau\>|)>|}>=2*<around*|(|p<rsub|n><around|(|\<tau\>|)>+i*<space|0.17em>p<rsub|<wide|n|^>><around|(|\<tau\>|)>|)>,
+      p<rsub|f><around|(|\<tau\>|)>=\<bbb-E\>*<around|{|f<around|(|t|)>*f<rsup|\<ast\>>*<around|(|t+\<tau\>|)>|}>=2*<around*|(|p<rsub|n><around|(|\<tau\>|)>+i*<space|0.17em>p<rsub|<wide|n|^>><around|(|\<tau\>|)>|)>
     </equation>
 
     where <math|p<rsub|n><around|(|\<tau\>|)>=\<bbb-E\>*<around|{|n<around|(|t|)>*n*<around|(|t+\<tau\>|)>|}>>
@@ -198,7 +198,7 @@
       U<around|(|\<omega\>|)>=<tfrac|1+<math-up|sgn><around|(|\<omega\>|)>|2>
     </equation>
 
-    . This proves the claim.
+    This proves the claim.
   </proof>
 
   <section|Complex output, correlation kernels, and evolutionary PSD>
@@ -339,7 +339,7 @@
     and finite <math|t>,
 
     <\equation>
-      <label|eq:ineq>K<rsub|r><around|(|\<omega\>,t|)>\<neq\><around|(|i*\<omega\>|)><rsup|r>*<space|0.17em>K<rsub|0><around|(|\<omega\>,t|)>.
+      <label|eq:ineq>K<rsub|r><around|(|\<omega\>,t|)>\<neq\><around|(|i*\<omega\>|)><rsup|r>*<space|0.17em>K<rsub|0><around|(|\<omega\>,t|)>
     </equation>
 
     Consequently, the evolutionary PSD <math|G<rsub|x><around|(|\<omega\>,t|)>>
