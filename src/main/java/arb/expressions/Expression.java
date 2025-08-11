@@ -2552,7 +2552,10 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public Expression<D, C, F> optimize()
   {
-    rootNode.accept(node -> System.out.println("node=" + node + " " + node.getFieldName()));
+    if (trace)
+    {
+      rootNode.accept(node -> System.out.println("node=" + node + " " + node.getFieldName()));
+    }
     return this;
 
   }
