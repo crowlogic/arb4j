@@ -7,6 +7,32 @@
   Unbounded Substitutions>|<doc-author|<author-data|<author-name|Stephen
   Crowley>|<author-misc|July 30, 2025>>>|<doc-date|>>
 
+  <\abstract>
+    This paper establishes the fundamental connection between unitary
+    bijections in <math|L<rsup|2>> spaces and measure-preserving
+    transformations through weighted composition operators on unbounded
+    domains. The investigation demonstrates that for <math|C<rsup|1>>
+    bijective transformations <math|g:I\<to\>J> between unbounded intervals
+    with positive derivative almost everywhere, <math|L<rsup|2>> norm
+    preservation is achieved through the unitary change of variables operator
+    <math|T<rsub|g>*f=f<around|(|g<around|(|y|)>|)><sqrt|g<rprime|'><around|(|y|)>>>.
+    The analysis proves that strictly increasing functions on unbounded
+    domains yield bijective mappings onto unbounded ranges, providing the
+    foundation for well-defined changes of variables in Lebesgue integration.
+    The central result shows that the operator
+    <math|T<rsub|g>:L<rsup|2><around|(|J,d*x|)>\<to\>L<rsup|2><around|(|I,d*y|)>>
+    constitutes an isometric isomorphism, with the square root of the
+    Jacobian <math|<sqrt|g<rprime|'><around|(|y|)>>> serving as the unique
+    scaling factor necessary for norm preservation. The necessity of this
+    specific scaling is rigorously established through variational arguments,
+    demonstrating that any alternative weighting function achieving the same
+    isometric property must equal <math|<sqrt|g<rprime|'><around|(|y|)>>>
+    almost everywhere. These findings bridge the change-of-variables formula
+    in real analysis with the unitary structure of <math|L<rsup|2>> spaces,
+    providing theoretical foundations for applications in ergodic theory and
+    functional analysis on unbounded domains.
+  </abstract>
+
   <\table-of-contents|toc>
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Introduction>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
@@ -285,34 +311,34 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1>>
-    <associate|auto-2|<tuple|2|1>>
-    <associate|auto-3|<tuple|3|2>>
-    <associate|auto-4|<tuple|4|3>>
-    <associate|auto-5|<tuple|5|4>>
-    <associate|auto-6|<tuple|6|4>>
-    <associate|auto-7|<tuple|6|4>>
-    <associate|bib-EinsiedlerWard|<tuple|EinsiedlerWard|4>>
-    <associate|bib-Folland|<tuple|Folland|4>>
-    <associate|bib-Halmos|<tuple|Halmos|4>>
-    <associate|bib-RoydenFitzpatrick|<tuple|RoydenFitzpatrick|4>>
-    <associate|bib-Walters|<tuple|Walters|4>>
-    <associate|def:bijectiveC1|<tuple|1|1>>
-    <associate|def:koopman|<tuple|6|4>>
-    <associate|eq:L2normpres|<tuple|2|2>>
-    <associate|eq:aftercov|<tuple|6|3>>
-    <associate|eq:cov|<tuple|5|2>>
-    <associate|eq:generalweight|<tuple|7|3>>
-    <associate|eq:koopman|<tuple|12|4>>
-    <associate|eq:normexpansion1|<tuple|3|2>>
-    <associate|eq:normexpansion2|<tuple|4|2>>
-    <associate|eq:proofcov|<tuple|9|3>>
-    <associate|eq:transformationdef|<tuple|1|2>>
-    <associate|lem:L2density|<tuple|4|3>>
-    <associate|lem:bijective_unbounded|<tuple|2|2>>
-    <associate|thm:L2_jacobian|<tuple|3|2>>
-    <associate|thm:measurepreserving_unitary|<tuple|7|4>>
-    <associate|thm:necessity|<tuple|5|3>>
+    <associate|auto-1|<tuple|1|2|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|auto-2|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|auto-3|<tuple|3|3|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|auto-4|<tuple|4|3|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|auto-5|<tuple|5|4|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|auto-6|<tuple|6|5|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|auto-7|<tuple|6|5|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|bib-EinsiedlerWard|<tuple|EinsiedlerWard|5|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|bib-Folland|<tuple|Folland|5|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|bib-Halmos|<tuple|Halmos|5|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|bib-RoydenFitzpatrick|<tuple|RoydenFitzpatrick|5|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|bib-Walters|<tuple|Walters|5|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|def:bijectiveC1|<tuple|1|2|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|def:koopman|<tuple|6|4|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|eq:L2normpres|<tuple|2|3|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|eq:aftercov|<tuple|6|3|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|eq:cov|<tuple|5|3|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|eq:generalweight|<tuple|7|4|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|eq:koopman|<tuple|12|4|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|eq:normexpansion1|<tuple|3|3|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|eq:normexpansion2|<tuple|4|3|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|eq:proofcov|<tuple|9|4|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|eq:transformationdef|<tuple|1|3|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|lem:L2density|<tuple|4|3|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|lem:bijective_unbounded|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|thm:L2_jacobian|<tuple|3|3|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|thm:measurepreserving_unitary|<tuple|7|5|../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|thm:necessity|<tuple|5|4|../.TeXmacs/texts/scratch/no_name_14.tm>>
   </collection>
 </references>
 
