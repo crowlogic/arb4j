@@ -240,7 +240,7 @@ import arb.utensils.Utensils;
 
   public Complex pow(Complex div, int bits, Complex res)
   {
-    return res.set(this).div(div,bits,res);
+    return res.set(this).pow(div,bits,res);
   }
   
   
