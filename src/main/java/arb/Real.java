@@ -265,6 +265,12 @@ public class Real implements Becomable<Real>,Domain<Real>,Serializable,Comparabl
     return res.set(this).sub(that,prec,res);
   }
 
+  public Complex pow(Complex div, int bits, Complex res)
+  {
+    return res.set(this).div(div,bits,res);
+  }
+  
+  
   public Fraction add(Real element, int prec, Fraction result)
   {
     return result.set(this).add(element, prec, result);

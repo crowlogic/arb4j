@@ -1,0 +1,2 @@
+var χ = RealFunction.express("χ:s➔(2*π)ˢ/(2*Γ(s))*cos(π*s/2)");
+plot(-15,15,5000,χ);

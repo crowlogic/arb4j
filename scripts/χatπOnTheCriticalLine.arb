@@ -1,3 +1,0 @@
-var χ = ComplexFunction.express("χ:s➔(2*π)ˢ/(2*Γ(s))*cos(π*s/2)");
-var πOnTheCriticalLine = new Complex("½+ⅈ*π",128);
-var χatπOnTheCriticalLine = χ.evaluate(πOnTheCriticalLine,1,128,new Complex());
