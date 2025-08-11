@@ -320,6 +320,21 @@ import arb.utensils.Utensils;
     return res.set(a,bits).mul(this, bits, res);
   }
   
+  public Real div(AlgebraicNumber a, int bits, Real res)
+  {
+    return res.set(a,bits).div(this, bits, res);
+  }
+
+  public Real add(AlgebraicNumber a, int prec, Real res)
+  {
+    return res.set(a,bits).add(this, bits, res);
+  }
+  
+  public Real sub(AlgebraicNumber a, int prec, Real res)
+  {
+    return res.set(a,bits).sub(this, bits, res);
+  }  
+  
   public RationalFunction add( Integer z, int bits, RationalFunction result )
   {
     return result.set(this).add(z,bits,result);
@@ -2279,7 +2294,7 @@ import arb.utensils.Utensils;
     
   public int bits()
   {
-    return arblib.arb_bits(this);
+    return Math.max( 128, arblib.arb_bits(this) );
   }
 
   public Real posInf()

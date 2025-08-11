@@ -170,14 +170,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     assignFunctionName();
     if (this.expression.context != null)
     {
-      mapping    =
-              (FunctionMapping<D, R, F>) this.expression.context.functions.map.get(functionName);
-      contextual = mapping != null;
-      if (contextual)
-      {
-        expression.referencedFunctions.put(functionName, mapping);
-        generatedType = mapping.coDomain;
-      }
+      lookupFunctionInContext();
     }
     else
     {
@@ -188,6 +181,18 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       designateAsRecursiveFunction(type());
     }
 
+  }
+
+  private void lookupFunctionInContext()
+  {
+    mapping    =
+            (FunctionMapping<D, R, F>) this.expression.context.functions.map.get(this.functionName);
+    contextual = mapping != null;
+    if (contextual)
+    {
+      this.expression.referencedFunctions.put(this.functionName, mapping);
+      generatedType = mapping.coDomain;
+    }
   }
 
   @Override

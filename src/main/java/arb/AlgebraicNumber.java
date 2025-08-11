@@ -111,7 +111,15 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
       return getSymbolicFormula(blip, FormulaGenerationMethod.All).typeset();
     }
   }
-  
+
+  public AlgebraicNumber div(Integer x, int prec, AlgebraicNumber result)
+  {
+    assert x != null && x.swigCPtr != 0 : "x is null or has null swigCPtr";
+    assert result != null && result.swigCPtr != 0 : "result is null or has null swigCPtr";
+    arblib.qqbar_div_fmpz(result, this, x.swigCPtr);
+    return result;
+  }
+    
   public AlgebraicNumber sqrt()
   {
     return sqrt(this);
@@ -251,6 +259,14 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     return result;
   }
 
+  public Real sub(AlgebraicNumber x, int prec, Real result)
+  {
+    try ( var a = result.borrowVariable(); var b = result.borrowVariable())
+    {
+      return a.set(this).sub(b.set(x), prec, result);
+    }
+  }
+  
   @Override
   public AlgebraicNumber div(AlgebraicNumber x, int prec, AlgebraicNumber result)
   {

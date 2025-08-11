@@ -85,30 +85,6 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   }
 
   @Override
-  public String toString()
-  {
-    if (integralNode == null)
-    {
-      return "null";
-    }
-
-    if (lowerLimitNode != null && upperLimitNode != null)
-    {
-      var    upperEval           = integralNode.spliceInto(expression);
-      var    lowerEval           = integralNode.spliceInto(expression);
-
-      String integrationVariable = integrationVariableNode.getName();
-      var    upperResult         = upperEval.substitute(integrationVariable, upperLimitNode);
-      var    lowerResult         = lowerEval.substitute(integrationVariable, lowerLimitNode);
-
-      return String.format("(%s)-(%s)", upperResult, lowerResult);
-    }
-
-    // For indefinite integrals, just return the integralNode
-    return integralNode.toString();
-  }
-
-  @Override
   public <E, S, G extends Function<? extends E, ? extends S>>
          Node<D, C, F>
          substitute(String variable, Node<E, S, G> arg)
@@ -224,7 +200,8 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     Compiler.getFieldFromThis(mv,
                               expression.className,
                               integralFunctionFieldName,
-                              "L" + integralExpression.className + ";");
+                              String.format("L%s;", integralExpression.className));
+
   }
 
   static String integralEvaluateMethodSignature = Compiler.getMethodDescriptor(Object.class,
@@ -242,6 +219,25 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   }
 
   @Override
+  public String toString()
+  {
+    if (integralNode == null)
+    {
+      return "null";
+    }
+
+    return isDefiniteIntegral() ? getDefiniteIntegralEvaluationNode().toString()
+                                : integralNode.toString();
+  }
+
+  public boolean isDefiniteIntegral()
+  {
+    return lowerLimitNode != null && upperLimitNode != null;
+  }
+
+  boolean useNewMethod = false;
+
+  @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     generatedType = resultType;
@@ -250,27 +246,52 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     {
       computeIndefiniteIntegral();
     }
-    if (upperLimitNode == null && lowerLimitNode == null)
+    if (!isDefiniteIntegral())
     {
       expression.merge(integralNode);
       integralNode.generate(mv, resultType);
     }
     else
     {
-      evaluateIndefiniteIntegralAt(mv, upperLimitNode, resultType, lowerIntegralValueFieldName);
-      evaluateIndefiniteIntegralAt(mv, lowerLimitNode, resultType, upperIntegralValueFieldName);
-      loadBitsParameterOntoStack(mv);
-      if (isResult)
+      if (useNewMethod)
       {
-        Compiler.cast(Compiler.loadResultParameter(mv), resultType);
+        var difference = getDefiniteIntegralEvaluationNode();
+        difference.generate(mv, resultType);
       }
       else
       {
-        fieldName = expression.allocateIntermediateVariable(mv, "integralDifference", resultType);
+        generateDefiniteIntegralTheOldWay(mv, resultType);
       }
-      Compiler.invokeBinaryOperationMethod(mv, "sub", resultType, resultType, resultType);
     }
     return mv;
+  }
+
+  public void generateDefiniteIntegralTheOldWay(MethodVisitor mv, Class<?> resultType)
+  {
+    evaluateIndefiniteIntegralAt(mv, upperLimitNode, resultType, lowerIntegralValueFieldName);
+    evaluateIndefiniteIntegralAt(mv, lowerLimitNode, resultType, upperIntegralValueFieldName);
+    loadBitsParameterOntoStack(mv);
+    if (isResult)
+    {
+      Compiler.cast(Compiler.loadResultParameter(mv), resultType);
+    }
+    else
+    {
+      fieldName = expression.allocateIntermediateVariable(mv, "integralDifference", resultType);
+    }
+    Compiler.invokeBinaryOperationMethod(mv, "sub", resultType, resultType, resultType);
+  }
+
+  public Node<D, C, F> getDefiniteIntegralEvaluationNode()
+  {
+    var    upperEval           = integralNode.spliceInto(expression);
+    var    lowerEval           = integralNode.spliceInto(expression);
+    String integrationVariable = integrationVariableNode.getName();
+
+    var    upperResult         = upperEval.substitute(integrationVariable, upperLimitNode);
+    var    lowerResult         = lowerEval.substitute(integrationVariable, lowerLimitNode);
+
+    return upperResult.sub(lowerResult);
   }
 
   @SuppressWarnings("unchecked")
