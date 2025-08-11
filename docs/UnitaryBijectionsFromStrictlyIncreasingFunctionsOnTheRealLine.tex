@@ -1,0 +1,278 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,latexsym}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmaffiliation}[1]{\\ #1}
+\newcommand{\tmem}[1]{{\em #1\/}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{Unitary Bijections From Strictly Increasing Functions On The Real Line
+}
+
+\author{
+  Stephen Crowley
+  \tmaffiliation{August 11, 2025}
+}
+
+\date{July 30, 2025}
+
+\maketitle
+
+{\tableofcontents}
+
+\section{Introduction}
+
+This document establishes the fundamental relationship between unitary
+bijections in $L^2$ spaces and measure-preserving transformations in ergodic
+theory. The central result demonstrates that $L^2$ norm preservation under
+bijective transformations of unbounded domains necessarily involves specific
+scaling factors derived from the transformation's differential structure.
+
+\section{Bijective Transformations on Unbounded Domains}
+
+\begin{theorem}
+  [Bijectivity of Strictly Increasing Functions on Unbounded
+  Domains]\label{thm:bijective_unbounded}Let $g : I \to \mathbb{R}$ be a
+  strictly increasing function where $I \subseteq \mathbb{R}$ is an unbounded
+  interval. Then $g$ is bijective onto its range $J = g (I)$, and $J$ is also
+  an unbounded interval.
+\end{theorem}
+
+\begin{proof}
+  Since $g$ is strictly increasing, injectivity is immediate. For any $x_1,
+  x_2 \in I$ with $x_1 < x_2$, one has $g (x_1) < g (x_2)$.
+  
+  For surjectivity onto $J = g (I)$, let $y \in J$. By definition, there
+  exists $x \in I$ such that $g (x) = y$. The uniqueness of such $x$ follows
+  from injectivity.
+  
+  To establish that $J$ is unbounded, consider two cases:
+  \begin{enumerate}
+    \item If $I = (a, \infty)$ or $I = [a, \infty)$ for some $a \in
+    \mathbb{R}$, then as $x \to \infty$, since $g$ is strictly increasing,
+    either $g (x) \to \infty$ or $g (x)$ approaches some finite supremum. If
+    the latter held, then by the intermediate value theorem and strict
+    monotonicity, $g$ would map $(a, \infty)$ to some bounded interval,
+    contradicting the strict increase property over an unbounded domain.
+    
+    \item If $I = (- \infty, b)$ or $I = (- \infty, b]$, a similar argument
+    shows $J$ extends to $- \infty$.
+    
+    \item If $I =\mathbb{R}$, then $J$ must be unbounded in both directions.
+  \end{enumerate}
+  Therefore, $g : I \to J$ is bijective with both $I$ and $J$ unbounded
+  intervals.
+\end{proof}
+
+\begin{theorem}
+  [Differentiable Bijections with Positive
+  Derivative]\label{thm:diff_bijective}Let $g : I \to J$ be a $C^1$ bijection
+  between unbounded intervals $I, J \subseteq \mathbb{R}$ such that $g' (y) >
+  0$ for all $y \in I$ except possibly on a set of measure zero. Then $g$ is a
+  well-defined change of variables for Lebesgue integration.
+\end{theorem}
+
+\begin{proof}
+  The condition $g' (y) > 0$ almost everywhere ensures that $g$ is locally
+  invertible almost everywhere. Since $g$ is already assumed bijective and
+  $C^1$, the standard change of variables formula applies:
+  \begin{equation}
+    \label{eq:change_vars} \int_J f (x)  \hspace{0.17em} dx = \int_I f (g (y))
+    |g' (y) |  \hspace{0.17em} dy = \int_I f (g (y)) g' (y)  \hspace{0.17em}
+    dy
+  \end{equation}
+  where the last equality uses $g' (y) > 0$ almost everywhere. The points
+  where $g' (y) = 0$ form a set of measure zero and do not affect the
+  integral.
+\end{proof}
+
+\section{$L^2$ Norm Preservation}
+
+\begin{definition}
+  [Scaled Transformation Operator]\label{def:scaled_transform}Let $g : I \to
+  J$ be a $C^1$ bijection between unbounded intervals with $g' (y) > 0$ almost
+  everywhere. For $f \in L^2 (J, dx)$, define the scaled transformation
+  operator $T_g$ by:
+  \begin{equation}
+    \label{eq:scaled_transform} (T_g f) (y) = f (g (y)) \sqrt{g' (y)}
+  \end{equation}
+\end{definition}
+
+\begin{theorem}
+  [$L^2$ Norm Preservation for Unbounded
+  Domains]\label{thm:l2_preservation}Under the conditions of
+  Definition~\ref{def:scaled_transform}, the operator $T_g : L^2 (J, dx) \to
+  L^2 (I, dy)$ is an isometric isomorphism. Specifically:
+  \begin{equation}
+    \label{eq:norm_equality} \|T_g f\|_{L^2 (I, dy)} = \|f\|_{L^2 (J, dx)}
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  For $f \in L^2 (J, dx)$, compute directly:
+  
+  \begin{align}
+    \|T_g f\|_{L^2 (I, dy)}^2 & = \int_I |f (g (y)) \sqrt{g' (y)} |^2 
+    \hspace{0.17em} dy  \label{eq:norm_calc1}\\
+    & = \int_I |f (g (y)) |^2 g' (y)  \hspace{0.17em} dy 
+    \label{eq:norm_calc2}
+  \end{align}
+  
+  By the change of variables formula from Theorem~\ref{thm:diff_bijective}
+  with $x = g (y)$:
+  \begin{equation}
+    \label{eq:change_vars_apply} \int_I |f (g (y)) |^2 g' (y) \hspace{0.17em}
+    dy = \int_J |f (x) |^2  \hspace{0.17em} dx = \|f\|_{L^2 (J, dx)}^2
+  \end{equation}
+  Since both $I$ and $J$ are unbounded, the change of variables is justified
+  by approximating with bounded subintervals and applying the monotone
+  convergence theorem.
+  
+  Therefore:
+  \begin{equation}
+    \label{eq:final_norm} \|T_g f\|_{L^2 (I, dy)} = \|f\|_{L^2 (J, dx)}
+  \end{equation}
+  The fact that $T_g f \in L^2 (I, dy)$ follows immediately from
+  equation~\eqref{eq:final_norm} and the assumption $f \in L^2 (J, dx)$.
+\end{proof}
+
+\begin{theorem}
+  [Necessity of Square Root Scaling]\label{thm:necessity}Let $g : I \to J$ be
+  as in Theorem~\ref{thm:l2_preservation}. If $\phi : I \to \mathbb{R}^+$ is
+  any measurable function such that $f (g (y)) \phi (y) \in L^2 (I, dy)$ and
+  \begin{equation}
+    \label{eq:general_norm} \|f (g (\cdot)) \phi (\cdot)\|_{L^2 (I, dy)} =
+    \|f\|_{L^2 (J, dx)}
+  \end{equation}
+  for all $f \in L^2 (J, dx)$, then $\phi (y) = \sqrt{g' (y)}$ almost
+  everywhere.
+\end{theorem}
+
+\begin{proof}
+  From the norm condition in equation~\eqref{eq:general_norm}:
+  \begin{equation}
+    \label{eq:phi_condition} \int_I |f (g (y)) |^2 \phi (y)^2  \hspace{0.17em}
+    dy = \int_J |f (x) |^2  \hspace{0.17em} dx
+  \end{equation}
+  Using the change of variables $x = g (y)$ on the right side:
+  \begin{equation}
+    \label{eq:phi_comparison} \int_I |f (g (y)) |^2 \phi (y)^2 
+    \hspace{0.17em} dy = \int_I |f (g (y)) |^2 g' (y)  \hspace{0.17em} dy
+  \end{equation}
+  This gives:
+  \begin{equation}
+    \label{eq:phi_difference} \int_I |f (g (y)) |^2  (\phi (y)^2 - g' (y)) 
+    \hspace{0.17em} dy = 0
+  \end{equation}
+  Since this holds for all $f \in L^2 (J, dx)$ and the composition $f (g
+  (\cdot))$ generates a dense subspace of $L^2 (I, g' (y) \hspace{0.17em}
+  dy)$, the fundamental lemma of calculus of variations implies:
+  \begin{equation}
+    \label{eq:phi_ae_equal} \phi (y)^2 = g' (y) \text{almost everywhere}
+  \end{equation}
+  Taking $\phi (y) > 0$, one obtains $\phi (y) = \sqrt{g' (y)}$ almost
+  everywhere.
+\end{proof}
+
+\section{Unitary Operators and Measure Preservation}
+
+\begin{definition}
+  [Koopman Operator]\label{def:koopman}Let $(X, \mathcal{B}, \mu)$ be a
+  probability space and $T : X \to X$ be a measure-preserving bijection. The
+  Koopman operator $U_T : L^2 (X, \mu) \to L^2 (X, \mu)$ is defined by:
+  \begin{equation}
+    \label{eq:koopman} (U_T f) (x) = f (T (x))
+  \end{equation}
+\end{definition}
+
+\begin{theorem}
+  [Unitarity of Koopman Operator]\label{thm:koopman_unitary}The Koopman
+  operator $U_T$ defined in Definition~\ref{def:koopman} is unitary on $L^2
+  (X, \mu)$.
+\end{theorem}
+
+\begin{proof}
+  For $f, h \in L^2 (X, \mu)$:
+  
+  \begin{align}
+    \langle U_T f, U_T h \rangle & = \int_X f (T (x)) \overline{h (T (x))}
+    \hspace{0.17em} d \mu (x)  \label{eq:inner_product1}\\
+    & = \int_X f (y) \overline{h (y)} \hspace{0.17em} d \mu (T^{- 1} (y)) 
+    \label{eq:inner_product2}\\
+    & = \int_X f (y) \overline{h (y)} \hspace{0.17em} d \mu (y) 
+    \label{eq:inner_product3}\\
+    & = \langle f, h \rangle  \label{eq:inner_product4}
+  \end{align}
+  
+  where equation~\eqref{eq:inner_product2} uses the change of variables $y = T
+  (x)$, and equation~\eqref{eq:inner_product3} follows from the
+  measure-preserving property of $T$.
+  
+  Since $T$ is bijective and measure-preserving, $U_T$ is surjective,
+  completing the proof of unitarity.
+\end{proof}
+
+\begin{corollary}
+  [Equivalence of Unitary Bijection and Measure
+  Preservation]\label{cor:unitary_equiv}A bijective transformation $T$ on a
+  probability space induces a unitary operator on $L^2$ if and only if $T$ is
+  measure-preserving.
+\end{corollary}
+
+\begin{proof}
+  This follows directly from Theorem~\ref{thm:koopman_unitary} and the fact
+  that the Koopman operator construction is reversible.
+\end{proof}
+
+\section{Invariant Measures}
+
+\begin{definition}
+  [Invariant Measure]\label{def:invariant}A measure $\mu$ on a measurable
+  space $(X, \mathcal{B})$ is invariant under a transformation $T : X \to X$
+  if $\mu (T^{- 1} (A)) = \mu (A)$ for all $A \in \mathcal{B}$.
+\end{definition}
+
+\begin{theorem}
+  [Uniqueness of Finite Invariant Measures for Ergodic
+  Systems]\label{thm:invariant_unique}Let $T : X \to X$ be an ergodic
+  transformation on a measurable space. If finite invariant measures $\mu_1$
+  and $\mu_2$ exist for $T$, then $\mu_1 = c \mu_2$ for some constant $c > 0$.
+\end{theorem}
+
+\begin{proof}
+  The proof follows from the ergodic theorem and the fact that ergodic systems
+  admit at most one invariant probability measure up to
+  scaling~{\cite{petersen1989ergodic}}.
+\end{proof}
+
+\section{Conclusion}
+
+The results establish that unitary bijections in $L^2$ spaces correspond
+precisely to measure-preserving transformations. The scaling factor $\sqrt{g'
+(y)}$ in Theorem~\ref{thm:l2_preservation} is both necessary and sufficient
+for norm preservation, providing the connection between differential geometry
+and functional analysis in the context of ergodic theory.
+
+\begin{thebibliography}{9}
+  {\bibitem{petersen1989ergodic}}K. Petersen, {\tmem{Ergodic Theory}},
+  Cambridge Studies in Advanced Mathematics, Cambridge University Press, 1989.
+  
+  {\bibitem{halmos1956lectures}}P. R. Halmos, {\tmem{Lectures on Ergodic
+  Theory}}, Chelsea Publishing Company, 1956.
+  
+  {\bibitem{walters1982introduction}}P. Walters, {\tmem{An Introduction to
+  Ergodic Theory}}, Graduate Texts in Mathematics, Springer-Verlag, 1982.
+  
+  {\bibitem{reed1980functional}}M. Reed and B. Simon, {\tmem{Methods of Modern
+  Mathematical Physics I: Functional Analysis}}, Academic Press, 1980.
+\end{thebibliography}
+
+\end{document}

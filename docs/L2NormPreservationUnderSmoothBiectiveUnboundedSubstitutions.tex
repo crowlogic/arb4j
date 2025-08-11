@@ -1,0 +1,233 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,latexsym}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\assign}{:=}
+\newcommand{\tmem}[1]{{\em #1\/}}
+\newcommand{\tmmisc}[1]{\thanks{\textit{Misc:} #1}}
+\newcommand{\tmrsup}[1]{\textsuperscript{#1}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{L\tmrsup{2} Norm Preservation Under Smooth Bijective Unbounded
+Substitutions}
+
+\author{
+  Stephen Crowley
+  \tmmisc{July 30, 2025}
+}
+
+\date{}
+
+\maketitle
+
+{\tableofcontents}
+
+\section{Introduction}
+
+This document concerns the structure of $L^2$-norm-preserving operators
+induced on $L^2$ spaces by smooth, bijective, orientation-preserving
+substitutions $g : I \to J$ on (possibly unbounded) intervals $I, J \subseteq
+\mathbb{R}$. The topic is fundamental in ergodic theory and operator theory,
+as it precisely characterizes when a substitution operator corresponds to a
+unitary operator, and relates directly to the behavior of measures under
+measure-preserving bijections. The classical result is also crucial for
+understanding the behavior of the $L^2$ norm under change of variables.
+Canonicity and necessity of the Jacobian factor is established, and the role
+of unboundedness is treated from the start.
+
+\section{Smooth Bijective Transformations and $L^2$ Norm Preservation}
+
+\begin{definition}
+  \label{def:bijectiveC1}Let $I, J \subseteq \mathbb{R}$ be (possibly
+  unbounded) open intervals. A map $g : I \to J$ is called a {\tmem{smooth
+  bijection}} if $g$ is:
+  \begin{enumerate}
+    \item Bijection between $I$ and $J$,
+    
+    \item Differentiable on $I$ with $g' (y) > 0$ for almost every $y \in I$
+    (i.e., $g$ is strictly increasing except possibly on a set of Lebesgue
+    measure zero).
+  \end{enumerate}
+\end{definition}
+
+\begin{lemma}
+  [Bijectivity of Strictly Increasing Unbounded $C^1$
+  Maps]\label{lem:bijective_unbounded} Let $I, J \subseteq \mathbb{R}$ be
+  (possibly unbounded) open intervals. Suppose $g : I \to J$ is a $C^1$
+  function with $g' (y) > 0$ for all $y \in I$ except possibly a Lebesgue null
+  set, and $g$ is unbounded above and below on $I$. Then $g$ is bijective onto
+  $J = g (I)$, $g^{- 1}$ exists and is also strictly increasing and
+  differentiable a.e.
+\end{lemma}
+
+\begin{proof}
+  The function $g$ is strictly increasing on every subset of $I$ where $g' (y)
+  > 0$; on the (at most measure-zero) set where $g' (y) = 0$, $g$ remains
+  monotonic and continuous by $C^1$ regularity. Since $I$ is an interval and
+  $g$ is continuous and strictly increasing almost everywhere, $g$ is
+  injective by the intermediate value property of continuous strictly
+  increasing functions.
+  
+  Unboundedness of $g$ on $I$ implies that $g (I)$ is also an open interval in
+  $\mathbb{R}$ (possibly the whole real line), so $g : I \to J$ is surjective.
+  Thus, $g$ is bijective from $I$ onto $J = g (I)$. Its inverse $g^{- 1} : J
+  \to I$ is again continuous, strictly increasing (except possibly on a null
+  set), and differentiable almost everywhere by the inverse function theorem.
+\end{proof}
+
+\section{Norm-Preserving Substitution Operators: Measure-Preservation and
+Unitarity}
+
+\begin{theorem}
+  [L\tmrsup{2} Norm Preservation via Jacobian Factor]\label{thm:L2_jacobian}
+  Let $g : I \to J$ be a smooth bijection in the sense of
+  Definition~\ref{def:bijectiveC1}. For any $f \in L^2 (J, dx)$, define
+  \begin{equation}
+    \label{eq:transformationdef} \tilde{f} (y) \assign f (g (y)) \sqrt{g' (y)}
+    .
+  \end{equation}
+  Then $\tilde{f} \in L^2 (I, dy)$ and
+  \begin{equation}
+    \label{eq:L2normpres} \| \tilde{f} \|_{L^2 (I, dy)} = \|f\|_{L^2 (J, dx)}
+    .
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  Since $g : I \to J$ is bijective, strictly increasing and differentiable
+  almost everywhere with $g' (y) > 0$ a.e., the change of variables theorem
+  applies (see e.g., {\cite{RoydenFitzpatrick}}, {\cite{Folland}}).
+  
+  For any $f \in L^2 (J, dx)$,
+  
+  \begin{align}
+    \| \tilde{f} \|_{L^2 (I, dy)}^2 & = \int_I |f (g (y)) \sqrt{g' (y)} |^2 
+    \hspace{0.17em} dy  \label{eq:normexpansion1}\\
+    & = \int_I |f (g (y)) |^2 g' (y)  \hspace{0.17em} dy 
+    \label{eq:normexpansion2}
+  \end{align}
+  
+  By the change of variables formula for Lebesgue integrals, for any
+  measurable function $\varphi$ and bijective, strictly increasing $g$ as in
+  Lemma~\ref{lem:bijective_unbounded}:
+  \begin{equation}
+    \label{eq:cov} \int_I \varphi (g (y)) g' (y)  \hspace{0.17em} dy = \int_J
+    \varphi (x)  \hspace{0.17em} dx.
+  \end{equation}
+  Setting $\varphi (x) = |f (x) |^2$, one obtains
+  \begin{equation}
+    \int_I |f (g (y)) |^2 g' (y) \hspace{0.17em} dy = \int_J |f (x) |^2 
+    \hspace{0.17em} dx = \|f\|_{L^2 (J, dx)}^2 \label{eq:aftercov}
+  \end{equation}
+  Thus, $\| \tilde{f} \|_{L^2 (I, dy)} = \|f\|_{L^2 (J, dx)}$ as claimed.
+\end{proof}
+
+\section{Necessity and Canonicality of the Jacobian Weight}
+
+\begin{lemma}
+  [Density of Substitution Images]\label{lem:L2density} Let $g : I \rightarrow
+  J$ be as in Theorem~\ref{thm:L2_jacobian}. Then the collection $\{f \circ g
+  : f \in L^2 (J, dx)\}$ is dense in $L^2 (I, g' (y) \hspace{0.17em} dy)$.
+\end{lemma}
+
+\begin{proof}
+  The transformation $T : L^2 (J, dx) \to L^2 (I, g' (y) \hspace{0.17em} dy)$
+  defined by $T (f) = f \circ g$ is an isometric isomorphism by the change of
+  variables~\eqref{eq:cov}. The image of an isomorphism from a complete space
+  is itself complete and thus dense.
+\end{proof}
+
+\begin{theorem}
+  [Necessity of the Square Root Jacobian Factor]\label{thm:necessity} Let $g :
+  I \to J$ be as above. Suppose $\psi : I \to \mathbb{R}^+$ is measurable and
+  for every $f \in L^2 (J, dx)$,
+  \begin{equation}
+    \label{eq:generalweight} | f (g (\cdot)) \cdot \psi (\cdot) |_{L^2 (I,
+    dy)} = \|f\|_{L^2 (J, dx)} .
+  \end{equation}
+  Then $\psi (y) = \sqrt{g' (y)}$ for almost every $y \in I$.
+\end{theorem}
+
+\begin{proof}
+  Suppose \eqref{eq:generalweight} holds for all $f \in L^2 (J, dx)$. Compute:
+  
+  \begin{align}
+    \int_I |f (g (y)) |^2 | \psi (y) |^2  \hspace{0.17em} dy & = \|f\|_{L^2
+    (J, dx)}^2 \\
+    & = \int_I |f (g (y)) |^2 g' (y)  \hspace{0.17em} dy  \label{eq:proofcov}
+  \end{align}
+  
+  Subtracting, for every $f$,
+  \begin{equation}
+    \int_I |f (g (y)) |^2  (| \psi (y) |^2 - g' (y))  \hspace{0.17em} dy = 0
+  \end{equation}
+  By Lemma~\ref{lem:L2density}, the set $\{f (g (y))\}$ is dense in $L^2 (I,
+  g' (y) dy)$. Thus, for every $u \in L^2 (I, g' (y) dy)$,
+  \begin{equation}
+    \int_I |u (y) |^2  (| \psi (y) |^2 - g' (y))  \hspace{0.17em} dy = 0
+  \end{equation}
+  By standard measure-theoretic arguments (cf. {\cite{Folland}}, p. 70), the
+  only way for this to be true for all $u$ is for $| \psi (y) |^2 = g' (y)$
+  almost everywhere. Since $\psi$ is taken as non-negative, $\psi (y) =
+  \sqrt{g' (y)}$ a.e.
+\end{proof}
+
+\section{Unitary Operators, Invariant Measures, and Measure-Preservation}
+
+\begin{definition}
+  [Koopman Operator]\label{def:koopman} Let $(X, \mathcal{B}, \mu)$ be a
+  probability measure space, $T : X \rightarrow X$ a measurable bijection, and
+  $\mu$ a $T$-invariant measure: for all $A \in \mathcal{B}$, $\mu (T^{- 1} A)
+  = \mu (A)$. The {\tmem{Koopman operator}} $U_T$ is defined for measurable $f
+  : X \to \mathbb{C}$ by
+  \begin{equation}
+    \label{eq:koopman} (U_T f) (x) = f (Tx) .
+  \end{equation}
+\end{definition}
+
+\begin{theorem}
+  [Unitarity Corresponds to
+  Measure-Preservation]\label{thm:measurepreserving_unitary} The Koopman
+  operator $U_T$ on $L^2 (X, \mu)$ is unitary if and only if $T$ is invertible
+  and both $T$ and $T^{- 1}$ preserve the measure $\mu$.
+\end{theorem}
+
+\begin{proof}
+  If $T$ is invertible and $\mu$ is $T$-invariant,
+  \[ \|U_T f\|_{L^2 (X, \mu)}^2 = \int_X |f (Tx) |^2  \hspace{0.17em} d \mu
+     (x) = \int_X |f (x) |^2  \hspace{0.17em} d \mu (x) \]
+  where the last equality is by change of variables $x = T^{- 1} (y)$ and
+  measure-preservation, so $U_T$ is an isometry. Surjectivity follows from
+  invertibility of $T$ and surjectivity of $L^2$ composition. Conversely, if
+  $U_T$ is unitary, then the above identity must hold for all $f$. Choosing
+  indicator functions of sets $A$, it follows that $\mu (T^{- 1} (A)) = \mu
+  (A)$, so $T$ preserves the measure.
+\end{proof}
+
+\section{Bibliography}
+
+\begin{thebibliography}{99}
+  {\bibitem{RoydenFitzpatrick}}H. L. Royden and P. M. Fitzpatrick, {\tmem{Real
+  Analysis}}, Fourth Edition, Pearson, 2010.
+  
+  {\bibitem{Folland}}G. B. Folland, {\tmem{Real Analysis: Modern Techniques
+  and Their Applications}}, Second Edition, Wiley, 1999.
+  
+  {\bibitem{Walters}}P. Walters, {\tmem{An Introduction to Ergodic Theory}},
+  Springer, 1982.
+  
+  {\bibitem{Halmos}}P. R. Halmos, {\tmem{Measure Theory}}, Springer, 1974.
+  
+  {\bibitem{EinsiedlerWard}}M. Einsiedler and T. Ward, {\tmem{Ergodic Theory
+  with a View Towards Number Theory}}, Springer, 2011.
+\end{thebibliography}
+
+\end{document}
