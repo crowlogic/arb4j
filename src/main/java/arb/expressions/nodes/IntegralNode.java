@@ -299,11 +299,13 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   private void computeIndefiniteIntegral()
   {
     assert integralFunction == null;
+    integralExpression                      =
+                       (Expression<Object, Object, Function<?, ?>>) expression.cloneExpression();
+
     integralNode                            = (Node<Object,
                   Object,
                   Function<?, ?>>) integrandNode.integrate(integrationVariableNode.asVariable());
 
-    integralExpression                      = integralNode.expression.cloneExpression();
     integralExpression.instructionByteCodes = null;
     integralExpression.compiledClass        = null;
     integralExpression.domainType           = integralNode.type();

@@ -24,7 +24,7 @@ public class IntegralNodeTest extends
   public void testDefiniteIntegralOfSquareRoot()
   {
 
-    // Expression.trace = Expression.saveClasses = true;
+    Expression.saveClasses = true;
     var e = RealFunction.express("ω➔∫λ➔1/√(1-λ²)dλ∈(-1,ω)");
     var f = RealFunction.express("x➔∫y➔1/sqrt(1-y^2)dy∈(-1,x)");
     var y = f.eval(0.75);
@@ -32,14 +32,14 @@ public class IntegralNodeTest extends
     var g = RealFunction.express("arcsin(x)+π⁄2");
     var z = g.eval(0.75);
 
-    assertEquals(y, z);
+    assertEquals(z,y);
 
   }
 
   public void testDefiniteIntegralOfSquareRootStringRepresentation()
   {
 
-     //Expression.trace = Expression.saveClasses = true;
+     Expression.saveClasses = true;
     var e = RealFunction.express("ω➔∫λ➔1/√(1-λ²)dλ∈(-1,ω)");
     var f = RealFunction.express("x➔∫y➔1/sqrt(1-y^2)dy∈(-1,x)");
     var y = f.eval(0.75);

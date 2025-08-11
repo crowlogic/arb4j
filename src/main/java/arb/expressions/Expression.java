@@ -167,19 +167,27 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   @Override
   protected Object clone()
   {
-    var expr = new Expression<>(className,
-                                domainType,
-                                coDomainType,
-                                functionClass,
-                                expression,
-                                context,
-                                functionName,
-                                ascendentExpression);
+    var expr = new Expression<D, C, F>(className,
+                                       domainType,
+                                       coDomainType,
+                                       functionClass,
+                                       expression,
+                                       context,
+                                       functionName,
+                                       ascendentExpression);
     expr.functionNameSpecified = functionNameSpecified;
     expr.position              = position;
     expr.character             = character;
     expr.previousCharacter     = previousCharacter;
-    
+//    if (independentVariable != null)
+//    {
+//      expr.independentVariable = (VariableNode<D, C, F>) independentVariable.spliceInto(expr);
+//    }
+//    if (indeterminateVariable != null)
+//    {
+//      expr.indeterminateVariable = (VariableNode<D, C, F>) indeterminateVariable.spliceInto(expr);
+//    }
+
     return expr;
   }
 
