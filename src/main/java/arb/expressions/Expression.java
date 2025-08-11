@@ -167,14 +167,14 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   @Override
   protected Object clone()
   {
-    var expr = new Expression<D, C, F>(className,
-                                       domainType,
-                                       coDomainType,
-                                       functionClass,
-                                       expression,
-                                       context,
-                                       functionName,
-                                       ascendentExpression);
+    var expr = new Expression<>(className,
+                                domainType,
+                                coDomainType,
+                                functionClass,
+                                expression,
+                                context,
+                                functionName,
+                                ascendentExpression);
     expr.functionNameSpecified = functionNameSpecified;
     expr.position              = position;
     expr.character             = character;
@@ -2204,10 +2204,21 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (nextCharacterIs(COMBINING_DOT_ABOVE))
     {
-      return require('(').resolveFunction(startPos, reference).differentiate();
+      return resolveFunctionDerivative(startPos, reference);
+    }
+
+    if (nextCharacterIs(COMBINING_TWO_DOTS_ABOVE))
+    {
+      return resolveFunctionDerivative(startPos, reference).differentiate();
     }
 
     return resolveSymbolicLiteralConstantKeywordOrVariable(startPos, reference);
+  }
+
+  protected Node<D, C, F> resolveFunctionDerivative(int startPos,
+                                                    VariableReference<D, C, F> reference)
+  {
+    return require('(').resolveFunction(startPos, reference).differentiate();
   }
 
   @SuppressWarnings("unchecked")
