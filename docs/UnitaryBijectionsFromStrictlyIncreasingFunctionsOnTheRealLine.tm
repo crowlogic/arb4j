@@ -39,8 +39,8 @@
   transformations in ergodic theory. Under bijective <math|C<rsup|1>> changes
   of variables on unbounded domains, <math|L<rsup|2>> norm preservation is
   achieved by a weighted composition operator whose weight is the square root
-  of the Jacobian <math|g<rprime|'>>. This scaling is both necessary and
-  sufficient.
+  of the Jacobian <math|g<rprime|'>>. This unitary transformation is both
+  necessary and sufficient.
 
   <section|Bijective Transformations on Unbounded Domains>
 
@@ -114,21 +114,21 @@
   <section|<math|L<rsup|2>> Norm Preservation>
 
   <\definition>
-    <dueto|Scaled Transformation Operator><label|def:scaled_transform>Let
+    <dueto|Unitary Change of Variables Operator><label|def:unitary_transform>Let
     <math|g:I\<to\>J> be a <math|C<rsup|1>> bijection between unbounded
     intervals with <math|g<rprime|'><around|(|y|)>\<gtr\>0> almost
     everywhere. For <math|f\<in\>L<rsup|2><around|(|J,d*x|)>>, define the
-    scaled transformation operator <math|T<rsub|g>> by:
+    unitary change of variables operator <math|T<rsub|g>> by:
 
     <\equation>
-      <label|eq:scaled_transform><around|(|T<rsub|g>*f|)><around|(|y|)>=f<around|(|g<around|(|y|)>|)><sqrt|g<rprime|'><around|(|y|)>>
+      <label|eq:unitary_transform><around|(|T<rsub|g>*f|)><around|(|y|)>=f<around|(|g<around|(|y|)>|)><sqrt|g<rprime|'><around|(|y|)>>
     </equation>
   </definition>
 
   <\theorem>
     <dueto|<math|L<rsup|2>> Norm Preservation for Unbounded
     Domains><label|thm:l2_preservation>Under the conditions of
-    Definition<nbsp><reference|def:scaled_transform>, the operator
+    Definition<nbsp><reference|def:unitary_transform>, the operator
     <math|T<rsub|g>:L<rsup|2><around|(|J,d*x|)>\<to\>L<rsup|2><around|(|I,d*y|)>>
     is an isometric isomorphism. Specifically:
 
@@ -168,10 +168,11 @@
   </proof>
 
   <\theorem>
-    <dueto|Necessity of Square Root Scaling><label|thm:necessity>Let
-    <math|g:I\<to\>J> be as in Theorem<nbsp><reference|thm:l2_preservation>.
-    If <math|\<phi\>:I\<to\>\<bbb-R\><rsup|+>> is any measurable function
-    such that <math|f<around|(|g<around|(|y|)>|)>*\<phi\><around|(|y|)>\<in\>L<rsup|2><around|(|I,d*y|)>>
+    <dueto|Necessity of Square Root Unitary
+    Transformation><label|thm:necessity>Let <math|g:I\<to\>J> be as in
+    Theorem<nbsp><reference|thm:l2_preservation>. If
+    <math|\<phi\>:I\<to\>\<bbb-R\><rsup|+>> is any measurable function such
+    that <math|f<around|(|g<around|(|y|)>|)>*\<phi\><around|(|y|)>\<in\>L<rsup|2><around|(|I,d*y|)>>
     and
 
     <\equation>
@@ -262,7 +263,7 @@
     <associate|bib-petersen1989ergodic|<tuple|petersen1989ergodic|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|bib-reed1980functional|<tuple|reed1980functional|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|bib-walters1982introduction|<tuple|walters1982introduction|4|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|def:scaled_transform|<tuple|3|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|def:unitary_transform|<tuple|3|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|eq:change_vars|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|eq:change_vars_apply|<tuple|6|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|eq:final_norm|<tuple|7|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
@@ -274,7 +275,7 @@
     <associate|eq:phi_comparison|<tuple|10|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|eq:phi_condition|<tuple|9|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|eq:phi_difference|<tuple|11|3|../../.TeXmacs/texts/scratch/no_name_14.tm>>
-    <associate|eq:scaled_transform|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
+    <associate|eq:unitary_transform|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|thm:bijective_unbounded|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|thm:diff_bijective|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
     <associate|thm:l2_preservation|<tuple|4|2|../../.TeXmacs/texts/scratch/no_name_14.tm>>
