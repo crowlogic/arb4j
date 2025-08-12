@@ -239,7 +239,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
-  @SuppressWarnings("unchecked")
   public Expression<D, C, F> cloneExpression()
   {
     return (Expression<D, C, F>) clone();
@@ -707,7 +706,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return this;
   }
 
-  @SuppressWarnings("unchecked")
   public Node<D, C, F> evaluate() throws CompilerException
   {
     Node<D, C, F> node = null;
@@ -1909,7 +1907,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return !literalConstants.isEmpty() | !intermediateVariables.isEmpty();
   }
 
-  @SuppressWarnings("unchecked")
   public <N extends Named> N newCoDomainInstance()
   {
     try
@@ -1923,7 +1920,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  @SuppressWarnings("unchecked")
   public <N extends Named> N newDomainInstance()
   {
     try
@@ -2025,7 +2021,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @return this
    * @throws CompilerException
    */
-  @SuppressWarnings("unchecked")
   public <E extends Expression<D, C, F>> E parseRoot()
   {
     assert rootNode
@@ -2186,7 +2181,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    * @return the result of passing this{@link #exponentiateMultiplyAndDivide()} to
    *         this{@link #addAndSubtract(Node)}
    */
-  @SuppressWarnings("unchecked")
   public <N extends Node<D, C, F>> N resolve()
   {
     var node = exponentiateMultiplyAndDivide();
@@ -2205,7 +2199,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
-  @SuppressWarnings("unchecked")
   protected <N extends Node<D, C, F>> N resolveFactorials(N node)
   {
     if (nextCharacterIs('!'))
@@ -2231,7 +2224,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
   }
 
-  @SuppressWarnings("unchecked")
   protected <N extends Node<D, C, F>> N resolveFloor(Node<D, C, F> node)
   {
     if (nextCharacterIs('⌊'))
@@ -2311,7 +2303,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return require('(').resolveFunction(startPos, reference).differentiate();
   }
 
-  @SuppressWarnings("unchecked")
   protected Node<D, C, F> resolvePostfixOperators(Node<D, C, F> node)
   {
     node = resolveFactorials(node);
