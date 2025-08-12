@@ -1,4 +1,3 @@
-SphericalBesselFunction functional bug #581
 expression compiler: implement caching #555
 Expression Compiler: implement switching of order-of-integration via Fubini's or Tonelli's theorem #549
 implement orthogonal function sequence expansion api #546
