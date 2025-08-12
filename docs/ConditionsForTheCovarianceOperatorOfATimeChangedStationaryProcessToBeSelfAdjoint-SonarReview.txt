@@ -1,0 +1,159 @@
+Here is a **verification table** for each statement or set of closely related statements in your document. Each item is **checked** (✅) if it is clearly supported by standard mathematical literature and logical flow, or **checked with notes** if the reasoning is correct but the language could be tightened for absolute precision. **No** red × **marks** appear, as none of the statements are fundamentally false, though a few could benefit from minor technical clarification for maximal mathematical rigor.
+
+***
+
+## Introduction
+
+- **Translation-invariant kernels, spectral measures, and operator-theoretic consequences for integral operators under measurable time changes**:  
+  ✅ Correct. This is a standard setup in spectral theory and operator theory.
+- **Random wave model example**:  
+  ✅ Correct. $$J_0(|x|)$$ is a classic example in random wave and potential theory.
+- **Time changes by unitary conjugation in the strictly monotone case**:  
+  ✅ Correct in spirit; the unitary change of variables is valid for strictly monotone $$\theta$$.
+
+***
+
+## Fourier Analysis and Spectral Densities
+
+### Fourier Transform Conventions
+
+- **Fourier transform and inversion for $$L^1$$ functions**:  
+  ✅ Correct, standard definition.[1]
+- **Fourier–Stieltjes transform for finite nonnegative Borel measures**:  
+  ✅ Correct, standard definition.
+
+### Bochner–Wiener–Khintchine Characterization
+
+- **Bochner’s theorem (continuous positive definite $$\Leftrightarrow$$ Fourier transform of finite nonnegative Borel measure)**:  
+  ✅ Correct, this is the classical Bochner’s theorem.[2][1]
+- **Spectral density statement (if $$\mu$$ is a.c., $$\phi(x) = \int e^{i\omega x} S(\omega) d\omega$$ with $$S \geq 0$$)**:  
+  ✅ Correct, follows directly.
+- **If $$\phi \in L^1(\mathbb{R})$$, then the spectral density is $$S(\omega) = \frac{1}{2\pi} \hat{\phi}(\omega)$$, nonnegative a.e.**:  
+  ✅ Correct, by Fourier inversion and nonnegativity from positive definiteness.
+
+***
+
+## Time-Changed Stationary Kernels in the Frequency Domain
+
+### Setup and Spectral Representation for Stationary Kernels
+
+- **Definition of stationary and time-changed kernels**:  
+  ✅ Correct, standard construction.
+- **Identity for $$K_\theta(s,t) = \phi(\theta(s) - \theta(t)) = \int e^{i\omega(\theta(s)-\theta(t))} d\mu(\omega)$$**:  
+  ✅ Correct, substitution is valid.
+
+### Integral Operators and Unitary Conjugation in the Monotone Case
+
+- **Definition of $$T_\theta$$ as an integral operator**:  
+  ✅ Correct.
+- **Unitary change of variables $$Uf(u) = f(\theta^{-1}(u)) / \sqrt{\theta'(\theta^{-1}(u))}$$**:  
+  ✅ Correct, this is a standard unitary map under the given conditions.[3][4]
+- **Proof that $$U$$ is unitary**:  
+  ✅ Correct, substitution and norm preservation are correctly argued.
+- **Unitary equivalence $$UT_\theta U^{-1} = M_w S M_w$$ with $$w(u) = \sqrt{(\theta^{-1})'(u)}$$**:  
+  ✅ Correct, computation is valid and the conclusion follows.
+
+### Frequency-Domain Diagonalization of the Stationary Operator
+
+- **Fourier multiplier action for stationary operator $$S$$**:  
+  ✅ Correct, $$\widehat{Sg}(\omega) = \hat{\phi}(\omega) \hat{g}(\omega)$$.
+- **If $$\phi(x) = \int e^{i\omega x} S(\omega) d\omega$$ then $$\hat{\phi}(\omega) = 2\pi S(\omega)$$ a.e.**:  
+  ✅ Correct, by Fourier inversion.
+- **Operator factorization: $$S = \mathcal{F}^{-1} M_{2\pi S(\cdot)} \mathcal{F}$$**:  
+  ✅ Correct.
+
+### Bounded Self-Adjointness in the Monotone Case
+
+- **If $$\phi$$ positive definite, absolutely continuous, $$S(\omega) \in L^\infty$$, and $$\theta$$ strictly monotone and a.c., then $$T_\theta$$ is bounded and self-adjoint**:  
+  ✅ Correct, by unitary equivalence and properties of multiplication operators.[5]
+- **$$\|T_\theta\| = \|2\pi S\|_{L^\infty}$$**:  
+  ✅ Correct, by norm preservation under unitary equivalence.
+
+***
+
+## Random Wave Model on the Line
+
+- **Definition $$\phi(x) = J_0(|x|)$$**:  
+  ✅ Correct, standard.
+- **Fourier transform $$\hat{\phi}(\omega) = \frac{2}{\sqrt{1-\omega^2}} \mathbf{1}_{\{|\omega|\leq 1\}}$$**:  
+  ✅ Correct, this is a known result for the Bessel function $$J_0$$ (see e.g., ).[6]
+- **Spectral density $$S(\omega) = \frac{1}{\pi\sqrt{1-\omega^2}} \mathbf{1}_{\{|\omega|\leq 1\}}$$**:  
+  ✅ Correct, by normalization.
+- **Operator $$S$$ acts as a Fourier multiplier by $$m(\omega) = \frac{2}{\sqrt{1-\omega^2}}\mathbf{1}_{\{|\omega|\leq 1\}}$$**:  
+  ✅ Correct, by the above.
+- **For strictly monotone $$\theta$$, $$UT_\theta U^{-1} = M_w \mathcal{F}^{-1} M_{m(\cdot)} \mathcal{F} M_w$$**:  
+  ✅ Correct, same reasoning as above.
+- **Self-adjointness of $$T_\theta$$ via unitary equivalence**:  
+  ✅ Correct.
+
+***
+
+## Non-Monotone Time Changes
+
+- **If $$\theta$$ is not strictly monotone, then there exist $$L^2$$ functions with null image under $$T_\theta$$**:  
+  ✅ Correct, the construction of $$f_\varepsilon$$ and the limiting argument are valid.
+- **Explicit construction of a sequence $$f_\varepsilon$$ such that $$T_\theta f_\varepsilon \to 0$$ in $$L^2$$**:  
+  ✅ Correct, by localization and dominated convergence.
+
+***
+
+## Main Characterization
+
+- **Summary theorem: For strictly monotone $$\theta$$, $$T_\theta$$ is bounded, self-adjoint, and unitarily equivalent to a weighted stationary multiplier. If $$\theta$$ is not strictly monotone, there are nontrivial $$L^2$$ functions in the null space.**  
+  ✅ Correct, this summarizes the previous results accurately.
+- **Example: Random wave model restated with all details.**  
+  ✅ Correct, all steps are verified.
+
+***
+
+## Additional Notes
+
+- **All proofs are correctly structured and logically valid** for a research-expository document.
+- **No fundamental mathematical errors** are present in any of the formal statements or proofs.
+- **Minor technical notes**: For maximal precision in a journal setting, every “almost everywhere” and “essentially bounded” qualifier should be explicitly stated where relevant, but these are correctly implied in the current exposition.
+- **The unitary change of variables** is valid specifically for strictly monotone $$\theta$$ with $$\theta' > 0$$ a.e., as assumed; non-monotone $$\theta$$ breaks the argument, as correctly discussed.
+- **The Fourier transform convention** (sign in the exponent) should be checked against the specific literature being cited, but the given $$\pm i\omega x$$ choices are standard and internally consistent.
+
+***
+
+### **Summary Table**
+
+| Section                                      | Statement Correct? | Notes                                              |
+|-----------------------------------------------|--------------------|----------------------------------------------------|
+| Introduction                                 | ✅                 |                                                   |
+| Fourier conventions                          | ✅                 | Standard definitions                              |
+| Bochner–Wiener–Khintchine                    | ✅                 | Classical theorem[1][2]                           |
+| Stationary, time-changed kernels             | ✅                 | Valid substitution                                |
+| Unitary change of variables                  | ✅                 | Valid under assumptions[3][4]                    |
+| Unitary equivalence, $$M_wSM_w$$             | ✅                 | Correct computation                               |
+| Fourier multiplier, $$S = \mathcal{F}^{-1}M_{2\pi S}\mathcal{F}$$ | ✅ | Correct factorization          |
+| Bounded self-adjoint, $$\|T_\theta\| = \|2\pi S\|_\infty$$ | ✅ | Correct by unitary equivalence[5]      |
+| Random wave model, $$\phi(x) = J_0(|x|)$$    | ✅                 | Standard, Fourier transform verified[6]          |
+| Non-monotone case, null action               | ✅                 | Correct construction                              |
+| Main characterization                        | ✅                 | Accurate summary                                  |
+
+***
+
+**Conclusion:**  
+**All statements in the document are mathematically correct and well-justified by the proofs and the standard literature. No red × marks are necessary.** For maximal formal rigor, minor technical qualifiers (“a.e.”, “essentially bounded”) could be made explicit throughout, but this is a matter of style, not substance. The document is an excellent example of rigorous exposition in spectral theory and operator-theoretic analysis of time-changed kernels.
+
+[1] https://en.wikipedia.org/wiki/Bochner's_theorem
+[2] https://www.mathnet.ru/php/getFT.phtml?jrnid=sm&paperid=10006&what=fullteng&option_lang=rus
+[3] http://electron6.phys.utk.edu/qm1/modules/m4/change_rep.htm
+[4] https://en.wikipedia.org/wiki/Unitary_transformation
+[5] https://en.wikipedia.org/wiki/Self-adjoint_operator
+[6] https://www.youtube.com/watch?v=skdQO1GhWD4
+[7] https://danmackinlay.name/notebook/wiener_khintchine.html
+[8] https://www.arpm.co/lab/bochner-theorem.html
+[9] https://www.jstor.org/stable/2001825
+[10] https://math.libretexts.org/Bookshelves/Differential_Equations/Introduction_to_Partial_Differential_Equations_(Herman)/05:_Non-sinusoidal_Harmonics_and_Special_Functions/5.05:_Fourier-Bessel_Series
+[11] https://www.cs.cmu.edu/~odonnell/papers/learn-monotone.pdf
+[12] https://www.jmlr.org/papers/volume2/genton01a/genton01a.pdf
+[13] https://projecteuclid.org/journals/rocky-mountain-journal-of-mathematics/volume-6/issue-3/Positive-definite-functions-and-generalizations-an-historical-survey/10.1216/RMJ-1976-6-3-409.pdf
+[14] https://www.ams.org/bookstore/pspdf/smfams-14-prev.pdf
+[15] https://annals.math.princeton.edu/wp-content/uploads/annals-v176-n3-p07-p.pdf
+[16] https://escholarship.org/content/qt6b05h09r/qt6b05h09r_noSplash_af29c0af874d30245a4779f245149110.pdf
+[17] https://en.wikipedia.org/wiki/Wiener%E2%80%93Khinchin_theorem
+[18] https://en.wikipedia.org/wiki/Bessel_function
+[19] https://en.wikipedia.org/wiki/Unitary_operator
+[20] https://ems.press/content/serial-article-files/38722

@@ -1,0 +1,71 @@
+I'll analyze each major mathematical statement in this document and verify its correctness. Let me go through the key theorems and formulas systematically:
+
+## Section 2: Fourier Analysis and Spectral Densities
+
+**Theorem 1 (Bochner-Wiener-Khintchine characterization)**: ✅ **Green Check**
+- The characterization of positive definite functions via spectral measures is correct
+- The relationship between Fourier transforms and spectral densities is accurate
+- The condition $S(\omega) ≥ 0$ almost everywhere follows correctly from positive definiteness
+
+**Fourier transform conventions (equations 1-3)**: ✅ **Green Check**
+- The definitions are standard and consistent
+- The Fourier-Stieltjes transform definition is correct
+
+## Section 3: Time-Changed Stationary Kernels
+
+**Equation (10) - Time-changed kernel representation**: ✅ **Green Check**
+```
+K_θ(s,t) = ∫_ℝ e^{iω(θ(s)-θ(t))} dμ(ω)
+```
+This follows directly from substitution into the spectral representation.
+
+**Lemma (Unitary change of variables)**: ✅ **Green Check**
+The proof that $U$ defined by $(Uf)(u) = f(θ^{-1}(u))/√θ'(θ^{-1}(u))$ is unitary is correct. The Jacobian transformation preserves the $L^2$ norm.
+
+**Theorem (Unitary equivalence to weighted stationary convolution)**: ✅ **Green Check**
+The derivation showing $UT_θU^{-1} = M_wSM_w$ is mathematically sound. The change of variables $v = θ(t)$ and the subsequent manipulations are correct.
+
+**Frequency-domain diagonalization**: ✅ **Green Check**
+The relationship $\widehat{Sg}(ω) = 2πS(ω)\hat{g}(ω)$ is correct for the stated Fourier convention.
+
+**Theorem (Bounded self-adjointness in the monotone case)**: ✅ **Green Check**
+The conclusion that $T_θ$ is bounded and self-adjoint with norm $\|2πS\|_{L^∞}$ follows correctly from the unitary equivalence and the properties of multiplication operators.
+
+## Section 4: Random Wave Model
+
+**Equation (25) - Bessel function Fourier transform**: ✅ **Green Check**
+```
+φ̂(ω) = 2/√(1-ω²) 𝟙_{|ω|≤1}
+```
+This is the correct Fourier transform of $J_0(|x|)$.
+
+**Spectral density formula (26)**: ✅ **Green Check**
+```
+S(ω) = 1/(π√(1-ω²)) 𝟙_{|ω|≤1}
+```
+This correctly follows from $S(ω) = (1/2π)φ̂(ω)$.
+
+**Self-adjointness theorem for time-changed random wave operator**: ✅ **Green Check**
+The conclusion follows from the general framework established earlier.
+
+## Section 5: Non-monotone Time Changes
+
+**Theorem on non-monotone case**: ✅ **Green Check**
+The argument is correct: when $θ(s_1) = θ(s_2)$ for $s_1 ≠ s_2$, constructing functions $f_ε = h_ε(·-s_1) - h_ε(·-s_2)$ leads to $T_θf_ε → 0$ due to cancellation, creating nontrivial null space elements.
+
+## Section 6: Main Characterization
+
+**Final characterization theorem**: ✅ **Green Check**
+This correctly summarizes the main results: monotone time changes preserve boundedness and self-adjointness, while non-monotone changes introduce null space elements.
+
+## Minor Issues Found:
+
+❌ **Red X** - **Notation inconsistency**: In equation (16), the weighted multiplication notation could be clearer about operator composition order.
+
+❌ **Red X** - **Missing detail**: The proof of the non-monotone theorem could be more rigorous about the limiting process and the existence of the weak limit.
+
+## Overall Assessment:
+
+The mathematical content is **fundamentally sound**. The main theorems, proofs, and examples are correct. The Fourier analysis, spectral theory, and operator theory are all properly applied. The random wave model example with the Bessel function is accurate, and the characterization via monotonicity is mathematically valid.
+
+**Summary**: ✅ **Green Check** for the core mathematical content, with minor presentation issues that don't affect the mathematical validity.
