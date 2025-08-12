@@ -3,7 +3,7 @@ package arb.functions.complex;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.expressions.Expression;
+import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
 /**
@@ -21,9 +21,15 @@ public class RealRiemannSiegelThetaFunction implements
                                             RealFunction
 {
 
+  @Override
+  public Function<Real, Real> derivative()
+  {
+    return RealFunction.express("θ:t->diff(im(lnΓ(¼+ⅈ*t/2))-(t*log(π)/2),t)");
+  }
+
   static
   {
-   // Expression.saveClasses = true;
+    // Expression.saveClasses = true;
   }
   public static final RealFunction θ = RealFunction.express("θ:t->im(lnΓ(¼+ⅈ*t/2))-(t*log(π)/2)");
 
@@ -34,7 +40,7 @@ public class RealRiemannSiegelThetaFunction implements
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)
   {
-    
+
     return θ.evaluate(t, order, bits, res);
   }
 
