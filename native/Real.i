@@ -238,6 +238,12 @@ import arb.utensils.Utensils;
     return res.set(this).sub(that,prec,res);
   }
 
+  public Complex pow(Complex div, int bits, Complex res)
+  {
+    return res.set(this).pow(div,bits,res);
+  }
+  
+  
   public Fraction add(Real element, int prec, Fraction result)
   {
     return result.set(this).add(element, prec, result);
