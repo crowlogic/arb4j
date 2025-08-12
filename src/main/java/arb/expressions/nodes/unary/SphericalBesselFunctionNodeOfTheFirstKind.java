@@ -1,8 +1,6 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.cast;
-import static arb.expressions.Compiler.loadInputParameter;
-import static arb.expressions.Compiler.loadOrderParameter;
+import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 import static java.lang.System.err;
 
@@ -43,17 +41,17 @@ import arb.functions.real.SphericalBesselFunction;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<? extends D, ? extends R>> extends
+public class SphericalBesselFunctionNodeOfTheFirstKind<D,
+              R,
+              F extends Function<? extends D, ? extends R>> extends
                                                       FunctionNode<D, R, F>
 {
 
   final private String functionFieldName;
 
-  Node<D, R, F>  order;
+  Node<D, R, F>        order;
 
-  public boolean scalar;
-
-  final boolean  useInitializer;
+  public boolean       scalar;
 
   public SphericalBesselFunctionNodeOfTheFirstKind(Expression<D, R, F> expression)
   {
@@ -79,13 +77,10 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
                                                 SphericalBesselFunction.class.getSimpleName(),
                                                 expression.coDomainType.getSimpleName()));
     }
-    if (useInitializer = !order.dependsOn(expression.getIndependentVariable()))
-    {
-      expression.registerInitializer(this::generateInitializer);
-    }
 
-    functionFieldName = expression.newIntermediateVariable("j", SphericalBesselFunction.class, true);
-    //assert functionFieldName != null : "functionFieldName is null when it shouldn't be";
+    functionFieldName =
+                      expression.newIntermediateVariable("j", SphericalBesselFunction.class, true);
+
   }
 
   @Override
@@ -119,23 +114,6 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
     loadBitsOntoStack(mv);
     loadOutputVariableOntoStack(mv, expression.coDomainType);
     return cast(invokeEvaluationMethod(mv, expression.domainType), expression.coDomainType);
-  }
-
-  public void generateInitializer(MethodVisitor mv)
-  {
-    assert useInitializer : "generateInitializer shouldn't be called if useInitializer isn't true";
-    expression.insideInitializer = true;
-    assert !expression.isFunctional() : "TODO: handle functional";
-    
-    loadSphericalBesselFunctionOntoStack(mv);
-    Compiler.getField(mv, SphericalBesselFunction.class, "n", Integer.class);
-    generateOrder(mv);
-
-    assert order.getGeneratedType()
-                .equals(Integer.class) : "wanted " + Integer.class + " got " + order.getGeneratedType();
-
-    Compiler.invokeMethod(mv, Integer.class, "set", Integer.class, false, Integer.class);
-
   }
 
   protected MethodVisitor generateNullaryFunctionInvocation(MethodVisitor mv, Class<?> resultType)
@@ -184,18 +162,13 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D, R, F extends Function<
 
   public void loadSphericalBesselFunctionOntoStack(MethodVisitor mv)
   {
-    if (useInitializer)
-    {
-      loadFunctionFieldOntoStack(mv);
-    }
-    else
-    {
-      loadFunctionFieldOntoStack(mv);
-      Compiler.getField(mv, SphericalBesselFunction.class, "n", Integer.class);
-      generateOrder(mv);
-      Compiler.invokeMethod(mv, Integer.class, "set", Integer.class, false, Integer.class);
-      loadFunctionFieldOntoStack(mv);
-    }
+    loadFunctionFieldOntoStack(mv);
+    generateOrder(mv);
+    Compiler.invokeVirtualMethod(mv,
+                                 SphericalBesselFunction.class,
+                                 "setOrder",
+                                 SphericalBesselFunction.class,
+                                 Integer.class);
   }
 
   @Override

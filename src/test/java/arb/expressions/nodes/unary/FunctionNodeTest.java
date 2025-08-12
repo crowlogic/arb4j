@@ -10,7 +10,7 @@ public class FunctionNodeTest extends
 {
   public static void testDerivativeOfImaginaryPartIsRealZero()
   {
-    Expression.trace=true;
+    //Expression.trace=true;
     Expression<Real, Real, RealFunction> fexpr = RealFunction.parse("diff(im(cos(I*t)),t)");
    // Expression<Real, Real, RealFunction> fexpr = RealFunction.parse("im(diff(cos(I*t),t))");
     

@@ -38,6 +38,12 @@ public class SphericalBesselFunction implements
 
   boolean isInitialized = false;
 
+  public SphericalBesselFunction setOrder( Integer n )
+  {
+    this.n.set(n);
+    return this;
+  }
+  
   public void initialize()
   {
     var n = context.getVariable("n");
