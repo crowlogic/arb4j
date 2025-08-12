@@ -65,131 +65,23 @@
   \;
 
   <\theorem>
-    <dueto|Eigenfunctions>For any stationary kernel
-    <math|K<around|(|t,s|)>=K<around|(|<around|\||t-s|\|>|)>>, the
-    eigenfunctions of the integral covariance operator
+    <reference|unitaryVariableChange><dueto|Unitary Change-Of-Variables>The
+    transformation operator
 
     <\equation>
-      T<rsub|K<rsub|\<theta\>>><around|[|f|]><around|(|t|)>=<big|int><rsub|0><rsup|\<infty\>>K<rsub|\<theta\>><around|(|<around|\||t-s|\|>|)>*f<around|(|s|)>*\<mathd\>*s
-    </equation>
-
-    defined by the <math|\<theta\>>-modulated kernel
-
-    <\equation>
-      K<rsub|\<theta\>><around|(|t,s|)>=K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>
-    </equation>
-
-    are given <math|\<forall\>\<theta\>\<in\>\<cal-F\>> by
-
-    <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|3|3|cell-halign|l>|<cwith|1|-1|4|4|cell-halign|l>|<cwith|1|-1|5|5|cell-halign|l>|<cwith|1|-1|6|6|cell-halign|l>|<cwith|1|-1|6|6|cell-rborder|0ln>|<table|<row|<cell|\<phi\><rsub|n><around|(|t|)>=\<psi\><rsub|n><around|(|\<theta\><around|(|t|)>|)><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>>|<cell|>|<cell|>|<cell|>|<cell|>|<cell|>>>>>
-    </equation>
-
-    which satisfies the eigenfunction equation
-
-    <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|T<rsub|K<rsub|\<theta\>>><around|[|\<phi\><rsub|n>|]><around|(|t|)>>|<cell|=\<lambda\><rsub|n>*<big|int><rsub|0><rsup|\<infty\>>K<rsub|\<theta\>><around|(|<around|\||t-s|\|>|)>*\<phi\><rsub|n><around|(|s|)>*\<mathd\>*s>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*<big|int><rsub|0><rsup|\<infty\>>K<rsub|\<theta\>><around|(|<around|\||t-s|\|>|)>*\<psi\><rsub|n><around|(|\<theta\><around|(|s|)>|)><sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*\<mathd\>*s>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*<big|int><rsub|0><rsup|\<infty\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*\<psi\><rsub|n><around|(|\<theta\><around|(|s|)>|)><sqrt|<wide|\<theta\>|\<dot\>><around|(|s|)>>*\<mathd\>*s>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*\<phi\><rsub|n><around|(|t|)>>>>>>
-    </equation>
-
-    where <math|\<psi\><rsub|n>> are the normalized eigenfunctions of the
-    covariance operator defined by the original unmodulated kernel
-    <math|K<around|(|<around|\||t-s|\|>|)>> which satisfy
-
-    <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|T<rsub|K><around|[|\<psi\><rsub|n>|]><around|(|t|)>>|<cell|=\<lambda\><rsub|n>*<big|int><rsub|0><rsup|\<infty\>>K<around|(|<around|\||t-s|\|>|)>*\<psi\><rsub|n><around|(|s|)>*\<mathd\>*s>>|<row|<cell|>|<cell|=\<lambda\><rsub|n>*\<psi\><rsub|n><around|(|t|)>>>>>>
-    </equation>
-  </theorem>
-
-  <\proof>
-    The eigenfunction equation for the modulated kernel's covariance operator
-    is:
-
-    <\equation>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*\<phi\><rsub|n><around|(|s|)>*d*s=\<lambda\><rsub|n>*\<phi\><rsub|n><around|(|t|)>
-    </equation>
-
-    The variables can be changed by substituting
-    <math|u=\<theta\><around|(|s|)>>, <math|v=\<theta\><around|(|t|)>>:
-
-    <\equation>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around|(|<around|\||v-u|\|>|)><frac|\<phi\><rsub|n><around|(|\<theta\><rsup|-1><around|(|u|)>|)>|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|u|)>|)>>*d*u=\<lambda\><rsub|n>*\<phi\><rsub|n><around|(|\<theta\><rsup|-1><around|(|v|)>|)>
-    </equation>
-
-    which is valid due to the strict monotonicity of <math|\<theta\>> which
-    assures its invertability. Let
-
-    <\equation>
-      \<psi\><rsub|n><around|(|u|)>=<frac|\<phi\><rsub|n><around|(|\<theta\><rsup|-1><around|(|u|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|u|)>|)>>>
-    </equation>
-
-    Then:
-
-    <\equation>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>>K<around|(|<around|\||v-u|\|>|)>*\<psi\><rsub|n><around|(|u|)>*d*u=\<lambda\><rsub|n>*\<psi\><rsub|n><around|(|v|)>
-    </equation>
-
-    This is precisely the eigenfunction equation for the original kernel
-    <math|K>'s covariance operator. Therefore,
-
-    <\equation>
-      \<phi\><rsub|n><around|(|t|)>=\<psi\><rsub|n><around|(|\<theta\><around|(|t|)>|)><sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>
-    </equation>
-
-    are the eigenfunctions of the modulated kernel's covariance operator
-
-    <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|T<rsub|K<rsub|\<theta\>>><around|[|\<phi\><rsub|n>|]><around|(|t|)>>|<cell|=\<lambda\><rsub|n>*<big|int><rsub|0><rsup|\<infty\>>K<rsub|\<theta\>><around|(|<around|\||t-s|\|>|)>*\<phi\><rsub|n><around|(|s|)>*\<mathd\>*s>>>>>
-    </equation>
-
-    and <math|\<psi\><rsub|n>> are the eigenfunctions of the original
-    kernel's covariance operator which satisfy
-
-    <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|T<rsub|K><around|[|\<psi\><rsub|n>|]><around|(|t|)>>|<cell|=\<lambda\><rsub|n>*<big|int><rsub|0><rsup|\<infty\>>K<around|(|<around|\||t-s|\|>|)>*\<psi\><rsub|n><around|(|s|)>*\<mathd\>*s>>>>>
-    </equation>
-  </proof>
-
-  <\corollary>
-    <dueto|Eigenvalue Invariance>The eigenvalues
-    <math|<around|{|\<lambda\><rsub|n>|}>> of the modulated kernel
-    <math|K<rsub|\<theta\>>>'s covariance operator are identical to those of
-    the original kernel <math|K>'s covariance operator.
-  </corollary>
-
-  <\proof>
-    For normalized <math|\<psi\><rsub|n>>:
-
-    <\equation>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||\<phi\><rsub|n><around|(|t|)>*<around|\||<rsup|2>d*t=<big|int><rsub|-\<infty\>><rsup|\<infty\>>|\|>*\<psi\><rsub|n><around|(|\<theta\><around|(|t|)>|)>|\|><rsup|2><wide|\<theta\>|\<dot\>><around|(|t|)>*d*t
-    </equation>
-
-    Under the change of variables <math|u=\<theta\><around|(|t|)>>:
-
-    <\equation>
-      <big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||\<psi\><rsub|n><around|(|u|)>|\|><rsup|2>*d*u=1
-    </equation>
-
-    Therefore the <math|\<phi\><rsub|n>> are already normalized without
-    additional constants.
-  </proof>
-
-  <\theorem>
-    <dueto|Operator Conjugation>The transformation operator
-
-    <\equation>
-      M<rsub|\<theta\>><around|[|\<phi\>|]><around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*\<phi\><around|(|\<theta\><around|(|t|)>|)>
+      M<rsub|\<theta\>><around|[|X|]><around|(|t|)>=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*X<around|(|\<theta\><around|(|t|)>|)>
     </equation>
 
     conjugates the integral covariance operator
 
     <\equation>
-      T<rsub|K><around|[|\<phi\>|]><around|(|t|)>=<big|int><rsub|0><rsup|\<infty\>>K<around|(|<around|\||t-s|\|>|)>*\<phi\><around|(|s|)>*\<mathd\>*s
+      <tabular|<tformat|<table|<row|<cell|T<rsub|K><around|[|\<phi\>|]><around|(|t|)>>|<cell|=<big|int><rsub|0><rsup|\<infty\>>K<around|(|t,s|)>*X<around|(|s|)>*\<mathd\>*s>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>K<around|(|<around|\||t-s|\|>|)>*X<around|(|s|)>*\<mathd\>*s>>>>>
     </equation>
 
     where the resulting conjugated operator is
 
     <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|T<rsub|K<rsub|\<theta\>>><around|[|\<phi\>|]><around|(|t|)>>|<cell|=M<rsub|\<theta\>><around|[|T<rsub|K><around|[|M<rsub|\<theta\>><rsup|-1><around|[|\<phi\>|]>|]>|]><around|(|t|)>>>|<row|<cell|>|<cell|=M<around*|[|<big|int><rsub|0><rsup|\<infty\>>K<around|(|<around|\||t-s|\|>|)><frac|\<phi\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>*\<mathd\>*s|]><around|(|t|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<big|int><rsub|0><rsup|\<infty\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)><frac|\<phi\><around|(|\<theta\><rsup|-1><around|(|s|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>*\<mathd\>*s>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*\<phi\><around|(|s|)>*\<mathd\>*s>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>K<rsub|\<theta\>><around|(|<around|\||t-s|\|>|)>*\<phi\><around|(|s|)>*\<mathd\>*s>>>>><label|a>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|T<rsub|K<rsub|\<theta\>>><around|[|X|]><around|(|t|)>>|<cell|=M<rsub|\<theta\>><around|[|T<rsub|K><around|[|M<rsub|\<theta\>><rsup|-1><around|[|X|]>|]>|]><around|(|t|)>>>|<row|<cell|>|<cell|=M<around*|[|<big|int><rsub|0><rsup|\<infty\>>K<around|(|<around|\||t-s|\|>|)><frac|X<around|(|\<theta\><rsup|-1><around|(|s|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>*\<mathd\>*s|]><around|(|t|)>>>|<row|<cell|>|<cell|=<sqrt|<wide|\<theta\>|\<dot\>><around|(|t|)>>*<big|int><rsub|0><rsup|\<infty\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)><frac|X<around|(|\<theta\><rsup|-1><around|(|s|)>|)>|<sqrt|<wide|\<theta\>|\<dot\>><around|(|\<theta\><rsup|-1><around|(|s|)>|)>>>*\<mathd\>*s>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>*\<phi\><around|(|s|)>*\<mathd\>*s>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|\<infty\>>K<rsub|\<theta\>><around|(|<around|\||t-s|\|>|)>*\<phi\><around|(|s|)>*\<mathd\>*s>>>>><label|a>
     </equation>
 
     providing an explicit isometry between the original and modulated kernel
@@ -210,6 +102,10 @@
     demonstrating that the conjugated operator is precisely the integral
     operator with modulated kernel <math|K<around|(|<around|\||\<theta\><around|(|t|)>-\<theta\><around|(|s|)>|\|>|)>>.
   </proof>
+
+  \;
+
+  \;
 
   <\theorem>
     <dueto|Expected Zero-Counting Function>Let
@@ -314,7 +210,7 @@
 
 <\references>
   <\collection>
-    <associate|a|<tuple|18|5>>
+    <associate|a|<tuple|4|5>>
     <associate|auto-1|<tuple|1|2>>
     <associate|auto-2|<tuple|2|2>>
     <associate|auto-3|<tuple|3|6>>
