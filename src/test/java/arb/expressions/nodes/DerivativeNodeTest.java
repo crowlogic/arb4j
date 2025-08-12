@@ -1,11 +1,13 @@
 package arb.expressions.nodes;
 
 import arb.Real;
+import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
 import arb.expressions.Context;
-import arb.expressions.Expression;
+import arb.functions.θ;
+import arb.functions.complex.RealRiemannSiegelThetaFunction;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
@@ -17,6 +19,26 @@ import junit.framework.TestCase;
 public class DerivativeNodeTest extends
                                 TestCase
 {
+
+  public void testDecompiledEvaluateRealBivariateFunctionWithContextVariable()
+  {
+    try ( θ θ = new θ())
+    {
+      var  θ̇      = θ.derivative();
+      Real θ̇AtOne = θ̇.evaluate(RealConstants.one, 128, new Real());
+      assertEquals(-1.0125730965517337, θ̇AtOne.doubleValue());
+    }
+  }
+
+  public void testEvaluateRealBivariateFunctionWithContextVariable()
+  {
+    try ( RealRiemannSiegelThetaFunction θ = new RealRiemannSiegelThetaFunction())
+    {
+      var  θ̇      = θ.derivative();
+      Real θ̇AtOne = θ̇.evaluate(RealConstants.one, 128, new Real());
+      assertEquals(-1.0125730965517337, θ̇AtOne.doubleValue());
+    }
+  }
 
   public static void testDerivativeOfComplexExponential()
   {
@@ -36,15 +58,12 @@ public class DerivativeNodeTest extends
     assertTrue(caught);
   }
 
-
   public void testDerivativeOfTheLogarithmicGammaFunction()
   {
     var ψ = RealFunction.express("diff(lnΓ(x),x)");
     var f = ψ.eval(2.3);
     assertEquals(0.6000398803639695, f);
   }
-
- 
 
   public void testSquareRootDerivative()
   {

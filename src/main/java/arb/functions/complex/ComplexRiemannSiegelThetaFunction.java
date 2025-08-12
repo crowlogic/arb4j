@@ -28,13 +28,13 @@ import arb.documentation.TheArb4jLibrary;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class RiemannSiegelϑFunction implements
+public class ComplexRiemannSiegelThetaFunction implements
                                     ComplexFunction
 {
   public static final ComplexFunction ϑ =
                                         ComplexFunction.express("ϑ:t->(-ⅈ*(ln⁡Γ(¼+ⅈ*t/2)-lnΓ(¼−ⅈ*t/2))−ln⁡(π)*t)/2");
 
-  public RiemannSiegelϑFunction()
+  public ComplexRiemannSiegelThetaFunction()
   {
   }
 

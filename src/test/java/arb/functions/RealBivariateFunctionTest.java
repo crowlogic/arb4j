@@ -1,8 +1,6 @@
 package arb.functions;
 
-import arb.Complex;
-import arb.Real;
-import arb.RealConstants;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
@@ -26,6 +24,8 @@ public class RealBivariateFunctionTest extends
 
     assertEquals(-0.91421356237309504880168872420969807857, result.doubleValue()); // ½-√2
   }
+
+
 
   public void testEvaluateRealBivariateFunctionWithContextVariable()
   {
