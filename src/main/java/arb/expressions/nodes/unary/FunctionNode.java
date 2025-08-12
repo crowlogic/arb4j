@@ -257,13 +257,12 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     if (isLinearOperator())
     {
-      return arg.differentiate(variable).apply(functionName);
+      return arg.differentiate(variable).apply(functionName).simplify();
     }
     var argDerivative      = arg.differentiate(variable);
     var functionDerivative = differentiateFunction();
     var derivative         = functionDerivative.mul(argDerivative);
-    derivative = derivative.simplify();
-    return derivative;
+    return derivative.simplify();
   }
 
   public boolean isLinearOperator()
@@ -504,7 +503,8 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
       else
       {
-        assert false : String.format("%s: %s -> %s", this, domainType, coDomainType);
+        expression.simplify();
+        assert false : String.format("%s: %s -> %s (expr=%s)", this, domainType, coDomainType, expression);
       }
     }
     return methodVisitor;

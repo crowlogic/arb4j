@@ -27,7 +27,7 @@ public class RealBivariateFunctionTest extends
     assertEquals(-0.91421356237309504880168872420969807857, result.doubleValue()); // ½-√2
   }
 
-  public void testEvalRealBivariateFunctionWithContextVariable()
+  public void testEvaluateRealBivariateFunctionWithContextVariable()
   {
     ZProcess                       Zprocess        = new ZProcess();
     RealBivariateToComplexFunction gain            = Zprocess.gainFunction();

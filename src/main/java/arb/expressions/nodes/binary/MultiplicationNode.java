@@ -33,7 +33,7 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   {
     var a = left.differentiate(variable).mul(right);
     var b = right.differentiate(variable).mul(left);
-    return a.add(b);
+    return a.add(b).simplify();
   }
 
   @Override

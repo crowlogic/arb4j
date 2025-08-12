@@ -35,7 +35,7 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    return left.differentiate(variable).sub(right.differentiate(variable));
+    return left.differentiate(variable).sub(right.differentiate(variable)).simplify();
   }
 
   private void fillInNullLeftHandSide()
