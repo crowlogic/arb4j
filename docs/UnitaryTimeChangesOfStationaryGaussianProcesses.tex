@@ -1,0 +1,126 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage[margin=1in]{geometry}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+
+\title{Unitary Time Changes of Stationary Gaussian Processes}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{theorem}[Gain Function for Unitary Time Changes]
+Let $X(t)$ be a zero-mean stationary Gaussian process and $\theta: \mathbb{R} \to \mathbb{R}$ be an absolutely continuous bijection with $\theta'(t) \neq 0$ almost everywhere. The unitary time change produces an oscillatory process $Z(t)$ with gain function
+\[
+A_t(\lambda) = \sqrt{|\theta'(t)|} \, e^{i\lambda(\theta(t) - t)}
+\]
+\end{theorem}
+
+\begin{definition}[Unitary Time Change Operator]
+Let $\theta: \mathbb{R} \to \mathbb{R}$ be an absolutely continuous bijection with $\theta'(t) \neq 0$ almost everywhere. The unitary time change operator $U_\theta$ on $L^2(\mathbb{R})$ is defined by
+\[
+(U_\theta f)(t) = \sqrt{|\theta'(t)|} \, f(\theta(t))
+\]
+\end{definition}
+
+\begin{lemma}[Unitarity of Time Change Operator]
+The operator $U_\theta$ defined above is unitary on $L^2(\mathbb{R})$.
+\end{lemma}
+
+\begin{proof}
+For any $f \in L^2(\mathbb{R})$, compute
+\begin{align}
+\|U_\theta f\|_2^2 &= \int_{-\infty}^{\infty} |f(\theta(t))|^2 |\theta'(t)| \, dt
+\end{align}
+By the change of variables $s = \theta(t)$, we have $ds = \theta'(t) \, dt$, so
+\begin{align}
+\|U_\theta f\|_2^2 &= \int_{-\infty}^{\infty} |f(s)|^2 \, ds = \|f\|_2^2
+\end{align}
+Thus $U_\theta$ is an isometry. Since $\theta$ is a bijection, $U_\theta$ is surjective, hence unitary.
+\end{proof}
+
+\begin{definition}[Stationary Gaussian Process]
+A zero-mean stationary Gaussian process $X(t)$ has the spectral representation
+\[
+X(t) = \int_{-\infty}^{\infty} e^{i\lambda t} \, d\Phi(\lambda)
+\]
+where $\Phi(\lambda)$ is a complex-valued orthogonal increment process with $E[|d\Phi(\lambda)|^2] = dF(\lambda)$ for some finite measure $F$.
+\end{definition}
+
+\begin{definition}[Oscillatory Process]
+An oscillatory process in the sense of Priestley is a process $Z(t)$ with the representation
+\[
+Z(t) = \int_{-\infty}^{\infty} \varphi_t(\lambda) \, d\Phi(\lambda)
+\]
+where $\varphi_t(\lambda)$ is the oscillatory function and $\Phi(\lambda)$ is as in the stationary case. The gain function $A_t(\lambda)$ is defined by
+\[
+\varphi_t(\lambda) = A_t(\lambda) e^{i\lambda t}
+\]
+so that
+\[
+Z(t) = \int_{-\infty}^{\infty} A_t(\lambda) e^{i\lambda t} \, d\Phi(\lambda)
+\]
+\end{definition}
+
+\begin{proof}[Proof of Main Theorem]
+Start with the stationary process
+\[
+X(t) = \int_{-\infty}^{\infty} e^{i\lambda t} \, d\Phi(\lambda)
+\]
+
+Apply the unitary time change operator to obtain
+\[
+Z(t) = (U_\theta X)(t) = \sqrt{|\theta'(t)|} \, X(\theta(t))
+\]
+
+Substituting the spectral representation:
+\begin{align}
+Z(t) &= \sqrt{|\theta'(t)|} \int_{-\infty}^{\infty} e^{i\lambda \theta(t)} \, d\Phi(\lambda)\\
+&= \int_{-\infty}^{\infty} \sqrt{|\theta'(t)|} \, e^{i\lambda \theta(t)} \, d\Phi(\lambda)
+\end{align}
+
+To express this in oscillatory form, factor out $e^{i\lambda t}$:
+\begin{align}
+Z(t) &= \int_{-\infty}^{\infty} \sqrt{|\theta'(t)|} \, e^{i\lambda(\theta(t) - t)} \, e^{i\lambda t} \, d\Phi(\lambda)
+\end{align}
+
+Comparing with the oscillatory representation $Z(t) = \int_{-\infty}^{\infty} A_t(\lambda) e^{i\lambda t} \, d\Phi(\lambda)$, we identify the gain function:
+\[
+A_t(\lambda) = \sqrt{|\theta'(t)|} \, e^{i\lambda(\theta(t) - t)}
+\]
+
+The oscillatory function is therefore
+\[
+\varphi_t(\lambda) = A_t(\lambda) e^{i\lambda t} = \sqrt{|\theta'(t)|} \, e^{i\lambda \theta(t)}
+\]
+\end{proof}
+
+\begin{theorem}[Kernel Representation]
+The covariance kernel of the oscillatory process $Z(t)$ is given by
+\[
+K_Z(s,t) = \sqrt{|\theta'(s)||\theta'(t)|} \int_{-\infty}^{\infty} e^{i\lambda(\theta(s) - \theta(t))} \, dF(\lambda)
+\]
+where $F(\lambda)$ is the spectral measure of the original stationary process.
+\end{theorem}
+
+\begin{proof}
+The covariance is
+\begin{align}
+K_Z(s,t) &= E[Z(s)\overline{Z(t)}]\\
+&= E\left[\int_{-\infty}^{\infty} A_s(\lambda) e^{i\lambda s} \, d\Phi(\lambda) \int_{-\infty}^{\infty} \overline{A_t(\mu) e^{i\mu t}} \, d\overline{\Phi(\mu)}\right]\\
+&= \int_{-\infty}^{\infty} A_s(\lambda) \overline{A_t(\lambda)} e^{i\lambda(s-t)} \, dF(\lambda)
+\end{align}
+
+Substituting the gain function:
+\begin{align}
+K_Z(s,t) &= \int_{-\infty}^{\infty} \sqrt{|\theta'(s)|} e^{i\lambda(\theta(s) - s)} \sqrt{|\theta'(t)|} e^{-i\lambda(\theta(t) - t)} e^{i\lambda(s-t)} \, dF(\lambda)\\
+&= \sqrt{|\theta'(s)||\theta'(t)|} \int_{-\infty}^{\infty} e^{i\lambda(\theta(s) - \theta(t))} \, dF(\lambda)
+\end{align}
+\end{proof}
+
+\end{document}\
+
