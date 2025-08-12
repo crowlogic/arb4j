@@ -6,10 +6,18 @@ import arb.FractionConstants;
 import arb.Initializable;
 import arb.Integer;
 import arb.Real;
-import arb.RealConstants;
 import arb.Typesettable;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;
+import arb.functions.complex.RealRiemannSiegelThetaFunction;
 
+/**
+ * Decompiled form of the {@link RealRiemannSiegelThetaFunction}
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class θ implements
                RealFunction,
                Typesettable,
@@ -20,7 +28,7 @@ public class θ implements
   public Function<Real, Real> derivative()
   {
     return RealFunction.express("diff((im(lnΓ(¼+((ⅈ*t)/2))))-((t*(log(π)))/2),t)");
-    //return RealFunction.super.derivative();
+    // return RealFunction.super.derivative();
   }
 
   public boolean       isInitialized;
