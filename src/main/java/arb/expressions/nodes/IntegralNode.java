@@ -281,10 +281,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
     var upperEval               = integralNode.spliceInto(integralExpression);
     var lowerEval               = integralNode.spliceInto(integralExpression);
     var independentVariableNode = expression.getIndependentVariable();
-    if (independentVariableNode != null)
-    {
-      integrationVariableNode.renameTo(independentVariableNode.getName());
-    }
+
     String        integrationVariable = integrationVariableNode.getName();
 
     var           upperResult         = upperEval.substitute(integrationVariable, upperLimitNode);
