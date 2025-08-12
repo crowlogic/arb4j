@@ -19,8 +19,8 @@ public class θ implements
   @Override
   public Function<Real, Real> derivative()
   {
-    // TODO Auto-generated method stub
-    return RealFunction.super.derivative();
+    return RealFunction.express("diff((im(lnΓ(¼+((ⅈ*t)/2))))-((t*(log(π)))/2),t)");
+    //return RealFunction.super.derivative();
   }
 
   public boolean       isInitialized;
