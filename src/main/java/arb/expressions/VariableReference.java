@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
@@ -39,7 +40,7 @@ public class VariableReference<D, R, F extends Function<? extends D, ? extends R
       return false;
     if (getClass() != obj.getClass())
       return false;
-    VariableReference<?,?,?> other = (VariableReference<?,?,?>) obj;
+    VariableReference<?, ?, ?> other = (VariableReference<?, ?, ?>) obj;
     return Objects.equals(index, other.index) && Objects.equals(name, other.name);
   }
 
@@ -61,14 +62,15 @@ public class VariableReference<D, R, F extends Function<? extends D, ? extends R
     this(name,
          index);
     this.type = type;
-   // assert !type.equals(Object.class) : "type shan't be Object for variable named " + name;
+    // assert !type.equals(Object.class) : "type shan't be Object for variable named
+    // " + name;
   }
 
   public String        name;
 
   public Node<D, R, F> index;
 
-  public int position;
+  public int           position;
 
   public String typeset()
   {
@@ -92,7 +94,7 @@ public class VariableReference<D, R, F extends Function<? extends D, ? extends R
   {
     return "else".equals(name) && index == null;
   }
-  
+
   public <E, S, G extends Function<? extends E, ? extends S>>
          VariableReference<E, S, G>
          spliceInto(Expression<E, S, G> newExpression)
@@ -104,9 +106,14 @@ public class VariableReference<D, R, F extends Function<? extends D, ? extends R
 
   public void set(VariableReference<D, R, F> ref)
   {
-   this.index = ref.index;
-   this.name = ref.name;
-   this.type = ref.type;
+    this.index = ref.index;
+    this.name  = ref.name;
+    this.type  = ref.type;
+  }
+
+  public boolean isLiteralConstant()
+  {
+    return LiteralConstantNode.constantSymbols.contains(name);
   }
 
 }
