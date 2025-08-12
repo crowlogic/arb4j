@@ -255,9 +255,20 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
+    if (isLinearOperator())
+    {
+      return arg.differentiate(variable).apply(functionName);
+    }
     var argDerivative      = arg.differentiate(variable);
     var functionDerivative = differentiateFunction();
-    return functionDerivative.mul(argDerivative);
+    var derivative         = functionDerivative.mul(argDerivative);
+    derivative = derivative.simplify();
+    return derivative;
+  }
+
+  public boolean isLinearOperator()
+  {
+    return "re".equals(functionName) || "im".equals(functionName);
   }
 
   /**
@@ -268,11 +279,6 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
     switch (functionName)
     {
-    case "re":
-      // d/dt[re(f(t))] = re(f'(t))
-    case "im":
-      // d/dt[im(f(t))] = im(f'(t))
-      return arg.differentiate().apply(functionName);
     case "sqrt":
       return one().div(mul(2));
     case "arctan":
@@ -498,7 +504,7 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       }
       else
       {
-        assert false : String.format("%s: %s -> %s", functionName, domainType, coDomainType);
+        assert false : String.format("%s: %s -> %s", this, domainType, coDomainType);
       }
     }
     return methodVisitor;
