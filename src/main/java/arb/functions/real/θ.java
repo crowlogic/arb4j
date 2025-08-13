@@ -1,15 +1,8 @@
 package arb.functions.real;
 
-import arb.Complex;
-import arb.ComplexConstants;
-import arb.FractionConstants;
-import arb.Initializable;
-import arb.Integer;
-import arb.Real;
-import arb.Typesettable;
+import arb.*;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.Function;
 import arb.functions.complex.RealRiemannSiegelThetaFunction;
 
 /**
@@ -30,16 +23,15 @@ public class θ implements
     return RealFunction.express("diff((im(lnΓ(¼+((ⅈ*t)/2))))-((t*(log(π)))/2),t)");
   }
 
-  public boolean       isInitialized;
-  public final Integer cℤ0000 = new Integer("2");
-  public Complex       vℂ0001 = new Complex();
-  public Complex       vℂ0002 = new Complex();
-  public Complex       vℂ0003 = new Complex();
-  public Complex       vℂ0004 = new Complex();
-  public Real          vℝ0001 = new Real();
-  public Real          vℝ0002 = new Real();
-  public Real          vℝ0003 = new Real();
-  public Real          vℝ0004 = new Real();
+  public boolean isInitialized;
+  public Complex vℂ0001 = new Complex();
+  public Complex vℂ0002 = new Complex();
+  public Complex vℂ0003 = new Complex();
+  public Complex vℂ0004 = new Complex();
+  public Real    vℝ0001 = new Real();
+  public Real    vℝ0002 = new Real();
+  public Real    vℝ0003 = new Real();
+  public Real    vℝ0004 = new Real();
 
   @Override
   public Class<Real> domainType()
@@ -57,13 +49,13 @@ public class θ implements
   public Real evaluate(Real t, int order, int bits, Real result)
   {
     return FractionConstants.oneQuarter.add(ComplexConstants.ⅈ.mul(t, bits, vℂ0001)
-                                                              .div(cℤ0000, bits, vℂ0002),
+                                                              .div(2, bits, vℂ0002),
                                             bits,
                                             vℂ0003)
                                        .lnΓ(bits, vℂ0004)
                                        .im(bits, vℝ0001)
                                        .sub(vℝ0002.π(bits)
-                                                  .div(cℤ0000, bits, vℝ0003)
+                                                  .div(2, bits, vℝ0003)
                                                   .mul(t, bits, vℝ0004),
                                             bits,
                                             result);
@@ -85,7 +77,6 @@ public class θ implements
   @Override
   public void close()
   {
-    cℤ0000.close();
     vℂ0001.close();
     vℂ0002.close();
     vℂ0003.close();
