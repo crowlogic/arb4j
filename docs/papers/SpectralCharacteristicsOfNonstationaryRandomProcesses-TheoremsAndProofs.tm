@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|article|boring-white|framed-theorems>>
+<style|<tuple|article|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Theorems and Proofs Related To Oscillatory
@@ -616,7 +616,7 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|1|1|SpectralCharacteristicsOfNonstationaryRandomProcesses.tm>>
-    <associate|auto-10|<tuple|10|10|SpectralCharacteristicsOfNonstationaryRandomProcesses.tm>>
+    <associate|auto-10|<tuple|10|9|SpectralCharacteristicsOfNonstationaryRandomProcesses.tm>>
     <associate|auto-11|<tuple|76|10|SpectralCharacteristicsOfNonstationaryRandomProcesses.tm>>
     <associate|auto-2|<tuple|2|2|SpectralCharacteristicsOfNonstationaryRandomProcesses.tm>>
     <associate|auto-3|<tuple|3|3|SpectralCharacteristicsOfNonstationaryRandomProcesses.tm>>
@@ -624,7 +624,7 @@
     <associate|auto-5|<tuple|5|4|SpectralCharacteristicsOfNonstationaryRandomProcesses.tm>>
     <associate|auto-6|<tuple|6|5|SpectralCharacteristicsOfNonstationaryRandomProcesses.tm>>
     <associate|auto-7|<tuple|7|6|SpectralCharacteristicsOfNonstationaryRandomProcesses.tm>>
-    <associate|auto-8|<tuple|8|8|SpectralCharacteristicsOfNonstationaryRandomProcesses.tm>>
+    <associate|auto-8|<tuple|8|7|SpectralCharacteristicsOfNonstationaryRandomProcesses.tm>>
     <associate|auto-9|<tuple|9|9|SpectralCharacteristicsOfNonstationaryRandomProcesses.tm>>
     <associate|bib-spectralCharacteristicsOfNonstationaryRandomProcesses|<tuple|1|10|SpectralCharacteristicsOfNonstationaryRandomProcesses.tm>>
   </collection>
