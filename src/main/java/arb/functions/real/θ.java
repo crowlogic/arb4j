@@ -25,10 +25,9 @@ public class θ implements
                Initializable
 {
   @Override
-  public Function<Real, Real> derivative()
+  public RealFunction derivative()
   {
     return RealFunction.express("diff((im(lnΓ(¼+((ⅈ*t)/2))))-((t*(log(π)))/2),t)");
-    // return RealFunction.super.derivative();
   }
 
   public boolean       isInitialized;
