@@ -4,10 +4,7 @@ import static arb.utensils.Utensils.wrapOrThrow;
 import static java.lang.String.format;
 import static java.lang.System.err;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -19,10 +16,7 @@ import arb.OrderedPair;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
-import arb.expressions.context.Dependency;
-import arb.expressions.context.FunctionMappings;
-import arb.expressions.context.TopologicalSorter;
-import arb.expressions.context.Variables;
+import arb.expressions.context.*;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
@@ -387,6 +381,11 @@ public class Context
   public FunctionMapping<?, ?, ?> registerFunction(String string, Function<?, ?> func)
   {
     return registerFunctionMapping(string, func, func.domainType(), func.coDomainType());
+  }
+
+  public Stream<Entry<String, FunctionMapping<?, ?, ?>>> functionEntryStream()
+  {
+    return functions.map.entrySet().stream();
   }
 
 }

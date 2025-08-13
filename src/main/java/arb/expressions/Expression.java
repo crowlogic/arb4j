@@ -1202,23 +1202,23 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                          Object,
                                                                          Function<?, ?>> function)
   {
-    context.functions.map.entrySet()
-                         .stream()
-                         .filter(entry -> function.referencedFunctions.containsKey(entry.getKey())
-                                       && !functionName.equals(entry.getKey()))
-                         .forEach(entry -> propagateContextFunctionToFunctionalElement(mv,
-                                                                                       function,
-                                                                                       entry.getKey(),
-                                                                                       entry.getValue().functionClass));
+    context.functionEntryStream()
+           .filter(entry -> function.referencedFunctions.containsKey(entry.getKey())
+                         && !functionName.equals(entry.getKey()))
+           .forEach(entry -> propagateContextFunctionToFunctionalElement(mv, function, entry));
   }
 
   protected void propagateContextFunctionToFunctionalElement(MethodVisitor mv,
                                                              Expression<Object,
                                                                            Object,
                                                                            Function<?, ?>> function,
-                                                             String fieldName,
-                                                             Class<?> fieldType)
+                                                             Map.Entry<String,
+                                                                           FunctionMapping<?,
+                                                                                         ?,
+                                                                                         ?>> entry)
   {
+    var fieldName = entry.getKey();
+    var fieldType = entry.getValue().functionClass;
     loadThisFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
     Compiler.putField(mv, function.className, fieldName, fieldType);
   }
