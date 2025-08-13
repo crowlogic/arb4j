@@ -1,9 +1,11 @@
 \documentclass{article}
 \usepackage[english]{babel}
-\usepackage{amsmath,amssymb,latexsym}
+\usepackage{geometry,amsmath,amssymb,latexsym}
+\geometry{letterpaper}
 
 %%%%%%%%%% Start TeXmacs macros
 \newcommand{\assign}{:=}
+\newcommand{\tmaffiliation}[1]{\\ #1}
 \newcommand{\tmtextbf}[1]{\text{{\bfseries{#1}}}}
 \newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
 \newtheorem{corollary}{Corollary}
@@ -13,6 +15,11 @@
 \begin{document}
 
 \title{Stone's Theorem, The Shift Group, and The Fourier Transform}
+
+\author{
+  Stephen Crowley
+  \tmaffiliation{August 12, 2025}
+}
 
 \maketitle
 
