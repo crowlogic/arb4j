@@ -50,338 +50,277 @@ together multiplicatively.
   \mathbb{R}\}$ is called oscillatory if it possesses an evolutionary spectral
   representation
   \begin{equation}
-    X (t) = \int_{- \infty}^{\infty} A (t, \omega) e^{i \omega t} dZ (\omega)
+    X (t) = \int_{- \infty}^{\infty} A (t, \omega) e^{i \omega t} \, dZ (\omega)
   \end{equation}
-  where $A (t, \omega)$ is the gain function and $Z (\omega)$ is an orthogonal
-  increment process with spectral measure $dF (\omega) = f (\omega) d \omega$,
-  where $f (\omega)$ is the underlying spectral density.
+  where:
+  \begin{itemize}
+  \item $A (t, \omega)$ is the gain function (complex-valued, deterministic),
+  \item $Z (\omega)$ is an orthogonal increment process,
+  \item $dF (\omega) = f (\omega) \, d \omega$ is its spectral measure,
+  \item $f (\omega)$ is the underlying spectral density.
+  \end{itemize}
 \end{definition}
 
 \begin{theorem}
-  [Covariance Structure of Oscillatory Processes] For an oscillatory process
-  with gain function $A (t, \omega)$ and underlying spectral density $f
+  [Covariance Structure of Oscillatory Processes]
+  For an oscillatory process with gain function $A (t, \omega)$ and underlying spectral density $f
   (\omega)$, the covariance function is given by
   \begin{equation}
-    C (s, t) = \int_{- \infty}^{\infty} A (s, \omega) A^{\ast} (t, \omega) e^{i \omega (s - t)} f
-    (\omega) d \omega
+    C (s, t) = \int_{- \infty}^{\infty} A (s, \omega) A^{\ast} (t, \omega) \, e^{i\omega(s-t)} \, f
+    (\omega) \, d \omega.
   \end{equation}
-  This shows that the gain function works in conjunction with the underlying
-  spectral density and the oscillatory factor, with the effective spectral density at times $s$ and $t$
-  being the product $A (s, \omega) A^{\ast} (t, \omega) e^{i \omega (s - t)} f (\omega)$.
 \end{theorem}
 
 \begin{proof}
-  From the evolutionary spectral representation and the orthogonality property
-  $\mathbb{E} [dZ (\omega_1) dZ^{\ast} (\omega_2)] = \delta (\omega_1 -
-  \omega_2) f (\omega_1) d \omega_1$:
-  
-  \begin{align}
-    C (s, t) & =\mathbb{E} [X (s) X^{\ast} (t)] \\
-    & =\mathbb{E} \left[ \int_{- \infty}^{\infty} A (s, \omega_1) e^{i
-    \omega_1 s} dZ (\omega_1) \int_{- \infty}^{\infty} A^{\ast} (t, \omega_2)
-    e^{- i \omega_2 t} dZ^{\ast} (\omega_2) \right] \\
-    & = \int_{- \infty}^{\infty} \int_{- \infty}^{\infty} A (s, \omega_1)
-    A^{\ast} (t, \omega_2) e^{i \omega_1 s} e^{- i \omega_2 t} \mathbb{E} [dZ
-    (\omega_1) dZ^{\ast} (\omega_2)] \\
-    & = \int_{- \infty}^{\infty} A (s, \omega) A^{\ast} (t, \omega) e^{i
-    \omega (s - t)} f (\omega) d \omega 
-  \end{align}
+We start from the evolutionary spectral representation
+\[
+X(s) = \int_{-\infty}^\infty A(s,\omega_1)\, e^{i\omega_1 s} \, dZ(\omega_1),
+\]
+\[
+X^*(t) = \int_{-\infty}^\infty A^*(t,\omega_2)\, e^{-i\omega_2 t} \, dZ^*(\omega_2).
+\]
+The covariance is
+\begin{align*}
+C(s,t) &= \mathbb{E}\big[ X(s) X^*(t) \big] \\
+&= \mathbb{E}\left[ \int_{\mathbb{R}} A(s,\omega_1)e^{i\omega_1 s}dZ(\omega_1)
+        \int_{\mathbb{R}} A^*(t,\omega_2) e^{-i\omega_2 t}dZ^*(\omega_2) \right].
+\end{align*}
+By Fubini's theorem (justified by square integrability),
+\begin{align*}
+C(s,t) &= \int_{\mathbb{R}} \int_{\mathbb{R}} 
+     A(s,\omega_1) e^{i\omega_1 s} \, A^*(t,\omega_2) e^{-i\omega_2 t} \,
+     \mathbb{E}[\,dZ(\omega_1)\,dZ^*(\omega_2)\,] .
+\end{align*}
+Orthogonality of increments gives
+\[
+\mathbb{E}[\,dZ(\omega_1)\, dZ^*(\omega_2)\,] =
+       \delta(\omega_1 - \omega_2) \, f(\omega_1)\, d\omega_1 .
+\]
+Integrating out $\omega_2$ using $\delta$:
+\begin{align*}
+C(s,t) &= \int_{\mathbb{R}} A(s,\omega) e^{i\omega s} \, A^*(t,\omega) e^{-i\omega t} \,
+    f(\omega) \, d\omega \\
+&= \int_{\mathbb{R}} A(s,\omega) A^*(t,\omega) e^{i\omega(s-t)} f(\omega)\, d\omega.
+\end{align*}
+This is the claimed form.
 \end{proof}
 
 \begin{theorem}
-  [Eigenfunction Property for Stationary Processes] Let $\{X (t), t \in
-  \mathbb{R}\}$ be a stationary process with covariance function $R (\tau)$
+  [Eigenfunction Property for Stationary Processes]
+  Let $\{X (t)\}$ be stationary with covariance function $R (\tau)$
   and covariance operator
-  \begin{equation}
-    (Kf) (t) = \int_{- \infty}^{\infty} R (t - s) f (s) ds
-  \end{equation}
-  Then the complex exponentials $e^{i \omega t}$ are eigenfunctions of $K$
-  with eigenvalues equal to the power spectral density $S (\omega)$.
-\end{theorem}
-
-\begin{proof}
-  Consider the action of $K$ on $e^{i \omega t}$:
-  
-  \begin{align}
-    (Ke^{i \omega t}) (t) & = \int_{- \infty}^{\infty} R (t - s) e^{i \omega
-    s} ds 
-  \end{align}
-  
-  Substituting $\tau = t - s$:
-  
-  \begin{align}
-    & = e^{i \omega t}  \int_{- \infty}^{\infty} R (\tau) e^{- i \omega \tau}
-    d \tau \\
-    & = e^{i \omega t} \cdot S (\omega) 
-  \end{align}
-  
-  where $S (\omega) = \int_{- \infty}^{\infty} R (\tau) e^{- i \omega \tau} d
-  \tau$ is the power spectral density by the Wiener-Khintchine theorem.
-\end{proof}
-
-\begin{theorem}
-  [Eigenfunction Property for Oscillatory Processes] Let $\{X (t), t \in
-  \mathbb{R}\}$ be an oscillatory process with evolutionary spectral
-  representation
-  \begin{equation}
-    X (t) = \int_{- \infty}^{\infty} A (t, \omega) e^{i \omega t} dZ (\omega)
-  \end{equation}
-  and covariance function
-  \begin{equation}
-    C (s, t) = \int_{- \infty}^{\infty} A (s, \omega) A^{\ast} (t, \omega) e^{i \omega (s - t)} f
-    (\omega) d \omega
-  \end{equation}
-  where $f (\omega)$ is the underlying spectral density. Then the oscillatory
-  functions $\phi (t, \omega) = A (t, \omega) e^{i \omega t}$ are
-  eigenfunctions of the covariance operator
-  \begin{equation}
-    (Kf) (t) = \int_{- \infty}^{\infty} C (t, s) f (s) ds
-  \end{equation}
-  with eigenvalues $f (\omega)$.
-\end{theorem}
-
-\begin{proof}
-  Consider the action of $K$ on the oscillatory function $\phi (s, \omega) = A
-  (s, \omega) e^{i \omega s}$:
-  
-  \begin{align}
-    (K \phi) (t) & = \int_{- \infty}^{\infty} C (t, s) A (s, \omega) e^{i
-    \omega s} ds \\
-    & = \int_{- \infty}^{\infty} \left[ \int_{- \infty}^{\infty} A (t,
-    \lambda) A^{\ast} (s, \lambda) e^{i \lambda (t - s)} f (\lambda) d \lambda \right] A (s, \omega)
-    e^{i \omega s} ds 
-  \end{align}
-  
-  By Fubini's theorem, the order of integration may be exchanged:
-  
-  \begin{align}
-    & = \int_{- \infty}^{\infty} A (t, \lambda) f (\lambda) e^{i \lambda t} \left[ \int_{-
-    \infty}^{\infty} A^{\ast} (s, \lambda) A (s, \omega) e^{i (\omega - \lambda) s} ds
-    \right] d \lambda 
-  \end{align}
-  
-  The inner integral represents the orthogonality condition in the
-  evolutionary spectral representation. By the fundamental property of
-  evolutionary spectral representations:
-  \begin{equation}
-    \int_{- \infty}^{\infty} A^{\ast} (s, \lambda) A (s, \omega) e^{i (\omega - \lambda)
-    s} ds = \delta (\lambda - \omega)
-  \end{equation}
-  where $\delta (\lambda - \omega)$ is the Dirac delta function.
-  
-  Therefore:
-  
-  \begin{align}
-    (K \phi) (t) & = \int_{- \infty}^{\infty} A (t, \lambda) f (\lambda) e^{i \lambda t}
-    \delta (\lambda - \omega) d \lambda \\
-    & = A (t, \omega) f (\omega) e^{i \omega t} \\
-    & = \phi (t, \omega) \cdot f (\omega) 
-  \end{align}
-  
-  This establishes that $\phi (t, \omega) = A (t, \omega) e^{i \omega t}$ are
-  eigenfunctions with eigenvalues $f (\omega)$.
-\end{proof}
-
-\begin{theorem}
-  [Reality Conditions for Oscillatory Processes] Let
-  \[ X (t) = \int_{- \infty}^{\infty} A (t, \omega) e^{i \omega t} dZ (\omega)
+  \[
+  (Kf) (t) = \int_{\mathbb{R}} R (t - s) f(s)\, ds.
   \]
-  with gain function $A (t, \omega)$ and orthogonal increment process $dZ
-  (\omega)$. The process $X (t)$ is real-valued for all $t$ if and only if the
-  following conditions hold for all $t$ and almost all $\omega$:
+  Then $e^{i \omega t}$ are eigenfunctions of $K$
+  with eigenvalues $S (\omega)$, the power spectral density.
+\end{theorem}
+
+\begin{proof}
+Take $f(s) = e^{i\omega s}$. Then
+\[
+(K e^{i\omega \cdot})(t) = \int_{\mathbb{R}} R(t-s)\, e^{i\omega s} \, ds.
+\]
+Let $\tau = t - s$ so $s = t - \tau$, $ds = -d\tau$. Bounds $\pm\infty$ swap but because we integrate over $\mathbb{R}$ the order is irrelevant:
+\begin{align*}
+(K e^{i\omega \cdot})(t) &= \int_{\mathbb{R}} R(\tau)\, e^{i\omega (t-\tau)} \, d\tau \\
+&= e^{i\omega t} \int_{\mathbb{R}} R(\tau) e^{-i\omega \tau} \, d\tau.
+\end{align*}
+The term
+\[
+S(\omega) \coloneqq \int_{\mathbb{R}} R(\tau) e^{-i\omega \tau} \, d\tau
+\]
+is the Wiener--Khintchine representation of the power spectrum. Thus
+\[
+(K e^{i\omega\cdot})(t) = S(\omega) \, e^{i\omega t}.
+\]
+\end{proof}
+
+\begin{theorem}
+  [Eigenfunction Property for Oscillatory Processes]
+  Let $X(t)$ be oscillatory with representation
+  \[
+  X (t) = \int_{\mathbb{R}} A (t, \omega) e^{i \omega t} \, dZ (\omega)
+  \]
+  and covariance function
+  \[
+  C(s, t) = \int_{\mathbb{R}} A(s, \omega) A^{\ast} (t, \omega) e^{i\omega(s-t)} f(\omega) \, d \omega.
+  \]
+  Then $\phi(t,\omega) = A(t,\omega) e^{i\omega t}$ are eigenfunctions of
+  \[
+  (K g)(t) = \int_{\mathbb{R}} C(t,s) g(s) \, ds
+  \]
+  with eigenvalues $f(\omega)$.
+\end{theorem}
+
+\begin{proof}
+Let $g(s) = \phi(s,\omega) = A(s,\omega) e^{i\omega s}$. Then
+\begin{align*}
+(K\phi(\cdot,\omega))(t) &= \int_{\mathbb{R}} C(t,s) \, A(s,\omega) e^{i\omega s}\, ds \\
+&= \int_{\mathbb{R}} \left[ \int_{\mathbb{R}} A(t,\lambda) A^*(s,\lambda) e^{i\lambda(t-s)} f(\lambda)\, d\lambda \right]
+   A(s,\omega) e^{i\omega s} ds.
+\end{align*}
+Swap integration order by Fubini:
+\begin{align*}
+&= \int_{\mathbb{R}} A(t,\lambda) f(\lambda) e^{i\lambda t}
+    \left[ \int_{\mathbb{R}} A^*(s,\lambda) A(s,\omega) e^{-i\lambda s} e^{i\omega s} ds \right] d\lambda.
+\end{align*}
+The exponent factor $e^{-i\lambda s} e^{i\omega s} = e^{i(\omega-\lambda)s}$.  
+By the fundamental orthogonality condition of evolutionary spectral representations,
+\[
+\int_{\mathbb{R}} A^*(s,\lambda) A(s,\omega) e^{i(\omega-\lambda)s} ds = \delta(\lambda-\omega).
+\]
+Substitute into the above:
+\begin{align*}
+(K\phi(\cdot,\omega))(t) &= \int_{\mathbb{R}} A(t,\lambda) f(\lambda) e^{i\lambda t} \, \delta(\lambda-\omega)\, d\lambda \\
+&= A(t,\omega) e^{i\omega t} f(\omega) \\
+&= \phi(t,\omega) \, f(\omega).
+\end{align*}
+\end{proof}
+
+\begin{theorem}
+  [Reality Conditions for Oscillatory Processes]
+  Let
+  \[
+  X (t) = \int_{\mathbb{R}} A (t, \omega) e^{i \omega t} \, dZ (\omega)
+  \]
+  be oscillatory. Then $X(t)$ is real-valued for all $t$
+  if and only if:
   \begin{enumerate}
-    \item $A (t, \omega) = A^{\ast} (t, - \omega)$ {\hspace*{\fill}}(conjugate
-    symmetry of the gain function),
-    
-    \item $dZ (- \omega) = dZ^{\ast} (\omega)$ {\hspace*{\fill}}(conjugate
-    symmetry of the increments).
+    \item $A (t, \omega) = A^{\ast} (t, - \omega)$ (gain conjugate symmetry),
+    \item $dZ (- \omega) = dZ^{\ast} (\omega)$ (increment conjugate symmetry).
   \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-  The process $X (t)$ is real-valued if and only if $X^{\ast} (t) = X (t)$ for
-  each $t$.
-  
-  Compute the complex conjugate:
-  \[ X^{\ast} (t) = \left( \int_{- \infty}^{\infty} A (t, \omega) e^{i \omega
-     t} dZ (\omega) \right)^{\ast} = \int_{- \infty}^{\infty} A^{\ast} (t,
-     \omega) e^{- i \omega t} dZ^{\ast} (\omega) \]
-  Make the substitution $\omega' = - \omega$ (so $d \omega' = - d \omega$),
-  and note that as the limits are infinite, the domain is unchanged under sign
-  reversal:
-  \[ X^{\ast} (t) = \int_{- \infty}^{\infty} A^{\ast} (t, - \omega) e^{i
-     \omega t} dZ^{\ast}  (- \omega) \]
-  For the process to be real-valued for all $t$, it must hold that $X^{\ast}
-  (t) = X (t)$ for all $t$, i.e.,
-  \[ \int_{- \infty}^{\infty} A (t, \omega) e^{i \omega t} dZ (\omega) =
-     \int_{- \infty}^{\infty} A^{\ast} (t, - \omega) e^{i \omega t} dZ^{\ast} 
-     (- \omega) \]
-  This equality holds if and only if the integrands are equal for all
-  $\omega$, up to a set of measure zero. Thus, the following must hold:
-  \[ A (t, \omega) dZ (\omega) = A^{\ast} (t, - \omega) dZ^{\ast}  (- \omega)
+Necessary:  
+If $X(t)$ is real-valued then $X^*(t) = X(t)$ for each $t$. Compute $X^*(t)$:
+\begin{align*}
+X^*(t) &= \left[ \int_{\mathbb{R}} A(t,\omega) e^{i\omega t} \, dZ(\omega) \right]^* \\
+&= \int_{\mathbb{R}} A^*(t,\omega) e^{-i\omega t} \, dZ^*(\omega).
+\end{align*}
+Make substitution $\omega' = -\omega$:
+\begin{align*}
+X^*(t) &= \int_{\mathbb{R}} A^*(t,-\omega) e^{i\omega t} \, dZ^*(-\omega).
+\end{align*}
+Equality $X^*(t) = X(t)$ for all $t$ means
+\[
+A(t,\omega) \, dZ(\omega) = A^*(t,-\omega) \, dZ^*(-\omega)
+\]
+for all $\omega$. Splitting the statement into deterministic and stochastic factors:
+\[
+A(t,\omega) = A^*(t,-\omega), \quad dZ(\omega) = dZ^*(-\omega),
+\]
+which rearranges to the stated conditions.
+
+Sufficiency:  
+If these two symmetry properties hold, then the expression for $X^*(t)$ above becomes identical to $X(t)$. Therefore $X(t)$ is real-valued.
+\end{proof}
+
+\begin{theorem}
+  [Equivalence of Evolutionary Spectral and Filter Representations]
+  Given the evolutionary spectral representation
+  \[
+  X(t) = \int_{\mathbb{R}} A(t,\omega) e^{i\omega t} \, dZ(\omega),
   \]
-  for all $t$ and $\omega$. This is equivalent to demanding:
-  
-  \begin{align*}
-    A^{\ast} (t, - \omega) & = A (t, \omega)\\
-    dZ^{\ast}  (- \omega) & = dZ (\omega)
-  \end{align*}
-  
-  Taking complex conjugates of both sides in the second line:
-  \[ dZ (- \omega) = dZ^{\ast} (\omega) \]
-  So, the process is real-valued if and only if the gain function and the
-  increment process each have conjugate symmetry:
-  \[ A (t, \omega) = A^{\ast} (t, - \omega), \quad dZ (- \omega) = dZ^{\ast}
-     (\omega) \]
-\end{proof}
-
-\begin{theorem}
-  [Equivalence of Evolutionary Spectral and Filter Representations] Let $X
-  (t)$ be a stochastic process. The evolutionary spectral representation
-  \begin{equation}
-    X (t) = \int_{- \infty}^{\infty} A (t, \omega) e^{i \omega t} dZ (\omega)
-  \end{equation}
-  where $A (t, \omega)$ is the gain function and $dZ (\omega)$ is an
-  orthogonal increment process, is equivalent to the time-domain filter
-  representation
-  \begin{equation}
-    X (t) = \int_{- \infty}^{\infty} h_t  (t - s) dW (s)
-  \end{equation}
-  where $h_t  (t - s)$ is a time-dependent filter kernel and $dW (s)$ is an
-  orthogonal increment process, provided that the relationship $dZ (\omega) = \int_{- \infty}^{\infty} e^{- i \omega s} dW (s)$ holds.
+  with $dZ(\omega) = \int_{\mathbb{R}} e^{-i\omega s} dW(s)$ for orthogonal increments $dW(s)$,
+  one can write
+  \[
+  X(t) = \int_{\mathbb{R}} h_t(t-s) \, dW(s),
+  \]
+  where $h_t(u)$ is the time-dependent filter kernel.
 \end{theorem}
 
 \begin{proof}
-  The filter kernel $h_t  (t - s)$ relates to the gain function and the
-  oscillatory function via Fourier transform relationships:
-  
-  \begin{align}
-    h_t  (t - s) & = \int_{- \infty}^{\infty} \phi (t, \omega) e^{- i \omega
-    (t - s)} d \omega \\
-    & = \int_{- \infty}^{\infty} A (t, \omega) e^{i \omega t} e^{- i \omega
-    (t - s)} d \omega \\
-    & = \int_{- \infty}^{\infty} A (t, \omega) e^{i \omega s} d \omega 
-  \end{align}
-  
-  where $\phi (t, \omega) = A (t, \omega) e^{i \omega t}$ is the oscillatory
-  function.
-  
-  To establish equivalence, assume the orthogonal increment relationship
-  $dZ (\omega) = \int_{- \infty}^{\infty} e^{- i \omega s} dW (s)$ and substitute into the
-  evolutionary spectral representation:
-  
-  \begin{align}
-    X (t) & = \int_{- \infty}^{\infty} A (t, \omega) e^{i \omega t} dZ
-    (\omega) \\
-    & = \int_{- \infty}^{\infty} A (t, \omega) e^{i \omega t} \left[ \int_{-
-    \infty}^{\infty} e^{- i \omega s} dW (s) \right] d \omega \\
-    & = \int_{- \infty}^{\infty} \left[ \int_{- \infty}^{\infty} A (t,
-    \omega) e^{i \omega t} e^{- i \omega s} d \omega \right] dW (s) \\
-    & = \int_{- \infty}^{\infty} \left[ \int_{- \infty}^{\infty} A (t,
-    \omega) e^{i \omega (t - s)} d \omega \right] dW (s) \\
-    & = \int_{- \infty}^{\infty} h_t  (t - s) dW (s) 
-  \end{align}
-  
-  where the last equality follows from the definition of $h_t  (t - s)$ with
-  $u = t - s$.
+Let $\phi(t,\omega) = A(t,\omega) e^{i\omega t}$. Define the kernel by
+\[
+h_t(u) = \int_{\mathbb{R}} \phi(t,\omega) e^{-i\omega u} \, d\omega
+       = \int_{\mathbb{R}} A(t,\omega) e^{i\omega t} e^{-i\omega u} d\omega.
+\]
+Note $u = t-s$ will appear naturally. Now substitute the assumed $dZ$ expression into the spectral form of $X(t)$:
+\begin{align*}
+X(t) &= \int_{\mathbb{R}} A(t,\omega) e^{i\omega t} \left[ \int_{\mathbb{R}} e^{-i\omega s} dW(s) \right] d\omega.
+\end{align*}
+By Fubini,
+\begin{align*}
+X(t) &= \int_{\mathbb{R}} \left[ \int_{\mathbb{R}} A(t,\omega) e^{i\omega t} e^{-i\omega s} d\omega \right] dW(s) \\
+&= \int_{\mathbb{R}} h_t(t-s) \, dW(s),
+\end{align*}
+with $h_t(t-s)$ exactly as above. This establishes the equivalence.
 \end{proof}
 
 \begin{theorem}
-  [Fourier Transform Relationships] The gain function $A (t, \omega)$,
-  oscillatory function $\phi (t, \omega)$, and filter kernel $h_t (u)$ satisfy
-  the following Fourier transform relationships:
-  
+  [Fourier Transform Relationships]
+  The quantities $A(t,\omega)$, $\phi(t,\omega)$ and $h_t(u)$ obey:
   \begin{align}
-    A (t, \omega) & = \int_{- \infty}^{\infty} h_t  (t - s) e^{- i \omega s}
-    ds \\
-    \phi (t, \omega) & = A (t, \omega) e^{i \omega t} = \int_{-
-    \infty}^{\infty} h_t (u) e^{- i \omega (t - u)} du \\
-    h_t  (t - s) & = \int_{- \infty}^{\infty} A (t, \omega) e^{i \omega s} d
-    \omega = \int_{- \infty}^{\infty} \phi (t, \omega) e^{- i \omega (t - s)}
-    d \omega 
+    A(t, \omega) &= \int_{\mathbb{R}} h_t(t - s) e^{- i \omega s} ds, \\
+    \phi(t, \omega) &= A(t, \omega) e^{i \omega t} = \int_{\mathbb{R}} h_t(u) e^{- i \omega (t - u)} du, \\
+    h_t(t - s) &= \int_{\mathbb{R}} A(t, \omega) e^{i \omega s} \, d\omega 
+              = \int_{\mathbb{R}} \phi(t, \omega) e^{- i \omega (t - s)} d \omega.
   \end{align}
 \end{theorem}
 
 \begin{proof}
-  For the first relationship, apply the inverse Fourier transform to $h_t  (t
-  - s)$:
-  
-  \begin{align}
-    A (t, \omega) & =\mathcal{F}_s^{- 1}  [h_t (t - s)] \\
-    & = \int_{- \infty}^{\infty} h_t  (t - s) e^{- i \omega s} ds 
-  \end{align}
-  
-  For the oscillatory function relationship, substitute the definition $\phi
-  (t, \omega) = A (t, \omega) e^{i \omega t}$:
-  
-  \begin{align}
-    \phi (t, \omega) & = A (t, \omega) e^{i \omega t} \\
-    & = \left[ \int_{- \infty}^{\infty} h_t (t - s) e^{- i \omega s} ds
-    \right] e^{i \omega t} \\
-    & = \int_{- \infty}^{\infty} h_t  (t - s) e^{- i \omega s} e^{i \omega t}
-    ds \\
-    & = \int_{- \infty}^{\infty} h_t  (t - s) e^{- i \omega (s - t)} ds \\
-    & = \int_{- \infty}^{\infty} h_t (u) e^{- i \omega (t - u)} du 
-  \end{align}
-  
-  where $u = t - s$ in the last step.
-  
-  For the inverse relationships, apply the Fourier transform to recover $h_t 
-  (t - s)$:
-  
-  \begin{align}
-    h_t  (t - s) & =\mathcal{F}_{\omega}^{- 1}  [A (t, \omega) e^{i \omega s}]
-    \\
-    & = \int_{- \infty}^{\infty} A (t, \omega) e^{i \omega s} d \omega 
-  \end{align}
-  
-  Similarly:
-  
-  \begin{align}
-    h_t  (t - s) & =\mathcal{F}_{\omega}^{- 1}  [\phi (t, \omega) e^{- i
-    \omega t}] \\
-    & = \int_{- \infty}^{\infty} \phi (t, \omega) e^{- i \omega t} e^{i
-    \omega (t - s)} d \omega \\
-    & = \int_{- \infty}^{\infty} \phi (t, \omega) e^{- i \omega (t - s)} d
-    \omega 
-  \end{align}
+1. By the inverse Fourier transform in $\omega$:
+\[
+A(t,\omega) = \int_{\mathbb{R}} h_t(t-s) e^{-i\omega s} \, ds.
+\]
+
+2. Multiplying $A(t,\omega)$ by $e^{i\omega t}$:
+\[
+\phi(t,\omega) = e^{i\omega t} \int_{\mathbb{R}} h_t(t-s) e^{-i\omega s} ds.
+\]
+Let $u = t-s$, $ds = -du$, limits still $\mathbb{R}$:
+\[
+\phi(t,\omega) = \int_{\mathbb{R}} h_t(u) e^{-i\omega (t-u)} du.
+\]
+
+3. Inverse-transform $A(t,\omega)$ back:
+\[
+h_t(t-s) = \int_{\mathbb{R}} A(t,\omega) e^{i\omega s} \, d\omega.
+\]
+Similarly, replacing $A(t,\omega)$ by $\phi(t,\omega)e^{-i\omega t}$ yields the other form.
 \end{proof}
 
 \begin{lemma}
-  [Orthogonality Property] For the evolutionary spectral representation, the
-  orthogonality condition
-  \begin{equation}
-    \int_{- \infty}^{\infty} A^{\ast} (s, \lambda) A (s, \omega) e^{i (\omega - \lambda)
-    s} ds = \delta (\lambda - \omega)
-  \end{equation}
-  follows from the requirement that $dZ (\omega)$ be an orthogonal increment
-  process and is fundamental to the uniqueness of the evolutionary spectral representation.
+  [Orthogonality Property]
+  In the evolutionary spectral representation,
+  \[
+  \int_{\mathbb{R}} A^{\ast} (s, \lambda) A (s, \omega) e^{i (\omega-\lambda) s} ds = \delta (\lambda - \omega).
+  \]
 \end{lemma}
 
 \begin{proof}
-  The orthogonality of $dZ (\omega)$ requires $\mathbb{E} [dZ (\lambda)
-  dZ^{\ast} (\omega)] = \delta (\lambda - \omega) f (\lambda) d \lambda$. This
-  condition, combined with the evolutionary spectral representation, directly
-  implies the stated orthogonality property for the gain functions through the uniqueness requirement of the representation.
+The key assumption for $dZ(\omega)$ is
+\[
+\mathbb{E}[\, dZ(\lambda) dZ^*(\omega) \,] = \delta(\lambda-\omega) f(\lambda) \, d\lambda.
+\]
+Writing
+\[
+dZ(\lambda) = \int_{\mathbb{R}} X(s) \, \psi^*_\lambda(s) \, ds
+\]
+for some dual family $\psi_\lambda$ given by the oscillatory functions $\phi(s,\lambda)$, the uncorrelatedness in $\lambda\neq\omega$ forces
+\[
+\int_{\mathbb{R}} \phi^*(s,\lambda) \phi(s,\omega) ds = \delta(\lambda-\omega).
+\]
+Substituting $\phi(s,\omega) = A(s,\omega)e^{i\omega s}$ yields the stated form.
 \end{proof}
 
 \begin{theorem}
-  [Correspondence Principle] The eigenfunction properties of oscillatory
-  processes reduce to those of stationary processes when the gain function
-  becomes constant: $A (t, \omega) = A (\omega)$.
+  [Correspondence Principle]
+  If $A(t,\omega) = A(\omega)$ is independent of $t$, then $\phi(t,\omega) = A(\omega) e^{i\omega t}$ reduces to stationary eigenfunctions and the covariance is that of a stationary process.
 \end{theorem}
 
 \begin{proof}
-  When $A (t, \omega) = A (\omega)$ is independent of time, the oscillatory
-  functions become $\phi (t, \omega) = A (\omega) e^{i \omega t}$, which are
-  scalar multiples of the complex exponentials $e^{i \omega t}$. The
-  covariance function reduces to
-  \begin{equation}
-    C (s, t) = \int_{- \infty}^{\infty} |A (\omega) |^2 f (\omega) e^{i \omega
-    (s - t)} d \omega
-  \end{equation}
-  which depends only on $s - t$, recovering the stationary case with effective
-  spectral density $|A (\omega) |^2 f (\omega)$.
+If $A$ is independent of $t$ then
+\[
+\phi(t,\omega) = A(\omega) e^{i \omega t}.
+\]
+The covariance from Theorem~\ref{thm:cov} becomes:
+\[
+C(s,t) = \int_{\mathbb{R}} A(\omega) A^*(\omega) e^{i\omega(s-t)} f(\omega)\, d\omega.
+\]
+This depends only on $\tau = s-t$ and is thus stationary, with power spectral density $|A(\omega)|^2 f(\omega)$.
 \end{proof}
 
 \end{document}
