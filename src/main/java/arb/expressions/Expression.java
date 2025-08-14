@@ -1028,7 +1028,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                       getFunctionClassTypeSignature(functionClass),
                                       null);
     mv.visitCode();
-    mv.visitInsn(Opcodes.ACONST_NULL);
+    mv.visitLdcInsn(Type.getType(domainType));
+    mv.visitLdcInsn(Type.getType(coDomainType));
+    mv.visitLdcInsn(Type.getType(Function.class));
+    mv.visitLdcInsn(String.format("diff(%s,%s)", expression, independentVariable));
+    Compiler.invokeStaticMethod(mv,
+                                Function.class,
+                                "express",
+                                Function.class,
+                                Class.class,
+                                Class.class,
+                                Class.class,
+                                String.class);
     mv.visitInsn(Opcodes.ARETURN);
     mv.visitMaxs(10, 10);
     mv.visitEnd();

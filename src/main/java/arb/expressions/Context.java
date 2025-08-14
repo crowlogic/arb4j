@@ -4,11 +4,17 @@ import static arb.utensils.Utensils.wrapOrThrow;
 import static java.lang.String.format;
 import static java.lang.System.err;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import arb.Integer;
 import arb.Named;
@@ -16,12 +22,14 @@ import arb.OrderedPair;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.CompilerException;
-import arb.expressions.context.*;
+import arb.expressions.context.Dependency;
+import arb.expressions.context.FunctionMappings;
+import arb.expressions.context.TopologicalSorter;
+import arb.expressions.context.Variables;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.Function;
 import arb.functions.integer.Sequence;
-import arb.utensils.Utensils;
 
 /**
  * The {@link Context} class is an integral part of the {@link Expression}
@@ -166,9 +174,14 @@ public class Context
     }
     catch (Throwable t)
     {
-      Utensils.throwOrWrap(t);
+      if (log.isWarnEnabled())
+      {
+        log.warn(t.getMessage(), t);
+      }
     }
   }
+
+  private final Logger log = LoggerFactory.getLogger(Context.class);
 
   public <D, R, F extends Function<? extends D, ? extends R>> void injectVariableReferences(F f)
   {

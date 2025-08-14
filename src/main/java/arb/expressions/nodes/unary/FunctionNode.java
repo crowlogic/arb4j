@@ -16,6 +16,8 @@ import java.util.stream.Stream;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import arb.Complex;
 import arb.Fraction;
@@ -342,20 +344,33 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                                                 functionMapping));
     }
 
-    var derivative                   = instance.derivative();
+    var    derivative                   = instance.derivative();
 
-    var newDerivativeFunctionMapping =
-                                     expression.context.registerFunctionMapping("diff"
-                                                                                + functionName,
-                                                                                derivative,
-                                                                                derivative.domainType(),
-                                                                                derivative.coDomainType());
+    String derivativeFunctionName       = "diff" + functionName;
+    var    newDerivativeFunctionMapping = expression.context.functions.get(derivativeFunctionName);
+    if (newDerivativeFunctionMapping == null)
+    {
+      newDerivativeFunctionMapping =
+                                   expression.context.registerFunctionMapping(derivativeFunctionName,
+                                                                              derivative,
+                                                                              derivative.domainType(),
+                                                                              derivative.coDomainType());
+    }
+    else
+    {
+      if (logger.isDebugEnabled())
+      {
+        logger.debug("Reusing {}", newDerivativeFunctionMapping);
+      }
+    }
 
     return new FunctionNode<D, R, F>(expression,
                                      newDerivativeFunctionMapping,
                                      arg);
 
   }
+
+  private final static Logger logger = LoggerFactory.getLogger(FunctionNode.class);
 
   private Node<D, R, F> integrateContextualFunction()
   {
@@ -504,7 +519,11 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
       else
       {
         expression.simplify();
-        assert false : String.format("%s: %s -> %s (expr=%s)", this, domainType, coDomainType, expression);
+        assert false : String.format("%s: %s -> %s (expr=%s)",
+                                     this,
+                                     domainType,
+                                     coDomainType,
+                                     expression);
       }
     }
     return methodVisitor;
