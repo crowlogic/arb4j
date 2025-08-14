@@ -1,0 +1,10 @@
+Expression.saveClasses=true;
+FunctionPlotter.darkStyle=false;
+var context = new Context();
+var Z = RealFunction.express("Z(t)");
+var θ = RealFunction.express("θ:im(lnΓ(1/4+I*t/2))-(log(π)/2)*t",context);
+var V = RealFunction.express("V:(2*(u+π/8))/W(0,(u+π/8)/(π*exp(1)))",context);
+var f = RealFunction.express("Z(V(t))",context);
+var Q = RealFunction.express("Q:θ(V(t))",context);
+var line = RealFunction.express("line:t->t-Q(0.0000000001)",context);
+plot(0.00001,50,5000,Q,line,f,V,θ,Z);

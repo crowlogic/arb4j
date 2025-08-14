@@ -185,6 +185,204 @@
       <tformat|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em><wide|\<varphi\>|\<bar\>><rsub|s><around|(|\<lambda\>|)>}<space|0.17em>d*F<around|(|\<lambda\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t><space|0.17em><wide|A<rsub|s><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*s>|\<bar\>><space|0.17em>d*F<around|(|\<lambda\>|)><eq-number>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)><eq-number>>>>>
     </align>
   </proof>
+
+  -----<hrule>
+
+  \;
+
+  <\theorem>
+    [Unitary time change on <math|L<rsup|2><around|(|\<bbb-R\>|)>>] Let
+    <math|\<theta\>:\<bbb-R\>\<to\>\<bbb-R\>> be absolutely continuous with
+    <math|\<theta\><rprime|'><around|(|t|)>\<neq\>0> almost everywhere.
+    Define the operator
+
+    <\equation*>
+      <around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>\<assign\><sqrt|<around|\||\<theta\><rprime|'><around|(|t|)>|\|>>*<space|0.17em>f<around|(|\<theta\><around|(|t|)>|)>*<space|2em><text|for
+      >f\<in\>L<rsup|2><around|(|\<bbb-R\>|)>.
+    </equation*>
+
+    Then <math|U<rsub|\<theta\>>> is unitary on
+    <math|L<rsup|2><around|(|\<bbb-R\>|)>>.
+  </theorem>
+
+  <\proof>
+    By absolute continuity and <math|\<theta\><rprime|'><around|(|t|)>\<neq\>0>
+    a.e., the change-of-variables formula gives
+
+    <\equation*>
+      <big|int><rsub|\<bbb-R\>><around|\||<around|(|U<rsub|\<theta\>>*f|)><around|(|t|)>*<around|\||<rsup|2><space|0.17em>d*t=<big|int><rsub|\<bbb-R\>>|\|>*\<theta\><rprime|'><around|(|t|)><around|\||<space|0.17em>|\|>*f<around|(|\<theta\><around|(|t|)>|)>*<around|\||<rsup|2><space|0.17em>d*t=<big|int><rsub|\<bbb-R\>>|\|>*f<around|(|u|)>|\|><rsup|2>*<space|0.17em>d*u,
+    </equation*>
+
+    so <math|U<rsub|\<theta\>>> is an isometry. The inverse time change
+    <math|\<theta\><rsup|-1>> exists a.e. and is absolutely continuous,
+    yielding an isometric inverse by the same computation; hence
+    <math|U<rsub|\<theta\>>> is unitary.
+  </proof>
+
+  <\theorem>
+    [Oscillatory processes (Priestley framework)] Fix a finite nonnegative
+    measure <math|F> on <math|\<bbb-R\>>. For each <math|t\<in\>\<bbb-R\>>,
+    let <math|A<rsub|t>:\<bbb-R\>\<to\>\<bbb-C\>> be measurable with
+
+    <\equation*>
+      <big|int><rsub|\<bbb-R\>><around|\||A<rsub|t><around|(|\<lambda\>|)>|\|><rsup|2>*<space|0.17em>d*F<around|(|\<lambda\>|)>\<less\>\<infty\>.
+    </equation*>
+
+    Define the oscillatory function by
+
+    <\equation*>
+      \<varphi\><rsub|t><around|(|\<lambda\>|)>\<assign\>A<rsub|t><around|(|\<lambda\>|)>*<space|0.17em>e<rsup|i*\<lambda\>*t>.
+    </equation*>
+
+    There exists a complex orthogonal random measure <math|\<Phi\>> on
+    <math|\<bbb-R\>> with spectral measure <math|F> such that the stochastic
+    integral
+
+    <\equation*>
+      Z<around|(|t|)>\<assign\><big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>
+    </equation*>
+
+    is well-defined for each <math|t>, and the covariance kernel satisfies
+
+    <\equation*>
+      R<rsub|Z><around|(|t,s|)>\<assign\>\<bbb-E\><around*|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|\<varphi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>d*F<around|(|\<lambda\>|)>=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>.
+    </equation*>
+
+    Moreover, if <math|X> is a zero-mean stationary process with spectral
+    representation <math|X<around|(|t|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*t>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>>
+    for the same <math|F> and <math|\<Phi\>>, then <math|Z> reduces to
+    <math|X> when <math|A<rsub|t><around|(|\<lambda\>|)>\<equiv\>1>.
+  </theorem>
+
+  <\proof>
+    Given <math|F>, there exists a complex orthogonal random measure
+    <math|\<Phi\>> with spectral measure <math|F>, i.e.,
+
+    <\equation*>
+      \<bbb-E\>*<around*|[|\<Phi\>*<around|(|d*\<lambda\>|)><space|0.17em><wide|\<Phi\>*<around|(|d*\<mu\>|)>|\<bar\>>|]>=<with|math-font-family|bf|1><rsub|<around|{|\<lambda\>=\<mu\>|}>>*<space|0.17em>d*F<around|(|\<lambda\>|)>.
+    </equation*>
+
+    Square-integrability of <math|\<varphi\><rsub|t>> with respect to
+    <math|F> ensures the stochastic integral isometric definition of
+    <math|Z<around|(|t|)>> and yields
+
+    <\equation*>
+      \<bbb-E\><around*|[|Z<around|(|t|)><wide|Z<around|(|s|)>|\<bar\>>|]>=<big|int>\<varphi\><rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|\<varphi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>d*F<around|(|\<lambda\>|)>.
+    </equation*>
+
+    Substituting <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>>
+    gives the stated kernel. If <math|A<rsub|t>\<equiv\>1>, then
+    <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>=e<rsup|i*\<lambda\>*t>>
+    and <math|Z> coincides with the stationary Cramér form <math|X> built
+    from the same <math|\<Phi\>>.
+  </proof>
+
+  <\theorem>
+    [Real-valuedness condition] Let <math|Z> be as above with oscillatory
+    function <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>>.
+    The process <math|Z> is real-valued if and only if, for each fixed
+    <math|t>,
+
+    <\equation*>
+      A<rsub|t>*<around|(|-\<lambda\>|)>=<wide|A<rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|1em><text|for
+      >F*<text|-almost every >\<lambda\>,
+    </equation*>
+
+    equivalently,
+
+    <\equation*>
+      \<varphi\><rsub|t>*<around|(|-\<lambda\>|)>=<wide|\<varphi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|1em><text|for
+      >F*<text|-almost every >\<lambda\>.
+    </equation*>
+  </theorem>
+
+  <\proof>
+    Write <math|Z<around|(|t|)>=<big|int>\<varphi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>>.
+    Real-valuedness of <math|Z<around|(|t|)>> is equivalent to
+    <math|Z<around|(|t|)>=<wide|Z<around|(|t|)>|\<bar\>>> in
+    <math|L<rsup|2><around|(|\<Omega\>|)>>, i.e.,
+
+    <\equation*>
+      <big|int>\<varphi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>=<wide|<big|int>\<varphi\><rsub|t><around|(|\<lambda\>|)>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>|\<bar\>>=<big|int><wide|\<varphi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|0.17em><wide|\<Phi\>*<around|(|d*\<lambda\>|)>|\<bar\>>.
+    </equation*>
+
+    Using the standard symmetry relation for complex orthogonal random
+    measures associated with real processes (the negative-frequency part is
+    the complex conjugate of the positive-frequency part in the
+    <math|L<rsup|2>> sense), one arrives at the necessary and sufficient
+    Hermitian symmetry of the integrand: <math|\<varphi\><rsub|t>*<around|(|-\<lambda\>|)>=<wide|\<varphi\><rsub|t><around|(|\<lambda\>|)>|\<bar\>>>
+    <math|F>-a.e. As <math|e<rsup|i*<around|(|-\<lambda\>|)>*t>=<wide|e<rsup|i*\<lambda\>*t>|\<bar\>>>,
+    this is equivalent to <math|A<rsub|t>*<around|(|-\<lambda\>|)>=<wide|A<rsub|t><around|(|\<lambda\>|)>|\<bar\>>>
+    <math|F>-a.e.
+  </proof>
+
+  <\theorem>
+    [Unitary time change of a stationary process is oscillatory; explicit
+    gain] Let <math|X> be a zero-mean stationary Gaussian process with
+    spectral representation
+
+    <\equation*>
+      X<around|(|t|)>=<big|int><rsub|\<bbb-R\>>e<rsup|i*\<lambda\>*t>*<space|0.17em>\<Phi\>*<around|(|d*\<lambda\>|)>,
+    </equation*>
+
+    for a complex orthogonal random measure <math|\<Phi\>> with spectral
+    measure <math|F>. Let <math|\<theta\>> satisfy the hypotheses of the
+    unitary theorem, and define
+
+    <\equation*>
+      Z<around|(|t|)>\<assign\><around|(|U<rsub|\<theta\>>*X|)><around|(|t|)>=<sqrt|<around|\||\<theta\><rprime|'><around|(|t|)>|\|>>*<space|0.17em>X<around|(|\<theta\><around|(|t|)>|)>.
+    </equation*>
+
+    Then <math|Z> is an oscillatory process in the sense above with
+    oscillatory function
+
+    <\equation*>
+      \<varphi\><rsub|t><around|(|\<lambda\>|)>=<sqrt|<around|\||\<theta\><rprime|'><around|(|t|)>|\|>>*<space|0.17em>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>,
+    </equation*>
+
+    and gain
+
+    <\equation*>
+      A<rsub|t><around|(|\<lambda\>|)>=<sqrt|<around|\||\<theta\><rprime|'><around|(|t|)>|\|>>*<space|0.17em>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>.
+    </equation*>
+
+    Its covariance kernel is
+
+    <\equation*>
+      R<rsub|Z><around|(|t,s|)>=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|\<varphi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>d*F<around|(|\<lambda\>|)>=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>.
+    </equation*>
+
+    Moreover, <math|Z> is real-valued if and only if
+
+    <\equation*>
+      A<rsub|t>*<around|(|-\<lambda\>|)>=<wide|A<rsub|t><around|(|\<lambda\>|)>|\<bar\>><space|1em><text|for
+      >F*<text|-almost every >\<lambda\>,<text|for each >t.
+    </equation*>
+  </theorem>
+
+  <\proof>
+    From the previous theorem, we have <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>=<sqrt|<around|\||\<theta\><rprime|'><around|(|t|)>|\|>>*<space|0.17em>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>>.
+    Since the oscillatory function must satisfy
+    <math|\<varphi\><rsub|t><around|(|\<lambda\>|)>=A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t>>,
+    we solve for the gain:
+
+    <\equation*>
+      A<rsub|t><around|(|\<lambda\>|)>=<frac|\<varphi\><rsub|t><around|(|\<lambda\>|)>|e<rsup|i*\<lambda\>*t>>=<frac|<sqrt|<around|\||\<theta\><rprime|'><around|(|t|)>|\|>>*<space|0.17em>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>|e<rsup|i*\<lambda\>*t>>.
+    </equation*>
+
+    Using the exponential division rule <math|<frac|e<rsup|a>|e<rsup|b>>=e<rsup|a-b>>,
+    we get:
+
+    <\equation*>
+      A<rsub|t><around|(|\<lambda\>|)>=<sqrt|<around|\||\<theta\><rprime|'><around|(|t|)>|\|>>*<space|0.17em><frac|e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>>|e<rsup|i*\<lambda\>*t>>=<sqrt|<around|\||\<theta\><rprime|'><around|(|t|)>|\|>>*<space|0.17em>e<rsup|i*\<lambda\>*\<theta\><around|(|t|)>-i*\<lambda\>*t>=<sqrt|<around|\||\<theta\><rprime|'><around|(|t|)>|\|>>*<space|0.17em>e<rsup|i*\<lambda\>*<around|(|\<theta\><around|(|t|)>-t|)>>.
+    </equation*>
+
+    Substituting back into the covariance formula:
+
+    <\align*>
+      <tformat|<table|<row|<cell|R<rsub|Z><around|(|t,s|)>>|<cell|=<big|int><rsub|\<bbb-R\>>\<varphi\><rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|\<varphi\><rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t><space|0.17em><wide|A<rsub|s><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*s>|\<bar\>><space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t><space|0.17em><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em><wide|e<rsup|i*\<lambda\>*s>|\<bar\>><space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)>*e<rsup|i*\<lambda\>*t><space|0.17em><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>e<rsup|-i*\<lambda\>*s>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>e<rsup|i*\<lambda\>*t>*<space|0.17em>e<rsup|-i*\<lambda\>*s>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>e<rsup|i*\<lambda\>*t-i*\<lambda\>*s>*<space|0.17em>d*F<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|\<bbb-R\>>A<rsub|t><around|(|\<lambda\>|)><space|0.17em><wide|A<rsub|s><around|(|\<lambda\>|)>|\<bar\>><space|0.17em>e<rsup|i*\<lambda\>*<around|(|t-s|)>>*<space|0.17em>d*F<around|(|\<lambda\>|)>.>>>>
+    </align*>
+  </proof>
 </body>
 
 <\initial>

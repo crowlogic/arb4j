@@ -192,4 +192,163 @@ Processes}
   \end{align}
 \end{proof}
 
+-----\hrulefill
+
+\
+
+\begin{theorem}
+  [Unitary time change on $L^2 (\mathbb{R})$] Let $\theta : \mathbb{R} \to
+  \mathbb{R}$ be absolutely continuous with $\theta' (t) \neq 0$ almost
+  everywhere. Define the operator
+  \[ (U_{\theta} f) (t) \assign \sqrt{| \theta' (t) |}  \hspace{0.17em} f
+     (\theta (t))  \qquad \text{for } f \in L^2 (\mathbb{R}) . \]
+  Then $U_{\theta}$ is unitary on $L^2 (\mathbb{R})$.
+\end{theorem}
+
+\begin{proof}
+  By absolute continuity and $\theta' (t) \neq 0$ a.e., the
+  change-of-variables formula gives
+  \[ \int_{\mathbb{R}} | (U_{\theta} f) (t) |^2 \hspace{0.17em} dt =
+     \int_{\mathbb{R}} | \theta' (t) | \hspace{0.17em} |f (\theta (t)) |^2
+     \hspace{0.17em} dt = \int_{\mathbb{R}} |f (u) |^2  \hspace{0.17em} du, \]
+  so $U_{\theta}$ is an isometry. The inverse time change $\theta^{- 1}$
+  exists a.e. and is absolutely continuous, yielding an isometric inverse by
+  the same computation; hence $U_{\theta}$ is unitary.
+\end{proof}
+
+\begin{theorem}
+  [Oscillatory processes (Priestley framework)] Fix a finite nonnegative
+  measure $F$ on $\mathbb{R}$. For each $t \in \mathbb{R}$, let $A_t :
+  \mathbb{R} \to \mathbb{C}$ be measurable with
+  \[ \int_{\mathbb{R}} |A_t (\lambda) |^2  \hspace{0.17em} dF (\lambda) <
+     \infty . \]
+  Define the oscillatory function by
+  \[ \varphi_t (\lambda) \assign A_t (\lambda)  \hspace{0.17em} e^{i \lambda
+     t} . \]
+  There exists a complex orthogonal random measure $\Phi$ on $\mathbb{R}$ with
+  spectral measure $F$ such that the stochastic integral
+  \[ Z (t) \assign \int_{\mathbb{R}} \varphi_t (\lambda)  \hspace{0.17em} \Phi
+     (d \lambda) \]
+  is well-defined for each $t$, and the covariance kernel satisfies
+  \[ R_Z (t, s) \assign \mathbb{E} [Z (t) \overline{Z (s)}] =
+     \int_{\mathbb{R}} \varphi_t (\lambda) \hspace{0.17em} \overline{\varphi_s
+     (\lambda)} \hspace{0.17em} dF (\lambda) = \int_{\mathbb{R}} A_t (\lambda)
+     \hspace{0.17em} \overline{A_s (\lambda)} \hspace{0.17em} e^{i \lambda (t
+     - s)}  \hspace{0.17em} dF (\lambda) . \]
+  Moreover, if $X$ is a zero-mean stationary process with spectral
+  representation $X (t) = \int_{\mathbb{R}} e^{i \lambda t}  \hspace{0.17em}
+  \Phi (d \lambda)$ for the same $F$ and $\Phi$, then $Z$ reduces to $X$ when
+  $A_t (\lambda) \equiv 1$.
+\end{theorem}
+
+\begin{proof}
+  Given $F$, there exists a complex orthogonal random measure $\Phi$ with
+  spectral measure $F$, i.e.,
+  \[ \mathbb{E} \left[ \Phi (d \lambda) \hspace{0.17em} \overline{\Phi (d
+     \mu)} \right] = \textbf{1}_{\{\lambda = \mu\}}  \hspace{0.17em} dF
+     (\lambda) . \]
+  Square-integrability of $\varphi_t$ with respect to $F$ ensures the
+  stochastic integral isometric definition of $Z (t)$ and yields
+  \[ \mathbb{E} [Z (t) \overline{Z (s)}] = \int \varphi_t (\lambda)
+     \hspace{0.17em} \overline{\varphi_s (\lambda)} \hspace{0.17em} dF
+     (\lambda) . \]
+  Substituting $\varphi_t (\lambda) = A_t (\lambda) e^{i \lambda t}$ gives the
+  stated kernel. If $A_t \equiv 1$, then $\varphi_t (\lambda) = e^{i \lambda
+  t}$ and $Z$ coincides with the stationary Cram{\'e}r form $X$ built from the
+  same $\Phi$.
+\end{proof}
+
+\begin{theorem}
+  [Real-valuedness condition] Let $Z$ be as above with oscillatory function
+  $\varphi_t (\lambda) = A_t (\lambda) e^{i \lambda t}$. The process $Z$ is
+  real-valued if and only if, for each fixed $t$,
+  \[ A_t  (- \lambda) = \overline{A_t (\lambda)} \quad \text{for } F
+     \text{-almost every } \lambda, \]
+  equivalently,
+  \[ \varphi_t  (- \lambda) = \overline{\varphi_t (\lambda)} \quad \text{for }
+     F \text{-almost every } \lambda . \]
+\end{theorem}
+
+\begin{proof}
+  Write $Z (t) = \int \varphi_t (\lambda)  \hspace{0.17em} \Phi (d \lambda)$.
+  Real-valuedness of $Z (t)$ is equivalent to $Z (t) = \overline{Z (t)}$ in
+  $L^2 (\Omega)$, i.e.,
+  \[ \int \varphi_t (\lambda)  \hspace{0.17em} \Phi (d \lambda) =
+     \overline{\int \varphi_t (\lambda)  \hspace{0.17em} \Phi (d \lambda)} =
+     \int \overline{\varphi_t (\lambda)} \hspace{0.17em} \overline{\Phi (d
+     \lambda)} . \]
+  Using the standard symmetry relation for complex orthogonal random measures
+  associated with real processes (the negative-frequency part is the complex
+  conjugate of the positive-frequency part in the $L^2$ sense), one arrives at
+  the necessary and sufficient Hermitian symmetry of the integrand: $\varphi_t
+  (- \lambda) = \overline{\varphi_t (\lambda)}$ $F$-a.e. As $e^{i (- \lambda)
+  t} = \overline{e^{i \lambda t}}$, this is equivalent to $A_t  (- \lambda) =
+  \overline{A_t (\lambda)}$ $F$-a.e.
+\end{proof}
+
+\begin{theorem}
+  [Unitary time change of a stationary process is oscillatory; explicit gain]
+  Let $X$ be a zero-mean stationary Gaussian process with spectral
+  representation
+  \[ X (t) = \int_{\mathbb{R}} e^{i \lambda t}  \hspace{0.17em} \Phi (d
+     \lambda), \]
+  for a complex orthogonal random measure $\Phi$ with spectral measure $F$.
+  Let $\theta$ satisfy the hypotheses of the unitary theorem, and define
+  \[ Z (t) \assign (U_{\theta} X) (t) = \sqrt{| \theta' (t) |} 
+     \hspace{0.17em} X (\theta (t)) . \]
+  Then $Z$ is an oscillatory process in the sense above with oscillatory
+  function
+  \[ \varphi_t (\lambda) = \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i
+     \lambda \theta (t)}, \]
+  and gain
+  \[ A_t (\lambda) = \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i \lambda
+     (\theta (t) - t)} . \]
+  Its covariance kernel is
+  \[ R_Z (t, s) = \int_{\mathbb{R}} \varphi_t (\lambda) \hspace{0.17em}
+     \overline{\varphi_s (\lambda)} \hspace{0.17em} dF (\lambda) =
+     \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em} \overline{A_s (\lambda)}
+     \hspace{0.17em} e^{i \lambda (t - s)}  \hspace{0.17em} dF (\lambda) . \]
+  Moreover, $Z$ is real-valued if and only if
+  \[ A_t  (- \lambda) = \overline{A_t (\lambda)} \quad \text{for } F
+     \text{-almost every } \lambda, \text{for each } t. \]
+\end{theorem}
+
+\begin{proof}
+  From the previous theorem, we have $\varphi_t (\lambda) = \sqrt{| \theta'
+  (t) |}  \hspace{0.17em} e^{i \lambda \theta (t)}$. Since the oscillatory
+  function must satisfy $\varphi_t (\lambda) = A_t (\lambda) e^{i \lambda t}$,
+  we solve for the gain:
+  \[ A_t (\lambda) = \frac{\varphi_t (\lambda)}{e^{i \lambda t}} =
+     \frac{\sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i \lambda \theta
+     (t)}}{e^{i \lambda t}} . \]
+  Using the exponential division rule $\frac{e^a}{e^b} = e^{a - b}$, we get:
+  \[ A_t (\lambda) = \sqrt{| \theta' (t) |}  \hspace{0.17em} \frac{e^{i
+     \lambda \theta (t)}}{e^{i \lambda t}} = \sqrt{| \theta' (t) |} 
+     \hspace{0.17em} e^{i \lambda \theta (t) - i \lambda t} = \sqrt{| \theta'
+     (t) |}  \hspace{0.17em} e^{i \lambda (\theta (t) - t)} . \]
+  Substituting back into the covariance formula:
+  
+  \begin{align*}
+    R_Z (t, s) & = \int_{\mathbb{R}} \varphi_t (\lambda) \hspace{0.17em}
+    \overline{\varphi_s (\lambda)} \hspace{0.17em} dF (\lambda)\\
+    & = \int_{\mathbb{R}} A_t (\lambda) e^{i \lambda t} \hspace{0.17em}
+    \overline{A_s (\lambda) e^{i \lambda s}} \hspace{0.17em} dF (\lambda)\\
+    & = \int_{\mathbb{R}} A_t (\lambda) e^{i \lambda t} \hspace{0.17em}
+    \overline{A_s (\lambda)} \hspace{0.17em} \overline{e^{i \lambda s}}
+    \hspace{0.17em} dF (\lambda)\\
+    & = \int_{\mathbb{R}} A_t (\lambda) e^{i \lambda t} \hspace{0.17em}
+    \overline{A_s (\lambda)} \hspace{0.17em} e^{- i \lambda s} 
+    \hspace{0.17em} dF (\lambda)\\
+    & = \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em} \overline{A_s
+    (\lambda)} \hspace{0.17em} e^{i \lambda t}  \hspace{0.17em} e^{- i \lambda
+    s}  \hspace{0.17em} dF (\lambda)\\
+    & = \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em} \overline{A_s
+    (\lambda)} \hspace{0.17em} e^{i \lambda t - i \lambda s}  \hspace{0.17em}
+    dF (\lambda)\\
+    & = \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em} \overline{A_s
+    (\lambda)} \hspace{0.17em} e^{i \lambda (t - s)}  \hspace{0.17em} dF
+    (\lambda) .
+  \end{align*}
+\end{proof}
+
 \end{document}
