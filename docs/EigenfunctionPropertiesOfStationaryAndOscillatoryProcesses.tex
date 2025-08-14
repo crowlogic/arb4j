@@ -62,12 +62,12 @@ together multiplicatively.
   with gain function $A (t, \omega)$ and underlying spectral density $f
   (\omega)$, the covariance function is given by
   \begin{equation}
-    C (s, t) = \int_{- \infty}^{\infty} A (s, \omega) A^{\ast} (t, \omega) f
+    C (s, t) = \int_{- \infty}^{\infty} A (s, \omega) A^{\ast} (t, \omega) e^{i \omega (s - t)} f
     (\omega) d \omega
   \end{equation}
   This shows that the gain function works in conjunction with the underlying
-  spectral density, with the effective spectral density at times $s$ and $t$
-  being the product $A (s, \omega) A^{\ast} (t, \omega) f (\omega)$.
+  spectral density and the oscillatory factor, with the effective spectral density at times $s$ and $t$
+  being the product $A (s, \omega) A^{\ast} (t, \omega) e^{i \omega (s - t)} f (\omega)$.
 \end{theorem}
 
 \begin{proof}
@@ -128,7 +128,7 @@ together multiplicatively.
   \end{equation}
   and covariance function
   \begin{equation}
-    C (s, t) = \int_{- \infty}^{\infty} A (s, \omega) A^{\ast} (t, \omega) f
+    C (s, t) = \int_{- \infty}^{\infty} A (s, \omega) A^{\ast} (t, \omega) e^{i \omega (s - t)} f
     (\omega) d \omega
   \end{equation}
   where $f (\omega)$ is the underlying spectral density. Then the oscillatory
@@ -148,15 +148,15 @@ together multiplicatively.
     (K \phi) (t) & = \int_{- \infty}^{\infty} C (t, s) A (s, \omega) e^{i
     \omega s} ds \\
     & = \int_{- \infty}^{\infty} \left[ \int_{- \infty}^{\infty} A (t,
-    \lambda) A^{\ast} (s, \lambda) f (\lambda) d \lambda \right] A (s, \omega)
+    \lambda) A^{\ast} (s, \lambda) e^{i \lambda (t - s)} f (\lambda) d \lambda \right] A (s, \omega)
     e^{i \omega s} ds 
   \end{align}
   
   By Fubini's theorem, the order of integration may be exchanged:
   
   \begin{align}
-    & = \int_{- \infty}^{\infty} A (t, \lambda) f (\lambda) \left[ \int_{-
-    \infty}^{\infty} A^{\ast} (s, \lambda) A (s, \omega) e^{i \omega s} ds
+    & = \int_{- \infty}^{\infty} A (t, \lambda) f (\lambda) e^{i \lambda t} \left[ \int_{-
+    \infty}^{\infty} A^{\ast} (s, \lambda) A (s, \omega) e^{i (\omega - \lambda) s} ds
     \right] d \lambda 
   \end{align}
   
@@ -164,7 +164,7 @@ together multiplicatively.
   evolutionary spectral representation. By the fundamental property of
   evolutionary spectral representations:
   \begin{equation}
-    \int_{- \infty}^{\infty} A^{\ast} (s, \lambda) A (s, \omega) e^{i \omega
+    \int_{- \infty}^{\infty} A^{\ast} (s, \lambda) A (s, \omega) e^{i (\omega - \lambda)
     s} ds = \delta (\lambda - \omega)
   \end{equation}
   where $\delta (\lambda - \omega)$ is the Dirac delta function.
@@ -172,9 +172,9 @@ together multiplicatively.
   Therefore:
   
   \begin{align}
-    (K \phi) (t) & = \int_{- \infty}^{\infty} A (t, \lambda) f (\lambda)
+    (K \phi) (t) & = \int_{- \infty}^{\infty} A (t, \lambda) f (\lambda) e^{i \lambda t}
     \delta (\lambda - \omega) d \lambda \\
-    & = A (t, \omega) f (\omega) \\
+    & = A (t, \omega) f (\omega) e^{i \omega t} \\
     & = \phi (t, \omega) \cdot f (\omega) 
   \end{align}
   
@@ -248,7 +248,7 @@ together multiplicatively.
     X (t) = \int_{- \infty}^{\infty} h_t  (t - s) dW (s)
   \end{equation}
   where $h_t  (t - s)$ is a time-dependent filter kernel and $dW (s)$ is an
-  orthogonal increment process.
+  orthogonal increment process, provided that the relationship $dZ (\omega) = \int_{- \infty}^{\infty} e^{- i \omega s} dW (s)$ holds.
 \end{theorem}
 
 \begin{proof}
@@ -266,8 +266,8 @@ together multiplicatively.
   where $\phi (t, \omega) = A (t, \omega) e^{i \omega t}$ is the oscillatory
   function.
   
-  To establish equivalence, substitute the orthogonal increment relationship
-  $dZ (\omega) = \int_{- \infty}^{\infty} e^{- i \omega s} dW (s)$ into the
+  To establish equivalence, assume the orthogonal increment relationship
+  $dZ (\omega) = \int_{- \infty}^{\infty} e^{- i \omega s} dW (s)$ and substitute into the
   evolutionary spectral representation:
   
   \begin{align}
@@ -351,18 +351,18 @@ together multiplicatively.
   [Orthogonality Property] For the evolutionary spectral representation, the
   orthogonality condition
   \begin{equation}
-    \int_{- \infty}^{\infty} A^{\ast} (s, \lambda) A (s, \omega) e^{i \omega
+    \int_{- \infty}^{\infty} A^{\ast} (s, \lambda) A (s, \omega) e^{i (\omega - \lambda)
     s} ds = \delta (\lambda - \omega)
   \end{equation}
   follows from the requirement that $dZ (\omega)$ be an orthogonal increment
-  process.
+  process and is fundamental to the uniqueness of the evolutionary spectral representation.
 \end{lemma}
 
 \begin{proof}
   The orthogonality of $dZ (\omega)$ requires $\mathbb{E} [dZ (\lambda)
   dZ^{\ast} (\omega)] = \delta (\lambda - \omega) f (\lambda) d \lambda$. This
   condition, combined with the evolutionary spectral representation, directly
-  implies the stated orthogonality property for the gain functions.
+  implies the stated orthogonality property for the gain functions through the uniqueness requirement of the representation.
 \end{proof}
 
 \begin{theorem}
