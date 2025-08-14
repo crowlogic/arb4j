@@ -14,8 +14,7 @@
 
 \begin{document}
 
-\title{Unitary Time Changes of Stationary Processes Yield Oscillatory
-Processes}
+\title{Unitary Time Changes of Stationary Processes Yield Oscillatory Processes}
 
 \author{
   Stephen Crowley
@@ -26,169 +25,102 @@ Processes}
 
 \maketitle
 
-\begin{definition}
-  [Unitary time change operator on $L^2 (\mathbb{R})$] Let $\theta :
-  \mathbb{R} \to \mathbb{R}$ be absolutely continuous with $\theta' (t) \neq
-  0$ almost everywhere. The unitary time change operator $U_{\theta}$ on $L^2
-  (\mathbb{R})$ is defined by
-  \begin{equation}
-    (U_{\theta} f) (t) \assign \sqrt{| \theta' (t) |}  \hspace{0.17em} f
-    (\theta (t))  \qquad \text{for } f \in L^2 (\mathbb{R})
-  \end{equation}
-\end{definition}
-
 \begin{theorem}
-  [Unitarity of $U_{\theta}$] The operator $U_{\theta}$ defined above is
-  unitary on $L^2 (\mathbb{R})$.
+  [Unitary time change operator] Let $\theta : \mathbb{R} \to \mathbb{R}$ be a diffeomorphism (bijective and absolutely continuous) with $\theta'(t) \neq 0$ almost everywhere. The unitary time change operator $U_{\theta}$ on $L^2(\mathbb{R})$ is defined by
+  \begin{equation}
+    (U_{\theta} f)(t) \assign \sqrt{|\theta'(t)|} \hspace{0.17em} f(\theta(t)) \qquad \text{for } f \in L^2(\mathbb{R})
+  \end{equation}
+  This operator is unitary on $L^2(\mathbb{R})$.
 \end{theorem}
 
 \begin{proof}
-  Absolute continuity with $\theta' (t) \neq 0$ a.e. implies the
-  change-of-variables formula
+  The change-of-variables formula gives
   \begin{equation}
-    \int_{\mathbb{R}} | (U_{\theta} f) (t) |^2 \hspace{0.17em} dt =
-    \int_{\mathbb{R}} | \theta' (t) | \hspace{0.17em} |f (\theta (t)) |^2
-    \hspace{0.17em} dt = \int_{\mathbb{R}} |f (u) |^2  \hspace{0.17em} du
+    \int_{\mathbb{R}} |(U_{\theta} f)(t)|^2 \hspace{0.17em} dt = \int_{\mathbb{R}} |\theta'(t)| \hspace{0.17em} |f(\theta(t))|^2 \hspace{0.17em} dt = \int_{\mathbb{R}} |f(u)|^2 \hspace{0.17em} du
   \end{equation}
-  so $U_{\theta}$ is isometric. Surjectivity follows from the same
-  change-of-variables applied to $U_{\theta^{- 1}}$, which exists almost
-  everywhere under these hypotheses. Hence $U_{\theta}$ is unitary.
+  so $U_{\theta}$ is isometric. Since $\theta$ is a diffeomorphism, $U_{\theta^{-1}}$ exists and provides the inverse, making $U_{\theta}$ unitary.
 \end{proof}
 
 \begin{definition}
-  [Oscillatory processes in the sense of Priestley] An oscillatory process $Z$
-  is specified by a measurable gain function $A_t (\lambda)$ and has
-  oscillatory function
+  [Oscillatory processes in the sense of Priestley] An oscillatory process $Z$ is specified by a measurable gain function $A_t(\lambda)$ and has oscillatory function
   \begin{equation}
-    \varphi_t (\lambda) \assign A_t (\lambda)  \hspace{0.17em} e^{i \lambda t}
+    \varphi_t(\lambda) \assign A_t(\lambda) \hspace{0.17em} e^{i \lambda t}
   \end{equation}
   The process $Z$ has spectral representation
   \begin{equation}
-    Z (t) = \int_{\mathbb{R}} \varphi_t (\lambda)  \hspace{0.17em} \Phi (d
-    \lambda) = \int_{\mathbb{R}} A_t (\lambda)  \hspace{0.17em} e^{i \lambda
-    t}  \hspace{0.17em} \Phi (d \lambda)
+    Z(t) = \int_{\mathbb{R}} \varphi_t(\lambda) \hspace{0.17em} \Phi(d\lambda) = \int_{\mathbb{R}} A_t(\lambda) \hspace{0.17em} e^{i \lambda t} \hspace{0.17em} \Phi(d\lambda)
   \end{equation}
-  where $\Phi$ is a complex orthogonal random measure on $\mathbb{R}$ with
-  spectral measure $F$ satisfying
+  where $\Phi$ is a complex orthogonal random measure on $\mathbb{R}$ with spectral measure $F$ satisfying
   \begin{equation}
-    E \left[ \Phi (d \lambda) \hspace{0.17em} \overline{\Phi (d \mu)} \right]
-    = \textbf{1}_{\{\lambda = \mu\}}  \hspace{0.17em} dF (\lambda)
+    E\left[\Phi(d\lambda) \hspace{0.17em} \overline{\Phi(d\mu)}\right] = \mathbf{1}_{\{\lambda = \mu\}} \hspace{0.17em} dF(\lambda)
   \end{equation}
   The covariance kernel of $Z$ is
   \begin{equation}
-    R_Z (t, s) \assign E [Z (t) \overline{Z (s)}] = \int_{\mathbb{R}} A_t
-    (\lambda) \hspace{0.17em} \overline{A_s (\lambda)} \hspace{0.17em} e^{i
-    \lambda (t - s)}  \hspace{0.17em} dF (\lambda)
+    R_Z(t,s) \assign E[Z(t)\overline{Z(s)}] = \int_{\mathbb{R}} A_t(\lambda) \hspace{0.17em} \overline{A_s(\lambda)} \hspace{0.17em} e^{i\lambda(t-s)} \hspace{0.17em} dF(\lambda)
   \end{equation}
 \end{definition}
 
 \begin{remark}
-  [Real-valuedness condition] The oscillatory process $Z$ is real-valued if
-  and only if the gain satisfies conjugate symmetry:
+  [Real-valuedness condition] The oscillatory process $Z$ is real-valued if and only if the gain satisfies conjugate symmetry:
   \begin{equation}
-    A_t  (- \lambda) = \overline{A_t (\lambda)} \quad \text{for $F$-almost
-    every } \lambda, \text{for each fixed } t
+    A_t(-\lambda) = \overline{A_t(\lambda)} \quad \text{for $F$-almost every } \lambda, \text{for each fixed } t
   \end{equation}
 \end{remark}
 
 \begin{theorem}
-  [Unitary time change of stationary process yields oscillatory process] Let
-  $X$ be a zero-mean stationary Gaussian process with Cram{\'e}r spectral
-  representation
+  [Unitary time change of stationary process yields oscillatory process] Let $X$ be a zero-mean stationary Gaussian process with Cramér spectral representation
   \begin{equation}
-    X (t) = \int_{\mathbb{R}} e^{i \lambda t}  \hspace{0.17em} \Phi (d
-    \lambda)
+    X(t) = \int_{\mathbb{R}} e^{i \lambda t} \hspace{0.17em} \Phi(d\lambda)
   \end{equation}
-  where $\Phi$ is the same complex orthogonal random measure with spectral
-  measure $F$ as in the oscillatory definition. Let $U_{\theta}$ be a unitary
-  time change operator as defined above. Then the transformed process
+  where $\Phi$ is a complex orthogonal random measure with spectral measure $F$. Let $U_{\theta}$ be a unitary time change operator as defined above. Then the transformed process
   \begin{equation}
-    Z (t) \assign (U_{\theta} X) (t) = \sqrt{| \theta' (t) |}  \hspace{0.17em}
-    X (\theta (t))
+    Z(t) \assign (U_{\theta} X)(t) = \sqrt{|\theta'(t)|} \hspace{0.17em} X(\theta(t))
   \end{equation}
-  is an oscillatory process in the sense of Priestley with oscillatory
-  function
+  is an oscillatory process in the sense of Priestley with oscillatory function
   \begin{equation}
-    \varphi_t (\lambda) = \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i \lambda
-    \theta (t)}
+    \varphi_t(\lambda) = \sqrt{|\theta'(t)|} \hspace{0.17em} e^{i \lambda \theta(t)}
   \end{equation}
 \end{theorem}
 
 \begin{proof}
-  Starting from the stationary representation, we compute
-  
+  Starting from the stationary representation:
   \begin{align}
-    Z (t) & = \sqrt{| \theta' (t) |}  \hspace{0.17em} X (\theta (t)) \\
-    & = \sqrt{| \theta' (t) |}  \int_{\mathbb{R}} e^{i \lambda \theta (t)} 
-    \hspace{0.17em} \Phi (d \lambda) \\
-    & = \int_{\mathbb{R}} \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i
-    \lambda \theta (t)}  \hspace{0.17em} \Phi (d \lambda) 
+    Z(t) &= \sqrt{|\theta'(t)|} \hspace{0.17em} X(\theta(t)) \\
+    &= \sqrt{|\theta'(t)|} \int_{\mathbb{R}} e^{i \lambda \theta(t)} \hspace{0.17em} \Phi(d\lambda) \\
+    &= \int_{\mathbb{R}} \sqrt{|\theta'(t)|} \hspace{0.17em} e^{i \lambda \theta(t)} \hspace{0.17em} \Phi(d\lambda)
   \end{align}
-  
-  Defining
+  Defining $\varphi_t(\lambda) \assign \sqrt{|\theta'(t)|} \hspace{0.17em} e^{i \lambda \theta(t)}$, we have
   \begin{equation}
-    \varphi_t (\lambda) \assign \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i
-    \lambda \theta (t)}
+    Z(t) = \int_{\mathbb{R}} \varphi_t(\lambda) \hspace{0.17em} \Phi(d\lambda)
   \end{equation}
-  we have
-  \[ Z (t) = \int_{\mathbb{R}} \varphi_t (\lambda)  \hspace{0.17em} \Phi (d
-     \lambda) \]
-  which is precisely the oscillatory form. The covariance kernel becomes
-  \[ R_Z (t, s) = \int_{\mathbb{R}} \varphi_t (\lambda) \hspace{0.17em}
-     \overline{\varphi_s (\lambda)} \hspace{0.17em} dF (\lambda) =
-     \int_{\mathbb{R}} \sqrt{| \theta' (t) || \theta' (s) |}  \hspace{0.17em}
-     e^{i \lambda (\theta (t) - \theta (s))}  \hspace{0.17em} dF (\lambda) \]
+  which is the oscillatory form.
 \end{proof}
 
 \begin{theorem}
-  [Explicit gain function for unitary time change] In the setting of the
-  previous theorem, the gain function for the oscillatory process
+  [Explicit gain function for unitary time change] In the setting of the previous theorem, the gain function for the oscillatory process $Z(t) = (U_{\theta} X)(t)$ is given by
   \begin{equation}
-    Z (t) = (U_{\theta} X) (t)
-  \end{equation}
-  is given by
-  \begin{equation}
-    A_t (\lambda) = \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i \lambda
-    (\theta (t) - t)}
+    A_t(\lambda) = \sqrt{|\theta'(t)|} \hspace{0.17em} e^{i \lambda (\theta(t) - t)}
   \end{equation}
   The oscillatory function is
   \begin{equation}
-    \varphi_t (\lambda) = A_t (\lambda)  \hspace{0.17em} e^{i \lambda t} =
-    \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i \lambda \theta (t)}
+    \varphi_t(\lambda) = A_t(\lambda) \hspace{0.17em} e^{i \lambda t} = \sqrt{|\theta'(t)|} \hspace{0.17em} e^{i \lambda \theta(t)}
   \end{equation}
   and the covariance kernel takes the form
   \begin{equation}
-    R_Z (t, s) = \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em} \overline{A_s
-    (\lambda)} \hspace{0.17em} e^{i \lambda (t - s)}  \hspace{0.17em} dF
-    (\lambda)
+    R_Z(t,s) = \int_{\mathbb{R}} A_t(\lambda) \hspace{0.17em} \overline{A_s(\lambda)} \hspace{0.17em} e^{i \lambda (t-s)} \hspace{0.17em} dF(\lambda)
   \end{equation}
 \end{theorem}
 
 \begin{proof}
-  From the previous theorem, we have
+  Since $\varphi_t(\lambda) = A_t(\lambda) e^{i \lambda t}$, we solve for the gain:
   \begin{equation}
-    \varphi_t (\lambda) = \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i \lambda
-    \theta (t)}
+    A_t(\lambda) = \frac{\varphi_t(\lambda)}{e^{i \lambda t}} = \frac{\sqrt{|\theta'(t)|} \hspace{0.17em} e^{i \lambda \theta(t)}}{e^{i \lambda t}} = \sqrt{|\theta'(t)|} \hspace{0.17em} e^{i \lambda (\theta(t) - t)}
   \end{equation}
-  Since the oscillatory function must satisfy
-  \begin{equation}
-    \varphi_t (\lambda) = A_t (\lambda) e^{i \lambda t}
-  \end{equation}
-  one solves for the gain:
-  \[ A_t (\lambda) = \frac{\varphi_t (\lambda)}{e^{i \lambda t}} =
-     \frac{\sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i \lambda \theta
-     (t)}}{e^{i \lambda t}} = \sqrt{| \theta' (t) |}  \hspace{0.17em} e^{i
-     \lambda (\theta (t) - t)} \]
-  and substitutes back into the covariance formula:
-  
+  The covariance formula follows by substitution:
   \begin{align}
-    R_Z (t, s) & = \int_{\mathbb{R}} \varphi_t (\lambda)  \hspace{0.17em}
-    \bar{\varphi}_s (\lambda) \} \hspace{0.17em} dF (\lambda) \\
-    & = \int_{\mathbb{R}} A_t (\lambda) e^{i \lambda t} \hspace{0.17em}
-    \overline{A_s (\lambda) e^{i \lambda s}} \hspace{0.17em} dF (\lambda) \\
-    & = \int_{\mathbb{R}} A_t (\lambda) \hspace{0.17em} \overline{A_s
-    (\lambda)} \hspace{0.17em} e^{i \lambda (t - s)}  \hspace{0.17em} dF
-    (\lambda) 
+    R_Z(t,s) &= \int_{\mathbb{R}} \varphi_t(\lambda) \hspace{0.17em} \overline{\varphi_s(\lambda)} \hspace{0.17em} dF(\lambda) \\
+    &= \int_{\mathbb{R}} A_t(\lambda) e^{i \lambda t} \hspace{0.17em} \overline{A_s(\lambda) e^{i \lambda s}} \hspace{0.17em} dF(\lambda) \\
+    &= \int_{\mathbb{R}} A_t(\lambda) \hspace{0.17em} \overline{A_s(\lambda)} \hspace{0.17em} e^{i \lambda (t-s)} \hspace{0.17em} dF(\lambda)
   \end{align}
 \end{proof}
 
