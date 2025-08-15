@@ -301,7 +301,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
       generateConstructor(methodVisitor, type);
     }
 
-    return expression.putField(methodVisitor, fieldName, type);
+    return expression.setThisField(methodVisitor, fieldName, type);
   }
 
   protected MethodVisitor generateConstructor(MethodVisitor methodVisitor, Class<?> type)

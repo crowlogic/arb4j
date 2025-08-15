@@ -426,7 +426,7 @@ public class ExpressionTest extends
 
     expr.substitute("x", subs);
 
-    assertTrue(expr.instructionByteCodes == null);
+    assertTrue(expr.instructions == null);
 
     var f = expr.generate();
     var g = f.instantiate();

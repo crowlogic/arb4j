@@ -303,7 +303,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
                   Object,
                   Function<?, ?>>) integrandNode.integrate(integrationVariableNode.asVariable());
 
-    integralExpression.instructionByteCodes = null;
+    integralExpression.instructions = null;
     integralExpression.compiledClass        = null;
     integralExpression.domainType           = integralNode.type();
     integralExpression.coDomainType         = integralNode.type();

@@ -18,6 +18,7 @@ import static arb.expressions.Compiler.jumpToIfNotEqual;
 import static arb.expressions.Compiler.loadFunctionClass;
 import static arb.expressions.Compiler.loadResultParameter;
 import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.putField;
 import static arb.expressions.Compiler.swap;
 import static arb.expressions.Parser.isAlphabeticalGreekSpecialOrBlackLetter;
 import static arb.expressions.Parser.isNumeric;
@@ -358,7 +359,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected F                                           instance;
 
-  public byte[]                                         instructionByteCodes;
+  public byte[]                                         instructions;
 
   public HashMap<String, IntermediateVariable<D, C, F>> intermediateVariables         =
                                                                               new HashMap<>();
@@ -699,11 +700,11 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                         className,
                         context);
     }
-    if (instructionByteCodes == null)
+    if (instructions == null)
     {
       generate();
     }
-    compiledClass = loadFunctionClass(className, instructionByteCodes, context);
+    compiledClass = loadFunctionClass(className, instructions, context);
     return this;
   }
 
@@ -974,7 +975,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
    */
   public Expression<D, C, F> generate() throws CompilerException
   {
-    assert instructionByteCodes == null;
+    assert instructions == null;
     if (log.isDebugEnabled())
     {
       log.debug("Expression(#{}).generate() className={} expression='{}'\n\n",
@@ -1334,7 +1335,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var fieldName = entry.getKey();
     var fieldType = entry.getValue().functionClass;
     loadThisFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
-    Compiler.putField(mv, function.className, fieldName, fieldType);
+    putField(mv, function.className, fieldName, fieldType);
   }
 
   public void propagateContexVariablesToFunctionalElement(MethodVisitor mv,
@@ -1613,10 +1614,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   protected MethodVisitor generateSelfReference(MethodVisitor mv)
   {
-    loadThisOntoStack(mv);
-    generateNewObjectInstruction(mv, functionName);
-    duplicateTopOfTheStack(mv);
-    invokeDefaultConstructor(mv, functionName);
+    generateNewObjectInstruction(loadThisOntoStack(mv), functionName);
+    invokeDefaultConstructor(duplicateTopOfTheStack(mv), functionName);
     Compiler.putField(mv, className, functionName, String.format("L%s;", functionName));
     initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv),
                                                    className,
@@ -1809,6 +1808,17 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                  .toArray(n -> new String[n]);
   }
 
+  /**
+   * Propagates {@link VariableReference}s from this function to a nested function
+   * specified
+   * 
+   * @param mv
+   * @param generatedFunctionClassInternalName
+   * @param fieldType
+   * @param functionFieldName                  name of the field to have its
+   *                                           variables injected from this one
+   * @param variables
+   */
   protected void
             initializeReferencedFunctionVariableReferences(MethodVisitor mv,
                                                            String generatedFunctionClassInternalName,
@@ -2019,9 +2029,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   }
 
   /**
-   * expression.charAt(position)
-   * 
-   * @return
+   * @return this{@link #parseName(int)}(this{@link #position})
    */
   public String parseName()
   {
@@ -2035,9 +2043,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     boolean isLatinOrGreek;
     while ((isLatinOrGreek = isAlphabeticalGreekSpecialOrBlackLetter(character, true))
                   || (entirelySubscripted && !isLatinOrGreek && Parser.isSubscript(character))
-                  || (entirelySuperscripted && !isLatinOrGreek && Parser.isSuperscript(character))) // Add
-                                                                                                    // this
-                                                                                                    // line
+                  || (entirelySuperscripted && !isLatinOrGreek && Parser.isSuperscript(character)))
     {
       nextCharacter();
       if (isLatinOrGreek)
@@ -2117,7 +2123,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     return node;
   }
 
-  public MethodVisitor putField(MethodVisitor mv, String fieldName, Class<?> fieldType)
+  public MethodVisitor setThisField(MethodVisitor mv, String fieldName, Class<?> fieldType)
   {
     Compiler.putField(mv, className, fieldName, fieldType);
     return mv;
@@ -2242,22 +2248,20 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       return (N) new FactorialNode<D, C, F>(this,
                                             node);
     }
-    else if (nextCharacterIs('₍'))
+    if (nextCharacterIs('₍'))
     {
       return (N) new AscendingFactorializationNode<D, C, F>(node,
                                                             resolve(),
                                                             require('₎'));
     }
-    else if (nextCharacterIs('⋰'))
+    if (nextCharacterIs('⋰'))
     {
       return (N) new AscendingFactorializationNode<D, C, F>(node,
                                                             resolve(),
                                                             this);
     }
-    else
-    {
-      return node;
-    }
+
+    return node;
   }
 
   protected <N extends Node<D, C, F>> N resolveFloor(Node<D, C, F> node)
@@ -2398,7 +2402,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       classVisitor = ((TraceClassVisitor) classVisitor).getDelegate();
     }
 
-    instructionByteCodes = ((ClassWriter) classVisitor).toByteArray();
+    instructions = ((ClassWriter) classVisitor).toByteArray();
 
     if (saveClasses)
     {
@@ -2618,7 +2622,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       {
         file.getParentFile().mkdir();
       }
-      Files.write(file.toPath(), instructionByteCodes);
+      Files.write(file.toPath(), instructions);
     }
     catch (IOException e)
     {
