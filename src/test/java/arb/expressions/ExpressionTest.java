@@ -388,15 +388,15 @@ public class ExpressionTest extends
     context.registerVariable("q", new Integer(2));
     var    F                     =
              RealPolynomialNullaryFunction.parse("F",
-                                                 "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
+                                                 "Σn➔zⁿ/n!*∏k➔αₖ₍ₙ₎{k=1…p}*∏k➔βₖ₍ₙ₎{k=1…q}{n=0…N}",
                                                  context);
     var    transformedExpression = F.substitute("z", RealFunction.parse("2*z"));
     String str                   = transformedExpression.toString();
     // got F:Σn➔((2*z^n)*Πk➔α[k]⋰n{k=1…p})/n!*Πk➔β[k]⋰n{k=1…q}{n=0…N}
-    String ideal                 =
-                 "F:Σn➔(((2*z)^n)*Πk➔α[k]⋰n{k=1…p})/((n!)*Πk➔β[k]⋰n{k=1…q}){n=0…N}";
+    String expected                 =
+                 "F:Σn➔((((2*z)^n)/(n!))*Πk➔α[k]⋰n{k=1…p})*Πk➔β[k]⋰n{k=1…q}{n=0…N}";
 
-    assertEquals(ideal, str);
+    assertEquals(expected, str);
   }
 
   public void testSubstitutionToo2()
