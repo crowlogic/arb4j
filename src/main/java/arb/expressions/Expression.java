@@ -1348,7 +1348,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       var fieldName = entry.getKey();
       var fieldType = entry.getValue().getClass();
       loadThisFieldOntoStack(duplicateTopOfTheStack(mv), fieldName, fieldType);
-      Compiler.putField(mv, function.className, fieldName, fieldType);
+      putField(mv, function.className, fieldName, fieldType);
     }
   }
 
@@ -1365,7 +1365,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     var fieldName = independentVariableMappedToFunctional.getName();
     duplicateTopOfTheStack(mv);
     independentVariable.generate(mv, domainType);
-    Compiler.putField(mv, function.className, fieldName, domainType);
+    putField(mv, function.className, fieldName, domainType);
   }
 
   protected Expression<Object, Object, Function<?, ?>> newFunctionalExpression()
@@ -1468,7 +1468,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
       generateNewObjectInstruction(mv, type);
       duplicateTopOfTheStack(mv);
       invokeDefaultConstructor(mv, type);
-      Compiler.putField(mv, className, mapping.functionName, type);
+      putField(mv, className, mapping.functionName, type);
       mv.visitLabel(alreadyInitialized);
     }
   }
@@ -1616,7 +1616,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
   {
     generateNewObjectInstruction(loadThisOntoStack(mv), functionName);
     invokeDefaultConstructor(duplicateTopOfTheStack(mv), functionName);
-    Compiler.putField(mv, className, functionName, String.format("L%s;", functionName));
+    putField(mv, className, functionName, String.format("L%s;", functionName));
     initializeReferencedFunctionVariableReferences(loadThisOntoStack(mv),
                                                    className,
                                                    functionName,
@@ -1841,7 +1841,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                generatedFunctionClassInternalName,
                variableFieldName,
                variableFieldTypeDescriptor);
-      Compiler.putField(mv, fieldType, variableFieldName, variableFieldTypeDescriptor);
+      putField(mv, fieldType, variableFieldName, variableFieldTypeDescriptor);
     });
 
   }
@@ -2125,7 +2125,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public MethodVisitor setThisField(MethodVisitor mv, String fieldName, Class<?> fieldType)
   {
-    Compiler.putField(mv, className, fieldName, fieldType);
+    putField(mv, className, fieldName, fieldType);
     return mv;
   }
 
