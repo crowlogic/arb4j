@@ -1,232 +1,84 @@
-\documentclass{article}
-\usepackage[english]{babel}
-\usepackage{geometry,amssymb,latexsym}
-\geometry{letterpaper}
+\documentclass[12pt]{article}
+\usepackage{amsmath,amsthm,amssymb,mathrsfs,bm}
 
-%%%%%%%%%% Start TeXmacs macros
-\newcommand{\tmaffiliation}[1]{\\ #1}
-\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
-\newtheorem{corollary}{Corollary}
-\newtheorem{definition}{Definition}
-\newtheorem{lemma}{Lemma}
-\newtheorem{proposition}{Proposition}
+\title{An Operator-Theoretic Formulation of the Invertibility Theorem for Oscillatory Gaussian Processes}
+\author{Stephen Crowley}
+\date{}
+
+\theoremstyle{plain}
 \newtheorem{theorem}{Theorem}
-%%%%%%%%%% End TeXmacs macros
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
 
 \begin{document}
 
-\title{Positive Definiteness and Self-Adjoint Extensions for Covariance
-Operators of Transformed Stationary Gaussian Processes}
-
-\author{
-  Stephen Crowley
-  \tmaffiliation{August 3, 2025}
-}
-
 \maketitle
 
-{\tableofcontents}
+\section{Abstract}
+In the Hilbert space of square-integrable sample paths, oscillatory processes of Priestley's type can be expressed through a deterministic amplitude kernel and an orthogonal increment spectral measure. The inversion theorem for such processes can be reformulated in operator-theoretic terms: recovery of the spectral measure is equivalent to the unitarity of a synthesis map defined by the amplitude function. This formulation makes the necessity and sufficiency of the orthonormality condition immediate.
 
-\section{Definitions}
-
-\begin{definition}
-  [Bessel Kernel] Let $J_0$ be the Bessel function of the first kind of order
-  zero. The standard Bessel kernel is defined as $B (s, t) = J_0  (2 \pi |s -
-  t|)$ for $s, t \in \mathbb{R}$.
+\section{Hilbert Space Setting}
+\begin{definition}[Oscillatory process]
+Let $(\Omega,\mathcal{F},\mathbb{P})$ be a probability space and $\mu$ a finite positive Borel measure on $\mathbb{R}$. An \emph{oscillatory Gaussian process} is a mapping
+\[
+X:\mathbb{R} \times \Omega \to \mathbb{C}, \quad
+X(t) = \int_{\mathbb{R}} A(t,\lambda) e^{i\lambda t} \, dZ(\lambda),
+\]
+where $A:\mathbb{R}^2 \to \mathbb{C}$ is measurable and $dZ(\lambda)$ is a complex Gaussian orthogonal increment process satisfying
+\[
+\mathbb{E}\bigl[dZ(\lambda_1) \overline{dZ(\lambda_2)}\bigr] = \delta(\lambda_1 - \lambda_2)\,\mu(d\lambda_1).
+\]
 \end{definition}
 
-\begin{definition}
-  [Transformed Bessel Kernel] Given a function $\theta : \mathbb{R} \to
-  \mathbb{R}$, the transformed Bessel kernel is defined as $K_{\theta} (s, t)
-  = J_0  (2 \pi | \theta (s) - \theta (t) |)$ for $s, t \in \mathbb{R}$.
-\end{definition}
+\section{Operator Formulation}
+Let $L^2(\mu)$ denote the complex Hilbert space of square-integrable functions with respect to $\mu$, and let $L^2(\mathbb{R},dt)$ be the space of complex square-integrable functions on $\mathbb{R}$ with respect to Lebesgue measure $t$.
 
-\begin{definition}
-  [Covariance Operator] The integral operator $T_{\theta}$ associated with
-  kernel $K_{\theta}$ acts on functions $f \in L^2 (\mathbb{R})$ as:
-  \begin{equation}
-    (T_{\theta} f) (s) = \int_{\mathbb{R}} J_0  (2 \pi | \theta (s) - \theta
-    (t) |) f (t) dt
-  \end{equation}
-\end{definition}
+\subsection{Synthesis Operator}
+Define the \emph{synthesis operator} $S_A : L^2(\mu) \to L^2(\mathbb{R},dt)$ by
+\[
+(S_A g)(t) = \int_{\mathbb{R}} A(t,\lambda) e^{i\lambda t} g(\lambda) \,\mu^{1/2}(d\lambda),
+\]
+where $\mu^{1/2}(d\lambda)$ denotes integration against $\mu$ with square-root density viewed as measure factor.
 
-\begin{definition}
-  [Defect Indices] For a densely defined symmetric operator $T$ on a Hilbert
-  space $\mathcal{H}$ with adjoint $T^{\ast}$, the defect indices $(n_+, n_-)$
-  are:
-  \begin{equation}
-    n_+ = \dim \ker (T^{\ast} - i \cdot I), \quad n_- = \dim \ker (T^{\ast} +
-    i \cdot I)
-  \end{equation}
-  where $I$ denotes the identity operator.
-\end{definition}
+\subsection{Analysis Operator}
+The formal $L^2$-adjoint $S_A^* : L^2(\mathbb{R},dt) \to L^2(\mu)$ is given by
+\[
+(S_A^* f)(\lambda) = \frac{1}{2\pi} \int_{\mathbb{R}} \overline{A(t,\lambda)} e^{-i\lambda t} f(t)\, dt.
+\]
+This operator is exactly the inversion operator $\mathcal{I}$ from the original theorem.
 
-\begin{definition}
-  [Self-Adjoint Operator] A symmetric operator $T$ is self-adjoint if and only
-  if $T = T^{\ast}$, which is equivalent to having defect indices $n_+ = n_- =
-  0$.
-\end{definition}
-
-\section{Main Results}
-
+\section{Invertibility Theorem in Operator Terms}
 \begin{theorem}
-  \label{thm:main}The covariance operator $T_{\theta}$ with kernel $K_{\theta}
-  (s, t) = J_0  (2 \pi | \theta (s) - \theta (t) |)$ has zero defect indices
-  $(n_+ = n_- = 0)$ if and only if $\theta$ is strictly monotonic.
+Let $S_A$ be as above, with adjoint $S_A^*$. The following are equivalent:
+\begin{enumerate}
+\item $S_A$ is a unitary isomorphism from $L^2(\mu)$ onto its range in $L^2(\mathbb{R},dt)$.
+\item The inversion $\mathcal{I} = S_A^*$ satisfies $\mathcal{I}[X] = dZ$ for every oscillatory Gaussian process with amplitude $A$.
+\item The kernel family $\{t \mapsto A(t,\lambda)e^{i\lambda t}:\lambda \in \mathbb{R}\}$ is orthonormal:
+\[
+\frac{1}{2\pi} \int_{\mathbb{R}} \overline{A(t,\lambda_1)} A(t,\lambda_2) e^{i(\lambda_2 - \lambda_1)t}\, dt
+= \delta(\lambda_1 - \lambda_2).
+\]
+\end{enumerate}
+In this situation, $S_A$ and $S_A^*$ are mutual inverses and the inversion operator is unique.
 \end{theorem}
 
-To prove this theorem, several preliminary results are needed.
+\begin{proof}
+$(1) \Rightarrow (2)$: If $S_A$ is unitary, then $S_A^* S_A = I_{L^2(\mu)}$. For $g(\lambda) = dZ(\lambda)$, $X = S_A g$ yields $S_A^* X = g = dZ$.
 
+$(2) \Rightarrow (3)$: Fix $\lambda_0$ and test $\mathcal{I}$ on $X(t) = A(t,\lambda) e^{i\lambda t}$; the computation forces the inner product relation of (3).
+
+$(3) \Rightarrow (1)$: The relation in (3) shows that the collection $\{\lambda \mapsto A(\cdot,\lambda)e^{i\lambda \cdot}\}$ is orthonormal in $L^2(\mathbb{R},dt)$, making $S_A$ an isometry onto its range. Nonvanishing of $A$ ensures surjectivity onto that range, completing unitarity.
+\end{proof}
+
+\section{Uniqueness}
 \begin{lemma}
-  \label{lemma:bessel-pd}The Bessel kernel $B (s, t) = J_0  (2 \pi |s - t|)$
-  defines a positive definite operator.
+If $L_1$ and $L_2$ are linear operators from the range of $S_A$ to $L^2(\mu)$ satisfying $L_j[X] = dZ$ for all Gaussian oscillatory $X$ with amplitude $A$, then $L_1 = L_2$.
 \end{lemma}
 
 \begin{proof}
-  By Bochner's theorem, a continuous function $\phi (s - t)$ is positive
-  definite if and only if it is the Fourier transform of a non-negative
-  measure. The Fourier transform of $J_0  (2 \pi |x|)$ is:
-  \begin{equation}
-    \mathcal{F} [J_0 (2 \pi |x|)] (\omega) = \frac{1}{2 \pi \sqrt{1 - \omega^2
-    / (4 \pi^2)}}  \textbf{1}_{[- 2 \pi, 2 \pi]} (\omega)
-  \end{equation}
-  where $\textbf{1}_{[- 2 \pi, 2 \pi]}$ is the indicator function of the
-  interval $[- 2 \pi, 2 \pi]$.
-  
-  Since this is a non-negative function, $J_0  (2 \pi |x|)$ is positive
-  definite, and hence $B (s, t)$ defines a positive definite operator.
+Let $L = L_1 - L_2$. Since $L[X] = 0$ for all $X$ in the range of $S_A$, and the set $\{A(\cdot,\lambda)e^{i\lambda \cdot}\}$ spans a dense subset of that range, $L = 0$ by continuity.
 \end{proof}
 
-\begin{lemma}
-  \label{lemma:standard-sa}The operator $S$ associated with the standard
-  Bessel kernel $B (s, t) = J_0  (2 \pi |s - t|)$ is self-adjoint.
-\end{lemma}
-
-\begin{proof}
-  The operator $S$ with kernel $B (s, t)$ is unitarily equivalent to
-  multiplication by the function $\frac{1}{2 \pi \sqrt{1 - \omega^2 / (4
-  \pi^2)}}  \textbf{1}_{[- 2 \pi, 2 \pi]} (\omega)$ in the Fourier domain.
-  Since this is a bounded, real-valued multiplication operator, it is
-  self-adjoint, and thus $S$ has defect indices $(0, 0)$.
-\end{proof}
-
-\begin{proposition}
-  \label{prop:monotonic-implies-sa}If $\theta : \mathbb{R} \to \mathbb{R}$ is
-  strictly monotonic, then the covariance operator $T_{\theta}$ is
-  self-adjoint.
-\end{proposition}
-
-\begin{proof}
-  When $\theta$ is strictly monotonic, it is invertible. Consider the change
-  of variables:
-  \begin{equation}
-    u = \theta (s), \quad v = \theta (t)
-  \end{equation}
-  Define the unitary transformation $U : L^2 (\mathbb{R}, ds) \to L^2
-  (\mathbb{R}, du)$ by:
-  \begin{equation}
-    (Uf) (u) = f (\theta^{- 1} (u)) \sqrt{\left| \frac{d \theta^{- 1}}{du} (u)
-    \right|}
-  \end{equation}
-  Under this transformation, the operator $T_{\theta}$ becomes:
-  \begin{equation}
-    (UT_{\theta} U^{- 1} g) (u) = \int_{\mathbb{R}} J_0  (2 \pi |u - v|) g (v)
-    dv
-  \end{equation}
-  which is precisely the operator $S$ with the standard Bessel kernel.
-  
-  Since $S$ is self-adjoint by Lemma \ref{lemma:standard-sa}, and unitary
-  equivalence preserves self-adjointness, $T_{\theta} = U^{- 1} SU$ is also
-  self-adjoint. Thus, its defect indices are $(0, 0)$.
-\end{proof}
-
-\begin{proposition}
-  \label{prop:nonmonotonic-implies-defect}If $\theta$ is not strictly
-  monotonic, then $T_{\theta}$ has non-zero defect indices.
-\end{proposition}
-
-\begin{proof}
-  If $\theta$ is not strictly monotonic, there exist points $s_1 \neq s_2$
-  such that $\theta (s_1) = \theta (s_2)$.
-  
-  Let $\mathcal{E}= \{(s_1, s_2) \in \mathbb{R}^2 : s_1 \neq s_2, \theta (s_1)
-  = \theta (s_2)\}$. This set is non-empty by assumption.
-  
-  For any pair $(s_1, s_2) \in \mathcal{E}$, the kernel satisfies:
-  \begin{equation}
-    K_{\theta} (s_1, t) = J_0  (2 \pi | \theta (s_1) - \theta (t) |) = J_0  (2
-    \pi | \theta (s_2) - \theta (t) |) = K_{\theta} (s_2, t)
-  \end{equation}
-  This introduces a linear dependence in the kernel, violating the strict
-  positive definiteness needed for self-adjointness.
-  
-  To formalize this, consider the distribution:
-  \begin{equation}
-    f_{s_1, s_2} (t) = \delta (t - s_1) - \delta (t - s_2)
-  \end{equation}
-  While $f_{s_1, s_2}$ itself is not in $L^2 (\mathbb{R})$, it can be
-  approximated by $L^2$ functions. Using the symmetry property $K_{\theta}
-  (s_1, t) = K_{\theta} (s_2, t)$:
-  \begin{equation}
-    (T_{\theta} f_{s_1, s_2}) (s) = \int_{\mathbb{R}} K_{\theta} (s, t)
-    f_{s_1, s_2} (t) dt = K_{\theta} (s, s_1) - K_{\theta} (s, s_2) = 0
-  \end{equation}
-  This implies that $T_{\theta}$ has a non-trivial null space, and
-  consequently, there exist non-zero solutions to the equations
-  $(T_{\theta}^{\ast} \pm i \cdot I) g = 0$. Therefore, both defect indices
-  $n_+$ and $n_-$ are at least 1.
-\end{proof}
-
-\begin{lemma}
-  \label{lemma:nonmonotonic-not-pd}If $\theta$ is not strictly monotonic, then
-  the kernel $K_{\theta} (s, t) = J_0  (2 \pi | \theta (s) - \theta (t) |)$ is
-  not positive definite.
-\end{lemma}
-
-\begin{proof}
-  Let $s_1 \neq s_2$ with $\theta (s_1) = \theta (s_2)$. Consider the matrix:
-  \begin{equation}
-    M = \left(\begin{array}{cc}
-      K_{\theta} (s_1, s_1) & K_{\theta} (s_1, s_2)\\
-      K_{\theta} (s_2, s_1) & K_{\theta} (s_2, s_2)
-    \end{array}\right)
-  \end{equation}
-  Since $\theta (s_1) = \theta (s_2)$, we have:
-  \begin{equation}
-    K_{\theta} (s_1, s_1) = K_{\theta} (s_2, s_2) = J_0 (0) = 1
-  \end{equation}
-  \begin{equation}
-    K_{\theta} (s_1, s_2) = K_{\theta} (s_2, s_1) = J_0  (2 \pi | \theta (s_1)
-    - \theta (s_2) |) = J_0 (0) = 1
-  \end{equation}
-  Thus, $M = \left(\begin{array}{cc}
-    1 & 1\\
-    1 & 1
-  \end{array}\right)$, which has eigenvalues 2 and 0. The presence of the zero
-  eigenvalue means $M$ is not strictly positive definite. Therefore,
-  $K_{\theta}$ is not a positive definite kernel.
-\end{proof}
-
-Combining Proposition \ref{prop:monotonic-implies-sa} and Proposition
-\ref{prop:nonmonotonic-implies-defect}, the covariance operator $T_{\theta}$
-has defect indices $(0, 0)$ if and only if $\theta$ is strictly monotonic.
-
-\begin{corollary}
-  The Gaussian process with covariance function $K_{\theta} (s, t) = J_0  (2
-  \pi | \theta (s) - \theta (t) |)$ is well-defined if and only if $\theta$ is
-  strictly monotonic.
-\end{corollary}
-
-\begin{proof}
-  A Gaussian process is well-defined if and only if its covariance function is
-  positive definite. By Lemma \ref{lemma:nonmonotonic-not-pd} and Lemma
-  \ref{lemma:bessel-pd}, $K_{\theta}$ is positive definite if and only if
-  $\theta$ is strictly monotonic. Furthermore, the self-adjointness of
-  $T_{\theta}$ (which occurs if and only if $\theta$ is strictly monotonic by
-  Theorem \ref{thm:main}) ensures the existence of a spectral decomposition,
-  which is necessary for the proper definition of the process.
-\end{proof}
-
-\
-
+\section{Concluding Remarks}
+In operator language, the original kernel orthonormality condition corresponds exactly to the requirement that the synthesis operator be an isometry, while the nonvanishing condition guarantees no loss of spectral components. The inversion operator is then simply the Hilbert space adjoint, unique by standard functional analytic arguments.
 \end{document}
