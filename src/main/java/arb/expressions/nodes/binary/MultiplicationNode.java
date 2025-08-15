@@ -87,12 +87,11 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
 
     if (leftIsConstant && rightIsConstant)
     {
-      var lconst = leftConstant;
-      var rconst = right.asLiteralConstant();
 
-      if (lconst.isInt && rconst.isInt)
+      if (leftConstant.isInt && rightConstant.isInt)
       {
-        try ( var lint = new Integer(lconst.value); var rint = new Integer(rconst.value);)
+        try ( var lint = new Integer(leftConstant.value);
+              var rint = new Integer(rightConstant.value);)
         {
           var product = lint.mul(rint, 0, rint);
           return expression.newLiteralConstant(product.toString());
