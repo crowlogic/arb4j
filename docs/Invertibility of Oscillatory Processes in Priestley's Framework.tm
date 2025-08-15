@@ -16,7 +16,7 @@
     the integral representation
 
     <\equation>
-      X<around|(|t|)>=<big|int><rsub|\<infty\>><rsup|\<infty\>>A<around|(|t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>d*Z<around|(|\<lambda\>|)>
+      X<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>d*Z<around|(|\<lambda\>|)>
     </equation>
 
     where <math|A<around|(|t,\<lambda\>|)>> is the time-varying amplitude
@@ -77,7 +77,7 @@
     and integrate over <math|t>
 
     <\equation>
-      <tabular|<tformat|<table|<row|<cell|<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|A<around|(|t,\<lambda\><rsub|0>|)>|\<bar\>>e<rsup|-i*\<lambda\><rsub|0>*t>*X<around|(|t|)>*<space|0.17em>d*t>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|A<around|(|t,\<lambda\><rsub|0>|)>|\<bar\>>e<rsup|-i*\<lambda\><rsub|0>*t>*<big|int><rsub|-\<pi\>><rsup|\<pi\>>A<around|(|t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>d*Z<around|(|\<lambda\>|)>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|A<around|(|t,\<lambda\><rsub|0>|)>|\<bar\>>A<around|(|t,\<lambda\>|)>*e<rsup|i*<around|(|\<lambda\>-\<lambda\><rsub|0>|)>*t>*<space|0.17em>d*t|]>*d*Z<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<delta\>*<around|(|\<lambda\>-\<lambda\><rsub|0>|)>d*Z<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=\<mathd\>
+      <tabular|<tformat|<table|<row|<cell|<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|A<around|(|t,\<lambda\><rsub|0>|)>|\<bar\>>e<rsup|-i*\<lambda\><rsub|0>*t>*X<around|(|t|)>*<space|0.17em>d*t>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|A<around|(|t,\<lambda\><rsub|0>|)>|\<bar\>>e<rsup|-i*\<lambda\><rsub|0>*t>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>*<space|0.17em>d*Z<around|(|\<lambda\>|)>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|[|<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|A<around|(|t,\<lambda\><rsub|0>|)>|\<bar\>>A<around|(|t,\<lambda\>|)>*e<rsup|i*<around|(|\<lambda\>-\<lambda\><rsub|0>|)>*t>*<space|0.17em>d*t|]>*d*Z<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>\<delta\>*<around|(|\<lambda\>-\<lambda\><rsub|0>|)>d*Z<around|(|\<lambda\>|)>>>|<row|<cell|>|<cell|=\<mathd\>
       Z<around*|(|\<lambda\><rsub|0>|)>>>>>><label|inv>
     </equation>
 
@@ -97,11 +97,38 @@
   </lemma>
 
   <\proof>
-    Suppose two different inversion operators both recover
-    <math|d*Z<around|(|\<lambda\>|)>> from <math|X<around|(|t|)>>. Then their
-    difference must annihilate all possible <math|X<around|(|t|)>> while
-    producing zero output, which implies they are identical by the
-    non-degeneracy condition <math|A<around|(|t,\<lambda\>|)>\<neq\>0>.
+    Suppose there exist two distinct linear operators <math|L<rsub|1>> and
+    <math|L<rsub|2>> that both satisfy the inversion property, i.e., for all
+    <math|X<around|(|t|)>> of the given form:
+
+    <\equation>
+      L<rsub|1><around|[|X<around|(|t|)>|]>=d*Z<around|(|\<lambda\>|)>*<space|1em><text|and><space|1em>L<rsub|2><around|[|X<around|(|t|)>|]>=d*Z<around|(|\<lambda\>|)>
+    </equation>
+
+    Define the difference operator <math|L=L<rsub|1>-L<rsub|2>>. Then
+    <math|L<around|[|X<around|(|t|)>|]>=0> for all <math|X<around|(|t|)>>
+    representable as
+
+    <\equation>
+      X<around|(|t|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>A<around|(|t,\<mu\>|)>*e<rsup|i*\<mu\>*t>*d*Z<around|(|\<mu\>|)>
+    </equation>
+
+    Consider the specific process <math|X<rsub|\<lambda\><rsub|0>><around|(|t|)>=A<around|(|t,\<lambda\><rsub|0>|)>*e<rsup|i*\<lambda\><rsub|0>*t>*d*Z<around|(|\<lambda\><rsub|0>|)>>
+    for any fixed <math|\<lambda\><rsub|0>>. Since
+    <math|L<around|[|X<rsub|\<lambda\><rsub|0>><around|(|t|)>|]>=0>, and this
+    must hold for arbitrary <math|d*Z<around|(|\<lambda\><rsub|0>|)>>, the
+    operator <math|L> must annihilate the kernel function
+    <math|A<around|(|t,\<lambda\><rsub|0>|)>*e<rsup|i*\<lambda\><rsub|0>*t>>
+    for every <math|\<lambda\><rsub|0>>.
+
+    By the orthogonality condition (<reference|ortho>), the system
+    <math|<around|{|A<around|(|t,\<lambda\>|)>*e<rsup|i*\<lambda\>*t>|}><rsub|\<lambda\>>>
+    forms a complete orthogonal basis in the relevant function space. Since
+    <math|L> annihilates every element of this complete system, and any
+    <math|X<around|(|t|)>> can be expressed as a linear combination
+    (integral) of these basis functions, <math|L> must be the zero operator.
+
+    Therefore <math|L<rsub|1>=L<rsub|2>>, establishing uniqueness.
   </proof>
 
   <section|References>
@@ -133,10 +160,10 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|1|1>>
-    <associate|auto-2|<tuple|1.1|2>>
-    <associate|auto-3|<tuple|2|3>>
+    <associate|auto-2|<tuple|1.1|1>>
+    <associate|auto-3|<tuple|2|2>>
     <associate|inv|<tuple|6|2>>
-    <associate|ortho|<tuple|4|2>>
+    <associate|ortho|<tuple|4|1>>
   </collection>
 </references>
 

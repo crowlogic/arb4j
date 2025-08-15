@@ -1,2 +1,181 @@
-verify each statement here, assigning a green check mark if the statement is true and a red x if it is not
+\documentclass{article}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{xcolor}
+\title{Mathematical Verification Protocol: Instructions for Rigorous Review}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+
+\section{MANDATORY VERIFICATION PROTOCOL}
+
+You are tasked with mathematically verifying statements in a technical document. Follow these instructions \textbf{exactly} and \textbf{completely}. Failure to follow any step constitutes verification failure.
+
+\section{FORBIDDEN ACTIONS}
+
+The following are \textbf{STRICTLY PROHIBITED} during verification:
+
+\begin{enumerate}
+\item \textbf{NO INTUITION}: Do not use phrases like "this seems," "I think," "appears to be," "looks like," or "feels wrong"
+\item \textbf{NO APPEALS TO AUTHORITY}: Do not reference "standard theory," "well-known results," or "familiar methods" without explicit computation
+\item \textbf{NO ASSUMPTIONS}: Do not assume anything is "stronger than necessary," "weaker than required," or "different from expected"
+\item \textbf{NO DISMISSAL WITHOUT PROOF}: Do not mark any statement as incorrect without providing explicit mathematical counter-proof
+\item \textbf{NO PATTERN MATCHING}: Do not reject statements because they differ from "similar" results you may know
+\item \textbf{NO MIDDLE GROUND}: Every distinguishable mathematical statement must receive exactly one mark
+\end{enumerate}
+
+\section{REQUIRED VERIFICATION STEPS}
+
+For each mathematical statement, you \textbf{MUST}:
+
+\subsection{Step 1: Explicit Computation}
+\begin{itemize}
+\item Write out all mathematical steps explicitly
+\item Show all algebraic manipulations
+\item Verify all claimed equalities by direct computation
+\item Check all claimed implications by logical deduction
+\end{itemize}
+
+\subsection{Step 2: Proof Structure Analysis}
+For each theorem/proposition:
+\begin{itemize}
+\item Identify the logical structure (if-then, if-and-only-if, etc.)
+\item Verify each direction of equivalences separately
+\item Check that all proof steps are mathematically valid
+\item Ensure no logical gaps exist in the argument
+\end{itemize}
+
+\subsection{Step 3: Condition Verification}
+For each claimed condition:
+\begin{itemize}
+\item Compute what the condition actually requires
+\item Verify necessity by showing what happens when condition fails
+\item Verify sufficiency by showing condition implies desired result
+\item Do not assume conditions are "too strong" or "too weak" without proof
+\end{itemize}
+
+\subsection{Step 4: Formula Verification}
+For each formula or equation:
+\begin{itemize}
+\item Substitute definitions and work through algebra
+\item Verify dimensional consistency
+\item Check boundary cases and limiting behavior
+\item Ensure all integrals/sums are well-defined under stated conditions
+\end{itemize}
+
+\section{MANDATORY MARKING SYSTEM}
+
+\textbf{ABSOLUTE REQUIREMENT}: Every distinguishable mathematical statement, definition, theorem, proposition, lemma, corollary, formula, equation, or claim must receive \textbf{exactly one} of the following marks:
+
+\subsection{GREEN CHECK ✅: Statement is Mathematically Correct}
+Mark GREEN CHECK if and only if:
+\begin{itemize}
+\item You have completed explicit mathematical verification
+\item All computational steps check out
+\item The logical structure is sound
+\item No mathematical errors are found
+\item The statement is mathematically true
+\end{itemize}
+
+\subsection{RED X ❌: Statement is Mathematically Incorrect}
+Mark RED X if and only if:
+\begin{itemize}
+\item You have found a specific mathematical error
+\item You can provide an explicit counterexample
+\item You can show a logical contradiction
+\item You have rigorous proof that the statement is false
+\end{itemize}
+
+\textbf{CRITICAL RULE}: You may \textbf{ONLY} mark RED X if you provide explicit mathematical proof of incorrectness.
+
+\subsection{🟡 YELLOW CIRCLE: Indeterminate Due to Verification Failure}
+Mark YELLOW CIRCLE if and only if \textbf{ALL} of the following conditions hold:
+\begin{itemize}
+\item You genuinely cannot complete the mathematical verification
+\item You do not understand the mathematical content sufficiently
+\item You cannot determine whether the statement is true or false
+\item You have made genuine effort to understand but failed
+\end{itemize}
+
+\textbf{YELLOW REQUIREMENTS}: If you mark YELLOW, you \textbf{MUST}:
+\begin{enumerate}
+\item Explicitly state: "I cannot complete verification of this statement"
+\item Detail exactly what you do not understand
+\item Explain what specific mathematical knowledge or technique you lack
+\item State clearly: "This mark reflects my failure to understand, not any claim that the statement is incorrect"
+\end{enumerate}
+
+\textbf{YELLOW PROHIBITION}: You \textbf{CANNOT} mark YELLOW if:
+\begin{itemize}
+\item You think the statement might be wrong (use RED X with proof instead)
+\item You are unsure but lean toward incorrect (use RED X with proof instead)  
+\item You find the statement unexpected (complete verification instead)
+\item You lack familiarity with the topic (complete verification instead)
+\end{itemize}
+
+\section{NO EXCEPTIONS POLICY}
+
+\begin{enumerate}
+\item \textbf{NO SKIPPED STATEMENTS}: Every mathematical claim must be marked
+\item \textbf{NO PARTIAL MARKS}: Each statement gets exactly one mark
+\item \textbf{NO CONDITIONAL MARKS}: Do not use phrases like "correct if..." - determine the truth value
+\item \textbf{NO MIDDLE POSITIONS}: There is no "partially correct" or "mostly right"
+\end{enumerate}
+
+\section{MANDATORY DOCUMENTATION}
+
+For each statement you evaluate, you \textbf{MUST} provide:
+
+\begin{enumerate}
+\item \textbf{Mark Assignment}: Exactly one mark (✅, ❌, or 🟡)
+\item \textbf{Computational Work}: Show your mathematical verification steps
+\item \textbf{Logical Analysis}: Identify the claim structure and verify each part
+\item \textbf{Specific Reasoning}: State exactly why you assigned your mark
+\item \textbf{Counterproof Requirement}: If marking RED X, provide complete mathematical counterproof
+\item \textbf{Ignorance Declaration}: If marking YELLOW, explicitly detail your failure to understand
+\end{enumerate}
+
+\section{VERIFICATION EXAMPLES}
+
+\subsection{Correct Approach for Equivalence Claims}
+For claim "A ⟺ B":
+\begin{enumerate}
+\item Prove A ⟹ B by direct mathematical argument
+\item Prove B ⟹ A by direct mathematical argument  
+\item Verify both directions are logically sound
+\item Mark ✅ GREEN CHECK only after both directions verified
+\item If either direction fails, provide counterproof and mark ❌ RED X
+\end{enumerate}
+
+\subsection{Correct Approach for Formula Claims}
+For claimed formula $F = G$:
+\begin{enumerate}
+\item Start with left-hand side F
+\item Apply definitions and perform algebraic manipulations
+\item Show that this equals right-hand side G
+\item Verify all steps are mathematically valid
+\item Check that all operations are well-defined
+\item Mark ✅ if verification succeeds, ❌ if counterexample found
+\end{enumerate}
+
+\section{FINAL REQUIREMENTS}
+
+\begin{enumerate}
+\item Complete verification for \textbf{every single distinguishable statement}
+\item Assign exactly one mark to \textbf{every statement}
+\item Provide explicit mathematical reasoning for \textbf{every mark assigned}
+\item Do not skip any statement as "obvious," "familiar," or "minor"
+\item If genuinely unable to verify, mark 🟡 and detail your failure - do not guess
+\end{enumerate}
+
+\textbf{REMEMBER}: 
+\begin{itemize}
+\item Mathematical truth is determined by rigorous proof, not by intuition or familiarity
+\item Your task is to verify what the mathematics actually says, not what you expect it to say
+\item Marking something wrong requires proof of its incorrectness
+\item Every mathematical statement in the document must receive exactly one mark
+\item There are no exceptions to these requirements
+\end{itemize}
+
+\end{document}
 
