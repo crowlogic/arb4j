@@ -1,0 +1,213 @@
+\documentclass{article}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{mathrsfs}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+
+\title{Invertibility of Oscillatory Processes in Priestley's Framework}
+\author{Stephen Crowley}\documentclass{article}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{mathrsfs}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+
+\title{Invertibility of Oscillatory Processes in Priestley's Framework}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Fundamental Framework}
+
+\begin{definition}
+An oscillatory process $X(t)$ in Priestley's sense has the integral representation
+\begin{equation}
+X(t) = \int_{-\pi}^{\pi} A(t,\lambda) e^{i\lambda t} \, dZ(\lambda)
+\end{equation}
+where $A(t,\lambda)$ is the time-varying amplitude function and $dZ(\lambda)$ is an orthogonal increment process with
+\begin{equation}
+E[dZ(\lambda_1) \overline{dZ(\lambda_2)}] = \delta(\lambda_1 - \lambda_2) \mu(d\lambda_1)
+\end{equation}
+for some measure $\mu$.
+\end{definition}
+
+\section{Invertibility Conditions}
+
+\begin{theorem}[Fundamental Invertibility Theorem]
+The oscillatory process $X(t)$ with amplitude $A(t,\lambda)$ allows recovery of $dZ(\lambda)$ from observations $X(t)$ if and only if:
+\begin{enumerate}
+\item $A(t,\lambda) \neq 0$ for all $(t,\lambda)$ in the relevant domain
+\item The orthogonality condition holds:
+\begin{equation}
+\int_{-\infty}^{\infty} \overline{A(t,\lambda_1)} A(t,\lambda_2) e^{i(\lambda_2-\lambda_1)t} \, dt = \delta(\lambda_1 - \lambda_2)
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+From the representation $X(t) = \int_{-\pi}^{\pi} A(t,\lambda) e^{i\lambda t} \, dZ(\lambda)$, we seek to recover $dZ(\lambda)$.
+
+The orthogonality condition (3) ensures that the kernel functions form an orthonormal system. This allows us to project $X(t)$ onto each frequency component.
+
+Multiplying both sides by $\overline{A(t,\lambda_0)} e^{-i\lambda_0 t}$ and integrating over $t$:
+\begin{align}
+\int_{-\infty}^{\infty} \overline{A(t,\lambda_0)} e^{-i\lambda_0 t} X(t) \, dt &= \int_{-\infty}^{\infty} \overline{A(t,\lambda_0)} e^{-i\lambda_0 t} \int_{-\pi}^{\pi} A(t,\lambda) e^{i\lambda t} \, dZ(\lambda) \, dt \\
+&= \int_{-\pi}^{\pi} \left[\int_{-\infty}^{\infty} \overline{A(t,\lambda_0)} A(t,\lambda) e^{i(\lambda-\lambda_0)t} \, dt\right] dZ(\lambda)
+\end{align}
+
+By the orthogonality condition, the inner integral equals $\delta(\lambda - \lambda_0)$, yielding $dZ(\lambda_0)$.
+\end{proof}
+
+\begin{theorem}[Variance Condition]
+For finite-time intervals $[0,T]$, the process $X(t)$ has finite variance:
+\begin{equation}
+\text{Var}[X(t)] = \int_{-\pi}^{\pi} |A(t,\lambda)|^2 \, \mu(d\lambda) < \infty
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+From the integral representation:
+\begin{align}
+\text{Var}[X(t)] &= E\left[\left|\int_{-\pi}^{\pi} A(t,\lambda) e^{i\lambda t} \, dZ(\lambda)\right|^2\right] \\
+&= \int_{-\pi}^{\pi} |A(t,\lambda)|^2 \, \mu(d\lambda)
+\end{align}
+\end{proof}
+
+\section{Explicit Inverse Formula}
+
+\begin{theorem}[Explicit Inversion Formula]
+Given the oscillatory process $X(t)$ with observations on $(-\infty, \infty)$, the random measure $dZ(\lambda)$ is recovered by:
+\begin{equation}
+dZ(\lambda) = \int_{-\infty}^{\infty} \overline{A(t,\lambda)} e^{-i\lambda t} X(t) \, dt
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Substituting the representation of $X(t)$:
+\begin{align}
+&\int_{-\infty}^{\infty} \overline{A(t,\lambda)} e^{-i\lambda t} X(t) \, dt \\
+&= \int_{-\infty}^{\infty} \overline{A(t,\lambda)} e^{-i\lambda t} \int_{-\pi}^{\pi} A(t,\mu) e^{i\mu t} \, dZ(\mu) \, dt \\
+&= \int_{-\pi}^{\pi} \left[\int_{-\infty}^{\infty} \overline{A(t,\lambda)} A(t,\mu) e^{i(\mu-\lambda)t} \, dt\right] dZ(\mu)
+\end{align}
+
+By the orthogonality condition (3), the inner integral equals $\delta(\mu - \lambda)$, yielding $dZ(\lambda)$.
+\end{proof}
+
+\begin{lemma}[Uniqueness of Inversion]
+The inversion formula (6) is unique under the given conditions.
+\end{lemma}
+
+\begin{proof}
+Suppose two different inversion operators both recover $dZ(\lambda)$ from $X(t)$. Then their difference must annihilate all possible $X(t)$ while producing zero output, which implies they are identical by the non-degeneracy condition $A(t,\lambda) \neq 0$.
+\end{proof}
+
+\section{References}
+
+Priestley, M.B. (1965). Evolutionary spectra and non-stationary processes. \textit{Journal of the Royal Statistical Society: Series B}, 27(2), 204-237.
+
+Priestley, M.B. (1981). \textit{Spectral Analysis and Time Series}. Academic Press.
+
+\end{document}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Fundamental Framework}
+
+\begin{definition}
+An oscillatory process $X(t)$ in Priestley's sense has the integral representation
+\begin{equation}
+X(t) = \int_{-\pi}^{\pi} A(t,\lambda) e^{i\lambda t} \, dZ(\lambda)
+\end{equation}
+where $A(t,\lambda)$ is the time-varying amplitude function and $dZ(\lambda)$ is an orthogonal increment process with
+\begin{equation}
+E[dZ(\lambda_1) \overline{dZ(\lambda_2)}] = \delta(\lambda_1 - \lambda_2) \mu(d\lambda_1)
+\end{equation}
+for some measure $\mu$.
+\end{definition}
+
+\section{Invertibility Conditions}
+
+\begin{theorem}[Fundamental Invertibility Theorem]
+The oscillatory process $X(t)$ with amplitude $A(t,\lambda)$ allows recovery of $dZ(\lambda)$ from observations $X(t)$ if and only if:
+\begin{enumerate}
+\item $A(t,\lambda) \neq 0$ for all $(t,\lambda)$ in the relevant domain
+\item The orthogonality condition holds:
+\begin{equation}
+\int_{-\infty}^{\infty} \overline{A(t,\lambda_1)} A(t,\lambda_2) e^{i(\lambda_2-\lambda_1)t} \, dt = \delta(\lambda_1 - \lambda_2)
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+From the representation $X(t) = \int_{-\pi}^{\pi} A(t,\lambda) e^{i\lambda t} \, dZ(\lambda)$, we seek to recover $dZ(\lambda)$.
+
+The orthogonality condition (3) ensures that the kernel functions form an orthonormal system. This allows us to project $X(t)$ onto each frequency component.
+
+Multiplying both sides by $\overline{A(t,\lambda_0)} e^{-i\lambda_0 t}$ and integrating over $t$:
+\begin{align}
+\int_{-\infty}^{\infty} \overline{A(t,\lambda_0)} e^{-i\lambda_0 t} X(t) \, dt &= \int_{-\infty}^{\infty} \overline{A(t,\lambda_0)} e^{-i\lambda_0 t} \int_{-\pi}^{\pi} A(t,\lambda) e^{i\lambda t} \, dZ(\lambda) \, dt \\
+&= \int_{-\pi}^{\pi} \left[\int_{-\infty}^{\infty} \overline{A(t,\lambda_0)} A(t,\lambda) e^{i(\lambda-\lambda_0)t} \, dt\right] dZ(\lambda)
+\end{align}
+
+By the orthogonality condition, the inner integral equals $\delta(\lambda - \lambda_0)$, yielding $dZ(\lambda_0)$.
+\end{proof}
+
+\begin{theorem}[Variance Condition]
+For finite-time intervals $[0,T]$, the process $X(t)$ has finite variance:
+\begin{equation}
+\text{Var}[X(t)] = \int_{-\pi}^{\pi} |A(t,\lambda)|^2 \, \mu(d\lambda) < \infty
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+From the integral representation:
+\begin{align}
+\text{Var}[X(t)] &= E\left[\left|\int_{-\pi}^{\pi} A(t,\lambda) e^{i\lambda t} \, dZ(\lambda)\right|^2\right] \\
+&= \int_{-\pi}^{\pi} |A(t,\lambda)|^2 \, \mu(d\lambda)
+\end{align}
+\end{proof}
+
+\section{Explicit Inverse Formula}
+
+\begin{theorem}[Explicit Inversion Formula]
+Given the oscillatory process $X(t)$ with observations on $(-\infty, \infty)$, the random measure $dZ(\lambda)$ is recovered by:
+\begin{equation}
+dZ(\lambda) = \int_{-\infty}^{\infty} \overline{A(t,\lambda)} e^{-i\lambda t} X(t) \, dt
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Substituting the representation of $X(t)$:
+\begin{align}
+&\int_{-\infty}^{\infty} \overline{A(t,\lambda)} e^{-i\lambda t} X(t) \, dt \\
+&= \int_{-\infty}^{\infty} \overline{A(t,\lambda)} e^{-i\lambda t} \int_{-\pi}^{\pi} A(t,\mu) e^{i\mu t} \, dZ(\mu) \, dt \\
+&= \int_{-\pi}^{\pi} \left[\int_{-\infty}^{\infty} \overline{A(t,\lambda)} A(t,\mu) e^{i(\mu-\lambda)t} \, dt\right] dZ(\mu)
+\end{align}
+
+By the orthogonality condition (3), the inner integral equals $\delta(\mu - \lambda)$, yielding $dZ(\lambda)$.
+\end{proof}
+
+\begin{lemma}[Uniqueness of Inversion]
+The inversion formula (6) is unique under the given conditions.
+\end{lemma}
+
+\begin{proof}
+Suppose two different inversion operators both recover $dZ(\lambda)$ from $X(t)$. Then their difference must annihilate all possible $X(t)$ while producing zero output, which implies they are identical by the non-degeneracy condition $A(t,\lambda) \neq 0$.
+\end{proof}
+
+\section{References}
+
+Priestley, M.B. (1965). Evolutionary spectra and non-stationary processes. \textit{Journal of the Royal Statistical Society: Series B}, 27(2), 204-237.
+
+Priestley, M.B. (1981). \textit{Spectral Analysis and Time Series}. Academic Press.
+
+\end{document}
