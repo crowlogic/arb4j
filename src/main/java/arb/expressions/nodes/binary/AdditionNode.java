@@ -87,7 +87,7 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     {
       if (lconst.isInt && rconst.isInt)
       {
-        try ( var lint = new Integer(lconst.value); var rint = new Integer(rconst.value);)
+        try ( var lint = lconst.asInteger(); var rint = rconst.asInteger())
         {
           var sum = lint.add(rint, 0, rint);
           return expression.newLiteralConstant(sum.toString());

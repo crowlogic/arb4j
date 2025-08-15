@@ -444,4 +444,10 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return "1".equals(value) || (fractionValue != null && fractionValue.isOne());
   }
 
+  public Integer asInteger()
+  {
+    assert isInt : this + " is not an integer";
+    return new Integer(value);
+  }
+
 }
