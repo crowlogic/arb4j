@@ -2331,14 +2331,18 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (nextCharacterIs(COMBINING_TWO_DOTS_ABOVE))
     {
-      return resolveFunctionDerivative(startPos, reference).differentiate();
+      return resolveFunctionSecondDerivative(startPos, reference);
     }
 
     return resolveSymbolicLiteralConstantKeywordOrVariable(startPos, reference);
   }
 
-  protected Node<D, C, F> resolveFunctionDerivative(int startPos,
-                                                    VariableReference<D, C, F> reference)
+  Node<D, C, F> resolveFunctionSecondDerivative(int startPos, VariableReference<D, C, F> reference)
+  {
+    return resolveFunctionDerivative(startPos, reference).differentiate();
+  }
+
+  Node<D, C, F> resolveFunctionDerivative(int startPos, VariableReference<D, C, F> reference)
   {
     return require('(').resolveFunction(startPos, reference).differentiate();
   }
