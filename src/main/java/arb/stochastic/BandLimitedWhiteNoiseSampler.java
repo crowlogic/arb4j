@@ -12,8 +12,8 @@ import arb.functions.real.RealFunction;
  * of the stationary Gaussian process whose kernel is
  * K(t-s)=sinc(2π(t-s))=sin(2*π*(t-s))/(2*π*(t-s)) the unit band-limited
  * reproducing kernel whose spectral density is the rectangular function
- * rect(t,s)=1/2*(Θ(|t-s|-1)+Θ(|t-s|+1)) which is 1 on the signed unit interval
- * where |t-s|<1 and 0 when |t-s|>=1 *
+ * rect(t,s)=1/2*(Θ(|t-s|-1)+Θ(|t-s|+1)) where Θ is the Heaviside StepFunction,
+ * which is 1 on the signed unit interval where |t-s|<1 and 0 when |t-s|>=1 *
  * 
  * @author Stephen Crowley
  * 
