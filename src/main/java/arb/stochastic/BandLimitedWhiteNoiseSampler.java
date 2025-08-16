@@ -9,7 +9,7 @@ import arb.functions.real.RealFunction;
 
 /**
  * Generates and plots a pseudo-randomly generated path and associated spectra
- * of the Gaussian process whose kernel is
+ * of the stationary Gaussian process whose kernel is
  * K(t-s)=sinc(2π(t-s))=sin(2*π*(t-s))/(2*π*(t-s)) the unit band-limited
  * reproducing kernel whose spectral density is the rectangular function
  * rect(t,s)=1/2*(Θ(|t-s|-1)+Θ(|t-s|+1)) which is 1 on the signed unit interval
