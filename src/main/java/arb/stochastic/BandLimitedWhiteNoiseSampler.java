@@ -5,20 +5,15 @@ import arb.FloatInterval;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.polynomials.orthogonal.real.Type1ChebyshevPolynomials;
 import arb.functions.real.RealFunction;
 
 /**
- * Generates and plots a pseudo-randomly generated path from the Gaussian
- * process whose kernel is K(t-s)=J_0(t-s) (the random Wave model) whose
- * spectral density is the orthogonality measure of the
- * {@link Type1ChebyshevPolynomials}, then calculates its empirical
- * autocorrelation spectrum and compares it with the theoretical then does the
- * same for the power-spectral density. Also plots the white noise that was
- * convolved with the square root of the spectral factor to generate the sample
- * path.
- * 
- * 
+ * Generates and plots a pseudo-randomly generated path and associated spectra
+ * of the Gaussian process whose kernel is
+ * K(t-s)=sinc(2π(t-s))=sin(2*π*(t-s))/(2*π*(t-s)) the unit band-limited
+ * reproducing kernel whose spectral density is the rectangular function
+ * rect(t,s)=1/2*(Θ(|t-s|-1)+Θ(|t-s|+1)) which is 1 on the signed unit interval
+ * where |t-s|<1 and 0 when |t-s|>=1 *
  * 
  * @author Stephen Crowley
  * 
