@@ -99,7 +99,7 @@ public abstract class StationaryGaussianProcessSampler extends
 
   private static final int     positiveFrequencyCount           = N / 2 + 1;
 
-  private static final String  randomMeasureDatasetStyle        =
+  static final String  randomMeasureDatasetStyle        =
                                                          DataSetStyleBuilder.instance()
                                                                             .setMarkerType("circle")
                                                                             .setMarkerSize(2)
@@ -212,7 +212,7 @@ public abstract class StationaryGaussianProcessSampler extends
 
     Stream.of(charts = new XYChart[]
     { newTimeDomainChart(),
-      newRandomWhiteNoiseMeasureChart(),
+      Charts.newRandomWhiteNoiseMeasureChart(frequencies, whiteNoise),
       newAutoCorrelationChart(),
       newPowerSpectralDensityChart() })
           .forEach(chart -> WindowManager.configureChart(chart, light));
@@ -344,46 +344,6 @@ public abstract class StationaryGaussianProcessSampler extends
     WindowManager.configureXAxisOfPowerSpectralDensityChart(chart);
 
     WindowManager.configureYAxisOfPowerSpectralDensityChart(chart);
-
-    return chart;
-  }
-
-  protected XYChart newRandomWhiteNoiseMeasureChart()
-  {
-    XYChart chart = new XYChart(new DefaultNumericAxis("Frequency",
-                                                       ""),
-                                new DefaultNumericAxis("Measure",
-                                                       ""));
-    chart.setTitle("Random White Noise Measure");
-
-    final ErrorDataSetRenderer scatterPlotRenderer    = WindowManager.newScatterChartRenderer();
-
-    int                        positiveFrequencyCount = frequencies.length;
-    double[]                   realNoise              = new double[positiveFrequencyCount];
-    double[]                   imagNoise              = new double[positiveFrequencyCount];
-    double[]                   normalizedFrequencies  = new double[positiveFrequencyCount];
-
-    for (int i = 0; i < positiveFrequencyCount; i++)
-    {
-      Complex element = whiteNoise.get(i);
-      realNoise[i]             = element.re().doubleValue();
-      imagNoise[i]             = element.im().doubleValue();
-      normalizedFrequencies[i] = frequencies[i] / nyquistFrequency; // Normalize to [0, 1]
-    }
-
-    DoubleDataSet realDataSet = new DoubleDataSet("Real").set(normalizedFrequencies, realNoise);
-    DoubleDataSet imagDataSet =
-                              new DoubleDataSet("Imaginary").set(normalizedFrequencies, imagNoise);
-
-    realDataSet.setStyle(randomMeasureDatasetStyle);
-    imagDataSet.setStyle(randomMeasureDatasetStyle);
-
-    chart.getRenderers().setAll(scatterPlotRenderer);
-    scatterPlotRenderer.getDatasets().addAll(realDataSet, imagDataSet);
-
-    chart.getXAxis().setAutoRanging(false);
-    chart.getXAxis().setMin(0.0);
-    chart.getXAxis().setMax(1.0);
 
     return chart;
   }
