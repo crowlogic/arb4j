@@ -1,7 +1,5 @@
 package arb.stochastic;
 
-import static arb.viz.WindowManager.createGridPane;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -215,7 +213,7 @@ public abstract class StationaryGaussianProcessSampler extends
       Charts.newRandomWhiteNoiseMeasureChart(frequencies, whiteNoise),
       newAutoCorrelationChart(),
       newPowerSpectralDensityChart() })
-          .forEach(chart -> WindowManager.configureChart(chart, light));
+          .forEach(chart -> Charts.configureChart(chart, light));
 
     return charts;
   }
@@ -266,7 +264,7 @@ public abstract class StationaryGaussianProcessSampler extends
 
   protected void initializeWindowContainingAllCharts(Stage stage)
   {
-    GridPane gridPane = createGridPane(charts);
+    GridPane gridPane = Charts.createGridPane(charts);
     Scene    scene    = new Scene(gridPane);
     stage.setScene(scene);
     stage.setMaximized(true);
@@ -322,7 +320,7 @@ public abstract class StationaryGaussianProcessSampler extends
       theoreticalPowerSpectralDensities[i] = powerSpectralDensity[i];
     }
 
-    var scatterPlotRenderer = WindowManager.newScatterChartRenderer();
+    var scatterPlotRenderer = Charts.newScatterChartRenderer();
     var lineRenderer        = new ErrorDataSetRenderer();
 
     var empiricalDataSet    =
@@ -341,9 +339,9 @@ public abstract class StationaryGaussianProcessSampler extends
 
     chart.getRenderers().setAll(scatterPlotRenderer, lineRenderer);
 
-    WindowManager.configureXAxisOfPowerSpectralDensityChart(chart);
+    Charts.configureXAxisOfPowerSpectralDensityChart(chart);
 
-    WindowManager.configureYAxisOfPowerSpectralDensityChart(chart);
+    Charts.configureYAxisOfPowerSpectralDensityChart(chart);
 
     return chart;
   }
