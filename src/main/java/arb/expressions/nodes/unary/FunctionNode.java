@@ -812,4 +812,9 @@ public class FunctionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                   arg == null ? "" : arg.typeset());
   }
 
+  public boolean isExponential()
+  {
+    return functionName.equals("exp");
+  }
+
 }

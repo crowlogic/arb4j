@@ -142,20 +142,30 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public Node<D, R, F> simplify()
   {
+    Node<D, R, F> node = this;
     right = right.simplify();
     left  = left.simplify();
-    if ("1".equals(right.toString()))
+    node  = simplifyWhenEitherSideIsOne(node);
+    node  = simplifyDivisionOfCommonBases(node);
+    node  = simplifyExponentialDivision(node);
+    return node;
+  }
+
+  Node<D, R, F> simplifyWhenEitherSideIsOne(Node<D, R, F> node)
+  {
+    if (right.isConstantOne())
     {
       return left;
     }
     if (left.equals(right))
     {
-      return expression.newLiteralConstant(1);
+      return one();
     }
+    return node;
+  }
 
-    boolean leftIsConstant  = left != null && left.isLiteralConstant();
-    boolean rightIsConstant = right != null && right.isLiteralConstant();
-
+  Node<D, R, F> simplifyDivisionOfCommonBases(Node<D, R, F> node)
+  {
     if (left instanceof ExponentiationNode<D, R, F> leftExp
                   && right instanceof ExponentiationNode<D, R, F> rightExp)
     {
@@ -167,21 +177,21 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
         return leftBase.pow(exponentDifference).simplify();
       }
     }
+    return node;
+  }
 
+  Node<D, R, F> simplifyExponentialDivision(Node<D, R, F> node)
+  {
     if (left instanceof FunctionNode<D, R, F> leftFunction
                   && right instanceof FunctionNode<D, R, F> rightFunction)
     {
-      var leftIsExponentialFunction  = leftFunction.functionName.equals("exp");
-      var rightIsExponentialFunction = rightFunction.functionName.equals("exp");
-
-      if (leftIsExponentialFunction && rightIsExponentialFunction)
+      if (leftFunction.isExponential() && rightFunction.functionName.equals("exp"))
       {
         var exponentSum = leftFunction.arg.sub(rightFunction.arg).simplify();
         return exponentSum.exp();
       }
     }
-
-    return this;
+    return node;
   }
 
   @Override
