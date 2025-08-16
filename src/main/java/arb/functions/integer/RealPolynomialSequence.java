@@ -7,6 +7,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.expressions.Parser;
 import arb.functions.Function;
 import arb.functions.polynomials.PolynomialSequence;
 
@@ -39,10 +40,35 @@ public interface RealPolynomialSequence extends
                             context);
   }
 
+  public static Expression<Integer, RealPolynomial, RealPolynomialSequence>
+         parse(String className, String expression, Context context)
+  {
+    if (className == null)
+    {
+      className = Parser.expressionToUniqueClassname(expression);
+    }
+    return Sequence.parse(className,
+                          RealPolynomialSequence.class,
+                          RealPolynomial.class,
+                          expression,
+                          context);
+  }
+
   public static Expression<Integer, RealPolynomial, RealPolynomialSequence> parse(String className,
                                                                                   String string)
   {
-    return Sequence.parse(className, RealPolynomialSequence.class, RealPolynomial.class, string);
+    return parse(className, string, null);
+  }
+
+  public static Expression<Integer, RealPolynomial, RealPolynomialSequence> parse(String string)
+  {
+    return parse(null, string, null);
+  }
+
+  public static Expression<Integer, RealPolynomial, RealPolynomialSequence> parse(String string,
+                                                                                  Context context)
+  {
+    return parse(null, string, context);
   }
 
 }
