@@ -1,5 +1,7 @@
 package arb.stochastic;
 
+import static arb.viz.WindowManager.createGridPane;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -23,10 +25,7 @@ import io.fair_acc.dataset.spi.DoubleDataSet;
 import io.fair_acc.dataset.utils.DataSetStyleBuilder;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
 /**
@@ -161,39 +160,6 @@ public abstract class StationaryGaussianProcessSampler extends
     envelope        = Real.newVector(N);
     samplingTimes   = Real.newVector(N);
     randomMeasure   = Complex.newVector(N);
-  }
-
-  protected GridPane createGridPane(XYChart[] charts)
-  {
-    GridPane gridPane = new GridPane();
-    gridPane.setHgap(10);
-    gridPane.setVgap(10);
-
-    var col1 = new ColumnConstraints();
-    col1.setPercentWidth(50);
-    var col2 = new ColumnConstraints();
-    col2.setPercentWidth(50);
-    gridPane.getColumnConstraints().addAll(col1, col2);
-
-    var row1 = new RowConstraints();
-    row1.setPercentHeight(50);
-    var row2 = new RowConstraints();
-    row2.setPercentHeight(50);
-    gridPane.getRowConstraints().addAll(row1, row2);
-
-    for (XYChart chart : charts)
-    {
-      chart.setPrefSize(10000, 10000);
-      GridPane.setHgrow(chart, Priority.ALWAYS);
-      GridPane.setVgrow(chart, Priority.ALWAYS);
-    }
-
-    gridPane.add(charts[0], 0, 0);
-    gridPane.add(charts[1], 1, 0);
-    gridPane.add(charts[2], 0, 1);
-    gridPane.add(charts[3], 1, 1);
-
-    return gridPane;
   }
 
   public StationaryGaussianProcessSampler generate()
