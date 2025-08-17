@@ -18,6 +18,61 @@ import arb.documentation.references.Book;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Book    grafakosClassicalFourierAnalysis                                 =
+                                                         new Book("Classical Fourier Analysis",
+                                                                  "Loukas Grafakos",
+                                                                  "2014").setPublisher("Springer")
+                                                                         .setEdition("3rd");
+
+  public static Book    hormanderI                                                       =
+                                   new Book("The Analysis of Linear Partial Differential Operators I: Distribution Theory and Fourier Analysis",
+                                            "Lars Hörmander",
+                                            "1990").setPublisher("Springer").setEdition("2nd");
+
+  public static Book    rudinRealComplexAnalysis                                         =
+                                                 new Book("Real and Complex Analysis",
+                                                          "Walter Rudin",
+                                                          "1987").setPublisher("McGraw-Hill")
+                                                                 .setEdition("3rd");
+
+  public static Book    katznelsonHarmonicAnalysis                                       =
+                                                   new Book("An Introduction to Harmonic Analysis",
+                                                            "Yitzhak Katznelson",
+                                                            "2004").setPublisher("Cambridge University Press")
+                                                                   .setEdition("3rd");
+
+  public static Book    steinWeissEuclidean                                              =
+                                            new Book("Introduction to Fourier Analysis on Euclidean Spaces",
+                                                     "Elias M. Stein and Guido Weiss",
+                                                     "1971").setPublisher("Princeton University Press");
+
+  public static Book    evansPDE                                                         =
+                                 new Book("Partial Differential Equations",
+                                          "Lawrence C. Evans",
+                                          "2010").setPublisher("American Mathematical Society")
+                                                 .setEdition("2nd");
+
+  public static Book    courantHilbertII                                                 =
+                                         new Book("Methods of Mathematical Physics, Vol. II: Partial Differential Equations",
+                                                  "Richard Courant and David Hilbert",
+                                                  "1962").setPublisher("Wiley–VCH");
+
+  public static Book    follandFourierApplications                                       =
+                                                   new Book("Fourier Analysis and Its Applications",
+                                                            "Gerald B. Folland",
+                                                            "2009").setPublisher("American Mathematical Society");
+
+  public static Book    ahlforsComplexAnalysis                                           =
+                                               new Book("Complex Analysis",
+                                                        "Lars V. Ahlfors",
+                                                        "1979").setPublisher("McGraw-Hill")
+                                                               .setEdition("3rd");
+
+  public static Book    mumfordTataI                                                     =
+                                     new Book("Tata Lectures on Theta I",
+                                              "David Mumford",
+                                              "1983").setPublisher("Birkhäuser");
+
   public static Book    theoryOfHardysZFunction                                          =
                                                 new Book("The Theory of Hardy's Z-function",
                                                          "Aleksandar Ivić",

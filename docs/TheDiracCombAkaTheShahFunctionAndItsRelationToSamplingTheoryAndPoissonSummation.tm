@@ -59,6 +59,10 @@
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|10<space|2spc>Normalization
     and Integral Properties> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-10><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-11><vspace|0.5fn>
   </table-of-contents>
 
   <section|Definition and Basic Properties>
@@ -527,6 +531,57 @@
   This normalization ensures that the Shah function acts as a proper sampling
   operator, extracting function values at lattice points with unit weight per
   period.
+
+  <cite|grafakosClassicalFourierAnalysis><cite|hormanderI><cite|rudinRealComplexAnalysis><cite|katznelsonHarmonicAnalysis><cite|steinWeissEuclidean><cite|evansPDE><cite|courantHilbertII><cite|follandFourierApplications><cite|ahlforsComplexAnalysis><cite|mumfordTataI>
+
+  <\bibliography|bib|tm-plain|refs>
+    <\bib-list|10>
+      <bibitem*|1><label|bib-ahlforsComplexAnalysis>Lars<nbsp>V.<nbsp>Ahlfors.
+      <newblock><with|font-shape|italic|Complex Analysis>.
+      <newblock>McGraw-Hill, 3rd<localize| edition>, 1979.<newblock>
+
+      <bibitem*|2><label|bib-courantHilbertII>Richard Courant<localize| and
+      >David Hilbert. <newblock><with|font-shape|italic|Methods of
+      Mathematical Physics, Vol. II: Partial Differential Equations>.
+      <newblock>Wiley\UVCH, 1962.<newblock>
+
+      <bibitem*|3><label|bib-evansPDE>Lawrence<nbsp>C.<nbsp>Evans.
+      <newblock><with|font-shape|italic|Partial Differential Equations>.
+      <newblock>American Mathematical Society, 2nd<localize| edition>,
+      2010.<newblock>
+
+      <bibitem*|4><label|bib-follandFourierApplications>Gerald<nbsp>B.<nbsp>Folland.
+      <newblock><with|font-shape|italic|Fourier Analysis and Its
+      Applications>. <newblock>American Mathematical Society, 2009.<newblock>
+
+      <bibitem*|5><label|bib-grafakosClassicalFourierAnalysis>Loukas
+      Grafakos. <newblock><with|font-shape|italic|Classical Fourier
+      Analysis>. <newblock>Springer, 3rd<localize| edition>, 2014.<newblock>
+
+      <bibitem*|6><label|bib-hormanderI>Lars Hörmander.
+      <newblock><with|font-shape|italic|The Analysis of Linear Partial
+      Differential Operators I: Distribution Theory and Fourier Analysis>.
+      <newblock>Springer, 2nd<localize| edition>, 1990.<newblock>
+
+      <bibitem*|7><label|bib-katznelsonHarmonicAnalysis>Yitzhak Katznelson.
+      <newblock><with|font-shape|italic|An Introduction to Harmonic
+      Analysis>. <newblock>Cambridge University Press, 3rd<localize|
+      edition>, 2004.<newblock>
+
+      <bibitem*|8><label|bib-mumfordTataI>David Mumford.
+      <newblock><with|font-shape|italic|Tata Lectures on Theta I>.
+      <newblock>Birkhäuser, 1983.<newblock>
+
+      <bibitem*|9><label|bib-rudinRealComplexAnalysis>Walter Rudin.
+      <newblock><with|font-shape|italic|Real and Complex Analysis>.
+      <newblock>McGraw-Hill, 3rd<localize| edition>, 1987.<newblock>
+
+      <bibitem*|10><label|bib-steinWeissEuclidean>Elias<nbsp>M.<nbsp>Stein<localize|
+      and >Guido Weiss. <newblock><with|font-shape|italic|Introduction to
+      Fourier Analysis on Euclidean Spaces>. <newblock>Princeton University
+      Press, 1971.<newblock>
+    </bib-list>
+  </bibliography>
 </body>
 
 <\initial>
@@ -541,122 +596,154 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|auto-10|<tuple|10|9|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|auto-2|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|auto-3|<tuple|3|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|auto-4|<tuple|4|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|auto-5|<tuple|5|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|auto-6|<tuple|6|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|auto-7|<tuple|7|7|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|auto-8|<tuple|8|8|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|auto-9|<tuple|9|9|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|cor:shah_self_reciprocal|<tuple|8|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|def:shah_2d|<tuple|11|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|def:shah_function|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|def:weighted_shah|<tuple|13|7|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:2d_fourier_def|<tuple|54|7|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:asymptotic_dft|<tuple|79|9|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:convolution_def|<tuple|26|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:convolution_theorem|<tuple|42|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:delta_action|<tuple|24|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:delta_evaluation|<tuple|72|8|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:delta_scaling|<tuple|11|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:delta_sifting|<tuple|6|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:delta_sifting_2d|<tuple|57|7|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:dft_definition|<tuple|75|9|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:dft_shah|<tuple|73|9|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:distribute_f|<tuple|51|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:distribute_sum|<tuple|20|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:evaluate_at_k|<tuple|22|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:evaluate_at_lattice|<tuple|66|8|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:expand_integral|<tuple|81|10|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:exponential_fourier|<tuple|38|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:factor_T|<tuple|76|9|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:factor_constant|<tuple|23|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:factor_constants|<tuple|44|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:factor_constants_poisson|<tuple|71|8|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:factor_exponentials|<tuple|58|7|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:factor_out|<tuple|10|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:factor_out_2pi|<tuple|39|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:final_2d_result|<tuple|62|7|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:final_sampling_spectrum|<tuple|47|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:fourier_series_shah|<tuple|35|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:fourier_series_transform|<tuple|36|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:fundamental_period|<tuple|31|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:g_epsilon_fourier|<tuple|33|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:index_adjust|<tuple|14|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:index_order|<tuple|46|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:integral_form|<tuple|77|9|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:interchange_sum_integral|<tuple|56|7|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:interchange_sum_integral_norm|<tuple|82|10|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:linearity_fourier|<tuple|37|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:linearity_functional|<tuple|5|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:parseval_shah|<tuple|69|8|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:period_result|<tuple|16|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:period_shift|<tuple|13|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:periodization_spectrum|<tuple|48|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:poisson_shah|<tuple|67|8|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:product_1d_transforms|<tuple|61|7|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:product_definition|<tuple|18|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:product_delta|<tuple|21|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:product_theorem|<tuple|49|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:rearrange_factors|<tuple|65|8|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:reindex|<tuple|15|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:replication|<tuple|25|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:replication_applied|<tuple|45|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:sampling|<tuple|17|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:sampling_effect|<tuple|78|9|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:sampling_spectrum|<tuple|41|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:scaling_rhs|<tuple|9|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:scaling_start|<tuple|8|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:self_reciprocal|<tuple|40|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:shah_2d|<tuple|52|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:shah_2d_fourier|<tuple|53|7|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:shah_action|<tuple|3|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:shah_action_expand|<tuple|4|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:shah_as_limit|<tuple|32|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:shah_expand|<tuple|19|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:shah_fourier_transform|<tuple|30|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:shah_in_convolution|<tuple|27|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:shah_integral|<tuple|80|9|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:shah_pairing|<tuple|68|8|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:shah_period_T|<tuple|2|1|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:shah_periodic|<tuple|12|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:shah_scaling|<tuple|7|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:shah_unit|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:sifting_convolution|<tuple|29|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:sifting_normalization|<tuple|84|10|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:sinc_result|<tuple|34|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:single_term|<tuple|83|10|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:substitute_2d_shah|<tuple|55|7|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:substitute_shah_fourier|<tuple|43|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:substitute_shah_fourier_full|<tuple|70|8|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:substitute_shah_transform|<tuple|50|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:sum_linearity|<tuple|28|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:weighted_sampling|<tuple|64|8|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:weighted_shah|<tuple|63|7|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:windowed_sampling|<tuple|74|9|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:x_direction_shah|<tuple|59|7|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:y_direction_shah|<tuple|60|7|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|prop:shah_normalization|<tuple|17|9|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|prop:shah_periodicity|<tuple|4|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|prop:shah_support|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|thm:dft_shah_connection|<tuple|16|9|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|thm:periodization_spectrum|<tuple|10|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|thm:poisson_shah_connection|<tuple|15|8|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|thm:replication_property|<tuple|6|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|thm:sampling_property|<tuple|5|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|thm:sampling_spectral|<tuple|9|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|thm:shah_2d_fourier|<tuple|12|7|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|thm:shah_fourier|<tuple|7|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|thm:shah_scaling|<tuple|3|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|thm:weighted_shah_properties|<tuple|14|8|../.TeXmacs/texts/scratch/no_name_16.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-10|<tuple|10|9>>
+    <associate|auto-11|<tuple|84|10>>
+    <associate|auto-2|<tuple|2|2>>
+    <associate|auto-3|<tuple|3|3>>
+    <associate|auto-4|<tuple|4|4>>
+    <associate|auto-5|<tuple|5|5>>
+    <associate|auto-6|<tuple|6|6>>
+    <associate|auto-7|<tuple|7|7>>
+    <associate|auto-8|<tuple|8|8>>
+    <associate|auto-9|<tuple|9|9>>
+    <associate|bib-ahlforsComplexAnalysis|<tuple|1|10>>
+    <associate|bib-courantHilbertII|<tuple|2|10>>
+    <associate|bib-evansPDE|<tuple|3|10>>
+    <associate|bib-follandFourierApplications|<tuple|4|10>>
+    <associate|bib-grafakosClassicalFourierAnalysis|<tuple|5|10>>
+    <associate|bib-hormanderI|<tuple|6|10>>
+    <associate|bib-katznelsonHarmonicAnalysis|<tuple|7|10>>
+    <associate|bib-mumfordTataI|<tuple|8|10>>
+    <associate|bib-rudinRealComplexAnalysis|<tuple|9|10>>
+    <associate|bib-steinWeissEuclidean|<tuple|10|10>>
+    <associate|cor:shah_self_reciprocal|<tuple|8|5>>
+    <associate|def:shah_2d|<tuple|11|6>>
+    <associate|def:shah_function|<tuple|1|1>>
+    <associate|def:weighted_shah|<tuple|13|7>>
+    <associate|eq:2d_fourier_def|<tuple|54|7>>
+    <associate|eq:asymptotic_dft|<tuple|79|9>>
+    <associate|eq:convolution_def|<tuple|26|4>>
+    <associate|eq:convolution_theorem|<tuple|42|6>>
+    <associate|eq:delta_action|<tuple|24|3>>
+    <associate|eq:delta_evaluation|<tuple|72|8>>
+    <associate|eq:delta_scaling|<tuple|11|2>>
+    <associate|eq:delta_sifting|<tuple|6|2>>
+    <associate|eq:delta_sifting_2d|<tuple|57|7>>
+    <associate|eq:dft_definition|<tuple|75|9>>
+    <associate|eq:dft_shah|<tuple|73|9>>
+    <associate|eq:distribute_f|<tuple|51|6>>
+    <associate|eq:distribute_sum|<tuple|20|3>>
+    <associate|eq:evaluate_at_k|<tuple|22|3>>
+    <associate|eq:evaluate_at_lattice|<tuple|66|8>>
+    <associate|eq:expand_integral|<tuple|81|10>>
+    <associate|eq:exponential_fourier|<tuple|38|5>>
+    <associate|eq:factor_T|<tuple|76|9>>
+    <associate|eq:factor_constant|<tuple|23|3>>
+    <associate|eq:factor_constants|<tuple|44|6>>
+    <associate|eq:factor_constants_poisson|<tuple|71|8>>
+    <associate|eq:factor_exponentials|<tuple|58|7>>
+    <associate|eq:factor_out|<tuple|10|2>>
+    <associate|eq:factor_out_2pi|<tuple|39|5>>
+    <associate|eq:final_2d_result|<tuple|62|7>>
+    <associate|eq:final_sampling_spectrum|<tuple|47|6>>
+    <associate|eq:fourier_series_shah|<tuple|35|5>>
+    <associate|eq:fourier_series_transform|<tuple|36|5>>
+    <associate|eq:fundamental_period|<tuple|31|4>>
+    <associate|eq:g_epsilon_fourier|<tuple|33|5>>
+    <associate|eq:index_adjust|<tuple|14|3>>
+    <associate|eq:index_order|<tuple|46|6>>
+    <associate|eq:integral_form|<tuple|77|9>>
+    <associate|eq:interchange_sum_integral|<tuple|56|7>>
+    <associate|eq:interchange_sum_integral_norm|<tuple|82|10>>
+    <associate|eq:linearity_fourier|<tuple|37|5>>
+    <associate|eq:linearity_functional|<tuple|5|2>>
+    <associate|eq:parseval_shah|<tuple|69|8>>
+    <associate|eq:period_result|<tuple|16|3>>
+    <associate|eq:period_shift|<tuple|13|3>>
+    <associate|eq:periodization_spectrum|<tuple|48|6>>
+    <associate|eq:poisson_shah|<tuple|67|8>>
+    <associate|eq:product_1d_transforms|<tuple|61|7>>
+    <associate|eq:product_definition|<tuple|18|3>>
+    <associate|eq:product_delta|<tuple|21|3>>
+    <associate|eq:product_theorem|<tuple|49|6>>
+    <associate|eq:rearrange_factors|<tuple|65|8>>
+    <associate|eq:reindex|<tuple|15|3>>
+    <associate|eq:replication|<tuple|25|4>>
+    <associate|eq:replication_applied|<tuple|45|6>>
+    <associate|eq:sampling|<tuple|17|3>>
+    <associate|eq:sampling_effect|<tuple|78|9>>
+    <associate|eq:sampling_spectrum|<tuple|41|5>>
+    <associate|eq:scaling_rhs|<tuple|9|2>>
+    <associate|eq:scaling_start|<tuple|8|2>>
+    <associate|eq:self_reciprocal|<tuple|40|5>>
+    <associate|eq:shah_2d|<tuple|52|6>>
+    <associate|eq:shah_2d_fourier|<tuple|53|7>>
+    <associate|eq:shah_action|<tuple|3|2>>
+    <associate|eq:shah_action_expand|<tuple|4|2>>
+    <associate|eq:shah_as_limit|<tuple|32|4>>
+    <associate|eq:shah_expand|<tuple|19|3>>
+    <associate|eq:shah_fourier_transform|<tuple|30|4>>
+    <associate|eq:shah_in_convolution|<tuple|27|4>>
+    <associate|eq:shah_integral|<tuple|80|9>>
+    <associate|eq:shah_pairing|<tuple|68|8>>
+    <associate|eq:shah_period_T|<tuple|2|1>>
+    <associate|eq:shah_periodic|<tuple|12|3>>
+    <associate|eq:shah_scaling|<tuple|7|2>>
+    <associate|eq:shah_unit|<tuple|1|1>>
+    <associate|eq:sifting_convolution|<tuple|29|4>>
+    <associate|eq:sifting_normalization|<tuple|84|10>>
+    <associate|eq:sinc_result|<tuple|34|5>>
+    <associate|eq:single_term|<tuple|83|10>>
+    <associate|eq:substitute_2d_shah|<tuple|55|7>>
+    <associate|eq:substitute_shah_fourier|<tuple|43|6>>
+    <associate|eq:substitute_shah_fourier_full|<tuple|70|8>>
+    <associate|eq:substitute_shah_transform|<tuple|50|6>>
+    <associate|eq:sum_linearity|<tuple|28|4>>
+    <associate|eq:weighted_sampling|<tuple|64|8>>
+    <associate|eq:weighted_shah|<tuple|63|7>>
+    <associate|eq:windowed_sampling|<tuple|74|9>>
+    <associate|eq:x_direction_shah|<tuple|59|7>>
+    <associate|eq:y_direction_shah|<tuple|60|7>>
+    <associate|prop:shah_normalization|<tuple|17|9>>
+    <associate|prop:shah_periodicity|<tuple|4|3>>
+    <associate|prop:shah_support|<tuple|2|2>>
+    <associate|thm:dft_shah_connection|<tuple|16|9>>
+    <associate|thm:periodization_spectrum|<tuple|10|6>>
+    <associate|thm:poisson_shah_connection|<tuple|15|8>>
+    <associate|thm:replication_property|<tuple|6|4>>
+    <associate|thm:sampling_property|<tuple|5|3>>
+    <associate|thm:sampling_spectral|<tuple|9|5>>
+    <associate|thm:shah_2d_fourier|<tuple|12|7>>
+    <associate|thm:shah_fourier|<tuple|7|4>>
+    <associate|thm:shah_scaling|<tuple|3|2>>
+    <associate|thm:weighted_shah_properties|<tuple|14|8>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
+    <\associate|bib>
+      grafakosClassicalFourierAnalysis
+
+      hormanderI
+
+      rudinRealComplexAnalysis
+
+      katznelsonHarmonicAnalysis
+
+      steinWeissEuclidean
+
+      evansPDE
+
+      courantHilbertII
+
+      follandFourierApplications
+
+      ahlforsComplexAnalysis
+
+      mumfordTataI
+    </associate>
     <\associate|toc>
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Definition
       and Basic Properties> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
@@ -697,6 +784,10 @@
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|10<space|2spc>Normalization
       and Integral Properties> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-10><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-11><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
