@@ -8,7 +8,6 @@ import arb.Complex;
 import arb.Float;
 import arb.FloatInterval;
 import arb.Real;
-import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
@@ -56,29 +55,29 @@ public abstract class StationaryGaussianProcessSampler extends
     randomMeasure.close();
   }
 
-  static final double          autocorrelationLength            = 20.0;
+  static final double          autocorrelationLength  = 20.0;
 
-  static final int             bits                             = 128;
+  static final int             bits                   = 128;
 
-  static final double          dt                               = 0.01;
+  static final double          dt                     = 0.01;
 
-  static final FloatInterval   timeSpan                         = new FloatInterval(0,
-                                                                                    1000);
+  static final FloatInterval   timeSpan               = new FloatInterval(0,
+                                                                          1000);
 
-  static final double          L                                =
+  static final double          L                      =
                                  timeSpan.length(128, new Float()).doubleValue();
 
-  public static final double   df                               = 1.0 / L;
+  public static final double   df                     = 1.0 / L;
 
-  static final int             N                                = (int) (L / dt);
+  static final int             N                      = (int) (L / dt);
 
-  private static final boolean N_IS_EVEN                        = N % 2 == 0;
+  private static final boolean N_IS_EVEN              = N % 2 == 0;
 
-  public static final double   nyquistFrequency                 = 1.0 / (2 * dt);
+  public static final double   nyquistFrequency       = 1.0 / (2 * dt);
 
-  public static final int      nyquistIndex                     = N / 2;
+  public static final int      nyquistIndex           = N / 2;
 
-  static final int             positiveFrequencyCount           = N / 2 + 1;
+  static final int             positiveFrequencyCount = N / 2 + 1;
 
   public static double[] generateFrequencies()
   {
@@ -137,17 +136,14 @@ public abstract class StationaryGaussianProcessSampler extends
     frequencies          = generateFrequencies();
     powerSpectralDensity = getPowerSpectralDensity(frequencies);
 
-    try ( 
-          ComplexWhiteNoiseProcess whiteNoiseProcess = new ComplexWhiteNoiseProcess())
+    try ( ComplexWhiteNoiseProcess whiteNoiseProcess = new ComplexWhiteNoiseProcess())
     {
-      generateRandomWhiteNoiseMeasureFromSeed(seed, whiteNoiseProcess);
-      assert samplePath.size() == N : String.format("samplePath.size=%d != N = %d", samplePath.size(), N );
-      assert samplingTimes.size() == N : String.format("samplingTimes.size=%d != N = %d", samplingTimes.size(), N );
+      var W = generateRandomWhiteNoiseMeasureFromSeed(seed, whiteNoiseProcess);
+      W.constructPathFromRandomMeasure(bits, samplePath).mul(N, bits);
 
-      arblib.acb_dft_inverse(samplePath, randomMeasure, N, bits);
-
-      samplePath.mul(N, bits);
-
+      assert samplingTimes.size() == N : String.format("samplingTimes.size=%d != N = %d",
+                                                       samplingTimes.size(),
+                                                       N);
       for (int i = 0; i < N; i++)
       {
         samplingTimes.get(i).set(i * dt);
@@ -159,21 +155,22 @@ public abstract class StationaryGaussianProcessSampler extends
     }
   }
 
-  void generateRandomWhiteNoiseMeasureFromSeed(long theSeed,
-                                               ComplexWhiteNoiseProcess whiteNoiseProcess)
+  Complex generateRandomWhiteNoiseMeasureFromSeed(long theSeed,
+                                                  ComplexWhiteNoiseProcess whiteNoiseProcess)
   {
-    try ( Real mag = new Real() )
+    try ( Real mag = new Real())
     {
-    whiteNoiseProcess.initializeWithSeed(theSeed);
+      whiteNoiseProcess.initializeWithSeed(theSeed);
 
-    for (int k = 0; k <= nyquistIndex; k++)
-    {
-      drawWhiteNoiseSample(whiteNoiseProcess, k).mul(mag.set(powerSpectralDensity[k] * df)
-                                                        .sqrt(bits),
-                                                     bits,
-                                                     randomMeasure.get(k));
+      for (int k = 0; k <= nyquistIndex; k++)
+      {
+        drawWhiteNoiseSample(whiteNoiseProcess, k).mul(mag.set(powerSpectralDensity[k] * df)
+                                                          .sqrt(bits),
+                                                       bits,
+                                                       randomMeasure.get(k));
+      }
     }
-    }
+    return randomMeasure;
   }
 
   protected Complex drawWhiteNoiseSample(ComplexWhiteNoiseProcess whiteNoiseProcess, int k)

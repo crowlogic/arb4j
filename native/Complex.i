@@ -117,6 +117,24 @@ import arb.functions.complex.ComplexNullaryFunction;
    this();
    set(i);
   }
+
+  /**
+   * Calculate the inverse (discrete) Fourier transform (via some
+   * FastFourierTransfork routine or the other)
+   * 
+   * @param bits
+   * @param samplePath
+   * @return {@link arblib#acb_dft_inverse(Complex, Complex, int, int)}
+   */
+  public Complex reconstructPathFromRandomMeasure(int bits, Complex samplePath)
+  {
+    int N = size();
+    assert samplePath.size()
+                  == size() : String.format("samplePath.size=%d != N = %d", samplePath.size(), N);
+    arblib.acb_dft_inverse(samplePath, this, N, bits);
+    return samplePath;
+  }
+
   
   public Complex pow( Real operand, int prec, Complex r )
   {
