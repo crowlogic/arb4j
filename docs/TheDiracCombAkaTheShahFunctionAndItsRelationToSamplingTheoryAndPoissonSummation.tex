@@ -1,452 +1,638 @@
 \documentclass{article}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage{amsfonts}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,latexsym}
+\geometry{letterpaper}
 
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}{Lemma}
-\newtheorem{proposition}{Proposition}
-\newtheorem{definition}{Definition}
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\cdummy}{\cdot}
+\newcommand{\tmaffiliation}[1]{\\ #1}
+\newcommand{\tmrsub}[1]{\ensuremath{_{\textrm{#1}}}}
+\newcommand{\tmtextit}[1]{\text{{\itshape{#1}}}}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
 \newtheorem{corollary}{Corollary}
-
-\title{The Shah Function: Properties, Fourier Analysis, and Applications to Sampling Theory}
-\author{}
-\date{}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
 
 \begin{document}
+
+\title{The Shah Function: Properties, Fourier Analysis, and Applications to
+Sampling Theory}
+
+\author{
+  Stephen Crowley
+  \tmaffiliation{August 16, 2025}
+}
 
 \maketitle
 
 \begin{abstract}
-This document presents the mathematical properties of the Shah function (Dirac comb), including its definition as a periodic distribution of delta functions, fundamental algebraic identities, Fourier transform properties, and connections to sampling theory and Poisson summation. The analysis establishes the role of the Shah function in relating continuous and discrete signal processing through sampling and periodization operations.
+  This document presents the mathematical properties of the Shah function
+  (Dirac comb), including its definition as a periodic distribution of delta
+  functions, fundamental algebraic identities, Fourier transform properties,
+  and connections to sampling theory and Poisson summation. The analysis
+  establishes the role of the Shah function in relating continuous and
+  discrete signal processing through sampling and periodization operations.
 \end{abstract}
+
+{\tableofcontents}
 
 \section{Definition and Basic Properties}
 
 \begin{definition}
-\label{def:shah_function}
-The Shah function with unit period is defined as the distribution
-\begin{equation}
-\label{eq:shah_unit}
-\text{III}(x) = \sum_{k \in \mathbb{Z}} \delta(x - k)
-\end{equation}
-where $\delta$ is the Dirac delta function. For arbitrary period $T > 0$, the scaled Shah function is
-\begin{equation}
-\label{eq:shah_period_T}
-\text{III}_T(x) = \sum_{k \in \mathbb{Z}} \delta(x - kT)
-\end{equation}
+  \label{def:shah_function}The Shah function with unit period is defined as
+  the distribution
+  \begin{equation}
+    \label{eq:shah_unit} \text{III} (x) = \sum_{k \in \mathbb{Z}} \delta (x -
+    k)
+  \end{equation}
+  where $\delta$ is the Dirac delta function. For arbitrary period $T > 0$,
+  the scaled Shah function is
+  \begin{equation}
+    \label{eq:shah_period_T} \text{III}_T (x) = \sum_{k \in \mathbb{Z}} \delta
+    (x - kT)
+  \end{equation}
 \end{definition}
 
 \begin{proposition}
-\label{prop:shah_support}
-The Shah function $\text{III}(x)$ has support on the integer lattice $\mathbb{Z}$. For any test function $\phi \in \mathcal{S}(\mathbb{R})$ (Schwartz space), the action is given by
-\begin{equation}
-\label{eq:shah_action}
-\langle \text{III}, \phi \rangle = \sum_{k \in \mathbb{Z}} \phi(k)
-\end{equation}
+  \label{prop:shah_support}The Shah function III$(x)$ has support on the
+  integer lattice $\mathbb{Z}$. For any test function $\phi \in \mathcal{S}
+  (\mathbb{R})$ (Schwartz space), the action is given by
+  \begin{equation}
+    \label{eq:shah_action} \langle \text{III}, \phi \rangle = \sum_{k \in
+    \mathbb{Z}} \phi (k)
+  \end{equation}
 \end{proposition}
 
 \begin{proof}
-By definition \eqref{eq:shah_unit} and the sifting property of the delta function:
-\begin{align}
-\langle \text{III}, \phi \rangle &= \left\langle \sum_{k \in \mathbb{Z}} \delta(\cdot - k), \phi \right\rangle \label{eq:shah_action_expand}\\
-&= \sum_{k \in \mathbb{Z}} \langle \delta(\cdot - k), \phi \rangle \label{eq:linearity_functional}\\
-&= \sum_{k \in \mathbb{Z}} \phi(k) \label{eq:delta_sifting}
-\end{align}
-where step \eqref{eq:linearity_functional} uses the linearity of the distributional pairing and step \eqref{eq:delta_sifting} applies the sifting property $\langle \delta(\cdot - k), \phi \rangle = \phi(k)$.
+  By definition \eqref{eq:shah_unit} and the sifting property of the delta
+  function:
+  
+  \begin{align}
+    \langle \text{III}, \phi \rangle & \left. = \left\langle \sum_{k \in
+    \mathbb{Z}} \delta \right( \cdot - k), \phi \right\rangle 
+    \label{eq:shah_action_expand}\\
+    & = \sum_{k \in \mathbb{Z}} \langle \delta (\cdot - k), \phi \rangle 
+    \label{eq:linearity_functional}\\
+    & = \sum_{k \in \mathbb{Z}} \phi (k)  \label{eq:delta_sifting}
+  \end{align}
+  
+  where step \eqref{eq:linearity_functional} uses the linearity of the
+  distributional pairing and step \eqref{eq:delta_sifting} applies the sifting
+  property $\langle \delta (\cdot - k), \phi \rangle = \phi (k)$.
 \end{proof}
 
 \section{Scaling and Periodicity Properties}
 
 \begin{theorem}
-\label{thm:shah_scaling}
-The Shah function satisfies the scaling relation
-\begin{equation}
-\label{eq:shah_scaling}
-\text{III}_T(x) = \frac{1}{T} \text{III}\left(\frac{x}{T}\right)
-\end{equation}
+  \label{thm:shah_scaling}The Shah function satisfies the scaling relation
+  \begin{equation}
+    \label{eq:shah_scaling} \text{III}_T (x) = \frac{1}{T} \text{III} \left(
+    \frac{x}{T} \right)
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-Starting with definition \eqref{eq:shah_period_T}:
-\begin{align}
-\text{III}_T(x) &= \sum_{k \in \mathbb{Z}} \delta(x - kT) \label{eq:scaling_start}
-\end{align}
-
-For the right-hand side of \eqref{eq:shah_scaling}:
-\begin{align}
-\frac{1}{T} \text{III}\left(\frac{x}{T}\right) &= \frac{1}{T} \sum_{k \in \mathbb{Z}} \delta\left(\frac{x}{T} - k\right) \label{eq:scaling_rhs}\\
-&= \frac{1}{T} \sum_{k \in \mathbb{Z}} \delta\left(\frac{x - kT}{T}\right) \label{eq:factor_out}\\
-&= \sum_{k \in \mathbb{Z}} \delta(x - kT) \label{eq:delta_scaling}
-\end{align}
-where step \eqref{eq:delta_scaling} uses the scaling property $\delta(ax) = \frac{1}{|a|}\delta(x)$ with $a = 1/T > 0$.
-
-Comparing \eqref{eq:scaling_start} and \eqref{eq:delta_scaling} establishes \eqref{eq:shah_scaling}.
+  Starting with definition \eqref{eq:shah_period_T}:
+  
+  \begin{align}
+    \text{III}_T (x) & = \sum_{k \in \mathbb{Z}} \delta (x - kT) 
+    \label{eq:scaling_start}
+  \end{align}
+  
+  For the right-hand side of \eqref{eq:shah_scaling}:
+  
+  \begin{align}
+    \frac{1}{T} \text{III} \left( \frac{x}{T} \right) & = \frac{1}{T}  \sum_{k
+    \in \mathbb{Z}} \delta \left( \frac{x}{T} - k \right) 
+    \label{eq:scaling_rhs}\\
+    & = \frac{1}{T}  \sum_{k \in \mathbb{Z}} \delta \left( \frac{x - kT}{T}
+    \right)  \label{eq:factor_out}\\
+    & = \sum_{k \in \mathbb{Z}} \delta (x - kT)  \label{eq:delta_scaling}
+  \end{align}
+  
+  where step \eqref{eq:delta_scaling} uses the scaling property $\delta (ax) =
+  \frac{1}{|a|} \delta (x)$ with $a = 1 / T > 0$.
+  
+  Comparing \eqref{eq:scaling_start} and \eqref{eq:delta_scaling} establishes
+  \eqref{eq:shah_scaling}.
 \end{proof}
 
 \begin{proposition}
-\label{prop:shah_periodicity}
-The Shah function is periodic with period $T$:
-\begin{equation}
-\label{eq:shah_periodic}
-\text{III}_T(x + T) = \text{III}_T(x)
-\end{equation}
+  \label{prop:shah_periodicity}The Shah function is periodic with period $T$:
+  \begin{equation}
+    \label{eq:shah_periodic} \text{III}_T (x + T) = \text{III}_T (x)
+  \end{equation}
 \end{proposition}
 
 \begin{proof}
-\begin{align}
-\text{III}_T(x + T) &= \sum_{k \in \mathbb{Z}} \delta(x + T - kT) \label{eq:period_shift}\\
-&= \sum_{k \in \mathbb{Z}} \delta(x - (k-1)T) \label{eq:index_adjust}\\
-&= \sum_{j \in \mathbb{Z}} \delta(x - jT) \label{eq:reindex}\\
-&= \text{III}_T(x) \label{eq:period_result}
-\end{align}
-where step \eqref{eq:reindex} substitutes $j = k - 1$ and uses the fact that as $k$ ranges over all integers, so does $j$.
+  \begin{align}
+    \text{III}_T (x + T) & = \sum_{k \in \mathbb{Z}} \delta (x + T - kT) 
+    \label{eq:period_shift}\\
+    & = \sum_{k \in \mathbb{Z}} \delta (x - (k - 1) T) 
+    \label{eq:index_adjust}\\
+    & = \sum_{j \in \mathbb{Z}} \delta (x - jT)  \label{eq:reindex}\\
+    & = \text{III}_T (x)  \label{eq:period_result}
+  \end{align}
+  
+  where step \eqref{eq:reindex} substitutes $j = k - 1$ and uses the fact that
+  as $k$ ranges over all integers, so does $j$.
 \end{proof}
 
 \section{Sampling and Replication Properties}
 
 \begin{theorem}
-\label{thm:sampling_property}
-For any function $f$ and the Shah function, the sampling property states
-\begin{equation}
-\label{eq:sampling}
-f(x) \cdot \text{III}_T(x) = \sum_{k \in \mathbb{Z}} f(kT) \delta(x - kT)
-\end{equation}
+  \label{thm:sampling_property}For any function $f$ and the Shah function, the
+  sampling property states
+  \begin{equation}
+    \label{eq:sampling} f (x) \cdot \text{III}_T (x) = \sum_{k \in \mathbb{Z}}
+    f (kT) \delta (x - kT)
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-The product of distributions is defined through the action on test functions. For $\phi \in \mathcal{S}(\mathbb{R})$:
-\begin{align}
-\langle f \cdot \text{III}_T, \phi \rangle &= \langle f, \text{III}_T \cdot \phi \rangle \label{eq:product_definition}\\
-&= \langle f, \phi \sum_{k \in \mathbb{Z}} \delta(\cdot - kT) \rangle \label{eq:shah_expand}\\
-&= \sum_{k \in \mathbb{Z}} \langle f, \phi \delta(\cdot - kT) \rangle \label{eq:distribute_sum}\\
-&= \sum_{k \in \mathbb{Z}} \langle f \delta(\cdot - kT), \phi \rangle \label{eq:product_delta}\\
-&= \sum_{k \in \mathbb{Z}} \langle f(kT) \delta(\cdot - kT), \phi \rangle \label{eq:evaluate_at_k}\\
-&= \sum_{k \in \mathbb{Z}} f(kT) \langle \delta(\cdot - kT), \phi \rangle \label{eq:factor_constant}\\
-&= \sum_{k \in \mathbb{Z}} f(kT) \phi(kT) \label{eq:delta_action}
-\end{align}
-
-Step \eqref{eq:evaluate_at_k} uses the fact that $f \delta(x - kT) = f(kT) \delta(x - kT)$ since the delta function localizes the product to $x = kT$.
-
-This establishes that $f \cdot \text{III}_T$ has the same distributional action as $\sum_{k} f(kT) \delta(\cdot - kT)$.
+  The product of distributions is defined through the action on test
+  functions. For $\phi \in \mathcal{S} (\mathbb{R})$:
+  
+  \begin{align}
+    \langle f \cdot \text{III}_T, \phi \rangle & = \langle f, \text{III}_T
+    \cdot \phi \rangle  \label{eq:product_definition}\\
+    & = \langle f, \phi \sum_{k \in \mathbb{Z}} \delta (\cdot - kT) \rangle 
+    \label{eq:shah_expand}\\
+    & = \sum_{k \in \mathbb{Z}} \langle f, \phi \delta (\cdot - kT) \rangle 
+    \label{eq:distribute_sum}\\
+    & = \sum_{k \in \mathbb{Z}} \langle f \delta (\cdot - kT), \phi \rangle 
+    \label{eq:product_delta}\\
+    & = \sum_{k \in \mathbb{Z}} \langle f (kT) \delta (\cdot - kT), \phi
+    \rangle  \label{eq:evaluate_at_k}\\
+    & = \sum_{k \in \mathbb{Z}} f (kT) \langle \delta (\cdot - kT), \phi
+    \rangle  \label{eq:factor_constant}\\
+    & = \sum_{k \in \mathbb{Z}} f (kT) \phi (kT)  \label{eq:delta_action}
+  \end{align}
+  
+  Step \eqref{eq:evaluate_at_k} uses the fact that $f \delta (x - kT) = f (kT)
+  \delta (x - kT)$ since the delta function localizes the product to $x = kT$.
+  
+  This establishes that $f \cdot \text{III}_T$ has the same distributional
+  action as $\sum_k f (kT) \delta (\cdummy - kT)$.
 \end{proof}
 
 \begin{theorem}
-\label{thm:replication_property}
-The replication property of the Shah function under convolution is
-\begin{equation}
-\label{eq:replication}
-(f * \text{III}_T)(x) = \sum_{k \in \mathbb{Z}} f(x - kT)
-\end{equation}
-where $*$ denotes convolution.
+  \label{thm:replication_property}The replication property of the Shah
+  function under convolution is
+  \begin{equation}
+    \label{eq:replication} (f \ast \text{III}_T) (x) = \sum_{k \in \mathbb{Z}}
+    f (x - kT)
+  \end{equation}
+  where $\ast$ denotes convolution.
 \end{theorem}
 
 \begin{proof}
-By definition of convolution with a distribution:
-\begin{align}
-(f * \text{III}_T)(x) &= \langle \text{III}_T(\cdot), f(x - \cdot) \rangle \label{eq:convolution_def}\\
-&= \left\langle \sum_{k \in \mathbb{Z}} \delta(\cdot - kT), f(x - \cdot) \right\rangle \label{eq:shah_in_convolution}\\
-&= \sum_{k \in \mathbb{Z}} \langle \delta(\cdot - kT), f(x - \cdot) \rangle \label{eq:sum_linearity}\\
-&= \sum_{k \in \mathbb{Z}} f(x - kT) \label{eq:sifting_convolution}
-\end{align}
-where step \eqref{eq:sifting_convolution} applies the sifting property at $kT$.
+  By definition of convolution with a distribution:
+  
+  \begin{align}
+    (f \ast \text{III}_T) (x) & = \langle \text{III}_T (\cdot), f (x - \cdot)
+    \rangle  \label{eq:convolution_def}\\
+    & = \left\langle \sum_{k \in \mathbb{Z}} \delta \right( \cdot - kT), f (x
+    - \cdot) \rangle  \label{eq:shah_in_convolution}\\
+    & = \sum_{k \in \mathbb{Z}} \langle \delta (\cdot - kT), f (x - \cdot)
+    \rangle  \label{eq:sum_linearity}\\
+    & = \sum_{k \in \mathbb{Z}} f (x - kT)  \label{eq:sifting_convolution}
+  \end{align}
+  
+  where step \eqref{eq:sifting_convolution} applies the sifting property at
+  $kT$.
 \end{proof}
 
 \section{Fourier Transform Properties}
 
 \begin{theorem}
-\label{thm:shah_fourier}
-The Fourier transform of the Shah function with period $T$ is
-\begin{equation}
-\label{eq:shah_fourier_transform}
-\mathcal{F}[\text{III}_T](\omega) = \frac{2\pi}{T} \sum_{n \in \mathbb{Z}} \delta\left(\omega - \frac{2\pi n}{T}\right) = \frac{2\pi}{T} \text{III}_{\frac{2\pi}{T}}(\omega)
-\end{equation}
-using the angular frequency convention $\mathcal{F}[f](\omega) = \int_{-\infty}^{\infty} f(x) e^{-i\omega x} dx$.
+  \label{thm:shah_fourier}The Fourier transform of the Shah function with
+  period $T$ is
+  \begin{equation}
+    \label{eq:shah_fourier_transform} \mathcal{F} [\text{III}_T] (\omega) =
+    \frac{2 \pi}{T}  \sum_{n \in \mathbb{Z}} \delta \left( \omega - \frac{2
+    \pi n}{T} \right) = \frac{2 \pi}{T} \text{III}_{\frac{2 \pi}{T}} (\omega)
+  \end{equation}
+  using the angular frequency convention $\mathcal{F} [f] (\omega) = \int_{-
+  \infty}^{\infty} f (x) e^{- i \omega x} dx$.
 \end{theorem}
 
 \begin{proof}
-The Fourier transform of $\text{III}_T$ is computed using the Poisson summation formula. First, consider the fundamental period function
-\begin{equation}
-\label{eq:fundamental_period}
-g_T(x) = \begin{cases}
-1 & \text{if } |x| < T/2 \\
-0 & \text{if } |x| > T/2
-\end{cases}
-\end{equation}
-
-The Shah function can be expressed as the limit:
-\begin{equation}
-\label{eq:shah_as_limit}
-\text{III}_T(x) = \lim_{\epsilon \to 0^+} \frac{1}{T} \sum_{k \in \mathbb{Z}} g_\epsilon(x - kT)
-\end{equation}
-
-The Fourier transform of $g_\epsilon$ is:
-\begin{align}
-\mathcal{F}[g_\epsilon](\omega) &= \int_{-\epsilon/2}^{\epsilon/2} e^{-i\omega x} dx \label{eq:g_epsilon_fourier}\\
-&= \frac{2\sin(\omega\epsilon/2)}{\omega} \label{eq:sinc_result}
-\end{align}
-
-For $\epsilon \to 0$, this approaches $\epsilon$ for $\omega = 0$ and $0$ for $\omega \neq 0$, giving $\mathcal{F}[g_\epsilon](\omega) \to \epsilon \cdot 2\pi\delta(\omega)$ in the distributional limit.
-
-Alternatively, use the direct approach with the Poisson summation formula. The periodic distribution $\text{III}_T$ has Fourier series representation:
-\begin{equation}
-\label{eq:fourier_series_shah}
-\text{III}_T(x) = \frac{1}{T} \sum_{n \in \mathbb{Z}} e^{i 2\pi n x / T}
-\end{equation}
-
-Taking the Fourier transform term by term:
-\begin{align}
-\mathcal{F}[\text{III}_T](\omega) &= \mathcal{F}\left[\frac{1}{T} \sum_{n \in \mathbb{Z}} e^{i 2\pi n x / T}\right] \label{eq:fourier_series_transform}\\
-&= \frac{1}{T} \sum_{n \in \mathbb{Z}} \mathcal{F}[e^{i 2\pi n x / T}](\omega) \label{eq:linearity_fourier}\\
-&= \frac{1}{T} \sum_{n \in \mathbb{Z}} 2\pi \delta\left(\omega - \frac{2\pi n}{T}\right) \label{eq:exponential_fourier}\\
-&= \frac{2\pi}{T} \sum_{n \in \mathbb{Z}} \delta\left(\omega - \frac{2\pi n}{T}\right) \label{eq:factor_out_2pi}
-\end{align}
-
-Step \eqref{eq:exponential_fourier} uses $\mathcal{F}[e^{i\omega_0 x}](\omega) = 2\pi\delta(\omega - \omega_0)$.
+  The Fourier transform of III\tmrsub{$T$} is computed using the Poisson
+  summation formula. First, consider the fundamental period function
+  \begin{equation}
+    \label{eq:fundamental_period} g_T (x) = \left\{\begin{array}{ll}
+      1 & \text{if } |x| < T / 2\\
+      0 & \text{if } |x| > T / 2
+    \end{array}\right.
+  \end{equation}
+  The Shah function can be expressed as the limit:
+  \begin{equation}
+    \label{eq:shah_as_limit} \text{III}_T (x) = \lim_{\epsilon \to 0^+} 
+    \frac{1}{T}  \sum_{k \in \mathbb{Z}} g_{\epsilon}  (x - kT)
+  \end{equation}
+  The Fourier transform of $g_{\epsilon}$ is:
+  
+  \begin{align}
+    \mathcal{F} [g_{\epsilon}] (\omega) & = \int_{- \epsilon / 2}^{\epsilon /
+    2} e^{- i \omega x} dx  \label{eq:g_epsilon_fourier}\\
+    & = \frac{2 \sin (\omega \epsilon / 2)}{\omega}  \label{eq:sinc_result}
+  \end{align}
+  
+  For $\epsilon \to 0$, this approaches $\epsilon$ for $\omega = 0$ and $0$
+  for $\omega \neq 0$, giving $\mathcal{F} [g_{\epsilon}] (\omega) \to
+  \epsilon \cdot 2 \pi \delta (\omega)$ in the distributional limit.
+  
+  Alternatively, use the direct approach with the Poisson summation formula.
+  The periodic distribution III\tmrsub{$T$} has Fourier series representation:
+  \begin{equation}
+    \label{eq:fourier_series_shah} \text{III}_T (x) = \frac{1}{T}  \sum_{n \in
+    \mathbb{Z}} e^{i 2 \pi nx / T}
+  \end{equation}
+  Taking the Fourier transform term by term:
+  
+  \begin{align}
+    \mathcal{F} [\text{III}_T] (\omega) & =\mathcal{F} \left[ \frac{1}{T} 
+    \sum_{n \in \mathbb{Z}} e^{i 2 \pi nx / T} \right] 
+    \label{eq:fourier_series_transform}\\
+    & = \frac{1}{T}  \sum_{n \in \mathbb{Z}} \mathcal{F} [e^{i 2 \pi nx / T}]
+    (\omega)  \label{eq:linearity_fourier}\\
+    & = \frac{1}{T}  \sum_{n \in \mathbb{Z}} 2 \pi \delta \left( \omega -
+    \frac{2 \pi n}{T} \right)  \label{eq:exponential_fourier}\\
+    & = \frac{2 \pi}{T}  \sum_{n \in \mathbb{Z}} \delta \left( \omega -
+    \frac{2 \pi n}{T} \right)  \label{eq:factor_out_2pi}
+  \end{align}
+  
+  Step \eqref{eq:exponential_fourier} uses $\mathcal{F} [e^{i \omega_0 x}]
+  (\omega) = 2 \pi \delta (\omega - \omega_0)$.
 \end{proof}
 
 \begin{corollary}
-\label{cor:shah_self_reciprocal}
-The Shah function is self-reciprocal under Fourier transform up to scaling:
-\begin{equation}
-\label{eq:self_reciprocal}
-\mathcal{F}[\text{III}_T] = \frac{2\pi}{T} \text{III}_{\frac{2\pi}{T}}
-\end{equation}
+  \label{cor:shah_self_reciprocal}The Shah function is self-reciprocal under
+  Fourier transform up to scaling:
+  \begin{equation}
+    \label{eq:self_reciprocal} \mathcal{F} [\text{III}_T] = \frac{2 \pi}{T}
+    \text{III}_{\frac{2 \pi}{T}}
+  \end{equation}
 \end{corollary}
 
 \section{Sampling Theorem and Spectral Replication}
 
 \begin{theorem}
-\label{thm:sampling_spectral}
-When a function $f(x)$ is multiplied by $\text{III}_T(x)$, its Fourier transform becomes
-\begin{equation}
-\label{eq:sampling_spectrum}
-\mathcal{F}[f \cdot \text{III}_T](\omega) = \frac{1}{T} \sum_{n \in \mathbb{Z}} \mathcal{F}[f]\left(\omega - \frac{2\pi n}{T}\right)
-\end{equation}
+  \label{thm:sampling_spectral}When a function $f (x)$ is multiplied by III$_T
+  (x)$, its Fourier transform becomes
+  \begin{equation}
+    \label{eq:sampling_spectrum} \mathcal{F} [f \cdummy \text{III}_T] (\omega)
+    = \frac{1}{T}  \sum_{n \in \mathbb{Z}} \mathcal{F} [f]  \left( \omega -
+    \frac{2 \pi n}{T} \right)
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-Using the convolution theorem and result \eqref{eq:shah_fourier_transform}:
-\begin{align}
-\mathcal{F}[f \cdot \text{III}_T](\omega) &= \frac{1}{2\pi} (\mathcal{F}[f] * \mathcal{F}[\text{III}_T])(\omega) \label{eq:convolution_theorem}\\
-&= \frac{1}{2\pi} \mathcal{F}[f] * \left(\frac{2\pi}{T} \text{III}_{\frac{2\pi}{T}}\right)(\omega) \label{eq:substitute_shah_fourier}\\
-&= \frac{1}{T} (\mathcal{F}[f] * \text{III}_{\frac{2\pi}{T}})(\omega) \label{eq:factor_constants}
-\end{align}
-
-Applying the replication property \eqref{eq:replication} to the convolution:
-\begin{align}
-(\mathcal{F}[f] * \text{III}_{\frac{2\pi}{T}})(\omega) &= \sum_{n \in \mathbb{Z}} \mathcal{F}[f]\left(\omega - n \cdot \frac{2\pi}{T}\right) \label{eq:replication_applied}\\
-&= \sum_{n \in \mathbb{Z}} \mathcal{F}[f]\left(\omega - \frac{2\pi n}{T}\right) \label{eq:index_order}
-\end{align}
-
-Combining with \eqref{eq:factor_constants}:
-\begin{equation}
-\label{eq:final_sampling_spectrum}
-\mathcal{F}[f \cdot \text{III}_T](\omega) = \frac{1}{T} \sum_{n \in \mathbb{Z}} \mathcal{F}[f]\left(\omega - \frac{2\pi n}{T}\right)
-\end{equation}
+  Using the convolution theorem and result \eqref{eq:shah_fourier_transform}:
+  
+  \begin{align}
+    \mathcal{F} [f \cdummy \text{III}_T] (\omega) & = \frac{1}{2 \pi} 
+    (\mathcal{F}[f] \ast \mathcal{F}[\text{III}_T]) (\omega) 
+    \label{eq:convolution_theorem}\\
+    & = \frac{1}{2 \pi} \mathcal{F} [f] \ast \left( \frac{2 \pi}{T}
+    \text{III}_{\frac{2 \pi}{T}} \right) (\omega) 
+    \label{eq:substitute_shah_fourier}\\
+    & = \frac{1}{T} (\mathcal{F} [f] \ast \text{III}_{\frac{2 \pi}{T}})
+    (\omega)  \label{eq:factor_constants}
+  \end{align}
+  
+  Applying the replication property \eqref{eq:replication} to the convolution:
+  
+  \begin{align}
+    (\mathcal{F} [f] \ast \text{III}_{\frac{2 \pi}{T}}) (\omega) & = \sum_{n
+    \in \mathbb{Z}} \mathcal{F} [f]  \left( \omega - n \cdot \frac{2 \pi}{T}
+    \right)  \label{eq:replication_applied}\\
+    & = \sum_{n \in \mathbb{Z}} \mathcal{F} [f]  \left( \omega - \frac{2 \pi
+    n}{T} \right)  \label{eq:index_order}
+  \end{align}
+  
+  Combining with \eqref{eq:factor_constants}:
+  \begin{equation}
+    \label{eq:final_sampling_spectrum} \mathcal{F} [f \cdummy \text{III}_T]
+    (\omega) = \frac{1}{T}  \sum_{n \in \mathbb{Z}} \mathcal{F} [f]  \left(
+    \omega - \frac{2 \pi n}{T} \right)
+  \end{equation}
 \end{proof}
 
 \begin{theorem}
-\label{thm:periodization_spectrum}
-When a function $f(x)$ is convolved with $\text{III}_T(x)$, its Fourier transform becomes
-\begin{equation}
-\label{eq:periodization_spectrum}
-\mathcal{F}[f * \text{III}_T](\omega) = \mathcal{F}[f](\omega) \cdot \mathcal{F}[\text{III}_T](\omega) = \frac{2\pi}{T} \mathcal{F}[f](\omega) \sum_{n \in \mathbb{Z}} \delta\left(\omega - \frac{2\pi n}{T}\right)
-\end{equation}
+  \label{thm:periodization_spectrum}When a function $f (x)$ is convolved with
+  III$_T (x)$, its Fourier transform becomes
+  \begin{equation}
+    \label{eq:periodization_spectrum} \mathcal{F}[f \ast \text{III}_T]
+    (\omega) =\mathcal{F} [f] (\omega) \cdot \mathcal{F} [\text{III}_T]
+    (\omega) = \frac{2 \pi}{T} \mathcal{F} [f] (\omega)  \sum_{n \in
+    \mathbb{Z}} \delta \left( \omega - \frac{2 \pi n}{T} \right)
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-Direct application of the convolution theorem:
-\begin{align}
-\mathcal{F}[f * \text{III}_T](\omega) &= \mathcal{F}[f](\omega) \cdot \mathcal{F}[\text{III}_T](\omega) \label{eq:product_theorem}\\
-&= \mathcal{F}[f](\omega) \cdot \frac{2\pi}{T} \sum_{n \in \mathbb{Z}} \delta\left(\omega - \frac{2\pi n}{T}\right) \label{eq:substitute_shah_transform}\\
-&= \frac{2\pi}{T} \mathcal{F}[f](\omega) \sum_{n \in \mathbb{Z}} \delta\left(\omega - \frac{2\pi n}{T}\right) \label{eq:distribute_f}
-\end{align}
-
-This shows that the spectrum is sampled at the reciprocal lattice points $\frac{2\pi n}{T}$.
+  Direct application of the convolution theorem:
+  
+  \begin{align}
+    \mathcal{F}[f \ast \text{III}_T] (\omega) & =\mathcal{F} [f] (\omega)
+    \cdot \mathcal{F} [\text{III}_T] (\omega)  \label{eq:product_theorem}\\
+    & =\mathcal{F} [f] (\omega) \cdot \frac{2 \pi}{T}  \sum_{n \in
+    \mathbb{Z}} \delta \left( \omega - \frac{2 \pi n}{T} \right) 
+    \label{eq:substitute_shah_transform}\\
+    & = \frac{2 \pi}{T} \mathcal{F} [f] (\omega)  \sum_{n \in \mathbb{Z}}
+    \delta \left( \omega - \frac{2 \pi n}{T} \right)  \label{eq:distribute_f}
+  \end{align}
+  
+  This shows that the spectrum is sampled at the reciprocal lattice points
+  $\frac{2 \pi n}{T}$.
 \end{proof}
 
 \section{Two-Dimensional Shah Function}
 
 \begin{definition}
-\label{def:shah_2d}
-The two-dimensional Shah function on a rectangular lattice with periods $T_x, T_y > 0$ is
-\begin{equation}
-\label{eq:shah_2d}
-\text{III}_{T_x,T_y}(x,y) = \sum_{m,n \in \mathbb{Z}} \delta(x - mT_x) \delta(y - nT_y)
-\end{equation}
+  \label{def:shah_2d}The two-dimensional Shah function on a rectangular
+  lattice with periods $T_x, T_y > 0$ is
+  \begin{equation}
+    \label{eq:shah_2d} \text{III}_{T_x, T_y} (x, y) = \sum_{m, n \in
+    \mathbb{Z}} \delta (x - mT_x) \delta (y - nT_y)
+  \end{equation}
 \end{definition}
 
 \begin{theorem}
-\label{thm:shah_2d_fourier}
-The two-dimensional Fourier transform of the rectangular lattice Shah function is
-\begin{equation}
-\label{eq:shah_2d_fourier}
-\mathcal{F}[\text{III}_{T_x,T_y}](k_x, k_y) = \frac{(2\pi)^2}{T_x T_y} \sum_{m,n \in \mathbb{Z}} \delta\left(k_x - \frac{2\pi m}{T_x}\right) \delta\left(k_y - \frac{2\pi n}{T_y}\right)
-\end{equation}
+  \label{thm:shah_2d_fourier}The two-dimensional Fourier transform of the
+  rectangular lattice Shah function is
+  \begin{equation}
+    \label{eq:shah_2d_fourier} \mathcal{F} [\text{III}_{T_x, T_y}] (k_x, k_y)
+    = \frac{(2 \pi)^2}{T_x T_y}  \sum_{m, n \in \mathbb{Z}} \delta \left( k_x
+    - \frac{2 \pi m}{T_x} \right) \delta \left( k_y - \frac{2 \pi n}{T_y}
+    \right)
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-The two-dimensional Fourier transform factorizes:
-\begin{align}
-&\mathcal{F}[\text{III}_{T_x,T_y}](k_x, k_y) \nonumber\\
-&= \iint \text{III}_{T_x,T_y}(x,y) e^{-i(k_x x + k_y y)} dx dy \label{eq:2d_fourier_def}\\
-&= \iint \sum_{m,n \in \mathbb{Z}} \delta(x - mT_x) \delta(y - nT_y) e^{-i(k_x x + k_y y)} dx dy \label{eq:substitute_2d_shah}\\
-&= \sum_{m,n \in \mathbb{Z}} \iint \delta(x - mT_x) \delta(y - nT_y) e^{-i(k_x x + k_y y)} dx dy \label{eq:interchange_sum_integral}\\
-&= \sum_{m,n \in \mathbb{Z}} e^{-i(k_x mT_x + k_y nT_y)} \label{eq:delta_sifting_2d}\\
-&= \sum_{m \in \mathbb{Z}} e^{-i k_x mT_x} \sum_{n \in \mathbb{Z}} e^{-i k_y nT_y} \label{eq:factor_exponentials}
-\end{align}
-
-Each sum is a one-dimensional Shah transform:
-\begin{align}
-\sum_{m \in \mathbb{Z}} e^{-i k_x mT_x} &= \frac{2\pi}{T_x} \sum_{j \in \mathbb{Z}} \delta\left(k_x - \frac{2\pi j}{T_x}\right) \label{eq:x_direction_shah}\\
-\sum_{n \in \mathbb{Z}} e^{-i k_y nT_y} &= \frac{2\pi}{T_y} \sum_{\ell \in \mathbb{Z}} \delta\left(k_y - \frac{2\pi \ell}{T_y}\right) \label{eq:y_direction_shah}
-\end{align}
-
-Taking the product:
-\begin{align}
-&\mathcal{F}[\text{III}_{T_x,T_y}](k_x, k_y) \nonumber\\
-&= \frac{2\pi}{T_x} \sum_{j \in \mathbb{Z}} \delta\left(k_x - \frac{2\pi j}{T_x}\right) \cdot \frac{2\pi}{T_y} \sum_{\ell \in \mathbb{Z}} \delta\left(k_y - \frac{2\pi \ell}{T_y}\right) \label{eq:product_1d_transforms}\\
-&= \frac{(2\pi)^2}{T_x T_y} \sum_{j,\ell \in \mathbb{Z}} \delta\left(k_x - \frac{2\pi j}{T_x}\right) \delta\left(k_y - \frac{2\pi \ell}{T_y}\right) \label{eq:final_2d_result}
-\end{align}
-
-Relabeling $j = m, \ell = n$ gives equation \eqref{eq:shah_2d_fourier}.
+  The two-dimensional Fourier transform factorizes:
+  
+  \begin{align}
+    & \mathcal{F} [\text{III}_{T_x, T_y}] (k_x, k_y) \nonumber\\
+    & = \iint \text{III}_{T_x, T_y} (x, y) e^{- i (k_x x + k_y y)} dxdy 
+    \label{eq:2d_fourier_def}\\
+    & = \iint \sum_{m, n \in \mathbb{Z}} \delta (x - mT_x) \delta (y - nT_y)
+    e^{- i (k_x x + k_y y)} dxdy  \label{eq:substitute_2d_shah}\\
+    & = \sum_{m, n \in \mathbb{Z}} \iint \delta (x - mT_x) \delta (y - nT_y)
+    e^{- i (k_x x + k_y y)} dxdy  \label{eq:interchange_sum_integral}\\
+    & = \sum_{m, n \in \mathbb{Z}} e^{- i (k_x mT_x + k_y nT_y)} 
+    \label{eq:delta_sifting_2d}\\
+    & = \sum_{m \in \mathbb{Z}} e^{- ik_x mT_x}  \sum_{n \in \mathbb{Z}} e^{-
+    ik_y nT_y}  \label{eq:factor_exponentials}
+  \end{align}
+  
+  Each sum is a one-dimensional Shah transform:
+  
+  \begin{align}
+    \sum_{m \in \mathbb{Z}} e^{- ik_x mT_x} & = \frac{2 \pi}{T_x}  \sum_{j \in
+    \mathbb{Z}} \delta \left( k_x - \frac{2 \pi j}{T_x} \right) 
+    \label{eq:x_direction_shah}\\
+    \sum_{n \in \mathbb{Z}} e^{- ik_y nT_y} & = \frac{2 \pi}{T_y}  \sum_{\ell
+    \in \mathbb{Z}} \delta \left( k_y - \frac{2 \pi \ell}{T_y} \right) 
+    \label{eq:y_direction_shah}
+  \end{align}
+  
+  Taking the product:
+  
+  \begin{align}
+    & \mathcal{F} [\text{III}_{T_x, T_y}] (k_x, k_y) \nonumber\\
+    & = \frac{2 \pi}{T_x}  \sum_{j \in \mathbb{Z}} \delta \left( k_x -
+    \frac{2 \pi j}{T_x} \right) \cdot \frac{2 \pi}{T_y}  \sum_{\ell \in
+    \mathbb{Z}} \delta \left( k_y - \frac{2 \pi \ell}{T_y} \right) 
+    \label{eq:product_1d_transforms}\\
+    & = \frac{(2 \pi)^2}{T_x T_y}  \sum_{j, \ell \in \mathbb{Z}} \delta
+    \left( k_x - \frac{2 \pi j}{T_x} \right) \delta \left( k_y - \frac{2 \pi
+    \ell}{T_y} \right)  \label{eq:final_2d_result}
+  \end{align}
+  
+  Relabeling $j = m, \ell = n$ gives equation \eqref{eq:shah_2d_fourier}.
 \end{proof}
 
 \section{Weighted Shah Functions}
 
 \begin{definition}
-\label{def:weighted_shah}
-A weighted two-dimensional Shah function incorporates reliability weights $w_{m,n}$, density weights $\rho(x,y)$, and local tapers $\tau(x,y)$:
-\begin{equation}
-\label{eq:weighted_shah}
-\text{III}_{w,\rho,\tau}(x,y) = \sum_{m,n \in \mathbb{Z}} w_{m,n} \rho(mT_x, nT_y) \tau(x - mT_x, y - nT_y) \delta(x - mT_x) \delta(y - nT_y)
-\end{equation}
+  \label{def:weighted_shah}A weighted two-dimensional Shah function
+  incorporates reliability weights $w_{m, n}$, density weights $\rho (x, y)$,
+  and local tapers $\tau (x, y)$:
+  \begin{equation}
+    \label{eq:weighted_shah} \text{III}_{w, \rho, \tau} (x, y) = \sum_{m, n
+    \in \mathbb{Z}} w_{m, n} \rho (mT_x, nT_y) \tau (x - mT_x, y - nT_y)
+    \delta (x - mT_x) \delta (y - nT_y)
+  \end{equation}
 \end{definition}
 
 \begin{theorem}
-\label{thm:weighted_shah_properties}
-The weighted Shah function satisfies the sampling property
-\begin{equation}
-\label{eq:weighted_sampling}
-f(x,y) \cdot \text{III}_{w,\rho,\tau}(x,y) = \sum_{m,n} w_{m,n} \rho(mT_x, nT_y) f(mT_x, nT_y) \tau(0,0) \delta(x - mT_x) \delta(y - nT_y)
-\end{equation}
+  \label{thm:weighted_shah_properties}The weighted Shah function satisfies the
+  sampling property
+  \begin{equation}
+    \label{eq:weighted_sampling} f (x, y) \cdot \text{III}_{w, \rho, \tau} (x,
+    y) = \sum_{m, n} w_{m, n} \rho (mT_x, nT_y) f (mT_x, nT_y) \tau (0, 0)
+    \delta (x - mT_x) \delta (y - nT_y)
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-For each term in the weighted sum:
-\begin{align}
-&f(x,y) \cdot w_{m,n} \rho(mT_x, nT_y) \tau(x - mT_x, y - nT_y) \delta(x - mT_x) \delta(y - nT_y) \nonumber\\
-&= w_{m,n} \rho(mT_x, nT_y) f(x,y) \tau(x - mT_x, y - nT_y) \delta(x - mT_x) \delta(y - nT_y) \label{eq:rearrange_factors}\\
-&= w_{m,n} \rho(mT_x, nT_y) f(mT_x, nT_y) \tau(0, 0) \delta(x - mT_x) \delta(y - nT_y) \label{eq:evaluate_at_lattice}
-\end{align}
-
-Step \eqref{eq:evaluate_at_lattice} uses the fact that the delta functions force evaluation at $(x,y) = (mT_x, nT_y)$, so $f(x,y) = f(mT_x, nT_y)$ and $\tau(x - mT_x, y - nT_y) = \tau(0,0)$.
-
-Summing over all lattice points $(m,n)$ gives equation \eqref{eq:weighted_sampling}.
+  For each term in the weighted sum:
+  
+  \begin{align}
+    & f (x, y) \cdot w_{m, n} \rho (mT_x, nT_y) \tau (x - mT_x, y - nT_y)
+    \delta (x - mT_x) \delta (y - nT_y) \nonumber\\
+    & = w_{m, n} \rho (mT_x, nT_y) f (x, y) \tau (x - mT_x, y - nT_y) \delta
+    (x - mT_x) \delta (y - nT_y)  \label{eq:rearrange_factors}\\
+    & = w_{m, n} \rho (mT_x, nT_y) f (mT_x, nT_y) \tau (0, 0) \delta (x -
+    mT_x) \delta (y - nT_y)  \label{eq:evaluate_at_lattice}
+  \end{align}
+  
+  Step \eqref{eq:evaluate_at_lattice} uses the fact that the delta functions
+  force evaluation at $(x, y) = (mT_x, nT_y)$, so $f (x, y) = f (mT_x, nT_y)$
+  and $\tau (x - mT_x, y - nT_y) = \tau (0, 0)$.
+  
+  Summing over all lattice points $(m, n)$ gives equation
+  \eqref{eq:weighted_sampling}.
 \end{proof}
 
 \section{Connection to Poisson Summation}
 
 \begin{theorem}
-\label{thm:poisson_shah_connection}
-The Poisson summation formula can be expressed using Shah functions as
-\begin{equation}
-\label{eq:poisson_shah}
-\sum_{k \in \mathbb{Z}} f(kT) = \frac{1}{T} \sum_{n \in \mathbb{Z}} \mathcal{F}[f]\left(\frac{2\pi n}{T}\right)
-\end{equation}
-This identity follows from the duality between multiplication by $\text{III}_T$ (sampling) and convolution with $\text{III}_{2\pi/T}$ (replication) in the frequency domain.
+  \label{thm:poisson_shah_connection}The Poisson summation formula can be
+  expressed using Shah functions as
+  \begin{equation}
+    \label{eq:poisson_shah} \sum_{k \in \mathbb{Z}} f (kT) = \frac{1}{T} 
+    \sum_{n \in \mathbb{Z}} \mathcal{F} [f] \left( \frac{2 \pi n}{T} \right)
+  \end{equation}
+  This identity follows from the duality between multiplication by
+  III\tmrsub{$T$} (sampling) and convolution with III\tmrsub{$2 \pi / T$}
+  (replication) in the frequency domain.
 \end{theorem}
 
 \begin{proof}
-Consider the identity:
-\begin{equation}
-\label{eq:shah_pairing}
-\langle \text{III}_T, f \rangle = \langle \text{III}, f(T \cdot) \rangle = \sum_{k \in \mathbb{Z}} f(kT)
-\end{equation}
-
-By Parseval's theorem for distributions:
-\begin{equation}
-\label{eq:parseval_shah}
-\langle \text{III}_T, f \rangle = \frac{1}{2\pi} \langle \mathcal{F}[\text{III}_T], \mathcal{F}[f] \rangle
-\end{equation}
-
-Substituting the Fourier transform of the Shah function from equation \eqref{eq:shah_fourier_transform}:
-\begin{align}
-\frac{1}{2\pi} \langle \mathcal{F}[\text{III}_T], \mathcal{F}[f] \rangle &= \frac{1}{2\pi} \left\langle \frac{2\pi}{T} \sum_{n \in \mathbb{Z}} \delta\left(\cdot - \frac{2\pi n}{T}\right), \mathcal{F}[f] \right\rangle \label{eq:substitute_shah_fourier_full}\\
-&= \frac{1}{T} \sum_{n \in \mathbb{Z}} \left\langle \delta\left(\cdot - \frac{2\pi n}{T}\right), \mathcal{F}[f] \right\rangle \label{eq:factor_constants_poisson}\\
-&= \frac{1}{T} \sum_{n \in \mathbb{Z}} \mathcal{F}[f]\left(\frac{2\pi n}{T}\right) \label{eq:delta_evaluation}
-\end{align}
-
-Equating \eqref{eq:shah_pairing} and \eqref{eq:delta_evaluation} yields the Poisson summation formula \eqref{eq:poisson_shah}.
+  Consider the identity:
+  \begin{equation}
+    \label{eq:shah_pairing} \langle \text{III}_T, f \rangle = \langle
+    \text{III}, f (T \cdot) \rangle = \sum_{k \in \mathbb{Z}} f (kT)
+  \end{equation}
+  By Parseval's theorem for distributions:
+  \begin{equation}
+    \label{eq:parseval_shah} \langle \text{III}_T, f \rangle = \frac{1}{2 \pi}
+    \langle \mathcal{F}[\text{III}_T], \mathcal{F}[f] \rangle
+  \end{equation}
+  Substituting the Fourier transform of the Shah function from equation
+  \eqref{eq:shah_fourier_transform}:
+  
+  \begin{align}
+    \frac{1}{2 \pi}  \langle \mathcal{F}[\text{III}_T], \mathcal{F}[f] \rangle
+    & = \frac{1}{2 \pi}  \left\langle \frac{2 \pi}{T}  \sum_{n \in \mathbb{Z}}
+    \delta \left( \cdot - \frac{2 \pi n}{T} \right), \mathcal{F}[f]
+    \right\rangle  \label{eq:substitute_shah_fourier_full}\\
+    & = \frac{1}{T}  \sum_{n \in \mathbb{Z}} \left\langle \delta \left( \cdot
+    - \frac{2 \pi n}{T} \right), \mathcal{F}[f] \right\rangle 
+    \label{eq:factor_constants_poisson}\\
+    & = \frac{1}{T}  \sum_{n \in \mathbb{Z}} \mathcal{F} [f] \left( \frac{2
+    \pi n}{T} \right)  \label{eq:delta_evaluation}
+  \end{align}
+  
+  Equating \eqref{eq:shah_pairing} and \eqref{eq:delta_evaluation} yields the
+  Poisson summation formula \eqref{eq:poisson_shah}.
 \end{proof}
 
 \section{Applications to Discrete Fourier Transform}
 
 \begin{theorem}
-\label{thm:dft_shah_connection}
-The discrete Fourier transform of a finite sequence can be understood as the result of sampling and periodization operations using Shah functions. For a sequence $\{x_n\}_{n=0}^{N-1}$ with $x_n = f(nT)$ for some continuous function $f$, the DFT coefficients satisfy
-\begin{equation}
-\label{eq:dft_shah}
-X_k = T \sum_{m \in \mathbb{Z}} \mathcal{F}[f]\left(\frac{2\pi k}{NT} - \frac{2\pi m}{T}\right)
-\end{equation}
+  \label{thm:dft_shah_connection}The discrete Fourier transform of a finite
+  sequence can be understood as the result of sampling and periodization
+  operations using Shah functions. For a sequence $\{x_n \}_{n = 0}^{N - 1}$
+  with $x_n = f (nT)$ for some continuous function $f$, the DFT coefficients
+  satisfy
+  \begin{equation}
+    \label{eq:dft_shah} X_k = T \sum_{m \in \mathbb{Z}} \mathcal{F} [f] 
+    \left( \frac{2 \pi k}{NT} - \frac{2 \pi m}{T} \right)
+  \end{equation}
 \end{theorem}
 
 \begin{proof}
-The finite sequence corresponds to sampling $f$ with a windowed Shah function:
-\begin{equation}
-\label{eq:windowed_sampling}
-f_s(x) = f(x) \sum_{n=0}^{N-1} \delta(x - nT) = f(x) \cdot W_N(x) \cdot \text{III}_T(x)
-\end{equation}
-where $W_N(x) = \sum_{n=0}^{N-1} \delta(x - nT) / \text{III}_T(x)$ is the windowing function.
-
-The DFT coefficient is:
-\begin{align}
-X_k &= \sum_{n=0}^{N-1} f(nT) e^{-2\pi i kn/N} \label{eq:dft_definition}\\
-&= T \sum_{n=0}^{N-1} f(nT) e^{-2\pi i knT/(NT)} \label{eq:factor_T}\\
-&= T \int_{-\infty}^{\infty} f_s(x) e^{-2\pi i kx/(NT)} dx \label{eq:integral_form}
-\end{align}
-
-Step \eqref{eq:integral_form} recognizes the sum as a Riemann sum approximation to the integral with spacing $T$.
-
-The Fourier transform of $f_s$ involves convolution with the Shah transform:
-\begin{align}
-\mathcal{F}[f_s]\left(\frac{2\pi k}{NT}\right) &= \frac{1}{T} \sum_{m \in \mathbb{Z}} \mathcal{F}[f \cdot W_N]\left(\frac{2\pi k}{NT} - \frac{2\pi m}{T}\right) \label{eq:sampling_effect}
-\end{align}
-
-For large $N$, the windowing effect becomes negligible for most frequencies, giving:
-\begin{equation}
-\label{eq:asymptotic_dft}
-X_k \approx T \sum_{m \in \mathbb{Z}} \mathcal{F}[f]\left(\frac{2\pi k}{NT} - \frac{2\pi m}{T}\right)
-\end{equation}
+  The finite sequence corresponds to sampling $f$ with a windowed Shah
+  function:
+  \begin{equation}
+    \label{eq:windowed_sampling} f_s (x) = f (x)  \sum_{n = 0}^{N - 1} \delta
+    (x - nT) = f (x) \cdot W_N (x) \cdot \text{III}_T (x)
+  \end{equation}
+  where $W_N (x) = \sum_{n = 0}^{N - 1} \delta (x - nT) / \text{III}_T (x)$ is
+  the windowing function.
+  
+  The DFT coefficient is:
+  
+  \begin{align}
+    X_k & = \sum_{n = 0}^{N - 1} f (nT) e^{- 2 \pi ikn / N} 
+    \label{eq:dft_definition}\\
+    & = T \sum_{n = 0}^{N - 1} f (nT) e^{- 2 \pi iknT / (NT)} 
+    \label{eq:factor_T}\\
+    & = T \int_{- \infty}^{\infty} f_s (x) e^{- 2 \pi ikx / (NT)} dx 
+    \label{eq:integral_form}
+  \end{align}
+  
+  Step \eqref{eq:integral_form} recognizes the sum as a Riemann sum
+  approximation to the integral with spacing $T$.
+  
+  The Fourier transform of $f_s$ involves convolution with the Shah transform:
+  
+  \begin{align}
+    \mathcal{F} [f_s] \left( \frac{2 \pi k}{NT} \right) & = \frac{1}{T} 
+    \sum_{m \in \mathbb{Z}} \mathcal{F} [f \cdot W_N]  \left( \frac{2 \pi
+    k}{NT} - \frac{2 \pi m}{T} \right)  \label{eq:sampling_effect}
+  \end{align}
+  
+  For large $N$, the windowing effect becomes negligible for most frequencies,
+  giving:
+  \begin{equation}
+    \label{eq:asymptotic_dft} X_k \approx T \sum_{m \in \mathbb{Z}}
+    \mathcal{F} [f]  \left( \frac{2 \pi k}{NT} - \frac{2 \pi m}{T} \right)
+  \end{equation}
 \end{proof}
 
 \section{Normalization and Integral Properties}
 
 \begin{proposition}
-\label{prop:shah_normalization}
-The Shah function satisfies the normalization condition that for any interval of length $T$ containing exactly one lattice point,
-\begin{equation}
-\label{eq:shah_integral}
-\int_{a}^{a+T} \text{III}_T(x) \phi(x) dx = \phi(kT)
-\end{equation}
-where $kT \in (a, a+T)$ is the unique lattice point in the interval and $\phi$ is any test function.
+  \label{prop:shah_normalization}The Shah function satisfies the normalization
+  condition that for any interval of length $T$ containing exactly one lattice
+  point,
+  \begin{equation}
+    \label{eq:shah_integral} \int_a^{a + T} \text{III}_T (x) \phi (x) dx =
+    \phi (kT)
+  \end{equation}
+  where $kT \in (a, a + T)$ is the unique lattice point in the interval and
+  $\phi$ is any test function.
 \end{proposition}
 
 \begin{proof}
-Since $\text{III}_T(x) = \sum_{j \in \mathbb{Z}} \delta(x - jT)$, only one term contributes to the integral:
-\begin{align}
-\int_{a}^{a+T} \text{III}_T(x) \phi(x) dx &= \int_{a}^{a+T} \sum_{j \in \mathbb{Z}} \delta(x - jT) \phi(x) dx \label{eq:expand_integral}\\
-&= \sum_{j \in \mathbb{Z}} \int_{a}^{a+T} \delta(x - jT) \phi(x) dx \label{eq:interchange_sum_integral_norm}\\
-&= \int_{a}^{a+T} \delta(x - kT) \phi(x) dx \label{eq:single_term}\\
-&= \phi(kT) \label{eq:sifting_normalization}
-\end{align}
-
-Step \eqref{eq:single_term} uses the fact that only $j = k$ contributes since $kT$ is the unique lattice point in $(a, a+T)$.
+  Since III$_T (x) = \sum_{j \in \mathbb{Z}} \delta (x - jT)$, only one term
+  contributes to the integral:
+  
+  \begin{align}
+    \int_a^{a + T} \text{III}_T (x) \phi (x) dx & = \int_a^{a + T} \sum_{j \in
+    \mathbb{Z}} \delta (x - jT) \phi (x) dx  \label{eq:expand_integral}\\
+    & = \sum_{j \in \mathbb{Z}} \int_a^{a + T} \delta (x - jT) \phi (x) dx 
+    \label{eq:interchange_sum_integral_norm}\\
+    & = \int_a^{a + T} \delta (x - kT) \phi (x) dx  \label{eq:single_term}\\
+    & = \phi (kT)  \label{eq:sifting_normalization}
+  \end{align}
+  
+  Step \eqref{eq:single_term} uses the fact that only $j = k$ contributes
+  since $kT$ is the unique lattice point in $(a, a + T)$.
 \end{proof}
 
-This normalization ensures that the Shah function acts as a proper sampling operator, extracting function values at lattice points with unit weight per period.
+This normalization ensures that the Shah function acts as a proper sampling
+operator, extracting function values at lattice points with unit weight per
+period.
+
+{\cite{grafakosClassicalFourierAnalysis}}{\cite{hormanderI}}{\cite{rudinRealComplexAnalysis}}{\cite{katznelsonHarmonicAnalysis}}{\cite{steinWeissEuclidean}}{\cite{evansPDE}}{\cite{courantHilbertII}}{\cite{follandFourierApplications}}{\cite{ahlforsComplexAnalysis}}{\cite{mumfordTataI}}
+
+\begin{thebibliography}{10}
+  \bibitem[1]{ahlforsComplexAnalysis}Lars~V.~Ahlfors.
+  {\newblock}\tmtextit{Complex Analysis}. {\newblock}McGraw-Hill, 3rd 
+  edition, 1979.{\newblock}
+  
+  \bibitem[2]{courantHilbertII}Richard Courant  and  David Hilbert.
+  {\newblock}\tmtextit{Methods of Mathematical Physics, Vol. II: Partial
+  Differential Equations}. {\newblock}Wiley--VCH, 1962.{\newblock}
+  
+  \bibitem[3]{evansPDE}Lawrence~C.~Evans. {\newblock}\tmtextit{Partial
+  Differential Equations}. {\newblock}American Mathematical Society, 2nd 
+  edition, 2010.{\newblock}
+  
+  \bibitem[4]{follandFourierApplications}Gerald~B.~Folland.
+  {\newblock}\tmtextit{Fourier Analysis and Its Applications}.
+  {\newblock}American Mathematical Society, 2009.{\newblock}
+  
+  \bibitem[5]{grafakosClassicalFourierAnalysis}Loukas Grafakos.
+  {\newblock}\tmtextit{Classical Fourier Analysis}. {\newblock}Springer, 3rd 
+  edition, 2014.{\newblock}
+  
+  \bibitem[6]{hormanderI}Lars H{\"o}rmander. {\newblock}\tmtextit{The Analysis
+  of Linear Partial Differential Operators I: Distribution Theory and Fourier
+  Analysis}. {\newblock}Springer, 2nd  edition, 1990.{\newblock}
+  
+  \bibitem[7]{katznelsonHarmonicAnalysis}Yitzhak Katznelson.
+  {\newblock}\tmtextit{An Introduction to Harmonic Analysis}.
+  {\newblock}Cambridge University Press, 3rd  edition, 2004.{\newblock}
+  
+  \bibitem[8]{mumfordTataI}David Mumford. {\newblock}\tmtextit{Tata Lectures
+  on Theta I}. {\newblock}Birkh{\"a}user, 1983.{\newblock}
+  
+  \bibitem[9]{rudinRealComplexAnalysis}Walter Rudin. {\newblock}\tmtextit{Real
+  and Complex Analysis}. {\newblock}McGraw-Hill, 3rd  edition,
+  1987.{\newblock}
+  
+  \bibitem[10]{steinWeissEuclidean}Elias~M.~Stein  and  Guido Weiss.
+  {\newblock}\tmtextit{Introduction to Fourier Analysis on Euclidean Spaces}.
+  {\newblock}Princeton University Press, 1971.{\newblock}
+\end{thebibliography}
 
 \end{document}
-

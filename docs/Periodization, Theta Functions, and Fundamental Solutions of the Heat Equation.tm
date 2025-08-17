@@ -47,6 +47,10 @@
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|7<space|2spc>Unified
     Framework> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-7><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-8><vspace|0.5fn>
   </table-of-contents>
 
   <section|The Poisson Summation Formula>
@@ -396,6 +400,44 @@
   The mathematical structure reveals periodization as the fundamental
   operation connecting discrete sampling, boundary conditions, and exact
   solutions of the heat equation through theta function representations.
+
+  <no-indent><cite|grafakosClassicalFourierAnalysis><cite|hormanderI><cite|steinWeissEuclidean><cite|evansPDE><cite|courantHilbertII><cite|ahlforsComplexAnalysis><cite|mumfordTataI>
+
+  <\bibliography|bib|tm-plain|refs>
+    <\bib-list|7>
+      <bibitem*|1><label|bib-ahlforsComplexAnalysis>Lars<nbsp>V.<nbsp>Ahlfors.
+      <newblock><with|font-shape|italic|Complex Analysis>.
+      <newblock>McGraw-Hill, 3rd<localize| edition>, 1979.<newblock>
+
+      <bibitem*|2><label|bib-courantHilbertII>Richard Courant<localize| and
+      >David Hilbert. <newblock><with|font-shape|italic|Methods of
+      Mathematical Physics, Vol. II: Partial Differential Equations>.
+      <newblock>Wiley\UVCH, 1962.<newblock>
+
+      <bibitem*|3><label|bib-evansPDE>Lawrence<nbsp>C.<nbsp>Evans.
+      <newblock><with|font-shape|italic|Partial Differential Equations>.
+      <newblock>American Mathematical Society, 2nd<localize| edition>,
+      2010.<newblock>
+
+      <bibitem*|4><label|bib-grafakosClassicalFourierAnalysis>Loukas
+      Grafakos. <newblock><with|font-shape|italic|Classical Fourier
+      Analysis>. <newblock>Springer, 3rd<localize| edition>, 2014.<newblock>
+
+      <bibitem*|5><label|bib-hormanderI>Lars Hörmander.
+      <newblock><with|font-shape|italic|The Analysis of Linear Partial
+      Differential Operators I: Distribution Theory and Fourier Analysis>.
+      <newblock>Springer, 2nd<localize| edition>, 1990.<newblock>
+
+      <bibitem*|6><label|bib-mumfordTataI>David Mumford.
+      <newblock><with|font-shape|italic|Tata Lectures on Theta I>.
+      <newblock>Birkhäuser, 1983.<newblock>
+
+      <bibitem*|7><label|bib-steinWeissEuclidean>Elias<nbsp>M.<nbsp>Stein<localize|
+      and >Guido Weiss. <newblock><with|font-shape|italic|Introduction to
+      Fourier Analysis on Euclidean Spaces>. <newblock>Princeton University
+      Press, 1971.<newblock>
+    </bib-list>
+  </bibliography>
 </body>
 
 <\initial>
@@ -410,72 +452,95 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|auto-2|<tuple|2|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|auto-3|<tuple|3|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|auto-4|<tuple|4|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|auto-5|<tuple|5|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|auto-6|<tuple|6|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|auto-7|<tuple|7|7|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:boundary_check|<tuple|39|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:boundary_satisfied|<tuple|41|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:boundary_x_zero|<tuple|43|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:circle_solution|<tuple|49|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:coeff_def|<tuple|4|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:coeff_expand|<tuple|5|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:completed_square|<tuple|33|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:completing_square|<tuple|32|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:dft|<tuple|14|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:dft_expanded|<tuple|17|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:dft_poisson_relation|<tuple|16|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:evaluation|<tuple|38|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:f_zero|<tuple|13|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:factor_out|<tuple|8|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:factored|<tuple|51|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:final_kernel|<tuple|35|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:fourier_heat|<tuple|27|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:fourier_series|<tuple|3|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:fourier_solution|<tuple|28|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:fourier_transform|<tuple|11|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:fundamental_fourier|<tuple|29|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:gaussian_integral|<tuple|34|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:h_periodic|<tuple|21|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:half_line_solution|<tuple|36|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:heat|<tuple|25|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:heat_kernel|<tuple|26|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:idft|<tuple|15|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:impulse_fourier|<tuple|20|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:impulse_train|<tuple|19|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:index_shift|<tuple|46|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:interchange|<tuple|6|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:inverse_transform|<tuple|30|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:periodic_sum|<tuple|9|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:periodized|<tuple|2|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:periodized_kernel|<tuple|50|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:poisson|<tuple|1|1|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:poisson_applied|<tuple|22|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:poisson_theta|<tuple|54|7|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:product_form|<tuple|31|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:rectangle_solution|<tuple|42|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:scaled_fourier|<tuple|18|3|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:scaling_applied|<tuple|23|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:sign_flip|<tuple|47|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:simplified|<tuple|24|4|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:substitution|<tuple|7|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:superposition|<tuple|37|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:symmetry|<tuple|40|5|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:symmetry_applied|<tuple|45|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:theta_def|<tuple|48|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:theta_form|<tuple|52|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:theta_identified|<tuple|53|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:union_intervals|<tuple|10|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:x_zero|<tuple|12|2|../.TeXmacs/texts/scratch/no_name_16.tm>>
-    <associate|eq:x_zero_expanded|<tuple|44|6|../.TeXmacs/texts/scratch/no_name_16.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-2|<tuple|2|3>>
+    <associate|auto-3|<tuple|3|4>>
+    <associate|auto-4|<tuple|4|5>>
+    <associate|auto-5|<tuple|5|5>>
+    <associate|auto-6|<tuple|6|6>>
+    <associate|auto-7|<tuple|7|7>>
+    <associate|auto-8|<tuple|5|7>>
+    <associate|bib-ahlforsComplexAnalysis|<tuple|1|7>>
+    <associate|bib-courantHilbertII|<tuple|2|7>>
+    <associate|bib-evansPDE|<tuple|3|7>>
+    <associate|bib-grafakosClassicalFourierAnalysis|<tuple|4|7>>
+    <associate|bib-hormanderI|<tuple|5|7>>
+    <associate|bib-mumfordTataI|<tuple|6|7>>
+    <associate|bib-steinWeissEuclidean|<tuple|7|7>>
+    <associate|eq:boundary_check|<tuple|39|5>>
+    <associate|eq:boundary_satisfied|<tuple|41|5>>
+    <associate|eq:boundary_x_zero|<tuple|43|6>>
+    <associate|eq:circle_solution|<tuple|49|6>>
+    <associate|eq:coeff_def|<tuple|4|2>>
+    <associate|eq:coeff_expand|<tuple|5|2>>
+    <associate|eq:completed_square|<tuple|33|5>>
+    <associate|eq:completing_square|<tuple|32|5>>
+    <associate|eq:dft|<tuple|14|3>>
+    <associate|eq:dft_expanded|<tuple|17|3>>
+    <associate|eq:dft_poisson_relation|<tuple|16|3>>
+    <associate|eq:evaluation|<tuple|38|5>>
+    <associate|eq:f_zero|<tuple|13|2>>
+    <associate|eq:factor_out|<tuple|8|2>>
+    <associate|eq:factored|<tuple|51|6>>
+    <associate|eq:final_kernel|<tuple|35|5>>
+    <associate|eq:fourier_heat|<tuple|27|4>>
+    <associate|eq:fourier_series|<tuple|3|2>>
+    <associate|eq:fourier_solution|<tuple|28|4>>
+    <associate|eq:fourier_transform|<tuple|11|2>>
+    <associate|eq:fundamental_fourier|<tuple|29|4>>
+    <associate|eq:gaussian_integral|<tuple|34|5>>
+    <associate|eq:h_periodic|<tuple|21|3>>
+    <associate|eq:half_line_solution|<tuple|36|5>>
+    <associate|eq:heat|<tuple|25|4>>
+    <associate|eq:heat_kernel|<tuple|26|4>>
+    <associate|eq:idft|<tuple|15|3>>
+    <associate|eq:impulse_fourier|<tuple|20|3>>
+    <associate|eq:impulse_train|<tuple|19|3>>
+    <associate|eq:index_shift|<tuple|46|6>>
+    <associate|eq:interchange|<tuple|6|2>>
+    <associate|eq:inverse_transform|<tuple|30|4>>
+    <associate|eq:periodic_sum|<tuple|9|2>>
+    <associate|eq:periodized|<tuple|2|2>>
+    <associate|eq:periodized_kernel|<tuple|50|6>>
+    <associate|eq:poisson|<tuple|1|1>>
+    <associate|eq:poisson_applied|<tuple|22|4>>
+    <associate|eq:poisson_theta|<tuple|54|7>>
+    <associate|eq:product_form|<tuple|31|4>>
+    <associate|eq:rectangle_solution|<tuple|42|5>>
+    <associate|eq:scaled_fourier|<tuple|18|3>>
+    <associate|eq:scaling_applied|<tuple|23|4>>
+    <associate|eq:sign_flip|<tuple|47|6>>
+    <associate|eq:simplified|<tuple|24|4>>
+    <associate|eq:substitution|<tuple|7|2>>
+    <associate|eq:superposition|<tuple|37|5>>
+    <associate|eq:symmetry|<tuple|40|5>>
+    <associate|eq:symmetry_applied|<tuple|45|6>>
+    <associate|eq:theta_def|<tuple|48|6>>
+    <associate|eq:theta_form|<tuple|52|6>>
+    <associate|eq:theta_identified|<tuple|53|6>>
+    <associate|eq:union_intervals|<tuple|10|2>>
+    <associate|eq:x_zero|<tuple|12|2>>
+    <associate|eq:x_zero_expanded|<tuple|44|6>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
+    <\associate|bib>
+      grafakosClassicalFourierAnalysis
+
+      hormanderI
+
+      steinWeissEuclidean
+
+      evansPDE
+
+      courantHilbertII
+
+      ahlforsComplexAnalysis
+
+      mumfordTataI
+    </associate>
     <\associate|toc>
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>The
       Poisson Summation Formula> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
@@ -507,6 +572,10 @@
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|7<space|2spc>Unified
       Framework> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-7><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-8><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
