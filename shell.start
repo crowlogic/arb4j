@@ -1,3 +1,4 @@
+import arb.Integer;
 import arb.*;
 import arb.viz.FunctionPlotter;
 import arb.functions.polynomials.orthogonal.real.Type1ChebyshevPolynomials;
