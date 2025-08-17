@@ -9,7 +9,6 @@ import arb.Complex;
 import arb.Float;
 import arb.FloatInterval;
 import arb.Real;
-import arb.RealDataSet;
 import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -209,7 +208,7 @@ public abstract class StationaryGaussianProcessSampler extends
     generate();
 
     Stream.of(charts = new XYChart[]
-    { newTimeDomainChart(),
+    { Charts.newTimeDomainChart(spectralSupport, samplingTimes, samplePath, envelope),
       Charts.newRandomWhiteNoiseMeasureChart(frequencies, whiteNoise),
       Charts.newAutoCorrelationChart(this, samplePath),
       newPowerSpectralDensityChart() }).forEach(chart -> Charts.configureChart(chart, light));
@@ -312,45 +311,8 @@ public abstract class StationaryGaussianProcessSampler extends
 
     chart.getRenderers().setAll(scatterPlotRenderer, lineRenderer);
 
-    Charts.configureXAxisOfPowerSpectralDensityChart(chart);
+    Charts.configurePowerSpectralDensityAxes(chart);
 
-    Charts.configureYAxisOfPowerSpectralDensityChart(chart);
-
-    return chart;
-  }
-
-  protected XYChart newTimeDomainChart()
-  {
-    XYChart chart = new XYChart(new DefaultNumericAxis("Time",
-                                                       "?"),
-                                new DefaultNumericAxis("Level",
-                                                       "?"));
-
-    chart.setTitle("In-Phase, Quadrature, and Envelope (±) via Hilbert Transform");
-
-    RealDataSet inPhase = new RealDataSet("In-phase",
-                                          N,
-                                          spectralSupport);
-    inPhase.getTimes().set(samplingTimes);
-    inPhase.getValues().set(samplePath.re());
-
-    RealDataSet quad = new RealDataSet("Quadrature",
-                                       N,
-                                       spectralSupport);
-
-    quad.getTimes().set(samplingTimes);
-    quad.getValues().set(samplePath.im());
-
-    DoubleDataSet envPos = new DoubleDataSet("Envelope (+)").set(samplingTimes.doubleValues(),
-                                                                 envelope.doubleValues());
-    double[]      negEnv = new double[N];
-    for (int i = 0; i < N; i++)
-    {
-      negEnv[i] = -envelope.get(i).doubleValue();
-    }
-    DoubleDataSet envNeg = new DoubleDataSet("Envelope (–)").set(samplingTimes.doubleValues(),
-                                                                 negEnv);
-    chart.getDatasets().addAll(inPhase, quad, envPos, envNeg);
     return chart;
   }
 

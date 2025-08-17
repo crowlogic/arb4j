@@ -1,6 +1,9 @@
 package arb.stochastic;
 
 import arb.Complex;
+import arb.FloatInterval;
+import arb.Real;
+import arb.RealDataSet;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
@@ -168,6 +171,51 @@ public class Charts
     chart.getXAxis().setMin(0);
     chart.getXAxis().setMax(StationaryGaussianProcessSampler.autocorrelationLength);
     return chart;
+  }
+
+  public static XYChart newTimeDomainChart(FloatInterval spectralSupport,
+                                           Real samplingTimes,
+                                           Complex samplePath,
+                                           Real envelope)
+  {
+    XYChart chart = new XYChart(new DefaultNumericAxis("Time",
+                                                       "?"),
+                                new DefaultNumericAxis("Level",
+                                                       "?"));
+  
+    chart.setTitle("In-Phase, Quadrature, and Envelope (±) via Hilbert Transform");
+  
+    RealDataSet inPhase = new RealDataSet("In-phase",
+                                          StationaryGaussianProcessSampler.N,
+                                          spectralSupport);
+    inPhase.getTimes().set(samplingTimes);
+    inPhase.getValues().set(samplePath.re());
+  
+    RealDataSet quad = new RealDataSet("Quadrature",
+                                       StationaryGaussianProcessSampler.N,
+                                       spectralSupport);
+  
+    quad.getTimes().set(samplingTimes);
+    quad.getValues().set(samplePath.im());
+  
+    DoubleDataSet envPos = new DoubleDataSet("Envelope (+)").set(samplingTimes.doubleValues(),
+                                                                 envelope.doubleValues());
+    double[]      negEnv = new double[StationaryGaussianProcessSampler.N];
+    for (int i = 0; i < StationaryGaussianProcessSampler.N; i++)
+    {
+      negEnv[i] = -envelope.get(i).doubleValue();
+    }
+    DoubleDataSet envNeg = new DoubleDataSet("Envelope (–)").set(samplingTimes.doubleValues(),
+                                                                 negEnv);
+    chart.getDatasets().addAll(inPhase, quad, envPos, envNeg);
+    return chart;
+  }
+
+  public static void configurePowerSpectralDensityAxes(XYChart chart)
+  {
+    configureXAxisOfPowerSpectralDensityChart(chart);
+  
+    configureYAxisOfPowerSpectralDensityChart(chart);
   }
 
 }
