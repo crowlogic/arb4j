@@ -1,5 +1,7 @@
 package arb.stochastic;
 
+import java.util.Arrays;
+
 import arb.Complex;
 import arb.FloatInterval;
 import arb.Real;
@@ -16,6 +18,7 @@ import io.fair_acc.chartfx.renderer.ErrorStyle;
 import io.fair_acc.chartfx.renderer.LineStyle;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import io.fair_acc.dataset.spi.DoubleDataSet;
+import io.fair_acc.dataset.utils.DataSetStyleBuilder;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -51,8 +54,8 @@ public class Charts
     DoubleDataSet imagDataSet =
                               new DoubleDataSet("Imaginary").set(normalizedFrequencies, imagNoise);
   
-    realDataSet.setStyle(StationaryGaussianProcessSampler.randomMeasureDatasetStyle);
-    imagDataSet.setStyle(StationaryGaussianProcessSampler.randomMeasureDatasetStyle);
+    realDataSet.setStyle(Charts.randomMeasureDatasetStyle);
+    imagDataSet.setStyle(Charts.randomMeasureDatasetStyle);
   
     chart.getRenderers().setAll(scatterPlotRenderer);
     scatterPlotRenderer.getDatasets().addAll(realDataSet, imagDataSet);
@@ -217,5 +220,70 @@ public class Charts
   
     configureYAxisOfPowerSpectralDensityChart(chart);
   }
+
+  public static XYChart newPowerSpectralDensityChart(Complex samplePath,
+                                                        double[] positiveFrequencies,
+                                                        double[] frequencies,
+                                                        double[] theoreticalPowerSpectralDensities,
+                                                        double[] powerSpectralDensity)
+  {
+    // Chart 4: PSD
+    XYChart chart = new XYChart(new DefaultNumericAxis("Frequency",
+                                                       ""),
+                                new DefaultNumericAxis("PSD",
+                                                       ""));
+    chart.setTitle("Power Spectral Density");
+    double[] empiricalPowerSpectralDensity =
+                                           Statistics.computePowerSpectralDensity(samplePath.im()
+                                                                                            .doubleValues());
+    for (int i = 0; i < StationaryGaussianProcessSampler.positiveFrequencyCount; i++)
+    {
+      positiveFrequencies[i]               = frequencies[i];
+      theoreticalPowerSpectralDensities[i] = powerSpectralDensity[i];
+    }
+  
+    var scatterPlotRenderer = newScatterChartRenderer();
+    var lineRenderer        = new ErrorDataSetRenderer();
+  
+    var empiricalDataSet    =
+                         new DoubleDataSet("Empirical").set(positiveFrequencies,
+                                                            Arrays.copyOf(empiricalPowerSpectralDensity,
+                                                                          StationaryGaussianProcessSampler.positiveFrequencyCount))
+                                                       .setStyle(Charts.empiricialFrequencyDatasetStyle);
+  
+    var theoryDataSet       =
+                      new DoubleDataSet("Theoretical").set(positiveFrequencies,
+                                                           theoreticalPowerSpectralDensities)
+                                                      .setStyle(Charts.theoreticalFrequencyDatasetStyle);
+    scatterPlotRenderer.getDatasets().add(empiricalDataSet);
+  
+    lineRenderer.getDatasets().add(theoryDataSet);
+  
+    chart.getRenderers().setAll(scatterPlotRenderer, lineRenderer);
+  
+    configurePowerSpectralDensityAxes(chart);
+  
+    return chart;
+  }
+
+  /**
+   * Needs to set both because the drawLegendSymbol method in chartfx uses
+   * {@link DataSetStyleBuilder#setMarkerColor(String)} as well as
+   * {@link DataSetStyleBuilder#setLineColor(String)}
+   */
+  static final String          empiricialFrequencyDatasetStyle  =
+                                                               DataSetStyleBuilder.instance()
+                                                                                  .setMarkerColor("darkgoldenrod")
+                                                                                  .setLineColor("darkgoldenrod")
+                                                                                  .build();
+  static final String          randomMeasureDatasetStyle        =
+   DataSetStyleBuilder.instance()
+                      .setMarkerType("circle")
+                      .setMarkerSize(2)
+                      .build();
+  static final String          theoreticalFrequencyDatasetStyle =
+  DataSetStyleBuilder.instance()
+                     .setLineWidth(2)
+                     .build();
 
 }

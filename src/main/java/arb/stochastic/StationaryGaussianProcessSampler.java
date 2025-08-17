@@ -1,6 +1,5 @@
 package arb.stochastic;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -16,10 +15,6 @@ import arb.functions.real.RealFunction;
 import arb.stochastic.processes.ComplexWhiteNoiseProcess;
 import arb.viz.WindowManager;
 import io.fair_acc.chartfx.XYChart;
-import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
-import io.fair_acc.dataset.spi.DoubleDataSet;
-import io.fair_acc.dataset.utils.DataSetStyleBuilder;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
@@ -67,17 +62,6 @@ public abstract class StationaryGaussianProcessSampler extends
 
   static final double          dt                               = 0.01;
 
-  /**
-   * Needs to set both because the drawLegendSymbol method in chartfx uses
-   * {@link DataSetStyleBuilder#setMarkerColor(String)} as well as
-   * {@link DataSetStyleBuilder#setLineColor(String)}
-   */
-  private static final String  empiricialFrequencyDatasetStyle  =
-                                                               DataSetStyleBuilder.instance()
-                                                                                  .setMarkerColor("darkgoldenrod")
-                                                                                  .setLineColor("darkgoldenrod")
-                                                                                  .build();
-
   static final FloatInterval   timeSpan                         = new FloatInterval(0,
                                                                                     1000);
 
@@ -94,18 +78,7 @@ public abstract class StationaryGaussianProcessSampler extends
 
   public static final int      nyquistIndex                     = N / 2;
 
-  private static final int     positiveFrequencyCount           = N / 2 + 1;
-
-  static final String          randomMeasureDatasetStyle        =
-                                                         DataSetStyleBuilder.instance()
-                                                                            .setMarkerType("circle")
-                                                                            .setMarkerSize(2)
-                                                                            .build();
-
-  private static final String  theoreticalFrequencyDatasetStyle =
-                                                                DataSetStyleBuilder.instance()
-                                                                                   .setLineWidth(2)
-                                                                                   .build();
+  static final int             positiveFrequencyCount           = N / 2 + 1;
 
   public static double[] generateFrequencies()
   {
@@ -164,18 +137,12 @@ public abstract class StationaryGaussianProcessSampler extends
     frequencies          = generateFrequencies();
     powerSpectralDensity = getPowerSpectralDensity(frequencies);
 
-    try ( Real mag = new Real();
+    try ( 
           ComplexWhiteNoiseProcess whiteNoiseProcess = new ComplexWhiteNoiseProcess())
     {
-      whiteNoiseProcess.initializeWithSeed(seed);
-
-      for (int k = 0; k <= nyquistIndex; k++)
-      {
-        drawWhiteNoiseSample(whiteNoiseProcess, k).mul(mag.set(powerSpectralDensity[k] * df)
-                                                          .sqrt(bits),
-                                                       bits,
-                                                       randomMeasure.get(k));
-      }
+      generateRandomWhiteNoiseMeasureFromSeed(seed, whiteNoiseProcess);
+      assert samplePath.size() == N : String.format("samplePath.size=%d != N = %d", samplePath.size(), N );
+      assert samplingTimes.size() == N : String.format("samplingTimes.size=%d != N = %d", samplingTimes.size(), N );
 
       arblib.acb_dft_inverse(samplePath, randomMeasure, N, bits);
 
@@ -189,6 +156,23 @@ public abstract class StationaryGaussianProcessSampler extends
 
       return this;
 
+    }
+  }
+
+  void generateRandomWhiteNoiseMeasureFromSeed(long theSeed,
+                                               ComplexWhiteNoiseProcess whiteNoiseProcess)
+  {
+    try ( Real mag = new Real() )
+    {
+    whiteNoiseProcess.initializeWithSeed(theSeed);
+
+    for (int k = 0; k <= nyquistIndex; k++)
+    {
+      drawWhiteNoiseSample(whiteNoiseProcess, k).mul(mag.set(powerSpectralDensity[k] * df)
+                                                        .sqrt(bits),
+                                                     bits,
+                                                     randomMeasure.get(k));
+    }
     }
   }
 
@@ -206,14 +190,22 @@ public abstract class StationaryGaussianProcessSampler extends
   protected XYChart[] generateAndConfigureCharts()
   {
     generate();
+    configureCharts();
+    return charts;
+  }
 
+  void configureCharts()
+  {
     Stream.of(charts = new XYChart[]
     { Charts.newTimeDomainChart(spectralSupport, samplingTimes, samplePath, envelope),
       Charts.newRandomWhiteNoiseMeasureChart(frequencies, whiteNoise),
       Charts.newAutoCorrelationChart(this, samplePath),
-      newPowerSpectralDensityChart() }).forEach(chart -> Charts.configureChart(chart, light));
-
-    return charts;
+      Charts.newPowerSpectralDensityChart(samplePath,
+                                          positiveFrequencies,
+                                          frequencies,
+                                          theoreticalPowerSpectralDensities,
+                                          powerSpectralDensity) })
+          .forEach(chart -> Charts.configureChart(chart, light));
   }
 
   public abstract RealFunction getKernel();
@@ -273,47 +265,6 @@ public abstract class StationaryGaussianProcessSampler extends
     {
       WindowManager.setMoreConduciveStyle(scene);
     }
-  }
-
-  protected XYChart newPowerSpectralDensityChart()
-  {
-    // Chart 4: PSD
-    XYChart chart = new XYChart(new DefaultNumericAxis("Frequency",
-                                                       ""),
-                                new DefaultNumericAxis("PSD",
-                                                       ""));
-    chart.setTitle("Power Spectral Density");
-    double[] empiricalPowerSpectralDensity =
-                                           Statistics.computePowerSpectralDensity(samplePath.im()
-                                                                                            .doubleValues());
-    for (int i = 0; i < positiveFrequencyCount; i++)
-    {
-      positiveFrequencies[i]               = frequencies[i];
-      theoreticalPowerSpectralDensities[i] = powerSpectralDensity[i];
-    }
-
-    var scatterPlotRenderer = Charts.newScatterChartRenderer();
-    var lineRenderer        = new ErrorDataSetRenderer();
-
-    var empiricalDataSet    =
-                         new DoubleDataSet("Empirical").set(positiveFrequencies,
-                                                            Arrays.copyOf(empiricalPowerSpectralDensity,
-                                                                          positiveFrequencyCount))
-                                                       .setStyle(empiricialFrequencyDatasetStyle);
-
-    var theoryDataSet       =
-                      new DoubleDataSet("Theoretical").set(positiveFrequencies,
-                                                           theoreticalPowerSpectralDensities)
-                                                      .setStyle(theoreticalFrequencyDatasetStyle);
-    scatterPlotRenderer.getDatasets().add(empiricalDataSet);
-
-    lineRenderer.getDatasets().add(theoryDataSet);
-
-    chart.getRenderers().setAll(scatterPlotRenderer, lineRenderer);
-
-    Charts.configurePowerSpectralDensityAxes(chart);
-
-    return chart;
   }
 
   protected void processParameters()
