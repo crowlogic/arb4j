@@ -97,7 +97,7 @@ public abstract class StationaryGaussianProcessSampler extends
 
   private static final int     positiveFrequencyCount           = N / 2 + 1;
 
-  static final String  randomMeasureDatasetStyle        =
+  static final String          randomMeasureDatasetStyle        =
                                                          DataSetStyleBuilder.instance()
                                                                             .setMarkerType("circle")
                                                                             .setMarkerSize(2)
@@ -211,9 +211,8 @@ public abstract class StationaryGaussianProcessSampler extends
     Stream.of(charts = new XYChart[]
     { newTimeDomainChart(),
       Charts.newRandomWhiteNoiseMeasureChart(frequencies, whiteNoise),
-      newAutoCorrelationChart(),
-      newPowerSpectralDensityChart() })
-          .forEach(chart -> Charts.configureChart(chart, light));
+      Charts.newAutoCorrelationChart(this, samplePath),
+      newPowerSpectralDensityChart() }).forEach(chart -> Charts.configureChart(chart, light));
 
     return charts;
   }
@@ -275,32 +274,6 @@ public abstract class StationaryGaussianProcessSampler extends
     {
       WindowManager.setMoreConduciveStyle(scene);
     }
-  }
-
-  protected XYChart newAutoCorrelationChart()
-  {
-    XYChart chart = new XYChart(new DefaultNumericAxis("Δt",
-                                                       ""),
-                                new DefaultNumericAxis("Correlation",
-                                                       ""));
-    chart.setTitle("Covariance");
-    int      maxLag = (int) (autocorrelationLength / dt) + 1;
-    double[] times  = new double[maxLag];
-    double[] theory = new double[maxLag];
-    getKernel(times, theory);
-    chart.getDatasets()
-         .addAll(new DoubleDataSet("Empirical").set(times,
-                                                    Statistics.autocorr(samplePath.re()
-                                                                                  .doubleValues(),
-                                                                        maxLag)),
-                 new DoubleDataSet("Theoretical Covariance " + getKernel()).set(times, theory));
-    chart.getYAxis().setAutoRanging(false);
-    chart.getYAxis().setMin(-0.5);
-    chart.getYAxis().setMax(1.05);
-    chart.getXAxis().setAutoRanging(false);
-    chart.getXAxis().setMin(0);
-    chart.getXAxis().setMax(autocorrelationLength);
-    return chart;
   }
 
   protected XYChart newPowerSpectralDensityChart()

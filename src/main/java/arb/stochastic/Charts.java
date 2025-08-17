@@ -142,4 +142,32 @@ public class Charts
     return gridPane;
   }
 
+  public static XYChart newAutoCorrelationChart(StationaryGaussianProcessSampler sampler,
+                                                   Complex samplePath)
+  {
+    XYChart chart = new XYChart(new DefaultNumericAxis("Δt",
+                                                       ""),
+                                new DefaultNumericAxis("Correlation",
+                                                       ""));
+    chart.setTitle("Covariance");
+    int      maxLag = (int) (StationaryGaussianProcessSampler.autocorrelationLength / StationaryGaussianProcessSampler.dt) + 1;
+    double[] times  = new double[maxLag];
+    double[] theory = new double[maxLag];
+    sampler.getKernel(times, theory);
+    chart.getDatasets()
+         .addAll(new DoubleDataSet("Empirical").set(times,
+                                                    Statistics.autocorr(samplePath.re()
+                                                                                  .doubleValues(),
+                                                                        maxLag)),
+                 new DoubleDataSet("Theoretical Covariance " + sampler.getKernel()).set(times,
+                                                                                        theory));
+    chart.getYAxis().setAutoRanging(false);
+    chart.getYAxis().setMin(-0.5);
+    chart.getYAxis().setMax(1.05);
+    chart.getXAxis().setAutoRanging(false);
+    chart.getXAxis().setMin(0);
+    chart.getXAxis().setMax(StationaryGaussianProcessSampler.autocorrelationLength);
+    return chart;
+  }
+
 }
