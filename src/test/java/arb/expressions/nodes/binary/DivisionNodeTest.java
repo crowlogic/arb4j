@@ -9,7 +9,7 @@ import junit.framework.TestCase;
 public class DivisionNodeTest extends
                               TestCase
 {
-  public void testIntegralOfSincFunction()
+  public void testSineIntegral()
   {
     var f = RealFunction.express("λ➔∫t➔sin(2*π*λ*t)/(2*π*t)*J(0,2*π*t)dt{t=0...∞}");
 
