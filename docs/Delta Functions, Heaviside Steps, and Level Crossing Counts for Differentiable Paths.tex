@@ -1,0 +1,188 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage[margin=1in]{geometry}
+
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+\title{Delta Functions, Heaviside Steps, and Level Crossing Counts for Differentiable Paths}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Foundations of Distributions on Real Line}
+
+\begin{definition}[Schwartz Test Function Space]
+The Schwartz space $\mathcal{S}(\mathbb{R})$ is the space of all infinitely differentiable functions $\phi: \mathbb{R} \to \mathbb{R}$ such that for every pair of nonnegative integers $m,n$,
+\[
+\sup_{x \in \mathbb{R}} |x^{m} \phi^{(n)} (x)| < \infty.
+\]
+Functions in $\mathcal{S}(\mathbb{R})$ are called rapidly decreasing smooth test functions.
+\end{definition}
+
+\begin{definition}[Tempered Distribution]
+A tempered distribution is a continuous linear functional
+\[
+T: \mathcal{S}(\mathbb{R}) \to \mathbb{R}.
+\]
+\end{definition}
+
+\begin{definition}[Dirac Delta Distribution]
+The Dirac delta distribution $\delta_a \in \mathcal{S}'(\mathbb{R})$ centered at $a \in \mathbb{R}$ is defined by
+\[
+\langle \delta_a, \phi \rangle = \phi(a)
+\]
+for all $\phi \in \mathcal{S}(\mathbb{R})$. When $a = 0$, one writes $\delta = \delta_0$.
+\end{definition}
+
+\begin{definition}[Heaviside Step Function]
+The Heaviside step function $H: \mathbb{R} \to \{0,1\}$ is defined by
+\[
+H(x) = \begin{cases}
+1 & \text{if } x > 0 \\
+0 & \text{if } x \leq 0
+\end{cases}
+\]
+\end{definition}
+
+\begin{definition}[Distributional Derivative]
+For a tempered distribution $T \in \mathcal{S}'(\mathbb{R})$, its distributional derivative $T' \in \mathcal{S}'(\mathbb{R})$ is defined by
+\[
+\langle T', \phi \rangle = -\langle T, \phi' \rangle
+\]
+for all $\phi \in \mathcal{S}(\mathbb{R})$.
+\end{definition}
+
+\section{Basic Identities}
+
+\begin{theorem}[Heaviside Derivative]
+The Heaviside step function $H$ satisfies
+\[
+H' = \delta
+\]
+as distributions on $\mathcal{S}'(\mathbb{R})$.
+\end{theorem}
+
+\begin{proof}
+For all $\phi \in \mathcal{S}(\mathbb{R})$,
+\begin{align}
+\langle H', \phi \rangle &= -\langle H, \phi' \rangle \\
+&= -\int_{-\infty}^{\infty} H(x) \phi'(x) \, dx \\
+&= -\int_{0}^{\infty} \phi'(x) \, dx \\
+&= -[\phi(x)]_{0}^{\infty} \\
+&= -(\lim_{x \to \infty} \phi(x) - \phi(0)) \\
+&= \phi(0)
+\end{align}
+where the limit vanishes since $\phi \in \mathcal{S}(\mathbb{R})$ decays rapidly at infinity. Thus $\langle H', \phi \rangle = \phi(0) = \langle \delta, \phi \rangle$.
+\end{proof}
+
+\begin{theorem}[Integral of Delta]
+For any $a \in \mathbb{R}$ and $T \in \mathbb{R}$,
+\[
+\int_{-\infty}^T \delta(t - a) \, dt = H(T - a).
+\]
+\end{theorem}
+
+\begin{proof}
+Define $F(T) = \int_{-\infty}^T \delta(t - a) \, dt$. Taking the distributional derivative with respect to $T$:
+\[
+F'(T) = \frac{d}{dT} \int_{-\infty}^T \delta(t - a) \, dt = \delta(T - a)
+\]
+Since $F(-\infty) = 0$ and $F'(T) = \delta(T - a) = H'(T - a)$ from the previous theorem, one has $F(T) = H(T - a) + C$ for some constant $C$. The boundary condition $F(-\infty) = 0 = H(-\infty) + C$ implies $C = 0$, thus $F(T) = H(T - a)$.
+\end{proof}
+
+\section{Delta of a Smooth Function}
+
+\begin{theorem}[Delta under Change of Variables]
+Let $g: \mathbb{R} \to \mathbb{R}$ be continuously differentiable with isolated, simple zeros $\{x_i\}$ such that $g(x_i)=0$ and $g'(x_i) \neq 0$.
+Then the identity
+\[
+\delta(g(x)) = \sum_i \frac{\delta(x - x_i)}{|g'(x_i)|}
+\]
+holds in $\mathcal{S}'(\mathbb{R})$.
+\end{theorem}
+
+\begin{proof}
+For $\phi \in \mathcal{S}(\mathbb{R})$,
+\begin{align*}
+\langle \delta(g(x)), \phi \rangle &= \int_{-\infty}^\infty \phi(x) \delta(g(x)) \, dx.
+\end{align*}
+Near each zero $x_i$, where $g$ is locally monotone by the implicit function theorem,
+the change of variables $u = g(x)$ gives
+\begin{align*}
+\int_{I_i} \phi(x) \delta(g(x)) \, dx &= \int_{g(I_i)} \phi(g^{-1}(u)) \delta(u) \, \frac{1}{|g'(g^{-1}(u))|} \, du \\
+&= \frac{\phi(x_i)}{|g'(x_i)|}
+\end{align*}
+by the sifting property of $\delta$. Summing over all zeros yields
+\[
+\langle \delta(g(x)), \phi \rangle = \sum_i \frac{\phi(x_i)}{|g'(x_i)|} = \left\langle \sum_i \frac{\delta(x - x_i)}{|g'(x_i)|}, \phi \right\rangle.
+\]
+Since this holds for all $\phi \in \mathcal{S}(\mathbb{R})$, the distributional equality follows.
+\end{proof}
+
+\section{Counting Function for Level Crossings}
+
+Let $x: \mathbb{R} \to \mathbb{R}$ be continuously differentiable, and fix $u \in \mathbb{R}$.
+Assume the zeros of $g(t) := x(t) - u$ are isolated and simple; that is,
+for every zero $t_i$, $g'(t_i) = x'(t_i) \neq 0$.
+
+\begin{definition}[Level Crossing Counting Function]
+Define the counting function
+\[
+N(T) := \text{the number of zeros } t_i \text{ of } x(t) - u \text{ with } t_i \leq T.
+\]
+\end{definition}
+
+\begin{theorem}[Counting Function as Integral Over Delta]
+For every $T \in \mathbb{R}$,
+\[
+N(T) = \int_{-\infty}^T |x'(t)| \delta(x(t) - u) \, dt.
+\]
+\end{theorem}
+
+\begin{proof}
+Using the delta change of variables theorem with $g(t) = x(t) - u$,
+\begin{align}
+|x'(t)| \delta(x(t) - u) &= |x'(t)| \sum_i \frac{\delta(t - t_i)}{|x'(t_i)|} \\
+&= \sum_i |x'(t)| \frac{\delta(t - t_i)}{|x'(t_i)|}
+\end{align}
+Since $x'(t_i) \neq 0$ by assumption, and $\delta(t - t_i)$ picks out the value at $t = t_i$,
+\[
+|x'(t)| \delta(x(t) - u) = \sum_i \frac{|x'(t_i)|}{|x'(t_i)|} \delta(t - t_i) = \sum_i \delta(t - t_i).
+\]
+Therefore,
+\[
+\int_{-\infty}^T |x'(t)| \delta(x(t) - u) \, dt = \sum_i \int_{-\infty}^T \delta(t - t_i) \, dt = \sum_{t_i \leq T} 1 = N(T).
+\]
+\end{proof}
+
+\begin{theorem}[Counting Function as Sum of Heaviside Steps]
+For every $T \in \mathbb{R}$,
+\[
+N(T) = \sum_{i} H(T - t_i)
+\]
+where the sum runs over all level crossing times $t_i$.
+\end{theorem}
+
+\begin{proof}
+By definition of the Heaviside function, $H(T - t_i) = 1$ if and only if $T \geq t_i$, and $H(T - t_i) = 0$ otherwise. Therefore,
+\[
+\sum_{i} H(T - t_i) = \sum_{t_i \leq T} 1 = N(T).
+\]
+\end{proof}
+
+\begin{theorem}[Equivalence of Representations]
+The delta integral representation and the Heaviside step sum representation are equivalent:
+\[
+\int_{-\infty}^T |x'(t)| \delta(x(t) - u) \, dt = \sum_{i} H(T - t_i).
+\]
+\end{theorem}
+
+\begin{proof}
+This follows immediately from the two previous theorems, since both expressions equal $N(T)$.
+\end{proof}
+
+\end{document}
