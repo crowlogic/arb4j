@@ -134,9 +134,40 @@ import arb.documentation.TheArb4jLibrary;
       return sb.toString();
     }
   }
-  
+ 
+
+  public Real mul(Real x, int prec, Real result)
+  {
+    return getReal(prec, result).mul(x,prec);
+  }  
+
+  public Real div(Real x, int prec, Real result)
+  {
+    return getReal(prec, result).div(x,prec);
+  }  
+
+  public Real add(Real x, int prec, Real result)
+  {
+    return getReal(prec, result).add(x,prec);
+  }  
+
+  public Real sub(Real x, int prec, Real result)
+  {
+    return getReal(prec, result).sub(x,prec);
+  }  
+
+  public Real pow(Real x, int prec, Real result)
+  {
+    return getReal(prec, result).pow(x,prec);
+  }  
+
+ 
   public Real getReal(int bits, Real result)
   {
+    if ( !isReal() )
+    {
+      throw new IllegalArgumentException( this + " is not Real-valued" );
+    }
     arblib.qqbar_get_arb(result, this, bits);
     return result;
   }

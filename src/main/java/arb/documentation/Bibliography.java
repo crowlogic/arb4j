@@ -18,6 +18,84 @@ import arb.documentation.references.Book;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article cramerNonStationaryProcesses                                     =
+                                                     new Article("On some classes of non-stationary stochastic processes",
+                                                                 "H. Cramér",
+                                                                 "1961",
+                                                                 "Proc. 4th Berkeley Sympos. Math. Statist. and Prob.",
+                                                                 "II",
+                                                                 "57–77");
+
+  public static Article cramerPurelyNonDeterministicProcesses                            =
+                                                              new Article("On the structure of purely non-deterministic stochastic processes",
+                                                                          "H. Cramér",
+                                                                          "1961",
+                                                                          "Arkiv Math.",
+                                                                          "4",
+                                                                          "249–266");
+
+  public static Article cramerOrthogonalDecompositions                                   =
+                                                       new Article("Décompositions orthogonales de certains procès stochastiques",
+                                                                   "H. Cramér",
+                                                                   "1962",
+                                                                   "Ann. Fac. Sciences Clermont",
+                                                                   "11",
+                                                                   "15–21");
+
+  public static Book    doobStochasticProcesses                                          =
+                                                new Book("Stochastic Processes",
+                                                         "J. L. Doob",
+                                                         "1953").setPublisher("Wiley");
+
+  public static Book    halmosHilbertSpaceSpectralMultiplicity                           =
+                                                               new Book("Introduction to Hilbert Space and the Theory of Spectral Multiplicity",
+                                                                        "P. R. Halmos",
+                                                                        "1957").setPublisher("Chelsea")
+                                                                               .setEdition("2nd");
+
+  public static Article kolmogorovInvariantCurves                                        =
+                                                  new Article("Curves in Hilbert space which are invariant with respect to a one-parameter group of motions",
+                                                              "A. N. Kolmogorov",
+                                                              "1940",
+                                                              "DAN SSSR",
+                                                              "26",
+                                                              "6–9");
+
+  public static Article kolmogorovWienerSpiral                                           =
+                                               new Article("Wiener's spiral and some other interesting curves in Hilbert space",
+                                                           "A. N. Kolmogorov",
+                                                           "1940",
+                                                           "DAN SSSR",
+                                                           "26",
+                                                           "115–118");
+
+  public static Book    loeveProbabilityTheory                                           =
+                                               new Book("Probability Theory",
+                                                        "M. Loève",
+                                                        "1963").setPublisher("Van Nostrand")
+                                                               .setEdition("3rd");
+
+  public static Book    nakanoSpectralTheory                                             =
+                                             new Book("Spectral Theory in the Hilbert Space",
+                                                      "H. Nakano",
+                                                      "1953").setPublisher("Jap. Soc. for the Promotion of Science");
+
+  public static Article neumannSchoenbergFourierIntegrals                                =
+                                                          new Article("Fourier integrals and metric geometry",
+                                                                      "J. von Neumann and I. J. Schoenberg",
+                                                                      "1941",
+                                                                      "Trans. Amer. Math. Soc.",
+                                                                      "50",
+                                                                      "226–251");
+
+  public static Article pinskerCurvesStationaryIncrements                                =
+                                                          new Article("Theory of curves in Hilbert space with stationary n-th increments",
+                                                                      "M. S. Pinsker",
+                                                                      "1955",
+                                                                      "Izv. AN SSSR, Ser. Mat.",
+                                                                      "19",
+                                                                      "319–344");
+
   public static Book    grafakosClassicalFourierAnalysis                                 =
                                                          new Book("Classical Fourier Analysis",
                                                                   "Loukas Grafakos",

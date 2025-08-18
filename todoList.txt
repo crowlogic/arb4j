@@ -9,4 +9,4 @@ compiler: move input-independent parts of the expression sub-tree into the initi
 LiteralConstantNode: replace linear search with hashmap     for (var existingConstant : expression.literalConstants.values())
 implement ∂/∂x[∏ᵢ₌₁ᵏfᵢ(x)] = ∑ᵢ₌₁ᵏ[(∂/∂x fᵢ(x))∏ⱼ₌₁,ⱼ≠ᵢᵏfⱼ(x)]
 #722: need to make sure that identity isnt used on a Scalar.. here in this case real.. it probably acts like the unknown variable is an indetrerminant rather than a variable taht the IntegralNode failed to rename/subst properly
-arb bug.arbException java.lang.NoSuchMethodError: 'arb.Real arb.AlgebraicNumber.mul(arb.Real, int, arb.Real)'
+UnsupportedOperationException: Derivative not implemented for function: ζ
