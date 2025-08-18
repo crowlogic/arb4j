@@ -57,7 +57,7 @@ public class SubtractionNode<D, R, F extends Function<? extends D, ? extends R>>
   @Override
   public Node<D, R, F> integrate(VariableNode<D, R, F> variable)
   {
-    return left.integrate(variable).sub(right.integrate(variable));
+    return left.integrate(variable).sub(right.integrate(variable)).simplify();
   }
 
   @Override
