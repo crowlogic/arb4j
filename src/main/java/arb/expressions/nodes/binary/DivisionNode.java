@@ -26,6 +26,12 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
                          BinaryOperationNode<D, R, F>
 {
 
+  @Override
+  public boolean isZero()
+  {
+    return left == null || left.isZero();
+  }
+
   static
   {
     assert arb.Integer.class.equals(Integer.class) : "you forgot to import arb.Integer";

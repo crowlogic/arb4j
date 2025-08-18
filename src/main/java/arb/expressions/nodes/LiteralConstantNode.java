@@ -434,6 +434,7 @@ public class LiteralConstantNode<D, R, F extends Function<? extends D, ? extends
     return '#';
   }
 
+  @Override
   public boolean isZero()
   {
     return "0".equals(value) || (fractionValue != null && fractionValue.isZero());

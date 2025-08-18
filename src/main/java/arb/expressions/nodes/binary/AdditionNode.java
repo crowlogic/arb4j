@@ -73,12 +73,12 @@ public class AdditionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   {
     super.simplify();
 
-    if (left.isLiteralConstant() && left.asLiteralConstant().isZero())
+    if (left.isZero())
     {
       return right;
     }
 
-    if (right.isLiteralConstant() && right.asLiteralConstant().isZero())
+    if (right.isZero())
     {
       return left;
     }

@@ -79,7 +79,7 @@ public class DerivativeNode<D, R, F extends Function<? extends D, ? extends R>> 
       variable = expression.require(',').resolve();
       expression.require(')');
     }
-    derivative = operand.differentiate(variable);
+    derivative = operand.differentiate(variable).simplify();
   }
 
   @Override

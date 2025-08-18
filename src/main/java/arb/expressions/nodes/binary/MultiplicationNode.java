@@ -7,6 +7,7 @@ import arb.Quaternion;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
+import arb.expressions.nodes.LiteralConstantNode;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.expressions.nodes.unary.FunctionNode;
@@ -31,8 +32,8 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   @Override
   public Node<D, R, F> differentiate(VariableNode<D, R, F> variable)
   {
-    var a = left.differentiate(variable).mul(right);
-    var b = right.differentiate(variable).mul(left);
+    var a = left.differentiate(variable).mul(right).simplify();
+    var b = right.differentiate(variable).mul(left).simplify();
     return a.add(b).simplify();
   }
 
@@ -56,36 +57,26 @@ public class MultiplicationNode<D, R, F extends Function<? extends D, ? extends 
   {
     super.simplify();
 
-    boolean leftIsConstant  = left != null && left.isLiteralConstant();
-    boolean rightIsConstant = right != null && right.isLiteralConstant();
-    var     rightConstant   = rightIsConstant ? right.asLiteralConstant() : null;
-    var     leftConstant    = leftIsConstant ? left.asLiteralConstant() : null;
-
-    if (leftIsConstant)
+    if (left.isZero())
     {
-      if (leftConstant.isZero())
-      {
-        return left;
-      }
-      if (leftConstant.isOne())
-      {
-        return right;
-      }
+      return left;
+    }
+    if (left.isOne())
+    {
+      return right;
     }
 
-    if (rightIsConstant)
+    if (right.isZero())
     {
-      if (rightConstant.isZero())
-      {
-        return right;
-      }
-      if (rightConstant.isOne())
-      {
-        return left;
-      }
+      return right;
+    }
+    if (right.isOne())
+    {
+      return left;
     }
 
-    if (leftIsConstant && rightIsConstant)
+    if (left instanceof LiteralConstantNode<D, R, F> leftConstant
+                  && right instanceof LiteralConstantNode<D, R, F> rightConstant)
     {
 
       if (leftConstant.isInt && rightConstant.isInt)

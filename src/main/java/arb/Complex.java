@@ -155,7 +155,7 @@ public class Complex implements Becomable<Complex>,Domain<Complex>,NamedField<Co
   {
     int N = size();
     assert samplePath.size()
-                  == size() : String.format("samplePath.size=%d != N = %d", samplePath.size(), N);
+                  == N : String.format("samplePath.size=%d != N = %d", samplePath.size(), N);
     arblib.acb_dft_inverse(samplePath, this, N, bits);
     return samplePath;
   }

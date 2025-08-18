@@ -366,6 +366,11 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     return expression.newLiteralConstant(-1);
   }
 
+  public LiteralConstantNode<D, R, F> zero()
+  {
+    return expression.newLiteralConstant(0);
+  }
+
   public LiteralConstantNode<D, R, F> one()
   {
     return expression.newLiteralConstant(1);
@@ -468,5 +473,15 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    * @return the string that represents this node in {@link Latex} format
    */
   public abstract String typeset();
+
+  public boolean isZero()
+  {
+    return "0".equals(toString());
+  }
+
+  public boolean isOne()
+  {
+    return "1".equals(toString());
+  }
 
 }
