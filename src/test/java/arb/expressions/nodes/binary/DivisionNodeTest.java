@@ -11,7 +11,7 @@ public class DivisionNodeTest extends
 {
   public void testIntegralOfSincFunction()
   {
-    var f = RealFunction.express("int(sin(λ*t)/t*J(0,2*π*t),t=0...∞)");
+    var f = RealFunction.express("λ➔∫t➔sin(2*π*λ*t)/(2*π*t)*J(0,2*π*t)dt{t=0...∞}");
 
   }
 

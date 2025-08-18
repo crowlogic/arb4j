@@ -119,7 +119,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   }
 
   String                          SYNTAXMSG =
-                                            "the format is  g(x)=∫x➔f(x)dx∈(a,b) for definite integrals and "
+                                            "the format is  g(a,b)=∫x➔f(x)dx∈(a,b) for definite integrals and "
                                               + "g(x)=∫x➔f(x)dx for indefinate integrals, the variable on the left "
                                               + "side of the arrow must match the variable on the right side of the d and "
                                               + "before the ( but the first var was %s and the 2nd was %s\n";
