@@ -126,7 +126,7 @@ import arb.functions.complex.ComplexNullaryFunction;
    * @param samplePath
    * @return {@link arblib#acb_dft_inverse(Complex, Complex, int, int)}
    */
-  public Complex reconstructPathFromRandomMeasure(int bits, Complex samplePath)
+  public Complex applyInverseDiscreteFourierTransform(int bits, Complex samplePath)
   {
     int N = size();
     assert samplePath.size()

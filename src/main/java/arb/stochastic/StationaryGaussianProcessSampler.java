@@ -139,7 +139,7 @@ public abstract class StationaryGaussianProcessSampler extends
     try ( ComplexWhiteNoiseProcess whiteNoiseProcess = new ComplexWhiteNoiseProcess())
     {
       var W = generateRandomWhiteNoiseMeasureFromSeed(seed, whiteNoiseProcess);
-      W.constructPathFromRandomMeasure(bits, samplePath).mul(N, bits);
+      W.applyInverseDiscreteFourierTransform(bits, samplePath).mul(N, bits);
 
       assert samplingTimes.size() == N : String.format("samplingTimes.size=%d != N = %d",
                                                        samplingTimes.size(),
