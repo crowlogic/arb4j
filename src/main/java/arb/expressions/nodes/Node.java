@@ -269,10 +269,6 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
    */
   public abstract Node<D, R, F> integrate(VariableNode<D, R, F> variable);
 
-  public boolean isConstantOne()
-  {
-    return isLiteralConstant() && "1".equals(toString());
-  }
 
   public boolean isHalf()
   {

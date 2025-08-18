@@ -100,7 +100,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public boolean isHalf()
   {
-    return left.isConstantOne() && right.isLiteralConstant() && right.toString().equals("2");
+    return left.isOne() && right.isLiteralConstant() && right.toString().equals("2");
   }
 
   private boolean isOneMinusXSquared(Node<D, R, F> node, VariableNode<D, R, F> variable)
@@ -108,7 +108,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (!(node instanceof SubtractionNode sub))
       return false;
 
-    return sub.left.isConstantOne() && sub.right.isVariableSquared(variable);
+    return sub.left.isOne() && sub.right.isVariableSquared(variable);
   }
 
   private boolean isOneOverOnePlusXSquared(VariableNode<D, R, F> variable)
@@ -142,7 +142,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     if (!(node instanceof AdditionNode add))
       return false;
 
-    return add.left.isConstantOne() && add.right.isVariableSquared(variable);
+    return add.left.isOne() && add.right.isVariableSquared(variable);
   }
 
   @Override
@@ -159,7 +159,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
 
   Node<D, R, F> simplifyWhenEitherSideIsOne(Node<D, R, F> node)
   {
-    if (right.isConstantOne())
+    if (right.isOne())
     {
       return left;
     }
