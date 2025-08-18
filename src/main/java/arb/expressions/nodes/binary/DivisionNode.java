@@ -80,7 +80,7 @@ public class DivisionNode<D, R, F extends Function<? extends D, ? extends R>> ex
     // If denominator is constant: ∫f(x)/c dx = (1/c)∫f(x)dx
     if (right.isIndependentOf(variable))
     {
-      return left.integrate(variable).div(right);
+      return left.integrate(variable).div(right).simplify();
     }
 
     // More complex rational functions would need additional logic
