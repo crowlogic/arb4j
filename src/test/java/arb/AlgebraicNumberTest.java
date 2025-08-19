@@ -11,6 +11,13 @@ import junit.framework.TestCase;
 public class AlgebraicNumberTest extends
                                  TestCase
 {
+  public static void testRationalNumberFromString()
+  {
+    var a = new AlgebraicNumber();
+    a.set("377/32");
+    assertEquals("377/32", a.toString());
+  }
+
   public static void testIsReal()
   {
     try ( var a = new AlgebraicNumber())

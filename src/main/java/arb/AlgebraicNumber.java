@@ -9,6 +9,8 @@
 package arb;
 
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.Function;
+import arb.functions.NullaryFunction;
 
 /**
  * <p>
@@ -96,7 +98,13 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   {
     return arblib.qqbar_is_integer(this) != 0;
   }
-  
+
+  public AlgebraicNumber(String string, int bits )
+  {
+    this();
+    set(string);
+  }
+    
   public AlgebraicNumber swap(AlgebraicNumber reference)
   {
     arblib.qqbar_swap(reference, this);
@@ -108,7 +116,7 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   {
     try ( var blip = new SymbolicExpression())
     {
-      return getSymbolicFormula(blip, FormulaGenerationMethod.All).typeset();
+      return getSymbolicExpression(blip, FormulaGenerationMethod.All).typeset();
     }
   }
 
@@ -148,7 +156,7 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
       {
         sb.append(name + "=");
       }
-      sb.append(getSymbolicFormula(blip, FormulaGenerationMethod.All));
+      sb.append(getSymbolicExpression(blip, FormulaGenerationMethod.All));
       return sb.toString();
     }
   }
@@ -230,30 +238,37 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     return pow(exp,this);
   }
   
+
   public Named set(String value)
   {
-    try ( SymbolicExpression expr = new SymbolicExpression())
-    {
-      expr.set(value);
-      arblib.qqbar_set_fexpr(this, expr);
-      return this;
-    }
+    NullaryFunction<AlgebraicNumber> f = Function.express(Object.class,
+                                                          AlgebraicNumber.class,
+                                                          NullaryFunction.class,
+                                                          value);
+    return set(f.evaluate());
   }
-    
-  public SymbolicExpression getSymbolicRepresentation(SymbolicExpression result)
+  
+  public AlgebraicNumber set(SymbolicExpression expr)
   {
-    arblib.qqbar_get_fexpr_repr(result, this);
-    return result;
+    arblib.qqbar_set_fexpr(this, expr);
+    return this;
   }
 
-  public SymbolicExpression getSymbolicFormula(SymbolicExpression result, FormulaGenerationMethod... methods)
+  public SymbolicExpression getSymbolicExpression(SymbolicExpression result,
+                                                  FormulaGenerationMethod... methods)
   {
     long flags = 0;
     for (FormulaGenerationMethod method : methods)
     {
       flags = flags | method.value();
     }
-    return getSymbolicFormula(result, flags);
+    return getSymbolicExpression(result, flags);
+  }
+
+  protected SymbolicExpression getSymbolicExpression(SymbolicExpression result, long flags)
+  {
+    arblib.qqbar_get_fexpr_formula(result, this, flags);
+    return result;
   }
   
   public Complex mul(Complex x, int prec, Complex result)
@@ -265,12 +280,6 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   public AlgebraicNumber inverse(AlgebraicNumber result)
   {
     arblib.qqbar_inv(result, this);
-    return result;
-  }
-  
-  protected SymbolicExpression getSymbolicFormula(SymbolicExpression result, long flags)
-  {
-    arblib.qqbar_get_fexpr_formula(result, this, flags);
     return result;
   }
 

@@ -177,8 +177,8 @@ public class Compiler
     else if (from.equals(Fraction.class))
     {
       if (to.equals(Real.class) || to.equals(ComplexFraction.class) || to.equals(Complex.class)
-                    || to.equals(RationalFunction.class)
-                    || to.equals(ComplexRationalFunction.class))
+                    || to.equals(RationalFunction.class) || to.equals(ComplexRationalFunction.class)
+                    || to.equals(AlgebraicNumber.class))
       {
         return true;
       }

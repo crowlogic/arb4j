@@ -19,7 +19,7 @@ public class IntegerTest extends
     try ( Integer p = new Integer(3))
     {
       var t                      = p.pow(new Integer(-3), 128, new AlgebraicNumber());
-      var symbolicRepresentation = t.getSymbolicFormula(new SymbolicExpression());
+      var symbolicRepresentation = t.getSymbolicExpression(new SymbolicExpression());
       assertEquals("Div(1, 27)", symbolicRepresentation.toString());
     }
   }
