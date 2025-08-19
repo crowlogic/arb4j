@@ -1,6 +1,6 @@
 <TeXmacs|2.1.4>
 
-<style|<tuple|generic|boring-white|framed-theorems>>
+<style|<tuple|article|boring-white|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Measure-Preserving Bijective Time Changes of
@@ -611,61 +611,61 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-10|<tuple|6|10|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-11|<tuple|7|11|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-12|<tuple|5|11|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-2|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-3|<tuple|3|3|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-4|<tuple|4|4|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-5|<tuple|4.1|4|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-6|<tuple|4.2|6|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-7|<tuple|4.3|7|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-8|<tuple|4.4|8|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-9|<tuple|5|9|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|bib-cramer1967|<tuple|cramer1967|11|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|bib-kac1943|<tuple|kac1943|11|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|bib-priestley1965|<tuple|priestley1965|11|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|bib-rice1945|<tuple|rice1945|11|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|cor:evolving_spec|<tuple|12|8|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|cor:measure_preserve|<tuple|9|6|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|def:inverse_unitary_op|<tuple|6|4|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|def:oscillatory|<tuple|3|3|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|def:scaling|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|def:time_changed_proc|<tuple|5|4|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|def:unitary_op|<tuple|4|4|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|envelope|<tuple|4|3|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:L2_preserve|<tuple|12|5|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:conjugation|<tuple|51|9|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:evolutionary_spec|<tuple|41|8|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:integral_op_original|<tuple|47|9|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:integral_op_transformed|<tuple|49|9|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:kac_rice|<tuple|63|10|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:measure_preserve|<tuple|26|6|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:measure_preserve_sets|<tuple|25|6|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:oscillatory_rep|<tuple|6|3|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:phi_def|<tuple|30|7|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:stationary_rep|<tuple|7|3|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:time_change|<tuple|10|4|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:time_changed_cov|<tuple|62|10|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:unitary_inverse|<tuple|11|4|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:unitary_op|<tuple|9|4|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|eq:zero_count|<tuple|61|10|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|lem:inverse_well_defined|<tuple|7|4|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|rem:inverse_properties|<tuple|2|2|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|sec:conclusion|<tuple|7|11|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|sec:conjugation|<tuple|5|9|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|sec:norm_preservation|<tuple|4.2|6|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|sec:oscillatory|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|sec:scaling|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|sec:stationary|<tuple|3|3|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|sec:time_change|<tuple|4|4|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|sec:zero_count|<tuple|6|10|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|thm:measure_preserve|<tuple|10|6|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|thm:operator_conjugation|<tuple|13|9|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|thm:osc_rep|<tuple|11|7|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|thm:unitary|<tuple|8|5|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|thm:zero_count|<tuple|14|10|../../.TeXmacs/texts/scratch/no_name_29.tm>>
+    <associate|auto-1|<tuple|1|2>>
+    <associate|auto-10|<tuple|6|9>>
+    <associate|auto-11|<tuple|7|10>>
+    <associate|auto-12|<tuple|5|10>>
+    <associate|auto-2|<tuple|2|2>>
+    <associate|auto-3|<tuple|3|3>>
+    <associate|auto-4|<tuple|4|3>>
+    <associate|auto-5|<tuple|4.1|3>>
+    <associate|auto-6|<tuple|4.2|5>>
+    <associate|auto-7|<tuple|4.3|6>>
+    <associate|auto-8|<tuple|4.4|7>>
+    <associate|auto-9|<tuple|5|8>>
+    <associate|bib-cramer1967|<tuple|cramer1967|10>>
+    <associate|bib-kac1943|<tuple|kac1943|10>>
+    <associate|bib-priestley1965|<tuple|priestley1965|10>>
+    <associate|bib-rice1945|<tuple|rice1945|10>>
+    <associate|cor:evolving_spec|<tuple|12|7>>
+    <associate|cor:measure_preserve|<tuple|9|5>>
+    <associate|def:inverse_unitary_op|<tuple|6|3>>
+    <associate|def:oscillatory|<tuple|3|2>>
+    <associate|def:scaling|<tuple|1|2>>
+    <associate|def:time_changed_proc|<tuple|5|3>>
+    <associate|def:unitary_op|<tuple|4|3>>
+    <associate|envelope|<tuple|4|2>>
+    <associate|eq:L2_preserve|<tuple|12|4>>
+    <associate|eq:conjugation|<tuple|51|8>>
+    <associate|eq:evolutionary_spec|<tuple|41|7>>
+    <associate|eq:integral_op_original|<tuple|47|8>>
+    <associate|eq:integral_op_transformed|<tuple|49|8>>
+    <associate|eq:kac_rice|<tuple|63|9>>
+    <associate|eq:measure_preserve|<tuple|26|5>>
+    <associate|eq:measure_preserve_sets|<tuple|25|5>>
+    <associate|eq:oscillatory_rep|<tuple|6|2>>
+    <associate|eq:phi_def|<tuple|30|6>>
+    <associate|eq:stationary_rep|<tuple|7|3>>
+    <associate|eq:time_change|<tuple|10|3>>
+    <associate|eq:time_changed_cov|<tuple|62|9>>
+    <associate|eq:unitary_inverse|<tuple|11|3>>
+    <associate|eq:unitary_op|<tuple|9|3>>
+    <associate|eq:zero_count|<tuple|61|9>>
+    <associate|lem:inverse_well_defined|<tuple|7|4>>
+    <associate|rem:inverse_properties|<tuple|2|2>>
+    <associate|sec:conclusion|<tuple|7|10>>
+    <associate|sec:conjugation|<tuple|5|8>>
+    <associate|sec:norm_preservation|<tuple|4.2|5>>
+    <associate|sec:oscillatory|<tuple|2|2>>
+    <associate|sec:scaling|<tuple|1|2>>
+    <associate|sec:stationary|<tuple|3|3>>
+    <associate|sec:time_change|<tuple|4|3>>
+    <associate|sec:zero_count|<tuple|6|9>>
+    <associate|thm:measure_preserve|<tuple|10|5>>
+    <associate|thm:operator_conjugation|<tuple|13|8>>
+    <associate|thm:osc_rep|<tuple|11|6>>
+    <associate|thm:unitary|<tuple|8|4>>
+    <associate|thm:zero_count|<tuple|14|9>>
   </collection>
 </references>
 

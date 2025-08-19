@@ -262,15 +262,6 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     expr.position              = position;
     expr.character             = character;
     expr.previousCharacter     = previousCharacter;
-//    if (independentVariable != null)
-//    {
-//      expr.independentVariable = (VariableNode<D, C, F>) independentVariable.spliceInto(expr);
-//    }
-//    if (indeterminateVariable != null)
-//    {
-//      expr.indeterminateVariable = (VariableNode<D, C, F>) indeterminateVariable.spliceInto(expr);
-//    }
-
     return expr;
   }
 
@@ -505,7 +496,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
   public String allocateIntermediateVariable(MethodVisitor methodVisitor, Class<?> type)
   {
-    // assert !type.isInterface() : "cannot instantiate interface " + type;
+    assert !type.isInterface() : "cannot instantiate interface " + type;
     String intermediateVariableName = newIntermediateVariable(type);
     loadThisFieldOntoStack(methodVisitor, intermediateVariableName, type);
     return intermediateVariableName;
@@ -555,7 +546,12 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                                                                        Label startLabel,
                                                                        Label endLabel)
   {
-    methodVisitor.visitLocalVariable("this", "L" + className + ";", null, startLabel, endLabel, 0);
+    methodVisitor.visitLocalVariable("this",
+                                     String.format("L%s;", className),
+                                     null,
+                                     startLabel,
+                                     endLabel,
+                                     0);
     methodVisitor.visitLocalVariable(independentVariable != null ? independentVariable.getName()
                                                                  : "in",
                                      domainType.descriptorString(),
@@ -594,8 +590,8 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
     }
     context.populateFunctionReferenceGraph();
     dependencies =
-                 TopologicalSorter.findDependencyOrderUsingDepthFirstSearch(context.functionReferenceGraph,
-                                                                            referencedFunctions);
+                 TopologicalSorter.determineDependencyOrderUsingDepthFirstSearch(context.functionReferenceGraph,
+                                                                                 referencedFunctions);
 
     if (saveGraphs)
     {
@@ -669,10 +665,9 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
 
     if (context != null)
     {
-      var varList = context.variables.map.entrySet()
-                                         .stream()
-                                         .sorted((a, b) -> a.getKey().compareTo(b.getKey()))
-                                         .toList();
+      var varList = context.variableEntryStream()
+                           .sorted((a, b) -> a.getKey().compareTo(b.getKey()))
+                           .toList();
       if (trace)
       {
         String vars = varList.stream().map(f -> f.getKey()).collect(Collectors.joining(","));

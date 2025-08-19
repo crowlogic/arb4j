@@ -54,7 +54,7 @@ public class TopologicalSorter
     return image;
   }
 
-  public static List<Dependency> findDependencyOrderUsingDepthFirstSearch(Map<String,
+  public static List<Dependency> determineDependencyOrderUsingDepthFirstSearch(Map<String,
                 Dependency> dependencies, HashMap<String, FunctionMapping<?, ?, ?>> mappings)
   {
     List<Dependency> initializationOrder = new ArrayList<>();
