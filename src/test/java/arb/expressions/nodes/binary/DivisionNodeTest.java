@@ -11,17 +11,16 @@ public class DivisionNodeTest extends
 {
   public void testSineIntegral()
   {
-    var f = RealFunction.express("λ➔∫t➔sin(2*π*λ*t)/(2*π*t)*J(0,2*π*t)dt{t=0...∞}");
+    var f = RealFunction.express("int(sin(t)/t,t)");
 
   }
 
   public void testSimplificationOfExponentialDivision()
   {
-    var context = new Context();
-    context.registerVariable(Real.named("t").set(2));
-    context.registerVariable(Real.named("s").set(3));
-    var expr = ComplexNullaryFunction.parse("exp(t)/exp(s)", context);
-    var inst = expr.instantiate();
+    var context = new Context(Real.named("t").set(2),
+                              Real.named("s").set(3));
+    var expr    = ComplexNullaryFunction.parse("exp(t)/exp(s)", context);
+    var inst    = expr.instantiate();
     assertEquals("exp(t-s)", inst.toString());
   }
 }
