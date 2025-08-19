@@ -228,6 +228,7 @@ public class Expression<D, C, F extends Function<? extends D, ? extends C>> impl
                        Cloneable,
                        Supplier<F>
 {
+  private static final char MIDDLE_DOT               = '\u00B7';
 
   private static final char COMBINING_DOT_ABOVE      = '\u0307';
 

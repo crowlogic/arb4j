@@ -1,0 +1,358 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,latexsym}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmaffiliation}[1]{\\ #1}
+\newenvironment{proof}{\noindent\textbf{Proof\ }}{\hspace*{\fill}$\Box$\medskip}
+\newtheorem{corollary}{Corollary}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{The Radial Solution of the Two-Dimensional Schr{\"o}dinger Equation
+with Circular Symmetry}
+
+\author{
+  Stephen Crowley
+  \tmaffiliation{August 18, 2025}
+}
+
+\maketitle
+
+\begin{theorem}
+  [Separation of Variables for 2D Schr{\"o}dinger Equation] Consider a
+  particle of mass $m$ in a two-dimensional radially symmetric potential $V
+  (r)$. The time-independent Schr{\"o}dinger equation in polar coordinates
+  $(r, \theta)$ admits separable solutions of the form $\psi (r, \theta) = R
+  (r) \Theta (\theta)$.
+\end{theorem}
+
+\begin{proof}
+  The time-independent Schr{\"o}dinger equation in polar coordinates is:
+  \begin{equation}
+    - \frac{\hbar^2}{2 m}  \left( \frac{\partial^2}{\partial r^2} +
+    \frac{1}{r}  \frac{\partial}{\partial r} + \frac{1}{r^2} 
+    \frac{\partial^2}{\partial \theta^2} \right) \psi (r, \theta) + V (r) \psi
+    (r, \theta) = E \psi (r, \theta)
+  \end{equation}
+  Substituting $\psi (r, \theta) = R (r) \Theta (\theta)$ and dividing by $R
+  (r) \Theta (\theta)$:
+  \begin{equation}
+    - \frac{\hbar^2}{2 m}  \left( \frac{R'' (r)}{R (r)} + \frac{1}{r} 
+    \frac{R' (r)}{R (r)} + \frac{1}{r^2}  \frac{\Theta'' (\theta)}{\Theta
+    (\theta)} \right) + V (r) = E
+  \end{equation}
+  Multiplying by $r^2$ and rearranging:
+  \begin{equation}
+    r^2  \left[ - \frac{\hbar^2}{2 m}  \left( \frac{R'' (r)}{R (r)} +
+    \frac{1}{r}  \frac{R' (r)}{R (r)} \right) + V (r) - E \right] = -
+    \frac{\hbar^2}{2 m}  \frac{\Theta'' (\theta)}{\Theta (\theta)}
+  \end{equation}
+  Since the left side depends only on $r$ and the right side depends only on
+  $\theta$, both sides must equal a constant. Let this separation constant be
+  $\frac{\hbar^2 m_l^2}{2 m}$ where $m_l$ is an integer.
+\end{proof}
+
+\begin{theorem}
+  [Angular Part Solution] The angular part of the separated wave function
+  satisfies $\Theta (\theta) = e^{im_l \theta}$ where $m_l \in \mathbb{Z}$.
+\end{theorem}
+
+\begin{proof}
+  From the separation procedure, the angular equation is:
+  \begin{equation}
+    \frac{\Theta'' (\theta)}{\Theta (\theta)} = - m_l^2
+  \end{equation}
+  This gives the differential equation:
+  \begin{equation}
+    \Theta'' (\theta) + m_l^2 \Theta (\theta) = 0
+  \end{equation}
+  The general solution is:
+  \begin{equation}
+    \Theta (\theta) = Ae^{im_l \theta} + Be^{- im_l \theta}
+  \end{equation}
+  For single-valued wave functions, periodicity requires $\Theta (\theta + 2
+  \pi) = \Theta (\theta)$, which implies:
+  \begin{equation}
+    e^{im_l \cdot 2 \pi} = 1
+  \end{equation}
+  This condition is satisfied if and only if $m_l \in \mathbb{Z}$. Without
+  loss of generality, one can choose the normalized form $\Theta (\theta) =
+  \frac{1}{\sqrt{2 \pi}} e^{im_l \theta}$.
+\end{proof}
+
+\begin{theorem}
+  [Radial Equation for Free Particle] For a free particle in two dimensions
+  ($V (r) = 0$), the radial part of the wave function satisfies Bessel's
+  differential equation of integer order $|m_l |$.
+\end{theorem}
+
+\begin{proof}
+  From the separation of variables with $V (r) = 0$, the radial equation
+  becomes:
+  \begin{equation}
+    - \frac{\hbar^2}{2 m}  \left( R'' (r) + \frac{1}{r} R' (r) \right) +
+    \frac{\hbar^2 m_l^2}{2 mr^2} R (r) = ER (r)
+  \end{equation}
+  Rearranging and defining $k^2 = \frac{2 mE}{\hbar^2}$:
+  \begin{equation}
+    R'' (r) + \frac{1}{r} R' (r) + \left( k^2 - \frac{m_l^2}{r^2} \right) R
+    (r) = 0
+  \end{equation}
+  Making the substitution $x = kr$, let $u (x) = R (r) = R (x / k)$. Then:
+  
+  \begin{align}
+    \frac{dR}{dr} & = k \frac{du}{dx}  \frac{d^2 R}{dr^2} & = k^2  \frac{d^2
+    u}{dx^2} 
+  \end{align}
+  
+  Substituting into the radial equation:
+  \begin{equation}
+    k^2  \frac{d^2 u}{dx^2} + \frac{k}{r} k \frac{du}{dx} + \left( k^2 -
+    \frac{m_l^2}{r^2} \right) u = 0
+  \end{equation}
+  Since $r = x / k$, this becomes:
+  \begin{equation}
+    x^2  \frac{d^2 u}{dx^2} + x \frac{du}{dx} + (x^2 - m_l^2) u = 0
+  \end{equation}
+  This is precisely Bessel's differential equation of order $|m_l |$.
+\end{proof}
+
+\begin{theorem}
+  [General Solution in Terms of Bessel Functions] The general solution to the
+  radial equation for a free particle in two dimensions is:
+  \begin{equation}
+    R (r) = AJ_{|m_l |}  (kr) + BY_{|m_l |}  (kr)
+  \end{equation}
+  where $J_{|m_l |}$ and $Y_{|m_l |}$ are Bessel functions of the first and
+  second kind, respectively, of order $|m_l |$.
+\end{theorem}
+
+\begin{proof}
+  From Theorem 3, the radial equation is Bessel's differential equation of
+  order $|m_l |$. The standard theory of Bessel functions establishes that the
+  general solution to:
+  \begin{equation}
+    x^2 y'' + xy' + (x^2 - \nu^2) y = 0
+  \end{equation}
+  is given by:
+  \begin{equation}
+    y (x) = c_1 J_{\nu} (x) + c_2 Y_{\nu} (x)
+  \end{equation}
+  where $J_{\nu}$ and $Y_{\nu}$ are linearly independent solutions for
+  non-integer $\nu$, and for integer $\nu$, $Y_{\nu}$ is defined as the
+  appropriate limit. Since $|m_l |$ is a non-negative integer, and with $x =
+  kr$, the general solution is:
+  \begin{equation}
+    R (r) = AJ_{|m_l |}  (kr) + BY_{|m_l |}  (kr)
+  \end{equation}
+\end{proof}
+
+\begin{corollary}
+  [Regular Solution at Origin] For wave functions that must be finite at the
+  origin $r = 0$, the coefficient $B = 0$, yielding:
+  \begin{equation}
+    R (r) = AJ_{|m_l |}  (kr)
+  \end{equation}
+\end{corollary}
+
+\begin{proof}
+  The Bessel function of the second kind $Y_{|m_l |}  (kr)$ has a logarithmic
+  singularity at $r = 0$ for $m_l = 0$ and diverges as $r^{- |m_l |}$ for $m_l
+  \neq 0$. Since physical wave functions must be square-integrable near the
+  origin, one requires $B = 0$.
+\end{proof}
+
+\begin{theorem}
+  [Complete Solution] The complete separable solution for a free particle in
+  two dimensions with circular symmetry is:
+  \begin{equation}
+    \psi (r, \theta) = AJ_{|m_l |}  (kr) e^{im_l \theta}
+  \end{equation}
+  where $m_l \in \mathbb{Z}$, $k = \sqrt{\frac{2 mE}{\hbar^2}}$, and $A$ is a
+  normalization constant.
+\end{theorem}
+
+\begin{proof}
+  This follows directly from combining Theorems 2, 4, and Corollary 1. The
+  angular part contributes $e^{im_l \theta}$ with integer $m_l$, and the
+  radial part contributes $AJ_{|m_l |}  (kr)$ for regularity at the origin.
+\end{proof}
+
+{\documentclass{article}} {\usepackage{amsmath, amsthm, amssymb}}
+{\usepackage{physics}} {\title{Radial Solutions of the Two-Dimensional
+Schr{\"o}dinger Equation with Nonzero Potentials}} {\author{}}August 18, 2025
+
+{\maketitle}\section{General Radial Equation}
+
+The starting point is the time-independent Schr{\"o}dinger equation with
+circular symmetry:
+\begin{equation}
+  - \frac{\hbar^2}{2 m}  \left( R'' (r) + \frac{1}{r} R' (r) -
+  \frac{m_l^2}{r^2} R (r) \right) + V (r) R (r) = ER (r)
+\end{equation}
+where $m_l \in \mathbb{Z}$ is the angular momentum quantum number from
+separation of variables.
+
+\begin{theorem}
+  [Radial Schr{\"o}dinger Equation, General Form] For any centrally symmetric
+  $V (r)$ in two dimensions, the reduced radial equation reads:
+  \begin{equation}
+    R'' (r) + \frac{1}{r} R' (r) + \left( \frac{2 m}{\hbar^2} (E - V (r)) -
+    \frac{m_l^2}{r^2} \right) R (r) = 0.
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  This follows by rearranging the separated Schr{\"o}dinger equation and
+  collecting terms. All quantities are explicit.
+\end{proof}
+
+\section{Two-Dimensional Isotropic Harmonic Oscillator}
+
+The isotropic harmonic oscillator in two dimensions has potential
+\begin{equation}
+  V (r) = \tfrac{1}{2} m \omega^2 r^2 .
+\end{equation}
+\begin{theorem}
+  [Radial Equation for 2D Harmonic Oscillator] With $V (r) = \tfrac{1}{2} m
+  \omega^2 r^2$, the radial equation becomes
+  \begin{equation}
+    R'' (r) + \frac{1}{r} R' (r) + \left( \frac{2 mE}{\hbar^2} - \frac{m^2
+    \omega^2}{\hbar^2} r^2 - \frac{m_l^2}{r^2} \right) R (r) = 0.
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  Substitution of $V (r)$ into the general form yields the displayed equation
+  directly.
+\end{proof}
+
+\begin{theorem}
+  [Transformation to Associated Laguerre Equation] Defining dimensionless
+  variable $\rho = \frac{m \omega}{\hbar} r^2$ and ansatz
+  \begin{equation}
+    R (r) = \rho^{|m_l | / 2} e^{- \rho / 2} L (\rho),
+  \end{equation}
+  the differential equation for $L (\rho)$ is
+  \begin{equation}
+    \rho L'' (\rho) + (1 + |m_l | - \rho) L' (\rho) + \left( \frac{E}{\hbar
+    \omega} - 1 - \frac{|m_l |}{2} \right) L (\rho) = 0.
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  Explicit substitution of the ansatz into the radial equation, followed by
+  algebraic simplification, yields the associated Laguerre form.
+\end{proof}
+
+\begin{theorem}
+  [Quantization Condition] Polynomial solutions $L_n^{|m_l |} (\rho)$ exist
+  only if
+  \begin{equation}
+    \frac{E}{\hbar \omega} - 1 - \frac{|m_l |}{2} = n, \qquad n = 0, 1, 2,
+    \ldots
+  \end{equation}
+  so that
+  \begin{equation}
+    E_{n, m_l} = \hbar \omega (2 n + |m_l | + 1) .
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  The termination condition for the Laguerre series determines admissible
+  energies exactly as written.
+\end{proof}
+
+\begin{corollary}
+  [Normalized Radial Eigenfunctions] The regular radial functions take the
+  form
+  \begin{equation}
+    R_{n, m_l} (r) = C_{n, m_l} r^{|m_l |} e^{- \frac{m \omega}{2 \hbar} r^2}
+    L_n^{|m_l |}  \hspace{-0.17em} \left( \frac{m \omega}{\hbar} r^2 \right)
+  \end{equation}
+  where $C_{n, m_l}$ is a normalization constant.
+\end{corollary}
+
+\section{Two-Dimensional Coulomb Potential}
+
+The two-dimensional Coulomb potential is defined as
+\begin{equation}
+  V (r) = - \frac{Ze^2}{r} .
+\end{equation}
+\begin{theorem}
+  [Radial Equation for 2D Coulomb Potential] The radial Schr{\"o}dinger
+  equation takes the form
+  \begin{equation}
+    R'' (r) + \frac{1}{r} R' (r) + \left( \frac{2 mE}{\hbar^2} + \frac{2
+    mZe^2}{\hbar^2 r} - \frac{m_l^2}{r^2} \right) R (r) = 0.
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  Direct substitution of Coulomb potential into the radial Schr{\"o}dinger
+  equation yields this expression.
+\end{proof}
+
+\begin{theorem}
+  [Asymptotic Behavior] For $E < 0$, the solution at large $r$ behaves as
+  \begin{equation}
+    R (r) \sim e^{- \kappa r}, \qquad \kappa = \sqrt{- \frac{2 mE}{\hbar^2}} .
+  \end{equation}
+  At small $r$, finite solutions behave $R (r) \sim r^{|m_l |}$.
+\end{theorem}
+
+\begin{proof}
+  For large $r$, the $\tfrac{1}{r}$ and $\tfrac{1}{r^2}$ terms are negligible,
+  reducing to $R'' + \frac{1}{r} R' \approx \frac{2 mE}{\hbar^2} R$. Solutions
+  are exponential with decay constant $\kappa$. For small $r$, the leading
+  equation is $R'' + \frac{1}{r} R' - \frac{m_l^2}{r^2} R = 0$, solved by
+  $r^{\pm |m_l |}$.
+\end{proof}
+
+\begin{theorem}
+  [Confluent Hypergeometric Form of Solution] Define $\rho = 2 \kappa r$ and
+  ansatz
+  \begin{equation}
+    R (r) = \rho^{|m_l |} e^{- \rho / 2} F (\rho) .
+  \end{equation}
+  Then $F (\rho)$ satisfies the confluent hypergeometric equation
+  \begin{equation}
+    \rho F'' (\rho) + (2| m_l | + 1 - \rho) F' (\rho) + \left(
+    \frac{mZe^2}{\hbar^2 \kappa} - |m_l | - \tfrac{1}{2} \right) F (\rho) = 0.
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  Explicit substitution of the ansatz into the radial Coulomb equation and
+  simplification leads to the above form.
+\end{proof}
+
+\begin{theorem}
+  [Quantization Condition for 2D Coulomb] Normalizability requires $F (\rho)$
+  to be a terminating confluent hypergeometric series, giving condition
+  \begin{equation}
+    \frac{mZe^2}{\hbar^2 \kappa} - |m_l | - \tfrac{1}{2} = n, \qquad n = 0, 1,
+    2, \ldots
+  \end{equation}
+  so that
+  \begin{equation}
+    E_{n, m_l} = - \frac{mZ^2 e^4}{2 \hbar^2  (n + |m_l | + \tfrac{1}{2})^2} .
+  \end{equation}
+\end{theorem}
+
+\begin{corollary}
+  [Radial Eigenfunctions for 2D Coulomb Potential] Bound-state radial
+  functions are given by
+  \begin{equation}
+    R_{n, m_l} (r) = C_{n, m_l}  \hspace{0.17em} r^{|m_l |} e^{- \kappa r} 
+    \hspace{0.17em}_1 F_1 \hspace{-0.17em} \left( - n, \hspace{0.17em} 2| m_l
+    | + 1, \hspace{0.17em} 2 \kappa r \right),
+  \end{equation}
+  where $_1 F_1$ is the confluent hypergeometric function.
+\end{corollary}
+
+\end{document}
