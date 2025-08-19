@@ -11,6 +11,7 @@ import junit.framework.TestCase;
 public class AlgebraicNumberTest extends
                                  TestCase
 {
+
   public static void testRationalNumberFromString()
   {
     var a = new AlgebraicNumber();

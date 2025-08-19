@@ -78,6 +78,17 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   }
 
 
+  public AlgebraicNumber identity()
+  {
+    return one();
+  }
+
+  public AlgebraicNumber one()
+  {
+    arblib.qqbar_one(this);
+    return this;
+  }
+  
   @SuppressWarnings("resource")
   public static AlgebraicNumber named(String string)
   {
