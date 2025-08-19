@@ -3,6 +3,7 @@ package arb.functions.complex.numbertheoretic;
 import arb.Complex;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.RealToComplexFunction;
 import arb.functions.complex.RiemannζFunction;
 import junit.framework.TestCase;
 
@@ -13,6 +14,13 @@ import junit.framework.TestCase;
 public class RiemannζFunctionTest extends
                                   TestCase
 {
+  public static void testZetaDerivative()
+  {
+    var f = RealToComplexFunction.express("diff(ζ(1/2+I*t),t)");
+    var y = f.eval(2.3, new Complex());
+    assertEquals(4.7, y.re().doubleValue());
+  }
+
   public static void testZeta()
   {
 
