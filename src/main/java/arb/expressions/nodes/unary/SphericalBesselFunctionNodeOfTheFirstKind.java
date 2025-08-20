@@ -93,6 +93,7 @@ public class SphericalBesselFunctionNodeOfTheFirstKind<D,
     {
       err.printf("j.generate(ν=%s, resultType=%s\n)\n", order, resultType);
     }
+    generatedType = resultType;
     return isNullaryFunction ? generateNullaryFunctionInvocation(mv, resultType)
                              : generateEvaluateFunctionInvocation(mv);
   }
