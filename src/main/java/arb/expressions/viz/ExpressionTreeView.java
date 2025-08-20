@@ -18,7 +18,7 @@ import arb.expressions.context.TopologicalSorter;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.VariableNode;
 import arb.functions.*;
-import arb.functions.algebraic.AlgebraicFunction;
+import arb.functions.algebraic.AlgebraicNumberFunction;
 import arb.functions.complex.*;
 import arb.functions.integer.*;
 import arb.functions.polynomials.RealPolynomialFunction;
@@ -433,7 +433,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     Quaternion.class };
 
   public static Class<?>[]              INTERFACES           = new Class<?>[]
-  { AlgebraicFunction.class,
+  { AlgebraicNumberFunction.class,
     IntegerSequence.class,
     RealSequence.class,
     Function.class,
@@ -610,7 +610,7 @@ public class ExpressionTreeView<D, C extends Closeable, F extends Function<D, C>
     {
       selectTypes(Integer.class, Real.class);
     }
-    else if (functionType.equals(AlgebraicFunction.class))
+    else if (functionType.equals(AlgebraicNumberFunction.class))
     {
       selectTypes(AlgebraicNumber.class, AlgebraicNumber.class);
     }

@@ -6,5 +6,5 @@ context:
   - input=0
 domain: arb.AlgebraicNumber
 expression: x+3
-function: arb.functions.algebraic.AlgebraicFunction
+function: arb.functions.algebraic.AlgebraicNumberFunction
 ...
