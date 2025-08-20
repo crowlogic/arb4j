@@ -232,6 +232,7 @@ public class IntegralNode<D, C, F extends Function<? extends D, ? extends C>> ex
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+    assert resultType != null : "resultType cannot be null";
     generatedType = resultType;
 
     if (integralNode == null)

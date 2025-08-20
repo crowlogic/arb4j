@@ -54,29 +54,37 @@ import arb.functions.NullaryFunction;
  * 
  * @author ©2024 Stephen Crowley
  */
-public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber>,Typesettable {
-  protected long swigCPtr;
+public class AlgebraicNumber implements
+                             AutoCloseable,
+                             NamedField<AlgebraicNumber>,
+                             Typesettable
+{
+  protected long    swigCPtr;
   protected boolean swigCMemOwn;
 
-  public AlgebraicNumber(long cPtr, boolean cMemoryOwn) {
+  public AlgebraicNumber(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(AlgebraicNumber obj) {
+  public static long getCPtr(AlgebraicNumber obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arblibJNI.delete_AlgebraicNumber(swigCPtr);
       }
       swigCPtr = 0;
     }
   }
-
 
   public AlgebraicNumber identity()
   {
@@ -88,40 +96,40 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     arblib.qqbar_one(this);
     return this;
   }
-  
+
   @SuppressWarnings("resource")
   public static AlgebraicNumber named(String string)
   {
     return new AlgebraicNumber().setName(string);
   }
-  
+
   public boolean isReal()
   {
     return arblib.qqbar_is_real(this) != 0;
   }
-  
+
   public boolean isRational()
   {
     return arblib.qqbar_is_rational(this) != 0;
   }
-  
+
   public boolean isInteger()
   {
     return arblib.qqbar_is_integer(this) != 0;
   }
 
-  public AlgebraicNumber(String string, int bits )
+  public AlgebraicNumber(String string, int bits)
   {
     this();
     set(string);
   }
-    
+
   public AlgebraicNumber swap(AlgebraicNumber reference)
   {
     arblib.qqbar_swap(reference, this);
     return reference;
   }
-  
+
   @Override
   public String typeset()
   {
@@ -138,25 +146,24 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     arblib.qqbar_div_fmpz(result, this, x.swigCPtr);
     return result;
   }
-    
+
   public AlgebraicNumber sqrt()
   {
     return sqrt(this);
   }
-  
-  public AlgebraicNumber set( int val )
+
+  public AlgebraicNumber set(int val)
   {
     arblib.qqbar_set_si(this, val);
     return this;
   }
-  
 
   public AlgebraicNumber root(int n, AlgebraicNumber result)
   {
     arblib.qqbar_root_ui(result, this, n);
     return result;
   }
-  
+
   @Override
   public String toString()
   {
@@ -171,39 +178,37 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
       return sb.toString();
     }
   }
- 
 
   public Real mul(Real x, int prec, Real result)
   {
-    return getReal(prec, result).mul(x,prec);
-  }  
+    return getReal(prec, result).mul(x, prec);
+  }
 
   public Real div(Real x, int prec, Real result)
   {
-    return getReal(prec, result).div(x,prec);
-  }  
+    return getReal(prec, result).div(x, prec);
+  }
 
   public Real add(Real x, int prec, Real result)
   {
-    return getReal(prec, result).add(x,prec);
-  }  
+    return getReal(prec, result).add(x, prec);
+  }
 
   public Real sub(Real x, int prec, Real result)
   {
-    return getReal(prec, result).sub(x,prec);
-  }  
+    return getReal(prec, result).sub(x, prec);
+  }
 
   public Real pow(Real x, int prec, Real result)
   {
-    return getReal(prec, result).pow(x,prec);
-  }  
+    return getReal(prec, result).pow(x, prec);
+  }
 
- 
   public Real getReal(int bits, Real result)
   {
-    if ( !isReal() )
+    if (!isReal())
     {
-      throw new IllegalArgumentException( this + " is not Real-valued" );
+      throw new IllegalArgumentException(this + " is not Real-valued");
     }
     arblib.qqbar_get_arb(result, this, bits);
     return result;
@@ -214,41 +219,40 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     arblib.qqbar_sub_fmpz(result, this, x.swigCPtr);
     return result;
   }
-  
+
   public Complex getComplex(int bits, Complex result)
   {
     arblib.qqbar_get_acb(result, this, bits);
     return result;
   }
-  
+
   @Override
   public AlgebraicNumber pow(AlgebraicNumber operand, int bits, AlgebraicNumber res)
   {
     return pow(operand, res);
   }
-  
- public AlgebraicNumber pow(AlgebraicNumber operand, AlgebraicNumber res)
+
+  public AlgebraicNumber pow(AlgebraicNumber operand, AlgebraicNumber res)
   {
     arblib.qqbar_pow(res, this, operand);
     return res;
-  }  
-  
+  }
+
   public AlgebraicNumber pow(Fraction operand, AlgebraicNumber res)
   {
     arblib.qqbar_pow_fmpq(res, this, operand);
     return res;
   }
-  
+
   public AlgebraicNumber inverse()
   {
     return inverse(this);
   }
-  
+
   public AlgebraicNumber pow(Integer exp)
   {
-    return pow(exp,this);
+    return pow(exp, this);
   }
-  
 
   public Named set(String value)
   {
@@ -258,7 +262,7 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
                                                           value);
     return set(f.evaluate());
   }
-  
+
   public AlgebraicNumber set(SymbolicExpression expr)
   {
     arblib.qqbar_set_fexpr(this, expr);
@@ -281,11 +285,11 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     arblib.qqbar_get_fexpr_formula(result, this, flags);
     return result;
   }
-  
+
   public Complex mul(Complex x, int prec, Complex result)
   {
-    return getComplex(prec, result).mul(x,prec);
-  }  
+    return getComplex(prec, result).mul(x, prec);
+  }
 
   @Override
   public AlgebraicNumber inverse(AlgebraicNumber result)
@@ -301,7 +305,7 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     arblib.qqbar_add_fmpz(result, this, addend.swigCPtr);
     return result;
   }
-  
+
   public AlgebraicNumber pow(Integer n, AlgebraicNumber result)
   {
     assert n != null && n.swigCPtr != 0 : "n is null or has null swigCPtr";
@@ -317,7 +321,7 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
       return a.set(this).sub(b.set(x), prec, result);
     }
   }
-  
+
   @Override
   public AlgebraicNumber div(AlgebraicNumber x, int prec, AlgebraicNumber result)
   {
@@ -335,27 +339,26 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     arblib.qqbar_mul(result, this, x);
     return result;
   }
-  
-  
+
   public AlgebraicNumber set(Integer val)
   {
     assert val != null && val.swigCPtr != 0 : "val is null or has a null swigCPtr";
     arblib.qqbar_set_fmpz(this, val.swigCPtr);
     return this;
   }
-  
+
   public AlgebraicNumber(Complex complex)
   {
     this();
-    setEnclosure(complex);    
+    setEnclosure(complex);
   }
 
- public AlgebraicNumber init()
- {
-   arblib.qqbar_init(this);
-   return this;
- }
- 
+  public AlgebraicNumber init()
+  {
+    arblib.qqbar_init(this);
+    return this;
+  }
+
   @Override
   public <E> E get(int i)
   {
@@ -370,14 +373,14 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     arblib.qqbar_set_fmpq(this, val);
     return this;
   }
-  
+
   String name;
-  
+
   public RealPolynomial div(RealPolynomial x, int prec, RealPolynomial result)
-  {   
-      return result.set(this).div(x, prec, result);    
+  {
+    return result.set(this).div(x, prec, result);
   }
-  
+
   @SuppressWarnings("unchecked")
   @Override
   public <N extends Named> N setName(String name)
@@ -407,7 +410,7 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   }
 
   @Override
-  public AlgebraicNumber add(AlgebraicNumber x, int prec, AlgebraicNumber result) 
+  public AlgebraicNumber add(AlgebraicNumber x, int prec, AlgebraicNumber result)
   {
     assert x != null && x.swigCPtr != 0 : "x is null or has null swigCPtr";
     assert result != null && result.swigCPtr != 0 : "result is null or has null swigCPtr";
@@ -442,14 +445,14 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     arblib.qqbar_mul_fmpq(result, this, x);
     return result;
   }
-  
+
   public AlgebraicNumber mul(Integer x, int prec, AlgebraicNumber result)
   {
     assert x != null && x.swigCPtr != 0 : "x is null or has null swigCPtr";
     assert result != null && result.swigCPtr != 0 : "result is null or has null swigCPtr";
     arblib.qqbar_mul_fmpz(result, this, x.swigCPtr);
     return result;
-  }  
+  }
 
   @Override
   public AlgebraicNumber mul(int x, int prec, AlgebraicNumber result)
@@ -458,7 +461,6 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     arblib.qqbar_mul_si(result, this, x);
     return result;
   }
-
 
   @Override
   public AlgebraicNumber newFieldElement()
@@ -475,7 +477,7 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
   }
 
   @Override
-  public AlgebraicNumber sub(AlgebraicNumber x, int prec, AlgebraicNumber result) 
+  public AlgebraicNumber sub(AlgebraicNumber x, int prec, AlgebraicNumber result)
   {
     assert x != null && x.swigCPtr != 0 : "x is null or has null swigCPtr";
     assert result != null && result.swigCPtr != 0 : "result is null or has null swigCPtr";
@@ -506,36 +508,43 @@ public class AlgebraicNumber implements AutoCloseable,NamedField<AlgebraicNumber
     arblib.qqbar_sqrt(result, this);
     return result;
   }
+
   static
   {
     System.loadLibrary("arblib");
   }
- 
- 
 
-  public void setPoly(IntegerPolynomial value) {
+  public void setPoly(IntegerPolynomial value)
+  {
     arblibJNI.AlgebraicNumber_poly_set(swigCPtr, this, IntegerPolynomial.getCPtr(value), value);
   }
 
-  public IntegerPolynomial getPoly() {
+  public IntegerPolynomial getPoly()
+  {
     long cPtr = arblibJNI.AlgebraicNumber_poly_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new IntegerPolynomial(cPtr, false);
+    return (cPtr == 0) ? null
+                       : new IntegerPolynomial(cPtr,
+                                               false);
   }
 
-  public void setEnclosure(Complex value) {
+  public void setEnclosure(Complex value)
+  {
     arblibJNI.AlgebraicNumber_enclosure_set(swigCPtr, this, Complex.getCPtr(value), value);
   }
 
-  public Complex getEnclosure() {
+  public Complex getEnclosure()
+  {
     long cPtr = arblibJNI.AlgebraicNumber_enclosure_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Complex(cPtr, false);
+    return (cPtr == 0) ? null
+                       : new Complex(cPtr,
+                                     false);
   }
 
-  public AlgebraicNumber() 
+  public AlgebraicNumber()
   {
-    this(arblibJNI.new_AlgebraicNumber(), true);
+    this(arblibJNI.new_AlgebraicNumber(),
+         true);
     init();
   }
-
 
 }

@@ -125,7 +125,8 @@ public class TextTree<N>
               {
                 field = instance.getClass().getField(intermediateValueFieldName);
                 field.setAccessible(true);
-                sb.append("=" + field.get(instance));
+                sb.append("=" + field.get(instance) + "(" + arbNode.generatedType + ")");
+           
               }
             }
             catch (NoSuchFieldException e)
@@ -142,7 +143,7 @@ public class TextTree<N>
       }
       else
       {
-        sb.append(node);
+        sb.append(node + " wtf type " + node.getClass() );
       }
       sb.append("\n");
     }
