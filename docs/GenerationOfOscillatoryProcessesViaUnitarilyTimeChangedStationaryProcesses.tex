@@ -1,0 +1,188 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+
+\title{Generation of Oscillatory Processes via Unitary Time-Changed Stationary Processes}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{definition}[Time Change Function]
+Let $T(t)$ be a function that is strictly increasing except on a set of Lebesgue measure zero.
+\end{definition}
+
+\begin{definition}[Stationary Gaussian Process]
+Let $X(t)$ be a stationary Gaussian process with spectral representation:
+\[
+X(t) = \int_{-\infty}^{\infty} e^{i\lambda t} \, d\Phi(\lambda)
+\]
+where $d\Phi(\lambda)$ is an orthogonal increment process and $S(\lambda)$ is the spectral density of $X(t)$.
+\end{definition}
+
+\begin{definition}[Unitarity-Preserving Time Change]
+The unitarily time-changed process is defined as:
+\[
+Z(t) = \sqrt{T'(t)} \cdot X(T(t))
+\]
+where $T'(t)$ is the derivative of $T(t)$.
+\end{definition}
+
+\begin{theorem}[Oscillatory Function Representation]
+The oscillatory function for the unitarily time-changed process is:
+\[
+\phi_t(\lambda) = \sqrt{T'(t)} e^{i\lambda T(t)}
+\]
+\end{theorem}
+
+\begin{proof}
+Substituting the spectral representation of $X(t)$ into the definition of $Z(t)$:
+\begin{align}
+Z(t) &= \sqrt{T'(t)} \cdot X(T(t)) \\
+&= \sqrt{T'(t)} \int_{-\infty}^{\infty} e^{i\lambda T(t)} \, d\Phi(\lambda) \\
+&= \int_{-\infty}^{\infty} \sqrt{T'(t)} e^{i\lambda T(t)} \, d\Phi(\lambda) \\
+&= \int_{-\infty}^{\infty} \phi_t(\lambda) \, d\Phi(\lambda)
+\end{align}
+\end{proof}
+
+\begin{theorem}[Priestley Gain Function]
+The gain function in Priestley's oscillatory process representation is:
+\[
+A(t,\lambda) = \sqrt{T'(t)} e^{i\lambda(T(t)-t)}
+\]
+\end{theorem}
+
+\begin{proof}
+The Priestley representation requires:
+\[
+Z(t) = \int_{-\infty}^{\infty} A(t,\lambda) e^{i\lambda t} \, d\Phi(\lambda)
+\]
+Comparing with the oscillatory function representation:
+\[
+\int_{-\infty}^{\infty} \phi_t(\lambda) \, d\Phi(\lambda) = \int_{-\infty}^{\infty} A(t,\lambda) e^{i\lambda t} \, d\Phi(\lambda)
+\]
+Therefore:
+\[
+\phi_t(\lambda) = A(t,\lambda) e^{i\lambda t}
+\]
+Solving for $A(t,\lambda)$:
+\begin{align}
+A(t,\lambda) &= \phi_t(\lambda) e^{-i\lambda t} \\
+&= \sqrt{T'(t)} e^{i\lambda T(t)} e^{-i\lambda t} \\
+&= \sqrt{T'(t)} e^{i\lambda(T(t)-t)}
+\end{align}
+\end{proof}
+
+\begin{theorem}[Covariance Kernel]
+The covariance kernel $R(s,t)$ of the unitarily time-changed process $Z(t)$ is:
+\[
+R(s,t) = \sqrt{T'(s)T'(t)} \int_{-\infty}^{\infty} e^{i\lambda(T(s)-T(t))} S(\lambda) \, d\lambda
+\]
+\end{theorem}
+
+\begin{proof}
+The covariance kernel is defined as:
+\[
+R(s,t) = \text{Cov}[Z(s), Z(t)] = E[Z(s) \overline{Z(t)}]
+\]
+Using the oscillatory function representation:
+\begin{align}
+R(s,t) &= E\left[\int_{-\infty}^{\infty} \phi_s(\lambda) \, d\Phi(\lambda) \int_{-\infty}^{\infty} \overline{\phi_t(\mu)} \, \overline{d\Phi(\mu)}\right] \\
+&= \int_{-\infty}^{\infty} \phi_s(\lambda) \overline{\phi_t(\lambda)} S(\lambda) \, d\lambda \\
+&= \int_{-\infty}^{\infty} \sqrt{T'(s)} e^{i\lambda T(s)} \sqrt{T'(t)} e^{-i\lambda T(t)} S(\lambda) \, d\lambda \\
+&= \sqrt{T'(s)T'(t)} \int_{-\infty}^{\infty} e^{i\lambda(T(s)-T(t))} S(\lambda) \, d\lambda
+\end{align}
+\end{proof}
+
+\begin{theorem}[Variance Function]
+The variance function of the unitarily time-changed process is:
+\[
+\text{Var}[Z(t)] = T'(t) \cdot \sigma_X^2
+\]
+where $\sigma_X^2 = \int_{-\infty}^{\infty} S(\lambda) \, d\lambda$.
+\end{theorem}
+
+\begin{proof}
+Setting $s = t$ in the covariance kernel:
+\begin{align}
+\text{Var}[Z(t)] &= R(t,t) \\
+&= \sqrt{T'(t)T'(t)} \int_{-\infty}^{\infty} e^{i\lambda(T(t)-T(t))} S(\lambda) \, d\lambda \\
+&= T'(t) \int_{-\infty}^{\infty} e^{i\lambda \cdot 0} S(\lambda) \, d\lambda \\
+&= T'(t) \int_{-\infty}^{\infty} S(\lambda) \, d\lambda \\
+&= T'(t) \cdot \sigma_X^2
+\end{align}
+\end{proof}
+
+\begin{theorem}[Time-Dependent Spectral Density]
+The time-dependent spectral density (evolutionary spectral density) is:
+\[
+S_Z(t,\lambda) = T'(t) \cdot S(\lambda)
+\]
+\end{theorem}
+
+\begin{proof}
+The time-dependent spectral density is defined as:
+\[
+S_Z(t,\lambda) = |A(t,\lambda)|^2 \cdot S(\lambda)
+\]
+Computing the modulus squared of the gain function:
+\begin{align}
+|A(t,\lambda)|^2 &= \left|\sqrt{T'(t)} e^{i\lambda(T(t)-t)}\right|^2 \\
+&= \left|\sqrt{T'(t)}\right|^2 \left|e^{i\lambda(T(t)-t)}\right|^2 \\
+&= T'(t) \cdot 1 \\
+&= T'(t)
+\end{align}
+Therefore:
+\[
+S_Z(t,\lambda) = T'(t) \cdot S(\lambda)
+\]
+\end{proof}
+
+\begin{theorem}[Expected Zero Count]
+The expected zero count of the unitarily time-changed process $Z(t)$ in interval $[a,b]$ is:
+\[
+E[N_Z[a,b]] = \rho_X \cdot (T(b) - T(a))
+\]
+where $\rho_X = \frac{1}{\pi} \sqrt{\frac{-R_X''(0)}{R_X(0)}}$ is the constant zero-crossing rate of the stationary process $X(t)$.
+\end{theorem}
+
+\begin{proof}
+The zeros of $Z(t)$ occur when:
+\[
+Z(t) = \sqrt{T'(t)} \cdot X(T(t)) = 0
+\]
+Since $\sqrt{T'(t)} > 0$ almost everywhere, this occurs if and only if:
+\[
+X(T(t)) = 0
+\]
+The interval $[a,b]$ in the $Z$-process corresponds to the interval $[T(a), T(b)]$ in the $X$-process. The expected number of zeros of the stationary process $X$ in an interval of length $T(b) - T(a)$ is:
+\[
+E[N_X[T(a), T(b)]] = \rho_X \cdot (T(b) - T(a))
+\]
+Since the zeros of $Z$ in $[a,b]$ correspond exactly to the zeros of $X$ in $[T(a), T(b)]$:
+\[
+E[N_Z[a,b]] = E[N_X[T(a), T(b)]] = \rho_X \cdot (T(b) - T(a))
+\]
+\end{proof}
+
+\begin{proposition}[Non-Stationarity]
+The unitarily time-changed process $Z(t)$ is non-stationary.
+\end{proposition}
+
+\begin{proof}
+For stationarity, the covariance function must depend only on the lag $s-t$. However, from the covariance kernel:
+\[
+R(s,t) = \sqrt{T'(s)T'(t)} \int_{-\infty}^{\infty} e^{i\lambda(T(s)-T(t))} S(\lambda) \, d\lambda
+\]
+The dependence on $T'(s)$ and $T'(t)$ individually, rather than through their difference, demonstrates that the process is non-stationary unless $T'(t)$ is constant (which would make $T(t)$ linear).
+\end{proof}
+
+\end{document}
