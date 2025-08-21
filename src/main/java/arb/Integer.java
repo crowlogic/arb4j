@@ -244,21 +244,6 @@ public class Integer implements
     return result.set(this).add(addend, bits, result);
   }
 
-  public AlgebraicNumber div(Integer dividend, int prec, AlgebraicNumber res)
-  {
-    return res.set(this).div(dividend, prec, res);
-  }
-
-  public AlgebraicNumber mul(Integer dividend, int prec, AlgebraicNumber res)
-  {
-    return res.set(this).mul(dividend, prec, res);
-  }
-
-  public AlgebraicNumber sub(Integer dividend, int prec, AlgebraicNumber res)
-  {
-    return res.set(this).sub(dividend, prec, res);
-  }
-
   public Complex add(Integer operand, int prec, Complex result)
   {
     return result.set(this).add(operand, prec);
@@ -332,6 +317,11 @@ public class Integer implements
   public Integer additiveIdentity()
   {
     return set(0);
+  }
+
+  public Real arcsin(int bits, Real result)
+  {
+    return result.set(this).arcsin(bits, result);
   }
 
   public Real ascendingFactorial(Fraction n, int bits, Real result)
@@ -471,6 +461,11 @@ public class Integer implements
     return div(operand, this);
   }
 
+  public AlgebraicNumber div(Integer dividend, int prec, AlgebraicNumber res)
+  {
+    return res.set(this).div(dividend, prec, res);
+  }
+
   public Complex div(Integer operand, int prec, Complex result)
   {
     return result.set(this).div(operand, prec);
@@ -600,9 +595,9 @@ public class Integer implements
     return arblib.fmpz_equal(swigCPtr, other.swigCPtr) != 0;
   }
 
-  public Real arcsin(int bits, Real result)
+  public Real exp(int bits, Real res)
   {
-    return result.set(this).arcsin(bits, result);
+    return res.set(this).exp(bits);
   }
 
   public Integer factorial(int bits, Integer result)
@@ -666,11 +661,6 @@ public class Integer implements
   public int getUnsignedIntValue()
   {
     return (int) getUnsignedValue();
-  }
-
-  public Real exp(int bits, Real res)
-  {
-    return res.set(this).exp(bits);
   }
 
   /**
@@ -774,6 +764,11 @@ public class Integer implements
     return result.set(this).log(bits);
   }
 
+  public AlgebraicNumber mul(AlgebraicNumber multiplicand, int prec, AlgebraicNumber result)
+  {
+    return result.set(this).mul(multiplicand, prec, result);
+  }
+
   public Complex mul(Complex x, int bits, Complex result)
   {
     return result.set(this).mul(x, bits);
@@ -795,15 +790,15 @@ public class Integer implements
     return result.set(this).mul(subtrahend, prec, result);
   }
 
-  public AlgebraicNumber mul(AlgebraicNumber multiplicand, int prec, AlgebraicNumber result)
-  {
-    return result.set(this).mul(multiplicand, prec, result);
-  }
-
   @Override
   public Integer mul(Integer operand, int prec)
   {
     return mul(operand, prec, this);
+  }
+
+  public AlgebraicNumber mul(Integer dividend, int prec, AlgebraicNumber res)
+  {
+    return res.set(this).mul(dividend, prec, res);
   }
 
   public Complex mul(Integer operand, int prec, Complex result)
@@ -915,6 +910,22 @@ public class Integer implements
     return res.set(this).pow(operand, res);
   }
 
+  public Complex pow(Fraction operand, int bits, Complex result)
+  {
+    try ( Complex tmp = new Complex())
+    {
+      return tmp.set(this).pow(operand, bits, result);
+    }
+  }
+
+  public Real pow(Fraction exponent, int bits, Real result)
+  {
+    try ( Real blip = new Real())
+    {
+      return pow(blip.set(exponent), bits, result);
+    }
+  }
+
   public AlgebraicNumber pow(Integer exp, int bits, AlgebraicNumber result)
   {
     result.set(this);
@@ -928,14 +939,6 @@ public class Integer implements
       {
         return result.pow(negExp).inverse();
       }
-    }
-  }
-
-  public Complex pow(Fraction operand, int bits, Complex result)
-  {
-    try ( Complex tmp = new Complex())
-    {
-      return tmp.set(this).pow(operand, bits, result);
     }
   }
 
@@ -1113,6 +1116,11 @@ public class Integer implements
     return sub(b, i, this);
   }
 
+  public AlgebraicNumber sub(Integer dividend, int prec, AlgebraicNumber res)
+  {
+    return res.set(this).sub(dividend, prec, res);
+  }
+
   public Complex sub(Integer operand, int prec, Complex result)
   {
     return result.set(this).sub(operand, prec);
@@ -1238,14 +1246,6 @@ public class Integer implements
   public Real Γ(int bits, Real result)
   {
     return result.set(this).Γ(bits);
-  }
-
-  public Real pow(Fraction exponent, int bits, Real result)
-  {
-    try ( Real blip = new Real())
-    {
-      return pow(blip.set(exponent), bits, result);
-    }
   }
 
 }
