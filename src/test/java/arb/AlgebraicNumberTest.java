@@ -14,9 +14,11 @@ public class AlgebraicNumberTest extends
 
   public static void testRationalNumberFromString()
   {
-    var a = new AlgebraicNumber();
-    a.set("377/32");
-    assertEquals("377/32", a.toString());
+    try ( var a = new AlgebraicNumber())
+    {
+      a.set("377/32");
+      assertEquals("Div(377, 32)", a.toString());
+    }
   }
 
   public static void testIsReal()

@@ -244,6 +244,21 @@ public class Integer implements
     return result.set(this).add(addend, bits, result);
   }
 
+  public AlgebraicNumber div(Integer dividend, int prec, AlgebraicNumber res)
+  {
+    return res.set(this).div(dividend, prec, res);
+  }
+
+  public AlgebraicNumber mul(Integer dividend, int prec, AlgebraicNumber res)
+  {
+    return res.set(this).mul(dividend, prec, res);
+  }
+
+  public AlgebraicNumber sub(Integer dividend, int prec, AlgebraicNumber res)
+  {
+    return res.set(this).sub(dividend, prec, res);
+  }
+
   public Complex add(Integer operand, int prec, Complex result)
   {
     return result.set(this).add(operand, prec);
